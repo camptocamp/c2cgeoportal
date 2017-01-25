@@ -118,47 +118,48 @@ code, and a make environment for it. So do that first, as described below.</p>
 <span class="prompt1">git submodule update --init</span>
 </pre><p>c2cgeoportal has two types of tests: unit tests and functional tests. The unit
 tests are self-contained, and do not require any specific setup. The functional
-tests require a PostGIS database and a MapServer installation that can access
-the test mapfile <code class="docutils literal"><span class="pre">c2cgeoportal/tests/functional/c2cgeoportal_test.map</span></code>.</p>
+tests require to run with <cite>docker-compose-run</cite>.</p>
 </div>
 <div class="section" id="unit-tests">
 <h4>Unit tests<a class="headerlink" href="#unit-tests" title="Permalink to this headline">¶</a></h4>
 <p>To run the unit tests do this:</p>
 <pre class="highlight"><span class="prompt1">make build</span>
-<span class="prompt1">.build/venv/bin/python setup.py nosetests -a <span class="s1">&#39;!functional&#39;</span></span>
+<span class="prompt1">./docker-run ./setup.py nosetests -a <span class="s1">&#39;!functional&#39;</span></span>
 </pre></div>
 <div class="section" id="functional-tests">
 <h4>Functional tests<a class="headerlink" href="#functional-tests" title="Permalink to this headline">¶</a></h4>
 <p>For the functional tests you need to have MapServer and PostgreSQL/PostGIS
 installed. Make sure this is the case before proceeding.</p>
-<p>You now need to create PostGIS database (named <code class="docutils literal"><span class="pre">c2cgeoportal_test</span></code> for example)
+<p>You now need to create PostGIS database (named <code class="docutils literal"><span class="pre">geomapfish_test</span></code> for example)
 and a schema named <code class="docutils literal"><span class="pre">main</span></code> into it.</p>
 <p>To create the database use the following command if you have a PostGIS database
 template at your disposal:</p>
-<pre class="highlight"><span class="prompt1">sudo -u postgres createdb -T template_postgis c2cgeoportal_test</span>
+<pre class="highlight"><span class="prompt1">sudo -u postgres createdb -T template_postgis geomapfish_test</span>
 </pre><div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>If you do not have a template named <code class="docutils literal"><span class="pre">template_postgis</span></code> use this:</p>
-<pre class="highlight"><span class="prompt1">sudo -u postgres createdb -E UTF8 -T template0 c2cgeoportal_test</span>
-<span class="prompt1">sudo -u postgres createlang plpgsql c2cgeoportal_test</span>
-<span class="prompt1">sudo -u postgres psql -d c2cgeoportal_test <span class="se">\</span>
+<pre class="highlight"><span class="prompt1">sudo -u postgres createdb -E UTF8 -T template0 geomapfish_test</span>
+<span class="prompt1">sudo -u postgres createlang plpgsql geomapfish_test</span>
+<span class="prompt1">sudo -u postgres psql -d geomapfish_test <span class="se">\</span>
        -f /usr/share/postgresql/9.1/contrib/postgis-1.5/postgis.sql</span>
-<span class="prompt1">sudo -u postgres psql -d c2cgeoportal_test <span class="se">\</span>
+<span class="prompt1">sudo -u postgres psql -d geomapfish_test <span class="se">\</span>
        -f /usr/share/postgresql/9.1/contrib/postgis-1.5/spatial_ref_sys.sql</span>
-<span class="prompt1">sudo -u postgres psql -d c2cgeoportal_test <span class="se">\</span>
+<span class="prompt1">sudo -u postgres psql -d geomapfish_test <span class="se">\</span>
        -c <span class="s1">&#39;GRANT ALL ON geometry_columns TO &quot;www-data&quot;;&#39;</span></span>
-<span class="prompt1">sudo -u postgres psql -d c2cgeoportal_test <span class="se">\</span>
+<span class="prompt1">sudo -u postgres psql -d geomapfish_test <span class="se">\</span>
        -c <span class="s1">&#39;GRANT SELECT ON spatial_ref_sys TO &quot;www-data&quot;;&#39;</span></span>
 </pre><p class="last">The <code class="docutils literal"><span class="pre">template0</span></code> is needed on Debian and Ubuntu to create a utf-8
 database.</p>
 </div>
 <p>If you do not have a <code class="docutils literal"><span class="pre">www-data</span></code> user you need to create one:</p>
 <pre class="highlight"><span class="prompt1">sudo -u postgres createuser -P www-data</span>
-</pre><p>To create the <code class="docutils literal"><span class="pre">main</span></code> and <code class="docutils literal"><span class="pre">main_static</span></code> schema:</p>
-<pre class="highlight"><span class="prompt1">sudo -u postgres psql -d c2cgeoportal_test -c <span class="s1">&#39;CREATE SCHEMA main;&#39;</span></span>
-<span class="prompt1">sudo -u postgres psql -d c2cgeoportal_test -c <span class="s1">&#39;GRANT ALL ON SCHEMA main TO &quot;www-data&quot;;&#39;</span></span>
-<span class="prompt1">sudo -u postgres psql -d c2cgeoportal_test -c <span class="s1">&#39;CREATE SCHEMA main_static;&#39;</span></span>
-<span class="prompt1">sudo -u postgres psql -d c2cgeoportal_test -c <span class="s1">&#39;GRANT ALL ON SCHEMA main_static TO &quot;www-data&quot;;&#39;</span></span>
+</pre><p>To create the <code class="docutils literal"><span class="pre">main</span></code>,  <code class="docutils literal"><span class="pre">main_static</span></code>  and <code class="docutils literal"><span class="pre">geodata</span></code> schema:</p>
+<pre class="highlight"><span class="prompt1">sudo -u postgres psql -d geomapfish_test -c <span class="s1">&#39;CREATE SCHEMA main;&#39;</span></span>
+<span class="prompt1">sudo -u postgres psql -d geomapfish_test -c <span class="s1">&#39;GRANT ALL ON SCHEMA main TO &quot;www-data&quot;;&#39;</span></span>
+<span class="prompt1">sudo -u postgres psql -d geomapfish_test -c <span class="s1">&#39;CREATE SCHEMA main_static;&#39;</span></span>
+<span class="prompt1">sudo -u postgres psql -d geomapfish_test -c <span class="s1">&#39;GRANT ALL ON SCHEMA main_static TO &quot;www-data&quot;;&#39;</span></span>
+<span class="prompt1">sudo -u postgres psql -d geomapfish_test -c <span class="s1">&#39;CREATE SCHEMA geodata;&#39;</span></span>
+<span class="prompt1">sudo -u postgres psql -d geomapfish_test -c <span class="s1">&#39;GRANT ALL ON SCHEMA geodata TO &quot;www-data&quot;;&#39;</span></span>
 </pre><p>If you do not use the default variables edit the <code class="docutils literal"><span class="pre">vars.yaml</span></code> and set the <code class="docutils literal"><span class="pre">dbuser</span></code>, <code class="docutils literal"><span class="pre">dbpassword</span></code>,
 <code class="docutils literal"><span class="pre">dbhost</span></code>, <code class="docutils literal"><span class="pre">dbport</span></code>, <code class="docutils literal"><span class="pre">db</span></code>, and <code class="docutils literal"><span class="pre">mapserv_url</span></code> as appropriate.</p>
 <p><code class="docutils literal"><span class="pre">mapserv_url</span></code> needs to refer a valid <code class="docutils literal"><span class="pre">mapserv</span></code> instance running locally,
@@ -187,14 +188,14 @@ to generate <code class="docutils literal"><span class="pre">c2cgeoportal/tests/
 <code class="docutils literal"><span class="pre">c2cgeoportal/tests/functional/c2cgeoportal_test.map</span></code>:</p>
 <pre class="highlight"><span class="prompt1">make build</span>
 </pre><p>You can now run the functional tests with this:</p>
-<pre class="highlight"><span class="prompt1">.build/venv/bin/python setup.py nosetests -a functional</span>
+<pre class="highlight"><span class="prompt1">./docker-compose-run ./setup.py nosetests -a functional</span>
 </pre></div>
 <div class="section" id="all-tests">
 <h4>All tests<a class="headerlink" href="#all-tests" title="Permalink to this headline">¶</a></h4>
 <p>To run all the tests do this:</p>
-<pre class="highlight"><span class="prompt1">make tests</span>
+<pre class="highlight"><span class="prompt1">./docker-compose-run make tests</span>
 </pre><p>To run a specific test use the <code class="docutils literal"><span class="pre">--where</span></code> switch. For example:</p>
-<pre class="highlight"><span class="prompt1">.build/venv/bin/python setup.py nosetests --where <span class="se">\</span>
+<pre class="highlight"><span class="prompt1">./docker-compose-run ./setup.py nosetests --where <span class="se">\</span>
     c2cgeoportal/tests/functional/test_themes.py:TestThemesView.test_catalogue</span>
 </pre></div>
 </div>
@@ -413,7 +414,7 @@ this directory.</p>
       &copy;2011-2016, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
       |

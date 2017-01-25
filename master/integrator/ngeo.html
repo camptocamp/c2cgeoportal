@@ -172,10 +172,12 @@ span.prompt1:before {
 </pre></div>
 </div>
 <p>The used method has the following API:</p>
-<p><code class="docutils literal"><span class="pre">add_interface(config,</span> <span class="pre">interface_name=None,</span> <span class="pre">interface_type=INTERFACE_TYPE_CGXP,</span> <span class="pre">**kwargs)</span></code>:</p>
-<p><code class="docutils literal"><span class="pre">config</span></code> is the application configuration object.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">interface_name</span><span class="o">=</span><span class="s2">&quot;desktop&quot;</span><span class="p">,</span> <span class="n">interface_type</span><span class="o">=</span><span class="n">INTERFACE_TYPE_CGXP</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Where <code class="docutils literal"><span class="pre">config</span></code> is the application configuration object,</p>
 <p><code class="docutils literal"><span class="pre">interface_name</span></code> is the name specified in the <code class="docutils literal"><span class="pre">interface</span></code> table,
-also used to create the route path.</p>
+also used to create the route path,</p>
 <p><code class="docutils literal"><span class="pre">interface_type</span></code> may be either <code class="docutils literal"><span class="pre">INTERFACE_TYPE_CGXP</span></code>, <code class="docutils literal"><span class="pre">INTERFACE_TYPE_NGEO</span></code> or
 <code class="docutils literal"><span class="pre">INTERFACE_TYPE_NGEO_CATALOGUE</span></code>. Constants available in <code class="docutils literal"><span class="pre">c2cgeoportal</span></code>.</p>
 </div>
@@ -265,7 +267,7 @@ The default interfaces are <code class="docutils literal"><span class="pre">desk
       &copy;2011-2016, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
       |

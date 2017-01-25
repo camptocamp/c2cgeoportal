@@ -59,31 +59,50 @@ as in the following example:</p>
 <div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">vars</span><span class="p p-Indicator">:</span>
     <span class="l l-Scalar l-Scalar-Plain">...</span>
     <span class="l l-Scalar l-Scalar-Plain">pdfreport</span><span class="p p-Indicator">:</span>
-        <span class="l l-Scalar l-Scalar-Plain">defaults</span><span class="p p-Indicator">:</span>
-            <span class="l l-Scalar l-Scalar-Plain">check_credentials</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">False</span>
+        <span class="l l-Scalar l-Scalar-Plain">layer-defaults</span><span class="p p-Indicator">:</span> <span class="nl">&amp;pdfreport-layer-default</span>
+            <span class="l l-Scalar l-Scalar-Plain">check_credentials</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">True</span>
             <span class="l l-Scalar l-Scalar-Plain">srs</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">EPSG:21781</span>
             <span class="l l-Scalar l-Scalar-Plain">map</span><span class="p p-Indicator">:</span>
                 <span class="l l-Scalar l-Scalar-Plain">backgroundlayers</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">[</span><span class="nv">grp_ly_tilegenerierung_landeskarte</span><span class="p p-Indicator">]</span>
                 <span class="l l-Scalar l-Scalar-Plain">imageformat</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">image/png</span>
+        <span class="l l-Scalar l-Scalar-Plain">map-defaults</span><span class="p p-Indicator">:</span> <span class="nl">&amp;pdfreport-map-default</span>
+            <span class="l l-Scalar l-Scalar-Plain">backgroundlayers</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">[]</span>
+            <span class="l l-Scalar l-Scalar-Plain">imageformat</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">image/png</span>
+            <span class="l l-Scalar l-Scalar-Plain">zoomType</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">extent</span>
+            <span class="l l-Scalar l-Scalar-Plain">minScale</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">1000</span>
+            <span class="l l-Scalar l-Scalar-Plain">style</span><span class="p p-Indicator">:</span>
+                <span class="l l-Scalar l-Scalar-Plain">fillColor</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">red</span>
+                <span class="l l-Scalar l-Scalar-Plain">fillOpacity</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">0.2</span>
+                <span class="l l-Scalar l-Scalar-Plain">symbolizers</span><span class="p p-Indicator">:</span>
+                <span class="p p-Indicator">-</span>   <span class="l l-Scalar l-Scalar-Plain">strokeColor</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">red</span>
+                    <span class="l l-Scalar l-Scalar-Plain">strokeWidth</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+                    <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">point</span>
+                    <span class="l l-Scalar l-Scalar-Plain">pointRadius</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
         <span class="l l-Scalar l-Scalar-Plain">layers</span><span class="p p-Indicator">:</span>
             <span class="l l-Scalar l-Scalar-Plain">ly_a020_belastete_standorte_point</span><span class="p p-Indicator">:</span>
+                <span class="l l-Scalar l-Scalar-Plain">&lt;&lt;</span><span class="p p-Indicator">:</span> <span class="nv">*pdfreport-layer-default</span>
                 <span class="l l-Scalar l-Scalar-Plain">map</span><span class="p p-Indicator">:</span>
+                    <span class="l l-Scalar l-Scalar-Plain">&lt;&lt;</span><span class="p p-Indicator">:</span> <span class="nv">*pdfreport-map-default</span>
                     <span class="l l-Scalar l-Scalar-Plain">backgroundlayers</span><span class="p p-Indicator">:</span>
                         <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">grp_ly_tilegenerierung_landeskarte</span>
                         <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ly_a020_belastete_standorte_point</span>
                     <span class="l l-Scalar l-Scalar-Plain">imageformat</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">image/jpeg</span>
             <span class="l l-Scalar l-Scalar-Plain">some_template_with_no_map</span><span class="p p-Indicator">:</span>
+                <span class="l l-Scalar l-Scalar-Plain">&lt;&lt;</span><span class="p p-Indicator">:</span> <span class="nv">*pdfreport-layer-default</span>
                 <span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
                     <span class="l l-Scalar l-Scalar-Plain">layout</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">some_template_name</span>
                     <span class="l l-Scalar l-Scalar-Plain">outputFormat</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">pdf</span>
                     <span class="l l-Scalar l-Scalar-Plain">attributes</span><span class="p p-Indicator">:</span>
                         <span class="l l-Scalar l-Scalar-Plain">paramID</span><span class="p p-Indicator">:</span> <span class="s">&quot;%(id)s&quot;</span>
             <span class="l l-Scalar l-Scalar-Plain">some_template_with_multi_map</span><span class="p p-Indicator">:</span>
+                <span class="l l-Scalar l-Scalar-Plain">&lt;&lt;</span><span class="p p-Indicator">:</span> <span class="nv">*pdfreport-layer-default</span>
                 <span class="l l-Scalar l-Scalar-Plain">maps</span><span class="p p-Indicator">:</span>
-                    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backgroundlayers</span><span class="p p-Indicator">:</span>
-                        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">grp_ly_tilegenerierung_landeskarte</span>
-                    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backgroundlayers</span><span class="p p-Indicator">:</span>
-                        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ly_a020_belastete_standorte_point</span>
+                    <span class="p p-Indicator">-</span>   <span class="l l-Scalar l-Scalar-Plain">&lt;&lt;</span><span class="p p-Indicator">:</span> <span class="nv">*pdfreport-map-default</span>
+                        <span class="l l-Scalar l-Scalar-Plain">backgroundlayers</span><span class="p p-Indicator">:</span>
+                            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">grp_ly_tilegenerierung_landeskarte</span>
+                    <span class="p p-Indicator">-</span>   <span class="l l-Scalar l-Scalar-Plain">&lt;&lt;</span><span class="p p-Indicator">:</span> <span class="nv">*pdfreport-map-default</span>
+                        <span class="l l-Scalar l-Scalar-Plain">backgroundlayers</span><span class="p p-Indicator">:</span>
+                            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ly_a020_belastete_standorte_point</span>
 <span class="l l-Scalar l-Scalar-Plain">update_paths</span><span class="p p-Indicator">:</span>
     <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">pdfreport</span>
 </pre></div>
@@ -222,7 +241,7 @@ variables values are passed to the template:</p>
       &copy;2011-2016, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
       |

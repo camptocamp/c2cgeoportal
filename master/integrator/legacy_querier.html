@@ -55,21 +55,25 @@ web service that does a <code class="docutils literal"><span class="pre">SELECT<
 <p>The web service configuration is done in the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file:</p>
 <div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">layers</span><span class="p">:</span>
     <span class="n">enum</span><span class="p">:</span>
-        <span class="n">dbsession</span><span class="p">:</span> <span class="s2">&quot;&lt;session name&gt;&quot;</span>
+        <span class="n">defaults</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">layers</span><span class="o">-</span><span class="n">enum</span><span class="o">-</span><span class="n">defaults</span>
+            <span class="n">dbsession</span><span class="p">:</span> <span class="s2">&quot;&lt;session name&gt;&quot;</span>
         <span class="s2">&quot;&lt;layer_name&gt;&quot;</span><span class="p">:</span>
             <span class="n">dbsession</span><span class="p">:</span> <span class="s2">&quot;&lt;session name&gt;&quot;</span>
-            <span class="n">table</span><span class="p">:</span> <span class="s2">&quot;&lt;[schema.]table name&gt;&quot;</span>
+            <span class="n">defaults</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">layers</span><span class="o">-</span><span class="n">enum</span><span class="o">-</span><span class="n">table</span><span class="o">-</span><span class="n">defaults</span>
+                <span class="n">table</span><span class="p">:</span> <span class="s2">&quot;&lt;[schema.]table name&gt;&quot;</span>
             <span class="n">attributes</span><span class="p">:</span>
                 <span class="s2">&quot;&lt;attribute name&gt;&quot;</span><span class="p">:</span>
                     <span class="n">table</span><span class="p">:</span> <span class="s2">&quot;&lt;[schema.]table name&gt;&quot;</span>
                     <span class="n">column_name</span><span class="p">:</span> <span class="s2">&quot;&lt;column name&gt;&quot;</span>
                     <span class="n">separator</span><span class="p">:</span> <span class="s2">&quot;,&quot;</span>
+                <span class="o">&lt;&lt;</span><span class="p">:</span> <span class="o">*</span><span class="n">layers</span><span class="o">-</span><span class="n">enum</span><span class="o">-</span><span class="n">table</span><span class="o">-</span><span class="n">defaults</span>
+            <span class="o">&lt;&lt;</span><span class="p">:</span> <span class="o">*</span><span class="n">layers</span><span class="o">-</span><span class="n">enum</span><span class="o">-</span><span class="n">defaults</span>
 </pre></div>
 </div>
-<p><code class="docutils literal"><span class="pre">dbsession:</span> <span class="pre">&quot;&lt;session</span> <span class="pre">name&gt;&quot;</span></code> at the <code class="docutils literal"><span class="pre">enum</span></code> level is a shortcut that
+<p><code class="docutils literal"><span class="pre">dbsession:</span> <span class="pre">&quot;&lt;session</span> <span class="pre">name&gt;&quot;</span></code> at the <code class="docutils literal"><span class="pre">enum.defaults</span></code> level is a shortcut that
 may be used if almost all the layers use the same <code class="docutils literal"><span class="pre">dbsession</span></code>. It may be
 overridden for each layer. If omitted, the main DB session is used.</p>
-<p><code class="docutils literal"><span class="pre">table:</span> <span class="pre">&quot;&lt;[schema.]table</span> <span class="pre">name&gt;&quot;</span></code> may be used at the layer level as a the default
+<p><code class="docutils literal"><span class="pre">table:</span> <span class="pre">&quot;&lt;[schema.]table</span> <span class="pre">name&gt;&quot;</span></code> may be used at the layer <code class="docutils literal"><span class="pre">defaults</span></code> level as a the default
 table where following attributes may be found. It can be overridden at the
 attribute level. <code class="docutils literal"><span class="pre">table</span></code> is a mandatory parameter.</p>
 <p>If <code class="docutils literal"><span class="pre">column_name</span></code> is not defined, the attribute name is used.</p>
@@ -78,10 +82,10 @@ attribute level. <code class="docutils literal"><span class="pre">table</span></
 <div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">layers</span>
     <span class="n">enum</span><span class="p">:</span>
         <span class="n">mapserver_layer</span><span class="p">:</span>
-            <span class="n">table</span><span class="p">:</span> <span class="n">geodata</span><span class="o">.</span><span class="n">table</span>
             <span class="n">attributes</span><span class="p">:</span>
-                <span class="nb">type</span><span class="p">:</span>
-                <span class="n">country</span><span class="p">:</span>
+                <span class="nb">type</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">layers</span><span class="o">-</span><span class="n">enum</span><span class="o">-</span><span class="n">mapserver</span><span class="o">-</span><span class="n">layer</span><span class="o">-</span><span class="n">defaults</span>
+                    <span class="n">table</span><span class="p">:</span> <span class="n">geodata</span><span class="o">.</span><span class="n">table</span>
+                <span class="n">country</span><span class="p">:</span> <span class="o">*</span><span class="n">layers</span><span class="o">-</span><span class="n">enum</span><span class="o">-</span><span class="n">mapserver</span><span class="o">-</span><span class="n">layer</span><span class="o">-</span><span class="n">defaults</span>
 </pre></div>
 </div>
 <p>Make sure that the <code class="docutils literal"><span class="pre">cgxp_querier</span></code> plugin has the attribute <code class="docutils literal"><span class="pre">attributeURLs</span></code>
@@ -167,7 +171,7 @@ For instance:</p>
       &copy;2011-2016, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
       |
