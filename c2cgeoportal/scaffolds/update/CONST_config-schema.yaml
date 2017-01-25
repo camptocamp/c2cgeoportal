@@ -122,8 +122,14 @@ mapping:
                     available_metadata:
                         type: seq
                         required: True
-                        sequence:
-                        -   type: str
+                        sequence: &types
+                        -   type: map
+                            mapping:
+                                name:
+                                    type: str
+                                    required: True
+                                type:
+                                    type: str
                     available_functionalities:
                         type: seq
                         required: True
@@ -142,7 +148,7 @@ mapping:
                             defaults: &free_dict
                                 type: map
                                 mapping:
-                                    .+:
+                                    regex;(.+):
                                         type: any
                             regex;(.+):
                                 type: map
@@ -185,21 +191,11 @@ mapping:
                 type: map
                 required: True
                 mapping:
-                    mapserv_url:
+                    default_ogc_server:
                         type: str
                         required: True
-                    mapserv_wfs_url:
+                    default_external_ogc_server:
                         type: str
-                    external_mapserv_url:
-                        type: str
-                    external_mapserv_wfs_url:
-                        type: str
-                    geoserver:
-                        type: bool
-                        required: True
-                    proxies:
-                        type: any
-                        required: True
             tinyowsproxy:
                 type: map
                 required: True
@@ -209,13 +205,10 @@ mapping:
                         required: True
                     proxy_online_resource:
                         type: str
-                        required: True
                     online_resource:
                         type: str
-                        required: True
                     tinyows_host:
                         type: str
-                        required: True
             fulltextsearch:
                 type: map
                 required: True
@@ -230,7 +223,7 @@ mapping:
                         type: map
                         required: True
                         mapping:
-                            regex;([0-9][0-9]):
+                            regex;([a-z][a-z]):
                                 type: str
             reset_password:
                 type: map
@@ -238,16 +231,12 @@ mapping:
                 mapping:
                     email_from:
                         type: str
-                        required: True
                     email_body:
                         type: str
-                        required: True
                     email_subject:
                         type: str
-                        required: True
                     smtp_server:
                         type: str
-                        required: True
             servers:
                 <<: *free_dict
                 required: True
@@ -261,6 +250,14 @@ mapping:
                     base_url:
                         type: str
                         required: True
+                    email_from:
+                        type: str
+                    email_subject:
+                        type: str
+                    email_body:
+                        type: str
+                    smtp_server:
+                        type: str
             hide_capabilities:
                 type: bool
                 required: True
@@ -277,7 +274,7 @@ mapping:
                     layers:
                         type: map
                         mapping:
-                            .*:
+                            regex;(.+):
                                 type: map
                                 mapping:
                                     check_credentials:
@@ -323,37 +320,56 @@ mapping:
                 type: map
                 required: True
                 mapping:
-                    fulltextsearch:
-                        type: str
-                        required: True
-                    lang_files:
-                        type: seq
-                        required: True
-                        sequence:
-                        -   type: str
-                    print_template:
-                        type: str
-                    print_center_lon:
-                        type: int
-                    print_center_lat:
-                        type: int
-                    print_scale:
-                        type: int
-                    print_spec:
-                        type: any
-                        required: True
-                    themes:
+                    regex;(.+):
                         type: map
-                        required: True
                         mapping:
-                            regex;([a-z]+):
+                            fulltextsearch:
+                                type: str
+                            lang_files:
+                                type: seq
+                                sequence:
+                                -   type: str
+                            print_template:
+                                type: str
+                            print_center_lon:
+                                type: int
+                            print_center_lat:
+                                type: int
+                            print_scale:
+                                type: int
+                            print_spec:
+                                type: any
+                            routes: &routes
+                                type: seq
+                                seq:
+                                -   type: map
+                                    mapping:
+                                        name:
+                                            type: str
+                                            required: true
+                                        params: &params
+                                            type: map
+                                            mapping:
+                                                regex;([a-zA-Z0-9_\-~\.]+):
+                                                    type: str
+                                                    pattern: |-
+                                                        [a-zA-Z0-9_\-~\.]+
+                            phantomjs_routes: *routes
+                            routes_disable:
+                                type: seq
+                                seq:
+                                -   type: str
+                            themes:
                                 type: map
                                 mapping:
-                                    params:
+                                    regex;([a-z]+):
                                         type: map
                                         mapping:
-                                            regex;([a-z]+):
-                                                type: str
+                                            params: *params
+                            forward_headers:
+                                type: seq
+                                sequence:
+                                -   type: str
             check_collector:
                 type: map
                 required: True
