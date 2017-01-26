@@ -46,6 +46,8 @@ before_install:
         docker pull camptocamp/geomapfish_build_dev
     fi
 - docker build --tag=camptocamp/geomapfish_build .
+- |
+    [[ `./docker-run id` =~ uid=[0-9]+\(travis\)\ gid=[0-9]+\(geomapfish\)\ groups=[0-9]+\(geomapfish\) ]]
 
 install:
 - if [ ${TRAVIS_PULL_REQUEST} != "false" ] ; then git fetch origin ${TRAVIS_BRANCH}:${TRAVIS_BRANCH}; fi
