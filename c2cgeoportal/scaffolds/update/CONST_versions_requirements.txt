@@ -15,7 +15,7 @@ isodate==0.5.4
 Jinja2==2.9.4
 lingua==4.13
 Mako==1.0.6
-Markdown==2.6.7
+Markdown==2.6.8
 MarkupSafe==0.23
 OWSLib==0.14.0
 papyrus==2.2
