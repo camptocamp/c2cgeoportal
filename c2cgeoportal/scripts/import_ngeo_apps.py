@@ -335,6 +335,7 @@ ${ ',\\n'.join([
                 ("gmfPrintUrl", r"/printproxy", "printproxy", args.interface != "mobile"),
                 ("gmfTreeUrl", r"/themes", "themes", True),
                 ("gmfShortenerCreateUrl", r"/short/create", "shortener_create", args.interface != "mobile"),
+                ("gmfLayersUrl", r"/layers", "layers_root", args.interface != "mobile"),
             ]:
                 data = _sub(
                     r"module.constant\('%s', "
