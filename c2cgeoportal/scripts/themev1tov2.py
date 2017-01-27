@@ -167,7 +167,7 @@ def layer_v1tov2(session, layer):
     from c2cgeoportal.models import OGCServer, LayerWMS, LayerWMTS, \
         LayergroupTreeitem, Dimension
 
-    if layer.layer_type == "internal WMS" or layer.layer_type == "external WMS":
+    if layer.layer_type in ["internal WMS", "external WMS"]:
         # use the first one
         new_layer = LayerWMS()
         image_type = layer.image_type
@@ -185,22 +185,14 @@ def layer_v1tov2(session, layer):
             OGCServer.is_single_tile == is_single_tile
         ).one()
         new_layer.ogc_server = ogc_server
-    elif layer.layer_type == "WMTS":
-        new_layer = LayerWMTS()
 
-    new_layer.name = layer.name
-    new_layer.public = layer.public
-    new_layer.geo_table = layer.geo_table
-    new_layer.interfaces = layer.interfaces
-    new_layer.restrictionareas = layer.restrictionareas
-
-    if layer.layer_type[-4:] == " WMS":
         new_layer.layer = layer.layer
         new_layer.style = layer.style
         new_layer.time_mode = layer.time_mode
         new_layer.time_widget = layer.time_widget
+    elif layer.layer_type == "WMTS":
+        new_layer = LayerWMTS()
 
-    if layer.layer_type == "WMTS":
         new_layer.url = layer.url
         new_layer.layer = layer.layer
         new_layer.style = layer.style
@@ -211,6 +203,12 @@ def layer_v1tov2(session, layer):
             dimensions = loads(layer.dimensions)
             for name, value in dimensions.items():
                 session.add(Dimension(name, value, new_layer))
+
+    new_layer.name = layer.name
+    new_layer.public = layer.public
+    new_layer.geo_table = layer.geo_table
+    new_layer.interfaces = layer.interfaces
+    new_layer.restrictionareas = layer.restrictionareas
 
     for link in layer.parents_relation:
         new_link = LayergroupTreeitem()
