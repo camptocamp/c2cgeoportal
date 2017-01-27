@@ -1,6 +1,14 @@
 This file includes migration steps for each release of c2cgeoportal.
 
 
+Version 2.1.2
+=============
+
+1. Rename the following file:
+
+    git mv deploy/hooks/post-{create,restore}
+
+
 Version 2.1.0
 =============
 
