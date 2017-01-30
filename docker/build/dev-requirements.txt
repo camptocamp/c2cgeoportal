@@ -24,7 +24,7 @@ https://github.com/camptocamp/fa.jquery/archive/6b781ecb416ef40caa79ca449a04159d
 https://github.com/camptocamp/pyramid_closure/archive/819bc43420b3cd924d8698c5a9606592c19dbb15.zip#egg=pyramid_closure
 ipcalc==1.99.0
 isodate==0.5.4
-Jinja2==2.9.4
+Jinja2==2.9.5
 js.jqgrid==4.4.4
 js.jquery==1.9.1  # Fixed for admin interface
 js.jquery-form==3.9
