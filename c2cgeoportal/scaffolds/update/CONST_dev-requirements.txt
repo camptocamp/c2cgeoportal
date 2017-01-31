@@ -8,5 +8,5 @@ pep8-naming== 0.4.1
 https://github.com/transifex/transifex-client/archive/655c5e9f964bdc3e7ba4787d68b048bc670dcbf0.zip#transifex-client
 tilecloud==0.3.0
 tilecloud-chain==1.2.1
-PyYAML==3.11
+PyYAML==3.12
 pykwalify==1.6.0
