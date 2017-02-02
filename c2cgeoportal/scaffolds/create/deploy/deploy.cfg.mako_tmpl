@@ -18,11 +18,11 @@ createdb = sudo -u postgres createdb
 restore_tmp = sudo -u postgres pg_restore -Fc -d
 
 [code]
-dir = /var/www/c2cgeoportal_mapfish/private/c2cgeoportal
+src = ${deploy["code_source"]}
+dest = ${deploy["code_destination"]}
 
 [apache]
-dest = /var/www/c2cgeoportal_mapfish/conf/c2cgeoportal.conf
-content = Include /var/www/c2cgeoportal_mapfish/private/c2cgeoportal/apache/*.conf
+active = false
 
 [remote_hosts]
 demo = c2cpc.camptocamp.com
