@@ -179,6 +179,11 @@ vars:
         - name: snappingConfig
           type: json
         - name: geometry_validation
+        # WMS
+        - name: directedFilterAttributes
+          type: list
+        - name: enumeratedAttributes
+          type: list
         # WMTS layers
         - name: ogcServer
         - name: layers
@@ -191,6 +196,7 @@ vars:
         - default_theme
         - print_template
         - mapserver_substitution
+        - filterable_layers
 
     functionalities:
     # Functionalities that are accessible to anonymous
