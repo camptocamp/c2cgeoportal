@@ -1,1 +1,0 @@
-git+https://github.com/camptocamp/pyramid_closure#egg=pyramid_closure
