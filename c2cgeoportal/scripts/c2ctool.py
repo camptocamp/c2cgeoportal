@@ -400,7 +400,7 @@ class C2cTool:
             self.step3()
         else:
             self.print_step(
-                3, message="Apply the ngeo application diff available in the `ngeo.diff` file."
+                3, message="Manually apply the ngeo application changes as shown in the `ngeo.diff` file."
             )
 
     def step3(self):

@@ -1,6 +1,14 @@
 This file includes migration steps for each release of c2cgeoportal.
 
 
+Version 2.1.2
+=============
+
+1. Rename the following file:
+
+    git mv deploy/hooks/post-{create,restore}
+
+
 Version 2.1.0
 =============
 
@@ -55,7 +63,7 @@ You should also add a Layer group named 'background' with the background layers.
 
     chmod +x CONST_create_template/deploy/hooks/*
     cp CONST_create_template/apache/wsgi.conf.mako apache/
-    cp CONST_create_template/deploy/hooks/* /deploy/hooks/
+    cp CONST_create_template/deploy/hooks/* deploy/hooks/
 
 6. The less build is simplified (be careful if you customized the style):
 

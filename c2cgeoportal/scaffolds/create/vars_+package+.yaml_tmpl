@@ -139,6 +139,10 @@ vars:
         # - display: Child:
         #   url: {web_protocol}://{host}/child/wsgi
 
+    deploy:
+        code_source: /var/www/c2cgeoportal_mapfish/private/c2cgeoportal
+        code_destination: /var/www/c2cgeoportal_mapfish/private/c2cgeoportal
+
 update_paths:
 - shortener
 - fulltextsearch
