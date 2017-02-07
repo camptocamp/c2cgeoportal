@@ -757,12 +757,25 @@ $(TX_RC):
 .build/locale/%/LC_MESSAGES/gmf.po: $(TX_DEPENDENCIES)
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
-	sleep 1 # To be sure that the the creation date should be after the .transifexrc file. (the $(TOUCHBACK_TXRC) lost the ms)
-	$(VENV_BIN)/tx pull -l $* --force
+	sleep 1 # To be sure that the creation date should be after the .transifexrc file. (the $(TOUCHBACK_TXRC) lost the ms)
+	$(VENV_BIN)/tx pull --language $* --resource ngeo.gmf-$(TX_VERSION) --force
+	$(TOUCHBACK_TXRC)
+	test -s $@
+
+.PRECIOUS: .build/locale/%/LC_MESSAGES/ngeo.po
+.build/locale/%/LC_MESSAGES/ngeo.po: $(TX_DEPENDENCIES)
+	$(PRERULE_CMD)
+	mkdir -p $(dir $@)
+	sleep 1 # To be sure that the creation date should be after the .transifexrc file. (the $(TOUCHBACK_TXRC) lost the ms)
+	$(VENV_BIN)/tx pull --language $* --resource ngeo.ngeo-$(TX_VERSION) --force
 	$(TOUCHBACK_TXRC)
 	test -s $@
 
 .build/locale/en/LC_MESSAGES/gmf.po:
+	$(PRERULE_CMD)
+	@echo "The en language is the source language, so the file must stay empty"
+
+.build/locale/en/LC_MESSAGES/ngeo.po:
 	$(PRERULE_CMD)
 	@echo "The en language is the source language, so the file must stay empty"
 
@@ -783,11 +796,15 @@ $(COMPILE_CATALOG): .build/node_modules.timestamp
 .PRECIOUS: $(APP_OUTPUT_DIR)/%.json
 $(APP_OUTPUT_DIR)/%.json: $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-client.po \
 		.build/locale/%/LC_MESSAGES/gmf.po \
+		.build/locale/%/LC_MESSAGES/ngeo.po \
 		$(COMPILE_CATALOG) \
 		.build/node_modules.timestamp
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
-	node $(COMPILE_CATALOG) .build/locale/$*/LC_MESSAGES/gmf.po $< > $@
+	node $(COMPILE_CATALOG) \
+		.build/locale/$*/LC_MESSAGES/gmf.po \
+		.build/locale/$*/LC_MESSAGES/ngeo.po \
+		$< > $@
 
 $(APP_OUTPUT_DIR)/angular-locale_%.js: node_modules/ngeo/github_versions
 	mkdir -p $(dir $@)
