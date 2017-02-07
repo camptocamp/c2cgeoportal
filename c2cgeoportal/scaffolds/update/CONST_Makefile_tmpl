@@ -1256,7 +1256,7 @@ $(UPGRADE_MAKE_FILE):
 	@echo "The file '$(UPGRADE_MAKE_FILE)' cannot be found,"
 	@echo "this probably mean that you Makefile is not named '<instanceid>.mk'."
 	@echo "To solve this you can rename your Makefile or add in your Makefile"
-	@echo "`UPGRADE_MAKE_FILE = <your_makefile_name>`."
+	@echo "\`UPGRADE_MAKE_FILE = <your_makefile_name>\`."
 	exit 1
 
 $(VENV_BIN)/c2ctool$(PYTHON_BIN_POSTFIX): .build/requirements.timestamp $(VENV_BIN)/alembic$(PYTHON_BIN_POSTFIX)
