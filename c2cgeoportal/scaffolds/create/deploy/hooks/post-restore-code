@@ -2,10 +2,3 @@
 
 PROJECT_NAME=$1
 CODE_DIR=$2
-
-cd $CODE_DIR
-
-rm -rf .build/venv
-rm .build/venv.timestamp-noclean
-rm apache/tiles.conf
-make -f $TARGET.mk template-clean

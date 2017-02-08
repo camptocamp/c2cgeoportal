@@ -1,0 +1,8 @@
+#!/bin/sh -ex
+#
+# variables set here:
+#   $TARGET: name of the symbolic remote host key (see remote_hosts
+#            section in config file)
+#
+
+echo "Deploy '$TARGET' at `date`" > /tmp/np

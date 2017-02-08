@@ -1,0 +1,14 @@
+#!/bin/sh -ex
+#
+# variables set here:
+#   $TARGET: name of the symbolic remote host key (see remote_hosts
+#            section in config file)
+#
+
+DATABASES=$@
+
+## Uncomment the following lines if you want to vacuum the databases after the
+## restore. In most cases this is not needed because we are working with
+## read-only databases.
+
+sudo service apache2 start
