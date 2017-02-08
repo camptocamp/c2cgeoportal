@@ -121,6 +121,7 @@ after_success:
 before_deploy:
 - git checkout ${GIT_REV}
 - if [[ ${TRAVIS_TAG} =~ ^[0-9]+\.[0-9]+\..+$ ]] ; then
+  sed --expression 's/REQUIREMENTS [\?]= c2cgeoportal/REQUIREMENTS ?= c2cgeoportal=='"${TRAVIS_TAG}"'/g' --in-place c2cgeoportal/scaffolds/update/CONST_Makefile_tmpl;
   sed --expression 's/version="[0-9]\+\.[0-9]\+",/version="'"${TRAVIS_TAG}"'",/g' --in-place setup.py;
   git diff;
   fi
