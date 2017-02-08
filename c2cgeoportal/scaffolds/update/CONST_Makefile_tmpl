@@ -185,7 +185,7 @@ export VISIBLE_WEB_HOST
 export VISIBLE_WEB_PROTOCOL
 
 # ngeo
-ANGULAR_VERSION = 1.5
+ANGULAR_VERSION = 1.6
 ifeq ($(OPERATING_SYSTEM), LINUX)
 NPM_CMD = node_modules/.bin/npm
 else
@@ -939,17 +939,17 @@ $(APP_OUTPUT_DIR)/templatecache.js: .build/gmftemplatecache.js
 .build/externs/angular-$(ANGULAR_VERSION).js: node_modules/ngeo/github_versions
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
-	curl --max-redirs 0 --location --output $@ https://raw.githubusercontent.com/google/closure-compiler/`grep ^closure-compiler= $< | cut --delimiter = --fields 2`/contrib/externs/angular-$(ANGULAR_VERSION).js
+	curl --max-redirs 0 --location --output $@ https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/angular-$(ANGULAR_VERSION).js
 
 .build/externs/angular-$(ANGULAR_VERSION)-q_templated.js: node_modules/ngeo/github_versions
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
-	curl --max-redirs 0 --location --output $@ https://raw.githubusercontent.com/google/closure-compiler/`grep ^closure-compiler= $< | cut --delimiter = --fields 2`/contrib/externs/angular-$(ANGULAR_VERSION)-q_templated.js
+	curl --max-redirs 0 --location --output $@ https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/angular-$(ANGULAR_VERSION)-q_templated.js
 
 .build/externs/angular-$(ANGULAR_VERSION)-http-promise_templated.js: node_modules/ngeo/github_versions
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
-	curl --max-redirs 0 --location --output $@ https://raw.githubusercontent.com/google/closure-compiler/`grep ^closure-compiler= $< | cut --delimiter = --fields 2`/contrib/externs/angular-$(ANGULAR_VERSION)-http-promise_templated.js
+	curl --max-redirs 0 --location --output $@ https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/angular-$(ANGULAR_VERSION)-http-promise_templated.js
 
 .build/externs/jquery-1.9.js: node_modules/ngeo/github_versions
 	$(PRERULE_CMD)
