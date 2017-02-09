@@ -1,12 +1,12 @@
 .. _integrator_querier:
 
-Query builder (Querier)
-=======================
+Filter (Querier)
+================
 
 Configuration
 -------------
 
-In the Query builder interface, instead of the standard text field,
+In the filter panel, instead of the standard text field,
 it is possible to display combos providing the available values of
 the attributes. The values are automatically retrieved using a
 web service that does a ``SELECT distinct(<column>) FROM <table>``.
@@ -55,16 +55,18 @@ Simple example:
                         table: geodata.table
                     country: *layers-enum-mapserver-layer-defaults
 
-Make sure that the ``cgxp_querier`` plugin has the attribute ``attributeURLs``
-in the ``viewer.js`` file:
+.. note::
 
-.. code: javascript
+    If you use cgxp, make sure that the ``cgxp_querier`` plugin has
+    the attribute ``attributeURLs`` in the ``viewer.js`` file:
 
-    {
-        ptype: "cgxp_querier",
-        attributeURLs: ${queryer_attribute_urls | n},
-        ...
-    },
+    .. code: javascript
+
+        {
+            ptype: "cgxp_querier",
+            attributeURLs: ${queryer_attribute_urls | n},
+            ...
+        },
 
 Using DB sessions
 -----------------

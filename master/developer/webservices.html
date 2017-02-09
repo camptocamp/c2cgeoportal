@@ -388,12 +388,27 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 <p>URL: <code class="docutils literal"><span class="pre">.../layers/&lt;layer_id&gt;/....</span></code></p>
 <p><a class="reference external" href="https://github.com/elemoine/papyrus/wiki/Protocol">Parameters and results, see the MapFish protocol</a>.</p>
 </div>
+<div class="section" id="enumerate-attributes">
+<h3>Enumerate attributes<a class="headerlink" href="#enumerate-attributes" title="Permalink to this headline">¶</a></h3>
+<p>URL: <code class="docutils literal"><span class="pre">.../layers/&lt;layer_name&gt;/values/&lt;field_name&gt;</span></code></p>
+<div class="section" id="id3">
+<h4>Result<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
+<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;items&quot;</span><span class="p">:</span> <span class="p">[{</span>
+      <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;value&gt;&quot;</span>
+    <span class="p">},</span> <span class="o">...</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
 </div>
 <div class="section" id="raster">
 <h2>Raster<a class="headerlink" href="#raster" title="Permalink to this headline">¶</a></h2>
 <p>URL: <code class="docutils literal"><span class="pre">.../raster</span></code></p>
-<div class="section" id="id3">
-<h3>Parameters<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id4">
+<h3>Parameters<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><code class="docutils literal"><span class="pre">lon</span></code>: The longitude.</li>
 <li><code class="docutils literal"><span class="pre">lat</span></code>: The latitude.</li>
@@ -401,8 +416,8 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 <li><code class="docutils literal"><span class="pre">callback</span></code>: Function name to do the callback (optional, deprecated in v2).</li>
 </ul>
 </div>
-<div class="section" id="id4">
-<h3>Result<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id5">
+<h3>Result<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
 <div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;&lt;layer&gt;&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span><span class="p">,</span>
     <span class="o">...</span>
@@ -415,8 +430,8 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 <h2>Digital Elevation Model<a class="headerlink" href="#digital-elevation-model" title="Permalink to this headline">¶</a></h2>
 <p>URL: <code class="docutils literal"><span class="pre">.../profile.csv</span></code> or <code class="docutils literal"><span class="pre">.../profile.json</span></code></p>
 <p>Method <code class="docutils literal"><span class="pre">POST</span></code></p>
-<div class="section" id="id5">
-<h3>Parameters<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id6">
+<h3>Parameters<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><code class="docutils literal"><span class="pre">geom</span></code>: Geometry field used to get the profile data.</li>
 <li><code class="docutils literal"><span class="pre">layers</span></code>: On witch layers, default to all.</li>
@@ -424,8 +439,8 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 <li><code class="docutils literal"><span class="pre">callback</span></code>: Function name to do the callback (optional, deprecated in v2).</li>
 </ul>
 </div>
-<div class="section" id="id6">
-<h3>Result<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id7">
+<h3>Result<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
 <p>A JSON or a CSV file, with &#8216;dist&#8217;, &#8216;value&#8217;, &#8216;x&#8217;, &#8216;y&#8217;.</p>
 </div>
 </div>
@@ -435,8 +450,8 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 <h3>Create<a class="headerlink" href="#create" title="Permalink to this headline">¶</a></h3>
 <p>URL: <code class="docutils literal"><span class="pre">.../short/create</span></code></p>
 <p>Method <code class="docutils literal"><span class="pre">POST</span></code></p>
-<div class="section" id="id7">
-<h4>Parameters<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id8">
+<h4>Parameters<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h4>
 <ul class="simple">
 <li><code class="docutils literal"><span class="pre">url</span></code>: URL to shorten.</li>
 <li><code class="docutils literal"><span class="pre">email</span></code>: Email address to send a message to (optional).</li>
@@ -444,8 +459,8 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 <li><code class="docutils literal"><span class="pre">callback</span></code>: Function name to do the callback (optional, deprecated in v2).</li>
 </ul>
 </div>
-<div class="section" id="id8">
-<h4>Result<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id9">
+<h4>Result<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h4>
 <div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;short_url&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">the</span> <span class="n">short</span> <span class="n">URL</span><span class="o">&gt;</span>
 <span class="p">}</span>
@@ -464,8 +479,8 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 <p>This service returns a file containing data submitted in the POST request as the &#8220;file&#8221; field.
 This is used to be able to get the data in the client from a file select by the user.</p>
 <p>URL: <code class="docutils literal"><span class="pre">.../echo</span></code></p>
-<div class="section" id="id9">
-<h3>Result<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id10">
+<h3>Result<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
 <p>The &#8216;Content-Type&#8217; header is &#8216;text/html&#8217;, and the data is:</p>
 <div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;filename&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">The</span> <span class="n">base64</span> <span class="n">encoded</span> <span class="n">file</span><span class="o">&gt;</span>
@@ -480,16 +495,16 @@ This is used to be able to get the data in the client from a file select by the 
 <p>This service returns a file containing data submitted in the POST request as the &#8220;csv&#8221; field.
 This is used to be able to get as a download file csv data build on the client.</p>
 <p>URL: <code class="docutils literal"><span class="pre">.../csv</span></code></p>
-<div class="section" id="id10">
-<h3>Parameters<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id11">
+<h3>Parameters<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><code class="docutils literal"><span class="pre">csv_extension</span></code>: File extension, defaults to &#8216;csv&#8217;.</li>
 <li><code class="docutils literal"><span class="pre">csv_encoding</span></code>: Character encoding, defaults to &#8216;UTF-8&#8217;,</li>
 <li><code class="docutils literal"><span class="pre">name</span></code>: File name without extension set in the &#8216;Content-Disposition&#8217;, defaults to &#8216;export&#8217;.</li>
 </ul>
 </div>
-<div class="section" id="id11">
-<h3>Result<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id12">
+<h3>Result<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
 <p>The &#8216;Content-Type&#8217; header is &#8216;text/csv&#8217;,
 and the data contains the given &#8216;csv&#8217; data.</p>
 </div>
@@ -568,34 +583,38 @@ and the <code class="docutils literal"><span class="pre">&lt;geomB&gt;</span></c
 </ul>
 </li>
 <li><a class="reference internal" href="#mapfish-protocol">MapFish protocol</a></li>
+<li><a class="reference internal" href="#enumerate-attributes">Enumerate attributes</a><ul>
+<li><a class="reference internal" href="#id3">Result</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a class="reference internal" href="#raster">Raster</a><ul>
-<li><a class="reference internal" href="#id3">Parameters</a></li>
-<li><a class="reference internal" href="#id4">Result</a></li>
+<li><a class="reference internal" href="#id4">Parameters</a></li>
+<li><a class="reference internal" href="#id5">Result</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#digital-elevation-model">Digital Elevation Model</a><ul>
-<li><a class="reference internal" href="#id5">Parameters</a></li>
-<li><a class="reference internal" href="#id6">Result</a></li>
+<li><a class="reference internal" href="#id6">Parameters</a></li>
+<li><a class="reference internal" href="#id7">Result</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#shortener">Shortener</a><ul>
 <li><a class="reference internal" href="#create">Create</a><ul>
-<li><a class="reference internal" href="#id7">Parameters</a></li>
-<li><a class="reference internal" href="#id8">Result</a></li>
+<li><a class="reference internal" href="#id8">Parameters</a></li>
+<li><a class="reference internal" href="#id9">Result</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#get">Get</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#echo">Echo</a><ul>
-<li><a class="reference internal" href="#id9">Result</a></li>
+<li><a class="reference internal" href="#id10">Result</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#export-csv">Export CSV</a><ul>
-<li><a class="reference internal" href="#id10">Parameters</a></li>
-<li><a class="reference internal" href="#id11">Result</a></li>
+<li><a class="reference internal" href="#id11">Parameters</a></li>
+<li><a class="reference internal" href="#id12">Result</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#geometry-processing">Geometry processing</a><ul>

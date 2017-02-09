@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Query builder (Querier) &#8212; c2cgeoportal  documentation</title>
+    <title>Filter (Querier) &#8212; c2cgeoportal  documentation</title>
     
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -27,8 +27,8 @@
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="TileGeneration" href="tilegeneration.html" />
-    <link rel="prev" title="Advanced configuration examples" href="legacy_advanced.html" />
+    <link rel="next" title="Developer Guide" href="../developer/index.html" />
+    <link rel="prev" title="Statistics" href="statistics.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -44,11 +44,11 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="query-builder-querier">
-<span id="integrator-querier"></span><h1>Query builder (Querier)<a class="headerlink" href="#query-builder-querier" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="filter-querier">
+<span id="integrator-querier"></span><h1>Filter (Querier)<a class="headerlink" href="#filter-querier" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="configuration">
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
-<p>In the Query builder interface, instead of the standard text field,
+<p>In the filter panel, instead of the standard text field,
 it is possible to display combos providing the available values of
 the attributes. The values are automatically retrieved using a
 web service that does a <code class="docutils literal"><span class="pre">SELECT</span> <span class="pre">distinct(&lt;column&gt;)</span> <span class="pre">FROM</span> <span class="pre">&lt;table&gt;</span></code>.</p>
@@ -88,8 +88,11 @@ attribute level. <code class="docutils literal"><span class="pre">table</span></
                 <span class="n">country</span><span class="p">:</span> <span class="o">*</span><span class="n">layers</span><span class="o">-</span><span class="n">enum</span><span class="o">-</span><span class="n">mapserver</span><span class="o">-</span><span class="n">layer</span><span class="o">-</span><span class="n">defaults</span>
 </pre></div>
 </div>
-<p>Make sure that the <code class="docutils literal"><span class="pre">cgxp_querier</span></code> plugin has the attribute <code class="docutils literal"><span class="pre">attributeURLs</span></code>
-in the <code class="docutils literal"><span class="pre">viewer.js</span></code> file:</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you use cgxp, make sure that the <code class="docutils literal"><span class="pre">cgxp_querier</span></code> plugin has
+the attribute <code class="docutils literal"><span class="pre">attributeURLs</span></code> in the <code class="docutils literal"><span class="pre">viewer.js</span></code> file:</p>
+</div>
 </div>
 <div class="section" id="using-db-sessions">
 <h2>Using DB sessions<a class="headerlink" href="#using-db-sessions" title="Permalink to this headline">¶</a></h2>
@@ -125,7 +128,7 @@ For instance:</p>
             </a></p>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Query builder (Querier)</a><ul>
+<li><a class="reference internal" href="#">Filter (Querier)</a><ul>
 <li><a class="reference internal" href="#configuration">Configuration</a></li>
 <li><a class="reference internal" href="#using-db-sessions">Using DB sessions</a></li>
 </ul>
@@ -136,12 +139,8 @@ For instance:</p>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="index.html">Integrator Guide</a><ul>
-  <li><a href="features.html">Additional features</a><ul>
-  <li><a href="legacy.html">Legacy components</a><ul>
-      <li>Previous: <a href="legacy_advanced.html" title="previous chapter">Advanced configuration examples</a></li>
-      <li>Next: <a href="tilegeneration.html" title="next chapter">TileGeneration</a></li>
-  </ul></li>
-  </ul></li>
+      <li>Previous: <a href="statistics.html" title="previous chapter">Statistics</a></li>
+      <li>Next: <a href="../developer/index.html" title="next chapter">Developer Guide</a></li>
   </ul></li>
   </ul></li>
 </ul>
@@ -149,7 +148,7 @@ For instance:</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/integrator/legacy_querier.rst.txt"
+      <li><a href="../_sources/integrator/filter.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -175,7 +174,7 @@ For instance:</p>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
       |
-      <a href="../_sources/integrator/legacy_querier.rst.txt"
+      <a href="../_sources/integrator/filter.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 
