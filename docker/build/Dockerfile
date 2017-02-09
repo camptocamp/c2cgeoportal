@@ -14,7 +14,7 @@ RUN \
   curl https://bootstrap.pypa.io/get-pip.py > get-pip.py && \
   python get-pip.py `cat base-requirements.txt` && \
   pip install --requirement dev-requirements.txt && \
-  apt-get purge --assume-yes --auto-remove curl libpq-dev libgeos-dev libjpeg-dev gcc apt-transport-https && \
+  apt-get purge --assume-yes --auto-remove curl libpq-dev libgeos-dev libjpeg-dev gcc && \
   apt-get clean && \
   rm --recursive --force /tmp/* /var/tmp/* i/var/lib/apt/lists/* /root/.cache/*
 

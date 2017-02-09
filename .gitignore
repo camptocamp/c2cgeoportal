@@ -18,6 +18,7 @@
 /c2cgeoportal/scaffolds/create/+package+/static-ngeo/js/mobile.js_tmpl
 /c2cgeoportal/scaffolds/create/+package+/static-ngeo/js/desktop.js_tmpl
 /c2cgeoportal/scaffolds/create/+package+/static-ngeo/components/
+/c2cgeoportal/scaffolds/update/package.json_tmpl
 /c2cgeoportal/scaffolds/update/CONST_create_template/
 /c2cgeoportal/version.py
 /c2cgeoportal.egg-info
@@ -31,7 +32,7 @@
 /doc/integrator/fulltext_search.rst
 /doc/integrator/print.rst
 /doc/integrator/upgrade_application.rst
-/ngeo/
+/dist/
 /.coverage
 /coverage.xml
 /.tx/config

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2017, Camptocamp SA
+# Copyright (c) 2017, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,47 +27,45 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-
-from nose.plugins.attrib import attr
-from unittest import TestCase
-
-from c2cgeoportal.tests.functional import (  # noqa
-    tear_down_common as tearDownModule,
-    set_up_common as setUpModule,
-    create_dummy_request,
-)
+import argparse
+import time
+import json
+import c2c.template
+from Crypto.Cipher import AES
 
 
-@attr(functional=True)
-class TestGroupsFinder(TestCase):
+def create_token(aeskey, user, password, valid):
+    auth = {
+        "u": user,
+        "p": password,
+        "t": int(time.time()) + valid * 3600 * 24,
+    }
 
-    def setUp(self):  # noqa
-        import transaction
-        from c2cgeoportal.models import DBSession, User, Role
+    if aeskey is None:
+        print("urllogin is not configured")
+        exit(1)
+    cipher = AES.new(aeskey)
+    data = json.dumps(auth)
+    mod_len = len(data) % 16
+    if mod_len != 0:
+        data += "".join([" " for i in range(16 - mod_len)])
+    return cipher.encrypt(data).encode("hex")
 
-        r = Role(name=u"__test_role")
-        u = User(
-            username=u"__test_user",
-            password=u"__test_user",
-            role=r
-        )
 
-        DBSession.add_all([r, u])
-        transaction.commit()
+def main():
+    parser = argparse.ArgumentParser(description="Generate an auth token")
+    parser.add_argument("user", help="The username")
+    parser.add_argument("password", help="The password")
+    parser.add_argument("valid", type=int, default=1, nargs='?', help="Is valid for, in days")
 
-    @staticmethod
-    def tearDown():  # noqa
-        import transaction
-        from c2cgeoportal.models import DBSession, User, Role
+    args = parser.parse_args()
+    config = c2c.template.get_config(".build/config.yaml")
+    urllogin = config.get('urllogin', {})
+    aeskey = urllogin.get("aes_key")
+    auth_enc = create_token(aeskey, args.user, args.password, args.valid)
 
-        transaction.commit()
+    print("Use: auth={}".format(auth_enc))
 
-        DBSession.query(User).filter_by(username=u"__test_user").delete()
-        DBSession.query(Role).filter_by(name=u"__test_role").delete()
-        transaction.commit()
 
-    def test_it(self):
-        from c2cgeoportal.resources import defaultgroupsfinder
-        request = create_dummy_request(authentication=False, user=u"__test_user")
-        roles = defaultgroupsfinder(u"__test_user", request)
-        self.assertEqual(roles, [u"__test_role"])
+if __name__ == "__main__":
+    main()

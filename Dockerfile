@@ -6,7 +6,7 @@ COPY . /tmp/
 RUN \
   cd /tmp && \
   pip install . && \
-  rm -rf /tmp/*
+  rm --recursive --force /tmp/*
 
 WORKDIR /src
 

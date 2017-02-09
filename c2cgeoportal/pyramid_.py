@@ -27,6 +27,7 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+import time
 import logging
 import sqlalchemy
 import sqlahelper
@@ -37,11 +38,13 @@ from urlparse import urlsplit
 import simplejson as json
 from socket import gethostbyname, gaierror
 from ipcalc import IP, Network
+from Crypto.Cipher import AES
 import importlib
 
 from pyramid_mako import add_mako_renderer
 from pyramid.interfaces import IStaticURLInfo
 from pyramid.httpexceptions import HTTPException
+import pyramid.security
 
 from papyrus.renderers import GeoJSON, XSD
 
@@ -268,7 +271,7 @@ def _match_url_start(ref, val):
     return ref_parts == val_parts
 
 
-def _is_valid_referer(referer, settings):
+def is_valid_referer(referer, settings):
     if referer:
         list_ = settings.get("authorized_referers", [])
         return any(_match_url_start(x, referer) for x in list_)
@@ -276,7 +279,7 @@ def _is_valid_referer(referer, settings):
         return False
 
 
-def _create_get_user_from_request(settings):
+def create_get_user_from_request(settings):
     def get_user_from_request(request):
         """ Return the User object for the request.
 
@@ -287,10 +290,33 @@ def _create_get_user_from_request(settings):
         """
         from c2cgeoportal.models import DBSession, User
 
+        try:
+            if "auth" in request.params:
+                auth_enc = request.params.get("auth")
+
+                if auth_enc is not None:
+                    urllogin = request.registry.settings.get("urllogin", {})
+                    aeskey = urllogin.get("aes_key")
+                    if aeskey is None:  # pragma: nocover
+                        raise Exception("urllogin is not configured")
+                    now = int(time.time())
+                    cipher = AES.new(aeskey)
+                    auth = json.loads(cipher.decrypt(auth_enc.decode("hex")))
+
+                    if "t" in auth and "u" in auth and "p" in auth:
+                        timestamp = int(auth["t"])
+                        if now < timestamp and request.registry.validate_user(
+                            request, unicode(auth["u"]), auth["p"]
+                        ):
+                            headers = pyramid.security.remember(request, auth["u"])
+                            request.response.headerlist.extend(headers)
+        except Exception as e:
+            log.error("URL login error: {}".format(e))
+
         # disable the referer check for the admin interface
         if not (
                 request.path_info_peek() == "admin" and request.referer is None or
-                _is_valid_referer(request.referer, settings)
+                is_valid_referer(request.referer, settings)
         ):
             if request.referer is not None:
                 log.warning("Invalid referer for %s: %s", request.path_qs,
@@ -439,7 +465,7 @@ def includeme(config):
 
     call_hook(settings, "after_settings", settings)
 
-    config.add_request_method(_create_get_user_from_request(settings),
+    config.add_request_method(create_get_user_from_request(settings),
                               name="user", property=True)
 
     # configure 'locale' dir as the translation dir for c2cgeoportal app

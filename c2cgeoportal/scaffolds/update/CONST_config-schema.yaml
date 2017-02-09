@@ -117,6 +117,13 @@ mapping:
                     exportgpxkml: *header
                     error: *header
 
+            urllogin:
+                type: map
+                required: True
+                mapping:
+                    rc4_key:
+                        type: str
+
             cache:
                 type: map
                 required: True

@@ -235,6 +235,8 @@ vars:
     # architecture.
     external_themes_url:
 
+    urllogin: {}
+
     mapserverproxy:
         default_ogc_server: source for image/png
 
