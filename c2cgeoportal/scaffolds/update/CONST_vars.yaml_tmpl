@@ -395,7 +395,7 @@ vars:
 
     # What web page is authorized to use the API
     authorized_referers:
-    - '{web_protocol}://{host}/{instanceid}'
+    - '{web_protocol}://{host}{apache_entry_point}'
 
     # Hooks that can be called at different moments in the life of the
     # application. The value is the full python name
