@@ -58,7 +58,8 @@ OGC Server
         "wfsSupport": (true|false),
         "imageType": "image/(jpeg|png)",
         "isSingleTile": (true|false),
-        "serverType": "(mapserver|geoserver|qgisserver)",
+        "type": "(mapserver|geoserver|qgisserver)",
+        "credential: (true|false),"
     }
 
 

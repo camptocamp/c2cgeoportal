@@ -1405,6 +1405,7 @@ class Entry:
                     "url": url,
                     "urlWfs": url_wfs,
                     "type": ogc_server.type,
+                    "credential": ogc_server.auth != OGCSERVER_AUTH_NOAUTH,
                     "imageType": ogc_server.image_type,
                     "wfsSupport": ogc_server.wfs_support,
                     "isSingleTile": ogc_server.is_single_tile,
