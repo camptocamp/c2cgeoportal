@@ -9,4 +9,3 @@ Legacy components
    legacy_cgxp
    legacy_print
    legacy_advanced
-   legacy_querier

@@ -30,3 +30,4 @@ Content:
    extend_data_model
    caching
    statistics
+   filter

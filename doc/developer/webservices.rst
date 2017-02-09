@@ -390,6 +390,22 @@ URL: ``.../layers/<layer_id>/....``
 
 `Parameters and results, see the MapFish protocol <https://github.com/elemoine/papyrus/wiki/Protocol>`_.
 
+Enumerate attributes
+--------------------
+
+URL: ``.../layers/<layer_name>/values/<field_name>``
+
+Result
+~~~~~~
+
+.. code:: json
+
+    {
+        "items": [{
+          "label": "<name>",
+          "value": "<value>"
+        }, ...]
+    }
 
 Raster
 ======
@@ -409,10 +425,10 @@ Result
 
 .. code:: json
 
-   {
-       "<layer>": <value>,
-       ...
-   }
+    {
+        "<layer>": <value>,
+        ...
+    }
 
 
 Digital Elevation Model
