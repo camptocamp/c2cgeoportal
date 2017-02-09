@@ -27,6 +27,9 @@ before_install:
 - docker build --tag=geomapfish-db docker/test-db
 - docker run --publish=5432:5432 --detach geomapfish-db
 
+- docker build --tag=external-db docker/test-external-db
+- docker run --publish=5433:5432 --detach external-db
+
 - |
   if [ "${TX_PASS}" != "" ]
   then
@@ -82,8 +85,9 @@ script:
 - cd $TRAVIS_FOLDER
 - travis/no-make-error.sh /tmp/travis/testgeomapfish -f travis.mk help
 - find /tmp/travis/testgeomapfish/setup.py /tmp/travis/testgeomapfish/testgeomapfish/*.py /tmp/travis/testgeomapfish/testgeomapfish/views -name \*.py | xargs travis/quote
-- travis/test-new-project.sh wsgi/check_collector
-- travis/test-new-project.sh wsgi/check_collector?type=all
+- travis/test-new-project wsgi/check_collector
+- travis/test-new-project wsgi/check_collector?type=all
+- travis/test-new-project wsgi/layers/test/values/type enum
 - travis/status.sh /tmp/travis/testgeomapfish/
 - travis/empty-make-new-project.sh
 - travis/no-make-error.sh /tmp/travis/testgeomapfish -f travis.mk build

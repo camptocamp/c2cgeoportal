@@ -702,7 +702,7 @@ def includeme(config):
     ]
 
     from c2cgeoportal.models import DBSessions
-    for dbsession_name, dbsession_config in settings.get("dbsessions", {}).items():
+    for dbsession_name, dbsession_config in settings.get("dbsessions", {}).items():  # pragma: nocover
         engine = sqlalchemy.create_engine(dbsession_config.get("url"))
         sqlahelper.add_engine(engine, dbsession_name)
         session = sqlalchemy.orm.session.sessionmaker()
