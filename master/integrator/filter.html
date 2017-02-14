@@ -53,21 +53,19 @@ it is possible to display combos providing the available values of
 the attributes. The values are automatically retrieved using a
 web service that does a <code class="docutils literal"><span class="pre">SELECT</span> <span class="pre">distinct(&lt;column&gt;)</span> <span class="pre">FROM</span> <span class="pre">&lt;table&gt;</span></code>.</p>
 <p>The web service configuration is done in the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">layers</span><span class="p">:</span>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">dbsessions</span><span class="p">:</span>
+    <span class="o">&lt;</span><span class="n">session</span> <span class="n">name</span><span class="o">&gt;</span><span class="p">:</span>
+        <span class="n">url</span><span class="p">:</span> <span class="n">postgresql</span><span class="p">:</span><span class="o">//</span><span class="p">{</span><span class="n">dbuser</span><span class="p">}:{</span><span class="n">dbpassword</span><span class="p">}</span><span class="o">@</span><span class="p">{</span><span class="n">dbhost</span><span class="p">}:{</span><span class="n">dbport</span><span class="p">}</span><span class="o">/&lt;</span><span class="n">dbname</span><span class="o">&gt;</span>
+
+<span class="n">layers</span><span class="p">:</span>
     <span class="n">enum</span><span class="p">:</span>
-        <span class="n">defaults</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">layers</span><span class="o">-</span><span class="n">enum</span><span class="o">-</span><span class="n">defaults</span>
-            <span class="n">dbsession</span><span class="p">:</span> <span class="s2">&quot;&lt;session name&gt;&quot;</span>
-        <span class="s2">&quot;&lt;layer_name&gt;&quot;</span><span class="p">:</span>
-            <span class="n">dbsession</span><span class="p">:</span> <span class="s2">&quot;&lt;session name&gt;&quot;</span>
-            <span class="n">defaults</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">layers</span><span class="o">-</span><span class="n">enum</span><span class="o">-</span><span class="n">table</span><span class="o">-</span><span class="n">defaults</span>
-                <span class="n">table</span><span class="p">:</span> <span class="s2">&quot;&lt;[schema.]table name&gt;&quot;</span>
+        <span class="o">&lt;</span><span class="n">layer_name</span><span class="o">&gt;</span><span class="p">:</span>
+            <span class="n">dbsession</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">session</span> <span class="n">name</span><span class="o">&gt;</span>
             <span class="n">attributes</span><span class="p">:</span>
-                <span class="s2">&quot;&lt;attribute name&gt;&quot;</span><span class="p">:</span>
-                    <span class="n">table</span><span class="p">:</span> <span class="s2">&quot;&lt;[schema.]table name&gt;&quot;</span>
-                    <span class="n">column_name</span><span class="p">:</span> <span class="s2">&quot;&lt;column name&gt;&quot;</span>
+                <span class="o">&lt;</span><span class="n">attribute</span> <span class="n">name</span><span class="o">&gt;</span><span class="p">:</span>
+                    <span class="n">table</span><span class="p">:</span> <span class="o">&lt;</span><span class="p">[</span><span class="n">schema</span><span class="o">.</span><span class="p">]</span><span class="n">table</span> <span class="n">name</span><span class="o">&gt;</span>
+                    <span class="n">column_name</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">column</span> <span class="n">name</span><span class="o">&gt;</span>
                     <span class="n">separator</span><span class="p">:</span> <span class="s2">&quot;,&quot;</span>
-                <span class="o">&lt;&lt;</span><span class="p">:</span> <span class="o">*</span><span class="n">layers</span><span class="o">-</span><span class="n">enum</span><span class="o">-</span><span class="n">table</span><span class="o">-</span><span class="n">defaults</span>
-            <span class="o">&lt;&lt;</span><span class="p">:</span> <span class="o">*</span><span class="n">layers</span><span class="o">-</span><span class="n">enum</span><span class="o">-</span><span class="n">defaults</span>
 </pre></div>
 </div>
 <p><code class="docutils literal"><span class="pre">dbsession:</span> <span class="pre">&quot;&lt;session</span> <span class="pre">name&gt;&quot;</span></code> at the <code class="docutils literal"><span class="pre">enum.defaults</span></code> level is a shortcut that
