@@ -114,7 +114,7 @@ clean:
 .PHONY: cleanall
 cleanall: clean
 	rm -f $(PO_FILES)
-	rm -rf $(BUILD_DIR)
+	rm -rf $(BUILD_DIR)/*
 
 .PHONY: c2c-egg
 c2c-egg: $(BUILD_DIR)/requirements.timestamp
