@@ -102,7 +102,7 @@ To run the unit tests do this:
 .. prompt:: bash
 
     make build
-    ./docker-run ./setup.py nosetests -a '!functional'
+    ./docker-run nosetests -a '!functional'
 
 Functional tests
 ................
@@ -198,7 +198,7 @@ You can now run the functional tests with this:
 
 .. prompt:: bash
 
-    ./docker-compose-run ./setup.py nosetests -a functional
+    ./docker-compose-run nosetests -a functional
 
 All tests
 .........
@@ -213,8 +213,8 @@ To run a specific test use the ``--where`` switch. For example:
 
 .. prompt:: bash
 
-    ./docker-compose-run ./setup.py nosetests --where \
-        c2cgeoportal/tests/functional/test_themes.py:TestThemesView.test_catalogue
+    ./docker-compose-run nosetests --where \
+        /src/c2cgeoportal/tests/functional/test_themes.py:TestThemesView.test_catalogue
 
 Adding tests
 ~~~~~~~~~~~~
