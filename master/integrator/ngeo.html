@@ -70,7 +70,23 @@ is define in the file: <code class="docutils literal"><span class="pre">&lt;pack
 <a class="reference external" href="http://camptocamp.github.io/ngeo/master/apidoc/">ngeo documentation</a>
 in the sections <code class="docutils literal"><span class="pre">gmf/Directives</span></code> and <code class="docutils literal"><span class="pre">ngeo/Directives</span></code>.</p>
 <p>All the directives should provide an example.</p>
-<p>At the end of the file you find something like:</p>
+<p>The controller (js file) is commonly named <code class="docutils literal"><span class="pre">mainCtrl</span></code>. So you can use a value
+from the controller by doing this (here, the controller is the DesktopController):</p>
+<div class="code html highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">html</span> <span class="n">lang</span><span class="o">=</span><span class="s2">&quot;{{desktopCtrl.lang}}&quot;</span> <span class="n">ng</span><span class="o">-</span><span class="n">app</span><span class="o">=</span><span class="s2">&quot;mydemo&quot;</span> <span class="n">ng</span><span class="o">-</span><span class="n">controller</span><span class="o">=</span><span class="s2">&quot;DesktopController as mainCtrl&quot;</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">head</span><span class="o">&gt;</span>
+  <span class="o">...</span>
+  <span class="o">&lt;/</span><span class="n">head</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">body</span><span class="o">&gt;</span>
+  <span class="o">...</span>
+  <span class="o">&lt;</span><span class="n">gmf</span><span class="o">-</span><span class="n">mydirective</span> <span class="n">gmf</span><span class="o">-</span><span class="n">mydirective</span><span class="o">-</span><span class="n">variableproperty</span><span class="o">=</span><span class="s2">&quot;mainCtrl.open&quot;</span>
+                   <span class="n">gmf</span><span class="o">-</span><span class="n">mydirective</span><span class="o">-</span><span class="n">staticproperty</span><span class="o">=</span><span class="s2">&quot;::mainCtrl.map&quot;</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">gmf</span><span class="o">-</span><span class="n">mydirective</span><span class="o">&gt;</span>
+  <span class="o">...</span>
+  <span class="o">&lt;/</span><span class="n">body</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">html</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The js constants of the application are defined at the end of the file:</p>
 <div class="code html highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">script</span><span class="o">&gt;</span>
   <span class="p">(</span><span class="n">function</span><span class="p">()</span> <span class="p">{</span>
      <span class="n">var</span> <span class="n">module</span> <span class="o">=</span> <span class="n">angular</span><span class="o">.</span><span class="n">module</span><span class="p">(</span><span class="s1">&#39;&lt;package&gt;&#39;</span><span class="p">);</span>
