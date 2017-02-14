@@ -701,6 +701,13 @@ def includeme(config):
         for e in c2cgeoportal.formalchemy_available_metadata
     ]
 
+    from c2cgeoportal.models import DBSessions
+    for dbsession_name, dbsession_config in settings.get("dbsessions", {}).items():  # pragma: nocover
+        engine = sqlalchemy.create_engine(dbsession_config.get("url"))
+        sqlahelper.add_engine(engine, dbsession_name)
+        session = sqlalchemy.orm.session.sessionmaker()
+        DBSessions[dbsession_name] = session(bind=engine)
+
     config.add_route("checker_all", "/checker_all", request_method="GET")
 
     config.add_route("version_json", "/version.json", request_method="GET")

@@ -33,6 +33,18 @@ mapping:
             parentschema:
                 type: str
                 required: True
+
+            dbsessions:
+                type: map
+                required: True
+                mapping:
+                    regex;([a-z0-9-]+):
+                        type: map
+                        mapping:
+                            url:
+                                type: str
+                                required: true
+
             jsbuild:
                 type: map
                 mapping:

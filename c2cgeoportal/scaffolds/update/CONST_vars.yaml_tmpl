@@ -32,6 +32,9 @@ vars:
     schema: main
     # database parent schema
     parentschema: ""
+
+    dbsessions: {}
+
     # apache/mapserver.conf "Allow" statement
     mapserv_allow: |
         Allow from 127.0.0.1 ::1

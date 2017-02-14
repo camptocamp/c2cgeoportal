@@ -15,21 +15,19 @@ The web service configuration is done in the ``vars_<project>.yaml`` file:
 
 .. code:: yaml
 
+    dbsessions:
+        <session name>:
+            url: postgresql://{dbuser}:{dbpassword}@{dbhost}:{dbport}/<dbname>
+
     layers:
         enum:
-            defaults: &layers-enum-defaults
-                dbsession: "<session name>"
-            "<layer_name>":
-                dbsession: "<session name>"
-                defaults: &layers-enum-table-defaults
-                    table: "<[schema.]table name>"
+            <layer_name>:
+                dbsession: <session name>
                 attributes:
-                    "<attribute name>":
-                        table: "<[schema.]table name>"
-                        column_name: "<column name>"
+                    <attribute name>:
+                        table: <[schema.]table name>
+                        column_name: <column name>
                         separator: ","
-                    <<: *layers-enum-table-defaults
-                <<: *layers-enum-defaults
 
 ``dbsession: "<session name>"`` at the ``enum.defaults`` level is a shortcut that
 may be used if almost all the layers use the same ``dbsession``. It may be

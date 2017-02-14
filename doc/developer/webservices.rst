@@ -403,7 +403,7 @@ Result
 
     {
         "items": [{
-          "label": "<name>",
+          "label": "<name>", // deprecated in v2
           "value": "<value>"
         }, ...]
     }
