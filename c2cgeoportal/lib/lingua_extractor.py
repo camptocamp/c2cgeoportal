@@ -170,31 +170,73 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
             config = yaml.load(config_file)
             # for application config (.build/config.yaml)
             if "vars" in config:
-                return [
-                    Message(
-                        None, raster_layer, None, [], u"", u"",
-                        (filename, u"raster/{0!s}".format(raster_layer))
-                    )
-                    for raster_layer in config["vars"].get("raster", {}).keys()
-                ]
+                return self._collect_app_config(config, filename)
             # for the print config
             elif "templates" in config:
-                result = []
-                for template_ in config.get("templates").keys():
-                    result.append(Message(
-                        None, template_, None, [], u"", u"",
-                        (filename, u"template/{0!s}".format(template_))
-                    ))
-                    result += [
-                        Message(
-                            None, attribute, None, [], u"", u"",
-                            (filename, u"template/{0!s}/{1!s}".format(template_, attribute))
-                        )
-                        for attribute in config.get("templates")[template_].attributes.keys()
-                    ]
-                return result
+                return self._collect_print_config(config, filename)
             else:
                 raise Exception("Not a known config file")
+
+    def _collect_app_config(self, config, filename):
+        # Collect raster layers names
+        raster = [
+            Message(
+                None, raster_layer, None, [], u"", u"",
+                (filename, u"raster/{0!s}".format(raster_layer))
+            )
+            for raster_layer in config["vars"].get("raster", {}).keys()
+        ]
+        # Collect layers enum values (for filters)
+        enums = []
+        enum_layers = config["vars"].get("layers", {}).get("enum", {})
+        for layer_name in enum_layers.keys():
+            attributes = enum_layers.get(layer_name, {}).get("attributes", {})
+            for field_name in attributes.keys():
+                enums += self._get_enumerate_attributes(config, filename, layer_name, field_name)
+        return raster + enums
+
+    def _get_enumerate_attributes(self, config, filename, layer_name, field_name):
+        # FIXME host correct ?
+        host = config["vars"].get("servers", {}).get("local")
+        url = u"{0!s}/wsgi/layers/{1!s}/values/{2!s}".format(host, layer_name, field_name)
+        http = httplib2.Http()
+        try:
+            resp, content = http.request(url, method="GET")
+        except:  # pragma: no cover
+            print(colorize(u"Unable to get enumerate attributes from URL {0!s}".format(url), YELLOW))
+            return []
+
+        if resp.status < 200 or resp.status >= 300:  # pragma: no cover
+            print(colorize(u"Get enumarate attributes from URL {0!s} return the error: {1:d} {2!s}".format(
+                url, resp.status, resp.reason
+            ), YELLOW))
+            return []
+
+        enums = [item.get("value") for item in loads(content).get("items", {})]
+        return [
+            Message(
+                None, value, None, [], u"", u"",
+                # FIXME name ok ?
+                (filename, u"/layers/{0!s}/values/{1!s}/{2!s}".format(layer_name, field_name, value))
+            )
+            for value in enums
+        ]
+
+    def _collect_print_config(self, config, filename):
+        result = []
+        for template_ in config.get("templates").keys():
+            result.append(Message(
+                None, template_, None, [], u"", u"",
+                (filename, u"template/{0!s}".format(template_))
+            ))
+            result += [
+                Message(
+                    None, attribute, None, [], u"", u"",
+                    (filename, u"template/{0!s}/{1!s}".format(template_, attribute))
+                )
+                for attribute in config.get("templates")[template_].attributes.keys()
+            ]
+        return result
 
 
 class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
