@@ -666,6 +666,37 @@ def includeme(config):
     config.include("pyramid_formalchemy")
     config.include("fa.jquery")
 
+    # Initialise DBSessions
+    init_dbsessions(settings)
+
+    config.add_route("checker_all", "/checker_all", request_method="GET")
+
+    config.add_route("version_json", "/version.json", request_method="GET")
+
+    stats.init(config)
+
+    # scan view decorator for adding routes
+    config.scan(ignore=["c2cgeoportal.tests", "c2cgeoportal.scripts"])
+
+    if "subdomains" in settings:  # pragma: no cover
+        config.registry.registerUtility(
+            MultiDomainStaticURLInfo(), IStaticURLInfo)
+
+    # add the static view (for static resources)
+    _add_static_view(config, "static", "c2cgeoportal:static")
+    _add_static_view(config, "project", "c2cgeoportal:project")
+
+    add_admin_interface(config)
+    add_static_view(config)
+
+    # Handles the other HTTP errors raised by the views. Without that,
+    # the client receives a status=200 without content.
+    config.add_view(error_handler, context=HTTPException)
+
+    _log_versions(settings)
+
+
+def init_dbsessions(settings):
     # define the srid, schema and parentschema
     # as global variables to be usable in the model
     c2cgeoportal.srid = settings["srid"]
@@ -707,32 +738,6 @@ def includeme(config):
         sqlahelper.add_engine(engine, dbsession_name)
         session = sqlalchemy.orm.session.sessionmaker()
         DBSessions[dbsession_name] = session(bind=engine)
-
-    config.add_route("checker_all", "/checker_all", request_method="GET")
-
-    config.add_route("version_json", "/version.json", request_method="GET")
-
-    stats.init(config)
-
-    # scan view decorator for adding routes
-    config.scan(ignore=["c2cgeoportal.tests", "c2cgeoportal.scripts"])
-
-    if "subdomains" in settings:  # pragma: no cover
-        config.registry.registerUtility(
-            MultiDomainStaticURLInfo(), IStaticURLInfo)
-
-    # add the static view (for static resources)
-    _add_static_view(config, "static", "c2cgeoportal:static")
-    _add_static_view(config, "project", "c2cgeoportal:project")
-
-    add_admin_interface(config)
-    add_static_view(config)
-
-    # Handles the other HTTP errors raised by the views. Without that,
-    # the client receives a status=200 without content.
-    config.add_view(error_handler, context=HTTPException)
-
-    _log_versions(settings)
 
 
 def _log_versions(settings):

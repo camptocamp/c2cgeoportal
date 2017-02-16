@@ -177,7 +177,8 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
             else:
                 raise Exception("Not a known config file")
 
-    def _collect_app_config(self, config, filename):
+    @classmethod
+    def _collect_app_config(cls, config, filename):
         # Collect raster layers names
         raster = [
             Message(
@@ -187,40 +188,44 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
             for raster_layer in config["vars"].get("raster", {}).keys()
         ]
         # Collect layers enum values (for filters)
+        settings = get_config(".build/config.yaml")
+        from c2cgeoportal.pyramid_ import init_dbsessions
+        init_dbsessions(settings)
+        from c2cgeoportal.models import DBSessions
+        from c2cgeoportal.views.layers import Layers
         enums = []
         enum_layers = config["vars"].get("layers", {}).get("enum", {})
         for layername in enum_layers.keys():
             layerinfos = enum_layers.get(layername, {})
             attributes = layerinfos.get("attributes", {})
             for fieldname in attributes.keys():
-                values = self._enumerate_attributes_values(layerinfos, fieldname)
+                values = cls._enumerate_attributes_values(DBSessions, Layers, layerinfos, fieldname)
                 enums += [
                     Message(
-                        None, value, None, [], u"", u"",
-                        # FIXME name ok ?
-                        (filename, u"/layers/{0!s}/values/{1!s}/{2!s}".format(layername, fieldname, value))
+                        None, value[0], None, [], u"", u"",
+                        (filename, u"/layers/{0!s}/values/{1!s}/{2!s}".format(layername, fieldname, value[0]))
                     )
                     for value in values
                 ]
 
         return raster + enums
 
-    def _enumerate_attributes_values(self, layerinfos, fieldname):
-        from c2cgeoportal.models import DBSessions
-        from c2cgeoportal.views import Layers
+    @classmethod
+    def _enumerate_attributes_values(cls, dbsessions, layers, layerinfos, fieldname):
         dbname = layerinfos.get("dbsession")
-        dbsession = DBSessions.get(dbname)
         try:
-            values = Layers.query_enumerate_attribute_values(dbsession, layerinfos, fieldname)
+            dbsession = dbsessions.get(dbname)
+            values = layers.query_enumerate_attribute_values(dbsession, layerinfos, fieldname)
         except:
-            table = layerinfos.get(fieldname, {}).get("table")
+            table = layerinfos.get("attributes").get(fieldname, {}).get("table")
             print(colorize(
                 u"Unable to collect enumerate attributes for "
-                u"db: {0!s}, table: {1!s}, column: {2!s}".format(dbname, table, fieldname)
-            ), YELLOW)
+                u"db: {0!s}, table: {1!s}, column: {2!s}".format(dbname, table, fieldname),
+                YELLOW))
         return values
 
-    def _collect_print_config(self, config, filename):
+    @classmethod
+    def _collect_print_config(cls, config, filename):
         result = []
         for template_ in config.get("templates").keys():
             result.append(Message(

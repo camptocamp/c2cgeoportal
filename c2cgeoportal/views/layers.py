@@ -463,6 +463,7 @@ class Layers:
             ))
         return dbsession.query(distinct(attribute)).order_by(attribute).all()
 
+
 def get_layer_metadatas(layer):
     # exclude the columns used to record the last features update
     exclude = [] if layer.exclude_properties is None else layer.exclude_properties.split(",")
