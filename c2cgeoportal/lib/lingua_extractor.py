@@ -189,38 +189,36 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
         # Collect layers enum values (for filters)
         enums = []
         enum_layers = config["vars"].get("layers", {}).get("enum", {})
-        for layer_name in enum_layers.keys():
-            attributes = enum_layers.get(layer_name, {}).get("attributes", {})
-            for field_name in attributes.keys():
-                enums += self._get_enumerate_attributes(config, filename, layer_name, field_name)
+        for layername in enum_layers.keys():
+            layerinfos = enum_layers.get(layername, {})
+            attributes = layerinfos.get("attributes", {})
+            for fieldname in attributes.keys():
+                values = self._enumerate_attributes_values(layerinfos, fieldname)
+                enums += [
+                    Message(
+                        None, value, None, [], u"", u"",
+                        # FIXME name ok ?
+                        (filename, u"/layers/{0!s}/values/{1!s}/{2!s}".format(layername, fieldname, value))
+                    )
+                    for value in values
+                ]
+
         return raster + enums
 
-    def _get_enumerate_attributes(self, config, filename, layer_name, field_name):
-        # FIXME host correct ?
-        host = config["vars"].get("servers", {}).get("local")
-        url = u"{0!s}/wsgi/layers/{1!s}/values/{2!s}".format(host, layer_name, field_name)
-        http = httplib2.Http()
+    def _enumerate_attributes_values(self, layerinfos, fieldname):
+        from c2cgeoportal.models import DBSessions
+        from c2cgeoportal.views import Layers
+        dbname = layerinfos.get("dbsession")
+        dbsession = DBSessions.get(dbname)
         try:
-            resp, content = http.request(url, method="GET")
-        except:  # pragma: no cover
-            print(colorize(u"Unable to get enumerate attributes from URL {0!s}".format(url), YELLOW))
-            return []
-
-        if resp.status < 200 or resp.status >= 300:  # pragma: no cover
-            print(colorize(u"Get enumarate attributes from URL {0!s} return the error: {1:d} {2!s}".format(
-                url, resp.status, resp.reason
-            ), YELLOW))
-            return []
-
-        enums = [item.get("value") for item in loads(content).get("items", {})]
-        return [
-            Message(
-                None, value, None, [], u"", u"",
-                # FIXME name ok ?
-                (filename, u"/layers/{0!s}/values/{1!s}/{2!s}".format(layer_name, field_name, value))
-            )
-            for value in enums
-        ]
+            values = Layers.query_enumerate_attribute_values(dbsession, layerinfos, fieldname)
+        except:
+            table = layerinfos.get(fieldname, {}).get("table")
+            print(colorize(
+                u"Unable to collect enumerate attributes for "
+                u"db: {0!s}, table: {1!s}, column: {2!s}".format(dbname, table, fieldname)
+            ), YELLOW)
+        return values
 
     def _collect_print_config(self, config, filename):
         result = []
