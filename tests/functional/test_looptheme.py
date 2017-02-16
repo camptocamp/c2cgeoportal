@@ -29,22 +29,20 @@
 
 
 from unittest import TestCase
-from nose.plugins.attrib import attr
 
 import transaction
 from pyramid import testing
 
 from tests.functional import (  # noqa
-    tear_down_common as tearDownModule,
-    set_up_common as setUpModule,
+    teardown_common as teardown_module,
+    setup_common as setup_module,
     mapserv_url, create_default_ogcserver,
 )
 
 
-@attr(functional=True)
 class TestLoopTheme(TestCase):
 
-    def setUp(self):  # noqa
+    def setup_method(self, _):
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
@@ -70,8 +68,7 @@ class TestLoopTheme(TestCase):
         DBSession.add_all([layer, layer_group, theme])
         transaction.commit()
 
-    @staticmethod
-    def tearDown():  # noqa
+    def teardown_method(self, _):
         testing.tearDown()
 
         from c2cgeoportal.models import DBSession, LayerWMS, \

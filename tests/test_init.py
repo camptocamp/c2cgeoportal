@@ -38,12 +38,12 @@ from c2cgeoportal.pyramid_ import call_hook, set_user_validator, \
 
 class TestIncludeme(TestCase):
 
-    def setUp(self):  # noqa
+    def setup_method(self, _):
         self.config = testing.setUp(
             # the c2cgeoportal includeme function requires a number
             # of settings
             settings={
-                "sqlalchemy.url": "postgresql://u:p@h/d",
+                "sqlalchemy.url": "postgresql://www-data:www-data@db:5432/geomapfish_test",
                 "srid": 3857,
                 "schema": "main",
                 "default_max_age": 86400,

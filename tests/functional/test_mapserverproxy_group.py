@@ -29,26 +29,23 @@
 
 
 from unittest import TestCase
-from nose.plugins.attrib import attr
 
 from geoalchemy2 import WKTElement
 import transaction
 import sqlahelper
 
 from tests.functional import (  # noqa
-    tear_down_common as tearDownModule,
-    set_up_common as setUpModule,
+    teardown_common as teardown_module,
+    setup_common as setup_module,
     create_dummy_request, mapserv_url, create_default_ogcserver,
 )
 
 Base = sqlahelper.get_base()
 
 
-@attr(functional=True)
 class TestMapserverproxyViewGroup(TestCase):
 
-    @staticmethod
-    def setUp():  # noqa
+    def setup_method(self, _):
         from c2cgeoportal.models import User, Role, LayerWMS, RestrictionArea, \
             Interface, DBSession
 
@@ -80,8 +77,7 @@ class TestMapserverproxyViewGroup(TestCase):
 
         transaction.commit()
 
-    @staticmethod
-    def tearDown():  # noqa
+    def teardown_method(self, _):
         from c2cgeoportal.models import User, Role, LayerWMS, RestrictionArea, \
             Interface, DBSession, OGCServer
 
@@ -126,24 +122,24 @@ class TestMapserverproxyViewGroup(TestCase):
         ))
         response = MapservProxy(request).proxy()
 
-        self.assertFalse(response.body.decode("utf-8").find("<Name>testpoint_protected</Name>") > 0)
-        self.assertFalse(response.body.decode("utf-8").find("<Name>testpoint_protected_2</Name>") > 0)
+        assert "<Name>testpoint_protected</Name>" not in response.body.decode("utf-8")
+        assert "<Name>testpoint_protected_2</Name>" not in response.body.decode("utf-8")
         # testpoint_group is not public so even unprotected layers are hidden:
-        self.assertFalse(response.body.decode("utf-8").find("<Name>testpoint_unprotected</Name>") > 0)
-        self.assertFalse(response.body.decode("utf-8").find("<Name>testpoint_group</Name>") > 0)
+        assert "<Name>testpoint_unprotected</Name>" not in response.body.decode("utf-8")
+        assert "<Name>testpoint_group</Name>" not in response.body.decode("utf-8")
         # testpoint_group_2 is a standard group containing only protected layers
-        self.assertFalse(response.body.decode("utf-8").find("<Name>testpoint_group_2</Name>") > 0)
+        assert "<Name>testpoint_group_2</Name>" not in response.body.decode("utf-8")
 
         request = self._create_getcap_request(username="__test_user1")
         request.params.update(dict(
             service="wms", version="1.1.1", request="getcapabilities",
         ))
         response = MapservProxy(request).proxy()
-        self.assertTrue(response.body.decode("utf-8").find("<Name>testpoint_protected</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>testpoint_protected_2</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>testpoint_unprotected</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>testpoint_group</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>testpoint_group_2</Name>") > 0)
+        assert "<Name>testpoint_protected</Name>" in response.body.decode("utf-8")
+        assert "<Name>testpoint_protected_2</Name>" in response.body.decode("utf-8")
+        assert "<Name>testpoint_unprotected</Name>" in response.body.decode("utf-8")
+        assert "<Name>testpoint_group</Name>" in response.body.decode("utf-8")
+        assert "<Name>testpoint_group_2</Name>" in response.body.decode("utf-8")
 
     def test_wfs_get_capabilities(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
@@ -154,16 +150,16 @@ class TestMapserverproxyViewGroup(TestCase):
         ))
         response = MapservProxy(request).proxy()
 
-        self.assertFalse(response.body.decode("utf-8").find("<Name>testpoint_protected</Name>") > 0)
+        assert "<Name>testpoint_protected</Name>" not in response.body.decode("utf-8")
         # testpoint_group is not public so even unprotected layers are hidden:
-        self.assertFalse(response.body.decode("utf-8").find("<Name>testpoint_unprotected</Name>") > 0)
-        self.assertFalse(response.body.decode("utf-8").find("<Name>testpoint_group</Name>") > 0)
+        assert "<Name>testpoint_unprotected</Name>" not in response.body.decode("utf-8")
+        assert "<Name>testpoint_group</Name>" not in response.body.decode("utf-8")
 
         request = self._create_getcap_request(username="__test_user1")
         request.params.update(dict(
             service="wfs", version="1.1.1", request="getcapabilities",
         ))
         response = MapservProxy(request).proxy()
-        self.assertTrue(response.body.decode("utf-8").find("<Name>testpoint_protected</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>testpoint_unprotected</Name>") > 0)
-        self.assertFalse(response.body.decode("utf-8").find("<Name>testpoint_group</Name>") > 0)
+        assert "<Name>testpoint_protected</Name>" in response.body.decode("utf-8")
+        assert "<Name>testpoint_unprotected</Name>" in response.body.decode("utf-8")
+        assert "<Name>testpoint_group</Name>" not in response.body.decode("utf-8")

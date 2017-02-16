@@ -29,7 +29,6 @@
 
 
 from unittest2 import TestCase
-from nose.plugins.attrib import attr
 
 import sqlahelper
 import transaction
@@ -38,8 +37,8 @@ from pyramid import testing
 
 from c2cgeoportal.lib import functionality
 from tests.functional import (  # noqa
-    tear_down_common as tearDownModule,
-    set_up_common as setUpModule,
+    teardown_common as teardown_module,
+    setup_common as setup_module,
     mapserv_url, create_dummy_request, create_default_ogcserver,
 )
 
@@ -47,10 +46,9 @@ import logging
 log = logging.getLogger(__name__)
 
 
-@attr(functional=True)
 class TestThemeEditing(TestCase):
 
-    def setUp(self):  # noqa
+    def setup_method(self, _):
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
@@ -130,7 +128,7 @@ class TestThemeEditing(TestCase):
 
         transaction.commit()
 
-    def tearDown(self):  # noqa
+    def teardown_method(self, _):
         testing.tearDown()
 
         functionality.FUNCTIONALITIES_TYPES = None

@@ -29,7 +29,6 @@
 
 
 from unittest import TestCase
-from nose.plugins.attrib import attr
 
 from io import StringIO
 from xml import sax
@@ -37,12 +36,11 @@ from xml.sax.saxutils import XMLGenerator
 
 from tests import load_file
 from tests.functional import (  # noqa
-    tear_down_common as tearDownModule,
-    set_up_common as setUpModule
+    teardown_common as teardown_module,
+    setup_common as setup_module
 )
 
 
-@attr(functional=True)
 class TestFilterCapabilities(TestCase):
     capabilities_file = "tests/data/tinyows_getcapabilities.xml"
 

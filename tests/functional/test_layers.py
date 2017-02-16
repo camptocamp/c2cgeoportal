@@ -28,23 +28,21 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from nose.plugins.attrib import attr
 from unittest import TestCase
 
 from tests.functional import (  # noqa
-    tear_down_common as tearDownModule,
-    set_up_common as setUpModule,
+    teardown_common as teardown_module,
+    setup_common as setup_module,
     create_dummy_request, cleanup_db
 )
 
 
-@attr(functional=True)
 class TestLayers(TestCase):
 
     _table_index = 0
     _tables = None
 
-    def setUp(self):  # noqa
+    def setup_method(self, _):
         import sqlahelper
         import transaction
         from c2cgeoportal.models import DBSession, Role, User, Interface
@@ -76,7 +74,7 @@ class TestLayers(TestCase):
         engine = sqlahelper.get_engine()
         init(engine)
 
-    def tearDown(self):  # noqa
+    def teardown_method(self, _):
         import transaction
 
         cleanup_db()

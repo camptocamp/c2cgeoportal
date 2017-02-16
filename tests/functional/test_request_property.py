@@ -29,20 +29,18 @@
 
 
 import base64
-from nose.plugins.attrib import attr
 from unittest import TestCase
 
 from tests.functional import (  # noqa
-    tear_down_common as tearDownModule,
-    set_up_common as setUpModule,
+    teardown_common as teardown_module,
+    setup_common as setup_module,
     create_dummy_request,
 )
 
 
-@attr(functional=True)
 class TestRequestProperty(TestCase):
 
-    def setUp(self):  # noqa
+    def setup_method(self, _):
         import transaction
         from c2cgeoportal.models import DBSession, User, Role
 
@@ -54,8 +52,7 @@ class TestRequestProperty(TestCase):
         DBSession.add_all([u, r])
         transaction.commit()
 
-    @staticmethod
-    def tearDown():  # noqa
+    def teardown_method(self, _):
         import transaction
         from c2cgeoportal.models import DBSession, User, Role
 

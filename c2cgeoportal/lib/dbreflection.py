@@ -65,6 +65,7 @@ def init(engine):
     class an engine, required for the reflection.
     """
     Base.metadata.bind = engine
+    _class_cache.clear()
 
 
 class _AssociationProxy(object):

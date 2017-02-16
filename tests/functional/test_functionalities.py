@@ -28,22 +28,19 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from nose.plugins.attrib import attr
 from unittest import TestCase
 
 from c2cgeoportal.lib import functionality
 from tests.functional import (  # noqa
-    tear_down_common as tearDownModule,
-    set_up_common as setUpModule,
+    teardown_common as teardown_module,
+    setup_common as setup_module,
     create_default_ogcserver,
 )
 
 
-@attr(functional=True)
 class TestFunctionalities(TestCase):
 
-    @staticmethod
-    def setUp():  # noqa
+    def setup_method(self, _):
         import sqlahelper
         import transaction
         from c2cgeoportal.models import DBSession, Role, User, Functionality
@@ -74,8 +71,7 @@ class TestFunctionalities(TestCase):
         engine = sqlahelper.get_engine()
         init(engine)
 
-    @staticmethod
-    def tearDown():  # noqa
+    def teardown_method(self, _):
         import transaction
         from c2cgeoportal.models import DBSession, Role, User, Functionality, OGCServer
 

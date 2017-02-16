@@ -31,15 +31,15 @@
 from unittest2 import TestCase
 import transaction
 from tests.functional import (  # noqa
-    tear_down_common as tearDownModule,
-    set_up_common as setUpModule,
+    teardown_common as teardown_module,
+    setup_common as setup_module,
     create_dummy_request, mapserv_url, create_default_ogcserver, cleanup_db,
 )
 
 
 class TestMapserverproxyCapabilities(TestCase):
 
-    def setUp(self):  # noqa
+    def setup_method(self, _):
         self.maxDiff = None
 
         from c2cgeoportal.models import User, Role, LayerWMS, RestrictionArea, \
@@ -108,8 +108,7 @@ class TestMapserverproxyCapabilities(TestCase):
         ])
         transaction.commit()
 
-    @staticmethod
-    def tearDown():  # noqa
+    def teardown_method(self, _):
         cleanup_db()
 
     @staticmethod
@@ -162,170 +161,170 @@ class TestMapserverproxyCapabilities(TestCase):
 
     def test_wms_osjpeg(self):
         response = self._wms_get_capabilities("__test_ogc_server_jpeg")
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer1</Name>") < 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer2</Name>") < 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer3</Name>") < 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer4</Name>") > 0)
+        assert "<Name>__test_private_layer1</Name>" not in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer2</Name>" not in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer3</Name>" not in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer4</Name>" in response.body.decode("utf-8")
 
     def test_wms_osjpeg_auth(self):
         response = self._wms_get_capabilities("__test_ogc_server_jpeg", username="__test_user")
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer1</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer2</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer3</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer4</Name>") > 0)
+        assert "<Name>__test_private_layer1</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer2</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer3</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer4</Name>" in response.body.decode("utf-8")
 
     def test_wfs_osjpeg(self):
         response = self._wms_get_capabilities("__test_ogc_server_jpeg", "wfs")
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer1</Name>") < 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer2</Name>") < 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer3</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer4</Name>") < 0)
+        assert "<Name>__test_private_layer1</Name>" not in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer2</Name>" not in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer3</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer4</Name>" not in response.body.decode("utf-8")
 
     def test_wfs_osjpeg_auth(self):
         response = self._wms_get_capabilities("__test_ogc_server_jpeg", "wfs", username="__test_user")
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer1</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer2</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer3</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer4</Name>") > 0)
+        assert "<Name>__test_private_layer1</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer2</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer3</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer4</Name>" in response.body.decode("utf-8")
 
     def test_wms_ospng(self):
         response = self._wms_get_capabilities("__test_ogc_server_png")
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer1</Name>") < 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer2</Name>") < 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer3</Name>") < 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer4</Name>") > 0)
+        assert "<Name>__test_private_layer1</Name>" not in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer2</Name>" not in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer3</Name>" not in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer4</Name>" in response.body.decode("utf-8")
 
     def test_wms_ospng_auth(self):
         response = self._wms_get_capabilities("__test_ogc_server_png", username="__test_user")
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer1</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer2</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer3</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer4</Name>") > 0)
+        assert "<Name>__test_private_layer1</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer2</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer3</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer4</Name>" in response.body.decode("utf-8")
 
     def test_wfs_ospng(self):
         response = self._wms_get_capabilities("__test_ogc_server_png", "wfs")
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer1</Name>") < 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer2</Name>") < 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer3</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer4</Name>") < 0)
+        assert "<Name>__test_private_layer1</Name>" not in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer2</Name>" not in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer3</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer4</Name>" not in response.body.decode("utf-8")
 
     def test_wfs_ospng_auth(self):
         response = self._wms_get_capabilities("__test_ogc_server_png", "wfs", username="__test_user")
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer1</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer2</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer3</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer4</Name>") > 0)
+        assert "<Name>__test_private_layer1</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer2</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer3</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer4</Name>" in response.body.decode("utf-8")
 
     def test_wms_oswfs1(self):
         response = self._wms_get_capabilities("__test_ogc_server_wfs1")
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer1</Name>") < 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer2</Name>") < 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer3</Name>") < 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer4</Name>") > 0)
+        assert "<Name>__test_private_layer1</Name>" not in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer2</Name>" not in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer3</Name>" not in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer4</Name>" in response.body.decode("utf-8")
 
     def test_wms_oswfs1_auth(self):
         response = self._wms_get_capabilities("__test_ogc_server_wfs1", username="__test_user")
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer1</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer2</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer3</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer4</Name>") > 0)
+        assert "<Name>__test_private_layer1</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer2</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer3</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer4</Name>" in response.body.decode("utf-8")
 
     def test_wfs_oswfs2(self):
         response = self._wms_get_capabilities("__test_ogc_server_wfs2", "wfs")
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer1</Name>") < 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer2</Name>") < 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer3</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer4</Name>") < 0)
+        assert "<Name>__test_private_layer1</Name>" not in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer2</Name>" not in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer3</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer4</Name>" not in response.body.decode("utf-8")
 
     def test_wfs_oswfs2_auth(self):
         response = self._wms_get_capabilities("__test_ogc_server_wfs2", "wfs", username="__test_user")
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer1</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer2</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer3</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer4</Name>") > 0)
+        assert "<Name>__test_private_layer1</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer2</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer3</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer4</Name>" in response.body.decode("utf-8")
 
     # # # CONFIG # # #
 
     def test_wms_osjpeg_config(self):
         response = self._wms_get_capabilities_config("__test_ogc_server_jpeg")
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer1</Name>") < 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer2</Name>") < 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer3</Name>") < 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer4</Name>") > 0)
+        assert "<Name>__test_private_layer1</Name>" not in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer2</Name>" not in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer3</Name>" not in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer4</Name>" in response.body.decode("utf-8")
 
     def test_wms_osjpeg_auth_config(self):
         response = self._wms_get_capabilities_config("__test_ogc_server_jpeg", username="__test_user")
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer1</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer2</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer3</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer4</Name>") > 0)
+        assert "<Name>__test_private_layer1</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer2</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer3</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer4</Name>" in response.body.decode("utf-8")
 
     def test_wfs_osjpeg_config(self):
         response = self._wms_get_capabilities_config("__test_ogc_server_jpeg", "wfs")
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer1</Name>") < 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer2</Name>") < 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer3</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer4</Name>") < 0)
+        assert "<Name>__test_private_layer1</Name>" not in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer2</Name>" not in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer3</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer4</Name>" not in response.body.decode("utf-8")
 
     def test_wfs_osjpeg_auth_config(self):
         response = self._wms_get_capabilities_config("__test_ogc_server_jpeg", "wfs", username="__test_user")
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer1</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer2</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer3</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer4</Name>") > 0)
+        assert "<Name>__test_private_layer1</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer2</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer3</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer4</Name>" in response.body.decode("utf-8")
 
     def test_wms_ospng_config(self):
         response = self._wms_get_capabilities_config("__test_ogc_server_png")
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer1</Name>") < 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer2</Name>") < 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer3</Name>") < 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer4</Name>") > 0)
+        assert "<Name>__test_private_layer1</Name>" not in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer2</Name>" not in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer3</Name>" not in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer4</Name>" in response.body.decode("utf-8")
 
     def test_wms_ospng_auth_config(self):
         response = self._wms_get_capabilities_config("__test_ogc_server_png", username="__test_user")
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer1</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer2</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer3</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer4</Name>") > 0)
+        assert "<Name>__test_private_layer1</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer2</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer3</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer4</Name>" in response.body.decode("utf-8")
 
     def test_wfs_ospng_config(self):
         response = self._wms_get_capabilities_config("__test_ogc_server_png", "wfs")
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer1</Name>") < 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer2</Name>") < 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer3</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer4</Name>") < 0)
+        assert "<Name>__test_private_layer1</Name>" not in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer2</Name>" not in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer3</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer4</Name>" not in response.body.decode("utf-8")
 
     def test_wfs_ospng_auth_config(self):
         response = self._wms_get_capabilities_config("__test_ogc_server_png", "wfs", username="__test_user")
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer1</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer2</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer3</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer4</Name>") > 0)
+        assert "<Name>__test_private_layer1</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer2</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer3</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer4</Name>" in response.body.decode("utf-8")
 
     def test_wms_oswfs1_config(self):
         response = self._wms_get_capabilities_config("__test_ogc_server_wfs1")
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer1</Name>") < 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer2</Name>") < 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer3</Name>") < 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer4</Name>") > 0)
+        assert "<Name>__test_private_layer1</Name>" not in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer2</Name>" not in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer3</Name>" not in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer4</Name>" in response.body.decode("utf-8")
 
     def test_wms_oswfs1_auth_config(self):
         response = self._wms_get_capabilities_config("__test_ogc_server_wfs1", username="__test_user")
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer1</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer2</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer3</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer4</Name>") > 0)
+        assert "<Name>__test_private_layer1</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer2</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer3</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer4</Name>" in response.body.decode("utf-8")
 
     def test_wfs_oswfs2_config(self):
         response = self._wms_get_capabilities_config("__test_ogc_server_wfs2", "wfs")
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer1</Name>") < 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer2</Name>") < 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer3</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer4</Name>") < 0)
+        assert "<Name>__test_private_layer1</Name>" not in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer2</Name>" not in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer3</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer4</Name>" not in response.body.decode("utf-8")
 
     def test_wfs_oswfs2_auth_config(self):
         response = self._wms_get_capabilities_config("__test_ogc_server_wfs2", "wfs", username="__test_user")
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer1</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer2</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer3</Name>") > 0)
-        self.assertTrue(response.body.decode("utf-8").find("<Name>__test_private_layer4</Name>") > 0)
+        assert "<Name>__test_private_layer1</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer2</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer3</Name>" in response.body.decode("utf-8")
+        assert "<Name>__test_private_layer4</Name>" in response.body.decode("utf-8")

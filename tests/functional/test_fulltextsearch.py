@@ -29,23 +29,20 @@
 
 
 from unittest import TestCase
-from nose.plugins.attrib import attr
 
 from pyramid import testing
 from pyramid.response import Response
 
 from tests.functional import (  # noqa
-    tear_down_common as tearDownModule,
-    set_up_common as setUpModule,
+    teardown_common as teardown_module,
+    setup_common as setup_module,
     create_dummy_request
 )
 
 
-@attr(functional=True)
 class TestFulltextsearchView(TestCase):
 
-    @staticmethod
-    def setUp():  # noqa
+    def setup_method(self, _):
         import transaction
         from sqlalchemy import func
         from geoalchemy2 import WKTElement
@@ -105,8 +102,7 @@ class TestFulltextsearchView(TestCase):
         DBSession.add_all([user1, user2, role1, role2, entry1, entry2, entry3, entry4, entry5, entry6])
         transaction.commit()
 
-    @staticmethod
-    def tearDown():  # noqa
+    def teardown_method(self, _):
         testing.tearDown()
 
         import transaction

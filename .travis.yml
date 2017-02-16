@@ -118,7 +118,7 @@ script:
 - ./docker-run make -f travis.mk tests/functional/alembic.ini
 - ./docker-compose-run alembic --config tests/functional/alembic.ini upgrade head
 - ./docker-compose-run alembic --config tests/functional/alembic_static.ini upgrade head
-- ./docker-compose-run nosetests
+- ./docker-compose-run make tests
 
 ## FOR NON DOCKER TESTS
 # Test new non Docker project
@@ -158,7 +158,7 @@ script:
 - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run alembic --config alembic_static.ini downgrade base
 - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run alembic --config alembic.ini downgrade base
 ## END FOR NON DOCKER TESTS
-
+#
 after_success:
 - ./docker-run coveralls
 - export CODACY_PROJECT_TOKEN=1605f78ffb214af5ba6cb172a95db5d1

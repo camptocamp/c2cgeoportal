@@ -160,7 +160,6 @@ class MapservProxy(OGCProxy):
                 self.request
             ).encode("utf-8")
 
-        content_type = None
         if callback is not None:
             content_type = "application/javascript"
             # escape single quotes in the JavaScript string

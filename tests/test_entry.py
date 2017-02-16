@@ -29,27 +29,31 @@
 
 
 from unittest import TestCase
+from pyramid import testing
 
 
-def setUpModule():  # noqa
+def setup_module():  # noqa
     import c2cgeoportal
     from c2cgeoportal.pyramid_ import caching
     c2cgeoportal.schema = "main"
     c2cgeoportal.srid = 21781
-    caching.init_region({"backend": "dogpile.cache.memory"})
+    caching.init_region({
+        "backend": "dogpile.cache.null",
+    })
 
 
 class TestEntryView(TestCase):
 
-    @staticmethod
-    def setUp():  # noqa
-        from pyramid import testing
+    def setup_method(self, _):
         testing.setUp(
             settings={
                 "default_locale_name": "fr",
                 "default_max_age": 1000,
             }
         )
+
+    def teardown_method(self, _):
+        testing.tearDown()
 
     def test_decimal_json(self):
         from decimal import Decimal

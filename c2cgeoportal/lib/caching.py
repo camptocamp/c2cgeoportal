@@ -31,7 +31,7 @@
 import inspect
 import logging
 
-from dogpile.util import compat
+from dogpile.cache.util import compat
 from dogpile.cache.region import make_region
 
 log = logging.getLogger(__name__)

@@ -85,8 +85,6 @@ buildall: build doc tests checks
 .PHONY: doc
 doc: $(BUILD_DIR)/sphinx.timestamp
 
-.PHONY: tests
-tests: nose
 
 .PHONY: checks
 checks: flake8 git-attributes quote spell
@@ -117,9 +115,14 @@ $(BUILD_DIR)/sphinx.timestamp: $(SPHINX_FILES) $(SPHINX_MAKO_FILES:.mako=)
 	doc/build.sh
 	touch $@
 
-.PHONY: nose
-nose: $(MAKO_FILES:.mako=)
-	nosetests
+.PHONY: tests
+tests: $(BUILD_DIR)/requirements.timestamp tests/functional/test.ini $(BUILD_DIR)/db.timestamp
+	py.test
+
+$(BUILD_DIR)/db.timestamp: tests/functional/alembic.ini tests/functional/alembic_static.ini
+	alembic --config tests/functional/alembic.ini upgrade head
+	alembic --config tests/functional/alembic_static.ini upgrade head
+	touch $@
 
 .PHONY: flake8
 flake8:
