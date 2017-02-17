@@ -292,10 +292,10 @@ def _parse_date(date):
 
 def _format_date(date):
     assert isinstance(date, datetime.datetime)
-    str = isodate.datetime_isoformat(date)
+    str_ = isodate.datetime_isoformat(date)
     if date.tzinfo is None:
-        str += "Z"
-    return str
+        str_ += "Z"
+    return str_
 
 
 def _parse_duration(duration):

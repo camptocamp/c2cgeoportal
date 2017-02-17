@@ -1258,14 +1258,14 @@ class Entry:
 
         return d
 
-    def get_ngeo_index_vars(self, vars=None):
-        if vars is None:
-            vars = {}
+    def get_ngeo_index_vars(self, vars_=None):
+        if vars_ is None:
+            vars_ = {}
         set_common_headers(self.request, "index", NO_CACHE)
 
-        vars["debug"] = self.debug
+        vars_["debug"] = self.debug
 
-        vars["fulltextsearch_groups"] = [
+        vars_["fulltextsearch_groups"] = [
             group[0] for group in DBSession.query(
                 func.distinct(FullTextSearch.layer_name)
             ).filter(FullTextSearch.layer_name.isnot(None)).all()
@@ -1277,15 +1277,15 @@ class Entry:
         else:
             wfs_types, add_errors = self._wfs_types_cached(url)
         if len(add_errors) == 0:
-            vars["wfs_types"] = [{
+            vars_["wfs_types"] = [{
                 "featureType": t,
                 "label": t,
             } for t in wfs_types]
         else:  # pragma: no cover
             log.error(u"Error while getting the WFS params: \n{}".format("\n".join(add_errors)))
-            vars["wfs_types"] = []
+            vars_["wfs_types"] = []
 
-        return vars
+        return vars_
 
     def get_ngeo_permalinktheme_vars(self):
         # recover themes from url route

@@ -102,7 +102,7 @@ class PdfReport(Proxy):  # pragma: no cover
 
     @view_config(route_name="pdfreport", renderer="json")
     def get_report(self):
-        id = self.request.matchdict["id"]
+        id_ = self.request.matchdict["id"]
         self.layername = self.request.matchdict["layername"]
         layer_config = self.config["layers"].get(self.layername)
 
@@ -130,7 +130,7 @@ class PdfReport(Proxy):  # pragma: no cover
                 "outputformat": "gml3",
                 "request": "GetFeature",
                 "typeName": self.layername,
-                "featureid": self.layername + "." + id,
+                "featureid": self.layername + "." + id_,
                 "srsName": "epsg:" + str(srs)
             }.items()])
         )
@@ -141,7 +141,7 @@ class PdfReport(Proxy):  # pragma: no cover
                 "layout": self.layername,
                 "outputFormat": "pdf",
                 "attributes": {
-                    "paramID": id
+                    "paramID": id_
                 }
             }
             map_config = layer_config.get("map")
@@ -160,7 +160,7 @@ class PdfReport(Proxy):  # pragma: no cover
         else:
             spec = loads(dumps(spec) % {
                 "layername": self.layername,
-                "id": id,
+                "id": id_,
                 "srs": srs,
                 "mapserv_url": mapserv_url,
                 "vector_request_url": vector_request_url,

@@ -95,14 +95,14 @@ def create_record(fp):
 # Reading defs
 
 
-def read_record_any(fp, type):
-    if type == 0:
+def read_record_any(fp, type_):
+    if type_ == 0:
         return read_record_null(fp)
-    elif type == 1:
+    elif type_ == 1:
         return read_record_point(fp)
-    elif type == 8:
+    elif type_ == 8:
         return read_record_multi_point(fp)
-    elif type in [3, 5]:
+    elif type_ in [3, 5]:
         return read_record_poly_line(fp)
     else:
         return False
