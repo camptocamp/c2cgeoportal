@@ -5,7 +5,7 @@
 # The goal is to run the command on an other directory
 # and return to the original directory withouts losing the error code
 
-pushd `pwd`
+pushd $(pwd)
 
 cd $1
 
