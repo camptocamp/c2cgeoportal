@@ -709,10 +709,10 @@ class Entry:
 
     @staticmethod
     def _layer_included(tree_item, version):
-        if version == 1 and type(tree_item) == LayerV1:
+        if version == 1 and isinstance(tree_item, LayerV1):
             return True
         if version == 2 and isinstance(tree_item, Layer):
-            return type(tree_item) != LayerV1
+            return not isinstance(tree_item, LayerV1)
         return False
 
     @staticmethod
@@ -775,9 +775,9 @@ class Entry:
             dim = DimensionInformation()
 
         for tree_item in group.children:
-            if type(tree_item) == LayerGroup:
+            if isinstance(tree_item, LayerGroup):
                 depth += 1
-                if type(group) == Theme or catalogue or \
+                if isinstance(group, Theme) or catalogue or \
                         group.is_internal_wms == tree_item.is_internal_wms:
                     gp, gp_errors = self._group(
                         "{0!s}/{1!s}".format(path, tree_item.name),
@@ -967,7 +967,7 @@ class Entry:
         children = []
         errors = set()
         for item in theme.children:
-            if type(item) == LayerGroup:
+            if isinstance(item, LayerGroup):
                 gp, gp_errors = self._group(
                     u"{0!s}/{1!s}".format(theme.name, item.name),
                     item, layers,
