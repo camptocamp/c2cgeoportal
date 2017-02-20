@@ -7,7 +7,7 @@
 
 DATABASES=$@
 
-cd "${directory}"
+cd ${deploy["code_destination"]}
 make -f $TARGET.mk clean
 
 # Apache must be stopped to prevent database connection during
