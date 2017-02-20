@@ -170,31 +170,76 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
             config = yaml.load(config_file)
             # for application config (.build/config.yaml)
             if "vars" in config:
-                return [
-                    Message(
-                        None, raster_layer, None, [], u"", u"",
-                        (filename, u"raster/{0!s}".format(raster_layer))
-                    )
-                    for raster_layer in config["vars"].get("raster", {}).keys()
-                ]
+                return self._collect_app_config(config, filename)
             # for the print config
             elif "templates" in config:
-                result = []
-                for template_ in config.get("templates").keys():
-                    result.append(Message(
-                        None, template_, None, [], u"", u"",
-                        (filename, u"template/{0!s}".format(template_))
-                    ))
-                    result += [
-                        Message(
-                            None, attribute, None, [], u"", u"",
-                            (filename, u"template/{0!s}/{1!s}".format(template_, attribute))
-                        )
-                        for attribute in config.get("templates")[template_].attributes.keys()
-                    ]
-                return result
+                return self._collect_print_config(config, filename)
             else:
                 raise Exception("Not a known config file")
+
+    @classmethod
+    def _collect_app_config(cls, config, filename):
+        # Collect raster layers names
+        raster = [
+            Message(
+                None, raster_layer, None, [], u"", u"",
+                (filename, u"raster/{0!s}".format(raster_layer))
+            )
+            for raster_layer in config["vars"].get("raster", {}).keys()
+        ]
+        # Collect layers enum values (for filters)
+        settings = get_config(".build/config.yaml")
+        from c2cgeoportal.pyramid_ import init_dbsessions
+        init_dbsessions(settings)
+        from c2cgeoportal.models import DBSessions
+        from c2cgeoportal.views.layers import Layers
+        enums = []
+        enum_layers = config["vars"].get("layers", {}).get("enum", {})
+        for layername in enum_layers.keys():
+            layerinfos = enum_layers.get(layername, {})
+            attributes = layerinfos.get("attributes", {})
+            for fieldname in attributes.keys():
+                values = cls._enumerate_attributes_values(DBSessions, Layers, layerinfos, fieldname)
+                enums += [
+                    Message(
+                        None, value[0], None, [], u"", u"",
+                        (filename, u"/layers/{0!s}/values/{1!s}/{2!s}".format(layername, fieldname, value[0]))
+                    )
+                    for value in values
+                ]
+
+        return raster + enums
+
+    @classmethod
+    def _enumerate_attributes_values(cls, dbsessions, layers, layerinfos, fieldname):
+        dbname = layerinfos.get("dbsession")
+        try:
+            dbsession = dbsessions.get(dbname)
+            values = layers.query_enumerate_attribute_values(dbsession, layerinfos, fieldname)
+        except:
+            table = layerinfos.get("attributes").get(fieldname, {}).get("table")
+            print(colorize(
+                u"Unable to collect enumerate attributes for "
+                u"db: {0!s}, table: {1!s}, column: {2!s}".format(dbname, table, fieldname),
+                YELLOW))
+        return values
+
+    @classmethod
+    def _collect_print_config(cls, config, filename):
+        result = []
+        for template_ in config.get("templates").keys():
+            result.append(Message(
+                None, template_, None, [], u"", u"",
+                (filename, u"template/{0!s}".format(template_))
+            ))
+            result += [
+                Message(
+                    None, attribute, None, [], u"", u"",
+                    (filename, u"template/{0!s}/{1!s}".format(template_, attribute))
+                )
+                for attribute in config.get("templates")[template_].attributes.keys()
+            ]
+        return result
 
 
 class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover

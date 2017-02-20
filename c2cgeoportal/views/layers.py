@@ -441,12 +441,17 @@ class Layers:
             raise HTTPInternalServerError(
                 "No dbsession found for layer '{0!s}'".format(layername)
             )
+        values = self.query_enumerate_attribute_values(dbsession, layerinfos, fieldname)
+        enum = {
+            "items": [{"label": value[0], "value": value[0]} for value in values]
+        }
+        return enum
 
+    @staticmethod
+    def query_enumerate_attribute_values(dbsession, layerinfos, fieldname):
         attrinfos = layerinfos["attributes"][fieldname]
-
         table = attrinfos["table"]
         layertable = get_table(table, session=dbsession)
-
         column = attrinfos.get("column_name", fieldname)
         attribute = getattr(layertable.columns, column)
         # For instance if `separator` is a "," we consider that the column contains a
@@ -456,12 +461,7 @@ class Layers:
             attribute = func.unnest(func.string_to_array(
                 func.string_agg(attribute, separator), separator
             ))
-        values = dbsession.query(distinct(attribute)).order_by(attribute).all()
-        enum = {
-            "items": [{"label": value[0], "value": value[0]} for value in values]
-        }
-
-        return enum
+        return dbsession.query(distinct(attribute)).order_by(attribute).all()
 
 
 def get_layer_metadatas(layer):
