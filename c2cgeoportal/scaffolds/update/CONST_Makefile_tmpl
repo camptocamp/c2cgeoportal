@@ -163,6 +163,7 @@ EGGS_DEPENDENCIES += .build/venv.timestamp-noclean setup.py \
 	$(CONST_REQUIREMENT)
 REQUIREMENTS ?= c2cgeoportal
 REQUIREMENTS += -r $(CONST_REQUIREMENT)
+DEV_REQUIREMENTS += -r CONST_fixversions.txt
 DEV_REQUIREMENTS += -r CONST_dev-requirements.txt
 ifeq ($(TILECLOUD_CHAIN), TRUE)
 DEV_REQUIREMENTS += $(TILECLOUD_VERSION) $(TILECLOUDCHAIN_VERSION)
@@ -1322,7 +1323,9 @@ $(WMTSCAPABILITIES_FILE): tilegeneration/config.yaml .build/dev-requirements.tim
 	$(VENV_BIN)/generate_controller --capabilities
 
 # Version
+$(VENV_BIN)/gen-version$(PYTHON_BIN_POSTFIX): .build/requirements.timestamp
+
 .PHONY: $(PACKAGE)/version.py
-$(PACKAGE)/version.py:
+$(PACKAGE)/version.py: $(VENV_BIN)/gen-version$(PYTHON_BIN_POSTFIX)
 	@echo "# Auto-generated file. Do not Edit!" > $@
 	@$(VENV_BIN)/gen-version >> $@
