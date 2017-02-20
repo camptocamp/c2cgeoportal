@@ -22,15 +22,23 @@ def main():
         "--volume={pwd}:/src".format(pwd=os.getcwd()),
         "--volume={home}:{home}".format(home=os.environ["HOME"]),
         "--volume=/tmp/travis/testgeomapfish:/tmp/travis/testgeomapfish",
-        "--env=HOME={home}".format(home=os.environ["HOME"]),
         "--env=USER_NAME={}".format(getpass.getuser()),
         "--env=USER_ID={}".format(os.getuid()),
         "--env=GROUP_ID={}".format(os.getgid()),
-        "--env=TRAVIS={}".format(os.environ.get("TRAVIS", "")),
-        "--env=TRAVIS_BRANCH={}".format(os.environ.get("TRAVIS_BRANCH", "")),
-        "--env=TRAVIS_JOB_ID={}".format(os.environ.get("TRAVIS_JOB_ID", "")),
-        "camptocamp/geomapfish_build_dev",
     ])
+
+    for env in [
+        "HOME",
+        "TRAVIS",
+        "TRAVIS_BRANCH",
+        "TRAVIS_JOB_ID",
+        "SRID",
+        "APACHE_VHOST",
+        "EXTENT",
+    ]:
+        docker_cmd.append("--env={}={}".format(env, os.environ.get(env, "")))
+
+    docker_cmd.append("camptocamp/geomapfish_build_dev")
     docker_cmd.extend(args)
     try:
         subprocess.check_call(docker_cmd)

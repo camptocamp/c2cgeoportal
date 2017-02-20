@@ -57,8 +57,6 @@ class BaseTemplate(Template):  # pragma: no cover
         package logger "root").
         """
 
-        self._args_to_vars(command.args, vars_)
-
         self._get_vars(vars_, "package", "Get a package name: ")
         self._get_vars(vars_, "apache_vhost", "The Apache vhost name: ")
         self._get_vars(
@@ -103,19 +101,15 @@ class BaseTemplate(Template):  # pragma: no cover
         print(msg)
 
     @staticmethod
-    def _args_to_vars(args, vars_):
-        for arg in args:
-            m = re.match("(.+)=(.*)", arg)
-            if m:
-                vars_[m.group(1)] = m.group(2)
-
-    @staticmethod
     def _get_vars(vars_, name, prompt, type_=None):
         """
         Set an attribute in the vars dict.
         """
 
-        value = vars_.get(name)
+        if name.upper() in os.environ:
+            value = os.environ[name.upper()]
+        else:
+            value = vars_.get(name)
 
         if value is None:
             value = input_(prompt).strip()

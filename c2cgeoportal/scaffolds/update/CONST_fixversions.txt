@@ -1,5 +1,4 @@
 # List of versions that should not be changed by requires.io
-pyramid==1.6.1
 https://github.com/camptocamp/fa.jquery/archive/6b781ecb416ef40caa79ca449a04159d7b93547e.zip#egg=fa.jquery
 FormAlchemy==1.4.3
 js.jqgrid==4.4.4

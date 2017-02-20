@@ -1,7 +1,8 @@
 #!/bin/bash -ex
 
-./docker-run pcreate --scaffold=c2cgeoportal_create /tmp/travis/testgeomapfish package=testgeomapfish srid=21781 apache_vhost=test extent= > /dev/null
-./docker-run pcreate --scaffold=c2cgeoportal_update /tmp/travis/testgeomapfish package=testgeomapfish srid=21781 apache_vhost=test extent= > /dev/null # on create
+export SRID=21781 APACHE_VHOST=test EXTENT=
+./docker-run pcreate --scaffold=c2cgeoportal_create /tmp/travis/testgeomapfish --package-name testgeomapfish > /dev/null
+./docker-run pcreate --scaffold=c2cgeoportal_update /tmp/travis/testgeomapfish --package-name testgeomapfish > /dev/null # on create
 
 cp travis/build.mk /tmp/travis/testgeomapfish/travis.mk
 cp travis/vars.yaml /tmp/travis/testgeomapfish/vars_travis.yaml
