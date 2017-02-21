@@ -259,7 +259,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
         try:
             self.env = bootstrap(filename)
             with open("project.yaml") as f:
-                self.package = yaml.load(f)
+                self.package = yaml.safe_load(f)
             self.config = get_config(".build/config.yaml")
 
             try:
