@@ -1,4 +1,5 @@
 # A compose file for development.
+version: '2'
 % if dbhost == "db":
 db:
   build: testDB
