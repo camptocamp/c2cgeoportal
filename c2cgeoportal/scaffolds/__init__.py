@@ -185,7 +185,7 @@ class TemplateUpdate(BaseTemplate):  # pragma: no cover
 
         if os.path.exists("project.yaml"):
             with open("project.yaml", "r") as f:
-                project = yaml.load(f)
+                project = yaml.safe_load(f)
                 if "template_vars" in project:
                     for key, value in project["template_vars"].items():
                         vars_[key] = \

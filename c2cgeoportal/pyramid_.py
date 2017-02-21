@@ -270,8 +270,8 @@ def _match_url_start(ref, val):
 
 def _is_valid_referer(referer, settings):
     if referer:
-        list = settings.get("authorized_referers", [])
-        return any(_match_url_start(x, referer) for x in list)
+        list_ = settings.get("authorized_referers", [])
+        return any(_match_url_start(x, referer) for x in list_)
     else:
         return False
 
@@ -389,7 +389,8 @@ class MapserverproxyRoutePredicate:
         )
         return "request" not in params or params["request"] != u"getcapabilities"
 
-    def phash(self):
+    @staticmethod
+    def phash():
         return ""
 
 

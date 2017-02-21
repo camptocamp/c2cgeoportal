@@ -74,7 +74,7 @@ class _AssociationProxy(object):
         self.target = target
         self.value_attr = value_attr
 
-    def __get__(self, obj, type=None):
+    def __get__(self, obj, type_=None):
         if obj is None:
             # For "hybrid" descriptors that work both at the instance
             # and class levels we could return an SQL expression here.

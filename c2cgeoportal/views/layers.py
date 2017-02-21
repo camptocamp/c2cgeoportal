@@ -68,7 +68,8 @@ class Layers:
         self.settings = request.registry.settings.get("layers", {})
         self.layers_enum_config = self.settings.get("enum")
 
-    def _get_geom_col_info(self, layer):
+    @staticmethod
+    def _get_geom_col_info(layer):
         """ Return information about the layer's geometry column, namely
         a ``(name, srid)`` tuple, where ``name`` is the name of the
         geometry column, and ``srid`` its srid.
@@ -345,7 +346,8 @@ class Layers:
         if last_update_user is not None:
             setattr(feature, last_update_user, self.request.user.id)
 
-    def _get_metadata(self, layer, key, default=None):
+    @staticmethod
+    def _get_metadata(layer, key, default=None):
         metadatas = layer.get_metadatas(key)
         if len(metadatas) == 1:
             metadata = metadatas[0]

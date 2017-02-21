@@ -51,7 +51,7 @@ except ImportError:
     def check_output(cmd, cwd=None, stdin=None, stderr=None, shell=False):  # noqa
         """Backwards compatible check_output"""
         p = Popen(cmd, cwd=cwd, stdin=stdin, stderr=stderr, shell=shell, stdout=PIPE)
-        out, err = p.communicate()
+        out, _ = p.communicate()
         return out
 
 VERSION_RE = "^[0-9]+\.[0-9]+\..+$"
@@ -187,12 +187,12 @@ class C2cTool:
             exit(1)
 
         with open("project.yaml", "r") as f:
-            return yaml.load(f)
+            return yaml.safe_load(f)
 
     def test_checkers(self):
         http = httplib2.Http()
         for check_type in ("", "type=all"):
-            resp, content = http.request(
+            resp, _ = http.request(
                 "http://localhost{0!s}{1!s}".format(self.project["checker_path"], check_type),
                 method="GET",
                 headers={

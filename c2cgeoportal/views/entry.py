@@ -1591,7 +1591,7 @@ class Entry:
         rand = Random()
 
         password = ""
-        for i in range(8):
+        for _ in range(8):
             password += rand.choice(allchars)
 
         return password
