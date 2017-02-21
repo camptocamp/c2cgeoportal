@@ -1,5 +1,5 @@
 Babel==2.3.4
-boto==2.45.0
+boto==2.46.1
 bottle==0.12.13
 c2c.template==1.4.0.dev1
 Chameleon==3.0
