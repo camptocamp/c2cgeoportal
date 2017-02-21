@@ -1097,6 +1097,7 @@ $(VENV_BIN)/flake8$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
 .build/venv.timestamp-noclean: CONST_optional-requirements.txt
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
+	rm --recursive --force .build/venv
 	virtualenv --no-site-packages .build/venv
 	$(PIP_CMD) install '$(PIP_VERSION)' '$(SETUPTOOLS_VERSION)'
 	touch $@
