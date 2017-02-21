@@ -171,6 +171,8 @@ vars:
           type: float
         - name: minResolution
           type: float
+        - name: opacity
+          type: float
         - name: thumbnail
           type: url
         - name: copyable
