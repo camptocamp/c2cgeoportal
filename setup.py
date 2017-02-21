@@ -65,6 +65,7 @@ install_requires = [
     "lingua",
     "PyYAML",
     "c2c.template>=1.3.0.dev",
+    "defusedxml",
 ]
 install_requires += [
     requirement for requirement in

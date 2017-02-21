@@ -36,7 +36,7 @@ import re
 import traceback
 from json import loads
 from urlparse import urlsplit
-from xml.dom.minidom import parseString
+from defusedxml.minidom import parseString
 from xml.parsers.expat import ExpatError
 from sqlalchemy.exc import ProgrammingError, NoSuchTableError, OperationalError
 from sqlalchemy.orm.exc import NoResultFound

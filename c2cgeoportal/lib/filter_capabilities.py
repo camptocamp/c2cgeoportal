@@ -34,10 +34,11 @@ from StringIO import StringIO
 from urlparse import urlsplit, urljoin
 from urllib import urlopen
 
-from xml import sax
+import xml.sax.handler
 from xml.sax import saxutils
 from xml.sax.saxutils import XMLFilterBase, XMLGenerator
 from xml.sax.xmlreader import InputSource
+import defusedxml.expatreader
 
 from pyramid.httpexceptions import HTTPBadGateway
 
@@ -167,7 +168,11 @@ def filter_capabilities(content, role_id, wms, wms_url, headers, proxies):
         if layer in wms_structure:
             private_layers.update(wms_structure[layer])
 
-    parser = sax.make_parser()
+    parser = defusedxml.expatreader.create_parser(forbid_external=False)
+    # skip inclusion of DTDs
+    parser.setFeature(xml.sax.handler.feature_external_ges, False)
+    parser.setFeature(xml.sax.handler.feature_external_pes, False)
+
     result = StringIO()
     downstream_handler = XMLGenerator(result, "utf-8")
     filter_handler = _CapabilitiesFilter(
@@ -175,9 +180,6 @@ def filter_capabilities(content, role_id, wms, wms_url, headers, proxies):
         u"Layer" if wms else u"FeatureType",
         layers_blacklist=private_layers
     )
-    # skip inclusion of DTDs
-    parser.setFeature(sax.handler.feature_external_ges, False)
-    parser.setFeature(sax.handler.feature_external_pes, False)
     filter_handler.parse(StringIO(content))
     return unicode(result.getvalue(), "utf-8")
 
@@ -189,7 +191,11 @@ def filter_wfst_capabilities(content, role_id, wfs_url, proxies):
 
     writable_layers = get_writable_layers(role_id)
 
-    parser = sax.make_parser()
+    parser = defusedxml.expatreader.create_parser(forbid_external=False)
+    # skip inclusion of DTDs
+    parser.setFeature(xml.sax.handler.feature_external_ges, False)
+    parser.setFeature(xml.sax.handler.feature_external_pes, False)
+
     result = StringIO()
     downstream_handler = XMLGenerator(result, "utf-8")
     filter_handler = _CapabilitiesFilter(
