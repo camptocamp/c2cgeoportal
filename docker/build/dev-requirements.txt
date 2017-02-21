@@ -9,7 +9,6 @@ Chameleon==3.0
 couchdbkit==0.6.5
 coveralls==1.1
 dogpile.cache==0.6.2
-dogpile.core==0.4.1
 fanstatic==0.16
 flake8==3.3.0
 flake8-copyright==0.2.0
