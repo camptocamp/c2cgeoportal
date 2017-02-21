@@ -72,7 +72,7 @@ Build c2cgeoportal:
 
 .. prompt:: bash
 
-    make build
+    ./docker-run make build
 
 List existing skeletons
 -----------------------
