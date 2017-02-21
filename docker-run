@@ -31,6 +31,7 @@ def main():
         "--env=USER_NAME={}".format(getpass.getuser()),
         "--env=USER_ID={}".format(os.getuid()),
         "--env=GROUP_ID={}".format(os.getgid()),
+        "--env=CODACY_PROJECT_TOKEN={}".format(os.environ.get("CODACY_PROJECT_TOKEN", "")),
     ])
 
     for env in [
