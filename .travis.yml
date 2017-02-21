@@ -136,6 +136,7 @@ deploy:
   password:
     secure: dT4Z3Zk2SGq1BPl+mX2iI0ubK7veSPb1b0fGrKHpvC3gBxuGUDMhtHw5dgopdWWeUhZLzLoPpEZPyCHtJhE2vunGwZfmJXkrqp/yC1meszZpDgBkpRWzx62u/f1+FmUdGPukvlqTfzgl/vJwertPRzX9Y4hanoFIDQvIKnp37Ls=
   skip_cleanup: true
+  skip_upload_docs: true
   distributions: sdist bdist_wheel
   on:
     repo: camptocamp/c2cgeoportal
