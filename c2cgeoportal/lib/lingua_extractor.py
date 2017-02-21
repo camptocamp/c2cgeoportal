@@ -75,15 +75,19 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
             GET = {}
             user_agent = ""
 
+            @staticmethod
             def static_url(*args, **kwargs):
                 return ""
 
+            @staticmethod
             def static_path(*args, **kwargs):
                 return ""
 
+            @staticmethod
             def route_url(*args, **kwargs):
                 return ""
 
+            @staticmethod
             def current_route_url(*args, **kwargs):
                 return ""
 

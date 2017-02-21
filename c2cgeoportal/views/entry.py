@@ -709,10 +709,10 @@ class Entry:
 
     @staticmethod
     def _layer_included(tree_item, version):
-        if version == 1 and type(tree_item) == LayerV1:
+        if version == 1 and isinstance(tree_item, LayerV1):
             return True
         if version == 2 and isinstance(tree_item, Layer):
-            return type(tree_item) != LayerV1
+            return not isinstance(tree_item, LayerV1)
         return False
 
     @staticmethod
@@ -775,9 +775,9 @@ class Entry:
             dim = DimensionInformation()
 
         for tree_item in group.children:
-            if type(tree_item) == LayerGroup:
+            if isinstance(tree_item, LayerGroup):
                 depth += 1
-                if type(group) == Theme or catalogue or \
+                if isinstance(group, Theme) or catalogue or \
                         group.is_internal_wms == tree_item.is_internal_wms:
                     gp, gp_errors = self._group(
                         "{0!s}/{1!s}".format(path, tree_item.name),
@@ -967,7 +967,7 @@ class Entry:
         children = []
         errors = set()
         for item in theme.children:
-            if type(item) == LayerGroup:
+            if isinstance(item, LayerGroup):
                 gp, gp_errors = self._group(
                     u"{0!s}/{1!s}".format(theme.name, item.name),
                     item, layers,
@@ -1258,14 +1258,14 @@ class Entry:
 
         return d
 
-    def get_ngeo_index_vars(self, vars=None):
-        if vars is None:
-            vars = {}
+    def get_ngeo_index_vars(self, vars_=None):
+        if vars_ is None:
+            vars_ = {}
         set_common_headers(self.request, "index", NO_CACHE)
 
-        vars["debug"] = self.debug
+        vars_["debug"] = self.debug
 
-        vars["fulltextsearch_groups"] = [
+        vars_["fulltextsearch_groups"] = [
             group[0] for group in DBSession.query(
                 func.distinct(FullTextSearch.layer_name)
             ).filter(FullTextSearch.layer_name.isnot(None)).all()
@@ -1277,15 +1277,15 @@ class Entry:
         else:
             wfs_types, add_errors = self._wfs_types_cached(url)
         if len(add_errors) == 0:
-            vars["wfs_types"] = [{
+            vars_["wfs_types"] = [{
                 "featureType": t,
                 "label": t,
             } for t in wfs_types]
         else:  # pragma: no cover
             log.error(u"Error while getting the WFS params: \n{}".format("\n".join(add_errors)))
-            vars["wfs_types"] = []
+            vars_["wfs_types"] = []
 
-        return vars
+        return vars_
 
     def get_ngeo_permalinktheme_vars(self):
         # recover themes from url route

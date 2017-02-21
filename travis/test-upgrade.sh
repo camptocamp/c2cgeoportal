@@ -1,6 +1,6 @@
 #!/bin/bash -ex
 
-export VERSION=`python setup.py --version`
+export VERSION=$(python setup.py --version)
 
 cd /tmp/travis/testgeomapfish/
 

@@ -95,14 +95,14 @@ def create_record(fp):
 # Reading defs
 
 
-def read_record_any(fp, type):
-    if type == 0:
+def read_record_any(fp, type_):
+    if type_ == 0:
         return read_record_null(fp)
-    elif type == 1:
+    elif type_ == 1:
         return read_record_point(fp)
-    elif type == 8:
+    elif type_ == 8:
         return read_record_multi_point(fp)
-    elif type in [3, 5]:
+    elif type_ in [3, 5]:
         return read_record_poly_line(fp)
     else:
         return False
@@ -235,9 +235,9 @@ def get_true_centers(records, projected=False):
             # now get the true centroid
         temp_point = {"x": 0, "y": 0}
         if biggest[points][0] != biggest[points][len(biggest[points]) - 1]:
-            print  \
-                "mug", biggest[points][0], \
-                biggest[points][len(biggest[points]) - 1]
+            print(
+                "mug", biggest[points][0],
+                biggest[points][len(biggest[points]) - 1])
         for i in range(0, len(biggest[points]) - 1):
             j = (i + 1) % (len(biggest[points]) - 1)
             temp_point["x"] -= \
@@ -305,7 +305,7 @@ def get_neighbors(records):
 
 
 def project_shapefile(records, what_projection, lon_center=0, lat_center=0):
-    print "projecting to ", what_projection
+    print("projecting to ", what_projection)
     for feature in records:
         for part in feature["shp_data"]["parts"]:
             part["projectedPoints"] = []
@@ -341,10 +341,8 @@ def project_point(from_point, what_projection, lon_center, lat_center):
 
 
 def overlap(feature1, feature2):
-    if (feature1["shp_data"]["xmax"] > feature2["shp_data"]["xmin"] and
-            feature1["shp_data"]["ymax"] > feature2["shp_data"]["ymin"] and
-            feature1["shp_data"]["xmin"] < feature2["shp_data"]["xmax"] and
-            feature1["shp_data"]["ymin"] < feature2["shp_data"]["ymax"]):
-        return True
-    else:
-        return False
+    return \
+        feature1["shp_data"]["xmax"] > feature2["shp_data"]["xmin"] and \
+        feature1["shp_data"]["ymax"] > feature2["shp_data"]["ymin"] and \
+        feature1["shp_data"]["xmin"] < feature2["shp_data"]["xmax"] and \
+        feature1["shp_data"]["ymin"] < feature2["shp_data"]["ymax"]

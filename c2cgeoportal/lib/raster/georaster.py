@@ -82,16 +82,16 @@ class GeoRaster:
     def __init__(self, shapefile_name):
         self.tiles = []
         shp_records = shputils.load_shapefile(shapefile_name)
-        dir = dirname(shapefile_name)
-        if dir == "":
-            dir = "."
+        dir_ = dirname(shapefile_name)
+        if dir_ == "":
+            dir_ = "."
         for shape in shp_records:
             filename = shape["dbf_data"]["location"].rstrip()
             tile_class = None
             if filename.endswith(".bt"):
                 tile_class = BTTile
             if not filename.startswith("/"):
-                filename = dir + "/" + filename
+                filename = dir_ + "/" + filename
             geo = shape["shp_data"]
             tile = tile_class(geo["xmin"], geo["ymin"], geo["xmax"], geo["ymax"], filename)
             self.tiles.append(tile)
