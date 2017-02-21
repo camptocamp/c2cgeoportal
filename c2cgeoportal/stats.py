@@ -127,7 +127,7 @@ class _StatsDBackend:  # pragma: no cover
         host, port = address.rsplit(":")
         host = host.strip("[]")
         addrinfo = socket.getaddrinfo(host, port, 0, 0, socket.IPPROTO_UDP)
-        af, socktype, proto, canonname, sa = addrinfo[0]
+        af, socktype, proto, _, sa = addrinfo[0]
         LOG.info("Starting a StatsDBackend for %s stats: %s -> %s", prefix, address, repr(sa))
 
         self._socket = socket.socket(af, socktype, proto)

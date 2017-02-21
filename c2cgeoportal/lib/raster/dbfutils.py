@@ -54,7 +54,7 @@ def dbfreader(f):
     numfields = (lenheader - 33) // 32
 
     fields = []
-    for fieldno in xrange(numfields):
+    for _ in xrange(numfields):
         name, typ, size, deci = struct.unpack("<11sc4xBB14x", f.read(32))
         name = name.replace("\0", "")       # eliminate NULs from string
         fields.append((name, typ, size, deci))
@@ -67,7 +67,7 @@ def dbfreader(f):
     fields.insert(0, ("DeletionFlag", "C", 1, 0))
     fmt = "".join(["{0:d}s".format(fieldinfo[2]) for fieldinfo in fields])
     fmtsiz = struct.calcsize(fmt)
-    for i in xrange(numrec):
+    for _ in xrange(numrec):
         record = struct.unpack(fmt, f.read(fmtsiz))
         if record[0] != " ":
             continue                        # deleted record

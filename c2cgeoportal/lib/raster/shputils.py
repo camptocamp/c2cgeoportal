@@ -128,7 +128,7 @@ def read_record_point(fp):
 def read_record_multi_point(fp):
     data = read_bounding_box(fp)
     data["numpoints"] = read_and_unpack("i", fp.read(4))
-    for i in range(0, data["numpoints"]):
+    for _ in range(0, data["numpoints"]):
         data["points"].append(read_record_point(fp))
     return data
 
@@ -138,7 +138,7 @@ def read_record_poly_line(fp):
     data["numparts"] = read_and_unpack("i", fp.read(4))
     data["numpoints"] = read_and_unpack("i", fp.read(4))
     data["parts"] = []
-    for i in range(0, data["numparts"]):
+    for _ in range(0, data["numparts"]):
         data["parts"].append(read_and_unpack("i", fp.read(4)))
     points_initial_index = fp.tell()
     points_read = 0
@@ -177,10 +177,10 @@ def read_bounding_box(fp):
     return data
 
 
-def read_and_unpack(type, data):
+def read_and_unpack(type_, data):
     if data == "":
         return data
-    return unpack(type, data)[0]
+    return unpack(type_, data)[0]
 
 
 # ###
@@ -270,32 +270,32 @@ def get_area(ring, points):
 
 def get_neighbors(records):
     # for each feature
-    for i in range(len(records)):
-        if "neighbors" not in records[i]["shp_data"]:
-            records[i]["shp_data"]["neighbors"] = []
+    for i, record_1 in enumerate(records):
+        if "neighbors" not in record_1["shp_data"]:
+            record_1["shp_data"]["neighbors"] = []
 
         # for each other feature
-        for j in range(i + 1, len(records)):
+        for j, record_2 in range(i + 1, len(records)):
             numcommon = 0
             # first check to see if the bounding boxes overlap
-            if overlap(records[i], records[j]):
+            if overlap(record_1, record_2):
                 # if so, check every single point in this feature
                 # to see if it matches a point in the other feature
 
                 # for each part:
-                for part in records[i]["shp_data"]["parts"]:
+                for part in record_1["shp_data"]["parts"]:
 
                     # for each point:
                     for point in part["points"]:
 
-                        for otherPart in records[j]["shp_data"]["parts"]:
+                        for otherPart in record_2["shp_data"]["parts"]:
                             if point in otherPart["points"]:
                                 numcommon += 1
                                 if numcommon == 2:
-                                    if "neighbors" not in records[j]["shp_data"]:
-                                        records[j]["shp_data"]["neighbors"] = []
-                                    records[i]["shp_data"]["neighbors"].append(j)
-                                    records[j]["shp_data"]["neighbors"].append(i)
+                                    if "neighbors" not in record_2["shp_data"]:
+                                        record_2["shp_data"]["neighbors"] = []
+                                    record_1["shp_data"]["neighbors"].append(j)
+                                    record_2["shp_data"]["neighbors"].append(i)
                                     # now break out to the next j
                                     break
                         if numcommon == 2:

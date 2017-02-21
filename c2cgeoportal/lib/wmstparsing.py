@@ -250,11 +250,11 @@ def _parse_default_values(default_values):
 
     def_value = str(default_values).split("/")
 
-    r, min_def_value = _parse_date(def_value[0])
+    _, min_def_value = _parse_date(def_value[0])
     max_def_value = None
 
     if len(def_value) > 1:
-        r, max_def_value = _parse_date(def_value[1])
+        _, max_def_value = _parse_date(def_value[1])
 
     return min_def_value, max_def_value
 

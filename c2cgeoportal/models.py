@@ -122,6 +122,7 @@ def cache_invalidate_cb(*args):
 
 class TsVector(UserDefinedType):
     """ A custom type for PostgreSQL's tsvector type. """
+
     def get_col_spec(self):  # pragma: no cover
         return "TSVECTOR"
 
@@ -723,14 +724,14 @@ class OGCServer(Base):
 
     def __init__(
         self, name="", description=None, url="https://wms.example.com", url_wfs=None,
-        type=u"mapserver", image_type="image/png", auth="Standard auth", wfs_support=True,
+        type_=u"mapserver", image_type="image/png", auth="Standard auth", wfs_support=True,
         is_single_tile=False
     ):
         self.name = name
         self.description = description
         self.url = url
         self.url_wfs = url_wfs
-        self.type = type
+        self.type = type_
         self.image_type = image_type
         self.auth = auth
         self.wfs_support = wfs_support

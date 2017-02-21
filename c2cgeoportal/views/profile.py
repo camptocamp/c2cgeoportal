@@ -53,7 +53,7 @@ class Profile(Raster):
     @view_config(route_name="profile.json", renderer="decimaljson")
     def json(self):
         """answers to /profile.json"""
-        layer, points = self._compute_points()
+        _, points = self._compute_points()
         set_common_headers(
             self.request, "profile", NO_CACHE
         )
