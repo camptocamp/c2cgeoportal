@@ -9,7 +9,7 @@ COPY *.txt setup.py /app/
 COPY .whiskey /app/.whiskey
 RUN mod_wsgi-docker-build
 
-# Step #2 copy the rest of the files (watch for the .dockerignore
+# Step #2 copy the rest of the files (watch for the .dockerignore)
 COPY . /app
 
 EXPOSE 80
