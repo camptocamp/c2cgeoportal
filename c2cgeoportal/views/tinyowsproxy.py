@@ -31,7 +31,7 @@
 import logging
 
 from pyramid.view import view_config
-from xml.etree import ElementTree
+from defusedxml import ElementTree
 from pyramid.httpexceptions import HTTPForbidden, HTTPBadRequest, HTTPUnauthorized
 
 from c2cgeoportal.lib.caching import get_region, NO_CACHE, PRIVATE_CACHE

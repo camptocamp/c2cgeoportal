@@ -190,14 +190,14 @@ class TemplateUpdate(BaseTemplate):  # pragma: no cover
         return BaseTemplate.pre(self, command, output_dir, vars_)
 
     def post(self, command, output_dir, vars_):
-        if os.name == 'posix':
-            dest = os.path.join(output_dir, ".whiskey/action_hooks/pre-build.mako")
-            subprocess.check_call(["chmod", "+x", dest])
         """
         Overrides the base template class to print "Welcome to c2cgeoportal!"
         after a successful scaffolding rendering.
         """
 
+        if os.name == 'posix':
+            dest = os.path.join(output_dir, ".whiskey/action_hooks/pre-build.mako")
+            subprocess.check_call(["chmod", "+x", dest])
         self.out(colorize("\nWelcome to c2cgeoportal!", GREEN))
 
         return BaseTemplate.post(self, command, output_dir, vars_)

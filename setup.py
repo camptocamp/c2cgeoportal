@@ -64,7 +64,8 @@ install_requires = [
     "pyramid_closure",
     "lingua",
     "PyYAML",
-    "c2c.template>=1.3.0.dev",
+    "c2c.template>=1.4.0.dev",
+    "defusedxml",
 ]
 install_requires += [
     requirement for requirement in

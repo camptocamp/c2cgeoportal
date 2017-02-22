@@ -36,7 +36,7 @@ import re
 import traceback
 from json import loads
 from urlparse import urlsplit
-from xml.dom.minidom import parseString
+from defusedxml.minidom import parseString
 from xml.parsers.expat import ExpatError
 from sqlalchemy.exc import ProgrammingError, NoSuchTableError, OperationalError
 from sqlalchemy.orm.exc import NoResultFound
@@ -259,7 +259,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
         try:
             self.env = bootstrap(filename)
             with open("project.yaml") as f:
-                self.package = yaml.load(f)
+                self.package = yaml.safe_load(f)
             self.config = get_config(".build/config.yaml")
 
             try:

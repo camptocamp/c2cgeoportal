@@ -37,7 +37,7 @@ import re
 
 from random import Random
 from math import sqrt
-from xml.dom.minidom import parseString
+from defusedxml.minidom import parseString
 from socket import gaierror
 from collections import Counter
 
