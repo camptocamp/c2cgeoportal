@@ -1,6 +1,5 @@
 var async = require('async');
 var fs = require('fs');
-var path = require('path');
 var nomnom = require('nomnom');
 var Extractor = require('angular-gettext-tools').Extractor;
 
