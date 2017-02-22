@@ -362,11 +362,6 @@ ${ ',\\n'.join([
                 count=1,
                 flags=re.DOTALL,
             )
-            data = _sub(
-                re.escape("module.constant('defaultTheme', 'OSM');"),
-                "module.constant('defaultTheme', 'Demo');",
-                data,
-            )
             if args.interface == "desktop":
                 data = _sub(
                     r"<head>",
