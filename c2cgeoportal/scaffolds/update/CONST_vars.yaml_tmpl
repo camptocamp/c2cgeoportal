@@ -284,6 +284,8 @@ vars:
     shortener:
         # The base of created URL
         base_url:  '{web_protocol}://{host}{apache_entry_point}s/'
+        allowed_hosts:
+        - '{host}'
 
     # Define whether the MapServer proxy should hide the OGC capabilities.
     hide_capabilities: false
