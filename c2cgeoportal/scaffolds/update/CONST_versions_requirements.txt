@@ -2,7 +2,7 @@ Babel==2.3.4
 boto==2.46.1
 bottle==0.12.13
 c2c.template==1.4.0.dev1
-Chameleon==3.0
+Chameleon==3.1
 dogpile.cache==0.6.2
 fanstatic==0.16
 GeoAlchemy2==0.4.0
