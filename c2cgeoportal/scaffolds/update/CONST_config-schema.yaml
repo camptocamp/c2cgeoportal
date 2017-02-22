@@ -104,11 +104,17 @@ mapping:
                     config: *header
                     api: *header
                     themes: *header
+                    fulltextsearch: *header
                     mapserver: *header
+                    tinyows: *header
                     layers: *header
                     print: *header
                     profile: *header
                     raster: *header
+                    shortner: *header
+                    echo: *header
+                    csvecho: *header
+                    exportgpxkml: *header
                     error: *header
 
             cache:
