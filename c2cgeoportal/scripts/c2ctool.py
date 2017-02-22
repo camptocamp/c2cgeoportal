@@ -37,6 +37,7 @@ import yaml
 import json
 import shutil
 import pkg_resources
+import subprocess
 from subprocess import check_call, CalledProcessError
 from argparse import ArgumentParser
 from alembic.config import Config
@@ -164,6 +165,23 @@ def _fill_arguments(command):
     return parser
 
 
+class Step:
+    def __init__(self, step_number):
+        self.step_number = step_number
+
+    def __call__(self, current_step):
+        def decorate(c2ctool, *args, **kwargs):
+            try:
+                current_step(c2ctool, *args, **kwargs)
+            except subprocess.CalledProcessError as e:
+                c2ctool.print_step(
+                    self.step_number, error=True,
+                    message="The command '{}' returns the error code {}.".format(e.cmd, e.returncode),
+                    prompt="Fix it and run it again:"
+                )
+        return decorate
+
+
 class C2cTool:
 
     color_bar = colorize("================================================================", GREEN)
@@ -234,6 +252,7 @@ class C2cTool:
         elif self.options.step == 6:
             self.step6()
 
+    @Step(0)
     def step0(self):
         project_template_keys = self.project.get("template_vars").keys()
         messages = []
@@ -297,6 +316,7 @@ class C2cTool:
                 "changes before going further. All uncommited changes will be lost."
             )
 
+    @Step(1)
     def step1(self):
         if self.options.version is None:
             self.print_step(
@@ -385,6 +405,7 @@ class C2cTool:
                 "file (listed in the `changelog.diff` file)."
             )
 
+    @Step(2)
     def step2(self):
         if os.path.isfile("changelog.diff"):
             os.unlink("changelog.diff")
@@ -403,6 +424,7 @@ class C2cTool:
                 3, message="Manually apply the ngeo application changes as shown in the `ngeo.diff` file."
             )
 
+    @Step(3)
     def step3(self):
         if os.path.isfile("ngeo.diff"):
             os.unlink("ngeo.diff")
@@ -438,6 +460,7 @@ class C2cTool:
         else:
             self.step4()
 
+    @Step(4)
     def step4(self):
         if self.options.file is None:
             self.print_step(
@@ -473,6 +496,7 @@ class C2cTool:
 
         self.print_step(5, message="\n".join(message))
 
+    @Step(5)
     def step5(self):
         ok, message = self.test_checkers()
         if not ok:
@@ -491,6 +515,7 @@ class C2cTool:
             "add them into the `.gitignore` file and launch upgrade5 again.",
             prompt="Then to commit your changes type:")
 
+    @Step(6)
     def step6(self):
         check_call(["git", "commit", "-m", "Upgrade to GeoMapFish {}".format(
             pkg_resources.get_distribution("c2cgeoportal").version
