@@ -68,11 +68,11 @@ class BTTile(Tile):
             val = unpack("<f", file.read(self.dataSize))[0]
         else:
             if self.dataSize == 2:
-                format = "<h"
+                format_ = "<h"
             else:
-                format = "<l"
+                format_ = "<l"
             data = file.read(self.dataSize)
-            val = unpack(format, data)[0]
+            val = unpack(format_, data)[0]
 
         file.close()
         return val
