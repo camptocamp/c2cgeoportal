@@ -1,5 +1,5 @@
 # List of versions that should not be changed by requires.io
-pyramid<=1.6.99,>=1.6b3
+pyramid<=1.8.99
 # # admin interface # #
 pyramid_chameleon
 pyramid_formalchemy>=0.4.3
