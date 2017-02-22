@@ -8,6 +8,14 @@ Version 2.1.2
 
     git mv deploy/hooks/post-{create,restore}
 
+2. Add in the project vars file:
+
+    deploy:
+        code_source: /var/www/c2cgeoportal_mapfish/private/c2cgeoportal
+        code_destination: /var/www/c2cgeoportal_mapfish/private/c2cgeoportal
+
+    with the right deploy path.
+
 
 Version 2.1.0
 =============
