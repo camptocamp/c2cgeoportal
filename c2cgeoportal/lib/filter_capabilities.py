@@ -32,7 +32,7 @@ import logging
 import httplib2
 from StringIO import StringIO
 from urlparse import urlsplit, urljoin
-from urllib import urlopen
+from urllib2 import urlopen
 
 from xml import sax
 from xml.sax import saxutils
