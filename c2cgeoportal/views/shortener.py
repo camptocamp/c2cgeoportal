@@ -69,7 +69,7 @@ class Shortener:
         short_urls[0].last_hit = datetime.now()
 
         set_common_headers(
-            self.request, "shortner", NO_CACHE
+            self.request, "shortener", NO_CACHE
         )
         return HTTPFound(location=short_urls[0].url)
 
@@ -158,6 +158,6 @@ class Shortener:
             )
 
         set_common_headers(
-            self.request, "shortner", NO_CACHE
+            self.request, "shortener", NO_CACHE
         )
         return {"short_url": s_url}

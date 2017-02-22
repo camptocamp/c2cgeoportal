@@ -111,7 +111,7 @@ mapping:
                     print: *header
                     profile: *header
                     raster: *header
-                    shortner: *header
+                    shortener: *header
                     echo: *header
                     csvecho: *header
                     exportgpxkml: *header

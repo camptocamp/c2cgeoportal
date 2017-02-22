@@ -280,7 +280,7 @@ vars:
     # Used to send an email on password reset
     reset_password: {}
 
-    # The shortner base configuration
+    # The shortener base configuration
     shortener:
         # The base of created URL
         base_url:  '{web_protocol}://{host}{apache_entry_point}s/'
@@ -330,7 +330,7 @@ vars:
         mapserver: *auth_header
         tinyows: *auth_header
         layers: *auth_header
-        shortner: *auth_header
+        shortener: *auth_header
         login:
             access_control_max_age: 600 # 10 minutes
             access_control_allow_origin:
