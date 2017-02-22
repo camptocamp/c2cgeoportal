@@ -54,7 +54,7 @@ the target project, and copying the missing files from there:
 
     cd <project>
     .build/venv/bin/pcreate -s c2cgeoportal_create \
-            /tmp/<project> package=<package>
+            /tmp/<project> --package-name <package>
     cp -r /tmp/<project>/<package>/templates/api <project>/templates/
     cp -r /tmp/<project>/<package>/static/apihelp <project>/static/
     rm -rf /tmp/<project>

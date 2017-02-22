@@ -32,8 +32,8 @@ Start the migration by instantiating the default template:
    cd <project_root>
    cp -r print ~
    git rm -r print
-   .build/venv/bin/pcreate --interactive -s c2cgeoportal_create /tmp/<project> package=<package> srid=-1
-   .build/venv/bin/pcreate --interactive -s c2cgeoportal_update /tmp/<project> package=<package>
+   SRID=-1 .build/venv/bin/pcreate --interactive --scaffold c2cgeoportal_create --package-name <package> /tmp/<project>
+   .build/venv/bin/pcreate --interactive --scaffold c2cgeoportal_update --package-name <package> /tmp/<project>
    mv /tmp/<project>/print .
    rm -rf /tmp/<project>
 
