@@ -346,10 +346,14 @@ class C2cTool:
                 pip_cmd += ["c2cgeoportal=={0!s}".format((self.options.version))]
             check_call(pip_cmd)
 
+        shutil.rmtree("CONST_create_template")
         check_call([
             "{0!s}/pcreate".format(self.venv_bin), "--ignore-conflicting-name", "--overwrite",
             "--scaffold=c2cgeoportal_update", "../{0!s}".format(self.project["project_folder"])
         ])
+        for deploy_hook_file in os.listdir("CONST_create_template/deploy/hooks"):
+            check_call(["chmod", "+x", "CONST_create_template/deploy/hooks/{}".format(deploy_hook_file)])
+
         check_call(["make", "-f", self.options.file, self.options.clean])
 
         # Update the package.json file
