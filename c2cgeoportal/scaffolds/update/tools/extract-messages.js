@@ -21,10 +21,12 @@ function main(inputs) {
       }
       var messages = [];
       for (var msgstr in extractor.strings) {
-        var msg = extractor.strings[msgstr];
-        var contexts = Object.keys(msg).sort();
-        var ref = msg[contexts]['references'].join(', ');
-        messages.push([ref, msgstr]);
+        if (extractor.strings.hasOwnProperty(msgstr)) {
+          var msg = extractor.strings[msgstr];
+          var contexts = Object.keys(msg).sort();
+          var ref = msg[contexts]['references'].join(', ');
+          messages.push([ref, msgstr]);
+        }
       }
 
       process.stdout.write(JSON.stringify(messages));
