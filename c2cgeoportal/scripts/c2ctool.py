@@ -506,7 +506,8 @@ class C2cTool:
         print(colorize("Congratulations your upgrade is a success.", GREEN))
         print("")
         branch = check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).strip()
-        print("Now all your files will be commited, you should do a git push {0!s} {1!s}.".format(
+        print("Now all your files will be commited, you should do a git push:")
+        print("git push {0!s} {1!s}.".format(
             self.options.git_remote, branch
         ))
 
