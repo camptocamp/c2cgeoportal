@@ -346,6 +346,7 @@ class C2cTool:
                 pip_cmd += ["c2cgeoportal=={0!s}".format((self.options.version))]
             check_call(pip_cmd)
 
+        shutil.rmtree("CONST_create_template")
         check_call([
             "{0!s}/pcreate".format(self.venv_bin), "--ignore-conflicting-name", "--overwrite",
             "--scaffold=c2cgeoportal_update", "../{0!s}".format(self.project["project_folder"])
