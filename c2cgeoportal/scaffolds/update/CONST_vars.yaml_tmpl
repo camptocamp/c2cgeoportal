@@ -288,6 +288,8 @@ vars:
     - '{web_protocol}:://d.tiles.{host}/{instanceid}/tiles'
     wmtscapabilities_path: WMTSCAPABILITIES_PATH
 
+    ogcproxy_enable: False
+
     # Control the HTTP headers
     headers:
         ngeo_index:
