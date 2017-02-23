@@ -35,6 +35,7 @@ import os
 from ConfigParser import ConfigParser
 from webob.acceptparse import Accept
 
+from pyramid import testing
 import c2cgeoportal
 from c2cgeoportal import tests
 from c2cgeoportal.lib import functionality, caching
@@ -52,9 +53,13 @@ if os.path.exists(configfile):
     db_url = cfg.get("test", "sqlalchemy.url")
 
 caching.init_region({"backend": "dogpile.cache.memory"})
+config = None
 
 
 def set_up_common():
+    global config
+    config = testing.setUp()
+
     c2cgeoportal.schema = "main"
     c2cgeoportal.srid = 21781
     functionality.FUNCTIONALITIES_TYPES = None
@@ -79,6 +84,7 @@ def set_up_common():
 
 
 def tear_down_common():
+    testing.tearDown()
 
     functionality.FUNCTIONALITIES_TYPES = None
 
@@ -116,10 +122,12 @@ def create_default_ogcserver():
     return ogcserver, ogcserver_external
 
 
-def create_dummy_request(additional_settings=None, *args, **kargs):
+def create_dummy_request(additional_settings=None, authentication=True, user=None, *args, **kargs):
     if additional_settings is None:
         additional_settings = {}
     from c2cgeoportal.pyramid_ import default_user_validator
+    from c2cgeoportal.pyramid_ import create_get_user_from_request
+    from c2cgeoportal.lib.authentication import create_authentication
     request = tests.create_dummy_request({
         "mapserverproxy": {
             "default_ogc_server": "__test_ogc_server",
@@ -136,23 +144,21 @@ def create_dummy_request(additional_settings=None, *args, **kargs):
     }, *args, **kargs)
     request.accept_language = Accept("fr-CH,fr;q=0.8,en;q=0.5,en-US;q=0.3")
     request.registry.settings.update(additional_settings)
-    request.user = None
+    request.referer = "http://example.com/app"
+    request.path_info_peek = lambda: "main"
     request.interface_name = "main"
     request.registry.validate_user = default_user_validator
     request.client_addr = None
-    return request
-
-
-def add_user_property(request):
-    """
-    Add the "user" property to the given request.
-    Disable referer checking.
-    """
-    from c2cgeoportal.pyramid_ import _create_get_user_from_request
-    request.referer = "http://example.com/app"
-    request.path_info_peek = lambda: "main"
+    if authentication:
+        request._get_authentication_policy = lambda: create_authentication({
+            "authtkt_cookie_name": "__test",
+            "authtkt_secret": "123",
+        })
+    elif user is not None:
+        config.testing_securitypolicy(user)
     request.set_property(
-        _create_get_user_from_request({"authorized_referers": [request.referer]}),
+        create_get_user_from_request({"authorized_referers": [request.referer]}),
         name="user",
         reify=True
     )
+    return request

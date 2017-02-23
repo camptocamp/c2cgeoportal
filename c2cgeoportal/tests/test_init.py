@@ -33,7 +33,7 @@ from pyramid import testing
 
 import c2cgeoportal
 from c2cgeoportal.pyramid_ import call_hook, set_user_validator, \
-    default_user_validator, _create_get_user_from_request, _match_url_start
+    default_user_validator, create_get_user_from_request, _match_url_start
 
 
 class TestIncludeme(TestCase):
@@ -101,7 +101,7 @@ class TestReferer(TestCase):
             def path_info_peek():
                 return "main"
 
-        get_user = _create_get_user_from_request(self.SETTINGS)
+        get_user = create_get_user_from_request(self.SETTINGS)
         return get_user(MockRequest(to=to, ref=ref))
 
     def test_match_url(self):

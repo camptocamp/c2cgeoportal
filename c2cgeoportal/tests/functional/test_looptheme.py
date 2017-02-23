@@ -49,20 +49,22 @@ class TestLoopTheme(TestCase):
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
 
-        from c2cgeoportal.models import DBSession, LayerV1, \
+        from c2cgeoportal.models import DBSession, LayerWMS, \
             Theme, LayerGroup, Interface
 
-        create_default_ogcserver()
-        main = Interface(name=u"desktop")
+        ogc_server, _ = create_default_ogcserver()
+        main = Interface(name=u"desktop2")
 
-        layer = LayerV1(name=u"__test_layer", public=True)
+        layer = LayerWMS(name=u"__test_layer", public=True)
+        layer.layers = u"__test_layer"
         layer.interfaces = [main]
+        layer.ogc_server = ogc_server
 
         layer_group = LayerGroup(name=u"__test_layer_group")
         layer_group.children = [layer, layer_group]
 
         theme = Theme(name=u"__test_theme")
-        theme.children = [layer, layer_group]
+        theme.children = [layer_group]
         theme.interfaces = [main]
 
         DBSession.add_all([layer, layer_group, theme])
@@ -72,33 +74,29 @@ class TestLoopTheme(TestCase):
     def tearDown():  # noqa
         testing.tearDown()
 
-        from c2cgeoportal.models import DBSession, LayerV1, \
+        from c2cgeoportal.models import DBSession, LayerWMS, \
             Theme, LayerGroup, OGCServer
 
         for t in DBSession.query(Theme).filter(Theme.name == "__test_theme").all():
             DBSession.delete(t)
         for g in DBSession.query(LayerGroup).all():
             DBSession.delete(g)
-        for layer in DBSession.query(LayerV1).all():
+        for layer in DBSession.query(LayerWMS).all():
             DBSession.delete(layer)  # pragma: no cover
         DBSession.query(OGCServer).delete()
 
         transaction.commit()
 
     def test_theme(self):
-        from c2cgeoportal.views.entry import Entry, cache_region
+        from c2cgeoportal.views.entry import Entry
 
-        request = testing.DummyRequest()
+        request = testing.DummyRequest({
+            "version": "2",
+        })
         request.static_url = lambda url: "http://example.com/dummy/static/url"
-        request.route_url = lambda url: mapserv_url
+        request.route_url = lambda url, _query={}: mapserv_url
         request.client_addr = None
         request.user = None
         entry = Entry(request)
-
-        cache_region.invalidate()
-        themes = entry.themes()
-        self.assertEquals([t["name"] for t in themes], [u"__test_theme"])
-
-        cache_region.invalidate()
-        themes, errors = entry._themes(None, u"desktop")
+        _, errors = entry._themes(None, u"desktop2", True, 2)
         self.assertEquals(len([e for e in errors if e == "Too many recursions with group '__test_layer_group'"]), 1)

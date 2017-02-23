@@ -116,6 +116,8 @@ class DimensionInformation:
 class Entry:
 
     WFS_NS = "http://www.opengis.net/wfs"
+    default_ogc_server = None
+    external_ogc_server = None
 
     def __init__(self, request):
         self.request = request

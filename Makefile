@@ -102,19 +102,19 @@ checks: flake8 git-attributes quote
 
 .PHONY: clean
 clean:
-	rm -f $(BUILD_DIR)/venv.timestamp
-	rm -f c2cgeoportal/version.py
-	rm -f c2cgeoportal/locale/*.pot
-	rm -f c2cgeoportal/locale/en/LC_MESSAGES/c2cgeoportal.po
-	rm -rf c2cgeoportal/static/build
-	rm -f $(MAKO_FILES:.mako=)
-	rm -rf ngeo
-	rm -f $(APPS_FILES)
+	rm --force $(BUILD_DIR)/venv.timestamp
+	rm --force c2cgeoportal/version.py
+	rm --force c2cgeoportal/locale/*.pot
+	rm --force c2cgeoportal/locale/en/LC_MESSAGES/c2cgeoportal.po
+	rm --recursive --force c2cgeoportal/static/build
+	rm --force $(MAKO_FILES:.mako=)
+	rm --recursive --force ngeo
+	rm --force $(APPS_FILES)
 
 .PHONY: cleanall
 cleanall: clean
-	rm -f $(PO_FILES)
-	rm -rf $(BUILD_DIR)
+	rm --force $(PO_FILES)
+	rm --recursive --force $(BUILD_DIR)/*
 
 .PHONY: c2c-egg
 c2c-egg: $(BUILD_DIR)/requirements.timestamp

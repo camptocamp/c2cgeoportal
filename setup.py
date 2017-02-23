@@ -44,6 +44,7 @@ install_requires = [
     "pyramid_multiauth",
     "pyramid_mako",  # to render the HTML files
     "psycopg2",
+    "pycrypto",
     "GeoAlchemy2",
     "SQLAHelper",
     "pyramid_tm",
@@ -115,6 +116,7 @@ setup(
             "ngeo-version = c2cgeoportal.scripts.import_ngeo_apps:ngeo_git_version",
             "create-demo-theme = c2cgeoportal.scripts.create_demo_theme:main",
             "treeitem_uniquename = c2cgeoportal.scripts.treeitem_uniquename:main",
+            "urllogin = c2cgeoportal.scripts.urllogin:main",
         ],
         "pyramid.scaffold": [
             "c2cgeoportal_create = c2cgeoportal.scaffolds:TemplateCreate",
