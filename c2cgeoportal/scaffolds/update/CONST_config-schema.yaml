@@ -104,11 +104,17 @@ mapping:
                     config: *header
                     api: *header
                     themes: *header
+                    fulltextsearch: *header
                     mapserver: *header
+                    tinyows: *header
                     layers: *header
                     print: *header
                     profile: *header
                     raster: *header
+                    shortener: *header
+                    echo: *header
+                    csvecho: *header
+                    exportgpxkml: *header
                     error: *header
 
             cache:
@@ -262,6 +268,10 @@ mapping:
                     base_url:
                         type: str
                         required: True
+                    allowed_hosts:
+                        type: seq
+                        sequence:
+                        -   type: str
                     email_from:
                         type: str
                     email_subject:

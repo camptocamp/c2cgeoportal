@@ -281,10 +281,12 @@ vars:
     # Used to send an email on password reset
     reset_password: {}
 
-    # The shortner base configuration
+    # The shortener base configuration
     shortener:
         # The base of created URL
         base_url:  '{web_protocol}://{host}{apache_entry_point}s/'
+        allowed_hosts:
+        - '{host}'
 
     # Define whether the MapServer proxy should hide the OGC capabilities.
     hide_capabilities: false
@@ -307,10 +309,33 @@ vars:
 
     # Control the HTTP headers
     headers:
-        ngeo_index:
+        index: &header
             access_control_max_age: 600 # 10 minutes
-        mapserver:
-            access_control_allow_origin: ["*"]
+            access_control_allow_origin:
+            - "*"
+        api: *header
+        profile: *header
+        raster: *header
+        echo: *header
+        csvecho: *header
+        exportgpxkml: *header
+        error: *header
+        themes: &auth_header
+            access_control_max_age: 600 # 10 minutes
+            access_control_allow_origin:
+            - "{web_protocol}:://{host}/"
+            - "*"
+        config: *auth_header
+        print: *auth_header
+        fulltextsearch: *auth_header
+        mapserver: *auth_header
+        tinyows: *auth_header
+        layers: *auth_header
+        shortener: *auth_header
+        login:
+            access_control_max_age: 600 # 10 minutes
+            access_control_allow_origin:
+            - "{web_protocol}:://{host}/"
 
     # Checker configuration
     checker:
@@ -423,22 +448,6 @@ vars:
       # List of {method path} regexes to force the usage of the slave
       slave:
       - \w+ /printproxy/.*  # The print proxy is never writing to the DB
-
-    headers:
-        login: &default-headers
-            access_control_max_age: 3600
-        index: *default-headers
-        config: *default-headers
-        api: *default-headers
-        themes: *default-headers
-        mapserver:
-            <<: *default-headers
-            access_control_allow_origin: ["*"]
-        layers: *default-headers
-        print: *default-headers
-        profile: *default-headers
-        raster: *default-headers
-        error: *default-headers
 
 
 interpreted:
