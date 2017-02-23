@@ -66,6 +66,7 @@ class TestGetURL(TestCase):
             "servers": {
                 "srv": "https://example.com/test",
                 "srv_alt": "https://example.com/test/",
+                "full_url": "https://example.com/test.xml",
             },
         })
 
@@ -77,9 +78,10 @@ class TestGetURL(TestCase):
         self.assertEquals(get_url2("test", "static:///icon.png", request, set()), "http://server.org/my_project:static/icon.png")
         self.assertEquals(get_url2("test", "config://srv/icon.png", request, set()), "https://example.com/test/icon.png")
         self.assertEquals(get_url2("test", "config://srv/", request, set()), "https://example.com/test/")
-        self.assertEquals(get_url2("test", "config://srv", request, set()), "https://example.com/test/")
+        self.assertEquals(get_url2("test", "config://srv", request, set()), "https://example.com/test")
         self.assertEquals(get_url2("test", "config://srv/icon.png?test=aaa", request, set()), "https://example.com/test/icon.png?test=aaa")
         self.assertEquals(get_url2("test", "config://srv_alt/icon.png", request, set()), "https://example.com/test/icon.png")
+        self.assertEquals(get_url2("test", "config://full_url", request, set()), "https://example.com/test.xml")
         self.assertEquals(get_url2("test", "http://example.com/icon.png", request, set()), "http://example.com/icon.png")
         self.assertEquals(get_url2("test", "https://example.com/icon.png", request, set()), "https://example.com/icon.png")
         errors = set()
