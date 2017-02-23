@@ -954,8 +954,9 @@ class Entry:
                 result[functionality.name] = [functionality.value]
         return result
 
+    @staticmethod
     @view_config(route_name="invalidate", renderer="json")
-    def invalidate_cache(self):  # pragma: no cover
+    def invalidate_cache():  # pragma: no cover
         invalidate_region()
         return {
             "success": True

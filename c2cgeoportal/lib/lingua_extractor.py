@@ -225,7 +225,8 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
             print(colorize(
                 u"Unable to collect enumerate attributes for "
                 u"db: {0!s}, table: {1!s}, column: {2!s}".format(dbname, table, fieldname),
-                YELLOW))
+                YELLOW
+            ))
         return values
 
     @classmethod
@@ -432,15 +433,17 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
             except ExpatError as e:
                 print(colorize(
                     "WARNING! an error occurred while trying to "
-                    "parse the DescribeFeatureType document."
-                ), YELLOW)
+                    "parse the DescribeFeatureType document.",
+                    YELLOW
+                ))
                 print(colorize(str(e), YELLOW))
                 print("URL: {0!s}\nxml:\n{1!s}".format(url, content))
             except AttributeError:
                 print(colorize(
                     "WARNING! an error occured while trying to "
-                    "read the Mapfile and recover the themes."
-                ), YELLOW)
+                    "read the Mapfile and recover the themes.",
+                    YELLOW
+                ))
                 print("URL: {0!s}\nxml:\n{1!s}".format(url, content))
         else:
             describe = self.featuretype_cache[url]
