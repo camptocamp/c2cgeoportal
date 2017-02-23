@@ -72,7 +72,7 @@ Build c2cgeoportal:
 
 .. prompt:: bash
 
-    make build
+    BUILD_DIR=.build make build
 
 List existing skeletons
 -----------------------
