@@ -1,5 +1,5 @@
-alabaster==0.7.9
-alembic==0.8.10
+alabaster==0.7.10
+alembic==0.9.1
 Babel==2.3.4
 boto==2.46.1
 bottle==0.12.13
@@ -51,7 +51,7 @@ pep8-naming==0.4.1
 Pillow==4.0.0
 polib==1.0.8
 postmarkup==1.2.2
-psycopg2==2.6.2
+psycopg2==2.7
 pycodestyle==2.3.1
 pycrypto==2.6.1
 pyflakes==1.5.0
@@ -73,10 +73,10 @@ restkit==4.2.2
 Shapely==1.5.17.post1
 simplejson==3.10.0
 six==1.10.0
-Sphinx==1.5.2
+Sphinx==1.5.3
 sphinx-prompt==1.0.0
 SQLAHelper==1.0
-SQLAlchemy==1.1.5
+SQLAlchemy==1.1.6
 Tempita==0.5.2
 textile==2.3.6
 tilecloud==0.3.0
