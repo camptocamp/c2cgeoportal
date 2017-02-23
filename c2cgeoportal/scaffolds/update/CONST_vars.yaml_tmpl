@@ -215,6 +215,7 @@ vars:
         available_in_templates:
         - default_basemap
         - default_theme
+        - print_template
 
     # Define URLs to the parent application. Only useful if
     # this application is a child application in a parent/child
