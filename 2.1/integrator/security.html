@@ -61,11 +61,15 @@ in your <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.ya
 </div>
 <div class="section" id="enable-disable-the-ogc-proxy">
 <h2>Enable / Disable the OGC proxy<a class="headerlink" href="#enable-disable-the-ogc-proxy" title="Permalink to this headline">¶</a></h2>
-<p>To disable the OGC proxy, set <code class="docutils literal"><span class="pre">ogcproxy_enable</span></code> to <code class="docutils literal"><span class="pre">false</span></code> in your
+<p>To enable the OGC proxy, set <code class="docutils literal"><span class="pre">ogcproxy_enable</span></code> to <code class="docutils literal"><span class="pre">true</span></code> in your
 <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file.</p>
-<p>Default: <code class="docutils literal"><span class="pre">true</span></code></p>
-<p>In the <code class="docutils literal"><span class="pre">viewer.js</span></code> files you should also remove the <code class="docutils literal"><span class="pre">OpenLayers.ProxyHost</span></code> configuration.</p>
-<p>This implies that all external WMS services (from the database and from the WMS browser) should
+<p>Default: <code class="docutils literal"><span class="pre">false</span></code></p>
+<p>And adding the <code class="docutils literal"><span class="pre">papyrus_ogcproxy</span></code> package in the <code class="docutils literal"><span class="pre">install_requires</span></code> of the <code class="docutils literal"><span class="pre">setup.py</span></code> file.</p>
+<p>In the <code class="docutils literal"><span class="pre">viewer.js</span></code> files you should also add the <code class="docutils literal"><span class="pre">OpenLayers.ProxyHost</span></code> configuration:</p>
+<div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="n">OpenLayers</span><span class="o">.</span><span class="n">ProxyHost</span> <span class="o">=</span> <span class="s2">&quot;${request.route_url(&#39;ogcproxy&#39;) | n}?url=&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Working without this proxy implies that all external WMS services (from the database and from the WMS browser) should
 have the CORS headers (<a class="reference external" href="http://enable-cors.org/server.html">enable-cors.org</a>).</p>
 </div>
 <div class="section" id="access-to-services-by-external-servers">
