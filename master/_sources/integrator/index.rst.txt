@@ -26,6 +26,7 @@ Content:
    backend
    checker
    deploy
+   urllogin
    authentication
    extend_data_model
    caching

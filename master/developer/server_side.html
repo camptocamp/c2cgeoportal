@@ -124,7 +124,7 @@ tests require to run with <cite>docker-compose-run</cite>.</p>
 <h4>Unit tests<a class="headerlink" href="#unit-tests" title="Permalink to this headline">¶</a></h4>
 <p>To run the unit tests do this:</p>
 <pre class="highlight"><span class="prompt1">make build</span>
-<span class="prompt1">./docker-run ./setup.py nosetests -a <span class="s1">&#39;!functional&#39;</span></span>
+<span class="prompt1">./docker-run nosetests -a <span class="s1">&#39;!functional&#39;</span></span>
 </pre></div>
 <div class="section" id="functional-tests">
 <h4>Functional tests<a class="headerlink" href="#functional-tests" title="Permalink to this headline">¶</a></h4>
@@ -188,15 +188,15 @@ to generate <code class="docutils literal"><span class="pre">c2cgeoportal/tests/
 <code class="docutils literal"><span class="pre">c2cgeoportal/tests/functional/c2cgeoportal_test.map</span></code>:</p>
 <pre class="highlight"><span class="prompt1">make build</span>
 </pre><p>You can now run the functional tests with this:</p>
-<pre class="highlight"><span class="prompt1">./docker-compose-run ./setup.py nosetests -a functional</span>
+<pre class="highlight"><span class="prompt1">./docker-compose-run nosetests -a functional</span>
 </pre></div>
 <div class="section" id="all-tests">
 <h4>All tests<a class="headerlink" href="#all-tests" title="Permalink to this headline">¶</a></h4>
 <p>To run all the tests do this:</p>
 <pre class="highlight"><span class="prompt1">./docker-compose-run make tests</span>
 </pre><p>To run a specific test use the <code class="docutils literal"><span class="pre">--where</span></code> switch. For example:</p>
-<pre class="highlight"><span class="prompt1">./docker-compose-run ./setup.py nosetests --where <span class="se">\</span>
-    c2cgeoportal/tests/functional/test_themes.py:TestThemesView.test_catalogue</span>
+<pre class="highlight"><span class="prompt1">./docker-compose-run nosetests --where <span class="se">\</span>
+    /src/c2cgeoportal/tests/functional/test_themes.py:TestThemesView.test_catalogue</span>
 </pre></div>
 </div>
 <div class="section" id="adding-tests">
