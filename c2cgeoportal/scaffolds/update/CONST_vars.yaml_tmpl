@@ -152,6 +152,8 @@ vars:
         # Layer
         - name: copyTo
           type: list
+        - name: copyable
+          type: boolean
         - name: legend
           type: boolean
         - name: isLegendExpanded
@@ -175,8 +177,7 @@ vars:
           type: float
         - name: thumbnail
           type: url
-        - name: copyable
-          type: boolean
+        - name: timeAttribute
         - name: queryLayers
         - name: wmsLayers
         - name: lastUpdateDateColumn
