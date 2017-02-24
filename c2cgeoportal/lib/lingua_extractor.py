@@ -51,6 +51,7 @@ from c2c.template import get_config
 from bottle import template, MakoTemplate
 from mako.template import Template
 from mako.lookup import TemplateLookup
+from owslib.wms import WebMapService
 
 from c2cgeoportal.lib import add_url_params, get_url2
 from c2cgeoportal.lib.bashcolor import colorize, RED, YELLOW
@@ -203,6 +204,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
     # Run on the development.ini file
     extensions = [".ini"]
     featuretype_cache = {}
+    wmscap_cache = {}
 
     def __call__(self, filename, options):
         messages = []
@@ -348,66 +350,119 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
             print("\n".join(errors))
             return []
 
-        url = add_url_params(url, {
+        wms_getcap_url = add_url_params(url, {
+            "SERVICE": "WMS",
+            "VERSION": "1.1.1",
+            "REQUEST": "GetCapabilities",
+        })
+
+        hostname = urlsplit(url).hostname
+        if url not in self.wmscap_cache:
+            print("Get WMS GetCapabilities for URL: {}".format(url))
+            self.wmscap_cache[url] = None
+
+            # forward request to target (without Host Header)
+            http = httplib2.Http()
+            h = {}
+            if hostname == "localhost":  # pragma: no cover
+                h["Host"] = self.package["host"]
+            try:
+                resp, content = http.request(wms_getcap_url, method="GET", headers=h)
+
+                try:
+                    self.wmscap_cache[url] = WebMapService(None, xml=content)
+                except Exception as e:
+                    print(colorize(
+                        "WARNING! an error occurred while trying to "
+                        "parse the GetCapabilities document."
+                    ), YELLOW)
+                    print(colorize(str(e), YELLOW))
+                    print("URL: {0!s}\nxml:\n{1!s}".format(wms_getcap_url, content))
+            except Exception as e:  # pragma: no cover
+                print(colorize(str(e), YELLOW))
+                print(colorize(
+                    "WARNING! Unable to GetCapabilities from URL: {0!s}".format(wms_getcap_url),
+                    YELLOW,
+                ))
+
+        wmscap = self.wmscap_cache[url]
+
+        wfs_descrfeat_url = add_url_params(url, {
             "SERVICE": "WFS",
             "VERSION": "1.1.0",
             "REQUEST": "DescribeFeatureType",
         })
 
         if url not in self.featuretype_cache:
-            print("Get DescribeFeatureType for url: {0!s}".format(url))
+            print("Get WFS DescribeFeatureType for URL: {}".format(wfs_descrfeat_url))
             self.featuretype_cache[url] = None
 
             # forward request to target (without Host Header)
             http = httplib2.Http()
             h = {}
-            if urlsplit(url).hostname == "localhost":  # pragma: no cover
+            if hostname == "localhost":  # pragma: no cover
                 h["Host"] = self.package["host"]
             try:
-                resp, content = http.request(url, method="GET", headers=h)
-            except:  # pragma: no cover
-                print(colorize("Unable to DescribeFeatureType from URL {0!s}".format(url), YELLOW))
-                self.featuretype_cache[url] = None
+                resp, content = http.request(wfs_descrfeat_url, method="GET", headers=h)
+            except Exception as e:  # pragma: no cover
+                print(colorize(str(e), YELLOW))
+                print(colorize(
+                    "Unable to DescribeFeatureType from URL: {0!s}".format(wfs_descrfeat_url),
+                    YELLOW,
+                ))
                 return []
 
             if resp.status < 200 or resp.status >= 300:  # pragma: no cover
-                print(colorize("DescribeFeatureType from URL {0!s} return the error: {1:d} {2!s}".format(
-                    url, resp.status, resp.reason
-                ), YELLOW))
-                self.featuretype_cache[url] = None
+                print(colorize(
+                    "WARNING DescribeFeatureType from URL {0!s} return the error: {1:d} {2!s}".format(
+                        wfs_descrfeat_url, resp.status, resp.reason
+                    ),
+                    YELLOW,
+                ))
                 return []
 
             try:
                 describe = parseString(content)
-                self.featuretype_cache[url] = describe
+                featurestype = {}
+                self.featuretype_cache[url] = featurestype
+                for type_element in describe.getElementsByTagNameNS(
+                    "http://www.w3.org/2001/XMLSchema", "complexType"
+                ):
+                    featurestype[type_element.getAttribute("name")] = type_element
             except ExpatError as e:
                 print(colorize(
                     "WARNING! an error occurred while trying to "
                     "parse the DescribeFeatureType document."
                 ), YELLOW)
                 print(colorize(str(e), YELLOW))
-                print("URL: {0!s}\nxml:\n{1!s}".format(url, content))
+                print("URL: {0!s}\nxml:\n{1!s}".format(wfs_descrfeat_url, content))
             except AttributeError:
                 print(colorize(
                     "WARNING! an error occured while trying to "
                     "read the Mapfile and recover the themes."
                 ), YELLOW)
-                print("URL: {0!s}\nxml:\n{1!s}".format(url, content))
+                print("URL: {0!s}\nxml:\n{1!s}".format(wfs_descrfeat_url, content))
         else:
-            describe = self.featuretype_cache[url]
+            featurestype = self.featuretype_cache[url]
 
-        if describe is None:
+        if featurestype is None:
             return []
 
+        layers = [layer]
+        if wmscap is not None and layer in list(wmscap.contents):
+            layer_obj = wmscap[layer]
+            if len(layer_obj.layers) > 0:
+                layers = [l.name for l in layer_obj.layers]
+
         attributes = []
-        # Should probably be adapted for other king of servers
-        for type_element in describe.getElementsByTagNameNS(
-            "http://www.w3.org/2001/XMLSchema", "complexType"
-        ):
-            if type_element.getAttribute("name") == "{0!s}Type".format(layer):
+        for sub_layer in layers:
+            # Should probably be adapted for other king of servers
+            type_element = featurestype.get("{}Type".format(sub_layer))
+            if type_element is not None:
                 for element in type_element.getElementsByTagNameNS(
                     "http://www.w3.org/2001/XMLSchema", "element"
                 ):
                     if not element.getAttribute("type").startswith("gml:"):
                         attributes.append(element.getAttribute("name"))
+
         return attributes
