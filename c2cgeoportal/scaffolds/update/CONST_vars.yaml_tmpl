@@ -170,17 +170,16 @@ vars:
           type: url
         - name: copyable
           type: boolean
-        - queryLayers
-        - wmsLayers
         - lastUpdateDateColumn
         - lastUpdateUserColumn
         - name: snappingConfig
           type: json
         - geometry_validation
         # WMTS layers
-        - ogcServer
-        - layers
-        - printLayers
+        - name: ogcServer
+        - name: printLayers
+        - name: queryLayers
+        - name: wmsLayers
 
     # The list of functionalities that can be configured
     # through the admin interface.
