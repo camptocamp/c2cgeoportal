@@ -131,9 +131,12 @@ def get_url2(name, url, request, errors):
                 "The server '{}' is not found in the config".format(url_split.netloc)
             )
             return None
-        if server[-1] != "/":
-            server += "/"
-        url = urlparse.urljoin(server, url_split.path[1:])
+        if url_split.path != "":
+            if server[-1] != "/":
+                server += "/"
+            url = urlparse.urljoin(server, url_split.path[1:])
+        else:
+            url = server
         return url if len(url_split.query) == 0 else u"{}?{}".format(
             url, url_split.query,
         )
