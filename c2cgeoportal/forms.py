@@ -608,8 +608,8 @@ field_order = [
     password,
     User.role_name
 ]
-if hasattr(User, "parent_role"):  # pragma: no cover
-    field_order.append(User.parent_role)
+if hasattr(User, "parent_role_name"):  # pragma: no cover
+    field_order.append(User.parent_role_name)
 field_order.extend([
     User.email.with_metadata(mandatory="")
 ])
