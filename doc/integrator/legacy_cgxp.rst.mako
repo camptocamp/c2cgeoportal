@@ -107,7 +107,7 @@ Do the following change in the ``<package>/templates/desktop.html`` file:
      <script>
          if(('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
    -         window.location = "${'$'}{mobile_url}";
-   +         window.location = "${'$'}{request.route_url('mobile', _query=dict(request.GET))}";
+   +         window.location = "${'$'}{request.route_url('mobile', _query=dict(request.GET)) | n}";
          }
      </script>
      ${'%'} endif
