@@ -56,40 +56,18 @@ from start of 2014 both projects will synchronize their major versions.</p>
 <p>Then <code class="docutils literal"><span class="pre">&lt;release&gt;</span></code> can be <code class="docutils literal"><span class="pre">1.6.0rc1</span></code> for the first release candidate
 of the version <code class="docutils literal"><span class="pre">1.6.0</span></code>, <code class="docutils literal"><span class="pre">1.6.0</span></code> for the final release, <code class="docutils literal"><span class="pre">1.6.1</span></code> for
 the first bug fix release, and <code class="docutils literal"><span class="pre">&lt;version&gt;</span></code> can be <code class="docutils literal"><span class="pre">1.6</span></code>, <code class="docutils literal"><span class="pre">2.0</span></code>, ...</p>
+<p><cite>For ngeo see here &lt;https://github.com/camptocamp/ngeo/blob/master/docs/developer-guide.md#create-a-package-on-npm&gt;_</cite>.</p>
 </div>
-<div class="section" id="cgxp">
-<h2>CGXP<a class="headerlink" href="#cgxp" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="c2cgeoportal">
+<h2>c2cgeoportal<a class="headerlink" href="#c2cgeoportal" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="new-version">
 <h3>New version<a class="headerlink" href="#new-version" title="Permalink to this headline">¶</a></h3>
-<p>For each version we create a new branch (at least at the final release):</p>
+<p>Checkout the code:</p>
 <pre class="highlight"><style type="text/css">
 span.prompt1:before {
   content: "$ ";
 }
 </style><span class="prompt1">git fetch</span>
-<span class="prompt1">git checkout master</span>
-<span class="prompt1">git reset --hard origin/master</span>
-<span class="prompt1">git checkout -b &lt;version&gt;</span>
-</pre><p>Push your changes:</p>
-<pre class="highlight"><span class="prompt1">git push origin &lt;version&gt;</span>
-</pre><p>Then continue by creating the release.</p>
-</div>
-<div class="section" id="new-release">
-<h3>New release<a class="headerlink" href="#new-release" title="Permalink to this headline">¶</a></h3>
-<p>Tag the new CGXP release:</p>
-<pre class="highlight"><span class="prompt1">git fetch</span>
-<span class="prompt1">git checkout &lt;version&gt;</span>
-<span class="prompt1">git reset --hard origin/&lt;version&gt;</span>
-<span class="prompt1">git tag &lt;release&gt;</span>
-<span class="prompt1">git push origin &lt;release&gt;</span>
-</pre></div>
-</div>
-<div class="section" id="c2cgeoportal">
-<h2>c2cgeoportal<a class="headerlink" href="#c2cgeoportal" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id1">
-<h3>New version<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
-<p>Checkout the code:</p>
-<pre class="highlight"><span class="prompt1">git fetch</span>
 <span class="prompt1">git checkout master</span>
 <span class="prompt1">git reset --hard origin/master</span>
 </pre><p>Get the localisation from Transifex:</p>
@@ -109,8 +87,8 @@ span.prompt1:before {
 <pre class="highlight"><span class="prompt1">make transifex-init</span>
 </pre><p>Then continue by creating the release.</p>
 </div>
-<div class="section" id="id2">
-<h3>New release<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="new-release">
+<h3>New release<a class="headerlink" href="#new-release" title="Permalink to this headline">¶</a></h3>
 <p>Checkout the code:</p>
 <pre class="highlight"><span class="prompt1">git fetch</span>
 <span class="prompt1">git checkout &lt;version&gt;</span>
@@ -129,7 +107,7 @@ a new release will automatically be created on Travis CI.</p>
 <h2>Post release tasks<a class="headerlink" href="#post-release-tasks" title="Permalink to this headline">¶</a></h2>
 <p>When a new release or a new version is done you should do the following tasks:</p>
 <ul>
-<li><p class="first">Merge the release changes (on <code class="docutils literal"><span class="pre">cgxp</span></code> and on <code class="docutils literal"><span class="pre">c2cgeoportal</span></code>)
+<li><p class="first">Merge the release changes (on <code class="docutils literal"><span class="pre">ngeo</span></code> and on <code class="docutils literal"><span class="pre">c2cgeoportal</span></code>)
 to the upper branches i.e.: <code class="docutils literal"><span class="pre">1.6</span></code> =&gt; <code class="docutils literal"><span class="pre">2.0</span></code>, <code class="docutils literal"><span class="pre">2.0</span></code> =&gt; <code class="docutils literal"><span class="pre">master</span></code>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -149,20 +127,29 @@ to the upper branches i.e.: <code class="docutils literal"><span class="pre">1.6
 <p class="last">And finally add the new file.</p>
 </div>
 </li>
-<li><p class="first">Upgrade the demo in your home folder with <code class="docutils literal"><span class="pre">c2ctool</span></code>.</p>
+<li><p class="first">Upgrade the demo in your home folder with <code class="docutils literal"><span class="pre">make</span> <span class="pre">upgrade</span></code>.</p>
 </li>
-<li><p class="first">Update the demo on the main folder with:</p>
+<li><p class="first">Update the demo on the test server in the main folder with:</p>
 <pre class="highlight"><span class="prompt1">sudo -u sigdev make -f demo.mk update</span>
 <span class="prompt1">sudo -u sigdev make -f demo.mk build</span>
 </pre></li>
-<li><p class="first">Test the demo.</p>
+<li><p class="first">Test the <cite>demo &lt;http://testgmf.sig.cloud.camptocamp.net/&gt;_</cite>.</p>
 </li>
-<li><p class="first">Move all the open issues to a new milestone and close the current milestone
-in <cite>cgxp &lt;https://github.com/camptocamp/cgxp/milestones&gt;_</cite>
+<li><p class="first">Deploy on the demo server with:</p>
+<pre class="highlight"><span class="prompt1">sudo -u deploy deploy -r deploy/deploy.cfg demo_server</span>
+</pre></li>
+<li><p class="first">Rename the milestone on <cite>c2cgeoportal &lt;https://github.com/camptocamp/c2cgeoportal/milestones&gt;_</cite>
+and on <cite>ngeo &lt;https://github.com/camptocamp/ngeo/milestones&gt;_</cite> from <code class="docutils literal"><span class="pre">x.y</span></code> to <code class="docutils literal"><span class="pre">x.y.z</span></code>.</p>
+</li>
+<li><p class="first">Create again the milestone on <cite>c2cgeoportal &lt;https://github.com/camptocamp/c2cgeoportal/milestones&gt;_</cite>
+and on <cite>ngeo &lt;https://github.com/camptocamp/ngeo/milestones&gt;_</cite> for <code class="docutils literal"><span class="pre">x.y</span></code>.</p>
+</li>
+<li><p class="first">Move all the open issues to the new milestone and close the current milestone
+in <cite>ngeo &lt;https://github.com/camptocamp/ngeo/milestones&gt;_</cite>
 and in <cite>c2cgeoportal &lt;https://github.com/camptocamp/c2cgeoportal/milestones&gt;_</cite>.</p>
 </li>
 <li><p class="first">Send a release email to the <code class="docutils literal"><span class="pre">geomapfish&#64;googlegroups.com</span></code>
-and <code class="docutils literal"><span class="pre">geospatial&#64;lists.camptocamp.com</span></code> mailing lists.</p>
+and <code class="docutils literal"><span class="pre">gmf2&#64;lists.camptocamp.com</span></code> mailing lists.</p>
 </li>
 </ul>
 </div>
@@ -181,14 +168,9 @@ and <code class="docutils literal"><span class="pre">geospatial&#64;lists.campto
   <ul>
 <li><a class="reference internal" href="#">Create a new release</a><ul>
 <li><a class="reference internal" href="#vocabulary">Vocabulary</a></li>
-<li><a class="reference internal" href="#cgxp">CGXP</a><ul>
+<li><a class="reference internal" href="#c2cgeoportal">c2cgeoportal</a><ul>
 <li><a class="reference internal" href="#new-version">New version</a></li>
 <li><a class="reference internal" href="#new-release">New release</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#c2cgeoportal">c2cgeoportal</a><ul>
-<li><a class="reference internal" href="#id1">New version</a></li>
-<li><a class="reference internal" href="#id2">New release</a></li>
 <li><a class="reference internal" href="#notes-about-travis">Notes about Travis</a></li>
 </ul>
 </li>

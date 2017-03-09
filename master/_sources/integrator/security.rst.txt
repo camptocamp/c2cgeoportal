@@ -22,14 +22,20 @@ Default: ``true``
 Enable / Disable the OGC proxy
 ------------------------------
 
-To disable the OGC proxy, set ``ogcproxy_enable`` to ``false`` in your
+To enable the OGC proxy, set ``ogcproxy_enable`` to ``true`` in your
 ``vars_<project>.yaml`` file.
 
-Default: ``true``
+Default: ``false``
 
-In the ``viewer.js`` files you should also remove the ``OpenLayers.ProxyHost`` configuration.
+And adding the ``papyrus_ogcproxy`` package in the ``install_requires`` of the ``setup.py`` file.
 
-This implies that all external WMS services (from the database and from the WMS browser) should
+In the ``viewer.js`` files you should also add the ``OpenLayers.ProxyHost`` configuration:
+
+.. code:: javascript
+
+   OpenLayers.ProxyHost = "${request.route_url('ogcproxy') | n}?url=";
+
+Working without this proxy implies that all external WMS services (from the database and from the WMS browser) should
 have the CORS headers (`enable-cors.org <http://enable-cors.org/server.html>`_).
 
 Access to services by external servers

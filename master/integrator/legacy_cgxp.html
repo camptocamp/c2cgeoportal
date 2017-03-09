@@ -133,7 +133,7 @@ from <code class="docutils literal"><span class="pre">&lt;package&gt;/templates/
   <span class="o">&lt;</span><span class="n">script</span><span class="o">&gt;</span>
       <span class="k">if</span><span class="p">((</span><span class="s1">&#39;ontouchstart&#39;</span> <span class="ow">in</span> <span class="n">window</span><span class="p">)</span> <span class="o">||</span> <span class="n">window</span><span class="o">.</span><span class="n">DocumentTouch</span> <span class="o">&amp;&amp;</span> <span class="n">document</span> <span class="n">instanceof</span> <span class="n">DocumentTouch</span><span class="p">)</span> <span class="p">{</span>
 <span class="o">-</span>         <span class="n">window</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{mobile_url}</span><span class="s2">&quot;</span><span class="p">;</span>
-<span class="o">+</span>         <span class="n">window</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="s2">&quot;${request.route_url(&#39;mobile&#39;, _query=dict(request.GET))}&quot;</span><span class="p">;</span>
+<span class="o">+</span>         <span class="n">window</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="s2">&quot;${request.route_url(&#39;mobile&#39;, _query=dict(request.GET)) | n}&quot;</span><span class="p">;</span>
       <span class="p">}</span>
   <span class="o">&lt;/</span><span class="n">script</span><span class="o">&gt;</span>
   <span class="o">%</span> <span class="n">endif</span>
