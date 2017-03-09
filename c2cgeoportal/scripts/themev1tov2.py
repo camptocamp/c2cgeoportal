@@ -257,7 +257,7 @@ def layer_add_metadata(layer, new_layer, session):
         session.add(new_metadata(u"disclaimer", layer.disclaimer, new_layer))
     if layer.identifier_attribute_field is not None:
         session.add(new_metadata(
-            u"identifier_attribute_field",
+            u"identifierAttributeField",
             layer.identifier_attribute_field, new_layer
         ))
     if layer.exclude_properties is not None:
