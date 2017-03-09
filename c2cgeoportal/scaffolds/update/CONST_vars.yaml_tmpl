@@ -261,7 +261,7 @@ vars:
     raster: {}
 
     # Used by enumeration in the query builder
-    layers:
+    layers: {}
 
     # Used to send an email on password reset
     reset_password:
