@@ -369,7 +369,7 @@ ${ ',\\n'.join([
 % if "no_redirect" not in request.params:
         <script>
             if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
-                window.location = "${request.route_url('mobile', _query=dict(request.GET))}";
+                window.location = "${request.route_url('mobile', _query=dict(request.GET)) | n}";
             }
         </script>
 % endif

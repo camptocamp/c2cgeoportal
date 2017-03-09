@@ -208,7 +208,9 @@ NGEO_GMF_FONTS = $(addprefix $(PACKAGE)/static-ngeo/fonts/gmf-icons, .woff .ttf 
 NGEO_FONTAWESOME_FONTS = $(addprefix $(PACKAGE)/static-ngeo/fonts/fontawesome-webfont, .woff .woff2 .ttf .eot)
 NGEO_FONTS = $(NGEO_GMF_FONTS) $(NGEO_FONTAWESOME_FONTS)
 JSON_CLIENT_LOCALISATION_FILES = $(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .json, $(LANGUAGES)))
-MO_CLIENT_LOCALISATION_FILES = $(addprefix $(PACKAGE)/locale/, $(addsuffix /LC_MESSAGES/$(PACKAGE)-client.po, $(LANGUAGES)))
+L10N_CLIENT_POSTFIX=client
+L10N_SERVER_POSTFIX=server
+MO_CLIENT_LOCALISATION_FILES = $(addprefix $(PACKAGE)/locale/, $(addsuffix /LC_MESSAGES/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).po, $(LANGUAGES)))
 ANGULAR_LOCALES_FILES = $(addprefix $(APP_OUTPUT_DIR)/angular-locale_, $(addsuffix .js, $(LANGUAGES)))
 NGEO_OUTPUT_JS_INTERFACES_FILES = $(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .js, $(NGEO_INTERFACES)))
 NGEO_OUTPUT_CSS_INTERFACES_FILES = $(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .css, $(NGEO_INTERFACES)))
@@ -404,7 +406,7 @@ SPHINX_FILES = $(shell $(FIND) doc -name "*.rst" -print)
 # Server localisation
 ifdef CGXP_INTERFACES
 SERVER_LOCALISATION_SOURCES_FILES += $(PACKAGE)/models.py $(shell $(FIND) $(PACKAGE)/templates -type f -name '*.html')
-SERVER_LOCALISATION_FILES = $(addprefix $(PACKAGE)/locale/, $(addsuffix /LC_MESSAGES/$(PACKAGE)-server.mo, $(LANGUAGES)))
+SERVER_LOCALISATION_FILES = $(addprefix $(PACKAGE)/locale/, $(addsuffix /LC_MESSAGES/$(PACKAGE)-$(L10N_SERVER_POSTFIX).mo, $(LANGUAGES)))
 endif
 
 # Print
@@ -692,8 +694,8 @@ $(VENV_BIN)/pot-create$(PYTHON_BIN_POSTFIX): .build/requirements.timestamp
 .PHONY: compile-py-catalog
 compile-py-catalog: $(SERVER_LOCALISATION_FILES)
 
-.PRECIOUS: $(PACKAGE)/locale/$(PACKAGE)-server.pot
-$(PACKAGE)/locale/$(PACKAGE)-server.pot: \
+.PRECIOUS: $(PACKAGE)/locale/$(PACKAGE)-$(L10N_SERVER_POSTFIX).pot
+$(PACKAGE)/locale/$(PACKAGE)-$(L10N_SERVER_POSTFIX).pot: \
 		lingua-server.cfg \
 		$(VENV_BIN)/pot-create$(PYTHON_BIN_POSTFIX) \
 		$(SERVER_LOCALISATION_SOURCES_FILES)
@@ -704,8 +706,8 @@ $(PACKAGE)/locale/$(PACKAGE)-server.pot: \
 	sed -i '/^"PO-Revision-Date: /d' $@
 	chmod go+r $@
 
-.PRECIOUS: $(PACKAGE)/locale/$(PACKAGE)-client.pot
-$(PACKAGE)/locale/$(PACKAGE)-client.pot: \
+.PRECIOUS: $(PACKAGE)/locale/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).pot
+$(PACKAGE)/locale/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).pot: \
 		lingua-client.cfg \
 		$(I18N_DEPENDENCIES) \
 		$(I18N_SOURCE_FILES) \
@@ -719,16 +721,16 @@ $(PACKAGE)/locale/$(PACKAGE)-client.pot: \
 	sed -i '/^"PO-Revision-Date: /d' $@
 	chmod go+r $@
 
-.PRECIOUS: $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-server.po
-$(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-server.po: $(PACKAGE)/locale/$(PACKAGE)-server.pot
+.PRECIOUS: $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-$(L10N_SERVER_POSTFIX).po
+$(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-$(L10N_SERVER_POSTFIX).po: $(PACKAGE)/locale/$(PACKAGE)-$(L10N_SERVER_POSTFIX).pot
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
 	[ -f $@ ] || msginit --no-translator --input=$< --output-file=$@ -l $*
 	touch --no-create $@
 	msgmerge --backup=none --update --sort-output --no-location $@ $<
 
-.PRECIOUS: $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-client.po
-$(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-client.po: $(PACKAGE)/locale/$(PACKAGE)-client.pot
+.PRECIOUS: $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).po
+$(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).po: $(PACKAGE)/locale/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).pot
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
 	[ -f $@ ] || msginit --no-translator --input=$< --output-file=$@ -l $*
@@ -801,7 +803,7 @@ $(JSON_CLIENT_LOCALISATION_FILES): .build/node_modules.timestamp
 $(COMPILE_CATALOG): .build/node_modules.timestamp
 
 .PRECIOUS: $(APP_OUTPUT_DIR)/%.json
-$(APP_OUTPUT_DIR)/%.json: $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-client.po \
+$(APP_OUTPUT_DIR)/%.json: $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).po \
 		.build/locale/%/LC_MESSAGES/gmf.po \
 		.build/locale/%/LC_MESSAGES/ngeo.po \
 		$(COMPILE_CATALOG) \

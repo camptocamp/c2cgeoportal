@@ -366,10 +366,14 @@ class C2cTool:
                 pip_cmd += ["c2cgeoportal=={0!s}".format((self.options.version))]
             check_call(pip_cmd)
 
+        shutil.rmtree("CONST_create_template")
         check_call([
             "{0!s}/pcreate".format(self.venv_bin), "--ignore-conflicting-name", "--overwrite",
             "--scaffold=c2cgeoportal_update", "../{0!s}".format(self.project["project_folder"])
         ])
+        for deploy_hook_file in os.listdir("CONST_create_template/deploy/hooks"):
+            check_call(["chmod", "+x", "CONST_create_template/deploy/hooks/{}".format(deploy_hook_file)])
+
         check_call(["make", "-f", self.options.file, self.options.clean])
 
         # Update the package.json file
@@ -527,7 +531,8 @@ class C2cTool:
         print(colorize("Congratulations your upgrade is a success.", GREEN))
         print("")
         branch = check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).strip()
-        print("Now all your files will be commited, you should do a git push {0!s} {1!s}.".format(
+        print("Now all your files will be commited, you should do a git push:")
+        print("git push {0!s} {1!s}.".format(
             self.options.git_remote, branch
         ))
 

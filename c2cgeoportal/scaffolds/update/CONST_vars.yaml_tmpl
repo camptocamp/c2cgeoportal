@@ -178,8 +178,6 @@ vars:
         - name: thumbnail
           type: url
         - name: timeAttribute
-        - name: queryLayers
-        - name: wmsLayers
         - name: lastUpdateDateColumn
         - name: lastUpdateUserColumn
         - name: snappingConfig
@@ -192,7 +190,8 @@ vars:
           type: list
         # WMTS layers
         - name: ogcServer
-        - name: layers
+        - name: wmsLayers
+        - name: queryLayers
         - name: printLayers
 
     # The list of functionalities that can be configured
@@ -230,6 +229,7 @@ vars:
         - default_basemap
         - default_theme
         - filterable_layers
+        - print_template
 
     # Define URLs to the parent application. Only useful if
     # this application is a child application in a parent/child
@@ -309,6 +309,8 @@ vars:
     - '{web_protocol}:://c.tiles.{host}/{instanceid}/tiles'
     - '{web_protocol}:://d.tiles.{host}/{instanceid}/tiles'
     wmtscapabilities_path: WMTSCAPABILITIES_PATH
+
+    ogcproxy_enable: False
 
     # Control the HTTP headers
     headers:

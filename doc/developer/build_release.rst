@@ -17,41 +17,7 @@ Then ``<release>`` can be ``1.6.0rc1`` for the first release candidate
 of the version ``1.6.0``, ``1.6.0`` for the final release, ``1.6.1`` for
 the first bug fix release, and ``<version>`` can be ``1.6``, ``2.0``, ...
 
-CGXP
-----
-
-New version
-~~~~~~~~~~~
-
-For each version we create a new branch (at least at the final release):
-
-.. prompt:: bash
-
-    git fetch
-    git checkout master
-    git reset --hard origin/master
-    git checkout -b <version>
-
-Push your changes:
-
-.. prompt:: bash
-
-    git push origin <version>
-
-Then continue by creating the release.
-
-New release
-~~~~~~~~~~~
-
-Tag the new CGXP release:
-
-.. prompt:: bash
-
-    git fetch
-    git checkout <version>
-    git reset --hard origin/<version>
-    git tag <release>
-    git push origin <release>
+`For ngeo see here <https://github.com/camptocamp/ngeo/blob/master/docs/developer-guide.md#create-a-package-on-npm>_`.
 
 c2cgeoportal
 ------------
@@ -138,7 +104,7 @@ Post release tasks
 
 When a new release or a new version is done you should do the following tasks:
 
-* Merge the release changes (on ``cgxp`` and on ``c2cgeoportal``)
+* Merge the release changes (on ``ngeo`` and on ``c2cgeoportal``)
   to the upper branches i.e.: ``1.6`` => ``2.0``, ``2.0`` => ``master``.
 
   .. note::
@@ -167,17 +133,27 @@ When a new release or a new version is done you should do the following tasks:
 
      And finally add the new file.
 
-* Upgrade the demo in your home folder with ``c2ctool``.
-* Update the demo on the main folder with:
+* Upgrade the demo in your home folder with ``make upgrade``.
+* Update the demo on the test server in the main folder with:
 
   .. prompt:: bash
 
     sudo -u sigdev make -f demo.mk update
     sudo -u sigdev make -f demo.mk build
 
-* Test the demo.
-* Move all the open issues to a new milestone and close the current milestone
-  in `cgxp <https://github.com/camptocamp/cgxp/milestones>_`
+* Test the `demo <http://testgmf.sig.cloud.camptocamp.net/>_`.
+* Deploy on the demo server with:
+
+  .. prompt:: bash
+
+     sudo -u deploy deploy -r deploy/deploy.cfg demo_server
+
+* Rename the milestone on `c2cgeoportal <https://github.com/camptocamp/c2cgeoportal/milestones>_`
+  and on `ngeo <https://github.com/camptocamp/ngeo/milestones>_` from ``x.y`` to ``x.y.z``.
+* Create again the milestone on `c2cgeoportal <https://github.com/camptocamp/c2cgeoportal/milestones>_`
+  and on `ngeo <https://github.com/camptocamp/ngeo/milestones>_` for ``x.y``.
+* Move all the open issues to the new milestone and close the current milestone
+  in `ngeo <https://github.com/camptocamp/ngeo/milestones>_`
   and in `c2cgeoportal <https://github.com/camptocamp/c2cgeoportal/milestones>_`.
 * Send a release email to the ``geomapfish@googlegroups.com``
-  and ``geospatial@lists.camptocamp.com`` mailing lists.
+  and ``gmf2@lists.camptocamp.com`` mailing lists.

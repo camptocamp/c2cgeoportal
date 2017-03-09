@@ -8,6 +8,9 @@ cp travis/build.mk /tmp/travis/testgeomapfish/travis.mk
 cp travis/vars.yaml /tmp/travis/testgeomapfish/vars_travis.yaml
 cd /tmp/travis/testgeomapfish
 
+chmod +x CONST_create_template/deploy/hooks/*
+chmod +x deploy/hooks/*
+
 echo "REQUIREMENTS = --editable ${TRAVIS_FOLDER}" | cat - travis.mk > travis.mk.new
 mv travis.mk.new travis.mk
 

@@ -243,7 +243,7 @@ class TestThemesViewMetadata(TestCase):
                             u"url4": "http://dummy.org/tests:cgxp/path/icon.png",
                             u"url5": "http://dummy.org/project:static/path/icon.png",
                             u"url6": "http://dummy.org/project:cgxp/path/icon.png",
-                            u"url7": "http://example.com/test/",
+                            u"url7": "http://example.com/test",
                             u"url8": u"http://example.com/test/index.html",
                             u"url9": u"/dummy/static/icon.png",
                             u"url10": u"dummy/static/icon.png",
