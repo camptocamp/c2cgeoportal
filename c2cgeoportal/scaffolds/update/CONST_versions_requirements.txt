@@ -15,7 +15,7 @@ Jinja2==2.9.5
 lingua==4.13
 Mako==1.0.6
 Markdown==2.6.8
-MarkupSafe==0.23
+MarkupSafe==1.0
 OWSLib==0.14.0
 papyrus==2.2
 Paste==2.0.3
@@ -38,7 +38,7 @@ requests==2.13.0
 simplejson==3.10.0
 six==1.10.0
 SQLAHelper==1.0
-SQLAlchemy==1.1.5
+SQLAlchemy==1.1.6
 Tempita==0.5.2
 textile==2.3.6
 transaction==2.1.0
