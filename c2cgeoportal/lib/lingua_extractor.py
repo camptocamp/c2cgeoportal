@@ -220,7 +220,7 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
         dbname = layerinfos.get("dbsession")
         try:
             dbsession = dbsessions.get(dbname)
-            values = layers.query_enumerate_attribute_values(dbsession, layerinfos, fieldname)
+            return layers.query_enumerate_attribute_values(dbsession, layerinfos, fieldname)
         except:
             table = layerinfos.get("attributes").get(fieldname, {}).get("table")
             print(colorize(
@@ -228,7 +228,7 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
                 u"db: {0!s}, table: {1!s}, column: {2!s}".format(dbname, table, fieldname),
                 YELLOW
             ))
-        return values
+            return []
 
     @classmethod
     def _collect_print_config(cls, config, filename):
