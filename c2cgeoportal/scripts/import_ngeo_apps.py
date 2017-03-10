@@ -171,6 +171,32 @@ def main():
         else:
             data = re.sub(r"{{", r"\\{\\{", data)
             data = re.sub(r"}}", r"\\}\\}", data)
+
+            if args.html:
+                if args.interface == "mobile":
+                    data = _sub(
+                        re.escape(
+                            r"http://camptocamp.github.io/ngeo/master/"
+                            r"examples/contribs/gmf/apps/desktop/"
+                        ),
+                        "${request.route_url('desktop', _query=dict(request.GET)) | n}",
+                        data,
+                    )
+                if args.interface == "desktop":
+                    data = _sub(
+                        r"<head>",
+                        """<head>
+    % if "no_redirect" not in request.params:
+            <script>
+                if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
+                    window.location = "${request.route_url('mobile', _query=dict(request.GET)) | n}";
+                }
+            </script>
+    % endif
+    """,
+                        data,
+                    )
+
             data = re.sub("app", "{{package}}", data)
 
 # temporary disable ...
@@ -361,20 +387,6 @@ ${ ',\\n'.join([
                 count=1,
                 flags=re.DOTALL,
             )
-            if args.interface == "desktop":
-                data = _sub(
-                    r"<head>",
-                    """<head>
-% if "no_redirect" not in request.params:
-        <script>
-            if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
-                window.location = "${request.route_url('mobile', _query=dict(request.GET)) | n}";
-            }
-        </script>
-% endif
-""",
-                    data,
-                )
 
         with open(args.dst, "wt") as dst:
             dst.write(data)
