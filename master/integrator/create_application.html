@@ -101,7 +101,7 @@ span.prompt1:before {
 </pre><p><code class="docutils literal"><span class="pre">&lt;branch|tag&gt;</span></code> can be <code class="docutils literal"><span class="pre">1.4</span></code> for the latest version of the 1.4 branch,
 <code class="docutils literal"><span class="pre">1.4.0</span></code> for the first stable 1.4 version.</p>
 <p>Build c2cgeoportal:</p>
-<pre class="highlight"><span class="prompt1">make build</span>
+<pre class="highlight"><span class="prompt1">./docker-run make build</span>
 </pre></div>
 <div class="section" id="list-existing-skeletons">
 <h2>List existing skeletons<a class="headerlink" href="#list-existing-skeletons" title="Permalink to this headline">¶</a></h2>
@@ -109,7 +109,7 @@ span.prompt1:before {
 from the root directory of c2cgeoportal (if you have followed the instructions
 from the previous section), or from the root directory of the existing
 c2cgeoportal application you want to create the new application from:</p>
-<pre class="highlight"><span class="prompt1">.build/venv/bin/pcreate -l</span>
+<pre class="highlight"><span class="prompt1">./docker-run pcreate -l</span>
 </pre><p>You should at least see the c2cgeoportal skeletons:</p>
 <ul class="simple">
 <li>c2cgeoportal_create</li>
@@ -124,7 +124,7 @@ c2cgeoportal application you want to create the new application from:</p>
 <p>The package name should not contain an underscore (<code class="docutils literal"><span class="pre">_</span></code>) because of an
 issue with Pip.</p>
 <p>To create the application first apply the <code class="docutils literal"><span class="pre">c2cgeoportal_create</span></code> skeleton:</p>
-<pre class="highlight"><span class="prompt1">.build/venv/bin/pcreate -s c2cgeoportal_create ../&lt;project&gt;</span>
+<pre class="highlight"><span class="prompt1">./docker-run pcreate -s c2cgeoportal_create &lt;project&gt;</span>
 </pre><div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Do not add any &#8216;/&#8217; after the project name.</p>
@@ -138,7 +138,7 @@ it later.</p>
 parameters:</p>
 <blockquote class="last">
 <div><pre class="highlight"><span class="prompt1"><span class="nv">SRID</span><span class="o">=</span><span class="m">21781</span> <span class="nv">EXTENT</span><span class="o">=</span><span class="s2">&quot;420000 30000 900000 350000&quot;</span> <span class="nv">apache_vhost</span><span class="o">=</span>&lt;vhost&gt; <span class="se">\</span>
-   .build/venv/bin/pcreate -s c2cgeoportal_create --package-name &lt;package&gt; ../&lt;project&gt;</span>
+   ./docker-run pcreate -s c2cgeoportal_create --package-name &lt;package&gt; &lt;project&gt;</span>
 </pre></div></blockquote>
 </div>
 <p>This will create a directory named <code class="docutils literal"><span class="pre">&lt;project&gt;</span></code> that will be next to the
@@ -146,7 +146,7 @@ parameters:</p>
 creating this application from.</p>
 <p>Now apply the <code class="docutils literal"><span class="pre">c2cgeoportal_update</span></code> skeleton:</p>
 <pre class="highlight"><span class="prompt1"><span class="nv">SRID</span><span class="o">=</span><span class="m">21781</span> <span class="nv">apache_vhost</span><span class="o">=</span>&lt;vhost&gt; <span class="se">\</span>
-    .build/venv/bin/pcreate -s c2cgeoportal_update --package-name &lt;package&gt; ../&lt;project&gt;</span>
+    ./docker-run pcreate -s c2cgeoportal_update --package-name &lt;package&gt; &lt;project&gt;</span>
 </pre><div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Do not add any &#8216;/&#8217; after the project name.</p>

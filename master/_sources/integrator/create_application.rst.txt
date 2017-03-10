@@ -72,7 +72,7 @@ Build c2cgeoportal:
 
 .. prompt:: bash
 
-    make build
+    ./docker-run make build
 
 List existing skeletons
 -----------------------
@@ -84,7 +84,7 @@ c2cgeoportal application you want to create the new application from:
 
 .. prompt:: bash
 
-    .build/venv/bin/pcreate -l
+    ./docker-run pcreate -l
 
 You should at least see the c2cgeoportal skeletons:
 
@@ -106,7 +106,7 @@ To create the application first apply the ``c2cgeoportal_create`` skeleton:
 
 .. prompt:: bash
 
-    .build/venv/bin/pcreate -s c2cgeoportal_create ../<project>
+    ./docker-run pcreate -s c2cgeoportal_create <project>
 
 .. note::
 
@@ -124,7 +124,7 @@ it later.
      .. prompt:: bash
 
          SRID=21781 EXTENT="420000 30000 900000 350000" apache_vhost=<vhost> \
-            .build/venv/bin/pcreate -s c2cgeoportal_create --package-name <package> ../<project>
+            ./docker-run pcreate -s c2cgeoportal_create --package-name <package> <project>
 
 This will create a directory named ``<project>`` that will be next to the
 ``c2cgeoportal`` directory, or to the directory of the application you are
@@ -135,7 +135,7 @@ Now apply the ``c2cgeoportal_update`` skeleton:
 .. prompt:: bash
 
     SRID=21781 apache_vhost=<vhost> \
-        .build/venv/bin/pcreate -s c2cgeoportal_update --package-name <package> ../<project>
+        ./docker-run pcreate -s c2cgeoportal_update --package-name <package> <project>
 
 .. note::
 
