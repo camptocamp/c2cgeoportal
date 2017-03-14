@@ -51,13 +51,13 @@ pep8-naming==0.4.1
 Pillow==4.0.0
 polib==1.0.8
 postmarkup==1.2.2
-psycopg2==2.7
+psycopg2==2.7.1
 pycodestyle==2.3.1
 pycrypto==2.6.1
 pyflakes==1.5.0
 Pygments==2.2.0
 pyproj==1.9.5.1
-pyramid==1.8.2
+pyramid==1.8.3
 pyramid-chameleon==0.3
 pyramid-debugtoolbar==3.0.5
 pyramid-formalchemy==0.4.4
