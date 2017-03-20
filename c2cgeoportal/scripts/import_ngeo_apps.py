@@ -175,11 +175,21 @@ def main():
             if args.html:
                 if args.interface == "mobile":
                     data = _sub(
+                        r"</head>",
+                        """</head>
+  <%
+    request_get_no_redirect = request.GET
+    request_get_no_redirect['no_redirect'] = u''
+  %>
+    """,
+                        data,
+                    )
+                    data = _sub(
                         re.escape(
                             r"http://camptocamp.github.io/ngeo/master/"
-                            r"examples/contribs/gmf/apps/desktop/"
+                            r"examples/contribs/gmf/apps/desktop/?no_redirect"
                         ),
-                        "${request.route_url('desktop', _query=dict(request.GET)) | n}",
+                        "${request.route_url('desktop', _query=dict(request_get_no_redirect)) | n}",
                         data,
                     )
                 if args.interface == "desktop":
