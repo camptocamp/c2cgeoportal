@@ -84,9 +84,7 @@ Python
 ^^^^^^
 
 * Install Microsoft Visual C++ Compiler for Python 2.7 (http://aka.ms/vcpython27)
-* Install pip, go to https://pip.pypa.io/en/latest/installing.html and download get-pip.py
-* Open a batch console (cmd), and run ``python get-pip.py``
-* Once done, run ``pip install virtualenv``
+* Be sure to have at least pip >= 9.x in your project . Using virtualenv >= 15 should resolve that.
 
 Cygwin
 ^^^^^^
