@@ -22,9 +22,12 @@ papyrus==2.2
 Paste==2.0.3
 PasteDeploy==1.5.2
 PasteScript==2.0.2
+Pillow==3.4.2
 polib==1.0.8
 postmarkup==1.2.2
+psycopg2==2.6.2
 pykwalify==1.5.2
+pyproj==1.9.5.1
 pyramid-chameleon==0.3
 pyramid-debugtoolbar==3.0.5
 pyramid-mako==1.0.2
