@@ -96,21 +96,23 @@ def add_interface(
             route_names=(interface_name, interface_name + ".js"),
             routes=("/{0!s}".format(interface_name), "/{0!s}.js".format(interface_name)),
             renderers=("/{0!s}.html".format(interface_name), "/{0!s}.js".format(interface_name)),
+            **kwargs
         )
 
     elif interface_type == INTERFACE_TYPE_NGEO:
         route = "/{0!s}".format(interface_name)
-
         add_interface_ngeo(
             config,
             interface_name=interface_name,
             route_name=interface_name,
             route=route,
             renderer="/{0!s}.html".format(interface_name),
+            **kwargs
         )
 
 
-def add_interface_cgxp(config, interface_name, route_names, routes, renderers):  # pragma: no cover
+def add_interface_cgxp(config, interface_name, route_names, routes, renderers,
+                       permission=None):  # pragma: no cover
     # Cannot be at the header to don"t load the model too early
     from c2cgeoportal.views.entry import Entry
 
@@ -126,7 +128,8 @@ def add_interface_cgxp(config, interface_name, route_names, routes, renderers): 
         decorator=add_interface,
         attr="get_cgxp_index_vars",
         route_name=route_names[0],
-        renderer=renderers[0]
+        renderer=renderers[0],
+        permission=permission
     )
     # permalink theme: recover the theme for generating custom viewer.js url
     config.add_route(
@@ -138,7 +141,8 @@ def add_interface_cgxp(config, interface_name, route_names, routes, renderers): 
         decorator=add_interface,
         attr="get_cgxp_permalinktheme_vars",
         route_name="{0!s}theme".format(route_names[0]),
-        renderer=renderers[0]
+        renderer=renderers[0],
+        permission=permission
     )
     config.add_route(
         route_names[1], routes[1],
@@ -150,14 +154,16 @@ def add_interface_cgxp(config, interface_name, route_names, routes, renderers): 
         decorator=add_interface,
         attr="get_cgxp_viewer_vars",
         route_name=route_names[1],
-        renderer=renderers[1]
+        renderer=renderers[1],
+        permission=permission
     )
 
 
 ngeo_static_init = False
 
 
-def add_interface_ngeo(config, interface_name, route_name, route, renderer):  # pragma: no cover
+def add_interface_ngeo(config, interface_name, route_name, route, renderer,
+                       permission=None):  # pragma: no cover
     # Cannot be at the header to do not load the model too early
     from c2cgeoportal.views.entry import Entry
 
@@ -173,7 +179,8 @@ def add_interface_ngeo(config, interface_name, route_name, route, renderer):  # 
         decorator=add_interface,
         attr="get_ngeo_index_vars",
         route_name=route_name,
-        renderer=renderer
+        renderer=renderer,
+        permission=permission
     )
     # permalink theme: recover the theme for generating custom viewer.js url
     config.add_route(
@@ -186,7 +193,8 @@ def add_interface_ngeo(config, interface_name, route_name, route, renderer):  # 
         decorator=add_interface,
         attr="get_ngeo_permalinktheme_vars",
         route_name="{0!s}theme".format(route_name),
-        renderer=renderer
+        renderer=renderer,
+        permission=permission
     )
 
     global ngeo_static_init
