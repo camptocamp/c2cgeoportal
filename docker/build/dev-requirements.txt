@@ -1,6 +1,6 @@
 alabaster==0.7.10
 alembic==0.9.1
-Babel==2.3.4
+Babel==2.4.0
 boto==2.46.1
 bottle==0.12.13
 c2c.cssmin==0.7.dev6
