@@ -1,4 +1,4 @@
-Babel==2.3.4
+Babel==2.4.0
 boto==2.46.1
 bottle==0.12.13
 c2c.template==1.4.0.dev1
@@ -24,7 +24,7 @@ PasteScript==2.0.2
 polib==1.0.8
 postmarkup==1.2.2
 pycrypto==2.6.1
-pyramid==1.8.2
+pyramid==1.8.3
 pyramid-chameleon==0.3
 pyramid-debugtoolbar==3.0.5
 pyramid-mako==1.0.2
@@ -40,14 +40,14 @@ six==1.10.0
 SQLAHelper==1.0
 SQLAlchemy==1.1.6
 Tempita==0.5.2
-textile==2.3.6
-transaction==2.1.0
+textile==2.3.7
+transaction==2.1.2
 translationstring==1.3
 venusian==1.0
 waitress==1.0.2
 WebError==0.13.1
 WebHelpers==1.3
-WebOb==1.7.1
+WebOb==1.7.2
 zope.component==4.3.0
 zope.deprecation==4.2.0
 zope.event==4.2.0

@@ -4,7 +4,7 @@
 couchdbkit==0.6.5
 http-parser==0.8.3
 Pillow==4.0.0
-psycopg2==2.7
+psycopg2==2.7.1
 pyproj==1.9.5.1
 restkit==4.2.2
 Shapely==1.5.17.post1
