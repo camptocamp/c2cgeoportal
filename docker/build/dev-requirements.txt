@@ -76,7 +76,7 @@ six==1.10.0
 Sphinx==1.5.3
 sphinx-prompt==1.0.0
 SQLAHelper==1.0
-SQLAlchemy==1.1.6
+SQLAlchemy==1.1.7
 Tempita==0.5.2
 textile==2.3.7
 tilecloud==0.4.0
