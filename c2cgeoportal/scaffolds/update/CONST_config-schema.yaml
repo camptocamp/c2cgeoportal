@@ -121,7 +121,7 @@ mapping:
                 type: map
                 required: True
                 mapping:
-                    rc4_key:
+                    aes_key:
                         type: str
 
             cache:
