@@ -42,7 +42,7 @@ from c2cgeoportal.lib.caching import get_region, set_common_headers, NO_CACHE
 
 cache_region = get_region()
 
-IGNORED_CHARS_RE = re.compile(r"[()'&|!:*-]")
+IGNORED_CHARS_RE = re.compile(r"[()&|!:]")
 
 
 class FullTextSearchView:
