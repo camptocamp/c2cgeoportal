@@ -132,7 +132,7 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
                         file_open.write(processed.encode("utf-8"))
                 except:
                     print(colorize(
-                        "An error occurred during the '{}' template generation".format(filename),
+                        u"An error occurred during the '{}' template generation".format(filename),
                         YELLOW
                     ))
                     print(colorize(traceback.format_exc(), YELLOW))
@@ -299,7 +299,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                         ))
             except NoSuchTableError:
                 print(colorize(
-                    "No such table '{}' for layer '{}'.".format(layer.geo_table, layer.name),
+                    u"No such table '{}' for layer '{}'.".format(layer.geo_table, layer.name),
                     YELLOW
                 ))
                 print(colorize(traceback.format_exc(), YELLOW))
@@ -321,7 +321,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                     )
                 except NoResultFound:
                     print(colorize(
-                        "Error: the OGC server '{}' from the WMTS layer '{}' does not exist.".format(
+                        u"Error: the OGC server '{}' from the WMTS layer '{}' does not exist.".format(
                             server[0], layer.name
                         ),
                         YELLOW
@@ -358,7 +358,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
 
         hostname = urlsplit(url).hostname
         if url not in self.wmscap_cache:
-            print("Get WMS GetCapabilities for URL: {}".format(url))
+            print(u"Get WMS GetCapabilities for URL: {}".format(url))
             self.wmscap_cache[url] = None
 
             # forward request to target (without Host Header)
@@ -377,11 +377,11 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                         "parse the GetCapabilities document."
                     ), YELLOW)
                     print(colorize(str(e), YELLOW))
-                    print("URL: {0!s}\nxml:\n{1!s}".format(wms_getcap_url, content))
+                    print(u"URL: {0!s}\nxml:\n{1!s}".format(wms_getcap_url, content))
             except Exception as e:  # pragma: no cover
                 print(colorize(str(e), YELLOW))
                 print(colorize(
-                    "WARNING! Unable to GetCapabilities from URL: {0!s}".format(wms_getcap_url),
+                    u"WARNING! Unable to GetCapabilities from URL: {0!s}".format(wms_getcap_url),
                     YELLOW,
                 ))
 
@@ -394,7 +394,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
         })
 
         if url not in self.featuretype_cache:
-            print("Get WFS DescribeFeatureType for URL: {}".format(wfs_descrfeat_url))
+            print(u"Get WFS DescribeFeatureType for URL: {}".format(wfs_descrfeat_url))
             self.featuretype_cache[url] = None
 
             # forward request to target (without Host Header)
@@ -407,14 +407,14 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
             except Exception as e:  # pragma: no cover
                 print(colorize(str(e), YELLOW))
                 print(colorize(
-                    "Unable to DescribeFeatureType from URL: {0!s}".format(wfs_descrfeat_url),
+                    u"Unable to DescribeFeatureType from URL: {0!s}".format(wfs_descrfeat_url),
                     YELLOW,
                 ))
                 return []
 
             if resp.status < 200 or resp.status >= 300:  # pragma: no cover
                 print(colorize(
-                    "WARNING DescribeFeatureType from URL {0!s} return the error: {1:d} {2!s}".format(
+                    u"WARNING DescribeFeatureType from URL {0!s} return the error: {1:d} {2!s}".format(
                         wfs_descrfeat_url, resp.status, resp.reason
                     ),
                     YELLOW,
@@ -435,13 +435,13 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                     "parse the DescribeFeatureType document."
                 ), YELLOW)
                 print(colorize(str(e), YELLOW))
-                print("URL: {0!s}\nxml:\n{1!s}".format(wfs_descrfeat_url, content))
+                print(u"URL: {0!s}\nxml:\n{1!s}".format(wfs_descrfeat_url, content))
             except AttributeError:
                 print(colorize(
                     "WARNING! an error occured while trying to "
                     "read the Mapfile and recover the themes."
                 ), YELLOW)
-                print("URL: {0!s}\nxml:\n{1!s}".format(wfs_descrfeat_url, content))
+                print(u"URL: {0!s}\nxml:\n{1!s}".format(wfs_descrfeat_url, content))
         else:
             featurestype = self.featuretype_cache[url]
 
@@ -457,7 +457,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
         attributes = []
         for sub_layer in layers:
             # Should probably be adapted for other king of servers
-            type_element = featurestype.get("{}Type".format(sub_layer))
+            type_element = featurestype.get(u"{}Type".format(sub_layer))
             if type_element is not None:
                 for element in type_element.getElementsByTagNameNS(
                     "http://www.w3.org/2001/XMLSchema", "element"
