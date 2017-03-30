@@ -65,7 +65,7 @@ pyramid-mako==1.0.2
 pyramid-multiauth==0.9.0
 pyramid-tm==1.1.1
 python-dateutil==2.6.0
-pytz==2016.10
+pytz==2017.2
 PyYAML==3.12
 repoze.lru==0.6
 requests[security]==2.13.0
