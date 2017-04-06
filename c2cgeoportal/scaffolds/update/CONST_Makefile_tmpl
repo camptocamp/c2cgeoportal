@@ -755,7 +755,7 @@ $(TX_RC):
 	echo "password = c2cc2c" >> $@
 	echo "token =" >> $@
 
-.tx/config: .tx/CONST_config_mako $(VENV_BIN)/mako-render$(PYTHON_BIN_POSTFIX)
+.tx/config: .tx/CONST_config_mako $(VENV_BIN)/mako-render$(PYTHON_BIN_POSTFIX) .build/requirements.timestamp
 	$(PRERULE_CMD)
 	PYTHONIOENCODING=UTF-8 $(VENV_BIN)/mako-render \
 		--var "tx_version=$(TX_VERSION)" --var "tx_host=$(TX_HOST)" $< > $@
