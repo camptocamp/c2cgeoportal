@@ -110,6 +110,7 @@ def set_common_headers(
 
     if cache == NO_CACHE:
         response.cache_control.no_cache = True
+        response.cache_control.max_age = 0
     elif cache == PUBLIC_CACHE:
         response.cache_control.public = True
     elif cache == PRIVATE_CACHE:
@@ -127,9 +128,8 @@ def set_common_headers(
         if service_name in settings and "max_age" in settings[service_name]:
             max_age = settings[service_name]["max_age"]
 
-        if max_age != 0:
-            response.cache_control.max_age = max_age
-        else:
+        response.cache_control.max_age = max_age
+        if max_age == 0:
             response.cache_control.no_cache = True
 
     if add_cors:
