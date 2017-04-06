@@ -41,38 +41,39 @@ from xml.sax.xmlreader import InputSource
 
 from pyramid.httpexceptions import HTTPBadGateway
 
-from sqlalchemy import distinct
-
 from owslib.wms import WebMapService
 
 from c2cgeoportal.lib import caching, get_protected_layers_query, \
     get_writable_layers_query, add_url_params
-from c2cgeoportal.models import DBSession, Layer
+from c2cgeoportal.models import DBSession, LayerWMS, OGCServer
 
 cache_region = caching.get_region()
 log = logging.getLogger(__name__)
 
 
 @cache_region.cache_on_arguments()
-def get_protected_layers(role_id):
-    q = get_protected_layers_query(role_id, distinct(Layer.name))
-    return [r for r, in q.all()]
+def get_protected_layers(role_id, wms_url):
+    q = get_protected_layers_query(role_id, wms_url=wms_url, what=LayerWMS, version=2)
+    return {r.id: r for r in q.all()}
 
 
 @cache_region.cache_on_arguments()
-def get_private_layers():
-    q = DBSession.query(Layer.name).filter(Layer.public.is_(False))
-    return [r for r, in q.all()]
+def get_private_layers(wms_url):
+    q = DBSession.query(LayerWMS) \
+        .filter(LayerWMS.public.is_(False)) \
+        .join(LayerWMS.ogc_server) \
+        .filter(OGCServer.url == wms_url)
+    return {r.id: r for r in q.all()}
 
 
 @cache_region.cache_on_arguments()
-def get_writable_layers(role_id):
-    q = get_writable_layers_query(role_id, distinct(Layer.name))
-    return {r for r, in q.all()}
+def get_writable_layers(role_id, wms_url):
+    q = get_writable_layers_query(role_id, wms_url=wms_url)
+    return {r.id: r for r in q.all()}
 
 
 @cache_region.cache_on_arguments()
-def _wms_structure(wms_url, host):
+def wms_structure(wms_url, host):
     url = urlsplit(wms_url)
     wms_url = add_url_params(wms_url, {
         "SERVICE": "WMS",
@@ -82,7 +83,7 @@ def _wms_structure(wms_url, host):
 
     log.info("Get WMS GetCapabilities for URL: {0!s}".format(wms_url))
 
-    # forward request to target (without Host Header)
+    # Forward request to target (without Host Header)
     http = httplib2.Http()
     headers = dict()
     if url.hostname == "localhost" and host is not None:  # pragma: no cover
@@ -156,16 +157,19 @@ def filter_capabilities(content, role_id, wms, wms_url, headers, proxies):
     if proxies:  # pragma: no cover
         enable_proxies(proxies)
 
-    wms_structure = _wms_structure(wms_url, headers.get("Host"))
-    tmp_private_layers = list(get_private_layers())
-    for name in get_protected_layers(role_id):
-        tmp_private_layers.remove(name)
+    wms_structure_ = wms_structure(wms_url, headers.get("Host"))
+
+    gmf_private_layers = get_private_layers(wms_url)
+    for id_ in get_protected_layers(role_id, wms_url).keys():
+        if id_ in gmf_private_layers:
+            del gmf_private_layers[id_]
 
     private_layers = set()
-    for layer in tmp_private_layers:
-        private_layers.add(layer)
-        if layer in wms_structure:
-            private_layers.update(wms_structure[layer])
+    for gmflayer in gmf_private_layers.values():
+        for ogclayer in gmflayer.layer.split(","):
+            private_layers.add(ogclayer)
+            if ogclayer in wms_structure_:
+                private_layers.update(wms_structure_[ogclayer])
 
     parser = sax.make_parser()
     result = StringIO()
@@ -187,7 +191,9 @@ def filter_wfst_capabilities(content, role_id, wfs_url, proxies):
     if proxies:  # pragma: no cover
         enable_proxies(proxies)
 
-    writable_layers = get_writable_layers(role_id)
+    writable_layers = []
+    for gmflayer in get_writable_layers(role_id, wfs_url).values():
+        writable_layers += gmflayer.layer.split(",")
 
     parser = sax.make_parser()
     result = StringIO()

@@ -94,6 +94,12 @@ class TestEntryView(TestCase):
         ogcserver_geoserver.type = OGCSERVER_TYPE_GEOSERVER
         ogcserver_geoserver.auth = OGCSERVER_AUTH_GEOSERVER
 
+        private_layerv2 = LayerWMS(name=u"__test_private_layer", public=False)
+        private_layerv2.layer = u"__test_private_layer"
+        private_layerv2.geo_table = "a_schema.a_geo_table"
+        private_layerv2.interfaces = [main, mobile]
+        private_layerv2.ogc_server = ogcserver
+
         public_layer2 = LayerWMS(
             name=u"__test_public_layer2", layer=u"__test_public_layer_bis", public=True)
         public_layer2.interfaces = [main, mobile]
@@ -125,7 +131,7 @@ class TestEntryView(TestCase):
 
         group = LayerGroup(name=u"__test_layer_group_2")
         group.children = [
-            public_layer, private_layer, layer_group, layer_wmsgroup,
+            public_layer, private_layer, private_layerv2, layer_group, layer_wmsgroup,
             public_layer2, public_layer_not_mapfile, public_layer_no_layers,
             private_layer2
         ]
@@ -141,13 +147,13 @@ class TestEntryView(TestCase):
 
         area = WKTElement(poly, srid=21781)
         RestrictionArea(
-            name=u"__test_ra1", description=u"", layers=[private_layer, private_layer2],
+            name=u"__test_ra1", description=u"", layers=[private_layer, private_layerv2, private_layer2],
             roles=[role1], area=area
         )
 
         area = WKTElement(poly, srid=21781)
         RestrictionArea(
-            name=u"__test_ra2", description=u"", layers=[private_layer, private_layer2],
+            name=u"__test_ra2", description=u"", layers=[private_layer, private_layerv2, private_layer2],
             roles=[role2], area=area, readwrite=True
         )
 
@@ -174,7 +180,7 @@ class TestEntryView(TestCase):
 
         DBSession.add_all([
             user1, user2, ogcserver_normapfile, ogcserver_geoserver,
-            public_layer, private_layer, public_layer2, private_layer2,
+            public_layer, private_layer, private_layerv2, public_layer2, private_layer2,
             entry1, entry2, entry3,
         ])
 
@@ -400,7 +406,10 @@ class TestEntryView(TestCase):
         self.assertEqual(len(themes), 1)
 
         layers = themes[0]["children"][0]["children"]
-        self.assertEqual(len(layers), 4)
+        self.assertEqual(
+            {layer["name"] for layer in layers},
+            {"__test_public_layer", "__test_private_layer", "test_wmsfeaturesgroup", "__test_layer_group_1"}
+        )
 
         self.assertEqual([
             "editable" in layer
@@ -520,6 +529,7 @@ class TestEntryView(TestCase):
         layers = {l["name"] for l in themes["themes"][0]["children"][0]["children"]}
         self.assertEquals(layers, set([
             u"__test_public_layer2",
+            u"__test_private_layer",
             u"__test_private_layer2",
             u"__test_public_layer_not_mapfile",
         ]))
@@ -595,6 +605,7 @@ class TestEntryView(TestCase):
         layers = {l["name"] for l in themes["themes"][0]["children"][0]["children"]}
         self.assertEquals(layers, set([
             u"__test_public_layer2",
+            u"__test_private_layer",
             u"__test_private_layer2",
             u"__test_public_layer_not_mapfile",
         ]))

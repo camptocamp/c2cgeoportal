@@ -37,21 +37,22 @@ from pyramid.httpexceptions import HTTPForbidden, HTTPBadRequest, HTTPUnauthoriz
 from c2cgeoportal.lib.caching import get_region, NO_CACHE, PRIVATE_CACHE
 from c2cgeoportal.lib.filter_capabilities import filter_wfst_capabilities, \
     normalize_tag, normalize_typename, get_writable_layers
-from c2cgeoportal.views.proxy import Proxy
+from c2cgeoportal.views.ogcproxy import OGCProxy
 
 cache_region = get_region()
 log = logging.getLogger(__name__)
 
 
-class TinyOWSProxy(Proxy):
+class TinyOWSProxy(OGCProxy):
 
     def __init__(self, request):
-        Proxy.__init__(self, request)
+        OGCProxy.__init__(self, request)
         self.settings = request.registry.settings.get("tinyowsproxy", {})
 
         assert \
             "tinyows_url" in self.settings, \
             "tinyowsproxy.tinyows_url must be set"
+        assert self.default_ogc_server, "mapserverproxy.default_ogc_server must be set"
 
     def _get_wfs_url(self):
         return self.settings.get("tinyows_url")
@@ -123,11 +124,15 @@ class TinyOWSProxy(Proxy):
         Checks if the current user has the rights to access the given
         type-names.
         """
-        writable_layers = get_writable_layers(self.role_id)
+
+        writable_layers = set()
+        for gmflayer in get_writable_layers(self.role_id, self.default_ogc_server.url).values():
+            for ogclayer in gmflayer.layer.split(","):
+                writable_layers.add(ogclayer)
         return typenames.issubset(writable_layers)
 
     def _get_headers(self):
-        headers = Proxy._get_headers(self)
+        headers = OGCProxy._get_headers(self)
         if "tinyows_host" in self.settings:
             headers["Host"] = self.settings.get("tinyows_host")
         return headers
@@ -137,9 +142,7 @@ class TinyOWSProxy(Proxy):
 
         if operation == "getcapabilities":
             content = filter_wfst_capabilities(
-                content, role_id,
-                self._get_wfs_url(),
-                self.settings.get("proxies")
+                content, role_id, self.default_ogc_server.url, self.settings.get("proxies")
             )
 
         content = self._filter_urls(

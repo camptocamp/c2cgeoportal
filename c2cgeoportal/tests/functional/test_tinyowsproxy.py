@@ -39,7 +39,7 @@ from c2cgeoportal.tests import load_file
 from c2cgeoportal.tests.functional import (  # noqa
     tear_down_common as tearDownModule,
     set_up_common as setUpModule,
-    create_dummy_request, mapserv_url)
+    create_dummy_request, mapserv_url, create_default_ogcserver)
 
 Base = sqlahelper.get_base()
 
@@ -77,7 +77,7 @@ class TestTinyOWSProxyView(TestCase):
 
     @staticmethod
     def setUp():  # noqa
-        from c2cgeoportal.models import User, Role, LayerV1, RestrictionArea, \
+        from c2cgeoportal.models import User, Role, LayerWMS, RestrictionArea, \
             Interface, DBSession
 
         user1 = User(username=u"__test_user1", password=u"__test_user1")
@@ -90,13 +90,22 @@ class TestTinyOWSProxyView(TestCase):
         user2.role_name = role2.name
         user2.email = u"Tarenpion"
 
+        ogc_server_internal, _ = create_default_ogcserver()
         main = Interface(name=u"main")
 
-        layer1 = LayerV1(u"layer_1", public=False)
+        layer1 = LayerWMS(u"layer_1", public=False)
+        layer1.layer = u"layer_1"
+        layer1.ogc_server = ogc_server_internal
         layer1.interfaces = [main]
-        layer2 = LayerV1(u"layer_2", public=False)
+
+        layer2 = LayerWMS(u"layer_2", public=False)
+        layer2.layer = u"layer_2"
+        layer2.ogc_server = ogc_server_internal
         layer2.interfaces = [main]
-        layer3 = LayerV1(u"layer_3", public=False)
+
+        layer3 = LayerWMS(u"layer_3", public=False)
+        layer3.layer = u"layer_3"
+        layer3.ogc_server = ogc_server_internal
         layer3.interfaces = [main]
 
         area = "POLYGON((-100 30, -100 50, 100 50, 100 30, -100 30))"
@@ -117,7 +126,7 @@ class TestTinyOWSProxyView(TestCase):
 
     @staticmethod
     def tearDown():  # noqa
-        from c2cgeoportal.models import User, Role, LayerV1, RestrictionArea, \
+        from c2cgeoportal.models import User, Role, LayerWMS, RestrictionArea, \
             Interface, DBSession
 
         DBSession.query(User).filter(User.username == "__test_user1").delete()
@@ -143,11 +152,11 @@ class TestTinyOWSProxyView(TestCase):
         r.functionalities = []
         DBSession.delete(r)
 
-        for layer in DBSession.query(LayerV1).filter(LayerV1.name == "layer_1").all():
+        for layer in DBSession.query(LayerWMS).filter(LayerWMS.name == "layer_1").all():
             DBSession.delete(layer)  # pragma: no cover
-        for layer in DBSession.query(LayerV1).filter(LayerV1.name == "layer_2").all():
+        for layer in DBSession.query(LayerWMS).filter(LayerWMS.name == "layer_2").all():
             DBSession.delete(layer)
-        for layer in DBSession.query(LayerV1).filter(LayerV1.name == "layer_3").all():
+        for layer in DBSession.query(LayerWMS).filter(LayerWMS.name == "layer_3").all():
             DBSession.delete(layer)
         DBSession.query(Interface).filter(
             Interface.name == "main"
