@@ -24,7 +24,7 @@ https://github.com/camptocamp/fa.jquery/archive/6b781ecb416ef40caa79ca449a04159d
 https://github.com/camptocamp/pyramid_closure/archive/819bc43420b3cd924d8698c5a9606592c19dbb15.zip#egg=pyramid_closure
 ipcalc==1.99.0
 isodate==0.5.4
-Jinja2==2.9.5
+Jinja2==2.9.6
 js.jqgrid==4.4.4
 js.jquery==1.9.1  # Fixed for admin interface
 js.jquery-form==3.9
@@ -48,7 +48,7 @@ Paste==2.0.3
 PasteDeploy==1.5.2
 PasteScript==2.0.2
 pep8-naming==0.4.1
-Pillow==4.0.0
+Pillow==4.1.0
 polib==1.0.8
 postmarkup==1.2.2
 psycopg2==2.7.1
@@ -73,10 +73,10 @@ restkit==4.2.2
 Shapely==1.5.17.post1
 simplejson==3.10.0
 six==1.10.0
-Sphinx==1.5.3
+Sphinx==1.5.5
 sphinx-prompt==1.0.0
 SQLAHelper==1.0
-SQLAlchemy==1.1.7
+SQLAlchemy==1.1.9
 Tempita==0.5.2
 textile==2.3.7
 tilecloud==0.4.0
