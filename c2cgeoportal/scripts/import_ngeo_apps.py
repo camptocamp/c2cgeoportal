@@ -241,6 +241,7 @@ def main():
         // {{{{package}}}}.baseTemplateUrl = '${{request.static_url("{{{{package}}}}:static-ngeo/js")}}';
     </script>
 % else:
+    <script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyCYnqxEQA5sz13sWSgMr97ejzvUeGP8gz4"></script>
     <script src="${{request.static_url('{{{{package}}}}:static-ngeo/build/{interface}.js')}}"></script>
 % endif""".format(interface=args.interface),  # noqa
                 data,
