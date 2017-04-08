@@ -1,4 +1,4 @@
 appdirs==1.4.3
 pip==9.0.1
-setuptools==34.3.3
+setuptools==34.4.0
 wheel==0.29.0
