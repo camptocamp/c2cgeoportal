@@ -78,7 +78,7 @@ sphinx-prompt==1.0.0
 SQLAHelper==1.0
 SQLAlchemy==1.1.9
 Tempita==0.5.2
-textile==2.3.7
+textile==2.3.9
 tilecloud==0.4.0
 tilecloud-chain==1.3.0
 transaction==2.1.2
