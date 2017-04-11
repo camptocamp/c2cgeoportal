@@ -63,7 +63,7 @@ pyramid-debugtoolbar==3.0.5
 pyramid-formalchemy==0.4.4
 pyramid-mako==1.0.2
 pyramid-multiauth==0.9.0
-pyramid-tm==1.1.1
+pyramid-tm==2.0
 python-dateutil==2.6.0
 pytz==2017.2
 PyYAML==3.12
