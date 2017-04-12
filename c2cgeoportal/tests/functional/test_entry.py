@@ -413,19 +413,19 @@ class TestEntryView(TestCase):
 
         self.assertEqual([
             "editable" in layer
-            for layer in themes[0]["children"][0]["children"]
+            for layer in layers
             if layer["name"] == "test_wmsfeaturesgroup"
         ], [False])
 
         self.assertEqual([
             "editable" in layer
-            for layer in themes[0]["children"][0]["children"]
+            for layer in layers
             if layer["name"] == "__test_private_layer"
         ], [True])
 
         self.assertEqual([
             "editable" in layer
-            for layer in themes[0]["children"][0]["children"]
+            for layer in layers
             if layer["name"] == "__test_public_layer"
         ], [False])
 
@@ -437,16 +437,16 @@ class TestEntryView(TestCase):
 
         # unautenticated
         themes, errors = entry._themes(None, "desktop")
-        self.assertEquals(errors, set([
+        self.assertEquals(errors, {
             u"The layer '__test_layer_in_group' (__test_layer_in_group) is not defined in WMS capabilities from '__test_ogc_server'",
-        ]))
+        })
         self.assertEquals(len(themes), 1)
         layers = {l["name"] for l in themes[0]["children"][0]["children"]}
-        self.assertEquals(layers, set([
+        self.assertEquals(layers, {
             u"test_wmsfeaturesgroup",
             u"__test_layer_group_1",
             u"__test_public_layer",
-        ]))
+        })
 
         # autenticated on parent
         request.params = {
@@ -463,17 +463,17 @@ class TestEntryView(TestCase):
         request.params = {}
         request.user = DBSession.query(User).filter_by(username=u"__test_user1").one()
         themes, errors = entry._themes(request.user.role.id)
-        self.assertEquals(errors, set([
+        self.assertEquals(errors, {
             u"The layer '__test_layer_in_group' (__test_layer_in_group) is not defined in WMS capabilities from '__test_ogc_server'",
-        ]))
+        })
         self.assertEquals(len(themes), 1)
         layers = {l["name"] for l in themes[0]["children"][0]["children"]}
-        self.assertEquals(layers, set([
+        self.assertEquals(layers, {
             u"test_wmsfeaturesgroup",
             u"__test_layer_group_1",
             u"__test_public_layer",
             u"__test_private_layer",
-        ]))
+        })
 
     def test_notmapfile(self):
         # mapfile error
@@ -489,12 +489,12 @@ class TestEntryView(TestCase):
         from c2cgeoportal.lib import caching
         caching.invalidate_region()
         themes, errors = entry._themes(None, "desktop")
-        self.assertEquals(errors, set([
+        self.assertEquals(errors, {
             u"The layer '__test_public_layer' (__test_public_layer) is not defined in WMS capabilities from '__test_ogc_server_notmapfile'",
             u"The layer '__test_layer_in_group' (__test_layer_in_group) is not defined in WMS capabilities from '__test_ogc_server_notmapfile'",
             u"The layer 'test_wmsfeaturesgroup' (test_wmsfeaturesgroup) is not defined in WMS capabilities from '__test_ogc_server_notmapfile'",
             u'GetCapabilities from URL http://localhost/cgi-bin/mapserv?map=not_a_mapfile&VERSION=1.1.1&REQUEST=GetCapabilities&SERVICE=WMS returns a wrong Content-Type: text/html\n<HTML>\n<HEAD><TITLE>MapServer Message</TITLE></HEAD>\n<!-- MapServer version 7.0.0 OUTPUT=PNG OUTPUT=JPEG OUTPUT=KML SUPPORTS=PROJ SUPPORTS=AGG SUPPORTS=FREETYPE SUPPORTS=CAIRO SUPPORTS=SVG_SYMBOLS SUPPORTS=RSVG SUPPORTS=ICONV SUPPORTS=WMS_SERVER SUPPORTS=WMS_CLIENT SUPPORTS=WFS_SERVER SUPPORTS=WFS_CLIENT SUPPORTS=WCS_SERVER SUPPORTS=SOS_SERVER SUPPORTS=FASTCGI SUPPORTS=THREADS SUPPORTS=GEOS INPUT=JPEG INPUT=POSTGIS INPUT=OGR INPUT=GDAL INPUT=SHAPEFILE -->\n<BODY BGCOLOR="#FFFFFF">\nmsLoadMap(): Regular expression error. MS_DEFAULT_MAPFILE_PATTERN validation failed.\n</BODY></HTML>',
-        ]))
+        })
 
     def test_themev2(self):
         from c2cgeoportal.models import DBSession, User
@@ -509,15 +509,15 @@ class TestEntryView(TestCase):
         themes = entry.themes()
         self.assertEquals(len(themes["themes"]), 1)
         layers = {l["name"] for l in themes["themes"][0]["children"][0]["children"]}
-        self.assertEquals(layers, set([
+        self.assertEquals(layers, {
             u"__test_public_layer2",
             u"__test_public_layer_not_mapfile",
-        ]))
+        })
 
-        self.assertEquals(set(themes["errors"]), set([
+        self.assertEquals(set(themes["errors"]), {
             u"The layer '__test_public_layer_not_in_mapfile' (__test_public_layer_not_mapfile) is not defined in WMS capabilities from '__test_ogc_server'",
             u"The layer '__test_public_layer_no_layers' do not have any layers",
-        ]))
+        })
 
         # autenticated
         request.params = {
@@ -527,16 +527,16 @@ class TestEntryView(TestCase):
         themes = entry.themes()
         self.assertEquals(len(themes["themes"]), 1)
         layers = {l["name"] for l in themes["themes"][0]["children"][0]["children"]}
-        self.assertEquals(layers, set([
+        self.assertEquals(layers, {
             u"__test_public_layer2",
             u"__test_private_layer",
             u"__test_private_layer2",
             u"__test_public_layer_not_mapfile",
-        ]))
-        self.assertEquals(set(themes["errors"]), set([
+        })
+        self.assertEquals(set(themes["errors"]), {
             u"The layer '__test_public_layer_not_in_mapfile' (__test_public_layer_not_mapfile) is not defined in WMS capabilities from '__test_ogc_server'",
             u"The layer '__test_public_layer_no_layers' do not have any layers",
-        ]))
+        })
 
     def test_theme_geoserver(self):
         from c2cgeoportal.models import DBSession, User
@@ -553,11 +553,11 @@ class TestEntryView(TestCase):
         self.assertEquals(errors, set())
         self.assertEquals(len(themes), 1)
         layers = {l["name"] for l in themes[0]["children"][0]["children"]}
-        self.assertEquals(layers, set([
+        self.assertEquals(layers, {
             u"test_wmsfeaturesgroup",
             u"__test_public_layer",
             u"__test_layer_group_1",
-        ]))
+        })
 
         # autenticated v1
         request.params = {}
@@ -566,12 +566,12 @@ class TestEntryView(TestCase):
         self.assertEquals(errors, set())
         self.assertEquals(len(themes), 1)
         layers = {l["name"] for l in themes[0]["children"][0]["children"]}
-        self.assertEquals(layers, set([
+        self.assertEquals(layers, {
             u"test_wmsfeaturesgroup",
             u"__test_public_layer",
             u"__test_private_layer",
             u"__test_layer_group_1",
-        ]))
+        })
 
         # do not test anything related to geoserver ...
         # unautenticated v2
@@ -580,16 +580,16 @@ class TestEntryView(TestCase):
         }
         request.user = None
         themes = entry.themes()
-        self.assertEquals(set(themes["errors"]), set([
+        self.assertEquals(set(themes["errors"]), {
             u"The layer '__test_public_layer_not_in_mapfile' (__test_public_layer_not_mapfile) is not defined in WMS capabilities from '__test_ogc_server'",
             u"The layer '__test_public_layer_no_layers' do not have any layers",
-        ]))
+        })
         self.assertEquals(len(themes["themes"]), 1)
         layers = {l["name"] for l in themes["themes"][0]["children"][0]["children"]}
-        self.assertEquals(layers, set([
+        self.assertEquals(layers, {
             u"__test_public_layer2",
             u"__test_public_layer_not_mapfile",
-        ]))
+        })
 
         # autenticated v2
         request.params = {
@@ -597,18 +597,18 @@ class TestEntryView(TestCase):
         }
         request.user = DBSession.query(User).filter_by(username=u"__test_user1").one()
         themes = entry.themes()
-        self.assertEquals(set(themes["errors"]), set([
+        self.assertEquals(set(themes["errors"]), {
             u"The layer '__test_public_layer_not_in_mapfile' (__test_public_layer_not_mapfile) is not defined in WMS capabilities from '__test_ogc_server'",
             u"The layer '__test_public_layer_no_layers' do not have any layers",
-        ]))
+        })
         self.assertEquals(len(themes["themes"]), 1)
         layers = {l["name"] for l in themes["themes"][0]["children"][0]["children"]}
-        self.assertEquals(layers, set([
+        self.assertEquals(layers, {
             u"__test_public_layer2",
             u"__test_private_layer",
             u"__test_private_layer2",
             u"__test_public_layer_not_mapfile",
-        ]))
+        })
 
     def test_wfs_types(self):
         from c2cgeoportal.views.entry import Entry
@@ -622,7 +622,7 @@ class TestEntryView(TestCase):
             set()
         )
 
-        result = set([
+        result = {
             "testpoint_unprotected",
             "testpoint_protected",
             "testpoint_protected_2",
@@ -641,7 +641,7 @@ class TestEntryView(TestCase):
             "test_minscale",
             "test_maxscale",
             "test_boothscale",
-        ])
+        }
 
         self.assertEquals(set(json.loads(response["WFSTypes"])), result)
         self.assertEquals(set(json.loads(response["externalWFSTypes"])), result)
@@ -686,50 +686,50 @@ class TestEntryView(TestCase):
         result = entry.get_cgxp_index_vars()
         self.assertEquals(
             set(result.keys()),
-            set(["lang", "debug", "extra_params"])
+            {"lang", "debug", "extra_params"}
         )
         result = entry.get_cgxp_viewer_vars()
-        self.assertEquals(set(result.keys()), set([
+        self.assertEquals(set(result.keys()), {
             "lang", "tiles_url", "debug",
             "serverError", "themes", "external_themes", "functionality",
             "WFSTypes", "externalWFSTypes", "user", "queryer_attribute_urls",
             "version_role_params", "version_params",
-        ]))
+        })
         self.assertEquals(
             result["queryer_attribute_urls"],
             '{{"layer_test": {{"label": "{0!s}"}}}}'.format(mapserv_url)
         )
 
         result = entry.get_ngeo_index_vars()
-        self.assertEquals(set(result.keys()), set([
+        self.assertEquals(set(result.keys()), {
             "debug", "fulltextsearch_groups", "wfs_types"
-        ]))
+        })
         result = entry.get_ngeo_permalinktheme_vars()
-        self.assertEquals(set(result.keys()), set([
+        self.assertEquals(set(result.keys()), {
             "debug", "fulltextsearch_groups", "permalink_themes", "wfs_types"
-        ]))
+        })
 
         result = entry.apijs()
         self.assertEquals(
             set(result.keys()),
-            set(["lang", "debug", "queryable_layers", "tiles_url", "url_params"])
+            {"lang", "debug", "queryable_layers", "tiles_url", "url_params"}
         )
         result = entry.xapijs()
         self.assertEquals(
             set(result.keys()),
-            set(["lang", "debug", "queryable_layers", "tiles_url", "url_params"])
+            {"lang", "debug", "queryable_layers", "tiles_url", "url_params"}
         )
         result = entry.apihelp()
-        self.assertEquals(set(result.keys()), set(["lang", "debug"]))
+        self.assertEquals(set(result.keys()), {"lang", "debug"})
         result = entry.xapihelp()
-        self.assertEquals(set(result.keys()), set(["lang", "debug"]))
+        self.assertEquals(set(result.keys()), {"lang", "debug"})
 
     def test_ngeo_vars(self):
         entry, _ = self._create_entry()
         result = entry.get_ngeo_index_vars()
         self.assertEquals(
-            result["fulltextsearch_groups"],
-            ["layer1"],
+            set(result["fulltextsearch_groups"]),
+            {"layer1"},
         )
 
     def test_auth_home(self):
@@ -759,11 +759,11 @@ class TestEntryView(TestCase):
         result = entry.get_cgxp_index_vars()
         self.assertEquals(
             set(result.keys()),
-            set(["lang", "debug", "extra_params"])
+            {"lang", "debug", "extra_params"}
         )
         self.assertEquals(
             set(result["extra_params"].keys()),
-            set(["lang"])
+            {"lang"}
         )
         self.assertEquals(result["extra_params"]["lang"], "fr")
 
@@ -794,7 +794,7 @@ class TestEntryView(TestCase):
         result = entry.get_cgxp_index_vars()
         self.assertEquals(
             set(result.keys()),
-            set(["lang", "debug", "extra_params"])
+            {"lang", "debug", "extra_params"}
         )
 
     def test_entry_points_wfs(self):
@@ -824,13 +824,11 @@ class TestEntryView(TestCase):
         result = entry.get_cgxp_index_vars()
         self.assertEquals(
             set(result.keys()),
-            set([
-                "lang", "debug", "extra_params"
-            ])
+            {"lang", "debug", "extra_params"}
         )
         self.assertEquals(
             set(result["extra_params"].keys()),
-            set(["lang"]),
+            {"lang"},
         )
         self.assertEquals(result["extra_params"]["lang"], "fr")
 
@@ -855,7 +853,7 @@ class TestEntryView(TestCase):
         result = entry.get_cgxp_index_vars()
         self.assertEquals(
             set(result.keys()),
-            set(["lang", "debug", "extra_params"])
+            {"lang", "debug", "extra_params"}
         )
         result = entry.get_cgxp_viewer_vars()
 
@@ -880,7 +878,7 @@ class TestEntryView(TestCase):
         result = entry.get_cgxp_index_vars()
         self.assertEquals(
             set(result.keys()),
-            set(["lang", "debug", "extra_params"])
+            {"lang", "debug", "extra_params"}
         )
         result = entry.get_cgxp_viewer_vars()
 
@@ -895,14 +893,11 @@ class TestEntryView(TestCase):
         result = entry.get_cgxp_permalinktheme_vars()
         self.assertEquals(
             set(result.keys()),
-            set([
-                "lang", "permalink_themes",
-                "debug", "extra_params",
-            ])
+            {"lang", "permalink_themes", "debug", "extra_params"}
         )
         self.assertEquals(
             set(result["extra_params"].keys()),
-            set(["lang", "permalink_themes"])
+            {"lang", "permalink_themes"}
         )
         self.assertEquals(result["extra_params"]["lang"], "fr")
         self.assertEquals(result["extra_params"]["permalink_themes"], ["theme"])
@@ -914,13 +909,11 @@ class TestEntryView(TestCase):
         result = entry.get_cgxp_permalinktheme_vars()
         self.assertEquals(
             set(result.keys()),
-            set([
-                "lang", "permalink_themes", "debug", "extra_params"
-            ])
+            {"lang", "permalink_themes", "debug", "extra_params"}
         )
         self.assertEquals(
             set(result["extra_params"].keys()),
-            set(["lang", "permalink_themes"])
+            {"lang", "permalink_themes"}
         )
         self.assertEquals(result["extra_params"]["lang"], "fr")
         self.assertEquals(result["extra_params"]["permalink_themes"], ["theme1", "theme2"])
@@ -984,7 +977,7 @@ class TestEntryView(TestCase):
             "identifierAttribute": "name",
             "public": True,
             "metadata": {},
-        }, set(["The layer 'test internal WMS' (test internal WMS) is not defined in WMS capabilities from '__test_ogc_server'"])))
+        }, {"The layer 'test internal WMS' (test internal WMS) is not defined in WMS capabilities from '__test_ogc_server'"}))
 
         layer = LayerV1()
         layer.id = 20
@@ -1395,7 +1388,7 @@ class TestEntryView(TestCase):
                     "metadata": {},
                 }]
             }]
-        }, set(["The layer 'test layer in group' (test layer in group) is not defined in WMS capabilities from '__test_ogc_server'"])))
+        }, {"The layer 'test layer in group' (test layer in group) is not defined in WMS capabilities from '__test_ogc_server'"}))
 
     def _assert_has_error(self, errors, error):
         self.assertIn(error, errors)
@@ -1436,9 +1429,9 @@ class TestEntryView(TestCase):
         layer.layer_type = "internal WMS"
         group.children = [layer]
         _, errors = entry._group("", group, [layer.name], catalogue=False)
-        self.assertEqual(errors, set([
+        self.assertEqual(errors, {
             u"The layer '' () is not defined in WMS capabilities from '__test_ogc_server'",
-        ]))
+        })
 
         group = LayerGroup()
         group.is_internal_wms = True
