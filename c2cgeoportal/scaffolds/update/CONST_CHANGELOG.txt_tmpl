@@ -1,5 +1,13 @@
 This file includes migration steps for each release of c2cgeoportal.
 
+Version 1.6.1
+=============
+
+1. If you use ngeo you will need the `templatecache.mako.js` file at the root of
+   your project:
+
+    ./buildout/bin/pcreate -s c2cgeoportal_create /tmp/{{project}} package={{package}}
+    cp /tmp/{{project}}/templatecache.mako.js .
 
 Version 1.6.8
 =============
