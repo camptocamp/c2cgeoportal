@@ -370,3 +370,35 @@ Your application should be available at:
 
 Where the ``<hostname>`` is directly linked to the virtual host,
 and the ``<instanceid>`` is the value you provided before.
+
+Dependency Version 
+~~~~~~~~~~~~~~~~~~~~
+
+You should prevent version dependency upgrade when you install a new 
+instance of your application. So copy the dependency version lines 
+(of the form ``Mako = 0.7.2``) from the ``buildout`` command output 
+and paste them into the ``[versions]`` part of ``buildout.cfg``. 
+Then, apply the following corrections (to work around bugs in 
+``buildout.dumppickedversions``)::
+
+  -Mako = x.y.z
+  +mako = x.y.z
+  -Markdown = x.y.z
+  +markdown = x.y.z
+  -SQLAHelper = x.y.z
+  +sqlahelper = x.y.z
+  -SQLAlchemy = x.y.z
+  +sqlalchemy = x.y.z
+  -Tempita = x.y.z
+  +tempita = x.y.z
+
+.. note::
+
+    If you have ``tilecloud_chain`` installed, please make the
+    following changes as well::
+
+        -Jinja2 = x.y.z
+        +jinja2 = x.y.z
+        -Pillow = x.y.z
+        +pillow = x.y.z
+
