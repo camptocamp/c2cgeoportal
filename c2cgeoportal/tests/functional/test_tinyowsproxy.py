@@ -75,10 +75,13 @@ class TestTinyOWSProxyView(TestCase):
     describefeaturetype_request_multiple_file = \
         data_base + "tinyows_describefeaturetype_request_multiple.xml"
 
-    @staticmethod
-    def setUp():  # noqa
+    def setUp(self):  # noqa
         from c2cgeoportal.models import User, Role, LayerWMS, RestrictionArea, \
             Interface, DBSession
+
+        # Always see the diff
+        # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
+        self.maxDiff = None
 
         user1 = User(username=u"__test_user1", password=u"__test_user1")
         role1 = Role(name=u"__test_role1", description=u"__test_role1")
