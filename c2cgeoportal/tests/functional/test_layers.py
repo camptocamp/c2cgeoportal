@@ -56,6 +56,10 @@ class TestLayers(TestCase):
         self.metadata = None
         self.layer_ids = []
 
+        DBSession.query(User).filter(
+            User.username == u"__test_user"
+        ).delete()
+
         self.role = Role(name=u"__test_role")
         self.user = User(
             username=u"__test_user",
