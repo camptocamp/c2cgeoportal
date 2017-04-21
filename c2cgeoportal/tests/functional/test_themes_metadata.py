@@ -119,17 +119,12 @@ class TestThemesViewMetadata(TestCase):
     def tearDown():  # noqa
         testing.tearDown()
 
-        from c2cgeoportal.models import DBSession, Layer, \
-            Theme, LayerGroup, Interface, Metadata
+        from c2cgeoportal.models import DBSession, TreeItem, Interface, Metadata
 
         for t in DBSession.query(Metadata).all():
             DBSession.delete(t)
-        for layer in DBSession.query(Layer).all():
-            DBSession.delete(layer)
-        for layergroup in DBSession.query(LayerGroup).all():
-            DBSession.delete(layergroup)
-        for t in DBSession.query(Theme).all():
-            DBSession.delete(t)
+        for item in DBSession.query(TreeItem).all():
+            DBSession.delete(item)
         DBSession.query(Interface).filter(
             Interface.name == "desktop"
         ).delete()

@@ -129,17 +129,13 @@ class TestThemesView(TestCase):
     def tearDown():  # noqa
         testing.tearDown()
 
-        from c2cgeoportal.models import DBSession, OGCServer, Layer, \
-            Theme, LayerGroup, Interface, Metadata, Dimension
+        from c2cgeoportal.models import DBSession, OGCServer, TreeItem, \
+            Interface, Metadata, Dimension
 
         DBSession.query(Metadata).delete()
         DBSession.query(Dimension).delete()
-        for layer in DBSession.query(Layer).all():
-            DBSession.delete(layer)
-        for g in DBSession.query(LayerGroup).all():
-            DBSession.delete(g)
-        for t in DBSession.query(Theme).all():
-            DBSession.delete(t)
+        for item in DBSession.query(TreeItem).all():
+            DBSession.delete(item)
         DBSession.query(Interface).filter(
             Interface.name == "main"
         ).delete()
