@@ -57,6 +57,7 @@ vars:
 
     directory: __import__('os').getcwd()
     python_path: __import__('distutils').sysconfig.get_python_lib()
+    ps: __import__('os').path.sep
 
     # Authentication settings
     authtkt:
@@ -77,7 +78,7 @@ vars:
 
     # used for the "node_modules" and "closure" static views
     closure_library_path: 'process.stdout.write(require("closure-util").getLibraryPath())'
-    node_modules_path: "{directory}/node_modules"
+    node_modules_path: "{directory}{ps}node_modules"
 
     # pyramid_closure configuration
     # Each item in the roots_with_prefix array is an array with two elements. The
@@ -90,10 +91,10 @@ vars:
         - ["{closure_library_path}/closure/goog", "{closure_library_path}/closure/goog"]
         - ["{package}:static-ngeo/js", "{directory}/{package}/static-ngeo/js"]
         - ["{package}:static-ngeo/components", "{directory}/{package}/static-ngeo/components"]
-        - ["{node_modules_path}/openlayers/src", "{node_modules_path}/openlayers/src"]
-        - ["{node_modules_path}/openlayers/build", "{node_modules_path}/openlayers/build"]
-        - ["{node_modules_path}/ngeo/src", "{node_modules_path}/ngeo/src"]
-        - ["{node_modules_path}/ngeo/contribs/gmf/src", "{node_modules_path}/ngeo/contribs/gmf/src"]
+        - ["{node_modules_path}{ps}openlayers/src", "{node_modules_path}{ps}openlayers/src"]
+        - ["{node_modules_path}{ps}openlayers/build", "{node_modules_path}{ps}openlayers/build"]
+        - ["{node_modules_path}{ps}ngeo/src", "{node_modules_path}{ps}ngeo/src"]
+        - ["{node_modules_path}{ps}ngeo/contribs/gmf/src", "{node_modules_path}{ps}ngeo/contribs/gmf/src"]
 
     # The application's default language. This is the language used by
     # the application if no specific language is specified in the URLs.
@@ -412,6 +413,7 @@ interpreted:
     python:
     - authtkt.secret
     - python_path
+    - ps
     - directory
     - interfaces
     environment:
