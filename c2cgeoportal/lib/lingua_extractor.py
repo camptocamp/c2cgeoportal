@@ -489,7 +489,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                 print("URL: {0!s}\nxml:\n{1!s}".format(wfs_descrfeat_url, content))
             except AttributeError:
                 print(colorize(
-                    "WARNING! an error occured while trying to "
+                    "WARNING! an error occurred while trying to "
                     "read the Mapfile and recover the themes.",
                     YELLOW
                 ))

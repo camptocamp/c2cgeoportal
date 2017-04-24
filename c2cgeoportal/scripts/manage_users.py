@@ -39,9 +39,9 @@ import transaction
 def main():
     """
     Emergency user create and password reset script
-    exemple, reset toto password to foobar:
+    example, reset toto password to foobar:
     .build/venv/bin/manage_users -p foobar toto
-    exemple, create user foo with password bar and role admin:
+    example, create user foo with password bar and role admin:
     .build/venv/bin/manage_users -c -r role_admin -p bar foo
 
     to get the options list, do:

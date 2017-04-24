@@ -6,6 +6,7 @@ bottle==0.12.13
 c2c.cssmin==0.7.dev6
 c2c.template==1.4.0.dev1
 Chameleon==3.1
+codespell==1.10.0
 couchdbkit==0.6.5
 coveralls==1.1
 defusedxml==0.5.0
