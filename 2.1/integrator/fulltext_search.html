@@ -184,6 +184,11 @@ for more information.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
+<p>Example of <code class="docutils literal"><span class="pre">SQL</span></code> <code class="docutils literal"><span class="pre">INSERT</span></code> of <code class="docutils literal"><span class="pre">actions</span></code> data to add the layer &#8220;cadastre&#8221; on the map:</p>
+<div class="code sql highlight-default"><div class="highlight"><pre><span></span><span class="n">INSERT</span> <span class="n">INTO</span> <span class="n">app_schema</span><span class="o">.</span><span class="n">tsearch</span> <span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">actions</span><span class="p">)</span>
+<span class="n">VALUES</span> <span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="s1">&#39;[{&quot;action&quot;: &quot;add_layer&quot;, &quot;data&quot;: &quot;cadastre&quot;}]&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="interface">
 <h2>Interface<a class="headerlink" href="#interface" title="Permalink to this headline">¶</a></h2>
