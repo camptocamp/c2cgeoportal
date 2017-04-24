@@ -51,7 +51,7 @@ install_requires = [
     "papyrus",
     "ipcalc",
     "httplib2",
-    # Needed by the developement.ini
+    # Needed by the development.ini
     "pyramid_debugtoolbar",
     "OWSLib>=0.6.0",
     "dogpile.cache>=0.6",

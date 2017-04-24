@@ -515,7 +515,7 @@ class C2cTool:
 
         self.print_step(
             6, message="We will commit all the above files!\n"
-            "If there are some files which should not be commited, then you should "
+            "If there are some files which should not be committed, then you should "
             "add them into the `.gitignore` file and launch upgrade5 again.",
             prompt="Then to commit your changes type:")
 
@@ -531,7 +531,7 @@ class C2cTool:
         print(colorize("Congratulations your upgrade is a success.", GREEN))
         print("")
         branch = check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).strip()
-        print("Now all your files will be commited, you should do a git push:")
+        print("Now all your files will be committed, you should do a git push:")
         print("git push {0!s} {1!s}.".format(
             self.options.git_remote, branch
         ))

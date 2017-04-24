@@ -39,7 +39,7 @@ def main():
         prog=sys.argv[0], add_help=True,
         description="Tool used to migrate the localisation v1 to v2.",
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""The source file should be wheel formated as:
+        epilog="""The source file should be wheel formatted as:
 OpenLayers.Util.extend(OpenLayers.Lang.<lang>, {
     ...
 });

@@ -266,7 +266,7 @@ class Entry:
             wms = WebMapService(None, xml=content)
         except:  # pragma: no cover
             error = _(
-                "WARNING! an error occured while trying to "
+                "WARNING! an error occurred while trying to "
                 "read the mapfile and recover the themes."
             )
             error = u"{0!s}\nURL: {1!s}\n{2!s}".format(error, url, content.encode("utf-8"))
@@ -1391,7 +1391,7 @@ class Entry:
 
             result["ogcServers"] = {}
             for ogc_server in DBSession.query(OGCServer).all():
-                # required to do everytime to validate the url.
+                # required to do every time to validate the url.
                 if ogc_server.auth != OGCSERVER_AUTH_NOAUTH:
                     url = self.request.route_url("mapserverproxy", _query={"ogcserver": ogc_server.name})
                     url_wfs = url

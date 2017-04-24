@@ -37,7 +37,7 @@ def main():
     """ This function build the print configuration file config.yaml using
     mako.
     The file is created in the folder print/.
-    If the file print/templates/print.mako doesnt exists, the build is not
+    If the file print/templates/print.mako doesn't exists, the build is not
     executed
     """
 
@@ -45,7 +45,7 @@ def main():
     if os.path.exists(base_template):
         print "building print template"
 
-        # DONT! add a trailing / to the lookup path, mako cant find templates otherwise
+        # DON'T! add a trailing / to the lookup path, mako can't find templates otherwise
         mylookup = TemplateLookup(directories=['print/templates'])
         mytemplate = Template(filename=base_template, lookup=mylookup)
 
