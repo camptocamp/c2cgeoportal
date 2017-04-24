@@ -60,7 +60,6 @@ APPS_FILES = $(APPS_HTML_FILES) $(APPS_JS_FILES) \
 
 C2C_TEMPLATE_CMD = $(BUILD_DIR)/venv/bin/python /usr/local/bin/c2c-template --vars $(VARS_FILE)
 
-
 .PHONY: help
 help:
 	@echo "Usage: $(MAKE) <target>"
@@ -98,7 +97,7 @@ doc: $(BUILD_DIR)/sphinx.timestamp
 tests: nose
 
 .PHONY: checks
-checks: flake8 git-attributes quote
+checks: flake8 git-attributes quote spell
 
 .PHONY: clean
 clean:
@@ -157,6 +156,10 @@ git-attributes:
 quote:
 	travis/quote `find c2cgeoportal/lib c2cgeoportal/scaffolds/create c2cgeoportal/templates c2cgeoportal/tests c2cgeoportal/views -name '*.py'` c2cgeoportal/*.py setup.py
 	travis/squote `find c2cgeoportal/scaffolds/update/CONST_alembic -name '*.py'`
+
+.PHONY: spell
+spell:
+	@codespell setup.py $(shell find c2cgeoportal -name static -prune -or -name '*.py' -print)
 
 # i18n
 $(HOME)/.transifexrc:
