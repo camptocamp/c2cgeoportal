@@ -182,6 +182,13 @@ The ``actions`` column contains a JSON with an array of actions like:
         "data": "<the_theme_name>"
     }
 
+Example of ``SQL`` ``INSERT`` of ``actions`` data to add the layer "cadastre" on the map:
+
+.. code:: sql
+
+   INSERT INTO app_schema.tsearch (..., actions)
+   VALUES (..., '[{"action": "add_layer", "data": "cadastre"}]')
+
 Interface
 ---------
 
