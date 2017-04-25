@@ -340,7 +340,7 @@ class Layers:
 
         last_update_user = self._get_metadata(layer, "lastUpdateUserColumn")
         if last_update_user is not None:
-            setattr(feature, last_update_user, self.request.user.role.id)
+            setattr(feature, last_update_user, self.request.user.id)
 
     def _get_metadata(self, layer, key, default=None):
         metadatas = layer.get_metadatas(key)

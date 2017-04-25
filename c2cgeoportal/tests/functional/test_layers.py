@@ -56,6 +56,10 @@ class TestLayers(TestCase):
         self.metadata = None
         self.layer_ids = []
 
+        DBSession.query(User).filter(
+            User.username == u"__test_user"
+        ).delete()
+
         self.role = Role(name=u"__test_role")
         self.user = User(
             username=u"__test_user",
@@ -419,6 +423,10 @@ class TestLayers(TestCase):
         from c2cgeoportal.views.layers import Layers
         from c2cgeoportal.models import Metadata
 
+        from c2cgeoportal.models import DBSession, User
+
+        self.assertEquals(DBSession.query(User.username).all(), [(u"admin",), (u"__test_user",)])
+
         metadatas = [
             Metadata("lastUpdateDateColumn", "last_update_date"),
             Metadata("lastUpdateUserColumn", "last_update_user"),
@@ -433,6 +441,9 @@ class TestLayers(TestCase):
         self.assertTrue(isinstance(collection, FeatureCollection))
         self.assertEquals(len(collection.features), 1)
         properties = collection.features[0]
+
+        self.assertEquals(request.user.username, u"__test_user")
+
         self.assertEquals(properties.last_update_user, request.user.id)
         self.assertIsInstance(properties.last_update_date, datetime)
 

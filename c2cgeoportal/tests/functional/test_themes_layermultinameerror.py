@@ -94,15 +94,11 @@ class TestLayerMultiNameErrorView(TestCase):
     def tearDown():
         testing.tearDown()
 
-        from c2cgeoportal.models import DBSession, Layer, \
-            Theme, LayerGroup, Interface, OGCServer
+        from c2cgeoportal.models import DBSession, TreeItem, \
+            Interface, OGCServer
 
-        for layer in DBSession.query(Layer).all():
-            DBSession.delete(layer)
-        for g in DBSession.query(LayerGroup).all():
-            DBSession.delete(g)
-        for t in DBSession.query(Theme).all():
-            DBSession.delete(t)
+        for item in DBSession.query(TreeItem).all():
+            DBSession.delete(item)
         DBSession.query(OGCServer).delete()
         DBSession.query(Interface).filter(
             Interface.name == "main"

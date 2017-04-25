@@ -49,10 +49,10 @@ class TestMapserverproxyViewGroup(TestCase):
 
     @staticmethod
     def setUp():  # noqa
-        from c2cgeoportal.models import User, Role, LayerV1, RestrictionArea, \
+        from c2cgeoportal.models import User, Role, LayerWMS, RestrictionArea, \
             Interface, DBSession
 
-        create_default_ogcserver()
+        ogc_server_internal, _ = create_default_ogcserver()
 
         user1 = User(username=u"__test_user1", password=u"__test_user1")
         role1 = Role(name=u"__test_role1", description=u"__test_role1")
@@ -61,10 +61,14 @@ class TestMapserverproxyViewGroup(TestCase):
 
         main = Interface(name=u"main")
 
-        layer1 = LayerV1(u"testpoint_group", public=False)
+        layer1 = LayerWMS(u"testpoint_group_name", public=False)
+        layer1.layer = u"testpoint_group"
+        layer1.ogc_server = ogc_server_internal
         layer1.interfaces = [main]
 
-        layer2 = LayerV1(u"testpoint_protected_2", public=False)
+        layer2 = LayerWMS(u"testpoint_protected_2_name", public=False)
+        layer2.layer = u"testpoint_protected_2"
+        layer2.ogc_server = ogc_server_internal
         layer2.interfaces = [main]
 
         area = "POLYGON((-100 30, -100 50, 100 50, 100 30, -100 30))"
@@ -78,7 +82,7 @@ class TestMapserverproxyViewGroup(TestCase):
 
     @staticmethod
     def tearDown():  # noqa
-        from c2cgeoportal.models import User, Role, LayerV1, RestrictionArea, \
+        from c2cgeoportal.models import User, Role, LayerWMS, RestrictionArea, \
             Interface, DBSession, OGCServer
 
         DBSession.query(User).filter(User.username == "__test_user1").delete()
@@ -93,8 +97,8 @@ class TestMapserverproxyViewGroup(TestCase):
         r = DBSession.query(Role).filter(Role.name == "__test_role1").one()
         DBSession.delete(r)
 
-        for layer in DBSession.query(LayerV1).filter(
-                LayerV1.name.in_(["testpoint_group", "testpoint_protected_2"])
+        for layer in DBSession.query(LayerWMS).filter(
+                LayerWMS.name.in_(["testpoint_group_name", "testpoint_protected_2_name"])
         ).all():
             DBSession.delete(layer)
         DBSession.query(Interface).filter(

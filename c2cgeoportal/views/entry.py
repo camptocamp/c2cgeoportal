@@ -271,24 +271,34 @@ class Entry:
             log.exception(error)
         return wms, errors
 
-    @staticmethod
-    def _create_layer_query(role_id, version):
+    def _create_layer_query(self, role_id, version, interface):
         """ Create an SQLAlchemy query for Layer and for the role
             identified to by ``role_id``.
         """
 
         if version == 1:
-            q = DBSession.query(LayerV1)
+            query = DBSession.query(LayerV1.name)
         else:
-            q = DBSession.query(Layer).with_polymorphic(
-                [LayerWMS, LayerWMTS]
-            )
+            query = DBSession.query(Layer.name).filter(Layer.item_type.in_(["l_wms", "l_wmts"]))
 
-        q = q.filter(Layer.public.is_(True))
+        query = query.filter(Layer.public.is_(True))
+
+        if interface is not None:
+            query = query.join(Layer.interfaces)
+            query = query.filter(Interface.name == interface)
+
         if role_id is not None:
-            q = q.union(get_protected_layers_query(role_id, version=version))
+            query2 = get_protected_layers_query(
+                role_id, self.default_ogc_server.url,
+                what=LayerV1.name if version == 1 else LayerWMS.name,
+                version=version
+            )
+            if interface is not None:
+                query2 = query2.join(Layer.interfaces)
+                query2 = query2.filter(Interface.name == interface)
+            query = query.union(query2)
 
-        return q
+        return query
 
     def _get_layer_metadata_urls(self, layer):
         metadata_urls = []
@@ -861,11 +871,8 @@ class Entry:
 
     @cache_region.cache_on_arguments()
     def _layers(self, role_id, version, interface):
-        query = self._create_layer_query(role_id, version)
-        if interface is not None:
-            query = query.join(Layer.interfaces)
-            query = query.filter(Interface.name == interface)
-        return [l.name for l in query.all()]
+        query = self._create_layer_query(role_id, version, interface=interface)
+        return [name for (name,) in query.all()]
 
     @cache_region.cache_on_arguments()
     def _wms_layers(self, role_id, ogc_server):
