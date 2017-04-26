@@ -265,6 +265,10 @@ mapping:
             servers:
                 <<: *free_dict
                 required: True
+            host_forward_host:
+                type: seq
+                sequence:
+                -   type: str
             raster:
                 <<: *free_dict
                 required: True

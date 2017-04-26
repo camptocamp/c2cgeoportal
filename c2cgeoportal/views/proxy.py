@@ -50,6 +50,7 @@ class Proxy:
 
     def __init__(self, request):
         self.request = request
+        self.host_forward_host = request.registry.settings["host_forward_host"]
 
     def _proxy(self, url, params=None, method=None, cache=False, body=None, headers=None):
         # get query string
@@ -86,7 +87,7 @@ class Proxy:
         if headers is None:  # pragma: no cover
             headers = dict(self.request.headers)
 
-        if parsed_url.hostname != "localhost" and "Host" in headers:  # pragma: no cover
+        if parsed_url.hostname not in self.host_forward_host and "Host" in headers:  # pragma: no cover
             headers.pop("Host")
 
         if not cache:
