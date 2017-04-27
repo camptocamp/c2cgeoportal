@@ -276,12 +276,12 @@ def _match_url_start(ref, val):
     return ref_parts == val_parts
 
 
-def _is_valid_referer(referer, settings):
-    if referer:
+def _is_valid_referer(request, settings):
+    if request.referer:
         list = settings.get("authorized_referers", [])
-        return any(_match_url_start(x, referer) for x in list)
+        return any(_match_url_start(x, request.referer) for x in list)
     else:
-        return False
+        return request.method == "GET"
 
 
 def _create_get_user_from_request(settings):
@@ -295,14 +295,11 @@ def _create_get_user_from_request(settings):
         """
         from c2cgeoportal.models import DBSession, User
 
-        # disable the referer check for the admin interface
-        if not (
-                request.path_info_peek() == "admin" and request.referer is None or
-                _is_valid_referer(request.referer, settings)
-        ):
-            if request.referer is not None:
-                log.warning("Invalid referer for %s: %s", request.path_qs,
-                            repr(request.referer))
+        if not hasattr(request, "_is_valid_referer"):
+            request._is_valid_referer = _is_valid_referer(request, settings)
+        if not request._is_valid_referer:
+            log.warning("Invalid referer for %s: %s", request.path_qs,
+                        repr(request.referer))
             return None
 
         if not hasattr(request, "_user"):
