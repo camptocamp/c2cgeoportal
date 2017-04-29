@@ -49,7 +49,7 @@ Paste==2.0.3
 PasteDeploy==1.5.2
 PasteScript==2.0.2
 pep8-naming==0.4.1
-Pillow==4.1.0
+Pillow==4.1.1
 polib==1.0.8
 postmarkup==1.2.2
 psycopg2==2.7.1
