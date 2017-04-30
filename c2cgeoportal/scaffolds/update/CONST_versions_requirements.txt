@@ -44,7 +44,7 @@ six==1.10.0
 SQLAHelper==1.0
 SQLAlchemy==1.1.9
 Tempita==0.5.2
-textile==2.3.10
+textile==2.3.11
 transaction==2.1.2
 translationstring==1.3
 venusian==1.1.0
