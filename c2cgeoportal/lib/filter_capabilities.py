@@ -253,6 +253,11 @@ class _CapabilitiesFilter(XMLFilterBase):
             layers_blacklist is not None and
             layers_whitelist is not None), \
             "only either layers_blacklist OR layers_whitelist can be set"
+
+        if layers_blacklist is not None:
+            layers_blacklist = [layer.lower() for layer in layers_blacklist]
+        if layers_whitelist is not None:
+            layers_whitelist = [layer.lower() for layer in layers_whitelist]
         self.layers_blacklist = layers_blacklist
         self.layers_whitelist = layers_whitelist
 
