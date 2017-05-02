@@ -280,11 +280,11 @@ def _match_url_start(ref, val):
 
 
 def is_valid_referer(request, settings):
-    if request.referer:
+    if request.referer is not None:
         list_ = settings.get("authorized_referers", [])
         return any(_match_url_start(x, request.referer) for x in list_)
     else:
-        return False
+        return True
 
 
 def create_get_user_from_request(settings):
