@@ -124,12 +124,10 @@ class TestReferer(TestCase):
 
     def test_no_ref(self):
         self.assertEqual(self._get_user(to=self.BASE1, ref=None), self.USER)
-        self.assertEqual(self._get_user(to=self.BASE1, ref=""), None)
+        self.assertIsNone(self._get_user(to=self.BASE1, ref=""))
 
-        self.assertIsNone(
-            self._get_user(to=self.BASE1, ref=None, method="POST"))
-        self.assertIsNone(
-            self._get_user(to=self.BASE1, ref="", method="POST"))
+        self.assertEqual(self._get_user(to=self.BASE1, ref=None, method="POST"), self.USER)
+        self.assertIsNone(self._get_user(to=self.BASE1, ref="", method="POST"))
 
     def test_bad_ref(self):
         self.assertIsNone(self._get_user(
