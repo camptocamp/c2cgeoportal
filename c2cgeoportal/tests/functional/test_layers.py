@@ -424,7 +424,7 @@ class TestLayers(TestCase):
 
         from c2cgeoportal.models import DBSession, User
 
-        self.assertEquals(DBSession.query(User.username).all(), [(u"admin",), (u"__test_user",)])
+        self.assertEquals(DBSession.query(User.username).all(), [(u"__test_user",)])
 
         metadatas = [
             Metadata("lastUpdateDateColumn", "last_update_date"),
