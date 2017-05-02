@@ -56,6 +56,7 @@ class TestLayers(TestCase):
         self.metadata = None
         self.layer_ids = []
 
+        DBSession.query(User).delete()
         DBSession.query(User).filter(
             User.username == u"__test_user"
         ).delete()
@@ -86,9 +87,7 @@ class TestLayers(TestCase):
         for treeitem in DBSession.query(TreeItem).all():
             DBSession.delete(treeitem)
 
-        DBSession.query(User).filter(
-            User.username == u"__test_user"
-        ).delete()
+        DBSession.query(User).delete()
         r = DBSession.query(Role).filter(
             Role.name == u"__test_role"
         ).one()
