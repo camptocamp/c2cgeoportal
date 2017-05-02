@@ -251,13 +251,13 @@ def main():
             )
             # Scripts
             data = _sub(
-                r'    <script',
+                "({})".format(re.escape(r'<script src="../../../../')),
                 r"""% if debug:
     <script>
         window.CLOSURE_BASE_PATH = '';
         window.CLOSURE_NO_DEPS = true;
     </script>
-    <script""",
+    \1""",
                 data, count=1
             )
             data = _sub(
