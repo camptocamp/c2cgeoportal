@@ -90,19 +90,16 @@ class TestReferer(TestCase):
     ]}
     USER = "toto"
 
-    def _get_user(self, to, ref):
+    def _get_user(self, to, ref, method="GET"):
         class MockRequest:
-            def __init__(self, to, ref):
+            def __init__(self, to, ref, method):
                 self.path_qs = to
                 self.referer = ref
                 self._user = TestReferer.USER
-
-            @staticmethod
-            def path_info_peek():
-                return "main"
+                self.method = method
 
         get_user = create_get_user_from_request(self.SETTINGS)
-        return get_user(MockRequest(to=to, ref=ref))
+        return get_user(MockRequest(to=to, ref=ref, method=method))
 
     def test_match_url(self):
         def match(ref, val, expected):
@@ -128,8 +125,13 @@ class TestReferer(TestCase):
             self.USER)
 
     def test_no_ref(self):
-        self.assertIsNone(self._get_user(to=self.BASE1, ref=None))
-        self.assertIsNone(self._get_user(to=self.BASE1, ref=""))
+        self.assertEqual(self._get_user(to=self.BASE1, ref=None), self.USER)
+        self.assertEqual(self._get_user(to=self.BASE1, ref=""), self.USER)
+
+        self.assertIsNone(
+            self._get_user(to=self.BASE1, ref=None, method="POST"))
+        self.assertIsNone(
+            self._get_user(to=self.BASE1, ref="", method="POST"))
 
     def test_bad_ref(self):
         self.assertIsNone(self._get_user(to=self.BASE1,

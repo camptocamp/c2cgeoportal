@@ -66,7 +66,8 @@ Here is an example of an insertion in the ``tsearch`` table:
       (the_geom, layer_name, label, public, role_id, ts)
     VALUES
       (ST_GeomFromText('POINT(2660000 1140000)', 21781), 'Layer group',
-       'text to display', 't', NULL, to_tsvector('french', 'text to search'));
+       'text to display', 't', NULL,
+       to_tsvector('french', regexp_replace('text to search', E'[\\[\\]\\(\\):&\\*]', ' ', 'g')));
 
 Where ``Layer group`` is the name of the layer group that should be activated,
 ``text to display`` is the text that is displayed in the results,
@@ -80,7 +81,8 @@ Here is another example where rows from a ``SELECT`` are inserted:
     INSERT INTO app_schema.tsearch
       (the_geom, layer_name, label, public, role_id, ts)
     SELECT
-      geom, 'layer group name', text, 't', NULL, to_tsvector('german', text)
+      geom, 'layer group name', text, 't', NULL,
+      to_tsvector('german', regexp_replace(text, E'[\\[\\]\\(\\):&\\*]', ' ', 'g'))
     FROM table;
 
 .. note::
@@ -124,13 +126,15 @@ available to users of the corresponding role.
         INSERT INTO app_schema.tsearch
            (the_geom, layer_name, label, public, role_id, ts)
         SELECT
-           geom, 'layer group name', text, 'f', 1, to_tsvector('german', text)
+           geom, 'layer group name', text, 'f', 1,
+           to_tsvector('german', regexp_replace(text, E'[\\[\\]\\(\\):&\\*]', ' ', 'g'))
         FROM table;
 
         INSERT INTO app_schema.tsearch
            (the_geom, layer_name, label, public, role_id, ts)
         SELECT
-           geom, 'layer group name', text, 'f', 2, to_tsvector('german', text)
+           geom, 'layer group name', text, 'f', 2,
+           to_tsvector('german', regexp_replace(text, E'[\\[\\]\\(\\):&\\*]', ' ', 'g'))
         FROM table;
 
 .. _integrator_fulltext_search_params:
@@ -177,6 +181,13 @@ The ``actions`` column contains a JSON with an array of actions like:
         "action": "add_theme",
         "data": "<the_theme_name>"
     }
+
+Example of ``SQL`` ``INSERT`` of ``actions`` data to add the layer "cadastre" on the map:
+
+.. code:: sql
+
+   INSERT INTO app_schema.tsearch (..., actions)
+   VALUES (..., '[{"action": "add_layer", "data": "cadastre"}]')
 
 Interface
 ---------

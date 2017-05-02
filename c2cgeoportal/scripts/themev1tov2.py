@@ -236,7 +236,7 @@ def layer_add_metadata(layer, new_layer, session):
     if layer.is_checked is True:
         session.add(new_metadata(u"isChecked", u"true", new_layer))
     if layer.icon is not None:
-        session.add(new_metadata(u"icon", layer.icon, new_layer))
+        session.add(new_metadata(u"iconUrl", layer.icon, new_layer))
     if layer.wms_layers is not None:
         session.add(new_metadata(u"wmsLayers", layer.wms_layers, new_layer))
     if layer.query_layers is not None:
@@ -257,7 +257,7 @@ def layer_add_metadata(layer, new_layer, session):
         session.add(new_metadata(u"disclaimer", layer.disclaimer, new_layer))
     if layer.identifier_attribute_field is not None:
         session.add(new_metadata(
-            u"identifier_attribute_field",
+            u"identifierAttributeField",
             layer.identifier_attribute_field, new_layer
         ))
     if layer.exclude_properties is not None:

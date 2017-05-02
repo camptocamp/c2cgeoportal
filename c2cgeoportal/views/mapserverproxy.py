@@ -36,27 +36,17 @@ from c2cgeoportal.lib import get_url2
 from c2cgeoportal.lib.caching import get_region, NO_CACHE, PUBLIC_CACHE, PRIVATE_CACHE
 from c2cgeoportal.lib.functionality import get_mapserver_substitution_params
 from c2cgeoportal.lib.filter_capabilities import filter_capabilities
-from c2cgeoportal.views.proxy import Proxy
-from c2cgeoportal.models import DBSession, OGCServer, OGCSERVER_AUTH_GEOSERVER
+from c2cgeoportal.views.ogcproxy import OGCProxy
+from c2cgeoportal.models import OGCSERVER_AUTH_GEOSERVER
 
 cache_region = get_region()
 log = logging.getLogger(__name__)
 
 
-class MapservProxy(Proxy):
+class MapservProxy(OGCProxy):
 
     def __init__(self, request):
-        Proxy.__init__(self, request)
-        self.settings = request.registry.settings.get("mapserverproxy", {})
-        if "default_ogc_server" in self.settings:
-            self.default_ogc_server = self._get_ogcserver_byname(
-                self.settings["default_ogc_server"]
-            )
-
-        if "external_ogc_server" in self.settings:
-            self.external_ogc_server = self._get_ogcserver_byname(
-                self.settings["external_ogc_server"]
-            )
+        OGCProxy.__init__(self, request)
 
     def _get_ogc_server(self):
         return self.ogc_server or (
@@ -85,12 +75,6 @@ class MapservProxy(Proxy):
             log.error("\n".join(errors))
         return url
 
-    @cache_region.cache_on_arguments()
-    def _get_ogcserver_byname(self, name):
-        result = DBSession.query(OGCServer).filter(OGCServer.name == name).one()
-        DBSession.expunge(result)
-        return result
-
     @view_config(route_name="mapserverproxy")
     def proxy(self):
 
@@ -107,7 +91,7 @@ class MapservProxy(Proxy):
             del params["user_id"]
 
         self.lower_params = self._get_lower_params(params)
-        self.ogc_server = self._get_ogcserver_byname(params["ogcserver"]) \
+        self.ogc_server = self.get_ogcserver_byname(params["ogcserver"]) \
             if "ogcserver" in params else None
 
         if self.user is not None:
@@ -214,7 +198,7 @@ class MapservProxy(Proxy):
                 content, role_id, self.lower_params.get("service") == "wms",
                 self._get_wms_url(),
                 self.request.headers,
-                self.settings.get("proxies")
+                self.mapserver_settings.get("proxies")
             )
 
         content_type = None

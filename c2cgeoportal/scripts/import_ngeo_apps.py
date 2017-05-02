@@ -172,6 +172,42 @@ def main():
         else:
             data = re.sub(r"{{", r"\\{\\{", data)
             data = re.sub(r"}}", r"\\}\\}", data)
+
+            if args.html:
+                if args.interface == "mobile":
+                    data = _sub(
+                        r"</head>",
+                        """</head>
+  <%
+    no_redirect_query = dict(request.GET)
+    no_redirect_query['no_redirect'] = u''
+  %>
+    """,
+                        data,
+                    )
+                    data = _sub(
+                        re.escape(
+                            r"http://camptocamp.github.io/ngeo/master/"
+                            r"examples/contribs/gmf/apps/desktop/?no_redirect"
+                        ),
+                        "${request.route_url('desktop', _query=no_redirect_query) | n}",
+                        data,
+                    )
+                if args.interface == "desktop":
+                    data = _sub(
+                        r"<head>",
+                        """<head>
+    % if "no_redirect" not in request.params:
+            <script>
+                if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
+                    window.location = "${request.route_url('mobile', _query=dict(request.GET)) | n}";
+                }
+            </script>
+    % endif
+    """,
+                        data,
+                    )
+
             data = re.sub("app", "{{package}}", data)
 
 # temporary disable ...
@@ -216,13 +252,13 @@ def main():
             )
             # Scripts
             data = _sub(
-                r'    <script',
+                "({})".format(re.escape(r'<script src="../../../../')),
                 r"""% if debug:
     <script>
         window.CLOSURE_BASE_PATH = '';
         window.CLOSURE_NO_DEPS = true;
     </script>
-    <script""",
+    \1""",
                 data, count=1
             )
             data = _sub(
@@ -363,20 +399,6 @@ ${ ',\\n'.join([
                 count=1,
                 flags=re.DOTALL,
             )
-            if args.interface == "desktop":
-                data = _sub(
-                    r"<head>",
-                    """<head>
-% if "no_redirect" not in request.params:
-        <script>
-            if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
-                window.location = "${request.route_url('mobile', _query=dict(request.GET)) | n}";
-            }
-        </script>
-% endif
-""",
-                    data,
-                )
 
         with open(args.dst, "wt") as dst:
             dst.write(data)

@@ -126,11 +126,11 @@ class TestMapserverproxyView(TestCase):
     def setUp(self):  # noqa
         self.maxDiff = None
 
-        from c2cgeoportal.models import User, Role, LayerV1, RestrictionArea, \
+        from c2cgeoportal.models import User, Role, LayerWMS, RestrictionArea, \
             Functionality, Interface, DBSession, OGCServer, \
             OGCSERVER_TYPE_GEOSERVER, OGCSERVER_AUTH_GEOSERVER
 
-        create_default_ogcserver()
+        ogc_server_internal, _ = create_default_ogcserver()
         ogcserver_geoserver = OGCServer(name="__test_ogc_server_geoserver")
         ogcserver_geoserver.url = mapserv_url
         ogcserver_geoserver.type = OGCSERVER_TYPE_GEOSERVER
@@ -162,13 +162,17 @@ class TestMapserverproxyView(TestCase):
         user3 = User(username=u"__test_user3", password=u"__test_user3")
         role3 = Role(name=u"__test_role3", description=u"__test_role3", functionalities=[pt1, pt2])
         user3.role_name = role3.name
-        user3.email = u"Tarenpion"
 
         main = Interface(name=u"main")
 
-        layer2 = LayerV1(u"testpoint_protected", public=False)
+        layer2 = LayerWMS(u"testpoint_protected", public=False)
+        layer2.layer = u"testpoint_protected"
+        layer2.ogc_server = ogc_server_internal
         layer2.interfaces = [main]
-        layer3 = LayerV1(u"testpoint_protected_query_with_collect", public=False)
+
+        layer3 = LayerWMS(u"testpoint_protected_query_with_collect", public=False)
+        layer3.layer = u"testpoint_protected_query_with_collect"
+        layer3.ogc_server = ogc_server_internal
         layer3.interfaces = [main]
 
         area = "POLYGON((-100 30, -100 50, 100 50, 100 30, -100 30))"
@@ -196,7 +200,7 @@ class TestMapserverproxyView(TestCase):
 
     @staticmethod
     def tearDown():  # noqa
-        from c2cgeoportal.models import User, Role, LayerV1, RestrictionArea, \
+        from c2cgeoportal.models import User, Role, LayerWMS, RestrictionArea, \
             Functionality, Interface, DBSession, OGCServer
 
         functionality.FUNCTIONALITIES_TYPES = None
@@ -236,11 +240,11 @@ class TestMapserverproxyView(TestCase):
 
         DBSession.query(Functionality).filter(Functionality.value == u"1 Wohlen A4 portrait").delete()
         DBSession.query(Functionality).filter(Functionality.value == u"2 Wohlen A3 landscape").delete()
-        for layer in DBSession.query(LayerV1).filter(LayerV1.name == "testpoint_unprotected").all():
+        for layer in DBSession.query(LayerWMS).filter(LayerWMS.name == "testpoint_unprotected").all():
             DBSession.delete(layer)  # pragma: no cover
-        for layer in DBSession.query(LayerV1).filter(LayerV1.name == "testpoint_protected").all():
+        for layer in DBSession.query(LayerWMS).filter(LayerWMS.name == "testpoint_protected").all():
             DBSession.delete(layer)
-        for layer in DBSession.query(LayerV1).filter(LayerV1.name == "testpoint_protected_query_with_collect").all():
+        for layer in DBSession.query(LayerWMS).filter(LayerWMS.name == "testpoint_protected_query_with_collect").all():
             DBSession.delete(layer)
         DBSession.query(Interface).filter(
             Interface.name == "main"

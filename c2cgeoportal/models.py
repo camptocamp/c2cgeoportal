@@ -778,7 +778,7 @@ class LayerWMS(DimensionLayer):
     )
 
     def __init__(
-        self, name=u"", layer=u"", public=True, icon=u"", time_mode="disabled", time_widget="slider"
+        self, name=u"", layer=u"", public=True, time_mode="disabled", time_widget="slider"
     ):
         DimensionLayer.__init__(self, name=name, public=public)
         self.layer = layer

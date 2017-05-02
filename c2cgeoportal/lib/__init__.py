@@ -256,38 +256,34 @@ def get_setting(settings, path, default=None):
     return value if value else default
 
 
-def _get_layers_query(role_id, what=None, version=1):
-    from c2cgeoportal.models import DBSession, LayerV1, \
-        Layer, RestrictionArea, Role, layer_ra, role_ra, \
-        LayerWMS, LayerWMTS
+def _get_layers_query(role_id, what):
+    from c2cgeoportal.models import DBSession, Layer, RestrictionArea, Role
 
-    if version == 1:
-        q = DBSession.query(what if what is not None else LayerV1)
-    else:
-        q = DBSession.query(Layer).with_polymorphic(
-            [LayerWMS, LayerWMTS]
-        )
-    q = q.join(
-        (layer_ra, Layer.id == layer_ra.c.layer_id),
-        (RestrictionArea,
-            RestrictionArea.id == layer_ra.c.restrictionarea_id),
-        (role_ra, role_ra.c.restrictionarea_id == RestrictionArea.id),
-        (Role, Role.id == role_ra.c.role_id))
+    q = DBSession.query(what)
+    q = q.join(Layer.restrictionareas)
+    q = q.join(RestrictionArea.roles)
     q = q.filter(Role.id == role_id)
 
     return q
 
 
-def get_protected_layers_query(role_id, what=None, version=1):
-    from c2cgeoportal.models import Layer
-    q = _get_layers_query(role_id, what, version)
-    return q.filter(Layer.public.is_(False))
+def get_protected_layers_query(role_id, wms_url, what=None, version=1):
+    from c2cgeoportal.models import Layer, LayerWMS, OGCServer
+    q = _get_layers_query(role_id, what)
+    q = q.filter(Layer.public.is_(False))
+    if version == 2:
+        q = q.join(LayerWMS.ogc_server)
+        q = q.filter(OGCServer.url == wms_url)
+    return q
 
 
-def get_writable_layers_query(role_id, what=None, version=1):
-    from c2cgeoportal.models import RestrictionArea
-    q = _get_layers_query(role_id, what, version)
-    return q.filter(RestrictionArea.readwrite.is_(True))
+def get_writable_layers_query(role_id, wms_url):
+    from c2cgeoportal.models import RestrictionArea, LayerWMS, OGCServer
+    q = _get_layers_query(role_id, LayerWMS)
+    return q \
+        .filter(RestrictionArea.readwrite.is_(True)) \
+        .join(LayerWMS.ogc_server) \
+        .filter(OGCServer.url == wms_url)
 
 
 @implementer(IRoutePregenerator)

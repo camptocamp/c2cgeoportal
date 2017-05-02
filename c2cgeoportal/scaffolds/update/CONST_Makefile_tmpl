@@ -243,7 +243,8 @@ NGEO_LIBS_JS_FILES += \
 	node_modules/angular-gettext/dist/angular-gettext.min.js \
 	node_modules/angular-dynamic-locale/dist/tmhDynamicLocale.min.js \
 	node_modules/bootstrap/dist/js/bootstrap.min.js \
-	node_modules/d3/build/d3.min.js
+	node_modules/d3/build/d3.min.js \
+	node_modules/file-saver/FileSaver.min.js
 NGEO_PROJECT_LIBS_JS_FILES ?=
 ifeq ($(OPERATING_SYSTEM),WINDOWS)
 COMPILE_CATALOG = node_modules/ngeo/buildtools/compile-catalog.js
@@ -700,11 +701,12 @@ $(PACKAGE)/locale/$(PACKAGE)-$(L10N_SERVER_POSTFIX).pot: \
 		$(VENV_BIN)/pot-create$(PYTHON_BIN_POSTFIX) \
 		$(SERVER_LOCALISATION_SOURCES_FILES)
 	$(PRERULE_CMD)
-	$(VENV_BIN)/pot-create --keyword _ --config $< --output $@ $(SERVER_LOCALISATION_SOURCES_FILES)
+	rm -f $@ # Because of WindowsError, thus only problematic on Windows
+	$(VENV_BIN)/pot-create --keyword _ --config $< --output $@ $(SERVER_LOCALISATION_SOURCES_FILES) || true
 	# removes the always changed date line
-	sed -i '/^"POT-Creation-Date: /d' $@
-	sed -i '/^"PO-Revision-Date: /d' $@
-	chmod go+r $@
+	[ ! -f $@ ] || sed -i '/^"POT-Creation-Date: /d' $@
+	[ ! -f $@ ] || sed -i '/^"PO-Revision-Date: /d' $@
+	[ ! -f $@ ] || chmod go+r $@
 
 .PRECIOUS: $(PACKAGE)/locale/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).pot
 $(PACKAGE)/locale/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).pot: \
@@ -715,6 +717,7 @@ $(PACKAGE)/locale/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).pot: \
 		.build/mapserver.timestamp \
 		.build/config.yaml
 	$(PRERULE_CMD)
+	rm -f $@ # Because of WindowsError, thus only problematic on Windows
 	$(VENV_BIN)/pot-create --config $< --output $@ $(I18N_SOURCE_FILES)
 	# removes the always changed date line
 	sed -i '/^"POT-Creation-Date: /d' $@
@@ -727,7 +730,7 @@ $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-$(L10N_SERVER_POSTFIX).po: $(PACKAGE)
 	mkdir -p $(dir $@)
 	[ -f $@ ] || msginit --no-translator --input=$< --output-file=$@ -l $*
 	touch --no-create $@
-	msgmerge --backup=none --update --sort-output --no-location $@ $<
+	[ ! -f $< ] || msgmerge --backup=none --update --sort-output --no-location $@ $<
 
 .PRECIOUS: $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).po
 $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).po: $(PACKAGE)/locale/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).pot
@@ -757,7 +760,7 @@ $(TX_RC):
 	echo "password = c2cc2c" >> $@
 	echo "token =" >> $@
 
-.tx/config: .tx/CONST_config_mako $(VENV_BIN)/mako-render$(PYTHON_BIN_POSTFIX)
+.tx/config: .tx/CONST_config_mako $(VENV_BIN)/mako-render$(PYTHON_BIN_POSTFIX) .build/requirements.timestamp
 	$(PRERULE_CMD)
 	PYTHONIOENCODING=UTF-8 $(VENV_BIN)/mako-render \
 		--var "tx_version=$(TX_VERSION)" --var "tx_host=$(TX_HOST)" $< > $@
