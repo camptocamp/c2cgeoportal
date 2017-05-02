@@ -118,15 +118,13 @@ class TestReferer(TestCase):
         self.assertEqual(
             self._get_user(to=self.BASE1 + "/1", ref=self.BASE1), self.USER)
         self.assertEqual(
-            self._get_user(to=self.BASE1 + "/2", ref=self.BASE1 + "/3"),
-            self.USER)
+            self._get_user(to=self.BASE1 + "/2", ref=self.BASE1 + "/3"), self.USER)
         self.assertEqual(
-            self._get_user(to=self.BASE1 + "/4", ref=self.BASE2 + "/5"),
-            self.USER)
+            self._get_user(to=self.BASE1 + "/4", ref=self.BASE2 + "/5"), self.USER)
 
     def test_no_ref(self):
         self.assertEqual(self._get_user(to=self.BASE1, ref=None), self.USER)
-        self.assertEqual(self._get_user(to=self.BASE1, ref=""), self.USER)
+        self.assertEqual(self._get_user(to=self.BASE1, ref=""), None)
 
         self.assertIsNone(
             self._get_user(to=self.BASE1, ref=None, method="POST"))
@@ -134,8 +132,9 @@ class TestReferer(TestCase):
             self._get_user(to=self.BASE1, ref="", method="POST"))
 
     def test_bad_ref(self):
-        self.assertIsNone(self._get_user(to=self.BASE1,
-                                         ref="http://bad.com/hacker"))
+        self.assertIsNone(self._get_user(
+            to=self.BASE1,
+            ref="http://bad.com/hacker"))
 
 
 def hook(tracer):
