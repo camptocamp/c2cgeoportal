@@ -30,7 +30,7 @@ pyproj==1.9.5.1
 pyramid==1.8.3
 pykwalify==1.6.0
 pyramid-chameleon==0.3
-pyramid-debugtoolbar==3.0.5
+pyramid-debugtoolbar==4.0
 pyramid-mako==1.0.2
 pyramid-multiauth==0.9.0
 pyramid-tm==2.0
