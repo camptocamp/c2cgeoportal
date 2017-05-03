@@ -192,6 +192,19 @@ something like that:
     environment:
       DB_CONNECTION: user=www-data password=toto dbname=geoacordaDev host=db
 
+To have the right URL in the GetCapabilities:
+
+* In the Admin interface configure an OGC server with the URL: "http://mapserver/mapserv_proxy".
+
+* In the project vars file add this:
+
+  .. code:: yaml
+
+    vars:
+        ...
+        host_formard_host:
+        - mapserver
+
 
 Keep your DB schema up to date
 ------------------------------

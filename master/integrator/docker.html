@@ -205,6 +205,19 @@ something like that:</p>
   <span class="n">DB_CONNECTION</span><span class="p">:</span> <span class="n">user</span><span class="o">=</span><span class="n">www</span><span class="o">-</span><span class="n">data</span> <span class="n">password</span><span class="o">=</span><span class="n">toto</span> <span class="n">dbname</span><span class="o">=</span><span class="n">geoacordaDev</span> <span class="n">host</span><span class="o">=</span><span class="n">db</span>
 </pre></div>
 </div>
+<p>To have the right URL in the GetCapabilities:</p>
+<ul>
+<li><p class="first">In the Admin interface configure an OGC server with the URL: &#8220;<a class="reference external" href="http://mapserver/mapserv_proxy">http://mapserver/mapserv_proxy</a>&#8221;.</p>
+</li>
+<li><p class="first">In the project vars file add this:</p>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
+    <span class="o">...</span>
+    <span class="n">host_formard_host</span><span class="p">:</span>
+    <span class="o">-</span> <span class="n">mapserver</span>
+</pre></div>
+</div>
+</li>
+</ul>
 </div>
 </div>
 <div class="section" id="keep-your-db-schema-up-to-date">
