@@ -274,6 +274,9 @@ vars:
         internal: http://localhost/{instanceid}/
         local: '{web_protocol}://{host}/{instanceid}/'
 
+    host_forward_host:
+    - localhost
+
     # The "raster web services" configuration. See the "raster"
     # chapter in the integrator documentation.
     raster: {}

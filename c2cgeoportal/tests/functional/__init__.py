@@ -129,6 +129,7 @@ def create_dummy_request(additional_settings=None, authentication=True, user=Non
     from c2cgeoportal.pyramid_ import create_get_user_from_request
     from c2cgeoportal.lib.authentication import create_authentication
     request = tests.create_dummy_request({
+        "host_forward_host": [],
         "mapserverproxy": {
             "default_ogc_server": "__test_ogc_server",
             "external_ogc_server": "__test_external_ogc_server",
