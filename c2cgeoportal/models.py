@@ -435,7 +435,7 @@ class LayergroupTreeitem(Base):
     treegroup_id = Column(
         Integer, ForeignKey(_schema + ".treegroup.id")
     )
-    group = relationship(
+    treegroup = relationship(
         "TreeGroup",
         backref=backref(
             "children_relation",
@@ -447,7 +447,7 @@ class LayergroupTreeitem(Base):
     treeitem_id = Column(
         Integer, ForeignKey(_schema + ".treeitem.id")
     )
-    item = relationship(
+    treeitem = relationship(
         "TreeItem",
         backref=backref(
             "parents_relation", cascade="save-update,merge,delete,delete-orphan"
@@ -458,11 +458,11 @@ class LayergroupTreeitem(Base):
 
     # Used by formalchemy
     def __unicode__(self):  # pragma: no cover
-        return self.group.name
+        return self.treegroup.name
 
     def __init__(self, group=None, item=None, ordering=0):
-        self.group = group
-        self.item = item
+        self.treegroup = group
+        self.treeitem = item
         self.ordering = ordering
 
 
@@ -481,23 +481,23 @@ class TreeGroup(TreeItem):
     )
 
     def _get_children(self):
-        return [c.item for c in self.children_relation]
+        return [c.treeitem for c in self.children_relation]
 
     def _set_children(self, children, order=False):
         for child in self.children_relation:
-            if child.item not in children:
-                child.item = None
-                child.group = None
+            if child.treeitem not in children:
+                child.treeitem = None
+                child.treegroup = None
         if order is True:  # pragma: nocover
             for index, child in enumerate(children):
-                current = [c for c in self.children_relation if c.item == child]
+                current = [c for c in self.children_relation if c.treeitem == child]
                 if len(current) == 1:
                     current[0].ordering = index * 10
                 else:
                     LayergroupTreeitem(self, child, index * 10)
             self.children_relation.sort(key=lambda child: child.ordering)
         else:
-            current_item = [child.item for child in self.children_relation]
+            current_item = [child.treeitem for child in self.children_relation]
             for index, item in enumerate(children):
                 if item not in current_item:
                     LayergroupTreeitem(self, item, 1000000 + index)
