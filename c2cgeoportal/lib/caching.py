@@ -193,7 +193,7 @@ def set_common_headers(
             max_age = service_headers_settings.get("cache_control_max_age", 3600)
 
             response.cache_control.max_age = max_age
-            if max_age != 0:
+            if max_age == 0:
                 response.cache_control.no_cache = True
 
         set_cors_headers(
