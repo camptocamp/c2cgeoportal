@@ -1020,7 +1020,7 @@ $(VENV_BIN)/flake8$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
 .build/venv.timestamp-noclean:
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
-	virtualenv --no-site-packages .build/venv
+	virtualenv --setuptools --no-site-packages .build/venv
 	$(PIP_CMD) install '$(PIP_VERSION)' '$(SETUPTOOLS_VERSION)'
 	touch $@
 
