@@ -167,6 +167,7 @@ def set_common_headers(
 
     if cache == NO_CACHE:
         response.cache_control.no_cache = True
+        response.cache_control.max_age = 0
     elif cache == PUBLIC_CACHE:
         response.cache_control.public = True
     elif cache == PRIVATE_CACHE:
@@ -188,9 +189,8 @@ def set_common_headers(
                     "cache_control_max_age" in service_headers_settings:
                 max_age = service_headers_settings["cache_control_max_age"]
 
+            response.cache_control.max_age = max_age
             if max_age != 0:
-                response.cache_control.max_age = max_age
-            else:
                 response.cache_control.no_cache = True
 
         set_cors_headers(

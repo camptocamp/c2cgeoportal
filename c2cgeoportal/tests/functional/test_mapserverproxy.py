@@ -354,7 +354,7 @@ class TestMapserverproxyView(TestCase):
             re.sub(pattern, "", l) for l in response.body.splitlines()
         )
         self.assertEqual(response_body, expected_response)
-        self.assertEqual(str(response.cache_control), "no-cache")
+        self.assertEqual(str(response.cache_control), "max-age=0, no-cache")
 
     def test_get_feature_info_jsonp(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
@@ -409,7 +409,7 @@ class TestMapserverproxyView(TestCase):
         )
         self.assertEqual(response_body, expected_response)
         self.assertFalse(response.cache_control.public)
-        self.assertEqual(str(response.cache_control), "no-cache")
+        self.assertEqual(str(response.cache_control), "max-age=0, no-cache")
 
     def test_get_map_unprotected_layer_anonymous(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
@@ -423,7 +423,7 @@ class TestMapserverproxyView(TestCase):
         response = MapservProxy(request).proxy()
 
         self.assertTrue(response.status_int, 200)
-        self.assertEqual(str(response.cache_control), "no-cache")
+        self.assertEqual(str(response.cache_control), "max-age=0, no-cache")
         # 4 points
         md5sum = hashlib.md5(response.body).hexdigest()
         self.assertIn(md5sum, FOUR_POINTS)
@@ -440,7 +440,7 @@ class TestMapserverproxyView(TestCase):
         response = MapservProxy(request).proxy()
 
         self.assertTrue(response.status_int, 200)
-        self.assertEqual(str(response.cache_control), "no-cache")
+        self.assertEqual(str(response.cache_control), "max-age=0, no-cache")
         # 4 points
         md5sum = hashlib.md5(response.body).hexdigest()
         self.assertIn(md5sum, FOUR_POINTS)
@@ -457,7 +457,7 @@ class TestMapserverproxyView(TestCase):
         response = MapservProxy(request).proxy()
 
         self.assertTrue(response.status_int, 200)
-        self.assertEqual(str(response.cache_control), "no-cache")
+        self.assertEqual(str(response.cache_control), "max-age=0, no-cache")
         # 4 points
         md5sum = hashlib.md5(response.body).hexdigest()
         self.assertIn(md5sum, FOUR_POINTS)
@@ -474,7 +474,7 @@ class TestMapserverproxyView(TestCase):
         response = MapservProxy(request).proxy()
 
         self.assertTrue(response.status_int, 200)
-        self.assertEqual(str(response.cache_control), "no-cache")
+        self.assertEqual(str(response.cache_control), "max-age=0, no-cache")
         # empty
         md5sum = hashlib.md5(response.body).hexdigest()
         self.assertIn(md5sum, NO_POINT)
@@ -491,7 +491,7 @@ class TestMapserverproxyView(TestCase):
         response = MapservProxy(request).proxy()
 
         self.assertTrue(response.status_int, 200)
-        self.assertEqual(str(response.cache_control), "no-cache")
+        self.assertEqual(str(response.cache_control), "max-age=0, no-cache")
         # two points
         md5sum = hashlib.md5(response.body).hexdigest()
         self.assertIn(md5sum, TWO_POINTS)
@@ -507,7 +507,7 @@ class TestMapserverproxyView(TestCase):
         ))
         response = MapservProxy(request).proxy()
 
-        self.assertEqual(str(response.cache_control), "no-cache")
+        self.assertEqual(str(response.cache_control), "max-age=0, no-cache")
         # empty
         md5sum = hashlib.md5(response.body).hexdigest()
         self.assertIn(md5sum, NO_POINT)
@@ -524,7 +524,7 @@ class TestMapserverproxyView(TestCase):
         response = MapservProxy(request).proxy()
 
         self.assertTrue(response.status_int, 200)
-        self.assertEqual(str(response.cache_control), "no-cache")
+        self.assertEqual(str(response.cache_control), "max-age=0, no-cache")
         # two points
         md5sum = hashlib.md5(response.body).hexdigest()
         self.assertIn(md5sum, TWO_POINTS)
@@ -541,7 +541,7 @@ class TestMapserverproxyView(TestCase):
         response = MapservProxy(request).proxy()
 
         self.assertTrue(response.status_int, 200)
-        self.assertEqual(str(response.cache_control), "no-cache")
+        self.assertEqual(str(response.cache_control), "max-age=0, no-cache")
         # empty
         md5sum = hashlib.md5(response.body).hexdigest()
         self.assertIn(md5sum, NO_POINT)
@@ -558,7 +558,7 @@ class TestMapserverproxyView(TestCase):
         response = MapservProxy(request).proxy()
 
         self.assertTrue(response.status_int, 200)
-        self.assertEqual(str(response.cache_control), "no-cache")
+        self.assertEqual(str(response.cache_control), "max-age=0, no-cache")
         # two points
         md5sum = hashlib.md5(response.body).hexdigest()
         self.assertIn(md5sum, TWO_POINTS)
@@ -792,7 +792,7 @@ class TestMapserverproxyView(TestCase):
         response = MapservProxy(request).proxy()
 
         self.assertTrue(response.body != "")
-        self.assertEqual(str(response.cache_control), "no-cache")
+        self.assertEqual(str(response.cache_control), "max-age=0, no-cache")
 
     def test_get_feature_external_url(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
@@ -815,7 +815,7 @@ class TestMapserverproxyView(TestCase):
         response = MapservProxy(request).proxy()
 
         self.assertTrue(response.body != "")
-        self.assertEqual(str(response.cache_control), "no-cache")
+        self.assertEqual(str(response.cache_control), "max-age=0, no-cache")
 
     def test_get_feature_external_wfs_url(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
@@ -841,7 +841,7 @@ class TestMapserverproxyView(TestCase):
         response = MapservProxy(request).proxy()
 
         self.assertTrue(response.body != "")
-        self.assertEqual(str(response.cache_control), "no-cache")
+        self.assertEqual(str(response.cache_control), "max-age=0, no-cache")
 
     def test_substitution(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
