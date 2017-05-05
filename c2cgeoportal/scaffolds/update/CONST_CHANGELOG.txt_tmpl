@@ -66,6 +66,27 @@ You should also add a Layer group named 'background' with the background layers.
 
     git rm CONST_versions.txt
     git rm .jshintrc
+    git rm CONST_create_template/deploy/deploy.cfg
+    git rm CONST_create_template/deploy/hooks/pre-restore-database
+    git rm CONST_create_template/print/WEB-INF/classes/logback.xml
+    git rm CONST_create_template/print/print-apps/demo/config.yaml
+    git rm CONST_create_template/production.ini
+    git rm CONST_create_template/mapserver/tinyows.xml
+    git rm CONST_create_template/mapserver/c2cgeoportal.map
+    git rm CONST_create_template/mapserver/demo.map
+    git rm CONST_create_template/jsbuild/app.cfg
+    git rm CONST_create_template/alembic_static.ini
+    git rm CONST_create_template/project.yaml
+    git rm CONST_create_template/apache/application.wsgi
+    git rm CONST_create_template/apache/frontend.conf
+    git rm CONST_create_template/apache/wsgi.conf
+    git rm CONST_create_template/apache/tinyows.conf
+    git rm CONST_create_template/apache/mapserver.conf
+    git rm CONST_create_template/apache/README.txt
+    git rm CONST_create_template/development.ini
+    git rm CONST_create_template/alembic.ini
+    git rm CONST_create_template/docker-compose.yml
+
 
 5. Get the new and heavily modified files for ngeo integration:
 

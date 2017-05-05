@@ -38,7 +38,7 @@ PRINT_TMP ?= /tmp
 endif
 
 TEMPLATE_EXCLUDE += .build node_modules \
-	print/templates CONST_alembic \
+	print/templates CONST_alembic CONST_create_template \
 	$(PACKAGE)/static/lib
 FIND_OPTS = $(foreach ELEM, $(TEMPLATE_EXCLUDE),-path ./$(ELEM) -prune -o) -type f
 
