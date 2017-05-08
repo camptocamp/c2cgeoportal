@@ -127,7 +127,7 @@ templates:
             scalebar: *scalebar
             map: !map
                 <<: *map
-                width: 800
-                height: 460
+                width: 1150
+                height: 673
             datasource: *datasource
         processors: *processors
