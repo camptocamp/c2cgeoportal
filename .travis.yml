@@ -72,6 +72,7 @@ script:
 - docker version
 
 # test return code
+- travis/test-eof-newline
 - ./docker-compose-run true
 - |
     if ./docker-compose-run false

@@ -207,7 +207,7 @@ class TestTinyOWSProxyView(TestCase):
         filtered = load_file(
             TestTinyOWSProxyView.capabilities_response_filtered_file1)
         response.body = response.body.replace("  \n", "")
-        self.assertEquals(filtered, response.body)
+        self.assertEquals(filtered.strip(), response.body.strip())
         self.assertEquals("200 OK", response.status)
 
     def test_proxy_get_capabilities_user2(self):
@@ -221,7 +221,7 @@ class TestTinyOWSProxyView(TestCase):
         filtered = load_file(
             TestTinyOWSProxyView.capabilities_response_filtered_file2)
         response.body = response.body.replace("  \n", "")
-        self.assertEquals(filtered, response.body)
+        self.assertEquals(filtered.strip(), response.body.strip())
         self.assertEquals("200 OK", response.status)
 
     def test_proxy_get_capabilities_get(self):
@@ -239,7 +239,7 @@ class TestTinyOWSProxyView(TestCase):
         filtered = load_file(
             TestTinyOWSProxyView.capabilities_response_filtered_file1)
         response.body = response.body.replace("  \n", "")
-        self.assertEquals(filtered, response.body)
+        self.assertEquals(filtered.strip(), response.body.strip())
         self.assertEquals("200 OK", response.status)
 
     def test_proxy_get_capabilities_post(self):
@@ -257,7 +257,7 @@ class TestTinyOWSProxyView(TestCase):
         filtered = load_file(
             TestTinyOWSProxyView.capabilities_response_filtered_file1)
         response.body = response.body.replace("  \n", "")
-        self.assertEquals(filtered, response.body)
+        self.assertEquals(filtered.strip(), response.body.strip())
         self.assertEquals("200 OK", response.status)
 
     def test_proxy_get_capabilities_post_invalid_body(self):

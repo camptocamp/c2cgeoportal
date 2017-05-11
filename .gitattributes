@@ -10,3 +10,12 @@ doc/Makefile -whitespace
 *.ttf binary
 *.png binary
 *.war binary
+*.ico binary
+*.gif binary
+*.enc binary
+*.gz binary
+*.bt binary
+*.dbf binary
+*.shp binary
+*.shx binary
+*.dia binary
