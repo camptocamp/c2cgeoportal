@@ -30,6 +30,7 @@
 
 import logging
 import httplib2
+import copy
 from StringIO import StringIO
 from urlparse import urlsplit, urljoin
 from urllib import urlopen
@@ -44,7 +45,8 @@ from pyramid.httpexceptions import HTTPBadGateway
 from owslib.wms import WebMapService
 
 from c2cgeoportal.lib import caching, get_protected_layers_query, \
-    get_writable_layers_query, add_url_params
+    get_writable_layers_query, add_url_params, get_ogc_server_wms_url_ids,\
+    get_ogc_server_wfs_url_ids
 from c2cgeoportal.models import DBSession, LayerWMS, OGCServer
 
 cache_region = caching.get_region()
@@ -52,23 +54,25 @@ log = logging.getLogger(__name__)
 
 
 @cache_region.cache_on_arguments()
-def get_protected_layers(role_id, wms_url):
-    q = get_protected_layers_query(role_id, wms_url=wms_url, what=LayerWMS, version=2)
+def get_protected_layers(role_id, ogc_server_ids):
+    q = get_protected_layers_query(role_id, ogc_server_ids, what=LayerWMS, version=2)
     return {r.id: r for r in q.all()}
 
 
 @cache_region.cache_on_arguments()
-def get_private_layers(wms_url):
+def get_private_layers(ogc_server_ids):
     q = DBSession.query(LayerWMS) \
         .filter(LayerWMS.public.is_(False)) \
         .join(LayerWMS.ogc_server) \
-        .filter(OGCServer.url == wms_url)
-    return {r.id: r for r in q.all()}
+        .filter(OGCServer.id.in_(ogc_server_ids))
+    results = q.all()
+    DBSession.expunge_all()
+    return {r.id: r for r in results}
 
 
 @cache_region.cache_on_arguments()
-def get_writable_layers(role_id, wms_url):
-    q = get_writable_layers_query(role_id, wms_url=wms_url)
+def get_writable_layers(role_id, ogc_server_ids):
+    q = get_writable_layers_query(role_id, ogc_server_ids)
     return {r.id: r for r in q.all()}
 
 
@@ -80,8 +84,6 @@ def wms_structure(wms_url, host):
         "VERSION": "1.1.1",
         "REQUEST": "GetCapabilities",
     })
-
-    log.info("Get WMS GetCapabilities for URL: {0!s}".format(wms_url))
 
     # Forward request to target (without Host Header)
     http = httplib2.Http()
@@ -159,15 +161,16 @@ def enable_proxies(proxies):  # pragma: no cover
     saxutils.prepare_input_source = caching_prepare_input_source
 
 
-def filter_capabilities(content, role_id, wms, wms_url, headers, proxies):
+def filter_capabilities(content, role_id, wms, wms_url, headers, proxies, request):
 
     if proxies:  # pragma: no cover
         enable_proxies(proxies)
 
     wms_structure_ = wms_structure(wms_url, headers.get("Host"))
 
-    gmf_private_layers = get_private_layers(wms_url)
-    for id_ in get_protected_layers(role_id, wms_url).keys():
+    ogc_server_ids = get_ogc_server_wms_url_ids(request).get(wms_url)
+    gmf_private_layers = copy.copy(get_private_layers(ogc_server_ids))
+    for id_ in get_protected_layers(role_id, ogc_server_ids).keys():
         if id_ in gmf_private_layers:
             del gmf_private_layers[id_]
 
@@ -193,13 +196,14 @@ def filter_capabilities(content, role_id, wms, wms_url, headers, proxies):
     return unicode(result.getvalue(), "utf-8")
 
 
-def filter_wfst_capabilities(content, role_id, wfs_url, proxies):
+def filter_wfst_capabilities(content, role_id, wfs_url, proxies, request):
 
     if proxies:  # pragma: no cover
         enable_proxies(proxies)
 
     writable_layers = []
-    for gmflayer in get_writable_layers(role_id, wfs_url).values():
+    ogc_server_ids = get_ogc_server_wfs_url_ids(request).get(wfs_url)
+    for gmflayer in get_writable_layers(role_id, ogc_server_ids).values():
         writable_layers += gmflayer.layer.split(",")
 
     parser = sax.make_parser()
@@ -246,11 +250,6 @@ class _CapabilitiesFilter(XMLFilterBase):
             layers_blacklist is not None and
             layers_whitelist is not None), \
             "only either layers_blacklist OR layers_whitelist can be set"
-
-        if layers_blacklist is not None:
-            layers_blacklist = [layer.lower() for layer in layers_blacklist]
-        if layers_whitelist is not None:
-            layers_whitelist = [layer.lower() for layer in layers_whitelist]
         self.layers_blacklist = layers_blacklist
         self.layers_whitelist = layers_whitelist
 

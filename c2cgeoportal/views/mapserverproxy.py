@@ -203,7 +203,8 @@ class MapservProxy(OGCProxy):
                 content, role_id, self.lower_params.get("service") == "wms",
                 self._get_wms_url(),
                 self.request.headers,
-                self.mapserver_settings.get("proxies")
+                self.mapserver_settings.get("proxies"),
+                self.request
             )
 
         content_type = None

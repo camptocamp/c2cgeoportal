@@ -256,6 +256,40 @@ def get_setting(settings, path, default=None):
     return value if value else default
 
 
+ogc_server_wms_url_ids = None
+
+
+def get_ogc_server_wms_url_ids(request):
+    from c2cgeoportal.models import DBSession, OGCServer
+    global ogc_server_wms_url_ids
+    errors = set()
+    if ogc_server_wms_url_ids is None:
+        ogc_server_wms_url_ids = dict()
+        for ogc_server in DBSession.query(OGCServer).all():
+            url = get_url2(ogc_server.name, ogc_server.url, request, errors)
+            if ogc_server_wms_url_ids.get(url) is None:
+                ogc_server_wms_url_ids[url] = []
+            ogc_server_wms_url_ids.get(url).append(ogc_server.id)
+    return ogc_server_wms_url_ids
+
+
+ogc_server_wfs_url_ids = None
+
+
+def get_ogc_server_wfs_url_ids(request):
+    from c2cgeoportal.models import DBSession, OGCServer
+    global ogc_server_wfs_url_ids
+    errors = set()
+    if ogc_server_wfs_url_ids is None:
+        ogc_server_wfs_url_ids = dict()
+        for ogc_server in DBSession.query(OGCServer).all():
+            url = get_url2(ogc_server.name, ogc_server.url_wfs, request, errors)
+            if ogc_server_wfs_url_ids.get(url) is None:
+                ogc_server_wfs_url_ids[url] = []
+            ogc_server_wfs_url_ids.get(url).append(ogc_server.id)
+    return ogc_server_wfs_url_ids
+
+
 def _get_layers_query(role_id, what):
     from c2cgeoportal.models import DBSession, Layer, RestrictionArea, Role
 
@@ -267,23 +301,23 @@ def _get_layers_query(role_id, what):
     return q
 
 
-def get_protected_layers_query(role_id, wms_url, what=None, version=1):
+def get_protected_layers_query(role_id, ogc_server_ids, what=None, version=1):
     from c2cgeoportal.models import Layer, LayerWMS, OGCServer
     q = _get_layers_query(role_id, what)
     q = q.filter(Layer.public.is_(False))
-    if version == 2:
+    if version == 2 and ogc_server_ids is not None:
         q = q.join(LayerWMS.ogc_server)
-        q = q.filter(OGCServer.url == wms_url)
+        q = q.filter(OGCServer.id.in_(ogc_server_ids))
     return q
 
 
-def get_writable_layers_query(role_id, wms_url):
+def get_writable_layers_query(role_id, ogc_server_ids):
     from c2cgeoportal.models import RestrictionArea, LayerWMS, OGCServer
     q = _get_layers_query(role_id, LayerWMS)
     return q \
         .filter(RestrictionArea.readwrite.is_(True)) \
         .join(LayerWMS.ogc_server) \
-        .filter(OGCServer.url == wms_url)
+        .filter(OGCServer.id.in_(ogc_server_ids))
 
 
 @implementer(IRoutePregenerator)
