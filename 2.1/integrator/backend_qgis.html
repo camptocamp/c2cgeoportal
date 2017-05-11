@@ -119,36 +119,35 @@ change.</p>
 <div class="section" id="connect-to-postgres-database">
 <h3>Connect to Postgres database<a class="headerlink" href="#connect-to-postgres-database" title="Permalink to this headline">¶</a></h3>
 <p>This section is subject to change when the QGIS plugin is available.</p>
-<div class="section" id="throw-a-tunnel">
-<h4>Throw a tunnel<a class="headerlink" href="#throw-a-tunnel" title="Permalink to this headline">¶</a></h4>
-<p>The first solution is to create a tunnel with ssh:</p>
+<p>The way you should connect QGIS to the database is based on an external file
+called. pg_service.conf located in the home directory. The content of this file
+is as follow:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">geomapfish</span><span class="p">]</span>
+<span class="n">host</span><span class="o">=</span><span class="n">localhost</span>
+<span class="n">dbname</span><span class="o">=</span><span class="n">geomapfish</span>
+<span class="n">user</span><span class="o">=</span><span class="n">www</span><span class="o">-</span><span class="n">data</span>
+<span class="n">password</span><span class="o">=</span><span class="n">www</span><span class="o">-</span><span class="n">data</span>
+<span class="n">port</span><span class="o">=</span><span class="mi">5433</span>
+</pre></div>
+</div>
+<p>You probably need to create a tunnel with ssh:</p>
 <pre class="highlight"><span class="prompt1">ssh -L <span class="m">5432</span>:localhost:54532 &lt;server&gt;</span>
-</pre><p>And use the following connection attributes:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Name</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">aname</span><span class="o">&gt;</span>
-<span class="n">Host</span><span class="p">:</span> <span class="n">localhost</span>
-<span class="n">Port</span><span class="p">:</span> <span class="mi">5432</span>
-<span class="n">Database</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">database</span><span class="o">&gt;</span>
-<span class="n">SSL</span> <span class="n">mode</span><span class="p">:</span> <span class="n">Disable</span>
-<span class="n">Username</span><span class="p">:</span> <span class="n">www</span><span class="o">-</span><span class="n">data</span>
-<span class="n">Password</span><span class="p">:</span> <span class="n">www</span><span class="o">-</span><span class="n">data</span>
+</pre><p>Note that if you can connect directly to the database, you don&#8217;t need this tunnel.
+Ask to your database administrator the correct parameters. You probably just need
+to change the host parameter.</p>
+<p>You can have several sections. A section start with a name with [] and
+finish with a blanck line. This file should be a unix file.</p>
+<p>On QGIS deskop, when creating a new PostGIS connection, give it a name and use
+the service name (<cite>geomapfish</cite> in our example) in the connection parameters
+form.</p>
+<p>Copy past this file in the server, change the parameters to fit with the server
+settings and add the variable environment setting in the Apache config:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>[..]
+SetEnv QGIS_PROJECT_FILE ${directory}/qgisserver.qgs
++ SetEnv PGSERVICEFILE path/to/pg_service.conf
 </pre></div>
 </div>
-</div>
-<div class="section" id="directly-on-the-server">
-<h4>Directly on the server<a class="headerlink" href="#directly-on-the-server" title="Permalink to this headline">¶</a></h4>
-<p>For that you should ask the sysadmins to be able to access to the
-postgres port on the server from your infra.</p>
-<p>Then use the following connection attributes:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Name</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">aname</span><span class="o">&gt;</span>
-<span class="n">Host</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">server</span><span class="o">&gt;</span>
-<span class="n">Port</span><span class="p">:</span> <span class="mi">5432</span>
-<span class="n">Database</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">database</span><span class="o">&gt;</span>
-<span class="n">SSL</span> <span class="n">mode</span><span class="p">:</span> <span class="n">require</span>
-<span class="n">Username</span><span class="p">:</span> <span class="n">www</span><span class="o">-</span><span class="n">data</span>
-<span class="n">Password</span><span class="p">:</span> <span class="n">www</span><span class="o">-</span><span class="n">data</span>
-</pre></div>
-</div>
-</div>
+<p>Don&#8217;t forget to restart Apache.</p>
 </div>
 <div class="section" id="deploy-notes">
 <h3>Deploy notes<a class="headerlink" href="#deploy-notes" title="Permalink to this headline">¶</a></h3>
@@ -175,11 +174,7 @@ postgres port on the server from your infra.</p>
 <li><a class="reference internal" href="#cleanup">Cleanup</a></li>
 <li><a class="reference internal" href="#qgis-desktop-configuration">QGIS Desktop configuration</a><ul>
 <li><a class="reference internal" href="#ows-configuration">OWS configuration</a></li>
-<li><a class="reference internal" href="#connect-to-postgres-database">Connect to Postgres database</a><ul>
-<li><a class="reference internal" href="#throw-a-tunnel">Throw a tunnel</a></li>
-<li><a class="reference internal" href="#directly-on-the-server">Directly on the server</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#connect-to-postgres-database">Connect to Postgres database</a></li>
 <li><a class="reference internal" href="#deploy-notes">Deploy notes</a></li>
 </ul>
 </li>
