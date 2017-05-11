@@ -18,7 +18,7 @@ before_install:
 - sudo add-apt-repository --yes ppa:stephane-brunner/precise-gis
 - curl --silent --location https://deb.nodesource.com/setup_4.x | sudo -E bash -
 - sudo aptitude install --assume-yes apache2 libapache2-mod-wsgi libapache2-mod-fcgid tomcat7 nodejs
-  deploy cgi-mapserver postgis=2.0.3-2~precise4 postgresql-9.1-postgis-2.0=2.0.3-2~precise4
+  deploy cgi-mapserver postgis=2.0.3-2~precise4 postgresql-9.1-postgis-2.0=2.0.3-2~precise4 gettext
   postgresql-9.1-postgis-2.0-scripts=2.0.3-2~precise4
 
 - sudo -u postgres createdb --encoding=UTF8 --template=template0 template_postgis
