@@ -95,5 +95,5 @@ WebOb==1.7.2
 zope.component==4.3.0
 zope.deprecation==4.2.0
 zope.event==4.2.0
-zope.interface==4.4.0
+zope.interface==4.4.1
 zope.sqlalchemy==0.7.7
