@@ -1,5 +1,5 @@
 # Copyright (c) 2013-2016, Camptocamp SA
-# All rights reserved.
+ All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -88,7 +88,7 @@ tests_require = install_requires + [
 
 setup(
     name="c2cgeoportal",
-    version="1.6.10",
+    version="1.6.11",
     description="c2cgeoportal",
     long_description=README,
     classifiers=[
