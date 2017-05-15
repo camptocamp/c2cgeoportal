@@ -104,6 +104,7 @@ table.detail td {
 
 div.olMap {
     z-index: 0;
+    touch-action: none;
 }
 // Avoid tiles flickering on webkit
 .olBackBuffer, .olBackBuffer *, .olLayerGrid, .olLayerGrid * {
