@@ -690,14 +690,8 @@ class Entry(object):
                         children.append(l)
         return children, errors
 
-    def _get_wfs_url(self):
-        if "mapserv_wfs_url" in self.mapserver_settings and \
-                self.mapserver_settings["mapserv_wfs_url"]:
-            return self.mapserver_settings["mapserv_wfs_url"]
-        return self.mapserver_settings["mapserv_url"]
-
     def _internal_wfs_types(self, role_id):
-        return self._wfs_types(self._get_wfs_url(), role_id)
+        return self._wfs_types(self.request.route_url('mapserverproxy'), role_id)
 
     def _get_external_wfs_url(self):
         if "external_mapserv_wfs_url" in self.mapserver_settings and \
