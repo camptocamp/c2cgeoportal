@@ -67,6 +67,7 @@ install_requires = [
     "PyYAML",
     "c2c.template>=1.4.0.dev",
     "defusedxml",
+    "FormAlchemy"
 ]
 install_requires += [
     requirement for requirement in
