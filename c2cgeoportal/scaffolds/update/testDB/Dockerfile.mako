@@ -1,4 +1,5 @@
-FROM camptocamp/postgresql:pg9.5-latest
-MAINTAINER Camptocamp "info@camptocamp.com"
+FROM camptocamp/postgis:9.5
 
-ADD *.sql *.csv *.sh /docker-entrypoint-initdb.d/
+LABEL maintainer Camptocamp "info@camptocamp.com"
+
+COPY *.sql *.csv *.sh /docker-entrypoint-initdb.d/

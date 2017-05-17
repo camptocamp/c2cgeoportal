@@ -1,3 +1,5 @@
+CREATE EXTENSION postgis;
+
 CREATE SCHEMA main;
 CREATE SCHEMA main_static;
 CREATE SCHEMA geodata;

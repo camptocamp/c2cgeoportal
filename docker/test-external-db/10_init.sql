@@ -1,3 +1,5 @@
+CREATE EXTENSION postgis;
+
 CREATE SCHEMA main;
 ALTER USER "www-data" PASSWORD 'www-data';
 GRANT SELECT ON spatial_ref_sys TO "www-data";
