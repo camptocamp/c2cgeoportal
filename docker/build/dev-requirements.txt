@@ -60,7 +60,7 @@ Pygments==2.2.0
 pyproj==1.9.5.1
 pyramid==1.8.3
 pyramid-chameleon==0.3
-pyramid-debugtoolbar==4.0
+pyramid-debugtoolbar==4.0.1
 pyramid-formalchemy==0.4.4
 pyramid-mako==1.0.2
 pyramid-multiauth==0.9.0
@@ -69,12 +69,12 @@ python-dateutil==2.6.0
 pytz==2017.2
 PyYAML==3.12
 repoze.lru==0.6
-requests[security]==2.14.0
+requests[security]==2.14.2
 restkit==4.2.2
 Shapely==1.5.17.post1
 simplejson==3.10.0
 six==1.10.0
-Sphinx==1.5.5
+Sphinx==1.6.1
 sphinx-prompt==1.0.0
 SQLAHelper==1.0
 SQLAlchemy==1.1.9
@@ -95,5 +95,5 @@ WebOb==1.7.2
 zope.component==4.3.0
 zope.deprecation==4.2.0
 zope.event==4.2.0
-zope.interface==4.4.0
+zope.interface==4.4.1
 zope.sqlalchemy==0.7.7
