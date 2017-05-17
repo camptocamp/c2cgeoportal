@@ -1,6 +1,6 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
@@ -36,7 +36,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">
+  <body>
   
 
     <div class="document">
@@ -55,7 +55,7 @@ line:</p>
 <span class="n">JASPERREPORTS_VERSION</span> <span class="o">=</span> <span class="mf">6.1</span><span class="o">.</span><span class="mi">1</span>
 </pre></div>
 </div>
-<p>In the private makefiles, do not specify the <code class="docutils literal"><span class="pre">INSTANCE_ID</span></code> (you&#8217;ll be alone
+<p>In the private makefiles, do not specify the <code class="docutils literal"><span class="pre">INSTANCE_ID</span></code> (you’ll be alone
 in your container).</p>
 <p>After that, a <code class="docutils literal"><span class="pre">make</span> <span class="pre">-f</span> <span class="pre">&lt;xxx.mk&gt;</span> <span class="pre">build</span></code> will create Docker images named like
 that:</p>
@@ -137,7 +137,7 @@ composition, you can add this in your <code class="docutils literal"><span class
 </pre></div>
 </div>
 <p>By setting the <code class="docutils literal"><span class="pre">SQLALCHEMY_URL</span></code> environment variable in your composition
-for the wsgi image, you&#8217;ll be able to change the DB connection used.</p>
+for the wsgi image, you’ll be able to change the DB connection used.</p>
 <p>You can change your <code class="docutils literal"><span class="pre">production.ini</span></code> and <code class="docutils literal"><span class="pre">development.ini</span></code> files to use
 environment variables for configuring the loggers. Here is an example for
 the part about the logging:</p>
@@ -207,7 +207,7 @@ something like that:</p>
 </div>
 <p>To have the right URL in the GetCapabilities:</p>
 <ul>
-<li><p class="first">In the Admin interface configure an OGC server with the URL: &#8220;<a class="reference external" href="http://mapserver/mapserv_proxy">http://mapserver/mapserv_proxy</a>&#8221;.</p>
+<li><p class="first">In the Admin interface configure an OGC server with the URL: “<a class="reference external" href="http://mapserver/mapserv_proxy">http://mapserver/mapserv_proxy</a>”.</p>
 </li>
 <li><p class="first">In the project vars file add this:</p>
 <div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
@@ -302,7 +302,7 @@ DB schema, if needed.</p>
       &copy;2011-2016, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

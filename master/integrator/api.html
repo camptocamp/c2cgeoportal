@@ -1,6 +1,6 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
@@ -36,7 +36,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">
+  <body>
   
 
     <div class="document">
@@ -114,7 +114,7 @@ Extended API only.</div></blockquote>
 <div class="section" id="gotchas-limitations-and-hints">
 <h3>Gotchas, limitations and hints<a class="headerlink" href="#gotchas-limitations-and-hints" title="Permalink to this headline">¶</a></h3>
 <p>Below are a few things that c2cgeoportal integrators should know and take into
-account when setting up their projects&#8217; APIs.</p>
+account when setting up their projects’ APIs.</p>
 <p>Background/base layers</p>
 <blockquote>
 <div><p>Several notes about background/base layers.</p>
@@ -129,7 +129,7 @@ responsible for setting this option. The Simple API sets
 is used the <code class="docutils literal"><span class="pre">MapOpacitySlider</span></code> plugin should be set in the viewer. The
 OpenLayers <code class="docutils literal"><span class="pre">LayerSwitcher</span></code> control will indeed not include base layers
 (and radio buttons) in the case of the Extended API.</p>
-<p>The API user can also have some control on his map&#8217;s base layers, through
+<p>The API user can also have some control on his map’s base layers, through
 the <code class="docutils literal"><span class="pre">backgroundLayers</span></code> option, which is optional.</p>
 <p>The <code class="docutils literal"><span class="pre">backgroundLayers</span></code> option references an array of layer
 names/references, which should correspond to the <code class="docutils literal"><span class="pre">ref</span></code> values in the map
@@ -140,13 +140,13 @@ different in API and XAPI.</p>
 <p>For the Simple API every layer in the map config is an OpenLayers base
 layer. By setting <code class="docutils literal"><span class="pre">backgroundLayers</span></code> the API user specifies the base
 layers the map will work with, and the order of the base layers in the
-map&#8217;s layers array.  The first layer in the <code class="docutils literal"><span class="pre">backgroundLayers</span></code> option is
+map’s layers array.  The first layer in the <code class="docutils literal"><span class="pre">backgroundLayers</span></code> option is
 the base layer that will be displayed by default.</p>
 <p>For the Extended API, if the viewer includes a map opacity slider plugin
 (<code class="docutils literal"><span class="pre">cgxp_mapopacityslider</span></code>), the backgroundLayers option has no effect on
 the layer order, and the background layer that is displayed by default.
-When the viewer includes a map opacity slider plugin the &#8220;background layer
-behavior&#8221; is indeed entirely determined by the plugin, and the user that
+When the viewer includes a map opacity slider plugin the “background layer
+behavior” is indeed entirely determined by the plugin, and the user that
 controls the plugin through the UI.</p>
 <p>If the map opacity slider plugin (<code class="docutils literal"><span class="pre">cgxp_mapopacityslider</span></code>) is enabled,
 the layer visibility is managed by the plugin. Else the  layer
@@ -274,7 +274,7 @@ are used for the application viewers and for the Extended API.</p>
       &copy;2011-2016, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

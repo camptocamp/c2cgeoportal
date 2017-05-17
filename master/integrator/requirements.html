@@ -1,6 +1,6 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
@@ -36,7 +36,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">
+  <body>
   
 
     <div class="document">
@@ -95,7 +95,7 @@ components installed on your system:</p>
 <p>The print requires a Tomcat server listening by default on port 8080.
 To change it you should overwrite the <code class="docutils literal"><span class="pre">print_url</span></code> vars in <code class="docutils literal"><span class="pre">config.yaml.in</span></code>,
 default is: <code class="docutils literal"><span class="pre">http://localhost:8080/print-c2cgeoportal-{instanceid}/pdf/</span></code>.</p>
-<p>And by default the &#8216;webapps&#8217; folder is <code class="docutils literal"><span class="pre">/srv/tomcat/tomcat1/webapps</span></code>,
+<p>And by default the ‘webapps’ folder is <code class="docutils literal"><span class="pre">/srv/tomcat/tomcat1/webapps</span></code>,
 to change it set the <code class="docutils literal"><span class="pre">PRINT_OUTPUT</span></code> value in the makefile.</p>
 <p>For MapFish Print to function properly it is recommended to increase the default
 Java Heap Size for Tomcat (parameter <code class="docutils literal"><span class="pre">-Xmx</span></code> and <code class="docutils literal"><span class="pre">-Xms</span></code>). On servers managed
@@ -147,7 +147,7 @@ variable:</p>
 <li>Open its properties</li>
 <li>Under the <code class="docutils literal"><span class="pre">Compatibility</span></code> tab, check the <code class="docutils literal"><span class="pre">Run</span> <span class="pre">this</span> <span class="pre">program</span> <span class="pre">as</span> <span class="pre">an</span> <span class="pre">administrator</span></code></li>
 </ul>
-<p>To avoid file permission problems between Windows and Cygwin, edit Cygwin&#8217;s
+<p>To avoid file permission problems between Windows and Cygwin, edit Cygwin’s
 <code class="docutils literal"><span class="pre">/etc/fstab</span></code> file to disable ACLs like this:</p>
 <pre class="highlight"><style type="text/css">
 span.prompt1:before {
@@ -158,7 +158,7 @@ span.prompt1:before {
 <div class="section" id="configure-git">
 <h3>Configure Git<a class="headerlink" href="#configure-git" title="Permalink to this headline">¶</a></h3>
 <p>Cygwin comes with its own git package. It might be a really good idea to configure
-Cygwin&#8217;s git for Windows. To do so:</p>
+Cygwin’s git for Windows. To do so:</p>
 <ul class="simple">
 <li>Open a Cygwin bash</li>
 <li>Run <code class="docutils literal"><span class="pre">git</span> <span class="pre">config</span> <span class="pre">core.autocrlf</span> <span class="pre">true</span></code></li>
@@ -242,7 +242,7 @@ used on Linux.</p>
       &copy;2011-2016, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

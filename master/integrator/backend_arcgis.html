@@ -1,6 +1,6 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
@@ -36,7 +36,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">
+  <body>
   
 
     <div class="document">
@@ -76,11 +76,11 @@ in the <code class="docutils literal"><span class="pre">config_child.yaml.mako</
 <p>in the <code class="docutils literal"><span class="pre">&lt;package&gt;/templates/viewer.js</span></code> file, for the <em>cgxp.plugins.WFSGetFeature</em> or <em>cgxp.plugins.GetFeature</em> plugins, add the
 following parameter in the plugin configuration:</p>
 <blockquote>
-<div>geometryName: &#8216;SHAPE&#8217;</div></blockquote>
+<div>geometryName: ‘SHAPE’</div></blockquote>
 </div>
 <div class="section" id="note">
 <h2>Note<a class="headerlink" href="#note" title="Permalink to this headline">¶</a></h2>
-<p>ArcGis (even 10.2) does not understand &#8220;application/vnd.ogc.gml&#8221; for <em>INFO_FORMAT</em> in
+<p>ArcGis (even 10.2) does not understand “application/vnd.ogc.gml” for <em>INFO_FORMAT</em> in
 a <em>GetFeatureInfo</em> request and returns only a simple XML formated response
 instead of GML.</p>
 <p>This kind of result can not be parsed correctly by the <em>cgxp.plugins.GetFeature</em> plugin,
@@ -147,7 +147,7 @@ queries.</p>
       &copy;2011-2016, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

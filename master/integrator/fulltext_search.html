@@ -1,6 +1,6 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
@@ -36,7 +36,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">
+  <body>
   
 
     <div class="document">
@@ -107,9 +107,9 @@ span.prompt1:before {
 <p class="last">The language string used as the first argument to the <code class="docutils literal"><span class="pre">to_tsvector</span></code>
 function should match that defined in the <code class="docutils literal"><span class="pre">default_locale_name</span></code> variable of
 the application configuration (<code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code>). For example if you have
-&#8220;french&#8221; text in the database the application&#8217;s <code class="docutils literal"><span class="pre">default_locale_name</span></code> should
+“french” text in the database the application’s <code class="docutils literal"><span class="pre">default_locale_name</span></code> should
 be <code class="docutils literal"><span class="pre">fr</span></code>. In other words c2cgeoportal assumes that the database language
-and the application&#8217;s default language match.</p>
+and the application’s default language match.</p>
 </div>
 </div>
 <div class="section" id="populate-with-the-themes">
@@ -183,7 +183,7 @@ for more information.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Example of <code class="docutils literal"><span class="pre">SQL</span></code> <code class="docutils literal"><span class="pre">INSERT</span></code> of <code class="docutils literal"><span class="pre">actions</span></code> data to add the layer &#8220;cadastre&#8221; on the map:</p>
+<p>Example of <code class="docutils literal"><span class="pre">SQL</span></code> <code class="docutils literal"><span class="pre">INSERT</span></code> of <code class="docutils literal"><span class="pre">actions</span></code> data to add the layer “cadastre” on the map:</p>
 <div class="code sql highlight-default"><div class="highlight"><pre><span></span><span class="n">INSERT</span> <span class="n">INTO</span> <span class="n">app_schema</span><span class="o">.</span><span class="n">tsearch</span> <span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">actions</span><span class="p">)</span>
 <span class="n">VALUES</span> <span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="s1">&#39;[{&quot;action&quot;: &quot;add_layer&quot;, &quot;data&quot;: &quot;cadastre&quot;}]&#39;</span><span class="p">)</span>
 </pre></div>
@@ -210,7 +210,7 @@ default is 30.</li>
 <div class="section" id="using-the-unaccent-extension">
 <h2>Using the unaccent extension<a class="headerlink" href="#using-the-unaccent-extension" title="Permalink to this headline">¶</a></h2>
 <p>By the default the full text search is accent-sensitive.
-To make it accent-insensitive Postgres&#8217;s
+To make it accent-insensitive Postgres’s
 <a class="reference external" href="http://www.postgresql.org/docs/9.0/static/unaccent.html">unaccent extension</a>
 can be used.</p>
 <p>First connect to the database:</p>
@@ -227,8 +227,8 @@ can be used.</p>
     <span class="n">WITH</span> <span class="n">unaccent</span><span class="p">,</span> <span class="n">french_stem</span><span class="p">;</span>
 </pre></div>
 </div>
-<p>When populating the <code class="docutils literal"><span class="pre">tsearch</span></code> table use the text configuration &#8216;fr&#8217;
-instead of &#8216;french&#8217;. For example:</p>
+<p>When populating the <code class="docutils literal"><span class="pre">tsearch</span></code> table use the text configuration ‘fr’
+instead of ‘french’. For example:</p>
 <div class="code sql highlight-default"><div class="highlight"><pre><span></span><span class="n">INSERT</span> <span class="n">INTO</span> <span class="o">&lt;</span><span class="n">schema</span><span class="o">&gt;.</span><span class="n">tsearch</span>
   <span class="p">(</span><span class="n">the_geom</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">public</span><span class="p">,</span> <span class="n">role_id</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
 <span class="n">VALUES</span>
@@ -245,7 +245,7 @@ instead of &#8216;french&#8217;. For example:</p>
 <p><code class="docutils literal"><span class="pre">fr:</span> <span class="pre">fr</span></code> is a link between the pyramid language and
 the text search configuration, by default the it is
 <code class="docutils literal"><span class="pre">fr:</span> <span class="pre">french</span></code> because the default french text search
-configuration is named &#8216;french&#8217;.</p>
+configuration is named ‘french’.</p>
 </div>
 </div>
 
@@ -313,7 +313,7 @@ configuration is named &#8216;french&#8217;.</p>
       &copy;2011-2016, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

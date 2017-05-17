@@ -1,6 +1,6 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
@@ -36,7 +36,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">
+  <body>
   
 
     <div class="document">
@@ -48,16 +48,16 @@
 <span id="administrator-mapfile"></span><h1>Mapfile configuration<a class="headerlink" href="#mapfile-configuration" title="Permalink to this headline">¶</a></h1>
 <p>As mentioned on the index page (<a class="reference internal" href="index.html#administrator-guide"><span class="std std-ref">Administrator Guide</span></a>) the application
 administrator manages the application through the database, and the
-application&#8217;s MapServer mapfile.</p>
-<p>The application&#8217;s mapfile is where WMS and WFS layers are defined.  WMS is used
+application’s MapServer mapfile.</p>
+<p>The application’s mapfile is where WMS and WFS layers are defined.  WMS is used
 for the map (<code class="docutils literal"><span class="pre">WMS</span> <span class="pre">GetMap</span></code>), and for the <code class="docutils literal"><span class="pre">point</span> <span class="pre">query</span></code> feature (<code class="docutils literal"><span class="pre">WMS</span>
 <span class="pre">GetFeatureInfo</span></code>). WFS is used for the <code class="docutils literal"><span class="pre">box</span> <span class="pre">query</span></code> and <code class="docutils literal"><span class="pre">query</span> <span class="pre">builder</span></code>
 features (<code class="docutils literal"><span class="pre">WFS</span> <span class="pre">GetFeature</span></code>).</p>
-<p>The application&#8217;s mapfile is located in the <code class="docutils literal"><span class="pre">mapserver</span></code> directory, it is
+<p>The application’s mapfile is located in the <code class="docutils literal"><span class="pre">mapserver</span></code> directory, it is
 commonly named <code class="docutils literal"><span class="pre">c2cgeoportal.map.mako</span></code>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The application&#8217;s mapfile is a <code class="docutils literal"><span class="pre">.mako</span></code> file because it contains variables.
+<p class="last">The application’s mapfile is a <code class="docutils literal"><span class="pre">.mako</span></code> file because it contains variables.
 These variables are substituted when the <code class="docutils literal"><span class="pre">make</span></code> build command is
 executed.</p>
 </div>
@@ -65,7 +65,7 @@ executed.</p>
 and/or <em>private</em> (a.k.a <em>restricted</em>).</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p>Please note that, because of c2cgeoportal&#8217;s caching system, each time you
+<p>Please note that, because of c2cgeoportal’s caching system, each time you
 update the mapfile configuration, you have to reload apache.</p>
 <p class="last">(on debian system, you can do: <code class="docutils literal"><span class="pre">sudo</span> <span class="pre">/usr/sbin/apache2ctl</span> <span class="pre">graceful</span></code>).</p>
 </div>
@@ -119,11 +119,11 @@ attributes that should be returned in GML responses. <code class="docutils liter
 the attributes of the layer should be returned.</div></blockquote>
 <p><code class="docutils literal"><span class="pre">gml_types</span></code></p>
 <blockquote>
-<div>Always set this to <code class="docutils literal"><span class="pre">auto</span></code>. This means that the layer&#8217;s field type
+<div>Always set this to <code class="docutils literal"><span class="pre">auto</span></code>. This means that the layer’s field type
 information is obtained from the input feature driver (OGC).</div></blockquote>
 <p><code class="docutils literal"><span class="pre">gml_featureid</span></code></p>
 <blockquote>
-<div>References the name of layer&#8217;s primary key column. Setting this is mandatory
+<div>References the name of layer’s primary key column. Setting this is mandatory
 for <code class="docutils literal"><span class="pre">GetFeature</span></code> request including <code class="docutils literal"><span class="pre">ogc:FeatureId</span></code> filters. Always set
 it. (This is required for the <a class="reference internal" href="../integrator/api.html#integrator-api"><span class="std std-ref">JavaScript API</span></a>.)</div></blockquote>
 <p><code class="docutils literal"><span class="pre">wfs_enable_request</span></code></p>
@@ -141,7 +141,7 @@ well as <code class="docutils literal"><span class="pre">box</span> <span class=
 features with that box). However, it is to be noted that WFS GetFeature may
 return features that are not visible at the current resolution of the map.
 This is because a limitation in MapServer, where <code class="docutils literal"><span class="pre">MINSCALE</span></code>/<code class="docutils literal"><span class="pre">MAXSCALE</span></code>
-values defined in the layer&#8217;s classes (<code class="docutils literal"><span class="pre">CLASS</span></code>) have no effect.</p>
+values defined in the layer’s classes (<code class="docutils literal"><span class="pre">CLASS</span></code>) have no effect.</p>
 </div>
 <div class="section" id="wms-getfeatureinfo">
 <h2>WMS GetFeatureInfo<a class="headerlink" href="#wms-getfeatureinfo" title="Permalink to this headline">¶</a></h2>
@@ -167,7 +167,7 @@ example:</p>
 <blockquote>
 <div>This is a string specifying the name used for geometry elements in
 GetFeatureInfo (GML) responses. This property, and <code class="docutils literal"><span class="pre">gml_[name]_type</span></code>,
-should be set for the GetFeatureInfo responses to include the features&#8217;
+should be set for the GetFeatureInfo responses to include the features’
 geometries instead of bboxes.</div></blockquote>
 <p><code class="docutils literal"><span class="pre">gml_[geometry</span> <span class="pre">name]_type</span></code></p>
 <blockquote>
@@ -214,7 +214,7 @@ may slow down the application.</p>
 </div>
 <p><code class="docutils literal"><span class="pre">&lt;schema&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;table&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;layername&gt;</span></code> and <code class="docutils literal"><span class="pre">&lt;the_geom&gt;</span></code> need to be
 replaced as appropriate. <code class="docutils literal"><span class="pre">&lt;table&gt;</span></code> is the name of the PostGIS table including
-the geographic data for this layer. <code class="docutils literal"><span class="pre">&lt;the_geom&gt;</span></code> is the name of the table&#8217;s
+the geographic data for this layer. <code class="docutils literal"><span class="pre">&lt;the_geom&gt;</span></code> is the name of the table’s
 geometry column. <code class="docutils literal"><span class="pre">&lt;schema&gt;</span></code> is the name of the schema including the table.
 <code class="docutils literal"><span class="pre">&lt;layer_name&gt;</span></code> can be either the layer NAME or the layer GROUP, depending on
 what is configured in the admin interface for the layer.</p>
@@ -311,7 +311,7 @@ substituted at make execution time.</p>
 </div>
 <div class="section" id="variable-substitution">
 <h2>Variable Substitution<a class="headerlink" href="#variable-substitution" title="Permalink to this headline">¶</a></h2>
-<p>It is possible to adapt some values in the mapfile according to the user&#8217;s role
+<p>It is possible to adapt some values in the mapfile according to the user’s role
 by using variable substitution. For instance to hide some layer objects
 attributes. The list of parameters that support variable substitution is
 available <a class="reference external" href="http://mapserver.org/cgi/runsub.html#parameters-supported">here</a>.</p>
@@ -505,7 +505,7 @@ file. But note that this affects performance.</p>
       &copy;2011-2016, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

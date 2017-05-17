@@ -1,6 +1,6 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
@@ -36,7 +36,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">
+  <body>
   
 
     <div class="document">
@@ -442,7 +442,7 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 </div>
 <div class="section" id="id7">
 <h3>Result<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
-<p>A JSON or a CSV file, with &#8216;dist&#8217;, &#8216;value&#8217;, &#8216;x&#8217;, &#8216;y&#8217;.</p>
+<p>A JSON or a CSV file, with ‘dist’, ‘value’, ‘x’, ‘y’.</p>
 </div>
 </div>
 <div class="section" id="shortener">
@@ -477,12 +477,12 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 </div>
 <div class="section" id="echo">
 <h2>Echo<a class="headerlink" href="#echo" title="Permalink to this headline">¶</a></h2>
-<p>This service returns a file containing data submitted in the POST request as the &#8220;file&#8221; field.
+<p>This service returns a file containing data submitted in the POST request as the “file” field.
 This is used to be able to get the data in the client from a file select by the user.</p>
 <p>URL: <code class="docutils literal"><span class="pre">.../echo</span></code></p>
 <div class="section" id="id10">
 <h3>Result<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
-<p>The &#8216;Content-Type&#8217; header is &#8216;text/html&#8217;, and the data is:</p>
+<p>The ‘Content-Type’ header is ‘text/html’, and the data is:</p>
 <div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;filename&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">The</span> <span class="n">base64</span> <span class="n">encoded</span> <span class="n">file</span><span class="o">&gt;</span>
     <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">true</span>
@@ -493,21 +493,21 @@ This is used to be able to get the data in the client from a file select by the 
 </div>
 <div class="section" id="export-csv">
 <h2>Export CSV<a class="headerlink" href="#export-csv" title="Permalink to this headline">¶</a></h2>
-<p>This service returns a file containing data submitted in the POST request as the &#8220;csv&#8221; field.
+<p>This service returns a file containing data submitted in the POST request as the “csv” field.
 This is used to be able to get as a download file csv data build on the client.</p>
 <p>URL: <code class="docutils literal"><span class="pre">.../csv</span></code></p>
 <div class="section" id="id11">
 <h3>Parameters<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">csv_extension</span></code>: File extension, defaults to &#8216;csv&#8217;.</li>
-<li><code class="docutils literal"><span class="pre">csv_encoding</span></code>: Character encoding, defaults to &#8216;UTF-8&#8217;,</li>
-<li><code class="docutils literal"><span class="pre">name</span></code>: File name without extension set in the &#8216;Content-Disposition&#8217;, defaults to &#8216;export&#8217;.</li>
+<li><code class="docutils literal"><span class="pre">csv_extension</span></code>: File extension, defaults to ‘csv’.</li>
+<li><code class="docutils literal"><span class="pre">csv_encoding</span></code>: Character encoding, defaults to ‘UTF-8’,</li>
+<li><code class="docutils literal"><span class="pre">name</span></code>: File name without extension set in the ‘Content-Disposition’, defaults to ‘export’.</li>
 </ul>
 </div>
 <div class="section" id="id12">
 <h3>Result<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
-<p>The &#8216;Content-Type&#8217; header is &#8216;text/csv&#8217;,
-and the data contains the given &#8216;csv&#8217; data.</p>
+<p>The ‘Content-Type’ header is ‘text/csv’,
+and the data contains the given ‘csv’ data.</p>
 </div>
 </div>
 <div class="section" id="geometry-processing">
@@ -661,7 +661,7 @@ and the <code class="docutils literal"><span class="pre">&lt;geomB&gt;</span></c
       &copy;2011-2016, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

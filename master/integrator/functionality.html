@@ -1,6 +1,6 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
@@ -36,7 +36,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">
+  <body>
   
 
     <div class="document">
@@ -47,7 +47,7 @@
   <div class="section" id="customizing-the-application-using-functionalities">
 <span id="integrator-functionality"></span><h1>Customizing the Application using Functionalities<a class="headerlink" href="#customizing-the-application-using-functionalities" title="Permalink to this headline">¶</a></h1>
 <p>c2cgeoportal provides the concept of <em>functionality</em> that can be used to customize
-the application according to the user&#8217;s permissions.</p>
+the application according to the user’s permissions.</p>
 <p>A functionality may be associated to users through different ways:</p>
 <ol class="arabic simple">
 <li>Functionalities for anonymous users are defined through the
@@ -131,7 +131,7 @@ enabled using the <code class="docutils literal"><span class="pre">functionaliti
 <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> configuration file.</p>
 <p>Functionalities may be used in templates for various purposes. The examples
 below explain how to set the default basemap and how to limit access to some
-plugins according to the user&#8217;s permissions.</p>
+plugins according to the user’s permissions.</p>
 <div class="section" id="example-of-the-default-basemap-functionality">
 <h3>Example of the default_basemap Functionality<a class="headerlink" href="#example-of-the-default-basemap-functionality" title="Permalink to this headline">¶</a></h3>
 <p>Using functionalities, it is easy to set the default basemap that will be
@@ -165,7 +165,7 @@ for anonymous users:</p>
 users in the administration interface.</p>
 <p>So that the <code class="docutils literal"><span class="pre">default_basemap</span></code> is actually provided to the
 <code class="docutils literal"><span class="pre">cgxp_mapopacityslider</span></code> plugin, use the following configuration in your
-project&#8217;s <code class="docutils literal"><span class="pre">viewer.js</span></code> template:</p>
+project’s <code class="docutils literal"><span class="pre">viewer.js</span></code> template:</p>
 <div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="n">ptype</span><span class="p">:</span> <span class="s2">&quot;cgxp_mapopacityslider&quot;</span><span class="p">,</span>
     <span class="n">defaultBaseLayerRef</span><span class="p">:</span> <span class="s2">&quot;${functionality[&#39;default_basemap&#39;][0] | n}&quot;</span>
@@ -199,7 +199,7 @@ anonymous users. In <code class="docutils literal"><span class="pre">vars_&lt;pr
     <span class="n">available_in_templates</span><span class="p">:</span> <span class="p">[</span><span class="n">default_basemap</span><span class="p">,</span> <span class="n">authorized_plugins</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>Then you may test in your project&#8217;s <code class="docutils literal"><span class="pre">viewer.js</span></code> template if the current user
+<p>Then you may test in your project’s <code class="docutils literal"><span class="pre">viewer.js</span></code> template if the current user
 has been granted access to some protected plugins:</p>
 <div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="n">app</span> <span class="o">=</span> <span class="n">new</span> <span class="n">gxp</span><span class="o">.</span><span class="n">Viewer</span><span class="p">({</span>
     <span class="o">//</span> <span class="o">...</span>
@@ -327,7 +327,7 @@ taken into account.</p>
       &copy;2011-2016, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

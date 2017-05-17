@@ -1,6 +1,6 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
@@ -36,7 +36,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">
+  <body>
   
 
     <div class="document">
@@ -50,26 +50,26 @@
 <h2>The default policy<a class="headerlink" href="#the-default-policy" title="Permalink to this headline">¶</a></h2>
 <p>By default <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> applications use an <em>auth ticket</em> authentication
 policy (<code class="docutils literal"><span class="pre">AuthTktAuthenticationPolicy</span></code>). With this policy the user name is
-obtained from the &#8220;auth ticket&#8221; cookie set in the request.</p>
-<p>The policy is created, and added to the application&#8217;s configuration, in the
-application&#8217;s main <code class="docutils literal"><span class="pre">__init__.py</span></code> file.</p>
+obtained from the “auth ticket” cookie set in the request.</p>
+<p>The policy is created, and added to the application’s configuration, in the
+application’s main <code class="docutils literal"><span class="pre">__init__.py</span></code> file.</p>
 </div>
 <div class="section" id="using-another-policy">
 <h2>Using another policy<a class="headerlink" href="#using-another-policy" title="Permalink to this headline">¶</a></h2>
-<p>When using <code class="docutils literal"><span class="pre">AuthTktAuthenticationPolicy</span></code> an &#8220;auth ticket&#8221; cookie should be
+<p>When using <code class="docutils literal"><span class="pre">AuthTktAuthenticationPolicy</span></code> an “auth ticket” cookie should be
 set in the request for the user to be identified. In some applications using
 another identification mechanism may be needed.</p>
 <div class="section" id="example-with-a-remote-user-policy">
-<h3>Example with a &#8220;remote user&#8221; policy<a class="headerlink" href="#example-with-a-remote-user-policy" title="Permalink to this headline">¶</a></h3>
+<h3>Example with a “remote user” policy<a class="headerlink" href="#example-with-a-remote-user-policy" title="Permalink to this headline">¶</a></h3>
 <p>For example, in a project of ours, the c2cgeoportal application needs to
 integrate with the Nevis single sign-on environment. This SSO system is
 composed of a central auth server, and a proxy running as an Apache module.
 The proxy takes care of communicating with the auth server, and sets the
 username in the <code class="docutils literal"><span class="pre">REMOTE_USER</span></code> environment variable when the user has been
-identified. With this system an &#8220;auth ticket&#8221; policy cannot be used, obviously.
-A <a class="reference external" href="http://docs.pylonsproject.org/projects/pyramid/en/1.3-branch/api/authentication.html#pyramid.authentication.RemoteUserAuthenticationPolicy">&#8220;remote user&#8221; authentication policy</a>
+identified. With this system an “auth ticket” policy cannot be used, obviously.
+A <a class="reference external" href="http://docs.pylonsproject.org/projects/pyramid/en/1.3-branch/api/authentication.html#pyramid.authentication.RemoteUserAuthenticationPolicy">“remote user” authentication policy</a>
 should be used instead.</p>
-<p>To use a &#8220;remote user&#8221; authentication policy edit the application&#8217;s
+<p>To use a “remote user” authentication policy edit the application’s
 main <code class="docutils literal"><span class="pre">__init__.py</span></code> file, and set <code class="docutils literal"><span class="pre">authentication_policy</span></code> to a
 <code class="docutils literal"><span class="pre">RemoteUserAuthenticationPolicy</span></code> instance:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span>from pyramid.config import Configurator
@@ -94,18 +94,18 @@ def main(global_config, **settings):
 assumes that <code class="docutils literal"><span class="pre">request.user.role</span></code> is a reference to the <code class="docutils literal"><span class="pre">Role</span></code> database
 object (more information below). This callback is required for admin users to
 be able to access to the admin interface.</p>
-<p>It is important to note that when using a &#8220;remote user&#8221; authentication policy
+<p>It is important to note that when using a “remote user” authentication policy
 the authentication process is delegated to an outside system. So calls to
 <code class="docutils literal"><span class="pre">pyramid.security.remember</span></code> and <code class="docutils literal"><span class="pre">pyramid.security.forget</span></code>, as done in
-c2cgeoportal&#8217;s <code class="docutils literal"><span class="pre">login</span></code> and <code class="docutils literal"><span class="pre">logout</span></code> views, have no effect.</p>
+c2cgeoportal’s <code class="docutils literal"><span class="pre">login</span></code> and <code class="docutils literal"><span class="pre">logout</span></code> views, have no effect.</p>
 <p>With an authentication policy set in the application configuration the user
 name can be obtained by calling <code class="docutils literal"><span class="pre">request.unauthenticated_userid</span></code>.
 (This function returns <code class="docutils literal"><span class="pre">None</span></code> if there is currently no authenticated user.)
-But c2cgeoportal applications need to also know about the user&#8217;s <em>role</em> to
+But c2cgeoportal applications need to also know about the user’s <em>role</em> to
 work properly.</p>
 <p>So when using an external authentication system this system should also provide
-the c2cgeoportal application with the name of the user&#8217;s role. This can be done
-in <code class="docutils literal"><span class="pre">apache/wsgi.conf.mako</span></code> by relying on the <a class="reference external" href="http://httpd.apache.org/docs/2.2/mod/mod_setenvif.html">mod_setenvif</a> Apache module&#8217;s
+the c2cgeoportal application with the name of the user’s role. This can be done
+in <code class="docutils literal"><span class="pre">apache/wsgi.conf.mako</span></code> by relying on the <a class="reference external" href="http://httpd.apache.org/docs/2.2/mod/mod_setenvif.html">mod_setenvif</a> Apache module’s
 <code class="docutils literal"><span class="pre">SetEnvIf</span></code> directive. For example:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>SetEnvIf isiwebsectoken &lt;role&gt;(.*)&lt;/role&gt; rolename=$1
 </pre></div>
@@ -157,13 +157,13 @@ You may for example add to <code class="docutils literal"><span class="pre">__in
         <span class="k">return</span> <span class="n">user</span>
 </pre></div>
 </div>
-<p>And then, in the application&#8217;s <code class="docutils literal"><span class="pre">main</span></code> function:</p>
+<p>And then, in the application’s <code class="docutils literal"><span class="pre">main</span></code> function:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">config</span><span class="o">.</span><span class="n">set_request_property</span><span class="p">(</span><span class="n">get_user_from_request</span><span class="p">,</span>
                             <span class="n">name</span><span class="o">=</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="n">reify</span><span class="o">=</span><span class="kc">True</span>
                             <span class="p">)</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal"><span class="pre">reify</span></code> argument is to <code class="docutils literal"><span class="pre">True</span></code> to cache the function&#8217;s return value and
+<p>The <code class="docutils literal"><span class="pre">reify</span></code> argument is to <code class="docutils literal"><span class="pre">True</span></code> to cache the function’s return value and
 actually execute the function only once per request. In this example the user
 name is obtained by calling <code class="docutils literal"><span class="pre">unauthenticated_userid</span></code>, itself relying on the
 authentication policy set in the application. The role object is obtained from
@@ -377,7 +377,7 @@ LDAP would look like this:</p>
 <li><a class="reference internal" href="#">Authentication</a><ul>
 <li><a class="reference internal" href="#the-default-policy">The default policy</a></li>
 <li><a class="reference internal" href="#using-another-policy">Using another policy</a><ul>
-<li><a class="reference internal" href="#example-with-a-remote-user-policy">Example with a &#8220;remote user&#8221; policy</a></li>
+<li><a class="reference internal" href="#example-with-a-remote-user-policy">Example with a “remote user” policy</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#custom-user-validation">Custom user validation</a><ul>
@@ -423,7 +423,7 @@ LDAP would look like this:</p>
       &copy;2011-2016, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

@@ -1,6 +1,6 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
@@ -36,7 +36,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">
+  <body>
   
 
     <div class="document">
@@ -74,10 +74,10 @@ associated. Example:</p>
 </li>
 <li><p class="first">The PostGIS table should include one geometry column only. You
 will get errors if the table has multiple geometry columns, even
-if one of them only is declared in PostGIS&#8217; <code class="docutils literal"><span class="pre">geometry_columns</span></code>
+if one of them only is declared in PostGIS’ <code class="docutils literal"><span class="pre">geometry_columns</span></code>
 table.</p>
 </li>
-<li><p class="first">The PostGIS table&#8217;s geometry column should be declared in PostGIS&#8217;
+<li><p class="first">The PostGIS table’s geometry column should be declared in PostGIS’
 <code class="docutils literal"><span class="pre">geometry_columns</span></code> table. c2cgeoportal indeed queries the
 <code class="docutils literal"><span class="pre">geometry_columns</span></code> table to get the information it needs.</p>
 <div class="admonition note">
@@ -101,7 +101,7 @@ MULTIPOINT, MULTILINESTRING, MULTIPOLYGON</p>
 <ul class="simple">
 <li>The name of the foreign key column should end with <code class="docutils literal"><span class="pre">_id</span></code> (e.g.
 <code class="docutils literal"><span class="pre">type_id</span></code>). This is not strictly required, but recommended.</li>
-<li>The relationship&#8217;s target table should have two columns, a
+<li>The relationship’s target table should have two columns, a
 primary key column and a text column. The text column must
 be named <code class="docutils literal"><span class="pre">name</span></code>.</li>
 </ul>
@@ -110,10 +110,10 @@ be named <code class="docutils literal"><span class="pre">name</span></code>.</l
 </div>
 <div class="section" id="adding-or-making-layers-editable">
 <h2>Adding or making layers editable<a class="headerlink" href="#adding-or-making-layers-editable" title="Permalink to this headline">¶</a></h2>
-<p>The application&#8217;s layers are defined in the <code class="docutils literal"><span class="pre">layer</span></code> table, which is managed
-by selecting the <em>Layers</em> item in the admin interface&#8217;s menu.</p>
+<p>The application’s layers are defined in the <code class="docutils literal"><span class="pre">layer</span></code> table, which is managed
+by selecting the <em>Layers</em> item in the admin interface’s menu.</p>
 <p>For a <em>layer</em> to be editable its <code class="docutils literal"><span class="pre">geoTable</span></code> field should be set. This field
-is the name of the PostGIS table containing the layer&#8217;s geographic data.  It is
+is the name of the PostGIS table containing the layer’s geographic data.  It is
 string of the form <code class="docutils literal"><span class="pre">[&lt;schemaname&gt;.]&lt;tablename&gt;</span></code>.  If <code class="docutils literal"><span class="pre">schemaname</span></code> is
 omitted the table is assumed to be in the <code class="docutils literal"><span class="pre">public</span></code> schema.  The label
 corresponding to this field is <em>Related Postgres table</em> in the admin interface.</p>
@@ -232,7 +232,7 @@ layer names, separated by commas.</li>
       &copy;2011-2016, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

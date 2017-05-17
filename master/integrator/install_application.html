@@ -1,6 +1,6 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
@@ -36,7 +36,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">
+  <body>
   
 
     <div class="document">
@@ -112,7 +112,7 @@ then to create it use:</p>
 <pre class="highlight"><span class="prompt1">sudo -u postgres psql -c <span class="s2">&quot;CREATE SCHEMA &lt;schema_name&gt;;&quot;</span> &lt;db_name&gt;</span>
 <span class="prompt1">sudo -u postgres psql -c <span class="s2">&quot;CREATE SCHEMA &lt;schema_name&gt;_static;&quot;</span> &lt;db_name&gt;</span>
 </pre><p>with <code class="docutils literal"><span class="pre">&lt;db_name&gt;</span></code> and <code class="docutils literal"><span class="pre">&lt;schema_name&gt;</span></code> replaced by the actual database name,
-and schema name (&#8216;main&#8217; by default), respectively.</p>
+and schema name (‘main’ by default), respectively.</p>
 </div>
 <div class="section" id="create-a-database-user">
 <span id="integrator-install-application-create-user"></span><h3>Create a database user<a class="headerlink" href="#create-a-database-user" title="Permalink to this headline">¶</a></h3>
@@ -143,13 +143,13 @@ application source tree:</p>
 </pre><p>c2cgeoportal applications include a Git submodule for CGXP. The following
 commands should be used to download CGXP and its dependencies:</p>
 <pre class="highlight"><span class="prompt1"><span class="nb">cd</span> &lt;my_project&gt;</span>
-</pre><p>The <code class="docutils literal"><span class="pre">foreach</span></code> command aims to init and update CGXP&#8217;s own submodules, for GXP,
+</pre><p>The <code class="docutils literal"><span class="pre">foreach</span></code> command aims to init and update CGXP’s own submodules, for GXP,
 OpenLayers and GeoExt.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">We do not just use <code class="docutils literal"><span class="pre">git</span> <span class="pre">submodule</span> <span class="pre">update</span> <span class="pre">--init</span> <span class="pre">--recursive</span></code> here because
-that would also download GXP&#8217;s submodules. We do not want that because we
-do not need GXP&#8217;s submodules. CGXP indeed has its own submodules for
+that would also download GXP’s submodules. We do not want that because we
+do not need GXP’s submodules. CGXP indeed has its own submodules for
 OpenLayers and GeoExt.</p>
 </div>
 </div>
@@ -194,7 +194,7 @@ environment variable, for cygwin, git and node binaries.</p>
 </div>
 <div class="section" id="python-wheels">
 <h4>Python Wheels<a class="headerlink" href="#python-wheels" title="Permalink to this headline">¶</a></h4>
-<p>You should create a &#8220;wheels&#8221; folder at the root folder of your project.</p>
+<p>You should create a “wheels” folder at the root folder of your project.</p>
 <p>Then, go to <a class="reference external" href="http://www.lfd.uci.edu/~gohlke/pythonlibs/">http://www.lfd.uci.edu/~gohlke/pythonlibs/</a>, search and download the
 following packages:</p>
 <ul class="simple">
@@ -213,8 +213,8 @@ packages according to the files you have downloaded.</p>
 <h4>apache/wsgi.conf.mako<a class="headerlink" href="#apache-wsgi-conf-mako" title="Permalink to this headline">¶</a></h4>
 <p><code class="docutils literal"><span class="pre">WSGIDaemonProcess</span></code> and <code class="docutils literal"><span class="pre">WSGIProcessGroup</span></code> are not supported on windows.</p>
 <p>(<a class="reference external" href="http://code.google.com/p/modwsgi/wiki/ConfigurationDirectives#WSGIDaemonProcess">WSGIDaemonProcess ConfigurationDirective</a>
-&#8220;Note that the <code class="docutils literal"><span class="pre">WSGIDaemonProcess</span></code> directive and corresponding features are not
-available on Windows or when running Apache 1.3.&#8221;)</p>
+“Note that the <code class="docutils literal"><span class="pre">WSGIDaemonProcess</span></code> directive and corresponding features are not
+available on Windows or when running Apache 1.3.”)</p>
 <p>The following lines must be commented/removed:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>WSGIDaemonProcess c2cgeoportal:${instanceid} display-name=%{GROUP} user=${modwsgi_user}
 ...
@@ -231,7 +231,7 @@ WSGIProcessGroup c2cgeoportal:${instanceid}
 </div>
 <div class="section" id="mapserver-c2cgeoportal-map-mako">
 <h4>mapserver/c2cgeoportal.map.mako<a class="headerlink" href="#mapserver-c2cgeoportal-map-mako" title="Permalink to this headline">¶</a></h4>
-<p>You must specify the path to the mapserver&#8217;s epsg file by uncommenting and adapting
+<p>You must specify the path to the mapserver’s epsg file by uncommenting and adapting
 this line under <code class="docutils literal"><span class="pre">MAP</span></code> (use regular slash <code class="docutils literal"><span class="pre">/</span></code>)</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">PROJ_LIB</span><span class="s2">&quot; &quot;</span><span class="n">C</span><span class="p">:</span><span class="o">/</span><span class="n">PATH</span><span class="o">/</span><span class="n">TO</span><span class="o">/</span><span class="n">ms4w</span><span class="o">/</span><span class="n">proj</span><span class="o">/</span><span class="n">nad</span><span class="s2">&quot;</span>
 </pre></div>
@@ -426,7 +426,7 @@ and the <code class="docutils literal"><span class="pre">&lt;instanceid&gt;</spa
       &copy;2011-2016, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

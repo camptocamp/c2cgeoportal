@@ -1,6 +1,6 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
@@ -36,7 +36,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">
+  <body>
   
 
     <div class="document">
@@ -147,7 +147,7 @@ span.prompt1:before {
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">If you use Mako templates for generating the print configuration,
-to prevent character &#8216;$&#8217; from being incorrectly interpreted, use
+to prevent character ‘$’ from being incorrectly interpreted, use
 <code class="docutils literal"><span class="pre">&lt;%text&gt;$&lt;/%text&gt;{attribute}</span></code> in place of <code class="docutils literal"><span class="pre">${attribute}</span></code>.</p>
 </div>
 </div>
@@ -164,7 +164,7 @@ template so you do not have to duplicate a huge quantity of code in your <code c
 <p>And in <code class="docutils literal"><span class="pre">print/templates/A3_landscape_inherit.mako</span></code> and
 <code class="docutils literal"><span class="pre">print/templates/A4_portrait_inherit.mako</span></code> thoses block will
 be redefined.</p>
-<p>The <code class="docutils literal"><span class="pre">print.yaml.mako</span></code> has the &#8220;header&#8221; part and includes the wanted templates.</p>
+<p>The <code class="docutils literal"><span class="pre">print.yaml.mako</span></code> has the “header” part and includes the wanted templates.</p>
 </div>
 <div class="section" id="using-backgroundpdf-parameter">
 <h3>Using backgroundPdf parameter<a class="headerlink" href="#using-backgroundpdf-parameter" title="Permalink to this headline">¶</a></h3>
@@ -172,7 +172,7 @@ be redefined.</p>
 PDF file in the print directory and use
 <code class="docutils literal"><span class="pre">&lt;%text&gt;$&lt;/%text&gt;{configDir}/template_A4_portrait.pdf</span></code>
 for the value of backgroundPdf parameter.</p>
-<p>The <code class="docutils literal"><span class="pre">print.yaml.mako</span></code> has the &#8220;header&#8221; part and includes the wanted templates.</p>
+<p>The <code class="docutils literal"><span class="pre">print.yaml.mako</span></code> has the “header” part and includes the wanted templates.</p>
 </div>
 </div>
 <div class="section" id="using-a-single-print-server-in-a-set-of-sites">
@@ -305,7 +305,7 @@ print v3 (although that is the same idea).</p>
       &copy;2011-2016, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
