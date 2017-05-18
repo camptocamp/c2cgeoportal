@@ -42,7 +42,8 @@ else
 TOUCHBACK_TXRC = touch --date "$(shell stat -c '%y' $(HOME)/.transifexrc)" $(HOME)/.transifexrc
 endif
 L10N_LANGUAGES = fr de
-L10N_PO_FILES = $(addprefix c2cgeoportal/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal.po, $(L10N_LANGUAGES)))
+L10N_PO_FILES = $(addprefix c2cgeoportal/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal.po, $(L10N_LANGUAGES))) \
+	$(addprefix c2cgeoportal/scaffolds/create/+package+/locale/,$(addsuffix LC_MESSAGES/+package+-client.po, $(L10N_LANGUAGES)))
 LANGUAGES = en $(L10N_LANGUAGES)
 PO_FILES = $(addprefix c2cgeoportal/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal.po, $(LANGUAGES)))
 MO_FILES = $(addprefix .build/,$(addsuffix .mo.timestamp,$(basename $(PO_FILES))))
@@ -250,6 +251,13 @@ c2cgeoportal/locale/en/LC_MESSAGES/c2cgeoportal.po: c2cgeoportal/locale/c2cgeopo
 	msgmerge --update $@ $<
 
 c2cgeoportal/locale/%/LC_MESSAGES/c2cgeoportal.po: $(TX_DEPENDENCIES) .build/dev-requirements.timestamp
+	mkdir -p $(dir $@)
+	.build/venv/bin/tx pull -l $* --force
+	$(TOUCHBACK_TXRC)
+	test -s $@
+
+c2cgeoportal/scaffolds/create/+package+/locale/%/LC_MESSAGES/+package+-client.po: \
+		$(TX_DEPENDENCIES) .build/dev-requirements.timestamp
 	mkdir -p $(dir $@)
 	.build/venv/bin/tx pull -l $* --force
 	$(TOUCHBACK_TXRC)
