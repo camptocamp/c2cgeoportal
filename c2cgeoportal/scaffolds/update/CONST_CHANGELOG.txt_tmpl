@@ -1,6 +1,14 @@
 This file includes migration steps for each release of c2cgeoportal.
 
 
+Version 2.1.5
+=============
+
+1. Get the new language mapping used to select angular sub local:
+
+    cp CONST_create_template/language_mapping .
+
+
 Version 2.1.2
 =============
 
