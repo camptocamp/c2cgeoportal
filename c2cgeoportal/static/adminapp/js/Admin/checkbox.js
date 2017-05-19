@@ -138,25 +138,6 @@ either expressed or implied, of the FreeBSD Project.
     };
 
     /**
-     * show / hide restrictionArea input fields
-     */
-    $.fn.adminapp.toogleRestrictionAreas = function(el) {
-        var els = $.fn.adminapp.findField('restrictionareas', [el.id]);
-        var state = el.value == "internal WMS" || el.value == "WMTS";
-        if (state) {
-            els.removeClass('disabledinput');
-        } else {
-            // reset value
-            $.fn.adminapp.resetField(els);
-
-            els.addClass('disabledinput');
-        }
-        // set readonly
-        els.attr('readOnly', !state);
-        els.attr('disabled', !state);
-    };
-
-    /**
      * show / hide unneeded fields
      */
     $.fn.adminapp.toogleLayerType = function(el) {
@@ -198,20 +179,6 @@ either expressed or implied, of the FreeBSD Project.
         change("query_layers", fields);
         change("is_single_tile", fields);
         change("legend_rule", fields);
-
-        enablePrivateOption = state == "internal WMS" || state == "WMTS"
-        var e = $.fn.adminapp.findField("public",  [el.id]);
-        e.attr('readOnly', !enablePrivateOption);
-        if (enablePrivateOption) {
-            e.removeClass('disabledinput');
-        }
-        else {
-            e.addClass('disabledinput');
-            e.attr('checked', true);
-        }
-        this.toogleRestrictionAreas(el);
-        // true should be send ...
-        //e.attr('disabled', !internalWMS);
     };
 
     $.fn.adminapp.toogleBaseLayer = function(wmsi, bl) {
@@ -287,7 +254,6 @@ $(document).ready(function(){
         // restrictionareas
         $.fn.adminapp.bindEventOnLayer(lt[0]);
         // init state
-        $.fn.adminapp.toogleRestrictionAreas(lt[0]);
         $.fn.adminapp.toogleLayerType(lt[0]);
     }
 
