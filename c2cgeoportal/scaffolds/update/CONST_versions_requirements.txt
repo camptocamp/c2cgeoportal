@@ -42,7 +42,7 @@ requests==2.14.2
 simplejson==3.10.0
 six==1.10.0
 SQLAHelper==1.0
-SQLAlchemy==1.1.9
+SQLAlchemy==1.1.10
 Tempita==0.5.2
 textile==2.3.11
 transaction==2.1.2
