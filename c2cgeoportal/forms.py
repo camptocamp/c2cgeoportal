@@ -273,7 +273,7 @@ class SimpleLayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
         self.values = [int(v) for v in self.value]
 
     def render_item(self, item, depth):
-        final_item = item.item if isinstance(item, models.LayergroupTreeitem) else item
+        final_item = item.treeitem if isinstance(item, models.LayergroupTreeitem) else item
 
         # no link to theme
         # if autocheck mean that we want select only layers.
@@ -351,7 +351,7 @@ class LayerCheckBoxTreeSet(SimpleLayerCheckBoxTreeSet):  # pragma: no cover
     def build_values(self):
         values = models.DBSession.query(models.LayergroupTreeitem) \
             .filter(models.LayergroupTreeitem.id.in_([int(v) for v in self.value])).all()
-        self.values = [v.item.id for v in values]
+        self.values = [v.treeitem.id for v in values]
 
 
 class TreeItemCheckBoxTreeSet(LayerCheckBoxTreeSet):  # pragma: no cover
