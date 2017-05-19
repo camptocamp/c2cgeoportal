@@ -7,3 +7,9 @@ source_file = c2cgeoportal/locale/c2cgeoportal.pot
 source_lang = en
 trans.de = c2cgeoportal/locale/de/LC_MESSAGES/c2cgeoportal.po
 trans.fr = c2cgeoportal/locale/fr/LC_MESSAGES/c2cgeoportal.po
+
+[ngeo.gmf-apps-${tx_version.strip()}]
+type = PO
+source_lang = en
+trans.de = c2cgeoportal/scaffolds/create/+package+/locale/de/LC_MESSAGES/+package+-client.po
+trans.fr = c2cgeoportal/scaffolds/create/+package+/locale/fr/LC_MESSAGES/+package+-client.po
