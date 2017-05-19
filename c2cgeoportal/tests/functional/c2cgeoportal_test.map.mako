@@ -1,7 +1,7 @@
 MAP
     NAME "c2cgeoportail"
 
-    EXTENT -180 -90 180 90
+    EXTENT 420000 40500 839000 306400
     UNITS dd
 
     # MAXSIZE should not be less than 4000 for MF print
@@ -66,7 +66,7 @@ MAP
     LAYER
         NAME "testpoint_unprotected"
         GROUP "testpoint_group"
-        EXTENT -180 -90 180 90
+        EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
@@ -102,7 +102,7 @@ MAP
     LAYER
         NAME "testpoint_protected"
         GROUP "testpoint_group"
-        EXTENT -180 -90 180 90
+        EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
@@ -175,7 +175,7 @@ MAP
 
     LAYER
         NAME "testpoint_protected_query_with_collect"
-        EXTENT -180 -90 180 90
+        EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
@@ -254,7 +254,7 @@ MAP
     LAYER
         NAME "testpoint_column_restriction"
         TYPE POINT
-        EXTENT -180 -90 180 90
+        EXTENT 420000 40500 839000 306400
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
@@ -295,7 +295,7 @@ MAP
     LAYER
         NAME "test_wmsfeatures"
         GROUP "test_wmsfeaturesgroup"
-        EXTENT -180 -90 180 90
+        EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
@@ -335,7 +335,7 @@ MAP
     LAYER
         NAME "test_wmstime"
         GROUP "test_wmstimegroup"
-        EXTENT -180 -90 180 90
+        EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
@@ -367,7 +367,7 @@ MAP
     LAYER
         NAME "test_wmstime2"
         GROUP "test_wmstimegroup"
-        EXTENT -180 -90 180 90
+        EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
@@ -398,7 +398,7 @@ MAP
 
     LAYER
         NAME "__test_public_layer"
-        EXTENT -180 -90 180 90
+        EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
@@ -422,7 +422,7 @@ MAP
 
     LAYER
         NAME "__test_private_layer"
-        EXTENT -180 -90 180 90
+        EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
@@ -446,7 +446,7 @@ MAP
 
     LAYER
         NAME "__test_public_layer_bis"
-        EXTENT -180 -90 180 90
+        EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
@@ -470,7 +470,7 @@ MAP
 
     LAYER
         NAME "__test_private_layer_bis"
-        EXTENT -180 -90 180 90
+        EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
@@ -494,7 +494,7 @@ MAP
 
     LAYER
         NAME "__test_layer_internal_wms"
-        EXTENT -180 -90 180 90
+        EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
         METADATA
@@ -519,7 +519,7 @@ MAP
 % for name, hasMin, hasMax in [("noscale", False, False), ("minscale", True, False), ("maxscale", False, True), ("boothscale", True, True)]:
     LAYER
         NAME "test_${name}"
-        EXTENT -180 -90 180 90
+        EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
