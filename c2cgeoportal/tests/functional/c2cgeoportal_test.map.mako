@@ -41,7 +41,6 @@ MAP
             "wms_title" "changeme"
             "wms_abstract" "changeme"
             "wms_onlineresource" "changeme"
-            "wms_srs" "epsg:21781"
             "wms_encoding" "UTF-8"
             "wms_enable_request" "*"
             "ows_title" "changeme"
@@ -74,7 +73,6 @@ MAP
         DATA "the_geom from main.testpoint using unique id using srid=21781"
         METADATA
             "wms_title" "countries"
-            "wms_srs" "epsg:21781"
             # gml_ settings for GetFeatureInfo
             "gml_include_items" "all"
             "gml_exclude_items" "id"
@@ -110,7 +108,6 @@ MAP
         DATA "the_geom from (SELECT tp.* FROM main.testpoint AS tp, ${mapserver_join_tables} WHERE ST_Contains(${mapserver_join_area}, ST_GeomFromText(ST_AsText(tp.the_geom), 21781)) AND ${mapserver_join_where} 'testpoint_protected') as foo using unique id using srid=21781"
         METADATA
             "wms_title" "countries"
-            "wms_srs" "epsg:21781"
             # gml_ settings for GetFeatureInfo
             "gml_include_items" "all"
             "gml_exclude_items" "id"
@@ -148,7 +145,6 @@ MAP
         DATA "the_geom from (SELECT tp.* FROM main.testpoint AS tp, ${mapserver_join_tables} WHERE ST_Contains(${mapserver_join_area}, ST_GeomFromText(ST_AsText(tp.the_geom), 21781)) AND ${mapserver_join_where} 'testpoint_protected_2') as foo using unique id using srid=21781"
         METADATA
             "wms_title" "countries"
-            "wms_srs" "epsg:21781"
             # gml_ settings for GetFeatureInfo
             "gml_include_items" "all"
             "gml_exclude_items" "id"
@@ -183,7 +179,6 @@ MAP
         DATA "the_geom from (SELECT tp.* FROM main.testpoint AS tp WHERE ST_Contains((${mapfile_data_subselect} 'testpoint_protected_query_with_collect'), ST_SetSRID(tp.the_geom, 21781))) as foo using unique id using srid=21781"
         METADATA
             "wms_title" "countries"
-            "wms_srs" "epsg:21781"
             # gml_ settings for GetFeatureInfo
             "gml_include_items" "all"
             "gml_exclude_items" "id"
@@ -220,7 +215,6 @@ MAP
         DATA "the_geom FROM (SELECT * FROM main.testpoint WHERE name='%s_name%') AS test USING UNIQUE id USING srid=21781"
         METADATA
             "wms_title" "countries"
-            "wms_srs" "epsg:21781"
             # gml_ settings for GetFeature
             "gml_include_items" "all"
             "gml_exclude_items" "id"
@@ -261,7 +255,6 @@ MAP
         DATA "the_geom FROM (SELECT the_geom, id, %s_cols% FROM main.testpoint) AS test USING UNIQUE id USING srid=21781"
         METADATA
             "wms_title" "countries"
-            "wms_srs" "epsg:21781"
             # gml_ settings for GetFeature
             "gml_include_items" "all"
             "gml_exclude_items" "id"
@@ -303,7 +296,6 @@ MAP
         DATA "the_geom from main.testpoint using unique id using srid=21781"
         METADATA
             "wms_title" "countries"
-            "wms_srs" "epsg:21781"
             # gml_ settings for GetFeatureInfo
             "gml_include_items" "all"
             "gml_exclude_items" "id"
@@ -343,7 +335,6 @@ MAP
         DATA "the_geom from main.testpoint using unique id using srid=21781"
         METADATA
             "wms_title" "time"
-            "wms_srs" "epsg:21781"
             "wms_timeextent" "2000/2010/P1Y"
             "wms_timeitem" "date"
             "wms_timedefault" "2000"
@@ -375,7 +366,6 @@ MAP
         DATA "the_geom from main.testpoint using unique id using srid=21781"
         METADATA
             "wms_title" "time"
-            "wms_srs" "epsg:21781"
             "wms_timeextent" "2015/2020/P1Y"
             "wms_timeitem" "date"
             "wms_timedefault" "2015"
@@ -405,7 +395,6 @@ MAP
         CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
         DATA "the_geom from main.testpoint using unique id using srid=21781"
         METADATA
-            "wms_srs" "epsg:21781"
         END
         PROJECTION
            "init=epsg:21781"
@@ -428,9 +417,6 @@ MAP
         CONNECTIONTYPE postgis
         CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
         DATA "the_geom from main.testpoint using unique id using srid=21781"
-        METADATA
-            "wms_srs" "epsg:21781"
-        END
         PROJECTION
            "init=epsg:21781"
         END
@@ -452,9 +438,6 @@ MAP
         CONNECTIONTYPE postgis
         CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
         DATA "the_geom from main.testpoint using unique id using srid=21781"
-        METADATA
-            "wms_srs" "epsg:21781"
-        END
         PROJECTION
            "init=epsg:21781"
         END
@@ -476,9 +459,6 @@ MAP
         CONNECTIONTYPE postgis
         CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
         DATA "the_geom from main.testpoint using unique id using srid=21781"
-        METADATA
-            "wms_srs" "epsg:21781"
-        END
         PROJECTION
            "init=epsg:21781"
         END
@@ -497,9 +477,6 @@ MAP
         EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
-        METADATA
-            "wms_srs" "epsg:21781"
-        END
         PROJECTION
            "init=epsg:21781"
         END
@@ -527,7 +504,6 @@ MAP
         DATA "the_geom from main.testpoint using unique id using srid=21781"
         METADATA
             "wms_title" "countries"
-            "wms_srs" "epsg:21781"
             # gml_ settings for GetFeatureInfo
             "gml_include_items" "all"
             "gml_exclude_items" "id"
