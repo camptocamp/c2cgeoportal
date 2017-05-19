@@ -604,7 +604,7 @@ class TestMapserverproxyView(TestCase):
         ))
         response = MapservProxy(request).proxy()
 
-        self.assertFalse((response.body).find("<Name>testpoint_protected</Name>") > 0)
+        self.assertFalse(response.body.find("<Name>testpoint_protected</Name>") > 0)
 
         request = self._create_getcap_request(username=u"__test_user1")
         request.params.update(dict(
@@ -622,7 +622,7 @@ class TestMapserverproxyView(TestCase):
         ))
         response = MapservProxy(request).proxy()
 
-        self.assertFalse((response.body).find("<Name>testpoint_protected</Name>") > 0)
+        self.assertFalse(response.body.find("<Name>testpoint_protected</Name>") > 0)
 
         request = self._create_getcap_request(username=u"__test_user1")
         request.params.update(dict(
@@ -955,4 +955,4 @@ class TestMapserverproxyView(TestCase):
         ))
         response = MapservProxy(request).proxy()
 
-        self.assertTrue((response.body).find("<Name>testpoint_protected</Name>") > 0)
+        self.assertTrue(response.body.find("<Name>testpoint_protected</Name>") > 0)
