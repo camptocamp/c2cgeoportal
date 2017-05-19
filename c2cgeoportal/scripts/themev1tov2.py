@@ -213,6 +213,7 @@ def layer_v1tov2(session, layer):
     for link in layer.parents_relation:
         new_link = LayergroupTreeitem()
         new_link.ordering = link.ordering
+        new_link.description = link.description
         new_link.treegroup_id = link.treegroup_id
         new_link.group = link.group
         new_link.item = new_layer
