@@ -36,7 +36,7 @@
 #                                       |
 #        +--------------------------------------------------------------+ area1
 #        |  +--------------------------------------------------------+  |
-#        |  |   p2       area3          |+45                    p3   |  |
+#        |  |   p2       area3          |200045                 p3   |  |
 #        |  +--------------------------------------------------------+  |
 #        |               area1          |                               |
 #        +--------------------------------------------------------------+
@@ -44,13 +44,13 @@
 #        +--------------------------------------------------------------+
 #        |               area2          |                               |
 #    +---+--------------------------------------------------------------+-------->
-#       -100   -90                      |                       +90    +100)
+#       599900   599910                 |               600090    600100)
 #                                       |
 #                                       |
 #                                       |
 #                                       |
 #                                       |
-#               p1                      |-45                    p4
+#               p1                      |199955                    p4
 #                                       |
 #                                       |
 #                                       +
@@ -142,13 +142,13 @@ class TestMapserverproxyView(TestCase):
 
         TestPoint.__table__.create(bind=DBSession.bind, checkfirst=True)
 
-        geom = WKTElement("MULTIPOINT((-90 -45))", srid=21781)
+        geom = WKTElement("MULTIPOINT((599910 199955))", srid=21781)
         p1 = TestPoint(the_geom=geom, name=u"foo", city=u"Lausanne", country=u"Swiss")
-        geom = WKTElement("MULTIPOINT((-90 45))", srid=21781)
+        geom = WKTElement("MULTIPOINT((599910 200045))", srid=21781)
         p2 = TestPoint(the_geom=geom, name=u"bar", city=u"Chambéry", country=u"France")
-        geom = WKTElement("MULTIPOINT((90 45))", srid=21781)
+        geom = WKTElement("MULTIPOINT((600090 200045))", srid=21781)
         p3 = TestPoint(the_geom=geom, name=u"éàè", city=u"Paris", country=u"France")
-        geom = WKTElement("MULTIPOINT((90 -45))", srid=21781)
+        geom = WKTElement("MULTIPOINT((600090 199955))", srid=21781)
         p4 = TestPoint(the_geom=geom, name=u"123", city=u"Londre", country=u"UK")
 
         pt1 = Functionality(name=u"print_template", value=u"1 Wohlen A4 portrait")
@@ -179,15 +179,15 @@ class TestMapserverproxyView(TestCase):
         layer3.ogc_server = ogc_server_internal
         layer3.interfaces = [main]
 
-        area = "POLYGON((-100 30, -100 50, 100 50, 100 30, -100 30))"
+        area = "POLYGON((599900 200030, 599900 200050, 600100 200050, 600100 200030, 599900 200030))"
         area = WKTElement(area, srid=21781)
         restricted_area1 = RestrictionArea(u"__test_ra1", u"", [layer2, layer3], [role1], area)
 
-        area = "POLYGON((-100 0, -100 20, 100 20, 100 0, -100 0))"
+        area = "POLYGON((599900 200000, 599900 200020, 600100 200020, 600100 200000, 599900 200000))"
         area = WKTElement(area, srid=21781)
         restricted_area2 = RestrictionArea(u"__test_ra2", u"", [layer2, layer3], [role2, role3], area)
 
-        area = "POLYGON((-95 43, -95 47, 95 47, 95 43, -95 43))"
+        area = "POLYGON((599905 200043, 599905 200047, 600095 200047, 600095 200043, 599905 200043))"
         area = WKTElement(area, srid=21781)
         restricted_area3 = RestrictionArea(u"__test_ra3", u"", [layer3], [role3], area, readwrite=True)
 
@@ -339,7 +339,7 @@ class TestMapserverproxyView(TestCase):
         request = self._create_dummy_request()
         request.params.update(dict(
             service="wms", version="1.1.1",
-            request="getfeatureinfo", bbox="-90,-45,90,0",
+            request="getfeatureinfo", bbox="599910,199955,600090,200000",
             layers="testpoint_unprotected",
             query_layers="testpoint_unprotected",
             srs="EPSG:21781", format="image/png",
@@ -359,12 +359,12 @@ class TestMapserverproxyView(TestCase):
                 <testpoint_unprotected_feature>
                         <gml:boundedBy>
                                 <gml:Box srsName="EPSG:21781">
-                                        <gml:coordinates>-90.000000,-45.000000 -90.000000,-45.000000</gml:coordinates>
+                                        <gml:coordinates>599910.000000,199955.000000 599910.000000,199955.000000</gml:coordinates>
                                 </gml:Box>
                         </gml:boundedBy>
                         <the_geom>
                         <gml:Point srsName="EPSG:21781">
-                          <gml:coordinates>-90.000000,-45.000000</gml:coordinates>
+                          <gml:coordinates>599910.000000,199955.000000</gml:coordinates>
                         </gml:Point>
                         </the_geom>
                         <name>foo</name>
@@ -391,7 +391,7 @@ class TestMapserverproxyView(TestCase):
         request = self._create_dummy_request()
         request.params.update(dict(
             service="wms", version="1.1.1",
-            request="getfeatureinfo", bbox="-90,-45,90,0",
+            request="getfeatureinfo", bbox="599910,199955,600090,200000",
             layers="testpoint_unprotected",
             query_layers="testpoint_unprotected",
             srs="EPSG:21781", format="image/png",
@@ -412,12 +412,12 @@ class TestMapserverproxyView(TestCase):
                 <testpoint_unprotected_feature>
                         <gml:boundedBy>
                                 <gml:Box srsName="EPSG:21781">
-                                        <gml:coordinates>-90.000000,-45.000000 -90.000000,-45.000000</gml:coordinates>
+                                        <gml:coordinates>599910.000000,199955.000000 599910.000000,199955.000000</gml:coordinates>
                                 </gml:Box>
                         </gml:boundedBy>
                         <the_geom>
                         <gml:Point srsName="EPSG:21781">
-                          <gml:coordinates>-90.000000,-45.000000</gml:coordinates>
+                          <gml:coordinates>599910.000000,199955.000000</gml:coordinates>
                         </gml:Point>
                         </the_geom>
                         <name>foo</name>
@@ -446,7 +446,7 @@ class TestMapserverproxyView(TestCase):
         request = self._create_dummy_request()
         request.params.update(dict(
             service="wms", version="1.1.1", request="getmap",
-            bbox="-180,-90,180,90", layers="testpoint_unprotected",
+            bbox="599820,199910,600180,200090", layers="testpoint_unprotected",
             width="600", height="400", srs="EPSG:21781", format="image/png"
         ))
         response = MapservProxy(request).proxy()
@@ -463,7 +463,7 @@ class TestMapserverproxyView(TestCase):
         request = self._create_dummy_request(username=u"__test_user1")
         request.params.update(dict(
             service="wms", version="1.1.1", request="getmap",
-            bbox="-180,-90,180,90", layers="testpoint_unprotected",
+            bbox="599820,199910,600180,200090", layers="testpoint_unprotected",
             width="600", height="400", srs="EPSG:21781", format="image/png"
         ))
         response = MapservProxy(request).proxy()
@@ -480,7 +480,7 @@ class TestMapserverproxyView(TestCase):
         request = self._create_dummy_request(username=u"__test_user2")
         request.params.update(dict(
             service="wms", version="1.1.1", request="getmap",
-            bbox="-180,-90,180,90", layers="testpoint_unprotected",
+            bbox="599820,199910,600180,200090", layers="testpoint_unprotected",
             width="600", height="400", srs="EPSG:21781", format="image/png"
         ))
         response = MapservProxy(request).proxy()
@@ -497,7 +497,7 @@ class TestMapserverproxyView(TestCase):
         request = self._create_dummy_request()
         request.params.update(dict(
             service="wms", version="1.1.1", request="getmap",
-            bbox="-180,-90,180,90", layers="testpoint_protected",
+            bbox="599820,199910,600180,200090", layers="testpoint_protected",
             width="600", height="400", srs="EPSG:21781", format="image/png"
         ))
         response = MapservProxy(request).proxy()
@@ -514,7 +514,7 @@ class TestMapserverproxyView(TestCase):
         request = self._create_dummy_request(username=u"__test_user1")
         request.params.update(dict(
             service="wms", version="1.1.1", request="getmap",
-            bbox="-180,-90,180,90", layers="testpoint_protected",
+            bbox="599820,199910,600180,200090", layers="testpoint_protected",
             width="600", height="400", srs="EPSG:21781", format="image/png"
         ))
         response = MapservProxy(request).proxy()
@@ -531,7 +531,7 @@ class TestMapserverproxyView(TestCase):
         request = self._create_dummy_request(username=u"__test_user2")
         request.params.update(dict(
             service="wms", version="1.1.1", request="getmap",
-            bbox="-180,-90,180,90", layers="testpoint_protected",
+            bbox="599820,199910,600180,200090", layers="testpoint_protected",
             width="600", height="400", srs="EPSG:21781", format="image/png"
         ))
         response = MapservProxy(request).proxy()
@@ -547,7 +547,7 @@ class TestMapserverproxyView(TestCase):
         request = self._create_dummy_request(username=u"__test_user1")
         request.params.update(dict(
             service="wms", version="1.1.1", request="getmap",
-            bbox="-180,-90,180,90", layers="testpoint_protected_query_with_collect",
+            bbox="599820,199910,600180,200090", layers="testpoint_protected_query_with_collect",
             width="600", height="400", srs="EPSG:21781", format="image/png"
         ))
         response = MapservProxy(request).proxy()
@@ -564,7 +564,7 @@ class TestMapserverproxyView(TestCase):
         request = self._create_dummy_request(username=u"__test_user2")
         request.params.update(dict(
             service="wms", version="1.1.1", request="getmap",
-            bbox="-180,-90,180,90", layers="testpoint_protected_query_with_collect",
+            bbox="599820,199910,600180,200090", layers="testpoint_protected_query_with_collect",
             width="600", height="400", srs="EPSG:21781", format="image/png"
         ))
         response = MapservProxy(request).proxy()
@@ -581,7 +581,7 @@ class TestMapserverproxyView(TestCase):
         request = self._create_dummy_request(username=u"__test_user3")
         request.params.update(dict(
             service="wms", version="1.1.1", request="getmap",
-            bbox="-180,-90,180,90", layers="testpoint_protected_query_with_collect",
+            bbox="599820,199910,600180,200090", layers="testpoint_protected_query_with_collect",
             width="600", height="400", srs="EPSG:21781", format="image/png"
         ))
         response = MapservProxy(request).proxy()
