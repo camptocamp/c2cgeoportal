@@ -20,8 +20,16 @@ of an existing c2cgeoportal application. Here is how:
     git clone git@github.com:camptocamp/c2cgeoportal.git
     cd c2cgeoportal
     git submodule update --init
-    make build
+    ./docker-run make build
     cd  ~/<project>
+
+.. note:: Old build directory
+
+   If you still have old build directory remove it before running the build
+
+   .. prompt:: bash
+
+      rm -rf .build
 
   You can now check out your development branch if necessary.
 
