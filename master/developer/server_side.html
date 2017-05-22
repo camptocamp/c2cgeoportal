@@ -66,10 +66,20 @@ span.prompt1:before {
 <span class="prompt1">git clone git@github.com:camptocamp/c2cgeoportal.git</span>
 <span class="prompt1"><span class="nb">cd</span> c2cgeoportal</span>
 <span class="prompt1">git submodule update --init</span>
-<span class="prompt1">make build</span>
+<span class="prompt1">./docker-run make build</span>
 <span class="prompt1"><span class="nb">cd</span>  ~/&lt;project&gt;</span>
-</pre><p>You can now check out your development branch if necessary.</p>
-</li>
+</pre></li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Old build directory</p>
+<blockquote>
+<div><p>If you still have old build directory remove it before running the build</p>
+<pre class="highlight"><span class="prompt1">rm -rf .build</span>
+</pre></div></blockquote>
+<p class="last">You can now check out your development branch if necessary.</p>
+</div>
+<ul>
 <li><p class="first">Edit your <code class="docutils literal"><span class="pre">&lt;user&gt;.mk</span></code> to have something like this:</p>
 <pre class="code make literal-block">
 <span class="name variable">INSTANCE_ID</span> <span class="operator">=</span> &lt;user&gt;
