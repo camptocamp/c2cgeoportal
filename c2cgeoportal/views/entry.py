@@ -1496,7 +1496,7 @@ class Entry:
                 return set_common_headers(
                     self.request, "login", NO_CACHE,
                     response=Response(json.dumps(self._user(
-                        DBSession.query(User).filter(User.username == user).one()
+                        self.request.get_user(user)
                     )), headers=headers),
                 )
         else:

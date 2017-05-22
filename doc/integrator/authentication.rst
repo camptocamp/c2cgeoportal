@@ -116,17 +116,18 @@ You may for example add to ``__init__.py``:
 
 .. code:: python
 
-    def get_user_from_request(request):
+    def get_user_from_request(request, username):
         from c2cgeoportal.models import DBSession, Role
         class O:
             pass
-        username = request.unauthenticated_userid
+        if username is None:
+            username = request.unauthenticated_userid
         if username is not None:
             user = O()
             user.username = username
             rolename = request.environ.get('rolename')
-            user.role = DBSession.query(Role).filter_by(
-                            name=rolename).one()
+            user.role_name = rolename
+            user.role = DBSession.query(Role).filter_by(name=rolename).one()
             user.functionalities = []
             return user
 
@@ -134,15 +135,10 @@ And then, in the application's ``main`` function:
 
 .. code:: python
 
-    config.set_request_property(get_user_from_request,
-                                name='user', reify=True
-                                )
-
-The ``reify`` argument is to ``True`` to cache the function's return value and
-actually execute the function only once per request. In this example the user
-name is obtained by calling ``unauthenticated_userid``, itself relying on the
-authentication policy set in the application. The role object is obtained from
-the value of the ``rolename`` environment variable by querying the database.
+    config.set_request_property(
+            get_user_from_request, name='user', property=True)
+    config.set_request_property(
+            get_user_from_request, name='get_user')
 
 Please note that ``c2cgeoportal`` expects the admin role to be ``role_admin``.
 If for some reason you need to use another name for this role, you may define
@@ -263,14 +259,14 @@ Full example using pyramid_ldap, see `# LDAP` / `# END LDAP` blocs.
 
     # get custom user data from request and link with existing c2cgeoportal
     # role in your project
-    def custom_get_user_from_request(request):
+    def custom_get_user_from_request(request, identity):
 
         class O:
             pass
 
         from c2cgeoportal.models import DBSession, Role
 
-        if hasattr(request, '_user'):
+        if hasattr(request, '_user') and identity is None:
             # avoid recursive calls from
             # get_user_from_request -> request.authenticated_userid -> ...
             return request._user
@@ -278,13 +274,15 @@ Full example using pyramid_ldap, see `# LDAP` / `# END LDAP` blocs.
         user = get_user_from_request(request)
         if user is None:
             log.debug("user is not authenticated or is a ldap user")
-            identity = request.unauthenticated_userid
+            if identity is None:
+               identity = request.unauthenticated_userid
             if identity is not None:
                 identity = loads(identity)
                 user = O()
                 user.username = identity['username']
                 user.functionalities = []
                 user.is_password_changed = True
+                user.role_name = identity['role']
                 user.role = DBSession.query(Role).filter_by(name=identity['role']).one()
                 user.id = -1
                 request._user = user
@@ -340,7 +338,8 @@ Full example using pyramid_ldap, see `# LDAP` / `# END LDAP` blocs.
         # LDAP
         # register the customized function
         config.set_user_validator(custom_user_validator)
-        config.add_request_method(custom_get_user_from_request, 'user', reify=True)
+        config.add_request_method(custom_get_user_from_request, 'user', property=True)
+        config.add_request_method(custom_get_user_from_request, 'get_user')
         # END LDAP
 
         return config.make_wsgi_app()
