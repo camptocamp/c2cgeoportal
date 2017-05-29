@@ -69,12 +69,12 @@ python-dateutil==2.6.0
 pytz==2017.2
 PyYAML==3.12
 repoze.lru==0.6
-requests[security]==2.16.4
+requests[security]==2.17.0
 restkit==4.2.2
 Shapely==1.5.17.post1
 simplejson==3.10.0
 six==1.10.0
-Sphinx==1.6.1
+Sphinx==1.6.2
 sphinx-prompt==1.0.0
 SQLAHelper==1.0
 SQLAlchemy==1.1.10
