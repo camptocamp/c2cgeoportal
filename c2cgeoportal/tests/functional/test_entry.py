@@ -38,12 +38,11 @@ import json
 from geoalchemy2 import WKTElement
 from pyramid import testing
 
-from c2cgeoportal.lib import functionality
 from c2cgeoportal.tests.functional import (  # noqa
     tear_down_common as tearDownModule,
     set_up_common as setUpModule,
     mapserv_url, mapserv, host, create_dummy_request,
-    create_default_ogcserver,
+    create_default_ogcserver, cleanup_db
 )
 
 import logging
@@ -58,12 +57,12 @@ class TestEntryView(TestCase):
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
 
-        functionality.FUNCTIONALITIES_TYPES = None
-
         from c2cgeoportal.models import DBSession, User, Role, LayerV1, \
             RestrictionArea, Theme, LayerGroup, Functionality, Interface, \
             LayerWMS, OGCServer, FullTextSearch, OGCSERVER_TYPE_GEOSERVER, OGCSERVER_AUTH_GEOSERVER
         from sqlalchemy import func
+
+        cleanup_db()
 
         role1 = Role(name=u"__test_role1")
         role1.id = 999
@@ -190,36 +189,7 @@ class TestEntryView(TestCase):
     def tearDown():  # noqa
         testing.tearDown()
 
-        functionality.FUNCTIONALITIES_TYPES = None
-
-        from c2cgeoportal.models import DBSession, User, Role, TreeItem, \
-            RestrictionArea, Interface, OGCServer
-
-        DBSession.query(User).filter(User.username == "__test_user1").delete()
-        DBSession.query(User).filter(User.username == "__test_user2").delete()
-
-        ra = DBSession.query(RestrictionArea).filter(
-            RestrictionArea.name == "__test_ra1"
-        ).one()
-        ra.roles = []
-        DBSession.delete(ra)
-        ra = DBSession.query(RestrictionArea).filter(
-            RestrictionArea.name == "__test_ra2"
-        ).one()
-        ra.roles = []
-        DBSession.delete(ra)
-
-        DBSession.query(Role).filter(Role.name == "__test_role1").delete()
-        DBSession.query(Role).filter(Role.name == "__test_role2").delete()
-
-        for item in DBSession.query(TreeItem).all():
-            DBSession.delete(item)
-        DBSession.query(Interface).filter(
-            Interface.name == "desktop"
-        ).delete()
-        DBSession.query(OGCServer).delete()
-
-        transaction.commit()
+        cleanup_db()
 
     #
     # login/logout tests
