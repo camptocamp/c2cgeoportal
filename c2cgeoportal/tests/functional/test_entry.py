@@ -637,6 +637,16 @@ class TestEntryView(TestCase):
             "test_minscale",
             "test_maxscale",
             "test_boothscale",
+            "__test_private_layer0",
+            "__test_private_layer1",
+            "__test_private_layer2",
+            "__test_private_layer3",
+            "__test_private_layer4",
+            "__test_private_layer5",
+            "__test_private_layer6",
+            "__test_private_layer7",
+            "__test_private_layer8",
+            "__test_private_layer9",
         }
 
         self.assertEquals(set(json.loads(response["WFSTypes"])), result)
