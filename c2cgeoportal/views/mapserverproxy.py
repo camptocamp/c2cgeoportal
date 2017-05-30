@@ -103,12 +103,17 @@ class MapservProxy(OGCProxy):
             # send layer_name, but MapServer should not use the DATA
             # string for GetLegendGraphic.
 
-            params["role_id"] = self.user.parent_role.id if self.external else self.user.role.id
+            role = self.user.parent_role if self.external else self.user.role
+            if role is not None:
+                params["role_id"] = role.id
 
-            # In some application we want to display the features owned by a user
-            # than we need his id.
-            if not self.external:
-                params["user_id"] = self.user.id  # pragma: no cover
+                # In some application we want to display the features owned by a user
+                # than we need his id.
+                if not self.external:
+                    params["user_id"] = self.user.id  # pragma: no cover
+            else:  # pragma nocover
+                log.warning(u"The user '{}' has no {}role".format(
+                    self.user.name, "external " if self.external else ""))
 
         # do not allows direct variable substitution
         for k in params.keys():
