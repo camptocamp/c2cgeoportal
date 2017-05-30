@@ -123,6 +123,13 @@ def wms_structure(wms_url, host):
         log.exception(error)
         raise HTTPBadGateway(error)
 
+    except SyntaxError:  # pragma: no cover
+        error = "WARNING! an error occured while trying to " \
+            "read the mapfile and recover the themes."
+        error = "{0!s}\nurl: {1!s}\nxml:\n{2!s}".format(error, wms_url, content)
+        log.exception(error)
+        raise HTTPBadGateway(error)
+
 
 def enable_proxies(proxies):  # pragma: no cover
     old_prepare_input_source = saxutils.prepare_input_source
