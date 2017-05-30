@@ -39,7 +39,7 @@ from c2cgeoportal.tests import load_file
 from c2cgeoportal.tests.functional import (  # noqa
     tear_down_common as tearDownModule,
     set_up_common as setUpModule,
-    create_dummy_request, mapserv_url, create_default_ogcserver)
+    create_dummy_request, create_default_ogcserver, cleanup_db)
 
 Base = sqlahelper.get_base()
 
@@ -83,6 +83,8 @@ class TestTinyOWSProxyView(TestCase):
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
 
+        cleanup_db()
+
         user1 = User(username=u"__test_user1", password=u"__test_user1")
         role1 = Role(name=u"__test_role1", description=u"__test_role1")
         user1.role_name = role1.name
@@ -123,49 +125,12 @@ class TestTinyOWSProxyView(TestCase):
             user1, user2, role1, role2,
             restricted_area1, restricted_area2
         ])
-        DBSession.flush()
 
         transaction.commit()
 
     @staticmethod
     def tearDown():  # noqa
-        from c2cgeoportal.models import User, Role, LayerWMS, RestrictionArea, \
-            Interface, DBSession
-
-        DBSession.query(User).filter(User.username == "__test_user1").delete()
-        DBSession.query(User).filter(User.username == "__test_user2").delete()
-
-        ra = DBSession.query(RestrictionArea).filter(
-            RestrictionArea.name == "__test_ra1"
-        ).one()
-        ra.roles = []
-        ra.layers = []
-        DBSession.delete(ra)
-        ra = DBSession.query(RestrictionArea).filter(
-            RestrictionArea.name == "__test_ra2"
-        ).one()
-        ra.roles = []
-        ra.layers = []
-        DBSession.delete(ra)
-
-        r = DBSession.query(Role).filter(Role.name == "__test_role1").one()
-        r.functionalities = []
-        DBSession.delete(r)
-        r = DBSession.query(Role).filter(Role.name == "__test_role2").one()
-        r.functionalities = []
-        DBSession.delete(r)
-
-        for layer in DBSession.query(LayerWMS).filter(LayerWMS.name == "layer_1").all():
-            DBSession.delete(layer)  # pragma: no cover
-        for layer in DBSession.query(LayerWMS).filter(LayerWMS.name == "layer_2").all():
-            DBSession.delete(layer)
-        for layer in DBSession.query(LayerWMS).filter(LayerWMS.name == "layer_3").all():
-            DBSession.delete(layer)
-        DBSession.query(Interface).filter(
-            Interface.name == "main"
-        ).delete()
-
-        transaction.commit()
+        cleanup_db()
 
     @staticmethod
     def get_fake_proxy_(request, response_body, status):
@@ -339,6 +304,18 @@ class TestTinyOWSProxyViewNoDb(TestCase):
     transaction_insert_request_file = \
         data_base + "tinyows_transaction_insert_request.xml"
 
+    def setUp(self):  # noqa
+        # Always see the diff
+        # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
+        self.maxDiff = None
+
+        cleanup_db()
+        create_default_ogcserver()
+
+    @staticmethod
+    def tearDown():  # noqa
+        cleanup_db()
+
     def test_parse_body_getcapabilities(self):
         from c2cgeoportal.views.tinyowsproxy import TinyOWSProxy
 
@@ -358,9 +335,7 @@ class TestTinyOWSProxyViewNoDb(TestCase):
 
         request = _create_dummy_request()
 
-        describefeature_request = \
-            load_file(TestTinyOWSProxyViewNoDb.describefeature_request_file)
-        request.body = describefeature_request
+        request.body = load_file(TestTinyOWSProxyViewNoDb.describefeature_request_file)
 
         proxy = TinyOWSProxy(request)
         (operation, typename) = proxy._parse_body(request.body)

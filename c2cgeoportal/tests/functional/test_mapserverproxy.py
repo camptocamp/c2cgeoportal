@@ -71,7 +71,7 @@ from c2cgeoportal.lib import functionality
 from c2cgeoportal.tests.functional import (  # noqa
     tear_down_common as tearDownModule,
     set_up_common as setUpModule,
-    create_dummy_request, mapserv_url, mapserv, create_default_ogcserver,
+    create_dummy_request, mapserv_url, mapserv, create_default_ogcserver, cleanup_db
 )
 
 Base = sqlahelper.get_base()
@@ -125,14 +125,15 @@ COLUMN_RESTRICTION_GETFEATURE_REQUEST = (GETFEATURE_REQUEST % {
 class TestMapserverproxyView(TestCase):
 
     def setUp(self):  # noqa
+        # Always see the diff
+        # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
 
         from c2cgeoportal.models import User, Role, LayerWMS, RestrictionArea, \
-            Functionality, Interface, DBSession, management, OGCServer, \
+            Functionality, Interface, DBSession, OGCServer, \
             OGCSERVER_TYPE_GEOSERVER, OGCSERVER_AUTH_GEOSERVER
 
-        if management:
-            TestPoint.__table__.c.the_geom.type.management = True
+        cleanup_db()
 
         ogc_server_internal, _ = create_default_ogcserver()
         ogcserver_geoserver = OGCServer(name="__test_ogc_server_geoserver")
@@ -204,58 +205,12 @@ class TestMapserverproxyView(TestCase):
 
     @staticmethod
     def tearDown():  # noqa
-        from c2cgeoportal.models import User, Role, LayerWMS, RestrictionArea, \
-            Functionality, Interface, DBSession, OGCServer
+        from c2cgeoportal.models import DBSession
 
         functionality.FUNCTIONALITIES_TYPES = None
 
-        DBSession.query(User).filter(User.username == "__test_user1").delete()
-        DBSession.query(User).filter(User.username == "__test_user2").delete()
-        DBSession.query(User).filter(User.username == "__test_user3").delete()
+        cleanup_db()
 
-        ra = DBSession.query(RestrictionArea).filter(
-            RestrictionArea.name == "__test_ra1"
-        ).one()
-        ra.roles = []
-        ra.layers = []
-        DBSession.delete(ra)
-        ra = DBSession.query(RestrictionArea).filter(
-            RestrictionArea.name == "__test_ra2"
-        ).one()
-        ra.roles = []
-        ra.layers = []
-        DBSession.delete(ra)
-        ra = DBSession.query(RestrictionArea).filter(
-            RestrictionArea.name == "__test_ra3"
-        ).one()
-        ra.roles = []
-        ra.layers = []
-        DBSession.delete(ra)
-
-        r = DBSession.query(Role).filter(Role.name == "__test_role1").one()
-        r.functionalities = []
-        DBSession.delete(r)
-        r = DBSession.query(Role).filter(Role.name == "__test_role2").one()
-        r.functionalities = []
-        DBSession.delete(r)
-        r = DBSession.query(Role).filter(Role.name == "__test_role3").one()
-        r.functionalities = []
-        DBSession.delete(r)
-
-        DBSession.query(Functionality).filter(Functionality.value == u"1 Wohlen A4 portrait").delete()
-        DBSession.query(Functionality).filter(Functionality.value == u"2 Wohlen A3 landscape").delete()
-        for layer in DBSession.query(LayerWMS).filter(LayerWMS.name == "testpoint_unprotected").all():
-            DBSession.delete(layer)  # pragma: no cover
-        for layer in DBSession.query(LayerWMS).filter(LayerWMS.name == "testpoint_protected").all():
-            DBSession.delete(layer)
-        for layer in DBSession.query(LayerWMS).filter(LayerWMS.name == "testpoint_protected_query_with_collect").all():
-            DBSession.delete(layer)
-        DBSession.query(Interface).filter(
-            Interface.name == "main"
-        ).delete()
-        DBSession.query(OGCServer).delete()
-
-        transaction.commit()
         TestPoint.__table__.drop(bind=DBSession.bind, checkfirst=True)
 
     def assert_contains(self, body, text):
