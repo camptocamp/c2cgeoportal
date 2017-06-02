@@ -615,13 +615,8 @@ serve: build development.ini
 	$(VENV_BIN)/pserve --reload --monitor-restart development.ini
 
 .PHONY: update-node-modules
-<<<<<<< HEAD
-update-node-modules: $(NPM_CMD)
-	$(NPM_CMD) install --force || sleep 20 || $(NPM_CMD) install --force || sleep 90 || $(NPM_CMD) install --force
-=======
 update-node-modules:
 	npm install --force
->>>>>>> origin/2.1
 	mkdir -p .build
 	touch .build/node_modules.timestamp
 
