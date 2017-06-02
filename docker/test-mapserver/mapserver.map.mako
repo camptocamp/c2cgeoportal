@@ -77,7 +77,7 @@ MAP
             "gml_include_items" "all"
             "gml_exclude_items" "id"
             "gml_geometries" "geom"
-            "gml_the_geom_type" "point"
+            "gml_geom_type" "point"
             "gml_types" "auto"
             "gml_featureid" "id"
         END
@@ -112,7 +112,7 @@ MAP
             "gml_include_items" "all"
             "gml_exclude_items" "id"
             "gml_geometries" "geom"
-            "gml_the_geom_type" "point"
+            "gml_geom_type" "point"
 
             ${mapserver_layer_metadata}
         END
@@ -149,7 +149,7 @@ MAP
             "gml_include_items" "all"
             "gml_exclude_items" "id"
             "gml_geometries" "geom"
-            "gml_the_geom_type" "point"
+            "gml_geom_type" "point"
 
             ${mapserver_layer_metadata}
         END
@@ -186,7 +186,7 @@ MAP
             "gml_include_items" "all"
             "gml_exclude_items" "id"
             "gml_geometries" "geom"
-            "gml_the_geom_type" "point"
+            "gml_geom_type" "point"
 
             ${mapserver_layer_metadata}
         END
@@ -222,7 +222,7 @@ MAP
             "gml_include_items" "all"
             "gml_exclude_items" "id"
             "gml_geometries" "geom"
-            "gml_the_geom_type" "point"
+            "gml_geom_type" "point"
             "gml_types" "auto"
 
             "s_name_validation_pattern" "^[a-z]*$$"
@@ -262,7 +262,7 @@ MAP
             "gml_include_items" "all"
             "gml_exclude_items" "id"
             "gml_geometries" "geom"
-            "gml_the_geom_type" "point"
+            "gml_geom_type" "point"
             "gml_types" "auto"
 
             "s_cols_validation_pattern" "^[a-z,]*$$"
@@ -303,7 +303,7 @@ MAP
             "gml_include_items" "all"
             "gml_exclude_items" "id"
             "gml_geometries" "geom"
-            "gml_the_geom_type" "point"
+            "gml_geom_type" "point"
             "gml_types" "auto"
             "wms_metadataurl_href" "http://example.com/wmsfeatures.metadata"
             "wms_metadataurl_format" "text/plain"
@@ -511,7 +511,7 @@ MAP
             "gml_include_items" "all"
             "gml_exclude_items" "id"
             "gml_geometries" "geom"
-            "gml_the_geom_type" "point"
+            "gml_geom_type" "point"
             "gml_types" "auto"
             "wms_metadataurl_href" "http://example.com/wmsfeatures.metadata"
             "wms_metadataurl_format" "text/plain"

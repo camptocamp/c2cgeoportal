@@ -272,12 +272,15 @@ I18N_SOURCE_FILES += $(APP_HTML_FILES) \
 	$(APP_JS_FILES) \
 	$(APP_DIRECTIVES_PARTIALS_FILES) \
 	.build/config.yaml
-ifeq ($(DOCKER),FALSE)
+ifeq ($(DOCKER), FALSE)
 # The theme from the database
 I18N_SOURCE_FILES += development.ini
 endif
-I18N_DEPENDENCIES += $(MAP_FILES) \
-	project.yaml
+I18N_DEPENDENCIES += $(VENV_BIN)/pot-create$(PYTHON_BIN_POSTFIX)
+ifeq (${MAPSERVER}, TRUE)
+I18N_DEPENDENCIES += .build/mapserver.timestamp
+endif
+
 
 # CGXP
 JSBUILD_MAIN_FILES = $(shell $(FIND) $(PACKAGE)/static/lib/cgxp $(PACKAGE)/static/js -name "*.js" -print 2> /dev/null)
@@ -709,13 +712,7 @@ $(PACKAGE)/locale/$(PACKAGE)-$(L10N_SERVER_POSTFIX).pot: \
 	[ ! -f $@ ] || chmod go+r $@
 
 .PRECIOUS: $(PACKAGE)/locale/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).pot
-$(PACKAGE)/locale/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).pot: \
-		lingua-client.cfg \
-		$(I18N_DEPENDENCIES) \
-		$(I18N_SOURCE_FILES) \
-		$(VENV_BIN)/pot-create$(PYTHON_BIN_POSTFIX) \
-		.build/mapserver.timestamp \
-		.build/config.yaml
+$(PACKAGE)/locale/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).pot: lingua-client.cfg $(I18N_DEPENDENCIES) $(I18N_SOURCE_FILES)
 	$(PRERULE_CMD)
 	rm -f $@ # Because of WindowsError, thus only problematic on Windows
 	$(VENV_BIN)/pot-create --config $< --output $@ $(I18N_SOURCE_FILES)
@@ -763,7 +760,7 @@ $(TX_RC):
 .tx/config: .tx/CONST_config_mako $(VENV_BIN)/mako-render$(PYTHON_BIN_POSTFIX) .build/requirements.timestamp
 	$(PRERULE_CMD)
 	PYTHONIOENCODING=UTF-8 $(VENV_BIN)/mako-render \
-		--var "tx_version=$(TX_VERSION)" --var "tx_host=$(TX_HOST)" $< > $@
+		--var "tx_version=$(TX_VERSION)" --var "tx_host=$(TX_HOST)" --var "languages=$(LANGUAGES)" $< > $@
 
 .PRECIOUS: .build/locale/%/LC_MESSAGES/gmf.po
 .build/locale/%/LC_MESSAGES/gmf.po: $(TX_DEPENDENCIES)
