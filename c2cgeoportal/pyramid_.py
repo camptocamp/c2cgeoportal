@@ -114,8 +114,8 @@ def add_interface(
         )
 
 
-def add_interface_cgxp(config, interface_name, route_names, routes, renderers,
-                       permission=None):  # pragma: no cover
+def add_interface_cgxp(
+        config, interface_name, route_names, routes, renderers, permission=None):  # pragma: no cover
     # Cannot be at the header to don"t load the model too early
     from c2cgeoportal.views.entry import Entry
 
@@ -165,8 +165,8 @@ def add_interface_cgxp(config, interface_name, route_names, routes, renderers,
 ngeo_static_init = False
 
 
-def add_interface_ngeo(config, interface_name, route_name, route, renderer,
-                       permission=None):  # pragma: no cover
+def add_interface_ngeo(
+        config, interface_name, route_name, route, renderer, permission=None):  # pragma: no cover
     # Cannot be at the header to do not load the model too early
     from c2cgeoportal.views.entry import Entry
 
@@ -288,7 +288,7 @@ def is_valid_referer(request, settings):
 
 
 def create_get_user_from_request(settings):
-    def get_user_from_request(request):
+    def get_user_from_request(request, username=None):
         """ Return the User object for the request.
 
         Return ``None`` if:
@@ -331,7 +331,8 @@ def create_get_user_from_request(settings):
 
         if not hasattr(request, "_user"):
             request._user = None
-            username = request.authenticated_userid
+            if username is None:
+                username = request.authenticated_userid
             if username is not None:
                 # We know we will need the role object of the
                 # user so we use joined loading
@@ -471,8 +472,9 @@ def includeme(config):
 
     call_hook(settings, "after_settings", settings)
 
-    config.add_request_method(create_get_user_from_request(settings),
-                              name="user", property=True)
+    get_user_from_request = create_get_user_from_request(settings)
+    config.add_request_method(get_user_from_request, name="user", property=True)
+    config.add_request_method(get_user_from_request, name="get_user")
 
     # configure 'locale' dir as the translation dir for c2cgeoportal app
     config.add_translation_dirs("c2cgeoportal:locale/")

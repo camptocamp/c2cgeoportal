@@ -9,6 +9,7 @@
 /c2cgeoportal/locale/c2cgeoportal.pot
 /c2cgeoportal/locale/*/LC_MESSAGES/c2cgeoportal.po
 /c2cgeoportal/locale/*/LC_MESSAGES/c2cgeoportal.mo
+/c2cgeoportal/scaffolds/create/+package+/locale/*/LC_MESSAGES/+package+-client.po
 /c2cgeoportal/scaffolds/update/CONST_Makefile_tmpl.mk
 /c2cgeoportal/scaffolds/create/package.json_tmpl
 /c2cgeoportal/scaffolds/update/+dot+tx/CONST_config_mako

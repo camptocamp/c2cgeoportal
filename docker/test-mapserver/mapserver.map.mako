@@ -1,7 +1,7 @@
 MAP
     NAME "c2cgeoportail"
 
-    EXTENT -180 -90 180 90
+    EXTENT 420000 40500 839000 306400
     UNITS dd
 
     # MAXSIZE should not be less than 4000 for MF print
@@ -41,7 +41,6 @@ MAP
             "wms_title" "changeme"
             "wms_abstract" "changeme"
             "wms_onlineresource" "changeme"
-            "wms_srs" "epsg:21781"
             "wms_encoding" "UTF-8"
             "wms_enable_request" "*"
             "ows_title" "changeme"
@@ -66,7 +65,7 @@ MAP
     LAYER
         NAME "testpoint_unprotected"
         GROUP "testpoint_group"
-        EXTENT -180 -90 180 90
+        EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
@@ -74,7 +73,6 @@ MAP
         DATA "geom from geodata.testpoint using unique id using srid=21781"
         METADATA
             "wms_title" "countries"
-            "wms_srs" "epsg:21781"
             # gml_ settings for GetFeatureInfo
             "gml_include_items" "all"
             "gml_exclude_items" "id"
@@ -102,7 +100,7 @@ MAP
     LAYER
         NAME "testpoint_protected"
         GROUP "testpoint_group"
-        EXTENT -180 -90 180 90
+        EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
@@ -110,7 +108,6 @@ MAP
         DATA "geom from (SELECT tp.* FROM geodata.testpoint AS tp, ${mapserver_join_tables} WHERE ST_Contains(${mapserver_join_area}, ST_GeomFromText(ST_AsText(tp.geom), 21781)) AND ${mapserver_join_where} 'testpoint_protected') as foo using unique id using srid=21781"
         METADATA
             "wms_title" "countries"
-            "wms_srs" "epsg:21781"
             # gml_ settings for GetFeatureInfo
             "gml_include_items" "all"
             "gml_exclude_items" "id"
@@ -148,7 +145,6 @@ MAP
         DATA "geom from (SELECT tp.* FROM geodata.testpoint AS tp, ${mapserver_join_tables} WHERE ST_Contains(${mapserver_join_area}, ST_GeomFromText(ST_AsText(tp.geom), 21781)) AND ${mapserver_join_where} 'testpoint_protected_2') as foo using unique id using srid=21781"
         METADATA
             "wms_title" "countries"
-            "wms_srs" "epsg:21781"
             # gml_ settings for GetFeatureInfo
             "gml_include_items" "all"
             "gml_exclude_items" "id"
@@ -178,7 +174,7 @@ MAP
 
     LAYER
         NAME "testpoint_protected_query_with_collect"
-        EXTENT -180 -90 180 90
+        EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
@@ -186,7 +182,6 @@ MAP
         DATA "geom from (SELECT tp.* FROM geodata.testpoint AS tp WHERE ST_Contains((${mapfile_data_subselect} 'testpoint_protected_query_with_collect'), ST_SetSRID(tp.geom, 21781))) as foo using unique id using srid=21781"
         METADATA
             "wms_title" "countries"
-            "wms_srs" "epsg:21781"
             # gml_ settings for GetFeatureInfo
             "gml_include_items" "all"
             "gml_exclude_items" "id"
@@ -223,7 +218,6 @@ MAP
         DATA "geom FROM (SELECT * FROM geodata.testpoint WHERE name='%s_name%') AS test USING UNIQUE id USING srid=21781"
         METADATA
             "wms_title" "countries"
-            "wms_srs" "epsg:21781"
             # gml_ settings for GetFeature
             "gml_include_items" "all"
             "gml_exclude_items" "id"
@@ -257,14 +251,13 @@ MAP
     LAYER
         NAME "testpoint_column_restriction"
         TYPE POINT
-        EXTENT -180 -90 180 90
+        EXTENT 420000 40500 839000 306400
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
         DATA "geom FROM (SELECT geom, id, %s_cols% FROM geodata.testpoint) AS test USING UNIQUE id USING srid=21781"
         METADATA
             "wms_title" "countries"
-            "wms_srs" "epsg:21781"
             # gml_ settings for GetFeature
             "gml_include_items" "all"
             "gml_exclude_items" "id"
@@ -298,7 +291,7 @@ MAP
     LAYER
         NAME "test_wmsfeatures"
         GROUP "test_wmsfeaturesgroup"
-        EXTENT -180 -90 180 90
+        EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
@@ -306,7 +299,6 @@ MAP
         DATA "geom from geodata.testpoint using unique id using srid=21781"
         METADATA
             "wms_title" "countries"
-            "wms_srs" "epsg:21781"
             # gml_ settings for GetFeatureInfo
             "gml_include_items" "all"
             "gml_exclude_items" "id"
@@ -338,7 +330,7 @@ MAP
     LAYER
         NAME "test_wmstime"
         GROUP "test_wmstimegroup"
-        EXTENT -180 -90 180 90
+        EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
@@ -346,7 +338,6 @@ MAP
         DATA "geom from geodata.testpoint using unique id using srid=21781"
         METADATA
             "wms_title" "time"
-            "wms_srs" "epsg:21781"
             "wms_timeextent" "2000/2010/P1Y"
             "wms_timeitem" "date"
             "wms_timedefault" "2000"
@@ -370,7 +361,7 @@ MAP
     LAYER
         NAME "test_wmstime2"
         GROUP "test_wmstimegroup"
-        EXTENT -180 -90 180 90
+        EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
@@ -378,7 +369,6 @@ MAP
         DATA "geom from geodata.testpoint using unique id using srid=21781"
         METADATA
             "wms_title" "time"
-            "wms_srs" "epsg:21781"
             "wms_timeextent" "2015/2020/P1Y"
             "wms_timeitem" "date"
             "wms_timedefault" "2015"
@@ -401,14 +391,13 @@ MAP
 
     LAYER
         NAME "__test_public_layer"
-        EXTENT -180 -90 180 90
+        EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
         DATA "geom from geodata.testpoint using unique id using srid=21781"
         METADATA
-            "wms_srs" "epsg:21781"
         END
         PROJECTION
            "init=epsg:21781"
@@ -425,15 +414,12 @@ MAP
 
     LAYER
         NAME "__test_private_layer"
-        EXTENT -180 -90 180 90
+        EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
-        DATA "geom from geodata.testpoint using unique id using srid=21781"
-        METADATA
-            "wms_srs" "epsg:21781"
-        END
+        DATA "geom from main.testpoint using unique id using srid=21781"
         PROJECTION
            "init=epsg:21781"
         END
@@ -449,15 +435,12 @@ MAP
 
     LAYER
         NAME "__test_public_layer_bis"
-        EXTENT -180 -90 180 90
+        EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
-        DATA "geom from geodata.testpoint using unique id using srid=21781"
-        METADATA
-            "wms_srs" "epsg:21781"
-        END
+        DATA "geom from main.testpoint using unique id using srid=21781"
         PROJECTION
            "init=epsg:21781"
         END
@@ -473,15 +456,12 @@ MAP
 
     LAYER
         NAME "__test_private_layer_bis"
-        EXTENT -180 -90 180 90
+        EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
-        DATA "geom from geodata.testpoint using unique id using srid=21781"
-        METADATA
-            "wms_srs" "epsg:21781"
-        END
+        DATA "geom from main.testpoint using unique id using srid=21781"
         PROJECTION
            "init=epsg:21781"
         END
@@ -497,12 +477,9 @@ MAP
 
     LAYER
         NAME "__test_layer_internal_wms"
-        EXTENT -180 -90 180 90
+        EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
-        METADATA
-            "wms_srs" "epsg:21781"
-        END
         PROJECTION
            "init=epsg:21781"
         END
@@ -522,7 +499,7 @@ MAP
 % for name, hasMin, hasMax in [("noscale", False, False), ("minscale", True, False), ("maxscale", False, True), ("boothscale", True, True)]:
     LAYER
         NAME "test_${name}"
-        EXTENT -180 -90 180 90
+        EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
@@ -530,7 +507,6 @@ MAP
         DATA "geom from geodata.testpoint using unique id using srid=21781"
         METADATA
             "wms_title" "countries"
-            "wms_srs" "epsg:21781"
             # gml_ settings for GetFeatureInfo
             "gml_include_items" "all"
             "gml_exclude_items" "id"

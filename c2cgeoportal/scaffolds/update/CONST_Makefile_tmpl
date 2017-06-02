@@ -615,8 +615,13 @@ serve: build development.ini
 	$(VENV_BIN)/pserve --reload --monitor-restart development.ini
 
 .PHONY: update-node-modules
+<<<<<<< HEAD
 update-node-modules: $(NPM_CMD)
 	$(NPM_CMD) install --force || sleep 20 || $(NPM_CMD) install --force || sleep 90 || $(NPM_CMD) install --force
+=======
+update-node-modules:
+	npm install --force
+>>>>>>> origin/2.1
 	mkdir -p .build
 	touch .build/node_modules.timestamp
 
@@ -818,9 +823,9 @@ $(APP_OUTPUT_DIR)/%.json: $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-$(L10N_CLIE
 		.build/locale/$*/LC_MESSAGES/ngeo.po \
 		$< > $@
 
-$(APP_OUTPUT_DIR)/angular-locale_%.js: node_modules/ngeo/github_versions
+$(APP_OUTPUT_DIR)/angular-locale_%.js: node_modules/ngeo/github_versions language_mapping
 	mkdir -p $(dir $@)
-	wget -O $@ https://raw.githubusercontent.com/angular/angular.js/`grep ^angular.js= $< | cut --delimiter = --fields 2`/src/ngLocale/angular-locale_$*.js
+	wget -O $@ https://raw.githubusercontent.com/angular/angular.js/`grep ^angular.js= $< | cut --delimiter = --fields 2`/src/ngLocale/angular-locale_`(grep $* language_mapping || echo $*) | cut -d = -f 2`.js
 
 $(APP_OUTPUT_DIR)/%.js: .build/%.js .build/node_modules.timestamp $(NGEO_LIBS_JS_FILES) $(NGEO_PROJECT_LIBS_JS_FILES)
 	$(PRERULE_CMD)
@@ -971,19 +976,11 @@ else
 	touch $@
 endif
 
-$(NPM_CMD):
-	$(PRERULE_CMD)
-ifeq ($(OPERATING_SYSTEM), LINUX)
-	npm install npm || sleep 20 || npm install npm || sleep 90 || npm install npm
-else
-	touch $@
-endif
-
-.build/node_modules.timestamp: package.json $(NPM_CMD)
+.build/node_modules.timestamp: package.json
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
 ifneq ($(NGEO_INTERFACES), "")
-	$(NPM_CMD) install || sleep 20 || $(NPM_CMD) install || sleep 90 || $(NPM_CMD) install
+	npm install || sleep 20 || npm install || sleep 90 || npm install
 endif
 	touch $@
 
@@ -1012,7 +1009,7 @@ update:
 	git submodule foreach git submodule foreach git clean -fd
 ifneq ($(NGEO_INTERFACES), "")
 	rm -f .build/node_modules.timestamp
-	$(NPM_CMD) install --force
+	npm install --force
 	touch .build/node_modules.timestamp
 endif
 	@echo After that you should launch the `build` task.

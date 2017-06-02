@@ -122,6 +122,12 @@ def create_default_ogcserver():
     return ogcserver, ogcserver_external
 
 
+def _get_user(username):
+    from c2cgeoportal.models import DBSession, User
+
+    return DBSession.query(User).filter(User.username == username).one()
+
+
 def create_dummy_request(additional_settings=None, authentication=True, user=None, *args, **kargs):
     if additional_settings is None:
         additional_settings = {}
@@ -148,6 +154,7 @@ def create_dummy_request(additional_settings=None, authentication=True, user=Non
     request.referer = "http://example.com/app"
     request.path_info_peek = lambda: "main"
     request.interface_name = "main"
+    request.get_user = _get_user
     request.registry.validate_user = default_user_validator
     request.client_addr = None
     if authentication:
