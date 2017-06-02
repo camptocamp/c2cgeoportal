@@ -138,14 +138,14 @@ class TestMapserverproxyView(TestCase):
 
         TestPoint.__table__.create(bind=DBSession.bind, checkfirst=True)
 
-        geom = WKTElement("POINT((599910 199955))", srid=21781)
-        p1 = TestPoint(the_geom=geom, name=u"foo", city=u"Lausanne", country=u"Swiss")
-        geom = WKTElement("POINT((599910 200045))", srid=21781)
-        p2 = TestPoint(the_geom=geom, name=u"bar", city=u"Chambéry", country=u"France")
-        geom = WKTElement("POINT((600090 200045))", srid=21781)
-        p3 = TestPoint(the_geom=geom, name=u"éàè", city=u"Paris", country=u"France")
-        geom = WKTElement("POINT((600090 199955))", srid=21781)
-        p4 = TestPoint(the_geom=geom, name=u"123", city=u"Londre", country=u"UK")
+        geom = WKTElement("POINT(599910 199955)", srid=21781)
+        p1 = TestPoint(geom=geom, name=u"foo", city=u"Lausanne", country=u"Swiss")
+        geom = WKTElement("POINT(599910 200045)", srid=21781)
+        p2 = TestPoint(geom=geom, name=u"bar", city=u"Chambéry", country=u"France")
+        geom = WKTElement("POINT(600090 200045)", srid=21781)
+        p3 = TestPoint(geom=geom, name=u"éàè", city=u"Paris", country=u"France")
+        geom = WKTElement("POINT(600090 199955)", srid=21781)
+        p4 = TestPoint(geom=geom, name=u"123", city=u"Londre", country=u"UK")
 
         pt1 = Functionality(name=u"print_template", value=u"1 Wohlen A4 portrait")
         pt2 = Functionality(name=u"print_template", value=u"2 Wohlen A3 landscape")
