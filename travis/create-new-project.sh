@@ -1,7 +1,7 @@
 #!/bin/bash -ex
 
-.build/venv/bin/pcreate --scaffold=c2cgeoportal_create /tmp/travis/testgeomapfish package=testgeomapfish srid=21781 apache_vhost=test extent= > /dev/null
-.build/venv/bin/pcreate --scaffold=c2cgeoportal_update /tmp/travis/testgeomapfish package=testgeomapfish srid=21781 apache_vhost=test extent= > /dev/null # on create
+.build/venv/bin/pcreate --scaffold=c2cgeoportal_create /tmp/travis/testgeomapfish package=testgeomapfish srid=21781 apache_vhost=test extent=489246.36,78873.44,837119.76,296543.14
+.build/venv/bin/pcreate --scaffold=c2cgeoportal_update /tmp/travis/testgeomapfish package=testgeomapfish srid=21781 apache_vhost=test extent=489246.36,78873.44,837119.76,296543.14 > /dev/null # on create
 
 cp travis/build.mk /tmp/travis/testgeomapfish/travis.mk
 cp travis/vars.yaml /tmp/travis/testgeomapfish/vars_travis.yaml
