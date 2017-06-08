@@ -430,6 +430,21 @@ MAP
         END
     END
 
+% for n in range(10):
+    LAYER
+        NAME "__test_private_layer${n}"
+        EXTENT 420000 40500 839000 306400
+        TYPE POINT
+        STATUS ON
+        CONNECTIONTYPE postgis
+        CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
+        DATA "the_geom from main.testpoint using unique id using srid=21781"
+        PROJECTION
+           "init=epsg:21781"
+        END
+    END
+% endfor
+
     LAYER
         NAME "__test_public_layer_bis"
         EXTENT 420000 40500 839000 306400
