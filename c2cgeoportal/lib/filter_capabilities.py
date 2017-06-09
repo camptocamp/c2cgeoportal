@@ -161,14 +161,17 @@ def enable_proxies(proxies):  # pragma: no cover
     saxutils.prepare_input_source = caching_prepare_input_source
 
 
-def filter_capabilities(content, role_id, wms, wms_url, headers, proxies, request):
+def filter_capabilities(content, role_id, wms, url, headers, proxies, request):
 
     if proxies:  # pragma: no cover
         enable_proxies(proxies)
 
-    wms_structure_ = wms_structure(wms_url, headers.get("Host"))
+    wms_structure_ = wms_structure(url, headers.get("Host"))
 
-    ogc_server_ids = get_ogc_server_wms_url_ids(request).get(wms_url)
+    ogc_server_ids = (
+        get_ogc_server_wms_url_ids(request) if wms else
+        get_ogc_server_wfs_url_ids(request)
+    ).get(url)
     gmf_private_layers = copy.copy(get_private_layers(ogc_server_ids))
     for id_ in get_protected_layers(role_id, ogc_server_ids).keys():
         if id_ in gmf_private_layers:

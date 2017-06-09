@@ -295,7 +295,7 @@ def get_ogc_server_wfs_url_ids(request):
         servers = dict()
         ogc_server_wfs_url_ids.set(servers)
         for ogc_server in DBSession.query(OGCServer).all():
-            url = get_url2(ogc_server.name, ogc_server.url_wfs, request, errors)
+            url = get_url2(ogc_server.name, ogc_server.url_wfs or ogc_server.url, request, errors)
             if servers.get(url) is None:
                 servers[url] = []
             servers.get(url).append(ogc_server.id)

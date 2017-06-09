@@ -191,17 +191,16 @@ class MapservProxy(OGCProxy):
         )
         return response
 
-    def _proxy_callback(self, role_id, cache_control, *args, **kwargs):
-        params = kwargs.get("params", {})
+    def _proxy_callback(self, role_id, cache_control, url, params, **kwargs):
         callback = params.get("callback")
         if callback is not None:
             del params["callback"]
-        resp, content = self._proxy(*args, **kwargs)
+        resp, content = self._proxy(url=url, params=params, **kwargs)
 
         if self.lower_params.get("request") == "getcapabilities":
             content = filter_capabilities(
                 content, role_id, self.lower_params.get("service") == "wms",
-                self._get_wms_url(),
+                url,
                 self.request.headers,
                 self.mapserver_settings.get("proxies"),
                 self.request
