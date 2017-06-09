@@ -87,6 +87,8 @@ def cleanup_db():
     DBSession.query(Shorturl).delete()
     transaction.commit()
 
+    caching.invalidate_region()
+
 
 def set_up_common():
     c2cgeoportal.schema = "main"
@@ -109,8 +111,6 @@ def tear_down_common():
 
     import sqlahelper
     sqlahelper.reset()
-
-    caching.invalidate_region()
 
 
 def create_default_ogcserver():
