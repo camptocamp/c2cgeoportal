@@ -1,6 +1,6 @@
 #!/bin/bash -ex
 
-export SRID=21781 APACHE_VHOST=test EXTENT=
+export SRID=21781 APACHE_VHOST=test EXTENT=489246.36,78873.44,837119.76,296543.14
 ./docker-run pcreate --scaffold=c2cgeoportal_create /tmp/travis/testgeomapfish --package-name testgeomapfish > /dev/null
 ./docker-run pcreate --scaffold=c2cgeoportal_update /tmp/travis/testgeomapfish --package-name testgeomapfish > /dev/null # on create
 

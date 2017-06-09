@@ -35,6 +35,7 @@ import json
 import requests
 import yaml
 from six import string_types
+from simplejson.scanner import JSONDecodeError
 
 from pyramid.scaffolds.template import Template
 from pyramid.compat import input_
@@ -72,7 +73,7 @@ class BaseTemplate(Template):  # pragma: no cover
             if extent else
             "Extent (minx miny maxx maxy): in EPSG: {srid} projection: ".format(srid=srid)
         )
-        match = re.match(r"(\d+)[,; ] *(\d+)[,; ] *(\d+)[,; ] *(\d+)", vars_["extent"])
+        match = re.match(r"([\d.]+)[,; ] *([\d.]+)[,; ] *([\d.]+)[,; ] *([\d.]+)", vars_["extent"])
         if match is not None:
             extent = [match.group(n + 1) for n in range(4)]
         vars_["extent"] = ",".join(extent)
@@ -130,15 +131,18 @@ class BaseTemplate(Template):  # pragma: no cover
             bbox = r.json()["results"][0]["bbox"]
             r = requests.get(
                 "http://epsg.io/trans?s_srs=4326&t_srs={srid}&data={bbox[1]},{bbox[0]}"
-                .format(srid=srid, bbox=bbox)
+                        .format(srid=srid, bbox=bbox)
             )
             r1 = r.json()[0]
             r = requests.get(
                 "http://epsg.io/trans?s_srs=4326&t_srs={srid}&data={bbox[3]},{bbox[2]}"
-                .format(srid=srid, bbox=bbox)
+                        .format(srid=srid, bbox=bbox)
             )
             r2 = r.json()[0]
             return [r1["x"], r2["y"], r2["x"], r1["y"]]
+        except JSONDecodeError:
+            print("epsg.io doesn't return a correct json.")
+            return None
         except IndexError:
             print("Unable to get the bbox")
             return None
