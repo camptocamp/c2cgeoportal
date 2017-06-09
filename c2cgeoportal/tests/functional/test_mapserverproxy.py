@@ -200,6 +200,10 @@ class TestMapserverproxyView(TestCase):
 
         self.id_lausanne = p1.id
         self.id_paris = p3.id
+        self.ogc_server_id = ogc_server_internal.id
+        self.role1_id = role1.id
+        self.role2_id = role2.id
+        self.role3_id = role3.id
 
         transaction.commit()
 
@@ -557,6 +561,67 @@ class TestMapserverproxyView(TestCase):
         request.user = None if username is None else \
             DBSession.query(User).filter_by(username=username).one()
         return request
+
+    def test_private_layer(self):
+        from c2cgeoportal.lib.filter_capabilities import get_private_layers
+
+        pl = get_private_layers([self.ogc_server_id])
+        self.assertEquals(
+            {pl[l].name for l in pl},
+            {"testpoint_protected", "testpoint_protected_query_with_collect"}
+        )
+
+    def test_protected_layers1(self):
+        from c2cgeoportal.lib.filter_capabilities import get_protected_layers
+
+        pl = get_protected_layers(self.role1_id, [self.ogc_server_id])
+        self.assertEquals(
+            {pl[l].name for l in pl},
+            {"testpoint_protected", "testpoint_protected_query_with_collect"}
+        )
+
+    def test_protected_layers2(self):
+        from c2cgeoportal.lib.filter_capabilities import get_protected_layers
+
+        pl = get_protected_layers(self.role2_id, [self.ogc_server_id])
+        self.assertEquals(
+            {pl[l].name for l in pl},
+            {"testpoint_protected", "testpoint_protected_query_with_collect"}
+        )
+
+    def test_protected_layers3(self):
+        from c2cgeoportal.lib.filter_capabilities import get_protected_layers
+
+        pl = get_protected_layers(self.role3_id, [self.ogc_server_id])
+        self.assertEquals(
+            {pl[l].name for l in pl},
+            {"testpoint_protected", "testpoint_protected_query_with_collect"}
+        )
+
+    def test_writable_layers1(self):
+        from c2cgeoportal.lib.filter_capabilities import get_writable_layers
+
+        pl = get_writable_layers(self.role1_id, [self.ogc_server_id])
+        self.assertEquals(
+            {pl[l].name for l in pl}, set()
+        )
+
+    def test_writable_layers2(self):
+        from c2cgeoportal.lib.filter_capabilities import get_writable_layers
+
+        pl = get_writable_layers(self.role2_id, [self.ogc_server_id])
+        self.assertEquals(
+            {pl[l].name for l in pl}, set()
+        )
+
+    def test_writable_layers3(self):
+        from c2cgeoportal.lib.filter_capabilities import get_writable_layers
+
+        pl = get_writable_layers(self.role3_id, [self.ogc_server_id])
+        self.assertEquals(
+            {pl[l].name for l in pl},
+            {"testpoint_protected_query_with_collect"}
+        )
 
     def test_wms_get_capabilities(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
