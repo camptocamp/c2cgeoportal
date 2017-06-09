@@ -65,8 +65,14 @@ Then you should checkout the branch or tag of the version you want to install:
 
     git checkout <branch|tag>
 
-``<branch|tag>`` can be ``1.4`` for the latest version of the 1.4 branch,
-``1.4.0`` for the first stable 1.4 version.
+``<branch|tag>`` can be ``2.2`` for the latest version of the 2.2 branch,
+``2.2.0`` for the first stable 2.2 version.
+
+Fetch the Git submodules:
+
+.. prompt:: bash
+
+   git submodules update --init
 
 Build c2cgeoportal:
 
