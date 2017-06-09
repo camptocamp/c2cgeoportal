@@ -261,16 +261,22 @@ ogc_server_wms_url_ids = None
 
 def get_ogc_server_wms_url_ids(request):
     from c2cgeoportal.models import DBSession, OGCServer
+    from c2cgeoportal.lib.cacheversion import VersionCache
     global ogc_server_wms_url_ids
-    errors = set()
     if ogc_server_wms_url_ids is None:
-        ogc_server_wms_url_ids = dict()
+        ogc_server_wms_url_ids = VersionCache()
+
+    errors = set()
+    servers = ogc_server_wms_url_ids.get()
+    if servers is None:
+        servers = dict()
+        ogc_server_wms_url_ids.set(servers)
         for ogc_server in DBSession.query(OGCServer).all():
             url = get_url2(ogc_server.name, ogc_server.url, request, errors)
-            if ogc_server_wms_url_ids.get(url) is None:
-                ogc_server_wms_url_ids[url] = []
-            ogc_server_wms_url_ids.get(url).append(ogc_server.id)
-    return ogc_server_wms_url_ids
+            if servers.get(url) is None:
+                servers[url] = []
+            servers.get(url).append(ogc_server.id)
+    return servers
 
 
 ogc_server_wfs_url_ids = None
@@ -278,16 +284,22 @@ ogc_server_wfs_url_ids = None
 
 def get_ogc_server_wfs_url_ids(request):
     from c2cgeoportal.models import DBSession, OGCServer
+    from c2cgeoportal.lib.cacheversion import VersionCache
     global ogc_server_wfs_url_ids
-    errors = set()
     if ogc_server_wfs_url_ids is None:
-        ogc_server_wfs_url_ids = dict()
+        ogc_server_wfs_url_ids = VersionCache()
+
+    errors = set()
+    servers = ogc_server_wfs_url_ids.get()
+    if servers is None:
+        servers = dict()
+        ogc_server_wfs_url_ids.set(servers)
         for ogc_server in DBSession.query(OGCServer).all():
             url = get_url2(ogc_server.name, ogc_server.url_wfs, request, errors)
-            if ogc_server_wfs_url_ids.get(url) is None:
-                ogc_server_wfs_url_ids[url] = []
-            ogc_server_wfs_url_ids.get(url).append(ogc_server.id)
-    return ogc_server_wfs_url_ids
+            if servers.get(url) is None:
+                servers[url] = []
+            servers.get(url).append(ogc_server.id)
+    return servers
 
 
 def _get_layers_query(role_id, what):
