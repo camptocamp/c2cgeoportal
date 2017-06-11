@@ -27,7 +27,7 @@ postmarkup==1.2.2
 psycopg2==2.7.1
 pycrypto==2.6.1
 pyproj==1.9.5.1
-pyramid==1.8.3
+pyramid==1.8.4
 pykwalify==1.6.0
 pyramid-chameleon==0.3
 pyramid-debugtoolbar==4.1
