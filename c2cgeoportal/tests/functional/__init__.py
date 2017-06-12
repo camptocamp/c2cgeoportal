@@ -28,7 +28,8 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-"""Pyramid application test package
+"""
+Pyramid application test package
 """
 
 import os
@@ -63,65 +64,67 @@ if os.path.exists(configfile):
 caching.init_region({"backend": "dogpile.cache.memory"})
 
 
+def cleanup_db():
+    """ Cleanup the database """
+    import transaction
+    from c2cgeoportal.models import DBSession, OGCServer, TreeItem, Role, User, RestrictionArea, \
+        Interface, Functionality, FullTextSearch, Shorturl
+
+    transaction.commit()
+    for ra in DBSession.query(RestrictionArea).all():
+        ra.roles = []
+        DBSession.delete(ra)
+    for ti in DBSession.query(TreeItem).all():
+        DBSession.delete(ti)
+    DBSession.query(OGCServer).delete()
+    DBSession.query(Interface).delete()
+    for r in DBSession.query(Role).all():
+        r.functionnalities = []
+        DBSession.delete(r)
+    DBSession.query(User).delete()
+    DBSession.query(Functionality).delete()
+    DBSession.query(FullTextSearch).delete()
+    DBSession.query(Shorturl).delete()
+    transaction.commit()
+
+    caching.invalidate_region()
+
+
 def set_up_common():
     c2cgeoportal.schema = "main"
     c2cgeoportal.srid = 21781
     functionality.FUNCTIONALITIES_TYPES = None
 
-    # if test.in does not exist (because the z3c.recipe.filetemplate
-    # part hasn"t been executed) then db_url is None
-    if db_url is None:  # pragma: no cover
-        return
-
-    # verify that we have a working database connection before going
-    # forward
+    # verify that we have a working database connection before going forward
     from sqlalchemy import create_engine
-    from sqlalchemy.exc import OperationalError
     engine = create_engine(db_url)
-    try:
-        engine.connect()
-    except OperationalError:  # pragma: no cover
-        return
+    engine.connect()
 
     import sqlahelper
     sqlahelper.add_engine(engine)
 
+    cleanup_db()
+
 
 def tear_down_common():
-
-    functionality.FUNCTIONALITIES_TYPES = None
-
-    # if test.in does not exist (because the z3c.recipe.filetemplate
-    # part hasn't been executed) then db_url is None
-    if db_url is None:  # pragma: no cover
-        return
+    cleanup_db()
 
     import sqlahelper
     sqlahelper.reset()
 
-    # verify that we have a working database connection before going
-    # forward
-    from sqlalchemy import create_engine
-    from sqlalchemy.exc import OperationalError
-    engine = create_engine(db_url)
-    try:
-        engine.connect()
-    except OperationalError:  # pragma: no cover
-        return
-
-    caching.invalidate_region()
-
 
 def create_default_ogcserver():
-    from c2cgeoportal.models import DBSession, OGCServer
-    DBSession.query(OGCServer).delete()
     import transaction
+    from c2cgeoportal.models import DBSession, OGCServer
+
     transaction.commit()
     ogcserver = OGCServer(name="__test_ogc_server")
     ogcserver.url = mapserv
     ogcserver_external = OGCServer(name="__test_external_ogc_server")
     ogcserver_external.url = mapserv + "external=true&"
     DBSession.add_all([ogcserver, ogcserver_external])
+    transaction.commit()
+
     return ogcserver, ogcserver_external
 
 

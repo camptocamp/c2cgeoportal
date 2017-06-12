@@ -103,12 +103,17 @@ class MapservProxy(OGCProxy):
             # send layer_name, but MapServer should not use the DATA
             # string for GetLegendGraphic.
 
-            params["role_id"] = self.user.parent_role.id if self.external else self.user.role.id
+            role = self.user.parent_role if self.external else self.user.role
+            if role is not None:
+                params["role_id"] = role.id
 
-            # In some application we want to display the features owned by a user
-            # than we need his id.
-            if not self.external:
-                params["user_id"] = self.user.id  # pragma: no cover
+                # In some application we want to display the features owned by a user
+                # than we need his id.
+                if not self.external:
+                    params["user_id"] = self.user.id  # pragma: no cover
+            else:  # pragma nocover
+                log.warning(u"The user '{}' has no {}role".format(
+                    self.user.name, "external " if self.external else ""))
 
         # do not allows direct variable substitution
         for k in params.keys():
@@ -186,19 +191,19 @@ class MapservProxy(OGCProxy):
         )
         return response
 
-    def _proxy_callback(self, role_id, cache_control, *args, **kwargs):
-        params = kwargs.get("params", {})
+    def _proxy_callback(self, role_id, cache_control, url, params, **kwargs):
         callback = params.get("callback")
         if callback is not None:
             del params["callback"]
-        resp, content = self._proxy(*args, **kwargs)
+        resp, content = self._proxy(url=url, params=params, **kwargs)
 
         if self.lower_params.get("request") == "getcapabilities":
             content = filter_capabilities(
                 content, role_id, self.lower_params.get("service") == "wms",
-                self._get_wms_url(),
+                url,
                 self.request.headers,
-                self.mapserver_settings.get("proxies")
+                self.mapserver_settings.get("proxies"),
+                self.request
             )
 
         content_type = None

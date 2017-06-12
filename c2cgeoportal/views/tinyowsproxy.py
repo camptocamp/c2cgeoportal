@@ -126,7 +126,7 @@ class TinyOWSProxy(OGCProxy):
         """
 
         writable_layers = set()
-        for gmflayer in get_writable_layers(self.role_id, self.default_ogc_server.url).values():
+        for gmflayer in get_writable_layers(self.role_id, [self.default_ogc_server.id]).values():
             for ogclayer in gmflayer.layer.split(","):
                 writable_layers.add(ogclayer)
         return typenames.issubset(writable_layers)
@@ -142,7 +142,9 @@ class TinyOWSProxy(OGCProxy):
 
         if operation == "getcapabilities":
             content = filter_wfst_capabilities(
-                content, role_id, self.default_ogc_server.url, self.settings.get("proxies")
+                content, role_id,
+                self.default_ogc_server.url_wfs or self.default_ogc_server.url,
+                self.settings.get("proxies"), self.request
             )
 
         content = self._filter_urls(

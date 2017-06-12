@@ -27,11 +27,15 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+import logging
+
+from sqlalchemy.orm.exc import NoResultFound
 from c2cgeoportal.views.proxy import Proxy
 from c2cgeoportal.models import DBSession, OGCServer
 from c2cgeoportal.lib.caching import get_region
 
 cache_region = get_region()
+log = logging.getLogger(__name__)
 
 
 class OGCProxy(Proxy):
@@ -52,6 +56,11 @@ class OGCProxy(Proxy):
 
     @cache_region.cache_on_arguments()
     def get_ogcserver_byname(self, name):
-        result = DBSession.query(OGCServer).filter(OGCServer.name == name).one()
-        DBSession.expunge(result)
-        return result
+        try:
+            result = DBSession.query(OGCServer).filter(OGCServer.name == name).one()
+            DBSession.expunge(result)
+            return result
+        except NoResultFound:  # pragma nocover
+            log.error("OGSServer '{}' does not exists (existing: {}).".format(
+                name, ",".join([t[0] for t in DBSession.query(OGCServer.name).all()])))
+            raise
