@@ -28,6 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from urllib import urlencode
 from nose.plugins.attrib import attr
 from unittest import TestCase
 
@@ -35,8 +36,7 @@ import sqlahelper
 from c2cgeoportal.tests.functional import (  # noqa
     tear_down_common as tearDownModule,
     set_up_common as setUpModule,
-    create_dummy_request,
-    create_default_ogcserver,
+    create_dummy_request, create_default_ogcserver, cleanup_db,
 )
 
 
@@ -49,6 +49,8 @@ class TestThemesEditColumns(TestCase):
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
+
+        cleanup_db()
 
         self._tables = []
 
@@ -90,31 +92,8 @@ class TestThemesEditColumns(TestCase):
 
     def tearDown(self):  # noqa
         import transaction
-        from c2cgeoportal.models import DBSession, Role, User, TreeItem, \
-            RestrictionArea, Interface, OGCServer
 
-        transaction.commit()
-
-        for treeitem in DBSession.query(TreeItem).all():
-            DBSession.delete(treeitem)
-
-        DBSession.query(User).filter(
-            User.username == u"__test_user"
-        ).delete()
-        r = DBSession.query(Role).filter(
-            Role.name == u"__test_role"
-        ).one()
-        r.restrictionareas = []
-        DBSession.delete(r)
-        DBSession.query(RestrictionArea).filter(
-            RestrictionArea.name == u"__test_ra"
-        ).delete()
-
-        DBSession.query(Interface).filter(
-            Interface.name == u"main"
-        ).delete()
-
-        DBSession.query(OGCServer).delete()
+        cleanup_db()
 
         for table in self._tables[::-1]:
             table.drop(checkfirst=True)
@@ -228,19 +207,14 @@ class TestThemesEditColumns(TestCase):
 
     @staticmethod
     def _get_request(layerid, username=None, params=None):
-        from c2cgeoportal.models import DBSession, User
-
         if params is None:
             params = {}
 
-        request = create_dummy_request()
+        request = create_dummy_request(user=username)
         request.static_url = lambda url: "/dummy/static/url"
+        request.route_url = lambda name, _query: "http://server/{}?{}".format(name, urlencode(_query))
         request.matchdict = {"layer_id": str(layerid)}
         request.params = params
-        if username is not None:
-            request.user = DBSession.query(User).filter_by(
-                username=username
-            ).one()
         return request
 
     def test_themes_edit_columns(self):

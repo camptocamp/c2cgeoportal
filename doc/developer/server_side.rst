@@ -197,8 +197,7 @@ machine it may be ``http://locahost/cgi-bin/mapserv``.
 
 
 Once done with the editing of ``vars.yaml``, run ``make``
-to generate ``c2cgeoportal/tests/functional/test.ini`` and
-``c2cgeoportal/tests/functional/c2cgeoportal_test.map``:
+to generate ``c2cgeoportal/tests/functional/test.ini``:
 
 .. prompt:: bash
 

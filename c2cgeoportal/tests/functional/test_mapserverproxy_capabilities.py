@@ -28,13 +28,12 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import os
 from unittest2 import TestCase
 import transaction
 from c2cgeoportal.tests.functional import (  # noqa
     tear_down_common as tearDownModule,
     set_up_common as setUpModule,
-    create_dummy_request, mapserv, create_default_ogcserver, cleanup_db,
+    create_dummy_request, mapserv_url, create_default_ogcserver, cleanup_db,
 )
 
 
@@ -51,19 +50,19 @@ class TestMapserverproxyCapabilities(TestCase):
         create_default_ogcserver()
 
         ogcserver_jpeg = OGCServer(name="__test_ogc_server_jpeg")
-        ogcserver_jpeg.url = mapserv
+        ogcserver_jpeg.url = mapserv_url
         ogcserver_jpeg.image_type = "image/jpeg"
         ogcserver_jpeg.type = OGCSERVER_TYPE_MAPSERVER
         ogcserver_jpeg.auth = OGCSERVER_AUTH_STANDARD
 
         ogcserver_png = OGCServer(name="__test_ogc_server_png")
-        ogcserver_png.url = mapserv
+        ogcserver_png.url = mapserv_url
         ogcserver_png.image_type = "image/png"
         ogcserver_png.type = OGCSERVER_TYPE_MAPSERVER
         ogcserver_png.auth = OGCSERVER_AUTH_STANDARD
 
         ogcserver_wfs1 = OGCServer(name="__test_ogc_server_wfs1")
-        ogcserver_wfs1.url = mapserv
+        ogcserver_wfs1.url = mapserv_url
         ogcserver_wfs1.url_wfs = "config://srv"
         ogcserver_wfs1.image_type = "image/png"
         ogcserver_wfs1.type = OGCSERVER_TYPE_MAPSERVER
@@ -71,7 +70,7 @@ class TestMapserverproxyCapabilities(TestCase):
 
         ogcserver_wfs2 = OGCServer(name="__test_ogc_server_wfs2")
         ogcserver_wfs2.url = "config://srv"
-        ogcserver_wfs2.url_wfs = mapserv
+        ogcserver_wfs2.url_wfs = mapserv_url
         ogcserver_wfs2.image_type = "image/png"
         ogcserver_wfs2.type = OGCSERVER_TYPE_MAPSERVER
         ogcserver_wfs2.auth = OGCSERVER_AUTH_STANDARD
@@ -115,7 +114,6 @@ class TestMapserverproxyCapabilities(TestCase):
 
     @staticmethod
     def _wms_get_capabilities(ogcserver, service="wms", username=None):
-        from c2cgeoportal.models import DBSession, User
         from c2cgeoportal.views.mapserverproxy import MapservProxy
 
         request = create_dummy_request({
@@ -128,13 +126,7 @@ class TestMapserverproxyCapabilities(TestCase):
             "servers": {
                 "srv": "http://example.com"
             }
-        })
-        request.params = {"map": os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            "c2cgeoportal_test.map"
-        )}
-        request.user = None if username is None else \
-            DBSession.query(User).filter_by(username=username).one()
+        }, user=username)
         request.params.update(dict(
             service=service,
             version="1.1.1",
@@ -145,7 +137,6 @@ class TestMapserverproxyCapabilities(TestCase):
 
     @staticmethod
     def _wms_get_capabilities_config(ogcserver, service="wms", username=None):
-        from c2cgeoportal.models import DBSession, User
         from c2cgeoportal.views.mapserverproxy import MapservProxy
 
         request = create_dummy_request({
@@ -161,13 +152,7 @@ class TestMapserverproxyCapabilities(TestCase):
             "mapserverproxy": {
                 "default_ogc_server": ogcserver,
             },
-        })
-        request.params = {"map": os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            "c2cgeoportal_test.map"
-        )}
-        request.user = None if username is None else \
-            DBSession.query(User).filter_by(username=username).one()
+        }, user=username)
         request.params.update(dict(
             service=service,
             version="1.1.1",

@@ -441,7 +441,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
-        DATA "the_geom from main.testpoint using unique id using srid=21781"
+        DATA "geom from main.testpoint using unique id using srid=21781"
         PROJECTION
            "init=epsg:21781"
         END
