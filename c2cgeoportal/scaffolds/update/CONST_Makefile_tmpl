@@ -902,6 +902,7 @@ node_modules/ngeo/buildtools/mako_build.json: .build/node_modules.timestamp
 		--var src_set=contribs_gmf \
 		--var entry_point=$(PACKAGE)_$* \
 		--var ngeo_folder=node_modules/ngeo/ \
+		$(MAKO_BUILD_ARGS) \
 		--var generate_exports=true $< > $@
 
 .PRECIOUS: .build/%.js
