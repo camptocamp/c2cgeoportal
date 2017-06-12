@@ -128,15 +128,8 @@ template at your disposal:
     .. prompt:: bash
 
         sudo -u postgres createdb -E UTF8 -T template0 c2cgeoportal_test
-        sudo -u postgres createlang plpgsql c2cgeoportal_test
         sudo -u postgres psql -d c2cgeoportal_test \
-               -f /usr/share/postgresql/9.1/contrib/postgis-1.5/postgis.sql
-        sudo -u postgres psql -d c2cgeoportal_test \
-               -f /usr/share/postgresql/9.1/contrib/postgis-1.5/spatial_ref_sys.sql
-        sudo -u postgres psql -d c2cgeoportal_test \
-               -c 'GRANT ALL ON geometry_columns TO "www-data";'
-        sudo -u postgres psql -d c2cgeoportal_test \
-               -c 'GRANT SELECT ON spatial_ref_sys TO "www-data";'
+               -c 'CREATE EXTENSION postgis;'
 
     The ``template0`` is needed on Debian and Ubuntu to create a utf-8
     database.
@@ -155,6 +148,15 @@ To create the ``main`` and ``main_static`` schema:
     sudo -u postgres psql -d c2cgeoportal_test -c 'GRANT ALL ON SCHEMA main TO "www-data";'
     sudo -u postgres psql -d c2cgeoportal_test -c 'CREATE SCHEMA main_static;'
     sudo -u postgres psql -d c2cgeoportal_test -c 'GRANT ALL ON SCHEMA main_static TO "www-data";'
+
+Create the tables:
+
+.. prompt:: bash
+
+    make .build/dev-requirements.timestamp c2cgeoportal/tests/functional/alembic.ini \
+        c2cgeoportal/tests/functional/alembic_static.ini
+    .build/venv/bin/alembic --config c2cgeoportal/tests/functional/alembic.ini upgrade head
+    .build/venv/bin/alembic --config c2cgeoportal/tests/functional/alembic_static.ini upgrade head
 
 If you do not use the default variables edit the ``vars.yaml`` and set the ``dbuser``, ``dbpassword``,
 ``dbhost``, ``dbport``, ``db``, and ``mapserv_url`` as appropriate.

@@ -141,15 +141,8 @@ template at your disposal:</p>
 <p class="first admonition-title">Note</p>
 <p>If you do not have a template named <code class="docutils literal"><span class="pre">template_postgis</span></code> use this:</p>
 <pre class="highlight"><span class="prompt1">sudo -u postgres createdb -E UTF8 -T template0 c2cgeoportal_test</span>
-<span class="prompt1">sudo -u postgres createlang plpgsql c2cgeoportal_test</span>
 <span class="prompt1">sudo -u postgres psql -d c2cgeoportal_test <span class="se">\</span>
-       -f /usr/share/postgresql/9.1/contrib/postgis-1.5/postgis.sql</span>
-<span class="prompt1">sudo -u postgres psql -d c2cgeoportal_test <span class="se">\</span>
-       -f /usr/share/postgresql/9.1/contrib/postgis-1.5/spatial_ref_sys.sql</span>
-<span class="prompt1">sudo -u postgres psql -d c2cgeoportal_test <span class="se">\</span>
-       -c <span class="s1">&#39;GRANT ALL ON geometry_columns TO &quot;www-data&quot;;&#39;</span></span>
-<span class="prompt1">sudo -u postgres psql -d c2cgeoportal_test <span class="se">\</span>
-       -c <span class="s1">&#39;GRANT SELECT ON spatial_ref_sys TO &quot;www-data&quot;;&#39;</span></span>
+       -c <span class="s1">&#39;CREATE EXTENSION postgis;&#39;</span></span>
 </pre><p class="last">The <code class="docutils literal"><span class="pre">template0</span></code> is needed on Debian and Ubuntu to create a utf-8
 database.</p>
 </div>
@@ -160,6 +153,11 @@ database.</p>
 <span class="prompt1">sudo -u postgres psql -d c2cgeoportal_test -c <span class="s1">&#39;GRANT ALL ON SCHEMA main TO &quot;www-data&quot;;&#39;</span></span>
 <span class="prompt1">sudo -u postgres psql -d c2cgeoportal_test -c <span class="s1">&#39;CREATE SCHEMA main_static;&#39;</span></span>
 <span class="prompt1">sudo -u postgres psql -d c2cgeoportal_test -c <span class="s1">&#39;GRANT ALL ON SCHEMA main_static TO &quot;www-data&quot;;&#39;</span></span>
+</pre><p>Create the tables:</p>
+<pre class="highlight"><span class="prompt1">make .build/dev-requirements.timestamp c2cgeoportal/tests/functional/alembic.ini <span class="se">\</span>
+    c2cgeoportal/tests/functional/alembic_static.ini</span>
+<span class="prompt1">.build/venv/bin/alembic --config c2cgeoportal/tests/functional/alembic.ini upgrade head</span>
+<span class="prompt1">.build/venv/bin/alembic --config c2cgeoportal/tests/functional/alembic_static.ini upgrade head</span>
 </pre><p>If you do not use the default variables edit the <code class="docutils literal"><span class="pre">vars.yaml</span></code> and set the <code class="docutils literal"><span class="pre">dbuser</span></code>, <code class="docutils literal"><span class="pre">dbpassword</span></code>,
 <code class="docutils literal"><span class="pre">dbhost</span></code>, <code class="docutils literal"><span class="pre">dbport</span></code>, <code class="docutils literal"><span class="pre">db</span></code>, and <code class="docutils literal"><span class="pre">mapserv_url</span></code> as appropriate.</p>
 <p><code class="docutils literal"><span class="pre">mapserv_url</span></code> needs to refer a valid <code class="docutils literal"><span class="pre">mapserv</span></code> instance running locally,
