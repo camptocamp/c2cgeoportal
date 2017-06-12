@@ -66,9 +66,10 @@ FUNCTIONALITIES_TYPES = None
 
 
 def get_functionality(name, request):
+    global FUNCTIONALITIES_TYPES
+
     result = []
     errors = set()
-    global FUNCTIONALITIES_TYPES
     if FUNCTIONALITIES_TYPES is None:
         FUNCTIONALITIES_TYPES = get_types_map(
             request.registry.settings.get("admin_interface", {})

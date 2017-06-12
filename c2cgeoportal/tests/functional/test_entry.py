@@ -38,12 +38,11 @@ import json
 from geoalchemy2 import WKTElement
 from pyramid import testing
 
-from c2cgeoportal.lib import functionality
 from c2cgeoportal.tests.functional import (  # noqa
     tear_down_common as tearDownModule,
     set_up_common as setUpModule,
     mapserv_url, create_dummy_request,
-    create_default_ogcserver,
+    create_default_ogcserver, cleanup_db
 )
 
 import logging
@@ -59,29 +58,17 @@ class TestEntryView(TestCase):
         self.maxDiff = None
         self._tables = []
 
-        functionality.FUNCTIONALITIES_TYPES = None
-
         from c2cgeoportal.models import DBSession, User, Role, LayerV1, \
-            RestrictionArea, TreeItem, Theme, LayerGroup, Functionality, Interface, \
+            RestrictionArea, Theme, LayerGroup, Functionality, Interface, \
             LayerWMS, OGCServer, FullTextSearch, OGCSERVER_TYPE_GEOSERVER, OGCSERVER_AUTH_GEOSERVER
-        from sqlalchemy import func
-
-        from sqlalchemy import Column, Table, types
+        from sqlalchemy import Column, Table, types, func
         from sqlalchemy.ext.declarative import declarative_base
         from geoalchemy2 import Geometry
         from c2cgeoportal.lib.dbreflection import init
 
-        for o in DBSession.query(RestrictionArea).all():
-            DBSession.delete(o)
-        for o in DBSession.query(Role).all():
-            DBSession.delete(o)
-        for o in DBSession.query(User).all():
-            DBSession.delete(o)
-        for o in DBSession.query(TreeItem).all():
-            DBSession.delete(o)
+        cleanup_db()
 
         role1 = Role(name=u"__test_role1")
-        role1.id = 999
         user1 = User(username=u"__test_user1", password=u"__test_user1", role=role1)
         user1.email = "__test_user1@example.com"
 
@@ -214,44 +201,16 @@ class TestEntryView(TestCase):
             entry1, entry2, entry3,
         ])
 
+        DBSession.flush()
+
+        self.role1_id = role1.id
+
         transaction.commit()
 
     def tearDown(self):  # noqa
         testing.tearDown()
 
-        functionality.FUNCTIONALITIES_TYPES = None
-
-        from c2cgeoportal.models import DBSession, User, Role, TreeItem, \
-            RestrictionArea, Interface, OGCServer
-
-        DBSession.query(User).filter(User.username == "__test_user1").delete()
-        DBSession.query(User).filter(User.username == "__test_user2").delete()
-
-        ra = DBSession.query(RestrictionArea).filter(
-            RestrictionArea.name == "__test_ra1"
-        ).one()
-        ra.roles = []
-        DBSession.delete(ra)
-        ra = DBSession.query(RestrictionArea).filter(
-            RestrictionArea.name == "__test_ra2"
-        ).one()
-        ra.roles = []
-        DBSession.delete(ra)
-
-        DBSession.query(Role).filter(Role.name == "__test_role1").delete()
-        DBSession.query(Role).filter(Role.name == "__test_role2").delete()
-
-        for item in DBSession.query(TreeItem).all():
-            DBSession.delete(item)
-        DBSession.query(Interface).filter(
-            Interface.name == "desktop"
-        ).delete()
-        DBSession.query(OGCServer).delete()
-
-        for table in self._tables[::-1]:
-            table.drop(checkfirst=True)
-
-        transaction.commit()
+        cleanup_db()
 
     #
     # login/logout tests
@@ -282,7 +241,7 @@ class TestEntryView(TestCase):
             "username": "__test_user1",
             "is_password_changed": False,
             "role_name": "__test_role1",
-            "role_id": 999,
+            "role_id": self.role1_id,
             "functionalities": {},
         })
 
@@ -340,12 +299,12 @@ class TestEntryView(TestCase):
         response = Entry(request).login()
         self.assertEquals(response.status_int, 200)
         self.assertEquals(json.loads(response.body), {
-            "success": True,
-            "username": "__test_user1",
-            "is_password_changed": True,
-            "role_name": "__test_role1",
-            "role_id": 999,
-            "functionalities": {},
+            u"success": True,
+            u"username": u"__test_user1",
+            u"is_password_changed": True,
+            u"role_name": u"__test_role1",
+            u"role_id": self.role1_id,
+            u"functionalities": {},
         })
 
     #
@@ -669,6 +628,16 @@ class TestEntryView(TestCase):
             "test_minscale",
             "test_maxscale",
             "test_boothscale",
+            "__test_private_layer0",
+            "__test_private_layer1",
+            "__test_private_layer2",
+            "__test_private_layer3",
+            "__test_private_layer4",
+            "__test_private_layer5",
+            "__test_private_layer6",
+            "__test_private_layer7",
+            "__test_private_layer8",
+            "__test_private_layer9",
         }
 
         self.assertEquals(set(json.loads(response["WFSTypes"])), result)

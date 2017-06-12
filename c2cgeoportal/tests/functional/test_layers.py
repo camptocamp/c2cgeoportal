@@ -34,7 +34,7 @@ from unittest import TestCase
 from c2cgeoportal.tests.functional import (  # noqa
     tear_down_common as tearDownModule,
     set_up_common as setUpModule,
-    create_dummy_request
+    create_dummy_request, cleanup_db
 )
 
 
@@ -47,11 +47,10 @@ class TestLayers(TestCase):
     def setUp(self):  # noqa
         import sqlahelper
         import transaction
-        from c2cgeoportal.models import DBSession, Role, User, Interface, TreeItem
+        from c2cgeoportal.models import DBSession, Role, User, Interface
         from c2cgeoportal.lib.dbreflection import init
 
-        for treeitem in DBSession.query(TreeItem).all():
-            DBSession.delete(treeitem)
+        cleanup_db()
 
         self.metadata = None
         self.layer_ids = []
@@ -79,27 +78,8 @@ class TestLayers(TestCase):
 
     def tearDown(self):  # noqa
         import transaction
-        from c2cgeoportal.models import DBSession, Role, User,  \
-            TreeItem, RestrictionArea, Interface
 
-        transaction.commit()
-
-        for treeitem in DBSession.query(TreeItem).all():
-            DBSession.delete(treeitem)
-
-        DBSession.query(User).delete()
-        r = DBSession.query(Role).filter(
-            Role.name == u"__test_role"
-        ).one()
-        r.restrictionareas = []
-        DBSession.delete(r)
-        DBSession.query(RestrictionArea).filter(
-            RestrictionArea.name == u"__test_ra"
-        ).delete()
-
-        DBSession.query(Interface).filter(
-            Interface.name == u"main"
-        ).delete()
+        cleanup_db()
 
         if self._tables is not None:
             for table in self._tables[::-1]:

@@ -66,3 +66,18 @@ class CachebusterTween:
             response.headers["Access-Control-Allow-Headers"] = "X-Requested-With, Content-Type"
 
         return response
+
+
+class VersionCache:
+    _value = None
+    _cache = None
+
+    def uptodate(self):
+        return self._cache == get_cache_version()
+
+    def get(self):
+        return self._value if self.uptodate() else None
+
+    def set(self, value):
+        self._value = value
+        self._cache = get_cache_version()

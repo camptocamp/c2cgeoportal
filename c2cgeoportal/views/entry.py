@@ -292,7 +292,7 @@ class Entry:
 
         if role_id is not None:
             query2 = get_protected_layers_query(
-                role_id, self.default_ogc_server.url,
+                role_id, None,
                 what=LayerV1.name if version == 1 else LayerWMS.name,
                 version=version
             )
