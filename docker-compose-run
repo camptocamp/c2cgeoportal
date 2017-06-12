@@ -14,9 +14,6 @@ os.environ["RUN"] = urllib.quote(json.dumps(sys.argv[1:]))
 if os.path.exists("SUCCESS"):
     os.remove("SUCCESS")
 
-if os.path.exists("SUCCESS"):
-    os.remove("SUCCESS")
-
 subprocess.check_call(["docker-compose", "up", "--abort-on-container-exit"])
 
 if os.path.exists("SUCCESS"):
