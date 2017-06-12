@@ -5,6 +5,6 @@ RESULT=$(make $* 2>&1)
 if [ "${RESULT}" != "" ]
 then
     echo A Rule is running again
-    make $*
+    DEBUG=TRUE make $*
     exit 1
 fi
