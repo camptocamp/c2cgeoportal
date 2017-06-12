@@ -208,6 +208,7 @@ def main():
                     )
 
             data = re.sub("app", "{{package}}", data)
+            data = re.sub(re.escape("{{package}}lication"), "application", data)
 
 # temporary disable ...
 #        if args.js:
