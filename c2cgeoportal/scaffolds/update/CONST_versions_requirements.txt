@@ -43,7 +43,7 @@ SQLAHelper==1.0
 SQLAlchemy==1.1.4
 Tempita==0.5.2
 textile==2.3.6
-tilecloud==0.4.0
+tilecloud==0.3.0
 tilecloud-chain==1.2.1
 transaction==2.0.3
 translationstring==1.3
