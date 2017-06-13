@@ -399,6 +399,6 @@ Major dependencies docs:
 * `alembic <http://alembic.readthedocs.org/>`_
 * `Pyramid <http://docs.pylonsproject.org/en/latest/docs/pyramid.html>`_
 * `Papyrus <http://pypi.python.org/pypi/papyrus>`_
-* `MapFish Print <http://www.mapfish.org/doc/print/index.html>`_
+* `MapFish Print <http://mapfish.github.io/mapfish-print-doc/>`_
 * `reStructuredText <http://docutils.sourceforge.net/docs/ref/rst/introduction.html>`_
 * `Sphinx <http://sphinx.pocoo.org/>`_
