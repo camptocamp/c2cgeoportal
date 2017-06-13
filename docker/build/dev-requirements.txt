@@ -28,7 +28,7 @@ ipcalc==1.99.0
 isodate==0.5.4
 Jinja2==2.9.6
 js.jqgrid==4.4.4
-js.jquery==1.7.1  # Fixed for admin interface
+js.jquery==1.9.1  # Fixed for admin interface
 js.jquery-form==3.9
 js.jquery-jgrowl==1.4.2
 js.jquery-markitup==1.1.10.post1
