@@ -98,9 +98,11 @@ span.prompt1:before {
 <span class="prompt1"><span class="nb">cd</span> c2cgeoportal</span>
 </pre><p>Then you should checkout the branch or tag of the version you want to install:</p>
 <pre class="highlight"><span class="prompt1">git checkout &lt;branch<span class="p">|</span>tag&gt;</span>
-</pre><p><code class="docutils literal"><span class="pre">&lt;branch|tag&gt;</span></code> can be <code class="docutils literal"><span class="pre">1.4</span></code> for the latest version of the 1.4 branch,
-<code class="docutils literal"><span class="pre">1.4.0</span></code> for the first stable 1.4 version.</p>
-<p>Build c2cgeoportal:</p>
+</pre><p><code class="docutils literal"><span class="pre">&lt;branch|tag&gt;</span></code> can be <code class="docutils literal"><span class="pre">2.2</span></code> for the latest version of the 2.2 branch,
+<code class="docutils literal"><span class="pre">2.2.0</span></code> for the first stable 2.2 version.</p>
+<p>Fetch the Git submodules:</p>
+<pre class="highlight"><span class="prompt1">git submodules update --init</span>
+</pre><p>Build c2cgeoportal:</p>
 <pre class="highlight"><span class="prompt1">./docker-run make build</span>
 </pre></div>
 <div class="section" id="list-existing-skeletons">
