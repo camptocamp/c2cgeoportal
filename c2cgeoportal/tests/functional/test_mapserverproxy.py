@@ -226,8 +226,6 @@ class TestMapserverproxyView(TestCase):
 
     @staticmethod
     def _create_dummy_request(username=None):
-        from c2cgeoportal.models import DBSession, User
-
         request = create_dummy_request({
             "admin_interface": {
                 "available_functionalities": [
@@ -235,9 +233,7 @@ class TestMapserverproxyView(TestCase):
                     "print_template",
                 ]
             }
-        })
-        request.user = None if username is None else \
-            DBSession.query(User).filter_by(username=username).one()
+        }, user=username)
         return request
 
     def test_no_params(self):

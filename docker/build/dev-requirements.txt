@@ -5,6 +5,7 @@ boto==2.47.0
 bottle==0.12.13
 c2c.cssmin==0.7.dev6
 c2c.template==1.4.0.dev1
+chardet==3.0.4
 Chameleon==3.1
 codespell==1.10.0
 couchdbkit==0.6.5
@@ -27,7 +28,7 @@ ipcalc==1.99.0
 isodate==0.5.4
 Jinja2==2.9.6
 js.jqgrid==4.4.4
-js.jquery==1.9.1  # Fixed for admin interface
+js.jquery==1.7.1  # Fixed for admin interface
 js.jquery-form==3.9
 js.jquery-jgrowl==1.4.2
 js.jquery-markitup==1.1.10.post1
