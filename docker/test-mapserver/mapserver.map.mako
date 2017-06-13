@@ -137,6 +137,7 @@ MAP
 
     LAYER
         NAME "testpoint_protected_2"
+        EXTENT 420000 40500 839000 306400
         GROUP "testpoint_group_2"
         TYPE POINT
         STATUS ON
@@ -211,6 +212,7 @@ MAP
 
     LAYER
         NAME "testpoint_substitution"
+        EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
@@ -250,8 +252,8 @@ MAP
 
     LAYER
         NAME "testpoint_column_restriction"
-        TYPE POINT
         EXTENT 420000 40500 839000 306400
+        TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
