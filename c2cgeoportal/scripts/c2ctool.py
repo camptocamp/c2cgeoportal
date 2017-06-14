@@ -479,19 +479,26 @@ class C2cTool:
 
         check_call(["make", "-f", self.options.file, "build"])
 
-        command.upgrade(Config("alembic.ini"), "head")
-        command.upgrade(Config("alembic_static.ini"), "head")
+        if os.environ.get("DOCKER") != "TRUE":
+            command.upgrade(Config("alembic.ini"), "head")
+            command.upgrade(Config("alembic_static.ini"), "head")
 
-        if not self.options.windows:
-            check_call(self.project.get("cmds", {}).get(
-                "apache_graceful",
-                ["sudo", "/usr/sbin/apache2ctl", "graceful"]
-            ))
+            if not self.options.windows:
+                check_call(self.project.get("cmds", {}).get(
+                    "apache_graceful",
+                    ["sudo", "/usr/sbin/apache2ctl", "graceful"]
+                ))
 
-        message = [
-            "The upgrade is nearly done, now you should:",
-            "- Test your application."
-        ]
+            message = [
+                "The upgrade is nearly done, now you should:",
+                "- Test your application."
+            ]
+        else:
+            message = [
+                "The upgrade is nearly done, now you should:",
+                "- run `make run`",
+                "- Test your application on 'http://localhost:8480/desktop'."
+            ]
 
         if self.options.windows:
             message.append(
