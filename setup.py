@@ -41,8 +41,19 @@ with open("README.rst") as f:
     README = "\n".join(text)
 
 install_requires = [
+    "pyramid<=1.8.99",
     "pyramid_multiauth",
     "pyramid_mako",  # to render the HTML files
+    # Needed by the development.ini
+    "pyramid_debugtoolbar",
+
+    # # admin interface # #
+    "pyramid_chameleon",
+    "pyramid_formalchemy>=0.4.3",
+    "fa.jquery>=0.9.5",
+    "GeoFormAlchemy2>=2.0.dev2",
+    "FormAlchemy",
+
     "psycopg2",
     "pycrypto",
     "GeoAlchemy2",
@@ -51,8 +62,6 @@ install_requires = [
     "papyrus",
     "ipcalc",
     "httplib2",
-    # Needed by the development.ini
-    "pyramid_debugtoolbar",
     "OWSLib>=0.6.0",
     "dogpile.cache>=0.6",
     "Paste",
@@ -67,12 +76,12 @@ install_requires = [
     "PyYAML",
     "c2c.template>=1.4.0.dev",
     "defusedxml",
-    "FormAlchemy",
-    "urllib3",
+    "dateutils",
 ]
+
 install_requires += [
     requirement for requirement in
-    open(os.path.join(here, "fixversions.txt")).read().splitlines()
+    open(os.path.join(here, "docker/build/fixversions.txt")).read().splitlines()
     if len(requirement) > 0 and requirement[0] != "#"
 ]
 
