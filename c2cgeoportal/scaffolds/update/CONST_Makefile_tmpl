@@ -277,6 +277,7 @@ ifeq ($(DOCKER), FALSE)
 I18N_SOURCE_FILES += development.ini
 endif
 I18N_DEPENDENCIES += $(VENV_BIN)/pot-create$(PYTHON_BIN_POSTFIX)
+I18N_DEPENDENCIES += project.yaml
 ifeq (${MAPSERVER}, TRUE)
 I18N_DEPENDENCIES += .build/mapserver.timestamp
 endif
