@@ -1187,7 +1187,11 @@ apache/tiles.conf: tilegeneration/config.yaml apache/mapcache.xml $(VENV_BIN)/ge
 # Apache config
 .PHONY: apache
 ifeq ($(DOCKER), TRUE)
+ifeq ($(MAPSERVER), TRUE)
 apache: mapserver_docker wsgi_docker
+else
+apache: wsgi_docker
+endif
 
 .PHONY: mapserver_docker
 mapserver_docker: mapserver/Dockerfile $(MAKO_FILES:.mako=) mapserver/mapserver.map
