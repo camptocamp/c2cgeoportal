@@ -367,6 +367,7 @@ class Checker:  # pragma: no cover
         results = []
         for route in self.settings["phantomjs_routes"]:
             url = self.request.route_url(route["name"], _query=route.get("params", {}))
+            url, _ = build_url("Check", url, self.request)
 
             cmd = [executable_path, "--local-to-remote-url-access=true", checker_config_path, url]
 
