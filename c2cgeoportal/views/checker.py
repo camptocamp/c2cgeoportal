@@ -52,7 +52,8 @@ def build_url(name, url, request, headers=None):
     headers["Cache-Control"] = "no-cache"
 
     urlfragments = urlsplit(url)
-    if urlfragments.netloc == request.environ.get("SERVER_NAME"):
+    if urlfragments.netloc == request.environ.get("SERVER_NAME") or \
+            urlfragments.netloc.startswith("localhost:"):
         url_ = urlunsplit((
             "http", "localhost", urlfragments.path, urlfragments.query, urlfragments.fragment
         ))
