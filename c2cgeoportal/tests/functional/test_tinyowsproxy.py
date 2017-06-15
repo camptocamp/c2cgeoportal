@@ -354,7 +354,7 @@ class TestTinyOWSProxyViewNoDb(TestCase):
         proxy = TinyOWSProxy(request)
         (operation, typename) = proxy._parse_body(request.body)
         self.assertEquals("getfeature", operation)
-        self.assertEquals(set(["parks"]), typename)
+        self.assertEquals({"parks"}, typename)
 
     def test_parse_body_lockfeature(self):
         from c2cgeoportal.views.tinyowsproxy import TinyOWSProxy
@@ -368,7 +368,7 @@ class TestTinyOWSProxyViewNoDb(TestCase):
         proxy = TinyOWSProxy(request)
         (operation, typename) = proxy._parse_body(request.body)
         self.assertEquals("lockfeature", operation)
-        self.assertEquals(set(["parks"]), typename)
+        self.assertEquals({"parks"}, typename)
 
     def test_parse_body_transaction_update(self):
         from c2cgeoportal.views.tinyowsproxy import TinyOWSProxy
@@ -382,7 +382,7 @@ class TestTinyOWSProxyViewNoDb(TestCase):
         proxy = TinyOWSProxy(request)
         (operation, typename) = proxy._parse_body(request.body)
         self.assertEquals("transaction", operation)
-        self.assertEquals(set(["parks"]), typename)
+        self.assertEquals({"parks"}, typename)
 
     def test_parse_body_transaction_delete(self):
         from c2cgeoportal.views.tinyowsproxy import TinyOWSProxy
@@ -396,7 +396,7 @@ class TestTinyOWSProxyViewNoDb(TestCase):
         proxy = TinyOWSProxy(request)
         (operation, typename) = proxy._parse_body(request.body)
         self.assertEquals("transaction", operation)
-        self.assertEquals(set(["parks"]), typename)
+        self.assertEquals({"parks"}, typename)
 
     def test_parse_body_transaction_insert(self):
         from c2cgeoportal.views.tinyowsproxy import TinyOWSProxy
@@ -410,4 +410,4 @@ class TestTinyOWSProxyViewNoDb(TestCase):
         proxy = TinyOWSProxy(request)
         (operation, typename) = proxy._parse_body(request.body)
         self.assertEquals("transaction", operation)
-        self.assertEquals(set(["parks"]), typename)
+        self.assertEquals({"parks"}, typename)
