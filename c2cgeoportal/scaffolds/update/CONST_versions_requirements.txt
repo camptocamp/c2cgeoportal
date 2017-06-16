@@ -38,7 +38,7 @@ pyramid_closure==1.1.0
 python-dateutil==2.6.0
 pytz==2017.2
 repoze.lru==0.6
-requests==2.17.3
+requests==2.18.1
 simplejson==3.10.0
 six==1.10.0
 SQLAHelper==1.0
@@ -55,5 +55,5 @@ WebOb==1.7.2
 zope.component==4.3.0
 zope.deprecation==4.2.0
 zope.event==4.2.0
-zope.interface==4.4.1
+zope.interface==4.4.2
 zope.sqlalchemy==0.7.7
