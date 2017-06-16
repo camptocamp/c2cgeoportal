@@ -1,5 +1,5 @@
 FROM python:2
-MAINTAINER Stéphane Brunner <stephane.brunner@camptocamp.com>
+LABEL maintainer Camptocamp "info@camptocamp.com"
 
 RUN \
   apt-get update && \

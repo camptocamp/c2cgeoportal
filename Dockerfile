@@ -1,5 +1,5 @@
 FROM camptocamp/geomapfish_build_dev
-MAINTAINER Stéphane Brunner <stephane.brunner@camptocamp.com>
+LABEL maintainer Camptocamp "info@camptocamp.com"
 
 COPY . /tmp/
 

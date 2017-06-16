@@ -1,5 +1,5 @@
 FROM grahamdumpleton/mod-wsgi-docker:python-2.7
-MAINTAINER Camptocamp "info@camptocamp.com"
+LABEL maintainer Camptocamp "info@camptocamp.com"
 
 RUN \
     apt-get update && \
