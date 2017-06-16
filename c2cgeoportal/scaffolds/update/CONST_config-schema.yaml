@@ -291,6 +291,8 @@ mapping:
                         type: str
                     smtp_server:
                         type: str
+                    length:
+                        type: int
             hide_capabilities:
                 type: bool
                 required: True
@@ -403,6 +405,9 @@ mapping:
                                 type: seq
                                 sequence:
                                 -   type: str
+
+                            regex;(.+):
+                                type: any
             check_collector:
                 type: map
                 required: True
