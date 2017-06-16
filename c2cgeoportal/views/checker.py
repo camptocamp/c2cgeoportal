@@ -52,7 +52,8 @@ def build_url(name, url, request, headers=None):
     headers["Cache-Control"] = "no-cache"
 
     urlfragments = urlsplit(url)
-    if urlfragments.netloc == request.environ.get("SERVER_NAME"):
+    if urlfragments.netloc == request.environ.get("SERVER_NAME") or \
+            urlfragments.netloc.startswith("localhost:"):
         url_ = urlunsplit((
             "http", "localhost", urlfragments.path, urlfragments.query, urlfragments.fragment
         ))
@@ -366,6 +367,7 @@ class Checker:  # pragma: no cover
         results = []
         for route in self.settings["phantomjs_routes"]:
             url = self.request.route_url(route["name"], _query=route.get("params", {}))
+            url, _ = build_url("Check", url, self.request)
 
             cmd = [executable_path, "--local-to-remote-url-access=true", checker_config_path, url]
 
