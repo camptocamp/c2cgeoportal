@@ -98,6 +98,13 @@ account:</p>
 <p>You can run <cite>DEBUG=TRUE make …</cite> to have some debug message.
 Actually we display the running rule and why she is running (dependence update).</p>
 </div>
+<div class="section" id="docker">
+<h2>Docker<a class="headerlink" href="#docker" title="Permalink to this headline">¶</a></h2>
+<p>Edit a file in a running apache wsgi container</p>
+<pre class="highlight"><span class="prompt1">docker <span class="nb">exec</span> -ti &lt;package&gt;_wsgi_1 bash</span>
+<span class="prompt1">vi ...</span>
+<span class="prompt1"><span class="nb">kill</span> -s USR1 <span class="m">1</span>  <span class="c1"># graceful</span></span>
+</pre></div>
 <div class="section" id="performance-or-network-error">
 <h2>Performance or network error<a class="headerlink" href="#performance-or-network-error" title="Permalink to this headline">¶</a></h2>
 <p>For performance and proxy issues make sure that all internal URLs in the config file
@@ -131,6 +138,7 @@ to test it).</p>
 <li><a class="reference internal" href="#mapserver">Mapserver</a></li>
 <li><a class="reference internal" href="#postgresql">PostgreSQL</a></li>
 <li><a class="reference internal" href="#makefile">Makefile</a></li>
+<li><a class="reference internal" href="#docker">Docker</a></li>
 <li><a class="reference internal" href="#performance-or-network-error">Performance or network error</a><ul>
 <li><a class="reference internal" href="#tilecloud-chain">Tilecloud chain</a></li>
 </ul>
