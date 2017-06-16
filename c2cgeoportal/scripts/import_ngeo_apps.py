@@ -210,6 +210,7 @@ def main():
 
             data = re.sub("app", "{{package}}", data)
             data = re.sub(re.escape("{{package}}lication"), "application", data)
+            data = re.sub(re.escape("{{package}}le"), "apple", data)
 
 # temporary disable ...
 #        if args.js:
