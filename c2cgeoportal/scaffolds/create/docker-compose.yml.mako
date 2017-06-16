@@ -4,6 +4,7 @@ services:
 % if dbhost == "db":
   db:
     build: testDB
+    image: ${docker_base}_testdb:latest
     environment:
       POSTGRES_USER: ${dbuser}
       POSTGRES_DB: ${db}
