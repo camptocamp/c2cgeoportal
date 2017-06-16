@@ -1,4 +1,4 @@
-FROM camptocamp/postgis:9.5
+FROM camptocamp/postgres:9.5
 
 LABEL maintainer Camptocamp "info@camptocamp.com"
 

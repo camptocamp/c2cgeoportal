@@ -1,4 +1,4 @@
-CREATE EXTENSION postgis;
+CREATE EXTENSION IF NOT EXISTS postgis;
 
 CREATE SCHEMA main;
 ALTER USER "www-data" PASSWORD 'www-data';
