@@ -5,4 +5,4 @@
 !README.rst
 !c2cgeoportal/scaffolds/update/CONST_requirements.txt
 !c2cgeoportal/scaffolds/update/CONST_versions_requirements.txt
-!fixversions.txt
+!docker/build/fixversions.txt
