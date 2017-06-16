@@ -28,14 +28,12 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import re
-import urlparse
 import datetime
 import dateutil
 import json
+import re
 import urllib
-from urlparse import urlsplit, urlunsplit, urljoin
-from urllib import quote
+import urlparse
 
 from pyramid.interfaces import IRoutePregenerator, IStaticURLInfo
 from zope.interface import implementer
@@ -62,7 +60,7 @@ def get_url(url, request, default=None, errors=None):
     if re.match("^[a-z]*://", url) is None:  # pragma: no cover
         return url
 
-    obj = urlsplit(url)
+    obj = urlparse.urlsplit(url)
     if obj.scheme == "static":
         netloc = obj.netloc
         if netloc == "":
@@ -224,25 +222,21 @@ def get_typed(name, value, types, request, errors):
 def add_url_params(url, params):
     if len(params.items()) == 0:
         return url
-    return add_spliturl_params(urlsplit(url), params)
+    return add_spliturl_params(urlparse.urlsplit(url), params)
+
+
+def _encode(val):
+    return val.encode("utf-8") if isinstance(val, unicode) else val
 
 
 def add_spliturl_params(spliturl, params):
-    query = []
-    if spliturl.query != "":
-        query.append(spliturl.query)
-    prepared_params = []
-    for param in params.items():
-        if isinstance(param[1], unicode):
-            prepared_params.append([param[0], param[1].encode("utf-8")])
-        else:
-            prepared_params.append(param)
+    query = dict([(k, v[-1]) for k, v in urlparse.parse_qs(_encode(spliturl.query)).items()])
+    for key, value in params.items():
+        query[_encode(key)] = _encode(value)
 
-    query.extend([urllib.urlencode(dict([param])) for param in prepared_params])
-
-    return urlunsplit((
+    return urlparse.urlunsplit((
         spliturl.scheme, spliturl.netloc, spliturl.path,
-        "&".join(query), spliturl.fragment
+        urllib.urlencode(query), spliturl.fragment
     ))
 
 
@@ -390,8 +384,8 @@ class MultiDomainStaticURLInfo(StaticURLInfo):  # pragma: no cover
                         **kw
                     )
                 else:
-                    subpath = quote(subpath)
-                    return urljoin(url, subpath[1:])
+                    subpath = urllib.quote(subpath)
+                    return urlparse.urljoin(url, subpath[1:])
         raise ValueError("No static URL definition matching {0!s}".format(path))
 
     def add(self, config, name, spec, **extra):
