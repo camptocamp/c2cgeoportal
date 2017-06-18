@@ -72,7 +72,7 @@ repoze.lru==0.6
 requests[security]==2.18.1
 restkit==4.2.2
 Shapely==1.5.17.post1
-simplejson==3.10.0
+simplejson==3.11.0
 six==1.10.0
 Sphinx==1.6.2
 sphinx-prompt==1.0.0
