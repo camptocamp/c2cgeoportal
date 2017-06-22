@@ -221,11 +221,11 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
         try:
             dbsession = dbsessions.get(dbname)
             return layers.query_enumerate_attribute_values(dbsession, layerinfos, fieldname)
-        except:
+        except Exception as e:
             table = layerinfos.get("attributes").get(fieldname, {}).get("table")
             print(colorize(
                 u"Unable to collect enumerate attributes for "
-                u"db: {0!s}, table: {1!s}, column: {2!s}".format(dbname, table, fieldname),
+                u"db: {}, table: {}, column: {} ({})".format(dbname, table, fieldname, e),
                 YELLOW
             ))
             return []
