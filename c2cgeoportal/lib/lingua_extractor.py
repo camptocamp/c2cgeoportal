@@ -424,8 +424,8 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                 except Exception as e:
                     print(colorize(
                         "WARNING! an error occurred while trying to "
-                        "parse the GetCapabilities document."
-                    ), YELLOW)
+                        "parse the GetCapabilities document.",
+                        YELLOW))
                     print(colorize(str(e), YELLOW))
                     print(u"URL: {0!s}\nxml:\n{1!s}".format(wms_getcap_url, content))
             except Exception as e:  # pragma: no cover
