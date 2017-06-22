@@ -205,13 +205,14 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
             attributes = layerinfos.get("attributes", {})
             for fieldname in attributes.keys():
                 values = cls._enumerate_attributes_values(DBSessions, Layers, layerinfos, fieldname)
-                enums += [
-                    Message(
-                        None, value[0], None, [], u"", u"",
-                        (filename, u"/layers/{0!s}/values/{1!s}/{2!s}".format(layername, fieldname, value[0]))
-                    )
-                    for value in values
-                ]
+                for value, in values:
+                    if value != "":
+                        msgid = value if isinstance(value, unicode) else str(value)
+                        location = "/layers/{0!s}/values/{1!s}/{2!s}".format(
+                            layername,
+                            fieldname,
+                            value.encode("ascii", errors="replace") if isinstance(value, unicode) else value)
+                        enums.append(Message(None, msgid, None, [], u"", u"", (filename, location)))
 
         return raster + enums
 
