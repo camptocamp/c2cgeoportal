@@ -15,8 +15,8 @@ root = "${directory}"
 % endif
 
 
-# Remove site packages
-regex = re.compile("^/usr/lib/python.\../dist-packages$")
+# Remove site packages in both redhat and debian
+regex = re.compile("^/usr/lib[64]*/python.\../(site|dist)-packages$")
 sys.path = [p for p in sys.path if regex.match(p) is None]
 
 from pyramid.paster import get_app

@@ -205,27 +205,28 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
             attributes = layerinfos.get("attributes", {})
             for fieldname in attributes.keys():
                 values = cls._enumerate_attributes_values(DBSessions, Layers, layerinfos, fieldname)
-                enums += [
-                    Message(
-                        None, value[0], None, [], u"", u"",
-                        (filename, u"/layers/{0!s}/values/{1!s}/{2!s}".format(layername, fieldname, value[0]))
-                    )
-                    for value in values
-                ]
+                for value, in values:
+                    if value != "":
+                        msgid = value if isinstance(value, unicode) else str(value)
+                        location = "/layers/{0!s}/values/{1!s}/{2!s}".format(
+                            layername,
+                            fieldname,
+                            value.encode("ascii", errors="replace") if isinstance(value, unicode) else value)
+                        enums.append(Message(None, msgid, None, [], u"", u"", (filename, location)))
 
         return raster + enums
 
     @classmethod
     def _enumerate_attributes_values(cls, dbsessions, layers, layerinfos, fieldname):
-        dbname = layerinfos.get("dbsession")
+        dbname = layerinfos.get("dbsession", "dbsession")
         try:
             dbsession = dbsessions.get(dbname)
             return layers.query_enumerate_attribute_values(dbsession, layerinfos, fieldname)
-        except:
+        except Exception as e:
             table = layerinfos.get("attributes").get(fieldname, {}).get("table")
             print(colorize(
                 u"Unable to collect enumerate attributes for "
-                u"db: {0!s}, table: {1!s}, column: {2!s}".format(dbname, table, fieldname),
+                u"db: {}, table: {}, column: {} ({})".format(dbname, table, fieldname, e),
                 YELLOW
             ))
             return []
@@ -424,8 +425,8 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                 except Exception as e:
                     print(colorize(
                         "WARNING! an error occurred while trying to "
-                        "parse the GetCapabilities document."
-                    ), YELLOW)
+                        "parse the GetCapabilities document.",
+                        YELLOW))
                     print(colorize(str(e), YELLOW))
                     print(u"URL: {0!s}\nxml:\n{1!s}".format(wms_getcap_url, content))
             except Exception as e:  # pragma: no cover
