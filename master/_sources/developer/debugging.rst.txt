@@ -69,6 +69,18 @@ Makefile
 You can run `DEBUG=TRUE make ...` to have some debug message.
 Actually we display the running rule and why she is running (dependence update).
 
+Docker
+------
+
+Edit a file in a running apache wsgi container
+
+.. prompt:: bash
+
+   docker exec -ti <package>_wsgi_1 bash
+   vi ...
+   kill -s USR1 1  # graceful
+
+
 Performance or network error
 ----------------------------
 
