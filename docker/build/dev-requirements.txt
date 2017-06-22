@@ -60,7 +60,7 @@ Pygments==2.2.0
 pyproj==1.9.5.1
 pyramid==1.8.4
 pyramid-chameleon==0.3
-pyramid-debugtoolbar==4.1
+pyramid-debugtoolbar==4.2
 pyramid-formalchemy==0.4.4
 pyramid-mako==1.0.2
 pyramid-multiauth==0.9.0
