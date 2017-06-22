@@ -217,7 +217,7 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
 
     @classmethod
     def _enumerate_attributes_values(cls, dbsessions, layers, layerinfos, fieldname):
-        dbname = layerinfos.get("dbsession")
+        dbname = layerinfos.get("dbsession", "dbsession")
         try:
             dbsession = dbsessions.get(dbname)
             return layers.query_enumerate_attribute_values(dbsession, layerinfos, fieldname)
