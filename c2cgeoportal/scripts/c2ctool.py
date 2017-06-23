@@ -62,6 +62,11 @@ TEMPLATE_EXAMPLE = {
     "extent": "489246, 78873, 837119, 296543",
     "apache_vhost": "<apache_vhost>",
 }
+DIFF_NOTICE = "The changes visible on `a/CONST_create_template/<file>` should be done on `<file>`.\n" \
+    "An advise to be more effective: in most cases it concerns a file that you never customize, " \
+    "or a file that you have heavily customized, then respectively copy the new file from " \
+    "`CONST_create_template` (`cp CONST_create_template/<file> <file>`), respectively ignore " \
+    "the changes."
 
 
 def main():
@@ -405,7 +410,9 @@ class C2cTool:
             self.step3()
         else:
             self.print_step(
-                3, message="Manually apply the ngeo application changes as shown in the `ngeo.diff` file."
+                3,
+                message="Manually apply the ngeo application changes as shown in the `ngeo.diff` file.\n" +
+                DIFF_NOTICE
             )
 
     def step3(self):
@@ -435,10 +442,7 @@ class C2cTool:
                 self.print_step(
                     4, message="This is an optional step but it helps to have a standard project.\n"
                     "The `create.diff` file is a recommendation of the changes that you should apply "
-                    "to your project.\n"
-                    "An advise to be more effective: in most cases it concerns a file that "
-                    "you never customize, or a file that you have heavily customized, then respectively "
-                    "copy the new file from CONST_create_template, respectively ignore the changes."
+                    "to your project.\n" + DIFF_NOTICE
                 )
         else:
             self.step4()
