@@ -109,7 +109,7 @@ To run the unit tests do this:
 
 .. prompt:: bash
 
-    make build
+    ./docker-run make build
     ./docker-run nosetests -a '!functional'
 
 Functional tests

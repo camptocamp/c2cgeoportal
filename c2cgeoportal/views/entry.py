@@ -1247,7 +1247,7 @@ class Entry:
             "version_role_params": version_role_params,
         }
 
-        if hasattr(self, "external_ogc_server"):
+        if hasattr(self, "external_ogc_server") and self.external_ogc_server is not None:
             external_wfs_types, add_errors = self._external_wfs_types(role_id)
             errors |= add_errors
             d["externalWFSTypes"] = json.dumps(external_wfs_types)
