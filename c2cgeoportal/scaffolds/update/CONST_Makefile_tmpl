@@ -71,12 +71,12 @@ endif
 export INSTANCE_ID
 
 PIP_CMD ?= $(VENV_BIN)/pip
-PIP_VERSION ?= $(shell grep ^pip== CONST_optional-requirements.txt --colour=never)
-SETUPTOOLS_VERSION ?= $(shell grep ^setuptools== CONST_optional-requirements.txt --colour=never)
-TILECLOUD_VERSION ?= $(shell grep ^tilecloud== CONST_optional-requirements.txt --colour=never)
-TILECLOUDCHAIN_VERSION ?= $(shell grep ^tilecloud-chain== CONST_optional-requirements.txt --colour=never)
-JSTOOLS_VERSION ?= $(shell grep ^JSTools== CONST_optional-requirements.txt --colour=never)
-C2CCSSMIN_VERSION ?= $(shell grep ^c2c.cssmin== CONST_optional-requirements.txt --colour=never)
+PIP_VERSION ?= $(shell grep ^pip== CONST_optional-requirements.txt --colour=never | tr --delete '\r\n')
+SETUPTOOLS_VERSION ?= $(shell grep ^setuptools== CONST_optional-requirements.txt --colour=never | tr --delete '\r\n')
+TILECLOUD_VERSION ?= $(shell grep ^tilecloud== CONST_optional-requirements.txt --colour=never | tr --delete '\r\n')
+TILECLOUDCHAIN_VERSION ?= $(shell grep ^tilecloud-chain== CONST_optional-requirements.txt --colour=never | tr --delete '\r\n')
+JSTOOLS_VERSION ?= $(shell grep ^JSTools== CONST_optional-requirements.txt --colour=never | tr --delete '\r\n')
+C2CCSSMIN_VERSION ?= $(shell grep ^c2c.cssmin== CONST_optional-requirements.txt --colour=never | tr --delete '\r\n')
 
 GIT_MODULES_FOLDER ?= .git/modules/
 
@@ -818,7 +818,7 @@ $(APP_OUTPUT_DIR)/%.json: $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-$(L10N_CLIE
 
 $(APP_OUTPUT_DIR)/angular-locale_%.js: node_modules/ngeo/github_versions language_mapping
 	mkdir -p $(dir $@)
-	wget -O $@ https://raw.githubusercontent.com/angular/angular.js/`grep ^angular.js= $< | cut --delimiter = --fields 2`/src/ngLocale/angular-locale_`(grep $* language_mapping || echo $*) | cut -d = -f 2`.js
+	wget -O $@ https://raw.githubusercontent.com/angular/angular.js/`grep ^angular.js= $< | cut --delimiter = --fields 2 | tr --delete '\r\n'`/src/ngLocale/angular-locale_`(grep $* language_mapping || echo $*) | cut --delimiter = --fields 2 | tr --delete '\r\n'`.js
 
 $(APP_OUTPUT_DIR)/%.js: .build/%.js .build/node_modules.timestamp $(NGEO_LIBS_JS_FILES) $(NGEO_PROJECT_LIBS_JS_FILES)
 	$(PRERULE_CMD)
@@ -959,7 +959,7 @@ $(APP_OUTPUT_DIR)/templatecache.js: .build/gmftemplatecache.js
 .build/externs/jquery-1.9.js: node_modules/ngeo/github_versions
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
-	curl --max-redirs 0 --location --output $@ https://raw.githubusercontent.com/google/closure-compiler/`grep ^closure-compiler= $< | cut --delimiter = --fields 2`/contrib/externs/jquery-1.9.js
+	curl --max-redirs 0 --location --output $@ https://raw.githubusercontent.com/google/closure-compiler/`grep ^closure-compiler= $< | cut --delimiter = --fields 2  | tr --delete '\r\n'`/contrib/externs/jquery-1.9.js
 
 package.json:
 	$(PRERULE_CMD)
