@@ -9,7 +9,7 @@ dogpile.core==0.4.1
 https://github.com/camptocamp/fa.jquery/archive/6b781ecb416ef40caa79ca449a04159d7b93547e.zip#egg=fa.jquery
 fanstatic==0.16
 https://github.com/camptocamp/formalchemy/archive/1da70d8a906af08d49d6a0fd858cfea6c20afacb.zip#egg=FormAlchemy
-GeoAlchemy2==0.2.4
+GeoAlchemy2==0.4.0
 GeoFormAlchemy2==2.0.dev3
 geojson==1.0.9
 http-parser==0.8.3
@@ -54,7 +54,7 @@ simplejson==3.6.5
 six==1.9.0
 socketpool==0.5.3
 SQLAHelper==1.0
-SQLAlchemy==0.9.8
+SQLAlchemy==1.1.4
 Tempita==0.5.2
 textile==2.2.2
 transaction==1.4.3
@@ -68,4 +68,4 @@ zope.component==4.2.1
 zope.deprecation==4.1.2
 zope.event==4.0.3
 zope.interface==4.1.2
-zope.sqlalchemy==0.7.5
+zope.sqlalchemy==0.7.7
