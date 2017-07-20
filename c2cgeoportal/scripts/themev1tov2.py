@@ -214,9 +214,8 @@ def layer_v1tov2(session, layer):
         new_link = LayergroupTreeitem()
         new_link.ordering = link.ordering
         new_link.description = link.description
-        new_link.treegroup_id = link.treegroup_id
-        new_link.group = link.group
-        new_link.item = new_layer
+        new_link.treegroup = link.treegroup
+        new_link.treeitem = new_layer
 
     layer_add_metadata(layer, new_layer, session)
 
