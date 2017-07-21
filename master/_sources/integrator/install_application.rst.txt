@@ -135,16 +135,6 @@ commands should be used to download CGXP and its dependencies:
 
     cd <my_project>
 
-The ``foreach`` command aims to init and update CGXP's own submodules, for GXP,
-OpenLayers and GeoExt.
-
-.. note::
-
-    We do not just use ``git submodule update --init --recursive`` here because
-    that would also download GXP's submodules. We do not want that because we
-    do not need GXP's submodules. CGXP indeed has its own submodules for
-    OpenLayers and GeoExt.
-
 Non Apt/Dpkg based OS Configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
