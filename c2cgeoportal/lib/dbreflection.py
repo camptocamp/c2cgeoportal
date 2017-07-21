@@ -99,7 +99,7 @@ class _AssociationProxy(object):
             setattr(obj, self.target, o)
 
 
-def _xsd_sequence_callback(tb, cls):
+def xsd_sequence_callback(tb, cls):
     from c2cgeoportal.models import DBSession
     for k, p in cls.__dict__.iteritems():
         if not isinstance(p, _AssociationProxy):

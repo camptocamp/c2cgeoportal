@@ -519,7 +519,7 @@ def includeme(config):
 
     # add the "xsd" renderer
     config.add_renderer("xsd", XSD(
-        sequence_callback=dbreflection._xsd_sequence_callback
+        sequence_callback=dbreflection.xsd_sequence_callback
     ))
 
     # add the set_user_validator directive, and set a default user
