@@ -649,7 +649,7 @@ class Entry:
             l["matrixSet"] = layer.matrix_set
 
         if version == 1:
-            self._fill_wmts_v1(l, layer, errors, role_id)
+            self._fill_wmts_v1(l, layer, errors)
         else:
             self._fill_wmts_v2(l, layer)
 
@@ -658,7 +658,7 @@ class Entry:
         l["layer"] = layer.layer
         l["imageType"] = layer.image_type
 
-    def _fill_wmts_v1(self, l, layer, errors, role_id):
+    def _fill_wmts_v1(self, l, layer, errors):
         if layer.dimensions:
             try:
                 l["dimensions"] = json.loads(layer.dimensions)
