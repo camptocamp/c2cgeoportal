@@ -151,7 +151,7 @@ def read_record_poly_line(fp):
         # while( ! in_array( points_read, data["parts"]) and
         # points_read < data["numpoints"] and !feof(fp)):
         check_point = []
-        while (points_read < data["numpoints"]):
+        while points_read < data["numpoints"]:
             curr_point = read_record_point(fp)
             data["parts"][part_index]["points"].append(curr_point)
             points_read += 1

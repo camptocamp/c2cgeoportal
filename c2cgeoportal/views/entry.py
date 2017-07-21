@@ -392,9 +392,9 @@ class Entry:
         if layer.geo_table:
             self._fill_editable(l, layer)
         if mixed:
-            assert(time is None)
+            assert time is None
             time = TimeInformation()
-        assert(time is not None)
+        assert time is not None
 
         if not isinstance(layer, LayerV1):
             errors |= dim.merge(layer, l, mixed)
@@ -805,7 +805,7 @@ class Entry:
                         tree_item.name, group.name
                     ))
             elif self._layer_included(tree_item, version):
-                if (tree_item.name in layers):
+                if tree_item.name in layers:
                     if (catalogue or not isinstance(tree_item, LayerV1) or
                         (isinstance(tree_item, LayerV1) and group.is_internal_wms ==
                             self._is_internal_wms(tree_item))):
