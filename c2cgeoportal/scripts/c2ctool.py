@@ -190,6 +190,7 @@ class Step:
 class C2cTool:
 
     color_bar = colorize("================================================================", GREEN)
+    venv_bin = None
 
     def print_step(self, step, error=False, message=None, prompt="To continue type:"):
         print("")

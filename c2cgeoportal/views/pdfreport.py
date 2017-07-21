@@ -44,6 +44,8 @@ log = logging.getLogger(__name__)
 
 class PdfReport(Proxy):  # pragma: no cover
 
+    layername = None
+
     def __init__(self, request):
         Proxy.__init__(self, request)
         self.config = self.request.registry.settings.get("pdfreport", {})

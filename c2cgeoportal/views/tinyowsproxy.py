@@ -54,23 +54,22 @@ class TinyOWSProxy(OGCProxy):
             "tinyowsproxy.tinyows_url must be set"
         assert self.default_ogc_server, "mapserverproxy.default_ogc_server must be set"
 
+        self.user = self.request.user
+        self.role_id = None if self.user is None else self.user.role.id
+
+        # params hold the parameters we are going to send to TinyOWS
+        self.lower_params = self._get_lower_params(dict(self.request.params))
+
     def _get_wfs_url(self):
         return self.settings.get("tinyows_url")
 
     @view_config(route_name="tinyowsproxy")
     def proxy(self):
-        self.user = self.request.user
-
         if self.user is None:
             raise HTTPUnauthorized(
                 "Authentication required",
                 headers=[("WWW-Authenticate", 'Basic realm="TinyOWS"')]
             )
-        self.role_id = None if self.user is None else self.user.role.id
-
-        # params hold the parameters we are going to send to TinyOWS
-        params = dict(self.request.params)
-        self.lower_params = self._get_lower_params(params)
 
         operation = self.lower_params.get("request")
         typenames = \
@@ -114,7 +113,7 @@ class TinyOWSProxy(OGCProxy):
 
         response = self._proxy_callback(
             operation, self.role_id, cache_control,
-            url=self._get_wfs_url(), params=params, cache=use_cache,
+            url=self._get_wfs_url(), params=dict(self.request.params), cache=use_cache,
             headers=self._get_headers(), body=self.request.body,
         )
         return response
