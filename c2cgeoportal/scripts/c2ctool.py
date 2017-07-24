@@ -216,7 +216,7 @@ class C2cTool:
         http = httplib2.Http()
         for check_type in ("", "type=all"):
             resp, _ = http.request(
-                "http://localhost{0!s}{1!s}".format(self.project["checker_path"], check_type),
+                "http://{}{}{}".format(self.project["host"], self.project["checker_path"], check_type),
                 method="GET",
                 headers={
                     "Host": self.project["host"]
@@ -225,7 +225,7 @@ class C2cTool:
             if resp.status < 200 or resp.status >= 300:
                 return False, "\n".join([
                     "Checker error:",
-                    "Open `http://{0!s}{1!s}{2!s}` for more informations."
+                    "Open `http://{}{}{}` for more informations."
                 ]).format(
                     self.project["host"], self.project["checker_path"], check_type
                 )
