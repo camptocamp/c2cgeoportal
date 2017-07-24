@@ -18,6 +18,8 @@ before_install:
 - sudo apt-get install --assume-yes --force-yes aptitude
 - curl --silent --location https://deb.nodesource.com/setup_6.x | sudo -E bash -
 - sudo aptitude install --assume-yes apache2 libapache2-mod-wsgi libapache2-mod-fcgid tomcat7 nodejs cgi-mapserver gettext
+- sudo chmod  o+rx /var/log/apache2/
+- sudo chmod  o+r /var/log/apache2/*.log
 - sudo apt-get install --option Dpkg::Options::="--force-confold" --force-yes --assume-yes docker-ce
 - sudo pip install pyignore git+https://github.com/docker/docker-py.git@1.10.6#egg=docker docker-compose==1.9.0 requests==2.11.1
 
