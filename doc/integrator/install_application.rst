@@ -126,14 +126,9 @@ application source tree:
 
 .. prompt:: bash
 
-    git clone git@github.com:camptocamp/<my_project>.git <my_project>
+    git clone git@github.com:camptocamp/<project>.git
+    cd <project>
 
-c2cgeoportal applications include a Git submodule for CGXP. The following
-commands should be used to download CGXP and its dependencies:
-
-.. prompt:: bash
-
-    cd <my_project>
 
 Non Apt/Dpkg based OS Configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
