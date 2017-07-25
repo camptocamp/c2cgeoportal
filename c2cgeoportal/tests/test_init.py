@@ -95,7 +95,7 @@ class TestReferer(TestCase):
             def __init__(self, to, ref, method):
                 self.path_qs = to
                 self.referer = ref
-                self._user = TestReferer.USER
+                self.user_ = TestReferer.USER
                 self.method = method
 
         get_user = create_get_user_from_request(self.SETTINGS)

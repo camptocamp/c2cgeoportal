@@ -329,18 +329,18 @@ def create_get_user_from_request(settings):
             )
             return None
 
-        if not hasattr(request, "_user"):
-            request._user = None
+        if not hasattr(request, "user_"):
+            request.user_ = None
             if username is None:
                 username = request.authenticated_userid
             if username is not None:
                 # We know we will need the role object of the
                 # user so we use joined loading
-                request._user = DBSession.query(User) \
+                request.user_ = DBSession.query(User) \
                     .filter_by(username=username) \
                     .first()
 
-        return request._user
+        return request.user_
     return get_user_from_request
 
 
