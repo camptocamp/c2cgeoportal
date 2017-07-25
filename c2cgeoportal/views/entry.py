@@ -1586,7 +1586,7 @@ class Entry:
             raise HTTPBadRequest("See server logs for details")
 
         u = self.request.user
-        u._set_password(new_password)
+        u.password = new_password
         u.is_password_changed = True
         DBSession.flush()
         log.info(u"Password changed for user '{0!s}'".format(self.request.user.username))
