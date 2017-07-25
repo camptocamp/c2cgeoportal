@@ -60,9 +60,14 @@ from c2cgeoportal.lib.caching import init_region
 
 
 class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
-    "GeoMapfish angular extractor"
+    """GeoMapfish angular extractor"""
 
     extensions = [".js", ".html"]
+    tpl = None
+    env = None
+    package = None
+    config = None
+    settings = None
 
     def __call__(self, filename, options):
         config = get_config(".build/config.yaml")
