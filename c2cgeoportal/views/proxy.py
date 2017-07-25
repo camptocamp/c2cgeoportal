@@ -166,7 +166,7 @@ class Proxy:
 
     def _proxy_response(
         self, service_name, url,
-        headers=None, headers_update=None, public=False, **kwargs
+        headers_update=None, public=False, **kwargs
     ):  # pragma: no cover
         if headers_update is None:
             headers_update = {}

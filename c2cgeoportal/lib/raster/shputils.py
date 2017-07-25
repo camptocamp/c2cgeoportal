@@ -97,7 +97,7 @@ def create_record(fp):
 
 def read_record_any(fp, type_):
     if type_ == 0:
-        return read_record_null(fp)
+        return read_record_null()
     elif type_ == 1:
         return read_record_point(fp)
     elif type_ == 8:
@@ -108,7 +108,7 @@ def read_record_any(fp, type_):
         return False
 
 
-def read_record_null(fp):
+def read_record_null():
     data = {}
     return data
 
