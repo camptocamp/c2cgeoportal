@@ -351,10 +351,10 @@ class _CapabilitiesFilter(XMLFilterBase):
             self.layers_whitelist is not None and
             layer_name in self.layers_whitelist)
 
-    def characters(self, text):
+    def characters(self, content):
         if self.in_name and len(self.layers_path) != 0 and not \
                 self.layers_path[-1].self_hidden is True:
-            layer_name = normalize_typename(text)
+            layer_name = normalize_typename(content)
             if self._keep_layer(layer_name):
                 for layer in self.layers_path:
                     layer.hidden = False
@@ -364,13 +364,13 @@ class _CapabilitiesFilter(XMLFilterBase):
                 if len(self.layers_path) > 1:
                     self.layers_path[-2].children_nb -= 1
 
-        self._do(lambda: self._accumulator.append(text))
+        self._do(lambda: self._accumulator.append(content))
 
-    def ignorableWhitespace(self, ws):  # pragma: no cover  # noqa
-        self._do(lambda: self._accumulator.append(ws))
+    def ignorableWhitespace(self, chars):  # pragma: no cover  # noqa
+        self._do(lambda: self._accumulator.append(chars))
 
-    def processingInstruction(self, target, body):  # pragma: no cover  # noqa
-        self._do(lambda: self._downstream.processingInstruction(target, body))
+    def processingInstruction(self, target, data):  # pragma: no cover  # noqa
+        self._do(lambda: self._downstream.processingInstruction(target, data))
 
     def skippedEntity(self, name):  # pragma: no cover  # noqa
         self._downstream.skippedEntity(name)
