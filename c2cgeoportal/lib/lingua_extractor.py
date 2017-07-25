@@ -63,11 +63,14 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
     """GeoMapfish angular extractor"""
 
     extensions = [".js", ".html"]
-    tpl = None
-    env = None
-    package = None
-    config = None
-    settings = None
+
+    def __init__(self):
+        super(GeoMapfishAngularExtractor, self).__init__()
+        self.tpl = None
+        self.env = None
+        self.package = None
+        self.config = None
+        self.settings = None
 
     def __call__(self, filename, options):
         config = get_config(".build/config.yaml")

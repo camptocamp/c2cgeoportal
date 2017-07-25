@@ -33,7 +33,7 @@ from os.path import dirname
 from struct import unpack
 
 
-class Tile:
+class Tile(object):
     def __init__(self, min_x, min_y, max_x, max_y, filename):
         self.min_x = min_x
         self.min_y = min_y
@@ -51,9 +51,15 @@ class Tile:
 
 
 class BTTile(Tile):
+    def __init__(self, *args):
+        super(BTTile, self).__init__(*args)
+        self.cols = None
+        self.resolution_x = None
+        self.resolution_y = None
+
     def get_value(self, x, y):
         file = open(self.filename, "rb")
-        if not hasattr(self, "cols"):
+        if self.cols is None:
             file.seek(10)
             (self.cols, self.rows, self.dataSize, self.floatingPoint) = \
                 unpack("<LLhh", file.read(12))
