@@ -46,23 +46,21 @@ def load_shapefile(file_name):
     records = []
     # open dbf file and get records as a list
     dbf_file = file_name[0:-4] + ".dbf"
-    dbf = open(dbf_file, "rb")
-    db = list(dbfutils.dbfreader(dbf))
-    dbf.close()
-    fp = open(file_name, "rb")
+    with open(dbf_file, "rb") as dbf:
+        db = list(dbfutils.dbfreader(dbf))
+    with open(file_name, "rb") as fp:
+        # get basic shapefile configuration
+        fp.seek(32)
+        read_and_unpack("i", fp.read(4))
+        read_bounding_box(fp)
 
-    # get basic shapefile configuration
-    fp.seek(32)
-    read_and_unpack("i", fp.read(4))
-    read_bounding_box(fp)
-
-    # fetch Records
-    fp.seek(100)
-    while True:
-        shp_record = create_record(fp)
-        if not shp_record:
-            break
-        records.append(shp_record)
+        # fetch Records
+        fp.seek(100)
+        while True:
+            shp_record = create_record(fp)
+            if not shp_record:
+                break
+            records.append(shp_record)
 
     return records
 
@@ -97,7 +95,7 @@ def create_record(fp):
 
 def read_record_any(fp, type_):
     if type_ == 0:
-        return read_record_null(fp)
+        return read_record_null()
     elif type_ == 1:
         return read_record_point(fp)
     elif type_ == 8:
@@ -108,7 +106,7 @@ def read_record_any(fp, type_):
         return False
 
 
-def read_record_null(fp):
+def read_record_null():
     data = {}
     return data
 

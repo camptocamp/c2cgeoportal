@@ -195,8 +195,8 @@ def _simplify_sql(sql):
     return re.sub(r"%\(\w+\)\w", "?", sql)
 
 
-def _before_cursor_execute(conn, cursor, statement,
-                           parameters, context, executemany):  # pragma: no cover
+def _before_cursor_execute(
+        conn, cursor, statement, parameters, context, executemany):  # pragma: no cover
     measure = timer(["sql", _simplify_sql(statement)])
 
     def after(*args, **kwargs):

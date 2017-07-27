@@ -63,11 +63,14 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
     """GeoMapfish angular extractor"""
 
     extensions = [".js", ".html"]
-    tpl = None
-    env = None
-    package = None
-    config = None
-    settings = None
+
+    def __init__(self):
+        super(GeoMapfishAngularExtractor, self).__init__()
+        self.tpl = None
+        self.env = None
+        self.package = None
+        self.config = None
+        self.settings = None
 
     def __call__(self, filename, options):
         config = get_config(".build/config.yaml")
@@ -330,9 +333,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
         if url is None:
             return
         for wms_layer in layer.layer.split(","):
-            self._import_layer_attributes(
-                url, wms_layer, layer.item_type, layer.name, layer.id, messages
-            )
+            self._import_layer_attributes(url, wms_layer, layer.item_type, layer.name, messages)
         if layer.geo_table is not None and layer.geo_table != "":
             exclude = [] if layer.exclude_properties is None else layer.exclude_properties.split(",")
             last_update_date = layer.get_metadatas("lastUpdateDateColumn")
@@ -373,7 +374,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                     db_server = DBSession.query(OGCServer).filter(OGCServer.name == server[0]).one()
                     self._import_layer_attributes(
                         db_server.url_wfs or db_server.url, wms_layer,
-                        layer.item_type, layer.name, layer.id, messages
+                        layer.item_type, layer.name, messages
                     )
                 except NoResultFound:
                     print(colorize(
@@ -383,7 +384,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                         YELLOW
                     ))
 
-    def _import_layer_attributes(self, url, layer, item_type, name, layer_id, messages):
+    def _import_layer_attributes(self, url, layer, item_type, name, messages):
         for attribute in self._layer_attributes(url, layer):
             messages.append(Message(
                 None, attribute, None, [], "", "", (".".join([item_type, name]), layer)

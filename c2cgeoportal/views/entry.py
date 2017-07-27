@@ -431,7 +431,7 @@ class Entry:
             elif layer.layer_type == "external WMS":
                 self._fill_external_wms(l, layer, errors)
             elif layer.layer_type == "WMTS":
-                self._fill_wmts(l, layer, errors, role_id=role_id)
+                self._fill_wmts(l, layer, errors)
         elif isinstance(layer, LayerWMS):
             wms, wms_layers, wms_errors = self._wms_layers(
                 self._get_cache_role_key(layer.ogc_server),
@@ -634,7 +634,7 @@ class Entry:
         l["url"] = get_url(layer.url, self.request, errors=errors)
         l["isSingleTile"] = layer.is_single_tile
 
-    def _fill_wmts(self, l, layer, errors, version=1, role_id=None):
+    def _fill_wmts(self, l, layer, errors, version=1):
         if version == 1:
             l["url"] = get_url(layer.url, self.request, errors=errors)
         else:
@@ -1586,7 +1586,7 @@ class Entry:
             raise HTTPBadRequest("See server logs for details")
 
         u = self.request.user
-        u._set_password(new_password)
+        u.password = new_password
         u.is_password_changed = True
         DBSession.flush()
         log.info(u"Password changed for user '{0!s}'".format(self.request.user.username))
