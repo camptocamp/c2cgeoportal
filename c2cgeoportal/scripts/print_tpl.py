@@ -49,9 +49,8 @@ def main():
         mylookup = TemplateLookup(directories=['print/templates'])
         mytemplate = Template(filename=base_template, lookup=mylookup)
 
-        print_template = open('print/config.yaml', 'w+')
-        print_template.write(mytemplate.render().encode('UTF-8'))
-        print_template.close()
+        with open('print/config.yaml', 'w+') as print_template:
+            print_template.write(mytemplate.render().encode('UTF-8'))
 
         print("finished building print template")
     else:

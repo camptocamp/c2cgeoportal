@@ -79,11 +79,12 @@ install_requires = [
     "dateutils",
 ]
 
-install_requires += [
-    requirement for requirement in
-    open(os.path.join(here, "docker/build/fixversions.txt")).read().splitlines()
-    if len(requirement) > 0 and requirement[0] != "#"
-]
+with open(os.path.join(here, "docker/build/fixversions.txt")) as file_:
+    install_requires += [
+        requirement for requirement in
+        file_.read().splitlines()
+        if len(requirement) > 0 and requirement[0] != "#"
+    ]
 
 setup_requires = [
 ]

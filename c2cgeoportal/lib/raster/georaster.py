@@ -58,29 +58,28 @@ class BTTile(Tile):
         self.resolution_y = None
 
     def get_value(self, x, y):
-        file_ = open(self.filename, "rb")
-        if self.cols is None:
-            file_.seek(10)
-            (self.cols, self.rows, self.dataSize, self.floatingPoint) = \
-                unpack("<LLhh", file_.read(12))
-            self.resolution_x = (self.max_x - self.min_x) / self.cols
-            self.resolution_y = (self.max_y - self.min_y) / self.rows
+        with open(self.filename, "rb") as file_:
+            if self.cols is None:
+                file_.seek(10)
+                (self.cols, self.rows, self.dataSize, self.floatingPoint) = \
+                    unpack("<LLhh", file_.read(12))
+                self.resolution_x = (self.max_x - self.min_x) / self.cols
+                self.resolution_y = (self.max_y - self.min_y) / self.rows
 
-        pos_x = int((x - self.min_x) / self.resolution_x)
-        pos_y = int((y - self.min_y) / self.resolution_y)
-        file_.seek(256 + (pos_y + pos_x * self.rows) * self.dataSize)
+            pos_x = int((x - self.min_x) / self.resolution_x)
+            pos_y = int((y - self.min_y) / self.resolution_y)
+            file_.seek(256 + (pos_y + pos_x * self.rows) * self.dataSize)
 
-        if self.floatingPoint == 1:
-            val = unpack("<f", file_.read(self.dataSize))[0]
-        else:
-            if self.dataSize == 2:
-                format_ = "<h"
+            if self.floatingPoint == 1:
+                val = unpack("<f", file_.read(self.dataSize))[0]
             else:
-                format_ = "<l"
-            data = file_.read(self.dataSize)
-            val = unpack(format_, data)[0]
+                if self.dataSize == 2:
+                    format_ = "<h"
+                else:
+                    format_ = "<l"
+                data = file_.read(self.dataSize)
+                val = unpack(format_, data)[0]
 
-        file_.close()
         return val
 
 
