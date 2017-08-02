@@ -244,7 +244,9 @@ NGEO_LIBS_JS_FILES += \
 	node_modules/angular-dynamic-locale/dist/tmhDynamicLocale.min.js \
 	node_modules/bootstrap/dist/js/bootstrap.min.js \
 	node_modules/d3/build/d3.min.js \
-	node_modules/file-saver/FileSaver.min.js
+	node_modules/file-saver/FileSaver.min.js \
+	node_modules/jsts/dist/jsts.min.js \
+	node_modules/moment/min/moment.min.js
 NGEO_PROJECT_LIBS_JS_FILES ?=
 ifeq ($(OPERATING_SYSTEM),WINDOWS)
 COMPILE_CATALOG = node_modules/ngeo/buildtools/compile-catalog.js
