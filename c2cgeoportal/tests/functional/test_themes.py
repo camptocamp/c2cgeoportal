@@ -167,6 +167,9 @@ class TestThemesView(TestCase):
     def _create_entry_obj(self, **kwargs):
         from c2cgeoportal.views.entry import Entry
 
+        kwargs["additional_settings"] = {
+            "admin_interface": {"available_metadata": ["test"]}
+        }
         return Entry(self._create_request_obj(**kwargs))
 
     def _only_name(self, item, attribute="name"):
@@ -440,8 +443,6 @@ class TestThemesView(TestCase):
         entry = self._create_entry_obj(params={
             "version": "2",
             "catalogue": "true",
-        }, additional_settings={
-            "admin_interface": {"available_metadata": ["test"]}
         })
         themes = entry.themes()
         self.assertEquals(self._get_filtered_errors(themes), set())
