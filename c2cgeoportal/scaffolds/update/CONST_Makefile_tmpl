@@ -886,10 +886,19 @@ $(PACKAGE)/static-ngeo/fonts/fontawesome-webfont.%: node_modules/font-awesome/fo
 	mkdir -p $(dir $@)
 	cp $< $@
 
-$(APP_OUTPUT_DIR)/%.css: $(PACKAGE)/static-ngeo/less/%.less $(LESS_FILES) $(NGEO_FONTS) .build/node_modules.timestamp
+$(APP_OUTPUT_DIR)/%.css: \
+		$(PACKAGE)/static-ngeo/less/%.less \
+		$(LESS_FILES) \
+		$(NGEO_FONTS) \
+		.build/node_modules.timestamp \
+		$(APP_OUTPUT_DIR)/images/
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
 	node_modules/.bin/lessc $(LESS_ARGS) $< $@
+
+$(APP_OUTPUT_DIR)/images/: node_modules/ngeo/third-party/jquery-ui/images/
+	mkdir -p $@
+	cp -r $</* $@
 
 .PRECIOUS: node_modules/ngeo/buildtools/mako_build.json
 node_modules/ngeo/buildtools/mako_build.json: .build/node_modules.timestamp
