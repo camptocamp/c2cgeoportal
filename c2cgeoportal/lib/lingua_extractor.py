@@ -54,7 +54,7 @@ from mako.lookup import TemplateLookup
 from owslib.wms import WebMapService
 
 from c2cgeoportal.lib import add_url_params, get_url2
-from c2cgeoportal.lib.bashcolor import colorize, RED, YELLOW
+from c2cgeoportal.lib.bashcolor import colorize, RED
 from c2cgeoportal.lib.dbreflection import get_class
 from c2cgeoportal.lib.caching import init_region
 
@@ -144,13 +144,15 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
                         file_open.write(processed.encode("utf-8"))
                 except:
                     print(colorize(
-                        u"An error occurred during the '{}' template generation".format(filename),
-                        YELLOW
+                        u"ERROR! Occurred during the '{}' template generation".format(filename),
+                        RED
                     ))
-                    print(colorize(traceback.format_exc(), YELLOW))
-                    print("------")
-                    # Continue with the original one
-                    int_filename = filename
+                    print(colorize(traceback.format_exc(), RED))
+                    if os.environ["IGNORE_I18N_ERRORS"] == "TRUE":
+                        # Continue with the original one
+                        int_filename = filename
+                    else:
+                        raise
             except:
                 print(traceback.format_exc())
 
@@ -233,11 +235,14 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
         except Exception as e:
             table = layerinfos.get("attributes").get(fieldname, {}).get("table")
             print(colorize(
-                u"Unable to collect enumerate attributes for "
+                u"ERROR! Unable to collect enumerate attributes for "
                 u"db: {}, table: {}, column: {} ({})".format(dbname, table, fieldname, e),
-                YELLOW
+                RED
             ))
-            return []
+            if os.environ["IGNORE_I18N_ERRORS"] == "TRUE":
+                return []
+            else:
+                raise
 
     @classmethod
     def _collect_print_config(cls, config, filename):
@@ -291,25 +296,31 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                         ))
             except ProgrammingError as e:
                 print(colorize(
-                    "ERROR: The database is probably not up to date "
+                    "ERROR! The database is probably not up to date "
                     "(should be ignored when happen during the upgrade)",
                     RED
                 ))
                 print(colorize(e, RED))
+                if os.environ["IGNORE_I18N_ERRORS"] != "TRUE":
+                    raise
         except NoSuchTableError as e:
             print(colorize(
-                "ERROR: The schema didn't seem to exists "
+                "ERROR! The schema didn't seem to exists "
                 "(should be ignored when happen during the deploy)",
                 RED
             ))
             print(colorize(e, RED))
+            if os.environ["IGNORE_I18N_ERRORS"] != "TRUE":
+                raise
         except OperationalError as e:
             print(colorize(
-                "ERROR: The database didn't seem to exists "
+                "ERROR! The database didn't seem to exists "
                 "(should be ignored when happen during the deploy)",
                 RED
             ))
             print(colorize(e, RED))
+            if os.environ["IGNORE_I18N_ERRORS"] != "TRUE":
+                raise
 
         return messages
 
@@ -356,10 +367,12 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                         ))
             except NoSuchTableError:
                 print(colorize(
-                    u"No such table '{}' for layer '{}'.".format(layer.geo_table, layer.name),
-                    YELLOW
+                    u"ERROR! No such table '{}' for layer '{}'.".format(layer.geo_table, layer.name),
+                    RED
                 ))
-                print(colorize(traceback.format_exc(), YELLOW))
+                print(colorize(traceback.format_exc(), RED))
+                if os.environ["IGNORE_I18N_ERRORS"] != "TRUE":
+                    raise
 
     def _import_layer_wmts(self, layer, messages):
         from c2cgeoportal.models import DBSession, OGCServer
@@ -378,11 +391,13 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                     )
                 except NoResultFound:
                     print(colorize(
-                        u"Error: the OGC server '{}' from the WMTS layer '{}' does not exist.".format(
+                        u"ERROR! the OGC server '{}' from the WMTS layer '{}' does not exist.".format(
                             server[0], layer.name
                         ),
-                        YELLOW
+                        RED
                     ))
+                    if os.environ["IGNORE_I18N_ERRORS"] != "TRUE":
+                        raise
 
     def _import_layer_attributes(self, url, layer, item_type, name, messages):
         for attribute in self._layer_attributes(url, layer):
@@ -430,17 +445,21 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                     self.wmscap_cache[url] = WebMapService(None, xml=content)
                 except Exception as e:
                     print(colorize(
-                        "WARNING! an error occurred while trying to "
+                        "ERROR! an error occurred while trying to "
                         "parse the GetCapabilities document.",
-                        YELLOW))
-                    print(colorize(str(e), YELLOW))
+                        RED))
+                    print(colorize(str(e), RED))
                     print(u"URL: {0!s}\nxml:\n{1!s}".format(wms_getcap_url, content))
+                    if os.environ["IGNORE_I18N_ERRORS"] != "TRUE":
+                        raise
             except Exception as e:  # pragma: no cover
-                print(colorize(str(e), YELLOW))
+                print(colorize(str(e), RED))
                 print(colorize(
-                    u"WARNING! Unable to GetCapabilities from URL: {0!s}".format(wms_getcap_url),
-                    YELLOW,
+                    u"ERROR! Unable to GetCapabilities from URL: {0!s}".format(wms_getcap_url),
+                    RED,
                 ))
+                if os.environ["IGNORE_I18N_ERRORS"] != "TRUE":
+                    raise
 
         wmscap = self.wmscap_cache[url]
 
@@ -462,21 +481,27 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
             try:
                 resp, content = http.request(wfs_descrfeat_url, method="GET", headers=h)
             except Exception as e:  # pragma: no cover
-                print(colorize(str(e), YELLOW))
+                print(colorize(str(e), RED))
                 print(colorize(
-                    u"Unable to DescribeFeatureType from URL: {0!s}".format(wfs_descrfeat_url),
-                    YELLOW,
+                    u"ERROR! Unable to DescribeFeatureType from URL: {0!s}".format(wfs_descrfeat_url),
+                    RED,
                 ))
-                return []
+                if os.environ["IGNORE_I18N_ERRORS"] == "TRUE":
+                    return []
+                else:
+                    raise
 
             if resp.status < 200 or resp.status >= 300:  # pragma: no cover
                 print(colorize(
-                    u"WARNING DescribeFeatureType from URL {0!s} return the error: {1:d} {2!s}".format(
+                    u"ERROR! DescribeFeatureType from URL {0!s} return the error: {1:d} {2!s}".format(
                         wfs_descrfeat_url, resp.status, resp.reason
                     ),
-                    YELLOW,
+                    RED,
                 ))
-                return []
+                if os.environ["IGNORE_I18N_ERRORS"] == "TRUE":
+                    return []
+                else:
+                    raise Exception("Aborted")
 
             try:
                 describe = parseString(content)
@@ -488,19 +513,27 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                     featurestype[type_element.getAttribute("name")] = type_element
             except ExpatError as e:
                 print(colorize(
-                    "WARNING! an error occurred while trying to "
+                    "ERROR! an error occurred while trying to "
                     "parse the DescribeFeatureType document.",
-                    YELLOW
+                    RED
                 ))
-                print(colorize(str(e), YELLOW))
+                print(colorize(str(e), RED))
                 print(u"URL: {0!s}\nxml:\n{1!s}".format(wfs_descrfeat_url, content))
+                if os.environ["IGNORE_I18N_ERRORS"] == "TRUE":
+                    return []
+                else:
+                    raise
             except AttributeError:
                 print(colorize(
-                    "WARNING! an error occurred while trying to "
+                    "ERROR! an error occurred while trying to "
                     "read the Mapfile and recover the themes.",
-                    YELLOW
+                    RED
                 ))
                 print(u"URL: {0!s}\nxml:\n{1!s}".format(wfs_descrfeat_url, content))
+                if os.environ["IGNORE_I18N_ERRORS"] == "TRUE":
+                    return []
+                else:
+                    raise
         else:
             featurestype = self.featuretype_cache[url]
 

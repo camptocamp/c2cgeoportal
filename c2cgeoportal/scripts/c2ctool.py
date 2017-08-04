@@ -482,7 +482,11 @@ class C2cTool:
         if os.path.isfile("create.diff"):
             os.unlink("create.diff")
 
+        os.environ["IGNORE_I18N_ERRORS"] = "TRUE"
         check_call(["make", "-f", self.options.file, "build"])
+        del os.environ["IGNORE_I18N_ERRORS"]
+        check_call(["git", "checkout", "{0}/locale/*/LC_MESSAGES/{0}-client.po".format(
+            self.project["project_package"])])
 
         if os.environ.get("DOCKER") != "TRUE":
             command.upgrade(Config("alembic.ini"), "head")
