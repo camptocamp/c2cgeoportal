@@ -59,8 +59,6 @@ APPS_FILES = $(APPS_HTML_FILES) $(APPS_JS_FILES) \
 	$(addprefix $(APPS_PACKAGE_PATH)/static-ngeo/images/,favicon.ico logo.png background-layer-button.png) \
 	$(APPS_PACKAGE_PATH)/static-ngeo/components/contextualdata/contextualdata.html
 
-C2C_TEMPLATE_CMD = $(BUILD_DIR)/venv/bin/python /usr/local/bin/c2c-template --vars $(VARS_FILE)
-
 .PHONY: help
 help:
 	@echo "Usage: $(MAKE) <target>"
@@ -103,6 +101,7 @@ checks: flake8 git-attributes quote spell
 .PHONY: clean
 clean:
 	rm --force $(BUILD_DIR)/venv.timestamp
+	rm --force $(BUILD_DIR)/c2ctemplate-cache.yaml
 	rm --force c2cgeoportal/version.py
 	rm --force c2cgeoportal/locale/*.pot
 	rm --force c2cgeoportal/locale/en/LC_MESSAGES/c2cgeoportal.po
@@ -240,10 +239,13 @@ $(APPS_PACKAGE_PATH)/static-ngeo/images/%: ngeo/contribs/gmf/apps/desktop/image/
 
 # Templates
 
-$(MAKO_FILES:.mako=): ${VARS_FILES}
+$(BUILD_DIR)/c2ctemplate-cache.yaml: $(VARS_FILES)
+	$(BUILD_DIR)/venv/bin/python /usr/local/bin/c2c-template --vars $(VARS_FILE) --get-cache $@
 
-%: %.mako $(BUILD_DIR)/requirements.timestamp
-	$(C2C_TEMPLATE_CMD) --engine mako --files $<
+$(MAKO_FILES:.mako=): $(BUILD_DIR)/c2ctemplate-cache.yaml
+
+%: %.mako $(BUILD_DIR)/requirements.timestamp $(BUILD_DIR)/c2ctemplate-cache.yaml
+	c2c-template --cache $(BUILD_DIR)/c2ctemplate-cache.yaml --engine mako --files $<
 
 c2cgeoportal/locale/c2cgeoportal.pot: lingua.cfg $(SRC_FILES) $(BUILD_DIR)/requirements.timestamp
 	mkdir -p $(dir $@)
@@ -261,9 +263,9 @@ c2cgeoportal/locale/%/LC_MESSAGES/c2cgeoportal.po: $(TX_DEPENDENCIES)
 	test -s $@
 
 c2cgeoportal/scaffolds/create/+package+/locale/%/LC_MESSAGES/+package+-client.po: \
-		$(TX_DEPENDENCIES) .build/dev-requirements.timestamp
+		$(TX_DEPENDENCIES) $(BUILD_DIR)/dev-requirements.timestamp
 	mkdir -p $(dir $@)
-	.build/venv/bin/tx pull -l $* --force
+	$(BUILD_DIR)/venv/bin/tx pull -l $* --force
 	$(TOUCHBACK_TXRC)
 	test -s $@
 

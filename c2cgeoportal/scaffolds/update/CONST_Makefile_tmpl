@@ -496,7 +496,6 @@ CONFIG_VARS += instanceid sqlalchemy.url schema parentschema enable_admin_interf
 	tiles_url checker check_collector default_max_age jsbuild package srid \
 	reset_password fulltextsearch headers authorized_referers hooks stats db_chooser \
 	ogcproxy_enable dbsessions urllogin host_forward_host
-C2C_TEMPLATE_CMD = $(ENVIRONMENT_VARS) $(VENV_BIN)/c2c-template --vars $(VARS_FILE)
 MAKE_FILES = $(shell ls -1 *.mk) CONST_Makefile
 
 # Disabling Make built-in rules to speed up execution time
@@ -655,6 +654,7 @@ remove-branch:
 
 .PHONY: template-clean
 template-clean:
+	rm -f .build/c2ctemplate-cache.yaml
 	rm -f $(ALL_MAKO_FILES:.mako=)
 	rm -f $(ALL_JINJA_FILES:.jinja=)
 	rm -f .build/config.yaml
@@ -662,31 +662,31 @@ template-clean:
 .PHONY: template-generate
 template-generate: $(ALL_MAKO_FILES:.mako=) $(ALL_JINJA_FILES:.jinja=) .build/config.yaml
 
-$(MAKO_FILES:.mako=) $(JINJA_FILES:.jinja=): $(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX) $(VARS_DEPENDS)
-
-%: %.mako $(INSTANCE_ID_MARKER) $(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX)
+.build/c2ctemplate-cache.yaml: $(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX) $(VARS_DEPENDS) $(INSTANCE_ID_MARKER) $(MAKE_FILES)
 	$(PRERULE_CMD)
 ifeq ($(origin VARS_FILE), undefined)
 	@echo "Error: the variable VARS_FILE is required."
 	exit 1
 endif
-	$(C2C_TEMPLATE_CMD) --engine mako --files $<
+	$(ENVIRONMENT_VARS) $(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX) --vars $(VARS_FILE) --get-cache $@
 
-%: %.jinja $(INSTANCE_ID_MARKER) $(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX)
+$(MAKO_FILES:.mako=) $(JINJA_FILES:.jinja=) .build/config.yaml: $(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX) .build/c2ctemplate-cache.yaml
+
+%: %.mako
 	$(PRERULE_CMD)
-ifeq ($(origin VARS_FILE), undefined)
-	@echo "Error: the variable VARS_FILE is required."
-	exit 1
-endif
-	$(C2C_TEMPLATE_CMD) --engine jinja --files $<
+	$(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX) --cache .build/c2ctemplate-cache.yaml --engine mako --files $<
+
+%: %.jinja
+	$(PRERULE_CMD)
+	$(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX) --cache .build/c2ctemplate-cache.yaml --engine jinja --files $<
 
 $(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX): .build/requirements.timestamp
 
 $(VENV_BIN)/pykwalify$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
 
-.build/config.yaml: $(INSTANCE_ID_MARKER) $(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX) $(VENV_BIN)/pykwalify$(PYTHON_BIN_POSTFIX) $(VARS_DEPENDS) $(MAKE_FILES)
+.build/config.yaml: $(VENV_BIN)/pykwalify$(PYTHON_BIN_POSTFIX)
 	$(PRERULE_CMD)
-	$(C2C_TEMPLATE_CMD) --get-config .build/_config.yaml $(CONFIG_VARS)
+	$(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX) --cache .build/c2ctemplate-cache.yaml --get-config .build/_config.yaml $(CONFIG_VARS)
 	$(VENV_BIN)/pykwalify --data-file .build/_config.yaml --schema-file CONST_config-schema.yaml
 	mv .build/_config.yaml .build/config.yaml
 	touch $@
