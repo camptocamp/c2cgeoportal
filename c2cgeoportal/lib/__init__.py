@@ -143,7 +143,7 @@ def get_url2(name, url, request, errors):
 def get_typed(name, value, types, request, errors):
     try:
         if name not in types:
-            # ignore
+            errors.add("Type '{}' not defined.".format(name))
             return None
         type_ = types[name]
         if type_.get("type", "string") == "string":
