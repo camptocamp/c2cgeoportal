@@ -50,8 +50,7 @@ from papyrus.renderers import GeoJSON, XSD
 
 import c2cgeoportal
 from c2cgeoportal import stats
-from c2cgeoportal.resources import FAModels
-from c2cgeoportal.lib import dbreflection, get_setting, caching, \
+from c2cgeoportal.lib import dbreflection, caching, \
     C2CPregenerator, MultiDomainStaticURLInfo
 
 log = logging.getLogger(__name__)
@@ -228,12 +227,7 @@ def add_static_view_ngeo(config):  # pragma: no cover
 
 def add_admin_interface(config):
     if config.get_settings().get("enable_admin_interface", False):
-        config.formalchemy_admin(
-            route_name="admin",
-            package=config.get_settings()["package"],
-            view="fa.jquery.pyramid.ModelView",
-            factory=FAModels
-        )
+        pass
 
 
 def add_static_view(config):
@@ -697,10 +691,6 @@ def includeme(config):
     # Resource proxy (load external url, useful when loading non https content)
     config.add_route("resourceproxy", "/resourceproxy", request_method="GET")
 
-    # pyramid_formalchemy's configuration
-    config.include("pyramid_formalchemy")
-    config.include("fa.jquery")
-
     # Initialise DBSessions
     init_dbsessions(settings)
 
@@ -737,35 +727,6 @@ def init_dbsessions(settings):
     c2cgeoportal.srid = settings["srid"]
     c2cgeoportal.schema = settings["schema"]
     c2cgeoportal.parentschema = settings["parentschema"]
-    c2cgeoportal.formalchemy_default_zoom = get_setting(
-        settings,
-        ("admin_interface", "map_zoom"),
-        c2cgeoportal.formalchemy_default_zoom
-    )
-    c2cgeoportal.formalchemy_default_x = get_setting(
-        settings,
-        ("admin_interface", "map_x"),
-        c2cgeoportal.formalchemy_default_x
-    )
-    c2cgeoportal.formalchemy_default_y = get_setting(
-        settings,
-        ("admin_interface", "map_y"),
-        c2cgeoportal.formalchemy_default_y
-    )
-    c2cgeoportal.formalchemy_available_functionalities = get_setting(
-        settings,
-        ("admin_interface", "available_functionalities"),
-        c2cgeoportal.formalchemy_available_functionalities
-    )
-    c2cgeoportal.formalchemy_available_metadata = get_setting(
-        settings,
-        ("admin_interface", "available_metadata"),
-        c2cgeoportal.formalchemy_available_metadata
-    )
-    c2cgeoportal.formalchemy_available_metadata = [
-        e if isinstance(e, str) else e.get("name")
-        for e in c2cgeoportal.formalchemy_available_metadata
-    ]
 
     from c2cgeoportal.models import DBSessions
     for dbsession_name, dbsession_config in list(settings.get("dbsessions", {}).items()):  # pragma: nocover

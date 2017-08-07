@@ -47,13 +47,6 @@ install_requires = [
     # Needed by the development.ini
     "pyramid_debugtoolbar",
 
-    # # admin interface # #
-    "pyramid_chameleon",
-    "pyramid_formalchemy>=0.4.3",
-    "fa.jquery>=0.9.5",
-    "GeoFormAlchemy2>=2.0.dev2",
-    "FormAlchemy",
-
     "psycopg2",
     "pycrypto",
     "GeoAlchemy2",
@@ -133,9 +126,6 @@ setup(
         "pyramid.scaffold": [
             "c2cgeoportal_create = c2cgeoportal.scaffolds:TemplateCreate",
             "c2cgeoportal_update = c2cgeoportal.scaffolds:TemplateUpdate",
-        ],
-        "fanstatic.libraries": [
-            "admin = c2cgeoportal.forms:fanstatic_lib",
         ],
         "lingua.extractors": [
             "geomapfish-theme = c2cgeoportal.lib.lingua_extractor:GeoMapfishThemeExtractor",

@@ -32,22 +32,10 @@
 global srid
 global schema
 global parentschema
-global formalchemy_language
-global formalchemy_default_zoom
-global formalchemy_default_x
-global formalchemy_default_y
-global formalchemy_available_functionalities
-global formalchemy_available_metadata
 
 srid = None
 schema = None
 parentschema = None
-formalchemy_language = None
-formalchemy_default_zoom = 10
-formalchemy_default_x = 740000
-formalchemy_default_y = 5860000
-formalchemy_available_functionalities = []
-formalchemy_available_metadata = []
 
 
 def includeme(config):

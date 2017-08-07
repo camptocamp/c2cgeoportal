@@ -1,5 +1,1 @@
 # List of versions that should not be changed by requires.io
-# # admin interface # #
-js.jquery==1.7.1
-# The version 1.10.3 have an issue with the 'jump to' combobox of the
-js.jqueryui==1.8.24

@@ -13,19 +13,6 @@ else
 VERSION ?= 2.0
 endif
 
-ADMIN_OUTPUT_DIR = c2cgeoportal/static/build/admin/
-
-JSBUILD_ADMIN_FILES = $(shell find c2cgeoportal/static/lib c2cgeoportal/static/adminapp -name "*.js" -print)
-JSBUILD_ADMIN_CONFIG = jsbuild/app.cfg
-JSBUILD_ADMIN_OUTPUT_FILES = $(addprefix $(ADMIN_OUTPUT_DIR),admin.js)
-JSBUILD_ARGS = $(if ifeq($(DEVELOPPEMENT), ‘TRUE’),-u,)
-
-CSS_ADMIN_FILES = c2cgeoportal/static/adminapp/css/admin.css c2cgeoportal/static/lib/openlayers/theme/default/style.css c2cgeoportal/static/lib/checkboxtree-r253/jquery.checkboxtree.css
-CSS_ADMIN_OUTPUT = c2cgeoportal/static/build/admin/admin.css
-ifeq ($(DEVELOPMENT), FALSE)
-	CSSMIN_ARGS += --compress
-endif
-
 VALIDATE_PY_FOLDERS = setup.py c2cgeoportal/*.py c2cgeoportal/lib c2cgeoportal/scripts c2cgeoportal/views c2cgeoportal/scaffolds/update/CONST_alembic
 VALIDATE_TEMPLATE_PY_FOLDERS = c2cgeoportal/scaffolds
 VALIDATE_PY_TEST_FOLDERS = c2cgeoportal/tests
@@ -78,8 +65,6 @@ help:
 build: $(MAKO_FILES:.mako=) \
 	c2c-egg \
 	c2cgeoportal/version.py \
-	$(JSBUILD_ADMIN_OUTPUT_FILES) \
-	$(CSS_ADMIN_OUTPUT) \
 	$(MO_FILES) \
 	$(APPS_FILES) \
 	c2cgeoportal/scaffolds/update/+dot+tx/CONST_config_mako \
@@ -282,14 +267,6 @@ $(BUILD_DIR)/venv.timestamp:
 $(BUILD_DIR)/requirements.timestamp: setup.py $(BUILD_DIR)/venv.timestamp
 	$(BUILD_DIR)/venv/bin/pip install -e .
 	touch $@
-
-$(JSBUILD_ADMIN_OUTPUT_FILES): $(JSBUILD_ADMIN_FILES) $(JSBUILD_ADMIN_CONFIG)
-	mkdir -p $(dir $@)
-	jsbuild $(JSBUILD_ADMIN_CONFIG) $(JSBUILD_ARGS) -j $(notdir $@) -o $(ADMIN_OUTPUT_DIR)
-
-$(CSS_ADMIN_OUTPUT): $(CSS_ADMIN_FILES)
-	mkdir -p $(dir $@)
-	c2c-cssmin $(CSSMIN_ARGS) $@ $(CSS_ADMIN_FILES)
 
 c2cgeoportal/version.py: gen_current_version
 
