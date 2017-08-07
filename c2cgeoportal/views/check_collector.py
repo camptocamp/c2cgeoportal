@@ -86,6 +86,7 @@ class CheckerCollector:  # pragma: no cover
 
         h = Http()
         resp, content = h.request(url, headers=headers)
+        content = content.decode("utf-8")
 
         if resp.status != http.client.OK:
             self.status_int = max(self.status_int, resp.status)

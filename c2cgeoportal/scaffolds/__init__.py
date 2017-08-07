@@ -34,7 +34,6 @@ import os
 import json
 import requests
 import yaml
-from six import string_types
 from simplejson.scanner import JSONDecodeError
 
 from pyramid.scaffolds.template import Template
@@ -186,10 +185,7 @@ class TemplateUpdate(BaseTemplate):  # pragma: no cover
                 project = yaml.safe_load(f)
                 if "template_vars" in project:
                     for key, value in list(project["template_vars"].items()):
-                        vars_[key] = \
-                            value.encode("utf-8") \
-                            if isinstance(value, string_types) \
-                            else value
+                        vars_[key] = "{}".format(value)
 
         return BaseTemplate.pre(self, command, output_dir, vars_)
 

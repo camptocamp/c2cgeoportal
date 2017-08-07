@@ -109,7 +109,7 @@ def xsd_sequence_callback(tb, cls):
         target_cls = relationship_property.argument
         query = DBSession.query(getattr(target_cls, p.value_attr))
         attrs = {}
-        attrs["minOccurs"] = str(0)
+        attrs["minOccurs"] = "0"
         attrs["nillable"] = "true"
         attrs["name"] = k
         with tag(tb, "xsd:element", attrs) as tb:
@@ -202,7 +202,7 @@ def _create_class(table, exclude_properties=None):
     if exclude_properties is None:  # pragma: nocover
         exclude_properties = []
     cls = type(
-        str(table.name.capitalize()),
+        table.name.capitalize(),
         (GeoInterface, Base),
         dict(
             __table__=table,

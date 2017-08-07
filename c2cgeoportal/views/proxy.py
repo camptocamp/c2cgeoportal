@@ -62,10 +62,7 @@ class Proxy:
         for p in all_params:  # pragma: no cover
             all_params[p] = ",".join(all_params[p])
         all_params.update(params)
-        params_encoded = {}
-        for k, v in all_params.items():
-            params_encoded[k] = str(v).encode("utf-8")
-        query_string = urllib.parse.urlencode(params_encoded)
+        query_string = urllib.parse.urlencode(all_params)
 
         if parsed_url.port is None:
             url = "{0!s}://{1!s}{2!s}?{3!s}".format(

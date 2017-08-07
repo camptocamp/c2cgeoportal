@@ -77,7 +77,7 @@ record_class = {
 def create_record(fp):
     # read header
     record_number = read_and_unpack(">L", fp.read(4))
-    if record_number == "":
+    if record_number == b"":
         return False
     read_and_unpack(">L", fp.read(4))
     record_shape_type = read_and_unpack("<L", fp.read(4))
@@ -176,7 +176,7 @@ def read_bounding_box(fp):
 
 
 def read_and_unpack(type_, data):
-    if data == "":
+    if data == b"":
         return data
     return unpack(type_, data)[0]
 

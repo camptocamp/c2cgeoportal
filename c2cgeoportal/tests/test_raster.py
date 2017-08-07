@@ -202,7 +202,7 @@ class TestRasterViews(TestCase):
         request.params["geom"] = '{"type":"LineString",' \
             '"coordinates":[[548009.5,215990],[547990,216009.5]]}'
         response = profile.csv()
-        self.assertEqual(response.body, """distance,dem4,dem2,dem,x,y
+        self.assertEqual(response.body.decode("utf-8"), """distance,dem4,dem2,dem,x,y
 0.0,-9999,1166,1166,548009.5,215990.0
 9.2,-9999,1181,1181,548003.0,215996.5
 18.4,1181,1181,1181,547996.5,216003.0
@@ -210,7 +210,7 @@ class TestRasterViews(TestCase):
 
         request.params["layers"] = "dem"
         response = profile.csv()
-        self.assertEqual(response.body, """distance,dem,x,y
+        self.assertEqual(response.body.decode("utf-8"), """distance,dem,x,y
 0.0,1166,548009.5,215990.0
 9.2,1181,548003.0,215996.5
 18.4,1181,547996.5,216003.0

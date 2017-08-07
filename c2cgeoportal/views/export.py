@@ -52,7 +52,7 @@ def exportcsv(request):
     name = request.params.get("name", "export")
 
     response = request.response
-    content = ""
+    content = b""
     if csv_encoding == DEFAULT_CSV_ENCODING:
         content += codecs.BOM_UTF8
     content += csv.encode(csv_encoding)

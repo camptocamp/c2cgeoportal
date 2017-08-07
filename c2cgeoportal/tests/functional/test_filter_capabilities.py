@@ -74,4 +74,4 @@ class TestFilterCapabilities(TestCase):
             tag_name, layers_whitelist=layers_whitelist
         )
         filter_handler.parse(StringIO(xml))
-        return str(result.getvalue(), "utf-8")
+        return result.getvalue()

@@ -198,20 +198,20 @@ class MapservProxy(OGCProxy):
 
         if self.lower_params.get("request") == "getcapabilities":
             content = filter_capabilities(
-                content, role_id, self.lower_params.get("service") == "wms",
+                content.decode("utf-8"), role_id, self.lower_params.get("service") == "wms",
                 url,
                 self.request.headers,
                 self.mapserver_settings.get("proxies"),
                 self.request
-            )
+            ).encode("utf-8")
 
         content_type = None
         if callback is not None:
             content_type = "application/javascript"
             # escape single quotes in the JavaScript string
-            content = str(content.decode("utf8"))
-            content = content.replace("'", "\\'")
-            content = "{0!s}('{1!s}');".format(callback, " ".join(content.splitlines()))
+            content = "{}('{}');".format(callback, " ".join(
+                content.decode("utf-8").replace("'", "\\'").splitlines()
+            )).encode("utf-8")
         else:
             content_type = resp["content-type"]
 

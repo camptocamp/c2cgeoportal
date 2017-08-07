@@ -302,7 +302,7 @@ class C2cTool:
             )
             exit(1)
 
-        if check_output(["git", "status", "--short"]) == "":
+        if check_output(["git", "status", "--short"]).decode("utf-8") == "":
             self.step1()
         else:
             check_call(["git", "status"])
@@ -324,10 +324,10 @@ class C2cTool:
         check_call(["git", "submodule", "foreach", "--recursive", "git", "reset", "--hard"])
         check_call(["git", "submodule", "foreach", "--recursive", "git", "clean", "--force", "-d"])
 
-        branch = check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).strip()
+        branch = check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode("utf-8").strip()
         # remove all no more existing branches
         check_call(["git", "fetch", "origin", "--prune"])
-        branches = check_output(["git", "branch", "--all"]).split("\n")
+        branches = check_output(["git", "branch", "--all"]).decode("utf-8").split("\n")
         if "  remotes/origin/{0!s}".format(branch) in branches:
             try:
                 check_call(["git", "pull", "--rebase", self.options.git_remote, branch])
@@ -342,7 +342,7 @@ class C2cTool:
         check_call(["git", "submodule", "foreach", "git", "submodule", "sync"])
         check_call(["git", "submodule", "foreach", "git", "submodule", "update", "--init"])
 
-        if len(check_output(["git", "status", "-z"]).strip()) != 0:
+        if len(check_output(["git", "status", "-z"]).decode("utf-8").strip()) != 0:
             self.print_step(
                 1, error=True, message="The pull is not fast forward.",
                 prompt="Please solve the rebase and run it again:")
@@ -431,7 +431,7 @@ class C2cTool:
         if os.path.isfile("ngeo.diff"):
             os.unlink("ngeo.diff")
 
-        status = check_output(["git", "status", "--short", "CONST_create_template"])
+        status = check_output(["git", "status", "--short", "CONST_create_template"]).decode("utf-8")
         status = [s for s in status.split("\n") if len(s) > 3]
         status = [s[3:] for s in status if not s.startswith("?? ")]
         status = [s for s in status if not s.startswith(
@@ -536,7 +536,7 @@ class C2cTool:
         print("")
         print((colorize("Congratulations your upgrade is a success.", GREEN)))
         print("")
-        branch = check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).strip()
+        branch = check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode("utf-8").strip()
         print("Now all your files will be committed, you should do a git push:")
         print(("git push {0!s} {1!s}.".format(
             self.options.git_remote, branch

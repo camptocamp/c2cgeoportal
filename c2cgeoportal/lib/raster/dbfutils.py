@@ -56,38 +56,38 @@ def dbfreader(f):
     fields = []
     for _ in range(numfields):
         name, typ, size, deci = struct.unpack("<11sc4xBB14x", f.read(32))
-        name = name.replace("\0", "")       # eliminate NULs from string
+        name = name.replace(b"\0", b"")       # eliminate NULs from string
         fields.append((name, typ, size, deci))
     yield [field[0] for field in fields]
     yield [tuple(field[1:]) for field in fields]
 
     terminator = f.read(1)
-    assert terminator == "\r"
+    assert terminator == b"\r"
 
-    fields.insert(0, ("DeletionFlag", "C", 1, 0))
+    fields.insert(0, (b"DeletionFlag", b"C", 1, 0))
     fmt = "".join(["{0:d}s".format(fieldinfo[2]) for fieldinfo in fields])
     fmtsiz = struct.calcsize(fmt)
     for _ in range(numrec):
         record = struct.unpack(fmt, f.read(fmtsiz))
-        if record[0] != " ":
+        if record[0] != b" ":
             continue                        # deleted record
         result = []
         for (name, typ, size, deci), value in zip(fields, record):
-            if name == "DeletionFlag":
+            if name == b"DeletionFlag":
                 continue
-            if typ == "N":
-                value = value.replace("\0", "").lstrip()
-                if value == "":
-                    value = 0
+            if typ == b"N":
+                value = value.replace(b"\0", b"").lstrip()
+                if value == b"":
+                    value = b"0"
                 elif deci:
                     value = decimal.Decimal(value)
                 else:
                     value = int(value)
-            elif typ == "D":
+            elif typ == b"D":
                 y, m, d = int(value[:4]), int(value[4:6]), int(value[6:8])
-                value = datetime.date(y, m, d)
-            elif typ == "L":
-                value = (value in "YyTt" and "T") or (value in "NnFf" and "F") or "?"
+                value = datetime.date(y, m, d).encode("utf-8")
+            elif typ == b"L":
+                value = (value in b"YyTt" and b"T") or (value in b"NnFf" and b"F") or b"?"
             result.append(value)
         yield result
 
@@ -136,13 +136,13 @@ def dbfwriter(f, fieldnames, fieldspecs, records):
         f.write(" ")                        # deletion flag
         for (typ, size, deci), value in zip(fieldspecs, record):
             if typ == "N":
-                value = str(value).rjust(size, " ")
+                value = value.rjust(size, " ")
             elif typ == "D":
                 value = value.strftime("%Y%m%d")
             elif typ == "L":
-                value = str(value)[0].upper()
+                value = value[0].upper()
             else:
-                value = str(value)[:size].ljust(size, " ")
+                value = value[:size].ljust(size, " ")
             assert len(value) == size
             f.write(value)
 

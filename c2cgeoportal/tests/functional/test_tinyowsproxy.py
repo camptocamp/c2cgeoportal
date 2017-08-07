@@ -35,7 +35,7 @@ from geoalchemy2 import WKTElement
 import transaction
 import sqlahelper
 
-from c2cgeoportal.tests import load_file
+from c2cgeoportal.tests import load_file, load_binfile
 from c2cgeoportal.tests.functional import (  # noqa
     tear_down_common as tearDownModule,
     set_up_common as setUpModule,
@@ -165,28 +165,28 @@ class TestTinyOWSProxyView(TestCase):
         request = _create_dummy_request(username="__test_user1")
         proxy = self.get_fake_proxy_(
             request,
-            load_file(TestTinyOWSProxyView.capabilities_response_file),
+            load_binfile(TestTinyOWSProxyView.capabilities_response_file),
             200)
 
         response = proxy.proxy()
         filtered = load_file(
             TestTinyOWSProxyView.capabilities_response_filtered_file1)
-        response.body = response.body.replace("  \n", "")
-        self.assertEqual(filtered.strip(), response.body.strip())
+        body = response.body.decode("utf-8").replace("  \n", "")
+        self.assertEqual(filtered.strip(), body.strip())
         self.assertEqual("200 OK", response.status)
 
     def test_proxy_get_capabilities_user2(self):
         request = _create_dummy_request(username="__test_user2")
         proxy = self.get_fake_proxy_(
             request,
-            load_file(TestTinyOWSProxyView.capabilities_response_file),
+            load_binfile(TestTinyOWSProxyView.capabilities_response_file),
             200)
 
         response = proxy.proxy()
         filtered = load_file(
             TestTinyOWSProxyView.capabilities_response_filtered_file2)
-        response.body = response.body.replace("  \n", "")
-        self.assertEqual(filtered.strip(), response.body.strip())
+        body = response.body.decode("utf-8").replace("  \n", "")
+        self.assertEqual(filtered.strip(), body.strip())
         self.assertEqual("200 OK", response.status)
 
     def test_proxy_get_capabilities_get(self):
@@ -197,14 +197,14 @@ class TestTinyOWSProxyView(TestCase):
 
         proxy = self.get_fake_proxy_(
             request,
-            load_file(TestTinyOWSProxyView.capabilities_response_file),
+            load_binfile(TestTinyOWSProxyView.capabilities_response_file),
             200)
 
         response = proxy.proxy()
         filtered = load_file(
             TestTinyOWSProxyView.capabilities_response_filtered_file1)
-        response.body = response.body.replace("  \n", "")
-        self.assertEqual(filtered.strip(), response.body.strip())
+        body = response.body.decode("utf-8").replace("  \n", "")
+        self.assertEqual(filtered.strip(), body.strip())
         self.assertEqual("200 OK", response.status)
 
     def test_proxy_get_capabilities_post(self):
@@ -215,14 +215,14 @@ class TestTinyOWSProxyView(TestCase):
 
         proxy = self.get_fake_proxy_(
             request,
-            load_file(TestTinyOWSProxyView.capabilities_response_file),
+            load_binfile(TestTinyOWSProxyView.capabilities_response_file),
             200)
 
         response = proxy.proxy()
         filtered = load_file(
             TestTinyOWSProxyView.capabilities_response_filtered_file1)
-        response.body = response.body.replace("  \n", "")
-        self.assertEqual(filtered.strip(), response.body.strip())
+        body = response.body.decode("utf-8").replace("  \n", "")
+        self.assertEqual(filtered.strip(), body.strip())
         self.assertEqual("200 OK", response.status)
 
     def test_proxy_get_capabilities_post_invalid_body(self):
@@ -232,7 +232,7 @@ class TestTinyOWSProxyView(TestCase):
         request.method = "POST"
         request.body = "This is not XML"
 
-        proxy = self.get_fake_proxy_(request, "", None)
+        proxy = self.get_fake_proxy_(request, "".encode("utf-8"), None)
         self.assertRaises(HTTPBadRequest, proxy.proxy)
 
     def test_proxy_describe_feature_type_get(self):
@@ -246,7 +246,7 @@ class TestTinyOWSProxyView(TestCase):
             typename="tows:layer_1"
         ))
 
-        proxy = self.get_fake_proxy_(request, "unfiltered response", 200)
+        proxy = self.get_fake_proxy_(request, "unfiltered response".encode("utf-8"), 200)
 
         response = proxy.proxy()
         self.assertEqual("200 OK", response.status)
@@ -260,16 +260,15 @@ class TestTinyOWSProxyView(TestCase):
             typename="tows:layer_3"
         ))
 
-        proxy = self.get_fake_proxy_(request, "", None)
+        proxy = self.get_fake_proxy_(request, "".encode("utf-8"), None)
         self.assertRaises(HTTPForbidden, proxy.proxy)
 
     def test_proxy_describe_feature_type_post(self):
         request = _create_dummy_request(username="__test_user1")
         request.method = "POST"
-        request.body = load_file(
-            TestTinyOWSProxyView.describefeaturetype_request_file)
+        request.body = load_binfile(TestTinyOWSProxyView.describefeaturetype_request_file)
 
-        proxy = self.get_fake_proxy_(request, "unfiltered response", 200)
+        proxy = self.get_fake_proxy_(request, "unfiltered response".encode("utf-8"), 200)
 
         response = proxy.proxy()
         self.assertEqual("200 OK", response.status)
@@ -279,10 +278,9 @@ class TestTinyOWSProxyView(TestCase):
 
         request = _create_dummy_request(username="__test_user1")
         request.method = "POST"
-        request.body = load_file(
-            TestTinyOWSProxyView.describefeaturetype_request_multiple_file)
+        request.body = load_binfile(TestTinyOWSProxyView.describefeaturetype_request_multiple_file)
 
-        proxy = self.get_fake_proxy_(request, "", None)
+        proxy = self.get_fake_proxy_(request, "".encode("utf-8"), None)
         self.assertRaises(HTTPBadRequest, proxy.proxy)
 
 
@@ -322,7 +320,7 @@ class TestTinyOWSProxyViewNoDb(TestCase):
         request = _create_dummy_request()
 
         capabilities_request = \
-            load_file(TestTinyOWSProxyViewNoDb.capabilities_request_file)
+            load_binfile(TestTinyOWSProxyViewNoDb.capabilities_request_file)
         request.body = capabilities_request
 
         proxy = TinyOWSProxy(request)
@@ -335,7 +333,7 @@ class TestTinyOWSProxyViewNoDb(TestCase):
 
         request = _create_dummy_request()
 
-        request.body = load_file(TestTinyOWSProxyViewNoDb.describefeature_request_file)
+        request.body = load_binfile(TestTinyOWSProxyViewNoDb.describefeature_request_file)
 
         proxy = TinyOWSProxy(request)
         (operation, typename) = proxy._parse_body(request.body)
@@ -347,8 +345,7 @@ class TestTinyOWSProxyViewNoDb(TestCase):
 
         request = _create_dummy_request()
 
-        getfeature_request = \
-            load_file(TestTinyOWSProxyViewNoDb.getfeature_request_file)
+        getfeature_request = load_binfile(TestTinyOWSProxyViewNoDb.getfeature_request_file)
         request.body = getfeature_request
 
         proxy = TinyOWSProxy(request)
@@ -361,8 +358,7 @@ class TestTinyOWSProxyViewNoDb(TestCase):
 
         request = _create_dummy_request()
 
-        lockfeature_request = \
-            load_file(TestTinyOWSProxyViewNoDb.lockfeature_request_file)
+        lockfeature_request = load_binfile(TestTinyOWSProxyViewNoDb.lockfeature_request_file)
         request.body = lockfeature_request
 
         proxy = TinyOWSProxy(request)
@@ -375,8 +371,7 @@ class TestTinyOWSProxyViewNoDb(TestCase):
 
         request = _create_dummy_request()
 
-        transaction_update_request = \
-            load_file(TestTinyOWSProxyViewNoDb.transaction_update_request_file)
+        transaction_update_request = load_binfile(TestTinyOWSProxyViewNoDb.transaction_update_request_file)
         request.body = transaction_update_request
 
         proxy = TinyOWSProxy(request)
@@ -389,8 +384,7 @@ class TestTinyOWSProxyViewNoDb(TestCase):
 
         request = _create_dummy_request()
 
-        transaction_delete_request = \
-            load_file(TestTinyOWSProxyViewNoDb.transaction_delete_request_file)
+        transaction_delete_request = load_binfile(TestTinyOWSProxyViewNoDb.transaction_delete_request_file)
         request.body = transaction_delete_request
 
         proxy = TinyOWSProxy(request)
@@ -403,8 +397,7 @@ class TestTinyOWSProxyViewNoDb(TestCase):
 
         request = _create_dummy_request()
 
-        transaction_insert_request = \
-            load_file(TestTinyOWSProxyViewNoDb.transaction_insert_request_file)
+        transaction_insert_request = load_binfile(TestTinyOWSProxyViewNoDb.transaction_insert_request_file)
         request.body = transaction_insert_request
 
         proxy = TinyOWSProxy(request)

@@ -225,14 +225,10 @@ def add_url_params(url, params):
     return add_spliturl_params(urllib.parse.urlsplit(url), params)
 
 
-def _encode(val):
-    return val.encode("utf-8") if isinstance(val, str) else val
-
-
 def add_spliturl_params(spliturl, params):
-    query = dict([(k, v[-1]) for k, v in list(urllib.parse.parse_qs(_encode(spliturl.query)).items())])
+    query = dict([(k, v[-1]) for k, v in list(urllib.parse.parse_qs(spliturl.query).items())])
     for key, value in list(params.items()):
-        query[_encode(key)] = _encode(value)
+        query[key] = value
 
     return urllib.parse.urlunsplit((
         spliturl.scheme, spliturl.netloc, spliturl.path,

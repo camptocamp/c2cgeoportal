@@ -89,7 +89,7 @@ def main():
     if options.layers:
         table_list = [LayerWMTS, LayerWMS, OGCServer]
         for table in table_list:
-            print(("Emptying table {0!s}.".format(str(table.__table__))))
+            print(("Emptying table {0!s}.".format(table.__table__)))
             # must be done exactly this way othewise the cascade config in the
             # models are not used
             for t in session.query(table).all():

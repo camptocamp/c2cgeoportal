@@ -159,7 +159,7 @@ def _create_finished_cb(kind, measure):  # pragma: no cover
             name = "_not_found"
         else:
             name = request.matched_route.name
-        key = [kind, request.method, name, str(status)]
+        key = [kind, request.method, name, status]
         measure.stop(key)
     return finished_cb
 

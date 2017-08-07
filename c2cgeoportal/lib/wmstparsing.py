@@ -248,7 +248,7 @@ def _parse_default_values(default_values):
     if default_values is None:  # pragma: no cover
         return None, None
 
-    def_value = str(default_values).split("/")
+    def_value = default_values.split("/")
 
     _, min_def_value = _parse_date(def_value[0])
     max_def_value = None

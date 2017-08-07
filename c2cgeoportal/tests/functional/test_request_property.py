@@ -76,14 +76,18 @@ class TestRequestProperty(TestCase):
 
     def test_request_right_auth(self):
         request = create_dummy_request(headers={
-            "Authorization": "Basic " + base64.b64encode("__test_user:__test_user").replace("\n", "")
+            "Authorization": "Basic " + base64.b64encode(
+                "__test_user:__test_user".encode("utf-8")
+            ).decode("utf-8").replace("\n", "")
         })
 
         self.assertEqual(request.user.username, "__test_user")
 
     def test_request_wrong_auth(self):
         request = create_dummy_request(headers={
-            "Authorization": "Basic " + base64.b64encode("__test_user:__wrong_pass").replace("\n", "")
+            "Authorization": "Basic " + base64.b64encode(
+                "__test_user:__wrong_pass".encode("utf-8")
+            ).decode("utf-8").replace("\n", "")
         })
 
         self.assertEqual(request.user, None)

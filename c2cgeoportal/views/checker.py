@@ -102,7 +102,7 @@ class Checker:  # pragma: no cover
         if resp.status != http.client.OK:
             print((list(resp.items())))
             self.set_status(resp.status, resp.reason)
-            return url + "<br/>" + content
+            return url + "<br/>" + content.decode("utf-8")
 
         return "OK"
 
@@ -167,6 +167,7 @@ class Checker:  # pragma: no cover
 
         h = Http()
         resp, content = h.request(url, "POST", headers=headers, body=body)
+        content = content.decode("utf-8")
 
         if resp.status != http.client.OK:
             self.set_status(resp.status, resp.reason)
@@ -178,6 +179,7 @@ class Checker:  # pragma: no cover
         )
 
         resp, content = h.request(url, headers=headers)
+        content = content.decode("utf-8")
 
         if resp.status != http.client.OK:
             self.set_status(resp.status, resp.reason)
@@ -199,6 +201,7 @@ class Checker:  # pragma: no cover
 
         h = Http()
         resp, content = h.request(url, "POST", headers=headers, body=body)
+        content = content.decode("utf-8")
 
         if resp.status != http.client.OK:
             self.set_status(resp.status, resp.reason)
@@ -211,6 +214,7 @@ class Checker:  # pragma: no cover
         while not done:
             sleep(1)
             resp, content = h.request(url, headers=headers)
+            content = content.decode("utf-8")
             if resp.status != http.client.OK:
                 self.set_status(resp.status, resp.reason)
                 return "Failed get the status: " + content
@@ -224,6 +228,7 @@ class Checker:  # pragma: no cover
         url = self.request.route_url("printproxy_report_get", ref=job["ref"])
         url, headers = build_url("Check the printproxy pdf retrieve", url, self.request)
         resp, content = h.request(url, headers=headers)
+        content = content.decode("utf-8")
 
         if resp.status != http.client.OK:
             self.set_status(resp.status, resp.reason)
@@ -244,6 +249,7 @@ class Checker:  # pragma: no cover
 
         h = Http()
         resp, content = h.request(url, headers=headers)
+        content = content.decode("utf-8")
 
         if resp.status != http.client.OK:
             self.set_status(resp.status, resp.reason)
@@ -277,6 +283,7 @@ class Checker:  # pragma: no cover
             interface_url, headers = build_url("Check the theme", interface_url, self.request)
 
             resp, content = h.request(interface_url, headers=headers)
+            content = content.decode("utf-8")
 
             if resp.status != http.client.OK:
                 self.set_status(resp.status, resp.reason)

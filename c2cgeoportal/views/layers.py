@@ -410,7 +410,7 @@ class Layers:
             exclude.append(last_update_user)
 
         return get_class(
-            str(layer.geo_table),
+            layer.geo_table,
             exclude_properties=exclude
         )
 
@@ -480,7 +480,7 @@ def get_layer_metadatas(layer):
         exclude.append(last_update_user.value)
 
     cls = get_class(
-        str(layer.geo_table),
+        layer.geo_table,
         exclude_properties=exclude
     )
 
@@ -497,7 +497,7 @@ def get_layer_metadatas(layer):
             # Exclude columns that are primary keys
             if not column.primary_key:
                 properties = _convert_column_type(column.type)
-                properties["name"] = str(column.key)
+                properties["name"] = column.key
 
                 if column.nullable:
                     properties["nillable"] = True
@@ -538,7 +538,7 @@ def _convert_column_type(column_type):
         if geometry_type in XSDGenerator.SIMPLE_GEOMETRY_XSD_TYPES:
             xsd_type = XSDGenerator.SIMPLE_GEOMETRY_XSD_TYPES[geometry_type]
             return {"type": xsd_type, "srid": int(column_type.srid)}
-        if str(geometry_type) == "GEOMETRY":
+        if geometry_type == "GEOMETRY":
             xsd_type = "gml:GeometryPropertyType"
             return {"type": xsd_type, "srid": int(column_type.srid)}
 

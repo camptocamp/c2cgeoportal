@@ -256,7 +256,7 @@ class Entry:
         if resp.get("content-type").split(";")[0].strip() not in \
                 ["application/vnd.ogc.wms_xml", "text/xml"]:
             error = "GetCapabilities from URL {0!s} returns a wrong Content-Type: {1!s}\n{2!s}".format(
-                url, resp.get("content-type"), content.encode("utf-8")
+                url, resp.get("content-type"), content
             )
             errors.add(error)
             log.exception(error)
@@ -269,7 +269,7 @@ class Entry:
                 "WARNING! an error occurred while trying to "
                 "read the mapfile and recover the themes."
             )
-            error = "{0!s}\nURL: {1!s}\n{2!s}".format(error, url, content.encode("utf-8"))
+            error = "{0!s}\nURL: {1!s}\n{2!s}".format(error, url, content)
             errors.add(error)
             log.exception(error)
         return wms, errors

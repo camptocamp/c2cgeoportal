@@ -236,7 +236,7 @@ class TestEntryView(TestCase):
         })
         response = Entry(request).login()
         self.assertEqual(response.status_int, 200)
-        self.assertEqual(json.loads(response.body), {
+        self.assertEqual(json.loads(response.body.decode("utf-8")), {
             "success": True,
             "username": "__test_user1",
             "is_password_changed": False,
@@ -272,7 +272,7 @@ class TestEntryView(TestCase):
         ).one()
         response = Entry(request).logout()
         self.assertEqual(response.status_int, 200)
-        self.assertEqual(response.body, "true")
+        self.assertEqual(response.body.decode("utf-8"), "true")
 
         request = self._create_request_obj(path="/")
         request.route_url = lambda url: "/dummy/route/url"
@@ -281,7 +281,7 @@ class TestEntryView(TestCase):
         ).one()
         response = Entry(request).logout()
         self.assertEqual(response.status_int, 200)
-        self.assertEqual(response.body, "true")
+        self.assertEqual(response.body.decode("utf-8"), "true")
 
     def test_reset_password(self):
         from c2cgeoportal.views.entry import Entry
@@ -298,7 +298,7 @@ class TestEntryView(TestCase):
         })
         response = Entry(request).login()
         self.assertEqual(response.status_int, 200)
-        self.assertEqual(json.loads(response.body), {
+        self.assertEqual(json.loads(response.body.decode("utf-8")), {
             "success": True,
             "username": "__test_user1",
             "is_password_changed": True,

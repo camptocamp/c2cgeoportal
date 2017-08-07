@@ -33,6 +33,7 @@ import sqlalchemy
 import sqlahelper
 import pyramid_tm
 import mimetypes
+import binascii
 import c2c.template
 from urllib.parse import urlsplit
 import simplejson as json
@@ -251,7 +252,7 @@ def _add_static_view(config, name, path):
         cache_max_age=int(config.get_settings()["default_max_age"]),
     )
     config.add_cache_buster(path, version_cache_buster)
-    CACHE_PATH.append(str(name))
+    CACHE_PATH.append(name)
 
 
 def locale_negotiator(request):
@@ -303,12 +304,12 @@ def create_get_user_from_request(settings):
                         raise Exception("urllogin is not configured")
                     now = int(time.time())
                     cipher = AES.new(aeskey)
-                    auth = json.loads(cipher.decrypt(auth_enc.decode("hex")))
+                    auth = json.loads(cipher.decrypt(binascii.unhexlify(auth_enc)))
 
                     if "t" in auth and "u" in auth and "p" in auth:
                         timestamp = int(auth["t"])
                         if now < timestamp and request.registry.validate_user(
-                            request, str(auth["u"]), auth["p"]
+                            request, auth["u"], auth["p"]
                         ):
                             headers = pyramid.security.remember(request, auth["u"])
                             request.response.headerlist.extend(headers)
@@ -412,7 +413,7 @@ class MapserverproxyRoutePredicate:
         if not hide_capabilities:
             return True
         params = dict(
-            (k.lower(), str(v).lower()) for k, v in request.params.items()
+            (k.lower(), v.lower()) for k, v in request.params.items()
         )
         return "request" not in params or params["request"] != "getcapabilities"
 

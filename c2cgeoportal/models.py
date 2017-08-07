@@ -274,7 +274,7 @@ class User(Base):
 
     def _set_password(self, password):
         """encrypts password on the fly."""
-        self._password = str(self.__encrypt_password(password))
+        self._password = self.__encrypt_password(password)
 
     def set_temp_password(self, password):
         """encrypts password on the fly."""

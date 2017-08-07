@@ -126,24 +126,24 @@ class TestMapserverproxyViewGroup(TestCase):
         ))
         response = MapservProxy(request).proxy()
 
-        self.assertFalse((response.body).find("<Name>testpoint_protected</Name>") > 0)
-        self.assertFalse((response.body).find("<Name>testpoint_protected_2</Name>") > 0)
+        self.assertFalse(response.body.decode("utf-8").find("<Name>testpoint_protected</Name>") > 0)
+        self.assertFalse(response.body.decode("utf-8").find("<Name>testpoint_protected_2</Name>") > 0)
         # testpoint_group is not public so even unprotected layers are hidden:
-        self.assertFalse((response.body).find("<Name>testpoint_unprotected</Name>") > 0)
-        self.assertFalse((response.body).find("<Name>testpoint_group</Name>") > 0)
+        self.assertFalse(response.body.decode("utf-8").find("<Name>testpoint_unprotected</Name>") > 0)
+        self.assertFalse(response.body.decode("utf-8").find("<Name>testpoint_group</Name>") > 0)
         # testpoint_group_2 is a standard group containing only protected layers
-        self.assertFalse((response.body).find("<Name>testpoint_group_2</Name>") > 0)
+        self.assertFalse(response.body.decode("utf-8").find("<Name>testpoint_group_2</Name>") > 0)
 
         request = self._create_getcap_request(username="__test_user1")
         request.params.update(dict(
             service="wms", version="1.1.1", request="getcapabilities",
         ))
         response = MapservProxy(request).proxy()
-        self.assertTrue(response.body.find("<Name>testpoint_protected</Name>") > 0)
-        self.assertTrue(response.body.find("<Name>testpoint_protected_2</Name>") > 0)
-        self.assertTrue((response.body).find("<Name>testpoint_unprotected</Name>") > 0)
-        self.assertTrue((response.body).find("<Name>testpoint_group</Name>") > 0)
-        self.assertTrue((response.body).find("<Name>testpoint_group_2</Name>") > 0)
+        self.assertTrue(response.body.decode("utf-8").find("<Name>testpoint_protected</Name>") > 0)
+        self.assertTrue(response.body.decode("utf-8").find("<Name>testpoint_protected_2</Name>") > 0)
+        self.assertTrue(response.body.decode("utf-8").find("<Name>testpoint_unprotected</Name>") > 0)
+        self.assertTrue(response.body.decode("utf-8").find("<Name>testpoint_group</Name>") > 0)
+        self.assertTrue(response.body.decode("utf-8").find("<Name>testpoint_group_2</Name>") > 0)
 
     def test_wfs_get_capabilities(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
@@ -154,16 +154,16 @@ class TestMapserverproxyViewGroup(TestCase):
         ))
         response = MapservProxy(request).proxy()
 
-        self.assertFalse((response.body).find("<Name>testpoint_protected</Name>") > 0)
+        self.assertFalse(response.body.decode("utf-8").find("<Name>testpoint_protected</Name>") > 0)
         # testpoint_group is not public so even unprotected layers are hidden:
-        self.assertFalse((response.body).find("<Name>testpoint_unprotected</Name>") > 0)
-        self.assertFalse((response.body).find("<Name>testpoint_group</Name>") > 0)
+        self.assertFalse(response.body.decode("utf-8").find("<Name>testpoint_unprotected</Name>") > 0)
+        self.assertFalse(response.body.decode("utf-8").find("<Name>testpoint_group</Name>") > 0)
 
         request = self._create_getcap_request(username="__test_user1")
         request.params.update(dict(
             service="wfs", version="1.1.1", request="getcapabilities",
         ))
         response = MapservProxy(request).proxy()
-        self.assertTrue(response.body.find("<Name>testpoint_protected</Name>") > 0)
-        self.assertTrue((response.body).find("<Name>testpoint_unprotected</Name>") > 0)
-        self.assertFalse((response.body).find("<Name>testpoint_group</Name>") > 0)
+        self.assertTrue(response.body.decode("utf-8").find("<Name>testpoint_protected</Name>") > 0)
+        self.assertTrue(response.body.decode("utf-8").find("<Name>testpoint_unprotected</Name>") > 0)
+        self.assertFalse(response.body.decode("utf-8").find("<Name>testpoint_group</Name>") > 0)

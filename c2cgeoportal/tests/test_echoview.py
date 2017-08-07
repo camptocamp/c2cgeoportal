@@ -37,13 +37,13 @@ class TestEchoView(TestCase):
         import io
         from c2cgeoportal.views.echo import json_base64_encode
 
-        sio = io.StringIO()
-        sio.write("some content with non-ASCII chars ç à é")
+        sio = io.BytesIO()
+        sio.write("some content with non-ASCII chars ç à é".encode("utf-8"))
         sio.flush()
         sio.seek(0)
 
         a = [s for s in json_base64_encode("a file name", sio)]
-        s = "".join(a)
+        s = b"".join(a).decode("utf-8")
 
         self.assertEqual(s, '{"filename":"a file name","data":\
 "c29tZSBjb250ZW50IHdpdGggbm9uLUFTQ0lJIGNoYXJzIMOnIMOgIMOp","success":true}')

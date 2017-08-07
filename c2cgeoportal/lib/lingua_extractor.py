@@ -158,7 +158,9 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
             except:
                 print((traceback.format_exc()))
 
-        message_str = subprocess.check_output(["node", "tools/extract-messages.js", int_filename])
+        message_str = subprocess.check_output([
+            "node", "tools/extract-messages.js", int_filename
+        ]).decode("utf-8")
         if int_filename != filename:
             os.unlink(int_filename)
         try:
@@ -218,7 +220,7 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
                 values = cls._enumerate_attributes_values(DBSessions, Layers, layerinfos, fieldname)
                 for value, in values:
                     if value != "":
-                        msgid = value if isinstance(value, str) else str(value)
+                        msgid = value if isinstance(value, str) else value
                         location = "/layers/{0!s}/values/{1!s}/{2!s}".format(
                             layername,
                             fieldname,

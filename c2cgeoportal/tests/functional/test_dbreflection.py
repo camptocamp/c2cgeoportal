@@ -285,7 +285,7 @@ class TestXSDSequenceCallback(TestCase):
             xsd_sequence_callback(tb, self.cls)
         e = tb.close()
         self.assertEqual(
-            tostring(e),
+            tostring(e).decode("utf-8"),
             '<xsd:sequence>'
             '<xsd:element minOccurs="0" name="child1" nillable="true">'
             '<xsd:simpleType>'

@@ -330,9 +330,9 @@ class TestMapserverproxyView(TestCase):
             re.sub(pattern, "", l) for l in expected_response.splitlines()
         )
         response_body = "".join(
-            re.sub(pattern, "", l) for l in response.body.splitlines()
-        )
-        self.assertEqual(response_body, expected_response)
+            re.sub(pattern, "", l) for l in response.body.decode("utf-8").splitlines()
+        ).encode("utf-8")
+        self.assertEqual(response_body.decode("utf-8"), expected_response)
         self.assertEqual(str(response.cache_control), "max-age=0, no-cache")
 
     def test_get_feature_info_jsonp(self):
@@ -384,7 +384,7 @@ class TestMapserverproxyView(TestCase):
         )
         expected_response = "{0!s}('{1!s}');".format("cb", expected_response)
         response_body = "".join(
-            re.sub(pattern, "", l) for l in response.body.splitlines()
+            re.sub(pattern, "", l) for l in response.body.decode("utf-8").splitlines()
         )
         self.assertEqual(response_body, expected_response)
         self.assertFalse(response.cache_control.public)

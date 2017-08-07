@@ -30,6 +30,7 @@
 import argparse
 import time
 import json
+import binascii
 import c2c.template
 from Crypto.Cipher import AES
 
@@ -49,7 +50,7 @@ def create_token(aeskey, user, password, valid):
     mod_len = len(data) % 16
     if mod_len != 0:
         data += "".join([" " for i in range(16 - mod_len)])
-    return cipher.encrypt(data).encode("hex")
+    return binascii.hexlify(cipher.encrypt(data.encode("utf-8"))).decode("utf-8")
 
 
 def main():

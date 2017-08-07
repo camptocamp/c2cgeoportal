@@ -68,7 +68,7 @@ Content-Type: text/html
 
 some content with non-ASCII chars ç à é
 --foobar--
-"""
+""".encode("utf-8")
 
         response = echo.echo(request)
         self.assertEqual(response.status_int, 200)
