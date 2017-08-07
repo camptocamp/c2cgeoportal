@@ -3,7 +3,7 @@ sudo: required
 
 language: python
 python:
-- 2.7
+- "3.5"
 
 env:
   global:
@@ -17,7 +17,7 @@ before_install:
 - sudo apt-get remove --assume-yes --force-yes python-zope.interface postgresql-*
 - sudo apt-get install --assume-yes --force-yes aptitude
 - curl --silent --location https://deb.nodesource.com/setup_6.x | sudo -E bash -
-- sudo aptitude install --assume-yes apache2 libapache2-mod-wsgi libapache2-mod-fcgid tomcat7 nodejs cgi-mapserver gettext
+- sudo aptitude install --assume-yes apache2 libapache2-mod-wsgi-py3 libapache2-mod-fcgid tomcat7 nodejs cgi-mapserver gettext
 - sudo chmod  o+rx /var/log/apache2/
 - sudo chmod  o+r /var/log/apache2/*.log
 - sudo apt-get install --option Dpkg::Options::="--force-confold" --force-yes --assume-yes docker-ce

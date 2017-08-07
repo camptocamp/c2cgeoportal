@@ -1,4 +1,4 @@
-FROM python:2
+FROM python:3.5
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
 RUN \
@@ -25,6 +25,6 @@ COPY run /usr/bin/
 
 WORKDIR /src
 
-ENV PYTHONPATH /build/venv/lib/python2.7/site-packages/
+ENV PYTHONPATH /build/venv/lib/python3.5/site-packages/
 
 ENTRYPOINT ["run"]
