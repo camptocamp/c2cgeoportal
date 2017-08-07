@@ -37,7 +37,8 @@ Get the localisation from Transifex:
 
 .. prompt:: bash
 
-    make transifex-get
+    docker build --tag=camptocamp/geomapfish_build_dev docker/build
+    ./docker-run make transifex-get
 
 For each version we create a new branch (at the latest at the final release):
 
@@ -71,7 +72,9 @@ Create a new Transifex resource:
 
 .. prompt:: bash
 
-    make transifex-init
+    rm .tx/config
+    ./docker-run rm /build/c2ctemplate-cache.yaml
+    ./docker-run make transifex-init
 
 Then continue by creating the release.
 
