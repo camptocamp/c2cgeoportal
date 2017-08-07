@@ -1,6 +1,6 @@
 project_folder: {{project}}
 project_package: ${package}
-host: <host>
+host: ${host}
 checker_path: /${instanceid}/wsgi/check_collector?
 template_vars:
     package: {{package}}
