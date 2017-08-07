@@ -148,7 +148,7 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
                         RED
                     ))
                     print(colorize(traceback.format_exc(), RED))
-                    if os.environ["IGNORE_I18N_ERRORS"] == "TRUE":
+                    if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
                         # Continue with the original one
                         int_filename = filename
                     else:
@@ -239,7 +239,7 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
                 u"db: {}, table: {}, column: {} ({})".format(dbname, table, fieldname, e),
                 RED
             ))
-            if os.environ["IGNORE_I18N_ERRORS"] == "TRUE":
+            if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
                 return []
             else:
                 raise
@@ -301,7 +301,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                     RED
                 ))
                 print(colorize(e, RED))
-                if os.environ["IGNORE_I18N_ERRORS"] != "TRUE":
+                if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
                     raise
         except NoSuchTableError as e:
             print(colorize(
@@ -310,7 +310,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                 RED
             ))
             print(colorize(e, RED))
-            if os.environ["IGNORE_I18N_ERRORS"] != "TRUE":
+            if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
                 raise
         except OperationalError as e:
             print(colorize(
@@ -319,7 +319,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                 RED
             ))
             print(colorize(e, RED))
-            if os.environ["IGNORE_I18N_ERRORS"] != "TRUE":
+            if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
                 raise
 
         return messages
@@ -371,7 +371,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                     RED
                 ))
                 print(colorize(traceback.format_exc(), RED))
-                if os.environ["IGNORE_I18N_ERRORS"] != "TRUE":
+                if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
                     raise
 
     def _import_layer_wmts(self, layer, messages):
@@ -396,7 +396,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                         ),
                         RED
                     ))
-                    if os.environ["IGNORE_I18N_ERRORS"] != "TRUE":
+                    if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
                         raise
 
     def _import_layer_attributes(self, url, layer, item_type, name, messages):
@@ -450,7 +450,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                         RED))
                     print(colorize(str(e), RED))
                     print(u"URL: {0!s}\nxml:\n{1!s}".format(wms_getcap_url, content))
-                    if os.environ["IGNORE_I18N_ERRORS"] != "TRUE":
+                    if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
                         raise
             except Exception as e:  # pragma: no cover
                 print(colorize(str(e), RED))
@@ -458,7 +458,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                     u"ERROR! Unable to GetCapabilities from URL: {0!s}".format(wms_getcap_url),
                     RED,
                 ))
-                if os.environ["IGNORE_I18N_ERRORS"] != "TRUE":
+                if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
                     raise
 
         wmscap = self.wmscap_cache[url]
@@ -486,7 +486,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                     u"ERROR! Unable to DescribeFeatureType from URL: {0!s}".format(wfs_descrfeat_url),
                     RED,
                 ))
-                if os.environ["IGNORE_I18N_ERRORS"] == "TRUE":
+                if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
                     return []
                 else:
                     raise
@@ -498,7 +498,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                     ),
                     RED,
                 ))
-                if os.environ["IGNORE_I18N_ERRORS"] == "TRUE":
+                if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
                     return []
                 else:
                     raise Exception("Aborted")
@@ -519,7 +519,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                 ))
                 print(colorize(str(e), RED))
                 print(u"URL: {0!s}\nxml:\n{1!s}".format(wfs_descrfeat_url, content))
-                if os.environ["IGNORE_I18N_ERRORS"] == "TRUE":
+                if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
                     return []
                 else:
                     raise
@@ -530,7 +530,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                     RED
                 ))
                 print(u"URL: {0!s}\nxml:\n{1!s}".format(wfs_descrfeat_url, content))
-                if os.environ["IGNORE_I18N_ERRORS"] == "TRUE":
+                if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
                     return []
                 else:
                     raise
