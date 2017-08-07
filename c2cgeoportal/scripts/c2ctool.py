@@ -38,22 +38,11 @@ import json
 import shutil
 import pkg_resources
 import subprocess
-from subprocess import check_call, CalledProcessError
+from subprocess import check_call, check_output, CalledProcessError
 from argparse import ArgumentParser
 from alembic.config import Config
 from alembic import command
 from c2cgeoportal.lib.bashcolor import colorize, GREEN, YELLOW, RED
-
-try:
-    from subprocess import check_output
-except ImportError:
-    from subprocess import Popen, PIPE
-
-    def check_output(cmd, cwd=None, stdin=None, stderr=None, shell=False):  # noqa
-        """Backwards compatible check_output"""
-        p = Popen(cmd, cwd=cwd, stdin=stdin, stderr=stderr, shell=shell, stdout=PIPE)
-        out, _ = p.communicate()
-        return out
 
 VERSION_RE = "^[0-9]+\.[0-9]+\..+$"
 REQUIRED_TEMPLATE_KEYS = ["package", "srid", "extent", "apache_vhost"]
