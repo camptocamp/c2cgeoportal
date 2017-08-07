@@ -53,17 +53,17 @@ class TestLoopTheme(TestCase):
             Theme, LayerGroup, Interface
 
         ogc_server, _ = create_default_ogcserver()
-        main = Interface(name=u"desktop2")
+        main = Interface(name="desktop2")
 
-        layer = LayerWMS(name=u"__test_layer", public=True)
-        layer.layers = u"__test_layer"
+        layer = LayerWMS(name="__test_layer", public=True)
+        layer.layers = "__test_layer"
         layer.interfaces = [main]
         layer.ogc_server = ogc_server
 
-        layer_group = LayerGroup(name=u"__test_layer_group")
+        layer_group = LayerGroup(name="__test_layer_group")
         layer_group.children = [layer, layer_group]
 
-        theme = Theme(name=u"__test_theme")
+        theme = Theme(name="__test_theme")
         theme.children = [layer_group]
         theme.interfaces = [main]
 
@@ -98,5 +98,5 @@ class TestLoopTheme(TestCase):
         request.client_addr = None
         request.user = None
         entry = Entry(request)
-        _, errors = entry._themes(None, u"desktop2", True, 2)
-        self.assertEquals(len([e for e in errors if e == "Too many recursions with group '__test_layer_group'"]), 1)
+        _, errors = entry._themes(None, "desktop2", True, 2)
+        self.assertEqual(len([e for e in errors if e == "Too many recursions with group '__test_layer_group'"]), 1)

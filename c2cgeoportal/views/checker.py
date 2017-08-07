@@ -29,13 +29,13 @@
 
 
 import os
-import urllib
-import httplib
+import urllib.request, urllib.parse, urllib.error
+import http.client
 import logging
 from httplib2 import Http
 from json import dumps, loads
 from time import sleep
-from urlparse import urlsplit, urlunsplit
+from urllib.parse import urlsplit, urlunsplit
 from subprocess import check_output, CalledProcessError
 
 from pyramid.view import view_config
@@ -73,8 +73,8 @@ def build_url(name, url, request, headers=None):
 
 class Checker:  # pragma: no cover
 
-    status_int = httplib.OK
-    status = httplib.responses[httplib.OK]
+    status_int = http.client.OK
+    status = http.client.responses[http.client.OK]
 
     def __init__(self, request):
         self.request = request
@@ -99,8 +99,8 @@ class Checker:  # pragma: no cover
         h = Http()
         resp, content = h.request(url, headers=headers)
 
-        if resp.status != httplib.OK:
-            print(resp.items())
+        if resp.status != http.client.OK:
+            print((list(resp.items())))
             self.set_status(resp.status, resp.reason)
             return url + "<br/>" + content
 
@@ -168,7 +168,7 @@ class Checker:  # pragma: no cover
         h = Http()
         resp, content = h.request(url, "POST", headers=headers, body=body)
 
-        if resp.status != httplib.OK:
+        if resp.status != http.client.OK:
             self.set_status(resp.status, resp.reason)
             return "Failed creating PDF: " + content
 
@@ -179,7 +179,7 @@ class Checker:  # pragma: no cover
 
         resp, content = h.request(url, headers=headers)
 
-        if resp.status != httplib.OK:
+        if resp.status != http.client.OK:
             self.set_status(resp.status, resp.reason)
             return "Failed retrieving PDF: " + content
 
@@ -200,7 +200,7 @@ class Checker:  # pragma: no cover
         h = Http()
         resp, content = h.request(url, "POST", headers=headers, body=body)
 
-        if resp.status != httplib.OK:
+        if resp.status != http.client.OK:
             self.set_status(resp.status, resp.reason)
             return "Failed creating the print job: " + content
 
@@ -211,7 +211,7 @@ class Checker:  # pragma: no cover
         while not done:
             sleep(1)
             resp, content = h.request(url, headers=headers)
-            if resp.status != httplib.OK:
+            if resp.status != http.client.OK:
                 self.set_status(resp.status, resp.reason)
                 return "Failed get the status: " + content
 
@@ -225,7 +225,7 @@ class Checker:  # pragma: no cover
         url, headers = build_url("Check the printproxy pdf retrieve", url, self.request)
         resp, content = h.request(url, headers=headers)
 
-        if resp.status != httplib.OK:
+        if resp.status != http.client.OK:
             self.set_status(resp.status, resp.reason)
             return "Failed to get the PDF: " + content
 
@@ -245,14 +245,14 @@ class Checker:  # pragma: no cover
         h = Http()
         resp, content = h.request(url, headers=headers)
 
-        if resp.status != httplib.OK:
+        if resp.status != http.client.OK:
             self.set_status(resp.status, resp.reason)
             return content
 
         result = loads(content)
 
         if len(result["features"]) == 0:
-            self.set_status(httplib.BAD_REQUEST, httplib.responses[httplib.BAD_REQUEST])
+            self.set_status(http.client.BAD_REQUEST, http.client.responses[http.client.BAD_REQUEST])
             return "No result"
 
         return "OK"
@@ -278,7 +278,7 @@ class Checker:  # pragma: no cover
 
             resp, content = h.request(interface_url, headers=headers)
 
-            if resp.status != httplib.OK:
+            if resp.status != http.client.OK:
                 self.set_status(resp.status, resp.reason)
                 results.append("{}: {}".format(interface, content))
 
@@ -293,7 +293,7 @@ class Checker:  # pragma: no cover
                 ))
 
         return self.make_response(
-            "OK" if len(results) == 0 else urllib.unquote("\n\n".join(results))
+            "OK" if len(results) == 0 else urllib.parse.unquote("\n\n".join(results))
         )
 
     @view_config(route_name="checker_lang_files")

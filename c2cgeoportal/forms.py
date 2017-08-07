@@ -96,7 +96,7 @@ def get_fanstatic_resources(request):  # pragma: no cover
     olimgpath = request.static_url("c2cgeoportal:static/lib/openlayers/img/")
 
     def olimgpath_renderer(url):
-        return u'<script>OpenLayers.ImgPath="{0!s}";</script>'.format(olimgpath)
+        return '<script>OpenLayers.ImgPath="{0!s}";</script>'.format(olimgpath)
     if olimgpath_js is None:
         olimgpath_js = Resource(
             fanstatic_lib,
@@ -148,7 +148,7 @@ def unique_validator(value, f):  # pragma: no cover
     query = f.query(f.model.__class__)
     query = query.filter_by(**{f.name: f.value})
     if f.parent._bound_pk is None and query.first():
-        raise ValidationError(_(u"Duplicate record"))
+        raise ValidationError(_("Duplicate record"))
 
 
 class PyramidGeometryFieldRenderer(GeometryFieldRenderer):  # pragma: no cover
@@ -204,13 +204,13 @@ class CheckBoxTreeSet(CheckBoxSet):  # pragma: no cover
         return ""
 
     def render(self, options, **kwargs):
-        opt = u""
+        opt = ""
         if self.auto_collapsed:
-            opt += u'"initializeUnchecked": "collapsed"'
+            opt += '"initializeUnchecked": "collapsed"'
         if self.auto_collapsed and not self.auto_check:
-            opt += u","
+            opt += ","
         if not self.auto_check:
-            opt += u"""'onCheck': {
+            opt += """'onCheck': {
                 'others': false,
                 'descendants': false,
                 'ancestors': false },
@@ -218,7 +218,7 @@ class CheckBoxTreeSet(CheckBoxSet):  # pragma: no cover
                 'others': false,
                 'descendants': false,
                 'ancestors': false }"""
-        result = u"""<script lang="text/javascript" >
+        result = """<script lang="text/javascript" >
             $(document).ready(function(){{
                 $("#{id!s}").checkboxTree({{{opt!s}}});
             }});
@@ -226,7 +226,7 @@ class CheckBoxTreeSet(CheckBoxSet):  # pragma: no cover
         <ul id="{id!s}" class="checkboxtree">
         """.format(id=self.dom_id, opt=opt)
         result += self.render_tree()
-        result += u"</ul>"
+        result += "</ul>"
         return result
 
 
@@ -244,26 +244,26 @@ class SimpleLayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
         if (depth >= 5):
             return ""
 
-        result = u""
+        result = ""
         if isinstance(item, models.TreeGroup):
-            result += u"<ul>"
+            result += "<ul>"
             for child in item.children_relation:
                 result += self.render_item(child, depth + 1)
-            result += u"</ul>"
+            result += "</ul>"
         return result
 
     def render_organisational_item(self, item, depth):
         if item in self.layer_group:
             self.layer_group.remove(item)
 
-        result = u"<li>"
+        result = "<li>"
         if self.auto_check:
-            result += u'<input type="checkbox"></input>'
-        result += u"<label>{label!s}</label>".format(
+            result += '<input type="checkbox"></input>'
+        result += "<label>{label!s}</label>".format(
             label=item.name,
         )
         result += self.render_children(item, depth)
-        result += u"</li>"
+        result += "</li>"
         return result
 
     def is_checked(self, item, final_item):
@@ -297,7 +297,7 @@ class SimpleLayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
             "l_wmts": "WMTS Layer: ",
         }
 
-        result = u"""
+        result = """
         <li>
             <input type="checkbox" id="{id!s}" name="{name!s}" value="{value!s}"{add!s}></input>
             <label>{type!s}{label!s}</label>
@@ -314,7 +314,7 @@ class SimpleLayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
         self._rendered_id.append(final_item.id)
         self.i += 1
         result += self.render_children(final_item, depth)
-        result += u"</li>"
+        result += "</li>"
         return result
 
     def render_tree(self):
@@ -325,25 +325,25 @@ class SimpleLayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
         themes = models.DBSession.query(models.Theme). \
             order_by(models.Theme.ordering).all()
         self.i = 0
-        result = u""
+        result = ""
         for item in themes:
             result += self.render_item(item, 1)
 
         # add unlinked layers
         if len(self.layer) >= 0 or len(self.layer_group) > 0:
-            result += u"<li>"
+            result += "<li>"
             if self.auto_check:
-                result += u'<input type="checkbox"></input>'
-            result += u"<label>{name!s}</label>".format(name=_("Unlinked layers"))
-            result += u"<ul>"
+                result += '<input type="checkbox"></input>'
+            result += "<label>{name!s}</label>".format(name=_("Unlinked layers"))
+            result += "<ul>"
 
             while len(self.layer_group) > 0:
                 result += self.render_item(self.layer_group.pop(0), 2)
             while len(self.layer) > 0:
                 result += self.render_item(self.layer.pop(0), 2)
 
-            result += u"</ul>"
-            result += u"</li>"
+            result += "</ul>"
+            result += "</li>"
         return result
 
 
@@ -373,34 +373,34 @@ class FunctionalityCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
         query = query.order_by(models.Functionality.value)
         functionalities = query.all()
         i = 0
-        prev_name = u""
-        result = u""
+        prev_name = ""
+        result = ""
         for functionality in functionalities:
             if prev_name != functionality.name:
-                if prev_name != u"":
-                    result += u"</ul></li>\n"
+                if prev_name != "":
+                    result += "</ul></li>\n"
                 prev_name = functionality.name
                 result += \
-                    u'<li><input type="checkbox" style="display:none"></input>' \
+                    '<li><input type="checkbox" style="display:none"></input>' \
                     '<label>%s</label><ul>\n' % (functionality.name)
             result += \
-                u'<li><input type="checkbox" id="%s" name="%s" value="%i"%s>' \
+                '<li><input type="checkbox" id="%s" name="%s" value="%i"%s>' \
                 '</input><label>%s</label></li>\n' % (
                     "{0!s}_{1:d}".format(self.name, i),
                     self.name,
                     functionality.id,
-                    u' checked="checked"' if self._is_checked(functionality.id) else "",
+                    ' checked="checked"' if self._is_checked(functionality.id) else "",
                     functionality.value)
             i += 1
-        result += u"</ul></li>"
+        result += "</ul></li>"
         return result
 
 
 class RoListRenderer(FieldRenderer):  # pragma: no cover
     def render_readonly(self, **kwargs):
-        return helpers.content_tag(u"span", ("," + helpers.tag("br")).join([
+        return helpers.content_tag("span", ("," + helpers.tag("br")).join([
             helpers.literal(value) for value in self.raw_value
-        ]), style=u"white-space: nowrap;")
+        ]), style="white-space: nowrap;")
 
 
 ##############################################################################
@@ -581,7 +581,7 @@ RestrictionArea = FieldSet(models.RestrictionArea)
 RestrictionArea.name.set(metadata=dict(mandatory="")).required()
 RestrictionArea.layers.set(renderer=SimpleLayerCheckBoxTreeSet)
 RestrictionArea.roles.set(renderer=CheckBoxSet)
-RestrictionArea.area.set(label=_(u"Restriction area"), options=[
+RestrictionArea.area.set(label=_("Restriction area"), options=[
     ("map_srid", 3857),
     ("base_layer", 'new OpenLayers.Layer.OSM("OSM")'),
     ("zoom", formalchemy_default_zoom),
@@ -603,7 +603,7 @@ Role = FieldSet(models.Role)
 Role.name.set(metadata=dict(mandatory="")).required()
 Role.functionalities.set(renderer=FunctionalityCheckBoxTreeSet)
 Role.restrictionareas.set(renderer=CheckBoxSet)
-Role.extent.set(label=_(u"Extent"), options=[
+Role.extent.set(label=_("Extent"), options=[
     ("map_srid", 3857),
     ("base_layer", 'new OpenLayers.Layer.OSM("OSM")'),
     ("zoom", formalchemy_default_zoom),

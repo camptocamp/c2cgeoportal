@@ -101,7 +101,7 @@ class _AssociationProxy(object):
 
 def xsd_sequence_callback(tb, cls):
     from c2cgeoportal.models import DBSession
-    for k, p in cls.__dict__.iteritems():
+    for k, p in cls.__dict__.items():
         if not isinstance(p, _AssociationProxy):
             continue
         relationship_property = class_mapper(cls) \

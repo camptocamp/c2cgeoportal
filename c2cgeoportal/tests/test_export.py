@@ -53,10 +53,10 @@ class TestExportCSVView(TestCase):
         self.assertEqual(type(response), HTTPBadRequest)
 
         request.params = {
-            "csv": u"éà,èç"
+            "csv": "éà,èç"
         }
         response = exportcsv(request)
-        self.assertEqual(response.body, codecs.BOM_UTF8 + u"éà,èç".encode("UTF-8"))
+        self.assertEqual(response.body, codecs.BOM_UTF8 + "éà,èç".encode("UTF-8"))
 
 
 class TestExportGpxKmlView(TestCase):
@@ -69,8 +69,8 @@ class TestExportGpxKmlView(TestCase):
         request = DummyRequest()
         request.method = "POST"
         request.params = {
-            "name": u"foo",
-            "doc": u"<gpx>éç</gpx>",
+            "name": "foo",
+            "doc": "<gpx>éç</gpx>",
         }
         response = exportgpxkml(request)
         self.assertEqual(type(response), HTTPBadRequest)
@@ -84,8 +84,8 @@ class TestExportGpxKmlView(TestCase):
         request.method = "POST"
         request.params = {
             "format": "unknown",
-            "name": u"foo",
-            "doc": u"<gpx>éç</gpx>",
+            "name": "foo",
+            "doc": "<gpx>éç</gpx>",
         }
         response = exportgpxkml(request)
         self.assertEqual(type(response), HTTPBadRequest)
@@ -99,7 +99,7 @@ class TestExportGpxKmlView(TestCase):
         request.method = "POST"
         request.params = {
             "format": "gpx",
-            "doc": u"<gpx>éç</gpx>",
+            "doc": "<gpx>éç</gpx>",
         }
         response = exportgpxkml(request)
         self.assertEqual(type(response), HTTPBadRequest)
@@ -113,7 +113,7 @@ class TestExportGpxKmlView(TestCase):
         request.method = "POST"
         request.params = {
             "format": "gpx",
-            "name": u"foo",
+            "name": "foo",
         }
         response = exportgpxkml(request)
         self.assertEqual(type(response), HTTPBadRequest)
@@ -125,16 +125,16 @@ class TestExportGpxKmlView(TestCase):
         request = DummyRequest()
         request.method = "POST"
         request.params = {
-            "format": u"gpx",
-            "name": u"foo",
-            "doc": u"<gpx>éç</gpx>",
+            "format": "gpx",
+            "name": "foo",
+            "doc": "<gpx>éç</gpx>",
         }
         response = exportgpxkml(request)
         self.assertEqual(response.content_disposition,
                          "attachment; filename=foo.gpx")
         self.assertEqual(response.content_type,
                          "application/gpx")
-        self.assertEqual(response.body, u"<gpx>éç</gpx>".encode("UTF-8"))
+        self.assertEqual(response.body, "<gpx>éç</gpx>".encode("UTF-8"))
 
     def test_kml(self):
         from pyramid.testing import DummyRequest
@@ -143,13 +143,13 @@ class TestExportGpxKmlView(TestCase):
         request = DummyRequest()
         request.method = "POST"
         request.params = {
-            "format": u"kml",
-            "name": u"foo",
-            "doc": u"<kml>éç</kml>",
+            "format": "kml",
+            "name": "foo",
+            "doc": "<kml>éç</kml>",
         }
         response = exportgpxkml(request)
         self.assertEqual(response.content_disposition,
                          "attachment; filename=foo.kml")
         self.assertEqual(response.content_type,
                          "application/vnd.google-earth.kml+xml")
-        self.assertEqual(response.body, u"<kml>éç</kml>".encode("UTF-8"))
+        self.assertEqual(response.body, "<kml>éç</kml>".encode("UTF-8"))

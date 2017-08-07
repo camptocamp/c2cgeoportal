@@ -65,7 +65,7 @@ class Raster:
             rasters = self.rasters
 
         result = {}
-        for ref in rasters.keys():
+        for ref in list(rasters.keys()):
             result[ref] = self._get_raster_value(
                 rasters[ref], ref, lon, lat)
 

@@ -28,7 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import logging
 
 import simplejson as json
@@ -93,7 +93,7 @@ class PrintProxy(Proxy):  # pragma: no cover
 
         # get query string
         params = dict(self.request.params)
-        query_string = urllib.urlencode(params)
+        query_string = urllib.parse.urlencode(params)
 
         return self._info(
             templates,
@@ -160,7 +160,7 @@ class PrintProxy(Proxy):  # pragma: no cover
 
         # get query string
         params = dict(self.request.params)
-        query_string = urllib.urlencode(params)
+        query_string = urllib.parse.urlencode(params)
 
         resp, content = self._capabilities(
             templates,

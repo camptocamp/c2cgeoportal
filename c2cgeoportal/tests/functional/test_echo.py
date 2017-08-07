@@ -43,7 +43,7 @@ class TestEchoView(TestCase):
         request = testing.DummyRequest()
 
         response = echo.echo(request)
-        self.assertEquals(response.status_int, 400)
+        self.assertEqual(response.status_int, 400)
 
     def test_echo_bad_request(self):
         from c2cgeoportal.views import echo
@@ -52,7 +52,7 @@ class TestEchoView(TestCase):
         request.method = "POST"
 
         response = echo.echo(request)
-        self.assertEquals(response.status_int, 400)
+        self.assertEqual(response.status_int, 400)
 
     def test_echo(self):
         from c2cgeoportal.views import echo
@@ -71,6 +71,6 @@ some content with non-ASCII chars ç à é
 """
 
         response = echo.echo(request)
-        self.assertEquals(response.status_int, 200)
-        self.assertEquals(response.content_type, "text/html")
-        self.assertEquals(response.body, '{"filename":"a file name","data":"c29tZSBjb250ZW50IHdpdGggbm9uLUFTQ0lJIGNoYXJzIMOnIMOgIMOp","success":true}')  # noqa
+        self.assertEqual(response.status_int, 200)
+        self.assertEqual(response.content_type, "text/html")
+        self.assertEqual(response.body, '{"filename":"a file name","data":"c29tZSBjb250ZW50IHdpdGggbm9uLUFTQ0lJIGNoYXJzIMOnIMOgIMOp","success":true}')  # noqa

@@ -56,32 +56,32 @@ class TestLayerMultiNameErrorView(TestCase):
         from c2cgeoportal.models import DBSession, \
             Theme, LayerGroup, Interface, LayerWMS
 
-        main = Interface(name=u"desktop")
+        main = Interface(name="desktop")
 
         ogc_server, _ = create_default_ogcserver()
 
-        layer_wms_1 = LayerWMS(name=u"__test_layer_wms_1", public=True)
+        layer_wms_1 = LayerWMS(name="__test_layer_wms_1", public=True)
         layer_wms_1.layer = "testpoint_unprotected"
         layer_wms_1.interfaces = [main]
         layer_wms_1.ogc_server = ogc_server
 
-        layer_wms_2 = LayerWMS(name=u"__test_layer_wms_2", public=True)
+        layer_wms_2 = LayerWMS(name="__test_layer_wms_2", public=True)
         layer_wms_2.layer = "testpoint_substitution"
         layer_wms_2.interfaces = [main]
         layer_wms_2.ogc_server = ogc_server
 
-        layer_wms_3 = LayerWMS(name=u"__test_layer_wms_3", public=True)
+        layer_wms_3 = LayerWMS(name="__test_layer_wms_3", public=True)
         layer_wms_3.layer = "testpoint_unprotected,testpoint_substitution"
         layer_wms_3.interfaces = [main]
         layer_wms_3.ogc_server = ogc_server
 
-        layer_group_1 = LayerGroup(name=u"__test_layer_group_1")
+        layer_group_1 = LayerGroup(name="__test_layer_group_1")
         layer_group_1.children = [layer_wms_1, layer_wms_2]
 
-        layer_group_2 = LayerGroup(name=u"__test_layer_group_2")
+        layer_group_2 = LayerGroup(name="__test_layer_group_2")
         layer_group_2.children = [layer_wms_1, layer_wms_3]
 
-        theme = Theme(name=u"__test_theme")
+        theme = Theme(name="__test_theme")
         theme.interfaces = [main]
         theme.children = [
             layer_group_1, layer_group_2

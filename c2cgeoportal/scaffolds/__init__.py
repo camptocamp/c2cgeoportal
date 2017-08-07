@@ -119,7 +119,7 @@ class BaseTemplate(Template):  # pragma: no cover
             try:
                 type_(value)
             except ValueError:
-                print("The attribute {} is not a {}".format(name, type_))
+                print(("The attribute {} is not a {}".format(name, type_)))
                 exit(1)
 
         vars_[name] = value
@@ -185,7 +185,7 @@ class TemplateUpdate(BaseTemplate):  # pragma: no cover
             with open("project.yaml", "r") as f:
                 project = yaml.safe_load(f)
                 if "template_vars" in project:
-                    for key, value in project["template_vars"].items():
+                    for key, value in list(project["template_vars"].items()):
                         vars_[key] = \
                             value.encode("utf-8") \
                             if isinstance(value, string_types) \

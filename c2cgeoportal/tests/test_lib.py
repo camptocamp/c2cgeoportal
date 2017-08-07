@@ -38,25 +38,25 @@ class TestLib(TestCase):
     def test_add_url_params_encode1(self):
         self.assertEqual(add_url_params(
             "http://example.com/toto",
-            {u"à": u"é"}
+            {"à": "é"}
         ), "http://example.com/toto?%C3%A0=%C3%A9")
 
     def test_add_url_params_encode2(self):
         self.assertEqual(add_url_params(
-            u"http://example.com/toto?à=é",
-            {u"1": u"2"}
+            "http://example.com/toto?à=é",
+            {"1": "2"}
         ), "http://example.com/toto?1=2&%C3%A0=%C3%A9")
 
     def test_add_url_params_encode3(self):
         self.assertEqual(add_url_params(
             "http://example.com/toto?%C3%A0=%C3%A9",
-            {u"1": u"2"}
+            {"1": "2"}
         ), "http://example.com/toto?1=2&%C3%A0=%C3%A9")
 
     def test_add_url_params_port(self):
         self.assertEqual(add_url_params(
             "http://example.com:8480/toto",
-            {u"1": u"2"}
+            {"1": "2"}
         ), "http://example.com:8480/toto?1=2")
 
     def test_add_url_params_noparam(self):

@@ -54,26 +54,26 @@ class TestMapserverproxyViewGroup(TestCase):
 
         ogc_server_internal, _ = create_default_ogcserver()
 
-        user1 = User(username=u"__test_user1", password=u"__test_user1")
-        role1 = Role(name=u"__test_role1", description=u"__test_role1")
+        user1 = User(username="__test_user1", password="__test_user1")
+        role1 = Role(name="__test_role1", description="__test_role1")
         user1.role_name = role1.name
-        user1.email = u"Tarenpion"
+        user1.email = "Tarenpion"
 
-        main = Interface(name=u"main")
+        main = Interface(name="main")
 
-        layer1 = LayerWMS(u"testpoint_group_name", public=False)
-        layer1.layer = u"testpoint_group"
+        layer1 = LayerWMS("testpoint_group_name", public=False)
+        layer1.layer = "testpoint_group"
         layer1.ogc_server = ogc_server_internal
         layer1.interfaces = [main]
 
-        layer2 = LayerWMS(u"testpoint_protected_2_name", public=False)
-        layer2.layer = u"testpoint_protected_2"
+        layer2 = LayerWMS("testpoint_protected_2_name", public=False)
+        layer2.layer = "testpoint_protected_2"
         layer2.ogc_server = ogc_server_internal
         layer2.interfaces = [main]
 
         area = "POLYGON((-100 30, -100 50, 100 50, 100 30, -100 30))"
         area = WKTElement(area, srid=21781)
-        restricted_area1 = RestrictionArea(u"__test_ra1", u"", [layer1, layer2], [role1], area)
+        restricted_area1 = RestrictionArea("__test_ra1", "", [layer1, layer2], [role1], area)
 
         DBSession.add_all([user1, role1, layer1, layer2, restricted_area1])
         DBSession.flush()
@@ -134,7 +134,7 @@ class TestMapserverproxyViewGroup(TestCase):
         # testpoint_group_2 is a standard group containing only protected layers
         self.assertFalse((response.body).find("<Name>testpoint_group_2</Name>") > 0)
 
-        request = self._create_getcap_request(username=u"__test_user1")
+        request = self._create_getcap_request(username="__test_user1")
         request.params.update(dict(
             service="wms", version="1.1.1", request="getcapabilities",
         ))
@@ -159,7 +159,7 @@ class TestMapserverproxyViewGroup(TestCase):
         self.assertFalse((response.body).find("<Name>testpoint_unprotected</Name>") > 0)
         self.assertFalse((response.body).find("<Name>testpoint_group</Name>") > 0)
 
-        request = self._create_getcap_request(username=u"__test_user1")
+        request = self._create_getcap_request(username="__test_user1")
         request.params.update(dict(
             service="wfs", version="1.1.1", request="getcapabilities",
         ))

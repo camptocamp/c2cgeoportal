@@ -140,7 +140,7 @@ class TimeExtentValue:
         return {
             "minValue": _format_date(values[0]),
             "maxValue": _format_date(values[-1]),
-            "values": map(_format_date, values),
+            "values": list(map(_format_date, values)),
             "resolution": self.resolution,
             "minDefValue": min_def_value,
             "maxDefValue": max_def_value,
@@ -274,7 +274,7 @@ def _parse_date(date):
         "day": "%Y-%m-%d",
     }
 
-    for resolution, pattern in resolutions.items():
+    for resolution, pattern in list(resolutions.items()):
         try:
             dt = datetime.datetime.strptime(date, pattern)
             return resolution, dt.replace(tzinfo=isodate.UTC)

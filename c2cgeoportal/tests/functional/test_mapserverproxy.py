@@ -91,7 +91,7 @@ class TestPoint(Base):
     country = Column(types.Unicode)
 
 
-GETFEATURE_REQUEST = u"""<?xml version='1.0' encoding="UTF-8" ?>
+GETFEATURE_REQUEST = """<?xml version='1.0' encoding="UTF-8" ?>
 <wfs:GetFeature xmlns:wfs="http://www.opengis.net/wfs" service="WFS" version="1.1.0" xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 <wfs:Query typeName="feature:%(feature)s" srsName="EPSG:21781" xmlns:feature="http://mapserver.gis.umn.edu/mapserver">
 <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
@@ -104,18 +104,18 @@ GETFEATURE_REQUEST = u"""<?xml version='1.0' encoding="UTF-8" ?>
 </wfs:GetFeature>"""
 
 SUBSTITUTION_GETFEATURE_REQUEST = (GETFEATURE_REQUEST % {
-    "feature": u"testpoint_substitution",
-    "function": u"NotEqualTo",
-    "arguments": u"",
-    "property": u"name",
+    "feature": "testpoint_substitution",
+    "function": "NotEqualTo",
+    "arguments": "",
+    "property": "name",
     "value": "toto",
 }).encode("utf-8")
 
 COLUMN_RESTRICTION_GETFEATURE_REQUEST = (GETFEATURE_REQUEST % {
-    "feature": u"testpoint_column_restriction",
-    "function": u"NotEqualTo",
-    "arguments": u"",
-    "property": u"name",
+    "feature": "testpoint_column_restriction",
+    "function": "NotEqualTo",
+    "arguments": "",
+    "property": "name",
     "value": "bar",
 }).encode("utf-8")
 
@@ -143,53 +143,53 @@ class TestMapserverproxyView(TestCase):
         TestPoint.__table__.create(bind=DBSession.bind, checkfirst=True)
 
         geom = WKTElement("POINT(599910 199955)", srid=21781)
-        p1 = TestPoint(geom=geom, name=u"foo", city=u"Lausanne", country=u"Swiss")
+        p1 = TestPoint(geom=geom, name="foo", city="Lausanne", country="Swiss")
         geom = WKTElement("POINT(599910 200045)", srid=21781)
-        p2 = TestPoint(geom=geom, name=u"bar", city=u"Chambéry", country=u"France")
+        p2 = TestPoint(geom=geom, name="bar", city="Chambéry", country="France")
         geom = WKTElement("POINT(600090 200045)", srid=21781)
-        p3 = TestPoint(geom=geom, name=u"éàè", city=u"Paris", country=u"France")
+        p3 = TestPoint(geom=geom, name="éàè", city="Paris", country="France")
         geom = WKTElement("POINT(600090 199955)", srid=21781)
-        p4 = TestPoint(geom=geom, name=u"123", city=u"Londre", country=u"UK")
+        p4 = TestPoint(geom=geom, name="123", city="Londre", country="UK")
 
-        pt1 = Functionality(name=u"print_template", value=u"1 Wohlen A4 portrait")
-        pt2 = Functionality(name=u"print_template", value=u"2 Wohlen A3 landscape")
-        user1 = User(username=u"__test_user1", password=u"__test_user1")
-        role1 = Role(name=u"__test_role1", description=u"__test_role1", functionalities=[pt1, pt2])
+        pt1 = Functionality(name="print_template", value="1 Wohlen A4 portrait")
+        pt2 = Functionality(name="print_template", value="2 Wohlen A3 landscape")
+        user1 = User(username="__test_user1", password="__test_user1")
+        role1 = Role(name="__test_role1", description="__test_role1", functionalities=[pt1, pt2])
         user1.role_name = role1.name
-        user1.email = u"Tarenpion"
+        user1.email = "Tarenpion"
 
-        user2 = User(username=u"__test_user2", password=u"__test_user2")
-        role2 = Role(name=u"__test_role2", description=u"__test_role2", functionalities=[pt1, pt2])
+        user2 = User(username="__test_user2", password="__test_user2")
+        role2 = Role(name="__test_role2", description="__test_role2", functionalities=[pt1, pt2])
         user2.role_name = role2.name
-        user2.email = u"Tarenpion"
+        user2.email = "Tarenpion"
 
-        user3 = User(username=u"__test_user3", password=u"__test_user3")
-        role3 = Role(name=u"__test_role3", description=u"__test_role3", functionalities=[pt1, pt2])
+        user3 = User(username="__test_user3", password="__test_user3")
+        role3 = Role(name="__test_role3", description="__test_role3", functionalities=[pt1, pt2])
         user3.role_name = role3.name
 
-        main = Interface(name=u"main")
+        main = Interface(name="main")
 
-        layer2 = LayerWMS(u"testpoint_protected", public=False)
-        layer2.layer = u"testpoint_protected"
+        layer2 = LayerWMS("testpoint_protected", public=False)
+        layer2.layer = "testpoint_protected"
         layer2.ogc_server = ogc_server_internal
         layer2.interfaces = [main]
 
-        layer3 = LayerWMS(u"testpoint_protected_query_with_collect", public=False)
-        layer3.layer = u"testpoint_protected_query_with_collect"
+        layer3 = LayerWMS("testpoint_protected_query_with_collect", public=False)
+        layer3.layer = "testpoint_protected_query_with_collect"
         layer3.ogc_server = ogc_server_internal
         layer3.interfaces = [main]
 
         area = "POLYGON((599900 200030, 599900 200050, 600100 200050, 600100 200030, 599900 200030))"
         area = WKTElement(area, srid=21781)
-        restricted_area1 = RestrictionArea(u"__test_ra1", u"", [layer2, layer3], [role1], area)
+        restricted_area1 = RestrictionArea("__test_ra1", "", [layer2, layer3], [role1], area)
 
         area = "POLYGON((599900 200000, 599900 200020, 600100 200020, 600100 200000, 599900 200000))"
         area = WKTElement(area, srid=21781)
-        restricted_area2 = RestrictionArea(u"__test_ra2", u"", [layer2, layer3], [role2, role3], area)
+        restricted_area2 = RestrictionArea("__test_ra2", "", [layer2, layer3], [role2, role3], area)
 
         area = "POLYGON((599905 200043, 599905 200047, 600095 200047, 600095 200043, 599905 200043))"
         area = WKTElement(area, srid=21781)
-        restricted_area3 = RestrictionArea(u"__test_ra3", u"", [layer3], [role3], area, readwrite=True)
+        restricted_area3 = RestrictionArea("__test_ra3", "", [layer3], [role3], area, readwrite=True)
 
         DBSession.add_all([
             p1, p2, p3, p4, user1, user2, user3, role1, role2, role3,
@@ -217,12 +217,12 @@ class TestMapserverproxyView(TestCase):
         TestPoint.__table__.drop(bind=DBSession.bind, checkfirst=True)
 
     def assert_contains(self, body, text):
-        decoded_body = unicode(body.decode("utf-8"))
-        self.assertTrue(decoded_body.find(text) >= 0, u"Unable to find '{}' in:\n{}".format(text, decoded_body))
+        decoded_body = str(body.decode("utf-8"))
+        self.assertTrue(decoded_body.find(text) >= 0, "Unable to find '{}' in:\n{}".format(text, decoded_body))
 
     def assert_not_contains(self, body, text):
-        decoded_body = unicode(body.decode("utf-8"))
-        self.assertTrue(decoded_body.find(text) < 0, u"Find unexpected text '{}' in:\n{}".format(text, decoded_body))
+        decoded_body = str(body.decode("utf-8"))
+        self.assertTrue(decoded_body.find(text) < 0, "Find unexpected text '{}' in:\n{}".format(text, decoded_body))
 
     @staticmethod
     def _create_dummy_request(username=None):
@@ -253,7 +253,7 @@ class TestMapserverproxyView(TestCase):
             layer="testpoint_unprotected",
             srs="EPSG:21781",
             format="image/png",
-            extraparam=u"with spéciàl chârs"
+            extraparam="with spéciàl chârs"
         ))
         response = MapservProxy(request).proxy()
         self.assertTrue(response.cache_control.public)
@@ -277,7 +277,7 @@ class TestMapserverproxyView(TestCase):
             layer="testpoint_unprotected",
             srs="EPSG:21781",
             format="image/png",
-            extraparam=u"with spéciàl chârs"
+            extraparam="with spéciàl chârs"
         ))
         response = MapservProxy(request).proxy()
         self.assertTrue(response.cache_control.public)
@@ -410,7 +410,7 @@ class TestMapserverproxyView(TestCase):
     def test_get_map_unprotected_layer_user1(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
 
-        request = self._create_dummy_request(username=u"__test_user1")
+        request = self._create_dummy_request(username="__test_user1")
         request.params.update(dict(
             service="wms", version="1.1.1", request="getmap",
             bbox="599820,199910,600180,200090", layers="testpoint_unprotected",
@@ -427,7 +427,7 @@ class TestMapserverproxyView(TestCase):
     def test_get_map_unprotected_layer_user2(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
 
-        request = self._create_dummy_request(username=u"__test_user2")
+        request = self._create_dummy_request(username="__test_user2")
         request.params.update(dict(
             service="wms", version="1.1.1", request="getmap",
             bbox="599820,199910,600180,200090", layers="testpoint_unprotected",
@@ -461,7 +461,7 @@ class TestMapserverproxyView(TestCase):
     def test_get_map_protected_layer_user1(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
 
-        request = self._create_dummy_request(username=u"__test_user1")
+        request = self._create_dummy_request(username="__test_user1")
         request.params.update(dict(
             service="wms", version="1.1.1", request="getmap",
             bbox="599820,199910,600180,200090", layers="testpoint_protected",
@@ -478,7 +478,7 @@ class TestMapserverproxyView(TestCase):
     def test_get_map_protected_layer_user2(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
 
-        request = self._create_dummy_request(username=u"__test_user2")
+        request = self._create_dummy_request(username="__test_user2")
         request.params.update(dict(
             service="wms", version="1.1.1", request="getmap",
             bbox="599820,199910,600180,200090", layers="testpoint_protected",
@@ -494,7 +494,7 @@ class TestMapserverproxyView(TestCase):
     def test_get_map_protected_layer_collect_query_user1(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
 
-        request = self._create_dummy_request(username=u"__test_user1")
+        request = self._create_dummy_request(username="__test_user1")
         request.params.update(dict(
             service="wms", version="1.1.1", request="getmap",
             bbox="599820,199910,600180,200090", layers="testpoint_protected_query_with_collect",
@@ -511,7 +511,7 @@ class TestMapserverproxyView(TestCase):
     def test_get_map_protected_layer_collect_query_user2(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
 
-        request = self._create_dummy_request(username=u"__test_user2")
+        request = self._create_dummy_request(username="__test_user2")
         request.params.update(dict(
             service="wms", version="1.1.1", request="getmap",
             bbox="599820,199910,600180,200090", layers="testpoint_protected_query_with_collect",
@@ -528,7 +528,7 @@ class TestMapserverproxyView(TestCase):
     def test_get_map_protected_layer_collect_query_user3(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
 
-        request = self._create_dummy_request(username=u"__test_user3")
+        request = self._create_dummy_request(username="__test_user3")
         request.params.update(dict(
             service="wms", version="1.1.1", request="getmap",
             bbox="599820,199910,600180,200090", layers="testpoint_protected_query_with_collect",
@@ -557,7 +557,7 @@ class TestMapserverproxyView(TestCase):
         from c2cgeoportal.lib.filter_capabilities import get_private_layers
 
         pl = get_private_layers([self.ogc_server_id])
-        self.assertEquals(
+        self.assertEqual(
             {pl[l].name for l in pl},
             {"testpoint_protected", "testpoint_protected_query_with_collect"}
         )
@@ -566,7 +566,7 @@ class TestMapserverproxyView(TestCase):
         from c2cgeoportal.lib.filter_capabilities import get_protected_layers
 
         pl = get_protected_layers(self.role1_id, [self.ogc_server_id])
-        self.assertEquals(
+        self.assertEqual(
             {pl[l].name for l in pl},
             {"testpoint_protected", "testpoint_protected_query_with_collect"}
         )
@@ -575,7 +575,7 @@ class TestMapserverproxyView(TestCase):
         from c2cgeoportal.lib.filter_capabilities import get_protected_layers
 
         pl = get_protected_layers(self.role2_id, [self.ogc_server_id])
-        self.assertEquals(
+        self.assertEqual(
             {pl[l].name for l in pl},
             {"testpoint_protected", "testpoint_protected_query_with_collect"}
         )
@@ -584,7 +584,7 @@ class TestMapserverproxyView(TestCase):
         from c2cgeoportal.lib.filter_capabilities import get_protected_layers
 
         pl = get_protected_layers(self.role3_id, [self.ogc_server_id])
-        self.assertEquals(
+        self.assertEqual(
             {pl[l].name for l in pl},
             {"testpoint_protected", "testpoint_protected_query_with_collect"}
         )
@@ -593,7 +593,7 @@ class TestMapserverproxyView(TestCase):
         from c2cgeoportal.lib.filter_capabilities import get_writable_layers
 
         pl = get_writable_layers(self.role1_id, [self.ogc_server_id])
-        self.assertEquals(
+        self.assertEqual(
             {pl[l].name for l in pl}, set()
         )
 
@@ -601,7 +601,7 @@ class TestMapserverproxyView(TestCase):
         from c2cgeoportal.lib.filter_capabilities import get_writable_layers
 
         pl = get_writable_layers(self.role2_id, [self.ogc_server_id])
-        self.assertEquals(
+        self.assertEqual(
             {pl[l].name for l in pl}, set()
         )
 
@@ -609,7 +609,7 @@ class TestMapserverproxyView(TestCase):
         from c2cgeoportal.lib.filter_capabilities import get_writable_layers
 
         pl = get_writable_layers(self.role3_id, [self.ogc_server_id])
-        self.assertEquals(
+        self.assertEqual(
             {pl[l].name for l in pl},
             {"testpoint_protected_query_with_collect"}
         )
@@ -624,7 +624,7 @@ class TestMapserverproxyView(TestCase):
         response = MapservProxy(request).proxy()
         self.assert_not_contains(response.body, "<Name>testpoint_protected</Name>")
 
-        request = self._create_getcap_request(username=u"__test_user1")
+        request = self._create_getcap_request(username="__test_user1")
         request.params.update(dict(
             service="wms", version="1.1.1", request="getcapabilities",
         ))
@@ -641,7 +641,7 @@ class TestMapserverproxyView(TestCase):
         response = MapservProxy(request).proxy()
         self.assert_not_contains(response.body, "<Name>testpoint_protected</Name>")
 
-        request = self._create_getcap_request(username=u"__test_user1")
+        request = self._create_getcap_request(username="__test_user1")
         request.params.update(dict(
             service="wfs", version="1.1.1", request="getcapabilities",
         ))
@@ -655,35 +655,35 @@ class TestMapserverproxyView(TestCase):
 
         request.method = "POST"
         request.body = (GETFEATURE_REQUEST % {
-            "feature": u"testpoint_unprotected",
-            "function": u"EqualTo",
-            "arguments": u"",
-            "property": u"name",
+            "feature": "testpoint_unprotected",
+            "function": "EqualTo",
+            "arguments": "",
+            "property": "name",
             "value": value,
         }).encode("utf-8")
         return MapservProxy(request).proxy()
 
     def test_get_feature_is_equal_to(self):
-        response = self._get_feature_is_equal_to(u"foo")
+        response = self._get_feature_is_equal_to("foo")
         self.assertTrue(response.status_int, 200)
-        self.assert_contains(response.body, u"foo")
-        self.assert_not_contains(response.body, u"bar")
-        self.assert_not_contains(response.body, u"éàè")
-        self.assert_not_contains(response.body, u"123")
+        self.assert_contains(response.body, "foo")
+        self.assert_not_contains(response.body, "bar")
+        self.assert_not_contains(response.body, "éàè")
+        self.assert_not_contains(response.body, "123")
 
-        response = self._get_feature_is_equal_to(u"éàè")
+        response = self._get_feature_is_equal_to("éàè")
         self.assertTrue(response.status_int, 200)  # 500)
-        self.assert_not_contains(response.body, u"foo")
-        self.assert_not_contains(response.body, u"bar")
-        self.assert_contains(response.body, u"éàè")
-        self.assert_not_contains(response.body, u"123")
+        self.assert_not_contains(response.body, "foo")
+        self.assert_not_contains(response.body, "bar")
+        self.assert_contains(response.body, "éàè")
+        self.assert_not_contains(response.body, "123")
 
-        response = self._get_feature_is_equal_to(u"123")
+        response = self._get_feature_is_equal_to("123")
         self.assertTrue(response.status_int, 200)
-        self.assert_not_contains(response.body, u"foo")
-        self.assert_not_contains(response.body, u"bar")
-        self.assert_not_contains(response.body, u"éàè")
-        self.assert_contains(response.body, u"123")
+        self.assert_not_contains(response.body, "foo")
+        self.assert_not_contains(response.body, "bar")
+        self.assert_not_contains(response.body, "éàè")
+        self.assert_contains(response.body, "123")
 
     def _get_feature_is_not_equal_to(self, value):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
@@ -693,35 +693,35 @@ class TestMapserverproxyView(TestCase):
 
         request.method = "POST"
         request.body = (GETFEATURE_REQUEST % {
-            "feature": u"testpoint_unprotected",
-            "function": u"NotEqualTo",
-            "arguments": u"",
-            "property": u"name",
+            "feature": "testpoint_unprotected",
+            "function": "NotEqualTo",
+            "arguments": "",
+            "property": "name",
             "value": value,
         }).encode("utf-8")
         return MapservProxy(request).proxy()
 
     def test_get_feature_is_not_equal_to(self):
-        response = self._get_feature_is_not_equal_to(u"foo")
+        response = self._get_feature_is_not_equal_to("foo")
         self.assertTrue(response.status_int, 200)
-        self.assert_not_contains(response.body, u"foo")
-        self.assert_contains(response.body, u"bar")
-        self.assert_contains(response.body, u"éàè")
-        self.assert_contains(response.body, u"123")
+        self.assert_not_contains(response.body, "foo")
+        self.assert_contains(response.body, "bar")
+        self.assert_contains(response.body, "éàè")
+        self.assert_contains(response.body, "123")
 
-        response = self._get_feature_is_not_equal_to(u"éàè")
+        response = self._get_feature_is_not_equal_to("éàè")
         self.assertTrue(response.status_int, 200)
-        self.assert_contains(response.body, u"foo")
-        self.assert_contains(response.body, u"bar")
-        self.assert_not_contains(response.body, u"éàè")
-        self.assert_contains(response.body, u"123")
+        self.assert_contains(response.body, "foo")
+        self.assert_contains(response.body, "bar")
+        self.assert_not_contains(response.body, "éàè")
+        self.assert_contains(response.body, "123")
 
-        response = self._get_feature_is_not_equal_to(u"123")
+        response = self._get_feature_is_not_equal_to("123")
         self.assertTrue(response.status_int, 200)
-        self.assert_contains(response.body, u"foo")
-        self.assert_contains(response.body, u"bar")
-        self.assert_contains(response.body, u"éàè")
-        self.assert_not_contains(response.body, u"123")
+        self.assert_contains(response.body, "foo")
+        self.assert_contains(response.body, "bar")
+        self.assert_contains(response.body, "éàè")
+        self.assert_not_contains(response.body, "123")
 
     def _get_feature_is_like(self, value):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
@@ -730,35 +730,35 @@ class TestMapserverproxyView(TestCase):
 
         request.method = "POST"
         request.body = (GETFEATURE_REQUEST % {
-            "feature": u"testpoint_unprotected",
-            "function": u"Like",
-            "arguments": u'wildCard="*" singleChar="." escapeChar="!"',
-            "property": u"name",
+            "feature": "testpoint_unprotected",
+            "function": "Like",
+            "arguments": 'wildCard="*" singleChar="." escapeChar="!"',
+            "property": "name",
             "value": value,
         }).encode("utf-8")
         return MapservProxy(request).proxy()
 
     def test_get_feature_is_like(self):
-        response = self._get_feature_is_like(u"*o*")
+        response = self._get_feature_is_like("*o*")
         self.assertTrue(response.status_int, 200)
-        self.assert_contains(response.body, u"foo")
-        self.assert_not_contains(response.body, u"bar")
-        self.assert_not_contains(response.body, u"éàè")
-        self.assert_not_contains(response.body, u"123")
+        self.assert_contains(response.body, "foo")
+        self.assert_not_contains(response.body, "bar")
+        self.assert_not_contains(response.body, "éàè")
+        self.assert_not_contains(response.body, "123")
 
-        response = self._get_feature_is_like(u"*à*")
+        response = self._get_feature_is_like("*à*")
         self.assertTrue(response.status_int, 200)
-        self.assert_not_contains(response.body, u"foo")
-        self.assert_not_contains(response.body, u"bar")
-        self.assert_contains(response.body, u"éàè")
-        self.assert_not_contains(response.body, u"123")
+        self.assert_not_contains(response.body, "foo")
+        self.assert_not_contains(response.body, "bar")
+        self.assert_contains(response.body, "éàè")
+        self.assert_not_contains(response.body, "123")
 
-        response = self._get_feature_is_like(u"*2*")
+        response = self._get_feature_is_like("*2*")
         self.assertTrue(response.status_int, 200)
-        self.assert_not_contains(response.body, u"foo")
-        self.assert_not_contains(response.body, u"bar")
-        self.assert_not_contains(response.body, u"éàè")
-        self.assert_contains(response.body, u"123")
+        self.assert_not_contains(response.body, "foo")
+        self.assert_not_contains(response.body, "bar")
+        self.assert_not_contains(response.body, "éàè")
+        self.assert_contains(response.body, "123")
 
     def test_get_feature_feature_id_get(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
@@ -776,10 +776,10 @@ class TestMapserverproxyView(TestCase):
             featureid=featureid
         ))
         response = MapservProxy(request).proxy()
-        self.assert_contains(response.body, u"Lausanne")
-        self.assert_contains(response.body, u"Paris")
-        self.assert_not_contains(response.body, u"Londre")
-        self.assert_not_contains(response.body, u"Chambéry")
+        self.assert_contains(response.body, "Lausanne")
+        self.assert_contains(response.body, "Paris")
+        self.assert_not_contains(response.body, "Londre")
+        self.assert_not_contains(response.body, "Chambéry")
         self.assertEqual(response.content_type, "text/xml")
 
     def test_get_feature_feature_id_get_jsonp(self):
@@ -798,10 +798,10 @@ class TestMapserverproxyView(TestCase):
             featureid=featureid, callback="cb"
         ))
         response = MapservProxy(request).proxy()
-        self.assert_contains(response.body, u"Lausanne")
-        self.assert_contains(response.body, u"Paris")
-        self.assert_not_contains(response.body, u"Londre")
-        self.assert_not_contains(response.body, u"Chambéry")
+        self.assert_contains(response.body, "Lausanne")
+        self.assert_contains(response.body, "Paris")
+        self.assert_not_contains(response.body, "Londre")
+        self.assert_not_contains(response.body, "Chambéry")
         self.assertEqual(response.content_type, "application/javascript")
 
     def test_get_feature_wfs_url(self):
@@ -874,18 +874,18 @@ class TestMapserverproxyView(TestCase):
 
         response = MapservProxy(request).proxy()
         self.assertTrue(response.status_int, 200)
-        self.assert_contains(response.body, u"foo")
-        self.assert_not_contains(response.body, u"bar")
-        self.assert_not_contains(response.body, u"éàè")
-        self.assert_not_contains(response.body, u"123")
+        self.assert_contains(response.body, "foo")
+        self.assert_not_contains(response.body, "bar")
+        self.assert_not_contains(response.body, "éàè")
+        self.assert_not_contains(response.body, "123")
 
         request.params.update(dict(s_name="bar"))
         response = MapservProxy(request).proxy()
         self.assertTrue(response.status_int, 200)
-        self.assert_contains(response.body, u"foo")
-        self.assert_not_contains(response.body, u"bar")
-        self.assert_not_contains(response.body, u"éàè")
-        self.assert_not_contains(response.body, u"123")
+        self.assert_contains(response.body, "foo")
+        self.assert_not_contains(response.body, "bar")
+        self.assert_not_contains(response.body, "éàè")
+        self.assert_not_contains(response.body, "123")
 
         request = self._create_dummy_request()
         request.method = "POST"
@@ -893,10 +893,10 @@ class TestMapserverproxyView(TestCase):
         request.params.update(dict(S_NAME="bar"))
         response = MapservProxy(request).proxy()
         self.assertTrue(response.status_int, 200)
-        self.assert_contains(response.body, u"foo")
-        self.assert_not_contains(response.body, u"bar")
-        self.assert_not_contains(response.body, u"éàè")
-        self.assert_not_contains(response.body, u"123")
+        self.assert_contains(response.body, "foo")
+        self.assert_not_contains(response.body, "bar")
+        self.assert_not_contains(response.body, "éàè")
+        self.assert_not_contains(response.body, "123")
 
         request = self._create_dummy_request()
         request.method = "POST"
@@ -906,10 +906,10 @@ class TestMapserverproxyView(TestCase):
         }
         response = MapservProxy(request).proxy()
         self.assertTrue(response.status_int, 200)
-        self.assert_not_contains(response.body, u"foo")
-        self.assert_contains(response.body, u"bar")
-        self.assert_not_contains(response.body, u"éàè")
-        self.assert_not_contains(response.body, u"123")
+        self.assert_not_contains(response.body, "foo")
+        self.assert_contains(response.body, "bar")
+        self.assert_not_contains(response.body, "éàè")
+        self.assert_not_contains(response.body, "123")
 
         request.body = COLUMN_RESTRICTION_GETFEATURE_REQUEST
         request.registry.settings["functionalities"]["anonymous"] = {
@@ -917,32 +917,32 @@ class TestMapserverproxyView(TestCase):
         }
         response = MapservProxy(request).proxy()
         self.assertTrue(response.status_int, 200)
-        self.assert_contains(response.body, u"Lausanne")
-        self.assert_contains(response.body, u"Swiss")
+        self.assert_contains(response.body, "Lausanne")
+        self.assert_contains(response.body, "Swiss")
 
         request.registry.settings["functionalities"]["anonymous"] = {
             "mapserver_substitution": ["cols=name", "cols=city"]
         }
         response = MapservProxy(request).proxy()
         self.assertTrue(response.status_int, 200)
-        self.assert_contains(response.body, u"Lausanne")
-        self.assert_not_contains(response.body, u"Swiss")
+        self.assert_contains(response.body, "Lausanne")
+        self.assert_not_contains(response.body, "Swiss")
 
         request.registry.settings["functionalities"]["anonymous"] = {
             "mapserver_substitution": ["cols=name", "cols=country"]
         }
         response = MapservProxy(request).proxy()
         self.assertTrue(response.status_int, 200)
-        self.assert_not_contains(response.body, u"Lausanne")
-        self.assert_contains(response.body, u"Swiss")
+        self.assert_not_contains(response.body, "Lausanne")
+        self.assert_contains(response.body, "Swiss")
 
         request.registry.settings["functionalities"]["anonymous"] = {
             "mapserver_substitution": ["cols=name"]
         }
         response = MapservProxy(request).proxy()
         self.assertTrue(response.status_int, 200)
-        self.assert_not_contains(response.body, u"Lausanne")
-        self.assert_not_contains(response.body, u"Swiss")
+        self.assert_not_contains(response.body, "Lausanne")
+        self.assert_not_contains(response.body, "Swiss")
 
         request = self._create_dummy_request()
         request.registry.settings["admin_interface"] = {"available_functionalities": [
@@ -962,7 +962,7 @@ class TestMapserverproxyView(TestCase):
     def test_geoserver(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
 
-        request = self._create_getcap_request(username=u"__test_user1", additional_settings={
+        request = self._create_getcap_request(username="__test_user1", additional_settings={
             "mapserverproxy": {
                 "default_ogc_server": "__test_ogc_server_geoserver",
             }
@@ -971,4 +971,4 @@ class TestMapserverproxyView(TestCase):
             service="wms", version="1.1.1", request="getcapabilities",
         ))
         response = MapservProxy(request).proxy()
-        self.assert_contains(response.body, u"<Name>testpoint_protected</Name>")
+        self.assert_contains(response.body, "<Name>testpoint_protected</Name>")

@@ -126,7 +126,7 @@ class PdfReport(Proxy):  # pragma: no cover
         mapserv_url = self.request.route_url("mapserverproxy")
         vector_request_url = "{0!s}?{1!s}".format(
             mapserv_url,
-            "&".join(["{0!s}={1!s}".format(*i) for i in {
+            "&".join(["{0!s}={1!s}".format(*i) for i in list({
                 "service": "WFS",
                 "version": "1.1.0",
                 "outputformat": "gml3",
@@ -134,7 +134,7 @@ class PdfReport(Proxy):  # pragma: no cover
                 "typeName": self.layername,
                 "featureid": self.layername + "." + id_,
                 "srsName": "epsg:" + str(srs)
-            }.items()])
+            }.items())])
         )
 
         spec = layer_config["spec"]

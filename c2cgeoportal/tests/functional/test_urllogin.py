@@ -48,7 +48,7 @@ class TestUrllogin(TestCase):
 
         from c2cgeoportal.models import User, DBSession
 
-        user = User(username=u"__test_user1", password=u"__test_user1")
+        user = User(username="__test_user1", password="__test_user1")
         DBSession.add(user)
         DBSession.flush()
 
@@ -83,7 +83,7 @@ class TestUrllogin(TestCase):
     def test_ok(self):
         user = self.get_user("foobar1234567891", "__test_user1", "__test_user1", 1)
         self.assertIsNotNone(user)
-        self.assertEquals(user, "__test_user1")
+        self.assertEqual(user, "__test_user1")
 
     def test_expired(self):
         self.assertIsNone(self.get_user("foobar1234567891", "__test_user1", "__test_user1", -1))

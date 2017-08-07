@@ -33,7 +33,7 @@
 import math
 
 from struct import unpack
-import dbfutils
+from . import dbfutils
 
 
 XY_POINT_RECORD_LENGTH = 16
@@ -233,9 +233,9 @@ def get_true_centers(records, projected=False):
             # now get the true centroid
         temp_point = {"x": 0, "y": 0}
         if biggest[points][0] != biggest[points][len(biggest[points]) - 1]:
-            print(
+            print((
                 "mug", biggest[points][0],
-                biggest[points][len(biggest[points]) - 1])
+                biggest[points][len(biggest[points]) - 1]))
         for i in range(0, len(biggest[points]) - 1):
             j = (i + 1) % (len(biggest[points]) - 1)
             temp_point["x"] -= \
@@ -303,7 +303,7 @@ def get_neighbors(records):
 
 
 def project_shapefile(records, what_projection, lon_center=0, lat_center=0):
-    print("projecting to ", what_projection)
+    print(("projecting to ", what_projection))
     for feature in records:
         for part in feature["shp_data"]["parts"]:
             part["projectedPoints"] = []

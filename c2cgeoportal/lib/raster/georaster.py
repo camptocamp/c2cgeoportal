@@ -28,7 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import shputils
+from . import shputils
 from os.path import dirname
 from struct import unpack
 

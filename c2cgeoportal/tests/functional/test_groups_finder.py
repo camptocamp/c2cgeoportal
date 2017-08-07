@@ -45,10 +45,10 @@ class TestGroupsFinder(TestCase):
         import transaction
         from c2cgeoportal.models import DBSession, User, Role
 
-        r = Role(name=u"__test_role")
+        r = Role(name="__test_role")
         u = User(
-            username=u"__test_user",
-            password=u"__test_user",
+            username="__test_user",
+            password="__test_user",
             role=r
         )
 
@@ -62,12 +62,12 @@ class TestGroupsFinder(TestCase):
 
         transaction.commit()
 
-        DBSession.query(User).filter_by(username=u"__test_user").delete()
-        DBSession.query(Role).filter_by(name=u"__test_role").delete()
+        DBSession.query(User).filter_by(username="__test_user").delete()
+        DBSession.query(Role).filter_by(name="__test_role").delete()
         transaction.commit()
 
     def test_it(self):
         from c2cgeoportal.resources import defaultgroupsfinder
-        request = create_dummy_request(authentication=False, user=u"__test_user")
-        roles = defaultgroupsfinder(u"__test_user", request)
-        self.assertEqual(roles, [u"__test_role"])
+        request = create_dummy_request(authentication=False, user="__test_user")
+        roles = defaultgroupsfinder("__test_user", request)
+        self.assertEqual(roles, ["__test_role"])

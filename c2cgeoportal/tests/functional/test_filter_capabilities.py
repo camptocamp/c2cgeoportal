@@ -31,7 +31,7 @@
 from unittest import TestCase
 from nose.plugins.attrib import attr
 
-from StringIO import StringIO
+from io import StringIO
 from xml import sax
 from xml.sax.saxutils import XMLGenerator
 
@@ -50,7 +50,7 @@ class TestFilterCapabilities(TestCase):
         xml = load_file(TestFilterCapabilities.capabilities_file)
         layers_whitelist = set()
         filtered_xml = self._filter_xml(
-            xml, u"FeatureType", layers_whitelist)
+            xml, "FeatureType", layers_whitelist)
 
         self.assertTrue("<Name>tows:parks</Name>" not in filtered_xml)
 
@@ -58,7 +58,7 @@ class TestFilterCapabilities(TestCase):
         xml = load_file(TestFilterCapabilities.capabilities_file)
         layers_whitelist = set()
         layers_whitelist.add("parks")
-        filtered_xml = self._filter_xml(xml, u"FeatureType", layers_whitelist)
+        filtered_xml = self._filter_xml(xml, "FeatureType", layers_whitelist)
 
         self.assertTrue("<Name>tows:parks</Name>" in filtered_xml)
 
@@ -74,4 +74,4 @@ class TestFilterCapabilities(TestCase):
             tag_name, layers_whitelist=layers_whitelist
         )
         filter_handler.parse(StringIO(xml))
-        return unicode(result.getvalue(), "utf-8")
+        return str(result.getvalue(), "utf-8")

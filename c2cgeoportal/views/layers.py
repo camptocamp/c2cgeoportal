@@ -503,7 +503,7 @@ def get_layer_metadatas(layer):
                     properties["nillable"] = True
                 edit_columns.append(properties)
         else:
-            for k, p in cls.__dict__.iteritems():
+            for k, p in cls.__dict__.items():
                 if not isinstance(p, _AssociationProxy):
                     continue
 

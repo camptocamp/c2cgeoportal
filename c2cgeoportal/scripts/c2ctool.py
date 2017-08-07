@@ -194,20 +194,20 @@ class C2cTool:
 
     def print_step(self, step, error=False, message=None, prompt="To continue type:"):
         print("")
-        print(self.color_bar)
+        print((self.color_bar))
         if message is not None:
-            print(colorize(message, RED if error else YELLOW))
+            print((colorize(message, RED if error else YELLOW)))
         if step >= 0:
-            print(colorize(prompt, GREEN))
-            print(colorize("make -f {} upgrade{}", GREEN).format(
+            print((colorize(prompt, GREEN)))
+            print((colorize("make -f {} upgrade{}", GREEN).format(
                 self.options.file if self.options.file is not None else "<user.mk>",
                 step if step != 0 else "",
-            ))
+            )))
 
     @staticmethod
     def get_project():
         if not os.path.isfile("project.yaml"):
-            print(colorize("Unable to find the required 'project.yaml' file.", RED))
+            print((colorize("Unable to find the required 'project.yaml' file.", RED)))
             exit(1)
 
         with open("project.yaml", "r") as f:
@@ -260,7 +260,7 @@ class C2cTool:
 
     @Step(0)
     def step0(self):
-        project_template_keys = self.project.get("template_vars").keys()
+        project_template_keys = list(self.project.get("template_vars").keys())
         messages = []
         for required in REQUIRED_TEMPLATE_KEYS:
             if required not in project_template_keys:
@@ -391,7 +391,7 @@ class C2cTool:
                 template_package_json = json.loads(package_json_file.read(), encoding="utf-8")
             if "devDependencies" not in package_json:
                 package_json["devDependencies"] = {}
-            for package, version in template_package_json.get("devDependencies", {}).items():
+            for package, version in list(template_package_json.get("devDependencies", {}).items()):
                 package_json["devDependencies"][package] = version
             with open("package.json", "w") as package_json_file:
                 json.dump(
@@ -543,21 +543,21 @@ class C2cTool:
         )])
 
         print("")
-        print(self.color_bar)
+        print((self.color_bar))
         print("")
-        print(colorize("Congratulations your upgrade is a success.", GREEN))
+        print((colorize("Congratulations your upgrade is a success.", GREEN)))
         print("")
         branch = check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).strip()
         print("Now all your files will be committed, you should do a git push:")
-        print("git push {0!s} {1!s}.".format(
+        print(("git push {0!s} {1!s}.".format(
             self.options.git_remote, branch
-        ))
+        )))
 
     def deploy(self):
         ok, message = self.test_checkers()
         if not ok:
             print(message)
-            print(colorize("Correct them and run again", RED))
+            print((colorize("Correct them and run again", RED)))
             exit(1)
 
         check_call(["sudo", "-u", "deploy", "deploy", "-r", "deploy/deploy.cfg", self.options.host])

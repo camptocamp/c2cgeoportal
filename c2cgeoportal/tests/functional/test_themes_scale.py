@@ -56,31 +56,31 @@ class TestThemesScale(TestCase):
         from c2cgeoportal.models import DBSession, \
             Theme, LayerGroup, Interface, LayerWMS, Metadata
 
-        main = Interface(name=u"desktop")
+        main = Interface(name="desktop")
 
         ogc_server, _ = create_default_ogcserver()
 
-        layer_noscale = LayerWMS(name=u"__test_layer_noscale", public=True)
+        layer_noscale = LayerWMS(name="__test_layer_noscale", public=True)
         layer_noscale.layer = "test_noscale"
         layer_noscale.interfaces = [main]
         layer_noscale.ogc_server = ogc_server
 
-        layer_minscale = LayerWMS(name=u"__test_layer_minscale", public=True)
+        layer_minscale = LayerWMS(name="__test_layer_minscale", public=True)
         layer_minscale.layer = "test_minscale"
         layer_minscale.interfaces = [main]
         layer_minscale.ogc_server = ogc_server
 
-        layer_maxscale = LayerWMS(name=u"__test_layer_maxscale", public=True)
+        layer_maxscale = LayerWMS(name="__test_layer_maxscale", public=True)
         layer_maxscale.layer = "test_maxscale"
         layer_maxscale.interfaces = [main]
         layer_maxscale.ogc_server = ogc_server
 
-        layer_boothscale = LayerWMS(name=u"__test_layer_boothscale", public=True)
+        layer_boothscale = LayerWMS(name="__test_layer_boothscale", public=True)
         layer_boothscale.layer = "test_boothscale"
         layer_boothscale.interfaces = [main]
         layer_boothscale.ogc_server = ogc_server
 
-        layer_metadatascale = LayerWMS(name=u"__test_layer_metadatascale", public=True)
+        layer_metadatascale = LayerWMS(name="__test_layer_metadatascale", public=True)
         layer_metadatascale.layer = "test_boothscale"
         layer_metadatascale.interfaces = [main]
         layer_metadatascale.ogc_server = ogc_server
@@ -89,10 +89,10 @@ class TestThemesScale(TestCase):
             Metadata("maxResolution", "1000"),
         ]
 
-        layer_group = LayerGroup(name=u"__test_layer_group")
+        layer_group = LayerGroup(name="__test_layer_group")
         layer_group.children = [layer_noscale, layer_minscale, layer_maxscale, layer_boothscale, layer_metadatascale]
 
-        theme = Theme(name=u"__test_theme")
+        theme = Theme(name="__test_theme")
         theme.interfaces = [main]
         theme.children = [layer_group]
 
@@ -173,13 +173,13 @@ class TestThemesScale(TestCase):
             "version": "2",
         })
         themes = entry.themes()
-        self.assertEquals(set(themes["errors"]), set())
-        self.assertEquals(
+        self.assertEqual(set(themes["errors"]), set())
+        self.assertEqual(
             [self._only_name(t, ["name", "childLayers", "minResolutionHint", "maxResolutionHint"]) for t in themes["themes"]],
             [{
-                "name": u"__test_theme",
+                "name": "__test_theme",
                 "children": [{
-                    "name": u"__test_layer_group",
+                    "name": "__test_layer_group",
                     "children": [{
                         "childLayers": [{
                             "minResolutionHint": 0.0,
@@ -189,7 +189,7 @@ class TestThemesScale(TestCase):
                         }],
                         "maxResolutionHint": 999999999.0,
                         "minResolutionHint": 0.0,
-                        "name": u"__test_layer_noscale",
+                        "name": "__test_layer_noscale",
                     }, {
                         "childLayers": [{
                             "minResolutionHint": 1.76,
@@ -199,7 +199,7 @@ class TestThemesScale(TestCase):
                         }],
                         "maxResolutionHint": 999999999.0,
                         "minResolutionHint": 1.76,
-                        "name": u"__test_layer_minscale",
+                        "name": "__test_layer_minscale",
                     }, {
                         "childLayers": [{
                             "minResolutionHint": 0.0,
@@ -209,7 +209,7 @@ class TestThemesScale(TestCase):
                         }],
                         "maxResolutionHint": 8.82,
                         "minResolutionHint": 0.0,
-                        "name": u"__test_layer_maxscale",
+                        "name": "__test_layer_maxscale",
                     }, {
                         "childLayers": [{
                             "minResolutionHint": 1.76,
@@ -219,7 +219,7 @@ class TestThemesScale(TestCase):
                         }],
                         "maxResolutionHint": 8.82,
                         "minResolutionHint": 1.76,
-                        "name": u"__test_layer_boothscale",
+                        "name": "__test_layer_boothscale",
                     }, {
                         "childLayers": [{
                             "minResolutionHint": 1.76,
@@ -229,7 +229,7 @@ class TestThemesScale(TestCase):
                         }],
                         "maxResolutionHint": 1000.0,
                         "minResolutionHint": 100.0,
-                        "name": u"__test_layer_metadatascale",
+                        "name": "__test_layer_metadatascale",
                     }]
                 }]
             }]

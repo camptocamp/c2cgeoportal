@@ -59,19 +59,19 @@ def main():
     session = DBSession()
 
     interfaces = session.query(Interface).all()
-    ogc_server = session.query(OGCServer).filter(OGCServer.name == u"source for image/png").one()
+    ogc_server = session.query(OGCServer).filter(OGCServer.name == "source for image/png").one()
 
-    layer_borders = LayerWMS(u"Borders", u"borders")
+    layer_borders = LayerWMS("Borders", "borders")
     layer_borders.interfaces = interfaces
     layer_borders.ogc_server = ogc_server
-    layer_density = LayerWMS(u"Density", u"density")
+    layer_density = LayerWMS("Density", "density")
     layer_density.interfaces = interfaces
     layer_density.ogc_server = ogc_server
 
-    group = LayerGroup(u"Demo")
+    group = LayerGroup("Demo")
     group.children = [layer_borders, layer_density]
 
-    theme = Theme(u"Demo")
+    theme = Theme("Demo")
     theme.children = [group]
     theme.interfaces = interfaces
 

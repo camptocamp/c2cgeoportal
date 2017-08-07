@@ -75,33 +75,33 @@ class TestMapserverproxyCapabilities(TestCase):
         ogcserver_wfs2.type = OGCSERVER_TYPE_MAPSERVER
         ogcserver_wfs2.auth = OGCSERVER_AUTH_STANDARD
 
-        role = Role(name=u"__test_role", description=u"__test_role")
-        user = User(username=u"__test_user", password=u"__test_user")
-        user.role_name = u"__test_role"
+        role = Role(name="__test_role", description="__test_role")
+        user = User(username="__test_user", password="__test_user")
+        user.role_name = "__test_role"
 
-        main = Interface(name=u"main")
+        main = Interface(name="main")
 
-        layer1 = LayerWMS(u"__test_layer1", public=False)
-        layer1.layer = u"__test_private_layer1"
+        layer1 = LayerWMS("__test_layer1", public=False)
+        layer1.layer = "__test_private_layer1"
         layer1.ogc_server = ogcserver_jpeg
         layer1.interfaces = [main]
 
-        layer2 = LayerWMS(u"__test_layer2", public=False)
-        layer2.layer = u"__test_private_layer2"
+        layer2 = LayerWMS("__test_layer2", public=False)
+        layer2.layer = "__test_private_layer2"
         layer2.ogc_server = ogcserver_png
         layer2.interfaces = [main]
 
-        layer3 = LayerWMS(u"__test_layer3", public=False)
-        layer3.layer = u"__test_private_layer3"
+        layer3 = LayerWMS("__test_layer3", public=False)
+        layer3.layer = "__test_private_layer3"
         layer3.ogc_server = ogcserver_wfs1
         layer3.interfaces = [main]
 
-        layer4 = LayerWMS(u"__test_layer4", public=False)
-        layer4.layer = u"__test_private_layer4"
+        layer4 = LayerWMS("__test_layer4", public=False)
+        layer4.layer = "__test_private_layer4"
         layer4.ogc_server = ogcserver_wfs2
         layer4.interfaces = [main]
 
-        restricted_area = RestrictionArea(u"__test_ra", u"", [layer1, layer2, layer3, layer4], [role])
+        restricted_area = RestrictionArea("__test_ra", "", [layer1, layer2, layer3, layer4], [role])
 
         DBSession.add_all([
             user, restricted_area

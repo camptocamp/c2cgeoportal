@@ -58,11 +58,11 @@ class TestThemesView(TestCase):
             LayerV1, OGCServer, LayerWMS, LayerWMTS, \
             Metadata, Dimension, OGCSERVER_AUTH_NOAUTH
 
-        main = Interface(name=u"desktop")
-        mobile = Interface(name=u"mobile")
-        min_levels = Interface(name=u"min_levels")
+        main = Interface(name="desktop")
+        mobile = Interface(name="mobile")
+        min_levels = Interface(name="min_levels")
 
-        layer_v1 = LayerV1(name=u"__test_layer_v1", public=True)
+        layer_v1 = LayerV1(name="__test_layer_v1", public=True)
         layer_v1.interfaces = [main]
         layer_v1.metadatas = [Metadata("test", "v1")]
 
@@ -73,51 +73,51 @@ class TestThemesView(TestCase):
         )
         ogc_server_external.wfs_support = False
 
-        layer_internal_wms = LayerWMS(name=u"__test_layer_internal_wms", public=True)
+        layer_internal_wms = LayerWMS(name="__test_layer_internal_wms", public=True)
         layer_internal_wms.layer = "__test_layer_internal_wms"
         layer_internal_wms.interfaces = [main, min_levels]
         layer_internal_wms.metadatas = [Metadata("test", "internal_wms")]
         layer_internal_wms.ogc_server = ogc_server_internal
 
-        layer_external_wms = LayerWMS(name=u"__test_layer_external_wms", layer="ch.swisstopo.dreiecksvermaschung", public=True)
+        layer_external_wms = LayerWMS(name="__test_layer_external_wms", layer="ch.swisstopo.dreiecksvermaschung", public=True)
         layer_external_wms.interfaces = [main]
         layer_external_wms.metadatas = [Metadata("test", "external_wms")]
         layer_external_wms.ogc_server = ogc_server_external
 
-        layer_wmts = LayerWMTS(name=u"__test_layer_wmts", public=True)
+        layer_wmts = LayerWMTS(name="__test_layer_wmts", public=True)
         layer_wmts.url = "http://example.com/1.0.0/WMTSCapabilities.xml"
         layer_wmts.layer = "map"
         layer_wmts.interfaces = [main, mobile]
         layer_wmts.metadatas = [Metadata("test", "wmts")]
         layer_wmts.dimensions = [Dimension("year", "2015")]
 
-        layer_group_1 = LayerGroup(name=u"__test_layer_group_1")
+        layer_group_1 = LayerGroup(name="__test_layer_group_1")
         layer_group_1.children = [layer_v1, layer_internal_wms, layer_external_wms, layer_wmts]
         layer_group_1.metadatas = [Metadata("test", "group_1")]
 
-        layer_group_2 = LayerGroup(name=u"__test_layer_group_2")
+        layer_group_2 = LayerGroup(name="__test_layer_group_2")
         layer_group_2.children = [layer_wmts, layer_internal_wms, layer_external_wms]
 
-        layer_group_3 = LayerGroup(name=u"__test_layer_group_3")
+        layer_group_3 = LayerGroup(name="__test_layer_group_3")
         layer_group_3.children = [layer_wmts, layer_internal_wms, layer_external_wms]
 
-        layer_group_4 = LayerGroup(name=u"__test_layer_group_4")
+        layer_group_4 = LayerGroup(name="__test_layer_group_4")
         layer_group_4.children = [layer_group_2]
 
-        theme = Theme(name=u"__test_theme")
+        theme = Theme(name="__test_theme")
         theme.interfaces = [main, mobile]
         theme.metadatas = [Metadata("test", "theme")]
         theme.children = [
             layer_group_1, layer_group_2
         ]
-        theme_layer = Theme(name=u"__test_theme_layer")
+        theme_layer = Theme(name="__test_theme_layer")
         theme_layer.interfaces = [min_levels]
         theme_layer.children = [
             layer_internal_wms
         ]
 
-        functionality1 = Functionality(name=u"test_name", value=u"test_value_1")
-        functionality2 = Functionality(name=u"test_name", value=u"test_value_2")
+        functionality1 = Functionality(name="test_name", value="test_value_1")
+        functionality2 = Functionality(name="test_name", value="test_value_2")
         theme.functionalities = [functionality1, functionality2]
 
         DBSession.add_all([theme, theme_layer])
@@ -157,7 +157,7 @@ class TestThemesView(TestCase):
             if _query is None:
                 return "http://localhost/travis/mapserv"
             else:
-                return "http://localhost/travis/mapserv?" + "&".join(["=".join(i) for i in _query.items()])
+                return "http://localhost/travis/mapserv?" + "&".join(["=".join(i) for i in list(_query.items())])
 
         request.route_url = route_url
         request.params = params
@@ -195,14 +195,14 @@ class TestThemesView(TestCase):
     def test_version(self):
         entry = self._create_entry_obj()
         themes = entry.themes()
-        self.assertEquals(
+        self.assertEqual(
             [self._only_name(t) for t in themes],
             [{
                 "name": "__test_theme",
                 "children": [{
-                    "name": u"__test_layer_group_1",
+                    "name": "__test_layer_group_1",
                     "children": [{
-                        "name": u"__test_layer_v1"
+                        "name": "__test_layer_v1"
                     }]
                 }]
             }]
@@ -213,30 +213,30 @@ class TestThemesView(TestCase):
             "catalogue": "true",
         })
         themes = entry.themes()
-        self.assertEquals(self._get_filtered_errors(themes), set())
-        self.assertEquals(
+        self.assertEqual(self._get_filtered_errors(themes), set())
+        self.assertEqual(
             [self._only_name(t) for t in themes["themes"]],
             [{
-                "name": u"__test_theme",
+                "name": "__test_theme",
                 "children": [{
-                    "name": u"__test_layer_group_1",
+                    "name": "__test_layer_group_1",
                     # order is important
                     "children": [{
-                        "name": u"__test_layer_internal_wms"
+                        "name": "__test_layer_internal_wms"
                     }, {
-                        "name": u"__test_layer_external_wms"
+                        "name": "__test_layer_external_wms"
                     }, {
-                        "name": u"__test_layer_wmts"
+                        "name": "__test_layer_wmts"
                     }]
                 }, {
-                    "name": u"__test_layer_group_2",
+                    "name": "__test_layer_group_2",
                     # order is important
                     "children": [{
-                        "name": u"__test_layer_wmts"
+                        "name": "__test_layer_wmts"
                     }, {
-                        "name": u"__test_layer_internal_wms"
+                        "name": "__test_layer_internal_wms"
                     }, {
-                        "name": u"__test_layer_external_wms"
+                        "name": "__test_layer_external_wms"
                     }]
                 }]
             }]
@@ -249,18 +249,18 @@ class TestThemesView(TestCase):
             "catalogue": "true",
         })
         themes = entry.themes()
-        self.assertEquals(self._get_filtered_errors(themes), set())
-        self.assertEquals(
+        self.assertEqual(self._get_filtered_errors(themes), set())
+        self.assertEqual(
             self._only_name(themes["group"]),
             {
-                "name": u"__test_layer_group_3",
+                "name": "__test_layer_group_3",
                 # order is important
                 "children": [{
-                    "name": u"__test_layer_wmts"
+                    "name": "__test_layer_wmts"
                 }, {
-                    "name": u"__test_layer_internal_wms"
+                    "name": "__test_layer_internal_wms"
                 }, {
-                    "name": u"__test_layer_external_wms"
+                    "name": "__test_layer_external_wms"
                 }]
             }
         )
@@ -271,20 +271,20 @@ class TestThemesView(TestCase):
             "catalogue": "true",
         })
         themes = entry.themes()
-        self.assertEquals(self._get_filtered_errors(themes), set())
-        self.assertEquals(
+        self.assertEqual(self._get_filtered_errors(themes), set())
+        self.assertEqual(
             self._only_name(themes["group"]),
             {
-                "name": u"__test_layer_group_4",
+                "name": "__test_layer_group_4",
                 "children": [{
-                    "name": u"__test_layer_group_2",
+                    "name": "__test_layer_group_2",
                     # order is important
                     "children": [{
-                        "name": u"__test_layer_wmts"
+                        "name": "__test_layer_wmts"
                     }, {
-                        "name": u"__test_layer_internal_wms"
+                        "name": "__test_layer_internal_wms"
                     }, {
-                        "name": u"__test_layer_external_wms"
+                        "name": "__test_layer_external_wms"
                     }]
                 }]
             }
@@ -292,7 +292,7 @@ class TestThemesView(TestCase):
 
     def test_group_update(self):
         from c2cgeoportal.models import DBSession, LayerGroup
-        layer_group_3 = DBSession.query(LayerGroup).filter(LayerGroup.name == u"__test_layer_group_3").one()
+        layer_group_3 = DBSession.query(LayerGroup).filter(LayerGroup.name == "__test_layer_group_3").one()
         layer_group_3.children = layer_group_3.children[:-1]
         transaction.commit()
 
@@ -302,16 +302,16 @@ class TestThemesView(TestCase):
             "catalogue": "true",
         })
         themes = entry.themes()
-        self.assertEquals(self._get_filtered_errors(themes), set())
-        self.assertEquals(
+        self.assertEqual(self._get_filtered_errors(themes), set())
+        self.assertEqual(
             self._only_name(themes["group"]),
             {
-                "name": u"__test_layer_group_3",
+                "name": "__test_layer_group_3",
                 # order is important
                 "children": [{
-                    "name": u"__test_layer_wmts"
+                    "name": "__test_layer_wmts"
                 }, {
-                    "name": u"__test_layer_internal_wms"
+                    "name": "__test_layer_internal_wms"
                 }]
             }
         )
@@ -323,8 +323,8 @@ class TestThemesView(TestCase):
             "interface": "min_levels",
         })
         themes = entry.themes()
-        self.assertEquals(self._get_filtered_errors(themes), set([
-            u"The Layer '__test_layer_internal_wms' cannot be directly in the theme '__test_theme_layer' (0/1)."
+        self.assertEqual(self._get_filtered_errors(themes), set([
+            "The Layer '__test_layer_internal_wms' cannot be directly in the theme '__test_theme_layer' (0/1)."
         ]))
 
         entry = self._create_entry_obj(params={
@@ -332,13 +332,13 @@ class TestThemesView(TestCase):
             "min_levels": "2",
         })
         themes = entry.themes()
-        self.assertEquals(self._get_filtered_errors(themes), set([
-            u"The Layer '__test_theme/__test_layer_group_1/__test_layer_internal_wms' is under indented (1/2).",
-            u"The Layer '__test_theme/__test_layer_group_1/__test_layer_wmts' is under indented (1/2).",
-            u"The Layer '__test_theme/__test_layer_group_2/__test_layer_external_wms' is under indented (1/2).",
-            u"The Layer '__test_theme/__test_layer_group_2/__test_layer_internal_wms' is under indented (1/2).",
-            u"The Layer '__test_theme/__test_layer_group_1/__test_layer_external_wms' is under indented (1/2).",
-            u"The Layer '__test_theme/__test_layer_group_2/__test_layer_wmts' is under indented (1/2).",
+        self.assertEqual(self._get_filtered_errors(themes), set([
+            "The Layer '__test_theme/__test_layer_group_1/__test_layer_internal_wms' is under indented (1/2).",
+            "The Layer '__test_theme/__test_layer_group_1/__test_layer_wmts' is under indented (1/2).",
+            "The Layer '__test_theme/__test_layer_group_2/__test_layer_external_wms' is under indented (1/2).",
+            "The Layer '__test_theme/__test_layer_group_2/__test_layer_internal_wms' is under indented (1/2).",
+            "The Layer '__test_theme/__test_layer_group_1/__test_layer_external_wms' is under indented (1/2).",
+            "The Layer '__test_theme/__test_layer_group_2/__test_layer_wmts' is under indented (1/2).",
         ]))
 
     def test_theme_layer(self):
@@ -348,13 +348,13 @@ class TestThemesView(TestCase):
             "min_levels": "0",
         })
         themes = entry.themes()
-        self.assertEquals(self._get_filtered_errors(themes), set())
-        self.assertEquals(
+        self.assertEqual(self._get_filtered_errors(themes), set())
+        self.assertEqual(
             [self._only_name(t) for t in themes["themes"]],
             [{
-                "name": u"__test_theme_layer",
+                "name": "__test_theme_layer",
                 "children": [{
-                    "name": u"__test_layer_internal_wms",
+                    "name": "__test_layer_internal_wms",
                 }]
             }]
         )
@@ -365,35 +365,35 @@ class TestThemesView(TestCase):
         })
         themes = entry.themes()
 
-        self.assertEquals(self._get_filtered_errors(themes), set([]))
+        self.assertEqual(self._get_filtered_errors(themes), set([]))
 
-        self.assertEquals(
+        self.assertEqual(
             [self._only_name(t) for t in themes["themes"]],
             [{
-                "name": u"__test_theme",
+                "name": "__test_theme",
                 "children": [{
-                    "name": u"__test_layer_group_1",
+                    "name": "__test_layer_group_1",
                     "children": [{
-                        "name": u"__test_layer_internal_wms"
+                        "name": "__test_layer_internal_wms"
                     }, {
-                        "name": u"__test_layer_external_wms"
+                        "name": "__test_layer_external_wms"
                     }, {
-                        "name": u"__test_layer_wmts"
+                        "name": "__test_layer_wmts"
                     }]
                 }, {
-                    "name": u"__test_layer_group_2",
+                    "name": "__test_layer_group_2",
                     "children": [{
-                        "name": u"__test_layer_wmts"
+                        "name": "__test_layer_wmts"
                     }, {
-                        "name": u"__test_layer_internal_wms"
+                        "name": "__test_layer_internal_wms"
                     }, {
-                        "name": u"__test_layer_external_wms"
+                        "name": "__test_layer_external_wms"
                     }]
                 }]
             }]
         )
 
-        self.assertEquals(
+        self.assertEqual(
             [self._only_name(t, "mixed") for t in themes["themes"]],
             [{
                 "children": [{
@@ -411,7 +411,7 @@ class TestThemesView(TestCase):
             "catalogue": "true",
         })
         themes = entry.themes()
-        self.assertEquals(self._get_filtered_errors(themes), set())
+        self.assertEqual(self._get_filtered_errors(themes), set())
 
     def test_interface(self):
         entry = self._create_entry_obj(params={
@@ -420,20 +420,20 @@ class TestThemesView(TestCase):
             "catalogue": "true",
         })
         themes = entry.themes()
-        self.assertEquals(self._get_filtered_errors(themes), set())
-        self.assertEquals(
+        self.assertEqual(self._get_filtered_errors(themes), set())
+        self.assertEqual(
             [self._only_name(t) for t in themes["themes"]],
             [{
-                "name": u"__test_theme",
+                "name": "__test_theme",
                 "children": [{
-                    "name": u"__test_layer_group_1",
+                    "name": "__test_layer_group_1",
                     "children": [{
-                        "name": u"__test_layer_wmts"
+                        "name": "__test_layer_wmts"
                     }]
                 }, {
-                    "name": u"__test_layer_group_2",
+                    "name": "__test_layer_group_2",
                     "children": [{
-                        "name": u"__test_layer_wmts"
+                        "name": "__test_layer_wmts"
                     }]
                 }]
             }]
@@ -445,29 +445,29 @@ class TestThemesView(TestCase):
             "catalogue": "true",
         })
         themes = entry.themes()
-        self.assertEquals(self._get_filtered_errors(themes), set())
-        self.assertEquals(
+        self.assertEqual(self._get_filtered_errors(themes), set())
+        self.assertEqual(
             [self._only_name(t, "metadata") for t in themes["themes"]],
             [{
                 "metadata": {
-                    u"test": u"theme",
+                    "test": "theme",
                 },
                 "children": [{
                     "metadata": {
-                        u"test": u"group_1",
+                        "test": "group_1",
                     },
                     # order is important
                     "children": [{
                         "metadata": {
-                            u"test": u"internal_wms",
+                            "test": "internal_wms",
                         }
                     }, {
                         "metadata": {
-                            u"test": u"external_wms",
+                            "test": "external_wms",
                         }
                     }, {
                         "metadata": {
-                            u"test": u"wmts",
+                            "test": "wmts",
                         }
                     }]
                 }, {
@@ -475,15 +475,15 @@ class TestThemesView(TestCase):
                     # order is important
                     "children": [{
                         "metadata": {
-                            u"test": u"wmts",
+                            "test": "wmts",
                         }
                     }, {
                         "metadata": {
-                            u"test": u"internal_wms",
+                            "test": "internal_wms",
                         }
                     }, {
                         "metadata": {
-                            u"test": u"external_wms",
+                            "test": "external_wms",
                         }
                     }]
                 }]
@@ -497,56 +497,56 @@ class TestThemesView(TestCase):
         })
 
         themes = entry.themes()
-        self.assertEquals(self._get_filtered_errors(themes), set())
-        self.assertEquals(
+        self.assertEqual(self._get_filtered_errors(themes), set())
+        self.assertEqual(
             themes["ogcServers"], {
-                u"__test_external_ogc_server": {
+                "__test_external_ogc_server": {
                     "wfsSupport": True,
-                    "url": u"http://localhost/travis/mapserv?ogcserver=__test_external_ogc_server",
+                    "url": "http://localhost/travis/mapserv?ogcserver=__test_external_ogc_server",
                     "isSingleTile": False,
-                    "urlWfs": u"http://localhost/travis/mapserv?ogcserver=__test_external_ogc_server",
+                    "urlWfs": "http://localhost/travis/mapserv?ogcserver=__test_external_ogc_server",
                     "type": "mapserver",
                     "imageType": "image/png",
                     "credential": True,
                 },
-                u"__test_ogc_server": {
+                "__test_ogc_server": {
                     "wfsSupport": True,
-                    "url": u"http://localhost/travis/mapserv?ogcserver=__test_ogc_server",
+                    "url": "http://localhost/travis/mapserv?ogcserver=__test_ogc_server",
                     "isSingleTile": False,
-                    "urlWfs": u"http://localhost/travis/mapserv?ogcserver=__test_ogc_server",
+                    "urlWfs": "http://localhost/travis/mapserv?ogcserver=__test_ogc_server",
                     "type": "mapserver",
                     "imageType": "image/png",
                     "credential": True,
                 },
-                u"__test_ogc_server_chtopo": {
+                "__test_ogc_server_chtopo": {
                     "wfsSupport": False,
-                    "url": u"http://wms.geo.admin.ch/",
+                    "url": "http://wms.geo.admin.ch/",
                     "isSingleTile": False,
-                    "urlWfs": u"http://wms.geo.admin.ch/",
+                    "urlWfs": "http://wms.geo.admin.ch/",
                     "type": "mapserver",
                     "imageType": "image/jpeg",
                     "credential": False,
                 }
             },
         )
-        self.assertEquals(
+        self.assertEqual(
             [self._only_name(t, "ogcServer") for t in themes["themes"]],
             [{
                 "children": [{
                     # order is important
                     "children": [{
-                        "ogcServer": u"__test_ogc_server",
+                        "ogcServer": "__test_ogc_server",
                     }, {
-                        "ogcServer": u"__test_ogc_server_chtopo",
+                        "ogcServer": "__test_ogc_server_chtopo",
                     }, {
                     }]
                 }, {
                     # order is important
                     "children": [{
                     }, {
-                        "ogcServer": u"__test_ogc_server",
+                        "ogcServer": "__test_ogc_server",
                     }, {
-                        "ogcServer": u"__test_ogc_server_chtopo",
+                        "ogcServer": "__test_ogc_server_chtopo",
                     }]
                 }]
             }]
@@ -559,13 +559,13 @@ class TestThemesView(TestCase):
             "catalogue": "true",
         })
         themes = entry.themes()
-        self.assertEquals(self._get_filtered_errors(themes), set())
-        self.assertEquals(
+        self.assertEqual(self._get_filtered_errors(themes), set())
+        self.assertEqual(
             self._only_name(themes["group"], "dimensions"),
             {
                 # order is important
                 "children": [{
-                    "dimensions": {u"year": u"2015"}
+                    "dimensions": {"year": "2015"}
                 }, {
                     "dimensions": {}
                 }, {
@@ -581,15 +581,15 @@ class TestThemesView(TestCase):
             "set": "background",
         })
         themes = entry.themes()
-        self.assertEquals(self._get_filtered_errors(themes), set())
-        self.assertEquals(
+        self.assertEqual(self._get_filtered_errors(themes), set())
+        self.assertEqual(
             [self._only_name(e) for e in themes["background_layers"]],
             # order is important
             [{
-                "name": u"__test_layer_wmts"
+                "name": "__test_layer_wmts"
             }, {
-                "name": u"__test_layer_internal_wms"
+                "name": "__test_layer_internal_wms"
             }, {
-                "name": u"__test_layer_external_wms"
+                "name": "__test_layer_external_wms"
             }]
         )

@@ -64,7 +64,7 @@ def main():
     aeskey = urllogin.get("aes_key")
     auth_enc = create_token(aeskey, args.user, args.password, args.valid)
 
-    print("Use: auth={}".format(auth_enc))
+    print(("Use: auth={}".format(auth_enc)))
 
 
 if __name__ == "__main__":

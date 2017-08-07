@@ -89,7 +89,7 @@ def main():
     if options.layers:
         table_list = [LayerWMTS, LayerWMS, OGCServer]
         for table in table_list:
-            print("Emptying table {0!s}.".format(str(table.__table__)))
+            print(("Emptying table {0!s}.".format(str(table.__table__))))
             # must be done exactly this way othewise the cascade config in the
             # models are not used
             for t in session.query(table).all():
@@ -143,12 +143,12 @@ def ogc_server(session):
         if is_single_tile is None:
             is_single_tile = False
         if url is None:
-            url = u"config://internal/mapserv"
-            name = u"source for {}".format(image_type)
+            url = "config://internal/mapserv"
+            name = "source for {}".format(image_type)
         else:
-            name = u"source for {} {}".format(url, image_type)
+            name = "source for {} {}".format(url, image_type)
         if is_single_tile:
-            name += u" with single_tile"
+            name += " with single_tile"
         identifier = (url, image_type, is_single_tile)
         if identifier not in unique_servers:
             unique_servers.add(identifier)
@@ -178,7 +178,7 @@ def layer_v1tov2(session, layer):
             is_single_tile = False
         url = layer.url
         if layer.url is None:
-            url = u"config://internal/mapserv"
+            url = "config://internal/mapserv"
         ogc_server = session.query(OGCServer).filter(
             OGCServer.url == url,
             OGCServer.image_type == image_type,
@@ -201,7 +201,7 @@ def layer_v1tov2(session, layer):
 
         if layer.dimensions is not None:
             dimensions = loads(layer.dimensions)
-            for name, value in dimensions.items():
+            for name, value in list(dimensions.items()):
                 session.add(Dimension(name, value, new_layer))
 
     new_layer.name = layer.name
@@ -232,45 +232,45 @@ def new_metadata(name, value, item):
 
 def layer_add_metadata(layer, new_layer, session):
     if layer.metadata_url is not None:
-        session.add(new_metadata(u"metadataUrl", layer.metadata_url, new_layer))
+        session.add(new_metadata("metadataUrl", layer.metadata_url, new_layer))
     if layer.is_checked is True:
-        session.add(new_metadata(u"isChecked", u"true", new_layer))
+        session.add(new_metadata("isChecked", "true", new_layer))
     if layer.icon is not None:
-        session.add(new_metadata(u"iconUrl", layer.icon, new_layer))
+        session.add(new_metadata("iconUrl", layer.icon, new_layer))
     if layer.wms_layers is not None:
-        session.add(new_metadata(u"wmsLayers", layer.wms_layers, new_layer))
+        session.add(new_metadata("wmsLayers", layer.wms_layers, new_layer))
     if layer.query_layers is not None:
-        session.add(new_metadata(u"queryLayers", layer.query_layers, new_layer))
+        session.add(new_metadata("queryLayers", layer.query_layers, new_layer))
     if layer.legend is not None:
-        session.add(new_metadata(u"legend", layer.legend, new_layer))
+        session.add(new_metadata("legend", layer.legend, new_layer))
     if layer.legend_image is not None:
-        session.add(new_metadata(u"legendImage", layer.legend_image, new_layer))
+        session.add(new_metadata("legendImage", layer.legend_image, new_layer))
     if layer.legend_rule is not None:
-        session.add(new_metadata(u"legendRule", layer.legend_rule, new_layer))
+        session.add(new_metadata("legendRule", layer.legend_rule, new_layer))
     if layer.is_legend_expanded is True:
-        session.add(new_metadata(u"isLegendExpanded", u"true", new_layer))
+        session.add(new_metadata("isLegendExpanded", "true", new_layer))
     if layer.min_resolution is not None:
-        session.add(new_metadata(u"minResolution", layer.min_resolution, new_layer))
+        session.add(new_metadata("minResolution", layer.min_resolution, new_layer))
     if layer.max_resolution is not None:
-        session.add(new_metadata(u"maxResolution", layer.max_resolution, new_layer))
+        session.add(new_metadata("maxResolution", layer.max_resolution, new_layer))
     if layer.disclaimer is not None:
-        session.add(new_metadata(u"disclaimer", layer.disclaimer, new_layer))
+        session.add(new_metadata("disclaimer", layer.disclaimer, new_layer))
     if layer.identifier_attribute_field is not None:
         session.add(new_metadata(
-            u"identifierAttributeField",
+            "identifierAttributeField",
             layer.identifier_attribute_field, new_layer
         ))
     if layer.exclude_properties is not None:
-        session.add(new_metadata(u"excludeProperties", layer.exclude_properties, new_layer))
+        session.add(new_metadata("excludeProperties", layer.exclude_properties, new_layer))
 
 
 def layergroup_v1tov2(session, group):
     is_expended_metadatas = group.get_metadatas("isExpanded")
     if group.is_expanded is True:
         if len(is_expended_metadatas) > 0:
-            is_expended_metadatas[0].value = u"true"
+            is_expended_metadatas[0].value = "true"
         else:
-            session.add(new_metadata(u"isExpanded", u"true", group))
+            session.add(new_metadata("isExpanded", "true", group))
     elif len(is_expended_metadatas) > 0:
         session.delete(is_expended_metadatas)
 
@@ -278,4 +278,4 @@ def layergroup_v1tov2(session, group):
 def theme_v1tov2(session, theme):
     thumbnail = theme.get_metadatas("thumbnail")
     if thumbnail is None and theme.icon is not None:
-        session.add(new_metadata(u"thumbnail", theme.icon, theme))
+        session.add(new_metadata("thumbnail", theme.icon, theme))

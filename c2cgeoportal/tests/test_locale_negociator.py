@@ -38,7 +38,7 @@ class TestLocalNegociator(TestCase):
 
         request = testing.DummyRequest(params=dict(lang="fr"))
         lang = locale_negotiator(request)
-        self.assertEquals(lang, "fr")
+        self.assertEqual(lang, "fr")
 
     def test_lang_is_not_available(self):
         from c2cgeoportal.pyramid_ import locale_negotiator
@@ -54,7 +54,7 @@ class TestLocalNegociator(TestCase):
 
         request.headers["accept-language"] = "en-us,en;q=0.3,fr;q=0.7"
         lang = locale_negotiator(request)
-        self.assertEquals(lang, "de")
+        self.assertEqual(lang, "de")
 
     def test_lang_is_available(self):
         from c2cgeoportal.pyramid_ import locale_negotiator
@@ -69,4 +69,4 @@ class TestLocalNegociator(TestCase):
         }
         request.accept_language = "en-us,en;q=0.3,es;q=0.7"
         lang = locale_negotiator(request)
-        self.assertEquals(lang, "es")
+        self.assertEqual(lang, "es")

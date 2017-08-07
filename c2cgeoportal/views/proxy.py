@@ -30,11 +30,11 @@
 
 import sys
 import httplib2
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import logging
 
-from cStringIO import StringIO
-from urlparse import urlparse, parse_qs
+from io import StringIO
+from urllib.parse import urlparse, parse_qs
 
 from pyramid.response import Response
 from pyramid.httpexceptions import HTTPBadGateway, HTTPInternalServerError
@@ -61,9 +61,9 @@ class Proxy:
             all_params[p] = ",".join(all_params[p])
         all_params.update(params)
         params_encoded = {}
-        for k, v in all_params.iteritems():
-            params_encoded[k] = unicode(v).encode("utf-8")
-        query_string = urllib.urlencode(params_encoded)
+        for k, v in all_params.items():
+            params_encoded[k] = str(v).encode("utf-8")
+        query_string = urllib.parse.urlencode(params_encoded)
 
         if parsed_url.port is None:
             url = "{0!s}://{1!s}{2!s}?{3!s}".format(
@@ -114,7 +114,7 @@ class Proxy:
 
             log.error(
                 "--- With headers ---\n{0!s}".format("\n".join(
-                    ["{0!s}: {1!s}".format(*h) for h in headers.items()]
+                    ["{0!s}: {1!s}".format(*h) for h in list(headers.items())]
                 ))
             )
 
@@ -141,7 +141,7 @@ class Proxy:
 
             log.error(
                 "--- With headers ---\n{0!s}".format("\n".join(
-                    ["{0!s}: {1!s}".format(*h) for h in headers.items()]
+                    ["{0!s}: {1!s}".format(*h) for h in list(headers.items())]
                 ))
             )
 
@@ -228,7 +228,7 @@ class Proxy:
     @staticmethod
     def _get_lower_params(params):
         return dict(
-            (k.lower(), unicode(v).lower()) for k, v in params.iteritems()
+            (k.lower(), str(v).lower()) for k, v in params.items()
         )
 
     def _get_headers(self):

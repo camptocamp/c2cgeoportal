@@ -35,7 +35,7 @@ import yaml
 import re
 import traceback
 from json import loads
-from urlparse import urlsplit
+from urllib.parse import urlsplit
 from defusedxml.minidom import parseString
 from xml.parsers.expat import ExpatError
 from sqlalchemy.exc import ProgrammingError, NoSuchTableError, OperationalError
@@ -143,18 +143,18 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
                     with open(int_filename, "wb") as file_open:
                         file_open.write(processed.encode("utf-8"))
                 except:
-                    print(colorize(
-                        u"ERROR! Occurred during the '{}' template generation".format(filename),
+                    print((colorize(
+                        "ERROR! Occurred during the '{}' template generation".format(filename),
                         RED
-                    ))
-                    print(colorize(traceback.format_exc(), RED))
+                    )))
+                    print((colorize(traceback.format_exc(), RED)))
                     if os.environ["IGNORE_I18N_ERRORS"] == "TRUE":
                         # Continue with the original one
                         int_filename = filename
                     else:
                         raise
             except:
-                print(traceback.format_exc())
+                print((traceback.format_exc()))
 
         message_str = subprocess.check_output(["node", "tools/extract-messages.js", int_filename])
         if int_filename != filename:
@@ -164,12 +164,12 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
             for contexts, message in loads(message_str):
                 for context in contexts.split(", "):
                     messages.append(Message(
-                        None, message, None, [], u"", u"", context.split(":")
+                        None, message, None, [], "", "", context.split(":")
                     ))
             return messages
         except:
-            print(colorize("An error occurred", RED))
-            print(colorize(message_str, RED))
+            print((colorize("An error occurred", RED)))
+            print((colorize(message_str, RED)))
             print("------")
             raise
 
@@ -197,10 +197,10 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
         # Collect raster layers names
         raster = [
             Message(
-                None, raster_layer, None, [], u"", u"",
-                (filename, u"raster/{0!s}".format(raster_layer))
+                None, raster_layer, None, [], "", "",
+                (filename, "raster/{0!s}".format(raster_layer))
             )
-            for raster_layer in config["vars"].get("raster", {}).keys()
+            for raster_layer in list(config["vars"].get("raster", {}).keys())
         ]
         # Collect layers enum values (for filters)
         settings = get_config(".build/config.yaml")
@@ -210,19 +210,19 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
         from c2cgeoportal.views.layers import Layers
         enums = []
         enum_layers = config["vars"].get("layers", {}).get("enum", {})
-        for layername in enum_layers.keys():
+        for layername in list(enum_layers.keys()):
             layerinfos = enum_layers.get(layername, {})
             attributes = layerinfos.get("attributes", {})
-            for fieldname in attributes.keys():
+            for fieldname in list(attributes.keys()):
                 values = cls._enumerate_attributes_values(DBSessions, Layers, layerinfos, fieldname)
                 for value, in values:
                     if value != "":
-                        msgid = value if isinstance(value, unicode) else str(value)
+                        msgid = value if isinstance(value, str) else str(value)
                         location = "/layers/{0!s}/values/{1!s}/{2!s}".format(
                             layername,
                             fieldname,
-                            value.encode("ascii", errors="replace") if isinstance(value, unicode) else value)
-                        enums.append(Message(None, msgid, None, [], u"", u"", (filename, location)))
+                            value.encode("ascii", errors="replace") if isinstance(value, str) else value)
+                        enums.append(Message(None, msgid, None, [], "", "", (filename, location)))
 
         return raster + enums
 
@@ -234,11 +234,11 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
             return layers.query_enumerate_attribute_values(dbsession, layerinfos, fieldname)
         except Exception as e:
             table = layerinfos.get("attributes").get(fieldname, {}).get("table")
-            print(colorize(
-                u"ERROR! Unable to collect enumerate attributes for "
-                u"db: {}, table: {}, column: {} ({})".format(dbname, table, fieldname, e),
+            print((colorize(
+                "ERROR! Unable to collect enumerate attributes for "
+                "db: {}, table: {}, column: {} ({})".format(dbname, table, fieldname, e),
                 RED
-            ))
+            )))
             if os.environ["IGNORE_I18N_ERRORS"] == "TRUE":
                 return []
             else:
@@ -247,17 +247,17 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
     @classmethod
     def _collect_print_config(cls, config, filename):
         result = []
-        for template_ in config.get("templates").keys():
+        for template_ in list(config.get("templates").keys()):
             result.append(Message(
-                None, template_, None, [], u"", u"",
-                (filename, u"template/{0!s}".format(template_))
+                None, template_, None, [], "", "",
+                (filename, "template/{0!s}".format(template_))
             ))
             result += [
                 Message(
-                    None, attribute, None, [], u"", u"",
-                    (filename, u"template/{0!s}/{1!s}".format(template_, attribute))
+                    None, attribute, None, [], "", "",
+                    (filename, "template/{0!s}/{1!s}".format(template_, attribute))
                 )
-                for attribute in config.get("templates")[template_].attributes.keys()
+                for attribute in list(config.get("templates")[template_].attributes.keys())
             ]
         return result
 
@@ -291,34 +291,34 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                 for ln, in DBSession.query(FullTextSearch.layer_name).distinct().all():
                     if ln is not None and ln != "":
                         messages.append(Message(
-                            None, ln, None, [], u"", u"",
+                            None, ln, None, [], "", "",
                             ("fts", ln.encode("ascii", errors="replace"))
                         ))
             except ProgrammingError as e:
-                print(colorize(
+                print((colorize(
                     "ERROR! The database is probably not up to date "
                     "(should be ignored when happen during the upgrade)",
                     RED
-                ))
-                print(colorize(e, RED))
+                )))
+                print((colorize(e, RED)))
                 if os.environ["IGNORE_I18N_ERRORS"] != "TRUE":
                     raise
         except NoSuchTableError as e:
-            print(colorize(
+            print((colorize(
                 "ERROR! The schema didn't seem to exists "
                 "(should be ignored when happen during the deploy)",
                 RED
-            ))
-            print(colorize(e, RED))
+            )))
+            print((colorize(e, RED)))
             if os.environ["IGNORE_I18N_ERRORS"] != "TRUE":
                 raise
         except OperationalError as e:
-            print(colorize(
+            print((colorize(
                 "ERROR! The database didn't seem to exists "
                 "(should be ignored when happen during the deploy)",
                 RED
-            ))
-            print(colorize(e, RED))
+            )))
+            print((colorize(e, RED)))
             if os.environ["IGNORE_I18N_ERRORS"] != "TRUE":
                 raise
 
@@ -331,7 +331,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
         items = DBSession.query(object_type)
         for item in items:
             messages.append(Message(
-                None, item.name, None, [], u"", u"",
+                None, item.name, None, [], "", "",
                 (item.item_type, item.name.encode("ascii", errors="replace"))
             ))
 
@@ -366,11 +366,11 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                             (".".join(["edit", layer.item_type, str(layer.id)]), layer.name)
                         ))
             except NoSuchTableError:
-                print(colorize(
-                    u"ERROR! No such table '{}' for layer '{}'.".format(layer.geo_table, layer.name),
+                print((colorize(
+                    "ERROR! No such table '{}' for layer '{}'.".format(layer.geo_table, layer.name),
                     RED
-                ))
-                print(colorize(traceback.format_exc(), RED))
+                )))
+                print((colorize(traceback.format_exc(), RED)))
                 if os.environ["IGNORE_I18N_ERRORS"] != "TRUE":
                     raise
 
@@ -390,12 +390,12 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                         layer.item_type, layer.name, messages
                     )
                 except NoResultFound:
-                    print(colorize(
-                        u"ERROR! the OGC server '{}' from the WMTS layer '{}' does not exist.".format(
+                    print((colorize(
+                        "ERROR! the OGC server '{}' from the WMTS layer '{}' does not exist.".format(
                             server[0], layer.name
                         ),
                         RED
-                    ))
+                    )))
                     if os.environ["IGNORE_I18N_ERRORS"] != "TRUE":
                         raise
 
@@ -419,7 +419,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
         # static schema will not be supported
         url = get_url2("Layer", url, request, errors)
         if len(errors) > 0:
-            print("\n".join(errors))
+            print(("\n".join(errors)))
             return []
 
         wms_getcap_url = add_url_params(url, {
@@ -430,7 +430,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
 
         hostname = urlsplit(url).hostname
         if url not in self.wmscap_cache:
-            print(u"Get WMS GetCapabilities for URL: {}".format(url))
+            print(("Get WMS GetCapabilities for URL: {}".format(url)))
             self.wmscap_cache[url] = None
 
             # forward request to target (without Host Header)
@@ -444,20 +444,20 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                 try:
                     self.wmscap_cache[url] = WebMapService(None, xml=content)
                 except Exception as e:
-                    print(colorize(
+                    print((colorize(
                         "ERROR! an error occurred while trying to "
                         "parse the GetCapabilities document.",
-                        RED))
-                    print(colorize(str(e), RED))
-                    print(u"URL: {0!s}\nxml:\n{1!s}".format(wms_getcap_url, content))
+                        RED)))
+                    print((colorize(str(e), RED)))
+                    print(("URL: {0!s}\nxml:\n{1!s}".format(wms_getcap_url, content)))
                     if os.environ["IGNORE_I18N_ERRORS"] != "TRUE":
                         raise
             except Exception as e:  # pragma: no cover
-                print(colorize(str(e), RED))
-                print(colorize(
-                    u"ERROR! Unable to GetCapabilities from URL: {0!s}".format(wms_getcap_url),
+                print((colorize(str(e), RED)))
+                print((colorize(
+                    "ERROR! Unable to GetCapabilities from URL: {0!s}".format(wms_getcap_url),
                     RED,
-                ))
+                )))
                 if os.environ["IGNORE_I18N_ERRORS"] != "TRUE":
                     raise
 
@@ -470,7 +470,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
         })
 
         if url not in self.featuretype_cache:
-            print(u"Get WFS DescribeFeatureType for URL: {}".format(wfs_descrfeat_url))
+            print(("Get WFS DescribeFeatureType for URL: {}".format(wfs_descrfeat_url)))
             self.featuretype_cache[url] = None
 
             # forward request to target (without Host Header)
@@ -481,23 +481,23 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
             try:
                 resp, content = http.request(wfs_descrfeat_url, method="GET", headers=h)
             except Exception as e:  # pragma: no cover
-                print(colorize(str(e), RED))
-                print(colorize(
-                    u"ERROR! Unable to DescribeFeatureType from URL: {0!s}".format(wfs_descrfeat_url),
+                print((colorize(str(e), RED)))
+                print((colorize(
+                    "ERROR! Unable to DescribeFeatureType from URL: {0!s}".format(wfs_descrfeat_url),
                     RED,
-                ))
+                )))
                 if os.environ["IGNORE_I18N_ERRORS"] == "TRUE":
                     return []
                 else:
                     raise
 
             if resp.status < 200 or resp.status >= 300:  # pragma: no cover
-                print(colorize(
-                    u"ERROR! DescribeFeatureType from URL {0!s} return the error: {1:d} {2!s}".format(
+                print((colorize(
+                    "ERROR! DescribeFeatureType from URL {0!s} return the error: {1:d} {2!s}".format(
                         wfs_descrfeat_url, resp.status, resp.reason
                     ),
                     RED,
-                ))
+                )))
                 if os.environ["IGNORE_I18N_ERRORS"] == "TRUE":
                     return []
                 else:
@@ -512,24 +512,24 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                 ):
                     featurestype[type_element.getAttribute("name")] = type_element
             except ExpatError as e:
-                print(colorize(
+                print((colorize(
                     "ERROR! an error occurred while trying to "
                     "parse the DescribeFeatureType document.",
                     RED
-                ))
-                print(colorize(str(e), RED))
-                print(u"URL: {0!s}\nxml:\n{1!s}".format(wfs_descrfeat_url, content))
+                )))
+                print((colorize(str(e), RED)))
+                print(("URL: {0!s}\nxml:\n{1!s}".format(wfs_descrfeat_url, content)))
                 if os.environ["IGNORE_I18N_ERRORS"] == "TRUE":
                     return []
                 else:
                     raise
             except AttributeError:
-                print(colorize(
+                print((colorize(
                     "ERROR! an error occurred while trying to "
                     "read the Mapfile and recover the themes.",
                     RED
-                ))
-                print(u"URL: {0!s}\nxml:\n{1!s}".format(wfs_descrfeat_url, content))
+                )))
+                print(("URL: {0!s}\nxml:\n{1!s}".format(wfs_descrfeat_url, content)))
                 if os.environ["IGNORE_I18N_ERRORS"] == "TRUE":
                     return []
                 else:
@@ -549,7 +549,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
         attributes = []
         for sub_layer in layers:
             # Should probably be adapted for other king of servers
-            type_element = featurestype.get(u"{}Type".format(sub_layer))
+            type_element = featurestype.get("{}Type".format(sub_layer))
             if type_element is not None:
                 for element in type_element.getElementsByTagNameNS(
                     "http://www.w3.org/2001/XMLSchema", "element"

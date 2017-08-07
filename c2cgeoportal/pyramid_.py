@@ -34,7 +34,7 @@ import sqlahelper
 import pyramid_tm
 import mimetypes
 import c2c.template
-from urlparse import urlsplit
+from urllib.parse import urlsplit
 import simplejson as json
 from socket import gethostbyname, gaierror
 from ipcalc import IP, Network
@@ -257,7 +257,7 @@ def _add_static_view(config, name, path):
         cache_max_age=int(config.get_settings()["default_max_age"]),
     )
     config.add_cache_buster(path, version_cache_buster)
-    CACHE_PATH.append(unicode(name))
+    CACHE_PATH.append(str(name))
 
 
 def locale_negotiator(request):
@@ -314,7 +314,7 @@ def create_get_user_from_request(settings):
                     if "t" in auth and "u" in auth and "p" in auth:
                         timestamp = int(auth["t"])
                         if now < timestamp and request.registry.validate_user(
-                            request, unicode(auth["u"]), auth["p"]
+                            request, str(auth["u"]), auth["p"]
                         ):
                             headers = pyramid.security.remember(request, auth["u"])
                             request.response.headerlist.extend(headers)
@@ -418,9 +418,9 @@ class MapserverproxyRoutePredicate:
         if not hide_capabilities:
             return True
         params = dict(
-            (k.lower(), unicode(v).lower()) for k, v in request.params.iteritems()
+            (k.lower(), str(v).lower()) for k, v in request.params.items()
         )
-        return "request" not in params or params["request"] != u"getcapabilities"
+        return "request" not in params or params["request"] != "getcapabilities"
 
     @staticmethod
     def phash():
@@ -763,12 +763,12 @@ def init_dbsessions(settings):
         c2cgeoportal.formalchemy_available_metadata
     )
     c2cgeoportal.formalchemy_available_metadata = [
-        e if isinstance(e, basestring) else e.get("name")
+        e if isinstance(e, str) else e.get("name")
         for e in c2cgeoportal.formalchemy_available_metadata
     ]
 
     from c2cgeoportal.models import DBSessions
-    for dbsession_name, dbsession_config in settings.get("dbsessions", {}).items():  # pragma: nocover
+    for dbsession_name, dbsession_config in list(settings.get("dbsessions", {}).items()):  # pragma: nocover
         engine = sqlalchemy.create_engine(dbsession_config.get("url"))
         sqlahelper.add_engine(engine, dbsession_name)
         session = sqlalchemy.orm.session.sessionmaker()

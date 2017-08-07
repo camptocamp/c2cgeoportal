@@ -34,249 +34,249 @@ import yaml
 # Attributes
 
 class PrintBoolean(yaml.YAMLObject):
-    yaml_tag = u"!boolean"
+    yaml_tag = "!boolean"
 
 
 class PrintDatasource(yaml.YAMLObject):
-    yaml_tag = u"!datasource"
+    yaml_tag = "!datasource"
 
 
 class PrintFeatures(yaml.YAMLObject):
-    yaml_tag = u"!features"
+    yaml_tag = "!features"
 
 
 class PrintFloat(yaml.YAMLObject):
-    yaml_tag = u"!float"
+    yaml_tag = "!float"
 
 
 class PrintInteger(yaml.YAMLObject):
-    yaml_tag = u"!integer"
+    yaml_tag = "!integer"
 
 
 class PrintLegend(yaml.YAMLObject):
-    yaml_tag = u"!legend"
+    yaml_tag = "!legend"
 
 
 class PrintMap(yaml.YAMLObject):
-    yaml_tag = u"!map"
+    yaml_tag = "!map"
 
 
 class PrintNorthArraw(yaml.YAMLObject):
-    yaml_tag = u"!northArrow"
+    yaml_tag = "!northArrow"
 
 
 class PrintOverviewMap(yaml.YAMLObject):
-    yaml_tag = u"!overviewMap"
+    yaml_tag = "!overviewMap"
 
 
 class PrintPaging(yaml.YAMLObject):
-    yaml_tag = u"!paging"
+    yaml_tag = "!paging"
 
 
 class PrintScalbar(yaml.YAMLObject):
-    yaml_tag = u"!scalebar"
+    yaml_tag = "!scalebar"
 
 
 class PrintStaticLayer(yaml.YAMLObject):
-    yaml_tag = u"!staticLayer"
+    yaml_tag = "!staticLayer"
 
 
 class PrintString(yaml.YAMLObject):
-    yaml_tag = u"!string"
+    yaml_tag = "!string"
 
 
 class PrintStringArray(yaml.YAMLObject):
-    yaml_tag = u"!stringArray"
+    yaml_tag = "!stringArray"
 
 
 class PrintStyle(yaml.YAMLObject):
-    yaml_tag = u"!style"
+    yaml_tag = "!style"
 
 
 class PrintTable(yaml.YAMLObject):
-    yaml_tag = u"!table"
+    yaml_tag = "!table"
 
 
 # Configuration
 
 
 class PrintAcceptAll(yaml.YAMLObject):
-    yaml_tag = u"!acceptAll"
+    yaml_tag = "!acceptAll"
 
 
 class PrintAlwaysAllowedAssertion(yaml.YAMLObject):
-    yaml_tag = u"!alwaysAllowedAssertion"
+    yaml_tag = "!alwaysAllowedAssertion"
 
 
 class PrintAndAssertion(yaml.YAMLObject):
-    yaml_tag = u"!andAssertion"
+    yaml_tag = "!andAssertion"
 
 
 class PrintCertificateStore(yaml.YAMLObject):
-    yaml_tag = u"!certificateStore"
+    yaml_tag = "!certificateStore"
 
 
 class PrintCredential(yaml.YAMLObject):
-    yaml_tag = u"!credential"
+    yaml_tag = "!credential"
 
 
 class PrintDmsMatch(yaml.YAMLObject):
-    yaml_tag = u"!dnsMatch"
+    yaml_tag = "!dnsMatch"
 
 
 class PrintIpMatch(yaml.YAMLObject):
-    yaml_tag = u"!ipMatch"
+    yaml_tag = "!ipMatch"
 
 
 class PrintLocalMatch(yaml.YAMLObject):
-    yaml_tag = u"!localMatch"
+    yaml_tag = "!localMatch"
 
 
 class PrintMergeSource(yaml.YAMLObject):
-    yaml_tag = u"!mergeSource"
+    yaml_tag = "!mergeSource"
 
 
 class PrintOldApi(yaml.YAMLObject):
-    yaml_tag = u"!oldApi"
+    yaml_tag = "!oldApi"
 
 
 class PrintPdfConfig(yaml.YAMLObject):
-    yaml_tag = u"!pdfConfig"
+    yaml_tag = "!pdfConfig"
 
 
 class PrintProxy(yaml.YAMLObject):
-    yaml_tag = u"!proxy"
+    yaml_tag = "!proxy"
 
 
 class PrintRoleAccessAssertion(yaml.YAMLObject):
-    yaml_tag = u"!roleAccessAssertion"
+    yaml_tag = "!roleAccessAssertion"
 
 
 class PrintTemplate(yaml.YAMLObject):
-    yaml_tag = u"!template"
+    yaml_tag = "!template"
 
 
 class PrintUpdatePdfConfigUpdate(yaml.YAMLObject):
-    yaml_tag = u"!updatePdfConfigUpdate"
+    yaml_tag = "!updatePdfConfigUpdate"
 
 
 class PrintUrlImage(yaml.YAMLObject):
-    yaml_tag = u"!urlImage"
+    yaml_tag = "!urlImage"
 
 
 class PrintZoomLevels(yaml.YAMLObject):
-    yaml_tag = u"!zoomLevels"
+    yaml_tag = "!zoomLevels"
 
 
 # Processor
 
 
 class PrintAddBackgroundLayers(yaml.YAMLObject):
-    yaml_tag = u"!addBackgroundLayers"
+    yaml_tag = "!addBackgroundLayers"
 
 
 class PrintaddHeaders(yaml.YAMLObject):
-    yaml_tag = u"!addHeaders"
+    yaml_tag = "!addHeaders"
 
 
 class PrintaddOverlayLayers(yaml.YAMLObject):
-    yaml_tag = u"!addOverlayLayers"
+    yaml_tag = "!addOverlayLayers"
 
 
 class PrintconfigureHttpRequests(yaml.YAMLObject):
-    yaml_tag = u"!configureHttpRequests"
+    yaml_tag = "!configureHttpRequests"
 
 
 class PrintcreateDataSource(yaml.YAMLObject):
-    yaml_tag = u"!createDataSource"
+    yaml_tag = "!createDataSource"
 
 
 class PrintcreateMap(yaml.YAMLObject):
-    yaml_tag = u"!createMap"
+    yaml_tag = "!createMap"
 
 
 class PrintcreateMapPages(yaml.YAMLObject):
-    yaml_tag = u"!createMapPages"
+    yaml_tag = "!createMapPages"
 
 
 class PrintcreateNorthArrow(yaml.YAMLObject):
-    yaml_tag = u"!createNorthArrow"
+    yaml_tag = "!createNorthArrow"
 
 
 class PrintcreateOverviewMap(yaml.YAMLObject):
-    yaml_tag = u"!createOverviewMap"
+    yaml_tag = "!createOverviewMap"
 
 
 class PrintcreateScalebar(yaml.YAMLObject):
-    yaml_tag = u"!createScalebar"
+    yaml_tag = "!createScalebar"
 
 
 class PrintForwardHeaders(yaml.YAMLObject):
-    yaml_tag = u"!forwardHeaders"
+    yaml_tag = "!forwardHeaders"
 
 
 class PrintMapUri(yaml.YAMLObject):
-    yaml_tag = u"!mapUri"
+    yaml_tag = "!mapUri"
 
 
 class PrintMergeDataSources(yaml.YAMLObject):
-    yaml_tag = u"!mergeDataSources"
+    yaml_tag = "!mergeDataSources"
 
 
 class PrintPrepareLegend(yaml.YAMLObject):
-    yaml_tag = u"!prepareLegend"
+    yaml_tag = "!prepareLegend"
 
 
 class PrintPrepareTable(yaml.YAMLObject):
-    yaml_tag = u"!prepareTable"
+    yaml_tag = "!prepareTable"
 
 
 class PrintReportBuilder(yaml.YAMLObject):
-    yaml_tag = u"!reportBuilder"
+    yaml_tag = "!reportBuilder"
 
 
 class PrintRestrictUris(yaml.YAMLObject):
-    yaml_tag = u"!restrictUris"
+    yaml_tag = "!restrictUris"
 
 
 class PrintSetFeatures(yaml.YAMLObject):
-    yaml_tag = u"!setFeatures"
+    yaml_tag = "!setFeatures"
 
 
 class PrintSetStyle(yaml.YAMLObject):
-    yaml_tag = u"!setStyle"
+    yaml_tag = "!setStyle"
 
 
 class PrintSetWmsCustomParam(yaml.YAMLObject):
-    yaml_tag = u"!setWmsCustomParam"
+    yaml_tag = "!setWmsCustomParam"
 
 
 class PrintUpdatePdfConfig(yaml.YAMLObject):
-    yaml_tag = u"!updatePdfConfig"
+    yaml_tag = "!updatePdfConfig"
 
 
 class PrintUseHttpForHttps(yaml.YAMLObject):
-    yaml_tag = u"!useHttpForHttps"
+    yaml_tag = "!useHttpForHttps"
 
 
 # Other
 
 
 class PrintConfigureHttpRequests(yaml.YAMLObject):
-    yaml_tag = u"!configureHttpRequests"
+    yaml_tag = "!configureHttpRequests"
 
 
 class PrintCreateNorthArrow(yaml.YAMLObject):
-    yaml_tag = u"!createNorthArrow"
+    yaml_tag = "!createNorthArrow"
 
 
 class PrintCreateScalebar(yaml.YAMLObject):
-    yaml_tag = u"!createScalebar"
+    yaml_tag = "!createScalebar"
 
 
 class PrintCreateMap(yaml.YAMLObject):
-    yaml_tag = u"!createMap"
+    yaml_tag = "!createMap"
 
 
 class PrintCreateDataSource(yaml.YAMLObject):
-    yaml_tag = u"!createDataSource"
+    yaml_tag = "!createDataSource"

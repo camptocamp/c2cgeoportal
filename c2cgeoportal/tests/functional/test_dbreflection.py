@@ -117,7 +117,7 @@ class TestReflection(TestCase):
         from c2cgeoportal.lib.dbreflection import get_class
 
         self.assertRaises(NoSuchTableError, get_class, "nonexisting")
-        self.assertEquals(c2cgeoportal.lib.dbreflection._class_cache, {})
+        self.assertEqual(c2cgeoportal.lib.dbreflection._class_cache, {})
 
     def test_get_class(self):
         from geoalchemy2 import Geometry
@@ -128,9 +128,9 @@ class TestReflection(TestCase):
         modelclass = get_class("table_a")
 
         # test the class
-        self.assertEquals(modelclass.__name__, "Table_a")
-        self.assertEquals(modelclass.__table__.name, "table_a")
-        self.assertEquals(modelclass.__table__.schema, "public")
+        self.assertEqual(modelclass.__name__, "Table_a")
+        self.assertEqual(modelclass.__table__.name, "table_a")
+        self.assertEqual(modelclass.__table__.schema, "public")
 
         self.assertTrue(isinstance(modelclass.point.type, Geometry))
         self.assertTrue(isinstance(modelclass.linestring.type, Geometry))
@@ -187,9 +187,9 @@ class TestReflection(TestCase):
         self._create_table("table_b")
         modelclass = get_class("public.table_b")
 
-        self.assertEquals(modelclass.__name__, "Table_b")
-        self.assertEquals(modelclass.__table__.name, "table_b")
-        self.assertEquals(modelclass.__table__.schema, "public")
+        self.assertEqual(modelclass.__name__, "Table_b")
+        self.assertEqual(modelclass.__table__.name, "table_b")
+        self.assertEqual(modelclass.__table__.schema, "public")
 
     def test_mixing_get_class_and_queries(self):
         """ This test shows that we can mix the use of DBSession
@@ -204,7 +204,7 @@ class TestReflection(TestCase):
         DBSession.execute(text("SELECT id FROM table_c"))
 
         modelclass = get_class("table_c")
-        self.assertEquals(modelclass.__name__, "Table_c")
+        self.assertEqual(modelclass.__name__, "Table_c")
 
         # This commits the transaction created by DBSession.execute. This
         # is required here in the test because tearDown does table.drop,

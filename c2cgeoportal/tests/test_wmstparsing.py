@@ -108,7 +108,7 @@ class TestParseDate(TestCase):
         date = _parse_date("2010")
         self.assertEqual("year", date[0])
         self.assertEqual(
-            datetime.datetime(2010, 01, 01, tzinfo=isodate.UTC),
+            datetime.datetime(2010, 0o1, 0o1, tzinfo=isodate.UTC),
             date[1]
         )
 
@@ -117,7 +117,7 @@ class TestParseDate(TestCase):
         date = _parse_date("2010-02")
         self.assertEqual("month", date[0])
         self.assertEqual(
-            datetime.datetime(2010, 02, 01, tzinfo=isodate.UTC),
+            datetime.datetime(2010, 0o2, 0o1, tzinfo=isodate.UTC),
             date[1]
         )
 
@@ -126,7 +126,7 @@ class TestParseDate(TestCase):
         date = _parse_date("2010-02-03")
         self.assertEqual("day", date[0])
         self.assertEqual(
-            datetime.datetime(2010, 02, 03, tzinfo=isodate.UTC),
+            datetime.datetime(2010, 0o2, 0o3, tzinfo=isodate.UTC),
             date[1]
         )
 
@@ -135,7 +135,7 @@ class TestParseDate(TestCase):
         date = _parse_date("2010-02-03T12:34")
         self.assertEqual("second", date[0])
         self.assertEqual(
-            datetime.datetime(2010, 02, 03, 12, 34, tzinfo=isodate.UTC),
+            datetime.datetime(2010, 0o2, 0o3, 12, 34, tzinfo=isodate.UTC),
             date[1]
         )
 
@@ -144,7 +144,7 @@ class TestParseDate(TestCase):
         date = _parse_date("2010-02-03T12:34Z")
         self.assertEqual("second", date[0])
         self.assertEqual(
-            datetime.datetime(2010, 02, 03, 12, 34, tzinfo=isodate.UTC),
+            datetime.datetime(2010, 0o2, 0o3, 12, 34, tzinfo=isodate.UTC),
             date[1]
         )
 
@@ -156,13 +156,13 @@ class TestParseDate(TestCase):
 class TestFormat(TestCase):
     def test_format(self):
         from c2cgeoportal.lib.wmstparsing import _format_date
-        dt = datetime.datetime(2010, 02, 01, 00, 00)
-        self.assertEquals("2010-02-01T00:00:00Z", _format_date(dt))
+        dt = datetime.datetime(2010, 0o2, 0o1, 00, 00)
+        self.assertEqual("2010-02-01T00:00:00Z", _format_date(dt))
 
     def test_format_tz(self):
         from c2cgeoportal.lib.wmstparsing import _parse_date, _format_date
         dt = _parse_date("2010-02-03T12:34:00+01:00")
-        self.assertEquals("2010-02-03T12:34:00+01:00", _format_date(dt[1]))
+        self.assertEqual("2010-02-03T12:34:00+01:00", _format_date(dt[1]))
 
 
 class TestParseDuration(TestCase):

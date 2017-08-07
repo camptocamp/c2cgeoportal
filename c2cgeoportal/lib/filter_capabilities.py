@@ -31,9 +31,9 @@
 import logging
 import httplib2
 import copy
-from StringIO import StringIO
-from urlparse import urlsplit, urljoin
-from urllib2 import urlopen
+from io import StringIO
+from urllib.parse import urlsplit, urljoin
+from urllib.request import urlopen
 
 import xml.sax.handler
 from xml.sax import saxutils
@@ -115,7 +115,7 @@ def wms_structure(wms_url, host):
             result[parent.name].append(name)
             _fill(name, parent.parent)
 
-        for layer in wms.contents.values():
+        for layer in list(wms.contents.values()):
             _fill(layer.name, layer.parent)
         return result
 
@@ -174,12 +174,12 @@ def filter_capabilities(content, role_id, wms, url, headers, proxies, request):
         get_ogc_server_wfs_url_ids(request)
     ).get(url)
     gmf_private_layers = copy.copy(get_private_layers(ogc_server_ids))
-    for id_ in get_protected_layers(role_id, ogc_server_ids).keys():
+    for id_ in list(get_protected_layers(role_id, ogc_server_ids).keys()):
         if id_ in gmf_private_layers:
             del gmf_private_layers[id_]
 
     private_layers = set()
-    for gmflayer in gmf_private_layers.values():
+    for gmflayer in list(gmf_private_layers.values()):
         for ogclayer in gmflayer.layer.split(","):
             private_layers.add(ogclayer)
             if ogclayer in wms_structure_:
@@ -194,11 +194,11 @@ def filter_capabilities(content, role_id, wms, url, headers, proxies, request):
     downstream_handler = XMLGenerator(result, "utf-8")
     filter_handler = _CapabilitiesFilter(
         parser, downstream_handler,
-        u"Layer" if wms else u"FeatureType",
+        "Layer" if wms else "FeatureType",
         layers_blacklist=private_layers
     )
     filter_handler.parse(StringIO(content))
-    return unicode(result.getvalue(), "utf-8")
+    return str(result.getvalue(), "utf-8")
 
 
 def filter_wfst_capabilities(content, role_id, wfs_url, proxies, request):
@@ -208,7 +208,7 @@ def filter_wfst_capabilities(content, role_id, wfs_url, proxies, request):
 
     writable_layers = []
     ogc_server_ids = get_ogc_server_wfs_url_ids(request).get(wfs_url)
-    for gmflayer in get_writable_layers(role_id, ogc_server_ids).values():
+    for gmflayer in list(get_writable_layers(role_id, ogc_server_ids).values()):
         writable_layers += gmflayer.layer.split(",")
 
     parser = defusedxml.expatreader.create_parser(forbid_external=False)
@@ -220,11 +220,11 @@ def filter_wfst_capabilities(content, role_id, wfs_url, proxies, request):
     downstream_handler = XMLGenerator(result, "utf-8")
     filter_handler = _CapabilitiesFilter(
         parser, downstream_handler,
-        u"FeatureType",
+        "FeatureType",
         layers_whitelist=writable_layers
     )
     filter_handler.parse(StringIO(content))
-    filtered_content = unicode(result.getvalue(), "utf-8")
+    filtered_content = str(result.getvalue(), "utf-8")
     return filtered_content
 
 

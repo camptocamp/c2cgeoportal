@@ -33,7 +33,7 @@ Pyramid application test package
 """
 
 import os
-from ConfigParser import ConfigParser
+from configparser import ConfigParser
 from webob.acceptparse import Accept
 
 from pyramid import testing
