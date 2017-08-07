@@ -29,11 +29,7 @@
 
 
 import logging
-try:
-    from hashlib import sha1
-    sha1  # suppress pyflakes warning
-except ImportError:  # pragma: no cover
-    from sha import new as sha1
+from hashlib import sha1
 
 import sqlahelper
 from papyrus.geo_interface import GeoInterface

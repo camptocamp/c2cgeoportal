@@ -34,11 +34,7 @@ Revises: 3f89a7d71a5e
 Create Date: 2015-02-20 14:09:04.875390
 """
 
-try:
-    from hashlib import sha1
-    sha1  # suppress pyflakes warning
-except ImportError:  # pragma: no cover
-    from sha import new as sha1
+from hashlib import sha1
 
 from alembic import op, context
 from sqlalchemy import Column, ForeignKey
@@ -110,7 +106,7 @@ def upgrade():
             "INSERT INTO %(staticschema)s.user (type, username, email, password, role) "
             "VALUES ( 'user', 'admin', 'info@example.com', '%(pass)s', 'role_admin')" % {
                 'staticschema': staticschema,
-                'pass': sha1('admin').hexdigest()
+                'pass': sha1('admin'.encode('utf-8')).hexdigest()
             }
         )
 

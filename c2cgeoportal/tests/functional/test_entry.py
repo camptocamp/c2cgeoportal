@@ -1525,11 +1525,11 @@ class TestEntryView(TestCase):
             "confirmNewPassword": "1234"
         })
         self.assertEqual(request.user.is_password_changed, False)
-        self.assertEqual(request.user._password, str(sha1("__test_user1").hexdigest()))
+        self.assertEqual(request.user._password, str(sha1("__test_user1".encode("utf-8")).hexdigest()))
         entry = Entry(request)
         self.assertNotEqual(entry.loginchange(), None)
         self.assertEqual(request.user.is_password_changed, True)
-        self.assertEqual(request.user._password, str(sha1("1234").hexdigest()))
+        self.assertEqual(request.user._password, str(sha1("1234".encode("utf-8")).hexdigest()))
 
     def test_json_extent(self):
         from c2cgeoportal.models import DBSession, Role
