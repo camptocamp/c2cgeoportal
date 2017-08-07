@@ -182,7 +182,7 @@ def main():
     no_redirect_query = dict(request.GET)
     no_redirect_query['no_redirect'] = u''
   %>
-    """,
+""",
                         data,
                     )
                     data = _sub(
@@ -204,7 +204,7 @@ def main():
                 }
             </script>
     % endif
-    """,
+""",
                         data,
                     )
 
