@@ -75,7 +75,7 @@ PIP_VERSION ?= $(shell grep ^pip== CONST_optional-requirements.txt --colour=neve
 SETUPTOOLS_VERSION ?= $(shell grep ^setuptools== CONST_optional-requirements.txt --colour=never | tr --delete '\r\n')
 TILECLOUD_VERSION ?= $(shell grep ^tilecloud== CONST_optional-requirements.txt --colour=never | tr --delete '\r\n')
 TILECLOUDCHAIN_VERSION ?= $(shell grep ^tilecloud-chain== CONST_optional-requirements.txt --colour=never | tr --delete '\r\n')
-JSTOOLS_VERSION ?= $(shell grep ^JSTools== CONST_optional-requirements.txt --colour=never | tr --delete '\r\n')
+#JSTOOLS_VERSION ?= $(shell grep ^JSTools== CONST_optional-requirements.txt --colour=never | tr --delete '\r\n')
 C2CCSSMIN_VERSION ?= $(shell grep ^c2c.cssmin== CONST_optional-requirements.txt --colour=never | tr --delete '\r\n')
 
 GIT_MODULES_FOLDER ?= .git/modules/
@@ -169,7 +169,7 @@ ifeq ($(TILECLOUD_CHAIN), TRUE)
 DEV_REQUIREMENTS += $(TILECLOUD_VERSION) $(TILECLOUDCHAIN_VERSION)
 endif
 ifneq ($(CGXP_INTERFACES), "")
-REQUIREMENTS += $(JSTOOLS_VERSION)
+#REQUIREMENTS += $(JSTOOLS_VERSION)
 DEV_REQUIREMENTS += $(C2CCSSMIN_VERSION)
 endif
 

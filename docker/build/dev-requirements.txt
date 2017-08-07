@@ -23,7 +23,6 @@ http-parser==0.8.3
 https://github.com/camptocamp/pyramid_closure/archive/819bc43420b3cd924d8698c5a9606592c19dbb15.zip#egg=pyramid_closure
 ipcalc==1.99.0
 isodate==0.5.4
-JSTools==0.6
 Jinja2==2.9.6
 lingua==4.13
 Mako==1.0.7
