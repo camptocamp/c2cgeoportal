@@ -71,10 +71,10 @@ def cleanup_db():
         DBSession.delete(ti)
     DBSession.query(OGCServer).delete()
     DBSession.query(Interface).delete()
+    DBSession.query(User).delete()
     for r in DBSession.query(Role).all():
         r.functionnalities = []
         DBSession.delete(r)
-    DBSession.query(User).delete()
     DBSession.query(Functionality).delete()
     DBSession.query(FullTextSearch).delete()
     DBSession.query(Shorturl).delete()
