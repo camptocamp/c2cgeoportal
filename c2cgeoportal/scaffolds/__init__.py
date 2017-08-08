@@ -118,7 +118,7 @@ class BaseTemplate(Template):  # pragma: no cover
             try:
                 type_(value)
             except ValueError:
-                print(("The attribute {} is not a {}".format(name, type_)))
+                print(("The attribute {}={} is not a {}".format(name, value, type_)))
                 exit(1)
 
         vars_[name] = value
