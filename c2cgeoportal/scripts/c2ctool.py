@@ -386,7 +386,7 @@ class C2cTool:
             with open("package.json", "w") as package_json_file:
                 json.dump(
                     package_json, package_json_file,
-                    encoding="utf-8", sort_keys=True, separators=(',', ': '), indent=2
+                    sort_keys=True, separators=(',', ': '), indent=2
                 )
                 package_json_file.write("\n")
         else:
