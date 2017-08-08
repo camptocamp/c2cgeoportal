@@ -31,7 +31,6 @@ minified = false
 
 [pipeline:main]
 pipeline =
-    egg:WebError#evalerror
     fanstatic
     app
 
