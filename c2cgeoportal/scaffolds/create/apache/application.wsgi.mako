@@ -2,6 +2,7 @@ import site
 import sys
 import re
 import os
+from importlib import reload
 from logging.config import fileConfig
 
 reload(sys)
