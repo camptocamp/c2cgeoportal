@@ -52,7 +52,10 @@ def _get_versions():
 def main():
     print("INFO = {")
     for key, value in _get_versions().items():
-        print("    \"{0}\": \"{1}\",".format(key, "None" if value is None else value.decode("utf-8").replace("\\", "\\\\").replace("\"", "\\\"")))
+        print("    \"{0}\": \"{1}\",".format(
+            key, "None" if value is None
+            else value.decode("utf-8").replace("\\", "\\\\").replace("\"", "\\\"")
+        ))
     print("}")
 
 

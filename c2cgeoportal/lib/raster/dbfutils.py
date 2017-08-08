@@ -33,7 +33,6 @@
 import struct
 import datetime
 import decimal
-import itertools
 
 
 def dbfreader(f):

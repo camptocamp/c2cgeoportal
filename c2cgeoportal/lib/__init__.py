@@ -32,8 +32,9 @@ import datetime
 import dateutil
 import json
 import re
-import urllib.request, urllib.parse, urllib.error
+import urllib.request
 import urllib.parse
+import urllib.error
 
 from pyramid.interfaces import IRoutePregenerator, IStaticURLInfo
 from zope.interface import implementer

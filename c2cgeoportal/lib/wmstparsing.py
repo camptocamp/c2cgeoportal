@@ -151,8 +151,7 @@ class TimeExtentInterval:
     """
     Represents time with the help of a start, an end and an interval.
     """
-    def __init__(self, start, end, interval, resolution,
-                 min_def_value, max_def_value):
+    def __init__(self, start, end, interval, resolution, min_def_value, max_def_value):
         """
         Arguments:
 
