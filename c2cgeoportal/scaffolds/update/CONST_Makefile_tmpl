@@ -81,10 +81,10 @@ C2CCSSMIN_VERSION ?= $(shell grep ^c2c.cssmin== CONST_optional-requirements.txt 
 GIT_MODULES_FOLDER ?= .git/modules/
 
 ifdef CGXP_INTERFACES
-DEFAULT_WEB_RULE += build-cgxp
+#DEFAULT_WEB_RULE += build-cgxp
 else
 ifeq ($(CGXP_API), TRUE)
-DEFAULT_WEB_RULE += build-cgxp
+#DEFAULT_WEB_RULE += build-cgxp
 endif
 endif
 ifneq ($(NGEO_INTERFACES), "")

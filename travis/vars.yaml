@@ -22,6 +22,7 @@ vars:
 
     checker:
         defaults:
+            lang_files: [ngeo]
             routes_disable: [printproxy_capabilities]
         all:
             routes_disable: [printproxy_capabilities]
