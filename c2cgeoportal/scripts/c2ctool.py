@@ -173,6 +173,7 @@ class Step:
                     message="The command '{}' returns the error code {}.".format(e.cmd, e.returncode),
                     prompt="Fix it and run it again:"
                 )
+                exit(1)
         return decorate
 
 
