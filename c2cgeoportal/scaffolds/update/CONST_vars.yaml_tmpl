@@ -203,6 +203,8 @@ vars:
         - print_template
         - mapserver_substitution
         - filterable_layers
+        - preset_layer_filter
+        - open_panel
 
     functionalities:
     # Functionalities that are accessible to anonymous
@@ -231,6 +233,8 @@ vars:
         - default_theme
         - filterable_layers
         - print_template
+        - preset_layer_filter
+        - open_panel
 
     # Define URLs to the parent application. Only useful if
     # this application is a child application in a parent/child
