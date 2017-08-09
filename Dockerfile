@@ -1,4 +1,4 @@
-FROM camptocamp/geomapfish_build_dev
+FROM camptocamp/geomapfish_build_dev:2.2
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
 COPY . /tmp/
