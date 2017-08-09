@@ -102,7 +102,6 @@ class Checker:  # pragma: no cover
         resp, content = h.request(url, headers=headers)
 
         if resp.status != http.client.OK:
-            print((list(resp.items())))
             self.set_status(resp.status, resp.reason)
             return url + "<br/>" + content.decode("utf-8")
 
@@ -388,7 +387,7 @@ class Checker:  # pragma: no cover
                 results.append("{}: OK".format(route))
             except CalledProcessError as e:
                 results.append("{}: {}".format(route, e.output.replace("\n", "<br/>")))
-                self.set_status(500, "{}: JS error".format(route))
+                self.set_status(500, "{}: JS error".format(route["name"]))
 
         return self.make_response(
             "-" if len(results) == 0 else "<br/><br/>".join(results)

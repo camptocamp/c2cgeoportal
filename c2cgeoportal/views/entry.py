@@ -742,7 +742,7 @@ class Entry:
             return ogc_servers
 
         # recurse on children
-        if isinstance(group, LayerGroup) and group.children > 0:
+        if isinstance(group, LayerGroup) and len(group.children) > 0:
             for tree_item in group.children:
                 ogc_servers.update(self._get_ogc_servers(tree_item, depth=depth + 1))
 
