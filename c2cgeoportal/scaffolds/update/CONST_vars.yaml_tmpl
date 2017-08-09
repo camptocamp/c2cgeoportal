@@ -225,7 +225,7 @@ vars:
     # database.
         registered: {}
 
-    # Functionalities that are made available to Mako templates.
+    # Functionalities that are made available to Mako templates and loginuser.
         available_in_templates:
         - default_basemap
         - default_theme
