@@ -4,7 +4,6 @@ LABEL maintainer Camptocamp "info@camptocamp.com"
 COPY . /opt/c2cgeoportal
 
 RUN \
-  pip install --disable-pip-version-check --no-cache-dir --editable /opt/c2cgeoportal && \
   npm install --global \
     angular@1.6.5 \
     angular-animate@1.6.5 \
@@ -49,6 +48,18 @@ RUN \
     typeahead.js@0.11.1 \
     walk@2.3.9 && \
   rm --recursive --force ~/.npm
+
+RUN \
+  mkdir --parents /opt/googleclosurecompiler-externs && \
+  curl --max-redirs 0 --location --output /opt/googleclosurecompiler-externs/angular-1.6.js https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/angular-1.6.js && \
+  curl --max-redirs 0 --location --output /opt/googleclosurecompiler-externs/angular-1.6-q_templated.js https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/angular-1.6-q_templated.js && \
+  curl --max-redirs 0 --location --output /opt/googleclosurecompiler-externs/angular-1.6-http-promise_templated.js https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/angular-1.6-http-promise_templated.js && \
+  curl --max-redirs 0 --location --output /opt/googleclosurecompiler-externs/jquery-1.9.js https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/jquery-1.9.js
+
+
+COPY . /opt/c2cgeoportal
+
+RUN pip install --disable-pip-version-check --no-cache-dir --editable /opt/c2cgeoportal
 
 WORKDIR /src
 
