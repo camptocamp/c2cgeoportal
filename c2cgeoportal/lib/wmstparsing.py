@@ -180,8 +180,14 @@ class TimeExtentInterval:
                 "different interval")
         self.start = min(self.start, extent.start)
         self.end = max(self.end, extent.end)
-        self.min_def_value = min(self.min_def_value, extent.min_def_value)
-        self.max_def_value = max(self.max_def_value, extent.max_def_value)
+        self.min_def_value = \
+            self.min_def_value if extent.min_def_value is None else \
+            extent.min_def_value if self.min_def_value is None else \
+            min(self.min_def_value, extent.min_def_value)
+        self.max_def_value = \
+            self.max_def_value if extent.max_def_value is None else \
+            extent.max_def_value if self.max_def_value is None else \
+            max(self.max_def_value, extent.max_def_value)
 
     def to_dict(self):
         min_def_value = _format_date(self.min_def_value) \
