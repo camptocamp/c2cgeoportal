@@ -15,10 +15,7 @@ COPY base-requirements.txt dev-requirements.txt fixversions.txt /tmp/
 
 RUN \
   cd /tmp && \
-  curl https://bootstrap.pypa.io/get-pip.py > get-pip.py && \
-  python get-pip.py `cat base-requirements.txt` && \
-  pip install --requirement dev-requirements.txt && \
-  apt-get clean && \
+  pip install --disable-pip-version-check --no-cache-dir --requirement dev-requirements.txt && \
   rm --recursive --force /tmp/* /var/tmp/* /root/.cache/*
 
 COPY run /usr/bin/

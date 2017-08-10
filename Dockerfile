@@ -5,7 +5,7 @@ COPY . /tmp/
 
 RUN \
   cd /tmp && \
-  pip install . && \
+  pip install --disable-pip-version-check --no-cache-dir . && \
   npm install --global \
     angular@1.6.5 \
     angular-animate@1.6.5 \
