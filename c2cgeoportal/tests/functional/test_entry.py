@@ -476,11 +476,11 @@ class TestEntryView(TestCase):
         from c2cgeoportal.lib import caching
         caching.invalidate_region()
         themes, errors = entry._themes(None, "desktop")
-        self.assertEqual({e[:100] for e in errors}, {
-            "The layer '__test_public_layer' (__test_public_layer) is not defined in WMS capabilities from '__tes",
-            "The layer '__test_layer_in_group' (__test_layer_in_group) is not defined in WMS capabilities from '_",
-            "The layer 'test_wmsfeaturesgroup' (test_wmsfeaturesgroup) is not defined in WMS capabilities from '_",
-            "GetCapabilities from URL http://mapserver/?map=not_a_mapfile&VERSION=1.1.1&REQUEST=GetCapabilities&S"
+        self.assertEqual({e[:43] for e in errors}, {
+            "The layer '__test_public_layer' (__test_pub",
+            "The layer '__test_layer_in_group' (__test_l",
+            "The layer 'test_wmsfeaturesgroup' (test_wms",
+            "GetCapabilities from URL http://mapserver/?"
         })
 
     def test_themev2(self):
@@ -952,14 +952,14 @@ class TestEntryView(TestCase):
         layer.geo_table = "tiwms"
         layer.public = True
 
-        self.assertEqual(entry._layer(layer, role_id=None), ({
+        result = entry._layer(layer, role_id=None)
+        result[0]["icon"] = None
+        self.assertEqual(result, ({
             "id": 20,
             "name": "test internal WMS",
             "metadataURL": "http://example.com/tiwms",
             "isChecked": True,
-            "icon": "/dummy/route/mapserverproxy?"
-            "LAYER=test+internal+WMS&SERVICE=WMS&FORMAT=image%2Fpng&"
-            "REQUEST=GetLegendGraphic&RULE=rule&VERSION=1.1.1&TRANSPARENT=TRUE",
+            "icon": None,
             "type": "internal WMS",
             "imageType": "image/png",
             "style": "my-style",
@@ -973,7 +973,9 @@ class TestEntryView(TestCase):
             "identifierAttribute": "name",
             "public": True,
             "metadata": {},
-        }, {"The layer 'test internal WMS' (test internal WMS) is not defined in WMS capabilities from '__test_ogc_server'"}))
+        }, {
+            "The layer 'test internal WMS' (test internal WMS) is not defined in WMS capabilities from '__test_ogc_server'"
+        }))
 
         layer = LayerV1()
         layer.id = 20

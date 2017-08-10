@@ -28,6 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import json
 from unittest import TestCase
 from nose.plugins.attrib import attr
 
@@ -73,4 +74,11 @@ some content with non-ASCII chars ç à é
         response = echo.echo(request)
         self.assertEqual(response.status_int, 200)
         self.assertEqual(response.content_type, "text/html")
-        self.assertEqual(response.body, '{"filename":"a file name","data":"c29tZSBjb250ZW50IHdpdGggbm9uLUFTQ0lJIGNoYXJzIMOnIMOgIMOp","success":true}')  # noqa
+        self.assertEqual(
+            json.loads(response.body.decode("utf-8")),
+            {
+                "filename": "a file name",
+                "data": "c29tZSBjb250ZW50IHdpdGggbm9uLUFTQ0lJIGNoYXJzIMOnIMOgIMOp",
+                "success": True
+            }
+        )

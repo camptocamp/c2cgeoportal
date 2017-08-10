@@ -28,6 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import re
 from unittest import TestCase
 from nose.plugins.attrib import attr
 
@@ -45,6 +46,9 @@ class TestReflection(TestCase):
         import sqlahelper
         from c2cgeoportal.lib.dbreflection import init
 
+        # Always see the diff
+        # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
+        self.maxDiff = None
         self.metadata = None
 
         engine = sqlahelper.get_engine()
@@ -238,6 +242,11 @@ class TestXSDSequenceCallback(TestCase):
         from sqlalchemy.ext.declarative import declarative_base
         from c2cgeoportal.models import DBSession
         from c2cgeoportal.lib.dbreflection import _AssociationProxy
+
+        # Always see the diff
+        # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
+        self.maxDiff = None
+
         engine = sqlahelper.get_engine()
         Base = declarative_base(bind=engine)  # noqa
 
@@ -284,17 +293,7 @@ class TestXSDSequenceCallback(TestCase):
         with tag(tb, "xsd:sequence") as tb:
             xsd_sequence_callback(tb, self.cls)
         e = tb.close()
-        self.assertEqual(
-            tostring(e).decode("utf-8"),
-            '<xsd:sequence>'
-            '<xsd:element minOccurs="0" name="child1" nillable="true">'
-            '<xsd:simpleType>'
-            '<xsd:restriction base="xsd:string">'
-            '<xsd:enumeration value="foo" />'
-            '<xsd:enumeration value="bar" />'
-            '</xsd:restriction>'
-            '</xsd:simpleType>'
-            '</xsd:element>'
+        self.assertIsNotNone(re.search(
             '<xsd:element minOccurs="0" name="child2" nillable="true">'
             '<xsd:simpleType>'
             '<xsd:restriction base="xsd:string">'
@@ -302,5 +301,17 @@ class TestXSDSequenceCallback(TestCase):
             '<xsd:enumeration value="bar" />'
             '</xsd:restriction>'
             '</xsd:simpleType>'
-            '</xsd:element>'
-            '</xsd:sequence>')
+            '</xsd:element>',
+            tostring(e).decode("utf-8"),
+        ))
+        self.assertIsNotNone(re.search(
+            '<xsd:element minOccurs="0" name="child1" nillable="true">'
+            '<xsd:simpleType>'
+            '<xsd:restriction base="xsd:string">'
+            '<xsd:enumeration value="foo" />'
+            '<xsd:enumeration value="bar" />'
+            '</xsd:restriction>'
+            '</xsd:simpleType>'
+            '</xsd:element>',
+            tostring(e).decode("utf-8"),
+        ))

@@ -61,11 +61,11 @@ def echo(request):
     http://docs.sencha.com/ext-js/3-4/#!/api/Ext.form.BasicForm-cfg-fileUpload
     """
     try:
-        file = request.POST["file"]
+        file_ = request.POST["file"]
     except KeyError:
         return HTTPBadRequest()
     response = Response()
-    response.app_iter = json_base64_encode(file.filename, file.file)
+    response.app_iter = json_base64_encode(file_.filename, file_.file)
     return set_common_headers(
         request, "echo", NO_CACHE,
         response=response, content_type="text/html"

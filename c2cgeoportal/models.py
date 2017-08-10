@@ -270,7 +270,7 @@ class User(Base):
 
     def _get_password(self):
         """returns password"""
-        return self._password
+        return self._password  # pragma: no cover
 
     def _set_password(self, password):
         """encrypts password on the fly."""

@@ -28,6 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import json
 from unittest import TestCase
 
 
@@ -45,5 +46,8 @@ class TestEchoView(TestCase):
         a = [s for s in json_base64_encode("a file name", sio)]
         s = b"".join(a).decode("utf-8")
 
-        self.assertEqual(s, '{"filename":"a file name","data":\
-"c29tZSBjb250ZW50IHdpdGggbm9uLUFTQ0lJIGNoYXJzIMOnIMOgIMOp","success":true}')
+        self.assertEqual(json.loads(s), {
+            "filename": "a file name",
+            "data": "c29tZSBjb250ZW50IHdpdGggbm9uLUFTQ0lJIGNoYXJzIMOnIMOgIMOp",
+            "success": True
+        })
