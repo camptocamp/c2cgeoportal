@@ -1,11 +1,10 @@
 FROM camptocamp/geomapfish_build_dev:2.2
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
-COPY . /tmp/
+COPY . /opt/c2cgeoportal
 
 RUN \
-  cd /tmp && \
-  pip install --disable-pip-version-check --no-cache-dir . && \
+  pip install --disable-pip-version-check --no-cache-dir --editable /opt/c2cgeoportal && \
   npm install --global \
     angular@1.6.5 \
     angular-animate@1.6.5 \
