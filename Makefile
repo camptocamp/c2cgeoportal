@@ -268,13 +268,14 @@ $(BUILD_DIR)/requirements.timestamp: setup.py $(BUILD_DIR)/venv.timestamp
 	$(BUILD_DIR)/venv/bin/pip install -e .
 	touch $@
 
-c2cgeoportal/version.py: gen_current_version
+c2cgeoportal/version.py:
+	@echo "# Copyright (c) 2017, Camptocamp SA" > $@.new
+	@echo "# All rights reserved." >> $@.new
+	@echo  >> $@.new
+	@echo "# Auto-generated file. Do not Edit!" >> $@.new
+	@$(BUILD_DIR)/venv/bin/python c2cgeoportal/scripts/gen_version.py >> $@.new
+	rm --force $@
+	mv $@.new $@
 
 .PHONY: gen_current_version
-gen_current_version:
-	@echo "# Copyright (c) 2017, Camptocamp SA" > c2cgeoportal/version.py.new
-	@echo "# All rights reserved." >> c2cgeoportal/version.py.new
-	@echo  >> c2cgeoportal/version.py.new
-	@echo "# Auto-generated file. Do not Edit!" >> c2cgeoportal/version.py.new
-	@$(BUILD_DIR)/venv/bin/python c2cgeoportal/scripts/gen_version.py >> c2cgeoportal/version.py.new
-	@if `diff -q c2cgeoportal/version.py.new c2cgeoportal/version.py > /dev/null 2> /dev/null`; then rm c2cgeoportal/version.py.new; else echo "New version of c2cgeoportal/version.py"; mv c2cgeoportal/version.py.new c2cgeoportal/version.py; fi
+gen_current_versiion: c2cgeoportal/version.py
