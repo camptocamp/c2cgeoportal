@@ -203,6 +203,8 @@ vars:
         - print_template
         - mapserver_substitution
         - filterable_layers
+        - preset_layer_filter
+        - open_panel
 
     functionalities:
     # Functionalities that are accessible to anonymous
@@ -225,12 +227,14 @@ vars:
     # database.
         registered: {}
 
-    # Functionalities that are made available to Mako templates.
+    # Functionalities that are made available to Mako templates and loginuser.
         available_in_templates:
         - default_basemap
         - default_theme
         - filterable_layers
         - print_template
+        - preset_layer_filter
+        - open_panel
 
     # Define URLs to the parent application. Only useful if
     # this application is a child application in a parent/child
