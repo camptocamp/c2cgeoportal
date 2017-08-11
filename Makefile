@@ -10,7 +10,7 @@ DEVELOPPEMENT ?= FALSE
 ifdef TRAVIS_TAG
 VERSION ?= $(TRAVIS_TAG)
 else
-VERSION ?= 2.0
+VERSION ?= 2.2
 endif
 
 ADMIN_OUTPUT_DIR = c2cgeoportal/static/build/admin/
