@@ -5,7 +5,7 @@ Babel==2.4.0
 boto==2.47.0
 bottle==0.12.13
 c2c.cssmin==0.7.dev6
-c2c.template==1.4.0
+c2c.template==1.4.1
 chardet==3.0.4
 Chameleon==3.1
 codespell==1.10.0
