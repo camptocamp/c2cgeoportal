@@ -30,6 +30,7 @@
 
 import logging
 from hashlib import sha1
+from typing import Optional
 
 from sqlalchemy import Column
 from sqlalchemy.types import Integer, Boolean, Unicode, String, DateTime
@@ -49,7 +50,7 @@ try:
     from pyramid.i18n import TranslationStringFactory
     _ = TranslationStringFactory("c2cgeoportal")
 except ImportError:
-    def _(s):
+    def _(s: str) -> str:
         return s
 
 LOG = logging.getLogger(__name__)
@@ -73,62 +74,46 @@ class User(Base):
         'title': _('User'),
         'plural': _('Users')
     }
-    item_type = Column(
-        "type", String(10), nullable=False,
-        info={
-            'colanderalchemy': {
-                'widget': HiddenWidget()
-            }
+    item_type = Column("type", String(10), nullable=False, info={
+        'colanderalchemy': {
+            'widget': HiddenWidget()
         }
-    )
+    })
     __mapper_args__ = {
         "polymorphic_on": item_type,
         "polymorphic_identity": "user",
     }
 
-    id = Column(
-        Integer, primary_key=True,
-        info={
-            'colanderalchemy': {
-                'widget': HiddenWidget()
-            }
+    id = Column(Integer, primary_key=True, info={
+        'colanderalchemy': {
+            'widget': HiddenWidget()
         }
-    )
-    username = Column(
-        Unicode, unique=True, nullable=False,
-    )
-    _password = Column(
-        "password", Unicode, nullable=False,
-        info={'colanderalchemy': {'widget': HiddenWidget()}}
-    )
-    temp_password = Column(
-        "temp_password", Unicode, nullable=True,
-    )
+    })
+    username = Column(Unicode, unique=True, nullable=False)
+    _password = Column("password", Unicode, nullable=False, info={
+        'colanderalchemy': {'widget': HiddenWidget()}
+    })
+    temp_password = Column("temp_password", Unicode, nullable=True)
     email = Column(Unicode, nullable=False, info={
         'colanderalchemy': {
             'title': _('email')
         }
     })
-    is_password_changed = Column(
-        Boolean, default=False,
-        info={
-            'colanderalchemy': {'widget': CheckboxWidget(readonly=True)}
+    is_password_changed = Column(Boolean, default=False, info={
+        'colanderalchemy': {'widget': CheckboxWidget(readonly=True)}
+    })
+    role_name = Column(String, info={
+        'colanderalchemy': {
+            'widget': deform_ext.RelationSelect2Widget(
+                Role, 'name', 'name', order_by='name', default_value=('', _('- Select -'))
+            )
         }
-    )
-    role_name = Column(
-        String, info={
-            'colanderalchemy': {
-                'widget': deform_ext.RelationSelect2Widget(
-                    Role, 'name', 'name', order_by='name', default_value=('', _('- Select -'))
-                )
-            }
-        }
-    )
-    _cached_role_name = None
-    _cached_role = None
+    })
+    _cached_role_name = None  # type: str
+    _cached_role = None  # type: Optional[Role]
 
     @property
-    def role(self):
+    def role(self) -> Optional[Role]:
         if self._cached_role_name == self.role_name:
             return self._cached_role
 
@@ -149,37 +134,36 @@ class User(Base):
         return self._cached_role
 
     def __init__(
-        self, username="", password="", email="", is_password_changed=False,
-        functionalities=None, role=None
-    ):
-        if functionalities is None:
-            functionalities = []
+        self, username: str="", password: str="", email: str="", is_password_changed: bool=False,
+        role: Role=None
+    ) -> None:
         self.username = username
         self.password = password
         self.email = email
         self.is_password_changed = is_password_changed
-        self.functionalities = functionalities
         if role is not None:
             self.role_name = role.name
 
-    def _get_password(self):
+    @property
+    def password(self) -> str:
         """returns password"""
         return self._password  # pragma: no cover
 
-    def _set_password(self, password):
+    @password.setter
+    def password(self, password: str) -> None:
         """encrypts password on the fly."""
         self._password = self.__encrypt_password(password)
 
-    def set_temp_password(self, password):
+    def set_temp_password(self, password: str) -> None:
         """encrypts password on the fly."""
         self.temp_password = self.__encrypt_password(password)
 
     @staticmethod
-    def __encrypt_password(password):
+    def __encrypt_password(password: str) -> str:
         """Hash the given password with SHA1."""
         return sha1(password.encode("utf8")).hexdigest()
 
-    def validate_password(self, passwd):
+    def validate_password(self, passwd: str) -> bool:
         """Check the password against existing credentials.
         this method _MUST_ return a boolean.
 
@@ -200,9 +184,7 @@ class User(Base):
             return True
         return False
 
-    password = property(_get_password, _set_password)
-
-    def __unicode__(self):
+    def __unicode__(self) -> str:
         return self.username or ""  # pragma: no cover
 
 

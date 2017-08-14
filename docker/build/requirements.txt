@@ -14,6 +14,7 @@ defusedxml==0.5.0  # geoportal
 dogpile.cache==0.6.4  # geoportal
 flake8==3.5.0  # lint
 flake8-copyright==0.2.0  # lint
+flake8-mypy==17.3.3  # lint
 Fiona==1.7.10.post1  # geoportal-raster
 GeoAlchemy2==0.4.0  # geoportal
 geojson==2.3.0  # geoportal
@@ -26,6 +27,7 @@ Jinja2==2.9.6  # c2c.template
 JSTools==1.0  # CGXP build
 lingua==4.13  # i18n
 mccabe==0.6.1  # lint
+mypy==0.521  # lint
 OWSLib==0.15.0  # geoportal
 papyrus==2.2  # geoportal
 PasteScript==2.0.2  # geoportal-pcreate

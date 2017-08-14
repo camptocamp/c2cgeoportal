@@ -5,7 +5,7 @@ sudo: required
 
 language: python
 python:
-  - "3.6"
+  - "3.5"
 
 service:
   - docker
@@ -77,6 +77,9 @@ jobs:
         - docker-compose --version
         - python3 -m pip install --requirement=travis/requirements.txt
       script:
+        - python3 -m compileall commons/c2cgeoportal_commons
+        - python3 -m compileall geoportal/c2cgeoportal_geoportal
+        - python3 -m compileall admin/c2cgeoportal_admin
         - docker build --tag camptocamp/geomapfish-build-dev:${MAJOR_VERSION} docker/build
         - docker tag camptocamp/geomapfish-build-dev:${MAJOR_VERSION} camptocamp/geomapfish-build-dev-travis:${TRAVIS_BUILD_NUMBER}
         - ./docker-run travis/empty-make.sh help

@@ -50,6 +50,7 @@ dockerBuild {
             sh './docker-run make admin/c2cgeoportal_admin/locale/c2cgeoportal_admin.pot'
             // lint
             sh './docker-run make flake8'
+            sh './docker-run make mypy'
             sh './docker-run make git-attributes'
             sh './docker-run make quote'
             sh './docker-run make spell'

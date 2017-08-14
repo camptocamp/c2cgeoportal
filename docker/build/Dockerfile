@@ -20,6 +20,8 @@ COPY requirements.txt fixversions.txt /tmp/
 RUN \
   cd /tmp && \
   pip install --disable-pip-version-check --no-cache-dir --requirement requirements.txt && \
+  # for mypy
+  touch /usr/local/lib/python3.6/site-packages/zope/__init__.py && \
   rm --recursive --force /tmp/* /var/tmp/* /root/.cache/*
 
 COPY run /usr/bin/
