@@ -174,7 +174,7 @@ transifex-init: $(TX_DEPENDENCIES) c2cgeoportal/locale/c2cgeoportal.pot
 import-ngeo-apps: $(APPS_FILES)
 
 ngeo: $(BUILD_DIR)/requirements.timestamp
-	if [ ! -e "ngeo" ] ; then git clone --depth 1 --branch=$(shell $(BUILD_DIR)/venv/bin/ngeo-version) https://github.com/camptocamp/ngeo.git ; fi
+	if [ ! -e "ngeo" ] ; then git clone --depth 1 --branch=$(shell VERSION=$(VERSION) $(BUILD_DIR)/venv/bin/ngeo-version) https://github.com/camptocamp/ngeo.git ; fi
 	touch --no-create $@
 
 .PRECIOUS: ngeo/contribs/gmf/apps/%/index.html
