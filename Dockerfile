@@ -3,7 +3,7 @@ LABEL maintainer Camptocamp "info@camptocamp.com"
 
 RUN \
   echo "deb http://apt.dockerproject.org/repo debian-jessie main" >> /etc/apt/sources.list && \
-  apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys F76221572C52609D && \
+  apt-key adv --keyserver eu.pool.sks-keyservers.net --recv-keys F76221572C52609D && \
   apt-get update && \
   apt-get install --assume-yes --no-install-recommends docker-engine && \
   apt-get clean && \
