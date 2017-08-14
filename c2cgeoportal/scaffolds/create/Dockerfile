@@ -1,4 +1,4 @@
-FROM grahamdumpleton/mod-wsgi-docker:python-2.7
+FROM grahamdumpleton/mod-wsgi-docker:python-3.5
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
 RUN \

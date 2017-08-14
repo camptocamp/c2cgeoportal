@@ -28,6 +28,8 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import re
+import json
 import decimal
 from unittest import TestCase
 from pyramid import testing
@@ -50,9 +52,14 @@ class TestDecimalJSON(TestCase):
         request = testing.DummyRequest()
         result = renderer(value, {"request": request})
         self.assertEqual(
-            result, '{"int": 1, "dec": 1.2, "str": "an str"}')
-        self.assertEqual(request.response.content_type,
-                         "application/json")
+            json.loads(result),
+            {
+                "int": 1,
+                "dec": 1.2,
+                "str": "an str"
+            }
+        )
+        self.assertEqual(request.response.content_type, "application/json")
 
     def test_jsonp(self):
         renderer = self._call_fut()
@@ -65,5 +72,11 @@ class TestDecimalJSON(TestCase):
         request.params["callback"] = "jsonp_cb"
         result = renderer(value, {"request": request})
         self.assertEqual(
-            result, 'jsonp_cb({"int": 1, "dec": 1.2, "str": "an str"});')
+            json.loads(re.search("jsonp_cb\((.*)\);", result).group(1)),
+            {
+                "int": 1,
+                "dec": 1.2,
+                "str": "an str"
+            }
+        )
         self.assertEqual(request.response.content_type, "text/javascript")

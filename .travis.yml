@@ -3,7 +3,7 @@ sudo: required
 
 language: python
 python:
-- 2.7
+- "3.5"
 
 env:
   global:
@@ -17,7 +17,7 @@ before_install:
 - sudo apt-get remove --assume-yes --force-yes python-zope.interface postgresql-*
 - sudo apt-get install --assume-yes --force-yes aptitude
 - curl --silent --location https://deb.nodesource.com/setup_6.x | sudo -E bash -
-- sudo aptitude install --assume-yes apache2 libapache2-mod-wsgi libapache2-mod-fcgid tomcat7 nodejs cgi-mapserver gettext
+- sudo aptitude install --assume-yes apache2 libapache2-mod-wsgi-py3 libapache2-mod-fcgid tomcat7 nodejs cgi-mapserver gettext
 - sudo chmod  o+rx /var/log/apache2/
 - sudo chmod  o+r /var/log/apache2/*.log
 - sudo apt-get install --option Dpkg::Options::="--force-confold" --force-yes --assume-yes docker-ce
@@ -88,6 +88,7 @@ script:
 - cd $TRAVIS_FOLDER
 - travis/no-make-error.sh /tmp/travis/testgeomapfish -f travis.mk help
 - find /tmp/travis/testgeomapfish/setup.py /tmp/travis/testgeomapfish/testgeomapfish/*.py /tmp/travis/testgeomapfish/testgeomapfish/views -name \*.py | xargs travis/quote
+- $TRAVIS_FOLDER/scripts/unify-so.py /tmp/travis/testgeomapfish
 - travis/test-new-project wsgi/check_collector
 - travis/test-new-project wsgi/check_collector?type=all
 - travis/test-new-project wsgi/layers/test/values/type enum

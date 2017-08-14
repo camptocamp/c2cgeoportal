@@ -1,8 +1,6 @@
 -r CONST_versions_requirements.txt
 -r CONST_fixversions.txt
-# missing dependency of formalchemy
-couchdbkit==0.6.5
 http-parser==0.8.3
 restkit==4.2.2
-Shapely==1.5.17.post1
+Shapely==1.5.17
 Pygments==2.2.0

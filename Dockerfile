@@ -10,4 +10,4 @@ RUN \
 
 WORKDIR /src
 
-ENV PYTHONPATH /build/venv/lib/python2.7/site-packages/
+ENV PYTHONPATH /build/venv/lib/python3.5/site-packages/

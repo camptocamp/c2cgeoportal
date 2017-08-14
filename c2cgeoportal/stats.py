@@ -103,7 +103,7 @@ class _MemoryBackend:
         reset = request.params.get("reset", "0") == "1"
         timers = {}
         with self._stats_lock:
-            for key, value in self._timers.iteritems():
+            for key, value in self._timers.items():
                 timers[key] = {
                     "nb": value[0],
                     "avg_ms": int(round((value[1] / value[0]) * 1000.0)),
@@ -159,7 +159,7 @@ def _create_finished_cb(kind, measure):  # pragma: no cover
             name = "_not_found"
         else:
             name = request.matched_route.name
-        key = [kind, request.method, name, str(status)]
+        key = [kind, request.method, name, status]
         measure.stop(key)
     return finished_cb
 

@@ -32,7 +32,7 @@ import os
 import re
 import subprocess
 from json import loads, dumps
-from urlparse import parse_qsl
+from urllib.parse import parse_qsl
 from argparse import ArgumentParser
 
 
@@ -57,7 +57,7 @@ def _subs(subs, string):
             if new_string != string:
                 return new_string
     print("Unable to find the patterns:")
-    print("\n".join([p for p, r in subs]))
+    print(("\n".join([p for p, r in subs])))
     print("in")
     print(string)
     exit(1)
@@ -110,7 +110,7 @@ def _ngeo_git_version():
 
 
 def ngeo_git_version():
-    print(_ngeo_git_version())
+    print((_ngeo_git_version()))
 
 
 def _get_ngeo_version():
@@ -118,7 +118,7 @@ def _get_ngeo_version():
     if version is not None:
         return version
     return "git://github.com/camptocamp/ngeo#{}".format(
-        subprocess.check_output(["git", "rev-parse", "HEAD"], cwd="ngeo").strip()
+        subprocess.check_output(["git", "rev-parse", "HEAD"], cwd="ngeo").decode("utf-8").strip()
     )
 
 
@@ -166,7 +166,7 @@ def main():
                 if package in json_data["devDependencies"]:
                     del json_data["devDependencies"][package]
 
-            data = dumps(json_data, indent=2, sort_keys=True, encoding="utf-8", separators=(',', ': '))
+            data = dumps(json_data, indent=2, sort_keys=True, separators=(',', ': '))
             data = data + "\n"
 
         else:

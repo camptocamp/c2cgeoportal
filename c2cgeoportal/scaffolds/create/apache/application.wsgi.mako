@@ -4,9 +4,6 @@ import re
 import os
 from logging.config import fileConfig
 
-reload(sys)
-sys.setdefaultencoding('utf-8')
-
 % if docker == 'TRUE':
 root = "/app"
 % else:

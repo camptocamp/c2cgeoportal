@@ -2,7 +2,7 @@
 
 RESULT=$(make $* 2>&1)
 
-if [ "${RESULT}" != "" ]
+if [ "${RESULT}" != "make: Nothing to be done for 'build'." ]
 then
     echo A Rule is running again
     DEBUG=TRUE make $*

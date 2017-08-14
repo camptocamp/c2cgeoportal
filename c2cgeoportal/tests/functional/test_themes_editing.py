@@ -76,17 +76,17 @@ class TestThemeEditing(TestCase):
             DBSession.delete(o)
         ogcserver, ogcserver_external = create_default_ogcserver()
 
-        role1 = Role(name=u"__test_role1")
+        role1 = Role(name="__test_role1")
         role1.id = 999
-        user1 = User(username=u"__test_user1", password=u"__test_user1", role=role1)
+        user1 = User(username="__test_user1", password="__test_user1", role=role1)
         user1.email = "__test_user1@example.com"
 
-        role2 = Role(name=u"__test_role2", extent=WKTElement(
+        role2 = Role(name="__test_role2", extent=WKTElement(
             "POLYGON((1 2, 1 4, 3 4, 3 2, 1 2))", srid=21781
         ))
-        user2 = User(username=u"__test_user2", password=u"__test_user2", role=role2)
+        user2 = User(username="__test_user2", password="__test_user2", role=role2)
 
-        main = Interface(name=u"main")
+        main = Interface(name="main")
 
         engine = sqlahelper.get_engine()
         init(engine)
@@ -102,25 +102,25 @@ class TestThemeEditing(TestCase):
         a_geo_table.drop(checkfirst=True)
         a_geo_table.create()
 
-        private_layer = LayerWMS(name=u"__test_private_layer", public=False)
+        private_layer = LayerWMS(name="__test_private_layer", public=False)
         private_layer.layer = "__test_private_layer"
         private_layer.geo_table = "geodata.a_geo_table"
         private_layer.interfaces = [main]
         private_layer.ogc_server = ogcserver
 
-        group = LayerGroup(name=u"__test_layer_group")
+        group = LayerGroup(name="__test_layer_group")
         group.children = [private_layer]
 
-        theme = Theme(name=u"__test_theme")
+        theme = Theme(name="__test_theme")
         theme.children = [group]
         theme.interfaces = [main]
 
         DBSession.add(RestrictionArea(
-            name=u"__test_ra1", description=u"", layers=[private_layer],
+            name="__test_ra1", description="", layers=[private_layer],
             roles=[role1],
         ))
         DBSession.add(RestrictionArea(
-            name=u"__test_ra2", description=u"", layers=[private_layer],
+            name="__test_ra2", description="", layers=[private_layer],
             roles=[role2], readwrite=True,
         ))
 
@@ -199,20 +199,20 @@ class TestThemeEditing(TestCase):
         }
         entry = Entry(request)
         themes = entry.themes()
-        self.assertEquals(set(themes["errors"]), set())
+        self.assertEqual(set(themes["errors"]), set())
         self.assertEqual([t["name"] for t in themes["themes"]], [])
 
     def test_themev2_auth_no_edit_permission(self):
         from c2cgeoportal.views.entry import Entry
 
-        request = self._create_request_obj(username=u"__test_user1")
+        request = self._create_request_obj(username="__test_user1")
         request.params = {
             "interface": "main",
             "version": "2"
         }
         entry = Entry(request)
         themes = entry.themes()
-        self.assertEquals(set(themes["errors"]), set())
+        self.assertEqual(set(themes["errors"]), set())
         self.assertEqual([t["name"] for t in themes["themes"]], ["__test_theme"])
         self.assertEqual([c["name"] for c in themes["themes"][0]["children"]], ["__test_layer_group"])
 
@@ -223,7 +223,7 @@ class TestThemeEditing(TestCase):
     def test_themev2_auth_edit_permission(self):
         from c2cgeoportal.views.entry import Entry
 
-        request = self._create_request_obj(username=u"__test_user2", params={
+        request = self._create_request_obj(username="__test_user2", params={
             "min_levels": "0"
         })
         request.params = {
@@ -233,7 +233,7 @@ class TestThemeEditing(TestCase):
 
         entry = Entry(request)
         themes = entry.themes()
-        self.assertEquals(set(themes["errors"]), set())
+        self.assertEqual(set(themes["errors"]), set())
         self.assertEqual([t["name"] for t in themes["themes"]], ["__test_theme"])
         self.assertEqual([c["name"] for c in themes["themes"][0]["children"]], ["__test_layer_group"])
 

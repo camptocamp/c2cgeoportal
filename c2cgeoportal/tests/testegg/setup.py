@@ -28,12 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-try:
-    from setuptools import setup, find_packages
-except ImportError:
-    from ez_setup import use_setuptools
-    use_setuptools()
-    from setuptools import setup, find_packages  # noqa
+from setuptools import setup, find_packages
 
 setup(
     name="testegg",

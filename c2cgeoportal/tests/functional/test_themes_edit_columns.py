@@ -28,7 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from urllib import urlencode
+from urllib.parse import urlencode
 from nose.plugins.attrib import attr
 from unittest import TestCase
 
@@ -62,13 +62,13 @@ class TestThemesEditColumns(TestCase):
         for treeitem in DBSession.query(TreeItem).all():
             DBSession.delete(treeitem)
 
-        self.role = Role(name=u"__test_role")
+        self.role = Role(name="__test_role")
         self.user = User(
-            username=u"__test_user",
-            password=u"__test_user",
+            username="__test_user",
+            password="__test_user",
             role=self.role
         )
-        self.main = Interface(name=u"main")
+        self.main = Interface(name="main")
 
         self.ogc_server, external_ogc_server = create_default_ogcserver()
         self.ogc_server.auth = OGCSERVER_AUTH_NOAUTH
@@ -77,9 +77,9 @@ class TestThemesEditColumns(TestCase):
         self.metadata = None
         self.layer_ids = []
 
-        self.layer_group_1 = LayerGroup(name=u"__test_layer_group_1")
+        self.layer_group_1 = LayerGroup(name="__test_layer_group_1")
 
-        theme = Theme(name=u"__test_theme")
+        theme = Theme(name="__test_theme")
         theme.interfaces = [self.main]
         theme.children = [self.layer_group_1]
 
@@ -170,12 +170,12 @@ class TestThemesEditColumns(TestCase):
         table1.create()
         table2.create()
 
-        ins = table1.insert().values(name=u"c1é")
+        ins = table1.insert().values(name="c1é")
         connection.execute(ins).inserted_primary_key[0]
-        ins = table1.insert().values(name=u"c2é")
+        ins = table1.insert().values(name="c2é")
         connection.execute(ins).inserted_primary_key[0]
 
-        layer = LayerWMS(name=u"test_WMS_1", public=True)
+        layer = LayerWMS(name="test_WMS_1", public=True)
         layer.layer = "test_wms"
         layer.id = id
         layer.geo_table = "{0!s}.{1!s}".format(schemaname, tablename)
@@ -194,7 +194,7 @@ class TestThemesEditColumns(TestCase):
         DBSession.add(self.layer_group_1)
 
         ra = RestrictionArea()
-        ra.name = u"__test_ra"
+        ra.name = "__test_ra"
         ra.layers = [layer]
         ra.roles = [self.role]
         ra.readwrite = True
@@ -221,7 +221,7 @@ class TestThemesEditColumns(TestCase):
         from c2cgeoportal.views.entry import Entry
 
         layer_id = self._create_layer(geom_type=True)
-        entry = Entry(self._get_request(layer_id, username=u"__test_user", params={
+        entry = Entry(self._get_request(layer_id, username="__test_user", params={
             "version": "2",
             "interface": "main"
         }))
@@ -229,7 +229,7 @@ class TestThemesEditColumns(TestCase):
         themes = entry.themes()
         layers = themes["themes"][0]["children"][0]["children"]
 
-        self.assertEquals(
+        self.assertEqual(
             [layer["edit_columns"] for layer in layers],
             [[{
                 "nillable": True,
@@ -285,9 +285,9 @@ class TestThemesEditColumns(TestCase):
                 "name": "large_binary"
             }, {
                 "enumeration": [
-                    u"one",
-                    u"two",
-                    u"three",
+                    "one",
+                    "two",
+                    "three",
                 ],
                 "type": "xsd:string",
                 "name": "value",
@@ -314,8 +314,8 @@ class TestThemesEditColumns(TestCase):
                 "type": "xsd:string",
                 "name": "child",
                 "enumeration": [
-                    u"c1\xe9",
-                    u"c2\xe9"
+                    "c1\xe9",
+                    "c2\xe9"
                 ]
             }]]
         )
@@ -329,7 +329,7 @@ class TestThemesEditColumns(TestCase):
             Metadata("lastUpdateUserColumn", "last_update_user"),
         ]
         layer_id = self._create_layer(geom_type=False, exclude_properties=True, metadatas=metadatas)
-        entry = Entry(self._get_request(layer_id, username=u"__test_user", params={
+        entry = Entry(self._get_request(layer_id, username="__test_user", params={
             "version": "2",
             "interface": "main"
         }))
@@ -337,7 +337,7 @@ class TestThemesEditColumns(TestCase):
         themes = entry.themes()
         layers = themes["themes"][0]["children"][0]["children"]
 
-        self.assertEquals(
+        self.assertEqual(
             [layer["edit_columns"] for layer in layers],
             [[{
                 "nillable": True,
@@ -382,9 +382,9 @@ class TestThemesEditColumns(TestCase):
                 "name": "large_binary"
             }, {
                 "enumeration": [
-                    u"one",
-                    u"two",
-                    u"three",
+                    "one",
+                    "two",
+                    "three",
                 ],
                 "type": "xsd:string",
                 "name": "value",
@@ -411,8 +411,8 @@ class TestThemesEditColumns(TestCase):
                 "type": "xsd:string",
                 "name": "child",
                 "enumeration": [
-                    u"c1\xe9",
-                    u"c2\xe9"
+                    "c1\xe9",
+                    "c2\xe9"
                 ]
             }]]
         )

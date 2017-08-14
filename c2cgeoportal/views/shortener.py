@@ -32,7 +32,7 @@ import random
 import string
 import logging
 from datetime import datetime
-from urlparse import urlparse
+from urllib.parse import urlparse
 
 from pyramid.httpexceptions import HTTPFound, HTTPBadRequest, \
     HTTPNotFound, HTTPInternalServerError

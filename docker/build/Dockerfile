@@ -1,4 +1,4 @@
-FROM python:2
+FROM python:3.5
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
 RUN \
@@ -11,12 +11,10 @@ RUN \
   apt-get clean && \
   rm --recursive --force /var/lib/apt/lists/*
 
-COPY base-requirements.txt dev-requirements.txt fixversions.txt /tmp/
+COPY dev-requirements.txt fixversions.txt /tmp/
 
 RUN \
   cd /tmp && \
-  curl https://bootstrap.pypa.io/get-pip.py > get-pip.py && \
-  python get-pip.py `cat base-requirements.txt` && \
   pip install --requirement dev-requirements.txt && \
   apt-get clean && \
   rm --recursive --force /tmp/* /var/tmp/* /root/.cache/*
@@ -25,6 +23,6 @@ COPY run /usr/bin/
 
 WORKDIR /src
 
-ENV PYTHONPATH /build/venv/lib/python2.7/site-packages/
+ENV PYTHONPATH /build/venv/lib/python3.5/site-packages/
 
 ENTRYPOINT ["run"]

@@ -140,7 +140,7 @@ class TimeExtentValue:
         return {
             "minValue": _format_date(values[0]),
             "maxValue": _format_date(values[-1]),
-            "values": map(_format_date, values),
+            "values": list(map(_format_date, values)),
             "resolution": self.resolution,
             "minDefValue": min_def_value,
             "maxDefValue": max_def_value,
@@ -151,8 +151,7 @@ class TimeExtentInterval:
     """
     Represents time with the help of a start, an end and an interval.
     """
-    def __init__(self, start, end, interval, resolution,
-                 min_def_value, max_def_value):
+    def __init__(self, start, end, interval, resolution, min_def_value, max_def_value):
         """
         Arguments:
 
@@ -181,8 +180,14 @@ class TimeExtentInterval:
                 "different interval")
         self.start = min(self.start, extent.start)
         self.end = max(self.end, extent.end)
-        self.min_def_value = min(self.min_def_value, extent.min_def_value)
-        self.max_def_value = max(self.max_def_value, extent.max_def_value)
+        self.min_def_value = \
+            self.min_def_value if extent.min_def_value is None else \
+            extent.min_def_value if self.min_def_value is None else \
+            min(self.min_def_value, extent.min_def_value)
+        self.max_def_value = \
+            self.max_def_value if extent.max_def_value is None else \
+            extent.max_def_value if self.max_def_value is None else \
+            max(self.max_def_value, extent.max_def_value)
 
     def to_dict(self):
         min_def_value = _format_date(self.min_def_value) \
@@ -248,7 +253,7 @@ def _parse_default_values(default_values):
     if default_values is None:  # pragma: no cover
         return None, None
 
-    def_value = str(default_values).split("/")
+    def_value = default_values.split("/")
 
     _, min_def_value = _parse_date(def_value[0])
     max_def_value = None
@@ -274,7 +279,7 @@ def _parse_date(date):
         "day": "%Y-%m-%d",
     }
 
-    for resolution, pattern in resolutions.items():
+    for resolution, pattern in list(resolutions.items()):
         try:
             dt = datetime.datetime.strptime(date, pattern)
             return resolution, dt.replace(tzinfo=isodate.UTC)

@@ -38,22 +38,11 @@ import json
 import shutil
 import pkg_resources
 import subprocess
-from subprocess import check_call, CalledProcessError
+from subprocess import check_call, check_output, CalledProcessError
 from argparse import ArgumentParser
 from alembic.config import Config
 from alembic import command
 from c2cgeoportal.lib.bashcolor import colorize, GREEN, YELLOW, RED
-
-try:
-    from subprocess import check_output
-except ImportError:
-    from subprocess import Popen, PIPE
-
-    def check_output(cmd, cwd=None, stdin=None, stderr=None, shell=False):  # noqa
-        """Backwards compatible check_output"""
-        p = Popen(cmd, cwd=cwd, stdin=stdin, stderr=stderr, shell=shell, stdout=PIPE)
-        out, _ = p.communicate()
-        return out
 
 VERSION_RE = "^[0-9]+\.[0-9]+\..+$"
 REQUIRED_TEMPLATE_KEYS = ["package", "srid", "extent", "apache_vhost"]
@@ -184,6 +173,7 @@ class Step:
                     message="The command '{}' returns the error code {}.".format(e.cmd, e.returncode),
                     prompt="Fix it and run it again:"
                 )
+                exit(1)
         return decorate
 
 
@@ -194,20 +184,20 @@ class C2cTool:
 
     def print_step(self, step, error=False, message=None, prompt="To continue type:"):
         print("")
-        print(self.color_bar)
+        print((self.color_bar))
         if message is not None:
-            print(colorize(message, RED if error else YELLOW))
+            print((colorize(message, RED if error else YELLOW)))
         if step >= 0:
-            print(colorize(prompt, GREEN))
-            print(colorize("make -f {} upgrade{}", GREEN).format(
+            print((colorize(prompt, GREEN)))
+            print((colorize("make -f {} upgrade{}", GREEN).format(
                 self.options.file if self.options.file is not None else "<user.mk>",
                 step if step != 0 else "",
-            ))
+            )))
 
     @staticmethod
     def get_project():
         if not os.path.isfile("project.yaml"):
-            print(colorize("Unable to find the required 'project.yaml' file.", RED))
+            print((colorize("Unable to find the required 'project.yaml' file.", RED)))
             exit(1)
 
         with open("project.yaml", "r") as f:
@@ -260,7 +250,7 @@ class C2cTool:
 
     @Step(0)
     def step0(self):
-        project_template_keys = self.project.get("template_vars").keys()
+        project_template_keys = list(self.project.get("template_vars").keys())
         messages = []
         for required in REQUIRED_TEMPLATE_KEYS:
             if required not in project_template_keys:
@@ -313,7 +303,7 @@ class C2cTool:
             )
             exit(1)
 
-        if check_output(["git", "status", "--short"]) == "":
+        if check_output(["git", "status", "--short"]).decode("utf-8") == "":
             self.step1()
         else:
             check_call(["git", "status"])
@@ -335,10 +325,10 @@ class C2cTool:
         check_call(["git", "submodule", "foreach", "--recursive", "git", "reset", "--hard"])
         check_call(["git", "submodule", "foreach", "--recursive", "git", "clean", "--force", "-d"])
 
-        branch = check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).strip()
+        branch = check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode("utf-8").strip()
         # remove all no more existing branches
         check_call(["git", "fetch", "origin", "--prune"])
-        branches = check_output(["git", "branch", "--all"]).split("\n")
+        branches = check_output(["git", "branch", "--all"]).decode("utf-8").split("\n")
         if "  remotes/origin/{0!s}".format(branch) in branches:
             try:
                 check_call(["git", "pull", "--rebase", self.options.git_remote, branch])
@@ -353,7 +343,7 @@ class C2cTool:
         check_call(["git", "submodule", "foreach", "git", "submodule", "sync"])
         check_call(["git", "submodule", "foreach", "git", "submodule", "update", "--init"])
 
-        if len(check_output(["git", "status", "-z"]).strip()) != 0:
+        if len(check_output(["git", "status", "-z"]).decode("utf-8").strip()) != 0:
             self.print_step(
                 1, error=True, message="The pull is not fast forward.",
                 prompt="Please solve the rebase and run it again:")
@@ -391,12 +381,12 @@ class C2cTool:
                 template_package_json = json.loads(package_json_file.read(), encoding="utf-8")
             if "devDependencies" not in package_json:
                 package_json["devDependencies"] = {}
-            for package, version in template_package_json.get("devDependencies", {}).items():
+            for package, version in list(template_package_json.get("devDependencies", {}).items()):
                 package_json["devDependencies"][package] = version
             with open("package.json", "w") as package_json_file:
                 json.dump(
                     package_json, package_json_file,
-                    encoding="utf-8", sort_keys=True, separators=(',', ': '), indent=2
+                    sort_keys=True, separators=(',', ': '), indent=2
                 )
                 package_json_file.write("\n")
         else:
@@ -442,7 +432,7 @@ class C2cTool:
         if os.path.isfile("ngeo.diff"):
             os.unlink("ngeo.diff")
 
-        status = check_output(["git", "status", "--short", "CONST_create_template"])
+        status = check_output(["git", "status", "--short", "CONST_create_template"]).decode("utf-8")
         status = [s for s in status.split("\n") if len(s) > 3]
         status = [s[3:] for s in status if not s.startswith("?? ")]
         status = [s for s in status if not s.startswith(
@@ -543,21 +533,21 @@ class C2cTool:
         )])
 
         print("")
-        print(self.color_bar)
+        print((self.color_bar))
         print("")
-        print(colorize("Congratulations your upgrade is a success.", GREEN))
+        print((colorize("Congratulations your upgrade is a success.", GREEN)))
         print("")
-        branch = check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).strip()
+        branch = check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode("utf-8").strip()
         print("Now all your files will be committed, you should do a git push:")
-        print("git push {0!s} {1!s}.".format(
+        print(("git push {0!s} {1!s}.".format(
             self.options.git_remote, branch
-        ))
+        )))
 
     def deploy(self):
         ok, message = self.test_checkers()
         if not ok:
             print(message)
-            print(colorize("Correct them and run again", RED))
+            print((colorize("Correct them and run again", RED)))
             exit(1)
 
         check_call(["sudo", "-u", "deploy", "deploy", "-r", "deploy/deploy.cfg", self.options.host])

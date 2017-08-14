@@ -97,6 +97,8 @@ class Profile(Raster):
                     raise HTTPNotFound("Layer {0!s} not found".format(layer))
         else:
             rasters = self.rasters
+            layers = list(rasters.keys())
+            layers.sort()
 
         points = []
 
@@ -109,7 +111,7 @@ class Profile(Raster):
 
             values = {}
             has_one = False
-            for ref in rasters.keys():
+            for ref in list(rasters.keys()):
                 value = self._get_raster_value(
                     self.rasters[ref],
                     ref, coord[0], coord[1])
@@ -128,7 +130,7 @@ class Profile(Raster):
                 })
             prev_coord = coord
 
-        return rasters.keys(), points
+        return layers, points
 
     @staticmethod
     def _dist(coord1, coord2):

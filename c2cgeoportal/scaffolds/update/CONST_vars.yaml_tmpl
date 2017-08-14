@@ -379,8 +379,8 @@ vars:
 #                no_redirect: "true"
 #                debug: "true"
             routes:
-            - name: apijs
-            - name: xapijs
+#            - name: apijs
+#            - name: xapijs
             - name: printproxy_capabilities
             # print V2
             #- name: printproxy_info
@@ -396,7 +396,7 @@ vars:
                 REQUEST: GetCapabilities
         main:
             routes:
-            - name: apijs
+#            - name: apijs
             - name: printproxy_capabilities
 
     # Check collector configuration

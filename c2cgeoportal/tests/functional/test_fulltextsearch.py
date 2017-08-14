@@ -52,12 +52,12 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal.models import FullTextSearch, User, Role, Interface
         from c2cgeoportal.models import DBSession
 
-        user1 = User(username=u"__test_user1", password=u"__test_user1")
-        role1 = Role(name=u"__test_role1", description=u"__test_role1")
+        user1 = User(username="__test_user1", password="__test_user1")
+        role1 = Role(name="__test_role1", description="__test_role1")
         user1.role_name = role1.name
 
-        user2 = User(username=u"__test_user2", password=u"__test_user2")
-        role2 = Role(name=u"__test_role2", description=u"__test_role2")
+        user2 = User(username="__test_user2", password="__test_user2")
+        role2 = Role(name="__test_role2", description="__test_role2")
         user2.role_name = role2.name
 
         entry1 = FullTextSearch()
@@ -303,7 +303,7 @@ class TestFulltextsearchView(TestCase):
 
         request = self._create_dummy_request(
             params=dict(query="pl sem", limit=40),
-            username=u"__test_user1"
+            username="__test_user1"
         )
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
@@ -318,7 +318,7 @@ class TestFulltextsearchView(TestCase):
 
         request = self._create_dummy_request(
             params=dict(query="ven nei", limit=40),
-            username=u"__test_user1"
+            username="__test_user1"
         )
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
@@ -331,7 +331,7 @@ class TestFulltextsearchView(TestCase):
 
         request = self._create_dummy_request(
             params=dict(query="ven nei", limit=40),
-            username=u"__test_user2"
+            username="__test_user2"
         )
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()

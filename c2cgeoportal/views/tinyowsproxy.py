@@ -108,7 +108,7 @@ class TinyOWSProxy(OGCProxy):
             )
 
         # we want clients to cache GetCapabilities and DescribeFeatureType req.
-        use_cache = method == "GET" and operation in (u"getcapabilities", u"describefeaturetype")
+        use_cache = method == "GET" and operation in ("getcapabilities", "describefeaturetype")
         cache_control = PRIVATE_CACHE if use_cache else NO_CACHE
 
         response = self._proxy_callback(
@@ -125,7 +125,7 @@ class TinyOWSProxy(OGCProxy):
         """
 
         writable_layers = set()
-        for gmflayer in get_writable_layers(self.role_id, [self.default_ogc_server.id]).values():
+        for gmflayer in list(get_writable_layers(self.role_id, [self.default_ogc_server.id]).values()):
             for ogclayer in gmflayer.layer.split(","):
                 writable_layers.add(ogclayer)
         return typenames.issubset(writable_layers)
@@ -138,6 +138,7 @@ class TinyOWSProxy(OGCProxy):
 
     def _proxy_callback(self, operation, role_id, cache_control, *args, **kwargs):
         resp, content = self._proxy(*args, **kwargs)
+        content = content.decode("utf-8")
 
         if operation == "getcapabilities":
             content = filter_wfst_capabilities(
@@ -153,7 +154,7 @@ class TinyOWSProxy(OGCProxy):
         )
 
         return self._build_response(
-            resp, content, cache_control, "tinyows"
+            resp, content.encode("utf-8"), cache_control, "tinyows"
         )
 
     @staticmethod

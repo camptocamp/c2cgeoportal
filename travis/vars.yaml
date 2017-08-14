@@ -7,6 +7,8 @@ vars:
     authorized_referers:
     - http://127.0.0.1/{instanceid}
     - https://127.0.0.1/{instanceid}
+    - http://localhost/{instanceid}
+    - https://localhost/{instanceid}
 
     dbsessions:
         travis_test:
@@ -22,6 +24,7 @@ vars:
 
     checker:
         defaults:
+            lang_files: [ngeo]
             routes_disable: [printproxy_capabilities]
         all:
             routes_disable: [printproxy_capabilities]

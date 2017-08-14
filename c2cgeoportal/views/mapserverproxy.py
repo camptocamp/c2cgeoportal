@@ -111,11 +111,11 @@ class MapservProxy(OGCProxy):
                 if not self.external:
                     self.params["user_id"] = self.user.id  # pragma: no cover
             else:  # pragma nocover
-                log.warning(u"The user '{}' has no {}role".format(
+                log.warning("The user '{}' has no {}role".format(
                     self.user.name, "external " if self.external else ""))
 
         # do not allows direct variable substitution
-        for k in self.params.keys():
+        for k in list(self.params.keys()):
             if k[:2].capitalize() == "S_":
                 log.warning("Direct substitution not allowed ({0!s}={1!s}).".format(k, self.params[k]))
                 del self.params[k]
@@ -137,10 +137,10 @@ class MapservProxy(OGCProxy):
                 self.params = {}  # pragma: no cover
             else:
                 use_cache = self.lower_params["request"] in (
-                    u"getcapabilities",
-                    u"getlegendgraphic",
-                    u"describelayer",
-                    u"describefeaturetype",
+                    "getcapabilities",
+                    "getlegendgraphic",
+                    "describelayer",
+                    "describefeaturetype",
                 )
 
                 # no user_id and role_id or cached queries
@@ -149,7 +149,7 @@ class MapservProxy(OGCProxy):
                 if use_cache and "role_id" in self.params:
                     del self.params["role_id"]
 
-            if "service" in self.lower_params and self.lower_params["service"] == u"wfs":
+            if "service" in self.lower_params and self.lower_params["service"] == "wfs":
                 _url = self._get_wfs_url()
             else:
                 _url = self._get_wms_url()
@@ -160,15 +160,15 @@ class MapservProxy(OGCProxy):
         cache_control = PRIVATE_CACHE
         if method == "GET" and \
                 "service" in self.lower_params and \
-                self.lower_params["service"] == u"wms":
-            if self.lower_params["request"] in (u"getmap", u"getfeatureinfo"):
+                self.lower_params["service"] == "wms":
+            if self.lower_params["request"] in ("getmap", "getfeatureinfo"):
                 cache_control = NO_CACHE
-            elif self.lower_params["request"] == u"getlegendgraphic":
+            elif self.lower_params["request"] == "getlegendgraphic":
                 cache_control = PUBLIC_CACHE
         elif method == "GET" and \
                 "service" in self.lower_params and \
-                self.lower_params["service"] == u"wfs":
-            if self.lower_params["request"] == u"getfeature":
+                self.lower_params["service"] == "wfs":
+            if self.lower_params["request"] == "getfeature":
                 cache_control = NO_CACHE
         elif method != "GET":
             cache_control = NO_CACHE
@@ -198,20 +198,20 @@ class MapservProxy(OGCProxy):
 
         if self.lower_params.get("request") == "getcapabilities":
             content = filter_capabilities(
-                content, role_id, self.lower_params.get("service") == "wms",
+                content.decode("utf-8"), role_id, self.lower_params.get("service") == "wms",
                 url,
                 self.request.headers,
                 self.mapserver_settings.get("proxies"),
                 self.request
-            )
+            ).encode("utf-8")
 
         content_type = None
         if callback is not None:
             content_type = "application/javascript"
             # escape single quotes in the JavaScript string
-            content = unicode(content.decode("utf8"))
-            content = content.replace(u"'", u"\\'")
-            content = u"{0!s}('{1!s}');".format(callback, u" ".join(content.splitlines()))
+            content = "{}('{}');".format(callback, " ".join(
+                content.decode("utf-8").replace("'", "\\'").splitlines()
+            )).encode("utf-8")
         else:
             content_type = resp["content-type"]
 

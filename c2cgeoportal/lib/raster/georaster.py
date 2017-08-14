@@ -28,7 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import shputils
+from . import shputils
 from os.path import dirname
 from struct import unpack
 
@@ -91,7 +91,7 @@ class GeoRaster:
         if dir_ == "":
             dir_ = "."
         for shape in shp_records:
-            filename = shape["dbf_data"]["location"].rstrip()
+            filename = shape["dbf_data"][b"location"].rstrip().decode("utf-8")
             tile_class = None
             if filename.endswith(".bt"):
                 tile_class = BTTile

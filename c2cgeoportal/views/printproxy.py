@@ -28,7 +28,9 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import urllib
+import urllib.request
+import urllib.parse
+import urllib.error
 import logging
 
 import simplejson as json
@@ -38,8 +40,7 @@ from pyramid.view import view_config
 from pyramid.response import Response
 from pyramid.httpexceptions import HTTPBadGateway
 
-from c2cgeoportal.lib.caching import get_region, \
-    set_common_headers, NO_CACHE, PRIVATE_CACHE
+from c2cgeoportal.lib.caching import get_region, set_common_headers, NO_CACHE, PRIVATE_CACHE
 from c2cgeoportal.lib.functionality import get_functionality
 from c2cgeoportal.views.proxy import Proxy
 
@@ -93,7 +94,7 @@ class PrintProxy(Proxy):  # pragma: no cover
 
         # get query string
         params = dict(self.request.params)
-        query_string = urllib.urlencode(params)
+        query_string = urllib.parse.urlencode(params)
 
         return self._info(
             templates,
@@ -160,7 +161,7 @@ class PrintProxy(Proxy):  # pragma: no cover
 
         # get query string
         params = dict(self.request.params)
-        query_string = urllib.urlencode(params)
+        query_string = urllib.parse.urlencode(params)
 
         resp, content = self._capabilities(
             templates,

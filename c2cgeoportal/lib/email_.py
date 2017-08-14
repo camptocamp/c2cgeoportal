@@ -31,7 +31,7 @@
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from email.Utils import formatdate
+from email.utils import formatdate
 
 
 def send_email(from_addr, to_addrs, body, subject, smtp_server):  # pragma: no cover

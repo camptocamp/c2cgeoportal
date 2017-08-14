@@ -48,6 +48,11 @@ def create_dummy_request(additional_settings=None, *args, **kargs):
     return request
 
 
+def load_binfile(file_name):
+    with open(os.path.join("/src", file_name), "rb") as file_:
+        return file_.read()
+
+
 def load_file(file_name):
-    with open(os.path.join("/src", file_name)) as file:
-        return file.read()
+    with open(os.path.join("/src", file_name)) as file_:
+        return file_.read()

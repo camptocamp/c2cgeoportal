@@ -79,7 +79,7 @@ and build your application to merge the old localisation with the new one.
         source = json.loads(json_)
 
     with open(options.po_v2, "w+") as destination:
-        destination.write(u"""msgid ""
+        destination.write("""msgid ""
 msgstr ""
 "Last-Translator: Imported from {0!s}\\n"
 "Language: {1!s}\\n"
@@ -88,9 +88,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\\n"
 """.format(options.json_v1, options.lang))
-        for key, value in source.items():
-            if isinstance(value, basestring):
-                destination.write((u"""
+        for key, value in list(source.items()):
+            if isinstance(value, str):
+                destination.write(("""
 msgid "{0!s}"
 msgstr "{1!s}"
 """.format(key, value.replace('"', '\\"'))).encode("utf-8"),

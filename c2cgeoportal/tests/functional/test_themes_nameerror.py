@@ -56,19 +56,19 @@ class TestThemesNameErrorView(TestCase):
         from c2cgeoportal.models import DBSession, \
             Theme, LayerGroup, Interface, LayerWMS
 
-        main = Interface(name=u"desktop")
+        main = Interface(name="desktop")
 
         ogc_server, _ = create_default_ogcserver()
 
-        layer_wms = LayerWMS(name=u"__test_layer_wms", public=True)
+        layer_wms = LayerWMS(name="__test_layer_wms", public=True)
         layer_wms.layer = "testpoint_unprotected"
         layer_wms.interfaces = [main]
         layer_wms.ogc_server = ogc_server
 
-        layer_group = LayerGroup(name=u"__test_layer_group")
+        layer_group = LayerGroup(name="__test_layer_group")
         layer_group.children = [layer_wms]
 
-        theme = Theme(name=u"__test/theme")
+        theme = Theme(name="__test/theme")
         theme.interfaces = [main]
         theme.children = [
             layer_group
@@ -120,6 +120,6 @@ class TestThemesNameErrorView(TestCase):
             "version": "2",
         }))
         themes = entry.themes()
-        self.assertEquals(set(themes["errors"]), set([
+        self.assertEqual(set(themes["errors"]), set([
             "The theme has an unsupported name '__test/theme'."
         ]))

@@ -28,6 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from urllib.parse import urlparse, parse_qs
 from unittest import TestCase
 
 from c2cgeoportal.lib import add_url_params
@@ -36,28 +37,62 @@ from c2cgeoportal.lib import add_url_params
 class TestLib(TestCase):
 
     def test_add_url_params_encode1(self):
-        self.assertEqual(add_url_params(
+        presult = urlparse(add_url_params(
             "http://example.com/toto",
-            {u"à": u"é"}
-        ), "http://example.com/toto?%C3%A0=%C3%A9")
+            {"à": "é"}
+        ))
+        self.assertEqual(presult.scheme, "http")
+        self.assertEqual(presult.netloc, "example.com")
+        self.assertEqual(presult.path, "/toto")
+        self.assertEqual(presult.params, "")
+        self.assertEqual(presult.fragment, "")
+        self.assertEqual(parse_qs(presult.query), {
+            "à": ["é"],
+        })
 
     def test_add_url_params_encode2(self):
-        self.assertEqual(add_url_params(
-            u"http://example.com/toto?à=é",
-            {u"1": u"2"}
-        ), "http://example.com/toto?1=2&%C3%A0=%C3%A9")
+        presult = urlparse(add_url_params(
+            "http://example.com/toto?à=é",
+            {"1": "2"}
+        ))
+        self.assertEqual(presult.scheme, "http")
+        self.assertEqual(presult.netloc, "example.com")
+        self.assertEqual(presult.path, "/toto")
+        self.assertEqual(presult.params, "")
+        self.assertEqual(presult.fragment, "")
+        self.assertEqual(parse_qs(presult.query), {
+            "à": ["é"],
+            "1": ["2"],
+        })
 
     def test_add_url_params_encode3(self):
-        self.assertEqual(add_url_params(
+        presult = urlparse(add_url_params(
             "http://example.com/toto?%C3%A0=%C3%A9",
-            {u"1": u"2"}
-        ), "http://example.com/toto?1=2&%C3%A0=%C3%A9")
+            {"1": "2"}
+        ))
+        self.assertEqual(presult.scheme, "http")
+        self.assertEqual(presult.netloc, "example.com")
+        self.assertEqual(presult.path, "/toto")
+        self.assertEqual(presult.params, "")
+        self.assertEqual(presult.fragment, "")
+        self.assertEqual(parse_qs(presult.query), {
+            "à": ["é"],
+            "1": ["2"],
+        })
 
     def test_add_url_params_port(self):
-        self.assertEqual(add_url_params(
+        presult = urlparse(add_url_params(
             "http://example.com:8480/toto",
-            {u"1": u"2"}
-        ), "http://example.com:8480/toto?1=2")
+            {"1": "2"}
+        ))
+        self.assertEqual(presult.scheme, "http")
+        self.assertEqual(presult.netloc, "example.com:8480")
+        self.assertEqual(presult.path, "/toto")
+        self.assertEqual(presult.params, "")
+        self.assertEqual(presult.fragment, "")
+        self.assertEqual(parse_qs(presult.query), {
+            "1": ["2"],
+        })
 
     def test_add_url_params_noparam(self):
         self.assertEqual(add_url_params(

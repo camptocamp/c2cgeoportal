@@ -59,12 +59,12 @@ class TestFunctionalities(TestCase):
         errors = set()
 
         f = functionality._get_config_functionality("func", True, types, request, errors)
-        self.assertEquals(errors, set())
-        self.assertEquals(f, [10])
+        self.assertEqual(errors, set())
+        self.assertEqual(f, [10])
 
         f = functionality._get_config_functionality("func", False, types, request, errors)
-        self.assertEquals(errors, set())
-        self.assertEquals(f, [20])
+        self.assertEqual(errors, set())
+        self.assertEqual(f, [20])
 
         request.registry.settings = {
             "functionalities": {
@@ -78,8 +78,8 @@ class TestFunctionalities(TestCase):
         }
         functionality.FUNCTIONALITIES_TYPES = None
         f = functionality._get_config_functionality("func", True, types, request, errors)
-        self.assertEquals(errors, set())
-        self.assertEquals(f, [20])
+        self.assertEqual(errors, set())
+        self.assertEqual(f, [20])
 
         request.registry.settings = {
             "functionalities": {
@@ -93,5 +93,5 @@ class TestFunctionalities(TestCase):
         }
         functionality.FUNCTIONALITIES_TYPES = None
         f = functionality._get_config_functionality("func", False, types, request, errors)
-        self.assertEquals(errors, set())
-        self.assertEquals(f, [])
+        self.assertEqual(errors, set())
+        self.assertEqual(f, [])
