@@ -1,4 +1,4 @@
-FROM camptocamp/geomapfish_build_dev:2.2
+FROM camptocamp/geomapfish_build_dev:latest
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
 RUN \
