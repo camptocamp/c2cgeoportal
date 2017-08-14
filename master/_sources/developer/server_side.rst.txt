@@ -394,8 +394,6 @@ Major dependencies docs:
 
 * `SQLAlchemy <http://docs.sqlalchemy.org/>`_
 * `GeoAlchemy2 <http://geoalchemy-2.readthedocs.org/>`_
-* `Formalchemy <http://docs.formalchemy.org/>`_
-* `GeoFormAlchemy <https://github.com/camptocamp/GeoFormAlchemy/blob/master/GeoFormAlchemy/README.rst>`_
 * `alembic <http://alembic.readthedocs.org/>`_
 * `Pyramid <http://docs.pylonsproject.org/en/latest/docs/pyramid.html>`_
 * `Papyrus <http://pypi.python.org/pypi/papyrus>`_
