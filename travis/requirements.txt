@@ -1,0 +1,4 @@
+docker-compose==1.11.0
+psycopg2==2.7.3
+requests==2.11.1
+SQLAlchemy==1.1.13

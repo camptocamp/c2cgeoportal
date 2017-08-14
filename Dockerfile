@@ -2,14 +2,6 @@ FROM camptocamp/geomapfish_build_dev:latest
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
 RUN \
-  echo "deb http://apt.dockerproject.org/repo debian-jessie main" >> /etc/apt/sources.list && \
-  apt-key adv --keyserver eu.pool.sks-keyservers.net --recv-keys F76221572C52609D && \
-  apt-get update && \
-  apt-get install --assume-yes --no-install-recommends docker-engine && \
-  apt-get clean && \
-  rm --recursive --force /var/lib/apt/lists/*
-
-RUN \
   npm install --global \
     angular@1.6.5 \
     angular-animate@1.6.5 \
@@ -42,18 +34,36 @@ RUN \
     less-plugin-autoprefix@1.5.1 \
     less-plugin-clean-css@1.5.1 \
     moment@2.18.1 \
-    ngeo@git://github.com/camptocamp/ngeo#878c237f3b7d68f64c47000c9f207dab06bbad0d \
+    ngeo@git://github.com/camptocamp/ngeo#master \
     nomnom@1.8.1 \
-    openlayers@git://github.com/openlayers/openlayers#c611891 \
+    openlayers@4.3.1 \
     phantomjs-prebuilt@2.1.14 \
-    proj4@2.4.3 \
+    proj4@2.4.4 \
     svg2ttf@4.1.0 \
     temp@0.8.3 \
     ttf2eot@2.0.0 \
     ttf2woff@2.0.1 \
     typeahead.js@0.11.1 \
     walk@2.3.9 && \
+  chmod o+r -R /usr/lib/node_modules/closure-util/.deps/compiler/* && \
   rm --recursive --force ~/.npm
+
+RUN \
+  svg2ttf /usr/lib/node_modules/ngeo/contribs/gmf/fonts/gmf-icons.svg \
+    /usr/lib/node_modules/ngeo/contribs/gmf/fonts/gmf-icons.ttf && \
+  ttf2eot /usr/lib/node_modules/ngeo/contribs/gmf/fonts/gmf-icons.ttf \
+    /usr/lib/node_modules/ngeo/contribs/gmf/fonts/gmf-icons.eot && \
+  ttf2woff /usr/lib/node_modules/ngeo/contribs/gmf/fonts/gmf-icons.ttf \
+    /usr/lib/node_modules/ngeo/contribs/gmf/fonts/gmf-icons.woff && \
+  convert /usr/lib/node_modules/ngeo/contribs/gmf/cursors/grabbing.png \
+    /usr/lib/node_modules/ngeo/contribs/gmf/cursors/grab.cur && \
+  convert /usr/lib/node_modules/ngeo/contribs/gmf/cursors/grabbing.png \
+    /usr/lib/node_modules/ngeo/contribs/gmf/cursors/grab.cur && \
+  for f in `ls -1 /usr/lib/node_modules/ngeo/contribs/gmf/less/`; \
+    do sed --in-place --expression='s/..\/..\/..\/node_modules\//\/usr\/lib\/node_modules\//g' \
+      /usr/lib/node_modules/ngeo/contribs/gmf/less/$f; \
+  done
+
 
 RUN \
   mkdir --parents /opt/googleclosurecompiler-externs && \
@@ -69,11 +79,12 @@ RUN \
 
 COPY . /opt/c2cgeoportal
 
-RUN \
-  cd /opt/c2cgeoportal && \
-  make build && \
-  pip install --disable-pip-version-check --no-cache-dir --editable .
+RUN cd /opt/c2cgeoportal && \
+    if [ ! -e c2cgeoportal/scaffolds/update/CONST_create_template ]; \
+    then make transifex-get buildlocales; \
+    fi && \
+    rm -rf /build
+
+RUN pip install --disable-pip-version-check --no-cache-dir --no-deps --editable /opt/c2cgeoportal
 
 WORKDIR /src
-
-ENV PYTHONPATH /build/venv/lib/python3.5/site-packages/

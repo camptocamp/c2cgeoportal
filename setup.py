@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # Copyright (c) 2013-2017, Camptocamp SA
@@ -41,43 +41,32 @@ with open("README.rst") as f:
     README = "\n".join(text)
 
 install_requires = [
-    "pyramid<=1.9.99",
-    "pyramid_multiauth",
-    "pyramid_mako",  # to render the HTML files
-    # Needed by the development.ini
-    "pyramid_debugtoolbar",
-
-    "psycopg2",
-    "pycrypto",
-    "GeoAlchemy2",
-    "SQLAHelper",
-    "pyramid_tm",
-    "papyrus",
-    "ipcalc",
-    "httplib2",
-    "OWSLib>=0.6.0",
+    "c2c.template>=1.4.0",  # Makefile
+    "dateutils",
+    "defusedxml",
     "dogpile.cache>=0.6",
+    "GeoAlchemy2",
+    "httplib2",
+    "ipcalc",
+    "isodate",  # WMST support
+    "lingua",
+    "OWSLib>=0.6.0",
+    "papyrus",
     "Paste",
     "PasteDeploy",
     "PasteScript",
-    # Needed by the production.ini
-    "waitress",
-    # WMST support
-    "isodate",
+    "psycopg2",
+    "pycrypto",
+    "pyramid<=1.9.99",
     "pyramid_closure",
-    "lingua",
+    "pyramid_debugtoolbar",  # Needed by the development.ini
+    "pyramid_mako",  # to render the HTML files
+    "pyramid_multiauth",
+    "pyramid_tm",
     "PyYAML",
-    "c2c.template>=1.4.0",
-    "defusedxml",
-    "dateutils",
+    "SQLAHelper",
+    "SQLAlchemy",
 ]
-
-with open(os.path.join(here, "docker/build/fixversions.txt")) as file_:
-    install_requires += [
-        requirement for requirement in
-        file_.read().splitlines()
-        if len(requirement) > 0 and requirement[0] != "#"
-    ]
 
 setup_requires = [
 ]
@@ -109,7 +98,6 @@ setup(
     test_suite="c2cgeoportal",
     entry_points={
         "console_scripts": [
-            "print_tpl = c2cgeoportal.scripts.print_tpl:main",
             "manage_users = c2cgeoportal.scripts.manage_users:main",
             "c2ctool = c2cgeoportal.scripts.c2ctool:main",
             "db2pot = c2cgeoportal.scripts.db2pot:main",
@@ -120,8 +108,9 @@ setup(
             "gen-version = c2cgeoportal.scripts.gen_version:main",
             "ngeo-version = c2cgeoportal.scripts.import_ngeo_apps:ngeo_git_version",
             "create-demo-theme = c2cgeoportal.scripts.create_demo_theme:main",
-            "treeitem_uniquename = c2cgeoportal.scripts.treeitem_uniquename:main",
+            "treeitem-uniquename = c2cgeoportal.scripts.treeitem_uniquename:main",
             "urllogin = c2cgeoportal.scripts.urllogin:main",
+            "docker-required = c2cgeoportal.scripts.docker_required:main",
         ],
         "pyramid.scaffold": [
             "c2cgeoportal_create = c2cgeoportal.scaffolds:TemplateCreate",

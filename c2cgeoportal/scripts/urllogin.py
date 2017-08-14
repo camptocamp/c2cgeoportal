@@ -60,7 +60,7 @@ def main():
     parser.add_argument("valid", type=int, default=1, nargs='?', help="Is valid for, in days")
 
     args = parser.parse_args()
-    config = c2c.template.get_config(".build/config.yaml")
+    config = c2c.template.get_config("config.yaml")
     urllogin = config.get('urllogin', {})
     aeskey = urllogin.get("aes_key")
     auth_enc = create_token(aeskey, args.user, args.password, args.valid)

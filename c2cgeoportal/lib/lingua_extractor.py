@@ -75,7 +75,7 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
         self.settings = None
 
     def __call__(self, filename, options):
-        config = get_config(".build/config.yaml")
+        config = get_config("config.yaml")
 
         class Registry:
             settings = config
@@ -186,7 +186,7 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
     def __call__(self, filename, options):
         with open(filename) as config_file:
             config = yaml.load(config_file)
-            # for application config (.build/config.yaml)
+            # for application config (config.yaml)
             if "vars" in config:
                 return self._collect_app_config(config, filename)
             # for the print config
@@ -206,7 +206,7 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
             for raster_layer in list(config["vars"].get("raster", {}).keys())
         ]
         # Collect layers enum values (for filters)
-        settings = get_config(".build/config.yaml")
+        settings = get_config("config.yaml")
         from c2cgeoportal.pyramid_ import init_dbsessions
         init_dbsessions(settings)
         from c2cgeoportal.models import DBSessions
@@ -280,7 +280,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
             self.env = bootstrap(filename)
             with open("project.yaml") as f:
                 self.package = yaml.safe_load(f)
-            self.config = get_config(".build/config.yaml")
+            self.config = get_config("config.yaml")
 
             try:
                 from c2cgeoportal.models import DBSession, Theme, LayerGroup, \

@@ -20,7 +20,6 @@ Content:
    cluster
    create_application
    customise
-   deploy
    docker
    editing
    extend_data_model

@@ -1,15 +1,16 @@
-#!/usr/bin/python
+#! /usr/bin/env python
 
+import getpass
 import os
 import sys
 import json
 import subprocess
-import urllib
+import urllib.parse
 
-os.environ["USER_NAME"] = subprocess.check_output(["whoami"]).strip()
-os.environ["USER_ID"] = subprocess.check_output(["id", "-u"]).strip()
-os.environ["GROUP_ID"] = subprocess.check_output(["id", "-g"]).strip()
-os.environ["RUN"] = urllib.quote(json.dumps(sys.argv[1:]))
+os.environ["USER_NAME"] = getpass.getuser()
+os.environ["USER_ID"] = str(os.getuid())
+os.environ["GROUP_ID"] = str(os.getgid())
+os.environ["RUN"] = urllib.parse.quote(json.dumps(sys.argv[1:]))
 
 if os.path.exists("SUCCESS"):
     os.remove("SUCCESS")

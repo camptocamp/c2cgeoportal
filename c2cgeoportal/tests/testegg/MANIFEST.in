@@ -1,3 +1,0 @@
-include testegg/CONST_migration/migrate.cfg
-include testegg/CONST_migration/versions/.gitignore
-prune .build

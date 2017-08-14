@@ -1,44 +1,35 @@
 vars:
-    # project instance id
-    instanceid: INSTANCE_ID
     # is in developement mode
     development: DEVELOPMENT
     # the package name
     package: {{package}}
+    geomapfish_version: GEOMAPFISH_VERSION
+    instance: main
 
     srid: -1
 
     host: VISIBLE_WEB_HOST
     web_protocol: VISIBLE_WEB_PROTOCOL
+    entry_point: VISIBLE_ENTRY_POINT
 
-    # the Unix user under which the modwsgi daemon processes are executed.
-    modwsgi_user: MODWSGI_USER
-    # url-path where the instance must respond.
-    apache_entry_point: APACHE_ENTRY_POINT
     # Docker base image name (comes from the makefile).
     docker_base: DOCKER_BASE
-    docker: DOCKER
+    docker_tag: DOCKER_TAG
     # database user
     dbuser: www-data
     # database password
     dbpassword: www-data
     # database host
-    dbhost: localhost
+    dbhost: db
     # database port
     dbport: 5432
     # database name
     db: override_me
     # sqlalchemy schema
     schema: main
-    # database parent schema
-    parentschema: ""
 
     dbsessions: {}
 
-    # apache/mapserver.conf "Allow" statement
-    mapserv_allow: |
-        Allow from 127.0.0.1 ::1
-        Require ip 127.0.0.1 ::1
     # mapserver connexion string
     mapserver_connection: user={dbuser} password={dbpassword} dbname={db} host={dbhost}
     # mapserver join tables
@@ -56,19 +47,17 @@ vars:
     mapfile_data_subselect: 'SELECT ST_Collect(ra.area) FROM main.restrictionarea AS ra, main.role_restrictionarea AS rra, main.layer_restrictionarea AS lra, main.treeitem AS la WHERE rra.role_id = %role_id% AND rra.restrictionarea_id = ra.id AND lra.restrictionarea_id = ra.id AND lra.layer_id = la.id AND la.name = '
     # mapserver filter on role id only
     mapfile_data_noarea_subselect: 'SELECT rra.role_id FROM {mapserver_join_tables} WHERE rra.restrictionarea_id = ra.id AND lra.restrictionarea_id = ra.id AND lra.layer_id = la.id AND la.name = '
-    # port for the waitress web server
-    waitress_port: 5000
     enable_admin_interface: True
 
     directory: __import__('os').getcwd()
-    python_path: __import__('distutils').sysconfig.get_python_lib()
+    python_path: __import__('distutils.sysconfig').sysconfig.get_python_lib()
     ps: __import__('os').path.sep
 
     # Authentication settings
     authtkt:
         # Cookie session secret
         secret: __import__('uuid').uuid4().hex
-        cookie_name: auth_tkt_{instanceid}
+        cookie_name: auth_tkt_{instance}
     # Database informations
     sqlalchemy:
         url: postgresql://{dbuser}:{dbpassword}@{dbhost}:{dbport}/{db}
@@ -83,7 +72,7 @@ vars:
 
     # used for the "node_modules" and "closure" static views
     closure_library_path: 'process.stdout.write(require("closure-util").getLibraryPath())'
-    node_modules_path: "{directory}{ps}node_modules"
+    node_modules_path: "/usr/lib/node_modules"
 
     # pyramid_closure configuration
     # Each item in the roots_with_prefix array is an array with two elements. The
@@ -237,11 +226,6 @@ vars:
         - preset_layer_filter
         - open_panel
 
-    # Define URLs to the parent application. Only useful if
-    # this application is a child application in a parent/child
-    # architecture.
-    external_themes_url:
-
     urllogin: {}
 
     mapserverproxy:
@@ -249,14 +233,14 @@ vars:
 
     tinyowsproxy:
         # URL to internal TinyOWS instance
-        tinyows_url: http://localhost/{instanceid}/tinyows
+        tinyows_url: http://tinyows
 
         # If the `online_resource` url in the TinyOWS configuration is not set
         # to the TinyOWS proxy url (e.g. when the service is also used without
         # the proxy), the proxy can replace the original `online_resource`
         # url with the proxy url.
-        # proxy_online_resource: http://{host}/{instanceid}/tinyows_proxy
-        # online_resource: http://localhost/{instanceid}/tinyows
+        # proxy_online_resource: http://{host}{entry_point}/tinyows_proxy
+        # online_resource: http://localhost{entry_point}/tinyows
 
         # When running a c2cgeoportal appl. in debug mode (with `make serve`)
         # the host has to be set explicitly in a vhost environment.
@@ -276,8 +260,9 @@ vars:
             de: german
 
     servers:
-        internal: http://localhost/{instanceid}/
-        local: '{web_protocol}://{host}/{instanceid}/'
+        internal: http://localhost/
+        local: '{web_protocol}://{host}{entry_point}'
+        mapserver: http://mapserver/
 
     host_forward_host:
     - localhost
@@ -296,7 +281,7 @@ vars:
     # The shortener base configuration
     shortener:
         # The base of created URL
-        base_url:  '{web_protocol}://{host}{apache_entry_point}s/'
+        base_url:  '{web_protocol}://{host}{entry_point}/s/'
         allowed_hosts:
         - '{host}'
 
@@ -306,17 +291,17 @@ vars:
     ogcproxy_enable: false
 
     # For print proxy
-    print_url: http://localhost:8080/print-{instanceid}/print/{package}
+    print_url: http://print:8080/print/{package}
 
     pdfreport:
-        print_url: http://localhost:8080/print-{instanceid}/print/{package}
+        print_url: http://print:8080/print/{package}
 
     # For base layers
     tiles_url:
-    - '{web_protocol}:://a.tiles.{host}/{instanceid}/tiles'
-    - '{web_protocol}:://b.tiles.{host}/{instanceid}/tiles'
-    - '{web_protocol}:://c.tiles.{host}/{instanceid}/tiles'
-    - '{web_protocol}:://d.tiles.{host}/{instanceid}/tiles'
+    - '{web_protocol}:://a.tiles.{host}/tiles'
+    - '{web_protocol}:://b.tiles.{host}/tiles'
+    - '{web_protocol}:://c.tiles.{host}/tiles'
+    - '{web_protocol}:://d.tiles.{host}/tiles'
     wmtscapabilities_path: WMTSCAPABILITIES_PATH
 
     ogcproxy_enable: False
@@ -374,7 +359,7 @@ vars:
             - name: mobile
               params:
                 no_redirect: "true"
-            # phamtomjs 2.5 is required
+            # phantomjs 2.5 is required
 #            - name: desktop
 #              params:
 #                no_redirect: "true"
@@ -435,12 +420,12 @@ vars:
               display: PhantomJS generic test
         hosts:
         - display: {{package}}
-          url: '{web_protocol}://{host}/{instanceid}/wsgi'
+          url: '{web_protocol}://{host}{entry_point}'
           type: main
 
     # What web page is authorized to use the API
     authorized_referers:
-    - '{web_protocol}://{host}{apache_entry_point}'
+    - '{web_protocol}://{host}{entry_point}'
 
     # Hooks that can be called at different moments in the life of the
     # application. The value is the full python name
@@ -472,15 +457,14 @@ interpreted:
     - directory
     - interfaces
     environment:
-    - modwsgi_user
-    - instanceid
-    - apache_entry_point
-    - docker
+    - geomapfish_version
     - docker_base
+    - docker_tag
     - development
     - wmtscapabilities_path
     - host
     - web_protocol
+    - entry_point
     node:
         vars:
         - closure_library_path

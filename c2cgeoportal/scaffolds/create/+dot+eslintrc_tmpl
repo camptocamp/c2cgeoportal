@@ -1,0 +1,3 @@
+extends: /usr/lib/node_modules/ngeo/.eslintrc.yaml
+globals:
+  '{{package}}': false

@@ -40,12 +40,12 @@ def main():
     """
     Emergency user create and password reset script
     example, reset toto password to foobar:
-    .build/venv/bin/manage_users -p foobar toto
+    ./docker-compose-run manage_users -p foobar toto
     example, create user foo with password bar and role admin:
-    .build/venv/bin/manage_users -c -r role_admin -p bar foo
+    ./docker-compose-run manage_users -c -r role_admin -p bar foo
 
     to get the options list, do:
-    .build/venv/bin/manage_users -h
+    ./docker-compose-run manage_users -h
     """
 
     usage = """Usage: %prog [options] USERNAME

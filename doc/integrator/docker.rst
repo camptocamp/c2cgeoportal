@@ -4,17 +4,13 @@ Use Docker to deploy your application
 Configure your project
 ----------------------
 
-Edit the ``<package>.mk`` file and add those lines after the APACHE_VHOST
-line:
+Edit the ``<package>.mk`` file and add those lines:
 
 .. code:: make
 
     DOCKER = TRUE
     DOCKER_BASE = camptocamp/<project_name>
     JASPERREPORTS_VERSION = 6.1.1
-
-In the private makefiles, do not specify the ``INSTANCE_ID`` (you'll be alone
-in your container).
 
 After that, a ``make -f <xxx.mk> build`` will create Docker images named like
 that:
@@ -36,7 +32,7 @@ Database container
 ------------------
 
 You can add scripts to populate the DB container by adding ``.sql`` or ``.sh``
-files in the ``testDB`` directory. They must start with 2 digits, followed by
+files in the ``testdb`` directory. They must start with 2 digits, followed by
 an underscore. Please start at number 20.
 
 Developer composition

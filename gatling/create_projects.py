@@ -18,8 +18,6 @@ extends = buildout.cfg
 eggs-directory = ../../buildout/eggs
 
 [vars]
-apache-entry-point = /ref/
-instanceid = ref
 host = geocommunes.ch/ref
 """)
 
@@ -41,7 +39,6 @@ apache-entry-point = /{no}/
 
 schema = {project}
 dataschema = data{project}
-instanceid = {no}
 host = geocommunes.ch/{no}
 appcfg = config_{project}.yaml
 # used for mapfile and print template

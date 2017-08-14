@@ -77,7 +77,7 @@ then:
 
     cd <your-project>
     npm link ngeo
-    make -f <user>.mk build
+    make build
 
 unlink
 ~~~~~~

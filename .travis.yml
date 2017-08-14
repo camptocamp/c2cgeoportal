@@ -3,35 +3,18 @@ sudo: required
 
 language: python
 python:
-- "3.5"
+- "3.6"
+
+service:
+- docker
 
 env:
   global:
     - secure: aZWcHZWV8lN2SNU2fcUsG8+fVQLOxwDUFYDvuftZALebRG2AHINTkbS31sKbeSwS19ZYpjcuVOKC9HxNAlnMxsdO1NvvFEbSJJD/yqq0V4EfTRqptZYsFCUou0eXIUWEnoFHD1nY3NhuPQjDoad995xU92z0BzwduxUAj28liu4=
 
 before_install:
-- cat /etc/apt/sources.list.d/*
-- rm --recursive --force /home/travis/.nvm
-- sudo rm --force /usr/local/bin/docker-compose
-- sudo rm --recursive --force /var/lib/apt/lists/*
-- sudo apt-get remove --assume-yes --force-yes python-zope.interface postgresql-*
-- sudo apt-get install --assume-yes --force-yes aptitude
-- curl --silent --location https://deb.nodesource.com/setup_6.x | sudo -E bash -
-- sudo aptitude install --assume-yes apache2 libapache2-mod-wsgi-py3 libapache2-mod-fcgid tomcat7 nodejs cgi-mapserver gettext
-- sudo chmod  o+rx /var/log/apache2/
-- sudo chmod  o+r /var/log/apache2/*.log
-- sudo apt-get install --option Dpkg::Options::="--force-confold" --force-yes --assume-yes docker-ce
-- sudo pip install pyignore git+https://github.com/docker/docker-py.git@1.10.6#egg=docker docker-compose==1.9.0 requests==2.11.1
-
-- sudo service postgresql stop
-
-# database for the GeoMapFish application
-- docker build --tag=geomapfish-db docker/test-db
-- docker run --publish=5432:5432 --detach geomapfish-db
-
+- pip install --disable-pip-version-check --no-cache-dir --requirement travis/requirements.txt
 - docker build --tag=external-db docker/test-external-db
-- docker run --publish=5433:5432 --detach external-db
-
 - |
   if [ "${TX_PASS}" != "" ]
   then
@@ -41,75 +24,77 @@ before_install:
   echo "password = ${TX_PASS}" >> ~/.transifexrc
   echo "token =" >> ~/.transifexrc
   fi
-- export TRAVIS_FOLDER=`pwd`
-- mkdir --parents /tmp/travis/testgeomapfish
-- |
-    if travis/git-modif docker/build
-    then
-        docker build --tag=camptocamp/geomapfish_build_dev docker/build
-    else
-        docker pull camptocamp/geomapfish_build_dev
-    fi
-- docker build --tag=camptocamp/geomapfish_build .
+- mkdir /tmp/travis
+- >
+  travis/docker-get
+  --tag camptocamp/geomapfish_build_dev:latest
+  --folder docker/build
+  --paths docker/build
+- >
+  travis/docker-get
+  --tag camptocamp/geomapfish_build:latest
+  --folder .
+  --rules transifex-get buildlocales c2cgeoportal/scaffolds/update/CONST_create_template/
+  --paths docker/build setup.py README.rst c2cgeoportal/ docker/build/fixversions.txt
 - |
     [[ `./docker-run id` =~ uid=[0-9]+\(travis\)\ gid=[0-9]+\(geomapfish\)\ groups=[0-9]+\(geomapfish\) ]]
 
 install:
 - if [ ${TRAVIS_PULL_REQUEST} != "false" ] ; then git fetch origin ${TRAVIS_BRANCH}:${TRAVIS_BRANCH}; fi
-- ./docker-run travis/no-make-error.sh . help
+- ./docker-run travis/no-make-error.sh help
 - ./docker-run make -f travis.mk build
-
-- pip install sqlalchemy psycopg2
-- python travis/waitdb postgres://www-data:www-data@localhost/geomapfish_test
-
 - travis/create-new-project.sh
 - travis/test-upgrade.sh
-- travis/build-new-project.sh
+- travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-run make -f travis.mk build project.yaml
 
 script:
-- uname --all
-- node --version
-- npm --version
-- python setup.py --version
 - docker version
+- docker-compose --version
 
-# test return code
-- travis/test-eof-newline
+# Test return code
+- ./docker-run travis/test-eof-newline
 - ./docker-compose-run true
 - |
     if ./docker-compose-run false
     then
         false
     fi
-# test new project
-- cd /tmp/travis/testgeomapfish
-- .build/venv/bin/pcreate --scaffold=c2cgeoportal_update --ignore-conflicting-name --overwrite /tmp/travis/testgeomapfish > /dev/null  # on upgrade - do not add any argument on this command
-- make -f travis.mk checks
-- cd $TRAVIS_FOLDER
-- travis/no-make-error.sh /tmp/travis/testgeomapfish -f travis.mk help
-- find /tmp/travis/testgeomapfish/setup.py /tmp/travis/testgeomapfish/testgeomapfish/*.py /tmp/travis/testgeomapfish/testgeomapfish/views -name \*.py | xargs travis/quote
-- $TRAVIS_FOLDER/scripts/unify-so.py /tmp/travis/testgeomapfish
-- travis/test-new-project wsgi/check_collector
-- travis/test-new-project wsgi/check_collector?type=all
-- travis/test-new-project wsgi/layers/test/values/type enum
-- travis/status.sh /tmp/travis/testgeomapfish/
-- travis/empty-make-new-project.sh
-- travis/no-make-error.sh /tmp/travis/testgeomapfish -f travis.mk build
-- cp travis/empty-vars.mk /tmp/travis/testgeomapfish/
-- travis/run-on.sh /tmp/travis/testgeomapfish/ 'make -f empty-vars.mk .build/config.yaml'
-- ./docker-compose-run alembic --config c2cgeoportal/tests/functional/alembic.ini upgrade head
-- ./docker-compose-run alembic --config c2cgeoportal/tests/functional/alembic_static.ini upgrade head
-- ./docker-compose-run alembic --config c2cgeoportal/tests/functional/alembic_static.ini downgrade base
-- ./docker-compose-run alembic --config c2cgeoportal/tests/functional/alembic.ini downgrade base
 
-# test c2cgeoportal
+# Test new project
+- >
+  travis/run-on.sh /tmp/travis/testgeomapfish/
+  ./docker-run pcreate
+  --scaffold=c2cgeoportal_update
+  --ignore-conflicting-name
+  --overwrite /tmp/travis/testgeomapfish > /dev/null
+  # on upgrade - do not add any argument on this command
+- travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-run make -f travis.mk checks
+- >
+  travis/run-on.sh /tmp/travis/testgeomapfish/
+  find setup.py testgeomapfish/*.py testgeomapfish/views -name \*.py | xargs travis/quote
+- travis/run-on.sh /tmp/travis/testgeomapfish/ docker-compose up -d
+- travis/waitwsgi http://localhost:8080/
+- travis/test-new-project check_collector
+- travis/test-new-project check_collector?type=all
+- travis/test-new-project layers/test/values/type enum
+- travis/run-on.sh /tmp/travis/testgeomapfish/ docker-compose logs
+- travis/run-on.sh /tmp/travis/testgeomapfish/ docker-compose down
+- travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-run travis/status.sh
+- travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-run travis/empty-make.sh -f travis.mk build
+- travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-run make -f empty-vars.mk config.yaml
+- ./docker-compose-run alembic --config tests/functional/alembic.ini upgrade head
+- ./docker-compose-run alembic --config tests/functional/alembic_static.ini upgrade head
+- ./docker-compose-run alembic --config tests/functional/alembic_static.ini downgrade base
+- ./docker-compose-run alembic --config tests/functional/alembic.ini downgrade base
+
+# Test c2cgeoportal
 - ./docker-run travis/empty-make.sh -f travis.mk build
-- ./docker-run travis/no-make-error.sh . -f travis.mk build
+- ./docker-run travis/no-make-error.sh -f travis.mk help
 - ./docker-run make -f travis.mk doc
 - ./docker-run make -f travis.mk checks
-- ./docker-run make -f travis.mk c2cgeoportal/tests/functional/alembic.ini
-- ./docker-compose-run alembic --config c2cgeoportal/tests/functional/alembic.ini upgrade head
-- ./docker-compose-run alembic --config c2cgeoportal/tests/functional/alembic_static.ini upgrade head
+- ./docker-run make -f travis.mk tests/functional/alembic.ini
+- ./docker-compose-run alembic --config tests/functional/alembic.ini upgrade head
+- ./docker-compose-run alembic --config tests/functional/alembic_static.ini upgrade head
 - ./docker-compose-run nosetests
 
 after_success:
@@ -153,14 +138,14 @@ deploy:
   skip_cleanup: true
   on:
     repo: camptocamp/c2cgeoportal
-    branch: 2.2
+    branch: master
     condition: '"${TRAVIS_PULL_REQUEST}" = false'
 - provider: script
   script: travis/doc.sh
   skip_cleanup: true
   on:
     repo: camptocamp/c2cgeoportal
-    branch: 2.2
+    branch: master
     condition: '"${TRAVIS_PULL_REQUEST}" = false'
 
 notifications:

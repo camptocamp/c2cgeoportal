@@ -25,7 +25,6 @@ sqlalchemy.url = ${sqlalchemy["url"]}
 version_table = c2cgeoportal_version
 version_table_schema = ${schema}_static
 schema = ${schema}
-parentschema = ${parentschema}
 srid = {{srid}}
 
 # Logging configuration

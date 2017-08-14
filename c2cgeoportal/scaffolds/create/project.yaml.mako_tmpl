@@ -1,9 +1,8 @@
 project_folder: {{project}}
 project_package: ${package}
 host: ${host}
-checker_path: /${instanceid}/wsgi/check_collector?
+checker_path: /check_collector?
 template_vars:
     package: {{package}}
     srid: {{srid}}
     extent: {{extent}}
-    apache_vhost: {{apache_vhost}}

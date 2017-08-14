@@ -12,30 +12,11 @@ authtkt_cookie_name = ${authtkt["cookie_name"]}
 % if "timeout" in authtkt:
 authtkt_timeout = ${authtkt["timeout"]}
 % endif
-app.cfg = %(here)s/.build/config.yaml
-
-[filter:fanstatic]
-use = egg:fanstatic#fanstatic
-publisher_signature = fanstatic
-% if instanceid == "":
-base_url = /wsgi
-% else:
-base_url = /${instanceid}/wsgi
-% endif
-recompute_hashes = false
-versioning = false
-bottom = true
-minified = true
+app.cfg = %(here)s/config.yaml
 
 [pipeline:main]
 pipeline =
-    fanstatic
     app
-
-[server:main]
-use = egg:waitress#main
-host = 0.0.0.0
-port = ${waitress_port}
 
 ###
 # logging configuration
@@ -80,4 +61,4 @@ level = NOTSET
 formatter = generic
 
 [formatter_generic]
-format = %(asctime)s %(levelname)-5.5s [%(name)s][%(threadName)s] %(message)s
+format = %(asctime)s %(levelname)-5.5s [%(name)s][%(thread)s] %(message)s

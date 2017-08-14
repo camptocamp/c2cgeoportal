@@ -1,0 +1,29 @@
+version: '2'
+
+volumes:
+    c2cgpbuild:
+        external:
+            name: c2cgpbuild
+
+services:
+
+    db:
+        build: docker/test-db
+        image: camptocamp/c2cgeoportal-test-db
+
+    mapserver:
+        build: docker/test-mapserver
+        image: camptocamp/c2cgeoportal-test-mapserver
+
+    build:
+        image: camptocamp/geomapfish_build_dev:latest
+        volumes:
+        - c2cgpbuild:/build
+        - .:/src
+        environment:
+        - USER_NAME
+        - USER_ID
+        - GROUP_ID
+        stdin_open: true
+        tty: true
+        command: ${RUN}

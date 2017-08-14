@@ -11,21 +11,10 @@ General
 First you should add ``?debug`` in the application URL to have all the
 JavaScript and stylesheets in separated non-minified files.
 
-Using a browser-integrated debugging tool such as
-`Firebug <https://addons.mozilla.org/fr/firefox/addon/firebug/>`_ (for Firefox)
-or Chrome development tool is very useful.
-
-In case of 500 errors have a look at the apache logs, located at
-``/var/www/vhosts/<vhost_name>/logs/<vhost_name>_error.log``. If we call a service behind
-a proxy, the log entry actually references the final URL. Therefore you may
-call the latter URL directly on the server by typing
-``curl "http://localhost/<path>" -H Host:<server_name>``.
+Using a browser-integrated debugging tool usually available with the ``F12`` key.
 
 If the ``pyramid_debugtoolbar`` is enabled the error is directly returned
 in the query that fails.
-
-For print-related issues have a look at the logs in the
-``/srv/tomcat/tomcat1/logs/<instanceid>.log`` file.
 
 Mapserver
 ---------
@@ -36,16 +25,10 @@ Sometime more information are available by using this command:
 
     shp2img -m <mapfile> -o test.png -e <minx> <miny> <maxx> <maxy> -s <sizex> <sizey> -l <layers>
 
-You may also activate Mapserver's debug mode and set the log level in your
-mapfile by adding the following configuration::
+You may also activate Mapserver's debug mode and set environment variable of the Mapserver container
+``MS_DEBUGLEVEL`` to ``5`` (most verbose level, default is 0).
 
-    MAP
-        ...
-        CONFIG "MS_ERRORFILE" "/tmp/ms_error.txt"
-        DEBUG 5
-        ...
-
-`More informations <http://mapserver.org/optimization/debugging.html?highlight=debug#step-2-set-the-debug-level>`_
+`More informations <http://mapserver.org/optimization/debugging.html?highlight=debug#debug-levels>`_
 
 PostgreSQL
 ----------

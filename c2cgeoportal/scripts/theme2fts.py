@@ -115,7 +115,7 @@ class Import:
         self.options = options
         self.imported = set()
 
-        settings = get_config(".build/config.yaml")
+        settings = get_config("config.yaml")
         package = settings["package"]
 
         self.fts_languages = settings["fulltextsearch"]["languages"]

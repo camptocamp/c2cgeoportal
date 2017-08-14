@@ -1,3 +1,0 @@
--r CONST_versions_requirements.txt
-wheels/Shapely-1.5.13-cp27-none-win32.whl
--e .

@@ -60,17 +60,15 @@ class MapservProxy(OGCProxy):
             # send layer_name, but MapServer should not use the DATA
             # string for GetLegendGraphic.
 
-            role = self.user.parent_role if self.external else self.user.role
+            role = self.user.role
             if role is not None:
                 self.params["role_id"] = role.id
 
                 # In some application we want to display the features owned by a user
                 # than we need his id.
-                if not self.external:
-                    self.params["user_id"] = self.user.id  # pragma: no cover
+                self.params["user_id"] = self.user.id  # pragma: no cover
             else:  # pragma nocover
-                log.warning("The user '{}' has no {}role".format(
-                    self.user.name, "external " if self.external else ""))
+                log.warning("The user '%s' has no role", self.user.name)
 
         # do not allows direct variable substitution
         for k in list(self.params.keys()):
@@ -131,8 +129,7 @@ class MapservProxy(OGCProxy):
         elif method != "GET":
             cache_control = NO_CACHE
 
-        role = None if self.user is None else \
-            self.user.parent_role if self.external else self.user.role
+        role = None if self.user is None else self.user.role
 
         headers = self._get_headers()
         # Add headers for Geoserver

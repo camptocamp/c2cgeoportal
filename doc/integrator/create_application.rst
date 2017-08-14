@@ -25,17 +25,7 @@ Project structure
 
 In the simple case the root directory of the application is the directory
 created by the c2cgeoportal skeletons (the ``c2cgeoportal_create`` and
-``c2cgeoportal_update`` skeletons). Projects following a parent/child
-architecture may use a different structure. Here is an example of a structure
-for a project composed of a main application and sub-applications::
-
-    <root>
-      +- <main_project>
-      +- <first_sub_project>
-      +- <second_sub_project>
-      +- ...
-
-Here ``<root>`` is the root of the Git tree.
+``c2cgeoportal_update`` skeletons).
 
 Install c2cgeoportal
 --------------------
@@ -51,34 +41,12 @@ access to the c2cgeoportal GitHub repository. If you cannot view the
 https://github.com/camptocamp/c2cgeoportal page in your browser that means you
 do not have the required permissions. Please contact Camptocamp in that case.
 
-To install ``c2cgeoportal`` you first need to clone the c2cgeoportal repository
-from GitHub:
+To get ``c2cgeoportal`` you first need to get the related docker image:
 
 .. prompt:: bash
 
-    git clone https://github.com/camptocamp/c2cgeoportal.git
-    cd c2cgeoportal
-
-Then you should checkout the branch or tag of the version you want to install:
-
-.. prompt:: bash
-
-    git checkout <branch|tag>
-
-``<branch|tag>`` can be ``2.2`` for the latest version of the 2.2 branch,
-``2.2.0`` for the first stable 2.2 version.
-
-Fetch the Git submodules:
-
-.. prompt:: bash
-
-   git submodules update --init
-
-Build c2cgeoportal:
-
-.. prompt:: bash
-
-    ./docker-run make build
+    docker pull camptocamp/geomapfish_build <release|version>
+    wget https://raw.githubusercontent.com/camptocamp/c2cgeoportal/master/docker-run
 
 List existing skeletons
 -----------------------
@@ -124,12 +92,12 @@ it later.
 
 .. note::
 
-    You can define these informations directly in the command line using
+    You can define these information directly in the command line using
     parameters:
 
      .. prompt:: bash
 
-         SRID=21781 EXTENT="420000 30000 900000 350000" apache_vhost=<vhost> \
+         SRID=21781 EXTENT="420000 30000 900000 350000" \
             ./docker-run pcreate -s c2cgeoportal_create --package-name <package> <project>
 
 This will create a directory named ``<project>`` that will be next to the
@@ -140,8 +108,7 @@ Now apply the ``c2cgeoportal_update`` skeleton:
 
 .. prompt:: bash
 
-    SRID=21781 apache_vhost=<vhost> \
-        ./docker-run pcreate -s c2cgeoportal_update --package-name <package> <project>
+    SRID=21781 ./docker-run pcreate -s c2cgeoportal_update --package-name <package> <project>
 
 .. note::
 
@@ -157,18 +124,7 @@ Go to your new project:
 
 .. prompt:: bash
 
-    cd ../<project>
-
-.. note::
-
-    If this application is a child of a parent/child architecture you should
-    fill the ``parent_schema`` and the ``parent_instanceid`` in the
-    ``vars_<package>.yaml`` file.
-
-    In a parent/child architecture one instance of the application is the
-    parent, the others are children. Child instances display layers
-    served by the parent instance. Parent and child instances share
-    the same database, but use dedicated schemas within that database.
+    cd <project>
 
 
 Put the application under revision control
@@ -176,33 +132,6 @@ Put the application under revision control
 
 Now is a good time to put the application source code under revision
 control (Git preferably).
-
-To add a new child in an existing repository
-............................................
-
-Add the project:
-
-.. prompt:: bash
-
-    cd ..
-    git add <package>/
-
-Add the CGXP submodule:
-
-.. prompt:: bash
-
-    git submodule add git@github.com:camptocamp/cgxp.git <project>/<package>/static/lib/cgxp
-    git submodule foreach git checkout <version>
-
-``-b <version>`` forces to use the CGXP branch ``<version>``.
-Branches are available starting at version ``1.3``.
-
-Commit and push on the main repository:
-
-.. prompt:: bash
-
-    git commit -m "Initial commit of <project>"
-    git push origin master
 
 To add a project in a new repository
 ....................................
@@ -214,16 +143,6 @@ Add the project:
     git init
     git add .
     git remote add origin git@github.com:camptocamp/<project>.git
-
-If you plan to use CGXP, add the CGXP submodule:
-
-.. prompt:: bash
-
-    git submodule add https://github.com/camptocamp/cgxp.git <package>/static/lib/cgxp
-    git submodule foreach git checkout <version>
-
-``-b <version>`` forces to use the CGXP branch ``<version>``.
-Branches are available starting at version ``1.3``.
 
 Commit and push on the main repository:
 
@@ -374,231 +293,13 @@ Then follow the sections in the install application guide:
 
    .. prompt:: bash
 
-      .build/venv/bin/create-demo-theme
+      ./docker-compose-run create-demo-theme
 
 .. note::
 
     If you create the main instance you should do the whole
     database creation as described in :ref:`integrator_install_application`,
     except the 'Get the application source tree' chapter.
-
-Create a multi-instance project
--------------------------------
-
-In some cases we want to create applications based on very similar code and settings.
-
-To be consistent with c2cgeoportal terminology we will use the words `project`
-to refer to the whole project and `instance` for a dedicated configuration of
-the project.
-
-Multi-instance project use the concepts describe above:
-
-.. image:: ../_static/doc_hierarchie_multiproject.png
-
-This procedure will deal with:
-
-* One folder per instance ``mapfile/<instance>``.
-* One configuration file for the project ``vars_<project>.yaml``.
-* One configuration file for each instance ``vars_<instance>.yaml``.
-* One make file for the project ``<project>.mk``.
-* One make file for each instance ``<instance>.mk``.
-* One Makefile generator for each developer and server ``<user>.mk``.
-* One additional CSS file for each instance ``<package>/static/css/proj-<instance>.css``.
-
-Create the project
-..................
-
-1. Configure the instances in ``vars_<package>.yaml`` as follows:
-
-  .. code:: yaml
-
-    vars:
-
-        ...
-        instance: INSTANCE
-
-        external_themes_url: http://{host}/{parent_instanceid}/wsgi/themes
-
-        tiles_url: http://{host}/{parent_instanceid}/tiles
-
-        instances:
-        - instance: a name
-        ...
-
-    interpreted:
-        environment:
-        - instance
-
-2. Create the ``<instance>.mk`` files:
-
-    .. code:: make
-
-        INSTANCE = <instance>
-        VARS_FILE = vars_$(INSTANCE).yaml
-        include <package>.mk
-
-3. In ``<package>.mk`` add a custom CSS and a task to generate the make files:
-
-.. code:: make
-
-    CSS_BASE_FILES += <package>/static/css/proj-$(INSTANCE).css
-    CONFIG_VARS += viewer
-    export INSTANCE
-
-4. Define the developer templates as follows (``<user>.mk``):
-
-.. code:: make
-
-    INSTANCE_ID = <user>_$(INSTANCE)
-    DEVELOPMENT = TRUE
-    include $(INSTANCE).mk
-
-5. Define the host templates as follows (``main.mk``, ``demo.mk``, ``prod.mk``):
-
-.. code::
-
-    INSTANCE_ID = $(INSTANCE)
-    include $(INSTANCE).mk
-
-6. Create a ``vars_<instance>.yaml`` file with:
-
-.. code::
-
-    extends: vars_<project>.yaml
-
-    vars:
-
-        # custom instance-specific variables for the viewer
-        viewer:
-            page_title: <title>
-            initial_extent: [<min_x>, <min_y>, <max_x>, <max_y>]
-            restricted_extent: [<min_x>, <min_y>, <max_x>, <max_y>]
-            default_themes:
-            - <theme>
-            feature_types:
-            - <feature>
-
-        # overwrite project settings
-        functionalities:
-            anonymous:
-                print_template:
-                - <template>
-
-7. In the ``<package>/templates/index.html`` file do the following changes:
-
-.. code:: diff
-
-   -        <meta name="keywords" content="<package>, geoportal">
-   -        <meta name="description" content="<package> Geoportal Application.">
-   +        <meta name="keywords" content="${request.registry.settings['instance']}, geoportal">
-   +        <meta name="description" content="${request.registry.settings['viewer']['page_title']}.">
-
-   -        <title><project> Geoportal Application</title>
-   +        <title>${request.registry.settings['viewer']['page_title']}</title>
-
-   ...
-
-            <link rel="stylesheet" type="text/css" href="${request.static_url('<package>:static/css/proj-widgets.css')}" />
-   +        <link rel="stylesheet" type="text/css" href="${request.static_url('<package>:static/css/proj-%s.css' % request.registry.settings['instance'])}" />
-
-8. Create the instance CSS file ``<package>/static/css/proj-<instance>.css``:
-
-.. code:: css
-
-   #header-in {
-       background: url('../images/<instance>_banner_left.png') top left no-repeat;
-       height: <height>px;
-   }
-   header-out {
-       background: url('../images/<instance>_banner_right.png') top right no-repeat;
-       background-color: #<color>;
-       height: <height>px;
-   }
-
-9. In the files ``<package>/templates/api/mapconfig.js``,
-    ``<package>/templates/viewer.js`` and ``<package>/templates/edit.js``
-    define the ``WMTS_OPTIONS`` url and extent as follows:
-
-.. code:: javascript
-
-    var WMTS_OPTIONS = {
-       url: '${tiles_url}',
-       ...
-    }
-
-    ...
-
-    <%
-    initial_extent = request.registry.settings["viewer"]["initial_extent"]
-    restricted_extent = request.registry.settings["viewer"]["restricted_extent"]
-    %>
-
-    var INITIAL_EXTENT = ${dumps(initial_extent)};
-    var RESTRICTED_EXTENT = ${dumps(restricted_extent)};
-
-10. In the ``mapserver/c2cgeoportal.map.mako`` file add the following line:
-
-.. code::
-
-   INCLUDE "${instance}.map"
-
-11. Edit ``deploy/deploy.cfg.mako`` as follows:
-
-.. code:: diff
-
-    [DEFAULT]
-   -project = <package>
-   +project = ${instance}
-
-    [code]
-   -dir = /var/www/vhosts/<project>/private/<project>
-   +dir = /var/www/vhosts/<project>/private/${instance}
-
-    [apache]
-   -dest = /var/www/vhosts/<project>/conf/<project>.conf
-   -content = Include /var/www/vhosts/<project>/private/<project>/apache/*.conf
-   +dest = /var/www/vhosts/<project>/conf/${instance}.conf
-   +content = Include /var/www/vhosts/<project>/private/${instance}/apache/*.conf
-
-12. Update the deploy configuration as follows:
-
-    .. prompt:: bash
-
-        git mv deploy/hooks/post-restore-code{,.mako}
-
-    Then edit it (`deploy/hooks/post-restore-code.mako`):
-
-    .. code:: diff
-
-        -make -f $TARGET.mk template-clean
-        -make -f $TARGET.mk template-generate
-        +INSTANCE=${instance} make -f $TARGET.mk template-clean
-        +INSTANCE=${instance} make -f $TARGET.mk template-generate
-
-Result
-......
-
-Now you can configure the application at instance level in the following places:
-
-* ``mapserver/<instance>.map``
-* ``<instance>.mk``
-* ``mandant/static/images/<instance>_banner_right.png``
-* ``mandant/static/images/<instance>_banner_left.png``
-* ``mandant/static/css/proj-<instance>.css``
-* ``vars_<instance>.yaml``
-
-Then run the make command for the user/instance you want to setup:
-
-.. prompt:: bash
-
-    INSTANCE=<instance> make -f <user>.mk build
-
-And to switch to an other instance:
-
-.. prompt:: bash
-
-    INSTANCE=<instance> make -f <user>.mk template-clean
-    INSTANCE=<instance> make -f <user>.mk build
 
 
 Dynamic configuration and autogenerated files
@@ -607,12 +308,12 @@ Dynamic configuration and autogenerated files
 Several files are autogenerated, their content depending of the variables you
 have set either in the main ``<package>.mk`` or a ``<user>.mk``
 
-The files can have either the extension ``.in`` or ``.mako``
+The files can have the extension ``.mako``
 
-.mako (recommanded)
-...................
+.mako
+.....
 
-If you use ``.mako``, you can also use all the possibilites allowed by the Mako
+If you use ``.mako``, you can also use all the possibilities allowed by the Mako
 templating system, such as for loops, conditions, sub-templates, etc.
 
 Please see the Mako documentation for details:
@@ -629,16 +330,4 @@ In ``.mako`` files, the variable replacement syntax is as follows::
 
 for example:
 
-* ``${instanceid}``
 * ``${directory}``
-
-.in (deprecated, for backward compatibility)
-............................................
-
-If you use ``.in``, the variables are simply replaced and a file without the
-``.in`` extension is generated.
-
-**Syntax**
-
-In ``.in`` files, the variable replacement syntax is the same as in ``.mako`` files.
-But we can get only the non structured variable.

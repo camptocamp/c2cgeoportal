@@ -702,7 +702,7 @@ def includeme(config):
     stats.init(config)
 
     # scan view decorator for adding routes
-    config.scan(ignore=["c2cgeoportal.tests", "c2cgeoportal.scripts"])
+    config.scan(ignore=["c2cgeoportal.scripts", "c2cgeoportal.wsgi_app"])
 
     if "subdomains" in settings:  # pragma: no cover
         config.registry.registerUtility(
@@ -723,11 +723,9 @@ def includeme(config):
 
 
 def init_dbsessions(settings):
-    # define the srid, schema and parentschema
-    # as global variables to be usable in the model
+    # define the srid, schema as global variables to be usable in the model
     c2cgeoportal.srid = settings["srid"]
     c2cgeoportal.schema = settings["schema"]
-    c2cgeoportal.parentschema = settings["parentschema"]
 
     from c2cgeoportal.models import DBSessions
     for dbsession_name, dbsession_config in list(settings.get("dbsessions", {}).items()):  # pragma: nocover

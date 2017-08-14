@@ -31,11 +31,9 @@
 
 global srid
 global schema
-global parentschema
 
 srid = None
 schema = None
-parentschema = None
 
 
 def includeme(config):

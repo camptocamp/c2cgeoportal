@@ -1,13 +1,9 @@
 *
+!c2cgeoportal/
 !setup.py
 !README.rst
-!c2cgeoportal/
 !Makefile
 !vars.yaml
-!c2cgeoportal/scaffolds/update/CONST_requirements.txt
-!c2cgeoportal/scaffolds/update/CONST_versions_requirements.txt
-!docker/build/fixversions.txt
-!jsbuild
 !lingua.cfg
 !.tx
 !.git
