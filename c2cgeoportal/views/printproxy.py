@@ -33,8 +33,7 @@ import urllib.parse
 import urllib.error
 import logging
 
-import simplejson as json
-from simplejson.decoder import JSONDecodeError
+import json
 
 from pyramid.view import view_config
 from pyramid.response import Response
@@ -61,7 +60,7 @@ class PrintProxy(Proxy):  # pragma: no cover
             if resp.status == 200:
                 try:
                     capabilities = json.loads(content)
-                except JSONDecodeError as e:
+                except json.JSONDecodeError as e:
                     # log and raise
                     log.error("Unable to parse capabilities.")
                     log.exception(e)
@@ -184,7 +183,7 @@ class PrintProxy(Proxy):  # pragma: no cover
             if resp.status == 200:
                 try:
                     capabilities = json.loads(content)
-                except JSONDecodeError as e:
+                except json.JSONDecodeError as e:
                     # log and raise
                     log.error("Unable to parse capabilities.")
                     log.exception(e)

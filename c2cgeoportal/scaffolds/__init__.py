@@ -34,7 +34,6 @@ import os
 import json
 import requests
 import yaml
-from simplejson.scanner import JSONDecodeError
 
 from pyramid.scaffolds.template import Template
 from pyramid.compat import input_
@@ -139,7 +138,7 @@ class BaseTemplate(Template):  # pragma: no cover
             )
             r2 = r.json()[0]
             return [r1["x"], r2["y"], r2["x"], r1["y"]]
-        except JSONDecodeError:
+        except json.JSONDecodeError:
             print("epsg.io doesn't return a correct json.")
             return None
         except IndexError:
