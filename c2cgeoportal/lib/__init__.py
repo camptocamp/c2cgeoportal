@@ -221,7 +221,7 @@ def get_typed(name, value, types, request, errors):
 
 
 def add_url_params(url, params):
-    if len(list(params.items())) == 0:
+    if len(params) == 0:
         return url
     return add_spliturl_params(urllib.parse.urlsplit(url), params)
 
