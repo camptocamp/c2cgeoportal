@@ -2,6 +2,8 @@ PYTHON_VERSION = $(shell $(VENV_BIN)/python -c "import sys; print('%i.%i' % (sys
 export PACKAGE = {{package}}
 OPERATING_SYSTEM ?= LINUX
 
+MAPSERVER ?= TRUE
+
 ifeq ($(DEBUG), TRUE)
 ifeq ($(OPERATING_SYSTEM), WINDOWS)
 PRERULE_CMD ?= @echo "Build $@ due mofification on $?"; ls -lt --reverse $? $@ || true
@@ -654,7 +656,7 @@ remove-branch:
 
 .PHONY: template-clean
 template-clean:
-	rm -f .build/c2ctemplate-cache.yaml
+	rm -f .build/c2ctemplate-cache.json
 	rm -f $(ALL_MAKO_FILES:.mako=)
 	rm -f $(ALL_JINJA_FILES:.jinja=)
 	rm -f .build/config.yaml
@@ -662,7 +664,7 @@ template-clean:
 .PHONY: template-generate
 template-generate: $(ALL_MAKO_FILES:.mako=) $(ALL_JINJA_FILES:.jinja=) .build/config.yaml
 
-.build/c2ctemplate-cache.yaml: $(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX) $(VARS_DEPENDS) $(INSTANCE_ID_MARKER) $(MAKE_FILES)
+.build/c2ctemplate-cache.json: $(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX) $(VARS_DEPENDS) $(INSTANCE_ID_MARKER) $(MAKE_FILES)
 	$(PRERULE_CMD)
 ifeq ($(origin VARS_FILE), undefined)
 	@echo "Error: the variable VARS_FILE is required."
@@ -670,15 +672,15 @@ ifeq ($(origin VARS_FILE), undefined)
 endif
 	$(ENVIRONMENT_VARS) $(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX) --vars $(VARS_FILE) --get-cache $@
 
-$(ALL_MAKO_FILES:.mako=) $(ALL_JINJA_FILES:.jinja=) .build/config.yaml: $(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX) .build/c2ctemplate-cache.yaml
+$(ALL_MAKO_FILES:.mako=) $(ALL_JINJA_FILES:.jinja=) .build/config.yaml: $(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX) .build/c2ctemplate-cache.json
 
 %: %.mako
 	$(PRERULE_CMD)
-	$(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX) --cache .build/c2ctemplate-cache.yaml --engine mako --files $<
+	$(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX) --cache .build/c2ctemplate-cache.json --engine mako --files $<
 
 %: %.jinja
 	$(PRERULE_CMD)
-	$(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX) --cache .build/c2ctemplate-cache.yaml --engine jinja --files $<
+	$(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX) --cache .build/c2ctemplate-cache.json --engine jinja --files $<
 
 $(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX): .build/requirements.timestamp
 
@@ -686,7 +688,7 @@ $(VENV_BIN)/pykwalify$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
 
 .build/config.yaml: $(VENV_BIN)/pykwalify$(PYTHON_BIN_POSTFIX)
 	$(PRERULE_CMD)
-	$(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX) --cache .build/c2ctemplate-cache.yaml --get-config .build/_config.yaml $(CONFIG_VARS)
+	$(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX) --cache .build/c2ctemplate-cache.json --get-config .build/_config.yaml $(CONFIG_VARS)
 	$(VENV_BIN)/pykwalify --data-file .build/_config.yaml --schema-file CONST_config-schema.yaml
 	mv .build/_config.yaml .build/config.yaml
 	touch $@

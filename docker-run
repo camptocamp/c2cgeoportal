@@ -10,6 +10,12 @@ def main():
 
     args = sys.argv[1:]
     docker_cmd = ['docker', 'run']
+
+    root = False
+    if args[0] == '--root':
+        args = args[1:]
+        root = True
+
     if args[0][0] == '-':
         docker_cmd.append(args[0])
         args = args[1:]
@@ -37,6 +43,10 @@ def main():
         "EXTENT",
     ]:
         docker_cmd.append("--env={}={}".format(env, os.environ.get(env, "")))
+
+    if root:
+        docker_cmd.extend(["--entrypoint", args[0]])
+        args = args[1:]
 
     docker_cmd.append("camptocamp/geomapfish_build_dev")
     docker_cmd.extend(args)

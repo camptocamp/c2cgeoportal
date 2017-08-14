@@ -10,7 +10,7 @@ DEVELOPPEMENT ?= FALSE
 ifdef TRAVIS_TAG
 VERSION ?= $(TRAVIS_TAG)
 else
-VERSION ?= 2.0
+VERSION ?= 2.2
 endif
 
 VALIDATE_PY_FOLDERS = setup.py c2cgeoportal/*.py c2cgeoportal/lib c2cgeoportal/scripts c2cgeoportal/views c2cgeoportal/scaffolds/update/CONST_alembic
