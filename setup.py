@@ -41,7 +41,7 @@ with open("README.rst") as f:
     README = "\n".join(text)
 
 install_requires = [
-    "pyramid<=1.8.99",
+    "pyramid<=1.9.99",
     "pyramid_multiauth",
     "pyramid_mako",  # to render the HTML files
     # Needed by the development.ini
