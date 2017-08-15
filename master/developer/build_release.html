@@ -73,14 +73,34 @@ span.prompt1:before {
 </pre><p>For each version we create a new branch (at the latest at the final release):</p>
 <pre class="highlight"><span class="prompt1">git checkout -b &lt;version&gt;</span>
 <span class="prompt1">git push origin &lt;version&gt;</span>
+</pre><dl class="docutils">
+<dt>Change the version in the following files:</dt>
+<dd><ul class="first last simple">
+<li>Makefile (VERSION)</li>
+<li>Dockerfile</li>
+</ul>
+</dd>
+</dl>
+<p>Commit your changes:</p>
+<pre class="highlight"><span class="prompt1">git add Makefile Dockerfile</span>
+<span class="prompt1">git commit -m <span class="s2">&quot;Create the version &lt;version&gt; branch&quot;</span></span>
 </pre><p>Go back to the master branch:</p>
 <pre class="highlight"><span class="prompt1">git checkout master</span>
+<span class="prompt1">git merge &lt;version&gt;</span>
 </pre><p>Edit the version in the <code class="docutils literal"><span class="pre">setup.py</span></code> to be <code class="docutils literal"><span class="pre">&lt;version</span> <span class="pre">+</span> <span class="pre">1&gt;</span></code>.</p>
+<dl class="docutils">
+<dt>Change back the version in the following files:</dt>
+<dd><ul class="first last simple">
+<li>Makefile (VERSION)</li>
+<li>Dockerfile</li>
+</ul>
+</dd>
+</dl>
 <p>Commit your changes:</p>
-<pre class="highlight"><span class="prompt1">git add setup.py</span>
+<pre class="highlight"><span class="prompt1">git add setup.py Makefile Dockerfile</span>
 <span class="prompt1">git commit -m <span class="s2">&quot;Start version &lt;version + 1&gt;&quot;</span></span>
 </pre><p>Push your changes:</p>
-<pre class="highlight"><span class="prompt1">git push origin master</span>
+<pre class="highlight"><span class="prompt1">git push origin &lt;version&gt; master</span>
 </pre><p>Create a new Transifex resource:</p>
 <pre class="highlight"><span class="prompt1">rm .tx/config</span>
 <span class="prompt1">./docker-run rm /build/c2ctemplate-cache.yaml</span>
