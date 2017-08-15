@@ -6,7 +6,7 @@ c2c.versions==1.0.1
 htmlmin==0.1.10
 Mako==1.0.6
 pep8-naming== 0.4.1
-https://github.com/transifex/transifex-client/archive/655c5e9f964bdc3e7ba4787d68b048bc670dcbf0.zip#transifex-client
+transifex-client==0.12.4
 tilecloud==0.4.0
 tilecloud-chain==1.3.0
 PyYAML==3.12
