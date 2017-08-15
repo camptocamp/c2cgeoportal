@@ -54,9 +54,7 @@ class Profile(Raster):
     def json(self):
         """answers to /profile.json"""
         _, points = self._compute_points()
-        set_common_headers(
-            self.request, "profile", NO_CACHE
-        )
+        set_common_headers(self.request, "profile", NO_CACHE)
         return {"profile": points}
 
     @view_config(route_name="profile.csv")
@@ -112,9 +110,7 @@ class Profile(Raster):
             values = {}
             has_one = False
             for ref in list(rasters.keys()):
-                value = self._get_raster_value(
-                    self.rasters[ref],
-                    ref, coord[0], coord[1])
+                value = self._get_raster_value(self.rasters[ref], coord[0], coord[1])
                 if value is not None:
                     values[ref] = value
                     has_one = True
@@ -135,8 +131,10 @@ class Profile(Raster):
     @staticmethod
     def _dist(coord1, coord2):
         """Compute the distance between 2 points"""
-        return math.sqrt(math.pow(coord1[0] - coord2[0], 2.0) +
-                         math.pow(coord1[1] - coord2[1], 2.0))
+        return math.sqrt(
+            math.pow(coord1[0] - coord2[0], 2.0) +
+            math.pow(coord1[1] - coord2[1], 2.0)
+        )
 
     def _create_points(self, coords, nb_points):
         """Add some points in order to reach roughly the asked number of points"""

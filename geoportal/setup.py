@@ -68,6 +68,8 @@ install_requires = [
     "pyramid_tm",
     "PyYAML",
     "SQLAlchemy",
+    "Fiona",
+    "rasterio",
 ]
 
 setup_requires = [

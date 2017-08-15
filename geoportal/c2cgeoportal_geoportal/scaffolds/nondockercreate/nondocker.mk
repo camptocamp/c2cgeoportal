@@ -131,7 +131,7 @@ remove-branch:
 .build/venv:
 	mkdir --parent .build
 	rm -rf .build/venv
-	virtualenv --python=python3 .build/venv
+	virtualenv --python=python3 --system-site-packages .build/venv
 ifeq ($(OPERATING_SYSTEM), WINDOWS)
 	.build/venv/Scripts/python -m pip install `./get-pip-dependencies pyramid-closure c2cgeoportal Shapely`
 	.build/venv/Scripts/python -m pip install wheels/Shapely-1.5.13-cp27-none-win32.whl

@@ -29,12 +29,14 @@
 
 
 import logging
+import os
 from decimal import Decimal
 
+import fiona
+import rasterio
+from pyramid.httpexceptions import HTTPNotFound
 from pyramid.view import view_config
-from pyramid.httpexceptions import HTTPInternalServerError, HTTPNotFound
 
-from c2cgeoportal_geoportal.lib.raster.georaster import GeoRaster
 from c2cgeoportal_geoportal.lib.caching import set_common_headers, NO_CACHE
 
 log = logging.getLogger(__name__)
@@ -66,28 +68,33 @@ class Raster:
 
         result = {}
         for ref in list(rasters.keys()):
-            result[ref] = self._get_raster_value(
-                rasters[ref], ref, lon, lat)
+            result[ref] = self._get_raster_value(rasters[ref], lon, lat)
 
-        set_common_headers(
-            self.request, "raster", NO_CACHE
-        )
+        set_common_headers(self.request, "raster", NO_CACHE)
         return result
 
-    def _get_raster_value(self, layer, ref, lon, lat):
-        if ref in self._rasters:
-            raster = self._rasters[ref]
-        elif "type" not in layer or layer["type"] == "shp_index":
-            raster = GeoRaster(layer["file"])
-            self._rasters[ref] = raster
-        else:  # pragma: no cover
-            raise HTTPInternalServerError(
-                'Bad raster type "{0!s}" for raster layer "{1!s}"'.format(
-                    layer["type"], ref
-                )
+    def _get_raster_value(self, layer, lon, lat):
+        path = layer["file"]
+        if layer.get("type", "shp_index") == "shp_index":
+
+            with fiona.open(path) as collection:
+                tiles = [e for e in collection.filter(mask={
+                    "type": "Point",
+                    "coordinates": [lon, lat],
+                })]
+
+            if len(tiles) == 0:
+                return None
+
+            path = os.path.join(
+                os.path.dirname(layer["file"]),
+                tiles[0]["properties"]["location"],
             )
 
-        result = raster.get_value(lon, lat)
+        with rasterio.open(path) as dataset:
+            index = dataset.index(lon, lat)
+            result = dataset.read(1)[index[0] - 1][index[1] - 1]
+
         if "round" in layer:
             result = self._round(result, layer["round"])
         elif result is not None:
