@@ -73,7 +73,7 @@ cache_region = get_region()
 
 class DimensionInformation:
 
-    URL_PART_RE = re.compile("[a-zA-Z0-9_\-\+~\.]+$")
+    URL_PART_RE = re.compile("[a-zA-Z0-9_\-\+~\.]*$")
 
     def __init__(self):
         self._dimensions = {}
