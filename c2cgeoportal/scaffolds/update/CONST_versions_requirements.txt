@@ -38,7 +38,7 @@ https://github.com/camptocamp/pyramid_closure/archive/23b45f7989cf471dce46dabb85
 python-dateutil==2.6.1
 pytz==2017.2
 repoze.lru==0.6
-requests==2.18.3
+requests==2.18.4
 simplejson==3.11.1
 six==1.10.0
 SQLAHelper==1.0
