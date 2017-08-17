@@ -37,15 +37,15 @@ from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPForbidden, HTTPInternalServerError
 
 from c2cgeoportal.lib.caching import NO_CACHE
-from c2cgeoportal.views.proxy import Proxy
+from c2cgeoportal.views.ogcproxy import OGCProxy
 
 log = logging.getLogger(__name__)
 
 
-class PdfReport(Proxy):  # pragma: no cover
+class PdfReport(OGCProxy):  # pragma: no cover
 
     def __init__(self, request):
-        Proxy.__init__(self, request)
+        OGCProxy.__init__(self, request)
         self.config = self.request.registry.settings.get("pdfreport", {})
 
     def _do_print(self, spec):
@@ -137,8 +137,9 @@ class PdfReport(Proxy):  # pragma: no cover
                 self.request.user.role.id
 
             # FIXME: support of mapserver groups
-            if self.layername in get_private_layers() and \
-                    self.layername not in get_protected_layers(role_id):
+            if self.layername in get_private_layers([self.default_ogc_server.id]) and \
+                    self.layername not in get_protected_layers(
+                        role_id, [self.default_ogc_server.id]):
                 raise HTTPForbidden
 
         srs = self._get_config("srs")
