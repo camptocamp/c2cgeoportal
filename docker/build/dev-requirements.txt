@@ -9,7 +9,7 @@ c2c.template==1.4.1
 chardet==3.0.4
 Chameleon==3.1
 codespell==1.10.0
-coveralls==1.1
+coveralls==1.2.0
 defusedxml==0.5.0
 dogpile.cache==0.6.4
 dateutils==0.6.6
@@ -59,9 +59,9 @@ python-dateutil==2.6.1
 pytz==2017.2
 PyYAML==3.12
 repoze.lru==0.6
-requests[security]==2.18.3
+requests[security]==2.18.4
 restkit==4.2.2
-Shapely==1.5.17
+Shapely==1.5.17.post1
 simplejson==3.11.1
 six==1.10.0
 Sphinx==1.6.3
