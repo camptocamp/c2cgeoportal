@@ -1,4 +1,5 @@
 vars:
+    build_volume_name: BUILD_VOLUME_NAME
     main_version: "'.'.join(__import__('pkg_resources').get_distribution('c2cgeoportal').version.split('.')[0:2])"
     dbuser: www-data
     dbpassword: www-data
@@ -22,6 +23,7 @@ vars:
 
 interpreted:
     environment:
+    - build_volume_name
     - tx_version
     - git_branch
     python:

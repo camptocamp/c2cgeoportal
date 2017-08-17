@@ -34,6 +34,7 @@ import os
 import json
 import requests
 import yaml
+import pkg_resources
 
 from pyramid.scaffolds.template import Template
 from pyramid.compat import input_
@@ -92,7 +93,9 @@ class BaseTemplate(Template):  # pragma: no cover
             package_logger = "app"
         vars_["package_logger"] = package_logger
 
-        vars_["geomapfish_version"] = os.environ.get("TRAVIS_TAG", "latest")
+        c2cgeoportal_version = pkg_resources.get_distribution('c2cgeoportal').parsed_version._version.release
+        vars_["geomapfish_version"] = "latest" if os.environ.get("CI") == "true" else \
+            "{}.{}".format(c2cgeoportal_version[0], c2cgeoportal_version[1])
 
         return ret
 

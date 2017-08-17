@@ -1,9 +1,0 @@
-Non Docker Changelog
-====================
-
-The new documentation consider that you use Docker, for non Docker specific usage you can use the old
-documentation (version 2.2)
-
-Changes you should do:
-- In you project makefile include the nondocker-override.mk in place of CONST_Makefile.
-- In your project vars file extends vars_nondocker.yaml in place of CONST_vars.yaml.

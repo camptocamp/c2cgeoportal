@@ -2,38 +2,61 @@
 
 import sys
 import os
+import argparse
 import subprocess
 import netifaces
+import configparser
 import distutils.sysconfig
+import configparser
 
 
 def main():
+    config_parser = configparser.ConfigParser()
+    if os.path.exists(".config"):
+        config_parser.read(".config")
+    if "docker-run" not in config_parser:
+        config_parser["docker-run"] = {}
+    config = config_parser["docker-run"]
 
-    args = sys.argv[1:]
+    parser = argparse.ArgumentParser(description="Run docker build.")
+    parser.add_argument("--root", action="store_true", help="Be root in the container")
+    parser.add_argument("-ti", action="store_true", help="Use -ti docker run option")
+    parser.add_argument("--share", help="A folder to share as a volume")
+    parser.add_argument("--image", help="The docker image to use", default=config.get(
+        "image", "camptocamp/geomapfish-build-dev")
+    )
+    parser.add_argument("--version", help="The docker image version to use", default=config.get(
+        "version", "latest")
+    )
+    parser.add_argument("cmd", metavar="CMD", help="The command to run")
+    parser.add_argument("args", metavar="...", nargs=argparse.REMAINDER, help="The command arguments")
+    options = parser.parse_args()
+
     docker_cmd = ['docker', 'run']
 
-    root = False
-    if args[0] == '--root':
-        args = args[1:]
-        root = True
+    if options.ti:
+        docker_cmd.append("-ti")
 
-    if args[0][0] == '-':
-        docker_cmd.append(args[0])
-        args = args[1:]
+    if options.share is not None:
+        docker_cmd.append("--volume={}:{}".format(options.share, options.share))
+
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    build_volume_name = dir_path[1:].replace("/", "-")
 
     git_branch = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode("utf-8").strip()
+    git_hash = subprocess.check_output(["git", "rev-parse", "HEAD"]).decode("utf-8").strip()
 
     docker_cmd.extend([
         "--rm",
         "--volume=/var/run/docker.sock:/var/run/docker.sock",
-        "--volume=c2cgeoportal-build:/build",
+        "--volume={}:/build".format(build_volume_name),
         "--volume={pwd}:/src".format(pwd=os.getcwd()),
         "--volume={home}:{home}".format(home=os.environ["HOME"]),
-        "--volume=/tmp/travis:/tmp/travis",
         "--env=USER_NAME={}".format(os.getlogin()),
         "--env=USER_ID={}".format(os.getuid() if os.name == "posix" else 1000),
         "--env=GROUP_ID={}".format(os.getgid() if os.name == "posix" else 1000),
-        "--env=GIT_BRANCH={}".format(git_branch)
+        "--env=GIT_BRANCH={}".format(git_branch),
+        "--env=GIT_HASH={}".format(git_hash)
     ])
 
     for env in [
@@ -46,16 +69,28 @@ def main():
 
     docker_adrs = netifaces.ifaddresses('docker0')[2][0]['addr']
     docker_cmd.append("--env=DOCKER_HOST_={}".format(docker_adrs))
-    docker_cmd.append("--env=BUILD_VOLUME_NAME=c2cgeoportal-build")
+    docker_cmd.append("--env=BUILD_VOLUME_NAME={}".format(build_volume_name))
     docker_cmd.append("--env=PROJECT_DIRECTORY={}".format(os.getcwd()))
-    docker_cmd.append("--env=PYTHON_PATH={}".format(distutils.sysconfig.get_python_lib()))
+    if config.getboolean("use_venv", False):
+        docker_cmd.append("--env=PYTHON_PATH={}".format(
+            os.path.join(
+                os.getcwd(),
+                ".build/venv/lib/python{}.{}/site-packages".format(
+                    sys.version_info.major,
+                    sys.version_info.minor,
+                )
+            )
+        ))
+    else:
+        docker_cmd.append("--env=PYTHON_PATH={}".format(distutils.sysconfig.get_python_lib()))
 
-    if root:
-        docker_cmd.extend(["--entrypoint", args[0]])
-        args = args[1:]
+    if options.root:
+        docker_cmd.extend(["--entrypoint", options.cmd])
 
-    docker_cmd.append("camptocamp/geomapfish-build-dev:latest")
-    docker_cmd.extend(args)
+    docker_cmd.append("{}:{}".format(options.image, options.version))
+    if not options.root:
+        docker_cmd.append(options.cmd)
+    docker_cmd.extend(options.args)
     try:
         subprocess.check_call(docker_cmd)
     except subprocess.CalledProcessError:

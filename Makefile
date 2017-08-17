@@ -1,5 +1,5 @@
 BUILD_DIR ?= /build
-MAKO_FILES = $(shell find .tx doc docker tests/functional -type f -name "*.mako" -print)
+MAKO_FILES = docker-compose.yaml.mako $(shell find .tx doc docker tests/functional -type f -name "*.mako" -print)
 VARS_FILE ?= vars.yaml
 VARS_FILES += vars.yaml
 
@@ -9,7 +9,7 @@ ifeq ($(DEBUG), TRUE)
 ifeq ($(OPERATING_SYSTEM), WINDOWS)
 PRERULE_CMD ?= @echo "Build $@ due mofification on $?"; ls -t --full-time --reverse $? $@ || true
 else
-PRERULE_CMD ?= @echo "Build \033[1;34m$@\033[0m due mofification on \033[1;34m$?\033[0m" 1>&2; ls -t --full-time --reverse $? $@ 1>&2 || true
+PRERULE_CMD ?= @echo "Build \033[1;34m$@\033[0m due modification on \033[1;34m$?\033[0m" 1>&2; ls -t --full-time --reverse $? $@ 1>&2 || true
 endif
 endif
 
@@ -73,6 +73,7 @@ build: $(MAKO_FILES:.mako=) \
 	$(MO_FILES) \
 	$(L10N_PO_FILES) \
 	$(APPS_FILES) \
+	c2cgeoportal/scaffolds/create/docker-run \
 	c2cgeoportal/scaffolds/create/package.json_tmpl \
 	c2cgeoportal/scaffolds/update/CONST_create_template/ \
 	c2cgeoportal/scaffolds/nondockerupdate/CONST_create_template/
@@ -224,9 +225,15 @@ ngeo/package.json: ngeo
 	$(PRERULE_CMD)
 	touch --no-create $@
 
+c2cgeoportal/scaffolds/create/docker-run: docker-run
+	$(PRERULE_CMD)
+	cp $< $@
+
 c2cgeoportal/scaffolds/create/package.json_tmpl: ngeo/package.json $(BUILD_DIR)/requirements.timestamp c2cgeoportal/scripts/import_ngeo_apps.py
 	$(PRERULE_CMD)
 	$(BUILD_DIR)/venv/bin/import-ngeo-apps --package _ $< $@
+
+c2cgeoportal/scaffolds/update/CONST_create_template/: c2cgeoportal/scaffolds/create/package.json_tmpl
 
 .PRECIOUS: c2cgeoportal/scaffolds%update/CONST_create_template/
 c2cgeoportal/scaffolds%update/CONST_create_template/: c2cgeoportal/scaffolds%create/
@@ -247,13 +254,11 @@ $(APPS_PACKAGE_PATH)/static-ngeo/images/%: ngeo/contribs/gmf/apps/desktop/image/
 
 # Templates
 
-$(BUILD_DIR)/c2ctemplate-cache.json: $(VARS_FILES)
+$(BUILD_DIR)/c2ctemplate-cache.json: $(VARS_FILES) $(BUILD_DIR)/requirements.timestamp
 	$(PRERULE_CMD)
 	$(BUILD_DIR)/venv/bin/python /usr/local/bin/c2c-template --vars $(VARS_FILE) --get-cache $@
 
-$(MAKO_FILES:.mako=): $(BUILD_DIR)/c2ctemplate-cache.json
-
-%: %.mako $(BUILD_DIR)/requirements.timestamp $(BUILD_DIR)/c2ctemplate-cache.json
+%: %.mako $(BUILD_DIR)/c2ctemplate-cache.json
 	$(PRERULE_CMD)
 	c2c-template --cache $(BUILD_DIR)/c2ctemplate-cache.json --engine mako --files $<
 

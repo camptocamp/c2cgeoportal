@@ -1,11 +1,11 @@
-GEOMAPFISH_VERSION ?= $(shell $(VENV_BIN)/python -c "print(__import__('pkg_resources').get_distribution('c2cgeoportal').version)")
+GEOMAPFISH_VERSION ?= {{geomapfish_version}}
 export GEOMAPFISH_VERSION
 export PACKAGE = {{package}}
 
 MAPSERVER ?= TRUE
 
 ifeq ($(DEBUG), TRUE)
-PRERULE_CMD ?= @echo "Build \033[1;34m$@\033[0m due mofification on \033[1;34m$?\033[0m" 1>&2; ls -t --full-time --reverse $? $@ 1>&2 || true
+PRERULE_CMD ?= @echo "Build \033[1;34m$@\033[0m due modification on \033[1;34m$?\033[0m" 1>&2; ls -t --full-time --reverse $? $@ 1>&2 || true
 endif
 
 VENV_BIN ?= /build/venv/bin
@@ -81,7 +81,7 @@ ifeq (${DEVELOPMENT}, TRUE)
 DEFAULT_BUILD_RULES += /build/testdb-docker.timestamp
 endif
 
-BUILD_RULES ?= $(PRE_RULES) $(filter-out $(DISABLE_BUILD_RULES),$(DEFAULT_BUILD_RULES)) $(POST_RULES)
+BUILD_RULES ?= $(filter-out $(DISABLE_BUILD_RULES),$(DEFAULT_BUILD_RULES))
 
 OUTPUT_DIR = $(PACKAGE)/static/build
 
@@ -374,18 +374,23 @@ git-attributes:
 clean: template-clean
 	rm -f /build/*.timestamp
 	rm -f apache/mapcache.xml apache/tiles.conf  # for nondocker
+	rm -f mapserver/mapserver.map
 	rm -rf $(OUTPUT_DIR)/
 	rm -rf $(APP_OUTPUT_DIR)/
 	rm -f $(PACKAGE)/locale/$(PACKAGE)-*.pot
+	rm -f .UPGRADE*
 ifeq ($(TILECLOUD_CHAIN_LOCAL), TRUE)
 	rm -f $(WMTSCAPABILITIES_FILE)
 endif
 
 .PHONY: clean-all
 clean-all: clean
-	rm -rf /build
-	rm -rf node_modules
+	rm -rf /build/*
+	rm -rf $(PACKAGE)/static-ngeo/fonts/
+	rm -rf $(PACKAGE)/static/lib/cgxp/
 	rm -f $(ANGULAR_LOCALES_FILES)
+	rm -rf `find -name __pycache__`
+	rm -rf node_modules  # for nondocker
 
 .PHONY: clean-all-cache
 clean-all-cache: cleanall
@@ -432,17 +437,15 @@ ifeq ($(origin VARS_FILE), undefined)
 endif
 	c2c-template --vars $(VARS_FILE) --get-cache $@
 
-$(ALL_MAKO_FILES:.mako=) $(ALL_JINJA_FILES:.jinja=) config.yaml: /build/c2ctemplate-cache.json
-
-%: %.mako
+%: %.mako /build/c2ctemplate-cache.json
 	$(PRERULE_CMD)
 	c2c-template --cache /build/c2ctemplate-cache.json --engine mako --files $<
 
-%: %.jinja
+%: %.jinja /build/c2ctemplate-cache.json
 	$(PRERULE_CMD)
 	c2c-template --cache /build/c2ctemplate-cache.json --engine jinja --files $<
 
-config.yaml:
+config.yaml: /build/c2ctemplate-cache.json
 	$(PRERULE_CMD)
 	c2c-template --cache /build/c2ctemplate-cache.json --get-config /build/_config.yaml $(CONFIG_VARS)
 	pykwalify --data-file /build/_config.yaml --schema-file CONST_config-schema.yaml
@@ -654,13 +657,21 @@ $(PACKAGE)/static/lib/cgxp/:
 
 # CGXP build
 
-$(OUTPUT_DIR)/%.js: $(JSBUILD_MAIN_FILES) \
+# Workaround to fix stange Make missing rule error
+$(OUTPUT_DIR)/api-lang-en.js: \
 		$(JSBUILD_MAIN_CONFIG) \
+		$(JSBUILD_MAIN_FILES) \
+		$(PACKAGE)/static/lib/cgxp/openlayers/ \
+		$(PACKAGE)/static/lib/cgxp/
+
+$(OUTPUT_DIR)/%.js: \
+		$(JSBUILD_MAIN_CONFIG) \
+		$(JSBUILD_MAIN_FILES) \
 		$(PACKAGE)/static/lib/cgxp/openlayers/ \
 		$(PACKAGE)/static/lib/cgxp/
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
-	jsbuild $(JSBUILD_MAIN_CONFIG) $(JSBUILD_ARGS) -j $(notdir $@) -o $(OUTPUT_DIR)
+	jsbuild $< $(JSBUILD_ARGS) -j $(notdir $@) -o $(dir $@)
 
 $(CSS_BASE_OUTPUT): \
 		$(PACKAGE)/static/lib/cgxp/openlayers/ \
@@ -758,33 +769,14 @@ testdb-docker: /build/testdb-docker.timestamp
 	touch $@
 
 # Upgrade
+
 .PHONY: upgrade
-upgrade: project.yaml $(UPGRADE_MAKE_FILE)
-	c2ctool upgrade $(UPGRADE_ARGS) $(UPGRADE_MAKE_FILE) ${VERSION}
+upgrade: project.yaml
+	c2cupgrade $(UPGRADE_ARGS)
 
-.PHONY: upgrade1
-upgrade1: project.yaml $(UPGRADE_MAKE_FILE)
-	c2ctool upgrade $(UPGRADE_ARGS) $(UPGRADE_MAKE_FILE) ${VERSION} --step 1
-
-.PHONY: upgrade2
-upgrade2: project.yaml alembic.ini alembic_static.ini $(UPGRADE_MAKE_FILE)
-	c2ctool upgrade $(UPGRADE_ARGS) $(UPGRADE_MAKE_FILE) --step 2
-
-.PHONY: upgrade3
-upgrade3: project.yaml $(UPGRADE_MAKE_FILE)
-	c2ctool upgrade $(UPGRADE_ARGS) $(UPGRADE_MAKE_FILE) --step 3
-
-.PHONY: upgrade4
-upgrade4: project.yaml $(UPGRADE_MAKE_FILE)
-	c2ctool upgrade $(UPGRADE_ARGS) $(UPGRADE_MAKE_FILE) --step 4
-
-.PHONY: upgrade5
-upgrade5: project.yaml $(UPGRADE_MAKE_FILE)
-	c2ctool upgrade $(UPGRADE_ARGS) $(UPGRADE_MAKE_FILE) ${VERSION} --step 5
-
-.PHONY: upgrade6
-upgrade6: project.yaml $(UPGRADE_MAKE_FILE)
-	c2ctool upgrade $(UPGRADE_ARGS) $(UPGRADE_MAKE_FILE) ${VERSION} --step 6
+.PHONY: upgrade%
+upgrade%: project.yaml
+	c2cupgrade $(UPGRADE_ARGS) --step $*
 
 # Tilecloud chain
 $(WMTSCAPABILITIES_FILE): tilegeneration/config.yaml
