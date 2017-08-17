@@ -7,6 +7,14 @@ VARS_FILES += vars.yaml
 
 DEVELOPPEMENT ?= FALSE
 
+ifeq ($(DEBUG), TRUE)
+ifeq ($(OPERATING_SYSTEM), WINDOWS)
+PRERULE_CMD ?= @echo "Build $@ due mofification on $?"; ls -t --full-time --reverse $? $@ || true
+else
+PRERULE_CMD ?= @echo "Build \033[1;34m$@\033[0m due mofification on \033[1;34m$?\033[0m"; ls -t --full-time --reverse $? $@ || true
+endif
+endif
+
 ifdef TRAVIS_TAG
 VERSION ?= $(TRAVIS_TAG)
 else
@@ -36,9 +44,9 @@ SPHINX_MAKO_FILES = $(shell find doc -name "*.rst.mako" -print)
 export TX_VERSION = $(shell python setup.py --version | awk -F . '{{print $$1"_"$$2}}')
 TX_DEPENDENCIES = $(HOME)/.transifexrc .tx/config
 ifeq (,$(wildcard $(HOME)/.transifexrc))
-TOUCHBACK_TXRC = touch --date "$(shell date --iso-8601=seconds)" $(HOME)/.transifexrc
+TOUCHBACK_TXRC := touch --no-create --date "$(shell date --iso-8601=seconds)" $(HOME)/.transifexrc
 else
-TOUCHBACK_TXRC = touch --date "$(shell stat -c '%y' $(HOME)/.transifexrc)" $(HOME)/.transifexrc
+TOUCHBACK_TXRC := touch --no-create --date "$(shell stat -c '%y' $(HOME)/.transifexrc)" $(HOME)/.transifexrc
 endif
 L10N_LANGUAGES = fr de
 L10N_PO_FILES = $(addprefix c2cgeoportal/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal.po, $(L10N_LANGUAGES))) \
@@ -119,6 +127,7 @@ cleanall: clean
 c2c-egg: $(BUILD_DIR)/requirements.timestamp
 
 $(BUILD_DIR)/sphinx.timestamp: $(SPHINX_FILES) $(SPHINX_MAKO_FILES:.mako=)
+	$(PRERULE_CMD)
 	mkdir -p doc/_build/html
 	doc/build.sh
 	touch $@
@@ -163,6 +172,7 @@ spell:
 
 # i18n
 $(HOME)/.transifexrc:
+	$(PRERULE_CMD)
 	echo "[https://www.transifex.com]" > $@
 	echo "hostname = https://www.transifex.com" >> $@
 	echo "username = c2c" >> $@
@@ -174,11 +184,13 @@ transifex-get: c2cgeoportal/locale/c2cgeoportal.pot $(L10N_PO_FILES)
 
 .PHONY: transifex-send
 transifex-send: $(TX_DEPENDENCIES) c2cgeoportal/locale/c2cgeoportal.pot
+	$(PRERULE_CMD)
 	tx push --source
 	$(TOUCHBACK_TXRC)
 
 .PHONY: transifex-init
 transifex-init: $(TX_DEPENDENCIES) c2cgeoportal/locale/c2cgeoportal.pot
+	$(PRERULE_CMD)
 	tx push --source --force --no-interactive
 	tx push --translations --force --no-interactive
 	$(TOUCHBACK_TXRC)
@@ -189,74 +201,91 @@ transifex-init: $(TX_DEPENDENCIES) c2cgeoportal/locale/c2cgeoportal.pot
 import-ngeo-apps: $(APPS_FILES)
 
 ngeo: $(BUILD_DIR)/requirements.timestamp
+	$(PRERULE_CMD)
 	if [ ! -e "ngeo" ] ; then git clone --depth 1 --branch=$(shell $(BUILD_DIR)/venv/bin/ngeo-version) https://github.com/camptocamp/ngeo.git ; fi
 	touch --no-create $@
 
 .PRECIOUS: ngeo/contribs/gmf/apps/%/index.html
 ngeo/contribs/gmf/apps/%/index.html: ngeo
+	$(PRERULE_CMD)
 	touch --no-create $@
 
 .PRECIOUS: ngeo/contribs/gmf/apps/%/js/controller.js
 ngeo/contribs/gmf/apps/%/js/controller.js: ngeo
+	$(PRERULE_CMD)
 	touch --no-create $@
 
 $(APPS_PACKAGE_PATH)/templates/%.html_tmpl: ngeo/contribs/gmf/apps/%/index.html $(BUILD_DIR)/requirements.timestamp c2cgeoportal/scripts/import_ngeo_apps.py
+	$(PRERULE_CMD)
 	$(BUILD_DIR)/venv/bin/import-ngeo-apps --html $* $< $@
 
 $(APPS_PACKAGE_PATH)/static-ngeo/js/%.js_tmpl: ngeo/contribs/gmf/apps/%/js/controller.js $(BUILD_DIR)/requirements.timestamp c2cgeoportal/scripts/import_ngeo_apps.py
+	$(PRERULE_CMD)
 	$(BUILD_DIR)/venv/bin/import-ngeo-apps --js $* $< $@
 
 $(APPS_PACKAGE_PATH)/static-ngeo/components/contextualdata/contextualdata.html: ngeo/contribs/gmf/apps/desktop/contextualdata.html
+	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
 	cp $< $@
 
 ngeo/.tx/config.mako: ngeo
 
 c2cgeoportal/scaffolds/update/+dot+tx/CONST_config_mako: ngeo/.tx/config.mako
+	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
 	cp $< $@
 
 .PRECIOUS: ngeo/package.json
 ngeo/package.json: ngeo
+	$(PRERULE_CMD)
 	touch --no-create $@
 
 c2cgeoportal/scaffolds/create/package.json_tmpl: ngeo/package.json $(BUILD_DIR)/requirements.timestamp c2cgeoportal/scripts/import_ngeo_apps.py
+	$(PRERULE_CMD)
 	$(BUILD_DIR)/venv/bin/import-ngeo-apps --package _ $< $@
 
 .PRECIOUS: c2cgeoportal/scaffolds/update/CONST_create_template/
 c2cgeoportal/scaffolds/update/CONST_create_template/: c2cgeoportal/scaffolds/create/
+	$(PRERULE_CMD)
 	rm -rf $@ || true
 	cp -r $< $@
 
 .PRECIOUS: ngeo/contribs/gmf/apps/desktop/image/%
 ngeo/contribs/gmf/apps/desktop/image/%: ngeo
+	$(PRERULE_CMD)
 	touch --no-create $@
 
 .PRECIOUS: $(APPS_PACKAGE_PATH)/static-ngeo/images/%
 $(APPS_PACKAGE_PATH)/static-ngeo/images/%: ngeo/contribs/gmf/apps/desktop/image/%
+	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
 	cp $< $@
 
 # Templates
 
 $(BUILD_DIR)/c2ctemplate-cache.yaml: $(VARS_FILES)
+	$(PRERULE_CMD)
 	$(BUILD_DIR)/venv/bin/python /usr/local/bin/c2c-template --vars $(VARS_FILE) --get-cache $@
 
 $(MAKO_FILES:.mako=): $(BUILD_DIR)/c2ctemplate-cache.yaml
 
 %: %.mako $(BUILD_DIR)/requirements.timestamp $(BUILD_DIR)/c2ctemplate-cache.yaml
+	$(PRERULE_CMD)
 	c2c-template --cache $(BUILD_DIR)/c2ctemplate-cache.yaml --engine mako --files $<
 
 c2cgeoportal/locale/c2cgeoportal.pot: lingua.cfg $(SRC_FILES) $(BUILD_DIR)/requirements.timestamp
+	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
 	pot-create --keyword _ --config $< --output $@ $(SRC_FILES)
 
 c2cgeoportal/locale/en/LC_MESSAGES/c2cgeoportal.po: c2cgeoportal/locale/c2cgeoportal.pot
+	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
 	touch $@
 	msgmerge --update $@ $<
 
 c2cgeoportal/locale/%/LC_MESSAGES/c2cgeoportal.po: $(TX_DEPENDENCIES)
+	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
 	tx pull -l $* --force
 	$(TOUCHBACK_TXRC)
@@ -264,30 +293,36 @@ c2cgeoportal/locale/%/LC_MESSAGES/c2cgeoportal.po: $(TX_DEPENDENCIES)
 
 c2cgeoportal/scaffolds/create/+package+/locale/%/LC_MESSAGES/+package+-client.po: \
 		$(TX_DEPENDENCIES) $(BUILD_DIR)/dev-requirements.timestamp
+	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
 	$(BUILD_DIR)/venv/bin/tx pull -l $* --force
 	$(TOUCHBACK_TXRC)
 	test -s $@
 
 $(BUILD_DIR)/%.mo.timestamp: %.po
+	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
 	msgfmt -o $*.mo $<
 	touch $@
 
 $(BUILD_DIR)/venv.timestamp:
+	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
 	virtualenv --system-site-packages $(BUILD_DIR)/venv
 	touch $@
 
 $(BUILD_DIR)/requirements.timestamp: setup.py $(BUILD_DIR)/venv.timestamp
+	$(PRERULE_CMD)
 	$(BUILD_DIR)/venv/bin/pip install -e .
 	touch $@
 
 $(JSBUILD_ADMIN_OUTPUT_FILES): $(JSBUILD_ADMIN_FILES) $(JSBUILD_ADMIN_CONFIG)
+	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
 	jsbuild $(JSBUILD_ADMIN_CONFIG) $(JSBUILD_ARGS) -j $(notdir $@) -o $(ADMIN_OUTPUT_DIR)
 
 $(CSS_ADMIN_OUTPUT): $(CSS_ADMIN_FILES)
+	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
 	c2c-cssmin $(CSSMIN_ARGS) $@ $(CSS_ADMIN_FILES)
 

@@ -1,6 +1,6 @@
 #!/bin/bash -ex
 
-RESULT=$(make $* 2>&1)
+RESULT=$(DEBUG=TRUE make $* 2>&1)
 
 if [ "${RESULT}" != "" ]
 then
