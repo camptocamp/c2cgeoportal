@@ -67,11 +67,12 @@ RUN \
     wget -O /opt/angular-locale/angular-locale_$LANG.js https://raw.githubusercontent.com/angular/angular.js/`grep ^angular.js= /usr/lib/node_modules/ngeo/github_versions | cut --delimiter = --fields 2 | tr --delete '\r\n'`/src/ngLocale/angular-locale_$LANG.js; \
   done
 
-
-
 COPY . /opt/c2cgeoportal
 
-RUN pip install --disable-pip-version-check --no-cache-dir --editable /opt/c2cgeoportal
+RUN \
+  cd /opt/c2cgeoportal && \
+  make build && \
+  pip install --disable-pip-version-check --no-cache-dir --editable .
 
 WORKDIR /src
 
