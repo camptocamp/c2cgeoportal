@@ -1,7 +1,7 @@
 -r CONST_versions_requirements.txt
 -r CONST_dev-fixversions.txt
 alembic==0.9.5
-glob2==0.5
+glob2==0.6
 c2c.versions==1.0.1
 htmlmin==0.1.10
 Mako==1.0.7
