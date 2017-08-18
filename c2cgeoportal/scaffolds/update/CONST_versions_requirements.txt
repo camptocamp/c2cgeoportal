@@ -1,4 +1,4 @@
-Babel==2.4.0
+Babel==2.5.0
 boto==2.48.0
 bottle==0.12.13
 c2c.template==1.4.1
@@ -14,7 +14,7 @@ isodate==0.5.4
 Jinja2==2.9.6
 lingua==4.13
 Mako==1.0.7
-Markdown==2.6.8
+Markdown==2.6.9
 MarkupSafe==1.0
 OWSLib==0.14.0
 papyrus==2.2
