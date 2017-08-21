@@ -6,9 +6,9 @@ MAPSERVER ?= TRUE
 
 ifeq ($(DEBUG), TRUE)
 ifeq ($(OPERATING_SYSTEM), WINDOWS)
-PRERULE_CMD ?= @echo "Build $@ due mofification on $?"; ls -lt --reverse $? $@ || true
+PRERULE_CMD ?= @echo "Build $@ due mofification on $?"; ls -t --full-time --reverse $? $@ || true
 else
-PRERULE_CMD ?= @echo "Build \033[1;34m$@\033[0m due mofification on \033[1;34m$?\033[0m"; ls -lt --reverse $? $@ || true
+PRERULE_CMD ?= @echo "Build \033[1;34m$@\033[0m due mofification on \033[1;34m$?\033[0m"; ls -t --full-time --reverse $? $@ || true
 endif
 endif
 
@@ -262,9 +262,9 @@ TX_RC = $(HOME_DIR).transifexrc
 TX_DEPENDENCIES = $(VENV_BIN)/tx$(PYTHON_BIN_POSTFIX) $(TX_RC) .tx/config
 TX_HOST ?= https://www.transifex.com
 ifeq (,$(wildcard $(TX_RC)))
-TOUCHBACK_TXRC =
+TOUCHBACK_TXRC := touch --no-create --date "$(shell date --iso-8601=seconds)" $(HOME)/.transifexrc
 else
-TOUCHBACK_TXRC = touch --date "$(shell stat -c '%y' $(TX_RC))" $(TX_RC)
+TOUCHBACK_TXRC := touch --no-create --date "$(shell stat -c '%y' $(TX_RC))" $(TX_RC)
 endif
 
 MAP_FILES += $(shell $(FIND) mapserver $(FIND_OPTS) \( -name "*.map" -o -name "*.sym" -o -name "*.conf" \) -print)
