@@ -217,7 +217,7 @@ class C2cTool:
         http = httplib2.Http()
         for check_type in ("", "type=all"):
             resp, _ = http.request(
-                "http://{}{}{}".format(self.project["host"], self.project["checker_path"], check_type),
+                "http://localhost{}{}".format(self.project["checker_path"], check_type),
                 method="GET",
                 headers={
                     "Host": self.project["host"]
