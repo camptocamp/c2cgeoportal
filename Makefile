@@ -301,16 +301,6 @@ $(BUILD_DIR)/requirements.timestamp: setup.py $(BUILD_DIR)/venv.timestamp
 	$(BUILD_DIR)/venv/bin/pip install -e .
 	touch $@
 
-<<<<<<< HEAD
-c2cgeoportal/version.py:
-	@echo "# Copyright (c) 2017, Camptocamp SA" > $@.new
-	@echo "# All rights reserved." >> $@.new
-	@echo  >> $@.new
-	@echo "# Auto-generated file. Do not Edit!" >> $@.new
-	@$(BUILD_DIR)/venv/bin/python c2cgeoportal/scripts/gen_version.py >> $@.new
-	rm --force $@
-	mv $@.new $@
-=======
 $(JSBUILD_ADMIN_OUTPUT_FILES): $(JSBUILD_ADMIN_FILES) $(JSBUILD_ADMIN_CONFIG)
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
@@ -321,8 +311,14 @@ $(CSS_ADMIN_OUTPUT): $(CSS_ADMIN_FILES)
 	mkdir -p $(dir $@)
 	c2c-cssmin $(CSSMIN_ARGS) $@ $(CSS_ADMIN_FILES)
 
-c2cgeoportal/version.py: gen_current_version
->>>>>>> origin/2.2
+c2cgeoportal/version.py:
+	@echo "# Copyright (c) 2017, Camptocamp SA" > $@.new
+	@echo "# All rights reserved." >> $@.new
+	@echo  >> $@.new
+	@echo "# Auto-generated file. Do not Edit!" >> $@.new
+	@$(BUILD_DIR)/venv/bin/python c2cgeoportal/scripts/gen_version.py >> $@.new
+	rm --force $@
+	mv $@.new $@
 
 .PHONY: gen_current_version
 gen_current_versiion: c2cgeoportal/version.py
