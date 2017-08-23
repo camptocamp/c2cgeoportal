@@ -137,9 +137,9 @@ class PdfReport(OGCProxy):  # pragma: no cover
                 self.request.user.role.id
 
             # FIXME: support of mapserver groups
-            if self.layername in get_private_layers([self.default_ogc_server.id]) and \
-                    self.layername not in get_protected_layers(
-                        role_id, [self.default_ogc_server.id]):
+            ogc_server_ids = [self.default_ogc_server.id]
+            if self.layername in get_private_layers(ogc_server_ids) and \
+                    self.layername not in get_protected_layers(role_id, ogc_server_ids):
                 raise HTTPForbidden
 
         srs = self._get_config("srs")
