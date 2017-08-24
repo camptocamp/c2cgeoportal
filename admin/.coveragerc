@@ -1,0 +1,3 @@
+[run]
+source = c2cgeoportal_admin
+omit = c2cgeoportal_admin/test*
