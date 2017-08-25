@@ -1,11 +1,11 @@
-"""c2cgeoportal_models package."""
+"""c2cgeoportal_commons package."""
 
 __version__ = "0.1.0"
 
 
-schema = 'main'
+schema = None
 parentschema = None
-srid = 3847
+srid = None
 
 
 from sqlalchemy import engine_from_config
@@ -55,7 +55,7 @@ def includeme(config):
     """
     Initialize the model for a Pyramid app.
 
-    Activate this setup using ``config.include('c2cgeoportal_admin.models')``.
+    Activate this setup using ``config.include('c2cgeoportal_admin.commons')``.
 
     """
     settings = config.get_settings()
@@ -79,16 +79,16 @@ def includeme(config):
     )
     
     global schema
-    schema = settings.get('schema', schema)
+    schema = settings.get('schema')
     global parent_schema
-    parent_schema = settings.get('parent_schema', parent_schema)
+    parent_schema = settings.get('parent_schema')
     global srid
-    srid = settings.get('srid', srid)
+    srid = settings.get('srid')
 
     # import or define all models here to ensure they are attached to the
     # Base.metadata prior to any initialization routines
     #from .mymodel import MyModel  # flake8: noqa
-    from c2cgeoportal_models import main  # flake8: noqa
+    from . import main  # flake8: noqa
 
     # run configure_mappers after defining all of the models to ensure
     # all relationships can be setup

@@ -1,0 +1,22 @@
+Metadata-Version: 1.1
+Name: c2cgeoportal-commons
+Version: 0.1.0
+Summary: c2cgeoportal commons
+Home-page: UNKNOWN
+Author: c2c
+Author-email: info@camptocamp.com
+License: MIT
+Download-URL: /tarball/0.1.0
+Description: README
+        ======
+        
+        c2cgeoportal model
+        
+        To install the c2cgeoportal_commons package.
+        
+        .. code-block:: bash
+        
+            cd c2cgeoportal_commons
+            python setup.py install
+        
+Platform: UNKNOWN

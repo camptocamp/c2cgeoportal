@@ -9,8 +9,8 @@ from pyramid.paster import (
 
 from pyramid.scripts.common import parse_vars
 
-from ..meta import Base
-from .. import (
+from ..models.meta import Base
+from ..models import (
     get_engine,
     get_session_factory,
     get_tm_session,
@@ -47,8 +47,8 @@ def main(argv=sys.argv):
 
 
 def init_db(connection):
-    from .. import main
-    from .. import schema
+    from ..models import main
+    from ..models import schema
 
     if not schema_exists(connection, schema):
         connection.execute("CREATE SCHEMA \"{}\";".format(schema))

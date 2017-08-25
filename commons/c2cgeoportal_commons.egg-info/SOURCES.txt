@@ -1,0 +1,10 @@
+MANIFEST.in
+README.rst
+setup.cfg
+c2cgeoportal_commons/__init__.py
+c2cgeoportal_commons.egg-info/PKG-INFO
+c2cgeoportal_commons.egg-info/SOURCES.txt
+c2cgeoportal_commons.egg-info/dependency_links.txt
+c2cgeoportal_commons.egg-info/entry_points.txt
+c2cgeoportal_commons.egg-info/requires.txt
+c2cgeoportal_commons.egg-info/top_level.txt

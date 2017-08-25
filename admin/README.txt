@@ -11,7 +11,7 @@ sudo -u postgres psql -d $DATABASE -c "CREATE EXTENSION postgis;"
 
 # optionnaly update sqlachemy.url in development.ini
 
-make initdb
+make init_db
 
 
 Getting Started
