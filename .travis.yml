@@ -150,14 +150,14 @@ deploy:
   skip_cleanup: true
   on:
     repo: camptocamp/c2cgeoportal
-    branch: 2.1
+    branch: 2.2
     condition: '"${TRAVIS_PULL_REQUEST}" = false'
 - provider: script
   script: travis/doc.sh
   skip_cleanup: true
   on:
     repo: camptocamp/c2cgeoportal
-    branch: 2.1
+    branch: 2.2
     condition: '"${TRAVIS_PULL_REQUEST}" = false'
 
 notifications:
