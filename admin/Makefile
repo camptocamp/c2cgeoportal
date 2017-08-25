@@ -3,7 +3,7 @@ VENV?=${BUILD_DIR}/venv
 
 .PHONY: install
 install: ${BUILD_DIR}/venv.timestamp \
-	${BUILD_DIR}/models.timestamp \
+	${BUILD_DIR}/commons.timestamp \
 	${BUILD_DIR}/requirements.timestamp
 
 .PHONY: init_db
@@ -28,9 +28,9 @@ ${BUILD_DIR}/venv.timestamp:
 	${VENV}/bin/pip install --upgrade pip setuptools
 	touch ${BUILD_DIR}/venv.timestamp
 
-${BUILD_DIR}/models.timestamp: ../models/setup.py
-	${VENV}/bin/pip install -e "../models"
-	touch ${BUILD_DIR}/models.timestamp
+${BUILD_DIR}/commons.timestamp: ../commons/setup.py
+	${VENV}/bin/pip install -e "../commons"
+	touch ${BUILD_DIR}/commons.timestamp
 
 ${BUILD_DIR}/requirements.timestamp: setup.py
 	#Install the project in editable mode with its testing requirements.

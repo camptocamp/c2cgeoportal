@@ -5,10 +5,10 @@ version = "0.1.0"
 readme = open('README.rst').read()
 
 setup(
-    name="c2cgeoportal_models",
-    packages=["c2cgeoportal_models"],
+    name="c2cgeoportal_commons",
+    packages=["c2cgeoportal_commons"],
     version=version,
-    description="c2cgeoportal model",
+    description="c2cgeoportal commons",
     long_description=readme,
     include_package_data=True,
     author="c2c",
@@ -19,5 +19,10 @@ setup(
         "papyrus",
     ],
     download_url="{}/tarball/{}".format(url, version),
-    license="MIT"
+    license="MIT",
+    entry_points={
+        'console_scripts': [
+            'initialize_db_main = c2cgeoportal_commons.scripts.initializedb:main',
+        ],
+    },
 )

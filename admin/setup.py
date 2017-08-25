@@ -54,8 +54,5 @@ setup(
         'paste.app_factory': [
             'main = c2cgeoportal_admin:main',
         ],
-        'console_scripts': [
-            'initialize_db_main = c2cgeoportal_models.scripts.initializedb:main',
-        ],
     },
 )
