@@ -51,12 +51,31 @@ def get_tm_session(session_factory, transaction_manager):
     return dbsession
 
 
+def generate_mappers(settings):
+    """
+    Initialize the model for a Pyramid app.
+    """
+    global schema
+    schema = settings.get('schema')
+    global parent_schema
+    parent_schema = settings.get('parent_schema')
+    global srid
+    srid = settings.get('srid')
+
+    # import or define all models here to ensure they are attached to the
+    # Base.metadata prior to any initialization routines
+    #from .mymodel import MyModel  # flake8: noqa
+    from . import main  # flake8: noqa
+
+    # run configure_mappers after defining all of the models to ensure
+    # all relationships can be setup
+    configure_mappers()
+
+
 def includeme(config):
     """
     Initialize the model for a Pyramid app.
-
     Activate this setup using ``config.include('c2cgeoportal_admin.commons')``.
-
     """
     settings = config.get_settings()
     settings['tm.manager_hook'] = 'pyramid_tm.explicit_manager'
@@ -77,19 +96,5 @@ def includeme(config):
         'dbsession',
         reify=True
     )
-    
-    global schema
-    schema = settings.get('schema')
-    global parent_schema
-    parent_schema = settings.get('parent_schema')
-    global srid
-    srid = settings.get('srid')
 
-    # import or define all models here to ensure they are attached to the
-    # Base.metadata prior to any initialization routines
-    #from .mymodel import MyModel  # flake8: noqa
-    from . import main  # flake8: noqa
-
-    # run configure_mappers after defining all of the models to ensure
-    # all relationships can be setup
-    configure_mappers()
+    generate_mappers(settings)

@@ -1,3 +1,3 @@
-"""Pyramid application test package
+"""Commons test package
 """
 

@@ -14,8 +14,8 @@ from ..models import (
     get_engine,
     get_session_factory,
     get_tm_session,
+    generate_mappers
     )
-
 
 def usage(argv):
     cmd = os.path.basename(argv[0])
@@ -31,6 +31,7 @@ def main(argv=sys.argv):
     options = parse_vars(argv[2:])
     setup_logging(config_uri)
     settings = get_appsettings(config_uri, options=options)
+    generate_mappers(settings)
 
     engine = get_engine(settings)
 
