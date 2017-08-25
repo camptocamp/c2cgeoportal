@@ -47,7 +47,7 @@ def main(argv=sys.argv):
     '''
 
 
-def init_db(connection, force=false):
+def init_db(connection, force=False):
     from ..models import main
     from ..models import schema
 
