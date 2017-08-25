@@ -36,7 +36,7 @@ def main(argv=sys.argv):
     engine = get_engine(settings)
 
     with engine.begin() as connection:
-        init_db(connection)
+        init_db(connection, force='--force' in options)
 
     '''
     # generate the Alembic version table and stamp it with the latest revision
@@ -47,14 +47,22 @@ def main(argv=sys.argv):
     '''
 
 
-def init_db(connection):
+def init_db(connection, force=false):
     from ..models import main
     from ..models import schema
+
+    schema_static = "{}_static".format(schema)
+
+    if force:
+        if schema_exists(connection, schema):
+            connection.execute("DROP SCHEMA {} CASCADE;".format(schema))
+        if schema_exists(connection, schema_static):
+            connection.execute("DROP SCHEMA {} CASCADE;".format(schema_static))
+
 
     if not schema_exists(connection, schema):
         connection.execute("CREATE SCHEMA \"{}\";".format(schema))
 
-    schema_static = "{}_static".format(schema)
     if not schema_exists(connection, schema_static):
         connection.execute("CREATE SCHEMA \"{}\";".format(schema_static))
 
