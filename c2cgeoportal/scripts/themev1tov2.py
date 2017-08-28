@@ -30,6 +30,7 @@
 
 import sys
 import transaction
+import re
 from json import loads
 from argparse import ArgumentParser
 from pyramid.paster import get_app, setup_logging
@@ -78,7 +79,7 @@ def main():
     if app_name is None and "#" in app_config:
         app_config, app_name = app_config.split("#", 1)
     setup_logging(app_config)
-    get_app(app_config, name=app_name)
+    app = get_app(app_config, name=app_name)
 
     # must be done only once we have loaded the project config
     from c2cgeoportal.models import DBSession, \
@@ -96,7 +97,7 @@ def main():
                 session.delete(t)
 
         # list and create all distinct ogc_server
-        ogc_server(session)
+        ogc_server(session, app.registry.settings)
 
         print("Converting layerv1.")
         for layer in session.query(LayerV1).all():
@@ -115,8 +116,23 @@ def main():
     transaction.commit()
 
 
-def ogc_server(session):
-    from c2cgeoportal.models import LayerV1, OGCServer
+def ogc_server(session, settings):
+    from c2cgeoportal.models import LayerV1, OGCServer, \
+        OGCSERVER_TYPE_QGISSERVER, OGCSERVER_TYPE_GEOSERVER, OGCSERVER_TYPE_OTHER, \
+        OGCSERVER_AUTH_GEOSERVER, OGCSERVER_AUTH_NOAUTH
+
+    qgis_re = []
+    geoserver_re = []
+    other_re = []
+    for e in settings.get("themev1tov2_qgis_res", "").split(","):
+        if e.strip() != "":
+            qgis_re.append(re.compile(e))
+    for e in settings.get("themev1tov2_geoserver_res", "").split(","):
+        if e.strip() != "":
+            geoserver_re.append(re.compile(e))
+    for e in settings.get("themev1tov2_other_res", "").split(","):
+        if e.strip() != "":
+            other_re.append(re.compile(e))
 
     servers_v1 = session.query(
         LayerV1.url, LayerV1.image_type, LayerV1.is_single_tile
@@ -158,6 +174,21 @@ def ogc_server(session):
             new_ogc_server.is_single_tile = is_single_tile
             new_ogc_server.name = name
 
+            for e in qgis_re:
+                if e.search(url) is not None:
+                    new_ogc_server.type = OGCSERVER_TYPE_QGISSERVER
+                    break
+            for e in geoserver_re:
+                if e.search(url) is not None:
+                    new_ogc_server.type = OGCSERVER_TYPE_GEOSERVER
+                    new_ogc_server.auth = OGCSERVER_AUTH_GEOSERVER
+                    break
+            for e in other_re:
+                if e.search(url) is not None:
+                    new_ogc_server.type = OGCSERVER_TYPE_OTHER
+                    new_ogc_server.auth = OGCSERVER_AUTH_NOAUTH
+                    break
+
             session.add(new_ogc_server)
 
     transaction.commit()
@@ -184,6 +215,7 @@ def layer_v1tov2(session, layer):
             OGCServer.image_type == image_type,
             OGCServer.is_single_tile == is_single_tile
         ).one()
+
         new_layer.ogc_server = ogc_server
 
         new_layer.layer = layer.layer

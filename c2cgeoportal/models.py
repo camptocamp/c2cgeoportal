@@ -724,7 +724,8 @@ class OGCServer(Base):
 
     def __init__(
         self, name="", description=None, url="https://wms.example.com", url_wfs=None,
-        type_=u"mapserver", image_type="image/png", auth="Standard auth", wfs_support=True,
+        type_=OGCSERVER_TYPE_MAPSERVER, image_type="image/png",
+        auth=OGCSERVER_AUTH_STANDARD, wfs_support=True,
         is_single_tile=False
     ):
         self.name = name
