@@ -30,6 +30,7 @@
 import logging
 
 from sqlalchemy.orm.exc import NoResultFound
+from c2cgeoportal.lib import get_url2
 from c2cgeoportal.views.proxy import Proxy
 from c2cgeoportal.models import DBSession, OGCServer
 from c2cgeoportal.lib.caching import get_region
@@ -54,6 +55,20 @@ class OGCProxy(Proxy):
                 self.mapserver_settings["external_ogc_server"]
             )
 
+        # params hold the parameters we"re going to send to backend
+        self.params = dict(self.request.params)
+
+        # reset possible value of role_id and user_id
+        if "role_id" in self.params:  # pragma: no cover
+            del self.params["role_id"]
+        if "user_id" in self.params:  # pragma: no cover
+            del self.params["user_id"]
+
+        self.lower_params = self._get_lower_params(self.params)
+        self.ogc_server = self.get_ogcserver_byname(self.params["ogcserver"]) \
+            if "ogcserver" in self.params else None
+        self.external = bool(self.request.params.get("EXTERNAL"))
+
     @cache_region.cache_on_arguments()
     def get_ogcserver_byname(self, name):
         try:
@@ -64,3 +79,30 @@ class OGCProxy(Proxy):
             log.error("OGSServer '{}' does not exists (existing: {}).".format(
                 name, ",".join([t[0] for t in DBSession.query(OGCServer.name).all()])))
             raise
+
+    def _get_ogc_server(self):
+        return self.ogc_server or (
+            self.external_ogc_server if self.external else self.default_ogc_server
+        )
+
+    def _get_wms_url(self):
+        errors = set()
+        url = get_url2(
+            "The OGC server '{}'".format(self._get_ogc_server().name),
+            self._get_ogc_server().url, self.request, errors
+        )
+        if len(errors) > 0:  # pragma: no cover
+            log.error("\n".join(errors))
+        return url
+
+    def _get_wfs_url(self):
+        ogc_server = self._get_ogc_server()
+        errors = set()
+        url = get_url2(
+            "The OGC server (WFS) '{}'".format(self._get_ogc_server().name),
+            ogc_server.url_wfs or ogc_server.url,
+            self.request, errors
+        )
+        if len(errors) > 0:  # pragma: no cover
+            log.error("\n".join(errors))
+        return url
