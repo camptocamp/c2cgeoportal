@@ -1,3 +1,0 @@
-[console_scripts]
-initialize_db_main = c2cgeoportal_commons.scripts.initializedb:main
-
