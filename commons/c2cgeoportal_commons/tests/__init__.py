@@ -46,50 +46,80 @@ def dbsession(request):
 
     return session
 
-
-class BaseTest:
-    def setUp(self):
-        '''
-        self.config = testing.setUp(settings={
-            'sqlalchemy.url': 'sqlite:///:memory:'
-        })
-        self.config.include('.models')
-        settings = self.config.get_settings()
-
-        from .models import (
-            get_engine,
-            get_session_factory,
-            get_tm_session,
-            )
-
-        self.engine = get_engine(settings)
-        session_factory = get_session_factory(self.engine)
-
-        self.session = get_tm_session(session_factory, transaction.manager)
-        '''
-
-    def init_database(self):
-        from .models.meta import Base
-        Base.metadata.create_all(self.engine)
-
-    def tearDown(self):
-        '''
-        from .models.meta import Base
-
-        testing.tearDown()
-        transaction.abort()
-        Base.metadata.drop_all(self.engine)
-        '''
-
-
-def test_import(dbsession):
-    from c2cgeoportal_commons.models import main
-
-
+@pytest.fixture(scope='class')
 @pytest.mark.usefixtures("dbsession")
-class TestUser(BaseTest):
+def insertUsersTestData(dbsession):
+    from c2cgeoportal_commons.models.main import User
+    user = User("babar")
+    transaction = dbsession.begin_nested()
+    dbsession.add(user)
 
-    def test_all_users(self, dbsession):
+    yield
+
+    transaction.rollback()
+
+@pytest.fixture(scope='class')
+@pytest.mark.usefixtures("dbsession")
+def insertRolesTestData(dbsession):
+    from c2cgeoportal_commons.models.main import Role
+    role = Role("secretaire")
+    transaction = dbsession.begin_nested()
+    dbsession.add(role)
+
+    yield
+
+    transaction.rollback()
+
+@pytest.fixture(scope='function')
+@pytest.mark.usefixtures("dbsession")
+def transact(request, dbsession):
+    transaction = dbsession.begin_nested()
+
+    yield
+
+    transaction.rollback()
+
+@pytest.mark.usefixtures("insertUsersTestData", "transact")
+class TestUser():
+
+    def test_select(self, dbsession):
         from c2cgeoportal_commons.models.main import User
-        dbsession.query(User).all()
-        assert 0, "mo"
+        users = dbsession.query(User).all()
+        assert len(users) == 1, "querying for users"
+        assert users[0].username == 'babar', "user from test data is babar"
+
+    def test_remove(self, dbsession):
+        from c2cgeoportal_commons.models.main import User
+        users = dbsession.query(User).all()
+        dbsession.delete(users[0])
+        users = dbsession.query(User).all()
+        assert len(users) == 0, "removed a user"
+
+    def test_add(self, dbsession):
+        from c2cgeoportal_commons.models.main import User
+        user = User("momo")
+        dbsession.add(user)
+        users = dbsession.query(User).all()
+        assert len(users) == 2, "added a user"
+        assert users[0].username == 'babar', "user from test data is babar"
+        assert users[1].username == 'momo', "added user is momo"
+
+    def test_no_role(self, dbsession):
+        from c2cgeoportal_commons.models.main import Role
+        users = dbsession.query(Role).all()
+        assert len(users) == 0, "querying for role"
+
+
+@pytest.mark.usefixtures("insertRolesTestData", "transact")
+class TestRole():
+
+    def test_no_user(self, dbsession):
+        from c2cgeoportal_commons.models.main import User
+        users = dbsession.query(User).all()
+        assert len(users) == 0, "querying for users"
+
+    def test_select(self, dbsession):
+        from c2cgeoportal_commons.models.main import Role
+        roles = dbsession.query(Role).all()
+        assert len(roles) == 1, "querying for roles"
+        assert roles[0].name == 'secretaire', "role from test data is secretaire"
