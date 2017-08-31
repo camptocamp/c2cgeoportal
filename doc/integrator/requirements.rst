@@ -25,8 +25,8 @@ components installed on your system:
 For ngeo
 ~~~~~~~~
 
-* **node** >= 0.10
-* **npm** >= 1.3
+* **node** >= 6.0
+* **npm** >= 3.0
 
 Required Apache modules
 ~~~~~~~~~~~~~~~~~~~~~~~
