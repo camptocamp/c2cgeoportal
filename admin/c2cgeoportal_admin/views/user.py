@@ -3,17 +3,21 @@ from pyramid.view import view_config
 
 from sqlalchemy.exc import DBAPIError
 
-from ..models import MyModel
+from c2cgeoportal_commons.models.main import User
 
 
-@view_config(route_name='home', renderer='../templates/mytemplate.jinja2')
-def my_view(request):
+@view_config(route_name='user', renderer='../templates/mytemplate.jinja2')
+def user_view(request):
     try:
-        query = request.dbsession.query(MyModel)
-        one = query.filter(MyModel.name == 'one').first()
+        users = request.dbsession.query(User).all();
+        if len(users) > 0:
+            return {'first': users[0], 'project': 'c2cgeoportal_admin'}
+        else:
+            return {}
+                    
     except DBAPIError:
         return Response(db_err_msg, content_type='text/plain', status=500)
-    return {'one': one, 'project': 'c2cgeoportal_admin'}
+    
 
 
 db_err_msg = """\
