@@ -1,0 +1,3 @@
+from c2cgeoportal_commons.tests import dbsession
+from c2cgeoportal_commons.tests import transact
+from c2cgeoportal_commons.tests import raise_db_error_on_query
