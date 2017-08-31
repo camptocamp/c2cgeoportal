@@ -31,3 +31,4 @@ def raise_db_error_on_query(request, dbsession):
     dbsession.query = raise_db_error
     yield
     dbsession.query = query
+
