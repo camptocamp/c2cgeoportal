@@ -9,7 +9,7 @@ install: ${BUILD_DIR}/venv.timestamp \
 .PHONY: init_db
 init_db:
 	#Configure the database:
-	${VENV}/bin/initialize_db_main development.ini
+	${VENV}/bin/initialize_db_main development.ini --force=1
 
 .PHONY: test
 test:
