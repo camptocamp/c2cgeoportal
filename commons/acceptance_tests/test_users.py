@@ -5,12 +5,10 @@ import pytest
 def insertUsersTestData(dbsession):
     from c2cgeoportal_commons.models.main import User
     user = User("babar")
-    transaction = dbsession.begin_nested()
+    dbsession.begin_nested()
     dbsession.add(user)
-
     yield
-
-    transaction.rollback()
+    dbsession.rollback()
 
 @pytest.mark.usefixtures("insertUsersTestData", "transact")
 class TestUser():

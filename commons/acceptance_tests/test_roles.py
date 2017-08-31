@@ -5,12 +5,10 @@ import pytest
 def insertRolesTestData(dbsession):
     from c2cgeoportal_commons.models.main import Role
     role = Role("secretary")
-    transaction = dbsession.begin_nested()
+    dbsession.begin_nested()
     dbsession.add(role)
-
     yield
-
-    transaction.rollback()
+    dbsession.rollback()
 
 @pytest.mark.usefixtures("insertRolesTestData", "transact")
 class TestRole():
