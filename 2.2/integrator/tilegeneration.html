@@ -1,0 +1,340 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>TileGeneration &#8212; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Customise the application" href="customise.html" />
+    <link rel="prev" title="Advanced configuration examples" href="legacy_advanced.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="tilegeneration">
+<span id="administrator-tilegeneration"></span><h1>TileGeneration<a class="headerlink" href="#tilegeneration" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>With this solution we solve the following issue:</p>
+<ul class="simple">
+<li>Managing millions of files on the file system is difficult.</li>
+<li>We should be able to update all the generated tiles.</li>
+<li>We should not have thousands of expired files.</li>
+</ul>
+<p>To do so we need need a tool that can generate the tiles,
+update some of them contained in given geometries and delete empty tiles.</p>
+<p>On-the-fly tiles generation introduces some issues such as having a growing
+number of tiles that may become unmanageable. For example when updating the
+data, it is not possible to figure out what tiles should be updated.</p>
+<p>For the high usage website we want to put the tiles on S3
+with the same tool.</p>
+<p>One issue we have if we want to generate all the tiles, the generation
+time can grow to more than one month, especially if we have
+a high resolution (low if in m/px) on the last zoom level.
+Than for the last zoom level we should generate the tiles on the fly
+with a low expiry (4 hours for example).
+We should use metatiles to do not have too may request to postgres.
+And the tiles should be delete after the expiry time.</p>
+<p>The chosen solution is a combination of two tools:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://mapserver.org/trunk/mapcache/">MapCache</a> for the last zoom level.</li>
+<li><a class="reference external" href="https://github.com/sbrunner/tilecloud-chain">TileCloud-Chain</a> for the tile generation.</li>
+</ul>
+</div>
+<div class="section" id="id1">
+<h2>MapCache<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>MapCache is a tool of the MapServer Suite.</p>
+<p>It is recommended to use <a class="reference external" href="http://memcached.org/">Memcached</a> as cache,
+since it is the only system that offers automatic deletion of the expired tiles.</p>
+<p>To use it you should have MapCache and Memcached installed on your computer.
+And Memcached should listen on port 11211.</p>
+<p>To clear/flush Memcached cache, use the following command:</p>
+<pre class="highlight"><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1"><span class="nb">echo</span> <span class="s2">&quot;flush_all&quot;</span> <span class="p">|</span> /bin/netcat -q <span class="m">2</span> <span class="m">127</span>.0.0.1 <span class="m">11211</span></span>
+</pre><p>See the <a class="reference external" href="https://github.com/sbrunner/tilecloud-chain#configure-mapcache">TileCloud-chain documentation for more details</a></p>
+</div>
+<div class="section" id="id2">
+<h2>TileCloud-chain<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>TileCloud-chain is a TileCloud-based tool that offers a build chain for
+generating tiles from WMS of Mapnik on a local storage or S3 using a
+WMTS layout.</p>
+<p>It supports the following AWS services for generating tiles:
+EC2, SQS, SNS.</p>
+<p><a class="reference external" href="http://pypi.python.org/pypi/tilecloud-chain">See readme</a>.</p>
+<div class="section" id="initialization">
+<h3>Initialization<a class="headerlink" href="#initialization" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p class="first">Build the project:</p>
+<pre class="highlight"><span class="prompt1">make -f &lt;user&gt;.mk build</span>
+</pre></li>
+<li><p class="first">Install the base template template:</p>
+<pre class="highlight"><span class="prompt1">.build/venv/bin/pcreate --interactive -s tilecloud_chain ../&lt;project&gt; <span class="nv">package</span><span class="o">=</span>&lt;package&gt;</span>
+</pre></li>
+<li><p class="first">In the <code class="docutils literal"><span class="pre">&lt;prokect&gt;.mk</span></code> activate the tile generation:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span>TILECLOUD_CHAIN ?= TRUE
+</pre></div>
+</div>
+</li>
+<li><p class="first">If you use local cache activate the capabilities generation with:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span>TILECLOUD_CHAIN_LOCAL ?= TRUE
+</pre></div>
+</div>
+<p>and set the <code class="docutils literal"><span class="pre">wmtscapabilities_file</span></code> to <code class="docutils literal"><span class="pre">${wmtscapabilities_path}</span></code> in your
+<code class="docutils literal"><span class="pre">tilegeneration/config.yaml.mako</span></code> file.</p>
+</li>
+<li><p class="first">In your <code class="docutils literal"><span class="pre">&lt;prod&gt;.mk</span></code> you can also set the capabilities file name with:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">WMTSCAPABILITIES_PATH</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">.</span><span class="mi">0</span><span class="o">/</span><span class="n">WMTSCapabilities</span><span class="o">.</span><span class="n">xml</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Add configuration to Git:</p>
+<pre class="highlight"><span class="prompt1">git add tilegeneration</span>
+</pre></li>
+</ul>
+</div>
+<div class="section" id="configuration">
+<h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h3>
+<p>The configuration is done in the self-documented file
+<code class="docutils literal"><span class="pre">tilegeneration/config.yaml</span></code>. The original file is available at:
+<a class="reference external" href="https://github.com/sbrunner/tilecloud-chain/blob/master/tilecloud_chain/scaffolds/create/tilegeneration/config.yaml.in_tmpl">https://github.com/sbrunner/tilecloud-chain/blob/master/tilecloud_chain/scaffolds/create/tilegeneration/config.yaml.in_tmpl</a></p>
+<p>The main thing to do is to:</p>
+<ul>
+<li><p class="first">Set the resolutions we want to generate in the <code class="docutils literal"><span class="pre">grids</span></code>.
+If we want to generate different resolution per layers we should create
+deferent grid.
+Sub-level of <code class="docutils literal"><span class="pre">grids</span></code> is the grid name.</p>
+</li>
+<li><p class="first">Configure the <code class="docutils literal"><span class="pre">caches</span></code> and set the <code class="docutils literal"><span class="pre">generation</span></code>/<code class="docutils literal"><span class="pre">default_cache</span></code>.
+Sub-level of <code class="docutils literal"><span class="pre">caches</span></code> is the cache name.</p>
+</li>
+<li><p class="first">Configure the <code class="docutils literal"><span class="pre">layer_default</span></code>, the <code class="docutils literal"><span class="pre">layers</span></code>, and the
+<code class="docutils literal"><span class="pre">generation</span></code>/<code class="docutils literal"><span class="pre">default_layers</span></code>.
+Sub-level of <code class="docutils literal"><span class="pre">layers</span></code> is the layer name.</p>
+</li>
+<li><p class="first">We can drop the empty tiles with an hash comparison,
+tilecloud-chain has a tool to help us:</p>
+<pre class="highlight"><span class="prompt1">.build/venv/bin/generate_tiles --get-hash &lt;max-zoom&gt;/0/0 --layer &lt;layer&gt;</span>
+</pre><p>We consider that the first tile of the max zoom is empty.
+Than copy past the result in the layer config.</p>
+</li>
+<li><p class="first">If you need it you can generate the WMTS capabilities file:</p>
+<pre class="highlight"><span class="prompt1">.build/venv/bin/generate_controller --generate_wmts_capabilities</span>
+</pre></li>
+<li><p class="first">And an OpenLayers test page:</p>
+<pre class="highlight"><span class="prompt1">.build/venv/bin/generate_controller --openlayers-test</span>
+</pre></li>
+</ul>
+<p>If you generate the tiles locally you do not need all the configuration
+variables, because many of them in the <code class="docutils literal"><span class="pre">generation</span></code> part are for
+AWS generation.</p>
+</div>
+<div class="section" id="tile-generation-and-management">
+<h3>Tile Generation and management<a class="headerlink" href="#tile-generation-and-management" title="Permalink to this headline">¶</a></h3>
+<p>This package offers two commands lines, one to generate the tiles locally,
+see help:</p>
+<pre class="highlight"><span class="prompt1">.build/venv/bin/generate_tiles --help</span>
+</pre><p>one to generate the tiles using AWS, see help:</p>
+<pre class="highlight"><span class="prompt1">.build/venv/bin/generate_controller --help</span>
+</pre><p>Before start a tile generation on S3 measure the cost:</p>
+<pre class="highlight"><span class="prompt1">.build/venv/bin/generate_controller --cost</span>
+</pre><p>If you setup all the default options you can generate the tiles by
+using the command:</p>
+<pre class="highlight"><span class="prompt1">.build/venv/bin/generate_tiles</span>
+</pre><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Make sure you export AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY:</p>
+<pre class="highlight"><span class="prompt1"><span class="nb">export</span> <span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">=</span>XXXXX</span>
+<span class="prompt1"><span class="nb">export</span> <span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">=</span>YYYY</span>
+</pre><p class="last">If you forget it you will get an explicit message.</p>
+</div>
+</div>
+<div class="section" id="integration-in-c2cgeoportal">
+<h3>Integration in c2cgeoportal<a class="headerlink" href="#integration-in-c2cgeoportal" title="Permalink to this headline">¶</a></h3>
+<p>In the <code class="docutils literal"><span class="pre">viewer.js</span></code>, <code class="docutils literal"><span class="pre">api/viewer.js</span></code> and <code class="docutils literal"><span class="pre">edit.js</span></code>:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Be sure that <code class="docutils literal"><span class="pre">OpenLayers.IMAGE_RELOAD_ATTEMPTS</span></code> is not defined.</li>
+<li>In <code class="docutils literal"><span class="pre">WMTS_OPTION</span></code> url should be ${tiles_url}.</li>
+</ul>
+</div></blockquote>
+<p>In the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> define <code class="docutils literal"><span class="pre">tiles_url</span></code> to something like, for S3 usage:</p>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">tiles_url</span><span class="p">:</span>
+<span class="o">-</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">a</span><span class="o">.</span><span class="n">tiles</span><span class="o">.</span><span class="p">{</span><span class="n">host</span><span class="p">}</span><span class="o">/</span>
+<span class="o">-</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">b</span><span class="o">.</span><span class="n">tiles</span><span class="o">.</span><span class="p">{</span><span class="n">host</span><span class="p">}</span><span class="o">/</span>
+<span class="o">-</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">c</span><span class="o">.</span><span class="n">tiles</span><span class="o">.</span><span class="p">{</span><span class="n">host</span><span class="p">}</span><span class="o">/</span>
+<span class="o">-</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">d</span><span class="o">.</span><span class="n">tiles</span><span class="o">.</span><span class="p">{</span><span class="n">host</span><span class="p">}</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>The configuration of the <code class="docutils literal"><span class="pre">tiles</span></code> vhost will be done by the sysadmins.</p>
+<p>To get your tiles URL in the <code class="docutils literal"><span class="pre">viewer.js</span></code> do:</p>
+<div class="code javascript highlight-default"><div class="highlight"><pre><span></span>&lt;%
+from json import dumps
+%&gt;
+var WMTS_OPTIONS = {
+    url: ${dumps(request.registry.settings[&#39;tiles_url&#39;]) | n},
+    ...
+}
+</pre></div>
+</div>
+<p>And in the <code class="docutils literal"><span class="pre">mobile/config.js</span></code> do:</p>
+<div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="n">dummy</span> <span class="o">=</span> <span class="s2">&quot;&lt;</span><span class="si">% f</span><span class="s2">rom json import dumps %&gt;&quot;</span><span class="p">;</span>
+<span class="n">jsonFormat</span> <span class="o">=</span> <span class="n">new</span> <span class="n">OpenLayers</span><span class="o">.</span><span class="n">Format</span><span class="o">.</span><span class="n">JSON</span><span class="p">();</span>
+<span class="k">try</span> <span class="p">{</span>
+    <span class="n">App</span><span class="o">.</span><span class="n">tilesURL</span> <span class="o">=</span> <span class="n">jsonFormat</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;${dumps(request.registry.settings[&quot;tiles_url&quot;]) | n}&#39;</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="n">catch</span> <span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">App</span><span class="o">.</span><span class="n">tilesURL</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="n">var</span> <span class="n">WMTS_OPTIONS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">url</span><span class="p">:</span> <span class="n">App</span><span class="o">.</span><span class="n">tilesURL</span><span class="p">,</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="switchablewmts">
+<h2>SwitchableWMTS<a class="headerlink" href="#switchablewmts" title="Permalink to this headline">¶</a></h2>
+<p>Useful tool to switch from TileCloud to MapCache.</p>
+<p>See: <a class="reference external" href="https://github.com/camptocamp/cgxp/blob/master/openlayers.addins/SwitchableWMTS/lib/OpenLayers/Layer/SwitchableWMTS.js">https://github.com/camptocamp/cgxp/blob/master/openlayers.addins/SwitchableWMTS/lib/OpenLayers/Layer/SwitchableWMTS.js</a></p>
+</div>
+<div class="section" id="internal-service">
+<h2>Internal service<a class="headerlink" href="#internal-service" title="Permalink to this headline">¶</a></h2>
+<p>If you use an internal service to access to the tiles you can use sub domaine
+to access to them by using that in <code class="docutils literal"><span class="pre">WMTS_OPTION</span></code>:</p>
+<div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="n">url</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s1">&#39;${request.route_url(&#39;</span><span class="o">&lt;</span><span class="n">view</span><span class="o">&gt;</span><span class="s1">&#39;, subdomain=&#39;</span><span class="n">s1</span><span class="s1">&#39;)}&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;${request.route_url(&#39;</span><span class="o">&lt;</span><span class="n">view</span><span class="o">&gt;</span><span class="s1">&#39;, subdomain=&#39;</span><span class="n">s2</span><span class="s1">&#39;)}&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;${request.route_url(&#39;</span><span class="o">&lt;</span><span class="n">view</span><span class="o">&gt;</span><span class="s1">&#39;, subdomain=&#39;</span><span class="n">s3</span><span class="s1">&#39;)}&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;${request.route_url(&#39;</span><span class="o">&lt;</span><span class="n">view</span><span class="o">&gt;</span><span class="s1">&#39;, subdomain=&#39;</span><span class="n">s4</span><span class="s1">&#39;)}&#39;</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>With <code class="docutils literal"><span class="pre">&lt;view&gt;</span></code> the name of the view that serve the tiles.
+The sub domain should obviously be define in the DNS and in the Apache
+vhost. If the application is served on deferent URL and you want to use
+the sub domain on only one of them you can define in the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code>
+the following:</p>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="c1"># The URL template used to generate the sub domain URL</span>
+<span class="c1"># %(sub)s will be replaced by the sub domain value.</span>
+<span class="n">subdomain_url_template</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//%</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span><span class="n">s</span><span class="o">.</span><span class="p">{</span><span class="n">host</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">TileGeneration</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#id1">MapCache</a></li>
+<li><a class="reference internal" href="#id2">TileCloud-chain</a><ul>
+<li><a class="reference internal" href="#initialization">Initialization</a></li>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
+<li><a class="reference internal" href="#tile-generation-and-management">Tile Generation and management</a></li>
+<li><a class="reference internal" href="#integration-in-c2cgeoportal">Integration in c2cgeoportal</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#switchablewmts">SwitchableWMTS</a></li>
+<li><a class="reference internal" href="#internal-service">Internal service</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+      <li>Previous: <a href="legacy_advanced.html" title="previous chapter">Advanced configuration examples</a></li>
+      <li>Next: <a href="customise.html" title="next chapter">Customise the application</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/integrator/tilegeneration.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2016, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/integrator/tilegeneration.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

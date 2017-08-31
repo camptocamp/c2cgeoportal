@@ -1,0 +1,224 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Extend the data model &#8212; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Caching" href="caching.html" />
+    <link rel="prev" title="Authentication" href="authentication.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="extend-the-data-model">
+<span id="integrator-extend-data-model"></span><h1>Extend the data model<a class="headerlink" href="#extend-the-data-model" title="Permalink to this headline">¶</a></h1>
+<p>The Data model can be extended in the file <code class="docutils literal"><span class="pre">&lt;package&gt;/models.py</span></code>
+and the corresponding admin interface configuration
+in the file <code class="docutils literal"><span class="pre">&lt;package&gt;/forms.py</span></code>.</p>
+<p>For example to add some user details, including a link to a
+new class named “Title”, add to <code class="docutils literal"><span class="pre">&lt;package&gt;/models.py</span></code>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Used to hide the original user in the admin interface</span>
+<span class="n">User</span><span class="o">.</span><span class="n">__acl__</span> <span class="o">=</span> <span class="p">[</span><span class="n">DENY_ALL</span><span class="p">]</span>
+
+<span class="k">class</span> <span class="nc">UserDetail</span><span class="p">(</span><span class="n">User</span><span class="p">):</span>
+    <span class="n">__label__</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;userdetail&#39;</span><span class="p">)</span>
+    <span class="n">__plural__</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;userdetails&#39;</span><span class="p">)</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;userdetail&#39;</span>
+    <span class="n">__table_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;schema&#39;</span><span class="p">:</span> <span class="n">_schema</span><span class="p">}</span>
+    <span class="n">__acl__</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">(</span><span class="n">Allow</span><span class="p">,</span> <span class="n">Authenticated</span><span class="p">,</span> <span class="n">ALL_PERMISSIONS</span><span class="p">),</span>
+    <span class="p">]</span>
+    <span class="n">__mapper_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;polymorphic_identity&#39;</span><span class="p">:</span> <span class="s1">&#39;detailed&#39;</span><span class="p">}</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">_schema</span> <span class="o">+</span> <span class="s1">&#39;.user.id&#39;</span><span class="p">),</span>
+            <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">phone</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">Unicode</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;phone&#39;</span><span class="p">))</span>
+
+    <span class="c1"># title</span>
+    <span class="n">title_id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">_schema</span> <span class="o">+</span> <span class="s1">&#39;.title.id&#39;</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">,</span> <span class="n">backref</span><span class="o">=</span><span class="n">backref</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">functionalities</span><span class="o">=</span><span class="p">[],</span>
+                 <span class="n">phone</span><span class="o">=</span><span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">User</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">functionalities</span><span class="p">,</span> <span class="n">role</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">phone</span> <span class="o">=</span> <span class="n">phone</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span>
+
+<span class="k">class</span> <span class="nc">Title</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+    <span class="n">__label__</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">)</span>
+    <span class="n">__plural__</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;titles&#39;</span><span class="p">)</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;title&#39;</span>
+    <span class="n">__table_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;schema&#39;</span><span class="p">:</span> <span class="n">_schema</span><span class="p">}</span>
+    <span class="n">__acl__</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">(</span><span class="n">Allow</span><span class="p">,</span> <span class="n">Authenticated</span><span class="p">,</span> <span class="n">ALL_PERMISSIONS</span><span class="p">),</span>
+    <span class="p">]</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">Unicode</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;Name&#39;</span><span class="p">))</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">Unicode</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;Description&#39;</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">description</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span> <span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">or</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span>
+</pre></div>
+</div>
+<p>And in the file <code class="docutils literal"><span class="pre">&lt;package&gt;/forms.py</span></code>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Add a field set (form) for the title</span>
+<span class="n">Title</span> <span class="o">=</span> <span class="n">FieldSet</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Title</span><span class="p">)</span>
+
+<span class="c1"># Add a field set for the user details</span>
+<span class="n">UserDetail</span> <span class="o">=</span> <span class="n">FieldSet</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">UserDetail</span><span class="p">)</span>
+<span class="c1"># Need to hide the password</span>
+<span class="n">password</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">DblPasswordField</span><span class="p">(</span><span class="n">UserDetail</span><span class="p">,</span> <span class="n">UserDetail</span><span class="o">.</span><span class="n">_password</span><span class="p">)</span>
+<span class="n">UserDetail</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">password</span><span class="p">)</span>
+<span class="c1"># Fix the fields order</span>
+<span class="n">fieldOrder</span> <span class="o">=</span> <span class="p">[</span><span class="n">UserDetail</span><span class="o">.</span><span class="n">username</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">unique_validator</span><span class="p">)</span>
+                               <span class="o">.</span><span class="n">with_metadata</span><span class="p">(</span><span class="n">mandatory</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">),</span>
+              <span class="n">password</span><span class="p">,</span> <span class="n">UserDetail</span><span class="o">.</span><span class="n">role</span><span class="p">]</span>
+<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">UserDetail</span><span class="p">,</span> <span class="s1">&#39;parent_role&#39;</span><span class="p">):</span>
+    <span class="n">fieldOrder</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">UserDetail</span><span class="o">.</span><span class="n">parent_role</span><span class="p">)</span>
+<span class="n">fieldOrder</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">UserDetail</span><span class="o">.</span><span class="n">title</span><span class="p">,</span>
+        <span class="n">UserDetail</span><span class="o">.</span><span class="n">functionalities</span><span class="o">.</span>
+                <span class="nb">set</span><span class="p">(</span><span class="n">renderer</span><span class="o">=</span><span class="n">forms</span><span class="o">.</span><span class="n">FunctionalityCheckBoxTreeSet</span><span class="p">)])</span>
+<span class="n">UserDetail</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="n">fieldOrder</span><span class="p">)</span>
+
+<span class="c1"># Add a grid for the title</span>
+<span class="n">TitleGrid</span> <span class="o">=</span> <span class="n">Grid</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Title</span><span class="p">)</span>
+
+<span class="c1"># Add a grid for the  user details</span>
+<span class="n">UserGrid</span> <span class="o">=</span> <span class="n">Grid</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">UserDetail</span><span class="p">)</span>
+<span class="c1"># Visible fields</span>
+<span class="n">fieldOrder</span> <span class="o">=</span> <span class="p">[</span><span class="n">UserDetail</span><span class="o">.</span><span class="n">username</span><span class="p">,</span>
+              <span class="n">UserDetail</span><span class="o">.</span><span class="n">title</span><span class="p">,</span>
+              <span class="n">UserDetail</span><span class="o">.</span><span class="n">functionalities</span><span class="p">,</span>
+              <span class="n">UserDetail</span><span class="o">.</span><span class="n">role</span><span class="p">]</span>
+<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">UserGrid</span><span class="p">,</span> <span class="s1">&#39;parent_role&#39;</span><span class="p">):</span>
+    <span class="n">fieldOrder</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">UserDetail</span><span class="o">.</span><span class="n">parent_role</span><span class="p">)</span>
+<span class="n">UserGrid</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="n">fieldOrder</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We can change the renderer of a field, for example change the
+Role renderer:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Role</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">renderer</span><span class="o">=</span><span class="n">AnOtherRenderer</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>And if we need an other resource (javascript or stylesheet):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fa.jquery</span> <span class="k">import</span> <span class="n">fanstatic_resources</span>
+<span class="kn">from</span> <span class="nn">fanstatic</span> <span class="k">import</span> <span class="n">Resource</span><span class="p">,</span> <span class="n">Group</span><span class="p">,</span> <span class="n">Library</span>
+<span class="kn">from</span> <span class="nn">pyramid_formalchemy</span> <span class="k">import</span> <span class="n">events</span> <span class="k">as</span> <span class="n">fa_events</span>
+
+<span class="n">fanstatic_lib</span> <span class="o">=</span> <span class="n">Library</span><span class="p">(</span><span class="s1">&#39;&lt;package&gt;_admin&#39;</span><span class="p">,</span> <span class="s1">&#39;static&#39;</span><span class="p">)</span>
+<span class="n">new_js</span> <span class="o">=</span> <span class="n">Resource</span><span class="p">(</span><span class="n">fanstatic_lib</span><span class="p">,</span> <span class="s1">&#39;&lt;path_to_javascript.js&gt;&#39;</span><span class="p">,</span>
+    <span class="n">depends</span><span class="o">=</span><span class="p">[</span><span class="n">fanstatic_resources</span><span class="o">.&lt;</span><span class="n">depends_on</span><span class="o">&gt;</span><span class="p">])</span>
+<span class="n">new_css</span> <span class="o">=</span> <span class="n">Resource</span><span class="p">(</span><span class="n">fanstatic_lib</span><span class="p">,</span> <span class="s1">&#39;&lt;path_to_stylesheet.css&gt;&#39;</span><span class="p">)</span>
+
+<span class="nd">@fa_events</span><span class="o">.</span><span class="n">subscriber</span><span class="p">([</span><span class="n">models</span><span class="o">.</span><span class="n">Role</span><span class="p">,</span> <span class="n">fa_events</span><span class="o">.</span><span class="n">IBeforeRenderEvent</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">before_render_role</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+    <span class="n">Group</span><span class="p">([</span><span class="n">new_js</span><span class="p">,</span> <span class="n">new_css</span><span class="p">])</span><span class="o">.</span><span class="n">need</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>And in the <code class="docutils literal"><span class="pre">setup.py</span></code> we need to add in the <code class="docutils literal"><span class="pre">entry_points</span></code>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s1">&#39;fanstatic.libraries&#39;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s1">&#39;&lt;package&gt;_admin = &lt;package&gt;.forms:fanstatic_lib&#39;</span><span class="p">,</span>
+<span class="p">],</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+      <li>Previous: <a href="authentication.html" title="previous chapter">Authentication</a></li>
+      <li>Next: <a href="caching.html" title="next chapter">Caching</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/integrator/extend_data_model.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2016, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/integrator/extend_data_model.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

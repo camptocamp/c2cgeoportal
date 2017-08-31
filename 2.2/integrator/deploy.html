@@ -1,0 +1,304 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Infrastructure and Deployment &#8212; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="URL login" href="urllogin.html" />
+    <link rel="prev" title="Automated check" href="checker.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="infrastructure-and-deployment">
+<span id="integrator-deploy"></span><h1>Infrastructure and Deployment<a class="headerlink" href="#infrastructure-and-deployment" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="infrastructure">
+<h2>Infrastructure<a class="headerlink" href="#infrastructure" title="Permalink to this headline">¶</a></h2>
+<p>There are three kinds of environments available for GeoMapFish applications
+in Camptocamp’s infrastructure:</p>
+<ul class="simple">
+<li>A user environment for the personal tests and development.</li>
+<li>A shared environment where more than one user should be able to build
+the application.</li>
+<li>A production environment.</li>
+</ul>
+<div class="section" id="user-environment">
+<h3>User environment<a class="headerlink" href="#user-environment" title="Permalink to this headline">¶</a></h3>
+<p>Located in the home directory of a user, who is the only one that may access it.</p>
+</div>
+<div class="section" id="shared-environement">
+<h3>Shared environement<a class="headerlink" href="#shared-environement" title="Permalink to this headline">¶</a></h3>
+<p>Located in <code class="docutils literal"><span class="pre">/var/www/vhost/&lt;project_vhost&gt;/private/&lt;project&gt;</span></code>.</p>
+<p>Only user <code class="docutils literal"><span class="pre">sigdev</span></code> may access this environment.  Developers must then prefix
+all the commands on this environment by <code class="docutils literal"><span class="pre">sudo</span> <span class="pre">-u</span> <span class="pre">sigdev</span></code>.</p>
+<p>To be able to access to GitHub you should use the https protocol.</p>
+<p>For instance to update the application:</p>
+<pre class="highlight"><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">sudo -u sigdev make -f demo.mk update</span>
+<span class="prompt1">sudo -u sigdev make -f demo.mk build</span>
+</pre><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you need to access to GitHub by using the ssh protocol you
+should add the sigdev key located in <code class="docutils literal"><span class="pre">/var/sig/.ssh/id_rsa.pub</span></code>
+as a deploy key of your project (GitHub repo &gt; settings &gt; Deploy keys).</p>
+</div>
+</div>
+<div class="section" id="production-environment">
+<h3>Production environment<a class="headerlink" href="#production-environment" title="Permalink to this headline">¶</a></h3>
+<p>To deploy the application to the production environment,
+one must use the <code class="docutils literal"><span class="pre">deploy</span></code> tool from a clean shared environment.</p>
+<p>See below.</p>
+</div>
+</div>
+<div class="section" id="deployment">
+<h2>Deployment<a class="headerlink" href="#deployment" title="Permalink to this headline">¶</a></h2>
+<p>When we deploy an application we:</p>
+<ul class="simple">
+<li>Deploy the application code (copy, and specific build).</li>
+<li>Copy the geodata files usually in /var/sig/…</li>
+<li>Copy the database.</li>
+<li>Add the Apache configuration</li>
+</ul>
+<p>Copying the database may be critical since it may result in losing data.
+For instance if the target database contains user-edited data such as:</p>
+<ol class="arabic simple">
+<li>features modified in the editing interface,</li>
+<li>shortened URLs,</li>
+<li>new passwords.</li>
+</ol>
+<div class="section" id="preserving-user-created-data">
+<h3>Preserving user-created data<a class="headerlink" href="#preserving-user-created-data" title="Permalink to this headline">¶</a></h3>
+<p>To prevent data modified by the users (such as editable layers features or
+short permalinks) from being lost when redeploying the DataBase, such data
+must be saved in dedicated schemas that will not be replaced.</p>
+<p>For that we should have 4 different schemas:</p>
+<ul class="simple">
+<li>one for the application data that should be deployed (<code class="docutils literal"><span class="pre">&lt;schema&gt;</span></code>),</li>
+<li>one for the application data that should not be deployed (<code class="docutils literal"><span class="pre">&lt;schema&gt;_static</span></code>),</li>
+<li>one for the readonly geodata that should be deployed,</li>
+<li>one for the editable geodata that should not be deployed.</li>
+</ul>
+<p>We should configure the deploy tool to deploy only the
+wanted schema, by setting the following configuration in the
+<code class="docutils literal"><span class="pre">[databases]</span></code> section of the <code class="docutils literal"><span class="pre">deploy/deploy.cfg.mako</span></code> file:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>names = ${db}.${schema},${db}.&lt;readonly_geodata_schema&gt;
+use_schema = true
+</pre></div>
+</div>
+</div>
+<div class="section" id="shortened-urls">
+<h3>Shortened URLs<a class="headerlink" href="#shortened-urls" title="Permalink to this headline">¶</a></h3>
+<p>We put the short URL table in a separate schema postfixed with <code class="docutils literal"><span class="pre">_static</span></code>
+then the deploy configuration set in the previous point also fix this case.</p>
+</div>
+<div class="section" id="administration-interface">
+<h3>Administration interface<a class="headerlink" href="#administration-interface" title="Permalink to this headline">¶</a></h3>
+<p>All configurations done in the administration interface of the development
+host are deployed to the production host as well. As a result it is not
+necessary (and not recommended) to make changes in the production
+administration interface.</p>
+<div class="section" id="deploy-configuration">
+<h4>Deploy configuration<a class="headerlink" href="#deploy-configuration" title="Permalink to this headline">¶</a></h4>
+<p>The first time you want do deploy an application the configuration
+should be set up in file <code class="docutils literal"><span class="pre">deploy/deploy.cfg[.mako]</span></code>.</p>
+<p>The deploy tool has four parts:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">[files]</span></code> to deploy the GeoTIFF, ShapeFiles and so on.</li>
+<li><code class="docutils literal"><span class="pre">[databases]</span></code> to deploy the database.</li>
+<li><code class="docutils literal"><span class="pre">[code]</span></code> to deploy the application.</li>
+<li><code class="docutils literal"><span class="pre">[apache]</span></code> to build the apache config.</li>
+</ul>
+<p>An other important section is the <code class="docutils literal"><span class="pre">[remote_hosts]</span></code> where we
+configure the demo and production hosts.</p>
+<p>All the configuration option can be found in <code class="docutils literal"><span class="pre">/etc/deploy/deploy.cfg</span></code>.</p>
+<p>Get help with the command line <code class="docutils literal"><span class="pre">deploy</span> <span class="pre">--help</span></code>.</p>
+</div>
+<div class="section" id="make-configuration">
+<h4>Make configuration<a class="headerlink" href="#make-configuration" title="Permalink to this headline">¶</a></h4>
+<p>To use specific parameter values on the <code class="docutils literal"><span class="pre">&lt;target&gt;</span></code> server (for instance for
+<code class="docutils literal"><span class="pre">host</span></code>), create dedicated <code class="docutils literal"><span class="pre">&lt;target&gt;.mk</span></code> files that will contain
+those values. The deploy tool will then automatically detect those files and
+use them when running the make command on the <code class="docutils literal"><span class="pre">&lt;target&gt;</span></code> server.</p>
+<p>For instance a makefile for the <code class="docutils literal"><span class="pre">prod</span></code> server would be
+named <code class="docutils literal"><span class="pre">prod.mk</span></code> and look like:</p>
+<pre class="code make literal-block">
+<span class="name variable">INSTANCE_ID</span> <span class="operator">=</span> main
+<span class="name variable">VARS_FILE</span> <span class="operator">=</span> vars_main.yaml
+
+<span class="comment preproc">include &lt;project&gt;.mk
+</span>
+</pre>
+<p>If you have more than one instance on a domain name you can define
+<code class="docutils literal"><span class="pre">apache_entry_point</span></code> with something like <code class="docutils literal"><span class="pre">/a_name/</span></code>. The trailing <code class="docutils literal"><span class="pre">/</span></code>
+is required in the <code class="docutils literal"><span class="pre">apache_entry_point</span></code> but not in the URL, than
+<cite>http://host/a_name</cite> will work.</p>
+</div>
+<div class="section" id="prepare-destination-host">
+<h4>Prepare destination host<a class="headerlink" href="#prepare-destination-host" title="Permalink to this headline">¶</a></h4>
+<p>On the destination host we just need that the schema postfixed with
+<code class="docutils literal"><span class="pre">_static</span></code> already exists.</p>
+</div>
+<div class="section" id="do-the-deploy">
+<h4>Do the deploy<a class="headerlink" href="#do-the-deploy" title="Permalink to this headline">¶</a></h4>
+<p>First of all be sure that the application on the source server work well!</p>
+<p>Connect to your server using your SSH agent:</p>
+<pre class="highlight"><span class="prompt1">ssh -A &lt;dev_server&gt;</span>
+</pre><p>Go into your project directory:</p>
+<pre class="highlight"><span class="prompt1"><span class="nb">cd</span> /var/www/vhost/&lt;project_vhost&gt;/private/&lt;project&gt;</span>
+</pre><p>Deploy your project:</p>
+<pre class="highlight"><span class="prompt1">.build/venv/bin/c2ctool deploy &lt;host&gt;</span>
+</pre><p>Where <code class="docutils literal"><span class="pre">&lt;host&gt;</span></code> is your destination host that you configured in the
+<code class="docutils literal"><span class="pre">deploy/deploy.cfg</span></code> file, e.g. <code class="docutils literal"><span class="pre">demo</span></code>, <code class="docutils literal"><span class="pre">prod</span></code>.</p>
+</div>
+<div class="section" id="to-deploy-from-dev-to-demo-advanced-version">
+<h4>To deploy from dev to demo (advanced version)<a class="headerlink" href="#to-deploy-from-dev-to-demo-advanced-version" title="Permalink to this headline">¶</a></h4>
+<p>Build on the dev server:</p>
+<pre class="highlight"><span class="prompt1">ssh -A &lt;dev_server&gt; <span class="c1"># SSH agent forward is needed</span></span>
+<span class="prompt1"><span class="nb">cd</span> /var/www/vhost/&lt;project_vhost&gt;/private/&lt;project&gt;</span>
+<span class="prompt1">git pull origin master <span class="c1"># update the code</span></span>
+<span class="prompt1">make -f main.mk build <span class="c1"># configure c2cgeoportal</span></span>
+</pre><p><strong>Test on the dev server</strong></p>
+<p>Deploy to the demo server:</p>
+<pre class="highlight"><span class="prompt1"><span class="nb">cd</span> deploy</span>
+<span class="prompt1">sudo -u deploy deploy -r deploy.cfg demo</span>
+</pre><p><strong>Test on the demo server</strong></p>
+</div>
+<div class="section" id="to-deploy-from-demo-to-prod-advanced-version">
+<h4>To deploy from demo to prod (advanced version)<a class="headerlink" href="#to-deploy-from-demo-to-prod-advanced-version" title="Permalink to this headline">¶</a></h4>
+<p><strong>Test on the demo server</strong></p>
+<p>Deploy on the prod server:</p>
+<pre class="highlight"><span class="prompt1">ssh -A &lt;demo_server&gt; <span class="c1"># SSH agent forward is needed</span></span>
+<span class="prompt1"><span class="nb">cd</span> /var/www/vhost/&lt;project_vhost&gt;/private/&lt;project&gt;</span>
+<span class="prompt1"><span class="nb">cd</span> deploy</span>
+<span class="prompt1">sudo -u deploy deploy -r deploy.cfg prod</span>
+</pre><p><strong>Test on the prod server</strong></p>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Infrastructure and Deployment</a><ul>
+<li><a class="reference internal" href="#infrastructure">Infrastructure</a><ul>
+<li><a class="reference internal" href="#user-environment">User environment</a></li>
+<li><a class="reference internal" href="#shared-environement">Shared environement</a></li>
+<li><a class="reference internal" href="#production-environment">Production environment</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#deployment">Deployment</a><ul>
+<li><a class="reference internal" href="#preserving-user-created-data">Preserving user-created data</a></li>
+<li><a class="reference internal" href="#shortened-urls">Shortened URLs</a></li>
+<li><a class="reference internal" href="#administration-interface">Administration interface</a><ul>
+<li><a class="reference internal" href="#deploy-configuration">Deploy configuration</a></li>
+<li><a class="reference internal" href="#make-configuration">Make configuration</a></li>
+<li><a class="reference internal" href="#prepare-destination-host">Prepare destination host</a></li>
+<li><a class="reference internal" href="#do-the-deploy">Do the deploy</a></li>
+<li><a class="reference internal" href="#to-deploy-from-dev-to-demo-advanced-version">To deploy from dev to demo (advanced version)</a></li>
+<li><a class="reference internal" href="#to-deploy-from-demo-to-prod-advanced-version">To deploy from demo to prod (advanced version)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+      <li>Previous: <a href="checker.html" title="previous chapter">Automated check</a></li>
+      <li>Next: <a href="urllogin.html" title="next chapter">URL login</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/integrator/deploy.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2016, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/integrator/deploy.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
