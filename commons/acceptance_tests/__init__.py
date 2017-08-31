@@ -1,0 +1,1 @@
+from c2cgeoportal_commons.tests import *

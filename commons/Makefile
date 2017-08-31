@@ -12,7 +12,7 @@ test: ${BUILD_DIR}/requirements.timestamp
 	# regenerate the database schema
 	#${VENV}/bin/initialize_db_main tests.ini#test_app --force=1
 	#Run your project's tests.
-	${VENV}/bin/pytest
+	${VENV}/bin/pytest acceptance_tests
 
 ${BUILD_DIR}/requirements.timestamp: ${BUILD_DIR}/venv.timestamp setup.py
 	#Install the project in editable mode with its testing requirements.
