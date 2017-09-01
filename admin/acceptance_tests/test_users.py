@@ -32,6 +32,17 @@ class TestUser():
         assert info.status_int == 500, '500 status when db error'
 
     @pytest.mark.usefixtures("app")
-    def test_view_rendering(self, dbsession, app):
+    def test_view_rendering_in_app(self, dbsession, app):
+        res = app.get('/user/1/', status=200)
+        assert "['users len is: 1', <br/>, 'first is: babar', <br/>, 'projetc is: c2cgeoportal_admin', <br/>]" == str(res.html.contents), 'what a beautifull soup !'
+
+    @pytest.mark.usefixtures("app")
+    def test_commit_in_app(self, dbsession, app):
+        res = app.get('/test/', status=200)
+        res = app.get('/user/1/', status=200)
+        assert "['users len is: 2', <br/>, 'first is: babar', <br/>, 'projetc is: c2cgeoportal_admin', <br/>]" == str(res.html.contents), 'what a beautifull soup !'
+
+    @pytest.mark.usefixtures("app")
+    def test_rollback_commit_in_app(self, dbsession, app):
         res = app.get('/user/1/', status=200)
         assert "['users len is: 1', <br/>, 'first is: babar', <br/>, 'projetc is: c2cgeoportal_admin', <br/>]" == str(res.html.contents), 'what a beautifull soup !'

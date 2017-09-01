@@ -26,9 +26,9 @@ def dbsession(request):
 @pytest.fixture(scope='function')
 @pytest.mark.usefixtures("dbsession")
 def transact(request, dbsession):
-    dbsession.begin_nested()
+    t = dbsession.begin_nested()
     yield
-    dbsession.rollback()
+    t.rollback()
 
 def raise_db_error(Table):
     raise DBAPIError('this is a test !', None, None)

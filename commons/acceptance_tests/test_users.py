@@ -2,13 +2,13 @@ import pytest
 
 @pytest.fixture(scope='class')
 @pytest.mark.usefixtures("dbsession")
-def insertUsersTestData(dbsession):
+def insertUsersTestData(request, dbsession):
     from c2cgeoportal_commons.models.main import User
     user = User("babar")
-    dbsession.begin_nested()
+    t= dbsession.begin_nested()
     dbsession.add(user)
     yield
-    dbsession.rollback()
+    t.rollback()
 
 @pytest.mark.usefixtures("insertUsersTestData", "transact")
 class TestUser():
@@ -37,5 +37,5 @@ class TestUser():
 
     def test_no_role(self, dbsession):
         from c2cgeoportal_commons.models.main import Role
-        users = dbsession.query(Role).all()
-        assert len(users) == 0, "querying for role"
+        roles = dbsession.query(Role).all()
+        assert len(roles) == 0, "querying for role"

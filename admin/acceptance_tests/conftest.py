@@ -29,7 +29,20 @@ def dbsession(request):
 @pytest.mark.usefixtures("dbsession")
 def app(request, dbsession):
     config.include('pyramid_jinja2')
+    config.add_route('test', 'test/')
     config.scan(package='c2cgeoportal_admin.views')
+    config.scan(package='acceptance_tests')
     from webtest import TestApp
     testapp = TestApp(config.make_wsgi_app())
     return testapp;
+
+from pyramid.view import view_config
+
+@view_config(route_name='test', renderer='./test.jinja2')
+def view_commiting_user(request):
+    from c2cgeoportal_commons.models.main import User
+    user = User("momo")
+    t = request.dbsession.begin_nested()
+    request.dbsession.add(user)
+    t.commit()
+    return {}
