@@ -46,7 +46,7 @@ log = logging.getLogger(__name__)
 cache_region = get_region()
 
 
-class Proxy:
+class Proxy(object):
 
     def __init__(self, request):
         self.request = request

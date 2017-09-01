@@ -142,7 +142,7 @@ class TinyOWSProxy(OGCProxy):
         if operation == "getcapabilities":
             content = filter_wfst_capabilities(
                 content, role_id,
-                self.default_ogc_server.url_wfs or self.default_ogc_server.url,
+                super(TinyOWSProxy, self)._get_wfs_url(),
                 self.settings.get("proxies"), self.request
             )
 

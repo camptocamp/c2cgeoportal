@@ -32,7 +32,6 @@ import logging
 
 from pyramid.view import view_config
 
-from c2cgeoportal.lib import get_url2
 from c2cgeoportal.lib.caching import get_region, NO_CACHE, PUBLIC_CACHE, PRIVATE_CACHE
 from c2cgeoportal.lib.functionality import get_mapserver_substitution_params
 from c2cgeoportal.lib.filter_capabilities import filter_capabilities
@@ -48,47 +47,6 @@ class MapservProxy(OGCProxy):
     def __init__(self, request):
         OGCProxy.__init__(self, request)
         self.user = self.request.user
-        self.external = bool(self.request.params.get("EXTERNAL"))
-
-        # params hold the parameters we"re going to send to MapServer
-        self.params = dict(self.request.params)
-
-        # reset possible value of role_id and user_id
-        if "role_id" in self.params:  # pragma: no cover
-            del self.params["role_id"]
-        if "user_id" in self.params:  # pragma: no cover
-            del self.params["user_id"]
-
-        self.lower_params = self._get_lower_params(self.params)
-        self.ogc_server = self.get_ogcserver_byname(self.params["ogcserver"]) \
-            if "ogcserver" in self.params else None
-
-    def _get_ogc_server(self):
-        return self.ogc_server or (
-            self.external_ogc_server if self.external else self.default_ogc_server
-        )
-
-    def _get_wms_url(self):
-        errors = set()
-        url = get_url2(
-            "The OGC server '{}'".format(self._get_ogc_server().name),
-            self._get_ogc_server().url, self.request, errors
-        )
-        if len(errors) > 0:  # pragma: no cover
-            log.error("\n".join(errors))
-        return url
-
-    def _get_wfs_url(self):
-        ogc_server = self._get_ogc_server()
-        errors = set()
-        url = get_url2(
-            "The OGC server (WFS) '{}'".format(self._get_ogc_server().name),
-            ogc_server.url_wfs or ogc_server.url,
-            self.request, errors
-        )
-        if len(errors) > 0:  # pragma: no cover
-            log.error("\n".join(errors))
-        return url
 
     @view_config(route_name="mapserverproxy")
     def proxy(self):
