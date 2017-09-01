@@ -29,7 +29,9 @@ class TestUser():
     def test_add(self, dbsession):
         from c2cgeoportal_commons.models.main import User
         user = User("momo")
+        dbsession.begin_nested()
         dbsession.add(user)
+        dbsession.commit()
         users = dbsession.query(User).all()
         assert len(users) == 2, "added a user"
         assert users[0].username == 'babar', "user from test data is babar"
