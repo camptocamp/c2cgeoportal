@@ -2,5 +2,5 @@
 -r CONST_fixversions.txt
 http-parser==0.8.3
 restkit==4.2.2
-Shapely==1.6.0
+Shapely==1.6.1
 Pygments==2.2.0
