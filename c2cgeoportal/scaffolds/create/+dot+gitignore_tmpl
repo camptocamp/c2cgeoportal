@@ -1,5 +1,7 @@
 *.pyc
 /ngeo
+/jsbuild/app.cfg
+/{{package}}/static/lib/cgxp/
 /node_modules
 /docker-compose.yml
 /alembic.ini
