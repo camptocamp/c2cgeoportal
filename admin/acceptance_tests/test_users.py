@@ -7,13 +7,10 @@ from pyramid.testing import DummyRequest
 def insertUsersTestData(dbsession):
     from c2cgeoportal_commons.models.main import User
     user = User("babar")
-    with transaction.manager:
-        dbsession.begin_nested()
-        dbsession.add(user)
+    dbsession.begin_nested()
+    dbsession.add(user)
     yield
-    with transaction.manager:
-        dbsession.rollback()
-
+    dbsession.rollback()
 
 @pytest.mark.usefixtures("insertUsersTestData", "transact")
 class TestUser():
