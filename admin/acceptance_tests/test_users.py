@@ -1,5 +1,4 @@
 import pytest
-import transaction
 from pyramid.testing import DummyRequest
 
 @pytest.fixture(scope='class')

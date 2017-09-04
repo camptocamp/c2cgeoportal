@@ -1,21 +1,21 @@
+import pytest
+from pyramid import testing
+
 from c2cgeoportal_commons.tests import dbsession, transact, raise_db_error_on_query
 
-import pytest
-import transaction
-from c2cgeoportal_commons.scripts.initializedb import init_db
-from c2cgeoportal_commons.models import get_engine, get_session_factory, get_tm_session, generate_mappers
-from pyramid.config import Configurator
-
-config = Configurator(settings={
-    'sqlalchemy.url': 'postgresql://www-data:www-data@localhost:5432/c2cgeoportal',
-    'schema': 'main',
-    'parent_schema': '',
-    'srid': 3857
-})
+@pytest.fixture(scope='session')
+def settings(request):
+    return {
+        'sqlalchemy.url': 'postgresql://www-data:www-data@localhost:5432/c2cgeoportal',
+        'schema': 'main',
+        'parent_schema': '',
+        'srid': 3857
+    }
 
 @pytest.fixture(scope='session')
 @pytest.mark.usefixtures("dbsession")
-def app(request, dbsession):
+def app(request, dbsession, settings):
+    config = testing.setUp(settings=settings)
     config.include('pyramid_jinja2')
     config.add_route('test', 'test/')
     config.include('c2cgeoportal_admin.routes')
