@@ -1,0 +1,18 @@
+#!/bin/bash
+
+docker login --username ${DOCKER_USERNAME} --password ${DOCKER_PASSWORD}
+
+for IMAGE in geomapfish-build-dev geomapfish-build
+do
+    if [ "${TRAVIS_TAG}" != "" ]
+    then
+        docker tag camptocamp/${IMAGE}:latest camptocamp/${IMAGE}:${TRAVIS_TAG}
+        docker push camptocamp/${IMAGE}:${TRAVIS_TAG}
+    elif [ "${TRAVIS_BRANCH}" != "master" ]
+    then
+        docker tag camptocamp/${IMAGE}:latest camptocamp/${IMAGE}:${TRAVIS_BRANCH}
+        docker push camptocamp/${IMAGE}:${TRAVIS_BRANCH}
+    else
+        docker push camptocamp/${IMAGE}:latest
+    fi
+done

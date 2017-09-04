@@ -55,7 +55,7 @@ def main():
         docker_cmd.extend(["--entrypoint", args[0]])
         args = args[1:]
 
-    docker_cmd.append("camptocamp/geomapfish_build_dev")
+    docker_cmd.append("camptocamp/geomapfish-build-dev")
     docker_cmd.extend(args)
     try:
         subprocess.check_call(docker_cmd)

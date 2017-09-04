@@ -1,4 +1,4 @@
-FROM camptocamp/geomapfish_build_dev:latest
+FROM camptocamp/geomapfish-build-dev:latest
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
 RUN \
@@ -79,13 +79,7 @@ RUN \
 
 COPY . /opt/c2cgeoportal
 
-RUN cd /opt/c2cgeoportal && \
-    if [ ! -e c2cgeoportal/scaffolds/update/CONST_create_template ]; \
-    then make transifex-get buildlocales; \
-    fi && \
-    chmod go+r -R . && \
-    rm -rf /build
-
-RUN pip install --disable-pip-version-check --no-cache-dir --no-deps --editable /opt/c2cgeoportal
+RUN chmod go+r -R /opt/c2cgeoportal && \
+  pip install --disable-pip-version-check --no-cache-dir --no-deps --editable /opt/c2cgeoportal
 
 WORKDIR /src
