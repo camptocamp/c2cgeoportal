@@ -3,7 +3,7 @@ from pyramid.view import view_config
 from sqlalchemy.exc import DBAPIError
 from c2cgeoportal_commons.models.main import User
 
-@view_config(route_name='user', renderer='../templates/users_test.jinja2')
+@view_config(route_name='user', renderer='../templates/users.jinja2')
 def user_view(request):
     try:
         users = request.dbsession.query(User).all();
