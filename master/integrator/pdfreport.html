@@ -53,55 +53,55 @@ and <a class="reference external" href="http://community.jaspersoft.com/project/
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
 <p>The service is configured in the main <code class="docutils literal"><span class="pre">vars_&lt;package&gt;.yaml</span></code> file of the project
 as in the following example:</p>
-<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">vars</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">...</span>
-    <span class="l l-Scalar l-Scalar-Plain">pdfreport</span><span class="p p-Indicator">:</span>
-        <span class="l l-Scalar l-Scalar-Plain">layer-defaults</span><span class="p p-Indicator">:</span> <span class="nl">&amp;pdfreport-layer-default</span>
-            <span class="l l-Scalar l-Scalar-Plain">check_credentials</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">True</span>
-            <span class="l l-Scalar l-Scalar-Plain">srs</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">EPSG:21781</span>
-            <span class="l l-Scalar l-Scalar-Plain">map</span><span class="p p-Indicator">:</span>
-                <span class="l l-Scalar l-Scalar-Plain">backgroundlayers</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">[</span><span class="nv">grp_ly_tilegenerierung_landeskarte</span><span class="p p-Indicator">]</span>
-                <span class="l l-Scalar l-Scalar-Plain">imageformat</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">image/png</span>
-        <span class="l l-Scalar l-Scalar-Plain">map-defaults</span><span class="p p-Indicator">:</span> <span class="nl">&amp;pdfreport-map-default</span>
-            <span class="l l-Scalar l-Scalar-Plain">backgroundlayers</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">[]</span>
-            <span class="l l-Scalar l-Scalar-Plain">imageformat</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">image/png</span>
-            <span class="l l-Scalar l-Scalar-Plain">zoomType</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">extent</span>
-            <span class="l l-Scalar l-Scalar-Plain">minScale</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">1000</span>
-            <span class="l l-Scalar l-Scalar-Plain">style</span><span class="p p-Indicator">:</span>
-                <span class="l l-Scalar l-Scalar-Plain">fillColor</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">red</span>
-                <span class="l l-Scalar l-Scalar-Plain">fillOpacity</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">0.2</span>
-                <span class="l l-Scalar l-Scalar-Plain">symbolizers</span><span class="p p-Indicator">:</span>
-                <span class="p p-Indicator">-</span>   <span class="l l-Scalar l-Scalar-Plain">strokeColor</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">red</span>
-                    <span class="l l-Scalar l-Scalar-Plain">strokeWidth</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
-                    <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">point</span>
-                    <span class="l l-Scalar l-Scalar-Plain">pointRadius</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
-        <span class="l l-Scalar l-Scalar-Plain">layers</span><span class="p p-Indicator">:</span>
-            <span class="l l-Scalar l-Scalar-Plain">ly_a020_belastete_standorte_point</span><span class="p p-Indicator">:</span>
-                <span class="l l-Scalar l-Scalar-Plain">&lt;&lt;</span><span class="p p-Indicator">:</span> <span class="nv">*pdfreport-layer-default</span>
-                <span class="l l-Scalar l-Scalar-Plain">map</span><span class="p p-Indicator">:</span>
-                    <span class="l l-Scalar l-Scalar-Plain">&lt;&lt;</span><span class="p p-Indicator">:</span> <span class="nv">*pdfreport-map-default</span>
-                    <span class="l l-Scalar l-Scalar-Plain">backgroundlayers</span><span class="p p-Indicator">:</span>
-                        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">grp_ly_tilegenerierung_landeskarte</span>
-                        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ly_a020_belastete_standorte_point</span>
-                    <span class="l l-Scalar l-Scalar-Plain">imageformat</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">image/jpeg</span>
-            <span class="l l-Scalar l-Scalar-Plain">some_template_with_no_map</span><span class="p p-Indicator">:</span>
-                <span class="l l-Scalar l-Scalar-Plain">&lt;&lt;</span><span class="p p-Indicator">:</span> <span class="nv">*pdfreport-layer-default</span>
-                <span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
-                    <span class="l l-Scalar l-Scalar-Plain">layout</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">some_template_name</span>
-                    <span class="l l-Scalar l-Scalar-Plain">outputFormat</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">pdf</span>
-                    <span class="l l-Scalar l-Scalar-Plain">attributes</span><span class="p p-Indicator">:</span>
-                        <span class="l l-Scalar l-Scalar-Plain">paramID</span><span class="p p-Indicator">:</span> <span class="s">&quot;%(id)s&quot;</span>
-            <span class="l l-Scalar l-Scalar-Plain">some_template_with_multi_map</span><span class="p p-Indicator">:</span>
-                <span class="l l-Scalar l-Scalar-Plain">&lt;&lt;</span><span class="p p-Indicator">:</span> <span class="nv">*pdfreport-layer-default</span>
-                <span class="l l-Scalar l-Scalar-Plain">maps</span><span class="p p-Indicator">:</span>
-                    <span class="p p-Indicator">-</span>   <span class="l l-Scalar l-Scalar-Plain">&lt;&lt;</span><span class="p p-Indicator">:</span> <span class="nv">*pdfreport-map-default</span>
-                        <span class="l l-Scalar l-Scalar-Plain">backgroundlayers</span><span class="p p-Indicator">:</span>
-                            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">grp_ly_tilegenerierung_landeskarte</span>
-                    <span class="p p-Indicator">-</span>   <span class="l l-Scalar l-Scalar-Plain">&lt;&lt;</span><span class="p p-Indicator">:</span> <span class="nv">*pdfreport-map-default</span>
-                        <span class="l l-Scalar l-Scalar-Plain">backgroundlayers</span><span class="p p-Indicator">:</span>
-                            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ly_a020_belastete_standorte_point</span>
-<span class="l l-Scalar l-Scalar-Plain">update_paths</span><span class="p p-Indicator">:</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">pdfreport</span>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
+    <span class="o">...</span>
+    <span class="n">pdfreport</span><span class="p">:</span>
+        <span class="n">layer</span><span class="o">-</span><span class="n">defaults</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">pdfreport</span><span class="o">-</span><span class="n">layer</span><span class="o">-</span><span class="n">default</span>
+            <span class="n">check_credentials</span><span class="p">:</span> <span class="kc">True</span>
+            <span class="n">srs</span><span class="p">:</span> <span class="n">EPSG</span><span class="p">:</span><span class="mi">21781</span>
+            <span class="nb">map</span><span class="p">:</span>
+                <span class="n">backgroundlayers</span><span class="p">:</span> <span class="p">[</span><span class="n">grp_ly_tilegenerierung_landeskarte</span><span class="p">]</span>
+                <span class="n">imageformat</span><span class="p">:</span> <span class="n">image</span><span class="o">/</span><span class="n">png</span>
+        <span class="nb">map</span><span class="o">-</span><span class="n">defaults</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">pdfreport</span><span class="o">-</span><span class="nb">map</span><span class="o">-</span><span class="n">default</span>
+            <span class="n">backgroundlayers</span><span class="p">:</span> <span class="p">[]</span>
+            <span class="n">imageformat</span><span class="p">:</span> <span class="n">image</span><span class="o">/</span><span class="n">png</span>
+            <span class="n">zoomType</span><span class="p">:</span> <span class="n">extent</span>
+            <span class="n">minScale</span><span class="p">:</span> <span class="mi">1000</span>
+            <span class="n">style</span><span class="p">:</span>
+                <span class="n">fillColor</span><span class="p">:</span> <span class="n">red</span>
+                <span class="n">fillOpacity</span><span class="p">:</span> <span class="mf">0.2</span>
+                <span class="n">symbolizers</span><span class="p">:</span>
+                <span class="o">-</span>   <span class="n">strokeColor</span><span class="p">:</span> <span class="n">red</span>
+                    <span class="n">strokeWidth</span><span class="p">:</span> <span class="mi">1</span>
+                    <span class="nb">type</span><span class="p">:</span> <span class="n">point</span>
+                    <span class="n">pointRadius</span><span class="p">:</span> <span class="mi">10</span>
+        <span class="n">layers</span><span class="p">:</span>
+            <span class="n">ly_a020_belastete_standorte_point</span><span class="p">:</span>
+                <span class="o">&lt;&lt;</span><span class="p">:</span> <span class="o">*</span><span class="n">pdfreport</span><span class="o">-</span><span class="n">layer</span><span class="o">-</span><span class="n">default</span>
+                <span class="nb">map</span><span class="p">:</span>
+                    <span class="o">&lt;&lt;</span><span class="p">:</span> <span class="o">*</span><span class="n">pdfreport</span><span class="o">-</span><span class="nb">map</span><span class="o">-</span><span class="n">default</span>
+                    <span class="n">backgroundlayers</span><span class="p">:</span>
+                        <span class="o">-</span> <span class="n">grp_ly_tilegenerierung_landeskarte</span>
+                        <span class="o">-</span> <span class="n">ly_a020_belastete_standorte_point</span>
+                    <span class="n">imageformat</span><span class="p">:</span> <span class="n">image</span><span class="o">/</span><span class="n">jpeg</span>
+            <span class="n">some_template_with_no_map</span><span class="p">:</span>
+                <span class="o">&lt;&lt;</span><span class="p">:</span> <span class="o">*</span><span class="n">pdfreport</span><span class="o">-</span><span class="n">layer</span><span class="o">-</span><span class="n">default</span>
+                <span class="n">spec</span><span class="p">:</span>
+                    <span class="n">layout</span><span class="p">:</span> <span class="n">some_template_name</span>
+                    <span class="n">outputFormat</span><span class="p">:</span> <span class="n">pdf</span>
+                    <span class="n">attributes</span><span class="p">:</span>
+                        <span class="n">ids</span><span class="p">:</span> <span class="o">%</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span><span class="n">s</span>
+            <span class="n">some_template_with_multi_map</span><span class="p">:</span>
+                <span class="o">&lt;&lt;</span><span class="p">:</span> <span class="o">*</span><span class="n">pdfreport</span><span class="o">-</span><span class="n">layer</span><span class="o">-</span><span class="n">default</span>
+                <span class="n">maps</span><span class="p">:</span>
+                    <span class="o">-</span>   <span class="o">&lt;&lt;</span><span class="p">:</span> <span class="o">*</span><span class="n">pdfreport</span><span class="o">-</span><span class="nb">map</span><span class="o">-</span><span class="n">default</span>
+                        <span class="n">backgroundlayers</span><span class="p">:</span>
+                            <span class="o">-</span> <span class="n">grp_ly_tilegenerierung_landeskarte</span>
+                    <span class="o">-</span>   <span class="o">&lt;&lt;</span><span class="p">:</span> <span class="o">*</span><span class="n">pdfreport</span><span class="o">-</span><span class="nb">map</span><span class="o">-</span><span class="n">default</span>
+                        <span class="n">backgroundlayers</span><span class="p">:</span>
+                            <span class="o">-</span> <span class="n">ly_a020_belastete_standorte_point</span>
+<span class="n">update_paths</span><span class="p">:</span>
+    <span class="o">-</span> <span class="n">pdfreport</span>
 </pre></div>
 </div>
 <p>with the following parameters:</p>
@@ -114,71 +114,45 @@ as in the following example:</p>
 <ul class="simple">
 <li><code class="docutils literal"><span class="pre">check_credentials</span></code>: boolean, wether layer credentials are checked before generating the report. Defaults to <code class="docutils literal"><span class="pre">True</span></code>.</li>
 <li><code class="docutils literal"><span class="pre">srs</span></code>: projection code (required when showing the map).</li>
-<li><code class="docutils literal"><span class="pre">backgroundlayers</span></code>: string containing a comma-separated list of WMS layers that should be displayed on the map. If the curent layer must also be displayed, it should be added to the list. Please note that layernames must be embedded in double-quotes (“). Defaults to <code class="docutils literal"><span class="pre">&quot;&quot;</span></code>.</li>
-<li><code class="docutils literal"><span class="pre">imageformat</span></code>: format of the generated map. Defaults to <code class="docutils literal"><span class="pre">image/png</span></code>.</li>
-<li><code class="docutils literal"><span class="pre">spec_template</span></code>: optional JSON template used to build the <code class="docutils literal"><span class="pre">spec</span></code> argument sent to the MapFish Print webapp.</li>
+<li><code class="docutils literal"><span class="pre">spec</span></code>: optional template used to build the <code class="docutils literal"><span class="pre">spec</span></code> argument sent to the MapFish Print webapp.</li>
+<li><code class="docutils literal"><span class="pre">map</span></code>: optional the map configuration.</li>
+<li><code class="docutils literal"><span class="pre">maps</span></code>: optional a list of maps configuration.</li>
 </ul>
-<p>If no <code class="docutils literal"><span class="pre">spec_template</span></code> is provided, the following template is used:</p>
-<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="nt">&quot;layout&quot;</span><span class="p">:</span> <span class="s2">&quot;%(layername)s&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;outputFormat&quot;</span><span class="p">:</span> <span class="s2">&quot;pdf&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;attributes&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="nt">&quot;paramID&quot;</span><span class="p">:</span> <span class="s2">&quot;%(id)s&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;map&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="nt">&quot;projection&quot;</span><span class="p">:</span> <span class="s2">&quot;%(srs)s&quot;</span><span class="p">,</span>
-            <span class="nt">&quot;dpi&quot;</span><span class="p">:</span> <span class="mi">254</span><span class="p">,</span>
-            <span class="nt">&quot;rotation&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-            <span class="nt">&quot;bbox&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1000000</span><span class="p">,</span> <span class="mi">1000000</span><span class="p">],</span>
-            <span class="nt">&quot;zoomToFeatures&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="nt">&quot;zoomType&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
-                <span class="nt">&quot;layer&quot;</span><span class="p">:</span> <span class="s2">&quot;vector&quot;</span><span class="p">,</span>
-                <span class="nt">&quot;minScale&quot;</span><span class="p">:</span> <span class="mi">25000</span>
-            <span class="p">},</span>
-            <span class="nt">&quot;layers&quot;</span><span class="p">:</span> <span class="p">[{</span>
-                <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;gml&quot;</span><span class="p">,</span>
-                <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;vector&quot;</span><span class="p">,</span>
-                <span class="nt">&quot;style&quot;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span>
-                    <span class="nt">&quot;[1 &gt; 0]&quot;</span><span class="p">:</span> <span class="p">{</span>
-                        <span class="nt">&quot;fillColor&quot;</span><span class="p">:</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span>
-                        <span class="nt">&quot;fillOpacity&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
-                        <span class="nt">&quot;symbolizers&quot;</span><span class="p">:</span> <span class="p">[{</span>
-                            <span class="nt">&quot;strokeColor&quot;</span><span class="p">:</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span>
-                            <span class="nt">&quot;strokeWidth&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-                            <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;point&quot;</span><span class="p">,</span>
-                            <span class="nt">&quot;pointRadius&quot;</span><span class="p">:</span> <span class="mi">10</span>
-                        <span class="p">}]</span>
-                    <span class="p">}</span>
-                <span class="p">},</span>
-                <span class="nt">&quot;opacity&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-                <span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;%(vector_request_url)s&quot;</span>
-            <span class="p">},</span> <span class="p">{</span>
-                <span class="nt">&quot;baseURL&quot;</span><span class="p">:</span> <span class="s2">&quot;%(mapserv_url)s&quot;</span><span class="p">,</span>
-                <span class="nt">&quot;opacity&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-                <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;WMS&quot;</span><span class="p">,</span>
-                <span class="nt">&quot;serverType&quot;</span><span class="p">:</span> <span class="s2">&quot;mapserver&quot;</span><span class="p">,</span>
-                <span class="nt">&quot;layers&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;%(backgroundlayers)s&quot;</span><span class="p">],</span>
-                <span class="nt">&quot;imageFormat&quot;</span><span class="p">:</span> <span class="s2">&quot;%(imageformat)s&quot;</span>
-            <span class="p">}]</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+<p>The map configuration can contains the following:</p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">backgroundlayers</span></code>: string containing a comma-separated list of WMS layers that should be displayed on the map. If the curent layer must also be displayed, it should be added to the list. Please note that layernames must be embedded in double-quotes (“). Defaults to <code class="docutils literal"><span class="pre">&quot;&quot;</span></code>.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">imageformat</span></code>: format of the generated map. Defaults to <code class="docutils literal"><span class="pre">image/png</span></code>.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">zoomType</span></code>: The type of zoom, default is <code class="docutils literal"><span class="pre">extent</span></code>.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">minScale</span></code>: The minimum zoom scale, default is <code class="docutils literal"><span class="pre">1000</span></code>.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">style</span></code>: The used style, default is:</p>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">fillColor</span><span class="p">:</span> <span class="n">red</span>
+<span class="n">fillOpacity</span><span class="p">:</span> <span class="mf">0.2</span>
+<span class="n">symbolizers</span><span class="p">:</span>
+<span class="o">-</span> <span class="n">strokeColor</span><span class="p">:</span> <span class="n">red</span>
+  <span class="n">strokeWidth</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="nb">type</span><span class="p">:</span> <span class="n">point</span>
+  <span class="n">pointRadius</span><span class="p">:</span> <span class="mi">10</span>
 </pre></div>
 </div>
-<p>Variables may be inserted using the <code class="docutils literal"><span class="pre">%(&lt;variable</span> <span class="pre">name&gt;)s</span></code> syntax. The following
-variables values are passed to the template:</p>
+</li>
+</ul>
+<p>The variables pass to the <code class="docutils literal"><span class="pre">spec</span></code> template using the <code class="docutils literal"><span class="pre">%(&lt;variable</span> <span class="pre">name&gt;)s</span></code> syntax:</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">layername</span></code>: name of the layer</li>
-<li><code class="docutils literal"><span class="pre">id</span></code>: feature id</li>
-<li><code class="docutils literal"><span class="pre">srs</span></code>: projection code</li>
-<li><code class="docutils literal"><span class="pre">mapserv_url</span></code>: URL of the MapServer proxy</li>
-<li><code class="docutils literal"><span class="pre">vector_request_url</span></code>: URL of the WFS GetFeature request retrieving the feature geometry in GML</li>
-<li><code class="docutils literal"><span class="pre">imageformat</span></code>: format of the WMS layer</li>
-<li><code class="docutils literal"><span class="pre">backgroundlayers</span></code>: WMS layers to display on the map (including the current layer)</li>
+<li><code class="docutils literal"><span class="pre">layername</span></code>: name of the layer.</li>
+<li><code class="docutils literal"><span class="pre">ids</span></code>: JSON representation of the features id.</li>
+<li><code class="docutils literal"><span class="pre">srs</span></code>: projection code.</li>
+<li><code class="docutils literal"><span class="pre">mapserv_url</span></code>: URL of the MapServer proxy.</li>
+<li><code class="docutils literal"><span class="pre">vector_request_url</span></code>: URL of the WFS GetFeature request retrieving the feature geometry in GML.</li>
 </ul>
 </div>
 <div class="section" id="configuration-of-the-reports">
 <h2>Configuration of the reports<a class="headerlink" href="#configuration-of-the-reports" title="Permalink to this headline">¶</a></h2>
+<p>If you use the <code class="docutils literal"><span class="pre">ids</span></code> in an SQL query you should use <code class="docutils literal"><span class="pre">$X{IN,</span> <span class="pre">&lt;column_name&gt;,</span> <span class="pre">$P{ids}}</span></code>
+to avoid SQL injection, <a class="reference external" href="http://jasperreports.sourceforge.net/sample.reference/query/">see also</a>.</p>
 <p>See the <a class="reference external" href="http://mapfish.github.io/mapfish-print-doc/">Mapfish Print documentation</a>.</p>
 </div>
 </div>
