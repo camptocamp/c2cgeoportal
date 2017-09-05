@@ -151,8 +151,7 @@ vars:
         - name: isExpanded
           type: boolean
         # Layer
-        - name: copyTo
-          type: list
+        - name: copy_to # V1
         - name: copyable
           type: boolean
         - name: legend
