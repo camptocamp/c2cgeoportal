@@ -183,6 +183,7 @@ vars:
         - name: snappingConfig
           type: json
         - name: geometry_validation
+          type: boolean
         # WMS
         - name: directedFilterAttributes
           type: list
