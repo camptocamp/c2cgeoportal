@@ -1,15 +1,22 @@
-#!/bin/bash -x
+#!/usr/bin/env python3
 
-make $* > /dev/null 2> make-err
+import time
+import sys
+import re
+import subprocess
 
-RESULT=$(cat make-err)
+p = subprocess.Popen(["make"] + sys.argv[1:], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+while p.returncode == None:
+    time.sleep(0.2)
+    p.poll()
 
-rm make-err --force
+lines = p.stderr.read().decode("utf-8").split("\n")
+lines = [l for l in lines if l != ""]
+lines = [l for l in lines if " warning: overriding recipe for target " not in l]
+lines = [l for l in lines if " warning: ignoring old recipe for target " not in l]
 
-if [ "${RESULT}" != "" ]
-then
-    echo There is some error output in the make
-    make $* > /dev/null
-    cd - > /dev/null
-    exit 2
-fi
+if p.returncode > 0 or len(lines) > 0:
+    print("There is some error output in the make, code: {}\nerror:\n{}\n---".format(
+        p.returncode, "\n".join(lines)))
+    subprocess.call(["make"] + sys.argv[1:])
+    exit(2)

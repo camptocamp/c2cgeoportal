@@ -5,6 +5,7 @@ vars:
     package: {{package}}
     geomapfish_version: GEOMAPFISH_VERSION
     instance: main
+    build_volume_name: BUILD_VOLUME_NAME
 
     srid: -1
 
@@ -50,7 +51,8 @@ vars:
     enable_admin_interface: True
 
     directory: __import__('os').getcwd()
-    python_path: __import__('distutils.sysconfig').sysconfig.get_python_lib()
+    project_directory: PROJECT_DIRECTORY
+    python_path: PYTHON_PATH
     ps: __import__('os').path.sep
 
     # Authentication settings
@@ -452,7 +454,6 @@ vars:
 interpreted:
     python:
     - authtkt.secret
-    - python_path
     - ps
     - directory
     - interfaces
@@ -465,6 +466,9 @@ interpreted:
     - host
     - web_protocol
     - entry_point
+    - build_volume_name
+    - project_directory
+    - python_path
     node:
         vars:
         - closure_library_path

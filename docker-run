@@ -1,9 +1,10 @@
-#! /usr/bin/env python
+#!/usr/bin/env python3
 
 import sys
 import os
 import subprocess
-import getpass
+import netifaces
+import distutils.sysconfig
 
 
 def main():
@@ -20,17 +21,16 @@ def main():
         docker_cmd.append(args[0])
         args = args[1:]
 
-    # docker_adrs = netifaces.ifaddresses('docker0')[2][0]['addr']
-
     docker_cmd.extend([
         "--rm",
-        "--volume=c2cgpbuild:/build",
+        "--volume=/var/run/docker.sock:/var/run/docker.sock",
+        "--volume=c2cgeoportal-build:/build",
         "--volume={pwd}:/src".format(pwd=os.getcwd()),
         "--volume={home}:{home}".format(home=os.environ["HOME"]),
         "--volume=/tmp/travis:/tmp/travis",
-        "--env=USER_NAME={}".format(getpass.getuser()),
-        "--env=USER_ID={}".format(os.getuid()),
-        "--env=GROUP_ID={}".format(os.getgid()),
+        "--env=USER_NAME={}".format(os.getlogin()),
+        "--env=USER_ID={}".format(os.getuid() if os.name == "posix" else 1000),
+        "--env=GROUP_ID={}".format(os.getgid() if os.name == "posix" else 1000),
         "--env=CODACY_PROJECT_TOKEN={}".format(os.environ.get("CODACY_PROJECT_TOKEN", "")),
     ])
 
@@ -41,8 +41,15 @@ def main():
         "TRAVIS_JOB_ID",
         "SRID",
         "EXTENT",
+        "APACHE_VHOST",
     ]:
         docker_cmd.append("--env={}".format(env))
+
+    docker_adrs = netifaces.ifaddresses('docker0')[2][0]['addr']
+    docker_cmd.append("--env=DOCKER_HOST_={}".format(docker_adrs))
+    docker_cmd.append("--env=BUILD_VOLUME_NAME=c2cgeoportal-build")
+    docker_cmd.append("--env=PROJECT_DIRECTORY={}".format(os.getcwd()))
+    docker_cmd.append("--env=PYTHON_PATH={}".format(distutils.sysconfig.get_python_lib()))
 
     if root:
         docker_cmd.extend(["--entrypoint", args[0]])

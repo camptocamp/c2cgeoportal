@@ -21,6 +21,7 @@
 /c2cgeoportal/scaffolds/create/+package+/static-ngeo/components/
 /c2cgeoportal/scaffolds/update/package.json_tmpl
 /c2cgeoportal/scaffolds/update/CONST_create_template/
+/c2cgeoportal/scaffolds/nondockerupdate/CONST_create_template/
 /c2cgeoportal/version.py
 /c2cgeoportal.egg-info
 /docker/test-mapserver/mapserver.map

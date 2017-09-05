@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#!/usr/bin/env python3
 
 import os
 import sys
@@ -38,7 +38,7 @@ os.chmod("/build", stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR | stat.S_IRGRP | s
 
 run_file_name = "/tmp/run"
 with open(run_file_name, 'w') as run_file:
-    run_file.write("""#! /usr/bin/env python
+    run_file.write("""#!/usr/bin/env python3
 
 import subprocess, os
 

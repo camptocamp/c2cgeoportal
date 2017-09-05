@@ -4,7 +4,7 @@ version: '2'
 volumes:
     build:
         external:
-            name: build
+            name: ${build_volume_name}
 
 services:
 % if dbhost == "db":

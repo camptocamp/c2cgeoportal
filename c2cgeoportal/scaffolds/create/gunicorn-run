@@ -2,7 +2,7 @@
 
 if [ -z "$GUNICORN_PARAMS" ]
 then
-    GUNICORN_PARAMS="-b :80 --worker-class gthread --threads 5 --workers 2"
+    GUNICORN_PARAMS="-b :80 --worker-class gthread --threads 5 --workers 2 --access-logfile -"
 fi
 
 _term() {

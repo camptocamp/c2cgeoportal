@@ -45,7 +45,7 @@ RUN \
     ttf2woff@2.0.1 \
     typeahead.js@0.11.1 \
     walk@2.3.9 && \
-  chmod o+r -R /usr/lib/node_modules/closure-util/.deps/compiler/* && \
+  chmod go+r -R /usr/lib/node_modules/closure-util/.deps/compiler/* && \
   rm --recursive --force ~/.npm
 
 RUN \
@@ -83,6 +83,7 @@ RUN cd /opt/c2cgeoportal && \
     if [ ! -e c2cgeoportal/scaffolds/update/CONST_create_template ]; \
     then make transifex-get buildlocales; \
     fi && \
+    chmod go+r -R . && \
     rm -rf /build
 
 RUN pip install --disable-pip-version-check --no-cache-dir --no-deps --editable /opt/c2cgeoportal

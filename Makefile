@@ -77,7 +77,8 @@ build: $(MAKO_FILES:.mako=) \
 	$(APPS_FILES) \
 	c2cgeoportal/scaffolds/update/+dot+tx/CONST_config_mako \
 	c2cgeoportal/scaffolds/create/package.json_tmpl \
-	c2cgeoportal/scaffolds/update/CONST_create_template/
+	c2cgeoportal/scaffolds/update/CONST_create_template/ \
+	c2cgeoportal/scaffolds/nondockerupdate/CONST_create_template/
 
 .PHONY: buildall
 buildall: build doc tests checks
@@ -236,8 +237,8 @@ c2cgeoportal/scaffolds/create/package.json_tmpl: ngeo/package.json $(BUILD_DIR)/
 	$(PRERULE_CMD)
 	$(BUILD_DIR)/venv/bin/import-ngeo-apps --package _ $< $@
 
-.PRECIOUS: c2cgeoportal/scaffolds/update/CONST_create_template/
-c2cgeoportal/scaffolds/update/CONST_create_template/: c2cgeoportal/scaffolds/create/
+.PRECIOUS: c2cgeoportal/scaffolds%update/CONST_create_template/
+c2cgeoportal/scaffolds%update/CONST_create_template/: c2cgeoportal/scaffolds%create/
 	$(PRERULE_CMD)
 	rm -rf $@ || true
 	cp -r $< $@

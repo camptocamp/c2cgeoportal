@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # Copyright (c) 2013-2017, Camptocamp SA
@@ -115,6 +115,8 @@ setup(
         "pyramid.scaffold": [
             "c2cgeoportal_create = c2cgeoportal.scaffolds:TemplateCreate",
             "c2cgeoportal_update = c2cgeoportal.scaffolds:TemplateUpdate",
+            "c2cgeoportal_nondockercreate = c2cgeoportal.scaffolds:TemplateNondockerCreate",
+            "c2cgeoportal_nondockerupdate = c2cgeoportal.scaffolds:TemplateNondockerUpdate",
         ],
         "lingua.extractors": [
             "geomapfish-theme = c2cgeoportal.lib.lingua_extractor:GeoMapfishThemeExtractor",

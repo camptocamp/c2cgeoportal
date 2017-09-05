@@ -13,8 +13,22 @@ env:
     - secure: aZWcHZWV8lN2SNU2fcUsG8+fVQLOxwDUFYDvuftZALebRG2AHINTkbS31sKbeSwS19ZYpjcuVOKC9HxNAlnMxsdO1NvvFEbSJJD/yqq0V4EfTRqptZYsFCUou0eXIUWEnoFHD1nY3NhuPQjDoad995xU92z0BzwduxUAj28liu4=
 
 before_install:
-- pip install --disable-pip-version-check --no-cache-dir --requirement travis/requirements.txt
+## FOR NON DOCKER TESTS
+- sudo apt-get remove --assume-yes --force-yes python-zope.interface
+- sudo aptitude install --assume-yes apache2 libapache2-mod-wsgi-py3 libapache2-mod-fcgid tomcat7 cgi-mapserver python3-netifaces python3-pip python3-virtualenv
+- sudo chmod o+rx /var/log/apache2/
+- sudo chmod o+r /var/log/apache2/*.log
+- sudo service postgresql stop
+# database for the GeoMapFish application
+- docker build --tag=camptocamp/c2cgeoportal-gis-db docker/gis-db
+- docker run --env=POSTGRES_USER=www-data --env=POSTGRES_PASSWORD=www-data --env=POSTGRES_DB=geomapfish --publish=5432:5432 --detach camptocamp/c2cgeoportal-gis-db
+- export TRAVIS_FOLDER=`pwd`
+- sudo service tomcat7 stop
+## END FOR NON DOCKER TESTS
+
+- python3 -m pip install --requirement travis/requirements.txt
 - docker build --tag=external-db docker/test-external-db
+- docker run --publish=5433:5432 --detach external-db ## FOR NON DOCKER TEST
 - |
   if [ "${TX_PASS}" != "" ]
   then
@@ -34,7 +48,7 @@ before_install:
   travis/docker-get
   --tag camptocamp/geomapfish_build:latest
   --folder .
-  --rules transifex-get buildlocales c2cgeoportal/scaffolds/update/CONST_create_template/
+  --rules transifex-get buildlocales c2cgeoportal/scaffolds/update/CONST_create_template/ c2cgeoportal/scaffolds/nondockerupdate/CONST_create_template/
   --paths docker/build setup.py README.rst c2cgeoportal/ docker/build/fixversions.txt
 - |
     [[ `./docker-run id` =~ uid=[0-9]+\(travis\)\ gid=[0-9]+\(geomapfish\)\ groups=[0-9]+\(geomapfish\) ]]
@@ -46,6 +60,11 @@ install:
 - travis/create-new-project.sh
 - travis/test-upgrade.sh
 - travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-run make -f travis.mk build project.yaml
+## FOR NON DOCKER TESTS
+- travis/create-new-nondocker-project.sh
+- travis/test-nondocker-upgrade.sh
+- travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run make -f travis.mk build project.yaml
+## END FOR NON DOCKER TESTS
 
 script:
 - docker version
@@ -60,7 +79,7 @@ script:
         false
     fi
 
-# Test new project
+# Test new Docker project
 - >
   travis/run-on.sh /tmp/travis/testgeomapfish/
   ./docker-run pcreate
@@ -74,18 +93,20 @@ script:
   find setup.py testgeomapfish/*.py testgeomapfish/views -name \*.py | xargs travis/quote
 - travis/run-on.sh /tmp/travis/testgeomapfish/ docker-compose up -d
 - travis/waitwsgi http://localhost:8080/
-- travis/test-new-project check_collector
-- travis/test-new-project check_collector?type=all
-- travis/test-new-project layers/test/values/type enum
+- travis/test-new-project http://localhost:8080/check_collector
+- travis/test-new-project http://localhost:8080/check_collector?type=all
+- travis/test-new-project http://localhost:8080/layers/test/values/type enum
 - travis/run-on.sh /tmp/travis/testgeomapfish/ docker-compose logs
 - travis/run-on.sh /tmp/travis/testgeomapfish/ docker-compose down
 - travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-run travis/status.sh
 - travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-run travis/empty-make.sh -f travis.mk build
 - travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-run make -f empty-vars.mk config.yaml
-- ./docker-compose-run alembic --config tests/functional/alembic.ini upgrade head
-- ./docker-compose-run alembic --config tests/functional/alembic_static.ini upgrade head
-- ./docker-compose-run alembic --config tests/functional/alembic_static.ini downgrade base
-- ./docker-compose-run alembic --config tests/functional/alembic.ini downgrade base
+- travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-run make -f travis.mk alembic.ini alembic_static.ini
+- travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-compose-run sleep 15
+- travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-compose-run alembic --config alembic.ini upgrade head
+- travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-compose-run alembic --config alembic_static.ini upgrade head
+- travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-compose-run alembic --config alembic_static.ini downgrade base
+- travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-compose-run alembic --config alembic.ini downgrade base
 
 # Test c2cgeoportal
 - ./docker-run travis/empty-make.sh -f travis.mk build
@@ -96,6 +117,45 @@ script:
 - ./docker-compose-run alembic --config tests/functional/alembic.ini upgrade head
 - ./docker-compose-run alembic --config tests/functional/alembic_static.ini upgrade head
 - ./docker-compose-run nosetests
+
+## FOR NON DOCKER TESTS
+# Test new non Docker project
+- sudo service tomcat7 start
+- deactivate
+- travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ rm apache/application.wsgi
+- travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run rm /build/c2ctemplate-cache.json
+- travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run make -f travis.mk apache/application.wsgi
+- travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ make -f travis-nondocker.mk build
+- travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run make -f travis.mk project.yaml
+- >
+    travis/run-on.sh /tmp/travis/nondockertestgeomapfish/
+    ./docker-run pcreate
+    --scaffold=c2cgeoportal_update
+    --ignore-conflicting-name
+    --overwrite /tmp/travis/nondockertestgeomapfish > /dev/null  # on upgrade - do not add any argument on this command
+- >
+    travis/run-on.sh /tmp/travis/nondockertestgeomapfish/
+    ./docker-run pcreate
+    --scaffold=c2cgeoportal_nondockerupdate
+    --ignore-conflicting-name
+    --overwrite /tmp/travis/nondockertestgeomapfish > /dev/null  # on upgrade - do not add any argument on this command
+- travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run make -f travis.mk checks
+- travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run travis/no-make-error.sh -f travis.mk help
+- find /tmp/travis/nondockertestgeomapfish/setup.py /tmp/travis/nondockertestgeomapfish/testgeomapfish/*.py /tmp/travis/nondockertestgeomapfish/testgeomapfish/views -name \*.py | xargs travis/quote
+- travis/test-new-project http://localhost/main/wsgi/check_collector
+- travis/test-new-project http://localhost/main/wsgi/check_collector?type=all
+- cat /var/log/apache2/error.log
+- cat /var/log/apache2/access.log
+- travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run travis/status.sh
+- travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run travis/empty-make.sh -f travis.mk build
+- travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run travis/no-make-error.sh -f travis.mk build
+- travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run make -f empty-vars.mk config.yaml
+- travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run make -f travis.mk alembic.ini alembic_static.ini
+- travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run alembic --config alembic.ini upgrade head
+- travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run alembic --config alembic_static.ini upgrade head
+- travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run alembic --config alembic_static.ini downgrade base
+- travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run alembic --config alembic.ini downgrade base
+## END FOR NON DOCKER TESTS
 
 after_success:
 - ./docker-run coveralls

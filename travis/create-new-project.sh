@@ -36,6 +36,6 @@ git remote add origin . # add a fake remote
     docker-compose-build.yaml \
     wsgi-docker mapserver-docker print-docker testdb-docker
 # Wait DB
-./docker-compose-run travis/waitdb postgres://www-data:www-data@db/geomapfish
+./docker-compose-run sleep 15
 # Create default theme
 ./docker-compose-run create-demo-theme

@@ -1,0 +1,12 @@
+#!/usr/bin/env python3
+
+import sys
+import subprocess
+
+dependencies = subprocess.check_output(["./docker-run", "pip", "freeze"]).decode("utf-8").split("\n")
+dependencies = [e for e in dependencies if "@" not in e or "#" not in e]
+
+for filter_ in sys.argv[1:]:
+    dependencies = [e for e in dependencies if not e.startswith(filter_ + "==")]
+
+print(" ".join(dependencies))

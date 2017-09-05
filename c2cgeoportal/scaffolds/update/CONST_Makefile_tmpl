@@ -1,44 +1,25 @@
-GEOMAPFISH_VERSION ?= $(shell $(VENV_BIN)/python -c "print('_'.join(__import__('pkg_resources').get_distribution('c2cgeoportal').version))")
+GEOMAPFISH_VERSION ?= $(shell $(VENV_BIN)/python -c "print(__import__('pkg_resources').get_distribution('c2cgeoportal').version)")
 export GEOMAPFISH_VERSION
 export PACKAGE = {{package}}
-OPERATING_SYSTEM ?= LINUX
 
 MAPSERVER ?= TRUE
 
 ifeq ($(DEBUG), TRUE)
-ifeq ($(OPERATING_SYSTEM), WINDOWS)
-PRERULE_CMD ?= @echo "Build $@ due mofification on $?"; ls -t --full-time --reverse $? $@ || true
-else
 PRERULE_CMD ?= @echo "Build \033[1;34m$@\033[0m due mofification on \033[1;34m$?\033[0m"; ls -t --full-time --reverse $? $@ || true
 endif
-endif
 
-ifeq ($(OPERATING_SYSTEM), WINDOWS)
-VENV_BIN = /build/venv/Scripts
-FIND ?= $(CYGWIN_PATH)/bin/find.exe
-HOME_DIR ?= ""
-# TILECLOUD_CHAIN require Shapely but does not have a system specific setup.
-# You can still install it but you must install Shapely manualy inside
-# TILECLOUD_CHAIN virtualenv
-TILECLOUD_CHAIN ?= FALSE
-# because Windows does not like path with //
-PRINT_TMP ?= tmp
-else
 VENV_BIN ?= /build/venv/bin
-FIND ?= find
 HOME_DIR ?= $(HOME)/
 # Use TileCloud chain
 TILECLOUD_CHAIN ?= TRUE
 TILECLOUD_CHAIN_LOCAL ?= FALSE
-PRINT_TMP ?= /tmp
-endif
 
 TEMPLATE_EXCLUDE += /build node_modules \
 	print/templates CONST_alembic CONST_create_template \
 	$(PACKAGE)/static/lib
 FIND_OPTS = $(foreach ELEM, $(TEMPLATE_EXCLUDE),-path ./$(ELEM) -prune -o) -type f
 
-# Id TRUE do not minify the js / css, ...
+# If TRUE do not minify the js / css, ...
 DEVELOPMENT ?= FALSE
 export DEVELOPMENT
 # Language provided by the application
@@ -112,7 +93,7 @@ GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 # Visible web URL
 # The protocol part
 VISIBLE_WEB_PROTOCOL ?= https
-VISIBLE_ENTRY_POINT ?=
+VISIBLE_ENTRY_POINT ?= /
 export VISIBLE_WEB_HOST
 export VISIBLE_WEB_PROTOCOL
 export VISIBLE_ENTRY_POINT
@@ -120,17 +101,17 @@ export VISIBLE_ENTRY_POINT
 # ngeo
 ANGULAR_VERSION = 1.6
 APP_OUTPUT_DIR = $(PACKAGE)/static-ngeo/build
-OL_JS_FILES = $(shell $(FIND) /usr/lib/node_modules/openlayers/src/ol -type f -name '*.js' 2> /dev/null)
-NGEO_JS_FILES = $(shell $(FIND) /usr/lib/node_modules/ngeo/src -type f -name '*.js' 2> /dev/null)
-APP_JS_FILES = $(shell $(FIND) $(PACKAGE)/static-ngeo/js $(PACKAGE)/static-ngeo/components -type f -name '*.js' 2> /dev/null)
-APP_JS_MAKO_FILES += $(shell $(FIND) $(PACKAGE)/static-ngeo/js $(PACKAGE)/static-ngeo/components $(FIND_OPTS) -name "*.js.mako" -print 2> /dev/null)
-APP_JS_JINJA_FILES += $(shell $(FIND) $(PACKAGE)/static-ngeo/js $(PACKAGE)/static-ngeo/components $(FIND_OPTS) -name "*.js.jinja" -print 2> /dev/null)
+OL_JS_FILES = $(shell find /usr/lib/node_modules/openlayers/src/ol -type f -name '*.js' 2> /dev/null)
+NGEO_JS_FILES = $(shell find /usr/lib/node_modules/ngeo/src -type f -name '*.js' 2> /dev/null)
+APP_JS_FILES = $(shell find $(PACKAGE)/static-ngeo/js $(PACKAGE)/static-ngeo/components -type f -name '*.js' 2> /dev/null)
+APP_JS_MAKO_FILES += $(shell find $(PACKAGE)/static-ngeo/js $(PACKAGE)/static-ngeo/components $(FIND_OPTS) -name "*.js.mako" -print 2> /dev/null)
+APP_JS_JINJA_FILES += $(shell find $(PACKAGE)/static-ngeo/js $(PACKAGE)/static-ngeo/components $(FIND_OPTS) -name "*.js.jinja" -print 2> /dev/null)
 APP_JS_FILES +=  $(APP_JS_MAKO_FILES:.mako=) $(APP_JS_JINJA_FILES:.jinja=)
 APP_HTML_FILES += $(addprefix $(PACKAGE)/templates/, $(addsuffix .html, $(NGEO_INTERFACES)))
 NGEO_DIRECTIVES_PARTIALS_FILES = $(shell ls -1 /usr/lib/node_modules/ngeo/src/directives/partials/*.html 2> /dev/null)
 GMF_DIRECTIVES_PARTIALS_FILES = $(shell ls -1 /usr/lib/node_modules/ngeo/contribs/gmf/src/directives/partials/*.html 2> /dev/null)
-APP_DIRECTIVES_PARTIALS_FILES = $(shell $(FIND) $(PACKAGE)/static-ngeo/components $(PACKAGE)/static-ngeo/partials $(PACKAGE)/static-ngeo/js -type f -name '*.html' 2> /dev/null)
-LESS_FILES = $(shell $(FIND) $(PACKAGE)/static-ngeo/less $(PACKAGE)/static-ngeo/components -type f -name '*.less' 2> /dev/null)
+APP_DIRECTIVES_PARTIALS_FILES = $(shell find $(PACKAGE)/static-ngeo/components $(PACKAGE)/static-ngeo/partials $(PACKAGE)/static-ngeo/js -type f -name '*.html' 2> /dev/null)
+LESS_FILES = $(shell find $(PACKAGE)/static-ngeo/less $(PACKAGE)/static-ngeo/components -type f -name '*.less' 2> /dev/null)
 NGEO_GMF_FONTS = $(addprefix $(PACKAGE)/static-ngeo/fonts/gmf-icons, .woff .ttf .eot)
 NGEO_FONTAWESOME_FONTS = $(addprefix $(PACKAGE)/static-ngeo/fonts/fontawesome-webfont, .woff .woff2 .ttf .eot)
 NGEO_FONTS = $(NGEO_GMF_FONTS) $(NGEO_FONTAWESOME_FONTS)
@@ -192,7 +173,7 @@ endif
 
 
 # CGXP
-JSBUILD_MAIN_FILES = $(shell $(FIND) $(PACKAGE)/static/lib/cgxp $(PACKAGE)/static/js -name "*.js" -print 2> /dev/null)
+JSBUILD_MAIN_FILES = $(shell find $(PACKAGE)/static/lib/cgxp $(PACKAGE)/static/js -name "*.js" -print 2> /dev/null)
 JSBUILD_MAIN_CONFIG = jsbuild/app.cfg
 JSBUILD_MAIN_OUTPUT_FILES ?= $(addsuffix .js, $(CGXP_INTERFACES)) api.js xapi.js
 ifdef CGXP_INTERFACES
@@ -314,11 +295,11 @@ VALIDATE_PY_FOLDERS = $(PACKAGE)/*.py $(PACKAGE)/lib $(PACKAGE)/scripts $(PACKAG
 VALIDATE_PY_TEST_FOLDERS = $(PACKAGE)/tests
 
 # Documentation
-SPHINX_FILES = $(shell $(FIND) doc -name "*.rst" -print)
+SPHINX_FILES = $(shell find doc -name "*.rst" -print)
 
 # Server localisation
 ifdef CGXP_INTERFACES
-SERVER_LOCALISATION_SOURCES_FILES += $(PACKAGE)/models.py $(shell $(FIND) $(PACKAGE)/templates -type f -name '*.html')
+SERVER_LOCALISATION_SOURCES_FILES += $(PACKAGE)/models.py $(shell find $(PACKAGE)/templates -type f -name '*.html')
 SERVER_LOCALISATION_FILES = $(addprefix $(PACKAGE)/locale/, $(addsuffix /LC_MESSAGES/$(PACKAGE)-$(L10N_SERVER_POSTFIX).mo, $(LANGUAGES)))
 endif
 
@@ -329,11 +310,11 @@ I18N_SOURCE_FILES += print/print-apps/$(PACKAGE)/config.yaml
 ifeq ($(TILECLOUD_CHAIN), TRUE)
 CONF_FILES += apache/tiles.conf apache/mapcache.xml
 endif
-PY_FILES = $(shell $(FIND) $(PACKAGE) -type f -name '*.py' -print)
+PY_FILES = $(shell find $(PACKAGE) -type f -name '*.py' -print)
 
 # Templates
-ALL_MAKO_FILES = $(shell $(FIND) $(FIND_OPTS) -name "*.mako" -print)
-ALL_JINJA_FILES = $(shell $(FIND) $(FIND_OPTS) -name "*.jinja" -print)
+ALL_MAKO_FILES = $(shell find $(FIND_OPTS) -name "*.mako" -print)
+ALL_JINJA_FILES = $(shell find $(FIND_OPTS) -name "*.jinja" -print)
 EXTRA_EXCLUDE = $(foreach ELEM, print mapfile jsbuild tilegeneration,-path ./$(ELEM) -prune -o)
 VARS_FILES += CONST_vars.yaml $(VARS_FILE)
 VARS_DEPENDS += $(VARS_FILES) /build/node_modules.timestamp
@@ -359,8 +340,8 @@ help:
 	@echo  "- checks		Perform a number of checks on the code"
 	@echo  "- serve			Run the development server (Pserve)"
 	@echo  "- clean			Remove generated files"
-	@echo  "- cleanall		Remove all the build artefacts"
-	@echo  "- cleanallcache		Remove all the build artefacts and the extra caches (npm and pip)"
+	@echo  "- clean-all		Remove all the build artefacts"
+	@echo  "- clean-all-cache	Remove all the build artefacts and the extra caches (npm and pip)"
 	@echo
 	@echo  "Utility targets:"
 	@echo
@@ -371,8 +352,6 @@ help:
 	@echo  "Deploy branch target:"
 	@echo
 	@echo  "- theme2fts		Inport the theme in the full-text search"
-	@echo  "- deploy-branch		Deploy the curent branch to demos"
-	@echo  "- remove-branch		Remove the curent branch from demos"
 
 ifdef UTILITY_HELP
 	@echo $(UTILITY_HELP)
@@ -385,7 +364,6 @@ endif
 	@echo  "- flake8		Run Flake8 checker on the Python code"
 	@echo  "- lint-ngeo		Check the JavaScript code with linters for ngeo"
 	@echo  "- template-clean	Clean the template file"
-	@echo  "- template-generate	Generate the template file"
 ifdef SECONDARY_HELP
 	@echo $(SECONDARY_HELP)
 endif
@@ -408,30 +386,20 @@ clean: template-clean
 	rm -rf $(OUTPUT_DIR)/
 	rm -rf $(APP_OUTPUT_DIR)/
 	rm -f $(PACKAGE)/locale/$(PACKAGE)-*.pot
-# We use the print
-ifdef PRINT_BASE_WAR
-	$(TOMCAT_OUTPUT_CMD_PREFIX) rm -f $(PRINT_OUTPUT)/$(PRINT_WAR)
-	$(TOMCAT_OUTPUT_CMD_PREFIX) rm -rf $(PRINT_OUTPUT)/$(PRINT_WAR:.war=) 2> /dev/null || true
-endif
 ifeq ($(TILECLOUD_CHAIN_LOCAL), TRUE)
 	rm -f $(WMTSCAPABILITIES_FILE)
 endif
 
-.PHONY: cleanall
-cleanall: clean
+.PHONY: clean-all
+clean-all: clean
 	rm -rf /build
 	rm -rf node_modules
 	rm -f $(ANGULAR_LOCALES_FILES)
 
-.PHONY: cleanallcache
-cleanallcache: cleanall
-ifeq ($(OPERATING_SYSTEM), WINDOWS)
-	rm -rf %AppData%/npm-cache
-	rm -rf %AppData%/../Local/pip/cache
-else
+.PHONY: clean-all-cache
+clean-all-cache: cleanall
 	rm -rf $(HOME_DIR).npm
 	rm -rf $(HOME_DIR).cache/pip
-endif
 
 .PHONY: theme2fts
 theme2fts: $(PO_CLIENT_LOCALISATION_FILES)
@@ -460,13 +428,10 @@ upgrade-db: alembic.ini alembic_static.ini
 
 .PHONY: template-clean
 template-clean:
-	rm -f /build/c2ctemplate-cache.json
+	rm -f .build/c2ctemplate-cache.json
 	rm -f $(ALL_MAKO_FILES:.mako=)
 	rm -f $(ALL_JINJA_FILES:.jinja=)
 	rm -f config.yaml
-
-.PHONY: template-generate
-template-generate: $(ALL_MAKO_FILES:.mako=) $(ALL_JINJA_FILES:.jinja=) config.yaml
 
 /build/c2ctemplate-cache.json: $(VARS_DEPENDS) $(MAKE_FILES)
 	$(PRERULE_CMD)
@@ -807,7 +772,10 @@ mapserver/mapserver.map:
 wsgi-docker: /build/wsgi-docker.timestamp
 
 /build/wsgi-docker.timestamp: $(shell docker-required --path .) \
-		$(SERVER_LOCALISATION_FILES) $(WEB_RULE) $(PACKAGE)/version.py
+		$(SERVER_LOCALISATION_FILES) \
+		$(WEB_RULE) \
+		config.yaml \
+		$(PACKAGE)/version.py
 	$(PRERULE_CMD)
 	docker build -t $(DOCKER_BASE)-wsgi:$(DOCKER_TAG) .
 	touch $@
@@ -836,10 +804,6 @@ testdb-docker: /build/testdb-docker.timestamp
 	touch $@
 
 # Upgrade
-ifeq ($(OPERATING_SYSTEM), WINDOWS)
-UPGRADE_ARGS ?= --windows
-endif
-
 .PHONY: upgrade
 upgrade: project.yaml $(UPGRADE_MAKE_FILE)
 	c2ctool upgrade $(UPGRADE_ARGS) $(UPGRADE_MAKE_FILE) ${VERSION}
@@ -867,7 +831,6 @@ upgrade5: project.yaml $(UPGRADE_MAKE_FILE)
 .PHONY: upgrade6
 upgrade6: project.yaml $(UPGRADE_MAKE_FILE)
 	c2ctool upgrade $(UPGRADE_ARGS) $(UPGRADE_MAKE_FILE) ${VERSION} --step 6
-
 
 # Tilecloud chain
 $(WMTSCAPABILITIES_FILE): tilegeneration/config.yaml

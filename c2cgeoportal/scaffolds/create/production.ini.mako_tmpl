@@ -24,7 +24,7 @@ pipeline =
 ###
 
 [loggers]
-keys = root, sqlalchemy, c2cgeoportal, {{package}}
+keys = root, sqlalchemy, gunicorn.access, gunicorn.error, c2cgeoportal, {{package}}
 
 [handlers]
 keys = console
@@ -45,6 +45,16 @@ qualname = c2cgeoportal
 level = WARN
 handlers =
 qualname = {{package}}
+
+[logger_gunicorn.access]
+level = INFO
+handlers =
+qualname = gunicorn.access
+
+[logger_gunicorn.error]
+level = INFO
+handlers =
+qualname = gunicorn.error
 
 [logger_sqlalchemy]
 level = WARN

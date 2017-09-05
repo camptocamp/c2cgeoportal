@@ -1,0 +1,4 @@
+#!/bin/sh -ex
+
+PROJECT_NAME=$1
+CODE_DIR=$2

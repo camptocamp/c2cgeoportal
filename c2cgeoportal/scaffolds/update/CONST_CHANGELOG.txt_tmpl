@@ -4,6 +4,8 @@ This file includes migration steps for each release of c2cgeoportal.
 Version 2.3.0
 =============
 
+For non Docker upgrade have a look on the nondocker_CHANGELOG
+
 Remove the old configurations files:
 * rm -rf deploy
 * rm -rf apache
