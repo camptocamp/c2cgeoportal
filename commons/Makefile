@@ -24,4 +24,6 @@ ${BUILD_DIR}/venv.timestamp:
 	python3 -m venv ${VENV}
 	#Upgrade packaging tools.
 	${VENV}/bin/pip install --upgrade pip setuptools
+	msgfmt -o c2cgeoportal_commons/locale/fr/LC_MESSAGES/c2cgeoportal_commons.mo c2cgeoportal_commons/locale/fr/LC_MESSAGES/c2cgeoportal_commons.po
+	msgfmt -o c2cgeoportal_commons/locale/en/LC_MESSAGES/c2cgeoportal_commons.mo c2cgeoportal_commons/locale/en/LC_MESSAGES/c2cgeoportal_commons.po
 	touch ${BUILD_DIR}/venv.timestamp
