@@ -1,6 +1,7 @@
 version: '2'
+
 services:
-  api:
+  admin:
     image: camptocamp/c2cgeoportal_admin:latest
     environment:
       SQLALCHEMY_URL: postgresql://www-data:www-data@db:5432/c2cgeoportal
@@ -10,13 +11,13 @@ services:
       APP_LOG_LEVEL: DEBUG
       SQL_LOG_LEVEL: DEBUG
       OTHER_LOG_LEVEL: INFO
-      DEVELOPMENT: true
+      DEVELOPMENT: 'true'
       GUNICORN_PARAMS: '-b :80 --threads 10'  # only one process in order to get consistent stats
     links:
       - db
       - db:db_slave
     ports:
-      - 8080:80
+      - 8888:80
 
   db:
     image: camptocamp/postgres:9.6

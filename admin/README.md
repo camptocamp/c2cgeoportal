@@ -39,3 +39,10 @@ make test
 ```
 make serve
 ```
+
+## Build docker image
+
+
+```
+make build_admin
+```
