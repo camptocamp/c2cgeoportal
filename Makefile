@@ -135,7 +135,7 @@ flake8:
 		--copyright-min-file-size=1 \
 		--copyright-regexp="Copyright \(c\) ([0-9][0-9][0-9][0-9]-)?$(shell date +%Y), Camptocamp SA" \
 		travis/quote
-	find $(VALIDATE_TEMPLATE_PY_FOLDERS) -name \*.py | xargs flake8 --max-line-length=100
+	find $(VALIDATE_TEMPLATE_PY_FOLDERS) -name \*.py | xargs flake8 --max-line-length=110
 	find $(VALIDATE_PY_TEST_FOLDERS) -name \*.py | xargs flake8 \
 		--ignore=E501 \
 		--copyright-check \

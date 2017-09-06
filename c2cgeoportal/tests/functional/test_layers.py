@@ -445,7 +445,7 @@ class TestLayers(TestCase):
         from c2cgeoportal.models import Metadata
 
         metadatas = [
-            Metadata("geometry_validation", "False")
+            Metadata("geometryValidation", "False")
         ]
         layer_id = self._create_layer(metadatas=metadatas, geom_type=False)
         request = self._get_request(layer_id, username="__test_user")
@@ -560,7 +560,7 @@ class TestLayers(TestCase):
         from c2cgeoportal.models import Metadata
 
         metadatas = [
-            Metadata("geometry_validation", "False")
+            Metadata("geometryValidation", "False")
         ]
         layer_id = self._create_layer(metadatas=metadatas, geom_type=False)
         request = self._get_request(layer_id, username="__test_user")
