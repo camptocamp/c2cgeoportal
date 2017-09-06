@@ -50,7 +50,13 @@ before_install:
     else
         docker pull camptocamp/geomapfish_build_dev
     fi
-- docker build --tag=camptocamp/geomapfish_build .
+- |
+    if travis/git-modif setup.py README.rst c2cgeoportal/ docker/build/fixversions.txt
+    then
+        docker build --tag=camptocamp/geomapfish_build .
+    else
+        docker pull camptocamp/geomapfish_build
+    fi
 - |
     [[ `./docker-run id` =~ uid=[0-9]+\(travis\)\ gid=[0-9]+\(geomapfish\)\ groups=[0-9]+\(geomapfish\) ]]
 
