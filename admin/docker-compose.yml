@@ -1,0 +1,30 @@
+version: '2'
+services:
+  api:
+    image: camptocamp/c2cgeoportal_admin:latest
+    environment:
+      SQLALCHEMY_URL: postgresql://www-data:www-data@db:5432/c2cgeoportal
+      SQLALCHEMY_URL_SLAVE: postgresql://www-data:www-data@db_slave:5432/c2cgeoportal
+      LOG_TYPE: console
+      C2CWSGI_LOG_LEVEL: DEBUG
+      APP_LOG_LEVEL: DEBUG
+      SQL_LOG_LEVEL: DEBUG
+      OTHER_LOG_LEVEL: INFO
+      DEVELOPMENT: true
+      GUNICORN_PARAMS: '-b :80 --threads 10'  # only one process in order to get consistent stats
+    links:
+      - db
+      - db:db_slave
+    ports:
+      - 8080:80
+
+  db:
+    image: camptocamp/postgres:9.6
+    environment:
+      POSTGRES_USER: www-data
+      POSTGRES_PASSWORD: www-data
+      POSTGRES_DB: c2cgeoportal
+    # Uncomment following line to have database show all incoming SQL statements
+    # command: postgres -c log_statement=all
+    ports:
+      - 15432:5432
