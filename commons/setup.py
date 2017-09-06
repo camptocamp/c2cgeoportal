@@ -15,13 +15,14 @@ setup(
     install_requires=[
         "sqlahelper",
         "papyrus",
+        'lingua>=2.4',
+    '    babel',
     ],
     extras_require={
         'testing': [
             'psycopg2',
             'pytest',
-            'pytest-cov',
-            #'pydevd',
+            'pytest-cov'
         ],
     },
     entry_points={
