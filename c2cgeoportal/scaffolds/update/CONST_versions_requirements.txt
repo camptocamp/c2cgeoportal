@@ -37,7 +37,7 @@ pyramid-tm==2.2
 https://github.com/camptocamp/pyramid_closure/archive/23b45f7989cf471dce46dabb8516537bae0a2789.zip#egg=pyramid_closure
 python-dateutil==2.6.1
 pytz==2017.2
-repoze.lru==0.6
+repoze.lru==0.7
 requests==2.18.4
 simplejson==3.11.1
 six==1.10.0
