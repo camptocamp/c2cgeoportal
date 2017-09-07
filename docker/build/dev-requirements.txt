@@ -59,7 +59,7 @@ pyramid-tm==2.2
 python-dateutil==2.6.1
 pytz==2017.2
 PyYAML==3.12
-repoze.lru==0.6
+repoze.lru==0.7
 requests[security]==2.18.4
 restkit==4.2.2
 Shapely==1.6.1
