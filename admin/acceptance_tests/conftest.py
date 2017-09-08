@@ -1,6 +1,10 @@
+
+
 import pytest
 from pyramid import testing
 from c2cgeoportal_commons.tests import dbsession, transact, raise_db_error_on_query
+from wsgiref.simple_server import make_server
+import threading
 
 @pytest.fixture(scope='session')
 def settings(request):
@@ -8,14 +12,12 @@ def settings(request):
         'sqlalchemy.url': 'postgresql://www-data:www-data@localhost:5432/c2cgeoportal',
         'schema': 'main',
         'parent_schema': '',
-        'srid': 3857
+        'srid': 3857,
+        'pyramid.available_languages' : 'fr en'
     }
 
-@pytest.fixture(scope='session')
-@pytest.mark.usefixtures("dbsession")
-def app(request, dbsession, settings):
+def prepare_app(dbsession, settings):
     config = testing.setUp(settings=settings)
-
     config.include('pyramid_jinja2')
     config.include('c2cgeoform')
     config.add_route('user_add', 'user_add')
@@ -24,10 +26,28 @@ def app(request, dbsession, settings):
     config.include('c2cgeoportal_commons.models')
     config.scan(package='c2cgeoportal_admin.views')
     config.scan(package='acceptance_tests')
+    config.add_request_method(lambda r:dbsession, 'dbsession', reify=True)
+    app = config.make_wsgi_app()
+    return app
+
+@pytest.fixture(scope='session')
+@pytest.mark.usefixtures("dbsession")
+def test_app(request, dbsession, settings):
+    app = prepare_app(dbsession, settings)
     from webtest import TestApp
-    config.add_request_method(lambda r: dbsession, 'dbsession', reify=True)
-    testapp = TestApp(config.make_wsgi_app())
+    testapp = TestApp(app)
     return testapp;
+
+HOST_BASE = "http://localhost:6543"
+
+@pytest.fixture(scope='session')
+@pytest.mark.usefixtures("dbsession")
+def selenium_app(request, dbsession, settings):
+    app = prepare_app(dbsession, settings)
+    srv = make_server('', 6543, app)
+    threading.Thread(target=srv.serve_forever).start()
+    yield()
+    srv.shutdown()
 
 from pyramid.view import view_config
 

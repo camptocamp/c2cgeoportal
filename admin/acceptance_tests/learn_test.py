@@ -14,18 +14,18 @@ def insertUsersTestData(dbsession):
 @pytest.mark.usefixtures("insertUsersTestData", "transact")
 class TestUser():
 
-    @pytest.mark.usefixtures("app")
-    def test_view_rendering_in_app(self, dbsession, app):
-        res = app.get('/users_nb', status=200)
+    @pytest.mark.usefixtures("test_app")
+    def test_view_rendering_in_app(self, dbsession, test_app):
+        res = test_app.get('/users_nb', status=200)
         assert "['users len is: 1', <br/>, 'first is: babar', <br/>, 'projetc is: c2cgeoportal_admin', <br/>]" == str(res.html.contents), 'what a beautifull soup !'
 
-    @pytest.mark.usefixtures("app")
-    def test_commit_in_app(self, dbsession, app):
-        res = app.get('/user_add', status=200)
-        res = app.get('/users_nb', status=200)
+    @pytest.mark.usefixtures("test_app")
+    def test_commit_in_app(self, dbsession, test_app):
+        res = test_app.get('/user_add', status=200)
+        res = test_app.get('/users_nb', status=200)
         assert "['users len is: 2', <br/>, 'first is: babar', <br/>, 'projetc is: c2cgeoportal_admin', <br/>]" == str(res.html.contents), 'what a beautifull soup !'
 
-    @pytest.mark.usefixtures("app")
-    def test_commit_in_app_rollbacked(self, dbsession, app):
-        res = app.get('/users_nb', status=200)
+    @pytest.mark.usefixtures("test_app")
+    def test_commit_in_app_rollbacked(self, dbsession, test_app):
+        res = test_app.get('/users_nb', status=200)
         assert "['users len is: 1', <br/>, 'first is: babar', <br/>, 'projetc is: c2cgeoportal_admin', <br/>]" == str(res.html.contents), 'what a beautifull soup !'

@@ -14,7 +14,7 @@ init_db:
 .PHONY: test
 test:
 	#Run your project's tests.
-	${VENV}/bin/pytest
+	${VENV}/bin/pytest --driver Firefox
 
 .PHONY: serve
 serve:

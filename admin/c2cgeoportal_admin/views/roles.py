@@ -31,6 +31,6 @@ class UserViews(AbstractViews):
     def edit(self):
         return {}
 
-    @view_config(match_param=("action=view_admin"), renderer="json")
-    def view_admin(self):
+    @view_config(match_param=("action=view"), renderer="json")
+    def view(self):
         return {}

@@ -29,20 +29,34 @@ class TestUser():
         info = UserViews(request).grid()
         assert info.status_int == 500, '500 status when db error'
 
-    @pytest.mark.usefixtures("app")
-    def test_view_index_rendering_in_app(self, dbsession, app):
-        res = app.get('/user/all/index', status=200)
+    @pytest.mark.usefixtures("test_app")
+    def test_view_index_rendering_in_app(self, dbsession, test_app):
+        res = test_app.get('/user/all/index', status=200)
         assert str(res.html.find_all('th', limit=3)) == \
              '[<th data-column-id="username">username</th>,' \
              + ' <th data-column-id="email">email</th>,' \
              + ' <th data-column-id="_id_" data-converter="commands" data-searchable="false" data-sortable="false">Commands</th>]'
 
-    @pytest.mark.usefixtures("app")
-    def test_view_index_rendering_in_app_fr(self, dbsession, app):
-        res = app.get('/user/all/index', status=200)
+    @pytest.mark.usefixtures("test_app")
+    def test_view_index_rendering_in_app_fr(self, dbsession, test_app):
+        res = test_app.get('/user/all/index', status=200)
         res1 = res.click(verbose=True, href='language=fr')
         res2 = res1.follow()
+
         assert str(res2.html.find_all('th', limit=3)) == \
              '[<th data-column-id="username">username</th>,' \
              + ' <th data-column-id="email">mel</th>,' \
              + ' <th data-column-id="_id_" data-converter="commands" data-searchable="false" data-sortable="false">Commands</th>]'
+
+    # in order to make this work, had to patch as indicated in https://github.com/SeleniumHQ/selenium/issues/4558
+    # and to install selenium gecko driver
+    @pytest.mark.usefixtures("selenium", "selenium_app")
+    def test_selenium(self, selenium):
+        selenium.get('http://127.0.0.1:6543' + '/user/all/index')
+        elem = selenium.find_element_by_xpath("//button[@title='Refresh']/following-sibling::*")
+        elem.click()
+        elem = selenium.find_element_by_xpath("//a[contains(@href,'#50')]")
+        elem.click()
+        elem = selenium.find_element_by_xpath("//a[contains(@href,'babar_13/edit')]")
+        elem.click()
+        pass
