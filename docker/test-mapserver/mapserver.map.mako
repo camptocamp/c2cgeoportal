@@ -70,14 +70,14 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
-        DATA "the_geom from main.testpoint using unique id using srid=21781"
+        DATA "geom from geodata.testpoint using unique id using srid=21781"
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeatureInfo
             "gml_include_items" "all"
             "gml_exclude_items" "id"
-            "gml_geometries" "the_geom"
-            "gml_the_geom_type" "point"
+            "gml_geometries" "geom"
+            "gml_geom_type" "point"
             "gml_types" "auto"
             "gml_featureid" "id"
         END
@@ -105,14 +105,14 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
-        DATA "the_geom from (SELECT tp.* FROM main.testpoint AS tp, ${mapserver_join_tables} WHERE ST_Contains(${mapserver_join_area}, ST_GeomFromText(ST_AsText(tp.the_geom), 21781)) AND ${mapserver_join_where} 'testpoint_protected') as foo using unique id using srid=21781"
+        DATA "geom from (SELECT tp.* FROM geodata.testpoint AS tp, ${mapserver_join_tables} WHERE ST_Contains(${mapserver_join_area}, ST_GeomFromText(ST_AsText(tp.geom), 21781)) AND ${mapserver_join_where} 'testpoint_protected') as foo using unique id using srid=21781"
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeatureInfo
             "gml_include_items" "all"
             "gml_exclude_items" "id"
-            "gml_geometries" "the_geom"
-            "gml_the_geom_type" "point"
+            "gml_geometries" "geom"
+            "gml_geom_type" "point"
 
             ${mapserver_layer_metadata}
         END
@@ -137,21 +137,25 @@ MAP
 
     LAYER
         NAME "testpoint_protected_2"
+        EXTENT 420000 40500 839000 306400
         GROUP "testpoint_group_2"
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
-        DATA "the_geom from (SELECT tp.* FROM main.testpoint AS tp, ${mapserver_join_tables} WHERE ST_Contains(${mapserver_join_area}, ST_GeomFromText(ST_AsText(tp.the_geom), 21781)) AND ${mapserver_join_where} 'testpoint_protected_2') as foo using unique id using srid=21781"
+        DATA "geom from (SELECT tp.* FROM geodata.testpoint AS tp, ${mapserver_join_tables} WHERE ST_Contains(${mapserver_join_area}, ST_GeomFromText(ST_AsText(tp.geom), 21781)) AND ${mapserver_join_where} 'testpoint_protected_2') as foo using unique id using srid=21781"
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeatureInfo
             "gml_include_items" "all"
             "gml_exclude_items" "id"
-            "gml_geometries" "the_geom"
-            "gml_the_geom_type" "point"
+            "gml_geometries" "geom"
+            "gml_geom_type" "point"
 
             ${mapserver_layer_metadata}
+        END
+        VALIDATION
+            ${mapserver_layer_validation}
         END
         DUMP TRUE # for GetFeatureInfo
         TEMPLATE "template"
@@ -176,14 +180,14 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
-        DATA "the_geom from (SELECT tp.* FROM main.testpoint AS tp WHERE ST_Contains((${mapfile_data_subselect} 'testpoint_protected_query_with_collect'), ST_SetSRID(tp.the_geom, 21781))) as foo using unique id using srid=21781"
+        DATA "geom from (SELECT tp.* FROM geodata.testpoint AS tp WHERE ST_Contains((${mapfile_data_subselect} 'testpoint_protected_query_with_collect'), ST_SetSRID(tp.geom, 21781))) as foo using unique id using srid=21781"
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeatureInfo
             "gml_include_items" "all"
             "gml_exclude_items" "id"
-            "gml_geometries" "the_geom"
-            "gml_the_geom_type" "point"
+            "gml_geometries" "geom"
+            "gml_geom_type" "point"
 
             ${mapserver_layer_metadata}
         END
@@ -208,18 +212,19 @@ MAP
 
     LAYER
         NAME "testpoint_substitution"
+        EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
-        DATA "the_geom FROM (SELECT * FROM main.testpoint WHERE name='%s_name%') AS test USING UNIQUE id USING srid=21781"
+        DATA "geom FROM (SELECT * FROM geodata.testpoint WHERE name='%s_name%') AS test USING UNIQUE id USING srid=21781"
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeature
             "gml_include_items" "all"
             "gml_exclude_items" "id"
-            "gml_geometries" "the_geom"
-            "gml_the_geom_type" "point"
+            "gml_geometries" "geom"
+            "gml_geom_type" "point"
             "gml_types" "auto"
 
             "s_name_validation_pattern" "^[a-z]*$$"
@@ -247,19 +252,19 @@ MAP
 
     LAYER
         NAME "testpoint_column_restriction"
-        TYPE POINT
         EXTENT 420000 40500 839000 306400
+        TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
-        DATA "the_geom FROM (SELECT the_geom, id, %s_cols% FROM main.testpoint) AS test USING UNIQUE id USING srid=21781"
+        DATA "geom FROM (SELECT geom, id, %s_cols% FROM geodata.testpoint) AS test USING UNIQUE id USING srid=21781"
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeature
             "gml_include_items" "all"
             "gml_exclude_items" "id"
-            "gml_geometries" "the_geom"
-            "gml_the_geom_type" "point"
+            "gml_geometries" "geom"
+            "gml_geom_type" "point"
             "gml_types" "auto"
 
             "s_cols_validation_pattern" "^[a-z,]*$$"
@@ -293,14 +298,14 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
-        DATA "the_geom from main.testpoint using unique id using srid=21781"
+        DATA "geom from geodata.testpoint using unique id using srid=21781"
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeatureInfo
             "gml_include_items" "all"
             "gml_exclude_items" "id"
-            "gml_geometries" "the_geom"
-            "gml_the_geom_type" "point"
+            "gml_geometries" "geom"
+            "gml_geom_type" "point"
             "gml_types" "auto"
             "wms_metadataurl_href" "http://example.com/wmsfeatures.metadata"
             "wms_metadataurl_format" "text/plain"
@@ -332,7 +337,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
-        DATA "the_geom from main.testpoint using unique id using srid=21781"
+        DATA "geom from geodata.testpoint using unique id using srid=21781"
         METADATA
             "wms_title" "time"
             "wms_timeextent" "2000/2010/P1Y"
@@ -363,7 +368,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
-        DATA "the_geom from main.testpoint using unique id using srid=21781"
+        DATA "geom from geodata.testpoint using unique id using srid=21781"
         METADATA
             "wms_title" "time"
             "wms_timeextent" "2015/2020/P1Y"
@@ -393,7 +398,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
-        DATA "the_geom from main.testpoint using unique id using srid=21781"
+        DATA "geom from geodata.testpoint using unique id using srid=21781"
         METADATA
         END
         PROJECTION
@@ -416,7 +421,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
-        DATA "the_geom from main.testpoint using unique id using srid=21781"
+        DATA "geom from main.testpoint using unique id using srid=21781"
         PROJECTION
            "init=epsg:21781"
         END
@@ -438,7 +443,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
-        DATA "the_geom from main.testpoint using unique id using srid=21781"
+        DATA "geom from main.testpoint using unique id using srid=21781"
         PROJECTION
            "init=epsg:21781"
         END
@@ -452,7 +457,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
-        DATA "the_geom from main.testpoint using unique id using srid=21781"
+        DATA "geom from main.testpoint using unique id using srid=21781"
         PROJECTION
            "init=epsg:21781"
         END
@@ -473,7 +478,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
-        DATA "the_geom from main.testpoint using unique id using srid=21781"
+        DATA "geom from main.testpoint using unique id using srid=21781"
         PROJECTION
            "init=epsg:21781"
         END
@@ -516,14 +521,14 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
-        DATA "the_geom from main.testpoint using unique id using srid=21781"
+        DATA "geom from geodata.testpoint using unique id using srid=21781"
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeatureInfo
             "gml_include_items" "all"
             "gml_exclude_items" "id"
-            "gml_geometries" "the_geom"
-            "gml_the_geom_type" "point"
+            "gml_geometries" "geom"
+            "gml_geom_type" "point"
             "gml_types" "auto"
             "wms_metadataurl_href" "http://example.com/wmsfeatures.metadata"
             "wms_metadataurl_format" "text/plain"

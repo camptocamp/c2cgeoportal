@@ -51,7 +51,7 @@ class TestGeometryProcessing(TestCase):
             '{ "type": "Polygon", "coordinates": [[[2, 1], [2, 3], [6, 3], [6, 1], [2, 1]]] }]}'
         geom_ops = GeometryProcessing(request)
         geom = geom_ops.difference()
-        self.assertEquals(
+        self.assertEqual(
             geom,
             Polygon([(0, 0), (0, 4), (4, 4), (4, 3), (2, 3), (2, 1), (4, 1), (4, 0), (0, 0)])
         )

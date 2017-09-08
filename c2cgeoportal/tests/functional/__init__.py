@@ -33,16 +33,16 @@ Pyramid application test package
 """
 
 import os
-from ConfigParser import ConfigParser
-from urlparse import urlparse, urljoin
+from configparser import ConfigParser
 from webob.acceptparse import Accept
 
+from pyramid import testing
 import c2cgeoportal
 from c2cgeoportal import tests
 from c2cgeoportal.lib import functionality, caching
 
 
-mapserv_url = None
+mapserv_url = "http://mapserver/"
 db_url = None
 
 curdir = os.path.dirname(os.path.abspath(__file__))
@@ -52,16 +52,9 @@ if os.path.exists(configfile):
     cfg = ConfigParser()
     cfg.read(configfile)
     db_url = cfg.get("test", "sqlalchemy.url")
-    mapserv_url = urlparse(cfg.get("test", "mapserv.url"))
-    host = mapserv_url.hostname
-    mapserv_url = urljoin("http://localhost/", mapserv_url.path)
-    mapfile = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)),
-        "c2cgeoportal_test.map"
-    )
-    mapserv = "{0!s}?map={1!s}&".format(mapserv_url, mapfile)
 
 caching.init_region({"backend": "dogpile.cache.memory"})
+config = None
 
 
 def cleanup_db():
@@ -78,10 +71,10 @@ def cleanup_db():
         DBSession.delete(ti)
     DBSession.query(OGCServer).delete()
     DBSession.query(Interface).delete()
+    DBSession.query(User).delete()
     for r in DBSession.query(Role).all():
         r.functionnalities = []
         DBSession.delete(r)
-    DBSession.query(User).delete()
     DBSession.query(Functionality).delete()
     DBSession.query(FullTextSearch).delete()
     DBSession.query(Shorturl).delete()
@@ -91,6 +84,9 @@ def cleanup_db():
 
 
 def set_up_common():
+    global config
+    config = testing.setUp()
+
     c2cgeoportal.schema = "main"
     c2cgeoportal.srid = 21781
     functionality.FUNCTIONALITIES_TYPES = None
@@ -108,6 +104,8 @@ def set_up_common():
 
 def tear_down_common():
     cleanup_db()
+    testing.tearDown()
+    functionality.FUNCTIONALITIES_TYPES = None
 
     import sqlahelper
     sqlahelper.reset()
@@ -119,9 +117,9 @@ def create_default_ogcserver():
 
     transaction.commit()
     ogcserver = OGCServer(name="__test_ogc_server")
-    ogcserver.url = mapserv
+    ogcserver.url = mapserv_url
     ogcserver_external = OGCServer(name="__test_external_ogc_server")
-    ogcserver_external.url = mapserv + "external=true&"
+    ogcserver_external.url = mapserv_url + "?external=true&"
     DBSession.add_all([ogcserver, ogcserver_external])
     transaction.commit()
 
@@ -134,11 +132,14 @@ def _get_user(username):
     return DBSession.query(User).filter(User.username == username).one()
 
 
-def create_dummy_request(additional_settings=None, *args, **kargs):
+def create_dummy_request(additional_settings=None, authentication=True, user=None, *args, **kargs):
     if additional_settings is None:
         additional_settings = {}
     from c2cgeoportal.pyramid_ import default_user_validator
+    from c2cgeoportal.pyramid_ import create_get_user_from_request
+    from c2cgeoportal.lib.authentication import create_authentication
     request = tests.create_dummy_request({
+        "host_forward_host": [],
         "mapserverproxy": {
             "default_ogc_server": "__test_ogc_server",
             "external_ogc_server": "__test_external_ogc_server",
@@ -154,25 +155,22 @@ def create_dummy_request(additional_settings=None, *args, **kargs):
     }, *args, **kargs)
     request.accept_language = Accept("fr-CH,fr;q=0.8,en;q=0.5,en-US;q=0.3")
     request.registry.settings.update(additional_settings)
-    request.headers["Host"] = host
-    request.user = None
+    request.referer = "http://example.com/app"
+    request.path_info_peek = lambda: "main"
     request.interface_name = "main"
     request.get_user = _get_user
     request.registry.validate_user = default_user_validator
     request.client_addr = None
-    return request
-
-
-def add_user_property(request):
-    """
-    Add the "user" property to the given request.
-    Disable referer checking.
-    """
-    from c2cgeoportal.pyramid_ import _create_get_user_from_request
-    request.referer = "http://example.com/app"
-    request.path_info_peek = lambda: "main"
+    if authentication and user is None:
+        request._get_authentication_policy = lambda: create_authentication({
+            "authtkt_cookie_name": "__test",
+            "authtkt_secret": "123",
+        })
+    elif user is not None:
+        config.testing_securitypolicy(user)
     request.set_property(
-        _create_get_user_from_request({"authorized_referers": [request.referer]}),
+        create_get_user_from_request({"authorized_referers": [request.referer]}),
         name="user",
         reify=True
     )
+    return request

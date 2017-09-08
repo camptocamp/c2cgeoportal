@@ -28,22 +28,26 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import json
 from unittest import TestCase
 
 
 class TestEchoView(TestCase):
 
     def test_json_base64_encode(self):
-        import StringIO
+        import io
         from c2cgeoportal.views.echo import json_base64_encode
 
-        sio = StringIO.StringIO()
-        sio.write("some content with non-ASCII chars ç à é")
+        sio = io.BytesIO()
+        sio.write("some content with non-ASCII chars ç à é".encode("utf-8"))
         sio.flush()
         sio.seek(0)
 
         a = [s for s in json_base64_encode("a file name", sio)]
-        s = "".join(a)
+        s = b"".join(a).decode("utf-8")
 
-        self.assertEquals(s, '{"filename":"a file name","data":\
-"c29tZSBjb250ZW50IHdpdGggbm9uLUFTQ0lJIGNoYXJzIMOnIMOgIMOp","success":true}')
+        self.assertEqual(json.loads(s), {
+            "filename": "a file name",
+            "data": "c29tZSBjb250ZW50IHdpdGggbm9uLUFTQ0lJIGNoYXJzIMOnIMOgIMOp",
+            "success": True
+        })

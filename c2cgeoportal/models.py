@@ -29,11 +29,7 @@
 
 
 import logging
-try:
-    from hashlib import sha1
-    sha1  # suppress pyflakes warning
-except ImportError:  # pragma: no cover
-    from sha import new as sha1
+from hashlib import sha1
 
 import sqlahelper
 from papyrus.geo_interface import GeoInterface
@@ -47,15 +43,8 @@ from sqlalchemy.orm import relationship, backref
 from sqlalchemy.exc import UnboundExecutionError
 from geoalchemy2 import Geometry, func
 from geoalchemy2.shape import to_shape
-try:
-    from formalchemy import Column
-# Fallback if formalchemy do not exists, used by QGIS server plugin
-except:  # pragma: no cover
-    from sqlalchemy import Column as Col
+from sqlalchemy import Column
 
-    class Column(Col):
-        def __init__(self, label=None, *args, **kwargs):
-            super(Column, self).__init__(*args, **kwargs)
 
 try:
     from pyramid.security import Allow, ALL_PERMISSIONS, DENY_ALL
@@ -97,7 +86,6 @@ try:
     postgis_version = DBSession.execute(func.postgis_version()).scalar()
 except UnboundExecutionError:  # pragma: no cover - needed by non functional tests
     postgis_version = "2.0"
-management = postgis_version.startswith("1.")
 
 AUTHORIZED_ROLE = "role_admin"
 
@@ -123,6 +111,7 @@ def cache_invalidate_cb(*args):
 
 class TsVector(UserDefinedType):
     """ A custom type for PostgreSQL's tsvector type. """
+
     def get_col_spec(self):  # pragma: no cover
         return "TSVECTOR"
 
@@ -145,15 +134,13 @@ class FullTextSearch(GeoInterface, Base):
     lang = Column(String(2), nullable=True)
     public = Column(Boolean, server_default="true")
     ts = Column(TsVector)
-    the_geom = Column(Geometry("GEOMETRY", srid=_srid, management=management))
+    the_geom = Column(Geometry("GEOMETRY", srid=_srid))
     params = Column(JSONEncodedDict, nullable=True)
     actions = Column(JSONEncodedDict, nullable=True)
     from_theme = Column(Boolean, server_default="false")
 
 
 class Functionality(Base):
-    __label__ = _(u"Functionality")
-    __plural__ = _(u"Functionalities")
     __tablename__ = "functionality"
     __table_args__ = {"schema": _schema}
     __acl__ = [
@@ -161,17 +148,17 @@ class Functionality(Base):
     ]
 
     id = Column(Integer, primary_key=True)
-    name = Column(Unicode, nullable=False, label=_(u"Name"))
-    value = Column(Unicode, nullable=False, label=_(u"Value"))
+    name = Column(Unicode, nullable=False)
+    value = Column(Unicode, nullable=False)
     description = Column(Unicode)
 
-    def __init__(self, name=u"", value=u"", description=u""):
+    def __init__(self, name="", value="", description=""):
         self.name = name
         self.value = value
         self.description = description
 
     def __unicode__(self):
-        return u"{0!s} - {1!s}".format(self.name or u"", self.value or u"")  # pragma: no cover
+        return "{0!s} - {1!s}".format(self.name or "", self.value or "")  # pragma: no cover
 
 
 event.listen(Functionality, "after_update", cache_invalidate_cb)
@@ -208,8 +195,6 @@ theme_functionality = Table(
 
 
 class User(Base):
-    __label__ = _(u"User")
-    __plural__ = _(u"Users")
     __tablename__ = "user"
     __table_args__ = {"schema": _schema + "_static"}
     __acl__ = [
@@ -224,21 +209,17 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     username = Column(
         Unicode, unique=True, nullable=False,
-        label=_(u"Username")
     )
     _password = Column(
         "password", Unicode, nullable=False,
-        label=_(u"Password")
     )
     temp_password = Column(
         "temp_password", Unicode, nullable=True,
-        label=_(u"Password")
     )
-    email = Column(Unicode, nullable=False, label=_(u"E-mail"))
-    is_password_changed = Column(Boolean, default=False, label=_(u"Password Changed"))
+    email = Column(Unicode, nullable=False)
+    is_password_changed = Column(Boolean, default=False)
 
-    role_name = Column(String, label=_(u"Role"))
-
+    role_name = Column(String)
     _cached_role_name = None
     _cached_role = None
 
@@ -265,7 +246,7 @@ class User(Base):
 
     if _parentschema is not None and _parentschema != "":  # pragma: no cover
         # parent role relationship
-        parent_role_name = Column(String, label=_(u"Parent Role"))
+        parent_role_name = Column(String)
 
         @property
         def parent_role(self):
@@ -274,7 +255,7 @@ class User(Base):
             ).one()
 
     def __init__(
-        self, username=u"", password=u"", email=u"", is_password_changed=False,
+        self, username="", password="", email="", is_password_changed=False,
         functionalities=None, role=None
     ):
         if functionalities is None:
@@ -289,7 +270,7 @@ class User(Base):
 
     def _get_password(self):
         """returns password"""
-        return self._password
+        return self._password  # pragma: no cover
 
     def _set_password(self, password):
         """encrypts password on the fly."""
@@ -328,12 +309,10 @@ class User(Base):
     password = property(_get_password, _set_password)
 
     def __unicode__(self):
-        return self.username or u""  # pragma: no cover
+        return self.username or ""  # pragma: no cover
 
 
 class Role(Base):
-    __label__ = _(u"Role")
-    __plural__ = _(u"Roles")
     __tablename__ = "role"
     __table_args__ = {"schema": _schema}
     __acl__ = [
@@ -341,9 +320,9 @@ class Role(Base):
     ]
 
     id = Column(Integer, primary_key=True)
-    name = Column(Unicode, unique=True, nullable=False, label=_(u"Name"))
-    description = Column(Unicode, label=_(u"Description"))
-    extent = Column(Geometry("POLYGON", srid=_srid, management=management))
+    name = Column(Unicode, unique=True, nullable=False)
+    description = Column(Unicode)
+    extent = Column(Geometry("POLYGON", srid=_srid))
 
     # functionality
     functionalities = relationship(
@@ -351,7 +330,7 @@ class Role(Base):
         cascade="save-update,merge,refresh-expire"
     )
 
-    def __init__(self, name=u"", description=u"", functionalities=None, extent=None):
+    def __init__(self, name="", description="", functionalities=None, extent=None):
         if functionalities is None:
             functionalities = []
         self.name = name
@@ -360,7 +339,7 @@ class Role(Base):
         self.description = description
 
     def __unicode__(self):
-        return self.name or u""  # pragma: no cover
+        return self.name or ""  # pragma: no cover
 
     @property
     def bounds(self):
@@ -385,9 +364,9 @@ class TreeItem(Base):
     __mapper_args__ = {"polymorphic_on": item_type}
 
     id = Column(Integer, primary_key=True)
-    name = Column(Unicode, label=_(u"Name"), nullable=False)
-    metadata_url = Column(Unicode, label=_(u"Metadata URL"))  # should not be used in V2
-    description = Column(Unicode, label=_(u"Description"))
+    name = Column(Unicode, nullable=False)
+    metadata_url = Column(Unicode)  # should not be used in V2
+    description = Column(Unicode)
 
     @property
     def parents(self):  # pragma: no cover
@@ -406,12 +385,8 @@ class TreeItem(Base):
     def get_metadatas(self, name):  # pragma: no cover
         return [metadata for metadata in self.metadatas if metadata.name == name]
 
-    def __init__(self, name=u""):
+    def __init__(self, name=""):
         self.name = name
-
-    def __unicode__(self):  # pragma: no cover
-        type_ = self.__label__ if hasattr(self, "__label__") else self.item_type
-        return u"{}: {}".format(type_, self.name or u"")
 
 
 event.listen(TreeItem, "after_insert", cache_invalidate_cb, propagate=True)
@@ -421,8 +396,6 @@ event.listen(TreeItem, "after_delete", cache_invalidate_cb, propagate=True)
 
 # association table LayerGroup <> TreeItem
 class LayergroupTreeitem(Base):
-    __label__ = _(u"Tree links order")
-    __plural__ = _(u"Tree links order")
     __tablename__ = "layergroup_treeitem"
     __table_args__ = {"schema": _schema}
     __acl__ = [
@@ -431,11 +404,11 @@ class LayergroupTreeitem(Base):
 
     # required by formalchemy
     id = Column(Integer, primary_key=True)
-    description = Column(Unicode, label=_(u"Description"))
+    description = Column(Unicode)
     treegroup_id = Column(
         Integer, ForeignKey(_schema + ".treegroup.id")
     )
-    group = relationship(
+    treegroup = relationship(
         "TreeGroup",
         backref=backref(
             "children_relation",
@@ -447,7 +420,7 @@ class LayergroupTreeitem(Base):
     treeitem_id = Column(
         Integer, ForeignKey(_schema + ".treeitem.id")
     )
-    item = relationship(
+    treeitem = relationship(
         "TreeItem",
         backref=backref(
             "parents_relation", cascade="save-update,merge,delete,delete-orphan"
@@ -456,13 +429,9 @@ class LayergroupTreeitem(Base):
     )
     ordering = Column(Integer)
 
-    # Used by formalchemy
-    def __unicode__(self):  # pragma: no cover
-        return self.group.name
-
     def __init__(self, group=None, item=None, ordering=0):
-        self.group = group
-        self.item = item
+        self.treegroup = group
+        self.treeitem = item
         self.ordering = ordering
 
 
@@ -481,23 +450,23 @@ class TreeGroup(TreeItem):
     )
 
     def _get_children(self):
-        return [c.item for c in self.children_relation]
+        return [c.treeitem for c in self.children_relation]
 
     def _set_children(self, children, order=False):
         for child in self.children_relation:
-            if child.item not in children:
-                child.item = None
-                child.group = None
+            if child.treeitem not in children:
+                child.treeitem = None
+                child.treegroup = None
         if order is True:  # pragma: nocover
             for index, child in enumerate(children):
-                current = [c for c in self.children_relation if c.item == child]
+                current = [c for c in self.children_relation if c.treeitem == child]
                 if len(current) == 1:
                     current[0].ordering = index * 10
                 else:
                     LayergroupTreeitem(self, child, index * 10)
             self.children_relation.sort(key=lambda child: child.ordering)
         else:
-            current_item = [child.item for child in self.children_relation]
+            current_item = [child.treeitem for child in self.children_relation]
             for index, item in enumerate(children):
                 if item not in current_item:
                     LayergroupTreeitem(self, item, 1000000 + index)
@@ -506,13 +475,11 @@ class TreeGroup(TreeItem):
 
     children = property(_get_children, _set_children)
 
-    def __init__(self, name=u""):
+    def __init__(self, name=""):
         TreeItem.__init__(self, name=name)
 
 
 class LayerGroup(TreeGroup):
-    __label__ = _(u"Layer Group")
-    __plural__ = _(u"Layer Groups")
     __tablename__ = "layergroup"
     __table_args__ = {"schema": _schema}
     __acl__ = [
@@ -523,13 +490,13 @@ class LayerGroup(TreeGroup):
     id = Column(
         Integer, ForeignKey(_schema + ".treegroup.id"), primary_key=True
     )
-    is_expanded = Column(Boolean, label=_(u"Expanded"))  # shouldn"t be used in V3
-    is_internal_wms = Column(Boolean, label=_(u"Internal WMS"))
+    is_expanded = Column(Boolean)  # shouldn"t be used in V3
+    is_internal_wms = Column(Boolean)
     # children have radio button instance of check box
-    is_base_layer = Column(Boolean, label=_(u"Group of base layers"))  # Should not be used in V3
+    is_base_layer = Column(Boolean)  # Should not be used in V3
 
     def __init__(
-            self, name=u"", is_expanded=False,
+            self, name="", is_expanded=False,
             is_internal_wms=True, is_base_layer=False):
         TreeGroup.__init__(self, name=name)
         self.is_expanded = is_expanded
@@ -552,8 +519,6 @@ restricted_role_theme = Table(
 
 
 class Theme(TreeGroup):
-    __label__ = _(u"Theme")
-    __plural__ = _(u"Themes")
     __tablename__ = "theme"
     __table_args__ = {"schema": _schema}
     __acl__ = [
@@ -564,9 +529,9 @@ class Theme(TreeGroup):
     id = Column(
         Integer, ForeignKey(_schema + ".treegroup.id"), primary_key=True
     )
-    ordering = Column(Integer, nullable=False, label=_(u"Order"))
-    public = Column(Boolean, default=True, nullable=False, label=_(u"Public"))
-    icon = Column(Unicode, label=_(u"Icon"))
+    ordering = Column(Integer, nullable=False)
+    public = Column(Boolean, default=True, nullable=False)
+    icon = Column(Unicode)
 
     # functionality
     functionalities = relationship(
@@ -580,7 +545,7 @@ class Theme(TreeGroup):
         cascade="save-update,merge,refresh-expire",
     )
 
-    def __init__(self, name=u"", ordering=100, icon=u""):
+    def __init__(self, name="", ordering=100, icon=""):
         TreeGroup.__init__(self, name=name)
         self.ordering = ordering
         self.icon = icon
@@ -599,11 +564,11 @@ class Layer(TreeItem):
     id = Column(
         Integer, ForeignKey(_schema + ".treeitem.id"), primary_key=True
     )
-    public = Column(Boolean, default=True, label=_(u"Public"))
-    geo_table = Column(Unicode, label=_(u"Related Postgres table"))
-    exclude_properties = Column(Unicode, label=_(u"Attributes to exclude"))
+    public = Column(Boolean, default=True)
+    geo_table = Column(Unicode)
+    exclude_properties = Column(Unicode)
 
-    def __init__(self, name=u"", public=True):
+    def __init__(self, name="", public=True):
         TreeItem.__init__(self, name=name)
         self.public = public
 
@@ -613,8 +578,6 @@ class DimensionLayer(Layer):
 
 
 class LayerV1(Layer):  # Deprecated in v2
-    __label__ = _(u"Layer")
-    __plural__ = _(u"Layers")
     __tablename__ = "layerv1"
     __table_args__ = {"schema": _schema}
     __acl__ = [
@@ -625,52 +588,52 @@ class LayerV1(Layer):  # Deprecated in v2
     id = Column(
         Integer, ForeignKey(_schema + ".layer.id"), primary_key=True
     )
-    layer = Column(Unicode, label=_(u"Layer"))
-    is_checked = Column(Boolean, default=True, label=_(u"Checked"))  # by default
-    icon = Column(Unicode, label=_(u"Icon"))  # on the tree
+    layer = Column(Unicode)
+    is_checked = Column(Boolean, default=True)  # by default
+    icon = Column(Unicode)  # on the tree
     layer_type = Column(Enum(
         "internal WMS",
         "external WMS",
         "WMTS",
         "no 2D",
-        native_enum=False), label=_(u"Type"))
-    url = Column(Unicode, label=_(u"Base URL"))  # for externals
+        native_enum=False))
+    url = Column(Unicode)  # for externals
     image_type = Column(Enum(
         "image/jpeg",
         "image/png",
-        native_enum=False), label=_(u"Image type"))  # for WMS
-    style = Column(Unicode, label=_(u"Style"))
-    dimensions = Column(Unicode, label=_(u"Dimensions"))  # for WMTS
-    matrix_set = Column(Unicode, label=_(u"Matrix set"))  # for WMTS
-    wms_url = Column(Unicode, label=_(u"WMS server URL"))  # for WMTS
-    wms_layers = Column(Unicode, label=_(u"WMS layers"))  # for WMTS
-    query_layers = Column(Unicode, label=_(u"Query layers"))  # for WMTS
-    kml = Column(Unicode, label=_(u"KML 3D"))  # for kml 3D
-    is_single_tile = Column(Boolean, label=_(u"Single tile"))  # for extenal WMS
-    legend = Column(Boolean, default=True, label=_(u"Display legend"))  # on the tree
-    legend_image = Column(Unicode, label=_(u"Legend image"))  # fixed legend image
-    legend_rule = Column(Unicode, label=_(u"Legend rule"))  # on wms legend only one rule
-    is_legend_expanded = Column(Boolean, default=False, label=_(u"Legend expanded"))
-    min_resolution = Column(Float, label=_(u"Min resolution"))  # for all except internal WMS
-    max_resolution = Column(Float, label=_(u"Max resolution"))  # for all except internal WMS
-    disclaimer = Column(Unicode, label=_(u"Disclaimer"))
+        native_enum=False))  # for WMS
+    style = Column(Unicode)
+    dimensions = Column(Unicode)  # for WMTS
+    matrix_set = Column(Unicode)  # for WMTS
+    wms_url = Column(Unicode)  # for WMTS
+    wms_layers = Column(Unicode)  # for WMTS
+    query_layers = Column(Unicode)  # for WMTS
+    kml = Column(Unicode)  # for kml 3D
+    is_single_tile = Column(Boolean)  # for extenal WMS
+    legend = Column(Boolean, default=True)  # on the tree
+    legend_image = Column(Unicode)  # fixed legend image
+    legend_rule = Column(Unicode)  # on wms legend only one rule
+    is_legend_expanded = Column(Boolean, default=False)
+    min_resolution = Column(Float)  # for all except internal WMS
+    max_resolution = Column(Float)  # for all except internal WMS
+    disclaimer = Column(Unicode)
     # data attribute field in which application can find a human identifiable name or number
-    identifier_attribute_field = Column(Unicode, label=_(u"Identifier attribute field"))
+    identifier_attribute_field = Column(Unicode)
     time_mode = Column(Enum(
         "disabled",
         "value",
         "range",
         native_enum=False), default="disabled", nullable=False,
-        label=_(u"Time mode"))
+    )
     time_widget = Column(Enum(
         "slider",
         "datepicker",
         native_enum=False), default="slider", nullable=True,
-        label=_(u"Time widget"))
+    )
 
     def __init__(
-        self, name=u"", public=True, icon=u"",
-        layer_type=u"internal WMS"
+        self, name="", public=True, icon="",
+        layer_type="internal WMS"
     ):
         Layer.__init__(self, name=name, public=public)
         self.layer = name
@@ -689,8 +652,6 @@ OGCSERVER_AUTH_GEOSERVER = "Geoserver auth"
 
 
 class OGCServer(Base):
-    __label__ = _(u"OGC server")
-    __plural__ = _(u"OGC servers")
     __tablename__ = "ogc_server"
     __table_args__ = {"schema": _schema}
     __acl__ = [
@@ -700,50 +661,49 @@ class OGCServer(Base):
     id = Column(
         Integer, primary_key=True
     )
-    name = Column(Unicode, label=_(u"Name"), nullable=False, unique=True)
-    description = Column(Unicode, label=_(u"Description"))
-    url = Column(Unicode, label=_(u"Base URL"), nullable=False)
-    url_wfs = Column(Unicode, label=_(u"WFS URL"))
+    name = Column(Unicode, nullable=False, unique=True)
+    description = Column(Unicode)
+    url = Column(Unicode, nullable=False)
+    url_wfs = Column(Unicode)
     type = Column(Enum(
         OGCSERVER_TYPE_MAPSERVER,
         OGCSERVER_TYPE_QGISSERVER,
         OGCSERVER_TYPE_GEOSERVER,
         OGCSERVER_TYPE_OTHER,
-        native_enum=False), nullable=False, label=_(u"Server type"))
+        native_enum=False), nullable=False)
     image_type = Column(Enum(
         "image/jpeg",
         "image/png",
-        native_enum=False), nullable=False, label=_(u"Image type"))
+        native_enum=False), nullable=False)
     auth = Column(Enum(
         OGCSERVER_AUTH_NOAUTH,
         OGCSERVER_AUTH_STANDARD,
         OGCSERVER_AUTH_GEOSERVER,
-        native_enum=False), nullable=False, label=_(u"Authentication type"))
-    wfs_support = Column(Boolean, label=_(u"WFS support"))
-    is_single_tile = Column(Boolean, label=_(u"Single tile"))
+        native_enum=False), nullable=False)
+    wfs_support = Column(Boolean)
+    is_single_tile = Column(Boolean)
 
     def __init__(
         self, name="", description=None, url="https://wms.example.com", url_wfs=None,
-        type=u"mapserver", image_type="image/png", auth="Standard auth", wfs_support=True,
+        type_=OGCSERVER_TYPE_MAPSERVER, image_type="image/png",
+        auth=OGCSERVER_AUTH_STANDARD, wfs_support=True,
         is_single_tile=False
     ):
         self.name = name
         self.description = description
         self.url = url
         self.url_wfs = url_wfs
-        self.type = type
+        self.type = type_
         self.image_type = image_type
         self.auth = auth
         self.wfs_support = wfs_support
         self.is_single_tile = is_single_tile
 
     def __unicode__(self):
-        return self.name or u""  # pragma: no cover
+        return self.name or ""  # pragma: no cover
 
 
 class LayerWMS(DimensionLayer):
-    __label__ = _(u"WMS layer")
-    __plural__ = _(u"WMS layers")
     __tablename__ = "layer_wms"
     __table_args__ = {"schema": _schema}
     __acl__ = [
@@ -757,20 +717,19 @@ class LayerWMS(DimensionLayer):
     ogc_server_id = Column(
         Integer, ForeignKey(_schema + ".ogc_server.id"), nullable=False
     )
-    layer = Column(Unicode, label=_(u"WMS layer name"))
-    style = Column(Unicode, label=_(u"Style"))
+    layer = Column(Unicode)
+    style = Column(Unicode)
     time_mode = Column(Enum(
         "disabled",
         "value",
         "range",
         native_enum=False), default="disabled", nullable=False,
-        label=_(u"Time mode")
     )
     time_widget = Column(Enum(
         "slider",
         "datepicker",
         native_enum=False), default="slider", nullable=False,
-        label=_(u"Time widget"))
+    )
 
     # relationship with OGCServer
     ogc_server = relationship(
@@ -778,7 +737,7 @@ class LayerWMS(DimensionLayer):
     )
 
     def __init__(
-        self, name=u"", layer=u"", public=True, time_mode="disabled", time_widget="slider"
+        self, name="", layer="", public=True, time_mode="disabled", time_widget="slider"
     ):
         DimensionLayer.__init__(self, name=name, public=public)
         self.layer = layer
@@ -787,8 +746,6 @@ class LayerWMS(DimensionLayer):
 
 
 class LayerWMTS(DimensionLayer):
-    __label__ = _(u"WMTS layer")
-    __plural__ = _(u"WMTS layers")
     __tablename__ = "layer_wmts"
     __table_args__ = {"schema": _schema}
     __acl__ = [
@@ -799,17 +756,17 @@ class LayerWMTS(DimensionLayer):
     id = Column(
         Integer, ForeignKey(_schema + ".layer.id"), primary_key=True
     )
-    url = Column(Unicode, label=_(u"GetCapabilities URL"), nullable=False)
-    layer = Column(Unicode, label=_(u"Layer"), nullable=False)
-    style = Column(Unicode, label=_(u"Style"))
-    matrix_set = Column(Unicode, label=_(u"Matrix set"))
+    url = Column(Unicode, nullable=False)
+    layer = Column(Unicode, nullable=False)
+    style = Column(Unicode)
+    matrix_set = Column(Unicode)
     image_type = Column(Enum(
         "image/jpeg",
         "image/png",
-        native_enum=False), nullable=False, label=_(u"Image type")
+        native_enum=False), nullable=False
     )
 
-    def __init__(self, name=u"", public=True, image_type="image/png"):
+    def __init__(self, name="", public=True, image_type="image/png"):
         DimensionLayer.__init__(self, name=name, public=public)
         self.image_type = image_type
 
@@ -843,8 +800,6 @@ layer_ra = Table(
 
 
 class RestrictionArea(Base):
-    __label__ = _(u"Restriction Area")
-    __plural__ = _(u"Restriction Areas")
     __tablename__ = "restrictionarea"
     __table_args__ = {"schema": _schema}
     __acl__ = [
@@ -852,10 +807,10 @@ class RestrictionArea(Base):
     ]
 
     id = Column(Integer, primary_key=True)
-    area = Column(Geometry("POLYGON", srid=_srid, management=management))
-    name = Column(Unicode, label=_(u"Name"))
-    description = Column(Unicode, label=_(u"Description"))
-    readwrite = Column(Boolean, label=_(u"Read-write mode"), default=False)
+    area = Column(Geometry("POLYGON", srid=_srid))
+    name = Column(Unicode)
+    description = Column(Unicode)
+    readwrite = Column(Boolean, default=False)
 
     # relationship with Role and Layer
     roles = relationship(
@@ -881,7 +836,7 @@ class RestrictionArea(Base):
         self.readwrite = readwrite
 
     def __unicode__(self):  # pragma: no cover
-        return self.name or u""
+        return self.name or ""
 
 
 event.listen(RestrictionArea, "after_insert", cache_invalidate_cb)
@@ -919,8 +874,6 @@ interface_theme = Table(
 
 
 class Interface(Base):
-    __label__ = _(u"Interface")
-    __plural__ = _(u"Interfaces")
     __tablename__ = "interface"
     __table_args__ = {"schema": _schema}
     __acl__ = [
@@ -928,8 +881,8 @@ class Interface(Base):
     ]
 
     id = Column(Integer, primary_key=True)
-    name = Column(Unicode, label=_(u"Name"))
-    description = Column(Unicode, label=_(u"Description"))
+    name = Column(Unicode)
+    description = Column(Unicode)
 
     # relationship with Layer and Theme
     layers = relationship(
@@ -946,12 +899,10 @@ class Interface(Base):
         self.description = description
 
     def __unicode__(self):  # pragma: no cover
-        return self.name or u""
+        return self.name or ""
 
 
 class Metadata(Base):
-    __label__ = _(u"Metadata")
-    __plural__ = _(u"Metadatas")
     __tablename__ = "metadata"
     __table_args__ = {"schema": _schema}
     __acl__ = [
@@ -959,9 +910,9 @@ class Metadata(Base):
     ]
 
     id = Column(Integer, primary_key=True)
-    name = Column(Unicode, label=_(u"Name"))
-    value = Column(Unicode, label=_(u"Value"))
-    description = Column(Unicode, label=_(u"Description"))
+    name = Column(Unicode)
+    value = Column(Unicode)
+    description = Column(Unicode)
 
     item_id = Column(
         "item_id", Integer,
@@ -980,7 +931,7 @@ class Metadata(Base):
         self.value = value
 
     def __unicode__(self):  # pragma: no cover
-        return u"{0!s}: {1!s}".format(self.name or u"", self.value or u"")
+        return "{0!s}: {1!s}".format(self.name or "", self.value or "")
 
 
 event.listen(Metadata, "after_insert", cache_invalidate_cb, propagate=True)
@@ -989,8 +940,6 @@ event.listen(Metadata, "after_delete", cache_invalidate_cb, propagate=True)
 
 
 class Dimension(Base):
-    __label__ = _(u"Dimension")
-    __plural__ = _(u"Dimensions")
     __tablename__ = "dimension"
     __table_args__ = {"schema": _schema}
     __acl__ = [
@@ -998,9 +947,9 @@ class Dimension(Base):
     ]
 
     id = Column(Integer, primary_key=True)
-    name = Column(Unicode, label=_(u"Name"))
-    value = Column(Unicode, label=_(u"Value"))
-    description = Column(Unicode, label=_(u"Description"))
+    name = Column(Unicode)
+    value = Column(Unicode)
+    description = Column(Unicode)
 
     layer_id = Column(
         "layer_id", Integer,
@@ -1021,13 +970,11 @@ class Dimension(Base):
             self.layer = layer
 
     def __unicode__(self):  # pragma: no cover
-        return self.name or u""
+        return self.name or ""
 
 
 if _parentschema is not None and _parentschema != "":  # pragma: no cover
     class ParentRole(Base):
-        __label__ = _(u"Parent Role")
-        __plural__ = _(u"Parent Roles")
         __tablename__ = "role"
         __table_args__ = {"schema": _parentschema}
         __acl__ = [
@@ -1035,13 +982,13 @@ if _parentschema is not None and _parentschema != "":  # pragma: no cover
         ]
 
         id = Column(Integer, primary_key=True)
-        name = Column(Unicode, unique=True, nullable=False, label=_(u"Name"))
+        name = Column(Unicode, unique=True, nullable=False)
 
-        def __init__(self, name=u""):
+        def __init__(self, name=""):
             self.name = name
 
         def __unicode__(self):
-            return self.name or u""  # pragma: no cover
+            return self.name or ""  # pragma: no cover
 
 
 class Shorturl(Base):

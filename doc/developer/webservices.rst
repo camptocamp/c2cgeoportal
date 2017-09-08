@@ -58,7 +58,8 @@ OGC Server
         "wfsSupport": (true|false),
         "imageType": "image/(jpeg|png)",
         "isSingleTile": (true|false),
-        "serverType": "(mapserver|geoserver|qgisserver)",
+        "type": "(mapserver|geoserver|qgisserver)",
+        "credential: (true|false),"
     }
 
 
@@ -171,6 +172,19 @@ WMS Layer
             "queryable": (true|false),
             "minResolutionHint": <minResolutionHint>,
             "maxResolutionHint": <maxResolutionHint>
+        }],
+        "edit_columns":[{
+            "maxLength": <maxLength>,
+            "name": "<name>",
+            "nillable": (true|false),
+            "restriction": "enumeration",
+            "enumeration": [
+                "<value>"
+            ],
+            "srid": <srid>,
+            "type": "(xsd:string|xsd:decimal|xsd:integer|xsd:boolean|xsd:date|xsd:dateTime|xsd:double|xsd:duration|xsd:base64Binary|xsd:time|gml:CurvePropertyType|gml:GeometryCollectionPropertyType|gml:LineStringPropertyType|gml:MultiLineStringPropertyType|gml:MultiPointPropertyType|gml:MultiPolygonPropertyType|gml:PointPropertyType|gml:PolygonPropertyType)",
+            "fractionDigits": <fractionDigits>,
+            "totalDigits": <totalDigits>
         }]
     }
 
@@ -377,6 +391,22 @@ URL: ``.../layers/<layer_id>/....``
 
 `Parameters and results, see the MapFish protocol <https://github.com/elemoine/papyrus/wiki/Protocol>`_.
 
+Enumerate attributes
+--------------------
+
+URL: ``.../layers/<layer_name>/values/<field_name>``
+
+Result
+~~~~~~
+
+.. code:: json
+
+    {
+        "items": [{
+          "label": "<name>", // deprecated in v2
+          "value": "<value>"
+        }, ...]
+    }
 
 Raster
 ======
@@ -396,10 +426,10 @@ Result
 
 .. code:: json
 
-   {
-       "<layer>": <value>,
-       ...
-   }
+    {
+        "<layer>": <value>,
+        ...
+    }
 
 
 Digital Elevation Model

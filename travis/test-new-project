@@ -1,0 +1,76 @@
+#!/usr/bin/python
+
+import sys
+import json
+import os.path
+import subprocess
+from subprocess import check_output
+
+initial_error_length = 0
+initial_access_length = 0
+if os.path.exists("/var/log/apache2/error.log"):
+    with open("/var/log/apache2/error.log") as f:
+        initial_error_length = len(f.read().split("\n"))
+if os.path.exists("/var/log/apache2/access.log"):
+    with open("/var/log/apache2/access.log") as f:
+        initial_access_length = len(f.read().split("\n"))
+
+curl_args = ["--connect-timeout", "1", "--max-time", "120", "--retry", "5", "--silent"]
+
+url = "http://localhost/travis/{}".format(sys.argv[1])
+
+try:
+    status_code = subprocess.check_output(
+        ["curl", "--write-out", "%{http_code}"] + curl_args + ["--output", "/dev/null", url]
+    )
+except subprocess.CalledProcessError as e:
+    print("Exception on curl call: {}".format(e))
+
+    if os.path.exists("/var/log/apache2/error.log"):
+        with open("/var/log/apache2/error.log") as f:
+            print("ERRORS:")
+            print("\n".join(f.read().split('\n')[initial_error_length:]))
+    if os.path.exists("/var/log/apache2/access.log"):
+        with open("/var/log/apache2/access.log") as f:
+            print("ACCESS:")
+            print("\n".join(f.read().split('\n')[initial_access_length:]))
+    print("RESULT:")
+    print(subprocess.check_output(["curl"] + curl_args + [url]))
+    exit(1)
+
+if status_code == "200":
+    if len(sys.argv) == 4 and sys.argv[3] == "enum":
+        result = subprocess.check_output(
+            ["curl", "--write-out", "%{http_code}"] + curl_args + [url]
+        )
+        if json.loads(result) == {
+            "items": [{
+                "label": "car",
+                "value": "car"
+            }, {
+                "label": "train",
+                "value": "train"
+            }]
+        }:
+            print("enum OK")
+            exit()
+        else:
+            print("Incorrect result:")
+            print("$RESULT")
+            exit(2)
+    print("OK")
+    exit()
+else:
+    print("Bad status code {}".format(status_code))
+
+    if os.path.exists("/var/log/apache2/error.log"):
+        with open("/var/log/apache2/error.log") as f:
+            print("ERRORS:")
+            print("\n".join(f.read().split('\n')[initial_error_length:]))
+    if os.path.exists("/var/log/apache2/access.log"):
+        with open("/var/log/apache2/access.log") as f:
+            print("ACCESS:")
+            print("\n".join(f.read().split('\n')[initial_access_length:]))
+    print("RESULT:")
+    print(subprocess.check_output(["curl"] + curl_args + [url]))
+    exit(2)

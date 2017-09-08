@@ -1,7 +1,8 @@
 #!/bin/bash -ex
 
-.build/venv/bin/pcreate --scaffold=c2cgeoportal_create /tmp/travis/testgeomapfish package=testgeomapfish srid=21781 apache_vhost=test extent=489246.36,78873.44,837119.76,296543.14
-.build/venv/bin/pcreate --scaffold=c2cgeoportal_update /tmp/travis/testgeomapfish package=testgeomapfish srid=21781 apache_vhost=test extent=489246.36,78873.44,837119.76,296543.14 > /dev/null # on create
+export SRID=21781 APACHE_VHOST=test EXTENT=489246.36,78873.44,837119.76,296543.14
+./docker-run pcreate --scaffold=c2cgeoportal_create /tmp/travis/testgeomapfish --package-name testgeomapfish > /dev/null
+./docker-run pcreate --scaffold=c2cgeoportal_update /tmp/travis/testgeomapfish --package-name testgeomapfish > /dev/null # on create
 
 cp travis/build.mk /tmp/travis/testgeomapfish/travis.mk
 cp travis/vars.yaml /tmp/travis/testgeomapfish/vars_travis.yaml
@@ -29,13 +30,6 @@ sudo a2enmod headers
 sudo a2enmod rewrite
 sudo a2enmod wsgi
 sudo a2enmod fcgid
-
-sudo -u postgres psql --command='GRANT SELECT ON TABLE spatial_ref_sys TO "www-data"' geomapfish
-sudo -u postgres psql --command='GRANT ALL ON TABLE geometry_columns TO "www-data"' geomapfish
-sudo -u postgres psql --command="CREATE SCHEMA main;" geomapfish
-sudo -u postgres psql --command="CREATE SCHEMA main_static;" geomapfish
-sudo -u postgres psql --command='GRANT ALL ON SCHEMA main TO "www-data"' geomapfish
-sudo -u postgres psql --command='GRANT ALL ON SCHEMA main_static TO "www-data"' geomapfish
 
 make -f travis.mk .build/requirements.timestamp alembic.ini alembic_static.ini production.ini .build/config.yaml .build/venv/bin/alembic
 .build/venv/bin/alembic --config alembic.ini upgrade head

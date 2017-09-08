@@ -1,6 +1,6 @@
 #!/bin/bash -ex
 
-make -f travis.mk doc
+./docker-run make -f travis.mk doc
 
 DOC=false
 BRANCH=2.1
@@ -14,12 +14,14 @@ fi
 
 echo == Build the doc ==
 
-GIT_REV=`git log | head --lines=1 | awk '{{print $2}}'`
 git fetch origin gh-pages:gh-pages
 git checkout gh-pages
 
+if [ -e ${BRANCH} ]
+then
+    git rm -r --force -- ${BRANCH}
+fi
 mkdir --parent ${BRANCH}
-rm --recursive --force ${BRANCH}/*
 mv doc/_build/html/* ${BRANCH}
 
 if [ ${DOC} == true ]
@@ -28,9 +30,9 @@ then
     git commit --message="Update documentation for the revision ${TRAVIS_COMMIT}" | true
     git push origin gh-pages
 else
-    git checkout ${BRANCH}/searchindex.js
-    git checkout ${BRANCH}/_sources
-    git checkout ${BRANCH}/_static
+    git checkout ${BRANCH}/searchindex.js || true
+    git checkout ${BRANCH}/_sources || true
+    git checkout ${BRANCH}/_static || true
     git status
     git diff
     git reset --hard

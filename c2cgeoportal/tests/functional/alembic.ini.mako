@@ -21,6 +21,7 @@ script_location = c2cgeoportal/scaffolds/update/CONST_alembic/main
 # sourceless = false
 
 sqlalchemy.url = postgresql://${dbuser}:${dbpassword}@${dbhost}:${dbport}/${db}
+version_table = c2cgeoportal_version
 version_table_schema = main
 schema = main
 parentschema =

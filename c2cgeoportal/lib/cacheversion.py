@@ -29,7 +29,7 @@
 
 
 import uuid
-from urlparse import urljoin
+from urllib.parse import urljoin
 
 from c2cgeoportal.pyramid_ import CACHE_PATH
 from c2cgeoportal.lib.caching import get_region

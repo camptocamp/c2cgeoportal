@@ -28,7 +28,6 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import functools
 import warnings
 
 from sqlalchemy import Table, sql, MetaData
@@ -75,7 +74,7 @@ class _AssociationProxy(object):
         self.target = target
         self.value_attr = value_attr
 
-    def __get__(self, obj, type=None):
+    def __get__(self, obj, type_=None):
         if obj is None:
             # For "hybrid" descriptors that work both at the instance
             # and class levels we could return an SQL expression here.
@@ -100,9 +99,9 @@ class _AssociationProxy(object):
             setattr(obj, self.target, o)
 
 
-def _xsd_sequence_callback(tb, cls):
+def xsd_sequence_callback(tb, cls):
     from c2cgeoportal.models import DBSession
-    for k, p in cls.__dict__.iteritems():
+    for k, p in cls.__dict__.items():
         if not isinstance(p, _AssociationProxy):
             continue
         relationship_property = class_mapper(cls) \
@@ -110,7 +109,7 @@ def _xsd_sequence_callback(tb, cls):
         target_cls = relationship_property.argument
         query = DBSession.query(getattr(target_cls, p.value_attr))
         attrs = {}
-        attrs["minOccurs"] = str(0)
+        attrs["minOccurs"] = "0"
         attrs["nillable"] = "true"
         attrs["name"] = k
         with tag(tb, "xsd:element", attrs) as tb:
@@ -146,8 +145,6 @@ def _get_schema(tablename):
 
 
 def get_table(tablename, schema=None, session=None):
-    from c2cgeoportal.models import management
-
     if schema is None:
         tablename, schema = _get_schema(tablename)
 
@@ -169,13 +166,6 @@ def get_table(tablename, schema=None, session=None):
             schema=schema,
             autoload=True,
             autoload_with=engine,
-            listeners=[(
-                "column_reflect",
-                functools.partial(
-                    _column_reflect_listener,
-                    engine=engine
-                )
-            )] if management else []
         )
     return table
 
@@ -212,7 +202,7 @@ def _create_class(table, exclude_properties=None):
     if exclude_properties is None:  # pragma: nocover
         exclude_properties = []
     cls = type(
-        str(table.name.capitalize()),
+        table.name.capitalize(),
         (GeoInterface, Base),
         dict(
             __table__=table,

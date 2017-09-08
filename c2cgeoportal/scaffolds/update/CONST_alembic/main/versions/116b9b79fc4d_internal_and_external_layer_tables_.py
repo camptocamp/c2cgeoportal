@@ -77,8 +77,8 @@ def upgrade():
         ),
         Column('layer', Unicode),
         Column('style', Unicode),
-        Column('time_mode', Unicode, server_default=u'disabled', nullable=False),
-        Column('time_widget', Unicode, server_default=u'slider', nullable=False),
+        Column('time_mode', Unicode, server_default='disabled', nullable=False),
+        Column('time_widget', Unicode, server_default='slider', nullable=False),
         schema=schema,
     )
 
@@ -194,7 +194,7 @@ def downgrade():
         Column('image_type', Unicode(10)),
         Column('style', Unicode),
         Column('time_mode', Unicode(8)),
-        Column('time_widget', Unicode(10), server_default=u'slider'),
+        Column('time_widget', Unicode(10), server_default='slider'),
         schema=schema,
     )
 
@@ -209,7 +209,7 @@ def downgrade():
         Column('style', Unicode),
         Column('is_single_tile', Boolean),
         Column('time_mode', Unicode(8)),
-        Column('time_widget', Unicode(10), server_default=u'slider'),
+        Column('time_widget', Unicode(10), server_default='slider'),
         schema=schema,
     )
     # move data back

@@ -39,7 +39,7 @@ from pyramid import testing
 from c2cgeoportal.tests.functional import (  # noqa
     tear_down_common as tearDownModule,
     set_up_common as setUpModule,
-    mapserv_url, host, create_dummy_request, create_default_ogcserver,
+    mapserv_url, create_dummy_request, create_default_ogcserver,
 )
 
 import logging
@@ -57,50 +57,50 @@ class TestThemesView(TestCase):
         from c2cgeoportal.models import DBSession, \
             Theme, LayerGroup, Interface, OGCServer, LayerWMS, LayerWMTS
 
-        main = Interface(name=u"main")
+        main = Interface(name="main")
 
         ogc_server_internal, _ = create_default_ogcserver()
         ogc_server_external = OGCServer(name="__test_ogc_server_external", url="http://wms.geo.admin.ch/", image_type="image/jpeg")
 
-        layer_internal_wms = LayerWMS(name=u"__test_layer_internal_wms", public=True)
+        layer_internal_wms = LayerWMS(name="__test_layer_internal_wms", public=True)
         layer_internal_wms.layer = "__test_layer_internal_wms"
         layer_internal_wms.interfaces = [main]
         layer_internal_wms.ogc_server = ogc_server_internal
 
-        layer_external_wms = LayerWMS(name=u"__test_layer_external_wms", layer="ch.swisstopo.dreiecksvermaschung", public=True)
+        layer_external_wms = LayerWMS(name="__test_layer_external_wms", layer="ch.swisstopo.dreiecksvermaschung", public=True)
         layer_external_wms.interfaces = [main]
         layer_external_wms.ogc_server = ogc_server_external
 
-        layer_wmts = LayerWMTS(name=u"__test_layer_wmts", public=True)
+        layer_wmts = LayerWMTS(name="__test_layer_wmts", public=True)
         layer_wmts.url = "http://example.com/1.0.0/WMTSCapabilities.xml"
         layer_wmts.layer = "map"
         layer_wmts.interfaces = [main]
 
-        layer_group_1 = LayerGroup(name=u"__test_layer_group_1")
+        layer_group_1 = LayerGroup(name="__test_layer_group_1")
         layer_group_1.children = [layer_internal_wms]
 
-        layer_group_2 = LayerGroup(name=u"__test_layer_group_2")
+        layer_group_2 = LayerGroup(name="__test_layer_group_2")
         layer_group_2.children = [layer_external_wms]
 
-        layer_group_3 = LayerGroup(name=u"__test_layer_group_3")
+        layer_group_3 = LayerGroup(name="__test_layer_group_3")
         layer_group_3.children = [layer_wmts]
 
-        layer_group_4 = LayerGroup(name=u"__test_layer_group_4")
+        layer_group_4 = LayerGroup(name="__test_layer_group_4")
         layer_group_4.children = [layer_group_1, layer_group_2]
 
-        layer_group_5 = LayerGroup(name=u"__test_layer_group_5")
+        layer_group_5 = LayerGroup(name="__test_layer_group_5")
         layer_group_5.children = [layer_group_1, layer_group_3]
 
-        layer_group_6 = LayerGroup(name=u"__test_layer_group_6")
+        layer_group_6 = LayerGroup(name="__test_layer_group_6")
         layer_group_6.children = [layer_internal_wms]
 
-        layer_group_7 = LayerGroup(name=u"__test_layer_group_7")
+        layer_group_7 = LayerGroup(name="__test_layer_group_7")
         layer_group_7.children = [layer_group_1, layer_group_6]
 
-        layer_group_8 = LayerGroup(name=u"__test_layer_group_8")
+        layer_group_8 = LayerGroup(name="__test_layer_group_8")
         layer_group_8.children = [layer_group_2, layer_group_6]
 
-        theme = Theme(name=u"__test_theme")
+        theme = Theme(name="__test_theme")
         theme.interfaces = [main]
         theme.children = [
             layer_group_1, layer_group_2, layer_group_3,
@@ -183,8 +183,8 @@ class TestThemesView(TestCase):
             "interface": "main",
         })
         themes = entry.themes()
-        self.assertEquals(self._get_filtered_errors(themes), set())
-        self.assertEquals(
+        self.assertEqual(self._get_filtered_errors(themes), set())
+        self.assertEqual(
             [self._only_name(t, ["name", "mixed"]) for t in themes["themes"]],
             [{
                 "children": [{

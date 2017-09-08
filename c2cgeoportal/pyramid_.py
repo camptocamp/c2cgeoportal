@@ -27,28 +27,31 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+import time
 import logging
 import sqlalchemy
 import sqlahelper
 import pyramid_tm
 import mimetypes
+import binascii
 import c2c.template
-from urlparse import urlsplit
+from urllib.parse import urlsplit
 import simplejson as json
 from socket import gethostbyname, gaierror
 from ipcalc import IP, Network
+from Crypto.Cipher import AES
 import importlib
 
 from pyramid_mako import add_mako_renderer
 from pyramid.interfaces import IStaticURLInfo
 from pyramid.httpexceptions import HTTPException
+import pyramid.security
 
 from papyrus.renderers import GeoJSON, XSD
 
 import c2cgeoportal
 from c2cgeoportal import stats
-from c2cgeoportal.resources import FAModels
-from c2cgeoportal.lib import dbreflection, get_setting, caching, \
+from c2cgeoportal.lib import dbreflection, caching, \
     C2CPregenerator, MultiDomainStaticURLInfo
 
 log = logging.getLogger(__name__)
@@ -225,12 +228,7 @@ def add_static_view_ngeo(config):  # pragma: no cover
 
 def add_admin_interface(config):
     if config.get_settings().get("enable_admin_interface", False):
-        config.formalchemy_admin(
-            route_name="admin",
-            package=config.get_settings()["package"],
-            view="fa.jquery.pyramid.ModelView",
-            factory=FAModels
-        )
+        pass
 
 
 def add_static_view(config):
@@ -254,7 +252,7 @@ def _add_static_view(config, name, path):
         cache_max_age=int(config.get_settings()["default_max_age"]),
     )
     config.add_cache_buster(path, version_cache_buster)
-    CACHE_PATH.append(unicode(name))
+    CACHE_PATH.append(name)
 
 
 def locale_negotiator(request):
@@ -276,15 +274,15 @@ def _match_url_start(ref, val):
     return ref_parts == val_parts
 
 
-def _is_valid_referer(request, settings):
+def is_valid_referer(request, settings):
     if request.referer is not None:
-        list = settings.get("authorized_referers", [])
-        return any(_match_url_start(x, request.referer) for x in list)
+        list_ = settings.get("authorized_referers", [])
+        return any(_match_url_start(x, request.referer) for x in list_)
     else:
-        return request.method == "GET"
+        return True
 
 
-def _create_get_user_from_request(settings):
+def create_get_user_from_request(settings):
     def get_user_from_request(request, username=None):
         """ Return the User object for the request.
 
@@ -295,25 +293,49 @@ def _create_get_user_from_request(settings):
         """
         from c2cgeoportal.models import DBSession, User
 
-        if not hasattr(request, "_is_valid_referer"):
-            request._is_valid_referer = _is_valid_referer(request, settings)
-        if not request._is_valid_referer:
-            log.warning("Invalid referer for %s: %s", request.path_qs,
-                        repr(request.referer))
+        try:
+            if "auth" in request.params:
+                auth_enc = request.params.get("auth")
+
+                if auth_enc is not None:
+                    urllogin = request.registry.settings.get("urllogin", {})
+                    aeskey = urllogin.get("aes_key")
+                    if aeskey is None:  # pragma: nocover
+                        raise Exception("urllogin is not configured")
+                    now = int(time.time())
+                    cipher = AES.new(aeskey)
+                    auth = json.loads(cipher.decrypt(binascii.unhexlify(auth_enc)))
+
+                    if "t" in auth and "u" in auth and "p" in auth:
+                        timestamp = int(auth["t"])
+                        if now < timestamp and request.registry.validate_user(
+                            request, auth["u"], auth["p"]
+                        ):
+                            headers = pyramid.security.remember(request, auth["u"])
+                            request.response.headerlist.extend(headers)
+        except Exception as e:
+            log.error("URL login error: {}".format(e))
+
+        if not hasattr(request, "is_valid_referer"):
+            request.is_valid_referer = is_valid_referer(request, settings)
+        if not request.is_valid_referer:
+            log.warning(
+                "Invalid referer for %s: %s", request.path_qs, repr(request.referer)
+            )
             return None
 
-        if not hasattr(request, "_user"):
-            request._user = None
+        if not hasattr(request, "user_"):
+            request.user_ = None
             if username is None:
                 username = request.authenticated_userid
             if username is not None:
                 # We know we will need the role object of the
                 # user so we use joined loading
-                request._user = DBSession.query(User) \
+                request.user_ = DBSession.query(User) \
                     .filter_by(username=username) \
                     .first()
 
-        return request._user
+        return request.user_
     return get_user_from_request
 
 
@@ -391,11 +413,12 @@ class MapserverproxyRoutePredicate:
         if not hide_capabilities:
             return True
         params = dict(
-            (k.lower(), unicode(v).lower()) for k, v in request.params.iteritems()
+            (k.lower(), v.lower()) for k, v in request.params.items()
         )
-        return "request" not in params or params["request"] != u"getcapabilities"
+        return "request" not in params or params["request"] != "getcapabilities"
 
-    def phash(self):
+    @staticmethod
+    def phash():
         return ""
 
 
@@ -444,7 +467,7 @@ def includeme(config):
 
     call_hook(settings, "after_settings", settings)
 
-    get_user_from_request = _create_get_user_from_request(settings)
+    get_user_from_request = create_get_user_from_request(settings)
     config.add_request_method(get_user_from_request, name="user", property=True)
     config.add_request_method(get_user_from_request, name="get_user")
 
@@ -491,7 +514,7 @@ def includeme(config):
 
     # add the "xsd" renderer
     config.add_renderer("xsd", XSD(
-        sequence_callback=dbreflection._xsd_sequence_callback
+        sequence_callback=dbreflection.xsd_sequence_callback
     ))
 
     # add the set_user_validator directive, and set a default user
@@ -619,7 +642,7 @@ def includeme(config):
     config.add_route("profile.json", "/profile.json", request_method="POST")
 
     # shortener
-    add_cors_route(config, "/short/create", "shortner")
+    add_cors_route(config, "/short/create", "shortener")
     config.add_route("shortener_create", "/short/create", request_method="POST")
     config.add_route("shortener_get", "/short/{ref}", request_method="GET")
 
@@ -627,7 +650,7 @@ def includeme(config):
     config.add_route("difference", "/difference", request_method="POST")
 
     # PDF report tool
-    config.add_route("pdfreport", "/pdfreport/{layername}/{id}", request_method="GET")
+    config.add_route("pdfreport", "/pdfreport/{layername}/{ids}", request_method="GET")
 
     # add routes for the "layers" web service
     add_cors_route(config, "/layers/*all", "layers")
@@ -669,44 +692,8 @@ def includeme(config):
     # Resource proxy (load external url, useful when loading non https content)
     config.add_route("resourceproxy", "/resourceproxy", request_method="GET")
 
-    # pyramid_formalchemy's configuration
-    config.include("pyramid_formalchemy")
-    config.include("fa.jquery")
-
-    # define the srid, schema and parentschema
-    # as global variables to be usable in the model
-    c2cgeoportal.srid = settings["srid"]
-    c2cgeoportal.schema = settings["schema"]
-    c2cgeoportal.parentschema = settings["parentschema"]
-    c2cgeoportal.formalchemy_default_zoom = get_setting(
-        settings,
-        ("admin_interface", "map_zoom"),
-        c2cgeoportal.formalchemy_default_zoom
-    )
-    c2cgeoportal.formalchemy_default_x = get_setting(
-        settings,
-        ("admin_interface", "map_x"),
-        c2cgeoportal.formalchemy_default_x
-    )
-    c2cgeoportal.formalchemy_default_y = get_setting(
-        settings,
-        ("admin_interface", "map_y"),
-        c2cgeoportal.formalchemy_default_y
-    )
-    c2cgeoportal.formalchemy_available_functionalities = get_setting(
-        settings,
-        ("admin_interface", "available_functionalities"),
-        c2cgeoportal.formalchemy_available_functionalities
-    )
-    c2cgeoportal.formalchemy_available_metadata = get_setting(
-        settings,
-        ("admin_interface", "available_metadata"),
-        c2cgeoportal.formalchemy_available_metadata
-    )
-    c2cgeoportal.formalchemy_available_metadata = [
-        e if isinstance(e, basestring) else e.get("name")
-        for e in c2cgeoportal.formalchemy_available_metadata
-    ]
+    # Initialise DBSessions
+    init_dbsessions(settings)
 
     config.add_route("checker_all", "/checker_all", request_method="GET")
 
@@ -733,6 +720,21 @@ def includeme(config):
     config.add_view(error_handler, context=HTTPException)
 
     _log_versions(settings)
+
+
+def init_dbsessions(settings):
+    # define the srid, schema and parentschema
+    # as global variables to be usable in the model
+    c2cgeoportal.srid = settings["srid"]
+    c2cgeoportal.schema = settings["schema"]
+    c2cgeoportal.parentschema = settings["parentschema"]
+
+    from c2cgeoportal.models import DBSessions
+    for dbsession_name, dbsession_config in list(settings.get("dbsessions", {}).items()):  # pragma: nocover
+        engine = sqlalchemy.create_engine(dbsession_config.get("url"))
+        sqlahelper.add_engine(engine, dbsession_name)
+        session = sqlalchemy.orm.session.sessionmaker()
+        DBSessions[dbsession_name] = session(bind=engine)
 
 
 def _log_versions(settings):

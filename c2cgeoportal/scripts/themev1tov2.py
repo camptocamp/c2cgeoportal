@@ -30,6 +30,7 @@
 
 import sys
 import transaction
+import re
 from json import loads
 from argparse import ArgumentParser
 from pyramid.paster import get_app, setup_logging
@@ -78,7 +79,7 @@ def main():
     if app_name is None and "#" in app_config:
         app_config, app_name = app_config.split("#", 1)
     setup_logging(app_config)
-    get_app(app_config, name=app_name)
+    app = get_app(app_config, name=app_name)
 
     # must be done only once we have loaded the project config
     from c2cgeoportal.models import DBSession, \
@@ -89,14 +90,14 @@ def main():
     if options.layers:
         table_list = [LayerWMTS, LayerWMS, OGCServer]
         for table in table_list:
-            print("Emptying table {0!s}.".format(str(table.__table__)))
+            print(("Emptying table {0!s}.".format(table.__table__)))
             # must be done exactly this way othewise the cascade config in the
             # models are not used
             for t in session.query(table).all():
                 session.delete(t)
 
         # list and create all distinct ogc_server
-        ogc_server(session)
+        ogc_server(session, app.registry.settings)
 
         print("Converting layerv1.")
         for layer in session.query(LayerV1).all():
@@ -115,8 +116,23 @@ def main():
     transaction.commit()
 
 
-def ogc_server(session):
-    from c2cgeoportal.models import LayerV1, OGCServer
+def ogc_server(session, settings):
+    from c2cgeoportal.models import LayerV1, OGCServer, \
+        OGCSERVER_TYPE_QGISSERVER, OGCSERVER_TYPE_GEOSERVER, OGCSERVER_TYPE_OTHER, \
+        OGCSERVER_AUTH_GEOSERVER, OGCSERVER_AUTH_NOAUTH
+
+    qgis_re = []
+    geoserver_re = []
+    other_re = []
+    for e in settings.get("themev1tov2_qgis_res", "").split(","):
+        if e.strip() != "":
+            qgis_re.append(re.compile(e))
+    for e in settings.get("themev1tov2_geoserver_res", "").split(","):
+        if e.strip() != "":
+            geoserver_re.append(re.compile(e))
+    for e in settings.get("themev1tov2_other_res", "").split(","):
+        if e.strip() != "":
+            other_re.append(re.compile(e))
 
     servers_v1 = session.query(
         LayerV1.url, LayerV1.image_type, LayerV1.is_single_tile
@@ -143,12 +159,12 @@ def ogc_server(session):
         if is_single_tile is None:
             is_single_tile = False
         if url is None:
-            url = u"config://internal/mapserv"
-            name = u"source for {}".format(image_type)
+            url = "config://internal/mapserv"
+            name = "source for {}".format(image_type)
         else:
-            name = u"source for {} {}".format(url, image_type)
+            name = "source for {} {}".format(url, image_type)
         if is_single_tile:
-            name += u" with single_tile"
+            name += " with single_tile"
         identifier = (url, image_type, is_single_tile)
         if identifier not in unique_servers:
             unique_servers.add(identifier)
@@ -157,6 +173,21 @@ def ogc_server(session):
             new_ogc_server.image_type = image_type
             new_ogc_server.is_single_tile = is_single_tile
             new_ogc_server.name = name
+
+            for e in qgis_re:
+                if e.search(url) is not None:
+                    new_ogc_server.type = OGCSERVER_TYPE_QGISSERVER
+                    break
+            for e in geoserver_re:
+                if e.search(url) is not None:
+                    new_ogc_server.type = OGCSERVER_TYPE_GEOSERVER
+                    new_ogc_server.auth = OGCSERVER_AUTH_GEOSERVER
+                    break
+            for e in other_re:
+                if e.search(url) is not None:
+                    new_ogc_server.type = OGCSERVER_TYPE_OTHER
+                    new_ogc_server.auth = OGCSERVER_AUTH_NOAUTH
+                    break
 
             session.add(new_ogc_server)
 
@@ -178,12 +209,13 @@ def layer_v1tov2(session, layer):
             is_single_tile = False
         url = layer.url
         if layer.url is None:
-            url = u"config://internal/mapserv"
+            url = "config://internal/mapserv"
         ogc_server = session.query(OGCServer).filter(
             OGCServer.url == url,
             OGCServer.image_type == image_type,
             OGCServer.is_single_tile == is_single_tile
         ).one()
+
         new_layer.ogc_server = ogc_server
 
         new_layer.layer = layer.layer
@@ -201,7 +233,7 @@ def layer_v1tov2(session, layer):
 
         if layer.dimensions is not None:
             dimensions = loads(layer.dimensions)
-            for name, value in dimensions.items():
+            for name, value in list(dimensions.items()):
                 session.add(Dimension(name, value, new_layer))
 
     new_layer.name = layer.name
@@ -214,9 +246,8 @@ def layer_v1tov2(session, layer):
         new_link = LayergroupTreeitem()
         new_link.ordering = link.ordering
         new_link.description = link.description
-        new_link.treegroup_id = link.treegroup_id
-        new_link.group = link.group
-        new_link.item = new_layer
+        new_link.treegroup = link.treegroup
+        new_link.treeitem = new_layer
 
     layer_add_metadata(layer, new_layer, session)
 
@@ -233,45 +264,45 @@ def new_metadata(name, value, item):
 
 def layer_add_metadata(layer, new_layer, session):
     if layer.metadata_url is not None:
-        session.add(new_metadata(u"metadataUrl", layer.metadata_url, new_layer))
+        session.add(new_metadata("metadataUrl", layer.metadata_url, new_layer))
     if layer.is_checked is True:
-        session.add(new_metadata(u"isChecked", u"true", new_layer))
+        session.add(new_metadata("isChecked", "true", new_layer))
     if layer.icon is not None:
-        session.add(new_metadata(u"iconUrl", layer.icon, new_layer))
+        session.add(new_metadata("iconUrl", layer.icon, new_layer))
     if layer.wms_layers is not None:
-        session.add(new_metadata(u"wmsLayers", layer.wms_layers, new_layer))
+        session.add(new_metadata("wmsLayers", layer.wms_layers, new_layer))
     if layer.query_layers is not None:
-        session.add(new_metadata(u"queryLayers", layer.query_layers, new_layer))
+        session.add(new_metadata("queryLayers", layer.query_layers, new_layer))
     if layer.legend is not None:
-        session.add(new_metadata(u"legend", layer.legend, new_layer))
+        session.add(new_metadata("legend", layer.legend, new_layer))
     if layer.legend_image is not None:
-        session.add(new_metadata(u"legendImage", layer.legend_image, new_layer))
+        session.add(new_metadata("legendImage", layer.legend_image, new_layer))
     if layer.legend_rule is not None:
-        session.add(new_metadata(u"legendRule", layer.legend_rule, new_layer))
+        session.add(new_metadata("legendRule", layer.legend_rule, new_layer))
     if layer.is_legend_expanded is True:
-        session.add(new_metadata(u"isLegendExpanded", u"true", new_layer))
+        session.add(new_metadata("isLegendExpanded", "true", new_layer))
     if layer.min_resolution is not None:
-        session.add(new_metadata(u"minResolution", layer.min_resolution, new_layer))
+        session.add(new_metadata("minResolution", layer.min_resolution, new_layer))
     if layer.max_resolution is not None:
-        session.add(new_metadata(u"maxResolution", layer.max_resolution, new_layer))
+        session.add(new_metadata("maxResolution", layer.max_resolution, new_layer))
     if layer.disclaimer is not None:
-        session.add(new_metadata(u"disclaimer", layer.disclaimer, new_layer))
+        session.add(new_metadata("disclaimer", layer.disclaimer, new_layer))
     if layer.identifier_attribute_field is not None:
         session.add(new_metadata(
-            u"identifierAttributeField",
+            "identifierAttributeField",
             layer.identifier_attribute_field, new_layer
         ))
     if layer.exclude_properties is not None:
-        session.add(new_metadata(u"excludeProperties", layer.exclude_properties, new_layer))
+        session.add(new_metadata("excludeProperties", layer.exclude_properties, new_layer))
 
 
 def layergroup_v1tov2(session, group):
     is_expended_metadatas = group.get_metadatas("isExpanded")
     if group.is_expanded is True:
         if len(is_expended_metadatas) > 0:
-            is_expended_metadatas[0].value = u"true"
+            is_expended_metadatas[0].value = "true"
         else:
-            session.add(new_metadata(u"isExpanded", u"true", group))
+            session.add(new_metadata("isExpanded", "true", group))
     elif len(is_expended_metadatas) > 0:
         session.delete(is_expended_metadatas)
 
@@ -279,4 +310,4 @@ def layergroup_v1tov2(session, group):
 def theme_v1tov2(session, theme):
     thumbnail = theme.get_metadatas("thumbnail")
     if thumbnail is None and theme.icon is not None:
-        session.add(new_metadata(u"thumbnail", theme.icon, theme))
+        session.add(new_metadata("thumbnail", theme.icon, theme))

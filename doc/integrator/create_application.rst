@@ -65,14 +65,20 @@ Then you should checkout the branch or tag of the version you want to install:
 
     git checkout <branch|tag>
 
-``<branch|tag>`` can be ``1.4`` for the latest version of the 1.4 branch,
-``1.4.0`` for the first stable 1.4 version.
+``<branch|tag>`` can be ``2.2`` for the latest version of the 2.2 branch,
+``2.2.0`` for the first stable 2.2 version.
+
+Fetch the Git submodules:
+
+.. prompt:: bash
+
+   git submodules update --init
 
 Build c2cgeoportal:
 
 .. prompt:: bash
 
-    make build
+    ./docker-run make build
 
 List existing skeletons
 -----------------------
@@ -84,7 +90,7 @@ c2cgeoportal application you want to create the new application from:
 
 .. prompt:: bash
 
-    .build/venv/bin/pcreate -l
+    ./docker-run pcreate -l
 
 You should at least see the c2cgeoportal skeletons:
 
@@ -106,7 +112,7 @@ To create the application first apply the ``c2cgeoportal_create`` skeleton:
 
 .. prompt:: bash
 
-    .build/venv/bin/pcreate -s c2cgeoportal_create ../<project>
+    ./docker-run pcreate -s c2cgeoportal_create <project>
 
 .. note::
 
@@ -123,8 +129,8 @@ it later.
 
      .. prompt:: bash
 
-         .build/venv/bin/pcreate -s c2cgeoportal_create ../<project> package=<package> \
-             srid=21781 extent="420000 30000 900000 350000" apache_vhost=<vhost>
+         SRID=21781 EXTENT="420000 30000 900000 350000" apache_vhost=<vhost> \
+            ./docker-run pcreate -s c2cgeoportal_create --package-name <package> <project>
 
 This will create a directory named ``<project>`` that will be next to the
 ``c2cgeoportal`` directory, or to the directory of the application you are
@@ -134,8 +140,8 @@ Now apply the ``c2cgeoportal_update`` skeleton:
 
 .. prompt:: bash
 
-    .build/venv/bin/pcreate -s c2cgeoportal_update ../<project> package=<package> \
-             package=<package> srid=<srid> apache_vhost=<vhost>
+    SRID=21781 apache_vhost=<vhost> \
+        ./docker-run pcreate -s c2cgeoportal_update --package-name <package> <project>
 
 .. note::
 

@@ -2,11 +2,13 @@ PYTHON_VERSION = $(shell $(VENV_BIN)/python -c "import sys; print('%i.%i' % (sys
 export PACKAGE = {{package}}
 OPERATING_SYSTEM ?= LINUX
 
+MAPSERVER ?= TRUE
+
 ifeq ($(DEBUG), TRUE)
 ifeq ($(OPERATING_SYSTEM), WINDOWS)
-PRERULE_CMD ?= @echo "Build $@ due mofification on $?"; ls -lt --reverse $? $@ || true
+PRERULE_CMD ?= @echo "Build $@ due mofification on $?"; ls -t --full-time --reverse $? $@ || true
 else
-PRERULE_CMD ?= @echo "Build \033[1;34m$@\033[0m due mofification on \033[1;34m$?\033[0m"; ls -lt --reverse $? $@ || true
+PRERULE_CMD ?= @echo "Build \033[1;34m$@\033[0m due mofification on \033[1;34m$?\033[0m"; ls -t --full-time --reverse $? $@ || true
 endif
 endif
 
@@ -71,20 +73,20 @@ endif
 export INSTANCE_ID
 
 PIP_CMD ?= $(VENV_BIN)/pip
-PIP_VERSION ?= $(shell grep ^pip== CONST_optional-requirements.txt --colour=never)
-SETUPTOOLS_VERSION ?= $(shell grep ^setuptools== CONST_optional-requirements.txt --colour=never)
-TILECLOUD_VERSION ?= $(shell grep ^tilecloud== CONST_optional-requirements.txt --colour=never)
-TILECLOUDCHAIN_VERSION ?= $(shell grep ^tilecloud-chain== CONST_optional-requirements.txt --colour=never)
-JSTOOLS_VERSION ?= $(shell grep ^JSTools== CONST_optional-requirements.txt --colour=never)
-C2CCSSMIN_VERSION ?= $(shell grep ^c2c.cssmin== CONST_optional-requirements.txt --colour=never)
+PIP_VERSION ?= $(shell grep ^pip== CONST_optional-requirements.txt --colour=never | tr --delete '\r\n')
+SETUPTOOLS_VERSION ?= $(shell grep ^setuptools== CONST_optional-requirements.txt --colour=never | tr --delete '\r\n')
+TILECLOUD_VERSION ?= $(shell grep ^tilecloud== CONST_optional-requirements.txt --colour=never | tr --delete '\r\n')
+TILECLOUDCHAIN_VERSION ?= $(shell grep ^tilecloud-chain== CONST_optional-requirements.txt --colour=never | tr --delete '\r\n')
+#JSTOOLS_VERSION ?= $(shell grep ^JSTools== CONST_optional-requirements.txt --colour=never | tr --delete '\r\n')
+C2CCSSMIN_VERSION ?= $(shell grep ^c2c.cssmin== CONST_optional-requirements.txt --colour=never | tr --delete '\r\n')
 
 GIT_MODULES_FOLDER ?= .git/modules/
 
 ifdef CGXP_INTERFACES
-DEFAULT_WEB_RULE += build-cgxp
+#DEFAULT_WEB_RULE += build-cgxp
 else
 ifeq ($(CGXP_API), TRUE)
-DEFAULT_WEB_RULE += build-cgxp
+#DEFAULT_WEB_RULE += build-cgxp
 endif
 endif
 ifneq ($(NGEO_INTERFACES), "")
@@ -169,7 +171,7 @@ ifeq ($(TILECLOUD_CHAIN), TRUE)
 DEV_REQUIREMENTS += $(TILECLOUD_VERSION) $(TILECLOUDCHAIN_VERSION)
 endif
 ifneq ($(CGXP_INTERFACES), "")
-REQUIREMENTS += $(JSTOOLS_VERSION)
+#REQUIREMENTS += $(JSTOOLS_VERSION)
 DEV_REQUIREMENTS += $(C2CCSSMIN_VERSION)
 endif
 
@@ -186,7 +188,12 @@ export VISIBLE_WEB_HOST
 export VISIBLE_WEB_PROTOCOL
 
 # ngeo
-ANGULAR_VERSION = 1.5
+ANGULAR_VERSION = 1.6
+ifeq ($(OPERATING_SYSTEM), LINUX)
+NPM_CMD = node_modules/.bin/npm
+else
+NPM_CMD = npm
+endif
 APP_OUTPUT_DIR = $(PACKAGE)/static-ngeo/build
 OL_JS_FILES = $(shell $(FIND) node_modules/openlayers/src/ol -type f -name '*.js' 2> /dev/null)
 NGEO_JS_FILES = $(shell $(FIND) node_modules/ngeo/src -type f -name '*.js' 2> /dev/null)
@@ -224,22 +231,24 @@ NGEO_OUTPUT_FILES = $(JSON_CLIENT_LOCALISATION_FILES) \
 	$(ANGULAR_LOCALES_FILES)
 NGEO_LIBS_JS_FILES += \
 	node_modules/jquery/dist/jquery.min.js \
-	node_modules/ngeo/third-party/jquery-ui/jquery-ui.min.js \
 	node_modules/angular/angular.min.js \
 	node_modules/angular-animate/angular-animate.min.js \
+	node_modules/angular-float-thead/angular-floatThead.js \
+	node_modules/angular-gettext/dist/angular-gettext.min.js \
 	node_modules/angular-sanitize/angular-sanitize.min.js \
 	node_modules/angular-touch/angular-touch.min.js \
-	node_modules/corejs-typeahead/dist/typeahead.bundle.min.js \
-	node_modules/angular-ui-date/dist/date.js \
-	node_modules/angular-float-thead/angular-floatThead.js \
-	node_modules/floatthead/dist/jquery.floatThead.min.js \
-	node_modules/angular-ui-slider/src/slider.js \
-	node_modules/proj4/dist/proj4.js \
-	node_modules/angular-gettext/dist/angular-gettext.min.js \
 	node_modules/angular-dynamic-locale/dist/tmhDynamicLocale.min.js \
+	node_modules/angular-ui-date/dist/date.js \
+	node_modules/angular-ui-slider/src/slider.js \
 	node_modules/bootstrap/dist/js/bootstrap.min.js \
-	node_modules/d3/d3.min.js \
-	node_modules/file-saver/FileSaver.min.js
+	node_modules/floatthead/dist/jquery.floatThead.min.js \
+	node_modules/proj4/dist/proj4.js \
+	node_modules/d3/build/d3.min.js \
+	node_modules/file-saver/FileSaver.min.js \
+	node_modules/corejs-typeahead/dist/typeahead.bundle.min.js \
+	node_modules/jsts/dist/jsts.min.js \
+	node_modules/moment/min/moment.min.js \
+	node_modules/ngeo/third-party/jquery-ui/jquery-ui.min.js
 NGEO_PROJECT_LIBS_JS_FILES ?=
 ifeq ($(OPERATING_SYSTEM),WINDOWS)
 COMPILE_CATALOG = node_modules/ngeo/buildtools/compile-catalog.js
@@ -253,9 +262,9 @@ TX_RC = $(HOME_DIR).transifexrc
 TX_DEPENDENCIES = $(VENV_BIN)/tx$(PYTHON_BIN_POSTFIX) $(TX_RC) .tx/config
 TX_HOST ?= https://www.transifex.com
 ifeq (,$(wildcard $(TX_RC)))
-TOUCHBACK_TXRC =
+TOUCHBACK_TXRC := touch --no-create --date "$(shell date --iso-8601=seconds)" $(HOME)/.transifexrc
 else
-TOUCHBACK_TXRC = touch --date "$(shell stat -c '%y' $(TX_RC))" $(TX_RC)
+TOUCHBACK_TXRC := touch --no-create --date "$(shell stat -c '%y' $(TX_RC))" $(TX_RC)
 endif
 
 MAP_FILES += $(shell $(FIND) mapserver $(FIND_OPTS) \( -name "*.map" -o -name "*.sym" -o -name "*.conf" \) -print)
@@ -267,12 +276,16 @@ I18N_SOURCE_FILES += $(APP_HTML_FILES) \
 	$(APP_JS_FILES) \
 	$(APP_DIRECTIVES_PARTIALS_FILES) \
 	.build/config.yaml
-ifeq ($(DOCKER),FALSE)
+ifeq ($(DOCKER), FALSE)
 # The theme from the database
 I18N_SOURCE_FILES += development.ini
 endif
-I18N_DEPENDENCIES += $(MAP_FILES) \
-	project.yaml
+I18N_DEPENDENCIES += $(VENV_BIN)/pot-create$(PYTHON_BIN_POSTFIX)
+I18N_DEPENDENCIES += project.yaml
+ifeq (${MAPSERVER}, TRUE)
+I18N_DEPENDENCIES += .build/mapserver.timestamp
+endif
+
 
 # CGXP
 JSBUILD_MAIN_FILES = $(shell $(FIND) $(PACKAGE)/static/lib/cgxp $(PACKAGE)/static/js -name "*.js" -print 2> /dev/null)
@@ -484,8 +497,7 @@ CONFIG_VARS += instanceid sqlalchemy.url schema parentschema enable_admin_interf
 	raster shortener hide_capabilities mapserverproxy tinyowsproxy resourceproxy print_url \
 	tiles_url checker check_collector default_max_age jsbuild package srid \
 	reset_password fulltextsearch headers authorized_referers hooks stats db_chooser \
-	ogcproxy_enable
-C2C_TEMPLATE_CMD = $(ENVIRONMENT_VARS) $(VENV_BIN)/c2c-template --vars $(VARS_FILE)
+	ogcproxy_enable dbsessions urllogin host_forward_host
 MAKE_FILES = $(shell ls -1 *.mk) CONST_Makefile
 
 # Disabling Make built-in rules to speed up execution time
@@ -644,6 +656,7 @@ remove-branch:
 
 .PHONY: template-clean
 template-clean:
+	rm -f .build/c2ctemplate-cache.json
 	rm -f $(ALL_MAKO_FILES:.mako=)
 	rm -f $(ALL_JINJA_FILES:.jinja=)
 	rm -f .build/config.yaml
@@ -651,29 +664,34 @@ template-clean:
 .PHONY: template-generate
 template-generate: $(ALL_MAKO_FILES:.mako=) $(ALL_JINJA_FILES:.jinja=) .build/config.yaml
 
-$(MAKO_FILES:.mako=) $(JINJA_FILES:.jinja=): $(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX) $(VARS_DEPENDS)
-
-%: %.mako $(INSTANCE_ID_MARKER) $(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX)
+.build/c2ctemplate-cache.json: $(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX) $(VARS_DEPENDS) $(INSTANCE_ID_MARKER) $(MAKE_FILES)
 	$(PRERULE_CMD)
 ifeq ($(origin VARS_FILE), undefined)
 	@echo "Error: the variable VARS_FILE is required."
 	exit 1
 endif
-	$(C2C_TEMPLATE_CMD) --engine mako --files $<
+	$(ENVIRONMENT_VARS) $(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX) --vars $(VARS_FILE) --get-cache $@
 
-%: %.jinja $(INSTANCE_ID_MARKER) $(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX)
+$(ALL_MAKO_FILES:.mako=) $(ALL_JINJA_FILES:.jinja=) .build/config.yaml: $(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX) .build/c2ctemplate-cache.json
+
+%: %.mako
 	$(PRERULE_CMD)
-ifeq ($(origin VARS_FILE), undefined)
-	@echo "Error: the variable VARS_FILE is required."
-	exit 1
-endif
-	$(C2C_TEMPLATE_CMD) --engine jinja --files $<
+	$(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX) --cache .build/c2ctemplate-cache.json --engine mako --files $<
+
+%: %.jinja
+	$(PRERULE_CMD)
+	$(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX) --cache .build/c2ctemplate-cache.json --engine jinja --files $<
 
 $(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX): .build/requirements.timestamp
 
-.build/config.yaml: $(INSTANCE_ID_MARKER) $(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX) $(VARS_DEPENDS) $(MAKE_FILES)
+$(VENV_BIN)/pykwalify$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
+
+.build/config.yaml: $(VENV_BIN)/pykwalify$(PYTHON_BIN_POSTFIX)
 	$(PRERULE_CMD)
-	$(C2C_TEMPLATE_CMD) --get-config .build/config.yaml $(CONFIG_VARS)
+	$(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX) --cache .build/c2ctemplate-cache.json --get-config .build/_config.yaml $(CONFIG_VARS)
+	$(VENV_BIN)/pykwalify --data-file .build/_config.yaml --schema-file CONST_config-schema.yaml
+	mv .build/_config.yaml .build/config.yaml
+	touch $@
 
 # server localisation
 
@@ -699,13 +717,7 @@ $(PACKAGE)/locale/$(PACKAGE)-$(L10N_SERVER_POSTFIX).pot: \
 	[ ! -f $@ ] || chmod go+r $@
 
 .PRECIOUS: $(PACKAGE)/locale/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).pot
-$(PACKAGE)/locale/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).pot: \
-		lingua-client.cfg \
-		$(I18N_DEPENDENCIES) \
-		$(I18N_SOURCE_FILES) \
-		$(VENV_BIN)/pot-create$(PYTHON_BIN_POSTFIX) \
-		.build/mapserver.timestamp \
-		.build/config.yaml
+$(PACKAGE)/locale/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).pot: lingua-client.cfg $(I18N_DEPENDENCIES) $(I18N_SOURCE_FILES)
 	$(PRERULE_CMD)
 	rm -f $@ # Because of WindowsError, thus only problematic on Windows
 	$(VENV_BIN)/pot-create --config $< --output $@ $(I18N_SOURCE_FILES)
@@ -753,7 +765,7 @@ $(TX_RC):
 .tx/config: .tx/CONST_config_mako $(VENV_BIN)/mako-render$(PYTHON_BIN_POSTFIX) .build/requirements.timestamp
 	$(PRERULE_CMD)
 	PYTHONIOENCODING=UTF-8 $(VENV_BIN)/mako-render \
-		--var "tx_version=$(TX_VERSION)" --var "tx_host=$(TX_HOST)" $< > $@
+		--var "tx_version=$(TX_VERSION)" --var "tx_host=$(TX_HOST)" --var "languages=$(LANGUAGES)" $< > $@
 
 .PRECIOUS: .build/locale/%/LC_MESSAGES/gmf.po
 .build/locale/%/LC_MESSAGES/gmf.po: $(TX_DEPENDENCIES)
@@ -810,7 +822,7 @@ $(APP_OUTPUT_DIR)/%.json: $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-$(L10N_CLIE
 
 $(APP_OUTPUT_DIR)/angular-locale_%.js: node_modules/ngeo/github_versions language_mapping
 	mkdir -p $(dir $@)
-	wget -O $@ https://raw.githubusercontent.com/angular/angular.js/`grep ^angular.js= $< | cut --delimiter = --fields 2`/src/ngLocale/angular-locale_`(grep $* language_mapping || echo $*) | cut -d = -f 2`.js
+	wget -O $@ https://raw.githubusercontent.com/angular/angular.js/`grep ^angular.js= $< | cut --delimiter = --fields 2 | tr --delete '\r\n'`/src/ngLocale/angular-locale_`(grep $* language_mapping || echo $*) | cut --delimiter = --fields 2 | tr --delete '\r\n'`.js
 
 $(APP_OUTPUT_DIR)/%.js: .build/%.js .build/node_modules.timestamp $(NGEO_LIBS_JS_FILES) $(NGEO_PROJECT_LIBS_JS_FILES)
 	$(PRERULE_CMD)
@@ -876,10 +888,19 @@ $(PACKAGE)/static-ngeo/fonts/fontawesome-webfont.%: node_modules/font-awesome/fo
 	mkdir -p $(dir $@)
 	cp $< $@
 
-$(APP_OUTPUT_DIR)/%.css: $(PACKAGE)/static-ngeo/less/%.less $(LESS_FILES) $(NGEO_FONTS) .build/node_modules.timestamp
+$(APP_OUTPUT_DIR)/%.css: \
+		$(PACKAGE)/static-ngeo/less/%.less \
+		$(LESS_FILES) \
+		$(NGEO_FONTS) \
+		.build/node_modules.timestamp \
+		$(APP_OUTPUT_DIR)/images/
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
 	node_modules/.bin/lessc $(LESS_ARGS) $< $@
+
+$(APP_OUTPUT_DIR)/images/: node_modules/ngeo/third-party/jquery-ui/images/
+	mkdir -p $@
+	cp -r $</* $@
 
 .PRECIOUS: node_modules/ngeo/buildtools/mako_build.json
 node_modules/ngeo/buildtools/mako_build.json: .build/node_modules.timestamp
@@ -895,6 +916,7 @@ node_modules/ngeo/buildtools/mako_build.json: .build/node_modules.timestamp
 		--var src_set=contribs_gmf \
 		--var entry_point=$(PACKAGE)_$* \
 		--var ngeo_folder=node_modules/ngeo/ \
+		$(MAKO_BUILD_ARGS) \
 		--var generate_exports=true $< > $@
 
 .PRECIOUS: .build/%.js
@@ -935,22 +957,22 @@ $(APP_OUTPUT_DIR)/templatecache.js: .build/gmftemplatecache.js
 .build/externs/angular-$(ANGULAR_VERSION).js: node_modules/ngeo/github_versions
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
-	curl --max-redirs 0 --location --output $@ https://raw.githubusercontent.com/google/closure-compiler/`grep ^closure-compiler= $< | cut --delimiter = --fields 2`/contrib/externs/angular-$(ANGULAR_VERSION).js
+	curl --max-redirs 0 --location --output $@ https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/angular-$(ANGULAR_VERSION).js
 
 .build/externs/angular-$(ANGULAR_VERSION)-q_templated.js: node_modules/ngeo/github_versions
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
-	curl --max-redirs 0 --location --output $@ https://raw.githubusercontent.com/google/closure-compiler/`grep ^closure-compiler= $< | cut --delimiter = --fields 2`/contrib/externs/angular-$(ANGULAR_VERSION)-q_templated.js
+	curl --max-redirs 0 --location --output $@ https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/angular-$(ANGULAR_VERSION)-q_templated.js
 
 .build/externs/angular-$(ANGULAR_VERSION)-http-promise_templated.js: node_modules/ngeo/github_versions
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
-	curl --max-redirs 0 --location --output $@ https://raw.githubusercontent.com/google/closure-compiler/`grep ^closure-compiler= $< | cut --delimiter = --fields 2`/contrib/externs/angular-$(ANGULAR_VERSION)-http-promise_templated.js
+	curl --max-redirs 0 --location --output $@ https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/angular-$(ANGULAR_VERSION)-http-promise_templated.js
 
 .build/externs/jquery-1.9.js: node_modules/ngeo/github_versions
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
-	curl --max-redirs 0 --location --output $@ https://raw.githubusercontent.com/google/closure-compiler/`grep ^closure-compiler= $< | cut --delimiter = --fields 2`/contrib/externs/jquery-1.9.js
+	curl --max-redirs 0 --location --output $@ https://raw.githubusercontent.com/google/closure-compiler/`grep ^closure-compiler= $< | cut --delimiter = --fields 2  | tr --delete '\r\n'`/contrib/externs/jquery-1.9.js
 
 package.json:
 	$(PRERULE_CMD)
@@ -1084,13 +1106,15 @@ $(VENV_BIN)/flake8$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
 .build/venv.timestamp-noclean: CONST_optional-requirements.txt
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
-	virtualenv --no-site-packages .build/venv
+	rm --recursive --force .build/venv
+	virtualenv --no-site-packages --python python3 .build/venv
 	$(PIP_CMD) install '$(PIP_VERSION)' '$(SETUPTOOLS_VERSION)'
 	touch $@
 
 .build/requirements.timestamp: $(EGGS_DEPENDENCIES)
 	$(PRERULE_CMD)
 	$(PIP_CMD) install $(REQUIREMENTS)
+	$(PIP_CMD) install -e .
 	touch $@
 
 # Print
@@ -1147,7 +1171,7 @@ endif # !DOCKER
 print/WEB-INF/lib/jasperreports-functions-$(JASPERREPORTS_VERSION).jar:
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
-	curl --location --output $@ https://kent.dl.sourceforge.net/project/jasperreports/jasperreports/JasperReports%20$(JASPERREPORTS_VERSION)/jasperreports-functions-$(JASPERREPORTS_VERSION).jar
+	curl --location --output $@ http://central.maven.org/maven2/net/sf/jasperreports/jasperreports/$(JASPERREPORTS_VERSION)/jasperreports-$(JASPERREPORTS_VERSION).jar
 	unzip -t -q $@
 
 print/WEB-INF/lib/joda-time-1.6.jar:
@@ -1176,7 +1200,11 @@ apache/tiles.conf: tilegeneration/config.yaml apache/mapcache.xml $(VENV_BIN)/ge
 # Apache config
 .PHONY: apache
 ifeq ($(DOCKER), TRUE)
+ifeq ($(MAPSERVER), TRUE)
 apache: mapserver_docker wsgi_docker
+else
+apache: wsgi_docker
+endif
 
 .PHONY: mapserver_docker
 mapserver_docker: mapserver/Dockerfile $(MAKO_FILES:.mako=) mapserver/mapserver.map

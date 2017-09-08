@@ -53,8 +53,9 @@ class FullTextSearchView:
         self.settings = request.registry.settings.get("fulltextsearch", {})
         self.languages = self.settings.get("languages", {})
 
+    @staticmethod
     @cache_region.cache_on_arguments()
-    def _get_interface_id(self, interface):
+    def _get_interface_id(interface):
         return DBSession.query(Interface).filter_by(name=interface).one().id
 
     @view_config(route_name="fulltextsearch", renderer="geojson")

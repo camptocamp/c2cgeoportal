@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 # Copyright (c) 2013-2017, Camptocamp SA
 # All rights reserved.
 
@@ -38,17 +41,20 @@ with open("README.rst") as f:
     README = "\n".join(text)
 
 install_requires = [
+    "pyramid<=1.9.99",
     "pyramid_multiauth",
     "pyramid_mako",  # to render the HTML files
+    # Needed by the development.ini
+    "pyramid_debugtoolbar",
+
     "psycopg2",
+    "pycrypto",
     "GeoAlchemy2",
     "SQLAHelper",
     "pyramid_tm",
     "papyrus",
     "ipcalc",
     "httplib2",
-    # Needed by the developement.ini
-    "pyramid_debugtoolbar",
     "OWSLib>=0.6.0",
     "dogpile.cache>=0.6",
     "Paste",
@@ -61,13 +67,17 @@ install_requires = [
     "pyramid_closure",
     "lingua",
     "PyYAML",
-    "c2c.template>=1.3.0.dev",
+    "c2c.template>=1.4.0",
+    "defusedxml",
+    "dateutils",
 ]
-install_requires += [
-    requirement for requirement in
-    open(os.path.join(here, "fixversions.txt")).read().splitlines()
-    if len(requirement) > 0 and requirement[0] != "#"
-]
+
+with open(os.path.join(here, "docker/build/fixversions.txt")) as file_:
+    install_requires += [
+        requirement for requirement in
+        file_.read().splitlines()
+        if len(requirement) > 0 and requirement[0] != "#"
+    ]
 
 setup_requires = [
 ]
@@ -77,7 +87,7 @@ tests_require = install_requires + [
 
 setup(
     name="c2cgeoportal",
-    version="2.1",
+    version="2.3",
     description="c2cgeoportal",
     long_description=README,
     classifiers=[
@@ -111,13 +121,11 @@ setup(
             "ngeo-version = c2cgeoportal.scripts.import_ngeo_apps:ngeo_git_version",
             "create-demo-theme = c2cgeoportal.scripts.create_demo_theme:main",
             "treeitem_uniquename = c2cgeoportal.scripts.treeitem_uniquename:main",
+            "urllogin = c2cgeoportal.scripts.urllogin:main",
         ],
         "pyramid.scaffold": [
             "c2cgeoportal_create = c2cgeoportal.scaffolds:TemplateCreate",
             "c2cgeoportal_update = c2cgeoportal.scaffolds:TemplateUpdate",
-        ],
-        "fanstatic.libraries": [
-            "admin = c2cgeoportal.forms:fanstatic_lib",
         ],
         "lingua.extractors": [
             "geomapfish-theme = c2cgeoportal.lib.lingua_extractor:GeoMapfishThemeExtractor",

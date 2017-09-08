@@ -29,7 +29,7 @@
 
 
 import logging
-import httplib
+import http.client
 from httplib2 import Http
 from time import time
 
@@ -44,7 +44,7 @@ log = logging.getLogger(__name__)
 class CheckerCollector:  # pragma: no cover
 
     def __init__(self, request):
-        self.status_int = httplib.OK
+        self.status_int = http.client.OK
         self.request = request
         self.settings = request.registry.settings["check_collector"]
 
@@ -86,8 +86,9 @@ class CheckerCollector:  # pragma: no cover
 
         h = Http()
         resp, content = h.request(url, headers=headers)
+        content = content.decode("utf-8")
 
-        if resp.status != httplib.OK:
+        if resp.status != http.client.OK:
             self.status_int = max(self.status_int, resp.status)
             return '<span style="color: red;">{0:d} - {1!s}</span>'.format(
                 resp.status, resp.reason

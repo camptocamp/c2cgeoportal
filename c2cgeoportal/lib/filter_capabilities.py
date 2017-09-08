@@ -31,14 +31,15 @@
 import logging
 import httplib2
 import copy
-from StringIO import StringIO
-from urlparse import urlsplit, urljoin
-from urllib import urlopen
+from io import StringIO
+from urllib.parse import urlsplit, urljoin
+from urllib.request import urlopen
 
-from xml import sax
+import xml.sax.handler
 from xml.sax import saxutils
 from xml.sax.saxutils import XMLFilterBase, XMLGenerator
 from xml.sax.xmlreader import InputSource
+import defusedxml.expatreader
 
 from pyramid.httpexceptions import HTTPBadGateway
 
@@ -118,19 +119,19 @@ def wms_structure(wms_url, host):
             result[parent.name].append(name)
             _fill(name, parent.parent)
 
-        for layer in wms.contents.values():
+        for layer in list(wms.contents.values()):
             _fill(layer.name, layer.parent)
         return result
 
     except AttributeError:  # pragma: no cover
-        error = "WARNING! an error occured while trying to " \
+        error = "WARNING! an error occurred while trying to " \
             "read the mapfile and recover the themes."
         error = "{0!s}\nurl: {1!s}\nxml:\n{2!s}".format(error, wms_url, content)
         log.exception(error)
         raise HTTPBadGateway(error)
 
     except SyntaxError:  # pragma: no cover
-        error = "WARNING! an error occured while trying to " \
+        error = "WARNING! an error occurred while trying to " \
             "read the mapfile and recover the themes."
         error = "{0!s}\nurl: {1!s}\nxml:\n{2!s}".format(error, wms_url, content)
         log.exception(error)
@@ -177,30 +178,31 @@ def filter_capabilities(content, role_id, wms, url, headers, proxies, request):
         get_ogc_server_wfs_url_ids(request)
     ).get(url)
     gmf_private_layers = copy.copy(get_private_layers(ogc_server_ids))
-    for id_ in get_protected_layers(role_id, ogc_server_ids).keys():
+    for id_ in list(get_protected_layers(role_id, ogc_server_ids).keys()):
         if id_ in gmf_private_layers:
             del gmf_private_layers[id_]
 
     private_layers = set()
-    for gmflayer in gmf_private_layers.values():
+    for gmflayer in list(gmf_private_layers.values()):
         for ogclayer in gmflayer.layer.split(","):
             private_layers.add(ogclayer)
             if ogclayer in wms_structure_:
                 private_layers.update(wms_structure_[ogclayer])
 
-    parser = sax.make_parser()
+    parser = defusedxml.expatreader.create_parser(forbid_external=False)
+    # skip inclusion of DTDs
+    parser.setFeature(xml.sax.handler.feature_external_ges, False)
+    parser.setFeature(xml.sax.handler.feature_external_pes, False)
+
     result = StringIO()
     downstream_handler = XMLGenerator(result, "utf-8")
     filter_handler = _CapabilitiesFilter(
         parser, downstream_handler,
-        u"Layer" if wms else u"FeatureType",
+        "Layer" if wms else "FeatureType",
         layers_blacklist=private_layers
     )
-    # skip inclusion of DTDs
-    parser.setFeature(sax.handler.feature_external_ges, False)
-    parser.setFeature(sax.handler.feature_external_pes, False)
     filter_handler.parse(StringIO(content))
-    return unicode(result.getvalue(), "utf-8")
+    return result.getvalue()
 
 
 def filter_wfst_capabilities(content, role_id, wfs_url, proxies, request):
@@ -210,20 +212,23 @@ def filter_wfst_capabilities(content, role_id, wfs_url, proxies, request):
 
     writable_layers = []
     ogc_server_ids = get_ogc_server_wfs_url_ids(request).get(wfs_url)
-    for gmflayer in get_writable_layers(role_id, ogc_server_ids).values():
+    for gmflayer in list(get_writable_layers(role_id, ogc_server_ids).values()):
         writable_layers += gmflayer.layer.split(",")
 
-    parser = sax.make_parser()
+    parser = defusedxml.expatreader.create_parser(forbid_external=False)
+    # skip inclusion of DTDs
+    parser.setFeature(xml.sax.handler.feature_external_ges, False)
+    parser.setFeature(xml.sax.handler.feature_external_pes, False)
+
     result = StringIO()
     downstream_handler = XMLGenerator(result, "utf-8")
     filter_handler = _CapabilitiesFilter(
         parser, downstream_handler,
-        u"FeatureType",
+        "FeatureType",
         layers_whitelist=writable_layers
     )
     filter_handler.parse(StringIO(content))
-    filtered_content = unicode(result.getvalue(), "utf-8")
-    return filtered_content
+    return result.getvalue()
 
 
 class _Layer:
@@ -354,10 +359,10 @@ class _CapabilitiesFilter(XMLFilterBase):
             self.layers_whitelist is not None and
             layer_name in self.layers_whitelist)
 
-    def characters(self, text):
+    def characters(self, content):
         if self.in_name and len(self.layers_path) != 0 and not \
                 self.layers_path[-1].self_hidden is True:
-            layer_name = normalize_typename(text)
+            layer_name = normalize_typename(content)
             if self._keep_layer(layer_name):
                 for layer in self.layers_path:
                     layer.hidden = False
@@ -367,13 +372,13 @@ class _CapabilitiesFilter(XMLFilterBase):
                 if len(self.layers_path) > 1:
                     self.layers_path[-2].children_nb -= 1
 
-        self._do(lambda: self._accumulator.append(text))
+        self._do(lambda: self._accumulator.append(content))
 
-    def ignorableWhitespace(self, ws):  # pragma: no cover  # noqa
-        self._do(lambda: self._accumulator.append(ws))
+    def ignorableWhitespace(self, chars):  # pragma: no cover  # noqa
+        self._do(lambda: self._accumulator.append(chars))
 
-    def processingInstruction(self, target, body):  # pragma: no cover  # noqa
-        self._do(lambda: self._downstream.processingInstruction(target, body))
+    def processingInstruction(self, target, data):  # pragma: no cover  # noqa
+        self._do(lambda: self._downstream.processingInstruction(target, data))
 
     def skippedEntity(self, name):  # pragma: no cover  # noqa
         self._downstream.skippedEntity(name)

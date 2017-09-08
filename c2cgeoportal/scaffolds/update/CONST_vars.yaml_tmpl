@@ -32,8 +32,13 @@ vars:
     schema: main
     # database parent schema
     parentschema: ""
+
+    dbsessions: {}
+
     # apache/mapserver.conf "Allow" statement
-    mapserv_allow: Allow from 127.0.0.1 ::1
+    mapserv_allow: |
+        Allow from 127.0.0.1 ::1
+        Require ip 127.0.0.1 ::1
     # mapserver connexion string
     mapserver_connection: user={dbuser} password={dbpassword} dbname={db} host={dbhost}
     # mapserver join tables
@@ -44,9 +49,9 @@ vars:
     mapserver_join_where: 'rra.role_id = %role_id% AND rra.restrictionarea_id = ra.id AND lra.restrictionarea_id = ra.id AND lra.layer_id = la.id AND la.name = '
     # mapserver metadata for validation
     mapserver_layer_metadata: ""
-    mapserver_layer_validation:
-        '"default_role_id" "-1"
-        "role_id" "^-?[0-9]*$"'
+    mapserver_layer_validation: |
+        "default_role_id" "-1"
+        "role_id" "^-?[0-9]*$"
     # mapfile data subselect
     mapfile_data_subselect: 'SELECT ST_Collect(ra.area) FROM main.restrictionarea AS ra, main.role_restrictionarea AS rra, main.layer_restrictionarea AS lra, main.treeitem AS la WHERE rra.role_id = %role_id% AND rra.restrictionarea_id = ra.id AND lra.restrictionarea_id = ra.id AND lra.layer_id = la.id AND la.name = '
     # mapserver filter on role id only
@@ -146,41 +151,49 @@ vars:
         - name: isExpanded
           type: boolean
         # Layer
-        - name: copy_to
+        - name: copyTo # V1
+        - name: copyable
+          type: boolean
         - name: legend
           type: boolean
         - name: isLegendExpanded
           type: boolean
-        - legendRule
+        - name: legendRule
         - name: legendImage
           type: url
         - name: iconUrl
           type: url
         - name: metadataUrl
           type: url
-        - disclaimer
+        - name: disclaimer
         - name: isChecked
           type: boolean
-        - identifierAttributeField
+        - name: identifierAttributeField
         - name: maxResolution
           type: float
         - name: minResolution
           type: float
+        - name: opacity
+          type: float
         - name: thumbnail
           type: url
-        - name: copyable
-          type: boolean
-        - lastUpdateDateColumn
-        - lastUpdateUserColumn
+        - name: timeAttribute
+        - name: lastUpdateDateColumn
+        - name: lastUpdateUserColumn
         - name: snappingConfig
           type: json
-        - name: geometry_validation
+        - name: geometryValidation
           type: boolean
+        # WMS
+        - name: directedFilterAttributes
+          type: list
+        - name: enumeratedAttributes
+          type: list
         # WMTS layers
         - name: ogcServer
-        - name: printLayers
-        - name: queryLayers
         - name: wmsLayers
+        - name: queryLayers
+        - name: printLayers
 
     # The list of functionalities that can be configured
     # through the admin interface.
@@ -189,6 +202,9 @@ vars:
         - default_theme
         - print_template
         - mapserver_substitution
+        - filterable_layers
+        - preset_layer_filter
+        - open_panel
 
     functionalities:
     # Functionalities that are accessible to anonymous
@@ -209,18 +225,23 @@ vars:
     # Functionalities that are accessible to authenticated
     # users with no associated functionalities in the
     # database.
-        registered:
+        registered: {}
 
-    # Functionalities that are made available to Mako templates.
+    # Functionalities that are made available to Mako templates and loginuser.
         available_in_templates:
         - default_basemap
         - default_theme
+        - filterable_layers
         - print_template
+        - preset_layer_filter
+        - open_panel
 
     # Define URLs to the parent application. Only useful if
     # this application is a child application in a parent/child
     # architecture.
     external_themes_url:
+
+    urllogin: {}
 
     mapserverproxy:
         default_ogc_server: source for image/png
@@ -257,23 +278,31 @@ vars:
         internal: http://localhost/{instanceid}/
         local: '{web_protocol}://{host}/{instanceid}/'
 
+    host_forward_host:
+    - localhost
+
     # The "raster web services" configuration. See the "raster"
     # chapter in the integrator documentation.
     raster: {}
 
     # Used by enumeration in the query builder
-    layers: {}
+    layers:
+        geometry_validation: True
 
     # Used to send an email on password reset
-    reset_password:
+    reset_password: {}
 
-    # The shortner base configuration
+    # The shortener base configuration
     shortener:
         # The base of created URL
         base_url:  '{web_protocol}://{host}{apache_entry_point}s/'
+        allowed_hosts:
+        - '{host}'
 
     # Define whether the MapServer proxy should hide the OGC capabilities.
     hide_capabilities: false
+
+    ogcproxy_enable: false
 
     # For print proxy
     print_url: http://localhost:8080/print-{instanceid}/print/{package}
@@ -293,10 +322,33 @@ vars:
 
     # Control the HTTP headers
     headers:
-        ngeo_index:
+        index: &header
             access_control_max_age: 600 # 10 minutes
-        mapserver:
-            access_control_allow_origin: ["*"]
+            access_control_allow_origin:
+            - "*"
+        api: *header
+        profile: *header
+        raster: *header
+        echo: *header
+        csvecho: *header
+        exportgpxkml: *header
+        error: *header
+        themes: &auth_header
+            access_control_max_age: 600 # 10 minutes
+            access_control_allow_origin:
+            - "{web_protocol}:://{host}/"
+            - "*"
+        config: *auth_header
+        print: *auth_header
+        fulltextsearch: *auth_header
+        mapserver: *auth_header
+        tinyows: *auth_header
+        layers: *auth_header
+        shortener: *auth_header
+        login:
+            access_control_max_age: 600 # 10 minutes
+            access_control_allow_origin:
+            - "{web_protocol}:://{host}/"
 
     # Checker configuration
     checker:
@@ -305,33 +357,34 @@ vars:
             lang_files: [ngeo, cgxp-api]
             phantomjs_routes:
             - name: desktop
-              param:
-                no_redirect: true
+              params:
+                no_redirect: "true"
             forward_headers: []
             routes_disable: []
             themes:
                 default:
                     params:
-                        version: 2
+                        version: "2"
         all:
             phantomjs_routes:
             - name: desktop
-              param:
-                no_redirect: true
+              params:
+                no_redirect: "true"
             - name: mobile
-              param:
-                no_redirect: true
-            - name: desktop
-              param:
-                no_redirect: true
-                debug: true
-            - name: mobile
-              param:
-                no_redirect: true
-                debug: true
+              params:
+                no_redirect: "true"
+            # phamtomjs 2.5 is required
+#            - name: desktop
+#              params:
+#                no_redirect: "true"
+#                debug: "true"
+#            - name: mobile
+#              params:
+#                no_redirect: "true"
+#                debug: "true"
             routes:
-            - name: apijs
-            - name: xapijs
+#            - name: apijs
+#            - name: xapijs
             - name: printproxy_capabilities
             # print V2
             #- name: printproxy_info
@@ -347,7 +400,7 @@ vars:
                 REQUEST: GetCapabilities
         main:
             routes:
-            - name: apijs
+#            - name: apijs
             - name: printproxy_capabilities
 
     # Check collector configuration
@@ -386,7 +439,7 @@ vars:
 
     # What web page is authorized to use the API
     authorized_referers:
-    - '{web_protocol}://{host}/{instanceid}'
+    - '{web_protocol}://{host}{apache_entry_point}'
 
     # Hooks that can be called at different moments in the life of the
     # application. The value is the full python name
@@ -408,6 +461,7 @@ vars:
       # List of {method path} regexes to force the usage of the slave
       slave:
       - \w+ /printproxy/.*  # The print proxy is never writing to the DB
+
 
 interpreted:
     python:

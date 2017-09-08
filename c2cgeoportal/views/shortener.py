@@ -32,7 +32,7 @@ import random
 import string
 import logging
 from datetime import datetime
-from urlparse import urlparse
+from urllib.parse import urlparse
 
 from pyramid.httpexceptions import HTTPFound, HTTPBadRequest, \
     HTTPNotFound, HTTPInternalServerError
@@ -69,7 +69,7 @@ class Shortener:
         short_urls[0].last_hit = datetime.now()
 
         set_common_headers(
-            self.request, "shortner", NO_CACHE
+            self.request, "shortener", NO_CACHE
         )
         return HTTPFound(location=short_urls[0].url)
 
@@ -158,6 +158,6 @@ class Shortener:
             )
 
         set_common_headers(
-            self.request, "shortner", NO_CACHE
+            self.request, "shortener", NO_CACHE
         )
         return {"short_url": s_url}

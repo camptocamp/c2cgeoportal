@@ -38,7 +38,7 @@ from c2cgeoportal.lib import functionality
 from c2cgeoportal.tests.functional import (  # noqa
     tear_down_common as tearDownModule,
     set_up_common as setUpModule,
-    mapserv_url, host, create_dummy_request, create_default_ogcserver,
+    mapserv_url, create_dummy_request, create_default_ogcserver,
 )
 
 
@@ -53,42 +53,42 @@ class TestMobileDesktop(TestCase):
         from c2cgeoportal.models import DBSession, LayerV1, Theme, Interface, LayerGroup
 
         create_default_ogcserver()
-        main = Interface(name=u"main")
-        mobile = Interface(name=u"mobile")
+        main = Interface(name="main")
+        mobile = Interface(name="mobile")
 
-        layer = LayerV1(name=u"__test_layer")
+        layer = LayerV1(name="__test_layer")
         layer.interfaces = [main, mobile]
 
-        mobile_only_layer = LayerV1(name=u"__test_mobile_only_layer")
+        mobile_only_layer = LayerV1(name="__test_mobile_only_layer")
         mobile_only_layer.interfaces = [mobile]
 
-        desktop_only_layer = LayerV1(name=u"__test_desktop_only_layer")
+        desktop_only_layer = LayerV1(name="__test_desktop_only_layer")
         desktop_only_layer.interfaces = [main]
 
-        group = LayerGroup(name=u"__test_layer_group")
+        group = LayerGroup(name="__test_layer_group")
         group.children = [layer, mobile_only_layer, desktop_only_layer]
-        theme = Theme(name=u"__test_theme")
+        theme = Theme(name="__test_theme")
         theme.children = [group]
         theme.interfaces = [main, mobile]
 
-        mobile_only_group = LayerGroup(name=u"__test_mobile_only_layer_group")
+        mobile_only_group = LayerGroup(name="__test_mobile_only_layer_group")
         mobile_only_group.children = [layer]
-        mobile_only_theme = Theme(name=u"__test_mobile_only_theme")
+        mobile_only_theme = Theme(name="__test_mobile_only_theme")
         mobile_only_theme.children = [mobile_only_group]
         mobile_only_theme.interfaces = [mobile]
 
-        desktop_only_group = LayerGroup(name=u"__test_desktop_only_layer_group")
+        desktop_only_group = LayerGroup(name="__test_desktop_only_layer_group")
         desktop_only_group.children = [layer]
-        desktop_only_theme = Theme(name=u"__test_desktop_only_theme")
+        desktop_only_theme = Theme(name="__test_desktop_only_theme")
         desktop_only_theme.children = [desktop_only_group]
         desktop_only_theme.interfaces = [main]
 
         # the following theme should not appear in the list of themes on desktop
         # nor on mobile
         # It should be accessible by explicitely loading it in mobile though
-        mobile_private_group = LayerGroup(name=u"__test_mobile_private_layer_group")
+        mobile_private_group = LayerGroup(name="__test_mobile_private_layer_group")
         mobile_private_group.children = [layer]
-        mobile_private_theme = Theme(name=u"__test_mobile_private_theme")
+        mobile_private_theme = Theme(name="__test_mobile_private_theme")
         mobile_private_theme.children = [mobile_private_group]
 
         DBSession.add_all([
@@ -140,11 +140,11 @@ class TestMobileDesktop(TestCase):
         themes = json.loads(response_vars["themes"])
         self.assertEqual(
             {t["name"] for t in themes},
-            set([u"__test_desktop_only_theme", u"__test_theme"]),
+            set(["__test_desktop_only_theme", "__test_theme"]),
         )
-        theme = [t for t in themes if t["name"] == u"__test_theme"]
+        theme = [t for t in themes if t["name"] == "__test_theme"]
         layers = theme[0]["children"][0]["children"]
         self.assertEqual(
             {l["name"] for l in layers},
-            set([u"__test_layer", u"__test_desktop_only_layer"]),
+            set(["__test_layer", "__test_desktop_only_layer"]),
         )

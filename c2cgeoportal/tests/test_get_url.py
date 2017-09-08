@@ -48,15 +48,15 @@ class TestGetURL(TestCase):
             return "http://server.org/" + path
         request.static_url = static_url
 
-        self.assertEquals(get_url("static://pr:st/icon.png", request), "http://server.org/pr:st/icon.png")
-        self.assertEquals(get_url("static:///icon.png", request), "http://server.org/c2cgeoportal:project/icon.png")
-        self.assertEquals(get_url("config://srv/icon.png", request), "https://example.com/test/icon.png?")
-        self.assertEquals(get_url("config://srv2/icon.png", request, "/icon2.png"), "/icon2.png")
-        self.assertEquals(get_url("http://example.com/icon.png", request), "http://example.com/icon.png")
-        self.assertEquals(get_url("https://example.com/icon.png", request), "https://example.com/icon.png")
+        self.assertEqual(get_url("static://pr:st/icon.png", request), "http://server.org/pr:st/icon.png")
+        self.assertEqual(get_url("static:///icon.png", request), "http://server.org/c2cgeoportal:project/icon.png")
+        self.assertEqual(get_url("config://srv/icon.png", request), "https://example.com/test/icon.png?")
+        self.assertEqual(get_url("config://srv2/icon.png", request, "/icon2.png"), "/icon2.png")
+        self.assertEqual(get_url("http://example.com/icon.png", request), "http://example.com/icon.png")
+        self.assertEqual(get_url("https://example.com/icon.png", request), "https://example.com/icon.png")
         errors = set()
-        self.assertEquals(get_url("config://srv2/icon.png", request, errors=errors), None)
-        self.assertEquals(errors, set(["The server 'srv2' is not found in the config"]))
+        self.assertEqual(get_url("config://srv2/icon.png", request, errors=errors), None)
+        self.assertEqual(errors, set(["The server 'srv2' is not found in the config"]))
 
     def test_get_url2(self):
         from c2cgeoportal.lib import get_url2
@@ -74,16 +74,16 @@ class TestGetURL(TestCase):
             return "http://server.org/" + path
         request.static_url = static_url
 
-        self.assertEquals(get_url2("test", "static://pr:st/icon.png", request, set()), "http://server.org/pr:st/icon.png")
-        self.assertEquals(get_url2("test", "static:///icon.png", request, set()), "http://server.org/my_project:static/icon.png")
-        self.assertEquals(get_url2("test", "config://srv/icon.png", request, set()), "https://example.com/test/icon.png")
-        self.assertEquals(get_url2("test", "config://srv/", request, set()), "https://example.com/test/")
-        self.assertEquals(get_url2("test", "config://srv", request, set()), "https://example.com/test")
-        self.assertEquals(get_url2("test", "config://srv/icon.png?test=aaa", request, set()), "https://example.com/test/icon.png?test=aaa")
-        self.assertEquals(get_url2("test", "config://srv_alt/icon.png", request, set()), "https://example.com/test/icon.png")
-        self.assertEquals(get_url2("test", "config://full_url", request, set()), "https://example.com/test.xml")
-        self.assertEquals(get_url2("test", "http://example.com/icon.png", request, set()), "http://example.com/icon.png")
-        self.assertEquals(get_url2("test", "https://example.com/icon.png", request, set()), "https://example.com/icon.png")
+        self.assertEqual(get_url2("test", "static://pr:st/icon.png", request, set()), "http://server.org/pr:st/icon.png")
+        self.assertEqual(get_url2("test", "static:///icon.png", request, set()), "http://server.org/my_project:static/icon.png")
+        self.assertEqual(get_url2("test", "config://srv/icon.png", request, set()), "https://example.com/test/icon.png")
+        self.assertEqual(get_url2("test", "config://srv/", request, set()), "https://example.com/test/")
+        self.assertEqual(get_url2("test", "config://srv", request, set()), "https://example.com/test")
+        self.assertEqual(get_url2("test", "config://srv/icon.png?test=aaa", request, set()), "https://example.com/test/icon.png?test=aaa")
+        self.assertEqual(get_url2("test", "config://srv_alt/icon.png", request, set()), "https://example.com/test/icon.png")
+        self.assertEqual(get_url2("test", "config://full_url", request, set()), "https://example.com/test.xml")
+        self.assertEqual(get_url2("test", "http://example.com/icon.png", request, set()), "http://example.com/icon.png")
+        self.assertEqual(get_url2("test", "https://example.com/icon.png", request, set()), "https://example.com/icon.png")
         errors = set()
-        self.assertEquals(get_url2("test", "config://srv2/icon.png", request, errors=errors), None)
-        self.assertEquals(errors, set(["The server 'srv2' is not found in the config"]))
+        self.assertEqual(get_url2("test", "config://srv2/icon.png", request, errors=errors), None)
+        self.assertEqual(errors, set(["The server 'srv2' is not found in the config"]))

@@ -37,22 +37,12 @@ import yaml
 import json
 import shutil
 import pkg_resources
-from subprocess import check_call, CalledProcessError
+import subprocess
+from subprocess import check_call, check_output, CalledProcessError
 from argparse import ArgumentParser
 from alembic.config import Config
 from alembic import command
 from c2cgeoportal.lib.bashcolor import colorize, GREEN, YELLOW, RED
-
-try:
-    from subprocess import check_output
-except ImportError:
-    from subprocess import Popen, PIPE
-
-    def check_output(cmd, cwd=None, stdin=None, stderr=None, shell=False):  # noqa
-        """Backwards compatible check_output"""
-        p = Popen(cmd, cwd=cwd, stdin=stdin, stderr=stderr, shell=shell, stdout=PIPE)
-        out, err = p.communicate()
-        return out
 
 VERSION_RE = "^[0-9]+\.[0-9]+\..+$"
 REQUIRED_TEMPLATE_KEYS = ["package", "srid", "extent", "apache_vhost"]
@@ -169,36 +159,55 @@ def _fill_arguments(command):
     return parser
 
 
+class Step:
+    def __init__(self, step_number):
+        self.step_number = step_number
+
+    def __call__(self, current_step):
+        def decorate(c2ctool, *args, **kwargs):
+            try:
+                current_step(c2ctool, *args, **kwargs)
+            except subprocess.CalledProcessError as e:
+                c2ctool.print_step(
+                    self.step_number, error=True,
+                    message="The command '{}' returns the error code {}.".format(e.cmd, e.returncode),
+                    prompt="Fix it and run it again:"
+                )
+                exit(1)
+        return decorate
+
+
 class C2cTool:
 
     color_bar = colorize("================================================================", GREEN)
+    venv_bin = None
 
     def print_step(self, step, error=False, message=None, prompt="To continue type:"):
         print("")
-        print(self.color_bar)
+        print((self.color_bar))
         if message is not None:
-            print(colorize(message, RED if error else YELLOW))
+            print((colorize(message, RED if error else YELLOW)))
         if step >= 0:
-            print(colorize(prompt, GREEN))
-            print(colorize("make -f {} upgrade{}", GREEN).format(
+            print((colorize(prompt, GREEN)))
+            print((colorize("make -f {} upgrade{}", GREEN).format(
                 self.options.file if self.options.file is not None else "<user.mk>",
                 step if step != 0 else "",
-            ))
+            )))
 
     @staticmethod
     def get_project():
         if not os.path.isfile("project.yaml"):
-            print(colorize("Unable to find the required 'project.yaml' file.", RED))
+            print((colorize("Unable to find the required 'project.yaml' file.", RED)))
             exit(1)
 
         with open("project.yaml", "r") as f:
-            return yaml.load(f)
+            return yaml.safe_load(f)
 
     def test_checkers(self):
         http = httplib2.Http()
         for check_type in ("", "type=all"):
-            resp, content = http.request(
-                "http://localhost{0!s}{1!s}".format(self.project["checker_path"], check_type),
+            resp, _ = http.request(
+                "http://localhost{}{}".format(self.project["checker_path"], check_type),
                 method="GET",
                 headers={
                     "Host": self.project["host"]
@@ -207,7 +216,7 @@ class C2cTool:
             if resp.status < 200 or resp.status >= 300:
                 return False, "\n".join([
                     "Checker error:",
-                    "Open `http://{0!s}{1!s}{2!s}` for more informations."
+                    "Open `http://{}{}{}` for more informations."
                 ]).format(
                     self.project["host"], self.project["checker_path"], check_type
                 )
@@ -239,8 +248,9 @@ class C2cTool:
         elif self.options.step == 6:
             self.step6()
 
+    @Step(0)
     def step0(self):
-        project_template_keys = self.project.get("template_vars").keys()
+        project_template_keys = list(self.project.get("template_vars").keys())
         messages = []
         for required in REQUIRED_TEMPLATE_KEYS:
             if required not in project_template_keys:
@@ -293,7 +303,7 @@ class C2cTool:
             )
             exit(1)
 
-        if check_output(["git", "status", "--short"]) == "":
+        if check_output(["git", "status", "--short"]).decode("utf-8") == "":
             self.step1()
         else:
             check_call(["git", "status"])
@@ -302,6 +312,7 @@ class C2cTool:
                 "changes before going further. All uncommited changes will be lost."
             )
 
+    @Step(1)
     def step1(self):
         if self.options.version is None:
             self.print_step(
@@ -314,10 +325,10 @@ class C2cTool:
         check_call(["git", "submodule", "foreach", "--recursive", "git", "reset", "--hard"])
         check_call(["git", "submodule", "foreach", "--recursive", "git", "clean", "--force", "-d"])
 
-        branch = check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).strip()
+        branch = check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode("utf-8").strip()
         # remove all no more existing branches
         check_call(["git", "fetch", "origin", "--prune"])
-        branches = check_output(["git", "branch", "--all"]).split("\n")
+        branches = check_output(["git", "branch", "--all"]).decode("utf-8").split("\n")
         if "  remotes/origin/{0!s}".format(branch) in branches:
             try:
                 check_call(["git", "pull", "--rebase", self.options.git_remote, branch])
@@ -332,7 +343,7 @@ class C2cTool:
         check_call(["git", "submodule", "foreach", "git", "submodule", "sync"])
         check_call(["git", "submodule", "foreach", "git", "submodule", "update", "--init"])
 
-        if len(check_output(["git", "status", "-z"]).strip()) != 0:
+        if len(check_output(["git", "status", "-z"]).decode("utf-8").strip()) != 0:
             self.print_step(
                 1, error=True, message="The pull is not fast forward.",
                 prompt="Please solve the rebase and run it again:")
@@ -370,12 +381,12 @@ class C2cTool:
                 template_package_json = json.loads(package_json_file.read(), encoding="utf-8")
             if "devDependencies" not in package_json:
                 package_json["devDependencies"] = {}
-            for package, version in template_package_json.get("devDependencies", {}).items():
+            for package, version in list(template_package_json.get("devDependencies", {}).items()):
                 package_json["devDependencies"][package] = version
             with open("package.json", "w") as package_json_file:
                 json.dump(
                     package_json, package_json_file,
-                    encoding="utf-8", sort_keys=True, separators=(',', ': '), indent=2
+                    sort_keys=True, separators=(',', ': '), indent=2
                 )
                 package_json_file.write("\n")
         else:
@@ -395,6 +406,7 @@ class C2cTool:
                 "file (listed in the `changelog.diff` file)."
             )
 
+    @Step(2)
     def step2(self):
         if os.path.isfile("changelog.diff"):
             os.unlink("changelog.diff")
@@ -415,11 +427,12 @@ class C2cTool:
                 DIFF_NOTICE
             )
 
+    @Step(3)
     def step3(self):
         if os.path.isfile("ngeo.diff"):
             os.unlink("ngeo.diff")
 
-        status = check_output(["git", "status", "--short", "CONST_create_template"])
+        status = check_output(["git", "status", "--short", "CONST_create_template"]).decode("utf-8")
         status = [s for s in status.split("\n") if len(s) > 3]
         status = [s[3:] for s in status if not s.startswith("?? ")]
         status = [s for s in status if not s.startswith(
@@ -447,6 +460,7 @@ class C2cTool:
         else:
             self.step4()
 
+    @Step(4)
     def step4(self):
         if self.options.file is None:
             self.print_step(
@@ -458,21 +472,32 @@ class C2cTool:
         if os.path.isfile("create.diff"):
             os.unlink("create.diff")
 
+        os.environ["IGNORE_I18N_ERRORS"] = "TRUE"
         check_call(["make", "-f", self.options.file, "build"])
+        del os.environ["IGNORE_I18N_ERRORS"]
+        check_call(["git", "checkout", "{0}/locale/*/LC_MESSAGES/{0}-client.po".format(
+            self.project["project_package"])])
 
-        command.upgrade(Config("alembic.ini"), "head")
-        command.upgrade(Config("alembic_static.ini"), "head")
+        if os.environ.get("DOCKER") != "TRUE":
+            command.upgrade(Config("alembic.ini"), "head")
+            command.upgrade(Config("alembic_static.ini"), "head")
 
-        if not self.options.windows:
-            check_call(self.project.get("cmds", {}).get(
-                "apache_graceful",
-                ["sudo", "/usr/sbin/apache2ctl", "graceful"]
-            ))
+            if not self.options.windows:
+                check_call(self.project.get("cmds", {}).get(
+                    "apache_graceful",
+                    ["sudo", "/usr/sbin/apache2ctl", "graceful"]
+                ))
 
-        message = [
-            "The upgrade is nearly done, now you should:",
-            "- Test your application."
-        ]
+            message = [
+                "The upgrade is nearly done, now you should:",
+                "- Test your application."
+            ]
+        else:
+            message = [
+                "The upgrade is nearly done, now you should:",
+                "- run `make run`",
+                "- Test your application on 'http://localhost:8480/desktop'."
+            ]
 
         if self.options.windows:
             message.append(
@@ -482,6 +507,7 @@ class C2cTool:
 
         self.print_step(5, message="\n".join(message))
 
+    @Step(5)
     def step5(self):
         ok, message = self.test_checkers()
         if not ok:
@@ -496,31 +522,32 @@ class C2cTool:
 
         self.print_step(
             6, message="We will commit all the above files!\n"
-            "If there are some files which should not be commited, then you should "
+            "If there are some files which should not be committed, then you should "
             "add them into the `.gitignore` file and launch upgrade5 again.",
             prompt="Then to commit your changes type:")
 
+    @Step(6)
     def step6(self):
         check_call(["git", "commit", "-m", "Upgrade to GeoMapFish {}".format(
             pkg_resources.get_distribution("c2cgeoportal").version
         )])
 
         print("")
-        print(self.color_bar)
+        print((self.color_bar))
         print("")
-        print(colorize("Congratulations your upgrade is a success.", GREEN))
+        print((colorize("Congratulations your upgrade is a success.", GREEN)))
         print("")
-        branch = check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).strip()
-        print("Now all your files will be commited, you should do a git push:")
-        print("git push {0!s} {1!s}.".format(
+        branch = check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode("utf-8").strip()
+        print("Now all your files will be committed, you should do a git push:")
+        print(("git push {0!s} {1!s}.".format(
             self.options.git_remote, branch
-        ))
+        )))
 
     def deploy(self):
         ok, message = self.test_checkers()
         if not ok:
             print(message)
-            print(colorize("Correct them and run again", RED))
+            print((colorize("Correct them and run again", RED)))
             exit(1)
 
         check_call(["sudo", "-u", "deploy", "deploy", "-r", "deploy/deploy.cfg", self.options.host])

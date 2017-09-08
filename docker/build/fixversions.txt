@@ -1,0 +1,1 @@
+# List of versions that should not be changed by requires.io

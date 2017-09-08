@@ -28,14 +28,13 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import re
-import urlparse
 import datetime
 import dateutil
 import json
-import urllib
-from urlparse import urlsplit, urlunsplit, urljoin
-from urllib import quote
+import re
+import urllib.request
+import urllib.parse
+import urllib.error
 
 from pyramid.interfaces import IRoutePregenerator, IStaticURLInfo
 from zope.interface import implementer
@@ -46,7 +45,7 @@ from pyramid.config.views import StaticURLInfo
 def get_types_map(types_array):
     types_map = {}
     for type_ in types_array:
-        if isinstance(type_, basestring):
+        if isinstance(type_, str):
             types_map[type_] = {
                 "name": type_,
             }
@@ -62,7 +61,7 @@ def get_url(url, request, default=None, errors=None):
     if re.match("^[a-z]*://", url) is None:  # pragma: no cover
         return url
 
-    obj = urlsplit(url)
+    obj = urllib.parse.urlsplit(url)
     if obj.scheme == "static":
         netloc = obj.netloc
         if netloc == "":
@@ -84,11 +83,11 @@ def get_url(url, request, default=None, errors=None):
 
 
 def get_url2(name, url, request, errors):
-    url_split = urlparse.urlsplit(url)
+    url_split = urllib.parse.urlsplit(url)
     if url_split.scheme == "":
         if url_split.netloc == "" and url_split.path not in ("", "/"):
             # Relative URL like: /dummy/static/url or dummy/static/url
-            return urlparse.urlunsplit(url_split)
+            return urllib.parse.urlunsplit(url_split)
         errors.add(
             "{}='{}' is not an URL."
             .format(name, url)
@@ -101,7 +100,7 @@ def get_url2(name, url, request, errors):
                 .format(name, url)
             )
             return None
-        return urlparse.urlunsplit(url_split)
+        return urllib.parse.urlunsplit(url_split)
     elif url_split.scheme == "static":
         if url_split.path in ("", "/"):
             errors.add(
@@ -134,10 +133,10 @@ def get_url2(name, url, request, errors):
         if url_split.path != "":
             if server[-1] != "/":
                 server += "/"
-            url = urlparse.urljoin(server, url_split.path[1:])
+            url = urllib.parse.urljoin(server, url_split.path[1:])
         else:
             url = server
-        return url if len(url_split.query) == 0 else u"{}?{}".format(
+        return url if len(url_split.query) == 0 else "{}?{}".format(
             url, url_split.query,
         )
 
@@ -145,7 +144,7 @@ def get_url2(name, url, request, errors):
 def get_typed(name, value, types, request, errors):
     try:
         if name not in types:
-            # ignore
+            errors.add("Type '{}' not defined.".format(name))
             return None
         type_ = types[name]
         if type_.get("type", "string") == "string":
@@ -222,27 +221,19 @@ def get_typed(name, value, types, request, errors):
 
 
 def add_url_params(url, params):
-    if len(params.items()) == 0:
+    if len(params) == 0:
         return url
-    return add_spliturl_params(urlsplit(url), params)
+    return add_spliturl_params(urllib.parse.urlsplit(url), params)
 
 
 def add_spliturl_params(spliturl, params):
-    query = []
-    if spliturl.query != "":
-        query.append(spliturl.query)
-    prepared_params = []
-    for param in params.items():
-        if isinstance(param[1], unicode):
-            prepared_params.append([param[0], param[1].encode("utf-8")])
-        else:
-            prepared_params.append(param)
+    query = dict([(k, v[-1]) for k, v in list(urllib.parse.parse_qs(spliturl.query).items())])
+    for key, value in list(params.items()):
+        query[key] = value
 
-    query.extend([urllib.urlencode(dict([param])) for param in prepared_params])
-
-    return urlunsplit((
+    return urllib.parse.urlunsplit((
         spliturl.scheme, spliturl.netloc, spliturl.path,
-        "&".join(query), spliturl.fragment
+        urllib.parse.urlencode(query), spliturl.fragment
     ))
 
 
@@ -390,8 +381,8 @@ class MultiDomainStaticURLInfo(StaticURLInfo):  # pragma: no cover
                         **kw
                     )
                 else:
-                    subpath = quote(subpath)
-                    return urljoin(url, subpath[1:])
+                    subpath = urllib.parse.quote(subpath)
+                    return urllib.parse.urljoin(url, subpath[1:])
         raise ValueError("No static URL definition matching {0!s}".format(path))
 
     def add(self, config, name, spec, **extra):

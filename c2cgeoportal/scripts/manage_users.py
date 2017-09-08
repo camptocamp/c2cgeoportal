@@ -39,9 +39,9 @@ import transaction
 def main():
     """
     Emergency user create and password reset script
-    exemple, reset toto password to foobar:
+    example, reset toto password to foobar:
     .build/venv/bin/manage_users -p foobar toto
-    exemple, create user foo with password bar and role admin:
+    example, create user foo with password bar and role admin:
     .build/venv/bin/manage_users -c -r role_admin -p bar foo
 
     to get the options list, do:
@@ -122,11 +122,11 @@ User can be created if it does not exist yet."""
         try:
             getattr(models, model)
         except AttributeError:
-            print("models.{0!s} not found".format(model))
+            print(("models.{0!s} not found".format(model)))
 
     # check that user exists
     sess = models.DBSession()
-    query = sess.query(models.User).filter_by(username=u"{0!s}".format(username))
+    query = sess.query(models.User).filter_by(username="{0!s}".format(username))
 
     result = query.count()
     if result == 0:
@@ -134,7 +134,7 @@ User can be created if it does not exist yet."""
             # if doesn"t exist and no -c option, throw error
             raise Exception("User {0!s} does not exist in database".format(username))
         else:
-            print("User {0!s} does not exist in database, creating".format(username))
+            print(("User {0!s} does not exist in database, creating".format(username)))
             # if does not exist and -c option, create user
 
             password = options.password if options.password is not None else username
@@ -142,7 +142,7 @@ User can be created if it does not exist yet."""
 
             # get roles
             query_role = sess.query(models.Role).filter(
-                models.Role.name == u"{0!s}".format(options.rolename))
+                models.Role.name == "{0!s}".format(options.rolename))
 
             if query_role.count() == 0:
                 # role not found in db?
@@ -153,25 +153,25 @@ User can be created if it does not exist yet."""
             role = query_role.first()
 
             user = models.User(
-                username=u"{0!s}".format(username),
-                password=u"{0!s}".format(password),
-                email=u"{0!s}".format(email),
+                username="{0!s}".format(username),
+                password="{0!s}".format(password),
+                email="{0!s}".format(email),
                 role=role
             )
             sess.add(user)
             transaction.commit()
 
-            print("User {0!s} created with password {1!s} and role {2!s}".format(
+            print(("User {0!s} created with password {1!s} and role {2!s}".format(
                 username, password, options.rolename
-            ))
+            )))
 
     else:
         # if user exists (assuming username are unique)
         user = query.first()
 
         if options.password is not None:
-            print("Password set to: {0!s}".format(options.password))
-            user.password = u"{0!s}".format(options.password)
+            print(("Password set to: {0!s}".format(options.password)))
+            user.password = "{0!s}".format(options.password)
 
         if options.email is not None:
             user.email = options.email
@@ -179,7 +179,7 @@ User can be created if it does not exist yet."""
         sess.add(user)
         transaction.commit()
 
-        print("Password resetted for user {0!s}".format(username))
+        print(("Password resetted for user {0!s}".format(username)))
 
 
 if __name__ == "__main__":

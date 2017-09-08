@@ -33,7 +33,7 @@ from pyramid.httpexceptions import HTTPInternalServerError, \
     HTTPNotFound, HTTPBadRequest, HTTPForbidden
 from pyramid.view import view_config
 
-from sqlalchemy import func, distinct
+from sqlalchemy import Enum, func, distinct, Numeric, String, Text, Unicode, UnicodeText
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 from sqlalchemy.sql import and_, or_
 from sqlalchemy.orm.util import class_mapper
@@ -48,12 +48,14 @@ from geojson.feature import FeatureCollection, Feature
 from shapely.geometry import asShape
 from shapely.ops import cascaded_union
 from shapely.geos import TopologicalError
+from six import iteritems
 
 from papyrus.protocol import Protocol, create_filter
+from papyrus.xsd import XSDGenerator
 
 from c2cgeoportal.lib.caching import get_region, \
     set_common_headers, NO_CACHE, PUBLIC_CACHE, PRIVATE_CACHE
-from c2cgeoportal.lib.dbreflection import get_class, get_table
+from c2cgeoportal.lib.dbreflection import get_class, get_table, _AssociationProxy
 from c2cgeoportal.models import DBSessions, DBSession, Layer, RestrictionArea, Role
 
 cache_region = get_region()
@@ -66,7 +68,8 @@ class Layers:
         self.settings = request.registry.settings.get("layers", {})
         self.layers_enum_config = self.settings.get("enum")
 
-    def _get_geom_col_info(self, layer):
+    @staticmethod
+    def _get_geom_col_info(layer):
         """ Return information about the layer's geometry column, namely
         a ``(name, srid)`` tuple, where ``name`` is the name of the
         geometry column, and ``srid`` its srid.
@@ -267,7 +270,7 @@ class Layers:
             for feature in features.features:
                 self._log_last_update(layer, feature)
             return features
-        except TopologicalError, e:
+        except TopologicalError as e:
             self.request.response.status_int = 400
             return {"validation_error": str(e)}
 
@@ -319,11 +322,12 @@ class Layers:
             feature = protocol.update(self.request, feature_id)
             self._log_last_update(layer, feature)
             return feature
-        except TopologicalError, e:
+        except TopologicalError as e:
             self.request.response.status_int = 400
             return {"validation_error": str(e)}
 
-    def _validate_geometry(self, geom):
+    @staticmethod
+    def _validate_geometry(geom):
         if geom is not None:
             simple = DBSession.query(func.ST_IsSimple(geom)).scalar()
             if not simple:
@@ -342,7 +346,8 @@ class Layers:
         if last_update_user is not None:
             setattr(feature, last_update_user, self.request.user.id)
 
-    def _get_metadata(self, layer, key, default=None):
+    @staticmethod
+    def _get_metadata(layer, key, default=None):
         metadatas = layer.get_metadatas(key)
         if len(metadatas) == 1:
             metadata = metadatas[0]
@@ -351,7 +356,7 @@ class Layers:
 
     def _get_validation_setting(self, layer):
         # The validation UIMetadata is stored as a string, not a boolean
-        should_validate = self._get_metadata(layer, "geometry_validation", None)
+        should_validate = self._get_metadata(layer, "geometryValidation", None)
         if should_validate:
             return should_validate.lower() != "false"
         return self.settings.get("geometry_validation", False)
@@ -405,7 +410,7 @@ class Layers:
             exclude.append(last_update_user)
 
         return get_class(
-            str(layer.geo_table),
+            layer.geo_table,
             exclude_properties=exclude
         )
 
@@ -415,17 +420,16 @@ class Layers:
 
         if self.layers_enum_config is None:  # pragma: no cover
             raise HTTPInternalServerError("Missing configuration")
-        general_dbsession_name = self.layers_enum_config.get("dbsession", "dbsession")
         layername = self.request.matchdict["layer_name"]
         fieldname = self.request.matchdict["field_name"]
         # TODO check if layer is public or not
 
         return self._enumerate_attribute_values(
-            general_dbsession_name, layername, fieldname
+            layername, fieldname
         )
 
     @cache_region.cache_on_arguments()
-    def _enumerate_attribute_values(self, general_dbsession_name, layername, fieldname):
+    def _enumerate_attribute_values(self, layername, fieldname):
         if layername not in self.layers_enum_config:  # pragma: no cover
             raise HTTPBadRequest("Unknown layer: {0!s}".format(layername))
 
@@ -433,26 +437,24 @@ class Layers:
         if fieldname not in layerinfos["attributes"]:  # pragma: no cover
             raise HTTPBadRequest("Unknown attribute: {0!s}".format(fieldname))
         dbsession = DBSessions.get(
-            layerinfos.get("dbsession", general_dbsession_name),
+            layerinfos.get("dbsession", "dbsession"),
         )
         if dbsession is None:  # pragma: no cover
             raise HTTPInternalServerError(
                 "No dbsession found for layer '{0!s}'".format(layername)
             )
+        values = self.query_enumerate_attribute_values(dbsession, layerinfos, fieldname)
+        enum = {
+            "items": [{"label": value[0], "value": value[0]} for value in values]
+        }
+        return enum
 
-        layer_table = layerinfos.get("table")
+    @staticmethod
+    def query_enumerate_attribute_values(dbsession, layerinfos, fieldname):
         attrinfos = layerinfos["attributes"][fieldname]
-        attrinfos = {} if attrinfos is None else attrinfos
-
-        table = attrinfos.get("table", layer_table)
-        if table is None:  # pragma: no cover
-            raise HTTPInternalServerError(
-                "No config table found for layer '{0!s}'".format(layername)
-            )
+        table = attrinfos["table"]
         layertable = get_table(table, session=dbsession)
-
-        column = attrinfos["column_name"] \
-            if "column_name" in attrinfos else fieldname
+        column = attrinfos.get("column_name", fieldname)
         attribute = getattr(layertable.columns, column)
         # For instance if `separator` is a "," we consider that the column contains a
         # comma separate list of values e.g.: "value1,value2".
@@ -461,9 +463,115 @@ class Layers:
             attribute = func.unnest(func.string_to_array(
                 func.string_agg(attribute, separator), separator
             ))
-        values = dbsession.query(distinct(attribute)).order_by(attribute).all()
-        enum = {
-            "items": [{"label": value[0], "value": value[0]} for value in values]
-        }
+        return dbsession.query(distinct(attribute)).order_by(attribute).all()
 
-        return enum
+
+def get_layer_metadatas(layer):
+    # exclude the columns used to record the last features update
+    exclude = [] if layer.exclude_properties is None else layer.exclude_properties.split(",")
+
+    date_metadata = layer.get_metadatas("lastUpdateDateColumn")
+    last_update_date = date_metadata[0] if len(date_metadata) == 1 else None
+    if last_update_date is not None:
+        exclude.append(last_update_date.value)
+    user_metadata = layer.get_metadatas("lastUpdateUserColumn")
+    last_update_user = user_metadata[0] if len(user_metadata) == 1 else None
+    if last_update_user is not None:
+        exclude.append(last_update_user.value)
+
+    cls = get_class(
+        layer.geo_table,
+        exclude_properties=exclude
+    )
+
+    edit_columns = []
+
+    for column_property in class_mapper(cls).iterate_properties:
+        if isinstance(column_property, ColumnProperty):
+
+            if len(column_property.columns) != 1:
+                raise NotImplementedError  # pragma: no cover
+
+            column = column_property.columns[0]
+
+            # Exclude columns that are primary keys
+            if not column.primary_key:
+                properties = _convert_column_type(column.type)
+                properties["name"] = column.key
+
+                if column.nullable:
+                    properties["nillable"] = True
+                edit_columns.append(properties)
+        else:
+            for k, p in cls.__dict__.items():
+                if not isinstance(p, _AssociationProxy):
+                    continue
+
+                relationship_property = class_mapper(cls) \
+                    .get_property(p.target)
+                target_cls = relationship_property.argument
+                query = DBSession.query(getattr(target_cls, p.value_attr))
+                properties = {}
+                if column.nullable:
+                    properties["nillable"] = True
+
+                properties["name"] = k
+                properties["restriction"] = "enumeration"
+                properties["type"] = "xsd:string"
+                properties["enumeration"] = []
+                for value in query:
+                    properties["enumeration"].append(value[0])
+
+                edit_columns.append(properties)
+    return edit_columns
+
+
+def _convert_column_type(column_type):
+    # SIMPLE_XSD_TYPES
+    for cls, xsd_type in iteritems(XSDGenerator.SIMPLE_XSD_TYPES):
+        if isinstance(column_type, cls):
+            return {"type": xsd_type}
+
+    # Geometry type
+    if isinstance(column_type, Geometry):
+        geometry_type = column_type.geometry_type
+        if geometry_type in XSDGenerator.SIMPLE_GEOMETRY_XSD_TYPES:
+            xsd_type = XSDGenerator.SIMPLE_GEOMETRY_XSD_TYPES[geometry_type]
+            return {"type": xsd_type, "srid": int(column_type.srid)}
+        if geometry_type == "GEOMETRY":
+            xsd_type = "gml:GeometryPropertyType"
+            return {"type": xsd_type, "srid": int(column_type.srid)}
+
+        raise NotImplementedError  # pragma: no cover
+
+    # Enumeration type
+    if isinstance(column_type, Enum):
+        restriction = {}
+        restriction["restriction"] = "enumeration"
+        restriction["type"] = "xsd:string"
+        restriction["enumeration"] = []
+        for enum in column_type.enums:
+            restriction["enumeration"].append(enum)
+        return restriction
+
+    # String type
+    if isinstance(column_type, (String, Text, Unicode, UnicodeText)):
+        if column_type.length is None:
+            return {"type": "xsd:string"}
+        else:
+            return {"type": "xsd:string", "maxLength": int(column_type.length)}
+
+    # Numeric Type
+    if isinstance(column_type, Numeric):
+        xsd_type = {"type": "xsd:decimal"}
+        if column_type.scale is None and column_type.precision is None:
+            return xsd_type
+
+        else:
+            if column_type.scale is not None:
+                xsd_type["fractionDigits"] = int(column_type.scale)
+            if column_type.precision is not None:
+                xsd_type["totalDigits"] = int(column_type.precision)
+            return xsd_type
+
+    raise NotImplementedError  # pragma: no cover

@@ -103,7 +103,7 @@ class _MemoryBackend:
         reset = request.params.get("reset", "0") == "1"
         timers = {}
         with self._stats_lock:
-            for key, value in self._timers.iteritems():
+            for key, value in self._timers.items():
                 timers[key] = {
                     "nb": value[0],
                     "avg_ms": int(round((value[1] / value[0]) * 1000.0)),
@@ -127,7 +127,7 @@ class _StatsDBackend:  # pragma: no cover
         host, port = address.rsplit(":")
         host = host.strip("[]")
         addrinfo = socket.getaddrinfo(host, port, 0, 0, socket.IPPROTO_UDP)
-        af, socktype, proto, canonname, sa = addrinfo[0]
+        af, socktype, proto, _, sa = addrinfo[0]
         LOG.info("Starting a StatsDBackend for %s stats: %s -> %s", prefix, address, repr(sa))
 
         self._socket = socket.socket(af, socktype, proto)
@@ -159,7 +159,7 @@ def _create_finished_cb(kind, measure):  # pragma: no cover
             name = "_not_found"
         else:
             name = request.matched_route.name
-        key = [kind, request.method, name, str(status)]
+        key = [kind, request.method, name, status]
         measure.stop(key)
     return finished_cb
 
@@ -195,8 +195,8 @@ def _simplify_sql(sql):
     return re.sub(r"%\(\w+\)\w", "?", sql)
 
 
-def _before_cursor_execute(conn, cursor, statement,
-                           parameters, context, executemany):  # pragma: no cover
+def _before_cursor_execute(
+        conn, cursor, statement, parameters, context, executemany):  # pragma: no cover
     measure = timer(["sql", _simplify_sql(statement)])
 
     def after(*args, **kwargs):

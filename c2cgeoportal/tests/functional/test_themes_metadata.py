@@ -39,7 +39,7 @@ from pyramid import testing
 from c2cgeoportal.tests.functional import (  # noqa
     tear_down_common as tearDownModule,
     set_up_common as setUpModule,
-    mapserv_url, host, create_dummy_request, create_default_ogcserver,
+    mapserv_url, create_dummy_request, create_default_ogcserver,
 )
 
 import logging
@@ -57,11 +57,11 @@ class TestThemesViewMetadata(TestCase):
         from c2cgeoportal.models import DBSession, \
             Theme, LayerGroup, Interface, LayerWMS, Metadata
 
-        desktop = Interface(name=u"desktop")
+        desktop = Interface(name="desktop")
 
         ogc_server_internal, _ = create_default_ogcserver()
 
-        layer_wms = LayerWMS(name=u"__test_layer_internal_wms", public=True)
+        layer_wms = LayerWMS(name="__test_layer_internal_wms", public=True)
         layer_wms.layer = "__test_layer_internal_wms"
         layer_wms.ogc_server = ogc_server_internal
         layer_wms.interfaces = [desktop]
@@ -104,10 +104,10 @@ class TestThemesViewMetadata(TestCase):
             Metadata("unknown", "Hello"),
         ]
 
-        layer_group = LayerGroup(name=u"__test_layer_group")
+        layer_group = LayerGroup(name="__test_layer_group")
         layer_group.children = [layer_wms]
 
-        theme = Theme(name=u"__test_theme")
+        theme = Theme(name="__test_theme")
         theme.interfaces = [desktop]
         theme.children = [layer_group]
 
@@ -196,7 +196,7 @@ class TestThemesViewMetadata(TestCase):
         entry = Entry(request)
 
         themes = entry.themes()
-        self.assertEquals(self._get_filtered_errors(themes), set([
+        self.assertEqual(self._get_filtered_errors(themes), set([
             "The boolean attribute 'boolean3'='hello' is not in [yes, y, on, 1, true, no, n, off, 0, false].",
             "Unable to parse the attribute 'json_wrong'='{\"test\": 123' with the type 'json', error:\n'set' object has no attribute 'append'",
             "The date attribute 'date2'='Sep 25 10:36:28 BRST 2003' should not have any time",
@@ -214,7 +214,7 @@ class TestThemesViewMetadata(TestCase):
             "The attribute 'url20'='/' is not an URL.",
             "Unknown type 'unknown'.",
         ]))
-        self.assertEquals(
+        self.assertEqual(
             [self._only_name(t, "metadata") for t in themes["themes"]],
             [{
                 "metadata": {},
@@ -222,26 +222,26 @@ class TestThemesViewMetadata(TestCase):
                     "metadata": {},
                     "children": [{
                         "metadata": {
-                            u"string": u"string",
-                            u"list": [u"1", u"2", u"a"],
-                            u"boolean": True,
-                            u"boolean2": False,
-                            u"integer": 1,
-                            u"float": 5.5,
-                            u"json": {u"test": 123},
-                            u"date": "2003-09-25",
-                            u"time": "10:36:28",
-                            u"datetime": "2003-09-25T10:36:28",
-                            u"url1": u"http://example.com/hi?a=b#c",
-                            u"url2": "http://dummy.org/tests:static/path/icon.png",
-                            u"url3": "http://dummy.org/tests:static/path/icon.png",
-                            u"url4": "http://dummy.org/tests:cgxp/path/icon.png",
-                            u"url5": "http://dummy.org/project:static/path/icon.png",
-                            u"url6": "http://dummy.org/project:cgxp/path/icon.png",
-                            u"url7": "http://example.com/test",
-                            u"url8": u"http://example.com/test/index.html",
-                            u"url9": u"/dummy/static/icon.png",
-                            u"url10": u"dummy/static/icon.png",
+                            "string": "string",
+                            "list": ["1", "2", "a"],
+                            "boolean": True,
+                            "boolean2": False,
+                            "integer": 1,
+                            "float": 5.5,
+                            "json": {"test": 123},
+                            "date": "2003-09-25",
+                            "time": "10:36:28",
+                            "datetime": "2003-09-25T10:36:28",
+                            "url1": "http://example.com/hi?a=b#c",
+                            "url2": "http://dummy.org/tests:static/path/icon.png",
+                            "url3": "http://dummy.org/tests:static/path/icon.png",
+                            "url4": "http://dummy.org/tests:cgxp/path/icon.png",
+                            "url5": "http://dummy.org/project:static/path/icon.png",
+                            "url6": "http://dummy.org/project:cgxp/path/icon.png",
+                            "url7": "http://example.com/test",
+                            "url8": "http://example.com/test/index.html",
+                            "url9": "/dummy/static/icon.png",
+                            "url10": "dummy/static/icon.png",
                         }
                     }]
                 }]

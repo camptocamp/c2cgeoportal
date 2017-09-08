@@ -37,14 +37,14 @@ from pyramid.view import view_config
 from c2cgeoportal.lib.caching import set_common_headers, NO_CACHE
 
 
-def json_base64_encode(filename, file):
+def json_base64_encode(filename, file_):
     """
     Generate a JSON-wrapped base64-encoded string.
     See http://en.wikipedia.org/wiki/Base64
     """
-    yield '{{"filename":{0!s},"data":"'.format(json.dumps(filename))
-    yield b64encode(file.read())
-    yield '","success":true}'
+    yield '{{"filename":{},"data":"'.format(json.dumps(filename)).encode("utf-8")
+    yield b64encode(file_.read())
+    yield '","success":true}'.encode("utf-8")
 
 
 @view_config(route_name="echo")
@@ -61,11 +61,11 @@ def echo(request):
     http://docs.sencha.com/ext-js/3-4/#!/api/Ext.form.BasicForm-cfg-fileUpload
     """
     try:
-        file = request.POST["file"]
+        file_ = request.POST["file"]
     except KeyError:
         return HTTPBadRequest()
     response = Response()
-    response.app_iter = json_base64_encode(file.filename, file.file)
+    response.app_iter = json_base64_encode(file_.filename, file_.file)
     return set_common_headers(
         request, "echo", NO_CACHE,
         response=response, content_type="text/html"

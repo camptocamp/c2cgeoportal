@@ -40,7 +40,25 @@ in the sections ``gmf/Directives`` and ``ngeo/Directives``.
 
 All the directives should provide an example.
 
-At the end of the file you find something like:
+The controller (js file) is commonly named ``mainCtrl``. So you can use a value
+from the controller by doing this (here, the controller is the DesktopController):
+
+.. code:: html
+
+    <html lang="{{desktopCtrl.lang}}" ng-app="mydemo" ng-controller="DesktopController as mainCtrl">
+      <head>
+      ...
+      </head>
+      <body>
+      ...
+      <gmf-mydirective gmf-mydirective-variableproperty="mainCtrl.open"
+                       gmf-mydirective-staticproperty="::mainCtrl.map">
+      <gmf-mydirective>
+      ...
+      </body>
+    </html>
+
+The js constants of the application are defined at the end of the file:
 
 .. code:: html
 

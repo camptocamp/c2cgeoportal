@@ -4,7 +4,7 @@
 	<parameter name="comments" class="java.lang.String"/>
 	<parameter name="debug" class="java.lang.Boolean"/>
 	<parameter name="mapSubReport" class="java.lang.String"/>
-	<parameter name="legend" class="net.sf.jasperreports.engine.data.JRTableModelDataSource"/>
+	<parameter name="legendDataSource" class="net.sf.jasperreports.engine.data.JRTableModelDataSource"/>
 	<parameter name="legendSubReport" class="java.lang.String"/>
 	<parameter name="numberOfLegendRows" class="java.lang.Integer"/>
 	<parameter name="scalebarSubReport" class="java.lang.String"/>
@@ -119,7 +119,7 @@
 			</staticText>
 			<subreport>
 				<reportElement stretchType="RelativeToTallestObject" x="0" y="26" width="255" height="56"/>
-				<dataSourceExpression><![CDATA[$P{legend}]]></dataSourceExpression>
+				<dataSourceExpression><![CDATA[$P{legendDataSource}]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{legendSubReport}]]></subreportExpression>
 			</subreport>
 		</band>

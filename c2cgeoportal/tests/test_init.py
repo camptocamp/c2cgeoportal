@@ -33,7 +33,7 @@ from pyramid import testing
 
 import c2cgeoportal
 from c2cgeoportal.pyramid_ import call_hook, set_user_validator, \
-    default_user_validator, _create_get_user_from_request, _match_url_start
+    default_user_validator, create_get_user_from_request, _match_url_start
 
 
 class TestIncludeme(TestCase):
@@ -48,15 +48,15 @@ class TestIncludeme(TestCase):
                 "schema": "main",
                 "parentschema": "",
                 "default_max_age": 86400,
-                "app.cfg": "c2cgeoportal/tests/config.yaml",
+                "app.cfg": "/src/c2cgeoportal/tests/config.yaml",
                 "package": "c2cgeoportal",
                 "enable_admin_interface": True,
             })
 
     def test_set_user_validator_directive(self):
         self.config.include(c2cgeoportal.includeme)
-        self.failUnless(
-            self.config.set_user_validator.im_func.__docobj__ is
+        self.assertTrue(
+            self.config.set_user_validator.__func__.__docobj__ is
             set_user_validator
         )
 
@@ -95,10 +95,10 @@ class TestReferer(TestCase):
             def __init__(self, to, ref, method):
                 self.path_qs = to
                 self.referer = ref
-                self._user = TestReferer.USER
+                self.user_ = TestReferer.USER
                 self.method = method
 
-        get_user = _create_get_user_from_request(self.SETTINGS)
+        get_user = create_get_user_from_request(self.SETTINGS)
         return get_user(MockRequest(to=to, ref=ref, method=method))
 
     def test_match_url(self):
@@ -124,12 +124,10 @@ class TestReferer(TestCase):
 
     def test_no_ref(self):
         self.assertEqual(self._get_user(to=self.BASE1, ref=None), self.USER)
-        self.assertEqual(self._get_user(to=self.BASE1, ref=""), None)
+        self.assertIsNone(self._get_user(to=self.BASE1, ref=""))
 
-        self.assertIsNone(
-            self._get_user(to=self.BASE1, ref=None, method="POST"))
-        self.assertIsNone(
-            self._get_user(to=self.BASE1, ref="", method="POST"))
+        self.assertEqual(self._get_user(to=self.BASE1, ref=None, method="POST"), self.USER)
+        self.assertIsNone(self._get_user(to=self.BASE1, ref="", method="POST"))
 
     def test_bad_ref(self):
         self.assertIsNone(self._get_user(
@@ -168,6 +166,17 @@ class TestHooks(TestCase):
 class TestInit(TestCase):
     def test_add_url_params(self):
         from c2cgeoportal.lib import add_url_params
-        params = {"Name": "Bob", "Age": 18, "Nationality": u"Việt Nam"}
+        from urllib.parse import urlparse, parse_qs
+        params = {"Name": "Bob", "Age": 18, "Nationality": "Việt Nam"}
         result = add_url_params("http://test/", params)
-        self.assertEqual(result, "http://test/?Nationality=Vi%E1%BB%87t+Nam&Age=18&Name=Bob")
+        presult = urlparse(result)
+        self.assertEqual(presult.scheme, "http")
+        self.assertEqual(presult.netloc, "test")
+        self.assertEqual(presult.path, "/")
+        self.assertEqual(presult.params, "")
+        self.assertEqual(presult.fragment, "")
+        self.assertEqual(parse_qs(presult.query), {
+            "Name": ["Bob"],
+            "Age": ["18"],
+            "Nationality": ["Việt Nam"],
+        })

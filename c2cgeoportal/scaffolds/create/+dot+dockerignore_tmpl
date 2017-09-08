@@ -9,6 +9,7 @@
 !requirements.txt
 !CONST_alembic
 !CONST_requirements.txt
+!CONST_fixversions.txt
 !CONST_versions_requirements.txt
 !run_alembic.sh
 !setup.cfg

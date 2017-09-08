@@ -30,11 +30,13 @@
 
 import sys
 import httplib2
-import urllib
+import urllib.request
+import urllib.parse
+import urllib.error
 import logging
 
-from cStringIO import StringIO
-from urlparse import urlparse, parse_qs
+from io import StringIO
+from urllib.parse import urlparse, parse_qs
 
 from pyramid.response import Response
 from pyramid.httpexceptions import HTTPBadGateway, HTTPInternalServerError
@@ -46,23 +48,21 @@ log = logging.getLogger(__name__)
 cache_region = get_region()
 
 
-class Proxy:
+class Proxy(object):
 
     def __init__(self, request):
         self.request = request
+        self.host_forward_host = request.registry.settings["host_forward_host"]
 
     def _proxy(self, url, params=None, method=None, cache=False, body=None, headers=None):
         # get query string
         params = dict(self.request.params) if params is None else params
         parsed_url = urlparse(url)
         all_params = parse_qs(parsed_url.query)
-        for p in all_params:
+        for p in all_params:  # pragma: no cover
             all_params[p] = ",".join(all_params[p])
         all_params.update(params)
-        params_encoded = {}
-        for k, v in all_params.iteritems():
-            params_encoded[k] = unicode(v).encode("utf-8")
-        query_string = urllib.urlencode(params_encoded)
+        query_string = urllib.parse.urlencode(all_params)
 
         if parsed_url.port is None:
             url = "{0!s}://{1!s}{2!s}?{3!s}".format(
@@ -86,7 +86,7 @@ class Proxy:
         if headers is None:  # pragma: no cover
             headers = dict(self.request.headers)
 
-        if parsed_url.hostname != "localhost":  # pragma: no cover
+        if parsed_url.hostname not in self.host_forward_host and "Host" in headers:  # pragma: no cover
             headers.pop("Host")
 
         if not cache:
@@ -96,8 +96,6 @@ class Proxy:
             body = StringIO(self.request.body)
 
         try:
-            # fix encoding issue with IE
-            url = url.encode("UTF8")
             if method in ("POST", "PUT"):
                 resp, content = http.request(
                     url, method=method, body=body, headers=headers
@@ -113,7 +111,7 @@ class Proxy:
 
             log.error(
                 "--- With headers ---\n{0!s}".format("\n".join(
-                    ["{0!s}: {1!s}".format(*h) for h in headers.items()]
+                    ["{0!s}: {1!s}".format(*h) for h in list(headers.items())]
                 ))
             )
 
@@ -140,7 +138,7 @@ class Proxy:
 
             log.error(
                 "--- With headers ---\n{0!s}".format("\n".join(
-                    ["{0!s}: {1!s}".format(*h) for h in headers.items()]
+                    ["{0!s}: {1!s}".format(*h) for h in list(headers.items())]
                 ))
             )
 
@@ -165,7 +163,7 @@ class Proxy:
 
     def _proxy_response(
         self, service_name, url,
-        headers=None, headers_update=None, public=False, **kwargs
+        headers_update=None, public=False, **kwargs
     ):  # pragma: no cover
         if headers_update is None:
             headers_update = {}
@@ -227,7 +225,7 @@ class Proxy:
     @staticmethod
     def _get_lower_params(params):
         return dict(
-            (k.lower(), unicode(v).lower()) for k, v in params.iteritems()
+            (k.lower(), str(v).lower()) for k, v in params.items()
         )
 
     def _get_headers(self):

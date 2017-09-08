@@ -87,7 +87,7 @@ def get_functionality(name, request):
         )
 
     if errors != set():  # pragma: no cover
-        log.errors("\n".join(errors))
+        log.error("\n".join(errors))
     return result
 
 

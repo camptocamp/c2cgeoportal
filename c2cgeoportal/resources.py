@@ -28,19 +28,9 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from pyramid.security import Allow, Authenticated, ALL_PERMISSIONS
-from pyramid_formalchemy.resources import Models
-
-
 class Root:
     def __init__(self, request):
         self.request = request  # pragma: no cover
-
-
-class FAModels(Models):
-    __acl__ = [
-        (Allow, Authenticated, ALL_PERMISSIONS),
-    ]
 
 
 def defaultgroupsfinder(username, request):

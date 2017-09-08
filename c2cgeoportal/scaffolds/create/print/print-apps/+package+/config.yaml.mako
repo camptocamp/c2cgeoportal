@@ -15,11 +15,6 @@ templates:
                 size: 40
                 default:
                     graphic: "file:///north.svg"
-            scalebar: !scalebar &scalebar
-                width: 150
-                height: 20
-                default:
-                     fontSize: 8
             map: !map &map
                 maxDpi: 254
                 dpiSuggestions: [254]
@@ -27,6 +22,11 @@ templates:
                     scales: [100, 250, 500, 2500, 5000, 10000, 25000, 50000, 100000, 500000]
                 width: 555
                 height: 675
+            scalebar: !scalebar &scalebar
+                width: 150
+                height: 20
+                default:
+                     fontSize: 8
             datasource: !datasource &datasource
                 attributes:
                     title: !string {}
@@ -73,8 +73,8 @@ templates:
         - !prepareLegend
             template: legend.jrxml
         - !createNorthArrow {}
-        - !createScalebar {}
         - !createMap {}
+        - !createScalebar {}
         - !createDataSource
             processors:
             - !prepareTable
@@ -127,7 +127,7 @@ templates:
             scalebar: *scalebar
             map: !map
                 <<: *map
-                width: 800
-                height: 460
+                width: 1150
+                height: 673
             datasource: *datasource
         processors: *processors

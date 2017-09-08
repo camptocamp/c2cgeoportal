@@ -2,13 +2,29 @@ extends: vars_testgeomapfish.yaml
 
 vars:
     host: localhost
+    db: geomapfish_test
 
     authorized_referers:
     - http://127.0.0.1/{instanceid}
     - https://127.0.0.1/{instanceid}
+    - http://localhost/{instanceid}
+    - https://localhost/{instanceid}
+
+    dbsessions:
+        travis_test:
+            url: postgresql://{dbuser}:{dbpassword}@{dbhost}:5433/test
+
+    layers:
+        enum:
+            test:
+                dbsession: travis_test
+                attributes:
+                    type:
+                        table: main.test
 
     checker:
         defaults:
+            lang_files: [ngeo]
             routes_disable: [printproxy_capabilities]
         all:
             routes_disable: [printproxy_capabilities]
@@ -17,6 +33,7 @@ vars:
 
 update_paths:
 - authorized_referers
+- layers
 - checker.defaults
 - checker.all
 - check_collector.disabled

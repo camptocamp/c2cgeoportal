@@ -31,7 +31,7 @@
 import logging
 
 from pyramid.view import view_config
-from xml.etree import ElementTree
+from defusedxml import ElementTree
 from pyramid.httpexceptions import HTTPForbidden, HTTPBadRequest, HTTPUnauthorized
 
 from c2cgeoportal.lib.caching import get_region, NO_CACHE, PRIVATE_CACHE
@@ -54,23 +54,22 @@ class TinyOWSProxy(OGCProxy):
             "tinyowsproxy.tinyows_url must be set"
         assert self.default_ogc_server, "mapserverproxy.default_ogc_server must be set"
 
+        self.user = self.request.user
+        self.role_id = None if self.user is None else self.user.role.id
+
+        # params hold the parameters we are going to send to TinyOWS
+        self.lower_params = self._get_lower_params(dict(self.request.params))
+
     def _get_wfs_url(self):
         return self.settings.get("tinyows_url")
 
     @view_config(route_name="tinyowsproxy")
     def proxy(self):
-        self.user = self.request.user
-
         if self.user is None:
             raise HTTPUnauthorized(
                 "Authentication required",
                 headers=[("WWW-Authenticate", 'Basic realm="TinyOWS"')]
             )
-        self.role_id = None if self.user is None else self.user.role.id
-
-        # params hold the parameters we are going to send to TinyOWS
-        params = dict(self.request.params)
-        self.lower_params = self._get_lower_params(params)
 
         operation = self.lower_params.get("request")
         typenames = \
@@ -109,12 +108,12 @@ class TinyOWSProxy(OGCProxy):
             )
 
         # we want clients to cache GetCapabilities and DescribeFeatureType req.
-        use_cache = method == "GET" and operation in (u"getcapabilities", u"describefeaturetype")
+        use_cache = method == "GET" and operation in ("getcapabilities", "describefeaturetype")
         cache_control = PRIVATE_CACHE if use_cache else NO_CACHE
 
         response = self._proxy_callback(
             operation, self.role_id, cache_control,
-            url=self._get_wfs_url(), params=params, cache=use_cache,
+            url=self._get_wfs_url(), params=dict(self.request.params), cache=use_cache,
             headers=self._get_headers(), body=self.request.body,
         )
         return response
@@ -126,7 +125,7 @@ class TinyOWSProxy(OGCProxy):
         """
 
         writable_layers = set()
-        for gmflayer in get_writable_layers(self.role_id, [self.default_ogc_server.id]).values():
+        for gmflayer in list(get_writable_layers(self.role_id, [self.default_ogc_server.id]).values()):
             for ogclayer in gmflayer.layer.split(","):
                 writable_layers.add(ogclayer)
         return typenames.issubset(writable_layers)
@@ -139,11 +138,12 @@ class TinyOWSProxy(OGCProxy):
 
     def _proxy_callback(self, operation, role_id, cache_control, *args, **kwargs):
         resp, content = self._proxy(*args, **kwargs)
+        content = content.decode("utf-8")
 
         if operation == "getcapabilities":
             content = filter_wfst_capabilities(
                 content, role_id,
-                self.default_ogc_server.url_wfs or self.default_ogc_server.url,
+                super(TinyOWSProxy, self)._get_wfs_url(),
                 self.settings.get("proxies"), self.request
             )
 
@@ -154,7 +154,7 @@ class TinyOWSProxy(OGCProxy):
         )
 
         return self._build_response(
-            resp, content, cache_control, "tinyows"
+            resp, content.encode("utf-8"), cache_control, "tinyows"
         )
 
     @staticmethod

@@ -37,7 +37,8 @@ Get the localisation from Transifex:
 
 .. prompt:: bash
 
-    make transifex-get
+    docker build --tag=camptocamp/geomapfish_build_dev docker/build
+    ./docker-run make transifex-get
 
 For each version we create a new branch (at the latest at the final release):
 
@@ -46,32 +47,50 @@ For each version we create a new branch (at the latest at the final release):
     git checkout -b <version>
     git push origin <version>
 
-Go back to the master branch:
-
-.. prompt:: bash
-
-    git checkout master
-
-Edit the version in the ``setup.py`` to be ``<version + 1>``.
+Change the version in the following files:
+ * Makefile (VERSION)
+ * Dockerfile
 
 Commit your changes:
 
 .. prompt:: bash
 
-    git add setup.py
+    git add Makefile Dockerfile
+    git commit -m "Create the version <version> branch"
+
+Go back to the master branch:
+
+.. prompt:: bash
+
+    git checkout master
+    git merge <version>
+
+Edit the version in the ``setup.py`` to be ``<version + 1>``.
+
+Change back the version in the following files:
+ * Makefile (VERSION)
+ * Dockerfile
+
+Commit your changes:
+
+.. prompt:: bash
+
+    git add setup.py Makefile Dockerfile
     git commit -m "Start version <version + 1>"
 
 Push your changes:
 
 .. prompt:: bash
 
-    git push origin master
+    git push origin <version> master
 
 Create a new Transifex resource:
 
 .. prompt:: bash
 
-    make transifex-init
+    rm .tx/config
+    ./docker-run rm /build/c2ctemplate-cache.yaml
+    ./docker-run make transifex-init
 
 Then continue by creating the release.
 

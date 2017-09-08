@@ -28,6 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import json
 from unittest import TestCase
 from nose.plugins.attrib import attr
 
@@ -43,7 +44,7 @@ class TestEchoView(TestCase):
         request = testing.DummyRequest()
 
         response = echo.echo(request)
-        self.assertEquals(response.status_int, 400)
+        self.assertEqual(response.status_int, 400)
 
     def test_echo_bad_request(self):
         from c2cgeoportal.views import echo
@@ -52,7 +53,7 @@ class TestEchoView(TestCase):
         request.method = "POST"
 
         response = echo.echo(request)
-        self.assertEquals(response.status_int, 400)
+        self.assertEqual(response.status_int, 400)
 
     def test_echo(self):
         from c2cgeoportal.views import echo
@@ -68,9 +69,16 @@ Content-Type: text/html
 
 some content with non-ASCII chars ç à é
 --foobar--
-"""
+""".encode("utf-8")
 
         response = echo.echo(request)
-        self.assertEquals(response.status_int, 200)
-        self.assertEquals(response.content_type, "text/html")
-        self.assertEquals(response.body, '{"filename":"a file name","data":"c29tZSBjb250ZW50IHdpdGggbm9uLUFTQ0lJIGNoYXJzIMOnIMOgIMOp","success":true}')  # noqa
+        self.assertEqual(response.status_int, 200)
+        self.assertEqual(response.content_type, "text/html")
+        self.assertEqual(
+            json.loads(response.body.decode("utf-8")),
+            {
+                "filename": "a file name",
+                "data": "c29tZSBjb250ZW50IHdpdGggbm9uLUFTQ0lJIGNoYXJzIMOnIMOgIMOp",
+                "success": True
+            }
+        )

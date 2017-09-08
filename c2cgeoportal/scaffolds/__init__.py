@@ -34,8 +34,6 @@ import os
 import json
 import requests
 import yaml
-from six import string_types
-from simplejson.scanner import JSONDecodeError
 
 from pyramid.scaffolds.template import Template
 from pyramid.compat import input_
@@ -50,7 +48,7 @@ class BaseTemplate(Template):  # pragma: no cover
     Greatly inspired from ``pyramid.scaffolds.template.PyramidTemplate``.
     """
 
-    def pre(self, command, output_dir, vars):
+    def pre(self, command, output_dir, vars_):
         """
         Overrides ``pyramid.scaffold.template.Template.pre``, adding
         several variables to the default variables list. Also prevents
@@ -58,44 +56,42 @@ class BaseTemplate(Template):  # pragma: no cover
         package logger "root").
         """
 
-        self._args_to_vars(command.args, vars)
-
-        self._get_vars(vars, "package", "Get a package name: ")
-        self._get_vars(vars, "apache_vhost", "The Apache vhost name: ")
+        self._get_vars(vars_, "package", "Get a package name: ")
+        self._get_vars(vars_, "apache_vhost", "The Apache vhost name: ")
         self._get_vars(
-            vars, "srid",
+            vars_, "srid",
             "Spatial Reference System Identifier (e.g. 21781): ", int,
         )
-        srid = vars["srid"]
+        srid = vars_["srid"]
         extent = self._epsg2bbox(srid)
         self._get_vars(
-            vars, "extent",
+            vars_, "extent",
             "Extent (minx miny maxx maxy): in EPSG: {srid} projection, default is "
             "[{bbox[0]} {bbox[1]} {bbox[2]} {bbox[3]}]: ".format(srid=srid, bbox=extent)
             if extent else
             "Extent (minx miny maxx maxy): in EPSG: {srid} projection: ".format(srid=srid)
         )
-        match = re.match(r"([\d.]+)[,; ] *([\d.]+)[,; ] *([\d.]+)[,; ] *([\d.]+)", vars["extent"])
+        match = re.match(r"([\d.]+)[,; ] *([\d.]+)[,; ] *([\d.]+)[,; ] *([\d.]+)", vars_["extent"])
         if match is not None:
             extent = [match.group(n + 1) for n in range(4)]
-        vars["extent"] = ",".join(extent)
-        vars["extent_mapserver"] = " ".join(extent)
-        vars["extent_viewer"] = json.dumps(extent)
+        vars_["extent"] = ",".join(extent)
+        vars_["extent_mapserver"] = " ".join(extent)
+        vars_["extent_viewer"] = json.dumps(extent)
 
-        ret = Template.pre(self, command, output_dir, vars)
+        ret = Template.pre(self, command, output_dir, vars_)
 
-        if vars["package"] == "site":
+        if vars_["package"] == "site":
             raise ValueError(
                 "Sorry, you may not name your package 'site'. "
                 "The package name 'site' has a special meaning in "
                 "Python.  Please name it anything except 'site'.")
 
-        package_logger = vars["package"]
+        package_logger = vars_["package"]
         if package_logger == "root":
             # Rename the app logger in the rare case a project
             # is named "root"
             package_logger = "app"
-        vars["package_logger"] = package_logger
+        vars_["package_logger"] = package_logger
 
         return ret
 
@@ -104,30 +100,27 @@ class BaseTemplate(Template):  # pragma: no cover
         print(msg)
 
     @staticmethod
-    def _args_to_vars(args, vars):
-        for arg in args:
-            m = re.match("(.+)=(.*)", arg)
-            if m:
-                vars[m.group(1)] = m.group(2)
-
-    @staticmethod
-    def _get_vars(vars, name, prompt, type=None):
+    def _get_vars(vars_, name, prompt, type_=None):
         """
         Set an attribute in the vars dict.
         """
 
-        value = vars.get(name)
+        if name.upper() in os.environ:
+            value = os.environ[name.upper()]
+        else:
+            value = vars_.get(name)
 
         if value is None:
             value = input_(prompt).strip()
 
-        if type is not None:
+        if type_ is not None:
             try:
-                type(value)
+                type_(value)
             except ValueError:
-                exit("The attribute {} is not a {}".format(name, type))
+                print(("The attribute {}={} is not a {}".format(name, value, type_)))
+                exit(1)
 
-        vars[name] = value
+        vars_[name] = value
 
     @staticmethod
     def _epsg2bbox(srid):
@@ -145,7 +138,7 @@ class BaseTemplate(Template):  # pragma: no cover
             )
             r2 = r.json()[0]
             return [r1["x"], r2["y"], r2["x"], r1["y"]]
-        except JSONDecodeError:
+        except json.JSONDecodeError:
             print("epsg.io doesn't return a correct json.")
             return None
         except IndexError:
@@ -157,7 +150,7 @@ class TemplateCreate(BaseTemplate):  # pragma: no cover
     _template_dir = "create"
     summary = "Template used to create a c2cgeoportal project"
 
-    def post(self, command, output_dir, vars):
+    def post(self, command, output_dir, vars_):
         """
         Overrides the base template class to print the next step.
         """
@@ -170,43 +163,40 @@ class TemplateCreate(BaseTemplate):  # pragma: no cover
         self.out("\nContinue with:")
         self.out(colorize(
             ".build/venv/bin/pcreate -s c2cgeoportal_update ../{vars[project]} "
-            "package={vars[package]} srid={vars[srid]} extent={vars[extent]}".format(vars=vars),
+            "package={vars[package]} srid={vars[srid]} extent={vars[extent]}".format(vars=vars_),
             GREEN
         ))
 
-        return BaseTemplate.post(self, command, output_dir, vars)
+        return BaseTemplate.post(self, command, output_dir, vars_)
 
 
 class TemplateUpdate(BaseTemplate):  # pragma: no cover
     _template_dir = "update"
     summary = "Template used to update a c2cgeoportal project"
 
-    def pre(self, command, output_dir, vars):
+    def pre(self, command, output_dir, vars_):
         """
         Overrides the base template
         """
 
         if os.path.exists("project.yaml"):
             with open("project.yaml", "r") as f:
-                project = yaml.load(f)
+                project = yaml.safe_load(f)
                 if "template_vars" in project:
-                    for key, value in project["template_vars"].items():
-                        vars[key] = \
-                            value.encode("utf-8") \
-                            if isinstance(value, string_types) \
-                            else value
+                    for key, value in list(project["template_vars"].items()):
+                        vars_[key] = "{}".format(value)
 
-        return BaseTemplate.pre(self, command, output_dir, vars)
+        return BaseTemplate.pre(self, command, output_dir, vars_)
 
-    def post(self, command, output_dir, vars):
-        if os.name == 'posix':
-            dest = os.path.join(output_dir, ".whiskey/action_hooks/pre-build.mako")
-            subprocess.check_call(["chmod", "+x", dest])
+    def post(self, command, output_dir, vars_):
         """
         Overrides the base template class to print "Welcome to c2cgeoportal!"
         after a successful scaffolding rendering.
         """
 
+        if os.name == 'posix':
+            dest = os.path.join(output_dir, ".whiskey/action_hooks/pre-build.mako")
+            subprocess.check_call(["chmod", "+x", dest])
         self.out(colorize("\nWelcome to c2cgeoportal!", GREEN))
 
-        return BaseTemplate.post(self, command, output_dir, vars)
+        return BaseTemplate.post(self, command, output_dir, vars_)

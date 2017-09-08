@@ -34,11 +34,7 @@ Revises:
 Create Date: 2014-10-24 11:43:23.886123
 """
 
-try:
-    from hashlib import sha1
-    sha1  # suppress pyflakes warning
-except ImportError:  # pragma: no cover
-    from sha import new as sha1
+from hashlib import sha1
 
 from alembic import op, context
 from sqlalchemy import ForeignKey, Column, Table, MetaData
@@ -52,6 +48,7 @@ down_revision = None
 
 class TsVector(UserDefinedType):
     """ A custom type for PostgreSQL's tsvector type. """
+
     def get_col_spec(self):
         return 'TSVECTOR'
 
@@ -233,7 +230,7 @@ def upgrade():
         "FROM %(schema)s.role AS r "
         "WHERE r.name = 'role_admin')" % {
             'schema': schema,
-            'pass': sha1('admin').hexdigest()
+            'pass': sha1('admin'.encode('utf-8')).hexdigest()
         }
     )
 

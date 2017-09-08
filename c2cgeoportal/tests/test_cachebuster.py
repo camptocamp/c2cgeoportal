@@ -61,5 +61,5 @@ class TestCacheBuster(TestCase):
         response = ctf(request)
         self.assertEqual(request.path_info, "/test2/123456/build.css")
         # test no CORS
-        self.assertNotIn("Access-Control-Allow-Origin", response.headers.keys())
-        self.assertNotIn("Access-Control-Allow-Headers", response.headers.keys())
+        self.assertNotIn("Access-Control-Allow-Origin", list(response.headers.keys()))
+        self.assertNotIn("Access-Control-Allow-Headers", list(response.headers.keys()))

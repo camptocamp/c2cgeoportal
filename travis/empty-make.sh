@@ -1,10 +1,10 @@
 #!/bin/bash -ex
 
-RESULT=$(make $* 2>&1)
+RESULT=$(DEBUG=TRUE make $* 2>&1)
 
-if [ "${RESULT}" != "" ]
+if [ "${RESULT}" != "make: Nothing to be done for 'build'." ]
 then
     echo A Rule is running again
-    make $*
+    DEBUG=TRUE make $*
     exit 1
 fi

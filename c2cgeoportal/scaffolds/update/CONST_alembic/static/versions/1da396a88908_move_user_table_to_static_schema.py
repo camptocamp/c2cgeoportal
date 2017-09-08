@@ -34,6 +34,8 @@ Revises: 3f89a7d71a5e
 Create Date: 2015-02-20 14:09:04.875390
 """
 
+from hashlib import sha1
+
 from alembic import op, context
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy.types import Integer, String, Unicode, Boolean
@@ -82,23 +84,31 @@ def upgrade():
             )
         )
 
-    op.execute(
-        'INSERT INTO %(staticschema)s.user '
-        '(type, username, password, email, is_password_changed, role_name%(parent_column)s) ('
-        'SELECT u.type, u.username, u.password, u.email, '
-        'u.is_password_changed, r.name%(parent_select)s '
-        'FROM %(schema)s.user AS u '
-        'LEFT OUTER JOIN %(schema)s.role AS r ON (r.id = u.role_id) %(parent_join)s'
-        ')' % {
-            'staticschema': staticschema,
-            'schema': schema,
-            'parent_select': parent_select,
-            'parent_column': parent_column,
-            'parent_join': parent_join,
-        }
-    )
-
-    op.drop_table('user', schema=schema)
+    try:
+        op.execute(
+            'INSERT INTO %(staticschema)s.user '
+            '(type, username, password, email, is_password_changed, role_name%(parent_column)s) ('
+            'SELECT u.type, u.username, u.password, u.email, '
+            'u.is_password_changed, r.name%(parent_select)s '
+            'FROM %(schema)s.user AS u '
+            'LEFT OUTER JOIN %(schema)s.role AS r ON (r.id = u.role_id) %(parent_join)s'
+            ')' % {
+                'staticschema': staticschema,
+                'schema': schema,
+                'parent_select': parent_select,
+                'parent_column': parent_column,
+                'parent_join': parent_join,
+            }
+        )
+        op.drop_table('user', schema=schema)
+    except:
+        op.execute(
+            "INSERT INTO %(staticschema)s.user (type, username, email, password, role) "
+            "VALUES ( 'user', 'admin', 'info@example.com', '%(pass)s', 'role_admin')" % {
+                'staticschema': staticschema,
+                'pass': sha1('admin'.encode('utf-8')).hexdigest()
+            }
+        )
 
 
 def downgrade():

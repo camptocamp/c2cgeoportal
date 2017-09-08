@@ -33,7 +33,7 @@
 import math
 
 from struct import unpack
-import dbfutils
+from . import dbfutils
 
 
 XY_POINT_RECORD_LENGTH = 16
@@ -46,23 +46,21 @@ def load_shapefile(file_name):
     records = []
     # open dbf file and get records as a list
     dbf_file = file_name[0:-4] + ".dbf"
-    dbf = open(dbf_file, "rb")
-    db = list(dbfutils.dbfreader(dbf))
-    dbf.close()
-    fp = open(file_name, "rb")
+    with open(dbf_file, "rb") as dbf:
+        db = list(dbfutils.dbfreader(dbf))
+    with open(file_name, "rb") as fp:
+        # get basic shapefile configuration
+        fp.seek(32)
+        read_and_unpack("i", fp.read(4))
+        read_bounding_box(fp)
 
-    # get basic shapefile configuration
-    fp.seek(32)
-    read_and_unpack("i", fp.read(4))
-    read_bounding_box(fp)
-
-    # fetch Records
-    fp.seek(100)
-    while True:
-        shp_record = create_record(fp)
-        if not shp_record:
-            break
-        records.append(shp_record)
+        # fetch Records
+        fp.seek(100)
+        while True:
+            shp_record = create_record(fp)
+            if not shp_record:
+                break
+            records.append(shp_record)
 
     return records
 
@@ -79,7 +77,7 @@ record_class = {
 def create_record(fp):
     # read header
     record_number = read_and_unpack(">L", fp.read(4))
-    if record_number == "":
+    if record_number == b"":
         return False
     read_and_unpack(">L", fp.read(4))
     record_shape_type = read_and_unpack("<L", fp.read(4))
@@ -95,20 +93,20 @@ def create_record(fp):
 # Reading defs
 
 
-def read_record_any(fp, type):
-    if type == 0:
-        return read_record_null(fp)
-    elif type == 1:
+def read_record_any(fp, type_):
+    if type_ == 0:
+        return read_record_null()
+    elif type_ == 1:
         return read_record_point(fp)
-    elif type == 8:
+    elif type_ == 8:
         return read_record_multi_point(fp)
-    elif type in [3, 5]:
+    elif type_ in [3, 5]:
         return read_record_poly_line(fp)
     else:
         return False
 
 
-def read_record_null(fp):
+def read_record_null():
     data = {}
     return data
 
@@ -128,7 +126,7 @@ def read_record_point(fp):
 def read_record_multi_point(fp):
     data = read_bounding_box(fp)
     data["numpoints"] = read_and_unpack("i", fp.read(4))
-    for i in range(0, data["numpoints"]):
+    for _ in range(0, data["numpoints"]):
         data["points"].append(read_record_point(fp))
     return data
 
@@ -138,7 +136,7 @@ def read_record_poly_line(fp):
     data["numparts"] = read_and_unpack("i", fp.read(4))
     data["numpoints"] = read_and_unpack("i", fp.read(4))
     data["parts"] = []
-    for i in range(0, data["numparts"]):
+    for _ in range(0, data["numparts"]):
         data["parts"].append(read_and_unpack("i", fp.read(4)))
     points_initial_index = fp.tell()
     points_read = 0
@@ -151,7 +149,7 @@ def read_record_poly_line(fp):
         # while( ! in_array( points_read, data["parts"]) and
         # points_read < data["numpoints"] and !feof(fp)):
         check_point = []
-        while (points_read < data["numpoints"]):
+        while points_read < data["numpoints"]:
             curr_point = read_record_point(fp)
             data["parts"][part_index]["points"].append(curr_point)
             points_read += 1
@@ -177,10 +175,10 @@ def read_bounding_box(fp):
     return data
 
 
-def read_and_unpack(type, data):
-    if data == "":
+def read_and_unpack(type_, data):
+    if data == b"":
         return data
-    return unpack(type, data)[0]
+    return unpack(type_, data)[0]
 
 
 # ###
@@ -235,9 +233,9 @@ def get_true_centers(records, projected=False):
             # now get the true centroid
         temp_point = {"x": 0, "y": 0}
         if biggest[points][0] != biggest[points][len(biggest[points]) - 1]:
-            print  \
-                "mug", biggest[points][0], \
-                biggest[points][len(biggest[points]) - 1]
+            print((
+                "mug", biggest[points][0],
+                biggest[points][len(biggest[points]) - 1]))
         for i in range(0, len(biggest[points]) - 1):
             j = (i + 1) % (len(biggest[points]) - 1)
             temp_point["x"] -= \
@@ -270,32 +268,32 @@ def get_area(ring, points):
 
 def get_neighbors(records):
     # for each feature
-    for i in range(len(records)):
-        if "neighbors" not in records[i]["shp_data"]:
-            records[i]["shp_data"]["neighbors"] = []
+    for i, record_1 in enumerate(records):
+        if "neighbors" not in record_1["shp_data"]:
+            record_1["shp_data"]["neighbors"] = []
 
         # for each other feature
-        for j in range(i + 1, len(records)):
+        for j, record_2 in range(i + 1, len(records)):
             numcommon = 0
             # first check to see if the bounding boxes overlap
-            if overlap(records[i], records[j]):
+            if overlap(record_1, record_2):
                 # if so, check every single point in this feature
                 # to see if it matches a point in the other feature
 
                 # for each part:
-                for part in records[i]["shp_data"]["parts"]:
+                for part in record_1["shp_data"]["parts"]:
 
                     # for each point:
                     for point in part["points"]:
 
-                        for otherPart in records[j]["shp_data"]["parts"]:
+                        for otherPart in record_2["shp_data"]["parts"]:
                             if point in otherPart["points"]:
                                 numcommon += 1
                                 if numcommon == 2:
-                                    if "neighbors" not in records[j]["shp_data"]:
-                                        records[j]["shp_data"]["neighbors"] = []
-                                    records[i]["shp_data"]["neighbors"].append(j)
-                                    records[j]["shp_data"]["neighbors"].append(i)
+                                    if "neighbors" not in record_2["shp_data"]:
+                                        record_2["shp_data"]["neighbors"] = []
+                                    record_1["shp_data"]["neighbors"].append(j)
+                                    record_2["shp_data"]["neighbors"].append(i)
                                     # now break out to the next j
                                     break
                         if numcommon == 2:
@@ -305,7 +303,7 @@ def get_neighbors(records):
 
 
 def project_shapefile(records, what_projection, lon_center=0, lat_center=0):
-    print "projecting to ", what_projection
+    print(("projecting to ", what_projection))
     for feature in records:
         for part in feature["shp_data"]["parts"]:
             part["projectedPoints"] = []
@@ -341,10 +339,8 @@ def project_point(from_point, what_projection, lon_center, lat_center):
 
 
 def overlap(feature1, feature2):
-    if (feature1["shp_data"]["xmax"] > feature2["shp_data"]["xmin"] and
-            feature1["shp_data"]["ymax"] > feature2["shp_data"]["ymin"] and
-            feature1["shp_data"]["xmin"] < feature2["shp_data"]["xmax"] and
-            feature1["shp_data"]["ymin"] < feature2["shp_data"]["ymax"]):
-        return True
-    else:
-        return False
+    return \
+        feature1["shp_data"]["xmax"] > feature2["shp_data"]["xmin"] and \
+        feature1["shp_data"]["ymax"] > feature2["shp_data"]["ymin"] and \
+        feature1["shp_data"]["xmin"] < feature2["shp_data"]["xmax"] and \
+        feature1["shp_data"]["ymin"] < feature2["shp_data"]["ymax"]

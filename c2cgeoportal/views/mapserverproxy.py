@@ -32,7 +32,6 @@ import logging
 
 from pyramid.view import view_config
 
-from c2cgeoportal.lib import get_url2
 from c2cgeoportal.lib.caching import get_region, NO_CACHE, PUBLIC_CACHE, PRIVATE_CACHE
 from c2cgeoportal.lib.functionality import get_mapserver_substitution_params
 from c2cgeoportal.lib.filter_capabilities import filter_capabilities
@@ -47,52 +46,10 @@ class MapservProxy(OGCProxy):
 
     def __init__(self, request):
         OGCProxy.__init__(self, request)
-
-    def _get_ogc_server(self):
-        return self.ogc_server or (
-            self.external_ogc_server if self.external else self.default_ogc_server
-        )
-
-    def _get_wms_url(self):
-        errors = set()
-        url = get_url2(
-            "The OGC server '{}'".format(self._get_ogc_server().name),
-            self._get_ogc_server().url, self.request, errors
-        )
-        if len(errors) > 0:  # pragma: no cover
-            log.error("\n".join(errors))
-        return url
-
-    def _get_wfs_url(self):
-        ogc_server = self._get_ogc_server()
-        errors = set()
-        url = get_url2(
-            "The OGC server (WFS) '{}'".format(self._get_ogc_server().name),
-            ogc_server.url_wfs or ogc_server.url,
-            self.request, errors
-        )
-        if len(errors) > 0:  # pragma: no cover
-            log.error("\n".join(errors))
-        return url
+        self.user = self.request.user
 
     @view_config(route_name="mapserverproxy")
     def proxy(self):
-
-        self.user = self.request.user
-        self.external = bool(self.request.params.get("EXTERNAL"))
-
-        # params hold the parameters we"re going to send to MapServer
-        params = dict(self.request.params)
-
-        # reset possible value of role_id and user_id
-        if "role_id" in params:  # pragma: no cover
-            del params["role_id"]
-        if "user_id" in params:  # pragma: no cover
-            del params["user_id"]
-
-        self.lower_params = self._get_lower_params(params)
-        self.ogc_server = self.get_ogcserver_byname(params["ogcserver"]) \
-            if "ogcserver" in params else None
 
         if self.user is not None:
             # We have a user logged in. We need to set group_id and
@@ -105,24 +62,24 @@ class MapservProxy(OGCProxy):
 
             role = self.user.parent_role if self.external else self.user.role
             if role is not None:
-                params["role_id"] = role.id
+                self.params["role_id"] = role.id
 
                 # In some application we want to display the features owned by a user
                 # than we need his id.
                 if not self.external:
-                    params["user_id"] = self.user.id  # pragma: no cover
+                    self.params["user_id"] = self.user.id  # pragma: no cover
             else:  # pragma nocover
-                log.warning(u"The user '{}' has no {}role".format(
+                log.warning("The user '{}' has no {}role".format(
                     self.user.name, "external " if self.external else ""))
 
         # do not allows direct variable substitution
-        for k in params.keys():
+        for k in list(self.params.keys()):
             if k[:2].capitalize() == "S_":
-                log.warning("Direct substitution not allowed ({0!s}={1!s}).".format(k, params[k]))
-                del params[k]
+                log.warning("Direct substitution not allowed ({0!s}={1!s}).".format(k, self.params[k]))
+                del self.params[k]
 
         # add functionalities params
-        params.update(get_mapserver_substitution_params(self.request))
+        self.params.update(get_mapserver_substitution_params(self.request))
 
         # get method
         method = self.request.method
@@ -135,22 +92,22 @@ class MapservProxy(OGCProxy):
             # For GET requests, params are added only if the self.request
             # parameter is actually provided.
             if "request" not in self.lower_params:
-                params = {}  # pragma: no cover
+                self.params = {}  # pragma: no cover
             else:
                 use_cache = self.lower_params["request"] in (
-                    u"getcapabilities",
-                    u"getlegendgraphic",
-                    u"describelayer",
-                    u"describefeaturetype",
+                    "getcapabilities",
+                    "getlegendgraphic",
+                    "describelayer",
+                    "describefeaturetype",
                 )
 
                 # no user_id and role_id or cached queries
-                if use_cache and "user_id" in params:
-                    del params["user_id"]
-                if use_cache and "role_id" in params:
-                    del params["role_id"]
+                if use_cache and "user_id" in self.params:
+                    del self.params["user_id"]
+                if use_cache and "role_id" in self.params:
+                    del self.params["role_id"]
 
-            if "service" in self.lower_params and self.lower_params["service"] == u"wfs":
+            if "service" in self.lower_params and self.lower_params["service"] == "wfs":
                 _url = self._get_wfs_url()
             else:
                 _url = self._get_wms_url()
@@ -161,15 +118,15 @@ class MapservProxy(OGCProxy):
         cache_control = PRIVATE_CACHE
         if method == "GET" and \
                 "service" in self.lower_params and \
-                self.lower_params["service"] == u"wms":
-            if self.lower_params["request"] in (u"getmap", u"getfeatureinfo"):
+                self.lower_params["service"] == "wms":
+            if self.lower_params["request"] in ("getmap", "getfeatureinfo"):
                 cache_control = NO_CACHE
-            elif self.lower_params["request"] == u"getlegendgraphic":
+            elif self.lower_params["request"] == "getlegendgraphic":
                 cache_control = PUBLIC_CACHE
         elif method == "GET" and \
                 "service" in self.lower_params and \
-                self.lower_params["service"] == u"wfs":
-            if self.lower_params["request"] == u"getfeature":
+                self.lower_params["service"] == "wfs":
+            if self.lower_params["request"] == "getfeature":
                 cache_control = NO_CACHE
         elif method != "GET":
             cache_control = NO_CACHE
@@ -186,7 +143,7 @@ class MapservProxy(OGCProxy):
 
         response = self._proxy_callback(
             role.id if role is not None else None, cache_control,
-            url=_url, params=params, cache=use_cache,
+            url=_url, params=self.params, cache=use_cache,
             headers=headers, body=self.request.body
         )
         return response
@@ -199,20 +156,20 @@ class MapservProxy(OGCProxy):
 
         if self.lower_params.get("request") == "getcapabilities":
             content = filter_capabilities(
-                content, role_id, self.lower_params.get("service") == "wms",
+                content.decode("utf-8"), role_id, self.lower_params.get("service") == "wms",
                 url,
                 self.request.headers,
                 self.mapserver_settings.get("proxies"),
                 self.request
-            )
+            ).encode("utf-8")
 
         content_type = None
         if callback is not None:
             content_type = "application/javascript"
             # escape single quotes in the JavaScript string
-            content = unicode(content.decode("utf8"))
-            content = content.replace(u"'", u"\\'")
-            content = u"{0!s}('{1!s}');".format(callback, u" ".join(content.splitlines()))
+            content = "{}('{}');".format(callback, " ".join(
+                content.decode("utf-8").replace("'", "\\'").splitlines()
+            )).encode("utf-8")
         else:
             content_type = resp["content-type"]
 

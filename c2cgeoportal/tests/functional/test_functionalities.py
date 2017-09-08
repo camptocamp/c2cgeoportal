@@ -50,22 +50,22 @@ class TestFunctionalities(TestCase):
         from c2cgeoportal.lib.dbreflection import init
 
         create_default_ogcserver()
-        role1 = Role(name=u"__test_role1")
+        role1 = Role(name="__test_role1")
         user1 = User(
-            username=u"__test_user1",
-            password=u"__test_user1",
+            username="__test_user1",
+            password="__test_user1",
             role=role1
         )
-        role2 = Role(name=u"__test_role2")
+        role2 = Role(name="__test_role2")
         user2 = User(
-            username=u"__test_user2",
-            password=u"__test_user2",
+            username="__test_user2",
+            password="__test_user2",
             role=role2
         )
 
-        functionality1 = Functionality(u"__test_s", u"db")
-        functionality2 = Functionality(u"__test_a", u"db1")
-        functionality3 = Functionality(u"__test_a", u"db2")
+        functionality1 = Functionality("__test_s", "db")
+        functionality2 = Functionality("__test_a", "db1")
+        functionality3 = Functionality("__test_a", "db2")
         role2.functionalities = [functionality1, functionality2, functionality3]
 
         DBSession.add_all([user1, user2, role1, role2])
@@ -136,12 +136,12 @@ class TestFunctionalities(TestCase):
         request.registry.settings.update(settings)
         request1.registry.settings.update(settings)
         request2.registry.settings.update(settings)
-        self.assertEquals(get_functionality("__test_s", request), [])
-        self.assertEquals(get_functionality("__test_a", request), [])
-        self.assertEquals(get_functionality("__test_s", request1), [])
-        self.assertEquals(get_functionality("__test_a", request1), [])
-        self.assertEquals(get_functionality("__test_s", request2), ["db"])
-        self.assertEquals(get_functionality("__test_a", request2), ["db1", "db2"])
+        self.assertEqual(get_functionality("__test_s", request), [])
+        self.assertEqual(get_functionality("__test_a", request), [])
+        self.assertEqual(get_functionality("__test_s", request1), [])
+        self.assertEqual(get_functionality("__test_a", request1), [])
+        self.assertEqual(get_functionality("__test_s", request2), ["db"])
+        self.assertEqual(get_functionality("__test_a", request2), ["db1", "db2"])
 
         settings = {
             "functionalities": {
@@ -159,12 +159,12 @@ class TestFunctionalities(TestCase):
         request.registry.settings.update(settings)
         request1.registry.settings.update(settings)
         request2.registry.settings.update(settings)
-        self.assertEquals(get_functionality("__test_s", request), [])
-        self.assertEquals(get_functionality("__test_a", request), [])
-        self.assertEquals(get_functionality("__test_s", request1), ["registered"])
-        self.assertEquals(get_functionality("__test_a", request1), ["r1", "r2"])
-        self.assertEquals(get_functionality("__test_s", request2), ["db"])
-        self.assertEquals(get_functionality("__test_a", request2), ["db1", "db2"])
+        self.assertEqual(get_functionality("__test_s", request), [])
+        self.assertEqual(get_functionality("__test_a", request), [])
+        self.assertEqual(get_functionality("__test_s", request1), ["registered"])
+        self.assertEqual(get_functionality("__test_a", request1), ["r1", "r2"])
+        self.assertEqual(get_functionality("__test_s", request2), ["db"])
+        self.assertEqual(get_functionality("__test_a", request2), ["db1", "db2"])
 
         settings = {
             "functionalities": {
@@ -182,12 +182,12 @@ class TestFunctionalities(TestCase):
         request.registry.settings.update(settings)
         request1.registry.settings.update(settings)
         request2.registry.settings.update(settings)
-        self.assertEquals(get_functionality("__test_s", request), ["anonymous"])
-        self.assertEquals(get_functionality("__test_a", request), ["a1", "a2"])
-        self.assertEquals(get_functionality("__test_s", request1), ["anonymous"])
-        self.assertEquals(get_functionality("__test_a", request1), ["a1", "a2"])
-        self.assertEquals(get_functionality("__test_s", request2), ["db"])
-        self.assertEquals(get_functionality("__test_a", request2), ["db1", "db2"])
+        self.assertEqual(get_functionality("__test_s", request), ["anonymous"])
+        self.assertEqual(get_functionality("__test_a", request), ["a1", "a2"])
+        self.assertEqual(get_functionality("__test_s", request1), ["anonymous"])
+        self.assertEqual(get_functionality("__test_a", request1), ["a1", "a2"])
+        self.assertEqual(get_functionality("__test_s", request2), ["db"])
+        self.assertEqual(get_functionality("__test_a", request2), ["db1", "db2"])
 
         settings = {
             "functionalities": {
@@ -208,12 +208,12 @@ class TestFunctionalities(TestCase):
         request.registry.settings.update(settings)
         request1.registry.settings.update(settings)
         request2.registry.settings.update(settings)
-        self.assertEquals(get_functionality("__test_s", request), ["anonymous"])
-        self.assertEquals(get_functionality("__test_a", request), ["a1", "a2"])
-        self.assertEquals(get_functionality("__test_s", request1), ["registered"])
-        self.assertEquals(get_functionality("__test_a", request1), ["r1", "r2"])
-        self.assertEquals(get_functionality("__test_s", request2), ["db"])
-        self.assertEquals(get_functionality("__test_a", request2), ["db1", "db2"])
+        self.assertEqual(get_functionality("__test_s", request), ["anonymous"])
+        self.assertEqual(get_functionality("__test_a", request), ["a1", "a2"])
+        self.assertEqual(get_functionality("__test_s", request1), ["registered"])
+        self.assertEqual(get_functionality("__test_a", request1), ["r1", "r2"])
+        self.assertEqual(get_functionality("__test_s", request2), ["db"])
+        self.assertEqual(get_functionality("__test_a", request2), ["db1", "db2"])
 
     def test_web_client_functionalities(self):
         from c2cgeoportal.models import DBSession, User
@@ -253,6 +253,6 @@ class TestFunctionalities(TestCase):
         annon = Entry(request).get_cgxp_viewer_vars()
         u1 = Entry(request1).get_cgxp_viewer_vars()
         u2 = Entry(request2).get_cgxp_viewer_vars()
-        self.assertEquals(annon["functionality"], {"__test_s": ["anonymous"], "__test_a": ["a1", "a2"]})
-        self.assertEquals(u1["functionality"], {"__test_s": ["registered"], "__test_a": ["r1", "r2"]})
-        self.assertEquals(u2["functionality"], {"__test_s": ["db"], "__test_a": ["db1", "db2"]})
+        self.assertEqual(annon["functionality"], {"__test_s": ["anonymous"], "__test_a": ["a1", "a2"]})
+        self.assertEqual(u1["functionality"], {"__test_s": ["registered"], "__test_a": ["r1", "r2"]})
+        self.assertEqual(u2["functionality"], {"__test_s": ["db"], "__test_a": ["db1", "db2"]})

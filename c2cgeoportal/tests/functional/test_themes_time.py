@@ -74,55 +74,55 @@ class TestThemesTimeView(TestCase):
 
         TestPoint.__table__.create(bind=DBSession.bind, checkfirst=True)
 
-        main = Interface(name=u"desktop")
+        main = Interface(name="desktop")
         ogc_server, _ = create_default_ogcserver()
 
-        layer_wms_1 = LayerWMS(name=u"__test_layer_time_1", public=True)
+        layer_wms_1 = LayerWMS(name="__test_layer_time_1", public=True)
         layer_wms_1.layer = "test_wmstime"
         layer_wms_1.time_mode = "value"
         layer_wms_1.interfaces = [main]
         layer_wms_1.ogc_server = ogc_server
 
-        layer_wms_2 = LayerWMS(name=u"__test_layer_time_2", public=True)
+        layer_wms_2 = LayerWMS(name="__test_layer_time_2", public=True)
         layer_wms_2.layer = "test_wmstime2"
         layer_wms_2.time_mode = "value"
         layer_wms_2.interfaces = [main]
         layer_wms_2.ogc_server = ogc_server
 
-        layer_wmts = LayerWMTS(name=u"__test_layer_wmts", public=True)
+        layer_wmts = LayerWMTS(name="__test_layer_wmts", public=True)
         layer_wmts.url = "http://example.com/1.0.0/WMTSCapabilities.xml"
         layer_wmts.layer = "map"
         layer_wmts.interfaces = [main]
 
-        layer_wms_group = LayerWMS(name=u"__test_layer_time_group", public=True)
+        layer_wms_group = LayerWMS(name="__test_layer_time_group", public=True)
         layer_wms_group.layer = "test_wmstimegroup"
         layer_wms_group.time_mode = "range"
         layer_wms_group.time_widget = "datepicker"
         layer_wms_group.interfaces = [main]
         layer_wms_group.ogc_server = ogc_server
 
-        layer_group_1 = LayerGroup(name=u"__test_layer_group_1")
+        layer_group_1 = LayerGroup(name="__test_layer_group_1")
         layer_group_1.children = [layer_wms_1, layer_wms_2]
 
-        layer_group_2 = LayerGroup(name=u"__test_layer_group_2")
+        layer_group_2 = LayerGroup(name="__test_layer_group_2")
         layer_group_2.children = [layer_wms_1]
 
-        layer_group_3 = LayerGroup(name=u"__test_layer_group_3")
+        layer_group_3 = LayerGroup(name="__test_layer_group_3")
         layer_group_3.children = [layer_wms_1, layer_wms_2, layer_wms_group]
 
-        layer_group_4 = LayerGroup(name=u"__test_layer_group_4")
+        layer_group_4 = LayerGroup(name="__test_layer_group_4")
         layer_group_4.children = [layer_wms_group]
 
-        layer_group_5 = LayerGroup(name=u"__test_layer_group_5")
+        layer_group_5 = LayerGroup(name="__test_layer_group_5")
         layer_group_5.children = [layer_wms_1, layer_wms_2]
 
-        layer_group_6 = LayerGroup(name=u"__test_layer_group_6")
+        layer_group_6 = LayerGroup(name="__test_layer_group_6")
         layer_group_6.children = [layer_wms_1, layer_wms_2, layer_wmts]
 
-        layer_group_7 = LayerGroup(name=u"__test_layer_group_7")
+        layer_group_7 = LayerGroup(name="__test_layer_group_7")
         layer_group_7.children = [layer_wms_1]
 
-        theme = Theme(name=u"__test_theme")
+        theme = Theme(name="__test_theme")
         theme.interfaces = [main]
         theme.children = [
             layer_group_1, layer_group_2, layer_group_3, layer_group_4,
@@ -193,85 +193,85 @@ class TestThemesTimeView(TestCase):
             "version": "2",
         })
         themes = entry.themes()
-        self.assertEquals(self._get_filtered_errors(themes), set([
-            u"Error while handling time for layer '__test_layer_time_group': Could not mix time mode 'range' and 'value'"
+        self.assertEqual(self._get_filtered_errors(themes), set([
+            "Error while handling time for layer '__test_layer_time_group': Could not mix time mode 'range' and 'value'"
         ]))
-        self.assertEquals(
+        self.assertEqual(
             [self._only(t) for t in themes["themes"]],
             [{
-                "name": u"__test_theme",
+                "name": "__test_theme",
                 "children": [{
-                    "name": u"__test_layer_group_1",
+                    "name": "__test_layer_group_1",
                     "time": {
                         "maxDefValue": None,
                         "interval": (1, 0, 0, 0),
                         "maxValue": "2020-01-01T00:00:00Z",
                         "minDefValue": "2000-01-01T00:00:00Z",
                         "minValue": "2000-01-01T00:00:00Z",
-                        "mode": u"value",
+                        "mode": "value",
                         "resolution": "year",
-                        "widget": u"slider"
+                        "widget": "slider"
                     },
                     "children": [{
-                        "name": u"__test_layer_time_1",
+                        "name": "__test_layer_time_1",
                     }, {
-                        "name": u"__test_layer_time_2",
+                        "name": "__test_layer_time_2",
                     }]
                 }, {
-                    "name": u"__test_layer_group_2",
+                    "name": "__test_layer_group_2",
                     "children": [{
-                        "name": u"__test_layer_time_1",
+                        "name": "__test_layer_time_1",
                         "time": {
                             "maxDefValue": None,
                             "interval": (1, 0, 0, 0),
                             "maxValue": "2010-01-01T00:00:00Z",
                             "minDefValue": "2000-01-01T00:00:00Z",
                             "minValue": "2000-01-01T00:00:00Z",
-                            "mode": u"value",
+                            "mode": "value",
                             "resolution": "year",
-                            "widget": u"slider"
+                            "widget": "slider"
                         },
                     }]
                 }, {
-                    "name": u"__test_layer_group_3",
+                    "name": "__test_layer_group_3",
                     "time": {
                         "maxDefValue": None,
                         "interval": (1, 0, 0, 0),
                         "maxValue": "2020-01-01T00:00:00Z",
                         "minDefValue": "2000-01-01T00:00:00Z",
                         "minValue": "2000-01-01T00:00:00Z",
-                        "mode": u"value",
+                        "mode": "value",
                         "resolution": "year",
-                        "widget": u"slider"
+                        "widget": "slider"
                     },
                     "children": [{
-                        "name": u"__test_layer_time_1",
+                        "name": "__test_layer_time_1",
                     }, {
-                        "name": u"__test_layer_time_2",
+                        "name": "__test_layer_time_2",
                     }, {
-                        "name": u"__test_layer_time_group",
+                        "name": "__test_layer_time_group",
                     }]
                 }, {
-                    "name": u"__test_layer_group_4",
+                    "name": "__test_layer_group_4",
                     "children": [{
-                        "name": u"__test_layer_time_group",
+                        "name": "__test_layer_time_group",
                         "time": {
                             "maxDefValue": None,
                             "interval": (1, 0, 0, 0),
                             "maxValue": "2020-01-01T00:00:00Z",
                             "minDefValue": "2000-01-01T00:00:00Z",
                             "minValue": "2000-01-01T00:00:00Z",
-                            "mode": u"range",
+                            "mode": "range",
                             "resolution": "year",
-                            "widget": u"datepicker"
+                            "widget": "datepicker"
                         },
                     }]
                 }, {
-                    "name": u"__test_layer_group_5",
+                    "name": "__test_layer_group_5",
                     "children": [{
-                        "name": u"__test_layer_time_1",
+                        "name": "__test_layer_time_1",
                     }, {
-                        "name": u"__test_layer_time_2",
+                        "name": "__test_layer_time_2",
                     }],
                     "time": {
                         "maxDefValue": None,
@@ -279,52 +279,52 @@ class TestThemesTimeView(TestCase):
                         "maxValue": "2020-01-01T00:00:00Z",
                         "minDefValue": "2000-01-01T00:00:00Z",
                         "minValue": "2000-01-01T00:00:00Z",
-                        "mode": u"value",
+                        "mode": "value",
                         "resolution": "year",
-                        "widget": u"slider"
+                        "widget": "slider"
                     },
                 }, {
-                    "name": u"__test_layer_group_6",
+                    "name": "__test_layer_group_6",
                     "children": [{
-                        "name": u"__test_layer_time_1",
+                        "name": "__test_layer_time_1",
                         "time": {
                             "maxDefValue": None,
                             "interval": (1, 0, 0, 0),
                             "maxValue": "2010-01-01T00:00:00Z",
                             "minDefValue": "2000-01-01T00:00:00Z",
                             "minValue": "2000-01-01T00:00:00Z",
-                            "mode": u"value",
+                            "mode": "value",
                             "resolution": "year",
-                            "widget": u"slider"
+                            "widget": "slider"
                         },
                     }, {
-                        "name": u"__test_layer_time_2",
+                        "name": "__test_layer_time_2",
                         "time": {
                             "maxDefValue": None,
                             "interval": (1, 0, 0, 0),
                             "maxValue": "2020-01-01T00:00:00Z",
                             "minDefValue": "2015-01-01T00:00:00Z",
                             "minValue": "2015-01-01T00:00:00Z",
-                            "mode": u"value",
+                            "mode": "value",
                             "resolution": "year",
-                            "widget": u"slider"
+                            "widget": "slider"
                         },
                     }, {
-                        "name": u"__test_layer_wmts",
+                        "name": "__test_layer_wmts",
                     }]
                 }, {
-                    "name": u"__test_layer_group_7",
+                    "name": "__test_layer_group_7",
                     "children": [{
-                        "name": u"__test_layer_time_1",
+                        "name": "__test_layer_time_1",
                         "time": {
                             "maxDefValue": None,
                             "interval": (1, 0, 0, 0),
                             "maxValue": "2010-01-01T00:00:00Z",
                             "minDefValue": "2000-01-01T00:00:00Z",
                             "minValue": "2000-01-01T00:00:00Z",
-                            "mode": u"value",
+                            "mode": "value",
                             "resolution": "year",
-                            "widget": u"slider"
+                            "widget": "slider"
                         },
                     }]
                 }]

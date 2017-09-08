@@ -28,6 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import re
 from unittest import TestCase
 from nose.plugins.attrib import attr
 
@@ -45,6 +46,9 @@ class TestReflection(TestCase):
         import sqlahelper
         from c2cgeoportal.lib.dbreflection import init
 
+        # Always see the diff
+        # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
+        self.maxDiff = None
         self.metadata = None
 
         engine = sqlahelper.get_engine()
@@ -69,15 +73,11 @@ class TestReflection(TestCase):
         """
         import sqlahelper
         from sqlalchemy import Table, Column, ForeignKey, types
-        from sqlalchemy.orm import sessionmaker
         from sqlalchemy.ext.declarative import declarative_base
-        from geoalchemy2 import Geometry, func
+        from geoalchemy2 import Geometry
 
         engine = sqlahelper.get_engine()
         Base = declarative_base(bind=engine)  # noqa
-        session = sessionmaker(bind=engine)()
-        postgis_version = session.execute(func.postgis_version()).scalar()
-        management = postgis_version.startswith("1.")
 
         if self._tables is None:
             self._tables = []
@@ -102,12 +102,12 @@ class TestReflection(TestCase):
                 "child2_id", types.Integer,
                 ForeignKey("public.{0!s}_child.id".format(tablename))
             ),
-            Column("point", Geometry("POINT", management=management)),
-            Column("linestring", Geometry("LINESTRING", management=management)),
-            Column("polygon", Geometry("POLYGON", management=management)),
-            Column("multipoint", Geometry("MULTIPOINT", management=management)),
-            Column("multilinestring", Geometry("MULTILINESTRING", management=management)),
-            Column("multipolygon", Geometry("MULTIPOLYGON", management=management)),
+            Column("point", Geometry("POINT")),
+            Column("linestring", Geometry("LINESTRING")),
+            Column("polygon", Geometry("POLYGON")),
+            Column("multipoint", Geometry("MULTIPOINT")),
+            Column("multilinestring", Geometry("MULTILINESTRING")),
+            Column("multipolygon", Geometry("MULTIPOLYGON")),
             schema="public"
         )
         ptable.create()
@@ -121,7 +121,7 @@ class TestReflection(TestCase):
         from c2cgeoportal.lib.dbreflection import get_class
 
         self.assertRaises(NoSuchTableError, get_class, "nonexisting")
-        self.assertEquals(c2cgeoportal.lib.dbreflection._class_cache, {})
+        self.assertEqual(c2cgeoportal.lib.dbreflection._class_cache, {})
 
     def test_get_class(self):
         from geoalchemy2 import Geometry
@@ -132,9 +132,9 @@ class TestReflection(TestCase):
         modelclass = get_class("table_a")
 
         # test the class
-        self.assertEquals(modelclass.__name__, "Table_a")
-        self.assertEquals(modelclass.__table__.name, "table_a")
-        self.assertEquals(modelclass.__table__.schema, "public")
+        self.assertEqual(modelclass.__name__, "Table_a")
+        self.assertEqual(modelclass.__table__.name, "table_a")
+        self.assertEqual(modelclass.__table__.schema, "public")
 
         self.assertTrue(isinstance(modelclass.point.type, Geometry))
         self.assertTrue(isinstance(modelclass.linestring.type, Geometry))
@@ -191,9 +191,9 @@ class TestReflection(TestCase):
         self._create_table("table_b")
         modelclass = get_class("public.table_b")
 
-        self.assertEquals(modelclass.__name__, "Table_b")
-        self.assertEquals(modelclass.__table__.name, "table_b")
-        self.assertEquals(modelclass.__table__.schema, "public")
+        self.assertEqual(modelclass.__name__, "Table_b")
+        self.assertEqual(modelclass.__table__.name, "table_b")
+        self.assertEqual(modelclass.__table__.schema, "public")
 
     def test_mixing_get_class_and_queries(self):
         """ This test shows that we can mix the use of DBSession
@@ -208,7 +208,7 @@ class TestReflection(TestCase):
         DBSession.execute(text("SELECT id FROM table_c"))
 
         modelclass = get_class("table_c")
-        self.assertEquals(modelclass.__name__, "Table_c")
+        self.assertEqual(modelclass.__name__, "Table_c")
 
         # This commits the transaction created by DBSession.execute. This
         # is required here in the test because tearDown does table.drop,
@@ -242,6 +242,11 @@ class TestXSDSequenceCallback(TestCase):
         from sqlalchemy.ext.declarative import declarative_base
         from c2cgeoportal.models import DBSession
         from c2cgeoportal.lib.dbreflection import _AssociationProxy
+
+        # Always see the diff
+        # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
+        self.maxDiff = None
+
         engine = sqlahelper.get_engine()
         Base = declarative_base(bind=engine)  # noqa
 
@@ -282,23 +287,13 @@ class TestXSDSequenceCallback(TestCase):
 
     def test_xsd_sequence_callback(self):
         from xml.etree.ElementTree import TreeBuilder, tostring
-        from c2cgeoportal.lib.dbreflection import _xsd_sequence_callback
+        from c2cgeoportal.lib.dbreflection import xsd_sequence_callback
         from papyrus.xsd import tag
         tb = TreeBuilder()
         with tag(tb, "xsd:sequence") as tb:
-            _xsd_sequence_callback(tb, self.cls)
+            xsd_sequence_callback(tb, self.cls)
         e = tb.close()
-        self.assertEqual(
-            tostring(e),
-            '<xsd:sequence>'
-            '<xsd:element minOccurs="0" name="child1" nillable="true">'
-            '<xsd:simpleType>'
-            '<xsd:restriction base="xsd:string">'
-            '<xsd:enumeration value="foo" />'
-            '<xsd:enumeration value="bar" />'
-            '</xsd:restriction>'
-            '</xsd:simpleType>'
-            '</xsd:element>'
+        self.assertIsNotNone(re.search(
             '<xsd:element minOccurs="0" name="child2" nillable="true">'
             '<xsd:simpleType>'
             '<xsd:restriction base="xsd:string">'
@@ -306,5 +301,17 @@ class TestXSDSequenceCallback(TestCase):
             '<xsd:enumeration value="bar" />'
             '</xsd:restriction>'
             '</xsd:simpleType>'
-            '</xsd:element>'
-            '</xsd:sequence>')
+            '</xsd:element>',
+            tostring(e).decode("utf-8"),
+        ))
+        self.assertIsNotNone(re.search(
+            '<xsd:element minOccurs="0" name="child1" nillable="true">'
+            '<xsd:simpleType>'
+            '<xsd:restriction base="xsd:string">'
+            '<xsd:enumeration value="foo" />'
+            '<xsd:enumeration value="bar" />'
+            '</xsd:restriction>'
+            '</xsd:simpleType>'
+            '</xsd:element>',
+            tostring(e).decode("utf-8"),
+        ))

@@ -20,8 +20,16 @@ of an existing c2cgeoportal application. Here is how:
     git clone git@github.com:camptocamp/c2cgeoportal.git
     cd c2cgeoportal
     git submodule update --init
-    make build
+    ./docker-run make build
     cd  ~/<project>
+
+.. note:: Old build directory
+
+   If you still have old build directory remove it before running the build
+
+   .. prompt:: bash
+
+      rm -rf .build
 
   You can now check out your development branch if necessary.
 
@@ -92,8 +100,7 @@ Change into the ``c2cgeoportal`` directory and initialize the submodules:
 
 c2cgeoportal has two types of tests: unit tests and functional tests. The unit
 tests are self-contained, and do not require any specific setup. The functional
-tests require a PostGIS database and a MapServer installation that can access
-the test mapfile ``c2cgeoportal/tests/functional/c2cgeoportal_test.map``.
+tests require to run with `docker-compose-run`.
 
 Unit tests
 ..........
@@ -102,8 +109,8 @@ To run the unit tests do this:
 
 .. prompt:: bash
 
-    make build
-    .build/venv/bin/python setup.py nosetests -a '!functional'
+    ./docker-run make build
+    ./docker-run nosetests -a '!functional'
 
 Functional tests
 ................
@@ -111,7 +118,7 @@ Functional tests
 For the functional tests you need to have MapServer and PostgreSQL/PostGIS
 installed. Make sure this is the case before proceeding.
 
-You now need to create PostGIS database (named ``c2cgeoportal_test`` for example)
+You now need to create PostGIS database (named ``geomapfish_test`` for example)
 and a schema named ``main`` into it.
 
 To create the database use the following command if you have a PostGIS database
@@ -119,7 +126,7 @@ template at your disposal:
 
 .. prompt:: bash
 
-    sudo -u postgres createdb -T template_postgis c2cgeoportal_test
+    sudo -u postgres createdb -T template_postgis geomapfish_test
 
 .. note::
 
@@ -127,8 +134,8 @@ template at your disposal:
 
     .. prompt:: bash
 
-        sudo -u postgres createdb -E UTF8 -T template0 c2cgeoportal_test
-        sudo -u postgres psql -d c2cgeoportal_test \
+        sudo -u postgres createdb -E UTF8 -T template0 geomapfish_test
+        sudo -u postgres psql -d geomapfish_test \
                -c 'CREATE EXTENSION postgis;'
 
     The ``template0`` is needed on Debian and Ubuntu to create a utf-8
@@ -140,14 +147,16 @@ If you do not have a ``www-data`` user you need to create one:
 
     sudo -u postgres createuser -P www-data
 
-To create the ``main`` and ``main_static`` schema:
+To create the ``main``,  ``main_static``  and ``geodata`` schema:
 
 .. prompt:: bash
 
-    sudo -u postgres psql -d c2cgeoportal_test -c 'CREATE SCHEMA main;'
-    sudo -u postgres psql -d c2cgeoportal_test -c 'GRANT ALL ON SCHEMA main TO "www-data";'
-    sudo -u postgres psql -d c2cgeoportal_test -c 'CREATE SCHEMA main_static;'
-    sudo -u postgres psql -d c2cgeoportal_test -c 'GRANT ALL ON SCHEMA main_static TO "www-data";'
+    sudo -u postgres psql -d geomapfish_test -c 'CREATE SCHEMA main;'
+    sudo -u postgres psql -d geomapfish_test -c 'GRANT ALL ON SCHEMA main TO "www-data";'
+    sudo -u postgres psql -d geomapfish_test -c 'CREATE SCHEMA main_static;'
+    sudo -u postgres psql -d geomapfish_test -c 'GRANT ALL ON SCHEMA main_static TO "www-data";'
+    sudo -u postgres psql -d geomapfish_test -c 'CREATE SCHEMA geodata;'
+    sudo -u postgres psql -d geomapfish_test -c 'GRANT ALL ON SCHEMA geodata TO "www-data";'
 
 Create the tables:
 
@@ -188,8 +197,7 @@ machine it may be ``http://locahost/cgi-bin/mapserv``.
 
 
 Once done with the editing of ``vars.yaml``, run ``make``
-to generate ``c2cgeoportal/tests/functional/test.ini`` and
-``c2cgeoportal/tests/functional/c2cgeoportal_test.map``:
+to generate ``c2cgeoportal/tests/functional/test.ini``:
 
 .. prompt:: bash
 
@@ -199,7 +207,7 @@ You can now run the functional tests with this:
 
 .. prompt:: bash
 
-    .build/venv/bin/python setup.py nosetests -a functional
+    ./docker-compose-run nosetests -a functional
 
 All tests
 .........
@@ -208,14 +216,14 @@ To run all the tests do this:
 
 .. prompt:: bash
 
-    make tests
+    ./docker-compose-run make tests
 
 To run a specific test use the ``--where`` switch. For example:
 
 .. prompt:: bash
 
-    .build/venv/bin/python setup.py nosetests --where \
-        c2cgeoportal/tests/functional/test_themes.py:TestThemesView.test_catalogue
+    ./docker-compose-run nosetests --where \
+        /src/c2cgeoportal/tests/functional/test_themes.py:TestThemesView.test_catalogue
 
 Adding tests
 ~~~~~~~~~~~~
@@ -386,11 +394,9 @@ Major dependencies docs:
 
 * `SQLAlchemy <http://docs.sqlalchemy.org/>`_
 * `GeoAlchemy2 <http://geoalchemy-2.readthedocs.org/>`_
-* `Formalchemy <http://docs.formalchemy.org/>`_
-* `GeoFormAlchemy <https://github.com/camptocamp/GeoFormAlchemy/blob/master/GeoFormAlchemy/README.rst>`_
 * `alembic <http://alembic.readthedocs.org/>`_
 * `Pyramid <http://docs.pylonsproject.org/en/latest/docs/pyramid.html>`_
 * `Papyrus <http://pypi.python.org/pypi/papyrus>`_
-* `MapFish Print <http://www.mapfish.org/doc/print/index.html>`_
+* `MapFish Print <http://mapfish.github.io/mapfish-print-doc/>`_
 * `reStructuredText <http://docutils.sourceforge.net/docs/ref/rst/introduction.html>`_
 * `Sphinx <http://sphinx.pocoo.org/>`_

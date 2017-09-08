@@ -61,10 +61,10 @@ def main():
         for item in DBSession.query(class_).all():
             if item.name in names:
                 i = 2
-                while u"{}-{}".format(item.name, i) in names:
+                while "{}-{}".format(item.name, i) in names:
                     i += 1
 
-                item.name = u"{}-{}".format(item.name, i)
+                item.name = "{}-{}".format(item.name, i)
             names.append(item.name)
 
     transaction.commit()
