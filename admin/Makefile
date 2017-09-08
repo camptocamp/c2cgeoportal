@@ -13,7 +13,7 @@ build: ${BUILD_DIR}/venv.timestamp \
 .PHONY: init_db
 init_db:
 	#Configure the database:
-	${VENV}/bin/initialize_db_main development.ini --force=1
+	${VENV}/bin/initialize_db_main production.ini --force=1
 
 .PHONY: test
 test:
@@ -23,7 +23,7 @@ test:
 .PHONY: serve
 serve:
 	#Run your project.
-	${VENV}/bin/pserve development.ini
+	${VENV}/bin/pserve production.ini
 
 ${BUILD_DIR}/venv.timestamp:
 	#Create a Python virtual environment.
@@ -43,7 +43,8 @@ ${BUILD_DIR}/requirements.timestamp: setup.py
 
 .PHONY: build_admin
 build_admin:
-	docker build -t $(DOCKER_BASE)_admin:$(DOCKER_TAG) --build-arg "GIT_HASH=$(GIT_HASH)" .
+	cd .. ; \
+	docker build -t $(DOCKER_BASE)_admin:$(DOCKER_TAG) --build-arg "GIT_HASH=$(GIT_HASH)" -f admin/Dockerfile .
 
 .PHONY: pull
 pull:

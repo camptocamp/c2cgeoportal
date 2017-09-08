@@ -15,7 +15,8 @@ RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ jessie-pgdg main" > /etc/
 # Step #1 copy only the stuff needed to install the dependencies and run the script
 WORKDIR /app
 
-COPY *.txt /app/
+COPY ./admin/requirements.txt /app/
+COPY ./commons /commons/
 RUN pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 80
@@ -29,7 +30,7 @@ ENV SQLALCHEMY_URL=postgresql://www-data:www-data@db:5432/c2cgeoportal \
 #    SQLALCHEMY_MAX_OVERFLOW=25
 
 # Step #2 copy the rest of the files (watch for the .dockerignore)
-COPY . /app
+COPY ./admin /app
 
 ARG GIT_HASH
 ENV GIT_HASH=$GIT_HASH

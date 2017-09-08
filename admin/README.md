@@ -22,7 +22,7 @@ sudo -u postgres psql -c "CREATE DATABASE $DATABASE WITH OWNER \"www-data\";"
 sudo -u postgres psql -d $DATABASE -c "CREATE EXTENSION postgis;"
 ```
 
-Optionally update sqlachemy.url in development.ini
+Optionally update sqlachemy.url in production.ini
 
 ```
 make init_db

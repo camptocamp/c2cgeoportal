@@ -2,6 +2,8 @@
 !setup.py
 !README.rst
 !c2cgeoportal/
+!commons
+!admin
 !Makefile
 !vars.yaml
 !c2cgeoportal/scaffolds/update/CONST_requirements.txt
