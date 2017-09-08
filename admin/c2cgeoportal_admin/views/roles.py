@@ -1,22 +1,23 @@
 from pyramid.view import view_defaults
 from pyramid.view import view_config
 from c2cgeoform.views.abstract_views import AbstractViews
-from c2cgeoportal_commons.models.main import User
+from c2cgeoportal_commons.models.main import Role
 
-@view_config(route_name='user_', renderer='json')
-def user_test_insert(request):
+@view_config(route_name='role_', renderer='json')
+def role_test_insert(request):
     request.dbsession.begin_nested()
     for i in range (0, 23):
-        user = User("babar_" + str(i), email='mail' + str(i))
-        request.dbsession.add(user)
+        role = Role("secretary_" + str(i))
+        request.dbsession.add(role)
     request.dbsession.commit()
     return {}
 
-@view_defaults(route_name='user')
+
+@view_defaults(route_name='role')
 class UserViews(AbstractViews):
-    _list_fields = ['username', 'email']
-    _id_field = 'username'
-    _model = User
+    _list_fields = ['name']
+    _id_field = 'name'
+    _model = Role
 
     @view_config(match_param=("id=all", "action=index"), renderer="c2cgeoform:templates/site/index.pt")
     def index(self):

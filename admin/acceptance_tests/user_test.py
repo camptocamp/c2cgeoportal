@@ -1,0 +1,48 @@
+import pytest
+from pyramid.testing import DummyRequest
+
+@pytest.fixture(scope='class')
+@pytest.mark.usefixtures("dbsession")
+def insertUsersTestData(dbsession):
+    from c2cgeoportal_commons.models.main import User
+    user = User("babar")
+    dbsession.begin_nested()
+    for i in range (0, 23):
+        user = User("babar_" + str(i), email='mail' + str(i))
+        dbsession.add(user)
+    yield
+    dbsession.rollback()
+
+@pytest.mark.usefixtures("insertUsersTestData", "transact")
+class TestUser():
+    def test_view_index(self, dbsession):
+        from c2cgeoportal_admin.views.users import UserViews
+        info = UserViews(DummyRequest(dbsession=dbsession)).index()
+        assert info['list_fields'][0][0] == 'username'
+        assert info['list_fields'][1][0] == 'email'
+        assert type(info['list_fields'][1][1]) == str
+
+    @pytest.mark.usefixtures("raise_db_error_on_query")
+    def test_grid_dberror(self, dbsession):
+        from c2cgeoportal_admin.views.users import UserViews
+        request = DummyRequest(dbsession=dbsession, params={'current':0, 'rowCount':10})
+        info = UserViews(request).grid()
+        assert info.status_int == 500, '500 status when db error'
+
+    @pytest.mark.usefixtures("app")
+    def test_view_index_rendering_in_app(self, dbsession, app):
+        res = app.get('/user/all/index', status=200)
+        assert str(res.html.find_all('th', limit=3)) == \
+             '[<th data-column-id="username">username</th>,' \
+             + ' <th data-column-id="email">email</th>,' \
+             + ' <th data-column-id="_id_" data-converter="commands" data-searchable="false" data-sortable="false">Commands</th>]'
+
+    @pytest.mark.usefixtures("app")
+    def test_view_index_rendering_in_app_fr(self, dbsession, app):
+        res = app.get('/user/all/index', status=200)
+        res1 = res.click(verbose=True, href='language=fr')
+        res2 = res1.follow()
+        assert str(res2.html.find_all('th', limit=3)) == \
+             '[<th data-column-id="username">username</th>,' \
+             + ' <th data-column-id="email">mel</th>,' \
+             + ' <th data-column-id="_id_" data-converter="commands" data-searchable="false" data-sortable="false">Commands</th>]'
