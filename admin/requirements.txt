@@ -11,3 +11,4 @@ zope.sqlalchemy
 pyproj
 ColanderAlchemy>=0.3.2
 deform
+c2cwsgiutils

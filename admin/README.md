@@ -12,7 +12,8 @@ Install the virtual env, build the app:
 make build
 ```
 
-## Set up the database
+## Set up the database (TODO)
+
 
 ```
 sudo -u postgres psql -c "CREATE USER \"www-data\" WITH PASSWORD 'www-data';"
@@ -28,21 +29,28 @@ Optionally update sqlachemy.url in production.ini
 make init_db
 ```
 
-## Run the tests
+
+## Build docker image
 
 ```
-make test
+make build_admin
 ```
+
 
 ## Run the application
 
 ```
-make serve
+docker-compose up
 ```
 
-## Build docker image
+The following views are provided by `c2cwsgiutils`:
+ * http://localhost:8888/versions.json
+ * http://localhost:8888/stats.json
+ * http://localhost:8888/health_check?max_level=3
 
+
+## Run the tests (TODO)
 
 ```
-make build_admin
+make test
 ```

@@ -7,6 +7,8 @@ from pyramid.paster import (
     setup_logging,
 )
 
+from c2cwsgiutils.db import setup_session
+
 from pyramid.scripts.common import parse_vars
 
 from ..models.meta import Base
