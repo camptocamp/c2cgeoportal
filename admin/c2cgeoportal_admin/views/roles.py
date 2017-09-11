@@ -7,7 +7,7 @@ from c2cgeoportal_commons.models.main import Role
 @view_defaults(match_param='table=role')
 class RoleViews(AbstractViews):
     _list_fields = ['name']
-    _id_field = 'name'
+    _id_field = 'id'
     _model = Role
 
     @view_config(match_param=("id=all", "action=index"), renderer="c2cgeoform:templates/site/index.pt")
