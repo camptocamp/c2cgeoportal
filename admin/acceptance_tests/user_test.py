@@ -35,8 +35,8 @@ class TestUser():
         clean_form = clean_form.replace(' >', '>')
         inputs = re.findall('<input type="text" .*?>', clean_form)
 
-        assert inputs[2] == '<input type="text" name="username" value="babar_11" id="deformField3" class=" form-control "/>'
-        assert inputs[5] == '<input type="text" name="email" value="mail11" id="deformField6" class=" form-control "/>'
+        assert inputs[0] == '<input type="text" name="username" value="babar_11" id="deformField3" class=" form-control "/>'
+        assert inputs[3] == '<input type="text" name="email" value="mail11" id="deformField6" class=" form-control "/>'
 
     @pytest.mark.usefixtures("raise_db_error_on_query")
     def test_grid_dberror(self, dbsession):
