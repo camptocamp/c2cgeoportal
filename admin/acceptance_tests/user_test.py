@@ -22,6 +22,22 @@ class TestUser():
         assert info['list_fields'][1][0] == 'email'
         assert type(info['list_fields'][1][1]) == str
 
+    def test_view_edit(self, dbsession):
+        from c2cgeoportal_admin.views.users import UserViews
+        req = DummyRequest(dbsession=dbsession)
+        req.matchdict.update({'id': 'babar_11'})
+        info = UserViews(req).edit()
+        import re
+
+        clean_form = info['form'].replace('\n', ' ')
+        while re.search('  ', clean_form, re.MULTILINE):
+            clean_form = clean_form.replace('  ', ' ')
+        clean_form = clean_form.replace(' >', '>')
+        inputs = re.findall('<input type="text" .*?>', clean_form)
+
+        assert inputs[2] == '<input type="text" name="username" value="babar_11" id="deformField3" class=" form-control "/>'
+        assert inputs[5] == '<input type="text" name="email" value="mail11" id="deformField6" class=" form-control "/>'
+
     @pytest.mark.usefixtures("raise_db_error_on_query")
     def test_grid_dberror(self, dbsession):
         from c2cgeoportal_admin.views.users import UserViews
