@@ -55,14 +55,14 @@ except:  # pragma: no cover
 
 try:
     from pyramid.i18n import TranslationStringFactory
-    _ = TranslationStringFactory("c2cgeoportal")
+    _ = TranslationStringFactory("c2cgeoportal_commons")
 # Fallback if pyramid do not exists, used by QGIS server plugin
 except:  # pragma: no cover
     def _(s):
         return s
 
 from . import schema, parentschema, srid
-#from c2cgeoportal.lib import caching
+# from c2cgeoportal.lib import caching
 from .sqlalchemy_ import JSONEncodedDict
 
 __all__ = [
@@ -112,7 +112,7 @@ else:  # pragma: no cover
 
 
 def cache_invalidate_cb(*args):
-    #caching.invalidate_region()
+    # caching.invalidate_region()
     pass
 
 
@@ -223,7 +223,10 @@ class User(Base):
     temp_password = Column(
         "temp_password", Unicode, nullable=True,
     )
-    email = Column(Unicode, nullable=False)
+    email = Column(Unicode, nullable=False, info={
+        'colanderalchemy': {
+            'title': _('email')
+        }})
     is_password_changed = Column(Boolean, default=False)
 
     role_name = Column(String)

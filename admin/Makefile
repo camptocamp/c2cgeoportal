@@ -14,7 +14,7 @@ init_db:
 .PHONY: test
 test:
 	#Run your project's tests.
-	${VENV}/bin/pytest
+	${VENV}/bin/pytest --driver Firefox
 
 .PHONY: serve
 serve:
@@ -34,6 +34,7 @@ ${BUILD_DIR}/commons.timestamp: ../commons/setup.py
 
 ${BUILD_DIR}/requirements.timestamp: setup.py
 	#Install the project in editable mode with its testing requirements.
+	${VENV}/bin/pip install -e  "../../c2cgeoform"
 	${VENV}/bin/pip install -e ".[testing]"
 	touch ${BUILD_DIR}/requirements.timestamp
 

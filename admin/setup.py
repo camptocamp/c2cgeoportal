@@ -20,12 +20,15 @@ requires = [
     'transaction',
     'zope.sqlalchemy',
     'waitress',
+    'pyproj',  # sudo apt install python3-dev", why not with c2cgeoform ?
+    'ColanderAlchemy>=0.3.2'  # why not with c2cgeoform ?
 ]
 
 tests_require = [
     'WebTest >= 1.3.1',  # py3 compat
     'pytest',
     'pytest-cov',
+    'pytest-selenium'
 ]
 
 setup(
