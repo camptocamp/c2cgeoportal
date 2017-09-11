@@ -27,7 +27,7 @@ setup_schema(None, User)
 @view_defaults(route_name='user')
 class UserViews(AbstractViews):
     _list_fields = ['username', 'email']
-    _id_field = 'username'
+    _id_field = 'id'
     _model = User
     _base_schema = User.__colanderalchemy__
 

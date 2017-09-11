@@ -25,7 +25,7 @@ class TestUser():
     def test_view_edit(self, dbsession):
         from c2cgeoportal_admin.views.users import UserViews
         req = DummyRequest(dbsession=dbsession)
-        req.matchdict.update({'id': 'babar_11'})
+        req.matchdict.update({'id': '11'})
         info = UserViews(req).edit()
         import re
 
@@ -35,8 +35,8 @@ class TestUser():
         clean_form = clean_form.replace(' >', '>')
         inputs = re.findall('<input type="text" .*?>', clean_form)
 
-        assert inputs[0] == '<input type="text" name="username" value="babar_11" id="deformField3" class=" form-control "/>'
-        assert inputs[3] == '<input type="text" name="email" value="mail11" id="deformField6" class=" form-control "/>'
+        assert inputs[0] == '<input type="text" name="username" value="babar_8" id="deformField3" class=" form-control "/>'
+        assert inputs[3] == '<input type="text" name="email" value="mail8" id="deformField6" class=" form-control "/>'
 
     @pytest.mark.usefixtures("raise_db_error_on_query")
     def test_grid_dberror(self, dbsession):
@@ -73,6 +73,6 @@ class TestUser():
         elem.click()
         elem = selenium.find_element_by_xpath("//a[contains(@href,'#50')]")
         elem.click()
-        elem = selenium.find_element_by_xpath("//a[contains(@href,'babar_13/edit')]")
+        elem = selenium.find_element_by_xpath("//a[contains(@href,'13/edit')]")
         elem.click()
         pass

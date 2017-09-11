@@ -16,7 +16,7 @@ def role_test_insert(request):
 @view_defaults(route_name='role')
 class UserViews(AbstractViews):
     _list_fields = ['name']
-    _id_field = 'name'
+    _id_field = 'id'
     _model = Role
 
     @view_config(match_param=("id=all", "action=index"), renderer="c2cgeoform:templates/site/index.pt")
