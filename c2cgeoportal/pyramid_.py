@@ -650,7 +650,7 @@ def includeme(config):
     config.add_route("difference", "/difference", request_method="POST")
 
     # PDF report tool
-    config.add_route("pdfreport", "/pdfreport/{layername}/{id}", request_method="GET")
+    config.add_route("pdfreport", "/pdfreport/{layername}/{ids}", request_method="GET")
 
     # add routes for the "layers" web service
     add_cors_route(config, "/layers/*all", "layers")

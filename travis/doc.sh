@@ -17,7 +17,10 @@ echo == Build the doc ==
 git fetch origin gh-pages:gh-pages
 git checkout gh-pages
 
-git rm -r --force -- ${BRANCH}
+if [ -e ${BRANCH} ]
+then
+    git rm -r --force -- ${BRANCH}
+fi
 mkdir --parent ${BRANCH}
 mv doc/_build/html/* ${BRANCH}
 

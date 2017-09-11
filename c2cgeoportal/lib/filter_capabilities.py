@@ -57,7 +57,9 @@ log = logging.getLogger(__name__)
 @cache_region.cache_on_arguments()
 def get_protected_layers(role_id, ogc_server_ids):
     q = get_protected_layers_query(role_id, ogc_server_ids, what=LayerWMS, version=2)
-    return {r.id: r for r in q.all()}
+    results = q.all()
+    DBSession.expunge_all()
+    return {r.id: r for r in results}
 
 
 @cache_region.cache_on_arguments()
@@ -74,7 +76,9 @@ def get_private_layers(ogc_server_ids):
 @cache_region.cache_on_arguments()
 def get_writable_layers(role_id, ogc_server_ids):
     q = get_writable_layers_query(role_id, ogc_server_ids)
-    return {r.id: r for r in q.all()}
+    results = q.all()
+    DBSession.expunge_all()
+    return {r.id: r for r in results}
 
 
 @cache_region.cache_on_arguments()
@@ -258,6 +262,11 @@ class _CapabilitiesFilter(XMLFilterBase):
             layers_blacklist is not None and
             layers_whitelist is not None), \
             "only either layers_blacklist OR layers_whitelist can be set"
+
+        if layers_blacklist is not None:
+            layers_blacklist = [layer.lower() for layer in layers_blacklist]
+        if layers_whitelist is not None:
+            layers_whitelist = [layer.lower() for layer in layers_whitelist]
         self.layers_blacklist = layers_blacklist
         self.layers_whitelist = layers_whitelist
 

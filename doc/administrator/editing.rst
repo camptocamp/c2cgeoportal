@@ -115,16 +115,16 @@ Enabling `Copy to` functionality
 In the ``edit`` interface, you can give the user the possibility to copy
 features from one layer (source layer) to another layer (destination layer).
 
-In the ``admin`` interface, open the ``UI metadatas`` list and add a new record:
+In the ``admin`` interface, open the ``Metadatas`` list and add a new record:
 
-    * Name: Select ``copy_to``.
+    * Name: Select ``copyTo``.
     * Value: Enter the list of choices for destination layer, as mapserver
       layer names, separated by commas.
     * Item: Select the source layer.
 
 Example:
 
-    * Name: ``copy_to``
+    * Name: ``copyTo``
     * Value: ``polygon2,polygon3,polygon4``
     * Item: ``polygon``
 

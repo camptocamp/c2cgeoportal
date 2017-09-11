@@ -43,6 +43,9 @@ mainly UI features. Attributes:
 * ``Value``: the value of the metadata.
 * ``Descritpion``: a description.
 
+As the metadata are used by the layers on the client side, you'll find the effect
+of each metadata in the `NGEO documentation <https://camptocamp.github.io/ngeo/master/apidoc/gmfThemes.GmfMetaData.html>`_.
+
 Functionalities
 ---------------
 

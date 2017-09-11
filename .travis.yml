@@ -114,6 +114,8 @@ script:
 
 after_success:
 - ./docker-run coveralls
+- export CODACY_PROJECT_TOKEN=1605f78ffb214af5ba6cb172a95db5d1
+- ./docker-run python-codacy-coverage -r coverage.xml
 - openssl aes-256-cbc -K $encrypted_ae821512cabf_key -iv $encrypted_ae821512cabf_iv -in deploy_key.enc -out ~/.ssh/id_rsa -d | true
 - chmod 600 ~/.ssh/id_rsa
 - git config --global user.email travis@camptocamp.com
@@ -147,18 +149,18 @@ deploy:
     tags: true
     condition: '"${TRAVIS_TAG}" =~ ^[0-9]+\.[0-9]+\..+$'
 - provider: script
-  script: docker-run make transifex-send
+  script: ./docker-run make transifex-send
   skip_cleanup: true
   on:
     repo: camptocamp/c2cgeoportal
-    branch: 2.1
+    branch: 2.2
     condition: '"${TRAVIS_PULL_REQUEST}" = false'
 - provider: script
   script: travis/doc.sh
   skip_cleanup: true
   on:
     repo: camptocamp/c2cgeoportal
-    branch: 2.1
+    branch: 2.2
     condition: '"${TRAVIS_PULL_REQUEST}" = false'
 
 notifications:

@@ -37,17 +37,17 @@ from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPForbidden, HTTPBadRequest
 
 from c2cgeoportal.lib.caching import NO_CACHE
-from c2cgeoportal.views.proxy import Proxy
+from c2cgeoportal.views.ogcproxy import OGCProxy
 
 log = logging.getLogger(__name__)
 
 
-class PdfReport(Proxy):  # pragma: no cover
+class PdfReport(OGCProxy):  # pragma: no cover
 
     layername = None
 
     def __init__(self, request):
-        Proxy.__init__(self, request)
+        OGCProxy.__init__(self, request)
         self.config = self.request.registry.settings.get("pdfreport", {})
 
     def _do_print(self, spec):
@@ -104,12 +104,14 @@ class PdfReport(Proxy):  # pragma: no cover
 
     @view_config(route_name="pdfreport", renderer="json")
     def get_report(self):
-        id_ = self.request.matchdict["id"]
+        ids = self.request.matchdict["ids"].split(",")
         self.layername = self.request.matchdict["layername"]
         layer_config = self.config["layers"].get(self.layername)
 
         if layer_config is None:
             raise HTTPBadRequest("Layer not found")
+
+        features_ids = [self.layername + "." + id_ for id_ in ids]
 
         if layer_config["check_credentials"]:
             # check user credentials
@@ -117,8 +119,18 @@ class PdfReport(Proxy):  # pragma: no cover
                 self.request.user.role.id
 
             # FIXME: support of mapserver groups
-            if self.layername in get_private_layers() and \
-                    self.layername not in get_protected_layers(role_id):
+            ogc_server_ids = [self.default_ogc_server.id]
+
+            private_layers_object = get_private_layers(ogc_server_ids)
+            private_layers_names = [private_layers_object[oid].name
+                                    for oid in private_layers_object]
+
+            protected_layers_object = get_protected_layers(role_id, ogc_server_ids)
+            protected_layers_names = [protected_layers_object[oid].name
+                                      for oid in protected_layers_object]
+
+            if self.layername in private_layers_names and \
+                    self.layername not in protected_layers_names:
                 raise HTTPForbidden
 
         srs = layer_config["srs"]
@@ -132,7 +144,7 @@ class PdfReport(Proxy):  # pragma: no cover
                 "outputformat": "gml3",
                 "request": "GetFeature",
                 "typeName": self.layername,
-                "featureid": self.layername + "." + id_,
+                "featureid": ",".join(features_ids),
                 "srsName": "epsg:" + str(srs)
             }.items())])
         )
@@ -143,7 +155,7 @@ class PdfReport(Proxy):  # pragma: no cover
                 "layout": self.layername,
                 "outputFormat": "pdf",
                 "attributes": {
-                    "paramID": id_
+                    "ids": ids
                 }
             }
             map_config = layer_config.get("map")
@@ -162,7 +174,7 @@ class PdfReport(Proxy):  # pragma: no cover
         else:
             spec = loads(dumps(spec) % {
                 "layername": self.layername,
-                "id": id_,
+                "ids": dumps(ids),
                 "srs": srs,
                 "mapserv_url": mapserv_url,
                 "vector_request_url": vector_request_url,

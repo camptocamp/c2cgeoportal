@@ -356,7 +356,7 @@ class Layers:
 
     def _get_validation_setting(self, layer):
         # The validation UIMetadata is stored as a string, not a boolean
-        should_validate = self._get_metadata(layer, "geometry_validation", None)
+        should_validate = self._get_metadata(layer, "geometryValidation", None)
         if should_validate:
             return should_validate.lower() != "false"
         return self.settings.get("geometry_validation", False)

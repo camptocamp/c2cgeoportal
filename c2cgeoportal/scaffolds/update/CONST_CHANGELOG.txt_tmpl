@@ -278,6 +278,10 @@ add it in the `.gitignore` (at step 3).
 
 8. It is not allowed anymore to have layers directly in a theme.
 
+13. In the PDF report we now make a list id ids, then we should change:
+    - The `paramID` is replaced by a `ids` and it should be a `!stringArray`.
+    - In the `spec` template the `id` is renamed to `ids` and will be a list.
+
 
 Version 1.6.8
 =============
