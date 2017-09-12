@@ -47,7 +47,7 @@ class TestUser():
 
     @pytest.mark.usefixtures("test_app")
     def test_view_index_rendering_in_app(self, dbsession, test_app):
-        res = test_app.get('/user/all/index', status=200)
+        res = test_app.get('/user/', status=200)
         assert str(res.html.find_all('th', limit=3)) == \
              '[<th data-column-id="username">username</th>,' \
              + ' <th data-column-id="email">email</th>,' \
@@ -55,7 +55,7 @@ class TestUser():
 
     @pytest.mark.usefixtures("test_app")
     def test_view_index_rendering_in_app_fr(self, dbsession, test_app):
-        res = test_app.get('/user/all/index', status=200)
+        res = test_app.get('/user/', status=200)
         res1 = res.click(verbose=True, href='language=fr')
         res2 = res1.follow()
         assert str(res2.html.find_all('th', limit=3)) == \
@@ -67,7 +67,7 @@ class TestUser():
     # and to install selenium gecko driver
     @pytest.mark.usefixtures("selenium", "selenium_app")
     def test_selenium(self, selenium):
-        selenium.get('http://127.0.0.1:6543' + '/user/all/index')
+        selenium.get('http://127.0.0.1:6543' + '/user/')
         elem = selenium.find_element_by_xpath("//a[contains(@href,'language=fr')]")
         elem.click()
         elem = selenium.find_element_by_xpath("//button[@title='Actualiser']/following-sibling::*")
