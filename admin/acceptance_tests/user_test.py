@@ -35,7 +35,7 @@ class TestUser():
         req = DummyRequest(dbsession=dbsession)
         req.matchdict.update({'id': '11'})
 
-        form = clean_form(UserViews(req).edit()['form'])
+        form = clean_form(UserViews(req).view()['form'])
 
         inputs = re.findall('<input type="text" .*?>', form)
         assert inputs[0] == '<input type="text" name="username" value="babar_8" id="deformField3" class=" form-control "/>'
@@ -56,12 +56,9 @@ class TestUser():
                 'temp_password': ''}
         req = DummyRequest(dbsession=dbsession, post=post)
         req.matchdict.update({'id': '11'})
+        req.matchdict.update({'table': 'user'})
 
-        form = clean_form(UserViews(req).edit()['form'])
-
-        inputs = re.findall('<input type="text" .*?>', form)
-        assert inputs[0] == '<input type="text" name="username" value="new_name_withéàô" id="deformField3" class=" form-control "/>'
-        assert inputs[3] == '<input type="text" name="email" value="new_mail" id="deformField6" class=" form-control "/>'
+        res = UserViews(req).save()
 
         from c2cgeoportal_commons.models.main import User
         user = dbsession.query(User).filter("username='new_name_withéàô'").one_or_none();
