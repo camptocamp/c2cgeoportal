@@ -433,11 +433,7 @@ ifeq ($(PRINT_VERSION), 3)
 PRINT_OUTPUT_WAR = $(PRINT_OUTPUT)/$(PRINT_WAR)
 PRINT_BASE_WAR ?= print-servlet.war
 PRINT_INPUT += print-apps WEB-INF
-PRINT_EXTRA_LIBS += \
-	$(PRINT_BASE_DIR)/WEB-INF/lib/jasperreports-functions-$(JASPERREPORTS_VERSION).jar \
-	$(PRINT_BASE_DIR)/WEB-INF/lib/joda-time-1.6.jar \
-	$(PRINT_BASE_DIR)/WEB-INF/lib/postgresql-9.3-1102.jdbc41.jar
-PRINT_REQUIREMENT += $(PRINT_EXTRA_LIBS) \
+PRINT_REQUIREMENT += \
 	$(PRINT_BASE_DIR)/WEB-INF/classes/logback.xml \
 	$(PRINT_BASE_DIR)/WEB-INF/classes/mapfish-spring-application-context-override.xml \
 	$(shell $(FIND) $(PRINT_BASE_DIR)/print-apps)
@@ -1167,24 +1163,6 @@ ifneq ($(TOMCAT_START_COMMAND),)
 	$(TOMCAT_START_COMMAND)
 endif
 endif # !DOCKER
-
-print/WEB-INF/lib/jasperreports-functions-$(JASPERREPORTS_VERSION).jar:
-	$(PRERULE_CMD)
-	mkdir -p $(dir $@)
-	curl --location --output $@ http://central.maven.org/maven2/net/sf/jasperreports/jasperreports/$(JASPERREPORTS_VERSION)/jasperreports-$(JASPERREPORTS_VERSION).jar
-	unzip -t -q $@
-
-print/WEB-INF/lib/joda-time-1.6.jar:
-	$(PRERULE_CMD)
-	mkdir -p $(dir $@)
-	curl --max-redirs 0 --location --output $@ http://central.maven.org/maven2/joda-time/joda-time/1.6/joda-time-1.6.jar
-	unzip -t -q $@
-
-print/WEB-INF/lib/postgresql-9.3-1102.jdbc41.jar:
-	$(PRERULE_CMD)
-	mkdir -p $(dir $@)
-	curl --max-redirs 0 --location --output $@ https://jdbc.postgresql.org/download/postgresql-9.3-1102.jdbc41.jar
-	unzip -t -q $@
 
 $(VENV_BIN)/generate_controller$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
 
