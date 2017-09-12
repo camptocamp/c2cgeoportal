@@ -52,6 +52,7 @@ class TestUser():
              '[<th data-column-id="username">username</th>,' \
              + ' <th data-column-id="email">email</th>,' \
              + ' <th data-column-id="_id_" data-converter="commands" data-searchable="false" data-sortable="false">Commands</th>]'
+        assert len(list(filter(lambda x: str(x.contents) == "['New']", res.html.findAll('a')))) == 1
 
     @pytest.mark.usefixtures("test_app")
     def test_view_index_rendering_in_app_fr(self, dbsession, test_app):
@@ -62,6 +63,7 @@ class TestUser():
              '[<th data-column-id="username">username</th>,' \
              + ' <th data-column-id="email">mel</th>,' \
              + ' <th data-column-id="_id_" data-converter="commands" data-searchable="false" data-sortable="false">Actions</th>]'
+        assert len(list(filter(lambda x: str(x.contents) == "['Nouveau']", res2.html.findAll('a')))) == 1
 
     # in order to make this work, had to patch as indicated in https://github.com/SeleniumHQ/selenium/issues/4558
     # and to install selenium gecko driver
