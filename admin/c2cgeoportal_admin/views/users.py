@@ -6,6 +6,8 @@ from colanderalchemy import setup_schema
 from deform.widget import HiddenWidget
 from deform.widget import CheckboxWidget
 
+setup_schema(None, User)
+
 @view_defaults(match_param='table=user')
 class UserViews(AbstractViews):
     _list_fields = ['username', 'email']
@@ -13,18 +15,15 @@ class UserViews(AbstractViews):
     _model = User
     _base_schema = User.__colanderalchemy__
 
-    @view_config(match_param=("id=all", "action=index"), renderer="c2cgeoform:templates/site/index.pt")
+    @view_config(route_name='c2cgeoform_index', renderer="c2cgeoform:templates/site/index.pt")
     def index(self):
         return super().index()
 
-    @view_config(match_param=("id=all", "action=grid"), renderer="json")
+    @view_config(route_name='c2cgeoform_grid', renderer="json")
     def grid(self):
         return super().grid()
 
-    @view_config(match_param=("action=edit"), renderer="c2cgeoform:templates/site/edit.pt")
+    @view_config(route_name='c2cgeoform_action', renderer="c2cgeoform:templates/site/edit.pt")
     def edit(self):
         return super().edit()
 
-    @view_config(match_param=("action=view"), renderer="json")
-    def view(self):
-        return {}
