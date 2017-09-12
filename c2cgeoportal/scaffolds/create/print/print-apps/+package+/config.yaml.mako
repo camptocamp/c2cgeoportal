@@ -127,7 +127,6 @@ templates:
             debug: *debug
             legend: *legend
             northArrow: *northArrow
-            scalebar: *scalebar
             map: !map
                 <<: *map
                 width: 800
