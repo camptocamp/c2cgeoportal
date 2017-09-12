@@ -92,11 +92,11 @@ templates:
             debug: *debug
             legend: *legend
             northArrow: *northArrow
-            scalebar: *scalebar
             map: !map
                 <<: *map
                 width: 800
                 height: 441
+            scalebar: *scalebar
             datasource: *datasource
         processors: *processors
 
@@ -108,11 +108,11 @@ templates:
             debug: *debug
             legend: *legend
             northArrow: *northArrow
-            scalebar: *scalebar
             map: !map
                <<: *map
                width: 800
                height: 1000
+            scalebar: *scalebar
             datasource: *datasource
         processors: *processors
 
@@ -124,10 +124,10 @@ templates:
             debug: *debug
             legend: *legend
             northArrow: *northArrow
-            scalebar: *scalebar
             map: !map
                 <<: *map
                 width: 800
                 height: 460
+            scalebar: *scalebar
             datasource: *datasource
         processors: *processors
