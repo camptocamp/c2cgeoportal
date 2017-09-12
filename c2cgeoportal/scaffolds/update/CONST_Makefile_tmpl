@@ -433,8 +433,7 @@ ifeq ($(PRINT_VERSION), 3)
 PRINT_OUTPUT_WAR = $(PRINT_OUTPUT)/$(PRINT_WAR)
 PRINT_BASE_WAR ?= print-servlet.war
 PRINT_INPUT += print-apps WEB-INF
-PRINT_EXTRA_LIBS += 
-PRINT_REQUIREMENT += $(PRINT_EXTRA_LIBS) \
+PRINT_REQUIREMENT += \
 	$(PRINT_BASE_DIR)/WEB-INF/classes/logback.xml \
 	$(PRINT_BASE_DIR)/WEB-INF/classes/mapfish-spring-application-context-override.xml \
 	$(shell $(FIND) $(PRINT_BASE_DIR)/print-apps)
@@ -582,7 +581,7 @@ cleanall: clean
 
 ifdef PRINT_BASE_WAR
 ifeq ($(PRINT_VERSION), 3)
-	rm -f $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR) $(PRINT_EXTRA_LIBS)
+	rm -f $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR)
 endif
 endif
 
