@@ -330,7 +330,10 @@ class Role(Base):
     ]
 
     id = Column(Integer, primary_key=True)
-    name = Column(Unicode, unique=True, nullable=False)
+    name = Column(Unicode, unique=True, nullable=False, info={
+        'colanderalchemy': {
+            'title': _('name')
+        }})
     description = Column(Unicode)
     extent = Column(Geometry("POLYGON", srid=_srid))
 
