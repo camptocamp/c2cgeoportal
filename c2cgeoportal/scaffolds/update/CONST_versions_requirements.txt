@@ -16,7 +16,7 @@ lingua==4.13
 Mako==1.0.7
 Markdown==2.6.9
 MarkupSafe==1.0
-OWSLib==0.14.0
+OWSLib==0.15.0
 papyrus==2.2
 Paste==2.0.3
 PasteDeploy==1.5.2
