@@ -1,5 +1,3 @@
-
-
 import pytest
 from pyramid import testing
 from c2cgeoportal_commons.tests import dbsession, transact, raise_db_error_on_query
@@ -38,8 +36,6 @@ def test_app(request, dbsession, settings):
     testapp = TestApp(app)
     return testapp;
 
-HOST_BASE = "http://localhost:6543"
-
 @pytest.fixture(scope='session')
 @pytest.mark.usefixtures("dbsession")
 def selenium_app(request, dbsession, settings):
@@ -68,3 +64,4 @@ def view_displaying_users_nb(request):
     if len(users) > 0:
         username = users[0].username
     return {'size': len(users), 'first': username, 'project': 'c2cgeoportal_admin'}
+

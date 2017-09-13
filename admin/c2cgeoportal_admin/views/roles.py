@@ -4,18 +4,27 @@ from c2cgeoform.views.abstract_views import AbstractViews
 from c2cgeoportal_commons.models.main import Role
 from c2cgeoportal_commons.models.main  import RestrictionArea
 from colanderalchemy import setup_schema
-from c2cgeoform.ext import colander_ext
+from c2cgeoform.ext import colander_ext, deform_ext
+from deform.widget import HiddenWidget
 
 Role.extent.info.update({'colanderalchemy': {
     'typ': colander_ext.Geometry(
-        'POLYGON', srid=4326, map_srid=3857),
+        'POLYGON', srid=3857, map_srid=3857),
+    'widget': deform_ext.MapWidget()
+
 }})
 
 RestrictionArea.area.info.update({'colanderalchemy': {
     'typ': colander_ext.Geometry(
-        'POLYGON', srid=4326, map_srid=3857),
+        'POLYGON', srid=3857, map_srid=3857),
+    'widget': deform_ext.MapWidget()
 }})
 
+HIDE_FIELD = {'colanderalchemy': {
+                'widget': HiddenWidget()
+        }}
+
+Role.id.info.update(HIDE_FIELD)
 
 setup_schema(None, Role)
 
@@ -30,7 +39,7 @@ def role_test_insert(request):
 
 
 @view_defaults(match_param='table=role')
-class UserViews(AbstractViews):
+class RoleViews(AbstractViews):
     _list_fields = ['name']
     _id_field = 'id'
     _model = Role
