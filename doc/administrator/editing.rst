@@ -109,8 +109,8 @@ Binding restriction areas and layers together can be done from either the
 Likewise for binding roles and restriction areas.
 
 
-Enabling `Copy to` functionality
---------------------------------
+Enabling `Copy to` functionality (CGXP only)
+--------------------------------------------
 
 In the ``edit`` interface, you can give the user the possibility to copy
 features from one layer (source layer) to another layer (destination layer).
