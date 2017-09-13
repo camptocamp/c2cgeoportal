@@ -1,3 +1,6 @@
 [submodule "c2cgeoportal/static/lib/openlayers"]
 	path = c2cgeoportal/static/lib/openlayers
 	url = https://github.com/openlayers/ol2.git
+[submodule "c2cgeoform"]
+	path = c2cgeoform
+	url = https://github.com/camptocamp/c2cgeoform.git

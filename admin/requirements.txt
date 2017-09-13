@@ -1,4 +1,5 @@
 -e ../commons
+-e ../c2cgeoform
 plaster_pastedeploy
 psycopg2
 pyramid_jinja2

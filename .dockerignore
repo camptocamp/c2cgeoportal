@@ -3,6 +3,7 @@
 !README.rst
 !c2cgeoportal/
 !commons
+!c2cgeoform
 !admin
 !Makefile
 !vars.yaml

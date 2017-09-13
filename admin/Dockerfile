@@ -17,6 +17,10 @@ WORKDIR /app
 
 COPY admin/requirements.txt /app
 COPY commons /commons
+
+# temporary:
+COPY c2cgeoform /c2cgeoform
+
 RUN pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 80
