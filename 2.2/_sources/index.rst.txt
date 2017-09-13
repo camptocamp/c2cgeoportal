@@ -20,10 +20,11 @@ c2cgeoportal. *Integrator* is the person who builds the c2cgeoportal
 application, and does the initial setup. *Developer* is the person who
 produces code for c2cgeoportal itself.
 
-The c2cgeoportal project is composed of two software components: CGXP, a JS
-library based on `Boundless GXP <https://github.com/boundlessgeo/gxp>`_, and
-c2cgeoportal, a Python library for the Pyramid web framework. So c2cgeoportal
-applications are Pyramid applications with user interfaces based on ExtJS and
+The c2cgeoportal project is composed of two software components: NGEO (a JS
+library based on `OpenLayers <https://openlayers.org>`_ and
+`AngularJS <https://angularjs.org/>`_ ), and c2cgeoportal, a Python library
+for the Pyramid web framework. So c2cgeoportal applications are Pyramid
+applications with user interfaces based on ExtJS and
 OpenLayers.
 
 One of the primary goals of the c2cgeoportal project is sharing as much as
