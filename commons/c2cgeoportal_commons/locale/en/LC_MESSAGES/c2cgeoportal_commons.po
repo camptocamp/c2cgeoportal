@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2017-09-06 16:59+0200\n"
+"POT-Creation-Date: 2017-09-13 16:18+0200\n"
 "PO-Revision-Date: 2017-09-06 16:59+0200\n"
 "Last-Translator: Christophe Mangeat <dummy@dummy>\n"
 "Language-Team: English\n"
@@ -19,3 +19,7 @@ msgstr ""
 #: c2cgeoportal_commons/models/main.py:228
 msgid "email"
 msgstr "email"
+
+#: c2cgeoportal_commons/models/main.py:335
+msgid "name"
+msgstr ""
