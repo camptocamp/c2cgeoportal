@@ -4,6 +4,7 @@ from c2cgeoform.views.abstract_views import AbstractViews
 from c2cgeoportal_commons.models.main import User
 from colanderalchemy import setup_schema
 from deform.widget import HiddenWidget
+from deform.widget import CheckboxWidget
 
 @view_config(route_name='user_', renderer='json')
 def user_test_insert(request):
@@ -19,7 +20,7 @@ HIDE_FIELD = {'colanderalchemy': {
         }}
 
 User.id.info.update(HIDE_FIELD)
-User.is_password_changed.info.update(HIDE_FIELD)
+User.is_password_changed.info.update({'colanderalchemy': {'widget': CheckboxWidget(readonly=True)}})
 User.item_type.info.update(HIDE_FIELD)
 
 setup_schema(None, User)
