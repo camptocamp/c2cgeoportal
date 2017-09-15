@@ -46,8 +46,7 @@ class TestUser():
                 'email': 'new_mail',
                 'role_name': '',
                 'is_password_changed': 'false',
-                '_password': 'da39a3ee5e6b4b0d3255bfef95601890afd80709',
-                'temp_password': ''}
+                '_password': 'da39a3ee5e6b4b0d3255bfef95601890afd80709'}
         req = DummyRequest(dbsession=dbsession, post=post)
         req.matchdict.update({'id': '11'})
         req.matchdict.update({'table': 'user'})
@@ -57,6 +56,65 @@ class TestUser():
         from c2cgeoportal_commons.models.main import User
         user = dbsession.query(User).filter("username='new_name_withéàô'").one_or_none();
         assert user.email == 'new_mail'
+        assert user._password == 'da39a3ee5e6b4b0d3255bfef95601890afd80709'
+        assert user.temp_password == None
+
+    @pytest.mark.usefixtures("test_app")  # route have to be registred for HTTP_FOUND
+    def test_change_password(self, dbsession):
+        from c2cgeoportal_admin.views.users import UserViews
+        post = {'__formid__': 'deform',
+                '_charset_': 'UTF-8',
+                'formsubmit': 'formsubmit',
+                'item_type': 'user',
+                'id': '11',
+                'username': 'mothra',
+                'email': 'new_mail',
+                'role_name': '',
+                'is_password_changed': 'false',
+                '_password': 'pré$ident',
+                'temp_password': ''}
+        req = DummyRequest(dbsession=dbsession, post=post)
+        req.matchdict.update({'id': '11'})
+        req.matchdict.update({'table': 'user'})
+
+        UserViews(req).save()
+
+        from c2cgeoportal_commons.models.main import User
+        user = dbsession.query(User).filter("username='mothra'").one_or_none();
+        assert user.validate_password('pré$ident')
+        assert user._password != 'pré$ident'
+        assert user.temp_password == None
+
+
+    @pytest.mark.usefixtures("test_app")  # route have to be registred for HTTP_FOUND
+    def test_change_tmppassword(self, dbsession):
+        from c2cgeoportal_admin.views.users import UserViews
+        post = {'__formid__': 'deform',
+                '_charset_': 'UTF-8',
+                'formsubmit': 'formsubmit',
+                'item_type': 'user',
+                'id': '11',
+                'username': 'mothra',
+                'email': 'new_mail',
+                'role_name': '',
+                'is_password_changed': 'false',
+                '_password': 'da39a3ee5e6b4b0d3255bfef95601890afd80709',
+                'temp_password': 'pré$ident'}
+        req = DummyRequest(dbsession=dbsession, post=post)
+        req.matchdict.update({'id': '11'})
+        req.matchdict.update({'table': 'user'})
+
+        UserViews(req).save()
+
+        from c2cgeoportal_commons.models.main import User
+        user = dbsession.query(User).filter("username='mothra'").one_or_none();
+        assert user._password == 'da39a3ee5e6b4b0d3255bfef95601890afd80709'
+        assert user.temp_password != None
+        assert user.temp_password != 'pré$ident'
+        assert user.validate_password('pré$ident')
+        assert user._password != 'pré$ident'
+        assert user._password != 'da39a3ee5e6b4b0d3255bfef95601890afd80709'
+        assert user.temp_password == None
 
     @pytest.mark.usefixtures("raise_db_error_on_query")
     def test_grid_dberror(self, dbsession):

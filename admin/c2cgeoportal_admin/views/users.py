@@ -46,4 +46,11 @@ class UserViews(AbstractViews):
 
     @view_config(route_name='c2cgeoform_action', request_method='POST', renderer="c2cgeoform:templates/site/edit.pt")
     def save(self):
+        current = super()._get_object()
+        if current._password != self._request.POST.get('_password'):
+            current._set_password(self._request.POST.get('_password'))
+            self._request.POST.__setitem__('_password', current._password)
+        if current.temp_password != self._request.POST.get('temp_password') and self._request.POST.get('temp_password') != '':
+            current.set_temp_password(self._request.POST.get('temp_password'))
+            self._request.POST.__setitem__('temp_password', current.temp_password)
         return super().save()
