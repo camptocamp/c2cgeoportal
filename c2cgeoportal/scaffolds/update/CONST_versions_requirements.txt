@@ -1,4 +1,4 @@
-Babel==2.5.0
+Babel==2.5.1
 boto==2.48.0
 bottle==0.12.13
 c2c.template==1.5.1
