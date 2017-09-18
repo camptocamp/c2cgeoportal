@@ -3,7 +3,6 @@ from pyramid.view import view_config
 from c2cgeoform.views.abstract_views import AbstractViews
 from c2cgeoportal_commons.models.main import User
 from colanderalchemy import setup_schema
-from deform.widget import HiddenWidget
 
 @view_config(route_name='user_', renderer='json')
 def user_test_insert(request):
@@ -14,13 +13,6 @@ def user_test_insert(request):
     request.dbsession.commit()
     return {}
 
-HIDE_FIELD = {'colanderalchemy': {
-                'widget': HiddenWidget()
-        }}
-
-User.id.info.update(HIDE_FIELD)
-User.is_password_changed.info.update(HIDE_FIELD)
-User.item_type.info.update(HIDE_FIELD)
 
 setup_schema(None, User)
 
@@ -39,10 +31,11 @@ class UserViews(AbstractViews):
     def grid(self):
         return super().grid()
 
-    @view_config(route_name='c2cgeoform_action', request_method='GET', renderer="c2cgeoform:templates/site/edit.pt")
-    def view(self):
-        return super().view()
+    @view_config(route_name='c2cgeoform_action', renderer="c2cgeoform:templates/site/edit.pt")
+    def edit(self):
+        return super().edit()
 
-    @view_config(route_name='c2cgeoform_action', request_method='POST', renderer="c2cgeoform:templates/site/edit.pt")
-    def save(self):
-        return super().save()
+    @view_config(route_name='c2cgeoform_new', renderer="c2cgeoform:templates/site/edit.pt")
+    def new(self):
+        return super().new()
+

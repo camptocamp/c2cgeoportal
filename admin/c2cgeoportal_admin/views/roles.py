@@ -4,7 +4,8 @@ from c2cgeoform.views.abstract_views import AbstractViews
 from c2cgeoportal_commons.models.main import Role
 from colanderalchemy import setup_schema
 
-# setup_schema(None, Role)
+
+setup_schema(None, Role)
 
 @view_config(route_name='role_', renderer='json')
 def role_test_insert(request):
@@ -17,10 +18,11 @@ def role_test_insert(request):
 
 
 @view_defaults(match_param='table=role')
-class UserViews(AbstractViews):
+class RoleViews(AbstractViews):
     _list_fields = ['name']
     _id_field = 'id'
     _model = Role
+    _base_schema = Role.__colanderalchemy__
 
     @view_config(route_name='c2cgeoform_index', renderer="c2cgeoform:templates/site/index.pt")
     def index(self):
@@ -32,5 +34,8 @@ class UserViews(AbstractViews):
 
     @view_config(route_name='c2cgeoform_action', renderer="c2cgeoform:templates/site/edit.pt")
     def edit(self):
-        return {}
+        return super().edit()
 
+    @view_config(route_name='c2cgeoform_new', renderer="c2cgeoform:templates/site/edit.pt")
+    def new(self):
+        return super().new()

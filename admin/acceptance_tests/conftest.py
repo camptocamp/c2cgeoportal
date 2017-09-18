@@ -1,10 +1,7 @@
-
-
 import pytest
 from pyramid import testing
 from c2cgeoportal_commons.tests import dbsession, transact, raise_db_error_on_query
 from wsgiref.simple_server import make_server
-import threading
 
 @pytest.fixture(scope='session')
 def settings(request):
@@ -38,17 +35,6 @@ def test_app(request, dbsession, settings):
     testapp = TestApp(app)
     return testapp;
 
-HOST_BASE = "http://localhost:6543"
-
-@pytest.fixture(scope='session')
-@pytest.mark.usefixtures("dbsession")
-def selenium_app(request, dbsession, settings):
-    app = prepare_app(dbsession, settings)
-    srv = make_server('', 6543, app)
-    threading.Thread(target=srv.serve_forever).start()
-    yield()
-    srv.shutdown()
-
 from pyramid.view import view_config
 
 @view_config(route_name='user_add', renderer='./learn_test.jinja2')
@@ -68,3 +54,4 @@ def view_displaying_users_nb(request):
     if len(users) > 0:
         username = users[0].username
     return {'size': len(users), 'first': username, 'project': 'c2cgeoportal_admin'}
+
