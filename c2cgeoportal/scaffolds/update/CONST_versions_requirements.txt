@@ -40,7 +40,7 @@ pytz==2017.2
 repoze.lru==0.7
 requests==2.18.4
 simplejson==3.11.1
-six==1.10.0
+six==1.11.0
 SQLAHelper==1.0
 SQLAlchemy==1.1.14
 Tempita==0.5.2
