@@ -30,13 +30,12 @@ class TestRole():
         req = DummyRequest(dbsession=dbsession)
         req.matchdict.update({'id': '11'})
 
-        form = clean_form(RoleViews(req).view()['form'])
+        form = clean_form(RoleViews(req).edit()['form'])
 
         inputs = re.findall('<input type="text" .*?>', form)
         assert inputs[0] == '<input type="text" name="name" value="secretary_10" id="deformField2" class=" form-control "/>'
         assert inputs[1] == '<input type="text" name="description" value="" id="deformField3" class=" form-control "/>'
 
-    @pytest.mark.usefixtures("test_app")  # route have to be registred for HTTP_FOUND
     def test_submit_update(self, dbsession):
         from c2cgeoportal_admin.views.roles import RoleViews
         post = {'__formid__': 'deform',
@@ -54,7 +53,7 @@ class TestRole():
         req.matchdict.update({'id': '11'})
         req.matchdict.update({'table': 'role'})
 
-        RoleViews(req).save()
+        RoleViews(req).edit()
 
         from c2cgeoportal_commons.models.main import Role
         role = dbsession.query(Role).filter("name='secretary_with&&'").one_or_none();

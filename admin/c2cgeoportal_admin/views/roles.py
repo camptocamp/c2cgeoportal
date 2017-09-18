@@ -53,10 +53,10 @@ class RoleViews(AbstractViews):
     def grid(self):
         return super().grid()
 
-    @view_config(route_name='c2cgeoform_action', request_method='GET', renderer="c2cgeoform:templates/site/edit.pt")
-    def view(self):
-        return super().view()
+    @view_config(route_name='c2cgeoform_action', renderer="c2cgeoform:templates/site/edit.pt")
+    def edit(self):
+        return super().edit()
 
-    @view_config(route_name='c2cgeoform_action', request_method='POST', renderer="c2cgeoform:templates/site/edit.pt")
-    def save(self):
-        return super().save()
+    @view_config(route_name='c2cgeoform_new', renderer="c2cgeoform:templates/site/edit.pt")
+    def new(self):
+        return super().new()

@@ -28,13 +28,12 @@ class TestUser():
         req = DummyRequest(dbsession=dbsession)
         req.matchdict.update({'id': '11'})
 
-        form = clean_form(UserViews(req).view()['form'])
+        form = clean_form(UserViews(req).edit()['form'])
 
         inputs = re.findall('<input type="text" .*?>', form)
         assert inputs[0] == '<input type="text" name="username" value="babar_8" id="deformField3" class=" form-control "/>'
         assert inputs[3] == '<input type="text" name="email" value="mail8" id="deformField6" class=" form-control "/>'
 
-    @pytest.mark.usefixtures("test_app")  # route have to be registred for HTTP_FOUND
     def test_submit_update(self, dbsession):
         from c2cgeoportal_admin.views.users import UserViews
         post = {'__formid__': 'deform',
@@ -51,69 +50,12 @@ class TestUser():
         req.matchdict.update({'id': '11'})
         req.matchdict.update({'table': 'user'})
 
-        UserViews(req).save()
+        UserViews(req).edit()
 
         from c2cgeoportal_commons.models.main import User
         user = dbsession.query(User).filter("username='new_name_withéàô'").one_or_none();
         assert user.email == 'new_mail'
         assert user._password == 'da39a3ee5e6b4b0d3255bfef95601890afd80709'
-        assert user.temp_password == None
-
-    @pytest.mark.usefixtures("test_app")  # route have to be registred for HTTP_FOUND
-    def test_change_password(self, dbsession):
-        from c2cgeoportal_admin.views.users import UserViews
-        post = {'__formid__': 'deform',
-                '_charset_': 'UTF-8',
-                'formsubmit': 'formsubmit',
-                'item_type': 'user',
-                'id': '11',
-                'username': 'mothra',
-                'email': 'new_mail',
-                'role_name': '',
-                'is_password_changed': 'false',
-                '_password': 'pré$ident',
-                'temp_password': ''}
-        req = DummyRequest(dbsession=dbsession, post=post)
-        req.matchdict.update({'id': '11'})
-        req.matchdict.update({'table': 'user'})
-
-        UserViews(req).save()
-
-        from c2cgeoportal_commons.models.main import User
-        user = dbsession.query(User).filter("username='mothra'").one_or_none();
-        assert user.validate_password('pré$ident')
-        assert user._password != 'pré$ident'
-        assert user.temp_password == None
-
-
-    @pytest.mark.usefixtures("test_app")  # route have to be registred for HTTP_FOUND
-    def test_change_tmppassword(self, dbsession):
-        from c2cgeoportal_admin.views.users import UserViews
-        post = {'__formid__': 'deform',
-                '_charset_': 'UTF-8',
-                'formsubmit': 'formsubmit',
-                'item_type': 'user',
-                'id': '11',
-                'username': 'mothra',
-                'email': 'new_mail',
-                'role_name': '',
-                'is_password_changed': 'false',
-                '_password': 'da39a3ee5e6b4b0d3255bfef95601890afd80709',
-                'temp_password': 'pré$ident'}
-        req = DummyRequest(dbsession=dbsession, post=post)
-        req.matchdict.update({'id': '11'})
-        req.matchdict.update({'table': 'user'})
-
-        UserViews(req).save()
-
-        from c2cgeoportal_commons.models.main import User
-        user = dbsession.query(User).filter("username='mothra'").one_or_none();
-        assert user._password == 'da39a3ee5e6b4b0d3255bfef95601890afd80709'
-        assert user.temp_password != None
-        assert user.temp_password != 'pré$ident'
-        assert user.validate_password('pré$ident')
-        assert user._password != 'pré$ident'
-        assert user._password != 'da39a3ee5e6b4b0d3255bfef95601890afd80709'
         assert user.temp_password == None
 
     @pytest.mark.usefixtures("raise_db_error_on_query")
@@ -144,30 +86,3 @@ class TestUser():
              + ' <th data-column-id="email">mel</th>,' \
              + ' <th data-column-id="_id_" data-converter="commands" data-searchable="false" data-sortable="false">Actions</th>]'
         assert len(list(filter(lambda x: str(x.contents) == "['Nouveau']", res2.html.findAll('a')))) == 1
-
-    # in order to make this work, had to patch as indicated in https://github.com/SeleniumHQ/selenium/issues/4558
-    # and to install selenium gecko driver
-    @pytest.mark.usefixtures("selenium", "selenium_app")
-    def test_selenium(self, dbsession, selenium):
-        selenium.get('http://127.0.0.1:6543' + '/user/')
-        elem = selenium.find_element_by_xpath("//a[contains(@href,'language=fr')]")
-        elem.click()
-        elem = selenium.find_element_by_xpath("//button[@title='Actualiser']/following-sibling::*")
-        elem.click()
-        elem = selenium.find_element_by_xpath("//a[contains(@href,'#50')]")
-        elem.click()
-        elem = selenium.find_element_by_xpath("//a[contains(@href,'13/edit')]")
-        elem.click()
-        elem = selenium.find_element_by_xpath("//input[@name ='username']")
-        elem.clear()
-        elem.send_keys('new_name_éôù')
-        elem = selenium.find_element_by_xpath("//input[@name ='email']")
-        elem.clear()
-        elem.send_keys('new_email')
-
-        elem = selenium.find_element_by_xpath("//button[@name='formsubmit']")
-        elem.click()
-
-        from c2cgeoportal_commons.models.main import User
-        user = dbsession.query(User).filter("username='new_name_éôù'").one_or_none();
-        assert user.email == 'new_email'
