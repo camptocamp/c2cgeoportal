@@ -17,10 +17,7 @@ requires = [
     'SQLAlchemy',
     'transaction',
     'zope.sqlalchemy',
-    'waitress',
-    'pyproj',  # sudo apt install python3-dev", why not with c2cgeoform ?
-    'ColanderAlchemy>=0.3.2'  # why not with c2cgeoform ?
-    'deform'
+    'waitress'
 ]
 
 tests_require = [
