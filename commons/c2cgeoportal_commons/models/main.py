@@ -44,7 +44,9 @@ from sqlalchemy.exc import UnboundExecutionError
 from geoalchemy2 import Geometry, func
 from geoalchemy2.shape import to_shape
 from sqlalchemy import Column
-
+from deform.widget import HiddenWidget
+from c2cgeoform.ext import colander_ext, deform_ext
+from deform.widget import CheckboxWidget
 
 try:
     from pyramid.security import Allow, ALL_PERMISSIONS, DENY_ALL
@@ -207,18 +209,23 @@ class User(Base):
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
-    item_type = Column("type", String(10), nullable=False)
+    item_type = Column("type", String(10), nullable=False,
+                       info={'colanderalchemy':
+                             {'widget': HiddenWidget()}})
     __mapper_args__ = {
         "polymorphic_on": item_type,
         "polymorphic_identity": "user",
     }
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True,
+                info={'colanderalchemy': {
+                    'widget': HiddenWidget()}})
     username = Column(
         Unicode, unique=True, nullable=False,
     )
     _password = Column(
         "password", Unicode, nullable=False,
+        info={'colanderalchemy': {'widget': HiddenWidget()}}
     )
     temp_password = Column(
         "temp_password", Unicode, nullable=True,
@@ -227,7 +234,9 @@ class User(Base):
         'colanderalchemy': {
             'title': _('email')
         }})
-    is_password_changed = Column(Boolean, default=False)
+    is_password_changed = Column(Boolean, default=False,
+                                 info={'colanderalchemy':
+                                       {'widget': CheckboxWidget(readonly=True)}})
 
     role_name = Column(String)
     _cached_role_name = None
@@ -329,13 +338,18 @@ class Role(Base):
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
 
-    id = Column(Integer, primary_key=True)
-    name = Column(Unicode, unique=True, nullable=False, info={
-        'colanderalchemy': {
-            'title': _('name')
+    id = Column(Integer, primary_key=True,
+                info={'colanderalchemy':
+                      {'widget': HiddenWidget()
         }})
+    name = Column(Unicode, unique=True, nullable=False,
+                  info={'colanderalchemy':
+                        {'title': _('name')}})
     description = Column(Unicode)
-    extent = Column(Geometry("POLYGON", srid=_srid))
+    extent = Column(Geometry("POLYGON", srid=_srid),
+                    info={'colanderalchemy':
+                          {'typ': colander_ext.Geometry('POLYGON', srid=3857, map_srid=3857),
+                           'widget': deform_ext.MapWidget()}})
 
     # functionality
     functionalities = relationship(
@@ -819,7 +833,12 @@ class RestrictionArea(Base):
     ]
 
     id = Column(Integer, primary_key=True)
-    area = Column(Geometry("POLYGON", srid=_srid))
+    area = Column(Geometry("POLYGON", srid=_srid), info={'colanderalchemy': {
+        'typ': colander_ext.Geometry(
+        'POLYGON', srid=3857, map_srid=3857),
+        'widget': deform_ext.MapWidget()
+        }})
+
     name = Column(Unicode)
     description = Column(Unicode)
     readwrite = Column(Boolean, default=False)
