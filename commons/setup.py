@@ -16,7 +16,9 @@ setup(
         "sqlahelper",
         "papyrus",
         'lingua>=2.4',
-    '    babel',
+        'babel',
+        'deform',
+        'pyproj'
     ],
     extras_require={
         'testing': [

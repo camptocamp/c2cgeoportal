@@ -32,9 +32,9 @@ ${BUILD_DIR}/commons.timestamp: ../commons/setup.py
 	${VENV}/bin/pip install -e "../commons"
 	touch ${BUILD_DIR}/commons.timestamp
 
-${BUILD_DIR}/requirements.timestamp: setup.py
+${BUILD_DIR}/requirements.timestamp: setup.py requirements.txt
 	#Install the project in editable mode with its testing requirements.
-	${VENV}/bin/pip install -e  "../../c2cgeoform"
+	${VENV}/bin/pip install -r requirements.txt
 	${VENV}/bin/pip install -e ".[testing]"
 	touch ${BUILD_DIR}/requirements.timestamp
 

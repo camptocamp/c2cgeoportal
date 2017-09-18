@@ -1,0 +1,1 @@
+-e git://github.com/camptocamp/c2cgeoform.git@b2964e1cb941eab7b5c517b0ad2611c90d364942#egg=c2cgeoform
