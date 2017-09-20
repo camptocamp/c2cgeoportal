@@ -66,17 +66,18 @@ you should define two <code class="docutils literal"><span class="pre">OGC</span
 </div>
 <div class="section" id="metadata">
 <span id="administrator-administrate-metadata"></span><h2>Metadata<a class="headerlink" href="#metadata" title="Permalink to this headline">¶</a></h2>
-<p>All the Theme elements can have some Metadata to trigger some features,
-mainly UI features. Attributes:</p>
+<p>You can associate metadata to all theme elements (tree items).
+The purpose of this metadata is to trigger specific features, mainly UI features.
+Each metadata entry has the following attributes:</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">Item</span></code>: the concerned tree item.</li>
-<li><code class="docutils literal"><span class="pre">Name</span></code>: the type of <code class="docutils literal"><span class="pre">Metadata</span></code> we want to set (configured in the <code class="docutils literal"><span class="pre">vars</span></code>
+<li><code class="docutils literal"><span class="pre">Item</span></code>: the tree item the metadata is associated to.</li>
+<li><code class="docutils literal"><span class="pre">Name</span></code>: the type of <code class="docutils literal"><span class="pre">Metadata</span></code> we want to set (the available names are configured in the <code class="docutils literal"><span class="pre">vars</span></code>
 files in <code class="docutils literal"><span class="pre">admin_interface/available_metadata</span></code>).</li>
-<li><code class="docutils literal"><span class="pre">Value</span></code>: the value of the metadata.</li>
-<li><code class="docutils literal"><span class="pre">Descritpion</span></code>: a description.</li>
+<li><code class="docutils literal"><span class="pre">Value</span></code>: the value of the metadata entry.</li>
+<li><code class="docutils literal"><span class="pre">Description</span></code>: a description.</li>
 </ul>
-<p>As the metadata are used by the layers on the client side, you’ll find the effect
-of each metadata in the <a class="reference external" href="https://camptocamp.github.io/ngeo/master/apidoc/gmfThemes.GmfMetaData.html">NGEO documentation</a>.</p>
+<p>To set a metadata entry, create or edit an entry in the Metadata view of the administration UI.
+Regarding effect on the referenced tree item on the client side, you will find a description for each sort of metadata in the <a class="reference external" href="https://camptocamp.github.io/ngeo/master/apidoc/gmfThemes.GmfMetaData.html">NGEO documentation</a>.</p>
 </div>
 <div class="section" id="functionalities">
 <h2>Functionalities<a class="headerlink" href="#functionalities" title="Permalink to this headline">¶</a></h2>
@@ -85,7 +86,7 @@ of each metadata in the <a class="reference external" href="https://camptocamp.g
 <li><code class="docutils literal"><span class="pre">Name</span></code>: the type of Metadata we want to set (configured in the <code class="docutils literal"><span class="pre">vars</span></code>
 files in <code class="docutils literal"><span class="pre">admin_interface/available_functionalities</span></code>).</li>
 <li><code class="docutils literal"><span class="pre">Value</span></code>: the value of the metadata.</li>
-<li><code class="docutils literal"><span class="pre">Descritpion</span></code>: a description.</li>
+<li><code class="docutils literal"><span class="pre">Description</span></code>: a description.</li>
 </ul>
 </div>
 <div class="section" id="layers">
