@@ -128,15 +128,17 @@ from <code class="docutils literal"><span class="pre">&lt;package&gt;/templates/
 </pre></div>
 </div>
 <p>Do the following change in the <code class="docutils literal"><span class="pre">&lt;package&gt;/templates/desktop.html</span></code> file:</p>
-<div class="code diff highlight-default"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="o">%</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">no_redirect</span> <span class="ow">and</span> <span class="n">mobile_url</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-<span class="o">+</span> <span class="o">%</span> <span class="k">if</span> <span class="s2">&quot;no_redirect&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">params</span><span class="p">:</span>
-  <span class="o">&lt;</span><span class="n">script</span><span class="o">&gt;</span>
-      <span class="k">if</span><span class="p">((</span><span class="s1">&#39;ontouchstart&#39;</span> <span class="ow">in</span> <span class="n">window</span><span class="p">)</span> <span class="o">||</span> <span class="n">window</span><span class="o">.</span><span class="n">DocumentTouch</span> <span class="o">&amp;&amp;</span> <span class="n">document</span> <span class="n">instanceof</span> <span class="n">DocumentTouch</span><span class="p">)</span> <span class="p">{</span>
-<span class="o">-</span>         <span class="n">window</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{mobile_url}</span><span class="s2">&quot;</span><span class="p">;</span>
-<span class="o">+</span>         <span class="n">window</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="s2">&quot;${request.route_url(&#39;mobile&#39;, _query=dict(request.GET)) | n}&quot;</span><span class="p">;</span>
-      <span class="p">}</span>
-  <span class="o">&lt;/</span><span class="n">script</span><span class="o">&gt;</span>
-  <span class="o">%</span> <span class="n">endif</span>
+<div class="code diff highlight-default"><div class="highlight"><pre><span></span>- % if not no_redirect and mobile_url is not None:
++ % if &quot;no_redirect&quot; not in request.params:
+  &lt;script&gt;
+-     if ((&#39;ontouchstart&#39; in window) || window.DocumentTouch &amp;&amp; document instanceof DocumentTouch) {
++     var small_screen = window.matchMedia ? window.matchMedia(&#39;(max-width: 1024px)&#39;) : false;
++     if (small_screen &amp;&amp; ((ontouchstart&#39; in window) || window.DocumentTouch &amp;&amp; document instanceof DocumentTouch)) {
+-         window.location = &quot;${mobile_url}&quot;;
++         window.location = &quot;${request.route_url(&#39;mobile&#39;, _query=dict(request.GET)) | n}&quot;;
+      }
+  &lt;/script&gt;
+  % endif
 </pre></div>
 </div>
 <p>The OGC proxy is deprecated because with modern browsers it is not required anymore.
