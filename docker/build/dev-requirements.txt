@@ -18,7 +18,7 @@ fanstatic==0.16
 flake8==3.4.1
 flake8-copyright==0.2.0
 GeoAlchemy2==0.4.0
-geojson==2.2.0
+geojson==2.3.0
 glob2==0.6
 gunicorn==19.7.1
 httplib2==0.10.3
