@@ -34,8 +34,8 @@ you should define two ``OGC servers``. Attributes:
 Metadata
 --------
 
-You can associate metadata to all theme elements (tree items). 
-The purpose of this metadata is to trigger specific features, mainly UI features. 
+You can associate metadata to all theme elements (tree items).
+The purpose of this metadata is to trigger specific features, mainly UI features.
 Each metadata entry has the following attributes:
 
 * ``Item``: the tree item the metadata is associated to.
@@ -45,8 +45,7 @@ Each metadata entry has the following attributes:
 * ``Description``: a description.
 
 To set a metadata entry, create or edit an entry in the Metadata view of the administration UI.
-Regarding effect on the referenced tree item on the client side, you will find a description for each sort of 
-metadata in the `NGEO documentation <https://camptocamp.github.io/ngeo/master/apidoc/gmfThemes.GmfMetaData.html>`_.
+Regarding effect on the referenced tree item on the client side, you will find a description for each sort of metadata in the `NGEO documentation <https://camptocamp.github.io/ngeo/master/apidoc/gmfThemes.GmfMetaData.html>`_.
 
 Functionalities
 ---------------
