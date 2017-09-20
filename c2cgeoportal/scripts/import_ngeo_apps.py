@@ -199,12 +199,13 @@ def main():
                         """<head>
     % if "no_redirect" not in request.params:
             <script>
-                if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
+                var small_screen = window.matchMedia ? window.matchMedia('(max-width: 1024px)') : false;
+                if (small_screen && ((ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch)) {
                     window.location = "${request.route_url('mobile', _query=dict(request.GET)) | n}";
                 }
             </script>
     % endif
-""",
+""",  # noqa: E501
                         data,
                     )
 
@@ -241,13 +242,13 @@ def main():
                 )
             data = _sub(
                 r'<link rel="shortcut icon" href="image/favicon.ico"/>',
-                '<link rel="shortcut icon" href="${request.static_url(\'{{package}}:static-ngeo/images/favicon.ico\')}"/>',  # noqa
+                '<link rel="shortcut icon" href="${request.static_url(\'{{package}}:static-ngeo/images/favicon.ico\')}"/>',  # noqa: E501
                 data,
-            )
+            )  # noqa: E501
             # Styles
             data = _sub(
                 r'    <link rel="stylesheet.*/build/{}.css">'.format(args.interface),
-                r"""    <link rel="stylesheet" href="${{request.static_url('{{{{package}}}}:static-ngeo/build/{interface}.css')}}" type="text/css">""".format(interface=args.interface),  # noqa
+                r"""    <link rel="stylesheet" href="${{request.static_url('{{{{package}}}}:static-ngeo/build/{interface}.css')}}" type="text/css">""".format(interface=args.interface),  # noqa: E501
                 data,
                 count=1,
                 flags=re.DOTALL
@@ -280,7 +281,7 @@ def main():
     </script>
 % else:
     <script src="${{request.static_url('{{{{package}}}}:static-ngeo/build/{interface}.js')}}"></script>
-% endif""".format(interface=args.interface),  # noqa
+% endif""".format(interface=args.interface),  # noqa: E501
                 data,
                 count=1,
                 flags=re.DOTALL
@@ -291,7 +292,7 @@ def main():
                     re.escape('"'),
                     re.escape("></script>"),
                 ),
-                r"""<script src="${request.static_url('%s/\1' % request.registry.settings['node_modules_path'])}"\2></script>""",  # noqa
+                r"""<script src="${request.static_url('%s/\1' % request.registry.settings['node_modules_path'])}"\2></script>""",  # noqa: E501
                 data,
             )
             data = _sub(
@@ -300,7 +301,7 @@ def main():
                     re.escape('"'),
                     re.escape("></script>"),
                 ),
-                r"""<script src="${request.static_url('%s/ngeo/\1' % request.registry.settings['node_modules_path'])}"\2></script>""",  # noqa
+                r"""<script src="${request.static_url('%s/ngeo/\1' % request.registry.settings['node_modules_path'])}"\2></script>""",  # noqa: E501
                 data,
             )
             # i18n
@@ -316,7 +317,7 @@ def main():
             data = _sub(
                 re.escape(r"""
         var angularLocaleScriptUrlElements = urlElements.slice(0, urlElements.length - 3);
-        angularLocaleScriptUrlElements.push('build', 'angular-locale_\{\{locale\}\}.js?cache_version=' + cacheVersion);"""),  # noqa
+        angularLocaleScriptUrlElements.push('build', 'angular-locale_\{\{locale\}\}.js?cache_version=' + cacheVersion);"""),  # noqa: E501
                 "",
                 data,
             )
@@ -386,8 +387,8 @@ ${ ',\\n'.join([
                     required=required,
                 )
             data = _sub(
-                re.escape("module.constant('gmfContextualdatacontentTemplateUrl', window.location.pathname + 'contextualdata.html');"),  # noqa
-                "module.constant('gmfContextualdatacontentTemplateUrl', {{package}}.componentsBaseTemplateUrl + '/contextualdata/contextualdata.html');",  # noqa
+                re.escape("module.constant('gmfContextualdatacontentTemplateUrl', window.location.pathname + 'contextualdata.html');"),  # noqa: E501
+                "module.constant('gmfContextualdatacontentTemplateUrl', {{package}}.componentsBaseTemplateUrl + '/contextualdata/contextualdata.html');",  # noqa: E501
                 data, required=False
             )
             data = _sub(
