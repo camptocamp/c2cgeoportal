@@ -1,7 +1,7 @@
 .. _integrator_editing:
 
-Editing
-=======
+Editing (with CGXP)
+===================
 
 Any c2cgeoportal application comes with an editing interface, available at
 ``/edit`` (assuming ``/`` is the application's root URL).

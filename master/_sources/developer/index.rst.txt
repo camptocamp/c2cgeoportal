@@ -6,7 +6,7 @@ Developer Guide
 
 Write code for the c2cgeoportal involves writing Python code for
 the ``c2cgeoportal`` library, and writing JavaScript code for
-the ``CGXP`` library. Both libraries are hosted on GitHub,
+the ``NGEO`` (or ``CGXP``) library. All these libraries are hosted on GitHub,
 under the *camptocamp* organization.
 
 Content:
@@ -14,15 +14,15 @@ Content:
 .. toctree::
     :maxdepth: 1
 
-    transifex
-    debugging
-    webservices
-    cache
-    principles
-    server_side
-    client_side
     build_release
-    python_packaging
+    cache
+    client_side
+    debugging
     development_procedure
     documentation_infrastructure
     ngeo
+    principles
+    python_packaging
+    server_side
+    transifex
+    webservices
