@@ -151,7 +151,7 @@ vars:
         - name: isExpanded
           type: boolean
         # Layer
-        - name: copy_to # V1
+        - name: copy_to  # V1
         - name: copyable
           type: boolean
         - name: legend
@@ -182,8 +182,9 @@ vars:
         - name: lastUpdateUserColumn
         - name: snappingConfig
           type: json
-        - name: geometry_validation
+        - name: geometry_validation  # V1
           type: boolean
+        - name: excludeProperties  # not yet used
         # WMS
         - name: directedFilterAttributes
           type: list
