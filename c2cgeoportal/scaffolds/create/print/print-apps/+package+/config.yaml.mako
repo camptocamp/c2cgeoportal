@@ -11,10 +11,6 @@ templates:
             debug: !boolean &debug
                 default: false
             legend: !legend &legend {}
-            northArrow: !northArrow &northArrow
-                size: 40
-                default:
-                    graphic: "file:///north.svg"
             map: !map &map
                 maxDpi: 254
                 dpiSuggestions: [254]
@@ -22,6 +18,10 @@ templates:
                     scales: [100, 250, 500, 2500, 5000, 10000, 25000, 50000, 100000, 500000]
                 width: 555
                 height: 675
+            northArrow: !northArrow &northArrow
+                size: 40
+                default:
+                    graphic: "file:///north.svg"
             scalebar: !scalebar &scalebar
                 width: 150
                 height: 20
@@ -72,8 +72,8 @@ templates:
                 - !acceptAll {}
         - !prepareLegend
             template: legend.jrxml
-        - !createNorthArrow {}
         - !createMap {}
+        - !createNorthArrow {}
         - !createScalebar {}
         - !createDataSource
             processors:
@@ -91,11 +91,11 @@ templates:
             comments: *comments
             debug: *debug
             legend: *legend
-            northArrow: *northArrow
             map: !map
                 <<: *map
                 width: 800
                 height: 441
+            northArrow: *northArrow
             scalebar: *scalebar
             datasource: *datasource
         processors: *processors
@@ -107,11 +107,11 @@ templates:
             comments: *comments
             debug: *debug
             legend: *legend
-            northArrow: *northArrow
             map: !map
                <<: *map
                width: 800
                height: 1000
+            northArrow: *northArrow
             scalebar: *scalebar
             datasource: *datasource
         processors: *processors
@@ -123,11 +123,11 @@ templates:
             comments: *comments
             debug: *debug
             legend: *legend
-            northArrow: *northArrow
             map: !map
                 <<: *map
                 width: 1150
                 height: 673
+            northArrow: *northArrow
             scalebar: *scalebar
             datasource: *datasource
         processors: *processors
