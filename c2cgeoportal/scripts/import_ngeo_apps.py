@@ -200,7 +200,7 @@ def main():
     % if "no_redirect" not in request.params:
             <script>
                 var small_screen = window.matchMedia ? window.matchMedia('(max-width: 1024px)') : false;
-                if (small_screen && ((ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch)) {
+                if (small_screen && (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch)) {
                     window.location = "${request.route_url('mobile', _query=dict(request.GET)) | n}";
                 }
             </script>
