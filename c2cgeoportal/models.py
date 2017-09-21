@@ -327,7 +327,6 @@ class Role(Base):
     # functionality
     functionalities = relationship(
         "Functionality", secondary=role_functionality,
-        cascade="save-update,merge,refresh-expire"
     )
 
     def __init__(self, name="", description="", functionalities=None, extent=None):
@@ -536,7 +535,6 @@ class Theme(TreeGroup):
     # functionality
     functionalities = relationship(
         "Functionality", secondary=theme_functionality,
-        cascade="save-update,merge,refresh-expire"
     )
 
     # restricted to role

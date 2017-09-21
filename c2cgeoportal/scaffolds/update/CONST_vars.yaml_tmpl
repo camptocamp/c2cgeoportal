@@ -182,8 +182,9 @@ vars:
         - name: lastUpdateUserColumn
         - name: snappingConfig
           type: json
-        - name: geometryValidation
+        - name: geometryValidation  # V1
           type: boolean
+        - name: excludeProperties  # not yet used
         # WMS
         - name: directedFilterAttributes
           type: list

@@ -105,7 +105,9 @@ Do the following change in the ``<package>/templates/desktop.html`` file:
    - ${'%'} if not no_redirect and mobile_url is not None:
    + ${'%'} if "no_redirect" not in request.params:
      <script>
-         if(('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
+   -     if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
+   +     var small_screen = window.matchMedia ? window.matchMedia('(max-width: 1024px)') : false;
+   +     if (small_screen && ((ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch)) {
    -         window.location = "${'$'}{mobile_url}";
    +         window.location = "${'$'}{request.route_url('mobile', _query=dict(request.GET)) | n}";
          }
