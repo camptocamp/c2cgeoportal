@@ -44,13 +44,10 @@ def dbsession(request):
     session_factory = get_session_factory(engine)
     session = get_tm_session(session_factory, transaction.manager)
 
-    import pydevd
-    pydevd.settrace()
-
     return session
 
 
-class BaseTest(unittest.TestCase):
+class BaseTest:
     def setUp(self):
         '''
         self.config = testing.setUp(settings={
@@ -95,3 +92,4 @@ class TestUser(BaseTest):
     def test_all_users(self, dbsession):
         from c2cgeoportal_commons.models.main import User
         dbsession.query(User).all()
+        pass
