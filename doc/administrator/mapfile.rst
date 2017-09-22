@@ -344,8 +344,8 @@ interface with for instance the following value for the given role:
 
 .. note::
 
-   We also be able to use the ``role_id`` and ``user_id`` as
-   variable substitution, but they are not avalable for cached query like:
+   We are also able to use the ``role_id`` and ``user_id`` as
+   variable substitution, but they are not available for cached query like:
    ``GetCapabilities``, ``GetLegendGraphic``, ``DescribeFeatureType``.
 
 `MapServer documentation <http://mapserver.org/cgi/runsub.html>`_
