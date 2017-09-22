@@ -5,9 +5,12 @@
 git clone git@github.com:camptocamp/c2cgeoportal.git
 cd admin
 
-## Create virtual environment
+## Build the app
 
-make install
+Install the virtual env, build the app:
+```
+make build
+```
 
 ## Set up the database
 
