@@ -10,4 +10,3 @@ def settings(request):
         'parent_schema': '',
         'srid': 3857
     }
-

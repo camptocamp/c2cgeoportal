@@ -22,4 +22,3 @@ class TestRole():
         from c2cgeoportal_commons.models.main import User
         users = dbsession.query(User).all()
         assert len(users) == 0, "querying for users"
-
