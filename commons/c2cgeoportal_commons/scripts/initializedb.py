@@ -5,7 +5,7 @@ import transaction
 from pyramid.paster import (
     get_appsettings,
     setup_logging,
-    )
+)
 
 from pyramid.scripts.common import parse_vars
 
@@ -14,8 +14,8 @@ from ..models import (
     get_engine,
     get_session_factory,
     get_tm_session,
-    generate_mappers
-    )
+    generate_mappers,
+)
 
 def usage(argv):
     cmd = os.path.basename(argv[0])
