@@ -1,8 +1,8 @@
 BUILD_DIR?=.build
 VENV?=${BUILD_DIR}/venv
 
-.PHONY: install
-install: ${BUILD_DIR}/venv.timestamp \
+.PHONY: buid
+build: ${BUILD_DIR}/venv.timestamp \
 	${BUILD_DIR}/commons.timestamp \
 	${BUILD_DIR}/requirements.timestamp
 
