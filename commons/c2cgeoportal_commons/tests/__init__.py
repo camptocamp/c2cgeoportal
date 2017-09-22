@@ -44,9 +44,6 @@ def dbsession(request):
     session_factory = get_session_factory(engine)
     session = get_tm_session(session_factory, transaction.manager)
 
-    import pydevd
-    pydevd.settrace()
-
     return session
 
 
@@ -90,7 +87,7 @@ def test_import(dbsession):
 
 
 @pytest.mark.usefixtures("dbsession")
-class TestUser(BaseTest):
+class TestUser():
 
     def test_all_users(self, dbsession):
         from c2cgeoportal_commons.models.main import User
