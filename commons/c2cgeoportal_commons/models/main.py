@@ -63,7 +63,7 @@ except:  # pragma: no cover
 
 from . import schema, parentschema, srid
 #from c2cgeoportal.lib import caching
-from .sqlalchemy_ import JSONEncodedDict
+from .sqlalchemy import JSONEncodedDict
 
 __all__ = [
     "Base", "DBSession", "Functionality", "User", "Role", "TreeItem",
