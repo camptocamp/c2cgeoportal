@@ -26,14 +26,14 @@ ${BUILD_DIR}/venv.timestamp:
 	python3 -m venv ${VENV}
 	#Upgrade packaging tools.
 	${VENV}/bin/pip install --upgrade pip setuptools
-	touch ${BUILD_DIR}/venv.timestamp
+	touch $@
 
 ${BUILD_DIR}/commons.timestamp: ../commons/setup.py
 	${VENV}/bin/pip install -e "../commons"
-	touch ${BUILD_DIR}/commons.timestamp
+	touch $@
 
 ${BUILD_DIR}/requirements.timestamp: setup.py
 	#Install the project in editable mode with its testing requirements.
 	${VENV}/bin/pip install -e ".[testing]"
-	touch ${BUILD_DIR}/requirements.timestamp
+	touch $@
 
