@@ -2,7 +2,7 @@
 
 ## Checkout
 
-git clone git@github.com:camptocamp/c2cgeoportal.git
+git clone --recursive git@github.com:camptocamp/c2cgeoportal.git
 cd admin
 
 ## Build the app
