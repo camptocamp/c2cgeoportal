@@ -83,7 +83,8 @@ class DimensionInformation:
 
         dimensions = {}
         for dimension in layer.dimensions:
-            if dimension.value is not None and not self.URL_PART_RE.match(dimension.value):  # pragma: nocover
+            if not isinstance(layer, LayerWMS) and dimension.value is not None and \
+                    not self.URL_PART_RE.match(dimension.value):
                 errors.add(u"The layer '{}' has an unsupported dimension value '{}' ('{}').".format(
                     layer.name, dimension.value, dimension.name
                 ))
