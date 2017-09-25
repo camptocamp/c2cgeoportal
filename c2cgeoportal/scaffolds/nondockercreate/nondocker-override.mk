@@ -18,7 +18,22 @@ CONF_FILES_MAKO = $(shell ls -1 apache/*.conf.mako 2> /dev/null)
 CONF_FILES_JINJA = $(shell ls -1 apache/*.conf.jinja 2> /dev/null)
 CONF_FILES += $(shell ls -1 apache/*.conf 2> /dev/null) $(CONF_FILES_MAKO:.mako=) $(CONF_FILES_JINJA:.jinja=)
 
+TILECLOUD_CHAIN ?= TRUE
+ifeq ($(TILECLOUD_CHAIN), TRUE)
+CONF_FILES += apache/tiles.conf apache/mapcache.xml
+DEFAULT_BUILD_RULES += apache/tiles.conf
+endif
+
 include CONST_Makefile
+
+# Tile cloud chain
+apache/mapcache.xml: tilegeneration/config.yaml
+	$(PRERULE_CMD)
+	generate_controller --generate-mapcache-config
+
+apache/tiles.conf: tilegeneration/config.yaml apache/mapcache.xml
+	$(PRERULE_CMD)
+	generate_controller --generate-apache-config
 
 /build/print-docker.timestamp:
 	$(PRERULE_CMD)

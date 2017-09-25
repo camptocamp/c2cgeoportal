@@ -7,6 +7,7 @@ export SRID=21781 EXTENT=489246.36,78873.44,837119.76,296543.14
     --ignore-conflicting-name --package-name testgeomapfish > /dev/null
 ./docker-run pcreate --scaffold=c2cgeoportal_update /tmp/travis/testgeomapfish \
     --ignore-conflicting-name --package-name testgeomapfish > /dev/null # on create
+./docker-run pcreate --scaffold=tilecloud_chain /tmp/travis/testgeomapfish
 
 # Copy files for travis build and tests
 cp travis/build.mk /tmp/travis/testgeomapfish/travis.mk
