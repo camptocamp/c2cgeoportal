@@ -41,5 +41,5 @@ ARG GIT_HASH
 ENV GIT_HASH=$GIT_HASH
 
 RUN python setup.py install && \
-    /c2cwsgiutils/c2cwsgiutils_genversion.py $GIT_HASH
-    #flake8 acceptance_tests c2cgeoportal_admin *.py
+    /c2cwsgiutils/c2cwsgiutils_genversion.py $GIT_HASH && \
+    flake8 acceptance_tests c2cgeoportal_admin *.py
