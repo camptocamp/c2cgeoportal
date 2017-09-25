@@ -59,20 +59,7 @@ def main():
         print(docker_ignore_path)
 
         with open(docker_ignore_path) as f:
-            lines = []
-            for line in f.read().splitlines():
-                if line == "":
-                    continue
-                if line == "*":
-                    lines.append("*")
-                    continue
-                if line[0] == "!":
-                    lines.append("!/" + line[1:])
-                    lines.append("!/" + line[1:] + "/**")
-                else:
-                    lines.append("/" + line)
-                    lines.append("/" + line + "/**")
-            ignores = zgitignore.ZgitIgnore(lines)
+            ignores = zgitignore.ZgitIgnore(f.read().splitlines(), docker=True)
     else:
         ignores = zgitignore.ZgitIgnore([])
 
@@ -87,7 +74,7 @@ def main():
             for pattern, replacement in replaces:
                 filename = pattern.sub(replacement, filename)
             file_path = os.path.join(dir_path, filename)
-            if not ignores.is_ignored(file_path[len(path):]):
+            if not ignores.is_ignored(file_path[len(path):], check_parents=True):
                 print(file_path)
 
 
