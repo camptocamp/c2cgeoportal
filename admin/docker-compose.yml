@@ -20,7 +20,7 @@ services:
       GUNICORN_PARAMS: '-b :80 --threads 10 --timeout 60 --reload' # only one process in order to get consistent stats
     volumes:
       # overriding code from image for debugging purposes, also with above reload option:
-      - .:/app:ro
+      - .:/app
     links:
       - db
       - db:db_slave

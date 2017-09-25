@@ -20,6 +20,7 @@ COPY commons /commons
 
 # temporary:
 COPY c2cgeoform /c2cgeoform
+COPY c2cgeoform/.* /c2cgeoform/
 
 RUN pip install --no-cache-dir -r requirements.txt
 
