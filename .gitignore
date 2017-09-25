@@ -2,10 +2,10 @@
 *.pyc
 *.pyo
 /c2cgeoportal/static/build/
-/c2cgeoportal/tests/functional/test.ini
-/c2cgeoportal/tests/functional/alembic.ini
-/c2cgeoportal/tests/functional/alembic_static.ini
-/c2cgeoportal/tests/testegg/production.ini
+/tests/functional/test.ini
+/tests/functional/alembic.ini
+/tests/functional/alembic_static.ini
+/tests/testegg/production.ini
 /c2cgeoportal/locale/c2cgeoportal.pot
 /c2cgeoportal/locale/*/LC_MESSAGES/c2cgeoportal.po
 /c2cgeoportal/locale/*/LC_MESSAGES/c2cgeoportal.mo
@@ -21,6 +21,7 @@
 /c2cgeoportal/scaffolds/create/+package+/static-ngeo/components/
 /c2cgeoportal/scaffolds/update/package.json_tmpl
 /c2cgeoportal/scaffolds/update/CONST_create_template/
+/c2cgeoportal/scaffolds/nondockerupdate/CONST_create_template/
 /c2cgeoportal/version.py
 /c2cgeoportal.egg-info
 /docker/test-mapserver/mapserver.map
@@ -34,10 +35,10 @@
 /doc/integrator/print.rst
 /doc/integrator/upgrade_application.rst
 /dist/
-/.coverage
 /coverage.xml
-/.tx/config
 /gatling/.classpath
 /gatling/.project
 /gatling/.cache-main
-SUCCESS
+/SUCCESS
+/.coverage
+/.tx/config

@@ -82,16 +82,21 @@ class CheckerCollector:  # pragma: no cover
         )
 
     def _testurl(self, url):
-        url, headers = build_url("Collect", url, self.request)
+        try:
+            url, headers = build_url("Collect", url, self.request)
 
-        h = Http()
-        resp, content = h.request(url, headers=headers)
-        content = content.decode("utf-8")
+            h = Http()
+            resp, content = h.request(url, headers=headers)
+            content = content.decode("utf-8")
 
-        if resp.status != http.client.OK:
-            self.status_int = max(self.status_int, resp.status)
-            return '<span style="color: red;">{0:d} - {1!s}</span>'.format(
-                resp.status, resp.reason
+            if resp.status != http.client.OK:
+                self.status_int = max(self.status_int, resp.status)
+                return '<span style="color: red;">{0:d} - {1!s}</span>'.format(
+                    resp.status, resp.reason
+                ), content
+
+            return '<span style="color: green;">{0!s}</span>'.format(content), None
+        except Exception as e:
+            return '<span style="color: red;">Error on URL {0:d}: {1!s}</span>'.format(
+                url, e
             ), content
-
-        return '<span style="color: green;">{0!s}</span>'.format(content), None

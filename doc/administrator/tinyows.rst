@@ -16,8 +16,8 @@ there will already be a default Apache configuration file for TinyOWS under the
 location ``apache/tinyows.conf.mako``. Uncomment the lines in this file to
 enable TinyOWS::
 
-    ScriptAlias /${instanceid}/tinyows /usr/lib/cgi-bin/tinyows
-    <Location /${instanceid}/tinyows>
+    ScriptAlias /tinyows /usr/lib/cgi-bin/tinyows
+    <Location /tinyows>
       SetEnv TINYOWS_CONFIG_FILE ${directory}/mapserver/tinyows.xml
 
       # restrict access to localhost so that all requests go through the proxy
@@ -39,7 +39,7 @@ The configuration of TinyOWS is made in a XML file, which is located at
 ``mapserver/tinyows.xml.mako``::
 
     <tinyows
-        online_resource="http://${host}/${instanceid}/wsgi/tinyows_proxy"
+        online_resource="http://${host}/wsgi/tinyows_proxy"
         schema_dir="/usr/share/tinyows/schema/"
         log="tinyows.log"
         log_level="1"
@@ -76,7 +76,7 @@ The configuration of TinyOWS is made in a XML file, which is located at
 In the root element ``tinyows`` the following properties have to be set:
 
 1. ``online_resource`` - This should be the URL to the TinyOWS proxy, usually
-   ``http://${host}/${instanceid}/wsgi/tinyows_proxy``.
+   ``http://${host}/wsgi/tinyows_proxy``.
 2. ``schema_dir`` - The path to the TinyOWS schema directory. Adapt this path
    according to your installation.
 3. ``log`` - Path to the TinyOWS log file. This file must be writable.
@@ -135,6 +135,6 @@ Editing a layer with WFS-T
 
 The configured layers can now be edited using your favorite GIS supporting
 WFS-T. For example in QGIS add a new WFS layer with the URL
-``http://${host}/${instanceid}/wsgi/tinyows_proxy`` (e.g.
+``http://${host}/wsgi/tinyows_proxy`` (e.g.
 ``http://geomapfish.demo-camptocamp.com/demo/wsgi/tinyows_proxy``). For the
 authentication use your c2cgeoportal account details.

@@ -1,0 +1,25 @@
+#!/usr/bin/env python3
+
+import getpass
+import os
+import sys
+import json
+import subprocess
+import urllib.parse
+
+os.environ["USER_NAME"] = getpass.getuser()
+os.environ["USER_ID"] = str(os.getuid())
+os.environ["GROUP_ID"] = str(os.getgid())
+os.environ["RUN"] = urllib.parse.quote(json.dumps(sys.argv[1:]))
+
+if os.path.exists("SUCCESS"):
+    os.remove("SUCCESS")
+
+subprocess.check_call([
+    "docker-compose", "--file", "docker-compose-build.yaml", "up", "--abort-on-container-exit"
+])
+
+if os.path.exists("SUCCESS"):
+    os.remove("SUCCESS")
+else:
+    exit(2)

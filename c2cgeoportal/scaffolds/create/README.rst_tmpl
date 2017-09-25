@@ -17,6 +17,6 @@ Build
 
   cd {{project}}
 
-  make -f <user>.mk build
+  make build
 
 .. Feel free to add project-specific things.

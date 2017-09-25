@@ -57,7 +57,6 @@ class BaseTemplate(Template):  # pragma: no cover
         """
 
         self._get_vars(vars_, "package", "Get a package name: ")
-        self._get_vars(vars_, "apache_vhost", "The Apache vhost name: ")
         self._get_vars(
             vars_, "srid",
             "Spatial Reference System Identifier (e.g. 21781): ", int,
@@ -93,6 +92,8 @@ class BaseTemplate(Template):  # pragma: no cover
             package_logger = "app"
         vars_["package_logger"] = package_logger
 
+        vars_["geomapfish_version"] = os.environ.get("TRAVIS_TAG", "latest")
+
         return ret
 
     @staticmethod
@@ -105,7 +106,7 @@ class BaseTemplate(Template):  # pragma: no cover
         Set an attribute in the vars dict.
         """
 
-        if name.upper() in os.environ:
+        if name.upper() in os.environ and os.environ[name.upper()] != "":
             value = os.environ[name.upper()]
         else:
             value = vars_.get(name)
@@ -113,7 +114,7 @@ class BaseTemplate(Template):  # pragma: no cover
         if value is None:
             value = input_(prompt).strip()
 
-        if type_ is not None:
+        if type_ is not None and not isinstance(value, type_):
             try:
                 type_(value)
             except ValueError:
@@ -156,14 +157,14 @@ class TemplateCreate(BaseTemplate):  # pragma: no cover
         """
 
         if os.name == 'posix':
-            for file in ("post-restore-code", "pre-restore-database.mako"):
-                dest = os.path.join(output_dir, "deploy/hooks", file)
+            for file_ in ("docker-run", "docker-compose-run", "gunicorn-run"):
+                dest = os.path.join(output_dir, file_)
                 subprocess.check_call(["chmod", "+x", dest])
 
         self.out("\nContinue with:")
         self.out(colorize(
-            ".build/venv/bin/pcreate -s c2cgeoportal_update ../{vars[project]} "
-            "package={vars[package]} srid={vars[srid]} extent={vars[extent]}".format(vars=vars_),
+            "SRID={vars[srid]} EXTENT={vars[extent]} ./docker-run pcreate --scaffold c2cgeoportal_update "
+            "--ignore-conflicting-name --package-name {vars[package]} ../{vars[project]}".format(vars=vars_),
             GREEN
         ))
 
@@ -174,18 +175,19 @@ class TemplateUpdate(BaseTemplate):  # pragma: no cover
     _template_dir = "update"
     summary = "Template used to update a c2cgeoportal project"
 
-    def pre(self, command, output_dir, vars_):
-        """
-        Overrides the base template
-        """
-
+    def open_project(self, vars_):
         if os.path.exists("project.yaml"):
             with open("project.yaml", "r") as f:
                 project = yaml.safe_load(f)
                 if "template_vars" in project:
                     for key, value in list(project["template_vars"].items()):
-                        vars_[key] = "{}".format(value)
+                        vars_[key] = value
 
+    def pre(self, command, output_dir, vars_):
+        """
+        Overrides the base template
+        """
+        self.open_project(vars_)
         return BaseTemplate.pre(self, command, output_dir, vars_)
 
     def post(self, command, output_dir, vars_):
@@ -195,8 +197,51 @@ class TemplateUpdate(BaseTemplate):  # pragma: no cover
         """
 
         if os.name == 'posix':
-            dest = os.path.join(output_dir, ".whiskey/action_hooks/pre-build.mako")
-            subprocess.check_call(["chmod", "+x", dest])
+            for file_ in ("docker-run", "docker-compose-run", "gunicorn-run"):
+                dest = os.path.join(output_dir, "CONST_create_template", file_)
+                subprocess.check_call(["chmod", "+x", dest])
         self.out(colorize("\nWelcome to c2cgeoportal!", GREEN))
+
+        return BaseTemplate.post(self, command, output_dir, vars_)
+
+
+class TemplateNondockerCreate(TemplateCreate):  # pragma: no cover
+    _template_dir = "nondockercreate"
+    summary = "Template used to create a non Docker c2cgeoportal project"
+
+    def pre(self, command, output_dir, vars_):
+        self._get_vars(vars_, "apache_vhost", "The Apache vhost name: ")
+        return super().pre(command, output_dir, vars_)
+
+    def post(self, command, output_dir, vars_):
+        if os.name == 'posix':
+            for file_ in (
+                "get-pip-dependencies",
+                "deploy/hooks/post-restore-code",
+                "deploy/hooks/pre-restore-database.mako"
+            ):
+                dest = os.path.join(output_dir, file_)
+                subprocess.check_call(["chmod", "+x", dest])
+        return super().post(command, output_dir, vars_)
+
+
+class TemplateNondockerUpdate(TemplateUpdate):  # pragma: no cover
+    _template_dir = "nondockerupdate"
+    summary = "Template used to update a non Docker c2cgeoportal project"
+
+    def pre(self, command, output_dir, vars_):
+        self.open_project(vars_)
+        self._get_vars(vars_, "apache_vhost", "The Apache vhost name: ")
+        return BaseTemplate.pre(self, command, output_dir, vars_)
+
+    def post(self, command, output_dir, vars_):
+        if os.name == 'posix':
+            for file_ in (
+                "get-pip-dependencies",
+                "deploy/hooks/post-restore-code",
+                "deploy/hooks/pre-restore-database.mako"
+            ):
+                dest = os.path.join(output_dir, "CONST_create_template", file_)
+                subprocess.check_call(["chmod", "+x", dest])
 
         return BaseTemplate.post(self, command, output_dir, vars_)

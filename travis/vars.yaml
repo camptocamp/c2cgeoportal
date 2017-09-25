@@ -1,18 +1,9 @@
-extends: vars_testgeomapfish.yaml
+extends: vars.yaml
 
 vars:
-    host: localhost
-    db: geomapfish_test
-
-    authorized_referers:
-    - http://127.0.0.1/{instanceid}
-    - https://127.0.0.1/{instanceid}
-    - http://localhost/{instanceid}
-    - https://localhost/{instanceid}
-
     dbsessions:
         travis_test:
-            url: postgresql://{dbuser}:{dbpassword}@{dbhost}:5433/test
+            url: postgresql://{dbuser}:{dbpassword}@external-db:5432/test
 
     layers:
         enum:
@@ -32,7 +23,6 @@ vars:
         disabled: [checker_pdf3, checker_fts]
 
 update_paths:
-- authorized_referers
 - layers
 - checker.defaults
 - checker.all

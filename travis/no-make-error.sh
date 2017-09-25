@@ -1,21 +1,22 @@
-#!/bin/bash -x
+#!/usr/bin/env python3
 
-cd $1
-shift
+import time
+import sys
+import re
+import subprocess
 
-make $* > /dev/null 2> make-err
+p = subprocess.Popen(["make"] + sys.argv[1:], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+while p.returncode == None:
+    time.sleep(0.2)
+    p.poll()
 
-RESULT=$(cat make-err)
+lines = p.stderr.read().decode("utf-8").split("\n")
+lines = [l for l in lines if l != ""]
+lines = [l for l in lines if " warning: overriding recipe for target " not in l]
+lines = [l for l in lines if " warning: ignoring old recipe for target " not in l]
 
-rm make-err --force
-
-if [ "${RESULT}" != "" ] \
-    && [ "${RESULT}" != "AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 127.0.0.1. Set the 'ServerName' directive globally to suppress this message" ] \
-    && [ "${RESULT}" != "AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 127.0.1.1. Set the 'ServerName' directive globally to suppress this message" ]
-then
-    echo There is some error output in the make
-    make $* > /dev/null
-    cd - > /dev/null
-    exit 1
-fi
-cd - > /dev/null
+if p.returncode > 0 or len(lines) > 0:
+    print("There is some error output in the make, code: {}\nerror:\n{}\n---".format(
+        p.returncode, "\n".join(lines)))
+    subprocess.call(["make"] + sys.argv[1:])
+    exit(2)

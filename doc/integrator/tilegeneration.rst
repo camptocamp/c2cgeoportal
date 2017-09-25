@@ -77,13 +77,13 @@ Initialization
 
   .. prompt:: bash
 
-     make -f <user>.mk build
+     make build
 
 * Install the base template template:
 
   .. prompt:: bash
 
-    .build/venv/bin/pcreate --interactive -s tilecloud_chain ../<project> package=<package>
+    ./docker-run pcreate --interactive -s tilecloud_chain ../<project> package=<package>
 
 * In the ``<prokect>.mk`` activate the tile generation:
 
@@ -138,7 +138,7 @@ The main thing to do is to:
 
   .. prompt:: bash
 
-     .build/venv/bin/generate_tiles --get-hash <max-zoom>/0/0 --layer <layer>
+     ./docker-run generate_tiles --get-hash <max-zoom>/0/0 --layer <layer>
 
   We consider that the first tile of the max zoom is empty.
   Than copy past the result in the layer config.
@@ -147,13 +147,13 @@ The main thing to do is to:
 
   .. prompt:: bash
 
-     .build/venv/bin/generate_controller --generate_wmts_capabilities
+     ./docker-run generate_controller --generate_wmts_capabilities
 
 * And an OpenLayers test page:
 
   .. prompt:: bash
 
-     .build/venv/bin/generate_controller --openlayers-test
+     ./docker-run generate_controller --openlayers-test
 
 If you generate the tiles locally you do not need all the configuration
 variables, because many of them in the ``generation`` part are for
@@ -167,26 +167,26 @@ see help:
 
 .. prompt:: bash
 
-    .build/venv/bin/generate_tiles --help
+    ./docker-run generate_tiles --help
 
 one to generate the tiles using AWS, see help:
 
 .. prompt:: bash
 
-    .build/venv/bin/generate_controller --help
+    ./docker-run generate_controller --help
 
 Before start a tile generation on S3 measure the cost:
 
 .. prompt:: bash
 
-    .build/venv/bin/generate_controller --cost
+    ./docker-run generate_controller --cost
 
 If you setup all the default options you can generate the tiles by
 using the command:
 
 .. prompt:: bash
 
-    .build/venv/bin/generate_tiles
+    ./docker-run generate_tiles
 
 .. note:: Make sure you export AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY:
 

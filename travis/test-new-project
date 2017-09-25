@@ -1,48 +1,61 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+# Copyright (c) 2011-2017, Camptocamp SA
+# All rights reserved.
+
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+
+# 1. Redistributions of source code must retain the above copyright notice, this
+#    list of conditions and the following disclaimer.
+# 2. Redistributions in binary form must reproduce the above copyright notice,
+#    this list of conditions and the following disclaimer in the documentation
+#    and/or other materials provided with the distribution.
+
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+# ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# The views and conclusions contained in the software and documentation are those
+# of the authors and should not be interpreted as representing official policies,
+# either expressed or implied, of the FreeBSD Project.
 
 import sys
 import json
-import os.path
 import subprocess
-from subprocess import check_output
 
 initial_error_length = 0
 initial_access_length = 0
-if os.path.exists("/var/log/apache2/error.log"):
-    with open("/var/log/apache2/error.log") as f:
-        initial_error_length = len(f.read().split("\n"))
-if os.path.exists("/var/log/apache2/access.log"):
-    with open("/var/log/apache2/access.log") as f:
-        initial_access_length = len(f.read().split("\n"))
 
-curl_args = ["--connect-timeout", "1", "--max-time", "120", "--retry", "5", "--silent"]
+curl_args = ["--connect-timeout", "1", "--max-time", "120", "--retry", "2"]
 
-url = "http://localhost/travis/{}".format(sys.argv[1])
+url = sys.argv[1]
 
 try:
     status_code = subprocess.check_output(
-        ["curl", "--write-out", "%{http_code}"] + curl_args + ["--output", "/dev/null", url]
-    )
+        ["curl", "--write-out", "%{http_code}"] + curl_args + ["--silent", "--output", "/dev/null", url]
+    ).decode("utf-8")
 except subprocess.CalledProcessError as e:
     print("Exception on curl call: {}".format(e))
 
-    if os.path.exists("/var/log/apache2/error.log"):
-        with open("/var/log/apache2/error.log") as f:
-            print("ERRORS:")
-            print("\n".join(f.read().split('\n')[initial_error_length:]))
-    if os.path.exists("/var/log/apache2/access.log"):
-        with open("/var/log/apache2/access.log") as f:
-            print("ACCESS:")
-            print("\n".join(f.read().split('\n')[initial_access_length:]))
     print("RESULT:")
-    print(subprocess.check_output(["curl"] + curl_args + [url]))
-    exit(1)
+    sys.stdout.flush()
+    subprocess.call(["curl"] + curl_args + ["--verbose", url])
+    exit(2)
 
 if status_code == "200":
-    if len(sys.argv) == 4 and sys.argv[3] == "enum":
+    if len(sys.argv) == 3 and sys.argv[2] == "enum":
         result = subprocess.check_output(
-            ["curl", "--write-out", "%{http_code}"] + curl_args + [url]
-        )
+            ["curl"] + curl_args + [url]
+        ).decode("utf-8")
         if json.loads(result) == {
             "items": [{
                 "label": "car",
@@ -56,21 +69,14 @@ if status_code == "200":
             exit()
         else:
             print("Incorrect result:")
-            print("$RESULT")
+            print(result)
             exit(2)
     print("OK")
     exit()
 else:
     print("Bad status code {}".format(status_code))
 
-    if os.path.exists("/var/log/apache2/error.log"):
-        with open("/var/log/apache2/error.log") as f:
-            print("ERRORS:")
-            print("\n".join(f.read().split('\n')[initial_error_length:]))
-    if os.path.exists("/var/log/apache2/access.log"):
-        with open("/var/log/apache2/access.log") as f:
-            print("ACCESS:")
-            print("\n".join(f.read().split('\n')[initial_access_length:]))
     print("RESULT:")
-    print(subprocess.check_output(["curl"] + curl_args + [url]))
+    sys.stdout.flush()
+    subprocess.call(["curl"] + curl_args + ["--verbose", url])
     exit(2)

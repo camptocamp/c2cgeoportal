@@ -1,8 +1,9 @@
 #!/bin/bash -ex
 
-export VERSION=$(python setup.py --version)
-
 cd /tmp/travis/testgeomapfish/
 
-make -f travis.mk upgrade1
-make -f travis.mk upgrade2
+#./docker-run make -f travis.mk upgrade
+#for STEP in {1..13}:
+#do
+#    ./docker-run make -f travis.mk upgrade${STEP}
+#done

@@ -30,9 +30,6 @@ mapping:
             schema:
                 type: str
                 required: True
-            parentschema:
-                type: str
-                required: True
 
             dbsessions:
                 type: map
@@ -210,8 +207,6 @@ mapping:
                         required: True
                         sequence:
                         -   type: str
-            external_themes_url:
-                type: str
             mapserverproxy:
                 type: map
                 required: True

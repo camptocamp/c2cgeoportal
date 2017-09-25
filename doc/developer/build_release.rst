@@ -48,14 +48,16 @@ For each version we create a new branch (at the latest at the final release):
     git push origin <version>
 
 Change the version in the following files:
- * Makefile (VERSION)
- * Dockerfile
+ * ``.travis.yml`` (deploy branches)
+ * ``Makefile`` (``VERSION``)
+ * ``Dockerfile`` (in ``FROM`` and ngeo package)
+ * ``travis/git-modif``
 
 Commit your changes:
 
 .. prompt:: bash
 
-    git add Makefile Dockerfile
+    git add .travis.yml Makefile Dockerfile travis/git-modif
     git commit -m "Create the version <version> branch"
 
 Go back to the master branch:
@@ -132,19 +134,19 @@ When a new release or a new version is done you should do the following tasks:
 
      .. prompt:: bash
 
-        .build/venv/bin/alembic \
-            --config c2cgeoportal/tests/functional/alembic.ini \
+        ./docker-compose-run alembic \
+            --config tests/functional/alembic.ini \
             heads
-        .build/venv/bin/alembic \
-            --config c2cgeoportal/tests/functional/alembic_static.ini \
+        ./docker-compose-run alembic \
+            --config tests/functional/alembic_static.ini \
             heads
 
      If yes create the merge with:
 
      .. prompt:: bash
 
-        .build/venv/bin/alembic \
-            --config c2cgeoportal/tests/functional/alembic[_static].ini \
+        ./docker-compose-run alembic \
+            --config tests/functional/alembic[_static].ini \
             merge --message "Merge <src> and <dst> branches" \
             <rev 1> <rev 2>
 

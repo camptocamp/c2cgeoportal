@@ -14,7 +14,7 @@
 #
 
 MAP
-    NAME "geoportal"
+    NAME "{{package}}"
 
     # For Windows users: uncomment this line and adapt it to your
     # own mapserver's nad folder (use regular slash "/")
@@ -70,7 +70,7 @@ MAP
         METADATA
             "wms_title" "changeme"
             "wms_abstract" "changeme"
-            "wms_onlineresource" "http://${host}/${instanceid}/wsgi/mapserv_proxy"
+            "wms_onlineresource" "http://${host}${entry_point}/mapserv_proxy"
             "wms_srs" "EPSG:{{srid}}"
             "wms_encoding" "UTF-8"
             "wms_enable_request" "*"

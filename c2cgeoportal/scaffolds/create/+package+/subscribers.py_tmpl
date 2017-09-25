@@ -11,6 +11,7 @@ def add_renderer_globals(event):
         event["_"] = request.translate
         event["localizer"] = request.localizer
 
+
 # use two translator to translate each strings in Make
 tsf1 = TranslationStringFactory("{{package}}-server")
 tsf2 = TranslationStringFactory("c2cgeoportal")

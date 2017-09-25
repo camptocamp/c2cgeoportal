@@ -1,6 +1,4 @@
 include *.txt *.ini *.cfg *.rst
 recursive-include c2cgeoportal *.png *.html *.mo
 recursive-include c2cgeoportal/scaffolds *
-exclude .build
-prune c2cgeoportal/tests
 prune c2cgeoportal/static/examples

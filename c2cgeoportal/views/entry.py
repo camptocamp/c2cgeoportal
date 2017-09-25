@@ -1096,58 +1096,6 @@ class Entry:
         except:  # pragma: no cover
             return get_capabilities_xml, errors
 
-    def _external_themes(self, interface):  # pragma nocover
-        if not (
-            "external_themes_url" in self.settings and
-            self.settings["external_themes_url"]
-        ):
-            return None, set()
-
-        role_id = None
-        if self.request.user is not None and \
-                hasattr(self.request.user, "parent_role") and \
-                self.request.user.parent_role is not None:
-            role_id = str(self.request.user.parent_role.id)
-
-        return self._external_themes_role(interface, role_id)
-
-    @cache_region.cache_on_arguments()
-    def _external_themes_role(self, interface, role_id):  # pragma nocover
-        errors = set()
-
-        ext_url = self.settings["external_themes_url"]
-        url_params = {
-            "interface": interface
-        }
-
-        if ext_url[-1] not in ("?", "&"):
-            ext_url += "?"
-        ext_url += "&".join([
-            "=".join(p) for p in list(url_params.items())
-        ])
-
-        # forward request to target (without Host Header)
-        http = httplib2.Http()
-        headers = dict(self.request.headers)
-        if urllib.parse.urlsplit(ext_url).hostname != "localhost" and "Host" in headers:  # pragma: no cover
-            headers.pop("Host")
-
-        try:
-            resp, content = http.request(ext_url, method="GET", headers=headers)
-        except:
-            errors.add(
-                "Unable to get external themes from url {0!s}".format(ext_url)
-            )
-            return None, errors
-
-        if resp.status < 200 or resp.status >= 300:
-            errors.add("Get external themes from url {0!s} return the error: {1:d} {2!s}".format(
-                ext_url, resp.status, resp.reason
-            ))
-            return None, errors
-
-        return content, errors
-
     def _functionality(self):
         return self._functionality_cached(
             self.request.user.role.name if self.request.user is not None else None
@@ -1252,10 +1200,6 @@ class Entry:
             external_wfs_types, add_errors = self._external_wfs_types(role_id)
             errors |= add_errors
             d["externalWFSTypes"] = json.dumps(external_wfs_types)
-
-            external_themes, add_errors = self._external_themes(interface)
-            errors |= add_errors
-            d["external_themes"] = external_themes
 
         # handle permalink_themes
         permalink_themes = self.request.params.get("permalink_themes")

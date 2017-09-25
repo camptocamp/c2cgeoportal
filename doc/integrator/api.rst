@@ -53,8 +53,7 @@ the target project, and copying the missing files from there:
 .. prompt:: bash
 
     cd <project>
-    .build/venv/bin/pcreate -s c2cgeoportal_create \
-            /tmp/<project> --package-name <package>
+    ./docker-run pcreate -s c2cgeoportal_create /tmp/<project> --package-name <package>
     cp -r /tmp/<project>/<package>/templates/api <project>/templates/
     cp -r /tmp/<project>/<package>/static/apihelp <project>/static/
     rm -rf /tmp/<project>

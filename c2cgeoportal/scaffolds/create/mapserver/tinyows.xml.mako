@@ -1,5 +1,5 @@
 <tinyows
-    online_resource="http://${host}/${instanceid}/wsgi/tinyows_proxy"
+    online_resource="http://${host}/wsgi/tinyows_proxy"
     schema_dir="/usr/share/tinyows/schema/"
     log="tinyows.log"
     log_level="1"

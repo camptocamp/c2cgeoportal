@@ -193,33 +193,6 @@ following packages:
 If your project is configured for Windows, then ``make`` will expect this folder
 to exist and to contain these wheels.
 
-To be sure to use the right version of these packages, open the
-``CONST_requirements_windows.txt`` file and modify the versions of these
-packages according to the files you have downloaded.
-
-apache/wsgi.conf.mako
-^^^^^^^^^^^^^^^^^^^^^
-
-``WSGIDaemonProcess`` and ``WSGIProcessGroup`` are not supported on windows.
-
-(`WSGIDaemonProcess ConfigurationDirective
-<http://code.google.com/p/modwsgi/wiki/ConfigurationDirectives#WSGIDaemonProcess>`_
-"Note that the ``WSGIDaemonProcess`` directive and corresponding features are not
-available on Windows or when running Apache 1.3.")
-
-The following lines must be commented/removed::
-
-    WSGIDaemonProcess c2cgeoportal:${instanceid} display-name=%{GROUP} user=${modwsgi_user}
-    ...
-    WSGIProcessGroup c2cgeoportal:${instanceid}
-
-apache/mapserver.conf.mako
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The path to Mapserver executable must be modified::
-
-    ScriptAlias /${instanceid}/mapserv C:/path/to/ms4w/Apache/cgi-bin/mapserv.exe
-
 mapserver/c2cgeoportal.map.mako
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -237,13 +210,6 @@ The following configuration override must be added to your ``<project>.mk``::
     OPERATING_SYSTEM ?= WINDOWS
     # Path to cygwin
     CYGWIN_PATH ?= c:/path/to/cygwin
-    APACHE_VHOST ?= your_apache_vhost_folder
-    APACHE_CONF_DIR ?= path/to/your/$(APACHE_VHOST)/conf
-    PRINT_OUTPUT ?= path/to/your/Tomcat7/webapps
-    TOMCAT_SERVICE_COMMAND ?= path/to/your/Tomcat7/bin/Tomcat7.exe
-    APACHE_GRACEFUL ?= path/to/your/Apache/bin/httpd.exe -k restart -n <servicename>
-    # Where <servicename> is the name of the Apache service, look at your
-    # Windows services panel (Start > Search > Services)
 
 RHEL 6 Specific Configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -266,79 +232,22 @@ on RedHat Enterprise Linux (RHEL) 6.
     login name.
 
 
-<project>.mk
-~~~~~~~~~~~~
-
-Configure some ``<package>.mk`` RedHat specifics::
-
-    # Service base command for Tomcat on RedHat
-    TOMCAT_SERVICE_COMMAND ?= sudo service tomcat-tomcat1
-    # Command prefix to acces to the webapp folder
-    TOMCAT_OUTPUT_CMD_PREFIX ?= sudo -u tomcat
-    # Unix user who execute the 'mod_wsgi' processes.
-    # apache on RedHat, www-data elsewhere
-    MODWSGI_USER ?= apache
-    # Graceful command for RedHat
-    APACHE_GRACEFUL ?= sudo /usr/sbin/apachectl graceful
-    # Test packages are designed for Debian. They must be disabled by adding the following
-    # line to ``<package>.mk``::
-    DISABLE_BUILD_RULES += test-packages test-packages-tilecloud-chain test-packages-mobile test-packages-ngeo
-
-apache/mapserver.conf.mako
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-On RHEL 6 the ``mapserv`` binary is located in ``/usr/libexec/``. The
-``mapserver.conf.mako`` Apache config file assumes that ``mapserv`` is located in
-``/usr/lib/cgi-bin/``, and should therefore be changed::
-
-    ScriptAlias /${instanceid}/mapserv /usr/libexec/mapserv
-
-
 .. _integrator_install_application_install_application:
 
 Install the application
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-If it does not already exist, create a ``<user>.mk`` file
-(where ``<user>`` is for example your username),
-that will contain your application special
-configuration:
-
-.. code:: make
-
-    INSTANCE_ID = <instanceid>
-    DEVELOPMENT = TRUE
-
-    include <package>.mk
-
-.. note::
-
-   For technical simplification the file should be named ``<instanceid>.mk``
-   in other words ``<instanceid>`` should have the same value as ``<user>``.
-
-.. note::
-
-    The ``<instanceid>`` should be unique on the server, the username is a good
-    choice or something like ``<user>-<sub-project>`` in case of parent/children project.
-
-Add it to Git:
-
-.. prompt:: bash
-
-    git add <user>.mk
-    git commit -m "Add user build file"
-
 Create the application tables, and directly set the version (details later):
 
 .. prompt:: bash
 
-    make -f <user>.mk upgrade-db
+    make upgrade-db
 
 Then you can build and install the application with the command:
 
 .. prompt:: bash
 
-    make -f <user>.mk build
+    make build
 
 This previous command will do many things like:
 
@@ -351,7 +260,6 @@ This previous command will do many things like:
   * compile the translation files.
 
 Your application should be available at:
-``http://<hostname>/<instanceid>``.
+``http://<hostname>/``.
 
-Where the ``<hostname>`` is directly linked to the virtual host,
-and the ``<instanceid>`` is the value you provided before.
+Where the ``<hostname>`` is directly linked to the virtual host.

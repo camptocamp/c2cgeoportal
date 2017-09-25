@@ -6,7 +6,6 @@ git:
 language: node_js
 
 node_js:
-- '4'
 - '6'
 
 addons:
@@ -15,4 +14,4 @@ addons:
     - python-virtualenv
 
 script:
-- make -f travis.mk checks
+- make checks

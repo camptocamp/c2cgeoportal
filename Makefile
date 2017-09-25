@@ -1,5 +1,5 @@
 BUILD_DIR ?= /build
-TEMPLATE_EXCLUDE += MANIFEST.in $(BUILD_DIR) .eggs c2cgeoportal/scaffolds c2cgeoportal/tests/testegg c2cgeoportal/templates ngeo
+TEMPLATE_EXCLUDE += c2cgeoportal/scaffolds tests/testegg c2cgeoportal/templates ngeo
 FIND_OPTS = $(foreach ELEM, $(TEMPLATE_EXCLUDE),-path ./$(ELEM) -prune -o) -type f
 MAKO_FILES = $(shell find $(FIND_OPTS) -name "*.mako" -print)
 VARS_FILE ?= vars.yaml
@@ -23,7 +23,7 @@ endif
 
 VALIDATE_PY_FOLDERS = setup.py c2cgeoportal/*.py c2cgeoportal/lib c2cgeoportal/scripts c2cgeoportal/views c2cgeoportal/scaffolds/update/CONST_alembic
 VALIDATE_TEMPLATE_PY_FOLDERS = c2cgeoportal/scaffolds
-VALIDATE_PY_TEST_FOLDERS = c2cgeoportal/tests
+VALIDATE_PY_TEST_FOLDERS = tests
 
 SPHINX_FILES = $(shell find doc -name "*.rst" -print)
 SPHINX_MAKO_FILES = $(shell find doc -name "*.rst.mako" -print)
@@ -35,10 +35,10 @@ TOUCHBACK_TXRC := touch --no-create --date "$(shell date --iso-8601=seconds)" $(
 else
 TOUCHBACK_TXRC := touch --no-create --date "$(shell stat -c '%y' $(HOME)/.transifexrc)" $(HOME)/.transifexrc
 endif
-L10N_LANGUAGES = fr de
-L10N_PO_FILES = $(addprefix c2cgeoportal/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal.po, $(L10N_LANGUAGES))) \
-	$(addprefix c2cgeoportal/scaffolds/create/+package+/locale/,$(addsuffix LC_MESSAGES/+package+-client.po, $(L10N_LANGUAGES)))
-LANGUAGES = en $(L10N_LANGUAGES)
+NGEO_LANGUAGES = fr de
+LANGUAGES = en $(NGEO_LANGUAGES)
+L10N_PO_FILES = $(addprefix c2cgeoportal/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal.po, $(NGEO_LANGUAGES))) \
+	$(addprefix c2cgeoportal/scaffolds/create/+package+/locale/,$(addsuffix /LC_MESSAGES/+package+-client.po, $(LANGUAGES)))
 PO_FILES = $(addprefix c2cgeoportal/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal.po, $(LANGUAGES)))
 MO_FILES = $(addprefix $(BUILD_DIR)/,$(addsuffix .mo.timestamp,$(basename $(PO_FILES))))
 SRC_FILES = $(filter-out c2cgeoportal/version.py, $(shell ls -1 c2cgeoportal/*.py)) \
@@ -77,7 +77,8 @@ build: $(MAKO_FILES:.mako=) \
 	$(APPS_FILES) \
 	c2cgeoportal/scaffolds/update/+dot+tx/CONST_config_mako \
 	c2cgeoportal/scaffolds/create/package.json_tmpl \
-	c2cgeoportal/scaffolds/update/CONST_create_template/
+	c2cgeoportal/scaffolds/update/CONST_create_template/ \
+	c2cgeoportal/scaffolds/nondockerupdate/CONST_create_template/
 
 .PHONY: buildall
 buildall: build doc tests checks
@@ -94,7 +95,7 @@ checks: flake8 git-attributes quote spell
 .PHONY: clean
 clean:
 	rm --force $(BUILD_DIR)/venv.timestamp
-	rm --force $(BUILD_DIR)/c2ctemplate-cache.yaml
+	rm --force $(BUILD_DIR)/c2ctemplate-cache.json
 	rm --force c2cgeoportal/version.py
 	rm --force c2cgeoportal/locale/*.pot
 	rm --force c2cgeoportal/locale/en/LC_MESSAGES/c2cgeoportal.po
@@ -118,7 +119,7 @@ $(BUILD_DIR)/sphinx.timestamp: $(SPHINX_FILES) $(SPHINX_MAKO_FILES:.mako=)
 	touch $@
 
 .PHONY: nose
-nose: c2c-egg $(MAKO_FILES:.mako=)
+nose: $(MAKO_FILES:.mako=)
 	nosetests
 
 .PHONY: flake8
@@ -148,7 +149,13 @@ git-attributes:
 
 .PHONY: quote
 quote:
-	travis/quote `find c2cgeoportal/lib c2cgeoportal/scaffolds/create c2cgeoportal/templates c2cgeoportal/tests c2cgeoportal/views -name '*.py'` c2cgeoportal/*.py setup.py
+	travis/quote `find \
+		c2cgeoportal/lib \
+		c2cgeoportal/scaffolds/create \
+		c2cgeoportal/templates \
+		tests \
+		c2cgeoportal/views \
+		-name '*.py'` c2cgeoportal/*.py setup.py
 	travis/squote `find c2cgeoportal/scaffolds/update/CONST_alembic -name '*.py'`
 
 .PHONY: spell
@@ -165,7 +172,7 @@ $(HOME)/.transifexrc:
 	echo "token =" >> $@
 
 .PHONY: transifex-get
-transifex-get: c2cgeoportal/locale/c2cgeoportal.pot $(L10N_PO_FILES)
+transifex-get: $(L10N_PO_FILES)
 
 .PHONY: transifex-send
 transifex-send: $(TX_DEPENDENCIES) c2cgeoportal/locale/c2cgeoportal.pot
@@ -219,6 +226,7 @@ c2cgeoportal/scaffolds/update/+dot+tx/CONST_config_mako: ngeo/.tx/config.mako
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
 	cp $< $@
+	sed -i 's/\.build/\/build/g' $@
 
 .PRECIOUS: ngeo/package.json
 ngeo/package.json: ngeo
@@ -229,8 +237,8 @@ c2cgeoportal/scaffolds/create/package.json_tmpl: ngeo/package.json $(BUILD_DIR)/
 	$(PRERULE_CMD)
 	$(BUILD_DIR)/venv/bin/import-ngeo-apps --package _ $< $@
 
-.PRECIOUS: c2cgeoportal/scaffolds/update/CONST_create_template/
-c2cgeoportal/scaffolds/update/CONST_create_template/: c2cgeoportal/scaffolds/create/
+.PRECIOUS: c2cgeoportal/scaffolds%update/CONST_create_template/
+c2cgeoportal/scaffolds%update/CONST_create_template/: c2cgeoportal/scaffolds%create/
 	$(PRERULE_CMD)
 	rm -rf $@ || true
 	cp -r $< $@
@@ -248,15 +256,15 @@ $(APPS_PACKAGE_PATH)/static-ngeo/images/%: ngeo/contribs/gmf/apps/desktop/image/
 
 # Templates
 
-$(BUILD_DIR)/c2ctemplate-cache.yaml: $(VARS_FILES)
+$(BUILD_DIR)/c2ctemplate-cache.json: $(VARS_FILES)
 	$(PRERULE_CMD)
 	$(BUILD_DIR)/venv/bin/python /usr/local/bin/c2c-template --vars $(VARS_FILE) --get-cache $@
 
-$(MAKO_FILES:.mako=): $(BUILD_DIR)/c2ctemplate-cache.yaml
+$(MAKO_FILES:.mako=): $(BUILD_DIR)/c2ctemplate-cache.json
 
-%: %.mako $(BUILD_DIR)/requirements.timestamp $(BUILD_DIR)/c2ctemplate-cache.yaml
+%: %.mako $(BUILD_DIR)/requirements.timestamp $(BUILD_DIR)/c2ctemplate-cache.json
 	$(PRERULE_CMD)
-	c2c-template --cache $(BUILD_DIR)/c2ctemplate-cache.yaml --engine mako --files $<
+	c2c-template --cache $(BUILD_DIR)/c2ctemplate-cache.json --engine mako --files $<
 
 c2cgeoportal/locale/c2cgeoportal.pot: lingua.cfg $(SRC_FILES) $(BUILD_DIR)/requirements.timestamp
 	$(PRERULE_CMD)
@@ -277,12 +285,19 @@ c2cgeoportal/locale/%/LC_MESSAGES/c2cgeoportal.po: $(TX_DEPENDENCIES)
 	test -s $@
 
 c2cgeoportal/scaffolds/create/+package+/locale/%/LC_MESSAGES/+package+-client.po: \
-		$(TX_DEPENDENCIES) $(BUILD_DIR)/dev-requirements.timestamp
+		$(TX_DEPENDENCIES)
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
-	$(BUILD_DIR)/venv/bin/tx pull -l $* --force
+	tx pull -l $* --force
 	$(TOUCHBACK_TXRC)
 	test -s $@
+
+c2cgeoportal/scaffolds/create/+package+/locale/en/LC_MESSAGES/+package+-client.po:
+	mkdir -p $(dir $@)
+	touch $@
+
+.PHONY: buildlocales
+buildlocales: $(MO_FILES)
 
 $(BUILD_DIR)/%.mo.timestamp: %.po
 	$(PRERULE_CMD)
@@ -292,7 +307,6 @@ $(BUILD_DIR)/%.mo.timestamp: %.po
 
 $(BUILD_DIR)/venv.timestamp:
 	$(PRERULE_CMD)
-	mkdir -p $(dir $@)
 	virtualenv --system-site-packages $(BUILD_DIR)/venv
 	touch $@
 
@@ -314,7 +328,7 @@ $(CSS_ADMIN_OUTPUT): $(CSS_ADMIN_FILES)
 c2cgeoportal/version.py:
 	@echo "# Copyright (c) 2017, Camptocamp SA" > $@.new
 	@echo "# All rights reserved." >> $@.new
-	@echo  >> $@.new
+	@echo >> $@.new
 	@echo "# Auto-generated file. Do not Edit!" >> $@.new
 	@$(BUILD_DIR)/venv/bin/python c2cgeoportal/scripts/gen_version.py >> $@.new
 	rm --force $@

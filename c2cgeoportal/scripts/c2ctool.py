@@ -45,12 +45,11 @@ from alembic import command
 from c2cgeoportal.lib.bashcolor import colorize, GREEN, YELLOW, RED
 
 VERSION_RE = "^[0-9]+\.[0-9]+\..+$"
-REQUIRED_TEMPLATE_KEYS = ["package", "srid", "extent", "apache_vhost"]
+REQUIRED_TEMPLATE_KEYS = ["package", "srid", "extent"]
 TEMPLATE_EXAMPLE = {
     "package": "${package}",
     "srid": "${srid}",
     "extent": "489246, 78873, 837119, 296543",
-    "apache_vhost": "<apache_vhost>",
 }
 DIFF_NOTICE = "The changes visible on `a/CONST_create_template/<file>` should be done on `<file>`.\n" \
     "An advise to be more effective: in most cases it concerns a file that you never customize, " \
@@ -70,7 +69,6 @@ Available commands:
 
 """ + colorize("help", GREEN) + """: show this page
 """ + colorize("upgrade", GREEN) + """: upgrade the application to a new version
-""" + colorize("deploy", GREEN) + """: deploy the application to a server
 
 To have some help on a command type:
 {prog} help [command]""".format(prog=sys.argv[0])
@@ -93,22 +91,12 @@ To have some help on a command type:
     c2ctool = C2cTool(options)
     if sys.argv[1] == "upgrade":
         c2ctool.upgrade()
-    elif sys.argv[1] == "deploy":
-        c2ctool.deploy()
     else:
         print("Unknown command")
 
 
 def _fill_arguments(command):
     parser = ArgumentParser(prog="{0!s} {1!s}".format(sys.argv[0], command), add_help=False)
-    parser.add_argument(
-        "--no-cleanall",
-        help="Run clean instead of cleanall",
-        default="cleanall",
-        action="store_const",
-        const="clean",
-        dest="clean",
-    )
     parser.add_argument(
         "--windows",
         action="store_true",
@@ -142,15 +130,6 @@ def _fill_arguments(command):
         )
         parser.add_argument(
             "version", metavar="VERSION", nargs='?', help="Upgrade to version"
-        )
-    elif command == "deploy":
-        parser.add_argument(
-            "host", metavar="HOST", help="The destination host"
-        )
-        parser.add_argument(
-            "--components",
-            help="Restrict component to update. [databases,files,code]. default to all",
-            default=None
         )
     else:
         print("Unknown command")
@@ -228,10 +207,7 @@ class C2cTool:
         self.project = self.get_project()
 
     def upgrade(self):
-        self.venv_bin = ".build/venv/bin"
-        if self.options.windows:
-            self.options.clean = "clean"
-            self.venv_bin = ".build/venv/Scripts"
+        self.venv_bin = "/build/venv/bin"
 
         if self.options.step == 0:
             self.step0()
@@ -271,25 +247,6 @@ class C2cTool:
                 0, error=True, message="The VERSION environment variable is required for this upgrade step",
                 prompt="Fix it and run again the upgrade:")
             exit(1)
-
-        if re.match(VERSION_RE, self.options.version) is not None:
-            http = httplib2.Http()
-            url = (
-                "http://raw.github.com/camptocamp/c2cgeoportal/%s/"
-                "c2cgeoportal/scaffolds/update/CONST_versions_requirements.txt" %
-                self.options.version
-            )
-            headers, _ = http.request(url)
-            if headers.status != 200:
-                self.print_step(
-                    -1, error=True, message="\n".join([
-                        "Failed downloading the c2cgeoportal "
-                        "CONST_versions_requirements.txt file from URL:",
-                        url,
-                        "The upgrade is impossible"
-                    ])
-                )
-                exit(1)
 
         if os.path.split(os.path.realpath("."))[1] != self.project["project_folder"]:
             self.print_step(
@@ -368,10 +325,8 @@ class C2cTool:
             "{0!s}/pcreate".format(self.venv_bin), "--ignore-conflicting-name", "--overwrite",
             "--scaffold=c2cgeoportal_update", "../{0!s}".format(self.project["project_folder"])
         ])
-        for deploy_hook_file in os.listdir("CONST_create_template/deploy/hooks"):
-            check_call(["chmod", "+x", "CONST_create_template/deploy/hooks/{}".format(deploy_hook_file)])
 
-        check_call(["make", "-f", self.options.file, self.options.clean])
+        check_call(["make", "-f", self.options.file, "cleanall"])
 
         # Update the package.json file
         if os.path.exists("package.json") and os.path.getsize("package.json") > 0:
@@ -542,16 +497,6 @@ class C2cTool:
         print(("git push {0!s} {1!s}.".format(
             self.options.git_remote, branch
         )))
-
-    def deploy(self):
-        ok, message = self.test_checkers()
-        if not ok:
-            print(message)
-            print((colorize("Correct them and run again", RED)))
-            exit(1)
-
-        check_call(["sudo", "-u", "deploy", "deploy", "-r", "deploy/deploy.cfg", self.options.host])
-        check_call(["make", "-f", self.options.file, "build"])
 
 
 if __name__ == "__main__":

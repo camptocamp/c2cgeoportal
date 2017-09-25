@@ -10,7 +10,7 @@ It is based upon `MapfishPrint version 3 <http://mapfish.github.io/mapfish-print
 and `Jasper Reports <http://community.jaspersoft.com/project/jasperreports-library>`_.
 
 The webservice is called using the following URL schema:
-``http://<host>/<instanceid>/wsgi/pdfreport/<layername>/<featureid>``.
+``http://<host><entrypoint>/pdfreport/<layername>/<featureid>``.
 
 
 Configuration

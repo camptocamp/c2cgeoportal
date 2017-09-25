@@ -27,8 +27,6 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-
-import os
 import urllib.request
 import urllib.parse
 import urllib.error
@@ -361,17 +359,6 @@ class Checker:  # pragma: no cover
 
     @view_config(route_name="checker_phantomjs")
     def checker_phantomjs(self):
-        package = self.request.registry.settings["package"]
-
-        base_path = os.path.dirname(os.path.dirname(
-            os.path.abspath(__import__(package).__file__)))
-
-        phantomjs_base_path = "node_modules/.bin/phantomjs"
-        executable_path = os.path.join(base_path, phantomjs_base_path)
-
-        checker_config_base_path = "node_modules/ngeo/buildtools/check-example.js"
-        checker_config_path = os.path.join(base_path, checker_config_base_path)
-
         results = []
         for route in self.settings["phantomjs_routes"]:
             url = self.request.route_url(route["name"], _query=route.get("params", {}))
@@ -379,14 +366,16 @@ class Checker:  # pragma: no cover
                 # For Docker
                 url, _ = build_url("Check", url, self.request)
 
-            cmd = [executable_path, "--local-to-remote-url-access=true", checker_config_path, url]
+            cmd = [
+                "phantomjs", "--local-to-remote-url-access=true",
+                "/usr/lib/node_modules/ngeo/buildtools/check-example.js", url]
 
             # check_output throws a CalledProcessError if return code is > 0
             try:
                 check_output(cmd)
                 results.append("{}: OK".format(route))
             except CalledProcessError as e:
-                results.append("{}: {}".format(route, e.output.replace("\n", "<br/>")))
+                results.append("{}: {}".format(route, e.output.decode("utf-8").replace("\n", "<br/>")))
                 self.set_status(500, "{}: JS error".format(route["name"]))
 
         return self.make_response(

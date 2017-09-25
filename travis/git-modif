@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # Copyright (c) 2013-2016, Camptocamp SA
@@ -31,26 +31,22 @@
 import os
 import argparse
 import subprocess
-import pyignore
 
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('base_dir')
-    parser.add_argument('ignore_file', nargs='?')
+    parser.add_argument("paths", nargs="+")
     args = parser.parse_args()
 
     subprocess.check_output(["git", "fetch", "origin", "master:master"])
-    diff = subprocess.check_output(["git", "diff", "--name-only", "master", "--", args.base_dir]).strip()
-    files = [] if diff == "" else [
-        l.strip()
-        for l in diff.split('\n')
-    ]
-    if args.ignore_file is not None:
-        ignore = pyignore.Ignore(os.path.join(args.base_dir, args.ignore_file))
-        if len(ignore.filter(files)) == 0:
-            exit(1)
-    elif len(files) == 0:
+    files = []
+    for path in args.paths:
+        diff = subprocess.check_output(["git", "diff", "--name-only", "master", "--", path]).decode("utf-8").strip()
+        files += [] if diff == "" else [
+            l.strip()
+            for l in diff.split("\n")
+        ]
+    if len(files) == 0:
         exit(1)
 
 if __name__ == "__main__":

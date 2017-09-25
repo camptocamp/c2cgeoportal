@@ -1,0 +1,149 @@
+extends: CONST_vars.yaml
+
+vars:
+    # Database name
+    db: geomapfish
+
+    srid: {{srid}}
+
+    # The application's default language. This is the language used by
+    # the application if no specific language is specified in the URLs.
+    # This also defines the language used for the text search.
+    default_locale_name: fr
+
+    # The set of languages supported by the applications.
+    available_locale_names:
+    - en
+    - fr
+    - de
+
+    default_interface: desktop
+
+    authtkt:
+        # One day
+        timeout: 86400
+
+    admin_interface:
+        # Default values for the admin interface's maps.
+        map_x: 740000
+        map_y: 5860000
+        map_zoom: 10
+
+    functionalities:
+        # Functionalities that are accessible to anonymous
+        # users.
+        anonymous:
+            print_template:
+            - 1 A4 portrait
+            - 2 A4 landscape
+            - 3 A3 portrait
+            - 4 A3 landscape
+            default_basemap: map
+
+            # The name of the theme to use as the default theme.
+            # The default theme is the theme loaded when no
+            # theme name is specified in the mobile app URL. If unset
+            # then there is no default theme, and no theme information
+            # will be passed to the config.js template.
+            default_theme:
+
+        # Functionalities that are accessible to authenticated
+        # users with no associated functionalities in the
+        # database.
+        registered: {}
+
+        # Functionalities that are made available to Mako templates.
+        available_in_templates:
+        - default_basemap
+
+    layers:
+        geometry_validation: True
+
+    # For base layers
+    tiles_url:
+    - '{web_protocol}://a.tiles.{host}{entry_point}/tiles'
+    - '{web_protocol}://b.tiles.{host}{entry_point}/tiles'
+    - '{web_protocol}://c.tiles.{host}{entry_point}/tiles'
+
+    # The URL template used to generate the sub domain URL
+    # %(sub)s will be replaced by the sub domain value.
+    #subdomain_url_template: http://%(sub)s.{host}
+    # The used sub domain for the static resources
+    # Do not works with pyramid debug toolbar
+    #subdomains: [s1, s2, s3]
+
+    fulltextsearch:
+        languages:
+            fr: french
+            en: english
+            de: german
+
+    #proxies:
+    #    http: http://someproxy
+
+    shortener:
+        # Used to send a confirmation email
+        email_from: info@example.com
+        email_subject: "Geoportal URL"
+        email_body: |
+            Hello,
+
+            Somebody sent you the following link:
+            %(short_url)s
+
+            With the message:
+            %(message)
+
+            Sincerely yours
+            The GeoMapfish team
+        smtp_server: smtp.example.com
+
+    reset_password:
+        # Used to send a confirmation email
+        email_from: info@camptocamp.com
+        email_subject: New password generated for GeoMapFish
+        email_body: |
+            Hello {user},
+
+            You have asked for an new password,
+            the newly generated password is: {password}
+
+            Sincerely yours
+            The GeoMapfish team
+        smtp_server: smtp.example.com
+
+    # Checker configuration
+    checker:
+        defaults:
+            fulltextsearch: text to search
+            print_spec:
+                layout: "1 A4 portrait"
+                outputFormat: "pdf"
+                attributes:
+                    title: ""
+                    comments: ""
+                    datasource: []
+                    map:
+                        projection: "EPSG:21781"
+                        dpi: 254
+                        rotation: 0
+                        center: [600000, 200000]
+                        scale: 100000
+                        longitudeFirst: true
+                        layers: []
+                    legend: {}
+
+    check_collector:
+        disabled: []
+        hosts: []
+        # - display: Child:
+        #   url: {web_protocol}://{host}/child/wsgi
+
+update_paths:
+- shortener
+- fulltextsearch
+- authtkt
+- admin_interface
+- checker.defaults
+- check_collector.disabled
+- check_collector.hosts

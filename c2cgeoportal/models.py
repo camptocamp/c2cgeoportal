@@ -61,7 +61,7 @@ except:  # pragma: no cover
     def _(s):
         return s
 
-from c2cgeoportal import schema, parentschema, srid
+from c2cgeoportal import schema, srid
 from c2cgeoportal.lib import caching
 from c2cgeoportal.lib.sqlalchemy_ import JSONEncodedDict
 
@@ -95,7 +95,6 @@ else:  # pragma: no cover
     raise Exception(
         "schema not specified, you need to add it to your config"
     )
-_parentschema = parentschema
 
 if srid is not None:
     _srid = srid
@@ -243,16 +242,6 @@ class User(Base):
 
         self._cached_role_name = self.role_name
         return self._cached_role
-
-    if _parentschema is not None and _parentschema != "":  # pragma: no cover
-        # parent role relationship
-        parent_role_name = Column(String)
-
-        @property
-        def parent_role(self):
-            return self._sa_instance_state.session.query(Role).filter(
-                Role.name == self.parent_role_name
-            ).one()
 
     def __init__(
         self, username="", password="", email="", is_password_changed=False,
@@ -969,24 +958,6 @@ class Dimension(Base):
 
     def __unicode__(self):  # pragma: no cover
         return self.name or ""
-
-
-if _parentschema is not None and _parentschema != "":  # pragma: no cover
-    class ParentRole(Base):
-        __tablename__ = "role"
-        __table_args__ = {"schema": _parentschema}
-        __acl__ = [
-            (Allow, AUTHORIZED_ROLE, ("view")),
-        ]
-
-        id = Column(Integer, primary_key=True)
-        name = Column(Unicode, unique=True, nullable=False)
-
-        def __init__(self, name=""):
-            self.name = name
-
-        def __unicode__(self):
-            return self.name or ""  # pragma: no cover
 
 
 class Shorturl(Base):
