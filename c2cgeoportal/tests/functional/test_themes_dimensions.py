@@ -90,14 +90,26 @@ class TestThemesView(TestCase):
         layer_wms_5.ogc_server = ogc_server
         Dimension("B", "b", layer_wms_5)
 
+        layer_wms_6 = LayerWMS(name="__test_layer_wms_6", public=True)
+        layer_wms_6.layer = "__test_layer_wms_6"
+        layer_wms_6.interfaces = [main]
+        layer_wms_6.ogc_server = ogc_server
+        Dimension("FILTER", "countries:\"name\" IN ( 'Germany' , 'Italy' )", layer_wms_6)
+
         layer_wmts = LayerWMTS(name="__test_layer_wmts", public=True)
         layer_wmts.url = "http://example.com/1.0.0/WMTSCapabilities.xml"
         layer_wmts.layer = "map"
         layer_wmts.interfaces = [main]
         Dimension("B", "b", layer_wmts)
 
+        layer_wmts_2 = LayerWMTS(name="__test_layer_wmts_2", public=True)
+        layer_wmts_2.url = "http://example.com/1.0.0/WMTSCapabilities.xml"
+        layer_wmts_2.layer = "map"
+        layer_wmts_2.interfaces = [main]
+        Dimension("FILTER", "countries:\"name\" IN ( 'Germany' , 'Italy' )", layer_wmts_2)
+
         layer_group_1 = LayerGroup(name="__test_layer_group_1")
-        layer_group_1.children = [layer_wms_1, layer_wmts]
+        layer_group_1.children = [layer_wms_1, layer_wmts, layer_wmts_2]
 
         layer_group_2 = LayerGroup(name="__test_layer_group_2")
         layer_group_2.children = [layer_wms_1, layer_wms_2]
@@ -109,7 +121,7 @@ class TestThemesView(TestCase):
         layer_group_4.children = [layer_wms_1, layer_wms_4]
 
         layer_group_5 = LayerGroup(name="__test_layer_group_5")
-        layer_group_5.children = [layer_wms_1, layer_wms_5]
+        layer_group_5.children = [layer_wms_1, layer_wms_5, layer_wms_6]
 
         layer_group_6 = LayerGroup(name="__test_layer_group_6")
         layer_group_6.children = [layer_wms_3]
@@ -190,7 +202,8 @@ class TestThemesView(TestCase):
         })
         themes = entry.themes()
         self.assertEqual(self._get_filtered_errors(themes), set([
-            "The layer '__test_layer_wms_2' has a wrong dimension value 'b' for 'A', expected 'a' or empty."
+            "The layer '__test_layer_wms_2' has a wrong dimension value 'b' for 'A', expected 'a' or empty.",
+            "The layer '__test_layer_wmts_2' has an unsupported dimension value 'countries:\"name\" IN ( 'Germany' , 'Italy' )' ('FILTER')."
         ]))
         self.assertEqual(
             [self._only_name(t, ["name", "dimensions"]) for t in themes["themes"]],
@@ -203,6 +216,9 @@ class TestThemesView(TestCase):
                     }, {
                         "dimensions": {"B": "b"},
                         "name": "__test_layer_wmts"
+                    }, {
+                        "dimensions": {},
+                        "name": "__test_layer_wmts_2"
                     }],
                 }, {
                     "name": "__test_layer_group_2",
@@ -234,8 +250,14 @@ class TestThemesView(TestCase):
                         "name": "__test_layer_wms_1",
                     }, {
                         "name": "__test_layer_wms_5",
+                    }, {
+                        "name": "__test_layer_wms_6",
                     }],
-                    "dimensions": {"A": "a", "B": "b"},
+                    "dimensions": {
+                        "A": "a",
+                        "B": "b",
+                        "FILTER": "countries:\"name\" IN ( 'Germany' , 'Italy' )"
+                    },
                 }, {
                     "name": "__test_layer_group_6",
                     "children": [{
