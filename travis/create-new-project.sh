@@ -20,7 +20,6 @@ git config --global user.name "Travis"
 git config --global user.email "travis@example.com"
 git init
 git add --all
-git submodule add https://github.com/camptocamp/cgxp.git testgeomapfish/static/lib/cgxp
 git commit --quiet --message="Initial commit"
 git remote add origin . # add a fake remote
 

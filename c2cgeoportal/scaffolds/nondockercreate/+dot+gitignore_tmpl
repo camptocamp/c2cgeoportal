@@ -2,7 +2,9 @@
 .*.swp
 /.build
 /{{package}}.egg-info
+/ngeo
 /jsbuild/app.cfg
+/{{package}}/static/lib/cgxp/
 /node_modules
 /apache/README.txt
 /apache/frontend.conf

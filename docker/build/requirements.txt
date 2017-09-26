@@ -27,6 +27,7 @@ http-parser==0.8.3
 ipcalc==1.99.0  # setup.py
 isodate==0.5.4  # setup.py
 Jinja2==2.9.6  # c2c.template
+JSTools==1.0  # CGXP build
 lingua==4.13  # setup.py
 Mako==1.0.7  # templating
 Markdown==2.6.8

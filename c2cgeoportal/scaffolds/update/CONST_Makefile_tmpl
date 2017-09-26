@@ -38,10 +38,10 @@ DOCKER_TAG ?= latest
 export DOCKER_TAG
 
 ifdef CGXP_INTERFACES
-DEFAULT_WEB_RULE += build-cgxp
+DEFAULT_WEB_RULE += $(JSBUILD_MAIN_OUTPUT_FILES) $(CSS_BASE_OUTPUT)
 else
 ifeq ($(CGXP_API), TRUE)
-DEFAULT_WEB_RULE += build-cgxp
+DEFAULT_WEB_RULE += $(CSS_API_OUTPUT) $(CSS_XAPI_OUTPUT)
 endif
 endif
 ifneq ($(NGEO_INTERFACES), "")
@@ -184,6 +184,9 @@ JSBUILD_MAIN_OUTPUT_FILES := $(addprefix $(OUTPUT_DIR)/, $(JSBUILD_MAIN_OUTPUT_F
 ifeq ($(DEVELOPMENT), TRUE)
 JSBUILD_ARGS += --uncompress
 endif
+CGXP_GIT_REMOTE ?= https://github.com/camptocamp/cgxp.git
+CGXP_GIT_ARGS ?= --depth 1
+
 
 ifeq ($(DEVELOPMENT), FALSE)
 	CSSMIN_ARGS += --compress
@@ -682,43 +685,46 @@ update-git-submodules:
 	git submodule foreach git clean -fd
 	git submodule foreach git submodule foreach git clean -fd
 
-$(GIT_MODULES_FOLDER)$(PACKAGE)/static/lib/cgxp/modules/%/HEAD: $(GIT_MODULES_FOLDER)$(PACKAGE)/static/lib/cgxp/HEAD
+$(PACKAGE)/static/lib/cgxp/openlayers/: $(PACKAGE)/static/lib/cgxp/
 	$(PRERULE_CMD)
-	if [ -e $@ ]; then touch $@; else git submodule foreach git submodule update --init; fi
+	cd $< && git submodule update --init
 
-$(GIT_MODULES_FOLDER)$(PACKAGE)/static/lib/cgxp/HEAD:
+$(PACKAGE)/static/lib/cgxp/:
 	$(PRERULE_CMD)
-	git submodule update --init
+	git clone $(CGXP_GIT_ARGS) $(CGXP_GIT_REMOTE) $@
 
 
 # CGXP build
 
 $(JSBUILD_MAIN_OUTPUT_FILES): $(JSBUILD_MAIN_FILES) \
 		$(JSBUILD_MAIN_CONFIG) \
-		$(GIT_MODULES_FOLDER)$(PACKAGE)/static/lib/cgxp/modules/openlayers/HEAD \
-		$(GIT_MODULES_FOLDER)$(PACKAGE)/static/lib/cgxp/HEAD
+		$(PACKAGE)/static/lib/cgxp/openlayers/ \
+		$(PACKAGE)/static/lib/cgxp/
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
 	jsbuild $(JSBUILD_MAIN_CONFIG) $(JSBUILD_ARGS) -j $(notdir $@) -o $(OUTPUT_DIR)
 
 $(CSS_BASE_OUTPUT): \
-		$(GIT_MODULES_FOLDER)$(PACKAGE)/static/lib/cgxp/modules/openlayers/HEAD \
-		$(GIT_MODULES_FOLDER)$(PACKAGE)/static/lib/cgxp/HEAD \
-		$(CSS_BASE_FILES)
+		$(PACKAGE)/static/lib/cgxp/openlayers/ \
+		$(PACKAGE)/static/lib/cgxp/ \
+		$(PACKAGE)/static/css/proj.css \
+		$(PACKAGE)/static/css/proj-map.css \
+		$(PACKAGE)/static/css/proj-widgets.css
 	$(PRERULE_CMD)
 	c2c-cssmin $(CSSMIN_ARGS) $@ $(CSS_BASE_FILES)
 
 $(CSS_API_OUTPUT): \
-		$(GIT_MODULES_FOLDER)$(PACKAGE)/static/lib/cgxp/modules/openlayers/HEAD \
-		$(GIT_MODULES_FOLDER)$(PACKAGE)/static/lib/cgxp/HEAD \
-		$(CSS_API_FILES)
+		$(PACKAGE)/static/lib/cgxp/openlayers/ \
+		$(PACKAGE)/static/lib/cgxp/ \
+		$(PACKAGE)/static/css/proj-map.css
 	$(PRERULE_CMD)
 	c2c-cssmin $(CSSMIN_ARGS) $@ $(CSS_API_FILES)
 
 $(CSS_XAPI_OUTPUT): \
-		$(GIT_MODULES_FOLDER)$(PACKAGE)/static/lib/cgxp/modules/openlayers/HEAD \
-		$(GIT_MODULES_FOLDER)$(PACKAGE)/static/lib/cgxp/HEAD \
-		$(CSS_XAPI_FILES)
+		$(PACKAGE)/static/lib/cgxp/openlayers/ \
+		$(PACKAGE)/static/lib/cgxp/ \
+		$(PACKAGE)/static/css/proj-map.css \
+		$(PACKAGE)/static/css/proj-widgets.css
 	$(PRERULE_CMD)
 	c2c-cssmin $(CSSMIN_ARGS) $@ $(CSS_XAPI_FILES)
 
