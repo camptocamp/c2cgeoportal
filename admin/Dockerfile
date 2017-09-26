@@ -43,3 +43,6 @@ ENV GIT_HASH=$GIT_HASH
 RUN python setup.py install && \
     /c2cwsgiutils/c2cwsgiutils_genversion.py $GIT_HASH && \
     flake8 acceptance_tests c2cgeoportal_admin *.py
+
+ENTRYPOINT [ "/app/docker/docker-entrypoint.sh" ]
+CMD [ "/c2cwsgiutils/c2cwsgiutils_run" ]

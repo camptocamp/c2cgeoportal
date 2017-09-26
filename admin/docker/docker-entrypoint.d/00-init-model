@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# wait for the DB to be UP
+while ! echo "import sqlalchemy; sqlalchemy.create_engine('$SQLALCHEMY_URL').connect()" | python 2> /dev/null
+do
+    echo "Waiting for the DB to be reachable"
+    sleep 1;
+done
+
+initialize_db_main production.ini --force=1
