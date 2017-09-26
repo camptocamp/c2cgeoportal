@@ -82,7 +82,7 @@ venusian==1.1.0
 waitress==1.0.2  # For pcreate
 WebHelpers==1.3
 WebOb==1.7.3
-zgitignore==0.7.1  # Makefile
+zgitignore==0.8.0  # Makefile
 zope.component==4.4.0
 zope.deprecation==4.3.0
 zope.event==4.3.0
