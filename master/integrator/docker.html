@@ -62,6 +62,7 @@ that:</p>
 <code class="docutils literal"><span class="pre">DOCKER_TAG</span></code> Makefile variable.</p>
 <p>Edit <code class="docutils literal"><span class="pre">vars_&lt;package&gt;.yaml</span></code> and add:</p>
 <div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">dbhost</span><span class="p">:</span> <span class="n">db</span>
+<span class="n">dbhost_slave</span><span class="p">:</span> <span class="n">db</span>
 </pre></div>
 </div>
 </div>
@@ -75,11 +76,11 @@ an underscore. Please start at number 20.</p>
 <h2>Developer composition<a class="headerlink" href="#developer-composition" title="Permalink to this headline">¶</a></h2>
 <p>A <code class="docutils literal"><span class="pre">docker-compose.yml.mako</span></code> file is created as a starting point.</p>
 <p>If you want to host the database on your local machine, you must add a
-<code class="docutils literal"><span class="pre">dbhost</span></code> entry pointing to <code class="docutils literal"><span class="pre">172.17.0.1</span></code> (your host address for Docker
+<code class="docutils literal"><span class="pre">dbhost</span></code> and <code class="docutils literal"><span class="pre">dbhost_slave</span></code> entry pointing to <code class="docutils literal"><span class="pre">172.17.0.1</span></code> (your host address for Docker
 container) in your <code class="docutils literal"><span class="pre">vars_&lt;package&gt;.yaml</span></code> file. Then you need to make sure
 Postgres is configured to listen on that interface and accepts authentication.</p>
 <p>If you want to use an external serveur for the database, just put it is address
-in the <code class="docutils literal"><span class="pre">dbhost</span></code> entry.</p>
+in the <code class="docutils literal"><span class="pre">dbhost</span></code> and <code class="docutils literal"><span class="pre">dbhost_slave</span></code> entry.</p>
 </div>
 <div class="section" id="run-the-developer-composition">
 <h2>Run the developer composition<a class="headerlink" href="#run-the-developer-composition" title="Permalink to this headline">¶</a></h2>

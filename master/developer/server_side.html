@@ -165,7 +165,7 @@ database.</p>
 <span class="prompt1">./docker-compose-run alembic --config tests/functional/alembic.ini upgrade head</span>
 <span class="prompt1">./docker-compose-run alembic --config tests/functional/alembic_static.ini upgrade head</span>
 </pre><p>If you do not use the default variables edit the <code class="docutils literal"><span class="pre">vars.yaml</span></code> and set the <code class="docutils literal"><span class="pre">dbuser</span></code>, <code class="docutils literal"><span class="pre">dbpassword</span></code>,
-<code class="docutils literal"><span class="pre">dbhost</span></code>, <code class="docutils literal"><span class="pre">dbport</span></code>, <code class="docutils literal"><span class="pre">db</span></code>, and <code class="docutils literal"><span class="pre">mapserv_url</span></code> as appropriate.</p>
+<code class="docutils literal"><span class="pre">dbhost</span></code>, <code class="docutils literal"><span class="pre">dbhost_slave</span></code>, <code class="docutils literal"><span class="pre">dbport</span></code>, <code class="docutils literal"><span class="pre">db</span></code>, and <code class="docutils literal"><span class="pre">mapserv_url</span></code> as appropriate.</p>
 <p><code class="docutils literal"><span class="pre">mapserv_url</span></code> needs to refer a valid <code class="docutils literal"><span class="pre">mapserv</span></code> instance running locally,
 i.e. on the machine you run the tests on. For example, if you use your desktop
 machine it may be <code class="docutils literal"><span class="pre">http://locahost/cgi-bin/mapserv</span></code>.</p>

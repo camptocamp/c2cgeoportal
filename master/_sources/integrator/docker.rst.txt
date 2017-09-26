@@ -27,6 +27,7 @@ Edit ``vars_<package>.yaml`` and add:
 .. code:: yaml
 
     dbhost: db
+    dbhost_slave: db
 
 Database container
 ------------------
@@ -41,12 +42,12 @@ Developer composition
 A ``docker-compose.yml.mako`` file is created as a starting point.
 
 If you want to host the database on your local machine, you must add a
-``dbhost`` entry pointing to ``172.17.0.1`` (your host address for Docker
+``dbhost`` and ``dbhost_slave`` entry pointing to ``172.17.0.1`` (your host address for Docker
 container) in your ``vars_<package>.yaml`` file. Then you need to make sure
 Postgres is configured to listen on that interface and accepts authentication.
 
 If you want to use an external serveur for the database, just put it is address
-in the ``dbhost`` entry.
+in the ``dbhost`` and ``dbhost_slave`` entry.
 
 Run the developer composition
 -----------------------------
