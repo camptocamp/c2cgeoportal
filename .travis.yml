@@ -11,6 +11,8 @@ service:
 env:
   global:
     - secure: aZWcHZWV8lN2SNU2fcUsG8+fVQLOxwDUFYDvuftZALebRG2AHINTkbS31sKbeSwS19ZYpjcuVOKC9HxNAlnMxsdO1NvvFEbSJJD/yqq0V4EfTRqptZYsFCUou0eXIUWEnoFHD1nY3NhuPQjDoad995xU92z0BzwduxUAj28liu4=
+    - DOCKER_USERNAME=sbrunner
+    - secure: SosPNhER7I5YnVZy7AoUjrs+P08S60fPje1sFgMdfRNRElI42oLgO6wk1nEFEGGjUevSLzpsDruy7z1m5ilzyMenO1hG1lASf2BeeJC8rRz75MgRKnlf7Py6BA9GbNprzMdgxNPlUtrEkp9ExLvC7MZs7H0RvwxBgQmepQG5Mdg=
 
 before_install:
 ## FOR NON DOCKER TESTS
@@ -41,12 +43,12 @@ before_install:
 - mkdir /tmp/travis
 - >
   travis/docker-get
-  --tag camptocamp/geomapfish_build_dev:latest
+  --tag camptocamp/geomapfish-build-dev:latest
   --folder docker/build
   --paths docker/build
 - >
   travis/docker-get
-  --tag camptocamp/geomapfish_build:latest
+  --tag camptocamp/geomapfish-build:latest
   --folder .
   --rules transifex-get buildlocales c2cgeoportal/scaffolds/update/CONST_create_template/ c2cgeoportal/scaffolds/nondockerupdate/CONST_create_template/
   --paths docker/build setup.py README.rst c2cgeoportal/ docker/build/fixversions.txt
@@ -206,6 +208,20 @@ deploy:
   on:
     repo: camptocamp/c2cgeoportal
     branch: master
+    condition: '"${TRAVIS_PULL_REQUEST}" = false'
+- provider: script
+  script: travis/publish-docker
+  skip_cleanup: true
+  on:
+    repo: camptocamp/c2cgeoportal
+    tags: true
+    condition: '"${TRAVIS_PULL_REQUEST}" = false'
+- provider: script
+  script: travis/publish-docker
+  skip_cleanup: true
+  on:
+    repo: camptocamp/c2cgeoportal
+    all_branches: true
     condition: '"${TRAVIS_PULL_REQUEST}" = false'
 
 notifications:

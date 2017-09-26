@@ -1,4 +1,4 @@
-FROM camptocamp/geomapfish_build:${geomapfish_version}
+FROM camptocamp/geomapfish-build:${geomapfish_version}
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
 COPY . /app

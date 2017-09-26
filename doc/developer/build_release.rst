@@ -37,7 +37,7 @@ Get the localisation from Transifex:
 
 .. prompt:: bash
 
-    docker build --tag=camptocamp/geomapfish_build_dev docker/build
+    docker build --tag=camptocamp/geomapfish-build-dev docker/build
     ./docker-run make transifex-get
 
 For each version we create a new branch (at the latest at the final release):
