@@ -1,5 +1,5 @@
 BUILD_DIR ?= /build
-MAKO_FILES = $(shell find .tx doc docker tests -type f -name "*.mako" -print)
+MAKO_FILES = $(shell find .tx doc docker tests/functional -type f -name "*.mako" -print)
 VARS_FILE ?= vars.yaml
 VARS_FILES += vars.yaml
 
