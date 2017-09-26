@@ -21,6 +21,8 @@ def main():
         docker_cmd.append(args[0])
         args = args[1:]
 
+    git_branch = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode("utf-8").strip()
+
     docker_cmd.extend([
         "--rm",
         "--volume=/var/run/docker.sock:/var/run/docker.sock",
@@ -32,6 +34,7 @@ def main():
         "--env=USER_ID={}".format(os.getuid() if os.name == "posix" else 1000),
         "--env=GROUP_ID={}".format(os.getgid() if os.name == "posix" else 1000),
         "--env=CODACY_PROJECT_TOKEN={}".format(os.environ.get("CODACY_PROJECT_TOKEN", "")),
+        "--env=GIT_BRANCH={}".format(git_branch)
     ])
 
     for env in [

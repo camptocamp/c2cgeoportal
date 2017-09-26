@@ -33,7 +33,9 @@ import transaction
 import re
 from json import loads
 from argparse import ArgumentParser
-from pyramid.paster import get_app, setup_logging
+from pyramid.paster import get_app
+from logging.config import fileConfig
+import os
 
 
 def main():
@@ -78,8 +80,8 @@ def main():
     app_name = options.app_name
     if app_name is None and "#" in app_config:
         app_config, app_name = app_config.split("#", 1)
-    setup_logging(app_config)
-    app = get_app(app_config, name=app_name)
+    fileConfig(app_config, defaults=os.environ)
+    app = get_app(app_config, app_name, options=os.environ)
 
     # must be done only once we have loaded the project config
     from c2cgeoportal.models import DBSession, \

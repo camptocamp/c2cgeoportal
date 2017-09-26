@@ -167,7 +167,7 @@ Create the tables:
     ./docker-compose-run alembic --config tests/functional/alembic_static.ini upgrade head
 
 If you do not use the default variables edit the ``vars.yaml`` and set the ``dbuser``, ``dbpassword``,
-``dbhost``, ``dbport``, ``db``, and ``mapserv_url`` as appropriate.
+``dbhost``, ``dbhost_slave``, ``dbport``, ``db``, and ``mapserv_url`` as appropriate.
 
 ``mapserv_url`` needs to refer a valid ``mapserv`` instance running locally,
 i.e. on the machine you run the tests on. For example, if you use your desktop

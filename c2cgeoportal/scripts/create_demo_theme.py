@@ -30,7 +30,9 @@
 
 import argparse
 import transaction
-from pyramid.paster import get_app, setup_logging
+from pyramid.paster import get_app
+from logging.config import fileConfig
+import os
 
 
 def main():
@@ -51,8 +53,8 @@ def main():
     options = parser.parse_args()
 
     # read the configuration
-    setup_logging(options.iniconfig)
-    get_app(options.iniconfig, options.app_name)
+    fileConfig(options.iniconfig, defaults=os.environ)
+    get_app(options.iniconfig, options.app_name, options=os.environ)
 
     from c2cgeoportal.models import DBSession, Interface, OGCServer, Theme, LayerGroup, LayerWMS
 
@@ -74,6 +76,8 @@ def main():
     theme = Theme("Demo")
     theme.children = [group]
     theme.interfaces = interfaces
+
+    session.add(theme)
 
     transaction.commit()
 

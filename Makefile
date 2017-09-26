@@ -1,7 +1,5 @@
 BUILD_DIR ?= /build
-TEMPLATE_EXCLUDE += c2cgeoportal/scaffolds tests/testegg c2cgeoportal/templates ngeo
-FIND_OPTS = $(foreach ELEM, $(TEMPLATE_EXCLUDE),-path ./$(ELEM) -prune -o) -type f
-MAKO_FILES = $(shell find $(FIND_OPTS) -name "*.mako" -print)
+MAKO_FILES = $(shell find .tx doc docker tests -type f -name "*.mako" -print)
 VARS_FILE ?= vars.yaml
 VARS_FILES += vars.yaml
 
@@ -41,7 +39,7 @@ L10N_PO_FILES = $(addprefix c2cgeoportal/locale/,$(addsuffix /LC_MESSAGES/c2cgeo
 	$(addprefix c2cgeoportal/scaffolds/create/+package+/locale/,$(addsuffix /LC_MESSAGES/+package+-client.po, $(LANGUAGES)))
 PO_FILES = $(addprefix c2cgeoportal/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal.po, $(LANGUAGES)))
 MO_FILES = $(addprefix $(BUILD_DIR)/,$(addsuffix .mo.timestamp,$(basename $(PO_FILES))))
-SRC_FILES = $(filter-out c2cgeoportal/version.py, $(shell ls -1 c2cgeoportal/*.py)) \
+SRC_FILES = $(shell ls -1 c2cgeoportal/*.py) \
 	$(shell find c2cgeoportal/lib -name "*.py" -print) \
 	$(shell find c2cgeoportal/views -name "*.py" -print) \
 	$(filter-out c2cgeoportal/scripts/theme2fts.py, $(shell find c2cgeoportal/scripts -name "*.py" -print))
@@ -72,7 +70,6 @@ help:
 .PHONY: build
 build: $(MAKO_FILES:.mako=) \
 	c2c-egg \
-	c2cgeoportal/version.py \
 	$(MO_FILES) \
 	$(APPS_FILES) \
 	c2cgeoportal/scaffolds/create/package.json_tmpl \
@@ -93,7 +90,6 @@ checks: flake8 git-attributes quote spell
 clean:
 	rm --force $(BUILD_DIR)/venv.timestamp
 	rm --force $(BUILD_DIR)/c2ctemplate-cache.json
-	rm --force c2cgeoportal/version.py
 	rm --force c2cgeoportal/locale/*.pot
 	rm --force c2cgeoportal/locale/en/LC_MESSAGES/c2cgeoportal.po
 	rm --recursive --force c2cgeoportal/static/build
@@ -318,15 +314,3 @@ $(CSS_ADMIN_OUTPUT): $(CSS_ADMIN_FILES)
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
 	c2c-cssmin $(CSSMIN_ARGS) $@ $(CSS_ADMIN_FILES)
-
-c2cgeoportal/version.py:
-	@echo "# Copyright (c) 2017, Camptocamp SA" > $@.new
-	@echo "# All rights reserved." >> $@.new
-	@echo >> $@.new
-	@echo "# Auto-generated file. Do not Edit!" >> $@.new
-	@$(BUILD_DIR)/venv/bin/python c2cgeoportal/scripts/gen_version.py >> $@.new
-	rm --force $@
-	mv $@.new $@
-
-.PHONY: gen_current_version
-gen_current_versiion: c2cgeoportal/version.py

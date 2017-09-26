@@ -29,9 +29,6 @@
 
 import time
 import logging
-import sqlalchemy
-import sqlahelper
-import pyramid_tm
 import mimetypes
 import binascii
 import c2c.template
@@ -41,6 +38,7 @@ from socket import gethostbyname, gaierror
 from ipcalc import IP, Network
 from Crypto.Cipher import AES
 import importlib
+import re
 
 from pyramid_mako import add_mako_renderer
 from pyramid.interfaces import IStaticURLInfo
@@ -49,8 +47,11 @@ import pyramid.security
 
 from papyrus.renderers import GeoJSON, XSD
 
+import c2cwsgiutils.db
+import c2cwsgiutils.pyramid
+from c2cwsgiutils.health_check import HealthCheck
+
 import c2cgeoportal
-from c2cgeoportal import stats
 from c2cgeoportal.lib import dbreflection, caching, \
     C2CPregenerator, MultiDomainStaticURLInfo
 
@@ -477,25 +478,14 @@ def includeme(config):
     # configure 'locale' dir as the translation dir for c2cgeoportal app
     config.add_translation_dirs("c2cgeoportal:locale/")
 
-    # initialize database
-    engine = sqlalchemy.engine_from_config(
-        settings,
-        "sqlalchemy.")
-    sqlahelper.add_engine(engine)
-    config.include(pyramid_tm.includeme)
+    config.include(c2cwsgiutils.pyramid.includeme)
+    health_check = HealthCheck(config)
+    # TODO: add integration with the check collector
+
+    # Initialise DBSessions
+    init_dbsessions(settings, config, health_check)
+
     config.include("pyramid_closure")
-
-    if "sqlalchemy_slave.url" in settings and \
-            settings["sqlalchemy.url"] != settings["sqlalchemy_slave.url"]:  # pragma: nocover
-        # Setup a slave DB connection and add a tween to switch between it and the default one.
-        log.info("Using a slave DB for reading")
-        engine_slave = sqlalchemy.engine_from_config(config.get_settings(), "sqlalchemy_slave.")
-        sqlahelper.add_engine(engine_slave, name="slave")
-        config.add_tween("c2cgeoportal.models.db_chooser_tween_factory",
-                         over="pyramid_tm.tm_tween_factory")
-
-    # initialize the dbreflection module
-    dbreflection.init(engine)
 
     # dogpile.cache configuration
     caching.init_region(settings["cache"])
@@ -695,15 +685,6 @@ def includeme(config):
     # Resource proxy (load external url, useful when loading non https content)
     config.add_route("resourceproxy", "/resourceproxy", request_method="GET")
 
-    # Initialise DBSessions
-    init_dbsessions(settings)
-
-    config.add_route("checker_all", "/checker_all", request_method="GET")
-
-    config.add_route("version_json", "/version.json", request_method="GET")
-
-    stats.init(config)
-
     # scan view decorator for adding routes
     config.scan(ignore=["c2cgeoportal.scripts", "c2cgeoportal.wsgi_app"])
 
@@ -722,33 +703,36 @@ def includeme(config):
     # the client receives a status=200 without content.
     config.add_view(error_handler, context=HTTPException)
 
-    _log_versions(settings)
 
-
-def init_dbsessions(settings):
+def init_dbsessions(settings, config=None, health_check=None):
     # define the srid, schema as global variables to be usable in the model
     c2cgeoportal.srid = settings["srid"]
     c2cgeoportal.schema = settings["schema"]
 
-    from c2cgeoportal.models import DBSessions
-    for dbsession_name, dbsession_config in list(settings.get("dbsessions", {}).items()):  # pragma: nocover
-        url = dbsession_config.get("url")
-        assert url is not None
-        engine = sqlalchemy.create_engine(url)
-        sqlahelper.add_engine(engine, dbsession_name)
-        session = sqlalchemy.orm.session.sessionmaker()
-        DBSessions[dbsession_name] = session(bind=engine)
+    from c2cgeoportal import models
 
+    db_chooser = settings.get("db_chooser", {})
+    master_paths = [re.compile(i.replace("//", "/")) for i in db_chooser.get("master", [])]
+    slave_paths = [re.compile(i.replace("//", "/")) for i in db_chooser.get("slave", [])]
 
-def _log_versions(settings):
-    package = settings.get("package")
-    if package is not None:
-        try:
-            import c2cgeoportal.version
-            project_info = importlib.import_module(package + ".version").INFO
-            c2c_info = c2cgeoportal.version.INFO
-            log.warning("Starting WSGI for %s version %s (%s) with c2cgeoportal version %s (%s)",
-                        package, project_info["git_tag"], project_info["git_hash"][0:8],
-                        c2c_info["git_tag"], c2c_info["git_hash"][0:8])
-        except:  # pragma: nocover
-            pass  # In some cases, we do not have the version.py file
+    slave_prefix = "sqlalchemy_slave" if "sqlalchemy_slave.url" in settings else None
+
+    models.DBSession, rw_bind, ro_bind = c2cwsgiutils.db.setup_session(
+        config, "sqlalchemy", slave_prefix, force_master=master_paths, force_slave=slave_paths)
+    models.Base.metadata.bind = rw_bind
+    models.DBSessions["dbsession"] = models.DBSession
+
+    for dbsession_name, dbsession_config in settings.get("dbsessions", {}).items():  # pragma: nocover
+        models.DBSessions[dbsession_name] = \
+            c2cwsgiutils.db.create_session(config, dbsession_name, **dbsession_config)
+
+    # initialize the dbreflection module
+    dbreflection.init()
+
+    if health_check is not None:
+        for name, session in models.DBSessions.items():
+            if name == "dbsession":
+                health_check.add_db_session_check(session, at_least_one_model=models.Theme)
+            else:
+                health_check.add_db_session_check(session,
+                                                  query_cb=lambda session: session.execute("SELECT 1"))

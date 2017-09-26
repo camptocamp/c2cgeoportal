@@ -1,9 +1,9 @@
-FROM python:3.6
+FROM camptocamp/c2cwsgiutils:0
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
 RUN \
   apt-get update && \
-  apt-get install --assume-yes --no-install-recommends vim tree make git curl ca-certificates apt-transport-https libpq5 libgeos-c1 gettext libpq-dev libgeos-dev libjpeg-dev gcc default-jre-headless && \
+  apt-get install --assume-yes --no-install-recommends tree make git curl ca-certificates apt-transport-https gettext default-jre-headless && \
   echo 'deb https://deb.nodesource.com/node_6.x jessie main' > /etc/apt/sources.list.d/nodesource.list && \
   curl --silent https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - && \
   echo "deb http://apt.dockerproject.org/repo debian-jessie main" > /etc/apt/sources.list.d/docker.list && \

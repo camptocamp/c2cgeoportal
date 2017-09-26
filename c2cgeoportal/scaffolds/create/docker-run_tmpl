@@ -59,6 +59,8 @@ def main():
             )
         )
     ))
+    git_hash = subprocess.check_output(["git", "rev-parse", "HEAD"]).decode("utf-8").strip()
+    docker_cmd.append("--env=GIT_HASH={}".format(git_hash))
 
     if root:
         docker_cmd.extend(["--entrypoint", args[0]])

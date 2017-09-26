@@ -37,14 +37,6 @@ configuration. To enable this feature on GeoMapFish, you must add this to your
 .. code:: yaml
 
     dbhost_slave: my_db_slave_hostname
-    sqlalchemy_slave:
-        url: postgresql://{dbuser}:{dbpassword}@{dbhost_slave}:{dbport}/{db}
-
-Add in your project Makefile ``<package>.mk``:
-
-.. code:: makefile
-
-   CONFIG_VARS += sqlalchemy_slave.url
 
 Then, all the GET and OPTIONS requests will use one of the slave Postgres instances and the
 rest will use the master instance.

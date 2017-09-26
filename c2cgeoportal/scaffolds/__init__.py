@@ -157,7 +157,7 @@ class TemplateCreate(BaseTemplate):  # pragma: no cover
         """
 
         if os.name == 'posix':
-            for file_ in ("docker-run", "docker-compose-run", "gunicorn-run"):
+            for file_ in ("docker-run", "docker-compose-run"):
                 dest = os.path.join(output_dir, file_)
                 subprocess.check_call(["chmod", "+x", dest])
 
@@ -197,7 +197,7 @@ class TemplateUpdate(BaseTemplate):  # pragma: no cover
         """
 
         if os.name == 'posix':
-            for file_ in ("docker-run", "docker-compose-run", "gunicorn-run"):
+            for file_ in ("docker-run", "docker-compose-run"):
                 dest = os.path.join(output_dir, "CONST_create_template", file_)
                 subprocess.check_call(["chmod", "+x", dest])
         self.out(colorize("\nWelcome to c2cgeoportal!", GREEN))

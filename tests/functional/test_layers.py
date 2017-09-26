@@ -43,10 +43,8 @@ class TestLayers(TestCase):
     _tables = None
 
     def setup_method(self, _):
-        import sqlahelper
         import transaction
         from c2cgeoportal.models import DBSession, Role, User, Interface
-        from c2cgeoportal.lib.dbreflection import init
 
         cleanup_db()
 
@@ -71,9 +69,6 @@ class TestLayers(TestCase):
         DBSession.add(self.main)
         transaction.commit()
 
-        engine = sqlahelper.get_engine()
-        init(engine)
-
     def teardown_method(self, _):
         import transaction
 
@@ -92,7 +87,6 @@ class TestLayers(TestCase):
         a layer with two features, and associates a restriction area
         to it. """
         import transaction
-        import sqlahelper
         from sqlalchemy import Column, Table, types, ForeignKey
         from sqlalchemy.ext.declarative import declarative_base
         from geoalchemy2 import Geometry, WKTElement
@@ -104,7 +98,7 @@ class TestLayers(TestCase):
         self.__class__._table_index += 1
         id = self.__class__._table_index
 
-        engine = sqlahelper.get_engine()
+        engine = DBSession.c2c_rw_bind
         connection = engine.connect()
 
         if not self.metadata:

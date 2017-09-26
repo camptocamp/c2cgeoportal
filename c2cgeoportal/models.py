@@ -31,17 +31,15 @@
 import logging
 from hashlib import sha1
 
-import sqlahelper
 from papyrus.geo_interface import GeoInterface
-import re
 from sqlalchemy import ForeignKey, Table, event
 from sqlalchemy.types import Integer, Boolean, Unicode, Float, String, \
     Enum, DateTime, UserDefinedType
 from sqlalchemy import UniqueConstraint
 from sqlalchemy.schema import Index
 from sqlalchemy.orm import relationship, backref
-from sqlalchemy.exc import UnboundExecutionError
-from geoalchemy2 import Geometry, func
+import sqlalchemy.ext.declarative
+from geoalchemy2 import Geometry
 from geoalchemy2.shape import to_shape
 from sqlalchemy import Column
 
@@ -75,17 +73,9 @@ __all__ = [
 
 log = logging.getLogger(__name__)
 
-Base = sqlahelper.get_base()
-DBSession = sqlahelper.get_session()
-
-DBSessions = {
-    "dbsession": DBSession,
-}
-
-try:
-    postgis_version = DBSession.execute(func.postgis_version()).scalar()
-except UnboundExecutionError:  # pragma: no cover - needed by non functional tests
-    postgis_version = "2.0"
+DBSession = None  # Initialized by pyramid_.init_dbsessions
+Base = sqlalchemy.ext.declarative.declarative_base()
+DBSessions = {}
 
 AUTHORIZED_ROLE = "role_admin"
 
@@ -971,33 +961,3 @@ class Shorturl(Base):
     creation = Column(DateTime)
     last_hit = Column(DateTime)
     nb_hits = Column(Integer)
-
-
-def db_chooser_tween_factory(handler, registry):  # pragma: nocover
-    """
-    Tween factory to route to a slave DB for read-only queries.
-    Must be put over the pyramid_tm tween and sqlahelper must have a "slave" engine
-    configured.
-    """
-    settings = registry.settings.get("db_chooser", {})
-    master_paths = [re.compile(i.replace("//", "/")) for i in settings.get("master", [])]
-    slave_paths = [re.compile(i.replace("//", "/")) for i in settings.get("slave", [])]
-
-    def db_chooser_tween(request):
-        session = DBSession()
-        old = session.bind
-        method_path = "{0!s} {1!s}".format(request.method, request.path)
-        force_master = any(r.match(method_path) for r in master_paths)
-        if not force_master and (request.method in ("GET", "OPTIONS") or
-                                 any(r.match(method_path) for r in slave_paths)):
-            log.debug("Using slave database for: " + method_path)
-            session.bind = sqlahelper.get_engine("slave")
-        else:
-            log.debug("Using master database for: " + method_path)
-
-        try:
-            return handler(request)
-        finally:
-            session.bind = old
-
-    return db_chooser_tween

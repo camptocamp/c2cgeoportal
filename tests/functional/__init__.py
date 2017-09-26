@@ -79,8 +79,7 @@ def cleanup_db():
 
 
 def setup_common():
-    import c2cgeoportal
-
+    import c2cgeoportal.pyramid_
     global config
 
     current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -90,9 +89,9 @@ def setup_common():
     db_url = cfg.get("test", "sqlalchemy.url")
 
     assert db_url is not None
-
     config = testing.setUp(settings={
         "sqlalchemy.url": db_url,
+        "sqlalchemy_slave.url": db_url,
         "srid": 21781,
         "schema": "main",
         "default_max_age": 86400,
@@ -101,38 +100,21 @@ def setup_common():
         "enable_admin_interface": True,
     })
 
-    c2cgeoportal.schema = "main"
-    c2cgeoportal.srid = 21781
+    c2cgeoportal.pyramid_.init_dbsessions(config.get_settings(), config)
     functionality.FUNCTIONALITIES_TYPES = None
-
-    assert db_url is not None
-
-    # verify that we have a working database connection before going forward
-    from sqlalchemy import create_engine
-    engine = create_engine(db_url)
-    engine.connect()
-
-    import sqlahelper
-    sqlahelper.reset()
-    sqlahelper.add_engine(engine)
-
-    from c2cgeoportal import models
-    models.Base = sqlahelper.get_base()
-    models.DBSession = sqlahelper.get_session()
-    models.DBSessions = {
-        "dbsession": models.DBSession,
-    }
 
     cleanup_db()
 
 
 def teardown_common():
+    from c2cgeoportal import models
     cleanup_db()
     testing.tearDown()
     functionality.FUNCTIONALITIES_TYPES = None
 
-    import sqlahelper
-    sqlahelper.reset()
+    models.DBSession.close()
+    models.DBSession = None
+    models.DBSessions = {}
 
 
 def create_default_ogcserver():

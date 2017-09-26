@@ -30,7 +30,6 @@
 
 from unittest2 import TestCase
 
-import sqlahelper
 import transaction
 from geoalchemy2 import WKTElement
 from pyramid import testing
@@ -62,7 +61,6 @@ class TestThemeEditing(TestCase):
         from sqlalchemy import Column, Table, types
         from sqlalchemy.ext.declarative import declarative_base
         from geoalchemy2 import Geometry
-        from c2cgeoportal.lib.dbreflection import init
 
         for o in DBSession.query(RestrictionArea).all():
             DBSession.delete(o)
@@ -86,8 +84,7 @@ class TestThemeEditing(TestCase):
 
         main = Interface(name="main")
 
-        engine = sqlahelper.get_engine()
-        init(engine)
+        engine = DBSession.c2c_rw_bind
         engine.connect()
         a_geo_table = Table(
             "a_geo_table", declarative_base(bind=engine).metadata,

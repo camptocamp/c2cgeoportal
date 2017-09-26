@@ -34,8 +34,8 @@ import transaction
 from unittest2 import TestCase
 
 from sqlalchemy import Column
+import sqlalchemy.ext.declarative
 from sqlalchemy.types import Integer, Unicode, DateTime
-import sqlahelper
 from geoalchemy2 import Geometry
 from pyramid import testing
 
@@ -48,10 +48,10 @@ from tests.functional import (  # noqa
 import logging
 log = logging.getLogger(__name__)
 
-Base = sqlahelper.get_base()
+Base = sqlalchemy.ext.declarative.declarative_base()
 
 
-class TestPoint(Base):
+class PointTest(Base):
     __tablename__ = "testpointtime"
     __table_args__ = {"schema": "main"}
     id = Column(Integer, primary_key=True)
@@ -70,7 +70,7 @@ class TestThemesTimeView(TestCase):
         from c2cgeoportal.models import DBSession, \
             Theme, LayerGroup, Interface, LayerWMS, LayerWMTS
 
-        TestPoint.__table__.create(bind=DBSession.bind, checkfirst=True)
+        PointTest.__table__.create(bind=DBSession.bind, checkfirst=True)
 
         main = Interface(name="desktop")
         ogc_server, _ = create_default_ogcserver()
@@ -144,7 +144,7 @@ class TestThemesTimeView(TestCase):
         DBSession.query(OGCServer).delete()
 
         transaction.commit()
-        TestPoint.__table__.drop(bind=DBSession.bind, checkfirst=True)
+        PointTest.__table__.drop(bind=DBSession.bind, checkfirst=True)
 
     @staticmethod
     def _create_request_obj(params=None, **kwargs):

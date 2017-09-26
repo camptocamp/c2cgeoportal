@@ -100,4 +100,8 @@ RUN \
     tx pull --language ${LANG} --resource ngeo.ngeo-${TX_VERSION} --force; \
   done
 
+ENV LOG_LEVEL=INFO \
+    GUNICORN_ACCESS_LOG_LEVEL=INFO \
+    C2CGEOPORTAL_LOG_LEVEL=WARN
+
 WORKDIR /src

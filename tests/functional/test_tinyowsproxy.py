@@ -29,18 +29,16 @@
 
 
 # from unittest2 import TestCase
+# from nose.plugins.attrib import attr
 #
 # from geoalchemy2 import WKTElement
 # import transaction
-# import sqlahelper
 #
 # from tests import load_file, load_binfile
 # from tests.functional import (  # noqa
-#     teardown_common as teardown_module,
-#     setup_common as setup_module,
+#     tear_down_common as tearDownModule,
+#     set_up_common as setUpModule,
 #     create_dummy_request, create_default_ogcserver, cleanup_db)
-#
-# Base = sqlahelper.get_base()
 #
 #
 # def _create_dummy_request(username=None):
@@ -58,6 +56,7 @@
 #     return request
 #
 #
+# @attr(functional=True)
 # class TestTinyOWSProxyView(TestCase):
 #     data_base = "tests/data/"
 #     capabilities_response_file = \
@@ -73,7 +72,7 @@
 #     describefeaturetype_request_multiple_file = \
 #         data_base + "tinyows_describefeaturetype_request_multiple.xml"
 #
-#     def setup_method(self, _):
+#     def setUp(self):  # noqa
 #         from c2cgeoportal.models import User, Role, LayerWMS, RestrictionArea, \
 #             Interface, DBSession
 #
@@ -126,7 +125,8 @@
 #
 #         transaction.commit()
 #
-#     def teardown_method(self, _):
+#     @staticmethod
+#     def tearDown():  # noqa
 #         cleanup_db()
 #
 #     @staticmethod
@@ -289,6 +289,7 @@
 #         self.assertRaises(HTTPBadRequest, proxy.proxy)
 #
 #
+# @attr(functional=True)
 # class TestTinyOWSProxyViewNoDb(TestCase):
 #     data_base = "tests/data/"
 #     capabilities_request_file = \
@@ -306,7 +307,7 @@
 #     transaction_insert_request_file = \
 #         data_base + "tinyows_transaction_insert_request.xml"
 #
-#     def setup_method(self, _):
+#     def setUp(self):  # noqa
 #         # Always see the diff
 #         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
 #         self.maxDiff = None
@@ -314,7 +315,8 @@
 #         cleanup_db()
 #         create_default_ogcserver()
 #
-#     def teardown_method(self, _):
+#     @staticmethod
+#     def tearDown():  # noqa
 #         cleanup_db()
 #
 #     def test_parse_body_getcapabilities(self):

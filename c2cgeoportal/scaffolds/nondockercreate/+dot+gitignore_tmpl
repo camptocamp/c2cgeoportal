@@ -43,7 +43,6 @@
 /testdb/Dockerfile
 /deploy/hooks/pre-restore-database
 /deploy/hooks/post-restore
-/{{package}}/version.py
 /{{package}}/locale/*/LC_MESSAGES/*.mo
 /{{package}}/locale/{{package}}-*.pot
 /{{package}}/static-ngeo/build/

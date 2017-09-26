@@ -51,7 +51,6 @@ endif
 WEB_RULE ?= $(DEFAULT_WEB_RULE)
 
 DEFAULT_BUILD_RULES ?= /build/requirements.timestamp \
-	$(PACKAGE)/version.py \
 	/build/wsgi-docker.timestamp \
 	docker-compose.yaml \
 	docker-compose-build.yaml
@@ -89,6 +88,7 @@ OUTPUT_DIR = $(PACKAGE)/static/build
 # Git
 GIT_REMOTE ?= origin
 GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
+GIT_HASH ?= $(shell git rev-parse HEAD)
 
 # Visible web URL
 # The protocol part
@@ -311,14 +311,14 @@ ALL_JINJA_FILES = $(shell find $(FIND_OPTS) -name "*.jinja" -print)
 EXTRA_EXCLUDE = $(foreach ELEM, print mapfile jsbuild tilegeneration,-path ./$(ELEM) -prune -o)
 VARS_FILES += CONST_vars.yaml $(VARS_FILE)
 VARS_DEPENDS += $(VARS_FILES) /build/node_modules.timestamp
-CONFIG_VARS += sqlalchemy.url schema enable_admin_interface pyramid_closure \
+CONFIG_VARS += sqlalchemy.url sqlalchemy_slave.url schema enable_admin_interface pyramid_closure \
 	node_modules_path closure_library_path default_locale_name servers layers \
 	available_locale_names cache admin_interface functionalities \
 	raster shortener hide_capabilities mapserverproxy tinyowsproxy resourceproxy print_url \
 	tiles_url checker check_collector default_max_age jsbuild package srid \
 	reset_password fulltextsearch headers authorized_referers hooks stats db_chooser \
 	ogcproxy_enable dbsessions urllogin host_forward_host
-MAKE_FILES = $(shell ls -1 *.mk) CONST_Makefile
+MAKE_FILES = $(wildcard *.mk) CONST_Makefile
 
 # Disabling Make built-in rules to speed up execution time
 .SUFFIXES:
@@ -737,10 +737,9 @@ wsgi-docker: /build/wsgi-docker.timestamp
 /build/wsgi-docker.timestamp: $(shell docker-required --path .) \
 		$(SERVER_LOCALISATION_FILES) \
 		$(WEB_RULE) \
-		config.yaml \
-		$(PACKAGE)/version.py
+		config.yaml
 	$(PRERULE_CMD)
-	docker build -t $(DOCKER_BASE)-wsgi:$(DOCKER_TAG) .
+	docker build -t $(DOCKER_BASE)-wsgi:$(DOCKER_TAG) --build-arg "GIT_HASH=$(GIT_HASH)" .
 	touch $@
 
 .PHONY: push-docker
@@ -798,9 +797,3 @@ upgrade6: project.yaml $(UPGRADE_MAKE_FILE)
 # Tilecloud chain
 $(WMTSCAPABILITIES_FILE): tilegeneration/config.yaml
 	generate_controller --capabilities
-
-# Version
-$(PACKAGE)/version.py:
-	$(PRERULE_CMD)
-	@echo "# Auto-generated file. Do not Edit!" > $@
-	gen-version >> $@

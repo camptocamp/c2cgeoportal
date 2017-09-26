@@ -2,8 +2,12 @@ FROM camptocamp/geomapfish-build:${geomapfish_version}
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
 COPY . /app
-RUN pip install --disable-pip-version-check --no-cache-dir --no-deps --editable /app/
+WORKDIR /app
 
-EXPOSE 80
+ARG GIT_HASH
 
-ENTRYPOINT ["/app/gunicorn-run"]
+RUN pip install --disable-pip-version-check --no-cache-dir --no-deps --editable /app/ && \
+    c2cwsgiutils_genversion.py $GIT_HASH
+
+ENTRYPOINT []
+CMD ["c2cwsgiutils_run"]

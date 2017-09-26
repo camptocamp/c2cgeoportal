@@ -42,17 +42,10 @@ class TestReflection(TestCase):
 
     def setup_method(self, _):
         setup_module()
-
-        import sqlahelper
-        from c2cgeoportal.lib.dbreflection import init
-
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
         self.metadata = None
-
-        engine = sqlahelper.get_engine()
-        init(engine)
 
     def teardown_method(self, _):
         import c2cgeoportal.lib.dbreflection
@@ -71,13 +64,9 @@ class TestReflection(TestCase):
         there should not be two test functions that call this function
         with the same ptable_name value.
         """
-        import sqlahelper
+        from c2cgeoportal.models import Base
         from sqlalchemy import Table, Column, ForeignKey, types
-        from sqlalchemy.ext.declarative import declarative_base
         from geoalchemy2 import Geometry
-
-        engine = sqlahelper.get_engine()
-        Base = declarative_base(bind=engine)  # noqa
 
         if self._tables is None:
             self._tables = []
@@ -88,7 +77,7 @@ class TestReflection(TestCase):
             Column("name", types.Unicode),
             schema="public"
         )
-        ctable.create()
+        ctable.create(checkfirst=True)
         self._tables.append(ctable)
 
         ptable = Table(
@@ -110,7 +99,7 @@ class TestReflection(TestCase):
             Column("multipolygon", Geometry("MULTIPOLYGON")),
             schema="public"
         )
-        ptable.create()
+        ptable.create(checkfirst=True)
         self._tables.append(ptable)
 
         self.metadata = Base.metadata
@@ -235,7 +224,6 @@ class TestXSDSequenceCallback(TestCase):
 
     def setup_method(self, _):
         import transaction
-        import sqlahelper
         from sqlalchemy import Column, types, ForeignKey
         from sqlalchemy.orm import relationship
         from sqlalchemy.ext.declarative import declarative_base
@@ -246,8 +234,7 @@ class TestXSDSequenceCallback(TestCase):
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
 
-        engine = sqlahelper.get_engine()
-        Base = declarative_base(bind=engine)  # noqa
+        Base = declarative_base(bind=DBSession.c2c_rw_bind)  # noqa
 
         class Child(Base):
             __tablename__ = "child"

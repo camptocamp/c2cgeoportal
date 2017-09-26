@@ -31,7 +31,6 @@
 from urllib.parse import urlencode
 from unittest import TestCase
 
-import sqlahelper
 from tests.functional import (  # noqa
     teardown_common as teardown_module,
     setup_common as setup_module,
@@ -55,7 +54,6 @@ class TestThemesEditColumns(TestCase):
         import transaction
         from c2cgeoportal.models import DBSession, Role, User, Interface, TreeItem, Theme, \
             LayerGroup, OGCSERVER_AUTH_NOAUTH
-        from c2cgeoportal.lib.dbreflection import init
 
         for treeitem in DBSession.query(TreeItem).all():
             DBSession.delete(treeitem)
@@ -85,9 +83,6 @@ class TestThemesEditColumns(TestCase):
 
         transaction.commit()
 
-        engine = sqlahelper.get_engine()
-        init(engine)
-
     def teardown_method(self, _):
         import transaction
 
@@ -103,7 +98,6 @@ class TestThemesEditColumns(TestCase):
         a layer with two features, and associates a restriction area
         to it. """
         import transaction
-        import sqlahelper
         from sqlalchemy import Column, Table, types, ForeignKey
         from sqlalchemy.ext.declarative import declarative_base
         from geoalchemy2 import Geometry
@@ -112,7 +106,7 @@ class TestThemesEditColumns(TestCase):
         self.__class__._table_index += 1
         id = self.__class__._table_index
 
-        engine = sqlahelper.get_engine()
+        engine = DBSession.c2c_rw_bind
         connection = engine.connect()
 
         if not self.metadata:

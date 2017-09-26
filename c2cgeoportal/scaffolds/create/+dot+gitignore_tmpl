@@ -26,7 +26,6 @@
 /testdb/12-alembic.sql
 /testdb/13-alembic-static.sql
 /{{package}}.egg-info
-/{{package}}/version.py
 /{{package}}/locale/*/LC_MESSAGES/*.mo
 /{{package}}/locale/{{package}}-*.pot
 /{{package}}/static-ngeo/build/
