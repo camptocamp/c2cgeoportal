@@ -12,6 +12,7 @@ services:
         image: camptocamp/c2cgeoportal-gis-db
         environment:
         - POSTGRES_USER=www-data
+        - POSTGRES_PASSWORD=www-data
         - POSTGRES_DB=geomapfish_test
 
     mapserver:

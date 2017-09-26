@@ -30,12 +30,10 @@
 
 import json
 from unittest import TestCase
-from nose.plugins.attrib import attr
 
 from pyramid import testing
 
 
-@attr(functional=True)
 class TestEchoView(TestCase):
 
     def test_echo_bad_method(self):

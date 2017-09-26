@@ -732,7 +732,9 @@ def init_dbsessions(settings):
 
     from c2cgeoportal.models import DBSessions
     for dbsession_name, dbsession_config in list(settings.get("dbsessions", {}).items()):  # pragma: nocover
-        engine = sqlalchemy.create_engine(dbsession_config.get("url"))
+        url = dbsession_config.get("url")
+        assert url is not None
+        engine = sqlalchemy.create_engine(url)
         sqlahelper.add_engine(engine, dbsession_name)
         session = sqlalchemy.orm.session.sessionmaker()
         DBSessions[dbsession_name] = session(bind=engine)

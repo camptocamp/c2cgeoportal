@@ -30,7 +30,7 @@
 from unittest import TestCase
 from pyramid.testing import DummyRequest
 from c2cgeoportal.pyramid_ import CACHE_PATH
-from c2cgeoportal.lib.cacheversion import CachebusterTween
+from c2cgeoportal.lib.caching import init_region
 
 
 def handler(request):
@@ -44,7 +44,13 @@ class MyRequest(DummyRequest):
 
 class TestCacheBuster(TestCase):
 
+    @classmethod
+    def setup_class(cls):
+        init_region({"backend": "dogpile.cache.memory"})
+
     def test_replace(self):
+        from c2cgeoportal.lib.cacheversion import CachebusterTween
+
         CACHE_PATH.append("test")
         ctf = CachebusterTween(handler, None)
         request = MyRequest("/test/123456/build.css")
@@ -55,6 +61,8 @@ class TestCacheBuster(TestCase):
         self.assertEqual(response.headers["Access-Control-Allow-Headers"], "X-Requested-With, Content-Type")
 
     def test_noreplace(self):
+        from c2cgeoportal.lib.cacheversion import CachebusterTween
+
         CACHE_PATH.append("test")
         ctf = CachebusterTween(handler, None)
         request = MyRequest("/test2/123456/build.css")

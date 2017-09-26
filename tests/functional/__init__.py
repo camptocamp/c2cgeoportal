@@ -37,29 +37,18 @@ from configparser import ConfigParser
 from webob.acceptparse import Accept
 
 from pyramid import testing
-import c2cgeoportal
 import tests
 from c2cgeoportal.lib import functionality, caching
 
 
 mapserv_url = "http://mapserver/"
-db_url = None
-
-curdir = os.path.dirname(os.path.abspath(__file__))
-configfile = os.path.realpath(os.path.join(curdir, "test.ini"))
-
-if os.path.exists(configfile):
-    cfg = ConfigParser()
-    cfg.read(configfile)
-    db_url = cfg.get("test", "sqlalchemy.url")
-
-caching.init_region({"backend": "dogpile.cache.memory"})
 config = None
 
 
 def cleanup_db():
     """ Cleanup the database """
     import transaction
+    import c2cgeoportal.lib
     from c2cgeoportal.models import DBSession, OGCServer, TreeItem, Role, User, RestrictionArea, \
         Interface, Functionality, FullTextSearch, Shorturl
 
@@ -80,16 +69,43 @@ def cleanup_db():
     DBSession.query(Shorturl).delete()
     transaction.commit()
 
+    c2cgeoportal.lib.ogc_server_wms_url_ids = None
+    c2cgeoportal.lib.ogc_server_wfs_url_ids = None
+
+    caching.init_region({
+        "backend": "dogpile.cache.null",
+    })
     caching.invalidate_region()
 
 
-def set_up_common():
+def setup_common():
+    import c2cgeoportal
+
     global config
-    config = testing.setUp()
+
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    configfile = os.path.realpath(os.path.join(current_dir, "test.ini"))
+    cfg = ConfigParser()
+    cfg.read(configfile)
+    db_url = cfg.get("test", "sqlalchemy.url")
+
+    assert db_url is not None
+
+    config = testing.setUp(settings={
+        "sqlalchemy.url": db_url,
+        "srid": 21781,
+        "schema": "main",
+        "default_max_age": 86400,
+        "app.cfg": "/src/tests/config.yaml",
+        "package": "c2cgeoportal",
+        "enable_admin_interface": True,
+    })
 
     c2cgeoportal.schema = "main"
     c2cgeoportal.srid = 21781
     functionality.FUNCTIONALITIES_TYPES = None
+
+    assert db_url is not None
 
     # verify that we have a working database connection before going forward
     from sqlalchemy import create_engine
@@ -97,12 +113,20 @@ def set_up_common():
     engine.connect()
 
     import sqlahelper
+    sqlahelper.reset()
     sqlahelper.add_engine(engine)
+
+    from c2cgeoportal import models
+    models.Base = sqlahelper.get_base()
+    models.DBSession = sqlahelper.get_session()
+    models.DBSessions = {
+        "dbsession": models.DBSession,
+    }
 
     cleanup_db()
 
 
-def tear_down_common():
+def teardown_common():
     cleanup_db()
     testing.tearDown()
     functionality.FUNCTIONALITIES_TYPES = None

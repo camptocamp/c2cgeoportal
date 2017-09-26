@@ -35,15 +35,15 @@ import pyramid.security
 from c2cgeoportal.pyramid_ import create_get_user_from_request
 from c2cgeoportal.scripts.urllogin import create_token
 from tests.functional import (  # noqa
-    tear_down_common as tearDownModule,
-    set_up_common as setUpModule,
+    teardown_common as teardown_module,
+    setup_common as setup_module,
     create_dummy_request,
 )
 
 
 class TestUrllogin(TestCase):
 
-    def setUp(self):  # noqa
+    def setup_method(self, _):
         self.maxDiff = None
 
         from c2cgeoportal.models import User, DBSession
@@ -60,7 +60,7 @@ class TestUrllogin(TestCase):
 
         pyramid.security.remember = remember
 
-    def tearDown(self):  # noqa
+    def teardown_method(self, _):
         from c2cgeoportal.models import User, DBSession
 
         DBSession.query(User).filter(User.username == "__test_user1").delete()

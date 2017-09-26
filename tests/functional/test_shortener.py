@@ -29,24 +29,17 @@
 
 
 from unittest import TestCase
-from nose.plugins.attrib import attr
 
 from pyramid import testing
 
 from tests.functional import (  # noqa
-    tear_down_common as tearDownModule, set_up_common as setUpModule
+    teardown_common as teardown_module, setup_common as setup_module
 )
 
 
-@attr(functional=True)
 class TestshortenerView(TestCase):
 
-    @staticmethod
-    def setUp():  # noqa
-        pass
-
-    @staticmethod
-    def tearDown():  # noqa
+    def teardown_method(self, _):
         testing.tearDown()
 
         from c2cgeoportal.models import DBSession, Shorturl

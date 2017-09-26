@@ -38,12 +38,11 @@ class FakeRequest:
 
 
 class TestMemoryBackend(TestCase):
-    def setUp(self):
+    def setup_method(self, _):
         self.backend = stats._MemoryBackend()
         stats.BACKENDS = [self.backend]
 
-    @staticmethod
-    def tearDown():
+    def teardown_method(self, _):
         stats.BACKENDS = []
 
     def test_get_no_stats(self):

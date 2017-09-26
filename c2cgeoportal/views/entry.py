@@ -59,11 +59,7 @@ from c2cgeoportal.lib.functionality import get_functionality, \
     get_mapserver_substitution_params
 from c2cgeoportal.lib.wmstparsing import parse_extent, TimeInformation
 from c2cgeoportal.lib.email_ import send_email
-from c2cgeoportal.models import DBSession, User, Role, \
-    Theme, LayerGroup, RestrictionArea, Interface, OGCServer, \
-    Layer, LayerV1, LayerWMS, LayerWMTS, FullTextSearch, \
-    OGCSERVER_TYPE_GEOSERVER, OGCSERVER_TYPE_MAPSERVER, \
-    OGCSERVER_AUTH_GEOSERVER, OGCSERVER_AUTH_NOAUTH
+from c2cgeoportal import models
 from c2cgeoportal.views.layers import get_layer_metadatas
 
 _ = TranslationStringFactory("c2cgeoportal")
@@ -83,7 +79,7 @@ class DimensionInformation:
 
         dimensions = {}
         for dimension in layer.dimensions:
-            if not isinstance(layer, LayerWMS) and dimension.value is not None and \
+            if not isinstance(layer, models.LayerWMS) and dimension.value is not None and \
                     not self.URL_PART_RE.match(dimension.value):
                 errors.add(u"The layer '{}' has an unsupported dimension value '{}' ('{}').".format(
                     layer.name, dimension.value, dimension.name
@@ -131,28 +127,28 @@ class Entry:
         )
         if "default_ogc_server" in self.mapserver_settings:
             try:
-                self.default_ogc_server = DBSession.query(OGCServer).filter(
-                    OGCServer.name == self.mapserver_settings["default_ogc_server"]
+                self.default_ogc_server = models.DBSession.query(models.OGCServer).filter(
+                    models.OGCServer.name == self.mapserver_settings["default_ogc_server"]
                 ).one()
             except NoResultFound:  # pragma: no cover
                 log.error("Unable to find the OGC server named: {}.".format(
                     self.mapserver_settings["default_ogc_server"])
                 )
                 log.error("Available OGC servers: {}".format(
-                    ", ".join([i[0] for i in DBSession.query(OGCServer.name).all()]))
+                    ", ".join([i[0] for i in models.DBSession.query(models.OGCServer.name).all()]))
                 )
 
         if "external_ogc_server" in self.mapserver_settings:
             try:
-                self.external_ogc_server = DBSession.query(OGCServer).filter(
-                    OGCServer.name == self.mapserver_settings["external_ogc_server"]
+                self.external_ogc_server = models.DBSession.query(models.OGCServer).filter(
+                    models.OGCServer.name == self.mapserver_settings["external_ogc_server"]
                 ).one()
             except NoResultFound:  # pragma: no cover
                 log.error("Unable to find the OGC server named: {}.".format(
                     self.mapserver_settings["external_ogc_server"])
                 )
                 log.error("Available OGC servers: {}".format(
-                    ", ".join([i[0] for i in DBSession.query(OGCServer.name).all()]))
+                    ", ".join([i[0] for i in models.DBSession.query(models.OGCServer.name).all()]))
                 )
 
     @view_config(route_name="testi18n", renderer="testi18n.html")
@@ -162,13 +158,13 @@ class Entry:
 
     def _get_cache_role_key(self, ogc_server):
         return self._get_role_id() if (
-            ogc_server.auth != OGCSERVER_AUTH_NOAUTH
+            ogc_server.auth != models.OGCSERVER_AUTH_NOAUTH
         ) else None
 
     def _get_capabilities_cache_role_key(self, ogc_server):
         return self._get_role_id() if (
-            ogc_server.auth != OGCSERVER_AUTH_NOAUTH and
-            ogc_server.type != OGCSERVER_TYPE_MAPSERVER
+            ogc_server.auth != models.OGCSERVER_AUTH_NOAUTH and
+            ogc_server.type != models.OGCSERVER_TYPE_MAPSERVER
         ) else None
 
     def _get_metadata(self, item, metadata, errors):
@@ -232,7 +228,7 @@ class Entry:
         role = None if self.request.user is None else self.request.user.role
 
         # Add headers for Geoserver
-        if auth == OGCSERVER_AUTH_GEOSERVER and self.request.user is not None:
+        if auth == models.OGCSERVER_AUTH_GEOSERVER and self.request.user is not None:
             headers["sec-username"] = self.request.user.username
             headers["sec-roles"] = role.name
 
@@ -281,25 +277,27 @@ class Entry:
         """
 
         if version == 1:
-            query = DBSession.query(LayerV1.name)
+            query = models.DBSession.query(models.LayerV1.name)
         else:
-            query = DBSession.query(Layer.name).filter(Layer.item_type.in_(["l_wms", "l_wmts"]))
+            query = models.DBSession.query(models.Layer.name).filter(
+                models.Layer.item_type.in_(["l_wms", "l_wmts"])
+            )
 
-        query = query.filter(Layer.public.is_(True))
+        query = query.filter(models.Layer.public.is_(True))
 
         if interface is not None:
-            query = query.join(Layer.interfaces)
-            query = query.filter(Interface.name == interface)
+            query = query.join(models.Layer.interfaces)
+            query = query.filter(models.Interface.name == interface)
 
         if role_id is not None:
             query2 = get_protected_layers_query(
                 role_id, None,
-                what=LayerV1.name if version == 1 else LayerWMS.name,
+                what=models.LayerV1.name if version == 1 else models.LayerWMS.name,
                 version=version
             )
             if interface is not None:
-                query2 = query2.join(Layer.interfaces)
-                query2 = query2.filter(Interface.name == interface)
+                query2 = query2.join(models.Layer.interfaces)
+                query2 = query2.filter(models.Interface.name == interface)
             query = query.union(query2)
 
         return query
@@ -383,12 +381,12 @@ class Entry:
         errors = set()
         l = {
             "id": layer.id,
-            "name": layer.name if not isinstance(layer, LayerV1) else layer.layer,
+            "name": layer.name if not isinstance(layer, models.LayerV1) else layer.layer,
             "metadata": self._get_metadatas(layer, errors),
         }
         if re.search("[/?#]", layer.name):  # pragma: no cover
             errors.add("The layer has an unsupported name '{}'.".format(layer.name))
-        if isinstance(layer, LayerWMS) and re.search("[/?#]", layer.layer):  # pragma: no cover
+        if isinstance(layer, models.LayerWMS) and re.search("[/?#]", layer.layer):  # pragma: no cover
             errors.add("The layer has an unsupported layers '{}'.".format(layer.layer))
         if layer.geo_table:
             self._fill_editable(l, layer)
@@ -397,10 +395,10 @@ class Entry:
             time = TimeInformation()
         assert time is not None
 
-        if not isinstance(layer, LayerV1):
+        if not isinstance(layer, models.LayerV1):
             errors |= dim.merge(layer, l, mixed)
 
-        if isinstance(layer, LayerV1):
+        if isinstance(layer, models.LayerV1):
             wms, wms_layers, wms_errors = self._wms_layers(
                 self._get_cache_role_key(self.default_ogc_server),
                 self.default_ogc_server,
@@ -433,7 +431,7 @@ class Entry:
                 self._fill_external_wms(l, layer, errors)
             elif layer.layer_type == "WMTS":
                 self._fill_wmts(l, layer, errors)
-        elif isinstance(layer, LayerWMS):
+        elif isinstance(layer, models.LayerWMS):
             wms, wms_layers, wms_errors = self._wms_layers(
                 self._get_cache_role_key(layer.ogc_server),
                 layer.ogc_server,
@@ -447,7 +445,7 @@ class Entry:
             self._fill_wms(l, layer, errors, role_id, mixed=mixed)
             errors |= self._merge_time(time, l, layer, wms, wms_layers)
 
-        elif isinstance(layer, LayerWMTS):
+        elif isinstance(layer, models.LayerWMTS):
             l["type"] = "WMTS"
             self._fill_wmts(l, layer, errors, version=2)
 
@@ -456,7 +454,7 @@ class Entry:
     @staticmethod
     def _merge_time(time, l, layer, wms, wms_layers):
         errors = set()
-        wmslayer = layer.name if isinstance(layer, LayerV1) else layer.layer
+        wmslayer = layer.name if isinstance(layer, models.LayerV1) else layer.layer
         try:
             if wmslayer in wms_layers:
                 wms_layer_obj = wms[wmslayer]
@@ -486,11 +484,11 @@ class Entry:
 
     def _fill_editable(self, l, layer):
         if self.request.user:
-            c = DBSession.query(RestrictionArea) \
-                .filter(RestrictionArea.roles.any(
-                    Role.id == self.request.user.role.id)) \
-                .filter(RestrictionArea.layers.any(Layer.id == layer.id)) \
-                .filter(RestrictionArea.readwrite.is_(True)) \
+            c = models.DBSession.query(models.RestrictionArea) \
+                .filter(models.RestrictionArea.roles.any(
+                    models.Role.id == self.request.user.role.id)) \
+                .filter(models.RestrictionArea.layers.any(models.Layer.id == layer.id)) \
+                .filter(models.RestrictionArea.readwrite.is_(True)) \
                 .count()
             if c > 0:
                 l["editable"] = True
@@ -616,7 +614,7 @@ class Entry:
             if hasattr(wms_layer_obj, "queryable"):
                 l["queryable"] = wms_layer_obj.queryable
         else:
-            if self.default_ogc_server.type != OGCSERVER_TYPE_GEOSERVER:
+            if self.default_ogc_server.type != models.OGCSERVER_TYPE_GEOSERVER:
                 errors.add(
                     "The layer '{}' ({}) is not defined in WMS capabilities from '{}'".format(
                         wmslayer, layer.name, self.default_ogc_server.name
@@ -722,16 +720,16 @@ class Entry:
 
     @staticmethod
     def _layer_included(tree_item, version):
-        if version == 1 and isinstance(tree_item, LayerV1):
+        if version == 1 and isinstance(tree_item, models.LayerV1):
             return True
-        if version == 2 and isinstance(tree_item, Layer):
-            return not isinstance(tree_item, LayerV1)
+        if version == 2 and isinstance(tree_item, models.Layer):
+            return not isinstance(tree_item, models.LayerV1)
         return False
 
     @staticmethod
     def _is_internal_wms(layer):
         return \
-            isinstance(layer, LayerV1) and layer.layer_type == "internal WMS"
+            isinstance(layer, models.LayerV1) and layer.layer_type == "internal WMS"
 
     def _get_ogc_servers(self, group, depth=1):
         """ Recurse on all children to get unique identifier for each child. """
@@ -743,14 +741,14 @@ class Entry:
             return ogc_servers
 
         # recurse on children
-        if isinstance(group, LayerGroup) and len(group.children) > 0:
+        if isinstance(group, models.LayerGroup) and len(group.children) > 0:
             for tree_item in group.children:
                 ogc_servers.update(self._get_ogc_servers(tree_item, depth=depth + 1))
 
-        if isinstance(group, LayerWMS):
+        if isinstance(group, models.LayerWMS):
             ogc_servers.add(group.ogc_server)
 
-        if isinstance(group, LayerWMTS):
+        if isinstance(group, models.LayerWMTS):
             ogc_servers.add(False)
 
         return ogc_servers
@@ -788,9 +786,9 @@ class Entry:
             dim = DimensionInformation()
 
         for tree_item in group.children:
-            if isinstance(tree_item, LayerGroup):
+            if isinstance(tree_item, models.LayerGroup):
                 depth += 1
-                if isinstance(group, Theme) or catalogue or \
+                if isinstance(group, models.Theme) or catalogue or \
                         group.is_internal_wms == tree_item.is_internal_wms:
                     gp, gp_errors = self._group(
                         "{0!s}/{1!s}".format(path, tree_item.name),
@@ -807,12 +805,12 @@ class Entry:
                     ))
             elif self._layer_included(tree_item, version):
                 if tree_item.name in layers:
-                    if (catalogue or not isinstance(tree_item, LayerV1) or
-                        (isinstance(tree_item, LayerV1) and group.is_internal_wms ==
+                    if (catalogue or not isinstance(tree_item, models.LayerV1) or
+                        (isinstance(tree_item, models.LayerV1) and group.is_internal_wms ==
                             self._is_internal_wms(tree_item))):
 
                         layers_name.append(tree_item.name)
-                        if isinstance(tree_item, LayerWMS):
+                        if isinstance(tree_item, models.LayerWMS):
                             wms_layers.extend(tree_item.layer.split(","))
 
                         l, l_errors = self._layer(
@@ -902,21 +900,21 @@ class Entry:
         errors = set()
         layers = self._layers(role_id, version, interface)
 
-        themes = DBSession.query(Theme)
-        themes = themes.filter(Theme.public.is_(True))
+        themes = models.DBSession.query(models.Theme)
+        themes = themes.filter(models.Theme.public.is_(True))
         if role_id is not None:
-            auth_themes = DBSession.query(Theme)
-            auth_themes = auth_themes.filter(Theme.public.is_(False))
-            auth_themes = auth_themes.join(Theme.restricted_roles)
-            auth_themes = auth_themes.filter(Role.id == role_id)
+            auth_themes = models.DBSession.query(models.Theme)
+            auth_themes = auth_themes.filter(models.Theme.public.is_(False))
+            auth_themes = auth_themes.join(models.Theme.restricted_roles)
+            auth_themes = auth_themes.filter(models.Role.id == role_id)
 
             themes = themes.union(auth_themes)
 
-        themes = themes.order_by(Theme.ordering.asc())
+        themes = themes.order_by(models.Theme.ordering.asc())
 
         if filter_themes and interface is not None:
-            themes = themes.join(Theme.interfaces)
-            themes = themes.filter(Interface.name == interface)
+            themes = themes.join(models.Theme.interfaces)
+            themes = themes.filter(models.Interface.name == interface)
 
         export_themes = []
         for theme in themes.all():
@@ -978,7 +976,7 @@ class Entry:
         children = []
         errors = set()
         for item in theme.children:
-            if isinstance(item, LayerGroup):
+            if isinstance(item, models.LayerGroup):
                 gp, gp_errors = self._group(
                     "{0!s}/{1!s}".format(theme.name, item.name),
                     item, layers,
@@ -1061,8 +1059,8 @@ class Entry:
         # forward request to target (without Host Header)
         http = httplib2.Http()
         headers = dict(self.request.headers)
-        if urllib.parse.urlsplit(wfsgc_url).hostname != "localhost" and "Host" in headers:  # pragma: no cover
-            headers.pop("Host")
+        if urllib.parse.urlsplit(wfsgc_url).hostname != "localhost" and "Host" in headers:
+            headers.pop("Host")  # pragma nocover
 
         try:
             resp, get_capabilities_xml = http.request(wfsgc_url, method="GET", headers=headers)
@@ -1087,8 +1085,8 @@ class Entry:
                     name_value = name.childNodes[0].data
                     # ignore namespace when not using geoserver
                     if name_value.find(":") >= 0 and \
-                            not self.default_ogc_server.type == OGCSERVER_TYPE_GEOSERVER:  # pragma nocover
-                        name_value = name_value.split(":")[1]
+                            not self.default_ogc_server.type == models.OGCSERVER_TYPE_GEOSERVER:
+                        name_value = name_value.split(":")[1]  # pragma nocover
                     featuretypes.append(name_value)
                 else:  # pragma nocover
                     log.warn("Feature type without name: {0!s}".format(featureType.toxml()))
@@ -1221,9 +1219,9 @@ class Entry:
         vars_["debug"] = self.debug
 
         vars_["fulltextsearch_groups"] = [
-            group[0] for group in DBSession.query(
-                func.distinct(FullTextSearch.layer_name)
-            ).filter(FullTextSearch.layer_name.isnot(None)).all()
+            group[0] for group in models.DBSession.query(
+                func.distinct(models.FullTextSearch.layer_name)
+            ).filter(models.FullTextSearch.layer_name.isnot(None)).all()
         ]
 
         url, add_errors = self._get_wfs_url()
@@ -1342,9 +1340,9 @@ class Entry:
         if version == 2:
 
             result["ogcServers"] = {}
-            for ogc_server in DBSession.query(OGCServer).all():
+            for ogc_server in models.DBSession.query(models.OGCServer).all():
                 # required to do every time to validate the url.
-                if ogc_server.auth != OGCSERVER_AUTH_NOAUTH:
+                if ogc_server.auth != models.OGCSERVER_AUTH_NOAUTH:
                     url = self.request.route_url("mapserverproxy", _query={"ogcserver": ogc_server.name})
                     url_wfs = url
                 else:
@@ -1360,7 +1358,7 @@ class Entry:
                     "url": url,
                     "urlWfs": url_wfs,
                     "type": ogc_server.type,
-                    "credential": ogc_server.auth != OGCSERVER_AUTH_NOAUTH,
+                    "credential": ogc_server.auth != models.OGCSERVER_AUTH_NOAUTH,
                     "imageType": ogc_server.image_type,
                     "wfsSupport": ogc_server.wfs_support,
                     "isSingleTile": ogc_server.is_single_tile,
@@ -1395,14 +1393,14 @@ class Entry:
     def _get_group(self, group, role_id, interface, version):
         layers = self._layers(role_id, version, interface)
         try:
-            lg = DBSession.query(LayerGroup).filter(LayerGroup.name == group).one()
+            lg = models.DBSession.query(models.LayerGroup).filter(models.LayerGroup.name == group).one()
             return self._group(
                 lg.name, lg, layers,
                 role_id=role_id, version=version
             )
         except NoResultFound:  # pragma: no cover
             return None, set(["Unable to find the Group named: {}, Available Groups: {}".format(
-                group, ", ".join([i[0] for i in DBSession.query(LayerGroup.name).all()])
+                group, ", ".join([i[0] for i in models.DBSession.query(models.LayerGroup.name).all()])
             )])
 
     @view_config(context=HTTPForbidden, renderer="login.html")
@@ -1533,7 +1531,7 @@ class Entry:
         u = self.request.user
         u.password = new_password
         u.is_password_changed = True
-        DBSession.flush()
+        models.DBSession.flush()
         log.info("Password changed for user '{0!s}'".format(self.request.user.username))
 
         return {
@@ -1554,7 +1552,7 @@ class Entry:
     def _loginresetpassword(self):
         username = self.request.POST["login"]
         try:
-            user = DBSession.query(User).filter(User.username == username).one()
+            user = models.DBSession.query(models.User).filter(models.User.username == username).one()
         except NoResultFound:  # pragma: no cover
             return None, None, None, "The login '{0!s}' does not exist.".format(username)
 

@@ -30,19 +30,19 @@
 
 import re
 from unittest import TestCase
-from nose.plugins.attrib import attr
 
 from tests.functional import (  # noqa
-    tear_down_common as tearDownModule,
-    set_up_common as setUpModule)
+    teardown_common as teardown_module,
+    setup_common as setup_module)
 
 
-@attr(functional=True)
 class TestReflection(TestCase):
 
     _tables = None
 
-    def setUp(self):  # noqa
+    def setup_method(self, _):
+        setup_module()
+
         import sqlahelper
         from c2cgeoportal.lib.dbreflection import init
 
@@ -54,7 +54,7 @@ class TestReflection(TestCase):
         engine = sqlahelper.get_engine()
         init(engine)
 
-    def tearDown(self):  # noqa
+    def teardown_method(self, _):
         import c2cgeoportal.lib.dbreflection
 
         if self._tables is not None:
@@ -229,12 +229,11 @@ class TestReflection(TestCase):
         )
 
 
-@attr(functional=True)
 class TestXSDSequenceCallback(TestCase):
 
     _tables = None
 
-    def setUp(self):  # noqa
+    def setup_method(self, _):
         import transaction
         import sqlahelper
         from sqlalchemy import Column, types, ForeignKey
@@ -277,7 +276,7 @@ class TestXSDSequenceCallback(TestCase):
         self.metadata = Base.metadata
         self.cls = Parent
 
-    def tearDown(self):  # noqa
+    def teardown_method(self, _):
         import transaction
         transaction.commit()
 

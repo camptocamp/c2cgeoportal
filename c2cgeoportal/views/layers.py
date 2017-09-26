@@ -56,7 +56,8 @@ from papyrus.xsd import XSDGenerator
 from c2cgeoportal.lib.caching import get_region, \
     set_common_headers, NO_CACHE, PUBLIC_CACHE, PRIVATE_CACHE
 from c2cgeoportal.lib.dbreflection import get_class, get_table, _AssociationProxy
-from c2cgeoportal.models import DBSessions, DBSession, Layer, RestrictionArea, Role
+from c2cgeoportal import models
+from c2cgeoportal.models import Layer, RestrictionArea, Role
 
 cache_region = get_region()
 
@@ -95,7 +96,7 @@ class Layers:
         """ Return a ``Layer`` object for ``layer_id``. """
         layer_id = int(layer_id)
         try:
-            query = DBSession.query(Layer, Layer.geo_table)
+            query = models.DBSession.query(Layer, Layer.geo_table)
             query = query.filter(Layer.id == layer_id)
             layer, geo_table = query.one()
         except NoResultFound:
@@ -133,7 +134,7 @@ class Layers:
         """ Returns a papyrus ``Protocol`` for the ``Layer`` object. """
         cls = get_class(layer.geo_table)
         geom_attr = self._get_geom_col_info(layer)[0]
-        return Protocol(DBSession, cls, geom_attr, **kwargs)
+        return Protocol(models.DBSession, cls, geom_attr, **kwargs)
 
     def _get_protocol_for_request(self, **kwargs):
         """ Returns a papyrus ``Protocol`` for the first layer
@@ -151,7 +152,7 @@ class Layers:
             raise HTTPForbidden()
         cls = proto.mapped_class
         geom_attr = proto.geom_attr
-        ras = DBSession.query(RestrictionArea.area, RestrictionArea.area.ST_SRID())
+        ras = models.DBSession.query(RestrictionArea.area, RestrictionArea.area.ST_SRID())
         ras = ras.join(RestrictionArea.roles)
         ras = ras.join(RestrictionArea.layers)
         ras = ras.filter(Role.id == user.role.id)
@@ -209,7 +210,7 @@ class Layers:
         shape = asShape(geom)
         srid = self._get_geom_col_info(layer)[1]
         spatial_elt = from_shape(shape, srid=srid)
-        allowed = DBSession.query(func.count(RestrictionArea.id))
+        allowed = models.DBSession.query(func.count(RestrictionArea.id))
         allowed = allowed.join(RestrictionArea.roles)
         allowed = allowed.join(RestrictionArea.layers)
         allowed = allowed.filter(Role.id == self.request.user.role.id)
@@ -247,7 +248,7 @@ class Layers:
                 shape = asShape(geom)
                 srid = self._get_geom_col_info(layer)[1]
                 spatial_elt = from_shape(shape, srid=srid)
-                allowed = DBSession.query(func.count(RestrictionArea.id))
+                allowed = models.DBSession.query(func.count(RestrictionArea.id))
                 allowed = allowed.join(RestrictionArea.roles)
                 allowed = allowed.join(RestrictionArea.layers)
                 allowed = allowed.filter(RestrictionArea.readwrite.is_(True))
@@ -292,7 +293,7 @@ class Layers:
             geom_attr, srid = self._get_geom_col_info(layer)
             geom_attr = getattr(o, geom_attr)
             geom = feature.geometry
-            allowed = DBSession.query(func.count(RestrictionArea.id))
+            allowed = models.DBSession.query(func.count(RestrictionArea.id))
             allowed = allowed.join(RestrictionArea.roles)
             allowed = allowed.join(RestrictionArea.layers)
             allowed = allowed.filter(RestrictionArea.readwrite.is_(True))
@@ -329,12 +330,12 @@ class Layers:
     @staticmethod
     def _validate_geometry(geom):
         if geom is not None:
-            simple = DBSession.query(func.ST_IsSimple(geom)).scalar()
+            simple = models.DBSession.query(func.ST_IsSimple(geom)).scalar()
             if not simple:
                 raise TopologicalError("Not simple")
-            valid = DBSession.query(func.ST_IsValid(geom)).scalar()
+            valid = models.DBSession.query(func.ST_IsValid(geom)).scalar()
             if not valid:
-                reason = DBSession.query(func.ST_IsValidReason(geom)).scalar()
+                reason = models.DBSession.query(func.ST_IsValidReason(geom)).scalar()
                 raise TopologicalError(reason)
 
     def _log_last_update(self, layer, feature):
@@ -371,7 +372,7 @@ class Layers:
 
         def security_cb(r, o):
             geom_attr = getattr(o, self._get_geom_col_info(layer)[0])
-            allowed = DBSession.query(func.count(RestrictionArea.id))
+            allowed = models.DBSession.query(func.count(RestrictionArea.id))
             allowed = allowed.join(RestrictionArea.roles)
             allowed = allowed.join(RestrictionArea.layers)
             allowed = allowed.filter(RestrictionArea.readwrite.is_(True))
@@ -436,7 +437,7 @@ class Layers:
         layerinfos = self.layers_enum_config[layername]
         if fieldname not in layerinfos["attributes"]:  # pragma: no cover
             raise HTTPBadRequest("Unknown attribute: {0!s}".format(fieldname))
-        dbsession = DBSessions.get(
+        dbsession = models.DBSessions.get(
             layerinfos.get("dbsession", "dbsession"),
         )
         if dbsession is None:  # pragma: no cover
@@ -510,7 +511,7 @@ def get_layer_metadatas(layer):
                 relationship_property = class_mapper(cls) \
                     .get_property(p.target)
                 target_cls = relationship_property.argument
-                query = DBSession.query(getattr(target_cls, p.value_attr))
+                query = models.DBSession.query(getattr(target_cls, p.value_attr))
                 properties = {}
                 if column.nullable:
                     properties["nillable"] = True

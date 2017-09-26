@@ -28,20 +28,18 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from nose.plugins.attrib import attr
 from unittest import TestCase
 
 from tests.functional import (  # noqa
-    tear_down_common as tearDownModule,
-    set_up_common as setUpModule,
+    teardown_common as teardown_module,
+    setup_common as setup_module,
     create_dummy_request,
 )
 
 
-@attr(functional=True)
 class TestGroupsFinder(TestCase):
 
-    def setUp(self):  # noqa
+    def setup_method(self, _):
         import transaction
         from c2cgeoportal.models import DBSession, User, Role
 
@@ -55,8 +53,7 @@ class TestGroupsFinder(TestCase):
         DBSession.add_all([r, u])
         transaction.commit()
 
-    @staticmethod
-    def tearDown():  # noqa
+    def teardown_method(self, _):
         import transaction
         from c2cgeoportal.models import DBSession, User, Role
 
