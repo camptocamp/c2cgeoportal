@@ -75,7 +75,6 @@ build: $(MAKO_FILES:.mako=) \
 	c2cgeoportal/version.py \
 	$(MO_FILES) \
 	$(APPS_FILES) \
-	c2cgeoportal/scaffolds/update/+dot+tx/CONST_config_mako \
 	c2cgeoportal/scaffolds/create/package.json_tmpl \
 	c2cgeoportal/scaffolds/update/CONST_create_template/ \
 	c2cgeoportal/scaffolds/nondockerupdate/CONST_create_template/
@@ -220,14 +219,6 @@ $(APPS_PACKAGE_PATH)/static-ngeo/components/contextualdata/contextualdata.html: 
 	mkdir -p $(dir $@)
 	cp $< $@
 
-ngeo/.tx/config.mako: ngeo
-
-c2cgeoportal/scaffolds/update/+dot+tx/CONST_config_mako: ngeo/.tx/config.mako
-	$(PRERULE_CMD)
-	mkdir -p $(dir $@)
-	cp $< $@
-	sed -i 's/\.build/\/build/g' $@
-
 .PRECIOUS: ngeo/package.json
 ngeo/package.json: ngeo
 	$(PRERULE_CMD)
@@ -280,7 +271,7 @@ c2cgeoportal/locale/en/LC_MESSAGES/c2cgeoportal.po: c2cgeoportal/locale/c2cgeopo
 c2cgeoportal/locale/%/LC_MESSAGES/c2cgeoportal.po: $(TX_DEPENDENCIES)
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
-	tx pull -l $* --force
+	tx pull --language $* --resource geomapfish.c2cgeoportal-$(TX_VERSION) --force
 	$(TOUCHBACK_TXRC)
 	test -s $@
 
@@ -288,7 +279,7 @@ c2cgeoportal/scaffolds/create/+package+/locale/%/LC_MESSAGES/+package+-client.po
 		$(TX_DEPENDENCIES)
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
-	tx pull -l $* --force
+	tx pull --language $* --resource ngeo.gmf-apps-$(TX_VERSION) --force
 	$(TOUCHBACK_TXRC)
 	test -s $@
 

@@ -150,16 +150,6 @@ NGEO_LIBS_JS_FILES += \
 NGEO_PROJECT_LIBS_JS_FILES ?=
 
 # i18n
-TX_VERSION = $(shell $(VENV_BIN)/python -c "print('_'.join(__import__('pkg_resources').get_distribution('c2cgeoportal').version.split('.')[0:2]))")
-TX_RC = $(HOME_DIR).transifexrc
-TX_DEPENDENCIES = $(TX_RC) .tx/config
-TX_HOST ?= https://www.transifex.com
-ifeq (,$(wildcard $(TX_RC)))
-TOUCHBACK_TXRC := touch --no-create --date "$(shell date --iso-8601=seconds)" $(HOME)/.transifexrc
-else
-TOUCHBACK_TXRC := touch --no-create --date "$(shell stat -c '%y' $(TX_RC))" $(TX_RC)
-endif
-
 I18N_SOURCE_FILES += $(APP_HTML_FILES) \
 	$(APP_JS_FILES) \
 	$(APP_DIRECTIVES_PARTIALS_FILES) \
@@ -510,39 +500,6 @@ update-po: $(addprefix /build/lang-client-, $(LANGUAGES)) $(addprefix /build/lan
 	msgfmt -o $@ $<
 	touch --no-create $@
 
-# Get l10n from ngeo
-
-$(TX_RC):
-	$(PRERULE_CMD)
-	echo "[$(TX_HOST)]" > $@
-	echo "hostname = $(TX_HOST)" >> $@
-	echo "username = c2c" >> $@
-	echo "password = c2cc2c" >> $@
-	echo "token =" >> $@
-
-.tx/config: .tx/CONST_config_mako
-	$(PRERULE_CMD)
-	PYTHONIOENCODING=UTF-8 mako-render \
-		--var "tx_version=$(TX_VERSION)" --var "tx_host=$(TX_HOST)" --var "languages=$(LANGUAGES)" $< > $@
-
-.PRECIOUS: /build/locale/%/LC_MESSAGES/gmf.po
-/build/locale/%/LC_MESSAGES/gmf.po: $(TX_DEPENDENCIES)
-	$(PRERULE_CMD)
-	mkdir -p $(dir $@)
-	sleep 1 # To be sure that the creation date should be after the .transifexrc file. (the $(TOUCHBACK_TXRC) lost the ms)
-	tx pull --language $* --resource ngeo.gmf-$(TX_VERSION) --force
-	$(TOUCHBACK_TXRC)
-	test -s $@
-
-.PRECIOUS: /build/locale/%/LC_MESSAGES/ngeo.po
-/build/locale/%/LC_MESSAGES/ngeo.po: $(TX_DEPENDENCIES)
-	$(PRERULE_CMD)
-	mkdir -p $(dir $@)
-	sleep 1 # To be sure that the creation date should be after the .transifexrc file. (the $(TOUCHBACK_TXRC) lost the ms)
-	tx pull --language $* --resource ngeo.ngeo-$(TX_VERSION) --force
-	$(TOUCHBACK_TXRC)
-	test -s $@
-
 # ngeo
 
 .PHONY: build-ngeo
@@ -550,13 +507,13 @@ build-ngeo: $(NGEO_OUTPUT_FILES)
 
 .PRECIOUS: $(APP_OUTPUT_DIR)/%.json
 $(APP_OUTPUT_DIR)/%.json: $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).po \
-		$(addprefix /build/locale/, $(addsuffix /LC_MESSAGES/gmf.po, $(filter-out en, $(LANGUAGES)))) \
-		$(addprefix /build/locale/, $(addsuffix /LC_MESSAGES/ngeo.po, $(filter-out en, $(LANGUAGES))))
+		$(addprefix /opt/locale/, $(addsuffix /LC_MESSAGES/gmf.po, $(filter-out en, $(LANGUAGES)))) \
+		$(addprefix /opt/locale/, $(addsuffix /LC_MESSAGES/ngeo.po, $(filter-out en, $(LANGUAGES))))
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
 	node /usr/bin/compile-catalog \
-		/build/locale/$*/LC_MESSAGES/gmf.po \
-		/build/locale/$*/LC_MESSAGES/ngeo.po \
+		/opt/locale/$*/LC_MESSAGES/gmf.po \
+		/opt/locale/$*/LC_MESSAGES/ngeo.po \
 		$< > $@
 
 $(APP_OUTPUT_DIR)/angular-locale_%.js: /usr/lib/node_modules/ngeo/github_versions language_mapping

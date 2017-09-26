@@ -12,7 +12,6 @@
 /c2cgeoportal/scaffolds/create/+package+/locale/*/LC_MESSAGES/+package+-client.po
 /c2cgeoportal/scaffolds/update/CONST_Makefile_tmpl.mk
 /c2cgeoportal/scaffolds/create/package.json_tmpl
-/c2cgeoportal/scaffolds/update/+dot+tx/CONST_config_mako
 /c2cgeoportal/scaffolds/create/+package+/templates/mobile.html_tmpl
 /c2cgeoportal/scaffolds/create/+package+/templates/desktop.html_tmpl
 /c2cgeoportal/scaffolds/create/+package+/static-ngeo/images/
@@ -41,4 +40,3 @@
 /gatling/.cache-main
 /SUCCESS
 /.coverage
-/.tx/config
