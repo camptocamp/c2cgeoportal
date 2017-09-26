@@ -49,7 +49,7 @@ def main():
             l.strip()
             for l in diff.split("\n")
         ]
-    if len(files) == 0:
+    if len(files) == 0 or os.environ.get("TRAVIS_BRANCH") != "master":
         subprocess.check_call(["docker", "pull", args.tag])
     else:
         if args.rules is not None:
