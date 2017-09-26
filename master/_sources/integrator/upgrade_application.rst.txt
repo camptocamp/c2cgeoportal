@@ -7,7 +7,7 @@ Upgrading a GeoMapFish application
 Updating the application code
 -----------------------------
 
-Verify that you have in your ``project.yaml.mako`` file the following ``template_vars``: ``package``, ``srid``, ``extent``, ``apache_vhost``, for example:
+Verify that you have in your ``project.yaml.mako`` file the following ``template_vars``: ``package``, ``srid``, ``extent``, for example:
 
 .. code:: yaml
 
@@ -16,16 +16,13 @@ Verify that you have in your ``project.yaml.mako`` file the following ``template
        package: ${package}
        srid: ${srid}
        extent: 489246, 78873, 837119, 296543
-       apache_vhost: <apache_vhost>
 
 Then run:
 
 .. prompt:: bash
 
-   make -f <makefile> update
-   make -f <makefile> build
-
-Where ``<makefile>`` is your user make file (``<user>.mk``).
+   make update
+   make build
 
 
 Upgrading an application
@@ -33,9 +30,6 @@ Upgrading an application
 
 In the ``setup.py`` be sure not to specify a ``c2cgeoportal`` version,
 because it will prevent the installation of the new ``c2cgeoportal`` egg.
-
-We consider that your makefile is named ``<instanceid>.mk``, if it is not the case
-add in your Makefile ``UPGRADE_MAKE_FILE = <user.mk>``
 
 .. note:: For Windows:
 
@@ -45,16 +39,13 @@ To upgrade run:
 
 .. prompt:: bash
 
-   export VERSION=<target_version>
-   make -f <makefile> upgrade
+    wget https://raw.githubusercontent.com/camptocamp/c2cgeoportal/2.3/c2cgeoportal/scaffolds/create/docker-run_tmpl
+    mv docker-run_tmpl docker-run
+    sed -i 's/{{geomapfish_version}}/<target_version>/g'
+    chmod +x docker-run
+    ./docker-run make upgrade
 
-.. note:: For Windows:
-
-   You should replace ``export VERSION=<target_version>`` with
-   ``SET VERSION=<target_version>``.
-
-Where ``<makefile>`` is your user Makefile (``<user>.mk``),
-``<target_version>`` is the version that you wish to upgrade to.
+Where ``<target_version>`` is the version that you wish to upgrade to.
 
 And follow the instructions.
 
@@ -71,7 +62,7 @@ And follow the instructions.
 
         ``make -f <makefile> clean``
 
-    * Change the version in ``setup.py`` and ``CONST_requirements.txt``
+    * Change the version in ``setup.py``
       to the version you wish to install.
     * Build your application:
 
@@ -80,8 +71,6 @@ And follow the instructions.
     *  Put your modifications under git revision:
 
         ``git add setup.py``
-
-        ``git add CONST_requirements.txt``
 
         ``git commit -m "Upgrade c2cgeoportal version"``
 
@@ -102,16 +91,16 @@ The help:
 
 .. code:: bash
 
-   .build/venv/bin/alembic --help
+   ./docker-run alembic --help
 
 Upgrade the main schema:
 
 .. code:: bash
 
-   .build/venv/bin/alembic --config alembic.ini upgrade head
+   ./docker-run alembic --config alembic.ini upgrade head
 
 Upgrade the static schema:
 
 .. code:: bash
 
-   .build/venv/bin/alembic --config alembic_static.ini upgrade head
+   ./docker-run alembic --config alembic_static.ini upgrade head

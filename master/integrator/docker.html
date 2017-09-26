@@ -25,7 +25,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Editing (with CGXP)" href="editing.html" />
-    <link rel="prev" title="Infrastructure and Deployment" href="deploy.html" />
+    <link rel="prev" title="Customise the application" href="customise.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -45,15 +45,12 @@
 <h1>Use Docker to deploy your application<a class="headerlink" href="#use-docker-to-deploy-your-application" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="configure-your-project">
 <h2>Configure your project<a class="headerlink" href="#configure-your-project" title="Permalink to this headline">¶</a></h2>
-<p>Edit the <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> file and add those lines after the APACHE_VHOST
-line:</p>
+<p>Edit the <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> file and add those lines:</p>
 <div class="code make highlight-default"><div class="highlight"><pre><span></span><span class="n">DOCKER</span> <span class="o">=</span> <span class="n">TRUE</span>
 <span class="n">DOCKER_BASE</span> <span class="o">=</span> <span class="n">camptocamp</span><span class="o">/&lt;</span><span class="n">project_name</span><span class="o">&gt;</span>
 <span class="n">JASPERREPORTS_VERSION</span> <span class="o">=</span> <span class="mf">6.1</span><span class="o">.</span><span class="mi">1</span>
 </pre></div>
 </div>
-<p>In the private makefiles, do not specify the <code class="docutils literal"><span class="pre">INSTANCE_ID</span></code> (you’ll be alone
-in your container).</p>
 <p>After that, a <code class="docutils literal"><span class="pre">make</span> <span class="pre">-f</span> <span class="pre">&lt;xxx.mk&gt;</span> <span class="pre">build</span></code> will create Docker images named like
 that:</p>
 <ul class="simple">
@@ -71,7 +68,7 @@ that:</p>
 <div class="section" id="database-container">
 <h2>Database container<a class="headerlink" href="#database-container" title="Permalink to this headline">¶</a></h2>
 <p>You can add scripts to populate the DB container by adding <code class="docutils literal"><span class="pre">.sql</span></code> or <code class="docutils literal"><span class="pre">.sh</span></code>
-files in the <code class="docutils literal"><span class="pre">testDB</span></code> directory. They must start with 2 digits, followed by
+files in the <code class="docutils literal"><span class="pre">testdb</span></code> directory. They must start with 2 digits, followed by
 an underscore. Please start at number 20.</p>
 </div>
 <div class="section" id="developer-composition">
@@ -268,7 +265,7 @@ DB schema, if needed.</p>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="index.html">Integrator Guide</a><ul>
-      <li>Previous: <a href="deploy.html" title="previous chapter">Infrastructure and Deployment</a></li>
+      <li>Previous: <a href="customise.html" title="previous chapter">Customise the application</a></li>
       <li>Next: <a href="editing.html" title="next chapter">Editing (with CGXP)</a></li>
   </ul></li>
   </ul></li>

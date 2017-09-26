@@ -50,21 +50,7 @@ Print
 
 The print requires a Tomcat server listening by default on port 8080.
 To change it you should overwrite the ``print_url`` vars in ``config.yaml.in``,
-default is: ``http://localhost:8080/print-c2cgeoportal-{instanceid}/pdf/``.
-
-And by default the 'webapps' folder is ``/srv/tomcat/tomcat1/webapps``,
-to change it set the ``PRINT_OUTPUT`` value in the makefile.
-
-For MapFish Print to function properly it is recommended to increase the default
-Java Heap Size for Tomcat (parameter ``-Xmx`` and ``-Xms``). On servers managed
-by Camptocamp check the size in the file ``/srv/tomcat/tomcat1/bin/setenv-local.sh``:
-
-  .. code:: make
-
-    export JAVA_XMX="1G"
-    export ADD_JAVA_OPTS="-Xms1G"
-
-The above settings set the minimum and maximum heap size to 1GB.
+default is: ``http://localhost:8080/print/pdf/``.
 
 Additional notes for Windows users
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

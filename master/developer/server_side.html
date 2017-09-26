@@ -79,7 +79,6 @@ span.prompt1:before {
 <ul>
 <li><p class="first">Edit your <code class="docutils literal"><span class="pre">&lt;user&gt;.mk</span></code> to have something like this:</p>
 <pre class="code make literal-block">
-<span class="name variable">INSTANCE_ID</span> <span class="operator">=</span> &lt;user&gt;
 <span class="name variable">DEVELOPMENT</span> <span class="operator">=</span> TRUE
 <span class="name variable">REQUIREMENTS</span> <span class="operator">=</span> -e ../c2cgeoportal
 
@@ -88,7 +87,7 @@ span.prompt1:before {
 </pre>
 </li>
 <li><p class="first">Uninstall the regular c2cgeoportal egg from the virtual environment:</p>
-<pre class="highlight"><span class="prompt1">.build/venv/bin/pip uninstall c2cgeoportal</span>
+<pre class="highlight"><span class="prompt1">./docker-run pip uninstall c2cgeoportal</span>
 </pre></li>
 <li><p class="first">Remove/comment the following line in the CONST_requirements.txt file:</p>
 <div class="code make highlight-default"><div class="highlight"><pre><span></span><span class="n">c2cgeoportal</span><span class="o">==</span><span class="mf">1.6</span><span class="o">.</span><span class="mi">0</span>
@@ -96,7 +95,7 @@ span.prompt1:before {
 </div>
 </li>
 <li><p class="first">Build your application application:</p>
-<pre class="highlight"><span class="prompt1">rm .build/requirements.timestamp <span class="o">&amp;&amp;</span> make -f &lt;user&gt;.mk build</span>
+<pre class="highlight"><span class="prompt1">./docker-run rm /build/requirements.timestamp <span class="o">&amp;&amp;</span> ./docker-run make build</span>
 </pre></li>
 </ul>
 <div class="admonition note">
@@ -161,10 +160,10 @@ database.</p>
 <span class="prompt1">sudo -u postgres psql -d geomapfish_test -c <span class="s1">&#39;CREATE SCHEMA geodata;&#39;</span></span>
 <span class="prompt1">sudo -u postgres psql -d geomapfish_test -c <span class="s1">&#39;GRANT ALL ON SCHEMA geodata TO &quot;www-data&quot;;&#39;</span></span>
 </pre><p>Create the tables:</p>
-<pre class="highlight"><span class="prompt1">make .build/dev-requirements.timestamp c2cgeoportal/tests/functional/alembic.ini <span class="se">\</span>
-    c2cgeoportal/tests/functional/alembic_static.ini</span>
-<span class="prompt1">.build/venv/bin/alembic --config c2cgeoportal/tests/functional/alembic.ini upgrade head</span>
-<span class="prompt1">.build/venv/bin/alembic --config c2cgeoportal/tests/functional/alembic_static.ini upgrade head</span>
+<pre class="highlight"><span class="prompt1">./docker-run make /build/dev-requirements.timestamp tests/functional/alembic.ini <span class="se">\</span>
+    tests/functional/alembic_static.ini</span>
+<span class="prompt1">./docker-compose-run alembic --config tests/functional/alembic.ini upgrade head</span>
+<span class="prompt1">./docker-compose-run alembic --config tests/functional/alembic_static.ini upgrade head</span>
 </pre><p>If you do not use the default variables edit the <code class="docutils literal"><span class="pre">vars.yaml</span></code> and set the <code class="docutils literal"><span class="pre">dbuser</span></code>, <code class="docutils literal"><span class="pre">dbpassword</span></code>,
 <code class="docutils literal"><span class="pre">dbhost</span></code>, <code class="docutils literal"><span class="pre">dbport</span></code>, <code class="docutils literal"><span class="pre">db</span></code>, and <code class="docutils literal"><span class="pre">mapserv_url</span></code> as appropriate.</p>
 <p><code class="docutils literal"><span class="pre">mapserv_url</span></code> needs to refer a valid <code class="docutils literal"><span class="pre">mapserv</span></code> instance running locally,
@@ -189,7 +188,7 @@ configured for the virtual host in
 <code class="docutils literal"><span class="pre">http://mapfish-geoportal-demo/mapserv</span></code>.</p>
 </div>
 <p>Once done with the editing of <code class="docutils literal"><span class="pre">vars.yaml</span></code>, run <code class="docutils literal"><span class="pre">make</span></code>
-to generate <code class="docutils literal"><span class="pre">c2cgeoportal/tests/functional/test.ini</span></code>:</p>
+to generate <code class="docutils literal"><span class="pre">tests/functional/test.ini</span></code>:</p>
 <pre class="highlight"><span class="prompt1">make build</span>
 </pre><p>You can now run the functional tests with this:</p>
 <pre class="highlight"><span class="prompt1">./docker-compose-run nosetests -a functional</span>
@@ -200,7 +199,7 @@ to generate <code class="docutils literal"><span class="pre">c2cgeoportal/tests/
 <pre class="highlight"><span class="prompt1">./docker-compose-run make tests</span>
 </pre><p>To run a specific test use the <code class="docutils literal"><span class="pre">--where</span></code> switch. For example:</p>
 <pre class="highlight"><span class="prompt1">./docker-compose-run nosetests --where <span class="se">\</span>
-    /src/c2cgeoportal/tests/functional/test_themes.py:TestThemesView.test_catalogue</span>
+    /src/tests/functional/test_themes.py:TestThemesView.test_catalogue</span>
 </pre></div>
 </div>
 <div class="section" id="adding-tests">
@@ -217,7 +216,7 @@ phase it is a good idea to update the dependencies.</p>
 <p>All the <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> (and <code class="docutils literal"><span class="pre">tilecloud-chain</span></code>) dependencies are present in
 the <code class="docutils literal"><span class="pre">c2cgeoportal/scaffolds/update/CONST_versions.mako</span></code> file.</p>
 <p>To update them you can simply get them from a travis build in the
-<code class="docutils literal"><span class="pre">.build/venv/bin/pip</span> <span class="pre">freeze</span></code> task.</p>
+<code class="docutils literal"><span class="pre">./docker-run</span> <span class="pre">pip</span> <span class="pre">freeze</span></code> task.</p>
 </div>
 <div class="section" id="submodules">
 <h3>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h3>
@@ -263,10 +262,10 @@ or updated when this scaffold is applied. So developers who modify the
 <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> database schema should add migration scripts to the
 <code class="docutils literal"><span class="pre">c2cgeoportal_update</span></code> scaffold, as opposed to the application.</p>
 <p>Add a new script call from the application’s root directory:</p>
-<pre class="highlight"><span class="prompt1">.build/venv/bin/alembic --config alembic<span class="o">[</span>_static<span class="o">]</span>.ini revision --message <span class="s2">&quot;&lt;Explicit name&gt;&quot;</span></span>
+<pre class="highlight"><span class="prompt1">./docker-compose-run alembic --config alembic<span class="o">[</span>_static<span class="o">]</span>.ini revision --message <span class="s2">&quot;&lt;Explicit name&gt;&quot;</span></span>
 </pre><p>Or in c2cgeoportal root directory:</p>
-<pre class="highlight"><span class="prompt1">.build/venv/bin/alembic <span class="se">\</span>
-    --config c2cgeoportal/tests/functional/alembic<span class="o">[</span>_static<span class="o">]</span>.ini <span class="se">\</span>
+<pre class="highlight"><span class="prompt1">./docker-compose-run alembic <span class="se">\</span>
+    --config tests/functional/alembic<span class="o">[</span>_static<span class="o">]</span>.ini <span class="se">\</span>
     revision --message <span class="s2">&quot;&lt;Explicit name&gt;&quot;</span></span>
 </pre><p>This will generate the migration script in <code class="docutils literal"><span class="pre">CONST_alembic/versions/xxx_&lt;Explicite_name&gt;.py</span></code>
 You should <em>NOT</em> commit the script in this directory because this migration
@@ -279,7 +278,7 @@ this directory.</p>
 <p>The scripts should not fail if it is run again. See:
 <a class="reference external" href="http://alembic.readthedocs.org/en/latest/cookbook.html#conditional-migration-elements">http://alembic.readthedocs.org/en/latest/cookbook.html#conditional-migration-elements</a></p>
 <p>Then customize the migration to suit your needs, test it:</p>
-<pre class="highlight"><span class="prompt1">.build/venv/bin/alembic upgrade head</span>
+<pre class="highlight"><span class="prompt1">./docker-compose-run alembic upgrade head</span>
 </pre><p>Once you have tested it, move it to the c2cgeoportal <code class="docutils literal"><span class="pre">update</span></code> template, in
 <code class="docutils literal"><span class="pre">c2cgeoportal/scaffolds/update/CONST_mlembic/versions/</span></code>.</p>
 <dl class="docutils">

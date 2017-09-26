@@ -100,7 +100,7 @@ The assigned role must obviously have been defined in the administration interfa
 </pre></div>
 </div>
 </li>
-<li><p class="first">In <code class="docutils literal"><span class="pre">apache/wsgi.conf.mako</span></code> add to <code class="docutils literal"><span class="pre">&lt;Location</span> <span class="pre">/${instanceid}/wsgi&gt;</span></code>:</p>
+<li><p class="first">In <code class="docutils literal"><span class="pre">apache/wsgi.conf.mako</span></code> add to <code class="docutils literal"><span class="pre">&lt;Location</span> <span class="pre">/wsgi&gt;</span></code>:</p>
 <div class="code apache highlight-default"><div class="highlight"><pre><span></span>SetEnvIf REMOTE_ADDR ${intranet_ip} intranet=1
 </pre></div>
 </div>

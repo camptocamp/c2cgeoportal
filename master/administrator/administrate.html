@@ -94,7 +94,7 @@ files in <code class="docutils literal"><span class="pre">admin_interface/availa
 <p>In version 2, we split the layer table into 2 tables: <code class="docutils literal"><span class="pre">layer_wms</span></code>,
 <code class="docutils literal"><span class="pre">layer_wmts</span></code>, and we copy the previous layer table in <code class="docutils literal"><span class="pre">layerv1</span></code>.
 There is a tool to migrate the layers from the v1 structure to the v2
-structure see <code class="docutils literal"><span class="pre">.build/venv/bin/themev1tov2</span></code>.
+structure see <code class="docutils literal"><span class="pre">./docker-run</span> <span class="pre">themev1tov2</span></code>.
 Still using the CGXP application? Then you should maintain both version
 of the layers, respectively <code class="docutils literal"><span class="pre">layerv1</span></code> and <code class="docutils literal"><span class="pre">layer_wms</span></code>-<code class="docutils literal"><span class="pre">layer_wmts</span></code>.</p>
 <p>And the <code class="docutils literal"><span class="pre">order</span></code> will be moved in the relation of the tree.</p>

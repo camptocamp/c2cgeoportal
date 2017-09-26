@@ -66,8 +66,8 @@ span.prompt1:before {
 </style><span class="prompt1"><span class="nb">cd</span> &lt;project_root&gt;</span>
 <span class="prompt1">cp -r print ~</span>
 <span class="prompt1">git rm -r print</span>
-<span class="prompt1"><span class="nv">SRID</span><span class="o">=</span>-1 .build/venv/bin/pcreate --interactive --scaffold c2cgeoportal_create --package-name &lt;package&gt; /tmp/&lt;project&gt;</span>
-<span class="prompt1">.build/venv/bin/pcreate --interactive --scaffold c2cgeoportal_update --package-name &lt;package&gt; /tmp/&lt;project&gt;</span>
+<span class="prompt1"><span class="nv">SRID</span><span class="o">=</span>-1 ./docker-run pcreate --interactive --scaffold c2cgeoportal_create --package-name &lt;package&gt; /tmp/&lt;project&gt;</span>
+<span class="prompt1">./docker-run pcreate --interactive --scaffold c2cgeoportal_update --package-name &lt;package&gt; /tmp/&lt;project&gt;</span>
 <span class="prompt1">mv /tmp/&lt;project&gt;/print .</span>
 <span class="prompt1">rm -rf /tmp/&lt;project&gt;</span>
 </pre><p>Then in <code class="docutils literal"><span class="pre">~/print</span></code> you will have a backup of the old template, and in the <code class="docutils literal"><span class="pre">print</span></code> folder you will have the new print configuration.</p>
@@ -194,7 +194,7 @@ in the <code class="docutils literal"><span class="pre">vars_&lt;package&gt;.yam
     <span class="o">...</span>
     <span class="c1"># For print proxy</span>
     <span class="c1"># This value means that we use the parent print server</span>
-    <span class="n">print_url</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="p">{</span><span class="n">host</span><span class="p">}:</span><span class="mi">8080</span><span class="o">/</span><span class="nb">print</span><span class="o">-</span><span class="p">{</span><span class="n">parent_instanceid</span><span class="p">}</span><span class="o">/</span><span class="n">pdf</span><span class="o">/</span>
+    <span class="n">print_url</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="p">{</span><span class="n">host</span><span class="p">}:</span><span class="mi">8080</span><span class="o">/</span><span class="nb">print</span><span class="o">/</span><span class="n">pdf</span><span class="o">/</span>
 </pre></div>
 </div>
 </li>
@@ -211,11 +211,6 @@ following in the application configuration (<code class="docutils literal"><span
 </div>
 </li>
 </ul>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">In the user vars of children projects, the <code class="docutils literal"><span class="pre">parent_instanceid</span></code> should be
-defined so that it works in the user dev environment.</p>
-</div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This system works for print v2 but must be adapted for

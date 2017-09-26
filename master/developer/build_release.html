@@ -76,13 +76,15 @@ span.prompt1:before {
 </pre><dl class="docutils">
 <dt>Change the version in the following files:</dt>
 <dd><ul class="first last simple">
-<li>Makefile (VERSION)</li>
-<li>Dockerfile</li>
+<li><code class="docutils literal"><span class="pre">.travis.yml</span></code> (deploy branches)</li>
+<li><code class="docutils literal"><span class="pre">Makefile</span></code> (<code class="docutils literal"><span class="pre">VERSION</span></code>)</li>
+<li><code class="docutils literal"><span class="pre">Dockerfile</span></code> (in <code class="docutils literal"><span class="pre">FROM</span></code> and ngeo package)</li>
+<li><code class="docutils literal"><span class="pre">travis/git-modif</span></code></li>
 </ul>
 </dd>
 </dl>
 <p>Commit your changes:</p>
-<pre class="highlight"><span class="prompt1">git add Makefile Dockerfile</span>
+<pre class="highlight"><span class="prompt1">git add .travis.yml Makefile Dockerfile travis/git-modif</span>
 <span class="prompt1">git commit -m <span class="s2">&quot;Create the version &lt;version&gt; branch&quot;</span></span>
 </pre><p>Go back to the master branch:</p>
 <pre class="highlight"><span class="prompt1">git checkout master</span>
@@ -132,15 +134,15 @@ to the upper branches i.e.: <code class="docutils literal"><span class="pre">1.6
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>On <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> merge see if an alembic merge should be done:</p>
-<pre class="highlight"><span class="prompt1">.build/venv/bin/alembic <span class="se">\</span>
-    --config c2cgeoportal/tests/functional/alembic.ini <span class="se">\</span>
+<pre class="highlight"><span class="prompt1">./docker-compose-run alembic <span class="se">\</span>
+    --config tests/functional/alembic.ini <span class="se">\</span>
     heads</span>
-<span class="prompt1">.build/venv/bin/alembic <span class="se">\</span>
-    --config c2cgeoportal/tests/functional/alembic_static.ini <span class="se">\</span>
+<span class="prompt1">./docker-compose-run alembic <span class="se">\</span>
+    --config tests/functional/alembic_static.ini <span class="se">\</span>
     heads</span>
 </pre><p>If yes create the merge with:</p>
-<pre class="highlight"><span class="prompt1">.build/venv/bin/alembic <span class="se">\</span>
-    --config c2cgeoportal/tests/functional/alembic<span class="o">[</span>_static<span class="o">]</span>.ini <span class="se">\</span>
+<pre class="highlight"><span class="prompt1">./docker-compose-run alembic <span class="se">\</span>
+    --config tests/functional/alembic<span class="o">[</span>_static<span class="o">]</span>.ini <span class="se">\</span>
     merge --message <span class="s2">&quot;Merge &lt;src&gt; and &lt;dst&gt; branches&quot;</span> <span class="se">\</span>
     &lt;rev <span class="m">1</span>&gt; &lt;rev <span class="m">2</span>&gt;</span>
 </pre><p>Remove the import and replace the core of the method by <code class="docutils literal"><span class="pre">pass</span></code> in the generated file.</p>

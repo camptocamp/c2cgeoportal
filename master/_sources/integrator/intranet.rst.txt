@@ -73,7 +73,7 @@ This page lists the changes that must be applied to add such a functionality.
                                    name='user', reify=True
        )
 
-3. In ``apache/wsgi.conf.mako`` add to ``<Location /${instanceid}/wsgi>``:
+3. In ``apache/wsgi.conf.mako`` add to ``<Location /wsgi>``:
 
    .. code:: apache
 

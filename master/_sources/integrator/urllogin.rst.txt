@@ -14,7 +14,7 @@ First you should configure it in the vars file like it:
 
 The AES key must be either 16, 24, or 32 bytes long.
 
-To do that you should use the urllogin command: ``.build/venv/bin/urllogin --help``.
+To do that you should use the urllogin command: ``./docker-run urllogin --help``.
 
 It generate a token like: ``auth=148b60cc...`` that you can add it in the query string of
 the permalink.

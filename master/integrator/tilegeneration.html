@@ -98,10 +98,10 @@ EC2, SQS, SNS.</p>
 <h3>Initialization<a class="headerlink" href="#initialization" title="Permalink to this headline">¶</a></h3>
 <ul>
 <li><p class="first">Build the project:</p>
-<pre class="highlight"><span class="prompt1">make -f &lt;user&gt;.mk build</span>
+<pre class="highlight"><span class="prompt1">make build</span>
 </pre></li>
 <li><p class="first">Install the base template template:</p>
-<pre class="highlight"><span class="prompt1">.build/venv/bin/pcreate --interactive -s tilecloud_chain ../&lt;project&gt; <span class="nv">package</span><span class="o">=</span>&lt;package&gt;</span>
+<pre class="highlight"><span class="prompt1">./docker-run pcreate --interactive -s tilecloud_chain ../&lt;project&gt; <span class="nv">package</span><span class="o">=</span>&lt;package&gt;</span>
 </pre></li>
 <li><p class="first">In the <code class="docutils literal"><span class="pre">&lt;prokect&gt;.mk</span></code> activate the tile generation:</p>
 <div class="code highlight-default"><div class="highlight"><pre><span></span>TILECLOUD_CHAIN ?= TRUE
@@ -146,15 +146,15 @@ Sub-level of <code class="docutils literal"><span class="pre">layers</span></cod
 </li>
 <li><p class="first">We can drop the empty tiles with an hash comparison,
 tilecloud-chain has a tool to help us:</p>
-<pre class="highlight"><span class="prompt1">.build/venv/bin/generate_tiles --get-hash &lt;max-zoom&gt;/0/0 --layer &lt;layer&gt;</span>
+<pre class="highlight"><span class="prompt1">./docker-run generate_tiles --get-hash &lt;max-zoom&gt;/0/0 --layer &lt;layer&gt;</span>
 </pre><p>We consider that the first tile of the max zoom is empty.
 Than copy past the result in the layer config.</p>
 </li>
 <li><p class="first">If you need it you can generate the WMTS capabilities file:</p>
-<pre class="highlight"><span class="prompt1">.build/venv/bin/generate_controller --generate_wmts_capabilities</span>
+<pre class="highlight"><span class="prompt1">./docker-run generate_controller --generate_wmts_capabilities</span>
 </pre></li>
 <li><p class="first">And an OpenLayers test page:</p>
-<pre class="highlight"><span class="prompt1">.build/venv/bin/generate_controller --openlayers-test</span>
+<pre class="highlight"><span class="prompt1">./docker-run generate_controller --openlayers-test</span>
 </pre></li>
 </ul>
 <p>If you generate the tiles locally you do not need all the configuration
@@ -165,14 +165,14 @@ AWS generation.</p>
 <h3>Tile Generation and management<a class="headerlink" href="#tile-generation-and-management" title="Permalink to this headline">¶</a></h3>
 <p>This package offers two commands lines, one to generate the tiles locally,
 see help:</p>
-<pre class="highlight"><span class="prompt1">.build/venv/bin/generate_tiles --help</span>
+<pre class="highlight"><span class="prompt1">./docker-run generate_tiles --help</span>
 </pre><p>one to generate the tiles using AWS, see help:</p>
-<pre class="highlight"><span class="prompt1">.build/venv/bin/generate_controller --help</span>
+<pre class="highlight"><span class="prompt1">./docker-run generate_controller --help</span>
 </pre><p>Before start a tile generation on S3 measure the cost:</p>
-<pre class="highlight"><span class="prompt1">.build/venv/bin/generate_controller --cost</span>
+<pre class="highlight"><span class="prompt1">./docker-run generate_controller --cost</span>
 </pre><p>If you setup all the default options you can generate the tiles by
 using the command:</p>
-<pre class="highlight"><span class="prompt1">.build/venv/bin/generate_tiles</span>
+<pre class="highlight"><span class="prompt1">./docker-run generate_tiles</span>
 </pre><div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>Make sure you export AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY:</p>

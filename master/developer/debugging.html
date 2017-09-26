@@ -48,18 +48,9 @@
 <h2>General<a class="headerlink" href="#general" title="Permalink to this headline">¶</a></h2>
 <p>First you should add <code class="docutils literal"><span class="pre">?debug</span></code> in the application URL to have all the
 JavaScript and stylesheets in separated non-minified files.</p>
-<p>Using a browser-integrated debugging tool such as
-<a class="reference external" href="https://addons.mozilla.org/fr/firefox/addon/firebug/">Firebug</a> (for Firefox)
-or Chrome development tool is very useful.</p>
-<p>In case of 500 errors have a look at the apache logs, located at
-<code class="docutils literal"><span class="pre">/var/www/vhosts/&lt;vhost_name&gt;/logs/&lt;vhost_name&gt;_error.log</span></code>. If we call a service behind
-a proxy, the log entry actually references the final URL. Therefore you may
-call the latter URL directly on the server by typing
-<code class="docutils literal"><span class="pre">curl</span> <span class="pre">&quot;http://localhost/&lt;path&gt;&quot;</span> <span class="pre">-H</span> <span class="pre">Host:&lt;server_name&gt;</span></code>.</p>
+<p>Using a browser-integrated debugging tool usually available with the <code class="docutils literal"><span class="pre">F12</span></code> key.</p>
 <p>If the <code class="docutils literal"><span class="pre">pyramid_debugtoolbar</span></code> is enabled the error is directly returned
 in the query that fails.</p>
-<p>For print-related issues have a look at the logs in the
-<code class="docutils literal"><span class="pre">/srv/tomcat/tomcat1/logs/&lt;instanceid&gt;.log</span></code> file.</p>
 </div>
 <div class="section" id="mapserver">
 <h2>Mapserver<a class="headerlink" href="#mapserver" title="Permalink to this headline">¶</a></h2>
@@ -69,16 +60,9 @@ span.prompt1:before {
   content: "$ ";
 }
 </style><span class="prompt1">shp2img -m &lt;mapfile&gt; -o test.png -e &lt;minx&gt; &lt;miny&gt; &lt;maxx&gt; &lt;maxy&gt; -s &lt;sizex&gt; &lt;sizey&gt; -l &lt;layers&gt;</span>
-</pre><p>You may also activate Mapserver’s debug mode and set the log level in your
-mapfile by adding the following configuration:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">MAP</span>
-    <span class="o">...</span>
-    <span class="n">CONFIG</span> <span class="s2">&quot;MS_ERRORFILE&quot;</span> <span class="s2">&quot;/tmp/ms_error.txt&quot;</span>
-    <span class="n">DEBUG</span> <span class="mi">5</span>
-    <span class="o">...</span>
-</pre></div>
-</div>
-<p><a class="reference external" href="http://mapserver.org/optimization/debugging.html?highlight=debug#step-2-set-the-debug-level">More informations</a></p>
+</pre><p>You may also activate Mapserver’s debug mode and set environment variable of the Mapserver container
+<code class="docutils literal"><span class="pre">MS_DEBUGLEVEL</span></code> to <code class="docutils literal"><span class="pre">5</span></code> (most verbose level, default is 0).</p>
+<p><a class="reference external" href="http://mapserver.org/optimization/debugging.html?highlight=debug#debug-levels">More informations</a></p>
 </div>
 <div class="section" id="postgresql">
 <h2>PostgreSQL<a class="headerlink" href="#postgresql" title="Permalink to this headline">¶</a></h2>

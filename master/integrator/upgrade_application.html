@@ -45,13 +45,12 @@
 <span id="integrator-upgrade-application"></span><h1>Upgrading a GeoMapFish application<a class="headerlink" href="#upgrading-a-geomapfish-application" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="updating-the-application-code">
 <h2>Updating the application code<a class="headerlink" href="#updating-the-application-code" title="Permalink to this headline">¶</a></h2>
-<p>Verify that you have in your <code class="docutils literal"><span class="pre">project.yaml.mako</span></code> file the following <code class="docutils literal"><span class="pre">template_vars</span></code>: <code class="docutils literal"><span class="pre">package</span></code>, <code class="docutils literal"><span class="pre">srid</span></code>, <code class="docutils literal"><span class="pre">extent</span></code>, <code class="docutils literal"><span class="pre">apache_vhost</span></code>, for example:</p>
+<p>Verify that you have in your <code class="docutils literal"><span class="pre">project.yaml.mako</span></code> file the following <code class="docutils literal"><span class="pre">template_vars</span></code>: <code class="docutils literal"><span class="pre">package</span></code>, <code class="docutils literal"><span class="pre">srid</span></code>, <code class="docutils literal"><span class="pre">extent</span></code>, for example:</p>
 <div class="code yaml highlight-default"><div class="highlight"><pre><span></span>...
 template_vars:
     package: ${package}
     srid: ${srid}
     extent: 489246, 78873, 837119, 296543
-    apache_vhost: &lt;apache_vhost&gt;
 </pre></div>
 </div>
 <p>Then run:</p>
@@ -59,32 +58,25 @@ template_vars:
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">make -f &lt;makefile&gt; update</span>
-<span class="prompt1">make -f &lt;makefile&gt; build</span>
-</pre><p>Where <code class="docutils literal"><span class="pre">&lt;makefile&gt;</span></code> is your user make file (<code class="docutils literal"><span class="pre">&lt;user&gt;.mk</span></code>).</p>
-</div>
+</style><span class="prompt1">make update</span>
+<span class="prompt1">make build</span>
+</pre></div>
 <div class="section" id="upgrading-an-application">
 <h2>Upgrading an application<a class="headerlink" href="#upgrading-an-application" title="Permalink to this headline">¶</a></h2>
 <p>In the <code class="docutils literal"><span class="pre">setup.py</span></code> be sure not to specify a <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> version,
 because it will prevent the installation of the new <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> egg.</p>
-<p>We consider that your makefile is named <code class="docutils literal"><span class="pre">&lt;instanceid&gt;.mk</span></code>, if it is not the case
-add in your Makefile <code class="docutils literal"><span class="pre">UPGRADE_MAKE_FILE</span> <span class="pre">=</span> <span class="pre">&lt;user.mk&gt;</span></code></p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>For Windows:</p>
 <p class="last">You should add <code class="docutils literal"><span class="pre">UPGRADE_ARGS</span> <span class="pre">+=</span> <span class="pre">--windows</span></code> in your <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> file.</p>
 </div>
 <p>To upgrade run:</p>
-<pre class="highlight"><span class="prompt1"><span class="nb">export</span> <span class="nv">VERSION</span><span class="o">=</span>&lt;target_version&gt;</span>
-<span class="prompt1">make -f &lt;makefile&gt; upgrade</span>
-</pre><div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>For Windows:</p>
-<p class="last">You should replace <code class="docutils literal"><span class="pre">export</span> <span class="pre">VERSION=&lt;target_version&gt;</span></code> with
-<code class="docutils literal"><span class="pre">SET</span> <span class="pre">VERSION=&lt;target_version&gt;</span></code>.</p>
-</div>
-<p>Where <code class="docutils literal"><span class="pre">&lt;makefile&gt;</span></code> is your user Makefile (<code class="docutils literal"><span class="pre">&lt;user&gt;.mk</span></code>),
-<code class="docutils literal"><span class="pre">&lt;target_version&gt;</span></code> is the version that you wish to upgrade to.</p>
+<pre class="highlight"><span class="prompt1">wget https://raw.githubusercontent.com/camptocamp/c2cgeoportal/2.3/c2cgeoportal/scaffolds/create/docker-run_tmpl</span>
+<span class="prompt1">mv docker-run_tmpl docker-run</span>
+<span class="prompt1">sed -i <span class="s1">&#39;s/{{geomapfish_version}}/&lt;target_version&gt;/g&#39;</span></span>
+<span class="prompt1">chmod +x docker-run</span>
+<span class="prompt1">./docker-run make upgrade</span>
+</pre><p>Where <code class="docutils literal"><span class="pre">&lt;target_version&gt;</span></code> is the version that you wish to upgrade to.</p>
 <p>And follow the instructions.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -102,7 +94,7 @@ to the instructions hereunder:</p>
 <div><p><code class="docutils literal"><span class="pre">make</span> <span class="pre">-f</span> <span class="pre">&lt;makefile&gt;</span> <span class="pre">clean</span></code></p>
 </div></blockquote>
 </li>
-<li><p class="first">Change the version in <code class="docutils literal"><span class="pre">setup.py</span></code> and <code class="docutils literal"><span class="pre">CONST_requirements.txt</span></code>
+<li><p class="first">Change the version in <code class="docutils literal"><span class="pre">setup.py</span></code>
 to the version you wish to install.</p>
 </li>
 <li><p class="first">Build your application:</p>
@@ -113,7 +105,6 @@ to the version you wish to install.</p>
 <li><p class="first">Put your modifications under git revision:</p>
 <blockquote>
 <div><p><code class="docutils literal"><span class="pre">git</span> <span class="pre">add</span> <span class="pre">setup.py</span></code></p>
-<p><code class="docutils literal"><span class="pre">git</span> <span class="pre">add</span> <span class="pre">CONST_requirements.txt</span></code></p>
 <p><code class="docutils literal"><span class="pre">git</span> <span class="pre">commit</span> <span class="pre">-m</span> <span class="pre">&quot;Upgrade</span> <span class="pre">c2cgeoportal</span> <span class="pre">version&quot;</span></code></p>
 <p><code class="docutils literal"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">&lt;remote&gt;</span> <span class="pre">&lt;branch&gt;</span></code></p>
 </div></blockquote>
@@ -130,15 +121,15 @@ commands</p>
 <p>The database will be automatically upgraded during the upgrade process.</p>
 <p>To upgrade only the database you can use alembic directly.</p>
 <p>The help:</p>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">build</span><span class="o">/</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">alembic</span> <span class="o">--</span><span class="n">help</span>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">docker</span><span class="o">-</span><span class="n">run</span> <span class="n">alembic</span> <span class="o">--</span><span class="n">help</span>
 </pre></div>
 </div>
 <p>Upgrade the main schema:</p>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">build</span><span class="o">/</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">alembic</span> <span class="o">--</span><span class="n">config</span> <span class="n">alembic</span><span class="o">.</span><span class="n">ini</span> <span class="n">upgrade</span> <span class="n">head</span>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">docker</span><span class="o">-</span><span class="n">run</span> <span class="n">alembic</span> <span class="o">--</span><span class="n">config</span> <span class="n">alembic</span><span class="o">.</span><span class="n">ini</span> <span class="n">upgrade</span> <span class="n">head</span>
 </pre></div>
 </div>
 <p>Upgrade the static schema:</p>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">build</span><span class="o">/</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">alembic</span> <span class="o">--</span><span class="n">config</span> <span class="n">alembic_static</span><span class="o">.</span><span class="n">ini</span> <span class="n">upgrade</span> <span class="n">head</span>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">docker</span><span class="o">-</span><span class="n">run</span> <span class="n">alembic</span> <span class="o">--</span><span class="n">config</span> <span class="n">alembic_static</span><span class="o">.</span><span class="n">ini</span> <span class="n">upgrade</span> <span class="n">head</span>
 </pre></div>
 </div>
 </div>

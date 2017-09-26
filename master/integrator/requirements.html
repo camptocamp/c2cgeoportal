@@ -91,19 +91,7 @@ components installed on your system:</p>
 <h2>Print<a class="headerlink" href="#print" title="Permalink to this headline">¶</a></h2>
 <p>The print requires a Tomcat server listening by default on port 8080.
 To change it you should overwrite the <code class="docutils literal"><span class="pre">print_url</span></code> vars in <code class="docutils literal"><span class="pre">config.yaml.in</span></code>,
-default is: <code class="docutils literal"><span class="pre">http://localhost:8080/print-c2cgeoportal-{instanceid}/pdf/</span></code>.</p>
-<p>And by default the ‘webapps’ folder is <code class="docutils literal"><span class="pre">/srv/tomcat/tomcat1/webapps</span></code>,
-to change it set the <code class="docutils literal"><span class="pre">PRINT_OUTPUT</span></code> value in the makefile.</p>
-<p>For MapFish Print to function properly it is recommended to increase the default
-Java Heap Size for Tomcat (parameter <code class="docutils literal"><span class="pre">-Xmx</span></code> and <code class="docutils literal"><span class="pre">-Xms</span></code>). On servers managed
-by Camptocamp check the size in the file <code class="docutils literal"><span class="pre">/srv/tomcat/tomcat1/bin/setenv-local.sh</span></code>:</p>
-<blockquote>
-<div><div class="code make highlight-default"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">JAVA_XMX</span><span class="o">=</span><span class="s2">&quot;1G&quot;</span>
-<span class="n">export</span> <span class="n">ADD_JAVA_OPTS</span><span class="o">=</span><span class="s2">&quot;-Xms1G&quot;</span>
-</pre></div>
-</div>
-</div></blockquote>
-<p>The above settings set the minimum and maximum heap size to 1GB.</p>
+default is: <code class="docutils literal"><span class="pre">http://localhost:8080/print/pdf/</span></code>.</p>
 </div>
 <div class="section" id="additional-notes-for-windows-users">
 <h2>Additional notes for Windows users<a class="headerlink" href="#additional-notes-for-windows-users" title="Permalink to this headline">¶</a></h2>

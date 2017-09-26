@@ -62,10 +62,7 @@ Default is:</p>
 <span class="comment preproc">include CONST_Makefile
 </span>
 </pre>
-<p>And the <code class="docutils literal"><span class="pre">&lt;user&gt;.mk</span></code> contains the user-specific config (mainly the
-<code class="docutils literal"><span class="pre">INSTANCE_ID</span></code> config), and should look like:</p>
 <pre class="code makefile literal-block">
-<span class="name variable">INSTANCE_ID</span> <span class="operator">=</span> &lt;user&gt;
 <span class="name variable">DEVELOPMENT</span> <span class="operator">=</span> TRUE
 
 <span class="comment preproc">include &lt;package&gt;.mk
@@ -103,20 +100,24 @@ which extends the default <code class="docutils literal"><span class="pre">CONST
 <h2>Makefile config variables<a class="headerlink" href="#makefile-config-variables" title="Permalink to this headline">¶</a></h2>
 <p>The following variables may be set in the makefiles:</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">APACHE_ENTRY_POINT</span></code>: The apache entry point, defaults to <code class="docutils literal"><span class="pre">/$(INSTANCE_ID)/</span></code>.</li>
-<li><code class="docutils literal"><span class="pre">APACHE_VHOST</span></code>: The vhost folder name in <code class="docutils literal"><span class="pre">/var/www/vhost</span></code>.</li>
 <li><code class="docutils literal"><span class="pre">CONFIG_VARS</span></code>: The list of parameters read from the project yaml configuration file.</li>
-<li><code class="docutils literal"><span class="pre">DEVELOPMENT</span></code>: if <code class="docutils literal"><span class="pre">TRUE</span></code> the <code class="docutils literal"><span class="pre">CSS</span></code> and <code class="docutils literal"><span class="pre">JS</span></code> files are not minified and the
-<code class="docutils literal"><span class="pre">development.ini</span></code> pyramid config file is used, defaults to <code class="docutils literal"><span class="pre">FALSE</span></code>.</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal"><span class="pre">DEVELOPMENT</span></code>: If <code class="docutils literal"><span class="pre">TRUE</span></code> the <code class="docutils literal"><span class="pre">CSS</span></code> and <code class="docutils literal"><span class="pre">JS</span></code> files are not minified and the</dt>
+<dd><code class="docutils literal"><span class="pre">development.ini</span></code> pyramid config file is used, defaults to <code class="docutils literal"><span class="pre">FALSE</span></code>.</dd>
+</dl>
+</li>
 <li><code class="docutils literal"><span class="pre">DISABLE_BUILD_RULES</span></code>: List of rules we want to disable, default is empty.</li>
-<li><code class="docutils literal"><span class="pre">INSTANCE_ID</span></code>: The WSGI instance id (should be unique on a server).</li>
-<li><code class="docutils literal"><span class="pre">LANGUAGES</span></code>: the list of available languages.</li>
-<li><code class="docutils literal"><span class="pre">CGXP_INTERFACES</span></code>: The list of CGXP interfaces, default is empty.</li>
-<li><code class="docutils literal"><span class="pre">NGEO_INTERFACES</span></code>: The list of NGEO interfaces, default is <code class="docutils literal"><span class="pre">mobile</span> <span class="pre">desktop</span></code>.</li>
-<li><code class="docutils literal"><span class="pre">POST_RULES</span></code>: postdefine some build rules, default is empty.</li>
-<li><code class="docutils literal"><span class="pre">PRE_RULES</span></code>: predefine some build rules, default is empty.</li>
-<li><code class="docutils literal"><span class="pre">PRINT_VERSION</span></code>: , The print version we want to use (<code class="docutils literal"><span class="pre">2</span></code>, <code class="docutils literal"><span class="pre">3</span></code> or <code class="docutils literal"><span class="pre">NONE</span></code>), defaults to <code class="docutils literal"><span class="pre">3</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">LANGUAGES</span></code>: List of available languages.</li>
+<li><code class="docutils literal"><span class="pre">CGXP_INTERFACES</span></code>: List of CGXP interfaces, default is empty.</li>
+<li><code class="docutils literal"><span class="pre">NGEO_INTERFACES</span></code>: List of NGEO interfaces, default is <code class="docutils literal"><span class="pre">mobile</span> <span class="pre">desktop</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">POST_RULES</span></code>: Postdefine some build rules, default is empty.</li>
+<li><code class="docutils literal"><span class="pre">PRE_RULES</span></code>: Predefine some build rules, default is empty.</li>
+<li><code class="docutils literal"><span class="pre">PRINT</span></code>: Mapfish print is enable, defaults to <code class="docutils literal"><span class="pre">TRUE</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">MAPSERVER</span></code>: Mapserver is enable, defaults to <code class="docutils literal"><span class="pre">TRUE</span></code>.</li>
 <li><code class="docutils literal"><span class="pre">TILECLOUD_CHAIN</span></code>: <code class="docutils literal"><span class="pre">TRUE</span></code> to indicate that we use TileCloud-chain, defaults to <code class="docutils literal"><span class="pre">TRUE</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">VISIBLE_ENTRY_POINT</span></code>: The entry point (path) of the application, defaults to <code class="docutils literal"><span class="pre">/</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">VISIBLE_WEB_HOST</span></code>: The hostname, required.</li>
+<li><code class="docutils literal"><span class="pre">VISIBLE_WEB_PROTOCOL</span></code>: The used protocole, defaults to <code class="docutils literal"><span class="pre">https</span></code>.</li>
 </ul>
 </div>
 <div class="section" id="custom-rules">
@@ -141,7 +142,7 @@ project-clean:
 </div>
 <div class="section" id="note">
 <h2>Note<a class="headerlink" href="#note" title="Permalink to this headline">¶</a></h2>
-<p>The <code class="docutils literal"><span class="pre">.build/*.timestamp</span></code> files are not really required  but they are flags
+<p>The <code class="docutils literal"><span class="pre">/build/*.timestamp</span></code> files are not really required  but they are flags
 indicating that an other rule is correctly done.</p>
 <p>Upstream <a class="reference external" href="https://www.gnu.org/software/make/manual/make.html">make documentation</a>.</p>
 </div>

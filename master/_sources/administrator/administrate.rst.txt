@@ -63,7 +63,7 @@ Layers
 In version 2, we split the layer table into 2 tables: ``layer_wms``,
 ``layer_wmts``, and we copy the previous layer table in ``layerv1``.
 There is a tool to migrate the layers from the v1 structure to the v2
-structure see ``.build/venv/bin/themev1tov2``.
+structure see ``./docker-run themev1tov2``.
 Still using the CGXP application? Then you should maintain both version
 of the layers, respectively ``layerv1`` and ``layer_wms``-``layer_wmts``.
 

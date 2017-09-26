@@ -37,7 +37,6 @@ of an existing c2cgeoportal application. Here is how:
 
   .. code:: make
 
-    INSTANCE_ID = <user>
     DEVELOPMENT = TRUE
     REQUIREMENTS = -e ../c2cgeoportal
 
@@ -47,7 +46,7 @@ of an existing c2cgeoportal application. Here is how:
 
   .. prompt:: bash
 
-    .build/venv/bin/pip uninstall c2cgeoportal
+    ./docker-run pip uninstall c2cgeoportal
 
 * Remove/comment the following line in the CONST_requirements.txt file:
 
@@ -59,7 +58,7 @@ of an existing c2cgeoportal application. Here is how:
 
   .. prompt:: bash
 
-    rm .build/requirements.timestamp && make -f <user>.mk build
+    ./docker-run rm /build/requirements.timestamp && ./docker-run make build
 
 .. note:: Print performance issue
 
@@ -162,10 +161,10 @@ Create the tables:
 
 .. prompt:: bash
 
-    make .build/dev-requirements.timestamp c2cgeoportal/tests/functional/alembic.ini \
-        c2cgeoportal/tests/functional/alembic_static.ini
-    .build/venv/bin/alembic --config c2cgeoportal/tests/functional/alembic.ini upgrade head
-    .build/venv/bin/alembic --config c2cgeoportal/tests/functional/alembic_static.ini upgrade head
+    ./docker-run make /build/dev-requirements.timestamp tests/functional/alembic.ini \
+        tests/functional/alembic_static.ini
+    ./docker-compose-run alembic --config tests/functional/alembic.ini upgrade head
+    ./docker-compose-run alembic --config tests/functional/alembic_static.ini upgrade head
 
 If you do not use the default variables edit the ``vars.yaml`` and set the ``dbuser``, ``dbpassword``,
 ``dbhost``, ``dbport``, ``db``, and ``mapserv_url`` as appropriate.
@@ -197,7 +196,7 @@ machine it may be ``http://locahost/cgi-bin/mapserv``.
 
 
 Once done with the editing of ``vars.yaml``, run ``make``
-to generate ``c2cgeoportal/tests/functional/test.ini``:
+to generate ``tests/functional/test.ini``:
 
 .. prompt:: bash
 
@@ -223,7 +222,7 @@ To run a specific test use the ``--where`` switch. For example:
 .. prompt:: bash
 
     ./docker-compose-run nosetests --where \
-        /src/c2cgeoportal/tests/functional/test_themes.py:TestThemesView.test_catalogue
+        /src/tests/functional/test_themes.py:TestThemesView.test_catalogue
 
 Adding tests
 ~~~~~~~~~~~~
@@ -243,7 +242,7 @@ All the ``c2cgeoportal`` (and ``tilecloud-chain``) dependencies are present in
 the ``c2cgeoportal/scaffolds/update/CONST_versions.mako`` file.
 
 To update them you can simply get them from a travis build in the
-``.build/venv/bin/pip freeze`` task.
+``./docker-run pip freeze`` task.
 
 Submodules
 ~~~~~~~~~~
@@ -318,14 +317,14 @@ Add a new script call from the application's root directory:
 
 .. prompt:: bash
 
-    .build/venv/bin/alembic --config alembic[_static].ini revision --message "<Explicit name>"
+    ./docker-compose-run alembic --config alembic[_static].ini revision --message "<Explicit name>"
 
 Or in c2cgeoportal root directory:
 
 .. prompt:: bash
 
-    .build/venv/bin/alembic \
-        --config c2cgeoportal/tests/functional/alembic[_static].ini \
+    ./docker-compose-run alembic \
+        --config tests/functional/alembic[_static].ini \
         revision --message "<Explicit name>"
 
 This will generate the migration script in ``CONST_alembic/versions/xxx_<Explicite_name>.py``
@@ -346,7 +345,7 @@ Then customize the migration to suit your needs, test it:
 
 .. prompt:: bash
 
-    .build/venv/bin/alembic upgrade head
+    ./docker-compose-run alembic upgrade head
 
 Once you have tested it, move it to the c2cgeoportal ``update`` template, in
 ``c2cgeoportal/scaffolds/update/CONST_mlembic/versions/``.

@@ -66,8 +66,8 @@ and indicate that we do not want duplicate layer name above the legend:</p>
 <div class="section" id="apache-configuration">
 <h2>Apache configuration<a class="headerlink" href="#apache-configuration" title="Permalink to this headline">¶</a></h2>
 <p>In the <code class="docutils literal"><span class="pre">apache/mapserv.conf.mako</span></code> do the following changes:</p>
-<div class="code highlight-default"><div class="highlight"><pre><span></span>- ScriptAlias /${instanceid}/mapserv /usr/lib/cgi-bin/mapserv
-+ ScriptAlias /${instanceid}/mapserv /usr/lib/cgi-bin/qgis_mapserv.fcgi
+<div class="code highlight-default"><div class="highlight"><pre><span></span>- ScriptAlias /mapserv /usr/lib/cgi-bin/mapserv
++ ScriptAlias /mapserv /usr/lib/cgi-bin/qgis_mapserv.fcgi
 
 - SetEnv MS_MAPFILE ${directory}/mapserver/c2cgeoportal.map
 + SetEnv QGIS_PROJECT_FILE ${directory}/qgisserver.qgs

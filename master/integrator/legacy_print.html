@@ -50,7 +50,7 @@
 <div><ul class="simple">
 <li>Keep the print war in your repository.</li>
 <li>Add <code class="docutils literal"><span class="pre">PRINT_VERSION</span> <span class="pre">?=</span> <span class="pre">2</span></code> in your project makefile.</li>
-<li>Add in the <code class="docutils literal"><span class="pre">vars</span></code> of your project vars file: <code class="docutils literal"><span class="pre">print_url:</span> <span class="pre">http://localhost:8080/print-{instanceid}/pdf/</span></code>.</li>
+<li>Add in the <code class="docutils literal"><span class="pre">vars</span></code> of your project vars file: <code class="docutils literal"><span class="pre">print_url:</span> <span class="pre">http://localhost:8080/print/pdf/</span></code>.</li>
 <li>Disable the print v3 checker and enable the print v2 one, edit your project vars file:</li>
 </ul>
 </div></blockquote>
@@ -69,7 +69,7 @@
             <span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">printproxy_info</span>
 
     <span class="n">check_collector</span><span class="p">:</span>
-        <span class="c1"># Verify that in the `.build/config.yaml` `checker_pdf3` is present, and not `checker_pdf`.</span>
+        <span class="c1"># Verify that in the `config.yaml` `checker_pdf3` is present, and not `checker_pdf`.</span>
         <span class="n">disabled</span><span class="p">:</span> <span class="p">[</span><span class="n">checker_pdf3</span><span class="p">]</span>
 
  <span class="n">update_paths</span><span class="p">:</span>

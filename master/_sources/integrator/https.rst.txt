@@ -76,7 +76,7 @@ in your project `vars_<project>.yaml` configuration file:
           rfinfo: http://www.rfinfo.vd.ch/rfinfo.php?no_commune=%s&no_immeuble=%s
 
 Then you can access resources by building urls using the following schema:
-``http://<host>/<instanceid>/wsgi/resourceproxy?target=<targetname>&values=(<valueparam1>,...)``.
+``http://<host>/wsgi/resourceproxy?target=<targetname>&values=(<valueparam1>,...)``.
 
 For example:
 

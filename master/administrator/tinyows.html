@@ -53,8 +53,8 @@ proxy to TinyOWS to limit access to authorized users.</p>
 there will already be a default Apache configuration file for TinyOWS under the
 location <code class="docutils literal"><span class="pre">apache/tinyows.conf.mako</span></code>. Uncomment the lines in this file to
 enable TinyOWS:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>ScriptAlias /${instanceid}/tinyows /usr/lib/cgi-bin/tinyows
-&lt;Location /${instanceid}/tinyows&gt;
+<div class="highlight-default"><div class="highlight"><pre><span></span>ScriptAlias /tinyows /usr/lib/cgi-bin/tinyows
+&lt;Location /tinyows&gt;
   SetEnv TINYOWS_CONFIG_FILE ${directory}/mapserver/tinyows.xml
 
   # restrict access to localhost so that all requests go through the proxy
@@ -75,7 +75,7 @@ c2cgeoportal.</p>
 <p>The configuration of TinyOWS is made in a XML file, which is located at
 <code class="docutils literal"><span class="pre">mapserver/tinyows.xml.mako</span></code>:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">tinyows</span>
-    <span class="n">online_resource</span><span class="o">=</span><span class="s2">&quot;http://$</span><span class="si">{host}</span><span class="s2">/$</span><span class="si">{instanceid}</span><span class="s2">/wsgi/tinyows_proxy&quot;</span>
+    <span class="n">online_resource</span><span class="o">=</span><span class="s2">&quot;http://$</span><span class="si">{host}</span><span class="s2">/wsgi/tinyows_proxy&quot;</span>
     <span class="n">schema_dir</span><span class="o">=</span><span class="s2">&quot;/usr/share/tinyows/schema/&quot;</span>
     <span class="n">log</span><span class="o">=</span><span class="s2">&quot;tinyows.log&quot;</span>
     <span class="n">log_level</span><span class="o">=</span><span class="s2">&quot;1&quot;</span>
@@ -113,7 +113,7 @@ c2cgeoportal.</p>
 <p>In the root element <code class="docutils literal"><span class="pre">tinyows</span></code> the following properties have to be set:</p>
 <ol class="arabic simple">
 <li><code class="docutils literal"><span class="pre">online_resource</span></code> - This should be the URL to the TinyOWS proxy, usually
-<code class="docutils literal"><span class="pre">http://${host}/${instanceid}/wsgi/tinyows_proxy</span></code>.</li>
+<code class="docutils literal"><span class="pre">http://${host}/wsgi/tinyows_proxy</span></code>.</li>
 <li><code class="docutils literal"><span class="pre">schema_dir</span></code> - The path to the TinyOWS schema directory. Adapt this path
 according to your installation.</li>
 <li><code class="docutils literal"><span class="pre">log</span></code> - Path to the TinyOWS log file. This file must be writable.</li>
@@ -168,7 +168,7 @@ for more information.</p>
 <h2>Editing a layer with WFS-T<a class="headerlink" href="#editing-a-layer-with-wfs-t" title="Permalink to this headline">¶</a></h2>
 <p>The configured layers can now be edited using your favorite GIS supporting
 WFS-T. For example in QGIS add a new WFS layer with the URL
-<code class="docutils literal"><span class="pre">http://${host}/${instanceid}/wsgi/tinyows_proxy</span></code> (e.g.
+<code class="docutils literal"><span class="pre">http://${host}/wsgi/tinyows_proxy</span></code> (e.g.
 <code class="docutils literal"><span class="pre">http://geomapfish.demo-camptocamp.com/demo/wsgi/tinyows_proxy</span></code>). For the
 authentication use your c2cgeoportal account details.</p>
 </div>
