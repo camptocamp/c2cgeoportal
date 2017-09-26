@@ -488,18 +488,18 @@ update-po: $(addprefix /build/lang-client-, $(LANGUAGES)) $(addprefix /build/lan
 .PRECIOUS: /build/lang-server-%
 /build/lang-server-%: $(PACKAGE)/locale/$(PACKAGE)-$(L10N_SERVER_POSTFIX).pot
 	$(PRERULE_CMD)
-	mkdir -p $(PACKAGE)/locale/%/LC_MESSAGES/
-	[ -f $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-$(L10N_SERVER_POSTFIX).po ] || msginit --no-translator --input=$< --output-file=$(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-$(L10N_SERVER_POSTFIX).po -l $*
-	touch --no-create $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-$(L10N_SERVER_POSTFIX).po
-	[ ! -f $< ] || msgmerge --backup=none --update --sort-output --no-location $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-$(L10N_SERVER_POSTFIX).po $<
+	mkdir -p $(PACKAGE)/locale/$*/LC_MESSAGES/
+	[ -f $(PACKAGE)/locale/$*/LC_MESSAGES/$(PACKAGE)-$(L10N_SERVER_POSTFIX).po ] || msginit --no-translator --input=$< --output-file=$(PACKAGE)/locale/$*/LC_MESSAGES/$(PACKAGE)-$(L10N_SERVER_POSTFIX).po -l $*
+	touch --no-create $(PACKAGE)/locale/$*/LC_MESSAGES/$(PACKAGE)-$(L10N_SERVER_POSTFIX).po
+	[ ! -f $< ] || msgmerge --backup=none --update --sort-output --no-location $(PACKAGE)/locale/$*/LC_MESSAGES/$(PACKAGE)-$(L10N_SERVER_POSTFIX).po $<
 
 .PRECIOUS: /build/lang-client-%
 /build/lang-client-%: $(PACKAGE)/locale/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).pot
 	$(PRERULE_CMD)
-	mkdir -p $(PACKAGE)/locale/%/LC_MESSAGES/
-	[ -f $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).po ] || msginit --no-translator --input=$< --output-file=$(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).po -l $*
-	touch --no-create $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).po
-	msgmerge --backup=none --update --sort-output --no-location $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).po $<
+	mkdir -p $(PACKAGE)/locale/$*/LC_MESSAGES/
+	[ -f $(PACKAGE)/locale/$*/LC_MESSAGES/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).po ] || msginit --no-translator --input=$< --output-file=$(PACKAGE)/locale/$*/LC_MESSAGES/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).po -l $*
+	touch --no-create $(PACKAGE)/locale/$*/LC_MESSAGES/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).po
+	msgmerge --backup=none --update --sort-output --no-location $(PACKAGE)/locale/$*/LC_MESSAGES/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).po $<
 
 .PRECIOUS: %.mo
 %.mo: %.po
