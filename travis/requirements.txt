@@ -1,5 +1,5 @@
-docker-compose==1.11.0
+docker-compose==1.16.1
 netifaces==0.10.6
-psycopg2==2.7.3
-requests==2.11.1
-SQLAlchemy==1.1.13
+psycopg2==2.7.3.1
+requests==2.18.4
+SQLAlchemy==1.1.14
