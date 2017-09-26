@@ -29,6 +29,8 @@ services:
 
   db:
     image: camptocamp/postgres:9.6
+    volumes:
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
     environment:
       POSTGRES_USER: www-data
       POSTGRES_PASSWORD: www-data
