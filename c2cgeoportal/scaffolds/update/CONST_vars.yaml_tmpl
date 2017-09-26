@@ -20,8 +20,10 @@ vars:
     dbuser: www-data
     # database password
     dbpassword: www-data
-    # database host
+    # master database host
     dbhost: db
+    # slave database host
+    dbhost_slave: db
     # database port
     dbport: 5432
     # database name
@@ -63,6 +65,8 @@ vars:
     # Database informations
     sqlalchemy:
         url: postgresql://{dbuser}:{dbpassword}@{dbhost}:{dbport}/{db}
+    sqlalchemy_slave:
+        url: postgresql://{dbuser}:{dbpassword}@{dbhost_slave}:{dbport}/{db}
 
     # 10 days of default cache
     default_max_age: 864000

@@ -30,7 +30,6 @@
 
 from unittest2 import TestCase
 
-import sqlahelper
 import re
 import transaction
 import json
@@ -62,7 +61,6 @@ class TestEntryView(TestCase):
         from sqlalchemy import Column, Table, types, func
         from sqlalchemy.ext.declarative import declarative_base
         from geoalchemy2 import Geometry
-        from c2cgeoportal.lib.dbreflection import init
 
         cleanup_db()
 
@@ -78,8 +76,7 @@ class TestEntryView(TestCase):
         main = Interface(name="desktop")
         mobile = Interface(name="mobile")
 
-        engine = sqlahelper.get_engine()
-        init(engine)
+        engine = DBSession.c2c_rw_bind
         engine.connect()
 
         a_geo_table = Table(

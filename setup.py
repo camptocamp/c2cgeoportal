@@ -64,7 +64,6 @@ install_requires = [
     "pyramid_multiauth",
     "pyramid_tm",
     "PyYAML",
-    "SQLAHelper",
     "SQLAlchemy",
 ]
 
@@ -105,7 +104,6 @@ setup(
             "theme2fts = c2cgeoportal.scripts.theme2fts:main",
             "l10nv1tov2 = c2cgeoportal.scripts.l10nv1tov2:main",
             "import-ngeo-apps = c2cgeoportal.scripts.import_ngeo_apps:main",
-            "gen-version = c2cgeoportal.scripts.gen_version:main",
             "ngeo-version = c2cgeoportal.scripts.import_ngeo_apps:ngeo_git_version",
             "create-demo-theme = c2cgeoportal.scripts.create_demo_theme:main",
             "treeitem-uniquename = c2cgeoportal.scripts.treeitem_uniquename:main",

@@ -21,6 +21,9 @@ mapping:
             sqlalchemy.url:
                 type: str
                 required: True
+            sqlalchemy_slave.url:
+                type: str
+                required: True
             default_max_age:
                 type: int
                 required: True

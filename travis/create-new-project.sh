@@ -1,5 +1,7 @@
 #!/bin/bash -ex
 
+mkdir -p /tmp/travis/testgeomapfish
+
 export SRID=21781 EXTENT=489246.36,78873.44,837119.76,296543.14
 ./docker-run pcreate --scaffold=c2cgeoportal_create /tmp/travis/testgeomapfish \
     --ignore-conflicting-name --package-name testgeomapfish > /dev/null

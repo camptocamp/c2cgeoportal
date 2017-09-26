@@ -32,15 +32,12 @@ from unittest import TestCase
 
 from geoalchemy2 import WKTElement
 import transaction
-import sqlahelper
 
 from tests.functional import (  # noqa
     teardown_common as teardown_module,
     setup_common as setup_module,
     create_dummy_request, mapserv_url, create_default_ogcserver,
 )
-
-Base = sqlahelper.get_base()
 
 
 class TestMapserverproxyViewGroup(TestCase):

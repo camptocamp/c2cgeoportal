@@ -61,9 +61,9 @@ import hashlib
 from unittest2 import TestCase
 
 from sqlalchemy import Column, types
+import sqlalchemy.ext.declarative
 from geoalchemy2 import Geometry, WKTElement
 import transaction
-import sqlahelper
 
 from c2cgeoportal.lib import functionality
 from tests.functional import (  # noqa
@@ -72,15 +72,15 @@ from tests.functional import (  # noqa
     create_dummy_request, mapserv_url, create_default_ogcserver, cleanup_db
 )
 
-Base = sqlahelper.get_base()
-
 # GetMap hash for MapServer 6.0 and 7.0
 FOUR_POINTS = ["61cbb0a6d18b72e4a28c1087019de245", "e2fe30a8085b0db4040c9ad0d331b6b8"]
 TWO_POINTS = ["0a4fac2209d06c6fa36048c125b1679a", "0469e20ee04f22ab7ccdfebaa125f203"]
 NO_POINT = ["ef33223235b26c782736c88933b35331", "aaa27d9450664d34fd8f53b6e76af1e1"]
 
+Base = sqlalchemy.ext.declarative.declarative_base()
 
-class TestPoint(Base):
+
+class PointTest(Base):
     __tablename__ = "testpoint"
     __table_args__ = {"schema": "geodata"}
     id = Column(types.Integer, primary_key=True)
@@ -138,16 +138,16 @@ class TestMapserverproxyView(TestCase):
         ogcserver_geoserver.type = OGCSERVER_TYPE_GEOSERVER
         ogcserver_geoserver.auth = OGCSERVER_AUTH_GEOSERVER
 
-        TestPoint.__table__.create(bind=DBSession.bind, checkfirst=True)
+        PointTest.__table__.create(bind=DBSession.bind, checkfirst=True)
 
         geom = WKTElement("POINT(599910 199955)", srid=21781)
-        p1 = TestPoint(geom=geom, name="foo", city="Lausanne", country="Swiss")
+        p1 = PointTest(geom=geom, name="foo", city="Lausanne", country="Swiss")
         geom = WKTElement("POINT(599910 200045)", srid=21781)
-        p2 = TestPoint(geom=geom, name="bar", city="Chambéry", country="France")
+        p2 = PointTest(geom=geom, name="bar", city="Chambéry", country="France")
         geom = WKTElement("POINT(600090 200045)", srid=21781)
-        p3 = TestPoint(geom=geom, name="éàè", city="Paris", country="France")
+        p3 = PointTest(geom=geom, name="éàè", city="Paris", country="France")
         geom = WKTElement("POINT(600090 199955)", srid=21781)
-        p4 = TestPoint(geom=geom, name="123", city="Londre", country="UK")
+        p4 = PointTest(geom=geom, name="123", city="Londre", country="UK")
 
         pt1 = Functionality(name="print_template", value="1 Wohlen A4 portrait")
         pt2 = Functionality(name="print_template", value="2 Wohlen A3 landscape")
@@ -211,7 +211,7 @@ class TestMapserverproxyView(TestCase):
 
         cleanup_db()
 
-        TestPoint.__table__.drop(bind=DBSession.bind, checkfirst=True)
+        PointTest.__table__.drop(bind=DBSession.bind, checkfirst=True)
 
     @staticmethod
     def _create_dummy_request(username=None):

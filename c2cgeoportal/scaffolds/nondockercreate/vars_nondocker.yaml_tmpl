@@ -5,6 +5,7 @@ vars:
     apache_entry_point: '{entry_point}'
     modwsgi_user: MODWSGI_USER
     dbhost: DOCKER_HOST_
+    dbhost_slave: DOCKER_HOST_
     mapserv_allow: |
         Allow from 127.0.0.1 ::1
         Require ip 127.0.0.1 ::1
@@ -48,3 +49,4 @@ interpreted:
     environment:
     - modwsgi_user
     - dbhost
+    - dbhost_slave

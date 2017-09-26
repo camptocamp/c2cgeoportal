@@ -32,8 +32,10 @@ import os.path
 import argparse
 import warnings
 
-from pyramid.paster import get_app, setup_logging
+from pyramid.paster import get_app
 import transaction
+from logging.config import fileConfig
+import os
 
 
 def main():
@@ -108,8 +110,8 @@ User can be created if it does not exist yet."""
     # Ignores pyramid deprecation warnings
     warnings.simplefilter("ignore", DeprecationWarning)
 
-    setup_logging(app_config)
-    get_app(app_config, name=app_name)
+    fileConfig(app_config, defaults=os.environ)
+    get_app(app_name, options.app_name, options=os.environ)
 
     # must be done only once we have loaded the project config
     from c2cgeoportal import models

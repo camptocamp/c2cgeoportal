@@ -41,10 +41,8 @@ from tests.functional import (  # noqa
 class TestFunctionalities(TestCase):
 
     def setup_method(self, _):
-        import sqlahelper
         import transaction
         from c2cgeoportal.models import DBSession, Role, User, Functionality
-        from c2cgeoportal.lib.dbreflection import init
 
         create_default_ogcserver()
         role1 = Role(name="__test_role1")
@@ -67,9 +65,6 @@ class TestFunctionalities(TestCase):
 
         DBSession.add_all([user1, user2, role1, role2])
         transaction.commit()
-
-        engine = sqlahelper.get_engine()
-        init(engine)
 
     def teardown_method(self, _):
         import transaction

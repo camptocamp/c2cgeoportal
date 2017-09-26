@@ -13,7 +13,7 @@ vars:
         '"default_role_id" "-1"
         "role_id" "^-?[0-9]*$"'
     mapfile_data_subselect: "SELECT ST_Collect(ra.area) FROM main.restrictionarea AS ra, main.role_restrictionarea AS rra, main.layer_restrictionarea AS lra, main.treeitem AS la WHERE rra.role_id = %role_id% AND rra.restrictionarea_id = ra.id AND lra.restrictionarea_id = ra.id AND lra.layer_id = la.id AND la.name ="
-    git_branch: git rev-parse --abbrev-ref HEAD
+    git_branch: GIT_BRANCH
     tx_version: TX_VERSION
     ngeo_tx_languages:
     - fr
@@ -23,7 +23,6 @@ vars:
 interpreted:
     environment:
     - tx_version
-    bash:
     - git_branch
     python:
     - main_version

@@ -28,14 +28,15 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import os
 import sys
 import transaction
 from argparse import ArgumentParser
 from gettext import translation
-from pyramid.paster import get_app, setup_logging
+from pyramid.paster import get_app
 from sqlalchemy import func
 from c2c.template import get_config
+from logging.config import fileConfig
+import os
 
 
 def main():
@@ -104,8 +105,8 @@ def main():
     app_name = options.app_name
     if app_name is None and "#" in app_config:
         app_config, app_name = app_config.split("#", 1)
-    setup_logging(app_config)
-    get_app(app_config, name=app_name)
+    fileConfig(app_config, defaults=os.environ)
+    get_app(app_config, app_name, options=os.environ)
 
     Import(options)
 

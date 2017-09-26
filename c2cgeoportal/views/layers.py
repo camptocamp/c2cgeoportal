@@ -437,12 +437,11 @@ class Layers:
         layerinfos = self.layers_enum_config[layername]
         if fieldname not in layerinfos["attributes"]:  # pragma: no cover
             raise HTTPBadRequest("Unknown attribute: {0!s}".format(fieldname))
-        dbsession = models.DBSessions.get(
-            layerinfos.get("dbsession", "dbsession"),
-        )
+        dbsession_name = layerinfos.get("dbsession", "dbsession")
+        dbsession = models.DBSessions.get(dbsession_name)
         if dbsession is None:  # pragma: no cover
             raise HTTPInternalServerError(
-                "No dbsession found for layer '{0!s}'".format(layername)
+                "No dbsession found for layer '{0!s}' ({1!s})".format(layername, dbsession_name)
             )
         values = self.query_enumerate_attribute_values(dbsession, layerinfos, fieldname)
         enum = {

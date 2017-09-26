@@ -34,7 +34,6 @@ from sqlalchemy import Table, sql, MetaData
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm.util import class_mapper
 from sqlalchemy.exc import SAWarning
-from sqlalchemy.ext.declarative import declarative_base
 
 from geoalchemy2 import Geometry
 
@@ -43,8 +42,6 @@ from papyrus.xsd import tag
 
 
 _class_cache = {}
-
-Base = declarative_base()
 
 SQL_GEOMETRY_COLUMNS = """
     SELECT
@@ -59,12 +56,12 @@ SQL_GEOMETRY_COLUMNS = """
     """
 
 
-def init(engine):
+def init():
     """
     Initialize the db reflection module. Give the declarative base
     class an engine, required for the reflection.
     """
-    Base.metadata.bind = engine
+    global _class_cache
     _class_cache.clear()
 
 
@@ -153,7 +150,8 @@ def get_table(tablename, schema=None, session=None):
         engine = session.bind.engine
         metadata = MetaData(bind=engine)
     else:
-        engine = Base.metadata.bind
+        from c2cgeoportal.models import DBSession, Base
+        engine = DBSession.bind.engine
         metadata = Base.metadata
 
     # create table and reflect it
@@ -199,6 +197,7 @@ def get_class(tablename, session=None, exclude_properties=None):
 
 
 def _create_class(table, exclude_properties=None):
+    from c2cgeoportal.models import Base
 
     if exclude_properties is None:  # pragma: nocover
         exclude_properties = []
