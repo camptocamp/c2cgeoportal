@@ -2,6 +2,9 @@
 !setup.py
 !README.rst
 !c2cgeoportal/
+!commons
+!c2cgeoform
+!admin
 !Makefile
 !vars.yaml
 !c2cgeoportal/scaffolds/update/CONST_requirements.txt

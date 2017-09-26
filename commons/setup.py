@@ -15,6 +15,9 @@ setup(
     install_requires=[
         "sqlahelper",
         "papyrus",
+        "lingua>=2.4",
+        "babel",
+        "c2cwsgiutils",
     ],
     extras_require={
         'testing': [
