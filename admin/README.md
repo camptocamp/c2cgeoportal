@@ -1,19 +1,41 @@
 # c2cgeoportal_admin
 
-## Checkout
+## Run with docker
+
+To build:
+```
+make build_admin
+```
+
+To build & run the application:
+```
+make run_admin
+```
+
+Open http://localhost:8888/
+
+The following views are also provided by `c2cwsgiutils`:
+ * http://localhost:8888/versions.json
+ * http://localhost:8888/stats.json
+ * http://localhost:8888/health_check?max_level=3
+
+
+## Run without docker
+
+
+### Checkout
 
 git clone --recursive git@github.com:camptocamp/c2cgeoportal.git
 cd admin
 
-## Build the app
+### Build the app
 
 Install the virtual env, build the app:
 ```
 make build
 ```
 
-## Set up the database (TODO)
-
+### Set up the database
 
 ```
 sudo -u postgres psql -c "CREATE USER \"www-data\" WITH PASSWORD 'www-data';"
@@ -29,27 +51,7 @@ Optionally update sqlachemy.url in production.ini
 make init_db
 ```
 
-
-## Build docker image
-
-```
-make build_admin
-```
-
-
-## Run the application
-
-```
-docker-compose up
-```
-
-The following views are provided by `c2cwsgiutils`:
- * http://localhost:8888/versions.json
- * http://localhost:8888/stats.json
- * http://localhost:8888/health_check?max_level=3
-
-
-## Run the tests (TODO)
+## Run the tests
 
 ```
 make test
