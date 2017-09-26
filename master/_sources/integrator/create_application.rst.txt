@@ -45,7 +45,7 @@ To get ``c2cgeoportal`` you first need to get the related docker image:
 
 .. prompt:: bash
 
-    docker pull camptocamp/geomapfish_build <release|version>
+    docker pull camptocamp/geomapfish-build <release|version>
     wget https://raw.githubusercontent.com/camptocamp/c2cgeoportal/master/docker-run
 
 List existing skeletons

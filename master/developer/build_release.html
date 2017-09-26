@@ -68,7 +68,7 @@ span.prompt1:before {
 <span class="prompt1">git checkout master</span>
 <span class="prompt1">git reset --hard origin/master</span>
 </pre><p>Get the localisation from Transifex:</p>
-<pre class="highlight"><span class="prompt1">docker build --tag<span class="o">=</span>camptocamp/geomapfish_build_dev docker/build</span>
+<pre class="highlight"><span class="prompt1">docker build --tag<span class="o">=</span>camptocamp/geomapfish-build-dev docker/build</span>
 <span class="prompt1">./docker-run make transifex-get</span>
 </pre><p>For each version we create a new branch (at the latest at the final release):</p>
 <pre class="highlight"><span class="prompt1">git checkout -b &lt;version&gt;</span>
