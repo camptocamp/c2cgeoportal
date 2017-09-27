@@ -158,9 +158,8 @@ script:
 - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run alembic --config alembic_static.ini downgrade base
 - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run alembic --config alembic.ini downgrade base
 ## END FOR NON DOCKER TESTS
-#
+
 after_success:
-- ./docker-run coveralls
 - export CODACY_PROJECT_TOKEN=1605f78ffb214af5ba6cb172a95db5d1
 - ./docker-run python-codacy-coverage -r coverage.xml
 - openssl aes-256-cbc -K $encrypted_ae821512cabf_key -iv $encrypted_ae821512cabf_iv -in deploy_key.enc -out ~/.ssh/id_rsa -d | true

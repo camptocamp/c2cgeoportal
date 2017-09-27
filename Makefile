@@ -113,7 +113,7 @@ $(BUILD_DIR)/sphinx.timestamp: $(SPHINX_FILES) $(SPHINX_MAKO_FILES:.mako=)
 
 .PHONY: tests
 tests: $(BUILD_DIR)/requirements.timestamp tests/functional/test.ini $(BUILD_DIR)/db.timestamp
-	py.test
+	py.test --cov=c2cgeoportal tests
 
 $(BUILD_DIR)/db.timestamp: tests/functional/alembic.ini tests/functional/alembic_static.ini
 	alembic --config tests/functional/alembic.ini upgrade head

@@ -7,7 +7,6 @@ c2c.cssmin==0.7.dev6  # MakeFile
 c2c.template==1.5.1  # setup.py
 Chameleon==3.1
 codespell==1.10.0
-coveralls==1.2.0
 dateutils==0.6.6  # setup.py
 defusedxml==0.5.0  # setup.py
 dogpile.cache==0.6.4  # setup.py
@@ -43,6 +42,7 @@ https://github.com/camptocamp/pyramid_closure/archive/23b45f7989cf471dce46dabb85
 pyramid-debugtoolbar==4.3  # setup.py
 pyramid-mako==1.0.2  # setup.py
 pyramid-multiauth==0.9.0  # setup.py
+pytest-cov==2.5.1  # tests
 python-dateutil==2.6.1
 pytz==2017.2
 PyYAML==3.12  # setup.py
