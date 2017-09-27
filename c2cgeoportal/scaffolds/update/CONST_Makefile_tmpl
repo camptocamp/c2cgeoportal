@@ -60,7 +60,7 @@ WMTSCAPABILITIES_PATH ?= 1.0.0/WMTSCapabilities-$(ENVIRONEMENT).xml
 export WMTSCAPABILITIES_PATH
 ifeq ($(TILECLOUD_CHAIN), TRUE)
 WMTSCAPABILITIES_FILE ?= /var/sig/tiles/$(WMTSCAPABILITIES_PATH)
-DEFAULT_BUILD_RULES += apache/tiles.conf tilegeneration/config.yaml
+DEFAULT_BUILD_RULES += tilegeneration/config.yaml
 ifeq ($(TILECLOUD_CHAIN_LOCAL), TRUE)
 DEFAULT_BUILD_RULES += $(WMTSCAPABILITIES_FILE)
 endif
@@ -300,9 +300,6 @@ endif
 PRINT_BASE_DIR ?= print
 I18N_SOURCE_FILES += print/print-apps/$(PACKAGE)/config.yaml
 
-ifeq ($(TILECLOUD_CHAIN), TRUE)
-CONF_FILES += apache/tiles.conf apache/mapcache.xml
-endif
 PY_FILES = $(shell find $(PACKAGE) -type f -name '*.py' -print)
 
 # Templates
@@ -375,7 +372,7 @@ git-attributes:
 .PHONY: clean
 clean: template-clean
 	rm -f /build/*.timestamp
-	rm -f apache/mapcache.xml apache/tiles.conf
+	rm -f apache/mapcache.xml apache/tiles.conf  # for nondocker
 	rm -rf $(OUTPUT_DIR)/
 	rm -rf $(APP_OUTPUT_DIR)/
 	rm -f $(PACKAGE)/locale/$(PACKAGE)-*.pot
@@ -707,15 +704,6 @@ print-docker: /build/print-docker.timestamp
 	$(PRERULE_CMD)
 	docker build -t $(DOCKER_BASE)-print:$(DOCKER_TAG) print
 	touch $@
-
-# Tile cloud chain
-apache/mapcache.xml: tilegeneration/config.yaml
-	$(PRERULE_CMD)
-	generate_controller --generate-mapcache-config
-
-apache/tiles.conf: tilegeneration/config.yaml apache/mapcache.xml
-	$(PRERULE_CMD)
-	generate_controller --generate-apache-config
 
 # Docker
 .PHONY: mapserver-docker
