@@ -35,7 +35,6 @@ import urllib.parse
 import urllib.error
 import logging
 
-from io import StringIO
 from urllib.parse import urlparse, parse_qs
 
 from pyramid.response import Response
@@ -93,7 +92,7 @@ class Proxy(object):
             headers["Cache-Control"] = "no-cache"
 
         if method in ("POST", "PUT") and body is None:  # pragma: no cover
-            body = StringIO(self.request.body)
+            body = self.request.body
 
         try:
             if method in ("POST", "PUT"):
@@ -120,11 +119,7 @@ class Proxy(object):
 
             if method in ("POST", "PUT"):
                 log.error("--- With body ---")
-                if hasattr(body, "read"):
-                    body.reset()
-                    log.error(body.read())
-                else:
-                    log.error(body)
+                log.error(body.decode("utf-8"))
 
             raise HTTPBadGateway("Error on backend<hr>See logs for detail")
 
@@ -144,11 +139,7 @@ class Proxy(object):
 
             if method == "POST":
                 log.error("--- Query with body ---")
-                if hasattr(body, "read"):
-                    body.reset()
-                    log.error(body.read())
-                else:
-                    log.error(body)
+                log.error(body.decode("utf-8"))
 
             log.error("--- Return content ---")
             log.error(content)

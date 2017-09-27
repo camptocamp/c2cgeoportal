@@ -39,10 +39,9 @@ export DOCKER_TAG
 
 ifdef CGXP_INTERFACES
 DEFAULT_WEB_RULE += $(JSBUILD_MAIN_OUTPUT_FILES) $(CSS_BASE_OUTPUT)
-else
-ifeq ($(CGXP_API), TRUE)
-DEFAULT_WEB_RULE += $(CSS_API_OUTPUT) $(CSS_XAPI_OUTPUT)
 endif
+ifeq ($(CGXP_API), TRUE)
+DEFAULT_WEB_RULE += $(JSBUILD_API_OUTPUT_FILES) $(CSS_API_OUTPUT) $(CSS_XAPI_OUTPUT)
 endif
 ifneq ($(NGEO_INTERFACES), "")
 DEFAULT_WEB_RULE += $(NGEO_OUTPUT_FILES)
@@ -165,12 +164,13 @@ endif
 # CGXP
 JSBUILD_MAIN_FILES = $(shell find $(PACKAGE)/static/lib/cgxp $(PACKAGE)/static/js -name "*.js" -print 2> /dev/null)
 JSBUILD_MAIN_CONFIG = jsbuild/app.cfg
-JSBUILD_MAIN_OUTPUT_FILES ?= $(addsuffix .js, $(CGXP_INTERFACES)) api.js xapi.js
+JSBUILD_MAIN_OUTPUT_FILES ?= $(addsuffix .js, $(CGXP_INTERFACES))
 ifdef CGXP_INTERFACES
 JSBUILD_MAIN_OUTPUT_FILES += $(addprefix lang-, $(addsuffix .js, $(LANGUAGES)))
 endif
-JSBUILD_MAIN_OUTPUT_FILES += $(addprefix api-lang-, $(addsuffix .js, $(LANGUAGES)))
 JSBUILD_MAIN_OUTPUT_FILES := $(addprefix $(OUTPUT_DIR)/, $(JSBUILD_MAIN_OUTPUT_FILES))
+JSBUILD_API_OUTPUT_FILES += $(addprefix api-lang-, $(addsuffix .js, $(LANGUAGES))) api.js xapi.js
+JSBUILD_API_OUTPUT_FILES := $(addprefix $(OUTPUT_DIR)/, $(JSBUILD_API_OUTPUT_FILES))
 ifeq ($(DEVELOPMENT), TRUE)
 JSBUILD_ARGS += --uncompress
 endif
@@ -656,7 +656,7 @@ $(PACKAGE)/static/lib/cgxp/:
 
 # CGXP build
 
-$(JSBUILD_MAIN_OUTPUT_FILES): $(JSBUILD_MAIN_FILES) \
+$(OUTPUT_DIR)/%.js: $(JSBUILD_MAIN_FILES) \
 		$(JSBUILD_MAIN_CONFIG) \
 		$(PACKAGE)/static/lib/cgxp/openlayers/ \
 		$(PACKAGE)/static/lib/cgxp/

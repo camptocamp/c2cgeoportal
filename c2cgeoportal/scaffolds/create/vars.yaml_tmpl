@@ -114,9 +114,10 @@ vars:
 
     # Checker configuration
     checker:
-        defaults:
-            fulltextsearch: text to search
-            print_spec:
+        fulltextsearch:
+            search: text to search
+        print:
+            spec:
                 layout: "1 A4 portrait"
                 outputFormat: "pdf"
                 attributes:
@@ -134,7 +135,6 @@ vars:
                     legend: {}
 
     check_collector:
-        disabled: []
         hosts: []
         # - display: Child:
         #   url: {web_protocol}://{host}/child/wsgi
@@ -144,6 +144,7 @@ update_paths:
 - fulltextsearch
 - authtkt
 - admin_interface
-- checker.defaults
+- checker.fulltextsearch
+- checker.print
 - check_collector.disabled
 - check_collector.hosts

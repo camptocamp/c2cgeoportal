@@ -32,7 +32,7 @@ from unittest import TestCase
 
 from pyramid.testing import DummyRequest
 
-from c2cgeoportal.views.checker import build_url
+from c2cgeoportal.lib.checker import build_url
 
 
 class TestExportCSVView(TestCase):
@@ -52,13 +52,13 @@ class TestExportCSVView(TestCase):
                 "http://example.com/toto?titi#tutu",
                 self._create_dummy_request()
             ),
-            (
-                "http://localhost/toto?titi#tutu",
-                {
+            {
+                "url": "http://localhost/toto?titi#tutu",
+                "headers": {
                     "Cache-Control": "no-cache",
                     "Host": "example.com"
                 }
-            )
+            }
         )
 
     def test_build_url_https(self):
@@ -68,13 +68,13 @@ class TestExportCSVView(TestCase):
                 "https://example.com/toto?titi#tutu",
                 self._create_dummy_request()
             ),
-            (
-                "http://localhost/toto?titi#tutu",
-                {
+            {
+                "url": "http://localhost/toto?titi#tutu",
+                "headers": {
                     "Cache-Control": "no-cache",
                     "Host": "example.com"
                 }
-            )
+            }
         )
 
     def test_build_url_other(self):
@@ -84,12 +84,12 @@ class TestExportCSVView(TestCase):
                 "https://camptocamp.com/toto?titi#tutu",
                 self._create_dummy_request()
             ),
-            (
-                "https://camptocamp.com/toto?titi#tutu",
-                {
+            {
+                "url": "https://camptocamp.com/toto?titi#tutu",
+                "headers": {
                     "Cache-Control": "no-cache",
                 }
-            )
+            }
         )
 
     def test_build_url_forward_headers(self):
@@ -109,11 +109,11 @@ class TestExportCSVView(TestCase):
                 "https://camptocamp.com/toto?titi#tutu",
                 request
             ),
-            (
-                "https://camptocamp.com/toto?titi#tutu",
-                {
+            {
+                "url": "https://camptocamp.com/toto?titi#tutu",
+                "headers": {
                     "Cache-Control": "no-cache",
                     "Cookie": "test",
                 }
-            )
+            }
         )

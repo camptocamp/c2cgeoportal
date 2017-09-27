@@ -1,7 +1,7 @@
 project_folder: {{project}}
 project_package: ${package}
 host: ${host}
-checker_path: /check_collector?
+checker_path: /c2c/health_check?
 template_vars:
     package: {{package}}
     srid: {{srid}}

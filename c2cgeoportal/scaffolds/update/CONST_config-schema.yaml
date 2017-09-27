@@ -353,33 +353,61 @@ mapping:
                 type: map
                 required: True
                 mapping:
-                    regex;(.+):
+                    fulltextsearch:
                         type: map
+                        required: True
                         mapping:
-                            fulltextsearch:
+                            level:
+                                type: int
+                                required: True
+                            search:
                                 type: str
-                            lang_files:
+                                required: True
+                    lang:
+                        type: map
+                        required: True
+                        mapping:
+                            level:
+                                type: int
+                                required: True
+                            files:
                                 type: seq
+                                required: True
                                 sequence:
                                 -   type: str
-                            print_template:
-                                type: str
-                            print_center_lon:
+                    print:
+                        type: map
+                        required: True
+                        mapping:
+                            level:
                                 type: int
-                            print_center_lat:
-                                type: int
-                            print_scale:
-                                type: int
-                            print_spec:
+                                required: True
+                            spec:
                                 type: any
-                            routes: &routes
+                                required: True
+                    routes: &routes
+                        type: map
+                        required: True
+                        mapping:
+                            disable:
                                 type: seq
+                                required: True
+                                seq:
+                                - type: str
+                            routes:
+                                type: seq
+                                required: True
                                 seq:
                                 -   type: map
                                     mapping:
+                                        level:
+                                            type: int
+                                            required: True
                                         name:
                                             type: str
                                             required: true
+                                        display_name:
+                                            type: str
                                         params: &params
                                             type: map
                                             mapping:
@@ -387,49 +415,33 @@ mapping:
                                                     type: str
                                                     pattern: |-
                                                         [a-zA-Z0-9_\-~\.]+
-                            phantomjs_routes: *routes
-                            routes_disable:
-                                type: seq
-                                seq:
-                                -   type: str
-                            themes:
+                    phantomjs: *routes
+                    themes:
+                        type: map
+                        required: True
+                        mapping:
+                            level:
+                                type: int
+                                required: True
+                            params: *params
+                            interfaces:
                                 type: map
                                 mapping:
                                     regex;([a-z]+):
                                         type: map
                                         mapping:
                                             params: *params
-                            forward_headers:
-                                type: seq
-                                sequence:
-                                -   type: str
+                    forward_headers:
+                        type: seq
+                        sequence:
+                        -   type: str
 
-                            regex;(.+):
-                                type: any
+                    regex;(.+):
+                        type: any
             check_collector:
                 type: map
                 required: True
                 mapping:
-                    disabled:
-                        type: seq
-                        required: True
-                        sequence:
-                        -   type: str
-                    check_type:
-                        type: map
-                        required: True
-                        mapping:
-                            regex;([a-z]+):
-                                type: seq
-                                sequence:
-                                -   type: map
-                                    mapping:
-                                        name:
-                                            type: str
-                                            required: True
-                                        display:
-                                            type: str
-                                            required: True
                     hosts:
                         type: seq
                         required: True
@@ -442,8 +454,13 @@ mapping:
                                 url:
                                     type: str
                                     required: True
-                                type:
-                                    type: str
-                                    required: True
+                                level:
+                                    type: int
+                    max_level:
+                        type: int
+                        required: True
+                    level:
+                        type: int
+                        required: True
             regex;(.+):
                 type: any

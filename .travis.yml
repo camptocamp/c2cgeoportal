@@ -95,8 +95,8 @@ script:
   find setup.py testgeomapfish/*.py testgeomapfish/views -name \*.py | xargs travis/quote
 - travis/run-on.sh /tmp/travis/testgeomapfish/ docker-compose up -d
 - travis/waitwsgi http://localhost:8080/
-- travis/test-new-project http://localhost:8080/check_collector
-- travis/test-new-project http://localhost:8080/check_collector?type=all
+- travis/test-new-project http://localhost:8080/c2c/health_check
+- travis/test-new-project http://localhost:8080/c2c/health_check?max_level=100
 - travis/test-new-project http://localhost:8080/layers/test/values/type enum
 - travis/run-on.sh /tmp/travis/testgeomapfish/ docker-compose logs
 - travis/run-on.sh /tmp/travis/testgeomapfish/ docker-compose down
@@ -144,8 +144,8 @@ script:
 - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run make -f travis.mk checks
 - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run travis/no-make-error.sh -f travis.mk help
 - find /tmp/travis/nondockertestgeomapfish/setup.py /tmp/travis/nondockertestgeomapfish/testgeomapfish/*.py /tmp/travis/nondockertestgeomapfish/testgeomapfish/views -name \*.py | xargs travis/quote
-- travis/test-new-project http://localhost/main/wsgi/check_collector
-- travis/test-new-project http://localhost/main/wsgi/check_collector?type=all
+- travis/test-new-project http://localhost/main/wsgi/c2c/health_check
+- travis/test-new-project http://localhost/main/wsgi/c2c/health_check?max_level=100
 - cat /var/log/apache2/error.log
 - cat /var/log/apache2/access.log
 - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run travis/status.sh
