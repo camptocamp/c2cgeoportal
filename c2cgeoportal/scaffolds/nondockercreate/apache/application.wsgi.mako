@@ -4,12 +4,8 @@ import re
 import os
 from logging.config import fileConfig
 
-% if docker == 'TRUE':
-root = "/app"
-% else:
 site.addsitedir("${python_path}")
 root = "${project_directory}"
-% endif
 
 
 # Remove site packages in both redhat and debian

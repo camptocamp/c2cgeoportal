@@ -29,6 +29,8 @@
 
 import requests
 
+from c2cgeoportal.lib.checker import build_url
+
 
 def init(config, health_check):
     global_settings = config.get_settings()
@@ -44,8 +46,9 @@ def init(config, health_check):
             params = request.params
             display = host["display"]
             if "host" not in params or display == params["host"]:
-                url = "%s%s/health_check" % (host["url"], c2c_base)
-                r = requests.get(url, params={"max_level": str(host.get("max_level", max_level))})
+                url_headers = build_url(
+                    "check_collector", "%s%s/health_check" % (host["url"], c2c_base), request)
+                r = requests.get(params={"max_level": str(host.get("max_level", max_level))}, **url_headers)
                 r.raise_for_status()
 
         health_check.add_custom_check(name="check_collector_" + host["display"], check_cb=check,
