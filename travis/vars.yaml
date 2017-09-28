@@ -23,4 +23,3 @@ update_paths:
 - layers
 - checker.lang
 - checker.routes
-- checker.all
