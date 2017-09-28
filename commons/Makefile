@@ -16,6 +16,7 @@ test: ${BUILD_DIR}/requirements.timestamp
 
 ${BUILD_DIR}/requirements.timestamp: ${BUILD_DIR}/venv.timestamp setup.py
 	#Install the project in editable mode with its testing requirements.
+	${VENV}/bin/pip install -r requirements.txt
 	${VENV}/bin/pip install -e ".[testing]"
 	touch $@
 

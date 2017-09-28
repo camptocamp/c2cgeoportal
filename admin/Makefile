@@ -1,7 +1,7 @@
 BUILD_DIR?=.build
 VENV?=${BUILD_DIR}/venv
 
-.PHONY: buid
+.PHONY: build
 build: ${BUILD_DIR}/venv.timestamp \
 	${BUILD_DIR}/commons.timestamp \
 	${BUILD_DIR}/requirements.timestamp
@@ -14,7 +14,7 @@ init_db:
 .PHONY: test
 test:
 	#Run your project's tests.
-	${VENV}/bin/pytest
+	${VENV}/bin/pytest --driver Firefox
 
 .PHONY: serve
 serve:
@@ -34,5 +34,6 @@ ${BUILD_DIR}/commons.timestamp: ../commons/setup.py
 
 ${BUILD_DIR}/requirements.timestamp: setup.py
 	#Install the project in editable mode with its testing requirements.
+	${VENV}/bin/pip install -r requirements.txt
 	${VENV}/bin/pip install -e ".[testing]"
 	touch $@

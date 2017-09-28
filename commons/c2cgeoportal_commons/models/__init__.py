@@ -86,6 +86,8 @@ def includeme(config):
     # use pyramid_retry to retry a request when transient exceptions occur
     config.include('pyramid_retry')
 
+    config.add_translation_dirs('c2cgeoportal_commons:locale/')
+
     session_factory = get_session_factory(get_engine(settings))
     config.registry['dbsession_factory'] = session_factory
 

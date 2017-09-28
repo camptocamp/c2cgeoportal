@@ -15,13 +15,17 @@ setup(
     install_requires=[
         "sqlahelper",
         "papyrus",
+        'lingua>=2.4',
+        'babel',
+        'deform',
+        'pyproj',  # sudo apt install python3-dev", why not with c2cgeoform ?
+        'ColanderAlchemy>=0.3.2'  # why not with c2cgeoform ?
     ],
     extras_require={
         'testing': [
             'psycopg2',
             'pytest',
-            'pytest-cov',
-            #'pydevd',
+            'pytest-cov'
         ],
     },
     entry_points={
