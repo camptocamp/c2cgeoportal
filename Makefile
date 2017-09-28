@@ -9,7 +9,7 @@ ifeq ($(DEBUG), TRUE)
 ifeq ($(OPERATING_SYSTEM), WINDOWS)
 PRERULE_CMD ?= @echo "Build $@ due mofification on $?"; ls -t --full-time --reverse $? $@ || true
 else
-PRERULE_CMD ?= @echo "Build \033[1;34m$@\033[0m due mofification on \033[1;34m$?\033[0m"; ls -t --full-time --reverse $? $@ || true
+PRERULE_CMD ?= @echo "Build \033[1;34m$@\033[0m due mofification on \033[1;34m$?\033[0m" 1>&2; ls -t --full-time --reverse $? $@ 1>&2 || true
 endif
 endif
 
@@ -304,13 +304,3 @@ $(BUILD_DIR)/requirements.timestamp: setup.py $(BUILD_DIR)/venv.timestamp
 	$(PRERULE_CMD)
 	$(BUILD_DIR)/venv/bin/pip install -e .
 	touch $@
-
-$(JSBUILD_ADMIN_OUTPUT_FILES): $(JSBUILD_ADMIN_FILES) $(JSBUILD_ADMIN_CONFIG)
-	$(PRERULE_CMD)
-	mkdir -p $(dir $@)
-	jsbuild $(JSBUILD_ADMIN_CONFIG) $(JSBUILD_ARGS) -j $(notdir $@) -o $(ADMIN_OUTPUT_DIR)
-
-$(CSS_ADMIN_OUTPUT): $(CSS_ADMIN_FILES)
-	$(PRERULE_CMD)
-	mkdir -p $(dir $@)
-	c2c-cssmin $(CSSMIN_ARGS) $@ $(CSS_ADMIN_FILES)

@@ -26,9 +26,6 @@ git add --all
 git commit --quiet --message="Initial commit"
 git remote add origin . # add a fake remote
 
-# No make error
-./docker-run travis/no-make-error.sh -f travis.mk help
-
 # Minimal build
 ./docker-run make -f travis.mk \
     /build/requirements.timestamp \

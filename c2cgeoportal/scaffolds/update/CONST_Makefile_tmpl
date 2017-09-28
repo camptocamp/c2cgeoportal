@@ -5,7 +5,7 @@ export PACKAGE = {{package}}
 MAPSERVER ?= TRUE
 
 ifeq ($(DEBUG), TRUE)
-PRERULE_CMD ?= @echo "Build \033[1;34m$@\033[0m due mofification on \033[1;34m$?\033[0m"; ls -t --full-time --reverse $? $@ || true
+PRERULE_CMD ?= @echo "Build \033[1;34m$@\033[0m due mofification on \033[1;34m$?\033[0m" 1>&2; ls -t --full-time --reverse $? $@ 1>&2 || true
 endif
 
 VENV_BIN ?= /build/venv/bin

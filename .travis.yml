@@ -57,16 +57,11 @@ before_install:
 
 install:
 - if [ ${TRAVIS_PULL_REQUEST} != "false" ] ; then git fetch origin ${TRAVIS_BRANCH}:${TRAVIS_BRANCH}; fi
-- ./docker-run travis/no-make-error.sh help
+- ./docker-run travis/empty-make.sh help
 - ./docker-run make -f travis.mk build
 - travis/create-new-project.sh
 - travis/test-upgrade.sh
 - travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-run make -f travis.mk build project.yaml
-## FOR NON DOCKER TESTS
-- travis/create-new-nondocker-project.sh
-- travis/test-nondocker-upgrade.sh
-- travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run make -f travis.mk build project.yaml
-## END FOR NON DOCKER TESTS
 
 script:
 - docker version
@@ -89,6 +84,7 @@ script:
   --ignore-conflicting-name
   --overwrite /tmp/travis/testgeomapfish > /dev/null
   # on upgrade - do not add any argument on this command
+- travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-run travis/empty-make.sh -f travis.mk help
 - travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-run make -f travis.mk checks
 - >
   travis/run-on.sh /tmp/travis/testgeomapfish/
@@ -112,7 +108,7 @@ script:
 
 # Test c2cgeoportal
 - ./docker-run travis/empty-make.sh -f travis.mk build
-- ./docker-run travis/no-make-error.sh -f travis.mk help
+- ./docker-run travis/empty-make.sh -f travis.mk help
 - ./docker-run make -f travis.mk doc
 - ./docker-run make -f travis.mk checks
 - ./docker-run make -f travis.mk tests/functional/alembic.ini
@@ -122,10 +118,13 @@ script:
 
 ## FOR NON DOCKER TESTS
 # Test new non Docker project
-- sudo service tomcat7 start
 - deactivate
-- travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ rm apache/application.wsgi
-- travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run rm /build/c2ctemplate-cache.json
+- sudo service tomcat7 start
+- travis/create-new-nondocker-project.sh
+- travis/test-nondocker-upgrade.sh
+- travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run make -f travis.mk build project.yaml
+- travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run travis/empty-make.sh -f travis.mk build
+- travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run rm apache/application.wsgi /build/c2ctemplate-cache.json
 - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run make -f travis.mk apache/application.wsgi
 - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ make -f travis-nondocker.mk build
 - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run make -f travis.mk project.yaml
@@ -142,15 +141,13 @@ script:
     --ignore-conflicting-name
     --overwrite /tmp/travis/nondockertestgeomapfish > /dev/null  # on upgrade - do not add any argument on this command
 - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run make -f travis.mk checks
-- travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run travis/no-make-error.sh -f travis.mk help
+- travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run travis/empty-make.sh -f travis.mk help
 - find /tmp/travis/nondockertestgeomapfish/setup.py /tmp/travis/nondockertestgeomapfish/testgeomapfish/*.py /tmp/travis/nondockertestgeomapfish/testgeomapfish/views -name \*.py | xargs travis/quote
 - travis/test-new-project http://localhost/main/wsgi/c2c/health_check
 - travis/test-new-project http://localhost/main/wsgi/c2c/health_check?max_level=100
 - cat /var/log/apache2/error.log
 - cat /var/log/apache2/access.log
 - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run travis/status.sh
-- travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run travis/empty-make.sh -f travis.mk build
-- travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run travis/no-make-error.sh -f travis.mk build
 - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run make -f empty-vars.mk config.yaml
 - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run make -f travis.mk alembic.ini alembic_static.ini
 - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run alembic --config alembic.ini upgrade head
