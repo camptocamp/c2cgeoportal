@@ -17,7 +17,7 @@ services:
         - db
 
     c2cgeoportal:
-        image: camptocamp/geomapfish_build_dev
+        image: camptocamp/geomapfish_build_dev:2.2
         links:
         - db
         - mapserver
