@@ -33,7 +33,6 @@ def main():
         "--env=USER_NAME={}".format(os.getlogin()),
         "--env=USER_ID={}".format(os.getuid() if os.name == "posix" else 1000),
         "--env=GROUP_ID={}".format(os.getgid() if os.name == "posix" else 1000),
-        "--env=CODACY_PROJECT_TOKEN={}".format(os.environ.get("CODACY_PROJECT_TOKEN", "")),
         "--env=GIT_BRANCH={}".format(git_branch)
     ])
 
