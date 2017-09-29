@@ -480,10 +480,13 @@ def includeme(config):
 
     config.include(c2cwsgiutils.pyramid.includeme)
     health_check = HealthCheck(config)
-    # TODO: add integration with the check collector
 
     # Initialise DBSessions
     init_dbsessions(settings, config, health_check)
+
+    from c2cgeoportal.lib import checker, check_collector
+    checker.init(config, health_check)
+    check_collector.init(config, health_check)
 
     config.include("pyramid_closure")
 
@@ -570,19 +573,6 @@ def includeme(config):
         pregenerator=C2CPregenerator(role=True),
     )
     config.add_route("invalidate", "/invalidate", request_method="GET")
-
-    # checker routes, Checkers are web services to test and assess that
-    # the application is correctly functioning.
-    # These web services are used by tools like (nagios).
-    config.add_route("checker_routes", "/checker_routes", request_method="GET")
-    config.add_route("checker_lang_files", "/checker_lang_files", request_method="GET")
-    config.add_route("checker_pdf", "/checker_pdf", request_method="GET")
-    config.add_route("checker_pdf3", "/checker_pdf3", request_method="GET")
-    config.add_route("checker_fts", "/checker_fts", request_method="GET")
-    config.add_route("checker_theme_errors", "/checker_theme_errors", request_method="GET")
-    config.add_route("checker_phantomjs", "/checker_phantomjs", request_method="GET")
-    # collector
-    config.add_route("check_collector", "/check_collector", request_method="GET")
 
     # print proxy routes
     config.add_route("printproxy", "/printproxy", request_method="HEAD")

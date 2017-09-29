@@ -26,23 +26,15 @@ vars:
     - '{web_protocol}:://c.tiles.{host}/{instanceid}/tiles'
 
     checker:
-        defaults:
-            phantomjs_routes: []
-        all:
-            phantomjs_routes: []
-    check_collector:
-        hosts:
-        - display: {{package}}
-          url: '{web_protocol}://{host}/{instanceid}/wsgi'
-          type: main
+        phantomjs:
+            routes: []
 
     deploy:
         code_source: /var/www/c2cgeoportal_mapfish/private/c2cgeoportal
         code_destination: /var/www/c2cgeoportal_mapfish/private/c2cgeoportal
 
 update_paths:
-- checker.defaults
-- checker.all
+- checker.phantomjs
 - check_collector
 
 interpreted:

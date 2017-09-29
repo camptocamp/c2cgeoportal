@@ -344,90 +344,71 @@ vars:
 
     # Checker configuration
     checker:
-        defaults:
-            fulltextsearch: text to search
-            lang_files: [ngeo, cgxp-api]
-            phantomjs_routes:
+        fulltextsearch:
+          level: 2
+          search: text to search
+        lang:
+          level: 2
+          files: [ngeo, cgxp-api]
+        phantomjs:
+          disable: []
+          routes:
             - name: desktop
-              params:
-                no_redirect: "true"
-            forward_headers: []
-            routes_disable: []
-            themes:
-                default:
-                    params:
-                        version: "2"
-        all:
-            phantomjs_routes:
-            - name: desktop
+              level: 2
               params:
                 no_redirect: "true"
             - name: mobile
               params:
                 no_redirect: "true"
-            # phantomjs 2.5 is required
-#            - name: desktop
-#              params:
-#                no_redirect: "true"
-#                debug: "true"
-#            - name: mobile
-#              params:
-#                no_redirect: "true"
-#                debug: "true"
-            routes:
-#            - name: apijs
-#            - name: xapijs
+              level: 3
+#           - name: desktop
+#             params:
+#               no_redirect: "true"
+#               debug: "true"
+#             level: 3
+#           - name: mobile
+#             params:
+#               no_redirect: "true"
+#               debug: "true"
+#             level: 3
+        forward_headers: []  # TODO: remove
+        routes:
+          disable: []
+          routes:
+#           - name: apijs
+#             level: 3
+#           - name: xapijs
+#             level: 3
             - name: printproxy_capabilities
-            # print V2
-            #- name: printproxy_info
+              level: 3
             - name: mapserverproxy
+              display_name: mapserverproxy_wms
               params:
                 SERVICE: WMS
                 VERSION: 1.1.1
                 REQUEST: GetCapabilities
+              level: 3
             - name: mapserverproxy
+              display_name: mapserverproxy_wfs
               params:
                 SERVICE: WFS
                 VERSION: 1.1.0
                 REQUEST: GetCapabilities
-        main:
-            routes:
-#            - name: apijs
-            - name: printproxy_capabilities
+              level: 3
+        themes:
+            params:
+                version: "2"
+            level: 2
+            interfaces: {}
+        print:
+            spec: {}
+            level: 2
 
     # Check collector configuration
     check_collector:
-        disabled: [checker_pdf]
-        check_type:
-            all:
-            - name: checker_routes
-              display: Check pages
-            - name: checker_theme_errors
-              display: Errors in the themes
-            - name: checker_lang_files
-              display: Language files
-            - name: checker_pdf
-              display: Print PDF
-            - name: checker_pdf3
-              display: Print PDF
-            - name: checker_fts
-              display: FullTextSearch
-            - name: checker_phantomjs
-              display: PhantomJS generic test
-            main:
-            - name: checker_routes
-              display: Check pages
-            - name: checker_fts
-              display: FullTextSearch
-            - name: checker_phantomjs
-              display: PhantomJS generic test
-            default: # for children
-            - name: checker_phantomjs
-              display: PhantomJS generic test
-        hosts:
-        - display: {{package}}
-          url: '{web_protocol}://{host}{entry_point}'
-          type: main
+        hosts: []
+        max_level: 2
+        level: 2
 
     # What web page is authorized to use the API
     authorized_referers:

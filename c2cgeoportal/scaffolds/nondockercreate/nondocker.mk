@@ -157,7 +157,7 @@ ifeq ($(OPERATING_SYSTEM), WINDOWS)
 	.build/venv/Scripts/python -m pip install `./get-pip-dependencies pyramid-closure c2cgeoportal Shapely`
 	.build/venv/Scripts/python -m pip install wheels/Shapely-1.5.13-cp27-none-win32.whl
 else
-	.build/venv/bin/python -m pip install `./get-pip-dependencies pyramid-closure c2cgeoportal`
+	.build/venv/bin/python -m pip install `./get-pip-dependencies pyramid-closure c2cgeoportal GDAL`
 endif
 	./docker-run cp -r /opt/c2cgeoportal c2cgeoportal
 	.build/venv/bin/python -m pip install https://github.com/camptocamp/pyramid_closure/archive/23b45f7989cf471dce46dabb8516537bae0a2789.zip#egg=pyramid_closure

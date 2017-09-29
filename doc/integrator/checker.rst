@@ -3,30 +3,32 @@
 Automated check
 ===============
 
-c2cgeoportal applications include web services for testing
+c2cgeoportal applications include functionality for testing
 and assessing that the application is correctly functioning,
 ie. that its web services respond as expected.
 
-For that we have two services: a *checker* and a *check_collector*.
+For that we have parts: a *checker* and a *check_collector*.
 
-Those services (especially the collector) are meant to be used by a
+Those (especially the collector) are meant to be used by a
 monitoring system like Nagios to check that the application is alive.
 
-The return code are:
+They integrate into c2cwsgiutils's health check service. The return code are:
 
-* ``200``-``299`` => OK
-* ``400``-``499`` => Warning
-* ``500``-``599`` => Error
+* ``200`` => OK
+* ``500`` => Error
 
 .. Note::
 
     Check collector can only check pages that are on the same server as it.
 
+You can access the health_check service with this kind of url:
+
+    http://example.com/main/wsgi/c2c/health_check?max_level=3
 
 Checker
 -------
 
-The checker use the following configuration structure:
+The checker use the following configuration structure in ``vars_<project>.yaml``:
 
 .. code:: yaml
 
@@ -34,10 +36,7 @@ The checker use the following configuration structure:
        # Global configuration
        ...
        checker:
-           default:
-               # Default checkers configuration
-           <type>: # type of checker get from the query string
-               # Checker configuration
+           # Checker configurations
 
 .. note::
 
@@ -50,34 +49,22 @@ The checker use the following configuration structure:
         checker:
             forward_headers: ['Cookie', 'Authorisation']
 
-``checker_pdf``
-~~~~~~~~~~~~~~~
-
-Legacy, check the print version 2.x (try to print a page).
-
-Use the following configuration items::
-
-  * ``print_template``
-  * ``print_center_lon``
-  * ``print_center_lat``
-  * ``print_scale``
-
-``checker_pdf3``
-~~~~~~~~~~~~~~~~
+``print``
+~~~~~~~~~
 
 Check the print version 3.x (try to print a page).
 
-Use as spec the ``print_spec`` from configuration.
+Use as spec the ``spec`` from configuration.
 
-``checker_fts``
-~~~~~~~~~~~~~~~
+``fulltextsearch``
+~~~~~~~~~~~~~~~~~~
 
 Check that the FullText-search service return an element.
 
-Use the ``fulltextsearch`` from configuration as text to search.
+Use the ``search`` from configuration as text to search.
 
-``checker_theme_errors``
-~~~~~~~~~~~~~~~~~~~~~~~~
+``themes``
+~~~~~~~~~~
 
 Check that the theme has no error for all interface present in the database.
 
@@ -86,48 +73,41 @@ It use the ``themes`` configuration:
 .. code:: yaml
 
    themes:
-       defaults:
-           params:
-               # Dictionary that represent the query string
+       params:
+           # Dictionary that represent the query string
        <interface>:
            params:
                # Dictionary that represent the query string
+       level: 2
 
-``checker_lang_files``
-~~~~~~~~~~~~~~~~~~~~~~
+``lang``
+~~~~~~~~
 
 Check that all the language files are present,
 use the global configuration ``available_locale_names``, and the checker configuration
-``lang_files``, an array of string that must be in ``[cgxp, cgxp-api, ngeo]``.
+``files``, an array of string that must be in ``[cgxp, cgxp-api, ngeo]``.
 
-``checker_routes``
-~~~~~~~~~~~~~~~~~~
+``routes``
+~~~~~~~~~~
 
 Check some routes, configured in ``routes`` as array of objects with::
 
   * ``name`` witch is the route name.
   * ``params`` the used query string as a dictionary.
+  * ``level``
 
 In the configuration we can also fill the ``routes_disable`` to disable some routes.
 
-``checker_phantomjs``
-~~~~~~~~~~~~~~~~~~~~~
+``phantomjs``
+~~~~~~~~~~~~~
 
 Check with phantomjs that the pages load correctly without errors,
-use the ``phantomjs_routes`` configuration as an array of route name to check::
+use the ``routes`` configuration as an array of route name to check::
 
   * ``name`` witch is the route name.
   * ``params`` the used query string as a dictionary.
+  * ``level``
 
-Configuration in ``vars_<project>.yaml``:
-
-.. code:: yaml
-
-    checker:
-        defaults:
-            <the config>
-        <a type>:
-            <overide the default config for a specific type>
 
 Check collector
 ---------------
@@ -143,26 +123,12 @@ The checker collector use the following configuration structure:
        # Global configuration
        ...
        check_collector:
-           disable: # List of checker name that will be disable
-           check_type:
-               default:
-                   # The checker available for all type
-               <type>: # type of checker get from the query string
-               - name: # The checker name (see above)
-                 display: # The text to display in the result page
+           max_level: 1
+           level: 2
+           hosts: []
 
-To disable a predefined check do this:
-
-.. code:: yaml
-
-    vars:
-        check_collector:
-            disabled:
-            - <name>
-
-    update_paths:
-    - check_collector
-
+The ``max_level`` is the default max_level parameter used for every hosts. The ``max_level`` option can be set
+for a host to override it.
 
 To add a host:
 
@@ -173,11 +139,7 @@ To add a host:
             hosts:
             - display: Child
               url: http://{host}/child/wsgi
+              max_level: 1
 
     update_paths:
     - check_collector.hosts
-
-We can use an argument type of the script to call a specific
-list of checks on all hosts, for example::
-
-    http://example.com/main/wsgi/check_collector?type=all

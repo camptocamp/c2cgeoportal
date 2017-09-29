@@ -14,16 +14,12 @@ vars:
                         table: main.test
 
     checker:
-        defaults:
-            lang_files: [ngeo]
-            routes_disable: [printproxy_capabilities]
-        all:
-            routes_disable: [printproxy_capabilities]
-    check_collector:
-        disabled: [checker_pdf3, checker_fts]
+        lang:
+            files: [ngeo]
+        routes:
+            disable: [printproxy_capabilities]
 
 update_paths:
 - layers
-- checker.defaults
-- checker.all
-- check_collector.disabled
+- checker.lang
+- checker.routes
