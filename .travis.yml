@@ -119,7 +119,6 @@ script:
 ## FOR NON DOCKER TESTS
 # Test new non Docker project
 - deactivate
-- sudo service tomcat7 start
 - travis/create-new-nondocker-project.sh
 - travis/test-nondocker-upgrade.sh
 - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run make -f travis.mk build project.yaml
@@ -147,6 +146,7 @@ script:
 - travis/test-new-project http://localhost/main/wsgi/c2c/health_check?max_level=100
 - cat /var/log/apache2/error.log
 - cat /var/log/apache2/access.log
+- sudo cat /var/log/tomcat7/catalina.out
 - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run travis/status.sh
 - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run make -f empty-vars.mk config.yaml
 - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run make -f travis.mk alembic.ini alembic_static.ini
