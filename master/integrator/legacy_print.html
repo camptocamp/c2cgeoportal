@@ -51,31 +51,8 @@
 <li>Keep the print war in your repository.</li>
 <li>Add <code class="docutils literal"><span class="pre">PRINT_VERSION</span> <span class="pre">?=</span> <span class="pre">2</span></code> in your project makefile.</li>
 <li>Add in the <code class="docutils literal"><span class="pre">vars</span></code> of your project vars file: <code class="docutils literal"><span class="pre">print_url:</span> <span class="pre">http://localhost:8080/print/pdf/</span></code>.</li>
-<li>Disable the print v3 checker and enable the print v2 one, edit your project vars file:</li>
 </ul>
 </div></blockquote>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
-    <span class="o">...</span>
-    <span class="n">checker</span><span class="p">:</span>
-        <span class="n">defaults</span><span class="p">:</span>
-            <span class="o">...</span>
-            <span class="n">routes_disable</span><span class="p">:</span> <span class="p">[</span><span class="n">printproxy_capabilities</span><span class="p">]</span>
-            <span class="n">print_template</span><span class="p">:</span> <span class="mi">1</span> <span class="n">A4</span> <span class="n">portrait</span>
-            <span class="n">print_center_lon</span><span class="p">:</span> <span class="mi">600000</span>
-            <span class="n">print_center_lat</span><span class="p">:</span> <span class="mi">200000</span>
-            <span class="n">print_scale</span><span class="p">:</span> <span class="mi">10000</span>
-        <span class="nb">all</span><span class="p">:</span>
-            <span class="n">routes</span><span class="p">:</span>
-            <span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">printproxy_info</span>
-
-    <span class="n">check_collector</span><span class="p">:</span>
-        <span class="c1"># Verify that in the `config.yaml` `checker_pdf3` is present, and not `checker_pdf`.</span>
-        <span class="n">disabled</span><span class="p">:</span> <span class="p">[</span><span class="n">checker_pdf3</span><span class="p">]</span>
-
- <span class="n">update_paths</span><span class="p">:</span>
- <span class="o">-</span> <span class="n">checker</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">routes</span>
-</pre></div>
-</div>
 <p>Later on, if you want to use print version 3.x, follow the above instructions.</p>
 <blockquote>
 <div><ul class="simple">
@@ -83,42 +60,10 @@
 <li>Remove the <code class="docutils literal"><span class="pre">PRINT_VERSION</span></code> from your project makefile (default is 3).</li>
 <li>In your project vars file remove the following keys:<ul>
 <li><code class="docutils literal"><span class="pre">vars/print_url</span></code></li>
-<li><code class="docutils literal"><span class="pre">vars/checker/defaults/print_template</span></code></li>
-<li><code class="docutils literal"><span class="pre">vars/checker/defaults/print_center_lon</span></code></li>
-<li><code class="docutils literal"><span class="pre">vars/checker/defaults/print_center_lat</span></code></li>
-<li><code class="docutils literal"><span class="pre">vars/checker/defaults/print_scale</span></code></li>
 </ul>
 </li>
-<li>Do not have <code class="docutils literal"><span class="pre">printproxy_capabilities</span></code> in <code class="docutils literal"><span class="pre">vars/checker/defaults/routes_disable</span></code>.</li>
-<li>Do not have a route named <code class="docutils literal"><span class="pre">printproxy_info</span></code> in <code class="docutils literal"><span class="pre">vars/checker/defaults/routes</span></code>.</li>
-<li>Do not have <code class="docutils literal"><span class="pre">checker_pdf3</span></code> in <code class="docutils literal"><span class="pre">vars/check_collector/disabled</span></code>.</li>
-<li>Have <code class="docutils literal"><span class="pre">checker_pdf</span></code> in <code class="docutils literal"><span class="pre">vars/check_collector/disabled</span></code> (it is possible that you can completely remove it).</li>
-<li>Be sure that you do this thing in your project vars file:</li>
 </ul>
 </div></blockquote>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
-    <span class="o">...</span>
-    <span class="n">checker</span><span class="p">:</span>
-        <span class="n">defaults</span><span class="p">:</span>
-            <span class="o">...</span>
-            <span class="n">print_spec</span><span class="p">:</span>
-                <span class="n">layout</span><span class="p">:</span> <span class="s2">&quot;1 A4 portrait&quot;</span>
-                <span class="n">outputFormat</span><span class="p">:</span> <span class="s2">&quot;pdf&quot;</span>
-                <span class="n">attributes</span><span class="p">:</span>
-                    <span class="n">title</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
-                    <span class="n">comments</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
-                    <span class="n">datasource</span><span class="p">:</span> <span class="p">[]</span>
-                    <span class="nb">map</span><span class="p">:</span>
-                        <span class="n">projection</span><span class="p">:</span> <span class="s2">&quot;EPSG:21781&quot;</span>
-                        <span class="n">dpi</span><span class="p">:</span> <span class="mi">254</span>
-                        <span class="n">rotation</span><span class="p">:</span> <span class="mi">0</span>
-                        <span class="n">center</span><span class="p">:</span> <span class="p">[</span><span class="mi">600000</span><span class="p">,</span> <span class="mi">200000</span><span class="p">]</span>
-                        <span class="n">scale</span><span class="p">:</span> <span class="mi">100000</span>
-                        <span class="n">longitudeFirst</span><span class="p">:</span> <span class="n">true</span>
-                        <span class="n">layers</span><span class="p">:</span> <span class="p">[]</span>
-                    <span class="n">legend</span><span class="p">:</span> <span class="p">{}</span>
-</pre></div>
-</div>
 </div>
 
 

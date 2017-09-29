@@ -77,19 +77,13 @@ project vars file:
     vars:
         ...
         checker:
-           ...
-           defaults:
-               ...
-               phantomjs_routes: []
-               lang_files: [cgxp]
-           all:
-               phantomjs_routes: []
+            ...
+            lang:
+                files: [cgxp]
+            ...
     update_paths:
     ...
-    - checker.defaults.lang_files
-
-Make also sure that you do not have ``check_collector.disabled`` in the
-``update_paths`` (and do not readd it during the next upgrade steps).
+    - checker.lang.files
 
 ``externalWFSTypes`` does not exist anymore so you should remove the following line
 from ``<package>/templates/desktop.js``
@@ -158,5 +152,5 @@ by removing these following lines if one of them exists:
 
 To add an ngeo interface see :ref:`integrator_ngeo_add`.
 
-If you remove all the `CGXP` interface, remove the ``vars.checker.defaults.lang_files`` from your
-project vars file, and the ``checker.defaults.lang_files`` from your update_paths.
+If you remove all the `CGXP` interface, remove the ``vars.checker.lang.files`` from your
+project vars file, and the ``checker.lang.files`` from your update_paths.

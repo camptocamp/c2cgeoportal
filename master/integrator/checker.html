@@ -43,33 +43,32 @@
             
   <div class="section" id="automated-check">
 <span id="integrator-checker"></span><h1>Automated check<a class="headerlink" href="#automated-check" title="Permalink to this headline">¶</a></h1>
-<p>c2cgeoportal applications include web services for testing
+<p>c2cgeoportal applications include functionality for testing
 and assessing that the application is correctly functioning,
 ie. that its web services respond as expected.</p>
-<p>For that we have two services: a <em>checker</em> and a <em>check_collector</em>.</p>
-<p>Those services (especially the collector) are meant to be used by a
+<p>For that we have parts: a <em>checker</em> and a <em>check_collector</em>.</p>
+<p>Those (especially the collector) are meant to be used by a
 monitoring system like Nagios to check that the application is alive.</p>
-<p>The return code are:</p>
+<p>They integrate into c2cwsgiutils’s health check service. The return code are:</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">200</span></code>-<code class="docutils literal"><span class="pre">299</span></code> =&gt; OK</li>
-<li><code class="docutils literal"><span class="pre">400</span></code>-<code class="docutils literal"><span class="pre">499</span></code> =&gt; Warning</li>
-<li><code class="docutils literal"><span class="pre">500</span></code>-<code class="docutils literal"><span class="pre">599</span></code> =&gt; Error</li>
+<li><code class="docutils literal"><span class="pre">200</span></code> =&gt; OK</li>
+<li><code class="docutils literal"><span class="pre">500</span></code> =&gt; Error</li>
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Check collector can only check pages that are on the same server as it.</p>
 </div>
+<p>You can access the health_check service with this kind of url:</p>
+<blockquote>
+<div><a class="reference external" href="http://example.com/main/wsgi/c2c/health_check?max_level=3">http://example.com/main/wsgi/c2c/health_check?max_level=3</a></div></blockquote>
 <div class="section" id="checker">
 <h2>Checker<a class="headerlink" href="#checker" title="Permalink to this headline">¶</a></h2>
-<p>The checker use the following configuration structure:</p>
+<p>The checker use the following configuration structure in <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code>:</p>
 <div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
     <span class="c1"># Global configuration</span>
     <span class="o">...</span>
     <span class="n">checker</span><span class="p">:</span>
-        <span class="n">default</span><span class="p">:</span>
-            <span class="c1"># Default checkers configuration</span>
-        <span class="o">&lt;</span><span class="nb">type</span><span class="o">&gt;</span><span class="p">:</span> <span class="c1"># type of checker get from the query string</span>
-            <span class="c1"># Checker configuration</span>
+        <span class="c1"># Checker configurations</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -82,70 +81,53 @@ in the underlying requests.</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="checker-pdf">
-<h3><code class="docutils literal"><span class="pre">checker_pdf</span></code><a class="headerlink" href="#checker-pdf" title="Permalink to this headline">¶</a></h3>
-<p>Legacy, check the print version 2.x (try to print a page).</p>
-<p>Use the following configuration items:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>* ``print_template``
-* ``print_center_lon``
-* ``print_center_lat``
-* ``print_scale``
-</pre></div>
-</div>
-</div>
-<div class="section" id="checker-pdf3">
-<h3><code class="docutils literal"><span class="pre">checker_pdf3</span></code><a class="headerlink" href="#checker-pdf3" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="print">
+<h3><code class="docutils literal"><span class="pre">print</span></code><a class="headerlink" href="#print" title="Permalink to this headline">¶</a></h3>
 <p>Check the print version 3.x (try to print a page).</p>
-<p>Use as spec the <code class="docutils literal"><span class="pre">print_spec</span></code> from configuration.</p>
+<p>Use as spec the <code class="docutils literal"><span class="pre">spec</span></code> from configuration.</p>
 </div>
-<div class="section" id="checker-fts">
-<h3><code class="docutils literal"><span class="pre">checker_fts</span></code><a class="headerlink" href="#checker-fts" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="fulltextsearch">
+<h3><code class="docutils literal"><span class="pre">fulltextsearch</span></code><a class="headerlink" href="#fulltextsearch" title="Permalink to this headline">¶</a></h3>
 <p>Check that the FullText-search service return an element.</p>
-<p>Use the <code class="docutils literal"><span class="pre">fulltextsearch</span></code> from configuration as text to search.</p>
+<p>Use the <code class="docutils literal"><span class="pre">search</span></code> from configuration as text to search.</p>
 </div>
-<div class="section" id="checker-theme-errors">
-<h3><code class="docutils literal"><span class="pre">checker_theme_errors</span></code><a class="headerlink" href="#checker-theme-errors" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="themes">
+<h3><code class="docutils literal"><span class="pre">themes</span></code><a class="headerlink" href="#themes" title="Permalink to this headline">¶</a></h3>
 <p>Check that the theme has no error for all interface present in the database.</p>
 <p>It use the <code class="docutils literal"><span class="pre">themes</span></code> configuration:</p>
 <div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">themes</span><span class="p">:</span>
-    <span class="n">defaults</span><span class="p">:</span>
-        <span class="n">params</span><span class="p">:</span>
-            <span class="c1"># Dictionary that represent the query string</span>
+    <span class="n">params</span><span class="p">:</span>
+        <span class="c1"># Dictionary that represent the query string</span>
     <span class="o">&lt;</span><span class="n">interface</span><span class="o">&gt;</span><span class="p">:</span>
         <span class="n">params</span><span class="p">:</span>
             <span class="c1"># Dictionary that represent the query string</span>
+    <span class="n">level</span><span class="p">:</span> <span class="mi">2</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="checker-lang-files">
-<h3><code class="docutils literal"><span class="pre">checker_lang_files</span></code><a class="headerlink" href="#checker-lang-files" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="lang">
+<h3><code class="docutils literal"><span class="pre">lang</span></code><a class="headerlink" href="#lang" title="Permalink to this headline">¶</a></h3>
 <p>Check that all the language files are present,
 use the global configuration <code class="docutils literal"><span class="pre">available_locale_names</span></code>, and the checker configuration
-<code class="docutils literal"><span class="pre">lang_files</span></code>, an array of string that must be in <code class="docutils literal"><span class="pre">[cgxp,</span> <span class="pre">cgxp-api,</span> <span class="pre">ngeo]</span></code>.</p>
+<code class="docutils literal"><span class="pre">files</span></code>, an array of string that must be in <code class="docutils literal"><span class="pre">[cgxp,</span> <span class="pre">cgxp-api,</span> <span class="pre">ngeo]</span></code>.</p>
 </div>
-<div class="section" id="checker-routes">
-<h3><code class="docutils literal"><span class="pre">checker_routes</span></code><a class="headerlink" href="#checker-routes" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="routes">
+<h3><code class="docutils literal"><span class="pre">routes</span></code><a class="headerlink" href="#routes" title="Permalink to this headline">¶</a></h3>
 <p>Check some routes, configured in <code class="docutils literal"><span class="pre">routes</span></code> as array of objects with:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>* ``name`` witch is the route name.
 * ``params`` the used query string as a dictionary.
+* ``level``
 </pre></div>
 </div>
 <p>In the configuration we can also fill the <code class="docutils literal"><span class="pre">routes_disable</span></code> to disable some routes.</p>
 </div>
-<div class="section" id="checker-phantomjs">
-<h3><code class="docutils literal"><span class="pre">checker_phantomjs</span></code><a class="headerlink" href="#checker-phantomjs" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="phantomjs">
+<h3><code class="docutils literal"><span class="pre">phantomjs</span></code><a class="headerlink" href="#phantomjs" title="Permalink to this headline">¶</a></h3>
 <p>Check with phantomjs that the pages load correctly without errors,
-use the <code class="docutils literal"><span class="pre">phantomjs_routes</span></code> configuration as an array of route name to check:</p>
+use the <code class="docutils literal"><span class="pre">routes</span></code> configuration as an array of route name to check:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>* ``name`` witch is the route name.
 * ``params`` the used query string as a dictionary.
-</pre></div>
-</div>
-<p>Configuration in <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code>:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">checker</span><span class="p">:</span>
-    <span class="n">defaults</span><span class="p">:</span>
-        <span class="o">&lt;</span><span class="n">the</span> <span class="n">config</span><span class="o">&gt;</span>
-    <span class="o">&lt;</span><span class="n">a</span> <span class="nb">type</span><span class="o">&gt;</span><span class="p">:</span>
-        <span class="o">&lt;</span><span class="n">overide</span> <span class="n">the</span> <span class="n">default</span> <span class="n">config</span> <span class="k">for</span> <span class="n">a</span> <span class="n">specific</span> <span class="nb">type</span><span class="o">&gt;</span>
+* ``level``
 </pre></div>
 </div>
 </div>
@@ -159,39 +141,23 @@ structure. It is useful to perform a set of checks all at once.</p>
     <span class="c1"># Global configuration</span>
     <span class="o">...</span>
     <span class="n">check_collector</span><span class="p">:</span>
-        <span class="n">disable</span><span class="p">:</span> <span class="c1"># List of checker name that will be disable</span>
-        <span class="n">check_type</span><span class="p">:</span>
-            <span class="n">default</span><span class="p">:</span>
-                <span class="c1"># The checker available for all type</span>
-            <span class="o">&lt;</span><span class="nb">type</span><span class="o">&gt;</span><span class="p">:</span> <span class="c1"># type of checker get from the query string</span>
-            <span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="c1"># The checker name (see above)</span>
-              <span class="n">display</span><span class="p">:</span> <span class="c1"># The text to display in the result page</span>
+        <span class="n">max_level</span><span class="p">:</span> <span class="mi">1</span>
+        <span class="n">level</span><span class="p">:</span> <span class="mi">2</span>
+        <span class="n">hosts</span><span class="p">:</span> <span class="p">[]</span>
 </pre></div>
 </div>
-<p>To disable a predefined check do this:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
-    <span class="n">check_collector</span><span class="p">:</span>
-        <span class="n">disabled</span><span class="p">:</span>
-        <span class="o">-</span> <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span>
-
-<span class="n">update_paths</span><span class="p">:</span>
-<span class="o">-</span> <span class="n">check_collector</span>
-</pre></div>
-</div>
+<p>The <code class="docutils literal"><span class="pre">max_level</span></code> is the default max_level parameter used for every hosts. The <code class="docutils literal"><span class="pre">max_level</span></code> option can be set
+for a host to override it.</p>
 <p>To add a host:</p>
 <div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
     <span class="n">check_collector</span><span class="p">:</span>
         <span class="n">hosts</span><span class="p">:</span>
         <span class="o">-</span> <span class="n">display</span><span class="p">:</span> <span class="n">Child</span>
           <span class="n">url</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="p">{</span><span class="n">host</span><span class="p">}</span><span class="o">/</span><span class="n">child</span><span class="o">/</span><span class="n">wsgi</span>
+          <span class="n">max_level</span><span class="p">:</span> <span class="mi">1</span>
 
 <span class="n">update_paths</span><span class="p">:</span>
 <span class="o">-</span> <span class="n">check_collector</span><span class="o">.</span><span class="n">hosts</span>
-</pre></div>
-</div>
-<p>We can use an argument type of the script to call a specific
-list of checks on all hosts, for example:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>http://example.com/main/wsgi/check_collector?type=all
 </pre></div>
 </div>
 </div>
@@ -210,13 +176,12 @@ list of checks on all hosts, for example:</p>
   <ul>
 <li><a class="reference internal" href="#">Automated check</a><ul>
 <li><a class="reference internal" href="#checker">Checker</a><ul>
-<li><a class="reference internal" href="#checker-pdf"><code class="docutils literal"><span class="pre">checker_pdf</span></code></a></li>
-<li><a class="reference internal" href="#checker-pdf3"><code class="docutils literal"><span class="pre">checker_pdf3</span></code></a></li>
-<li><a class="reference internal" href="#checker-fts"><code class="docutils literal"><span class="pre">checker_fts</span></code></a></li>
-<li><a class="reference internal" href="#checker-theme-errors"><code class="docutils literal"><span class="pre">checker_theme_errors</span></code></a></li>
-<li><a class="reference internal" href="#checker-lang-files"><code class="docutils literal"><span class="pre">checker_lang_files</span></code></a></li>
-<li><a class="reference internal" href="#checker-routes"><code class="docutils literal"><span class="pre">checker_routes</span></code></a></li>
-<li><a class="reference internal" href="#checker-phantomjs"><code class="docutils literal"><span class="pre">checker_phantomjs</span></code></a></li>
+<li><a class="reference internal" href="#print"><code class="docutils literal"><span class="pre">print</span></code></a></li>
+<li><a class="reference internal" href="#fulltextsearch"><code class="docutils literal"><span class="pre">fulltextsearch</span></code></a></li>
+<li><a class="reference internal" href="#themes"><code class="docutils literal"><span class="pre">themes</span></code></a></li>
+<li><a class="reference internal" href="#lang"><code class="docutils literal"><span class="pre">lang</span></code></a></li>
+<li><a class="reference internal" href="#routes"><code class="docutils literal"><span class="pre">routes</span></code></a></li>
+<li><a class="reference internal" href="#phantomjs"><code class="docutils literal"><span class="pre">phantomjs</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#check-collector">Check collector</a></li>

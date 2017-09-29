@@ -105,20 +105,15 @@ project vars file:</p>
 <div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
     <span class="o">...</span>
     <span class="n">checker</span><span class="p">:</span>
-       <span class="o">...</span>
-       <span class="n">defaults</span><span class="p">:</span>
-           <span class="o">...</span>
-           <span class="n">phantomjs_routes</span><span class="p">:</span> <span class="p">[]</span>
-           <span class="n">lang_files</span><span class="p">:</span> <span class="p">[</span><span class="n">cgxp</span><span class="p">]</span>
-       <span class="nb">all</span><span class="p">:</span>
-           <span class="n">phantomjs_routes</span><span class="p">:</span> <span class="p">[]</span>
+        <span class="o">...</span>
+        <span class="n">lang</span><span class="p">:</span>
+            <span class="n">files</span><span class="p">:</span> <span class="p">[</span><span class="n">cgxp</span><span class="p">]</span>
+        <span class="o">...</span>
 <span class="n">update_paths</span><span class="p">:</span>
 <span class="o">...</span>
-<span class="o">-</span> <span class="n">checker</span><span class="o">.</span><span class="n">defaults</span><span class="o">.</span><span class="n">lang_files</span>
+<span class="o">-</span> <span class="n">checker</span><span class="o">.</span><span class="n">lang</span><span class="o">.</span><span class="n">files</span>
 </pre></div>
 </div>
-<p>Make also sure that you do not have <code class="docutils literal"><span class="pre">check_collector.disabled</span></code> in the
-<code class="docutils literal"><span class="pre">update_paths</span></code> (and do not readd it during the next upgrade steps).</p>
 <p><code class="docutils literal"><span class="pre">externalWFSTypes</span></code> does not exist anymore so you should remove the following line
 from <code class="docutils literal"><span class="pre">&lt;package&gt;/templates/desktop.js</span></code></p>
 <div class="code javascript highlight-default"><div class="highlight"><pre><span></span>externalWFSTypes: ${externalWFSTypes | n},
@@ -169,8 +164,8 @@ by removing these following lines if one of them exists:</p>
 </pre></div>
 </div>
 <p>To add an ngeo interface see <a class="reference internal" href="ngeo.html#integrator-ngeo-add"><span class="std std-ref">Add a new interface</span></a>.</p>
-<p>If you remove all the <cite>CGXP</cite> interface, remove the <code class="docutils literal"><span class="pre">vars.checker.defaults.lang_files</span></code> from your
-project vars file, and the <code class="docutils literal"><span class="pre">checker.defaults.lang_files</span></code> from your update_paths.</p>
+<p>If you remove all the <cite>CGXP</cite> interface, remove the <code class="docutils literal"><span class="pre">vars.checker.lang.files</span></code> from your
+project vars file, and the <code class="docutils literal"><span class="pre">checker.lang.files</span></code> from your update_paths.</p>
 </div>
 </div>
 
