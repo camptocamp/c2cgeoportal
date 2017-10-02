@@ -515,7 +515,7 @@ $(APP_OUTPUT_DIR)/%.json: $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-$(L10N_CLIE
 		$< > $@
 
 /opt/locale/en/LC_MESSAGES/%.po:
-	echo "Nothing to do"
+	echo "Nothing to do for $@"
 
 $(APP_OUTPUT_DIR)/angular-locale_%.js: /usr/lib/node_modules/ngeo/github_versions language_mapping
 	mkdir -p $(dir $@)
