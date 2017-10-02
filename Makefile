@@ -71,6 +71,7 @@ help:
 build: $(MAKO_FILES:.mako=) \
 	c2c-egg \
 	$(MO_FILES) \
+	$(L10N_PO_FILES) \
 	$(APPS_FILES) \
 	c2cgeoportal/scaffolds/create/package.json_tmpl \
 	c2cgeoportal/scaffolds/update/CONST_create_template/ \
