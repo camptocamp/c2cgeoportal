@@ -16,7 +16,7 @@ GeoAlchemy2==0.4.0  # setup.py
 geojson==2.3.0
 glob2==0.6
 httplib2==0.10.3  # setup.py
-htmlmin==0.1.10
+htmlmin==0.1.11
 http-parser==0.8.3
 ipcalc==1.99.0  # setup.py
 isodate==0.5.4  # setup.py
