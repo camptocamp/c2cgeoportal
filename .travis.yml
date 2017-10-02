@@ -56,7 +56,7 @@ install:
 - docker build --tag=camptocamp/geomapfish-build:latest .
 - travis/create-new-project.sh
 - travis/test-upgrade.sh
-- travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-run make -f travis.mk build project.yaml
+- travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-run make -f travis.mk build
 
 script:
 - docker version

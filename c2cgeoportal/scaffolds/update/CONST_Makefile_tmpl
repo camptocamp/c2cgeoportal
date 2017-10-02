@@ -51,6 +51,7 @@ WEB_RULE ?= $(DEFAULT_WEB_RULE)
 
 DEFAULT_BUILD_RULES ?= /build/requirements.timestamp \
 	/build/wsgi-docker.timestamp \
+	project.yaml \
 	docker-compose.yaml \
 	docker-compose-build.yaml
 
