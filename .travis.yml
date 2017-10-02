@@ -46,12 +46,6 @@ before_install:
   --tag camptocamp/geomapfish-build-dev:latest
   --folder docker/build
   --paths docker/build
-- >
-  travis/docker-get
-  --tag camptocamp/geomapfish-build:latest
-  --folder .
-  --rules transifex-get buildlocales c2cgeoportal/scaffolds/update/CONST_create_template/ c2cgeoportal/scaffolds/nondockerupdate/CONST_create_template/
-  --paths docker/build setup.py README.rst c2cgeoportal/ docker/build/fixversions.txt
 - |
     [[ `./docker-run id` =~ uid=[0-9]+\(travis\)\ gid=[0-9]+\(geomapfish\)\ groups=[0-9]+\(geomapfish\) ]]
 
