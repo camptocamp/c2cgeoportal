@@ -1,0 +1,2 @@
+include *.txt *.ini *.cfg *.rst
+recursive-include c2cgeoportal_admin *.png *.css *.jpeg *.js *.html *.jinja2
