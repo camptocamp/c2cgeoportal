@@ -723,6 +723,6 @@ def init_dbsessions(settings, config=None, health_check=None):
         for name, session in models.DBSessions.items():
             if name == "dbsession":
                 health_check.add_db_session_check(session, at_least_one_model=models.Theme)
-            else:
-                health_check.add_db_session_check(session,
-                                                  query_cb=lambda session: session.execute("SELECT 1"))
+            else:  # pragma: no cover
+                health_check.add_db_session_check(
+                    session, query_cb=lambda session: session.execute("SELECT 1"))
