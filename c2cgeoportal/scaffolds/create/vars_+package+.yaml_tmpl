@@ -110,7 +110,12 @@ vars:
 
             Sincerely yours
             The GeoMapfish team
-        smtp_server: smtp.example.com
+        smtp:
+          host: smtp.example.com
+          ssl: true
+          user: <username>
+          password: <password>
+          starttls: false
 
 update_paths:
 - authtkt

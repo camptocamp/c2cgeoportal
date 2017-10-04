@@ -1,5 +1,16 @@
 This file includes migration steps for each release of c2cgeoportal.
 
+Version 1.6.12
+==============
+
+1. In the `vars_{{package}}.yaml` file, change:
+
+   - smtp_server: smtp.example.com
+   + smtp:
+   +   host: smtp.example.com
+
+check the documentation if you need ssl, startls, username and password for
+your SMTP service.
 
 Version 1.6.8
 =============

@@ -1369,7 +1369,7 @@ class Entry(object):
             settings["email_from"], [user.email],
             settings["email_body"].format(user=username, password=password).encode("utf-8"),
             settings["email_subject"],
-            settings["smtp_server"],
+            settings["smtp"],
         )
 
         return {
