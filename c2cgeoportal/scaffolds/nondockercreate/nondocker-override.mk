@@ -37,12 +37,12 @@ apache/tiles.conf: tilegeneration/config.yaml apache/mapcache.xml
 
 /build/print-docker.timestamp:
 	$(PRERULE_CMD)
-	@echo "Nothing to do"
+	@echo "Nothing to do for $@"
 	touch $@
 
 /build/mapserver-docker.timestamp:
 	$(PRERULE_CMD)
-	@echo "Nothing to do"
+	@echo "Nothing to do fo $@"
 	touch $@
 
 node_modules/%: /usr/lib/node_modules/%
@@ -76,10 +76,10 @@ node_modules/%: /usr/lib/node_modules/%
 		node_modules/ngeo/third-party/jquery-ui/jquery-ui.min.js \
 		$(CONF_FILES)
 	$(PRERULE_CMD)
-	@echo "Nothing to do"
+	@echo "Nothing to do for $@"
 	touch $@
 
 /build/testdb-docker.timestamp:
 	$(PRERULE_CMD)
-	@echo "Nothing to do"
+	@echo "Nothing to do for $@"
 	touch $@
