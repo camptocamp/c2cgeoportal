@@ -4,7 +4,7 @@ c2c.template==1.1.2
 c2cgeoportal/tests/testegg/dist/testegg-1.0.tar.gz
 flake8==3.0.4
 flake8-copyright==0.2.0
-JSTools
+JSTools<1.0.0
 mccabe==0.5.2
 nose
 nosexcover
