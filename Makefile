@@ -1,5 +1,5 @@
 BUILD_DIR ?= /build
-MAKO_FILES = docker-compose.yaml.mako $(shell find .tx doc docker tests/functional -type f -name "*.mako" -print)
+MAKO_FILES = docker-compose.yaml.mako $(shell find .tx doc docker geoportal/tests/functional -type f -name "*.mako" -print)
 VARS_FILE ?= vars.yaml
 VARS_FILES += vars.yaml
 
@@ -19,33 +19,37 @@ else
 VERSION ?= master
 endif
 
-VALIDATE_PY_FOLDERS = setup.py c2cgeoportal/*.py c2cgeoportal/lib c2cgeoportal/scripts c2cgeoportal/views c2cgeoportal/scaffolds/update/CONST_alembic
-VALIDATE_TEMPLATE_PY_FOLDERS = c2cgeoportal/scaffolds
-VALIDATE_PY_TEST_FOLDERS = tests
+VALIDATE_PY_FOLDERS = geoportal/setup.py geoportal/c2cgeoportal_geoportal/*.py geoportal/c2cgeoportal_geoportal/lib geoportal/c2cgeoportal_geoportal/scripts geoportal/c2cgeoportal_geoportal/views geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_alembic
+VALIDATE_TEMPLATE_PY_FOLDERS = geoportal/c2cgeoportal_geoportal/scaffolds
+VALIDATE_PY_TEST_FOLDERS = geoportal/tests
 
 SPHINX_FILES = $(shell find doc -name "*.rst" -print)
 SPHINX_MAKO_FILES = $(shell find doc -name "*.rst.mako" -print)
 
-export TX_VERSION = $(shell python setup.py --version | awk -F . '{{print $$1"_"$$2}}')
+export TX_VERSION = $(shell python geoportal/setup.py --version | awk -F . '{{print $$1"_"$$2}}')
 TX_DEPENDENCIES = $(HOME)/.transifexrc .tx/config
 ifeq (,$(wildcard $(HOME)/.transifexrc))
 TOUCHBACK_TXRC := touch --no-create --date "$(shell date --iso-8601=seconds)" $(HOME)/.transifexrc
 else
 TOUCHBACK_TXRC := touch --no-create --date "$(shell stat -c '%y' $(HOME)/.transifexrc)" $(HOME)/.transifexrc
 endif
-NGEO_LANGUAGES = fr de
-LANGUAGES = en $(NGEO_LANGUAGES)
-L10N_PO_FILES = $(addprefix c2cgeoportal/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal.po, $(NGEO_LANGUAGES))) \
-	$(addprefix c2cgeoportal/scaffolds/create/+package+/locale/,$(addsuffix /LC_MESSAGES/+package+-client.po, $(LANGUAGES)))
-PO_FILES = $(addprefix c2cgeoportal/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal.po, $(LANGUAGES)))
+LANGUAGES = fr de it
+export LANGUAGES
+ALL_LANGUAGES = en $(LANGUAGES)
+L10N_PO_FILES = $(addprefix geoportal/c2cgeoportal_geoportal/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal_geoportal.po, $(LANGUAGES))) \
+	$(addprefix geoportal/c2cgeoportal_geoportal/locale/,$(addsuffix /LC_MESSAGES/ngeo.po, $(LANGUAGES))) \
+	$(addprefix geoportal/c2cgeoportal_geoportal/locale/,$(addsuffix /LC_MESSAGES/gmf.po, $(LANGUAGES))) \
+	$(addprefix geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/locale/,$(addsuffix /LC_MESSAGES/+package+_geoportal-client.po, $(ALL_LANGUAGES)))
+PO_FILES = $(addprefix geoportal/c2cgeoportal_geoportal/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal_geoportal.po, $(LANGUAGES)))
+PO_FILES += $(addprefix admin/c2cgeoportal_admin/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal_admin.po, $(LANGUAGES)))
 MO_FILES = $(addprefix $(BUILD_DIR)/,$(addsuffix .mo.timestamp,$(basename $(PO_FILES))))
-SRC_FILES = $(shell ls -1 c2cgeoportal/*.py) \
-	$(shell find c2cgeoportal/lib -name "*.py" -print) \
-	$(shell find c2cgeoportal/views -name "*.py" -print) \
-	$(filter-out c2cgeoportal/scripts/theme2fts.py, $(shell find c2cgeoportal/scripts -name "*.py" -print))
+SRC_FILES = $(shell ls -1 geoportal/c2cgeoportal_geoportal/*.py) \
+	$(shell find geoportal/c2cgeoportal_geoportal/lib -name "*.py" -print) \
+	$(shell find geoportal/c2cgeoportal_geoportal/views -name "*.py" -print) \
+	$(filter-out geoportal/c2cgeoportal_geoportal/scripts/theme2fts.py, $(shell find geoportal/c2cgeoportal_geoportal/scripts -name "*.py" -print))
 
 APPS += desktop mobile
-APPS_PACKAGE_PATH = c2cgeoportal/scaffolds/create/+package+
+APPS_PACKAGE_PATH = geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal
 APPS_HTML_FILES = $(addprefix $(APPS_PACKAGE_PATH)/templates/, $(addsuffix .html_tmpl, $(APPS)))
 APPS_JS_FILES = $(addprefix $(APPS_PACKAGE_PATH)/static-ngeo/js/, $(addsuffix .js_tmpl, $(APPS)))
 APPS_FILES = $(APPS_HTML_FILES) $(APPS_JS_FILES) \
@@ -70,13 +74,15 @@ help:
 .PHONY: build
 build: $(MAKO_FILES:.mako=) \
 	c2c-egg \
+	geoportal/package.json \
 	$(MO_FILES) \
 	$(L10N_PO_FILES) \
 	$(APPS_FILES) \
-	c2cgeoportal/scaffolds/create/docker-run \
-	npm-packages \
-	c2cgeoportal/scaffolds/update/CONST_create_template/ \
-	c2cgeoportal/scaffolds/nondockerupdate/CONST_create_template/
+	geoportal/c2cgeoportal_geoportal/scaffolds/create/docker-run \
+	geoportal/npm-packages \
+	geoportal/c2cgeoportal_geoportal/scaffolds/create/package.json_tmpl \
+	geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/ \
+	geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/CONST_create_template/
 
 .PHONY: buildall
 buildall: build doc tests checks
@@ -92,9 +98,11 @@ checks: flake8 git-attributes quote spell
 clean:
 	rm --force $(BUILD_DIR)/venv.timestamp
 	rm --force $(BUILD_DIR)/c2ctemplate-cache.json
-	rm --force c2cgeoportal/locale/*.pot
-	rm --force c2cgeoportal/locale/en/LC_MESSAGES/c2cgeoportal.po
-	rm --recursive --force c2cgeoportal/static/build
+	rm --force geoportal/c2cgeoportal_geoportal/locale/*.pot
+	rm --force geoportal/c2cgeoportal_admin/locale/*.pot
+	rm --force geoportal/c2cgeoportal_geoportal/locale/en/LC_MESSAGES/c2cgeoportal_geoportal.po
+	rm --force geoportal/c2cgeoportal_admin/locale/en/LC_MESSAGES/c2cgeoportal_admin.po
+	rm --recursive --force geoportal/c2cgeoportal_geoportal/static/build
 	rm --force $(MAKO_FILES:.mako=)
 	rm --recursive --force ngeo
 	rm --force $(APPS_FILES)
@@ -109,17 +117,24 @@ c2c-egg: $(BUILD_DIR)/requirements.timestamp
 
 $(BUILD_DIR)/sphinx.timestamp: $(SPHINX_FILES) $(SPHINX_MAKO_FILES:.mako=)
 	$(PRERULE_CMD)
-	mkdir -p doc/_build/html
+	mkdir --parent doc/_build/html
 	doc/build.sh
 	touch $@
 
-.PHONY: tests
-tests: $(BUILD_DIR)/requirements.timestamp tests/functional/test.ini $(BUILD_DIR)/db.timestamp
-	py.test --cov=c2cgeoportal tests
+.PHONY: prepare-tests
+prepare-tests: $(BUILD_DIR)/requirements.timestamp \
+		geoportal/tests/functional/test.ini \
+		geoportal/tests/functional/alembic.ini geoportal/tests/functional/alembic_static.ini \
+		$(addprefix geoportal/c2cgeoportal_geoportal/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal_geoportal.po, $(LANGUAGES)))
+	@echo "Ready to run tests"
 
-$(BUILD_DIR)/db.timestamp: tests/functional/alembic.ini tests/functional/alembic_static.ini
-	alembic --config tests/functional/alembic.ini upgrade head
-	alembic --config tests/functional/alembic_static.ini upgrade head
+.PHONY: tests
+tests:
+	py.test --cov=geoportal/c2cgeoportal_geoportal geoportal/tests
+
+$(BUILD_DIR)/db.timestamp: geoportal/tests/functional/alembic.ini geoportal/tests/functional/alembic_static.ini
+	alembic --config geoportal/tests/functional/alembic.ini upgrade head
+	alembic --config geoportal/tests/functional/alembic_static.ini upgrade head
 	touch $@
 
 .PHONY: flake8
@@ -130,7 +145,7 @@ flake8:
 		--copyright-check \
 		--copyright-min-file-size=1 \
 		--copyright-regexp="Copyright \(c\) ([0-9][0-9][0-9][0-9]-)?$(shell date +%Y), Camptocamp SA"
-	flake8 \
+	flake8 --max-line-length=110 \
 		--ignore=E712 \
 		--copyright-check \
 		--copyright-min-file-size=1 \
@@ -150,17 +165,17 @@ git-attributes:
 .PHONY: quote
 quote:
 	travis/quote `find \
-		c2cgeoportal/lib \
-		c2cgeoportal/scaffolds/create \
-		c2cgeoportal/templates \
-		tests \
-		c2cgeoportal/views \
-		-name '*.py'` c2cgeoportal/*.py setup.py
-	travis/squote `find c2cgeoportal/scaffolds/update/CONST_alembic -name '*.py'`
+		geoportal/c2cgeoportal_geoportal/lib \
+		geoportal/c2cgeoportal_geoportal/scaffolds/create \
+		geoportal/c2cgeoportal_geoportal/templates \
+		geoportal/tests \
+		geoportal/c2cgeoportal_geoportal/views \
+		-name '*.py'` geoportal/c2cgeoportal_geoportal/*.py geoportal/setup.py
+	travis/squote `find geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_alembic -name '*.py'`
 
 .PHONY: spell
 spell:
-	@codespell setup.py $(shell find c2cgeoportal -name static -prune -or -name '*.py' -print)
+	@codespell geoportal/setup.py $(shell find geoportal/c2cgeoportal_geoportal -name static -prune -or -name '*.py' -print)
 
 # i18n
 $(HOME)/.transifexrc:
@@ -175,16 +190,23 @@ $(HOME)/.transifexrc:
 transifex-get: $(L10N_PO_FILES)
 
 .PHONY: transifex-send
-transifex-send: $(TX_DEPENDENCIES) c2cgeoportal/locale/c2cgeoportal.pot
+transifex-send: $(TX_DEPENDENCIES) \
+		geoportal/c2cgeoportal_geoportal/locale/c2cgeoportal_geoportal.pot \
+		geoportal/c2cgeoportal_admin/locale/c2cgeoportal_admin.pot
 	$(PRERULE_CMD)
-	tx push --source
+	tx push --source --resource=geomapfish.c2cgeoportal_geoportal-$(TX_VERSION)
+	tx push --source --resource=geomapfish.c2cgeoportal_admin-$(TX_VERSION)
 	$(TOUCHBACK_TXRC)
 
 .PHONY: transifex-init
-transifex-init: $(TX_DEPENDENCIES) c2cgeoportal/locale/c2cgeoportal.pot
+transifex-init: $(TX_DEPENDENCIES) \
+		geoportal/c2cgeoportal_geoportal/locale/c2cgeoportal_geoportal.pot \
+		admin/c2cgeoportal_admin/locale/c2cgeoportal_admin.pot
 	$(PRERULE_CMD)
-	tx push --source --force --no-interactive
-	tx push --translations --force --no-interactive
+	tx push --source --resource=geomapfish.c2cgeoportal_geoportal-$(TX_VERSION)
+	tx push --source --resource=geomapfish.c2cgeoportal_admin-$(TX_VERSION)
+	tx push --translations --force --no-interactive  --resource=geomapfish.c2cgeoportal_geoportal-$(TX_VERSION)
+	tx push --translations --force --no-interactive  --resource=geomapfish.c2cgeoportal_admin-$(TX_VERSION)
 	$(TOUCHBACK_TXRC)
 
 # Import ngeo templates
@@ -207,17 +229,17 @@ ngeo/contribs/gmf/apps/%/js/controller.js: ngeo
 	$(PRERULE_CMD)
 	touch --no-create $@
 
-$(APPS_PACKAGE_PATH)/templates/%.html_tmpl: ngeo/contribs/gmf/apps/%/index.html $(BUILD_DIR)/requirements.timestamp c2cgeoportal/scripts/import_ngeo_apps.py
+$(APPS_PACKAGE_PATH)/templates/%.html_tmpl: ngeo/contribs/gmf/apps/%/index.html $(BUILD_DIR)/requirements.timestamp geoportal/c2cgeoportal_geoportal/scripts/import_ngeo_apps.py
 	$(PRERULE_CMD)
 	$(BUILD_DIR)/venv/bin/import-ngeo-apps --html $* $< $@
 
-$(APPS_PACKAGE_PATH)/static-ngeo/js/%.js_tmpl: ngeo/contribs/gmf/apps/%/js/controller.js $(BUILD_DIR)/requirements.timestamp c2cgeoportal/scripts/import_ngeo_apps.py
+$(APPS_PACKAGE_PATH)/static-ngeo/js/%.js_tmpl: ngeo/contribs/gmf/apps/%/js/controller.js $(BUILD_DIR)/requirements.timestamp geoportal/c2cgeoportal_geoportal/scripts/import_ngeo_apps.py
 	$(PRERULE_CMD)
 	$(BUILD_DIR)/venv/bin/import-ngeo-apps --js $* $< $@
 
 $(APPS_PACKAGE_PATH)/static-ngeo/components/contextualdata/contextualdata.html: ngeo/contribs/gmf/apps/desktop/contextualdata.html
 	$(PRERULE_CMD)
-	mkdir -p $(dir $@)
+	mkdir --parent $(dir $@)
 	cp $< $@
 
 .PRECIOUS: ngeo/package.json
@@ -225,16 +247,21 @@ ngeo/package.json: ngeo
 	$(PRERULE_CMD)
 	touch --no-create $@
 
-c2cgeoportal/scaffolds/create/docker-run: docker-run
+geoportal/c2cgeoportal_geoportal/scaffolds/create/docker-run: docker-run
 	$(PRERULE_CMD)
 	cp $< $@
 
-npm-packages: ngeo/package.json $(BUILD_DIR)/requirements.timestamp c2cgeoportal/scripts/import_ngeo_apps.py
+geoportal/npm-packages: ngeo/package.json $(BUILD_DIR)/requirements.timestamp geoportal/c2cgeoportal_geoportal/scripts/import_ngeo_apps.py
 	$(PRERULE_CMD)
 	$(BUILD_DIR)/venv/bin/import-ngeo-apps --package _ $< $@
 
-.PRECIOUS: c2cgeoportal/scaffolds%update/CONST_create_template/
-c2cgeoportal/scaffolds%update/CONST_create_template/: c2cgeoportal/scaffolds%create/
+geoportal/package.json: ngeo/package.json $(BUILD_DIR)/requirements.timestamp \
+		geoportal/c2cgeoportal_geoportal/scripts/import_ngeo_apps.py
+	$(PRERULE_CMD)
+	$(BUILD_DIR)/venv/bin/import-ngeo-apps --package _ $< $@
+
+.PRECIOUS: geoportal/c2cgeoportal_geoportal/scaffolds%update/CONST_create_template/
+geoportal/c2cgeoportal_geoportal/scaffolds%update/CONST_create_template/: geoportal/c2cgeoportal_geoportal/scaffolds%create/
 	$(PRERULE_CMD)
 	rm -rf $@ || true
 	cp -r $< $@
@@ -247,7 +274,7 @@ ngeo/contribs/gmf/apps/desktop/image/%: ngeo
 .PRECIOUS: $(APPS_PACKAGE_PATH)/static-ngeo/images/%
 $(APPS_PACKAGE_PATH)/static-ngeo/images/%: ngeo/contribs/gmf/apps/desktop/image/%
 	$(PRERULE_CMD)
-	mkdir -p $(dir $@)
+	mkdir --parent $(dir $@)
 	cp $< $@
 
 # Templates
@@ -260,34 +287,67 @@ $(BUILD_DIR)/c2ctemplate-cache.json: $(VARS_FILES) $(BUILD_DIR)/requirements.tim
 	$(PRERULE_CMD)
 	c2c-template --cache $(BUILD_DIR)/c2ctemplate-cache.json --engine mako --files $<
 
-c2cgeoportal/locale/c2cgeoportal.pot: lingua.cfg $(SRC_FILES) $(BUILD_DIR)/requirements.timestamp
+geoportal/c2cgeoportal_geoportal/locale/c2cgeoportal_geoportal.pot: \
+		lingua.cfg $(SRC_FILES) $(BUILD_DIR)/requirements.timestamp
 	$(PRERULE_CMD)
-	mkdir -p $(dir $@)
+	mkdir --parent $(dir $@)
 	pot-create --keyword _ --config $< --output $@ $(SRC_FILES)
 
-c2cgeoportal/locale/en/LC_MESSAGES/c2cgeoportal.po: c2cgeoportal/locale/c2cgeoportal.pot
+admin/c2cgeoportal_admin/locale/c2cgeoportal_admin.pot: lingua.cfg
 	$(PRERULE_CMD)
-	mkdir -p $(dir $@)
+	mkdir --parent $(dir $@)
+	pot-create --keyword _ --config $< --output $@ $(SRC_FILES)
+
+geoportal/c2cgeoportal_geoportal/locale/en/LC_MESSAGES/c2cgeoportal_geoportal.po: geoportal/c2cgeoportal_geoportal/locale/c2cgeoportal_geoportal.pot
+	$(PRERULE_CMD)
+	mkdir --parent $(dir $@)
 	touch $@
 	msgmerge --update $@ $<
 
-c2cgeoportal/locale/%/LC_MESSAGES/c2cgeoportal.po: $(TX_DEPENDENCIES)
+admin/c2cgeoportal_admin/locale/en/LC_MESSAGES/c2cgeoportal_admin.po: admin/c2cgeoportal_admin/locale/c2cgeoportal_admin.pot
 	$(PRERULE_CMD)
-	mkdir -p $(dir $@)
-	tx pull --language $* --resource geomapfish.c2cgeoportal-$(TX_VERSION) --force
+	mkdir --parent $(dir $@)
+	touch $@
+	msgmerge --update $@ $<
+
+geoportal/c2cgeoportal_geoportal/locale/%/LC_MESSAGES/c2cgeoportal_geoportal.po: $(TX_DEPENDENCIES)
+	$(PRERULE_CMD)
+	mkdir --parent $(dir $@)
+	tx pull --language $* --resource geomapfish.c2cgeoportal_geoportal-$(TX_VERSION) --force
 	$(TOUCHBACK_TXRC)
 	test -s $@
 
-c2cgeoportal/scaffolds/create/+package+/locale/%/LC_MESSAGES/+package+-client.po: \
+geoportal/c2cgeoportal_geoportal/locale/%/LC_MESSAGES/ngeo.po: $(TX_DEPENDENCIES)
+	$(PRERULE_CMD)
+	mkdir --parent $(dir $@)
+	tx pull --language $* --resource ngeo.ngeo-$(TX_VERSION) --force
+	$(TOUCHBACK_TXRC)
+	test -s $@
+
+geoportal/c2cgeoportal_geoportal/locale/%/LC_MESSAGES/gmf.po: $(TX_DEPENDENCIES)
+	$(PRERULE_CMD)
+	mkdir --parent $(dir $@)
+	tx pull --language $* --resource ngeo.gmf-$(TX_VERSION) --force
+	$(TOUCHBACK_TXRC)
+	test -s $@
+
+admin/c2cgeoportal_admin/locale/%/LC_MESSAGES/c2cgeoportal_admin.po: $(TX_DEPENDENCIES)
+	$(PRERULE_CMD)
+	mkdir --parent $(dir $@)
+	tx pull --language $* --resource geomapfish.c2cgeoportal_admin-$(TX_VERSION) --force
+	$(TOUCHBACK_TXRC)
+	test -s $@
+
+geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/locale/%/LC_MESSAGES/+package+_geoportal-client.po: \
 		$(TX_DEPENDENCIES)
 	$(PRERULE_CMD)
-	mkdir -p $(dir $@)
+	mkdir --parent $(dir $@)
 	tx pull --language $* --resource ngeo.gmf-apps-$(TX_VERSION) --force
 	$(TOUCHBACK_TXRC)
 	test -s $@
 
-c2cgeoportal/scaffolds/create/+package+/locale/en/LC_MESSAGES/+package+-client.po:
-	mkdir -p $(dir $@)
+geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/locale/en/LC_MESSAGES/+package+_geoportal-client.po:
+	mkdir --parent $(dir $@)
 	touch $@
 
 .PHONY: buildlocales
@@ -295,7 +355,7 @@ buildlocales: $(MO_FILES)
 
 $(BUILD_DIR)/%.mo.timestamp: %.po
 	$(PRERULE_CMD)
-	mkdir -p $(dir $@)
+	mkdir --parent $(dir $@)
 	msgfmt -o $*.mo $<
 	touch $@
 
@@ -304,7 +364,7 @@ $(BUILD_DIR)/venv.timestamp:
 	virtualenv --system-site-packages $(BUILD_DIR)/venv
 	touch $@
 
-$(BUILD_DIR)/requirements.timestamp: setup.py $(BUILD_DIR)/venv.timestamp
+$(BUILD_DIR)/requirements.timestamp: geoportal/setup.py $(BUILD_DIR)/venv.timestamp
 	$(PRERULE_CMD)
-	$(BUILD_DIR)/venv/bin/pip install -e .
+	$(BUILD_DIR)/venv/bin/pip install --editable=commons --editable=geoportal --editable=admin
 	touch $@

@@ -29,23 +29,21 @@
 
 
 import logging
-from hashlib import sha1
 
-import sqlahelper
 from papyrus.geo_interface import GeoInterface
-import re
 from sqlalchemy import ForeignKey, Table, event
 from sqlalchemy.types import Integer, Boolean, Unicode, Float, String, \
-    Enum, DateTime, UserDefinedType
-from sqlalchemy import UniqueConstraint
+    Enum, UserDefinedType
+from sqlalchemy import UniqueConstraint, Column
 from sqlalchemy.schema import Index
 from sqlalchemy.orm import relationship, backref
 from geoalchemy2 import Geometry
 from geoalchemy2.shape import to_shape
-from sqlalchemy import Column
 from deform.widget import HiddenWidget
 from c2cgeoform.ext import colander_ext, deform_ext
-from deform.widget import CheckboxWidget
+
+from c2cgeoportal_commons.models import Base, schema, srid
+from c2cgeoportal_commons.models.sqlalchemy import JSONEncodedDict
 
 try:
     from pyramid.security import Allow, ALL_PERMISSIONS, DENY_ALL
@@ -53,29 +51,15 @@ try:
 except:  # pragma: no cover
     Allow = ALL_PERMISSIONS = DENY_ALL = None
 
-
 try:
     from pyramid.i18n import TranslationStringFactory
     _ = TranslationStringFactory("c2cgeoportal")
-# Fallback if pyramid do not exists, used by QGIS server plugin
-except:  # pragma: no cover
+except:
     def _(s):
         return s
 
-from . import schema, parentschema, srid
-from .sqlalchemy import JSONEncodedDict
-from .meta import Base
 
-__all__ = [
-    "Base", "Functionality", "User", "Role", "TreeItem",
-    "TreeGroup", "LayerGroup", "Theme", "Layer", "RestrictionArea",
-    "LayerV1", "OGCServer",
-    "LayerWMS", "LayerWMTS", "Interface", "Metadata", "Dimension",
-    "LayergroupTreeitem"
-]
-
-log = logging.getLogger(__name__)
-
+LOG = logging.getLogger(__name__)
 AUTHORIZED_ROLE = "role_admin"
 
 if schema is not None:
@@ -84,7 +68,6 @@ else:  # pragma: no cover
     raise Exception(
         "schema not specified, you need to add it to your config"
     )
-_parentschema = parentschema
 
 if srid is not None:
     _srid = srid
@@ -96,6 +79,9 @@ else:  # pragma: no cover
 
 def cache_invalidate_cb(*args):
     # caching.invalidate_region()
+
+    # we should probably use this debounce https://gist.github.com/esromneb/8eac6bf5bdfef58304cb
+    # and call the invalidate on the geoportal
     pass
 
 
@@ -191,18 +177,23 @@ class Role(Base):
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
 
-    id = Column(Integer, primary_key=True,
-                info={'colanderalchemy':
-                      {'widget': HiddenWidget()
-        }})
-    name = Column(Unicode, unique=True, nullable=False,
-                  info={'colanderalchemy':
-                        {'title': _('name')}})
+    id = Column(Integer, primary_key=True, info={
+        'colanderalchemy': {
+            'widget': HiddenWidget()
+        }
+    })
+    name = Column(Unicode, unique=True, nullable=False, info={
+        'colanderalchemy': {
+            'title': _('name')
+        }
+    })
     description = Column(Unicode)
-    extent = Column(Geometry("POLYGON", srid=_srid),
-                    info={'colanderalchemy':
-                          {'typ': colander_ext.Geometry('POLYGON', srid=3857, map_srid=3857),
-                           'widget': deform_ext.MapWidget()}})
+    extent = Column(Geometry("POLYGON", srid=_srid), info={
+        'colanderalchemy': {
+            'typ': colander_ext.Geometry('POLYGON', srid=3857, map_srid=3857),
+            'widget': deform_ext.MapWidget()
+        }
+    })
 
     # functionality
     functionalities = relationship(
@@ -227,137 +218,6 @@ class Role(Base):
             return None
         return to_shape(self.extent).bounds
 
-class User(Base):
-    __tablename__ = "user"
-    __table_args__ = {"schema": _schema + "_static"}
-    __acl__ = [
-        (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
-    ]
-    item_type = Column("type", String(10), nullable=False,
-                       info={'colanderalchemy':
-                             {'widget': HiddenWidget()}})
-    __mapper_args__ = {
-        "polymorphic_on": item_type,
-        "polymorphic_identity": "user",
-    }
-
-    id = Column(Integer, primary_key=True,
-                info={'colanderalchemy': {
-                    'widget': HiddenWidget()}})
-    username = Column(
-        Unicode, unique=True, nullable=False,
-    )
-    _password = Column(
-        "password", Unicode, nullable=False,
-        info={'colanderalchemy': {'widget': HiddenWidget()}}
-    )
-    temp_password = Column(
-        "temp_password", Unicode, nullable=True,
-    )
-    email = Column(Unicode, nullable=False, info={
-        'colanderalchemy': {
-            'title': _('email')
-        }})
-    is_password_changed = Column(Boolean, default=False,
-                                 info={'colanderalchemy':
-                                       {'widget': CheckboxWidget(readonly=True)}})
-    role_name = Column(String, info={'colanderalchemy':
-                                     {'widget': deform_ext.RelationSelect2Widget(
-                                         Role,
-                                         'name',
-                                         'name',
-                                         order_by='name',
-                                         default_value=('', _('- Select -')))}})
-    _cached_role_name = None
-    _cached_role = None
-
-    @property
-    def role(self):
-        if self._cached_role_name == self.role_name:
-            return self._cached_role
-
-        if self.role_name is None or self.role_name == "":  # pragma: no cover
-            self._cached_role_name = self.role_name
-            self._cached_role = None
-            return None
-
-        result = self._sa_instance_state.session.query(Role).filter(
-            Role.name == self.role_name
-        ).all()
-        if len(result) == 0:  # pragma: no cover
-            self._cached_role = None
-        else:
-            self._cached_role = result[0]
-
-        self._cached_role_name = self.role_name
-        return self._cached_role
-
-    if _parentschema is not None and _parentschema != "":  # pragma: no cover
-        # parent role relationship
-        parent_role_name = Column(String)
-
-        @property
-        def parent_role(self):
-            return self._sa_instance_state.session.query(Role).filter(
-                Role.name == self.parent_role_name
-            ).one()
-
-    def __init__(
-        self, username="", password="", email="", is_password_changed=False,
-        functionalities=None, role=None
-    ):
-        if functionalities is None:
-            functionalities = []
-        self.username = username
-        self.password = password
-        self.email = email
-        self.is_password_changed = is_password_changed
-        self.functionalities = functionalities
-        if role is not None:
-            self.role_name = role.name
-
-    def _get_password(self):
-        """returns password"""
-        return self._password  # pragma: no cover
-
-    def _set_password(self, password):
-        """encrypts password on the fly."""
-        self._password = self.__encrypt_password(password)
-
-    def set_temp_password(self, password):
-        """encrypts password on the fly."""
-        self.temp_password = self.__encrypt_password(password)
-
-    @staticmethod
-    def __encrypt_password(password):
-        """Hash the given password with SHA1."""
-        return sha1(password.encode("utf8")).hexdigest()
-
-    def validate_password(self, passwd):
-        """Check the password against existing credentials.
-        this method _MUST_ return a boolean.
-
-        @param passwd: the password that was provided by the user to
-        try and authenticate. This is the clear text version that we will
-        need to match against the (possibly) encrypted one in the database.
-        @type password: string
-        """
-        if self._password == self.__encrypt_password(passwd):
-            return True
-        if \
-                self.temp_password is not None and \
-                self.temp_password != "" and \
-                self.temp_password == self.__encrypt_password(passwd):
-            self._password = self.temp_password
-            self.temp_password = None
-            self.is_password_changed = True
-            return True
-        return False
-
-    password = property(_get_password, _set_password)
-
-    def __unicode__(self):
-        return self.username or ""  # pragma: no cover
 
 event.listen(Role.functionalities, "set", cache_invalidate_cb)
 event.listen(Role.functionalities, "append", cache_invalidate_cb)
@@ -398,6 +258,7 @@ class TreeItem(Base):
 
     def __init__(self, name=""):
         self.name = name
+
 
 event.listen(TreeItem, "after_insert", cache_invalidate_cb, propagate=True)
 event.listen(TreeItem, "after_update", cache_invalidate_cb, propagate=True)
@@ -817,10 +678,9 @@ class RestrictionArea(Base):
 
     id = Column(Integer, primary_key=True)
     area = Column(Geometry("POLYGON", srid=_srid), info={'colanderalchemy': {
-        'typ': colander_ext.Geometry(
-        'POLYGON', srid=3857, map_srid=3857),
+        'typ': colander_ext.Geometry('POLYGON', srid=3857, map_srid=3857),
         'widget': deform_ext.MapWidget()
-        }})
+    }})
 
     name = Column(Unicode)
     description = Column(Unicode)
@@ -985,64 +845,3 @@ class Dimension(Base):
 
     def __unicode__(self):  # pragma: no cover
         return self.name or ""
-
-
-if _parentschema is not None and _parentschema != "":  # pragma: no cover
-    class ParentRole(Base):
-        __tablename__ = "role"
-        __table_args__ = {"schema": _parentschema}
-        __acl__ = [
-            (Allow, AUTHORIZED_ROLE, ("view")),
-        ]
-
-        id = Column(Integer, primary_key=True)
-        name = Column(Unicode, unique=True, nullable=False)
-
-        def __init__(self, name=""):
-            self.name = name
-
-        def __unicode__(self):
-            return self.name or ""  # pragma: no cover
-
-
-class Shorturl(Base):
-    __tablename__ = "shorturl"
-    __table_args__ = {"schema": _schema + "_static"}
-    __acl__ = [DENY_ALL]
-    id = Column(Integer, primary_key=True)
-    url = Column(Unicode)
-    ref = Column(String(20), index=True, unique=True, nullable=False)
-    creator_email = Column(Unicode(200))
-    creation = Column(DateTime)
-    last_hit = Column(DateTime)
-    nb_hits = Column(Integer)
-
-
-def db_chooser_tween_factory(handler, registry):  # pragma: nocover
-    """
-    Tween factory to route to a slave DB for read-only queries.
-    Must be put over the pyramid_tm tween and sqlahelper must have a "slave" engine
-    configured.
-    """
-    settings = registry.settings.get("db_chooser", {})
-    master_paths = [re.compile(i.replace("//", "/")) for i in settings.get("master", [])]
-    slave_paths = [re.compile(i.replace("//", "/")) for i in settings.get("slave", [])]
-
-    def db_chooser_tween(request):
-        session = request.session
-        old = session.bind
-        method_path = "{0!s} {1!s}".format(request.method, request.path)
-        force_master = any(r.match(method_path) for r in master_paths)
-        if not force_master and (request.method in ("GET", "OPTIONS") or
-                                 any(r.match(method_path) for r in slave_paths)):
-            log.debug("Using slave database for: " + method_path)
-            session.bind = sqlahelper.get_engine("slave")
-        else:
-            log.debug("Using master database for: " + method_path)
-
-        try:
-            return handler(request)
-        finally:
-            session.bind = old
-
-    return db_chooser_tween

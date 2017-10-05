@@ -130,7 +130,8 @@ def _fts(settings, health_check):
 
 
 def _themes_errors(settings, health_check):
-    from c2cgeoportal.models import DBSession, Interface
+    from c2cgeoportal_commons.models import DBSession
+    from c2cgeoportal_commons.models.main import Interface
 
     themes_settings = settings["themes"]
     default_params = themes_settings.get("params", {})
@@ -170,11 +171,11 @@ def _lang_files(global_settings, settings, health_check):
     for type_ in lang_settings.get("files", []):
         for lang in available_locale_names:
             if type_ == "cgxp":
-                url = "{package}:static/build/lang-{lang}.js"
+                url = "{package}_geoportal:static/build/lang-{lang}.js"
             elif type_ == "cgxp-api":
-                url = "{package}:static/build/api-lang-{lang}.js"
+                url = "{package}_geoportal:static/build/api-lang-{lang}.js"
             elif type_ == "ngeo":
-                url = "{package}:static-ngeo/build/{lang}.json"
+                url = "{package}_geoportal:static-ngeo/build/{lang}.json"
             else:
                 raise Exception("Your language type value '%s' is not valid, "
                                 "available values [cgxp, cgxp-api, ngeo]" % type_)

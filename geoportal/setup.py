@@ -33,14 +33,17 @@ import os
 from setuptools import setup, find_packages
 
 here = os.path.abspath(os.path.dirname(__file__))
-with open("README.rst") as f:
-    text = f.read().split("\n")
-    text = text[3:]
-    text += ""
-    text += "`Sources <https://github.com/camptocamp/c2cgeoportal/>`_"
-    README = "\n".join(text)
+README = """c2cgeoportal is the server part of `GeoMapFish <http://geomapfish.org/>`_,
+the client part is `ngeo <https://github.com/camptocamp/ngeo/>`_,
+the old client and API part is `CGXP <https://github.com/camptocamp/cgxp/>`_.
+
+Read the `Documentation <https://camptocamp.github.io/c2cgeoportal/master/>`_.
+
+`Sources <https://github.com/camptocamp/c2cgeoportal/>`_"""
 
 install_requires = [
+    "c2cgeoportal-commons",
+    "c2cwsgiutils",
     "c2c.template>=1.4.0",  # Makefile
     "dateutils",
     "defusedxml",
@@ -74,13 +77,14 @@ tests_require = install_requires + [
 ]
 
 setup(
-    name="c2cgeoportal",
+    name="c2cgeoportal-geoportal",
     version="2.3.0.dev0",
     description="c2cgeoportal",
     long_description=README,
     classifiers=[
         "Programming Language :: Python",
-        "Framework :: Pylons",
+        "Programming Language :: Python :: 3",
+        "Framework :: Pyramid",
         "Topic :: Internet :: WWW/HTTP",
         "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
     ],
@@ -88,38 +92,37 @@ setup(
     author_email="info@camptocamp.com",
     url="http://www.camptocamp.com/geospatial-solutions",
     keywords="web gis geoportail c2cgeoportal geocommune pyramid",
-    packages=find_packages(exclude=["*.tests", "*.tests.*"]),
+    packages=find_packages(exclude=["tests.*"]),
     include_package_data=True,
     zip_safe=False,
     install_requires=install_requires,
     setup_requires=setup_requires,
     tests_require=tests_require,
-    test_suite="c2cgeoportal",
     entry_points={
         "console_scripts": [
-            "manage_users = c2cgeoportal.scripts.manage_users:main",
-            "c2cupgrade = c2cgeoportal.scripts.c2cupgrade:main",
-            "db2pot = c2cgeoportal.scripts.db2pot:main",
-            "themev1tov2 = c2cgeoportal.scripts.themev1tov2:main",
-            "theme2fts = c2cgeoportal.scripts.theme2fts:main",
-            "l10nv1tov2 = c2cgeoportal.scripts.l10nv1tov2:main",
-            "import-ngeo-apps = c2cgeoportal.scripts.import_ngeo_apps:main",
-            "ngeo-version = c2cgeoportal.scripts.import_ngeo_apps:ngeo_git_version",
-            "create-demo-theme = c2cgeoportal.scripts.create_demo_theme:main",
-            "treeitem-uniquename = c2cgeoportal.scripts.treeitem_uniquename:main",
-            "urllogin = c2cgeoportal.scripts.urllogin:main",
-            "docker-required = c2cgeoportal.scripts.docker_required:main",
+            "manage_users = c2cgeoportal_geoportal.scripts.manage_users:main",
+            "c2cupgrade = c2cgeoportal_geoportal.scripts.c2cupgrade:main",
+            "db2pot = c2cgeoportal_geoportal.scripts.db2pot:main",
+            "themev1tov2 = c2cgeoportal_geoportal.scripts.themev1tov2:main",
+            "theme2fts = c2cgeoportal_geoportal.scripts.theme2fts:main",
+            "l10nv1tov2 = c2cgeoportal_geoportal.scripts.l10nv1tov2:main",
+            "import-ngeo-apps = c2cgeoportal_geoportal.scripts.import_ngeo_apps:main",
+            "ngeo-version = c2cgeoportal_geoportal.scripts.import_ngeo_apps:ngeo_git_version",
+            "create-demo-theme = c2cgeoportal_geoportal.scripts.create_demo_theme:main",
+            "treeitem-uniquename = c2cgeoportal_geoportal.scripts.treeitem_uniquename:main",
+            "urllogin = c2cgeoportal_geoportal.scripts.urllogin:main",
+            "docker-required = c2cgeoportal_geoportal.scripts.docker_required:main",
         ],
         "pyramid.scaffold": [
-            "c2cgeoportal_create = c2cgeoportal.scaffolds:TemplateCreate",
-            "c2cgeoportal_update = c2cgeoportal.scaffolds:TemplateUpdate",
-            "c2cgeoportal_nondockercreate = c2cgeoportal.scaffolds:TemplateNondockerCreate",
-            "c2cgeoportal_nondockerupdate = c2cgeoportal.scaffolds:TemplateNondockerUpdate",
+            "c2cgeoportal_create = c2cgeoportal_geoportal.scaffolds:TemplateCreate",
+            "c2cgeoportal_update = c2cgeoportal_geoportal.scaffolds:TemplateUpdate",
+            "c2cgeoportal_nondockercreate = c2cgeoportal_geoportal.scaffolds:TemplateNondockerCreate",
+            "c2cgeoportal_nondockerupdate = c2cgeoportal_geoportal.scaffolds:TemplateNondockerUpdate",
         ],
         "lingua.extractors": [
-            "geomapfish-theme = c2cgeoportal.lib.lingua_extractor:GeoMapfishThemeExtractor",
-            "geomapfish-config = c2cgeoportal.lib.lingua_extractor:GeoMapfishConfigExtractor",
-            "geomapfish-angular = c2cgeoportal.lib.lingua_extractor:GeoMapfishAngularExtractor",
+            "geomapfish-theme = c2cgeoportal_geoportal.lib.lingua_extractor:GeoMapfishThemeExtractor",
+            "geomapfish-config = c2cgeoportal_geoportal.lib.lingua_extractor:GeoMapfishConfigExtractor",
+            "geomapfish-angular = c2cgeoportal_geoportal.lib.lingua_extractor:GeoMapfishAngularExtractor",
         ],
     }
 )

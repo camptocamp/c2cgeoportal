@@ -1,4 +1,4 @@
-FROM camptocamp/geomapfish-build-dev:2.3
+FROM camptocamp/geomapfish-commons:2.3
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
 COPY npm-packages /opt/c2cgeoportal_geoportal/npm-packages
@@ -37,31 +37,11 @@ RUN \
     wget -O /opt/angular-locale/angular-locale_$LANG.js https://raw.githubusercontent.com/angular/angular.js/`grep ^angular.js= /usr/lib/node_modules/ngeo/github_versions | cut --delimiter = --fields 2 | tr --delete '\r\n'`/src/ngLocale/angular-locale_$LANG.js; \
   done
 
-COPY . /opt/c2cgeoportal
+COPY . /opt/c2cgeoportal_geoportal
 
-RUN chmod go+r -R /opt/c2cgeoportal && \
-  pip install --disable-pip-version-check --no-cache-dir --no-deps --editable /opt/c2cgeoportal
-
-RUN \
-  if [ ! -f ${HOME}/.transifexrc ]; \
-  then \
-    echo "[https://www.transifex.com]" > ${HOME}/.transifexrc; \
-    echo "hostname = https://www.transifex.com" >> ${HOME}/.transifexrc; \
-    echo "username = c2c" >> ${HOME}/.transifexrc; \
-    echo "password = c2cc2c" >> ${HOME}/.transifexrc; \
-    echo "token =" >> ${HOME}/.transifexrc; \
-  fi && \
-  mkdir --parents /opt/locale && \
-  cd /opt/c2cgeoportal && \
-  TX_VERSION=`python -c "print('_'.join(__import__('pkg_resources').get_distribution('c2cgeoportal').version.split('.')[0:2]))"` && \
-  for LANG in fr de it; \
-  do \
-    tx pull --language ${LANG} --resource ngeo.gmf-${TX_VERSION} --force;  \
-    tx pull --language ${LANG} --resource ngeo.ngeo-${TX_VERSION} --force; \
-  done
+RUN chmod go+r -R /opt/c2cgeoportal_geoportal && \
+  pip install --disable-pip-version-check --no-cache-dir --no-deps --editable=/opt/c2cgeoportal_geoportal
 
 ENV LOG_LEVEL=INFO \
     GUNICORN_ACCESS_LOG_LEVEL=INFO \
     C2CGEOPORTAL_LOG_LEVEL=WARN
-
-WORKDIR /src

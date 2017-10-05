@@ -44,7 +44,7 @@ function createv220 {
     cd -
 }
 
-if [ $1 = "init" ]
+if [ "$1" = "init" ]
 then
     rm --recursive --force $(find c2cgeoportal/scaffolds -name __pycache__)
     export SRID=21781 APACHE_VHOST=test EXTENT=489246.36,78873.44,837119.76,296543.14
@@ -58,7 +58,7 @@ then
     createv220 /tmp/v220-tonondocker
 fi
 
-if [ $1 = "docker" ]
+if [ "$1" = "docker" ]
 then
     cd /tmp/docker/testgeomapfish
     ./docker-run make upgrade
@@ -68,12 +68,13 @@ then
         exit 1
     fi
     ./docker-run make clean-all
-    rm --recursive --force .UPGRADE10 .UPGRADE_SUCCESS .SUCCESS testgeomapfish.egg-info
+    rm --recursive --force .UPGRADE10 .UPGRADE_SUCCESS .SUCCESS \
+        commons/testgeomapfish_commons.egg-info geoportal/testgeomapfish_geoportal.egg-info
     cd -
     diff --recursive --exclude=.git /tmp/dockerref /tmp/docker
 fi
 
-if [ $1 = "nondocker" ]
+if [ "$1" = "nondocker" ]
 then
     cd /tmp/nondocker/testgeomapfish
     ./docker-run make --makefile=testgeomapfish.mk upgrade
@@ -83,12 +84,13 @@ then
         exit 1
     fi
     ./docker-run make --makefile=testgeomapfish.mk clean-all
-    rm --recursive --force .UPGRADE10 .UPGRADE_SUCCESS .SUCCESS testgeomapfish.egg-info
+    rm --recursive --force .UPGRADE10 .UPGRADE_SUCCESS .SUCCESS \
+        commons/testgeomapfish_commons.egg-info geoportal/testgeomapfish_geoportal.egg-info
     cd -
     diff --recursive --exclude=.git /tmp/nondockerref /tmp/nondocker
 fi
 
-if [ $1 = "todocker" ]
+if [ "$1" = "todocker" ]
 then
     cd /tmp/nondocker/testgeomapfish
     echo "UPGRADE_ARGS += --force-docker --new-makefile=Makefile" > temp.mk
@@ -113,12 +115,13 @@ then
     fi
     git rm temp.mk
     ./docker-run make clean-all
-    rm --recursive --force .UPGRADE10 .UPGRADE_SUCCESS .SUCCESS testgeomapfish.egg-info
+    rm --recursive --force .UPGRADE10 .UPGRADE_SUCCESS .SUCCESS \
+        commons/testgeomapfish_commons.egg-info geoportal/testgeomapfish_geoportal.egg-info
     cd -
     diff --recursive --exclude=.git /tmp/dockerref /tmp/nondocker
 fi
 
-if [ $1 = "tonondocker" ]
+if [ "$1" = "tonondocker" ]
 then
     cd /tmp/docker/testgeomapfish
     cp Makefile tmp
@@ -145,7 +148,8 @@ then
         exit 1
     fi
     ./docker-run make --makefile=testgeomapfish.mk clean-all
-    rm --recursive --force .UPGRADE10 .UPGRADE_SUCCESS .SUCCESS testgeomapfish.egg-info
+    rm --recursive --force .UPGRADE10 .UPGRADE_SUCCESS .SUCCESS \
+        commons/testgeomapfish_commons.egg-info geoportal/testgeomapfish_geoportal.egg-info
     cd -
     diff --recursive --exclude=.git /tmp/nondockerref /tmp/docker
 fi
@@ -157,7 +161,7 @@ function v220 {
     git add docker-run project.yaml.mako
     git commit --quiet --message="Start upgrade"
     make --makefile=testgeomapfish.mk project.yaml
-    if [ $2 == non ]
+    if [ "$2" == non ]
     then
         ./docker-run --image=camptocamp/geomapfish-build \
             c2cupgrade --nondocker --makefile=testgeomapfish.mk
@@ -172,7 +176,7 @@ function v220 {
         exit 1
     fi
     ./docker-run make $MAKE_ARGS upgrade7
-    if [ $2 == non ]
+    if [ "$2" == non ]
     then
         if [ ! -e .UPGRADE7 ]
         then
@@ -193,22 +197,23 @@ function v220 {
         exit 1
     fi
     ./docker-run make $MAKE_ARGS clean-all
-    rm --recursive --force .UPGRADE10 .UPGRADE_SUCCESS .SUCCESS testgeomapfish.egg-info
+    rm --recursive --force .UPGRADE10 .UPGRADE_SUCCESS .SUCCESS \
+        commons/testgeomapfish_commons.egg-info geoportal/testgeomapfish_geoportal.egg-info
     cd -
     diff --recursive --exclude=.git --exclude=LC_MESSAGES /tmp/$2dockerref $1
 }
 
-if [ $1 = "v220-todocker" ]
+if [ "$1" = "v220-todocker" ]
 then
     v220 /tmp/v220-todocker
 fi
 
-if [ $1 = "v220-tonondocker" ]
+if [ "$1" = "v220-tonondocker" ]
 then
     v220 /tmp/v220-tonondocker non
 fi
 
-if [ $1 = "cleanup" ]
+if [ "$1" = "cleanup" ]
 then
     rm -rf /tmp/nondockerref /tmp/dockerref /tmp/nondocker /tmp/docker /tmp/v220-todocker /tmp/v220-tonondocker
 fi

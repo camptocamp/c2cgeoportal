@@ -55,9 +55,11 @@ class TestEntryView(TestCase):
         self.maxDiff = None
         self._tables = []
 
-        from c2cgeoportal.models import DBSession, User, Role, LayerV1, \
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.main import Role, LayerV1, \
             RestrictionArea, Theme, LayerGroup, Functionality, Interface, \
             LayerWMS, OGCServer, FullTextSearch, OGCSERVER_TYPE_GEOSERVER, OGCSERVER_AUTH_GEOSERVER
+        from c2cgeoportal_commons.models.static import User
         from sqlalchemy import Column, Table, types, func
         from sqlalchemy.ext.declarative import declarative_base
         from geoalchemy2 import Geometry
@@ -213,7 +215,7 @@ class TestEntryView(TestCase):
 
     def test_login(self):
         from pyramid.httpexceptions import HTTPBadRequest
-        from c2cgeoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.entry import Entry
 
         request = self._create_request_obj(params={
             "came_from": "/came_from",
@@ -249,7 +251,7 @@ class TestEntryView(TestCase):
 
     def test_logout_no_auth(self):
         from pyramid.httpexceptions import HTTPBadRequest
-        from c2cgeoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.entry import Entry
 
         request = self._create_request_obj(path="/", params={
             "came_from": "/came_from"
@@ -258,8 +260,9 @@ class TestEntryView(TestCase):
         self.assertRaises(HTTPBadRequest, entry.logout)
 
     def test_logout(self):
-        from c2cgeoportal.models import DBSession, User
-        from c2cgeoportal.views.entry import Entry
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.static import User
+        from c2cgeoportal_geoportal.views.entry import Entry
 
         request = self._create_request_obj(path="/")
         request.user = DBSession.query(User).filter_by(
@@ -279,7 +282,7 @@ class TestEntryView(TestCase):
         self.assertEqual(response.body.decode("utf-8"), "true")
 
     def test_reset_password(self):
-        from c2cgeoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.entry import Entry
 
         request = self._create_request_obj(POST={
             "login": "__test_user1",
@@ -310,7 +313,8 @@ class TestEntryView(TestCase):
     def _create_request_obj(username=None, params=None, **kwargs):
         if params is None:
             params = {}
-        from c2cgeoportal.models import DBSession, User
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.static import User
 
         request = create_dummy_request(**kwargs)
         request.static_url = lambda url: "/dummy/static/url"
@@ -325,7 +329,7 @@ class TestEntryView(TestCase):
         return request
 
     def _create_entry_obj(self, **kwargs):
-        from c2cgeoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.entry import Entry
 
         return Entry(self._create_request_obj(**kwargs))
 
@@ -412,8 +416,9 @@ class TestEntryView(TestCase):
         ], [False])
 
     def test_theme(self):
-        from c2cgeoportal.models import DBSession, User
-        from c2cgeoportal.views.entry import Entry
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.static import User
+        from c2cgeoportal_geoportal.views.entry import Entry
         request = self._create_request_obj()
         entry = Entry(request)
 
@@ -459,7 +464,7 @@ class TestEntryView(TestCase):
 
     def test_notmapfile(self):
         # mapfile error
-        from c2cgeoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.entry import Entry
         request = self._create_request_obj(additional_settings={
             "mapserverproxy": {
                 "default_ogc_server": "__test_ogc_server_notmapfile",
@@ -468,7 +473,7 @@ class TestEntryView(TestCase):
         entry = Entry(request)
         request.params = {}
 
-        from c2cgeoportal.lib import caching
+        from c2cgeoportal_geoportal.lib import caching
         caching.invalidate_region()
         themes, errors = entry._themes(None, "desktop")
         self.assertEqual({e[:43] for e in errors}, {
@@ -479,8 +484,9 @@ class TestEntryView(TestCase):
         })
 
     def test_themev2(self):
-        from c2cgeoportal.models import DBSession, User
-        from c2cgeoportal.views.entry import Entry
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.static import User
+        from c2cgeoportal_geoportal.views.entry import Entry
         request = self._create_request_obj()
         entry = Entry(request)
 
@@ -521,8 +527,9 @@ class TestEntryView(TestCase):
         })
 
     def test_theme_geoserver(self):
-        from c2cgeoportal.models import DBSession, User
-        from c2cgeoportal.views.entry import Entry
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.static import User
+        from c2cgeoportal_geoportal.views.entry import Entry
         request = self._create_request_obj(additional_settings={
             "mapserverproxy": {
                 "default_ogc_server": "__test_ogc_server_geoserver",
@@ -593,7 +600,7 @@ class TestEntryView(TestCase):
         })
 
     def test_wfs_types(self):
-        from c2cgeoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.entry import Entry
 
         request = self._create_request_obj()
         entry = Entry(request)
@@ -639,7 +646,7 @@ class TestEntryView(TestCase):
         self.assertEqual(set(json.loads(response["externalWFSTypes"])), result)
 
     def test_permalink_themes(self):
-        from c2cgeoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.entry import Entry
         request = self._create_request_obj()
         request.params = {
             "permalink_themes": "my_themes",
@@ -650,7 +657,7 @@ class TestEntryView(TestCase):
         self.assertEqual(response["permalink_themes"], '["my_themes"]')
 
     def _create_entry(self):
-        from c2cgeoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.entry import Entry
 
         request = self._create_request_obj()
         request.current_route_url = lambda **kwargs: "http://example.com/current/view"
@@ -725,8 +732,9 @@ class TestEntryView(TestCase):
         )
 
     def test_auth_home(self):
-        from c2cgeoportal.views.entry import Entry
-        from c2cgeoportal.models import User, Role
+        from c2cgeoportal_geoportal.views.entry import Entry
+        from c2cgeoportal_commons.models.main import Role
+        from c2cgeoportal_commons.models.static import User
 
         request = self._create_request_obj()
         request.registry.settings.update({
@@ -760,7 +768,7 @@ class TestEntryView(TestCase):
         self.assertEqual(result["extra_params"]["lang"], "fr")
 
     def test_entry_points_version(self):
-        from c2cgeoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.entry import Entry
 
         request = testing.DummyRequest()
         request.user = None
@@ -789,8 +797,9 @@ class TestEntryView(TestCase):
         )
 
     def test_entry_points_wfs(self):
-        from c2cgeoportal.views.entry import Entry
-        from c2cgeoportal.models import User, Role
+        from c2cgeoportal_geoportal.views.entry import Entry
+        from c2cgeoportal_commons.models.main import Role
+        from c2cgeoportal_commons.models.static import User
 
         request = self._create_request_obj()
         request.registry.settings.update({
@@ -824,7 +833,7 @@ class TestEntryView(TestCase):
         self.assertEqual(result["extra_params"]["lang"], "fr")
 
     def test_entry_points_wfs_url(self):
-        from c2cgeoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.entry import Entry
 
         request = self._create_request_obj()
         request.registry.settings.update({
@@ -849,7 +858,7 @@ class TestEntryView(TestCase):
         result = entry.get_cgxp_viewer_vars()
 
     def test_entry_points_noexternal(self):
-        from c2cgeoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.entry import Entry
 
         request = self._create_request_obj()
         request.registry.settings.update({
@@ -874,7 +883,7 @@ class TestEntryView(TestCase):
         result = entry.get_cgxp_viewer_vars()
 
     def test_permalink_theme(self):
-        from c2cgeoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.entry import Entry
         request = self._create_request_obj()
         entry = Entry(request)
 
@@ -912,9 +921,9 @@ class TestEntryView(TestCase):
 
     def test_layer(self):
         import httplib2
-        from c2cgeoportal.views.entry import Entry
-        from c2cgeoportal.models import LayerV1, LayerGroup
-        from c2cgeoportal.lib.wmstparsing import TimeInformation
+        from c2cgeoportal_geoportal.views.entry import Entry
+        from c2cgeoportal_commons.models.main import LayerV1, LayerGroup
+        from c2cgeoportal_geoportal.lib.wmstparsing import TimeInformation
 
         request = self._create_request_obj()
         request.static_url = lambda name: "/dummy/static/" + name
@@ -1381,8 +1390,8 @@ class TestEntryView(TestCase):
         )
 
     def test_internalwms(self):
-        from c2cgeoportal.views.entry import Entry
-        from c2cgeoportal.models import LayerV1, LayerGroup
+        from c2cgeoportal_geoportal.views.entry import Entry
+        from c2cgeoportal_commons.models.main import LayerV1, LayerGroup
 
         request = self._create_request_obj()
         request.static_url = lambda name: "/dummy/static/" + name
@@ -1474,7 +1483,7 @@ class TestEntryView(TestCase):
 
     def test_loginchange_no_params(self):
         from pyramid.httpexceptions import HTTPBadRequest
-        from c2cgeoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.entry import Entry
 
         request = self._create_request_obj(username="__test_user1", params={
             "lang": "en"
@@ -1484,7 +1493,7 @@ class TestEntryView(TestCase):
 
     def test_loginchange_wrong_old(self):
         from pyramid.httpexceptions import HTTPBadRequest
-        from c2cgeoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.entry import Entry
 
         request = self._create_request_obj(username="__test_user1", params={
             "lang": "en"
@@ -1498,7 +1507,7 @@ class TestEntryView(TestCase):
 
     def test_loginchange_different(self):
         from pyramid.httpexceptions import HTTPBadRequest
-        from c2cgeoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.entry import Entry
 
         request = self._create_request_obj(username="__test_user1", params={
             "lang": "en"
@@ -1511,7 +1520,7 @@ class TestEntryView(TestCase):
         self.assertRaises(HTTPBadRequest, entry.loginchange)
 
     def test_loginchange_good_is_password_changed(self):
-        from c2cgeoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.entry import Entry
         from hashlib import sha1
 
         request = self._create_request_obj(username="__test_user1", params={
@@ -1529,7 +1538,8 @@ class TestEntryView(TestCase):
         self.assertEqual(request.user._password, str(sha1("1234".encode("utf-8")).hexdigest()))
 
     def test_json_extent(self):
-        from c2cgeoportal.models import DBSession, Role
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.main import Role
 
         role = DBSession.query(Role).filter(Role.name == "__test_role1").one()
         self.assertEqual(role.bounds, None)

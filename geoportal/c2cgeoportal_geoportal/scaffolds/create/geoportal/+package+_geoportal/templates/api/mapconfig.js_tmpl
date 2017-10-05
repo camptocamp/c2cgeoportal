@@ -54,7 +54,7 @@ Extended APIs.
                     size: new OpenLayers.Size(200, 100),
                     layers: [new OpenLayers.Layer.Image(
                         "Overview Map",
-                        "${request.static_url('{{package}}:static/images/overviewmap.png') | n}",
+                        "${request.static_url('{{package}}_geoportal:static/images/overviewmap.png') | n}",
                         OpenLayers.Bounds.fromArray([420000, 30000, 900000, 350000]),
                         new OpenLayers.Size(200, 100),
                         {isBaseLayer: true}

@@ -30,14 +30,14 @@
 import logging
 from json import dumps, loads
 
-from c2cgeoportal.lib.filter_capabilities import get_protected_layers, \
+from c2cgeoportal_geoportal.lib.filter_capabilities import get_protected_layers, \
     get_private_layers
 
 from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPForbidden, HTTPBadRequest
 
-from c2cgeoportal.lib.caching import NO_CACHE
-from c2cgeoportal.views.ogcproxy import OGCProxy
+from c2cgeoportal_geoportal.lib.caching import NO_CACHE
+from c2cgeoportal_geoportal.views.ogcproxy import OGCProxy
 
 log = logging.getLogger(__name__)
 

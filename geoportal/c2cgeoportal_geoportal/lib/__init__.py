@@ -111,7 +111,7 @@ def get_url2(name, url, request, errors):
         proj = url_split.netloc
         package = request.registry.settings["package"]
         if proj == "":
-            proj = "{}:static".format(package)
+            proj = "{}_geoportal:static".format(package)
         elif ":" not in proj:
             proj = "{}:{}".format(package, proj)
         return request.static_url(
@@ -251,8 +251,9 @@ ogc_server_wms_url_ids = None
 
 
 def get_ogc_server_wms_url_ids(request):
-    from c2cgeoportal.models import DBSession, OGCServer
-    from c2cgeoportal.lib.cacheversion import VersionCache
+    from c2cgeoportal_commons.models import DBSession
+    from c2cgeoportal_commons.models.main import OGCServer
+    from c2cgeoportal_geoportal.lib.cacheversion import VersionCache
     global ogc_server_wms_url_ids
     if ogc_server_wms_url_ids is None:
         ogc_server_wms_url_ids = VersionCache()
@@ -274,8 +275,9 @@ ogc_server_wfs_url_ids = None
 
 
 def get_ogc_server_wfs_url_ids(request):
-    from c2cgeoportal.models import DBSession, OGCServer
-    from c2cgeoportal.lib.cacheversion import VersionCache
+    from c2cgeoportal_commons.models import DBSession
+    from c2cgeoportal_commons.models.main import OGCServer
+    from c2cgeoportal_geoportal.lib.cacheversion import VersionCache
     global ogc_server_wfs_url_ids
     if ogc_server_wfs_url_ids is None:
         ogc_server_wfs_url_ids = VersionCache()
@@ -294,7 +296,8 @@ def get_ogc_server_wfs_url_ids(request):
 
 
 def _get_layers_query(role_id, what):
-    from c2cgeoportal.models import DBSession, Layer, RestrictionArea, Role
+    from c2cgeoportal_commons.models import DBSession
+    from c2cgeoportal_commons.models.main import Layer, RestrictionArea, Role
 
     q = DBSession.query(what)
     q = q.join(Layer.restrictionareas)
@@ -305,7 +308,7 @@ def _get_layers_query(role_id, what):
 
 
 def get_protected_layers_query(role_id, ogc_server_ids, what=None, version=1):
-    from c2cgeoportal.models import Layer, LayerWMS, OGCServer
+    from c2cgeoportal_commons.models.main import Layer, LayerWMS, OGCServer
     q = _get_layers_query(role_id, what)
     q = q.filter(Layer.public.is_(False))
     if version == 2 and ogc_server_ids is not None:
@@ -315,7 +318,7 @@ def get_protected_layers_query(role_id, ogc_server_ids, what=None, version=1):
 
 
 def get_writable_layers_query(role_id, ogc_server_ids):
-    from c2cgeoportal.models import RestrictionArea, LayerWMS, OGCServer
+    from c2cgeoportal_commons.models.main import RestrictionArea, LayerWMS, OGCServer
     q = _get_layers_query(role_id, LayerWMS)
     return q \
         .filter(RestrictionArea.readwrite.is_(True)) \
@@ -346,7 +349,7 @@ class C2CPregenerator:  # pragma: no cover
         query = kw.get("_query", {})
 
         if self.version:
-            from c2cgeoportal.lib.cacheversion import get_cache_version
+            from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
             query["cache_version"] = get_cache_version()
 
         if self.role and request.user:

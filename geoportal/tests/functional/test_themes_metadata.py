@@ -52,8 +52,8 @@ class TestThemesViewMetadata(TestCase):
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
 
-        from c2cgeoportal.models import DBSession, \
-            Theme, LayerGroup, Interface, LayerWMS, Metadata
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.main import Theme, LayerGroup, Interface, LayerWMS, Metadata
 
         desktop = Interface(name="desktop")
 
@@ -116,7 +116,8 @@ class TestThemesViewMetadata(TestCase):
     def teardown_method(self, _):
         testing.tearDown()
 
-        from c2cgeoportal.models import DBSession, TreeItem, Interface, Metadata
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.main import TreeItem, Interface, Metadata
 
         for t in DBSession.query(Metadata).all():
             DBSession.delete(t)
@@ -149,7 +150,7 @@ class TestThemesViewMetadata(TestCase):
         return set(errors)
 
     def test_metadata(self):
-        from c2cgeoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.entry import Entry
 
         types = [
             {"name": "string", "type": "string"},
@@ -230,7 +231,7 @@ class TestThemesViewMetadata(TestCase):
                             "time": "10:36:28",
                             "datetime": "2003-09-25T10:36:28",
                             "url1": "http://example.com/hi?a=b#c",
-                            "url2": "http://dummy.org/tests:static/path/icon.png",
+                            "url2": "http://dummy.org/tests_geoportal:static/path/icon.png",
                             "url3": "http://dummy.org/tests:static/path/icon.png",
                             "url4": "http://dummy.org/tests:cgxp/path/icon.png",
                             "url5": "http://dummy.org/project:static/path/icon.png",

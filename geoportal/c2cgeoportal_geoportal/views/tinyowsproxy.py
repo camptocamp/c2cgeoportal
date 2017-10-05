@@ -34,10 +34,10 @@ from pyramid.view import view_config
 from defusedxml import ElementTree
 from pyramid.httpexceptions import HTTPForbidden, HTTPBadRequest, HTTPUnauthorized
 
-from c2cgeoportal.lib.caching import get_region, NO_CACHE, PRIVATE_CACHE
-from c2cgeoportal.lib.filter_capabilities import filter_wfst_capabilities, \
+from c2cgeoportal_geoportal.lib.caching import get_region, NO_CACHE, PRIVATE_CACHE
+from c2cgeoportal_geoportal.lib.filter_capabilities import filter_wfst_capabilities, \
     normalize_tag, normalize_typename, get_writable_layers
-from c2cgeoportal.views.ogcproxy import OGCProxy
+from c2cgeoportal_geoportal.views.ogcproxy import OGCProxy
 
 cache_region = get_region()
 log = logging.getLogger(__name__)

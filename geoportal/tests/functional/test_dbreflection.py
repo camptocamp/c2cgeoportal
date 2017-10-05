@@ -48,7 +48,7 @@ class TestReflection(TestCase):
         self.metadata = None
 
     def teardown_method(self, _):
-        import c2cgeoportal.lib.dbreflection
+        import c2cgeoportal_geoportal.lib.dbreflection
 
         if self._tables is not None:
             for table in self._tables[::-1]:
@@ -56,7 +56,7 @@ class TestReflection(TestCase):
                 # table.drop(checkfirst=True)
 
         # clear the dbreflection class cache
-        c2cgeoportal.lib.dbreflection._class_cache = {}
+        c2cgeoportal_geoportal.lib.dbreflection._class_cache = {}
 
     def _create_table(self, tablename):
         """ Test functions use this function to create a table object.
@@ -64,7 +64,7 @@ class TestReflection(TestCase):
         there should not be two test functions that call this function
         with the same ptable_name value.
         """
-        from c2cgeoportal.models import Base
+        from c2cgeoportal_commons.models.main import Base
         from sqlalchemy import Table, Column, ForeignKey, types
         from geoalchemy2 import Geometry
 
@@ -106,16 +106,16 @@ class TestReflection(TestCase):
 
     def test_get_class_nonexisting_table(self):
         from sqlalchemy.exc import NoSuchTableError
-        import c2cgeoportal.lib.dbreflection
-        from c2cgeoportal.lib.dbreflection import get_class
+        import c2cgeoportal_geoportal.lib.dbreflection
+        from c2cgeoportal_geoportal.lib.dbreflection import get_class
 
         self.assertRaises(NoSuchTableError, get_class, "nonexisting")
-        self.assertEqual(c2cgeoportal.lib.dbreflection._class_cache, {})
+        self.assertEqual(c2cgeoportal_geoportal.lib.dbreflection._class_cache, {})
 
     def test_get_class(self):
         from geoalchemy2 import Geometry
-        import c2cgeoportal.lib.dbreflection
-        from c2cgeoportal.lib.dbreflection import get_class
+        import c2cgeoportal_geoportal.lib.dbreflection
+        from c2cgeoportal_geoportal.lib.dbreflection import get_class
 
         self._create_table("table_a")
         modelclass = get_class("table_a")
@@ -169,13 +169,13 @@ class TestReflection(TestCase):
         # the class should now be in the cache
         self.assertTrue(
             ("public", "table_a", "") in
-            c2cgeoportal.lib.dbreflection._class_cache
+            c2cgeoportal_geoportal.lib.dbreflection._class_cache
         )
         _modelclass = get_class("table_a")
         self.assertTrue(_modelclass is modelclass)
 
     def test_get_class_dotted_notation(self):
-        from c2cgeoportal.lib.dbreflection import get_class
+        from c2cgeoportal_geoportal.lib.dbreflection import get_class
 
         self._create_table("table_b")
         modelclass = get_class("public.table_b")
@@ -187,8 +187,8 @@ class TestReflection(TestCase):
     def test_mixing_get_class_and_queries(self):
         """ This test shows that we can mix the use of DBSession
         and the db reflection API. """
-        from c2cgeoportal.lib.dbreflection import get_class
-        from c2cgeoportal.models import DBSession
+        from c2cgeoportal_geoportal.lib.dbreflection import get_class
+        from c2cgeoportal_commons.models import DBSession
         from sqlalchemy import text
         import transaction
 
@@ -205,8 +205,8 @@ class TestReflection(TestCase):
         transaction.commit()
 
     def test_get_class_exclude_properties(self):
-        import c2cgeoportal.lib.dbreflection
-        from c2cgeoportal.lib.dbreflection import get_class
+        import c2cgeoportal_geoportal.lib.dbreflection
+        from c2cgeoportal_geoportal.lib.dbreflection import get_class
 
         self._create_table("table_d")
         get_class("table_d", exclude_properties=["foo", "bar"])
@@ -214,7 +214,7 @@ class TestReflection(TestCase):
         # the class should now be in the cache
         self.assertTrue(
             ("public", "table_d", "foo,bar") in
-            c2cgeoportal.lib.dbreflection._class_cache
+            c2cgeoportal_geoportal.lib.dbreflection._class_cache
         )
 
 
@@ -227,8 +227,8 @@ class TestXSDSequenceCallback(TestCase):
         from sqlalchemy import Column, types, ForeignKey
         from sqlalchemy.orm import relationship
         from sqlalchemy.ext.declarative import declarative_base
-        from c2cgeoportal.models import DBSession
-        from c2cgeoportal.lib.dbreflection import _AssociationProxy
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_geoportal.lib.dbreflection import _AssociationProxy
 
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
@@ -273,7 +273,7 @@ class TestXSDSequenceCallback(TestCase):
 
     def test_xsd_sequence_callback(self):
         from xml.etree.ElementTree import TreeBuilder, tostring
-        from c2cgeoportal.lib.dbreflection import xsd_sequence_callback
+        from c2cgeoportal_geoportal.lib.dbreflection import xsd_sequence_callback
         from papyrus.xsd import tag
         tb = TreeBuilder()
         with tag(tb, "xsd:sequence") as tb:

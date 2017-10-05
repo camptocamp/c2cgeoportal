@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>XAPI description</title>
-    <link rel="shortcut icon" type="image/x-icon" href="${request.static_url('{{package}}:static/images/favicon.ico')}">
+    <link rel="shortcut icon" type="image/x-icon" href="${request.static_url('{{package}}_geoportal:static/images/favicon.ico')}">
     <style type="text/css">
         body {
             background: none repeat scroll 0 0 #EEEEEE;
@@ -41,7 +41,7 @@
             height: 400px;
         }
     </style>
-    <link href="${request.static_url('{{package}}:static/apihelp/github.css')}" rel="stylesheet" type="text/css" media="screen">
+    <link href="${request.static_url('{{package}}_geoportal:static/apihelp/github.css')}" rel="stylesheet" type="text/css" media="screen">
     <script type="text/javascript" src="${(request.route_url('xapijs') + '?lang=%s%s') % (lang, '&debug' if debug else '')}"></script>
 </head>
 <body>
@@ -93,7 +93,7 @@ certain <em>id</em> where you want your map to be:
                 ) >= 9.0) {
             // just for code examples coloration
             document.write('<scri' + 'pt type="text/javascript" ' +
-                'src="${request.static_url('{{package}}:static/apihelp/rainbow-custom.min.js')}"></sc' + 'ript>');
+                'src="${request.static_url('{{package}}_geoportal:static/apihelp/rainbow-custom.min.js')}"></sc' + 'ript>');
         }
     </script>
 </body>

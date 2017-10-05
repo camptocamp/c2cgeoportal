@@ -53,11 +53,11 @@ from six import iteritems
 from papyrus.protocol import Protocol, create_filter
 from papyrus.xsd import XSDGenerator
 
-from c2cgeoportal.lib.caching import get_region, \
+from c2cgeoportal_commons import models
+from c2cgeoportal_commons.models.main import Layer, RestrictionArea, Role
+from c2cgeoportal_geoportal.lib.caching import get_region, \
     set_common_headers, NO_CACHE, PUBLIC_CACHE, PRIVATE_CACHE
-from c2cgeoportal.lib.dbreflection import get_class, get_table, _AssociationProxy
-from c2cgeoportal import models
-from c2cgeoportal.models import Layer, RestrictionArea, Role
+from c2cgeoportal_geoportal.lib.dbreflection import get_class, get_table, _AssociationProxy
 
 cache_region = get_region()
 

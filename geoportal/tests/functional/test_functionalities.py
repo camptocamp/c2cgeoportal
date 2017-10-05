@@ -30,7 +30,7 @@
 
 from unittest import TestCase
 
-from c2cgeoportal.lib import functionality
+from c2cgeoportal_geoportal.lib import functionality
 from tests.functional import (  # noqa
     teardown_common as teardown_module,
     setup_common as setup_module,
@@ -42,7 +42,9 @@ class TestFunctionalities(TestCase):
 
     def setup_method(self, _):
         import transaction
-        from c2cgeoportal.models import DBSession, Role, User, Functionality
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.main import Role, Functionality
+        from c2cgeoportal_commons.models.static import User
 
         create_default_ogcserver()
         role1 = Role(name="__test_role1")
@@ -68,7 +70,9 @@ class TestFunctionalities(TestCase):
 
     def teardown_method(self, _):
         import transaction
-        from c2cgeoportal.models import DBSession, Role, User, Functionality, OGCServer
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.main import Role, Functionality, OGCServer
+        from c2cgeoportal_commons.models.static import User
 
         functionality.FUNCTIONALITIES_TYPES = None
 
@@ -104,8 +108,9 @@ class TestFunctionalities(TestCase):
 
     def test_functionalities(self):
         from tests.functional import create_dummy_request
-        from c2cgeoportal.models import DBSession, User
-        from c2cgeoportal.lib.functionality import get_functionality
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.static import User
+        from c2cgeoportal_geoportal.lib.functionality import get_functionality
 
         request = create_dummy_request()
         request.user = None
@@ -207,9 +212,10 @@ class TestFunctionalities(TestCase):
         self.assertEqual(get_functionality("__test_a", request2), ["db1", "db2"])
 
     def test_web_client_functionalities(self):
-        from c2cgeoportal.models import DBSession, User
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.static import User
         from tests.functional import create_dummy_request
-        from c2cgeoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.entry import Entry
 
         request = create_dummy_request()
         request.static_url = lambda url: "http://example.com/dummy/static/url"

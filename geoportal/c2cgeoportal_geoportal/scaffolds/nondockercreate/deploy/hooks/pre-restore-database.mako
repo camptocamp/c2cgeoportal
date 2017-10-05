@@ -8,7 +8,7 @@
 DATABASES=$@
 
 cd ${deploy["code_destination"]}
-make -f $TARGET.mk clean
+make --makefile=$TARGET.mk clean
 
 # Apache must be stopped to prevent database connection during
 # databases / tables restore.
@@ -38,5 +38,5 @@ psql -c 'GRANT ALL ON SCHEMA "${schema}_static" TO "${dbuser}";' ${db}
 psql -c 'GRANT ALL ON ALL TABLES IN SCHEMA "${schema}_static" TO "${dbuser}";' ${db}
 psql -c 'ALTER TABLE main_static.shorturl OWNER TO "www-data";' ${db}
 
-make -f $TARGET.mk .build/venv/bin/alembic alembic_static.ini -j2
+make --makefile=$TARGET.mk .build/venv/bin/alembic alembic_static.ini -j2
 .build/venv/bin/alembic -c alembic_static.ini upgrade head

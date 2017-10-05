@@ -65,7 +65,7 @@ import sqlalchemy.ext.declarative
 from geoalchemy2 import Geometry, WKTElement
 import transaction
 
-from c2cgeoportal.lib import functionality
+from c2cgeoportal_geoportal.lib import functionality
 from tests.functional import (  # noqa
     teardown_common as teardown_module,
     setup_common as setup_module,
@@ -126,9 +126,10 @@ class TestMapserverproxyView(TestCase):
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
 
-        from c2cgeoportal.models import User, Role, LayerWMS, RestrictionArea, \
-            Functionality, Interface, DBSession, OGCServer, \
-            OGCSERVER_TYPE_GEOSERVER, OGCSERVER_AUTH_GEOSERVER
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.main import Role, LayerWMS, RestrictionArea, \
+            Functionality, Interface, OGCServer, OGCSERVER_TYPE_GEOSERVER, OGCSERVER_AUTH_GEOSERVER
+        from c2cgeoportal_commons.models.static import User
 
         cleanup_db()
 
@@ -205,7 +206,7 @@ class TestMapserverproxyView(TestCase):
         transaction.commit()
 
     def teardown_method(self, _):
-        from c2cgeoportal.models import DBSession
+        from c2cgeoportal_commons.models import DBSession
 
         functionality.FUNCTIONALITIES_TYPES = None
 
@@ -226,14 +227,14 @@ class TestMapserverproxyView(TestCase):
         return request
 
     def test_no_params(self):
-        from c2cgeoportal.views.mapserverproxy import MapservProxy
+        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_dummy_request()
         response = MapservProxy(request).proxy()
         self.assertEqual(response.status_code, 200)
 
     def test_get_legend_graphic(self):
-        from c2cgeoportal.views.mapserverproxy import MapservProxy
+        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_dummy_request()
         request.params.update(dict(
@@ -249,7 +250,7 @@ class TestMapserverproxyView(TestCase):
         self.assertEqual(response.cache_control.max_age, 3600)
 
     def test_getlegendgraphic_custom_nocache(self):
-        from c2cgeoportal.views.mapserverproxy import MapservProxy
+        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_dummy_request()
         request.registry.settings.update({
@@ -273,7 +274,7 @@ class TestMapserverproxyView(TestCase):
         self.assertTrue(response.cache_control.no_cache)
 
     def test_get_feature_info(self):
-        from c2cgeoportal.views.mapserverproxy import MapservProxy
+        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_dummy_request()
         request.params.update(dict(
@@ -325,7 +326,7 @@ class TestMapserverproxyView(TestCase):
         self.assertEqual(str(response.cache_control), "max-age=0, no-cache")
 
     def test_get_feature_info_jsonp(self):
-        from c2cgeoportal.views.mapserverproxy import MapservProxy
+        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_dummy_request()
         request.params.update(dict(
@@ -380,7 +381,7 @@ class TestMapserverproxyView(TestCase):
         self.assertEqual(str(response.cache_control), "max-age=0, no-cache")
 
     def test_get_map_unprotected_layer_anonymous(self):
-        from c2cgeoportal.views.mapserverproxy import MapservProxy
+        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_dummy_request()
         request.params.update(dict(
@@ -397,7 +398,7 @@ class TestMapserverproxyView(TestCase):
         self.assertIn(md5sum, FOUR_POINTS)
 
     def test_get_map_unprotected_layer_user1(self):
-        from c2cgeoportal.views.mapserverproxy import MapservProxy
+        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_dummy_request(username="__test_user1")
         request.params.update(dict(
@@ -414,7 +415,7 @@ class TestMapserverproxyView(TestCase):
         self.assertIn(md5sum, FOUR_POINTS)
 
     def test_get_map_unprotected_layer_user2(self):
-        from c2cgeoportal.views.mapserverproxy import MapservProxy
+        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_dummy_request(username="__test_user2")
         request.params.update(dict(
@@ -431,7 +432,7 @@ class TestMapserverproxyView(TestCase):
         self.assertIn(md5sum, FOUR_POINTS)
 
     def test_get_map_protected_layer_anonymous(self):
-        from c2cgeoportal.views.mapserverproxy import MapservProxy
+        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_dummy_request()
         request.params.update(dict(
@@ -448,7 +449,7 @@ class TestMapserverproxyView(TestCase):
         self.assertIn(md5sum, NO_POINT)
 
     def test_get_map_protected_layer_user1(self):
-        from c2cgeoportal.views.mapserverproxy import MapservProxy
+        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_dummy_request(username="__test_user1")
         request.params.update(dict(
@@ -465,7 +466,7 @@ class TestMapserverproxyView(TestCase):
         self.assertIn(md5sum, TWO_POINTS)
 
     def test_get_map_protected_layer_user2(self):
-        from c2cgeoportal.views.mapserverproxy import MapservProxy
+        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_dummy_request(username="__test_user2")
         request.params.update(dict(
@@ -481,7 +482,7 @@ class TestMapserverproxyView(TestCase):
         self.assertIn(md5sum, NO_POINT)
 
     def test_get_map_protected_layer_collect_query_user1(self):
-        from c2cgeoportal.views.mapserverproxy import MapservProxy
+        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_dummy_request(username="__test_user1")
         request.params.update(dict(
@@ -498,7 +499,7 @@ class TestMapserverproxyView(TestCase):
         self.assertIn(md5sum, TWO_POINTS)
 
     def test_get_map_protected_layer_collect_query_user2(self):
-        from c2cgeoportal.views.mapserverproxy import MapservProxy
+        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_dummy_request(username="__test_user2")
         request.params.update(dict(
@@ -515,7 +516,7 @@ class TestMapserverproxyView(TestCase):
         self.assertIn(md5sum, NO_POINT)
 
     def test_get_map_protected_layer_collect_query_user3(self):
-        from c2cgeoportal.views.mapserverproxy import MapservProxy
+        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_dummy_request(username="__test_user3")
         request.params.update(dict(
@@ -535,7 +536,8 @@ class TestMapserverproxyView(TestCase):
     def _create_getcap_request(username=None, additional_settings=None):
         if additional_settings is None:
             additional_settings = {}
-        from c2cgeoportal.models import DBSession, User
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.static import User
 
         request = create_dummy_request(additional_settings)
         request.user = None if username is None else \
@@ -543,7 +545,7 @@ class TestMapserverproxyView(TestCase):
         return request
 
     def test_private_layer(self):
-        from c2cgeoportal.lib.filter_capabilities import get_private_layers
+        from c2cgeoportal_geoportal.lib.filter_capabilities import get_private_layers
 
         pl = get_private_layers([self.ogc_server_id])
         self.assertEqual(
@@ -552,7 +554,7 @@ class TestMapserverproxyView(TestCase):
         )
 
     def test_protected_layers1(self):
-        from c2cgeoportal.lib.filter_capabilities import get_protected_layers
+        from c2cgeoportal_geoportal.lib.filter_capabilities import get_protected_layers
 
         pl = get_protected_layers(self.role1_id, [self.ogc_server_id])
         self.assertEqual(
@@ -561,7 +563,7 @@ class TestMapserverproxyView(TestCase):
         )
 
     def test_protected_layers2(self):
-        from c2cgeoportal.lib.filter_capabilities import get_protected_layers
+        from c2cgeoportal_geoportal.lib.filter_capabilities import get_protected_layers
 
         pl = get_protected_layers(self.role2_id, [self.ogc_server_id])
         self.assertEqual(
@@ -570,7 +572,7 @@ class TestMapserverproxyView(TestCase):
         )
 
     def test_protected_layers3(self):
-        from c2cgeoportal.lib.filter_capabilities import get_protected_layers
+        from c2cgeoportal_geoportal.lib.filter_capabilities import get_protected_layers
 
         pl = get_protected_layers(self.role3_id, [self.ogc_server_id])
         self.assertEqual(
@@ -579,7 +581,7 @@ class TestMapserverproxyView(TestCase):
         )
 
     def test_writable_layers1(self):
-        from c2cgeoportal.lib.filter_capabilities import get_writable_layers
+        from c2cgeoportal_geoportal.lib.filter_capabilities import get_writable_layers
 
         pl = get_writable_layers(self.role1_id, [self.ogc_server_id])
         self.assertEqual(
@@ -587,7 +589,7 @@ class TestMapserverproxyView(TestCase):
         )
 
     def test_writable_layers2(self):
-        from c2cgeoportal.lib.filter_capabilities import get_writable_layers
+        from c2cgeoportal_geoportal.lib.filter_capabilities import get_writable_layers
 
         pl = get_writable_layers(self.role2_id, [self.ogc_server_id])
         self.assertEqual(
@@ -595,7 +597,7 @@ class TestMapserverproxyView(TestCase):
         )
 
     def test_writable_layers3(self):
-        from c2cgeoportal.lib.filter_capabilities import get_writable_layers
+        from c2cgeoportal_geoportal.lib.filter_capabilities import get_writable_layers
 
         pl = get_writable_layers(self.role3_id, [self.ogc_server_id])
         self.assertEqual(
@@ -604,7 +606,7 @@ class TestMapserverproxyView(TestCase):
         )
 
     def test_wms_get_capabilities(self):
-        from c2cgeoportal.views.mapserverproxy import MapservProxy
+        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_getcap_request()
         request.params.update(dict(
@@ -621,7 +623,7 @@ class TestMapserverproxyView(TestCase):
         assert "<Name>testpoint_protected</Name>" in response.body.decode("utf-8")
 
     def test_wfs_get_capabilities(self):
-        from c2cgeoportal.views.mapserverproxy import MapservProxy
+        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_getcap_request()
         request.params.update(dict(
@@ -638,7 +640,7 @@ class TestMapserverproxyView(TestCase):
         assert "<Name>testpoint_protected</Name>" in response.body.decode("utf-8")
 
     def _get_feature_is_equal_to(self, value):
-        from c2cgeoportal.views.mapserverproxy import MapservProxy
+        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_dummy_request()
 
@@ -675,7 +677,7 @@ class TestMapserverproxyView(TestCase):
         assert "123" in response.body.decode("utf-8")
 
     def _get_feature_is_not_equal_to(self, value):
-        from c2cgeoportal.views.mapserverproxy import MapservProxy
+        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_dummy_request()
         request.headers["Content-Type"] = "application/xml; charset=UTF-8"
@@ -713,7 +715,7 @@ class TestMapserverproxyView(TestCase):
         assert "123" not in response.body.decode("utf-8")
 
     def _get_feature_is_like(self, value):
-        from c2cgeoportal.views.mapserverproxy import MapservProxy
+        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_dummy_request()
 
@@ -750,7 +752,7 @@ class TestMapserverproxyView(TestCase):
         assert "123" in response.body.decode("utf-8")
 
     def test_get_feature_feature_id_get(self):
-        from c2cgeoportal.views.mapserverproxy import MapservProxy
+        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_dummy_request()
 
@@ -772,7 +774,7 @@ class TestMapserverproxyView(TestCase):
         self.assertEqual(response.content_type, "text/xml")
 
     def test_get_feature_feature_id_get_jsonp(self):
-        from c2cgeoportal.views.mapserverproxy import MapservProxy
+        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_dummy_request()
 
@@ -794,7 +796,7 @@ class TestMapserverproxyView(TestCase):
         self.assertEqual(response.content_type, "application/javascript")
 
     def test_get_feature_wfs_url(self):
-        from c2cgeoportal.views.mapserverproxy import MapservProxy
+        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_dummy_request()
 
@@ -814,7 +816,7 @@ class TestMapserverproxyView(TestCase):
         self.assertEqual(str(response.cache_control), "max-age=0, no-cache")
 
     def test_get_feature_external_url(self):
-        from c2cgeoportal.views.mapserverproxy import MapservProxy
+        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_dummy_request()
 
@@ -834,7 +836,7 @@ class TestMapserverproxyView(TestCase):
         self.assertEqual(str(response.cache_control), "max-age=0, no-cache")
 
     def test_get_feature_external_wfs_url(self):
-        from c2cgeoportal.views.mapserverproxy import MapservProxy
+        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_dummy_request()
 
@@ -854,7 +856,7 @@ class TestMapserverproxyView(TestCase):
         self.assertEqual(str(response.cache_control), "max-age=0, no-cache")
 
     def test_substitution(self):
-        from c2cgeoportal.views.mapserverproxy import MapservProxy
+        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_dummy_request()
         request.method = "POST"
@@ -949,7 +951,7 @@ class TestMapserverproxyView(TestCase):
         response = MapservProxy(request).proxy()
 
     def test_geoserver(self):
-        from c2cgeoportal.views.mapserverproxy import MapservProxy
+        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_getcap_request(username="__test_user1", additional_settings={
             "mapserverproxy": {

@@ -42,7 +42,8 @@
 #
 #
 # def _create_dummy_request(username=None):
-#     from c2cgeoportal.models import DBSession, User
+#     from c2cgeoportal_commons.models import DBSession
+#     from c2cgeoportal_commons.models.main import User
 #
 #     request = create_dummy_request({
 #         "tinyowsproxy": {
@@ -73,8 +74,8 @@
 #         data_base + "tinyows_describefeaturetype_request_multiple.xml"
 #
 #     def setUp(self):  # noqa
-#         from c2cgeoportal.models import User, Role, LayerWMS, RestrictionArea, \
-#             Interface, DBSession
+#         from c2cgeoportal_commons.models import DBSession
+#         from c2cgeoportal_commons.models.main import User, Role, LayerWMS, RestrictionArea, Interface
 #
 #         # Always see the diff
 #         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
@@ -131,7 +132,7 @@
 #
 #     @staticmethod
 #     def get_fake_proxy_(request, response_body, status):
-#         from c2cgeoportal.views.tinyowsproxy import TinyOWSProxy
+#         from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
 #         from types import MethodType
 #
 #         proxy = TinyOWSProxy(request)
@@ -152,7 +153,7 @@
 #         return proxy
 #
 #     def test_proxy_not_auth(self):
-#         from c2cgeoportal.views.tinyowsproxy import TinyOWSProxy
+#         from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
 #         from pyramid.httpexceptions import HTTPUnauthorized
 #
 #         request = _create_dummy_request()
@@ -320,7 +321,7 @@
 #         cleanup_db()
 #
 #     def test_parse_body_getcapabilities(self):
-#         from c2cgeoportal.views.tinyowsproxy import TinyOWSProxy
+#         from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
 #
 #         request = _create_dummy_request()
 #
@@ -334,7 +335,7 @@
 #         self.assertEqual(set(), typename)
 #
 #     def test_parse_body_describefeaturetype(self):
-#         from c2cgeoportal.views.tinyowsproxy import TinyOWSProxy
+#         from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
 #
 #         request = _create_dummy_request()
 #
@@ -346,7 +347,7 @@
 #         self.assertEqual(set(["layer_1"]), typename)
 #
 #     def test_parse_body_getfeature(self):
-#         from c2cgeoportal.views.tinyowsproxy import TinyOWSProxy
+#         from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
 #
 #         request = _create_dummy_request()
 #
@@ -359,7 +360,7 @@
 #         self.assertEqual({"parks"}, typename)
 #
 #     def test_parse_body_lockfeature(self):
-#         from c2cgeoportal.views.tinyowsproxy import TinyOWSProxy
+#         from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
 #
 #         request = _create_dummy_request()
 #
@@ -372,7 +373,7 @@
 #         self.assertEqual({"parks"}, typename)
 #
 #     def test_parse_body_transaction_update(self):
-#         from c2cgeoportal.views.tinyowsproxy import TinyOWSProxy
+#         from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
 #
 #         request = _create_dummy_request()
 #
@@ -385,7 +386,7 @@
 #         self.assertEqual({"parks"}, typename)
 #
 #     def test_parse_body_transaction_delete(self):
-#         from c2cgeoportal.views.tinyowsproxy import TinyOWSProxy
+#         from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
 #
 #         request = _create_dummy_request()
 #
@@ -398,7 +399,7 @@
 #         self.assertEqual({"parks"}, typename)
 #
 #     def test_parse_body_transaction_insert(self):
-#         from c2cgeoportal.views.tinyowsproxy import TinyOWSProxy
+#         from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
 #
 #         request = _create_dummy_request()
 #

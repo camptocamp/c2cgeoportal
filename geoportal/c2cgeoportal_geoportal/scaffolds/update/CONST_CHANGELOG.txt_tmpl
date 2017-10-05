@@ -24,7 +24,7 @@ Version 2.3.0
 
 For non Docker upgrade have a look on the nondocker_CHANGELOG
 
-Remove the old configurations files:
-* rm -rf deploy
-* rm -rf apache
-* rm {package}/form.py
+1. The structure of the project change:
+   * The package name become `{{package}}_geoportal`.
+   * The package is in the `folder geoportal`.
+   * The models will be in `commons/{{package}}_commons`.

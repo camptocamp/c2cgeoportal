@@ -59,7 +59,7 @@ measures special things in you application, just add code like that:
 
 .. code:: python
 
-    from c2cgeoportal import stats
+    from c2cgeoportal_geoportal import stats
     ...
         measure = stats.timer()
         ... # The code you want to measure
@@ -70,7 +70,7 @@ Or, if you know the key in advance and can use a context, you can write it like 
 
 .. code:: python
 
-    from c2cgeoportal import stats
+    from c2cgeoportal_geoportal import stats
     ...
         with stats.timer_context(["my_feature", "something"]):
             ... # The code you want to measure

@@ -89,7 +89,7 @@ def main():
     )
     parser.add_argument(
         "-i", "--app-config",
-        default="production.ini",
+        default="geoportal/production.ini",
         dest="app_config",
         help="the application .ini config file (optional, default is 'production.ini')"
     )
@@ -123,7 +123,8 @@ class Import:
         self.languages = settings["available_locale_names"]
 
         # must be done only once we have loaded the project config
-        from c2cgeoportal.models import DBSession, FullTextSearch, Interface, Theme, Role
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.main import FullTextSearch, Interface, Theme, Role
 
         self.session = DBSession()
         self.session.execute(FullTextSearch.__table__.delete().where(FullTextSearch.from_theme == True))  # noqa
@@ -156,7 +157,7 @@ class Import:
         transaction.commit()
 
     def _add_fts(self, item, interface, action, role):
-        from c2cgeoportal.models import FullTextSearch
+        from c2cgeoportal_commons.models.main import FullTextSearch
 
         key = (
             item.name if self.options.name else item.id,
@@ -201,7 +202,7 @@ class Import:
         return self._add_group(group, interface, self.options.folders, role)
 
     def _add_group(self, group, interface, export, role):
-        from c2cgeoportal.models import LayerGroup
+        from c2cgeoportal_commons.models.main import LayerGroup
 
         fill = False
         for child in group.children:
@@ -227,7 +228,7 @@ class Import:
         return False
 
     def _add_layer(self, layer, interface, role):
-        from c2cgeoportal.models import LayerV1
+        from c2cgeoportal_commons.models.main import LayerV1
 
         if isinstance(layer, LayerV1):
             return False

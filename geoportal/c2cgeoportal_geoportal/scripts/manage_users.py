@@ -59,7 +59,7 @@ User can be created if it does not exist yet."""
     parser = argparse.ArgumentParser(description=usage)
     parser.add_argument(
         "-i", "--app-config",
-        default="production.ini", dest="app_config",
+        default="geoportal/production.ini", dest="app_config",
         help="The application .ini config file (optional, default is "
         "'production.ini')"
     )
@@ -105,7 +105,7 @@ User can be created if it does not exist yet."""
         parser.error("Cannot find config file: {0!s}".format(app_config))
 
     # loading schema name from config and setting its value to the
-    # corresponding global variable from c2cgeoportal
+    # corresponding global variable from c2cgeoportal_geoportal
 
     # Ignores pyramid deprecation warnings
     warnings.simplefilter("ignore", DeprecationWarning)
@@ -114,21 +114,13 @@ User can be created if it does not exist yet."""
     get_app(app_name, options.app_name, options=os.environ)
 
     # must be done only once we have loaded the project config
-    from c2cgeoportal import models
+    from c2cgeoportal_commons.models import DBSession, main, static
 
     print("\n")
 
-    # check that User and Role exist in model
-    model_list = ["User", "Role"]
-    for model in model_list:
-        try:
-            getattr(models, model)
-        except AttributeError:
-            print(("models.{0!s} not found".format(model)))
-
     # check that user exists
-    sess = models.DBSession()
-    query = sess.query(models.User).filter_by(username="{0!s}".format(username))
+    sess = DBSession()
+    query = sess.query(static.User).filter_by(username="{0!s}".format(username))
 
     result = query.count()
     if result == 0:
@@ -143,8 +135,8 @@ User can be created if it does not exist yet."""
             email = options.email if options.email is not None else username
 
             # get roles
-            query_role = sess.query(models.Role).filter(
-                models.Role.name == "{0!s}".format(options.rolename))
+            query_role = sess.query(main.Role).filter(
+                main.Role.name == "{0!s}".format(options.rolename))
 
             if query_role.count() == 0:
                 # role not found in db?
@@ -154,7 +146,7 @@ User can be created if it does not exist yet."""
 
             role = query_role.first()
 
-            user = models.User(
+            user = static.User(
                 username="{0!s}".format(username),
                 password="{0!s}".format(password),
                 email="{0!s}".format(email),

@@ -31,7 +31,7 @@ from unittest import TestCase
 
 from pyramid.request import Request, Response
 
-from c2cgeoportal.lib.caching import set_cors_headers, CORS_METHODS
+from c2cgeoportal_geoportal.lib.caching import set_cors_headers, CORS_METHODS
 
 
 class TestSetCorsHeaders(TestCase):

@@ -34,8 +34,8 @@ from decimal import Decimal
 from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPInternalServerError, HTTPNotFound
 
-from c2cgeoportal.lib.raster.georaster import GeoRaster
-from c2cgeoportal.lib.caching import set_common_headers, NO_CACHE
+from c2cgeoportal_geoportal.lib.raster.georaster import GeoRaster
+from c2cgeoportal_geoportal.lib.caching import set_common_headers, NO_CACHE
 
 log = logging.getLogger(__name__)
 

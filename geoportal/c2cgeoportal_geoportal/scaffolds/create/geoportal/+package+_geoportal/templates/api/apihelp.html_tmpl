@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>API description</title>
-    <link rel="shortcut icon" type="image/x-icon" href="${request.static_url('{{package}}:static/images/favicon.ico')}">
+    <link rel="shortcut icon" type="image/x-icon" href="${request.static_url('{{package}}_geoportal:static/images/favicon.ico')}">
     <style type="text/css">
         body {
             background: none repeat scroll 0 0 #EEEEEE;
@@ -41,7 +41,7 @@
             height: 400px;
         }
     </style>
-    <link href="${request.static_url('{{package}}:static/apihelp/github.css')}" rel="stylesheet" type="text/css" media="screen">
+    <link href="${request.static_url('{{package}}_geoportal:static/apihelp/github.css')}" rel="stylesheet" type="text/css" media="screen">
     <script type="text/javascript" src="${(request.route_url('apijs') + '?lang=%s%s') % (lang, '&debug' if debug else '')}"></script>
 </head>
 <body>
@@ -99,17 +99,17 @@ map.addMarker();</pre>
 map.addMarker({
     position: [544410, 210100],
     size: [14, 14],
-    icon: '${request.static_path('{{package}}:static/apihelp/images/info.png')}'
+    icon: '${request.static_path('{{package}}_geoportal:static/apihelp/images/info.png')}'
 });
 map.addMarker({
     position: [544450, 210000],
     size: [18, 18],
-    icon: '${request.static_path('{{package}}:static/apihelp/images/essence.png')}'
+    icon: '${request.static_path('{{package}}_geoportal:static/apihelp/images/essence.png')}'
 });
 map.addMarker({
     position: [544310, 210200],
     size: [14, 14],
-    icon: '${request.static_path('{{package}}:static/apihelp/images/parking.png')}'
+    icon: '${request.static_path('{{package}}_geoportal:static/apihelp/images/parking.png')}'
 });</pre>
 </div>
 
@@ -187,19 +187,19 @@ map.recenterOnObjects(
     <pre data-language="javascript">var map = new {{package}}.Map({
     div: 'map8'
 });
-map.addCustomLayer('gpx', 'My GPX layer', '${request.static_path('{{package}}:static/apihelp/track0.gpx')}');
+map.addCustomLayer('gpx', 'My GPX layer', '${request.static_path('{{package}}_geoportal:static/apihelp/track0.gpx')}');
 </pre>
 </div>
 
 <div class="api">
     <h2>Load data from a text file</h2>
-    See <a href="${request.static_path('{{package}}:static/apihelp/data.txt')}" target="_blank">data.txt</a>.
+    See <a href="${request.static_path('{{package}}_geoportal:static/apihelp/data.txt')}" target="_blank">data.txt</a>.
     <br />
     <div id='map9' class="map"></div>
     <pre data-language="javascript">var map = new {{package}}.Map({
     div: 'map9'
 });
-map.addCustomLayer('text', 'My custom txt layer', '${request.static_path('{{package}}:static/apihelp/data.txt')}');
+map.addCustomLayer('text', 'My custom txt layer', '${request.static_path('{{package}}_geoportal:static/apihelp/data.txt')}');
 </pre>
 </div>
 
@@ -218,7 +218,7 @@ map.addCustomLayer('text', 'My custom txt layer', '${request.static_path('{{pack
                 ) >= 9.0) {
             // just for code examples coloration
             document.write('<scri' + 'pt type="text/javascript" ' +
-                'src="${request.static_url('{{package}}:static/apihelp/rainbow-custom.min.js')}"></sc' + 'ript>');
+                'src="${request.static_url('{{package}}_geoportal:static/apihelp/rainbow-custom.min.js')}"></sc' + 'ript>');
         }
     </script>
 </body>

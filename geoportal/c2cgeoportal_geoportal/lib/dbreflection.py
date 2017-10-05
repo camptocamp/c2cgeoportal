@@ -83,7 +83,7 @@ class _AssociationProxy(object):
         return getattr(target, self.value_attr) if target else None
 
     def __set__(self, obj, val):
-        from c2cgeoportal.models import DBSession
+        from c2cgeoportal_commons.models import DBSession
         o = getattr(obj, self.target)
         # if the obj as no child object or if the child object
         # does not correspond to the new value then we need to
@@ -98,7 +98,7 @@ class _AssociationProxy(object):
 
 
 def xsd_sequence_callback(tb, cls):
-    from c2cgeoportal.models import DBSession
+    from c2cgeoportal_commons.models import DBSession
     for k, p in cls.__dict__.items():
         if not isinstance(p, _AssociationProxy):
             continue
@@ -150,7 +150,8 @@ def get_table(tablename, schema=None, session=None):
         engine = session.bind.engine
         metadata = MetaData(bind=engine)
     else:
-        from c2cgeoportal.models import DBSession, Base
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.main import Base
         engine = DBSession.bind.engine
         metadata = Base.metadata
 
@@ -197,7 +198,7 @@ def get_class(tablename, session=None, exclude_properties=None):
 
 
 def _create_class(table, exclude_properties=None):
-    from c2cgeoportal.models import Base
+    from c2cgeoportal_commons.models.main import Base
 
     if exclude_properties is None:  # pragma: nocover
         exclude_properties = []

@@ -38,7 +38,6 @@ from socket import gethostbyname, gaierror
 from ipcalc import IP, Network
 from Crypto.Cipher import AES
 import importlib
-import re
 
 from pyramid_mako import add_mako_renderer
 from pyramid.interfaces import IStaticURLInfo
@@ -51,11 +50,12 @@ import c2cwsgiutils.db
 import c2cwsgiutils.pyramid
 from c2cwsgiutils.health_check import HealthCheck
 
-import c2cgeoportal
-from c2cgeoportal.lib import dbreflection, caching, \
+from c2cgeoportal_geoportal.lib import dbreflection, caching, \
     C2CPregenerator, MultiDomainStaticURLInfo
 
 log = logging.getLogger(__name__)
+
+# used by (sql|form)alchemy
 
 # Header predicate to accept only JSON content
 # OL/cgxp are not setting the correct content type for JSON. We have to accept
@@ -121,7 +121,7 @@ def add_interface(
 def add_interface_cgxp(
         config, interface_name, route_names, routes, renderers, permission=None):  # pragma: no cover
     # Cannot be at the header to don"t load the model too early
-    from c2cgeoportal.views.entry import Entry
+    from c2cgeoportal_geoportal.views.entry import Entry
 
     def add_interface(f):
         def new_f(root, request):
@@ -172,7 +172,7 @@ ngeo_static_init = False
 def add_interface_ngeo(
         config, interface_name, route_name, route, renderer, permission=None):  # pragma: no cover
     # Cannot be at the header to do not load the model too early
-    from c2cgeoportal.views.entry import Entry
+    from c2cgeoportal_geoportal.views.entry import Entry
 
     def add_interface(f):
         def new_f(root, request):
@@ -213,14 +213,14 @@ def add_interface_ngeo(
 def add_static_view_ngeo(config):  # pragma: no cover
     """ Add the project static view for ngeo """
     package = config.get_settings()["package"]
-    _add_static_view(config, "static-ngeo", "{0!s}:static-ngeo".format(package))
+    _add_static_view(config, "static-ngeo", "{0!s}_geoportal:static-ngeo".format(package))
     config.override_asset(
-        to_override="c2cgeoportal:project/",
-        override_with="{0!s}:static-ngeo/".format(package)
+        to_override="c2cgeoportal_geoportal:project/",
+        override_with="{0!s}_geoportal:static-ngeo/".format(package)
     )
     config.add_static_view(
         name=package,
-        path="{0!s}:static".format(package),
+        path="{0!s}_geoportal:static".format(package),
         cache_max_age=int(config.get_settings()["default_max_age"])
     )
 
@@ -238,10 +238,10 @@ def add_admin_interface(config):
 def add_static_view(config):
     """ Add the project static view for CGXP """
     package = config.get_settings()["package"]
-    _add_static_view(config, "static-cgxp", "{0!s}:static".format(package))
+    _add_static_view(config, "static-cgxp", "{0!s}_geoportal:static".format(package))
     config.override_asset(
-        to_override="c2cgeoportal:project/",
-        override_with="{0!s}:static/".format(package)
+        to_override="c2cgeoportal_geoportal:project/",
+        override_with="{0!s}_geoportal:static/".format(package)
     )
 
 
@@ -249,7 +249,7 @@ CACHE_PATH = []
 
 
 def _add_static_view(config, name, path):
-    from c2cgeoportal.lib.cacheversion import version_cache_buster
+    from c2cgeoportal_geoportal.lib.cacheversion import version_cache_buster
     config.add_static_view(
         name=name,
         path=path,
@@ -295,7 +295,8 @@ def create_get_user_from_request(settings):
         * it does not exist in the database
         * the referer is invalid
         """
-        from c2cgeoportal.models import DBSession, User
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.static import User
 
         try:
             if "auth" in request.params:
@@ -364,7 +365,8 @@ def default_user_validator(request, username, password):
     default user validator.
     Return none if we are anonymous, the string to remember otherwise.
     """
-    from c2cgeoportal.models import DBSession, User
+    from c2cgeoportal_commons.models import DBSession
+    from c2cgeoportal_commons.models.static import User
     user = DBSession.query(User).filter_by(username=username).first()
     return username if user and user.validate_password(password) else None
 
@@ -431,7 +433,7 @@ def add_cors_route(config, pattern, service):
     Add the OPTIONS route and view need for services supporting CORS.
     """
     def view(request):  # pragma: no cover
-        from c2cgeoportal.lib.caching import set_common_headers, NO_CACHE
+        from c2cgeoportal_geoportal.lib.caching import set_common_headers, NO_CACHE
         return set_common_headers(request, service, NO_CACHE)
 
     name = pattern + "_options"
@@ -476,15 +478,19 @@ def includeme(config):
     config.add_request_method(get_user_from_request, name="get_user")
 
     # configure 'locale' dir as the translation dir for c2cgeoportal app
-    config.add_translation_dirs("c2cgeoportal:locale/")
+    config.add_translation_dirs("c2cgeoportal_geoportal:locale/")
 
     config.include(c2cwsgiutils.pyramid.includeme)
     health_check = HealthCheck(config)
 
     # Initialise DBSessions
+    from c2cgeoportal_commons.models import init_dbsessions
     init_dbsessions(settings, config, health_check)
 
-    from c2cgeoportal.lib import checker, check_collector
+    # initialize the dbreflection module
+    dbreflection.init()
+
+    from c2cgeoportal_geoportal.lib import checker, check_collector
     checker.init(config, health_check)
     check_collector.init(config, health_check)
 
@@ -495,7 +501,7 @@ def includeme(config):
     caching.invalidate_region()
 
     # Register a tween to get back the cache buster path.
-    config.add_tween("c2cgeoportal.lib.cacheversion.CachebusterTween")
+    config.add_tween("c2cgeoportal_geoportal.lib.cacheversion.CachebusterTween")
 
     # bind the mako renderer to other file extensions
     add_mako_renderer(config, ".html")
@@ -676,15 +682,15 @@ def includeme(config):
     config.add_route("resourceproxy", "/resourceproxy", request_method="GET")
 
     # scan view decorator for adding routes
-    config.scan(ignore=["c2cgeoportal.scripts", "c2cgeoportal.wsgi_app"])
+    config.scan(ignore=["c2cgeoportal_geoportal.scripts", "c2cgeoportal_geoportal.wsgi_app"])
 
     if "subdomains" in settings:  # pragma: no cover
         config.registry.registerUtility(
             MultiDomainStaticURLInfo(), IStaticURLInfo)
 
     # add the static view (for static resources)
-    _add_static_view(config, "static", "c2cgeoportal:static")
-    _add_static_view(config, "project", "c2cgeoportal:project")
+    _add_static_view(config, "static", "c2cgeoportal_geoportal:static")
+    _add_static_view(config, "project", "c2cgeoportal_geoportal:project")
 
     add_admin_interface(config)
     add_static_view(config)
@@ -692,37 +698,3 @@ def includeme(config):
     # Handles the other HTTP errors raised by the views. Without that,
     # the client receives a status=200 without content.
     config.add_view(error_handler, context=HTTPException)
-
-
-def init_dbsessions(settings, config=None, health_check=None):
-    # define the srid, schema as global variables to be usable in the model
-    c2cgeoportal.srid = settings["srid"]
-    c2cgeoportal.schema = settings["schema"]
-
-    from c2cgeoportal import models
-
-    db_chooser = settings.get("db_chooser", {})
-    master_paths = [re.compile(i.replace("//", "/")) for i in db_chooser.get("master", [])]
-    slave_paths = [re.compile(i.replace("//", "/")) for i in db_chooser.get("slave", [])]
-
-    slave_prefix = "sqlalchemy_slave" if "sqlalchemy_slave.url" in settings else None
-
-    models.DBSession, rw_bind, ro_bind = c2cwsgiutils.db.setup_session(
-        config, "sqlalchemy", slave_prefix, force_master=master_paths, force_slave=slave_paths)
-    models.Base.metadata.bind = rw_bind
-    models.DBSessions["dbsession"] = models.DBSession
-
-    for dbsession_name, dbsession_config in settings.get("dbsessions", {}).items():  # pragma: nocover
-        models.DBSessions[dbsession_name] = \
-            c2cwsgiutils.db.create_session(config, dbsession_name, **dbsession_config)
-
-    # initialize the dbreflection module
-    dbreflection.init()
-
-    if health_check is not None:
-        for name, session in models.DBSessions.items():
-            if name == "dbsession":
-                health_check.add_db_session_check(session, at_least_one_model=models.Theme)
-            else:  # pragma: no cover
-                health_check.add_db_session_check(
-                    session, query_cb=lambda session: session.execute("SELECT 1"))

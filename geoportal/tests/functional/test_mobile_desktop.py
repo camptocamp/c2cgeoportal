@@ -33,7 +33,7 @@ from unittest import TestCase
 import transaction
 from pyramid import testing
 
-from c2cgeoportal.lib import functionality
+from c2cgeoportal_geoportal.lib import functionality
 from tests.functional import (  # noqa
     teardown_common as teardown_module,
     setup_common as setup_module,
@@ -48,7 +48,8 @@ class TestMobileDesktop(TestCase):
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
 
-        from c2cgeoportal.models import DBSession, LayerV1, Theme, Interface, LayerGroup
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.main import LayerV1, Theme, Interface, LayerGroup
 
         create_default_ogcserver()
         main = Interface(name="main")
@@ -100,7 +101,8 @@ class TestMobileDesktop(TestCase):
 
         functionality.FUNCTIONALITIES_TYPES = None
 
-        from c2cgeoportal.models import DBSession, LayerV1, \
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.main import LayerV1, \
             Theme, LayerGroup, Interface, OGCServer
 
         for t in DBSession.query(Theme).all():
@@ -120,7 +122,7 @@ class TestMobileDesktop(TestCase):
     def _create_entry_obj(username=None, params=None, **kargs):
         if params is None:
             params = {}
-        from c2cgeoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.entry import Entry
 
         request = create_dummy_request(**kargs)
         request.static_url = lambda url: "/dummy/static/url"

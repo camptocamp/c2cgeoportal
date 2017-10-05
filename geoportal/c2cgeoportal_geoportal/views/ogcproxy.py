@@ -30,10 +30,11 @@
 import logging
 
 from sqlalchemy.orm.exc import NoResultFound
-from c2cgeoportal.lib import get_url2
-from c2cgeoportal.views.proxy import Proxy
-from c2cgeoportal.models import DBSession, OGCServer
-from c2cgeoportal.lib.caching import get_region
+from c2cgeoportal_geoportal.lib import get_url2
+from c2cgeoportal_geoportal.views.proxy import Proxy
+from c2cgeoportal_commons.models import DBSession
+from c2cgeoportal_commons.models.main import OGCServer
+from c2cgeoportal_geoportal.lib.caching import get_region
 
 cache_region = get_region()
 log = logging.getLogger(__name__)

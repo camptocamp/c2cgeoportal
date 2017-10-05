@@ -28,11 +28,15 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import logging
 import argparse
 import transaction
 from pyramid.paster import get_app
 from logging.config import fileConfig
 import os
+
+
+LOG = logging.getLogger(__name__)
 
 
 def main():
@@ -41,7 +45,7 @@ def main():
     )
     parser.add_argument(
         '-i', '--iniconfig',
-        default='production.ini',
+        default='geoportal/production.ini',
         help='project .ini config file'
     )
     parser.add_argument(
@@ -56,7 +60,8 @@ def main():
     fileConfig(options.iniconfig, defaults=os.environ)
     get_app(options.iniconfig, options.app_name, options=os.environ)
 
-    from c2cgeoportal.models import DBSession, Interface, OGCServer, Theme, LayerGroup, LayerWMS
+    from c2cgeoportal_commons.models import DBSession
+    from c2cgeoportal_commons.models.main import Interface, OGCServer, Theme, LayerGroup, LayerWMS
 
     session = DBSession()
 

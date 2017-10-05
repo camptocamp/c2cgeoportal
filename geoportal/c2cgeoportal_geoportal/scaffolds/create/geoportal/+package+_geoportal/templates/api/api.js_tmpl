@@ -12,16 +12,16 @@ document.write('<script type="text/javascript" src="'
     % endfor
 
 document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/openlayers/theme/default/style.css')}" + '" />');
+        + "${request.static_url('{{package}}_geoportal:static/lib/cgxp/openlayers/theme/default/style.css')}" + '" />');
 document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/css/proj-map.css')}" + '" />');
+        + "${request.static_url('{{package}}_geoportal:static/css/proj-map.css')}" + '" />');
 % else:
 document.write('<scr' + 'ipt type="text/javascript" src="'
-        + "${request.static_url('{{package}}:static/build/api.js', _query=url_params)}" + '"></scr' + 'ipt>');
+        + "${request.static_url('{{package}}_geoportal:static/build/api.js', _query=url_params)}" + '"></scr' + 'ipt>');
 document.write('<scr' + 'ipt type="text/javascript" src="'
-        + "${request.static_url('{{package}}:static/build/api-lang-%s.js' % lang, _query=url_params)}" + '"></scr' + 'ipt>');
+        + "${request.static_url('{{package}}_geoportal:static/build/api-lang-%s.js' % lang, _query=url_params)}" + '"></scr' + 'ipt>');
 document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/build/api.css', _query=url_params)}" + '" />');
+        + "${request.static_url('{{package}}_geoportal:static/build/api.css', _query=url_params)}" + '" />');
 % endif
 
 
@@ -37,7 +37,7 @@ document.write('<link rel="stylesheet" type="text/css" href="'
 
         OpenLayers.Number.thousandsSeparator = ' ';
         OpenLayers.DOTS_PER_INCH = 96;
-        OpenLayers.ImgPath = "${request.static_url('{{package}}:static/lib/cgxp/core/src/theme/img/ol/') | n}";
+        OpenLayers.ImgPath = "${request.static_url('{{package}}_geoportal:static/lib/cgxp/core/src/theme/img/ol/') | n}";
         OpenLayers.Lang.setCode("${lang}");
 
         OpenLayers.inherit({{package}}.Map, cgxp.api.Map);

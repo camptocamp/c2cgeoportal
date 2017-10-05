@@ -36,7 +36,7 @@ class TestEchoView(TestCase):
 
     def test_json_base64_encode(self):
         import io
-        from c2cgeoportal.views.echo import json_base64_encode
+        from c2cgeoportal_geoportal.views.echo import json_base64_encode
 
         sio = io.BytesIO()
         sio.write("some content with non-ASCII chars ç à é".encode("utf-8"))

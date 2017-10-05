@@ -1,0 +1,21 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+from setuptools import setup, find_packages
+
+setup(
+    name='{{package}}_commons',
+    version='1.0',
+    description='{{package}}, a c2cgeoportal project',
+    author='camptocamp',
+    author_email='info@camptocamp.com',
+    url='http://www.camptocamp.com/geospatial-solutions',
+    install_requires=[
+        'c2cgeoportal_commons',
+    ],
+    packages=find_packages(exclude=['ez_setup']),
+    include_package_data=True,
+    zip_safe=False,
+    entry_points={
+    },
+)

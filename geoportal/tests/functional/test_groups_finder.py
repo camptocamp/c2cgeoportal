@@ -41,7 +41,9 @@ class TestGroupsFinder(TestCase):
 
     def setup_method(self, _):
         import transaction
-        from c2cgeoportal.models import DBSession, User, Role
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.main import Role
+        from c2cgeoportal_commons.models.static import User
 
         r = Role(name="__test_role")
         u = User(
@@ -55,7 +57,9 @@ class TestGroupsFinder(TestCase):
 
     def teardown_method(self, _):
         import transaction
-        from c2cgeoportal.models import DBSession, User, Role
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.main import Role
+        from c2cgeoportal_commons.models.static import User
 
         transaction.commit()
 
@@ -64,7 +68,7 @@ class TestGroupsFinder(TestCase):
         transaction.commit()
 
     def test_it(self):
-        from c2cgeoportal.resources import defaultgroupsfinder
+        from c2cgeoportal_geoportal.resources import defaultgroupsfinder
         request = create_dummy_request(authentication=False, user="__test_user")
         roles = defaultgroupsfinder("__test_user", request)
         self.assertEqual(roles, ["__test_role"])

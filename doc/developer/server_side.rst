@@ -222,7 +222,7 @@ To run a specific test use the ``--where`` switch. For example:
 .. prompt:: bash
 
     ./docker-compose-run nosetests --where \
-        /src/tests/functional/test_themes.py:TestThemesView.test_catalogue
+        /src/geoportal/tests/functional/test_themes.py:TestThemesView.test_catalogue
 
 Adding tests
 ~~~~~~~~~~~~
@@ -363,7 +363,7 @@ All the static resources used sub domains by using the configurations variables:
 
 To be able to use sub domain in a view we should configure the route as this::
 
-    from c2cgeoportal.lib import MultiDomainPregenerator
+    from c2cgeoportal_geoportal.lib import MultiDomainPregenerator
     config.add_route(
         '<name>', '<path>',
         pregenerator=MultiDomainPregenerator())

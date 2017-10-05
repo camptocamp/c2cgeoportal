@@ -45,10 +45,11 @@ from pyramid.httpexceptions import HTTPBadGateway
 
 from owslib.wms import WebMapService
 
-from c2cgeoportal.lib import caching, get_protected_layers_query, \
+from c2cgeoportal_geoportal.lib import caching, get_protected_layers_query, \
     get_writable_layers_query, add_url_params, get_ogc_server_wms_url_ids,\
     get_ogc_server_wfs_url_ids
-from c2cgeoportal.models import DBSession, LayerWMS, OGCServer
+from c2cgeoportal_commons.models import DBSession
+from c2cgeoportal_commons.models.main import LayerWMS, OGCServer
 
 cache_region = caching.get_region()
 log = logging.getLogger(__name__)

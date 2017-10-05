@@ -62,7 +62,7 @@ class TestFilterCapabilities(TestCase):
 
     @staticmethod
     def _filter_xml(xml, tag_name, layers_whitelist):
-        from c2cgeoportal.lib.filter_capabilities import _CapabilitiesFilter
+        from c2cgeoportal_geoportal.lib.filter_capabilities import _CapabilitiesFilter
 
         parser = sax.make_parser()
         result = StringIO()

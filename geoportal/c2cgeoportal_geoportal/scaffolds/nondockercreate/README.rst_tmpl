@@ -17,7 +17,7 @@ Build
 
   cd {{project}}
 
-  ./docker-run make -f <user.mk> build
+  ./docker-run make --makefile=<user.mk> build
 
   make build-local-venv[-windows] print
 

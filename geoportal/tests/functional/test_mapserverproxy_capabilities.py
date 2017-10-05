@@ -42,9 +42,10 @@ class TestMapserverproxyCapabilities(TestCase):
     def setup_method(self, _):
         self.maxDiff = None
 
-        from c2cgeoportal.models import User, Role, LayerWMS, RestrictionArea, \
-            Interface, DBSession, OGCServer, \
-            OGCSERVER_TYPE_MAPSERVER, OGCSERVER_AUTH_STANDARD
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.main import Role, LayerWMS, RestrictionArea, Interface, \
+            OGCServer, OGCSERVER_TYPE_MAPSERVER, OGCSERVER_AUTH_STANDARD
+        from c2cgeoportal_commons.models.static import User
 
         cleanup_db()
         create_default_ogcserver()
@@ -113,7 +114,7 @@ class TestMapserverproxyCapabilities(TestCase):
 
     @staticmethod
     def _wms_get_capabilities(ogcserver, service="wms", username=None):
-        from c2cgeoportal.views.mapserverproxy import MapservProxy
+        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = create_dummy_request({
             "admin_interface": {
@@ -136,7 +137,7 @@ class TestMapserverproxyCapabilities(TestCase):
 
     @staticmethod
     def _wms_get_capabilities_config(ogcserver, service="wms", username=None):
-        from c2cgeoportal.views.mapserverproxy import MapservProxy
+        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = create_dummy_request({
             "admin_interface": {

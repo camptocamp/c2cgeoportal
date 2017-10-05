@@ -41,7 +41,7 @@ class TestGeometryProcessing(TestCase):
 
     def test_difference(self):
         from shapely.geometry import Polygon
-        from c2cgeoportal.views.geometry_processing import GeometryProcessing
+        from c2cgeoportal_geoportal.views.geometry_processing import GeometryProcessing
 
         request = create_dummy_request()
         request.method = "POST"

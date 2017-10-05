@@ -34,7 +34,7 @@ from geoalchemy2.shape import from_shape, to_shape
 from pyramid.view import view_config
 from sqlalchemy import func
 from pyramid.httpexceptions import HTTPBadRequest
-from c2cgeoportal import models
+from c2cgeoportal_commons.models import DBSession
 
 
 class GeometryProcessing:
@@ -54,7 +54,7 @@ class GeometryProcessing:
             }
             """)
 
-        return to_shape(models.DBSession.query(func.ST_Difference(
+        return to_shape(DBSession.query(func.ST_Difference(
             from_shape(asShape(body["geometries"][0])),
             from_shape(asShape(body["geometries"][1]))
         )).scalar())

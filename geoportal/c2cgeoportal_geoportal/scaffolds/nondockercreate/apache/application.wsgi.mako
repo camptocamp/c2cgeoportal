@@ -14,7 +14,7 @@ sys.path = [p for p in sys.path if regex.match(p) is None]
 
 from pyramid.paster import get_app
 
-configfile = os.path.join(root, "${'development' if development == 'TRUE' else 'production'}.ini")
+configfile = os.path.join(root, "geoportal", "${'development' if development == 'TRUE' else 'production'}.ini")
 
 # Load the logging config without using pyramid to be able to use environment variables in there.
 vars = dict(__file__=configfile, here=os.path.dirname(configfile))

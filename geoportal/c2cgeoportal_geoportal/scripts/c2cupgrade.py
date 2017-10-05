@@ -42,7 +42,7 @@ from subprocess import check_call, check_output
 from argparse import ArgumentParser
 from alembic.config import Config
 from alembic import command
-from c2cgeoportal.lib.bashcolor import colorize, GREEN, YELLOW, RED
+from c2cgeoportal_geoportal.lib.bashcolor import colorize, GREEN, YELLOW, RED
 
 REQUIRED_TEMPLATE_KEYS = ["package", "srid", "extent"]
 TEMPLATE_EXAMPLE = {
@@ -389,6 +389,15 @@ class C2cUpgradeTool:
                         error = True
                         managed = True
                         break
+                    if re.match(pattern + '$', dst):
+                        print(colorize(
+                            "The {} '{}' is present in the managed_files as '{}' but he will move.".format(
+                                type_, dst, pattern),
+                            RED
+                        ))
+                        error = True
+                        managed = True
+                        break
                 if not managed and os.path.exists(dst):
                     print(colorize(
                         "The destination '{}' already exists.".format(dst),
@@ -401,6 +410,8 @@ class C2cUpgradeTool:
                     print(colorize("Move the {} '{}' to '{}'.".format(type_, src, dst), GREEN))
                     if "version" in element:
                         print("Needed from version {}.".format(element["version"]))
+                    if os.path.dirname(dst) != "":
+                        os.makedirs(os.path.dirname(dst), exist_ok=True)
                     os.rename(src, dst)
         return error
 
@@ -539,15 +550,11 @@ class C2cUpgradeTool:
         if os.path.isfile("create.diff"):
             os.unlink("create.diff")
 
-        os.environ["IGNORE_I18N_ERRORS"] = "TRUE"
         check_call(["make", "--makefile=" + self.options.new_makefile, "build"])
-        del os.environ["IGNORE_I18N_ERRORS"]
-        check_call(["git", "checkout", "{0}/locale/*/LC_MESSAGES/{0}-client.po".format(
-            self.project["project_package"])])
 
         if self.options.nondocker:
-            command.upgrade(Config("alembic.ini"), "head")
-            command.upgrade(Config("alembic_static.ini"), "head")
+            command.upgrade(Config("geoportal/alembic.ini"), "head")
+            command.upgrade(Config("geoportal/alembic_static.ini"), "head")
 
             message = [
                 "The upgrade is nearly done, now you should:",
@@ -596,7 +603,7 @@ class C2cUpgradeTool:
     @Step(12)
     def step12(self, _):
         check_call(["git", "commit", "-m", "Upgrade to GeoMapFish {}".format(
-            pkg_resources.get_distribution("c2cgeoportal").version
+            pkg_resources.get_distribution("c2cgeoportal_commons").version
         )])
 
         print("")

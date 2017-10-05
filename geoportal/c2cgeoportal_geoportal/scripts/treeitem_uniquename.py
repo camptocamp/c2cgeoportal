@@ -41,7 +41,7 @@ def main():
     )
     parser.add_argument(
         '-i', '--iniconfig',
-        default='production.ini',
+        default='geoportal/production.ini',
         help='project .ini config file',
     )
     parser.add_argument(
@@ -56,7 +56,8 @@ def main():
     fileConfig(options.iniconfig, defaults=os.environ)
     get_app(options.iniconfig, options.app_name, options=os.environ)
 
-    from c2cgeoportal.models import DBSession, LayerV1, LayerWMS, LayerWMTS, LayerGroup, Theme
+    from c2cgeoportal_commons.models import DBSession
+    from c2cgeoportal_commons.models.main import LayerV1, LayerWMS, LayerWMTS, LayerGroup, Theme
 
     for class_ in [LayerV1, LayerWMS, LayerWMTS, LayerGroup, Theme]:
         names = []

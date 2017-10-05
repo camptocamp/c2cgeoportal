@@ -32,11 +32,11 @@ import logging
 
 from pyramid.view import view_config
 
-from c2cgeoportal.lib.caching import get_region, NO_CACHE, PUBLIC_CACHE, PRIVATE_CACHE
-from c2cgeoportal.lib.functionality import get_mapserver_substitution_params
-from c2cgeoportal.lib.filter_capabilities import filter_capabilities
-from c2cgeoportal.views.ogcproxy import OGCProxy
-from c2cgeoportal.models import OGCSERVER_AUTH_GEOSERVER
+from c2cgeoportal_geoportal.lib.caching import get_region, NO_CACHE, PUBLIC_CACHE, PRIVATE_CACHE
+from c2cgeoportal_geoportal.lib.functionality import get_mapserver_substitution_params
+from c2cgeoportal_geoportal.lib.filter_capabilities import filter_capabilities
+from c2cgeoportal_geoportal.views.ogcproxy import OGCProxy
+from c2cgeoportal_commons.models.main import OGCSERVER_AUTH_GEOSERVER
 
 cache_region = get_region()
 log = logging.getLogger(__name__)

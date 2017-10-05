@@ -51,7 +51,7 @@ def main():
     options = parser.parse_args()
 
     # Should depends on the Dockerfile
-    print("Dockerfile")
+    print(os.path.join(options.path, "Dockerfile"))
 
     docker_ignore_path = os.path.join(options.path, ".dockerignore")
     if os.path.isfile(docker_ignore_path):

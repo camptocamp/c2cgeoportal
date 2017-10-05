@@ -4,7 +4,7 @@ import logging
 
 from pyramid.i18n import TranslationStringFactory
 
-from c2cgeoportal.models import *  # noqa
+from c2cgeoportal_commons.models.main import *  # noqa
 
-_ = TranslationStringFactory("{{package}}-server")
+_ = TranslationStringFactory('{{package}}-server')
 log = logging.getLogger(__name__)

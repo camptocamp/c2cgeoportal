@@ -49,10 +49,10 @@ def create_dummy_request(additional_settings=None, *args, **kargs):
 
 
 def load_binfile(file_name):
-    with open(os.path.join("/src", file_name), "rb") as file_:
+    with open(os.path.join("/src/geoportal", file_name), "rb") as file_:
         return file_.read()
 
 
 def load_file(file_name):
-    with open(os.path.join("/src", file_name)) as file_:
+    with open(os.path.join("/src/geoportal", file_name)) as file_:
         return file_.read()

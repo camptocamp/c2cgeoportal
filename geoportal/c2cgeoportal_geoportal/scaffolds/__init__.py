@@ -38,7 +38,7 @@ import pkg_resources
 
 from pyramid.scaffolds.template import Template
 from pyramid.compat import input_
-from c2cgeoportal.lib.bashcolor import colorize, GREEN
+from c2cgeoportal_geoportal.lib.bashcolor import colorize, GREEN
 
 
 class BaseTemplate(Template):  # pragma: no cover
@@ -93,7 +93,8 @@ class BaseTemplate(Template):  # pragma: no cover
             package_logger = "app"
         vars_["package_logger"] = package_logger
 
-        c2cgeoportal_version = pkg_resources.get_distribution('c2cgeoportal').parsed_version._version.release
+        c2cgeoportal_version = pkg_resources.get_distribution('c2cgeoportal_commons') \
+            .parsed_version._version.release
         vars_["geomapfish_version"] = "{}.{}".format(c2cgeoportal_version[0], c2cgeoportal_version[1])
 
         return ret

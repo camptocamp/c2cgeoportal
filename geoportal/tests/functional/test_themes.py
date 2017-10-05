@@ -51,7 +51,8 @@ class TestThemesView(TestCase):
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
 
-        from c2cgeoportal.models import DBSession, \
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.main import \
             Theme, LayerGroup, Functionality, Interface, \
             LayerV1, OGCServer, LayerWMS, LayerWMTS, \
             Metadata, Dimension, OGCSERVER_AUTH_NOAUTH
@@ -125,7 +126,8 @@ class TestThemesView(TestCase):
     def teardown_method(self, _):
         testing.tearDown()
 
-        from c2cgeoportal.models import DBSession, OGCServer, TreeItem, \
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.main import OGCServer, TreeItem, \
             Interface, Metadata, Dimension
 
         DBSession.query(Metadata).delete()
@@ -162,7 +164,7 @@ class TestThemesView(TestCase):
         return request
 
     def _create_entry_obj(self, **kwargs):
-        from c2cgeoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.entry import Entry
 
         kwargs["additional_settings"] = {
             "admin_interface": {"available_metadata": ["test"]}
@@ -288,7 +290,8 @@ class TestThemesView(TestCase):
         )
 
     def test_group_update(self):
-        from c2cgeoportal.models import DBSession, LayerGroup
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.main import LayerGroup
         layer_group_3 = DBSession.query(LayerGroup).filter(LayerGroup.name == "__test_layer_group_3").one()
         layer_group_3.children = layer_group_3.children[:-1]
         transaction.commit()

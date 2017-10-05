@@ -29,7 +29,7 @@
 
 import requests
 
-from c2cgeoportal.lib.checker import build_url
+from c2cgeoportal_geoportal.lib.checker import build_url
 
 
 def init(config, health_check):

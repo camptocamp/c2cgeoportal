@@ -29,8 +29,8 @@ file:
     - % for script in Merger.from_fn(jsbuild_cfg, root_dir=jsbuild_root_dir).list_run(['app.js', 'lang-%s.js' % lang]):
     + % for script in Merger.from_fn(jsbuild_cfg, root_dir=jsbuild_root_dir).list_run(['desktop.js', 'lang-%s.js' % lang]):
 
-    - <script type="text/javascript" src="${'$'}{request.static_url('<package>:static/build/app.js')}"></script>
-    + <script type="text/javascript" src="${'$'}{request.static_url('<package>:static/build/desktop.js')}"></script>
+    - <script type="text/javascript" src="${'$'}{request.static_url('<package>_geoportal:static/build/app.js')}"></script>
+    + <script type="text/javascript" src="${'$'}{request.static_url('<package>_geoportal:static/build/desktop.js')}"></script>
     ...
     - <script type="text/javascript" src="${'$'}{request.route_url('viewer', _query=extra_params)}"></script>
     + <script type="text/javascript" src="${'$'}{request.route_url('desktop.js', _query=extra_params)}"></script>

@@ -33,10 +33,10 @@ from pyramid import testing
 
 
 def setup_module():  # noqa
-    import c2cgeoportal
-    from c2cgeoportal.pyramid_ import caching
-    c2cgeoportal.schema = "main"
-    c2cgeoportal.srid = 21781
+    from c2cgeoportal_commons import models
+    from c2cgeoportal_geoportal import caching
+    models.schema = "main"
+    models.srid = 21781
     caching.init_region({
         "backend": "dogpile.cache.null",
     })
@@ -58,7 +58,7 @@ class TestEntryView(TestCase):
     def test_decimal_json(self):
         from decimal import Decimal
         from pyramid.testing import DummyRequest
-        from c2cgeoportal.pyramid_ import DecimalJSON
+        from c2cgeoportal_geoportal import DecimalJSON
         renderer = DecimalJSON()(None)
         request = DummyRequest()
         request.user = None
@@ -88,7 +88,7 @@ class TestEntryView(TestCase):
     def test__get_child_layers_info_with_scalehint(self):
         import math
         from pyramid.testing import DummyRequest
-        from c2cgeoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.entry import Entry
 
         request = DummyRequest()
         request.user = None
@@ -131,7 +131,7 @@ class TestEntryView(TestCase):
 
     def test_login(self):
         from pyramid.testing import DummyRequest
-        from c2cgeoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.entry import Entry
 
         request = DummyRequest()
         request.user = None
@@ -236,7 +236,7 @@ class TestEntryView(TestCase):
 
     def test__get_child_layers_info_without_scalehint(self):
         from pyramid.testing import DummyRequest
-        from c2cgeoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.entry import Entry
 
         request = DummyRequest()
         request.user = None

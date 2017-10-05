@@ -2,7 +2,7 @@
 
 [alembic]
 # path to migration scripts
-script_location = c2cgeoportal/scaffolds/update/CONST_alembic/static
+script_location = geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_alembic/static
 
 # template used to generate migration files
 # file_template = %%(rev)s_%%(slug)s

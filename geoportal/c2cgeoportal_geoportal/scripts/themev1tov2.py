@@ -46,7 +46,7 @@ def main():
 
     parser.add_argument(
         "-i", "--app-config",
-        default="production.ini",
+        default="geoportal/production.ini",
         dest="app_config",
         help="the application .ini config file (optional, default is 'production.ini')"
     )
@@ -84,8 +84,8 @@ def main():
     app = get_app(app_config, app_name, options=os.environ)
 
     # must be done only once we have loaded the project config
-    from c2cgeoportal.models import DBSession, \
-        OGCServer, Theme, LayerWMS, LayerWMTS, LayerV1, LayerGroup
+    from c2cgeoportal_commons.models import DBSession
+    from c2cgeoportal_commons.models.main import OGCServer, Theme, LayerWMS, LayerWMTS, LayerV1, LayerGroup
 
     session = DBSession()
 
@@ -119,7 +119,7 @@ def main():
 
 
 def ogc_server(session, settings):
-    from c2cgeoportal.models import LayerV1, OGCServer, \
+    from c2cgeoportal_commons.models.main import LayerV1, OGCServer, \
         OGCSERVER_TYPE_QGISSERVER, OGCSERVER_TYPE_GEOSERVER, OGCSERVER_TYPE_OTHER, \
         OGCSERVER_AUTH_GEOSERVER, OGCSERVER_AUTH_NOAUTH
 
@@ -197,7 +197,7 @@ def ogc_server(session, settings):
 
 
 def layer_v1tov2(session, layer):
-    from c2cgeoportal.models import OGCServer, LayerWMS, LayerWMTS, \
+    from c2cgeoportal_commons.models.main import OGCServer, LayerWMS, LayerWMTS, \
         LayergroupTreeitem, Dimension
 
     if layer.layer_type in ["internal WMS", "external WMS"]:
@@ -257,7 +257,7 @@ def layer_v1tov2(session, layer):
 
 
 def new_metadata(name, value, item):
-    from c2cgeoportal.models import Metadata
+    from c2cgeoportal_commons.models.main import Metadata
 
     metadata = Metadata(name, value)
     metadata.item = item

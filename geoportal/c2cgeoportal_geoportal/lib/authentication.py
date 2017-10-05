@@ -32,7 +32,7 @@ from pyramid.authentication import AuthTktAuthenticationPolicy, \
     BasicAuthAuthenticationPolicy
 from pyramid_multiauth import MultiAuthenticationPolicy
 
-from c2cgeoportal.resources import defaultgroupsfinder
+from c2cgeoportal_geoportal.resources import defaultgroupsfinder
 
 
 def create_authentication(settings):

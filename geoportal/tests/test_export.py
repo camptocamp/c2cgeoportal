@@ -37,7 +37,7 @@ class TestExportCSVView(TestCase):
     def test_exportcsv(self):
         from pyramid.testing import DummyRequest
         from pyramid.httpexceptions import HTTPBadRequest
-        from c2cgeoportal.views.export import exportcsv
+        from c2cgeoportal_geoportal.views.export import exportcsv
 
         request = DummyRequest()
 
@@ -64,7 +64,7 @@ class TestExportGpxKmlView(TestCase):
     def test_no_format_param(self):
         from pyramid.testing import DummyRequest
         from pyramid.httpexceptions import HTTPBadRequest
-        from c2cgeoportal.views.export import exportgpxkml
+        from c2cgeoportal_geoportal.views.export import exportgpxkml
 
         request = DummyRequest()
         request.method = "POST"
@@ -78,7 +78,7 @@ class TestExportGpxKmlView(TestCase):
     def test_unknown_format_param(self):
         from pyramid.testing import DummyRequest
         from pyramid.httpexceptions import HTTPBadRequest
-        from c2cgeoportal.views.export import exportgpxkml
+        from c2cgeoportal_geoportal.views.export import exportgpxkml
 
         request = DummyRequest()
         request.method = "POST"
@@ -93,7 +93,7 @@ class TestExportGpxKmlView(TestCase):
     def test_no_name_param(self):
         from pyramid.testing import DummyRequest
         from pyramid.httpexceptions import HTTPBadRequest
-        from c2cgeoportal.views.export import exportgpxkml
+        from c2cgeoportal_geoportal.views.export import exportgpxkml
 
         request = DummyRequest()
         request.method = "POST"
@@ -107,7 +107,7 @@ class TestExportGpxKmlView(TestCase):
     def test_no_doc_param(self):
         from pyramid.testing import DummyRequest
         from pyramid.httpexceptions import HTTPBadRequest
-        from c2cgeoportal.views.export import exportgpxkml
+        from c2cgeoportal_geoportal.views.export import exportgpxkml
 
         request = DummyRequest()
         request.method = "POST"
@@ -120,7 +120,7 @@ class TestExportGpxKmlView(TestCase):
 
     def test_gpx(self):
         from pyramid.testing import DummyRequest
-        from c2cgeoportal.views.export import exportgpxkml
+        from c2cgeoportal_geoportal.views.export import exportgpxkml
 
         request = DummyRequest()
         request.method = "POST"
@@ -138,7 +138,7 @@ class TestExportGpxKmlView(TestCase):
 
     def test_kml(self):
         from pyramid.testing import DummyRequest
-        from c2cgeoportal.views.export import exportgpxkml
+        from c2cgeoportal_geoportal.views.export import exportgpxkml
 
         request = DummyRequest()
         request.method = "POST"

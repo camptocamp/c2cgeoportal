@@ -40,7 +40,7 @@ from urllib.parse import urlparse, parse_qs
 from pyramid.response import Response
 from pyramid.httpexceptions import HTTPBadGateway, HTTPInternalServerError
 
-from c2cgeoportal.lib.caching import get_region, \
+from c2cgeoportal_geoportal.lib.caching import get_region, \
     set_common_headers, NO_CACHE, PUBLIC_CACHE, PRIVATE_CACHE
 
 log = logging.getLogger(__name__)

@@ -31,7 +31,7 @@
 from urllib.parse import urlparse, parse_qs
 from unittest import TestCase
 
-from c2cgeoportal.lib import add_url_params
+from c2cgeoportal_geoportal.lib import add_url_params
 
 
 class TestLib(TestCase):

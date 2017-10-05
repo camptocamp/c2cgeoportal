@@ -211,7 +211,7 @@ def main():
         if args.html:
             data = "<%\n" \
                 "from json import dumps\n" \
-                "from c2cgeoportal.lib.cacheversion import get_cache_version\n" \
+                "from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version\n" \
                 "%>\n" + \
                 data
             # back for ng-app
@@ -227,18 +227,18 @@ def main():
             else:
                 data = _sub(
                     r'<img src="image/([^"]+)"( alt="")? ?/>',
-                    '<img src="${request.static_url(\'{{package}}:static-ngeo/images/\\1\')}" />',
+                    '<img src="${request.static_url(\'{{package}}_geoportal:static-ngeo/images/\\1\')}" />',
                     data,
                 )
             data = _sub(
                 r'<link rel="shortcut icon" href="image/favicon.ico"/>',
-                '<link rel="shortcut icon" href="${request.static_url(\'{{package}}:static-ngeo/images/favicon.ico\')}"/>',  # noqa: E501
+                '<link rel="shortcut icon" href="${request.static_url(\'{{package}}_geoportal:static-ngeo/images/favicon.ico\')}"/>',  # noqa: E501
                 data,
             )  # noqa: E501
             # Styles
             data = _sub(
                 r'    <link rel="stylesheet.*/build/{}.css">'.format(args.interface),
-                r"""    <link rel="stylesheet" href="${{request.static_url('{{{{package}}}}:static-ngeo/build/{interface}.css')}}" type="text/css">""".format(interface=args.interface),  # noqa: E501
+                r"""    <link rel="stylesheet" href="${{request.static_url('{{{{package}}}}_geoportal:static-ngeo/build/{interface}.css')}}" type="text/css">""".format(interface=args.interface),  # noqa: E501
                 data,
                 count=1,
                 flags=re.DOTALL
@@ -262,15 +262,15 @@ def main():
     <script>
         goog.require('{{{{package}}}}_{interface}');
     </script>
-    <script src="${{request.static_url('{{{{package}}}}:static-ngeo/build/templatecache.js')}}"></script>
+    <script src="${{request.static_url('{{{{package}}}}_geoportal:static-ngeo/build/templatecache.js')}}"></script>
     <script src="${{request.static_url('%s/ngeo/utils/watchwatchers.js' % request.registry.settings['node_modules_path'])}}"></script>
     <script>
-        {{{{package}}}}.componentsBaseTemplateUrl = '${{request.static_url("{{{{package}}}}:static-ngeo/components")}}';
-        // {{{{package}}}}.partialsBaseTemplateUrl = '${{request.static_url("{{{{package}}}}:static-ngeo/partials")}}';
-        // {{{{package}}}}.baseTemplateUrl = '${{request.static_url("{{{{package}}}}:static-ngeo/js")}}';
+        {{{{package}}}}.componentsBaseTemplateUrl = '${{request.static_url("{{{{package}}}}_geoportal:static-ngeo/components")}}';
+        // {{{{package}}}}.partialsBaseTemplateUrl = '${{request.static_url("{{{{package}}}}_geoportal:static-ngeo/partials")}}';
+        // {{{{package}}}}.baseTemplateUrl = '${{request.static_url("{{{{package}}}}_geoportal:static-ngeo/js")}}';
     </script>
 % else:
-    <script src="${{request.static_url('{{{{package}}}}:static-ngeo/build/{interface}.js')}}"></script>
+    <script src="${{request.static_url('{{{{package}}}}_geoportal:static-ngeo/build/{interface}.js')}}"></script>
 % endif""".format(interface=args.interface),  # noqa: E501
                 data,
                 count=1,
@@ -317,7 +317,7 @@ def main():
                     "angularLocaleScriptUrlElements.join('/'));"
                 ),
                 "gmfModule.constant('angularLocaleScript', "
-                "'${request.static_url('{{package}}:static-ngeo/build/')}"
+                "'${request.static_url('{{package}}_geoportal:static-ngeo/build/')}"
                 "angular-locale_\{\{locale\}\}.js');",
                 data,
             )
@@ -333,7 +333,7 @@ def main():
 ${ ',\\n'.join([
     "          '{lang}': '{url}'".format(
         lang=lang,
-        url=request.static_url('{{package}}:static-ngeo/build/{lang}.json'.format(lang=lang))
+        url=request.static_url('{{package}}_geoportal:static-ngeo/build/{lang}.json'.format(lang=lang))
     )
     for lang in request.registry.settings["available_locale_names"]
 ]) | n}

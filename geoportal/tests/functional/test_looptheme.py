@@ -47,7 +47,8 @@ class TestLoopTheme(TestCase):
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
 
-        from c2cgeoportal.models import DBSession, LayerWMS, \
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.main import LayerWMS, \
             Theme, LayerGroup, Interface
 
         ogc_server, _ = create_default_ogcserver()
@@ -71,7 +72,8 @@ class TestLoopTheme(TestCase):
     def teardown_method(self, _):
         testing.tearDown()
 
-        from c2cgeoportal.models import DBSession, LayerWMS, \
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.main import LayerWMS, \
             Theme, LayerGroup, OGCServer
 
         for t in DBSession.query(Theme).filter(Theme.name == "__test_theme").all():
@@ -85,7 +87,7 @@ class TestLoopTheme(TestCase):
         transaction.commit()
 
     def test_theme(self):
-        from c2cgeoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.entry import Entry
 
         request = testing.DummyRequest({
             "version": "2",

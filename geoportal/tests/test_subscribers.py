@@ -35,7 +35,7 @@ from pyramid import testing
 class TestSubscribers(TestCase):
 
     def test_add_renderer_globals(self):
-        from c2cgeoportal.subscribers import add_renderer_globals
+        from c2cgeoportal_geoportal.subscribers import add_renderer_globals
 
         request = testing.DummyRequest()
         request.translate = "translate"
@@ -48,7 +48,7 @@ class TestSubscribers(TestCase):
         self.assertEqual(event["localizer"], "localizer")
 
     def test_add_localizer(self):
-        from c2cgeoportal.subscribers import add_localizer
+        from c2cgeoportal_geoportal.subscribers import add_localizer
 
         request = testing.DummyRequest()
 

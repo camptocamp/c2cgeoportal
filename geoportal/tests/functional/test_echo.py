@@ -37,7 +37,7 @@ from pyramid import testing
 class TestEchoView(TestCase):
 
     def test_echo_bad_method(self):
-        from c2cgeoportal.views import echo
+        from c2cgeoportal_geoportal.views import echo
 
         request = testing.DummyRequest()
 
@@ -45,7 +45,7 @@ class TestEchoView(TestCase):
         self.assertEqual(response.status_int, 400)
 
     def test_echo_bad_request(self):
-        from c2cgeoportal.views import echo
+        from c2cgeoportal_geoportal.views import echo
 
         request = testing.DummyRequest()
         request.method = "POST"
@@ -54,7 +54,7 @@ class TestEchoView(TestCase):
         self.assertEqual(response.status_int, 400)
 
     def test_echo(self):
-        from c2cgeoportal.views import echo
+        from c2cgeoportal_geoportal.views import echo
         from webob import Request
 
         request = Request.blank("/")

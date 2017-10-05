@@ -38,7 +38,7 @@ from webob.acceptparse import Accept
 
 from pyramid import testing
 import tests
-from c2cgeoportal.lib import functionality, caching
+from c2cgeoportal_geoportal.lib import functionality, caching
 
 
 mapserv_url = "http://mapserver/"
@@ -48,9 +48,11 @@ config = None
 def cleanup_db():
     """ Cleanup the database """
     import transaction
-    import c2cgeoportal.lib
-    from c2cgeoportal.models import DBSession, OGCServer, TreeItem, Role, User, RestrictionArea, \
-        Interface, Functionality, FullTextSearch, Shorturl
+    import c2cgeoportal_geoportal.lib
+    from c2cgeoportal_commons.models import DBSession
+    from c2cgeoportal_commons.models.main import OGCServer, TreeItem, Role, RestrictionArea, \
+        Interface, Functionality, FullTextSearch
+    from c2cgeoportal_commons.models.static import Shorturl, User
 
     transaction.commit()
     for ra in DBSession.query(RestrictionArea).all():
@@ -69,8 +71,8 @@ def cleanup_db():
     DBSession.query(Shorturl).delete()
     transaction.commit()
 
-    c2cgeoportal.lib.ogc_server_wms_url_ids = None
-    c2cgeoportal.lib.ogc_server_wfs_url_ids = None
+    c2cgeoportal_geoportal.lib.ogc_server_wms_url_ids = None
+    c2cgeoportal_geoportal.lib.ogc_server_wfs_url_ids = None
 
     caching.init_region({
         "backend": "dogpile.cache.null",
@@ -79,7 +81,7 @@ def cleanup_db():
 
 
 def setup_common():
-    import c2cgeoportal.pyramid_
+    from c2cgeoportal_commons import models
     global config
 
     current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -95,19 +97,19 @@ def setup_common():
         "srid": 21781,
         "schema": "main",
         "default_max_age": 86400,
-        "app.cfg": "/src/tests/config.yaml",
+        "app.cfg": "/src/geoportal/tests/config.yaml",
         "package": "c2cgeoportal",
         "enable_admin_interface": True,
     })
 
-    c2cgeoportal.pyramid_.init_dbsessions(config.get_settings(), config)
+    models.init_dbsessions(config.get_settings(), config)
     functionality.FUNCTIONALITIES_TYPES = None
 
     cleanup_db()
 
 
 def teardown_common():
-    from c2cgeoportal import models
+    from c2cgeoportal_commons import models
     cleanup_db()
     testing.tearDown()
     functionality.FUNCTIONALITIES_TYPES = None
@@ -119,7 +121,8 @@ def teardown_common():
 
 def create_default_ogcserver():
     import transaction
-    from c2cgeoportal.models import DBSession, OGCServer
+    from c2cgeoportal_commons.models import DBSession
+    from c2cgeoportal_commons.models.main import OGCServer
 
     transaction.commit()
     ogcserver = OGCServer(name="__test_ogc_server")
@@ -133,7 +136,8 @@ def create_default_ogcserver():
 
 
 def _get_user(username):
-    from c2cgeoportal.models import DBSession, User
+    from c2cgeoportal_commons.models import DBSession
+    from c2cgeoportal_commons.models.static import User
 
     return DBSession.query(User).filter(User.username == username).one()
 
@@ -141,9 +145,9 @@ def _get_user(username):
 def create_dummy_request(additional_settings=None, authentication=True, user=None, *args, **kargs):
     if additional_settings is None:
         additional_settings = {}
-    from c2cgeoportal.pyramid_ import default_user_validator
-    from c2cgeoportal.pyramid_ import create_get_user_from_request
-    from c2cgeoportal.lib.authentication import create_authentication
+    from c2cgeoportal_geoportal import default_user_validator
+    from c2cgeoportal_geoportal import create_get_user_from_request
+    from c2cgeoportal_geoportal.lib.authentication import create_authentication
     request = tests.create_dummy_request({
         "host_forward_host": [],
         "mapserverproxy": {

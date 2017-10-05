@@ -67,8 +67,8 @@ class TestThemesTimeView(TestCase):
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
 
-        from c2cgeoportal.models import DBSession, \
-            Theme, LayerGroup, Interface, LayerWMS, LayerWMTS
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.main import Theme, LayerGroup, Interface, LayerWMS, LayerWMTS
 
         PointTest.__table__.create(bind=DBSession.bind, checkfirst=True)
 
@@ -134,7 +134,8 @@ class TestThemesTimeView(TestCase):
     def teardown_method(self, _):
         testing.tearDown()
 
-        from c2cgeoportal.models import DBSession, TreeItem, Interface, OGCServer
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.main import TreeItem, Interface, OGCServer
 
         for item in DBSession.query(TreeItem).all():
             DBSession.delete(item)
@@ -158,7 +159,7 @@ class TestThemesTimeView(TestCase):
         return request
 
     def _create_entry_obj(self, **kwargs):
-        from c2cgeoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.entry import Entry
 
         return Entry(self._create_request_obj(**kwargs))
 

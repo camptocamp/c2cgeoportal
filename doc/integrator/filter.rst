@@ -90,5 +90,5 @@ For instance:
 
 .. code:: python
 
-    from c2cgeoportal.models import DBSessions
+    from c2cgeoportal_commons.models import DBSessions
     DBSessions['some_db_session_name'] = SomeDbSessionObject

@@ -52,7 +52,8 @@ class TestThemesView(TestCase):
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
 
-        from c2cgeoportal.models import DBSession, \
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.main import \
             Theme, LayerGroup, Interface, LayerWMS, LayerWMTS, Dimension
 
         ogc_server, _ = create_default_ogcserver()
@@ -138,8 +139,8 @@ class TestThemesView(TestCase):
     def teardown_method(self, _):
         testing.tearDown()
 
-        from c2cgeoportal.models import DBSession, TreeItem, \
-            Interface, Dimension, OGCServer
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.main import TreeItem, Interface, Dimension, OGCServer
 
         DBSession.query(Dimension).delete()
         for item in DBSession.query(TreeItem).all():
@@ -167,7 +168,7 @@ class TestThemesView(TestCase):
         return request
 
     def _create_entry_obj(self, **kwargs):
-        from c2cgeoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.entry import Entry
 
         return Entry(self._create_request_obj(**kwargs))
 

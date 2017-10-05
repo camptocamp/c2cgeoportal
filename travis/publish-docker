@@ -2,7 +2,7 @@
 
 docker login --username ${DOCKER_USERNAME} --password ${DOCKER_PASSWORD}
 
-for IMAGE in geomapfish-build-dev geomapfish-build
+for IMAGE in geomapfish-build-dev geomapfish-commons geomapfish-build
 do
     if [ "${TRAVIS_TAG}" != "" ]
     then

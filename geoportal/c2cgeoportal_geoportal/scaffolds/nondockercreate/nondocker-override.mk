@@ -7,11 +7,9 @@ MODWSGI_USER ?= www-data
 export MODWSGI_USER
 
 ADDITIONAL_MAKO_FILES += $(shell find apache $(FIND_OPTS) -name "*.mako" -print) \
-	$(shell find deploy $(FIND_OPTS) -name "*.mako" -print)
-POST_RULES += $(ADDITIONAL_MAKO_FILES)
-ifeq (${DEPOY}, TRUE)
-POST_RULES += deploy/deploy.cfg
-endif
+	$(shell find deploy $(FIND_OPTS) -name "*.mako" -print) \
+	geoportal/development.ini.mako geoportal/production.ini.mako
+
 
 CONF_FILES += apache/application.wsgi
 CONF_FILES_MAKO = $(shell ls -1 apache/*.conf.mako 2> /dev/null)
@@ -27,6 +25,11 @@ endif
 UPGRADE_ARGS += --nondocker --makefile=$(firstword $(MAKEFILE_LIST))
 
 include CONST_Makefile
+
+build: $(ADDITIONAL_MAKO_FILES:.mako=)
+ifeq (${DEPOY}, TRUE)
+build: deploy/deploy.cfg
+endif
 
 # Tile cloud chain
 apache/mapcache.xml: tilegeneration/config.yaml
@@ -49,7 +52,7 @@ apache/tiles.conf: tilegeneration/config.yaml apache/mapcache.xml
 
 node_modules/%: /usr/lib/node_modules/%
 	$(PRERULE_CMD)
-	mkdir -p $(dir $@)
+	mkdir --parent $(dir $@)
 	rm -rf $@
 	cp -r $< $@
 

@@ -24,13 +24,34 @@ files_to_move:
   to: Makefile
   version: 2.3
 - from: Dockerfile
-  to: Dockerfile.mako
+  to: geoportal/Dockerfile.mako
   version: 2.3
 - from: docker-compose.yml.mako
   to: docker-compose.yaml.mako
   version: 2.3
-- from: docker-compose.yml.mako
-  to: docker-compose.yaml.mako
+- from: alembic.ini.mako
+  to: geoportal/alembic.ini.mako
+  version: 2.3
+- from: alembic_static.ini.mako
+  to: geoportal/alembic_static.ini.mako
+  version: 2.3
+- from: .dockerignore
+  to: geoportal/.dockerignore
+  version: 2.3
+- from: jsbuild
+  to: geoportal/jsbuild
+  version: 2.3
+- from: production.ini.mako
+  to: geoportal/production.ini.mako
+  version: 2.3
+- from: setup.py
+  to: geoportal/setup.py
+  version: 2.3
+- from: testgeomapfish/models.py
+  to: commons/testgeomapfish_commons/models.py
+  version: 2.3
+- from: testgeomapfish
+  to: geoportal/testgeomapfish_geoportal
   version: 2.3
 
 files_to_remove:
@@ -118,3 +139,6 @@ files_to_remove:
 - file: development.ini.mako
   version: 2.3
   from: nondocker
+- file: testgeomapfish.egg-info
+  version: 2.3
+  from: 2.2

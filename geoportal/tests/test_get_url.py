@@ -35,7 +35,7 @@ from tests import create_dummy_request
 class TestGetURL(TestCase):
 
     def test_get_url(self):
-        from c2cgeoportal.lib import get_url
+        from c2cgeoportal_geoportal.lib import get_url
 
         request = create_dummy_request({
             "package": "my_project",
@@ -59,7 +59,7 @@ class TestGetURL(TestCase):
         self.assertEqual(errors, set(["The server 'srv2' is not found in the config"]))
 
     def test_get_url2(self):
-        from c2cgeoportal.lib import get_url2
+        from c2cgeoportal_geoportal.lib import get_url2
 
         request = create_dummy_request({
             "package": "my_project",
@@ -75,7 +75,7 @@ class TestGetURL(TestCase):
         request.static_url = static_url
 
         self.assertEqual(get_url2("test", "static://pr:st/icon.png", request, set()), "http://server.org/pr:st/icon.png")
-        self.assertEqual(get_url2("test", "static:///icon.png", request, set()), "http://server.org/my_project:static/icon.png")
+        self.assertEqual(get_url2("test", "static:///icon.png", request, set()), "http://server.org/my_project_geoportal:static/icon.png")
         self.assertEqual(get_url2("test", "config://srv/icon.png", request, set()), "https://example.com/test/icon.png")
         self.assertEqual(get_url2("test", "config://srv/", request, set()), "https://example.com/test/")
         self.assertEqual(get_url2("test", "config://srv", request, set()), "https://example.com/test")

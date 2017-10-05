@@ -1,5 +1,5 @@
 [app:app]
-use = egg:{{package}}
+use = egg:{{package}}_geoportal
 pyramid.reload_templates = true
 pyramid.debug_authorization = false
 pyramid.debug_notfound = true
@@ -7,8 +7,8 @@ pyramid.debug_routematch = false
 pyramid.debug_templates = true
 pyramid.includes =
     pyramid_debugtoolbar
-mako.directories = {{package}}:templates
-    c2cgeoportal:templates
+mako.directories = {{package}}_geoportal:templates
+    c2cgeoportal_geoportal:templates
 authtkt_secret = ${authtkt["secret"]}
 authtkt_cookie_name = ${authtkt["cookie_name"]}
 % if "timeout" in authtkt:
@@ -26,7 +26,7 @@ pipeline =
 ###
 
 [loggers]
-keys = root, sqlalchemy, c2cgeoportal, {{package}}
+keys = root, sqlalchemy, gunicorn.access, gunicorn.error, c2cgeoportal_commons, c2cgeoportal_geoportal, {{package}}_commons, {{package}}_geoportal
 
 [handlers]
 keys = console
@@ -38,15 +38,35 @@ keys = generic
 level = WARN
 handlers = console
 
-[logger_c2cgeoportal]
+[logger_c2cgeoportal_commons]
+level = %(C2CGEOPORTAL_LOG_LEVEL)s
+handlers =
+qualname = c2cgeoportal_commons
+
+[logger_c2cgeoportal_geoportal]
+level = %(C2CGEOPORTAL_LOG_LEVEL)s
+handlers =
+qualname = c2cgeoportal_geoportal
+
+[logger_{{package}}_commons]
+level = %(LOG_LEVEL)s
+handlers =
+qualname = {{package}}_commons
+
+[logger_{{package}}_geoportal]
+level = %(LOG_LEVEL)s
+handlers =
+qualname = {{package}}_geoportal
+
+[logger_gunicorn.access]
 level = INFO
 handlers =
-qualname = c2cgeoportal
+qualname = gunicorn.access
 
-[logger_{{package}}]
-level = DEBUG
+[logger_gunicorn.error]
+level = INFO
 handlers =
-qualname = {{package}}
+qualname = gunicorn.error
 
 [logger_sqlalchemy]
 level = WARN

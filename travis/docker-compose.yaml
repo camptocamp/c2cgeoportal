@@ -21,7 +21,7 @@ services:
   mapserver:
     image: camptocamp/testgeomapfish-mapserver:latest
 
-  wsgi:
-    image: camptocamp/testgeomapfish-wsgi:latest
+  geoportal:
+    image: camptocamp/testgeomapfish-geoportal:latest
     ports:
     - 8080:80

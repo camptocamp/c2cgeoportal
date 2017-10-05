@@ -1,7 +1,7 @@
 # This file is used to finalise non Docker production environment
 
 OPERATING_SYSTEM ?= LINUX
-INSTANCE_ID ?= $(shell python -c 'print(__import__("yaml").load(open("config.yaml").read())["vars"]["instanceid"])')
+INSTANCE_ID ?= $(shell python -c 'print(__import__("yaml").load(open("geoportal/config.yaml").read())["vars"]["instanceid"])')
 
 ifeq ($(OPERATING_SYSTEM), WINDOWS)
 FIND ?= find.exe
@@ -21,10 +21,6 @@ TOMCAT_START_COMMAND ?= $(TOMCAT_SERVICE_COMMAND) start
 endif
 PRINT_OUTPUT_WAR = $(PRINT_OUTPUT)/$(PRINT_WAR)
 PRINT_INPUT += print-apps WEB-INF
-PRINT_EXTRA_LIBS += \
-	print/WEB-INF/lib/jasperreports-functions-$(JASPERREPORTS_VERSION).jar \
-	print/WEB-INF/lib/joda-time-1.6.jar \
-	print/WEB-INF/lib/postgresql-9.3-1102.jdbc41.jar
 PRINT_REQUIREMENT += $(PRINT_EXTRA_LIBS) \
 	print/WEB-INF/classes/logback.xml \
 	print/WEB-INF/classes/mapfish-spring-application-context-override.xml \
@@ -66,9 +62,9 @@ $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf:
 
 .build/apache.timestamp: \
 		$(APACHE_CONF_DIR)/$(INSTANCE_ID).conf \
-		config.yaml \
+		geoportal/config.yaml \
 		.build/venv \
-		development.ini production.ini
+		geoportal/development.ini geoportal/production.ini
 	$(PRERULE_CMD)
 	$(APACHE_GRACEFUL)
 	touch $@
@@ -82,10 +78,10 @@ print/print-servlet.war: print_url
 	$(PRERULE_CMD)
 	curl --max-redirs 0 --location --output $@ $(shell cat $<)
 
-$(PRINT_OUTPUT)/$(PRINT_WAR): $(PRINT_REQUIREMENT)
+$(PRINT_OUTPUT)/$(PRINT_WAR): $(PRINT_REQUIREMENT) print/print-servlet.war
 	$(PRERULE_CMD)
 ifeq ($(OPERATING_SYSTEM), WINDOWS)
-	mkdir -p print/tmp
+	mkdir --parent print/tmp
 	cp print/print-servlet.war print/tmp/$(PRINT_WAR)
 	zip -d print/tmp/$(PRINT_WAR) print-apps/
 	cd print && jar -uf tmp/$(PRINT_WAR) $(PRINT_INPUT)
@@ -112,24 +108,6 @@ ifneq ($(TOMCAT_START_COMMAND),)
 	$(TOMCAT_START_COMMAND)
 endif
 
-print/WEB-INF/lib/jasperreports-functions-$(JASPERREPORTS_VERSION).jar:
-	$(PRERULE_CMD)
-	mkdir -p $(dir $@)
-	curl --location --output $@ http://central.maven.org/maven2/net/sf/jasperreports/jasperreports/$(JASPERREPORTS_VERSION)/jasperreports-$(JASPERREPORTS_VERSION).jar
-	unzip -t -q $@
-
-print/WEB-INF/lib/joda-time-1.6.jar:
-	$(PRERULE_CMD)
-	mkdir -p $(dir $@)
-	curl --max-redirs 0 --location --output $@ http://central.maven.org/maven2/joda-time/joda-time/1.6/joda-time-1.6.jar
-	unzip -t -q $@
-
-print/WEB-INF/lib/postgresql-9.3-1102.jdbc41.jar:
-	$(PRERULE_CMD)
-	mkdir -p $(dir $@)
-	curl --max-redirs 0 --location --output $@ https://jdbc.postgresql.org/download/postgresql-9.3-1102.jdbc41.jar
-	unzip -t -q $@
-
 # Deploy branch
 
 .PHONY: deploy-branch
@@ -151,16 +129,19 @@ remove-branch:
 # Extract
 
 .build/venv:
-	mkdir -p .build
+	mkdir --parent .build
 	rm -rf .build/venv
 	virtualenv --python=python3 .build/venv
 ifeq ($(OPERATING_SYSTEM), WINDOWS)
 	.build/venv/Scripts/python -m pip install `./get-pip-dependencies pyramid-closure c2cgeoportal Shapely`
 	.build/venv/Scripts/python -m pip install wheels/Shapely-1.5.13-cp27-none-win32.whl
 else
-	.build/venv/bin/python -m pip install `./get-pip-dependencies pyramid-closure c2cgeoportal GDAL`
+	# FIXME c2cgeoform
+	.build/venv/bin/python -m pip install `./get-pip-dependencies pyramid-closure c2cgeoportal-commons c2cgeoportal-geoportal GDAL c2cgeoform`
 endif
-	./docker-run cp -r /opt/c2cgeoportal c2cgeoportal
+	./docker-run cp -r /opt/c2cgeoportal_commons c2cgeoportal_commons
+	./docker-run cp -r /opt/c2cgeoportal_geoportal c2cgeoportal_geoportal
+	.build/venv/bin/python -m pip install http://github.com/camptocamp/c2cgeoform/archive/87a4191ef3330b76497bd009e9c0220cbc73c625.zip#egg=c2cgeoform
 	.build/venv/bin/python -m pip install https://github.com/camptocamp/pyramid_closure/archive/23b45f7989cf471dce46dabb8516537bae0a2789.zip#egg=pyramid_closure
-	.build/venv/bin/python -m pip install -e c2cgeoportal
-	.build/venv/bin/python -m pip install -e .
+	.build/venv/bin/python -m pip install --editable=c2cgeoportal_commons --editable=c2cgeoportal_geoportal
+	.build/venv/bin/python -m pip install --editable=commons --editable=geoportal

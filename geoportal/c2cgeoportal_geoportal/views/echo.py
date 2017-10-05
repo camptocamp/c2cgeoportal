@@ -34,7 +34,7 @@ from pyramid.httpexceptions import HTTPBadRequest
 from pyramid.response import Response
 from pyramid.view import view_config
 
-from c2cgeoportal.lib.caching import set_common_headers, NO_CACHE
+from c2cgeoportal_geoportal.lib.caching import set_common_headers, NO_CACHE
 
 
 def json_base64_encode(filename, file_):

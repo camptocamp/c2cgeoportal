@@ -37,16 +37,20 @@ class TestRasterViews(TestCase):
         from decimal import Decimal
         from pyramid.testing import DummyRequest
         from pyramid.httpexceptions import HTTPNotFound
-        from c2cgeoportal.views.raster import Raster
+        from c2cgeoportal_geoportal.views.raster import Raster
 
         request = DummyRequest()
         request.registry.settings = {
             "raster": {
-                "dem1": {"file": "/src/tests/data/dem.shp",
-                         "round": 0.1},
-                "dem2": {"file": "/src/tests/data/dem.shp",
-                         "round": 1},
-                "dem3": {"file": "/src/tests/data/dem.shp"}
+                "dem1": {
+                    "file": "/src/geoportal/tests/data/dem.shp",
+                    "round": 0.1
+                },
+                "dem2": {
+                    "file": "/src/geoportal/tests/data/dem.shp",
+                    "round": 1
+                },
+                "dem3": {"file": "/src/geoportal/tests/data/dem.shp"}
             }
         }
         raster = Raster(request)
@@ -76,8 +80,8 @@ class TestRasterViews(TestCase):
         self.assertRaises(HTTPNotFound, raster.raster)
 
     def test_absolute_path(self):
-        from c2cgeoportal.lib.raster.georaster import GeoRaster
-        gr = GeoRaster("/src/tests/data/dem_absolute.shp")
+        from c2cgeoportal_geoportal.lib.raster.georaster import GeoRaster
+        gr = GeoRaster("/src/geoportal/tests/data/dem_absolute.shp")
         tile = gr._get_tile(548000, 216000)
         self.assertEqual(
             tile.filename,
@@ -87,13 +91,13 @@ class TestRasterViews(TestCase):
         from decimal import Decimal
         from pyramid.testing import DummyRequest
         from pyramid.httpexceptions import HTTPNotFound
-        from c2cgeoportal.views.profile import Profile
+        from c2cgeoportal_geoportal.views.profile import Profile
 
         request = DummyRequest()
         request.registry.settings = {
             "raster": {
-                "dem": {"file": "/src/tests/data/dem.shp", "round": 4},
-                "dem2": {"file": "/src/tests/data/dem.shp", "round": 4}
+                "dem": {"file": "/src/geoportal/tests/data/dem.shp", "round": 4},
+                "dem2": {"file": "/src/geoportal/tests/data/dem.shp", "round": 4}
             }
         }
         profile = Profile(request)
@@ -186,14 +190,14 @@ class TestRasterViews(TestCase):
 
     def test_profile_csv(self):
         from pyramid.testing import DummyRequest
-        from c2cgeoportal.views.profile import Profile
+        from c2cgeoportal_geoportal.views.profile import Profile
 
         request = DummyRequest()
         request.registry.settings = {
             "raster": {
-                "dem": {"file": "/src/tests/data/dem.shp", "round": 1},
-                "dem2": {"file": "/src/tests/data/dem.shp", "round": 1},
-                "dem4": {"file": "/src/tests/data/dem4.shp", "round": 1}
+                "dem": {"file": "/src/geoportal/tests/data/dem.shp", "round": 1},
+                "dem2": {"file": "/src/geoportal/tests/data/dem.shp", "round": 1},
+                "dem4": {"file": "/src/geoportal/tests/data/dem4.shp", "round": 1}
             }
         }
         profile = Profile(request)

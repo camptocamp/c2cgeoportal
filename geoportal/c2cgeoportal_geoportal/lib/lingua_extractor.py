@@ -53,12 +53,12 @@ from mako.template import Template
 from mako.lookup import TemplateLookup
 from owslib.wms import WebMapService
 
-from c2cgeoportal.lib import add_url_params, get_url2
-from c2cgeoportal.lib.bashcolor import colorize, RED
-from c2cgeoportal.lib.dbreflection import get_class
-from c2cgeoportal.lib.caching import init_region
+from c2cgeoportal_geoportal.lib import add_url_params, get_url2
+from c2cgeoportal_geoportal.lib.bashcolor import colorize, RED
+from c2cgeoportal_geoportal.lib.dbreflection import get_class
+from c2cgeoportal_geoportal.lib.caching import init_region
 
-from c2cgeoportal.lib.print_ import *  # noqa
+from c2cgeoportal_geoportal.lib.print_ import *  # noqa
 
 
 class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
@@ -207,17 +207,16 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
         ]
         # Collect layers enum values (for filters)
         settings = get_config("config.yaml")
-        from c2cgeoportal.pyramid_ import init_dbsessions
-        init_dbsessions(settings)
-        from c2cgeoportal.models import DBSessions
-        from c2cgeoportal.views.layers import Layers
+        from c2cgeoportal_commons import models
+        models.init_dbsessions(settings)
+        from c2cgeoportal_geoportal.views.layers import Layers
         enums = []
         enum_layers = config["vars"].get("layers", {}).get("enum", {})
         for layername in list(enum_layers.keys()):
             layerinfos = enum_layers.get(layername, {})
             attributes = layerinfos.get("attributes", {})
             for fieldname in list(attributes.keys()):
-                values = cls._enumerate_attributes_values(DBSessions, Layers, layerinfos, fieldname)
+                values = cls._enumerate_attributes_values(models.DBSessions, Layers, layerinfos, fieldname)
                 for value, in values:
                     if value != "":
                         msgid = value if isinstance(value, str) else value
@@ -283,7 +282,8 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
             self.config = get_config("config.yaml")
 
             try:
-                from c2cgeoportal.models import DBSession, Theme, LayerGroup, \
+                from c2cgeoportal_commons.models import DBSession
+                from c2cgeoportal_commons.models.main import Theme, LayerGroup, \
                     LayerWMS, LayerWMTS, FullTextSearch
 
                 self._import(Theme, messages)
@@ -329,7 +329,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
 
     @staticmethod
     def _import(object_type, messages, callback=None):
-        from c2cgeoportal.models import DBSession
+        from c2cgeoportal_commons.models import DBSession
 
         items = DBSession.query(object_type)
         for item in items:
@@ -378,7 +378,8 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                     raise
 
     def _import_layer_wmts(self, layer, messages):
-        from c2cgeoportal.models import DBSession, OGCServer
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.main import OGCServer
 
         layers = [d.value for d in layer.metadatas if d.name == "queryLayers"]
         if len(layers) == 0:

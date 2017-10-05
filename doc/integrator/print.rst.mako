@@ -207,7 +207,7 @@ The goal is to be able to create a custom makefile with which one we make:
 
 .. prompt:: bash
 
-   make -f <file>.mk
+   make --makefile=<file>.mk
 
 To have only the print.
 

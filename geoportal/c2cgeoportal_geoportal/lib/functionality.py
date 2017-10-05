@@ -29,7 +29,7 @@
 
 
 import logging
-from c2cgeoportal.lib import get_setting, get_typed, get_types_map
+from c2cgeoportal_geoportal.lib import get_setting, get_typed, get_types_map
 
 log = logging.getLogger(__name__)
 

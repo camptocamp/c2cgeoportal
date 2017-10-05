@@ -32,8 +32,8 @@ from unittest import TestCase
 
 import transaction
 import pyramid.security
-from c2cgeoportal.pyramid_ import create_get_user_from_request
-from c2cgeoportal.scripts.urllogin import create_token
+from c2cgeoportal_geoportal import create_get_user_from_request
+from c2cgeoportal_geoportal.scripts.urllogin import create_token
 from tests.functional import (  # noqa
     teardown_common as teardown_module,
     setup_common as setup_module,
@@ -46,7 +46,8 @@ class TestUrllogin(TestCase):
     def setup_method(self, _):
         self.maxDiff = None
 
-        from c2cgeoportal.models import User, DBSession
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.static import User
 
         user = User(username="__test_user1", password="__test_user1")
         DBSession.add(user)
@@ -61,7 +62,8 @@ class TestUrllogin(TestCase):
         pyramid.security.remember = remember
 
     def teardown_method(self, _):
-        from c2cgeoportal.models import User, DBSession
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.static import User
 
         DBSession.query(User).filter(User.username == "__test_user1").delete()
         transaction.commit()

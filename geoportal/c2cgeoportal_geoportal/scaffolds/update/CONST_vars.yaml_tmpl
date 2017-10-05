@@ -89,8 +89,8 @@ vars:
     pyramid_closure:
         roots_with_prefix:
         - ["{closure_library_path}/closure/goog", "{closure_library_path}/closure/goog"]
-        - ["{package}:static-ngeo/js", "{directory}/{package}/static-ngeo/js"]
-        - ["{package}:static-ngeo/components", "{directory}/{package}/static-ngeo/components"]
+        - ["{package}_geoportal:static-ngeo/js", "{directory}/{package}/static-ngeo/js"]
+        - ["{package}_geoportal:static-ngeo/components", "{directory}/{package}/static-ngeo/components"]
         - ["{node_modules_path}{ps}openlayers/src", "{node_modules_path}{ps}openlayers/src"]
         - ["{node_modules_path}{ps}openlayers/build", "{node_modules_path}{ps}openlayers/build"]
         - ["{node_modules_path}{ps}ngeo/src", "{node_modules_path}{ps}ngeo/src"]

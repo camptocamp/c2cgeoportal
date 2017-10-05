@@ -76,21 +76,19 @@ Makefile config variables
 
 The following variables may be set in the makefiles:
 
-* ``CONFIG_VARS``: The list of parameters read from the project yaml configuration file.
+* ``CONFIG_VARS``: The list of parameters read from the project YAML configuration file.
 * ``DEVELOPMENT``: If ``TRUE`` the ``CSS`` and ``JS`` files are not minified and the
     ``development.ini`` pyramid config file is used, defaults to ``FALSE``.
 * ``DISABLE_BUILD_RULES``: List of rules we want to disable, default is empty.
 * ``LANGUAGES``: List of available languages.
 * ``CGXP_INTERFACES``: List of CGXP interfaces, default is empty.
-* ``NGEO_INTERFACES``: List of NGEO interfaces, default is ``mobile desktop``.
-* ``POST_RULES``: Postdefine some build rules, default is empty.
-* ``PRE_RULES``: Predefine some build rules, default is empty.
+* ``NGEO_INTERFACES``: List of ngeo interfaces, default is ``mobile desktop``.
 * ``PRINT``: Mapfish print is enable, defaults to ``TRUE``.
 * ``MAPSERVER``: Mapserver is enable, defaults to ``TRUE``.
 * ``TILECLOUD_CHAIN``: ``TRUE`` to indicate that we use TileCloud-chain, defaults to ``TRUE``.
 * ``VISIBLE_ENTRY_POINT``: The entry point (path) of the application, defaults to ``/``.
 * ``VISIBLE_WEB_HOST``: The hostname, required.
-* ``VISIBLE_WEB_PROTOCOL``: The used protocole, defaults to ``https``.
+* ``VISIBLE_WEB_PROTOCOL``: The used protocol, defaults to ``https``.
 
 
 Custom rules
@@ -103,7 +101,7 @@ Here is a simple example:
 
     MY_FILE ?= <file>
 
-    PRE_RULES = $(MY_FILE)
+    build: $(MY_FILE)
 
     $(MY_FILE): <source_file>
         cp <source_file> $(MY_FILE)

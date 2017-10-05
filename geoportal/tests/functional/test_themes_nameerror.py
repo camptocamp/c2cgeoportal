@@ -51,8 +51,8 @@ class TestThemesNameErrorView(TestCase):
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
 
-        from c2cgeoportal.models import DBSession, \
-            Theme, LayerGroup, Interface, LayerWMS
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.main import Theme, LayerGroup, Interface, LayerWMS
 
         main = Interface(name="desktop")
 
@@ -78,8 +78,8 @@ class TestThemesNameErrorView(TestCase):
     def teardown_method(self, _):
         testing.tearDown()
 
-        from c2cgeoportal.models import DBSession, Layer, \
-            Theme, LayerGroup, OGCServer, Interface
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.main import Layer, Theme, LayerGroup, OGCServer, Interface
 
         for layer in DBSession.query(Layer).all():
             DBSession.delete(layer)
@@ -106,12 +106,12 @@ class TestThemesNameErrorView(TestCase):
         return request
 
     def _create_entry_obj(self, **kwargs):
-        from c2cgeoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.entry import Entry
 
         return Entry(self._create_request_obj(**kwargs))
 
     def test_error(self):
-        from c2cgeoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.entry import Entry
 
         entry = Entry(self._create_request_obj(params={
             "version": "2",
