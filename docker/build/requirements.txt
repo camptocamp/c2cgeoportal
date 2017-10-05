@@ -31,7 +31,7 @@ papyrus==2.2  # setup.py
 Paste==2.0.3  # setup.py
 PasteScript==2.0.2  # setup.py
 pep8-naming==0.4.1  # Lint
-Pillow==4.2.1  # Tilecloud
+Pillow==4.3.0  # Tilecloud
 polib==1.0.8
 postmarkup==1.2.2
 pycrypto==2.6.1  # setup.py
