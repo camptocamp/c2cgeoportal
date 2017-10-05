@@ -49,7 +49,7 @@ try:
 except subprocess.CalledProcessError:
     exit(2)
 
-with open("/src/SUCCESS", "w"):
+with open("/src/.SUCCESS", "w"):
     pass
 """.format(
         umask='os.umask(0o{})'.format(os.environ["UMASK"]) if "UMASK" in os.environ else "",

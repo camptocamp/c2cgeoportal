@@ -19,3 +19,4 @@ doc/Makefile -whitespace
 *.shp binary
 *.shx binary
 *.dia binary
+*.bz2 binary

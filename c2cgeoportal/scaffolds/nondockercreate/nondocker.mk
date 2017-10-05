@@ -37,6 +37,7 @@ APACHE_VHOST ?= $(PACKAGE)
 APACHE_CONF_DIR ?= /var/www/vhosts/$(APACHE_VHOST)/conf
 APACHE_GRACEFUL ?= sudo /usr/sbin/apache2ctl graceful
 
+
 .PHONY: help
 help:
 	@echo  "Usage: make <target>"

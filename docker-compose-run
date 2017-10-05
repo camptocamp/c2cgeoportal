@@ -12,12 +12,12 @@ os.environ["USER_ID"] = str(os.getuid())
 os.environ["GROUP_ID"] = str(os.getgid())
 os.environ["RUN"] = urllib.parse.quote(json.dumps(sys.argv[1:]))
 
-if os.path.exists("SUCCESS"):
-    os.remove("SUCCESS")
+if os.path.exists(".SUCCESS"):
+    os.remove(".SUCCESS")
 
 subprocess.check_call(["docker-compose", "up", "--abort-on-container-exit"])
 
-if os.path.exists("SUCCESS"):
-    os.remove("SUCCESS")
+if os.path.exists(".SUCCESS"):
+    os.remove(".SUCCESS")
 else:
     exit(2)

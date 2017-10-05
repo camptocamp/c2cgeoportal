@@ -75,7 +75,7 @@ tests_require = install_requires + [
 
 setup(
     name="c2cgeoportal",
-    version="2.3",
+    version="2.3.0.dev0",
     description="c2cgeoportal",
     long_description=README,
     classifiers=[
@@ -98,7 +98,7 @@ setup(
     entry_points={
         "console_scripts": [
             "manage_users = c2cgeoportal.scripts.manage_users:main",
-            "c2ctool = c2cgeoportal.scripts.c2ctool:main",
+            "c2cupgrade = c2cgeoportal.scripts.c2cupgrade:main",
             "db2pot = c2cgeoportal.scripts.db2pot:main",
             "themev1tov2 = c2cgeoportal.scripts.themev1tov2:main",
             "theme2fts = c2cgeoportal.scripts.theme2fts:main",

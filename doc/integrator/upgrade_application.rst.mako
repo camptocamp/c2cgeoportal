@@ -4,81 +4,96 @@ Upgrading a GeoMapFish application
 ==================================
 
 
-Updating the application code
------------------------------
-
-Verify that you have in your ``project.yaml.mako`` file the following ``template_vars``: ``package``, ``srid``, ``extent``, for example:
-
-.. code:: yaml
-
-   ...
-   template_vars:
-       package: ${'$'}{package}
-       srid: ${'$'}{srid}
-       extent: 489246, 78873, 837119, 296543
-
-Then run:
-
-.. prompt:: bash
-
-   make update
-   make build
-
-
-Upgrading an application
+Updating the application
 ------------------------
 
-In the ``setup.py`` be sure not to specify a ``c2cgeoportal`` version,
-because it will prevent the installation of the new ``c2cgeoportal`` egg.
+Then you have 4 different ways...
 
-.. note:: For Windows:
-
-   You should add ``UPGRADE_ARGS += --windows`` in your ``<package>.mk`` file.
-
-To upgrade run:
+From a version 2.3 and next
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. prompt:: bash
 
-    wget https://raw.githubusercontent.com/camptocamp/c2cgeoportal/${main_version}/c2cgeoportal/scaffolds/create/docker-run_tmpl
-    mv docker-run_tmpl docker-run
-    sed -i 's/{{geomapfish_version}}/<target_version>/g'
-    chmod +x docker-run
-    ./docker-run make upgrade
+   ./docker-run make upgrade
 
-Where ``<target_version>`` is the version that you wish to upgrade to.
+Then follow the instruction
 
-And follow the instructions.
+Convert a version 2.3 to Docker
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. note:: For Windows:
+Add ``UPGRADE_ARGS += --force-docker --new-makefile=Makefile`` in your ``<user>.mk`` file.
 
-    If you are using Windows, you will have to execute some steps prior
-    to the instructions hereunder:
+.. prompt:: bash
 
-    * Uninstall manually the old c2cgeoportal egg:
+   git add <user>.mk
+   git commit --message="Start upgrade"
+   ./docker-run make --makefile=temp.mk upgrade
 
-        ``.build/venv/Scripts/pip uninstall c2cgeoportal``
+Then follow the instruction
 
-    * Clean / remove the generated files:
+Remove the ``UPGRADE_ARGS`` in your ``<user>.mk`` file.
 
-        ``make -f <makefile> clean``
+.. prompt:: bash
 
-    * Change the version in ``setup.py``
-      to the version you wish to install.
-    * Build your application:
+   git add <user>.mk
+   git commit --quiet --message="Finish upgrade"
 
-        ``make -f <makefile> build``
+Convert a version 2.3 to non-Docker
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    *  Put your modifications under git revision:
+Add the ``vhost`` in the ``template_vars`` of the ``project.yaml.mako`` file.
+Add ``UPGRADE_ARGS += --nondocker --new-makefile=testgeomapfish.mk`` in the ``Makefile``.
 
-        ``git add setup.py``
+.. prompt:: bash
 
-        ``git commit -m "Upgrade c2cgeoportal version"``
+   git add project.yaml.mako Makefile
+   git commit --message="Start upgrade"
+   ./docker-run make upgrade
 
-        ``git push <remote> <branch>``
+Then follow the instruction
 
-    * Follow the Windows instructions hereunder, note that you will have to use
-      ``.build\venv\Scripts\...`` instead of ``.build\venv\bin\...`` in all given
-      commands
+Remove the ``UPGRADE_ARGS`` in your ``Makefile``.
+
+Upgrade a version 2.2
+~~~~~~~~~~~~~~~~~~~~~
+
+Add a section managed_files: [...] in the ``project.yaml.mako`` file.
+All the files that's not in this section will be overwritten except::
+
+ - {package}/templates/.*
+ - {package}/locale/.*
+ - {package}/static/.*
+ - {package}/static-ngeo/.*
+ - print/print-apps/.*
+ - mapserver/.*
+ - project.yaml.mako
+ - setup.py
+ - vars.yaml
+ - Makefile
+
+.. prompt:: bash
+
+   wget https://raw.githubusercontent.com/camptocamp/c2cgeoportal/master/docker-run
+   chmod +x docker-run
+   git add docker-run project.yaml.mako
+   git commit --quiet --message="Start upgrade"
+   make --makefile=testgeomapfish.mk project.yaml
+
+For Docker:
+
+.. prompt:: bash
+
+   ./docker-run --image=camptocamp/geomapfish-build \
+       c2cupgrade --force-docker --new-makefile=Makefile --makefile=testgeomapfish.mk
+
+And for non-Docker
+
+.. prompt:: bash
+
+   ./docker-run --image=camptocamp/geomapfish-build c2cupgrade --nondocker --makefile=testgeomapfish.mk
+
+Then follow the instruction
+
 
 Upgrade the database
 --------------------

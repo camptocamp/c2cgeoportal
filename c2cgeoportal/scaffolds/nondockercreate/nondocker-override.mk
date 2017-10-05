@@ -24,6 +24,8 @@ CONF_FILES += apache/tiles.conf apache/mapcache.xml
 DEFAULT_BUILD_RULES += apache/tiles.conf
 endif
 
+UPGRADE_ARGS += --nondocker --makefile=$(firstword $(MAKEFILE_LIST))
+
 include CONST_Makefile
 
 # Tile cloud chain

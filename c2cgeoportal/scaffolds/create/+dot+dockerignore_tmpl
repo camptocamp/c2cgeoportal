@@ -7,3 +7,5 @@
 !setup.py
 !development.ini
 !production.ini
+!alembic.ini
+!alembic_static.ini

@@ -20,11 +20,12 @@
 /production.ini
 /project.yaml
 /config.yaml
-/SUCCESS
+/.SUCCESS
 /Dockerfile
 /c2cgeoportal
 /docker-compose.yaml
 /docker-compose-build.yaml
+/.upgrade.yaml
 /.tx/config
 /.tx/ngeo.gmf-*
 /.whiskey/action_hooks/pre-build
