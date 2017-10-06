@@ -1,6 +1,6 @@
 #!/bin/bash -ex
 
-./docker-run make -f travis.mk doc
+./docker-run make doc
 
 DOC=false
 BRANCH=2.1
