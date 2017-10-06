@@ -43,77 +43,65 @@
             
   <div class="section" id="upgrading-a-geomapfish-application">
 <span id="integrator-upgrade-application"></span><h1>Upgrading a GeoMapFish application<a class="headerlink" href="#upgrading-a-geomapfish-application" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="updating-the-application-code">
-<h2>Updating the application code<a class="headerlink" href="#updating-the-application-code" title="Permalink to this headline">¶</a></h2>
-<p>Verify that you have in your <code class="docutils literal"><span class="pre">project.yaml.mako</span></code> file the following <code class="docutils literal"><span class="pre">template_vars</span></code>: <code class="docutils literal"><span class="pre">package</span></code>, <code class="docutils literal"><span class="pre">srid</span></code>, <code class="docutils literal"><span class="pre">extent</span></code>, for example:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span>...
-template_vars:
-    package: ${package}
-    srid: ${srid}
-    extent: 489246, 78873, 837119, 296543
-</pre></div>
-</div>
-<p>Then run:</p>
+<div class="section" id="updating-the-application">
+<h2>Updating the application<a class="headerlink" href="#updating-the-application" title="Permalink to this headline">¶</a></h2>
+<p>Then you have 4 different ways…</p>
+<div class="section" id="from-a-version-2-3-and-next">
+<h3>From a version 2.3 and next<a class="headerlink" href="#from-a-version-2-3-and-next" title="Permalink to this headline">¶</a></h3>
 <pre class="highlight"><style type="text/css">
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">make update</span>
-<span class="prompt1">make build</span>
-</pre></div>
-<div class="section" id="upgrading-an-application">
-<h2>Upgrading an application<a class="headerlink" href="#upgrading-an-application" title="Permalink to this headline">¶</a></h2>
-<p>In the <code class="docutils literal"><span class="pre">setup.py</span></code> be sure not to specify a <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> version,
-because it will prevent the installation of the new <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> egg.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>For Windows:</p>
-<p class="last">You should add <code class="docutils literal"><span class="pre">UPGRADE_ARGS</span> <span class="pre">+=</span> <span class="pre">--windows</span></code> in your <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> file.</p>
+</style><span class="prompt1">./docker-run make upgrade</span>
+</pre><p>Then follow the instruction</p>
 </div>
-<p>To upgrade run:</p>
-<pre class="highlight"><span class="prompt1">wget https://raw.githubusercontent.com/camptocamp/c2cgeoportal/2.3/c2cgeoportal/scaffolds/create/docker-run_tmpl</span>
-<span class="prompt1">mv docker-run_tmpl docker-run</span>
-<span class="prompt1">sed -i <span class="s1">&#39;s/{{geomapfish_version}}/&lt;target_version&gt;/g&#39;</span></span>
-<span class="prompt1">chmod +x docker-run</span>
+<div class="section" id="convert-a-version-2-3-to-docker">
+<h3>Convert a version 2.3 to Docker<a class="headerlink" href="#convert-a-version-2-3-to-docker" title="Permalink to this headline">¶</a></h3>
+<p>Add <code class="docutils literal"><span class="pre">UPGRADE_ARGS</span> <span class="pre">+=</span> <span class="pre">--force-docker</span> <span class="pre">--new-makefile=Makefile</span></code> in your <code class="docutils literal"><span class="pre">&lt;user&gt;.mk</span></code> file.</p>
+<pre class="highlight"><span class="prompt1">git add &lt;user&gt;.mk</span>
+<span class="prompt1">git commit --message<span class="o">=</span><span class="s2">&quot;Start upgrade&quot;</span></span>
+<span class="prompt1">./docker-run make --makefile<span class="o">=</span>temp.mk upgrade</span>
+</pre><p>Then follow the instruction</p>
+<p>Remove the <code class="docutils literal"><span class="pre">UPGRADE_ARGS</span></code> in your <code class="docutils literal"><span class="pre">&lt;user&gt;.mk</span></code> file.</p>
+<pre class="highlight"><span class="prompt1">git add &lt;user&gt;.mk</span>
+<span class="prompt1">git commit --quiet --message<span class="o">=</span><span class="s2">&quot;Finish upgrade&quot;</span></span>
+</pre></div>
+<div class="section" id="convert-a-version-2-3-to-non-docker">
+<h3>Convert a version 2.3 to non-Docker<a class="headerlink" href="#convert-a-version-2-3-to-non-docker" title="Permalink to this headline">¶</a></h3>
+<p>Add the <code class="docutils literal"><span class="pre">vhost</span></code> in the <code class="docutils literal"><span class="pre">template_vars</span></code> of the <code class="docutils literal"><span class="pre">project.yaml.mako</span></code> file.
+Add <code class="docutils literal"><span class="pre">UPGRADE_ARGS</span> <span class="pre">+=</span> <span class="pre">--nondocker</span> <span class="pre">--new-makefile=testgeomapfish.mk</span></code> in the <code class="docutils literal"><span class="pre">Makefile</span></code>.</p>
+<pre class="highlight"><span class="prompt1">git add project.yaml.mako Makefile</span>
+<span class="prompt1">git commit --message<span class="o">=</span><span class="s2">&quot;Start upgrade&quot;</span></span>
 <span class="prompt1">./docker-run make upgrade</span>
-</pre><p>Where <code class="docutils literal"><span class="pre">&lt;target_version&gt;</span></code> is the version that you wish to upgrade to.</p>
-<p>And follow the instructions.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>For Windows:</p>
-<p>If you are using Windows, you will have to execute some steps prior
-to the instructions hereunder:</p>
-<ul class="last">
-<li><p class="first">Uninstall manually the old c2cgeoportal egg:</p>
-<blockquote>
-<div><p><code class="docutils literal"><span class="pre">.build/venv/Scripts/pip</span> <span class="pre">uninstall</span> <span class="pre">c2cgeoportal</span></code></p>
-</div></blockquote>
-</li>
-<li><p class="first">Clean / remove the generated files:</p>
-<blockquote>
-<div><p><code class="docutils literal"><span class="pre">make</span> <span class="pre">-f</span> <span class="pre">&lt;makefile&gt;</span> <span class="pre">clean</span></code></p>
-</div></blockquote>
-</li>
-<li><p class="first">Change the version in <code class="docutils literal"><span class="pre">setup.py</span></code>
-to the version you wish to install.</p>
-</li>
-<li><p class="first">Build your application:</p>
-<blockquote>
-<div><p><code class="docutils literal"><span class="pre">make</span> <span class="pre">-f</span> <span class="pre">&lt;makefile&gt;</span> <span class="pre">build</span></code></p>
-</div></blockquote>
-</li>
-<li><p class="first">Put your modifications under git revision:</p>
-<blockquote>
-<div><p><code class="docutils literal"><span class="pre">git</span> <span class="pre">add</span> <span class="pre">setup.py</span></code></p>
-<p><code class="docutils literal"><span class="pre">git</span> <span class="pre">commit</span> <span class="pre">-m</span> <span class="pre">&quot;Upgrade</span> <span class="pre">c2cgeoportal</span> <span class="pre">version&quot;</span></code></p>
-<p><code class="docutils literal"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">&lt;remote&gt;</span> <span class="pre">&lt;branch&gt;</span></code></p>
-</div></blockquote>
-</li>
-<li><p class="first">Follow the Windows instructions hereunder, note that you will have to use
-<code class="docutils literal"><span class="pre">.build\venv\Scripts\...</span></code> instead of <code class="docutils literal"><span class="pre">.build\venv\bin\...</span></code> in all given
-commands</p>
-</li>
-</ul>
+</pre><p>Then follow the instruction</p>
+<p>Remove the <code class="docutils literal"><span class="pre">UPGRADE_ARGS</span></code> in your <code class="docutils literal"><span class="pre">Makefile</span></code>.</p>
+</div>
+<div class="section" id="upgrade-a-version-2-2">
+<h3>Upgrade a version 2.2<a class="headerlink" href="#upgrade-a-version-2-2" title="Permalink to this headline">¶</a></h3>
+<p>Add a section managed_files: […] in the <code class="docutils literal"><span class="pre">project.yaml.mako</span></code> file.
+All the files that’s not in this section will be overwritten except:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="p">{</span><span class="n">package</span><span class="p">}</span><span class="o">/</span><span class="n">templates</span><span class="o">/.*</span>
+<span class="o">-</span> <span class="p">{</span><span class="n">package</span><span class="p">}</span><span class="o">/</span><span class="n">locale</span><span class="o">/.*</span>
+<span class="o">-</span> <span class="p">{</span><span class="n">package</span><span class="p">}</span><span class="o">/</span><span class="n">static</span><span class="o">/.*</span>
+<span class="o">-</span> <span class="p">{</span><span class="n">package</span><span class="p">}</span><span class="o">/</span><span class="n">static</span><span class="o">-</span><span class="n">ngeo</span><span class="o">/.*</span>
+<span class="o">-</span> <span class="nb">print</span><span class="o">/</span><span class="nb">print</span><span class="o">-</span><span class="n">apps</span><span class="o">/.*</span>
+<span class="o">-</span> <span class="n">mapserver</span><span class="o">/.*</span>
+<span class="o">-</span> <span class="n">project</span><span class="o">.</span><span class="n">yaml</span><span class="o">.</span><span class="n">mako</span>
+<span class="o">-</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span>
+<span class="o">-</span> <span class="nb">vars</span><span class="o">.</span><span class="n">yaml</span>
+<span class="o">-</span> <span class="n">Makefile</span>
+</pre></div>
+</div>
+<pre class="highlight"><span class="prompt1">wget https://raw.githubusercontent.com/camptocamp/c2cgeoportal/master/docker-run</span>
+<span class="prompt1">chmod +x docker-run</span>
+<span class="prompt1">git add docker-run project.yaml.mako</span>
+<span class="prompt1">git commit --quiet --message<span class="o">=</span><span class="s2">&quot;Start upgrade&quot;</span></span>
+<span class="prompt1">make --makefile<span class="o">=</span>testgeomapfish.mk project.yaml</span>
+</pre><p>For Docker:</p>
+<pre class="highlight"><span class="prompt1">./docker-run --image<span class="o">=</span>camptocamp/geomapfish-build        c2cupgrade --force-docker --new-makefile<span class="o">=</span>Makefile --makefile<span class="o">=</span>testgeomapfish.mk</span>
+</pre><p>And for non-Docker</p>
+<pre class="highlight"><span class="prompt1">./docker-run --image<span class="o">=</span>camptocamp/geomapfish-build c2cupgrade --nondocker --makefile<span class="o">=</span>testgeomapfish.mk</span>
+</pre><p>Then follow the instruction</p>
 </div>
 </div>
 <div class="section" id="upgrade-the-database">
@@ -147,8 +135,13 @@ commands</p>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Upgrading a GeoMapFish application</a><ul>
-<li><a class="reference internal" href="#updating-the-application-code">Updating the application code</a></li>
-<li><a class="reference internal" href="#upgrading-an-application">Upgrading an application</a></li>
+<li><a class="reference internal" href="#updating-the-application">Updating the application</a><ul>
+<li><a class="reference internal" href="#from-a-version-2-3-and-next">From a version 2.3 and next</a></li>
+<li><a class="reference internal" href="#convert-a-version-2-3-to-docker">Convert a version 2.3 to Docker</a></li>
+<li><a class="reference internal" href="#convert-a-version-2-3-to-non-docker">Convert a version 2.3 to non-Docker</a></li>
+<li><a class="reference internal" href="#upgrade-a-version-2-2">Upgrade a version 2.2</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#upgrade-the-database">Upgrade the database</a></li>
 </ul>
 </li>
