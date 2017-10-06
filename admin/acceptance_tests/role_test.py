@@ -1,7 +1,4 @@
 import pytest
-from . import clean_form
-import re
-import c2cgeoform
 from pyramid.testing import DummyRequest
 
 
@@ -17,7 +14,7 @@ def insertRolesTestData(dbsession):
     dbsession.rollback()
 
 
-@pytest.mark.usefixtures("insertRolesTestData", "transact")
+@pytest.mark.usefixtures("insertRolesTestData", "transact", "test_app")
 class TestRole():
     def test_view_index(self, dbsession):
         from c2cgeoportal_admin.views.roles import RoleViews
@@ -25,29 +22,10 @@ class TestRole():
         assert info['list_fields'][0][0] == 'name'
         assert type(info['list_fields'][0][1]) == str
 
-    def test_view_edit(self, dbsession):
-        c2cgeoform._set_widget_template_path()
-        from c2cgeoportal_admin.views.roles import RoleViews
-        req = DummyRequest(dbsession=dbsession)
-        req.matchdict.update({'id': '11'})
-
-        form = clean_form(RoleViews(req).edit()['form'])
-
-        inputs = re.findall('<input type="text" .*?>', form)
-        expected0 = ('<input'
-                     ' type="text"'
-                     ' name="name"'
-                     ' value="secretary_10"'
-                     ' id="deformField2"'
-                     ' class=" form-control "/>')
-        assert expected0 == inputs[0]
-        expected1 = ('<input'
-                     ' type="text"'
-                     ' name="description"'
-                     ' value=""'
-                     ' id="deformField3"'
-                     ' class=" form-control "/>')
-        assert expected1 == inputs[1]
+    def test_view_edit(self, dbsession, test_app):
+        resp = test_app.get('/role/11/edit', status=200)
+        assert resp.form['name'].value == "secretary_10"
+        assert resp.form['description'].value == ""
 
     @pytest.mark.usefixtures("test_app")  # route have to be registred for HTTP_FOUND
     def test_submit_update(self, dbsession):
