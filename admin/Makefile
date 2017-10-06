@@ -11,14 +11,14 @@ cleanall:
 .PHONY: test
 test: ${BUILD_DIR}/requirements.timestamp ${BUILD_DIR}/requirements-dev.timestamp
 	#Run your project's tests.
-	${VENV}/bin/pytest
+	${VENV}/bin/pytest --driver Firefox
 
 .PHONY: check
 check: flake8
 
 .PHONY: flake8
 flake8: ${BUILD_DIR}/requirements-dev.timestamp
-	${VENV}/bin/flake8 c2cgeoportal_admin
+	${VENV}/bin/flake8 c2cgeoportal_admin acceptance_tests
 
 .PHONY: init_db
 init_db:
