@@ -15,7 +15,7 @@ class RoleViews(AbstractViews):
     _base_schema = Role.__colanderalchemy__
 
     @view_config(route_name='c2cgeoform_index',
-                 renderer="c2cgeoform:templates/site/index.pt")
+                 renderer="../templates/index.jinja2")
     def index(self):
         return super().index()
 
@@ -26,12 +26,12 @@ class RoleViews(AbstractViews):
 
     @view_config(route_name='c2cgeoform_action',
                  request_method='GET',
-                 renderer="c2cgeoform:templates/site/edit.pt")
+                 renderer="../templates/edit.jinja2")
     def view(self):
         return super().edit()
 
     @view_config(route_name='c2cgeoform_action',
                  request_method='POST',
-                 renderer="c2cgeoform:templates/site/edit.pt")
+                 renderer="../templates/edit.jinja2")
     def save(self):
         return super().save()
