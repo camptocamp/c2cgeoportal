@@ -43,7 +43,9 @@ from sqlalchemy.orm import relationship, backref
 from geoalchemy2 import Geometry
 from geoalchemy2.shape import to_shape
 from sqlalchemy import Column
-
+from deform.widget import HiddenWidget
+from c2cgeoform.ext import colander_ext, deform_ext
+from deform.widget import CheckboxWidget
 
 try:
     from pyramid.security import Allow, ALL_PERMISSIONS, DENY_ALL
@@ -182,32 +184,90 @@ theme_functionality = Table(
 )
 
 
+class Role(Base):
+    __tablename__ = "role"
+    __table_args__ = {"schema": _schema}
+    __acl__ = [
+        (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
+    ]
+
+    id = Column(Integer, primary_key=True,
+                info={'colanderalchemy':
+                      {'widget': HiddenWidget()
+        }})
+    name = Column(Unicode, unique=True, nullable=False,
+                  info={'colanderalchemy':
+                        {'title': _('name')}})
+    description = Column(Unicode)
+    extent = Column(Geometry("POLYGON", srid=_srid),
+                    info={'colanderalchemy':
+                          {'typ': colander_ext.Geometry('POLYGON', srid=3857, map_srid=3857),
+                           'widget': deform_ext.MapWidget()}})
+
+    # functionality
+    functionalities = relationship(
+        "Functionality", secondary=role_functionality,
+        cascade="save-update,merge,refresh-expire"
+    )
+
+    def __init__(self, name="", description="", functionalities=None, extent=None):
+        if functionalities is None:
+            functionalities = []
+        self.name = name
+        self.functionalities = functionalities
+        self.extent = extent
+        self.description = description
+
+    def __unicode__(self):
+        return self.name or ""  # pragma: no cover
+
+    @property
+    def bounds(self):
+        if self.extent is None:
+            return None
+        return to_shape(self.extent).bounds
+
 class User(Base):
     __tablename__ = "user"
     __table_args__ = {"schema": _schema + "_static"}
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
-    item_type = Column("type", String(10), nullable=False)
+    item_type = Column("type", String(10), nullable=False,
+                       info={'colanderalchemy':
+                             {'widget': HiddenWidget()}})
     __mapper_args__ = {
         "polymorphic_on": item_type,
         "polymorphic_identity": "user",
     }
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True,
+                info={'colanderalchemy': {
+                    'widget': HiddenWidget()}})
     username = Column(
         Unicode, unique=True, nullable=False,
     )
     _password = Column(
         "password", Unicode, nullable=False,
+        info={'colanderalchemy': {'widget': HiddenWidget()}}
     )
     temp_password = Column(
         "temp_password", Unicode, nullable=True,
     )
-    email = Column(Unicode, nullable=False)
-    is_password_changed = Column(Boolean, default=False)
-
-    role_name = Column(String)
+    email = Column(Unicode, nullable=False, info={
+        'colanderalchemy': {
+            'title': _('email')
+        }})
+    is_password_changed = Column(Boolean, default=False,
+                                 info={'colanderalchemy':
+                                       {'widget': CheckboxWidget(readonly=True)}})
+    role_name = Column(String, info={'colanderalchemy':
+                                     {'widget': deform_ext.RelationSelect2Widget(
+                                         Role,
+                                         'name',
+                                         'name',
+                                         order_by='name',
+                                         default_value=('', _('- Select -')))}})
     _cached_role_name = None
     _cached_role = None
 
@@ -299,43 +359,6 @@ class User(Base):
     def __unicode__(self):
         return self.username or ""  # pragma: no cover
 
-
-class Role(Base):
-    __tablename__ = "role"
-    __table_args__ = {"schema": _schema}
-    __acl__ = [
-        (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
-    ]
-
-    id = Column(Integer, primary_key=True)
-    name = Column(Unicode, unique=True, nullable=False)
-    description = Column(Unicode)
-    extent = Column(Geometry("POLYGON", srid=_srid))
-
-    # functionality
-    functionalities = relationship(
-        "Functionality", secondary=role_functionality,
-        cascade="save-update,merge,refresh-expire"
-    )
-
-    def __init__(self, name="", description="", functionalities=None, extent=None):
-        if functionalities is None:
-            functionalities = []
-        self.name = name
-        self.functionalities = functionalities
-        self.extent = extent
-        self.description = description
-
-    def __unicode__(self):
-        return self.name or ""  # pragma: no cover
-
-    @property
-    def bounds(self):
-        if self.extent is None:
-            return None
-        return to_shape(self.extent).bounds
-
-
 event.listen(Role.functionalities, "set", cache_invalidate_cb)
 event.listen(Role.functionalities, "append", cache_invalidate_cb)
 event.listen(Role.functionalities, "remove", cache_invalidate_cb)
@@ -375,7 +398,6 @@ class TreeItem(Base):
 
     def __init__(self, name=""):
         self.name = name
-
 
 event.listen(TreeItem, "after_insert", cache_invalidate_cb, propagate=True)
 event.listen(TreeItem, "after_update", cache_invalidate_cb, propagate=True)
@@ -794,7 +816,12 @@ class RestrictionArea(Base):
     ]
 
     id = Column(Integer, primary_key=True)
-    area = Column(Geometry("POLYGON", srid=_srid))
+    area = Column(Geometry("POLYGON", srid=_srid), info={'colanderalchemy': {
+        'typ': colander_ext.Geometry(
+        'POLYGON', srid=3857, map_srid=3857),
+        'widget': deform_ext.MapWidget()
+        }})
+
     name = Column(Unicode)
     description = Column(Unicode)
     readwrite = Column(Boolean, default=False)

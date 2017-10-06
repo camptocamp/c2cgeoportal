@@ -25,6 +25,7 @@ tests_require = [
     'pytest',
     'pytest-cov',
     'flake8==3.4.1',
+    'pytest-selenium',
 ]
 
 setup(

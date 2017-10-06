@@ -11,14 +11,14 @@ cleanall:
 .PHONY: test
 test: ${BUILD_DIR}/requirements.timestamp ${BUILD_DIR}/requirements-dev.timestamp
 	#Run your project's tests.
-	${VENV}/bin/pytest
+	${VENV}/bin/pytest --driver Firefox
 
 .PHONY: check
 check: flake8
 
 .PHONY: flake8
 flake8: ${BUILD_DIR}/requirements-dev.timestamp
-	${VENV}/bin/flake8 c2cgeoportal_admin
+	${VENV}/bin/flake8 c2cgeoportal_admin acceptance_tests
 
 .PHONY: init_db
 init_db:
@@ -37,9 +37,10 @@ ${BUILD_DIR}/venv.timestamp:
 	${VENV}/bin/pip install --upgrade pip==9.0.1 setuptools==36.5.0
 	touch $@
 
-${BUILD_DIR}/requirements.timestamp: ${BUILD_DIR}/venv.timestamp ../commons/setup.py setup.py
+${BUILD_DIR}/requirements.timestamp: ${BUILD_DIR}/venv.timestamp ../commons/setup.py setup.py requirements.txt
 	#Install the project in editable mode.
 	${VENV}/bin/pip install -e "../commons"
+	${VENV}/bin/pip install -r requirements.txt
 	${VENV}/bin/pip install -e "."
 	touch $@
 
