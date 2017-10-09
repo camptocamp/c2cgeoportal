@@ -185,12 +185,6 @@ function v220 {
         echo "Fail to upgrade"
         exit 1
     fi
-    cp {CONST_create_template/,}testgeomapfish/static-ngeo/js/desktop.js
-    cp {CONST_create_template/,}testgeomapfish/static-ngeo/js/mobile.js
-    cp {CONST_create_template/,}testgeomapfish/static-ngeo/less/desktop.less
-    cp {CONST_create_template/,}testgeomapfish/static-ngeo/less/mobile.less
-    cp {CONST_create_template/,}testgeomapfish/templates/desktop.html
-    cp {CONST_create_template/,}testgeomapfish/templates/mobile.html
     ./docker-run make $MAKE_ARGS upgrade9 > /dev/null
     if [ ! -e .UPGRADE_SUCCESS ]
     then

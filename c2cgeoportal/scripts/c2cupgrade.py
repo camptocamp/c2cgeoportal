@@ -347,11 +347,7 @@ class C2cUpgradeTool:
                     "By default following regex pattern will not be replaced:\n{}"
                     "Than you should fill the 'managed_files' in you 'project.yaml' file with at least "
                     "`[]`.".format("\n".join([
-                        "- " + e.format(
-                            project=self.project["project_folder"],
-                            package=self.project["project_package"]
-                        )
-                        for e in self.project.get('default_project_files', [])
+                        "- " + e for e in self.project.get('unmanaged_files', [])
                     ])),
                     prompt="Fill it and run it again:"
                 )
@@ -366,10 +362,7 @@ class C2cUpgradeTool:
     def files_to_remove(self, summary=False):
         error = False
         for element in self.get_upgrade("files_to_remove"):
-            file_ = element["file"].format(
-                project=self.project["project_folder"],
-                package=self.project["project_package"]
-            )
+            file_ = element["file"]
             if os.path.exists(file_):
                 managed = False
                 for pattern in self.project["managed_files"]:
@@ -398,14 +391,8 @@ class C2cUpgradeTool:
     def files_to_move(self, summary=False):
         error = False
         for element in self.get_upgrade("files_to_move"):
-            src = element["from"].format(
-                project=self.project["project_folder"],
-                package=self.project["project_package"]
-            )
-            dst = element["to"].format(
-                project=self.project["project_folder"],
-                package=self.project["project_package"]
-            )
+            src = element["from"]
+            dst = element["to"]
             if os.path.exists(src):
                 type_ = "directory" if os.path.isdir(src) else "file"
                 managed = False
@@ -444,9 +431,7 @@ class C2cUpgradeTool:
             for file_ in files:
                 destination = os.path.join(root, file_)
                 managed = False
-                for pattern in self.project["managed_files"] + [e.format(
-                    project=self.project["project_folder"], package=self.project["project_package"]
-                ) for e in self.project.get('default_project_files', [])]:
+                for pattern in self.project["managed_files"] + [self.project.get('unmanaged_files', [])]:
                     if re.match(pattern + '$', destination):
                         for unpattern in self.project.get("unmanaged_files", []):
                             if re.match(unpattern + '$', file_) is None:

@@ -3,6 +3,13 @@ project_package: ${package}
 host: ${host}
 checker_path: /${instanceid}/wsgi/check_collector?
 managed_files: []
+unmanaged_files:
+- testgeomapfish/static-ngeo/js/desktop.js
+- testgeomapfish/static-ngeo/js/mobile.js
+- testgeomapfish/static-ngeo/less/desktop.less
+- testgeomapfish/static-ngeo/less/mobile.less
+- testgeomapfish/templates/desktop.html
+- testgeomapfish/templates/mobile.html
 template_vars:
     package: testgeomapfish
     srid: 21781
