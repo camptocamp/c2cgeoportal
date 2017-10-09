@@ -442,7 +442,7 @@ class C2cUpgradeTool:
                     if re.match(pattern + '$', destination):
                         for unpattern in self.project.get("unmanaged_files", []):
                             print(unpattern)
-                            if re.match(unpattern + '$', file_) is None:
+                            if re.match(unpattern + '$', destination) is None:
                                 managed = True
                                 break
                     if managed:
