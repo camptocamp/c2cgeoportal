@@ -170,6 +170,7 @@ function v220 {
         echo "Fail to upgrade"
         exit 1
     fi
+    grep -r vars_testgeomapfish.yaml .
     ./docker-run make $MAKE_ARGS upgrade7 > /dev/null
     if [ $2 == non ]
     then
