@@ -437,9 +437,11 @@ class C2cUpgradeTool:
             for file_ in files:
                 destination = os.path.join(root, file_)
                 managed = False
+                print(destination)
                 for pattern in self.project["managed_files"] + self.get_upgrade("default_project_file"):
                     if re.match(pattern + '$', destination):
                         for unpattern in self.project.get("unmanaged_files", []):
+                            print(unpattern)
                             if re.match(unpattern + '$', file_) is None:
                                 managed = True
                                 break
