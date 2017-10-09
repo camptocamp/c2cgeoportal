@@ -26,7 +26,7 @@ def main():
         "image", "camptocamp/geomapfish-build-dev")
     )
     parser.add_argument("--version", help="The docker image version to use", default=config.get(
-        "version", "latest")
+        "version", "2.3")
     )
     parser.add_argument("cmd", metavar="CMD", help="The command to run")
     parser.add_argument("args", metavar="...", nargs=argparse.REMAINDER, help="The command arguments")

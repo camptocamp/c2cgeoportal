@@ -3,11 +3,11 @@
 mkdir -p /tmp/travis/testgeomapfish
 
 export SRID=21781 EXTENT=489246.36,78873.44,837119.76,296543.14
-./docker-run --share /tmp/travis pcreate --scaffold=c2cgeoportal_create /tmp/travis/testgeomapfish \
-    --ignore-conflicting-name --package-name testgeomapfish > /dev/null
-./docker-run --share /tmp/travis pcreate --scaffold=c2cgeoportal_update /tmp/travis/testgeomapfish \
-    --ignore-conflicting-name --package-name testgeomapfish > /dev/null # on create
-./docker-run --share /tmp/travis pcreate --scaffold=tilecloud_chain /tmp/travis/testgeomapfish
+./docker-run --image=camptocamp/geomapfish-build --share /tmp/travis pcreate --scaffold=c2cgeoportal_create /tmp/travis/testgeomapfish \
+    --ignore-conflicting-name --package-name testgeomapfish
+./docker-run --image=camptocamp/geomapfish-build --share /tmp/travis pcreate --scaffold=c2cgeoportal_update /tmp/travis/testgeomapfish \
+    --ignore-conflicting-name --package-name testgeomapfish
+./docker-run --image=camptocamp/geomapfish-build --share /tmp/travis pcreate --scaffold=tilecloud_chain /tmp/travis/testgeomapfish
 
 # Copy files for travis build and tests
 cp travis/build.mk /tmp/travis/testgeomapfish/travis.mk
@@ -18,8 +18,6 @@ cp --recursive travis /tmp/travis/testgeomapfish/travis
 cd /tmp/travis/testgeomapfish
 
 # Init Git repository
-git config --global user.name "Travis"
-git config --global user.email "travis@example.com"
 git init
 git add --all
 git commit --quiet --message="Initial commit"

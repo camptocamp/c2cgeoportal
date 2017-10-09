@@ -94,8 +94,7 @@ class BaseTemplate(Template):  # pragma: no cover
         vars_["package_logger"] = package_logger
 
         c2cgeoportal_version = pkg_resources.get_distribution('c2cgeoportal').parsed_version._version.release
-        vars_["geomapfish_version"] = "latest" if os.environ.get("CI") == "true" else \
-            "{}.{}".format(c2cgeoportal_version[0], c2cgeoportal_version[1])
+        vars_["geomapfish_version"] = "{}.{}".format(c2cgeoportal_version[0], c2cgeoportal_version[1])
 
         return ret
 

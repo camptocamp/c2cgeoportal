@@ -1,14 +1,8 @@
 #!/bin/bash -ex
 
 function pcreate {
-    if [ "$CI" = true ]
-    then
-        ./docker-run --share $1 pcreate --scaffold=$2 $1/testgeomapfish \
-            --overwrite --ignore-conflicting-name --package-name testgeomapfish > /dev/null
-    else
-        ./docker-run -ti --share $1 pcreate --scaffold=$2 $1/testgeomapfish \
-            --overwrite --ignore-conflicting-name --package-name testgeomapfish
-    fi
+    ./docker-run --image=camptocamp/geomapfish-build --share $1 pcreate --scaffold=$2 $1/testgeomapfish \
+        --overwrite --ignore-conflicting-name --package-name testgeomapfish
 }
 
 function create {
@@ -67,7 +61,7 @@ fi
 if [ $1 = "docker" ]
 then
     cd /tmp/docker/testgeomapfish
-    ./docker-run make upgrade > /dev/null
+    ./docker-run make upgrade
     if [ ! -e .UPGRADE_SUCCESS ]
     then
         echo "Fail to upgrade"
@@ -82,7 +76,7 @@ fi
 if [ $1 = "nondocker" ]
 then
     cd /tmp/nondocker/testgeomapfish
-    ./docker-run make --makefile=testgeomapfish.mk upgrade > /dev/null
+    ./docker-run make --makefile=testgeomapfish.mk upgrade
     if [ ! -e .UPGRADE_SUCCESS ]
     then
         echo "Fail to upgrade"
@@ -102,13 +96,13 @@ then
     git rm testgeomapfish.mk
     git add temp.mk
     git commit --quiet --message="Start upgrade"
-    ./docker-run make --makefile=temp.mk upgrade > /dev/null
+    ./docker-run make --makefile=temp.mk upgrade
     if [ ! -e .UPGRADE7 ]
     then
         echo "Fail to upgrade"
         exit 1
     fi
-    ./docker-run make upgrade8 > /dev/null
+    ./docker-run make upgrade8
     if [ ! -e .UPGRADE_SUCCESS ]
     then
         echo "Fail to upgrade"
@@ -131,13 +125,13 @@ then
     git add Makefile
     git commit --quiet --message="Start upgrade"
     export APACHE_VHOST=test
-    ./docker-run make upgrade > /dev/null
+    ./docker-run make upgrade
     if [ ! -e .UPGRADE7 ]
     then
         echo "Fail to upgrade"
         exit 1
     fi
-    ./docker-run make --makefile=testgeomapfish.mk upgrade8 > /dev/null
+    ./docker-run make --makefile=testgeomapfish.mk upgrade8
     if [ ! -e .UPGRADE_SUCCESS ]
     then
         echo "Fail to upgrade"
@@ -163,14 +157,14 @@ function v220 {
         MAKE_ARGS=--makefile=testgeomapfish.mk
     else
         ./docker-run --image=camptocamp/geomapfish-build \
-            c2cupgrade --force-docker --new-makefile=Makefile --makefile=testgeomapfish.mk > /dev/null
+            c2cupgrade --force-docker --new-makefile=Makefile --makefile=testgeomapfish.mk
     fi
     if [ ! -e .UPGRADE6 ]
     then
         echo "Fail to upgrade"
         exit 1
     fi
-    ./docker-run make $MAKE_ARGS upgrade7 > /dev/null
+    ./docker-run make $MAKE_ARGS upgrade7
     if [ $2 == non ]
     then
         if [ ! -e .UPGRADE7 ]
@@ -178,7 +172,7 @@ function v220 {
             echo "Fail to upgrade"
             exit 1
         fi
-        ./docker-run make $MAKE_ARGS upgrade8 > /dev/null
+        ./docker-run make $MAKE_ARGS upgrade8
     fi
     if [ ! -e .UPGRADE8 ]
     then
@@ -191,7 +185,7 @@ function v220 {
     cp {CONST_create_template/,}testgeomapfish/static-ngeo/less/mobile.less
     cp {CONST_create_template/,}testgeomapfish/templates/desktop.html
     cp {CONST_create_template/,}testgeomapfish/templates/mobile.html
-    ./docker-run make $MAKE_ARGS upgrade9 > /dev/null
+    ./docker-run make $MAKE_ARGS upgrade9
     if [ ! -e .UPGRADE_SUCCESS ]
     then
         echo "Fail to upgrade"
