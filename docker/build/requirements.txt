@@ -5,7 +5,7 @@ boto==2.48.0
 bottle==0.12.13
 c2c.cssmin==0.7.dev6  # MakeFile
 c2c.template==1.5.1  # setup.py
-Chameleon==3.1
+Chameleon==3.2
 codespell==1.10.0
 dateutils==0.6.6  # setup.py
 defusedxml==0.5.0  # setup.py
