@@ -163,7 +163,7 @@ function v220 {
         MAKE_ARGS=--makefile=testgeomapfish.mk
     else
         ./docker-run --image=camptocamp/geomapfish-build \
-            c2cupgrade --force-docker --new-makefile=Makefile --makefile=testgeomapfish.mk > /dev/null
+            c2cupgrade --force-docker --new-makefile=Makefile --makefile=testgeomapfish.mk
     fi
     if [ ! -e .UPGRADE6 ]
     then
