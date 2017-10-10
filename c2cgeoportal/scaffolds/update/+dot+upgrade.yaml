@@ -60,7 +60,10 @@ files_to_remove:
   version: 2.3
 - file: CONST_print_url
   version: 2.3
-  from: 2.2, nondocker
+  from: 2.2
+- file: print_url
+  version: 2.3
+  from: nondocker
 - file: CONST_requirements.txt
   version: 2.3
 - file: CONST_requirements_windows.txt

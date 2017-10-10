@@ -26,6 +26,9 @@ files_to_move:
 - from: docker-compose.yml.mako
   to: docker-compose.yaml.mako
   version: 2.3
+- from: CONST_print_url
+  to: print_url
+  version: 2.3
 
 files_to_remove:
 - file: '.build'

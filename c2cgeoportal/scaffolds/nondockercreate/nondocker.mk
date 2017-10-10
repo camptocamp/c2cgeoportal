@@ -78,7 +78,7 @@ $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf:
 .PHONY: print
 print: $(PRINT_OUTPUT)/$(PRINT_WAR)
 
-print/print-servlet.war: CONST_print_url
+print/print-servlet.war: print_url
 	$(PRERULE_CMD)
 	curl --max-redirs 0 --location --output $@ $(shell cat $<)
 
