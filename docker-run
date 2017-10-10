@@ -8,6 +8,7 @@ import netifaces
 import configparser
 import distutils.sysconfig
 import configparser
+import pwd
 
 
 def main():
@@ -46,13 +47,19 @@ def main():
     git_branch = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode("utf-8").strip()
     git_hash = subprocess.check_output(["git", "rev-parse", "HEAD"]).decode("utf-8").strip()
 
+    try:
+        login = os.getlogin()
+    except FileNotFoundError:
+        # workarround on strange error
+        login = pwd.getpwuid(os.getuid())[0]
+
     docker_cmd.extend([
         "--rm",
         "--volume=/var/run/docker.sock:/var/run/docker.sock",
         "--volume={}:/build".format(build_volume_name),
         "--volume={pwd}:/src".format(pwd=os.getcwd()),
         "--volume={home}:{home}".format(home=os.environ["HOME"]),
-        "--env=USER_NAME={}".format(os.getlogin()),
+        "--env=USER_NAME={}".format(login),
         "--env=USER_ID={}".format(os.getuid() if os.name == "posix" else 1000),
         "--env=GROUP_ID={}".format(os.getgid() if os.name == "posix" else 1000),
         "--env=GIT_BRANCH={}".format(git_branch),
