@@ -36,7 +36,7 @@ from c2cgeoportal_geoportal.lib.caching import get_region, NO_CACHE, PUBLIC_CACH
 from c2cgeoportal_geoportal.lib.functionality import get_mapserver_substitution_params
 from c2cgeoportal_geoportal.lib.filter_capabilities import filter_capabilities
 from c2cgeoportal_geoportal.views.ogcproxy import OGCProxy
-from c2cgeoportal_commons.models.main import OGCSERVER_AUTH_GEOSERVER
+from c2cgeoportal_commons.models.main import OGCSERVER_AUTH_GEOSERVER, OGCSERVER_AUTH_STANDARD
 
 cache_region = get_region()
 log = logging.getLogger(__name__)
@@ -62,11 +62,12 @@ class MapservProxy(OGCProxy):
 
             role = self.user.role
             if role is not None:
-                self.params["role_id"] = role.id
+                if self._get_ogc_server().auth == OGCSERVER_AUTH_STANDARD:
+                    self.params["role_id"] = role.id
 
-                # In some application we want to display the features owned by a user
-                # than we need his id.
-                self.params["user_id"] = self.user.id  # pragma: no cover
+                    # In some application we want to display the features owned by a user
+                    # than we need his id.
+                    self.params["user_id"] = self.user.id  # pragma: no cover
             else:  # pragma nocover
                 log.warning("The user '%s' has no role", self.user.name)
 
