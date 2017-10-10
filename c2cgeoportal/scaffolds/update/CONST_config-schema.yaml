@@ -355,6 +355,10 @@ mapping:
                 type: map
                 required: True
                 mapping:
+                    forward_headers:
+                        type: seq
+                        sequence:
+                        -   type: str
                     regex;(.+):
                         type: map
                         mapping:
@@ -401,10 +405,6 @@ mapping:
                                         type: map
                                         mapping:
                                             params: *params
-                            forward_headers:
-                                type: seq
-                                sequence:
-                                -   type: str
 
                             regex;(.+):
                                 type: any
