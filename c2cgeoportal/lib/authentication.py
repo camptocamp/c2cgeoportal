@@ -54,5 +54,5 @@ def create_authentication(settings):
 
 def c2cgeoportal_check(username, password, request):  # pragma: nocover
     if request.registry.validate_user(request, username, password):
-        return []
+        return defaultgroupsfinder(username, request)
     return None
