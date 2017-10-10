@@ -1,15 +1,15 @@
 #!/bin/bash -ex
 
 export SRID=21781 APACHE_VHOST=test EXTENT=489246.36,78873.44,837119.76,296543.14
-./docker-run --share /tmp/travis pcreate --scaffold=c2cgeoportal_create /tmp/travis/nondockertestgeomapfish \
-    --package-name testgeomapfish > /dev/null
-./docker-run --share /tmp/travis pcreate --scaffold=c2cgeoportal_nondockercreate /tmp/travis/nondockertestgeomapfish \
-    --overwrite --package-name testgeomapfish > /dev/null
-./docker-run --share /tmp/travis pcreate --scaffold=c2cgeoportal_update /tmp/travis/nondockertestgeomapfish \
-    --package-name testgeomapfish > /dev/null # on create
-./docker-run --share /tmp/travis pcreate --scaffold=c2cgeoportal_nondockerupdate /tmp/travis/nondockertestgeomapfish \
-    --overwrite --package-name testgeomapfish > /dev/null # on create
-./docker-run --share /tmp/travis pcreate --scaffold=tilecloud_chain /tmp/travis/testgeomapfish
+./docker-run --image=camptocamp/geomapfish-build --share /tmp/travis pcreate --scaffold=c2cgeoportal_create /tmp/travis/nondockertestgeomapfish \
+    --package-name testgeomapfish
+./docker-run --image=camptocamp/geomapfish-build --share /tmp/travis pcreate --scaffold=c2cgeoportal_nondockercreate /tmp/travis/nondockertestgeomapfish \
+    --overwrite --package-name testgeomapfish
+./docker-run --image=camptocamp/geomapfish-build --share /tmp/travis pcreate --scaffold=c2cgeoportal_update /tmp/travis/nondockertestgeomapfish \
+    --package-name testgeomapfish
+./docker-run --image=camptocamp/geomapfish-build --share /tmp/travis pcreate --scaffold=c2cgeoportal_nondockerupdate /tmp/travis/nondockertestgeomapfish \
+    --overwrite --package-name testgeomapfish
+./docker-run --image=camptocamp/geomapfish-build --share /tmp/travis pcreate --scaffold=tilecloud_chain /tmp/travis/testgeomapfish
 
 cp travis/build-nd.mk /tmp/travis/nondockertestgeomapfish/travis.mk
 cp travis/build-nondocker.mk /tmp/travis/nondockertestgeomapfish/travis-nondocker.mk
@@ -27,8 +27,6 @@ echo "REQUIREMENTS = --editable ${TRAVIS_FOLDER}" | cat - travis.mk > travis.mk.
 mv travis.mk.new travis.mk
 
 # init Git repository
-git config --global user.name "Travis"
-git config --global user.email "travis@example.com"
 git init
 git add --all
 git commit --quiet --message="Initial commit"
