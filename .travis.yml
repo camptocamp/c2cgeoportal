@@ -2,6 +2,8 @@ dist: precise
 
 language: python
 
+dist: precise
+
 python:
 - 2.7
 
