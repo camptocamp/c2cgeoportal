@@ -2,7 +2,7 @@ FROM camptocamp/geomapfish-build-dev:2.3
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
 RUN \
-  npm install --global \
+  npm install --no-optional --global \
     angular@1.6.5 \
     angular-animate@1.6.5 \
     angular-dynamic-locale@0.1.32 \
