@@ -431,10 +431,13 @@ mapping:
                                         type: map
                                         mapping:
                                             params: *params
+<<<<<<< HEAD
                     forward_headers:
                         type: seq
                         sequence:
                         -   type: str
+=======
+>>>>>>> origin/2.2
 
                     regex;(.+):
                         type: any
