@@ -1,5 +1,6 @@
 import pytest
 from pyramid.testing import DummyRequest
+from selenium.common.exceptions import NoSuchElementException
 
 
 @pytest.fixture(scope='class')
@@ -50,16 +51,17 @@ class TestUser():
 
     def test_delete_success(self, dbsession):
         from c2cgeoportal_commons.models.main import User
+        user_id = dbsession.query(User). \
+            filter(User.username == 'babar_9'). \
+            one().id
         from c2cgeoportal_admin.views.users import UserViews
         req = DummyRequest(dbsession=dbsession)
         req.referer = 'this is a test, TestUser-test_delete'
-        req.matchdict.update({'id': '12'})
-        user = dbsession.query(User).filter(User.id == 12).one_or_none()
-        assert user is not None
+        req.matchdict.update({'id': str(user_id)})
 
         UserViews(req).delete()
 
-        user = dbsession.query(User).filter(User.id == 12).one_or_none()
+        user = dbsession.query(User).filter(User.id == user_id).one_or_none()
         assert user is None
 
     @pytest.mark.usefixtures("test_app")  # route have to be registred for HTTP_FOUND
@@ -168,12 +170,35 @@ class TestUser():
     # in order to make this work, had to install selenium gecko driver
     @pytest.mark.usefixtures("selenium", "selenium_app")
     def test_delete_selenium(self, dbsession, selenium):
+        from c2cgeoportal_commons.models.main import User
+        user_id = dbsession.query(User). \
+            filter(User.username == 'babar_13'). \
+            one().id
         selenium.get('http://127.0.0.1:6543' + '/user/')
         elem = selenium.find_element_by_xpath("//div[@class='infos']")
         assert 'Showing 1 to 10 of 23 entries' == elem.text
-
-        elem = selenium.find_element_by_xpath("//a[contains(@href,'8/delete')]")
+        main_window_handle = selenium.current_window_handle
+        elem = selenium.find_element_by_xpath("//button[@title='Refresh']/following-sibling::*")
         elem.click()
+        elem = selenium.find_element_by_xpath("//a[contains(.,'50')]")
+        elem.click()
+        elem = selenium.find_element_by_xpath("//a[contains(@href,'" +
+                                              str(user_id) +
+                                              "/edit')]/following-sibling::*")
+        elem.click()
+        selenium.switch_to_alert().accept()
 
+        selenium.switch_to_default_content()
+        selenium.refresh()
         elem = selenium.find_element_by_xpath("//div[@class='infos']")
         assert 'Showing 1 to 10 of 22 entries' == elem.text
+        elem = selenium.find_element_by_xpath("//button[@title='Refresh']/following-sibling::*")
+        elem.click()
+        elem = selenium.find_element_by_xpath("//a[contains(.,'50')]")
+        elem.click()
+        try:
+            assert None == selenium.find_element_by_xpath("//a[contains(@href,'" +
+                                              str(user_id) +
+                                              "/edit')]/following-sibling::*")
+        except NoSuchElementException:
+            pass
