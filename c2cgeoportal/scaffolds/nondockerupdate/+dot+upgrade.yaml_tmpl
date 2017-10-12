@@ -1,14 +1,14 @@
 default_project_file:
-- '{package}/templates/.*'
-- '{package}/locale/.*'
-- '{package}/static/.*'
-- '{package}/static-ngeo/.*'
+- {{package}}_geoportal/templates/.*
+- {{package}}_geoportal/locale/.*
+- {{package}}_geoportal/static/.*
+- {{package}}_geoportal/static-ngeo/.*
 - print/print-apps/.*
 - mapserver/.*
 - project.yaml.mako
 - setup.py
 - vars.yaml
-- Makefile
+- {{package}}.mk
 
 files_to_move:
 - from: testDB
@@ -17,7 +17,7 @@ files_to_move:
 - from: testdb/Dockerfile.mako
   to: testdb/Dockerfile
   version: 2.3
-- from: vars_{package}.yaml
+- from: vars_{{package}}.yaml
   to: vars.yaml
   version: 2.3
 - from: Dockerfile
@@ -31,33 +31,48 @@ files_to_move:
   version: 2.3
 
 files_to_remove:
-- file: '.build'
+- file: .build
   version: 2.3
-- file: '.tx'
+  from: 2.2
+- file: .tx
   version: 2.3
-- file: '{package}/forms.py'
+  from: 2.2
+- file: {{package}}/forms.py
   version: 2.3
+  from: 2.2
 - file: apache
   version: 2.3
+  from: 2.2
 - file: deploy
   version: 2.3
+  from: 2.2
 - file: travis.mk
   version: 2.3
+  from: 2.2
 - file: .whiskey
   version: 2.3
+  from: 2.2
 - file: CONST_dev-fixversions.txt
   version: 2.3
+  from: 2.2
 - file: CONST_dev-requirements.txt
   version: 2.3
+  from: 2.2
 - file: CONST_fixversions.txt
   version: 2.3
+  from: 2.2
 - file: CONST_optional-requirements.txt
   version: 2.3
+  from: 2.2
 - file: CONST_packages.yaml
   version: 2.3
+  from: 2.2
 - file: CONST_requirements.txt
   version: 2.3
+  from: 2.2
 - file: CONST_requirements_windows.txt
   version: 2.3
+  from: 2.2
 - file: CONST_versions_requirements.txt
   version: 2.3
+  from: 2.2

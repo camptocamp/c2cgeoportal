@@ -34,7 +34,7 @@ RUN \
     less-plugin-autoprefix@1.5.1 \
     less-plugin-clean-css@1.5.1 \
     moment@2.18.1 \
-    ngeo@git://github.com/camptocamp/ngeo#master \
+    ngeo@git://github.com/camptocamp/ngeo#b467c532a56424c83d05da2487d79a675f20cd4d \
     nomnom@1.8.1 \
     openlayers@4.3.1 \
     phantomjs-prebuilt@2.1.14 \

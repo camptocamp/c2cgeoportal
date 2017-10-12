@@ -3,6 +3,24 @@ project_package: ${package}
 host: ${host}
 checker_path: /${instanceid}/wsgi/check_collector?
 managed_files: []
+unmanaged_files:
+- setup.py
+- Makefile
+- testgeomapfish.mk
+- project.yaml.mako
+- vars.yaml
+- mapserver/Dockerfile
+- mapserver/c2cgeoportal.map.mako
+- mapserver/tinyows.xml.mako
+- print/print-apps/testgeomapfish/config.yaml.mako
+- testgeomapfish/locale/fr/LC_MESSAGES/testgeomapfish-client.po
+- testgeomapfish/locale/de/LC_MESSAGES/testgeomapfish-client.po
+- testgeomapfish/static-ngeo/js/desktop.js
+- testgeomapfish/static-ngeo/js/mobile.js
+- testgeomapfish/static-ngeo/less/desktop.less
+- testgeomapfish/static-ngeo/less/mobile.less
+- testgeomapfish/templates/desktop.html
+- testgeomapfish/templates/mobile.html
 template_vars:
     package: testgeomapfish
     srid: 21781
