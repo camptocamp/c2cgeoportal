@@ -35,6 +35,9 @@ serve: build
 	#Run your project.
 	${VENV}/bin/pserve --reload development.ini
 
+.PHONY: modwsgi
+modwsgi: build ${BUILD_DIR}/apache/c2cgeoportal_admin.wsgi ${BUILD_DIR}/apache/apache.conf
+
 ${BUILD_DIR}/venv.timestamp:
 	#Create a Python virtual environment.
 	virtualenv -p python3 ${VENV}
@@ -76,3 +79,13 @@ docker-serve: docker-build
 docker-pull:
 	for image in `find -name Dockerfile | xargs grep --no-filename FROM | awk '{print $$2}' | sort -u`; do docker pull $$image; done
 	for image in `find -name "docker-compose*.yml" | xargs grep --no-filename "image:" | awk '{print $$2}' | sort -u | grep -v $(DOCKER_BASE) | grep -v rancher`; do docker pull $$image; done
+
+${BUILD_DIR}/apache/c2cgeoportal_admin.wsgi: apache/c2cgeoportal_admin.wsgi
+	mkdir -p $(dir $@)
+	sed 's#\[DIR\]#$(CURDIR)#' $< > $@
+	chmod 755 $@
+
+${BUILD_DIR}/apache/apache.conf: apache/apache.conf ${BUILD_DIR}/venv.timestamp
+	mkdir -p $(dir $@)
+	sed -e 's#\[PYTHONPATH\]#$(shell ${VENV}/bin/python -c "import distutils.sysconfig; print(distutils.sysconfig.get_python_lib())")#' \
+	-e 's#\[WSGISCRIPT\]#$(abspath ${BUILD_DIR}/apache/{{package}}.wsgi)#' $< > $@
