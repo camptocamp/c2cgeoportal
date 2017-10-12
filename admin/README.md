@@ -39,3 +39,5 @@ make test
 ```
 make serve
 ```
+
+Open http://localhost:6543/user/
