@@ -34,7 +34,6 @@ import sys
 import argparse
 import httplib2
 import yaml
-import json
 import shutil
 import pkg_resources
 import subprocess
@@ -300,25 +299,6 @@ class C2cUpgradeTool:
 
         check_call(["make", "--makefile=" + self.options.makefile, "clean-all"])
         self.options.makefile = self.options.new_makefile
-
-        # Update the package.json file
-        if os.path.exists("package.json") and os.path.getsize("package.json") > 0:
-            with open("package.json", "r") as package_json_file:
-                package_json = json.loads(package_json_file.read(), encoding="utf-8")
-            with open("CONST_create_template/package.json", "r") as package_json_file:
-                template_package_json = json.loads(package_json_file.read(), encoding="utf-8")
-            if "devDependencies" not in package_json:
-                package_json["devDependencies"] = {}
-            for package, version in list(template_package_json.get("devDependencies", {}).items()):
-                package_json["devDependencies"][package] = version
-            with open("package.json", "w") as package_json_file:
-                json.dump(
-                    package_json, package_json_file,
-                    sort_keys=True, separators=(',', ': '), indent=2
-                )
-                package_json_file.write("\n")
-        else:
-            shutil.copyfile("CONST_create_template/package.json", "package.json")
         self.run_step(step + 1)
 
     @Step(2)
@@ -537,7 +517,6 @@ class C2cUpgradeTool:
         )]
         matcher = re.compile(r"CONST_create_tremplate.*/CONST_.+")
         status = [s for s in status if not matcher.match(s)]
-        status = [s for s in status if s != "CONST_create_template/package.json"]
         status = [s for s in status if not filecmp.cmp(s, s[len("CONST_create_template/"):])]
 
         if len(status) > 0:

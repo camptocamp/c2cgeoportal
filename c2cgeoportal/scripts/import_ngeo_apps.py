@@ -136,20 +136,14 @@ def main():
 
     with open(args.src) as src:
         data = src.read()
-
         if args.package:
-            ngeo_json_data = loads(data)
-            json_data = {}
-            json_data["name"] = "{{package}}"
-            json_data["version"] = "2.0.0"
-            json_data["description"] = "A GeoMapFish project"
-
-            json_data["devDependencies"] = ngeo_json_data["devDependencies"]
+            packages = loads(data)["devDependencies"]
             # freeze the ngeo version
-            json_data["devDependencies"]["ngeo"] = _get_ngeo_version()
+            packages["ngeo"] = _get_ngeo_version()
             for package in [
                 "angular-jsdoc",
                 "angular-mocks",
+                "console-control-strings",
                 "coveralls",
                 "gaze",
                 "jsdoc",
@@ -159,10 +153,10 @@ def main():
                 "karma-jasmine",
                 "karma-chrome-launcher",
             ]:
-                if package in json_data["devDependencies"]:
-                    del json_data["devDependencies"][package]
+                if package in packages:
+                    del packages[package]
 
-            data = dumps(json_data, indent=2, sort_keys=True, separators=(',', ': '))
+            data = " ".join(["{}@{}".format(p, v) for p, v in packages.items()])
             data = data + "\n"
 
         else:
