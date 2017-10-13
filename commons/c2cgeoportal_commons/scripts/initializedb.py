@@ -37,7 +37,9 @@ def main(argv=sys.argv):
     engine = get_engine(settings)
 
     with engine.begin() as connection:
-        init_db(connection, force='--force' in options)
+        init_db(connection,
+                force='--force' in options,
+                test='--test' in options)
 
     '''
     # generate the Alembic version table and stamp it with the latest revision
@@ -48,7 +50,7 @@ def main(argv=sys.argv):
     '''
 
 
-def init_db(connection, force=False):
+def init_db(connection, force=False, test=False):
     from ..models import main  # noqa: F401
     from ..models import schema
 
@@ -71,7 +73,9 @@ def init_db(connection, force=False):
     session_factory = get_session_factory(connection)
 
     with transaction.manager:
-        get_tm_session(session_factory, transaction.manager)
+        dbsession = get_tm_session(session_factory, transaction.manager)
+        if test:
+            setup_test_data(dbsession)
 
 
 def schema_exists(connection, schema_name):
@@ -83,3 +87,18 @@ WHERE schema_name = '{}';
     result = connection.execute(sql)
     row = result.first()
     return row[0] == 1
+
+
+def setup_test_data(dbsession):
+    from c2cgeoportal_commons.models.main import (
+        Role, User
+    )
+    role_admin = dbsession.merge(Role(name='role_admin'))
+    role_user = dbsession.merge(Role(name='role_user'))
+
+    dbsession.merge(User(username='admin',
+                         email='admin@camptocamp.com',
+                         role=role_admin))
+    dbsession.merge(User(username='user',
+                         email='user@camptocamp.com',
+                         role=role_user))

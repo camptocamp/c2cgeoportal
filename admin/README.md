@@ -5,15 +5,9 @@
 git clone git@github.com:camptocamp/c2cgeoportal.git
 cd admin
 
-## Build the app
+## Run the application
 
-Install the virtual env, build the app:
-```
-make build
-```
-
-## Set up the database
-
+### Set up the database
 ```
 sudo -u postgres psql -c "CREATE USER \"www-data\" WITH PASSWORD 'www-data';"
 
@@ -28,16 +22,27 @@ Optionally update sqlachemy.url in development.ini
 make init_db
 ```
 
-## Run the tests
-
-```
-make test
-```
-
-## Run the application
-
+### Run the development web server
 ```
 make serve
+```
+
+## Run the tests
+
+### Install the selenium gecko driver
+
+### Create the test database
+```
+sudo -u postgres psql -c "CREATE USER \"www-data\" WITH PASSWORD 'www-data';"
+
+DATABASE=c2cgeoportal_test
+sudo -u postgres psql -c "CREATE DATABASE $DATABASE WITH OWNER \"www-data\";"
+sudo -u postgres psql -d $DATABASE -c "CREATE EXTENSION postgis;"
+```
+
+### Run the tests
+```
+make test
 ```
 
 Open http://localhost:6543/user/

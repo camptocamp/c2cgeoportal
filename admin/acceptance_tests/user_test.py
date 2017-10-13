@@ -1,6 +1,4 @@
 import pytest
-from . import clean_form
-import re
 from pyramid.testing import DummyRequest
 
 
@@ -23,7 +21,7 @@ def insertUsersTestData(dbsession):
     dbsession.rollback()
 
 
-@pytest.mark.usefixtures("insertUsersTestData", "transact")
+@pytest.mark.usefixtures("insertUsersTestData", "transact", "test_app")
 class TestUser():
     def test_view_index(self, dbsession):
         from c2cgeoportal_admin.views.users import UserViews
@@ -32,57 +30,52 @@ class TestUser():
         assert info['list_fields'][1][0] == 'email'
         assert type(info['list_fields'][1][1]) == str
 
-    def test_view_edit(self, dbsession):
-        from c2cgeoportal_admin.views.users import UserViews
-        req = DummyRequest(dbsession=dbsession)
-        req.matchdict.update({'id': '12'})
+    def test_view_edit(self, dbsession, test_app):
+        from c2cgeoportal_commons.models.main import User
+        user = dbsession.query(User). \
+            filter(User.username == 'babar_9'). \
+            one()
 
-        form = clean_form(UserViews(req).edit()['form'])
+        resp = test_app.get('/user/{}/edit'.format(user.id), status=200)
 
-        inputs = re.findall('<input type="text" .*?>', form)
-        expected0 = '<input type="text" name="username" value="babar_9" .* "/>'
-        assert re.match(expected0, inputs[0]) is not None
-        expected2 = '<input type="text" name="email" value="mail9" .* "/>'
-        assert re.match(expected2, inputs[2]) is not None
-        selects = re.findall('<select name="role_name.*?>.*</select>', form)
-        assert re.match(('<select name="role_name" .*?">'
-                         ' <option value="">- Select -</option>'
-                         ' <option value="secretary_0">secretary_0</option>'
-                         ' <option selected="selected" value="secretary_1">secretary_1</option>'
-                         ' <option value="secretary_2">secretary_2</option>'
-                         ' <option value="secretary_3">secretary_3</option>'
-                         ' </select>'), selects[0]) is not None
+        assert resp.form['username'].value == user.username
+        assert resp.form['email'].value == user.email
+        assert resp.form['role_name'].options == [
+            ('', False, '- Select -'),
+            ('secretary_0', False, 'secretary_0'),
+            ('secretary_1', True, 'secretary_1'),
+            ('secretary_2', False, 'secretary_2'),
+            ('secretary_3', False, 'secretary_3')]
+        assert resp.form['role_name'].value == user.role_name
 
     @pytest.mark.usefixtures("test_app")  # route have to be registred for HTTP_FOUND
-    def test_submit_update(self, dbsession):
-        from c2cgeoportal_admin.views.users import UserViews
-        post = {'__formid__': 'deform',
+    def test_submit_update(self, dbsession, test_app):
+        from c2cgeoportal_commons.models.main import User
+        user = dbsession.query(User). \
+            filter(User.username == 'babar_11'). \
+            one()
+
+        resp = test_app.post(
+            '/user/{}/edit'.format(user.id),
+            {
+                '__formid__': 'deform',
                 '_charset_': 'UTF-8',
                 'formsubmit': 'formsubmit',
                 'item_type': 'user',
-                'id': '11',
+                'id': user.id,
                 'username': 'new_name_withéàô',
                 'email': 'new_mail',
                 'role_name': 'secretary_2',
                 'is_password_changed': 'false',
                 '_password': 'da39a3ee5e6b4b0d3255bfef95601890afd80709',
-                'temp_password': ''}
-        req = DummyRequest(dbsession=dbsession, post=post)
-        req.matchdict.update({'id': '11'})
-        req.matchdict.update({'table': 'user'})
+                'temp_password': ''},
+            status=302)
+        assert resp.location == 'http://localhost/user/{}/edit'.format(user.id)
 
-        UserViews(req).save()
-
-        from c2cgeoportal_commons.models.main import User
-        user = dbsession.query(User). \
-            filter(User.username == 'new_name_withéàô').\
-            one_or_none()
+        dbsession.expire(user)
+        assert user.username == 'new_name_withéàô'
         assert user.email == 'new_mail'
-        from c2cgeoportal_commons.models.main import Role
-        role = dbsession.query(Role). \
-            filter(Role.name == 'secretary_2'). \
-            one_or_none()
-        assert user.role == role
+        assert user.role_name == 'secretary_2'
 
     @pytest.mark.usefixtures("raise_db_error_on_query")
     def test_grid_dberror(self, dbsession):
@@ -127,14 +120,22 @@ class TestUser():
     @pytest.mark.usefixtures("selenium", "selenium_app")
     def test_selenium(self, dbsession, selenium):
         selenium.get('http://127.0.0.1:6543' + '/user/')
+
         # elem = selenium.find_element_by_xpath("//a[contains(@href,'language=fr')]")
         # elem.click()
 
-        elem = selenium.find_element_by_xpath("//button[@title='Refresh']/following-sibling::*")
+        grid_header = selenium.find_element_by_xpath("//div[contains(@id,'grid-header')]")
+        elem = grid_header.find_element_by_xpath("//button[@title='Refresh']/following-sibling::*")
         elem.click()
-        elem = selenium.find_element_by_xpath("//a[contains(@href,'#50')]")
+        elem = grid_header.find_element_by_xpath("//a[contains(.,'50')]")
         elem.click()
-        elem = selenium.find_element_by_xpath("//a[contains(@href,'13/edit')]")
+
+        from c2cgeoportal_commons.models.main import User
+        user = dbsession.query(User). \
+            filter(User.username == 'babar_13'). \
+            one()
+
+        elem = selenium.find_element_by_xpath("//a[contains(@href,'{}/edit')]".format(user.id))
         elem.click()
         elem = selenium.find_element_by_xpath("//input[@name ='username']")
         elem.clear()
@@ -146,8 +147,6 @@ class TestUser():
         elem = selenium.find_element_by_xpath("//button[@name='formsubmit']")
         elem.click()
 
-        from c2cgeoportal_commons.models.main import User
-        user = dbsession.query(User). \
-            filter(User.username == 'new_name_éôù'). \
-            one_or_none()
+        dbsession.expire(user)
+        assert user.username == 'new_name_éôù'
         assert user.email == 'new_email'

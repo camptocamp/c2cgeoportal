@@ -5,13 +5,24 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="pyramid web application">
-    <meta name="author" content="Pylons Project">
-    <link rel="shortcut icon" href="{{request.static_url('c2cgeoportal_admin:static/pyramid-16x16.png')}}">
+    <meta name="author" content="Camptocamp">
 
-    <title>Cookiecutter Alchemy project for the Pyramid Web Framework</title>
+    <title>GeoMapFish Administration Interface</title>
+    <link rel="shortcut icon" href="\{\{request.static_url('c2cgeoportal_admin:static/favicon.ico')}}">
 
     <!-- Bootstrap core CSS -->
-    <link href="//oss.maxcdn.com/libs/twitter-bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{request.static_url('c2cgeoportal_admin:node_modules/bootstrap/dist/css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{request.static_url('c2cgeoportal_admin:node_modules/jquery-bootgrid/dist/jquery.bootgrid.min.css')}}" rel="stylesheet">
+    <link href="{{request.static_url('c2cgeoportal_admin:node_modules/jquery-steps/demo/css/jquery.steps.css')}}" rel="stylesheet">
+    <link href="{{request.static_url('c2cgeoform:static/theme.css')}}" rel="stylesheet">
+
+    <!-- Deform dependecies CSS -->
+    {% if deform_dependencies %}
+    <link rel="stylesheet" href="{{request.static_url('deform:static/css/form.css')}}" type="text/css" />
+    {% for css in deform_dependencies['css'] %}
+    <link rel="stylesheet" type="text/css" href="{{request.static_url(css)}}"/>
+    {% endfor %}
+    {% endif %}
 
     <!-- Custom styles for this scaffold -->
     <link href="{{request.static_url('c2cgeoportal_admin:static/theme.css')}}" rel="stylesheet">
@@ -21,44 +32,53 @@
       <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js" integrity="sha384-0s5Pv64cNZJieYFkXYOTId2HMA2Lfb6q2nAcx2n0RTLUnCAoTTsS0nKEO27XyKcY" crossorigin="anonymous"></script>
       <script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js" integrity="sha384-f1r2UzjsxZ9T4V1f2zBO/evUqSEOpeaUUZcMTz1Up63bl4ruYnFYeM+BxI4NhyI0" crossorigin="anonymous"></script>
     <![endif]-->
+
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="{{request.static_url('c2cgeoportal_admin:node_modules/jquery/dist/jquery.min.js')}}"></script>
+    <script type="text/javascript" src="{{request.static_url('c2cgeoportal_admin:node_modules/bootstrap/dist/js/bootstrap.min.js')}}"></script>
+    <script type="text/javascript" src="{{request.static_url('c2cgeoportal_admin:node_modules/jquery-bootgrid/dist/jquery.bootgrid.min.js')}}"></script>
+    <script type="text/javascript" src="{{request.static_url('c2cgeoportal_admin:node_modules/jquery-steps/build/jquery.steps.min.js')}}"></script>
+    <script type="text/javascript" src="{{request.static_url('c2cgeoform:static/js/c2cgeoform.js')}}"></script>
+
+    <!-- Deform JavaScript -->
+    {% if deform_dependencies %}
+    <script type="text/javascript" src="{{request.static_url('deform:static/scripts/deform.js')}}" type="text/css" />
+    {% for js in deform_dependencies['js'] %}
+    <script type="text/javascript" src="{{request.static_url(js)}}"></script>
+    {% endfor %}
+    {% endif %}
   </head>
 
   <body>
 
-    <div class="starter-template">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-2">
-            <img class="logo img-responsive" src="{{request.static_url('c2cgeoportal_admin:static/pyramid.png') }}" alt="pyramid web framework">
-          </div>
-          <div class="col-md-10">
-            {% block content %}
-                <p>No content</p>
-            {% endblock content %}
-          </div>
+    <div class="container-fluid">
+      {% block header %}
+      <div class="row">
+        <div class="col-md-2">
         </div>
-        <div class="row">
-          <div class="links">
-            <ul>
-              <li><i class="glyphicon glyphicon-cog icon-muted"></i><a href="https://github.com/Pylons/pyramid">Github Project</a></li>
-              <li><i class="glyphicon glyphicon-globe icon-muted"></i><a href="https://webchat.freenode.net/?channels=pyramid">IRC Channel</a></li>
-              <li><i class="glyphicon glyphicon-home icon-muted"></i><a href="https://pylonsproject.org">Pylons Project</a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="row">
-          <div class="copyright">
-            Copyright &copy; Pylons Project
+        <div class="col-md-10">
+          <div class="pull-right">
+            <a href="{{request.route_url('locale', _query=(('language', 'en'),))}}">en</a>
+            <a href="{{request.route_url('locale', _query=(('language', 'fr'),))}}">fr</a>
           </div>
         </div>
       </div>
+      {% endblock header %}
+      <div class="row">
+        <div class="col-md-2">
+          {% block navigation %}
+          {% endblock navigation %}
+        </div>
+        <div class="col-md-10">
+          {% block content %}
+              <p>No content</p>
+          {% endblock content %}
+        </div>
+      </div>
+      {% block footer %}
+        <span class="copyright">Copyright &copy; Camptocamp / GeoMapFish</span> - <a href="https://github.com/camptocamp/c2cgeoportal">Github Project</a>
+      {% endblock footer %}
     </div>
 
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="//oss.maxcdn.com/libs/jquery/1.10.2/jquery.min.js" integrity="sha384-aBL3Lzi6c9LNDGvpHkZrrm3ZVsIwohDD7CDozL0pk8FwCrfmV7H9w8j3L7ikEv6h" crossorigin="anonymous"></script>
-    <script src="//oss.maxcdn.com/libs/twitter-bootstrap/3.0.3/js/bootstrap.min.js" integrity="sha384-s1ITto93iSMDxlp/79qhWHi+LsIi9Gx6yL+cOKDuymvihkfol83TYbLbOw+W/wv4" crossorigin="anonymous"></script>
   </body>
 </html>
