@@ -183,6 +183,72 @@ theme_functionality = Table(
     schema=_schema
 )
 
+# association table role <> restriciton area
+class RestrictionAreaForRole(Base):
+    __tablename__ = 'role_restrictionarea'
+    __table_args__ = (
+        {"schema": _schema}
+    )
+
+    id = Column("id", Integer, primary_key=True)
+    role_id = Column("role_id", Integer, ForeignKey(_schema + ".role.id"))
+    restrictionarea_id = Column("restrictionarea_id", Integer, ForeignKey(_schema + ".restrictionarea.id"))
+
+# association table layer <> restriciton area
+layer_ra = Table(
+    "layer_restrictionarea", Base.metadata,
+    Column(
+        "layer_id", Integer,
+        ForeignKey(_schema + ".layer.id"), primary_key=True
+    ),
+    Column(
+        "restrictionarea_id", Integer,
+        ForeignKey(_schema + ".restrictionarea.id"), primary_key=True
+    ),
+    schema=_schema
+)
+
+class RestrictionArea(Base):
+    __tablename__ = "restrictionarea"
+    __table_args__ = {"schema": _schema}
+    __acl__ = [
+        (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
+    ]
+
+    id = Column(Integer, primary_key=True)
+    area = Column(Geometry("POLYGON", srid=_srid), info={'colanderalchemy': {
+        'typ': colander_ext.Geometry(
+        'POLYGON', srid=3857, map_srid=3857),
+        'widget': deform_ext.MapWidget()
+        }})
+
+    name = Column(Unicode)
+    description = Column(Unicode)
+    readwrite = Column(Boolean, default=False)
+
+    # relationship with Role and Layer
+    roles = relationship(RestrictionAreaForRole, cascade="save-update,merge,refresh-expire")
+    layers = relationship(
+        "Layer", secondary=layer_ra,
+        backref="restrictionareas", cascade="save-update,merge,refresh-expire"
+    )
+
+    def __init__(self, name="", description="", layers=None, roles=None,
+                 area=None, readwrite=False):
+        if layers is None:
+            layers = []
+        if roles is None:
+            roles = []
+        self.name = name
+        self.description = description
+        self.layers = layers
+        self.roles = roles
+        self.area = area
+        self.readwrite = readwrite
+
+    def __unicode__(self):  # pragma: no cover
+        return self.name or ""
+
 
 class Role(Base):
     __tablename__ = "role"
@@ -209,6 +275,18 @@ class Role(Base):
         "Functionality", secondary=role_functionality,
         cascade="save-update,merge,refresh-expire"
     )
+
+    restrictionareas = relationship(
+                RestrictionAreaForRole,
+                cascade="all",
+                info={'colanderalchemy': {
+                        'widget': deform_ext.RelationCheckBoxListWidget(
+                        RestrictionArea,
+                        'id',
+                        'name',
+                        multiple=True
+                    )}}
+            )
 
     def __init__(self, name="", description="", functionalities=None, extent=None):
         if functionalities is None:
@@ -778,80 +856,6 @@ class LayerWMTS(DimensionLayer):
     def __init__(self, name="", public=True, image_type="image/png"):
         DimensionLayer.__init__(self, name=name, public=public)
         self.image_type = image_type
-
-
-# association table role <> restriciton area
-role_ra = Table(
-    "role_restrictionarea", Base.metadata,
-    Column(
-        "role_id", Integer, ForeignKey(_schema + ".role.id"), primary_key=True
-    ),
-    Column(
-        "restrictionarea_id", Integer,
-        ForeignKey(_schema + ".restrictionarea.id"), primary_key=True
-    ),
-    schema=_schema
-)
-
-# association table layer <> restriciton area
-layer_ra = Table(
-    "layer_restrictionarea", Base.metadata,
-    Column(
-        "layer_id", Integer,
-        ForeignKey(_schema + ".layer.id"), primary_key=True
-    ),
-    Column(
-        "restrictionarea_id", Integer,
-        ForeignKey(_schema + ".restrictionarea.id"), primary_key=True
-    ),
-    schema=_schema
-)
-
-
-class RestrictionArea(Base):
-    __tablename__ = "restrictionarea"
-    __table_args__ = {"schema": _schema}
-    __acl__ = [
-        (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
-    ]
-
-    id = Column(Integer, primary_key=True)
-    area = Column(Geometry("POLYGON", srid=_srid), info={'colanderalchemy': {
-        'typ': colander_ext.Geometry(
-        'POLYGON', srid=3857, map_srid=3857),
-        'widget': deform_ext.MapWidget()
-        }})
-
-    name = Column(Unicode)
-    description = Column(Unicode)
-    readwrite = Column(Boolean, default=False)
-
-    # relationship with Role and Layer
-    roles = relationship(
-        "Role", secondary=role_ra,
-        backref="restrictionareas", cascade="save-update,merge,refresh-expire"
-    )
-    layers = relationship(
-        "Layer", secondary=layer_ra,
-        backref="restrictionareas", cascade="save-update,merge,refresh-expire"
-    )
-
-    def __init__(self, name="", description="", layers=None, roles=None,
-                 area=None, readwrite=False):
-        if layers is None:
-            layers = []
-        if roles is None:
-            roles = []
-        self.name = name
-        self.description = description
-        self.layers = layers
-        self.roles = roles
-        self.area = area
-        self.readwrite = readwrite
-
-    def __unicode__(self):  # pragma: no cover
-        return self.name or ""
-
 
 event.listen(RestrictionArea, "after_insert", cache_invalidate_cb)
 event.listen(RestrictionArea, "after_update", cache_invalidate_cb)
