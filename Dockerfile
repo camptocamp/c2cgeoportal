@@ -1,52 +1,12 @@
 FROM camptocamp/geomapfish-build-dev:2.3
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
+COPY npm-packages /opt/c2cgeoportal_geoportal/npm-packages
+
 RUN \
-  npm install --no-optional --global \
-    angular@1.6.5 \
-    angular-animate@1.6.5 \
-    angular-dynamic-locale@0.1.32 \
-    angular-float-thead@0.1.2 \
-    angular-gettext@2.3.10 \
-    angular-gettext-tools@2.3.6 \
-    angular-sanitize@1.6.5 \
-    angular-touch@1.6.5 \
-    angular-ui-date@1.1.1 \
-    angular-ui-slider@0.4.0 \
-    async@2.5.0 \
-    bootstrap@3.3.7 \
-    clean-css@4.0.1 \
-    clean-css-cli@4.1.6 \
-    closure-util@git://github.com/camptocamp/closure-util#487fac6 \
-    console-control-strings@1.1.0 \
-    corejs-typeahead@1.1.1 \
-    d3@4.10.0 \
-    eslint@4.4.0 \
-    eslint-config-openlayers@7.0.0 \
-    file-saver@1.3.3 \
-    floatthead@2.0.3 \
-    font-awesome@4.7.0 \
-    fs-extra@4.0.1 \
-    jasmine-core@2.7.0 \
-    jquery@3.2.1 \
-    jsts@1.4.0 \
-    less@2.7.2 \
-    less-plugin-autoprefix@1.5.1 \
-    less-plugin-clean-css@1.5.1 \
-    moment@2.18.1 \
-    ngeo@git://github.com/camptocamp/ngeo#b467c532a56424c83d05da2487d79a675f20cd4d \
-    nomnom@1.8.1 \
-    openlayers@4.3.1 \
-    phantomjs-prebuilt@2.1.14 \
-    proj4@2.4.4 \
-    svg2ttf@4.1.0 \
-    temp@0.8.3 \
-    ttf2eot@2.0.0 \
-    ttf2woff@2.0.1 \
-    typeahead.js@0.11.1 \
-    walk@2.3.9 && \
-  chmod go+r -R /usr/lib/node_modules/closure-util/.deps/compiler/* && \
-  rm --recursive --force ~/.npm
+  npm install --no-optional --global `cat /opt/c2cgeoportal_geoportal/npm-packages` && \
+  chmod go+r -R /usr/lib/node_modules/@camptocamp/closure-util/.deps/compiler/* && \
+  rm --recursive --force ~/.npm /usr/lib/node_modules/openlayers/node_modules/
 
 RUN \
   svg2ttf /usr/lib/node_modules/ngeo/contribs/gmf/fonts/gmf-icons.svg \

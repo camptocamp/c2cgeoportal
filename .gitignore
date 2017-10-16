@@ -1,6 +1,7 @@
 *~
 *.pyc
 *.pyo
+npm-packages
 /c2cgeoportal/static/build/
 /tests/functional/test.ini
 /tests/functional/alembic.ini
@@ -10,7 +11,6 @@
 /c2cgeoportal/locale/*/LC_MESSAGES/c2cgeoportal.po
 /c2cgeoportal/locale/*/LC_MESSAGES/c2cgeoportal.mo
 /c2cgeoportal/scaffolds/create/+package+/locale/*/LC_MESSAGES/+package+-client.po
-/c2cgeoportal/scaffolds/create/package.json_tmpl
 /c2cgeoportal/scaffolds/create/docker-run
 /c2cgeoportal/scaffolds/create/+package+/templates/mobile.html_tmpl
 /c2cgeoportal/scaffolds/create/+package+/templates/desktop.html_tmpl

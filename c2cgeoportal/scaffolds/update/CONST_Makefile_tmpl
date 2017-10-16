@@ -308,7 +308,7 @@ ALL_MAKO_FILES = $(shell find $(FIND_OPTS) -name "*.mako" -print)
 ALL_JINJA_FILES = $(shell find $(FIND_OPTS) -name "*.jinja" -print)
 EXTRA_EXCLUDE = $(foreach ELEM, print mapfile jsbuild tilegeneration,-path ./$(ELEM) -prune -o)
 VARS_FILES += CONST_vars.yaml $(VARS_FILE)
-VARS_DEPENDS += $(VARS_FILES) /build/node_modules.timestamp
+VARS_DEPENDS += $(VARS_FILES)
 CONFIG_VARS += sqlalchemy.url sqlalchemy_slave.url schema enable_admin_interface pyramid_closure \
 	node_modules_path closure_library_path default_locale_name servers layers \
 	available_locale_names cache admin_interface functionalities \
@@ -599,19 +599,6 @@ $(APP_OUTPUT_DIR)/templatecache.js: /build/gmftemplatecache.js
 		$(PACKAGE)_js:$(PACKAGE)/static-ngeo/js" \
 		--var "app=$(PACKAGE)" $< > $@
 
-package.json:
-	$(PRERULE_CMD)
-ifneq ($(NGEO_INTERFACES), "")
-	@echo Missing $@ required file by ngeo
-	exit 1
-else
-	touch $@
-endif
-
-/build/node_modules.timestamp: package.json
-	$(PRERULE_CMD)
-	touch $@
-
 /build/eslint.timestamp: $(APP_JS_FILES)
 	$(PRERULE_CMD)
 	eslint $?
@@ -629,11 +616,6 @@ update:
 	git submodule foreach git submodule update --init
 	git submodule foreach git clean -fd
 	git submodule foreach git submodule foreach git clean -fd
-ifneq ($(NGEO_INTERFACES), "")
-	rm -f /build/node_modules.timestamp
-	npm install --force
-	touch /build/node_modules.timestamp
-endif
 	@echo After that you should launch the `build` task.
 	@echo Unfortunately sometimes we get an error, then you should run the task `cleanall` before.
 

@@ -74,7 +74,7 @@ build: $(MAKO_FILES:.mako=) \
 	$(L10N_PO_FILES) \
 	$(APPS_FILES) \
 	c2cgeoportal/scaffolds/create/docker-run \
-	c2cgeoportal/scaffolds/create/package.json_tmpl \
+	npm-packages \
 	c2cgeoportal/scaffolds/update/CONST_create_template/ \
 	c2cgeoportal/scaffolds/nondockerupdate/CONST_create_template/
 
@@ -229,11 +229,9 @@ c2cgeoportal/scaffolds/create/docker-run: docker-run
 	$(PRERULE_CMD)
 	cp $< $@
 
-c2cgeoportal/scaffolds/create/package.json_tmpl: ngeo/package.json $(BUILD_DIR)/requirements.timestamp c2cgeoportal/scripts/import_ngeo_apps.py
+npm-packages: ngeo/package.json $(BUILD_DIR)/requirements.timestamp c2cgeoportal/scripts/import_ngeo_apps.py
 	$(PRERULE_CMD)
 	$(BUILD_DIR)/venv/bin/import-ngeo-apps --package _ $< $@
-
-c2cgeoportal/scaffolds/update/CONST_create_template/: c2cgeoportal/scaffolds/create/package.json_tmpl
 
 .PRECIOUS: c2cgeoportal/scaffolds%update/CONST_create_template/
 c2cgeoportal/scaffolds%update/CONST_create_template/: c2cgeoportal/scaffolds%create/

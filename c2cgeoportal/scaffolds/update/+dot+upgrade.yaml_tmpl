@@ -85,6 +85,9 @@ files_to_remove:
 - file: CONST_versions_requirements.txt
   version: 2.3
   from: 2.2
+- file: package.json
+  version: 2.3
+  from: 2.2
 - file: print/WEB-INF
   version: 2.3
   from: 2.2, nondocker
