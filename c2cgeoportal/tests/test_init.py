@@ -129,6 +129,11 @@ class TestReferer(TestCase):
             self._get_user(to=self.BASE1 + "/2", ref=self.BASE1 + "/3"), self.USER)
         self.assertEqual(
             self._get_user(to=self.BASE1 + "/4", ref=self.BASE2 + "/5"), self.USER)
+        # anyone can propose a link to c2cgeoportal
+        self.assertEqual(self._get_user(
+            to=self.BASE1,
+            ref="http://bad.com/hacker",
+            method="GET"), self.USER)
 
     def test_no_ref(self):
         self.assertEqual(self._get_user(to=self.BASE1, ref=None), self.USER)
@@ -140,7 +145,8 @@ class TestReferer(TestCase):
     def test_bad_ref(self):
         self.assertIsNone(self._get_user(
             to=self.BASE1,
-            ref="http://bad.com/hacker"))
+            ref="http://bad.com/hacker",
+            method="POST"))
 
 
 def hook(tracer):

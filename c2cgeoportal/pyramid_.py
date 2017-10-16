@@ -280,6 +280,8 @@ def _match_url_start(reference, value):
 
 
 def is_valid_referer(request, settings):
+    if request.method == "GET":
+        return True
     if request.referer is not None:
         referer = urlsplit(request.referer)._replace(query="", fragment="").geturl().rstrip("/").split("/")
         list_ = settings.get("authorized_referers", [])
