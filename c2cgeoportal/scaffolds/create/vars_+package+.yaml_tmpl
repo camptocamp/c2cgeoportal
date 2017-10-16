@@ -92,7 +92,7 @@ vars:
             %(short_url)s
 
             With the message:
-            %(message)
+            %(message)s
 
             Sincerely yours
             The GeoMapfish team
