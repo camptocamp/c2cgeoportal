@@ -186,13 +186,11 @@ jobs:
       echo "password = ${TX_PASS}" >> ~/.transifexrc
       echo "token =" >> ~/.transifexrc
       fi
-    if: NOT type = pull_request AND branch = master
+    if: NOT type = pull_request AND branch = master AND repo = camptocamp/c2cgeoportal
     deploy:
     - provider: script
       script: ./docker-run make transifex-send
       skip_cleanup: true
-      on:
-        repo: camptocamp/c2cgeoportal
 
   - stage: Publish
     install: []
@@ -202,7 +200,7 @@ jobs:
       sed --expression 's/version="[0-9]\+\.[0-9]\+",/version="'"${TRAVIS_TAG}"'",/g' --in-place setup.py;
       git diff;
       fi
-    if: tag =~ ^[0-9]+\.[0-9]+\..+$
+    if: tag =~ ^[0-9]+\.[0-9]+\..+$ AND repo = camptocamp/c2cgeoportal
     deploy:
     - provider: pypi
       user: sbrunner
@@ -211,25 +209,14 @@ jobs:
       skip_cleanup: true
       skip_upload_docs: true
       distributions: sdist bdist_wheel
-      on:
-        repo: camptocamp/c2cgeoportal
 
   - stage: Publish
     script: []
-    if: NOT type = pull_request
+    if: NOT type = pull_request AND repo = camptocamp/c2cgeoportal
     deploy:
     - provider: script
       script: travis/publish-docker
       skip_cleanup: true
-      on:
-        repo: camptocamp/c2cgeoportal
-        tags: true
-    - provider: script
-      script: travis/publish-docker
-      skip_cleanup: true
-      on:
-        repo: camptocamp/c2cgeoportal
-        all_branches: true
 
 notifications:
   email:
