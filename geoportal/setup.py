@@ -90,7 +90,7 @@ setup(
     ],
     author="Camptocamp",
     author_email="info@camptocamp.com",
-    url="http://www.camptocamp.com/geospatial-solutions",
+    url="http://www.camptocamp.com/solutions/geospatial/",
     keywords="web gis geoportail c2cgeoportal geocommune pyramid",
     packages=find_packages(exclude=["tests.*"]),
     include_package_data=True,

@@ -48,7 +48,7 @@ def build_url(name, url, request, headers=None):
     else:
         url_ = url
 
-    log.info("{0!s}, URL: {1!s} => {2!s}".format(name, url, url_))
+    log.error("{}, URL: {} => {}".format(name, url, url_))
     return {"url": url_, "headers": headers}
 
 
@@ -73,9 +73,10 @@ def _routes(settings, health_check):
             def get_both(request):
                 return build_url("route", request.route_url(route["name"]), request)
 
-            health_check.add_url_check(url=lambda r: get_both(r)["url"], name=name,
-                                       params=route.get("params", None),
-                                       headers=lambda r: get_both(r)["headers"], level=route["level"])
+            health_check.add_url_check(
+                url=lambda r: get_both(r)["url"], name=name,
+                params=route.get("params", None),
+                headers=lambda r: get_both(r)["headers"], level=route["level"])
 
 
 def _pdf3(settings, health_check):
@@ -122,11 +123,14 @@ def _fts(settings, health_check):
         if response.json()["features"] == 0:
             raise Exception("No result")
 
-    health_check.add_url_check(name="checker_fulltextsearch", url=lambda r: get_both(r)["url"],
-                               headers=lambda r: get_both(r)["headers"], params={
-        "query": fts_settings["search"],
-        "limit": "1",
-    }, check_cb=check)
+    health_check.add_url_check(
+        name="checker_fulltextsearch", url=lambda r: get_both(r)["url"],
+        headers=lambda r: get_both(r)["headers"], params={
+            "query": fts_settings["search"],
+            "limit": "1",
+        },
+        check_cb=check
+    )
 
 
 def _themes_errors(settings, health_check):
@@ -187,8 +191,9 @@ def _lang_files(global_settings, settings, health_check):
                     request.static_url(url.format(package=global_settings["package"], lang=lang)),
                     request)
 
-            health_check.add_url_check(name=name, url=lambda r: get_both(r)["url"],
-                                       headers=lambda r: get_both(r)["headers"], level=lang_settings["level"])
+            health_check.add_url_check(
+                name=name, url=lambda r: get_both(r)["url"],
+                headers=lambda r: get_both(r)["headers"], level=lang_settings["level"])
 
 
 def _phantomjs(settings, health_check):

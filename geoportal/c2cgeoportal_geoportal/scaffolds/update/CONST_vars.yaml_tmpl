@@ -345,18 +345,18 @@ vars:
     # Checker configuration
     checker:
         fulltextsearch:
-          level: 2
+          level: 1
           search: text to search
         lang:
-          level: 2
+          level: 1
           files: [ngeo, cgxp-api]
         phantomjs:
           disable: []
           routes:
             - name: desktop
-              level: 2
               params:
                 no_redirect: "true"
+              level: 1
             - name: mobile
               params:
                 no_redirect: "true"
@@ -371,7 +371,6 @@ vars:
 #               no_redirect: "true"
 #               debug: "true"
 #             level: 3
-        forward_headers: []  # TODO: remove
         routes:
           disable: []
           routes:
@@ -398,17 +397,17 @@ vars:
         themes:
             params:
                 version: "2"
-            level: 2
+            level: 1
             interfaces: {}
         print:
             spec: {}
-            level: 2
+            level: 1
 
     # Check collector configuration
     check_collector:
         hosts: []
-        max_level: 2
-        level: 2
+        max_level: 1
+        level: 1
 
     # What web page is authorized to use the API
     authorized_referers:

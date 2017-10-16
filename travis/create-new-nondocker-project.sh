@@ -18,7 +18,7 @@ cp travis/empty-vars.mk /tmp/travis/nondockertestgeomapfish/
 echo 'include testgeomapfish.mk' > /tmp/travis/nondockertestgeomapfish/Makefile
 cp --recursive travis /tmp/travis/nondockertestgeomapfish/travis
 
-export TRAVIS_FOLDER=`pwd`
+export TRAVIS_FOLDER=$(pwd)
 cd /tmp/travis/nondockertestgeomapfish
 
 chmod +x CONST_create_template/deploy/hooks/*

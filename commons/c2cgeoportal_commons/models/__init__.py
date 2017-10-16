@@ -113,7 +113,7 @@ def init_dbsessions(settings, config=None, health_check=None):
 
     slave_prefix = "sqlalchemy_slave" if "sqlalchemy_slave.url" in settings else None
 
-    c2cgeoportal_commons.models.DBSession, rw_bind, ro_bind = c2cwsgiutils.db.setup_session(
+    c2cgeoportal_commons.models.DBSession, rw_bind, _ = c2cwsgiutils.db.setup_session(
         config, "sqlalchemy", slave_prefix, force_master=master_paths, force_slave=slave_paths)
     c2cgeoportal_commons.models.Base.metadata.bind = rw_bind
     c2cgeoportal_commons.models.DBSessions["dbsession"] = c2cgeoportal_commons.models.DBSession

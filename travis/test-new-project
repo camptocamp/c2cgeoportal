@@ -35,7 +35,7 @@ import subprocess
 initial_error_length = 0
 initial_access_length = 0
 
-curl_args = ["--connect-timeout", "1", "--max-time", "60", "--retry", "10"]
+curl_args = ["--connect-timeout", "1", "--max-time", "400", "--retry", "1"]
 
 url = sys.argv[1]
 

@@ -78,17 +78,17 @@ The following variables may be set in the makefiles:
 
 * ``CONFIG_VARS``: The list of parameters read from the project YAML configuration file.
 * ``DEVELOPMENT``: If ``TRUE`` the ``CSS`` and ``JS`` files are not minified and the
-    ``development.ini`` pyramid config file is used, defaults to ``FALSE``.
+    ``development.ini`` pyramid config file is used, default to ``FALSE``.
 * ``DISABLE_BUILD_RULES``: List of rules we want to disable, default is empty.
 * ``LANGUAGES``: List of available languages.
 * ``CGXP_INTERFACES``: List of CGXP interfaces, default is empty.
 * ``NGEO_INTERFACES``: List of ngeo interfaces, default is ``mobile desktop``.
-* ``PRINT``: Mapfish print is enable, defaults to ``TRUE``.
-* ``MAPSERVER``: Mapserver is enable, defaults to ``TRUE``.
-* ``TILECLOUD_CHAIN``: ``TRUE`` to indicate that we use TileCloud-chain, defaults to ``TRUE``.
-* ``VISIBLE_ENTRY_POINT``: The entry point (path) of the application, defaults to ``/``.
+* ``PRINT``: Mapfish print is enable, default to ``TRUE``.
+* ``MAPSERVER``: Mapserver is enable, default to ``TRUE``.
+* ``TILECLOUD_CHAIN``: ``TRUE`` to indicate that we use TileCloud-chain, default to ``TRUE``.
+* ``VISIBLE_ENTRY_POINT``: The entry point (path) of the application, default to ``/``.
 * ``VISIBLE_WEB_HOST``: The hostname, required.
-* ``VISIBLE_WEB_PROTOCOL``: The used protocol, defaults to ``https``.
+* ``VISIBLE_WEB_PROTOCOL``: The used protocol, default to ``https``.
 
 
 Custom rules

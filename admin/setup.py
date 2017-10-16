@@ -73,7 +73,7 @@ setup(
     ],
     author='Camptocamp',
     author_email='info@camptocamp.com',
-    url="http://www.camptocamp.com/geospatial-solutions",
+    url="http://www.camptocamp.com/solutions/geospatial/",
     packages=find_packages(exclude=["tests.*"]),
     include_package_data=True,
     zip_safe=False,

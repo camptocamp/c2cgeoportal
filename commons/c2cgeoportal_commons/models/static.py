@@ -42,13 +42,13 @@ from c2cgeoportal_commons.models.main import Role
 try:
     from pyramid.security import Allow, ALL_PERMISSIONS, DENY_ALL
 # Fallback if pyramid do not exists, used by QGIS server plugin
-except:  # pragma: no cover
+except ImportError:  # pragma: no cover
     Allow = ALL_PERMISSIONS = DENY_ALL = None
 
 try:
     from pyramid.i18n import TranslationStringFactory
     _ = TranslationStringFactory("c2cgeoportal")
-except:
+except ImportError:
     def _(s):
         return s
 

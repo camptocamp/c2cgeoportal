@@ -5,7 +5,7 @@ boto==2.48.0
 bottle==0.12.13
 c2c.cssmin==0.7.dev6  # MakeFile
 c2c.template==1.5.1  # geoportal
-http://github.com/camptocamp/c2cgeoform/archive/87a4191ef3330b76497bd009e9c0220cbc73c625.zip#egg=c2cgeoform  # commons
+https://github.com/camptocamp/c2cgeoform/archive/87a4191ef3330b76497bd009e9c0220cbc73c625.zip#egg=c2cgeoform  # commons
 Chameleon==3.2
 codespell==1.10.0
 ColanderAlchemy==0.3.3  # commons
