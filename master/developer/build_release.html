@@ -152,8 +152,8 @@ to the upper branches i.e.: <code class="docutils literal"><span class="pre">1.6
 <li><p class="first">Upgrade the demo in your home folder with <code class="docutils literal"><span class="pre">make</span> <span class="pre">upgrade</span></code>.</p>
 </li>
 <li><p class="first">Update the demo on the test server in the main folder with:</p>
-<pre class="highlight"><span class="prompt1">sudo -u sigdev make -f demo.mk update</span>
-<span class="prompt1">sudo -u sigdev make -f demo.mk build</span>
+<pre class="highlight"><span class="prompt1">sudo -u sigdev make --makefile<span class="o">=</span>demo.mk update</span>
+<span class="prompt1">sudo -u sigdev make --makefile<span class="o">=</span>demo.mk build</span>
 </pre></li>
 <li><p class="first">Test the <cite>demo &lt;http://testgmf.sig.cloud.camptocamp.net/&gt;_</cite>.</p>
 </li>

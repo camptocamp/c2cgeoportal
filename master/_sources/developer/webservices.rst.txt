@@ -520,9 +520,9 @@ URL: ``.../csv``
 Parameters
 ----------
 
-* ``csv_extension``: File extension, defaults to 'csv'.
-* ``csv_encoding``: Character encoding, defaults to 'UTF-8',
-* ``name``: File name without extension set in the 'Content-Disposition', defaults to 'export'.
+* ``csv_extension``: File extension, default to 'csv'.
+* ``csv_encoding``: Character encoding, default to 'UTF-8',
+* ``name``: File name without extension set in the 'Content-Disposition', default to 'export'.
 
 Result
 ------

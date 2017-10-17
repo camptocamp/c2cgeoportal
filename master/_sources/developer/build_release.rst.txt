@@ -159,8 +159,8 @@ When a new release or a new version is done you should do the following tasks:
 
   .. prompt:: bash
 
-    sudo -u sigdev make -f demo.mk update
-    sudo -u sigdev make -f demo.mk build
+    sudo -u sigdev make --makefile=demo.mk update
+    sudo -u sigdev make --makefile=demo.mk build
 
 * Test the `demo <http://testgmf.sig.cloud.camptocamp.net/>_`.
 * Deploy on the demo server with:

@@ -71,8 +71,8 @@ main <code class="docutils literal"><span class="pre">__init__.py</span></code> 
 <code class="docutils literal"><span class="pre">RemoteUserAuthenticationPolicy</span></code> instance:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span>from pyramid.config import Configurator
 from pyramid.authentication import RemoteUserAuthenticationPolicy
-from c2cgeoportal.pyramid_ import locale_negotiator
-from c2cgeoportal.resources import FAModels, defaultgroupsfinder
+from c2cgeoportal_geoportal import locale_negotiator
+from c2cgeoportal_geoportal.resources import FAModels, defaultgroupsfinder
 from ${package}.resources import Root
 
 def main(global_config, **settings):
@@ -140,7 +140,8 @@ a <code class="docutils literal"><span class="pre">user</span></code> property t
 <code class="docutils literal"><span class="pre">set_request_property</span></code> function on the <code class="docutils literal"><span class="pre">Configurator</span></code> object.
 You may for example add to <code class="docutils literal"><span class="pre">__init__.py</span></code>:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_user_from_request</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">username</span><span class="p">):</span>
-    <span class="kn">from</span> <span class="nn">c2cgeoportal.models</span> <span class="k">import</span> <span class="n">DBSession</span><span class="p">,</span> <span class="n">Role</span>
+    <span class="kn">from</span> <span class="nn">c2cgeoportal_commons.models</span> <span class="k">import</span> <span class="n">DBSession</span>
+    <span class="kn">from</span> <span class="nn">c2cgeoportal_commons.models.main</span> <span class="k">import</span> <span class="n">Role</span>
     <span class="k">class</span> <span class="nc">O</span><span class="p">:</span>
         <span class="k">pass</span>
     <span class="k">if</span> <span class="n">username</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -218,7 +219,7 @@ the user information source.</p>
 function that queries the <code class="docutils literal"><span class="pre">user</span></code> database table if the user does not exist in
 LDAP would look like this:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">custom_user_validator</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
-    <span class="kn">from</span> <span class="nn">c2cgeoportal.pyramid_</span> <span class="k">import</span> <span class="n">default_user_validator</span>
+    <span class="kn">from</span> <span class="nn">c2cgeoportal_geoportal</span> <span class="k">import</span> <span class="n">default_user_validator</span>
     <span class="kn">from</span> <span class="nn">pyramid_ldap</span> <span class="k">import</span> <span class="n">get_ldap_connector</span>
     <span class="n">connector</span> <span class="o">=</span> <span class="n">get_ldap_connector</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">connector</span><span class="o">.</span><span class="n">authenticate</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
@@ -235,10 +236,10 @@ LDAP would look like this:</p>
 <span class="kn">from</span> <span class="nn">pyramid.config</span> <span class="k">import</span> <span class="n">Configurator</span>
 <span class="c1"># LDAP</span>
 <span class="c1"># get_user_from_request also needed for the same reason</span>
-<span class="kn">from</span> <span class="nn">c2cgeoportal.pyramid_</span> <span class="k">import</span> <span class="n">locale_negotiator</span><span class="p">,</span> <span class="n">add_interface</span><span class="p">,</span> \
+<span class="kn">from</span> <span class="nn">c2cgeoportal_geoportal</span> <span class="k">import</span> <span class="n">locale_negotiator</span><span class="p">,</span> <span class="n">add_interface</span><span class="p">,</span> \
     <span class="n">INTERFACE_TYPE_NGEO</span><span class="p">,</span> <span class="n">get_user_from_request</span>
 <span class="c1"># END LDAP</span>
-<span class="kn">from</span> <span class="nn">c2cgeoportal.lib.authentication</span> <span class="k">import</span> <span class="n">create_authentication</span>
+<span class="kn">from</span> <span class="nn">c2cgeoportal_geoportal.lib.authentication</span> <span class="k">import</span> <span class="n">create_authentication</span>
 <span class="kn">from</span> <span class="nn">yourproject.resources</span> <span class="k">import</span> <span class="n">Root</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
@@ -254,7 +255,7 @@ LDAP would look like this:</p>
 <span class="c1"># LDAP</span>
 <span class="c1"># authenticate on LDAP and return cleaned user data</span>
 <span class="k">def</span> <span class="nf">custom_user_validator</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
-    <span class="kn">from</span> <span class="nn">c2cgeoportal.pyramid_</span> <span class="k">import</span> <span class="n">default_user_validator</span>
+    <span class="kn">from</span> <span class="nn">c2cgeoportal_geoportal</span> <span class="k">import</span> <span class="n">default_user_validator</span>
     <span class="kn">from</span> <span class="nn">pyramid_ldap</span> <span class="k">import</span> <span class="n">get_ldap_connector</span>
     <span class="n">connector</span> <span class="o">=</span> <span class="n">get_ldap_connector</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">connector</span><span class="o">.</span><span class="n">authenticate</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
@@ -275,7 +276,8 @@ LDAP would look like this:</p>
     <span class="k">class</span> <span class="nc">O</span><span class="p">:</span>
         <span class="k">pass</span>
 
-    <span class="kn">from</span> <span class="nn">c2cgeoportal.models</span> <span class="k">import</span> <span class="n">DBSession</span><span class="p">,</span> <span class="n">Role</span>
+    <span class="kn">from</span> <span class="nn">c2cgeoportal_commons.models</span> <span class="k">import</span> <span class="n">DBSession</span>
+    <span class="kn">from</span> <span class="nn">c2cgeoportal_commons.models.main</span> <span class="k">import</span> <span class="n">Role</span>
 
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;_user&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">identity</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># avoid recursive calls from</span>

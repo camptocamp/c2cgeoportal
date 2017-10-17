@@ -105,7 +105,7 @@ models file. Its default value is:</p>
 <p><code class="docutils literal"><span class="pre">DBSession</span></code> being the session object linked to the default database.</p>
 <p>You may add your own DB session objects in the application’s <code class="docutils literal"><span class="pre">models.py</span></code> file.
 For instance:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">c2cgeoportal.models</span> <span class="k">import</span> <span class="n">DBSessions</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">c2cgeoportal_commons.models</span> <span class="k">import</span> <span class="n">DBSessions</span>
 <span class="n">DBSessions</span><span class="p">[</span><span class="s1">&#39;some_db_session_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">SomeDbSessionObject</span>
 </pre></div>
 </div>

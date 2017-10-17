@@ -51,7 +51,7 @@
 <span class="n">JASPERREPORTS_VERSION</span> <span class="o">=</span> <span class="mf">6.1</span><span class="o">.</span><span class="mi">1</span>
 </pre></div>
 </div>
-<p>After that, a <code class="docutils literal"><span class="pre">make</span> <span class="pre">-f</span> <span class="pre">&lt;xxx.mk&gt;</span> <span class="pre">build</span></code> will create Docker images named like
+<p>After that, a <code class="docutils literal"><span class="pre">make</span> <span class="pre">--makefile=&lt;xxx.mk&gt;</span> <span class="pre">build</span></code> will create Docker images named like
 that:</p>
 <ul class="simple">
 <li>camptocamp/&lt;project_name&gt;_wsgi:latest</li>
@@ -88,7 +88,7 @@ in the <code class="docutils literal"><span class="pre">dbhost</span></code> and
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">make -f &lt;xxx.mk&gt; build <span class="o">&amp;&amp;</span> docker-compose up</span>
+</style><span class="prompt1">make --makefile<span class="o">=</span>&lt;xxx.mk&gt; build <span class="o">&amp;&amp;</span> docker-compose up</span>
 </pre><p>You can then access your application with <a class="reference external" href="http://localhost:8480/">http://localhost:8480/</a></p>
 </div>
 <div class="section" id="run-with-a-local-c2cgeoportal">
@@ -109,7 +109,7 @@ directory. That is needed to allow Docker to see those files.</p>
 </div>
 <p>Finally, edit your <code class="docutils literal"><span class="pre">Dockerfile</span></code> and add those lines just before the step #2:</p>
 <div class="code docker highlight-default"><div class="highlight"><pre><span></span><span class="n">COPY</span> <span class="n">c2cgeoportal</span> <span class="o">/</span><span class="n">app</span><span class="o">/</span><span class="n">c2cgeoportal</span>
-<span class="n">RUN</span> <span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">e</span> <span class="n">c2cgeoportal</span>
+<span class="n">RUN</span> <span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">editable</span><span class="o">=</span><span class="n">c2cgeoportal</span>
 </pre></div>
 </div>
 </div>
