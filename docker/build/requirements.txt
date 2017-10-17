@@ -4,48 +4,51 @@ Babel==2.5.1
 boto==2.48.0
 bottle==0.12.13
 c2c.cssmin==0.7.dev6  # MakeFile
-c2c.template==1.5.1  # setup.py
+c2c.template==1.5.1  # geoportal
+https://github.com/camptocamp/c2cgeoform/archive/87a4191ef3330b76497bd009e9c0220cbc73c625.zip#egg=c2cgeoform  # commons
 Chameleon==3.2
 codespell==1.10.0
-dateutils==0.6.6  # setup.py
-defusedxml==0.5.0  # setup.py
-dogpile.cache==0.6.4  # setup.py
+ColanderAlchemy==0.3.3  # commons
+dateutils==0.6.6  # geoportal
+deform==2.0.4  # commons
+defusedxml==0.5.0  # geoportal
+dogpile.cache==0.6.4  # geoportal
 fanstatic==0.16
 flake8-copyright==0.2.0
-GeoAlchemy2==0.4.0  # setup.py
+GeoAlchemy2==0.4.0  # geoportal
 geojson==2.3.0
 glob2==0.6
-httplib2==0.10.3  # setup.py
+httplib2==0.10.3  # geoportal
 htmlmin==0.1.11
 http-parser==0.8.3
-ipcalc==1.99.0  # setup.py
-isodate==0.6.0  # setup.py
+ipcalc==1.99.0  # geoportal
+isodate==0.6.0  # geoportal
 Jinja2==2.9.6  # c2c.template
 JSTools==1.0  # CGXP build
-lingua==4.13  # setup.py
+lingua==4.13  # geoportal
 Markdown==2.6.9
 MarkupSafe==1.0
 mccabe==0.6.1
-OWSLib==0.15.0  # setup.py
-papyrus==2.2  # setup.py
-Paste==2.0.3  # setup.py
-PasteScript==2.0.2  # setup.py
+OWSLib==0.15.0  # geoportal
+papyrus==2.2  # geoportal
+Paste==2.0.3  # geoportal
+PasteScript==2.0.2  # geoportal
 pep8-naming==0.4.1  # Lint
 Pillow==4.3.0  # Tilecloud
 polib==1.0.8
 postmarkup==1.2.2
-pycrypto==2.6.1  # setup.py
+pycrypto==2.6.1  # geoportal
 Pygments==2.2.0
 pyproj==1.9.5.1
 pyramid-chameleon==0.3
-https://github.com/camptocamp/pyramid_closure/archive/23b45f7989cf471dce46dabb8516537bae0a2789.zip#egg=pyramid_closure  # setup.py
-pyramid-debugtoolbar==4.3  # setup.py
-pyramid-mako==1.0.2  # setup.py
-pyramid-multiauth==0.9.0  # setup.py
+https://github.com/camptocamp/pyramid_closure/archive/23b45f7989cf471dce46dabb8516537bae0a2789.zip#egg=pyramid_closure  # geoportal
+pyramid-debugtoolbar==4.3  # geoportal
+pyramid-mako==1.0.2  # geoportal
+pyramid-multiauth==0.9.0  # geoportal
 pytest-cov==2.5.1  # tests
 python-dateutil==2.6.1
 pytz==2017.2
-PyYAML==3.12  # setup.py
+PyYAML==3.12  # geoportal
 restkit==4.2.2
 Shapely==1.6.1
 Sphinx==1.6.4

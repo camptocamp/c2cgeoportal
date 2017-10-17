@@ -1,0 +1,8 @@
+*
+!config.yaml
+!{{package}}_geoportal
+!setup.cfg
+!setup.py
+!production.ini
+!alembic.ini
+!alembic_static.ini

@@ -1,6 +1,2 @@
-*.egg
-*.egg-info
-*.pyc
-*~
 .build
 .cache

@@ -12,7 +12,7 @@ Edit the ``<package>.mk`` file and add those lines:
     DOCKER_BASE = camptocamp/<project_name>
     JASPERREPORTS_VERSION = 6.1.1
 
-After that, a ``make -f <xxx.mk> build`` will create Docker images named like
+After that, a ``make --makefile=<xxx.mk> build`` will create Docker images named like
 that:
 
 * camptocamp/<project_name>_wsgi:latest
@@ -54,7 +54,7 @@ Run the developer composition
 
 .. prompt:: bash
 
-    make -f <xxx.mk> build && docker-compose up
+    make --makefile=<xxx.mk> build && docker-compose up
 
 You can then access your application with http://localhost:8480/
 
@@ -87,7 +87,7 @@ Finally, edit your ``Dockerfile`` and add those lines just before the step #2:
 .. code:: docker
 
     COPY c2cgeoportal /app/c2cgeoportal
-    RUN pip install -e c2cgeoportal
+    RUN pip install --editable=c2cgeoportal
 
 
 Make your Docker images configurable from the composition

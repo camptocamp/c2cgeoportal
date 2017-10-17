@@ -1,0 +1,5 @@
+{
+  "description": "A GeoMapFish project",
+  "name": "{{package}}",
+  "version": "1.0.0"
+}

@@ -1,6 +1,6 @@
 #!/bin/bash -ex
 
-mkdir -p /tmp/travis/testgeomapfish
+mkdir --parent /tmp/travis/testgeomapfish
 
 export SRID=21781 EXTENT=489246.36,78873.44,837119.76,296543.14
 ./docker-run --image=camptocamp/geomapfish-build --share /tmp/travis pcreate --scaffold=c2cgeoportal_create /tmp/travis/testgeomapfish \
@@ -24,13 +24,10 @@ git commit --quiet --message="Initial commit"
 git remote add origin . # add a fake remote
 
 # Minimal build
-./docker-run make -f travis.mk \
-    /build/requirements.timestamp \
-    alembic.ini alembic_static.ini \
-    production.ini \
-    config.yaml \
+./docker-run make --makefile=travis.mk \
     docker-compose-build.yaml \
-    wsgi-docker mapserver-docker print-docker testdb-docker
+    geoportal-docker mapserver-docker print-docker testdb-docker
+cat docker-compose-build.yaml
 # Wait DB
 ./docker-compose-run sleep 15
 # Create default theme

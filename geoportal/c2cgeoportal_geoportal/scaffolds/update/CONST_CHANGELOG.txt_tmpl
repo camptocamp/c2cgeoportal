@@ -1,0 +1,30 @@
+This file includes migration steps for each release of c2cgeoportal.
+
+Version 2.2.0
+=============
+
+1. In your vars file verify (you can compare what you have with the 2.2 documentation):
+
+   In the vars/layers/enum parameter (used for the `Query builder`), the
+   `table` parameter is now under the `attributes` parameters. Not more under
+   the layer directly.
+
+   In the vars/checker/all/phantomjs_routes/*, the parameter `param` must be
+   renomed to 'params'. Also, all `true` value muste be replaced by the value
+   `"true"` (with quotes).
+
+   If you use the `pdfreports` functionnality. You should use a yaml template
+   to describe the /vars/pdfreport/defaults configuration for layers
+   (containing `srs` and `check_credentials`). Also, the `defaults` parameter
+   must be renamed to `layer-defaults`.
+
+
+Version 2.3.0
+=============
+
+For non Docker upgrade have a look on the nondocker_CHANGELOG
+
+1. The structure of the project change:
+   * The package name become `{{package}}_geoportal`.
+   * The package is in the folder `geoportal`.
+   * The models will be in `commons/{{package}}_commons`.

@@ -18,12 +18,13 @@ cp travis/empty-vars.mk /tmp/travis/nondockertestgeomapfish/
 echo 'include testgeomapfish.mk' > /tmp/travis/nondockertestgeomapfish/Makefile
 cp --recursive travis /tmp/travis/nondockertestgeomapfish/travis
 
+export TRAVIS_FOLDER=$(pwd)
 cd /tmp/travis/nondockertestgeomapfish
 
 chmod +x CONST_create_template/deploy/hooks/*
 chmod +x deploy/hooks/*
 
-echo "REQUIREMENTS = --editable ${TRAVIS_FOLDER}" | cat - travis.mk > travis.mk.new
+echo "REQUIREMENTS = --editable=${TRAVIS_FOLDER}" | cat - travis.mk > travis.mk.new
 mv travis.mk.new travis.mk
 
 # init Git repository
@@ -37,17 +38,16 @@ sudo chmod 777 /var/lib/tomcat7/webapps
 
 sudo a2enmod headers
 sudo a2enmod rewrite
-sudo a2enmod wsgi
 sudo a2enmod fcgid
 
 # Minimal build
-./docker-run make -f travis.mk \
+./docker-run make --makefile=travis.mk \
     /build/requirements.timestamp \
-    alembic.ini alembic_static.ini \
-    production.ini \
-    config.yaml \
+    geoportal/alembic.ini geoportal/alembic_static.ini \
+    geoportal/production.ini \
+    geoportal/config.yaml \
     docker-compose-build.yaml testdb-docker
-./docker-run alembic --config alembic.ini upgrade head
-./docker-run alembic --config alembic_static.ini upgrade head
+./docker-run alembic --config geoportal/alembic.ini upgrade head
+./docker-run alembic --config geoportal/alembic_static.ini upgrade head
 # Create default theme
 ./docker-run create-demo-theme

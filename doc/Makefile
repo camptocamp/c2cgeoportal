@@ -86,7 +86,7 @@ devhelp:
 	@echo
 	@echo "Build finished."
 	@echo "To view the help file:"
-	@echo "# mkdir -p $$HOME/.local/share/devhelp/c2cgeoportal"
+	@echo "# mkdir --parent $$HOME/.local/share/devhelp/c2cgeoportal"
 	@echo "# ln -s $(BUILDDIR)/devhelp $$HOME/.local/share/devhelp/c2cgeoportal"
 	@echo "# devhelp"
 

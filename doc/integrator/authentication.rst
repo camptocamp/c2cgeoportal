@@ -41,8 +41,8 @@ main ``__init__.py`` file, and set ``authentication_policy`` to a
 
    from pyramid.config import Configurator
    from pyramid.authentication import RemoteUserAuthenticationPolicy
-   from c2cgeoportal.pyramid_ import locale_negotiator
-   from c2cgeoportal.resources import FAModels, defaultgroupsfinder
+   from c2cgeoportal_geoportal import locale_negotiator
+   from c2cgeoportal_geoportal.resources import FAModels, defaultgroupsfinder
    from ${package}.resources import Root
 
    def main(global_config, **settings):
@@ -117,7 +117,8 @@ You may for example add to ``__init__.py``:
 .. code:: python
 
     def get_user_from_request(request, username):
-        from c2cgeoportal.models import DBSession, Role
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.main import Role
         class O:
             pass
         if username is None:
@@ -204,7 +205,7 @@ LDAP would look like this:
 .. code:: python
 
     def custom_user_validator(request, username, password):
-        from c2cgeoportal.pyramid_ import default_user_validator
+        from c2cgeoportal_geoportal import default_user_validator
         from pyramid_ldap import get_ldap_connector
         connector = get_ldap_connector(request)
         data = connector.authenticate(username, password)
@@ -224,10 +225,10 @@ Full example using pyramid_ldap, see `# LDAP` / `# END LDAP` blocs.
     from pyramid.config import Configurator
     # LDAP
     # get_user_from_request also needed for the same reason
-    from c2cgeoportal.pyramid_ import locale_negotiator, add_interface, \
+    from c2cgeoportal_geoportal import locale_negotiator, add_interface, \
         INTERFACE_TYPE_NGEO, get_user_from_request
     # END LDAP
-    from c2cgeoportal.lib.authentication import create_authentication
+    from c2cgeoportal_geoportal.lib.authentication import create_authentication
     from yourproject.resources import Root
 
     import logging
@@ -243,7 +244,7 @@ Full example using pyramid_ldap, see `# LDAP` / `# END LDAP` blocs.
     # LDAP
     # authenticate on LDAP and return cleaned user data
     def custom_user_validator(request, username, password):
-        from c2cgeoportal.pyramid_ import default_user_validator
+        from c2cgeoportal_geoportal import default_user_validator
         from pyramid_ldap import get_ldap_connector
         connector = get_ldap_connector(request)
         data = connector.authenticate(username, password)
@@ -264,7 +265,8 @@ Full example using pyramid_ldap, see `# LDAP` / `# END LDAP` blocs.
         class O:
             pass
 
-        from c2cgeoportal.models import DBSession, Role
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.main import Role
 
         if hasattr(request, '_user') and identity is None:
             # avoid recursive calls from
