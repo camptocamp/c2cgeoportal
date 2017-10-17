@@ -30,11 +30,11 @@ And to generate the required e-mail, in the ``vars_<package>.yaml`` file, add th
             Sincerely yours
             The GeoMapfish team
         smtp:
-          host: smtp.example.com:465
-          ssl: true
-          user: <username>
-          password: <password>
-          starttls: false
+            host: smtp.example.com:465
+            ssl: true
+            user: <username>
+            password: <password>
+            starttls: false
 
 If the SMTP host ends with a colon (`:`) followed by a number, and
 there is no port specified, that suffix will be stripped off and the

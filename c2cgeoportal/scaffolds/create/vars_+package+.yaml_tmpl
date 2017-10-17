@@ -111,11 +111,11 @@ vars:
             Sincerely yours
             The GeoMapfish team
         smtp:
-          host: smtp.example.com
-          ssl: true
-          user: <username>
-          password: <password>
-          starttls: false
+            host: smtp.example.com
+            ssl: true
+            user: <username>
+            password: <password>
+            starttls: false
 
 update_paths:
 - authtkt

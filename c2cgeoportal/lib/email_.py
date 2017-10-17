@@ -43,13 +43,13 @@ def send_email(from_addr, to_addrs, body, subject, smtp):  # pragma: no cover
     msg.attach(MIMEText(body, "plain", "utf-8"))
 
     # Connect to server
-    if smtp.get('ssl', False):
-        smtp = smtplib.SMTP_SSL(smtp['host'])
+    if smtp.get("ssl", False):
+        smtp = smtplib.SMTP_SSL(smtp["host"])
     else:
-        smtp = smtplib.SMTP(smtp['host'])
-    if smtp.get('user', False):
-        smtp.login(smtp['user'], smtp['password'])
-    if smtp.get('starttls', False):
+        smtp = smtplib.SMTP(smtp["host"])
+    if smtp.get("user", False):
+        smtp.login(smtp["user"], smtp["password"])
+    if smtp.get("starttls", False):
         smtp.starttls()
 
     smtp.sendmail(from_addr, to_addrs, msg.as_string())
