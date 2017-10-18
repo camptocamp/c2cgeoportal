@@ -37,6 +37,8 @@ jobs:
     - ./docker-run travis/empty-make.sh help
     - ./docker-run make build
     - ./docker-run make doc
+    - ./docker-run make geoportal/c2cgeoportal_geoportal/locale/c2cgeoportal_geoportal.pot
+    - ./docker-run make admin/c2cgeoportal_admin/locale/c2cgeoportal_admin.pot
     # lint
     - ./docker-run make flake8
     - ./docker-run make git-attributes

@@ -192,7 +192,7 @@ transifex-get: $(L10N_PO_FILES)
 .PHONY: transifex-send
 transifex-send: $(TX_DEPENDENCIES) \
 		geoportal/c2cgeoportal_geoportal/locale/c2cgeoportal_geoportal.pot \
-		geoportal/c2cgeoportal_admin/locale/c2cgeoportal_admin.pot
+		admin/c2cgeoportal_admin/locale/c2cgeoportal_admin.pot
 	$(PRERULE_CMD)
 	tx push --source --resource=geomapfish.c2cgeoportal_geoportal-$(TX_VERSION)
 	tx push --source --resource=geomapfish.c2cgeoportal_admin-$(TX_VERSION)
