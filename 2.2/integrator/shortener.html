@@ -47,7 +47,15 @@
   <div class="section" id="configure-short-url">
 <span id="integrator-shortener"></span><h1>Configure short URL<a class="headerlink" href="#configure-short-url" title="Permalink to this headline">¶</a></h1>
 <p>The configuration in <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> looks like this:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">shortener</span><span class="p">:</span>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="c1"># SMTP configuration could be already there if needed by other feature</span>
+<span class="n">smtp</span><span class="p">:</span>
+    <span class="n">host</span><span class="p">:</span> <span class="n">smtp</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="mi">465</span>
+    <span class="n">ssl</span><span class="p">:</span> <span class="n">true</span>
+    <span class="n">user</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">username</span><span class="o">&gt;</span>
+    <span class="n">password</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">password</span><span class="o">&gt;</span>
+    <span class="n">starttls</span><span class="p">:</span> <span class="n">false</span>
+
+<span class="n">shortener</span><span class="p">:</span>
      <span class="c1"># The base of created URL</span>
      <span class="n">base_url</span><span class="p">:</span>  <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="p">{</span><span class="n">host</span><span class="p">}</span><span class="o">/</span><span class="p">{</span><span class="n">apache_entry_point</span><span class="p">}</span><span class="n">s</span><span class="o">/</span>
      <span class="c1"># Used to send a confirmation email</span>
@@ -61,7 +69,6 @@
          <span class="n">full</span> <span class="n">URL</span><span class="p">:</span> <span class="o">%</span><span class="p">(</span><span class="n">full_url</span><span class="p">)</span><span class="n">s</span>
 
          <span class="n">The</span> <span class="n">Mapfish</span> <span class="n">team</span>
-     <span class="n">smtp_server</span><span class="p">:</span> <span class="n">smtp</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span>
      <span class="c1"># length (default) of ref of new short url</span>
      <span class="c1"># Can be change when you want</span>
      <span class="c1"># max 20 (size of the column)</span>
@@ -71,6 +78,10 @@
 <p>The shortened URL is sent by email to the current registered user email address
 unless another address has been provided through the email field in the
 viewer interface.</p>
+<p>If the SMTP host ends with a colon (<cite>:</cite>) followed by a number, and
+there is no port specified, that suffix will be stripped off and the
+number interpreted as the port number to use.</p>
+<p>Replace the <code class="docutils literal"><span class="pre">smtp.example.com</span></code> value by a working SMTP server name.</p>
 </div>
 
 
