@@ -1,5 +1,6 @@
 This file includes migration steps for each release of c2cgeoportal.
 
+
 Version 2.2.0
 =============
 
@@ -299,6 +300,23 @@ add it in the `.gitignore` (at step 3).
 13. In the PDF report we now make a list id ids, then we should change:
     - The `paramID` is replaced by a `ids` and it should be a `!stringArray`.
     - In the `spec` template the `id` is renamed to `ids` and will be a list.
+
+
+Version 1.6.12
+==============
+
+1. In the `vars_{{package}}.yaml` file, remove:
+
+   - smtp_server: smtp.example.com
+
+  and add this line to the parent node:
+   + smtp:
+   +     host: smtp.example.com
+     reset_password:
+        ...
+
+Check the documentation if you need ssl, startls, username and password for
+your SMTP service.
 
 
 Version 1.6.8

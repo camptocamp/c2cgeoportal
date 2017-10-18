@@ -138,12 +138,13 @@ class Shortener:
         else:
             s_url = self.request.route_url("shortener_get", ref=ref)
 
+        smtp = self.request.registry.settings.get("smtp", {})
         if \
                 email is not None and \
                 "email_from" in self.settings and \
                 "email_subject" in self.settings and \
                 "email_body" in self.settings and \
-                "smtp_server" in self.settings:  # pragma: no cover
+                "host" in smtp:  # pragma: no cover
             text = self.settings["email_body"] % {
                 "full_url": url,
                 "short_url": s_url,
@@ -154,7 +155,7 @@ class Shortener:
                 [email],
                 text.encode("utf-8"),
                 self.settings["email_subject"],
-                self.settings["smtp_server"],
+                smtp,
             )
 
         set_common_headers(
