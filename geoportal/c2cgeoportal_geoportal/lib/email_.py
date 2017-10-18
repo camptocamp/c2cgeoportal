@@ -34,13 +34,23 @@ from email.mime.multipart import MIMEMultipart
 from email.utils import formatdate
 
 
-def send_email(from_addr, to_addrs, body, subject, smtp_server):  # pragma: no cover
+def send_email(from_addr, to_addrs, body, subject, smtp):  # pragma: no cover
     msg = MIMEMultipart()
     msg["From"] = from_addr
     msg["To"] = ", ".join(to_addrs)
     msg["Date"] = formatdate(localtime=True)
     msg["Subject"] = subject
     msg.attach(MIMEText(body, "plain", "utf-8"))
-    smtp = smtplib.SMTP(smtp_server)
+
+    # Connect to server
+    if smtp.get("ssl", False):
+        smtp = smtplib.SMTP_SSL(smtp["host"])
+    else:
+        smtp = smtplib.SMTP(smtp["host"])
+    if smtp.get("user", False):
+        smtp.login(smtp["user"], smtp["password"])
+    if smtp.get("starttls", False):
+        smtp.starttls()
+
     smtp.sendmail(from_addr, to_addrs, msg.as_string())
     smtp.close()

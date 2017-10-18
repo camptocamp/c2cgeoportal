@@ -98,6 +98,14 @@ vars:
             The GeoMapfish team
         smtp_server: smtp.example.com
 
+    smtp:
+        # Used to send email from various feature
+        host: smtp.example.com
+        ssl: true
+        user: <username>
+        password: <password>
+        starttls: false
+
     reset_password:
         # Used to send a confirmation email
         email_from: info@camptocamp.com
@@ -110,7 +118,6 @@ vars:
 
             Sincerely yours
             The GeoMapfish team
-        smtp_server: smtp.example.com
 
     # Checker configuration
     checker:
