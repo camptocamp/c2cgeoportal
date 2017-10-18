@@ -49,7 +49,6 @@ def main():
     parser.add_argument(
         "--interfaces",
         nargs='+',
-        type=unicode,
         help="the interfaces to export",
     )
     parser.add_argument(
@@ -169,7 +168,7 @@ class Import:
             self.imported.add(key)
             for lang in self.languages:
                 fts = FullTextSearch()
-                fts.label = self._unicode_str(self._[lang].gettext(item.name))
+                fts.label = self._[lang].gettext(item.name)
                 fts.role = role
                 fts.interface = interface
                 fts.lang = lang
@@ -244,7 +243,3 @@ class Import:
             self._add_fts(layer, interface, "add_layer", role)
 
         return fill
-
-    @staticmethod
-    def _unicode_str(string):
-        return string.decode('utf-8') if isinstance(string, str) else string
