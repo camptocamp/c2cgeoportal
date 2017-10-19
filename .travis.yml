@@ -228,11 +228,8 @@ jobs:
       echo "password = ${TX_PASS}" >> ~/.transifexrc
       echo "token =" >> ~/.transifexrc
       fi
+      ./docker-run make transifex-send
     if: NOT type = pull_request AND branch = master AND repo = camptocamp/c2cgeoportal
-    deploy:
-    - provider: script
-      script: ./docker-run make transifex-send
-      skip_cleanup: true
 
   - stage: Publish
     env: [JOB=publish-pypi]
@@ -255,12 +252,9 @@ jobs:
 
   - stage: Publish
     env: [JOB=publish-docker]
-    script: []
+    script:
+    - travis/publish-docker
     if: NOT type = pull_request AND repo = camptocamp/c2cgeoportal
-    deploy:
-    - provider: script
-      script: travis/publish-docker
-      skip_cleanup: true
 
 notifications:
   email:
