@@ -55,7 +55,7 @@ Sphinx==1.6.4
 sphinx-prompt==1.0.0
 Tempita==0.5.2
 textile==2.3.16
-tilecloud==0.5.0.dev3  # Tiles
+tilecloud==0.5.0.dev4  # Tiles
 tilecloud-chain==1.4.0.dev8  # Tiles
 transifex-client==0.12.4  # Makefile
 unittest2==1.1.0  # Tests
