@@ -520,6 +520,7 @@ OGCSERVER_TYPE_OTHER = "other"
 OGCSERVER_AUTH_NOAUTH = "No auth"
 OGCSERVER_AUTH_STANDARD = "Standard auth"
 OGCSERVER_AUTH_GEOSERVER = "Geoserver auth"
+OGCSERVER_AUTH_PROXY = "Proxy"
 
 
 class OGCServer(Base):
@@ -550,6 +551,7 @@ class OGCServer(Base):
         OGCSERVER_AUTH_NOAUTH,
         OGCSERVER_AUTH_STANDARD,
         OGCSERVER_AUTH_GEOSERVER,
+        OGCSERVER_AUTH_PROXY,
         native_enum=False), nullable=False)
     wfs_support = Column(Boolean)
     is_single_tile = Column(Boolean)
