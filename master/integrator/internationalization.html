@@ -46,7 +46,16 @@
 <div class="section" id="ngeo-and-server">
 <h2>ngeo and server<a class="headerlink" href="#ngeo-and-server" title="Permalink to this headline">¶</a></h2>
 <p>In the <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> file define the supported language with (default):</p>
+<div class="code make highlight-default"><div class="highlight"><pre><span></span>LANGUAGES ?= en fr de
+</pre></div>
+</div>
 <p>In the <code class="docutils literal"><span class="pre">vars_&lt;package&gt;.yaml</span></code> file define the available and default language:</p>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
+     <span class="o">...</span>
+     <span class="n">default_locale_name</span><span class="p">:</span> <span class="n">fr</span>
+     <span class="n">available_locale_names</span><span class="p">:</span> <span class="p">[</span><span class="n">en</span><span class="p">,</span> <span class="n">fr</span><span class="p">,</span> <span class="n">de</span><span class="p">]</span>
+</pre></div>
+</div>
 <p>Build your application</p>
 <p>The file to translate are:</p>
 <ul class="simple">

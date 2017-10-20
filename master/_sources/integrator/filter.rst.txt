@@ -58,7 +58,7 @@ Simple example:
     If you use cgxp, make sure that the ``cgxp_querier`` plugin has
     the attribute ``attributeURLs`` in the ``viewer.js`` file:
 
-    .. code: javascript
+    .. code:: javascript
 
         {
             ptype: "cgxp_querier",

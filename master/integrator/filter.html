@@ -85,8 +85,15 @@ attribute level. <code class="docutils literal"><span class="pre">table</span></
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">If you use cgxp, make sure that the <code class="docutils literal"><span class="pre">cgxp_querier</span></code> plugin has
+<p>If you use cgxp, make sure that the <code class="docutils literal"><span class="pre">cgxp_querier</span></code> plugin has
 the attribute <code class="docutils literal"><span class="pre">attributeURLs</span></code> in the <code class="docutils literal"><span class="pre">viewer.js</span></code> file:</p>
+<div class="code javascript last highlight-default"><div class="highlight"><pre><span></span>{
+    ptype: &quot;cgxp_querier&quot;,
+    attributeURLs: ${queryer_attribute_urls | n},
+    ...
+},
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="using-db-sessions">
