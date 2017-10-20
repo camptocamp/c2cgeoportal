@@ -71,8 +71,5 @@ setup(
         'console_scripts': [
             'initialize_db_main = c2cgeoportal_commons.scripts.initializedb:main',
         ],
-        'paste.app_factory': [
-            'test_app = c2cgeoportal_commons.tests:app',
-        ],
     },
 )
