@@ -11,13 +11,13 @@ ngeo and server
 
 In the ``<package>.mk`` file define the supported language with (default):
 
-.. code: make
+.. code:: make
 
    LANGUAGES ?= en fr de
 
 In the ``vars_<package>.yaml`` file define the available and default language:
 
-.. code: yaml
+.. code:: yaml
 
    vars:
         ...
