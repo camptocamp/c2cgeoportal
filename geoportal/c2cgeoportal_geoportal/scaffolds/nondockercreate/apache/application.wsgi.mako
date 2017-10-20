@@ -4,13 +4,9 @@ import re
 import os
 from logging.config import fileConfig
 
-site.addsitedir("${python_path}")
 root = "${project_directory}"
 
-
-# Remove site packages in both redhat and debian
-regex = re.compile(r"^/usr/lib(?:64)?/python\d(?:\.\d+)?/(?:site|dist)-packages$")
-sys.path = [p for p in sys.path if regex.match(p) is None]
+sys.path = ["${python_path}"] + sys.path
 
 from pyramid.paster import get_app
 

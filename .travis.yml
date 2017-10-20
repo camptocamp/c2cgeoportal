@@ -124,7 +124,7 @@ jobs:
     before_script:
     - deactivate
     - sudo apt-get remove --assume-yes --force-yes python-zope.interface
-    - sudo aptitude install --assume-yes tree apache2 apache2-dev libapache2-mod-fcgid tomcat7 cgi-mapserver python3-netifaces python3-pip python3-virtualenv
+    - sudo aptitude install --assume-yes tree apache2 apache2-dev libapache2-mod-fcgid tomcat7 cgi-mapserver python3-netifaces python3-pip python3-virtualenv libgdal-dev
     # workaround: https://askubuntu.com/questions/569550/assertionerror-using-apache2-and-libapache2-mod-wsgi-py3-on-ubuntu-14-04-python
     - sudo python3 -m pip install mod_wsgi
     - sudo mod_wsgi-express install-module

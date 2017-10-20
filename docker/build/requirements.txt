@@ -15,6 +15,7 @@ defusedxml==0.5.0  # geoportal
 dogpile.cache==0.6.4  # geoportal
 fanstatic==0.16
 flake8-copyright==0.2.0
+Fiona==1.7.9.post1  # raster
 GeoAlchemy2==0.4.0  # geoportal
 geojson==2.3.0
 glob2==0.6
@@ -49,6 +50,7 @@ pytest-cov==2.5.1  # tests
 python-dateutil==2.6.1
 pytz==2017.2
 PyYAML==3.12  # geoportal
+rasterio==1.0a10  # raster
 restkit==4.2.2
 Shapely==1.6.1
 Sphinx==1.6.4
