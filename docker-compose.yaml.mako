@@ -22,7 +22,7 @@ services:
     image: camptocamp/c2cgeoportal-test-mapserver
 
   build:
-    image: camptocamp/geomapfish-build-dev:2.3
+    image: camptocamp/geomapfish-build-dev:${major_version}
     volumes:
       - c2cgpbuild:/build
       - .:/src

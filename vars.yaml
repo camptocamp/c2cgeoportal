@@ -4,6 +4,7 @@ vars:
   main_version:
     "'.'.join(__import__('pkg_resources').get_distribution('c2cgeoportal_commons')
     .version.split('.')[0:2])"
+  major_version: MAJOR_VERSION
   dbuser: www-data
   dbpassword: www-data
   dbhost: db
@@ -32,5 +33,6 @@ interpreted:
     - tx_version
     - tx_languages
     - git_branch
+    - major_version
   python:
     - main_version

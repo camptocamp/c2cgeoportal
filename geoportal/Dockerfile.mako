@@ -1,5 +1,8 @@
-FROM camptocamp/geomapfish-commons:2.3
+FROM camptocamp/geomapfish-commons:${major_version}
 LABEL maintainer Camptocamp "info@camptocamp.com"
+
+ARG GIT_TAG
+ARG MAJOR_VERSION
 
 COPY npm-packages /opt/c2cgeoportal_geoportal/npm-packages
 

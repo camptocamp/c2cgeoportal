@@ -32,14 +32,20 @@ import os
 
 from setuptools import setup, find_packages
 
-here = os.path.abspath(os.path.dirname(__file__))
-with open(os.path.join(here, 'README.md')) as f:
+HERE = os.path.abspath(os.path.dirname(__file__))
+with open(os.path.join(HERE, 'README.md')) as f:
     README = f.read()
 
+TRAVIS_TAG = os.environ.get("GIT_TAG")
+MAJOR_VERSION = os.environ.get("MAJOR_VERSION")
+VERSION = TRAVIS_TAG if TRAVIS_TAG is not None and TRAVIS_TAG != "" else \
+    MAJOR_VERSION if MAJOR_VERSION is not None and MAJOR_VERSION != "" else "dev"
+
 requires = [
+    'c2cgeoportal-commons==' + VERSION,
     'plaster_pastedeploy',
     'psycopg2',
-    'pyramid >= 1.9a',
+    'pyramid>=1.9a',
     'pyramid_debugtoolbar',
     'pyramid_jinja2',
     'pyramid_retry',
@@ -51,7 +57,7 @@ requires = [
 ]
 
 tests_require = [
-    'WebTest >= 1.3.1',  # py3 compat
+    'WebTest>=1.3.1',  # py3 compat
     'pytest',
     'pytest-cov',
     'flake8==3.4.1',
@@ -60,7 +66,7 @@ tests_require = [
 
 setup(
     name='c2cgeoportal-admin',
-    version='2.3.0.dev0',
+    version=VERSION,
     description='c2cgeoportal admin',
     long_description=README,
     classifiers=[

@@ -2,6 +2,10 @@
 @Library('c2c-pipeline-library')
 import static com.camptocamp.utils.*
 
+final MAIN_BRANCH = 'master'
+env.MAIN_BRANCH = MAIN_BRANCH
+final MAJOR_VERSION = '2.3'
+env.MAJOR_VERSION = MAJOR_VERSION
 
 def clean() {
     sh 'git clean -dx --force'
@@ -30,7 +34,7 @@ dockerBuild {
         }
         stage('Build build Docker image') {
             checkout scm
-            sh 'docker build --tag camptocamp/geomapfish-build-dev:2.3 docker/build'
+            sh "docker build --tag camptocamp/geomapfish-build-dev:${MAJOR_VERSION} docker/build"
         }
         stage('Build') {
             checkout scm
@@ -59,11 +63,13 @@ dockerBuild {
         }
         stage('Build commons Docker image') {
             checkout scm
-            sh 'docker build --tag camptocamp/geomapfish-commons:2.3 commons'
+            sh "docker build --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --tag camptocamp/geomapfish-commons:${MAJOR_VERSION} commons"
+            sh "./docker-run --image=camptocamp/geomapfish-commons grep ${MAJOR_VERSION} /opt/c2cgeoportal_commons/c2cgeoportal_commons.egg-info/PKG-INFO"
         }
         stage('Build geoportal Docker image') {
             checkout scm
-            sh 'docker build --tag camptocamp/geomapfish-build:2.3 geoportal'
+            sh "docker build --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --tag camptocamp/geomapfish-build:${MAJOR_VERSION} geoportal"
+            sh "./docker-run --image=camptocamp/geomapfish-build grep ${MAJOR_VERSION} /opt/c2cgeoportal_geoportal/c2cgeoportal_geoportal.egg-info/PKG-INFO"
         }
 
         stage('Test c2cgeoportal') {
