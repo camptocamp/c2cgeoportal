@@ -1,6 +1,8 @@
 import pytest
 from pyramid.testing import DummyRequest
 
+from . import skip_if_travis
+
 
 @pytest.fixture(scope='class')
 @pytest.mark.usefixtures("dbsession")
@@ -117,6 +119,7 @@ class TestUser():
                                     res2.html.findAll('a'))))
 
     # in order to make this work, had to install selenium gecko driver
+    @skip_if_travis
     @pytest.mark.usefixtures("selenium", "selenium_app")
     def test_selenium(self, dbsession, selenium):
         selenium.get('http://127.0.0.1:6543' + '/user/')
