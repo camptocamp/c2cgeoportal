@@ -48,7 +48,7 @@ def build_url(name, url, request, headers=None):
     else:
         url_ = url
 
-    log.error("{}, URL: {} => {}".format(name, url, url_))
+    log.error("%s, URL: %s => %s", name, url, url_)
     return {"url": url_, "headers": headers}
 
 
@@ -207,7 +207,8 @@ def _phantomjs(settings, health_check):
 
             cmd = [
                 "phantomjs", "--local-to-remote-url-access=true",
-                "/usr/lib/node_modules/ngeo/buildtools/check-example.js", url]
+                "/usr/lib/node_modules/ngeo/buildtools/check-example.js", url
+            ]
 
             # check_output throws a CalledProcessError if return code is > 0
             try:
