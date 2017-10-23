@@ -58,7 +58,7 @@
 #
 
 import hashlib
-from unittest2 import TestCase
+from unittest import TestCase
 
 from sqlalchemy import Column, types
 import sqlalchemy.ext.declarative

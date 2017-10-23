@@ -28,7 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-# from unittest2 import TestCase
+# from unittest import TestCase
 # from nose.plugins.attrib import attr
 #
 # from geoalchemy2 import WKTElement

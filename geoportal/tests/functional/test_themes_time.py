@@ -31,7 +31,7 @@
 import re
 import transaction
 
-from unittest2 import TestCase
+from unittest import TestCase
 
 from sqlalchemy import Column
 import sqlalchemy.ext.declarative

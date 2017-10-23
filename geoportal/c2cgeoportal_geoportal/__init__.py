@@ -506,7 +506,6 @@ def includeme(config):
     # bind the mako renderer to other file extensions
     add_mako_renderer(config, ".html")
     add_mako_renderer(config, ".js")
-    config.include("pyramid_chameleon")
 
     # add the "geojson" renderer
     config.add_renderer("geojson", GeoJSON())

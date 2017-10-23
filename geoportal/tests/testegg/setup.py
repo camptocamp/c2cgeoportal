@@ -41,9 +41,5 @@ setup(
     packages=find_packages(exclude=["ez_setup"]),
     include_package_data=True,
     zip_safe=False,
-    entry_points={
-        "paste.app_factory": [
-            "main = testegg:main",
-        ],
-    },
+    entry_points={},
 )

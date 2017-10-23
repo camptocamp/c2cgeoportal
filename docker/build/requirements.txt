@@ -1,69 +1,53 @@
 -r fixversions.txt
-alabaster==0.7.10
-Babel==2.5.1
-boto==2.48.0
-bottle==0.12.13
-c2c.cssmin==0.7.dev6  # MakeFile
+alabaster==0.7.10  # Doc theme
+Babel==2.5.1  # i18n
+boto==2.48.0  # Tile generation
+bottle==0.12.13  # i18n
+c2c.cssmin==0.7.dev6  # CGXP build
 c2c.template==1.5.1  # geoportal
 https://github.com/camptocamp/c2cgeoform/archive/87a4191ef3330b76497bd009e9c0220cbc73c625.zip#egg=c2cgeoform  # commons
-Chameleon==3.2
-codespell==1.10.0
+codespell==1.10.0  # Lint
 ColanderAlchemy==0.3.3  # commons
-dateutils==0.6.6  # geoportal
+dateutils==0.6.6  # geoportal-pcreate
 deform==2.0.4  # commons
 defusedxml==0.5.0  # geoportal
 dogpile.cache==0.6.4  # geoportal
-fanstatic==0.16
-flake8-copyright==0.2.0
-Fiona==1.7.9.post1  # raster
+flake8-copyright==0.2.0  # lint
+Fiona==1.7.9.post1  # geoportal-raster
 GeoAlchemy2==0.4.0  # geoportal
-geojson==2.3.0
-glob2==0.6
+geojson==2.3.0  # geoportal
+glob2==0.6  # ngeo
+htmlmin==0.1.11  # ngeo
 httplib2==0.10.3  # geoportal
-htmlmin==0.1.11
-http-parser==0.8.3
 ipcalc==1.99.0  # geoportal
 isodate==0.6.0  # geoportal
 Jinja2==2.9.6  # c2c.template
 JSTools==1.0  # CGXP build
-lingua==4.13  # geoportal
-Markdown==2.6.9
-MarkupSafe==1.0
-mccabe==0.6.1
+lingua==4.13  # i18n
+mccabe==0.6.1  # lint
 OWSLib==0.15.0  # geoportal
 papyrus==2.2  # geoportal
-Paste==2.0.3  # geoportal
-PasteScript==2.0.2  # geoportal
+PasteScript==2.0.2  # geoportal-pcreate
 pep8-naming==0.4.1  # Lint
-Pillow==4.3.0  # Tilecloud
-polib==1.0.8
-postmarkup==1.2.2
+Pillow==4.3.0  # Tile generation
+polib==1.0.8  # i18n
 pycrypto==2.6.1  # geoportal
-Pygments==2.2.0
-pyproj==1.9.5.1
-pyramid-chameleon==0.3
-https://github.com/camptocamp/pyramid_closure/archive/23b45f7989cf471dce46dabb8516537bae0a2789.zip#egg=pyramid_closure  # geoportal
+Pygments==2.2.0  # doc
+pyproj==1.9.5.1  # geoportal
+https://github.com/camptocamp/pyramid_closure/archive/23b45f7989cf471dce46dabb8516537bae0a2789.zip#egg=pyramid_closure  # ngeo
 pyramid-debugtoolbar==4.3  # geoportal
 pyramid-mako==1.0.2  # geoportal
 pyramid-multiauth==0.9.0  # geoportal
 pytest-cov==2.5.1  # tests
-python-dateutil==2.6.1
-pytz==2017.2
+python-dateutil==2.6.1  # geoportal
 PyYAML==3.12  # geoportal
-rasterio==1.0a10  # raster
-restkit==4.2.2
-Shapely==1.6.1
-Sphinx==1.6.4
-sphinx-prompt==1.0.0
-Tempita==0.5.2
-textile==2.3.16
-tilecloud==0.5.0.dev4  # Tiles
-tilecloud-chain==1.4.0.dev8  # Tiles
+rasterio==1.0a10  # geoportal-raster
+Shapely==1.6.1  # geoportal
+Sphinx==1.6.4  # doc
+sphinx-prompt==1.0.0  # doc
+tilecloud==0.5.0.dev3  # Tile generation
+tilecloud-chain==1.4.0.dev8  # Tile generation
 transifex-client==0.12.4  # Makefile
-unittest2==1.1.0  # Tests
 virtualenv==15.1.0  # Makefile
 waitress==1.1.0  # For pcreate
-WebHelpers==1.3
 zgitignore==0.8.0  # Makefile
-zope.component==4.4.1
-zope.event==4.3.0

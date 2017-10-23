@@ -28,7 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from unittest2 import TestCase
+from unittest import TestCase
 import transaction
 from tests.functional import (  # noqa
     teardown_common as teardown_module,
