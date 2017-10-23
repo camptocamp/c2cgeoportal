@@ -1,7 +1,7 @@
 import pytest
 import transaction
 from c2cgeoportal_commons.scripts.initializedb import init_db
-from c2cgeoportal_commons.models.main import (
+from c2cgeoportal_commons.models import (
     get_engine,
     get_session_factory,
     get_tm_session,

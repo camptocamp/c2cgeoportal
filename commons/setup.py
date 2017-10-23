@@ -51,7 +51,7 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
-        "c2cgeoform",
+        "c2cwsgiutils",
         "papyrus",
         'lingua>=2.4',
         'babel',

@@ -1,6 +1,12 @@
 """c2cgeoportal_commons package."""
 
-from c2cgeoportal_commons.models import get_session_factory, get_engine, get_tm_session, generate_mappers, init_dbsessions
+from c2cgeoportal_commons.models import (  # noqa
+    get_session_factory,
+    get_engine,
+    get_tm_session,
+    generate_mappers,
+    init_dbsessions,
+)
 
 schema = None
 srid = None
