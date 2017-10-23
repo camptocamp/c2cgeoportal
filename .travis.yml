@@ -5,6 +5,9 @@ language: python
 python:
 - "3.6"
 
+node_js:
+- "6"
+
 service:
 - docker
 
@@ -40,6 +43,20 @@ jobs:
     - psql -d c2cgeoportal_tests -c "CREATE EXTENSION postgis;" -U postgres
     script:
     - cd commons
+    - make check test
+
+  - stage: admin
+    install:
+    - sudo apt-get update
+    - sudo apt-get autoremove postgis*
+    - sudo apt-get autoremove postgresql*
+    - sudo apt-get install postgresql-9.3-postgis-2.1
+    before_script:
+    - psql -c "CREATE USER \"www-data\" WITH PASSWORD 'www-data';" -U postgres
+    - psql -c "CREATE DATABASE c2cgeoportal_tests WITH OWNER \"www-data\";" -U postgres
+    - psql -d c2cgeoportal_tests -c "CREATE EXTENSION postgis;" -U postgres
+    script:
+    - cd admin
     - make check test
 
   - stage: Lint, build Docker images
