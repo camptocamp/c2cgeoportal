@@ -50,7 +50,7 @@ def selenium_app(request, dbsession, settings, app_env):
 
 @view_config(route_name='user_add', renderer='./learn_test.jinja2')
 def view_committing_user(request):
-    from c2cgeoportal_commons.models.main import User
+    from c2cgeoportal_commons.models.static import User
     user = User("momo")
     t = request.dbsession.begin_nested()
     request.dbsession.add(user)
@@ -60,7 +60,7 @@ def view_committing_user(request):
 
 @view_config(route_name='users_nb', renderer='./learn_test.jinja2')
 def view_displaying_users_nb(request):
-    from c2cgeoportal_commons.models.main import User
+    from c2cgeoportal_commons.models.static import User
     users = request.dbsession.query(User).all()
     username = 'None'
     if len(users) > 0:

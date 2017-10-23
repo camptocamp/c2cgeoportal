@@ -5,7 +5,7 @@ from pyramid.testing import DummyRequest
 @pytest.fixture(scope='class')
 @pytest.mark.usefixtures("dbsession")
 def insertUsersTestData(dbsession):
-    from c2cgeoportal_commons.models.main import User
+    from c2cgeoportal_commons.models.static import User
     from c2cgeoportal_commons.models.main import Role
     dbsession.begin_nested()
     roles = []
@@ -31,7 +31,7 @@ class TestUser():
         assert type(info['list_fields'][1][1]) == str
 
     def test_view_edit(self, dbsession, test_app):
-        from c2cgeoportal_commons.models.main import User
+        from c2cgeoportal_commons.models.static import User
         user = dbsession.query(User). \
             filter(User.username == 'babar_9'). \
             one()
@@ -50,7 +50,7 @@ class TestUser():
 
     @pytest.mark.usefixtures("test_app")  # route have to be registred for HTTP_FOUND
     def test_submit_update(self, dbsession, test_app):
-        from c2cgeoportal_commons.models.main import User
+        from c2cgeoportal_commons.models.static import User
         user = dbsession.query(User). \
             filter(User.username == 'babar_11'). \
             one()
@@ -130,7 +130,7 @@ class TestUser():
         elem = grid_header.find_element_by_xpath("//a[contains(.,'50')]")
         elem.click()
 
-        from c2cgeoportal_commons.models.main import User
+        from c2cgeoportal_commons.models.static import User
         user = dbsession.query(User). \
             filter(User.username == 'babar_13'). \
             one()
