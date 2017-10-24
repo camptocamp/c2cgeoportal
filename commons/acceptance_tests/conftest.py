@@ -7,7 +7,7 @@ from c2cgeoportal_commons.tests import transact  # noqa: F401
 @pytest.fixture(scope='session')
 def settings():
     return {
-        'sqlalchemy.url': 'postgresql://www-data:www-data@localhost:5432/c2cgeoportal',
+        'sqlalchemy.url': 'postgresql://www-data:www-data@localhost:5432/c2cgeoportal_tests',
         'schema': 'main',
         'parent_schema': '',
         'srid': 3857
