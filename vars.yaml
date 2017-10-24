@@ -1,28 +1,36 @@
+---
 vars:
-    build_volume_name: BUILD_VOLUME_NAME
-    main_version: "'.'.join(__import__('pkg_resources').get_distribution('c2cgeoportal_commons').version.split('.')[0:2])"
-    dbuser: www-data
-    dbpassword: www-data
-    dbhost: db
-    dbport: 5432
-    db: geomapfish_test
-    mapserver_join_tables: main.restrictionarea AS ra, main.role_restrictionarea AS rra, main.layer_restrictionarea AS lra, main.treeitem AS la
-    mapserver_join_area: ra.area
-    mapserver_join_where: "rra.role_id = %role_id% AND rra.restrictionarea_id = ra.id AND lra.restrictionarea_id = ra.id AND lra.layer_id = la.id AND la.name ="
-    mapserver_layer_metadata: ""
-    mapserver_layer_validation:
-        '"default_role_id" "-1"
-        "role_id" "^-?[0-9]*$"'
-    mapfile_data_subselect: "SELECT ST_Collect(ra.area) FROM main.restrictionarea AS ra, main.role_restrictionarea AS rra, main.layer_restrictionarea AS lra, main.treeitem AS la WHERE rra.role_id = %role_id% AND rra.restrictionarea_id = ra.id AND lra.restrictionarea_id = ra.id AND lra.layer_id = la.id AND la.name ="
-    git_branch: GIT_BRANCH
-    tx_version: TX_VERSION
-    tx_languages: LANGUAGES
+  build_volume_name: BUILD_VOLUME_NAME
+  main_version:
+    "'.'.join(__import__('pkg_resources').get_distribution('c2cgeoportal_commons')
+    .version.split('.')[0:2])"
+  dbuser: www-data
+  dbpassword: www-data
+  dbhost: db
+  dbport: 5432
+  db: geomapfish_test
+  mapserver_join_tables: main.restrictionarea AS ra, main.role_restrictionarea AS rra,
+    main.layer_restrictionarea AS lra, main.treeitem AS la
+  mapserver_join_area: ra.area
+  mapserver_join_where: "rra.role_id = %role_id% AND rra.restrictionarea_id = ra.id \
+    AND lra.restrictionarea_id = ra.id AND lra.layer_id = la.id AND la.name ="
+  mapserver_layer_metadata: ""
+  mapserver_layer_validation:
+    '"default_role_id" "-1"
+    "role_id" "^-?[0-9]*$"'
+  mapfile_data_subselect: "SELECT ST_Collect(ra.area) FROM main.restrictionarea AS ra, \
+    main.role_restrictionarea AS rra, main.layer_restrictionarea AS lra, main.treeitem AS la \
+    WHERE rra.role_id = %role_id% AND rra.restrictionarea_id = ra.id AND lra.restrictionarea_id = ra.id \
+    AND lra.layer_id = la.id AND la.name ="
+  git_branch: GIT_BRANCH
+  tx_version: TX_VERSION
+  tx_languages: LANGUAGES
 
 interpreted:
-    environment:
+  environment:
     - build_volume_name
     - tx_version
     - tx_languages
     - git_branch
-    python:
+  python:
     - main_version

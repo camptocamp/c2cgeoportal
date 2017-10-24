@@ -93,7 +93,7 @@ build: $(MAKO_FILES:.mako=) \
 doc: $(BUILD_DIR)/sphinx.timestamp
 
 .PHONY: checks
-checks: flake8 git-attributes quote spell
+checks: flake8 git-attributes quote spell yamllint
 
 .PHONY: clean
 clean:
@@ -180,6 +180,11 @@ quote:
 .PHONY: spell
 spell:
 	@codespell geoportal/setup.py $(shell find geoportal/c2cgeoportal_geoportal -name static -prune -or -name '*.py' -print)
+
+YAML_FILES ?= $(shell find -name ngeo -prune -or \( -name "*.yml" -or -name "*.yaml" \) -print)
+.PHONY: yamllint
+yamllint: $(YAML_FILES)
+	yamllint --strict --config-file=yamllint.yaml -s $(YAML_FILES)
 
 # i18n
 $(HOME_DIR)/.transifexrc:

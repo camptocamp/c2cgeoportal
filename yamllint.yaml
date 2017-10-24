@@ -1,0 +1,9 @@
+---
+extends: default
+
+rules:
+  line-length:
+    max: 110
+  indentation:
+    spaces: 2
+  truthy: disable

@@ -1,9 +1,10 @@
+---
 project_folder: {{project}}
 project_package: ${package}
 host: ${host}
 checker_path: /c2c/health_check?
 managed_files: []
 template_vars:
-    package: {{package}}
-    srid: {{srid}}
-    extent: {{extent}}
+  package: {{package}}
+  srid: {{srid}}
+  extent: {{extent}}
