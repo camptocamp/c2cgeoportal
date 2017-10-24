@@ -98,7 +98,7 @@ def wms_structure(wms_url, host):
         headers["Host"] = host
     try:
         resp, content = http.request(wms_url, method="GET", headers=headers)
-    except:  # pragma: no cover
+    except Exception:  # pragma: no cover
         raise HTTPBadGateway("Unable to GetCapabilities from wms_url {0!s}".format(wms_url))
 
     if resp.status < 200 or resp.status >= 300:  # pragma: no cover

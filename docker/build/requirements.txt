@@ -12,6 +12,7 @@ dateutils==0.6.6  # geoportal-pcreate
 deform==2.0.4  # commons
 defusedxml==0.5.0  # geoportal
 dogpile.cache==0.6.4  # geoportal
+flake8==3.5.0  # lint
 flake8-copyright==0.2.0  # lint
 Fiona==1.7.9.post1  # geoportal-raster
 GeoAlchemy2==0.4.0  # geoportal
@@ -28,10 +29,12 @@ mccabe==0.6.1  # lint
 OWSLib==0.15.0  # geoportal
 papyrus==2.2  # geoportal
 PasteScript==2.0.2  # geoportal-pcreate
+pep8==1.7.0  # lint
 pep8-naming==0.4.1  # Lint
 Pillow==4.3.0  # Tile generation
 polib==1.0.8  # i18n
 pycrypto==2.6.1  # geoportal
+pyflakes==1.6.0  # lint
 Pygments==2.2.0  # doc
 pyproj==1.9.5.1  # geoportal
 https://github.com/camptocamp/pyramid_closure/archive/23b45f7989cf471dce46dabb8516537bae0a2789.zip#egg=pyramid_closure  # ngeo

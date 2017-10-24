@@ -142,11 +142,13 @@ flake8:
 	# E712 is not compatible with SQLAlchemy
 	find $(VALIDATE_PY_FOLDERS) -name \*.py | xargs flake8 \
 		--ignore=E712 \
+		--max-line-length=110 \
 		--copyright-check \
 		--copyright-min-file-size=1 \
 		--copyright-regexp="Copyright \(c\) ([0-9][0-9][0-9][0-9]-)?$(shell date +%Y), Camptocamp SA"
 	flake8 --max-line-length=110 \
 		--ignore=E712 \
+		--max-line-length=110 \
 		--copyright-check \
 		--copyright-min-file-size=1 \
 		--copyright-regexp="Copyright \(c\) ([0-9][0-9][0-9][0-9]-)?$(shell date +%Y), Camptocamp SA" \
@@ -154,6 +156,7 @@ flake8:
 	find $(VALIDATE_TEMPLATE_PY_FOLDERS) -name \*.py | xargs flake8 --max-line-length=110
 	find $(VALIDATE_PY_TEST_FOLDERS) -name \*.py | xargs flake8 \
 		--ignore=E501 \
+		--max-line-length=110 \
 		--copyright-check \
 		--copyright-min-file-size=1 \
 		--copyright-regexp="Copyright \(c\) ([0-9][0-9][0-9][0-9]-)?$(shell date +%Y), Camptocamp SA"

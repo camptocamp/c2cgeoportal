@@ -144,7 +144,7 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
                     int_filename = os.path.join(os.path.dirname(filename), "_" + os.path.basename(filename))
                     with open(int_filename, "wb") as file_open:
                         file_open.write(processed.encode("utf-8"))
-                except:
+                except Exception:
                     print(colorize(
                         "ERROR! Occurred during the '{}' template generation".format(filename),
                         RED
@@ -155,7 +155,7 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
                         int_filename = filename
                     else:
                         raise
-            except:
+            except Exception:
                 print(traceback.format_exc())
 
         message_str = subprocess.check_output([
@@ -171,7 +171,7 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
                         None, message, None, [], "", "", context.split(":")
                     ))
             return messages
-        except:
+        except Exception:
             print(colorize("An error occurred", RED))
             print(colorize(message_str, RED))
             print("------")
