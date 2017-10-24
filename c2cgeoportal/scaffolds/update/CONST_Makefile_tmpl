@@ -53,6 +53,7 @@ LANGUAGES ?= en fr de
 NGEO_INTERFACES ?= desktop mobile
 CGXP_INTERFACES ?=
 CGXP_API ?= TRUE
+CGXP_XAPI ?= FALSE
 INTERFACES += $(NGEO_INTERFACES) $(CGXP_INTERFACES)
 export INTERFACES
 # Used print version
@@ -290,11 +291,18 @@ endif
 # CGXP
 JSBUILD_MAIN_FILES = $(shell $(FIND) $(PACKAGE)/static/lib/cgxp $(PACKAGE)/static/js -name "*.js" -print 2> /dev/null)
 JSBUILD_MAIN_CONFIG = jsbuild/app.cfg
-JSBUILD_MAIN_OUTPUT_FILES ?= $(addsuffix .js, $(CGXP_INTERFACES)) api.js xapi.js
+JSBUILD_MAIN_OUTPUT_FILES ?= $(addsuffix .js, $(CGXP_INTERFACES))
 ifdef CGXP_INTERFACES
 JSBUILD_MAIN_OUTPUT_FILES += $(addprefix lang-, $(addsuffix .js, $(LANGUAGES)))
 endif
+ifeq ($(CGXP_XAPI), TRUE)
+JSBUILD_MAIN_OUTPUT_FILES += xapi.js
+JSBUILD_MAIN_OUTPUT_FILES += $(addprefix lang-, $(addsuffix .js, $(LANGUAGES)))
+endif
+ifeq ($(CGXP_API), TRUE)
+JSBUILD_MAIN_OUTPUT_FILES += api.js
 JSBUILD_MAIN_OUTPUT_FILES += $(addprefix api-lang-, $(addsuffix .js, $(LANGUAGES)))
+endif
 JSBUILD_MAIN_OUTPUT_FILES := $(addprefix $(OUTPUT_DIR)/, $(JSBUILD_MAIN_OUTPUT_FILES))
 ifeq ($(DEVELOPMENT), TRUE)
 JSBUILD_ARGS += --uncompress
