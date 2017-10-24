@@ -238,7 +238,7 @@ class Entry:
 
         try:
             resp, content = http.request(url, method="GET", headers=headers)
-        except:  # pragma: no cover
+        except Exception:  # pragma: no cover
             errors.add("Unable to GetCapabilities from url {0!s}".format(url))
             return None, errors
 
@@ -262,7 +262,7 @@ class Entry:
 
         try:
             wms = WebMapService(None, xml=content)
-        except:  # pragma: no cover
+        except Exception:  # pragma: no cover
             error = _(
                 "WARNING! an error occurred while trying to "
                 "read the mapfile and recover the themes."
@@ -380,7 +380,7 @@ class Entry:
 
     def _layer(self, layer, time=None, dim=None, role_id=None, mixed=True):
         errors = set()
-        l = {
+        layer_info = {
             "id": layer.id,
             "name": layer.name if not isinstance(layer, main.LayerV1) else layer.layer,
             "metadata": self._get_metadatas(layer, errors),
@@ -390,14 +390,14 @@ class Entry:
         if isinstance(layer, main.LayerWMS) and re.search("[/?#]", layer.layer):  # pragma: no cover
             errors.add("The layer has an unsupported layers '{}'.".format(layer.layer))
         if layer.geo_table:
-            self._fill_editable(l, layer)
+            self._fill_editable(layer_info, layer)
         if mixed:
             assert time is None
             time = TimeInformation()
         assert time is not None
 
         if not isinstance(layer, main.LayerV1):
-            errors |= dim.merge(layer, l, mixed)
+            errors |= dim.merge(layer, layer_info, mixed)
 
         if isinstance(layer, main.LayerV1):
             wms, wms_layers, wms_errors = self._wms_layers(
@@ -405,7 +405,7 @@ class Entry:
                 self.default_ogc_server,
             )
             errors |= wms_errors
-            l.update({
+            layer_info.update({
                 "type": layer.layer_type,
                 "public": layer.public,
                 "legend": layer.legend,
@@ -413,25 +413,25 @@ class Entry:
                 "isLegendExpanded": layer.is_legend_expanded,
             })
             if layer.identifier_attribute_field:
-                l["identifierAttribute"] = layer.identifier_attribute_field
+                layer_info["identifierAttribute"] = layer.identifier_attribute_field
             if layer.disclaimer:
-                l["disclaimer"] = layer.disclaimer
+                layer_info["disclaimer"] = layer.disclaimer
             if layer.icon:
-                l["icon"] = get_url(layer.icon, self.request, errors=errors)
+                layer_info["icon"] = get_url(layer.icon, self.request, errors=errors)
             if layer.kml:
-                l["kml"] = get_url(layer.kml, self.request, errors=errors)
+                layer_info["kml"] = get_url(layer.kml, self.request, errors=errors)
             if layer.metadata_url:
-                l["metadataURL"] = layer.metadata_url
+                layer_info["metadataURL"] = layer.metadata_url
             if layer.legend_image:
-                l["legendImage"] = get_url(layer.legend_image, self.request, errors=errors)
+                layer_info["legendImage"] = get_url(layer.legend_image, self.request, errors=errors)
 
             if layer.layer_type == "internal WMS":
-                self._fill_internal_wms(l, layer, wms, wms_layers, errors)
-                errors |= self._merge_time(time, l, layer, wms, wms_layers)
+                self._fill_internal_wms(layer_info, layer, wms, wms_layers, errors)
+                errors |= self._merge_time(time, layer_info, layer, wms, wms_layers)
             elif layer.layer_type == "external WMS":
-                self._fill_external_wms(l, layer, errors)
+                self._fill_external_wms(layer_info, layer, errors)
             elif layer.layer_type == "WMTS":
-                self._fill_wmts(l, layer, errors)
+                self._fill_wmts(layer_info, layer, errors)
         elif isinstance(layer, main.LayerWMS):
             wms, wms_layers, wms_errors = self._wms_layers(
                 self._get_cache_role_key(layer.ogc_server),
@@ -441,16 +441,16 @@ class Entry:
             if layer.layer is None or layer.layer == "":
                 errors.add("The layer '{}' do not have any layers".format(layer.name))
                 return None, errors
-            l["type"] = "WMS"
-            l["layers"] = layer.layer
-            self._fill_wms(l, layer, errors, role_id, mixed=mixed)
-            errors |= self._merge_time(time, l, layer, wms, wms_layers)
+            layer_info["type"] = "WMS"
+            layer_info["layers"] = layer.layer
+            self._fill_wms(layer_info, layer, errors, role_id, mixed=mixed)
+            errors |= self._merge_time(time, layer_info, layer, wms, wms_layers)
 
         elif isinstance(layer, main.LayerWMTS):
-            l["type"] = "WMTS"
-            self._fill_wmts(l, layer, errors, version=2)
+            layer_info["type"] = "WMTS"
+            self._fill_wmts(layer_info, layer, errors, version=2)
 
-        return l, errors
+        return layer_info, errors
 
     @staticmethod
     def _merge_time(time, l, layer, wms, wms_layers):
@@ -662,7 +662,7 @@ class Entry:
         if layer.dimensions:
             try:
                 l["dimensions"] = json.loads(layer.dimensions)
-            except:  # pragma: no cover
+            except Exception:  # pragma: no cover
                 errors.add("Unexpected error: '{0!s}' while reading '{1!s}' in layer '{2!s}'".format(
                     sys.exc_info()[0], layer.dimensions, layer.name
                 ))
@@ -1065,7 +1065,7 @@ class Entry:
 
         try:
             resp, get_capabilities_xml = http.request(wfsgc_url, method="GET", headers=headers)
-        except:  # pragma: no cover
+        except Exception:  # pragma: no cover
             errors.add("Unable to GetCapabilities from url {0!s}".format(wfsgc_url))
             return None, errors
 
@@ -1092,7 +1092,7 @@ class Entry:
                 else:  # pragma nocover
                     log.warn("Feature type without name: {0!s}".format(featureType.toxml()))
             return featuretypes, errors
-        except:  # pragma: no cover
+        except Exception:  # pragma: no cover
             return get_capabilities_xml, errors
 
     def _functionality(self):
