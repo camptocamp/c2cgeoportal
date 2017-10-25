@@ -283,7 +283,7 @@ def _parse_date(date):
         try:
             dt = datetime.datetime.strptime(date, pattern)
             return resolution, dt.replace(tzinfo=isodate.UTC)
-        except:
+        except Exception:
             pass
 
     try:
@@ -291,7 +291,7 @@ def _parse_date(date):
         if dt.tzinfo is None:
             dt = dt.replace(tzinfo=isodate.UTC)
         return "second", dt
-    except:
+    except Exception:
         raise ValueError("Invalid date format '{0!s}'".format(date))
 
 

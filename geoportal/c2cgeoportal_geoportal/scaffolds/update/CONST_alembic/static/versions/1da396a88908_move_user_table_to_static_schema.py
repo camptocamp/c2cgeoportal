@@ -101,7 +101,7 @@ def upgrade():
             }
         )
         op.drop_table('user', schema=schema)
-    except:
+    except Exception:
         op.execute(
             "INSERT INTO %(staticschema)s.user (type, username, email, password, role) "
             "VALUES ( 'user', 'admin', 'info@example.com', '%(pass)s', 'role_admin')" % {
