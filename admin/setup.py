@@ -37,6 +37,7 @@ with open(os.path.join(here, 'README.md')) as f:
     README = f.read()
 
 requires = [
+    'alembic',
     'c2cgeoportal-commons',
     'plaster_pastedeploy',
     'psycopg2',
