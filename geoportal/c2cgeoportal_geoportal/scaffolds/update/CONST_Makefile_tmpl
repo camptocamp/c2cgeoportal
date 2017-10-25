@@ -15,7 +15,8 @@ TILECLOUD_CHAIN ?= TRUE
 TILECLOUD_CHAIN_LOCAL ?= FALSE
 
 TEMPLATE_EXCLUDE += /build node_modules \
-	print/templates CONST_alembic CONST_create_template \
+	print/templates \
+	CONST_create_template \
 	geoportal/$(PACKAGE)_geoportal/static/lib
 FIND_OPTS = $(foreach ELEM, $(TEMPLATE_EXCLUDE),-path ./$(ELEM) -prune -o) -type f
 
@@ -47,6 +48,7 @@ WEB_RULE ?= $(DEFAULT_WEB_RULE)
 
 DEFAULT_BUILD_RULES ?= /build/geoportal-docker.timestamp \
 	project.yaml \
+	alembic.ini \
 	docker-compose.yaml \
 	docker-compose-build.yaml
 
@@ -425,9 +427,9 @@ serve: build development.ini
 	pserve --reload --monitor-restart development.ini
 
 .PHONY: upgrade-db
-upgrade-db: geoportal/alembic.ini geoportal/alembic_static.ini
-	alembic -c geoportal/alembic.ini upgrade head
-	alembic -c geoportal/alembic_static.ini upgrade head
+upgrade-db: alembic.ini
+	alembic --name=main upgrade head
+	alembic --name=static upgrade head
 
 # Templates
 
@@ -751,13 +753,13 @@ push-docker:
 	docker push $(DOCKER_BASE)-geoportal:$(DOCKER_TAG)
 	docker push $(DOCKER_BASE)-mapserver:$(DOCKER_TAG)
 
-testdb/12-alembic.sql: geoportal/alembic.ini $(shell ls -1 CONST_alembic/main/versions/*.py)
+testdb/12-alembic.sql: alembic.ini $(shell ls -1 /opt/alembic/main/*.py)
 	$(PRERULE_CMD)
-	alembic -c geoportal/alembic.ini upgrade --sql head > $@
+	alembic --name=main upgrade --sql head > $@
 
-testdb/13-alembic-static.sql: geoportal/alembic_static.ini $(shell ls -1 CONST_alembic/static/versions/*.py)
+testdb/13-alembic-static.sql: alembic.ini $(shell ls -1 /opt/alembic/static/*.py)
 	$(PRERULE_CMD)
-	alembic -c geoportal/alembic_static.ini upgrade --sql head > $@
+	alembic --name=static upgrade --sql head > $@
 
 .PHONY: testdb-docker
 testdb-docker: /build/testdb-docker.timestamp

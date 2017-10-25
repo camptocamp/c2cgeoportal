@@ -23,7 +23,7 @@ services:
 % endif
 
   build:
-    image: camptocamp/geomapfish_build:${geomapfish_version}
+    image: camptocamp/geomapfish-build:${geomapfish_version}
     volumes:
       - build:/build
       - .:/src

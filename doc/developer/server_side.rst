@@ -161,10 +161,9 @@ Create the tables:
 
 .. prompt:: bash
 
-    ./docker-run make /build/dev-requirements.timestamp tests/functional/alembic.ini \
-        tests/functional/alembic_static.ini
-    ./docker-compose-run alembic --config tests/functional/alembic.ini upgrade head
-    ./docker-compose-run alembic --config tests/functional/alembic_static.ini upgrade head
+    ./docker-run make /build/dev-requirements.timestamp tests/functional/alembic.ini
+    ./docker-compose-run alembic --config=tests/functional/alembic.ini --name=main upgrade head
+    ./docker-compose-run alembic --config=tests/functional/alembic.ini --name=static upgrade head
 
 If you do not use the default variables edit the ``vars.yaml`` and set the ``dbuser``, ``dbpassword``,
 ``dbhost``, ``dbhost_slave``, ``dbport``, ``db``, and ``mapserv_url`` as appropriate.
@@ -306,34 +305,25 @@ Migration
 ~~~~~~~~~
 
 We use the ``alembic`` module for database migration. ``alembic`` works with a
-so-called *migration repository*, which is a simple directory in the
-application source tree:``CONST_alembic``. As the ``CONST_`` prefix suggests
-this repository is part of the ``c2cgeoportal_update`` scaffold, it is created
-or updated when this scaffold is applied. So developers who modify the
-``c2cgeoportal`` database schema should add migration scripts to the
-``c2cgeoportal_update`` scaffold, as opposed to the application.
+so-called *migration repository*, which is a simple directory ``/opt/alembic`` in the
+docker image. So developers who modify the ``c2cgeoportal`` database schema should add migration scripts.
 
 Add a new script call from the application's root directory:
 
 .. prompt:: bash
 
-    ./docker-compose-run alembic --config alembic[_static].ini revision --message "<Explicit name>"
+    ./docker-compose-run alembic --name=[main|static] revision --message "<Explicit name>"
 
 Or in c2cgeoportal root directory:
 
 .. prompt:: bash
 
     ./docker-compose-run alembic \
-        --config tests/functional/alembic[_static].ini \
+        --config geoportal/tests/functional/alembic.ini --name=[main|static] \
         revision --message "<Explicit name>"
 
-This will generate the migration script in ``CONST_alembic/versions/xxx_<Explicite_name>.py``
-You should *NOT* commit the script in this directory because this migration
-script should be shared with all c2cgeoportal projects.
-It is the c2cgeoportal ``update`` template which is responsible for updating
-this directory.
-
-The script should not get any part of the ``c2cgeoportal.model`` module!
+This will generate the migration script in
+``commons/c2cgeoportal/commons/alembic/[main|static]/xxx_<Explicite_name>.py``.
 
 To get the project schema use:
 ``schema = context.get_context().config.get_main_option('schema')``
@@ -346,9 +336,6 @@ Then customize the migration to suit your needs, test it:
 .. prompt:: bash
 
     ./docker-compose-run alembic upgrade head
-
-Once you have tested it, move it to the c2cgeoportal ``update`` template, in
-``c2cgeoportal/scaffolds/update/CONST_mlembic/versions/``.
 
 More information at:
  * http://alembic.readthedocs.org/en/latest/index.html

@@ -46,8 +46,8 @@ down_revision = '3f89a7d71a5e'
 
 
 def upgrade():
-    schema = context.get_context().config.get_main_option('schema')
-    staticschema = schema + '_static'
+    schema = context.get_context().config.get_main_option('main_schema')
+    staticschema = context.get_context().config.get_main_option('static_schema')
     parentschema = context.get_context().config.get_main_option('parentschema')
 
     engine = op.get_bind().engine
@@ -112,8 +112,8 @@ def upgrade():
 
 
 def downgrade():
-    schema = context.get_context().config.get_main_option('schema')
-    staticschema = schema + '_static'
+    schema = context.get_context().config.get_main_option('main_schema')
+    staticschema = context.get_context().config.get_main_option('static_schema')
     parentschema = context.get_context().config.get_main_option('parentschema')
 
     op.create_table(

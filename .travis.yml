@@ -129,11 +129,10 @@ jobs:
       script:
         - ./docker-run make docker-compose.yaml
               geoportal/tests/functional/alembic.ini
-              geoportal/tests/functional/alembic_static.ini
               docker/test-mapserver/mapserver.map prepare-tests
         - ./docker-compose-run sleep 15
-        - ./docker-compose-run alembic --config geoportal/tests/functional/alembic.ini upgrade head
-        - ./docker-compose-run alembic --config geoportal/tests/functional/alembic_static.ini upgrade head
+        - ./docker-compose-run alembic --config=geoportal/tests/functional/alembic.ini --name=main upgrade head
+        - ./docker-compose-run alembic --config=geoportal/tests/functional/alembic.ini --name=static upgrade head
         - ./docker-compose-run make tests
 
     - env: [JOB=test-docker-app]
@@ -164,16 +163,16 @@ jobs:
         - "travis/run-on.sh /tmp/travis/testgeomapfish/ \
             ./docker-run make --makefile=empty-vars.mk geoportal/config.yaml"
         - "travis/run-on.sh /tmp/travis/testgeomapfish/ \
-            ./docker-run make --makefile=travis.mk geoportal/alembic.ini geoportal/alembic_static.ini"
+            ./docker-run make --makefile=travis.mk alembic.ini"
         - travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-compose-run sleep 15
         - "travis/run-on.sh /tmp/travis/testgeomapfish/ \
-            ./docker-compose-run alembic --config geoportal/alembic.ini upgrade head"
+            ./docker-compose-run alembic --name=main upgrade head"
         - "travis/run-on.sh /tmp/travis/testgeomapfish/ \
-            ./docker-compose-run alembic --config geoportal/alembic_static.ini upgrade head"
+            ./docker-compose-run alembic --name=static upgrade head"
         - "travis/run-on.sh /tmp/travis/testgeomapfish/ \
-            ./docker-compose-run alembic --config geoportal/alembic_static.ini downgrade base"
+            ./docker-compose-run alembic --name=static downgrade base"
         - "travis/run-on.sh /tmp/travis/testgeomapfish/ \
-            ./docker-compose-run alembic --config geoportal/alembic.ini downgrade base"
+            ./docker-compose-run alembic --name=main downgrade base"
 
     ## FOR NON DOCKER TESTS
     - stage: Tests
@@ -226,15 +225,15 @@ jobs:
         - "travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ \
             ./docker-run make --makefile=empty-vars.mk geoportal/config.yaml"
         - "travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ \
-            ./docker-run make --makefile=travis.mk geoportal/alembic.ini geoportal/alembic_static.ini"
+            ./docker-run make --makefile=travis.mk alembic.ini"
         - "travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ \
-            ./docker-run alembic --config geoportal/alembic.ini upgrade head"
+            ./docker-run alembic --name=main upgrade head"
         - "travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ \
-            ./docker-run alembic --config geoportal/alembic_static.ini upgrade head"
+            ./docker-run alembic --name=static upgrade head"
         - "travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ \
-            ./docker-run alembic --config geoportal/alembic_static.ini downgrade base"
+            ./docker-run alembic --name=static downgrade base"
         - "travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ \
-            ./docker-run alembic --config geoportal/alembic.ini downgrade base"
+            ./docker-run alembic --name=main downgrade base"
         ## END FOR NON DOCKER TESTS
 
     - env: [JOB=test-upgrade]
