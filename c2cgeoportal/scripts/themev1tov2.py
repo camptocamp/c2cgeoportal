@@ -201,15 +201,16 @@ def layer_v1tov2(session, layer):
     if layer.layer_type in ["internal WMS", "external WMS"]:
         # use the first one
         new_layer = LayerWMS()
-        image_type = layer.image_type
-        if layer.image_type is None:
-            image_type = "image/png"
         is_single_tile = layer.is_single_tile
         if is_single_tile is None:
             is_single_tile = False
-        url = layer.url
-        if layer.url is None:
+        image_type = "image/png"
+        if layer.layer_type == "internal WMS":
             url = u"config://internal/mapserv"
+        else:
+            if layer.image_type is not None:
+                image_type = layer.image_type
+            url = layer.url
         ogc_server = session.query(OGCServer).filter(
             OGCServer.url == url,
             OGCServer.image_type == image_type,
