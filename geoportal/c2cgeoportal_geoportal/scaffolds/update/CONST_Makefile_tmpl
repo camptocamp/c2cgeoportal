@@ -417,9 +417,9 @@ serve: build development.ini
 	pserve --reload --monitor-restart development.ini
 
 .PHONY: upgrade-db
-upgrade-db: geoportal/alembic.ini geoportal/alembic_static.ini
-	alembic -c geoportal/alembic.ini upgrade head
-	alembic -c geoportal/alembic_static.ini upgrade head
+upgrade-db: commons/alembic.ini commons/alembic_static.ini
+	alembic -c commons/alembic.ini upgrade head
+	alembic -c commons/alembic_static.ini upgrade head
 
 # Templates
 
@@ -744,13 +744,13 @@ push-docker:
 	docker push $(DOCKER_BASE)-geoportal:$(DOCKER_TAG)
 	docker push $(DOCKER_BASE)-mapserver:$(DOCKER_TAG)
 
-testdb/12-alembic.sql: geoportal/alembic.ini $(shell ls -1 CONST_alembic/main/versions/*.py)
+testdb/12-alembic.sql: commons/alembic.ini $(shell ls -1 CONST_alembic/main/versions/*.py)
 	$(PRERULE_CMD)
-	alembic -c geoportal/alembic.ini upgrade --sql head > $@
+	alembic -c commons/alembic.ini upgrade --sql head > $@
 
-testdb/13-alembic-static.sql: geoportal/alembic_static.ini $(shell ls -1 CONST_alembic/static/versions/*.py)
+testdb/13-alembic-static.sql: commons/alembic_static.ini $(shell ls -1 CONST_alembic/static/versions/*.py)
 	$(PRERULE_CMD)
-	alembic -c geoportal/alembic_static.ini upgrade --sql head > $@
+	alembic -c commons/alembic_static.ini upgrade --sql head > $@
 
 .PHONY: testdb-docker
 testdb-docker: /build/testdb-docker.timestamp
