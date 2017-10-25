@@ -37,6 +37,7 @@ from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPForbidden, HTTPBadRequest
 
 from c2cgeoportal.lib.caching import NO_CACHE
+from c2cgeoportal.lib import add_url_params
 from c2cgeoportal.views.ogcproxy import OGCProxy
 
 log = logging.getLogger(__name__)
@@ -104,49 +105,50 @@ class PdfReport(OGCProxy):  # pragma: no cover
 
     @view_config(route_name="pdfreport", renderer="json")
     def get_report(self):
-        ids = self.request.matchdict["ids"].split(",")
         self.layername = self.request.matchdict["layername"]
         layer_config = self.config["layers"].get(self.layername)
+
+        multiple = layer_config.get("multiple", False)
+        ids = self.request.matchdict["ids"]
+        if multiple:
+            ids = ids.split(",")
 
         if layer_config is None:
             raise HTTPBadRequest("Layer not found")
 
-        features_ids = [self.layername + "." + id_ for id_ in ids]
+        features_ids = [self.layername + "." + id_ for id_ in ids] if multiple \
+            else [self.layername + "." + ids]
 
         if layer_config["check_credentials"]:
             # check user credentials
-            role_id = None if self.request.user is None else \
-                self.request.user.role.id
+            role_id = None if self.request.user is None else self.request.user.role.id
 
             # FIXME: support of mapserver groups
             ogc_server_ids = [self.default_ogc_server.id]
 
             private_layers_object = get_private_layers(ogc_server_ids)
-            private_layers_names = [private_layers_object[oid].name
-                                    for oid in private_layers_object]
+            private_layers_names = [private_layers_object[oid].name for oid in private_layers_object]
 
             protected_layers_object = get_protected_layers(role_id, ogc_server_ids)
-            protected_layers_names = [protected_layers_object[oid].name
-                                      for oid in protected_layers_object]
+            protected_layers_names = [protected_layers_object[oid].name for oid in protected_layers_object]
 
-            if self.layername in private_layers_names and \
-                    self.layername not in protected_layers_names:
+            if self.layername in private_layers_names and self.layername not in protected_layers_names:
                 raise HTTPForbidden
 
         srs = layer_config["srs"]
 
         mapserv_url = self.request.route_url("mapserverproxy")
-        vector_request_url = "{0!s}?{1!s}".format(
+        vector_request_url = add_url_params(
             mapserv_url,
-            "&".join(["{0!s}={1!s}".format(*i) for i in {
+            {
                 "service": "WFS",
                 "version": "1.1.0",
                 "outputformat": "gml3",
                 "request": "GetFeature",
                 "typeName": self.layername,
                 "featureid": ",".join(features_ids),
-                "srsName": "epsg:" + str(srs)
-            }.items()])
+                "srsName": "epsg:{}".format(srs)
+            }
         )
 
         spec = layer_config["spec"]
@@ -155,7 +157,11 @@ class PdfReport(OGCProxy):  # pragma: no cover
                 "layout": self.layername,
                 "outputFormat": "pdf",
                 "attributes": {
-                    "ids": ids
+                    "ids": [{
+                        "id": id_
+                    } for id_ in ids]
+                } if multiple else {
+                    "id": id
                 }
             }
             map_config = layer_config.get("map")
@@ -172,12 +178,56 @@ class PdfReport(OGCProxy):  # pragma: no cover
                         mapserv_url, vector_request_url, srs, map_config
                     ))
         else:
-            spec = loads(dumps(spec) % {
-                "layername": self.layername,
-                "ids": dumps(ids),
-                "srs": srs,
-                "mapserv_url": mapserv_url,
-                "vector_request_url": vector_request_url,
-            })
+            datasource = layer_config.get("datasource", True)
+            if multiple and datasource:
+                data = dumps(layer_config["data"])
+                datas = [
+                    loads(data % {
+                        "layername": self.layername,
+                        "id": id_,
+                        "srs": srs,
+                        "mapserv_url": mapserv_url,
+                        "vector_request_url": vector_request_url,
+                    }) for id_ in ids]
+                self.walker(spec, "%(datasource)s", datas)
+                spec = loads(dumps(spec) % {
+                    "layername": self.layername,
+                    "srs": srs,
+                    "mapserv_url": mapserv_url,
+                    "vector_request_url": vector_request_url,
+                })
+            elif multiple:
+                spec = loads(dumps(spec) % {
+                    "layername": self.layername,
+                    "ids": ",".join(ids),
+                    "srs": srs,
+                    "mapserv_url": mapserv_url,
+                    "vector_request_url": vector_request_url,
+                })
+            else:
+                spec = loads(dumps(spec) % {
+                    "layername": self.layername,
+                    "id": ids,
+                    "srs": srs,
+                    "mapserv_url": mapserv_url,
+                    "vector_request_url": vector_request_url,
+                })
 
         return self._do_print(spec)
+
+    def walker(self, spec, name, value):
+        if isinstance(spec, dict):
+            for k, v in spec.items():
+                if isinstance(v, str):
+                    if v == name:
+                        spec[k] = value
+                else:
+                    self.walker(v, name, value)
+
+        if isinstance(spec, list):
+            for k, v in enumerate(spec):
+                if isinstance(v, str):
+                    if v == name:
+                        spec[k] = value
+                else:
+                    self.walker(v, name, value)
