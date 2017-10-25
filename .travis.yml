@@ -16,9 +16,9 @@ env:
 
 install:
 - sudo service postgresql stop
-- docker pull camptocamp/geomapfish-build-dev-travis:${TRAVIS_BUILD_NUMBER}
-- docker pull camptocamp/geomapfish-commons-travis:${TRAVIS_BUILD_NUMBER}
-- docker pull camptocamp/geomapfish-build-travis:${TRAVIS_BUILD_NUMBER}
+- travis_wait 20 docker pull camptocamp/geomapfish-build-dev-travis:${TRAVIS_BUILD_NUMBER}
+- travis_wait 20 docker pull camptocamp/geomapfish-commons-travis:${TRAVIS_BUILD_NUMBER}
+- travis_wait 20 docker pull camptocamp/geomapfish-build-travis:${TRAVIS_BUILD_NUMBER}
 - docker tag camptocamp/geomapfish-build-dev-travis:${TRAVIS_BUILD_NUMBER} camptocamp/geomapfish-build-dev:2.3
 - docker tag camptocamp/geomapfish-commons-travis:${TRAVIS_BUILD_NUMBER} camptocamp/geomapfish-commons:2.3
 - docker tag camptocamp/geomapfish-build-travis:${TRAVIS_BUILD_NUMBER} camptocamp/geomapfish-build:2.3
