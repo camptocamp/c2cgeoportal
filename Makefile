@@ -62,6 +62,7 @@ help:
 	@echo
 	@echo "Main targets:"
 	@echo
+	@echo  "- pull   		Pull all the needed Docker images"
 	@echo  "- build 		Build and configure the project"
 	@echo  "- buildall		Build, check and test the project"
 	@echo  "- doc 			Build the project documentation"
@@ -70,6 +71,10 @@ help:
 	@echo  "- clean 		Remove generated files"
 	@echo  "- cleanall 		Remove all the build artefacts"
 	@echo  "- transifex-send	Send the localisation to Transifex"
+
+.PHONY: pull
+pull:
+	for image in `find -name Dockerfile | xargs grep --no-filename FROM | awk '{print $$2}' | sort -u`; do docker pull $$image; done
 
 .PHONY: build
 build: $(MAKO_FILES:.mako=) \
