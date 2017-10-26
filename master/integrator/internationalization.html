@@ -45,33 +45,37 @@
 <span id="id1"></span><h1>Internationalization<a class="headerlink" href="#internationalization" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="ngeo-and-server">
 <h2>ngeo and server<a class="headerlink" href="#ngeo-and-server" title="Permalink to this headline">¶</a></h2>
-<p>In the <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> file define the supported language with (default):</p>
+<p>In the file <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code>, define the supported languages with (default):</p>
 <div class="code make highlight-default"><div class="highlight"><pre><span></span>LANGUAGES ?= en fr de
 </pre></div>
 </div>
-<p>In the <code class="docutils literal"><span class="pre">vars_&lt;package&gt;.yaml</span></code> file define the available and default language:</p>
+<p>In the file <code class="docutils literal"><span class="pre">vars_&lt;package&gt;.yaml</span></code>, define the available and default locales:</p>
 <div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
      <span class="o">...</span>
      <span class="n">default_locale_name</span><span class="p">:</span> <span class="n">fr</span>
      <span class="n">available_locale_names</span><span class="p">:</span> <span class="p">[</span><span class="n">en</span><span class="p">,</span> <span class="n">fr</span><span class="p">,</span> <span class="n">de</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>Build your application</p>
-<p>The file to translate are:</p>
+<p>In the file <code class="docutils literal"><span class="pre">language_mapping</span></code>, define any desired locale variants, for example:</p>
+<div class="code make highlight-default"><div class="highlight"><pre><span></span><span class="n">fr</span><span class="o">=</span><span class="n">fr</span><span class="o">-</span><span class="n">ch</span>
+</pre></div>
+</div>
+<p>Build your application.</p>
+<p>The files to translate are:</p>
 <ul class="simple">
 <li><code class="docutils literal"><span class="pre">demo/locale/&lt;lang&gt;/LC_MESSAGES/demo-client.po</span></code> for ngeo client</li>
-<li><code class="docutils literal"><span class="pre">demo/locale/&lt;lang&gt;/LC_MESSAGES/demo-server.po</span></code> for the server part (Should be empty for ngeo interfaces)</li>
+<li><code class="docutils literal"><span class="pre">demo/locale/&lt;lang&gt;/LC_MESSAGES/demo-server.po</span></code> for the server part (should be empty for ngeo interfaces)</li>
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">All the <code class="docutils literal"><span class="pre">#,</span> <span class="pre">fuzzy</span></code> strings should be verified ans the line should be removed.
-(if the line is not removed the localisation will not be used.)</p>
+<p class="last">All the <code class="docutils literal"><span class="pre">#,</span> <span class="pre">fuzzy</span></code> strings should be verified and the line should be removed
+(if the line is not removed, the localisation will not be used).</p>
 </div>
 </div>
 <div class="section" id="cgxp">
 <h2>CGXP<a class="headerlink" href="#cgxp" title="Permalink to this headline">¶</a></h2>
 <p>Translations of the browser interfaces (main viewer, edit interfaces and APIs)
-are included in two kinds of Javascript files stored in
+are included in two kinds of Javascript files, stored in
 <code class="docutils literal"><span class="pre">&lt;package&gt;/static/js/Proj/Lang/</span></code>:</p>
 <ul>
 <li><p class="first"><code class="docutils literal"><span class="pre">&lt;lang&gt;.js</span></code> is used to translate data-related strings such as layernames or

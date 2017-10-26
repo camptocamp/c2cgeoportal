@@ -9,13 +9,13 @@ Internationalization
 ngeo and server
 ---------------
 
-In the ``<package>.mk`` file define the supported language with (default):
+In the file ``<package>.mk``, define the supported languages with (default):
 
 .. code:: make
 
    LANGUAGES ?= en fr de
 
-In the ``vars_<package>.yaml`` file define the available and default language:
+In the file ``vars_<package>.yaml``, define the available and default locales:
 
 .. code:: yaml
 
@@ -24,24 +24,30 @@ In the ``vars_<package>.yaml`` file define the available and default language:
         default_locale_name: fr
         available_locale_names: [en, fr, de]
 
-Build your application
+In the file ``language_mapping``, define any desired locale variants, for example:
 
-The file to translate are:
+.. code:: make
+
+   fr=fr-ch
+
+Build your application.
+
+The files to translate are:
 
 * ``demo/locale/<lang>/LC_MESSAGES/demo-client.po`` for ngeo client
-* ``demo/locale/<lang>/LC_MESSAGES/demo-server.po`` for the server part (Should be empty for ngeo interfaces)
+* ``demo/locale/<lang>/LC_MESSAGES/demo-server.po`` for the server part (should be empty for ngeo interfaces)
 
 .. note::
 
-   All the ``#, fuzzy`` strings should be verified ans the line should be removed.
-   (if the line is not removed the localisation will not be used.)
+   All the ``#, fuzzy`` strings should be verified and the line should be removed
+   (if the line is not removed, the localisation will not be used).
 
 ----
 CGXP
 ----
 
 Translations of the browser interfaces (main viewer, edit interfaces and APIs)
-are included in two kinds of Javascript files stored in
+are included in two kinds of Javascript files, stored in
 ``<package>/static/js/Proj/Lang/``:
 
 * ``<lang>.js`` is used to translate data-related strings such as layernames or
