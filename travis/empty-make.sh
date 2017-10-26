@@ -19,7 +19,8 @@ lines = [l for l in lines if " warning: overriding recipe for target " not in l]
 lines = [l for l in lines if " warning: ignoring old recipe for target " not in l]
 
 if p.returncode > 0 or len(lines) > 0:
-    print("A Rule is running again, code: {}\n{}\n---".format(
-        p.returncode, "\n".join(lines)))
+    print("A Rule is running again, code: {}\n\n{}\n\n{}\n---".format(
+        p.returncode, "\n".join(lines), p.stdout.read().decode("utf-8")
+    ))
     subprocess.call(["make"] + sys.argv[1:])
     exit(2)
