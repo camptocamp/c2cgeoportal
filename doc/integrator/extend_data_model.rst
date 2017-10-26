@@ -1,7 +1,5 @@
-.. _integrator_extend_data_model:
-
 Extend the data model
-=====================
+---------------------
 
 The Data model can be extended in the file ``<package>/models.py``
 and the corresponding admin interface configuration

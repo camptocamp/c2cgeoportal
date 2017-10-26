@@ -3,7 +3,11 @@
 Security
 ========
 
-Enable / Disable WMS GetCapability
+.. include:: authentication.rst
+.. include:: https.rst
+.. include:: reset_password.rst
+
+Access to WMS GetCapability
 ----------------------------------
 
 Set ``hide_capabilities`` to ``true`` in your ``vars_<project>.yaml`` to disable
@@ -11,7 +15,7 @@ the WMS GetCapability when accessing the Mapserver proxy (mapserverproxy).
 
 Default: ``false``
 
-Enable / Disable the admin interface
+Access to the admin interface
 ------------------------------------
 
 To disable the admin interface, set ``enable_admin_interface`` to ``false``
@@ -19,7 +23,7 @@ in your ``vars_<project>.yaml`` file.
 
 Default: ``true``
 
-Enable / Disable the OGC proxy
+Access to the OGC proxy
 ------------------------------
 
 To enable the OGC proxy, set ``ogcproxy_enable`` to ``true`` in your

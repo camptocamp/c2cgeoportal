@@ -1,7 +1,5 @@
-.. _integrator_functionality:
-
-Customizing the Application using Functionalities
-=================================================
+Functionalities
+-------------------------------------------------
 
 c2cgeoportal provides the concept of *functionality* that can be used to customize
 the application according to the user's permissions.
@@ -25,10 +23,8 @@ the ``user`` database table, then the ``functionalities:anonymous`` and
 ``functionalities:registered`` configuration variables, as well as any
 functionality associated with his/her role, will be ignored.
 
-.. _integrator_functionality_configuration:
-
 Configuration
--------------
+~~~~~~~~~~~~~
 
 The ``vars_<project>.yaml`` file includes variables for managing *functionalities*.
 
@@ -95,10 +91,10 @@ The ``vars_<project>.yaml`` file includes variables for managing *functionalitie
     then the ``functionality`` template variable will be set to a dict with one
     key/value pair: ``"<functionality_name>": ["value1","value2"]``.
 
-Using Functionalities in Templates
-----------------------------------
+Usage in Templates
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-As explained in the :ref:`integrator_functionality_configuration` section above,
+As explained in the configuration section above,
 a functionality can be used in the Mako templates as long as it has been
 enabled using the ``functionalities:available_in_templates`` parameter in the
 ``vars_<project>.yaml`` configuration file.
