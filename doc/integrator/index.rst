@@ -20,13 +20,7 @@ Content:
    configuration
    customise
    security
-   operations
-
-   api
-   docker
    features
+   docker
+   operations
    legacy
-   make
-   ngeo
-   pdfreport
-   print

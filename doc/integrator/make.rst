@@ -1,7 +1,7 @@
 .. _integrator_make:
 
-Build the project with Make
-===========================
+Build configuration
+===================
 
 Makefiles
 ---------
