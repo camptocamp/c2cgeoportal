@@ -4,7 +4,7 @@ import pytest
 @pytest.fixture(scope='class')
 @pytest.mark.usefixtures("dbsession")
 def insertUsersTestData(dbsession):
-    from c2cgeoportal_commons.models.main import User
+    from c2cgeoportal_commons.models.static import User
     user = User("babar")
     t = dbsession.begin_nested()
     dbsession.add(user)
@@ -16,20 +16,20 @@ def insertUsersTestData(dbsession):
 class TestUser():
 
     def test_select(self, dbsession):
-        from c2cgeoportal_commons.models.main import User
+        from c2cgeoportal_commons.models.static import User
         users = dbsession.query(User).all()
         assert len(users) == 1, "querying for users"
         assert users[0].username == 'babar', "user from test data is babar"
 
     def test_remove(self, dbsession):
-        from c2cgeoportal_commons.models.main import User
+        from c2cgeoportal_commons.models.static import User
         users = dbsession.query(User).all()
         dbsession.delete(users[0])
         users = dbsession.query(User).all()
         assert len(users) == 0, "removed a user"
 
     def test_add(self, dbsession):
-        from c2cgeoportal_commons.models.main import User
+        from c2cgeoportal_commons.models.static import User
         user = User("momo")
         dbsession.begin_nested()
         dbsession.add(user)

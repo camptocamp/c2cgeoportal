@@ -30,6 +30,7 @@
 
 import re
 import logging
+from sqlalchemy import engine_from_config
 import sqlalchemy.ext.declarative
 from sqlalchemy.orm import sessionmaker, configure_mappers
 import zope.sqlalchemy
@@ -47,7 +48,7 @@ schema = None
 
 
 def get_engine(settings, prefix='sqlalchemy.'):
-    return sqlalchemy.engine_from_config(settings, prefix)
+    return engine_from_config(settings, prefix)
 
 
 def get_session_factory(engine):

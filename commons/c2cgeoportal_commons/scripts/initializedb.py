@@ -9,7 +9,7 @@ from pyramid.paster import (
 
 from pyramid.scripts.common import parse_vars
 
-from ..models.meta import Base
+from ..models import Base
 from ..models import (
     get_engine,
     get_session_factory,
@@ -52,6 +52,7 @@ def main(argv=sys.argv):
 
 def init_db(connection, force=False, test=False):
     from ..models import main  # noqa: F401
+    from ..models import static  # noqa: F401
     from ..models import schema
 
     schema_static = "{}_static".format(schema)
@@ -91,7 +92,10 @@ WHERE schema_name = '{}';
 
 def setup_test_data(dbsession):
     from c2cgeoportal_commons.models.main import (
-        Role, User
+        Role
+    )
+    from c2cgeoportal_commons.models.static import (
+        User
     )
     role_admin = dbsession.merge(Role(name='role_admin'))
     role_user = dbsession.merge(Role(name='role_user'))

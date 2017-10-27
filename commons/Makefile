@@ -24,7 +24,7 @@ flake8: ${BUILD_DIR}/requirements-dev.timestamp
 
 ${BUILD_DIR}/venv.timestamp:
 	#Create a Python virtual environment.
-	python3 -m venv ${VENV}
+	virtualenv -p python3 ${VENV}
 	#Upgrade packaging tools.
 	${VENV}/bin/pip install --upgrade pip==9.0.1 setuptools==36.5.0
 	touch $@
