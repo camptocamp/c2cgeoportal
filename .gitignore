@@ -24,8 +24,6 @@
 /admin/c2cgeoportal_admin.egg-info/
 /commons/c2cgeoportal_commons.egg-info/
 /docker/test-mapserver/mapserver.map
-/doc/administrator/administrate.rst
-/doc/developer/client_side.rst
 /doc/index.rst
 /dist/
 /coverage.xml
