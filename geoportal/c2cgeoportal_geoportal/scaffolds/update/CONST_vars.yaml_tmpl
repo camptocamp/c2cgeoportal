@@ -77,7 +77,7 @@ vars:
         root_dir: "{directory}"
 
     # used for the "node_modules" and "closure" static views
-    closure_library_path: 'process.stdout.write(require("closure-util").getLibraryPath())'
+    closure_library_path: 'process.stdout.write(require("@camptocamp/closure-util").getLibraryPath())'
     node_modules_path: "/usr/lib/node_modules"
 
     # pyramid_closure configuration

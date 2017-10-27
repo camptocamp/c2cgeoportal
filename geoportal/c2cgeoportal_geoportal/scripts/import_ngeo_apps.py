@@ -143,7 +143,6 @@ def main():
             for package in [
                 "angular-jsdoc",
                 "angular-mocks",
-                "console-control-strings",
                 "coveralls",
                 "gaze",
                 "jsdoc",
