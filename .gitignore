@@ -27,12 +27,6 @@
 /doc/administrator/administrate.rst
 /doc/developer/client_side.rst
 /doc/index.rst
-/doc/integrator/legacy_cgxp.rst
-/doc/integrator/editing.rst
-/doc/integrator/features.rst
-/doc/integrator/fulltext_search.rst
-/doc/integrator/print.rst
-/doc/integrator/upgrade_application.rst
 /dist/
 /coverage.xml
 /gatling/.classpath

@@ -17,7 +17,7 @@ editing viewer is defined in the ``<package>/templates/edit.js`` file. Each
 viewer includes a number of plugins by default; adding/removing features
 involve adding/removing plugins to/from the viewer.
 
-See http://docs.camptocamp.net/cgxp/2.3/lib/plugins.html for the list of available CGXP plugins.
+See http://docs.camptocamp.net/cgxp/2.2/lib/plugins.html for the list of available CGXP plugins.
 
 Features that require additional steps (most of the time):
 

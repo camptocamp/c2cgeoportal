@@ -47,7 +47,7 @@ Dependencies
 
 Major dependencies docs:
 
-* `CGXP <http://docs.camptocamp.net/cgxp/2.3/>`_
+* `CGXP <http://docs.camptocamp.net/cgxp/2.2/>`_
 * `GXP <http://gxp.opengeo.org/master/doc/>`_
 * `GeoExt <http://dev.geoext.org/geoext/docs/lib/>`_
 * `OpenLayers <http://dev.openlayers.org/apidocs/files/OpenLayers-js.html>`_
