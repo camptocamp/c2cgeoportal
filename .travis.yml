@@ -5,9 +5,6 @@ language: python
 python:
 - "3.6"
 
-node_js:
-- "6"
-
 service:
 - docker
 
@@ -56,6 +53,7 @@ jobs:
     - psql -c "CREATE DATABASE c2cgeoportal_tests WITH OWNER \"www-data\";" -U postgres
     - psql -d c2cgeoportal_tests -c "CREATE EXTENSION postgis;" -U postgres
     script:
+    - nvm use --silent 6
     - cd admin
     - make check test
 
