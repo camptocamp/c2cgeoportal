@@ -4,7 +4,7 @@ import pytest
 @pytest.fixture(scope='class')
 @pytest.mark.usefixtures("dbsession")
 def insertUsersTestData(dbsession):
-    from c2cgeoportal_commons.models.main import User
+    from c2cgeoportal_commons.models.static import User
     user = User("babar")
     dbsession.begin_nested()
     dbsession.add(user)

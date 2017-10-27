@@ -7,7 +7,7 @@ def main(global_config, **settings):
     config = Configurator(settings=settings)
     config.include('pyramid_jinja2')
     config.include('c2cgeoform')
-    config.include('c2cgeoportal_commons.models')
+    config.include('c2cgeoportal_commons')
     config.include('.routes')
     config.scan()
     return config.make_wsgi_app()

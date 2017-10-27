@@ -1,7 +1,7 @@
 from pyramid.view import view_defaults
 from pyramid.view import view_config
 from c2cgeoform.views.abstract_views import AbstractViews
-from c2cgeoportal_commons.models.main import User
+from c2cgeoportal_commons.models.static import User
 from colanderalchemy import setup_schema
 
 setup_schema(None, User)
