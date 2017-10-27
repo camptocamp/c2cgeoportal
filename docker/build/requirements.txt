@@ -29,7 +29,7 @@ mccabe==0.6.1  # lint
 OWSLib==0.15.0  # geoportal
 papyrus==2.2  # geoportal
 PasteScript==2.0.2  # geoportal-pcreate
-pep8==1.7.0  # lint
+pep8==1.7.1  # lint
 pep8-naming==0.4.1  # Lint
 Pillow==4.3.0  # Tile generation
 polib==1.0.8  # i18n
