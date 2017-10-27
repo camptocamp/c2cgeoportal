@@ -154,3 +154,48 @@ To add an ngeo interface see :ref:`integrator_ngeo_add`.
 
 If you remove all the `CGXP` interface, remove the ``vars.checker.lang.files`` from your
 project vars file, and the ``checker.lang.files`` from your update_paths.
+
+Adding features in CGXP
+-----------------------
+Adding a feature requires adding a *plugin*  (CGXP plugin) to the user
+interface's *viewer*. It may also require additional steps, like adding and
+populating tables in the database.
+
+A c2cgeoportal project may define multiple viewers. By default a project
+includes two viewers: the *main viewer* and the *editing viewer*. The main
+viewer is defined in the ``<package>/templates/viewer.js`` file, while the
+editing viewer is defined in the ``<package>/templates/edit.js`` file. Each
+viewer includes a number of plugins by default; adding/removing features
+involve adding/removing plugins to/from the viewer.
+
+See http://docs.camptocamp.net/cgxp/2.2/lib/plugins.html for the list of available CGXP plugins.
+
+Enabling FullTextSearch plugin
+------------------------------
+Enabling the *full-text search* feature involves adding a ``FullTextSearch``
+plugin to the viewer, and creating and populating a dedicated table in the
+database.
+
+The viewer should include a ``FullTextSearch`` plugin for the *text search*
+feature to be available in the user interface.
+
+See the `FullTextSearch API doc
+<http://docs.camptocamp.net/cgxp/2.2/lib/plugins/FullTextSearch.html>`_ for the
+list of options the plugin can receive.
+
+*The main viewer includes a FullTextSearch plugin by default.*
+
+The Print plugin
+----------------
+Adding the *print* feature to a c2cgeoportal project involves adding
+a ``cgxp.plugins.Print`` plugin to the viewer, and configuring the MapFish
+Print.
+
+The viewer should include a ``Print`` plugin for the *print* feature to
+be available in the user interface.
+
+See the `Print API doc
+<http://docs.camptocamp.net/cgxp/2.2/lib/plugins/Print.html>`_ for the
+list of options the plugin can receive.
+
+*The main viewer includes a Print plugin by default.*

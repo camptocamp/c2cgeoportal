@@ -7,6 +7,6 @@ Legacy components
    :maxdepth: 1
 
    legacy_cgxp
-   editing
+   legacy_editing
    legacy_print
    legacy_advanced

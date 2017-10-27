@@ -1,5 +1,5 @@
 Functionalities
--------------------------------------------------
+---------------
 
 c2cgeoportal provides the concept of *functionality* that can be used to customize
 the application according to the user's permissions.
@@ -92,7 +92,7 @@ The ``vars_<project>.yaml`` file includes variables for managing *functionalitie
     key/value pair: ``"<functionality_name>": ["value1","value2"]``.
 
 Usage in Templates
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~
 
 As explained in the configuration section above,
 a functionality can be used in the Mako templates as long as it has been

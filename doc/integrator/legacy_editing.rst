@@ -1,4 +1,4 @@
-.. _integrator_editing:
+.. _integrator_legacy_editing:
 
 Editing (with CGXP)
 ===================
