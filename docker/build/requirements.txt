@@ -14,7 +14,7 @@ defusedxml==0.5.0  # geoportal
 dogpile.cache==0.6.4  # geoportal
 flake8==3.5.0  # lint
 flake8-copyright==0.2.0  # lint
-Fiona==1.7.9.post1  # geoportal-raster
+Fiona==1.7.10  # geoportal-raster
 GeoAlchemy2==0.4.0  # geoportal
 geojson==2.3.0  # geoportal
 glob2==0.6  # ngeo
@@ -45,7 +45,7 @@ pytest-cov==2.5.1  # tests
 python-dateutil==2.6.1  # geoportal
 PyYAML==3.12  # geoportal
 rasterio==1.0a10  # geoportal-raster
-Shapely==1.6.1  # geoportal
+Shapely==1.6.2  # geoportal
 Sphinx==1.6.5  # doc
 sphinx-prompt==1.0.0  # doc
 tilecloud==0.5.0.dev6  # Tile generation
