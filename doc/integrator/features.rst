@@ -11,7 +11,6 @@ Features that require additional steps (most of the time):
 .. toctree::
    :maxdepth: 1
 
-   ngeo
    object_editing
    raster
    print

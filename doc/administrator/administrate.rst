@@ -172,6 +172,25 @@ On ``WMTS`` layer we have the following specific attributes:
     If you want to define ``WMS layers`` but no ``Query layers``,
     set it to ``[]``.
 
+Queryable WMTS
+~~~~~~~~~~~~~~
+To make the WMTS queryable, you should add the following ``Metadata``:
+
+* ``ogcServer`` with the name of the used ``OGC server``,
+* ``wmsLayers`` or ``queryLayers`` with the layers to query (groups not supported).
+
+Print WMTS in high quality
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+To print the layers in high quality, you should add the following ``Metadata``:
+
+* ``ogcServer`` with the name of the used ``OGC server``,
+* ``wmsLayers`` or ``printLayers`` with the layers to print.
+
+.. note::
+
+   See also: :ref:`administrator_administrate_metadata`, :ref:`administrator_administrate_ogc_server`.
+
+
 LayerGroup
 ----------
 
@@ -184,3 +203,9 @@ Attributes:
 * ``Internal WMS``: if true it can include only ``Internal WMS`` layers,
   if false it can include only ``external WMS`` or ``WMTS`` layers (deprecated in v2).
 * ``Group of base layers``: if not ``Internal WMS`` replace radio button by check box (deprecated in v2).
+
+Background layers
+-----------------
+
+The background layers are configured in the database, with the layer group named
+**background** (by default).
