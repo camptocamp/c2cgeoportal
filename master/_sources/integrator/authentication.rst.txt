@@ -1,10 +1,8 @@
-.. _integrator_authentication:
-
 Authentication
-==============
+--------------
 
 The default policy
-------------------
+~~~~~~~~~~~~~~~~~~
 
 By default ``c2cgeoportal`` applications use an *auth ticket* authentication
 policy (``AuthTktAuthenticationPolicy``). With this policy the user name is
@@ -14,7 +12,7 @@ The policy is created, and added to the application's configuration, in the
 application's main ``__init__.py`` file.
 
 Using another policy
---------------------
+~~~~~~~~~~~~~~~~~~~~
 
 When using ``AuthTktAuthenticationPolicy`` an "auth ticket" cookie should be
 set in the request for the user to be identified. In some applications using
@@ -168,7 +166,7 @@ an alias in a project-specific callback and use it instead of the standard
 You should be set at this point.
 
 Custom user validation
-----------------------
+~~~~~~~~~~~~~~~~~~~~~~
 
 For logging in ``c2cgeoportal`` validates the user credentials
 (username/password) by reading the user information from the ``user`` database

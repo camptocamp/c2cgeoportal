@@ -4,15 +4,18 @@
 Customise the application
 =========================
 
-There is two generic ways to customise the application.
+.. toctree::
+   :maxdepth: 2
 
-The ``functionnalities`` and the ``UI metadata``.
+The application can be customised in the following manners:
+
+``functionalities``, ``UI metadata`` and data model extensions.
 
 The functionalities will be attached to the ``role`` and the ``theme``,
 and the UI metadata will be attached to all the elements of the theme.
 
 They should be configured in the vars file, in the ``admin_interface`` /
-``available_functionnalities`` or respectively ``available_metadata``.
+``available_functionalities`` or respectively ``available_metadata``.
 
 It is a list of object who have a ``name`` and a ``type``.
 
@@ -54,3 +57,7 @@ In the admin interface we can use in all the URLs the following special schema:
 
   ``config://my_server/icon.png`` will be transformed into
   the URL ``http://example.com/test/icon.png``.
+
+.. include:: functionality.rst
+
+.. include:: extend_data_model.rst

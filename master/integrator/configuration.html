@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Sub domain &#8212; c2cgeoportal  documentation</title>
+    <title>Configuration Guide for advanced settings &#8212; c2cgeoportal  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -24,8 +24,8 @@
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="TileGeneration" href="tilegeneration.html" />
-    <link rel="prev" title="Configure short URL" href="shortener.html" />
+    <link rel="next" title="Build configuration" href="make.html" />
+    <link rel="prev" title="Upgrading a GeoMapFish application" href="upgrade_application.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -41,23 +41,24 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="sub-domain">
-<span id="integrator-subdomain"></span><h1>Sub domain<a class="headerlink" href="#sub-domain" title="Permalink to this headline">¶</a></h1>
-<p>If you want to optimize the parallelization of static resource download you
-can use sub domain to do that you should define in the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code>
-something like this:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="c1"># The used sub domain for the static resources</span>
-<span class="n">subdommains</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;s1&#39;</span><span class="p">,</span> <span class="s1">&#39;s2&#39;</span><span class="p">,</span> <span class="s1">&#39;s3&#39;</span><span class="p">,</span> <span class="s1">&#39;s4&#39;</span><span class="p">]</span>
-</pre></div>
-</div>
-<p>Those sub domain should obviously be define in the DNS and in the Apache
-vhost. If the application is served on deferent URL and you want to use
-the sub domain on only one of them you can define in the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code>
-the following:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="c1"># The URL template used to generate the sub domain URL</span>
-<span class="c1"># %(sub)s will be replaced by the sub domain value.</span>
-<span class="n">subdomain_url_template</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//%</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span><span class="n">s</span><span class="o">.</span><span class="p">{</span><span class="n">host</span><span class="p">}</span>
-</pre></div>
+  <div class="section" id="configuration-guide-for-advanced-settings">
+<span id="configuration-guide"></span><h1>Configuration Guide for advanced settings<a class="headerlink" href="#configuration-guide-for-advanced-settings" title="Permalink to this headline">¶</a></h1>
+<p>This chapter describes advanced configuration settings.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="make.html">Build configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ngeo.html">ngeo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backend.html">Specific Backend Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="caching.html">Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cluster.html">Create a cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filter.html">Filter (Querier)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fulltext_search.html">Full-text search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internationalization.html">Internationalization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="shortener.html">Configure short URL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="subdomain.html">Sub domain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tilegeneration.html">TileGeneration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="windows_tools.html">Configuring Windows tools required to connect to our servers</a></li>
+</ul>
 </div>
 </div>
 
@@ -74,10 +75,8 @@ the following:</p>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="index.html">Integrator Guide</a><ul>
-  <li><a href="configuration.html">Configuration Guide for advanced settings</a><ul>
-      <li>Previous: <a href="shortener.html" title="previous chapter">Configure short URL</a></li>
-      <li>Next: <a href="tilegeneration.html" title="next chapter">TileGeneration</a></li>
-  </ul></li>
+      <li>Previous: <a href="upgrade_application.html" title="previous chapter">Upgrading a GeoMapFish application</a></li>
+      <li>Next: <a href="make.html" title="next chapter">Build configuration</a></li>
   </ul></li>
   </ul></li>
 </ul>
@@ -85,7 +84,7 @@ the following:</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/integrator/subdomain.rst.txt"
+      <li><a href="../_sources/integrator/configuration.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -111,7 +110,7 @@ the following:</p>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="../_sources/integrator/subdomain.rst.txt"
+      <a href="../_sources/integrator/configuration.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 

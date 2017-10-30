@@ -24,8 +24,8 @@
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Extend the data model" href="extend_data_model.html" />
-    <link rel="prev" title="Use Docker to deploy your application" href="docker.html" />
+    <link rel="next" title="Print version 2.x" href="legacy_print.html" />
+    <link rel="prev" title="CGXP" href="legacy_cgxp.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -42,7 +42,7 @@
           <div class="body" role="main">
             
   <div class="section" id="editing-with-cgxp">
-<span id="integrator-editing"></span><h1>Editing (with CGXP)<a class="headerlink" href="#editing-with-cgxp" title="Permalink to this headline">¶</a></h1>
+<span id="integrator-legacy-editing"></span><h1>Editing (with CGXP)<a class="headerlink" href="#editing-with-cgxp" title="Permalink to this headline">¶</a></h1>
 <p>Any c2cgeoportal application comes with an editing interface, available at
 <code class="docutils literal"><span class="pre">/edit</span></code> (assuming <code class="docutils literal"><span class="pre">/</span></code> is the application’s root URL).</p>
 <p>The editing interface requires the editing plugin (<code class="docutils literal"><span class="pre">cgxp.plugins.Editing</span></code>),
@@ -60,7 +60,7 @@ interface.</p>
 <p>Other customizations, like adding tools to the toolbar, can be done. If layer
 sources and tools are added you will certainly need to edit <code class="docutils literal"><span class="pre">jsbuild/app.cfg</span></code>
 and add scripts in the <code class="docutils literal"><span class="pre">[edit.js]</span></code> sections.</p>
-<p>See the <a class="reference external" href="http://docs.camptocamp.net/cgxp/2.3/lib/plugins/Editing.html">Editing API doc</a> for the list of
+<p>See the <a class="reference external" href="http://docs.camptocamp.net/cgxp/2.2/lib/plugins/Editing.html">Editing API doc</a> for the list of
 options the plugin can receive.</p>
 <div class="section" id="limitations">
 <h2>Limitations<a class="headerlink" href="#limitations" title="Permalink to this headline">¶</a></h2>
@@ -101,8 +101,10 @@ configuration in <code class="docutils literal"><span class="pre">vars_&lt;proje
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="index.html">Integrator Guide</a><ul>
-      <li>Previous: <a href="docker.html" title="previous chapter">Use Docker to deploy your application</a></li>
-      <li>Next: <a href="extend_data_model.html" title="next chapter">Extend the data model</a></li>
+  <li><a href="legacy.html">Legacy components</a><ul>
+      <li>Previous: <a href="legacy_cgxp.html" title="previous chapter">CGXP</a></li>
+      <li>Next: <a href="legacy_print.html" title="next chapter">Print version 2.x</a></li>
+  </ul></li>
   </ul></li>
   </ul></li>
 </ul>
@@ -110,7 +112,7 @@ configuration in <code class="docutils literal"><span class="pre">vars_&lt;proje
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/integrator/editing.rst.txt"
+      <li><a href="../_sources/integrator/legacy_editing.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -136,7 +138,7 @@ configuration in <code class="docutils literal"><span class="pre">vars_&lt;proje
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="../_sources/integrator/editing.rst.txt"
+      <a href="../_sources/integrator/legacy_editing.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 

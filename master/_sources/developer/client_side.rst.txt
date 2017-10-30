@@ -1,10 +1,43 @@
 .. _developer_client_side:
 
-Client-side development
-=======================
-
-CGXP
+NGEO
 ----
+
+link
+~~~~
+
+Use ngeo in dev mode:
+
+.. prompt:: bash
+
+    git clone git@github.com:camptocamp/ngeo.git
+    cd ngeo
+    npm config set prefix ~/.npm
+    npm link
+
+The `npm config set` command tells npm to use the local folder to store the npm
+packages instead of a system folder.
+
+then:
+
+.. prompt:: bash
+
+    cd <your-project>
+    npm link ngeo
+    make build
+
+unlink
+~~~~~~
+
+Use packaged npm, production mode:
+
+.. prompt:: bash
+
+    cd <your-project>
+    npm unlink ngeo
+
+CGXP (legacy)
+-------------
 
 The UI of c2cgeoportal applications is built from components of the CGXP
 JavaScript library. This library is on GitHub:
@@ -47,44 +80,8 @@ Dependencies
 
 Major dependencies docs:
 
-* `CGXP <http://docs.camptocamp.net/cgxp/2.3/>`_
+* `CGXP <http://docs.camptocamp.net/cgxp/2.2/>`_
 * `GXP <http://gxp.opengeo.org/master/doc/>`_
 * `GeoExt <http://dev.geoext.org/geoext/docs/lib/>`_
 * `OpenLayers <http://dev.openlayers.org/apidocs/files/OpenLayers-js.html>`_
 * `Ext JS <http://docs.sencha.com/ext-js/3-4/>`_
-
-NGEO
-----
-
-link
-~~~~
-
-Use ngeo in dev mode:
-
-.. prompt:: bash
-
-    git clone git@github.com:camptocamp/ngeo.git
-    cd ngeo
-    npm config set prefix ~/.npm
-    npm link
-
-The `npm config set` command tells npm to use the local folder to store the npm
-packages instead of a system folder.
-
-then:
-
-.. prompt:: bash
-
-    cd <your-project>
-    npm link ngeo
-    make build
-
-unlink
-~~~~~~
-
-Use packaged npm, production mode:
-
-.. prompt:: bash
-
-    cd <your-project>
-    npm unlink ngeo
