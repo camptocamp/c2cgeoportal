@@ -50,7 +50,7 @@ If you want a new desktop interface, get the default files as follows:
 
 Edit interface files
 ~~~~~~~~~~~~~~~~~~~~
-In the file ``<package>/static-ngeo/js/<inferface>.js``, adapt the ``goog.provide`` statement to the 
+In the file ``<package>/static-ngeo/js/<inferface>.js``, adapt the ``goog.provide`` statement to the
 name of the new interface. For example, if your package is called "demo" and your new interface is
 called "new", you need to change ``goog.provide('demo_desktop');`` to ``goog.provide('demo_new');``
 
@@ -99,18 +99,18 @@ also used to create the route path,
 
 Site-specific configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-After rebuilding your project and verifying that the new interface has no technical errors, 
+After rebuilding your project and verifying that the new interface has no technical errors,
 some site-specific configuration issues must be considered:
 
    - if you have V1 configuration and this has not yet been migrated to V2 configuration
-     on this DB instance, it must be migrated now (if it is for test purposes, clone the 
+     on this DB instance, it must be migrated now (if it is for test purposes, clone the
      DB first): run script ``.build/venv/bin/themev1tov2``
-   - set default theme of the new interface to the desired one (set "defaultTheme" 
+   - set default theme of the new interface to the desired one (set "defaultTheme"
      in <interface>.html)
-   - set meaningful starting zoom level and center coordinates of new interface, 
+   - set meaningful starting zoom level and center coordinates of new interface,
      in <interface>.js
-   - after rebuilding, to see the changes in the browser, you probably need to clear 
-     the browser cache and your URL parameters, and maybe in addition wait some minutes 
+   - after rebuilding, to see the changes in the browser, you probably need to clear
+     the browser cache and your URL parameters, and maybe in addition wait some minutes
      in order for the server-side to also be completely up-to-date.
 
 Database
@@ -125,8 +125,8 @@ Checker
 
 This section describes how to Enable the checker for the new interface.
 
-We suggest to add only the main checker in the ``defaults``. It is what is done by default. 
-In the ``all`` (``vars.checker.all``) file, check all the ngeo interfaces in standard 
+We suggest to add only the main checker in the ``defaults``. It is what is done by default.
+In the ``all`` (``vars.checker.all``) file, check all the ngeo interfaces in standard
 and debug mode:
 
 .. code:: yaml
