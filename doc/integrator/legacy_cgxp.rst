@@ -127,7 +127,7 @@ You should add the following line in ``desktop.html``, ``edit.html`` and
      <input id="newPassword" name="newPassword" type="password" />
 
 More information about how to configure the interface when using `CGXP` can be
-found in :ref:`integrator_ngeo_add`.
+found in :ref:`integrator_legacy_advanced`.
 
 Back to the ngeo interface
 --------------------------
@@ -150,7 +150,7 @@ by removing these following lines if one of them exists:
     # or
     add_interface(config)
 
-To add an ngeo interface see :ref:`integrator_ngeo_add`.
+To add an ngeo interface, see also :ref:`integrator_ngeo_new_interface`.
 
 If you remove all the `CGXP` interface, remove the ``vars.checker.lang.files`` from your
 project vars file, and the ``checker.lang.files`` from your update_paths.
