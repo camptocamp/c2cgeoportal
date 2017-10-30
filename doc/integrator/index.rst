@@ -4,51 +4,23 @@
 Integrator Guide
 ================
 
+This chapter describes how to install, deploy, and customize a
+c2cgeoportal application. Furthermore, it describes how to
+configure the files of the application.
+
 Content:
 
 .. toctree::
    :maxdepth: 2
 
-   api
-   authentication
-   backend_arcgis
-   backend_geoserver
-   backend_qgis
-   backend
-   caching
-   checker
-   cluster
-   create_application
-   customise
-   docker
-   editing
-   extend_data_model
-   features
-   filter
-   fulltext_search
-   functionality
-   https
-   install_application
-   internationalization
-   intranet
-   legacy_advanced
-   legacy_cgxp
-   legacy_print
-   legacy
-   make
-   ngeo
-   object_editing
-   pdfreport
-   print
-   raster
    requirements
-   reset_password
-   security
-   shortener
-   statistics
-   subdomain
-   tilegeneration
+   create_application
+   install_application
    upgrade_application
-   urllogin
-   windows_tools
-   wmstime
+   configuration
+   customise
+   security
+   features
+   docker
+   operations
+   legacy

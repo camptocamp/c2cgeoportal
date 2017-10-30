@@ -3,7 +3,7 @@
 Print version 2.x
 =================
 
-The print version 2.x cannot be used in the ngeo application be he still can be used in the CGXP application.
+The print version 2.x cannot be used in the ngeo application be it still can be used in the CGXP application.
 
 The print version 3.x and the version 2.x cannot be used together.
 
