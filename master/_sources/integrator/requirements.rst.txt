@@ -52,8 +52,6 @@ The print requires a Tomcat server listening by default on port 8080.
 To change it you should overwrite the ``print_url`` vars in ``config.yaml.in``,
 default is: ``http://localhost:8080/print/pdf/``.
 
-MapFishPrint must be installed in version 3 or later.
-
 Additional notes for Windows users
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

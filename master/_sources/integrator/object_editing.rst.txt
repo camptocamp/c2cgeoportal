@@ -1,7 +1,7 @@
 .. _integrator_objectediting:
 
-ObjectEditing
-=============
+ObjectEditing (only with NGEO)
+==============================
 
 This section describes how to set up editing for one feature at a time in
 c2cgeoportal applications.
@@ -12,7 +12,6 @@ can then be edited and saved.
 Requirements
 ------------
 
-This feature is available only in NGEO.
 The layer has to be editable (see :ref:`administrator_editing`).
 The user has to have the right to edit it (already logged in or using login
 via URL, see :ref:`integrator_urllogin`).

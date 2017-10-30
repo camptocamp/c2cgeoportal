@@ -24,7 +24,7 @@
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Editing (with CGXP)" href="legacy_editing.html" />
+    <link rel="next" title="Print version 2.x" href="legacy_print.html" />
     <link rel="prev" title="Legacy components" href="legacy.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -167,41 +167,6 @@ by removing these following lines if one of them exists:</p>
 <p>If you remove all the <cite>CGXP</cite> interface, remove the <code class="docutils literal"><span class="pre">vars.checker.lang.files</span></code> from your
 project vars file, and the <code class="docutils literal"><span class="pre">checker.lang.files</span></code> from your update_paths.</p>
 </div>
-<div class="section" id="adding-features-in-cgxp">
-<h2>Adding features in CGXP<a class="headerlink" href="#adding-features-in-cgxp" title="Permalink to this headline">¶</a></h2>
-<p>Adding a feature requires adding a <em>plugin</em>  (CGXP plugin) to the user
-interface’s <em>viewer</em>. It may also require additional steps, like adding and
-populating tables in the database.</p>
-<p>A c2cgeoportal project may define multiple viewers. By default a project
-includes two viewers: the <em>main viewer</em> and the <em>editing viewer</em>. The main
-viewer is defined in the <code class="docutils literal"><span class="pre">&lt;package&gt;/templates/viewer.js</span></code> file, while the
-editing viewer is defined in the <code class="docutils literal"><span class="pre">&lt;package&gt;/templates/edit.js</span></code> file. Each
-viewer includes a number of plugins by default; adding/removing features
-involve adding/removing plugins to/from the viewer.</p>
-<p>See <a class="reference external" href="http://docs.camptocamp.net/cgxp/2.2/lib/plugins.html">http://docs.camptocamp.net/cgxp/2.2/lib/plugins.html</a> for the list of available CGXP plugins.</p>
-</div>
-<div class="section" id="enabling-fulltextsearch-plugin">
-<h2>Enabling FullTextSearch plugin<a class="headerlink" href="#enabling-fulltextsearch-plugin" title="Permalink to this headline">¶</a></h2>
-<p>Enabling the <em>full-text search</em> feature involves adding a <code class="docutils literal"><span class="pre">FullTextSearch</span></code>
-plugin to the viewer, and creating and populating a dedicated table in the
-database.</p>
-<p>The viewer should include a <code class="docutils literal"><span class="pre">FullTextSearch</span></code> plugin for the <em>text search</em>
-feature to be available in the user interface.</p>
-<p>See the <a class="reference external" href="http://docs.camptocamp.net/cgxp/2.2/lib/plugins/FullTextSearch.html">FullTextSearch API doc</a> for the
-list of options the plugin can receive.</p>
-<p><em>The main viewer includes a FullTextSearch plugin by default.</em></p>
-</div>
-<div class="section" id="the-print-plugin">
-<h2>The Print plugin<a class="headerlink" href="#the-print-plugin" title="Permalink to this headline">¶</a></h2>
-<p>Adding the <em>print</em> feature to a c2cgeoportal project involves adding
-a <code class="docutils literal"><span class="pre">cgxp.plugins.Print</span></code> plugin to the viewer, and configuring the MapFish
-Print.</p>
-<p>The viewer should include a <code class="docutils literal"><span class="pre">Print</span></code> plugin for the <em>print</em> feature to
-be available in the user interface.</p>
-<p>See the <a class="reference external" href="http://docs.camptocamp.net/cgxp/2.2/lib/plugins/Print.html">Print API doc</a> for the
-list of options the plugin can receive.</p>
-<p><em>The main viewer includes a Print plugin by default.</em></p>
-</div>
 </div>
 
 
@@ -218,9 +183,6 @@ list of options the plugin can receive.</p>
 <li><a class="reference internal" href="#">CGXP</a><ul>
 <li><a class="reference internal" href="#use-the-cgxp-interface">Use the CGXP interface</a></li>
 <li><a class="reference internal" href="#back-to-the-ngeo-interface">Back to the ngeo interface</a></li>
-<li><a class="reference internal" href="#adding-features-in-cgxp">Adding features in CGXP</a></li>
-<li><a class="reference internal" href="#enabling-fulltextsearch-plugin">Enabling FullTextSearch plugin</a></li>
-<li><a class="reference internal" href="#the-print-plugin">The Print plugin</a></li>
 </ul>
 </li>
 </ul>
@@ -229,9 +191,11 @@ list of options the plugin can receive.</p>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="index.html">Integrator Guide</a><ul>
+  <li><a href="features.html">Additional features</a><ul>
   <li><a href="legacy.html">Legacy components</a><ul>
       <li>Previous: <a href="legacy.html" title="previous chapter">Legacy components</a></li>
-      <li>Next: <a href="legacy_editing.html" title="next chapter">Editing (with CGXP)</a></li>
+      <li>Next: <a href="legacy_print.html" title="next chapter">Print version 2.x</a></li>
+  </ul></li>
   </ul></li>
   </ul></li>
   </ul></li>

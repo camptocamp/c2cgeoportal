@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Functionalities &#8212; c2cgeoportal  documentation</title>
+    <title>Customizing the Application using Functionalities &#8212; c2cgeoportal  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -24,6 +24,8 @@
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Install an existing application" href="install_application.html" />
+    <link rel="prev" title="Filter (Querier)" href="filter.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -39,8 +41,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="functionalities">
-<h1>Functionalities<a class="headerlink" href="#functionalities" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="customizing-the-application-using-functionalities">
+<span id="integrator-functionality"></span><h1>Customizing the Application using Functionalities<a class="headerlink" href="#customizing-the-application-using-functionalities" title="Permalink to this headline">¶</a></h1>
 <p>c2cgeoportal provides the concept of <em>functionality</em> that can be used to customize
 the application according to the user’s permissions.</p>
 <p>A functionality may be associated to users through different ways:</p>
@@ -62,7 +64,7 @@ the <code class="docutils literal"><span class="pre">user</span></code> database
 <code class="docutils literal"><span class="pre">functionalities:registered</span></code> configuration variables, as well as any
 functionality associated with his/her role, will be ignored.</p>
 <div class="section" id="configuration">
-<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<span id="integrator-functionality-configuration"></span><h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
 <p>The <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file includes variables for managing <em>functionalities</em>.</p>
 <dl class="docutils">
 <dt><code class="docutils literal"><span class="pre">admin_interface</span></code>/<code class="docutils literal"><span class="pre">available_functionalities</span></code></dt>
@@ -118,9 +120,9 @@ key/value pair: <code class="docutils literal"><span class="pre">&quot;&lt;funct
 </dd>
 </dl>
 </div>
-<div class="section" id="usage-in-templates">
-<h2>Usage in Templates<a class="headerlink" href="#usage-in-templates" title="Permalink to this headline">¶</a></h2>
-<p>As explained in the configuration section above,
+<div class="section" id="using-functionalities-in-templates">
+<h2>Using Functionalities in Templates<a class="headerlink" href="#using-functionalities-in-templates" title="Permalink to this headline">¶</a></h2>
+<p>As explained in the <a class="reference internal" href="#integrator-functionality-configuration"><span class="std std-ref">Configuration</span></a> section above,
 a functionality can be used in the Mako templates as long as it has been
 enabled using the <code class="docutils literal"><span class="pre">functionalities:available_in_templates</span></code> parameter in the
 <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> configuration file.</p>
@@ -274,9 +276,9 @@ taken into account.</p>
             </a></p>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Functionalities</a><ul>
+<li><a class="reference internal" href="#">Customizing the Application using Functionalities</a><ul>
 <li><a class="reference internal" href="#configuration">Configuration</a></li>
-<li><a class="reference internal" href="#usage-in-templates">Usage in Templates</a><ul>
+<li><a class="reference internal" href="#using-functionalities-in-templates">Using Functionalities in Templates</a><ul>
 <li><a class="reference internal" href="#example-of-the-default-basemap-functionality">Example of the default_basemap Functionality</a></li>
 <li><a class="reference internal" href="#limiting-access-to-some-cgxp-plugins-using-functionalities">Limiting Access to some CGXP Plugins using Functionalities</a></li>
 <li><a class="reference internal" href="#using-functionalities-list-to-configure-the-layers-in-the-querybuilder">Using Functionalities list to configure the layers in the QueryBuilder</a></li>
@@ -290,6 +292,10 @@ taken into account.</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+      <li>Previous: <a href="filter.html" title="previous chapter">Filter (Querier)</a></li>
+      <li>Next: <a href="install_application.html" title="next chapter">Install an existing application</a></li>
+  </ul></li>
   </ul></li>
 </ul>
 </div>

@@ -83,8 +83,7 @@ For Docker:
 
 .. prompt:: bash
 
-   ./docker-run --image=camptocamp/geomapfish-build \
-       c2cupgrade --force-docker --new-makefile=Makefile --makefile=testgeomapfish.mk
+   ./docker-run --image=camptocamp/geomapfish-build        c2cupgrade --force-docker --new-makefile=Makefile --makefile=testgeomapfish.mk
 
 And for non-Docker
 
