@@ -5,7 +5,7 @@ Build this doc
 
 .. prompt:: bash
 
-  make doc
+  ./docker-run make doc
 
 The HTML should now be available in the ``doc/_build/html`` directory.
 
@@ -25,4 +25,4 @@ you should execute the following command (in addition to the ``make doc``):
 
 .. prompt:: bash
 
-  make git-attributes
+  ./docker-run make git-attributes
