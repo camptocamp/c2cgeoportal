@@ -19,4 +19,5 @@ This chapter describes advanced configuration settings.
    shortener
    subdomain
    tilegeneration
+   ngeo_new_interface
    windows_tools
