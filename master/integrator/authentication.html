@@ -24,8 +24,6 @@
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Specific configuration for Arcgis" href="backend_arcgis.html" />
-    <link rel="prev" title="JavaScript API" href="api.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -42,7 +40,7 @@
           <div class="body" role="main">
             
   <div class="section" id="authentication">
-<span id="integrator-authentication"></span><h1>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h1>
+<h1>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="the-default-policy">
 <h2>The default policy<a class="headerlink" href="#the-default-policy" title="Permalink to this headline">¶</a></h2>
 <p>By default <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> applications use an <em>auth ticket</em> authentication
@@ -56,8 +54,9 @@ application’s main <code class="docutils literal"><span class="pre">__init__.p
 <p>When using <code class="docutils literal"><span class="pre">AuthTktAuthenticationPolicy</span></code> an “auth ticket” cookie should be
 set in the request for the user to be identified. In some applications using
 another identification mechanism may be needed.</p>
+</div>
 <div class="section" id="example-with-a-remote-user-policy">
-<h3>Example with a “remote user” policy<a class="headerlink" href="#example-with-a-remote-user-policy" title="Permalink to this headline">¶</a></h3>
+<h2>Example with a “remote user” policy<a class="headerlink" href="#example-with-a-remote-user-policy" title="Permalink to this headline">¶</a></h2>
 <p>For example, in a project of ours, the c2cgeoportal application needs to
 integrate with the Nevis single sign-on environment. This SSO system is
 composed of a central auth server, and a proxy running as an Apache module.
@@ -189,7 +188,6 @@ The one registered by the application overwrites it.</p>
 </div>
 <p>You should be set at this point.</p>
 </div>
-</div>
 <div class="section" id="custom-user-validation">
 <h2>Custom user validation<a class="headerlink" href="#custom-user-validation" title="Permalink to this headline">¶</a></h2>
 <p>For logging in <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> validates the user credentials
@@ -228,8 +226,9 @@ LDAP would look like this:</p>
     <span class="k">return</span> <span class="n">default_user_validator</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
 <div class="section" id="custom-user-validation-ldap">
-<h3>Custom user validation - LDAP<a class="headerlink" href="#custom-user-validation-ldap" title="Permalink to this headline">¶</a></h3>
+<h2>Custom user validation - LDAP<a class="headerlink" href="#custom-user-validation-ldap" title="Permalink to this headline">¶</a></h2>
 <p>Full example using pyramid_ldap, see <cite># LDAP</cite> / <cite># END LDAP</cite> blocs.</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 
@@ -360,7 +359,6 @@ LDAP would look like this:</p>
 </div>
 </div>
 </div>
-</div>
 
 
           </div>
@@ -375,14 +373,10 @@ LDAP would look like this:</p>
   <ul>
 <li><a class="reference internal" href="#">Authentication</a><ul>
 <li><a class="reference internal" href="#the-default-policy">The default policy</a></li>
-<li><a class="reference internal" href="#using-another-policy">Using another policy</a><ul>
+<li><a class="reference internal" href="#using-another-policy">Using another policy</a></li>
 <li><a class="reference internal" href="#example-with-a-remote-user-policy">Example with a “remote user” policy</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#custom-user-validation">Custom user validation</a><ul>
+<li><a class="reference internal" href="#custom-user-validation">Custom user validation</a></li>
 <li><a class="reference internal" href="#custom-user-validation-ldap">Custom user validation - LDAP</a></li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
@@ -390,10 +384,6 @@ LDAP would look like this:</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-  <li><a href="index.html">Integrator Guide</a><ul>
-      <li>Previous: <a href="api.html" title="previous chapter">JavaScript API</a></li>
-      <li>Next: <a href="backend_arcgis.html" title="next chapter">Specific configuration for Arcgis</a></li>
-  </ul></li>
   </ul></li>
 </ul>
 </div>

@@ -156,10 +156,10 @@ in the capabilities it can be empty.</li>
 the given layer, used to zoom to visible scale, with WMS if it is empty
 we get the values from the capabilities.</li>
 <li><code class="docutils literal"><span class="pre">Disclaimer</span></code>: optional, copyright of the layer, used by
-<a class="reference external" href="http://docs.camptocamp.net/cgxp/2.3/lib/plugins/Disclaimer.html">Disclaimer</a>.</li>
+<a class="reference external" href="http://docs.camptocamp.net/cgxp/2.2/lib/plugins/Disclaimer.html">Disclaimer</a>.</li>
 <li><code class="docutils literal"><span class="pre">Identifier</span> <span class="pre">attribute</span> <span class="pre">field</span></code>: field used to identify a feature from the
 layer, e.g.: ‘name’, used by
-<a class="reference external" href="http://docs.camptocamp.net/cgxp/2.3/lib/plugins/FeaturesWindow.html">FeaturesWindow</a>.</li>
+<a class="reference external" href="http://docs.camptocamp.net/cgxp/2.2/lib/plugins/FeaturesWindow.html">FeaturesWindow</a>.</li>
 <li><code class="docutils literal"><span class="pre">Restrictions</span> <span class="pre">area</span></code>: the areas throw witch the user can see the layer.</li>
 </ul>
 <p>On <code class="docutils literal"><span class="pre">internal</span> <span class="pre">WMS</span></code> layer we have the following specific attributes:</p>
@@ -202,6 +202,26 @@ If you want to define <code class="docutils literal"><span class="pre">WMS</span
 set it to <code class="docutils literal"><span class="pre">[]</span></code>.</p>
 </div>
 </div>
+<div class="section" id="queryable-wmts">
+<h3>Queryable WMTS<a class="headerlink" href="#queryable-wmts" title="Permalink to this headline">¶</a></h3>
+<p>To make the WMTS queryable, you should add the following <code class="docutils literal"><span class="pre">Metadata</span></code>:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">ogcServer</span></code> with the name of the used <code class="docutils literal"><span class="pre">OGC</span> <span class="pre">server</span></code>,</li>
+<li><code class="docutils literal"><span class="pre">wmsLayers</span></code> or <code class="docutils literal"><span class="pre">queryLayers</span></code> with the layers to query (groups not supported).</li>
+</ul>
+</div>
+<div class="section" id="print-wmts-in-high-quality">
+<h3>Print WMTS in high quality<a class="headerlink" href="#print-wmts-in-high-quality" title="Permalink to this headline">¶</a></h3>
+<p>To print the layers in high quality, you should add the following <code class="docutils literal"><span class="pre">Metadata</span></code>:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">ogcServer</span></code> with the name of the used <code class="docutils literal"><span class="pre">OGC</span> <span class="pre">server</span></code>,</li>
+<li><code class="docutils literal"><span class="pre">wmsLayers</span></code> or <code class="docutils literal"><span class="pre">printLayers</span></code> with the layers to print.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">See also: <a class="reference internal" href="#administrator-administrate-metadata"><span class="std std-ref">Metadata</span></a>, <a class="reference internal" href="#administrator-administrate-ogc-server"><span class="std std-ref">OGC Server</span></a>.</p>
+</div>
+</div>
 </div>
 <div class="section" id="layergroup">
 <h2>LayerGroup<a class="headerlink" href="#layergroup" title="Permalink to this headline">¶</a></h2>
@@ -215,6 +235,11 @@ set it to <code class="docutils literal"><span class="pre">[]</span></code>.</p>
 if false it can include only <code class="docutils literal"><span class="pre">external</span> <span class="pre">WMS</span></code> or <code class="docutils literal"><span class="pre">WMTS</span></code> layers (deprecated in v2).</li>
 <li><code class="docutils literal"><span class="pre">Group</span> <span class="pre">of</span> <span class="pre">base</span> <span class="pre">layers</span></code>: if not <code class="docutils literal"><span class="pre">Internal</span> <span class="pre">WMS</span></code> replace radio button by check box (deprecated in v2).</li>
 </ul>
+</div>
+<div class="section" id="background-layers">
+<h2>Background layers<a class="headerlink" href="#background-layers" title="Permalink to this headline">¶</a></h2>
+<p>The background layers are configured in the database, with the layer group named
+<strong>background</strong> (by default).</p>
 </div>
 </div>
 
@@ -238,9 +263,12 @@ if false it can include only <code class="docutils literal"><span class="pre">ex
 <li><a class="reference internal" href="#wms-layer">WMS layer</a></li>
 <li><a class="reference internal" href="#wmts-layer">WMTS layer</a></li>
 <li><a class="reference internal" href="#layerv1-deprecated-in-v2">layerv1 (deprecated in v2)</a></li>
+<li><a class="reference internal" href="#queryable-wmts">Queryable WMTS</a></li>
+<li><a class="reference internal" href="#print-wmts-in-high-quality">Print WMTS in high quality</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#layergroup">LayerGroup</a></li>
+<li><a class="reference internal" href="#background-layers">Background layers</a></li>
 </ul>
 </li>
 </ul>

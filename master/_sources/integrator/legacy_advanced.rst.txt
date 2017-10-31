@@ -1,4 +1,4 @@
-.. _integrator_advanced:
+.. _integrator_legacy_advanced:
 
 Advanced configuration examples
 ===============================

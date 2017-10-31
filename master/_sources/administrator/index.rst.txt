@@ -4,7 +4,7 @@
 Administrator Guide
 ===================
 
-This chapter describes how to install, deploy, and administrate a c2cgeoportal
+This chapter describes how to administrate a c2cgeoportal
 application.
 
 The application administrator configures and administrates the application
@@ -23,3 +23,4 @@ Content:
    editing
    mapfile
    tinyows
+   wmstime
