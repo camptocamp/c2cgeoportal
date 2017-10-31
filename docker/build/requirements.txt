@@ -45,7 +45,7 @@ pytest-cov==2.5.1  # tests
 python-dateutil==2.6.1  # geoportal
 PyYAML==3.12  # geoportal
 rasterio==1.0a10  # geoportal-raster
-Shapely==1.6.2  # geoportal
+Shapely==1.6.2.post1  # geoportal
 Sphinx==1.6.5  # doc
 sphinx-prompt==1.0.0  # doc
 tilecloud==0.5.0.dev6  # Tile generation
