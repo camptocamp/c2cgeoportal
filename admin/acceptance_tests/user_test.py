@@ -38,7 +38,7 @@ class TestUser():
             filter(User.username == 'babar_9'). \
             one()
 
-        resp = test_app.get('/user/{}/edit'.format(user.id), status=200)
+        resp = test_app.get('/users/{}/edit'.format(user.id), status=200)
 
         assert resp.form['username'].value == user.username
         assert resp.form['email'].value == user.email
@@ -58,7 +58,7 @@ class TestUser():
             one()
 
         resp = test_app.post(
-            '/user/{}/edit'.format(user.id),
+            '/users/{}/edit'.format(user.id),
             {
                 '__formid__': 'deform',
                 '_charset_': 'UTF-8',
@@ -72,7 +72,7 @@ class TestUser():
                 '_password': 'da39a3ee5e6b4b0d3255bfef95601890afd80709',
                 'temp_password': ''},
             status=302)
-        assert resp.location == 'http://localhost/user/{}/edit'.format(user.id)
+        assert resp.location == 'http://localhost/users/{}/edit'.format(user.id)
 
         dbsession.expire(user)
         assert user.username == 'new_name_withéàô'
@@ -89,7 +89,7 @@ class TestUser():
 
     @pytest.mark.usefixtures("test_app")
     def test_view_index_rendering_in_app(self, dbsession, test_app):
-        res = test_app.get('/user/', status=200)
+        res = test_app.get('/users/', status=200)
         res1 = res.click(verbose=True, href='language=en')
         res2 = res1.follow()
         expected = ('[<th data-column-id="username">username</th>,'
@@ -105,7 +105,7 @@ class TestUser():
     @pytest.mark.skip(reason="Translation is not finished")
     @pytest.mark.usefixtures("test_app")
     def test_view_index_rendering_in_app_fr(self, dbsession, test_app):
-        res = test_app.get('/user/', status=200)
+        res = test_app.get('/users/', status=200)
         res1 = res.click(verbose=True, href='language=fr')
         res2 = res1.follow()
         expected = ('[<th data-column-id="username">username</th>,'
@@ -122,7 +122,7 @@ class TestUser():
     @skip_if_travis
     @pytest.mark.usefixtures("selenium", "selenium_app")
     def test_selenium(self, dbsession, selenium):
-        selenium.get('http://127.0.0.1:6543' + '/user/')
+        selenium.get('http://127.0.0.1:6543/users/')
 
         # elem = selenium.find_element_by_xpath("//a[contains(@href,'language=fr')]")
         # elem.click()

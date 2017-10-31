@@ -1,4 +1,5 @@
 import os
+from c2cgeoform.routes import register_models
 
 
 def includeme(config):
@@ -11,4 +12,10 @@ def includeme(config):
     config.add_static_view('static', 'static', cache_max_age=3600)
 
     config.add_route('home', '/')
-    config.include('c2cgeoform.routes')
+
+    from c2cgeoportal_commons.models.main import Role
+    from c2cgeoportal_commons.models.static import User
+    register_models(config, (
+        ('roles', Role),
+        ('users', User)
+    ))

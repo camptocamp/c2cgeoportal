@@ -7,7 +7,7 @@ from colanderalchemy import setup_schema
 setup_schema(None, User)
 
 
-@view_defaults(match_param='table=user')
+@view_defaults(match_param='table=users')
 class UserViews(AbstractViews):
     _list_fields = ['username', 'email']
     _id_field = 'id'

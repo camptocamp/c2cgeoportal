@@ -16,24 +16,37 @@ def insertRolesTestData(dbsession):
 
 @pytest.mark.usefixtures("insertRolesTestData", "transact", "test_app")
 class TestRole():
-    def test_view_index(self, dbsession):
+
+    def _role_by_name(self, dbsession, name):
+        from c2cgeoportal_commons.models.main import Role
+        role = dbsession.query(Role). \
+            filter(Role.name == name). \
+            one()
+        return role
+
+    def test_view_index(self, test_app):
+        test_app.get('/roles/', status=200)
+
+    def test_view_index_list_fields(self, dbsession):
         from c2cgeoportal_admin.views.roles import RoleViews
         info = RoleViews(DummyRequest(dbsession=dbsession)).index()
         assert info['list_fields'][0][0] == 'name'
         assert type(info['list_fields'][0][1]) == str
 
     def test_view_edit(self, dbsession, test_app):
-        resp = test_app.get('/role/11/edit', status=200)
+        role = self._role_by_name(dbsession, 'secretary_10')
+        resp = test_app.get('/roles/{}/edit'.format(role.id), status=200)
         assert resp.form['name'].value == "secretary_10"
         assert resp.form['description'].value == ""
 
     @pytest.mark.usefixtures("test_app")  # route have to be registred for HTTP_FOUND
     def test_submit_update(self, dbsession):
+        role = self._role_by_name(dbsession, 'secretary_11')
         from c2cgeoportal_admin.views.roles import RoleViews
         post = {'__formid__': 'deform',
                 '_charset_': 'UTF-8',
                 'formsubmit': 'formsubmit',
-                'id': '11',
+                'id': str(role.id),
                 'name': 'secretary_with&&',
                 'description': 'here is the fish',
                 'extent': '',
@@ -42,7 +55,7 @@ class TestRole():
                 }
 
         req = DummyRequest(dbsession=dbsession, post=post)
-        req.matchdict.update({'id': '11'})
+        req.matchdict.update({'id': str(role.id)})
         req.matchdict.update({'table': 'role'})
 
         RoleViews(req).save()
@@ -63,7 +76,7 @@ class TestRole():
 
     @pytest.mark.usefixtures("test_app")
     def test_view_index_rendering_in_app(self, dbsession, test_app):
-        res = test_app.get('/role/', status=200)
+        res = test_app.get('/roles/', status=200)
         res1 = res.click(verbose=True, href='language=en')
         res2 = res1.follow()
         expected = ('[<th data-column-id="name">name</th>,'
@@ -78,7 +91,7 @@ class TestRole():
     @pytest.mark.skip(reason="Translation is not finished")
     @pytest.mark.usefixtures("test_app")
     def test_view_index_rendering_in_app_fr(self, dbsession, test_app):
-        res = test_app.get('/role/', status=200)
+        res = test_app.get('/roles/', status=200)
         res1 = res.click(verbose=True, href='language=fr')
         res2 = res1.follow()
         expected = ('[<th data-column-id="name">nom</th>,'
