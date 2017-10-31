@@ -3,6 +3,44 @@
 Upgrading a GeoMapFish application
 ==================================
 
+Preliminary work
+----------------
+
+Depending on your current version of GeoMapFish and the environment of your
+target environment, some preliminary work is necessary before applying the
+update steps via scripts.
+
+GMF 1.X to GMF 2.1
+~~~~~~~~~~~~~~~~~~
+If you are updating directly from a GeoMapFish 1.X version to GeoMapFish 2.1,
+and your target environment contains a new recent of pip (such as found on,
+for example, Debian 9), you need to apply the following changes:
+
+Edit ``CONST_Makefile`` (lines starting with a "+" need to be added;
+lines starting with a "-" need to be removed):
+
+.. code:: yaml
+
+    ...
+    -PIP_INSTALL_ARGS += install --trusted-host pypi.camptocamp.net
+    +PIP_INSTALL_ARGS += install
+    ...
+    $(PIP_CMD) install \
+    -    --index-url http://pypi.camptocamp.net/pypi \
+         '$(PIP_VERSION)' '$(SETUPTOOL_VERSION)'
+    ...
+
+Edit ``CONST_dev-requirements.txt``:
+
+.. code:: yaml
+
+    ...
+    -    --index-url http://pypi.camptocamp.net/pypi
+    -    --find-links http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal
+    ...
+    -c2cgeoportal==1.6.8
+    +c2cgeoportal==2.1.8
+    ...
 
 Updating the application code
 -----------------------------
