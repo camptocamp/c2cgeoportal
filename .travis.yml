@@ -28,7 +28,9 @@ install:
 
 jobs:
   include:
-  - stage: commons
+
+  - stage: Prepare, first tests
+    env: [JOB=test-commons]
     install:
     - sudo apt-get update
     - sudo apt-get autoremove postgis*
@@ -42,7 +44,7 @@ jobs:
     - cd commons
     - make check test
 
-  - stage: admin
+  - env: [JOB=test-admin]
     install:
     - sudo apt-get update
     - sudo apt-get autoremove postgis*
@@ -58,14 +60,27 @@ jobs:
     - cd admin
     - make check test
 
-  - stage: Lint, build Docker images
+  - env: [JOB=build-docker-images]
     install:
+    - docker --version
+    - docker-compose --version
     - python3 -m pip install --requirement=travis/requirements.txt
     script:
     - docker build --tag camptocamp/geomapfish-build-dev:2.3 docker/build
     - docker tag camptocamp/geomapfish-build-dev:2.3 camptocamp/geomapfish-build-dev-travis:${TRAVIS_BUILD_NUMBER}
     - ./docker-run travis/empty-make.sh help
     - ./docker-run make build
+    - docker build --tag camptocamp/geomapfish-commons:2.3 commons
+    - docker tag camptocamp/geomapfish-commons:2.3 camptocamp/geomapfish-commons-travis:${TRAVIS_BUILD_NUMBER}
+    - docker build --tag camptocamp/geomapfish-build-travis:${TRAVIS_BUILD_NUMBER} geoportal
+    - docker login --username ${DOCKER_USERNAME} --password ${DOCKER_PASSWORD}
+    - docker push camptocamp/geomapfish-build-dev-travis:${TRAVIS_BUILD_NUMBER}
+    - docker push camptocamp/geomapfish-commons-travis:${TRAVIS_BUILD_NUMBER}
+    - docker push camptocamp/geomapfish-build-travis:${TRAVIS_BUILD_NUMBER}
+
+  - env: [JOB=lint]
+    if: NOT repo = camptocamp/c2cgeoportal
+    script:
     - ./docker-run make doc
     - ./docker-run make geoportal/c2cgeoportal_geoportal/locale/c2cgeoportal_geoportal.pot
     - ./docker-run make admin/c2cgeoportal_admin/locale/c2cgeoportal_admin.pot
@@ -92,15 +107,8 @@ jobs:
     - |
         [[ `./docker-run id` =~ uid=[0-9]+\(travis\)\ gid=[0-9]+\(geomapfish\)\ groups=[0-9]+\(geomapfish\) ]]
 
-    - docker build --tag camptocamp/geomapfish-commons:2.3 commons
-    - docker tag camptocamp/geomapfish-commons:2.3 camptocamp/geomapfish-commons-travis:${TRAVIS_BUILD_NUMBER}
-    - docker build --tag camptocamp/geomapfish-build-travis:${TRAVIS_BUILD_NUMBER} geoportal
-    - docker login --username ${DOCKER_USERNAME} --password ${DOCKER_PASSWORD}
-    - docker push camptocamp/geomapfish-build-dev-travis:${TRAVIS_BUILD_NUMBER}
-    - docker push camptocamp/geomapfish-commons-travis:${TRAVIS_BUILD_NUMBER}
-    - docker push camptocamp/geomapfish-build-travis:${TRAVIS_BUILD_NUMBER}
-
   - stage: Tests
+    if: NOT repo = camptocamp/c2cgeoportal
     env: [JOB=test-c2cgeoportal]
     before_script:
     # Test c2cgeoportal
@@ -116,6 +124,7 @@ jobs:
     - ./docker-compose-run make tests
 
   - env: [JOB=test-docker-app]
+    if: NOT repo = camptocamp/c2cgeoportal
     before_script:
     - docker build --tag=external-db docker/test-external-db
     - travis/create-new-project.sh
@@ -148,7 +157,8 @@ jobs:
     - travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-compose-run alembic --config geoportal/alembic.ini downgrade base
 
 ## FOR NON DOCKER TESTS
-  - env: [JOB=test-nondocker-app]
+  - stage: Tests
+    env: [JOB=test-nondocker-app]
     before_script:
     - deactivate
     - sudo apt-get remove --assume-yes --force-yes python-zope.interface
@@ -198,32 +208,33 @@ jobs:
     - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run alembic --config geoportal/alembic_static.ini downgrade base
     - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run alembic --config geoportal/alembic.ini downgrade base
 ## END FOR NON DOCKER TESTS
-
   - env: [JOB=test-upgrade]
+    if: NOT repo = camptocamp/c2cgeoportal
     before_script:
     # database for the GeoMapFish application
     - docker build --tag=camptocamp/c2cgeoportal-gis-db docker/gis-db
     - docker run --env=POSTGRES_USER=www-data --env=POSTGRES_PASSWORD=www-data --env=POSTGRES_DB=geomapfish --publish=5432:5432 --detach camptocamp/c2cgeoportal-gis-db
-    - travis/test-upgrade-convert.sh init
+    - travis/test-upgrade-convert.sh init /tmp/travis
     script:
     # Test Upgrade an convert project
-    - travis/test-upgrade-convert.sh docker
-    - travis/test-upgrade-convert.sh todocker
-    - travis/test-upgrade-convert.sh v220-todocker
-    - travis/test-upgrade-convert.sh cleanup
+    - travis/test-upgrade-convert.sh docker /tmp/travis
+    - travis/test-upgrade-convert.sh todocker /tmp/travis
+    - travis/test-upgrade-convert.sh v220-todocker /tmp/travis
+    - travis/test-upgrade-convert.sh cleanup /tmp/travis
 
   - env: [JOB=test-upgrade-nondocker]
+    if: NOT repo = camptocamp/c2cgeoportal
     before_script:
     # database for the GeoMapFish application
     - docker build --tag=camptocamp/c2cgeoportal-gis-db docker/gis-db
     - docker run --env=POSTGRES_USER=www-data --env=POSTGRES_PASSWORD=www-data --env=POSTGRES_DB=geomapfish --publish=5432:5432 --detach camptocamp/c2cgeoportal-gis-db
-    - travis/test-upgrade-convert.sh init
+    - travis/test-upgrade-convert.sh init  /tmp/travis
     script:
     # Test Upgrade an convert project
-    - travis/test-upgrade-convert.sh nondocker
-    - travis/test-upgrade-convert.sh tonondocker
-    - travis/test-upgrade-convert.sh v220-tonondocker
-    - travis/test-upgrade-convert.sh cleanup
+    - travis/test-upgrade-convert.sh nondocker /tmp/travis
+    - travis/test-upgrade-convert.sh tonondocker /tmp/travis
+    - travis/test-upgrade-convert.sh v220-tonondocker /tmp/travis
+    - travis/test-upgrade-convert.sh cleanup  /tmp/travis
 
   - stage: Publish
     env: [JOB=publish-doc]

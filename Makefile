@@ -26,12 +26,13 @@ VALIDATE_PY_TEST_FOLDERS = geoportal/tests
 SPHINX_FILES = $(shell find doc -name "*.rst" -print)
 SPHINX_MAKO_FILES = $(shell find doc -name "*.rst.mako" -print)
 
+HOME=$(HOME_DIR)
 export TX_VERSION = $(shell python geoportal/setup.py --version | awk -F . '{{print $$1"_"$$2}}')
-TX_DEPENDENCIES = $(HOME)/.transifexrc .tx/config
-ifeq (,$(wildcard $(HOME)/.transifexrc))
-TOUCHBACK_TXRC := touch --no-create --date "$(shell date --iso-8601=seconds)" $(HOME)/.transifexrc
+TX_DEPENDENCIES = $(HOME_DIR)/.transifexrc .tx/config
+ifeq (,$(wildcard $(HOME_DIR)/.transifexrc))
+TOUCHBACK_TXRC := touch --no-create --date "$(shell date --iso-8601=seconds)" $(HOME_DIR)/.transifexrc
 else
-TOUCHBACK_TXRC := touch --no-create --date "$(shell stat -c '%y' $(HOME)/.transifexrc)" $(HOME)/.transifexrc
+TOUCHBACK_TXRC := touch --no-create --date "$(shell stat -c '%y' $(HOME_DIR)/.transifexrc)" $(HOME_DIR)/.transifexrc
 endif
 LANGUAGES = fr de it
 export LANGUAGES
@@ -64,12 +65,11 @@ help:
 	@echo
 	@echo  "- pull   		Pull all the needed Docker images"
 	@echo  "- build 		Build and configure the project"
-	@echo  "- buildall		Build, check and test the project"
 	@echo  "- doc 			Build the project documentation"
 	@echo  "- tests 		Perform a number of tests on the code"
 	@echo  "- checks		Perform a number of checks on the code"
 	@echo  "- clean 		Remove generated files"
-	@echo  "- cleanall 		Remove all the build artefacts"
+	@echo  "- clean-all 		Remove all the build artefacts"
 	@echo  "- transifex-send	Send the localisation to Transifex"
 
 .PHONY: pull
@@ -89,12 +89,8 @@ build: $(MAKO_FILES:.mako=) \
 	geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/ \
 	geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/CONST_create_template/
 
-.PHONY: buildall
-buildall: build doc tests checks
-
 .PHONY: doc
 doc: $(BUILD_DIR)/sphinx.timestamp
-
 
 .PHONY: checks
 checks: flake8 git-attributes quote spell
@@ -112,8 +108,8 @@ clean:
 	rm --recursive --force ngeo
 	rm --force $(APPS_FILES)
 
-.PHONY: cleanall
-cleanall: clean
+.PHONY: clean-all
+clean-all: clean
 	rm --force $(PO_FILES)
 	rm --recursive --force $(BUILD_DIR)/*
 
@@ -186,7 +182,7 @@ spell:
 	@codespell geoportal/setup.py $(shell find geoportal/c2cgeoportal_geoportal -name static -prune -or -name '*.py' -print)
 
 # i18n
-$(HOME)/.transifexrc:
+$(HOME_DIR)/.transifexrc:
 	$(PRERULE_CMD)
 	echo "[https://www.transifex.com]" > $@
 	echo "hostname = https://www.transifex.com" >> $@
