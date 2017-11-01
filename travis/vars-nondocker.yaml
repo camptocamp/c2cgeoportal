@@ -1,14 +1,16 @@
+---
+
 extends: vars_nondocker.yaml
 
 vars:
-    checker:
-        lang:
-            files: [ngeo]
-        routes:
-            disable: [printproxy_capabilities]
+  checker:
+    lang:
+      files: [ngeo]
+    routes:
+      disable: [printproxy_capabilities]
 
 update_paths:
-- layers
-- checker.lang
-- checker.routes
-- check_collector.disabled
+  - layers
+  - checker.lang
+  - checker.routes
+  - check_collector.disabled

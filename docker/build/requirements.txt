@@ -53,4 +53,5 @@ tilecloud-chain==1.4.0.dev9  # Tile generation
 transifex-client==0.12.4  # Makefile
 virtualenv==15.1.0  # Makefile
 waitress==1.1.0  # For pcreate
+yamllint==1.9.0  # lint
 zgitignore==0.8.0  # Makefile

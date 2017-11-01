@@ -1,25 +1,27 @@
+---
+
 extends: vars.yaml
 
 vars:
-    dbsessions:
-        travis_test:
-            url: postgresql://{dbuser}:{dbpassword}@external-db:5432/test
+  dbsessions:
+    travis_test:
+      url: postgresql://{dbuser}:{dbpassword}@external-db:5432/test
 
-    layers:
-        enum:
-            test:
-                dbsession: travis_test
-                attributes:
-                    type:
-                        table: main.test
+  layers:
+    enum:
+      test:
+        dbsession: travis_test
+        attributes:
+          type:
+            table: main.test
 
-    checker:
-        lang:
-            files: [ngeo]
-        routes:
-            disable: [printproxy_capabilities]
+  checker:
+    lang:
+      files: [ngeo]
+    routes:
+      disable: [printproxy_capabilities]
 
 update_paths:
-- layers
-- checker.lang
-- checker.routes
+  - layers
+  - checker.lang
+  - checker.routes

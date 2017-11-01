@@ -19,6 +19,7 @@ def clean() {
 dockerBuild {
     try {
         stage('Clean') {
+            checkout scm
             sh 'docker --version'
             sh 'docker-compose --version'
             clean()
@@ -149,6 +150,7 @@ dockerBuild {
         }
     } finally {
         stage('Clean') {
+            checkout scm
             clean()
         }
     }
