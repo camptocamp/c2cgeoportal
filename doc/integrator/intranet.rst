@@ -23,7 +23,7 @@ This page lists the changes that must be applied to add such a functionality.
 
    .. code:: python
 
-       from c2cgeoportal.pyramid_ import create_get_user_from_request
+       from c2cgeoportal_geoportal import create_get_user_from_request
 
    Add the following function:
 
@@ -37,8 +37,8 @@ This page lists the changes that must be applied to add such a functionality.
            user = get_user_from_request(request)
 
            if user is None and request.environ.get('intranet', 0) == '1':
-               from c2cgeoportal.models import DBSession
-               from c2cgeoportal.models import Role
+               from c2cgeoportal_commons.models import DBSession
+               from c2cgeoportal_commons.models import Role
                class O(object):
                    pass
                user = O()
