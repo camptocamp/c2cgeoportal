@@ -25,4 +25,4 @@ you should execute the following command (in addition to the ``make doc``):
 
 .. prompt:: bash
 
-  make git-attributes
+  ./docker-run make git-attributes
