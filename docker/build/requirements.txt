@@ -50,7 +50,7 @@ Sphinx==1.6.5  # doc
 sphinx-prompt==1.0.0  # doc
 tilecloud==0.5.0.dev6  # Tile generation
 tilecloud-chain==1.4.0.dev9  # Tile generation
-transifex-client==0.12.4  # Makefile
+transifex-client==0.12.5  # Makefile
 virtualenv==15.1.0  # Makefile
 waitress==1.1.0  # For pcreate
 yamllint==1.9.0  # lint
