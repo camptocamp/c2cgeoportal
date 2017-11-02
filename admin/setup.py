@@ -48,13 +48,8 @@ with open(os.path.join(HERE, 'requirements.txt')) as f:
 requires = [r for r in requires if r[0:2] != '-e'] + \
     ['c2cgeoportal-commons==' + VERSION]
 
-tests_require = [
-    'WebTest>=1.3.1',  # py3 compat
-    'pytest',
-    'pytest-cov',
-    'flake8==3.5.0',
-    'pytest-selenium',
-]
+with open(os.path.join(HERE, 'requirements-dev.txt')) as f:
+    tests_require = f.read().splitlines()
 
 setup(
     name='c2cgeoportal-admin',

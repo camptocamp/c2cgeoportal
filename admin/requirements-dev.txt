@@ -1,0 +1,5 @@
+flake8==3.5.0
+pytest
+pytest-cov
+pytest-selenium
+WebTest>=1.3.1

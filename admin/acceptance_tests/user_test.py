@@ -1,4 +1,7 @@
+# pylint: disable=no-self-use
+
 import pytest
+import re
 from pyramid.testing import DummyRequest
 from selenium.common.exceptions import NoSuchElementException
 
@@ -93,6 +96,36 @@ class TestUser():
         assert user.email == 'new_mail'
         assert user.role_name == 'secretary_2'
 
+    @pytest.mark.usefixtures("test_app")
+    def test_submit_new(self, dbsession, test_app):
+        from c2cgeoportal_commons.models.static import User
+
+        resp = test_app.post(
+            '/users/new',
+            {
+                '__formid__': 'deform',
+                '_charset_': 'UTF-8',
+                'formsubmit': 'formsubmit',
+                'item_type': 'user',
+                'id': '',
+                'username': 'new_user',
+                'email': 'new_mail',
+                'role_name': 'secretary_2',
+                'is_password_changed': 'false',
+                '_password': 'da39a3ee5e6b4b0d3255bfef95601890afd80709',
+                'temp_password': ''},
+            status=302)
+
+        user = dbsession.query(User). \
+            filter(User.username == 'new_user'). \
+            one()
+
+        assert str(user.id) == re.match('http://localhost/users/(.*)', resp.location).group(1)
+
+        assert user.username == 'new_user'
+        assert user.email == 'new_mail'
+        assert user.role_name == 'secretary_2'
+
     @pytest.mark.usefixtures("raise_db_error_on_query")
     def test_grid_dberror(self, dbsession):
         from c2cgeoportal_admin.views.users import UserViews
@@ -136,11 +169,10 @@ class TestUser():
     @skip_if_travis
     @pytest.mark.usefixtures("selenium", "selenium_app")
     def test_selenium(self, dbsession, selenium):
-        selenium.get('http://127.0.0.1:6543/users/')
+        selenium.get('http://127.0.0.1:6544/users/')
 
-        # elem = selenium.find_element_by_xpath(
-        #     "//a[contains(@href,'language=fr')]")
-        # elem.click()
+        elem = selenium.find_element_by_xpath("//a[contains(@href,'language=en')]")
+        elem.click()
 
         grid_header = selenium.find_element_by_xpath("//div[contains(@id,'grid-header')]")
         elem = grid_header.find_element_by_xpath("//button[@title='Refresh']/following-sibling::*")
@@ -177,7 +209,10 @@ class TestUser():
         user_id = dbsession.query(User). \
             filter(User.username == 'babar_13'). \
             one().id
-        selenium.get('http://127.0.0.1:6543' + '/users/')
+        selenium.get('http://127.0.0.1:6544' + '/users/')
+
+        elem = selenium.find_element_by_xpath("//a[contains(@href,'language=en')]")
+        elem.click()
 
         elem = selenium.find_element_by_xpath("//div[@class='infos']")
         assert 'Showing 1 to 10 of 23 entries' == elem.text
