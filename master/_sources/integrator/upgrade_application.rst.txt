@@ -1,9 +1,11 @@
 .. _integrator_upgrade_application:
 
+==================================
 Upgrading a GeoMapFish application
 ==================================
 
 
+------------------------
 Updating the application
 ------------------------
 
@@ -119,3 +121,21 @@ Upgrade the static schema:
 .. code:: bash
 
    ./docker-run alembic --config alembic_static.ini upgrade head
+
+Contribute to the documentation
+-------------------------------
+
+You can contribute to the documentation by making changes to the git-managed
+files and creating a pull request, just like for any change proposals to
+c2cgeoportal or other git managed projects.
+
+To make changes to the documentation, you need to edit the ``.rst.mako``
+files where available; otherwise directly the ``.rst`` if there is no corresponding
+``mako`` file.
+
+To verify that the syntax of your changes is OK (no trailing whitespace etc.),
+you should execute the following command (in addition to the ``make doc``):
+
+.. prompt:: bash
+
+  make git-attributes

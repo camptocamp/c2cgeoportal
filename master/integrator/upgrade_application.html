@@ -103,10 +103,8 @@ All the files that’s not in this section will be overwritten except:</p>
 </pre><p>And for non-Docker</p>
 <pre class="highlight"><span class="prompt1">./docker-run --image<span class="o">=</span>camptocamp/geomapfish-build c2cupgrade --nondocker --makefile<span class="o">=</span>testgeomapfish.mk</span>
 </pre><p>Then follow the instruction</p>
-</div>
-</div>
 <div class="section" id="upgrade-the-database">
-<h2>Upgrade the database<a class="headerlink" href="#upgrade-the-database" title="Permalink to this headline">¶</a></h2>
+<h4>Upgrade the database<a class="headerlink" href="#upgrade-the-database" title="Permalink to this headline">¶</a></h4>
 <p>The database will be automatically upgraded during the upgrade process.</p>
 <p>To upgrade only the database you can use alembic directly.</p>
 <p>The help:</p>
@@ -119,6 +117,20 @@ All the files that’s not in this section will be overwritten except:</p>
 </div>
 <p>Upgrade the static schema:</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">docker</span><span class="o">-</span><span class="n">run</span> <span class="n">alembic</span> <span class="o">--</span><span class="n">config</span> <span class="n">alembic_static</span><span class="o">.</span><span class="n">ini</span> <span class="n">upgrade</span> <span class="n">head</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="contribute-to-the-documentation">
+<h4>Contribute to the documentation<a class="headerlink" href="#contribute-to-the-documentation" title="Permalink to this headline">¶</a></h4>
+<p>You can contribute to the documentation by making changes to the git-managed
+files and creating a pull request, just like for any change proposals to
+c2cgeoportal or other git managed projects.</p>
+<p>To make changes to the documentation, you need to edit the <code class="docutils literal"><span class="pre">.rst.mako</span></code>
+files where available; otherwise directly the <code class="docutils literal"><span class="pre">.rst</span></code> if there is no corresponding
+<code class="docutils literal"><span class="pre">mako</span></code> file.</p>
+<p>To verify that the syntax of your changes is OK (no trailing whitespace etc.),
+you should execute the following command (in addition to the <code class="docutils literal"><span class="pre">make</span> <span class="pre">doc</span></code>):</p>
+<pre class="highlight"><span class="prompt1">make git-attributes</span>
 </pre></div>
 </div>
 </div>
@@ -140,10 +152,13 @@ All the files that’s not in this section will be overwritten except:</p>
 <li><a class="reference internal" href="#from-a-version-2-3-and-next">From a version 2.3 and next</a></li>
 <li><a class="reference internal" href="#convert-a-version-2-3-to-docker">Convert a version 2.3 to Docker</a></li>
 <li><a class="reference internal" href="#convert-a-version-2-3-to-non-docker">Convert a version 2.3 to non-Docker</a></li>
-<li><a class="reference internal" href="#upgrade-a-version-2-2">Upgrade a version 2.2</a></li>
+<li><a class="reference internal" href="#upgrade-a-version-2-2">Upgrade a version 2.2</a><ul>
+<li><a class="reference internal" href="#upgrade-the-database">Upgrade the database</a></li>
+<li><a class="reference internal" href="#contribute-to-the-documentation">Contribute to the documentation</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#upgrade-the-database">Upgrade the database</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
