@@ -49,7 +49,7 @@
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">make doc</span>
+</style><span class="prompt1">./docker-run make doc</span>
 </pre><p>The HTML should now be available in the <code class="docutils literal"><span class="pre">doc/_build/html</span></code> directory.</p>
 <div class="section" id="contribute-to-the-documentation">
 <h2>Contribute to the documentation<a class="headerlink" href="#contribute-to-the-documentation" title="Permalink to this headline">¶</a></h2>
@@ -61,7 +61,7 @@ files where available; otherwise directly the <code class="docutils literal"><sp
 <code class="docutils literal"><span class="pre">mako</span></code> file.</p>
 <p>To verify that the syntax of your changes is OK (no trailing whitespace etc.),
 you should execute the following command (in addition to the <code class="docutils literal"><span class="pre">make</span> <span class="pre">doc</span></code>):</p>
-<pre class="highlight"><span class="prompt1">make git-attributes</span>
+<pre class="highlight"><span class="prompt1">./docker-run make git-attributes</span>
 </pre></div>
 </div>
 

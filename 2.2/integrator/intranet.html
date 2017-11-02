@@ -59,7 +59,7 @@ The assigned role must obviously have been defined in the administration interfa
 <p>This page lists the changes that must be applied to add such a functionality.</p>
 <ol class="arabic">
 <li><p class="first">Edit <code class="docutils literal"><span class="pre">&lt;package&gt;/__init__.py</span></code>. Add the following line:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">c2cgeoportal.pyramid_</span> <span class="k">import</span> <span class="n">_create_get_user_from_request</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">c2cgeoportal.pyramid_</span> <span class="k">import</span> <span class="n">create_get_user_from_request</span>
 </pre></div>
 </div>
 <p>Add the following function:</p>
@@ -67,7 +67,7 @@ The assigned role must obviously have been defined in the administration interfa
     <span class="k">if</span> <span class="s1">&#39;anonymous&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">params</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="n">get_user_from_request</span> <span class="o">=</span> <span class="n">_create_get_user_from_request</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">settings</span><span class="p">)</span>
+    <span class="n">get_user_from_request</span> <span class="o">=</span> <span class="n">create_get_user_from_request</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">settings</span><span class="p">)</span>
     <span class="n">user</span> <span class="o">=</span> <span class="n">get_user_from_request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">request</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;intranet&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span><span class="p">:</span>
