@@ -1,8 +1,10 @@
 .. _integrator_upgrade_application:
 
+==================================
 Upgrading a GeoMapFish application
 ==================================
 
+----------------
 Preliminary work
 ----------------
 
@@ -11,7 +13,10 @@ target environment, some preliminary work is necessary before applying the
 update steps via scripts.
 
 GMF 1.X to GMF 2.1
-~~~~~~~~~~~~~~~~~~
+==================
+
+pip dependency
+--------------
 If you are updating directly from a GeoMapFish 1.X version to GeoMapFish 2.1,
 and your target environment contains a new recent of pip (such as found on,
 for example, Debian 9), you need to apply the following changes:
@@ -42,6 +47,12 @@ Edit ``CONST_dev-requirements.txt``:
     +c2cgeoportal==2.1.8
     ...
 
+usage of intranet detection
+---------------------------
+If you are using automatic login via intranet detection, beware that the necessary code
+has changed with GMF 2.1. See :ref:`integrator_intranet` and update your code accordingly.
+
+-----------------------------
 Updating the application code
 -----------------------------
 
@@ -65,7 +76,7 @@ Then run:
 
 Where ``<makefile>`` is your user make file (``<user>.mk``).
 
-
+------------------------
 Upgrading an application
 ------------------------
 
@@ -129,6 +140,7 @@ And follow the instructions.
       ``.build\venv\Scripts\...`` instead of ``.build\venv\bin\...`` in all given
       commands
 
+--------------------
 Upgrade the database
 --------------------
 

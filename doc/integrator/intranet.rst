@@ -19,19 +19,11 @@ Example of accepted IP setting:
 
 This page lists the changes that must be applied to add such a functionality.
 
-1. Upgrade the CGXP submodule to the last version of branch 1.4.
-
-2. Edit ``<package>/__init__.py``. Replace
+1. Edit ``<package>/__init__.py``. Add the following line:
 
    .. code:: python
 
-       from c2cgeoportal.pyramid_ import locale_negotiator
-
-   by
-
-   .. code:: python
-
-       from c2cgeoportal.pyramid_ import locale_negotiator, get_user_from_request
+       from c2cgeoportal.pyramid_ import _create_get_user_from_request
 
    Add the following function:
 
@@ -41,10 +33,12 @@ This page lists the changes that must be applied to add such a functionality.
            if 'anonymous' in request.params:
                return None
 
+           get_user_from_request = _create_get_user_from_request(request.registry.settings)
            user = get_user_from_request(request)
+
            if user is None and request.environ.get('intranet', 0) == '1':
                from c2cgeoportal.models import DBSession, Role
-               class O:
+               class O(object):
                    pass
                user = O()
                user.username = request.registry.settings.get('intranet_default_user', 'Intranet')
@@ -52,7 +46,9 @@ This page lists the changes that must be applied to add such a functionality.
                user.is_password_changed = True
                try:
                    rolename = request.registry.settings.get('intranet_default_role', 'intranet')
+                   user.role_name = rolename
                    user.role = DBSession.query(Role).filter_by(name=rolename).one()
+                   user.role_id = -1
                    user.id = -1
                except:
                    request.environ['authFailed'] = True
@@ -73,7 +69,7 @@ This page lists the changes that must be applied to add such a functionality.
                                    name='user', reify=True
        )
 
-3. In ``apache/wsgi.conf.mako`` add to ``<Location /${instanceid}/wsgi>``:
+2. In ``apache/wsgi.conf.mako`` add to ``<Location /${instanceid}/wsgi>``:
 
    .. code:: apache
 
@@ -85,7 +81,7 @@ This page lists the changes that must be applied to add such a functionality.
 
        SetEnvIf x-forwarded-for ${intranet_ip} intranet=1
 
-4. In the ``vars`` section of ``vars_<package>.yaml`` add
+3. In the ``vars`` section of ``vars_<package>.yaml`` add
 
    .. code:: yaml
 
@@ -94,13 +90,13 @@ This page lists the changes that must be applied to add such a functionality.
        intranet_default_user = 'Intranet'
        intranet_default_role = 'role_intranet'
 
-5. At the end of ``<package>.mk`` add
+4. At the end of ``<package>.mk`` add
 
    .. code:: make
 
         CONFIG_VARS += intranet_default_user intranet_default_role
 
-6. In ``<package>/templates/index.html`` replace
+5. In ``<package>/templates/index.html`` replace
 
    .. code:: python
 
@@ -115,7 +111,7 @@ This page lists the changes that must be applied to add such a functionality.
        %>
        <script type="text/javascript" src="${request.route_url('viewer')}${extra_params}${anonymous_param}"></script>
 
-7. In ``<package>/templates/viewer.js`` and ``<package>/templates/edit.js`` add at the beginning:
+6. In ``<package>/templates/viewer.js`` and ``<package>/templates/edit.js`` add at the beginning:
 
    .. code:: python
 
