@@ -51,6 +51,18 @@ span.prompt1:before {
 }
 </style><span class="prompt1">make doc</span>
 </pre><p>The HTML should now be available in the <code class="docutils literal"><span class="pre">doc/_build/html</span></code> directory.</p>
+<div class="section" id="contribute-to-the-documentation">
+<h2>Contribute to the documentation<a class="headerlink" href="#contribute-to-the-documentation" title="Permalink to this headline">¶</a></h2>
+<p>You can contribute to the documentation by making changes to the git-managed
+files and creating a pull request, just like for any change proposals to
+c2cgeoportal or other git managed projects.</p>
+<p>To make changes to the documentation, you need to edit the <code class="docutils literal"><span class="pre">.rst.mako</span></code>
+files where available; otherwise directly the <code class="docutils literal"><span class="pre">.rst</span></code> if there is no corresponding
+<code class="docutils literal"><span class="pre">mako</span></code> file.</p>
+<p>To verify that the syntax of your changes is OK (no trailing whitespace etc.),
+you should execute the following command (in addition to the <code class="docutils literal"><span class="pre">make</span> <span class="pre">doc</span></code>):</p>
+<pre class="highlight"><span class="prompt1">make git-attributes</span>
+</pre></div>
 </div>
 
 
@@ -61,7 +73,15 @@ span.prompt1:before {
         <div class="sphinxsidebarwrapper">
             <p class="logo"><a href="index.html">
               <img class="logo" src="_static/camptocamp.png" alt="Logo"/>
-            </a></p><div class="relations">
+            </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Build this doc</a><ul>
+<li><a class="reference internal" href="#contribute-to-the-documentation">Contribute to the documentation</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
@@ -91,7 +111,7 @@ span.prompt1:before {
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2011-2016, Camptocamp.
+      &copy;2011-2017, Camptocamp.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>

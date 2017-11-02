@@ -58,14 +58,8 @@ The assigned role must obviously have been defined in the administration interfa
 </div>
 <p>This page lists the changes that must be applied to add such a functionality.</p>
 <ol class="arabic">
-<li><p class="first">Upgrade the CGXP submodule to the last version of branch 1.4.</p>
-</li>
-<li><p class="first">Edit <code class="docutils literal"><span class="pre">&lt;package&gt;/__init__.py</span></code>. Replace</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">c2cgeoportal.pyramid_</span> <span class="k">import</span> <span class="n">locale_negotiator</span>
-</pre></div>
-</div>
-<p>by</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">c2cgeoportal.pyramid_</span> <span class="k">import</span> <span class="n">locale_negotiator</span><span class="p">,</span> <span class="n">get_user_from_request</span>
+<li><p class="first">Edit <code class="docutils literal"><span class="pre">&lt;package&gt;/__init__.py</span></code>. Add the following line:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">c2cgeoportal.pyramid_</span> <span class="k">import</span> <span class="n">_create_get_user_from_request</span>
 </pre></div>
 </div>
 <p>Add the following function:</p>
@@ -73,10 +67,12 @@ The assigned role must obviously have been defined in the administration interfa
     <span class="k">if</span> <span class="s1">&#39;anonymous&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">params</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
 
+    <span class="n">get_user_from_request</span> <span class="o">=</span> <span class="n">_create_get_user_from_request</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">settings</span><span class="p">)</span>
     <span class="n">user</span> <span class="o">=</span> <span class="n">get_user_from_request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+
     <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">request</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;intranet&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span><span class="p">:</span>
         <span class="kn">from</span> <span class="nn">c2cgeoportal.models</span> <span class="k">import</span> <span class="n">DBSession</span><span class="p">,</span> <span class="n">Role</span>
-        <span class="k">class</span> <span class="nc">O</span><span class="p">:</span>
+        <span class="k">class</span> <span class="nc">O</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
             <span class="k">pass</span>
         <span class="n">user</span> <span class="o">=</span> <span class="n">O</span><span class="p">()</span>
         <span class="n">user</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;intranet_default_user&#39;</span><span class="p">,</span> <span class="s1">&#39;Intranet&#39;</span><span class="p">)</span>
@@ -84,7 +80,9 @@ The assigned role must obviously have been defined in the administration interfa
         <span class="n">user</span><span class="o">.</span><span class="n">is_password_changed</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">rolename</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;intranet_default_role&#39;</span><span class="p">,</span> <span class="s1">&#39;intranet&#39;</span><span class="p">)</span>
+            <span class="n">user</span><span class="o">.</span><span class="n">role_name</span> <span class="o">=</span> <span class="n">rolename</span>
             <span class="n">user</span><span class="o">.</span><span class="n">role</span> <span class="o">=</span> <span class="n">DBSession</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Role</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">rolename</span><span class="p">)</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
+            <span class="n">user</span><span class="o">.</span><span class="n">role_id</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
             <span class="n">user</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
         <span class="k">except</span><span class="p">:</span>
             <span class="n">request</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;authFailed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
@@ -204,7 +202,7 @@ The assigned role must obviously have been defined in the administration interfa
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2011-2016, Camptocamp.
+      &copy;2011-2017, Camptocamp.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
