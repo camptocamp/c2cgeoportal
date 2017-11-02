@@ -47,6 +47,46 @@
             
   <div class="section" id="upgrading-a-geomapfish-application">
 <span id="integrator-upgrade-application"></span><h1>Upgrading a GeoMapFish application<a class="headerlink" href="#upgrading-a-geomapfish-application" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="preliminary-work">
+<h2>Preliminary work<a class="headerlink" href="#preliminary-work" title="Permalink to this headline">¶</a></h2>
+<p>Depending on your current version of GeoMapFish and the environment of your
+target environment, some preliminary work is necessary before applying the
+update steps via scripts.</p>
+<div class="section" id="gmf-1-x-to-gmf-2-1">
+<h3>GMF 1.X to GMF 2.1<a class="headerlink" href="#gmf-1-x-to-gmf-2-1" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="pip-dependency">
+<h4>pip dependency<a class="headerlink" href="#pip-dependency" title="Permalink to this headline">¶</a></h4>
+<p>If you are updating directly from a GeoMapFish 1.X version to GeoMapFish 2.1,
+and your target environment contains a new recent of pip (such as found on,
+for example, Debian 9), you need to apply the following changes:</p>
+<p>Edit <code class="docutils literal"><span class="pre">CONST_Makefile</span></code> (lines starting with a &#8220;+&#8221; need to be added;
+lines starting with a &#8220;-&#8221; need to be removed):</p>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span>...
+-PIP_INSTALL_ARGS += install --trusted-host pypi.camptocamp.net
++PIP_INSTALL_ARGS += install
+...
+$(PIP_CMD) install     -    --index-url http://pypi.camptocamp.net/pypi          &#39;$(PIP_VERSION)&#39; &#39;$(SETUPTOOL_VERSION)&#39;
+...
+</pre></div>
+</div>
+<p>Edit <code class="docutils literal"><span class="pre">CONST_dev-requirements.txt</span></code>:</p>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="o">...</span>
+<span class="o">-</span>    <span class="o">--</span><span class="n">index</span><span class="o">-</span><span class="n">url</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">pypi</span><span class="o">.</span><span class="n">camptocamp</span><span class="o">.</span><span class="n">net</span><span class="o">/</span><span class="n">pypi</span>
+<span class="o">-</span>    <span class="o">--</span><span class="n">find</span><span class="o">-</span><span class="n">links</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">pypi</span><span class="o">.</span><span class="n">camptocamp</span><span class="o">.</span><span class="n">net</span><span class="o">/</span><span class="n">internal</span><span class="o">-</span><span class="n">pypi</span><span class="o">/</span><span class="n">index</span><span class="o">/</span><span class="n">c2cgeoportal</span>
+<span class="o">...</span>
+<span class="o">-</span><span class="n">c2cgeoportal</span><span class="o">==</span><span class="mf">1.6</span><span class="o">.</span><span class="mi">8</span>
+<span class="o">+</span><span class="n">c2cgeoportal</span><span class="o">==</span><span class="mf">2.1</span><span class="o">.</span><span class="mi">8</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="usage-of-intranet-detection">
+<h4>usage of intranet detection<a class="headerlink" href="#usage-of-intranet-detection" title="Permalink to this headline">¶</a></h4>
+<p>If you are using automatic login via intranet detection, beware that the necessary code
+has changed with GMF 2.1. See <a class="reference internal" href="intranet.html#integrator-intranet"><span class="std std-ref">Intranet Users Detection</span></a> and update your code accordingly.</p>
+</div>
+</div>
+</div>
 <div class="section" id="updating-the-application-code">
 <h2>Updating the application code<a class="headerlink" href="#updating-the-application-code" title="Permalink to this headline">¶</a></h2>
 <p>Verify that you have in your <code class="docutils literal"><span class="pre">project.yaml.mako</span></code> file the following <code class="docutils literal"><span class="pre">template_vars</span></code>: <code class="docutils literal"><span class="pre">package</span></code>, <code class="docutils literal"><span class="pre">srid</span></code>, <code class="docutils literal"><span class="pre">extent</span></code>, <code class="docutils literal"><span class="pre">apache_vhost</span></code>, for example:</p>
@@ -160,6 +200,14 @@ commands</p>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Upgrading a GeoMapFish application</a><ul>
+<li><a class="reference internal" href="#preliminary-work">Preliminary work</a><ul>
+<li><a class="reference internal" href="#gmf-1-x-to-gmf-2-1">GMF 1.X to GMF 2.1</a><ul>
+<li><a class="reference internal" href="#pip-dependency">pip dependency</a></li>
+<li><a class="reference internal" href="#usage-of-intranet-detection">usage of intranet detection</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li><a class="reference internal" href="#updating-the-application-code">Updating the application code</a></li>
 <li><a class="reference internal" href="#upgrading-an-application">Upgrading an application</a></li>
 <li><a class="reference internal" href="#upgrade-the-database">Upgrade the database</a></li>
@@ -199,7 +247,7 @@ commands</p>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2011-2016, Camptocamp.
+      &copy;2011-2017, Camptocamp.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.9</a>
