@@ -76,30 +76,31 @@ span.prompt1:before {
 </pre><dl class="docutils">
 <dt>Change the version in the following files:</dt>
 <dd><ul class="first last simple">
-<li><code class="docutils literal"><span class="pre">.travis.yml</span></code> (deploy branches)</li>
-<li><code class="docutils literal"><span class="pre">Makefile</span></code> (<code class="docutils literal"><span class="pre">VERSION</span></code>)</li>
-<li><code class="docutils literal"><span class="pre">Dockerfile</span></code> (in <code class="docutils literal"><span class="pre">FROM</span></code> and ngeo package)</li>
-<li><code class="docutils literal"><span class="pre">travis/git-modif</span></code></li>
+<li><code class="docutils literal"><span class="pre">.travis.yml</span></code> (<code class="docutils literal"><span class="pre">MAIN_BRANCH</span></code>, <code class="docutils literal"><span class="pre">MAJOR_VERSION</span></code>)</li>
+<li><code class="docutils literal"><span class="pre">Jenkinsfile</span></code> (<code class="docutils literal"><span class="pre">MAIN_BRANCH</span></code>, <code class="docutils literal"><span class="pre">MAJOR_VERSION</span></code>)</li>
+<li><code class="docutils literal"><span class="pre">Makefile</span></code> (<code class="docutils literal"><span class="pre">MAIN_BRANCH</span></code>, <code class="docutils literal"><span class="pre">MAJOR_VERSION</span></code>)</li>
+<li><code class="docutils literal"><span class="pre">docker-run</span></code> (<code class="docutils literal"><span class="pre">version</span></code>)</li>
 </ul>
 </dd>
 </dl>
 <p>Commit your changes:</p>
-<pre class="highlight"><span class="prompt1">git add .travis.yml Makefile Dockerfile travis/git-modif</span>
+<pre class="highlight"><span class="prompt1">git add .travis.yml Jenkinsfile Makefile docker-run</span>
 <span class="prompt1">git commit -m <span class="s2">&quot;Create the version &lt;version&gt; branch&quot;</span></span>
 </pre><p>Go back to the master branch:</p>
 <pre class="highlight"><span class="prompt1">git checkout master</span>
 <span class="prompt1">git merge &lt;version&gt;</span>
-</pre><p>Edit the version in the <code class="docutils literal"><span class="pre">setup.py</span></code> to be <code class="docutils literal"><span class="pre">&lt;version</span> <span class="pre">+</span> <span class="pre">1&gt;</span></code>.</p>
-<dl class="docutils">
+</pre><dl class="docutils">
 <dt>Change back the version in the following files:</dt>
 <dd><ul class="first last simple">
-<li>Makefile (VERSION)</li>
-<li>Dockerfile</li>
+<li><code class="docutils literal"><span class="pre">.travis.yml</span></code> (<code class="docutils literal"><span class="pre">MAIN_BRANCH</span></code>, <code class="docutils literal"><span class="pre">MAJOR_VERSION</span></code>)</li>
+<li><code class="docutils literal"><span class="pre">Jenkinsfile</span></code> (<code class="docutils literal"><span class="pre">MAIN_BRANCH</span></code>, <code class="docutils literal"><span class="pre">MAJOR_VERSION</span></code>)</li>
+<li><code class="docutils literal"><span class="pre">Makefile</span></code> (<code class="docutils literal"><span class="pre">MAIN_BRANCH</span></code>, <code class="docutils literal"><span class="pre">MAJOR_VERSION</span></code>)</li>
+<li><code class="docutils literal"><span class="pre">docker-run</span></code> (<code class="docutils literal"><span class="pre">version</span></code>)</li>
 </ul>
 </dd>
 </dl>
 <p>Commit your changes:</p>
-<pre class="highlight"><span class="prompt1">git add setup.py Makefile Dockerfile</span>
+<pre class="highlight"><span class="prompt1">git add .travis.yml Jenkinsfile Makefile docker-run</span>
 <span class="prompt1">git commit -m <span class="s2">&quot;Start version &lt;version + 1&gt;&quot;</span></span>
 </pre><p>Push your changes:</p>
 <pre class="highlight"><span class="prompt1">git push origin &lt;version&gt; master</span>
