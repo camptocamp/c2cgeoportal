@@ -23,7 +23,7 @@ This page lists the changes that must be applied to add such a functionality.
 
    .. code:: python
 
-       from c2cgeoportal_geoportal import _create_get_user_from_request
+       from c2cgeoportal.pyramid_ import create_get_user_from_request
 
    Add the following function:
 
@@ -33,11 +33,12 @@ This page lists the changes that must be applied to add such a functionality.
            if 'anonymous' in request.params:
                return None
 
-           get_user_from_request = _create_get_user_from_request(request.registry.settings)
+           get_user_from_request = create_get_user_from_request(request.registry.settings)
            user = get_user_from_request(request)
 
            if user is None and request.environ.get('intranet', 0) == '1':
-               from c2cgeoportal_commons.models import DBSession, Role
+               from c2cgeoportal.models import DBSession
+               from c2cgeoportal.models import Role
                class O(object):
                    pass
                user = O()
@@ -69,7 +70,19 @@ This page lists the changes that must be applied to add such a functionality.
                                    name='user', reify=True
        )
 
-2. In the ``vars`` section of ``vars.yaml`` add
+2. In ``apache/wsgi.conf.mako`` add to ``<Location /${instanceid}/wsgi>``:
+
+   .. code:: apache
+
+       SetEnvIf REMOTE_ADDR ${intranet_ip} intranet=1
+
+   or, depending on the proxies setup:
+
+   .. code:: apache
+
+       SetEnvIf x-forwarded-for ${intranet_ip} intranet=1
+
+3. In the ``vars`` section of ``vars_<package>.yaml`` add
 
    .. code:: yaml
 
@@ -78,13 +91,13 @@ This page lists the changes that must be applied to add such a functionality.
        intranet_default_user = 'Intranet'
        intranet_default_role = 'role_intranet'
 
-3. At the end of ``<package>.mk`` add
+4. At the end of ``<package>.mk`` add
 
    .. code:: make
 
         CONFIG_VARS += intranet_default_user intranet_default_role
 
-4. In ``<package>/templates/index.html`` replace
+5. In ``<package>/templates/index.html`` replace
 
    .. code:: python
 
@@ -99,7 +112,7 @@ This page lists the changes that must be applied to add such a functionality.
        %>
        <script type="text/javascript" src="${request.route_url('viewer')}${extra_params}${anonymous_param}"></script>
 
-5. In ``<package>/templates/viewer.js`` and ``<package>/templates/edit.js`` add at the beginning:
+6. In ``<package>/templates/viewer.js`` and ``<package>/templates/edit.js`` add at the beginning:
 
    .. code:: python
 
