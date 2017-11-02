@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# wait for the DB to be UP
+while ! echo "import sqlalchemy; sqlalchemy.create_engine('$SQLALCHEMY_URL').connect()" | python 2> /dev/null
+do
+    echo "Waiting for the DB to be reachable"
+    sleep 1;
+done
+
+# wait for PostGIS extension with select count(*) from pg_extension where extname='postgis';
+while [[ $(echo "import sqlalchemy; print(sqlalchemy.create_engine('$SQLALCHEMY_URL').connect().execute(sqlalchemy.sql.text(\"select count(*) from pg_extension where extname='postgis';\")).fetchone()[0]);" | python 2> /dev/null) -ne 1 ]];
+do
+    echo "Waiting for PostGIS extension to be available"
+    sleep 1;
+done
+
+initialize_db_main docker.ini \
+    DEVELOPMENT=$DEVELOPMENT \
+    SQLALCHEMY_URL=$SQLALCHEMY_URL \
+    SQLALCHEMY_POOL_SIZE=$SQLALCHEMY_POOL_SIZE \
+    SQLALCHEMY_MAX_OVERFLOW=$SQLALCHEMY_MAX_OVERFLOW \
+    SQLALCHEMY_URL_SLAVE=$SQLALCHEMY_URL_SLAVE \
+    LOG_TYPE=$LOG_TYPE OTHER_LOG_LEVEL=$OTHER_LOG_LEVEL \
+    APP_LOG_LEVEL=$APP_LOG_LEVEL \
+    C2CWSGI_LOG_LEVEL=$C2CWSGI_LOG_LEVEL \
+    SQL_LOG_LEVEL=$SQL_LOG_LEVEL

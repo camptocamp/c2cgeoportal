@@ -2,6 +2,9 @@
 *.egg-info
 *.pyc
 *~
+build
 .build
 .cache
 node_modules
+versions.json
+

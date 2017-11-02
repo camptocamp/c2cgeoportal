@@ -1,11 +1,41 @@
 # c2cgeoportal_admin
 
-## Checkout
+## Run with docker
 
+To build:
+```
+make build_admin
+```
+
+To build & run the application:
+```
+make run_admin
+```
+
+Open http://localhost:8888/
+
+The following views are also provided by `c2cwsgiutils`:
+ * http://localhost:8888/versions.json
+ * http://localhost:8888/stats.json
+ * http://localhost:8888/health_check?max_level=3
+
+
+## Run without docker
+
+
+### Checkout
+
+```
 git clone git@github.com:camptocamp/c2cgeoportal.git
 cd admin
+```
 
-## Run the application
+### Build the app
+
+Install the virtual env, build the app:
+```
+make build
+```
 
 ### Set up the database
 ```
@@ -16,8 +46,7 @@ sudo -u postgres psql -c "CREATE DATABASE $DATABASE WITH OWNER \"www-data\";"
 sudo -u postgres psql -d $DATABASE -c "CREATE EXTENSION postgis;"
 ```
 
-Optionally update sqlachemy.url in development.ini
-
+Optionally update sqlachemy.url in development.ini or production.ini then:
 ```
 make init_db
 ```
@@ -26,6 +55,8 @@ make init_db
 ```
 make serve
 ```
+
+Open http://localhost:6543/users/
 
 ## Run the tests
 
@@ -44,5 +75,3 @@ sudo -u postgres psql -d $DATABASE -c "CREATE EXTENSION postgis;"
 ```
 make test
 ```
-
-Open http://localhost:6543/user/
