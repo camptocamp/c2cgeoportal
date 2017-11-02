@@ -74,9 +74,14 @@ help:
 	@echo  "- clean-all 		Remove all the build artefacts"
 	@echo  "- transifex-send	Send the localisation to Transifex"
 
-.PHONY: pull
-pull:
+.PHONY: pull-base
+pull-base:
 	for image in `find -name Dockerfile | xargs grep --no-filename FROM | awk '{print $$2}' | sort -u`; do docker pull $$image; done
+
+.PHONY: pull
+pull: pull-base
+	docker pull camptocamp/geomapfish-build-dev:2.3
+	docker pull camptocamp/geomapfish-commons:2.3
 
 .PHONY: build
 build: $(MAKO_FILES:.mako=) \
