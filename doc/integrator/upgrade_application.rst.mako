@@ -4,6 +4,7 @@
 Upgrading a GeoMapFish application
 ==================================
 
+----------------
 Preliminary work
 ----------------
 
@@ -11,27 +12,19 @@ Depending on your current installation, some preliminary work is necessary befor
 update steps via scripts.
 
 GMF 1.X to GMF 2.2
-~~~~~~~~~~~~~~~~~~
+------------------
 If you are updating directly from a GeoMapFish 1.X version to GeoMapFish 2.2,
 you need to follow the update instructions for GeoMapFish 2.1 first before
 proceeding with the update to GeoMapFish 2.2.
 See
 `2.1 upgrade instructions <https://camptocamp.github.io/c2cgeoportal/2.1/integrator/upgrade_application.html>`_.
 
-.. code:: yaml
-
-    ...
-    -    --index-url http://pypi.camptocamp.net/pypi
-    -    --find-links http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal
-    ...
-    -c2cgeoportal==1.6.8
-    +c2cgeoportal==2.1.8
-    ...
-
 usage of intranet detection
 ---------------------------
-If you are using automatic login via intranet detection, beware that the necessary code
-has changed with GMF 2.1. See :ref:`integrator_intranet` and update your code accordingly.
+If you are using automatic login via intranet detection, beware that the name of the function
+to be used has been changed slightly (``_create_get_user_from_request`` instead of
+``create_get_user_from_request``).
+See :ref:`integrator_intranet` and update your code accordingly.
 
 -----------------------------
 Updating the application code
