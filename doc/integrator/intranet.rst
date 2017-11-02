@@ -23,7 +23,7 @@ This page lists the changes that must be applied to add such a functionality.
 
    .. code:: python
 
-       from c2cgeoportal_geoportal import _create_get_user_from_request
+       from c2cgeoportal_geoportal import create_get_user_from_request
 
    Add the following function:
 
@@ -33,7 +33,7 @@ This page lists the changes that must be applied to add such a functionality.
            if 'anonymous' in request.params:
                return None
 
-           get_user_from_request = _create_get_user_from_request(request.registry.settings)
+           get_user_from_request = create_get_user_from_request(request.registry.settings)
            user = get_user_from_request(request)
 
            if user is None and request.environ.get('intranet', 0) == '1':
