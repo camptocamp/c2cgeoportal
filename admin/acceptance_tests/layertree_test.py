@@ -2,7 +2,7 @@
 
 import pytest
 
-from . import skip_if_travis
+from . import skip_if_ci
 
 
 @pytest.fixture(scope="class")
@@ -55,7 +55,7 @@ def layertree_test_data(dbsession):
         dbsession.add(theme)
 
         dbsession.add(LayergroupTreeitem(group=theme, item=groups[i], ordering=0))
-        dbsession.add(LayergroupTreeitem(group=theme, item=groups[i+5], ordering=1))
+        dbsession.add(LayergroupTreeitem(group=theme, item=groups[i + 5], ordering=1))
 
     themes[0].ordering = 1
     themes[3].ordering = 2
@@ -138,17 +138,17 @@ class TestLayerTreeView():
         assert item not in group.children
 
     # @pytest.mark.skip(reason="Waiting for delete views")
-    @skip_if_travis
+    @skip_if_ci
     @pytest.mark.usefixtures("selenium", "selenium_app")
     def test_unlink_selenium(self, dbsession, selenium, selenium_app, layertree_test_data):
         from selenium.webdriver.common.by import By
-        from selenium.webdriver.support import expected_conditions as EC
+        from selenium.webdriver.support import expected_conditions
         from selenium.webdriver.support.ui import WebDriverWait
 
         selenium.get(selenium_app + '/layertree/')
 
         elem = WebDriverWait(selenium, 10).until(
-            EC.element_to_be_clickable((By.ID, "layertree-expand")))
+            expected_conditions.element_to_be_clickable((By.ID, "layertree-expand")))
         elem.click()
 
         for group_id, item_id in (
@@ -158,15 +158,21 @@ class TestLayerTreeView():
             (layertree_test_data['themes'][0].id, layertree_test_data['groups'][0].id),
         ):
             elem = WebDriverWait(selenium, 10).until(
-                EC.element_to_be_clickable((By.CSS_SELECTOR,
-                                            "tr.treegrid-{}.treegrid-parent-{} button.dropdown-toggle".
-                                            format(item_id, group_id))))
+                expected_conditions.element_to_be_clickable((
+                    By.CSS_SELECTOR,
+                    "tr.treegrid-{}.treegrid-parent-{} button.dropdown-toggle".
+                    format(item_id, group_id)
+                ))
+            )
             elem.click()
 
             elem = WebDriverWait(selenium, 10).until(
-                EC.element_to_be_clickable((By.CSS_SELECTOR,
-                                            "tr.treegrid-{}.treegrid-parent-{} li.action-unlink a".
-                                            format(item_id, group_id))))
+                expected_conditions.element_to_be_clickable((
+                    By.CSS_SELECTOR,
+                    "tr.treegrid-{}.treegrid-parent-{} li.action-unlink a".
+                    format(item_id, group_id)
+                ))
+            )
             expected_url = '{}/layertree/unlink/{}/{}'.format(selenium_app, group_id, item_id)
             assert expected_url == elem.get_attribute('data-url')
 

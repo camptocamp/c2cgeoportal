@@ -7,7 +7,7 @@ from . import check_grid_headers
 
 @pytest.fixture(scope='class')
 @pytest.mark.usefixtures('dbsession')
-def insertLayerWMTSTestData(dbsession):
+def insert_layer_wmts_test_data(dbsession):
     from c2cgeoportal_commons.models.main import \
         LayerWMTS, RestrictionArea
 
@@ -31,7 +31,7 @@ def insertLayerWMTSTestData(dbsession):
     dbsession.rollback()
 
 
-@pytest.mark.usefixtures('insertLayerWMTSTestData', 'transact', 'test_app')
+@pytest.mark.usefixtures('insert_layer_wmts_test_data', 'transact', 'test_app')
 class TestLayerWMTS():
 
     def test_view_index_rendering_in_app(self, test_app):
@@ -61,5 +61,5 @@ class TestLayerWMTS():
 
     def test_left_menu(self, test_app):
         html = test_app.get('/layers_wmts/', status=200).html
-        main_menu = html.select_one('a[href='http://localhost/layers_wmts/']').getText()
+        main_menu = html.select_one('a[href="http://localhost/layers_wmts/"]').getText()
         assert 'WMTS Layers' == main_menu

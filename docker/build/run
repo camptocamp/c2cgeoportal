@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
+import json
 import os
 import sys
 import stat
 import subprocess
-import json
 import urllib.parse
 
 
@@ -29,12 +29,29 @@ except subprocess.CalledProcessError:
     del_group = False
 
 try:
-    subprocess.check_call(['useradd', '--groups=docker,sudo', '--shell=/bin/bash', '--uid=' + os.environ['USER_ID'], '--gid=' + os.environ['GROUP_ID'], os.environ['USER_NAME']])
+    subprocess.check_call([
+        'useradd',
+        '--groups=docker,sudo',
+        '--shell=/bin/bash',
+        '--uid=' + os.environ['USER_ID'],
+        '--gid=' + os.environ['GROUP_ID'],
+        os.environ['USER_NAME']
+    ])
 except subprocess.CalledProcessError:
     del_user = False
 
+# Needed wen we run in docker-compose
+if not os.path.exists('/home/' + os.environ['USER_NAME']):
+    os.mkdir('/home/' + os.environ['USER_NAME'])
+    os.chown('/home/' + os.environ['USER_NAME'], int(os.environ['USER_ID']), int(os.environ['GROUP_ID']))
+
 # Be able to write in the build directory
-os.chmod("/build", stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR | stat.S_IRGRP | stat.S_IWGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IWOTH | stat.S_IXOTH)
+os.chmod(
+    "/build",
+    stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR |
+    stat.S_IRGRP | stat.S_IWGRP | stat.S_IXGRP |
+    stat.S_IROTH | stat.S_IWOTH | stat.S_IXOTH
+)
 
 run_file_name = "/tmp/run"
 with open(run_file_name, 'w') as run_file:
@@ -53,7 +70,13 @@ except subprocess.CalledProcessError as e:
         args=repr(args)
     ))
 
-os.chmod(run_file_name, stat.S_IRUSR | stat.S_IXUSR | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH)
+os.chmod(
+    run_file_name,
+    stat.S_IRUSR | stat.S_IXUSR |
+    stat.S_IRGRP | stat.S_IXGRP |
+    stat.S_IROTH | stat.S_IXOTH
+)
+
 try:
     subprocess.check_call(["su", os.environ['USER_NAME'], "-c", run_file_name])
 except subprocess.CalledProcessError as e:

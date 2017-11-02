@@ -6,6 +6,7 @@ final MAIN_BRANCH = 'master'
 env.MAIN_BRANCH = MAIN_BRANCH
 final MAJOR_VERSION = '2.3'
 env.MAJOR_VERSION = MAJOR_VERSION
+env.CI = 'true'
 
 def clean() {
     sh 'git clean -dx --force'
@@ -40,12 +41,15 @@ timeout(time: 2, unit: 'HOURS') {
             stage('Build') {
                 checkout scm
                 sh './docker-run make clean-all'
-                sh './docker-run travis/empty-make.sh help'
+                sh './docker-run travis/empty-make help'
                 sh './docker-run make build'
                 sh './docker-run travis/status.sh'
             }
             stage('Build CI Docker images') {
                 checkout scm
+                sh "docker build --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --tag camptocamp/geomapfish-commons:${MAJOR_VERSION} commons"
+                sh "./docker-run --image=camptocamp/geomapfish-commons grep ${MAJOR_VERSION} /opt/c2cgeoportal_commons/c2cgeoportal_commons.egg-info/PKG-INFO"
+                sh "docker build --tag camptocamp/geomapfish-admin-build:${MAJOR_VERSION} docker/admin-build"
                 sh 'docker build --tag=camptocamp/c2cgeoportal-gis-db:latest docker/gis-db'
                 sh 'docker build --tag=camptocamp/c2cgeoportal-test-mapserver:latest docker/test-mapserver'
             }
@@ -63,17 +67,12 @@ timeout(time: 2, unit: 'HOURS') {
                 sh './docker-run make spell'
                 sh './docker-run travis/status.sh'
                 sh './docker-run travis/test-eof-newline'
-                sh './docker-run travis/empty-make.sh build'
+                sh './docker-run travis/empty-make build'
                 // Test return code
                 sh './docker-run true'
                 sh 'if ./docker-run false; then false; fi'
                 sh './docker-compose-run true'
                 sh 'if ./docker-compose-run false; then false; fi'
-            }
-            stage('Build commons Docker image') {
-                checkout scm
-                sh "docker build --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --tag camptocamp/geomapfish-commons:${MAJOR_VERSION} commons"
-                sh "./docker-run --image=camptocamp/geomapfish-commons grep ${MAJOR_VERSION} /opt/c2cgeoportal_commons/c2cgeoportal_commons.egg-info/PKG-INFO"
             }
             stage('Build geoportal Docker image') {
                 checkout scm
@@ -98,7 +97,7 @@ timeout(time: 2, unit: 'HOURS') {
                 sh 'rm -rf ${HOME}/workspace/testgeomapfish'
                 sh 'docker build --tag=camptocamp/testgeomapfish-external-db:latest docker/test-external-db'
                 sh 'travis/create-new-project.sh ${HOME}/workspace'
-                sh 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ ./docker-run travis/empty-make.sh --makefile=travis.mk help'
+                sh 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ ./docker-run travis/empty-make --makefile=travis.mk help'
                 sh 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ ./docker-run make --makefile=travis.mk build'
                 try {
                     sh 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ docker-compose up -d'
@@ -116,13 +115,14 @@ timeout(time: 2, unit: 'HOURS') {
                 } finally {
                     sh 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ docker-compose down'
                 }
-                sh 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ ./docker-run travis/empty-make.sh --makefile=travis.mk build'
+                sh 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ ./docker-run travis/empty-make --makefile=travis.mk build'
                 sh 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ ./docker-run make --makefile=travis.mk checks'
                 sh '''find \
                     ${HOME}/workspace/testgeomapfish/geoportal/setup.py \
                     ${HOME}/workspace/testgeomapfish/geoportal/testgeomapfish_geoportal/*.py \
                     ${HOME}/workspace/testgeomapfish/geoportal/testgeomapfish_geoportal/views \
-                    ${HOME}/workspace/testgeomapfish/commons/setup.py ${HOME}/workspace/testgeomapfish/commons/testgeomapfish_commons \
+                    ${HOME}/workspace/testgeomapfish/commons/setup.py \
+                    ${HOME}/workspace/testgeomapfish/commons/testgeomapfish_commons \
                     -name \\*.py | xargs travis/squote'''
                 sh 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ ./docker-run travis/status.sh'
                 sh 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ ./docker-run make --makefile=empty-vars.mk geoportal/config.yaml'

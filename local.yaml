@@ -1,0 +1,5 @@
+---
+extends: vars.yaml
+
+vars:
+  dbhost: localhost

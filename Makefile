@@ -21,7 +21,12 @@ else
 VERSION ?= $(MAIN_BRANCH)
 endif
 
-VALIDATE_PY_FOLDERS = geoportal/setup.py geoportal/c2cgeoportal_geoportal/*.py geoportal/c2cgeoportal_geoportal/lib geoportal/c2cgeoportal_geoportal/scripts geoportal/c2cgeoportal_geoportal/views
+VALIDATE_PY_FOLDERS = commons admin \
+	geoportal/setup.py \
+	geoportal/c2cgeoportal_geoportal/*.py \
+	geoportal/c2cgeoportal_geoportal/lib \
+	geoportal/c2cgeoportal_geoportal/scripts \
+	geoportal/c2cgeoportal_geoportal/views
 VALIDATE_TEMPLATE_PY_FOLDERS = geoportal/c2cgeoportal_geoportal/scaffolds
 VALIDATE_PY_TEST_FOLDERS = geoportal/tests
 
@@ -80,8 +85,8 @@ pull-base:
 
 .PHONY: pull
 pull: pull-base
-	docker pull camptocamp/geomapfish-build-dev:2.3
-	docker pull camptocamp/geomapfish-commons:2.3
+	docker pull camptocamp/geomapfish-build-dev:$(MAJOR_VERSION)
+	docker pull camptocamp/geomapfish-commons:$(MAJOR_VERSION)
 
 .PHONY: build
 build: $(MAKO_FILES:.mako=) \
@@ -96,7 +101,11 @@ build: $(MAKO_FILES:.mako=) \
 	geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/ \
 	geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/CONST_create_template/ \
 	commons/Dockerfile \
-	geoportal/Dockerfile
+	commons/tests.yaml \
+	admin/tests.ini \
+	geoportal/Dockerfile \
+	docker/admin-build/Dockerfile \
+	docker/admin-build/npm-packages
 
 .PHONY: doc
 doc: $(BUILD_DIR)/sphinx.timestamp
@@ -140,7 +149,9 @@ prepare-tests: $(BUILD_DIR)/requirements.timestamp \
 
 .PHONY: tests
 tests:
+	py.test --cov=commons/c2cgeoportal_commons commons/acceptance_tests
 	py.test --cov=geoportal/c2cgeoportal_geoportal geoportal/tests
+	py.test --cov=admin/c2cgeoportal_admin admin/acceptance_tests
 
 $(BUILD_DIR)/db.timestamp: geoportal/tests/functional/alembic.ini
 	alembic --config=geoportal/tests/functional/alembic.ini --name=main upgrade head
@@ -152,21 +163,16 @@ flake8:
 	# E712 is not compatible with SQLAlchemy
 	find $(VALIDATE_PY_FOLDERS) -name \*.py | xargs flake8 \
 		--ignore=E712 \
-		--max-line-length=110 \
 		--copyright-check \
 		--copyright-min-file-size=1 \
 		--copyright-regexp="Copyright \(c\) ([0-9][0-9][0-9][0-9]-)?$(shell date +%Y), Camptocamp SA"
-	flake8 --max-line-length=110 \
-		--ignore=E712 \
-		--max-line-length=110 \
+	git grep --files-with-match '/usr/bin/env python' | grep -v Makefile | xargs flake8 \
 		--copyright-check \
 		--copyright-min-file-size=1 \
-		--copyright-regexp="Copyright \(c\) ([0-9][0-9][0-9][0-9]-)?$(shell date +%Y), Camptocamp SA" \
-		travis/quote
-	find $(VALIDATE_TEMPLATE_PY_FOLDERS) -name \*.py | xargs flake8 --max-line-length=110
+		--copyright-regexp="Copyright \(c\) ([0-9][0-9][0-9][0-9]-)?$(shell date +%Y), Camptocamp SA"
+	find $(VALIDATE_TEMPLATE_PY_FOLDERS) -name \*.py | xargs flake8 --config=setup.cfg
 	find $(VALIDATE_PY_TEST_FOLDERS) -name \*.py | xargs flake8 \
 		--ignore=E501 \
-		--max-line-length=110 \
 		--copyright-check \
 		--copyright-min-file-size=1 \
 		--copyright-regexp="Copyright \(c\) ([0-9][0-9][0-9][0-9]-)?$(shell date +%Y), Camptocamp SA"
@@ -188,19 +194,16 @@ git-attributes:
 
 .PHONY: quote
 quote:
-	travis/quote `find \
-		geoportal/c2cgeoportal_geoportal/lib \
-		geoportal/c2cgeoportal_geoportal/scaffolds/create \
-		geoportal/c2cgeoportal_geoportal/templates \
-		geoportal/tests \
-		geoportal/c2cgeoportal_geoportal/views \
-		-name '*.py'` geoportal/c2cgeoportal_geoportal/*.py geoportal/setup.py
+	travis/squote geoportal/setup.py \
+		`find commons/c2cgeoportal_commons -name '*.py'` \
+		`find admin/c2cgeoportal_admin -name '*.py'` \
 
 .PHONY: spell
 spell:
-	@codespell --ignore-words=spell-ignore-words.txt \
-		geoportal/setup.py \
-		$(shell find geoportal/c2cgeoportal_geoportal -name static -prune -or -name '*.py' -print)
+	codespell --ignore-words=spell-ignore-words.txt geoportal/setup.py \
+		$(shell find commons/c2cgeoportal_commons -name '*.py' -print) \
+		$(shell find geoportal/c2cgeoportal_geoportal -name static -prune -or -name '*.py' -print) \
+		$(shell find admin/c2cgeoportal_admin -name '*.py' -print)
 
 YAML_FILES ?= $(shell find -name ngeo -prune -or \( -name "*.yml" -or -name "*.yaml" \) -print)
 .PHONY: yamllint
@@ -282,6 +285,10 @@ geoportal/c2cgeoportal_geoportal/scaffolds/create/docker-run: docker-run
 	cp $< $@
 
 geoportal/npm-packages: ngeo/package.json $(BUILD_DIR)/requirements.timestamp geoportal/c2cgeoportal_geoportal/scripts/import_ngeo_apps.py
+	$(PRERULE_CMD)
+	$(BUILD_DIR)/venv/bin/import-ngeo-apps --package _ $< $@
+
+docker/admin-build/npm-packages: admin/package.json $(BUILD_DIR)/requirements.timestamp geoportal/c2cgeoportal_geoportal/scripts/import_ngeo_apps.py
 	$(PRERULE_CMD)
 	$(BUILD_DIR)/venv/bin/import-ngeo-apps --package _ $< $@
 

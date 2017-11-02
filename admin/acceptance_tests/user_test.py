@@ -5,7 +5,7 @@ import re
 from pyramid.testing import DummyRequest
 from selenium.common.exceptions import NoSuchElementException
 
-from . import skip_if_travis, check_grid_headers
+from . import skip_if_ci, check_grid_headers
 
 
 @pytest.fixture(scope='class')
@@ -138,7 +138,7 @@ class TestUser():
         check_grid_headers(test_app, '/users/', expected, language='fr')
 
     # in order to make this work, had to install selenium gecko driver
-    @skip_if_travis
+    @skip_if_ci
     @pytest.mark.usefixtures("selenium", "selenium_app")
     def test_selenium(self, dbsession, selenium, selenium_app, users_test_data):
         selenium.get(selenium_app + '/users/')
@@ -171,7 +171,7 @@ class TestUser():
         assert user.email == 'new_email'
 
     # in order to make this work, had to install selenium gecko driver
-    @skip_if_travis
+    @skip_if_ci
     @pytest.mark.usefixtures("selenium", "selenium_app")
     def test_delete_selenium(self, selenium, selenium_app, users_test_data):
         user = users_test_data['users'][13]
@@ -182,9 +182,9 @@ class TestUser():
 
         from selenium.webdriver.common.by import By
         from selenium.webdriver.support.ui import WebDriverWait
-        from selenium.webdriver.support import expected_conditions as EC
+        from selenium.webdriver.support import expected_conditions
         elem = WebDriverWait(selenium, 10).until(
-            EC.presence_of_element_located((By.XPATH, "//div[@class='infos']")))
+            expected_conditions.presence_of_element_located((By.XPATH, "//div[@class='infos']")))
         assert 'Showing 1 to 10 of 23 entries' == elem.text
         elem = selenium.find_element_by_xpath("//button[@title='Refresh']/following-sibling::*")
         elem.click()

@@ -29,7 +29,6 @@
 # either expressed or implied, of the FreeBSD Project.
 
 import os
-import io
 import subprocess
 
 exit_code = 0
@@ -37,7 +36,9 @@ FNULL = open(os.devnull, 'w')
 
 for filename in subprocess.check_output(["git", "ls-files"]).decode("utf-8").split("\n"):
     if os.path.isfile(filename):
-        if subprocess.call("git check-attr -a '{}' | grep ' text: set'".format(filename), shell=True, stdout=FNULL) == 0:
+        if subprocess.call(
+                "git check-attr -a '{}' | grep ' text: set'".format(filename),
+                shell=True, stdout=FNULL) == 0:
             size = os.stat(filename).st_size
             if size != 0:
                 with open(filename) as f:

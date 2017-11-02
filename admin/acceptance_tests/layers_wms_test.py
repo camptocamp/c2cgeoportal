@@ -3,12 +3,12 @@
 import pytest
 from pyramid.testing import DummyRequest
 
-from . import skip_if_travis, check_grid_headers
+from . import skip_if_ci, check_grid_headers
 
 
 @pytest.fixture(scope='class')
 @pytest.mark.usefixtures("dbsession")
-def insertLayerWMSTestData(dbsession):
+def insert_layer_wms_test_data(dbsession):
     from c2cgeoportal_commons.models.main import \
         LayerWMS, OGCServer, RestrictionArea
 
@@ -35,7 +35,7 @@ def insertLayerWMSTestData(dbsession):
     dbsession.rollback()
 
 
-@pytest.mark.usefixtures("insertLayerWMSTestData", "transact", "test_app")
+@pytest.mark.usefixtures("insert_layer_wms_test_data", "transact", "test_app")
 class TestLayerWMS():
 
     def test_view_index_rendering_in_app(self, test_app):
@@ -68,7 +68,7 @@ class TestLayerWMS():
         main_menu = html.select_one('a[href="http://localhost/layers_wms/"]').getText()
         assert 'WMS Layers' == main_menu
 
-    @skip_if_travis
+    @skip_if_ci
     @pytest.mark.usefixtures("selenium", "selenium_app")
     def test_selenium(self, selenium, selenium_app):
         selenium.get(selenium_app + '/layers_wms/')
@@ -78,9 +78,9 @@ class TestLayerWMS():
 
         from selenium.webdriver.common.by import By
         from selenium.webdriver.support.ui import WebDriverWait
-        from selenium.webdriver.support import expected_conditions as EC
+        from selenium.webdriver.support import expected_conditions
         elem = WebDriverWait(selenium, 10).until(
-            EC.presence_of_element_located((By.XPATH, "//div[@class='infos']")))
+            expected_conditions.presence_of_element_located((By.XPATH, "//div[@class='infos']")))
         assert 'Showing 1 to 10 of 25 entries' == elem.text
         elem = selenium.find_element_by_xpath("//button[@title='Refresh']/following-sibling::*")
         elem.click()

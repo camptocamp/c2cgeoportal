@@ -5,7 +5,7 @@ import pytest
 
 @pytest.fixture(scope='class')
 @pytest.mark.usefixtures("dbsession")
-def insertUsersTestData(dbsession):
+def insert_users_test_data(dbsession):
     from c2cgeoportal_commons.models.static import User
     user = User("babar")
     dbsession.begin_nested()
@@ -14,8 +14,8 @@ def insertUsersTestData(dbsession):
     dbsession.rollback()
 
 
-@pytest.mark.usefixtures("insertUsersTestData", "transact")
-class TestUser():
+@pytest.mark.usefixtures("insert_users_test_data", "transact")
+class TestUser:
 
     @pytest.mark.usefixtures("test_app")
     def test_view_rendering_in_app(self, dbsession, test_app):

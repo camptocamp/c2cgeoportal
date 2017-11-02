@@ -135,7 +135,7 @@ class Functionality(Base):
         self.value = value
         self.description = description
 
-    def __unicode__(self):
+    def __unicode__(self) -> str:
         return '{0!s} - {1!s}'.format(self.name or '', self.value or '')  # pragma: no cover
 
 
@@ -861,7 +861,7 @@ class Dimension(Base):
             cascade='save-update,merge,delete,delete-orphan',
             info={
                 'colanderalchemy': {
-                      'exclude': True
+                    'exclude': True
                 }
             }
         )

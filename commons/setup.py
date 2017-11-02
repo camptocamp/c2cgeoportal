@@ -73,6 +73,7 @@ setup(
             'pytest',
             'pytest-cov',
             'flake8==3.5.0',
+            'PyYAML',
         ],
     },
     entry_points={

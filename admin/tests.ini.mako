@@ -15,9 +15,9 @@ pyramid.available_languages = fr en
 pyramid.includes =
     pyramid_debugtoolbar
 
-sqlalchemy.url = postgresql://www-data:www-data@localhost/c2cgeoportal_tests
+sqlalchemy.url = postgresql://${dbuser}:${dbpassword}@${dbhost}:${dbport}/${db}
 schema = main
-srid = 3857
+srid = 21781
 
 healthcheck_host = localhost
 

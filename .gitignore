@@ -3,6 +3,7 @@
 *.pyo
 **/__pycache__/
 /commons/Dockerfile
+/commons/tests.yaml
 /commons/c2cgeoportal_commons.egg-info/
 /geoportal/Dockerfile
 /geoportal/package.json
@@ -23,8 +24,11 @@
 /geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/
 /geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/CONST_create_template/
 /geoportal/c2cgeoportal_geoportal.egg-info/
+/admin/tests.ini
 /admin/c2cgeoportal_admin/locale/
 /admin/c2cgeoportal_admin.egg-info/
+/docker/admin-build/Dockerfile
+/docker/admin-build/npm-packages
 /docker/test-mapserver/mapserver.map
 /doc/index.rst
 /dist/

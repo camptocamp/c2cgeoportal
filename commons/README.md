@@ -14,7 +14,7 @@ make install
 ```
 sudo -u postgres psql -c "CREATE USER \"www-data\" WITH PASSWORD 'www-data';"
 
-DATABASE=c2cgeoportal_tests
+DATABASE=geomapfish_tests
 sudo -u postgres psql -c "CREATE DATABASE $DATABASE WITH OWNER \"www-data\";"
 sudo -u postgres psql -d $DATABASE -c "CREATE EXTENSION postgis;"
 
