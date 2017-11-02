@@ -3,10 +3,7 @@ import sys
 import transaction
 from logging.config import fileConfig
 
-from pyramid.paster import (
-    get_appsettings,
-    setup_logging,
-)
+from pyramid.paster import get_appsettings
 
 from pyramid.scripts.common import parse_vars
 
