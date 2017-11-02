@@ -28,13 +28,19 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+import os
 from setuptools import setup, find_packages
 
 README = open('README.md').read()
 
+TRAVIS_TAG = os.environ.get("GIT_TAG")
+MAJOR_VERSION = os.environ.get("MAJOR_VERSION")
+VERSION = TRAVIS_TAG if TRAVIS_TAG is not None and TRAVIS_TAG != "" else \
+    MAJOR_VERSION if MAJOR_VERSION is not None and MAJOR_VERSION != "" else "dev"
+
 setup(
     name="c2cgeoportal-commons",
-    version="2.3.0.dev0",
+    version=VERSION,
     description="c2cgeoportal commons",
     long_description=README,
     classifiers=[

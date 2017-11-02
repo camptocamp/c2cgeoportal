@@ -38,10 +38,10 @@ def main():
     parser.add_argument("paths", nargs="+")
     args = parser.parse_args()
 
-    subprocess.check_output(["git", "fetch", "origin", "master:master"])
+    subprocess.check_output(["git", "fetch", "origin", "{0}:{0}".foramt(os.environ["MAIN_BRANCH"])])
     files = []
     for path in args.paths:
-        diff = subprocess.check_output(["git", "diff", "--name-only", "master", "--", path]).decode("utf-8").strip()
+        diff = subprocess.check_output(["git", "diff", "--name-only", os.environ["MAIN_BRANCH"], "--", path]).decode("utf-8").strip()
         files += [] if diff == "" else [
             l.strip()
             for l in diff.split("\n")

@@ -13,10 +13,12 @@ PRERULE_CMD ?= @echo "Build \033[1;34m$@\033[0m due modification on \033[1;34m$?
 endif
 endif
 
+export MAJOR_VERSION = 2.3
+export MAIN_BRANCH = master
 ifdef TRAVIS_TAG
 VERSION ?= $(TRAVIS_TAG)
 else
-VERSION ?= master
+VERSION ?= $(MAIN_BRANCH)
 endif
 
 VALIDATE_PY_FOLDERS = geoportal/setup.py geoportal/c2cgeoportal_geoportal/*.py geoportal/c2cgeoportal_geoportal/lib geoportal/c2cgeoportal_geoportal/scripts geoportal/c2cgeoportal_geoportal/views geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_alembic
@@ -27,7 +29,7 @@ SPHINX_FILES = $(shell find doc -name "*.rst" -print)
 SPHINX_MAKO_FILES = $(shell find doc -name "*.rst.mako" -print)
 
 HOME=$(HOME_DIR)
-export TX_VERSION = $(shell python geoportal/setup.py --version | awk -F . '{{print $$1"_"$$2}}')
+export TX_VERSION = $(shell echo $(MAJOR_VERSION) | awk -F . '{{print $$1"_"$$2}}')
 TX_DEPENDENCIES = $(HOME_DIR)/.transifexrc .tx/config
 ifeq (,$(wildcard $(HOME_DIR)/.transifexrc))
 TOUCHBACK_TXRC := touch --no-create --date "$(shell date --iso-8601=seconds)" $(HOME_DIR)/.transifexrc
@@ -87,7 +89,9 @@ build: $(MAKO_FILES:.mako=) \
 	geoportal/npm-packages \
 	geoportal/c2cgeoportal_geoportal/scaffolds/create/package.json_tmpl \
 	geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/ \
-	geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/CONST_create_template/
+	geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/CONST_create_template/ \
+	commons/Dockerfile \
+	geoportal/Dockerfile
 
 .PHONY: doc
 doc: $(BUILD_DIR)/sphinx.timestamp

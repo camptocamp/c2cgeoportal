@@ -41,8 +41,13 @@ Read the `Documentation <https://camptocamp.github.io/c2cgeoportal/master/>`_.
 
 `Sources <https://github.com/camptocamp/c2cgeoportal/>`_"""
 
+TRAVIS_TAG = os.environ.get("GIT_TAG")
+MAJOR_VERSION = os.environ.get("MAJOR_VERSION")
+VERSION = TRAVIS_TAG if TRAVIS_TAG is not None and TRAVIS_TAG != "" else \
+    MAJOR_VERSION if MAJOR_VERSION is not None and MAJOR_VERSION != "" else "dev"
+
 install_requires = [
-    "c2cgeoportal-commons",
+    "c2cgeoportal-commons==" + VERSION,
     "c2cwsgiutils",
     "c2c.template>=1.4.0",  # Makefile
     "dateutils",
@@ -80,7 +85,7 @@ tests_require = install_requires + [
 
 setup(
     name="c2cgeoportal-geoportal",
-    version="2.3.0.dev0",
+    version=VERSION,
     description="c2cgeoportal",
     long_description=README,
     classifiers=[

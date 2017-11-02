@@ -47,6 +47,7 @@ ${BUILD_DIR}/requirements.timestamp: ${BUILD_DIR}/venv.timestamp ../commons/setu
 
 ${BUILD_DIR}/requirements-dev.timestamp: ${BUILD_DIR}/venv.timestamp setup.py
 	#Install the project in editable mode with its testing requirements.
+	${VENV}/bin/pip install -e "../commons"
 	${VENV}/bin/pip install -e ".[testing]"
 	touch $@
 
