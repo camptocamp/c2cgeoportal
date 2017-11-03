@@ -6,6 +6,7 @@ __pycache__/
 /project.yaml
 /docker-compose.yaml
 /docker-compose-build.yaml
+/alembic.ini
 /testdb/11-schemas.sql
 /testdb/12-alembic.sql
 /testdb/13-alembic-static.sql
@@ -34,8 +35,6 @@ __pycache__/
 /geoportal/config.yaml
 /geoportal/development.ini
 /geoportal/production.ini
-/geoportal/alembic.ini
-/geoportal/alembic_static.ini
 /geoportal/{{package}}_geoportal.egg-info/
 /geoportal/{{package}}_geoportal/static/lib/cgxp/
 /geoportal/{{package}}_geoportal/locale/*/LC_MESSAGES/*.mo

@@ -5,6 +5,7 @@ __pycache__/
 /project.yaml
 /docker-compose.yaml
 /docker-compose-build.yaml
+/alembic.ini
 /testdb/11-schemas.sql
 /testdb/12-alembic.sql
 /testdb/13-alembic-static.sql
@@ -16,8 +17,6 @@ __pycache__/
 /mapserver/replace_db.sh
 /geoportal/jsbuild/app.cfg
 /geoportal/Dockerfile
-/geoportal/alembic.ini
-/geoportal/alembic_static.ini
 /geoportal/development.ini
 /geoportal/production.ini
 /geoportal/config.yaml

@@ -31,12 +31,6 @@ files_to_move:
   - from: CONST_print_url
     to: print_url
     version: 2.3
-  - from: alembic.ini.mako
-    to: geoportal/alembic.ini.mako
-    version: 2.3
-  - from: alembic_static.ini.mako
-    to: geoportal/alembic_static.ini.mako
-    version: 2.3
   - from: .dockerignore
     to: geoportal/.dockerignore
     version: 2.3
@@ -109,5 +103,11 @@ files_to_remove:
     version: 2.3
     from: 2.2
   - file: testgeomapfish.egg-info
+    version: 2.3
+    from: 2.2
+  - file: CONST_alembic
+    version: 2.3
+    from: 2.2
+  - file: alembic_static.ini.mako
     version: 2.3
     from: 2.2

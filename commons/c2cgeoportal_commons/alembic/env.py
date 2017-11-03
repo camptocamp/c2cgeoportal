@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2017, Camptocamp SA
+# Copyright (c) 2014-2017, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,6 @@
 from alembic import context
 from sqlalchemy import engine_from_config, pool
 from logging.config import fileConfig
-import os
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -38,21 +37,6 @@ config = context.config
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
 fileConfig(config.config_file_name)
-
-# Allow to define the DB URL from the environment
-if 'SQLALCHEMY_URL' in os.environ:  # pragma: nocover
-    config.set_main_option('sqlalchemy.url', os.environ['SQLALCHEMY_URL'])
-
-# add your model's MetaData object here
-# for 'autogenerate' support
-# from myapp import mymodel
-# target_metadata = mymodel.Base.metadata
-target_metadata = None
-
-# other values from the config, defined by the needs of env.py,
-# can be acquired:
-# my_important_option = config.get_main_option("my_important_option")
-# ... etc.
 
 
 def run_migrations_offline():  # pragma: no cover
@@ -67,10 +51,8 @@ def run_migrations_offline():  # pragma: no cover
     script output.
 
     """
-    url = config.get_main_option('sqlalchemy.url')
     context.configure(
-        url=url,
-        target_metadata=target_metadata,
+        url=config.get_main_option('sqlalchemy.url'),
         version_table_schema=config.get_main_option('version_table_schema'),
     )
 
@@ -88,12 +70,12 @@ def run_migrations_online():
     engine = engine_from_config(
         config.get_section(config.config_ini_section),
         prefix='sqlalchemy.',
-        poolclass=pool.NullPool)
+        poolclass=pool.NullPool
+    )
 
     connection = engine.connect()
     context.configure(
         connection=connection,
-        target_metadata=target_metadata,
         version_table_schema=config.get_main_option('version_table_schema'),
     )
 

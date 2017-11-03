@@ -135,19 +135,19 @@ When a new release or a new version is done you should do the following tasks:
      .. prompt:: bash
 
         ./docker-compose-run alembic \
-            --config tests/functional/alembic.ini \
-            heads
+            --config=tests/functional/alembic.ini \
+            --name=main heads
         ./docker-compose-run alembic \
-            --config tests/functional/alembic_static.ini \
-            heads
+            --config=tests/functional/alembic.ini \
+            --name=static heads
 
      If yes create the merge with:
 
      .. prompt:: bash
 
         ./docker-compose-run alembic \
-            --config tests/functional/alembic[_static].ini \
-            merge --message "Merge <src> and <dst> branches" \
+            --config=tests/functional/alembic.ini --name=[main|static] \
+            merge --message="Merge <src> and <dst> branches" \
             <rev 1> <rev 2>
 
      Remove the import and replace the core of the method by ``pass`` in the generated file.
