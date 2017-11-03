@@ -2,8 +2,6 @@
 *.pyc
 *.pyo
 **/__pycache__/
-**/.project
-**/.pydevproject
 /geoportal/npm-packages
 /geoportal/tests/functional/test.ini
 /geoportal/tests/functional/alembic.ini
