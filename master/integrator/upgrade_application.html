@@ -112,11 +112,11 @@ All the files that’s not in this section will be overwritten except:</p>
 </pre></div>
 </div>
 <p>Upgrade the main schema:</p>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">docker</span><span class="o">-</span><span class="n">run</span> <span class="n">alembic</span> <span class="o">--</span><span class="n">config</span> <span class="n">alembic</span><span class="o">.</span><span class="n">ini</span> <span class="n">upgrade</span> <span class="n">head</span>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">docker</span><span class="o">-</span><span class="n">run</span> <span class="n">alembic</span> <span class="o">--</span><span class="n">name</span><span class="o">=</span><span class="n">main</span> <span class="n">upgrade</span> <span class="n">head</span>
 </pre></div>
 </div>
 <p>Upgrade the static schema:</p>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">docker</span><span class="o">-</span><span class="n">run</span> <span class="n">alembic</span> <span class="o">--</span><span class="n">config</span> <span class="n">alembic_static</span><span class="o">.</span><span class="n">ini</span> <span class="n">upgrade</span> <span class="n">head</span>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">docker</span><span class="o">-</span><span class="n">run</span> <span class="n">alembic</span> <span class="o">--</span><span class="n">name</span><span class="o">=</span><span class="n">static</span> <span class="n">upgrade</span> <span class="n">head</span>
 </pre></div>
 </div>
 </div>

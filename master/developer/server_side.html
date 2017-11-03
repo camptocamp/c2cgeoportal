@@ -160,10 +160,9 @@ database.</p>
 <span class="prompt1">sudo -u postgres psql -d geomapfish_test -c <span class="s1">&#39;CREATE SCHEMA geodata;&#39;</span></span>
 <span class="prompt1">sudo -u postgres psql -d geomapfish_test -c <span class="s1">&#39;GRANT ALL ON SCHEMA geodata TO &quot;www-data&quot;;&#39;</span></span>
 </pre><p>Create the tables:</p>
-<pre class="highlight"><span class="prompt1">./docker-run make /build/dev-requirements.timestamp tests/functional/alembic.ini <span class="se">\</span>
-    tests/functional/alembic_static.ini</span>
-<span class="prompt1">./docker-compose-run alembic --config tests/functional/alembic.ini upgrade head</span>
-<span class="prompt1">./docker-compose-run alembic --config tests/functional/alembic_static.ini upgrade head</span>
+<pre class="highlight"><span class="prompt1">./docker-run make /build/dev-requirements.timestamp tests/functional/alembic.ini</span>
+<span class="prompt1">./docker-compose-run alembic --config<span class="o">=</span>tests/functional/alembic.ini --name<span class="o">=</span>main upgrade head</span>
+<span class="prompt1">./docker-compose-run alembic --config<span class="o">=</span>tests/functional/alembic.ini --name<span class="o">=</span>static upgrade head</span>
 </pre><p>If you do not use the default variables edit the <code class="docutils literal"><span class="pre">vars.yaml</span></code> and set the <code class="docutils literal"><span class="pre">dbuser</span></code>, <code class="docutils literal"><span class="pre">dbpassword</span></code>,
 <code class="docutils literal"><span class="pre">dbhost</span></code>, <code class="docutils literal"><span class="pre">dbhost_slave</span></code>, <code class="docutils literal"><span class="pre">dbport</span></code>, <code class="docutils literal"><span class="pre">db</span></code>, and <code class="docutils literal"><span class="pre">mapserv_url</span></code> as appropriate.</p>
 <p><code class="docutils literal"><span class="pre">mapserv_url</span></code> needs to refer a valid <code class="docutils literal"><span class="pre">mapserv</span></code> instance running locally,
@@ -255,33 +254,23 @@ For example the layer disclaimer, …</p>
 <div class="section" id="migration">
 <h3>Migration<a class="headerlink" href="#migration" title="Permalink to this headline">¶</a></h3>
 <p>We use the <code class="docutils literal"><span class="pre">alembic</span></code> module for database migration. <code class="docutils literal"><span class="pre">alembic</span></code> works with a
-so-called <em>migration repository</em>, which is a simple directory in the
-application source tree:<code class="docutils literal"><span class="pre">CONST_alembic</span></code>. As the <code class="docutils literal"><span class="pre">CONST_</span></code> prefix suggests
-this repository is part of the <code class="docutils literal"><span class="pre">c2cgeoportal_update</span></code> scaffold, it is created
-or updated when this scaffold is applied. So developers who modify the
-<code class="docutils literal"><span class="pre">c2cgeoportal</span></code> database schema should add migration scripts to the
-<code class="docutils literal"><span class="pre">c2cgeoportal_update</span></code> scaffold, as opposed to the application.</p>
+so-called <em>migration repository</em>, which is a simple directory <code class="docutils literal"><span class="pre">/opt/alembic</span></code> in the
+docker image. So developers who modify the <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> database schema should add migration scripts.</p>
 <p>Add a new script call from the application’s root directory:</p>
-<pre class="highlight"><span class="prompt1">./docker-compose-run alembic --config alembic<span class="o">[</span>_static<span class="o">]</span>.ini revision --message <span class="s2">&quot;&lt;Explicit name&gt;&quot;</span></span>
+<pre class="highlight"><span class="prompt1">./docker-compose-run alembic --name<span class="o">=[</span>main<span class="p">|</span>static<span class="o">]</span> revision --message <span class="s2">&quot;&lt;Explicit name&gt;&quot;</span></span>
 </pre><p>Or in c2cgeoportal root directory:</p>
 <pre class="highlight"><span class="prompt1">./docker-compose-run alembic <span class="se">\</span>
-    --config tests/functional/alembic<span class="o">[</span>_static<span class="o">]</span>.ini <span class="se">\</span>
+    --config geoportal/tests/functional/alembic.ini --name<span class="o">=[</span>main<span class="p">|</span>static<span class="o">]</span> <span class="se">\</span>
     revision --message <span class="s2">&quot;&lt;Explicit name&gt;&quot;</span></span>
-</pre><p>This will generate the migration script in <code class="docutils literal"><span class="pre">CONST_alembic/versions/xxx_&lt;Explicite_name&gt;.py</span></code>
-You should <em>NOT</em> commit the script in this directory because this migration
-script should be shared with all c2cgeoportal projects.
-It is the c2cgeoportal <code class="docutils literal"><span class="pre">update</span></code> template which is responsible for updating
-this directory.</p>
-<p>The script should not get any part of the <code class="docutils literal"><span class="pre">c2cgeoportal.model</span></code> module!</p>
+</pre><p>This will generate the migration script in
+<code class="docutils literal"><span class="pre">commons/c2cgeoportal/commons/alembic/[main|static]/xxx_&lt;Explicite_name&gt;.py</span></code>.</p>
 <p>To get the project schema use:
 <code class="docutils literal"><span class="pre">schema</span> <span class="pre">=</span> <span class="pre">context.get_context().config.get_main_option('schema')</span></code></p>
 <p>The scripts should not fail if it is run again. See:
 <a class="reference external" href="http://alembic.readthedocs.org/en/latest/cookbook.html#conditional-migration-elements">http://alembic.readthedocs.org/en/latest/cookbook.html#conditional-migration-elements</a></p>
 <p>Then customize the migration to suit your needs, test it:</p>
 <pre class="highlight"><span class="prompt1">./docker-compose-run alembic upgrade head</span>
-</pre><p>Once you have tested it, move it to the c2cgeoportal <code class="docutils literal"><span class="pre">update</span></code> template, in
-<code class="docutils literal"><span class="pre">c2cgeoportal/scaffolds/update/CONST_mlembic/versions/</span></code>.</p>
-<dl class="docutils">
+</pre><dl class="docutils">
 <dt>More information at:</dt>
 <dd><ul class="first last simple">
 <li><a class="reference external" href="http://alembic.readthedocs.org/en/latest/index.html">http://alembic.readthedocs.org/en/latest/index.html</a></li>
