@@ -30,6 +30,7 @@ def main(argv=sys.argv):
     options = parse_vars(argv[2:])
 
     fileConfig(config_uri, defaults=os.environ)
+    options.update(os.environ)
     settings = get_appsettings(config_uri, options=options)
     generate_mappers(settings)
 

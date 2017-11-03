@@ -36,8 +36,6 @@ ENV APP_LOG_LEVEL=INFO \
 
 ENV C2CWSGIUTILS_CONFIG=/app/docker.ini \
     DEVELOPMENT=1 \
-    SQLALCHEMY_URL=postgresql://www-data:www-data@db:5432/c2cgeoportal \
-    SQLALCHEMY_URL_SLAVE=postgresql://www-data:www-data@db_slave:5432/c2cgeoportal \
     SQLALCHEMY_POOL_SIZE=5 \
     SQLALCHEMY_MAX_OVERFLOW=25
 
