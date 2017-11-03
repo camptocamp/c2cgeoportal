@@ -59,21 +59,16 @@ ${BUILD_DIR}/requirements-dev.timestamp: ${BUILD_DIR}/venv.timestamp setup.py
 node_modules: package.json
 	npm install
 
-.PHONY: build_admin
-build_admin:
+.PHONY: docker-build
+docker-build:
 	cd .. ; \
 	docker build -t $(DOCKER_BASE)_admin:$(DOCKER_TAG) --build-arg "GIT_HASH=$(GIT_HASH)" -f admin/Dockerfile .
 
-.PHONY: build_admin_nocache
-build_admin_nocache:
-	cd .. ; \
-	docker build --no-cache -t $(DOCKER_BASE)_admin:$(DOCKER_TAG) --build-arg "GIT_HASH=$(GIT_HASH)" -f admin/Dockerfile .
-
-.PHONY: run_admin
-run_admin: build_admin
+.PHONY: docker-serve
+docker-serve: docker-build
 	docker-compose -f docker-compose.yml up
 
-.PHONY: pull
-pull:
+.PHONY: docker-pull
+docker-pull:
 	for image in `find -name Dockerfile | xargs grep --no-filename FROM | awk '{print $$2}' | sort -u`; do docker pull $$image; done
 	for image in `find -name "docker-compose*.yml" | xargs grep --no-filename "image:" | awk '{print $$2}' | sort -u | grep -v $(DOCKER_BASE) | grep -v rancher`; do docker pull $$image; done

@@ -4,12 +4,12 @@
 
 To build:
 ```
-make build_admin
+make docker_build
 ```
 
 To build & run the application:
 ```
-make run_admin
+make docker_serve
 ```
 
 Open http://localhost:8888/
@@ -28,13 +28,6 @@ The following views are also provided by `c2cwsgiutils`:
 ```
 git clone git@github.com:camptocamp/c2cgeoportal.git
 cd admin
-```
-
-### Build the app
-
-Install the virtual env, build the app:
-```
-make build
 ```
 
 ### Set up the database
