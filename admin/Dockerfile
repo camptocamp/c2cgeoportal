@@ -46,9 +46,9 @@ COPY admin /app
 ARG GIT_HASH
 ENV GIT_HASH=$GIT_HASH
 
-RUN pip install --disable-pip-version-check --no-cache-dir \
-	-e ../commons \
-	. && \
+RUN pip install --disable-pip-version-check --no-cache-dir -e ../commons
+
+RUN pip install --disable-pip-version-check --no-cache-dir . && \
     /c2cwsgiutils/c2cwsgiutils_genversion.py $GIT_HASH && \
     flake8 acceptance_tests c2cgeoportal_admin *.py
 
