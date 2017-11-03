@@ -37,8 +37,7 @@ This page lists the changes that must be applied to add such a functionality.
            user = get_user_from_request(request)
 
            if user is None and request.environ.get('intranet', 0) == '1':
-               from c2cgeoportal_commons.models import DBSession
-               from c2cgeoportal_commons.models import Role
+               from c2cgeoportal_commons.models import DBSession, Role
                class O(object):
                    pass
                user = O()
