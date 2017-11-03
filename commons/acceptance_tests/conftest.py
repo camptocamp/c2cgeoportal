@@ -6,7 +6,7 @@ from c2cgeoportal_commons.models import get_engine, get_session_factory, get_tm_
 
 
 @pytest.fixture(scope='session')
-@pytest.mark.usefixtures("settings")
+@pytest.mark.usefixtures('settings')
 def dbsession(settings):
     generate_mappers(settings)
     engine = get_engine(settings)
@@ -17,7 +17,7 @@ def dbsession(settings):
 
 
 @pytest.fixture(scope='function')
-@pytest.mark.usefixtures("dbsession")
+@pytest.mark.usefixtures('dbsession')
 def transact(dbsession):
     t = dbsession.begin_nested()
     yield

@@ -26,34 +26,34 @@ class LayerWmsViews(AbstractViews):
         ListField('time_widget'),
         ListField('ogc_server', renderer=lambda layer_wms: layer_wms.ogc_server.name),
         ListField('restrictionareas', renderer=lambda layer_wms:
-                  ", ".join([r.name or '' for r in layer_wms.restrictionareas]))]
+                  ', '.join([r.name or '' for r in layer_wms.restrictionareas]))]
     _id_field = 'id'
     _model = LayerWMS
     _base_schema = LayerWMS.__colanderalchemy__
 
     def _base_query(self):
         return self._request.dbsession.query(LayerWMS). \
-            options(subqueryload("restrictionareas"))
+            options(subqueryload('restrictionareas'))
 
     @view_config(route_name='c2cgeoform_index',
-                 renderer="../templates/index.jinja2")
+                 renderer='../templates/index.jinja2')
     def index(self):
         return super().index()
 
     @view_config(route_name='c2cgeoform_grid',
-                 renderer="json")
+                 renderer='json')
     def grid(self):
         return super().grid()
 
     @view_config(route_name='c2cgeoform_action',
                  request_method='GET',
-                 renderer="../templates/edit.jinja2")
+                 renderer='../templates/edit.jinja2')
     def view(self):
         return super().edit()
 
     @view_config(route_name='c2cgeoform_action',
                  request_method='POST',
-                 renderer="../templates/edit.jinja2")
+                 renderer='../templates/edit.jinja2')
     def save(self):
         return super().save()
 

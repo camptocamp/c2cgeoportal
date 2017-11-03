@@ -20,24 +20,24 @@ class LayerWmtsViews(AbstractViews):
     _base_schema = LayerWMTS.__colanderalchemy__
 
     @view_config(route_name='c2cgeoform_index',
-                 renderer="../templates/index.jinja2")
+                 renderer='../templates/index.jinja2')
     def index(self):
         return super().index()
 
     @view_config(route_name='c2cgeoform_grid',
-                 renderer="json")
+                 renderer='json')
     def grid(self):
         return super().grid()
 
     @view_config(route_name='c2cgeoform_action',
                  request_method='GET',
-                 renderer="../templates/edit.jinja2")
+                 renderer='../templates/edit.jinja2')
     def view(self):
         return super().edit()
 
     @view_config(route_name='c2cgeoform_action',
                  request_method='POST',
-                 renderer="../templates/edit.jinja2")
+                 renderer='../templates/edit.jinja2')
     def save(self):
         return super().save()
 
