@@ -14,7 +14,7 @@ def main(global_config, **settings):
     config.scan()
 
     health_check = HealthCheck(config)
-    health_check.add_url_check('http://localhost/')
+    health_check.add_url_check('http://'+settings['healthcheck_host']+'/')
     # health_check.add_alembic_check(models.DBSession, '/app/alembic.ini', 1)
 
     return config.make_wsgi_app()
