@@ -50,7 +50,8 @@ class TestUser():
             ('secretary_3', False, 'secretary_3')]
         assert resp.form['role_name'].value == user.role_name
 
-    @pytest.mark.usefixtures("test_app")  # route have to be registred for HTTP_FOUND
+    # route have to be registred for HTTP_FOUND
+    @pytest.mark.usefixtures("test_app")
     def test_submit_update(self, dbsession, test_app):
         from c2cgeoportal_commons.models.static import User
         user = dbsession.query(User). \
@@ -124,7 +125,8 @@ class TestUser():
     def test_selenium(self, dbsession, selenium):
         selenium.get('http://127.0.0.1:6543/users/')
 
-        # elem = selenium.find_element_by_xpath("//a[contains(@href,'language=fr')]")
+        # elem = selenium.find_element_by_xpath(
+        #     "//a[contains(@href,'language=fr')]")
         # elem.click()
 
         grid_header = selenium.find_element_by_xpath("//div[contains(@id,'grid-header')]")

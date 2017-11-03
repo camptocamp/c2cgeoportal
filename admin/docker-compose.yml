@@ -1,0 +1,46 @@
+version: '2'
+
+volumes:
+  postgresql_data:
+
+services:
+  admin:
+    image: camptocamp/c2cgeoportal_admin:latest
+    environment:
+      SQLALCHEMY_URL: postgresql://www-data:www-data@db:5432/c2cgeoportal
+      SQLALCHEMY_URL_SLAVE: postgresql://www-data:www-data@db_slave:5432/c2cgeoportal
+      # generates http://localhost:8888/stats.json :
+      STATS_VIEW: 'true'
+      # logs on the console:
+      LOG_TYPE: console
+      # enable SQL profiler on http://localhost:8888/sql_profiler?secret=changeme&enable=1
+      SQL_PROFILER_SECRET: changeme
+      C2CWSGI_LOG_LEVEL: DEBUG
+      APP_LOG_LEVEL: DEBUG
+      SQL_LOG_LEVEL: DEBUG
+      OTHER_LOG_LEVEL: INFO
+      DEVELOPMENT: 'true'
+      GUNICORN_PARAMS: '-b :80 --threads 10 --timeout 60 --reload'
+    volumes:
+      # overriding code from image for debugging purposes, also with above reload option:
+      - ./c2cgeoportal_admin:/app/c2cgeoportal_admin
+      - ../commons/c2cgeoportal_commons:/commons/c2cgeoportal_commons
+    links:
+      - db
+      - db:db_slave
+    ports:
+      - 8888:80
+
+  db:
+    image: camptocamp/postgres:9.6
+    volumes:
+      - ./docker/postgis.sql:/docker-entrypoint-initdb.d/postgis.sql
+      - postgresql_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: www-data
+      POSTGRES_PASSWORD: www-data
+      POSTGRES_DB: c2cgeoportal
+    # Uncomment following line to have database show all incoming SQL statements
+    # command: postgres -c log_statement=all
+    ports:
+      - 15432:5432
