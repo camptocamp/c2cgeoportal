@@ -20,4 +20,5 @@ This chapter describes advanced configuration settings.
    subdomain
    tilegeneration
    ngeo_new_interface
+   multiple_databases
    windows_tools
