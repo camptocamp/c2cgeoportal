@@ -94,6 +94,38 @@ class TestUser():
         assert user.email == 'new_mail'
         assert user.role_name == 'secretary_2'
 
+    @pytest.mark.usefixtures("test_app")
+    def test_submit_new(self, dbsession, test_app):
+        from c2cgeoportal_commons.models.static import User
+
+        resp = test_app.post(
+            '/users/new',
+            {
+                '__formid__': 'deform',
+                '_charset_': 'UTF-8',
+                'formsubmit': 'formsubmit',
+                'item_type': 'user',
+                'id': '',
+                'username': 'new_user',
+                'email': 'new_mail',
+                'role_name': 'secretary_2',
+                'is_password_changed': 'false',
+                '_password': 'da39a3ee5e6b4b0d3255bfef95601890afd80709',
+                'temp_password': ''},
+            status=302)
+
+        import re
+        assert re.match('http://localhost/users/.[0-9]', resp.location)
+
+        user = dbsession.query(User). \
+            filter(User.username == 'new_user'). \
+            one()
+        dbsession.expire(user)
+        assert user.username == 'new_user'
+        assert user.email == 'new_mail'
+        assert user.role_name == 'secretary_2'
+
+
     @pytest.mark.usefixtures("raise_db_error_on_query")
     def test_grid_dberror(self, dbsession):
         from c2cgeoportal_admin.views.users import UserViews
