@@ -5,7 +5,7 @@ Using multiple databases
 
 Configuration
 -------------
-In your ``vars_<project>.yaml`` file, configure any database sessions
+In your ``vars`` file, configure any database sessions
 that you want to access in your GMF instance in addition to
 the default database session, as follows. For example, to add sessions
 from a database ``otherdb`` and from a database ``moredb``:
@@ -22,7 +22,7 @@ These additional DB sessions will be automatically initialized by GMF.
 
 Using the additional sessions
 -----------------------------
-In the layers enumeration of your ``vars_<project>.yaml`` file, you can now
+In the layers enumeration of your ``vars`` file, you can now
 reference the sessions defined above. For example:
 
 .. code:: yaml
