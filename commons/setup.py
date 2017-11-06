@@ -70,7 +70,7 @@ setup(
             'psycopg2',
             'pytest',
             'pytest-cov',
-            'flake8==3.4.1',
+            'flake8==3.5.0',
         ],
     },
     entry_points={
