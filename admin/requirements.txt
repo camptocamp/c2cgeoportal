@@ -1,4 +1,4 @@
--e git://github.com/camptocamp/c2cgeoform.git@640d24fabd1cd923eeb57044c9b8701c405f65bc#egg=c2cgeoform
+-e git://github.com/camptocamp/c2cgeoform.git@ce5ea9a7311fefbed32e1ad6bd22f4112faf65ad#egg=c2cgeoform
 c2cwsgiutils
 ColanderAlchemy>=0.3.2
 deform
