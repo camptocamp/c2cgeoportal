@@ -28,13 +28,19 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+import os
 from setuptools import setup, find_packages
 
 README = open('README.md').read()
 
+TRAVIS_TAG = os.environ.get("GIT_TAG")
+MAJOR_VERSION = os.environ.get("MAJOR_VERSION")
+VERSION = TRAVIS_TAG if TRAVIS_TAG is not None and TRAVIS_TAG != "" else \
+    MAJOR_VERSION if MAJOR_VERSION is not None and MAJOR_VERSION != "" else "dev"
+
 setup(
     name="c2cgeoportal-commons",
-    version="2.3.0.dev0",
+    version=VERSION,
     description="c2cgeoportal commons",
     long_description=README,
     classifiers=[
@@ -51,20 +57,20 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
-        "c2cwsgiutils",
-        "papyrus",
-        'lingua>=2.4',
         'babel',
+        'c2cwsgiutils',
+        'ColanderAlchemy>=0.3.2',  # why not with c2cgeoform ?
         'deform',
+        'lingua>=2.4',
+        'papyrus',
         'pyproj',  # sudo apt install python3-dev", why not with c2cgeoform ?
-        'ColanderAlchemy>=0.3.2'  # why not with c2cgeoform ?
     ],
     extras_require={
         'testing': [
             'psycopg2',
             'pytest',
             'pytest-cov',
-            'flake8==3.4.1',
+            'flake8==3.5.0',
         ],
     },
     entry_points={

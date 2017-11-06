@@ -6,13 +6,13 @@ for IMAGE in geomapfish-build-dev geomapfish-commons geomapfish-build
 do
     if [ "${TRAVIS_TAG}" != "" ]
     then
-        docker tag camptocamp/${IMAGE}:2.3 camptocamp/${IMAGE}:${TRAVIS_TAG}
+        docker tag camptocamp/${IMAGE}:${MAJOR_VERSION} camptocamp/${IMAGE}:${TRAVIS_TAG}
         docker push camptocamp/${IMAGE}:${TRAVIS_TAG}
     elif [ "${TRAVIS_BRANCH}" != "master" ]
     then
-        docker tag camptocamp/${IMAGE}:2.3 camptocamp/${IMAGE}:${TRAVIS_BRANCH}
+        docker tag camptocamp/${IMAGE}:${MAJOR_VERSION} camptocamp/${IMAGE}:${TRAVIS_BRANCH}
         docker push camptocamp/${IMAGE}:${TRAVIS_BRANCH}
     else
-        docker push camptocamp/${IMAGE}:2.3
+        docker push camptocamp/${IMAGE}:${MAJOR_VERSION}
     fi
 done

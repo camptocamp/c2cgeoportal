@@ -1,17 +1,19 @@
+---
+
 sudo: false
 
 git:
-    submodules: false
+  submodules: false
 
 language: node_js
 
 node_js:
-- '6'
+  - '6'
 
 addons:
   apt:
     packages:
-    - python-virtualenv
+      - python-virtualenv
 
 script:
-- make checks
+  - make checks

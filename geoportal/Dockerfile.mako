@@ -1,5 +1,8 @@
-FROM camptocamp/geomapfish-commons:2.3
+FROM camptocamp/geomapfish-commons:${major_version}
 LABEL maintainer Camptocamp "info@camptocamp.com"
+
+ARG GIT_TAG
+ARG MAJOR_VERSION
 
 COPY npm-packages /opt/c2cgeoportal_geoportal/npm-packages
 
@@ -42,6 +45,7 @@ COPY . /opt/c2cgeoportal_geoportal
 RUN chmod go+r -R /opt/c2cgeoportal_geoportal && \
   pip install --disable-pip-version-check --no-cache-dir --no-deps --editable=/opt/c2cgeoportal_geoportal
 
-ENV LOG_LEVEL=INFO \
+ENV NODE_PATH=/usr/lib/node_modules \
+    LOG_LEVEL=INFO \
     GUNICORN_ACCESS_LOG_LEVEL=INFO \
     C2CGEOPORTAL_LOG_LEVEL=WARN

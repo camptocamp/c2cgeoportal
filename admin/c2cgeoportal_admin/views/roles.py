@@ -7,7 +7,7 @@ from colanderalchemy import setup_schema
 setup_schema(None, Role)
 
 
-@view_defaults(match_param='table=role')
+@view_defaults(match_param='table=roles')
 class RoleViews(AbstractViews):
     _list_fields = ['name']
     _id_field = 'id'

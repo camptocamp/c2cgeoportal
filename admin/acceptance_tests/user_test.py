@@ -2,6 +2,8 @@ import pytest
 from pyramid.testing import DummyRequest
 from selenium.common.exceptions import NoSuchElementException
 
+from . import skip_if_travis
+
 
 @pytest.fixture(scope='class')
 @pytest.mark.usefixtures("dbsession")
@@ -37,7 +39,7 @@ class TestUser():
             filter(User.username == 'babar_9'). \
             one()
 
-        resp = test_app.get('/user/{}/edit'.format(user.id), status=200)
+        resp = test_app.get('/users/{}/edit'.format(user.id), status=200)
 
         assert resp.form['username'].value == user.username
         assert resp.form['email'].value == user.email
@@ -64,7 +66,7 @@ class TestUser():
         user = dbsession.query(User).filter(User.id == user_id).one_or_none()
         assert user is None
 
-    @pytest.mark.usefixtures("test_app")  # route have to be registred for HTTP_FOUND
+    @pytest.mark.usefixtures("test_app")  
     def test_submit_update(self, dbsession, test_app):
         from c2cgeoportal_commons.models.static import User
         user = dbsession.query(User). \
@@ -72,7 +74,7 @@ class TestUser():
             one()
 
         resp = test_app.post(
-            '/user/{}/edit'.format(user.id),
+            '/users/{}/edit'.format(user.id),
             {
                 '__formid__': 'deform',
                 '_charset_': 'UTF-8',
@@ -86,7 +88,7 @@ class TestUser():
                 '_password': 'da39a3ee5e6b4b0d3255bfef95601890afd80709',
                 'temp_password': ''},
             status=302)
-        assert resp.location == 'http://localhost/user/{}/edit'.format(user.id)
+        assert resp.location == 'http://localhost/users/{}/edit'.format(user.id)
 
         dbsession.expire(user)
         assert user.username == 'new_name_withéàô'
@@ -103,7 +105,7 @@ class TestUser():
 
     @pytest.mark.usefixtures("test_app")
     def test_view_index_rendering_in_app(self, dbsession, test_app):
-        res = test_app.get('/user/', status=200)
+        res = test_app.get('/users/', status=200)
         res1 = res.click(verbose=True, href='language=en')
         res2 = res1.follow()
         expected = ('[<th data-column-id="username">username</th>,'
@@ -119,7 +121,7 @@ class TestUser():
     @pytest.mark.skip(reason="Translation is not finished")
     @pytest.mark.usefixtures("test_app")
     def test_view_index_rendering_in_app_fr(self, dbsession, test_app):
-        res = test_app.get('/user/', status=200)
+        res = test_app.get('/users/', status=200)
         res1 = res.click(verbose=True, href='language=fr')
         res2 = res1.follow()
         expected = ('[<th data-column-id="username">username</th>,'
@@ -133,11 +135,13 @@ class TestUser():
                                     res2.html.findAll('a'))))
 
     # in order to make this work, had to install selenium gecko driver
+    @skip_if_travis
     @pytest.mark.usefixtures("selenium", "selenium_app")
     def test_selenium(self, dbsession, selenium):
-        selenium.get('http://127.0.0.1:6543' + '/user/')
+        selenium.get('http://127.0.0.1:6543/users/')
 
-        # elem = selenium.find_element_by_xpath("//a[contains(@href,'language=fr')]")
+        # elem = selenium.find_element_by_xpath(
+        #     "//a[contains(@href,'language=fr')]")
         # elem.click()
 
         grid_header = selenium.find_element_by_xpath("//div[contains(@id,'grid-header')]")

@@ -13,25 +13,28 @@ PRERULE_CMD ?= @echo "Build \033[1;34m$@\033[0m due modification on \033[1;34m$?
 endif
 endif
 
+export MAJOR_VERSION = 2.3
+export MAIN_BRANCH = master
 ifdef TRAVIS_TAG
 VERSION ?= $(TRAVIS_TAG)
 else
-VERSION ?= master
+VERSION ?= $(MAIN_BRANCH)
 endif
 
-VALIDATE_PY_FOLDERS = geoportal/setup.py geoportal/c2cgeoportal_geoportal/*.py geoportal/c2cgeoportal_geoportal/lib geoportal/c2cgeoportal_geoportal/scripts geoportal/c2cgeoportal_geoportal/views geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_alembic
+VALIDATE_PY_FOLDERS = geoportal/setup.py geoportal/c2cgeoportal_geoportal/*.py geoportal/c2cgeoportal_geoportal/lib geoportal/c2cgeoportal_geoportal/scripts geoportal/c2cgeoportal_geoportal/views
 VALIDATE_TEMPLATE_PY_FOLDERS = geoportal/c2cgeoportal_geoportal/scaffolds
 VALIDATE_PY_TEST_FOLDERS = geoportal/tests
 
 SPHINX_FILES = $(shell find doc -name "*.rst" -print)
 SPHINX_MAKO_FILES = $(shell find doc -name "*.rst.mako" -print)
 
-export TX_VERSION = $(shell python geoportal/setup.py --version | awk -F . '{{print $$1"_"$$2}}')
-TX_DEPENDENCIES = $(HOME)/.transifexrc .tx/config
-ifeq (,$(wildcard $(HOME)/.transifexrc))
-TOUCHBACK_TXRC := touch --no-create --date "$(shell date --iso-8601=seconds)" $(HOME)/.transifexrc
+HOME=$(HOME_DIR)
+export TX_VERSION = $(shell echo $(MAJOR_VERSION) | awk -F . '{{print $$1"_"$$2}}')
+TX_DEPENDENCIES = $(HOME_DIR)/.transifexrc .tx/config
+ifeq (,$(wildcard $(HOME_DIR)/.transifexrc))
+TOUCHBACK_TXRC := touch --no-create --date "$(shell date --iso-8601=seconds)" $(HOME_DIR)/.transifexrc
 else
-TOUCHBACK_TXRC := touch --no-create --date "$(shell stat -c '%y' $(HOME)/.transifexrc)" $(HOME)/.transifexrc
+TOUCHBACK_TXRC := touch --no-create --date "$(shell stat -c '%y' $(HOME_DIR)/.transifexrc)" $(HOME_DIR)/.transifexrc
 endif
 LANGUAGES = fr de it
 export LANGUAGES
@@ -64,12 +67,11 @@ help:
 	@echo
 	@echo  "- pull   		Pull all the needed Docker images"
 	@echo  "- build 		Build and configure the project"
-	@echo  "- buildall		Build, check and test the project"
 	@echo  "- doc 			Build the project documentation"
 	@echo  "- tests 		Perform a number of tests on the code"
 	@echo  "- checks		Perform a number of checks on the code"
 	@echo  "- clean 		Remove generated files"
-	@echo  "- cleanall 		Remove all the build artefacts"
+	@echo  "- clean-all 		Remove all the build artefacts"
 	@echo  "- transifex-send	Send the localisation to Transifex"
 
 .PHONY: pull
@@ -87,17 +89,15 @@ build: $(MAKO_FILES:.mako=) \
 	geoportal/npm-packages \
 	geoportal/c2cgeoportal_geoportal/scaffolds/create/package.json_tmpl \
 	geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/ \
-	geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/CONST_create_template/
-
-.PHONY: buildall
-buildall: build doc tests checks
+	geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/CONST_create_template/ \
+	commons/Dockerfile \
+	geoportal/Dockerfile
 
 .PHONY: doc
 doc: $(BUILD_DIR)/sphinx.timestamp
 
-
 .PHONY: checks
-checks: flake8 git-attributes quote spell
+checks: flake8 git-attributes quote spell yamllint
 
 .PHONY: clean
 clean:
@@ -112,8 +112,8 @@ clean:
 	rm --recursive --force ngeo
 	rm --force $(APPS_FILES)
 
-.PHONY: cleanall
-cleanall: clean
+.PHONY: clean-all
+clean-all: clean
 	rm --force $(PO_FILES)
 	rm --recursive --force $(BUILD_DIR)/*
 
@@ -129,7 +129,7 @@ $(BUILD_DIR)/sphinx.timestamp: $(SPHINX_FILES) $(SPHINX_MAKO_FILES:.mako=)
 .PHONY: prepare-tests
 prepare-tests: $(BUILD_DIR)/requirements.timestamp \
 		geoportal/tests/functional/test.ini \
-		geoportal/tests/functional/alembic.ini geoportal/tests/functional/alembic_static.ini \
+		geoportal/tests/functional/alembic.ini \
 		$(addprefix geoportal/c2cgeoportal_geoportal/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal_geoportal.po, $(LANGUAGES)))
 	@echo "Ready to run tests"
 
@@ -137,9 +137,9 @@ prepare-tests: $(BUILD_DIR)/requirements.timestamp \
 tests:
 	py.test --cov=geoportal/c2cgeoportal_geoportal geoportal/tests
 
-$(BUILD_DIR)/db.timestamp: geoportal/tests/functional/alembic.ini geoportal/tests/functional/alembic_static.ini
-	alembic --config geoportal/tests/functional/alembic.ini upgrade head
-	alembic --config geoportal/tests/functional/alembic_static.ini upgrade head
+$(BUILD_DIR)/db.timestamp: geoportal/tests/functional/alembic.ini
+	alembic --config=geoportal/tests/functional/alembic.ini --name=main upgrade head
+	alembic --config=geoportal/tests/functional/alembic.ini --name=static upgrade head
 	touch $@
 
 .PHONY: flake8
@@ -179,14 +179,18 @@ quote:
 		geoportal/tests \
 		geoportal/c2cgeoportal_geoportal/views \
 		-name '*.py'` geoportal/c2cgeoportal_geoportal/*.py geoportal/setup.py
-	travis/squote `find geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_alembic -name '*.py'`
 
 .PHONY: spell
 spell:
 	@codespell geoportal/setup.py $(shell find geoportal/c2cgeoportal_geoportal -name static -prune -or -name '*.py' -print)
 
+YAML_FILES ?= $(shell find -name ngeo -prune -or \( -name "*.yml" -or -name "*.yaml" \) -print)
+.PHONY: yamllint
+yamllint: $(YAML_FILES)
+	yamllint --strict --config-file=yamllint.yaml -s $(YAML_FILES)
+
 # i18n
-$(HOME)/.transifexrc:
+$(HOME_DIR)/.transifexrc:
 	$(PRERULE_CMD)
 	echo "[https://www.transifex.com]" > $@
 	echo "hostname = https://www.transifex.com" >> $@

@@ -1,30 +1,20 @@
-# A generic, single database configuration.
-
-[alembic]
-# path to migration scripts
-script_location = geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_alembic/main
-
-# template used to generate migration files
-# file_template = %%(rev)s_%%(slug)s
-
-# max length of characters to apply to the
-# "slug" field
-#truncate_slug_length = 40
-
-# set to 'true' to run the environment during
-# the 'revision' command, regardless of autogenerate
-# revision_environment = false
-
-# set to 'true' to allow .pyc and .pyo files without
-# a source .py file to be detected as revisions in the
-# versions/ directory
-# sourceless = false
+[DEFAULT]
+script_location = commons/c2cgeoportal_commons/alembic
 
 sqlalchemy.url = postgresql://${dbuser}:${dbpassword}@${dbhost}:${dbport}/${db}
 version_table = c2cgeoportal_version
+srid = 21781
+
+[main]
 version_table_schema = main
 schema = main
-srid = 21781
+version_locations = commons/c2cgeoportal_commons/alembic/main/
+
+[static]
+version_table_schema = main_static
+main_schema = main
+static_schema = main_static
+version_locations = commons/c2cgeoportal_commons/alembic/static/
 
 # Logging configuration
 [loggers]

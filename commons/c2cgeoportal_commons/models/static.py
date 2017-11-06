@@ -69,6 +69,10 @@ class User(Base):
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
+    __colanderalchemy_config__ = {
+        'title': _('User'),
+        'plural': _('Users')
+    }
     item_type = Column(
         "type", String(10), nullable=False,
         info={

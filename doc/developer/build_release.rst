@@ -48,16 +48,16 @@ For each version we create a new branch (at the latest at the final release):
     git push origin <version>
 
 Change the version in the following files:
- * ``.travis.yml`` (deploy branches)
- * ``Makefile`` (``VERSION``)
- * ``Dockerfile`` (in ``FROM`` and ngeo package)
- * ``travis/git-modif``
+ * ``.travis.yml`` (``MAIN_BRANCH``, ``MAJOR_VERSION``)
+ * ``Jenkinsfile`` (``MAIN_BRANCH``, ``MAJOR_VERSION``)
+ * ``Makefile`` (``MAIN_BRANCH``, ``MAJOR_VERSION``)
+ * ``docker-run`` (``version``)
 
 Commit your changes:
 
 .. prompt:: bash
 
-    git add .travis.yml Makefile Dockerfile travis/git-modif
+    git add .travis.yml Jenkinsfile Makefile docker-run
     git commit -m "Create the version <version> branch"
 
 Go back to the master branch:
@@ -67,17 +67,17 @@ Go back to the master branch:
     git checkout master
     git merge <version>
 
-Edit the version in the ``setup.py`` to be ``<version + 1>``.
-
 Change back the version in the following files:
- * Makefile (VERSION)
- * Dockerfile
+ * ``.travis.yml`` (``MAIN_BRANCH``, ``MAJOR_VERSION``)
+ * ``Jenkinsfile`` (``MAIN_BRANCH``, ``MAJOR_VERSION``)
+ * ``Makefile`` (``MAIN_BRANCH``, ``MAJOR_VERSION``)
+ * ``docker-run`` (``version``)
 
 Commit your changes:
 
 .. prompt:: bash
 
-    git add setup.py Makefile Dockerfile
+    git add .travis.yml Jenkinsfile Makefile docker-run
     git commit -m "Start version <version + 1>"
 
 Push your changes:
@@ -135,19 +135,19 @@ When a new release or a new version is done you should do the following tasks:
      .. prompt:: bash
 
         ./docker-compose-run alembic \
-            --config tests/functional/alembic.ini \
-            heads
+            --config=tests/functional/alembic.ini \
+            --name=main heads
         ./docker-compose-run alembic \
-            --config tests/functional/alembic_static.ini \
-            heads
+            --config=tests/functional/alembic.ini \
+            --name=static heads
 
      If yes create the merge with:
 
      .. prompt:: bash
 
         ./docker-compose-run alembic \
-            --config tests/functional/alembic[_static].ini \
-            merge --message "Merge <src> and <dst> branches" \
+            --config=tests/functional/alembic.ini --name=[main|static] \
+            merge --message="Merge <src> and <dst> branches" \
             <rev 1> <rev 2>
 
      Remove the import and replace the core of the method by ``pass`` in the generated file.

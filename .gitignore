@@ -5,7 +5,6 @@
 /geoportal/npm-packages
 /geoportal/tests/functional/test.ini
 /geoportal/tests/functional/alembic.ini
-/geoportal/tests/functional/alembic_static.ini
 /geoportal/tests/testegg/production.ini
 /geoportal/c2cgeoportal_geoportal/locale/
 /geoportal/c2cgeoportal_geoportal/scaffolds/create/docker-run
@@ -24,15 +23,7 @@
 /admin/c2cgeoportal_admin.egg-info/
 /commons/c2cgeoportal_commons.egg-info/
 /docker/test-mapserver/mapserver.map
-/doc/administrator/administrate.rst
-/doc/developer/client_side.rst
 /doc/index.rst
-/doc/integrator/legacy_cgxp.rst
-/doc/integrator/editing.rst
-/doc/integrator/features.rst
-/doc/integrator/fulltext_search.rst
-/doc/integrator/print.rst
-/doc/integrator/upgrade_application.rst
 /dist/
 /coverage.xml
 /gatling/.classpath

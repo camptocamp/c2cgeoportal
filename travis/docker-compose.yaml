@@ -1,3 +1,4 @@
+---
 # A compose file for development.
 version: '2'
 services:
@@ -24,4 +25,4 @@ services:
   geoportal:
     image: camptocamp/testgeomapfish-geoportal:latest
     ports:
-    - 8080:80
+      - 8080:80

@@ -15,7 +15,8 @@ TILECLOUD_CHAIN ?= TRUE
 TILECLOUD_CHAIN_LOCAL ?= FALSE
 
 TEMPLATE_EXCLUDE += /build node_modules \
-	print/templates CONST_alembic CONST_create_template \
+	print/templates \
+	CONST_create_template \
 	geoportal/$(PACKAGE)_geoportal/static/lib
 FIND_OPTS = $(foreach ELEM, $(TEMPLATE_EXCLUDE),-path ./$(ELEM) -prune -o) -type f
 
@@ -27,6 +28,7 @@ LANGUAGES ?= en fr de
 NGEO_INTERFACES ?= desktop mobile
 CGXP_INTERFACES ?=
 CGXP_API ?= TRUE
+CGXP_API ?= FALSE
 INTERFACES += $(NGEO_INTERFACES) $(CGXP_INTERFACES)
 export INTERFACES
 # Used print version
@@ -37,12 +39,7 @@ export DOCKER_BASE
 DOCKER_TAG ?= latest
 export DOCKER_TAG
 
-ifdef CGXP_INTERFACES
-DEFAULT_WEB_RULE += $(JSBUILD_MAIN_OUTPUT_FILES) $(CSS_BASE_OUTPUT)
-endif
-ifeq ($(CGXP_API), TRUE)
-DEFAULT_WEB_RULE += $(JSBUILD_API_OUTPUT_FILES) $(CSS_API_OUTPUT) $(CSS_XAPI_OUTPUT)
-endif
+DEFAULT_WEB_RULE += $(JSBUILD_OUTPUT_FILES) $(CSS_CGXP_OUTPUT)
 ifneq ($(NGEO_INTERFACES), "")
 DEFAULT_WEB_RULE += $(NGEO_OUTPUT_FILES)
 CLIENT_CHECK_RULE ?= lint-ngeo
@@ -51,6 +48,7 @@ WEB_RULE ?= $(DEFAULT_WEB_RULE)
 
 DEFAULT_BUILD_RULES ?= /build/geoportal-docker.timestamp \
 	project.yaml \
+	alembic.ini \
 	docker-compose.yaml \
 	docker-compose-build.yaml
 
@@ -164,13 +162,22 @@ endif
 # CGXP
 JSBUILD_MAIN_FILES = $(shell find geoportal/$(PACKAGE)_geoportal/static/lib/cgxp geoportal/$(PACKAGE)_geoportal/static/js -name "*.js" -print 2> /dev/null)
 JSBUILD_MAIN_CONFIG = geoportal/jsbuild/app.cfg
-JSBUILD_MAIN_OUTPUT_FILES ?= $(addsuffix .js, $(CGXP_INTERFACES))
 ifdef CGXP_INTERFACES
-JSBUILD_MAIN_OUTPUT_FILES += $(addprefix lang-, $(addsuffix .js, $(LANGUAGES)))
+JSBUILD_OUTPUT_FILES ?= $(addsuffix .js, $(CGXP_INTERFACES))
+JSBUILD_OUTPUT_FILES += $(addprefix lang-, $(addsuffix .js, $(LANGUAGES)))
+CSS_CGXP_OUTPUT = $(OUTPUT_DIR)/app.css
 endif
-JSBUILD_MAIN_OUTPUT_FILES := $(addprefix $(OUTPUT_DIR)/, $(JSBUILD_MAIN_OUTPUT_FILES))
-JSBUILD_API_OUTPUT_FILES += $(addprefix api-lang-, $(addsuffix .js, $(LANGUAGES))) api.js xapi.js
-JSBUILD_API_OUTPUT_FILES := $(addprefix $(OUTPUT_DIR)/, $(JSBUILD_API_OUTPUT_FILES))
+ifeq ($(CGXP_XAPI), TRUE)
+JSBUILD_OUTPUT_FILES += xapi.js
+JSBUILD_OUTPUT_FILES += $(addprefix lang-, $(addsuffix .js, $(LANGUAGES)))
+CSS_API_OUTPUT = $(OUTPUT_DIR)/xapi.css
+endif
+ifeq ($(CGXP_API), TRUE)
+JSBUILD_OUTPUT_FILES += api.js
+JSBUILD_OUTPUT_FILES += $(addprefix api-lang-, $(addsuffix .js, $(LANGUAGES)))
+CSS_API_OUTPUT = $(OUTPUT_DIR)/api.css
+endif
+JSBUILD_OUTPUT_FILES := $(addprefix $(OUTPUT_DIR)/, $(JSBUILD_OUTPUT_FILES))
 ifeq ($(DEVELOPMENT), TRUE)
 JSBUILD_ARGS += --uncompress
 endif
@@ -204,7 +211,6 @@ CSS_BASE_FILES := $(DEFAULT_CSS_BASE_FILES) $(CSS_BASE_FILES)
 else
 CSS_BASE_FILES := $(DEFAULT_CSS_BASE_FILES)
 endif
-CSS_BASE_OUTPUT = $(OUTPUT_DIR)/app.css
 
 DEFAULT_CSS_API_FILES += \
 	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/openlayers/theme/default/style.css \
@@ -214,7 +220,6 @@ CSS_API_FILES := $(DEFAULT_CSS_API_FILES) $(CSS_API_FILES)
 else
 CSS_API_FILES := $(DEFAULT_CSS_API_FILES)
 endif
-CSS_API_OUTPUT = $(OUTPUT_DIR)/api.css
 
 DEFAULT_CSS_XAPI_FILES += \
 	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/core/src/theme/reset.css \
@@ -282,7 +287,6 @@ CSS_XAPI_FILES := $(DEFAULT_CSS_XAPI_FILES) $(CSS_XAPI_FILES)
 else
 CSS_XAPI_FILES := $(DEFAULT_CSS_XAPI_FILES)
 endif
-CSS_XAPI_OUTPUT = $(OUTPUT_DIR)/xapi.css
 
 VALIDATE_PY_FOLDERS = commons/$(PACKAGE)_commons admin/$(PACKAGE)_admin \
 	geoportal/$(PACKAGE)_geoportal/*.py geoportal/$(PACKAGE)_geoportal/lib \
@@ -365,11 +369,17 @@ endif
 build: $(BUILD_RULES)
 
 .PHONY: checks
-checks: flake8 $(CLIENT_CHECK_RULE) $(NGEO_OUTPUT_JS_INTERFACES_FILES) $(NGEO_OUTPUT_CSS_INTERFACES_FILES) git-attributes
+checks: flake8 $(CLIENT_CHECK_RULE) $(NGEO_OUTPUT_JS_INTERFACES_FILES) $(NGEO_OUTPUT_CSS_INTERFACES_FILES) \
+	git-attributes yamllint
 
 .PHONY: git-attributes
 git-attributes:
 	git --no-pager diff --check `git log --oneline | tail -1 | cut --fields=1 --delimiter=' '`
+
+YAML_FILES ?= $(filter-out ./tilegeneration/config.yaml ./geoportal/config.yaml,$(shell find -name .build -prune -or -name cgxp -prune -or \( -name "*.yml" -or -name "*.yaml" \) -print))
+.PHONY: yamllint
+yamllint: $(YAML_FILES)
+	yamllint --strict --config-file=yamllint.yaml -s $(YAML_FILES)
 
 .PHONY: clean
 clean: template-clean
@@ -407,7 +417,7 @@ flake8:
 	flake8 $(PACKAGE)
 
 .PHONY: build-cgxp
-build-cgxp: $(JSBUILD_MAIN_OUTPUT_FILES) $(CSS_BASE_OUTPUT) $(CSS_API_OUTPUT) $(CSS_XAPI_OUTPUT)
+build-cgxp: $(JSBUILD_OUTPUT_FILES) $(CSS_CGXP_OUTPUT)
 
 .PHONY: lint-ngeo
 lint-ngeo: /build/eslint.timestamp
@@ -417,9 +427,9 @@ serve: build development.ini
 	pserve --reload --monitor-restart development.ini
 
 .PHONY: upgrade-db
-upgrade-db: geoportal/alembic.ini geoportal/alembic_static.ini
-	alembic -c geoportal/alembic.ini upgrade head
-	alembic -c geoportal/alembic_static.ini upgrade head
+upgrade-db: alembic.ini
+	alembic --name=main upgrade head
+	alembic --name=static upgrade head
 
 # Templates
 
@@ -656,7 +666,7 @@ $(OUTPUT_DIR)/%.js: \
 	mkdir --parent $(dir $@)
 	jsbuild $< $(JSBUILD_ARGS) -j $(notdir $@) -o $(dir $@)
 
-$(CSS_BASE_OUTPUT): \
+$(CSS_CGXP_OUTPUT): \
 		geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/openlayers/ \
 		geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ \
 		geoportal/$(PACKAGE)_geoportal/static/css/proj.css \
@@ -698,8 +708,7 @@ $(CSS_XAPI_OUTPUT): \
 .PHONY: print-docker
 print-docker: /build/print-docker.timestamp
 
-/build/print-docker.timestamp: $(shell docker-required --path print) \
-		$(PRINT_EXTRA_LIBS)
+/build/print-docker.timestamp: $(shell docker-required --path print)
 	$(PRERULE_CMD)
 	docker build -t $(DOCKER_BASE)-print:$(DOCKER_TAG) print
 	touch $@
@@ -744,13 +753,13 @@ push-docker:
 	docker push $(DOCKER_BASE)-geoportal:$(DOCKER_TAG)
 	docker push $(DOCKER_BASE)-mapserver:$(DOCKER_TAG)
 
-testdb/12-alembic.sql: geoportal/alembic.ini $(shell ls -1 CONST_alembic/main/versions/*.py)
+testdb/12-alembic.sql: alembic.ini $(shell ls -1 /opt/alembic/main/*.py)
 	$(PRERULE_CMD)
-	alembic -c geoportal/alembic.ini upgrade --sql head > $@
+	alembic --name=main upgrade --sql head > $@
 
-testdb/13-alembic-static.sql: geoportal/alembic_static.ini $(shell ls -1 CONST_alembic/static/versions/*.py)
+testdb/13-alembic-static.sql: alembic.ini $(shell ls -1 /opt/alembic/static/*.py)
 	$(PRERULE_CMD)
-	alembic -c geoportal/alembic_static.ini upgrade --sql head > $@
+	alembic --name=static upgrade --sql head > $@
 
 .PHONY: testdb-docker
 testdb-docker: /build/testdb-docker.timestamp

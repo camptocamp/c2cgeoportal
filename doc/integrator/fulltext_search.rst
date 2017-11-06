@@ -3,22 +3,6 @@
 Full-text search
 ================
 
-Enabling the *full-text search* feature involves adding a ``FullTextSearch``
-plugin to the viewer, and creating and populating a dedicated table in the
-database.
-
-The FullTextSearch plugin
--------------------------
-
-The viewer should include a ``FullTextSearch`` plugin for the *text search*
-feature to be available in the user interface.
-
-See the `FullTextSearch API doc
-<http://docs.camptocamp.net/cgxp/${main_version}/lib/plugins/FullTextSearch.html>`_ for the
-list of options the plugin can receive.
-
-*The main viewer includes a FullTextSearch plugin by default.*
-
 The full-text search table
 --------------------------
 
@@ -153,7 +137,7 @@ For instance to specify a ``floor``:
 
 Query string ``floor=1`` is then automatically appended to all WMS requests.
 
-See `FloorSlider <http://docs.camptocamp.net/cgxp/${main_version}/lib/plugins/FloorSlider.html>`_
+See `FloorSlider <http://docs.camptocamp.net/cgxp/2.2/lib/plugins/FloorSlider.html>`_
 for more information.
 
 Actions

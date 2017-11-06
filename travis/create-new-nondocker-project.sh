@@ -43,11 +43,11 @@ sudo a2enmod fcgid
 # Minimal build
 ./docker-run make --makefile=travis.mk \
     /build/requirements.timestamp \
-    geoportal/alembic.ini geoportal/alembic_static.ini \
+    alembic.ini \
     geoportal/production.ini \
     geoportal/config.yaml \
     docker-compose-build.yaml testdb-docker
-./docker-run alembic --config geoportal/alembic.ini upgrade head
-./docker-run alembic --config geoportal/alembic_static.ini upgrade head
+./docker-run alembic --name=main upgrade head
+./docker-run alembic --name=static upgrade head
 # Create default theme
 ./docker-run create-demo-theme

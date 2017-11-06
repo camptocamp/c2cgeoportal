@@ -1,1 +1,13 @@
--e git://github.com/camptocamp/c2cgeoform.git@123561e963e43b765040e973c92599159cbd2170#egg=c2cgeoform
+-e git://github.com/camptocamp/c2cgeoform.git@ce5ea9a7311fefbed32e1ad6bd22f4112faf65ad#egg=c2cgeoform
+c2cwsgiutils
+ColanderAlchemy>=0.3.2
+deform
+plaster_pastedeploy
+pyproj
+pyramid == 1.9.1
+pyramid_debugtoolbar
+pyramid_jinja2
+pyramid_retry
+transaction
+waitress
+

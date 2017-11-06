@@ -50,7 +50,10 @@ def main():
     try:
         login = os.getlogin()
     except FileNotFoundError:
-        # workarround on strange error
+        # workaround on strange error
+        login = pwd.getpwuid(os.getuid())[0]
+    except OSError:
+        # workaround on strange error
         login = pwd.getpwuid(os.getuid())[0]
 
     docker_cmd.extend([
@@ -74,7 +77,12 @@ def main():
     ]:
         docker_cmd.append("--env={}".format(env))
 
-    docker_adrs = netifaces.ifaddresses('docker0')[2][0]['addr']
+    if 'docker0' in netifaces.interfaces():
+        docker_adrs = netifaces.ifaddresses('docker0')[2][0]['addr']
+    else:
+        # For Jenkins slave in Docker
+        docker_adrs = netifaces.gateways()[netifaces.AF_INET][0][0]
+    docker_cmd.append("--env=HOME_DIR={}".format(os.environ["HOME"]))
     docker_cmd.append("--env=DOCKER_HOST_={}".format(docker_adrs))
     docker_cmd.append("--env=BUILD_VOLUME_NAME={}".format(build_volume_name))
     docker_cmd.append("--env=PROJECT_DIRECTORY={}".format(os.getcwd()))
@@ -103,6 +111,9 @@ def main():
     except subprocess.CalledProcessError:
         exit(2)
 
+    # clean artifact for docker-compose-run
+    if os.path.exists(".SUCCESS"):
+        os.remove(".SUCCESS")
 
 if __name__ == "__main__":
     main()

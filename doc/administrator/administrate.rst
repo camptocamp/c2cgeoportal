@@ -127,10 +127,10 @@ The layers in the admin interface have the following attributes:
   the given layer, used to zoom to visible scale, with WMS if it is empty
   we get the values from the capabilities.
 * ``Disclaimer``: optional, copyright of the layer, used by
-  `Disclaimer <http://docs.camptocamp.net/cgxp/${main_version}/lib/plugins/Disclaimer.html>`_.
+  `Disclaimer <http://docs.camptocamp.net/cgxp/2.2/lib/plugins/Disclaimer.html>`_.
 * ``Identifier attribute field``: field used to identify a feature from the
   layer, e.g.: 'name', used by
-  `FeaturesWindow <http://docs.camptocamp.net/cgxp/${main_version}/lib/plugins/FeaturesWindow.html>`_.
+  `FeaturesWindow <http://docs.camptocamp.net/cgxp/2.2/lib/plugins/FeaturesWindow.html>`_.
 * ``Restrictions area``: the areas throw witch the user can see the layer.
 
 On ``internal WMS`` layer we have the following specific attributes:
@@ -172,6 +172,25 @@ On ``WMTS`` layer we have the following specific attributes:
     If you want to define ``WMS layers`` but no ``Query layers``,
     set it to ``[]``.
 
+Queryable WMTS
+~~~~~~~~~~~~~~
+To make the WMTS queryable, you should add the following ``Metadata``:
+
+* ``ogcServer`` with the name of the used ``OGC server``,
+* ``wmsLayers`` or ``queryLayers`` with the layers to query (groups not supported).
+
+Print WMTS in high quality
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+To print the layers in high quality, you should add the following ``Metadata``:
+
+* ``ogcServer`` with the name of the used ``OGC server``,
+* ``wmsLayers`` or ``printLayers`` with the layers to print.
+
+.. note::
+
+   See also: :ref:`administrator_administrate_metadata`, :ref:`administrator_administrate_ogc_server`.
+
+
 LayerGroup
 ----------
 
@@ -184,3 +203,9 @@ Attributes:
 * ``Internal WMS``: if true it can include only ``Internal WMS`` layers,
   if false it can include only ``external WMS`` or ``WMTS`` layers (deprecated in v2).
 * ``Group of base layers``: if not ``Internal WMS`` replace radio button by check box (deprecated in v2).
+
+Background layers
+-----------------
+
+The background layers are configured in the database, with the layer group named
+**background** (by default).

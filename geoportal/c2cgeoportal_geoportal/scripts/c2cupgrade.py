@@ -553,8 +553,8 @@ class C2cUpgradeTool:
         check_call(["make", "--makefile=" + self.options.new_makefile, "build"])
 
         if self.options.nondocker:
-            command.upgrade(Config("geoportal/alembic.ini"), "head")
-            command.upgrade(Config("geoportal/alembic_static.ini"), "head")
+            command.upgrade(Config("alembic.ini", ini_section="main"), "head")
+            command.upgrade(Config("alembic.ini", ini_section="static"), "head")
 
             message = [
                 "The upgrade is nearly done, now you should:",

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-# -*- coding: utf-8 -*-
 
-# Copyright (c) 2017, Camptocamp SA
+# Copyright (c) 2015-2017, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -28,29 +27,31 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-"""${message}
+"""Add temp_password column
 
-Revision ID: ${up_revision}
-Revises: ${down_revision}
-Create Date: ${create_date}
+Revision ID: 5472fbc19f39
+Revises: 1da396a88908
+Create Date: 2015-04-20 14:51:30.595467
 """
 
 from alembic import op, context
+from sqlalchemy import Column, Unicode
+
 
 # revision identifiers, used by Alembic.
-revision = ${repr(up_revision)}
-down_revision = ${repr(down_revision)}
-branch_labels = ${repr(branch_labels)}
-depends_on = ${repr(depends_on)}
+revision = '5472fbc19f39'
+down_revision = '1da396a88908'
 
 
 def upgrade():
-    schema = context.get_context().config.get_main_option('schema')
+    staticschema = context.get_context().config.get_main_option('static_schema')
 
-    ${upgrades if upgrades else '# Instructions'}
+    # Instructions
+    op.add_column('user', Column('temp_password', Unicode), schema=staticschema)
 
 
 def downgrade():
-    schema = context.get_context().config.get_main_option('schema')
+    staticschema = context.get_context().config.get_main_option('static_schema')
 
-    ${downgrades if downgrades else '# Instructions'}
+    # Instructions
+    op.drop_column('user', 'temp_password', schema=staticschema)

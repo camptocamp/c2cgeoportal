@@ -3,12 +3,11 @@
 ./docker-run make doc
 
 DOC=false
-BRANCH=2.1
+BRANCH=${MAIN_BRANCH}
 
 if [[ ${TRAVIS_BRANCH} =~ ^(master|[0-9]+.[0-9]+)$ ]] && [ ${TRAVIS_PULL_REQUEST} == false ]
 then
     DOC=true
-    BRANCH=${TRAVIS_BRANCH}
 fi
 
 

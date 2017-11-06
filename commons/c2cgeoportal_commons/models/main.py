@@ -176,6 +176,10 @@ class Role(Base):
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
+    __colanderalchemy_config__ = {
+        'title': _('Role'),
+        'plural': _('Roles')
+    }
 
     id = Column(Integer, primary_key=True, info={
         'colanderalchemy': {
