@@ -277,15 +277,15 @@ class Layers:
         except exc.IntegrityError as e:
             self.request.response.status_int = 400
             return {"error_type": "integrity_error",
-                    "message" : str(e.orig.diag.message_primary)}
+                    "message": str(e.orig.diag.message_primary)}
         except exc.ProgrammingError as e:
             self.request.response.status_int = 400
             return {"error_type": "programming_error",
-                    "message" : str(e.orig.diag.message_primary)}
+                    "message": str(e.orig.diag.message_primary)}
         except exc.DatabaseError as e:
-            self.request.response_status_int = 400
+            self.request.response.status_int = 400
             return {"error_type": "database_error",
-                    "message" : str(e.orig.diag.message_primary)}
+                    "message": str(e.orig.diag.message_primary)}
 
     @view_config(route_name="layers_update", renderer="geojson")
     def update(self):
@@ -342,15 +342,15 @@ class Layers:
         except exc.IntegrityError as e:
             self.request.response.status_int = 400
             return {"error_type": "integrity_error",
-                    "message" : str(e.orig.diag.message_primary)}
+                    "message": str(e.orig.diag.message_primary)}
         except exc.ProgrammingError as e:
             self.request.response.status_int = 400
             return {"error_type": "programming_error",
-                    "message" : str(e.orig.diag.message_primary)}
+                    "message": str(e.orig.diag.message_primary)}
         except exc.DatabaseError as e:
-            self.request.response_status_int = 400
+            self.request.response.status_int = 400
             return {"error_type": "database_error",
-                    "message" : str(e.orig.diag.message_primary)}
+                    "message": str(e.orig.diag.message_primary)}
 
     @staticmethod
     def _validate_geometry(geom):
