@@ -93,14 +93,16 @@ class User(Base):
     _password = Column("password", Unicode, nullable=False, info={
         'colanderalchemy': {'widget': HiddenWidget()}
     })
-    temp_password = Column("temp_password", Unicode, nullable=True)
+    temp_password = Column("temp_password", Unicode, nullable=True,
+        info={'colanderalchemy': {'widget': HiddenWidget()}}
+    )
     email = Column(Unicode, nullable=False, info={
         'colanderalchemy': {
             'title': _('email')
         }
     })
     is_password_changed = Column(Boolean, default=False, info={
-        'colanderalchemy': {'widget': CheckboxWidget(readonly=True)}
+        'colanderalchemy': {'widget': CheckboxWidget(readonly=True, hidden=True)}
     })
     role_name = Column(String, info={
         'colanderalchemy': {
