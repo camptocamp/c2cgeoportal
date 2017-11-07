@@ -39,7 +39,7 @@ class TestUser():
             filter(User.username == 'babar_9'). \
             one()
 
-        resp = test_app.get('/users/{}/edit'.format(user.id), status=200)
+        resp = test_app.get('/users/{}'.format(user.id), status=200)
 
         assert resp.form['username'].value == user.username
         assert resp.form['email'].value == user.email
@@ -58,7 +58,6 @@ class TestUser():
             one().id
         from c2cgeoportal_admin.views.users import UserViews
         req = DummyRequest(dbsession=dbsession)
-        req.referer = 'this is a test, TestUser-test_delete'
         req.matchdict.update({'id': str(user_id)})
 
         UserViews(req).delete()
@@ -74,7 +73,7 @@ class TestUser():
             one()
 
         resp = test_app.post(
-            '/users/{}/edit'.format(user.id),
+            '/users/{}'.format(user.id),
             {
                 '__formid__': 'deform',
                 '_charset_': 'UTF-8',
@@ -88,7 +87,7 @@ class TestUser():
                 '_password': 'da39a3ee5e6b4b0d3255bfef95601890afd80709',
                 'temp_password': ''},
             status=302)
-        assert resp.location == 'http://localhost/users/{}/edit'.format(user.id)
+        assert resp.location == 'http://localhost/users/{}'.format(user.id)
 
         dbsession.expire(user)
         assert user.username == 'new_name_withéàô'
@@ -155,7 +154,7 @@ class TestUser():
             filter(User.username == 'babar_13'). \
             one()
 
-        elem = selenium.find_element_by_xpath("//a[contains(@href,'{}/edit')]".format(user.id))
+        elem = selenium.find_element_by_xpath("//a[contains(@href,'{}')]".format(user.id))
         elem.click()
         elem = selenium.find_element_by_xpath("//input[@name ='username']")
         elem.clear()
@@ -174,21 +173,21 @@ class TestUser():
     # in order to make this work, had to install selenium gecko driver
     @skip_if_travis
     @pytest.mark.usefixtures("selenium", "selenium_app")
-    def skip_delete_selenium(self, dbsession, selenium):
+    def test_delete_selenium(self, dbsession, selenium):
         from c2cgeoportal_commons.models.static import User
         user_id = dbsession.query(User). \
             filter(User.username == 'babar_13'). \
             one().id
-        selenium.get('http://127.0.0.1:6543' + '/user/')
+        selenium.get('http://127.0.0.1:6543' + '/users/')
+
         elem = selenium.find_element_by_xpath("//div[@class='infos']")
         assert 'Showing 1 to 10 of 23 entries' == elem.text
         elem = selenium.find_element_by_xpath("//button[@title='Refresh']/following-sibling::*")
         elem.click()
         elem = selenium.find_element_by_xpath("//a[contains(.,'50')]")
         elem.click()
-        elem = selenium.find_element_by_xpath("//a[contains(@href,'" +
-                                              str(user_id) +
-                                              "/edit')]/following-sibling::*")
+        elem = selenium.find_element_by_xpath("//a[contains(@href,'{}')]/following-sibling::*"
+                                              .format(user_id))
         elem.click()
         selenium.switch_to_alert().accept()
 
@@ -201,6 +200,5 @@ class TestUser():
         elem = selenium.find_element_by_xpath("//a[contains(.,'50')]")
         elem.click()
         with pytest.raises(NoSuchElementException):
-            selenium.find_element_by_xpath("//a[contains(@href,'" +
-                                           str(user_id) +
-                                           "/edit')]/following-sibling::*")
+            selenium.find_element_by_xpath("//a[contains(@href,'{}')]/following-sibling::*"
+                                           .format(user_id))
