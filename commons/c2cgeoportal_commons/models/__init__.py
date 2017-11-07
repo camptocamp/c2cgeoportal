@@ -35,6 +35,7 @@ import sqlalchemy.ext.declarative
 from sqlalchemy.orm import sessionmaker, configure_mappers
 import zope.sqlalchemy
 import c2cwsgiutils
+import c2cgeoportal_commons.models  # "7/11/17, fix ci build, avoid use of globals"
 
 LOG = logging.getLogger(__name__)
 
