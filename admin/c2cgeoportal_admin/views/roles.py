@@ -36,6 +36,6 @@ class RoleViews(AbstractViews):
     def save(self):
         return super().save()
 
-    @view_config(route_name='c2cgeoform_delete')
+    # @view_config(route_name='c2cgeoform_delete')
     def delete(self):
         return super().delete()
