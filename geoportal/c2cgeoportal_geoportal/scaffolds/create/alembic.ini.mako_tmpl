@@ -1,20 +1,20 @@
 [DEFAULT]
-script_location = commons/c2cgeoportal_commons/alembic
+script_location = /opt/alembic
 
-sqlalchemy.url = postgresql://${dbuser}:${dbpassword}@${dbhost}:${dbport}/${db}
+sqlalchemy.url = ${sqlalchemy["url"]}
 version_table = c2cgeoportal_version
-srid = 21781
+srid = {{srid}}
 
 [main]
-version_table_schema = main
-schema = main
-version_locations = commons/c2cgeoportal_commons/alembic/main/
+version_table_schema = ${schema}
+schema = ${schema}
+version_locations = /opt/alembic/main/
 
 [static]
-version_table_schema = main_static
-main_schema = main
-static_schema = main_static
-version_locations = commons/c2cgeoportal_commons/alembic/static/
+version_table_schema = ${schema}_static
+main_schema = ${schema}
+static_schema = ${schema}_static
+version_locations = /opt/alembic/static/
 
 # Logging configuration
 [loggers]

@@ -57,20 +57,20 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
-        "c2cwsgiutils",
-        "papyrus",
-        'lingua>=2.4',
         'babel',
+        'c2cwsgiutils',
+        'ColanderAlchemy>=0.3.2',  # why not with c2cgeoform ?
         'deform',
+        'lingua>=2.4',
+        'papyrus',
         'pyproj',  # sudo apt install python3-dev", why not with c2cgeoform ?
-        'ColanderAlchemy>=0.3.2'  # why not with c2cgeoform ?
     ],
     extras_require={
         'testing': [
             'psycopg2',
             'pytest',
             'pytest-cov',
-            'flake8==3.4.1',
+            'flake8==3.5.0',
         ],
     },
     entry_points={

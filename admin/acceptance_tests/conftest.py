@@ -65,4 +65,5 @@ def view_displaying_users_nb(request):
     username = 'None'
     if len(users) > 0:
         username = users[0].username
-    return {'size': len(users), 'first': username, 'project': 'c2cgeoportal_admin'}
+    return {'size': len(users), 'first': username,
+            'project': 'c2cgeoportal_admin'}

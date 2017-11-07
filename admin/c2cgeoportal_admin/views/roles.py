@@ -35,3 +35,7 @@ class RoleViews(AbstractViews):
                  renderer="../templates/edit.jinja2")
     def save(self):
         return super().save()
+
+    @view_config(route_name='c2cgeoform_delete')
+    def delete(self):
+        return super().delete()

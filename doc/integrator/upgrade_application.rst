@@ -114,13 +114,13 @@ Upgrade the main schema:
 
 .. code:: bash
 
-   ./docker-run alembic --config alembic.ini upgrade head
+   ./docker-run alembic --name=main upgrade head
 
 Upgrade the static schema:
 
 .. code:: bash
 
-   ./docker-run alembic --config alembic_static.ini upgrade head
+   ./docker-run alembic --name=static upgrade head
 
 Contribute to the documentation
 -------------------------------
