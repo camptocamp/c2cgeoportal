@@ -10,4 +10,3 @@ pyramid_jinja2
 pyramid_retry
 transaction
 waitress
-
