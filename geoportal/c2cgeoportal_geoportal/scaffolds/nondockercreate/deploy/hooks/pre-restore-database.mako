@@ -38,5 +38,5 @@ psql -c 'GRANT ALL ON SCHEMA "${schema}_static" TO "${dbuser}";' ${db}
 psql -c 'GRANT ALL ON ALL TABLES IN SCHEMA "${schema}_static" TO "${dbuser}";' ${db}
 psql -c 'ALTER TABLE main_static.shorturl OWNER TO "www-data";' ${db}
 
-make --makefile=$TARGET.mk .build/venv/bin/alembic alembic_static.ini -j2
-.build/venv/bin/alembic -c alembic_static.ini upgrade head
+make --makefile=$TARGET.mk .build/venv/bin/alembic alembic.ini -j2
+.build/venv/bin/alembic --name=static upgrade head

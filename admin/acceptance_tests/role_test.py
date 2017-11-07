@@ -39,7 +39,8 @@ class TestRole():
         assert resp.form['name'].value == "secretary_10"
         assert resp.form['description'].value == ""
 
-    @pytest.mark.usefixtures("test_app")  # route have to be registred for HTTP_FOUND
+    # route have to be registred for HTTP_FOUND
+    @pytest.mark.usefixtures("test_app")
     def test_submit_update(self, dbsession):
         role = self._role_by_name(dbsession, 'secretary_11')
         from c2cgeoportal_admin.views.roles import RoleViews

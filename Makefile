@@ -21,7 +21,7 @@ else
 VERSION ?= $(MAIN_BRANCH)
 endif
 
-VALIDATE_PY_FOLDERS = geoportal/setup.py geoportal/c2cgeoportal_geoportal/*.py geoportal/c2cgeoportal_geoportal/lib geoportal/c2cgeoportal_geoportal/scripts geoportal/c2cgeoportal_geoportal/views geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_alembic
+VALIDATE_PY_FOLDERS = geoportal/setup.py geoportal/c2cgeoportal_geoportal/*.py geoportal/c2cgeoportal_geoportal/lib geoportal/c2cgeoportal_geoportal/scripts geoportal/c2cgeoportal_geoportal/views
 VALIDATE_TEMPLATE_PY_FOLDERS = geoportal/c2cgeoportal_geoportal/scaffolds
 VALIDATE_PY_TEST_FOLDERS = geoportal/tests
 
@@ -129,7 +129,7 @@ $(BUILD_DIR)/sphinx.timestamp: $(SPHINX_FILES) $(SPHINX_MAKO_FILES:.mako=)
 .PHONY: prepare-tests
 prepare-tests: $(BUILD_DIR)/requirements.timestamp \
 		geoportal/tests/functional/test.ini \
-		geoportal/tests/functional/alembic.ini geoportal/tests/functional/alembic_static.ini \
+		geoportal/tests/functional/alembic.ini \
 		$(addprefix geoportal/c2cgeoportal_geoportal/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal_geoportal.po, $(LANGUAGES)))
 	@echo "Ready to run tests"
 
@@ -137,9 +137,9 @@ prepare-tests: $(BUILD_DIR)/requirements.timestamp \
 tests:
 	py.test --cov=geoportal/c2cgeoportal_geoportal geoportal/tests
 
-$(BUILD_DIR)/db.timestamp: geoportal/tests/functional/alembic.ini geoportal/tests/functional/alembic_static.ini
-	alembic --config geoportal/tests/functional/alembic.ini upgrade head
-	alembic --config geoportal/tests/functional/alembic_static.ini upgrade head
+$(BUILD_DIR)/db.timestamp: geoportal/tests/functional/alembic.ini
+	alembic --config=geoportal/tests/functional/alembic.ini --name=main upgrade head
+	alembic --config=geoportal/tests/functional/alembic.ini --name=static upgrade head
 	touch $@
 
 .PHONY: flake8
@@ -179,7 +179,6 @@ quote:
 		geoportal/tests \
 		geoportal/c2cgeoportal_geoportal/views \
 		-name '*.py'` geoportal/c2cgeoportal_geoportal/*.py geoportal/setup.py
-	travis/squote `find geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_alembic -name '*.py'`
 
 .PHONY: spell
 spell:

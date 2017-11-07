@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2015-2017, Camptocamp SA
+# Copyright (c) 2014-2017, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,33 +27,26 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-"""Add temp_password column
 
-Revision ID: 5472fbc19f39
-Revises: 1da396a88908
-Create Date: 2015-04-20 14:51:30.595467
+"""Alter_column_url_to_remove_limitation
+
+Revision ID: 3f89a7d71a5e
+Revises:
+Create Date: 2014-12-18 10:27:52.263992
 """
 
 from alembic import op, context
-from sqlalchemy import Column, Unicode
-
+from sqlalchemy import types
 
 # revision identifiers, used by Alembic.
-revision = '5472fbc19f39'
-down_revision = '1da396a88908'
+revision = '3f89a7d71a5e'
+down_revision = None
 
 
 def upgrade():
-    schema = context.get_context().config.get_main_option('schema')
-    staticschema = schema + '_static'
-
-    # Instructions
-    op.add_column('user', Column('temp_password', Unicode), schema=staticschema)
+    schema = context.get_context().config.get_main_option('static_schema')
+    op.alter_column('shorturl', 'url', type_=types.Unicode, schema=schema)
 
 
 def downgrade():
-    schema = context.get_context().config.get_main_option('schema')
-    staticschema = schema + '_static'
-
-    # Instructions
-    op.drop_column('user', 'temp_password', schema=staticschema)
+    pass
