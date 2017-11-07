@@ -92,7 +92,7 @@ dockerBuild {
             sh 'git config --global user.email travis@camptocamp.com'
             sh 'git config --global user.name Travis'
             sh 'rm -rf ${HOME}/workspace/testgeomapfish'
-            sh 'docker build --tag=external-db docker/test-external-db'
+            sh 'docker build --tag=camptocamp/testgeomapfish-external-db:latest docker/test-external-db'
             sh 'travis/create-new-project.sh ${HOME}/workspace'
             sh 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ ./docker-run travis/empty-make.sh --makefile=travis.mk help'
             sh 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ ./docker-run make --makefile=travis.mk build'
