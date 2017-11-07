@@ -137,7 +137,7 @@ ifeq ($(OPERATING_SYSTEM), WINDOWS)
 	.build/venv/Scripts/python -m pip install wheels/Shapely-1.5.13-cp27-none-win32.whl
 else
 	# FIXME c2cgeoform
-	.build/venv/bin/python -m pip install `./get-pip-dependencies pyramid-closure c2cgeoportal-commons c2cgeoportal-geoportal GDAL c2cgeoform`
+	.build/venv/bin/python -m pip install `./get-pip-dependencies pyramid-closure c2cgeoportal-commons c2cgeoportal-geoportal GDAL c2cgeoform flake8-mypy mypy`
 endif
 	./docker-run cp -r /opt/c2cgeoportal_commons c2cgeoportal_commons
 	./docker-run cp -r /opt/c2cgeoportal_geoportal c2cgeoportal_geoportal

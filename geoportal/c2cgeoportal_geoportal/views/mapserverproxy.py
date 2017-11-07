@@ -29,8 +29,11 @@
 
 
 import logging
+from typing import Any, Dict  # noqa, pylint: disable=unused-import
 
+from pyramid.response import Response
 from pyramid.view import view_config
+from pyramid.request import Request
 
 from c2cgeoportal_geoportal.lib.caching import get_region, NO_CACHE, PUBLIC_CACHE, PRIVATE_CACHE
 from c2cgeoportal_geoportal.lib.functionality import get_mapserver_substitution_params
@@ -44,13 +47,14 @@ log = logging.getLogger(__name__)
 
 class MapservProxy(OGCProxy):
 
-    def __init__(self, request):
+    params = {}  # type: Dict[str, str]
+
+    def __init__(self, request: Request) -> None:
         OGCProxy.__init__(self, request)
         self.user = self.request.user
 
     @view_config(route_name="mapserverproxy")
-    def proxy(self):
-
+    def proxy(self) -> Response:
         if self.user is not None:
             # We have a user logged in. We need to set group_id and
             # possible layer_name in the params. We set layer_name
@@ -146,7 +150,9 @@ class MapservProxy(OGCProxy):
         )
         return response
 
-    def _proxy_callback(self, role_id, cache_control, url, params, **kwargs):
+    def _proxy_callback(
+        self, role_id: int, cache_control: int, url: str, params: dict, **kwargs: Any
+    ) -> Response:
         callback = params.get("callback")
         if callback is not None:
             del params["callback"]

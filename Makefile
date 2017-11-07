@@ -97,7 +97,7 @@ build: $(MAKO_FILES:.mako=) \
 doc: $(BUILD_DIR)/sphinx.timestamp
 
 .PHONY: checks
-checks: flake8 git-attributes quote spell yamllint
+checks: flake8 mypy git-attributes quote spell yamllint
 
 .PHONY: clean
 clean:
@@ -165,6 +165,17 @@ flake8:
 		--copyright-check \
 		--copyright-min-file-size=1 \
 		--copyright-regexp="Copyright \(c\) ([0-9][0-9][0-9][0-9]-)?$(shell date +%Y), Camptocamp SA"
+
+.PHONY: mypy
+mypy:
+	MYPYPATH=/usr/local/lib/python3.6/site-packages:/c2cwsgiutils \
+		mypy --disallow-untyped-defs --strict-optional --follow-imports skip \
+			commons/c2cgeoportal_commons
+	# TODO: add --disallow-untyped-defs
+	MYPYPATH=/usr/local/lib/python3.6/site-packages/ \
+		mypy --ignore-missing-imports --strict-optional --follow-imports skip \
+			geoportal/c2cgeoportal_geoportal \
+			admin/c2cgeoportal_admin \
 
 .PHONY: git-attributes
 git-attributes:

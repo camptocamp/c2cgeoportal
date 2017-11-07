@@ -29,6 +29,8 @@
 
 
 import logging
+from typing import List, Optional, Any
+from typing import Union, Tuple, Dict  # noqa, pylint: disable=unused-import
 
 from papyrus.geo_interface import GeoInterface
 from sqlalchemy import ForeignKey, Table, event
@@ -55,7 +57,7 @@ try:
     from pyramid.i18n import TranslationStringFactory
     _ = TranslationStringFactory("c2cgeoportal")
 except ImportError:
-    def _(s):
+    def _(s: str) -> str:
         return s
 
 
@@ -77,7 +79,7 @@ else:  # pragma: no cover
     )
 
 
-def cache_invalidate_cb(*args):
+def cache_invalidate_cb(*args: List[Any]) -> None:
     # caching.invalidate_region()
 
     # we should probably use this debounce https://gist.github.com/esromneb/8eac6bf5bdfef58304cb
@@ -88,7 +90,7 @@ def cache_invalidate_cb(*args):
 class TsVector(UserDefinedType):
     """ A custom type for PostgreSQL's tsvector type. """
 
-    def get_col_spec(self):  # pragma: no cover
+    def get_col_spec(self) -> str:  # pragma: no cover
         return "TSVECTOR"
 
 
@@ -128,12 +130,12 @@ class Functionality(Base):
     value = Column(Unicode, nullable=False)
     description = Column(Unicode)
 
-    def __init__(self, name="", value="", description=""):
+    def __init__(self, name: str="", value: str="", description: str="") -> None:
         self.name = name
         self.value = value
         self.description = description
 
-    def __unicode__(self):
+    def __unicode__(self) -> str:
         return "{0!s} - {1!s}".format(self.name or "", self.value or "")  # pragma: no cover
 
 
@@ -144,28 +146,16 @@ event.listen(Functionality, "after_delete", cache_invalidate_cb)
 # association table role <> functionality
 role_functionality = Table(
     "role_functionality", Base.metadata,
-    Column(
-        "role_id", Integer,
-        ForeignKey(_schema + ".role.id"), primary_key=True
-    ),
-    Column(
-        "functionality_id", Integer,
-        ForeignKey(_schema + ".functionality.id"), primary_key=True
-    ),
+    Column("role_id", Integer, ForeignKey(_schema + ".role.id"), primary_key=True),
+    Column("functionality_id", Integer, ForeignKey(_schema + ".functionality.id"), primary_key=True),
     schema=_schema
 )
 
 # association table theme <> functionality
 theme_functionality = Table(
     "theme_functionality", Base.metadata,
-    Column(
-        "theme_id", Integer,
-        ForeignKey(_schema + ".theme.id"), primary_key=True
-    ),
-    Column(
-        "functionality_id", Integer,
-        ForeignKey(_schema + ".functionality.id"), primary_key=True
-    ),
+    Column("theme_id", Integer, ForeignKey(_schema + ".theme.id"), primary_key=True),
+    Column("functionality_id", Integer, ForeignKey(_schema + ".functionality.id"), primary_key=True),
     schema=_schema
 )
 
@@ -205,7 +195,10 @@ class Role(Base):
         cascade="save-update,merge,refresh-expire"
     )
 
-    def __init__(self, name="", description="", functionalities=None, extent=None):
+    def __init__(
+        self, name: str="", description: str="",
+        functionalities: List[Functionality]=None, extent: Geometry=None
+    ) -> None:
         if functionalities is None:
             functionalities = []
         self.name = name
@@ -213,11 +206,11 @@ class Role(Base):
         self.extent = extent
         self.description = description
 
-    def __unicode__(self):
+    def __unicode__(self) -> str:
         return self.name or ""  # pragma: no cover
 
     @property
-    def bounds(self):
+    def bounds(self) -> None:
         if self.extent is None:
             return None
         return to_shape(self.extent).bounds
@@ -233,7 +226,7 @@ class TreeItem(Base):
     __table_args__ = (
         UniqueConstraint("type", "name"),
         {"schema": _schema},
-    )
+    )  # type: Union[Tuple, Dict[str, Any]]
     __acl__ = [DENY_ALL]
     item_type = Column("type", String(10), nullable=False)
     __mapper_args__ = {"polymorphic_on": item_type}
@@ -244,10 +237,11 @@ class TreeItem(Base):
     description = Column(Unicode)
 
     @property
-    def parents(self):  # pragma: no cover
+    # Better: def parents(self) -> List[TreeGroup]:  # pragma: no cover
+    def parents(self) -> List['TreeItem']:  # pragma: no cover
         return [c.group for c in self.parents_relation]
 
-    def is_in_interface(self, name):
+    def is_in_interface(self, name: str) -> bool:
         if not hasattr(self, "interfaces"):  # pragma: no cover
             return False
 
@@ -257,10 +251,10 @@ class TreeItem(Base):
 
         return False
 
-    def get_metadatas(self, name):  # pragma: no cover
+    def get_metadatas(self, name: str) -> List['Metadata']:  # pragma: no cover
         return [metadata for metadata in self.metadatas if metadata.name == name]
 
-    def __init__(self, name=""):
+    def __init__(self, name: str="") -> None:
         self.name = name
 
 
@@ -280,9 +274,7 @@ class LayergroupTreeitem(Base):
     # required by formalchemy
     id = Column(Integer, primary_key=True)
     description = Column(Unicode)
-    treegroup_id = Column(
-        Integer, ForeignKey(_schema + ".treegroup.id")
-    )
+    treegroup_id = Column(Integer, ForeignKey(_schema + ".treegroup.id"))
     treegroup = relationship(
         "TreeGroup",
         backref=backref(
@@ -292,9 +284,7 @@ class LayergroupTreeitem(Base):
         ),
         primaryjoin="LayergroupTreeitem.treegroup_id==TreeGroup.id",
     )
-    treeitem_id = Column(
-        Integer, ForeignKey(_schema + ".treeitem.id")
-    )
+    treeitem_id = Column(Integer, ForeignKey(_schema + ".treeitem.id"))
     treeitem = relationship(
         "TreeItem",
         backref=backref(
@@ -304,7 +294,7 @@ class LayergroupTreeitem(Base):
     )
     ordering = Column(Integer)
 
-    def __init__(self, group=None, item=None, ordering=0):
+    def __init__(self, group: 'TreeGroup'=None, item: TreeItem=None, ordering: int=0) -> None:
         self.treegroup = group
         self.treeitem = item
         self.ordering = ordering
@@ -320,14 +310,12 @@ class TreeGroup(TreeItem):
     __table_args__ = {"schema": _schema}
     __acl__ = [DENY_ALL]
 
-    id = Column(
-        Integer, ForeignKey(_schema + ".treeitem.id"), primary_key=True
-    )
+    id = Column(Integer, ForeignKey(_schema + ".treeitem.id"), primary_key=True)
 
-    def _get_children(self):
+    def _get_children(self) -> List[TreeItem]:
         return [c.treeitem for c in self.children_relation]
 
-    def _set_children(self, children, order=False):
+    def _set_children(self, children: List[TreeItem], order: bool=False) -> None:
         for child in self.children_relation:
             if child.treeitem not in children:
                 child.treeitem = None
@@ -350,7 +338,7 @@ class TreeGroup(TreeItem):
 
     children = property(_get_children, _set_children)
 
-    def __init__(self, name=""):
+    def __init__(self, name: str="") -> None:
         TreeItem.__init__(self, name=name)
 
 
@@ -362,17 +350,15 @@ class LayerGroup(TreeGroup):
     ]
     __mapper_args__ = {"polymorphic_identity": "group"}
 
-    id = Column(
-        Integer, ForeignKey(_schema + ".treegroup.id"), primary_key=True
-    )
+    id = Column(Integer, ForeignKey(_schema + ".treegroup.id"), primary_key=True)
     is_expanded = Column(Boolean)  # shouldn"t be used in V3
     is_internal_wms = Column(Boolean)
     # children have radio button instance of check box
     is_base_layer = Column(Boolean)  # Should not be used in V3
 
     def __init__(
-            self, name="", is_expanded=False,
-            is_internal_wms=True, is_base_layer=False):
+        self, name: str="", is_expanded: bool=False, is_internal_wms: bool=True, is_base_layer: bool=False
+    ) -> None:
         TreeGroup.__init__(self, name=name)
         self.is_expanded = is_expanded
         self.is_internal_wms = is_internal_wms
@@ -382,13 +368,8 @@ class LayerGroup(TreeGroup):
 # role theme link for restricted theme
 restricted_role_theme = Table(
     "restricted_role_theme", Base.metadata,
-    Column(
-        "role_id", Integer, ForeignKey(_schema + ".role.id"), primary_key=True
-    ),
-    Column(
-        "theme_id", Integer,
-        ForeignKey(_schema + ".theme.id"), primary_key=True
-    ),
+    Column("role_id", Integer, ForeignKey(_schema + ".role.id"), primary_key=True),
+    Column("theme_id", Integer, ForeignKey(_schema + ".theme.id"), primary_key=True),
     schema=_schema
 )
 
@@ -401,9 +382,7 @@ class Theme(TreeGroup):
     ]
     __mapper_args__ = {"polymorphic_identity": "theme"}
 
-    id = Column(
-        Integer, ForeignKey(_schema + ".treegroup.id"), primary_key=True
-    )
+    id = Column(Integer, ForeignKey(_schema + ".treegroup.id"), primary_key=True)
     ordering = Column(Integer, nullable=False)
     public = Column(Boolean, default=True, nullable=False)
     icon = Column(Unicode)
@@ -420,7 +399,7 @@ class Theme(TreeGroup):
         cascade="save-update,merge,refresh-expire",
     )
 
-    def __init__(self, name="", ordering=100, icon=""):
+    def __init__(self, name: str="", ordering: int=100, icon: str="") -> None:
         TreeGroup.__init__(self, name=name)
         self.ordering = ordering
         self.icon = icon
@@ -436,14 +415,12 @@ class Layer(TreeItem):
     __table_args__ = {"schema": _schema}
     __acl__ = [DENY_ALL]
 
-    id = Column(
-        Integer, ForeignKey(_schema + ".treeitem.id"), primary_key=True
-    )
+    id = Column(Integer, ForeignKey(_schema + ".treeitem.id"), primary_key=True)
     public = Column(Boolean, default=True)
     geo_table = Column(Unicode)
     exclude_properties = Column(Unicode)
 
-    def __init__(self, name="", public=True):
+    def __init__(self, name: str="", public: bool=True) -> None:
         TreeItem.__init__(self, name=name)
         self.public = public
 
@@ -467,15 +444,11 @@ class LayerV1(Layer):  # Deprecated in v2
     is_checked = Column(Boolean, default=True)  # by default
     icon = Column(Unicode)  # on the tree
     layer_type = Column(Enum(
-        "internal WMS",
-        "external WMS",
-        "WMTS",
-        "no 2D",
+        "internal WMS", "external WMS", "WMTS", "no 2D",
         native_enum=False))
     url = Column(Unicode)  # for externals
     image_type = Column(Enum(
-        "image/jpeg",
-        "image/png",
+        "image/jpeg", "image/png",
         native_enum=False))  # for WMS
     style = Column(Unicode)
     dimensions = Column(Unicode)  # for WMTS
@@ -495,21 +468,18 @@ class LayerV1(Layer):  # Deprecated in v2
     # data attribute field in which application can find a human identifiable name or number
     identifier_attribute_field = Column(Unicode)
     time_mode = Column(Enum(
-        "disabled",
-        "value",
-        "range",
+        "disabled", "value", "range",
         native_enum=False), default="disabled", nullable=False,
     )
     time_widget = Column(Enum(
-        "slider",
-        "datepicker",
+        "slider", "datepicker",
         native_enum=False), default="slider", nullable=True,
     )
 
     def __init__(
-        self, name="", public=True, icon="",
-        layer_type="internal WMS"
-    ):
+        self, name: str="", public: bool=True, icon: str="",
+        layer_type: str="internal WMS"
+    ) -> None:
         Layer.__init__(self, name=name, public=public)
         self.layer = name
         self.icon = icon
@@ -534,9 +504,7 @@ class OGCServer(Base):
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
 
-    id = Column(
-        Integer, primary_key=True
-    )
+    id = Column(Integer, primary_key=True)
     name = Column(Unicode, nullable=False, unique=True)
     description = Column(Unicode)
     url = Column(Unicode, nullable=False)
@@ -561,10 +529,10 @@ class OGCServer(Base):
     is_single_tile = Column(Boolean)
 
     def __init__(
-        self, name="", description=None, url="https://wms.example.com", url_wfs=None,
-        type_="mapserver", image_type="image/png", auth="Standard auth", wfs_support=True,
-        is_single_tile=False
-    ):
+        self, name: str="", description: Optional[str]=None, url: str="https://wms.example.com",
+        url_wfs: str=None, type_: str="mapserver", image_type: str="image/png", auth: str="Standard auth",
+        wfs_support: bool=True, is_single_tile: bool=False
+    ) -> None:
         self.name = name
         self.description = description
         self.url = url
@@ -575,7 +543,7 @@ class OGCServer(Base):
         self.wfs_support = wfs_support
         self.is_single_tile = is_single_tile
 
-    def __unicode__(self):
+    def __unicode__(self) -> str:
         return self.name or ""  # pragma: no cover
 
 
@@ -587,23 +555,16 @@ class LayerWMS(DimensionLayer):
     ]
     __mapper_args__ = {"polymorphic_identity": "l_wms"}
 
-    id = Column(
-        Integer, ForeignKey(_schema + ".layer.id"), primary_key=True
-    )
-    ogc_server_id = Column(
-        Integer, ForeignKey(_schema + ".ogc_server.id"), nullable=False
-    )
+    id = Column(Integer, ForeignKey(_schema + ".layer.id"), primary_key=True)
+    ogc_server_id = Column(Integer, ForeignKey(_schema + ".ogc_server.id"), nullable=False)
     layer = Column(Unicode)
     style = Column(Unicode)
     time_mode = Column(Enum(
-        "disabled",
-        "value",
-        "range",
+        "disabled", "value", "range",
         native_enum=False), default="disabled", nullable=False,
     )
     time_widget = Column(Enum(
-        "slider",
-        "datepicker",
+        "slider", "datepicker",
         native_enum=False), default="slider", nullable=False,
     )
 
@@ -613,8 +574,10 @@ class LayerWMS(DimensionLayer):
     )
 
     def __init__(
-        self, name="", layer="", public=True, time_mode="disabled", time_widget="slider"
-    ):
+        self, name: str="", layer: str="", public: bool=True,
+        time_mode: str="disabled",
+        time_widget: str="slider"
+    ) -> None:
         DimensionLayer.__init__(self, name=name, public=public)
         self.layer = layer
         self.time_mode = time_mode
@@ -629,9 +592,7 @@ class LayerWMTS(DimensionLayer):
     ]
     __mapper_args__ = {"polymorphic_identity": "l_wmts"}
 
-    id = Column(
-        Integer, ForeignKey(_schema + ".layer.id"), primary_key=True
-    )
+    id = Column(Integer, ForeignKey(_schema + ".layer.id"), primary_key=True)
     url = Column(Unicode, nullable=False)
     layer = Column(Unicode, nullable=False)
     style = Column(Unicode)
@@ -642,7 +603,7 @@ class LayerWMTS(DimensionLayer):
         native_enum=False), nullable=False
     )
 
-    def __init__(self, name="", public=True, image_type="image/png"):
+    def __init__(self, name: str="", public: bool=True, image_type: str="image/png") -> None:
         DimensionLayer.__init__(self, name=name, public=public)
         self.image_type = image_type
 
@@ -650,27 +611,16 @@ class LayerWMTS(DimensionLayer):
 # association table role <> restriciton area
 role_ra = Table(
     "role_restrictionarea", Base.metadata,
-    Column(
-        "role_id", Integer, ForeignKey(_schema + ".role.id"), primary_key=True
-    ),
-    Column(
-        "restrictionarea_id", Integer,
-        ForeignKey(_schema + ".restrictionarea.id"), primary_key=True
-    ),
+    Column("role_id", Integer, ForeignKey(_schema + ".role.id"), primary_key=True),
+    Column("restrictionarea_id", Integer, ForeignKey(_schema + ".restrictionarea.id"), primary_key=True),
     schema=_schema
 )
 
 # association table layer <> restriciton area
 layer_ra = Table(
     "layer_restrictionarea", Base.metadata,
-    Column(
-        "layer_id", Integer,
-        ForeignKey(_schema + ".layer.id"), primary_key=True
-    ),
-    Column(
-        "restrictionarea_id", Integer,
-        ForeignKey(_schema + ".restrictionarea.id"), primary_key=True
-    ),
+    Column("layer_id", Integer, ForeignKey(_schema + ".layer.id"), primary_key=True),
+    Column("restrictionarea_id", Integer, ForeignKey(_schema + ".restrictionarea.id"), primary_key=True),
     schema=_schema
 )
 
@@ -702,8 +652,9 @@ class RestrictionArea(Base):
         backref="restrictionareas", cascade="save-update,merge,refresh-expire"
     )
 
-    def __init__(self, name="", description="", layers=None, roles=None,
-                 area=None, readwrite=False):
+    def __init__(
+            self, name: str="", description: str="", layers: List[Layer]=None, roles: List[Role]=None,
+            area: Geometry=None, readwrite: bool=False) -> None:
         if layers is None:
             layers = []
         if roles is None:
@@ -715,7 +666,7 @@ class RestrictionArea(Base):
         self.area = area
         self.readwrite = readwrite
 
-    def __unicode__(self):  # pragma: no cover
+    def __unicode__(self) -> str:  # pragma: no cover
         return self.name or ""
 
 
@@ -727,28 +678,16 @@ event.listen(RestrictionArea, "after_delete", cache_invalidate_cb)
 # association table interface <> layer
 interface_layer = Table(
     "interface_layer", Base.metadata,
-    Column(
-        "interface_id", Integer,
-        ForeignKey(_schema + ".interface.id"), primary_key=True
-    ),
-    Column(
-        "layer_id", Integer,
-        ForeignKey(_schema + ".layer.id"), primary_key=True
-    ),
+    Column("interface_id", Integer, ForeignKey(_schema + ".interface.id"), primary_key=True),
+    Column("layer_id", Integer, ForeignKey(_schema + ".layer.id"), primary_key=True),
     schema=_schema
 )
 
 # association table interface <> theme
 interface_theme = Table(
     "interface_theme", Base.metadata,
-    Column(
-        "interface_id", Integer,
-        ForeignKey(_schema + ".interface.id"), primary_key=True
-    ),
-    Column(
-        "theme_id", Integer,
-        ForeignKey(_schema + ".theme.id"), primary_key=True
-    ),
+    Column("interface_id", Integer, ForeignKey(_schema + ".interface.id"), primary_key=True),
+    Column("theme_id", Integer, ForeignKey(_schema + ".theme.id"), primary_key=True),
     schema=_schema
 )
 
@@ -774,11 +713,11 @@ class Interface(Base):
         backref="interfaces", cascade="save-update,merge,refresh-expire"
     )
 
-    def __init__(self, name="", description=""):
+    def __init__(self, name: str="", description: str="") -> None:
         self.name = name
         self.description = description
 
-    def __unicode__(self):  # pragma: no cover
+    def __unicode__(self) -> str:  # pragma: no cover
         return self.name or ""
 
 
@@ -794,10 +733,7 @@ class Metadata(Base):
     value = Column(Unicode)
     description = Column(Unicode)
 
-    item_id = Column(
-        "item_id", Integer,
-        ForeignKey(_schema + ".treeitem.id"), nullable=False
-    )
+    item_id = Column("item_id", Integer, ForeignKey(_schema + ".treeitem.id"), nullable=False)
     item = relationship(
         "TreeItem",
         backref=backref(
@@ -806,11 +742,11 @@ class Metadata(Base):
         ),
     )
 
-    def __init__(self, name="", value=""):
+    def __init__(self, name: str="", value: str="") -> None:
         self.name = name
         self.value = value
 
-    def __unicode__(self):  # pragma: no cover
+    def __unicode__(self) -> str:  # pragma: no cover
         return "{0!s}: {1!s}".format(self.name or "", self.value or "")
 
 
@@ -831,10 +767,7 @@ class Dimension(Base):
     value = Column(Unicode)
     description = Column(Unicode)
 
-    layer_id = Column(
-        "layer_id", Integer,
-        ForeignKey(_schema + ".layer.id"), nullable=False
-    )
+    layer_id = Column("layer_id", Integer, ForeignKey(_schema + ".layer.id"), nullable=False)
     layer = relationship(
         "DimensionLayer",
         backref=backref(
@@ -843,11 +776,11 @@ class Dimension(Base):
         ),
     )
 
-    def __init__(self, name="", value="", layer=None):
+    def __init__(self, name: str="", value: str="", layer: str=None) -> None:
         self.name = name
         self.value = value
         if layer is not None:
             self.layer = layer
 
-    def __unicode__(self):  # pragma: no cover
+    def __unicode__(self) -> str:  # pragma: no cover
         return self.name or ""

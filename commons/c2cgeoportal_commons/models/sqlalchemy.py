@@ -26,7 +26,9 @@
 # The views and conclusions contained in the software and documentation are those
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
+from typing import Optional
 
+from sqlalchemy.engine import Dialect
 from sqlalchemy.types import TypeDecorator, VARCHAR
 import json
 
@@ -34,18 +36,16 @@ import json
 # get from http://docs.sqlalchemy.org/en/latest/orm/extensions/
 # mutable.html#establishing-mutability-on-scalar-column-values
 class JSONEncodedDict(TypeDecorator):
-    "Represents an immutable structure as a json-encoded string."
+    """
+    Represents an immutable structure as a json-encoded string.
+    """
 
     impl = VARCHAR
 
     @staticmethod
-    def process_bind_param(value, dialect):
-        if value is not None:
-            value = json.dumps(value)
-        return value
+    def process_bind_param(value: Optional[dict], _: Dialect)-> Optional[str]:
+        return json.dumps(value) if value is not None else None
 
     @staticmethod
-    def process_result_value(value, dialect):
-        if value is not None:
-            value = json.loads(value)
-        return value
+    def process_result_value(value: Optional[str], _: Dialect) -> Optional[dict]:
+        return json.loads(value) if value is not None else None

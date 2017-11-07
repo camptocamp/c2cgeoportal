@@ -44,9 +44,6 @@ log = logging.getLogger(__name__)
 
 class Raster:
 
-    # cache of GeoRaster instances in function of the layer name
-    _rasters = {}
-
     def __init__(self, request):
         self.request = request
         self.rasters = self.request.registry.settings["raster"]

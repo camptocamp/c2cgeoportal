@@ -30,34 +30,41 @@
 
 import re
 import logging
+from typing import Optional, Dict, Any
+
+from c2cwsgiutils.health_check import HealthCheck
+from pyramid.config import Configurator
 from sqlalchemy import engine_from_config
 import sqlalchemy.ext.declarative
-from sqlalchemy.orm import sessionmaker, configure_mappers
+from sqlalchemy.engine import Engine
+from sqlalchemy.orm import sessionmaker, configure_mappers, Session
+import sqlalchemy.ext.declarative.api
 import zope.sqlalchemy
 import c2cwsgiutils
+from transaction import TransactionManager
 import c2cgeoportal_commons.models  # "7/11/17, fix ci build, avoid use of globals"
 
 LOG = logging.getLogger(__name__)
 
 DBSession = None  # Initialized by init_dbsessions
-Base = sqlalchemy.ext.declarative.declarative_base()
-DBSessions = {}
+Base = sqlalchemy.ext.declarative.declarative_base()  # type: sqlalchemy.ext.declarative.api.Base
+DBSessions = {}  # type: Dict[str, Session]
 
-srid = None
-schema = None
+srid = None  # type: Optional[str]
+schema = None  # type: Optional[str]
 
 
-def get_engine(settings, prefix='sqlalchemy.'):
+def get_engine(settings: dict, prefix: str='sqlalchemy.') -> Engine:
     return engine_from_config(settings, prefix)
 
 
-def get_session_factory(engine):
+def get_session_factory(engine: Engine) -> sessionmaker:
     factory = sessionmaker()
     factory.configure(bind=engine)
     return factory
 
 
-def get_tm_session(session_factory, transaction_manager):
+def get_tm_session(session_factory: sessionmaker, transaction_manager: TransactionManager) -> Session:
     """
     Get a ``sqlalchemy.orm.Session`` instance backed by a transaction.
 
@@ -84,14 +91,14 @@ def get_tm_session(session_factory, transaction_manager):
     return dbsession
 
 
-def generate_mappers(settings):
+def generate_mappers(settings: dict) -> None:
     """
     Initialize the model for a Pyramid app.
     """
     global schema
-    schema = settings.get('schema')
+    schema = settings['schema']
     global srid
-    srid = settings.get('srid')
+    srid = settings['srid']
 
     # import or define all models here to ensure they are attached to the
     # Base.metadata prior to any initialization routines
@@ -101,7 +108,7 @@ def generate_mappers(settings):
     # all relationships can be setup
     configure_mappers()
 
-def init_dbsessions(settings, config=None, health_check=None):
+def init_dbsessions(settings: dict, config: Configurator=None, health_check: HealthCheck=None) -> None:
     # define the srid, schema as global variables to be usable in the model
     global schema
     global srid
@@ -123,6 +130,7 @@ def init_dbsessions(settings, config=None, health_check=None):
         c2cgeoportal_commons.models.DBSessions[dbsession_name] = \
             c2cwsgiutils.db.create_session(config, dbsession_name, **dbsession_config)
 
+    Base.metadata.clear()
     from c2cgeoportal_commons.models import main
 
     if health_check is not None:

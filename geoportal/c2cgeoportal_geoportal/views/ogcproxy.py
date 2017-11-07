@@ -28,6 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 import logging
+from typing import Dict  # noqa, pylint: disable=unused-import
 
 from sqlalchemy.orm.exc import NoResultFound
 from c2cgeoportal_geoportal.lib import get_url2
@@ -41,6 +42,8 @@ log = logging.getLogger(__name__)
 
 
 class OGCProxy(Proxy):
+
+    params = {}  # type: Dict[str, str]
 
     def __init__(self, request):
         Proxy.__init__(self, request)

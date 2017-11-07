@@ -29,6 +29,7 @@
 
 
 import re
+import typing
 import transaction
 
 from unittest import TestCase
@@ -48,7 +49,7 @@ from tests.functional import (  # noqa
 import logging
 log = logging.getLogger(__name__)
 
-Base = sqlalchemy.ext.declarative.declarative_base()
+Base: typing.Any = sqlalchemy.ext.declarative.declarative_base()
 
 
 class PointTest(Base):

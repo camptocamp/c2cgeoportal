@@ -1,4 +1,7 @@
 """c2cgeoportal_commons package."""
+from typing import Optional  # noqa, pylint: disable=unused-import
+
+from pyramid.config import Configurator
 
 from c2cgeoportal_commons.models import (  # noqa
     get_session_factory,
@@ -8,11 +11,11 @@ from c2cgeoportal_commons.models import (  # noqa
     init_dbsessions,
 )
 
-schema = None
-srid = None
+schema = None  # type: Optional[str]
+srid = None  # type: Optional[str]
 
 
-def includeme(config):
+def includeme(config: Configurator) -> None:
     """
     Initialize the model for a Pyramid app.
     Activate this setup using ``config.include('c2cgeoportal_admin.commons')``.

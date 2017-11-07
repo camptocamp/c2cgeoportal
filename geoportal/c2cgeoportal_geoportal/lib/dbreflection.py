@@ -29,11 +29,13 @@
 
 
 import warnings
+from typing import Dict, Tuple  # noqa, pylint: disable=unused-import
 
 from sqlalchemy import Table, sql, MetaData
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm.util import class_mapper
 from sqlalchemy.exc import SAWarning
+from sqlalchemy.ext.declarative.api import DeclarativeMeta  # noqa, pylint: disable=unused-import
 
 from geoalchemy2 import Geometry
 
@@ -41,14 +43,11 @@ from papyrus.geo_interface import GeoInterface
 from papyrus.xsd import tag
 
 
-_class_cache = {}
+_class_cache = {}  # type: Dict[Tuple[str, str, str], DeclarativeMeta]
 
 SQL_GEOMETRY_COLUMNS = """
-    SELECT
-      srid,
-      type
-    FROM
-      geometry_columns
+    SELECT srid, type
+    FROM geometry_columns
     WHERE
       f_table_schema = :table_schema AND
       f_table_name = :table_name AND
