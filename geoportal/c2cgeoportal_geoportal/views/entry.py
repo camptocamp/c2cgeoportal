@@ -300,6 +300,16 @@ class Entry:
                 query2 = query2.join(main.Layer.interfaces)
                 query2 = query2.filter(main.Interface.name == interface)
             query = query.union(query2)
+            if version == 2:
+                query3 = get_protected_layers_query(
+                    role_id, None,
+                    what=main.LayerWMTS.name,
+                    version=version
+                )
+                if interface is not None:
+                    query3 = query3.join(main.Layer.interfaces)
+                    query3 = query3.filter(main.Interface.name == interface)
+                query = query.union(query3)
 
         return query
 
