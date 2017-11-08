@@ -5,5 +5,5 @@ Shapely==1.5.6
 Pillow==2.7.0
 https://github.com/Pylons/pyramid/archive/1e02bbfc0df09259bf207112acf019c8dba44a90.zip#egg=pyramid>=1.6.dev
 https://github.com/camptocamp/pyramid_closure/archive/819bc43420b3cd924d8698c5a9606592c19dbb15.zip#egg=pyramid_closure
-c2cgeoportal==1.6.11
+c2cgeoportal==1.6.12
 -e .
