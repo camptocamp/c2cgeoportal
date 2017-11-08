@@ -30,7 +30,7 @@ dockerBuild {
         }
         stage('Docker pull') {
             checkout scm
-            sh 'make pull'
+            sh 'make pull-base'
         }
         stage('Build build Docker image') {
             checkout scm
