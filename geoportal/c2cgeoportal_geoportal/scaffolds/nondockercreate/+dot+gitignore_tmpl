@@ -52,5 +52,4 @@ __pycache__/
 /geoportal/{{package}}_geoportal/static/mobile/bootstrap.json
 /c2cgeoportal_commons/
 /c2cgeoportal_geoportal/
-/.SUCCESS
 /.upgrade.yaml

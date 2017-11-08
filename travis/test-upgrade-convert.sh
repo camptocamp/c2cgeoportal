@@ -77,7 +77,7 @@ then
         exit 1
     fi
     ./docker-run make clean-all
-    rm --recursive --force .UPGRADE10 .UPGRADE_SUCCESS .SUCCESS \
+    rm --recursive --force .UPGRADE10 .UPGRADE_SUCCESS \
         commons/testgeomapfish_commons.egg-info geoportal/testgeomapfish_geoportal.egg-info
     cd -
     diff --recursive --exclude=.git ${WORKSPACE}/dockerref ${WORKSPACE}/docker
@@ -93,7 +93,7 @@ then
         exit 1
     fi
     ./docker-run make --makefile=testgeomapfish.mk clean-all
-    rm --recursive --force .UPGRADE10 .UPGRADE_SUCCESS .SUCCESS \
+    rm --recursive --force .UPGRADE10 .UPGRADE_SUCCESS \
         commons/testgeomapfish_commons.egg-info geoportal/testgeomapfish_geoportal.egg-info
     cd -
     diff --recursive --exclude=.git ${WORKSPACE}/nondockerref ${WORKSPACE}/nondocker
@@ -124,7 +124,7 @@ then
     fi
     git rm temp.mk
     ./docker-run make clean-all
-    rm --recursive --force .UPGRADE10 .UPGRADE_SUCCESS .SUCCESS \
+    rm --recursive --force .UPGRADE10 .UPGRADE_SUCCESS \
         commons/testgeomapfish_commons.egg-info geoportal/testgeomapfish_geoportal.egg-info
     cd -
     diff --recursive --exclude=.git ${WORKSPACE}/dockerref ${WORKSPACE}/nondocker
@@ -157,7 +157,7 @@ then
         exit 1
     fi
     ./docker-run make --makefile=testgeomapfish.mk clean-all
-    rm --recursive --force .UPGRADE10 .UPGRADE_SUCCESS .SUCCESS \
+    rm --recursive --force .UPGRADE10 .UPGRADE_SUCCESS \
         commons/testgeomapfish_commons.egg-info geoportal/testgeomapfish_geoportal.egg-info
     cd -
     diff --recursive --exclude=.git ${WORKSPACE}/nondockerref ${WORKSPACE}/docker
@@ -208,7 +208,7 @@ function v220 {
         exit 1
     fi
     ./docker-run make $MAKE_ARGS clean-all
-    rm --recursive --force .UPGRADE10 .UPGRADE_SUCCESS .SUCCESS \
+    rm --recursive --force .UPGRADE10 .UPGRADE_SUCCESS \
         commons/testgeomapfish_commons.egg-info geoportal/testgeomapfish_geoportal.egg-info
     cd -
     diff --recursive --exclude=.git --exclude=LC_MESSAGES ${WORKSPACE}/$2dockerref $1

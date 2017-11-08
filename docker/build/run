@@ -46,11 +46,8 @@ import subprocess, os
 
 try:
     subprocess.check_call({args})
-except subprocess.CalledProcessError:
-    exit(2)
-
-with open("/src/.SUCCESS", "w"):
-    pass
+except subprocess.CalledProcessError as e:
+    exit(e.returncode)
 """.format(
         umask='os.umask(0o{})'.format(os.environ["UMASK"]) if "UMASK" in os.environ else "",
         args=repr(args)
@@ -59,8 +56,8 @@ with open("/src/.SUCCESS", "w"):
 os.chmod(run_file_name, stat.S_IRUSR | stat.S_IXUSR | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH)
 try:
     subprocess.check_call(["su", os.environ['USER_NAME'], "-c", run_file_name])
-except subprocess.CalledProcessError:
-    exit(2)
+except subprocess.CalledProcessError as e:
+    exit(e.returncode)
 except KeyboardInterrupt:
     print("Interrupted...")
     exit(0)

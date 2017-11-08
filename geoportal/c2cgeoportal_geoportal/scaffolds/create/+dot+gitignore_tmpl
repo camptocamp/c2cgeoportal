@@ -30,5 +30,4 @@ __pycache__/
 /geoportal/{{package}}_geoportal/static/build/
 /commons/Dockerfile
 /commons/{{package}}_commons.egg-info
-/.SUCCESS
 /.upgrade.yaml
