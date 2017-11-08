@@ -281,7 +281,7 @@ jobs:
             -in deploy_key.enc -out ~/.ssh/id_rsa -d | true
         - chmod 600 ~/.ssh/id_rsa
         - git remote set-url origin git@github.com:camptocamp/c2cgeoportal.git
-      if: NOT type = pull_request AND (branch = master OR branch ~= ^[0-9]\.[0-9]$)
+      if: ( NOT type = pull_request ) AND ( branch = master OR branch =~ ^[0-9]\.[0-9]$ )
       deploy:
         - provider: script
           script: travis/doc.sh
@@ -302,7 +302,7 @@ jobs:
           echo "token =" >> ~/.transifexrc
           fi
           ./docker-run make transifex-send
-      if: NOT type = pull_request AND (branch = master OR branch ~= ^[0-9]\.[0-9]$) AND repo = camptocamp/c2cgeoportal
+      if: ( NOT type = pull_request ) AND ( branch = master OR branch =~ ^[0-9]\.[0-9]$ ) AND repo = camptocamp/c2cgeoportal
 
     - stage: Publish
       env: [JOB=publish-pypi]
@@ -328,7 +328,7 @@ jobs:
       env: [JOB=publish-docker]
       script:
         - travis/publish-docker
-      if: NOT type = pull_request AND repo = camptocamp/c2cgeoportal
+      if: ( NOT type = pull_request ) AND repo = camptocamp/c2cgeoportal
 
 notifications:
   email:
