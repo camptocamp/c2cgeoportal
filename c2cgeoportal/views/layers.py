@@ -272,7 +272,7 @@ class Layers:
             return features
         except TopologicalError as e:
             self.request.response.status_int = 400
-            return {"error_type": 'validation_error',
+            return {"error_type": "validation_error",
                     "message": str(e)}
         except exc.IntegrityError as e:
             self.request.response.status_int = 400
@@ -337,7 +337,7 @@ class Layers:
             return feature
         except TopologicalError as e:
             self.request.response.status_int = 400
-            return {"error_type": 'validation_error',
+            return {"error_type": "validation_error",
                     "message": str(e)}
         except exc.IntegrityError as e:
             self.request.response.status_int = 400
