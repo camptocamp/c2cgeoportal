@@ -42,6 +42,11 @@ dockerBuild {
             sh './docker-run travis/empty-make.sh help'
             sh './docker-run make build'
         }
+        stage('Build CI Docker images') {
+            checkout scm
+            sh 'docker build --tag=camptocamp/c2cgeoportal-gis-db:latest docker/gis-db'
+            sh 'docker build --tag=camptocamp/c2cgeoportal-test-mapserver:latest docker/test-mapserver'
+        }
         stage('Lint') {
             checkout scm
             sh 'bash -c "test \\"`./docker-run id`\\" == \\"uid=0(root) gid=0(root) groups=0(root)\\""'
@@ -72,20 +77,16 @@ dockerBuild {
             sh "docker build --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --tag camptocamp/geomapfish-build:${MAJOR_VERSION} geoportal"
             sh "./docker-run --image=camptocamp/geomapfish-build grep ${MAJOR_VERSION} /opt/c2cgeoportal_geoportal/c2cgeoportal_geoportal.egg-info/PKG-INFO"
         }
-
         stage('Test c2cgeoportal') {
             checkout scm
             sh '''./docker-run make docker-compose.yaml \
                 geoportal/tests/functional/alembic.ini \
                 docker/test-mapserver/mapserver.map prepare-tests'''
-            try {
-                sh './docker-compose-run sleep 15'
-                sh './docker-compose-run alembic --config=geoportal/tests/functional/alembic.ini --name=main upgrade head'
-                sh './docker-compose-run alembic --config=geoportal/tests/functional/alembic.ini --name=static upgrade head'
-                sh './docker-compose-run make tests'
-            } finally {
-                sh 'docker-compose down'
-            }
+            sh 'docker-compose rm --stop --force'
+            sh './docker-compose-run sleep 5'
+            sh './docker-compose-run alembic --config=geoportal/tests/functional/alembic.ini --name=main upgrade head'
+            sh './docker-compose-run alembic --config=geoportal/tests/functional/alembic.ini --name=static upgrade head'
+            sh './docker-compose-run make tests'
         }
         stage('Test Docker app') {
             checkout scm
@@ -106,10 +107,6 @@ dockerBuild {
                     } catch (Exception error) {
                         sh "travis/run-on.sh ${HOME}/workspace/testgeomapfish/ docker-compose logs --since ${start}"
                         throw error
-                    }
-                }
-            } finally {
-                sh 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ docker-compose down'
             }
             sh 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ ./docker-run travis/empty-make.sh --makefile=travis.mk build'
             sh 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ ./docker-run make --makefile=travis.mk checks'
@@ -122,7 +119,7 @@ dockerBuild {
             sh 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ ./docker-run travis/status.sh'
             sh 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ ./docker-run make --makefile=empty-vars.mk geoportal/config.yaml'
             sh 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ ./docker-run make --makefile=travis.mk alembic.ini'
-            sh 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ ./docker-compose-run sleep 15'
+            sh 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ ./docker-compose-run sleep 5'
             sh 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ ./docker-compose-run alembic --name=main upgrade head'
             sh 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ ./docker-compose-run alembic --name=static upgrade head'
             sh 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ ./docker-compose-run alembic --name=static downgrade base'
@@ -131,9 +128,8 @@ dockerBuild {
         }
         stage('Tests upgrades') {
             checkout scm
-            // database for the GeoMapFish application
-            sh 'docker build --tag=camptocamp/c2cgeoportal-gis-db docker/gis-db'
             try {
+                sh 'docker rm --volumes geomapfish-db | true'
                 sh 'docker run --name geomapfish-db --env=POSTGRES_USER=www-data --env=POSTGRES_PASSWORD=www-data --env=POSTGRES_DB=geomapfish --publish=5432:5432 --detach camptocamp/c2cgeoportal-gis-db'
                 // Test Upgrade an convert project
                 sh 'travis/test-upgrade-convert.sh init ${HOME}/workspace'
