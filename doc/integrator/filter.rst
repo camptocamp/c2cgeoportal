@@ -15,10 +15,6 @@ The web service configuration is done in the ``vars_<project>.yaml`` file:
 
 .. code:: yaml
 
-    dbsessions:
-        <session name>:
-            url: postgresql://{dbuser}:{dbpassword}@{dbhost}:{dbport}/<dbname>
-
     layers:
         enum:
             <layer_name>:
@@ -29,9 +25,10 @@ The web service configuration is done in the ``vars_<project>.yaml`` file:
                         column_name: <column name>
                         separator: ","
 
-``dbsession: "<session name>"`` at the ``enum.defaults`` level is a shortcut that
-may be used if almost all the layers use the same ``dbsession``. It may be
-overridden for each layer. If omitted, the main DB session is used.
+``dbsession: "<session name>"`` at the ``enum.defaults`` level can be used
+to specify another DB session than the main DB session.
+See :ref:`integrator_multiple_databases` regarding the setup of multiple databases.
+If omitted, the main DB session is used.
 
 ``table: "<[schema.]table name>"`` may be used at the layer ``defaults`` level as a the default
 table where following attributes may be found. It can be overridden at the
@@ -65,30 +62,3 @@ Simple example:
             attributeURLs: ${queryer_attribute_urls | n},
             ...
         },
-
-Using DB sessions
------------------
-
-As explained above, it is possible to get the attributes lists including
-for layers whose data are hosted in external databases, using the
-``dbsession: "<session name>"`` parameter.
-
-Such `DB session objects <http://docs.sqlalchemy.org/en/rel_1_0/orm/session_basics.html#getting-a-session>`_
-must be listed in the ``DBSessions`` dictionary created in c2cgeoportal
-models file. Its default value is:
-
-.. code:: python
-
-    DBSessions = {
-        "dbsession": DBSession,
-    }
-
-``DBSession`` being the session object linked to the default database.
-
-You may add your own DB session objects in the application's ``models.py`` file.
-For instance:
-
-.. code:: python
-
-    from c2cgeoportal_commons.models import DBSessions
-    DBSessions['some_db_session_name'] = SomeDbSessionObject
