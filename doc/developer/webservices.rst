@@ -408,6 +408,103 @@ Result
         }, ...]
     }
 
+
+Update feature
+------------------
+
+URL: ``.../layers/<layer_name>/<layer_id>/<feature_id>``
+
+Success:
+
+.. code:: json
+
+   {
+       "type": "FeatureCollection",
+       "features": [
+          {
+             "geometry": {
+                "type": "MultiPoint",
+                "coordinates": [
+                   [
+                      648902.2912000001,
+                      185911.1152
+                   ]
+                ]
+             },
+             "type": "Feature",
+             "id": 103,
+             "properties": {
+                "kind": "tree",
+                "good": true,
+                "name": "nom",
+                "internal_id": null,
+                "short_name": "court",
+                "height": null,
+                "short_name3": "R",
+                "short_name2": "2"
+             }
+          }
+       ]
+   }
+
+Error :
+
+.. code:: json
+
+    {
+        "message": "error description",
+        "error_type": "type of error"
+    }
+
+Update feature
+------------------
+
+URL: ``.../layers/<layer_name>/<layer_id>``
+
+Success:
+
+.. code:: json
+
+   {
+       "type": "FeatureCollection",
+       "features": [
+          {
+             "geometry": {
+                "type": "MultiPoint",
+                "coordinates": [
+                   [
+                      648902.2912000001,
+                      185911.1152
+                   ]
+                ]
+             },
+             "type": "Feature",
+             "id": 103,
+             "properties": {
+                "kind": "tree",
+                "good": true,
+                "name": "nom",
+                "internal_id": null,
+                "short_name":" court",
+                "height": null,
+                "short_name3": "R",
+                "short_name2": "2"
+             }
+          }
+       ]
+   }
+
+
+Error :
+
+.. code:: json
+
+    {
+        "message": "error description",
+        "error_type": "type of error"
+    }
+
+
 Raster
 ======
 
