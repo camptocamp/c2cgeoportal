@@ -35,7 +35,7 @@ class TestRole():
 
     def test_view_edit(self, dbsession, test_app):
         role = self._role_by_name(dbsession, 'secretary_10')
-        resp = test_app.get('/roles/{}/edit'.format(role.id), status=200)
+        resp = test_app.get('/roles/{}'.format(role.id), status=200)
         assert resp.form['name'].value == "secretary_10"
         assert resp.form['description'].value == ""
 

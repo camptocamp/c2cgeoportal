@@ -39,5 +39,5 @@ class TestLeftMenu():
         role = dbsession.query(Role). \
             filter(Role.name == 'secretary'). \
             one()
-        html = test_app.get("/roles/{}/edit".format(role.id), status=200).html
+        html = test_app.get("/roles/{}".format(role.id), status=200).html
         self._assert_main_menu(html, "roles")
