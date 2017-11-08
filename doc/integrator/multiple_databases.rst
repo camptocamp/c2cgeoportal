@@ -43,7 +43,7 @@ via ``DBSessions``. For example:
     other_session = DBSessions['otherdb_session']
 
 This will provide you with a
-`DB session object <http://docs.sqlalchemy.org/en/rel_1_0/orm/session_basics.html#getting-a-session>`_
+`DB session object <http://docs.sqlalchemy.org/en/rel_1_0/orm/session_basics.html#getting-a-session>`_.
 The session name for the default database is ``dbsession``.
 
 To access attributes of your settings, proceed as follows
