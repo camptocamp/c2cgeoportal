@@ -69,7 +69,19 @@ This page lists the changes that must be applied to add such a functionality.
                                    name='user', reify=True
        )
 
-2. In the ``vars`` section of ``vars.yaml`` add
+2. In ``apache/wsgi.conf.mako`` add to ``<Location /${instanceid}/wsgi>``:
+
+   .. code:: apache
+
+       SetEnvIf REMOTE_ADDR ${intranet_ip} intranet=1
+
+   or, depending on the proxies setup:
+
+   .. code:: apache
+
+       SetEnvIf x-forwarded-for ${intranet_ip} intranet=1
+
+3. In the ``vars`` section of ``vars_<package>.yaml`` add
 
    .. code:: yaml
 
@@ -78,13 +90,13 @@ This page lists the changes that must be applied to add such a functionality.
        intranet_default_user = 'Intranet'
        intranet_default_role = 'role_intranet'
 
-3. At the end of ``<package>.mk`` add
+4. At the end of ``<package>.mk`` add
 
    .. code:: make
 
         CONFIG_VARS += intranet_default_user intranet_default_role
 
-4. In ``<package>/templates/index.html`` replace
+5. In ``<package>/templates/index.html`` replace
 
    .. code:: python
 
@@ -99,7 +111,7 @@ This page lists the changes that must be applied to add such a functionality.
        %>
        <script type="text/javascript" src="${request.route_url('viewer')}${extra_params}${anonymous_param}"></script>
 
-5. In ``<package>/templates/viewer.js`` and ``<package>/templates/edit.js`` add at the beginning:
+6. In ``<package>/templates/viewer.js`` and ``<package>/templates/edit.js`` add at the beginning:
 
    .. code:: python
 
