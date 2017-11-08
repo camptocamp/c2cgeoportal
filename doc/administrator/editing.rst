@@ -65,6 +65,7 @@ To be editable a layer should satisfy the following requirements:
      primary key column and a text column. The text column must
      be named ``name``.
 
+.. _administrator_editing_editable:
 
 Adding or making layers editable
 --------------------------------
