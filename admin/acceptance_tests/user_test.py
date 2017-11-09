@@ -31,7 +31,6 @@ class TestUser():
         info = UserViews(DummyRequest(dbsession=dbsession)).index()
         assert info['list_fields'][0][0] == 'username'
         assert info['list_fields'][1][0] == 'email'
-        assert type(info['list_fields'][1][1]) == str
 
     def test_view_edit(self, dbsession, test_app):
         from c2cgeoportal_commons.models.static import User

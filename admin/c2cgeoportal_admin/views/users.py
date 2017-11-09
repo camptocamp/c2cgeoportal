@@ -3,13 +3,16 @@ from pyramid.view import view_config
 from c2cgeoform.views.abstract_views import AbstractViews
 from c2cgeoportal_commons.models.static import User
 from colanderalchemy import setup_schema
+from c2cgeoform.views.abstract_views import ListField as ListField
 
 setup_schema(None, User)
 
 
 @view_defaults(match_param='table=users')
 class UserViews(AbstractViews):
-    _list_fields = ['username', 'email']
+    _list_fields = [
+        ListField('username'),
+        ListField('email')]
     _id_field = 'id'
     _model = User
     _base_schema = User.__colanderalchemy__
