@@ -134,73 +134,10 @@ tests require to run with <cite>docker-compose-run</cite>.</p>
 <h4>Unit tests<a class="headerlink" href="#unit-tests" title="Permalink to this headline">¶</a></h4>
 <p>To run the unit tests do this:</p>
 <pre class="highlight"><span class="prompt1">./docker-run make build</span>
-<span class="prompt1">./docker-run nosetests -a <span class="s1">&#39;!functional&#39;</span></span>
-</pre></div>
-<div class="section" id="functional-tests">
-<h4>Functional tests<a class="headerlink" href="#functional-tests" title="Permalink to this headline">¶</a></h4>
-<p>For the functional tests you need to have MapServer and PostgreSQL/PostGIS
-installed. Make sure this is the case before proceeding.</p>
-<p>You now need to create PostGIS database (named <code class="docutils literal"><span class="pre">geomapfish_test</span></code> for example)
-and a schema named <code class="docutils literal"><span class="pre">main</span></code> into it.</p>
-<p>To create the database use the following command if you have a PostGIS database
-template at your disposal:</p>
-<pre class="highlight"><span class="prompt1">sudo -u postgres createdb -T template_postgis geomapfish_test</span>
-</pre><div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>If you do not have a template named <code class="docutils literal"><span class="pre">template_postgis</span></code> use this:</p>
-<pre class="highlight"><span class="prompt1">sudo -u postgres createdb -E UTF8 -T template0 geomapfish_test</span>
-<span class="prompt1">sudo -u postgres psql -d geomapfish_test <span class="se">\</span>
-       -c <span class="s1">&#39;CREATE EXTENSION postgis;&#39;</span></span>
-</pre><p class="last">The <code class="docutils literal"><span class="pre">template0</span></code> is needed on Debian and Ubuntu to create a utf-8
-database.</p>
-</div>
-<p>If you do not have a <code class="docutils literal"><span class="pre">www-data</span></code> user you need to create one:</p>
-<pre class="highlight"><span class="prompt1">sudo -u postgres createuser -P www-data</span>
-</pre><p>To create the <code class="docutils literal"><span class="pre">main</span></code>,  <code class="docutils literal"><span class="pre">main_static</span></code>  and <code class="docutils literal"><span class="pre">geodata</span></code> schema:</p>
-<pre class="highlight"><span class="prompt1">sudo -u postgres psql -d geomapfish_test -c <span class="s1">&#39;CREATE SCHEMA main;&#39;</span></span>
-<span class="prompt1">sudo -u postgres psql -d geomapfish_test -c <span class="s1">&#39;GRANT ALL ON SCHEMA main TO &quot;www-data&quot;;&#39;</span></span>
-<span class="prompt1">sudo -u postgres psql -d geomapfish_test -c <span class="s1">&#39;CREATE SCHEMA main_static;&#39;</span></span>
-<span class="prompt1">sudo -u postgres psql -d geomapfish_test -c <span class="s1">&#39;GRANT ALL ON SCHEMA main_static TO &quot;www-data&quot;;&#39;</span></span>
-<span class="prompt1">sudo -u postgres psql -d geomapfish_test -c <span class="s1">&#39;CREATE SCHEMA geodata;&#39;</span></span>
-<span class="prompt1">sudo -u postgres psql -d geomapfish_test -c <span class="s1">&#39;GRANT ALL ON SCHEMA geodata TO &quot;www-data&quot;;&#39;</span></span>
-</pre><p>Create the tables:</p>
-<pre class="highlight"><span class="prompt1">make .build/dev-requirements.timestamp c2cgeoportal/tests/functional/alembic.ini <span class="se">\</span>
-    c2cgeoportal/tests/functional/alembic_static.ini</span>
-<span class="prompt1">.build/venv/bin/alembic --config c2cgeoportal/tests/functional/alembic.ini upgrade head</span>
-<span class="prompt1">.build/venv/bin/alembic --config c2cgeoportal/tests/functional/alembic_static.ini upgrade head</span>
-</pre><p>If you do not use the default variables edit the <code class="docutils literal"><span class="pre">vars.yaml</span></code> and set the <code class="docutils literal"><span class="pre">dbuser</span></code>, <code class="docutils literal"><span class="pre">dbpassword</span></code>,
-<code class="docutils literal"><span class="pre">dbhost</span></code>, <code class="docutils literal"><span class="pre">dbport</span></code>, <code class="docutils literal"><span class="pre">db</span></code>, and <code class="docutils literal"><span class="pre">mapserv_url</span></code> as appropriate.</p>
-<p><code class="docutils literal"><span class="pre">mapserv_url</span></code> needs to refer a valid <code class="docutils literal"><span class="pre">mapserv</span></code> instance running locally,
-i.e. on the machine you run the tests on. For example, if you use your desktop
-machine it may be <code class="docutils literal"><span class="pre">http://locahost/cgi-bin/mapserv</span></code>.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>On Camptocamp servers <code class="docutils literal"><span class="pre">mapserv</span></code> is usually not available on the
-<code class="docutils literal"><span class="pre">localhost</span></code> virtual host. One option involves creating a specific script
-alias for <code class="docutils literal"><span class="pre">mapserv</span></code>, for example by adding something like the following
-to your <code class="docutils literal"><span class="pre">/var/www/&lt;virtual_host_name&gt;/conf/mapserv.conf</span></code> file:</p>
-<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">ScriptAlias</span> <span class="o">/</span><span class="n">mapserv</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">cgi</span><span class="o">-</span><span class="nb">bin</span><span class="o">/</span><span class="n">mapserv</span>
-<span class="o">&lt;</span><span class="n">Location</span> <span class="o">/</span><span class="n">mapserv</span><span class="o">&gt;</span>
-    <span class="n">SetHandler</span> <span class="n">fcgid</span><span class="o">-</span><span class="n">script</span>
-<span class="o">&lt;/</span><span class="n">Location</span><span class="o">&gt;</span>
-</pre></div>
-</div>
-<p>To know what domain name to use look at the <code class="docutils literal"><span class="pre">ServerAlias</span></code>’es
-configured for the virtual host in
-<code class="docutils literal"><span class="pre">/etc/apache2/sites-enabled/&lt;virtual_host_name&gt;</span></code>.</p>
-<p class="last">Here is an example of a possible <code class="docutils literal"><span class="pre">mapserv_url</span></code>:
-<code class="docutils literal"><span class="pre">http://mapfish-geoportal-demo/mapserv</span></code>.</p>
-</div>
-<p>Once done with the editing of <code class="docutils literal"><span class="pre">vars.yaml</span></code>, run <code class="docutils literal"><span class="pre">make</span></code>
-to generate <code class="docutils literal"><span class="pre">c2cgeoportal/tests/functional/test.ini</span></code>:</p>
-<pre class="highlight"><span class="prompt1">make build</span>
-</pre><p>You can now run the functional tests with this:</p>
-<pre class="highlight"><span class="prompt1">./docker-compose-run nosetests -a functional</span>
-</pre></div>
-<div class="section" id="all-tests">
-<h4>All tests<a class="headerlink" href="#all-tests" title="Permalink to this headline">¶</a></h4>
-<p>To run all the tests do this:</p>
-<pre class="highlight"><span class="prompt1">./docker-compose-run make tests</span>
+<span class="prompt1">docker build --tag<span class="o">=</span>geomapfish-db docker/test-db</span>
+<span class="prompt1">./docker-compose-run alembic --config c2cgeoportal/tests/functional/alembic.ini upgrade head</span>
+<span class="prompt1">./docker-compose-run alembic --config c2cgeoportal/tests/functional/alembic_static.ini upgrade head</span>
+<span class="prompt1">./docker-compose-run make tests</span>
 </pre><p>To run a specific test use the <code class="docutils literal"><span class="pre">--where</span></code> switch. For example:</p>
 <pre class="highlight"><span class="prompt1">./docker-compose-run nosetests --where <span class="se">\</span>
     /src/c2cgeoportal/tests/functional/test_themes.py:TestThemesView.test_catalogue</span>
@@ -356,8 +293,6 @@ this directory.</p>
 <li><a class="reference internal" href="#running-tests">Running tests</a><ul>
 <li><a class="reference internal" href="#install-c2cgeportal-from-source">Install c2cgeportal from source</a></li>
 <li><a class="reference internal" href="#unit-tests">Unit tests</a></li>
-<li><a class="reference internal" href="#functional-tests">Functional tests</a></li>
-<li><a class="reference internal" href="#all-tests">All tests</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#adding-tests">Adding tests</a></li>
