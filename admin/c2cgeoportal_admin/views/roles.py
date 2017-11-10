@@ -2,7 +2,7 @@ from pyramid.view import view_defaults
 from pyramid.view import view_config
 from c2cgeoform.views.abstract_views import AbstractViews
 from c2cgeoportal_commons.models.main import Role
-from c2cgeoform.views.abstract_views import ListField as ListField
+from c2cgeoform.views.abstract_views import ListField
 from colanderalchemy import setup_schema
 
 setup_schema(None, Role)
