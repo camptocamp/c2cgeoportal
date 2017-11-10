@@ -27,7 +27,7 @@ Jinja2==2.10  # c2c.template
 JSTools==1.0  # CGXP build
 lingua==4.13  # i18n
 mccabe==0.6.1  # lint
-mypy==0.540  # lint
+mypy==0.550  # lint
 OWSLib==0.15.0  # geoportal
 papyrus==2.2  # geoportal
 PasteScript==2.0.2  # geoportal-pcreate
