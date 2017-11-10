@@ -136,16 +136,16 @@ tests require to run with <cite>docker-compose-run</cite>.</p>
 <h4>Functional tests<a class="headerlink" href="#functional-tests" title="Permalink to this headline">¶</a></h4>
 <p>For the functional tests you need to have MapServer and PostgreSQL/PostGIS
 installed. Make sure this is the case before proceeding.</p>
-<p>You now need to create PostGIS database (named <code class="docutils literal"><span class="pre">geomapfish_test</span></code> for example)
+<p>You now need to create PostGIS database (named <code class="docutils literal"><span class="pre">geomapfish_tests</span></code> for example)
 and a schema named <code class="docutils literal"><span class="pre">main</span></code> into it.</p>
 <p>To create the database use the following command if you have a PostGIS database
 template at your disposal:</p>
-<pre class="highlight"><span class="prompt1">sudo -u postgres createdb -T template_postgis geomapfish_test</span>
+<pre class="highlight"><span class="prompt1">sudo -u postgres createdb -T template_postgis geomapfish_tests</span>
 </pre><div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>If you do not have a template named <code class="docutils literal"><span class="pre">template_postgis</span></code> use this:</p>
-<pre class="highlight"><span class="prompt1">sudo -u postgres createdb -E UTF8 -T template0 geomapfish_test</span>
-<span class="prompt1">sudo -u postgres psql -d geomapfish_test <span class="se">\</span>
+<pre class="highlight"><span class="prompt1">sudo -u postgres createdb -E UTF8 -T template0 geomapfish_tests</span>
+<span class="prompt1">sudo -u postgres psql -d geomapfish_tests <span class="se">\</span>
        -c <span class="s1">&#39;CREATE EXTENSION postgis;&#39;</span></span>
 </pre><p class="last">The <code class="docutils literal"><span class="pre">template0</span></code> is needed on Debian and Ubuntu to create a utf-8
 database.</p>
@@ -153,12 +153,12 @@ database.</p>
 <p>If you do not have a <code class="docutils literal"><span class="pre">www-data</span></code> user you need to create one:</p>
 <pre class="highlight"><span class="prompt1">sudo -u postgres createuser -P www-data</span>
 </pre><p>To create the <code class="docutils literal"><span class="pre">main</span></code>,  <code class="docutils literal"><span class="pre">main_static</span></code>  and <code class="docutils literal"><span class="pre">geodata</span></code> schema:</p>
-<pre class="highlight"><span class="prompt1">sudo -u postgres psql -d geomapfish_test -c <span class="s1">&#39;CREATE SCHEMA main;&#39;</span></span>
-<span class="prompt1">sudo -u postgres psql -d geomapfish_test -c <span class="s1">&#39;GRANT ALL ON SCHEMA main TO &quot;www-data&quot;;&#39;</span></span>
-<span class="prompt1">sudo -u postgres psql -d geomapfish_test -c <span class="s1">&#39;CREATE SCHEMA main_static;&#39;</span></span>
-<span class="prompt1">sudo -u postgres psql -d geomapfish_test -c <span class="s1">&#39;GRANT ALL ON SCHEMA main_static TO &quot;www-data&quot;;&#39;</span></span>
-<span class="prompt1">sudo -u postgres psql -d geomapfish_test -c <span class="s1">&#39;CREATE SCHEMA geodata;&#39;</span></span>
-<span class="prompt1">sudo -u postgres psql -d geomapfish_test -c <span class="s1">&#39;GRANT ALL ON SCHEMA geodata TO &quot;www-data&quot;;&#39;</span></span>
+<pre class="highlight"><span class="prompt1">sudo -u postgres psql -d geomapfish_tests -c <span class="s1">&#39;CREATE SCHEMA main;&#39;</span></span>
+<span class="prompt1">sudo -u postgres psql -d geomapfish_tests -c <span class="s1">&#39;GRANT ALL ON SCHEMA main TO &quot;www-data&quot;;&#39;</span></span>
+<span class="prompt1">sudo -u postgres psql -d geomapfish_tests -c <span class="s1">&#39;CREATE SCHEMA main_static;&#39;</span></span>
+<span class="prompt1">sudo -u postgres psql -d geomapfish_tests -c <span class="s1">&#39;GRANT ALL ON SCHEMA main_static TO &quot;www-data&quot;;&#39;</span></span>
+<span class="prompt1">sudo -u postgres psql -d geomapfish_tests -c <span class="s1">&#39;CREATE SCHEMA geodata;&#39;</span></span>
+<span class="prompt1">sudo -u postgres psql -d geomapfish_tests -c <span class="s1">&#39;GRANT ALL ON SCHEMA geodata TO &quot;www-data&quot;;&#39;</span></span>
 </pre><p>Create the tables:</p>
 <pre class="highlight"><span class="prompt1">./docker-run make /build/dev-requirements.timestamp tests/functional/alembic.ini</span>
 <span class="prompt1">./docker-compose-run alembic --config<span class="o">=</span>tests/functional/alembic.ini --name<span class="o">=</span>main upgrade head</span>
