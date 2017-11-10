@@ -31,5 +31,4 @@
 /gatling/.cache-main
 /ngeo/
 /.tx/config
-/.SUCCESS
 /.coverage

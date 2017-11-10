@@ -111,9 +111,5 @@ def main():
     except subprocess.CalledProcessError:
         exit(2)
 
-    # clean artifact for docker-compose-run
-    if os.path.exists(".SUCCESS"):
-        os.remove(".SUCCESS")
-
 if __name__ == "__main__":
     main()

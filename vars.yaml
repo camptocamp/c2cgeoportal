@@ -9,7 +9,7 @@ vars:
   dbpassword: www-data
   dbhost: db
   dbport: 5432
-  db: geomapfish_test
+  db: geomapfish_tests
   mapserver_join_tables: main.restrictionarea AS ra, main.role_restrictionarea AS rra,
     main.layer_restrictionarea AS lra, main.treeitem AS la
   mapserver_join_area: ra.area

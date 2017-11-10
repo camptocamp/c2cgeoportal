@@ -1,35 +1,29 @@
 ---
 
-version: '2'
+db:
+  image: camptocamp/c2cgeoportal-gis-db:latest
+  environment:
+    - POSTGRES_USER=www-data
+    - POSTGRES_PASSWORD=www-data
+    - POSTGRES_DB=geomapfish_tests
 
-volumes:
-  c2cgpbuild:
-    external:
-      name: ${build_volume_name}
+mapserver:
+  image: camptocamp/c2cgeoportal-test-mapserver:latest
+  links:
+    - db
 
-services:
-
-  db:
-    build: docker/gis-db
-    image: camptocamp/c2cgeoportal-gis-db
-    environment:
-      - POSTGRES_USER=www-data
-      - POSTGRES_PASSWORD=www-data
-      - POSTGRES_DB=geomapfish_test
-
-  mapserver:
-    build: docker/test-mapserver
-    image: camptocamp/c2cgeoportal-test-mapserver
-
-  build:
-    image: camptocamp/geomapfish-build-dev:${major_version}
-    volumes:
-      - c2cgpbuild:/build
-      - .:/src
-    environment:
-      - USER_NAME
-      - USER_ID
-      - GROUP_ID
-    stdin_open: true
-    tty: true
-    command: ${'$'}{RUN}
+build:
+  image: camptocamp/geomapfish-build-dev:${major_version}
+  volumes:
+    - ${build_volume_name}:/build
+    - .:/src
+  environment:
+    - USER_NAME
+    - USER_ID
+    - GROUP_ID
+  stdin_open: true
+  tty: true
+  command: ${'$'}{RUN}
+  links:
+    - db
+    - mapserver

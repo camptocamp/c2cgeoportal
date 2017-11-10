@@ -117,7 +117,7 @@ Functional tests
 For the functional tests you need to have MapServer and PostgreSQL/PostGIS
 installed. Make sure this is the case before proceeding.
 
-You now need to create PostGIS database (named ``geomapfish_test`` for example)
+You now need to create PostGIS database (named ``geomapfish_tests`` for example)
 and a schema named ``main`` into it.
 
 To create the database use the following command if you have a PostGIS database
@@ -125,7 +125,7 @@ template at your disposal:
 
 .. prompt:: bash
 
-    sudo -u postgres createdb -T template_postgis geomapfish_test
+    sudo -u postgres createdb -T template_postgis geomapfish_tests
 
 .. note::
 
@@ -133,8 +133,8 @@ template at your disposal:
 
     .. prompt:: bash
 
-        sudo -u postgres createdb -E UTF8 -T template0 geomapfish_test
-        sudo -u postgres psql -d geomapfish_test \
+        sudo -u postgres createdb -E UTF8 -T template0 geomapfish_tests
+        sudo -u postgres psql -d geomapfish_tests \
                -c 'CREATE EXTENSION postgis;'
 
     The ``template0`` is needed on Debian and Ubuntu to create a utf-8
@@ -150,12 +150,12 @@ To create the ``main``,  ``main_static``  and ``geodata`` schema:
 
 .. prompt:: bash
 
-    sudo -u postgres psql -d geomapfish_test -c 'CREATE SCHEMA main;'
-    sudo -u postgres psql -d geomapfish_test -c 'GRANT ALL ON SCHEMA main TO "www-data";'
-    sudo -u postgres psql -d geomapfish_test -c 'CREATE SCHEMA main_static;'
-    sudo -u postgres psql -d geomapfish_test -c 'GRANT ALL ON SCHEMA main_static TO "www-data";'
-    sudo -u postgres psql -d geomapfish_test -c 'CREATE SCHEMA geodata;'
-    sudo -u postgres psql -d geomapfish_test -c 'GRANT ALL ON SCHEMA geodata TO "www-data";'
+    sudo -u postgres psql -d geomapfish_tests -c 'CREATE SCHEMA main;'
+    sudo -u postgres psql -d geomapfish_tests -c 'GRANT ALL ON SCHEMA main TO "www-data";'
+    sudo -u postgres psql -d geomapfish_tests -c 'CREATE SCHEMA main_static;'
+    sudo -u postgres psql -d geomapfish_tests -c 'GRANT ALL ON SCHEMA main_static TO "www-data";'
+    sudo -u postgres psql -d geomapfish_tests -c 'CREATE SCHEMA geodata;'
+    sudo -u postgres psql -d geomapfish_tests -c 'GRANT ALL ON SCHEMA geodata TO "www-data";'
 
 Create the tables:
 

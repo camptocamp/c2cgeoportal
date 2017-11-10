@@ -43,7 +43,7 @@ class TestIncludeme(TestCase):
             # the c2cgeoportal includeme function requires a number
             # of settings
             settings={
-                "sqlalchemy.url": "postgresql://www-data:www-data@db:5432/geomapfish_test",
+                "sqlalchemy.url": "postgresql://www-data:www-data@db:5432/geomapfish_tests",
                 "srid": 3857,
                 "schema": "main",
                 "default_max_age": 86400,
