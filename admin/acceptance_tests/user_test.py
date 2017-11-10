@@ -19,6 +19,7 @@ def insertUsersTestData(dbsession):
         user = User("babar_" + str(i),
                     email='mail' + str(i),
                     role=roles[i % 4])
+        user.password = 'pré$ident'
         dbsession.add(user)
     yield
     dbsession.rollback()
@@ -82,10 +83,7 @@ class TestUser():
                 'id': user.id,
                 'username': 'new_name_withéàô',
                 'email': 'new_mail',
-                'role_name': 'secretary_2',
-                'is_password_changed': 'false',
-                '_password': 'da39a3ee5e6b4b0d3255bfef95601890afd80709',
-                'temp_password': ''},
+                'role_name': 'secretary_2'},
             status=302)
         assert resp.location == 'http://localhost/users/{}'.format(user.id)
 
@@ -93,6 +91,7 @@ class TestUser():
         assert user.username == 'new_name_withéàô'
         assert user.email == 'new_mail'
         assert user.role_name == 'secretary_2'
+        assert user.validate_password('pré$ident')
 
     @pytest.mark.usefixtures("raise_db_error_on_query")
     def test_grid_dberror(self, dbsession):
