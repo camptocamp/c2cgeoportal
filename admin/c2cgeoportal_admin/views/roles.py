@@ -2,6 +2,7 @@ from pyramid.view import view_defaults
 from pyramid.view import view_config
 from c2cgeoform.views.abstract_views import AbstractViews
 from c2cgeoportal_commons.models.main import Role
+from c2cgeoform.views.abstract_views import ListField
 from colanderalchemy import setup_schema
 
 setup_schema(None, Role)
@@ -9,7 +10,13 @@ setup_schema(None, Role)
 
 @view_defaults(match_param='table=roles')
 class RoleViews(AbstractViews):
-    _list_fields = ['name']
+    _list_fields = [
+        ListField('name'),
+        ListField('description'),
+        ListField('functionalities', renderer=lambda role:
+                  ", ".join(["{}={}".format(f.name, f.value) for f in role.functionalities])),
+        ListField('restrictionareas', renderer=lambda role:
+                  ", ".join([r.name or '' for r in role.restrictionareas]))]
     _id_field = 'id'
     _model = Role
     _base_schema = Role.__colanderalchemy__

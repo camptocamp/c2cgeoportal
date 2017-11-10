@@ -1,6 +1,8 @@
 import pytest
 from pyramid.testing import DummyRequest
 
+from . import skip_if_travis
+
 
 @pytest.fixture(scope='class')
 @pytest.mark.usefixtures("dbsession")
@@ -31,7 +33,6 @@ class TestRole():
         from c2cgeoportal_admin.views.roles import RoleViews
         info = RoleViews(DummyRequest(dbsession=dbsession)).index()
         assert info['list_fields'][0][0] == 'name'
-        assert type(info['list_fields'][0][1]) == str
 
     def test_view_edit(self, dbsession, test_app):
         role = self._role_by_name(dbsession, 'secretary_10')
@@ -80,12 +81,17 @@ class TestRole():
         res = test_app.get('/roles/', status=200)
         res1 = res.click(verbose=True, href='language=en')
         res2 = res1.follow()
-        expected = ('[<th data-column-id="name">name</th>,'
-                    ' <th data-column-id="_id_"'
-                    ' data-converter="commands"'
-                    ' data-searchable="false"'
-                    ' data-sortable="false">Commands</th>]')
-        assert expected == str(res2.html.find_all('th', limit=2))
+        expected = (
+            '[<th data-column-id="name">name</th>, '
+            '<th data-column-id="description">description</th>, '
+            '<th data-column-id="functionalities">functionalities</th>, '
+            '<th data-column-id="restrictionareas">restrictionareas</th>, '
+            '<th data-column-id="_id_" '
+            'data-converter="commands" '
+            'data-searchable="false" '
+            'data-sortable="false">Commands</th>]')
+
+        assert expected == str(res2.html.find_all('th', limit=5))
         assert 1 == len(list(filter(lambda x: str(x.contents) == "['New']",
                                     res2.html.findAll('a'))))
 
@@ -103,3 +109,10 @@ class TestRole():
         assert expected == str(res2.html.find_all('th', limit=2))
         assert 1 == len(list(filter(lambda x: str(x.contents) == "['Nouveau']",
                                     res2.html.findAll('a'))))
+
+    # in order to make this work, had to install selenium gecko driver
+    @skip_if_travis
+    @pytest.mark.usefixtures("selenium", "selenium_app")
+    def test_grid_multientities_cell_selenium(self, dbsession, selenium):
+        selenium.get('http://127.0.0.1:6543' + '/roles/')
+        # 9/11/17, await data about to come with another pr
