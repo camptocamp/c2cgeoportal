@@ -237,9 +237,18 @@ class TreeItem(Base):
     __mapper_args__ = {"polymorphic_on": item_type}
 
     id = Column(Integer, primary_key=True)
-    name = Column(Unicode, nullable=False)
-    metadata_url = Column(Unicode)  # should not be used in V2
-    description = Column(Unicode)
+    name = Column(Unicode, nullable=False, info={
+        "colanderalchemy": {
+            "title": _("Name")
+        }})
+    metadata_url = Column(Unicode, info={
+        "colanderalchemy": {
+            "title": _("Metadata URL")
+        }})  # should not be used in V2
+    description = Column(Unicode, info={
+        "colanderalchemy": {
+            "title": _("Description")
+        }})
 
     @property
     # Better: def parents(self) -> List[TreeGroup]:  # pragma: no cover
@@ -293,7 +302,10 @@ class LayergroupTreeitem(Base):
     treeitem = relationship(
         "TreeItem",
         backref=backref(
-            "parents_relation", cascade="save-update,merge,delete,delete-orphan"
+            "parents_relation", cascade="save-update,merge,delete,delete-orphan", info={
+                "colanderalchemy": {
+                    "exclude": True
+                }}
         ),
         primaryjoin="LayergroupTreeitem.treeitem_id==TreeItem.id",
     )
@@ -421,9 +433,18 @@ class Layer(TreeItem):
     __acl__ = [DENY_ALL]
 
     id = Column(Integer, ForeignKey(_schema + ".treeitem.id"), primary_key=True)
-    public = Column(Boolean, default=True)
-    geo_table = Column(Unicode)
-    exclude_properties = Column(Unicode)
+    public = Column(Boolean, default=True, info={
+        "colanderalchemy": {
+            "title": _("Public")
+        }})
+    geo_table = Column(Unicode, info={
+        "colanderalchemy": {
+            "title": _("Geo table")
+        }})
+    exclude_properties = Column(Unicode, info={
+        "colanderalchemy": {
+            "title": _("Exclude properties")
+        }})
 
     def __init__(self, name: str="", public: bool=True) -> None:
         TreeItem.__init__(self, name=name)
@@ -558,24 +579,44 @@ class LayerWMS(DimensionLayer):
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
+    __colanderalchemy_config__ = {
+        "title": _("WMS Layer"),
+        "plural": _("WMS Layers")
+    }
     __mapper_args__ = {"polymorphic_identity": "l_wms"}
 
     id = Column(Integer, ForeignKey(_schema + ".layer.id"), primary_key=True)
     ogc_server_id = Column(Integer, ForeignKey(_schema + ".ogc_server.id"), nullable=False)
-    layer = Column(Unicode)
-    style = Column(Unicode)
+    layer = Column(Unicode, info={
+        "colanderalchemy": {
+            "title": _("WMS layer name")
+        }})
+    style = Column(Unicode, info={
+        "colanderalchemy": {
+            "title": _("Style")
+        }})
     time_mode = Column(Enum(
         "disabled", "value", "range",
-        native_enum=False), default="disabled", nullable=False,
+        native_enum=False), default="disabled", nullable=False, info={
+            "colanderalchemy": {
+                "title": _("Time mode")
+            }}
     )
     time_widget = Column(Enum(
         "slider", "datepicker",
-        native_enum=False), default="slider", nullable=False,
+        native_enum=False), default="slider", nullable=False, info={
+            "colanderalchemy": {
+                "title": _("Time widget")
+            }}
     )
 
     # relationship with OGCServer
     ogc_server = relationship(
-        "OGCServer"
+        "OGCServer", info={
+            "colanderalchemy": {
+                "title": _("OGC server"),
+                "exclude": True
+            }}
     )
 
     def __init__(
@@ -658,8 +699,13 @@ class RestrictionArea(Base):
         })
     )
     layers = relationship(
-        "Layer", secondary=layer_ra,
-        backref="restrictionareas", cascade="save-update,merge,refresh-expire"
+        "Layer", secondary=layer_ra, cascade="save-update,merge,refresh-expire",
+        backref=backref("restrictionareas", info={
+            "colanderalchemy": {
+                "title": _("Restriction areas"),
+                "exclude": True
+            }}
+        )
     )
 
     def __init__(
@@ -716,7 +762,12 @@ class Interface(Base):
     # relationship with Layer and Theme
     layers = relationship(
         "Layer", secondary=interface_layer,
-        backref="interfaces", cascade="save-update,merge,refresh-expire"
+        cascade="save-update,merge,refresh-expire",
+        backref=backref("interfaces", info={
+            "colanderalchemy": {
+                "exclude": True
+            }}
+        )
     )
     theme = relationship(
         "Theme", secondary=interface_theme,
@@ -749,6 +800,9 @@ class Metadata(Base):
         backref=backref(
             "metadatas",
             cascade="save-update,merge,delete,delete-orphan",
+            info={ "colanderalchemy": {
+                "exclude": True
+            }}
         ),
     )
 
@@ -783,7 +837,12 @@ class Dimension(Base):
         backref=backref(
             "dimensions",
             cascade="save-update,merge,delete,delete-orphan",
-        ),
+            info={
+                "colanderalchemy": {
+                      "exclude": True
+                }
+            }
+        )
     )
 
     def __init__(self, name: str="", value: str="", layer: str=None) -> None:
