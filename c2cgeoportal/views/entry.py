@@ -1364,12 +1364,16 @@ class Entry(object):
         set_common_headers(self.request, "loginresetpassword", NO_CACHE)
 
         user, username, password = self._loginresetpassword()
-        settings = self.request.registry.settings["smtp"]
+        smtp_config = self.request.registry.settings.get("smtp", {})
+        reset_password_config = self.request.registry.settings.get("reset_password", {})
+
         send_email(
-            settings["email_from"], [user.email],
-            settings["email_body"].format(user=username, password=password).encode("utf-8"),
-            settings["email_subject"],
-            settings["smtp"],
+            reset_password_config.get("email_from"),
+            [user.email],
+            reset_password_config.get("email_body").format(user=username,
+                                                           password=password).encode("utf-8"),
+            reset_password_config.get("email_subject"),
+            smtp_config
         )
 
         return {
