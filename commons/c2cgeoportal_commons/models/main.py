@@ -192,7 +192,12 @@ class Role(Base):
     # functionality
     functionalities = relationship(
         "Functionality", secondary=role_functionality,
-        cascade="save-update,merge,refresh-expire"
+        cascade="save-update,merge,refresh-expire",
+        info={
+            'colanderalchemy': {
+                'exclude': True
+            }
+        }
     )
 
     def __init__(
@@ -645,7 +650,12 @@ class RestrictionArea(Base):
     # relationship with Role and Layer
     roles = relationship(
         "Role", secondary=role_ra,
-        backref="restrictionareas", cascade="save-update,merge,refresh-expire"
+        cascade="save-update,merge,refresh-expire",
+        backref=backref("restrictionareas", info={
+            'colanderalchemy': {
+                'exclude': True
+            }
+        })
     )
     layers = relationship(
         "Layer", secondary=layer_ra,

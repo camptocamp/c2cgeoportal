@@ -1,6 +1,4 @@
--e git://github.com/camptocamp/c2cgeoform.git@28049e30c7daf535566cb30f8d8095d3f272f216#egg=c2cgeoform
 c2cwsgiutils
-ColanderAlchemy>=0.3.2
 deform
 plaster_pastedeploy
 pyproj

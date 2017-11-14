@@ -1,11 +1,54 @@
 from pyramid.view import view_defaults
 from pyramid.view import view_config
-from c2cgeoform.views.abstract_views import AbstractViews
-from c2cgeoportal_commons.models.main import Role
-from c2cgeoform.views.abstract_views import ListField
-from colanderalchemy import setup_schema
 
-setup_schema(None, Role)
+import colander
+from c2cgeoform.ext.deform_ext import RelationCheckBoxListWidget
+from c2cgeoform.schema import (
+    GeoFormSchemaNode,
+    GeoFormManyToManySchemaNode,
+    manytomany_validator,
+)
+from c2cgeoform.views.abstract_views import AbstractViews, ListField
+from sqlalchemy import select
+from sqlalchemy.sql.functions import concat
+
+from c2cgeoportal_commons.models.main import _, Role, Functionality, RestrictionArea
+
+
+base_schema = GeoFormSchemaNode(Role)
+base_schema.add_before(
+    'extent',
+    colander.SequenceSchema(
+        GeoFormManyToManySchemaNode(Functionality),
+        name='functionalities',
+        title=_('Functionalities'),
+        widget=RelationCheckBoxListWidget(
+            select([
+                Functionality.id,
+                concat(Functionality.name, '=', Functionality.value).label('label')
+            ]).alias('functionnality_labels'),
+            'id',
+            'label',
+            order_by='label'
+        ),
+        validator=manytomany_validator
+    )
+)
+base_schema.add_before(
+    'extent',
+    colander.SequenceSchema(
+        GeoFormManyToManySchemaNode(RestrictionArea),
+        name='restrictionareas',
+        title=_('Restriction areas'),
+        widget=RelationCheckBoxListWidget(
+            RestrictionArea,
+            'id',
+            'name',
+            order_by='name'
+        ),
+        validator=manytomany_validator
+    )
+)
 
 
 @view_defaults(match_param='table=roles')
@@ -19,7 +62,7 @@ class RoleViews(AbstractViews):
                   ", ".join([r.name or '' for r in role.restrictionareas]))]
     _id_field = 'id'
     _model = Role
-    _base_schema = Role.__colanderalchemy__
+    _base_schema = base_schema
 
     @view_config(route_name='c2cgeoform_index',
                  renderer="../templates/index.jinja2")

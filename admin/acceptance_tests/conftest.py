@@ -74,7 +74,7 @@ def test_app(request, dbsession, settings, app_env):
 @pytest.mark.usefixtures("dbsession", "app_env")
 def selenium_app(request, dbsession, settings, app_env):
     app = app_env.get('app')
-    srv = make_server('', 6543, app)
+    srv = make_server('', 6544, app)
     threading.Thread(target=srv.serve_forever).start()
     yield()
     srv.shutdown()
