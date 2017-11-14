@@ -30,14 +30,13 @@
 
 import transaction
 
-from unittest2 import TestCase
-from nose.plugins.attrib import attr
+from unittest import TestCase
 
 from pyramid import testing
 
-from c2cgeoportal.tests.functional import (  # noqa
-    tear_down_common as tearDownModule,
-    set_up_common as setUpModule,
+from tests.functional import (  # noqa, pylint: disable=unused-import
+    teardown_common as teardown_module,
+    setup_common as setup_module,
     mapserv_url, create_dummy_request, create_default_ogcserver,
 )
 
@@ -46,7 +45,6 @@ import logging
 log = logging.getLogger(__name__)
 
 
-@attr(functional=True)
 class TestThemesPrivateView(TestCase):
 
     def setUp(self):  # noqa
@@ -56,8 +54,10 @@ class TestThemesPrivateView(TestCase):
 
         self.clean()
 
-        from c2cgeoportal.models import DBSession, \
-            Theme, LayerGroup, Interface, LayerWMS, LayerWMTS, User, Role, RestrictionArea
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.static import User
+        from c2cgeoportal_commons.models.main import \
+            Theme, LayerGroup, Interface, LayerWMS, LayerWMTS, Role, RestrictionArea
 
         main = Interface(name=u"desktop")
         role = Role(name=u"__test_role")
@@ -108,8 +108,9 @@ class TestThemesPrivateView(TestCase):
 
     @staticmethod
     def clean():
-        from c2cgeoportal.models import DBSession, TreeItem, Interface, User, Role, RestrictionArea, \
-            OGCServer
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.static import User
+        from c2cgeoportal_commons.models.main import TreeItem, Interface, Role, RestrictionArea, OGCServer
 
         for o in DBSession.query(RestrictionArea).all():
             o.roles = []
@@ -154,7 +155,7 @@ class TestThemesPrivateView(TestCase):
         return request
 
     def _create_entry_obj(self, **kwargs):
-        from c2cgeoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.entry import Entry
 
         return Entry(self._create_request_obj(**kwargs))
 
@@ -200,7 +201,8 @@ class TestThemesPrivateView(TestCase):
         )
 
     def test_private(self):
-        from c2cgeoportal.models import DBSession, User
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.static import User
         entry = self._create_entry_obj(params={
             "version": "2"
         }, user=DBSession.query(User).filter_by(username=u"__test_user").one())
