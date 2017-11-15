@@ -48,13 +48,9 @@
 <p>c2cgeoportal developers often need to test c2cgeoportal changes in the context
 of an existing c2cgeoportal application. Here is how:</p>
 <ul>
-<li><dl class="first docutils">
-<dt>Change current directory to your sources root directory and clone</dt>
-<dd><p class="first last"><code class="docutils literal"><span class="pre">c2cgeoportal</span></code> there (in the following line the sources directory is the
-user home directory). Then checkout the submodules, build c2cgeoportal,
+<li><p class="first">Change current directory to your sources root directory and clone <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> there (in the
+following line the sources directory is the user home directory). Then build c2cgeoportal,
 and go back to your project directory:</p>
-</dd>
-</dl>
 <pre class="highlight"><style type="text/css">
 span.prompt1:before {
   content: "$ ";
@@ -62,7 +58,6 @@ span.prompt1:before {
 </style><span class="prompt1"><span class="nb">cd</span> ~</span>
 <span class="prompt1">git clone git@github.com:camptocamp/c2cgeoportal.git</span>
 <span class="prompt1"><span class="nb">cd</span> c2cgeoportal</span>
-<span class="prompt1">git submodule update --init</span>
 <span class="prompt1">./docker-run make build</span>
 <span class="prompt1"><span class="nb">cd</span>  ~/&lt;project&gt;</span>
 </pre></li>
@@ -119,9 +114,7 @@ code, and a make environment for it. So do that first, as described below.</p>
 <h4>Install c2cgeportal from source<a class="headerlink" href="#install-c2cgeportal-from-source" title="Permalink to this headline">¶</a></h4>
 <p>Check out c2cgeoportal from GitHub:</p>
 <pre class="highlight"><span class="prompt1">git clone git@github.com:camptocamp/c2cgeoportal.git</span>
-</pre><p>Change into the <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> directory and initialize the submodules:</p>
-<pre class="highlight"><span class="prompt1"><span class="nb">cd</span> c2cgeoportal</span>
-<span class="prompt1">git submodule update --init</span>
+<span class="prompt1"><span class="nb">cd</span> c2cgeoportal</span>
 </pre><p>c2cgeoportal has two types of tests: unit tests and functional tests. The unit
 tests are self-contained, and do not require any specific setup. The functional
 tests require to run with <cite>docker-compose-run</cite>.</p>
