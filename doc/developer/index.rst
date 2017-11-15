@@ -16,7 +16,6 @@ Content:
 
     build_release
     cache
-    client_side
     debugging
     development_procedure
     documentation_infrastructure

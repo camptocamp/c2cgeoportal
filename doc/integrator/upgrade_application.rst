@@ -5,10 +5,6 @@ Upgrading a GeoMapFish application
 ==================================
 
 
-------------------------
-Updating the application
-------------------------
-
 Then you have 4 different ways...
 
 From a version 2.3 and next
@@ -44,7 +40,7 @@ Convert a version 2.3 to non-Docker
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Add the ``vhost`` in the ``template_vars`` of the ``project.yaml.mako`` file.
-Add ``UPGRADE_ARGS += --nondocker --new-makefile=testgeomapfish.mk`` in the ``Makefile``.
+Add ``UPGRADE_ARGS += --nondocker --new-makefile=<package>.mk`` in the ``Makefile``.
 
 .. prompt:: bash
 
@@ -59,7 +55,7 @@ Remove the ``UPGRADE_ARGS`` in your ``Makefile``.
 Upgrade a version 2.2
 ~~~~~~~~~~~~~~~~~~~~~
 
-Add a section managed_files: [...] in the ``project.yaml.mako`` file.
+Add a section ``managed_files: [...]`` in the ``project.yaml.mako`` file.
 All the files that's not in this section will be overwritten except::
 
  - {package}/templates/.*
@@ -75,18 +71,20 @@ All the files that's not in this section will be overwritten except::
 
 .. prompt:: bash
 
+   git submodule deinit <package>/static/lib/cgxp/
+   git rm .gitmodules
    wget https://raw.githubusercontent.com/camptocamp/c2cgeoportal/master/docker-run
    chmod +x docker-run
    git add docker-run project.yaml.mako
    git commit --quiet --message="Start upgrade"
-   make --makefile=testgeomapfish.mk project.yaml
+   make --makefile=<package>.mk project.yaml
 
 For Docker:
 
 .. prompt:: bash
 
-   ./docker-run --image=camptocamp/geomapfish-build \
-       c2cupgrade --force-docker --new-makefile=Makefile --makefile=testgeomapfish.mk
+   ./docker-run --image=camptocamp/geomapfish-build --version=<version> \
+       c2cupgrade --force-docker --new-makefile=Makefile --makefile=<package>.mk
 
 And for non-Docker
 

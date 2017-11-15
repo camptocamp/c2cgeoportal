@@ -75,6 +75,8 @@ def main():
     if options.nondocker:
         print("- nondocker")
     print("- git_remote=" + options.git_remote)
+    if options.use_makefile:
+        print("- use_makefile")
     print("- makefile=" + options.makefile)
     print("- new_makefile=" + options.new_makefile)
     sys.stdout.flush()
@@ -107,10 +109,13 @@ def _fill_arguments():
         default="origin",
     )
     parser.add_argument(
-        "--makefile", metavar="MAKEFILE", help="The makefile used to build", default="Makefile"
+        "--makefile", help="The makefile used to build", default="Makefile",
     )
     parser.add_argument(
-        "--new-makefile", metavar="MAKEFILE", help="The makefile used to override the makefile",
+        "--new-makefile", help="The makefile used to override the makefile",
+    )
+    parser.add_argument(
+        "--use-makefile", action="store_true", help="c2cupgrade is running form a makefile",
     )
     parser.add_argument(
         "--step", type=int, help=argparse.SUPPRESS, default=0
@@ -189,10 +194,30 @@ class C2cUpgradeTool:
             print(colorize(message, RED if error else YELLOW))
         if step >= 0:
             print(colorize(prompt, GREEN))
-            args = " --makefile=" + self.options.new_makefile if self.options.makefile != "Makefile" else ""
-            print(colorize("./docker-run make{} upgrade{}", GREEN).format(
-                args, step if step != 0 else "",
-            ))
+            if self.options.use_makefile:
+                args = " --makefile={}".format(
+                    self.options.new_makefile if self.options.makefile != "Makefile" else "")
+                print(colorize("./docker-run make{} upgrade{}".format(
+                    args, step if step != 0 else "",
+                ), GREEN))
+            else:
+                cmd = "./docker-run --image=camptocamp/geomapfish-build --version={} c2cupgrade ".format(
+                    pkg_resources.get_distribution("c2cgeoportal_commons").version)
+                if self.options.windows:
+                    cmd += "--windows "
+                if self.options.nondocker:
+                    cmd += "--nondocker "
+                if self.options.force_docker:
+                    cmd += "--force-docker "
+                if self.options.git_remote != "origin":
+                    cmd += "--git-remote={} ".format(self.options.git_remote)
+                if self.options.makefile != "Makefile":
+                    cmd += "--makefile={} ".format(self.options.makefile)
+                if self.options.new_makefile is not None:
+                    cmd += "--new-makefile={} ".format(self.options.new_makefile)
+                if step != 0:
+                    cmd += "--step{}".format(step)
+                print(colorize(cmd, GREEN))
 
     def run_step(self, step):
         getattr(self, "step{}".format(step))()
@@ -296,6 +321,7 @@ class C2cUpgradeTool:
                 "--scaffold=c2cgeoportal_nondockerupdate", project_path
             ])
         os.remove(project_path)
+        self.options.use_makefile = True
 
         check_call(["make", "--makefile=" + self.options.makefile, "clean-all"])
         self.options.makefile = self.options.new_makefile

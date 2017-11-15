@@ -9,17 +9,15 @@ Create development environment in a project
 c2cgeoportal developers often need to test c2cgeoportal changes in the context
 of an existing c2cgeoportal application. Here is how:
 
-* Change current directory to your sources root directory and clone
-    ``c2cgeoportal`` there (in the following line the sources directory is the
-    user home directory). Then checkout the submodules, build c2cgeoportal,
-    and go back to your project directory:
+* Change current directory to your sources root directory and clone ``c2cgeoportal`` there (in the
+  following line the sources directory is the user home directory). Then build c2cgeoportal,
+  and go back to your project directory:
 
   .. prompt:: bash
 
     cd ~
     git clone git@github.com:camptocamp/c2cgeoportal.git
     cd c2cgeoportal
-    git submodule update --init
     ./docker-run make build
     cd  ~/<project>
 
@@ -89,13 +87,7 @@ Check out c2cgeoportal from GitHub:
 .. prompt:: bash
 
     git clone git@github.com:camptocamp/c2cgeoportal.git
-
-Change into the ``c2cgeoportal`` directory and initialize the submodules:
-
-.. prompt:: bash
-
     cd c2cgeoportal
-    git submodule update --init
 
 c2cgeoportal has two types of tests: unit tests and functional tests. The unit
 tests are self-contained, and do not require any specific setup. The functional
