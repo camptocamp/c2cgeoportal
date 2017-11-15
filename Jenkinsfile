@@ -102,11 +102,12 @@ timeout(time: 2, unit: 'HOURS') {
                     sh 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ docker-compose up -d'
                     sh './docker-run travis/waitwsgi http://`netstat --route --numeric|grep ^0.0.0.0|awk \'{print($2)}\'`:8080/'
                     for (path in ['c2c/health_check', 'c2c/health_check?max_level=100', 'layers/test/values/type enum']) {
-                        def start = sh(returnStdout: true, script: 'date --iso-8601=ns').trim()
+                        def start_lines = sh(returnStdout: true, script: 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ docker-compose logs | wc -l') as Integer
                         try {
                             sh 'travis/test-new-project http://`netstat --route --numeric|grep ^0.0.0.0|awk \'{print($2)}\'`:8080/' + path
                         } catch (Exception error) {
-                            sh "travis/run-on.sh ${HOME}/workspace/testgeomapfish/ docker-compose logs --since ${start}"
+                            def end_lines = sh(returnStdout: true, script: 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ docker-compose logs | wc -l') as Integer
+                            sh "travis/run-on.sh ${HOME}/workspace/testgeomapfish/ docker-compose logs --tail=${end_lines - start_lines}"
                             throw error
                         }
                     }
