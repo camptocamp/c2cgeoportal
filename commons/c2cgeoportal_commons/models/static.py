@@ -34,7 +34,7 @@ from typing import Optional
 
 from sqlalchemy import Column
 from sqlalchemy.types import Integer, Boolean, Unicode, String, DateTime
-from deform.widget import HiddenWidget, CheckboxWidget
+from deform.widget import HiddenWidget
 from c2cgeoform.ext import deform_ext
 
 from c2cgeoportal_commons.models import Base, schema
@@ -90,18 +90,17 @@ class User(Base):
         }
     })
     username = Column(Unicode, unique=True, nullable=False)
-    _password = Column("password", Unicode, nullable=False, info={
-        'colanderalchemy': {'widget': HiddenWidget()}
-    })
-    temp_password = Column("temp_password", Unicode, nullable=True)
+    _password = Column("password", Unicode, nullable=False,
+                       info={'colanderalchemy': {'exclude': True}})
+    temp_password = Column("temp_password", Unicode, nullable=True,
+                           info={'colanderalchemy': {'exclude': True}})
     email = Column(Unicode, nullable=False, info={
         'colanderalchemy': {
             'title': _('email')
         }
     })
-    is_password_changed = Column(Boolean, default=False, info={
-        'colanderalchemy': {'widget': CheckboxWidget(readonly=True)}
-    })
+    is_password_changed = Column(Boolean, default=False,
+                                 info={'colanderalchemy': {'exclude': True}})
     role_name = Column(String, info={
         'colanderalchemy': {
             'widget': deform_ext.RelationSelect2Widget(
