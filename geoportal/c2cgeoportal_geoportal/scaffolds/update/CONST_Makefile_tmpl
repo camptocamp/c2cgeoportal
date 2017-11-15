@@ -615,37 +615,16 @@ $(APP_OUTPUT_DIR)/templatecache.js: /build/gmftemplatecache.js
 	eslint $?
 	touch $@
 
+
 # Git
 
-.PHONY: update
-update:
-	git pull --rebase $(GIT_REMOTE) $(GIT_BRANCH)
-	git clean -fd
-	git submodule sync
-	git submodule update
-	git submodule foreach git submodule sync
-	git submodule foreach git submodule update --init
-	git submodule foreach git clean -fd
-	git submodule foreach git submodule foreach git clean -fd
-	@echo After that you should launch the `build` task.
-	@echo Unfortunately sometimes we get an error, then you should run the task `cleanall` before.
-
-.PHONY: update-git-submodules
-update-git-submodules:
-	git submodule sync
-	git submodule update
-	git submodule foreach git submodule sync
-	git submodule foreach git submodule update --init
-	git submodule foreach git clean -fd
-	git submodule foreach git submodule foreach git clean -fd
-
-geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/openlayers/: geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/
+geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/: cgxp_revision
 	$(PRERULE_CMD)
-	cd $< && git submodule update --init
-
-geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/:
-	$(PRERULE_CMD)
-	git clone $(CGXP_GIT_ARGS) $(CGXP_GIT_REMOTE) $@
+	if [ ! -e $@ ]; then git clone $(CGXP_GIT_ARGS) $(CGXP_GIT_REMOTE) $@; fi
+	cd $@ && git fetch
+	cd $@ && git reset --hard $(shell cat $<)
+	cd $@ && git submodule foreach git submodule sync
+	cd $@ && git submodule update --init
 
 
 # CGXP build
@@ -654,20 +633,17 @@ geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/:
 $(OUTPUT_DIR)/api-lang-en.js: \
 		$(JSBUILD_MAIN_CONFIG) \
 		$(JSBUILD_MAIN_FILES) \
-		geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/openlayers/ \
 		geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/
 
 $(OUTPUT_DIR)/%.js: \
 		$(JSBUILD_MAIN_CONFIG) \
 		$(JSBUILD_MAIN_FILES) \
-		geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/openlayers/ \
 		geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	jsbuild $< $(JSBUILD_ARGS) -j $(notdir $@) -o $(dir $@)
 
 $(CSS_CGXP_OUTPUT): \
-		geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/openlayers/ \
 		geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ \
 		geoportal/$(PACKAGE)_geoportal/static/css/proj.css \
 		geoportal/$(PACKAGE)_geoportal/static/css/proj-map.css \
@@ -676,14 +652,12 @@ $(CSS_CGXP_OUTPUT): \
 	c2c-cssmin $(CSSMIN_ARGS) $@ $(CSS_BASE_FILES)
 
 $(CSS_API_OUTPUT): \
-		geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/openlayers/ \
 		geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ \
 		geoportal/$(PACKAGE)_geoportal/static/css/proj-map.css
 	$(PRERULE_CMD)
 	c2c-cssmin $(CSSMIN_ARGS) $@ $(CSS_API_FILES)
 
 $(CSS_XAPI_OUTPUT): \
-		geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/openlayers/ \
 		geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ \
 		geoportal/$(PACKAGE)_geoportal/static/css/proj-map.css \
 		geoportal/$(PACKAGE)_geoportal/static/css/proj-widgets.css

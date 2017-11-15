@@ -71,6 +71,8 @@ All the files that's not in this section will be overwritten except::
 
 .. prompt:: bash
 
+   git submodule deinit <package>/static/lib/cgxp/
+   git rm .gitmodules
    wget https://raw.githubusercontent.com/camptocamp/c2cgeoportal/master/docker-run
    chmod +x docker-run
    git add docker-run project.yaml.mako
