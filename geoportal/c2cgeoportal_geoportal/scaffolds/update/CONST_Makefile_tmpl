@@ -772,6 +772,8 @@ testdb-docker: /build/testdb-docker.timestamp
 
 # Upgrade
 
+UPGRADE_ARGS += "--use-makefile"
+
 .PHONY: upgrade
 upgrade: project.yaml
 	c2cupgrade $(UPGRADE_ARGS)
