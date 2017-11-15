@@ -518,12 +518,6 @@ class Entry:
         for layer_name in layer.layer.split(","):
             if layer_name in wms_layers:
                 wms_layer_obj = wms[layer_name]
-                metadata_urls = self._get_layer_metadata_urls(wms_layer_obj)
-                if len(metadata_urls) > 0:  # pragma: no cover
-                    if "metadataUrls" not in l:
-                        l["metadataUrls"] = metadata_urls
-                    else:
-                        l["metadataUrls"].extend(metadata_urls)
                 if len(wms_layer_obj.layers) == 0:
                     l["childLayers"].append(self._get_child_layers_info(wms_layer_obj))
                 else:
