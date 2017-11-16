@@ -103,6 +103,7 @@ class User(Base):
                                  info={'colanderalchemy': {'exclude': True}})
     role_name = Column(String, info={
         'colanderalchemy': {
+            'title': _('role'),
             'widget': deform_ext.RelationSelect2Widget(
                 Role, 'name', 'name', order_by='name', default_value=('', _('- Select -'))
             )

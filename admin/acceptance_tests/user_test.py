@@ -30,12 +30,6 @@ def insertUsersTestData(dbsession):
 
 @pytest.mark.usefixtures("insertUsersTestData", "transact", "test_app")
 class TestUser():
-    def test_view_index(self, dbsession):
-        from c2cgeoportal_admin.views.users import UserViews
-        info = UserViews(DummyRequest(dbsession=dbsession)).index()
-        assert info['list_fields'][0][0] == 'username'
-        assert info['list_fields'][1][0] == 'email'
-
     def test_view_edit(self, dbsession, test_app):
         from c2cgeoportal_commons.models.static import User
         user = dbsession.query(User). \
@@ -134,6 +128,7 @@ class TestUser():
 
     def test_view_index_rendering_in_app(self, dbsession, test_app):
         expected = [('username', 'username'),
+                    ('role_name', 'role'),
                     ('email', 'email'),
                     ('_id_', 'Commands')]
         check_grid_headers(test_app, '/users/', expected)
@@ -141,7 +136,8 @@ class TestUser():
     @pytest.mark.skip(reason="Translation is not finished")
     def test_view_index_rendering_in_app_fr(self, dbsession, test_app):
         expected = [('username', 'nom'),
-                    ('email', 'mel'),
+                    ('role_name', 'role'),
+                    ('email', 'courriel'),
                     ('_id_', 'Commands')]
         check_grid_headers(test_app, '/users/', expected, language='fr')
 
