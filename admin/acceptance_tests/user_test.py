@@ -5,7 +5,7 @@ import re
 from pyramid.testing import DummyRequest
 from selenium.common.exceptions import NoSuchElementException
 
-from . import skip_if_travis
+from . import skip_if_travis, check_grid_headers
 
 
 @pytest.fixture(scope='class')
@@ -68,7 +68,6 @@ class TestUser():
         user = dbsession.query(User).filter(User.id == user_id).one_or_none()
         assert user is None
 
-    @pytest.mark.usefixtures("test_app")
     def test_submit_update(self, dbsession, test_app):
         from c2cgeoportal_commons.models.static import User
         user = dbsession.query(User). \
@@ -133,36 +132,18 @@ class TestUser():
         info = UserViews(request).grid()
         assert info.status_int == 500, '500 status when db error'
 
-    @pytest.mark.usefixtures("test_app")
     def test_view_index_rendering_in_app(self, dbsession, test_app):
-        res = test_app.get('/users/', status=200)
-        res1 = res.click(verbose=True, href='language=en')
-        res2 = res1.follow()
-        expected = ('[<th data-column-id="username">username</th>,'
-                    ' <th data-column-id="email">email</th>,'
-                    ' <th data-column-id="_id_"'
-                    ' data-converter="commands"'
-                    ' data-searchable="false"'
-                    ' data-sortable="false">Commands</th>]')
-        assert expected == str(res2.html.find_all('th', limit=3))
-        assert 1 == len(list(filter(lambda x: str(x.contents) == "['New']",
-                                    res2.html.findAll('a'))))
+        expected = [('username', 'username'),
+                    ('email', 'email'),
+                    ('_id_', 'Commands')]
+        check_grid_headers(test_app, '/users/', expected)
 
     @pytest.mark.skip(reason="Translation is not finished")
-    @pytest.mark.usefixtures("test_app")
     def test_view_index_rendering_in_app_fr(self, dbsession, test_app):
-        res = test_app.get('/users/', status=200)
-        res1 = res.click(verbose=True, href='language=fr')
-        res2 = res1.follow()
-        expected = ('[<th data-column-id="username">username</th>,'
-                    ' <th data-column-id="email">mel</th>,'
-                    ' <th data-column-id="_id_"'
-                    ' data-converter="commands"'
-                    ' data-searchable="false"'
-                    ' data-sortable="false">Actions</th>]')
-        assert expected == str(res2.html.find_all('th', limit=3))
-        assert 1 == len(list(filter(lambda x: str(x.contents) == "['Nouveau']",
-                                    res2.html.findAll('a'))))
+        expected = [('username', 'nom'),
+                    ('email', 'mel'),
+                    ('_id_', 'Commands')]
+        check_grid_headers(test_app, '/users/', expected, language='fr')
 
     # in order to make this work, had to install selenium gecko driver
     @skip_if_travis

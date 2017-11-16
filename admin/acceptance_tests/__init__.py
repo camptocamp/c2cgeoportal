@@ -1,14 +1,21 @@
 import os
 import pytest
-import re
 
 
-def clean_form(form):
-    clean_form = form.replace('\n', ' ')
-    while re.search('  ', clean_form, re.MULTILINE):
-        clean_form = clean_form.replace('  ', ' ')
-    clean_form = clean_form.replace(' >', '>')
-    return clean_form
+def check_grid_headers(test_app, path, expected_col_headers, language='en'):
+    res = test_app.get(path, status=200)
+    res1 = res.click(verbose=True, href='language=' + language)
+
+    res2 = res1.follow()
+
+    effective_cols = [(th.attrs['data-column-id'], th.getText()) for th in res2.html.select('th')]
+    assert expected_col_headers == effective_cols, \
+        str.format('{} and {} differs.', str(expected_col_headers), str(effective_cols))
+    commands = res2.html.select_one('th[data-column-id="_id_"]')
+    assert 'false' == commands.attrs['data-searchable']
+    assert 'false' == commands.attrs['data-sortable']
+    assert 1 == len(list(filter(lambda x: str(x.contents) == "['New']",
+                                res2.html.findAll('a'))))
 
 
 skip_if_travis = pytest.mark.skipif(os.environ.get('TRAVIS', "false") == "true",

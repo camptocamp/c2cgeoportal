@@ -4,7 +4,7 @@ import re
 import pytest
 from pyramid.testing import DummyRequest
 
-from . import skip_if_travis
+from . import skip_if_travis, check_grid_headers
 
 
 @pytest.fixture(scope='class')
@@ -161,39 +161,23 @@ class TestRole():
         info = RoleViews(request).grid()
         assert info.status_int == 500, '500 status when db error'
 
-    @pytest.mark.usefixtures("test_app")
     def test_view_index_rendering_in_app(self, dbsession, test_app):
-        res = test_app.get('/roles/', status=200)
-        res1 = res.click(verbose=True, href='language=en')
-        res2 = res1.follow()
-        expected = (
-            '[<th data-column-id="name">name</th>, '
-            '<th data-column-id="description">description</th>, '
-            '<th data-column-id="functionalities">functionalities</th>, '
-            '<th data-column-id="restrictionareas">restrictionareas</th>, '
-            '<th data-column-id="_id_" '
-            'data-converter="commands" '
-            'data-searchable="false" '
-            'data-sortable="false">Commands</th>]')
-
-        assert expected == str(res2.html.find_all('th', limit=5))
-        assert 1 == len(list(filter(lambda x: str(x.contents) == "['New']",
-                                    res2.html.findAll('a'))))
+        expected = [('name', 'name'),
+                    ('description', 'description'),
+                    ('functionalities', 'functionalities'),
+                    ('restrictionareas', 'restrictionareas'),
+                    ('_id_', 'Commands')]
+        check_grid_headers(test_app, '/roles/', expected)
 
     @pytest.mark.skip(reason="Translation is not finished")
-    @pytest.mark.usefixtures("test_app")
     def test_view_index_rendering_in_app_fr(self, dbsession, test_app):
-        res = test_app.get('/roles/', status=200)
-        res1 = res.click(verbose=True, href='language=fr')
-        res2 = res1.follow()
-        expected = ('[<th data-column-id="name">nom</th>,'
-                    ' <th data-column-id="_id_"'
-                    ' data-converter="commands"'
-                    ' data-searchable="false"'
-                    ' data-sortable="false">Actions</th>]')
-        assert expected == str(res2.html.find_all('th', limit=2))
-        assert 1 == len(list(filter(lambda x: str(x.contents) == "['Nouveau']",
-                                    res2.html.findAll('a'))))
+
+        expected = [('name', 'name'),
+                    ('description', 'description'),
+                    ('functionalities', 'functionalitiés'),
+                    ('restrictionareas', 'zones autorisées'),
+                    ('_id_', 'Commands')]
+        check_grid_headers(test_app, '/roles/', expected, language='en')
 
     # in order to make this work, had to install selenium gecko driver
     @skip_if_travis
