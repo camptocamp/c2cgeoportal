@@ -76,7 +76,7 @@ def selenium_app(request, dbsession, settings, app_env):
     app = app_env.get('app')
     srv = make_server('', 6544, app)
     threading.Thread(target=srv.serve_forever).start()
-    yield()
+    yield('http://localhost:6544')
     srv.shutdown()
 
 

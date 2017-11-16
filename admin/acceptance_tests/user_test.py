@@ -127,25 +127,25 @@ class TestUser():
         assert info.status_int == 500, '500 status when db error'
 
     def test_view_index_rendering_in_app(self, dbsession, test_app):
-        expected = [('username', 'username'),
+        expected = [('_id_', ''),
+                    ('username', 'username'),
                     ('role_name', 'role'),
-                    ('email', 'email'),
-                    ('_id_', 'Commands')]
+                    ('email', 'email')]
         check_grid_headers(test_app, '/users/', expected)
 
     @pytest.mark.skip(reason="Translation is not finished")
     def test_view_index_rendering_in_app_fr(self, dbsession, test_app):
-        expected = [('username', 'nom'),
+        expected = [('_id_', ''),
+                    ('username', 'nom'),
                     ('role_name', 'role'),
-                    ('email', 'courriel'),
-                    ('_id_', 'Commands')]
+                    ('email', 'mel')]
         check_grid_headers(test_app, '/users/', expected, language='fr')
 
     # in order to make this work, had to install selenium gecko driver
     @skip_if_travis
     @pytest.mark.usefixtures("selenium", "selenium_app")
-    def test_selenium(self, dbsession, selenium):
-        selenium.get('http://127.0.0.1:6544/users/')
+    def test_selenium(self, dbsession, selenium, selenium_app):
+        selenium.get(selenium_app + '/users/')
 
         elem = selenium.find_element_by_xpath("//a[contains(@href,'language=en')]")
         elem.click()
@@ -161,7 +161,7 @@ class TestUser():
             filter(User.username == 'babar_13'). \
             one()
 
-        elem = selenium.find_element_by_xpath("//a[contains(@href,'{}')]".format(user.id))
+        elem = selenium.find_element_by_xpath("//a[@href='{}/users/{}']".format(selenium_app, user.id))
         elem.click()
         elem = selenium.find_element_by_xpath("//input[@name ='username']")
         elem.clear()
@@ -180,27 +180,30 @@ class TestUser():
     # in order to make this work, had to install selenium gecko driver
     @skip_if_travis
     @pytest.mark.usefixtures("selenium", "selenium_app")
-    def test_delete_selenium(self, dbsession, selenium):
+    def test_delete_selenium(self, dbsession, selenium, selenium_app):
         from c2cgeoportal_commons.models.static import User
         user_id = dbsession.query(User). \
             filter(User.username == 'babar_13'). \
             one().id
-        selenium.get('http://127.0.0.1:6544' + '/users/')
+        selenium.get(selenium_app + '/users/')
 
         elem = selenium.find_element_by_xpath("//a[contains(@href,'language=en')]")
         elem.click()
 
-        elem = selenium.find_element_by_xpath("//div[@class='infos']")
+        from selenium.webdriver.common.by import By
+        from selenium.webdriver.support.ui import WebDriverWait
+        from selenium.webdriver.support import expected_conditions as EC
+        elem = WebDriverWait(selenium, 10).until(
+            EC.presence_of_element_located((By.XPATH, "//div[@class='infos']")))
         assert 'Showing 1 to 10 of 23 entries' == elem.text
         elem = selenium.find_element_by_xpath("//button[@title='Refresh']/following-sibling::*")
         elem.click()
         elem = selenium.find_element_by_xpath("//a[contains(.,'50')]")
         elem.click()
-        elem = selenium.find_element_by_xpath("//a[contains(@href,'{}')]/following-sibling::*"
-                                              .format(user_id))
+        elem = selenium.find_element_by_xpath("//a[@data-url='{}/users/{}']"
+                                              .format(selenium_app, user_id))
         elem.click()
         selenium.switch_to_alert().accept()
-
         selenium.switch_to_default_content()
         selenium.refresh()
         elem = selenium.find_element_by_xpath("//div[@class='infos']")
@@ -210,5 +213,5 @@ class TestUser():
         elem = selenium.find_element_by_xpath("//a[contains(.,'50')]")
         elem.click()
         with pytest.raises(NoSuchElementException):
-            selenium.find_element_by_xpath("//a[contains(@href,'{}')]/following-sibling::*"
-                                           .format(user_id))
+            selenium.find_element_by_xpath("//a[@data-url='{}/users/{}')]"
+                                           .format(selenium_app, user_id))
