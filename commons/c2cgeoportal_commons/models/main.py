@@ -800,7 +800,7 @@ class Metadata(Base):
         backref=backref(
             "metadatas",
             cascade="save-update,merge,delete,delete-orphan",
-            info={ "colanderalchemy": {
+            info={"colanderalchemy": {
                 "exclude": True
             }}
         ),
