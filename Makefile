@@ -21,6 +21,9 @@ else
 VERSION ?= $(MAIN_BRANCH)
 endif
 
+DOCKER_BASE = camptocamp/geomapfish
+DOCKER_TEST_BASE = $(DOCKER_BASE)-test
+
 VALIDATE_PY_FOLDERS = commons admin \
 	geoportal/setup.py \
 	geoportal/c2cgeoportal_geoportal/*.py \
@@ -85,8 +88,8 @@ pull-base:
 
 .PHONY: pull
 pull: pull-base
-	docker pull camptocamp/geomapfish-build-dev:$(MAJOR_VERSION)
-	docker pull camptocamp/geomapfish-commons:$(MAJOR_VERSION)
+	docker pull $(DOCKER_BASE)-build-dev:$(MAJOR_VERSION)
+	touch --no-create commons/Dockerfile
 
 .PHONY: build
 build: $(MAKO_FILES:.mako=) \
@@ -105,7 +108,8 @@ build: $(MAKO_FILES:.mako=) \
 	admin/tests.ini \
 	geoportal/Dockerfile \
 	docker/admin-build/Dockerfile \
-	docker/admin-build/npm-packages
+	docker/admin-build/npm-packages \
+	prepare-tests
 
 .PHONY: doc
 doc: $(BUILD_DIR)/sphinx.timestamp
@@ -140,23 +144,60 @@ $(BUILD_DIR)/sphinx.timestamp: $(SPHINX_FILES) $(SPHINX_MAKO_FILES:.mako=)
 	doc/build.sh
 	touch $@
 
+/build/gisdb-docker.timestamp: $(shell docker-required --path docker/gis-db)
+	$(PRERULE_CMD)
+	docker build --tag=$(DOCKER_TEST_BASE)-gis-db:latest docker/gis-db
+	touch $@
+
+docker/test-db/12-alembic.sql: \
+		geoportal/tests/functional/alembic.ini \
+		$(shell ls -1 commons/c2cgeoportal_commons/alembic/main/*.py)
+	$(PRERULE_CMD)
+	alembic --config=$< --name=main upgrade --sql head > $@
+
+docker/test-db/13-alembic-static.sql: \
+		geoportal/tests/functional/alembic.ini \
+		$(shell ls -1 commons/c2cgeoportal_commons/alembic/static/*.py)
+	$(PRERULE_CMD)
+	alembic --config=$< --name=static upgrade --sql head > $@
+
+/build/testdb-docker.timestamp: $(shell docker-required --path docker/test-db) \
+		docker/test-db/12-alembic.sql docker/test-db/13-alembic-static.sql \
+		/build/gisdb-docker.timestamp
+	$(PRERULE_CMD)
+	docker build --tag=$(DOCKER_TEST_BASE)-db:latest docker/test-db
+	touch $@
+
+/build/testmapserver-docker.timestamp: $(shell docker-required --path docker/test-mapserver)
+	$(PRERULE_CMD)
+	docker build --tag=$(DOCKER_TEST_BASE)-mapserver:latest docker/test-mapserver
+	touch $@
+
+/build/adminbuild-docker.timestamp: $(shell docker-required --path docker/admin-build) \
+		/build/commons-docker.timestamp
+	$(PRERULE_CMD)
+	docker build --tag=$(DOCKER_BASE)-admin-build:$(MAJOR_VERSION) docker/admin-build
+	touch $@
+
+/build/commons-docker.timestamp: $(shell docker-required --path commons --replace-pattern=)
+	$(PRERULE_CMD)
+	docker build --build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --tag=$(DOCKER_BASE)-commons:$(MAJOR_VERSION) commons
+	touch $@
+
 .PHONY: prepare-tests
 prepare-tests: $(BUILD_DIR)/requirements.timestamp \
 		geoportal/tests/functional/test.ini \
-		geoportal/tests/functional/alembic.ini \
+		docker-compose.yaml \
+		/build/testmapserver-docker.timestamp \
+		/build/testdb-docker.timestamp \
+		/build/adminbuild-docker.timestamp \
 		$(addprefix geoportal/c2cgeoportal_geoportal/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal_geoportal.po, $(LANGUAGES)))
-	@echo "Ready to run tests"
 
 .PHONY: tests
 tests:
 	py.test --cov=commons/c2cgeoportal_commons commons/acceptance_tests
 	py.test --cov=geoportal/c2cgeoportal_geoportal geoportal/tests
 	py.test --cov=admin/c2cgeoportal_admin admin/acceptance_tests
-
-$(BUILD_DIR)/db.timestamp: geoportal/tests/functional/alembic.ini
-	alembic --config=geoportal/tests/functional/alembic.ini --name=main upgrade head
-	alembic --config=geoportal/tests/functional/alembic.ini --name=static upgrade head
-	touch $@
 
 .PHONY: flake8
 flake8:

@@ -120,7 +120,6 @@ setup(
             'create-demo-theme = c2cgeoportal_geoportal.scripts.create_demo_theme:main',
             'treeitem-uniquename = c2cgeoportal_geoportal.scripts.treeitem_uniquename:main',
             'urllogin = c2cgeoportal_geoportal.scripts.urllogin:main',
-            'docker-required = c2cgeoportal_geoportal.scripts.docker_required:main',
         ],
         'pyramid.scaffold': [
             'c2cgeoportal_create = c2cgeoportal_geoportal.scaffolds:TemplateCreate',

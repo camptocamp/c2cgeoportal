@@ -1,14 +1,14 @@
 ---
 
 db:
-  image: camptocamp/c2cgeoportal-gis-db:latest
+  image: camptocamp/geomapfish-test-db:latest
   environment:
     - POSTGRES_USER=www-data
     - POSTGRES_PASSWORD=www-data
     - POSTGRES_DB=geomapfish_tests
 
 mapserver:
-  image: camptocamp/c2cgeoportal-test-mapserver:latest
+  image: camptocamp/geomapfish-test-mapserver:latest
   links:
     - db
 

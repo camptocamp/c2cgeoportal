@@ -1,4 +1,4 @@
-FROM camptocamp/postgres:9.5
+FROM camptocamp/geomapfish-test-gis-db:latest
 
 LABEL maintainer Camptocamp "info@camptocamp.com"
 

@@ -21,7 +21,7 @@ you should define two ``OGC servers``. Attributes:
 
 * ``Name``: the name of the OGC Server.
 * ``Description``: a description.
-* ``URL``: the server URL, empty to use the internal mapserver.
+* ``URL``: the server URL, empty to use the internal MapServer.
 * ``WFS support``: whether WFS is supported by the server.
 * ``WFS URL``: the WFS server URL, empty to use the same as the ``URL``.
 * ``Type``: the server type used to know which custom attribute will be used.
