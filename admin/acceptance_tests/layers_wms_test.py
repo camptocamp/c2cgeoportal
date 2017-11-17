@@ -40,7 +40,8 @@ def insertLayerWMSTestData(dbsession):
 class TestLayerWMS():
 
     def test_view_index_rendering_in_app(self, test_app):
-        expected = [('name', 'Name'),
+        expected = [('_id_', ''),
+                    ('name', 'Name'),
                     ('metadata_url', 'Metadata URL'),
                     ('description', 'Description'),
                     ('public', 'Public'),
@@ -51,8 +52,7 @@ class TestLayerWMS():
                     ('time_mode', 'Time mode'),
                     ('time_widget', 'Time widget'),
                     ('ogc_server', 'OGC server'),
-                    ('restrictionareas', 'Restriction areas'),
-                    ('_id_', 'Commands')]
+                    ('restrictionareas', 'Restriction areas')]
         check_grid_headers(test_app, '/layers_wms/', expected)
 
     def test_grid_complex_column_val(self, dbsession):
@@ -71,13 +71,17 @@ class TestLayerWMS():
 
     @skip_if_travis
     @pytest.mark.usefixtures("selenium", "selenium_app")
-    def test_selenium(self, selenium):
-        selenium.get('http://127.0.0.1:6544' + '/layers_wms/')
+    def test_selenium(self, selenium, selenium_app):
+        selenium.get(selenium_app + '/layers_wms/')
 
         elem = selenium.find_element_by_xpath("//a[contains(@href,'language=en')]")
         elem.click()
 
-        elem = selenium.find_element_by_xpath("//div[@class='infos']")
+        from selenium.webdriver.common.by import By
+        from selenium.webdriver.support.ui import WebDriverWait
+        from selenium.webdriver.support import expected_conditions as EC
+        elem = WebDriverWait(selenium, 10).until(
+            EC.presence_of_element_located((By.XPATH, "//div[@class='infos']")))
         assert 'Showing 1 to 10 of 25 entries' == elem.text
         elem = selenium.find_element_by_xpath("//button[@title='Refresh']/following-sibling::*")
         elem.click()

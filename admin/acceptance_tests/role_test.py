@@ -4,7 +4,7 @@ import re
 import pytest
 from pyramid.testing import DummyRequest
 
-from . import skip_if_travis, check_grid_headers
+from . import check_grid_headers
 
 
 @pytest.fixture(scope='class')
@@ -162,26 +162,18 @@ class TestRole():
         assert info.status_int == 500, '500 status when db error'
 
     def test_view_index_rendering_in_app(self, dbsession, test_app):
-        expected = [('name', 'name'),
+        expected = [('_id_', ''),
+                    ('name', 'name'),
                     ('description', 'description'),
                     ('functionalities', 'functionalities'),
-                    ('restrictionareas', 'restrictionareas'),
-                    ('_id_', 'Commands')]
+                    ('restrictionareas', 'restrictionareas')]
         check_grid_headers(test_app, '/roles/', expected)
 
     @pytest.mark.skip(reason="Translation is not finished")
     def test_view_index_rendering_in_app_fr(self, dbsession, test_app):
-
-        expected = [('name', 'name'),
+        expected = [('_id_', ''),
+                    ('name', 'name'),
                     ('description', 'description'),
                     ('functionalities', 'functionalitiés'),
-                    ('restrictionareas', 'zones autorisées'),
-                    ('_id_', 'Commands')]
+                    ('restrictionareas', 'zones autorisées')]
         check_grid_headers(test_app, '/roles/', expected, language='en')
-
-    # in order to make this work, had to install selenium gecko driver
-    @skip_if_travis
-    @pytest.mark.usefixtures("selenium", "selenium_app")
-    def test_grid_multientities_cell_selenium(self, dbsession, selenium):
-        selenium.get('http://127.0.0.1:6543' + '/roles/')
-        # 9/11/17, await data about to come with another pr
