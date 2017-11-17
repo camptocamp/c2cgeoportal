@@ -33,7 +33,7 @@ from pyramid.httpexceptions import HTTPInternalServerError, \
     HTTPNotFound, HTTPBadRequest, HTTPForbidden
 from pyramid.view import view_config
 
-from sqlalchemy import Enum, func, distinct, Numeric, String, Text, Unicode, UnicodeText
+from sqlalchemy import Enum, exc, func, distinct, Numeric, String, Text, Unicode, UnicodeText
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 from sqlalchemy.sql import and_, or_
 from sqlalchemy.orm.util import class_mapper
@@ -272,7 +272,20 @@ class Layers:
             return features
         except TopologicalError as e:
             self.request.response.status_int = 400
-            return {"validation_error": str(e)}
+            return {"error_type": "validation_error",
+                    "message": str(e)}
+        except exc.IntegrityError as e:
+            self.request.response.status_int = 400
+            return {"error_type": "integrity_error",
+                    "message": str(e.orig.diag.message_primary)}
+        except exc.ProgrammingError as e:
+            self.request.response.status_int = 400
+            return {"error_type": "programming_error",
+                    "message": str(e.orig.diag.message_primary)}
+        except exc.DatabaseError as e:
+            self.request.response.status_int = 400
+            return {"error_type": "database_error",
+                    "message": str(e.orig.diag.message_primary)}
 
     @view_config(route_name="layers_update", renderer="geojson")
     def update(self):
@@ -324,7 +337,20 @@ class Layers:
             return feature
         except TopologicalError as e:
             self.request.response.status_int = 400
-            return {"validation_error": str(e)}
+            return {"error_type": "validation_error",
+                    "message": str(e)}
+        except exc.IntegrityError as e:
+            self.request.response.status_int = 400
+            return {"error_type": "integrity_error",
+                    "message": str(e.orig.diag.message_primary)}
+        except exc.ProgrammingError as e:
+            self.request.response.status_int = 400
+            return {"error_type": "programming_error",
+                    "message": str(e.orig.diag.message_primary)}
+        except exc.DatabaseError as e:
+            self.request.response.status_int = 400
+            return {"error_type": "database_error",
+                    "message": str(e.orig.diag.message_primary)}
 
     @staticmethod
     def _validate_geometry(geom):
