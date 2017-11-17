@@ -636,11 +636,18 @@ class LayerWMTS(DimensionLayer):
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
+    __colanderalchemy_config__ = {
+        "title": _("WMTS Layer"),
+        "plural": _("WMTS Layers")
+    }
     __mapper_args__ = {"polymorphic_identity": "l_wmts"}
 
     id = Column(Integer, ForeignKey(_schema + ".layer.id"), primary_key=True)
     url = Column(Unicode, nullable=False)
-    layer = Column(Unicode, nullable=False)
+    layer = Column(Unicode, nullable=False, info={
+        "colanderalchemy": {
+            "title": _("WMTS layer name")
+        }})
     style = Column(Unicode)
     matrix_set = Column(Unicode)
     image_type = Column(Enum(
@@ -654,7 +661,7 @@ class LayerWMTS(DimensionLayer):
         self.image_type = image_type
 
 
-# association table role <> restriciton area
+# association table role <> restriction area
 role_ra = Table(
     "role_restrictionarea", Base.metadata,
     Column("role_id", Integer, ForeignKey(_schema + ".role.id"), primary_key=True),
@@ -662,7 +669,7 @@ role_ra = Table(
     schema=_schema
 )
 
-# association table layer <> restriciton area
+# association table layer <> restriction area
 layer_ra = Table(
     "layer_restrictionarea", Base.metadata,
     Column("layer_id", Integer, ForeignKey(_schema + ".layer.id"), primary_key=True),

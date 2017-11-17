@@ -13,11 +13,12 @@ def includeme(config):
 
     config.add_route('home', '/')
 
-    from c2cgeoportal_commons.models.main import Role
+    from c2cgeoportal_commons.models.main import (Role, LayerWMS, LayerWMTS)
     from c2cgeoportal_commons.models.static import User
-    from c2cgeoportal_commons.models.main import LayerWMS
+
     register_models(config, (
         ('roles', Role),
         ('users', User),
         ('layers_wms', LayerWMS),
+        ('layers_wmts', LayerWMTS),
     ))
