@@ -12,6 +12,9 @@ def includeme(config):
     config.add_static_view('static', 'static', cache_max_age=3600)
 
     config.add_route('home', '/')
+    config.add_route('layertree', '/layertree/')
+    config.add_route('layertree_unlink', '/layertree/unlink/{group_id}/{item_id}')
+    config.add_route('layertree_delete', '/layertree/delete/{item_id}')
 
     from c2cgeoportal_commons.models.main import Role
     from c2cgeoportal_commons.models.static import User

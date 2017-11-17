@@ -277,7 +277,7 @@ event.listen(TreeItem, "after_update", cache_invalidate_cb, propagate=True)
 event.listen(TreeItem, "after_delete", cache_invalidate_cb, propagate=True)
 
 
-# association table LayerGroup <> TreeItem
+# association table TreeGroup <> TreeItem
 class LayergroupTreeitem(Base):
     __tablename__ = "layergroup_treeitem"
     __table_args__ = {"schema": _schema}
@@ -326,6 +326,9 @@ class TreeGroup(TreeItem):
     __tablename__ = "treegroup"
     __table_args__ = {"schema": _schema}
     __acl__ = [DENY_ALL]
+    __mapper_args__ = {
+        "polymorphic_identity": "treegroup"  # needed for _identity_class
+    }
 
     id = Column(Integer, ForeignKey(_schema + ".treeitem.id"), primary_key=True)
 
@@ -431,6 +434,9 @@ class Layer(TreeItem):
     __tablename__ = "layer"
     __table_args__ = {"schema": _schema}
     __acl__ = [DENY_ALL]
+    __mapper_args__ = {
+        "polymorphic_identity": "layer"  # needed for _identity_class
+    }
 
     id = Column(Integer, ForeignKey(_schema + ".treeitem.id"), primary_key=True)
     public = Column(Boolean, default=True, info={
@@ -453,6 +459,9 @@ class Layer(TreeItem):
 
 class DimensionLayer(Layer):
     __acl__ = [DENY_ALL]
+    __mapper_args__ = {
+        "polymorphic_identity": "dimensionlayer"  # needed for _identity_class
+    }
 
 
 class LayerV1(Layer):  # Deprecated in v2
