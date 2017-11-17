@@ -22,12 +22,14 @@ def main():
     parser = argparse.ArgumentParser(description="Run docker build.")
     parser.add_argument("--root", action="store_true", help="Be root in the container")
     parser.add_argument("-ti", action="store_true", help="Use -ti docker run option")
-    parser.add_argument("--share", help="A folder to share as a volume")
-    parser.add_argument("--image", help="The docker image to use", default=config.get(
-        "image", "camptocamp/geomapfish-build-dev")
+    parser.add_argument("--share", action='append', default=[], help="A folder to share as a volume")
+    parser.add_argument(
+        "--image", default=config.get("image", "camptocamp/geomapfish-build-dev"),
+        help="The docker image to use"
     )
-    parser.add_argument("--version", help="The docker image version to use", default=config.get(
-        "version", "2.3")
+    parser.add_argument(
+        "--version", default=config.get("version", "2.3"),
+        help="The docker image version to use"
     )
     parser.add_argument("cmd", metavar="CMD", help="The command to run")
     parser.add_argument("args", metavar="...", nargs=argparse.REMAINDER, help="The command arguments")
@@ -38,8 +40,8 @@ def main():
     if options.ti:
         docker_cmd.append("-ti")
 
-    if options.share is not None:
-        docker_cmd.append("--volume={}:{}".format(options.share, options.share))
+    for share in options.share:
+        docker_cmd.append("--volume={}:{}".format(share, share))
 
     dir_path = os.path.dirname(os.path.realpath(__file__))
     build_volume_name = dir_path[1:].replace("/", "-")
