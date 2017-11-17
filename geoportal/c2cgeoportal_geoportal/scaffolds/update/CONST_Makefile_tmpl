@@ -98,8 +98,7 @@ export VISIBLE_ENTRY_POINT
 # ngeo
 ANGULAR_VERSION = 1.6
 APP_OUTPUT_DIR = geoportal/$(PACKAGE)_geoportal/static-ngeo/build
-OL_JS_FILES = $(shell find /usr/lib/node_modules/openlayers/src/ol -type f -name '*.js' 2> /dev/null)
-NGEO_JS_FILES = $(shell find /usr/lib/node_modules/ngeo/src -type f -name '*.js' 2> /dev/null)
+GCC_JS_FILES = $(shell find /usr/lib/node_modules/openlayers/src/ol /usr/lib/node_modules/ngeo/src /usr/lib/node_modules/ol-cesium/src -type f -name '*.js' 2> /dev/null)
 APP_JS_FILES = $(shell find geoportal/$(PACKAGE)_geoportal/static-ngeo/js geoportal/$(PACKAGE)_geoportal/static-ngeo/components -type f -name '*.js' 2> /dev/null)
 APP_JS_MAKO_FILES += $(shell find geoportal/$(PACKAGE)_geoportal/static-ngeo/js geoportal/$(PACKAGE)_geoportal/static-ngeo/components $(FIND_OPTS) -name "*.js.mako" -print 2> /dev/null)
 APP_JS_JINJA_FILES += $(shell find geoportal/$(PACKAGE)_geoportal/static-ngeo/js geoportal/$(PACKAGE)_geoportal/static-ngeo/components $(FIND_OPTS) -name "*.js.jinja" -print 2> /dev/null)
@@ -582,7 +581,7 @@ $(APP_OUTPUT_DIR)/images/: /usr/lib/node_modules/ngeo/third-party/jquery-ui/imag
 		sed 's/"node_modules\//"\/usr\/lib\/node_modules\//g' > $@
 
 .PRECIOUS: /build/%.js
-/build/%.js: /build/%.json $(OL_JS_FILES) $(NGEO_JS_FILES) $(APP_JS_FILES) \
+/build/%.js: /build/%.json $(GCC_JS_FILES) $(APP_JS_FILES) \
 		/build/gmftemplatecache.js \
 		/opt/googleclosurecompiler-externs/angular-$(ANGULAR_VERSION).js \
 		/opt/googleclosurecompiler-externs/angular-$(ANGULAR_VERSION)-q_templated.js \
