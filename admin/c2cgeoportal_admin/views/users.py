@@ -11,6 +11,7 @@ from c2cgeoportal_commons.models.static import User
 class UserViews(AbstractViews):
     _list_fields = [
         ListField('username'),
+        ListField('role_name'),
         ListField('email')]
     _id_field = 'id'
     _model = User
