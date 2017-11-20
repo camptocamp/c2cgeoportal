@@ -58,6 +58,9 @@ from c2cgeoportal.lib.caching import get_region, \
 from c2cgeoportal.lib.dbreflection import get_class, get_table, _AssociationProxy
 from c2cgeoportal.models import DBSessions, DBSession, Layer, RestrictionArea, Role
 
+import logging
+log = logging.getLogger(__name__)
+
 cache_region = get_region()
 
 
@@ -264,7 +267,8 @@ class Layers:
                 if self._get_validation_setting(layer):
                     self._validate_geometry(spatial_elt)
 
-        protocol = self._get_protocol_for_layer(layer, before_create=check_geometry)
+        protocol = self._get_protocol_for_layer(layer,
+                                                before_create=check_geometry)
         try:
             features = protocol.create(self.request)
             for feature in features.features:
@@ -275,16 +279,9 @@ class Layers:
             return {"error_type": "validation_error",
                     "message": str(e)}
         except exc.IntegrityError as e:
+            log.error(str(e))
             self.request.response.status_int = 400
             return {"error_type": "integrity_error",
-                    "message": str(e.orig.diag.message_primary)}
-        except exc.ProgrammingError as e:
-            self.request.response.status_int = 400
-            return {"error_type": "programming_error",
-                    "message": str(e.orig.diag.message_primary)}
-        except exc.DatabaseError as e:
-            self.request.response.status_int = 400
-            return {"error_type": "database_error",
                     "message": str(e.orig.diag.message_primary)}
 
     @view_config(route_name="layers_update", renderer="geojson")
@@ -340,16 +337,9 @@ class Layers:
             return {"error_type": "validation_error",
                     "message": str(e)}
         except exc.IntegrityError as e:
+            log.error(str(e))
             self.request.response.status_int = 400
             return {"error_type": "integrity_error",
-                    "message": str(e.orig.diag.message_primary)}
-        except exc.ProgrammingError as e:
-            self.request.response.status_int = 400
-            return {"error_type": "programming_error",
-                    "message": str(e.orig.diag.message_primary)}
-        except exc.DatabaseError as e:
-            self.request.response.status_int = 400
-            return {"error_type": "database_error",
                     "message": str(e.orig.diag.message_primary)}
 
     @staticmethod
