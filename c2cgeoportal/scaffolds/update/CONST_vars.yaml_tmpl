@@ -264,6 +264,9 @@ vars:
     # Used by enumeration in the query builder
     layers: {}
 
+    # Used by reset_password and shortener to send emails
+    smtp: {}
+
     # Used to send an email on password reset
     reset_password:
 
