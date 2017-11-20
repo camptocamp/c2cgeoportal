@@ -36,35 +36,51 @@ Then, if you want a new mobile interface, get the default files as follows:
 
 .. prompt:: bash
 
-  cp CONST_create_template/<package>/templates/mobile.html <package>/templates/<inferface>.html
-  cp CONST_create_template/<package>/static-ngeo/less/mobile.less <package>/templates/<inferface>.less
-  cp CONST_create_template/<package>/static-ngeo/js/mobile.js <package>/static-ngeo/js/<inferface>.js
+  cp CONST_create_template/<package>/templates/mobile.html <package>/templates/<interface>.html
+  cp CONST_create_template/<package>/static-ngeo/less/mobile.less <package>/static-ngeo/less/<interface>.less
+  cp CONST_create_template/<package>/static-ngeo/js/mobile.js <package>/static-ngeo/js/<interface>.js
 
 If you want a new desktop interface, get the default files as follows:
 
 .. prompt:: bash
 
-  cp CONST_create_template/<package>/templates/desktop.html <package>/templates/<inferface>.html
-  cp CONST_create_template/<package>/static-ngeo/less/desktop.less <package>/templates/<inferface>.less
-  cp CONST_create_template/<package>/static-ngeo/js/desktop.js <package>/static-ngeo/js/<inferface>.js
+  cp CONST_create_template/<package>/templates/desktop.html <package>/templates/<interface>.html
+  cp CONST_create_template/<package>/static-ngeo/less/desktop.less <package>/satic-ngeo/less/<interface>.less
+  cp CONST_create_template/<package>/static-ngeo/js/desktop.js <package>/static-ngeo/js/<interface>.js
 
 Edit interface files
 ~~~~~~~~~~~~~~~~~~~~
-In the file ``<package>/static-ngeo/js/<inferface>.js``, adapt the ``goog.provide`` statement to the
-name of the new interface. For example, if your package is called "demo" and your new interface is
-called "new", you need to change ``goog.provide('demo_desktop');`` to ``goog.provide('demo_new');``
+In the file ``<package>/static-ngeo/js/<interface>.js``, adapt the following lines:
 
-In the file ``<package/static-ngeo/templates/<interface>.html``, adapt the name of the referenced css
-and js files to the new interface name. For example, if your package is called "demo" and your new
-interface is called "new", you need to change the file as follows:
+.. code:: js
+
+   * This file defines the "<package>_<interface>" Closure namespace, which is be used as
+   ...
+   goog.provide('<package>.<Interface>Controller');
+   goog.provide('<package>_<interface>');
+   ...
+   geoportal.<Interface>Controller = function($scope, $injector) {
+   ...
+   ol.inherits(<package>.<Interface>Controller, gmf.AbstractDesktopController);
+   ...
+   geoportal.module.controller('<Interface>Controller', <package>.<Interface>Controller);
+
+where you replace ``<package>`` with the name of your package and ``<interface>`` with the name of your new
+interface. In the example used above, ``<package>`` is thus replaced with ``demo`` and ``<interface>``
+with ``new``.
+
+In the file ``<package/static-ngeo/templates/<interface>.html``, adapt the name of the controller and the
+referenced css and js files to the new interface name:
 
 .. code:: html
 
-   <link rel="stylesheet" href="${request.static_url('demo:static-ngeo/build/new.css')}" type="text/css">
+   <html lang="{{mainCtrl.lang}}" ng-app="<package>" ng-controller="<Interface>Controller as mainCtrl">
+
+   <link rel="stylesheet" href="${request.static_url('<package>:static-ngeo/build/<interface>.css')}" type="text/css">
    ...
-   goog.require('demo_new');
+   goog.require('<package>_<interface>');
    ...
-   <script src="${request.static_url('demo:static-ngeo/build/new.js')}"></script>
+   <script src="${request.static_url('<package>:static-ngeo/build/<interface>.js')}"></script>
 
 Add the new interface files to Git:
 
@@ -87,7 +103,7 @@ The used method has the following API:
 
 .. code:: python
 
-   add_interface(config, interface_name="desktop", interface_type=INTERFACE_TYPE_NGEO, **kwargs)
+   add_interface(config, interface_name="<interface>", interface_type=<INTERFACE_TYPE_NGEO>, **kwargs)
 
 Where ``config`` is the application configuration object,
 
@@ -106,9 +122,9 @@ some site-specific configuration issues must be considered:
      on this DB instance, it must be migrated now (if it is for test purposes, clone the
      DB first): run script ``.build/venv/bin/themev1tov2``
    - set default theme of the new interface to the desired one (set "defaultTheme"
-     in <interface>.html)
+     in ``<interface>.html``)
    - set meaningful starting zoom level and center coordinates of new interface,
-     in <interface>.js
+     in ``<interface>.js``
    - after rebuilding, to see the changes in the browser, you probably need to clear
      the browser cache and your URL parameters, and maybe in addition wait some minutes
      in order for the server-side to also be completely up-to-date.
@@ -119,6 +135,7 @@ Database
 The administration interface gives access to an ``interface`` table that lists the
 available interfaces (or pages) of the application.
 The default interfaces are ``desktop`` and ``mobile``.
+Add the name of your interface to the table. This can be done using the admin interface.
 
 Checker
 ~~~~~~~
@@ -126,18 +143,18 @@ Checker
 This section describes how to Enable the checker for the new interface.
 
 We suggest to add only the main checker in the ``defaults``. It is what is done by default.
-In the ``all`` (``vars.checker.all``) file, check all the ngeo interfaces in standard
+In the ``all`` (``vars.checker.all``) section, check all the ngeo interfaces in standard
 and debug mode:
 
 .. code:: yaml
 
    phantomjs_routes:
    - name: <interface>
-     param:
-       no_redirect: true
+     params:
+       no_redirect: "true"
    - name: <interface>
      param:
-       no_redirect: true
-       debug: true
+       no_redirect: "true"
+       debug: "true"
 
 By default, the checker is enabled for the desktop and mobile interfaces.
