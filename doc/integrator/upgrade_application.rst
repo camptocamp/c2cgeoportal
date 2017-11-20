@@ -69,6 +69,8 @@ All the files that's not in this section will be overwritten except::
  - vars.yaml
  - Makefile
 
+Prepare the upgrade:
+
 .. prompt:: bash
 
    git submodule deinit <package>/static/lib/cgxp/
@@ -78,6 +80,12 @@ All the files that's not in this section will be overwritten except::
    git add docker-run project.yaml.mako
    git commit --quiet --message="Start upgrade"
    make --makefile=<package>.mk project.yaml
+
+Pull the latest version of the Docker image:
+
+.. prompt:: bash
+
+    docker pull camptocamp/geomapfish-build:2.3
 
 For Docker:
 
@@ -94,6 +102,23 @@ And for non-Docker
 
 Then follow the instruction
 
+.. note:: Know issue
+
+   if you have the following message:
+
+   .. code::
+
+      Host key verification failed.
+      fatal: Could not read from remote repository.
+
+      Please make sure you have the correct access rights
+      and the repository exists.
+
+   you can do the following command to fix it:
+
+   .. prompt:: bash
+
+      ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
 
 Upgrade the database
 --------------------
@@ -104,19 +129,19 @@ To upgrade only the database you can use alembic directly.
 
 The help:
 
-.. code:: bash
+.. prompt:: bash
 
    ./docker-run alembic --help
 
 Upgrade the main schema:
 
-.. code:: bash
+.. prompt:: bash
 
    ./docker-run alembic --name=main upgrade head
 
 Upgrade the static schema:
 
-.. code:: bash
+.. prompt:: bash
 
    ./docker-run alembic --name=static upgrade head
 
