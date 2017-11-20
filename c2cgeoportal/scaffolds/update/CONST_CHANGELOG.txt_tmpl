@@ -309,9 +309,13 @@ Version 1.6.12
 
    - smtp_server: smtp.example.com
 
+  from the reset_password configuration node.
+
   and add this line to the parent node:
+
    + smtp:
    +     host: smtp.example.com
+
      reset_password:
         ...
 

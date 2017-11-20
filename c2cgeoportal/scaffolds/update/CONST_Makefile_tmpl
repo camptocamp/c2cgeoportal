@@ -501,7 +501,7 @@ CONFIG_VARS += instanceid sqlalchemy.url schema parentschema enable_admin_interf
 	raster shortener hide_capabilities mapserverproxy tinyowsproxy resourceproxy print_url \
 	tiles_url checker check_collector default_max_age jsbuild package srid \
 	reset_password fulltextsearch headers authorized_referers hooks stats db_chooser \
-	ogcproxy_enable dbsessions urllogin host_forward_host
+	ogcproxy_enable dbsessions urllogin host_forward_host smtp
 MAKE_FILES = $(shell ls -1 *.mk) CONST_Makefile
 
 # Disabling Make built-in rules to speed up execution time

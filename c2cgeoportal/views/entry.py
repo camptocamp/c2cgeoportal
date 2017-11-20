@@ -1644,13 +1644,14 @@ class Entry:
         if error is not None:
             log.info(error)
             raise HTTPBadRequest("See server logs for details")
-        settings = self.request.registry.settings["reset_password"]
+        smtp_config = self.request.registry.settings["smtp"]
+        reset_password_config = self.request.registry.settings["reset_password"]
         try:
             send_email(
-                settings["email_from"], [user.email],
-                settings["email_body"].format(user=username, password=password).encode("utf-8"),
-                settings["email_subject"],
-                self.request.registry.settings["smtp"],
+                reset_password_config["email_from"], [user.email],
+                reset_password_config["email_body"].format(user=username, password=password).encode("utf-8"),
+                reset_password_config["email_subject"],
+                smtp_config,
             )
 
             return {
