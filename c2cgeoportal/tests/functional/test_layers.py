@@ -400,6 +400,20 @@ class TestLayers(TestCase):
         self.assertTrue(isinstance(collection, FeatureCollection))
         self.assertEquals(len(collection.features), 2)
 
+    def test_create_with_constraint_fail_integrity(self):
+        from c2cgeoportal.views.layers import Layers
+
+        layer_id = self._create_layer()
+        request = self._get_request(layer_id, username=u"__test_user")
+        request.method = "POST"
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"email": "novalidemail", "name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # noqa
+        layers = Layers(request)
+        response = layers.create()
+        self.assertEquals(request.response.status_int, 400)
+        self.assertTrue("error_type" in response)
+        self.assertTrue("message" in response)
+        self.assertEquals(response["error_type"], "integrity_error")
+
     def test_create_log(self):
         from datetime import datetime
         from geojson.feature import FeatureCollection
