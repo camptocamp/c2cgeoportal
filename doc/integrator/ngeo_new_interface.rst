@@ -45,7 +45,7 @@ If you want a new desktop interface, get the default files as follows:
 .. prompt:: bash
 
   cp CONST_create_template/<package>/templates/desktop.html <package>/templates/<interface>.html
-  cp CONST_create_template/<package>/static-ngeo/less/desktop.less <package>/satic-ngeo/less/<interface>.less
+  cp CONST_create_template/<package>/static-ngeo/less/desktop.less <package>/static-ngeo/less/<interface>.less
   cp CONST_create_template/<package>/static-ngeo/js/desktop.js <package>/static-ngeo/js/<interface>.js
 
 Edit interface files
@@ -66,8 +66,7 @@ In the file ``<package>/static-ngeo/js/<interface>.js``, adapt the following lin
    geoportal.module.controller('<Interface>Controller', <package>.<Interface>Controller);
 
 where you replace ``<package>`` with the name of your package and ``<interface>`` with the name of your new
-interface. In the example used above, ``<package>`` is thus replaced with ``demo`` and ``<interface>``
-with ``new``.
+interface.
 
 In the file ``<package/static-ngeo/templates/<interface>.html``, adapt the name of the controller and the
 referenced css and js files to the new interface name:
@@ -103,7 +102,7 @@ The used method has the following API:
 
 .. code:: python
 
-   add_interface(config, interface_name="<interface>", interface_type=<INTERFACE_TYPE_NGEO>, **kwargs)
+   add_interface(config, interface_name="<interface>", interface_type=INTERFACE_TYPE_NGEO, **kwargs)
 
 Where ``config`` is the application configuration object,
 
