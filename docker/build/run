@@ -24,12 +24,12 @@ if len(args) == 1 and args[0].startswith("%5B"):
 del_user = True
 del_group = True
 try:
-    subprocess.check_call(['groupadd', '-g', os.environ['GROUP_ID'], 'geomapfish'])
+    subprocess.check_call(['groupadd', '--gid=' + os.environ['GROUP_ID'], 'geomapfish'])
 except subprocess.CalledProcessError:
     del_group = False
 
 try:
-    subprocess.check_call(['useradd', '-G', 'docker', '--shell', '/bin/bash', '--uid', os.environ['USER_ID'], '--gid', os.environ['GROUP_ID'], os.environ['USER_NAME']])
+    subprocess.check_call(['useradd', '--groups=docker,sudo', '--shell=/bin/bash', '--uid=' + os.environ['USER_ID'], '--gid=' + os.environ['GROUP_ID'], os.environ['USER_NAME']])
 except subprocess.CalledProcessError:
     del_user = False
 

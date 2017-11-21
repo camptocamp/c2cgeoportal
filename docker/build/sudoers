@@ -1,0 +1,5 @@
+Defaults env_keep=SSH_AUTH_SOCK
+Defaults !authenticate
+Defaults env_reset
+root ALL=(ALL) ALL
+%sudo ALL=(ALL) NOPASSWD:ALL

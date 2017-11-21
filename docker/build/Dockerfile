@@ -3,7 +3,7 @@ LABEL maintainer Camptocamp "info@camptocamp.com"
 
 RUN \
   apt-get update && \
-  apt-get install --assume-yes --no-install-recommends tree apt-transport-https gettext && \
+  apt-get install --assume-yes --no-install-recommends tree apt-transport-https gettext sudo && \
   echo 'deb https://deb.nodesource.com/node_6.x jessie main' > /etc/apt/sources.list.d/nodesource.list && \
   curl --silent https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - && \
   echo "deb http://apt.dockerproject.org/repo debian-jessie main" > /etc/apt/sources.list.d/docker.list && \
@@ -25,6 +25,7 @@ RUN \
   rm --recursive --force /tmp/* /var/tmp/* /root/.cache/*
 
 COPY run /usr/bin/
+COPY sudoers /etc/
 
 WORKDIR /src
 
