@@ -71,27 +71,40 @@ span.prompt1:before {
 <span class="prompt1"><span class="c1"># Add all the new files to Git</span></span>
 <span class="prompt1">git add &lt;package&gt;/static-ngeo</span>
 </pre><p>Then, if you want a new mobile interface, get the default files as follows:</p>
-<pre class="highlight"><span class="prompt1">cp CONST_create_template/&lt;package&gt;/templates/mobile.html &lt;package&gt;/templates/&lt;inferface&gt;.html</span>
-<span class="prompt1">cp CONST_create_template/&lt;package&gt;/static-ngeo/less/mobile.less &lt;package&gt;/templates/&lt;inferface&gt;.less</span>
-<span class="prompt1">cp CONST_create_template/&lt;package&gt;/static-ngeo/js/mobile.js &lt;package&gt;/static-ngeo/js/&lt;inferface&gt;.js</span>
+<pre class="highlight"><span class="prompt1">cp CONST_create_template/&lt;package&gt;/templates/mobile.html &lt;package&gt;/templates/&lt;interface&gt;.html</span>
+<span class="prompt1">cp CONST_create_template/&lt;package&gt;/static-ngeo/less/mobile.less &lt;package&gt;/static-ngeo/less/&lt;interface&gt;.less</span>
+<span class="prompt1">cp CONST_create_template/&lt;package&gt;/static-ngeo/js/mobile.js &lt;package&gt;/static-ngeo/js/&lt;interface&gt;.js</span>
 </pre><p>If you want a new desktop interface, get the default files as follows:</p>
-<pre class="highlight"><span class="prompt1">cp CONST_create_template/&lt;package&gt;/templates/desktop.html &lt;package&gt;/templates/&lt;inferface&gt;.html</span>
-<span class="prompt1">cp CONST_create_template/&lt;package&gt;/static-ngeo/less/desktop.less &lt;package&gt;/templates/&lt;inferface&gt;.less</span>
-<span class="prompt1">cp CONST_create_template/&lt;package&gt;/static-ngeo/js/desktop.js &lt;package&gt;/static-ngeo/js/&lt;inferface&gt;.js</span>
+<pre class="highlight"><span class="prompt1">cp CONST_create_template/&lt;package&gt;/templates/desktop.html &lt;package&gt;/templates/&lt;interface&gt;.html</span>
+<span class="prompt1">cp CONST_create_template/&lt;package&gt;/static-ngeo/less/desktop.less &lt;package&gt;/static-ngeo/less/&lt;interface&gt;.less</span>
+<span class="prompt1">cp CONST_create_template/&lt;package&gt;/static-ngeo/js/desktop.js &lt;package&gt;/static-ngeo/js/&lt;interface&gt;.js</span>
 </pre></div>
 <div class="section" id="edit-interface-files">
 <h2>Edit interface files<a class="headerlink" href="#edit-interface-files" title="Permalink to this headline">¶</a></h2>
-<p>In the file <code class="docutils literal"><span class="pre">&lt;package&gt;/static-ngeo/js/&lt;inferface&gt;.js</span></code>, adapt the <code class="docutils literal"><span class="pre">goog.provide</span></code> statement to the
-name of the new interface. For example, if your package is called “demo” and your new interface is
-called “new”, you need to change <code class="docutils literal"><span class="pre">goog.provide('demo_desktop');</span></code> to <code class="docutils literal"><span class="pre">goog.provide('demo_new');</span></code></p>
-<p>In the file <code class="docutils literal"><span class="pre">&lt;package/static-ngeo/templates/&lt;interface&gt;.html</span></code>, adapt the name of the referenced css
-and js files to the new interface name. For example, if your package is called “demo” and your new
-interface is called “new”, you need to change the file as follows:</p>
-<div class="code html highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">link</span> <span class="n">rel</span><span class="o">=</span><span class="s2">&quot;stylesheet&quot;</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;${request.static_url(&#39;demo:static-ngeo/build/new.css&#39;)}&quot;</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;text/css&quot;</span><span class="o">&gt;</span>
+<p>In the file <code class="docutils literal"><span class="pre">&lt;package&gt;/static-ngeo/js/&lt;interface&gt;.js</span></code>, adapt the following lines:</p>
+<div class="code js highlight-default"><div class="highlight"><pre><span></span>* This file defines the &quot;&lt;package&gt;_&lt;interface&gt;&quot; Closure namespace, which is be used as
+...
+goog.provide(&#39;&lt;package&gt;.&lt;Interface&gt;Controller&#39;);
+goog.provide(&#39;&lt;package&gt;_&lt;interface&gt;&#39;);
+...
+geoportal.&lt;Interface&gt;Controller = function($scope, $injector) {
+...
+ol.inherits(&lt;package&gt;.&lt;Interface&gt;Controller, gmf.AbstractDesktopController);
+...
+geoportal.module.controller(&#39;&lt;Interface&gt;Controller&#39;, &lt;package&gt;.&lt;Interface&gt;Controller);
+</pre></div>
+</div>
+<p>where <code class="docutils literal"><span class="pre">&lt;package&gt;</span></code> is the name of your package, and <code class="docutils literal"><span class="pre">&lt;interface&gt;</span></code> (desktop in the original file) is
+the name of your new interface.</p>
+<p>In the file <code class="docutils literal"><span class="pre">&lt;package/static-ngeo/templates/&lt;interface&gt;.html</span></code>, adapt the name of the controller and the
+referenced css and js files to the new interface name:</p>
+<div class="code html highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">html</span> <span class="n">lang</span><span class="o">=</span><span class="s2">&quot;{{mainCtrl.lang}}&quot;</span> <span class="n">ng</span><span class="o">-</span><span class="n">app</span><span class="o">=</span><span class="s2">&quot;&lt;package&gt;&quot;</span> <span class="n">ng</span><span class="o">-</span><span class="n">controller</span><span class="o">=</span><span class="s2">&quot;&lt;Interface&gt;Controller as mainCtrl&quot;</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">link</span> <span class="n">rel</span><span class="o">=</span><span class="s2">&quot;stylesheet&quot;</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;${request.static_url(&#39;&lt;package&gt;:static-ngeo/build/&lt;interface&gt;.css&#39;)}&quot;</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;text/css&quot;</span><span class="o">&gt;</span>
 <span class="o">...</span>
-<span class="n">goog</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="s1">&#39;demo_new&#39;</span><span class="p">);</span>
+<span class="n">goog</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="s1">&#39;&lt;package&gt;_&lt;interface&gt;&#39;</span><span class="p">);</span>
 <span class="o">...</span>
-<span class="o">&lt;</span><span class="n">script</span> <span class="n">src</span><span class="o">=</span><span class="s2">&quot;${request.static_url(&#39;demo:static-ngeo/build/new.js&#39;)}&quot;</span><span class="o">&gt;&lt;/</span><span class="n">script</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">script</span> <span class="n">src</span><span class="o">=</span><span class="s2">&quot;${request.static_url(&#39;&lt;package&gt;:static-ngeo/build/&lt;interface&gt;.js&#39;)}&quot;</span><span class="o">&gt;&lt;/</span><span class="n">script</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <p>Add the new interface files to Git:</p>
@@ -106,7 +119,7 @@ interface is called “new”, you need to change the file as follows:</p>
 </pre></div>
 </div>
 <p>The used method has the following API:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">interface_name</span><span class="o">=</span><span class="s2">&quot;desktop&quot;</span><span class="p">,</span> <span class="n">interface_type</span><span class="o">=</span><span class="n">INTERFACE_TYPE_NGEO</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">interface_name</span><span class="o">=</span><span class="s2">&quot;&lt;interface&gt;&quot;</span><span class="p">,</span> <span class="n">interface_type</span><span class="o">=</span><span class="n">INTERFACE_TYPE_NGEO</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Where <code class="docutils literal"><span class="pre">config</span></code> is the application configuration object,</p>
@@ -125,9 +138,9 @@ some site-specific configuration issues must be considered:</p>
 on this DB instance, it must be migrated now (if it is for test purposes, clone the
 DB first): run script <code class="docutils literal"><span class="pre">.build/venv/bin/themev1tov2</span></code></li>
 <li>set default theme of the new interface to the desired one (set “defaultTheme”
-in &lt;interface&gt;.html)</li>
+in <code class="docutils literal"><span class="pre">&lt;interface&gt;.html</span></code>)</li>
 <li>set meaningful starting zoom level and center coordinates of new interface,
-in &lt;interface&gt;.js</li>
+in <code class="docutils literal"><span class="pre">&lt;interface&gt;.js</span></code></li>
 <li>after rebuilding, to see the changes in the browser, you probably need to clear
 the browser cache and your URL parameters, and maybe in addition wait some minutes
 in order for the server-side to also be completely up-to-date.</li>
@@ -138,22 +151,23 @@ in order for the server-side to also be completely up-to-date.</li>
 <h2>Database<a class="headerlink" href="#database" title="Permalink to this headline">¶</a></h2>
 <p>The administration interface gives access to an <code class="docutils literal"><span class="pre">interface</span></code> table that lists the
 available interfaces (or pages) of the application.
-The default interfaces are <code class="docutils literal"><span class="pre">desktop</span></code> and <code class="docutils literal"><span class="pre">mobile</span></code>.</p>
+The default interfaces are <code class="docutils literal"><span class="pre">desktop</span></code> and <code class="docutils literal"><span class="pre">mobile</span></code>.
+Add the name of your interface to the table. This can be done using the admin interface.</p>
 </div>
 <div class="section" id="checker">
 <h2>Checker<a class="headerlink" href="#checker" title="Permalink to this headline">¶</a></h2>
 <p>This section describes how to Enable the checker for the new interface.</p>
 <p>We suggest to add only the main checker in the <code class="docutils literal"><span class="pre">defaults</span></code>. It is what is done by default.
-In the <code class="docutils literal"><span class="pre">all</span></code> (<code class="docutils literal"><span class="pre">vars.checker.all</span></code>) file, check all the ngeo interfaces in standard
+In the <code class="docutils literal"><span class="pre">all</span></code> (<code class="docutils literal"><span class="pre">vars.checker.all</span></code>) section, check all the ngeo interfaces in standard
 and debug mode:</p>
 <div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">phantomjs_routes</span><span class="p">:</span>
 <span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">interface</span><span class="o">&gt;</span>
-  <span class="n">param</span><span class="p">:</span>
-    <span class="n">no_redirect</span><span class="p">:</span> <span class="n">true</span>
+  <span class="n">params</span><span class="p">:</span>
+    <span class="n">no_redirect</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span>
 <span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">interface</span><span class="o">&gt;</span>
   <span class="n">param</span><span class="p">:</span>
-    <span class="n">no_redirect</span><span class="p">:</span> <span class="n">true</span>
-    <span class="n">debug</span><span class="p">:</span> <span class="n">true</span>
+    <span class="n">no_redirect</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span>
+    <span class="n">debug</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span>
 </pre></div>
 </div>
 <p>By default, the checker is enabled for the desktop and mobile interfaces.</p>
