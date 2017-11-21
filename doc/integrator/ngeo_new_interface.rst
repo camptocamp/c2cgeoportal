@@ -65,8 +65,8 @@ In the file ``<package>/static-ngeo/js/<interface>.js``, adapt the following lin
    ...
    geoportal.module.controller('<Interface>Controller', <package>.<Interface>Controller);
 
-where you replace ``<package>`` with the name of your package and ``<interface>`` with the name of your new
-interface.
+where ``<package>`` is the name of your package, and ``<interface>`` (desktop in the original file) is
+the name of your new interface.
 
 In the file ``<package/static-ngeo/templates/<interface>.html``, adapt the name of the controller and the
 referenced css and js files to the new interface name:
