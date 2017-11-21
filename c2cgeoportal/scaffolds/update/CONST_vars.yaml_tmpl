@@ -340,7 +340,7 @@ vars:
         themes: &auth_header
             access_control_max_age: 600 # 10 minutes
             access_control_allow_origin:
-            - "{web_protocol}:://{host}/"
+            - "{web_protocol}://{host}/"
             - "*"
         config: *auth_header
         print: *auth_header
@@ -352,7 +352,7 @@ vars:
         login:
             access_control_max_age: 600 # 10 minutes
             access_control_allow_origin:
-            - "{web_protocol}:://{host}/"
+            - "{web_protocol}://{host}/"
 
     # Checker configuration
     checker:
