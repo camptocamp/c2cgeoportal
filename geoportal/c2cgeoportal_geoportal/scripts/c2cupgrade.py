@@ -276,8 +276,6 @@ class C2cUpgradeTool:
     def step1(self, step):
         check_call(["git", "reset", "--hard"])
         check_call(["git", "clean", "--force", "-d"])
-        check_call(["git", "submodule", "foreach", "--recursive", "git", "reset", "--hard"])
-        check_call(["git", "submodule", "foreach", "--recursive", "git", "clean", "--force", "-d"])
 
         branch = check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode("utf-8").strip()
         # remove all no more existing branches
@@ -292,19 +290,11 @@ class C2cUpgradeTool:
                     prompt="Please solve the rebase and run it again:")
                 exit(1)
 
-        check_call(["git", "submodule", "sync"])
-        check_call(["git", "submodule", "update", "--init"])
-        check_call(["git", "submodule", "foreach", "git", "submodule", "sync"])
-        check_call(["git", "submodule", "foreach", "git", "submodule", "update", "--init"])
-
         if len(check_output(["git", "status", "-z"]).decode("utf-8").strip()) != 0:
             self.print_step(
                 step, error=True, message="The pull is not fast forward.",
                 prompt="Please solve the rebase and run it again:")
             exit(1)
-
-        check_call(["git", "submodule", "foreach", "git", "submodule", "sync"])
-        check_call(["git", "submodule", "foreach", "git", "submodule", "update", "--init"])
 
         if os.path.exists("CONST_create_template"):
             shutil.rmtree("CONST_create_template")
