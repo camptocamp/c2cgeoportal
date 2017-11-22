@@ -181,7 +181,6 @@ ifeq ($(DEVELOPMENT), TRUE)
 JSBUILD_ARGS += --uncompress
 endif
 CGXP_GIT_REMOTE ?= https://github.com/camptocamp/cgxp.git
-CGXP_GIT_ARGS ?= --depth 1
 
 
 ifeq ($(DEVELOPMENT), FALSE)
