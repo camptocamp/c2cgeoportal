@@ -216,7 +216,7 @@ class C2cUpgradeTool:
                 if self.options.new_makefile is not None:
                     cmd += "--new-makefile={} ".format(self.options.new_makefile)
                 if step != 0:
-                    cmd += "--step{}".format(step)
+                    cmd += "--step={}".format(step)
                 print(colorize(cmd, GREEN))
 
     def run_step(self, step):
