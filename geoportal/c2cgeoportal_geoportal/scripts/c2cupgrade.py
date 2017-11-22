@@ -195,8 +195,8 @@ class C2cUpgradeTool:
         if step >= 0:
             print(colorize(prompt, GREEN))
             if self.options.use_makefile:
-                args = " --makefile={}".format(
-                    self.options.new_makefile if self.options.makefile != "Makefile" else "")
+                args = " --makefile={}".format(self.options.makefile) \
+                    if self.options.makefile != "Makefile" else ""
                 print(colorize("./docker-run make{} upgrade{}".format(
                     args, step if step != 0 else "",
                 ), GREEN))
@@ -311,10 +311,8 @@ class C2cUpgradeTool:
                 "--scaffold=c2cgeoportal_nondockerupdate", project_path
             ])
         os.remove(project_path)
-        self.options.use_makefile = True
 
         check_call(["make", "--makefile=" + self.options.makefile, "clean-all"])
-        self.options.makefile = self.options.new_makefile
         self.run_step(step + 1)
 
     @Step(2)
@@ -348,6 +346,8 @@ class C2cUpgradeTool:
                     prompt="Fill it and run it again:"
                 )
             else:
+                self.options.use_makefile = True
+                self.options.makefile = self.options.new_makefile
                 self.run_step(step + 1)
 
     @Step(3)
