@@ -381,30 +381,30 @@ yamllint: $(YAML_FILES)
 
 .PHONY: clean
 clean: template-clean
-	rm -f /build/*.timestamp
-	rm -f apache/mapcache.xml apache/tiles.conf  # for nondocker
-	rm -f mapserver/mapserver.map
-	rm -rf $(OUTPUT_DIR)/
-	rm -rf $(APP_OUTPUT_DIR)/
-	rm -f geoportal/$(PACKAGE)_geoportal/locale/$(PACKAGE)-*.pot
-	rm -f .UPGRADE*
+	rm --recursive --force /build/*.timestamp \
+		apache/mapcache.xml apache/tiles.conf \
+		mapserver/mapserver.map \
+		$(OUTPUT_DIR)/ \
+		$(APP_OUTPUT_DIR)/ \
+		geoportal/$(PACKAGE)_geoportal/locale/$(PACKAGE)-*.pot \
+		.UPGRADE*
 ifeq ($(TILECLOUD_CHAIN_LOCAL), TRUE)
-	rm -f $(WMTSCAPABILITIES_FILE)
+	rm --force $(WMTSCAPABILITIES_FILE)
 endif
 
 .PHONY: clean-all
 clean-all: clean
-	rm -rf /build/*
-	rm -rf geoportal/$(PACKAGE)_geoportal/static-ngeo/fonts/
-	rm -rf geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/
-	rm -f $(ANGULAR_LOCALES_FILES)
-	rm -rf `find -name __pycache__`
-	rm -rf node_modules  # for nondocker
+	rm --recursive --force /build/* \
+		geoportal/$(PACKAGE)_geoportal/static-ngeo/fonts/ \
+		geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ \
+		$(ANGULAR_LOCALES_FILES) \
+		`find -name __pycache__` \
+		node_modules  # for nondocker
 
 .PHONY: clean-all-cache
 clean-all-cache: cleanall
-	rm -rf $(HOME_DIR).npm
-	rm -rf $(HOME_DIR).cache/pip
+	rm  --recursive --force $(HOME_DIR).npm \
+		$(HOME_DIR).cache/pip
 
 .PHONY: theme2fts
 theme2fts: $(PO_CLIENT_LOCALISATION_FILES)
@@ -433,10 +433,10 @@ upgrade-db: alembic.ini
 
 .PHONY: template-clean
 template-clean:
-	rm -f .build/c2ctemplate-cache.json
-	rm -f $(ALL_MAKO_FILES:.mako=)
-	rm -f $(ALL_JINJA_FILES:.jinja=)
-	rm -f geoportal/config.yaml
+	rm --force .build/c2ctemplate-cache.json \
+		$(ALL_MAKO_FILES:.mako=) \
+		$(ALL_JINJA_FILES:.jinja=) \
+		geoportal/config.yaml
 
 /build/c2ctemplate-cache.json: $(VARS_DEPENDS) $(MAKE_FILES)
 	$(PRERULE_CMD)
