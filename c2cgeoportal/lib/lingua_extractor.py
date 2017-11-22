@@ -403,7 +403,12 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                         raise
 
     def _import_layer_attributes(self, url, layer, item_type, name, messages):
-        for attribute in self._layer_attributes(url, layer):
+        attributes, layers = self._layer_attributes(url, layer)
+        for layer in layers:
+            messages.append(Message(
+                None, layer, None, [], "", "", (".".join([item_type, name]), layer)
+            ))
+        for attribute in attributes:
             messages.append(Message(
                 None, attribute, None, [], "", "", (".".join([item_type, name]), layer)
             ))
@@ -560,4 +565,4 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                     if not element.getAttribute("type").startswith("gml:"):
                         attributes.append(element.getAttribute("name"))
 
-        return attributes
+        return attributes, layers
