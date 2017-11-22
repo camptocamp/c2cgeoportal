@@ -70,6 +70,12 @@ def main():
         "--env=GIT_HASH={}".format(git_hash)
     ])
 
+    if "SSH_AUTH_SOCK" in os.environ:
+        docker_cmd.extend([
+            "--volume={ssh}:{ssh}".format(ssh=os.environ["SSH_AUTH_SOCK"]),
+            "--env=SSH_AUTH_SOCK",
+        ])
+
     for env in [
         "HOME",
         "SRID",
