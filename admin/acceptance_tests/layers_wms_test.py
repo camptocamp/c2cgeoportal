@@ -17,7 +17,6 @@ def insertLayerWMSTestData(dbsession):
     for i in range(0, 4):
         servers.append(OGCServer(name='server_{}'.format(i)))
         dbsession.add(servers[i])
-        dbsession.merge(servers[i])
 
     restrictionareas = []
     for i in range(0, 5):
@@ -28,7 +27,7 @@ def insertLayerWMSTestData(dbsession):
 
     for i in range(0, 25):
         layer = LayerWMS(name='layer_wms_{}'.format(i))
-        layer.ogc_server_id = servers[i % 4].id
+        layer.ogc_server = servers[i % 4]
         layer.restrictionareas = [restrictionareas[i % 5],
                                   restrictionareas[(i + 2) % 5]]
         dbsession.add(layer)
