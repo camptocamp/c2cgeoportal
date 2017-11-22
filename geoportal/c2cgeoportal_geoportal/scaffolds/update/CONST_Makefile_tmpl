@@ -296,8 +296,8 @@ SPHINX_FILES = $(shell find doc -name "*.rst" -print)
 
 # Server localisation
 ifdef CGXP_INTERFACES
-SERVER_LOCALISATION_SOURCES_FILES += geoportal/$(PACKAGE)_geoportal/models.py $(shell find geoportal/$(PACKAGE)_geoportal/templates -type f -name '*.html')
-SERVER_LOCALISATION_FILES = $(addprefix geoportal/$(PACKAGE)_geoportal/locale/, $(addsuffix /LC_MESSAGES/$(PACKAGE)-$(L10N_SERVER_POSTFIX).mo, $(LANGUAGES)))
+SERVER_LOCALISATION_SOURCES_FILES += commons/$(PACKAGE)_commons/models.py $(shell find geoportal/$(PACKAGE)_geoportal/templates -type f -name '*.html')
+SERVER_LOCALISATION_RULES = $(addprefix /build/lang-server-, $(LANGUAGES))
 endif
 
 # Print
@@ -492,7 +492,7 @@ update-po: $(addprefix /build/lang-client-, $(LANGUAGES)) $(addprefix /build/lan
 /build/lang-server-%: geoportal/$(PACKAGE)_geoportal/locale/$(PACKAGE)-$(L10N_SERVER_POSTFIX).pot
 	$(PRERULE_CMD)
 	mkdir --parent geoportal/$(PACKAGE)_geoportal/locale/$*/LC_MESSAGES/
-	[ -f geoportal/$(PACKAGE)_geoportal/locale/$*/LC_MESSAGES/$(PACKAGE)-$(L10N_SERVER_POSTFIX).po ] || msginit --no-translator --input=$< --output-file=geoportal/$(PACKAGE)_geoportal/locale/$*/LC_MESSAGES/$(PACKAGE)-$(L10N_SERVER_POSTFIX).po -l $*
+	[ ! -f geoportal/$(PACKAGE)_geoportal/locale/$*/LC_MESSAGES/$(PACKAGE)-$(L10N_SERVER_POSTFIX).po ] || [ -f $< ] || msginit --no-translator --input=$< --output-file=geoportal/$(PACKAGE)_geoportal/locale/$*/LC_MESSAGES/$(PACKAGE)-$(L10N_SERVER_POSTFIX).po -l $*
 	touch --no-create geoportal/$(PACKAGE)_geoportal/locale/$*/LC_MESSAGES/$(PACKAGE)-$(L10N_SERVER_POSTFIX).po
 	[ ! -f $< ] || msgmerge --backup=none --update --sort-output --no-location geoportal/$(PACKAGE)_geoportal/locale/$*/LC_MESSAGES/$(PACKAGE)-$(L10N_SERVER_POSTFIX).po $<
 
@@ -706,7 +706,7 @@ mapserver/mapserver.map:
 geoportal-docker: /build/geoportal-docker.timestamp
 
 /build/geoportal-docker.timestamp: $(shell docker-required --path geoportal) \
-		$(SERVER_LOCALISATION_FILES) \
+		$(SERVER_LOCALISATION_RULES) \
 		$(WEB_RULE) \
 		geoportal/config.yaml \
 		/build/commons-docker.timestamp

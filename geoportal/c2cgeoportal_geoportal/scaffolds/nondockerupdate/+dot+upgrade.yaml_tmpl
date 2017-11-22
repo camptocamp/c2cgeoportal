@@ -6,6 +6,12 @@ default_project_file:
     - {{package}}_geoportal/locale/.*
     - {{package}}_geoportal/static/.*
     - {{package}}_geoportal/static-ngeo/.*
+    - {{package}}/jsbuild/.*
+    - geoportal/{{package}}_geoportal/templates/.*
+    - geoportal/{{package}}_geoportal/locale/.*
+    - geoportal_{{package}}_geoportal/static/.*
+    - geoportal/{{package}}_geoportal/static-ngeo/.*
+    - geoportal/{{package}}_geoportal/jsbuild/.*
     - print/print-apps/.*
     - mapserver/.*
     - project.yaml.mako
