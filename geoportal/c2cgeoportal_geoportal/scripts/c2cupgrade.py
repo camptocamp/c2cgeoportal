@@ -296,6 +296,34 @@ class C2cUpgradeTool:
                 prompt="Please solve the rebase and run it again:")
             exit(1)
 
+        self.run_step(step + 1)
+
+    @Step(2)
+    def step2(self, step):
+        if not os.path.exists("CONST_create_template/geoportal"):
+            for source, destination in [
+                ("testDB", "testdb"),
+                ("testdb/Dockerfile.mako", "testdb/Dockerfile"),
+                ("vars_{{package}}.yaml", "vars.yaml"),
+                ("{{package}}.mk", "Makefile"),
+                ("Dockerfile", "geoportal/Dockerfile.mako"),
+                ("docker-compose.yml.mako", "docker-compose.yaml.mako"),
+                (".dockerignore", "geoportal/.dockerignore"),
+                ("jsbuild", "geoportal/jsbuild"),
+                ("production.ini.mako", "geoportal/production.ini.mako"),
+                ("setup.py", "geoportal/setup.py"),
+                ("testgeomapfish/models.py", "commons/testgeomapfish_commons/models.py"),
+                ("testgeomapfish", "geoportal/testgeomapfish_geoportal"),
+            ]:
+                if os.path.exists(source):
+                    if os.path.dirname(destination) != "":
+                        os.makedirs(os.path.dirname(destination), exist_ok=True)
+                    check_call(["git", "mv", source, destination])
+            check_call(["git", "commit", "--message=Do the moves in CONST_create_template"])
+        self.run_step(step + 1)
+
+    @Step(3)
+    def step3(self, step):
         if os.path.exists("CONST_create_template"):
             shutil.rmtree("CONST_create_template")
 
@@ -315,8 +343,8 @@ class C2cUpgradeTool:
         check_call(["make", "--makefile=" + self.options.makefile, "clean-all"])
         self.run_step(step + 1)
 
-    @Step(2)
-    def step2(self, step):
+    @Step(4)
+    def step4(self, step):
         error = False
 
         print("Files to remove")
@@ -350,8 +378,8 @@ class C2cUpgradeTool:
                 self.options.makefile = self.options.new_makefile
                 self.run_step(step + 1)
 
-    @Step(3)
-    def step3(self, step):
+    @Step(5)
+    def step5(self, step):
         self.files_to_remove()
         self.run_step(step + 1)
 
@@ -382,8 +410,8 @@ class C2cUpgradeTool:
                         os.remove(file_)
         return error
 
-    @Step(4)
-    def step4(self, step):
+    @Step(6)
+    def step6(self, step):
         self.files_to_move()
         self.run_step(step + 1)
 
@@ -431,8 +459,8 @@ class C2cUpgradeTool:
                     os.rename(src, dst)
         return error
 
-    @Step(5)
-    def step5(self, step):
+    @Step(7)
+    def step7(self, step):
         self.files_to_get()
         self.run_step(step + 1)
 
@@ -463,8 +491,8 @@ class C2cUpgradeTool:
                         shutil.copymode(source, destination)
         return error
 
-    @Step(6)
-    def step6(self, step):
+    @Step(8)
+    def step8(self, step):
         with open("changelog.diff", "w") as diff_file:
             check_call(["git", "diff", "--", "CONST_CHANGELOG.txt"], stdout=diff_file)
 
@@ -486,8 +514,8 @@ class C2cUpgradeTool:
                 "file (listed in the `changelog.diff` file)."
             )
 
-    @Step(7)
-    def step7(self, step):
+    @Step(9)
+    def step9(self, step):
         if os.path.isfile("changelog.diff"):
             os.unlink("changelog.diff")
 
@@ -507,16 +535,18 @@ class C2cUpgradeTool:
                 "CONST_nondocker_CHANGELOG.txt file (listed in the `nondocker-changelog.diff` file)."
             )
 
-    @Step(8)
-    def step8(self, step):
+    @Step(10)
+    def step10(self, step):
         if os.path.isfile("nondocker-changelog.diff"):
             os.unlink("nondocker-changelog.diff")
 
         with open("ngeo.diff", "w") as diff_file:
             check_call([
                 "git", "diff", "--",
-                "CONST_create_template/{}/templates".format(self.project["project_package"]),
-                "CONST_create_template/{}/static-ngeo".format(self.project["project_package"]),
+                "CONST_create_template/geoportal/{}_geoportal/templates".format(
+                    self.project["project_package"]),
+                "CONST_create_template/geoportal/{}_geoportal/static-ngeo".format(
+                    self.project["project_package"]),
             ], stdout=diff_file)
 
         if os.path.getsize("ngeo.diff") == 0:
@@ -528,8 +558,8 @@ class C2cUpgradeTool:
                 DIFF_NOTICE
             )
 
-    @Step(9)
-    def step9(self, step):
+    @Step(11)
+    def step11(self, step):
         if os.path.isfile("ngeo.diff"):
             os.unlink("ngeo.diff")
 
@@ -561,8 +591,8 @@ class C2cUpgradeTool:
         else:
             self.run_step(step + 1)
 
-    @Step(10)
-    def step10(self, step):
+    @Step(12)
+    def step12(self, step):
         if os.path.isfile("create.diff"):
             os.unlink("create.diff")
 
@@ -595,8 +625,8 @@ class C2cUpgradeTool:
             pass
         self.print_step(step + 1, message="\n".join(message))
 
-    @Step(11)
-    def step11(self, step):
+    @Step(13)
+    def step13(self, step):
         if os.path.isfile(".UPGRADE_SUCCESS"):
             os.unlink(".UPGRADE_SUCCESS")
         ok, message = self.test_checkers()
@@ -616,9 +646,9 @@ class C2cUpgradeTool:
             "add them into the `.gitignore` file and launch upgrade5 again.",
             prompt="Then to commit your changes type:")
 
-    @Step(12)
-    def step12(self, _):
-        check_call(["git", "commit", "-m", "Upgrade to GeoMapFish {}".format(
+    @Step(14)
+    def step14(self, _):
+        check_call(["git", "commit", "--message=Upgrade to GeoMapFish {}".format(
             pkg_resources.get_distribution("c2cgeoportal_commons").version
         )])
 
