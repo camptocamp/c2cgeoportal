@@ -67,7 +67,7 @@ def main():
         "--env=USER_ID={}".format(os.getuid() if os.name == "posix" else 1000),
         "--env=GROUP_ID={}".format(os.getgid() if os.name == "posix" else 1000),
         "--env=GIT_BRANCH={}".format(git_branch),
-        "--env=GIT_HASH={}".format(git_hash)
+        "--env=GIT_HASH={}".format(git_hash),
     ])
 
     if "SSH_AUTH_SOCK" in os.environ:
