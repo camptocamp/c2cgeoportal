@@ -1,16 +1,20 @@
 ---
 
 default_project_file:
-  - {{package}}_geoportal/templates/.*
-  - {{package}}_geoportal/locale/.*
-  - {{package}}_geoportal/static/.*
-  - {{package}}_geoportal/static-ngeo/.*
-  - print/print-apps/.*
-  - mapserver/.*
-  - project.yaml.mako
-  - setup.py
-  - vars.yaml
-  - {{package}}.mk
+  include:
+    - {{package}}_geoportal/templates/.*
+    - {{package}}_geoportal/locale/.*
+    - {{package}}_geoportal/static/.*
+    - {{package}}_geoportal/static-ngeo/.*
+    - print/print-apps/.*
+    - mapserver/.*
+    - project.yaml.mako
+    - setup.py
+    - vars.yaml
+    - {{package}}.mk
+  exclude:
+    - mapserver/Dockerfile
+    - mapserver/tinyows.xml.mako
 
 files_to_move:
   - from: testDB

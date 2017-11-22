@@ -466,19 +466,31 @@ class C2cUpgradeTool:
 
     def files_to_get(self, pre=False):
         error = False
+        default_project_file = self.get_upgrade("default_project_file")
         for root, _, files in os.walk("CONST_create_template"):
             root = root[len("CONST_create_template/"):]
             for file_ in files:
                 destination = os.path.join(root, file_)
                 managed = False
-                for pattern in self.project["managed_files"] + self.get_upgrade("default_project_file"):
+                for pattern in default_project_file["include"]:
                     if re.match(pattern + '$', destination):
                         managed = True
-                        for unpattern in self.project.get("unmanaged_files", []):
-                            if re.match(unpattern + '$', destination):
-                                managed = False
-                                break
                         break
+                if managed:
+                    for pattern in default_project_file["exclude"]:
+                        if re.match(pattern + '$', destination):
+                            managed = False
+                            break
+                if not managed:
+                    for pattern in self.project["managed_files"]:
+                        if re.match(pattern + '$', destination):
+                            managed = True
+                            break
+                if managed:
+                    for pattern in self.project.get("unmanaged_files", []):
+                        if re.match(pattern + '$', destination):
+                            managed = False
+                            break
                 source = os.path.join("CONST_create_template", destination)
                 if not managed and (not os.path.exists(destination) or not filecmp.cmp(source, destination)):
                     if not pre:
