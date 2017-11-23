@@ -10,6 +10,7 @@ from c2cgeoform.schema import (
 )
 from c2cgeoform.views.abstract_views import AbstractViews, ListField
 from sqlalchemy import select
+from sqlalchemy.orm import subqueryload
 from sqlalchemy.sql.functions import concat
 
 from c2cgeoportal_commons.models.main import _, Role, Functionality, RestrictionArea
@@ -63,6 +64,11 @@ class RoleViews(AbstractViews):
     _id_field = 'id'
     _model = Role
     _base_schema = base_schema
+
+    def _base_query(self):
+        return self._request.dbsession.query(Role). \
+            options(subqueryload("functionalities")). \
+            options(subqueryload("restrictionareas"))
 
     @view_config(route_name='c2cgeoform_index',
                  renderer="../templates/index.jinja2")

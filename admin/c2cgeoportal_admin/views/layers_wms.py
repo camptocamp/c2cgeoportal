@@ -1,5 +1,8 @@
 from pyramid.view import view_defaults
 from pyramid.view import view_config
+
+from sqlalchemy.orm import subqueryload
+
 from c2cgeoform.views.abstract_views import AbstractViews
 from c2cgeoportal_commons.models.main import LayerWMS
 from colanderalchemy import setup_schema
@@ -21,12 +24,16 @@ class LayerWmsViews(AbstractViews):
         ListField('style'),
         ListField('time_mode'),
         ListField('time_widget'),
-        ListField('ogc_server', renderer=lambda wmsLayer: wmsLayer.ogc_server.name),
-        ListField('restrictionareas', renderer=lambda wmsLayer:
-                  ", ".join([r.name or '' for r in wmsLayer.restrictionareas]))]
+        ListField('ogc_server', renderer=lambda layer_wms: layer_wms.ogc_server.name),
+        ListField('restrictionareas', renderer=lambda layer_wms:
+                  ", ".join([r.name or '' for r in layer_wms.restrictionareas]))]
     _id_field = 'id'
     _model = LayerWMS
     _base_schema = LayerWMS.__colanderalchemy__
+
+    def _base_query(self):
+        return self._request.dbsession.query(LayerWMS). \
+            options(subqueryload("restrictionareas"))
 
     @view_config(route_name='c2cgeoform_index',
                  renderer="../templates/index.jinja2")
