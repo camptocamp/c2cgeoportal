@@ -173,7 +173,7 @@ flake8:
 
 .PHONY: mypy
 mypy:
-	MYPYPATH=/usr/local/lib/python3.6/site-packages:/c2cwsgiutils \
+	MYPYPATH=/usr/local/lib/python3.6/site-packages:/opt/c2cwsgiutils \
 		mypy --disallow-untyped-defs --strict-optional --follow-imports skip \
 			commons/c2cgeoportal_commons
 	# TODO: add --disallow-untyped-defs
