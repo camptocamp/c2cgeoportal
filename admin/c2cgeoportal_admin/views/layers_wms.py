@@ -2,14 +2,48 @@ from itertools import groupby
 from pyramid.view import view_defaults
 from pyramid.view import view_config
 
+import colander
+
+from c2cgeoform.ext.deform_ext import RelationCheckBoxListWidget
+from c2cgeoform.schema import (
+    GeoFormSchemaNode,
+    GeoFormManyToManySchemaNode,
+    manytomany_validator,
+)
+from c2cgeoform.views.abstract_views import AbstractViews
+from c2cgeoform.views.abstract_views import ListField
 from sqlalchemy.orm import subqueryload
 
-from c2cgeoform.views.abstract_views import AbstractViews
-from c2cgeoportal_commons.models.main import LayerWMS
-from colanderalchemy import setup_schema
-from c2cgeoform.views.abstract_views import ListField
+from c2cgeoportal_commons.models.main import LayerWMS, RestrictionArea, Interface
 
-setup_schema(None, LayerWMS)
+
+base_schema = GeoFormSchemaNode(LayerWMS)
+base_schema.add(
+    colander.SequenceSchema(
+        GeoFormManyToManySchemaNode(Interface),
+        name='interfaces',
+        widget=RelationCheckBoxListWidget(
+            Interface,
+            'id',
+            'name',
+            order_by='name'
+        ),
+        validator=manytomany_validator
+    )
+)
+base_schema.add(
+    colander.SequenceSchema(
+        GeoFormManyToManySchemaNode(RestrictionArea),
+        name='restrictionareas',
+        widget=RelationCheckBoxListWidget(
+            RestrictionArea,
+            'id',
+            'name',
+            order_by='name'
+        ),
+        validator=manytomany_validator
+    )
+)
 
 
 @view_defaults(match_param='table=layers_wms')
@@ -52,7 +86,7 @@ class LayerWmsViews(AbstractViews):
                                                   for m in layer_wms.metadatas]))]
     _id_field = 'id'
     _model = LayerWMS
-    _base_schema = LayerWMS.__colanderalchemy__
+    _base_schema = base_schema
 
     def _base_query(self):
         return self._request.dbsession.query(LayerWMS). \
