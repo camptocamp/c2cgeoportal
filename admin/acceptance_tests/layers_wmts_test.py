@@ -35,10 +35,10 @@ def insertLayerWMTSTestData(dbsession):
 class TestLayerWMTS():
 
     def test_view_index_rendering_in_app(self, test_app):
-        expected = [('name', 'Name'),
+        expected = [('_id_', ''),
+                    ('name', 'Name'),
                     ('public', 'Public'),
-                    ('layer', 'WMTS layer name'),
-                    ('_id_', 'Commands')]
+                    ('layer', 'WMTS layer name')]
         check_grid_headers(test_app, '/layers_wmts/', expected)
 
     def test_grid_complex_column_val(self, dbsession, test_app):
