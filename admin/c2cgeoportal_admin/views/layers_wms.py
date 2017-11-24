@@ -1,3 +1,4 @@
+from itertools import groupby
 from pyramid.view import view_defaults
 from pyramid.view import view_config
 
@@ -25,8 +26,30 @@ class LayerWmsViews(AbstractViews):
         ListField('time_mode'),
         ListField('time_widget'),
         ListField('ogc_server', renderer=lambda layer_wms: layer_wms.ogc_server.name),
-        ListField('restrictionareas', renderer=lambda layer_wms:
-                  ', '.join([r.name or '' for r in layer_wms.restrictionareas]))]
+        ListField(
+            'interfaces',
+            sortable=False,
+            renderer=lambda layer_wms: ', '.join([i.name or '' for i in layer_wms.interfaces])),
+        ListField(
+            'dimensions',
+            sortable=False,
+            renderer=lambda layer_wms: '; '.join(
+                ['{}: {}'.format(group[0], ', '.join([d.value for d in group[1]]))
+                 for group in groupby(layer_wms.dimensions, lambda d: d.name)])),
+        ListField(
+            'parents_relation',
+            sortable=False,
+            renderer=lambda layer_wms:', '.join([p.treegroup.name or ''
+                                                 for p in layer_wms.parents_relation])),
+        ListField(
+            'restrictionareas',
+            sortable=False,
+            renderer=lambda layer_wms: ', '.join([r.name or '' for r in layer_wms.restrictionareas])),
+        ListField(
+            'metadatas',
+            sortable=False,
+            renderer=lambda layer_wms: ', '.join(['{}: {}'.format(m.name, m.value) or ''
+                                                  for m in layer_wms.metadatas]))]
     _id_field = 'id'
     _model = LayerWMS
     _base_schema = LayerWMS.__colanderalchemy__

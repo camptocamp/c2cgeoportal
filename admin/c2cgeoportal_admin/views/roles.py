@@ -57,10 +57,12 @@ class RoleViews(AbstractViews):
         ListField('description'),
         ListField(
             'functionalities',
+            sortable=False,
             renderer=lambda role: ', '.join(['{}={}'.format(f.name, f.value) for f in role.functionalities])
         ),
         ListField(
             'restrictionareas',
+            sortable=False,
             renderer=lambda role: ', '.join([r.name or '' for r in role.restrictionareas])
         ),
     ]
