@@ -13,7 +13,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import subqueryload
 from sqlalchemy.sql.functions import concat
 
-from c2cgeoportal_commons.models.main import _, Role, Functionality, RestrictionArea
+from c2cgeoportal_commons.models.main import Role, Functionality, RestrictionArea
 
 
 base_schema = GeoFormSchemaNode(Role)
@@ -22,7 +22,6 @@ base_schema.add_before(
     colander.SequenceSchema(
         GeoFormManyToManySchemaNode(Functionality),
         name='functionalities',
-        title=_('Functionalities'),
         widget=RelationCheckBoxListWidget(
             select([
                 Functionality.id,
@@ -40,7 +39,6 @@ base_schema.add_before(
     colander.SequenceSchema(
         GeoFormManyToManySchemaNode(RestrictionArea),
         name='restrictionareas',
-        title=_('Restriction areas'),
         widget=RelationCheckBoxListWidget(
             RestrictionArea,
             'id',
