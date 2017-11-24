@@ -1,0 +1,10 @@
+<ul class="nav nav-pills nav-stacked">
+  <li role="presentation" class="{{'active' if request.matched_route.name == 'layertree' else ''}}">
+    <a href="{{request.route_url('layertree')}}">{{_("Layer tree")}}</a>
+  </li>
+  {% for table in tables %}
+  <li role="presentation" class="{{'active' if request.matchdict and request.matchdict.get('table') == table['key'] else ''}}">
+    <a href="{{request.route_url('c2cgeoform_index', table=table['key'])}}">{{table['plural']}}</a>
+  </li>
+  {% endfor %}
+</ul>

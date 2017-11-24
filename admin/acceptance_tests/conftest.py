@@ -52,28 +52,33 @@ def app_env():
 
 
 @pytest.fixture(scope="session")
-@pytest.mark.usefixtures("app_env")
-def settings(app_env):
-    yield app_env.get('registry').settings
-
-
-@pytest.fixture()  # noqa: F811
-@pytest.mark.usefixtures("dbsession", "app_env")
-def test_app(request, dbsession, settings, app_env):
+@pytest.mark.usefixtures("app_env", "dbsession")
+def app(app_env, dbsession):
     config = testing.setUp(registry=app_env['registry'])
     config.add_request_method(lambda request: dbsession, 'dbsession', reify=True)
     config.add_route('user_add', 'user_add')
     config.add_route('users_nb', 'users_nb')
     config.scan(package='acceptance_tests')
     app = config.make_wsgi_app()
+    yield app
+
+
+@pytest.fixture(scope="session")
+@pytest.mark.usefixtures("app_env")
+def settings(app_env):
+    yield app_env.get('registry').settings
+
+
+@pytest.fixture(scope='session')  # noqa: F811
+@pytest.mark.usefixtures("app")
+def test_app(request, app):
     testapp = TestApp(app)
     yield testapp
 
 
 @pytest.fixture(scope='session')  # noqa: F811
-@pytest.mark.usefixtures("dbsession", "app_env")
-def selenium_app(request, dbsession, settings, app_env):
-    app = app_env.get('app')
+@pytest.mark.usefixtures("app")
+def selenium_app(app):
     srv = make_server('', 6544, app)
     threading.Thread(target=srv.serve_forever).start()
     yield('http://localhost:6544')
