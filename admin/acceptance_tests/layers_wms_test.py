@@ -228,6 +228,16 @@ class TestLayerWMS():
             [interface.id for interface in layer.interfaces])
         assert set([ras[1].id, ras[3].id]) == set([ra.id for ra in layer.restrictionareas])
 
+    def test_delete(self, test_app, dbsession):
+        from c2cgeoportal_commons.models.main import LayerWMS, Layer, TreeItem
+        layer_id = dbsession.query(LayerWMS.id).first().id
+
+        test_app.delete("/layers_wms/{}".format(layer_id), status=200)
+
+        assert dbsession.query(LayerWMS).get(layer_id) is None
+        assert dbsession.query(Layer).get(layer_id) is None
+        assert dbsession.query(TreeItem).get(layer_id) is None
+
     @skip_if_ci
     @pytest.mark.usefixtures("selenium", "selenium_app")
     def test_selenium(self, selenium, selenium_app):
