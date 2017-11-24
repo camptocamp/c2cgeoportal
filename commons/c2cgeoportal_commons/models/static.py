@@ -89,21 +89,25 @@ class User(Base):
             'widget': HiddenWidget()
         }
     })
-    username = Column(Unicode, unique=True, nullable=False)
+    username = Column(Unicode, unique=True, nullable=False, info={
+        'colanderalchemy': {
+            'title': _('Username')
+        }
+    })
     _password = Column("password", Unicode, nullable=False,
                        info={'colanderalchemy': {'exclude': True}})
     temp_password = Column("temp_password", Unicode, nullable=True,
                            info={'colanderalchemy': {'exclude': True}})
     email = Column(Unicode, nullable=False, info={
         'colanderalchemy': {
-            'title': _('email')
+            'title': _('Email')
         }
     })
     is_password_changed = Column(Boolean, default=False,
                                  info={'colanderalchemy': {'exclude': True}})
     role_name = Column(String, info={
         'colanderalchemy': {
-            'title': _('role'),
+            'title': _('Role'),
             'widget': deform_ext.RelationSelect2Widget(
                 Role, 'name', 'name', order_by='name', default_value=('', _('- Select -'))
             )

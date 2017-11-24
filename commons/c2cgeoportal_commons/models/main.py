@@ -178,10 +178,14 @@ class Role(Base):
     })
     name = Column(Unicode, unique=True, nullable=False, info={
         'colanderalchemy': {
-            'title': _('name')
+            'title': _('Name')
         }
     })
-    description = Column(Unicode)
+    description = Column(Unicode, info={
+        'colanderalchemy': {
+            'title': _('Description')
+        }
+    })
     extent = Column(Geometry("POLYGON", srid=_srid), info={
         'colanderalchemy': {
             'typ': colander_ext.Geometry('POLYGON', srid=3857, map_srid=3857),
@@ -195,7 +199,8 @@ class Role(Base):
         cascade="save-update,merge,refresh-expire",
         info={
             'colanderalchemy': {
-                'exclude': True
+                'exclude': True,
+                'title': _('Functionalities')
             }
         }
     )
@@ -710,7 +715,8 @@ class RestrictionArea(Base):
         cascade="save-update,merge,refresh-expire",
         backref=backref("restrictionareas", info={
             'colanderalchemy': {
-                'exclude': True
+                'exclude': True,
+                'title': _('Restriction areas')
             }
         })
     )

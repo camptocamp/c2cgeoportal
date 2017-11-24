@@ -10,7 +10,7 @@ from . import skip_if_travis, check_grid_headers
 
 @pytest.fixture(scope='class')
 @pytest.mark.usefixtures("dbsession")
-def insertUsersTestData(dbsession):
+def users_test_data(dbsession):
     from c2cgeoportal_commons.models.static import User
     from c2cgeoportal_commons.models.main import Role
     dbsession.begin_nested()
@@ -18,23 +18,24 @@ def insertUsersTestData(dbsession):
     for i in range(0, 4):
         roles.append(Role("secretary_" + str(i)))
         dbsession.add(roles[i])
+    users = []
     for i in range(0, 23):
         user = User("babar_" + str(i),
                     email='mail' + str(i),
                     role=roles[i % 4])
         user.password = 'pré$ident'
+        users.append(user)
         dbsession.add(user)
-    yield
+    yield {
+        'roles': roles,
+        'users': users}
     dbsession.rollback()
 
 
-@pytest.mark.usefixtures("insertUsersTestData", "transact", "test_app")
+@pytest.mark.usefixtures("users_test_data", "transact", "test_app")
 class TestUser():
-    def test_view_edit(self, dbsession, test_app):
-        from c2cgeoportal_commons.models.static import User
-        user = dbsession.query(User). \
-            filter(User.username == 'babar_9'). \
-            one()
+    def test_view_edit(self, test_app, users_test_data):
+        user = users_test_data['users'][9]
 
         resp = test_app.get('/users/{}'.format(user.id), status=200)
 
@@ -48,25 +49,20 @@ class TestUser():
             ('secretary_3', False, 'secretary_3')]
         assert resp.form['role_name'].value == user.role_name
 
-    def test_delete_success(self, dbsession):
-        from c2cgeoportal_commons.models.static import User
-        user_id = dbsession.query(User). \
-            filter(User.username == 'babar_9'). \
-            one().id
+    def test_delete_success(self, dbsession, users_test_data):
+        user = users_test_data['users'][9]
         from c2cgeoportal_admin.views.users import UserViews
         req = DummyRequest(dbsession=dbsession)
-        req.matchdict.update({'id': str(user_id)})
+        req.matchdict.update({'id': str(user.id)})
 
         UserViews(req).delete()
 
-        user = dbsession.query(User).filter(User.id == user_id).one_or_none()
+        from c2cgeoportal_commons.models.static import User
+        user = dbsession.query(User).filter(User.id == user.id).one_or_none()
         assert user is None
 
-    def test_submit_update(self, dbsession, test_app):
-        from c2cgeoportal_commons.models.static import User
-        user = dbsession.query(User). \
-            filter(User.username == 'babar_11'). \
-            one()
+    def test_submit_update(self, dbsession, test_app, users_test_data):
+        user = users_test_data['users'][11]
 
         resp = test_app.post(
             '/users/{}'.format(user.id),
@@ -128,23 +124,23 @@ class TestUser():
 
     def test_view_index_rendering_in_app(self, dbsession, test_app):
         expected = [('_id_', ''),
-                    ('username', 'username'),
-                    ('role_name', 'role'),
-                    ('email', 'email')]
+                    ('username', 'Username'),
+                    ('role_name', 'Role'),
+                    ('email', 'Email')]
         check_grid_headers(test_app, '/users/', expected)
 
     @pytest.mark.skip(reason="Translation is not finished")
     def test_view_index_rendering_in_app_fr(self, dbsession, test_app):
         expected = [('_id_', ''),
-                    ('username', 'nom'),
-                    ('role_name', 'role'),
-                    ('email', 'mel')]
+                    ('username', 'Nom'),
+                    ('role_name', 'Role'),
+                    ('email', 'Mel')]
         check_grid_headers(test_app, '/users/', expected, language='fr')
 
     # in order to make this work, had to install selenium gecko driver
     @skip_if_travis
     @pytest.mark.usefixtures("selenium", "selenium_app")
-    def test_selenium(self, dbsession, selenium, selenium_app):
+    def test_selenium(self, dbsession, selenium, selenium_app, users_test_data):
         selenium.get(selenium_app + '/users/')
 
         elem = selenium.find_element_by_xpath("//a[contains(@href,'language=en')]")
@@ -156,10 +152,7 @@ class TestUser():
         elem = grid_header.find_element_by_xpath("//a[contains(.,'50')]")
         elem.click()
 
-        from c2cgeoportal_commons.models.static import User
-        user = dbsession.query(User). \
-            filter(User.username == 'babar_13'). \
-            one()
+        user = users_test_data['users'][13]
 
         elem = selenium.find_element_by_xpath("//a[@href='{}/users/{}']".format(selenium_app, user.id))
         elem.click()
@@ -180,11 +173,8 @@ class TestUser():
     # in order to make this work, had to install selenium gecko driver
     @skip_if_travis
     @pytest.mark.usefixtures("selenium", "selenium_app")
-    def test_delete_selenium(self, dbsession, selenium, selenium_app):
-        from c2cgeoportal_commons.models.static import User
-        user_id = dbsession.query(User). \
-            filter(User.username == 'babar_13'). \
-            one().id
+    def test_delete_selenium(self, selenium, selenium_app, users_test_data):
+        user = users_test_data['users'][13]
         selenium.get(selenium_app + '/users/')
 
         elem = selenium.find_element_by_xpath("//a[contains(@href,'language=en')]")
@@ -201,7 +191,7 @@ class TestUser():
         elem = selenium.find_element_by_xpath("//a[contains(.,'50')]")
         elem.click()
         elem = selenium.find_element_by_xpath("//a[@data-url='{}/users/{}']"
-                                              .format(selenium_app, user_id))
+                                              .format(selenium_app, user.id))
         elem.click()
         selenium.switch_to_alert().accept()
         selenium.switch_to_default_content()
@@ -214,4 +204,4 @@ class TestUser():
         elem.click()
         with pytest.raises(NoSuchElementException):
             selenium.find_element_by_xpath("//a[@data-url='{}/users/{}')]"
-                                           .format(selenium_app, user_id))
+                                           .format(selenium_app, user.id))
