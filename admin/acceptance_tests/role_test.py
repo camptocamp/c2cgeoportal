@@ -143,18 +143,18 @@ class TestRole():
         assert info.status_int == 500, '500 status when db error'
 
     def test_view_index_rendering_in_app(self, dbsession, test_app):
-        expected = [('_id_', ''),
+        expected = [('_id_', '', 'false'),
                     ('name', 'Name'),
                     ('description', 'Description'),
-                    ('functionalities', 'Functionalities'),
-                    ('restrictionareas', 'Restriction areas')]
+                    ('functionalities', 'Functionalities', 'false'),
+                    ('restrictionareas', 'Restriction areas', 'false')]
         check_grid_headers(test_app, '/roles/', expected)
 
     @pytest.mark.skip(reason="Translation is not finished")
     def test_view_index_rendering_in_app_fr(self, dbsession, test_app):
-        expected = [('_id_', ''),
+        expected = [('_id_', '', 'false'),
                     ('name', 'name'),
                     ('description', 'Description'),
-                    ('functionalities', 'Functionalités'),
-                    ('restrictionareas', 'Zones autorisées')]
+                    ('functionalities', 'Functionalités', 'false'),
+                    ('restrictionareas', 'Zones autorisées', 'false')]
         check_grid_headers(test_app, '/roles/', expected, language='en')
