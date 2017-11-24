@@ -609,7 +609,7 @@ class LayerWMS(DimensionLayer):
         'colanderalchemy': {
             'widget': HiddenWidget()
         }})
-    ogc_server_id = Column(Integer, ForeignKey(_schema + '.ogc_server.id'), nullable=False, info={
+    ogc_server_id = Column(Integer, ForeignKey(_schema + ".ogc_server.id"), nullable=False, info={
         'colanderalchemy': {
             'title': _('OGC server'),
             'widget': deform_ext.RelationSelect2Widget(
@@ -635,7 +635,7 @@ class LayerWMS(DimensionLayer):
                 'widget': SelectWidget(values=(
                     ('disabled', _('Disabled')),
                     ('value', _('Value')),
-                    ('range', _('Range')),
+                    ('range', _('Range'))
                 ))
             }}
     )
@@ -646,7 +646,7 @@ class LayerWMS(DimensionLayer):
                 'title': _('Time widget'),
                 'widget': SelectWidget(values=(
                     ('slider', _('Slider')),
-                    ('datepicker', _('Datepicker')),
+                    ('datepicker', _('Datepicker'))
                 ))
             }}
     )

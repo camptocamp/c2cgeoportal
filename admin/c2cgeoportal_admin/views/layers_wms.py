@@ -64,26 +64,21 @@ class LayerWmsViews(AbstractViews):
         _list_field('ogc_server', renderer=lambda layer_wms: layer_wms.ogc_server.name),
         _list_field(
             'interfaces',
-            sortable=False,
             renderer=lambda layer_wms: ', '.join([i.name or '' for i in layer_wms.interfaces])),
         _list_field(
             'dimensions',
-            sortable=False,
             renderer=lambda layer_wms: '; '.join(
                 ['{}: {}'.format(group[0], ', '.join([d.value for d in group[1]]))
                  for group in groupby(layer_wms.dimensions, lambda d: d.name)])),
         _list_field(
             'parents_relation',
-            sortable=False,
             renderer=lambda layer_wms:', '.join([p.treegroup.name or ''
                                                  for p in layer_wms.parents_relation])),
         _list_field(
             'restrictionareas',
-            sortable=False,
             renderer=lambda layer_wms: ', '.join([r.name or '' for r in layer_wms.restrictionareas])),
         _list_field(
             'metadatas',
-            sortable=False,
             renderer=lambda layer_wms: ', '.join(['{}: {}'.format(m.name, m.value) or ''
                                                   for m in layer_wms.metadatas]))]
     _id_field = 'id'
