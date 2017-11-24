@@ -41,7 +41,7 @@ from sqlalchemy.schema import Index
 from sqlalchemy.orm import relationship, backref
 from geoalchemy2 import Geometry
 from geoalchemy2.shape import to_shape
-from deform.widget import HiddenWidget
+from deform.widget import HiddenWidget, SelectWidget
 from c2cgeoform.ext import colander_ext, deform_ext
 from deform.widget import CheckboxWidget
 
@@ -239,7 +239,10 @@ class TreeItem(Base):
         {'schema': _schema},
     )  # type: Union[Tuple, Dict[str, Any]]
     __acl__ = [DENY_ALL]
-    item_type = Column('type', String(10), nullable=False)
+    item_type = Column('type', String(10), nullable=False, info={
+        'colanderalchemy': {
+            'exclude': True
+        }})
     __mapper_args__ = {'polymorphic_on': item_type}
 
     id = Column(Integer, primary_key=True)
@@ -602,8 +605,20 @@ class LayerWMS(DimensionLayer):
     }
     __mapper_args__ = {'polymorphic_identity': 'l_wms'}
 
-    id = Column(Integer, ForeignKey(_schema + '.layer.id'), primary_key=True)
-    ogc_server_id = Column(Integer, ForeignKey(_schema + '.ogc_server.id'), nullable=False)
+    id = Column(Integer, ForeignKey(_schema + '.layer.id', ondelete='CASCADE'), primary_key=True, info={
+        'colanderalchemy': {
+            'widget': HiddenWidget()
+        }})
+    ogc_server_id = Column(Integer, ForeignKey(_schema + '.ogc_server.id'), nullable=False, info={
+        'colanderalchemy': {
+            'title': _('OGC server'),
+            'widget': deform_ext.RelationSelect2Widget(
+                OGCServer,
+                'id',
+                'name',
+                order_by='name',
+                default_value=('', _('- Select -')))
+        }})
     layer = Column(Unicode, info={
         'colanderalchemy': {
             'title': _('WMS layer name')
@@ -616,14 +631,23 @@ class LayerWMS(DimensionLayer):
         'disabled', 'value', 'range',
         native_enum=False), default='disabled', nullable=False, info={
             'colanderalchemy': {
-                'title': _('Time mode')
+                'title': _('Time mode'),
+                'widget': SelectWidget(values=(
+                    ('disabled', _('Disabled')),
+                    ('value', _('Value')),
+                    ('range', _('Range')),
+                ))
             }}
     )
     time_widget = Column(Enum(
         'slider', 'datepicker',
         native_enum=False), default='slider', nullable=False, info={
             'colanderalchemy': {
-                'title': _('Time widget')
+                'title': _('Time widget'),
+                'widget': SelectWidget(values=(
+                    ('slider', _('Slider')),
+                    ('datepicker', _('Datepicker')),
+                ))
             }}
     )
 
