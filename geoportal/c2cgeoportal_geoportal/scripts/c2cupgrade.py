@@ -279,9 +279,9 @@ class C2cUpgradeTool:
 
         branch = check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode("utf-8").strip()
         # remove all no more existing branches
-        check_call(["git", "fetch", "origin", "--prune"])
+        check_call(["git", "fetch", self.options.git_remote, "--prune"])
         branches = check_output(["git", "branch", "--all"]).decode("utf-8").split("\n")
-        if "  remotes/origin/{0!s}".format(branch) in branches:
+        if "  remotes/{}/{}".format(self.options.git_remote, branch) in branches:
             try:
                 check_call(["git", "pull", "--rebase", self.options.git_remote, branch])
             except subprocess.CalledProcessError:
