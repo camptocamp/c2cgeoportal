@@ -34,7 +34,7 @@ def users_test_data(dbsession):
 
 @pytest.mark.usefixtures("users_test_data", "transact", "test_app")
 class TestUser():
-    def test_view_edit(self, dbsession, test_app, users_test_data):
+    def test_view_edit(self, test_app, users_test_data):
         user = users_test_data['users'][9]
 
         resp = test_app.get('/users/{}'.format(user.id), status=200)
@@ -173,7 +173,7 @@ class TestUser():
     # in order to make this work, had to install selenium gecko driver
     @skip_if_travis
     @pytest.mark.usefixtures("selenium", "selenium_app")
-    def test_delete_selenium(self, dbsession, selenium, selenium_app, users_test_data):
+    def test_delete_selenium(self, selenium, selenium_app, users_test_data):
         user = users_test_data['users'][13]
         selenium.get(selenium_app + '/users/')
 
