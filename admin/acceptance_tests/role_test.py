@@ -79,7 +79,7 @@ class TestRole():
 
         functionalities_labels = form_group.select(".checkbox label")
         for i, functionality in enumerate(sum([roles_test_data['functionalities'][name]
-                                        for name in ("default_basemap", "location")], [])):
+                                               for name in ("default_basemap", "location")], [])):
             label = functionalities_labels[i]
             checkbox = label.select_one("input")
 
