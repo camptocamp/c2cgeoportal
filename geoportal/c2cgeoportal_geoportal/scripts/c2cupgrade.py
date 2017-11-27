@@ -235,7 +235,7 @@ class C2cUpgradeTool:
             if resp.status < 200 or resp.status >= 300:
                 return False, "\n".join([
                     "Checker error:",
-                    "Open `http://{}{}{}` for more informations."
+                    "Open `http://{}{}{}` for more information."
                 ]).format(
                     self.project["host"], self.project["checker_path"], check_type
                 )

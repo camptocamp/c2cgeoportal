@@ -198,7 +198,9 @@ quote:
 
 .PHONY: spell
 spell:
-	@codespell geoportal/setup.py $(shell find geoportal/c2cgeoportal_geoportal -name static -prune -or -name '*.py' -print)
+	@codespell --ignore-words=spell-ignore-words.txt \
+		geoportal/setup.py \
+		$(shell find geoportal/c2cgeoportal_geoportal -name static -prune -or -name '*.py' -print)
 
 YAML_FILES ?= $(shell find -name ngeo -prune -or \( -name "*.yml" -or -name "*.yaml" \) -print)
 .PHONY: yamllint
