@@ -55,6 +55,8 @@ Open http://localhost:6543/users/
 
 ### Install the selenium gecko driver
 
+https://github.com/mozilla/geckodriver/releases
+
 ### Create the test database
 ```
 sudo -u postgres psql -c "CREATE USER \"www-data\" WITH PASSWORD 'www-data';"
