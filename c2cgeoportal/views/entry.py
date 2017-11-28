@@ -657,7 +657,6 @@ class Entry(object):
             "success": True
         }
 
-    @cache_region.cache_on_arguments()
     def _get_children(self, theme, layers, wms, wms_layers, version, catalogue, min_levels):
         children = []
         errors = set()
