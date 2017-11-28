@@ -43,7 +43,7 @@ def main():
     parser = ArgumentParser(
         prog=sys.argv[0], add_help=True,
         description="Tool to fill the tsearch table (Full-Text Search) "
-        "from the theme informations.",
+        "from the theme information.",
     )
 
     parser.add_argument(
