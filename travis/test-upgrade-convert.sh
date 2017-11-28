@@ -15,6 +15,8 @@ function create {
     pcreate $1 tilecloud_chain
     cd $1/testgeomapfish
     git init
+    git config user.email travis@camptocamp.com
+    git config user.name CI
     git remote add origin . # add a fake remote
     git add --all
     git commit --quiet --message="Initial commit"
@@ -42,6 +44,8 @@ function createv220 {
     pcreate $1 tilecloud_chain
     cd $1/testgeomapfish
     git init
+    git config user.email travis@camptocamp.com
+    git config user.name CI
     git remote add origin . # add a fake remote
     git add --all
     git commit --quiet --message="Initial commit"

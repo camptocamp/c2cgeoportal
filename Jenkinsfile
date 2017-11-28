@@ -84,8 +84,6 @@ timeout(time: 2, unit: 'HOURS') {
             }
             stage('Test Docker app') {
                 checkout scm
-                sh 'git config --global user.email travis@camptocamp.com'
-                sh 'git config --global user.name Travis'
                 sh 'rm -rf ${HOME}/workspace/testgeomapfish'
                 sh 'docker build --tag=camptocamp/testgeomapfish-external-db:latest docker/test-external-db'
                 sh 'travis/create-new-project.sh ${HOME}/workspace'
