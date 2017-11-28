@@ -2,6 +2,10 @@
 *.pyc
 *.pyo
 **/__pycache__/
+/commons/Dockerfile
+/commons/c2cgeoportal_commons.egg-info/
+/geoportal/Dockerfile
+/geoportal/package.json
 /geoportal/npm-packages
 /geoportal/tests/functional/test.ini
 /geoportal/tests/functional/alembic.ini
@@ -21,10 +25,10 @@
 /geoportal/c2cgeoportal_geoportal.egg-info/
 /admin/c2cgeoportal_admin/locale/
 /admin/c2cgeoportal_admin.egg-info/
-/commons/c2cgeoportal_commons.egg-info/
 /docker/test-mapserver/mapserver.map
 /doc/index.rst
 /dist/
+/docker-compose.yaml
 /coverage.xml
 /gatling/.classpath
 /gatling/.project
@@ -32,3 +36,4 @@
 /ngeo/
 /.tx/config
 /.coverage
+/.mypy_cache/

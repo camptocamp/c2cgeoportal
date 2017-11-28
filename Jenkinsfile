@@ -42,6 +42,7 @@ timeout(time: 2, unit: 'HOURS') {
                 sh './docker-run make clean-all'
                 sh './docker-run travis/empty-make.sh help'
                 sh './docker-run make build'
+                sh './docker-run travis/status.sh'
             }
             stage('Build CI Docker images') {
                 checkout scm
@@ -60,6 +61,7 @@ timeout(time: 2, unit: 'HOURS') {
                 sh './docker-run make git-attributes'
                 sh './docker-run make quote'
                 sh './docker-run make spell'
+                sh './docker-run travis/status.sh'
                 sh './docker-run travis/test-eof-newline'
                 sh './docker-run travis/empty-make.sh build'
                 // Test return code
