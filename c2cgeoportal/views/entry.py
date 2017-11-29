@@ -798,7 +798,7 @@ class Entry:
                 if type(group) == Theme or catalogue or \
                         group.is_internal_wms == tree_item.is_internal_wms:
                     gp, gp_errors = self._group(
-                        "{0!s}/{1!s}".format(path, tree_item.name),
+                        u"{0!s}/{1!s}".format(path, tree_item.name),
                         tree_item, layers, depth=depth, min_levels=min_levels,
                         catalogue=catalogue, role_id=role_id, version=version, mixed=mixed,
                         time=time, dim=dim, wms_layers=wms_layers, layers_name=layers_name, **kwargs
