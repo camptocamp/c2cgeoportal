@@ -63,23 +63,20 @@ from c2cgeoportal_geoportal.lib.print_ import *  # noqa
 
 
 class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
-    """GeoMapfish angular extractor"""
+    """
+    GeoMapfish angular extractor
+    """
 
     extensions = [".js", ".html"]
 
     def __init__(self):
-        super(GeoMapfishAngularExtractor, self).__init__()
-        self.tpl = None
-        self.env = None
-        self.package = None
-        self.config = None
-        self.settings = None
+        super().__init__()
+        self.config = get_config("geoportal/config.yaml") if os.path.exists("geoportal/config.yaml") else None
 
     def __call__(self, filename, options):
-        config = get_config("config.yaml")
 
         class Registry:
-            settings = config
+            settings = self.config
 
         class Request:
             registry = Registry()
@@ -106,7 +103,7 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
         init_region({"backend": "dogpile.cache.memory"})
 
         int_filename = filename
-        if re.match("^" + re.escape("./{}/templates".format(config["package"])), filename):
+        if re.match("^" + re.escape("./{}/templates".format(self.config["package"])), filename):
             try:
                 empty_template = Template("")
 
@@ -180,7 +177,9 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
 
 
 class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
-    "GeoMapfish config extractor (raster layers, and print templates)"
+    """
+    GeoMapfish config extractor (raster layers, and print templates)
+    """
 
     extensions = [".yaml"]
 
@@ -189,35 +188,44 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
             config = yaml.load(config_file)
             # for application config (config.yaml)
             if "vars" in config:
-                return self._collect_app_config(config, filename)
+                return self._collect_app_config(filename)
             # for the print config
             elif "templates" in config:
                 return self._collect_print_config(config, filename)
             else:
                 raise Exception("Not a known config file")
 
-    @classmethod
-    def _collect_app_config(cls, config, filename):
+    def _collect_app_config(self, filename):
+        settings = get_config(filename)
         # Collect raster layers names
         raster = [
             Message(
                 None, raster_layer, None, [], "", "",
                 (filename, "raster/{}".format(raster_layer))
             )
-            for raster_layer in list(config["vars"].get("raster", {}).keys())
+            for raster_layer in list(settings.get("raster", {}).keys())
         ]
+
         # Collect layers enum values (for filters)
-        settings = get_config("config.yaml")
+
+        class R:
+            settings = None
+
+        class C:
+            registry = R()
+
+        config = C()
+        config.registry.settings = settings
         from c2cgeoportal_commons import models
-        models.init_dbsessions(settings)
+        models.init_dbsessions(settings, config)
         from c2cgeoportal_geoportal.views.layers import Layers
         enums = []
-        enum_layers = config["vars"].get("layers", {}).get("enum", {})
+        enum_layers = settings.get("layers", {}).get("enum", {})
         for layername in list(enum_layers.keys()):
             layerinfos = enum_layers.get(layername, {})
             attributes = layerinfos.get("attributes", {})
             for fieldname in list(attributes.keys()):
-                values = cls._enumerate_attributes_values(models.DBSessions, Layers, layerinfos, fieldname)
+                values = self._enumerate_attributes_values(models.DBSessions, Layers, layerinfos, fieldname)
                 for value, in values:
                     if value != "":
                         msgid = value if isinstance(value, str) else value
@@ -229,8 +237,8 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
 
         return raster + enums
 
-    @classmethod
-    def _enumerate_attributes_values(cls, dbsessions, layers, layerinfos, fieldname):
+    @staticmethod
+    def _enumerate_attributes_values(dbsessions, layers, layerinfos, fieldname):
         dbname = layerinfos.get("dbsession", "dbsession")
         try:
             dbsession = dbsessions.get(dbname)
@@ -247,8 +255,8 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
             else:
                 raise
 
-    @classmethod
-    def _collect_print_config(cls, config, filename):
+    @staticmethod
+    def _collect_print_config(config, filename):
         result = []
         for template_ in list(config.get("templates").keys()):
             result.append(Message(
@@ -266,21 +274,29 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
 
 
 class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
-    "GeoMapfish theme extractor"
+    """
+    GeoMapfish theme extractor
+    """
 
     # Run on the development.ini file
     extensions = [".ini"]
     featuretype_cache = {}  # type: Dict[str, Dict]
     wmscap_cache = {}  # type: Dict[str, WebMapService]
 
+    def __init__(self):
+        super().__init__()
+        self.config = get_config("geoportal/config.yaml") if os.path.exists("geoportal/config.yaml") else None
+        if os.path.exists("project.yaml"):
+            with open("project.yaml") as f:
+                self.package = yaml.safe_load(f)
+        else:
+            self.package = None
+
     def __call__(self, filename, options):
         messages = []
 
         try:
             self.env = bootstrap(filename)
-            with open("project.yaml") as f:
-                self.package = yaml.safe_load(f)
-            self.config = get_config("config.yaml")
 
             try:
                 from c2cgeoportal_commons.models import DBSession

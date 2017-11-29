@@ -476,7 +476,8 @@ geoportal/$(PACKAGE)_geoportal/locale/$(PACKAGE)-$(L10N_SERVER_POSTFIX).pot: \
 	[ ! -f $@ ] || chmod go+r $@
 
 .PRECIOUS: geoportal/$(PACKAGE)_geoportal/locale/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).pot
-geoportal/$(PACKAGE)_geoportal/locale/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).pot: lingua-client.cfg $(I18N_DEPENDENCIES) $(I18N_SOURCE_FILES)
+geoportal/$(PACKAGE)_geoportal/locale/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).pot: \
+		lingua-client.cfg $(I18N_DEPENDENCIES) $(I18N_SOURCE_FILES)
 	$(PRERULE_CMD)
 	rm -f $@ # Because of WindowsError, thus only problematic on Windows
 	pot-create --config $< --output $@ $(I18N_SOURCE_FILES)
