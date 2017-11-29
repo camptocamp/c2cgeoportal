@@ -36,42 +36,8 @@ install:
 jobs:
   include:
 
-    - stage: Prepare, first tests
-      env: [JOB=test-commons]
-      install:
-        - sudo apt-get update
-        - sudo apt-get autoremove postgis*
-        - sudo apt-get autoremove postgresql*
-        - sudo apt-get install postgresql-9.3-postgis-2.1
-      before_script:
-        - psql -c "CREATE USER \"www-data\" WITH PASSWORD 'www-data';" -U postgres
-        - psql -c "CREATE DATABASE c2cgeoportal_tests WITH OWNER \"www-data\";" -U postgres
-        - psql -d c2cgeoportal_tests -c "CREATE EXTENSION postgis;" -U postgres
-      script:
-        - cd commons
-        - make check test
-
-    - env: [JOB=test-admin]
-      install:
-        - sudo apt-get update
-        - sudo apt-get autoremove postgis*
-        - sudo apt-get autoremove postgresql*
-        - sudo apt-get install postgresql-9.3-postgis-2.1
-        - rm -rf ~/.nvm
-        - git clone https://github.com/creationix/nvm.git ~/.nvm
-        - (cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`)
-        - source ~/.nvm/nvm.sh
-        - nvm install 6
-        - npm -version
-      before_script:
-        - psql -c "CREATE USER \"www-data\" WITH PASSWORD 'www-data';" -U postgres
-        - psql -c "CREATE DATABASE c2cgeoportal_tests WITH OWNER \"www-data\";" -U postgres
-        - psql -d c2cgeoportal_tests -c "CREATE EXTENSION postgis;" -U postgres
-      script:
-        - cd admin
-        - make check test
-
-    - env: [JOB=build-docker-images]
+    - stage: Build Docker images
+      env: [JOB=build-docker-images]
       install:
         - docker --version
         - docker-compose --version
@@ -82,7 +48,7 @@ jobs:
         - python3 -m compileall admin/c2cgeoportal_admin
         - docker build --tag camptocamp/geomapfish-build-dev:${MAJOR_VERSION} docker/build
         - docker tag camptocamp/geomapfish-build-dev:${MAJOR_VERSION} camptocamp/geomapfish-build-dev-travis:${TRAVIS_BUILD_NUMBER}
-        - ./docker-run travis/empty-make.sh help
+        - ./docker-run travis/empty-make help
         - ./docker-run make build
         - "docker build --build-arg=GIT_TAG=${TRAVIS_TAG} --build-arg=MAJOR_VERSION=${MAJOR_VERSION} \
             --tag camptocamp/geomapfish-commons:${MAJOR_VERSION} commons"
@@ -93,6 +59,34 @@ jobs:
         - docker push camptocamp/geomapfish-build-dev-travis:${TRAVIS_BUILD_NUMBER}
         - docker push camptocamp/geomapfish-commons-travis:${TRAVIS_BUILD_NUMBER}
         - docker push camptocamp/geomapfish-build-travis:${TRAVIS_BUILD_NUMBER}
+
+    - stage: Tests
+      env: [JOB=test-commons]
+      before_script:
+        - docker build --tag=camptocamp/c2cgeoportal-gis-db docker/gis-db
+        - "docker run --env=POSTGRES_USER=www-data --env=POSTGRES_PASSWORD=www-data --env=POSTGRES_DB=geomapfish_tests \
+            --publish=5432:5432 --detach camptocamp/c2cgeoportal-gis-db"
+      script:
+        - ./docker-run make --makefile=local.mk commons/tests.yaml
+        - cd commons
+        - make check test
+
+    - stage: Tests
+      env: [JOB=test-admin]
+      before_script:
+        - docker build --tag=camptocamp/c2cgeoportal-gis-db docker/gis-db
+        - "docker run --env=POSTGRES_USER=www-data --env=POSTGRES_PASSWORD=www-data --env=POSTGRES_DB=geomapfish_tests \
+            --publish=5432:5432 --detach camptocamp/c2cgeoportal-gis-db"
+        - rm -rf ~/.nvm
+        - git clone https://github.com/creationix/nvm.git ~/.nvm
+        - (cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`)
+        - source ~/.nvm/nvm.sh
+        - nvm install 6
+        - npm -version
+      script:
+        - ./docker-run make --makefile=local.mk admin/tests.ini
+        - cd admin
+        - make check test
 
     - env: [JOB=lint]
       if: NOT repo = camptocamp/c2cgeoportal
@@ -106,7 +100,7 @@ jobs:
         - ./docker-run make quote
         - ./docker-run make spell
         - ./docker-run travis/test-eof-newline
-        - ./docker-run travis/empty-make.sh build
+        - ./docker-run travis/empty-make build
         # Test return code
         - ./docker-run true
         - |
@@ -143,13 +137,13 @@ jobs:
       before_script:
         - docker build --tag=external-db docker/test-external-db
         - travis/create-new-project.sh
-        - travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-run travis/empty-make.sh -f travis.mk help
+        - travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-run travis/empty-make -f travis.mk help
         - travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-run make --makefile=travis.mk build
         - travis/run-on.sh /tmp/travis/testgeomapfish/ docker-compose up -d
         - travis/waitwsgi http://localhost:8080/
       script:
         # Test new Docker project
-        - travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-run travis/empty-make.sh -f travis.mk build
+        - travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-run travis/empty-make -f travis.mk build
         - travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-run make --makefile=travis.mk checks
         - find
           /tmp/travis/testgeomapfish/geoportal/setup.py
@@ -205,12 +199,12 @@ jobs:
         - docker run --publish=5433:5432 --detach external-db ## FOR NON DOCKER TEST
         - mkdir /tmp/travis
         - travis/create-new-nondocker-project.sh
-        - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run travis/empty-make.sh -f travis.mk help
+        - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run travis/empty-make -f travis.mk help
         - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run make --makefile=travis.mk build
         - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ make --makefile=travis-nondocker.mk build
       script:
         # Test new non Docker project
-        - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run travis/empty-make.sh -f travis.mk build
+        - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run travis/empty-make -f travis.mk build
         - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run make --makefile=travis.mk checks
         - find
             /tmp/travis/testgeomapfish/geoportal/setup.py

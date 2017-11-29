@@ -5,7 +5,7 @@ boto==2.48.0  # Tile generation
 bottle==0.12.13  # i18n
 c2c.cssmin==0.7.dev6  # CGXP build
 c2c.template==1.5.1  # geoportal
-https://github.com/camptocamp/c2cgeoform/archive/8c27bbc669b4edf2a852e24254cf6baeb62088f6.zip#egg=c2cgeoform  # commons
+c2cgeoform==2.0.dev20171120  # commons
 codespell==1.11.0  # Lint
 ColanderAlchemy==0.3.3  # commons
 dateutils==0.6.6  # geoportal-pcreate
@@ -44,6 +44,7 @@ pyramid-debugtoolbar==4.3  # geoportal
 pyramid-mako==1.0.2  # geoportal
 pyramid-multiauth==0.9.0  # geoportal
 pytest-cov==2.5.1  # tests
+pytest-selenium==1.11.2  # admin tests
 python-dateutil==2.6.1  # geoportal
 PyYAML==3.12  # geoportal
 rasterio==1.0a11  # geoportal-raster
@@ -54,6 +55,7 @@ tilecloud==0.5.0.dev6  # Tile generation
 tilecloud-chain==1.4.0.dev10  # Tile generation
 transifex-client==0.12.5  # Makefile
 virtualenv==15.1.0  # Makefile
-waitress==1.1.0  # For pcreate
+waitress==1.1.0  # pcreate
+WebTest==2.0.29  # admin tests
 yamllint==1.10.0  # lint
 zgitignore==0.8.0  # Makefile

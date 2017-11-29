@@ -55,27 +55,27 @@ except ImportError:  # pragma: no cover
 
 try:
     from pyramid.i18n import TranslationStringFactory
-    _ = TranslationStringFactory("c2cgeoportal")
+    _ = TranslationStringFactory('c2cgeoportal')
 except ImportError:
     def _(s: str) -> str:
         return s
 
 
 LOG = logging.getLogger(__name__)
-AUTHORIZED_ROLE = "role_admin"
+AUTHORIZED_ROLE = 'role_admin'
 
 if schema is not None:
     _schema = schema
 else:  # pragma: no cover
     raise Exception(
-        "schema not specified, you need to add it to your config"
+        'schema not specified, you need to add it to your config'
     )
 
 if srid is not None:
     _srid = srid
 else:  # pragma: no cover
     raise Exception(
-        "srid not specified, you need to add it to your config"
+        'srid not specified, you need to add it to your config'
     )
 
 
@@ -91,36 +91,36 @@ class TsVector(UserDefinedType):
     """ A custom type for PostgreSQL's tsvector type. """
 
     def get_col_spec(self) -> str:  # pragma: no cover
-        return "TSVECTOR"
+        return 'TSVECTOR'
 
 
 class FullTextSearch(GeoInterface, Base):
-    __tablename__ = "tsearch"
+    __tablename__ = 'tsearch'
     __table_args__ = (
-        Index("tsearch_ts_idx", "ts", postgresql_using="gin"),
-        {"schema": _schema}
+        Index('tsearch_ts_idx', 'ts', postgresql_using='gin'),
+        {'schema': _schema}
     )
     __acl__ = [DENY_ALL]
 
     id = Column(Integer, primary_key=True)
     label = Column(Unicode)
     layer_name = Column(Unicode)  # Deprecated in v2
-    role_id = Column(Integer, ForeignKey(_schema + ".role.id"), nullable=True)
-    role = relationship("Role")
-    interface_id = Column(Integer, ForeignKey(_schema + ".interface.id"), nullable=True)
-    interface = relationship("Interface")
+    role_id = Column(Integer, ForeignKey(_schema + '.role.id'), nullable=True)
+    role = relationship('Role')
+    interface_id = Column(Integer, ForeignKey(_schema + '.interface.id'), nullable=True)
+    interface = relationship('Interface')
     lang = Column(String(2), nullable=True)
-    public = Column(Boolean, server_default="true")
+    public = Column(Boolean, server_default='true')
     ts = Column(TsVector)
-    the_geom = Column(Geometry("GEOMETRY", srid=_srid))
+    the_geom = Column(Geometry('GEOMETRY', srid=_srid))
     params = Column(JSONEncodedDict, nullable=True)
     actions = Column(JSONEncodedDict, nullable=True)
-    from_theme = Column(Boolean, server_default="false")
+    from_theme = Column(Boolean, server_default='false')
 
 
 class Functionality(Base):
-    __tablename__ = "functionality"
-    __table_args__ = {"schema": _schema}
+    __tablename__ = 'functionality'
+    __table_args__ = {'schema': _schema}
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
@@ -130,39 +130,39 @@ class Functionality(Base):
     value = Column(Unicode, nullable=False)
     description = Column(Unicode)
 
-    def __init__(self, name: str="", value: str="", description: str="") -> None:
+    def __init__(self, name: str='', value: str='', description: str='') -> None:
         self.name = name
         self.value = value
         self.description = description
 
     def __unicode__(self) -> str:
-        return "{0!s} - {1!s}".format(self.name or "", self.value or "")  # pragma: no cover
+        return '{0!s} - {1!s}'.format(self.name or '', self.value or '')  # pragma: no cover
 
 
-event.listen(Functionality, "after_update", cache_invalidate_cb)
-event.listen(Functionality, "after_delete", cache_invalidate_cb)
+event.listen(Functionality, 'after_update', cache_invalidate_cb)
+event.listen(Functionality, 'after_delete', cache_invalidate_cb)
 
 
 # association table role <> functionality
 role_functionality = Table(
-    "role_functionality", Base.metadata,
-    Column("role_id", Integer, ForeignKey(_schema + ".role.id"), primary_key=True),
-    Column("functionality_id", Integer, ForeignKey(_schema + ".functionality.id"), primary_key=True),
+    'role_functionality', Base.metadata,
+    Column('role_id', Integer, ForeignKey(_schema + '.role.id'), primary_key=True),
+    Column('functionality_id', Integer, ForeignKey(_schema + '.functionality.id'), primary_key=True),
     schema=_schema
 )
 
 # association table theme <> functionality
 theme_functionality = Table(
-    "theme_functionality", Base.metadata,
-    Column("theme_id", Integer, ForeignKey(_schema + ".theme.id"), primary_key=True),
-    Column("functionality_id", Integer, ForeignKey(_schema + ".functionality.id"), primary_key=True),
+    'theme_functionality', Base.metadata,
+    Column('theme_id', Integer, ForeignKey(_schema + '.theme.id'), primary_key=True),
+    Column('functionality_id', Integer, ForeignKey(_schema + '.functionality.id'), primary_key=True),
     schema=_schema
 )
 
 
 class Role(Base):
-    __tablename__ = "role"
-    __table_args__ = {"schema": _schema}
+    __tablename__ = 'role'
+    __table_args__ = {'schema': _schema}
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
@@ -186,7 +186,7 @@ class Role(Base):
             'title': _('Description')
         }
     })
-    extent = Column(Geometry("POLYGON", srid=_srid), info={
+    extent = Column(Geometry('POLYGON', srid=_srid), info={
         'colanderalchemy': {
             'typ': colander_ext.Geometry('POLYGON', srid=3857, map_srid=3857),
             'widget': deform_ext.MapWidget()
@@ -195,8 +195,8 @@ class Role(Base):
 
     # functionality
     functionalities = relationship(
-        "Functionality", secondary=role_functionality,
-        cascade="save-update,merge,refresh-expire",
+        'Functionality', secondary=role_functionality,
+        cascade='save-update,merge,refresh-expire',
         info={
             'colanderalchemy': {
                 'exclude': True,
@@ -206,7 +206,7 @@ class Role(Base):
     )
 
     def __init__(
-        self, name: str="", description: str="",
+        self, name: str='', description: str='',
         functionalities: List[Functionality]=None, extent: Geometry=None
     ) -> None:
         if functionalities is None:
@@ -217,7 +217,7 @@ class Role(Base):
         self.description = description
 
     def __unicode__(self) -> str:
-        return self.name or ""  # pragma: no cover
+        return self.name or ''  # pragma: no cover
 
     @property
     def bounds(self) -> None:
@@ -226,33 +226,33 @@ class Role(Base):
         return to_shape(self.extent).bounds
 
 
-event.listen(Role.functionalities, "set", cache_invalidate_cb)
-event.listen(Role.functionalities, "append", cache_invalidate_cb)
-event.listen(Role.functionalities, "remove", cache_invalidate_cb)
+event.listen(Role.functionalities, 'set', cache_invalidate_cb)
+event.listen(Role.functionalities, 'append', cache_invalidate_cb)
+event.listen(Role.functionalities, 'remove', cache_invalidate_cb)
 
 
 class TreeItem(Base):
-    __tablename__ = "treeitem"
+    __tablename__ = 'treeitem'
     __table_args__ = (
-        UniqueConstraint("type", "name"),
-        {"schema": _schema},
+        UniqueConstraint('type', 'name'),
+        {'schema': _schema},
     )  # type: Union[Tuple, Dict[str, Any]]
     __acl__ = [DENY_ALL]
-    item_type = Column("type", String(10), nullable=False)
-    __mapper_args__ = {"polymorphic_on": item_type}
+    item_type = Column('type', String(10), nullable=False)
+    __mapper_args__ = {'polymorphic_on': item_type}
 
     id = Column(Integer, primary_key=True)
     name = Column(Unicode, nullable=False, info={
-        "colanderalchemy": {
-            "title": _("Name")
+        'colanderalchemy': {
+            'title': _('Name')
         }})
     metadata_url = Column(Unicode, info={
-        "colanderalchemy": {
-            "title": _("Metadata URL")
+        'colanderalchemy': {
+            'title': _('Metadata URL')
         }})  # should not be used in V2
     description = Column(Unicode, info={
-        "colanderalchemy": {
-            "title": _("Description")
+        'colanderalchemy': {
+            'title': _('Description')
         }})
 
     @property
@@ -261,7 +261,7 @@ class TreeItem(Base):
         return [c.group for c in self.parents_relation]
 
     def is_in_interface(self, name: str) -> bool:
-        if not hasattr(self, "interfaces"):  # pragma: no cover
+        if not hasattr(self, 'interfaces'):  # pragma: no cover
             return False
 
         for interface in self.interfaces:
@@ -273,19 +273,19 @@ class TreeItem(Base):
     def get_metadatas(self, name: str) -> List['Metadata']:  # pragma: no cover
         return [metadata for metadata in self.metadatas if metadata.name == name]
 
-    def __init__(self, name: str="") -> None:
+    def __init__(self, name: str='') -> None:
         self.name = name
 
 
-event.listen(TreeItem, "after_insert", cache_invalidate_cb, propagate=True)
-event.listen(TreeItem, "after_update", cache_invalidate_cb, propagate=True)
-event.listen(TreeItem, "after_delete", cache_invalidate_cb, propagate=True)
+event.listen(TreeItem, 'after_insert', cache_invalidate_cb, propagate=True)
+event.listen(TreeItem, 'after_update', cache_invalidate_cb, propagate=True)
+event.listen(TreeItem, 'after_delete', cache_invalidate_cb, propagate=True)
 
 
 # association table TreeGroup <> TreeItem
 class LayergroupTreeitem(Base):
-    __tablename__ = "layergroup_treeitem"
-    __table_args__ = {"schema": _schema}
+    __tablename__ = 'layergroup_treeitem'
+    __table_args__ = {'schema': _schema}
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
@@ -293,26 +293,26 @@ class LayergroupTreeitem(Base):
     # required by formalchemy
     id = Column(Integer, primary_key=True)
     description = Column(Unicode)
-    treegroup_id = Column(Integer, ForeignKey(_schema + ".treegroup.id"))
+    treegroup_id = Column(Integer, ForeignKey(_schema + '.treegroup.id'))
     treegroup = relationship(
-        "TreeGroup",
+        'TreeGroup',
         backref=backref(
-            "children_relation",
-            order_by="LayergroupTreeitem.ordering",
-            cascade="save-update,merge,delete,delete-orphan",
+            'children_relation',
+            order_by='LayergroupTreeitem.ordering',
+            cascade='save-update,merge,delete,delete-orphan',
         ),
-        primaryjoin="LayergroupTreeitem.treegroup_id==TreeGroup.id",
+        primaryjoin='LayergroupTreeitem.treegroup_id==TreeGroup.id',
     )
-    treeitem_id = Column(Integer, ForeignKey(_schema + ".treeitem.id"))
+    treeitem_id = Column(Integer, ForeignKey(_schema + '.treeitem.id'))
     treeitem = relationship(
-        "TreeItem",
+        'TreeItem',
         backref=backref(
-            "parents_relation", cascade="save-update,merge,delete,delete-orphan", info={
-                "colanderalchemy": {
-                    "exclude": True
+            'parents_relation', cascade='save-update,merge,delete,delete-orphan', info={
+                'colanderalchemy': {
+                    'exclude': True
                 }}
         ),
-        primaryjoin="LayergroupTreeitem.treeitem_id==TreeItem.id",
+        primaryjoin='LayergroupTreeitem.treeitem_id==TreeItem.id',
     )
     ordering = Column(Integer)
 
@@ -322,20 +322,20 @@ class LayergroupTreeitem(Base):
         self.ordering = ordering
 
 
-event.listen(LayergroupTreeitem, "after_insert", cache_invalidate_cb, propagate=True)
-event.listen(LayergroupTreeitem, "after_update", cache_invalidate_cb, propagate=True)
-event.listen(LayergroupTreeitem, "after_delete", cache_invalidate_cb, propagate=True)
+event.listen(LayergroupTreeitem, 'after_insert', cache_invalidate_cb, propagate=True)
+event.listen(LayergroupTreeitem, 'after_update', cache_invalidate_cb, propagate=True)
+event.listen(LayergroupTreeitem, 'after_delete', cache_invalidate_cb, propagate=True)
 
 
 class TreeGroup(TreeItem):
-    __tablename__ = "treegroup"
-    __table_args__ = {"schema": _schema}
+    __tablename__ = 'treegroup'
+    __table_args__ = {'schema': _schema}
     __acl__ = [DENY_ALL]
     __mapper_args__ = {
-        "polymorphic_identity": "treegroup"  # needed for _identity_class
+        'polymorphic_identity': 'treegroup'  # needed for _identity_class
     }
 
-    id = Column(Integer, ForeignKey(_schema + ".treeitem.id"), primary_key=True)
+    id = Column(Integer, ForeignKey(_schema + '.treeitem.id'), primary_key=True)
 
     def _get_children(self) -> List[TreeItem]:
         return [c.treeitem for c in self.children_relation]
@@ -363,26 +363,26 @@ class TreeGroup(TreeItem):
 
     children = property(_get_children, _set_children)
 
-    def __init__(self, name: str="") -> None:
+    def __init__(self, name: str='') -> None:
         TreeItem.__init__(self, name=name)
 
 
 class LayerGroup(TreeGroup):
-    __tablename__ = "layergroup"
-    __table_args__ = {"schema": _schema}
+    __tablename__ = 'layergroup'
+    __table_args__ = {'schema': _schema}
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
-    __mapper_args__ = {"polymorphic_identity": "group"}
+    __mapper_args__ = {'polymorphic_identity': 'group'}
 
-    id = Column(Integer, ForeignKey(_schema + ".treegroup.id"), primary_key=True)
-    is_expanded = Column(Boolean)  # shouldn"t be used in V3
+    id = Column(Integer, ForeignKey(_schema + '.treegroup.id'), primary_key=True)
+    is_expanded = Column(Boolean)  # shouldn't be used in V3
     is_internal_wms = Column(Boolean)
     # children have radio button instance of check box
     is_base_layer = Column(Boolean)  # Should not be used in V3
 
     def __init__(
-        self, name: str="", is_expanded: bool=False, is_internal_wms: bool=True, is_base_layer: bool=False
+        self, name: str='', is_expanded: bool=False, is_internal_wms: bool=True, is_base_layer: bool=False
     ) -> None:
         TreeGroup.__init__(self, name=name)
         self.is_expanded = is_expanded
@@ -392,72 +392,72 @@ class LayerGroup(TreeGroup):
 
 # role theme link for restricted theme
 restricted_role_theme = Table(
-    "restricted_role_theme", Base.metadata,
-    Column("role_id", Integer, ForeignKey(_schema + ".role.id"), primary_key=True),
-    Column("theme_id", Integer, ForeignKey(_schema + ".theme.id"), primary_key=True),
+    'restricted_role_theme', Base.metadata,
+    Column('role_id', Integer, ForeignKey(_schema + '.role.id'), primary_key=True),
+    Column('theme_id', Integer, ForeignKey(_schema + '.theme.id'), primary_key=True),
     schema=_schema
 )
 
 
 class Theme(TreeGroup):
-    __tablename__ = "theme"
-    __table_args__ = {"schema": _schema}
+    __tablename__ = 'theme'
+    __table_args__ = {'schema': _schema}
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
-    __mapper_args__ = {"polymorphic_identity": "theme"}
+    __mapper_args__ = {'polymorphic_identity': 'theme'}
 
-    id = Column(Integer, ForeignKey(_schema + ".treegroup.id"), primary_key=True)
+    id = Column(Integer, ForeignKey(_schema + '.treegroup.id'), primary_key=True)
     ordering = Column(Integer, nullable=False)
     public = Column(Boolean, default=True, nullable=False)
     icon = Column(Unicode)
 
     # functionality
     functionalities = relationship(
-        "Functionality", secondary=theme_functionality,
-        cascade="save-update,merge,refresh-expire"
+        'Functionality', secondary=theme_functionality,
+        cascade='save-update,merge,refresh-expire'
     )
 
     # restricted to role
     restricted_roles = relationship(
-        "Role", secondary=restricted_role_theme,
-        cascade="save-update,merge,refresh-expire",
+        'Role', secondary=restricted_role_theme,
+        cascade='save-update,merge,refresh-expire',
     )
 
-    def __init__(self, name: str="", ordering: int=100, icon: str="") -> None:
+    def __init__(self, name: str='', ordering: int=100, icon: str='') -> None:
         TreeGroup.__init__(self, name=name)
         self.ordering = ordering
         self.icon = icon
 
 
-event.listen(Theme.functionalities, "set", cache_invalidate_cb)
-event.listen(Theme.functionalities, "append", cache_invalidate_cb)
-event.listen(Theme.functionalities, "remove", cache_invalidate_cb)
+event.listen(Theme.functionalities, 'set', cache_invalidate_cb)
+event.listen(Theme.functionalities, 'append', cache_invalidate_cb)
+event.listen(Theme.functionalities, 'remove', cache_invalidate_cb)
 
 
 class Layer(TreeItem):
-    __tablename__ = "layer"
-    __table_args__ = {"schema": _schema}
+    __tablename__ = 'layer'
+    __table_args__ = {'schema': _schema}
     __acl__ = [DENY_ALL]
     __mapper_args__ = {
-        "polymorphic_identity": "layer"  # needed for _identity_class
+        'polymorphic_identity': 'layer'  # needed for _identity_class
     }
 
-    id = Column(Integer, ForeignKey(_schema + ".treeitem.id"), primary_key=True)
+    id = Column(Integer, ForeignKey(_schema + '.treeitem.id'), primary_key=True)
     public = Column(Boolean, default=True, info={
-        "colanderalchemy": {
-            "title": _("Public")
+        'colanderalchemy': {
+            'title': _('Public')
         }})
     geo_table = Column(Unicode, info={
-        "colanderalchemy": {
-            "title": _("Geo table")
+        'colanderalchemy': {
+            'title': _('Geo table')
         }})
     exclude_properties = Column(Unicode, info={
-        "colanderalchemy": {
-            "title": _("Exclude properties")
+        'colanderalchemy': {
+            'title': _('Exclude properties')
         }})
 
-    def __init__(self, name: str="", public: bool=True) -> None:
+    def __init__(self, name: str='', public: bool=True) -> None:
         TreeItem.__init__(self, name=name)
         self.public = public
 
@@ -465,30 +465,30 @@ class Layer(TreeItem):
 class DimensionLayer(Layer):
     __acl__ = [DENY_ALL]
     __mapper_args__ = {
-        "polymorphic_identity": "dimensionlayer"  # needed for _identity_class
+        'polymorphic_identity': 'dimensionlayer'  # needed for _identity_class
     }
 
 
 class LayerV1(Layer):  # Deprecated in v2
-    __tablename__ = "layerv1"
-    __table_args__ = {"schema": _schema}
+    __tablename__ = 'layerv1'
+    __table_args__ = {'schema': _schema}
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
-    __mapper_args__ = {"polymorphic_identity": "layerv1"}
+    __mapper_args__ = {'polymorphic_identity': 'layerv1'}
 
     id = Column(
-        Integer, ForeignKey(_schema + ".layer.id"), primary_key=True
+        Integer, ForeignKey(_schema + '.layer.id'), primary_key=True
     )
     layer = Column(Unicode)
     is_checked = Column(Boolean, default=True)  # by default
     icon = Column(Unicode)  # on the tree
     layer_type = Column(Enum(
-        "internal WMS", "external WMS", "WMTS", "no 2D",
+        'internal WMS', 'external WMS', 'WMTS', 'no 2D',
         native_enum=False))
     url = Column(Unicode)  # for externals
     image_type = Column(Enum(
-        "image/jpeg", "image/png",
+        'image/jpeg', 'image/png',
         native_enum=False))  # for WMS
     style = Column(Unicode)
     dimensions = Column(Unicode)  # for WMTS
@@ -508,17 +508,17 @@ class LayerV1(Layer):  # Deprecated in v2
     # data attribute field in which application can find a human identifiable name or number
     identifier_attribute_field = Column(Unicode)
     time_mode = Column(Enum(
-        "disabled", "value", "range",
-        native_enum=False), default="disabled", nullable=False,
+        'disabled', 'value', 'range',
+        native_enum=False), default='disabled', nullable=False,
     )
     time_widget = Column(Enum(
-        "slider", "datepicker",
-        native_enum=False), default="slider", nullable=True,
+        'slider', 'datepicker',
+        native_enum=False), default='slider', nullable=True,
     )
 
     def __init__(
-        self, name: str="", public: bool=True, icon: str="",
-        layer_type: str="internal WMS"
+        self, name: str='', public: bool=True, icon: str='',
+        layer_type: str='internal WMS'
     ) -> None:
         Layer.__init__(self, name=name, public=public)
         self.layer = name
@@ -526,20 +526,20 @@ class LayerV1(Layer):  # Deprecated in v2
         self.layer_type = layer_type
 
 
-OGCSERVER_TYPE_MAPSERVER = "mapserver"
-OGCSERVER_TYPE_QGISSERVER = "qgisserver"
-OGCSERVER_TYPE_GEOSERVER = "geoserver"
-OGCSERVER_TYPE_OTHER = "other"
+OGCSERVER_TYPE_MAPSERVER = 'mapserver'
+OGCSERVER_TYPE_QGISSERVER = 'qgisserver'
+OGCSERVER_TYPE_GEOSERVER = 'geoserver'
+OGCSERVER_TYPE_OTHER = 'other'
 
-OGCSERVER_AUTH_NOAUTH = "No auth"
-OGCSERVER_AUTH_STANDARD = "Standard auth"
-OGCSERVER_AUTH_GEOSERVER = "Geoserver auth"
-OGCSERVER_AUTH_PROXY = "Proxy"
+OGCSERVER_AUTH_NOAUTH = 'No auth'
+OGCSERVER_AUTH_STANDARD = 'Standard auth'
+OGCSERVER_AUTH_GEOSERVER = 'Geoserver auth'
+OGCSERVER_AUTH_PROXY = 'Proxy'
 
 
 class OGCServer(Base):
-    __tablename__ = "ogc_server"
-    __table_args__ = {"schema": _schema}
+    __tablename__ = 'ogc_server'
+    __table_args__ = {'schema': _schema}
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
@@ -556,8 +556,8 @@ class OGCServer(Base):
         OGCSERVER_TYPE_OTHER,
         native_enum=False), nullable=False)
     image_type = Column(Enum(
-        "image/jpeg",
-        "image/png",
+        'image/jpeg',
+        'image/png',
         native_enum=False), nullable=False)
     auth = Column(Enum(
         OGCSERVER_AUTH_NOAUTH,
@@ -569,8 +569,8 @@ class OGCServer(Base):
     is_single_tile = Column(Boolean)
 
     def __init__(
-        self, name: str="", description: Optional[str]=None, url: str="https://wms.example.com",
-        url_wfs: str=None, type_: str="mapserver", image_type: str="image/png", auth: str="Standard auth",
+        self, name: str='', description: Optional[str]=None, url: str='https://wms.example.com',
+        url_wfs: str=None, type_: str='mapserver', image_type: str='image/png', auth: str='Standard auth',
         wfs_support: bool=True, is_single_tile: bool=False
     ) -> None:
         self.name = name
@@ -584,59 +584,59 @@ class OGCServer(Base):
         self.is_single_tile = is_single_tile
 
     def __unicode__(self) -> str:
-        return self.name or ""  # pragma: no cover
+        return self.name or ''  # pragma: no cover
 
 
 class LayerWMS(DimensionLayer):
-    __tablename__ = "layer_wms"
-    __table_args__ = {"schema": _schema}
+    __tablename__ = 'layer_wms'
+    __table_args__ = {'schema': _schema}
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
     __colanderalchemy_config__ = {
-        "title": _("WMS Layer"),
-        "plural": _("WMS Layers")
+        'title': _('WMS Layer'),
+        'plural': _('WMS Layers')
     }
-    __mapper_args__ = {"polymorphic_identity": "l_wms"}
+    __mapper_args__ = {'polymorphic_identity': 'l_wms'}
 
-    id = Column(Integer, ForeignKey(_schema + ".layer.id"), primary_key=True)
-    ogc_server_id = Column(Integer, ForeignKey(_schema + ".ogc_server.id"), nullable=False)
+    id = Column(Integer, ForeignKey(_schema + '.layer.id'), primary_key=True)
+    ogc_server_id = Column(Integer, ForeignKey(_schema + '.ogc_server.id'), nullable=False)
     layer = Column(Unicode, info={
-        "colanderalchemy": {
-            "title": _("WMS layer name")
+        'colanderalchemy': {
+            'title': _('WMS layer name')
         }})
     style = Column(Unicode, info={
-        "colanderalchemy": {
-            "title": _("Style")
+        'colanderalchemy': {
+            'title': _('Style')
         }})
     time_mode = Column(Enum(
-        "disabled", "value", "range",
-        native_enum=False), default="disabled", nullable=False, info={
-            "colanderalchemy": {
-                "title": _("Time mode")
+        'disabled', 'value', 'range',
+        native_enum=False), default='disabled', nullable=False, info={
+            'colanderalchemy': {
+                'title': _('Time mode')
             }}
     )
     time_widget = Column(Enum(
-        "slider", "datepicker",
-        native_enum=False), default="slider", nullable=False, info={
-            "colanderalchemy": {
-                "title": _("Time widget")
+        'slider', 'datepicker',
+        native_enum=False), default='slider', nullable=False, info={
+            'colanderalchemy': {
+                'title': _('Time widget')
             }}
     )
 
     # relationship with OGCServer
     ogc_server = relationship(
-        "OGCServer", info={
-            "colanderalchemy": {
-                "title": _("OGC server"),
-                "exclude": True
+        'OGCServer', info={
+            'colanderalchemy': {
+                'title': _('OGC server'),
+                'exclude': True
             }}
     )
 
     def __init__(
-        self, name: str="", layer: str="", public: bool=True,
-        time_mode: str="disabled",
-        time_widget: str="slider"
+        self, name: str='', layer: str='', public: bool=True,
+        time_mode: str='disabled',
+        time_widget: str='slider'
     ) -> None:
         DimensionLayer.__init__(self, name=name, public=public)
         self.layer = layer
@@ -645,62 +645,62 @@ class LayerWMS(DimensionLayer):
 
 
 class LayerWMTS(DimensionLayer):
-    __tablename__ = "layer_wmts"
-    __table_args__ = {"schema": _schema}
+    __tablename__ = 'layer_wmts'
+    __table_args__ = {'schema': _schema}
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
     __colanderalchemy_config__ = {
-        "title": _("WMTS Layer"),
-        "plural": _("WMTS Layers")
+        'title': _('WMTS Layer'),
+        'plural': _('WMTS Layers')
     }
-    __mapper_args__ = {"polymorphic_identity": "l_wmts"}
+    __mapper_args__ = {'polymorphic_identity': 'l_wmts'}
 
-    id = Column(Integer, ForeignKey(_schema + ".layer.id"), primary_key=True)
+    id = Column(Integer, ForeignKey(_schema + '.layer.id'), primary_key=True)
     url = Column(Unicode, nullable=False)
     layer = Column(Unicode, nullable=False, info={
-        "colanderalchemy": {
-            "title": _("WMTS layer name")
+        'colanderalchemy': {
+            'title': _('WMTS layer name')
         }})
     style = Column(Unicode)
     matrix_set = Column(Unicode)
     image_type = Column(Enum(
-        "image/jpeg",
-        "image/png",
+        'image/jpeg',
+        'image/png',
         native_enum=False), nullable=False
     )
 
-    def __init__(self, name: str="", public: bool=True, image_type: str="image/png") -> None:
+    def __init__(self, name: str='', public: bool=True, image_type: str='image/png') -> None:
         DimensionLayer.__init__(self, name=name, public=public)
         self.image_type = image_type
 
 
 # association table role <> restriction area
 role_ra = Table(
-    "role_restrictionarea", Base.metadata,
-    Column("role_id", Integer, ForeignKey(_schema + ".role.id"), primary_key=True),
-    Column("restrictionarea_id", Integer, ForeignKey(_schema + ".restrictionarea.id"), primary_key=True),
+    'role_restrictionarea', Base.metadata,
+    Column('role_id', Integer, ForeignKey(_schema + '.role.id'), primary_key=True),
+    Column('restrictionarea_id', Integer, ForeignKey(_schema + '.restrictionarea.id'), primary_key=True),
     schema=_schema
 )
 
 # association table layer <> restriction area
 layer_ra = Table(
-    "layer_restrictionarea", Base.metadata,
-    Column("layer_id", Integer, ForeignKey(_schema + ".layer.id"), primary_key=True),
-    Column("restrictionarea_id", Integer, ForeignKey(_schema + ".restrictionarea.id"), primary_key=True),
+    'layer_restrictionarea', Base.metadata,
+    Column('layer_id', Integer, ForeignKey(_schema + '.layer.id'), primary_key=True),
+    Column('restrictionarea_id', Integer, ForeignKey(_schema + '.restrictionarea.id'), primary_key=True),
     schema=_schema
 )
 
 
 class RestrictionArea(Base):
-    __tablename__ = "restrictionarea"
-    __table_args__ = {"schema": _schema}
+    __tablename__ = 'restrictionarea'
+    __table_args__ = {'schema': _schema}
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
 
     id = Column(Integer, primary_key=True)
-    area = Column(Geometry("POLYGON", srid=_srid), info={'colanderalchemy': {
+    area = Column(Geometry('POLYGON', srid=_srid), info={'colanderalchemy': {
         'typ': colander_ext.Geometry('POLYGON', srid=3857, map_srid=3857),
         'widget': deform_ext.MapWidget()
     }})
@@ -711,9 +711,9 @@ class RestrictionArea(Base):
 
     # relationship with Role and Layer
     roles = relationship(
-        "Role", secondary=role_ra,
-        cascade="save-update,merge,refresh-expire",
-        backref=backref("restrictionareas", info={
+        'Role', secondary=role_ra,
+        cascade='save-update,merge,refresh-expire',
+        backref=backref('restrictionareas', info={
             'colanderalchemy': {
                 'exclude': True,
                 'title': _('Restriction areas')
@@ -721,17 +721,17 @@ class RestrictionArea(Base):
         })
     )
     layers = relationship(
-        "Layer", secondary=layer_ra, cascade="save-update,merge,refresh-expire",
-        backref=backref("restrictionareas", info={
-            "colanderalchemy": {
-                "title": _("Restriction areas"),
-                "exclude": True
+        'Layer', secondary=layer_ra, cascade='save-update,merge,refresh-expire',
+        backref=backref('restrictionareas', info={
+            'colanderalchemy': {
+                'title': _('Restriction areas'),
+                'exclude': True
             }}
         )
     )
 
     def __init__(
-            self, name: str="", description: str="", layers: List[Layer]=None, roles: List[Role]=None,
+            self, name: str='', description: str='', layers: List[Layer]=None, roles: List[Role]=None,
             area: Geometry=None, readwrite: bool=False) -> None:
         if layers is None:
             layers = []
@@ -745,34 +745,34 @@ class RestrictionArea(Base):
         self.readwrite = readwrite
 
     def __unicode__(self) -> str:  # pragma: no cover
-        return self.name or ""
+        return self.name or ''
 
 
-event.listen(RestrictionArea, "after_insert", cache_invalidate_cb)
-event.listen(RestrictionArea, "after_update", cache_invalidate_cb)
-event.listen(RestrictionArea, "after_delete", cache_invalidate_cb)
+event.listen(RestrictionArea, 'after_insert', cache_invalidate_cb)
+event.listen(RestrictionArea, 'after_update', cache_invalidate_cb)
+event.listen(RestrictionArea, 'after_delete', cache_invalidate_cb)
 
 
 # association table interface <> layer
 interface_layer = Table(
-    "interface_layer", Base.metadata,
-    Column("interface_id", Integer, ForeignKey(_schema + ".interface.id"), primary_key=True),
-    Column("layer_id", Integer, ForeignKey(_schema + ".layer.id"), primary_key=True),
+    'interface_layer', Base.metadata,
+    Column('interface_id', Integer, ForeignKey(_schema + '.interface.id'), primary_key=True),
+    Column('layer_id', Integer, ForeignKey(_schema + '.layer.id'), primary_key=True),
     schema=_schema
 )
 
 # association table interface <> theme
 interface_theme = Table(
-    "interface_theme", Base.metadata,
-    Column("interface_id", Integer, ForeignKey(_schema + ".interface.id"), primary_key=True),
-    Column("theme_id", Integer, ForeignKey(_schema + ".theme.id"), primary_key=True),
+    'interface_theme', Base.metadata,
+    Column('interface_id', Integer, ForeignKey(_schema + '.interface.id'), primary_key=True),
+    Column('theme_id', Integer, ForeignKey(_schema + '.theme.id'), primary_key=True),
     schema=_schema
 )
 
 
 class Interface(Base):
-    __tablename__ = "interface"
-    __table_args__ = {"schema": _schema}
+    __tablename__ = 'interface'
+    __table_args__ = {'schema': _schema}
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
@@ -783,30 +783,30 @@ class Interface(Base):
 
     # relationship with Layer and Theme
     layers = relationship(
-        "Layer", secondary=interface_layer,
-        cascade="save-update,merge,refresh-expire",
-        backref=backref("interfaces", info={
-            "colanderalchemy": {
-                "exclude": True
+        'Layer', secondary=interface_layer,
+        cascade='save-update,merge,refresh-expire',
+        backref=backref('interfaces', info={
+            'colanderalchemy': {
+                'exclude': True
             }}
         )
     )
     theme = relationship(
-        "Theme", secondary=interface_theme,
-        backref="interfaces", cascade="save-update,merge,refresh-expire"
+        'Theme', secondary=interface_theme,
+        backref='interfaces', cascade='save-update,merge,refresh-expire'
     )
 
-    def __init__(self, name: str="", description: str="") -> None:
+    def __init__(self, name: str='', description: str='') -> None:
         self.name = name
         self.description = description
 
     def __unicode__(self) -> str:  # pragma: no cover
-        return self.name or ""
+        return self.name or ''
 
 
 class Metadata(Base):
-    __tablename__ = "metadata"
-    __table_args__ = {"schema": _schema}
+    __tablename__ = 'metadata'
+    __table_args__ = {'schema': _schema}
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
@@ -816,34 +816,34 @@ class Metadata(Base):
     value = Column(Unicode)
     description = Column(Unicode)
 
-    item_id = Column("item_id", Integer, ForeignKey(_schema + ".treeitem.id"), nullable=False)
+    item_id = Column('item_id', Integer, ForeignKey(_schema + '.treeitem.id'), nullable=False)
     item = relationship(
-        "TreeItem",
+        'TreeItem',
         backref=backref(
-            "metadatas",
-            cascade="save-update,merge,delete,delete-orphan",
-            info={"colanderalchemy": {
-                "exclude": True
+            'metadatas',
+            cascade='save-update,merge,delete,delete-orphan',
+            info={'colanderalchemy': {
+                'exclude': True
             }}
         ),
     )
 
-    def __init__(self, name: str="", value: str="") -> None:
+    def __init__(self, name: str='', value: str='') -> None:
         self.name = name
         self.value = value
 
     def __unicode__(self) -> str:  # pragma: no cover
-        return "{0!s}: {1!s}".format(self.name or "", self.value or "")
+        return '{0!s}: {1!s}'.format(self.name or '', self.value or '')
 
 
-event.listen(Metadata, "after_insert", cache_invalidate_cb, propagate=True)
-event.listen(Metadata, "after_update", cache_invalidate_cb, propagate=True)
-event.listen(Metadata, "after_delete", cache_invalidate_cb, propagate=True)
+event.listen(Metadata, 'after_insert', cache_invalidate_cb, propagate=True)
+event.listen(Metadata, 'after_update', cache_invalidate_cb, propagate=True)
+event.listen(Metadata, 'after_delete', cache_invalidate_cb, propagate=True)
 
 
 class Dimension(Base):
-    __tablename__ = "dimension"
-    __table_args__ = {"schema": _schema}
+    __tablename__ = 'dimension'
+    __table_args__ = {'schema': _schema}
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
@@ -853,25 +853,25 @@ class Dimension(Base):
     value = Column(Unicode)
     description = Column(Unicode)
 
-    layer_id = Column("layer_id", Integer, ForeignKey(_schema + ".layer.id"), nullable=False)
+    layer_id = Column('layer_id', Integer, ForeignKey(_schema + '.layer.id'), nullable=False)
     layer = relationship(
-        "DimensionLayer",
+        'DimensionLayer',
         backref=backref(
-            "dimensions",
-            cascade="save-update,merge,delete,delete-orphan",
+            'dimensions',
+            cascade='save-update,merge,delete,delete-orphan',
             info={
-                "colanderalchemy": {
-                      "exclude": True
+                'colanderalchemy': {
+                    'exclude': True
                 }
             }
         )
     )
 
-    def __init__(self, name: str="", value: str="", layer: str=None) -> None:
+    def __init__(self, name: str='', value: str='', layer: str=None) -> None:
         self.name = name
         self.value = value
         if layer is not None:
             self.layer = layer
 
     def __unicode__(self) -> str:  # pragma: no cover
-        return self.name or ""
+        return self.name or ''

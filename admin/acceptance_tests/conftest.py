@@ -1,3 +1,4 @@
+import os
 import pytest
 import transaction
 from pyramid import testing
@@ -32,7 +33,7 @@ def transact(dbsession):
     t.rollback()
 
 
-def raise_db_error(Table):
+def raise_db_error(_):
     raise DBAPIError('this is a test !', None, None)
 
 
@@ -47,7 +48,8 @@ def raise_db_error_on_query(dbsession):
 
 @pytest.fixture(scope="session")
 def app_env():
-    with bootstrap('tests.ini') as env:
+    file_name = 'tests.ini' if os.path.exists('tests.ini') else 'admin/tests.ini'
+    with bootstrap(file_name) as env:
         yield env
 
 

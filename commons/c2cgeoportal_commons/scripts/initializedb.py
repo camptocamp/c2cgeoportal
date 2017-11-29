@@ -59,20 +59,20 @@ def init_db(connection: Connection, force: bool=False, test: bool=False) -> None
     import c2cgeoportal_commons.models.static  # noqa: F401
     from c2cgeoportal_commons.models import schema
 
-    schema_static = "{}_static".format(schema)
+    schema_static = '{}_static'.format(schema)
 
     assert schema is not None
     if force:
         if schema_exists(connection, schema):
-            connection.execute("DROP SCHEMA {} CASCADE;".format(schema))
+            connection.execute('DROP SCHEMA {} CASCADE;'.format(schema))
         if schema_exists(connection, schema_static):
-            connection.execute("DROP SCHEMA {} CASCADE;".format(schema_static))
+            connection.execute('DROP SCHEMA {} CASCADE;'.format(schema_static))
 
     if not schema_exists(connection, schema):
-        connection.execute("CREATE SCHEMA \"{}\";".format(schema))
+        connection.execute('CREATE SCHEMA "{}";'.format(schema))
 
     if not schema_exists(connection, schema_static):
-        connection.execute("CREATE SCHEMA \"{}\";".format(schema_static))
+        connection.execute('CREATE SCHEMA "{}";'.format(schema_static))
 
     Base.metadata.create_all(connection)
 
@@ -85,11 +85,11 @@ def init_db(connection: Connection, force: bool=False, test: bool=False) -> None
 
 
 def schema_exists(connection: Connection, schema_name: str) -> bool:
-    sql = '''
+    sql = """
 SELECT count(*) AS count
 FROM information_schema.schemata
 WHERE schema_name = '{}';
-'''.format(schema_name)
+""".format(schema_name)
     result = connection.execute(sql)
     row = result.first()
     return row[0] == 1

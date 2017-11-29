@@ -13,7 +13,7 @@ mapserver:
     - db
 
 build:
-  image: camptocamp/geomapfish-build-dev:${major_version}
+  image: camptocamp/geomapfish-admin-build:${major_version}
   volumes:
     - ${build_volume_name}:/build
     - .:/src
@@ -21,6 +21,7 @@ build:
     - USER_NAME
     - USER_ID
     - GROUP_ID
+    - CI
   stdin_open: true
   tty: true
   command: ${'$'}{RUN}

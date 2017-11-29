@@ -48,25 +48,25 @@ except ImportError:  # pragma: no cover
 
 try:
     from pyramid.i18n import TranslationStringFactory
-    _ = TranslationStringFactory("c2cgeoportal")
+    _ = TranslationStringFactory('c2cgeoportal')
 except ImportError:
     def _(s: str) -> str:
         return s
 
 LOG = logging.getLogger(__name__)
-AUTHORIZED_ROLE = "role_admin"
+AUTHORIZED_ROLE = 'role_admin'
 
 if schema is not None:
     _schema = schema
 else:  # pragma: no cover
     raise Exception(
-        "schema not specified, you need to add it to your config"
+        'schema not specified, you need to add it to your config'
     )
 
 
 class User(Base):
-    __tablename__ = "user"
-    __table_args__ = {"schema": _schema + "_static"}
+    __tablename__ = 'user'
+    __table_args__ = {'schema': _schema + '_static'}
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
@@ -74,14 +74,14 @@ class User(Base):
         'title': _('User'),
         'plural': _('Users')
     }
-    item_type = Column("type", String(10), nullable=False, info={
+    item_type = Column('type', String(10), nullable=False, info={
         'colanderalchemy': {
             'widget': HiddenWidget()
         }
     })
     __mapper_args__ = {
-        "polymorphic_on": item_type,
-        "polymorphic_identity": "user",
+        'polymorphic_on': item_type,
+        'polymorphic_identity': 'user',
     }
 
     id = Column(Integer, primary_key=True, info={
@@ -94,9 +94,9 @@ class User(Base):
             'title': _('Username')
         }
     })
-    _password = Column("password", Unicode, nullable=False,
+    _password = Column('password', Unicode, nullable=False,
                        info={'colanderalchemy': {'exclude': True}})
-    temp_password = Column("temp_password", Unicode, nullable=True,
+    temp_password = Column('temp_password', Unicode, nullable=True,
                            info={'colanderalchemy': {'exclude': True}})
     email = Column(Unicode, nullable=False, info={
         'colanderalchemy': {
@@ -121,7 +121,7 @@ class User(Base):
         if self._cached_role_name == self.role_name:
             return self._cached_role
 
-        if self.role_name is None or self.role_name == "":  # pragma: no cover
+        if self.role_name is None or self.role_name == '':  # pragma: no cover
             self._cached_role_name = self.role_name
             self._cached_role = None
             return None
@@ -138,7 +138,7 @@ class User(Base):
         return self._cached_role
 
     def __init__(
-        self, username: str="", password: str="", email: str="", is_password_changed: bool=False,
+        self, username: str='', password: str='', email: str='', is_password_changed: bool=False,
         role: Role=None
     ) -> None:
         self.username = username
@@ -165,7 +165,7 @@ class User(Base):
     @staticmethod
     def __encrypt_password(password: str) -> str:
         """Hash the given password with SHA1."""
-        return sha1(password.encode("utf8")).hexdigest()
+        return sha1(password.encode('utf8')).hexdigest()
 
     def validate_password(self, passwd: str) -> bool:
         """Check the password against existing credentials.
@@ -180,7 +180,7 @@ class User(Base):
             return True
         if \
                 self.temp_password is not None and \
-                self.temp_password != "" and \
+                self.temp_password != '' and \
                 self.temp_password == self.__encrypt_password(passwd):
             self._password = self.temp_password
             self.temp_password = None
@@ -189,12 +189,12 @@ class User(Base):
         return False
 
     def __unicode__(self) -> str:
-        return self.username or ""  # pragma: no cover
+        return self.username or ''  # pragma: no cover
 
 
 class Shorturl(Base):
-    __tablename__ = "shorturl"
-    __table_args__ = {"schema": _schema + "_static"}
+    __tablename__ = 'shorturl'
+    __table_args__ = {'schema': _schema + '_static'}
     __acl__ = [DENY_ALL]
     id = Column(Integer, primary_key=True)
     url = Column(Unicode)

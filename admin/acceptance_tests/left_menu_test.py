@@ -5,7 +5,7 @@ import pytest
 
 @pytest.fixture(scope='class')
 @pytest.mark.usefixtures("dbsession")
-def insertLeftMenuTestData(dbsession):
+def insert_left_menu_test_data(dbsession):
     from c2cgeoportal_commons.models.main import Role
     dbsession.begin_nested()
     dbsession.add(Role("secretary"))
@@ -14,7 +14,7 @@ def insertLeftMenuTestData(dbsession):
 
 
 @pytest.mark.usefixtures("test_app")
-class TestLeftMenu():
+class TestLeftMenu:
 
     def _assert_main_menu(self, html, active_table=None):
         main_menus = html.find_all(id="main-menu")
@@ -35,7 +35,7 @@ class TestLeftMenu():
         html = test_app.get("/roles/", status=200).html
         self._assert_main_menu(html, "roles")
 
-    @pytest.mark.usefixtures("insertLeftMenuTestData")
+    @pytest.mark.usefixtures("insert_left_menu_test_data")
     def test_edit(self, test_app, dbsession):
         from c2cgeoportal_commons.models.main import Role
         role = dbsession.query(Role). \

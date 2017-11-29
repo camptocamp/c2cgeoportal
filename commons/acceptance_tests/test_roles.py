@@ -3,7 +3,7 @@ import pytest
 
 @pytest.fixture(scope='class')
 @pytest.mark.usefixtures("dbsession")
-def insertRolesTestData(dbsession):
+def insert_roles_test_data(dbsession):
     from c2cgeoportal_commons.models.main import Role
     role = Role("secretary")
     t = dbsession.begin_nested()
@@ -12,8 +12,8 @@ def insertRolesTestData(dbsession):
     t.rollback()
 
 
-@pytest.mark.usefixtures("insertRolesTestData", "transact")
-class TestRole():
+@pytest.mark.usefixtures("insert_roles_test_data", "transact")
+class TestRole:
     def test_select(self, dbsession):
         from c2cgeoportal_commons.models.main import Role
         roles = dbsession.query(Role).all()

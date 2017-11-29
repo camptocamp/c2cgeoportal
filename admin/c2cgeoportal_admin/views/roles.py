@@ -55,38 +55,43 @@ class RoleViews(AbstractViews):
     _list_fields = [
         ListField('name'),
         ListField('description'),
-        ListField('functionalities', renderer=lambda role:
-                  ", ".join(["{}={}".format(f.name, f.value) for f in role.functionalities])),
-        ListField('restrictionareas', renderer=lambda role:
-                  ", ".join([r.name or '' for r in role.restrictionareas]))]
+        ListField(
+            'functionalities',
+            renderer=lambda role: ', '.join(['{}={}'.format(f.name, f.value) for f in role.functionalities])
+        ),
+        ListField(
+            'restrictionareas',
+            renderer=lambda role: ', '.join([r.name or '' for r in role.restrictionareas])
+        ),
+    ]
     _id_field = 'id'
     _model = Role
     _base_schema = base_schema
 
     def _base_query(self):
         return self._request.dbsession.query(Role). \
-            options(subqueryload("functionalities")). \
-            options(subqueryload("restrictionareas"))
+            options(subqueryload('functionalities')). \
+            options(subqueryload('restrictionareas'))
 
     @view_config(route_name='c2cgeoform_index',
-                 renderer="../templates/index.jinja2")
+                 renderer='../templates/index.jinja2')
     def index(self):
         return super().index()
 
     @view_config(route_name='c2cgeoform_grid',
-                 renderer="json")
+                 renderer='json')
     def grid(self):
         return super().grid()
 
     @view_config(route_name='c2cgeoform_action',
                  request_method='GET',
-                 renderer="../templates/edit.jinja2")
+                 renderer='../templates/edit.jinja2')
     def view(self):
         return super().edit()
 
     @view_config(route_name='c2cgeoform_action',
                  request_method='POST',
-                 renderer="../templates/edit.jinja2")
+                 renderer='../templates/edit.jinja2')
     def save(self):
         return super().save()
 

@@ -18,5 +18,6 @@ def check_grid_headers(test_app, path, expected_col_headers, language='en'):
                                 res2.html.findAll('a'))))
 
 
-skip_if_travis = pytest.mark.skipif(os.environ.get('TRAVIS', "false") == "true",
-                                    reason="Not running on Travis")
+skip_if_ci = pytest.mark.skipif(
+    os.environ.get('CI', "false") == "true", reason="Not running on CI"
+)

@@ -13,7 +13,7 @@
 #    this list of conditions and the following disclaimer in the documentation
 #    and/or other materials provided with the distribution.
 
-# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 'AS IS' AND
 # ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 # WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
 # DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
@@ -41,40 +41,40 @@ Read the `Documentation <https://camptocamp.github.io/c2cgeoportal/master/>`_.
 
 `Sources <https://github.com/camptocamp/c2cgeoportal/>`_"""
 
-TRAVIS_TAG = os.environ.get("GIT_TAG")
-MAJOR_VERSION = os.environ.get("MAJOR_VERSION")
-VERSION = TRAVIS_TAG if TRAVIS_TAG is not None and TRAVIS_TAG != "" else \
-    MAJOR_VERSION if MAJOR_VERSION is not None and MAJOR_VERSION != "" else "dev"
+TRAVIS_TAG = os.environ.get('GIT_TAG')
+MAJOR_VERSION = os.environ.get('MAJOR_VERSION')
+VERSION = TRAVIS_TAG if TRAVIS_TAG is not None and TRAVIS_TAG != '' else \
+    MAJOR_VERSION if MAJOR_VERSION is not None and MAJOR_VERSION != '' else 'dev'
 
 install_requires = [
-    "c2cgeoportal-commons==" + VERSION,
-    "c2cwsgiutils",
-    "c2c.template>=1.4.0",  # Makefile
-    "dateutils",
-    "defusedxml",
-    "dogpile.cache>=0.6",
-    "GeoAlchemy2",
-    "httplib2",
-    "ipcalc",
-    "isodate",  # WMST support
-    "lingua",
-    "OWSLib>=0.6.0",
-    "papyrus",
-    "Paste",
-    "PasteDeploy",
-    "PasteScript",
-    "psycopg2",
-    "pycrypto",
-    "pyramid<=1.9.99",
-    "pyramid_closure",
-    "pyramid_debugtoolbar",  # Needed by the development.ini
-    "pyramid_mako",  # to render the HTML files
-    "pyramid_multiauth",
-    "pyramid_tm",
-    "PyYAML",
-    "SQLAlchemy",
-    "Fiona",
-    "rasterio",
+    'c2cgeoportal-commons==' + VERSION,
+    'c2cwsgiutils',
+    'c2c.template>=1.4.0',  # Makefile
+    'dateutils',
+    'defusedxml',
+    'dogpile.cache>=0.6',
+    'GeoAlchemy2',
+    'httplib2',
+    'ipcalc',
+    'isodate',  # WMST support
+    'lingua',
+    'OWSLib>=0.6.0',
+    'papyrus',
+    'Paste',
+    'PasteDeploy',
+    'PasteScript',
+    'psycopg2',
+    'pycrypto',
+    'pyramid<=1.9.99',
+    'pyramid_closure',
+    'pyramid_debugtoolbar',  # Needed by the development.ini
+    'pyramid_mako',  # to render the HTML files
+    'pyramid_multiauth',
+    'pyramid_tm',
+    'PyYAML',
+    'SQLAlchemy',
+    'Fiona',
+    'rasterio',
 ]
 
 setup_requires = [
@@ -84,54 +84,54 @@ tests_require = install_requires + [
 ]
 
 setup(
-    name="c2cgeoportal-geoportal",
+    name='c2cgeoportal-geoportal',
     version=VERSION,
-    description="c2cgeoportal",
+    description='c2cgeoportal',
     long_description=README,
     classifiers=[
-        "Programming Language :: Python",
-        "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.5",
-        "Programming Language :: Python :: 3.6",
-        "Framework :: Pyramid",
-        "Topic :: Internet :: WWW/HTTP",
-        "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Framework :: Pyramid',
+        'Topic :: Internet :: WWW/HTTP',
+        'Topic :: Internet :: WWW/HTTP :: WSGI :: Application',
     ],
-    author="Camptocamp",
-    author_email="info@camptocamp.com",
-    url="http://www.camptocamp.com/solutions/geospatial/",
-    keywords="web gis geoportail c2cgeoportal geocommune pyramid",
-    packages=find_packages(exclude=["tests.*"]),
+    author='Camptocamp',
+    author_email='info@camptocamp.com',
+    url='http://www.camptocamp.com/solutions/geospatial/',
+    keywords='web gis geoportail c2cgeoportal geocommune pyramid',
+    packages=find_packages(exclude=['tests.*']),
     include_package_data=True,
     zip_safe=False,
     install_requires=install_requires,
     setup_requires=setup_requires,
     tests_require=tests_require,
     entry_points={
-        "console_scripts": [
-            "manage_users = c2cgeoportal_geoportal.scripts.manage_users:main",
-            "c2cupgrade = c2cgeoportal_geoportal.scripts.c2cupgrade:main",
-            "db2pot = c2cgeoportal_geoportal.scripts.db2pot:main",
-            "themev1tov2 = c2cgeoportal_geoportal.scripts.themev1tov2:main",
-            "theme2fts = c2cgeoportal_geoportal.scripts.theme2fts:main",
-            "l10nv1tov2 = c2cgeoportal_geoportal.scripts.l10nv1tov2:main",
-            "import-ngeo-apps = c2cgeoportal_geoportal.scripts.import_ngeo_apps:main",
-            "ngeo-version = c2cgeoportal_geoportal.scripts.import_ngeo_apps:ngeo_git_version",
-            "create-demo-theme = c2cgeoportal_geoportal.scripts.create_demo_theme:main",
-            "treeitem-uniquename = c2cgeoportal_geoportal.scripts.treeitem_uniquename:main",
-            "urllogin = c2cgeoportal_geoportal.scripts.urllogin:main",
-            "docker-required = c2cgeoportal_geoportal.scripts.docker_required:main",
+        'console_scripts': [
+            'manage_users = c2cgeoportal_geoportal.scripts.manage_users:main',
+            'c2cupgrade = c2cgeoportal_geoportal.scripts.c2cupgrade:main',
+            'db2pot = c2cgeoportal_geoportal.scripts.db2pot:main',
+            'themev1tov2 = c2cgeoportal_geoportal.scripts.themev1tov2:main',
+            'theme2fts = c2cgeoportal_geoportal.scripts.theme2fts:main',
+            'l10nv1tov2 = c2cgeoportal_geoportal.scripts.l10nv1tov2:main',
+            'import-ngeo-apps = c2cgeoportal_geoportal.scripts.import_ngeo_apps:main',
+            'ngeo-version = c2cgeoportal_geoportal.scripts.import_ngeo_apps:ngeo_git_version',
+            'create-demo-theme = c2cgeoportal_geoportal.scripts.create_demo_theme:main',
+            'treeitem-uniquename = c2cgeoportal_geoportal.scripts.treeitem_uniquename:main',
+            'urllogin = c2cgeoportal_geoportal.scripts.urllogin:main',
+            'docker-required = c2cgeoportal_geoportal.scripts.docker_required:main',
         ],
-        "pyramid.scaffold": [
-            "c2cgeoportal_create = c2cgeoportal_geoportal.scaffolds:TemplateCreate",
-            "c2cgeoportal_update = c2cgeoportal_geoportal.scaffolds:TemplateUpdate",
-            "c2cgeoportal_nondockercreate = c2cgeoportal_geoportal.scaffolds:TemplateNondockerCreate",
-            "c2cgeoportal_nondockerupdate = c2cgeoportal_geoportal.scaffolds:TemplateNondockerUpdate",
+        'pyramid.scaffold': [
+            'c2cgeoportal_create = c2cgeoportal_geoportal.scaffolds:TemplateCreate',
+            'c2cgeoportal_update = c2cgeoportal_geoportal.scaffolds:TemplateUpdate',
+            'c2cgeoportal_nondockercreate = c2cgeoportal_geoportal.scaffolds:TemplateNondockerCreate',
+            'c2cgeoportal_nondockerupdate = c2cgeoportal_geoportal.scaffolds:TemplateNondockerUpdate',
         ],
-        "lingua.extractors": [
-            "geomapfish-theme = c2cgeoportal_geoportal.lib.lingua_extractor:GeoMapfishThemeExtractor",
-            "geomapfish-config = c2cgeoportal_geoportal.lib.lingua_extractor:GeoMapfishConfigExtractor",
-            "geomapfish-angular = c2cgeoportal_geoportal.lib.lingua_extractor:GeoMapfishAngularExtractor",
+        'lingua.extractors': [
+            'geomapfish-theme = c2cgeoportal_geoportal.lib.lingua_extractor:GeoMapfishThemeExtractor',
+            'geomapfish-config = c2cgeoportal_geoportal.lib.lingua_extractor:GeoMapfishConfigExtractor',
+            'geomapfish-angular = c2cgeoportal_geoportal.lib.lingua_extractor:GeoMapfishAngularExtractor',
         ],
     }
 )

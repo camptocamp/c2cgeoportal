@@ -112,21 +112,21 @@ def init_dbsessions(settings: dict, config: Configurator=None, health_check: Hea
     # define the srid, schema as global variables to be usable in the model
     global schema
     global srid
-    srid = settings["srid"]
-    schema = settings["schema"]
+    srid = settings['srid']
+    schema = settings['schema']
 
-    db_chooser = settings.get("db_chooser", {})
-    master_paths = [re.compile(i.replace("//", "/")) for i in db_chooser.get("master", [])]
-    slave_paths = [re.compile(i.replace("//", "/")) for i in db_chooser.get("slave", [])]
+    db_chooser = settings.get('db_chooser', {})
+    master_paths = [re.compile(i.replace('//', '/')) for i in db_chooser.get('master', [])]
+    slave_paths = [re.compile(i.replace('//', '/')) for i in db_chooser.get('slave', [])]
 
-    slave_prefix = "sqlalchemy_slave" if "sqlalchemy_slave.url" in settings else None
+    slave_prefix = 'sqlalchemy_slave' if 'sqlalchemy_slave.url' in settings else None
 
     c2cgeoportal_commons.models.DBSession, rw_bind, _ = c2cwsgiutils.db.setup_session(
-        config, "sqlalchemy", slave_prefix, force_master=master_paths, force_slave=slave_paths)
+        config, 'sqlalchemy', slave_prefix, force_master=master_paths, force_slave=slave_paths)
     c2cgeoportal_commons.models.Base.metadata.bind = rw_bind
-    c2cgeoportal_commons.models.DBSessions["dbsession"] = c2cgeoportal_commons.models.DBSession
+    c2cgeoportal_commons.models.DBSessions['dbsession'] = c2cgeoportal_commons.models.DBSession
 
-    for dbsession_name, dbsession_config in settings.get("dbsessions", {}).items():  # pragma: nocover
+    for dbsession_name, dbsession_config in settings.get('dbsessions', {}).items():  # pragma: nocover
         c2cgeoportal_commons.models.DBSessions[dbsession_name] = \
             c2cwsgiutils.db.create_session(config, dbsession_name, **dbsession_config)
 
@@ -135,8 +135,8 @@ def init_dbsessions(settings: dict, config: Configurator=None, health_check: Hea
 
     if health_check is not None:
         for name, session in c2cgeoportal_commons.models.DBSessions.items():
-            if name == "dbsession":
+            if name == 'dbsession':
                 health_check.add_db_session_check(session, at_least_one_model=main.Theme)
             else:  # pragma: no cover
                 health_check.add_db_session_check(
-                    session, query_cb=lambda session: session.execute("SELECT 1"))
+                    session, query_cb=lambda session: session.execute('SELECT 1'))

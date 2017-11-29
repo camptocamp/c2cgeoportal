@@ -3,7 +3,7 @@ import pytest
 
 @pytest.fixture(scope='class')
 @pytest.mark.usefixtures("dbsession")
-def insertUsersTestData(dbsession):
+def insert_users_test_data(dbsession):
     from c2cgeoportal_commons.models.static import User
     user = User("babar")
     t = dbsession.begin_nested()
@@ -12,8 +12,8 @@ def insertUsersTestData(dbsession):
     t.rollback()
 
 
-@pytest.mark.usefixtures("insertUsersTestData", "transact")
-class TestUser():
+@pytest.mark.usefixtures("insert_users_test_data", "transact")
+class TestUser:
 
     def test_select(self, dbsession):
         from c2cgeoportal_commons.models.static import User

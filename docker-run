@@ -5,7 +5,6 @@ import os
 import argparse
 import subprocess
 import netifaces
-import configparser
 import distutils.sysconfig
 import configparser
 import pwd
@@ -76,6 +75,7 @@ def main():
         "SRID",
         "EXTENT",
         "APACHE_VHOST",
+        "CI",
     ]:
         docker_cmd.append("--env={}".format(env))
 
@@ -112,6 +112,7 @@ def main():
         subprocess.check_call(docker_cmd)
     except subprocess.CalledProcessError:
         exit(2)
+
 
 if __name__ == "__main__":
     main()

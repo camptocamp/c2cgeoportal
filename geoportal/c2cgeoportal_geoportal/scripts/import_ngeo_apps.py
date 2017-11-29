@@ -137,7 +137,7 @@ def main():
     with open(args.src) as src:
         data = src.read()
         if args.package:
-            packages = loads(data)["devDependencies"]
+            packages = loads(data).get("devDependencies", loads(data).get("dependencies", []))
             # freeze the ngeo version
             packages["ngeo"] = _get_ngeo_version()
             for package in [
