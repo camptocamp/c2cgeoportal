@@ -5,7 +5,7 @@ boto==2.48.0  # Tile generation
 bottle==0.12.13  # i18n
 c2c.cssmin==0.7.dev6  # CGXP build
 c2c.template==1.5.1  # geoportal
-c2cgeoform==2.0.dev20171120  # commons
+c2cgeoform==2.0.dev20171128  # commons
 codespell==1.11.0  # Lint
 ColanderAlchemy==0.3.3  # commons
 dateutils==0.6.6  # geoportal-pcreate
@@ -34,7 +34,7 @@ PasteScript==2.0.2  # geoportal-pcreate
 pep8==1.7.1  # lint
 pep8-naming==0.4.1  # Lint
 Pillow==4.3.0  # Tile generation
-polib==1.0.8  # i18n
+polib==1.1.0  # i18n
 pycrypto==2.6.1  # geoportal
 pyflakes==1.6.0  # lint
 Pygments==2.2.0  # doc
