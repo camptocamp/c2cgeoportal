@@ -16,7 +16,8 @@ export SRID=21781 EXTENT=489246.36,78873.44,837119.76,296543.14
 cp travis/build.mk ${WORKSPACE}/testgeomapfish/travis.mk
 cp travis/empty-vars.mk ${WORKSPACE}/testgeomapfish/empty-vars.mk
 cp travis/vars.yaml ${WORKSPACE}/testgeomapfish/vars_travis.yaml
-cp travis/docker-compose.yaml ${WORKSPACE}/testgeomapfish/docker-compose.yaml.mako
+cp travis/docker-compose.yaml.mako ${WORKSPACE}/testgeomapfish/docker-compose.yaml.mako
+cp travis/docker-compose-build.yaml.mako ${WORKSPACE}/testgeomapfish/docker-compose-build.yaml.mako
 cp --recursive travis ${WORKSPACE}/testgeomapfish/travis
 cd ${WORKSPACE}/testgeomapfish
 

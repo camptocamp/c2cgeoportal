@@ -114,7 +114,7 @@ NGEO_FONTS = $(NGEO_GMF_FONTS) $(NGEO_FONTAWESOME_FONTS)
 JSON_CLIENT_LOCALISATION_FILES = $(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .json, $(LANGUAGES)))
 L10N_CLIENT_POSTFIX=client
 L10N_SERVER_POSTFIX=server
-PO_CLIENT_LOCALISATION_FILES = $(addprefix geoportal/$(PACKAGE)_geoportal/locale/, $(addsuffix /LC_MESSAGES/$(PACKAGE)_geoportal-$(L10N_CLIENT_POSTFIX).po, $(LANGUAGES)))
+CLIENT_LOCALISATION_RULES = $(addprefix /build/lang-client-, $(LANGUAGES))
 ANGULAR_LOCALES_FILES = $(addprefix $(APP_OUTPUT_DIR)/angular-locale_, $(addsuffix .js, $(LANGUAGES)))
 NGEO_OUTPUT_JS_INTERFACES_FILES = $(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .js, $(NGEO_INTERFACES)))
 NGEO_OUTPUT_CSS_INTERFACES_FILES = $(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .css, $(NGEO_INTERFACES)))
@@ -404,7 +404,7 @@ clean-all-cache: cleanall
 		$(HOME_DIR).cache/pip
 
 .PHONY: theme2fts
-theme2fts: $(PO_CLIENT_LOCALISATION_FILES)
+theme2fts: $(CLIENT_LOCALISATION_RULES)
 	theme2fts
 
 .PHONY: flake8
@@ -460,8 +460,8 @@ geoportal/config.yaml: /build/c2ctemplate-cache.json
 
 # server localisation
 
-.PRECIOUS: geoportal/$(PACKAGE)_geoportal/locale/$(PACKAGE)-$(L10N_SERVER_POSTFIX).pot
-geoportal/$(PACKAGE)_geoportal/locale/$(PACKAGE)-$(L10N_SERVER_POSTFIX).pot: \
+.PRECIOUS: geoportal/$(PACKAGE)_geoportal/locale/$(PACKAGE)_geoportal-$(L10N_SERVER_POSTFIX).pot
+geoportal/$(PACKAGE)_geoportal/locale/$(PACKAGE)_geoportal-$(L10N_SERVER_POSTFIX).pot: \
 		lingua-server.cfg \
 		$(SERVER_LOCALISATION_SOURCES_FILES)
 	$(PRERULE_CMD)
@@ -472,8 +472,8 @@ geoportal/$(PACKAGE)_geoportal/locale/$(PACKAGE)-$(L10N_SERVER_POSTFIX).pot: \
 	[ ! -f $@ ] || sed -i '/^"PO-Revision-Date: /d' $@
 	[ ! -f $@ ] || chmod go+r $@
 
-.PRECIOUS: geoportal/$(PACKAGE)_geoportal/locale/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).pot
-geoportal/$(PACKAGE)_geoportal/locale/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).pot: \
+.PRECIOUS: geoportal/$(PACKAGE)_geoportal/locale/$(PACKAGE)_geoportal-$(L10N_CLIENT_POSTFIX).pot
+geoportal/$(PACKAGE)_geoportal/locale/$(PACKAGE)_geoportal-$(L10N_CLIENT_POSTFIX).pot: \
 		lingua-client.cfg $(I18N_DEPENDENCIES) $(I18N_SOURCE_FILES)
 	$(PRERULE_CMD)
 	rm -f $@ # Because of WindowsError, thus only problematic on Windows
@@ -484,23 +484,34 @@ geoportal/$(PACKAGE)_geoportal/locale/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).pot: \
 	chmod go+r $@
 
 .PHONY: update-po
-update-po: $(addprefix /build/lang-client-, $(LANGUAGES)) $(addprefix /build/lang-server-, $(LANGUAGES))
+update-po: \
+	$(addprefix geoportal/$(PACKAGE)_geoportal/locale/, $(addsuffix /LC_MESSAGES/$(PACKAGE)_geoportal-$(L10N_SERVER_POSTFIX).po, $(LANGUAGES))) \
+	$(addprefix geoportal/$(PACKAGE)_geoportal/locale/, $(addsuffix /LC_MESSAGES/$(PACKAGE)_geoportal-$(L10N_CLIENT_POSTFIX).po, $(LANGUAGES)))
 
-.PRECIOUS: /build/lang-server-%
-/build/lang-server-%: geoportal/$(PACKAGE)_geoportal/locale/$(PACKAGE)-$(L10N_SERVER_POSTFIX).pot
+.PRECIOUS: geoportal/$(PACKAGE)_geoportal/locale/%/LC_MESSAGES/$(PACKAGE)_geoportal-$(L10N_SERVER_POSTFIX).po
+geoportal/$(PACKAGE)_geoportal/locale/%/LC_MESSAGES/$(PACKAGE)_geoportal-$(L10N_SERVER_POSTFIX).po: \
+		geoportal/$(PACKAGE)_geoportal/locale/$(PACKAGE)_geoportal-$(L10N_SERVER_POSTFIX).pot
 	$(PRERULE_CMD)
 	mkdir --parent geoportal/$(PACKAGE)_geoportal/locale/$*/LC_MESSAGES/
-	[ ! -f geoportal/$(PACKAGE)_geoportal/locale/$*/LC_MESSAGES/$(PACKAGE)-$(L10N_SERVER_POSTFIX).po ] || [ -f $< ] || msginit --no-translator --input=$< --output-file=geoportal/$(PACKAGE)_geoportal/locale/$*/LC_MESSAGES/$(PACKAGE)-$(L10N_SERVER_POSTFIX).po -l $*
-	touch --no-create geoportal/$(PACKAGE)_geoportal/locale/$*/LC_MESSAGES/$(PACKAGE)-$(L10N_SERVER_POSTFIX).po
-	[ ! -f $< ] || msgmerge --backup=none --update --sort-output --no-location geoportal/$(PACKAGE)_geoportal/locale/$*/LC_MESSAGES/$(PACKAGE)-$(L10N_SERVER_POSTFIX).po $<
+	[ -f $@ ] || [ ! -f $< ] || msginit --no-translator --input=$< --output-file=$@ -l $*
+	touch --no-create $@
+	[ ! -f $< ] || msgmerge --backup=none --update --sort-output --no-location $@ $<
+	touch /build/lang-server-$*
 
-.PRECIOUS: /build/lang-client-%
-/build/lang-client-%: geoportal/$(PACKAGE)_geoportal/locale/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).pot
+.PRECIOUS: geoportal/$(PACKAGE)_geoportal/locale/$*/LC_MESSAGES/$(PACKAGE)_geoportal-$(L10N_CLIENT_POSTFIX).po
+geoportal/$(PACKAGE)_geoportal/locale/%/LC_MESSAGES/$(PACKAGE)_geoportal-$(L10N_CLIENT_POSTFIX).po: \
+		geoportal/$(PACKAGE)_geoportal/locale/$(PACKAGE)_geoportal-$(L10N_CLIENT_POSTFIX).pot
 	$(PRERULE_CMD)
 	mkdir --parent geoportal/$(PACKAGE)_geoportal/locale/$*/LC_MESSAGES/
-	[ -f geoportal/$(PACKAGE)_geoportal/locale/$*/LC_MESSAGES/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).po ] || msginit --no-translator --input=$< --output-file=geoportal/$(PACKAGE)_geoportal/locale/$*/LC_MESSAGES/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).po -l $*
-	touch --no-create geoportal/$(PACKAGE)_geoportal/locale/$*/LC_MESSAGES/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).po
-	msgmerge --backup=none --update --sort-output --no-location geoportal/$(PACKAGE)_geoportal/locale/$*/LC_MESSAGES/$(PACKAGE)-$(L10N_CLIENT_POSTFIX).po $<
+	[ -f $@ ] || msginit --no-translator --input=$< --output-file=$@ -l $*
+	touch --no-create $@
+	msgmerge --backup=none --update --sort-output --no-location $@ $<
+	touch /build/lang-client-$*
+
+.PRECIOUS: /build/lang-%
+/build/lang-%:
+	$(PRERULE_CMD)
+	touch $@
 
 .PRECIOUS: %.mo
 %.mo: %.po
@@ -514,7 +525,7 @@ update-po: $(addprefix /build/lang-client-, $(LANGUAGES)) $(addprefix /build/lan
 build-ngeo: $(NGEO_OUTPUT_FILES)
 
 .PRECIOUS: $(APP_OUTPUT_DIR)/%.json
-$(APP_OUTPUT_DIR)/%.json: geoportal/$(PACKAGE)_geoportal/locale/%/LC_MESSAGES/$(PACKAGE)_geoportal-$(L10N_CLIENT_POSTFIX).po \
+$(APP_OUTPUT_DIR)/%.json: /build/lang-client-% \
 		/opt/c2cgeoportal_geoportal/c2cgeoportal_geoportal/locale/%/LC_MESSAGES/gmf.po \
 		/opt/c2cgeoportal_geoportal/c2cgeoportal_geoportal/locale/%/LC_MESSAGES/ngeo.po
 	$(PRERULE_CMD)
@@ -522,10 +533,7 @@ $(APP_OUTPUT_DIR)/%.json: geoportal/$(PACKAGE)_geoportal/locale/%/LC_MESSAGES/$(
 	node /usr/bin/compile-catalog \
 		/opt/c2cgeoportal_geoportal/c2cgeoportal_geoportal/locale/$*/LC_MESSAGES/gmf.po \
 		/opt/c2cgeoportal_geoportal/c2cgeoportal_geoportal/locale/$*/LC_MESSAGES/ngeo.po \
-		$< > $@
-
-geoportal/$(PACKAGE)_geoportal/locale/%/LC_MESSAGES/$(PACKAGE)_geoportal-$(L10N_CLIENT_POSTFIX).po:
-	echo "The po files will be create and updated with the rule update-po"
+		geoportal/$(PACKAGE)_geoportal/locale/$*/LC_MESSAGES/$(PACKAGE)_geoportal-$(L10N_CLIENT_POSTFIX).po > $@
 
 /opt/c2cgeoportal_geoportal/c2cgeoportal_geoportal/locale/en/LC_MESSAGES/%.po:
 	echo "Nothing to do for $@"

@@ -425,8 +425,8 @@ geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/
 	test -s $@
 
 geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/locale/en/LC_MESSAGES/+package+_geoportal-client.po:
-	mkdir --parent $(dir $@)
-	touch $@
+	$(PRERULE_CMD)
+	@echo "Nothing to be done for $@"
 
 .PHONY: buildlocales
 buildlocales: $(MO_FILES)

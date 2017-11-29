@@ -20,6 +20,17 @@ services:
     ports:
       - 15432:5432
 % endif
+
+  external-db:
+    image: camptocamp/testgeomapfish-external-db:latest
+    environment:
+      POSTGRES_USER: www-data
+      POSTGRES_PASSWORD: www-data
+      POSTGRES_DB: test
+% if development == "TRUE":
+    ports:
+      - 25432:5432
+% endif
 % endif
 
   mapserver:
