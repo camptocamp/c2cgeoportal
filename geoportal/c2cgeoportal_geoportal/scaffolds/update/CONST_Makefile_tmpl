@@ -151,11 +151,8 @@ I18N_SOURCE_FILES += $(APP_HTML_FILES) \
 	$(APP_DIRECTIVES_PARTIALS_FILES) \
 	geoportal/config.yaml
 # The theme from the database
-I18N_SOURCE_FILES += development.ini
+I18N_SOURCE_FILES += geoportal/development.ini
 I18N_DEPENDENCIES += project.yaml
-ifeq (${MAPSERVER}, TRUE)
-I18N_DEPENDENCIES += docker_mapserver
-endif
 
 
 # CGXP
@@ -421,8 +418,8 @@ build-cgxp: $(JSBUILD_OUTPUT_FILES) $(CSS_CGXP_OUTPUT)
 lint-ngeo: /build/eslint.timestamp
 
 .PHONY: serve
-serve: build development.ini
-	pserve --reload --monitor-restart development.ini
+serve: geoportal/development.ini build
+	pserve --reload --monitor-restart $<
 
 .PHONY: upgrade-db
 upgrade-db: alembic.ini
@@ -526,6 +523,9 @@ $(APP_OUTPUT_DIR)/%.json: geoportal/$(PACKAGE)_geoportal/locale/%/LC_MESSAGES/$(
 		/opt/c2cgeoportal_geoportal/c2cgeoportal_geoportal/locale/$*/LC_MESSAGES/gmf.po \
 		/opt/c2cgeoportal_geoportal/c2cgeoportal_geoportal/locale/$*/LC_MESSAGES/ngeo.po \
 		$< > $@
+
+geoportal/$(PACKAGE)_geoportal/locale/%/LC_MESSAGES/$(PACKAGE)_geoportal-$(L10N_CLIENT_POSTFIX).po:
+	echo "The po files will be create and updated with the rule update-po"
 
 /opt/c2cgeoportal_geoportal/c2cgeoportal_geoportal/locale/en/LC_MESSAGES/%.po:
 	echo "Nothing to do for $@"
