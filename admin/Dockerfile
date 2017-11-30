@@ -16,9 +16,11 @@ RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ jessie-pgdg main" > /etc/
 WORKDIR /app
 
 COPY admin/requirements.txt /app
+RUN mkdir /commons
+COPY commons/requirements.txt /commons
 
 RUN pip install --disable-pip-version-check --no-cache-dir \
-    -e git://github.com/camptocamp/c2cgeoform.git@4274932b47d98665d46c64dcd5853fb51527d8d3#egg=c2cgeoform \
+    -r /commons/requirements.txt \
     -r requirements.txt
 
 EXPOSE 80
