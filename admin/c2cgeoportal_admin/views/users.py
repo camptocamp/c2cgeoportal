@@ -1,3 +1,4 @@
+from functools import partial
 from pyramid.view import view_defaults
 from pyramid.view import view_config
 
@@ -6,13 +7,15 @@ from c2cgeoform.views.abstract_views import AbstractViews, ListField
 
 from c2cgeoportal_commons.models.static import User
 
+_list_field = partial(ListField, User)
+
 
 @view_defaults(match_param='table=users')
 class UserViews(AbstractViews):
     _list_fields = [
-        ListField('username'),
-        ListField('role_name'),
-        ListField('email')]
+        _list_field('username'),
+        _list_field('role_name'),
+        _list_field('email')]
     _id_field = 'id'
     _model = User
     _base_schema = GeoFormSchemaNode(User)

@@ -1,4 +1,5 @@
 from itertools import groupby
+from functools import partial
 from pyramid.view import view_defaults
 from pyramid.view import view_config
 
@@ -16,6 +17,7 @@ from sqlalchemy.orm import subqueryload
 
 from c2cgeoportal_commons.models.main import LayerWMS, RestrictionArea, Interface
 
+_list_field = partial(ListField, LayerWMS)
 
 base_schema = GeoFormSchemaNode(LayerWMS)
 base_schema.add(
@@ -49,37 +51,37 @@ base_schema.add(
 @view_defaults(match_param='table=layers_wms')
 class LayerWmsViews(AbstractViews):
     _list_fields = [
-        ListField('name'),
-        ListField('metadata_url'),
-        ListField('description'),
-        ListField('public'),
-        ListField('geo_table'),
-        ListField('exclude_properties'),
-        ListField('layer'),
-        ListField('style'),
-        ListField('time_mode'),
-        ListField('time_widget'),
-        ListField('ogc_server', renderer=lambda layer_wms: layer_wms.ogc_server.name),
-        ListField(
+        _list_field('name'),
+        _list_field('metadata_url'),
+        _list_field('description'),
+        _list_field('public'),
+        _list_field('geo_table'),
+        _list_field('exclude_properties'),
+        _list_field('layer'),
+        _list_field('style'),
+        _list_field('time_mode'),
+        _list_field('time_widget'),
+        _list_field('ogc_server', renderer=lambda layer_wms: layer_wms.ogc_server.name),
+        _list_field(
             'interfaces',
             sortable=False,
             renderer=lambda layer_wms: ', '.join([i.name or '' for i in layer_wms.interfaces])),
-        ListField(
+        _list_field(
             'dimensions',
             sortable=False,
             renderer=lambda layer_wms: '; '.join(
                 ['{}: {}'.format(group[0], ', '.join([d.value for d in group[1]]))
                  for group in groupby(layer_wms.dimensions, lambda d: d.name)])),
-        ListField(
+        _list_field(
             'parents_relation',
             sortable=False,
             renderer=lambda layer_wms:', '.join([p.treegroup.name or ''
                                                  for p in layer_wms.parents_relation])),
-        ListField(
+        _list_field(
             'restrictionareas',
             sortable=False,
             renderer=lambda layer_wms: ', '.join([r.name or '' for r in layer_wms.restrictionareas])),
-        ListField(
+        _list_field(
             'metadatas',
             sortable=False,
             renderer=lambda layer_wms: ', '.join(['{}: {}'.format(m.name, m.value) or ''
