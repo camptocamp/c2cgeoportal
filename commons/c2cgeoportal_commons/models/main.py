@@ -43,6 +43,7 @@ from geoalchemy2 import Geometry
 from geoalchemy2.shape import to_shape
 from deform.widget import HiddenWidget
 from c2cgeoform.ext import colander_ext, deform_ext
+from deform.widget import CheckboxWidget
 
 from c2cgeoportal_commons.models import Base, schema, srid
 from c2cgeoportal_commons.models.sqlalchemy import JSONEncodedDict
@@ -309,6 +310,7 @@ class LayergroupTreeitem(Base):
         backref=backref(
             'parents_relation', cascade='save-update,merge,delete,delete-orphan', info={
                 'colanderalchemy': {
+                    'title': _('Parents'),
                     'exclude': True
                 }}
         ),
@@ -446,7 +448,8 @@ class Layer(TreeItem):
     id = Column(Integer, ForeignKey(_schema + '.treeitem.id'), primary_key=True)
     public = Column(Boolean, default=True, info={
         'colanderalchemy': {
-            'title': _('Public')
+            'title': _('Public'),
+            'widget': CheckboxWidget()
         }})
     geo_table = Column(Unicode, info={
         'colanderalchemy': {
@@ -787,6 +790,7 @@ class Interface(Base):
         cascade='save-update,merge,refresh-expire',
         backref=backref('interfaces', info={
             'colanderalchemy': {
+                'title': _('Interfaces'),
                 'exclude': True
             }}
         )
@@ -823,6 +827,7 @@ class Metadata(Base):
             'metadatas',
             cascade='save-update,merge,delete,delete-orphan',
             info={'colanderalchemy': {
+                'title': _('Metadatas'),
                 'exclude': True
             }}
         ),
@@ -861,6 +866,7 @@ class Dimension(Base):
             cascade='save-update,merge,delete,delete-orphan',
             info={
                 'colanderalchemy': {
+                    'title': _('Dimensions'),
                     'exclude': True
                 }
             }
