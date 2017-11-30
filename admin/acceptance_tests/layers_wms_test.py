@@ -135,7 +135,6 @@ class TestLayerWMS():
         assert 'desktop, edit' == row['interfaces']
         assert 'Date: 2017, 1988; CLC: all' == row['dimensions']
         assert 'layer_group_0, layer_group_3' == row['parents_relation']
-        assert 'restrictionarea_0, restrictionarea_2' == row['restrictionareas']
         assert 'copyable: true, snappingConfig: {"tolerance": 50}' == row['metadatas']
 
     def test_base_edit(self, test_app, layer_wms_test_data):
