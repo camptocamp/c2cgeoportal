@@ -34,7 +34,7 @@ class LayerTreeViews():
             'themes': themes,
             'groups': groups,  # keep strong references
             'items': items,  # keep strong references
-            'tables': {
+            'itemtypes_tables': {
                 'theme': 'themes',
                 'group': 'groups',
                 'layerv1': 'layers_v1',
