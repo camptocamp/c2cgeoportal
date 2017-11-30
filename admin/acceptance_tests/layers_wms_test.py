@@ -102,7 +102,7 @@ class TestLayerWMS():
                     ('time_mode', 'Time mode'),
                     ('time_widget', 'Time widget'),
                     ('ogc_server', 'OGC server'),
-                    ('interfaces', "Interfaces", 'false'),
+                    ('interfaces', "Interfaces"),
                     ('dimensions', "Dimensions", 'false'),
                     ('parents_relation', "Parents", 'false'),
                     ('restrictionareas', 'Restriction areas', 'false'),

@@ -15,7 +15,7 @@ from c2cgeoform.views.abstract_views import AbstractViews
 from c2cgeoform.views.abstract_views import ListField
 from sqlalchemy.orm import subqueryload
 
-from c2cgeoportal_commons.models.main import LayerWMS, RestrictionArea, Interface
+from c2cgeoportal_commons.models.main import LayerWMS, RestrictionArea, Interface, OGCServer
 
 _list_field = partial(ListField, LayerWMS)
 
@@ -61,10 +61,16 @@ class LayerWmsViews(AbstractViews):
         _list_field('style'),
         _list_field('time_mode'),
         _list_field('time_widget'),
-        _list_field('ogc_server', renderer=lambda layer_wms: layer_wms.ogc_server.name),
+        _list_field(
+            'ogc_server',
+            renderer=lambda layer_wms: layer_wms.ogc_server.name,
+            sort_column=OGCServer.name,
+            filter_column=OGCServer.name),
         _list_field(
             'interfaces',
-            renderer=lambda layer_wms: ', '.join([i.name or '' for i in layer_wms.interfaces])),
+            renderer=lambda layer_wms: ', '.join([i.name or '' for i in layer_wms.interfaces]),
+            sort_column=Interface.name,
+            filter_column=Interface.name),
         _list_field(
             'dimensions',
             renderer=lambda layer_wms: '; '.join(
@@ -86,8 +92,14 @@ class LayerWmsViews(AbstractViews):
     _base_schema = base_schema
 
     def _base_query(self):
-        return self._request.dbsession.query(LayerWMS). \
-            options(subqueryload('restrictionareas'))
+        return self._request.dbsession.query(LayerWMS).distinct(). \
+            join('ogc_server'). \
+            join('interfaces'). \
+            options(subqueryload('interfaces')). \
+            options(subqueryload('dimensions')). \
+            options(subqueryload('restrictionareas')). \
+            options(subqueryload('metadatas')). \
+            options(subqueryload('parents_relation').joinedload('treegroup'))
 
     @view_config(route_name='c2cgeoform_index',
                  renderer='../templates/index.jinja2')
