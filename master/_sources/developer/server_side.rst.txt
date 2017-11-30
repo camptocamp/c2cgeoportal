@@ -102,9 +102,16 @@ To run the unit tests do this:
 
     ./docker-run make build
     docker build --tag=geomapfish-db docker/test-db
-    ./docker-compose-run alembic --config c2cgeoportal/tests/functional/alembic.ini --name=main upgrade head
-    ./docker-compose-run alembic --config c2cgeoportal/tests/functional/alembic.ini --name=static upgrade head
+    ./docker-compose-run alembic --config c2cgeoportal/tests/functional/alembic.ini upgrade head
+    ./docker-compose-run alembic --config c2cgeoportal/tests/functional/alembic_static.ini upgrade head
     ./docker-compose-run make tests
+
+To run a specific test use the ``--where`` switch. For example:
+
+.. prompt:: bash
+
+    ./docker-compose-run nosetests --where \
+        /src/geoportal/tests/functional/test_themes.py:TestThemesView.test_catalogue
 
 Adding tests
 ~~~~~~~~~~~~

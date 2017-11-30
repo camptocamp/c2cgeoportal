@@ -124,9 +124,12 @@ tests require to run with <cite>docker-compose-run</cite>.</p>
 <p>To run the unit tests do this:</p>
 <pre class="highlight"><span class="prompt1">./docker-run make build</span>
 <span class="prompt1">docker build --tag<span class="o">=</span>geomapfish-db docker/test-db</span>
-<span class="prompt1">./docker-compose-run alembic --config c2cgeoportal/tests/functional/alembic.ini --name<span class="o">=</span>main upgrade head</span>
-<span class="prompt1">./docker-compose-run alembic --config c2cgeoportal/tests/functional/alembic.ini --name<span class="o">=</span>static upgrade head</span>
+<span class="prompt1">./docker-compose-run alembic --config c2cgeoportal/tests/functional/alembic.ini upgrade head</span>
+<span class="prompt1">./docker-compose-run alembic --config c2cgeoportal/tests/functional/alembic_static.ini upgrade head</span>
 <span class="prompt1">./docker-compose-run make tests</span>
+</pre><p>To run a specific test use the <code class="docutils literal"><span class="pre">--where</span></code> switch. For example:</p>
+<pre class="highlight"><span class="prompt1">./docker-compose-run nosetests --where <span class="se">\</span>
+    /src/geoportal/tests/functional/test_themes.py:TestThemesView.test_catalogue</span>
 </pre></div>
 </div>
 <div class="section" id="adding-tests">
