@@ -200,7 +200,7 @@ geometry column. ``<schema>`` is the name of the schema including the table.
 what is configured in the admin interface for the layer.
 
 .. note:: The DATA example above is developed on several lines to make it
-    easily readable in this documentation. However please note that Mapserver
+    easily readable in this documentation. However please note that MapServer
     requires that this directive is contained on a single line.
 
 .. warning:: In some cases you can have geometries that overlap the restriction
@@ -357,7 +357,7 @@ Legend
 Legend text configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Mapserver allows different forms of legends.
+MapServer allows different forms of legends.
 
 - Legend with legend text (normal configuration, f.e. ``[ o ] Placemark``)::
 

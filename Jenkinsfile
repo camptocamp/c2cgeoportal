@@ -45,14 +45,6 @@ timeout(time: 2, unit: 'HOURS') {
                 sh './docker-run make build'
                 sh './docker-run travis/status.sh'
             }
-            stage('Build CI Docker images') {
-                checkout scm
-                sh "docker build --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --tag camptocamp/geomapfish-commons:${MAJOR_VERSION} commons"
-                sh "./docker-run --image=camptocamp/geomapfish-commons grep ${MAJOR_VERSION} /opt/c2cgeoportal_commons/c2cgeoportal_commons.egg-info/PKG-INFO"
-                sh "docker build --tag camptocamp/geomapfish-admin-build:${MAJOR_VERSION} docker/admin-build"
-                sh 'docker build --tag=camptocamp/c2cgeoportal-gis-db:latest docker/gis-db'
-                sh 'docker build --tag=camptocamp/c2cgeoportal-test-mapserver:latest docker/test-mapserver'
-            }
             stage('Lint') {
                 checkout scm
                 sh 'bash -c "test \\"`./docker-run id`\\" == \\"uid=0(root) gid=0(root) groups=0(root)\\""'
@@ -85,7 +77,7 @@ timeout(time: 2, unit: 'HOURS') {
                     geoportal/tests/functional/alembic.ini \
                     docker/test-mapserver/mapserver.map prepare-tests'''
                 sh 'docker-compose rm --stop --force'
-                sh './docker-compose-run sleep 5'
+                sh './docker-compose-run sleep 10'
                 sh './docker-compose-run alembic --config=geoportal/tests/functional/alembic.ini --name=main upgrade head'
                 sh './docker-compose-run alembic --config=geoportal/tests/functional/alembic.ini --name=static upgrade head'
                 sh './docker-compose-run make tests'
@@ -138,7 +130,7 @@ timeout(time: 2, unit: 'HOURS') {
                 checkout scm
                 try {
                     sh 'docker rm --volumes geomapfish-db | true'
-                    sh 'docker run --name geomapfish-db --env=POSTGRES_USER=www-data --env=POSTGRES_PASSWORD=www-data --env=POSTGRES_DB=geomapfish --publish=5432:5432 --detach camptocamp/c2cgeoportal-gis-db'
+                    sh 'docker run --name geomapfish-db --env=POSTGRES_USER=www-data --env=POSTGRES_PASSWORD=www-data --env=POSTGRES_DB=geomapfish --publish=5432:5432 --detach camptocamp/geomapfish-test-db'
                     // Test Upgrade an convert project
                     sh 'travis/test-upgrade-convert.sh init ${HOME}/workspace'
                     parallel 'docker': {

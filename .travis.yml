@@ -137,13 +137,13 @@ jobs:
       before_script:
         - docker build --tag=external-db docker/test-external-db
         - travis/create-new-project.sh
-        - travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-run travis/empty-make -f travis.mk help
+        - travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-run travis/empty-make --makefile=travis.mk help
         - travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-run make --makefile=travis.mk build
         - travis/run-on.sh /tmp/travis/testgeomapfish/ docker-compose up -d
         - travis/waitwsgi http://localhost:8080/
       script:
         # Test new Docker project
-        - travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-run travis/empty-make -f travis.mk build
+        - travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-run travis/empty-make --makefile=travis.mk build
         - travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-run make --makefile=travis.mk checks
         - find
           /tmp/travis/testgeomapfish/geoportal/setup.py
@@ -191,20 +191,21 @@ jobs:
         - sudo chmod o+rx /var/log/apache2/
         - sudo chmod o+r /var/log/apache2/*.log
         # Database for the GeoMapFish application
-        - docker build --tag=camptocamp/c2cgeoportal-gis-db docker/gis-db
+        - docker build --tag=camptocamp/geomapfish-test-gis-db docker/gis-db
+        - ./docker-run make /build/testdb-docker.timestamp
         - "docker run --env=POSTGRES_USER=www-data --env=POSTGRES_PASSWORD=www-data --env=POSTGRES_DB=geomapfish \
-            --publish=5432:5432 --detach camptocamp/c2cgeoportal-gis-db"
+            --publish=5432:5432 --detach camptocamp/geomapfish-test-db"
         # - sudo service tomcat7 stop
         - docker build --tag=external-db docker/test-external-db
         - docker run --publish=5433:5432 --detach external-db ## FOR NON DOCKER TEST
         - mkdir /tmp/travis
         - travis/create-new-nondocker-project.sh
-        - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run travis/empty-make -f travis.mk help
+        - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run travis/empty-make --makefile=travis.mk help
         - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run make --makefile=travis.mk build
         - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ make --makefile=travis-nondocker.mk build
       script:
         # Test new non Docker project
-        - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run travis/empty-make -f travis.mk build
+        - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run travis/empty-make --makefile=travis.mk build
         - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run make --makefile=travis.mk checks
         - find
             /tmp/travis/testgeomapfish/geoportal/setup.py
@@ -237,9 +238,9 @@ jobs:
       if: NOT repo = camptocamp/c2cgeoportal
       before_script:
         # database for the GeoMapFish application
-        - docker build --tag=camptocamp/c2cgeoportal-gis-db docker/gis-db
+        - docker build --tag=camptocamp/geomapfish-test-gis-db docker/gis-db
         - "docker run --env=POSTGRES_USER=www-data --env=POSTGRES_PASSWORD=www-data --env=POSTGRES_DB=geomapfish \
-            --publish=5432:5432 --detach camptocamp/c2cgeoportal-gis-db"
+            --publish=5432:5432 --detach camptocamp/geomapfish-test-gis-db"
         - travis/test-upgrade-convert.sh init /tmp/travis
       script:
         # Test Upgrade an convert project
@@ -252,9 +253,9 @@ jobs:
       if: NOT repo = camptocamp/c2cgeoportal
       before_script:
         # database for the GeoMapFish application
-        - docker build --tag=camptocamp/c2cgeoportal-gis-db docker/gis-db
+        - docker build --tag=camptocamp/geomapfish-test-gis-db docker/gis-db
         - "docker run --env=POSTGRES_USER=www-data --env=POSTGRES_PASSWORD=www-data --env=POSTGRES_DB=geomapfish \
-            --publish=5432:5432 --detach camptocamp/c2cgeoportal-gis-db"
+            --publish=5432:5432 --detach camptocamp/geomapfish-test-gis-db"
         - travis/test-upgrade-convert.sh init  /tmp/travis
       script:
         # Test Upgrade an convert project

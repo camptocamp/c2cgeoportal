@@ -60,7 +60,7 @@ In the ``vars_<project>.yaml`` file, define:
 Cleanup
 =======
 
-Remove the mapserver folder:
+Remove the MapServer folder:
 
 .. prompt:: bash
 
@@ -76,7 +76,7 @@ You should setup your OWS service in the QGIS project properties in the OWS
 tab.
 
 You should take care to **uncheck** the checkbox *User Layer ids as names*. If
-this checkbox is enabled you will have unreliabel layers name.
+this checkbox is enabled you will have unreliable layers name.
 
 You should **check** the checkbox *Add geometry to feature response* in order
 to make the WMS GetFeatureInfo working correctly.

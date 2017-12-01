@@ -1,7 +1,7 @@
 #!/bin/bash -ex
 
 WORKSPACE=$1
-
+./docker-run --image=camptocamp/geomapfish-build make clean-all
 mkdir --parent ${WORKSPACE}/testgeomapfish
 
 export SRID=21781 EXTENT=489246.36,78873.44,837119.76,296543.14

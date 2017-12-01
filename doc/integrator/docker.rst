@@ -1,3 +1,5 @@
+.. _integrator_docker:
+
 Use Docker to deploy your application
 =====================================
 
@@ -115,7 +117,7 @@ Then, in your ``<package>/__init__.py`` file, add this function:
         settings[DB_KEY] = new
 
 By setting the ``SQLALCHEMY_URL`` environment variable in your composition
-for the wsgi image, you'll be able to change the DB connection used.
+for the WSGI image, you'll be able to change the DB connection used.
 
 You can change your ``production.ini`` and ``development.ini`` files to use
 environment variables for configuring the loggers. Here is an example for
@@ -177,7 +179,7 @@ add the following at the end of your ``Dockerfile``:
     ENV SQL_LOG_LEVEL WARN
     ENV OTHER_LOG_LEVEL WARN
 
-Mapserver
+MapServer
 .........
 
 The created ``mapserver/Dockerfile`` file installs a hook to make the setup of

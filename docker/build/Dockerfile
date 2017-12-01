@@ -26,6 +26,7 @@ RUN \
 
 COPY run /usr/bin/
 COPY sudoers /etc/
+COPY bin/* /usr/bin/
 
 WORKDIR /src
 

@@ -29,8 +29,11 @@
 /admin/c2cgeoportal_admin.egg-info/
 /docker/admin-build/Dockerfile
 /docker/admin-build/npm-packages
+/docker/test-db/12-alembic.sql
+/docker/test-db/13-alembic-static.sql
 /docker/test-mapserver/mapserver.map
 /doc/index.rst
+/doc/developer/server_side.rst
 /dist/
 /docker-compose.yaml
 /coverage.xml
