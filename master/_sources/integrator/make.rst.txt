@@ -84,7 +84,7 @@ The following variables may be set in the makefiles:
 * ``CGXP_INTERFACES``: List of CGXP interfaces, default is empty.
 * ``NGEO_INTERFACES``: List of ngeo interfaces, default is ``mobile desktop``.
 * ``PRINT``: Mapfish print is enable, default to ``TRUE``.
-* ``MAPSERVER``: Mapserver is enable, default to ``TRUE``.
+* ``MAPSERVER``: MapServer is enable, default to ``TRUE``.
 * ``TILECLOUD_CHAIN``: ``TRUE`` to indicate that we use TileCloud-chain, default to ``TRUE``.
 * ``VISIBLE_ENTRY_POINT``: The entry point (path) of the application, default to ``/``.
 * ``VISIBLE_WEB_HOST``: The hostname, required.

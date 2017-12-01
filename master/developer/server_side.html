@@ -47,62 +47,15 @@
 <h2>Create development environment in a project<a class="headerlink" href="#create-development-environment-in-a-project" title="Permalink to this headline">¶</a></h2>
 <p>c2cgeoportal developers often need to test c2cgeoportal changes in the context
 of an existing c2cgeoportal application. Here is how:</p>
-<ul>
-<li><p class="first">Change current directory to your sources root directory and clone <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> there (in the
-following line the sources directory is the user home directory). Then build c2cgeoportal,
-and go back to your project directory:</p>
-<pre class="highlight"><style type="text/css">
-span.prompt1:before {
-  content: "$ ";
-}
-</style><span class="prompt1"><span class="nb">cd</span> ~</span>
-<span class="prompt1">git clone git@github.com:camptocamp/c2cgeoportal.git</span>
-<span class="prompt1"><span class="nb">cd</span> c2cgeoportal</span>
-<span class="prompt1">./docker-run make build</span>
-<span class="prompt1"><span class="nb">cd</span>  ~/&lt;project&gt;</span>
-</pre></li>
-</ul>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>Old build directory</p>
-<blockquote>
-<div><p>If you still have old build directory remove it before running the build</p>
-<pre class="highlight"><span class="prompt1">rm -rf .build</span>
-</pre></div></blockquote>
-<p class="last">You can now check out your development branch if necessary.</p>
-</div>
-<ul>
-<li><p class="first">Edit your <code class="docutils literal"><span class="pre">&lt;user&gt;.mk</span></code> to have something like this:</p>
-<pre class="code make literal-block">
-<span class="name variable">DEVELOPMENT</span> <span class="operator">=</span> TRUE
-<span class="name variable">REQUIREMENTS</span> <span class="operator">=</span> -e ../c2cgeoportal
+<p>Build the new containers:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">..</span> <span class="n">prompt</span><span class="p">::</span> <span class="n">bash</span>
 
-<span class="comment preproc">include &lt;package&gt;.mk
-</span>
-</pre>
-</li>
-<li><p class="first">Uninstall the regular c2cgeoportal egg from the virtual environment:</p>
-<pre class="highlight"><span class="prompt1">./docker-run pip uninstall c2cgeoportal</span>
-</pre></li>
-<li><p class="first">Remove/comment the following line in the CONST_requirements.txt file:</p>
-<div class="code make highlight-default"><div class="highlight"><pre><span></span><span class="n">c2cgeoportal</span><span class="o">==</span><span class="mf">1.6</span><span class="o">.</span><span class="mi">0</span>
+  <span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="nd">@github</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="n">camptocamp</span><span class="o">/</span><span class="n">c2cgeoportal</span><span class="o">.</span><span class="n">git</span>
+  <span class="n">cd</span> <span class="n">c2cgeoportal</span>
+  <span class="n">MAJOR_VERSION</span><span class="o">=</span><span class="mf">2.3</span> <span class="o">./</span><span class="n">docker</span><span class="o">-</span><span class="n">run</span> <span class="n">make</span> <span class="n">build</span>
 </pre></div>
 </div>
-</li>
-<li><p class="first">Build your application application:</p>
-<pre class="highlight"><span class="prompt1">./docker-run rm /build/requirements.timestamp <span class="o">&amp;&amp;</span> ./docker-run make build</span>
-</pre></li>
-</ul>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>Print performance issue</p>
-<p>When restarting the print server frequently, performance issues may randomly be observed.
-This is done in random number generation.</p>
-<p>To improve the performances you should add in the <code class="docutils literal"><span class="pre">/srv/tomcat/tomcat1/bin/setenv-local.sh</span></code> file:</p>
-<div class="code bash last highlight-default"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">ADD_JAVA_OPTS</span><span class="o">=</span><span class="s2">&quot;-Djava.security.egd=file:/dev/./urandom&quot;</span>
-</pre></div>
-</div>
-</div>
+<p>Than they are ready to use in the application on the same host.</p>
 </div>
 <div class="section" id="tests">
 <h2>Tests<a class="headerlink" href="#tests" title="Permalink to this headline">¶</a></h2>
@@ -110,28 +63,60 @@ This is done in random number generation.</p>
 <h3>Running tests<a class="headerlink" href="#running-tests" title="Permalink to this headline">¶</a></h3>
 <p>To be able to run c2cgeoportal tests you need to have the c2cgeoportal source
 code, and a make environment for it. So do that first, as described below.</p>
-<div class="section" id="install-c2cgeportal-from-source">
-<h4>Install c2cgeportal from source<a class="headerlink" href="#install-c2cgeportal-from-source" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="install-c2cgeoportal-from-source">
+<h4>Install c2cgeoportal from source<a class="headerlink" href="#install-c2cgeoportal-from-source" title="Permalink to this headline">¶</a></h4>
 <p>Check out c2cgeoportal from GitHub:</p>
-<pre class="highlight"><span class="prompt1">git clone git@github.com:camptocamp/c2cgeoportal.git</span>
+<pre class="highlight"><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">git clone git@github.com:camptocamp/c2cgeoportal.git</span>
 <span class="prompt1"><span class="nb">cd</span> c2cgeoportal</span>
+</pre><p>Pull all the base images:</p>
+<pre class="highlight"><span class="prompt1">./docker-run make pull</span>
+</pre><p>If you modify something in the folder <code class="docutils literal"><span class="pre">docker/build</span></code> build the base image:</p>
+<pre class="highlight"><span class="prompt1">docker build --tag camptocamp/geomapfish-build-dev:2.3 docker/build</span>
+</pre><p>Build everything:</p>
+<pre class="highlight"><span class="prompt1">./docker-run make build</span>
 </pre><p>c2cgeoportal has two types of tests: unit tests and functional tests. The unit
 tests are self-contained, and do not require any specific setup. The functional
-tests require to run with <cite>docker-compose-run</cite>.</p>
+tests require to run with <code class="docutils literal"><span class="pre">docker-compose-run</span></code>.</p>
+<p>docker-run will:</p>
+<ul class="simple">
+<li>Run the given command in the docker build image.</li>
+<li>Mount the current directory in /src.</li>
+<li>Use the current user and home directory.</li>
+<li>Use a named volume related to the current folder in <code class="docutils literal"><span class="pre">/build</span></code>.</li>
+</ul>
+<p>docker-compose will also:</p>
+<ul class="simple">
+<li>Have a testing database and a testing MapServer.</li>
+</ul>
+<p>Docker images dependencies:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">..</span> <span class="n">image</span><span class="p">::</span> <span class="n">docker</span><span class="o">.</span><span class="n">png</span>
+<span class="o">..</span> <span class="n">source</span> <span class="n">file</span> <span class="ow">is</span> <span class="n">docker</span><span class="o">.</span><span class="n">dia</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>Image nomenclature:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">camptocamp/geomapfish-*</span></code> for all images generated by/for c2cgeoportal.</li>
+<li><code class="docutils literal"><span class="pre">camptocamp/geomapfish-test-*</span></code> for all images used only for the CI (not pushed on a Docker repository).</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal"><span class="pre">camptocamp/testgeomapfish-*</span></code> for all images used by the CI to</dt>
+<dd>test applications generated using scaffolds.</dd>
+</dl>
+</li>
+</ul>
 </div>
 <div class="section" id="unit-tests">
 <h4>Unit tests<a class="headerlink" href="#unit-tests" title="Permalink to this headline">¶</a></h4>
-<p>To run the unit tests do this:</p>
-<pre class="highlight"><span class="prompt1">./docker-run make build</span>
-<span class="prompt1">docker build --tag<span class="o">=</span>geomapfish-db docker/test-db</span>
-<span class="prompt1">./docker-compose-run alembic --config c2cgeoportal/tests/functional/alembic.ini --name<span class="o">=</span>main upgrade head</span>
-<span class="prompt1">./docker-compose-run alembic --config c2cgeoportal/tests/functional/alembic.ini --name<span class="o">=</span>static upgrade head</span>
-<span class="prompt1">./docker-compose-run make tests</span>
+<p>Before to run the tests, install and build all dependencies:</p>
+<pre class="highlight"><span class="prompt1">./docker-run make prepare-tests</span>
+</pre><p>Run the tests:</p>
+<pre class="highlight"><span class="prompt1">./docker-compose-run make tests</span>
+</pre><p>To run a specific test use the <code class="docutils literal"><span class="pre">-k</span></code> switch. For example:</p>
+<pre class="highlight"><span class="prompt1">./docker-compose-run py.tests -k test_catalogue geoportal/tests</span>
 </pre></div>
-</div>
-<div class="section" id="adding-tests">
-<h3>Adding tests<a class="headerlink" href="#adding-tests" title="Permalink to this headline">¶</a></h3>
-<p><strong>To Be Done</strong></p>
 </div>
 </div>
 <div class="section" id="upgrade-dependencies">
@@ -187,9 +172,7 @@ docker image. So developers who modify the <code class="docutils literal"><span 
 <p>Add a new script call from the application’s root directory:</p>
 <pre class="highlight"><span class="prompt1">./docker-compose-run alembic --name<span class="o">=[</span>main<span class="p">|</span>static<span class="o">]</span> revision --message <span class="s2">&quot;&lt;Explicit name&gt;&quot;</span></span>
 </pre><p>Or in c2cgeoportal root directory:</p>
-<pre class="highlight"><span class="prompt1">./docker-compose-run alembic <span class="se">\</span>
-    --config geoportal/tests/functional/alembic.ini --name<span class="o">=[</span>main<span class="p">|</span>static<span class="o">]</span> <span class="se">\</span>
-    revision --message <span class="s2">&quot;&lt;Explicit name&gt;&quot;</span></span>
+<pre class="highlight"><span class="prompt1">./docker-compose-run alembic         --config geoportal/tests/functional/alembic.ini --name<span class="o">=[</span>main<span class="p">|</span>static<span class="o">]</span>         revision --message <span class="s2">&quot;&lt;Explicit name&gt;&quot;</span></span>
 </pre><p>This will generate the migration script in
 <code class="docutils literal"><span class="pre">commons/c2cgeoportal/commons/alembic/[main|static]/xxx_&lt;Explicite_name&gt;.py</span></code>.</p>
 <p>To get the project schema use:
@@ -265,11 +248,10 @@ docker image. So developers who modify the <code class="docutils literal"><span 
 <li><a class="reference internal" href="#create-development-environment-in-a-project">Create development environment in a project</a></li>
 <li><a class="reference internal" href="#tests">Tests</a><ul>
 <li><a class="reference internal" href="#running-tests">Running tests</a><ul>
-<li><a class="reference internal" href="#install-c2cgeportal-from-source">Install c2cgeportal from source</a></li>
+<li><a class="reference internal" href="#install-c2cgeoportal-from-source">Install c2cgeoportal from source</a></li>
 <li><a class="reference internal" href="#unit-tests">Unit tests</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#adding-tests">Adding tests</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#upgrade-dependencies">Upgrade dependencies</a><ul>

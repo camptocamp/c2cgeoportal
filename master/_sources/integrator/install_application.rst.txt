@@ -145,11 +145,11 @@ Windows Specific Configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Some Python modules cannot currently be installed through the Python Package
-Index (pypi) and they have to be downloaded manually and stored. This is
+Index (PyPI) and they have to be downloaded manually and stored. This is
 because these packages use DLLs and binaries which would have to be compiled
 using a C compiler.
 
-Furthermore, some changes in the apache wsgi and mapserver configurations are
+Furthermore, some changes in the apache WSGI and MapServer configurations are
 required to make c2cgeoportal work on Windows.
 
 Also, between all the different command interfaces available on Windows (cmd,
@@ -196,7 +196,7 @@ to exist and to contain these wheels.
 mapserver/c2cgeoportal.map.mako
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You must specify the path to the mapserver's epsg file by uncommenting and adapting
+You must specify the path to the MapServer's EPSG file by uncommenting and adapting
 this line under ``MAP`` (use regular slash ``/``) ::
 
     PROJ_LIB" "C:/PATH/TO/ms4w/proj/nad"

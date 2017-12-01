@@ -42,7 +42,7 @@
           <div class="body" role="main">
             
   <div class="section" id="use-docker-to-deploy-your-application">
-<h1>Use Docker to deploy your application<a class="headerlink" href="#use-docker-to-deploy-your-application" title="Permalink to this headline">¶</a></h1>
+<span id="integrator-docker"></span><h1>Use Docker to deploy your application<a class="headerlink" href="#use-docker-to-deploy-your-application" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="configure-your-project">
 <h2>Configure your project<a class="headerlink" href="#configure-your-project" title="Permalink to this headline">¶</a></h2>
 <p>Edit the <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> file and add those lines:</p>
@@ -132,7 +132,7 @@ composition, you can add this in your <code class="docutils literal"><span class
 </pre></div>
 </div>
 <p>By setting the <code class="docutils literal"><span class="pre">SQLALCHEMY_URL</span></code> environment variable in your composition
-for the wsgi image, you’ll be able to change the DB connection used.</p>
+for the WSGI image, you’ll be able to change the DB connection used.</p>
 <p>You can change your <code class="docutils literal"><span class="pre">production.ini</span></code> and <code class="docutils literal"><span class="pre">development.ini</span></code> files to use
 environment variables for configuring the loggers. Here is an example for
 the part about the logging:</p>
@@ -192,7 +192,7 @@ add the following at the end of your <code class="docutils literal"><span class=
 </div></blockquote>
 </div>
 <div class="section" id="mapserver">
-<h3>Mapserver<a class="headerlink" href="#mapserver" title="Permalink to this headline">¶</a></h3>
+<h3>MapServer<a class="headerlink" href="#mapserver" title="Permalink to this headline">¶</a></h3>
 <p>The created <code class="docutils literal"><span class="pre">mapserver/Dockerfile</span></code> file installs a hook to make the setup of
 the DB possible. Just set the <code class="docutils literal"><span class="pre">DB_CONNECTION</span></code> environment variable to
 something like that:</p>
@@ -254,7 +254,7 @@ DB schema, if needed.</p>
 <li><a class="reference internal" href="#run-with-a-local-c2cgeoportal">Run with a local c2cgeoportal</a></li>
 <li><a class="reference internal" href="#make-your-docker-images-configurable-from-the-composition">Make your Docker images configurable from the composition</a><ul>
 <li><a class="reference internal" href="#wsgi">WSGI</a></li>
-<li><a class="reference internal" href="#mapserver">Mapserver</a></li>
+<li><a class="reference internal" href="#mapserver">MapServer</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#keep-your-db-schema-up-to-date">Keep your DB schema up to date</a></li>

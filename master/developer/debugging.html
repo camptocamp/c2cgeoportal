@@ -60,7 +60,7 @@ span.prompt1:before {
   content: "$ ";
 }
 </style><span class="prompt1">shp2img -m &lt;mapfile&gt; -o test.png -e &lt;minx&gt; &lt;miny&gt; &lt;maxx&gt; &lt;maxy&gt; -s &lt;sizex&gt; &lt;sizey&gt; -l &lt;layers&gt;</span>
-</pre><p>You may also activate Mapserver’s debug mode and set environment variable of the Mapserver container
+</pre><p>You may also activate MapServer’s debug mode and set environment variable of the MapServer container
 <code class="docutils literal"><span class="pre">MS_DEBUGLEVEL</span></code> to <code class="docutils literal"><span class="pre">5</span></code> (most verbose level, default is 0).</p>
 <p><a class="reference external" href="http://mapserver.org/optimization/debugging.html?highlight=debug#debug-levels">More informations</a></p>
 </div>
@@ -81,7 +81,7 @@ Actually we display the running rule and why she is running (dependence update).
 </div>
 <div class="section" id="docker">
 <h2>Docker<a class="headerlink" href="#docker" title="Permalink to this headline">¶</a></h2>
-<p>Edit a file in a running apache wsgi container</p>
+<p>Edit a file in a running apache WSGI container</p>
 <pre class="highlight"><span class="prompt1">docker <span class="nb">exec</span> -ti &lt;package&gt;_wsgi_1 bash</span>
 <span class="prompt1">vi ...</span>
 <span class="prompt1"><span class="nb">kill</span> -s USR1 <span class="m">1</span>  <span class="c1"># graceful</span></span>

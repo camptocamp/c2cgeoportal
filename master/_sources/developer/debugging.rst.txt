@@ -25,7 +25,7 @@ Sometime more information are available by using this command:
 
     shp2img -m <mapfile> -o test.png -e <minx> <miny> <maxx> <maxy> -s <sizex> <sizey> -l <layers>
 
-You may also activate Mapserver's debug mode and set environment variable of the Mapserver container
+You may also activate MapServer's debug mode and set environment variable of the MapServer container
 ``MS_DEBUGLEVEL`` to ``5`` (most verbose level, default is 0).
 
 `More informations <http://mapserver.org/optimization/debugging.html?highlight=debug#debug-levels>`_
@@ -55,7 +55,7 @@ Actually we display the running rule and why she is running (dependence update).
 Docker
 ------
 
-Edit a file in a running apache wsgi container
+Edit a file in a running apache WSGI container
 
 .. prompt:: bash
 

@@ -151,10 +151,10 @@ application source tree:</p>
 <div class="section" id="windows-specific-configuration">
 <h3>Windows Specific Configuration<a class="headerlink" href="#windows-specific-configuration" title="Permalink to this headline">¶</a></h3>
 <p>Some Python modules cannot currently be installed through the Python Package
-Index (pypi) and they have to be downloaded manually and stored. This is
+Index (PyPI) and they have to be downloaded manually and stored. This is
 because these packages use DLLs and binaries which would have to be compiled
 using a C compiler.</p>
-<p>Furthermore, some changes in the apache wsgi and mapserver configurations are
+<p>Furthermore, some changes in the apache WSGI and MapServer configurations are
 required to make c2cgeoportal work on Windows.</p>
 <p>Also, between all the different command interfaces available on Windows (cmd,
 Cygwin, git mingw), only Windows default cmd interface handle paths correctly
@@ -194,7 +194,7 @@ to exist and to contain these wheels.</p>
 </div>
 <div class="section" id="mapserver-c2cgeoportal-map-mako">
 <h4>mapserver/c2cgeoportal.map.mako<a class="headerlink" href="#mapserver-c2cgeoportal-map-mako" title="Permalink to this headline">¶</a></h4>
-<p>You must specify the path to the mapserver’s epsg file by uncommenting and adapting
+<p>You must specify the path to the MapServer’s EPSG file by uncommenting and adapting
 this line under <code class="docutils literal"><span class="pre">MAP</span></code> (use regular slash <code class="docutils literal"><span class="pre">/</span></code>)</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">PROJ_LIB</span><span class="s2">&quot; &quot;</span><span class="n">C</span><span class="p">:</span><span class="o">/</span><span class="n">PATH</span><span class="o">/</span><span class="n">TO</span><span class="o">/</span><span class="n">ms4w</span><span class="o">/</span><span class="n">proj</span><span class="o">/</span><span class="n">nad</span><span class="s2">&quot;</span>
 </pre></div>
