@@ -18,7 +18,7 @@ WORKDIR /app
 COPY admin/requirements.txt /app
 
 RUN pip install --disable-pip-version-check --no-cache-dir \
-    -e git://github.com/camptocamp/c2cgeoform.git@4274932b47d98665d46c64dcd5853fb51527d8d3#egg=c2cgeoform \
+    -e git://github.com/camptocamp/c2cgeoform.git@c54a04d73d66ec94420a147e9987c49642768166#egg=c2cgeoform \
     -r requirements.txt
 
 EXPOSE 80
