@@ -137,14 +137,14 @@ jobs:
       before_script:
         - docker build --tag=external-db docker/test-external-db
         - travis/create-new-project.sh
-        - travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-run travis/empty-make --makefile=travis.mk help
-        - travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-run make --makefile=travis.mk build
-        - travis/run-on.sh /tmp/travis/testgeomapfish/ docker-compose up -d
+        - travis/run-on /tmp/travis/testgeomapfish/ ./docker-run travis/empty-make --makefile=travis.mk help
+        - travis/run-on /tmp/travis/testgeomapfish/ ./docker-run make --makefile=travis.mk build
+        - travis/run-on /tmp/travis/testgeomapfish/ docker-compose up -d
         - travis/waitwsgi http://localhost:8080/
       script:
         # Test new Docker project
-        - travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-run travis/empty-make --makefile=travis.mk build
-        - travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-run make --makefile=travis.mk checks
+        - travis/run-on /tmp/travis/testgeomapfish/ ./docker-run travis/empty-make --makefile=travis.mk build
+        - travis/run-on /tmp/travis/testgeomapfish/ ./docker-run make --makefile=travis.mk checks
         - find
           /tmp/travis/testgeomapfish/geoportal/setup.py
           /tmp/travis/testgeomapfish/geoportal/testgeomapfish_geoportal/*.py
@@ -154,21 +154,21 @@ jobs:
         - travis/test-new-project http://localhost:8080/c2c/health_check
         - travis/test-new-project http://localhost:8080/c2c/health_check?max_level=100
         - travis/test-new-project http://localhost:8080/layers/test/values/type enum
-        - travis/run-on.sh /tmp/travis/testgeomapfish/ docker-compose logs
-        - travis/run-on.sh /tmp/travis/testgeomapfish/ docker-compose down
-        - travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-run travis/status.sh
-        - "travis/run-on.sh /tmp/travis/testgeomapfish/ \
+        - travis/run-on /tmp/travis/testgeomapfish/ docker-compose logs
+        - travis/run-on /tmp/travis/testgeomapfish/ docker-compose down
+        - travis/run-on /tmp/travis/testgeomapfish/ ./docker-run travis/status.sh
+        - "travis/run-on /tmp/travis/testgeomapfish/ \
             ./docker-run make --makefile=empty-vars.mk geoportal/config.yaml"
-        - "travis/run-on.sh /tmp/travis/testgeomapfish/ \
+        - "travis/run-on /tmp/travis/testgeomapfish/ \
             ./docker-run make --makefile=travis.mk alembic.ini"
-        - travis/run-on.sh /tmp/travis/testgeomapfish/ ./docker-compose-run sleep 15
-        - "travis/run-on.sh /tmp/travis/testgeomapfish/ \
+        - travis/run-on /tmp/travis/testgeomapfish/ ./docker-compose-run sleep 15
+        - "travis/run-on /tmp/travis/testgeomapfish/ \
             ./docker-compose-run alembic --name=main upgrade head"
-        - "travis/run-on.sh /tmp/travis/testgeomapfish/ \
+        - "travis/run-on /tmp/travis/testgeomapfish/ \
             ./docker-compose-run alembic --name=static upgrade head"
-        - "travis/run-on.sh /tmp/travis/testgeomapfish/ \
+        - "travis/run-on /tmp/travis/testgeomapfish/ \
             ./docker-compose-run alembic --name=static downgrade base"
-        - "travis/run-on.sh /tmp/travis/testgeomapfish/ \
+        - "travis/run-on /tmp/travis/testgeomapfish/ \
             ./docker-compose-run alembic --name=main downgrade base"
 
     ## FOR NON DOCKER TESTS
@@ -198,13 +198,13 @@ jobs:
         - docker run --publish=5433:5432 --detach external-db ## FOR NON DOCKER TEST
         - mkdir /tmp/travis
         - travis/create-new-nondocker-project.sh
-        - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run travis/empty-make --makefile=travis.mk help
-        - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run make --makefile=travis.mk build
-        - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ make --makefile=travis-nondocker.mk build
+        - travis/run-on /tmp/travis/nondockertestgeomapfish/ ./docker-run travis/empty-make --makefile=travis.mk help
+        - travis/run-on /tmp/travis/nondockertestgeomapfish/ ./docker-run make --makefile=travis.mk build
+        - travis/run-on /tmp/travis/nondockertestgeomapfish/ make --makefile=travis-nondocker.mk build
       script:
         # Test new non Docker project
-        - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run travis/empty-make --makefile=travis.mk build
-        - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run make --makefile=travis.mk checks
+        - travis/run-on /tmp/travis/nondockertestgeomapfish/ ./docker-run travis/empty-make --makefile=travis.mk build
+        - travis/run-on /tmp/travis/nondockertestgeomapfish/ ./docker-run make --makefile=travis.mk checks
         - find
             /tmp/travis/testgeomapfish/geoportal/setup.py
             /tmp/travis/testgeomapfish/geoportal/testgeomapfish_geoportal/*.py
@@ -216,19 +216,19 @@ jobs:
         - cat /var/log/apache2/error.log
         - cat /var/log/apache2/access.log
         - sudo cat /var/log/tomcat7/catalina.out
-        - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run travis/status.sh
-        - travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ ./docker-run rm /build/c2ctemplate-cache.json
-        - "travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ \
+        - travis/run-on /tmp/travis/nondockertestgeomapfish/ ./docker-run travis/status.sh
+        - travis/run-on /tmp/travis/nondockertestgeomapfish/ ./docker-run rm /build/c2ctemplate-cache.json
+        - "travis/run-on /tmp/travis/nondockertestgeomapfish/ \
             ./docker-run make --makefile=empty-vars.mk geoportal/config.yaml"
-        - "travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ \
+        - "travis/run-on /tmp/travis/nondockertestgeomapfish/ \
             ./docker-run make --makefile=travis.mk alembic.ini"
-        - "travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ \
+        - "travis/run-on /tmp/travis/nondockertestgeomapfish/ \
             ./docker-run alembic --name=main upgrade head"
-        - "travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ \
+        - "travis/run-on /tmp/travis/nondockertestgeomapfish/ \
             ./docker-run alembic --name=static upgrade head"
-        - "travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ \
+        - "travis/run-on /tmp/travis/nondockertestgeomapfish/ \
             ./docker-run alembic --name=static downgrade base"
-        - "travis/run-on.sh /tmp/travis/nondockertestgeomapfish/ \
+        - "travis/run-on /tmp/travis/nondockertestgeomapfish/ \
             ./docker-run alembic --name=main downgrade base"
         ## END FOR NON DOCKER TESTS
 
