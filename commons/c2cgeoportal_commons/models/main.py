@@ -609,7 +609,7 @@ class LayerWMS(DimensionLayer):
         'colanderalchemy': {
             'widget': HiddenWidget()
         }})
-    ogc_server_id = Column(Integer, ForeignKey(_schema + ".ogc_server.id"), nullable=False, info={
+    ogc_server_id = Column(Integer, ForeignKey(_schema + '.ogc_server.id'), nullable=False, info={
         'colanderalchemy': {
             'title': _('OGC server'),
             'widget': deform_ext.RelationSelect2Widget(
