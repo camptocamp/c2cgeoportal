@@ -4,6 +4,7 @@ from pyramid.view import view_config
 
 import colander
 from sqlalchemy import select
+from sqlalchemy.orm import subqueryload
 from sqlalchemy.sql.functions import concat
 from c2cgeoform.ext.deform_ext import RelationCheckBoxListWidget
 from c2cgeoform.schema import (
@@ -13,7 +14,7 @@ from c2cgeoform.schema import (
 )
 from c2cgeoform.views.abstract_views import AbstractViews, ListField
 
-from c2cgeoportal_commons.models.main import Theme, Interface, Role, Functionality
+from c2cgeoportal_commons.models.main import (Theme, Interface, Role, Functionality, Metadata)
 
 _list_field = partial(ListField, Theme)
 
@@ -77,22 +78,38 @@ class Themes(AbstractViews):
         _list_field(
             'functionalities',
             renderer=lambda themes: ', '.join(['{}={}'.format(f.name, f.value)
-                                        for f in themes.functionalities])
+                                               for f in themes.functionalities]),
+            filter_column=concat(Functionality.name, '=', Functionality.value)
         ),
         _list_field(
             'restricted_roles',
-            renderer=lambda themes: ', '.join([r.name or '' for r in themes.restricted_roles])
+            renderer=lambda themes: ', '.join([r.name or '' for r in themes.restricted_roles]),
+            filter_column=Role.name
         ),
         _list_field(
             'interfaces',
-            renderer=lambda themes: ', '.join([i.name or '' for i in themes.interfaces])),
+            renderer=lambda themes: ', '.join([i.name or '' for i in themes.interfaces]),
+            filter_column=Interface.name
+        ),
         _list_field(
             'metadatas',
             renderer=lambda themes: ', '.join(['{}: {}'.format(m.name, m.value) or ''
-                                                  for m in themes.metadatas]))]
+                                               for m in themes.metadatas]),
+            filter_column=concat(Metadata.name, ': ', Metadata.value).label('metadata'))]
     _id_field = 'id'
     _model = Theme
     _base_schema = base_schema
+
+    def _base_query(self):
+        return self._request.dbsession.query(Theme).distinct(). \
+            outerjoin('metadatas'). \
+            outerjoin('interfaces'). \
+            outerjoin('restricted_roles'). \
+            outerjoin('functionalities'). \
+            options(subqueryload('functionalities')). \
+            options(subqueryload('restricted_roles')). \
+            options(subqueryload('interfaces')). \
+            options(subqueryload('metadatas'))
 
     @view_config(route_name='c2cgeoform_index',
                  renderer='../templates/index.jinja2')
