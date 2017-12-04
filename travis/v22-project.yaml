@@ -14,14 +14,14 @@ unmanaged_files:
   - mapserver/c2cgeoportal.map.mako
   - mapserver/tinyows.xml.mako
   - print/print-apps/testgeomapfish/config.yaml.mako
-  - testgeomapfish/locale/fr/LC_MESSAGES/testgeomapfish-client.po
-  - testgeomapfish/locale/de/LC_MESSAGES/testgeomapfish-client.po
-  - testgeomapfish/static-ngeo/js/desktop.js
-  - testgeomapfish/static-ngeo/js/mobile.js
-  - testgeomapfish/static-ngeo/less/desktop.less
-  - testgeomapfish/static-ngeo/less/mobile.less
-  - testgeomapfish/templates/desktop.html
-  - testgeomapfish/templates/mobile.html
+  - geoportal/testgeomapfish_geoportal/locale/fr/LC_MESSAGES/testgeomapfish-client.po
+  - geoportal/testgeomapfish_geoportal/locale/de/LC_MESSAGES/testgeomapfish-client.po
+  - geoportal/testgeomapfish_geoportal/static-ngeo/js/desktop.js
+  - geoportal/testgeomapfish_geoportal/static-ngeo/js/mobile.js
+  - geoportal/testgeomapfish_geoportal/static-ngeo/less/desktop.less
+  - geoportal/testgeomapfish_geoportal/static-ngeo/less/mobile.less
+  - geoportal/testgeomapfish_geoportal/templates/desktop.html
+  - geoportal/testgeomapfish_geoportal/templates/mobile.html
 template_vars:
   package: testgeomapfish
   srid: 21781
