@@ -143,7 +143,7 @@ timeout(time: 2, unit: 'HOURS') {
                     }, 'v220 docker': {
                         sh 'travis/test-upgrade-convert.sh v220-todocker ${HOME}/workspace'
                     }, 'v220 nondocker': {
-                        sh 'travis/test-upgrade-convert.sh v220-nontodocker ${HOME}/workspace'
+                        sh 'travis/test-upgrade-convert.sh v220-tonondocker ${HOME}/workspace'
                     }
                     sh 'travis/test-upgrade-convert.sh cleanup ${HOME}/workspace'
                 } finally {
