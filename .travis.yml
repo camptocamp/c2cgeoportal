@@ -191,11 +191,9 @@ jobs:
         - sudo chmod o+rx /var/log/apache2/
         - sudo chmod o+r /var/log/apache2/*.log
         # Database for the GeoMapFish application
-        - docker build --tag=camptocamp/geomapfish-test-gis-db docker/gis-db
         - ./docker-run make /build/testdb-docker.timestamp
         - "docker run --env=POSTGRES_USER=www-data --env=POSTGRES_PASSWORD=www-data --env=POSTGRES_DB=geomapfish \
             --publish=5432:5432 --detach camptocamp/geomapfish-test-db"
-        # - sudo service tomcat7 stop
         - docker build --tag=external-db docker/test-external-db
         - docker run --publish=5433:5432 --detach external-db ## FOR NON DOCKER TEST
         - mkdir /tmp/travis
