@@ -8,7 +8,9 @@ def check_grid_headers(test_app, path, expected_col_headers, language='en'):
 
     res2 = res1.follow()
 
-    effective_cols = [(th.attrs['data-column-id'], th.getText()) for th in res2.html.select('th')]
+    effective_cols = [(th.attrs['data-column-id'], th.getText(), th.attrs['data-sortable'])
+                      for th in res2.html.select('th')]
+    expected_col_headers = [(x[0], x[1], len(x) == 3 and x[2] or 'true') for x in expected_col_headers]
     assert expected_col_headers == effective_cols, \
         str.format('{} and {} differs.', str(expected_col_headers), str(effective_cols))
     commands = res2.html.select_one('th[data-column-id="_id_"]')
