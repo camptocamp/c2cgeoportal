@@ -165,7 +165,7 @@ class TestTheme():
             [functionality.id for functionality in theme.functionalities])
         assert 0 == len(theme.restricted_roles)
 
-    def test_grid_filter_on_metadatas(self, test_app):
+    def test_grid_filter_on_metadatas_key_value_formatted(self, test_app):
         json = test_app.post(
             '/themes/grid.json',
             params={
@@ -177,19 +177,19 @@ class TestTheme():
         ).json
         assert 16 == json['total']
 
-    def test_grid_filter_on_metadatas_1(self, test_app):
+    def test_grid_filter_on_metadatas_key_value_parts_not_formatted(self, test_app):
         json = test_app.post(
             '/themes/grid.json',
             params={
                 'current': 1,
                 'rowCount': 10,
-                'searchPhrase': 'disclaimer ©'
+                'searchPhrase': 'disclai ©'
             },
             status=200
         ).json
         assert 16 == json['total']
 
-    def test_grid_filter_on_metadatas_2(self, test_app):
+    def test_grid_filter_on_metadatas_value_dont_match(self, test_app):
         json = test_app.post(
             '/themes/grid.json',
             params={
@@ -208,19 +208,6 @@ class TestTheme():
                 'current': 1,
                 'rowCount': 10,
                 'searchPhrase': 'routing'
-            },
-            status=200
-        ).json
-        assert 12 == json['total']
-
-    @pytest.mark.skip(reason="use value to be defined")
-    def test_grid_filter_on_interfaces_2(self, test_app):
-        json = test_app.post(
-            '/themes/grid.json',
-            params={
-                'current': 1,
-                'rowCount': 10,
-                'searchPhrase': 'mobile, routing'
             },
             status=200
         ).json

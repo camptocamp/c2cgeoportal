@@ -93,8 +93,8 @@ class LayerWmsViews(AbstractViews):
 
     def _base_query(self):
         return self._request.dbsession.query(LayerWMS).distinct(). \
-            join('ogc_server'). \
-            join('interfaces'). \
+            outerjoin('ogc_server'). \
+            outerjoin('interfaces'). \
             options(subqueryload('interfaces')). \
             options(subqueryload('dimensions')). \
             options(subqueryload('restrictionareas')). \
