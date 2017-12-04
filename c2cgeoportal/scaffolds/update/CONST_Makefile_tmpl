@@ -249,6 +249,7 @@ NGEO_LIBS_JS_FILES += \
 	node_modules/corejs-typeahead/dist/typeahead.bundle.min.js \
 	node_modules/jsts/dist/jsts.min.js \
 	node_modules/moment/min/moment.min.js \
+	node_modules/url-polyfill/url-polyfill.min.js \
 	node_modules/ngeo/third-party/jquery-ui/jquery-ui.min.js
 NGEO_PROJECT_LIBS_JS_FILES ?=
 ifeq ($(OPERATING_SYSTEM),WINDOWS)
