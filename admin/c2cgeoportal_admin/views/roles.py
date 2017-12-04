@@ -1,3 +1,4 @@
+from functools import partial
 from pyramid.view import view_defaults
 from pyramid.view import view_config
 
@@ -15,6 +16,7 @@ from sqlalchemy.sql.functions import concat
 
 from c2cgeoportal_commons.models.main import Role, Functionality, RestrictionArea
 
+_list_field = partial(ListField, Role)
 
 base_schema = GeoFormSchemaNode(Role)
 base_schema.add_before(
@@ -53,13 +55,13 @@ base_schema.add_before(
 @view_defaults(match_param='table=roles')
 class RoleViews(AbstractViews):
     _list_fields = [
-        ListField('name'),
-        ListField('description'),
-        ListField(
+        _list_field('name'),
+        _list_field('description'),
+        _list_field(
             'functionalities',
             renderer=lambda role: ', '.join(['{}={}'.format(f.name, f.value) for f in role.functionalities])
         ),
-        ListField(
+        _list_field(
             'restrictionareas',
             renderer=lambda role: ', '.join([r.name or '' for r in role.restrictionareas])
         ),

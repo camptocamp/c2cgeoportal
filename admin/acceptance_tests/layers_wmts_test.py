@@ -35,7 +35,7 @@ def insert_layer_wmts_test_data(dbsession):
 class TestLayerWMTS():
 
     def test_view_index_rendering_in_app(self, test_app):
-        expected = [('_id_', ''),
+        expected = [('_id_', '', 'false'),
                     ('name', 'Name'),
                     ('public', 'Public'),
                     ('layer', 'WMTS layer name')]

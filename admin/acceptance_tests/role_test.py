@@ -60,11 +60,6 @@ class TestRole():
     def test_view_index(self, test_app):
         test_app.get('/roles/', status=200)
 
-    def test_view_index_list_fields(self, dbsession):
-        from c2cgeoportal_admin.views.roles import RoleViews
-        info = RoleViews(DummyRequest(dbsession=dbsession)).index()
-        assert info['list_fields'][0][0] == 'name'
-
     def test_edit(self, dbsession, test_app, roles_test_data):
         role = roles_test_data['roles'][10]
 
@@ -143,18 +138,18 @@ class TestRole():
         assert info.status_int == 500, '500 status when db error'
 
     def test_view_index_rendering_in_app(self, dbsession, test_app):
-        expected = [('_id_', ''),
+        expected = [('_id_', '', 'false'),
                     ('name', 'Name'),
                     ('description', 'Description'),
-                    ('functionalities', 'Functionalities'),
-                    ('restrictionareas', 'Restriction areas')]
+                    ('functionalities', 'Functionalities', 'false'),
+                    ('restrictionareas', 'Restriction areas', 'false')]
         check_grid_headers(test_app, '/roles/', expected)
 
     @pytest.mark.skip(reason="Translation is not finished")
     def test_view_index_rendering_in_app_fr(self, dbsession, test_app):
-        expected = [('_id_', ''),
+        expected = [('_id_', '', 'false'),
                     ('name', 'name'),
                     ('description', 'Description'),
-                    ('functionalities', 'Functionalités'),
-                    ('restrictionareas', 'Zones autorisées')]
+                    ('functionalities', 'Functionalités', 'false'),
+                    ('restrictionareas', 'Zones autorisées', 'false')]
         check_grid_headers(test_app, '/roles/', expected, language='en')

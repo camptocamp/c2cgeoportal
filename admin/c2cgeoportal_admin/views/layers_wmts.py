@@ -1,3 +1,4 @@
+from functools import partial
 from pyramid.view import view_defaults
 from pyramid.view import view_config
 from c2cgeoform.views.abstract_views import AbstractViews
@@ -7,13 +8,15 @@ from c2cgeoform.views.abstract_views import ListField
 
 setup_schema(None, LayerWMTS)
 
+_list_field = partial(ListField, LayerWMTS)
+
 
 @view_defaults(match_param='table=layers_wmts')
 class LayerWmtsViews(AbstractViews):
     _list_fields = [
-        ListField('name'),
-        ListField('public'),
-        ListField('layer'),
+        _list_field('name'),
+        _list_field('public'),
+        _list_field('layer'),
     ]
     _id_field = 'id'
     _model = LayerWMTS

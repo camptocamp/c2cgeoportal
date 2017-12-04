@@ -123,7 +123,7 @@ class TestUser():
         assert info.status_int == 500, '500 status when db error'
 
     def test_view_index_rendering_in_app(self, dbsession, test_app):
-        expected = [('_id_', ''),
+        expected = [('_id_', '', 'false'),
                     ('username', 'Username'),
                     ('role_name', 'Role'),
                     ('email', 'Email')]
@@ -131,10 +131,10 @@ class TestUser():
 
     @pytest.mark.skip(reason="Translation is not finished")
     def test_view_index_rendering_in_app_fr(self, dbsession, test_app):
-        expected = [('_id_', ''),
+        expected = [('_id_', '', 'false'),
                     ('username', 'Nom'),
                     ('role_name', 'Role'),
-                    ('email', 'Mel')]
+                    ('email', 'Courriel')]
         check_grid_headers(test_app, '/users/', expected, language='fr')
 
     # in order to make this work, had to install selenium gecko driver
