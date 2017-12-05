@@ -22,6 +22,12 @@ unmanaged_files:
   - geoportal/testgeomapfish_geoportal/static-ngeo/less/mobile.less
   - geoportal/testgeomapfish_geoportal/templates/desktop.html
   - geoportal/testgeomapfish_geoportal/templates/mobile.html
+  - geoportal/testgeomapfish_geoportal/templates/api/api.js
+  - geoportal/testgeomapfish_geoportal/templates/api/apihelp.html
+  - geoportal/testgeomapfish_geoportal/templates/api/mapconfig.js
+  - geoportal/testgeomapfish_geoportal/templates/api/xapi.js
+  - geoportal/testgeomapfish_geoportal/templates/api/xapihelp.html
+  - geoportal/testgeomapfish_geoportal/static-ngeo/components/README.md
 template_vars:
   package: testgeomapfish
   srid: 21781
