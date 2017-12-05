@@ -209,7 +209,7 @@ function v220 {
     rm --recursive --force .UPGRADE10 .UPGRADE_SUCCESS \
         commons/testgeomapfish_commons.egg-info geoportal/testgeomapfish_geoportal.egg-info
     cd -
-    diff --recursive --exclude=.git --exclude=LC_MESSAGES ${WORKSPACE}/$2dockerref $1
+    diff --recursive --exclude=.git --exclude=locale ${WORKSPACE}/$2dockerref $1
 }
 
 if [ "$1" = "v220-todocker" ]
