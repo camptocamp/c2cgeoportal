@@ -4,12 +4,12 @@
 
 To build:
 ```
-make docker_build
+make docker-build
 ```
 
 To build & run the application:
 ```
-make docker_serve
+make docker-serve
 ```
 
 Open http://localhost:8888/
