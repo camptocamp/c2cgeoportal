@@ -34,7 +34,8 @@ services:
   db:
     image: camptocamp/postgres:9.6
     volumes:
-      - ./docker/postgis.sql:/docker-entrypoint-initdb.d/postgis.sql
+      - ./docker/postgis.sql:/docker-entrypoint-initdb.d/01-postgis.sql
+      - ./docker/demo-dump.sql:/docker-entrypoint-initdb.d/02-demo-dump.sql
       - postgresql_data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: www-data

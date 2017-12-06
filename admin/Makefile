@@ -69,7 +69,7 @@ docker-build:
 	docker build -t $(DOCKER_BASE)_admin:$(DOCKER_TAG) --build-arg "GIT_HASH=$(GIT_HASH)" -f admin/Dockerfile .
 
 .PHONY: docker-serve
-docker-serve: docker-build
+docker-serve:
 	docker-compose -f docker-compose.yml up
 
 .PHONY: docker-pull
