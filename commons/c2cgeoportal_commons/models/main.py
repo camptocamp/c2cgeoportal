@@ -305,7 +305,7 @@ class LayergroupTreeitem(Base):
             order_by='LayergroupTreeitem.ordering',
             cascade='save-update,merge,delete,delete-orphan',
             info={'colanderalchemy': {
-                    'title': _('Parents'),
+                    'title': _('Children'),
                     'exclude': True}}
         ),
         primaryjoin='LayergroupTreeitem.treegroup_id==TreeGroup.id',
@@ -382,13 +382,23 @@ class LayerGroup(TreeGroup):
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
+    __colanderalchemy_config__ = {
+        'title': _('Layers group'),
+        'plural': _('Layers groups')
+    }
     __mapper_args__ = {'polymorphic_identity': 'group'}
 
-    id = Column(Integer, ForeignKey(_schema + '.treegroup.id'), primary_key=True)
-    is_expanded = Column(Boolean)  # shouldn't be used in V3
-    is_internal_wms = Column(Boolean)
+    id = Column(Integer, ForeignKey(_schema + '.treegroup.id'), primary_key=True, info={
+        'colanderalchemy': {
+            'widget': HiddenWidget()
+        }})
+    is_expanded = Column(Boolean, info={
+        'colanderalchemy': {'title': _('Expanded')}})  # shouldn't be used in V3
+    is_internal_wms = Column(Boolean, info={
+        'colanderalchemy': {'title': _('Internal WMS')}})
     # children have radio button instance of check box
-    is_base_layer = Column(Boolean)  # Should not be used in V3
+    is_base_layer = Column(Boolean, info={
+        'colanderalchemy': {'title': _('Base layers group')}})  # Should not be used in V3
 
     def __init__(
         self, name: str='', is_expanded: bool=False, is_internal_wms: bool=True, is_base_layer: bool=False
@@ -428,8 +438,7 @@ class Theme(TreeGroup):
         'colanderalchemy': {'title': _('Order')}})
     public = Column(Boolean, default=True, nullable=False, info={
         'colanderalchemy': {
-            'title': _('Public'),
-            'widget': CheckboxWidget()
+            'title': _('Public')
         }})
     icon = Column(Unicode, info={
         'colanderalchemy': {'title': _('Icon')}})
@@ -481,8 +490,7 @@ class Layer(TreeItem):
     id = Column(Integer, ForeignKey(_schema + '.treeitem.id'), primary_key=True)
     public = Column(Boolean, default=True, info={
         'colanderalchemy': {
-            'title': _('Public'),
-            'widget': CheckboxWidget()
+            'title': _('Public')
         }})
     geo_table = Column(Unicode, info={
         'colanderalchemy': {
