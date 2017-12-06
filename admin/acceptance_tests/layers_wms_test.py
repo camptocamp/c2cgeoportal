@@ -89,6 +89,8 @@ def layer_wms_test_data(dbsession):
 @pytest.mark.usefixtures("layer_wms_test_data", "transact", "test_app")
 class TestLayerWMS():
 
+    prefix = '/layers_wms/'
+
     def test_view_index_rendering_in_app(self, test_app):
         expected = [('_id_', '', 'false'),
                     ('name', 'Name'),
@@ -102,9 +104,9 @@ class TestLayerWMS():
                     ('time_mode', 'Time mode'),
                     ('time_widget', 'Time widget'),
                     ('ogc_server', 'OGC server'),
-                    ('interfaces', "Interfaces"),
                     ('dimensions', "Dimensions", 'false'),
                     ('parents_relation', "Parents", 'false'),
+                    ('interfaces', "Interfaces"),
                     ('restrictionareas', 'Restriction areas', 'false'),
                     ('metadatas', 'Metadatas', 'false')]
         check_grid_headers(test_app, '/layers_wms/', expected)
@@ -137,6 +139,38 @@ class TestLayerWMS():
         assert 'layer_group_0, layer_group_3' == row['parents_relation']
         assert 'restrictionarea_0, restrictionarea_2' == row['restrictionareas']
         assert 'copyable: true, snappingConfig: {"tolerance": 50}' == row['metadatas']
+
+    def test_grid_sort_on_ogc_server(self, test_app, layer_wms_test_data):
+        rows = test_app.post(
+            "/layers_wms/grid.json",
+            params={
+                "current": 1,
+                "rowCount": 10,
+                "sort[ogc_server]": "asc"
+            },
+            status=200
+        ).json['rows']
+        for i, layer in enumerate(sorted(layer_wms_test_data['layers'],
+                                         key=lambda layer: (layer.ogc_server.name, layer.id))):
+            if i == 10:
+                break
+            assert str(layer.id) == rows[i]['_id_']
+
+    def check_search(self, test_app, search, total):
+        json = test_app.post(
+            '/layers_wms/grid.json',
+            params={
+                'current': 1,
+                'rowCount': 10,
+                'searchPhrase': search
+            },
+            status=200
+        ).json
+        assert total == json['total']
+
+    def test_grid_search(self, test_app):
+        # check search on ogc_server.name
+        self.check_search(test_app, 'server_0', 7)
 
     def test_base_edit(self, test_app, layer_wms_test_data):
         layer = layer_wms_test_data['layers'][10]

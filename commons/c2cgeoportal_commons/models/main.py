@@ -684,18 +684,33 @@ class LayerWMTS(DimensionLayer):
     __mapper_args__ = {'polymorphic_identity': 'l_wmts'}
 
     id = Column(Integer, ForeignKey(_schema + '.layer.id'), primary_key=True)
-    url = Column(Unicode, nullable=False)
+    url = Column(Unicode, nullable=False, info={
+        'colanderalchemy': {
+            'title': _('GetCapabilities URL')
+        }})
     layer = Column(Unicode, nullable=False, info={
         'colanderalchemy': {
             'title': _('WMTS layer name')
         }})
-    style = Column(Unicode)
-    matrix_set = Column(Unicode)
-    image_type = Column(Enum(
-        'image/jpeg',
-        'image/png',
-        native_enum=False), nullable=False
-    )
+    style = Column(Unicode, info={
+        'colanderalchemy': {
+            'title': _('Style')
+        }})
+    matrix_set = Column(Unicode, info={
+        'colanderalchemy': {
+            'title': _('Matrix set')
+        }})
+    image_type = Column(
+        Enum(
+            'image/jpeg',
+            'image/png',
+            native_enum=False
+        ),
+        nullable=False,
+        info={
+            'colanderalchemy': {
+                'title': _('Image type')
+            }})
 
     def __init__(self, name: str='', public: bool=True, image_type: str='image/png') -> None:
         DimensionLayer.__init__(self, name=name, public=public)
