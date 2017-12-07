@@ -88,6 +88,8 @@ timeout(time: 2, unit: 'HOURS') {
                 sh 'docker build --tag=camptocamp/testgeomapfish-external-db:latest docker/test-external-db'
                 sh 'travis/create-new-project.sh ${HOME}/workspace'
                 sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ ./docker-compose-run make update-po'
+                // Commit the l10n files modifications
+                // To prevent fail on modification files check
                 sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ git add geoportal/testgeomapfish_geoportal/locale/*/LC_MESSAGES/testgeomapfish_geoportal-*.po'
                 sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ git commit -m "Upgrade the po files"'
                 sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ ./docker-run travis/empty-make --makefile=travis.mk help'

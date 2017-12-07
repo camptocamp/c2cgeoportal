@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+# Check that the make command don't execute any rules and had an unexpected error
+
 import time
 import sys
 import os
