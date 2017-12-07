@@ -304,6 +304,9 @@ class LayergroupTreeitem(Base):
             'children_relation',
             order_by='LayergroupTreeitem.ordering',
             cascade='save-update,merge,delete,delete-orphan',
+            info={'colanderalchemy': {
+                    'title': _('Parents'),
+                    'exclude': True}}
         ),
         primaryjoin='LayergroupTreeitem.treegroup_id==TreeGroup.id',
     )
@@ -311,11 +314,12 @@ class LayergroupTreeitem(Base):
     treeitem = relationship(
         'TreeItem',
         backref=backref(
-            'parents_relation', cascade='save-update,merge,delete,delete-orphan', info={
+            'parents_relation',
+            cascade='save-update,merge,delete,delete-orphan',
+            info={
                 'colanderalchemy': {
                     'title': _('Parents'),
-                    'exclude': True
-                }}
+                    'exclude': True}}
         ),
         primaryjoin='LayergroupTreeitem.treeitem_id==TreeItem.id',
     )
@@ -410,23 +414,49 @@ class Theme(TreeGroup):
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
+    __colanderalchemy_config__ = {
+        'title': _('Theme'),
+        'plural': _('Themes')
+    }
     __mapper_args__ = {'polymorphic_identity': 'theme'}
 
-    id = Column(Integer, ForeignKey(_schema + '.treegroup.id'), primary_key=True)
-    ordering = Column(Integer, nullable=False)
-    public = Column(Boolean, default=True, nullable=False)
-    icon = Column(Unicode)
+    id = Column(Integer, ForeignKey(_schema + '.treegroup.id'), primary_key=True, info={
+        'colanderalchemy': {
+            'widget': HiddenWidget()
+        }})
+    ordering = Column(Integer, nullable=False, info={
+        'colanderalchemy': {'title': _('Order')}})
+    public = Column(Boolean, default=True, nullable=False, info={
+        'colanderalchemy': {
+            'title': _('Public'),
+            'widget': CheckboxWidget()
+        }})
+    icon = Column(Unicode, info={
+        'colanderalchemy': {'title': _('Icon')}})
 
     # functionality
     functionalities = relationship(
-        'Functionality', secondary=theme_functionality,
-        cascade='save-update,merge,refresh-expire'
+        'Functionality',
+        secondary=theme_functionality,
+        cascade='save-update,merge,refresh-expire',
+        info={
+            'colanderalchemy': {
+                'exclude': True,
+                'title': _('Functionalities')
+            }
+        }
     )
 
     # restricted to role
     restricted_roles = relationship(
         'Role', secondary=restricted_role_theme,
         cascade='save-update,merge,refresh-expire',
+        info={
+            'colanderalchemy': {
+                'exclude': True,
+                'title': _('Roles')
+            }
+        }
     )
 
     def __init__(self, name: str='', ordering: int=100, icon: str='') -> None:
@@ -820,8 +850,15 @@ class Interface(Base):
         )
     )
     theme = relationship(
-        'Theme', secondary=interface_theme,
-        backref='interfaces', cascade='save-update,merge,refresh-expire'
+        'Theme',
+        secondary=interface_theme,
+        cascade='save-update,merge,refresh-expire',
+        backref=backref('interfaces', info={
+            'colanderalchemy': {
+                'title': _('Interfaces'),
+                'exclude': True
+            }}
+        )
     )
 
     def __init__(self, name: str='', description: str='') -> None:

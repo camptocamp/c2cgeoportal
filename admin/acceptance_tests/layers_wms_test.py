@@ -15,22 +15,12 @@ def layer_wms_test_data(dbsession):
 
     dbsession.begin_nested()
 
-    servers = []
-    for i in range(0, 4):
-        servers.append(OGCServer(name='server_{}'.format(i)))
-        dbsession.add(servers[i])
+    servers = [OGCServer(name='server_{}'.format(i)) for i in range(0, 4)]
 
-    restrictionareas = []
-    for i in range(0, 5):
-        restrictionarea = RestrictionArea(
-            name="restrictionarea_{}".format(i))
-        dbsession.add(restrictionarea)
-        restrictionareas.append(restrictionarea)
+    restrictionareas = [RestrictionArea(name="restrictionarea_{}".format(i))
+                        for i in range(0, 5)]
 
-    interfaces = [Interface(name) for name
-                  in ["desktop", "mobile", "edit", "routing"]]
-    for interface in interfaces:
-        dbsession.add(interface)
+    interfaces = [Interface(name) for name in ["desktop", "mobile", "edit", "routing"]]
 
     dimensions_protos = [("Date", "2017"),
                          ("Date", "2018"),
@@ -39,11 +29,8 @@ def layer_wms_test_data(dbsession):
     metadatas_protos = [("copyable", "true"),
                         ("disclaimer", "© le momo"),
                         ("snappingConfig", '{"tolerance": 50}')]
-    groups = []
-    for i in range(0, 5):
-        group = LayerGroup(name='layer_group_{}'.format(i))
-        groups.append(group)
-        dbsession.add(group)
+
+    groups = [LayerGroup(name='layer_group_{}'.format(i)) for i in range(0, 5)]
 
     layers = []
     for i in range(0, 25):
@@ -52,8 +39,9 @@ def layer_wms_test_data(dbsession):
         layer.ogc_server = servers[i % 4]
         layer.restrictionareas = [restrictionareas[i % 5],
                                   restrictionareas[(i + 2) % 5]]
-        layer.interfaces = [interfaces[i % 4],
-                            interfaces[(i + 2) % 4]]
+
+        if i % 10 != 1:
+            layer.interfaces = [interfaces[i % 4], interfaces[(i + 2) % 4]]
 
         layer.dimensions = [Dimension(name=dimensions_protos[id][0],
                                       value=dimensions_protos[id][1],
@@ -135,7 +123,6 @@ class TestLayerWMS():
         assert 'desktop, edit' == row['interfaces']
         assert 'Date: 2017, 1988; CLC: all' == row['dimensions']
         assert 'layer_group_0, layer_group_3' == row['parents_relation']
-        assert 'restrictionarea_0, restrictionarea_2' == row['restrictionareas']
         assert 'copyable: true, snappingConfig: {"tolerance": 50}' == row['metadatas']
 
     def test_base_edit(self, test_app, layer_wms_test_data):
@@ -227,6 +214,30 @@ class TestLayerWMS():
         assert set([interfaces[1].id, interfaces[3].id]) == set(
             [interface.id for interface in layer.interfaces])
         assert set([ras[1].id, ras[3].id]) == set([ra.id for ra in layer.restrictionareas])
+
+    def test_grid_filter_on_interfaces(self, test_app):
+        json = test_app.post(
+            '/layers_wms/grid.json',
+            params={
+                'current': 1,
+                'rowCount': 10,
+                'searchPhrase': 'mobile'
+            },
+            status=200
+        ).json
+        assert 9 == json['total']
+
+    def test_grid_filter_on_interfaces_blank_does_not_discard_anything(self, test_app):
+        json = test_app.post(
+            '/layers_wms/grid.json',
+            params={
+                'current': 1,
+                'rowCount': 10,
+                'searchPhrase': ''
+            },
+            status=200
+        ).json
+        assert 25 == json['total']
 
     def test_delete(self, test_app, dbsession):
         from c2cgeoportal_commons.models.main import LayerWMS, Layer, TreeItem
