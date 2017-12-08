@@ -70,3 +70,8 @@ sudo -u postgres psql -d $DATABASE -c "CREATE EXTENSION postgis;"
 ```
 make test
 ```
+
+Note that you can run all tests but selenium ones (really fast):
+```
+.build/venv/bin/pytest -m "not selenium"
+```
