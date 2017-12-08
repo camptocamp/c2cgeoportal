@@ -6,7 +6,11 @@ GIT_HASH := $(shell git rev-parse HEAD)
 DOCKER_BASE = camptocamp/c2cgeoportal
 
 .PHONY: build
-build: ${BUILD_DIR}/requirements.timestamp node_modules
+build: ${BUILD_DIR}/requirements.timestamp ${BUILD_DIR}/node_modules.timestamp
+
+.PHONY: clean
+clean:
+	rm -rf ${BUILD_DIR}/*.timestamp
 
 .PHONY: cleanall
 cleanall:
@@ -59,9 +63,9 @@ ${BUILD_DIR}/requirements-dev.timestamp: \
 	${VENV}/bin/pip install -r requirements-dev.txt
 	touch $@
 
-.PHONY: node_modules
-node_modules: package.json
+${BUILD_DIR}/node_modules.timestamp: package.json
 	npm install
+	touch $@
 
 .PHONY: docker-build
 docker-build:
