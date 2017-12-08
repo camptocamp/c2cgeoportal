@@ -3,7 +3,7 @@
 import re
 import pytest
 
-from . import check_grid_headers
+from . import AbstractViewsTests
 
 
 @pytest.fixture(scope='class')
@@ -59,9 +59,15 @@ def layer_groups_test_data(dbsession):
 
 
 @pytest.mark.usefixtures('layer_groups_test_data', 'transact', 'test_app')
-class TestLayersGroups():
+class TestLayersGroups(AbstractViewsTests):
 
-    def test_view_index_rendering_in_app(self, test_app):
+    _prefix = '/layer_groups'
+
+    def test_index_rendering(self, test_app):
+        resp = self.get(test_app)
+
+        self.check_left_menu(resp, 'Layers groups')
+
         expected = [('_id_', '', 'false'),
                     ('name', 'Name'),
                     ('metadata_url', 'Metadata URL'),
@@ -71,12 +77,7 @@ class TestLayersGroups():
                     ('is_base_layer', 'Base layers group'),
                     ('parents_relation', 'Parents', 'false'),
                     ('metadatas', 'Metadatas', 'false')]
-        check_grid_headers(test_app, '/layer_groups/', expected)
-
-    def test_left_menu(self, test_app):
-        html = test_app.get('/layer_groups/', status=200).html
-        main_menu = html.select_one('a[href="http://localhost/layer_groups/"]').getText()
-        assert 'Layers groups' == main_menu
+        self.check_grid_headers(resp, expected)
 
     def test_grid_complex_column_val(self, test_app, layer_groups_test_data):
         json = test_app.post(
@@ -110,23 +111,14 @@ class TestLayersGroups():
         ).json
         assert 4 == json['total']
 
-    def test_grid_filter_on_metadatas(self, test_app):
-        json = test_app.post(
-            '/layer_groups/grid.json',
-            params={
-                'current': 1,
-                'rowCount': 10,
-                'searchPhrase': 'copyable'
-            },
-            status=200
-        ).json
-        assert 8 == json['total']
+    def test_grid_search(self, test_app):
+        # search on metadatas
+        self.check_search(test_app, 'copyable', 8)
 
     def test_edit(self, test_app, layer_groups_test_data, dbsession):
         group = layer_groups_test_data['groups'][1]
 
-        resp = test_app.get('/layer_groups/{}'.format(group.id), status=200)
-        form = resp.form
+        form = self.get_item(test_app, group.id).form
 
         assert str(group.id) == form['id'].value
         assert 'hidden' == form['id'].attrs['type']
@@ -163,7 +155,6 @@ class TestLayersGroups():
 
     def test_delete(self, test_app, dbsession, layer_groups_test_data):
         from c2cgeoportal_commons.models.main import LayerGroup, TreeGroup, TreeItem, LayergroupTreeitem
-        group_id = dbsession.query(LayerGroup.id).first().id
 
         group_id = layer_groups_test_data['groups'][9].id
 

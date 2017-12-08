@@ -97,9 +97,9 @@ class TestLayerWMSViews(AbstractViewsTests):
                     ('time_widget', 'Time widget'),
                     ('ogc_server', 'OGC server'),
                     ('dimensions', 'Dimensions', 'false'),
-                    ('parents_relation', 'Parents', 'false'),
                     ('interfaces', 'Interfaces'),
                     ('restrictionareas', 'Restriction areas', 'false'),
+                    ('parents_relation', 'Parents', 'false'),
                     ('metadatas', 'Metadatas', 'false')]
         self.check_grid_headers(resp, expected)
 

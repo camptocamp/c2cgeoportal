@@ -10,12 +10,13 @@ _list_field = partial(ListField, Layer)
 
 
 class LayerViews(TreeItemViews):
+
     _list_fields = TreeItemViews._list_fields + [
         _list_field('public'),
         _list_field('geo_table'),
-        _list_field('exclude_properties')
-    ]
-    _extra_list_fields = TreeItemViews._extra_list_fields + [
+        _list_field('exclude_properties')]
+
+    _extra_list_fields = [
         _list_field(
             'interfaces',
             renderer=lambda layer_wms: ', '.join([i.name or '' for i in layer_wms.interfaces]),
@@ -23,17 +24,12 @@ class LayerViews(TreeItemViews):
             filter_column=Interface.name),
         _list_field(
             'restrictionareas',
-            renderer=lambda layer_wms: ', '.join([r.name or '' for r in layer_wms.restrictionareas])),
-        _list_field(
-            'metadatas',
-            renderer=lambda layer_wms: ', '.join(['{}: {}'.format(m.name, m.value) or ''
-                                                  for m in layer_wms.metadatas]))
-    ]
+            renderer=lambda layer_wms: ', '.join([r.name or '' for r in layer_wms.restrictionareas]))
+        ] + TreeItemViews._extra_list_fields
 
     def _base_query(self, query):
         return super()._base_query(
             query.
             outerjoin('interfaces').
             options(subqueryload('interfaces')).
-            options(subqueryload('restrictionareas')).
-            options(subqueryload('metadatas')))
+            options(subqueryload('restrictionareas')))

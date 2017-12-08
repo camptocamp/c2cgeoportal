@@ -3,13 +3,10 @@ from pyramid.view import view_defaults
 from pyramid.view import view_config
 
 from c2cgeoform.schema import GeoFormSchemaNode
-
-from c2cgeoform.views.abstract_views import AbstractViews
 from c2cgeoform.views.abstract_views import ListField
-from sqlalchemy.orm import subqueryload
-from sqlalchemy.sql.functions import concat
 
-from c2cgeoportal_commons.models.main import LayerGroup, Metadata
+from c2cgeoportal_commons.models.main import LayerGroup
+from c2cgeoportal_admin.views.treeitems import TreeItemViews
 
 _list_field = partial(ListField, LayerGroup)
 
@@ -17,32 +14,21 @@ base_schema = GeoFormSchemaNode(LayerGroup)
 
 
 @view_defaults(match_param='table=layer_groups')
-class LayerGroupsViews(AbstractViews):
-    _list_fields = [
-        _list_field('name'),
-        _list_field('metadata_url'),
-        _list_field('description'),
+class LayerGroupsViews(TreeItemViews):
+
+    _list_fields = TreeItemViews._list_fields + [
         _list_field('is_expanded'),
         _list_field('is_internal_wms'),
-        _list_field('is_base_layer'),
-        _list_field(
-            'parents_relation',
-            renderer=lambda layers_group:', '.join([p.treegroup.name or ''
-                                                    for p in layers_group.parents_relation])),
-        _list_field(
-            'metadatas',
-            renderer=lambda layers_group: ', '.join(['{}: {}'.format(m.name, m.value) or ''
-                                                     for m in layers_group.metadatas]),
-            filter_column=concat(Metadata.name, ': ', Metadata.value).label('metadata'))]
+        _list_field('is_base_layer')
+        ] + TreeItemViews._extra_list_fields
+
     _id_field = 'id'
     _model = LayerGroup
     _base_schema = base_schema
 
     def _base_query(self):
-        return self._request.dbsession.query(LayerGroup).distinct(). \
-            outerjoin('metadatas'). \
-            options(subqueryload('metadatas')). \
-            options(subqueryload('parents_relation').joinedload('treegroup'))
+        return super()._base_query(
+            self._request.dbsession.query(LayerGroup).distinct())
 
     @view_config(route_name='c2cgeoform_index',
                  renderer='../templates/index.jinja2')

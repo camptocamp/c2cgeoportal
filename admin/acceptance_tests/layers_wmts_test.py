@@ -61,9 +61,9 @@ class TestLayerWMTS(AbstractViewsTests):
                     ('matrix_set', 'Matrix set', 'true'),
                     ('image_type', 'Image type', 'true'),
                     ('dimensions', 'Dimensions', 'false'),
-                    ('parents_relation', 'Parents', 'false'),
                     ('interfaces', 'Interfaces', 'true'),
                     ('restrictionareas', 'Restriction areas', 'false'),
+                    ('parents_relation', 'Parents', 'false'),
                     ('metadatas', 'Metadatas', 'false')]
         self.check_grid_headers(resp, expected)
 

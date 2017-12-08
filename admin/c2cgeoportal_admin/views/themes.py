@@ -14,7 +14,7 @@ from c2cgeoform.schema import (
 )
 from c2cgeoform.views.abstract_views import ListField
 
-from c2cgeoportal_commons.models.main import Theme, Interface, Role, Functionality, Metadata
+from c2cgeoportal_commons.models.main import Theme, Interface, Role, Functionality
 from c2cgeoportal_admin.views.treeitems import TreeItemViews
 
 _list_field = partial(ListField, Theme)
@@ -69,6 +69,7 @@ base_schema.add(
 
 @view_defaults(match_param='table=themes')
 class ThemeViews(TreeItemViews):
+
     _list_fields = TreeItemViews._list_fields + [
         _list_field('ordering'),
         _list_field('public'),
@@ -88,26 +89,21 @@ class ThemeViews(TreeItemViews):
             'interfaces',
             renderer=lambda themes: ', '.join([i.name or '' for i in themes.interfaces]),
             filter_column=Interface.name
-        ),
-        _list_field(
-            'metadatas',
-            renderer=lambda themes: ', '.join(['{}: {}'.format(m.name, m.value) or ''
-                                               for m in themes.metadatas]),
-            filter_column=concat(Metadata.name, ': ', Metadata.value).label('metadata'))]
+        )] + TreeItemViews._extra_list_fields
+
     _id_field = 'id'
     _model = Theme
     _base_schema = base_schema
 
     def _base_query(self):
-        return self._request.dbsession.query(Theme).distinct(). \
-            outerjoin('metadatas'). \
-            outerjoin('interfaces'). \
-            outerjoin('restricted_roles'). \
-            outerjoin('functionalities'). \
-            options(subqueryload('functionalities')). \
-            options(subqueryload('restricted_roles')). \
-            options(subqueryload('interfaces')). \
-            options(subqueryload('metadatas'))
+        return super()._base_query(
+            self._request.dbsession.query(Theme).distinct().
+            outerjoin('interfaces').
+            outerjoin('restricted_roles').
+            outerjoin('functionalities').
+            options(subqueryload('functionalities')).
+            options(subqueryload('restricted_roles')).
+            options(subqueryload('interfaces')))
 
     @view_config(route_name='c2cgeoform_index',
                  renderer='../templates/index.jinja2')

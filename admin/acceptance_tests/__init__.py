@@ -1,4 +1,5 @@
 import os
+import pprint
 import pytest
 
 skip_if_ci = pytest.mark.skipif(
@@ -28,11 +29,14 @@ class AbstractViewsTests():
         assert title == link.getText()
 
     def check_grid_headers(self, resp, expected_col_headers):
+        pp = pprint.PrettyPrinter(indent=4)
         effective_cols = [(th.attrs['data-column-id'], th.getText(), th.attrs['data-sortable'])
                           for th in resp.html.select('th')]
         expected_col_headers = [(x[0], x[1], len(x) == 3 and x[2] or 'true') for x in expected_col_headers]
         assert expected_col_headers == effective_cols, \
-            str.format('{} and {} differs.', str(expected_col_headers), str(effective_cols))
+            str.format('\n\n{}\n\n differs from \n\n{}',
+                       pp.pformat(expected_col_headers),
+                       pp.pformat(effective_cols))
         commands = resp.html.select_one('th[data-column-id="_id_"]')
         assert 'false' == commands.attrs['data-searchable']
         assert 'false' == commands.attrs['data-sortable']
