@@ -3,7 +3,7 @@
 import re
 import pytest
 
-from . import check_grid_headers
+from . import AbstractViewsTests
 
 
 @pytest.fixture(scope='class')
@@ -67,9 +67,15 @@ def theme_test_data(dbsession):
 
 
 @pytest.mark.usefixtures('theme_test_data', 'transact', 'test_app')
-class TestTheme():
+class TestTheme(AbstractViewsTests):
 
-    def test_view_index_rendering_in_app(self, test_app):
+    _prefix = '/themes'
+
+    def test_index_rendering(self, test_app):
+        resp = self.get(test_app)
+
+        self.check_left_menu(resp, 'Themes')
+
         expected = [('_id_', '', 'false'),
                     ('name', 'Name'),
                     ('metadata_url', 'Metadata URL'),
@@ -81,27 +87,48 @@ class TestTheme():
                     ('restricted_roles', 'Roles', 'false'),
                     ('interfaces', 'Interfaces', 'false'),
                     ('metadatas', 'Metadatas', 'false')]
-        check_grid_headers(test_app, '/themes/', expected)
-
-    def test_left_menu(self, test_app):
-        html = test_app.get('/themes/', status=200).html
-        main_menu = html.select_one('a[href="http://localhost/themes/"]').getText()
-        assert 'Themes' == main_menu
+        self.check_grid_headers(resp, expected)
 
     def test_grid_complex_column_val(self, test_app, theme_test_data):
-        first_row = test_app.post('/themes/grid.json',
-                                  params={'current': 1, 'rowCount': 10},
-                                  status=200
-                                  ).json['rows'][0]
+        first_row = test_app.post(
+            '/themes/grid.json',
+            params={
+                'current': 1,
+                'rowCount': 10
+            },
+            status=200
+        ).json['rows'][0]
 
-        firsrt_theme = theme_test_data['themes'][0]
+        first_theme = theme_test_data['themes'][0]
 
-        assert firsrt_theme.id == int(first_row['_id_'])
-        assert firsrt_theme.name == first_row['name']
+        assert first_theme.id == int(first_row['_id_'])
+        assert first_theme.name == first_row['name']
         assert 'default_basemap=value_0, default_basemap=value_3' == first_row['functionalities']
         assert 'secretary_0, secretary_2' == first_row['restricted_roles']
         assert 'desktop, edit' == first_row['interfaces']
         assert 'copyable: true, snappingConfig: {"tolerance": 50}' == first_row['metadatas']
+
+    def test_grid_search(self, test_app):
+        # search on metadatas key and value parts
+        self.check_search(test_app, 'disclai ©', 16)
+
+        # search on metadatas case insensitive
+        self.check_search(test_app, 'disClaimer: © le momO', 16)
+
+        # search on metadatas with no match
+        self.check_search(test_app, 'DIfclaimer momo', 0)
+
+        # search on interfaces
+        self.check_search(test_app, 'routing', 12)
+
+        # search on roles
+        self.check_search(test_app, 'ary_2', 13)
+
+        # search with underscores (wildcard)
+        self.check_search(test_app, 'disclaimer m_m_', 16)
+
+        # search on functionalities
+        self.check_search(test_app, 'default_basemap value_0', 7)
 
     def test_public_checkbox_edit(self, test_app, theme_test_data):
         theme = theme_test_data['themes'][10]
@@ -126,15 +153,29 @@ class TestTheme():
         assert theme.public == form['public'].checked
 
         interfaces = theme_test_data['interfaces']
+        assert set((interfaces[0].id, interfaces[2].id)) == set(i.id for i in theme.interfaces)
+        self.check_checkboxes(
+            form,
+            'interfaces',
+            [{
+                'label': i.name,
+                'value': str(i.id),
+                'checked': i in theme.interfaces
+            } for i in sorted(interfaces, key=lambda i: i.name)])
+
         functionalities = theme_test_data['functionalities']
-        assert [interfaces[0].id, interfaces[2].id] == [interface.id for interface in theme.interfaces]
-        for i, interface in enumerate(sorted(interfaces, key=lambda interface: interface.name)):
-            field = form.get('interfaces', index=i)
-            checkbox = form.html.select_one('#{}'.format(field.id))
-            label = form.html.select_one('label[for={}]'.format(field.id))
-            assert interface.name == list(label.stripped_strings)[0]
-            assert str(interface.id) == checkbox['value']
-            assert (interface in theme.interfaces) == field.checked
+        assert set((
+                functionalities[0].id,
+                functionalities[3].id
+            )) == set(f.id for f in theme.functionalities)
+        self.check_checkboxes(
+            form,
+            'functionalities',
+            [{
+                'label': '{}={}'.format(f.name, f.value),
+                'value': str(f.id),
+                'checked': f in theme.functionalities
+            } for f in sorted(functionalities, key=lambda f: (f.name, f.value))])
 
         new_values = {
             'name': 'new_name',
@@ -164,87 +205,3 @@ class TestTheme():
         assert set([functionalities[2].id]) == set(
             [functionality.id for functionality in theme.functionalities])
         assert 0 == len(theme.restricted_roles)
-
-    def test_grid_filter_on_metadatas_key_value_formatted(self, test_app):
-        json = test_app.post(
-            '/themes/grid.json',
-            params={
-                'current': 1,
-                'rowCount': 10,
-                'searchPhrase': 'disClaimer: © le momO'
-            },
-            status=200
-        ).json
-        assert 16 == json['total']
-
-    def test_grid_filter_on_metadatas_key_value_parts_not_formatted(self, test_app):
-        json = test_app.post(
-            '/themes/grid.json',
-            params={
-                'current': 1,
-                'rowCount': 10,
-                'searchPhrase': 'disclai ©'
-            },
-            status=200
-        ).json
-        assert 16 == json['total']
-
-    def test_grid_filter_on_metadatas_value_dont_match(self, test_app):
-        json = test_app.post(
-            '/themes/grid.json',
-            params={
-                'current': 1,
-                'rowCount': 10,
-                'searchPhrase': 'DIfclaimer momo'
-            },
-            status=200
-        ).json
-        assert 0 == json['total']
-
-    def test_grid_filter_on_interfaces(self, test_app):
-        json = test_app.post(
-            '/themes/grid.json',
-            params={
-                'current': 1,
-                'rowCount': 10,
-                'searchPhrase': 'routing'
-            },
-            status=200
-        ).json
-        assert 12 == json['total']
-
-    def test_grid_filter_on_role(self, test_app):
-        json = test_app.post(
-            '/themes/grid.json',
-            params={
-                'current': 1,
-                'rowCount': 10,
-                'searchPhrase': 'ary_2'
-            },
-            status=200
-        ).json
-        assert 13 == json['total']
-
-    def test_grid_filter_underscore_count_as_wildcard(self, test_app):
-        json = test_app.post(
-            '/themes/grid.json',
-            params={
-                'current': 1,
-                'rowCount': 10,
-                'searchPhrase': 'disclaimer m_m_'
-            },
-            status=200
-        ).json
-        assert 16 == json['total']
-
-    def test_grid_filter_functionnalities(self, test_app):
-        json = test_app.post(
-            '/themes/grid.json',
-            params={
-                'current': 1,
-                'rowCount': 10,
-                'searchPhrase': 'default_basemap value_0'
-            },
-            status=200
-        ).json
-        assert 7 == json['total']

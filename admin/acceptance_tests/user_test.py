@@ -5,7 +5,7 @@ import re
 from pyramid.testing import DummyRequest
 from selenium.common.exceptions import NoSuchElementException
 
-from . import skip_if_ci, check_grid_headers
+from . import skip_if_ci, AbstractViewsTests
 
 
 @pytest.fixture(scope='class')
@@ -33,7 +33,33 @@ def users_test_data(dbsession):
 
 
 @pytest.mark.usefixtures("users_test_data", "transact", "test_app")
-class TestUser():
+class TestUser(AbstractViewsTests):
+
+    _prefix = '/users'
+
+    def test_index_rendering(self, test_app):
+        resp = self.get(test_app)
+
+        self.check_left_menu(resp, 'Users')
+
+        expected = [('_id_', '', 'false'),
+                    ('username', 'Username'),
+                    ('role_name', 'Role'),
+                    ('email', 'Email')]
+        self.check_grid_headers(resp, expected)
+
+    @pytest.mark.skip(reason="Translation is not finished")
+    def test_index_rendering_fr(self, test_app):
+        resp = self.get(test_app, locale='fr')
+
+        self.check_left_menu(resp, 'Utilisateurs')
+
+        expected = [('_id_', '', 'false'),
+                    ('username', 'Nom'),
+                    ('role_name', 'Role'),
+                    ('email', 'Courriel')]
+        self.check_grid_headers(resp, expected)
+
     def test_view_edit(self, test_app, users_test_data):
         user = users_test_data['users'][9]
 
@@ -122,26 +148,12 @@ class TestUser():
         info = UserViews(request).grid()
         assert info.status_int == 500, '500 status when db error'
 
-    def test_view_index_rendering_in_app(self, dbsession, test_app):
-        expected = [('_id_', '', 'false'),
-                    ('username', 'Username'),
-                    ('role_name', 'Role'),
-                    ('email', 'Email')]
-        check_grid_headers(test_app, '/users/', expected)
-
-    @pytest.mark.skip(reason="Translation is not finished")
-    def test_view_index_rendering_in_app_fr(self, dbsession, test_app):
-        expected = [('_id_', '', 'false'),
-                    ('username', 'Nom'),
-                    ('role_name', 'Role'),
-                    ('email', 'Courriel')]
-        check_grid_headers(test_app, '/users/', expected, language='fr')
-
     # in order to make this work, had to install selenium gecko driver
     @skip_if_ci
+    @pytest.mark.selenium
     @pytest.mark.usefixtures("selenium", "selenium_app")
     def test_selenium(self, dbsession, selenium, selenium_app, users_test_data):
-        selenium.get(selenium_app + '/users/')
+        selenium.get(selenium_app + self._prefix)
 
         elem = selenium.find_element_by_xpath("//a[contains(@href,'language=en')]")
         elem.click()
@@ -172,10 +184,11 @@ class TestUser():
 
     # in order to make this work, had to install selenium gecko driver
     @skip_if_ci
+    @pytest.mark.selenium
     @pytest.mark.usefixtures("selenium", "selenium_app")
     def test_delete_selenium(self, selenium, selenium_app, users_test_data):
         user = users_test_data['users'][13]
-        selenium.get(selenium_app + '/users/')
+        selenium.get(selenium_app + self._prefix)
 
         elem = selenium.find_element_by_xpath("//a[contains(@href,'language=en')]")
         elem.click()

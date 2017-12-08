@@ -2,7 +2,7 @@
 
 import pytest
 
-from . import check_grid_headers
+from . import AbstractViewsTests
 
 
 @pytest.fixture(scope='class')
@@ -39,9 +39,15 @@ def layer_wmts_test_data(dbsession):
 
 
 @pytest.mark.usefixtures('layer_wmts_test_data', 'transact', 'test_app')
-class TestLayerWMTS():
+class TestLayerWMTS(AbstractViewsTests):
 
-    def test_view_index_rendering_in_app(self, test_app):
+    _prefix = '/layers_wmts'
+
+    def test_index_rendering(self, test_app):
+        resp = self.get(test_app)
+
+        self.check_left_menu(resp, 'WMTS Layers')
+
         expected = [('_id_', '', 'false'),
                     ('name', 'Name', 'true'),
                     ('metadata_url', 'Metadata URL', 'true'),
@@ -59,7 +65,7 @@ class TestLayerWMTS():
                     ('interfaces', 'Interfaces', 'true'),
                     ('restrictionareas', 'Restriction areas', 'false'),
                     ('metadatas', 'Metadatas', 'false')]
-        check_grid_headers(test_app, '/layers_wmts/', expected)
+        self.check_grid_headers(resp, expected)
 
     def test_grid_complex_column_val(self, test_app, layer_wmts_test_data):
         json = test_app.post(
@@ -77,8 +83,3 @@ class TestLayerWMTS():
 
         assert layer.id == int(row['_id_'])
         assert layer.name == row['name']
-
-    def test_left_menu(self, test_app):
-        html = test_app.get('/layers_wmts/', status=200).html
-        main_menu = html.select_one('a[href="http://localhost/layers_wmts/"]').getText()
-        assert 'WMTS Layers' == main_menu
