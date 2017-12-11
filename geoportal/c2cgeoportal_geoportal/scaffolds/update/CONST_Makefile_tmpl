@@ -571,7 +571,7 @@ $(APP_OUTPUT_DIR)/images/: /usr/lib/node_modules/ngeo/third-party/jquery-ui/imag
 	PYTHONIOENCODING=UTF-8 mako-render \
 		--var 'src=geoportal/$(PACKAGE)_geoportal/static-ngeo/js/*.js,geoportal/$(PACKAGE)_geoportal/static-ngeo/components/**/*.js' \
 		--var src_set=contribs_gmf \
-		--var entry_point=$(PACKAGE)_$* \
+		--var entry_point=$(PACKAGE).$*.Controller \
 		--var ngeo_folder=/usr/lib/node_modules/ngeo/ \
 		$(MAKO_BUILD_ARGS) \
 		--var generate_exports=true $< | \
