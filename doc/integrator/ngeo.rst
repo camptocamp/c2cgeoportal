@@ -230,9 +230,9 @@ By default it is done for the desktop and mobile interface.
 Externs
 -------
 
-Adding additional external depedencies requires `declaring them as externs <https://developers.google.com/closure/compiler/docs/api-tutorial3#externs>`_.
+Adding additional external dependencies requires `declaring them as externs <https://developers.google.com/closure/compiler/docs/api-tutorial3#externs>`_.
 This prevents the closure-compiler from renaming the objects and their properties and allows type-checking.
-Good examples for such externs can be found in `ngeo <https://github.com/camptocamp/ngeo/tree/master/externs>`_ or directly at the `closure-compiler <https://github.com/google/closure-compiler/tree/master/contrib/externs>`_.
+Good examples for such externs can be found in `ngeo <https://github.com/camptocamp/ngeo/tree/master/externs>`_ or directly in the `closure-compiler <https://github.com/google/closure-compiler/tree/master/contrib/externs>`_ project.
 
 Project-specific externs are best placed in ``<package>/static-ngeo/externs/``.
 
