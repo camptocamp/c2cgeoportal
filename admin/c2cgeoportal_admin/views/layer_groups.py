@@ -19,14 +19,14 @@ class LayerGroupsViews(TreeItemViews):
     _list_fields = TreeItemViews._list_fields + [
         _list_field('is_expanded'),
         _list_field('is_internal_wms'),
-        _list_field('is_base_layer')
-        ] + TreeItemViews._extra_list_fields
+        _list_field('is_base_layer')] + \
+        TreeItemViews._extra_list_fields
 
     _id_field = 'id'
     _model = LayerGroup
     _base_schema = base_schema
 
-    def _base_query(self):
+    def _base_query(self, query=None):
         return super()._base_query(
             self._request.dbsession.query(LayerGroup).distinct())
 

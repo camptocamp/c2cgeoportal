@@ -166,9 +166,9 @@ class TestTheme(AbstractViewsTests):
 
         functionalities = theme_test_data['functionalities']
         assert set((
-                functionalities[0].id,
-                functionalities[3].id
-            )) == set(f.id for f in theme.functionalities)
+            functionalities[0].id,
+            functionalities[3].id
+        )) == set(f.id for f in theme.functionalities)
         self.check_checkboxes(
             form,
             'functionalities',

@@ -72,7 +72,7 @@ class TestRole(AbstractViewsTests):
         self.check_grid_headers(resp, expected)
 
     @pytest.mark.skip(reason='Translation is not finished')
-    def test_index_rendering_fr(self, dbsession, test_app):
+    def test_index_rendering_fr(self, test_app):
         resp = self.get(test_app, locale='fr')
 
         self.check_left_menu(resp, 'Roles')
@@ -94,10 +94,10 @@ class TestRole(AbstractViewsTests):
 
         functionalities = roles_test_data['functionalities']
         assert set((
-                functionalities['default_basemap'][0].id,
-                functionalities['location'][0].id,
-                functionalities['location'][1].id
-            )) == set(f.id for f in role.functionalities)
+            functionalities['default_basemap'][0].id,
+            functionalities['location'][0].id,
+            functionalities['location'][1].id
+        )) == set(f.id for f in role.functionalities)
         self.check_checkboxes(
             form,
             'functionalities',

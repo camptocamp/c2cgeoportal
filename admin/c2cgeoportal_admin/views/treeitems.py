@@ -1,3 +1,5 @@
+# pylint: disable=no-self-use
+
 from functools import partial
 
 from c2cgeoform.views.abstract_views import AbstractViews, ListField

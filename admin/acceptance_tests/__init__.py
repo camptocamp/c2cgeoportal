@@ -1,3 +1,5 @@
+# pylint: disable=no-self-use
+
 import os
 import pprint
 import pytest

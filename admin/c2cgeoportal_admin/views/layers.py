@@ -24,8 +24,8 @@ class LayerViews(TreeItemViews):
             filter_column=Interface.name),
         _list_field(
             'restrictionareas',
-            renderer=lambda layer_wms: ', '.join([r.name or '' for r in layer_wms.restrictionareas]))
-        ] + TreeItemViews._extra_list_fields
+            renderer=lambda layer_wms: ', '.join([r.name or '' for r in layer_wms.restrictionareas]))] + \
+        TreeItemViews._extra_list_fields
 
     def _base_query(self, query):
         return super()._base_query(

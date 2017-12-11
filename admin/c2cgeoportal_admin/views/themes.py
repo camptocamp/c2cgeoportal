@@ -95,7 +95,7 @@ class ThemeViews(TreeItemViews):
     _model = Theme
     _base_schema = base_schema
 
-    def _base_query(self):
+    def _base_query(self, query=None):
         return super()._base_query(
             self._request.dbsession.query(Theme).distinct().
             outerjoin('interfaces').
