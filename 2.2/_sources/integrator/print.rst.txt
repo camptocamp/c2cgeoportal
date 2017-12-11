@@ -58,7 +58,7 @@ All print-related files are located in the ``print/`` folder, and the files rela
 
 The main configuration file is ``print/print-apps/<package>/config.yaml``.
 
-* `MapFish print documntation <http://mapfish.github.io/mapfish-print-doc/>`_
+* `MapFish print documentation <http://mapfish.github.io/mapfish-print-doc/>`_
 * `Startup with Jasper Reports <http://mapfish.github.io/mapfish-print-doc/#/jasperReports>`_
 
 
