@@ -108,7 +108,7 @@ def generate_mappers(settings: dict) -> None:
     # all relationships can be setup
     configure_mappers()
 
-def init_dbsessions(settings: dict, config: Configurator=None, health_check: HealthCheck=None) -> None:
+def init_dbsessions(settings: dict, config: Configurator, health_check: HealthCheck=None) -> None:
     # define the srid, schema as global variables to be usable in the model
     global schema
     global srid

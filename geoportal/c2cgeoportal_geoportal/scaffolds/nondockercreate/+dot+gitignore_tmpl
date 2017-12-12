@@ -38,7 +38,7 @@ __pycache__/
 /geoportal/{{package}}_geoportal.egg-info/
 /geoportal/{{package}}_geoportal/static/lib/cgxp/
 /geoportal/{{package}}_geoportal/locale/*/LC_MESSAGES/*.mo
-/geoportal/{{package}}_geoportal/locale/{{package}}-*.pot
+/geoportal/{{package}}_geoportal/locale/{{package}}_geoportal-*.pot
 /geoportal/{{package}}_geoportal/static-ngeo/build/
 /geoportal/{{package}}_geoportal/static-ngeo/fonts/gmf-icons.*
 /geoportal/{{package}}_geoportal/static-ngeo/fonts/fontawesome-webfont.*

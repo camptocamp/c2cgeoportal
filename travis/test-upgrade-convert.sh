@@ -15,6 +15,8 @@ function create {
     pcreate $1 tilecloud_chain
     cd $1/testgeomapfish
     git init
+    git config user.email travis@camptocamp.com
+    git config user.name CI
     git remote add origin . # add a fake remote
     git add --all
     git commit --quiet --message="Initial commit"
@@ -42,6 +44,8 @@ function createv220 {
     pcreate $1 tilecloud_chain
     cd $1/testgeomapfish
     git init
+    git config user.email travis@camptocamp.com
+    git config user.name CI
     git remote add origin . # add a fake remote
     git add --all
     git commit --quiet --message="Initial commit"
@@ -108,7 +112,7 @@ then
     git add temp.mk
     git commit --quiet --message="Start upgrade"
     ./docker-run make --makefile=temp.mk upgrade
-    if [ ! -e .UPGRADE7 ]
+    if [ ! -e .UPGRADE9 ]
     then
         echo "Fail to upgrade"
         exit 1
@@ -116,7 +120,7 @@ then
     cp {CONST_create_template/,}project.yaml.mako
     cp {CONST_create_template/,}mapserver/tinyows.xml.mako
     cp {CONST_create_template/,}print/print-apps/testgeomapfish/config.yaml.mako
-    ./docker-run make upgrade8
+    ./docker-run make upgrade10
     if [ ! -e .UPGRADE_SUCCESS ]
     then
         echo "Fail to upgrade"
@@ -124,7 +128,7 @@ then
     fi
     git rm temp.mk
     ./docker-run make clean-all
-    rm --recursive --force .UPGRADE10 .UPGRADE_SUCCESS \
+    rm --recursive --force .UPGRADE12 .UPGRADE_SUCCESS \
         commons/testgeomapfish_commons.egg-info geoportal/testgeomapfish_geoportal.egg-info
     cd -
     diff --recursive --exclude=.git ${WORKSPACE}/dockerref ${WORKSPACE}/nondocker
@@ -141,7 +145,7 @@ then
     git commit --quiet --message="Start upgrade"
     export APACHE_VHOST=test
     ./docker-run make upgrade
-    if [ ! -e .UPGRADE7 ]
+    if [ ! -e .UPGRADE9 ]
     then
         echo "Fail to upgrade"
         exit 1
@@ -150,14 +154,14 @@ then
     cp {CONST_create_template/,}testgeomapfish.mk
     cp {CONST_create_template/,}mapserver/tinyows.xml.mako
     cp {CONST_create_template/,}print/print-apps/testgeomapfish/config.yaml.mako
-    ./docker-run make --makefile=testgeomapfish.mk upgrade8
+    ./docker-run make --makefile=testgeomapfish.mk upgrade10
     if [ ! -e .UPGRADE_SUCCESS ]
     then
         echo "Fail to upgrade"
         exit 1
     fi
     ./docker-run make --makefile=testgeomapfish.mk clean-all
-    rm --recursive --force .UPGRADE10 .UPGRADE_SUCCESS \
+    rm --recursive --force .UPGRADE12 .UPGRADE_SUCCESS \
         commons/testgeomapfish_commons.egg-info geoportal/testgeomapfish_geoportal.egg-info
     cd -
     diff --recursive --exclude=.git ${WORKSPACE}/nondockerref ${WORKSPACE}/docker
@@ -181,27 +185,21 @@ function v220 {
         ./docker-run --image=camptocamp/geomapfish-build \
             c2cupgrade --force-docker --new-makefile=Makefile --makefile=testgeomapfish.mk
     fi
-    if [ ! -e .UPGRADE6 ]
-    then
-        echo "Fail to upgrade"
-        exit 1
-    fi
-    ./docker-run make $MAKE_ARGS upgrade7
-    if [ "$2" == non ]
-    then
-        if [ ! -e .UPGRADE7 ]
-        then
-            echo "Fail to upgrade"
-            exit 1
-        fi
-        ./docker-run make $MAKE_ARGS upgrade8
-    fi
     if [ ! -e .UPGRADE8 ]
     then
         echo "Fail to upgrade"
         exit 1
     fi
     ./docker-run make $MAKE_ARGS upgrade9
+    if [ "$2" == non ]
+    then
+        if [ ! -e .UPGRADE9 ]
+        then
+            echo "Fail to upgrade"
+            exit 1
+        fi
+        ./docker-run make $MAKE_ARGS upgrade10
+    fi
     if [ ! -e .UPGRADE_SUCCESS ]
     then
         echo "Fail to upgrade"
@@ -211,7 +209,7 @@ function v220 {
     rm --recursive --force .UPGRADE10 .UPGRADE_SUCCESS \
         commons/testgeomapfish_commons.egg-info geoportal/testgeomapfish_geoportal.egg-info
     cd -
-    diff --recursive --exclude=.git --exclude=LC_MESSAGES ${WORKSPACE}/$2dockerref $1
+    diff --recursive --exclude=.git --exclude=locale ${WORKSPACE}/$2dockerref $1
 }
 
 if [ "$1" = "v220-todocker" ]

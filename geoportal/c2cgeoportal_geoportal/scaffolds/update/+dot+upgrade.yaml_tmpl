@@ -1,16 +1,26 @@
 ---
 
 default_project_file:
-  - {{package}}/templates/.*
-  - {{package}}/locale/.*
-  - {{package}}/static/.*
-  - {{package}}/static-ngeo/.*
-  - print/print-apps/.*
-  - mapserver/.*
-  - project.yaml.mako
-  - setup.py
-  - vars.yaml
-  - Makefile
+  include:
+    - {{package}}/templates/.*
+    - {{package}}/locale/.*
+    - {{package}}/static/.*
+    - {{package}}/static-ngeo/.*
+    - {{package}}/jsbuild/.*
+    - geoportal/{{package}}_geoportal/templates/.*
+    - geoportal/{{package}}_geoportal/locale/.*
+    - geoportal_{{package}}_geoportal/static/.*
+    - geoportal/{{package}}_geoportal/static-ngeo/.*
+    - geoportal/{{package}}_geoportal/jsbuild/.*
+    - print/print-apps/.*
+    - mapserver/.*
+    - project.yaml.mako
+    - setup.py
+    - vars.yaml
+    - Makefile
+  exclude:
+    - mapserver/Dockerfile
+    - mapserver/tinyows.xml.mako
 
 files_to_move:
   - from: testDB
@@ -57,7 +67,7 @@ files_to_remove:
   - file: .tx
     version: 2.3
     from: 2.2
-  - file: {{package}}/forms.py
+  - file: geoportal/{{package}}_geoportal/forms.py
     version: 2.3
     from: 2.2
   - file: apache

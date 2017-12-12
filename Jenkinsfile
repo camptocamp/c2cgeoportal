@@ -84,31 +84,34 @@ timeout(time: 2, unit: 'HOURS') {
             }
             stage('Test Docker app') {
                 checkout scm
-                sh 'git config --global user.email travis@camptocamp.com'
-                sh 'git config --global user.name Travis'
                 sh 'rm -rf ${HOME}/workspace/testgeomapfish'
                 sh 'docker build --tag=camptocamp/testgeomapfish-external-db:latest docker/test-external-db'
                 sh 'travis/create-new-project.sh ${HOME}/workspace'
-                sh 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ ./docker-run travis/empty-make --makefile=travis.mk help'
-                sh 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ ./docker-run make --makefile=travis.mk build'
+                sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ ./docker-compose-run make update-po'
+                // Commit the l10n files modifications
+                // To prevent fail on modification files check
+                sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ git add geoportal/testgeomapfish_geoportal/locale/*/LC_MESSAGES/testgeomapfish_geoportal-*.po'
+                sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ git commit -m "Upgrade the po files"'
+                sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ ./docker-run travis/empty-make --makefile=travis.mk help'
+                sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ ./docker-run make --makefile=travis.mk build'
                 try {
-                    sh 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ docker-compose up -d'
+                    sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ docker-compose up -d'
                     sh './docker-run travis/waitwsgi http://`netstat --route --numeric|grep ^0.0.0.0|awk \'{print($2)}\'`:8080/'
                     for (path in ['c2c/health_check', 'c2c/health_check?max_level=100', 'layers/test/values/type enum']) {
-                        def start_lines = sh(returnStdout: true, script: 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ docker-compose logs | wc -l') as Integer
+                        def start_lines = sh(returnStdout: true, script: 'travis/run-on ${HOME}/workspace/testgeomapfish/ docker-compose logs | wc -l') as Integer
                         try {
                             sh 'travis/test-new-project http://`netstat --route --numeric|grep ^0.0.0.0|awk \'{print($2)}\'`:8080/' + path
                         } catch (Exception error) {
-                            def end_lines = sh(returnStdout: true, script: 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ docker-compose logs | wc -l') as Integer
-                            sh "travis/run-on.sh ${HOME}/workspace/testgeomapfish/ docker-compose logs --tail=${end_lines - start_lines}"
+                            def end_lines = sh(returnStdout: true, script: 'travis/run-on ${HOME}/workspace/testgeomapfish/ docker-compose logs | wc -l') as Integer
+                            sh "travis/run-on ${HOME}/workspace/testgeomapfish/ docker-compose logs --tail=${end_lines - start_lines}"
                             throw error
                         }
                     }
                 } finally {
-                    sh 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ docker-compose down'
+                    sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ docker-compose down'
                 }
-                sh 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ ./docker-run travis/empty-make --makefile=travis.mk build'
-                sh 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ ./docker-run make --makefile=travis.mk checks'
+                sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ ./docker-run travis/empty-make --makefile=travis.mk build'
+                sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ ./docker-run make --makefile=travis.mk checks'
                 sh '''find \
                     ${HOME}/workspace/testgeomapfish/geoportal/setup.py \
                     ${HOME}/workspace/testgeomapfish/geoportal/testgeomapfish_geoportal/*.py \
@@ -116,14 +119,14 @@ timeout(time: 2, unit: 'HOURS') {
                     ${HOME}/workspace/testgeomapfish/commons/setup.py \
                     ${HOME}/workspace/testgeomapfish/commons/testgeomapfish_commons \
                     -name \\*.py | xargs travis/squote'''
-                sh 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ ./docker-run travis/status.sh'
-                sh 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ ./docker-run make --makefile=empty-vars.mk geoportal/config.yaml'
-                sh 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ ./docker-run make --makefile=travis.mk alembic.ini'
-                sh 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ ./docker-compose-run sleep 5'
-                sh 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ ./docker-compose-run alembic --name=main upgrade head'
-                sh 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ ./docker-compose-run alembic --name=static upgrade head'
-                sh 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ ./docker-compose-run alembic --name=static downgrade base'
-                sh 'travis/run-on.sh ${HOME}/workspace/testgeomapfish/ ./docker-compose-run alembic --name=main downgrade base'
+                sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ ./docker-run travis/status.sh'
+                sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ ./docker-run make --makefile=empty-vars.mk geoportal/config.yaml'
+                sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ ./docker-run make --makefile=travis.mk alembic.ini'
+                sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ ./docker-compose-run sleep 10'
+                sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ ./docker-compose-run alembic --name=main upgrade head'
+                sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ ./docker-compose-run alembic --name=static upgrade head'
+                sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ ./docker-compose-run alembic --name=static downgrade base'
+                sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ ./docker-compose-run alembic --name=main downgrade base'
                 sh 'rm -rf ${HOME}/workspacetestgeomapfish'
             }
             stage('Tests upgrades') {
@@ -142,7 +145,7 @@ timeout(time: 2, unit: 'HOURS') {
                     }, 'v220 docker': {
                         sh 'travis/test-upgrade-convert.sh v220-todocker ${HOME}/workspace'
                     }, 'v220 nondocker': {
-                        sh 'travis/test-upgrade-convert.sh v220-nontodocker ${HOME}/workspace'
+                        sh 'travis/test-upgrade-convert.sh v220-tonondocker ${HOME}/workspace'
                     }
                     sh 'travis/test-upgrade-convert.sh cleanup ${HOME}/workspace'
                 } finally {

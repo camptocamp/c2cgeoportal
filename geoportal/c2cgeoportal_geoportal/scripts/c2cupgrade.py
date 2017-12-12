@@ -195,8 +195,8 @@ class C2cUpgradeTool:
         if step >= 0:
             print(colorize(prompt, GREEN))
             if self.options.use_makefile:
-                args = " --makefile={}".format(
-                    self.options.new_makefile if self.options.makefile != "Makefile" else "")
+                args = " --makefile={}".format(self.options.makefile) \
+                    if self.options.makefile != "Makefile" else ""
                 print(colorize("./docker-run make{} upgrade{}".format(
                     args, step if step != 0 else "",
                 ), GREEN))
@@ -216,7 +216,7 @@ class C2cUpgradeTool:
                 if self.options.new_makefile is not None:
                     cmd += "--new-makefile={} ".format(self.options.new_makefile)
                 if step != 0:
-                    cmd += "--step{}".format(step)
+                    cmd += "--step={}".format(step)
                 print(colorize(cmd, GREEN))
 
     def run_step(self, step):
@@ -276,14 +276,12 @@ class C2cUpgradeTool:
     def step1(self, step):
         check_call(["git", "reset", "--hard"])
         check_call(["git", "clean", "--force", "-d"])
-        check_call(["git", "submodule", "foreach", "--recursive", "git", "reset", "--hard"])
-        check_call(["git", "submodule", "foreach", "--recursive", "git", "clean", "--force", "-d"])
 
         branch = check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode("utf-8").strip()
         # remove all no more existing branches
-        check_call(["git", "fetch", "origin", "--prune"])
+        check_call(["git", "fetch", self.options.git_remote, "--prune"])
         branches = check_output(["git", "branch", "--all"]).decode("utf-8").split("\n")
-        if "  remotes/origin/{0!s}".format(branch) in branches:
+        if "  remotes/{}/{}".format(self.options.git_remote, branch) in branches:
             try:
                 check_call(["git", "pull", "--rebase", self.options.git_remote, branch])
             except subprocess.CalledProcessError:
@@ -292,20 +290,40 @@ class C2cUpgradeTool:
                     prompt="Please solve the rebase and run it again:")
                 exit(1)
 
-        check_call(["git", "submodule", "sync"])
-        check_call(["git", "submodule", "update", "--init"])
-        check_call(["git", "submodule", "foreach", "git", "submodule", "sync"])
-        check_call(["git", "submodule", "foreach", "git", "submodule", "update", "--init"])
-
         if len(check_output(["git", "status", "-z"]).decode("utf-8").strip()) != 0:
             self.print_step(
                 step, error=True, message="The pull is not fast forward.",
                 prompt="Please solve the rebase and run it again:")
             exit(1)
 
-        check_call(["git", "submodule", "foreach", "git", "submodule", "sync"])
-        check_call(["git", "submodule", "foreach", "git", "submodule", "update", "--init"])
+        self.run_step(step + 1)
 
+    @Step(2)
+    def step2(self, step):
+        if not os.path.exists("CONST_create_template/geoportal"):
+            for source, destination in [
+                ("testDB", "testdb"),
+                ("testdb/Dockerfile.mako", "testdb/Dockerfile"),
+                ("vars_{{package}}.yaml", "vars.yaml"),
+                ("{{package}}.mk", "Makefile"),
+                ("Dockerfile", "geoportal/Dockerfile.mako"),
+                ("docker-compose.yml.mako", "docker-compose.yaml.mako"),
+                (".dockerignore", "geoportal/.dockerignore"),
+                ("jsbuild", "geoportal/jsbuild"),
+                ("production.ini.mako", "geoportal/production.ini.mako"),
+                ("setup.py", "geoportal/setup.py"),
+                ("testgeomapfish/models.py", "commons/testgeomapfish_commons/models.py"),
+                ("testgeomapfish", "geoportal/testgeomapfish_geoportal"),
+            ]:
+                if os.path.exists(source):
+                    if os.path.dirname(destination) != "":
+                        os.makedirs(os.path.dirname(destination), exist_ok=True)
+                    check_call(["git", "mv", source, destination])
+            check_call(["git", "commit", "--message=Do the moves in CONST_create_template"])
+        self.run_step(step + 1)
+
+    @Step(3)
+    def step3(self, step):
         if os.path.exists("CONST_create_template"):
             shutil.rmtree("CONST_create_template")
 
@@ -321,14 +339,12 @@ class C2cUpgradeTool:
                 "--scaffold=c2cgeoportal_nondockerupdate", project_path
             ])
         os.remove(project_path)
-        self.options.use_makefile = True
 
         check_call(["make", "--makefile=" + self.options.makefile, "clean-all"])
-        self.options.makefile = self.options.new_makefile
         self.run_step(step + 1)
 
-    @Step(2)
-    def step2(self, step):
+    @Step(4)
+    def step4(self, step):
         error = False
 
         print("Files to remove")
@@ -358,10 +374,12 @@ class C2cUpgradeTool:
                     prompt="Fill it and run it again:"
                 )
             else:
+                self.options.use_makefile = True
+                self.options.makefile = self.options.new_makefile
                 self.run_step(step + 1)
 
-    @Step(3)
-    def step3(self, step):
+    @Step(5)
+    def step5(self, step):
         self.files_to_remove()
         self.run_step(step + 1)
 
@@ -392,8 +410,8 @@ class C2cUpgradeTool:
                         os.remove(file_)
         return error
 
-    @Step(4)
-    def step4(self, step):
+    @Step(6)
+    def step6(self, step):
         self.files_to_move()
         self.run_step(step + 1)
 
@@ -441,26 +459,38 @@ class C2cUpgradeTool:
                     os.rename(src, dst)
         return error
 
-    @Step(5)
-    def step5(self, step):
+    @Step(7)
+    def step7(self, step):
         self.files_to_get()
         self.run_step(step + 1)
 
     def files_to_get(self, pre=False):
         error = False
+        default_project_file = self.get_upgrade("default_project_file")
         for root, _, files in os.walk("CONST_create_template"):
             root = root[len("CONST_create_template/"):]
             for file_ in files:
                 destination = os.path.join(root, file_)
                 managed = False
-                for pattern in self.project["managed_files"] + self.get_upgrade("default_project_file"):
+                for pattern in default_project_file["include"]:
                     if re.match(pattern + '$', destination):
                         managed = True
-                        for unpattern in self.project.get("unmanaged_files", []):
-                            if re.match(unpattern + '$', destination):
-                                managed = False
-                                break
                         break
+                if managed:
+                    for pattern in default_project_file["exclude"]:
+                        if re.match(pattern + '$', destination):
+                            managed = False
+                            break
+                if not managed:
+                    for pattern in self.project["managed_files"]:
+                        if re.match(pattern + '$', destination):
+                            managed = True
+                            break
+                if managed:
+                    for pattern in self.project.get("unmanaged_files", []):
+                        if re.match(pattern + '$', destination):
+                            managed = False
+                            break
                 source = os.path.join("CONST_create_template", destination)
                 if not managed and (not os.path.exists(destination) or not filecmp.cmp(source, destination)):
                     if not pre:
@@ -473,8 +503,8 @@ class C2cUpgradeTool:
                         shutil.copymode(source, destination)
         return error
 
-    @Step(6)
-    def step6(self, step):
+    @Step(8)
+    def step8(self, step):
         with open("changelog.diff", "w") as diff_file:
             check_call(["git", "diff", "--", "CONST_CHANGELOG.txt"], stdout=diff_file)
 
@@ -496,8 +526,8 @@ class C2cUpgradeTool:
                 "file (listed in the `changelog.diff` file)."
             )
 
-    @Step(7)
-    def step7(self, step):
+    @Step(9)
+    def step9(self, step):
         if os.path.isfile("changelog.diff"):
             os.unlink("changelog.diff")
 
@@ -517,16 +547,18 @@ class C2cUpgradeTool:
                 "CONST_nondocker_CHANGELOG.txt file (listed in the `nondocker-changelog.diff` file)."
             )
 
-    @Step(8)
-    def step8(self, step):
+    @Step(10)
+    def step10(self, step):
         if os.path.isfile("nondocker-changelog.diff"):
             os.unlink("nondocker-changelog.diff")
 
         with open("ngeo.diff", "w") as diff_file:
             check_call([
                 "git", "diff", "--",
-                "CONST_create_template/{}/templates".format(self.project["project_package"]),
-                "CONST_create_template/{}/static-ngeo".format(self.project["project_package"]),
+                "CONST_create_template/geoportal/{}_geoportal/templates".format(
+                    self.project["project_package"]),
+                "CONST_create_template/geoportal/{}_geoportal/static-ngeo".format(
+                    self.project["project_package"]),
             ], stdout=diff_file)
 
         if os.path.getsize("ngeo.diff") == 0:
@@ -538,8 +570,8 @@ class C2cUpgradeTool:
                 DIFF_NOTICE
             )
 
-    @Step(9)
-    def step9(self, step):
+    @Step(11)
+    def step11(self, step):
         if os.path.isfile("ngeo.diff"):
             os.unlink("ngeo.diff")
 
@@ -571,8 +603,8 @@ class C2cUpgradeTool:
         else:
             self.run_step(step + 1)
 
-    @Step(10)
-    def step10(self, step):
+    @Step(12)
+    def step12(self, step):
         if os.path.isfile("create.diff"):
             os.unlink("create.diff")
 
@@ -605,8 +637,8 @@ class C2cUpgradeTool:
             pass
         self.print_step(step + 1, message="\n".join(message))
 
-    @Step(11)
-    def step11(self, step):
+    @Step(13)
+    def step13(self, step):
         if os.path.isfile(".UPGRADE_SUCCESS"):
             os.unlink(".UPGRADE_SUCCESS")
         ok, message = self.test_checkers()
@@ -626,9 +658,9 @@ class C2cUpgradeTool:
             "add them into the `.gitignore` file and launch upgrade5 again.",
             prompt="Then to commit your changes type:")
 
-    @Step(12)
-    def step12(self, _):
-        check_call(["git", "commit", "-m", "Upgrade to GeoMapFish {}".format(
+    @Step(14)
+    def step14(self, _):
+        check_call(["git", "commit", "--message=Upgrade to GeoMapFish {}".format(
             pkg_resources.get_distribution("c2cgeoportal_commons").version
         )])
 

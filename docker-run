@@ -20,6 +20,7 @@ def main():
 
     parser = argparse.ArgumentParser(description="Run docker build.")
     parser.add_argument("--root", action="store_true", help="Be root in the container")
+    parser.add_argument("--home", action="store_true", help="Mount the home directory")
     parser.add_argument("-ti", action="store_true", help="Use -ti docker run option")
     parser.add_argument("--share", action='append', default=[], help="A folder to share as a volume")
     parser.add_argument(
@@ -62,13 +63,23 @@ def main():
         "--volume=/var/run/docker.sock:/var/run/docker.sock",
         "--volume={}:/build".format(build_volume_name),
         "--volume={pwd}:/src".format(pwd=os.getcwd()),
-        "--volume={home}:{home}".format(home=os.environ["HOME"]),
         "--env=USER_NAME={}".format(login),
         "--env=USER_ID={}".format(os.getuid() if os.name == "posix" else 1000),
         "--env=GROUP_ID={}".format(os.getgid() if os.name == "posix" else 1000),
         "--env=GIT_BRANCH={}".format(git_branch),
-        "--env=GIT_HASH={}".format(git_hash)
+        "--env=GIT_HASH={}".format(git_hash),
     ])
+
+    if options.home:
+        docker_cmd.append("--volume={home}:{home}".format(home=os.environ["HOME"]))
+    else:
+        docker_cmd.append("--volume={}:/home".format(build_volume_name + "-home"))
+
+    if "SSH_AUTH_SOCK" in os.environ:
+        docker_cmd.extend([
+            "--volume={ssh}:{ssh}".format(ssh=os.environ["SSH_AUTH_SOCK"]),
+            "--env=SSH_AUTH_SOCK",
+        ])
 
     for env in [
         "HOME",

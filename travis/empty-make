@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 
+# Check that the make command don't execute any rules and had an unexpected error
+
 import time
 import sys
 import os
+import re
 import subprocess
 
 os.environ["DEBUG"] = "TRUE"
@@ -11,11 +14,23 @@ while p.returncode is None:
     time.sleep(0.2)
     p.poll()
 
+patterns = [
+    re.compile(r"^$"),
+    re.compile(r"^ls: cannot access '.*': No such file or directory$"),
+    re.compile(r"^Build {0}.*{1} due modification on {0}{1}$".format(
+        re.escape("\x1b[1;34m"),
+        re.escape("\x1b[0m"),
+    )),
+    re.compile(r"^Nothing to be done for .*$"),
+    re.compile(r"^.*: warning: overriding recipe for target \'.*\'$"),
+    re.compile(r"^.*: warning: ignoring old recipe for target \'.*\'$"),
+]
+
 lines = p.stderr.read().decode("utf-8").split("\n")
-lines = [l_ for l_ in lines if l_ != ""]
-lines = [l for l in lines if "make: Nothing to be done for " not in l]
-lines = [l for l in lines if " warning: overriding recipe for target " not in l]
-lines = [l for l in lines if " warning: ignoring old recipe for target " not in l]
+
+lines = [l.strip() for l in lines]
+for pattern in patterns:
+    lines = [l for l in lines if pattern.match(l) is None]
 
 if p.returncode > 0 or len(lines) > 0:
     print("A Rule is running again, code: {}\n\n{}\n\n{}\n---".format(

@@ -8,14 +8,9 @@ import subprocess
 import urllib.parse
 
 
-if 'GROUP_ID' not in os.environ:
-    exit('The GROUP_ID environment variable is required')
-
-if 'USER_ID' not in os.environ:
-    exit('The USER_ID environment variable is required')
-
-if 'USER_NAME' not in os.environ:
-    exit('The USER_NAME environment variable is required')
+for env in ['GROUP_ID', 'USER_ID', 'USER_NAME']:
+    if env not in os.environ:
+        exit('The {} environment variable is required'.format(env))
 
 args = sys.argv[1:]
 if len(args) == 1 and args[0].startswith("%5B"):
@@ -31,19 +26,24 @@ except subprocess.CalledProcessError:
 try:
     subprocess.check_call([
         'useradd',
-        '--groups=docker,sudo',
+        '--groups={},sudo'.format(os.stat('/var/run/docker.sock').st_gid)
+        if os.path.exists('/var/run/docker.sock') else '--groups=sudo',
         '--shell=/bin/bash',
         '--uid=' + os.environ['USER_ID'],
         '--gid=' + os.environ['GROUP_ID'],
-        os.environ['USER_NAME']
+        os.environ['USER_NAME'],
     ])
 except subprocess.CalledProcessError:
     del_user = False
 
-# Needed wen we run in docker-compose
+# The home directory is required
 if not os.path.exists('/home/' + os.environ['USER_NAME']):
     os.mkdir('/home/' + os.environ['USER_NAME'])
-    os.chown('/home/' + os.environ['USER_NAME'], int(os.environ['USER_ID']), int(os.environ['GROUP_ID']))
+    os.chown(
+        '/home/' + os.environ['USER_NAME'],
+        int(os.environ['USER_ID']),
+        int(os.environ['GROUP_ID']),
+    )
 
 # Be able to write in the build directory
 os.chmod(
