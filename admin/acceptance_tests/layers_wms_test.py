@@ -3,11 +3,11 @@
 import re
 import pytest
 
-from . import skip_if_ci, check_grid_headers
+from . import skip_if_ci, AbstractViewsTests
 
 
 @pytest.fixture(scope='class')
-@pytest.mark.usefixtures("dbsession")
+@pytest.mark.usefixtures('dbsession')
 def layer_wms_test_data(dbsession):
     from c2cgeoportal_commons.models.main import \
         LayerWMS, OGCServer, RestrictionArea, LayergroupTreeitem, \
@@ -15,35 +15,22 @@ def layer_wms_test_data(dbsession):
 
     dbsession.begin_nested()
 
-    servers = []
-    for i in range(0, 4):
-        servers.append(OGCServer(name='server_{}'.format(i)))
-        dbsession.add(servers[i])
+    servers = [OGCServer(name='server_{}'.format(i)) for i in range(0, 4)]
 
-    restrictionareas = []
-    for i in range(0, 5):
-        restrictionarea = RestrictionArea(
-            name="restrictionarea_{}".format(i))
-        dbsession.add(restrictionarea)
-        restrictionareas.append(restrictionarea)
+    restrictionareas = [RestrictionArea(name='restrictionarea_{}'.format(i))
+                        for i in range(0, 5)]
 
-    interfaces = [Interface(name) for name
-                  in ["desktop", "mobile", "edit", "routing"]]
-    for interface in interfaces:
-        dbsession.add(interface)
+    interfaces = [Interface(name) for name in ['desktop', 'mobile', 'edit', 'routing']]
 
-    dimensions_protos = [("Date", "2017"),
-                         ("Date", "2018"),
-                         ("Date", "1988"),
-                         ("CLC", "all"), ]
-    metadatas_protos = [("copyable", "true"),
-                        ("disclaimer", "© le momo"),
-                        ("snappingConfig", '{"tolerance": 50}')]
-    groups = []
-    for i in range(0, 5):
-        group = LayerGroup(name='layer_group_{}'.format(i))
-        groups.append(group)
-        dbsession.add(group)
+    dimensions_protos = [('Date', '2017'),
+                         ('Date', '2018'),
+                         ('Date', '1988'),
+                         ('CLC', 'all'), ]
+    metadatas_protos = [('copyable', 'true'),
+                        ('disclaimer', '© le momo'),
+                        ('snappingConfig', '{"tolerance": 50}')]
+
+    groups = [LayerGroup(name='layer_group_{}'.format(i)) for i in range(0, 5)]
 
     layers = []
     for i in range(0, 25):
@@ -52,8 +39,9 @@ def layer_wms_test_data(dbsession):
         layer.ogc_server = servers[i % 4]
         layer.restrictionareas = [restrictionareas[i % 5],
                                   restrictionareas[(i + 2) % 5]]
-        layer.interfaces = [interfaces[i % 4],
-                            interfaces[(i + 2) % 4]]
+
+        if i % 10 != 1:
+            layer.interfaces = [interfaces[i % 4], interfaces[(i + 2) % 4]]
 
         layer.dimensions = [Dimension(name=dimensions_protos[id][0],
                                       value=dimensions_protos[id][1],
@@ -77,19 +65,25 @@ def layer_wms_test_data(dbsession):
         layers.append(layer)
 
     yield {
-        "servers": servers,
-        "restrictionareas": restrictionareas,
-        "layers": layers,
-        "interfaces": interfaces
+        'servers': servers,
+        'restrictionareas': restrictionareas,
+        'layers': layers,
+        'interfaces': interfaces
     }
 
     dbsession.rollback()
 
 
-@pytest.mark.usefixtures("layer_wms_test_data", "transact", "test_app")
-class TestLayerWMS():
+@pytest.mark.usefixtures('layer_wms_test_data', 'transact', 'test_app')
+class TestLayerWMSViews(AbstractViewsTests):
 
-    def test_view_index_rendering_in_app(self, test_app):
+    _prefix = '/layers_wms'
+
+    def test_index_rendering(self, test_app):
+        resp = self.get(test_app)
+
+        self.check_left_menu(resp, 'WMS Layers')
+
         expected = [('_id_', '', 'false'),
                     ('name', 'Name'),
                     ('metadata_url', 'Metadata URL'),
@@ -102,63 +96,82 @@ class TestLayerWMS():
                     ('time_mode', 'Time mode'),
                     ('time_widget', 'Time widget'),
                     ('ogc_server', 'OGC server'),
-                    ('interfaces', "Interfaces"),
-                    ('dimensions', "Dimensions", 'false'),
-                    ('parents_relation', "Parents", 'false'),
+                    ('dimensions', 'Dimensions', 'false'),
+                    ('interfaces', 'Interfaces'),
                     ('restrictionareas', 'Restriction areas', 'false'),
+                    ('parents_relation', 'Parents', 'false'),
                     ('metadatas', 'Metadatas', 'false')]
-        check_grid_headers(test_app, '/layers_wms/', expected)
-
-    def test_left_menu(self, test_app):
-        html = test_app.get("/layers_wms/", status=200).html
-        main_menu = html.select_one('a[href="http://localhost/layers_wms/"]').getText()
-        assert 'WMS Layers' == main_menu
+        self.check_grid_headers(resp, expected)
 
     def test_grid_complex_column_val(self, test_app, layer_wms_test_data):
         json = test_app.post(
-            "/layers_wms/grid.json",
+            '/layers_wms/grid.json',
             params={
-                "current": 1,
-                "rowCount": 10,
-                "sort[name]": "asc"
+                'current': 1,
+                'rowCount': 10,
+                'sort[name]': 'asc',
+                'searchPhrase': ''
             },
             status=200
         ).json
-        row = json["rows"][0]
+        assert 25 == json['total']
 
+        row = json['rows'][0]
         layer = layer_wms_test_data['layers'][0]
 
-        assert layer.id == int(row["_id_"])
-        assert layer.name == row["name"]
+        assert layer.id == int(row['_id_'])
+        assert layer.name == row['name']
         assert 'restrictionarea_0, restrictionarea_2' == row['restrictionareas']
         assert 'server_0' == row['ogc_server']
         assert 'desktop, edit' == row['interfaces']
         assert 'Date: 2017, 1988; CLC: all' == row['dimensions']
         assert 'layer_group_0, layer_group_3' == row['parents_relation']
-        assert 'restrictionarea_0, restrictionarea_2' == row['restrictionareas']
         assert 'copyable: true, snappingConfig: {"tolerance": 50}' == row['metadatas']
+
+    def test_grid_sort_on_ogc_server(self, test_app, layer_wms_test_data):
+        rows = test_app.post(
+            '/layers_wms/grid.json',
+            params={
+                'current': 1,
+                'rowCount': 10,
+                'sort[ogc_server]': 'asc'
+            },
+            status=200
+        ).json['rows']
+        for i, layer in enumerate(sorted(layer_wms_test_data['layers'],
+                                         key=lambda layer: (layer.ogc_server.name, layer.id))):
+            if i == 10:
+                break
+            assert str(layer.id) == rows[i]['_id_']
+
+    def test_grid_search(self, test_app):
+        # check search on ogc_server.name
+        self.check_search(test_app, 'server_0', 7)
+
+        # check search on interfaces
+        self.check_search(test_app, 'mobile', 9)
 
     def test_base_edit(self, test_app, layer_wms_test_data):
         layer = layer_wms_test_data['layers'][10]
-        resp = test_app.get('/layers_wms/{}'.format(layer.id), status=200)
-        form = resp.form
 
-        assert "layer_wms_10" == form['name'].value
-        assert "" == form['description'].value
+        form = self.get_item(test_app, layer.id).form
+
+        assert 'layer_wms_10' == form['name'].value
+        assert '' == form['description'].value
 
     def test_public_checkbox_edit(self, test_app, layer_wms_test_data):
         layer = layer_wms_test_data['layers'][10]
-        form10 = test_app.get('/layers_wms/{}'.format(layer.id), status=200).form
-        assert not form10['public'].checked
+        form = self.get_item(test_app, layer.id).form
+        assert not form['public'].checked
+
         layer = layer_wms_test_data['layers'][11]
-        form11 = test_app.get('/layers_wms/{}'.format(layer.id), status=200).form
-        assert form11['public'].checked
+        form = self.get_item(test_app, layer.id).form
+        assert form['public'].checked
 
     def test_edit(self, test_app, layer_wms_test_data, dbsession):
         layer = layer_wms_test_data['layers'][0]
 
-        resp = test_app.get('/layers_wms/{}'.format(layer.id), status=200)
-        form = resp.form
+        form = self.get_item(test_app, layer.id).form
 
         assert str(layer.id) == form['id'].value
         assert 'hidden' == form['id'].attrs['type']
@@ -175,27 +188,27 @@ class TestLayerWMS():
         assert str(layer.time_mode) == form['time_mode'].value
         assert str(layer.time_widget) == form['time_widget'].value
 
-        # interfaces
         interfaces = layer_wms_test_data['interfaces']
-        assert [interfaces[0].id, interfaces[2].id] == [interface.id for interface in layer.interfaces]
-        for i, interface in enumerate(sorted(interfaces, key=lambda ra: ra.name)):
-            field = form.get('interfaces', index=i)
-            checkbox = form.html.select_one("#{}".format(field.id))
-            label = form.html.select_one("label[for={}]".format(field.id))
-            assert interface.name == list(label.stripped_strings)[0]
-            assert str(interface.id) == checkbox['value']
-            assert (interface in layer.interfaces) == field.checked
+        assert set((interfaces[0].id, interfaces[2].id)) == set(i.id for i in layer.interfaces)
+        self.check_checkboxes(
+            form,
+            'interfaces',
+            [{
+                'label': i.name,
+                'value': str(i.id),
+                'checked': i in layer.interfaces
+            } for i in sorted(interfaces, key=lambda i: i.name)])
 
-        # restrictionareas
         ras = layer_wms_test_data['restrictionareas']
-        assert [ras[0].id, ras[2].id] == [ra.id for ra in layer.restrictionareas]
-        for i, ra in enumerate(sorted(ras, key=lambda ra: ra.name)):
-            field = form.get('restrictionareas', index=i)
-            checkbox = form.html.select_one("#{}".format(field.id))
-            label = form.html.select_one("label[for={}]".format(field.id))
-            assert ra.name == list(label.stripped_strings)[0]
-            assert str(ra.id) == checkbox['value']
-            assert (ra in layer.restrictionareas) == field.checked
+        assert set((ras[0].id, ras[2].id)) == set(i.id for i in layer.restrictionareas)
+        self.check_checkboxes(
+            form,
+            'restrictionareas',
+            [{
+                'label': ra.name,
+                'value': str(ra.id),
+                'checked': ra in layer.restrictionareas
+            } for ra in sorted(ras, key=lambda ra: ra.name)])
 
         new_values = {
             'name': 'new_name',
@@ -215,7 +228,7 @@ class TestLayerWMS():
         form['interfaces'] = [interfaces[1].id, interfaces[3].id]
         form['restrictionareas'] = [ras[1].id, ras[3].id]
 
-        resp = form.submit("submit")
+        resp = form.submit('submit')
         assert str(layer.id) == re.match('http://localhost/layers_wms/(.*)', resp.location).group(1)
 
         dbsession.expire(layer)
@@ -232,27 +245,28 @@ class TestLayerWMS():
         from c2cgeoportal_commons.models.main import LayerWMS, Layer, TreeItem
         layer_id = dbsession.query(LayerWMS.id).first().id
 
-        test_app.delete("/layers_wms/{}".format(layer_id), status=200)
+        test_app.delete('/layers_wms/{}'.format(layer_id), status=200)
 
         assert dbsession.query(LayerWMS).get(layer_id) is None
         assert dbsession.query(Layer).get(layer_id) is None
         assert dbsession.query(TreeItem).get(layer_id) is None
 
     @skip_if_ci
-    @pytest.mark.usefixtures("selenium", "selenium_app")
+    @pytest.mark.selenium
+    @pytest.mark.usefixtures('selenium', 'selenium_app')
     def test_selenium(self, selenium, selenium_app):
-        selenium.get(selenium_app + '/layers_wms/')
+        selenium.get(selenium_app + self._prefix)
 
-        elem = selenium.find_element_by_xpath("//a[contains(@href,'language=en')]")
+        elem = selenium.find_element_by_xpath('//a[contains(@href,"language=en")]')
         elem.click()
 
         from selenium.webdriver.common.by import By
         from selenium.webdriver.support.ui import WebDriverWait
         from selenium.webdriver.support import expected_conditions
         elem = WebDriverWait(selenium, 10).until(
-            expected_conditions.presence_of_element_located((By.XPATH, "//div[@class='infos']")))
+            expected_conditions.presence_of_element_located((By.XPATH, '//div[@class="infos"]')))
         assert 'Showing 1 to 10 of 25 entries' == elem.text
-        elem = selenium.find_element_by_xpath("//button[@title='Refresh']/following-sibling::*")
+        elem = selenium.find_element_by_xpath('//button[@title="Refresh"]/following-sibling::*')
         elem.click()
-        elem = selenium.find_element_by_xpath("//a[contains(.,'50')]")
+        elem = selenium.find_element_by_xpath('//a[contains(.,"50")]')
         elem.click()

@@ -2,11 +2,11 @@
 
 import pytest
 
-from . import skip_if_ci
+from . import skip_if_ci, AbstractViewsTests
 
 
-@pytest.fixture(scope="class")
-@pytest.mark.usefixtures("dbsession")
+@pytest.fixture(scope='class')
+@pytest.mark.usefixtures('dbsession')
 def layertree_test_data(dbsession):
     from c2cgeoportal_commons.models.main import \
         LayerGroup, LayergroupTreeitem, LayerV1, LayerWMS, LayerWMTS, OGCServer, Theme
@@ -76,11 +76,13 @@ def layertree_test_data(dbsession):
     dbsession.rollback()
 
 
-@pytest.mark.usefixtures("dbsession", "layertree_test_data", "transact", "test_app")
-class TestLayerTreeView():
+@pytest.mark.usefixtures('dbsession', 'layertree_test_data', 'transact', 'test_app')
+class TestLayerTreeView(AbstractViewsTests):
 
-    def test_index_view(self, test_app, layertree_test_data):
-        html = test_app.get("/layertree/", status=200).html
+    _prefix = '/layertree'
+
+    def test_index_rendering(self, test_app, layertree_test_data):
+        html = self.get(test_app).html
 
         # check themes are sorted by ordering
         theme_names = [list(tr.select('td')[0].stripped_strings)[0]
@@ -97,7 +99,7 @@ class TestLayerTreeView():
         assert nb_themes + nb_groups + nb_layers == len(lines)
 
     def test_edit_button(self, test_app, layertree_test_data):
-        resp = test_app.get("/layertree/", status=200)
+        resp = self.get(test_app)
 
         for table, item_id in (
             ('themes', layertree_test_data['themes'][0].id),
@@ -110,7 +112,7 @@ class TestLayerTreeView():
             assert 'http://localhost/{}/{}'.format(table, item_id) == link['href']
 
     def test_unlink_button(self, test_app, layertree_test_data):
-        resp = test_app.get("/layertree/", status=200)
+        resp = self.get(test_app)
 
         # no unlink on theme
         assert 0 == len(
@@ -131,24 +133,24 @@ class TestLayerTreeView():
         group = layertree_test_data['groups'][0]
         item = layertree_test_data['layers_wms'][0]
 
-        test_app.delete("/layertree/unlink/{}/{}".format(group.id, item.id), status=200)
+        test_app.delete('/layertree/unlink/{}/{}'.format(group.id, item.id), status=200)
 
         dbsession.expire_all()
 
         assert item not in group.children
 
-    # @pytest.mark.skip(reason="Waiting for delete views")
     @skip_if_ci
-    @pytest.mark.usefixtures("selenium", "selenium_app")
+    @pytest.mark.selenium
+    @pytest.mark.usefixtures('selenium', 'selenium_app')
     def test_unlink_selenium(self, dbsession, selenium, selenium_app, layertree_test_data):
         from selenium.webdriver.common.by import By
         from selenium.webdriver.support import expected_conditions
         from selenium.webdriver.support.ui import WebDriverWait
 
-        selenium.get(selenium_app + '/layertree/')
+        selenium.get(selenium_app + self._prefix)
 
         elem = WebDriverWait(selenium, 10).until(
-            expected_conditions.element_to_be_clickable((By.ID, "layertree-expand")))
+            expected_conditions.element_to_be_clickable((By.ID, 'layertree-expand')))
         elem.click()
 
         for group_id, item_id in (
@@ -160,7 +162,7 @@ class TestLayerTreeView():
             elem = WebDriverWait(selenium, 10).until(
                 expected_conditions.element_to_be_clickable((
                     By.CSS_SELECTOR,
-                    "tr.treegrid-{}.treegrid-parent-{} button.dropdown-toggle".
+                    'tr.treegrid-{}.treegrid-parent-{} button.dropdown-toggle'.
                     format(item_id, group_id)
                 ))
             )
@@ -169,7 +171,7 @@ class TestLayerTreeView():
             elem = WebDriverWait(selenium, 10).until(
                 expected_conditions.element_to_be_clickable((
                     By.CSS_SELECTOR,
-                    "tr.treegrid-{}.treegrid-parent-{} li.action-unlink a".
+                    'tr.treegrid-{}.treegrid-parent-{} li.action-unlink a'.
                     format(item_id, group_id)
                 ))
             )
@@ -182,7 +184,7 @@ class TestLayerTreeView():
 
             WebDriverWait(selenium, 10).until(
                 lambda driver: driver.execute_script(
-                    "return (window.jQuery != undefined && jQuery.active == 0)"))
+                    'return (window.jQuery != undefined && jQuery.active == 0)'))
 
             from c2cgeoportal_commons.models.main import LayergroupTreeitem
             link = dbsession.query(LayergroupTreeitem). \
@@ -196,5 +198,5 @@ class TestLayerTreeView():
 
             from selenium.common.exceptions import NoSuchElementException
             with pytest.raises(NoSuchElementException):
-                elem = selenium.find_element_by_css_selector("tr.treegrid-{}.treegrid-parent-{}"
+                elem = selenium.find_element_by_css_selector('tr.treegrid-{}.treegrid-parent-{}'
                                                              .format(item_id, group_id))

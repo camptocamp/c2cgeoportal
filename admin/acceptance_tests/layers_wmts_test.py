@@ -2,16 +2,17 @@
 
 import pytest
 
-from . import check_grid_headers
+from . import AbstractViewsTests
 
 
 @pytest.fixture(scope='class')
 @pytest.mark.usefixtures('dbsession')
-def insert_layer_wmts_test_data(dbsession):
+def layer_wmts_test_data(dbsession):
     from c2cgeoportal_commons.models.main import \
         LayerWMTS, RestrictionArea
 
     dbsession.begin_nested()
+
     restrictionareas = []
     for i in range(0, 5):
         restrictionarea = RestrictionArea(
@@ -19,6 +20,7 @@ def insert_layer_wmts_test_data(dbsession):
         dbsession.add(restrictionarea)
         restrictionareas.append(restrictionarea)
 
+    layers = []
     for i in range(0, 25):
         name = 'layer_wmts_{}'.format(i)
         layer = LayerWMTS(name=name)
@@ -27,22 +29,45 @@ def insert_layer_wmts_test_data(dbsession):
         layer.restrictionareas = [restrictionareas[i % 5],
                                   restrictionareas[(i + 2) % 5]]
         dbsession.add(layer)
-    yield
+        layers.append(layer)
+
+    yield {
+        'layers': layers
+    }
+
     dbsession.rollback()
 
 
-@pytest.mark.usefixtures('insert_layer_wmts_test_data', 'transact', 'test_app')
-class TestLayerWMTS():
+@pytest.mark.usefixtures('layer_wmts_test_data', 'transact', 'test_app')
+class TestLayerWMTS(AbstractViewsTests):
 
-    def test_view_index_rendering_in_app(self, test_app):
+    _prefix = '/layers_wmts'
+
+    def test_index_rendering(self, test_app):
+        resp = self.get(test_app)
+
+        self.check_left_menu(resp, 'WMTS Layers')
+
         expected = [('_id_', '', 'false'),
-                    ('name', 'Name'),
-                    ('public', 'Public'),
-                    ('layer', 'WMTS layer name')]
-        check_grid_headers(test_app, '/layers_wmts/', expected)
+                    ('name', 'Name', 'true'),
+                    ('metadata_url', 'Metadata URL', 'true'),
+                    ('description', 'Description', 'true'),
+                    ('public', 'Public', 'true'),
+                    ('geo_table', 'Geo table', 'true'),
+                    ('exclude_properties', 'Exclude properties', 'true'),
+                    ('url', 'GetCapabilities URL', 'true'),
+                    ('layer', 'WMTS layer name', 'true'),
+                    ('style', 'Style', 'true'),
+                    ('matrix_set', 'Matrix set', 'true'),
+                    ('image_type', 'Image type', 'true'),
+                    ('dimensions', 'Dimensions', 'false'),
+                    ('interfaces', 'Interfaces', 'true'),
+                    ('restrictionareas', 'Restriction areas', 'false'),
+                    ('parents_relation', 'Parents', 'false'),
+                    ('metadatas', 'Metadatas', 'false')]
+        self.check_grid_headers(resp, expected)
 
-    def test_grid_complex_column_val(self, dbsession, test_app):
-        from c2cgeoportal_commons.models.main import LayerWMTS
+    def test_grid_complex_column_val(self, test_app, layer_wmts_test_data):
         json = test_app.post(
             '/layers_wmts/grid.json',
             params={
@@ -53,13 +78,8 @@ class TestLayerWMTS():
             status=200
         ).json
         row = json['rows'][0]
-        layer = dbsession.query(LayerWMTS). \
-            filter(LayerWMTS.id == row['_id_']). \
-            one_or_none()
+
+        layer = layer_wmts_test_data['layers'][0]
+
         assert layer.id == int(row['_id_'])
         assert layer.name == row['name']
-
-    def test_left_menu(self, test_app):
-        html = test_app.get('/layers_wmts/', status=200).html
-        main_menu = html.select_one('a[href="http://localhost/layers_wmts/"]').getText()
-        assert 'WMTS Layers' == main_menu

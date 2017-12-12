@@ -43,7 +43,6 @@ from geoalchemy2 import Geometry
 from geoalchemy2.shape import to_shape
 from deform.widget import HiddenWidget, SelectWidget
 from c2cgeoform.ext import colander_ext, deform_ext
-from deform.widget import CheckboxWidget
 
 from c2cgeoportal_commons.models import Base, schema, srid
 from c2cgeoportal_commons.models.sqlalchemy import JSONEncodedDict
@@ -304,6 +303,9 @@ class LayergroupTreeitem(Base):
             'children_relation',
             order_by='LayergroupTreeitem.ordering',
             cascade='save-update,merge,delete,delete-orphan',
+            info={'colanderalchemy': {
+                    'title': _('Children'),
+                    'exclude': True}}
         ),
         primaryjoin='LayergroupTreeitem.treegroup_id==TreeGroup.id',
     )
@@ -311,11 +313,12 @@ class LayergroupTreeitem(Base):
     treeitem = relationship(
         'TreeItem',
         backref=backref(
-            'parents_relation', cascade='save-update,merge,delete,delete-orphan', info={
+            'parents_relation',
+            cascade='save-update,merge,delete,delete-orphan',
+            info={
                 'colanderalchemy': {
                     'title': _('Parents'),
-                    'exclude': True
-                }}
+                    'exclude': True}}
         ),
         primaryjoin='LayergroupTreeitem.treeitem_id==TreeItem.id',
     )
@@ -378,13 +381,23 @@ class LayerGroup(TreeGroup):
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
+    __colanderalchemy_config__ = {
+        'title': _('Layers group'),
+        'plural': _('Layers groups')
+    }
     __mapper_args__ = {'polymorphic_identity': 'group'}
 
-    id = Column(Integer, ForeignKey(_schema + '.treegroup.id'), primary_key=True)
-    is_expanded = Column(Boolean)  # shouldn't be used in V3
-    is_internal_wms = Column(Boolean)
+    id = Column(Integer, ForeignKey(_schema + '.treegroup.id'), primary_key=True, info={
+        'colanderalchemy': {
+            'widget': HiddenWidget()
+        }})
+    is_expanded = Column(Boolean, info={
+        'colanderalchemy': {'title': _('Expanded')}})  # shouldn't be used in V3
+    is_internal_wms = Column(Boolean, info={
+        'colanderalchemy': {'title': _('Internal WMS')}})
     # children have radio button instance of check box
-    is_base_layer = Column(Boolean)  # Should not be used in V3
+    is_base_layer = Column(Boolean, info={
+        'colanderalchemy': {'title': _('Base layers group')}})  # Should not be used in V3
 
     def __init__(
         self, name: str='', is_expanded: bool=False, is_internal_wms: bool=True, is_base_layer: bool=False
@@ -410,23 +423,48 @@ class Theme(TreeGroup):
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
+    __colanderalchemy_config__ = {
+        'title': _('Theme'),
+        'plural': _('Themes')
+    }
     __mapper_args__ = {'polymorphic_identity': 'theme'}
 
-    id = Column(Integer, ForeignKey(_schema + '.treegroup.id'), primary_key=True)
-    ordering = Column(Integer, nullable=False)
-    public = Column(Boolean, default=True, nullable=False)
-    icon = Column(Unicode)
+    id = Column(Integer, ForeignKey(_schema + '.treegroup.id'), primary_key=True, info={
+        'colanderalchemy': {
+            'widget': HiddenWidget()
+        }})
+    ordering = Column(Integer, nullable=False, info={
+        'colanderalchemy': {'title': _('Order')}})
+    public = Column(Boolean, default=True, nullable=False, info={
+        'colanderalchemy': {
+            'title': _('Public')
+        }})
+    icon = Column(Unicode, info={
+        'colanderalchemy': {'title': _('Icon')}})
 
     # functionality
     functionalities = relationship(
-        'Functionality', secondary=theme_functionality,
-        cascade='save-update,merge,refresh-expire'
+        'Functionality',
+        secondary=theme_functionality,
+        cascade='save-update,merge,refresh-expire',
+        info={
+            'colanderalchemy': {
+                'exclude': True,
+                'title': _('Functionalities')
+            }
+        }
     )
 
     # restricted to role
     restricted_roles = relationship(
         'Role', secondary=restricted_role_theme,
         cascade='save-update,merge,refresh-expire',
+        info={
+            'colanderalchemy': {
+                'exclude': True,
+                'title': _('Roles')
+            }
+        }
     )
 
     def __init__(self, name: str='', ordering: int=100, icon: str='') -> None:
@@ -451,8 +489,7 @@ class Layer(TreeItem):
     id = Column(Integer, ForeignKey(_schema + '.treeitem.id'), primary_key=True)
     public = Column(Boolean, default=True, info={
         'colanderalchemy': {
-            'title': _('Public'),
-            'widget': CheckboxWidget()
+            'title': _('Public')
         }})
     geo_table = Column(Unicode, info={
         'colanderalchemy': {
@@ -684,18 +721,33 @@ class LayerWMTS(DimensionLayer):
     __mapper_args__ = {'polymorphic_identity': 'l_wmts'}
 
     id = Column(Integer, ForeignKey(_schema + '.layer.id'), primary_key=True)
-    url = Column(Unicode, nullable=False)
+    url = Column(Unicode, nullable=False, info={
+        'colanderalchemy': {
+            'title': _('GetCapabilities URL')
+        }})
     layer = Column(Unicode, nullable=False, info={
         'colanderalchemy': {
             'title': _('WMTS layer name')
         }})
-    style = Column(Unicode)
-    matrix_set = Column(Unicode)
-    image_type = Column(Enum(
-        'image/jpeg',
-        'image/png',
-        native_enum=False), nullable=False
-    )
+    style = Column(Unicode, info={
+        'colanderalchemy': {
+            'title': _('Style')
+        }})
+    matrix_set = Column(Unicode, info={
+        'colanderalchemy': {
+            'title': _('Matrix set')
+        }})
+    image_type = Column(
+        Enum(
+            'image/jpeg',
+            'image/png',
+            native_enum=False
+        ),
+        nullable=False,
+        info={
+            'colanderalchemy': {
+                'title': _('Image type')
+            }})
 
     def __init__(self, name: str='', public: bool=True, image_type: str='image/png') -> None:
         DimensionLayer.__init__(self, name=name, public=public)
@@ -820,8 +872,15 @@ class Interface(Base):
         )
     )
     theme = relationship(
-        'Theme', secondary=interface_theme,
-        backref='interfaces', cascade='save-update,merge,refresh-expire'
+        'Theme',
+        secondary=interface_theme,
+        cascade='save-update,merge,refresh-expire',
+        backref=backref('interfaces', info={
+            'colanderalchemy': {
+                'title': _('Interfaces'),
+                'exclude': True
+            }}
+        )
     )
 
     def __init__(self, name: str='', description: str='') -> None:
