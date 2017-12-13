@@ -14,4 +14,5 @@ do
     sleep 1;
 done
 
-initialize_db_main docker.ini
+# useless now that the db is bootstrapped by the pg container:
+#initialize_db_main docker.ini
