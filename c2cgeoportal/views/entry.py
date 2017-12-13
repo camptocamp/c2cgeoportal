@@ -976,9 +976,7 @@ class Entry:
             "success": True
         }
 
-    @cache_region.cache_on_arguments()
-    def _get_children(self, theme, layers, version, catalogue,
-                      min_levels, role_id):
+    def _get_children(self, theme, layers, version, catalogue, min_levels, role_id):
         children = []
         errors = set()
         for item in theme.children:
