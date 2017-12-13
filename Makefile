@@ -196,8 +196,8 @@ prepare-tests: $(BUILD_DIR)/requirements.timestamp \
 .PHONY: tests
 tests:
 	py.test --cov=commons/c2cgeoportal_commons commons/acceptance_tests
-	py.test --cov=geoportal/c2cgeoportal_geoportal geoportal/tests
-	py.test --cov=admin/c2cgeoportal_admin admin/acceptance_tests
+	py.test --cov-append --cov=geoportal/c2cgeoportal_geoportal geoportal/tests
+	py.test --cov-append --cov=admin/c2cgeoportal_admin admin/acceptance_tests
 
 .PHONY: flake8
 flake8:

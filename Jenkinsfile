@@ -81,6 +81,7 @@ timeout(time: 2, unit: 'HOURS') {
                 sh './docker-compose-run alembic --config=geoportal/tests/functional/alembic.ini --name=main upgrade head'
                 sh './docker-compose-run alembic --config=geoportal/tests/functional/alembic.ini --name=static upgrade head'
                 sh './docker-compose-run make tests'
+                sh './docker-run travis/codacy.sh'
             }
             stage('Test Docker app') {
                 checkout scm
