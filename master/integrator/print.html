@@ -55,8 +55,8 @@ span.prompt1:before {
 </style><span class="prompt1"><span class="nb">cd</span> &lt;project_root&gt;</span>
 <span class="prompt1">cp -r print ~</span>
 <span class="prompt1">git rm -r print</span>
-<span class="prompt1"><span class="nv">SRID</span><span class="o">=</span>-1 ./docker-run pcreate --interactive --scaffold c2cgeoportal_create --package-name &lt;package&gt; /tmp/&lt;project&gt;</span>
-<span class="prompt1">./docker-run pcreate --interactive --scaffold c2cgeoportal_update --package-name &lt;package&gt; /tmp/&lt;project&gt;</span>
+<span class="prompt1"><span class="nv">SRID</span><span class="o">=</span>-1 ./docker-run pcreate --interactive --scaffold<span class="o">=</span>c2cgeoportal_create --package-name<span class="o">=</span>&lt;package&gt; /tmp/&lt;project&gt;</span>
+<span class="prompt1">./docker-run pcreate --interactive --scaffold<span class="o">=</span>c2cgeoportal_update --package-name<span class="o">=</span>&lt;package&gt; /tmp/&lt;project&gt;</span>
 <span class="prompt1">mv /tmp/&lt;project&gt;/print .</span>
 <span class="prompt1">rm -rf /tmp/&lt;project&gt;</span>
 </pre><p>Then in <code class="docutils literal"><span class="pre">~/print</span></code> you will have a backup of the old template, and in the <code class="docutils literal"><span class="pre">print</span></code> folder you will have the new print configuration.</p>
@@ -75,7 +75,7 @@ span.prompt1:before {
 <code class="docutils literal"><span class="pre">print/print-apps/&lt;package&gt;</span></code> folder.</p>
 <p>The main configuration file is <code class="docutils literal"><span class="pre">print/print-apps/&lt;package&gt;/config.yaml</span></code>.</p>
 <ul class="simple">
-<li><a class="reference external" href="http://mapfish.github.io/mapfish-print-doc/">MapFish print documntation</a></li>
+<li><a class="reference external" href="http://mapfish.github.io/mapfish-print-doc/">MapFish print documentation</a></li>
 <li><a class="reference external" href="http://mapfish.github.io/mapfish-print-doc/#/jasperReports">Startup with Jasper Reports</a></li>
 </ul>
 </div>

@@ -16,8 +16,8 @@ Start the migration by instantiating the default template:
    cd <project_root>
    cp -r print ~
    git rm -r print
-   SRID=-1 ./docker-run pcreate --interactive --scaffold c2cgeoportal_create --package-name <package> /tmp/<project>
-   ./docker-run pcreate --interactive --scaffold c2cgeoportal_update --package-name <package> /tmp/<project>
+   SRID=-1 ./docker-run pcreate --interactive --scaffold=c2cgeoportal_create --package-name=<package> /tmp/<project>
+   ./docker-run pcreate --interactive --scaffold=c2cgeoportal_update --package-name=<package> /tmp/<project>
    mv /tmp/<project>/print .
    rm -rf /tmp/<project>
 
@@ -42,7 +42,7 @@ All print-related files are located in the ``print/`` folder, and the files rela
 
 The main configuration file is ``print/print-apps/<package>/config.yaml``.
 
-* `MapFish print documntation <http://mapfish.github.io/mapfish-print-doc/>`_
+* `MapFish print documentation <http://mapfish.github.io/mapfish-print-doc/>`_
 * `Startup with Jasper Reports <http://mapfish.github.io/mapfish-print-doc/#/jasperReports>`_
 
 
