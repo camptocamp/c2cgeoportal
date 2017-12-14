@@ -10,9 +10,7 @@ unmanaged_files:
   - testgeomapfish.mk
   - project.yaml.mako
   - vars.yaml
-  - mapserver/Dockerfile
   - mapserver/c2cgeoportal.map.mako
-  - mapserver/tinyows.xml.mako
   - print/print-apps/testgeomapfish/config.yaml.mako
   - geoportal/testgeomapfish_geoportal/locale/fr/LC_MESSAGES/testgeomapfish-client.po
   - geoportal/testgeomapfish_geoportal/locale/de/LC_MESSAGES/testgeomapfish-client.po
@@ -27,7 +25,6 @@ unmanaged_files:
   - geoportal/testgeomapfish_geoportal/templates/api/mapconfig.js
   - geoportal/testgeomapfish_geoportal/templates/api/xapi.js
   - geoportal/testgeomapfish_geoportal/templates/api/xapihelp.html
-  - geoportal/testgeomapfish_geoportal/static-ngeo/components/README.md
 template_vars:
   package: testgeomapfish
   srid: 21781
