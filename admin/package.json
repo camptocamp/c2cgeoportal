@@ -13,6 +13,7 @@
     "jquery-steps": "1.1.0",
     "jquery-treegrid": "0.3.0",
     "jquery.cookie": "1.4.1",
+    "magicsuggest-alpine": "1.0.0",
     "openlayers": "3.11.2",
     "typeahead.js": "0.10.5"
   }

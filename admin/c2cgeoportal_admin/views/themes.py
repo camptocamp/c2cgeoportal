@@ -15,11 +15,14 @@ from c2cgeoform.schema import (
 from c2cgeoform.views.abstract_views import ListField
 
 from c2cgeoportal_commons.models.main import Theme, Interface, Role, Functionality
+from c2cgeoportal_admin.schemas.treegroup import children_schema_node
 from c2cgeoportal_admin.views.treeitems import TreeItemViews
 
 _list_field = partial(ListField, Theme)
 
 base_schema = GeoFormSchemaNode(Theme)
+
+base_schema.add(children_schema_node)
 
 base_schema.add(
     colander.SequenceSchema(

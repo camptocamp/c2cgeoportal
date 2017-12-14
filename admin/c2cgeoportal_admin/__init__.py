@@ -2,6 +2,12 @@ from pyramid.config import Configurator
 from c2cwsgiutils.health_check import HealthCheck
 import c2cgeoportal_admin.routes
 
+import c2cgeoform
+from pkg_resources import resource_filename
+search_paths = ((resource_filename(__name__, 'templates/widgets'),) +
+                c2cgeoform.default_search_paths)
+c2cgeoform.default_search_paths = search_paths
+
 
 def main(_, **settings):
     """

@@ -1,0 +1,17 @@
+<tal:def tal:define="title title|field.title;
+                     description description|field.description;
+                     errormsg errormsg|field.errormsg;
+                     item_template item_template|field.widget.item_template"
+         i18n:domain="deform">
+
+  <div class="deform-order-button ">
+    <div class="well"><span class="glyphicon icon-${treeitem.item_type}"></span> ${treeitem.name}</div>
+
+    ${field.start_mapping()}
+    <div tal:repeat="child field.children"
+         tal:replace="structure child.render_template(item_template)" >
+    </div>
+    ${field.end_mapping()}
+  </div>
+
+</tal:def>

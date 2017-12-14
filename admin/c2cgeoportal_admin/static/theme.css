@@ -7,3 +7,32 @@
   margin-bottom: 5px;
   width: auto;
 }
+
+.icon-theme:before {
+  content: "\e139";
+}
+.icon-group:before {
+  content: "\e118";
+}
+.icon-layerv1:before {
+  content: "\e060";
+  color:grey;
+}
+.icon-l_wms:before {
+  content: "\e060";
+}
+.icon-l_wmts:before {
+  content: "\e011";
+}
+
+.ms-res-ctn .ms-res-item {
+  color: initial;
+}
+
+.item-children_relation .well {
+  padding: 10px;
+  margin-bottom: 5px;
+}
+.item-children_relation .item-treeitem {
+  margin-bottom: 0;
+}

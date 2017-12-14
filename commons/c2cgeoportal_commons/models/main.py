@@ -41,6 +41,8 @@ from sqlalchemy.schema import Index
 from sqlalchemy.orm import relationship, backref
 from geoalchemy2 import Geometry
 from geoalchemy2.shape import to_shape
+
+import colander
 from deform.widget import HiddenWidget, SelectWidget
 from c2cgeoform.ext import colander_ext, deform_ext
 
@@ -297,26 +299,38 @@ class LayergroupTreeitem(Base):
     ]
 
     # required by formalchemy
-    id = Column(Integer, primary_key=True)
-    description = Column(Unicode)
-    treegroup_id = Column(Integer, ForeignKey(_schema + '.treegroup.id'))
+    id = Column(Integer, primary_key=True, info={
+        'colanderalchemy': {'widget': HiddenWidget()}}
+    )
+    description = Column(Unicode, info={'colanderalchemy': {'exclude': True}})
+    treegroup_id = Column(Integer, ForeignKey(_schema + '.treegroup.id'), info={
+        'colanderalchemy': {'exclude': True}}
+    )
     treegroup = relationship(
         'TreeGroup',
         backref=backref(
             'children_relation',
             order_by='LayergroupTreeitem.ordering',
             cascade='save-update,merge,delete,delete-orphan',
-            info={'colanderalchemy': {
+            info={
+                'colanderalchemy': {
                     'title': _('Children'),
-                    'exclude': True},
-                  'c2cgeoform': {
-                      'duplicate': False
-            }}
+                    'exclude': True
+                },
+                'c2cgeoform': {
+                    'duplicate': False
+                }
+            }
         ),
         primaryjoin='LayergroupTreeitem.treegroup_id==TreeGroup.id',
-        info={'c2cgeoform': {'duplicate': False}}
+        info={
+            'colanderalchemy': {'exclude': True},
+            'c2cgeoform': {'duplicate': False}
+        }
     )
-    treeitem_id = Column(Integer, ForeignKey(_schema + '.treeitem.id'))
+    treeitem_id = Column(Integer, ForeignKey(_schema + '.treeitem.id'), info={
+        'colanderalchemy': {'widget': HiddenWidget()}}
+    )
     treeitem = relationship(
         'TreeItem',
         backref=backref(
@@ -325,15 +339,22 @@ class LayergroupTreeitem(Base):
             info={
                 'colanderalchemy': {
                     'title': _('Parents'),
-                    'exclude': True},
+                    'exclude': True
+                },
                 'c2cgeoform': {
                     'duplicate': False
-                }}
+                }
+            }
         ),
         primaryjoin='LayergroupTreeitem.treeitem_id==TreeItem.id',
-        info={'c2cgeoform': {'duplicate': False}}
+        info={
+            'colanderalchemy': {'exclude': True},
+            'c2cgeoform': {'duplicate': False}
+        }
     )
-    ordering = Column(Integer)
+    ordering = Column(Integer, info={
+        'colanderalchemy': {'widget': HiddenWidget()}}
+    )
 
     def __init__(self, group: 'TreeGroup'=None, item: TreeItem=None, ordering: int=0) -> None:
         self.treegroup = group
@@ -400,6 +421,7 @@ class LayerGroup(TreeGroup):
 
     id = Column(Integer, ForeignKey(_schema + '.treegroup.id'), primary_key=True, info={
         'colanderalchemy': {
+            'missing': colander.drop,
             'widget': HiddenWidget()
         }})
     is_expanded = Column(Boolean, info={
@@ -442,6 +464,7 @@ class Theme(TreeGroup):
 
     id = Column(Integer, ForeignKey(_schema + '.treegroup.id'), primary_key=True, info={
         'colanderalchemy': {
+            'missing': colander.drop,
             'widget': HiddenWidget()
         }})
     ordering = Column(Integer, nullable=False, info={
