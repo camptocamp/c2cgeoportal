@@ -85,7 +85,9 @@ Pull the latest version of the Docker image:
 
 .. prompt:: bash
 
-    docker pull camptocamp/geomapfish-build:2.3
+    docker pull camptocamp/geomapfish-build:<version>
+
+Where ``<version>`` is ``2.3.0`` for the first stable release of the version ``2.3``.
 
 For Docker:
 
