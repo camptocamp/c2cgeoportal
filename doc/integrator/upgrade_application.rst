@@ -75,7 +75,7 @@ Prepare the upgrade:
 
    git submodule deinit <package>/static/lib/cgxp/
    git rm .gitmodules
-   wget https://raw.githubusercontent.com/camptocamp/c2cgeoportal/master/docker-run
+   curl https://raw.githubusercontent.com/camptocamp/c2cgeoportal/master/docker-run > docker-run
    chmod +x docker-run
    git add docker-run project.yaml.mako
    git commit --quiet --message="Start upgrade"
