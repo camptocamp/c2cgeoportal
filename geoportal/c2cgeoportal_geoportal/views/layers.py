@@ -33,7 +33,7 @@ from pyramid.httpexceptions import HTTPInternalServerError, \
     HTTPNotFound, HTTPBadRequest, HTTPForbidden
 from pyramid.view import view_config
 
-from sqlalchemy import Enum, func, distinct, Numeric, String, Text, Unicode, UnicodeText
+from sqlalchemy import Enum, exc, func, distinct, Numeric, String, Text, Unicode, UnicodeText
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 from sqlalchemy.sql import and_, or_
 from sqlalchemy.orm.util import class_mapper
@@ -58,6 +58,9 @@ from c2cgeoportal_commons.models.main import Layer, RestrictionArea, Role
 from c2cgeoportal_geoportal.lib.caching import get_region, \
     set_common_headers, NO_CACHE, PUBLIC_CACHE, PRIVATE_CACHE
 from c2cgeoportal_geoportal.lib.dbreflection import get_class, get_table, _AssociationProxy
+
+import logging
+log = logging.getLogger(__name__)
 
 cache_region = get_region()
 
@@ -265,7 +268,8 @@ class Layers:
                 if self._get_validation_setting(layer):
                     self._validate_geometry(spatial_elt)
 
-        protocol = self._get_protocol_for_layer(layer, before_create=check_geometry)
+        protocol = self._get_protocol_for_layer(layer,
+                                                before_create=check_geometry)
         try:
             features = protocol.create(self.request)
             for feature in features.features:
@@ -273,7 +277,13 @@ class Layers:
             return features
         except TopologicalError as e:
             self.request.response.status_int = 400
-            return {"validation_error": str(e)}
+            return {"error_type": "validation_error",
+                    "message": str(e)}
+        except exc.IntegrityError as e:
+            log.error(str(e))
+            self.request.response.status_int = 400
+            return {"error_type": "integrity_error",
+                    "message": str(e.orig.diag.message_primary)}
 
     @view_config(route_name="layers_update", renderer="geojson")
     def update(self):
@@ -325,7 +335,13 @@ class Layers:
             return feature
         except TopologicalError as e:
             self.request.response.status_int = 400
-            return {"validation_error": str(e)}
+            return {"error_type": "validation_error",
+                    "message": str(e)}
+        except exc.IntegrityError as e:
+            log.error(str(e))
+            self.request.response.status_int = 400
+            return {"error_type": "integrity_error",
+                    "message": str(e.orig.diag.message_primary)}
 
     @staticmethod
     def _validate_geometry(geom):

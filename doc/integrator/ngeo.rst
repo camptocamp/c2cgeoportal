@@ -108,3 +108,16 @@ The map configuration will be here:
    If you previously had a CGXP application and want to keep your permalinks
    compatible, the resolutions should be the same as in the previous
    application.
+
+Externs
+-------
+
+Adding additional external dependencies requires `declaring them as externs <https://developers.google.com/closure/compiler/docs/api-tutorial3#externs>`_.
+This prevents the closure-compiler from renaming the objects and their properties and allows type-checking.
+Good examples for such externs can be found in `ngeo <https://github.com/camptocamp/ngeo/tree/master/externs>`_ or directly in the `closure-compiler <https://github.com/google/closure-compiler/tree/master/contrib/externs>`_ project.
+
+Project-specific externs are best placed in ``<package>/static-ngeo/externs/``.
+
+These externs need to be referenced in the ``MAKO_BUILD_ARGS`` variable in your ``<package>.mk``, example::
+
+    MAKO_BUILD_ARGS = --var externs=package/static-ngeo/externs/recaptcha.js,package/static-ngeo/externs/anotherdep.js
