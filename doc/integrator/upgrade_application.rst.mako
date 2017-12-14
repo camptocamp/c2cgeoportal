@@ -30,18 +30,7 @@ See :ref:`integrator_intranet` and update your code accordingly.
 Updating the application code
 -----------------------------
 
-Verify that you have in your ``project.yaml.mako`` file the following ``template_vars``: ``package``, ``srid``, ``extent``, ``apache_vhost``, for example:
-
-.. code:: yaml
-
-   ...
-   template_vars:
-       package: ${'$'}{package}
-       srid: ${'$'}{srid}
-       extent: 489246, 78873, 837119, 296543
-       apache_vhost: <apache_vhost>
-
-Then run:
+To upgrade your application code from the remote repository run:
 
 .. prompt:: bash
 
@@ -56,6 +45,19 @@ Upgrading an application
 
 In the ``setup.py`` be sure not to specify a ``c2cgeoportal`` version,
 because it will prevent the installation of the new ``c2cgeoportal`` egg.
+
+Verify that you have in your ``project.yaml.mako`` file the following ``template_vars``:
+``package``, ``srid``, ``extent``, ``apache_vhost``, for example:
+
+.. code:: yaml
+
+    ...
+    template_vars:
+        package: ${'$'}{package}
+        srid: ${'$'}{srid}
+        extent: 489246, 78873, 837119, 296543
+        apache_vhost: <apache_vhost>
+
 
 We consider that your makefile is named ``<instanceid>.mk``, if it is not the case
 add in your Makefile ``UPGRADE_MAKE_FILE = <user.mk>``
