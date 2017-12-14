@@ -98,7 +98,8 @@ And for non-Docker
 
 .. prompt:: bash
 
-   ./docker-run --image=camptocamp/geomapfish-build c2cupgrade --nondocker --makefile=testgeomapfish.mk
+   ./docker-run --image=camptocamp/geomapfish-build \
+       c2cupgrade --nondocker --makefile=testgeomapfish.mk
 
 Then follow the instruction
 
