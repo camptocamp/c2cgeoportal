@@ -19,6 +19,7 @@ default_project_file:
     - vars.yaml
     - {{package}}.mk
   exclude:
+    - geoportal/testgeomapfish_geoportal/static-ngeo/components/README.md
     - mapserver/Dockerfile
     - mapserver/tinyows.xml.mako
 
