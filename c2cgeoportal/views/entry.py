@@ -294,7 +294,7 @@ class Entry:
         if role_id is not None:
             query2 = get_protected_layers_query(
                 role_id, None,
-                what=LayerV1.name if version == 1 else LayerWMS.name,
+                what=LayerV1.name if version == 1 else Layer.name,
                 version=version
             )
             if interface is not None:
