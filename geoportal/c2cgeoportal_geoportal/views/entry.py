@@ -796,7 +796,7 @@ class Entry:
                 if isinstance(group, main.Theme) or catalogue or \
                         group.is_internal_wms == tree_item.is_internal_wms:
                     gp, gp_errors = self._group(
-                        "{0!s}/{1!s}".format(path, tree_item.name),
+                        u"{0!s}/{1!s}".format(path, tree_item.name),
                         tree_item, layers, depth=depth, min_levels=min_levels,
                         catalogue=catalogue, role_id=role_id, version=version, mixed=mixed,
                         time=time, dim=dim, wms_layers=wms_layers, layers_name=layers_name, **kwargs
@@ -975,9 +975,7 @@ class Entry:
             "success": True
         }
 
-    @cache_region.cache_on_arguments()
-    def _get_children(self, theme, layers, version, catalogue,
-                      min_levels, role_id):
+    def _get_children(self, theme, layers, version, catalogue, min_levels, role_id):
         children = []
         errors = set()
         for item in theme.children:
@@ -1581,13 +1579,14 @@ class Entry:
         if error is not None:
             log.info(error)
             raise HTTPBadRequest("See server logs for details")
-        settings = self.request.registry.settings["reset_password"]
+        smtp_config = self.request.registry.settings["smtp"]
+        reset_password_config = self.request.registry.settings["reset_password"]
         try:
             send_email(
-                settings["email_from"], [user.email],
-                settings["email_body"].format(user=username, password=password).encode("utf-8"),
-                settings["email_subject"],
-                self.request.registry.settings["smtp"],
+                reset_password_config["email_from"], [user.email],
+                reset_password_config["email_body"].format(user=username, password=password).encode("utf-8"),
+                reset_password_config["email_subject"],
+                smtp_config,
             )
 
             return {

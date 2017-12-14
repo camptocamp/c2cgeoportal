@@ -376,15 +376,18 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
             try:
                 cls = get_class(layer.geo_table, exclude_properties=exclude)
                 for column_property in class_mapper(cls).iterate_properties:
-                    if isinstance(column_property, ColumnProperty) and \
-                            len(column_property.columns) == 1 and \
-                            not column_property.columns[0].primary_key and \
-                            not column_property.columns[0].foreign_keys and \
-                            not isinstance(column_property.columns[0].type, Geometry):
-                        messages.append(Message(
-                            None, column_property.key, None, [], "", "",
-                            (".".join(["edit", layer.item_type, str(layer.id)]), layer.name)
-                        ))
+                    if isinstance(column_property, ColumnProperty) and len(column_property.columns) == 1:
+                        column = column_property.columns[0]
+                        if not column.primary_key and not isinstance(column.type, Geometry):
+                            if column.foreign_keys:
+                                name = "type_" if column.name == "type_id" else \
+                                    column.name[0:column.name.rindex("_id")]
+                            else:
+                                name = column_property.key
+                            messages.append(Message(
+                                None, name, None, [], "", "",
+                                (".".join(["edit", layer.item_type, str(layer.id)]), layer.name)
+                            ))
             except NoSuchTableError:
                 print(colorize(
                     "ERROR! No such table '{}' for layer '{}'.".format(layer.geo_table, layer.name),
@@ -421,7 +424,12 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                         raise
 
     def _import_layer_attributes(self, url, layer, item_type, name, messages):
-        for attribute in self._layer_attributes(url, layer):
+        attributes, layers = self._layer_attributes(url, layer)
+        for layer in layers:
+            messages.append(Message(
+                None, layer, None, [], "", "", (".".join([item_type, name]), layer)
+            ))
+        for attribute in attributes:
             messages.append(Message(
                 None, attribute, None, [], "", "", (".".join([item_type, name]), layer)
             ))
@@ -578,4 +586,4 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                     if not element.getAttribute("type").startswith("gml:"):
                         attributes.append(element.getAttribute("name"))
 
-        return attributes
+        return attributes, layers

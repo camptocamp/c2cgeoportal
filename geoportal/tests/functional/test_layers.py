@@ -89,7 +89,7 @@ class TestLayers(TestCase):
         a layer with two features, and associates a restriction area
         to it. """
         import transaction
-        from sqlalchemy import Column, Table, types, ForeignKey
+        from sqlalchemy import Column, Table, types, ForeignKey, CheckConstraint
         from sqlalchemy.ext.declarative import declarative_base
         from geoalchemy2 import Geometry, WKTElement
         from c2cgeoportal_commons.models import DBSession
@@ -131,6 +131,10 @@ class TestLayers(TestCase):
             Column("child_id", types.Integer,
                    ForeignKey("public.{0!s}_child.id".format(tablename))),
             Column("name", types.Unicode),
+            Column("email", types.Unicode,
+                   CheckConstraint("""email ~* '^[A-Za-z0-9._%%-]
+                                      +@[A-Za-z0-9.-]+[.][A-Za-z]+$'""",
+                                   name="proper_email")),
             Column("last_update_user", types.Unicode),
             Column("last_update_date", types.DateTime),
             schema="public"
@@ -392,6 +396,20 @@ class TestLayers(TestCase):
         self.assertTrue(isinstance(collection, FeatureCollection))
         self.assertEqual(len(collection.features), 2)
 
+    def test_create_with_constraint_fail_integrity(self):
+        from c2cgeoportal_geoportal.views.layers import Layers
+
+        layer_id = self._create_layer()
+        request = self._get_request(layer_id, username=u"__test_user")
+        request.method = "POST"
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"email": "novalidemail", "name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # noqa
+        layers = Layers(request)
+        response = layers.create()
+        self.assertEquals(request.response.status_int, 400)
+        self.assertTrue("error_type" in response)
+        self.assertTrue("message" in response)
+        self.assertEquals(response["error_type"], "integrity_error")
+
     def test_create_log(self):
         from datetime import datetime
         from geojson.feature import FeatureCollection
@@ -432,9 +450,11 @@ class TestLayers(TestCase):
         request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "LineString", "coordinates": [[5, 45], [5, 45]]}}]}'  # noqa
         layers = Layers(request)
         response = layers.create()
-        self.assertEqual(request.response.status_int, 400)
-        self.assertTrue("validation_error" in response)
-        self.assertEqual(response["validation_error"], "Too few points in geometry component[5 45]")
+        self.assertEquals(request.response.status_int, 400)
+        self.assertTrue("error_type" in response)
+        self.assertTrue("message" in response)
+        self.assertEquals(response["error_type"], "validation_error")
+        self.assertEquals(response["message"], "Too few points in geometry component[5 45]")
 
     def test_create_no_validation(self):
         from geojson.feature import FeatureCollection
@@ -534,9 +554,11 @@ class TestLayers(TestCase):
         request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "LineString", "coordinates": [[5, 45], [5, 45]]}}'  # noqa
         layers = Layers(request)
         response = layers.update()
-        self.assertEqual(request.response.status_int, 400)
-        self.assertTrue("validation_error" in response)
-        self.assertEqual(response["validation_error"], "Too few points in geometry component[5 45]")
+        self.assertEquals(request.response.status_int, 400)
+        self.assertTrue("error_type" in response)
+        self.assertTrue("message" in response)
+        self.assertEquals(response["error_type"], "validation_error")
+        self.assertEquals(response["message"], "Too few points in geometry component[5 45]")
 
     def test_update_validation_fails_simple(self):
         from c2cgeoportal_geoportal.views.layers import Layers
@@ -548,9 +570,26 @@ class TestLayers(TestCase):
         request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "LineString", "coordinates": [[5, 45], [6, 45], [5, 45]]}}'  # noqa
         layers = Layers(request)
         response = layers.update()
-        self.assertEqual(request.response.status_int, 400)
-        self.assertTrue("validation_error" in response)
-        self.assertEqual(response["validation_error"], "Not simple")
+        self.assertEquals(request.response.status_int, 400)
+        self.assertTrue("error_type" in response)
+        self.assertTrue("message" in response)
+        self.assertEquals(response["error_type"], "validation_error")
+        self.assertEquals(response["message"], "Not simple")
+
+    def test_update_validation_fails_constraint(self):
+        from c2cgeoportal_geoportal.views.layers import Layers
+
+        layer_id = self._create_layer()
+        request = self._get_request(layer_id, username=u"__test_user")
+        request.matchdict["feature_id"] = 1
+        request.method = "PUT"
+        request.body = '{"type": "Feature", "id": 1, "properties": {"email": "novalidemail"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # noqa
+        layers = Layers(request)
+        response = layers.update()
+        self.assertEquals(request.response.status_int, 400)
+        self.assertTrue("error_type" in response)
+        self.assertTrue("message" in response)
+        self.assertEquals(response["error_type"], "integrity_error")
 
     def test_update_no_validation(self):
         from c2cgeoportal_geoportal.views.layers import Layers

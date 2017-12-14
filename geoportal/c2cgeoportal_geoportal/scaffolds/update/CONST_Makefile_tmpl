@@ -28,7 +28,7 @@ LANGUAGES ?= en fr de
 NGEO_INTERFACES ?= desktop mobile
 CGXP_INTERFACES ?=
 CGXP_API ?= TRUE
-CGXP_API ?= FALSE
+CGXP_XAPI ?= FALSE
 INTERFACES += $(NGEO_INTERFACES) $(CGXP_INTERFACES)
 export INTERFACES
 # Used print version
@@ -142,6 +142,7 @@ NGEO_LIBS_JS_FILES += \
 	/usr/lib/node_modules/corejs-typeahead/dist/typeahead.bundle.min.js \
 	/usr/lib/node_modules/jsts/dist/jsts.min.js \
 	/usr/lib/node_modules/moment/min/moment.min.js \
+	/usr/lib/node_modules/url-polyfill/url-polyfill.min.js \
 	/usr/lib/node_modules/ngeo/third-party/jquery-ui/jquery-ui.min.js
 NGEO_PROJECT_LIBS_JS_FILES ?=
 
@@ -315,7 +316,7 @@ CONFIG_VARS += sqlalchemy.url sqlalchemy_slave.url schema enable_admin_interface
 	raster shortener hide_capabilities mapserverproxy tinyowsproxy resourceproxy print_url \
 	tiles_url checker check_collector default_max_age jsbuild package srid \
 	reset_password fulltextsearch headers authorized_referers hooks stats db_chooser \
-	ogcproxy_enable dbsessions urllogin host_forward_host
+	ogcproxy_enable dbsessions urllogin host_forward_host smtp
 MAKE_FILES = $(wildcard *.mk) CONST_Makefile
 
 # Disabling Make built-in rules to speed up execution time

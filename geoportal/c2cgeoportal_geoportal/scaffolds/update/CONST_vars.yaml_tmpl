@@ -291,6 +291,9 @@ vars:
   layers:
     geometry_validation: True
 
+  # Used by reset_password and shortener to send emails
+  smtp: {}
+
   # Used to send an email on password reset
   reset_password: {}
 
@@ -312,10 +315,10 @@ vars:
 
   # For base layers
   tiles_url:
-    - '{web_protocol}:://a.tiles.{host}/tiles'
-    - '{web_protocol}:://b.tiles.{host}/tiles'
-    - '{web_protocol}:://c.tiles.{host}/tiles'
-    - '{web_protocol}:://d.tiles.{host}/tiles'
+    - '{web_protocol}://a.tiles.{host}/tiles'
+    - '{web_protocol}://b.tiles.{host}/tiles'
+    - '{web_protocol}://c.tiles.{host}/tiles'
+    - '{web_protocol}://d.tiles.{host}/tiles'
   wmtscapabilities_path: WMTSCAPABILITIES_PATH
 
   ogcproxy_enable: false
@@ -336,7 +339,7 @@ vars:
     themes: &auth_header
       access_control_max_age: 600  # 10 minutes
       access_control_allow_origin:
-        - "{web_protocol}:://{host}/"
+        - "{web_protocol}://{host}/"
         - "*"
     config: *auth_header
     print: *auth_header
@@ -348,7 +351,7 @@ vars:
     login:
       access_control_max_age: 600  # 10 minutes
       access_control_allow_origin:
-        - "{web_protocol}:://{host}/"
+        - "{web_protocol}://{host}/"
 
   # Checker configuration
   checker:
