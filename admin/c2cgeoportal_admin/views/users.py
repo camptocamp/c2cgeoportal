@@ -46,3 +46,9 @@ class UserViews(AbstractViews):
                  request_method='DELETE')
     def delete(self):
         return super().delete()
+
+    @view_config(route_name='c2cgeoform_item_action',
+                 request_method='GET',
+                 renderer='../templates/new.jinja2')
+    def duplicate(self):
+        return super().duplicate()

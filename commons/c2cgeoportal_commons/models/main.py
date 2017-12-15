@@ -170,6 +170,9 @@ class Role(Base):
         'title': _('Role'),
         'plural': _('Roles')
     }
+    __c2cgeoform_config__ = {
+        'duplicate': True
+    }
 
     id = Column(Integer, primary_key=True, info={
         'colanderalchemy': {
@@ -305,9 +308,13 @@ class LayergroupTreeitem(Base):
             cascade='save-update,merge,delete,delete-orphan',
             info={'colanderalchemy': {
                     'title': _('Children'),
-                    'exclude': True}}
+                    'exclude': True},
+                  'c2cgeoform': {
+                      'duplicate': False
+            }}
         ),
         primaryjoin='LayergroupTreeitem.treegroup_id==TreeGroup.id',
+        info={'c2cgeoform': {'duplicate': False}}
     )
     treeitem_id = Column(Integer, ForeignKey(_schema + '.treeitem.id'))
     treeitem = relationship(
@@ -318,9 +325,13 @@ class LayergroupTreeitem(Base):
             info={
                 'colanderalchemy': {
                     'title': _('Parents'),
-                    'exclude': True}}
+                    'exclude': True},
+                'c2cgeoform': {
+                    'duplicate': False
+                }}
         ),
         primaryjoin='LayergroupTreeitem.treeitem_id==TreeItem.id',
+        info={'c2cgeoform': {'duplicate': False}}
     )
     ordering = Column(Integer)
 
@@ -640,10 +651,16 @@ class LayerWMS(DimensionLayer):
         'title': _('WMS Layer'),
         'plural': _('WMS Layers')
     }
+
+    __c2cgeoform_config__ = {
+        'duplicate': True
+    }
+
     __mapper_args__ = {'polymorphic_identity': 'l_wms'}
 
     id = Column(Integer, ForeignKey(_schema + '.layer.id', ondelete='CASCADE'), primary_key=True, info={
         'colanderalchemy': {
+            'missing': None,
             'widget': HiddenWidget()
         }})
     ogc_server_id = Column(Integer, ForeignKey(_schema + '.ogc_server.id'), nullable=False, info={
@@ -718,9 +735,16 @@ class LayerWMTS(DimensionLayer):
         'title': _('WMTS Layer'),
         'plural': _('WMTS Layers')
     }
+    __c2cgeoform_config__ = {
+        'duplicate': True
+    }
     __mapper_args__ = {'polymorphic_identity': 'l_wmts'}
 
-    id = Column(Integer, ForeignKey(_schema + '.layer.id'), primary_key=True)
+    id = Column(Integer, ForeignKey(_schema + '.layer.id'), primary_key=True, info={
+        'colanderalchemy': {
+            'missing': None,
+            'widget': HiddenWidget()
+        }})
     url = Column(Unicode, nullable=False, info={
         'colanderalchemy': {
             'title': _('GetCapabilities URL')
@@ -898,22 +922,33 @@ class Metadata(Base):
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, info={'colanderalchemy': {'widget': HiddenWidget()}})
     name = Column(Unicode)
     value = Column(Unicode)
     description = Column(Unicode)
 
-    item_id = Column('item_id', Integer, ForeignKey(_schema + '.treeitem.id'), nullable=False)
+    item_id = Column('item_id',
+                     Integer,
+                     ForeignKey(_schema + '.treeitem.id'),
+                     nullable=False,
+                     info={
+                        'colanderalchemy': {
+                            'missing': None,
+                            'widget': HiddenWidget()
+                        },
+                        'c2cgeoform': {
+                            'duplicate': False
+                        }})
     item = relationship(
         'TreeItem',
+        info={'c2cgeoform': {'duplicate': False},
+              'colanderalchemy': {'exclude': True}
+        },
         backref=backref(
             'metadatas',
             cascade='save-update,merge,delete,delete-orphan',
-            info={'colanderalchemy': {
-                'title': _('Metadatas'),
-                'exclude': True
-            }}
-        ),
+            info={'colanderalchemy': {'title': _('Metadatas')}}
+        )
     )
 
     def __init__(self, name: str='', value: str='') -> None:
@@ -936,23 +971,32 @@ class Dimension(Base):
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, info={'colanderalchemy': {'widget': HiddenWidget()}})
     name = Column(Unicode)
     value = Column(Unicode)
     description = Column(Unicode)
 
-    layer_id = Column('layer_id', Integer, ForeignKey(_schema + '.layer.id'), nullable=False)
+    layer_id = Column('layer_id',
+                      Integer,
+                      ForeignKey(_schema + '.layer.id'),
+                      nullable=False,
+                      info={
+                          'colanderalchemy': {
+                              'missing': None,
+                              'widget': HiddenWidget()
+                          },
+                          'c2cgeoform': {
+                              'duplicate': False
+                          }})
     layer = relationship(
         'DimensionLayer',
+        info={'c2cgeoform': {'duplicate': False},
+              'colanderalchemy': {'exclude': True}
+        },
         backref=backref(
             'dimensions',
             cascade='save-update,merge,delete,delete-orphan',
-            info={
-                'colanderalchemy': {
-                    'title': _('Dimensions'),
-                    'exclude': True
-                }
-            }
+            info={'colanderalchemy': {'title': _('Dimensions')}}
         )
     )
 

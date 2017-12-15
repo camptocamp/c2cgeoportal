@@ -156,8 +156,8 @@ class TestLayerWMSViews(AbstractViewsTests):
 
         form = self.get_item(test_app, layer.id).form
 
-        assert 'layer_wms_10' == form['name'].value
-        assert '' == form['description'].value
+        assert 'layer_wms_10' == self.getFirstFieldNamed(form, 'name').value
+        assert '' == self.getFirstFieldNamed(form, 'description').value
 
     def test_public_checkbox_edit(self, test_app, layer_wms_test_data):
         layer = layer_wms_test_data['layers'][10]
@@ -173,11 +173,11 @@ class TestLayerWMSViews(AbstractViewsTests):
 
         form = self.get_item(test_app, layer.id).form
 
-        assert str(layer.id) == form['id'].value
-        assert 'hidden' == form['id'].attrs['type']
-        assert layer.name == form['name'].value
+        assert str(layer.id) == self.getFirstFieldNamed(form, 'id').value
+        assert 'hidden' == self.getFirstFieldNamed(form, 'id').attrs['type']
+        assert layer.name == self.getFirstFieldNamed(form, 'name').value
+        assert str(layer.description or '') == self.getFirstFieldNamed(form, 'description').value
         assert str(layer.metadata_url or '') == form['metadata_url'].value
-        assert str(layer.description or '') == form['description'].value
         assert layer.public is False
         assert layer.public == form['public'].checked
         assert str(layer.geo_table or '') == form['geo_table'].value
@@ -223,8 +223,9 @@ class TestLayerWMSViews(AbstractViewsTests):
             'time_mode': 'range',
             'time_widget': 'datepicker',
         }
+
         for key, value in new_values.items():
-            form[key] = value
+            self.setFirstFieldNamed(form, key, value)
         form['interfaces'] = [interfaces[1].id, interfaces[3].id]
         form['restrictionareas'] = [ras[1].id, ras[3].id]
 
@@ -241,6 +242,100 @@ class TestLayerWMSViews(AbstractViewsTests):
             [interface.id for interface in layer.interfaces])
         assert set([ras[1].id, ras[3].id]) == set([ra.id for ra in layer.restrictionareas])
 
+    def test_submit_new(self, dbsession, test_app):
+        from c2cgeoportal_commons.models.main import LayerWMS
+
+        resp = test_app.post(
+            '/layers_wms/new',
+            {
+                'name': 'new_name',
+                'metadata_url': 'https://new_metadata_url',
+                'description': 'new description',
+                'public': True,
+                'geo_table': 'new_geo_table',
+                'exclude_properties': 'property1,property2',
+                'ogc_server_id': '2',
+                'layer': 'new_wmslayername',
+                'style': 'new_style',
+                'time_mode': 'range',
+                'time_widget': 'datepicker',
+            },
+            status=302)
+
+        layer = dbsession.query(LayerWMS). \
+            filter(LayerWMS.name == 'new_name'). \
+            one()
+        assert str(layer.id) == re.match('http://localhost/layers_wms/(.*)', resp.location).group(1)
+        assert layer.name == 'new_name'
+
+    def test_duplicate(self, layer_wms_test_data, test_app, dbsession):
+        from c2cgeoportal_commons.models.main import LayerWMS
+        layer = layer_wms_test_data['layers'][3]
+
+        resp = test_app.get("/layers_wms/{}/duplicate".format(layer.id), status=200)
+        form = resp.form
+
+        assert '' == self.getFirstFieldNamed(form, 'id').value
+        assert layer.name == self.getFirstFieldNamed(form, 'name').value
+        assert str(layer.metadata_url or '') == form['metadata_url'].value
+        assert str(layer.description or '') == self.getFirstFieldNamed(form, 'description').value
+        assert layer.public is True
+        assert layer.public == form['public'].checked
+        assert str(layer.geo_table or '') == form['geo_table'].value
+        assert str(layer.exclude_properties or '') == form['exclude_properties'].value
+        assert str(layer.ogc_server_id) == form['ogc_server_id'].value
+        assert str(layer.layer or '') == form['layer'].value
+        assert str(layer.style or '') == form['style'].value
+        assert str(layer.time_mode) == form['time_mode'].value
+        assert str(layer.time_widget) == form['time_widget'].value
+        interfaces = layer_wms_test_data['interfaces']
+        assert set((interfaces[3].id, interfaces[1].id)) == set(i.id for i in layer.interfaces)
+        self.check_checkboxes(
+            form,
+            'interfaces',
+            [{
+                'label': i.name,
+                'value': str(i.id),
+                'checked': i in layer.interfaces
+            } for i in sorted(interfaces, key=lambda i: i.name)])
+
+        ras = layer_wms_test_data['restrictionareas']
+        assert set((ras[3].id, ras[0].id)) == set(i.id for i in layer.restrictionareas)
+        self.check_checkboxes(
+            form,
+            'restrictionareas',
+            [{
+                'label': ra.name,
+                'value': str(ra.id),
+                'checked': ra in layer.restrictionareas
+            } for ra in sorted(ras, key=lambda ra: ra.name)])
+
+        assert '' == form.html.select(
+            'input[value=dimensions:mapping] + input')[0].attrs['value']
+        assert layer.dimensions[0].name == form.html.select(
+            'input[value=dimensions:mapping] + input + div')[0].findChild('input').attrs['value']
+        assert layer.dimensions[0].value == form.html.select(
+            'input[value=dimensions:mapping] + input + div + div')[0].findChild('input').attrs['value']
+
+        assert '' == form.html.select(
+            'input[value=dimensions:mapping] + input')[2].attrs['value']
+        assert layer.dimensions[2].name == form.html.select(
+            'input[value=dimensions:mapping] + input + div')[2].findChild('input').attrs['value']
+        assert layer.dimensions[2].value == form.html.select(
+            'input[value=dimensions:mapping] + input + div + div')[2].findChild('input').attrs['value']
+
+        self.setFirstFieldNamed(form, 'name', 'clone')
+        resp = form.submit('submit')
+
+        layer = dbsession.query(LayerWMS). \
+            filter(LayerWMS.name == 'clone'). \
+            one()
+        assert str(layer.id) == re.match('http://localhost/layers_wms/(.*)', resp.location).group(1)
+        assert layer.id == layer.dimensions[0].layer_id
+        assert layer.id == layer.metadatas[0].item_id
+        assert layer_wms_test_data['layers'][3].metadatas[0].name == layer.metadatas[0].name
+        assert layer_wms_test_data['layers'][3].metadatas[1].name == layer.metadatas[1].name
+
     def test_delete(self, test_app, dbsession):
         from c2cgeoportal_commons.models.main import LayerWMS, Layer, TreeItem
         layer_id = dbsession.query(LayerWMS.id).first().id
@@ -250,6 +345,32 @@ class TestLayerWMSViews(AbstractViewsTests):
         assert dbsession.query(LayerWMS).get(layer_id) is None
         assert dbsession.query(Layer).get(layer_id) is None
         assert dbsession.query(TreeItem).get(layer_id) is None
+
+    @pytest.mark.skip(reason='Contraint has to be added at model side, alambiced')
+    def test_submit_new_no_layer_name(self, dbsession, test_app):
+        resp = test_app.post(
+            '/layers_wms/new',
+            {
+                'name': 'new_name',
+                'metadata_url': 'https://new_metadata_url',
+                'description': 'new description',
+                'public': True,
+                'geo_table': 'new_geo_table',
+                'exclude_properties': 'property1,property2',
+                'ogc_server_id': '2',
+                'style': 'new_style',
+                'time_mode': 'range',
+                'time_widget': 'datepicker',
+            },
+            status=200)
+
+        assert 'There was a problem with your submission' == \
+            resp.html.select_one('div[class="error-msg-lbl"]').text
+        assert 'Errors have been highlighted below' == \
+            resp.html.select_one('div[class="error-msg-detail"]').text
+        assert ['WMS layer name'] == \
+            sorted([(x.select_one("label").text.strip())
+                    for x in resp.html.select("[class~'has-error']")])
 
     @skip_if_ci
     @pytest.mark.selenium

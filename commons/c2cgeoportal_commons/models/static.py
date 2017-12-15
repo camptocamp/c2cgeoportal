@@ -74,6 +74,9 @@ class User(Base):
         'title': _('User'),
         'plural': _('Users')
     }
+    __c2cgeoform_config__ = {
+        'duplicate': True
+    }
     item_type = Column('type', String(10), nullable=False, info={
         'colanderalchemy': {
             'widget': HiddenWidget()
