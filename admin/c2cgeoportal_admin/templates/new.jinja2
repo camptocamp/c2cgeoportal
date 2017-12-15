@@ -5,7 +5,7 @@
   <div class="col-md-6">
     <p class="pull-right"><a href="${request.route_url('c2cgeoform_index')}">{{_("Back to overview")}}</a></p>
     <h3>{{_("New")}}</h3>
-    {{form|safe}}
+    {% include 'c2cgeoform:/templates/edit.jinja2' %}
   </div>
 </div>
 {% endblock content %}
