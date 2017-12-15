@@ -145,11 +145,11 @@ class TestTheme(AbstractViewsTests):
         resp = test_app.get('/themes/{}'.format(theme.id), status=200)
         form = resp.form
 
-        assert str(theme.id) == form['id'].value
-        assert 'hidden' == form['id'].attrs['type']
-        assert theme.name == form['name'].value
+        assert str(theme.id) == self.getFirstFieldNamed(form, 'id').value
+        assert 'hidden' == self.getFirstFieldNamed(form, 'id').attrs['type']
+        assert theme.name == self.getFirstFieldNamed(form, 'name').value
         assert str(theme.metadata_url or '') == form['metadata_url'].value
-        assert str(theme.description or '') == form['description'].value
+        assert str(theme.description or '') == self.getFirstFieldNamed(form, 'description').value
         assert str(theme.ordering or '') == form['ordering'].value
         assert theme.public == form['public'].checked
 
@@ -187,7 +187,7 @@ class TestTheme(AbstractViewsTests):
             'icon': 'static://img/cadastre.jpg'
         }
         for key, value in new_values.items():
-            form[key] = value
+            self.setFirstFieldNamed(form, key, value)
         form['interfaces'] = [interfaces[1].id, interfaces[3].id]
         form['functionalities'] = [functionalities[2].id]
         form['restricted_roles'] = []
