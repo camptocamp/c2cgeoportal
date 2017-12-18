@@ -300,6 +300,10 @@ vars:
             access_control_max_age: 600 # 10 minutes
         mapserver:
             access_control_allow_origin: ["*"]
+        login:
+            access_control_max_age: 600 # 10 minutes
+            access_control_allow_origin:
+            - "{web_protocol}://{host}/"
 
     # Checker configuration
     checker:
@@ -389,7 +393,7 @@ vars:
 
     # What web page is authorized to use the API
     authorized_referers:
-    - '{web_protocol}://{host}/{instanceid}'
+    - '{web_protocol}://{host}{apache_entry_point}'
 
     # Hooks that can be called at different moments in the life of the
     # application. The value is the full python name
