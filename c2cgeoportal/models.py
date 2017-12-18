@@ -474,6 +474,9 @@ class TreeGroup(TreeItem):
     __tablename__ = "treegroup"
     __table_args__ = {"schema": _schema}
     __acl__ = [DENY_ALL]
+    __mapper_args__ = {
+        "polymorphic_identity": "treegroup"  # needed for _identity_class (performance issue)
+    }
 
     id = Column(
         Integer, ForeignKey(_schema + ".treeitem.id"), primary_key=True
@@ -593,6 +596,9 @@ class Layer(TreeItem):
     __tablename__ = "layer"
     __table_args__ = {"schema": _schema}
     __acl__ = [DENY_ALL]
+    __mapper_args__ = {
+        "polymorphic_identity": "layer"  # needed for _identity_class (performance issue)
+    }
 
     id = Column(
         Integer, ForeignKey(_schema + ".treeitem.id"), primary_key=True
@@ -608,6 +614,9 @@ class Layer(TreeItem):
 
 class DimensionLayer(Layer):
     __acl__ = [DENY_ALL]
+    __mapper_args__ = {
+        "polymorphic_identity": "dimensionlayer"  # needed for _identity_class (performance issue)
+    }
 
 
 class LayerV1(Layer):  # Deprecated in v2

@@ -952,7 +952,7 @@ class TestEntryView(TestCase):
         layer.geo_table = "tiwms"
         layer.public = True
 
-        self.assertEqual(entry._layer(layer, role_id=None), ({
+        self.assertEqual(entry._layer(layer), ({
             "id": 20,
             "name": "test internal WMS",
             "metadataURL": "http://example.com/tiwms",
