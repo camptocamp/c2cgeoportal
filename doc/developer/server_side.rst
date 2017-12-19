@@ -127,6 +127,35 @@ Adding tests
 
 **To Be Done**
 
+Profiling
+---------
+
+.. prompt:: bash
+
+   .build/venv/bin/pip install wsgi_lineprof
+
+At the end of the file ``apache/application.wsgi`` add:
+
+.. code:: python
+
+   from wsgi_lineprof.middleware import LineProfilerMiddleware
+   from wsgi_lineprof.filters import FilenameFilter, TotalTimeSorter
+
+   filters = [
+       FilenameFilter("entry.py"),
+       TotalTimeSorter(),
+   ]
+   application = LineProfilerMiddleware(application, stream=open('/tmp/pro', 'w'), filters=filters)
+
+.. prompt:: bash
+
+   sudo apache2ctl graceful
+
+Do your request(s).
+
+The profile result will be in the file ``/tmp/pro``.
+
+
 Upgrade dependencies
 --------------------
 
