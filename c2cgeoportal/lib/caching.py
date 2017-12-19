@@ -42,7 +42,7 @@ def map_dbobject(item):
     # here to avoid import loop
     from c2cgeoportal.models import Base
 
-    return item.id if isinstance(item, Base) and hasattr(item, 'id') else item
+    return item.id if isinstance(item, Base) and hasattr(item, "id") else item
 
 
 def keygen_function(namespace, fn):

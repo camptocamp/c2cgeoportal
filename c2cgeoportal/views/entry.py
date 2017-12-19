@@ -47,7 +47,7 @@ from pyramid.httpexceptions import HTTPFound, HTTPBadRequest, HTTPForbidden, HTT
 from pyramid.security import remember, forget
 from pyramid.response import Response
 from sqlalchemy import func
-from sqlalchemy.orm import with_polymorphic
+from sqlalchemy.orm import subqueryload
 from sqlalchemy.orm.exc import NoResultFound
 from owslib.wms import WebMapService
 
@@ -56,12 +56,11 @@ from c2cgeoportal.lib import get_setting, get_protected_layers_query, \
 from c2cgeoportal.lib.cacheversion import get_cache_version
 from c2cgeoportal.lib.caching import get_region, invalidate_region,  \
     set_common_headers, NO_CACHE, PUBLIC_CACHE, PRIVATE_CACHE
-from c2cgeoportal.lib.functionality import get_functionality, \
-    get_mapserver_substitution_params
+from c2cgeoportal.lib.functionality import get_functionality, get_mapserver_substitution_params
 from c2cgeoportal.lib.wmstparsing import parse_extent, TimeInformation
 from c2cgeoportal.lib.email_ import send_email
 from c2cgeoportal.models import DBSession, User, Role, \
-    Theme, LayerGroup, TreeItem, Layer, LayerV1, LayerWMS, LayerWMTS, \
+    Theme, LayerGroup, Layer, LayerV1, LayerWMS, LayerWMTS, \
     RestrictionArea, Interface, OGCServer, FullTextSearch, \
     OGCSERVER_TYPE_GEOSERVER, OGCSERVER_TYPE_MAPSERVER, \
     OGCSERVER_AUTH_GEOSERVER, OGCSERVER_AUTH_NOAUTH
@@ -130,6 +129,11 @@ class Entry:
         self.metadata_type = get_types_map(
             self.settings.get("admin_interface", {}).get("available_metadata", [])
         )
+        self._layerswms_cache = None
+        self._layerswmts_cache = None
+        self._layersv1_cache = None
+        self._layergroup_cache = None
+        self._themes_cache = None
         if "default_ogc_server" in self.mapserver_settings:
             try:
                 self.default_ogc_server = DBSession.query(OGCServer).filter(
@@ -899,8 +903,24 @@ class Entry:
         return wms, list(wms.contents), wms_errors
 
     @cache_region.cache_on_arguments()
-    def _load_tree_itmes(self, cache_version):
-        DBSession.query(with_polymorphic(TreeItem, [Theme, LayerGroup, LayerV1, LayerWMS, LayerWMTS])).all()
+    def _load_tree_items(self):
+        self._layerswms_cache = DBSession.query(LayerWMS).options(
+            subqueryload(LayerWMS.dimensions), subqueryload(LayerWMS.metadatas)
+        ).all()
+        self._layerswmts_cache = DBSession.query(LayerWMTS).options(
+            subqueryload(LayerWMTS.dimensions), subqueryload(LayerWMTS.metadatas)
+        ).all()
+        self._layersv1_cache = DBSession.query(LayerV1).options(
+            subqueryload(LayerV1.metadatas)
+        ).all()
+        self._layergroup_cache = DBSession.query(LayerGroup).options(
+            subqueryload(LayerGroup.metadatas), subqueryload(LayerGroup.children_relation)
+        ).all()
+        self._themes_cache = DBSession.query(Theme).options(
+            subqueryload(Theme.functionalities),
+            subqueryload(Theme.metadatas),
+            subqueryload(Theme.children_relation)
+        ).all()
 
     @cache_region.cache_on_arguments()
     def _themes(
@@ -911,7 +931,7 @@ class Entry:
         This function returns theme information for the role identified
         by ``role_id``.
         """
-        self._load_tree_itmes(get_cache_version())
+        self._load_tree_items()
         errors = set()
         layers = self._layers(role_id, version, interface)
 
