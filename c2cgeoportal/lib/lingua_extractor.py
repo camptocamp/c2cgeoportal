@@ -180,6 +180,8 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
     extensions = [".yaml"]
 
     def __call__(self, filename, options):
+        init_region({"backend": "dogpile.cache.memory"})
+
         with open(filename) as config_file:
             from c2cgeoportal.lib.print_ import *  # noqa
             config = yaml.load(config_file)
@@ -406,11 +408,13 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
         attributes, layers = self._layer_attributes(url, layer)
         for layer in layers:
             messages.append(Message(
-                None, layer, None, [], "", "", (".".join([item_type, name]), layer)
+                None, layer, None, [], "", "",
+                (".".join([item_type, name]), layer.encode("ascii", "replace"))
             ))
         for attribute in attributes:
             messages.append(Message(
-                None, attribute, None, [], "", "", (".".join([item_type, name]), layer)
+                None, attribute, None, [], "", "",
+                (".".join([item_type, name]), layer.encode("ascii", "replace"))
             ))
 
     def _layer_attributes(self, url, layer):
