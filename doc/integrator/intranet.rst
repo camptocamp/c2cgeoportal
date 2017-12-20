@@ -115,12 +115,6 @@ This page lists the changes that must be applied to add such a functionality.
 
        ${request.route_url('mapserverproxy')}
 
-   or
-
-   .. code:: python
-
-       ${request.route_url('mapserverproxy')}
-
    by
 
    .. code:: python
