@@ -161,8 +161,9 @@ class TestRole(AbstractViewsTests):
 
         role = dbsession.query(Role).filter(Role.name == 'clone').one()
         assert str(role.id) == re.match('http://localhost/roles/(.*)', resp.location).group(1)
-        assert role_proto.id != str(role.id)
+        assert role_proto.id != role.id
         assert role_proto.functionalities[2].name == role.functionalities[2].name
+        assert role_proto.functionalities[2].value == role.functionalities[2].value
         assert role_proto.functionalities[2].id == role.functionalities[2].id
         assert role_proto.restrictionareas[1].name == role.restrictionareas[1].name
         assert role_proto.restrictionareas[1].id == role.restrictionareas[1].id
