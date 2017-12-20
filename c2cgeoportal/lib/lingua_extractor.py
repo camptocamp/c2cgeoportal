@@ -425,6 +425,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
 
         class Request:
             registry = Registry()
+            matchdict = {}
 
         request = Request()
         request.registry.settings = self.config
