@@ -187,15 +187,15 @@ def add_interface_ngeo(
     )
     # permalink theme: recover the theme for generating custom viewer.js url
     config.add_route(
-        "{0!s}theme".format(route_name),
-        "{0!s}{1!s}theme/{{themes}}".format(route, "" if route[-1] == "/" else "/"),
+        "{}theme".format(route_name),
+        "{}{}theme/{{themes}}".format(route, "" if route[-1] == "/" else "/"),
         request_method="GET",
     )
     config.add_view(
         Entry,
         decorator=add_interface,
         attr="get_ngeo_permalinktheme_vars",
-        route_name="{0!s}theme".format(route_name),
+        route_name="{}theme".format(route_name),
         renderer=renderer,
         permission=permission
     )

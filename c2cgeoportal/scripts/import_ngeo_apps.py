@@ -201,7 +201,11 @@ def main():
             <script>
                 var small_screen = window.matchMedia ? window.matchMedia('(max-width: 1024px)') : false;
                 if (small_screen && (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch)) {
+    % if "themes" in request.matchdict:
+                    window.location = "${request.route_url('mobiletheme', themes=request.matchdict['themes'], _query=dict(request.GET)) | n}";
+    % else:
                     window.location = "${request.route_url('mobile', _query=dict(request.GET)) | n}";
+    % endif
                 }
             </script>
     % endif
