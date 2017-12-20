@@ -66,8 +66,8 @@ class AbstractViewsTests():
             assert exp['value'] == checkbox['value']
             assert exp['checked'] == field.checked
 
-    def getFirstFieldNamed(self, form, name):
+    def get_first_field_named(self, form, name):
         return form.fields.get(name)[0]
 
-    def setFirstFieldNamed(self, form, name, value):
+    def set_first_field_named(self, form, name, value):
         form.fields.get(name)[0].value__set(value)

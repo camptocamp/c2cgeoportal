@@ -156,8 +156,8 @@ class TestLayerWMSViews(AbstractViewsTests):
 
         form = self.get_item(test_app, layer.id).form
 
-        assert 'layer_wms_10' == self.getFirstFieldNamed(form, 'name').value
-        assert '' == self.getFirstFieldNamed(form, 'description').value
+        assert 'layer_wms_10' == self.get_first_field_named(form, 'name').value
+        assert '' == self.get_first_field_named(form, 'description').value
 
     def test_public_checkbox_edit(self, test_app, layer_wms_test_data):
         layer = layer_wms_test_data['layers'][10]
@@ -173,10 +173,10 @@ class TestLayerWMSViews(AbstractViewsTests):
 
         form = self.get_item(test_app, layer.id).form
 
-        assert str(layer.id) == self.getFirstFieldNamed(form, 'id').value
-        assert 'hidden' == self.getFirstFieldNamed(form, 'id').attrs['type']
-        assert layer.name == self.getFirstFieldNamed(form, 'name').value
-        assert str(layer.description or '') == self.getFirstFieldNamed(form, 'description').value
+        assert str(layer.id) == self.get_first_field_named(form, 'id').value
+        assert 'hidden' == self.get_first_field_named(form, 'id').attrs['type']
+        assert layer.name == self.get_first_field_named(form, 'name').value
+        assert str(layer.description or '') == self.get_first_field_named(form, 'description').value
         assert str(layer.metadata_url or '') == form['metadata_url'].value
         assert layer.public is False
         assert layer.public == form['public'].checked
@@ -225,7 +225,7 @@ class TestLayerWMSViews(AbstractViewsTests):
         }
 
         for key, value in new_values.items():
-            self.setFirstFieldNamed(form, key, value)
+            self.set_first_field_named(form, key, value)
         form['interfaces'] = [interfaces[1].id, interfaces[3].id]
         form['restrictionareas'] = [ras[1].id, ras[3].id]
 
@@ -275,10 +275,10 @@ class TestLayerWMSViews(AbstractViewsTests):
         resp = test_app.get("/layers_wms/{}/duplicate".format(layer.id), status=200)
         form = resp.form
 
-        assert '' == self.getFirstFieldNamed(form, 'id').value
-        assert layer.name == self.getFirstFieldNamed(form, 'name').value
+        assert '' == self.get_first_field_named(form, 'id').value
+        assert layer.name == self.get_first_field_named(form, 'name').value
         assert str(layer.metadata_url or '') == form['metadata_url'].value
-        assert str(layer.description or '') == self.getFirstFieldNamed(form, 'description').value
+        assert str(layer.description or '') == self.get_first_field_named(form, 'description').value
         assert layer.public is True
         assert layer.public == form['public'].checked
         assert str(layer.geo_table or '') == form['geo_table'].value
@@ -324,7 +324,7 @@ class TestLayerWMSViews(AbstractViewsTests):
         assert layer.dimensions[2].value == form.html.select(
             'input[value=dimensions:mapping] + input + div + div')[2].findChild('input').attrs['value']
 
-        self.setFirstFieldNamed(form, 'name', 'clone')
+        self.set_first_field_named(form, 'name', 'clone')
         resp = form.submit('submit')
 
         layer = dbsession.query(LayerWMS). \

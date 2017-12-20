@@ -120,11 +120,11 @@ class TestLayersGroups(AbstractViewsTests):
 
         form = self.get_item(test_app, group.id).form
 
-        assert str(group.id) == self.getFirstFieldNamed(form, 'id').value
-        assert 'hidden' == self.getFirstFieldNamed(form, 'id').attrs['type']
-        assert group.name == self.getFirstFieldNamed(form, 'name').value
+        assert str(group.id) == self.get_first_field_named(form, 'id').value
+        assert 'hidden' == self.get_first_field_named(form, 'id').attrs['type']
+        assert group.name == self.get_first_field_named(form, 'name').value
         assert str(group.metadata_url or '') == form['metadata_url'].value
-        assert str(group.description or '') == self.getFirstFieldNamed(form, 'description').value
+        assert str(group.description or '') == self.get_first_field_named(form, 'description').value
         assert group.is_expanded is False
         assert group.is_expanded == form['is_expanded'].checked
         assert group.is_internal_wms is True
@@ -141,7 +141,7 @@ class TestLayersGroups(AbstractViewsTests):
             'is_base_layer': True
         }
         for key, value in new_values.items():
-            self.setFirstFieldNamed(form, key, value)
+            self.set_first_field_named(form, key, value)
 
         resp = form.submit("submit")
         assert str(group.id) == re.match('http://localhost/layer_groups/(.*)', resp.location).group(1)
