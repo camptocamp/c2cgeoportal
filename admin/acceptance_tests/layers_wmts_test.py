@@ -93,10 +93,10 @@ class TestLayerWMTS(AbstractViewsTests):
         resp = test_app.get("/layers_wmts/{}/duplicate".format(layer.id), status=200)
         form = resp.form
 
-        assert '' == self.getFirstFieldNamed(form, 'id').value
-        assert layer.name == self.getFirstFieldNamed(form, 'name').value
+        assert '' == self.get_first_field_named(form, 'id').value
+        assert layer.name == self.get_first_field_named(form, 'name').value
         assert str(layer.metadata_url or '') == form['metadata_url'].value
-        assert str(layer.description or '') == self.getFirstFieldNamed(form, 'description').value
+        assert str(layer.description or '') == self.get_first_field_named(form, 'description').value
         assert layer.public is True
         assert layer.public == form['public'].checked
         assert str(layer.geo_table or '') == form['geo_table'].value
@@ -113,7 +113,7 @@ class TestLayerWMTS(AbstractViewsTests):
                 'checked': ra in layer.restrictionareas
             } for ra in sorted(ras, key=lambda ra: ra.name)])
 
-        self.setFirstFieldNamed(form, 'name', 'clone')
+        self.set_first_field_named(form, 'name', 'clone')
         resp = form.submit('submit')
 
         layer = dbsession.query(LayerWMTS). \
