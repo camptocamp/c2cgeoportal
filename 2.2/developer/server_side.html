@@ -148,6 +148,24 @@ tests require to run with <cite>docker-compose-run</cite>.</p>
 <p><strong>To Be Done</strong></p>
 </div>
 </div>
+<div class="section" id="profiling">
+<h2>Profiling<a class="headerlink" href="#profiling" title="Permalink to this headline">¶</a></h2>
+<pre class="highlight"><span class="prompt1">.build/venv/bin/pip install wsgi_lineprof</span>
+</pre><p>At the end of the file <code class="docutils literal"><span class="pre">apache/application.wsgi</span></code> add:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">wsgi_lineprof.middleware</span> <span class="k">import</span> <span class="n">LineProfilerMiddleware</span>
+<span class="kn">from</span> <span class="nn">wsgi_lineprof.filters</span> <span class="k">import</span> <span class="n">FilenameFilter</span><span class="p">,</span> <span class="n">TotalTimeSorter</span>
+
+<span class="n">filters</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">FilenameFilter</span><span class="p">(</span><span class="s2">&quot;entry.py&quot;</span><span class="p">),</span>
+    <span class="n">TotalTimeSorter</span><span class="p">(),</span>
+<span class="p">]</span>
+<span class="n">application</span> <span class="o">=</span> <span class="n">LineProfilerMiddleware</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;/tmp/pro&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">),</span> <span class="n">filters</span><span class="o">=</span><span class="n">filters</span><span class="p">)</span>
+</pre></div>
+</div>
+<pre class="highlight"><span class="prompt1">sudo apache2ctl graceful</span>
+</pre><p>Do your request(s).</p>
+<p>The profile result will be in the file <code class="docutils literal"><span class="pre">/tmp/pro</span></code>.</p>
+</div>
 <div class="section" id="upgrade-dependencies">
 <h2>Upgrade dependencies<a class="headerlink" href="#upgrade-dependencies" title="Permalink to this headline">¶</a></h2>
 <p>When we start a new version of c2cgeoportal or just before a new development
@@ -298,6 +316,7 @@ this directory.</p>
 <li><a class="reference internal" href="#adding-tests">Adding tests</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#profiling">Profiling</a></li>
 <li><a class="reference internal" href="#upgrade-dependencies">Upgrade dependencies</a><ul>
 <li><a class="reference internal" href="#eggs">Eggs</a></li>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
