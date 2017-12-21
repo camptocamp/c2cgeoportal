@@ -26,11 +26,12 @@ to be used has been changed slightly (``_create_get_user_from_request`` instead 
 ``create_get_user_from_request``).
 See :ref:`integrator_intranet` and update your code accordingly.
 
------------------------------
-Updating the application code
------------------------------
-
-To upgrade your application code from the remote repository run:
+updating your project environment
+---------------------------------
+Before upgrading your application to a newer version of c2cgeoportal, you should make sure that
+your project environment is up-to-date with regard to your project repository and with regard to the
+required dependencies.
+For this, execute the following commands:
 
 .. prompt:: bash
 
@@ -39,9 +40,9 @@ To upgrade your application code from the remote repository run:
 
 Where ``<makefile>`` is your user make file (``<user>.mk``).
 
-------------------------
-Upgrading an application
-------------------------
+-------------------------
+Upgrading the application
+-------------------------
 
 In the ``setup.py`` be sure not to specify a ``c2cgeoportal`` version,
 because it will prevent the installation of the new ``c2cgeoportal`` egg.
@@ -66,7 +67,7 @@ add in your Makefile ``UPGRADE_MAKE_FILE = <user.mk>``
 
    You should add ``UPGRADE_ARGS += --windows`` in your ``<package>.mk`` file.
 
-To upgrade run:
+To upgrade, run:
 
 .. prompt:: bash
 

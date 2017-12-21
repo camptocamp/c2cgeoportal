@@ -65,10 +65,12 @@ to be used has been changed slightly (<code class="docutils literal"><span class
 <code class="docutils literal"><span class="pre">create_get_user_from_request</span></code>).
 See <a class="reference internal" href="intranet.html#integrator-intranet"><span class="std std-ref">Intranet Users Detection</span></a> and update your code accordingly.</p>
 </div>
-</div>
-<div class="section" id="updating-the-application-code">
-<h2>Updating the application code<a class="headerlink" href="#updating-the-application-code" title="Permalink to this headline">¶</a></h2>
-<p>To upgrade your application code from the remote repository run:</p>
+<div class="section" id="updating-your-project-environment">
+<h3>updating your project environment<a class="headerlink" href="#updating-your-project-environment" title="Permalink to this headline">¶</a></h3>
+<p>Before upgrading your application to a newer version of c2cgeoportal, you should make sure that
+your project environment is up-to-date with regard to your project repository and with regard to the
+required dependencies.
+For this, execute the following commands:</p>
 <pre class="highlight"><style type="text/css">
 span.prompt1:before {
   content: "$ ";
@@ -77,8 +79,9 @@ span.prompt1:before {
 <span class="prompt1">make -f &lt;makefile&gt; build</span>
 </pre><p>Where <code class="docutils literal"><span class="pre">&lt;makefile&gt;</span></code> is your user make file (<code class="docutils literal"><span class="pre">&lt;user&gt;.mk</span></code>).</p>
 </div>
-<div class="section" id="upgrading-an-application">
-<h2>Upgrading an application<a class="headerlink" href="#upgrading-an-application" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="upgrading-the-application">
+<h2>Upgrading the application<a class="headerlink" href="#upgrading-the-application" title="Permalink to this headline">¶</a></h2>
 <p>In the <code class="docutils literal"><span class="pre">setup.py</span></code> be sure not to specify a <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> version,
 because it will prevent the installation of the new <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> egg.</p>
 <p>Verify that you have in your <code class="docutils literal"><span class="pre">project.yaml.mako</span></code> file the following <code class="docutils literal"><span class="pre">template_vars</span></code>:
@@ -98,7 +101,7 @@ add in your Makefile <code class="docutils literal"><span class="pre">UPGRADE_MA
 <p>For Windows:</p>
 <p class="last">You should add <code class="docutils literal"><span class="pre">UPGRADE_ARGS</span> <span class="pre">+=</span> <span class="pre">--windows</span></code> in your <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> file.</p>
 </div>
-<p>To upgrade run:</p>
+<p>To upgrade, run:</p>
 <pre class="highlight"><span class="prompt1"><span class="nb">export</span> <span class="nv">VERSION</span><span class="o">=</span>&lt;target_version&gt;</span>
 <span class="prompt1">make -f &lt;makefile&gt; upgrade</span>
 </pre><div class="admonition note">
@@ -183,10 +186,10 @@ commands</p>
 <li><a class="reference internal" href="#preliminary-work">Preliminary work</a><ul>
 <li><a class="reference internal" href="#gmf-1-x-to-gmf-2-2">GMF 1.X to GMF 2.2</a></li>
 <li><a class="reference internal" href="#usage-of-intranet-detection">usage of intranet detection</a></li>
+<li><a class="reference internal" href="#updating-your-project-environment">updating your project environment</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#updating-the-application-code">Updating the application code</a></li>
-<li><a class="reference internal" href="#upgrading-an-application">Upgrading an application</a></li>
+<li><a class="reference internal" href="#upgrading-the-application">Upgrading the application</a></li>
 <li><a class="reference internal" href="#upgrade-the-database">Upgrade the database</a></li>
 </ul>
 </li>
