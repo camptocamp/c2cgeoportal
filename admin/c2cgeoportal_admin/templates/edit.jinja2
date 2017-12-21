@@ -1,16 +1,4 @@
 {% extends "layout.jinja2" %}
-
 {% block content %}
-<div class="row">
-  <div class="col-md-6">
-    <p class="pull-right">
-    {% if duplicate_url %}
-        <a href="{{ duplicate_url }}" style="margin-right:30px;">{{_("Duplicate")}}</a>
-    {% endif %}
-    <a href="{{request.route_url('c2cgeoform_index')}}">{{_("Back to overview")}}</a>
-    </p>
-    <h3>{{_("Edit")}}</h3>
-    {% include 'c2cgeoform:/templates/edit.jinja2' %}
-  </div>
-</div>
+{% include 'c2cgeoform:/templates/edit.jinja2' %}
 {% endblock content %}
