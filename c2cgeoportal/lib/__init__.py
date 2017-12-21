@@ -141,6 +141,9 @@ def get_url2(name, url, request, errors):
 
 
 def get_typed(name, value, types, request, errors):
+    type_ = {
+        "type": "not init"
+    }
     try:
         if name not in types:
             errors.add("Type '{}' not defined.".format(name))
