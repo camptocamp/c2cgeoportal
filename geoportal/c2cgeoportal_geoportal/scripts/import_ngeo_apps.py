@@ -324,9 +324,9 @@ def main():
                 re.escape("""
         var langUrls = {};
         ['en', 'fr', 'de'].forEach(function(lang) {
-            var langUrlElements = urlElements.slice(0, urlElements.length - 3);
-            langUrlElements.push('build', 'gmf-' + lang + '.json?cache_version=' + cacheVersion)
-            langUrls[lang] = langUrlElements.join('/')
+          var langUrlElements = urlElements.slice(0, urlElements.length - 3);
+          langUrlElements.push('build', 'gmf-' + lang + '.json?cache_version=' + cacheVersion)
+          langUrls[lang] = langUrlElements.join('/')
         });"""),
                 r"""        var langUrls = {
 ${ ',\\n'.join([
