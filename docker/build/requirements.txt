@@ -58,6 +58,7 @@ tilecloud-chain==1.4.0.dev10  # Tile generation
 transifex-client==0.12.5  # Makefile
 virtualenv==15.1.0  # Makefile
 waitress==1.1.0  # pcreate
+WebOb==1.7.0rc2  # geoportal test
 WebTest==2.0.29  # admin tests
 yamllint==1.10.0  # lint
 zgitignore==0.8.0  # Makefile
