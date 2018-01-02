@@ -347,7 +347,7 @@ class TestLayerWMSViews(AbstractViewsTests):
         assert dbsession.query(TreeItem).get(layer_id) is None
 
     @pytest.mark.skip(reason='Contraint has to be added at model side, alambiced')
-    def test_submit_new_no_layer_name(self, dbsession, test_app):
+    def test_submit_new_no_layer_name(self, test_app):
         resp = test_app.post(
             '/layers_wms/new',
             {
