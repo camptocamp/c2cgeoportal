@@ -932,18 +932,16 @@ class Metadata(Base):
                      ForeignKey(_schema + '.treeitem.id'),
                      nullable=False,
                      info={
-                        'colanderalchemy': {
-                            'missing': None,
-                            'widget': HiddenWidget()
-                        },
-                        'c2cgeoform': {
-                            'duplicate': False
-                        }})
+                         'colanderalchemy': {
+                             'missing': None,
+                             'widget': HiddenWidget()},
+                         'c2cgeoform': {
+                             'duplicate': False}})
     item = relationship(
         'TreeItem',
         info={'c2cgeoform': {'duplicate': False},
               'colanderalchemy': {'exclude': True}
-        },
+              },
         backref=backref(
             'metadatas',
             cascade='save-update,merge,delete,delete-orphan',
@@ -992,13 +990,10 @@ class Dimension(Base):
         'DimensionLayer',
         info={'c2cgeoform': {'duplicate': False},
               'colanderalchemy': {'exclude': True}
-        },
-        backref=backref(
-            'dimensions',
-            cascade='save-update,merge,delete,delete-orphan',
-            info={'colanderalchemy': {'title': _('Dimensions')}}
-        )
-    )
+              },
+        backref=backref('dimensions',
+                        cascade='save-update,merge,delete,delete-orphan',
+                        info={'colanderalchemy': {'title': _('Dimensions')}}))
 
     def __init__(self, name: str='', value: str='', layer: str=None) -> None:
         self.name = name
