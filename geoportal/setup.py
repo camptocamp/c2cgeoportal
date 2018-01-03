@@ -75,6 +75,7 @@ install_requires = [
     'SQLAlchemy',
     'Fiona',
     'rasterio',
+    'WebOb==1.7.0rc2'
 ]
 
 setup_requires = [
