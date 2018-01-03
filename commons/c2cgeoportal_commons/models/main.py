@@ -538,8 +538,7 @@ class LayerV1(Layer):  # Deprecated in v2
     }
     __mapper_args__ = {'polymorphic_identity': 'layerv1'}
 
-    id = Column(
-        Integer, ForeignKey(_schema + '.layer.id'), primary_key=True, info={
+    id = Column(Integer, ForeignKey(_schema + '.layer.id'), primary_key=True, info={
         'colanderalchemy': {
             'missing': None,
             'widget': HiddenWidget()
@@ -554,8 +553,9 @@ class LayerV1(Layer):  # Deprecated in v2
             'title': _('Is checked')
         }})  # by default
     icon = Column(Unicode, info={
-        'colanderalchemy': {'title': _('Icon')
-    }})  # on the tree
+        'colanderalchemy': {
+            'title': _('Icon')
+        }})  # on the tree
     layer_type = Column(
         Enum(
             'internal WMS',
@@ -573,8 +573,8 @@ class LayerV1(Layer):  # Deprecated in v2
                         ('external WMS', _('external WMS')),
                         ('WMTS', _('WMTS')),
                         ('no 2D', _('no 2D'))
-                ))
-        }})
+                    ))}
+        })
     url = Column(Unicode, info={
         'colanderalchemy': {
             'title': _('Url')
@@ -591,58 +591,92 @@ class LayerV1(Layer):  # Deprecated in v2
                     values=(
                         ('', _('- Select -')),
                         ('image/jpeg', _('image/jpeg')),
-                        ('image/png', _('image/png')),
-                ))
-        }})  # for WMS
-    style = Column(Unicode, info={
-        'colanderalchemy': {'title': _('Style')
-        }})
-    dimensions = Column(Unicode, info={
-        'colanderalchemy': {'title': _('Dimensions')
-        }})  # for WMTS
-    matrix_set = Column(Unicode, info={
-        'colanderalchemy': {'title': _('Matrix set')
-        }})  # for WMTS
-    wms_url = Column(Unicode, info={
-        'colanderalchemy': {'title': _('Wms url')
-        }})  # for WMTS
-    wms_layers = Column(Unicode, info={
-        'colanderalchemy': {'title': _('Wms layers')
-        }})  # for WMTS
-    query_layers = Column(Unicode, info={
-        'colanderalchemy': {'title': _('Query layers')
-        }})  # for WMTS
-    kml = Column(Unicode, info={
-        'colanderalchemy': {'title': _('Kml')
-        }})  # for kml 3D
-    is_single_tile = Column(Boolean, info={
-        'colanderalchemy': {'title': _('Is single title')
-        }})  # for extenal WMS
-    legend = Column(Boolean, default=True, info={
-        'colanderalchemy': {'title': _('Legend')
-        }})  # on the tree
-    legend_image = Column(Unicode, info={
-        'colanderalchemy': {'title': _('Legend image')
-        }})  # fixed legend image
-    legend_rule = Column(Unicode, info={
-        'colanderalchemy': {'title': _('Legend rule')
-        }})  # on wms legend only one rule
-    is_legend_expanded = Column(Boolean, default=False, info={
-        'colanderalchemy': {'title': _('Is legend expanded')
-        }})
-    min_resolution = Column(Float, info={
-        'colanderalchemy': {'title': _('Min resolution')
-        }})  # for all except internal WMS
-    max_resolution = Column(Float, info={
-        'colanderalchemy': {'title': _('Max resolution')
-        }})  # for all except internal WMS
-    disclaimer = Column(Unicode, info={
-        'colanderalchemy': {'title': _('Disclaimer')
-        }})
+                        ('image/png', _('image/png'))
+                    ))}
+        })  # for WMS
+    style = Column(
+        Unicode,
+        info={
+            'colanderalchemy': {'title': _('Style')}
+        })
+    dimensions = Column(
+        Unicode,
+        info={
+            'colanderalchemy': {'title': _('Dimensions')}
+        })  # for WMTS
+    matrix_set = Column(
+        Unicode,
+        info={
+            'colanderalchemy': {'title': _('Matrix set')}
+        })  # for WMTS
+    wms_url = Column(
+        Unicode,
+        info={
+            'colanderalchemy': {'title': _('Wms url')}
+        })  # for WMTS
+    wms_layers = Column(
+        Unicode,
+        info={
+            'colanderalchemy': {'title': _('Wms layers')}
+        })  # for WMTS
+    query_layers = Column(
+        Unicode,
+        info={
+            'colanderalchemy': {'title': _('Query layers')}
+        })  # for WMTS
+    kml = Column(
+        Unicode,
+        info={
+            'colanderalchemy': {'title': _('Kml')}
+        })  # for kml 3D
+    is_single_tile = Column(
+        Boolean,
+        info={
+            'colanderalchemy': {'title': _('Is single title')}
+        })  # for extenal WMS
+    legend = Column(
+        Boolean,
+        default=True,
+        info={
+            'colanderalchemy': {'title': _('Legend')}
+        })  # on the tree
+    legend_image = Column(
+        Unicode,
+        info={
+            'colanderalchemy': {'title': _('Legend image')}
+        })  # fixed legend image
+    legend_rule = Column(
+        Unicode,
+        info={
+            'colanderalchemy': {'title': _('Legend rule')}
+        })  # on wms legend only one rule
+    is_legend_expanded = Column(
+        Boolean,
+        default=False,
+        info={
+            'colanderalchemy': {'title': _('Is legend expanded')}
+        })
+    min_resolution = Column(
+        Float,
+        info={
+            'colanderalchemy': {'title': _('Min resolution')}
+        })  # for all except internal WMS
+    max_resolution = Column(
+        Float,
+        info={
+            'colanderalchemy': {'title': _('Max resolution')}
+        })  # for all except internal WMS
+    disclaimer = Column(
+        Unicode,
+        info={
+            'colanderalchemy': {'title': _('Disclaimer')}
+        })
     # data attribute field in which application can find a human identifiable name or number
-    identifier_attribute_field = Column(Unicode, info={
-        'colanderalchemy': {'title': _('Identifier')
-        }})
+    identifier_attribute_field = Column(
+        Unicode,
+        info={
+            'colanderalchemy': {'title': _('Identifier')}
+        })
     time_mode = Column(Enum(
         'disabled', 'value', 'range',
         native_enum=False), default='disabled', nullable=False, info={
@@ -666,6 +700,7 @@ class LayerV1(Layer):  # Deprecated in v2
                 ))
             }}
     )
+
     def __init__(
         self, name: str='', public: bool=True, icon: str='',
         layer_type: str='internal WMS'
