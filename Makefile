@@ -202,7 +202,10 @@ tests:
 .PHONY: flake8
 flake8:
 	# E712 is not compatible with SQLAlchemy
-	find $(VALIDATE_PY_FOLDERS) -name \*.py | xargs flake8 \
+	find $(VALIDATE_PY_FOLDERS) \
+		-not \( -path "*/.build" -prune \) \
+		-not \( -path "*/node_modules" -prune \) \
+		-name \*.py | xargs flake8 \
 		--ignore=E712 \
 		--copyright-check \
 		--copyright-min-file-size=1 \
