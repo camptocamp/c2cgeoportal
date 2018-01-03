@@ -129,6 +129,12 @@
                top: position.top - adjustment.top
              })
            }});
+
+         // Deform hide sequence .deform-order-button when has_multiple change to false,
+         // but icon and title are inside .deform-order-button in our case.
+         $('#deform').on('change', function(e) {
+           $('#${oid} .deform-order-button').show();
+         });
      </tal:block>
   </script>
 
