@@ -40,19 +40,19 @@ class LayerGroupsViews(TreeItemViews):
     def grid(self):
         return super().grid()
 
-    @view_config(route_name='c2cgeoform_action',
+    @view_config(route_name='c2cgeoform_item',
                  request_method='GET',
                  renderer='../templates/edit.jinja2')
     def view(self):
         return super().edit()
 
-    @view_config(route_name='c2cgeoform_action',
+    @view_config(route_name='c2cgeoform_item',
                  request_method='POST',
                  renderer='../templates/edit.jinja2')
     def save(self):
         return super().save()
 
-    @view_config(route_name='c2cgeoform_action',
+    @view_config(route_name='c2cgeoform_item',
                  request_method='DELETE')
     def delete(self):
         return super().delete()

@@ -5,34 +5,54 @@ from pyramid.view import view_config
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import ListField
 
-from c2cgeoportal_commons.models.main import LayerWMTS
-from c2cgeoportal_admin.views.dimension_layers import DimensionLayerViews
+from c2cgeoportal_commons.models.main import LayerV1
+
+from c2cgeoportal_admin.views.layers import LayerViews
 from c2cgeoportal_admin.views.interfaces import interfaces_schema_node
 from c2cgeoportal_admin.views.restrictionareas import restrictionareas_schema_node
 
-_list_field = partial(ListField, LayerWMTS)
+_list_field = partial(ListField, LayerV1)
 
-base_schema = GeoFormSchemaNode(LayerWMTS)
+base_schema = GeoFormSchemaNode(LayerV1)
 base_schema.add(interfaces_schema_node.clone())
 base_schema.add(restrictionareas_schema_node.clone())
 
 
-@view_defaults(match_param='table=layers_wmts')
-class LayerWmtsViews(DimensionLayerViews):
-    _list_fields = DimensionLayerViews._list_fields + [
-        _list_field('url'),
+@view_defaults(match_param='table=layers_v1')
+class LayerV1Views(LayerViews):
+    _list_fields = LayerViews._list_fields + [
         _list_field('layer'),
-        _list_field('style'),
-        _list_field('matrix_set'),
+        _list_field('is_checked'),
+        _list_field('icon'),
+        _list_field('layer_type'),
+        _list_field('url'),
         _list_field('image_type'),
-    ] + DimensionLayerViews._extra_list_fields
+        _list_field('style'),
+        _list_field('dimensions'),
+        _list_field('matrix_set'),
+        _list_field('wms_url'),
+        _list_field('wms_layers'),
+        _list_field('query_layers'),
+        _list_field('kml'),
+        _list_field('is_single_tile'),
+        _list_field('legend'),
+        _list_field('legend_image'),
+        _list_field('legend_rule'),
+        _list_field('is_legend_expanded'),
+        _list_field('min_resolution'),
+        _list_field('max_resolution'),
+        _list_field('disclaimer'),
+        _list_field('identifier_attribute_field'),
+        _list_field('time_mode'),
+        _list_field('time_widget')
+    ] + LayerViews._extra_list_fields
     _id_field = 'id'
-    _model = LayerWMTS
+    _model = LayerV1
     _base_schema = base_schema
 
     def _base_query(self, query=None):
         return super()._base_query(
-            self._request.dbsession.query(LayerWMTS).distinct())
+            self._request.dbsession.query(LayerV1).distinct())
 
     @view_config(route_name='c2cgeoform_index',
                  renderer='../templates/index.jinja2')

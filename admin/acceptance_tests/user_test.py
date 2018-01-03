@@ -24,6 +24,7 @@ def users_test_data(dbsession):
                     email='mail' + str(i),
                     role=roles[i % 4])
         user.password = 'pré$ident'
+        user.is_password_changed = i % 2 == 1
         users.append(user)
         dbsession.add(user)
     yield {
@@ -110,6 +111,27 @@ class TestUser(AbstractViewsTests):
         assert user.role_name == 'secretary_2'
         assert user.validate_password('pré$ident')
 
+    def test_duplicate(self, users_test_data, test_app, dbsession):
+        from c2cgeoportal_commons.models.static import User
+        user = users_test_data['users'][7]
+
+        resp = test_app.get("/users/{}/duplicate".format(user.id), status=200)
+        form = resp.form
+
+        assert '' == form['id'].value
+        assert user.username == form['username'].value
+        assert user.email == form['email'].value
+        assert user.role_name == form['role_name'].value
+        assert user.is_password_changed
+        form['username'].value = 'clone'
+        resp = form.submit('submit')
+
+        user = dbsession.query(User).filter(User.username == 'clone').one()
+        assert str(user.id) == re.match('http://localhost/users/(.*)', resp.location).group(1)
+        assert users_test_data['users'][7].id != str(user.id)
+        assert not user.is_password_changed
+        assert not user.validate_password('pré$ident')
+
     @pytest.mark.usefixtures("test_app")
     def test_submit_new(self, dbsession, test_app):
         from c2cgeoportal_commons.models.static import User
@@ -153,6 +175,7 @@ class TestUser(AbstractViewsTests):
     @pytest.mark.selenium
     @pytest.mark.usefixtures("selenium", "selenium_app")
     def test_selenium(self, dbsession, selenium, selenium_app, users_test_data):
+        from c2cgeoportal_commons.models.static import User
         selenium.get(selenium_app + self._prefix)
 
         elem = selenium.find_element_by_xpath("//a[contains(@href,'language=en')]")
@@ -178,6 +201,7 @@ class TestUser(AbstractViewsTests):
         elem = selenium.find_element_by_xpath("//button[@name='formsubmit']")
         elem.click()
 
+        user = dbsession.query(User).filter(User.id == user.id).one()
         dbsession.expire(user)
         assert user.username == 'new_name_éôù'
         assert user.email == 'new_email'

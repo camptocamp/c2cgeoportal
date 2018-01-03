@@ -65,3 +65,9 @@ class AbstractViewsTests():
             assert exp['label'] == list(label.stripped_strings)[0]
             assert exp['value'] == checkbox['value']
             assert exp['checked'] == field.checked
+
+    def get_first_field_named(self, form, name):
+        return form.fields.get(name)[0]
+
+    def set_first_field_named(self, form, name, value):
+        form.fields.get(name)[0].value__set(value)

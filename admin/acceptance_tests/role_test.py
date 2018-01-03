@@ -146,6 +146,28 @@ class TestRole(AbstractViewsTests):
         assert set(functionality_ids) == set([f.id for f in role.functionalities])
         assert set(ra_ids) == set([f.id for f in role.restrictionareas])
 
+    def test_duplicate(self, roles_test_data, test_app, dbsession):
+        from c2cgeoportal_commons.models.main import Role
+        role_proto = roles_test_data['roles'][7]
+
+        resp = test_app.get("/roles/{}/duplicate".format(role_proto.id), status=200)
+        form = resp.form
+
+        assert '' == form['id'].value
+        assert role_proto.name == form['name'].value
+        assert role_proto.description == form['description'].value
+        form['name'].value = 'clone'
+        resp = form.submit('submit')
+
+        role = dbsession.query(Role).filter(Role.name == 'clone').one()
+        assert str(role.id) == re.match('http://localhost/roles/(.*)', resp.location).group(1)
+        assert role_proto.id != role.id
+        assert role_proto.functionalities[2].name == role.functionalities[2].name
+        assert role_proto.functionalities[2].value == role.functionalities[2].value
+        assert role_proto.functionalities[2].id == role.functionalities[2].id
+        assert role_proto.restrictionareas[1].name == role.restrictionareas[1].name
+        assert role_proto.restrictionareas[1].id == role.restrictionareas[1].id
+
     @pytest.mark.usefixtures('raise_db_error_on_query')
     def test_grid_dberror(self, dbsession):
         from c2cgeoportal_admin.views.roles import RoleViews
