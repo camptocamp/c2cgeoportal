@@ -1,1 +1,1 @@
--e git://github.com/camptocamp/c2cgeoform.git@ac04dff13cf91194e95e177b9bcaf92f19bc717f#egg=c2cgeoform
+-e git://github.com/camptocamp/c2cgeoform.git@d1d05ecd7f039ce8aa1f2894ed61f7e23b682d3e#egg=c2cgeoform

@@ -1,0 +1,141 @@
+<?python import json ?>
+<div tal:define="item_tmpl item_template|field.widget.item_template;
+                 oid oid|field.oid;
+                 name name|field.name;
+                 min_len min_len|field.widget.min_len;
+                 min_len min_len or 0;
+                 max_len max_len|field.widget.max_len;
+                 max_len max_len or 100000;
+                 now_len len(subfields);
+                 orderable orderable|field.widget.orderable;
+                 orderable orderable and 1 or 0;
+                 prototype field.widget.prototype(field);
+                 title title|field.title;"
+     class="deform-seq"
+     id="${oid}">
+
+  <style>
+    body.dragging, body.dragging * {
+      cursor: move !important;
+    }
+
+    .dragged {
+      position: absolute;
+      opacity: 0.5;
+      z-index: 2000;
+    }
+  </style>
+
+  <!-- sequence -->
+  <input type="hidden" name="__start__"
+         value="${field.name}:sequence"
+         class="deform-proto"
+         tal:attributes="prototype prototype"/>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="magicsuggest"></div>
+    </div>
+
+    <div class="panel-body">
+      <div class="deform-seq-container"
+           id="${oid}-orderable">
+        <div tal:define="subfields [ x[1] for x in subfields ]"
+             tal:repeat="subfield subfields"
+             tal:replace="structure subfield.render_template(item_tmpl, parent=field)" />
+        <span class="deform-insert-before"
+              tal:attributes="
+                 min_len min_len;
+                 max_len max_len;
+                 now_len now_len;
+                 orderable orderable;"></span>
+      </div>
+    </div>
+  </div>
+
+  <input type="hidden" name="__end__" value="${field.name}:sequence"/>
+  <!-- /sequence -->
+
+  <script type="text/javascript">
+   deform.addCallback(
+     '${field.oid}',
+     function(oid) {
+       oid_node = $('#'+ oid);
+       deform.processSequenceButtons(oid_node, ${min_len},
+                                     ${max_len}, ${now_len},
+                                     ${orderable});
+       oid_node.find('.deform-order-button').show();
+
+       var ms = $('#'+ oid + ' .magicsuggest').magicSuggest({
+         data: ${ structure: json.dumps(treeitems, indent=4, separators=(',', ': ')) },
+         renderer: function(data) {
+           return '<span class="glyphicon icon-' + data.item_type + '"></span> ' + data.name;
+         },
+         valueField: 'id',
+         displayField: 'name',
+         groupBy: 'group',
+         maxDropHeight: 500
+       });
+
+       $(ms).on('selectionchange', function(e, m) {
+         this.getSelection().forEach(function(selecteditem) {
+
+           // Search for the corresponding item in sequence
+           var $el = $('#'+ oid).find('.deform-seq-item input[name="treeitem_id"][value="' + selecteditem.id + '"]');
+
+           // If item is already sequence, flash it to the user
+           if ($el.length > 0) {
+             for (var i=0; i<3; i++) {
+               $el.closest('.deform-seq-item').
+                 fadeOut(100).
+                 fadeIn(100)
+             }
+           }
+           else {
+             // Add item in sequence
+             deform.appendSequenceItem('#'+ oid);
+
+             // Set title and treeitem_id
+             var $itemnode = $('#'+ oid).find('.deform-seq-item').last();
+             $itemnode.find('.well').html('<span class="glyphicon icon-' + selecteditem.item_type + '"></span> ' + selecteditem.name);
+             $itemnode.find('input[name="treeitem_id"]').val(selecteditem.id);
+             $itemnode.find('.deform-order-button').show();
+           }
+         });
+         this.removeFromSelection(this.getSelection(), true);
+       });
+     }
+   )
+     <tal:block condition="orderable">
+         $( "#${oid}-orderable" ).sortable({
+           handle: ".deform-order-button, .panel-heading",
+           containerSelector: "#${oid}-orderable",
+           itemSelector: ".deform-seq-item",
+           placeholder: '<span class="glyphicon glyphicon-arrow-right placeholder"></span>',
+           onDragStart: function ($item, container, _super) {
+             var offset = $item.offset(),
+             pointer = container.rootGroup.pointer
+
+             adjustment = {
+               left: pointer.left - offset.left,
+               top: pointer.top - offset.top
+             }
+
+             _super($item, container)
+           },
+           onDrag: function ($item, position) {
+             $item.css({
+               left: position.left - adjustment.left,
+               top: position.top - adjustment.top
+             })
+           }});
+
+         // Deform hide sequence .deform-order-button when has_multiple change to false,
+         // but icon and title are inside .deform-order-button in our case.
+         $('#deform').on('change', function(e) {
+           $('#${oid} .deform-order-button').show();
+         });
+     </tal:block>
+  </script>
+
+</div>

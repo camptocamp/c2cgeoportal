@@ -22,17 +22,7 @@
         {% macro render_node(node, parent_id=None) -%}
         <tr class="{{ node.item_type }} treegrid-{{ node.id }}{{' treegrid-parent-{}'.format(parent_id) if parent_id else ''}}">
             <td>
-                {% if node.item_type == 'theme' %}
-                <span class="glyphicon glyphicon-briefcase"></span>
-                {% elif node.item_type == 'group' %}
-                <span class="glyphicon glyphicon-folder-open"></span>
-                {% elif node.item_type == 'layerv1' %}
-                <span class="glyphicon glyphicon-picture" style="color:grey"></span>
-                {% elif node.item_type == 'l_wms' %}
-                <span class="glyphicon glyphicon-picture"></span>
-                {% elif node.item_type == 'l_wmts' %}
-                <span class="glyphicon glyphicon-th"></span>
-                {% endif %}
+                <span class="glyphicon icon-{{ node.item_type }}"></span>
                 {{ node.name }}
             </td>
             <td>

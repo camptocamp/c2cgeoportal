@@ -1,16 +1,17 @@
 from functools import partial
 from pyramid.view import view_defaults
 from pyramid.view import view_config
-
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import ListField
-
 from c2cgeoportal_commons.models.main import LayerGroup
+from c2cgeoportal_admin.schemas.treegroup import children_schema_node
 from c2cgeoportal_admin.views.treeitems import TreeItemViews
 
 _list_field = partial(ListField, LayerGroup)
 
+
 base_schema = GeoFormSchemaNode(LayerGroup)
+base_schema.add(children_schema_node)
 
 
 @view_defaults(match_param='table=layer_groups')

@@ -3,7 +3,7 @@
 import re
 import pytest
 
-from . import AbstractViewsTests
+from .treegroup_tests import TestTreeGroup
 
 
 @pytest.fixture(scope='class')
@@ -59,6 +59,7 @@ def theme_test_data(dbsession):
     yield {
         'themes': themes,
         'interfaces': interfaces,
+        'groups': groups,
         'functionalities': functionalities,
         'roles': roles,
     }
@@ -67,7 +68,7 @@ def theme_test_data(dbsession):
 
 
 @pytest.mark.usefixtures('theme_test_data', 'transact', 'test_app')
-class TestTheme(AbstractViewsTests):
+class TestTheme(TestTreeGroup):
 
     _prefix = '/themes'
 
@@ -178,6 +179,18 @@ class TestTheme(AbstractViewsTests):
                 'checked': f in theme.functionalities
             } for f in sorted(functionalities, key=lambda f: (f.name, f.value))])
 
+        self.check_children(
+            form,
+            'children_relation',
+            [{
+                'label': rel.treeitem.name,
+                'values': {
+                    'id': str(rel.id),
+                    'treeitem_id': str(rel.treeitem.id)
+                }
+            } for rel in theme.children_relation]
+        )
+
         new_values = {
             'name': 'new_name',
             'metadata_url': 'https://new_metadata_url',
@@ -206,3 +219,71 @@ class TestTheme(AbstractViewsTests):
         assert set([functionalities[2].id]) == set(
             [functionality.id for functionality in theme.functionalities])
         assert 0 == len(theme.restricted_roles)
+
+    def test_post_new_with_children_invalid(self, test_app, theme_test_data):
+        """
+        Check there is no rendering error when validation fails.
+        """
+        groups = theme_test_data['groups']
+        resp = test_app.post(
+            '{}/new'.format(self._prefix),
+            (
+                ('_charset_', 'UTF-8'),
+                ('__formid__', 'deform'),
+                ('id', ''),
+                ('__start__', 'children_relation:sequence'),
+                ('__start__', 'layergroup_treeitem:mapping'),
+                ('id', ''),
+                ('treeitem_id', groups[1].id),
+                ('ordering', ''),
+                ('__end__', 'layergroup_treeitem:mapping'),
+                ('__end__', 'children_relation:sequence'),
+                ('formsubmit', 'formsubmit')
+            ),
+            status=200)
+        assert 'Required' == resp.html.select_one('.item-name .help-block').getText().strip()
+
+    def test_post_new_with_children_success(self, test_app, dbsession, theme_test_data):
+        groups = theme_test_data['groups']
+        resp = test_app.post(
+            '{}/new'.format(self._prefix),
+            (
+                ('_charset_', 'UTF-8'),
+                ('__formid__', 'deform'),
+                ('name', 'new_with_children'),
+                ('metadata_url', ''),
+                ('description', ''),
+                ('ordering', '100'),
+                ('id', ''),
+                ('__start__', 'children_relation:sequence'),
+                ('__start__', 'layergroup_treeitem:mapping'),
+                ('id', ''),
+                ('treeitem_id', groups[1].id),
+                ('ordering', ''),
+                ('__end__', 'layergroup_treeitem:mapping'),
+                ('__start__', 'layergroup_treeitem:mapping'),
+                ('id', ''),
+                ('treeitem_id', groups[3].id),
+                ('ordering', ''),
+                ('__end__', 'layergroup_treeitem:mapping'),
+                ('__start__', 'layergroup_treeitem:mapping'),
+                ('id', ''),
+                ('treeitem_id', groups[4].id),
+                ('ordering', ''),
+                ('__end__', 'layergroup_treeitem:mapping'),
+                ('__end__', 'children_relation:sequence'),
+                ('formsubmit', 'formsubmit')
+            ),
+            status=302)
+
+        from c2cgeoportal_commons.models.main import Theme
+        theme = dbsession.query(Theme). \
+            filter(Theme.name == 'new_with_children'). \
+            one()
+
+        assert str(theme.id) == re.match('http://localhost/themes/(.*)', resp.location).group(1)
+
+        assert (
+            [groups[1].id, groups[3].id, groups[4].id] ==
+            [rel.treeitem_id for rel in theme.children_relation]
+        )

@@ -3,7 +3,7 @@
 import re
 import pytest
 
-from . import AbstractViewsTests
+from .treegroup_tests import TestTreeGroup
 
 
 @pytest.fixture(scope='class')
@@ -59,7 +59,7 @@ def layer_groups_test_data(dbsession):
 
 
 @pytest.mark.usefixtures('layer_groups_test_data', 'transact', 'test_app')
-class TestLayersGroups(AbstractViewsTests):
+class TestLayersGroups(TestTreeGroup):
 
     _prefix = '/layer_groups'
 
@@ -132,6 +132,18 @@ class TestLayersGroups(AbstractViewsTests):
         assert group.is_base_layer is False
         assert group.is_base_layer == form['is_base_layer'].checked
 
+        self.check_children(
+            form,
+            'children_relation',
+            [{
+                'label': rel.treeitem.name,
+                'values': {
+                    'id': str(rel.id),
+                    'treeitem_id': str(rel.treeitem.id)
+                }
+            } for rel in group.children_relation]
+        )
+
         new_values = {
             'name': 'new_name',
             'metadata_url': 'https://new_metadata_url',
@@ -152,6 +164,74 @@ class TestLayersGroups(AbstractViewsTests):
                 assert value == getattr(group, key)
             else:
                 assert str(value or '') == str(getattr(group, key) or '')
+
+    def test_post_new_with_children_invalid(self, test_app, layer_groups_test_data):
+        """
+        Check there is no rendering error when validation fails.
+        """
+        groups = layer_groups_test_data['groups']
+        resp = test_app.post(
+            '{}/new'.format(self._prefix),
+            (
+                ('_charset_', 'UTF-8'),
+                ('__formid__', 'deform'),
+                ('id', ''),
+                ('__start__', 'children_relation:sequence'),
+                ('__start__', 'layergroup_treeitem:mapping'),
+                ('id', ''),
+                ('treeitem_id', groups[1].id),
+                ('ordering', ''),
+                ('__end__', 'layergroup_treeitem:mapping'),
+                ('__end__', 'children_relation:sequence'),
+                ('formsubmit', 'formsubmit')
+            ),
+            status=200)
+        assert 'Required' == resp.html.select_one('.item-name .help-block').getText().strip()
+
+    def test_post_new_with_children_success(self, test_app, dbsession, layer_groups_test_data):
+        groups = layer_groups_test_data['groups']
+        resp = test_app.post(
+            '{}/new'.format(self._prefix),
+            (
+                ('_charset_', 'UTF-8'),
+                ('__formid__', 'deform'),
+                ('name', 'new_with_children'),
+                ('metadata_url', ''),
+                ('description', ''),
+                ('id', ''),
+                ('is_internal_wms', 'true'),
+                ('__start__', 'children_relation:sequence'),
+                ('__start__', 'layergroup_treeitem:mapping'),
+                ('id', ''),
+                ('treeitem_id', groups[3].id),
+                ('ordering', ''),
+                ('__end__', 'layergroup_treeitem:mapping'),
+                ('__start__', 'layergroup_treeitem:mapping'),
+                ('id', ''),
+                ('treeitem_id', groups[4].id),
+                ('ordering', ''),
+                ('__end__', 'layergroup_treeitem:mapping'),
+                ('__start__', 'layergroup_treeitem:mapping'),
+                ('id', ''),
+                ('treeitem_id', groups[5].id),
+                ('ordering', ''),
+                ('__end__', 'layergroup_treeitem:mapping'),
+                ('__end__', 'children_relation:sequence'),
+                ('formsubmit', 'formsubmit')
+            ),
+            status=302)
+
+        from c2cgeoportal_commons.models.main import LayerGroup
+        group = dbsession.query(LayerGroup). \
+            filter(LayerGroup.name == 'new_with_children'). \
+            one()
+
+        assert str(group.id) == re.match('http://localhost/layer_groups/(.*)', resp.location).group(1)
+
+        assert (
+            [groups[3].id, groups[4].id, groups[5].id] ==
+            [rel.treeitem_id for rel in group.children_relation]
+        )
 
     def test_delete(self, test_app, dbsession, layer_groups_test_data):
         from c2cgeoportal_commons.models.main import LayerGroup, TreeGroup, TreeItem, LayergroupTreeitem
