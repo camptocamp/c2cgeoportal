@@ -317,9 +317,6 @@ class LayergroupTreeitem(Base):
                     'title': _('Children'),
                     'exclude': True
                 },
-                'c2cgeoform': {
-                    'duplicate': False
-                }
             }
         ),
         primaryjoin='LayergroupTreeitem.treegroup_id==TreeGroup.id',
@@ -418,6 +415,9 @@ class LayerGroup(TreeGroup):
         'plural': _('Layers groups')
     }
     __mapper_args__ = {'polymorphic_identity': 'group'}
+    __c2cgeoform_config__ = {
+        'duplicate': True
+    }
 
     id = Column(Integer, ForeignKey(_schema + '.treegroup.id'), primary_key=True, info={
         'colanderalchemy': {
@@ -461,6 +461,9 @@ class Theme(TreeGroup):
         'plural': _('Themes')
     }
     __mapper_args__ = {'polymorphic_identity': 'theme'}
+    __c2cgeoform_config__ = {
+        'duplicate': True
+    }
 
     id = Column(Integer, ForeignKey(_schema + '.treegroup.id'), primary_key=True, info={
         'colanderalchemy': {

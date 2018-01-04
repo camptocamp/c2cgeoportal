@@ -35,22 +35,19 @@ def theme_test_data(dbsession):
         theme.public = 1 == i % 2
         theme.interfaces = [interfaces[i % 4],
                             interfaces[(i + 2) % 4]]
-
         theme.metadatas = [Metadata(name=metadatas_protos[id][0],
                                     value=metadatas_protos[id][1])
                            for id in [i % 3, (i + 2) % 3]]
         for metadata in theme.metadatas:
             metadata.item = theme
-
         theme.functionalities = [functionalities[i % 8], functionalities[(i + 3) % 8]]
-
         theme.restricted_roles = [roles[i % 4], roles[(i + 2) % 4]]
 
-        dbsession.add(LayergroupTreeitem(group=groups[i % 5],
-                                         item=theme,
+        dbsession.add(LayergroupTreeitem(group=theme,
+                                         item=groups[i % 5],
                                          ordering=len(groups[i % 5].children_relation)))
-        dbsession.add(LayergroupTreeitem(group=groups[(i + 3) % 5],
-                                         item=theme,
+        dbsession.add(LayergroupTreeitem(group=theme,
+                                         item=groups[(i + 3) % 5],
                                          ordering=len(groups[(i + 3) % 5].children_relation)))
 
         dbsession.add(theme)
@@ -151,7 +148,7 @@ class TestTheme(TestTreeGroup):
         assert theme.name == self.get_first_field_named(form, 'name').value
         assert str(theme.metadata_url or '') == form['metadata_url'].value
         assert str(theme.description or '') == self.get_first_field_named(form, 'description').value
-        assert str(theme.ordering or '') == form['ordering'].value
+        assert str(theme.ordering or '') == self.get_first_field_named(form, 'ordering').value
         assert theme.public == form['public'].checked
 
         interfaces = theme_test_data['interfaces']
@@ -287,3 +284,74 @@ class TestTheme(TestTreeGroup):
             [groups[1].id, groups[3].id, groups[4].id] ==
             [rel.treeitem_id for rel in theme.children_relation]
         )
+
+    def test_duplicate(self, theme_test_data, test_app, dbsession):
+        from c2cgeoportal_commons.models.main import Theme
+        theme = theme_test_data['themes'][1]
+
+        resp = test_app.get('{}/{}/duplicate'.format(self._prefix, theme.id), status=200)
+        form = resp.form
+
+        assert '' == self.get_first_field_named(form, 'id').value
+        assert 'hidden' == self.get_first_field_named(form, 'id').attrs['type']
+        assert theme.name == self.get_first_field_named(form, 'name').value
+        assert str(theme.metadata_url or '') == form['metadata_url'].value
+        assert str(theme.description or '') == self.get_first_field_named(form, 'description').value
+        assert str(theme.ordering or '') == self.get_first_field_named(form, 'ordering').value
+
+        assert theme.public == form['public'].checked
+
+        interfaces = theme_test_data['interfaces']
+        assert set((interfaces[1].id, interfaces[3].id)) == set(i.id for i in theme.interfaces)
+
+        self.check_checkboxes(
+            form,
+            'interfaces',
+            [{
+                'label': i.name,
+                'value': str(i.id),
+                'checked': i in theme.interfaces
+            } for i in sorted(interfaces, key=lambda i: i.name)])
+
+        functionalities = theme_test_data['functionalities']
+        assert set((
+            functionalities[1].id,
+            functionalities[4].id
+        )) == set(f.id for f in theme.functionalities)
+        self.check_checkboxes(
+            form,
+            'functionalities',
+            [{
+                'label': '{}={}'.format(f.name, f.value),
+                'value': str(f.id),
+                'checked': f in theme.functionalities
+            } for f in sorted(functionalities, key=lambda f: (f.name, f.value))])
+
+        theme = dbsession.query(Theme). \
+            filter(Theme.id == theme.id). \
+            one()
+
+        self.check_children(
+            form,
+            'children_relation',
+            [{
+                'label': rel.treeitem.name,
+                'values': {
+                    'id': '',
+                    'treeitem_id': str(rel.treeitem.id)
+                }
+            } for rel in theme.children_relation]
+        )
+
+        self.set_first_field_named(form, 'name', 'duplicated')
+        resp = form.submit('submit')
+
+        duplicated = dbsession.query(Theme). \
+            filter(Theme.name == 'duplicated'). \
+            one()
+
+        assert str(duplicated.id) == \
+            re.match('http://localhost{}/(.*)'.format(self._prefix), resp.location).group(1)
+        assert duplicated.id != theme.id
+        assert duplicated.children_relation[0].id != theme.children_relation[0].id
+        assert duplicated.children_relation[0].treeitem.id == theme.children_relation[0].treeitem.id
