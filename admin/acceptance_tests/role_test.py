@@ -1,8 +1,12 @@
 # pylint: disable=no-self-use
 
+import json
 import re
 import pytest
 from pyramid.testing import DummyRequest
+
+from geoalchemy2.shape import from_shape, to_shape
+from shapely.geometry import box, Polygon, shape
 
 from . import AbstractViewsTests
 
@@ -40,6 +44,8 @@ def roles_test_data(dbsession):
         role.restrictionareas = [
             restrictionareas[0],
             restrictionareas[1]]
+        role.extent = from_shape(box(485869.5728, 76443.1884, 837076.5648, 299941.7864),
+                                 srid=21781)
         dbsession.add(role)
         roles.append(role)
 
@@ -90,7 +96,13 @@ class TestRole(AbstractViewsTests):
         form = self.get_item(test_app, role.id).form
 
         assert 'secretary_10' == form['name'].value
-        assert '' == form['description'].value
+
+        expected = Polygon([(1167544.3397631699, 5748064.729594703),
+                            (1180453.0256760044, 6074797.96820131),
+                            (658348.6696383564, 6080273.63626964),
+                            (664577.4194513536, 5753148.2510447875),
+                            (1167544.3397631699, 5748064.729594703)])
+        assert expected.almost_equals(shape(json.loads(form['extent'].value)))
 
         functionalities = roles_test_data['functionalities']
         assert set((
@@ -122,6 +134,16 @@ class TestRole(AbstractViewsTests):
 
         form['name'] = 'New name'
         form['description'] = 'New description'
+        form['extent'] = json.dumps({
+            'type': 'Polygon',
+            'coordinates': [[
+                [1000000, 5800000],
+                [1000000, 6000000],
+                [700000, 6000000],
+                [700000, 5800000],
+                [1000000, 5800000]
+            ]]
+        })
 
         functionality_ids = [
             roles_test_data['functionalities']['default_basemap'][1].id,
@@ -142,6 +164,13 @@ class TestRole(AbstractViewsTests):
 
         assert 'New name' == role.name
         assert 'New description' == role.description
+
+        expected = Polygon([(719383.7988896352, 109062.8141734005),
+                            (716689.3301397888, 245909.7643546755),
+                            (513083.1504351135, 245400.5416369234),
+                            (511073.1973649057, 108541.7344432737),
+                            (719383.7988896352, 109062.8141734005)])
+        assert expected.almost_equals(to_shape(role.extent))
 
         assert set(functionality_ids) == set([f.id for f in role.functionalities])
         assert set(ra_ids) == set([f.id for f in role.restrictionareas])

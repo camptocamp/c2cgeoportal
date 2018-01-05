@@ -193,7 +193,7 @@ class Role(Base):
     })
     extent = Column(Geometry('POLYGON', srid=_srid), info={
         'colanderalchemy': {
-            'typ': colander_ext.Geometry('POLYGON', srid=3857, map_srid=3857),
+            'typ': colander_ext.Geometry('POLYGON', srid=_srid, map_srid=3857),
             'widget': deform_ext.MapWidget()
         }
     })
@@ -961,7 +961,7 @@ class RestrictionArea(Base):
 
     id = Column(Integer, primary_key=True)
     area = Column(Geometry('POLYGON', srid=_srid), info={'colanderalchemy': {
-        'typ': colander_ext.Geometry('POLYGON', srid=3857, map_srid=3857),
+        'typ': colander_ext.Geometry('POLYGON', srid=_srid, map_srid=3857),
         'widget': deform_ext.MapWidget()
     }})
 
