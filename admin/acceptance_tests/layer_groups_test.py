@@ -233,6 +233,53 @@ class TestLayersGroups(TestTreeGroup):
             [rel.treeitem_id for rel in group.children_relation]
         )
 
+    def test_duplicate(self, layer_groups_test_data, test_app, dbsession):
+        from c2cgeoportal_commons.models.main import LayerGroup
+        group = layer_groups_test_data['groups'][1]
+
+        resp = test_app.get('{}/{}/duplicate'.format(self._prefix, group.id), status=200)
+        form = resp.form
+
+        group = dbsession.query(LayerGroup). \
+            filter(LayerGroup.id == group.id). \
+            one()
+
+        assert '' == self.get_first_field_named(form, 'id').value
+        assert group.name == self.get_first_field_named(form, 'name').value
+        assert str(group.metadata_url or '') == form['metadata_url'].value
+        assert str(group.description or '') == self.get_first_field_named(form, 'description').value
+        assert group.is_expanded is False
+        assert group.is_expanded == form['is_expanded'].checked
+        assert group.is_internal_wms is True
+        assert group.is_internal_wms == form['is_internal_wms'].checked
+        assert group.is_base_layer is False
+        assert group.is_base_layer == form['is_base_layer'].checked
+
+        self.check_children(
+            form,
+            'children_relation',
+            [{
+                'label': rel.treeitem.name,
+                'values': {
+                    'id': '',
+                    'treeitem_id': str(rel.treeitem.id)
+                }
+            } for rel in group.children_relation]
+        )
+
+        self.set_first_field_named(form, 'name', 'duplicated')
+        resp = form.submit('submit')
+
+        duplicated = dbsession.query(LayerGroup). \
+            filter(LayerGroup.name == 'duplicated'). \
+            one()
+
+        assert str(duplicated.id) == \
+            re.match('http://localhost{}/(.*)'.format(self._prefix), resp.location).group(1)
+        assert duplicated.id != group.id
+        assert duplicated.children_relation[0].id != group.children_relation[0].id
+        assert duplicated.children_relation[0].treeitem.id == group.children_relation[0].treeitem.id
+
     def test_delete(self, test_app, dbsession, layer_groups_test_data):
         from c2cgeoportal_commons.models.main import LayerGroup, TreeGroup, TreeItem, LayergroupTreeitem
 
