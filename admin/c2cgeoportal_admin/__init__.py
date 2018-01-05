@@ -1,5 +1,6 @@
 from pyramid.config import Configurator
 from c2cwsgiutils.health_check import HealthCheck
+import c2c.template
 import c2cgeoportal_admin.routes
 
 import c2cgeoform
@@ -13,6 +14,8 @@ def main(_, **settings):
     """
     This function returns a Pyramid WSGI application.
     """
+    settings.update(c2c.template.get_config(settings.get('app.cfg')))
+
     config = Configurator(settings=settings)
     config.include('c2cwsgiutils.pyramid.includeme')
     config.include('pyramid_jinja2')

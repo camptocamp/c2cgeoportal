@@ -15,9 +15,9 @@ pyramid.available_languages = fr en
 pyramid.includes =
     pyramid_debugtoolbar
 
+app.cfg = %(here)s/config.yaml
+
 sqlalchemy.url = postgresql://${dbuser}:${dbpassword}@${dbhost}:${dbport}/${db}
-schema = main
-srid = 21781
 
 healthcheck_host = localhost
 
