@@ -6,7 +6,6 @@ bottle==0.12.13  # i18n
 c2c.cssmin==0.7.dev6  # CGXP build
 c2c.template==1.5.1  # geoportal
 c2cgeoform==2.0.dev20180103  # commons
-codacy-coverage==1.3.9  # Codacy send report
 codespell==1.11.0  # Lint
 ColanderAlchemy==0.3.3  # commons
 coverage==4.4.2  # Build coverage XML for Codacy
@@ -29,7 +28,6 @@ Jinja2==2.10  # c2c.template
 JSTools==1.0  # CGXP build
 lingua==4.13  # i18n
 mccabe==0.6.1  # lint
-mypy==0.550  # lint
 OWSLib==0.15.0  # geoportal
 papyrus==2.2  # geoportal
 PasteScript==2.0.2  # geoportal-pcreate
