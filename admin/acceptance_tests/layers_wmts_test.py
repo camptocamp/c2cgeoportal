@@ -10,16 +10,14 @@ from . import AbstractViewsTests
 @pytest.mark.usefixtures('dbsession')
 def layer_wmts_test_data(dbsession):
     from c2cgeoportal_commons.models.main import \
-        LayerWMTS, RestrictionArea
+        LayerWMTS, RestrictionArea, Interface
 
     dbsession.begin_nested()
 
-    restrictionareas = []
-    for i in range(0, 5):
-        restrictionarea = RestrictionArea(
-            name='restrictionarea_{}'.format(i))
-        dbsession.add(restrictionarea)
-        restrictionareas.append(restrictionarea)
+    restrictionareas = [RestrictionArea(name='restrictionarea_{}'.format(i))
+                        for i in range(0, 5)]
+
+    interfaces = [Interface(name) for name in ['desktop', 'mobile', 'edit', 'routing']]
 
     layers = []
     for i in range(0, 25):
@@ -29,12 +27,18 @@ def layer_wmts_test_data(dbsession):
         layer.url = 'https://server{}.net/wmts'.format(i)
         layer.restrictionareas = [restrictionareas[i % 5],
                                   restrictionareas[(i + 2) % 5]]
+        if i % 10 != 1:
+            layer.interfaces = [interfaces[i % 4], interfaces[(i + 2) % 4]]
+        layer.public = 1 == i % 2
+        layer.image_type = 'image/jpeg'
         dbsession.add(layer)
         layers.append(layer)
 
+    dbsession.flush()
     yield {
         'layers': layers,
         'restrictionareas': restrictionareas,
+        'interfaces': interfaces
     }
 
     dbsession.rollback()
@@ -86,6 +90,68 @@ class TestLayerWMTS(AbstractViewsTests):
         assert layer.id == int(row['_id_'])
         assert layer.name == row['name']
 
+    def test_edit(self, test_app, layer_wmts_test_data, dbsession):
+        layer = layer_wmts_test_data['layers'][0]
+
+        form = self.get_item(test_app, layer.id).form
+
+        assert str(layer.id) == self.get_first_field_named(form, 'id').value
+        assert 'hidden' == self.get_first_field_named(form, 'id').attrs['type']
+        assert layer.name == self.get_first_field_named(form, 'name').value
+        assert str(layer.description or '') == self.get_first_field_named(form, 'description').value
+        assert str(layer.metadata_url or '') == form['metadata_url'].value
+        assert layer.public is False
+        assert layer.public == form['public'].checked
+        assert str(layer.geo_table or '') == form['geo_table'].value
+        assert str(layer.exclude_properties or '') == form['exclude_properties'].value
+        assert str(layer.url or '') == form['url'].value
+        assert str(layer.layer or '') == form['layer'].value
+        assert str(layer.style or '') == form['style'].value
+        assert str(layer.matrix_set or '') == form['matrix_set'].value
+        assert str(layer.image_type or '') == form['image_type'].value
+
+        interfaces = layer_wmts_test_data['interfaces']
+        assert set((interfaces[0].id, interfaces[2].id)) == set(i.id for i in layer.interfaces)
+        self._check_interfaces(form, interfaces, layer)
+
+        ras = layer_wmts_test_data['restrictionareas']
+        assert set((ras[0].id, ras[2].id)) == set(i.id for i in layer.restrictionareas)
+        self._check_restrictionsareas(form, ras, layer)
+
+        new_values = {
+            'name': 'new_name',
+            'metadata_url': 'https://new_metadata_url',
+            'description': 'new description',
+            'public': True,
+            'geo_table': 'new_geo_table',
+            'exclude_properties': 'property1,property2',
+            'url': 'new_url',
+            'layer': 'new_wmslayername',
+            'style': 'new_style',
+            'matrix_set': 'new_matrix_set',
+            'image_type': 'image/png'
+        }
+
+        for key, value in new_values.items():
+            self.set_first_field_named(form, key, value)
+        form['interfaces'] = [interfaces[1].id, interfaces[3].id]
+        form['restrictionareas'] = [ras[1].id, ras[3].id]
+
+        resp = form.submit('submit')
+        assert str(layer.id) == re.match(
+            'http://localhost{}/(.*)'.format(self._prefix),
+            resp.location).group(1)
+
+        dbsession.expire(layer)
+        for key, value in new_values.items():
+            if isinstance(value, bool):
+                assert value == getattr(layer, key)
+            else:
+                assert str(value or '') == str(getattr(layer, key) or '')
+        assert set([interfaces[1].id, interfaces[3].id]) == set(
+            [interface.id for interface in layer.interfaces])
+        assert set([ras[1].id, ras[3].id]) == set([ra.id for ra in layer.restrictionareas])
+
     def test_duplicate(self, layer_wmts_test_data, test_app, dbsession):
         from c2cgeoportal_commons.models.main import LayerWMTS
         layer = layer_wmts_test_data['layers'][3]
@@ -103,15 +169,9 @@ class TestLayerWMTS(AbstractViewsTests):
         assert str(layer.exclude_properties or '') == form['exclude_properties'].value
         assert str(layer.layer or '') == form['layer'].value
         assert str(layer.style or '') == form['style'].value
+
         ras = layer_wmts_test_data['restrictionareas']
-        self.check_checkboxes(
-            form,
-            'restrictionareas',
-            [{
-                'label': ra.name,
-                'value': str(ra.id),
-                'checked': ra in layer.restrictionareas
-            } for ra in sorted(ras, key=lambda ra: ra.name)])
+        self._check_restrictionsareas(form, ras, layer)
 
         self.set_first_field_named(form, 'name', 'clone')
         resp = form.submit('submit')

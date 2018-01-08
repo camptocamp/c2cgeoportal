@@ -7,6 +7,7 @@ from c2cgeoform.views.abstract_views import ListField
 
 from c2cgeoportal_commons.models.main import LayerWMS, OGCServer
 
+from c2cgeoportal_admin import _
 from c2cgeoportal_admin.views.dimension_layers import DimensionLayerViews
 from c2cgeoportal_admin.schemas.dimension import dimensions_schema_node
 from c2cgeoportal_admin.views.interfaces import interfaces_schema_node
@@ -56,7 +57,16 @@ class LayerWmsViews(DimensionLayerViews):
                  request_method='GET',
                  renderer='../templates/edit.jinja2')
     def view(self):
-        return super().edit()
+        to_render = super().edit()
+        if not self._is_new():
+            convert_url = self._request.route_url(
+                'layers_wmts_from_wms',
+                table='layers_wmts',
+                wms_layer_id=self._request.matchdict.get('id'),
+                action='from_wms')
+            to_render['actions'].append({'url': convert_url,
+                                         'label': _('Convert to wmts')})
+        return to_render
 
     @view_config(route_name='c2cgeoform_item',
                  request_method='POST',

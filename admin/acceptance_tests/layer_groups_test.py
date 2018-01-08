@@ -50,6 +50,7 @@ def layer_groups_test_data(dbsession):
                 flatten_tree(val, value[val])
 
     flatten_tree(1, tree[1])
+    dbsession.flush()
 
     yield {
         "groups": groups

@@ -19,12 +19,14 @@ class LayerViews(TreeItemViews):
     _extra_list_fields = [
         _list_field(
             'interfaces',
-            renderer=lambda layer_wms: ', '.join([i.name or '' for i in layer_wms.interfaces]),
+            renderer=lambda layer_wms: ', '.join(
+                [i.name or '' for i in sorted(layer_wms.interfaces, key=lambda i: i.name)]),
             sort_column=Interface.name,
             filter_column=Interface.name),
         _list_field(
             'restrictionareas',
-            renderer=lambda layer_wms: ', '.join([r.name or '' for r in layer_wms.restrictionareas]))] + \
+            renderer=lambda layer_wms: ', '.join(
+                [r.name or '' for r in sorted(layer_wms.restrictionareas, key=lambda r: r.name)]))] + \
         TreeItemViews._extra_list_fields
 
     def _base_query(self, query):

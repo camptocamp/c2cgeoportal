@@ -79,8 +79,9 @@ class ThemeViews(TreeItemViews):
         _list_field('icon'),
         _list_field(
             'functionalities',
-            renderer=lambda themes: ', '.join(['{}={}'.format(f.name, f.value)
-                                               for f in themes.functionalities]),
+            renderer=lambda themes: ', '.join(
+                ['{}={}'.format(f.name, f.value)
+                    for f in sorted(themes.functionalities, key=lambda f: f.name)]),
             filter_column=concat(Functionality.name, '=', Functionality.value)
         ),
         _list_field(
@@ -90,7 +91,8 @@ class ThemeViews(TreeItemViews):
         ),
         _list_field(
             'interfaces',
-            renderer=lambda themes: ', '.join([i.name or '' for i in themes.interfaces]),
+            renderer=lambda themes: ', '.join(
+                [i.name or '' for i in sorted(themes.interfaces, key=lambda i: i.name)]),
             filter_column=Interface.name
         )] + TreeItemViews._extra_list_fields
 

@@ -66,6 +66,26 @@ class AbstractViewsTests():
             assert exp['value'] == checkbox['value']
             assert exp['checked'] == field.checked
 
+    def _check_interfaces(self, form, interfaces, item):
+        self.check_checkboxes(
+            form,
+            'interfaces',
+            [{
+                'label': i.name,
+                'value': str(i.id),
+                'checked': i in item.interfaces
+            } for i in sorted(interfaces, key=lambda i: i.name)])
+
+    def _check_restrictionsareas(self, form, ras, item):
+        self.check_checkboxes(
+            form,
+            'restrictionareas',
+            [{
+                'label': ra.name,
+                'value': str(ra.id),
+                'checked': ra in item.restrictionareas
+            } for ra in sorted(ras, key=lambda ra: ra.name)])
+
     def get_first_field_named(self, form, name):
         return form.fields.get(name)[0]
 
