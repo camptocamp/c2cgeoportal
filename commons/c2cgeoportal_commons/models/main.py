@@ -927,7 +927,10 @@ class LayerWMTS(DimensionLayer):
         nullable=False,
         info={
             'colanderalchemy': {
-                'title': _('Image type')
+                'title': _('Image type'),
+                'widget': SelectWidget(values=(
+                    ('image/jpeg', _('image/jpeg')),
+                    ('image/png', _('image/png'))))
             }})
 
     def __init__(self, name: str='', public: bool=True, image_type: str='image/png') -> None:
