@@ -59,3 +59,9 @@ services:
     entrypoint:
       - wait-for-db
       - run
+    links:
+% if dbhost == "db":
+      - db
+% endif
+      - external-db
+      - mapserver
