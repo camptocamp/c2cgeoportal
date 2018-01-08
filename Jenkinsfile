@@ -77,10 +77,13 @@ timeout(time: 2, unit: 'HOURS') {
                     geoportal/tests/functional/alembic.ini \
                     docker/test-mapserver/mapserver.map prepare-tests'''
                 sh 'docker-compose rm --stop --force'
-                sh './docker-compose-run sleep 10'
-                sh './docker-compose-run alembic --config=geoportal/tests/functional/alembic.ini --name=main upgrade head'
-                sh './docker-compose-run alembic --config=geoportal/tests/functional/alembic.ini --name=static upgrade head'
-                sh './docker-compose-run make tests'
+                try {
+                    sh './docker-compose-run alembic --config=geoportal/tests/functional/alembic.ini --name=main upgrade head'
+                    sh './docker-compose-run alembic --config=geoportal/tests/functional/alembic.ini --name=static upgrade head'
+                    sh './docker-compose-run make tests'
+                } finally {
+                    sh 'docker-compose down'
+                }
                 sh './docker-run travis/codacy.sh'
             }
             stage('Test Docker app') {
@@ -123,12 +126,15 @@ timeout(time: 2, unit: 'HOURS') {
                 sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ ./docker-run travis/status.sh'
                 sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ ./docker-run make --makefile=empty-vars.mk geoportal/config.yaml'
                 sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ ./docker-run make --makefile=travis.mk alembic.ini'
-                sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ ./docker-compose-run sleep 10'
-                sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ ./docker-compose-run alembic --name=main upgrade head'
-                sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ ./docker-compose-run alembic --name=static upgrade head'
-                sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ ./docker-compose-run alembic --name=static downgrade base'
-                sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ ./docker-compose-run alembic --name=main downgrade base'
-                sh 'rm -rf ${HOME}/workspacetestgeomapfish'
+                try {
+                    sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ ./docker-compose-run alembic --name=main upgrade head'
+                    sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ ./docker-compose-run alembic --name=static upgrade head'
+                    sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ ./docker-compose-run alembic --name=static downgrade base'
+                    sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ ./docker-compose-run alembic --name=main downgrade base'
+                } finally {
+                    sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ docker-compose --file docker-compose-build.yaml down'
+                }
+                sh 'rm -rf ${HOME}/workspace/testgeomapfish'
             }
             stage('Tests upgrades') {
                 checkout scm

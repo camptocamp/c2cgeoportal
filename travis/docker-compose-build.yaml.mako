@@ -49,6 +49,13 @@ services:
       - USER_NAME
       - USER_ID
       - GROUP_ID
+      - PGHOST=db
+      - PGPORT=5432
+      - PGUSER=${dbuser}
+      - PGPASSWORD=${dbpassword}
+      - PGDATABASE=${db}
     stdin_open: true
     tty: true
-    command: ${'$'}{RUN}
+    entrypoint:
+      - wait-for-db
+      - run
