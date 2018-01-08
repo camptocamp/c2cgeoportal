@@ -11,7 +11,7 @@ _list_field = partial(ListField, LayerGroup)
 
 
 base_schema = GeoFormSchemaNode(LayerGroup)
-base_schema.add(children_schema_node)
+base_schema.add(children_schema_node())
 
 
 @view_defaults(match_param='table=layer_groups')

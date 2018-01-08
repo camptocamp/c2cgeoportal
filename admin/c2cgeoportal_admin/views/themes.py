@@ -22,7 +22,7 @@ _list_field = partial(ListField, Theme)
 
 base_schema = GeoFormSchemaNode(Theme)
 
-base_schema.add(children_schema_node)
+base_schema.add(children_schema_node(only_groups=True))
 
 base_schema.add(
     colander.SequenceSchema(

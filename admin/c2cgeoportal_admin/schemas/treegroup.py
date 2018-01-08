@@ -1,4 +1,5 @@
 import colander
+from functools import partial
 from sqlalchemy.sql.expression import func, case
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoportal_commons.models.main import LayergroupTreeitem, TreeItem
@@ -15,18 +16,22 @@ class ChildSchemaNode(GeoFormSchemaNode):
         return context
 
 
-@colander.deferred
-def treeitems(node, kw):  # pylint: disable=unused-argument
+def treeitems(node, kw, only_groups=False):  # pylint: disable=unused-argument
     group = case(
         [(func.count(LayergroupTreeitem.id) == 0, 'Unlinked')],
         else_='Others'
     ).label('group')
 
-    return kw['request'].dbsession.query(TreeItem, group).distinct(). \
+    query = kw['request'].dbsession.query(TreeItem, group).distinct(). \
         outerjoin('parents_relation'). \
         filter(TreeItem.item_type != 'theme'). \
         group_by(TreeItem.id). \
         order_by(group.desc(), TreeItem.name)
+
+    if only_groups:
+        query = query.filter(TreeItem.item_type == 'group')
+
+    return query
 
 
 def children_validator(node, cstruct):
@@ -37,14 +42,15 @@ def children_validator(node, cstruct):
                 format(dict_['treeitem_id'], TreeItem.__tablename__))
 
 
-children_schema_node = colander.SequenceSchema(
-    ChildSchemaNode(
-        LayergroupTreeitem,
-        name='layergroup_treeitem',
-        widget=ChildWidget()
-    ),
-    name='children_relation',
-    treeitems=treeitems,
-    validator=children_validator,
-    widget=ChildrenWidget()
-)
+def children_schema_node(only_groups=False):
+    return colander.SequenceSchema(
+        ChildSchemaNode(
+            LayergroupTreeitem,
+            name='layergroup_treeitem',
+            widget=ChildWidget()
+        ),
+        name='children_relation',
+        treeitems=colander.deferred(partial(treeitems, only_groups=only_groups)),
+        validator=children_validator,
+        widget=ChildrenWidget()
+    )

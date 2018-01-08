@@ -11,13 +11,18 @@ from .treegroup_tests import TestTreeGroup
 def theme_test_data(dbsession):
     from c2cgeoportal_commons.models.main import \
         Theme, Role, Functionality, LayergroupTreeitem, \
-        Interface, Metadata, LayerGroup
+        Interface, Metadata, LayerGroup, LayerWMS, OGCServer
 
     dbsession.begin_nested()
 
     interfaces = [Interface(name) for name in ['desktop', 'mobile', 'edit', 'routing']]
 
     groups = [LayerGroup(name='layer_group_{}'.format(i)) for i in range(0, 5)]
+
+    layer = LayerWMS(name='layer_wms')
+    layer.ogc_server = OGCServer(name='server')
+    dbsession.add(layer)
+    layers = [layer]
 
     functionalities = [Functionality(name=name, value='value_{}'.format(v))
                        for name in ('default_basemap', 'location') for v in range(0, 4)]
@@ -57,6 +62,7 @@ def theme_test_data(dbsession):
         'themes': themes,
         'interfaces': interfaces,
         'groups': groups,
+        'layers': layers,
         'functionalities': functionalities,
         'roles': roles,
     }
@@ -284,6 +290,34 @@ class TestTheme(TestTreeGroup):
             [groups[1].id, groups[3].id, groups[4].id] ==
             [rel.treeitem_id for rel in theme.children_relation]
         )
+
+    def test_post_new_with_child_layer(self, theme_test_data, test_app):
+        """
+        Check layers are rejected by the validator (also means that they are not proposed to the user).
+        """
+        layers = theme_test_data['layers']
+        resp = test_app.post(
+            '{}/new'.format(self._prefix),
+            (
+                ('_charset_', 'UTF-8'),
+                ('__formid__', 'deform'),
+                ('name', 'new_with_child_layer'),
+                ('metadata_url', ''),
+                ('description', ''),
+                ('ordering', '100'),
+                ('id', ''),
+                ('__start__', 'children_relation:sequence'),
+                ('__start__', 'layergroup_treeitem:mapping'),
+                ('id', ''),
+                ('treeitem_id', layers[0].id),
+                ('ordering', ''),
+                ('__end__', 'layergroup_treeitem:mapping'),
+                ('__end__', 'children_relation:sequence'),
+                ('formsubmit', 'formsubmit')
+            ),
+            status=200)
+        resp.showbrowser()
+        assert 'has-error' in resp.html.select_one('.item-children_relation').get('class')
 
     def test_duplicate(self, theme_test_data, test_app, dbsession):
         from c2cgeoportal_commons.models.main import Theme
