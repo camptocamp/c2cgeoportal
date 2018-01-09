@@ -31,6 +31,8 @@ mv travis.mk.new travis.mk
 
 # init Git repository
 git init
+git config user.email travis@camptocamp.com
+git config user.name CI
 git add --all
 git commit --quiet --message="Initial commit"
 git remote add origin . # add a fake remote
