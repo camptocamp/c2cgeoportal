@@ -1,4 +1,4 @@
-# Copyright (c) 2014-2017, Camptocamp SA
+# Copyright (c) 2014-2018, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
