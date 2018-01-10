@@ -330,7 +330,7 @@ c2cgeoportal/version.py: gen_current_version
 
 .PHONY: gen_current_version
 gen_current_version:
-	@echo "# Copyright (c) 2017, Camptocamp SA" > c2cgeoportal/version.py.new
+	@echo "# Copyright (c) 2018, Camptocamp SA" > c2cgeoportal/version.py.new
 	@echo "# All rights reserved." >> c2cgeoportal/version.py.new
 	@echo  >> c2cgeoportal/version.py.new
 	@echo "# Auto-generated file. Do not Edit!" >> c2cgeoportal/version.py.new
