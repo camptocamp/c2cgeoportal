@@ -93,18 +93,20 @@ All the files that’s not in this section will be overwritten except:</p>
 <p>Prepare the upgrade:</p>
 <pre class="highlight"><span class="prompt1">git submodule deinit &lt;package&gt;/static/lib/cgxp/</span>
 <span class="prompt1">git rm .gitmodules</span>
-<span class="prompt1">wget https://raw.githubusercontent.com/camptocamp/c2cgeoportal/master/docker-run</span>
+<span class="prompt1">curl https://raw.githubusercontent.com/camptocamp/c2cgeoportal/master/docker-run &gt; docker-run</span>
 <span class="prompt1">chmod +x docker-run</span>
 <span class="prompt1">git add docker-run project.yaml.mako</span>
 <span class="prompt1">git commit --quiet --message<span class="o">=</span><span class="s2">&quot;Start upgrade&quot;</span></span>
 <span class="prompt1">make --makefile<span class="o">=</span>&lt;package&gt;.mk project.yaml</span>
 </pre><p>Pull the latest version of the Docker image:</p>
-<pre class="highlight"><span class="prompt1">docker pull camptocamp/geomapfish-build:2.3</span>
-</pre><p>For Docker:</p>
+<pre class="highlight"><span class="prompt1">docker pull camptocamp/geomapfish-build:&lt;version&gt;</span>
+</pre><p>Where <code class="docutils literal"><span class="pre">&lt;version&gt;</span></code> is <code class="docutils literal"><span class="pre">2.3.0</span></code> for the first stable release of the version <code class="docutils literal"><span class="pre">2.3</span></code>.</p>
+<p>For Docker:</p>
 <pre class="highlight"><span class="prompt1">./docker-run --image<span class="o">=</span>camptocamp/geomapfish-build --version<span class="o">=</span>&lt;version&gt; <span class="se">\</span>
     c2cupgrade --force-docker --new-makefile<span class="o">=</span>Makefile --makefile<span class="o">=</span>&lt;package&gt;.mk</span>
 </pre><p>And for non-Docker</p>
-<pre class="highlight"><span class="prompt1">./docker-run --image<span class="o">=</span>camptocamp/geomapfish-build c2cupgrade --nondocker --makefile<span class="o">=</span>testgeomapfish.mk</span>
+<pre class="highlight"><span class="prompt1">./docker-run --image<span class="o">=</span>camptocamp/geomapfish-build <span class="se">\</span>
+    c2cupgrade --nondocker --makefile<span class="o">=</span>testgeomapfish.mk</span>
 </pre><p>Then follow the instruction</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -192,7 +194,7 @@ All the files that’s not in this section will be overwritten except:</p>
       &copy;2011-2017, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
