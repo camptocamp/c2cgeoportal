@@ -1,0 +1,39 @@
+<tal:def tal:define="title title|field.title;
+                     name name|field.name;
+                     type type|field.type;
+                     description description|field.description;
+                     errormsg errormsg|field.errormsg;
+                     item_template item_template|field.widget.item_template"
+         i18n:domain="deform">
+
+  <div class="panel panel-default" title="${description}">
+    <div class="panel-body">
+
+      <div tal:condition="errormsg"
+           class="clearfix alert alert-danger">
+        <p i18n:translate="">
+           There was a problem with this section
+        </p>
+        <p>${errormsg}</p>
+      </div>
+
+      <div tal:condition="description">
+        ${description}
+      </div>
+
+      ${field.start_mapping()}
+      <div class="row">
+        <div tal:replace="structure field['id'].render_template(item_template)" ></div>
+        <div class="col-md-6">
+            <div tal:replace="structure field['name'].render_template(item_template)" ></div>
+        </div>
+        <div class="col-md-6">
+            <div tal:replace="structure field['value'].render_template(item_template)" ></div>
+        </div>
+      </div>
+      <div tal:replace="structure field['description'].render_template(item_template)" ></div>
+      ${field.end_mapping()}
+
+    </div>
+  </div>
+</tal:def>

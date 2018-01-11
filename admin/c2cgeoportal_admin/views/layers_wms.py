@@ -8,12 +8,14 @@ from c2cgeoform.views.abstract_views import ListField
 from c2cgeoportal_commons.models.main import LayerWMS, OGCServer
 
 from c2cgeoportal_admin.views.dimension_layers import DimensionLayerViews
+from c2cgeoportal_admin.schemas.dimension import dimensions_schema_node
 from c2cgeoportal_admin.views.interfaces import interfaces_schema_node
 from c2cgeoportal_admin.views.restrictionareas import restrictionareas_schema_node
 
 _list_field = partial(ListField, LayerWMS)
 
 base_schema = GeoFormSchemaNode(LayerWMS)
+base_schema.add(dimensions_schema_node.clone())
 base_schema.add(interfaces_schema_node.clone())
 base_schema.add(restrictionareas_schema_node.clone())
 

@@ -309,19 +309,21 @@ class TestLayerWMSViews(AbstractViewsTests):
                 'checked': ra in layer.restrictionareas
             } for ra in sorted(ras, key=lambda ra: ra.name)])
 
-        assert '' == form.html.select(
-            'input[value=dimensions:mapping] + input')[0].attrs['value']
-        assert layer.dimensions[0].name == form.html.select(
-            'input[value=dimensions:mapping] + input + div')[0].findChild('input').attrs['value']
-        assert layer.dimensions[0].value == form.html.select(
-            'input[value=dimensions:mapping] + input + div + div')[0].findChild('input').attrs['value']
+        observed_input = form.html.select('input[value=dimension:mapping]')[0].find_next('input')
+        assert '' == observed_input.attrs['value']
+        observed_input = observed_input.find_next('input')
+        assert layer.dimensions[0].name == observed_input.attrs['value']
+        observed_input = observed_input.find_next('input')
+        assert layer.dimensions[0].value == observed_input.attrs['value']
 
-        assert '' == form.html.select(
-            'input[value=dimensions:mapping] + input')[2].attrs['value']
-        assert layer.dimensions[2].name == form.html.select(
-            'input[value=dimensions:mapping] + input + div')[2].findChild('input').attrs['value']
-        assert layer.dimensions[2].value == form.html.select(
-            'input[value=dimensions:mapping] + input + div + div')[2].findChild('input').attrs['value']
+        # [4] because whe should select 'input[value='dimension:mapping'][name='__start__'] but
+        #  Only the following pseudo-classes are implemented: nth-of-type.
+        observed_input = form.html.select('input[value=dimension:mapping]')[4].find_next('input')
+        assert '' == observed_input.attrs['value']
+        observed_input = observed_input.find_next('input')
+        assert layer.dimensions[2].name == observed_input.attrs['value']
+        observed_input = observed_input.find_next('input')
+        assert layer.dimensions[2].value == observed_input.attrs['value']
 
         self.set_first_field_named(form, 'name', 'clone')
         resp = form.submit('submit')
