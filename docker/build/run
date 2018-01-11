@@ -16,18 +16,27 @@ args = sys.argv[1:]
 if len(args) == 1 and args[0].startswith("%5B"):
     args = json.loads(urllib.parse.unquote(args[0]))
 
+has_docker = os.path.exists('/var/run/docker.sock')
+docker_group_id = os.stat('/var/run/docker.sock').st_gid if has_docker else -1
+
 del_user = True
 del_group = True
+del_docker_group = has_docker
 try:
     subprocess.check_call(['groupadd', '--gid=' + os.environ['GROUP_ID'], 'geomapfish'])
 except subprocess.CalledProcessError:
     del_group = False
 
+if has_docker:
+    try:
+        subprocess.check_call(['groupadd', '--gid={}'.format(docker_group_id), 'docker'])
+    except subprocess.CalledProcessError:
+        del_docker_group = False
+
 try:
     subprocess.check_call([
         'useradd',
-        '--groups={},sudo'.format(os.stat('/var/run/docker.sock').st_gid)
-        if os.path.exists('/var/run/docker.sock') else '--groups=sudo',
+        '--groups=docker,sudo' if has_docker else '--groups=sudo',
         '--shell=/bin/bash',
         '--uid=' + os.environ['USER_ID'],
         '--gid=' + os.environ['GROUP_ID'],
@@ -89,3 +98,5 @@ finally:
         subprocess.check_call(['userdel', os.environ['USER_NAME']])
     if del_group:
         subprocess.check_call(['groupdel', 'geomapfish'])
+    if del_docker_group:
+        subprocess.check_call(['groupdel', 'docker'])
