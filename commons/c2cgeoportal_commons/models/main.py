@@ -754,30 +754,108 @@ class OGCServer(Base):
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
-
-    id = Column(Integer, primary_key=True)
-    name = Column(Unicode, nullable=False, unique=True)
-    description = Column(Unicode)
-    url = Column(Unicode, nullable=False)
-    url_wfs = Column(Unicode)
-    type = Column(Enum(
-        OGCSERVER_TYPE_MAPSERVER,
-        OGCSERVER_TYPE_QGISSERVER,
-        OGCSERVER_TYPE_GEOSERVER,
-        OGCSERVER_TYPE_OTHER,
-        native_enum=False), nullable=False)
-    image_type = Column(Enum(
-        'image/jpeg',
-        'image/png',
-        native_enum=False), nullable=False)
-    auth = Column(Enum(
-        OGCSERVER_AUTH_NOAUTH,
-        OGCSERVER_AUTH_STANDARD,
-        OGCSERVER_AUTH_GEOSERVER,
-        OGCSERVER_AUTH_PROXY,
-        native_enum=False), nullable=False)
-    wfs_support = Column(Boolean)
-    is_single_tile = Column(Boolean)
+    __colanderalchemy_config__ = {
+        'title': _('OGC Server'),
+        'plural': _('OGC Servers')
+    }
+    __c2cgeoform_config__ = {
+        'duplicate': True
+    }
+    id = Column(
+        Integer,
+        primary_key=True,
+        info={
+            'colanderalchemy': {
+                'widget': HiddenWidget()
+            }
+        })
+    name = Column(
+        Unicode,
+        info={
+            'colanderalchemy': {'title': _('Name')}
+        })
+    description = Column(
+        Unicode,
+        info={
+            'colanderalchemy': {'title': _('Description')}
+        })
+    url = Column(
+        Unicode,
+        nullable=False,
+        info={
+            'colanderalchemy': {'title': _('Url')}
+        })
+    url_wfs = Column(
+        Unicode,
+        info={
+            'colanderalchemy': {'title': _('WFS Url')}
+        })
+    type = Column(
+        Enum(
+            OGCSERVER_TYPE_MAPSERVER,
+            OGCSERVER_TYPE_QGISSERVER,
+            OGCSERVER_TYPE_GEOSERVER,
+            OGCSERVER_TYPE_OTHER,
+            native_enum=False
+        ),
+        nullable=False,
+        info={
+            'colanderalchemy': {
+                'title': _('Authentication Type'),
+                'widget': SelectWidget(
+                    values=(
+                        ('', _('- Select -')),
+                        (OGCSERVER_TYPE_MAPSERVER, OGCSERVER_TYPE_MAPSERVER),
+                        (OGCSERVER_TYPE_QGISSERVER, OGCSERVER_TYPE_QGISSERVER),
+                        (OGCSERVER_TYPE_GEOSERVER, OGCSERVER_TYPE_GEOSERVER),
+                        (OGCSERVER_TYPE_OTHER, OGCSERVER_TYPE_OTHER))
+                    )}
+        })
+    image_type = Column(
+        Enum(
+            'image/jpeg',
+            'image/png',
+            native_enum=False),
+        info={
+            'colanderalchemy': {
+                'title': _('Image type'),
+                'widget': SelectWidget(
+                    values=(
+                        ('', _('- Select -')),
+                        ('image/jpeg', _('image/jpeg')),
+                        ('image/png', _('image/png'))
+                    ))}
+        })
+    auth = Column(
+        Enum(
+            OGCSERVER_AUTH_NOAUTH,
+            OGCSERVER_AUTH_STANDARD,
+            OGCSERVER_AUTH_GEOSERVER,
+            OGCSERVER_AUTH_PROXY,
+            native_enum=False),
+        nullable=False,
+        info={
+            'colanderalchemy': {
+                'title': _('Authentication Type'),
+                'widget': SelectWidget(
+                    values=(
+                        ('', _('- Select -')),
+                        (OGCSERVER_AUTH_NOAUTH, OGCSERVER_AUTH_NOAUTH),
+                        (OGCSERVER_AUTH_STANDARD, OGCSERVER_AUTH_STANDARD),
+                        (OGCSERVER_AUTH_GEOSERVER, OGCSERVER_AUTH_GEOSERVER),
+                        (OGCSERVER_AUTH_PROXY, OGCSERVER_AUTH_PROXY))
+                    )}
+        })
+    wfs_support = Column(
+        Boolean,
+        info={
+            'colanderalchemy': {'title': _('WFS Support')}
+        })
+    is_single_tile = Column(
+        Boolean,
+        info={
+            'colanderalchemy': {'title': _('Is single title')}
+        })
 
     def __init__(
         self, name: str='', description: Optional[str]=None, url: str='https://wms.example.com',

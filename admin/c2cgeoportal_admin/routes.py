@@ -21,7 +21,7 @@ def includeme(config):
     config.add_route('layertree_delete', '/layertree/delete/{item_id}')
 
     from c2cgeoportal_commons.models.main import (
-        Role, LayerWMS, LayerWMTS, Theme, LayerGroup, LayerV1)
+        Role, LayerWMS, LayerWMTS, Theme, OGCServer, LayerGroup, LayerV1)
     from c2cgeoportal_commons.models.static import User
 
     register_models(config, (
@@ -30,6 +30,7 @@ def includeme(config):
         ('layers_wms', LayerWMS),
         ('layers_wmts', LayerWMTS),
         ('layers_v1', LayerV1),
+        ('ogc_servers', OGCServer),
         ('themes', Theme),
         ('layer_groups', LayerGroup),
     ))
