@@ -5,7 +5,7 @@ boto==2.48.0  # Tile generation
 bottle==0.12.13  # i18n
 c2c.cssmin==0.7.dev6  # CGXP build
 c2c.template==1.5.1  # geoportal
-c2cgeoform==2.0.dev20180109  # commons
+c2cgeoform==2.0.dev20180110  # commons
 codacy-coverage==1.3.10  # Codacy send report
 codespell==1.11.0  # Lint
 ColanderAlchemy==0.3.3  # commons
@@ -18,7 +18,7 @@ flake8==3.5.0  # lint
 flake8-copyright==0.2.0  # lint
 flake8-mypy==17.8.0  # lint
 Fiona==1.7.11  # geoportal-raster
-GeoAlchemy2==0.4.1  # geoportal
+GeoAlchemy2==0.4.2  # geoportal
 geojson==2.3.0  # geoportal
 glob2==0.6  # ngeo
 htmlmin==0.1.12  # ngeo
@@ -31,7 +31,7 @@ lingua==4.13  # i18n
 mccabe==0.6.1  # lint
 mypy==0.560  # lint
 OWSLib==0.16.0  # geoportal
-papyrus==2.2  # geoportal
+papyrus==2.3  # geoportal
 PasteScript==2.0.2  # geoportal-pcreate
 pep8==1.7.1  # lint
 pep8-naming==0.5.0  # Lint
