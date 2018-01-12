@@ -43,7 +43,7 @@ from geoalchemy2 import Geometry
 from geoalchemy2.shape import to_shape
 
 import colander
-from deform.widget import HiddenWidget, SelectWidget
+from deform.widget import HiddenWidget, SelectWidget, TextAreaWidget
 from c2cgeoform.ext import colander_ext, deform_ext
 
 from c2cgeoportal_commons.models import Base, schema, srid
@@ -1129,7 +1129,11 @@ class Dimension(Base):
     id = Column(Integer, primary_key=True, info={'colanderalchemy': {'widget': HiddenWidget()}})
     name = Column(Unicode)
     value = Column(Unicode)
-    description = Column(Unicode)
+    description = Column(Unicode, info={
+        'colanderalchemy': {
+            'widget': TextAreaWidget(rows=2, cols=60)
+        }
+    })
 
     layer_id = Column('layer_id',
                       Integer,
@@ -1137,8 +1141,7 @@ class Dimension(Base):
                       nullable=False,
                       info={
                           'colanderalchemy': {
-                              'missing': None,
-                              'widget': HiddenWidget()
+                              'exclude': True
                           },
                           'c2cgeoform': {
                               'duplicate': False
@@ -1148,9 +1151,17 @@ class Dimension(Base):
         info={'c2cgeoform': {'duplicate': False},
               'colanderalchemy': {'exclude': True}
               },
-        backref=backref('dimensions',
-                        cascade='save-update,merge,delete,delete-orphan',
-                        info={'colanderalchemy': {'title': _('Dimensions')}}))
+        backref=backref(
+            'dimensions',
+            cascade='save-update,merge,delete,delete-orphan',
+            info={
+                'colanderalchemy': {
+                    'title': _('Dimensions'),
+                    'exclude': True
+                }
+            }
+        )
+    )
 
     def __init__(self, name: str='', value: str='', layer: str=None) -> None:
         self.name = name
