@@ -36,7 +36,7 @@ class LayerTreeViews():
             'items': items,  # keep strong references
             'itemtypes_tables': {
                 'theme': 'themes',
-                'group': 'groups',
+                'group': 'layer_groups',
                 'layerv1': 'layers_v1',
                 'l_wms': 'layers_wms',
                 'l_wmts': 'layers_wmts'
