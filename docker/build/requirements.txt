@@ -5,7 +5,7 @@ boto==2.48.0  # Tile generation
 bottle==0.12.13  # i18n
 c2c.cssmin==0.7.dev6  # CGXP build
 c2c.template==1.5.1  # geoportal
-c2cgeoform==2.0.dev20180110  # commons
+c2cgeoform==2.0.dev20180111  # commons
 codacy-coverage==1.3.10  # Codacy send report
 codespell==1.11.0  # Lint
 ColanderAlchemy==0.3.3  # commons
@@ -46,7 +46,7 @@ pyramid-debugtoolbar==4.3  # geoportal
 pyramid-mako==1.0.2  # geoportal
 pyramid-multiauth==0.9.0  # geoportal
 pytest-cov==2.5.1  # tests
-pytest-selenium==1.11.3  # admin tests
+pytest-selenium==1.11.4  # admin tests
 python-dateutil==2.6.1  # geoportal
 PyYAML==3.12  # geoportal
 rasterio==1.0a12  # geoportal-raster
@@ -55,7 +55,7 @@ Sphinx==1.6.6  # doc
 sphinx-prompt==1.0.0  # doc
 tilecloud==0.5.0.dev6  # Tile generation
 tilecloud-chain==1.4.0.dev10  # Tile generation
-transifex-client==0.12.5  # Makefile
+transifex-client==0.12.5  # Makefile, rq.filter: !=0.13.0
 virtualenv==15.1.0  # Makefile
 waitress==1.1.0  # pcreate
 WebOb==1.7.4  # geoportal test
