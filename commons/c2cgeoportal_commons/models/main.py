@@ -1036,15 +1036,32 @@ class Interface(Base):
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
+    __c2cgeoform_config__ = {
+        'duplicate': True
+    }
+    __colanderalchemy_config__ = {
+        'title': _('Interface'),
+        'plural': _('Interfaces')
+    }
 
-    id = Column(Integer, primary_key=True)
-    name = Column(Unicode)
-    description = Column(Unicode)
+    id = Column(Integer, primary_key=True, info={
+        'colanderalchemy': {
+            'widget': HiddenWidget()
+        }})
+    name = Column(Unicode, info={
+        'colanderalchemy': {'title': _('Name')}})
+    description = Column(Unicode, info={
+        'colanderalchemy': {'title': _('Description')}})
 
     # relationship with Layer and Theme
     layers = relationship(
         'Layer', secondary=interface_layer,
         cascade='save-update,merge,refresh-expire',
+        info={
+            'colanderalchemy': {
+                'title': _('Layers'),
+                'exclude': True
+            }},
         backref=backref('interfaces', info={
             'colanderalchemy': {
                 'title': _('Interfaces'),
@@ -1056,6 +1073,11 @@ class Interface(Base):
         'Theme',
         secondary=interface_theme,
         cascade='save-update,merge,refresh-expire',
+        info={
+            'colanderalchemy': {
+                'title': _('Themes'),
+                'exclude': True
+            }},
         backref=backref('interfaces', info={
             'colanderalchemy': {
                 'title': _('Interfaces'),

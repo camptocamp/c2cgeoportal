@@ -217,7 +217,7 @@ class TestLayerWMSViews(AbstractViewsTests):
             'public': True,
             'geo_table': 'new_geo_table',
             'exclude_properties': 'property1,property2',
-            'ogc_server_id': '2',
+            'ogc_server_id': str(layer_wms_test_data['servers'][1].id),
             'layer': 'new_wmslayername',
             'style': 'new_style',
             'time_mode': 'range',
@@ -242,7 +242,7 @@ class TestLayerWMSViews(AbstractViewsTests):
             [interface.id for interface in layer.interfaces])
         assert set([ras[1].id, ras[3].id]) == set([ra.id for ra in layer.restrictionareas])
 
-    def test_submit_new(self, dbsession, test_app):
+    def test_submit_new(self, dbsession, test_app, layer_wms_test_data):
         from c2cgeoportal_commons.models.main import LayerWMS
 
         resp = test_app.post(
@@ -254,7 +254,7 @@ class TestLayerWMSViews(AbstractViewsTests):
                 'public': True,
                 'geo_table': 'new_geo_table',
                 'exclude_properties': 'property1,property2',
-                'ogc_server_id': '2',
+                'ogc_server_id': str(layer_wms_test_data['servers'][1].id),
                 'layer': 'new_wmslayername',
                 'style': 'new_style',
                 'time_mode': 'range',
@@ -358,7 +358,7 @@ class TestLayerWMSViews(AbstractViewsTests):
                 'public': True,
                 'geo_table': 'new_geo_table',
                 'exclude_properties': 'property1,property2',
-                'ogc_server_id': '2',
+                'ogc_server_id': str(layer_wms_test_data['servers'][1].id),
                 'style': 'new_style',
                 'time_mode': 'range',
                 'time_widget': 'datepicker',
