@@ -20,12 +20,11 @@ class OGCServerViews(AbstractViews):
         _list_field('description'),
         _list_field('url'),
         _list_field('url_wfs'),
-        _list_field('url_wfs'),
         _list_field('type'),
+        _list_field('image_type'),
         _list_field('auth'),
         _list_field('wfs_support'),
         _list_field('is_single_tile')
-
     ]
     _id_field = 'id'
     _model = OGCServer
