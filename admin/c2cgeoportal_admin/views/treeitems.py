@@ -20,8 +20,10 @@ class TreeItemViews(AbstractViews):
     _extra_list_fields = [
         _list_field(
             'parents_relation',
-            renderer=lambda layer_wms:', '.join([p.treegroup.name or ''
-                                                 for p in layer_wms.parents_relation])),
+            renderer=lambda layer_wms:', '.join(
+                [p.treegroup.name or '' for p in sorted(
+                    layer_wms.parents_relation,
+                    key=lambda p: p.treegroup.name or '')])),
         _list_field(
             'metadatas',
             renderer=lambda layers_group: ', '.join(['{}: {}'.format(m.name, m.value) or ''

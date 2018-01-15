@@ -43,7 +43,7 @@ from geoalchemy2 import Geometry
 from geoalchemy2.shape import to_shape
 
 import colander
-from deform.widget import HiddenWidget, SelectWidget
+from deform.widget import HiddenWidget, SelectWidget, TextAreaWidget
 from c2cgeoform.ext import colander_ext, deform_ext
 
 from c2cgeoportal_commons.models import Base, schema, srid
@@ -991,7 +991,10 @@ class LayerWMTS(DimensionLayer):
         nullable=False,
         info={
             'colanderalchemy': {
-                'title': _('Image type')
+                'title': _('Image type'),
+                'widget': SelectWidget(values=(
+                    ('image/jpeg', 'image/jpeg'),
+                    ('image/png', 'image/png')))
             }})
 
     def __init__(self, name: str='', public: bool=True, image_type: str='image/png') -> None:
@@ -1100,15 +1103,32 @@ class Interface(Base):
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
+    __c2cgeoform_config__ = {
+        'duplicate': True
+    }
+    __colanderalchemy_config__ = {
+        'title': _('Interface'),
+        'plural': _('Interfaces')
+    }
 
-    id = Column(Integer, primary_key=True)
-    name = Column(Unicode)
-    description = Column(Unicode)
+    id = Column(Integer, primary_key=True, info={
+        'colanderalchemy': {
+            'widget': HiddenWidget()
+        }})
+    name = Column(Unicode, info={
+        'colanderalchemy': {'title': _('Name')}})
+    description = Column(Unicode, info={
+        'colanderalchemy': {'title': _('Description')}})
 
     # relationship with Layer and Theme
     layers = relationship(
         'Layer', secondary=interface_layer,
         cascade='save-update,merge,refresh-expire',
+        info={
+            'colanderalchemy': {
+                'title': _('Layers'),
+                'exclude': True
+            }},
         backref=backref('interfaces', info={
             'colanderalchemy': {
                 'title': _('Interfaces'),
@@ -1120,6 +1140,11 @@ class Interface(Base):
         'Theme',
         secondary=interface_theme,
         cascade='save-update,merge,refresh-expire',
+        info={
+            'colanderalchemy': {
+                'title': _('Themes'),
+                'exclude': True
+            }},
         backref=backref('interfaces', info={
             'colanderalchemy': {
                 'title': _('Interfaces'),
@@ -1165,7 +1190,7 @@ class Metadata(Base):
               },
         backref=backref(
             'metadatas',
-            cascade='save-update,merge,delete,delete-orphan',
+            cascade='save-update,merge,delete,delete-orphan,expunge',
             info={'colanderalchemy': {'title': _('Metadatas')}}
         )
     )
@@ -1193,7 +1218,11 @@ class Dimension(Base):
     id = Column(Integer, primary_key=True, info={'colanderalchemy': {'widget': HiddenWidget()}})
     name = Column(Unicode)
     value = Column(Unicode)
-    description = Column(Unicode)
+    description = Column(Unicode, info={
+        'colanderalchemy': {
+            'widget': TextAreaWidget()
+        }
+    })
 
     layer_id = Column('layer_id',
                       Integer,
@@ -1201,8 +1230,7 @@ class Dimension(Base):
                       nullable=False,
                       info={
                           'colanderalchemy': {
-                              'missing': None,
-                              'widget': HiddenWidget()
+                              'exclude': True
                           },
                           'c2cgeoform': {
                               'duplicate': False
@@ -1212,9 +1240,17 @@ class Dimension(Base):
         info={'c2cgeoform': {'duplicate': False},
               'colanderalchemy': {'exclude': True}
               },
-        backref=backref('dimensions',
-                        cascade='save-update,merge,delete,delete-orphan',
-                        info={'colanderalchemy': {'title': _('Dimensions')}}))
+        backref=backref(
+            'dimensions',
+            cascade='save-update,merge,delete,delete-orphan,expunge',
+            info={
+                'colanderalchemy': {
+                    'title': _('Dimensions'),
+                    'exclude': True
+                }
+            }
+        )
+    )
 
     def __init__(self, name: str='', value: str='', layer: str=None) -> None:
         self.name = name

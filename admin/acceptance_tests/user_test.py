@@ -27,6 +27,7 @@ def users_test_data(dbsession):
         user.is_password_changed = i % 2 == 1
         users.append(user)
         dbsession.add(user)
+    dbsession.flush()
     yield {
         'roles': roles,
         'users': users}

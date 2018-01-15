@@ -19,13 +19,15 @@ def includeme(config):
     config.add_route('layertree', '/layertree')
     config.add_route('layertree_unlink', '/layertree/unlink/{group_id}/{item_id}')
     config.add_route('layertree_delete', '/layertree/delete/{item_id}')
+    config.add_route('layers_wmts_from_wms', '/{table:layers_wmts}/from_wms/{wms_layer_id}')
 
     from c2cgeoportal_commons.models.main import (
-        Role, LayerWMS, LayerWMTS, Theme, OGCServer, LayerGroup, LayerV1)
+        Role, LayerWMS, LayerWMTS, Theme, LayerGroup, LayerV1, Interface, OGCServer)
     from c2cgeoportal_commons.models.static import User
 
     register_models(config, (
         ('roles', Role),
+        ('interfaces', Interface),
         ('users', User),
         ('layers_wms', LayerWMS),
         ('layers_wmts', LayerWMTS),

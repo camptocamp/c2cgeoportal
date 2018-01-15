@@ -16,6 +16,8 @@ def layer_wms_test_data(dbsession):
     dbsession.begin_nested()
 
     servers = [OGCServer(name='server_{}'.format(i)) for i in range(0, 4)]
+    for i, server in enumerate(servers):
+        server.image_type = 'image/jpeg' if i % 2 == 0 else 'image/png'
 
     restrictionareas = [RestrictionArea(name='restrictionarea_{}'.format(i))
                         for i in range(0, 5)]
@@ -35,6 +37,7 @@ def layer_wms_test_data(dbsession):
     layers = []
     for i in range(0, 25):
         layer = LayerWMS(name='layer_wms_{}'.format(i))
+        layer.layer = 'layer_{}'.format(i)
         layer.public = 1 == i % 2
         layer.ogc_server = servers[i % 4]
         layer.restrictionareas = [restrictionareas[i % 5],
@@ -63,7 +66,7 @@ def layer_wms_test_data(dbsession):
 
         dbsession.add(layer)
         layers.append(layer)
-
+    dbsession.flush()
     yield {
         'servers': servers,
         'restrictionareas': restrictionareas,
@@ -190,25 +193,11 @@ class TestLayerWMSViews(AbstractViewsTests):
 
         interfaces = layer_wms_test_data['interfaces']
         assert set((interfaces[0].id, interfaces[2].id)) == set(i.id for i in layer.interfaces)
-        self.check_checkboxes(
-            form,
-            'interfaces',
-            [{
-                'label': i.name,
-                'value': str(i.id),
-                'checked': i in layer.interfaces
-            } for i in sorted(interfaces, key=lambda i: i.name)])
+        self._check_interfaces(form, interfaces, layer)
 
         ras = layer_wms_test_data['restrictionareas']
         assert set((ras[0].id, ras[2].id)) == set(i.id for i in layer.restrictionareas)
-        self.check_checkboxes(
-            form,
-            'restrictionareas',
-            [{
-                'label': ra.name,
-                'value': str(ra.id),
-                'checked': ra in layer.restrictionareas
-            } for ra in sorted(ras, key=lambda ra: ra.name)])
+        self._check_restrictionsareas(form, ras, layer)
 
         new_values = {
             'name': 'new_name',
@@ -217,7 +206,7 @@ class TestLayerWMSViews(AbstractViewsTests):
             'public': True,
             'geo_table': 'new_geo_table',
             'exclude_properties': 'property1,property2',
-            'ogc_server_id': '2',
+            'ogc_server_id': str(layer_wms_test_data['servers'][1].id),
             'layer': 'new_wmslayername',
             'style': 'new_style',
             'time_mode': 'range',
@@ -230,7 +219,8 @@ class TestLayerWMSViews(AbstractViewsTests):
         form['restrictionareas'] = [ras[1].id, ras[3].id]
 
         resp = form.submit('submit')
-        assert str(layer.id) == re.match('http://localhost/layers_wms/(.*)', resp.location).group(1)
+        assert str(layer.id) == re.match('http://localhost{}/(.*)'.format(self._prefix),
+                                         resp.location).group(1)
 
         dbsession.expire(layer)
         for key, value in new_values.items():
@@ -242,7 +232,7 @@ class TestLayerWMSViews(AbstractViewsTests):
             [interface.id for interface in layer.interfaces])
         assert set([ras[1].id, ras[3].id]) == set([ra.id for ra in layer.restrictionareas])
 
-    def test_submit_new(self, dbsession, test_app):
+    def test_submit_new(self, dbsession, test_app, layer_wms_test_data):
         from c2cgeoportal_commons.models.main import LayerWMS
 
         resp = test_app.post(
@@ -254,7 +244,7 @@ class TestLayerWMSViews(AbstractViewsTests):
                 'public': True,
                 'geo_table': 'new_geo_table',
                 'exclude_properties': 'property1,property2',
-                'ogc_server_id': '2',
+                'ogc_server_id': str(layer_wms_test_data['servers'][1].id),
                 'layer': 'new_wmslayername',
                 'style': 'new_style',
                 'time_mode': 'range',
@@ -289,39 +279,13 @@ class TestLayerWMSViews(AbstractViewsTests):
         assert str(layer.time_widget) == form['time_widget'].value
         interfaces = layer_wms_test_data['interfaces']
         assert set((interfaces[3].id, interfaces[1].id)) == set(i.id for i in layer.interfaces)
-        self.check_checkboxes(
-            form,
-            'interfaces',
-            [{
-                'label': i.name,
-                'value': str(i.id),
-                'checked': i in layer.interfaces
-            } for i in sorted(interfaces, key=lambda i: i.name)])
+        self._check_interfaces(form, interfaces, layer)
 
         ras = layer_wms_test_data['restrictionareas']
         assert set((ras[3].id, ras[0].id)) == set(i.id for i in layer.restrictionareas)
-        self.check_checkboxes(
-            form,
-            'restrictionareas',
-            [{
-                'label': ra.name,
-                'value': str(ra.id),
-                'checked': ra in layer.restrictionareas
-            } for ra in sorted(ras, key=lambda ra: ra.name)])
+        self._check_restrictionsareas(form, ras, layer)
 
-        assert '' == form.html.select(
-            'input[value=dimensions:mapping] + input')[0].attrs['value']
-        assert layer.dimensions[0].name == form.html.select(
-            'input[value=dimensions:mapping] + input + div')[0].findChild('input').attrs['value']
-        assert layer.dimensions[0].value == form.html.select(
-            'input[value=dimensions:mapping] + input + div + div')[0].findChild('input').attrs['value']
-
-        assert '' == form.html.select(
-            'input[value=dimensions:mapping] + input')[2].attrs['value']
-        assert layer.dimensions[2].name == form.html.select(
-            'input[value=dimensions:mapping] + input + div')[2].findChild('input').attrs['value']
-        assert layer.dimensions[2].value == form.html.select(
-            'input[value=dimensions:mapping] + input + div + div')[2].findChild('input').attrs['value']
+        self._check_dimensions_are_duplicated(form, layer)
 
         self.set_first_field_named(form, 'name', 'clone')
         resp = form.submit('submit')
@@ -334,6 +298,63 @@ class TestLayerWMSViews(AbstractViewsTests):
         assert layer.id == layer.metadatas[0].item_id
         assert layer_wms_test_data['layers'][3].metadatas[0].name == layer.metadatas[0].name
         assert layer_wms_test_data['layers'][3].metadatas[1].name == layer.metadatas[1].name
+
+    def test_convert_common_fields_copied(self, layer_wms_test_data, test_app, dbsession):
+        from c2cgeoportal_commons.models.main import LayerWMTS
+        layer = layer_wms_test_data['layers'][3]
+
+        resp = test_app.get("/layers_wmts/from_wms/{}".format(layer.id), status=200)
+
+        form = resp.form
+        assert '' == self.get_first_field_named(form, 'id').value
+        assert layer.name == self.get_first_field_named(form, 'name').value
+        assert str(layer.metadata_url or '') == form['metadata_url'].value
+        assert str(layer.description or '') == self.get_first_field_named(form, 'description').value
+        assert layer.public is True
+        assert layer.public == form['public'].checked
+        assert str(layer.geo_table or '') == form['geo_table'].value
+        assert str(layer.exclude_properties or '') == form['exclude_properties'].value
+        assert str(layer.layer or '') == form['layer'].value
+        assert str(layer.style or '') == form['style'].value
+        interfaces = layer_wms_test_data['interfaces']
+        self._check_interfaces(form, interfaces, layer)
+        ras = layer_wms_test_data['restrictionareas']
+        self._check_restrictionsareas(form, ras, layer)
+        self._check_dimensions_are_duplicated(form, layer)
+
+        self.set_first_field_named(form, 'name', 'converted')
+        resp = form.submit('submit')
+
+        layer = dbsession.query(LayerWMTS). \
+            filter(LayerWMTS.name == 'converted'). \
+            one()
+        assert str(layer.id) == re.match('http://localhost/layers_wmts/(.*)', resp.location).group(1)
+
+    def test_convert_image_type_from_ogcserver(self, layer_wms_test_data, test_app):
+        layer = layer_wms_test_data['layers'][2]
+        resp = test_app.get("/layers_wmts/from_wms/{}".format(layer.id), status=200)
+        assert 'image/jpeg' == resp.form['image_type'].value
+
+        layer = layer_wms_test_data['layers'][3]
+        resp = test_app.get("/layers_wmts/from_wms/{}".format(layer.id), status=200)
+        assert 'image/png' == resp.form['image_type'].value
+
+    def _check_dimensions_are_duplicated(self, form, layer):
+        observed_input = form.html.select('input[value=dimension:mapping]')[0].find_next('input')
+        assert '' == observed_input.attrs['value']
+        observed_input = observed_input.find_next('input')
+        assert layer.dimensions[0].name == observed_input.attrs['value']
+        observed_input = observed_input.find_next('input')
+        assert layer.dimensions[0].value == observed_input.attrs['value']
+
+        # [4] because whe should select 'input[value='dimension:mapping'][name='__start__'] but
+        #  Only the following pseudo-classes are implemented: nth-of-type.
+        observed_input = form.html.select('input[value=dimension:mapping]')[4].find_next('input')
+        assert '' == observed_input.attrs['value']
+        observed_input = observed_input.find_next('input')
+        assert layer.dimensions[2].name == observed_input.attrs['value']
+        observed_input = observed_input.find_next('input')
+        assert layer.dimensions[2].value == observed_input.attrs['value']
 
     def test_delete(self, test_app, dbsession):
         from c2cgeoportal_commons.models.main import LayerWMS, Layer, TreeItem
@@ -356,7 +377,7 @@ class TestLayerWMSViews(AbstractViewsTests):
                 'public': True,
                 'geo_table': 'new_geo_table',
                 'exclude_properties': 'property1,property2',
-                'ogc_server_id': '2',
+                'ogc_server_id': str(layer_wms_test_data['servers'][1].id),
                 'style': 'new_style',
                 'time_mode': 'range',
                 'time_widget': 'datepicker',

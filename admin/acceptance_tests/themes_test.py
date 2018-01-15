@@ -58,6 +58,7 @@ def theme_test_data(dbsession):
         dbsession.add(theme)
         themes.append(theme)
 
+    dbsession.flush()
     yield {
         'themes': themes,
         'interfaces': interfaces,
@@ -159,14 +160,7 @@ class TestTheme(TestTreeGroup):
 
         interfaces = theme_test_data['interfaces']
         assert set((interfaces[0].id, interfaces[2].id)) == set(i.id for i in theme.interfaces)
-        self.check_checkboxes(
-            form,
-            'interfaces',
-            [{
-                'label': i.name,
-                'value': str(i.id),
-                'checked': i in theme.interfaces
-            } for i in sorted(interfaces, key=lambda i: i.name)])
+        self._check_interfaces(form, interfaces, theme)
 
         functionalities = theme_test_data['functionalities']
         assert set((
@@ -338,14 +332,7 @@ class TestTheme(TestTreeGroup):
         interfaces = theme_test_data['interfaces']
         assert set((interfaces[1].id, interfaces[3].id)) == set(i.id for i in theme.interfaces)
 
-        self.check_checkboxes(
-            form,
-            'interfaces',
-            [{
-                'label': i.name,
-                'value': str(i.id),
-                'checked': i in theme.interfaces
-            } for i in sorted(interfaces, key=lambda i: i.name)])
+        self._check_interfaces(form, interfaces, theme)
 
         functionalities = theme_test_data['functionalities']
         assert set((

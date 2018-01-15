@@ -51,6 +51,7 @@ def layer_v1_test_data(dbsession):
 
         dbsession.add(layer)
         layers.append(layer)
+    dbsession.flush()
 
     yield {
         'restrictionareas': restrictionareas,

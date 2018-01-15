@@ -103,13 +103,14 @@ class TestLayerTreeView(AbstractViewsTests):
 
         for table, item_id in (
             ('themes', layertree_test_data['themes'][0].id),
-            ('groups', layertree_test_data['groups'][0].id),
-            # ('layers_v1', layertree_test_data['layers_wms'][0].id),
+            ('layer_groups', layertree_test_data['groups'][0].id),
+            ('layers_v1', layertree_test_data['layers_v1'][0].id),
             ('layers_wms', layertree_test_data['layers_wms'][0].id),
-            # ('layers_wmts', layertree_test_data['layers_wmts'][0].id),
+            ('layers_wmts', layertree_test_data['layers_wmts'][0].id),
         ):
             link = resp.html.select_one('tr.treegrid-{} li.action-edit a'.format(item_id))
             assert 'http://localhost/{}/{}'.format(table, item_id) == link['href']
+            test_app.get(link['href'], status=200)
 
     def test_unlink_button(self, test_app, layertree_test_data):
         resp = self.get(test_app)
