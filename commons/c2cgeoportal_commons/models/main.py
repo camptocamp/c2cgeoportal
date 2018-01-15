@@ -927,7 +927,10 @@ class LayerWMTS(DimensionLayer):
         nullable=False,
         info={
             'colanderalchemy': {
-                'title': _('Image type')
+                'title': _('Image type'),
+                'widget': SelectWidget(values=(
+                    ('image/jpeg', 'image/jpeg'),
+                    ('image/png', 'image/png')))
             }})
 
     def __init__(self, name: str='', public: bool=True, image_type: str='image/png') -> None:
@@ -1123,7 +1126,7 @@ class Metadata(Base):
               },
         backref=backref(
             'metadatas',
-            cascade='save-update,merge,delete,delete-orphan',
+            cascade='save-update,merge,delete,delete-orphan,expunge',
             info={'colanderalchemy': {'title': _('Metadatas')}}
         )
     )
@@ -1153,7 +1156,7 @@ class Dimension(Base):
     value = Column(Unicode)
     description = Column(Unicode, info={
         'colanderalchemy': {
-            'widget': TextAreaWidget(rows=2, cols=60)
+            'widget': TextAreaWidget()
         }
     })
 
@@ -1175,7 +1178,7 @@ class Dimension(Base):
               },
         backref=backref(
             'dimensions',
-            cascade='save-update,merge,delete,delete-orphan',
+            cascade='save-update,merge,delete,delete-orphan,expunge',
             info={
                 'colanderalchemy': {
                     'title': _('Dimensions'),

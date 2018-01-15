@@ -11,6 +11,7 @@ def insert_users_test_data(dbsession):
     user = User('babar')
     dbsession.begin_nested()
     dbsession.add(user)
+    dbsession.flush()
     yield
     dbsession.rollback()
 
