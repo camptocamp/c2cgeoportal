@@ -5,6 +5,7 @@ from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import ListField
 from c2cgeoportal_commons.models.main import LayerGroup
 from c2cgeoportal_admin.schemas.treegroup import children_schema_node
+from c2cgeoportal_admin.schemas.metadata import metadatas_schema_node
 from c2cgeoportal_admin.views.treeitems import TreeItemViews
 
 _list_field = partial(ListField, LayerGroup)
@@ -12,6 +13,7 @@ _list_field = partial(ListField, LayerGroup)
 
 base_schema = GeoFormSchemaNode(LayerGroup)
 base_schema.add(children_schema_node())
+base_schema.add(metadatas_schema_node.clone())
 
 
 @view_defaults(match_param='table=layer_groups')

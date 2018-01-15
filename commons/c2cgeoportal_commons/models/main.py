@@ -1170,8 +1170,16 @@ class Metadata(Base):
 
     id = Column(Integer, primary_key=True, info={'colanderalchemy': {'widget': HiddenWidget()}})
     name = Column(Unicode)
-    value = Column(Unicode)
-    description = Column(Unicode)
+    value = Column(Unicode, info={
+        'colanderalchemy': {
+            'exclude': True
+        }
+    })
+    description = Column(Unicode, info={
+        'colanderalchemy': {
+            'widget': TextAreaWidget()
+        }
+    })
 
     item_id = Column('item_id',
                      Integer,
@@ -1179,8 +1187,7 @@ class Metadata(Base):
                      nullable=False,
                      info={
                          'colanderalchemy': {
-                             'missing': None,
-                             'widget': HiddenWidget()},
+                             'exclude': True},
                          'c2cgeoform': {
                              'duplicate': False}})
     item = relationship(
@@ -1191,7 +1198,13 @@ class Metadata(Base):
         backref=backref(
             'metadatas',
             cascade='save-update,merge,delete,delete-orphan,expunge',
-            info={'colanderalchemy': {'title': _('Metadatas')}}
+            order_by='Metadata.name',
+            info={
+                'colanderalchemy': {
+                    'title': _('Metadatas'),
+                    'exclude': True
+                }
+            }
         )
     )
 

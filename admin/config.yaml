@@ -1,3 +1,72 @@
 vars:
   schema: main
   srid: 21781
+
+  admin_interface:
+    available_metadata:
+      # Layers group
+      - name: isExpanded
+        type: boolean
+      # Layer
+      - name: copyTo  # V1
+      - name: copyable
+        type: boolean
+      - name: legend
+        type: boolean
+      - name: isLegendExpanded
+        type: boolean
+      - name: legendRule
+      - name: legendImage
+        type: url
+      - name: iconUrl
+        type: url
+      - name: metadataUrl
+        type: url
+      - name: disclaimer
+      - name: isChecked
+        type: boolean
+      - name: identifierAttributeField
+      - name: maxResolution
+        type: float
+      - name: minResolution
+        type: float
+      - name: opacity
+        type: float
+      - name: thumbnail
+        type: url
+      - name: timeAttribute
+      - name: lastUpdateDateColumn
+      - name: lastUpdateUserColumn
+      - name: snappingConfig
+        type: json
+      - name: geometryValidation  # V1
+        type: boolean
+      - name: excludeProperties  # not yet used
+      # WMS
+      - name: directedFilterAttributes
+        type: list
+      - name: enumeratedAttributes
+        type: list
+      # WMTS layers
+      - name: ogcServer
+      - name: wmsLayers
+      - name: queryLayers
+      - name: printLayers
+
+       # For dev /tests purpose
+      - name: _string
+        type: string
+      - name: _liste
+        type: liste
+      - name: _boolean
+        type: boolean
+      - name: _int
+        type: int
+      - name: _float
+        type: float
+      - name: _url
+        type: url
+      - name: _json
+        type: json
+      - name: _unknown
+        type: unknown

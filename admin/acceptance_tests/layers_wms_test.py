@@ -28,6 +28,7 @@ def layer_wms_test_data(dbsession):
                          ('Date', '2018'),
                          ('Date', '1988'),
                          ('CLC', 'all'), ]
+
     metadatas_protos = [('copyable', 'true'),
                         ('disclaimer', '© le momo'),
                         ('snappingConfig', '{"tolerance": 50}')]
@@ -67,6 +68,7 @@ def layer_wms_test_data(dbsession):
         dbsession.add(layer)
         layers.append(layer)
     dbsession.flush()
+
     yield {
         'servers': servers,
         'restrictionareas': restrictionareas,
