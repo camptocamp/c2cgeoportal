@@ -22,9 +22,16 @@ build:
     - USER_ID
     - GROUP_ID
     - CI
+    - PGHOST=db
+    - PGPORT=5432
+    - PGUSER=www-data
+    - PGPASSWORD=www-data
+    - PGDATABASE=geomapfish_tests
   stdin_open: true
   tty: true
-  command: ${'$'}{RUN}
+  entrypoint:
+    - wait-for-db
+    - run
   links:
     - db
     - mapserver

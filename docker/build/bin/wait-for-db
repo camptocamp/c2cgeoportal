@@ -1,0 +1,10 @@
+#!/bin/bash
+
+RETRIES=60
+
+until psql -c "select 1" > /dev/null || [ $RETRIES -eq 0 ]; do
+  echo "Waiting for postgres server, $((RETRIES--)) remaining attempts..."
+  sleep 1
+done
+
+exec "$@"
