@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2017, Camptocamp SA
+# Copyright (c) 2011-2018, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -47,6 +47,7 @@ from pyramid.httpexceptions import HTTPFound, HTTPBadRequest, HTTPForbidden, HTT
 from pyramid.security import remember, forget
 from pyramid.response import Response
 from sqlalchemy import func
+from sqlalchemy.orm import subqueryload
 from sqlalchemy.orm.exc import NoResultFound
 from owslib.wms import WebMapService
 
@@ -57,8 +58,7 @@ from c2cgeoportal_geoportal.lib import get_setting, get_protected_layers_query, 
 from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
 from c2cgeoportal_geoportal.lib.caching import get_region, invalidate_region,  \
     set_common_headers, NO_CACHE, PUBLIC_CACHE, PRIVATE_CACHE
-from c2cgeoportal_geoportal.lib.functionality import get_functionality, \
-    get_mapserver_substitution_params
+from c2cgeoportal_geoportal.lib.functionality import get_functionality, get_mapserver_substitution_params
 from c2cgeoportal_geoportal.lib.wmstparsing import parse_extent, TimeInformation
 from c2cgeoportal_geoportal.lib.email_ import send_email
 from c2cgeoportal_geoportal.views.layers import get_layer_metadatas
@@ -126,6 +126,11 @@ class Entry:
         self.metadata_type = get_types_map(
             self.settings.get("admin_interface", {}).get("available_metadata", [])
         )
+        self._layerswms_cache = None
+        self._layerswmts_cache = None
+        self._layersv1_cache = None
+        self._layergroup_cache = None
+        self._themes_cache = None
         if "default_ogc_server" in self.mapserver_settings:
             try:
                 self.default_ogc_server = models.DBSession.query(main.OGCServer).filter(
@@ -191,6 +196,15 @@ class Entry:
 
     def _wms_getcap(self, ogc_server=None):
         ogc_server = (ogc_server or self.default_ogc_server)
+
+        return self._wms_getcap_cached(
+            ogc_server, self._get_capabilities_cache_role_key(ogc_server)
+        )
+
+    @cache_region.cache_on_arguments()
+    def _wms_getcap_cached(self, ogc_server, _):
+        """ _ is just for cache on the role id """
+
         errors = set()
         url = get_url2(
             "The OGC server '{}'".format(ogc_server.name),
@@ -202,14 +216,6 @@ class Entry:
         # add functionalities params
         sparams = get_mapserver_substitution_params(self.request)
         url = add_url_params(url, sparams)
-
-        return self._wms_getcap_cached(
-            url, ogc_server.auth, self._get_capabilities_cache_role_key(ogc_server)
-        )
-
-    @cache_region.cache_on_arguments()
-    def _wms_getcap_cached(self, url, auth, role_id):
-        """ role_id is just for cache """
 
         errors = set()
         wms = None
@@ -229,7 +235,7 @@ class Entry:
         role = None if self.request.user is None else self.request.user.role
 
         # Add headers for Geoserver
-        if auth == main.OGCSERVER_AUTH_GEOSERVER and self.request.user is not None:
+        if ogc_server.auth == main.OGCSERVER_AUTH_GEOSERVER and self.request.user is not None:
             headers["sec-username"] = self.request.user.username
             headers["sec-roles"] = role.name
 
@@ -388,7 +394,7 @@ class Entry:
             if hasattr(layer, "queryable") else True
         return layer_info
 
-    def _layer(self, layer, time=None, dim=None, role_id=None, mixed=True):
+    def _layer(self, layer, time=None, dim=None, mixed=True):
         errors = set()
         layer_info = {
             "id": layer.id,
@@ -443,10 +449,8 @@ class Entry:
             elif layer.layer_type == "WMTS":
                 self._fill_wmts(layer_info, layer, errors)
         elif isinstance(layer, main.LayerWMS):
-            wms, wms_layers, wms_errors = self._wms_layers(
-                self._get_cache_role_key(layer.ogc_server),
-                layer.ogc_server,
-            )
+            role_id = self._get_cache_role_key(layer.ogc_server)
+            wms, wms_layers, wms_errors = self._wms_layers(role_id, layer.ogc_server)
             errors |= wms_errors
             if layer.layer is None or layer.layer == "":
                 errors.add("The layer '{}' do not have any layers".format(layer.name))
@@ -818,9 +822,7 @@ class Entry:
                         if isinstance(tree_item, main.LayerWMS):
                             wms_layers.extend(tree_item.layer.split(","))
 
-                        l, l_errors = self._layer(
-                            tree_item, role_id=role_id, mixed=mixed, time=time, dim=dim, **kwargs
-                        )
+                        l, l_errors = self._layer(tree_item, mixed=mixed, time=time, dim=dim, **kwargs)
                         errors |= l_errors
                         if l is not None:
                             if depth < min_levels:
@@ -894,6 +896,26 @@ class Entry:
         return wms, list(wms.contents), wms_errors
 
     @cache_region.cache_on_arguments()
+    def _load_tree_items(self):
+        self._layerswms_cache = models.DBSession.query(main.LayerWMS).options(
+            subqueryload(main.LayerWMS.dimensions), subqueryload(main.LayerWMS.metadatas)
+        ).all()
+        self._layerswmts_cache = models.DBSession.query(main.LayerWMTS).options(
+            subqueryload(main.LayerWMTS.dimensions), subqueryload(main.LayerWMTS.metadatas)
+        ).all()
+        self._layersv1_cache = models.DBSession.query(main.LayerV1).options(
+            subqueryload(main.LayerV1.metadatas)
+        ).all()
+        self._layergroup_cache = models.DBSession.query(main.LayerGroup).options(
+            subqueryload(main.LayerGroup.metadatas), subqueryload(main.LayerGroup.children_relation)
+        ).all()
+        self._themes_cache = models.DBSession.query(main.Theme).options(
+            subqueryload(main.Theme.functionalities),
+            subqueryload(main.Theme.metadatas),
+            subqueryload(main.Theme.children_relation)
+        ).all()
+
+    @cache_region.cache_on_arguments()
     def _themes(
         self, role_id, interface="desktop", filter_themes=True, version=1,
         catalogue=False, min_levels=1
@@ -902,6 +924,7 @@ class Entry:
         This function returns theme information for the role identified
         by ``role_id``.
         """
+        self._load_tree_items()
         errors = set()
         layers = self._layers(role_id, version, interface)
 
@@ -995,9 +1018,7 @@ class Entry:
                         item.name, theme.name, min_levels
                     ))
                 elif item.name in layers:
-                    l, l_errors = self._layer(
-                        item, role_id=role_id, dim=DimensionInformation()
-                    )
+                    l, l_errors = self._layer(item, dim=DimensionInformation())
                     errors |= l_errors
                     if l is not None:
                         children.append(l)
