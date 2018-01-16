@@ -29,6 +29,7 @@ except subprocess.CalledProcessError:
 
 if has_docker:
     try:
+        subprocess.check_call(['groupdel', 'docker'])
         subprocess.check_call(['groupadd', '--gid={}'.format(docker_group_id), 'docker'])
     except subprocess.CalledProcessError:
         del_docker_group = False
