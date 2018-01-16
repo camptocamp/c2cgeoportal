@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2017, Camptocamp SA
+# Copyright (c) 2011-2018, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -142,6 +142,9 @@ def get_url2(name, url, request, errors):
 
 
 def get_typed(name, value, types, request, errors):
+    type_ = {
+        "type": "not init"
+    }
     try:
         if name not in types:
             errors.add("Type '{}' not defined.".format(name))

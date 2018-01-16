@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2017, Camptocamp SA
+# Copyright (c) 2011-2018, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -184,6 +184,8 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
     extensions = [".yaml"]
 
     def __call__(self, filename, options):
+        init_region({"backend": "dogpile.cache.memory"})
+
         with open(filename) as config_file:
             config = yaml.load(config_file)
             # for application config (config.yaml)
@@ -427,11 +429,13 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
         attributes, layers = self._layer_attributes(url, layer)
         for layer in layers:
             messages.append(Message(
-                None, layer, None, [], "", "", (".".join([item_type, name]), layer)
+                None, layer, None, [], "", "",
+                (".".join([item_type, name]), layer.encode("ascii", "replace"))
             ))
         for attribute in attributes:
             messages.append(Message(
-                None, attribute, None, [], "", "", (".".join([item_type, name]), layer)
+                None, attribute, None, [], "", "",
+                (".".join([item_type, name]), layer.encode("ascii", "replace"))
             ))
 
     def _layer_attributes(self, url, layer):
@@ -442,6 +446,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
 
         class Request:
             registry = Registry()
+            matchdict = {}
 
         request = Request()
         request.registry.settings = self.config

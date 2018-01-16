@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2013-2017, Camptocamp SA
+# Copyright (c) 2013-2018, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -956,7 +956,7 @@ class TestEntryView(TestCase):
         layer.geo_table = "tiwms"
         layer.public = True
 
-        result = entry._layer(layer, role_id=None)
+        result = entry._layer(layer)
         result[0]["icon"] = None
         self.assertEqual(result, ({
             "id": 20,
