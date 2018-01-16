@@ -1,5 +1,6 @@
 *
 !c2cgeoportal_geoportal/
+**/__pycache__/
 !setup.py
 !npm-packages
 !MANIFEST.in

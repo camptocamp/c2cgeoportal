@@ -92,23 +92,13 @@ pull: pull-base
 	touch --no-create commons/Dockerfile
 
 .PHONY: build
-build: $(MAKO_FILES:.mako=) \
-	c2c-egg \
-	geoportal/package.json \
+build: c2c-egg \
 	$(MO_FILES) \
 	$(L10N_PO_FILES) \
 	$(APPS_FILES) \
-	geoportal/c2cgeoportal_geoportal/scaffolds/create/docker-run \
-	geoportal/npm-packages \
-	geoportal/c2cgeoportal_geoportal/scaffolds/create/package.json_tmpl \
-	geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/ \
-	geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/CONST_create_template/ \
-	commons/Dockerfile \
-	commons/tests.yaml \
 	admin/tests.ini \
-	geoportal/Dockerfile \
-	docker/admin-build/Dockerfile \
-	docker/admin-build/npm-packages \
+	/build/adminbuild-docker.timestamp \
+	/build/build-docker.timestamp \
 	prepare-tests
 
 .PHONY: doc
@@ -174,14 +164,26 @@ docker/test-db/13-alembic-static.sql: \
 	touch $@
 
 /build/adminbuild-docker.timestamp: $(shell docker-required --path docker/admin-build) \
-		/build/commons-docker.timestamp
+		/build/commons-docker.timestamp \
+		docker/admin-build/npm-packages
 	$(PRERULE_CMD)
 	docker build --tag=$(DOCKER_BASE)-admin-build:$(MAJOR_VERSION) docker/admin-build
 	touch $@
 
-/build/commons-docker.timestamp: $(shell docker-required --path commons --replace-pattern=)
+/build/commons-docker.timestamp: $(shell docker-required --path commons --replace-pattern=) \
+		commons/tests.yaml
 	$(PRERULE_CMD)
 	docker build --build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --tag=$(DOCKER_BASE)-commons:$(MAJOR_VERSION) commons
+	touch $@
+
+/build/build-docker.timestamp: $(shell docker-required --path geoportal  --replace-pattern='^test(.*).mako$/test/\1') \
+		/build/commons-docker.timestamp \
+		geoportal/c2cgeoportal_geoportal/scaffolds/create/docker-run \
+		geoportal/npm-packages \
+		geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/ \
+		geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/CONST_create_template/
+	$(PRERULE_CMD)
+	docker build --build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --tag=$(DOCKER_BASE)-build:$(MAJOR_VERSION) geoportal
 	touch $@
 
 .PHONY: prepare-tests

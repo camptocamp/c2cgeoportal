@@ -33,10 +33,6 @@ before_script:
   - python3 -m compileall admin/c2cgeoportal_admin
   - docker build --tag camptocamp/geomapfish-build-dev:${MAJOR_VERSION} docker/build
   - ./docker-run make build
-  - "docker build --build-arg=GIT_TAG=${TRAVIS_TAG} --build-arg=MAJOR_VERSION=${MAJOR_VERSION} \
-      --tag camptocamp/geomapfish-commons:${MAJOR_VERSION} commons"
-  - "docker build --build-arg=GIT_TAG=${TRAVIS_TAG} --build-arg=MAJOR_VERSION=${MAJOR_VERSION} \
-      --tag camptocamp/geomapfish-build:${MAJOR_VERSION} geoportal"
 
     ## FOR NON DOCKER TESTS
   - deactivate

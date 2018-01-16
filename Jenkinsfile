@@ -48,6 +48,7 @@ timeout(time: 2, unit: 'HOURS') {
             stage('Lint') {
                 checkout scm
                 sh 'bash -c "test \\"`./docker-run id`\\" == \\"uid=0(root) gid=0(root) groups=0(root)\\""'
+                sh './docker-run travis/empty-make build'
                 sh './docker-run make doc'
                 sh './docker-run make geoportal/c2cgeoportal_geoportal/locale/c2cgeoportal_geoportal.pot'
                 sh './docker-run make admin/c2cgeoportal_admin/locale/c2cgeoportal_admin.pot'
@@ -59,7 +60,6 @@ timeout(time: 2, unit: 'HOURS') {
                 sh './docker-run make spell'
                 sh './docker-run travis/status.sh'
                 sh './docker-run travis/test-eof-newline'
-                sh './docker-run travis/empty-make build'
                 // Test return code
                 sh './docker-run true'
                 sh 'if ./docker-run false; then false; fi'
