@@ -17,7 +17,7 @@ Mako==1.0.6
 Markdown==2.6.8
 MarkupSafe==1.0
 OWSLib==0.14.0
-papyrus==2.2
+papyrus==2.3
 Paste==2.0.3
 PasteDeploy==1.5.2
 PasteScript==2.0.2
