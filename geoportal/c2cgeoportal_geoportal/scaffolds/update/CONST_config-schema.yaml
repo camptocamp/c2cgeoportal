@@ -136,6 +136,8 @@ mapping:
         type: map
         required: True
         mapping:
+          map_base_layer:
+            type: str
           map_x:
             type: int
             required: True
@@ -145,6 +147,8 @@ mapping:
           map_zoom:
             type: int
             required: True
+          map_fit_max_zoom:
+            type: int
           available_metadata:
             type: seq
             required: True

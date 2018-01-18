@@ -3,6 +3,13 @@ vars:
   srid: 21781
 
   admin_interface:
+
+    map_base_layer: "new ol.layer.Tile({ source: new ol.source.OSM() })"
+    map_x: 740000
+    map_y: 5860000
+    map_zoom: 10
+    map_fit_max_zoom: 14
+
     available_metadata:
       # Layers group
       - name: isExpanded
