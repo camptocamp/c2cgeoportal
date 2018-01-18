@@ -143,7 +143,8 @@ NGEO_LIBS_JS_FILES += \
 	/usr/lib/node_modules/jsts/dist/jsts.min.js \
 	/usr/lib/node_modules/moment/min/moment.min.js \
 	/usr/lib/node_modules/url-polyfill/url-polyfill.min.js \
-	/usr/lib/node_modules/ngeo/third-party/jquery-ui/jquery-ui.min.js
+	/usr/lib/node_modules/ngeo/third-party/jquery-ui/jquery-ui.min.js \
+	/usr/lib/node_modules/jquery-datetimepicker/build/jquery.datetimepicker.full.min.js
 NGEO_PROJECT_LIBS_JS_FILES ?=
 
 # i18n
