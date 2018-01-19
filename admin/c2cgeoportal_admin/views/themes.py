@@ -16,6 +16,7 @@ from c2cgeoform.views.abstract_views import ListField
 
 from c2cgeoportal_commons.models.main import Theme, Interface, Role, Functionality
 from c2cgeoportal_admin.schemas.treegroup import children_schema_node
+from c2cgeoportal_admin.schemas.metadata import metadatas_schema_node
 from c2cgeoportal_admin.views.treeitems import TreeItemViews
 
 _list_field = partial(ListField, Theme)
@@ -68,6 +69,8 @@ base_schema.add(
         validator=manytomany_validator
     )
 )
+
+base_schema.add(metadatas_schema_node.clone())
 
 
 @view_defaults(match_param='table=themes')

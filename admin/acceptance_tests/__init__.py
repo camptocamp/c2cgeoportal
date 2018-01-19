@@ -91,3 +91,34 @@ class AbstractViewsTests():
 
     def set_first_field_named(self, form, name, value):
         form.fields.get(name)[0].value__set(value)
+
+    def _check_sequence(self, sequence, expected):
+        seq_items = sequence.select('.deform-seq-item')
+        assert len(expected) == len(seq_items)
+        for seq_item, exp in zip(seq_items, expected):
+            self._check_mapping(seq_item, exp)
+
+    def _check_mapping(self, mapping_item, expected):
+        for exp in expected:
+            input_tag = mapping_item.select_one('[name="{}"]'.format(exp['name']))
+            if 'value' in exp:
+                if input_tag.name == 'select':
+                    self._check_select(input_tag, exp['value'])
+                elif input_tag.name == 'textarea':
+                    assert (exp['value'] or '') == (input_tag.string or '')
+                else:
+                    assert (exp['value'] or '') == input_tag.attrs.get('value', '')
+            if exp.get('hidden', False):
+                assert 'hidden' == input_tag['type']
+            if 'label' in exp:
+                label_tag = mapping_item.select_one('label[for="{}"]'.format(input_tag['id']))
+                assert exp['label'] == label_tag.getText().strip()
+
+    def _check_select(self, select, expected):
+        for exp, option in zip(expected, select.find_all('option')):
+            if 'text' in exp:
+                assert exp['text'] == option.text
+            if 'value' in exp:
+                assert exp['value'] == option['value']
+            if 'selected' in exp:
+                assert exp['selected'] == ('selected' in option.attrs)

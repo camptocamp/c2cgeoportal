@@ -1,0 +1,10 @@
+<?python import json ?>
+
+<script type="text/javascript">
+  const c2cgeoportalAdmin = window.c2cgeoportalAdmin || {};
+  c2cgeoportalAdmin.metadata_types = ${structure: json.dumps(field.schema.metadata_types, indent=4, separators=(',', ': '))};
+</script>
+
+<div class="item-metadatas">
+    <tal metal:use-macro='load:sequence.pt'></tal>
+</div>
