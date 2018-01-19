@@ -311,7 +311,7 @@ class LayergroupTreeitem(Base):
         backref=backref(
             'children_relation',
             order_by='LayergroupTreeitem.ordering',
-            cascade='save-update,merge,delete,delete-orphan',
+            cascade='save-update,merge,delete,delete-orphan,expunge',
             info={
                 'colanderalchemy': {
                     'title': _('Children'),
@@ -1128,6 +1128,9 @@ class Interface(Base):
             'colanderalchemy': {
                 'title': _('Layers'),
                 'exclude': True
+            },
+            'c2cgeoform': {
+                'duplicate': False
             }},
         backref=backref('interfaces', info={
             'colanderalchemy': {
@@ -1144,6 +1147,9 @@ class Interface(Base):
             'colanderalchemy': {
                 'title': _('Themes'),
                 'exclude': True
+            },
+            'c2cgeoform': {
+                'duplicate': False
             }},
         backref=backref('interfaces', info={
             'colanderalchemy': {
