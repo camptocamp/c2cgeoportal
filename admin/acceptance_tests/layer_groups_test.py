@@ -234,6 +234,31 @@ class TestLayersGroups(TestTreeGroup):
             [rel.treeitem_id for rel in group.children_relation]
         )
 
+    def test_post_with_ancestor(self, layer_groups_test_data, test_app):
+        """Check that ancestors are refused to avoid cycles"""
+        groups = layer_groups_test_data['groups']
+        resp = test_app.post(
+            '{}/{}'.format(self._prefix, groups[3].id),
+            (
+                ('_charset_', 'UTF-8'),
+                ('__formid__', 'deform'),
+                ('id', str(groups[3].id)),
+                ('name', groups[3].name),
+                ('__start__', 'children_relation:sequence'),
+                ('__start__', 'layergroup_treeitem:mapping'),
+                ('id', ''),
+                ('treeitem_id', str(groups[1].id)),
+                ('ordering', ''),
+                ('__end__', 'layergroup_treeitem:mapping'),
+                ('__end__', 'children_relation:sequence'),
+                ('formsubmit', 'formsubmit')
+            ),
+            status=200)
+        assert (
+            'Value {} does not exist in table treeitem or is not allowed to avoid cycles'.
+            format(groups[1].id) ==
+            resp.html.select_one('.item-children_relation .help-block').getText().strip())
+
     def test_duplicate(self, layer_groups_test_data, test_app, dbsession):
         from c2cgeoportal_commons.models.main import LayerGroup
         group = layer_groups_test_data['groups'][1]
