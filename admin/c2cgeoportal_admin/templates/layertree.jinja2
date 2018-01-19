@@ -19,8 +19,9 @@
     </div>
 
     <table id="layertree-table" class="tree table table-hover">
-        {% macro render_node(node, parent_id=None) -%}
-        <tr class="{{ node.item_type }} treegrid-{{ node.id }}{{' treegrid-parent-{}'.format(parent_id) if parent_id else ''}}">
+        {% macro render_node(node, parent_id=None, path='') -%}
+        {% set subpath = path ~ '_' ~ node.id %}
+        <tr class="{{ node.item_type }} treegrid-{{ subpath }}{{' treegrid-parent-{}'.format(path) if path else ''}}">
             <td>
                 <span class="glyphicon icon-{{ node.item_type }}"></span>
                 {{ node.name }}
@@ -63,7 +64,7 @@
             </td>
         </tr>
         {% for child in node.children %}
-        {{ render_node(child, node.id) }}
+        {{ render_node(child, node.id, subpath) }}
         {% endfor %}
         {%- endmacro %}
 
