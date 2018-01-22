@@ -310,7 +310,6 @@ class TestTheme(TestTreeGroup):
                 ('formsubmit', 'formsubmit')
             ),
             status=200)
-        resp.showbrowser()
         assert 'has-error' in resp.html.select_one('.item-children_relation').get('class')
 
     def test_duplicate(self, theme_test_data, test_app, dbsession):
