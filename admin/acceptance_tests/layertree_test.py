@@ -101,33 +101,44 @@ class TestLayerTreeView(AbstractViewsTests):
     def test_edit_button(self, test_app, layertree_test_data):
         resp = self.get(test_app)
 
-        for table, item_id in (
-            ('themes', layertree_test_data['themes'][0].id),
-            ('layer_groups', layertree_test_data['groups'][0].id),
-            ('layers_v1', layertree_test_data['layers_v1'][0].id),
-            ('layers_wms', layertree_test_data['layers_wms'][0].id),
-            ('layers_wmts', layertree_test_data['layers_wmts'][0].id),
+        theme = layertree_test_data['themes'][0]
+        group = layertree_test_data['groups'][0]
+        layer_v1 = layertree_test_data['layers_v1'][0]
+        layer_wms = layertree_test_data['layers_wms'][0]
+        layer_wmts = layertree_test_data['layers_wmts'][0]
+
+        for table, item_id, path in (
+            ('themes', theme.id, '_{}'.format(theme.id)),
+            ('layer_groups', group.id, '_{}_{}'.format(theme.id, group.id)),
+            ('layers_v1', layer_v1.id, '_{}_{}_{}'.format(theme.id, group.id, layer_v1.id)),
+            ('layers_wms', layer_wms.id, '_{}_{}_{}'.format(theme.id, group.id, layer_wms.id)),
+            ('layers_wmts', layer_wmts.id, '_{}_{}_{}'.format(theme.id, group.id, layer_wmts.id)),
         ):
-            link = resp.html.select_one('tr.treegrid-{} li.action-edit a'.format(item_id))
+            link = resp.html.select_one('tr.treegrid-{} li.action-edit a'.format(path))
             assert 'http://localhost/{}/{}'.format(table, item_id) == link['href']
             test_app.get(link['href'], status=200)
 
     def test_unlink_button(self, test_app, layertree_test_data):
         resp = self.get(test_app)
 
+        theme = layertree_test_data['themes'][0]
+        group = layertree_test_data['groups'][0]
+        layer_v1 = layertree_test_data['layers_v1'][0]
+        layer_wms = layertree_test_data['layers_wms'][0]
+        layer_wmts = layertree_test_data['layers_wmts'][0]
+
         # no unlink on theme
         assert 0 == len(
             resp.html.select('tr.treegrid-{} li.action-unlink a'
-                             .format(layertree_test_data['themes'][0].id)))
+                             .format('_{}'.format(theme.id))))
 
-        for group_id, item_id in (
-            (layertree_test_data['groups'][0].id, layertree_test_data['layers_wmts'][0].id),
-            (layertree_test_data['groups'][0].id, layertree_test_data['layers_wms'][0].id),
-            (layertree_test_data['groups'][0].id, layertree_test_data['layers_v1'][0].id),
-            (layertree_test_data['themes'][0].id, layertree_test_data['groups'][0].id),
+        for group_id, item_id, path in (
+            (group.id, layer_wmts.id, '_{}_{}_{}'.format(theme.id, group.id, layer_wmts.id)),
+            (group.id, layer_wms.id, '_{}_{}_{}'.format(theme.id, group.id, layer_wms.id)),
+            (group.id, layer_v1.id, '_{}_{}_{}'.format(theme.id, group.id, layer_v1.id)),
+            (theme.id, group.id, '_{}_{}'.format(theme.id, group.id)),
         ):
-            link = resp.html.select_one('tr.treegrid-{}.treegrid-parent-{} li.action-unlink a'.
-                                        format(item_id, group_id))
+            link = resp.html.select_one('tr.treegrid-{} li.action-unlink a'.format(path))
             assert 'http://localhost/layertree/unlink/{}/{}'.format(group_id, item_id) == link['data-url']
 
     def test_unlink_view(self, test_app, layertree_test_data, dbsession):
@@ -154,17 +165,22 @@ class TestLayerTreeView(AbstractViewsTests):
             expected_conditions.element_to_be_clickable((By.ID, 'layertree-expand')))
         elem.click()
 
-        for group_id, item_id in (
-            (layertree_test_data['groups'][0].id, layertree_test_data['layers_wmts'][0].id),
-            (layertree_test_data['groups'][0].id, layertree_test_data['layers_wms'][0].id),
-            (layertree_test_data['groups'][0].id, layertree_test_data['layers_v1'][0].id),
-            (layertree_test_data['themes'][0].id, layertree_test_data['groups'][0].id),
+        theme = layertree_test_data['themes'][0]
+        group = layertree_test_data['groups'][0]
+        layer_v1 = layertree_test_data['layers_v1'][0]
+        layer_wms = layertree_test_data['layers_wms'][0]
+        layer_wmts = layertree_test_data['layers_wmts'][0]
+
+        for group_id, item_id, path in (
+            (group.id, layer_wmts.id, '_{}_{}_{}'.format(theme.id, group.id, layer_wmts.id)),
+            (group.id, layer_wms.id, '_{}_{}_{}'.format(theme.id, group.id, layer_wms.id)),
+            (group.id, layer_v1.id, '_{}_{}_{}'.format(theme.id, group.id, layer_v1.id)),
+            (theme.id, group.id, '_{}_{}'.format(theme.id, group.id)),
         ):
             elem = WebDriverWait(selenium, 10).until(
                 expected_conditions.element_to_be_clickable((
                     By.CSS_SELECTOR,
-                    'tr.treegrid-{}.treegrid-parent-{} button.dropdown-toggle'.
-                    format(item_id, group_id)
+                    'tr.treegrid-{} button.dropdown-toggle'.format(path)
                 ))
             )
             elem.click()
@@ -172,8 +188,7 @@ class TestLayerTreeView(AbstractViewsTests):
             elem = WebDriverWait(selenium, 10).until(
                 expected_conditions.element_to_be_clickable((
                     By.CSS_SELECTOR,
-                    'tr.treegrid-{}.treegrid-parent-{} li.action-unlink a'.
-                    format(item_id, group_id)
+                    'tr.treegrid-{} li.action-unlink a'.format(path)
                 ))
             )
             expected_url = '{}/layertree/unlink/{}/{}'.format(selenium_app, group_id, item_id)
@@ -199,5 +214,4 @@ class TestLayerTreeView(AbstractViewsTests):
 
             from selenium.common.exceptions import NoSuchElementException
             with pytest.raises(NoSuchElementException):
-                elem = selenium.find_element_by_css_selector('tr.treegrid-{}.treegrid-parent-{}'
-                                                             .format(item_id, group_id))
+                elem = selenium.find_element_by_css_selector('tr.treegrid-{}'.format(path))
