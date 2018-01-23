@@ -197,12 +197,17 @@ class C2cUpgradeTool:
             if self.options.use_makefile:
                 args = " --makefile={}".format(self.options.makefile) \
                     if self.options.makefile != "Makefile" else ""
-                print(colorize("./docker-run make{} upgrade{}".format(
+                print(colorize("./docker-run --home make{} upgrade{}".format(
                     args, step if step != 0 else "",
                 ), GREEN))
             else:
-                cmd = "./docker-run --image=camptocamp/geomapfish-build --version={} c2cupgrade ".format(
-                    pkg_resources.get_distribution("c2cgeoportal_commons").version)
+                cmd = " ".join([
+                    "./docker-run",
+                    "--home",
+                    "--image=camptocamp/geomapfish-build",
+                    "--version=" + pkg_resources.get_distribution("c2cgeoportal_commons").version,
+                    "c2cupgrade",
+                ])
                 if self.options.windows:
                     cmd += "--windows "
                 if self.options.nondocker:
