@@ -62,6 +62,40 @@ from c2cgeoportal_geoportal.lib.caching import init_region
 from c2cgeoportal_geoportal.lib.print_ import *  # noqa
 
 
+class _Registry:  # pragma: no cover
+    settings = None
+
+    def __init__(self, settings):
+        self.settings = settings
+
+
+class _Request:  # pragma: no cover
+    registry = None  # type: _Registry
+    params = {}  # type: Dict[str, str]
+    matchdict = {}  # type: Dict[str, str]
+    GET = {}  # type: Dict[str, str]
+    user_agent = ""  # type: str
+
+    def __init__(self, settings=None):
+        self.registry = _Registry(settings)
+
+    @staticmethod
+    def static_url(*args, **kwargs):
+        return ""
+
+    @staticmethod
+    def static_path(*args, **kwargs):
+        return ""
+
+    @staticmethod
+    def route_url(*args, **kwargs):
+        return ""
+
+    @staticmethod
+    def current_route_url(*args, **kwargs):
+        return ""
+
+
 class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
     """
     GeoMapfish angular extractor
@@ -74,31 +108,6 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
         self.config = get_config("geoportal/config.yaml") if os.path.exists("geoportal/config.yaml") else None
 
     def __call__(self, filename, options):
-
-        class Registry:
-            settings = self.config
-
-        class Request:
-            registry = Registry()
-            params = {}
-            GET = {}
-            user_agent = ""
-
-            @staticmethod
-            def static_url(*args, **kwargs):
-                return ""
-
-            @staticmethod
-            def static_path(*args, **kwargs):
-                return ""
-
-            @staticmethod
-            def route_url(*args, **kwargs):
-                return ""
-
-            @staticmethod
-            def current_route_url(*args, **kwargs):
-                return ""
 
         init_region({"backend": "dogpile.cache.memory"})
 
@@ -128,7 +137,7 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
                     processed = template(
                         filename,
                         {
-                            "request": Request(),
+                            "request": _Request(self.config),
                             "lang": "fr",
                             "debug": False,
                             "extra_params": {},
@@ -441,14 +450,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
     def _layer_attributes(self, url, layer):
         errors = set()
 
-        class Registry:
-            setting = None
-
-        class Request:
-            registry = Registry()
-            matchdict = {}
-
-        request = Request()
+        request = _Request()
         request.registry.settings = self.config
         # static schema will not be supported
         url = get_url2("Layer", url, request, errors)
