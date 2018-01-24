@@ -138,5 +138,6 @@ def init_dbsessions(settings: dict, config: Configurator, health_check: HealthCh
             if name == 'dbsession':
                 health_check.add_db_session_check(session, at_least_one_model=main.Theme)
             else:  # pragma: no cover
-                health_check.add_db_session_check(
-                    session, query_cb=lambda session: session.execute('SELECT 1'))
+                def check(session: Session) -> None:
+                    session.execute('SELECT 1')
+                health_check.add_db_session_check(session, query_cb=check)
