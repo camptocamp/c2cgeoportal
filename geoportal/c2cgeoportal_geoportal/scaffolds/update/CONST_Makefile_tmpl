@@ -612,8 +612,8 @@ $(APP_OUTPUT_DIR)/templatecache.js: /build/gmftemplatecache.js
 		$(NGEO_DIRECTIVES_PARTIALS_FILES)
 	$(PRERULE_CMD)
 	PYTHONIOENCODING=UTF-8 mako-render \
-		--var "partials=ngeo:/usr/lib/node_modules/ngeo/src/directives/partials \
-		gmf:/usr/lib/node_modules/ngeo/contribs/gmf/src/directives/partials \
+		--var "partials=ngeo:/usr/lib/node_modules/ngeo/src \
+		gmf:/usr/lib/node_modules/ngeo/contribs/gmf/src \
 		$(PACKAGE)_components:geoportal/$(PACKAGE)_geoportal/static-ngeo/components \
 		$(PACKAGE)_partials:geoportal/$(PACKAGE)_geoportal/static-ngeo/partials \
 		$(PACKAGE)_js:geoportal/$(PACKAGE)_geoportal/static-ngeo/js" \
