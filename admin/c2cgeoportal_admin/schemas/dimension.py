@@ -1,5 +1,5 @@
 import colander
-from deform.widget import MappingWidget
+from deform.widget import MappingWidget, SequenceWidget
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoportal_commons.models.main import Dimension
 
@@ -11,4 +11,5 @@ dimensions_schema_node = colander.SequenceSchema(
         widget=MappingWidget(template='dimension'),
     ),
     name='dimensions',
+    widget=SequenceWidget(category='structural')
 )
