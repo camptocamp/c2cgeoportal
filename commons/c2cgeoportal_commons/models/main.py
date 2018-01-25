@@ -43,7 +43,7 @@ from geoalchemy2 import Geometry
 from geoalchemy2.shape import to_shape
 
 import colander
-from deform.widget import HiddenWidget, SelectWidget, TextAreaWidget
+from deform.widget import HiddenWidget, FormWidget, SelectWidget, TextAreaWidget
 from c2cgeoform.ext import colander_ext, deform_ext
 
 from c2cgeoportal_commons.models import Base, schema, srid
@@ -126,6 +126,10 @@ class Functionality(Base):
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
+    __colanderalchemy_config__ = {
+        'title': _('Functionality'),
+        'plural': _('Functionalities')
+    }
 
     id = Column(Integer, primary_key=True)
     name = Column(Unicode, nullable=False)
@@ -869,7 +873,8 @@ class LayerWMS(DimensionLayer):
     ]
     __colanderalchemy_config__ = {
         'title': _('WMS Layer'),
-        'plural': _('WMS Layers')
+        'plural': _('WMS Layers'),
+        'widget': FormWidget(fields_template='layer_wms_fields')
     }
 
     __c2cgeoform_config__ = {
@@ -886,6 +891,7 @@ class LayerWMS(DimensionLayer):
     ogc_server_id = Column(Integer, ForeignKey(_schema + '.ogc_server.id'), nullable=False, info={
         'colanderalchemy': {
             'title': _('OGC server'),
+            'column': 2,
             'widget': deform_ext.RelationSelect2Widget(
                 OGCServer,
                 'id',
@@ -895,17 +901,20 @@ class LayerWMS(DimensionLayer):
         }})
     layer = Column(Unicode, info={
         'colanderalchemy': {
-            'title': _('WMS layer name')
+            'title': _('WMS layer name'),
+            'column': 2
         }})
     style = Column(Unicode, info={
         'colanderalchemy': {
-            'title': _('Style')
+            'title': _('Style'),
+            'column': 2
         }})
     time_mode = Column(Enum(
         'disabled', 'value', 'range',
         native_enum=False), default='disabled', nullable=False, info={
             'colanderalchemy': {
                 'title': _('Time mode'),
+                'column': 2,
                 'widget': SelectWidget(values=(
                     ('disabled', _('Disabled')),
                     ('value', _('Value')),
@@ -918,6 +927,7 @@ class LayerWMS(DimensionLayer):
         native_enum=False), default='slider', nullable=False, info={
             'colanderalchemy': {
                 'title': _('Time widget'),
+                'column': 2,
                 'widget': SelectWidget(values=(
                     ('slider', _('Slider')),
                     ('datepicker', _('Datepicker'))
@@ -1024,6 +1034,10 @@ class RestrictionArea(Base):
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
+    __colanderalchemy_config__ = {
+        'title': _('Restriction area'),
+        'plural': _('Restriction areas')
+    }
 
     id = Column(Integer, primary_key=True)
     area = Column(Geometry('POLYGON', srid=_srid), info={'colanderalchemy': {

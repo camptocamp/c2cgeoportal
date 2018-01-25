@@ -426,6 +426,8 @@ class TestLayerWMSViews(AbstractViewsTests):
     def test_selenium(self, selenium, selenium_app):
         selenium.get(selenium_app + self._prefix)
 
+        elem = selenium.find_element_by_xpath('//li[@id="language-dropdown"]')
+        elem.click()
         elem = selenium.find_element_by_xpath('//a[contains(@href,"language=en")]')
         elem.click()
 

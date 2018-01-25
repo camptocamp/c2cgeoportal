@@ -26,7 +26,7 @@ class AbstractViewsTests():
         return self.get(test_app, '/{}'.format(item_id), **kwargs)
 
     def check_left_menu(self, resp, title):
-        link = resp.html.select_one('#main-menu li.active a')
+        link = resp.html.select_one('.navbar li.active a')
         assert 'http://localhost{}'.format(self._prefix) == link.attrs['href']
         assert title == link.getText()
 
