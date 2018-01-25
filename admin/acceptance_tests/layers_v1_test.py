@@ -302,6 +302,16 @@ class TestLayerV1Views(AbstractViewsTests):
         assert layer_v1_test_data['layers'][3].metadatas[0].name == layer.metadatas[0].name
         assert layer_v1_test_data['layers'][3].metadatas[1].name == layer.metadatas[1].name
 
+    def test_unicity_validator(self, layer_v1_test_data, test_app):
+        layer = layer_v1_test_data['layers'][2]
+        resp = test_app.get("/layers_v1/{}/duplicate".format(layer.id), status=200)
+
+        resp = resp.form.submit('submit')
+
+        AbstractViewsTests.check_one_submission_problem(
+            '{} is already used.'.format(layer.name),
+            resp)
+
     def test_delete(self, test_app, dbsession):
         from c2cgeoportal_commons.models.main import LayerV1, Layer, TreeItem
         layer_id = dbsession.query(LayerV1.id).first().id

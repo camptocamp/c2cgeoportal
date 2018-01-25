@@ -21,6 +21,7 @@ base_schema.add(dimensions_schema_node.clone())
 base_schema.add(metadatas_schema_node.clone())
 base_schema.add(interfaces_schema_node.clone())
 base_schema.add(restrictionareas_schema_node.clone())
+base_schema.add_unique_validator(LayerWMS.name, LayerWMS.id)
 
 
 @view_defaults(match_param='table=layers_wms')

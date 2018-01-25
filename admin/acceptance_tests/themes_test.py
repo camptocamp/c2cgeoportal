@@ -3,6 +3,7 @@
 import re
 import pytest
 
+from . import AbstractViewsTests
 from .treegroup_tests import TestTreeGroup
 
 
@@ -375,3 +376,13 @@ class TestTheme(TestTreeGroup):
         assert duplicated.id != theme.id
         assert duplicated.children_relation[0].id != theme.children_relation[0].id
         assert duplicated.children_relation[0].treeitem.id == theme.children_relation[0].treeitem.id
+
+    def test_unicity_validator(self, theme_test_data, test_app):
+        theme = theme_test_data['themes'][1]
+        resp = test_app.get('{}/{}/duplicate'.format(self._prefix, theme.id), status=200)
+
+        resp = resp.form.submit('submit')
+
+        AbstractViewsTests.check_one_submission_problem(
+            '{} is already used.'.format(theme.name),
+            resp)

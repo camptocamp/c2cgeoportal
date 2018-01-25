@@ -180,3 +180,13 @@ class TestLayerWMTS(AbstractViewsTests):
             filter(LayerWMTS.name == 'clone'). \
             one()
         assert str(layer.id) == re.match('http://localhost/layers_wmts/(.*)', resp.location).group(1)
+
+    def test_unicity_validator(self, layer_wmts_test_data, test_app):
+        layer = layer_wmts_test_data['layers'][2]
+        resp = test_app.get("/layers_wmts/{}/duplicate".format(layer.id), status=200)
+
+        resp = resp.form.submit('submit')
+
+        AbstractViewsTests.check_one_submission_problem(
+            '{} is already used.'.format(layer.name),
+            resp)

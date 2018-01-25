@@ -62,6 +62,7 @@ base_schema.add_before(
         validator=manytomany_validator
     )
 )
+base_schema.add_unique_validator(Role.name, Role.id)
 
 
 @view_defaults(match_param='table=roles')

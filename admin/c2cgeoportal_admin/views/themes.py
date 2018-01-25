@@ -86,6 +86,7 @@ base_schema.add(
 )
 
 base_schema.add(metadatas_schema_node.clone())
+base_schema.add_unique_validator(Theme.name, Theme.id)
 
 
 @view_defaults(match_param='table=themes')

@@ -11,6 +11,7 @@ from c2cgeoform.views.abstract_views import ListField
 _list_field = partial(ListField, OGCServer)
 
 base_schema = GeoFormSchemaNode(OGCServer)
+base_schema.add_unique_validator(OGCServer.name, OGCServer.id)
 
 
 @view_defaults(match_param='table=ogc_servers')

@@ -14,6 +14,7 @@ _list_field = partial(ListField, LayerGroup)
 base_schema = GeoFormSchemaNode(LayerGroup)
 base_schema.add(children_schema_node())
 base_schema.add(metadatas_schema_node.clone())
+base_schema.add_unique_validator(LayerGroup.name, LayerGroup.id)
 
 
 @view_defaults(match_param='table=layer_groups')

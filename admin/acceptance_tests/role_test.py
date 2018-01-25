@@ -197,6 +197,16 @@ class TestRole(AbstractViewsTests):
         assert role_proto.restrictionareas[1].name == role.restrictionareas[1].name
         assert role_proto.restrictionareas[1].id == role.restrictionareas[1].id
 
+    def test_unicity_validator(self, roles_test_data, test_app):
+        role_proto = roles_test_data['roles'][7]
+        resp = test_app.get("/roles/{}/duplicate".format(role_proto.id), status=200)
+
+        resp = resp.form.submit('submit')
+
+        AbstractViewsTests.check_one_submission_problem(
+            '{} is already used.'.format(role_proto.name),
+            resp)
+
     @pytest.mark.usefixtures('raise_db_error_on_query')
     def test_grid_dberror(self, dbsession):
         from c2cgeoportal_admin.views.roles import RoleViews

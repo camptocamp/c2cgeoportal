@@ -106,3 +106,13 @@ class TestOGCServer(AbstractViewsTests):
             filter(OGCServer.name == 'clone'). \
             one()
         assert str(server.id) == re.match('http://localhost/ogc_servers/(.*)', resp.location).group(1)
+
+    def test_unicity_validator(self, ogc_server_test_data, test_app):
+        ogc_server = ogc_server_test_data['ogc_servers'][3]
+        resp = test_app.get("/ogc_servers/{}/duplicate".format(ogc_server.id), status=200)
+
+        resp = resp.form.submit('submit')
+
+        AbstractViewsTests.check_one_submission_problem(
+            '{} is already used.'.format(ogc_server.name),
+            resp)
