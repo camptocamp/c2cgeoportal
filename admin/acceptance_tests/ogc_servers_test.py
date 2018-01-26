@@ -113,6 +113,4 @@ class TestOGCServer(AbstractViewsTests):
 
         resp = resp.form.submit('submit')
 
-        AbstractViewsTests.check_one_submission_problem(
-            '{} is already used.'.format(ogc_server.name),
-            resp)
+        self._check_submission_problem(resp, '{} is already used.'.format(ogc_server.name))

@@ -3,78 +3,36 @@
 import re
 import pytest
 
-from . import skip_if_ci, AbstractViewsTests
+from . import skip_if_ci, AbstractViewsTests, get_test_default_layers, factory_build_layers
 
 
 @pytest.fixture(scope='class')
 @pytest.mark.usefixtures('dbsession')
 def layer_wms_test_data(dbsession):
-    from c2cgeoportal_commons.models.main import \
-        LayerWMS, OGCServer, RestrictionArea, LayergroupTreeitem, \
-        Interface, Dimension, Metadata, LayerGroup
-
-    dbsession.begin_nested()
+    from c2cgeoportal_commons.models.main import LayerWMS, OGCServer
 
     servers = [OGCServer(name='server_{}'.format(i)) for i in range(0, 4)]
     for i, server in enumerate(servers):
+        server.url = 'http://wms.geo.admin.ch_{}'.format(i)
         server.image_type = 'image/jpeg' if i % 2 == 0 else 'image/png'
 
-    restrictionareas = [RestrictionArea(name='restrictionarea_{}'.format(i))
-                        for i in range(0, 5)]
-
-    interfaces = [Interface(name) for name in ['desktop', 'mobile', 'edit', 'routing']]
-
-    dimensions_protos = [('Date', '2017'),
-                         ('Date', '2018'),
-                         ('Date', '1988'),
-                         ('CLC', 'all'), ]
-
-    metadatas_protos = [('copyable', 'true'),
-                        ('disclaimer', '© le momo'),
-                        ('snappingConfig', '{"tolerance": 50}')]
-
-    groups = [LayerGroup(name='layer_group_{}'.format(i)) for i in range(0, 5)]
-
-    layers = []
-    for i in range(0, 25):
+    def layer_builder(i):
         layer = LayerWMS(name='layer_wms_{}'.format(i))
         layer.layer = 'layer_{}'.format(i)
         layer.public = 1 == i % 2
+        layer.geo_table = 'geotable_{}'.format(i)
         layer.ogc_server = servers[i % 4]
-        layer.restrictionareas = [restrictionareas[i % 5],
-                                  restrictionareas[(i + 2) % 5]]
+        layer.style = 'décontrasté'
+        return layer
 
-        if i % 10 != 1:
-            layer.interfaces = [interfaces[i % 4], interfaces[(i + 2) % 4]]
+    dbsession.begin_nested()
 
-        layer.dimensions = [Dimension(name=dimensions_protos[id][0],
-                                      value=dimensions_protos[id][1],
-                                      layer=layer)
-                            for id in [i % 3, (i + 2) % 4, (i + 3) % 4]]
-
-        layer.metadatas = [Metadata(name=metadatas_protos[id][0],
-                                    value=metadatas_protos[id][1])
-                           for id in [i % 3, (i + 2) % 3]]
-        for metadata in layer.metadatas:
-            metadata.item = layer
-
-        dbsession.add(LayergroupTreeitem(group=groups[i % 5],
-                                         item=layer,
-                                         ordering=len(groups[i % 5].children_relation)))
-        dbsession.add(LayergroupTreeitem(group=groups[(i + 3) % 5],
-                                         item=layer,
-                                         ordering=len(groups[(i + 3) % 5].children_relation)))
-
-        dbsession.add(layer)
-        layers.append(layer)
+    datas = factory_build_layers(layer_builder, dbsession)
+    datas['servers'] = servers
+    datas['default'] = get_test_default_layers(dbsession, servers[1])
     dbsession.flush()
 
-    yield {
-        'servers': servers,
-        'restrictionareas': restrictionareas,
-        'layers': layers,
-        'interfaces': interfaces
-    }
+    yield datas
 
     dbsession.rollback()
 
@@ -119,7 +77,7 @@ class TestLayerWMSViews(AbstractViewsTests):
             },
             status=200
         ).json
-        assert 25 == json['total']
+        assert 26 == json['total']
 
         row = json['rows'][0]
         layer = layer_wms_test_data['layers'][0]
@@ -287,7 +245,7 @@ class TestLayerWMSViews(AbstractViewsTests):
         assert set((ras[3].id, ras[0].id)) == set(i.id for i in layer.restrictionareas)
         self._check_restrictionsareas(form, ras, layer)
 
-        self._check_dimensions_are_duplicated(form, layer)
+        self._check_dimensions(resp.html, layer.dimensions, duplicated=True)
 
         self.set_first_field_named(form, 'name', 'clone')
         resp = form.submit('submit')
@@ -302,13 +260,29 @@ class TestLayerWMSViews(AbstractViewsTests):
         assert layer_wms_test_data['layers'][3].metadatas[1].name == layer.metadatas[1].name
 
     def test_convert_common_fields_copied(self, layer_wms_test_data, test_app, dbsession):
-        from c2cgeoportal_commons.models.main import LayerWMTS
+        from c2cgeoportal_commons.models.main import LayerWMTS, LayerWMS
         layer = layer_wms_test_data['layers'][3]
+        assert 0 == dbsession.query(LayerWMTS). \
+            filter(LayerWMTS.name == layer.name). \
+            count()
+        assert 1 == dbsession.query(LayerWMS). \
+            filter(LayerWMS.name == layer.name). \
+            count()
 
-        resp = test_app.get("/layers_wmts/from_wms/{}".format(layer.id), status=200)
+        resp = test_app.get("/layers_wmts/from_wms/{}".format(layer.id), status=302)
 
+        assert str(layer.id) == re.match('http://localhost/layers_wmts/(.*)', resp.location).group(1)
+        assert 1 == dbsession.query(LayerWMTS). \
+            filter(LayerWMTS.name == layer.name). \
+            count()
+        assert 0 == dbsession.query(LayerWMS). \
+            filter(LayerWMS.name == layer.name). \
+            count()
+
+        resp = resp.follow()
         form = resp.form
-        assert '' == self.get_first_field_named(form, 'id').value
+
+        assert str(layer.id) == self.get_first_field_named(form, 'id').value
         assert layer.name == self.get_first_field_named(form, 'name').value
         assert str(layer.metadata_url or '') == form['metadata_url'].value
         assert str(layer.description or '') == self.get_first_field_named(form, 'description').value
@@ -318,28 +292,22 @@ class TestLayerWMSViews(AbstractViewsTests):
         assert str(layer.exclude_properties or '') == form['exclude_properties'].value
         assert str(layer.layer or '') == form['layer'].value
         assert str(layer.style or '') == form['style'].value
+        assert layer_wms_test_data['default']['wmts'].url == self.get_first_field_named(form, 'url').value
+        assert layer_wms_test_data['default']['wmts'].matrix_set == form['matrix_set'].value
+
         interfaces = layer_wms_test_data['interfaces']
         self._check_interfaces(form, interfaces, layer)
         ras = layer_wms_test_data['restrictionareas']
         self._check_restrictionsareas(form, ras, layer)
-        self._check_dimensions_are_duplicated(form, layer)
-
-        self.set_first_field_named(form, 'name', 'converted')
-        resp = form.submit('submit')
-
-        layer = dbsession.query(LayerWMTS). \
-            filter(LayerWMTS.name == 'converted'). \
-            one()
-        assert str(layer.id) == re.match('http://localhost/layers_wmts/(.*)', resp.location).group(1)
+        self._check_dimensions(resp.html, layer.dimensions)
 
     def test_convert_image_type_from_ogcserver(self, layer_wms_test_data, test_app):
-        layer = layer_wms_test_data['layers'][2]
-        resp = test_app.get("/layers_wmts/from_wms/{}".format(layer.id), status=200)
-        assert 'image/jpeg' == resp.form['image_type'].value
-
         layer = layer_wms_test_data['layers'][3]
-        resp = test_app.get("/layers_wmts/from_wms/{}".format(layer.id), status=200)
+        resp = test_app.get("/layers_wmts/from_wms/{}".format(layer.id), status=302).follow()
         assert 'image/png' == resp.form['image_type'].value
+        layer = layer_wms_test_data['layers'][2]
+        resp = test_app.get("/layers_wmts/from_wms/{}".format(layer.id), status=302).follow()
+        assert 'image/jpeg' == resp.form['image_type'].value
 
     def test_unicity_validator(self, layer_wms_test_data, test_app):
         layer = layer_wms_test_data['layers'][2]
@@ -347,9 +315,7 @@ class TestLayerWMSViews(AbstractViewsTests):
 
         resp = resp.form.submit('submit')
 
-        AbstractViewsTests.check_one_submission_problem(
-            '{} is already used.'.format(layer.name),
-            resp)
+        self._check_submission_problem(resp, '{} is already used.'.format(layer.name))
 
     def test_unicity_validator_does_not_matter_amongst_cousin(self, layer_wms_test_data, test_app, dbsession):
         from c2cgeoportal_commons.models.main import LayerWMS, LayerGroup
@@ -366,23 +332,6 @@ class TestLayerWMSViews(AbstractViewsTests):
             filter(LayerWMS.name == 'layer_group_0'). \
             one()
         assert str(layer.id) == re.match('http://localhost/layers_wms/(.*)', resp.location).group(1)
-
-    def _check_dimensions_are_duplicated(self, form, layer):
-        observed_input = form.html.select('input[value=dimension:mapping]')[0].find_next('input')
-        assert '' == observed_input.attrs['value']
-        observed_input = observed_input.find_next('input')
-        assert layer.dimensions[0].name == observed_input.attrs['value']
-        observed_input = observed_input.find_next('input')
-        assert layer.dimensions[0].value == observed_input.attrs['value']
-
-        # [4] because whe should select 'input[value='dimension:mapping'][name='__start__'] but
-        #  Only the following pseudo-classes are implemented: nth-of-type.
-        observed_input = form.html.select('input[value=dimension:mapping]')[4].find_next('input')
-        assert '' == observed_input.attrs['value']
-        observed_input = observed_input.find_next('input')
-        assert layer.dimensions[2].name == observed_input.attrs['value']
-        observed_input = observed_input.find_next('input')
-        assert layer.dimensions[2].value == observed_input.attrs['value']
 
     def test_delete(self, test_app, dbsession):
         from c2cgeoportal_commons.models.main import LayerWMS, Layer, TreeItem
@@ -436,7 +385,7 @@ class TestLayerWMSViews(AbstractViewsTests):
         from selenium.webdriver.support import expected_conditions
         elem = WebDriverWait(selenium, 10).until(
             expected_conditions.presence_of_element_located((By.XPATH, '//div[@class="infos"]')))
-        assert 'Showing 1 to 10 of 25 entries' == elem.text
+        assert 'Showing 1 to 10 of 26 entries' == elem.text
         elem = selenium.find_element_by_xpath('//button[@title="Refresh"]/following-sibling::*')
         elem.click()
         elem = selenium.find_element_by_xpath('//a[contains(.,"50")]')

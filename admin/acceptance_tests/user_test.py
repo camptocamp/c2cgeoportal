@@ -128,9 +128,7 @@ class TestUser(AbstractViewsTests):
                 'role_name': 'secretary_2'},
             status=200)
 
-        AbstractViewsTests.check_one_submission_problem(
-            '{} is already used.'.format('babar_0'),
-            resp)
+        self._check_submission_problem(resp, '{} is already used.'.format('babar_0'))
 
     def test_duplicate(self, users_test_data, test_app, dbsession):
         from c2cgeoportal_commons.models.static import User

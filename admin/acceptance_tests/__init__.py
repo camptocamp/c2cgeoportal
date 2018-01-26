@@ -9,6 +9,82 @@ skip_if_ci = pytest.mark.skipif(
 )
 
 
+def get_test_default_layers(dbsession, default_ogc_server):
+    from c2cgeoportal_commons.models.main import LayerWMTS, LayerWMS
+    default_wms = LayerWMS('wms-defaults')
+    default_wms.ogc_server = default_ogc_server
+    default_wms.time_widget = 'datepicker'
+    default_wms.time_mode = 'value'
+    dbsession.add(default_wms)
+    default_wmts = LayerWMTS('wmts-defaults')
+    default_wmts.url = 'https:///wmts.geo.admin_default.ch.org?service=wms&request=GetCapabilities'
+    default_wmts.layer = 'default'
+    default_wmts.matrix_set = 'matrix'
+
+    dbsession.add(default_wmts)
+    dbsession.flush()
+    return {'wms': default_wms, 'wmts': default_wmts}
+
+
+def factory_build_layers(layer_builder, dbsession, add_dimension=True):
+    from c2cgeoportal_commons.models.main import \
+        RestrictionArea, LayergroupTreeitem, \
+        Interface, Dimension, Metadata, LayerGroup
+
+    restrictionareas = [RestrictionArea(name='restrictionarea_{}'.format(i))
+                        for i in range(0, 5)]
+
+    interfaces = [Interface(name) for name in ['desktop', 'mobile', 'edit', 'routing']]
+
+    dimensions_protos = [('Date', '2017'),
+                         ('Date', '2018'),
+                         ('Date', '1988'),
+                         ('CLC', 'all'), ]
+
+    metadatas_protos = [('copyable', 'true'),
+                        ('disclaimer', '© le momo'),
+                        ('snappingConfig', '{"tolerance": 50}')]
+
+    groups = [LayerGroup(name='layer_group_{}'.format(i)) for i in range(0, 5)]
+
+    layers = []
+    for i in range(0, 25):
+
+        layer = layer_builder(i)
+
+        if add_dimension:
+            layer.dimensions = [Dimension(name=dimensions_protos[id][0],
+                                          value=dimensions_protos[id][1],
+                                          layer=layer)
+                                for id in [i % 3, (i + 2) % 4, (i + 3) % 4]]
+
+        layer.metadatas = [Metadata(name=metadatas_protos[id][0],
+                                    value=metadatas_protos[id][1])
+                           for id in [i % 3, (i + 2) % 3]]
+        for metadata in layer.metadatas:
+            metadata.item = layer
+
+        if i % 10 != 1:
+                layer.interfaces = [interfaces[i % 4], interfaces[(i + 2) % 4]]
+
+        layer.restrictionareas = [restrictionareas[i % 5], restrictionareas[(i + 2) % 5]]
+
+        dbsession.add(LayergroupTreeitem(group=groups[i % 5],
+                                         item=layer,
+                                         ordering=len(groups[i % 5].children_relation)))
+        dbsession.add(LayergroupTreeitem(group=groups[(i + 3) % 5],
+                                         item=layer,
+                                         ordering=len(groups[(i + 3) % 5].children_relation)))
+
+        dbsession.add(layer)
+        layers.append(layer)
+    return {
+        'restrictionareas': restrictionareas,
+        'layers': layers,
+        'interfaces': interfaces
+    }
+
+
 class AbstractViewsTests():
 
     _prefix = None  # url prefix (index view url). Example : /users
@@ -123,11 +199,38 @@ class AbstractViewsTests():
             if 'selected' in exp:
                 assert exp['selected'] == ('selected' in option.attrs)
 
-    @staticmethod
-    def check_one_submission_problem(expected_msg, resp):
+    def _check_submission_problem(self, resp, expected_msg):
         assert 'There was a problem with your submission' == \
             resp.html.select_one('div[class="error-msg-lbl"]').text
         assert 'Errors have been highlighted below' == \
             resp.html.select_one('div[class="error-msg-detail"]').text
         assert expected_msg == \
-            resp.html.select_one("[class~'has-error']").select_one("[class~'help-block']").getText()
+            resp.html.select_one("[class~'has-error']").select_one("[class~'help-block']").getText().strip()
+
+    def _check_dimensions(self, html, dimensions, duplicated=False):
+        item = html.select_one('.item-dimensions')
+        self._check_sequence(item, [
+            [
+                {
+                    'name': 'id',
+                    'value': '' if duplicated else str(d.id),
+                    'hidden': True
+                },
+                {
+                    'name': 'name',
+                    'value': d.name,
+                    'label': 'Name'
+                },
+                {
+                    'name': 'value',
+                    'value': d.value,
+                    'label': 'Value'
+                },
+                {
+                    'name': 'description',
+                    'value': d.description,
+                    'label': 'Description'
+                }
+            ]
+            for d in sorted(dimensions, key=lambda d: d.name)]
+        )

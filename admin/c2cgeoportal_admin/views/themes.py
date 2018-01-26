@@ -9,11 +9,11 @@ from c2cgeoform.views.abstract_views import ListField
 
 from c2cgeoportal_commons.models.main import Theme, Interface, Role, Functionality
 from c2cgeoportal_admin.schemas.treegroup import children_schema_node
-from c2cgeoportal_admin.views.functionalities import functionalities_schema_node
+from c2cgeoportal_admin.schemas.functionalities import functionalities_schema_node
 from c2cgeoportal_admin.schemas.metadata import metadatas_schema_node
+from c2cgeoportal_admin.schemas.interfaces import interfaces_schema_node
+from c2cgeoportal_admin.schemas.roles import roles_schema_node
 from c2cgeoportal_admin.views.treeitems import TreeItemViews
-from c2cgeoportal_admin.views.interfaces import interfaces_schema_node
-from c2cgeoportal_admin.views.roles import roles_schema_node
 
 
 _list_field = partial(ListField, Theme)
