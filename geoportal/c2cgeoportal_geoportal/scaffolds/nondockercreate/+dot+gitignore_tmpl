@@ -7,6 +7,7 @@ __pycache__/
 /docker-compose.yaml
 /docker-compose-build.yaml
 /alembic.ini
+/alembic.yaml
 /testdb/11-schemas.sql
 /testdb/12-alembic.sql
 /testdb/13-alembic-static.sql

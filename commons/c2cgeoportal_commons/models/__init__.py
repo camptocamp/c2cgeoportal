@@ -50,9 +50,6 @@ DBSession = None  # Initialized by init_dbsessions
 Base = sqlalchemy.ext.declarative.declarative_base()  # type: sqlalchemy.ext.declarative.api.Base
 DBSessions = {}  # type: Dict[str, Session]
 
-srid = None  # type: Optional[str]
-schema = None  # type: Optional[str]
-
 
 def get_engine(settings: dict, prefix: str='sqlalchemy.') -> Engine:
     return engine_from_config(settings, prefix)
@@ -95,10 +92,6 @@ def generate_mappers(settings: dict) -> None:
     """
     Initialize the model for a Pyramid app.
     """
-    global schema
-    schema = settings['schema']
-    global srid
-    srid = settings['srid']
 
     # import or define all models here to ensure they are attached to the
     # Base.metadata prior to any initialization routines
@@ -109,12 +102,6 @@ def generate_mappers(settings: dict) -> None:
     configure_mappers()
 
 def init_dbsessions(settings: dict, config: Configurator, health_check: HealthCheck=None) -> None:
-    # define the srid, schema as global variables to be usable in the model
-    global schema
-    global srid
-    srid = settings['srid']
-    schema = settings['schema']
-
     db_chooser = settings.get('db_chooser', {})
     master_paths = [re.compile(i.replace('//', '/')) for i in db_chooser.get('master', [])]
     slave_paths = [re.compile(i.replace('//', '/')) for i in db_chooser.get('slave', [])]

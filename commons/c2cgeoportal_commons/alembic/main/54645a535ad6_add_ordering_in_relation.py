@@ -34,9 +34,10 @@ Revises: 415746eb9f6
 Create Date: 2014-11-25 14:39:05.110315
 """
 
-from alembic import op, context
+from alembic import op
 from sqlalchemy import Column
 from sqlalchemy.types import Integer
+from c2cgeoportal_commons.config import config
 
 # revision identifiers, used by Alembic.
 revision = '54645a535ad6'
@@ -44,7 +45,7 @@ down_revision = '415746eb9f6'
 
 
 def upgrade():
-    schema = context.get_context().config.get_main_option('schema')
+    schema = config['schema']
 
     op.drop_constraint('layergroup_treeitem_pkey', 'layergroup_treeitem', schema=schema)
     op.add_column('layergroup_treeitem', Column('id', Integer, primary_key=True), schema=schema)
@@ -62,7 +63,7 @@ def upgrade():
 
 
 def downgrade():
-    schema = context.get_context().config.get_main_option('schema')
+    schema = config['schema']
     op.add_column('treeitem', Column('order', Integer), schema=schema)
     op.execute(
         'UPDATE ONLY %(schema)s.treeitem AS ti SET "order" = lt.ordering '

@@ -31,6 +31,7 @@
 from unittest import TestCase
 from pyramid import testing
 
+from c2cgeoportal_commons.config import config
 import c2cgeoportal_geoportal
 from c2cgeoportal_geoportal import call_hook, set_user_validator, \
     default_user_validator, create_get_user_from_request, _match_url_start
@@ -39,18 +40,19 @@ from c2cgeoportal_geoportal import call_hook, set_user_validator, \
 class TestIncludeme(TestCase):
 
     def setup_method(self, _):
-        self.config = testing.setUp(
-            # the c2cgeoportal includeme function requires a number
-            # of settings
-            settings={
-                "sqlalchemy.url": "postgresql://www-data:www-data@db:5432/geomapfish_tests",
-                "srid": 3857,
-                "schema": "main",
-                "default_max_age": 86400,
-                "app.cfg": "/src/geoportal/tests/config.yaml",
-                "package": "c2cgeoportal",
-                "enable_admin_interface": True,
-            })
+        # the c2cgeoportal includeme function requires a number
+        # of settings
+        config._config = {
+            "sqlalchemy.url": "postgresql://www-data:www-data@db:5432/geomapfish_tests",
+            "srid": 3857,
+            "schema": "main",
+            "schema_static": "main_static",
+            "default_max_age": 86400,
+            "app.cfg": "/src/geoportal/tests/config.yaml",
+            "package": "c2cgeoportal",
+            "enable_admin_interface": True,
+        }
+        self.config = testing.setUp(settings=config.get_config())
 
     def test_set_user_validator_directive(self):
         self.config.include(c2cgeoportal_geoportal.includeme)
@@ -97,6 +99,11 @@ class TestReferer(TestCase):
                 self.user_ = TestReferer.USER
                 self.method = method
 
+        config._config = {
+            'schema': 'main',
+            'schema_static': 'main_static',
+            'srid': 21781
+        }
         get_user = create_get_user_from_request(self.SETTINGS)
         return get_user(MockRequest(to=to, ref=ref, method=method))
 

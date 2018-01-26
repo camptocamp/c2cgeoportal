@@ -14,4 +14,6 @@ For non Docker upgrade have a look on the nondocker_CHANGELOG
 
 3. The `checker` section of the file `vars.yaml` should be rewritten like it's in `CONST_create_template/vars.yaml`.
 
-4. In the file `project.yaml.mako` the checker path sould ve set to `/c2c/health_check?`.
+4. In the file `project.yaml.mako` the checker path should we set to `/c2c/health_check?`.
+
+5. The `shortener.email_body` in the vars files use now the template syntax.

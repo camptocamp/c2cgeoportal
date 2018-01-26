@@ -38,6 +38,8 @@ from webob.acceptparse import Accept
 
 from pyramid import testing
 import tests
+
+from c2cgeoportal_commons.config import config as configuration
 from c2cgeoportal_geoportal.lib import functionality, caching
 
 
@@ -91,7 +93,7 @@ def setup_common():
     db_url = cfg.get("test", "sqlalchemy.url")
 
     assert db_url is not None
-    config = testing.setUp(settings={
+    configuration._config = {
         "sqlalchemy.url": db_url,
         "sqlalchemy_slave.url": db_url,
         "srid": 21781,
@@ -100,7 +102,8 @@ def setup_common():
         "app.cfg": "/src/geoportal/tests/config.yaml",
         "package": "c2cgeoportal",
         "enable_admin_interface": True,
-    })
+    }
+    config = testing.setUp(settings=configuration.get_config())
 
     models.init_dbsessions(config.get_settings(), config)
     functionality.FUNCTIONALITIES_TYPES = None

@@ -34,8 +34,9 @@ Revises: 1da396a88908
 Create Date: 2015-04-20 14:51:30.595467
 """
 
-from alembic import op, context
+from alembic import op
 from sqlalchemy import Column, Unicode
+from c2cgeoportal_commons.config import config
 
 
 # revision identifiers, used by Alembic.
@@ -44,14 +45,14 @@ down_revision = '1da396a88908'
 
 
 def upgrade():
-    staticschema = context.get_context().config.get_main_option('static_schema')
+    staticschema = config['schema_static']
 
     # Instructions
     op.add_column('user', Column('temp_password', Unicode), schema=staticschema)
 
 
 def downgrade():
-    staticschema = context.get_context().config.get_main_option('static_schema')
+    staticschema = config['schema_static']
 
     # Instructions
     op.drop_column('user', 'temp_password', schema=staticschema)

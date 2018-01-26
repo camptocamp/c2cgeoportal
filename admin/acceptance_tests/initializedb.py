@@ -14,6 +14,7 @@ from sqlalchemy.orm import Session
 from c2cgeoportal_commons.models import (
     Base, get_engine, get_session_factory, get_tm_session, generate_mappers,
 )
+from c2cgeoportal_commons.config import config
 
 
 def usage(argv: List[str]) -> None:
@@ -57,11 +58,9 @@ def main(argv: List[str]=sys.argv) -> None:
 def init_db(connection: Connection, force: bool=False, test: bool=False) -> None:
     import c2cgeoportal_commons.models.main  # noqa: F401
     import c2cgeoportal_commons.models.static  # noqa: F401
-    from c2cgeoportal_commons.models import schema
 
-    schema_static = '{}_static'.format(schema)
-
-    assert schema is not None
+    schema = config['schema']
+    schema_static = config['schema_static']
     if force:
         if schema_exists(connection, schema):
             connection.execute('DROP SCHEMA {} CASCADE;'.format(schema))

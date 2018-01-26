@@ -34,9 +34,10 @@ Revises: None
 Create Date: 2014-10-23 16:00:47.940216
 """
 
-from alembic import op, context
+from alembic import op
 from sqlalchemy import Column, ForeignKey, Table, MetaData
 from sqlalchemy.types import Integer, Boolean, Unicode, Float
+from c2cgeoportal_commons.config import config
 
 # revision identifiers, used by Alembic.
 revision = '415746eb9f6'
@@ -44,7 +45,7 @@ down_revision = '166ff2dcc48d'
 
 
 def upgrade():
-    schema = context.get_context().config.get_main_option('schema')
+    schema = config['schema']
 
     engine = op.get_bind().engine
     if type(engine).__name__ != 'MockConnection' and \
@@ -283,7 +284,7 @@ def upgrade():
 
 
 def downgrade():
-    schema = context.get_context().config.get_main_option('schema')
+    schema = config['schema']
 
     op.drop_table('wmts_dimension', schema=schema)
     op.drop_table('ui_metadata', schema=schema)

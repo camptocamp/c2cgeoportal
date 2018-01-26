@@ -3,5 +3,8 @@
 #
 # This is required for test_init.py.
 vars:
+  schema: main
+  schema_static: main_static
+  srid: 21781
   cache:
     backend: dogpile.cache.memory

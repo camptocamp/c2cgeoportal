@@ -48,12 +48,12 @@ from geoalchemy2.types import Geometry
 from lingua.extractors import Extractor
 from lingua.extractors import Message
 from pyramid.paster import bootstrap
-from c2c.template import get_config
 from bottle import template, MakoTemplate
 from mako.template import Template
 from mako.lookup import TemplateLookup
 from owslib.wms import WebMapService
 
+from c2cgeoportal_commons.config import config
 from c2cgeoportal_geoportal.lib import add_url_params, get_url2
 from c2cgeoportal_geoportal.lib.bashcolor import colorize, RED
 from c2cgeoportal_geoportal.lib.dbreflection import get_class
@@ -105,7 +105,11 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
 
     def __init__(self):
         super().__init__()
-        self.config = get_config("geoportal/config.yaml") if os.path.exists("geoportal/config.yaml") else None
+        if os.path.exists("geoportal/config.yaml"):
+            config.init("geoportal/config.yaml")
+            self.config = config.get_config()
+        else:
+            self.config = None
 
     def __call__(self, filename, options):
 
@@ -207,7 +211,8 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
                 raise Exception("Not a known config file")
 
     def _collect_app_config(self, filename):
-        settings = get_config(filename)
+        config.init(filename)
+        settings = config.get_config()
         # Collect raster layers names
         raster = [
             Message(
@@ -225,10 +230,10 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
         class C:
             registry = R()
 
-        config = C()
-        config.registry.settings = settings
+        config_ = C()
+        config_.registry.settings = settings
         from c2cgeoportal_commons import models
-        models.init_dbsessions(settings, config)
+        models.init_dbsessions(settings, config_)
         from c2cgeoportal_geoportal.views.layers import Layers
         enums = []
         enum_layers = settings.get("layers", {}).get("enum", {})
@@ -296,7 +301,11 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
 
     def __init__(self):
         super().__init__()
-        self.config = get_config("geoportal/config.yaml") if os.path.exists("geoportal/config.yaml") else None
+        if os.path.exists("geoportal/config.yaml"):
+            config.init("geoportal/config.yaml")
+            self.config = config.get_config()
+        else:
+            self.config = None
         if os.path.exists("project.yaml"):
             with open("project.yaml") as f:
                 self.package = yaml.safe_load(f)

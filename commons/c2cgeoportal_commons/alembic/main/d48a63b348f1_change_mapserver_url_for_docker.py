@@ -34,7 +34,8 @@ Revises: 9268a1dffac0
 Create Date: 2017-08-24 08:05:46.012191
 """
 
-from alembic import op, context
+from alembic import op
+from c2cgeoportal_commons.config import config
 
 # revision identifiers, used by Alembic.
 revision = 'd48a63b348f1'
@@ -44,7 +45,7 @@ depends_on = None
 
 
 def upgrade():
-    schema = context.get_context().config.get_main_option('schema')
+    schema = config['schema']
 
     # Instructions
     op.execute("""
@@ -55,7 +56,7 @@ def upgrade():
 
 
 def downgrade():
-    schema = context.get_context().config.get_main_option('schema')
+    schema = config['schema']
 
     # Instructions
     op.execute("""

@@ -30,13 +30,16 @@
 
 from unittest import TestCase
 from pyramid import testing
+from c2cgeoportal_commons.config import config
 
 
 def setup_module():  # noqa
-    from c2cgeoportal_commons import models
     from c2cgeoportal_geoportal import caching
-    models.schema = "main"
-    models.srid = 21781
+    config._config = {
+        'schema': 'main',
+        'schema_static': 'main_static',
+        'srid': 21781,
+    }
     caching.init_region({
         "backend": "dogpile.cache.null",
     })

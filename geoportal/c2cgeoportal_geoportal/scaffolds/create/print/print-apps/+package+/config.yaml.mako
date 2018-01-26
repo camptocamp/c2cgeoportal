@@ -63,9 +63,9 @@ templates:
           - !restrictUris
             matchers:
               - !localMatch
-                pathRegex: ${entry_point}/mapserv_proxy
+                pathRegex: '${entry_point}/mapserv_proxy'
               - !localMatch
-                pathRegex: ${entry_point}/tiles/.*
+                pathRegex: '${entry_point}/tiles/.*'
               - !localMatch
                 reject: true
               - !ipMatch

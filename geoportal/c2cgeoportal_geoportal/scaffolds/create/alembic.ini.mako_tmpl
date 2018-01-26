@@ -1,19 +1,14 @@
 [DEFAULT]
+app.cfg = %(here)s/alembic.yaml
 script_location = /opt/alembic
-
-sqlalchemy.url = ${sqlalchemy["url"]}
 version_table = c2cgeoportal_version
-srid = {{srid}}
 
 [main]
-version_table_schema = ${schema}
-schema = ${schema}
+type = main
 version_locations = /opt/alembic/main/
 
 [static]
-version_table_schema = ${schema}_static
-main_schema = ${schema}
-static_schema = ${schema}_static
+type = static
 version_locations = /opt/alembic/static/
 
 # Logging configuration
