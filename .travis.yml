@@ -131,7 +131,7 @@ deploy:
 
   - provider: script
     skip_cleanup: true
-    script: travis/publish-transifex
+    script: ./docker-run --home make transifex-send
     on:
       repo: camptocamp/c2cgeoportal
       condition: ( $TRAVIS_BRANCH == $MAIN_BRANCH )
