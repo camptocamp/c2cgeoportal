@@ -34,7 +34,8 @@ Revises: ec82a8906649
 Create Date: 2016-09-08 16:49:58.865617
 """
 
-from alembic import op, context
+from alembic import op
+from c2cgeoportal_commons.config import config
 
 # revision identifiers, used by Alembic.
 revision = '596ba21e3833'
@@ -44,7 +45,7 @@ depends_on = None
 
 
 def upgrade():
-    schema = context.get_context().config.get_main_option('schema')
+    schema = config['schema']
 
     op.execute("""
         UPDATE "{schema}".ogc_server
@@ -54,7 +55,7 @@ def upgrade():
 
 
 def downgrade():
-    schema = context.get_context().config.get_main_option('schema')
+    schema = config['schema']
 
     op.execute("""
         UPDATE "{schema}".ogc_server

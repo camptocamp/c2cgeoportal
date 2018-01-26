@@ -1,4 +1,4 @@
-c2c.template==1.5.1
+c2c.template
 c2cwsgiutils
 deform
 plaster_pastedeploy

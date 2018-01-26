@@ -49,6 +49,7 @@ WEB_RULE ?= $(DEFAULT_WEB_RULE)
 DEFAULT_BUILD_RULES ?= /build/geoportal-docker.timestamp \
 	project.yaml \
 	alembic.ini \
+	alembic.yaml \
 	docker-compose.yaml \
 	docker-compose-build.yaml
 
@@ -86,14 +87,6 @@ OUTPUT_DIR = geoportal/$(PACKAGE)_geoportal/static/build
 GIT_REMOTE ?= origin
 GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 GIT_HASH ?= $(shell git rev-parse HEAD)
-
-# Visible web URL
-# The protocol part
-VISIBLE_WEB_PROTOCOL ?= https
-VISIBLE_ENTRY_POINT ?= /
-export VISIBLE_WEB_HOST
-export VISIBLE_WEB_PROTOCOL
-export VISIBLE_ENTRY_POINT
 
 # ngeo
 ANGULAR_VERSION = 1.6
@@ -311,8 +304,8 @@ ALL_JINJA_FILES = $(shell find $(FIND_OPTS) -name "*.jinja" -print)
 EXTRA_EXCLUDE = $(foreach ELEM, print mapfile jsbuild tilegeneration,-path ./$(ELEM) -prune -o)
 VARS_FILES += CONST_vars.yaml $(VARS_FILE)
 VARS_DEPENDS += $(VARS_FILES)
-CONFIG_VARS += sqlalchemy.url sqlalchemy_slave.url schema enable_admin_interface pyramid_closure \
-	node_modules_path closure_library_path default_locale_name servers layers \
+CONFIG_VARS += sqlalchemy.url sqlalchemy_slave.url schema schema_static enable_admin_interface \
+	pyramid_closure node_modules_path closure_library_path default_locale_name servers layers \
 	available_locale_names cache admin_interface functionalities \
 	raster shortener hide_capabilities mapserverproxy tinyowsproxy resourceproxy print_url \
 	tiles_url checker check_collector default_max_age jsbuild package srid \
@@ -373,7 +366,7 @@ checks: flake8 $(CLIENT_CHECK_RULE) $(NGEO_OUTPUT_JS_INTERFACES_FILES) $(NGEO_OU
 git-attributes:
 	git --no-pager diff --check `git log --oneline | tail -1 | cut --fields=1 --delimiter=' '`
 
-YAML_FILES ?= $(filter-out ./tilegeneration/config.yaml ./geoportal/config.yaml,$(shell find -name .build -prune -or -name cgxp -prune -or \( -name "*.yml" -or -name "*.yaml" \) -print))
+YAML_FILES ?= $(filter-out ./tilegeneration/config.yaml ./geoportal/config.yaml ./alembic.yaml,$(shell find -name .build -prune -or -name cgxp -prune -or \( -name "*.yml" -or -name "*.yaml" \) -print))
 .PHONY: yamllint
 yamllint: $(YAML_FILES)
 	yamllint --strict --config-file=yamllint.yaml -s $(YAML_FILES)
@@ -386,6 +379,7 @@ clean: template-clean
 		$(OUTPUT_DIR)/ \
 		$(APP_OUTPUT_DIR)/ \
 		geoportal/$(PACKAGE)_geoportal/locale/$(PACKAGE)-*.pot \
+		alembic.yaml \
 		.UPGRADE*
 ifeq ($(TILECLOUD_CHAIN_LOCAL), TRUE)
 	rm --force $(WMTSCAPABILITIES_FILE)
@@ -424,7 +418,7 @@ serve: geoportal/development.ini build
 	pserve --reload --monitor-restart $<
 
 .PHONY: upgrade-db
-upgrade-db: alembic.ini
+upgrade-db: alembic.ini alembic.yaml
 	alembic --name=main upgrade head
 	alembic --name=static upgrade head
 
@@ -736,18 +730,29 @@ push-docker:
 	docker push $(DOCKER_BASE)-geoportal:$(DOCKER_TAG)
 	docker push $(DOCKER_BASE)-mapserver:$(DOCKER_TAG)
 
-testdb/12-alembic.sql: alembic.ini $(shell ls -1 /opt/alembic/main/*.py)
+alembic.yaml: vars_testdb.yaml vars.yaml CONST_vars.yaml
+	$(PRERULE_CMD)
+	c2c-template --vars $< --get-config /build/_alembic.yaml srid schema schema_static sqlalchemy.url
+	mv /build/_alembic.yaml $@
+
+testdb/11-schemas.sql: vars_testdb.yaml testdb/11-schemas.sql_mako vars.yaml CONST_vars.yaml
+	$(PRERULE_CMD)
+	ln -s 11-schemas.sql_mako testdb/11-schemas.sql.mako
+	c2c-template --vars $< --engine mako --files testdb/11-schemas.sql.mako
+	rm testdb/11-schemas.sql.mako
+
+testdb/12-alembic.sql: alembic.ini alembic.yaml $(shell ls -1 /opt/alembic/main/*.py)
 	$(PRERULE_CMD)
 	alembic --name=main upgrade --sql head > $@
 
-testdb/13-alembic-static.sql: alembic.ini $(shell ls -1 /opt/alembic/static/*.py)
+testdb/13-alembic-static.sql: alembic.ini alembic.yaml $(shell ls -1 /opt/alembic/static/*.py)
 	$(PRERULE_CMD)
 	alembic --name=static upgrade --sql head > $@
 
 .PHONY: testdb-docker
 testdb-docker: /build/testdb-docker.timestamp
 
-/build/testdb-docker.timestamp: testdb/12-alembic.sql testdb/13-alembic-static.sql \
+/build/testdb-docker.timestamp: testdb/11-schemas.sql testdb/12-alembic.sql testdb/13-alembic-static.sql \
 		$(shell docker-required --path testdb)
 	$(PRERULE_CMD)
 	docker build -t $(DOCKER_BASE)-testdb:$(DOCKER_TAG) testdb

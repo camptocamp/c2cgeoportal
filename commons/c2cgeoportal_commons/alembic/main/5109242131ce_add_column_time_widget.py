@@ -34,9 +34,10 @@ Revises: 164ac0819a61
 Create Date: 2015-04-27 17:31:41.760977
 """
 
-from alembic import op, context
+from alembic import op
 from sqlalchemy import Column
 from sqlalchemy.types import Unicode
+from c2cgeoportal_commons.config import config
 
 # revision identifiers, used by Alembic.
 revision = '5109242131ce'
@@ -44,7 +45,7 @@ down_revision = '164ac0819a61'
 
 
 def upgrade():
-    schema = context.get_context().config.get_main_option('schema')
+    schema = config['schema']
 
     # Instructions
     for table in ['layerv1', 'layer_internal_wms', 'layer_external_wms']:
@@ -55,7 +56,7 @@ def upgrade():
 
 
 def downgrade():
-    schema = context.get_context().config.get_main_option('schema')
+    schema = config['schema']
 
     # Instructions
     for table in ['layerv1', 'layer_internal_wms', 'layer_external_wms']:

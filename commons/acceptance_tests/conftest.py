@@ -1,13 +1,13 @@
 
 import os
 import pytest
-import yaml
 
 import transaction
 from sqlalchemy.exc import DBAPIError
 
-from c2cgeoportal_commons.scripts.initializedb import init_db
+from .initializedb import init_db
 from c2cgeoportal_commons.models import get_engine, get_session_factory, get_tm_session, generate_mappers
+from c2cgeoportal_commons.config import config
 
 
 @pytest.fixture(scope='session')
@@ -32,8 +32,8 @@ def transact(dbsession):
 @pytest.fixture(scope='session')
 def settings():
     file_name = 'tests.yaml' if os.path.exists('tests.yaml') else 'commons/tests.yaml'
-    with open(file_name) as config:
-        return yaml.safe_load(config.read())['settings']
+    config.init(file_name)
+    return config.get_config()
 
 
 def raise_db_error(_):

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (c) 2014-2018, Camptocamp SA
 # All rights reserved.
 
@@ -29,18 +30,30 @@
 from alembic import context
 from sqlalchemy import engine_from_config, pool
 from logging.config import fileConfig
-
-# this is the Alembic Config object, which provides
-# access to the values within the .ini file in use.
-config = context.config
+from c2cgeoportal_commons.config import config
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
-fileConfig(config.config_file_name)
+fileConfig(context.config.config_file_name)
+
+
+def get_config():
+    config.init(context.config.get_main_option('app.cfg'))
+    settings = {}
+    settings.update(config.get_config())
+    main = context.config.get_main_option('type') == 'main'
+    settings.update({
+        'script_location': context.config.get_main_option('script_location'),
+        'version_table': context.config.get_main_option('version_table'),
+        'version_locations': context.config.get_main_option('version_locations'),
+        'version_table_schema': config['schema' if main else 'schema_static'],
+    })
+    return settings
 
 
 def run_migrations_offline():  # pragma: no cover
-    """Run migrations in 'offline' mode.
+    """
+    Run migrations in 'offline' mode.
 
     This configures the context with just a URL
     and not an Engine, though an Engine is acceptable
@@ -51,33 +64,29 @@ def run_migrations_offline():  # pragma: no cover
     script output.
 
     """
-    context.configure(
-        url=config.get_main_option('sqlalchemy.url'),
-        version_table_schema=config.get_main_option('version_table_schema'),
-    )
+    conf = get_config()
+    context.configure(url=conf['sqlalchemy.url'], **conf)
 
     with context.begin_transaction():
         context.run_migrations()
 
 
 def run_migrations_online():
-    """Run migrations in 'online' mode.
+    """
+    Run migrations in 'online' mode.
 
     In this scenario we need to create an Engine
     and associate a connection with the context.
 
     """
+    conf = get_config()
     engine = engine_from_config(
-        config.get_section(config.config_ini_section),
+        conf,
         prefix='sqlalchemy.',
         poolclass=pool.NullPool
     )
-
     connection = engine.connect()
-    context.configure(
-        connection=connection,
-        version_table_schema=config.get_main_option('version_table_schema'),
-    )
+    context.configure(connection=connection, **conf)
 
     try:
         with context.begin_transaction():

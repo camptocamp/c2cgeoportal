@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 # Copyright (c) 2015-2018, Camptocamp SA
 # All rights reserved.
 
@@ -36,9 +36,10 @@ Create Date: 2015-02-20 14:09:04.875390
 
 from hashlib import sha1
 
-from alembic import op, context
+from alembic import op
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy.types import Integer, String, Unicode, Boolean
+from c2cgeoportal_commons.config import config
 
 # revision identifiers, used by Alembic.
 revision = '1da396a88908'
@@ -46,9 +47,9 @@ down_revision = '3f89a7d71a5e'
 
 
 def upgrade():
-    schema = context.get_context().config.get_main_option('main_schema')
-    staticschema = context.get_context().config.get_main_option('static_schema')
-    parentschema = context.get_context().config.get_main_option('parentschema')
+    schema = config['schema']
+    staticschema = config['schema_static']
+    parentschema = config.get('parentschema')
 
     engine = op.get_bind().engine
     if type(engine).__name__ != 'MockConnection' and \
@@ -112,9 +113,9 @@ def upgrade():
 
 
 def downgrade():
-    schema = context.get_context().config.get_main_option('main_schema')
-    staticschema = context.get_context().config.get_main_option('static_schema')
-    parentschema = context.get_context().config.get_main_option('parentschema')
+    schema = config['schema']
+    staticschema = config.get('schema_static')
+    parentschema = config.get('parentschema')
 
     op.create_table(
         'user',

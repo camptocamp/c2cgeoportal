@@ -34,7 +34,8 @@ Revises: daf738d5bae4
 Create Date: 2016-08-16 16:53:07.012668
 """
 
-from alembic import op, context
+from alembic import op
+from c2cgeoportal_commons.config import config
 
 # revision identifiers, used by Alembic.
 revision = '8117bb9bba16'
@@ -44,7 +45,7 @@ depends_on = None
 
 
 def upgrade():
-    schema = context.get_context().config.get_main_option('schema')
+    schema = config['schema']
 
     op.rename_table('wmts_dimension', 'dimension', schema=schema)
     with op.batch_alter_table('dimension', schema=schema) as table_op:
@@ -56,7 +57,7 @@ def upgrade():
 
 
 def downgrade():
-    schema = context.get_context().config.get_main_option('schema')
+    schema = config['schema']
 
     with op.batch_alter_table('dimension', schema=schema) as table_op:
         table_op.drop_constraint('dimension_layer_id_fkey', type_='foreignkey')

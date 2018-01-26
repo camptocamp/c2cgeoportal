@@ -31,8 +31,14 @@ files_to_move:
   - from: testdb/Dockerfile.mako
     to: testdb/Dockerfile
     version: 2.3
+  - from: testdb/11-schemas.sql.mako
+    to: testdb/11-schemas.sql_mako
+    version: 2.3
   - from: vars_{{package}}.yaml
     to: vars.yaml
+    version: 2.3
+  - from: alembic.ini.mako
+    to: alembic.ini
     version: 2.3
   - from: Dockerfile
     to: geoportal/Dockerfile.mako

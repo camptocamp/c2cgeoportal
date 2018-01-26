@@ -86,9 +86,6 @@ The following variables may be set in the makefiles:
 * ``PRINT``: Mapfish print is enable, default to ``TRUE``.
 * ``MAPSERVER``: MapServer is enable, default to ``TRUE``.
 * ``TILECLOUD_CHAIN``: ``TRUE`` to indicate that we use TileCloud-chain, default to ``TRUE``.
-* ``VISIBLE_ENTRY_POINT``: The entry point (path) of the application, default to ``/``.
-* ``VISIBLE_WEB_HOST``: The hostname, required.
-* ``VISIBLE_WEB_PROTOCOL``: The used protocol, default to ``https``.
 
 
 Custom rules

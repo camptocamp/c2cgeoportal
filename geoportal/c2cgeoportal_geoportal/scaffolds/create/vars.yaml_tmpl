@@ -91,10 +91,10 @@ vars:
       Hello,
 
       Somebody sent you the following link:
-      %(short_url)s
+      {short_url}
 
       With the message:
-      %(message)s
+      {message}
 
       Sincerely yours
       The GeoMapfish team
@@ -157,3 +157,7 @@ update_paths:
   - checker.print
   - check_collector.disabled
   - check_collector.hosts
+
+no_interpreted:
+  - shortener.email_body
+  - reset_password.email_body
