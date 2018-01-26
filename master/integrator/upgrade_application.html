@@ -50,7 +50,7 @@
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">./docker-run make upgrade</span>
+</style><span class="prompt1">./docker-run --home make upgrade</span>
 </pre><p>Then follow the instruction</p>
 </div>
 <div class="section" id="convert-a-version-2-3-to-docker">
@@ -58,7 +58,7 @@ span.prompt1:before {
 <p>Add <code class="docutils literal"><span class="pre">UPGRADE_ARGS</span> <span class="pre">+=</span> <span class="pre">--force-docker</span> <span class="pre">--new-makefile=Makefile</span></code> in your <code class="docutils literal"><span class="pre">&lt;user&gt;.mk</span></code> file.</p>
 <pre class="highlight"><span class="prompt1">git add &lt;user&gt;.mk</span>
 <span class="prompt1">git commit --message<span class="o">=</span><span class="s2">&quot;Start upgrade&quot;</span></span>
-<span class="prompt1">./docker-run make --makefile<span class="o">=</span>temp.mk upgrade</span>
+<span class="prompt1">./docker-run --home make --makefile<span class="o">=</span>temp.mk upgrade</span>
 </pre><p>Then follow the instruction</p>
 <p>Remove the <code class="docutils literal"><span class="pre">UPGRADE_ARGS</span></code> in your <code class="docutils literal"><span class="pre">&lt;user&gt;.mk</span></code> file.</p>
 <pre class="highlight"><span class="prompt1">git add &lt;user&gt;.mk</span>
@@ -70,7 +70,7 @@ span.prompt1:before {
 Add <code class="docutils literal"><span class="pre">UPGRADE_ARGS</span> <span class="pre">+=</span> <span class="pre">--nondocker</span> <span class="pre">--new-makefile=&lt;package&gt;.mk</span></code> in the <code class="docutils literal"><span class="pre">Makefile</span></code>.</p>
 <pre class="highlight"><span class="prompt1">git add project.yaml.mako Makefile</span>
 <span class="prompt1">git commit --message<span class="o">=</span><span class="s2">&quot;Start upgrade&quot;</span></span>
-<span class="prompt1">./docker-run make upgrade</span>
+<span class="prompt1">./docker-run --home make upgrade</span>
 </pre><p>Then follow the instruction</p>
 <p>Remove the <code class="docutils literal"><span class="pre">UPGRADE_ARGS</span></code> in your <code class="docutils literal"><span class="pre">Makefile</span></code>.</p>
 </div>
@@ -102,10 +102,10 @@ All the files that’s not in this section will be overwritten except:</p>
 <pre class="highlight"><span class="prompt1">docker pull camptocamp/geomapfish-build:&lt;version&gt;</span>
 </pre><p>Where <code class="docutils literal"><span class="pre">&lt;version&gt;</span></code> is <code class="docutils literal"><span class="pre">2.3.0</span></code> for the first stable release of the version <code class="docutils literal"><span class="pre">2.3</span></code>.</p>
 <p>For Docker:</p>
-<pre class="highlight"><span class="prompt1">./docker-run --image<span class="o">=</span>camptocamp/geomapfish-build --version<span class="o">=</span>&lt;version&gt; <span class="se">\</span>
+<pre class="highlight"><span class="prompt1">./docker-run --home --image<span class="o">=</span>camptocamp/geomapfish-build --version<span class="o">=</span>&lt;version&gt; <span class="se">\</span>
     c2cupgrade --force-docker --new-makefile<span class="o">=</span>Makefile --makefile<span class="o">=</span>&lt;package&gt;.mk</span>
 </pre><p>And for non-Docker</p>
-<pre class="highlight"><span class="prompt1">./docker-run --image<span class="o">=</span>camptocamp/geomapfish-build <span class="se">\</span>
+<pre class="highlight"><span class="prompt1">./docker-run --home --image<span class="o">=</span>camptocamp/geomapfish-build <span class="se">\</span>
     c2cupgrade --nondocker --makefile<span class="o">=</span>testgeomapfish.mk</span>
 </pre><p>Then follow the instruction</p>
 <div class="admonition note">
