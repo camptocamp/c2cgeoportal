@@ -34,7 +34,8 @@ Revises: 32b21aa1d0ed
 Create Date: 2017-01-11 11:07:53.042003
 """
 
-from alembic import op, context
+from alembic import op
+from c2cgeoportal_commons.config import config
 
 # revision identifiers, used by Alembic.
 revision = '9268a1dffac0'
@@ -44,7 +45,7 @@ depends_on = None
 
 
 def upgrade():
-    schema = context.get_context().config.get_main_option('schema')
+    schema = config['schema']
 
     op.execute("""
 CREATE OR REPLACE FUNCTION {schema}.on_role_name_change()
@@ -68,7 +69,7 @@ LANGUAGE plpgsql""".format(schema=schema))
 
 
 def downgrade():
-    schema = context.get_context().config.get_main_option('schema')
+    schema = config['schema']
 
     op.execute('DROP TRIGGER on_role_name_change ON {schema}.role'.format(
         schema=schema

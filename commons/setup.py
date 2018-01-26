@@ -72,13 +72,8 @@ setup(
             'psycopg2',
             'pytest',
             'pytest-cov',
-            'flake8==3.5.0',
+            'flake8',
             'PyYAML',
-        ],
-    },
-    entry_points={
-        'console_scripts': [
-            'initialize_db_main = c2cgeoportal_commons.scripts.initializedb:main',
         ],
     },
 )

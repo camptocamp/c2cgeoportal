@@ -36,10 +36,11 @@ Create Date: 2014-10-24 11:43:23.886123
 
 from hashlib import sha1
 
-from alembic import op, context
+from alembic import op
 from sqlalchemy import ForeignKey, Column, Table, MetaData
 from sqlalchemy.types import Integer, Boolean, Unicode, String, Float, \
     UserDefinedType, DateTime
+from c2cgeoportal_commons.config import config
 
 # revision identifiers, used by Alembic.
 revision = '166ff2dcc48d'
@@ -54,9 +55,10 @@ class TsVector(UserDefinedType):
 
 
 def upgrade():
-    schema = context.get_context().config.get_main_option('schema')
-    parentschema = context.get_context().config.get_main_option('parentschema')
-    srid = context.get_context().config.get_main_option('srid')
+    schema = config['schema']
+    schema_static = config['schema_static']
+    parentschema = config.get('parentschema')
+    srid = config.get('srid')
 
     engine = op.get_bind().engine
     if type(engine).__name__ != 'MockConnection' and \
@@ -104,7 +106,7 @@ def upgrade():
         Column('creation', DateTime),
         Column('last_hit', DateTime),
         Column('nb_hits', Integer),
-        schema=schema + '_static',
+        schema=schema_static,
     )
 
     op.create_table(
@@ -333,7 +335,8 @@ def upgrade():
 
 
 def downgrade():
-    schema = context.get_context().config.get_main_option('schema')
+    schema = config['schema']
+    schema_static = config['schema_static']
 
     op.drop_table('theme_functionality', schema=schema)
     op.drop_table('theme', schema=schema)
@@ -348,7 +351,7 @@ def downgrade():
     op.drop_table('role_restrictionarea', schema=schema)
     op.drop_table('layer', schema=schema)
     op.drop_table('role', schema=schema)
-    op.drop_table('shorturl', schema=schema + '_static')
+    op.drop_table('shorturl', schema=schema_static)
     op.drop_table('restrictionarea', schema=schema)
     op.drop_table('treeitem', schema=schema)
     op.drop_table('functionality', schema=schema)

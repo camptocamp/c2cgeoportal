@@ -34,7 +34,8 @@ Revises: 29f2a32859ec
 Create Date: 2016-06-22 15:29:24.210097
 """
 
-from alembic import op, context
+from alembic import op
+from c2cgeoportal_commons.config import config
 
 # revision identifiers, used by Alembic.
 revision = '951ff84bd8ec'
@@ -44,7 +45,7 @@ depends_on = None
 
 
 def upgrade():
-    schema = context.get_context().config.get_main_option('schema')
+    schema = config['schema']
 
     op.drop_constraint(
         'layergroup_treeitem_treeitem_id_fkey', 'layergroup_treeitem', schema=schema,
@@ -118,7 +119,7 @@ def upgrade():
 
 
 def downgrade():
-    schema = context.get_context().config.get_main_option('schema')
+    schema = config['schema']
 
     op.drop_constraint(
         'layergroup_treeitem_treeitem_id_fkey', 'layergroup_treeitem', schema=schema,

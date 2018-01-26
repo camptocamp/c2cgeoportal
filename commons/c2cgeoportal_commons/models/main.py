@@ -46,7 +46,8 @@ import colander
 from deform.widget import HiddenWidget, FormWidget, SelectWidget, TextAreaWidget
 from c2cgeoform.ext import colander_ext, deform_ext
 
-from c2cgeoportal_commons.models import Base, schema, srid
+from c2cgeoportal_commons.config import config
+from c2cgeoportal_commons.models import Base
 from c2cgeoportal_commons.models.sqlalchemy import JSONEncodedDict
 
 try:
@@ -66,19 +67,8 @@ except ImportError:
 LOG = logging.getLogger(__name__)
 AUTHORIZED_ROLE = 'role_admin'
 
-if schema is not None:
-    _schema = schema
-else:  # pragma: no cover
-    raise Exception(
-        'schema not specified, you need to add it to your config'
-    )
-
-if srid is not None:
-    _srid = srid
-else:  # pragma: no cover
-    raise Exception(
-        'srid not specified, you need to add it to your config'
-    )
+_schema = config['schema']  # type: str
+_srid = config['srid']  # type: int
 
 
 def cache_invalidate_cb(*args: List[Any]) -> None:

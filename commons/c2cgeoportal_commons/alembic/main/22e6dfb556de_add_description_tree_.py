@@ -34,8 +34,9 @@ Revises: 2b8ed8c1df94
 Create Date: 2015-12-04 13:44:42.475652
 """
 
-from alembic import op, context
+from alembic import op
 from sqlalchemy import Column, Unicode
+from c2cgeoportal_commons.config import config
 
 # revision identifiers, used by Alembic.
 revision = '22e6dfb556de'
@@ -43,7 +44,7 @@ down_revision = '2b8ed8c1df94'
 
 
 def upgrade():
-    schema = context.get_context().config.get_main_option('schema')
+    schema = config['schema']
 
     # Instructions
     op.add_column('layergroup_treeitem', Column('description', Unicode), schema=schema)
@@ -51,7 +52,7 @@ def upgrade():
 
 
 def downgrade():
-    schema = context.get_context().config.get_main_option('schema')
+    schema = config['schema']
 
     # Instructions
     op.drop_column('layergroup_treeitem', 'description', schema=schema)

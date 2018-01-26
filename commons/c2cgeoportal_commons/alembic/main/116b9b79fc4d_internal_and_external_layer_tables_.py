@@ -34,9 +34,10 @@ Revises: 1418cb05921b
 Create Date: 2015-10-28 12:21:59.162238
 """
 
-from alembic import op, context
+from alembic import op
 from sqlalchemy import ForeignKey, Column
 from sqlalchemy.types import Integer, Boolean, Unicode
+from c2cgeoportal_commons.config import config
 
 # revision identifiers, used by Alembic.
 revision = '116b9b79fc4d'
@@ -46,7 +47,7 @@ depends_on = None
 
 
 def upgrade():
-    schema = context.get_context().config.get_main_option('schema')
+    schema = config['schema']
 
     # Instructions
     op.create_table(
@@ -180,7 +181,7 @@ def upgrade():
 
 
 def downgrade():
-    schema = context.get_context().config.get_main_option('schema')
+    schema = config['schema']
 
     # Instructions
 

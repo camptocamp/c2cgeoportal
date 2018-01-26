@@ -35,8 +35,9 @@ Revises:
 Create Date: 2014-12-18 10:27:52.263992
 """
 
-from alembic import op, context
+from alembic import op
 from sqlalchemy import types
+from c2cgeoportal_commons.config import config
 
 # revision identifiers, used by Alembic.
 revision = '3f89a7d71a5e'
@@ -44,7 +45,7 @@ down_revision = None
 
 
 def upgrade():
-    schema = context.get_context().config.get_main_option('static_schema')
+    schema = config['schema_static']
     op.alter_column('shorturl', 'url', type_=types.Unicode, schema=schema)
 
 

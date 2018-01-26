@@ -1,0 +1,9 @@
+---
+
+extends: vars.yaml
+
+vars:
+  # sqlalchemy schema
+  schema: 'main'
+  # sqlalchemy static schema
+  schema_static: 'main_static'

@@ -119,6 +119,7 @@ clean:
 	rm --force $(MAKO_FILES:.mako=)
 	rm --recursive --force ngeo
 	rm --force $(APPS_FILES)
+	rm --force geoportal/tests/functional/alembic.yaml
 
 .PHONY: clean-all
 clean-all: clean
@@ -139,14 +140,20 @@ $(BUILD_DIR)/sphinx.timestamp: $(SPHINX_FILES) $(SPHINX_MAKO_FILES:.mako=)
 	docker build --tag=$(DOCKER_TEST_BASE)-gis-db:latest docker/gis-db
 	touch $@
 
+geoportal/tests/functional/alembic.yaml: $(BUILD_DIR)/c2ctemplate-cache.json
+	$(PRERULE_CMD)
+	c2c-template --cache $(BUILD_DIR)/c2ctemplate-cache.json --get-config $@ srid schema schema_static sqlalchemy.url
+
 docker/test-db/12-alembic.sql: \
 		geoportal/tests/functional/alembic.ini \
+		geoportal/tests/functional/alembic.yaml \
 		$(shell ls -1 commons/c2cgeoportal_commons/alembic/main/*.py)
 	$(PRERULE_CMD)
 	alembic --config=$< --name=main upgrade --sql head > $@
 
 docker/test-db/13-alembic-static.sql: \
 		geoportal/tests/functional/alembic.ini \
+		geoportal/tests/functional/alembic.yaml \
 		$(shell ls -1 commons/c2cgeoportal_commons/alembic/static/*.py)
 	$(PRERULE_CMD)
 	alembic --config=$< --name=static upgrade --sql head > $@
@@ -189,6 +196,7 @@ docker/test-db/13-alembic-static.sql: \
 .PHONY: prepare-tests
 prepare-tests: $(BUILD_DIR)/requirements.timestamp \
 		geoportal/tests/functional/test.ini \
+		commons/tests.yaml \
 		docker-compose.yaml \
 		/build/testmapserver-docker.timestamp \
 		/build/testdb-docker.timestamp \

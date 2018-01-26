@@ -34,9 +34,10 @@ Revises: 8117bb9bba16
 Create Date: 2016-10-20 15:00:13.619090
 """
 
-from alembic import op, context
+from alembic import op
 from sqlalchemy import Column
 from sqlalchemy.types import Unicode
+from c2cgeoportal_commons.config import config
 
 # revision identifiers, used by Alembic.
 revision = '7d271f4527cd'
@@ -46,7 +47,7 @@ depends_on = None
 
 
 def upgrade():
-    schema = context.get_context().config.get_main_option('schema')
+    schema = config['schema']
 
     op.add_column('layerv1', Column('layer', Unicode), schema=schema)
     op.execute(
@@ -58,6 +59,6 @@ def upgrade():
 
 
 def downgrade():
-    schema = context.get_context().config.get_main_option('schema')
+    schema = config['schema']
 
     op.drop_column('layerv1', 'layer', schema=schema)

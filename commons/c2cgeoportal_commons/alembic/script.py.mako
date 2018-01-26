@@ -35,7 +35,8 @@ Revises: ${down_revision}
 Create Date: ${create_date}
 """
 
-from alembic import op, context
+from alembic import op
+from c2cgeoportal_commons.config import config
 
 # revision identifiers, used by Alembic.
 revision = ${repr(up_revision)}
@@ -45,14 +46,14 @@ depends_on = ${repr(depends_on)}
 
 
 def upgrade():
-    schema = context.get_context().config.get_main_option('schema')
-    staticschema = schema + '_static'
+    schema = config['schema']
+    staticschema = config['schema_static']
 
     ${upgrades if upgrades else '# Instructions'}
 
 
 def downgrade():
-    schema = context.get_context().config.get_main_option('schema')
-    staticschema = schema + '_static'
+    schema = config['schema']
+    staticschema = config['schema_static']
 
     ${downgrades if downgrades else '# Instructions'}

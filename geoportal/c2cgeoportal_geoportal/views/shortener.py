@@ -147,11 +147,11 @@ class Shortener:
                 "email_from" in self.settings and \
                 "email_subject" in self.settings and \
                 "email_body" in self.settings:  # pragma: no cover
-            text = self.settings["email_body"] % {
-                "full_url": url,
-                "short_url": s_url,
-                "message": self.request.params.get("message", ""),
-            }
+            text = self.settings["email_body"].format(
+                full_url=url,
+                short_url=s_url,
+                message=self.request.params.get("message", ""),
+            )
             send_email(
                 self.settings["email_from"],
                 [email],
