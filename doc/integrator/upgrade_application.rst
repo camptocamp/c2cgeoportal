@@ -12,7 +12,7 @@ From a version 2.3 and next
 
 .. prompt:: bash
 
-   ./docker-run make upgrade
+   ./docker-run --home make upgrade
 
 Then follow the instruction
 
@@ -25,7 +25,7 @@ Add ``UPGRADE_ARGS += --force-docker --new-makefile=Makefile`` in your ``<user>.
 
    git add <user>.mk
    git commit --message="Start upgrade"
-   ./docker-run make --makefile=temp.mk upgrade
+   ./docker-run --home make --makefile=temp.mk upgrade
 
 Then follow the instruction
 
@@ -46,7 +46,7 @@ Add ``UPGRADE_ARGS += --nondocker --new-makefile=<package>.mk`` in the ``Makefil
 
    git add project.yaml.mako Makefile
    git commit --message="Start upgrade"
-   ./docker-run make upgrade
+   ./docker-run --home make upgrade
 
 Then follow the instruction
 
@@ -93,14 +93,14 @@ For Docker:
 
 .. prompt:: bash
 
-   ./docker-run --image=camptocamp/geomapfish-build --version=<version> \
+   ./docker-run --home --image=camptocamp/geomapfish-build --version=<version> \
        c2cupgrade --force-docker --new-makefile=Makefile --makefile=<package>.mk
 
 And for non-Docker
 
 .. prompt:: bash
 
-   ./docker-run --image=camptocamp/geomapfish-build \
+   ./docker-run --home --image=camptocamp/geomapfish-build \
        c2cupgrade --nondocker --makefile=testgeomapfish.mk
 
 Then follow the instruction
