@@ -114,7 +114,7 @@ ifndef TEST_PACKAGES
 TEST_PACKAGES = common
 ifeq ($(DOCKER), FALSE)
 TEST_PACKAGES += main
-ifneq (, $(filter $(PRINT_VERSION), 2 3))
+ifeq ($(PRINT_VERSION), 3)
 TEST_PACKAGES += print
 endif
 ifeq ($(MAPSERVER), TRUE)
@@ -143,9 +143,6 @@ DEFAULT_BUILD_RULES += test-packages
 endif
 ifeq ($(TILECLOUD_CHAIN), TRUE)
 DEFAULT_BUILD_RULES += tilegeneration/config.yaml
-endif
-ifeq ($(PRINT_VERSION), 2)
-DEFAULT_BUILD_RULES += print
 endif
 ifeq ($(PRINT_VERSION), 3)
 DEFAULT_BUILD_RULES += print
@@ -449,17 +446,8 @@ PRINT_REQUIREMENT += \
 	$(shell $(FIND) $(PRINT_BASE_DIR)/print-apps)
 I18N_SOURCE_FILES += print/print-apps/$(PACKAGE)/config.yaml
 endif
-ifeq ($(PRINT_VERSION), 2)
-PRINT_OUTPUT_WAR = $(PRINT_OUTPUT)/$(PRINT_WAR)
-PRINT_BASE_WAR ?= print-servlet-2.1-SNAPSHOT-IMG-MAGICK.war
-PRINT_INPUT_LS += config.yaml WEB-INF/classes/log4j.properties
-PRINT_INPUT_FIND += *.tif *.bmp *.jpg *.jpeg *.gif *.png *.pdf *.xml
-PRINT_INPUT += $(shell cd $(PRINT_BASE_DIR) && ls -1 $(PRINT_INPUT_LS) 2> /dev/null)
-PRINT_INPUT += $(foreach INPUT, $(PRINT_INPUT_FIND), $(shell cd $(PRINT_BASE_DIR) && $(FIND) -name '$(INPUT)' -type f))
-PRINT_REQUIREMENT += $(addprefix $(PRINT_BASE_DIR)/, $(PRINT_INPUT))
-endif
 
-ifneq (, $(filter $(PRINT_VERSION), 2 3))
+ifeq ($(PRINT_VERSION), 3)
 PRINT_FILES += $(shell $(FIND) print $(FIND_OPTS) -not -name ".mako" -not -name ".jinja" -print)
 PRINT_MAKO_FILES += $(shell $(FIND) print $(FIND_OPTS) -name "*.mako" -print)
 PRINT_JINJA_FILES += $(shell $(FIND) print $(FIND_OPTS) -name "*.jinja" -print)
@@ -1151,7 +1139,9 @@ endif
 else
 	cp $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR) $(PRINT_TMP)/$(PRINT_WAR)
 ifeq ($(PRINT_VERSION), 3)
-	zip -d $(PRINT_TMP)/$(PRINT_WAR) print-apps/
+	# Versions mfp up to 3.10 have a print-apps directory; later versions do not,
+	# so ignore any errors resulting from zip
+	zip -d $(PRINT_TMP)/$(PRINT_WAR) print-apps/ || true
 endif
 	cd $(PRINT_BASE_DIR) && jar -uf $(PRINT_TMP)/$(PRINT_WAR) $(PRINT_INPUT)
 	chmod g+r,o+r $(PRINT_TMP)/$(PRINT_WAR)

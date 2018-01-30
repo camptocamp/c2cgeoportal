@@ -1,6 +1,14 @@
 This file includes migration steps for each release of c2cgeoportal.
 
 
+Version 2.2.3
+=============
+
+1. To update MapFish Print, you should get the corresponding file:
+
+    cp CONST_create_template/CONST_print_url .
+
+
 Version 2.2.0
 =============
 
