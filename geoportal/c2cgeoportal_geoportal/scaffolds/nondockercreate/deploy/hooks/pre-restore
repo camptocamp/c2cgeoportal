@@ -6,3 +6,4 @@
 #
 
 echo "Deploy '$TARGET' at `date`" > /tmp/np
+#touch apache/maintenance.enable
