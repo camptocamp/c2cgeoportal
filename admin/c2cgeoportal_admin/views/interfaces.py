@@ -21,7 +21,12 @@ interfaces_schema_node = colander.SequenceSchema(
         Interface,
         'id',
         'name',
-        order_by='name'
+        order_by='name',
+        edit_url=lambda request, value: request.route_url(
+            'c2cgeoform_item',
+            table='interfaces',
+            id=value
+        )
     ),
     validator=manytomany_validator
 )

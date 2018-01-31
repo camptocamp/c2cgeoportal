@@ -36,7 +36,12 @@ base_schema.add(
             ]).alias('functionnality_labels'),
             'id',
             'label',
-            order_by='label'
+            order_by='label',
+            edit_url=lambda request, value: request.route_url(
+                'c2cgeoform_item',
+                table='functionalities',
+                id=value
+            )
         ),
         validator=manytomany_validator
     )
@@ -50,7 +55,12 @@ base_schema.add(
             Role,
             'id',
             'name',
-            order_by='name'
+            order_by='name',
+            edit_url=lambda request, value: request.route_url(
+                'c2cgeoform_item',
+                table='roles',
+                id=value
+            )
         ),
         validator=manytomany_validator
     )
@@ -64,7 +74,12 @@ base_schema.add(
             Interface,
             'id',
             'name',
-            order_by='name'
+            order_by='name',
+            edit_url=lambda request, value: request.route_url(
+                'c2cgeoform_item',
+                table='interfaces',
+                id=value
+            )
         ),
         validator=manytomany_validator
     )

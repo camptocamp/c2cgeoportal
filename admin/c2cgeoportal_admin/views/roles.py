@@ -31,7 +31,11 @@ base_schema.add_before(
             ]).alias('functionnality_labels'),
             'id',
             'label',
-            order_by='label'
+            order_by='label',
+            edit_url=lambda request, value: request.route_url(
+                'c2cgeoform_item',
+                table='functionalities', id=value
+            )
         ),
         validator=manytomany_validator
     )
@@ -45,7 +49,12 @@ base_schema.add_before(
             RestrictionArea,
             'id',
             'name',
-            order_by='name'
+            order_by='name',
+            edit_url=lambda request, value: request.route_url(
+                'c2cgeoform_item',
+                table='restrictionareas',
+                id=value
+            )
         ),
         validator=manytomany_validator
     )
