@@ -31,6 +31,34 @@
                       <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
+                       {% if node.item_type == 'theme' %}
+                       <li class="action-new">
+                           <a title="{{_("New Layer Group")}}"
+                               href="{{request.route_url('c2cgeoform_item', table='layer_groups', id='new')}}?parent_id={{node.id}}"
+                               role="button">
+                               <span class="glyphicon glyphicon-plus"></span>
+                               {{_("New Layer Group")}}
+                           </a>
+                       </li>
+                       {% endif %}
+                       {% if node.item_type == 'group'%}
+                       <li class="action-new">
+                            <a title="{{_("New WMS")}}"
+                                href="{{request.route_url('c2cgeoform_item', table='layers_wms', id='new')}}?parent_id={{node.id}}"
+                                role="button">
+                                <span class="glyphicon glyphicon-plus"></span>
+                                {{_("New WMS Layer")}}
+                            </a>
+                        </li>
+                        <li class="action-new">
+                            <a title="{{_("New WMTS")}}"
+                                href="{{request.route_url('c2cgeoform_item', table='layers_wmts', id='new')}}?parent_id={{node.id}}"
+                                role="button">
+                                <span class="glyphicon glyphicon-plus"></span>
+                                {{_("New WMTS Layer")}}
+                            </a>
+                        </li>
+                        {% endif %}
                         <li class="action-edit">
                             <a title="{{_("Edit")}}"
                                 href="{{request.route_url('c2cgeoform_item', table=itemtypes_tables[node.item_type], id=node.id)}}">

@@ -63,6 +63,17 @@ def children_validator(node, cstruct):
                 format(dict_['treeitem_id'], TreeItem.__tablename__))
 
 
+def base_deferred_parent_id_validator(node, kw, model):  # pylint: disable=unused-argument
+    def validator(node, cstruct):
+        if kw['dbsession'].query(model).filter(model.id == cstruct).count() == 0:
+            raise colander.Invalid(
+                node,
+                'Value {} does not exist in table {}'.
+                format(cstruct, model.__tablename__),
+            )
+    return validator
+
+
 def children_schema_node(only_groups=False):
     return colander.SequenceSchema(
         ChildSchemaNode(
