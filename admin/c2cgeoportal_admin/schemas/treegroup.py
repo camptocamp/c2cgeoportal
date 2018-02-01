@@ -1,5 +1,6 @@
 import colander
 from functools import partial
+from sqlalchemy.orm import aliased
 from sqlalchemy.sql.expression import func, case
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoportal_commons.models.main import LayergroupTreeitem, TreeItem
@@ -17,16 +18,35 @@ class ChildSchemaNode(GeoFormSchemaNode):
 
 
 def treeitems(node, kw, only_groups=False):  # pylint: disable=unused-argument
+    dbsession = kw['request'].dbsession
+
     group = case(
         [(func.count(LayergroupTreeitem.id) == 0, 'Unlinked')],
         else_='Others'
     ).label('group')
 
-    query = kw['request'].dbsession.query(TreeItem, group).distinct(). \
+    query = dbsession.query(TreeItem, group).distinct(). \
         outerjoin('parents_relation'). \
         filter(TreeItem.item_type != 'theme'). \
         group_by(TreeItem.id). \
         order_by(group.desc(), TreeItem.name)
+
+    # Do not propose ancestors to avoid cycles
+    item_id = kw['request'].matchdict['id']
+    if item_id != 'new':
+        search_ancestors = dbsession.query(LayergroupTreeitem.treegroup_id). \
+            filter(LayergroupTreeitem.treeitem_id == item_id). \
+            cte(name='ancestors', recursive=True)
+        search_alias = aliased(search_ancestors, name='search_ancestors')
+        relation_alias = aliased(LayergroupTreeitem, name='relation')
+        search_ancestors = search_alias.union_all(
+            dbsession.query(relation_alias.treegroup_id).
+            filter(relation_alias.treeitem_id == search_alias.c.treegroup_id))
+        ancestors = dbsession.query(search_ancestors.c.treegroup_id).subquery('ancestors')
+
+        query = query. \
+            filter(~TreeItem.id.in_(ancestors)). \
+            filter(TreeItem.id != item_id)
 
     if only_groups:
         query = query.filter(TreeItem.item_type == 'group')
@@ -38,7 +58,8 @@ def children_validator(node, cstruct):
     for dict_ in cstruct:
         if not dict_['treeitem_id'] in [item.id for item, group in node.treeitems]:
             raise colander.Invalid(
-                'Value {} does not exist in table {}'.
+                node,
+                'Value {} does not exist in table {} or is not allowed to avoid cycles'.
                 format(dict_['treeitem_id'], TreeItem.__tablename__))
 
 
