@@ -15,10 +15,13 @@ from sqlalchemy.orm import subqueryload
 from sqlalchemy.sql.functions import concat
 
 from c2cgeoportal_commons.models.main import Role, Functionality, RestrictionArea
+from c2cgeoportal_admin.schemas.map import map_widget
 
 _list_field = partial(ListField, Role)
 
+
 base_schema = GeoFormSchemaNode(Role)
+base_schema['extent'].widget = map_widget
 base_schema.add_before(
     'extent',
     colander.SequenceSchema(
