@@ -461,7 +461,8 @@ class Theme(TreeGroup):
     ]
     __colanderalchemy_config__ = {
         'title': _('Theme'),
-        'plural': _('Themes')
+        'plural': _('Themes'),
+        'widget': FormWidget(fields_template='theme_fields')
     }
     __mapper_args__ = {'polymorphic_identity': 'theme'}
     __c2cgeoform_config__ = {

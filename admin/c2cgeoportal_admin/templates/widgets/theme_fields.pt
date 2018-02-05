@@ -1,0 +1,61 @@
+<div class="row">
+
+  <div class="col-md-4 col-sm-12">
+    <div tal:repeat="child field.children" tal:omit-tag="">
+      <div
+         tal:condition="child.schema.name not in ('interfaces', 'functionalities', 'restricted_roles', 'children_relation', 'metadatas')"
+         tal:replace="structure child.render_template(field.widget.item_template)">
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-8 col-sm-12">
+    <div class="row">
+      <div class="col-sm-4">
+        <div tal:repeat="child field.children" tal:omit-tag="">
+          <div
+             tal:condition="child.schema.name in ('interfaces')"
+             tal:replace="structure child.render_template(field.widget.item_template)">
+          </div>
+        </div>
+        <div tal:repeat="child field.children" tal:omit-tag="">
+          <div
+             tal:condition="child.schema.name in ('restricted_roles')"
+             tal:replace="structure child.render_template(field.widget.item_template)">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-8">
+        <div tal:repeat="child field.children" tal:omit-tag="">
+          <div
+             tal:condition="child.schema.name in ('functionalities')"
+             tal:replace="structure child.render_template(field.widget.item_template)">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="row">
+
+  <div class="col-md-6">
+      <div tal:repeat="child field.children" tal:omit-tag="">
+        <div
+           tal:condition="child.schema.name in ('children_relation')"
+           tal:replace="structure child.render_template(field.widget.item_template)">
+        </div>
+      </div>
+  </div>
+
+  <div class="col-md-6">
+      <div tal:repeat="child field.children" tal:omit-tag="">
+        <div
+           tal:condition="child.schema.name in ('metadatas')"
+           tal:replace="structure child.render_template(field.widget.item_template)">
+        </div>
+      </div>
+  </div>
+
+</div>

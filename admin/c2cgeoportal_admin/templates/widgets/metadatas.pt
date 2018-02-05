@@ -8,4 +8,3 @@
 <div class="item-metadatas">
     <tal metal:use-macro='load:sequence.pt'></tal>
 </div>
-
