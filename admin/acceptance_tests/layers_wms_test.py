@@ -341,6 +341,32 @@ class TestLayerWMSViews(AbstractViewsTests):
         resp = test_app.get("/layers_wmts/from_wms/{}".format(layer.id), status=200)
         assert 'image/png' == resp.form['image_type'].value
 
+    def test_unicity_validator(self, layer_wms_test_data, test_app):
+        layer = layer_wms_test_data['layers'][2]
+        resp = test_app.get("/layers_wms/{}/duplicate".format(layer.id), status=200)
+
+        resp = resp.form.submit('submit')
+
+        AbstractViewsTests.check_one_submission_problem(
+            '{} is already used.'.format(layer.name),
+            resp)
+
+    def test_unicity_validator_does_not_matter_amongst_cousin(self, layer_wms_test_data, test_app, dbsession):
+        from c2cgeoportal_commons.models.main import LayerWMS, LayerGroup
+        layer = layer_wms_test_data['layers'][2]
+        resp = test_app.get("/layers_wms/{}/duplicate".format(layer.id), status=200)
+        assert 1 == dbsession.query(LayerGroup). \
+            filter(LayerGroup.name == 'layer_group_0'). \
+            count()
+        self.set_first_field_named(resp.form, 'name', 'layer_group_0')
+
+        resp = resp.form.submit('submit')
+
+        layer = dbsession.query(LayerWMS). \
+            filter(LayerWMS.name == 'layer_group_0'). \
+            one()
+        assert str(layer.id) == re.match('http://localhost/layers_wms/(.*)', resp.location).group(1)
+
     def _check_dimensions_are_duplicated(self, form, layer):
         observed_input = form.html.select('input[value=dimension:mapping]')[0].find_next('input')
         assert '' == observed_input.attrs['value']

@@ -122,3 +122,12 @@ class AbstractViewsTests():
                 assert exp['value'] == option['value']
             if 'selected' in exp:
                 assert exp['selected'] == ('selected' in option.attrs)
+
+    @staticmethod
+    def check_one_submission_problem(expected_msg, resp):
+        assert 'There was a problem with your submission' == \
+            resp.html.select_one('div[class="error-msg-lbl"]').text
+        assert 'Errors have been highlighted below' == \
+            resp.html.select_one('div[class="error-msg-detail"]').text
+        assert expected_msg == \
+            resp.html.select_one("[class~'has-error']").select_one("[class~'help-block']").getText()

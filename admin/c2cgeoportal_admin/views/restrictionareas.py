@@ -17,7 +17,12 @@ restrictionareas_schema_node = colander.SequenceSchema(
         edit_url=lambda request, value: request.route_url(
             'c2cgeoform_item',
             table='restrictionareas',
-            id=value
+            id=value,
+            edit_url=lambda request, value: request.route_url(
+                'c2cgeoform_item',
+                table='restrictionareas',
+                id=value
+            )
         )
     ),
     validator=manytomany_validator

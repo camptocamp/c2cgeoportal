@@ -18,6 +18,7 @@ base_schema = GeoFormSchemaNode(LayerV1)
 base_schema.add(interfaces_schema_node.clone())
 base_schema.add(restrictionareas_schema_node.clone())
 base_schema.add(metadatas_schema_node.clone())
+base_schema.add_unique_validator(LayerV1.name, LayerV1.id)
 
 
 @view_defaults(match_param='table=layers_v1')

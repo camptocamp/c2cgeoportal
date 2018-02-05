@@ -2,90 +2,29 @@ from functools import partial
 from pyramid.view import view_defaults
 from pyramid.view import view_config
 
-import colander
-from sqlalchemy import select
 from sqlalchemy.orm import subqueryload
 from sqlalchemy.sql.functions import concat
-from c2cgeoform.ext.deform_ext import RelationCheckBoxListWidget
-from c2cgeoform.schema import (
-    GeoFormSchemaNode,
-    GeoFormManyToManySchemaNode,
-    manytomany_validator,
-)
+from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import ListField
 
 from c2cgeoportal_commons.models.main import Theme, Interface, Role, Functionality
 from c2cgeoportal_admin.schemas.treegroup import children_schema_node
+from c2cgeoportal_admin.views.functionalities import functionalities_schema_node
 from c2cgeoportal_admin.schemas.metadata import metadatas_schema_node
 from c2cgeoportal_admin.views.treeitems import TreeItemViews
+from c2cgeoportal_admin.views.interfaces import interfaces_schema_node
+from c2cgeoportal_admin.views.roles import roles_schema_node
+
 
 _list_field = partial(ListField, Theme)
 
 base_schema = GeoFormSchemaNode(Theme)
-
 base_schema.add(children_schema_node(only_groups=True))
-
-base_schema.add(
-    colander.SequenceSchema(
-        GeoFormManyToManySchemaNode(Functionality),
-        name='functionalities',
-        widget=RelationCheckBoxListWidget(
-            select([
-                Functionality.id,
-                concat(Functionality.name, '=', Functionality.value).label('label')
-            ]).alias('functionnality_labels'),
-            'id',
-            'label',
-            order_by='label',
-            edit_url=lambda request, value: request.route_url(
-                'c2cgeoform_item',
-                table='functionalities',
-                id=value
-            )
-        ),
-        validator=manytomany_validator
-    )
-)
-
-base_schema.add(
-    colander.SequenceSchema(
-        GeoFormManyToManySchemaNode(Role),
-        name='restricted_roles',
-        widget=RelationCheckBoxListWidget(
-            Role,
-            'id',
-            'name',
-            order_by='name',
-            edit_url=lambda request, value: request.route_url(
-                'c2cgeoform_item',
-                table='roles',
-                id=value
-            )
-        ),
-        validator=manytomany_validator
-    )
-)
-
-base_schema.add(
-    colander.SequenceSchema(
-        GeoFormManyToManySchemaNode(Interface),
-        name='interfaces',
-        widget=RelationCheckBoxListWidget(
-            Interface,
-            'id',
-            'name',
-            order_by='name',
-            edit_url=lambda request, value: request.route_url(
-                'c2cgeoform_item',
-                table='interfaces',
-                id=value
-            )
-        ),
-        validator=manytomany_validator
-    )
-)
-
+base_schema.add(functionalities_schema_node.clone())
+base_schema.add(roles_schema_node.clone())
+base_schema.add(interfaces_schema_node.clone())
 base_schema.add(metadatas_schema_node.clone())
+base_schema.add_unique_validator(Theme.name, Theme.id)
 
 
 @view_defaults(match_param='table=themes')

@@ -10,58 +10,35 @@ from c2cgeoform.schema import (
     manytomany_validator,
 )
 from c2cgeoform.views.abstract_views import AbstractViews, ListField
-from sqlalchemy import select
 from sqlalchemy.orm import subqueryload
-from sqlalchemy.sql.functions import concat
 
-from c2cgeoportal_commons.models.main import Role, Functionality, RestrictionArea
-from c2cgeoportal_admin.schemas.map import map_widget
+from c2cgeoportal_commons.models.main import Role
+from c2cgeoportal_admin.views.restrictionareas import restrictionareas_schema_node
+from c2cgeoportal_admin.views.functionalities import functionalities_schema_node
 
+roles_schema_node = colander.SequenceSchema(
+    GeoFormManyToManySchemaNode(Role),
+    name='restricted_roles',
+    widget=RelationCheckBoxListWidget(
+        Role,
+        'id',
+        'name',
+        order_by='name',
+        edit_url=lambda request, value: request.route_url(
+            'c2cgeoform_item',
+            table='roles',
+            id=value
+        )
+    ),
+    validator=manytomany_validator
+)
 _list_field = partial(ListField, Role)
 
 
 base_schema = GeoFormSchemaNode(Role)
-base_schema['extent'].widget = map_widget
-base_schema.add_before(
-    'extent',
-    colander.SequenceSchema(
-        GeoFormManyToManySchemaNode(Functionality),
-        name='functionalities',
-        widget=RelationCheckBoxListWidget(
-            select([
-                Functionality.id,
-                concat(Functionality.name, '=', Functionality.value).label('label')
-            ]).alias('functionnality_labels'),
-            'id',
-            'label',
-            order_by='label',
-            edit_url=lambda request, value: request.route_url(
-                'c2cgeoform_item',
-                table='functionalities', id=value
-            )
-        ),
-        validator=manytomany_validator
-    )
-)
-base_schema.add_before(
-    'extent',
-    colander.SequenceSchema(
-        GeoFormManyToManySchemaNode(RestrictionArea),
-        name='restrictionareas',
-        widget=RelationCheckBoxListWidget(
-            RestrictionArea,
-            'id',
-            'name',
-            order_by='name',
-            edit_url=lambda request, value: request.route_url(
-                'c2cgeoform_item',
-                table='restrictionareas',
-                id=value
-            )
-        ),
-        validator=manytomany_validator
-    )
-)
+base_schema.add_before('extent', functionalities_schema_node.clone())
+base_schema.add_before('extent', restrictionareas_schema_node.clone())
+base_schema.add_unique_validator(Role.name, Role.id)
 
 
 @view_defaults(match_param='table=roles')

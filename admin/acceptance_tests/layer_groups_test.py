@@ -3,6 +3,7 @@
 import re
 import pytest
 
+from . import AbstractViewsTests
 from .treegroup_tests import TestTreeGroup
 
 
@@ -305,6 +306,16 @@ class TestLayersGroups(TestTreeGroup):
         assert duplicated.id != group.id
         assert duplicated.children_relation[0].id != group.children_relation[0].id
         assert duplicated.children_relation[0].treeitem.id == group.children_relation[0].treeitem.id
+
+    def test_unicity_validator(self, layer_groups_test_data, test_app):
+        group = layer_groups_test_data['groups'][1]
+        resp = test_app.get('{}/{}/duplicate'.format(self._prefix, group.id), status=200)
+
+        resp = resp.form.submit('submit')
+
+        AbstractViewsTests.check_one_submission_problem(
+            '{} is already used.'.format(group.name),
+            resp)
 
     def test_delete(self, test_app, dbsession, layer_groups_test_data):
         from c2cgeoportal_commons.models.main import LayerGroup, TreeGroup, TreeItem, LayergroupTreeitem

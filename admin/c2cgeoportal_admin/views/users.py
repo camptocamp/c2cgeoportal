@@ -9,6 +9,9 @@ from c2cgeoportal_commons.models.static import User
 
 _list_field = partial(ListField, User)
 
+base_schema = GeoFormSchemaNode(User)
+base_schema.add_unique_validator(User.username, User.id)
+
 
 @view_defaults(match_param='table=users')
 class UserViews(AbstractViews):
@@ -18,7 +21,7 @@ class UserViews(AbstractViews):
         _list_field('email')]
     _id_field = 'id'
     _model = User
-    _base_schema = GeoFormSchemaNode(User)
+    _base_schema = base_schema
 
     @view_config(route_name='c2cgeoform_index',
                  renderer='../templates/index.jinja2')
