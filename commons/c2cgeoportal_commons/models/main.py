@@ -560,7 +560,8 @@ class LayerV1(Layer):  # Deprecated in v2
     ]
     __colanderalchemy_config__ = {
         'title': _('Layer V1'),
-        'plural': _('Layers V1')
+        'plural': _('Layers V1'),
+        'widget': FormWidget(fields_template='layer_v1_fields')
     }
     __c2cgeoform_config__ = {
         'duplicate': True
@@ -579,11 +580,13 @@ class LayerV1(Layer):  # Deprecated in v2
         }})
     is_checked = Column(Boolean, default=True, info={
         'colanderalchemy': {
-            'title': _('Is checked')
+            'title': _('Is checked'),
+            'group': 'tree'
         }})  # by default
     icon = Column(Unicode, info={
         'colanderalchemy': {
-            'title': _('Icon')
+            'title': _('Icon'),
+            'group': 'tree'
         }})  # on the tree
     layer_type = Column(
         Enum(
@@ -606,7 +609,8 @@ class LayerV1(Layer):  # Deprecated in v2
         })
     url = Column(Unicode, info={
         'colanderalchemy': {
-            'title': _('Url')
+            'title': _('Url'),
+            'group': 'external'
         }})  # for externals
     image_type = Column(
         Enum(
@@ -623,94 +627,92 @@ class LayerV1(Layer):  # Deprecated in v2
                         ('image/png', _('image/png'))
                     ))}
         })  # for WMS
-    style = Column(
-        Unicode,
-        info={
-            'colanderalchemy': {'title': _('Style')}
-        })
-    dimensions = Column(
-        Unicode,
-        info={
-            'colanderalchemy': {'title': _('Dimensions')}
-        })  # for WMTS
-    matrix_set = Column(
-        Unicode,
-        info={
-            'colanderalchemy': {'title': _('Matrix set')}
-        })  # for WMTS
-    wms_url = Column(
-        Unicode,
-        info={
-            'colanderalchemy': {'title': _('Wms url')}
-        })  # for WMTS
-    wms_layers = Column(
-        Unicode,
-        info={
-            'colanderalchemy': {'title': _('Wms layers')}
-        })  # for WMTS
-    query_layers = Column(
-        Unicode,
-        info={
-            'colanderalchemy': {'title': _('Query layers')}
-        })  # for WMTS
-    kml = Column(
-        Unicode,
-        info={
-            'colanderalchemy': {'title': _('Kml')}
-        })  # for kml 3D
-    is_single_tile = Column(
-        Boolean,
-        info={
-            'colanderalchemy': {'title': _('Is single title')}
-        })  # for extenal WMS
-    legend = Column(
-        Boolean,
-        default=True,
-        info={
-            'colanderalchemy': {'title': _('Legend')}
-        })  # on the tree
-    legend_image = Column(
-        Unicode,
-        info={
-            'colanderalchemy': {'title': _('Legend image')}
-        })  # fixed legend image
-    legend_rule = Column(
-        Unicode,
-        info={
-            'colanderalchemy': {'title': _('Legend rule')}
-        })  # on wms legend only one rule
-    is_legend_expanded = Column(
-        Boolean,
-        default=False,
-        info={
-            'colanderalchemy': {'title': _('Is legend expanded')}
-        })
-    min_resolution = Column(
-        Float,
-        info={
-            'colanderalchemy': {'title': _('Min resolution')}
-        })  # for all except internal WMS
-    max_resolution = Column(
-        Float,
-        info={
-            'colanderalchemy': {'title': _('Max resolution')}
-        })  # for all except internal WMS
-    disclaimer = Column(
-        Unicode,
-        info={
-            'colanderalchemy': {'title': _('Disclaimer')}
-        })
+    style = Column(Unicode, info={
+        'colanderalchemy': {
+            'title': _('Style')
+        }})
+    dimensions = Column(Unicode, info={
+        'colanderalchemy': {
+            'title': _('Dimensions'),
+            'group': 'WMTS'
+        }})  # for WMTS
+    matrix_set = Column(Unicode, info={
+        'colanderalchemy': {
+            'title': _('Matrix set'),
+            'group': 'WMTS'
+        }})  # for WMTS
+    wms_url = Column(Unicode, info={
+        'colanderalchemy': {
+            'title': _('Wms url'),
+            'group': 'WMTS'
+        }})  # for WMTS
+    wms_layers = Column(Unicode, info={
+        'colanderalchemy': {
+            'title': _('Wms layers'),
+            'group': 'WMTS'
+        }})  # for WMTS
+    query_layers = Column(Unicode, info={
+        'colanderalchemy': {
+            'title': _('Query layers'),
+            'group': 'WMTS'
+        }})  # for WMTS
+    kml = Column(Unicode, info={
+        'colanderalchemy': {
+            'title': _('Kml'),
+            'group': 'other'
+        }})  # for kml 3D
+    is_single_tile = Column(Boolean, info={
+        'colanderalchemy': {
+            'title': _('Is single title'),
+            'group': 'external'
+        }})  # for extenal WMS
+    legend = Column(Boolean, default=True, info={
+        'colanderalchemy': {
+            'title': _('Legend'),
+            'group': 'tree'
+        }})  # on the tree
+    legend_image = Column(Unicode, info={
+        'colanderalchemy': {
+            'title': _('Legend image'),
+            'group': 'tree'
+        }})  # fixed legend image
+    legend_rule = Column(Unicode, info={
+        'colanderalchemy': {
+            'title': _('Legend rule'),
+            'group': 'tree'
+        }})  # on wms legend only one rule
+    is_legend_expanded = Column(Boolean, default=False, info={
+        'colanderalchemy': {
+            'title': _('Is legend expanded'),
+            'group': 'tree'
+        }})
+    min_resolution = Column(Float, info={
+        'colanderalchemy': {
+            'title': _('Min resolution'),
+            'group': 'other'
+        }})  # for all except internal WMS
+    max_resolution = Column(Float, info={
+        'colanderalchemy': {
+            'title': _('Max resolution'),
+            'group': 'other'
+        }})  # for all except internal WMS
+    disclaimer = Column(Unicode, info={
+        'colanderalchemy': {
+            'title': _('Disclaimer'),
+            'group': 'other'
+        }})
     # data attribute field in which application can find a human identifiable name or number
-    identifier_attribute_field = Column(
-        Unicode,
-        info={
-            'colanderalchemy': {'title': _('Identifier field')}
-        })
+    identifier_attribute_field = Column(Unicode, info={
+        'colanderalchemy': {
+            'title': _('Identifier field'),
+            'group': 'other'
+        }})
     time_mode = Column(Enum(
         'disabled', 'value', 'range',
         native_enum=False), default='disabled', nullable=False, info={
             'colanderalchemy': {
                 'title': _('Time mode'),
+                'group': 'other',
                 'widget': SelectWidget(values=(
                     ('disabled', _('Disabled')),
                     ('value', _('Value')),
@@ -718,11 +720,14 @@ class LayerV1(Layer):  # Deprecated in v2
                 ))
             }}
     )
-    time_widget = Column(Enum(
-        'slider', 'datepicker',
-        native_enum=False), default='slider', nullable=True, info={
+    time_widget = Column(
+        Enum('slider', 'datepicker', native_enum=False),
+        default='slider',
+        nullable=True,
+        info={
             'colanderalchemy': {
                 'title': _('Time widget'),
+                'group': 'other',
                 'widget': SelectWidget(values=(
                     ('slider', _('Slider')),
                     ('datepicker', _('Datepicker'))
