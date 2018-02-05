@@ -874,7 +874,7 @@ class LayerWMS(DimensionLayer):
     __colanderalchemy_config__ = {
         'title': _('WMS Layer'),
         'plural': _('WMS Layers'),
-        'widget': FormWidget(fields_template='layer_wms_fields')
+        'widget': FormWidget(fields_template='layer_fields')
     }
 
     __c2cgeoform_config__ = {
@@ -963,7 +963,8 @@ class LayerWMTS(DimensionLayer):
     ]
     __colanderalchemy_config__ = {
         'title': _('WMTS Layer'),
-        'plural': _('WMTS Layers')
+        'plural': _('WMTS Layers'),
+        'widget': FormWidget(fields_template='layer_fields')
     }
     __c2cgeoform_config__ = {
         'duplicate': True
@@ -977,19 +978,23 @@ class LayerWMTS(DimensionLayer):
         }})
     url = Column(Unicode, nullable=False, info={
         'colanderalchemy': {
-            'title': _('GetCapabilities URL')
+            'title': _('GetCapabilities URL'),
+            'column': 2
         }})
     layer = Column(Unicode, nullable=False, info={
         'colanderalchemy': {
-            'title': _('WMTS layer name')
+            'title': _('WMTS layer name'),
+            'column': 2
         }})
     style = Column(Unicode, info={
         'colanderalchemy': {
-            'title': _('Style')
+            'title': _('Style'),
+            'column': 2
         }})
     matrix_set = Column(Unicode, info={
         'colanderalchemy': {
-            'title': _('Matrix set')
+            'title': _('Matrix set'),
+            'column': 2
         }})
     image_type = Column(
         Enum(
@@ -1001,6 +1006,7 @@ class LayerWMTS(DimensionLayer):
         info={
             'colanderalchemy': {
                 'title': _('Image type'),
+                'column': 2,
                 'widget': SelectWidget(values=(
                     ('image/jpeg', 'image/jpeg'),
                     ('image/png', 'image/png')))
