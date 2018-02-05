@@ -415,7 +415,8 @@ class LayerGroup(TreeGroup):
     ]
     __colanderalchemy_config__ = {
         'title': _('Layers group'),
-        'plural': _('Layers groups')
+        'plural': _('Layers groups'),
+        'widget': FormWidget(fields_template='layer_group_fields')
     }
     __mapper_args__ = {'polymorphic_identity': 'group'}
     __c2cgeoform_config__ = {
@@ -428,12 +429,21 @@ class LayerGroup(TreeGroup):
             'widget': HiddenWidget()
         }})
     is_expanded = Column(Boolean, info={
-        'colanderalchemy': {'title': _('Expanded')}})  # shouldn't be used in V3
+        'colanderalchemy': {
+            'title': _('Expanded'),
+            'column': 2
+        }})  # shouldn't be used in V3
     is_internal_wms = Column(Boolean, info={
-        'colanderalchemy': {'title': _('Internal WMS')}})
+        'colanderalchemy': {
+            'title': _('Internal WMS'),
+            'column': 2
+        }})
     # children have radio button instance of check box
     is_base_layer = Column(Boolean, info={
-        'colanderalchemy': {'title': _('Base layers group')}})  # Should not be used in V3
+        'colanderalchemy': {
+            'title': _('Base layers group'),
+            'column': 2
+        }})  # Should not be used in V3
 
     def __init__(
         self, name: str='', is_expanded: bool=False, is_internal_wms: bool=True, is_base_layer: bool=False
