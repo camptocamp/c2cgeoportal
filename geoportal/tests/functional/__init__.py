@@ -171,6 +171,7 @@ def create_dummy_request(additional_settings=None, authentication=True, user=Non
     request.get_user = _get_user
     request.registry.validate_user = default_user_validator
     request.client_addr = None
+    request.c2c_request_id = 'test'
     if authentication and user is None:
         request._get_authentication_policy = lambda: create_authentication({
             "authtkt_cookie_name": "__test",
