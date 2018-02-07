@@ -311,7 +311,10 @@ class TestTheme(TestTreeGroup):
                 ('formsubmit', 'formsubmit')
             ),
             status=200)
-        assert 'has-error' in resp.html.select_one('.item-children_relation').get('class')
+        assert (
+            'Value {} does not exist in table treeitem or is not allowed to avoid cycles'.
+            format(layers[0].id) ==
+            resp.html.select_one('.item-children_relation + .help-block').getText().strip())
 
     def test_duplicate(self, theme_test_data, test_app, dbsession):
         from c2cgeoportal_commons.models.main import Theme

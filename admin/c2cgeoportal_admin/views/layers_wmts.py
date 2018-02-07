@@ -83,10 +83,11 @@ class LayerWmtsViews(DimensionLayerViews):
         if src is None:
             raise HTTPNotFound()
 
-        form = self._form(action=self._request.route_url(
-            'c2cgeoform_item',
-            id='new',
-            table='layers_wmts'))
+        form = self._form(
+            action=self._request.route_url(
+                'c2cgeoform_item',
+                id='new',
+                table='layers_wmts'))
 
         with self._request.dbsession.no_autoflush:
             dest = self.copy_members_if_duplicates(src, dest=LayerWMTS())
@@ -98,9 +99,10 @@ class LayerWmtsViews(DimensionLayerViews):
 
         self._populate_widgets(form.schema)
 
-        rendered = form.render(dict_, request=self._request)
+        rendered = form.render(dict_,
+                               request=self._request,
+                               actions=self._item_actions())
         return {
             'form': rendered,
-            'deform_dependencies': form.get_widget_resources(),
-            'actions': self._get_back_to_overview_actions()
+            'deform_dependencies': form.get_widget_resources()
         }

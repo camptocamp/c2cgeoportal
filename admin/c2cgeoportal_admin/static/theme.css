@@ -1,3 +1,8 @@
+.nav>li>a {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
 #layertree-actions {
   margin-top: 5px;
   margin-bottom: 5px;
@@ -15,8 +20,7 @@
   content: "\e118";
 }
 .icon-layerv1:before {
-  content: "\e060";
-  color:grey;
+  content: "v1";
 }
 .icon-l_wms:before {
   content: "\e060";
@@ -29,10 +33,10 @@
   color: initial;
 }
 
-.item-children_relation .well {
+.item-layergroup_treeitem {
+  margin-bottom: 0;
+}
+.item-layergroup_treeitem .well {
   padding: 10px;
   margin-bottom: 5px;
-}
-.item-children_relation .item-treeitem {
-  margin-bottom: 0;
 }

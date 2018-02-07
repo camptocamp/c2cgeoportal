@@ -199,6 +199,8 @@ class TestUser(AbstractViewsTests):
         from c2cgeoportal_commons.models.static import User
         selenium.get(selenium_app + self._prefix)
 
+        elem = selenium.find_element_by_xpath('//li[@id="language-dropdown"]')
+        elem.click()
         elem = selenium.find_element_by_xpath("//a[contains(@href,'language=en')]")
         elem.click()
 
@@ -235,6 +237,8 @@ class TestUser(AbstractViewsTests):
         user = users_test_data['users'][13]
         selenium.get(selenium_app + self._prefix)
 
+        elem = selenium.find_element_by_xpath('//li[@id="language-dropdown"]')
+        elem.click()
         elem = selenium.find_element_by_xpath("//a[contains(@href,'language=en')]")
         elem.click()
 

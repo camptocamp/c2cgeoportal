@@ -56,20 +56,24 @@ class LayerWmsViews(DimensionLayerViews):
     def grid(self):
         return super().grid()
 
+    def _item_actions(self):
+        actions = super()._item_actions()
+        if not self._is_new():
+            actions.append({
+                'name': 'convert_to_wmts',
+                'label': _('Convert to wmts'),
+                'url': self._request.route_url(
+                    'layers_wmts_from_wms',
+                    table='layers_wmts',
+                    wms_layer_id=self._request.matchdict.get('id'),
+                    action='from_wms')})
+        return actions
+
     @view_config(route_name='c2cgeoform_item',
                  request_method='GET',
                  renderer='../templates/edit.jinja2')
     def view(self):
-        to_render = super().edit()
-        if not self._is_new():
-            convert_url = self._request.route_url(
-                'layers_wmts_from_wms',
-                table='layers_wmts',
-                wms_layer_id=self._request.matchdict.get('id'),
-                action='from_wms')
-            to_render['actions'].append({'url': convert_url,
-                                         'label': _('Convert to wmts')})
-        return to_render
+        return super().edit()
 
     @view_config(route_name='c2cgeoform_item',
                  request_method='POST',

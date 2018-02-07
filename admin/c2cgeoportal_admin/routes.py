@@ -22,17 +22,20 @@ def includeme(config):
     config.add_route('layers_wmts_from_wms', '/{table:layers_wmts}/from_wms/{wms_layer_id}')
 
     from c2cgeoportal_commons.models.main import (
-        Role, LayerWMS, LayerWMTS, Theme, LayerGroup, LayerV1, Interface, OGCServer)
+        Role, LayerWMS, LayerWMTS, Theme, LayerGroup, LayerV1, Interface, OGCServer,
+        Functionality, RestrictionArea)
     from c2cgeoportal_commons.models.static import User
 
     register_models(config, (
-        ('roles', Role),
-        ('interfaces', Interface),
-        ('users', User),
+        ('themes', Theme),
+        ('layer_groups', LayerGroup),
         ('layers_wms', LayerWMS),
         ('layers_wmts', LayerWMTS),
         ('layers_v1', LayerV1),
         ('ogc_servers', OGCServer),
-        ('themes', Theme),
-        ('layer_groups', LayerGroup),
+        ('restriction areas', RestrictionArea),
+        ('users', User),
+        ('roles', Role),
+        ('functionalities', Functionality),
+        ('interfaces', Interface),
     ))

@@ -11,7 +11,7 @@
                  orderable orderable and 1 or 0;
                  prototype field.widget.prototype(field);
                  title title|field.title;"
-     class="deform-seq"
+     class="deform-seq item-children_relation"
      id="${oid}">
 
   <style>
@@ -33,9 +33,7 @@
          tal:attributes="prototype prototype"/>
 
   <div class="panel panel-default">
-    <div class="panel-heading">
-      <div class="magicsuggest"></div>
-    </div>
+    <div class="panel-heading">${title}</div>
 
     <div class="panel-body">
       <div class="deform-seq-container"
@@ -50,6 +48,10 @@
                  now_len now_len;
                  orderable orderable;"></span>
       </div>
+    </div>
+
+    <div class="panel-footer">
+      <div class="magicsuggest"></div>
     </div>
   </div>
 

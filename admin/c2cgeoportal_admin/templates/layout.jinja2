@@ -53,36 +53,12 @@
 
   <body>
 
-    <div class="container-fluid">
-      {% block header %}
-      <div class="row">
-        <div class="col-md-2">
-        </div>
-        <div class="col-md-10">
-          <div class="pull-right">
-            <a href="{{request.route_url('locale', _query=(('language', 'en'),))}}">en</a>
-            <a href="{{request.route_url('locale', _query=(('language', 'fr'),))}}">fr</a>
-          </div>
-        </div>
-      </div>
-      {% endblock header %}
-      <div class="row">
-        <div class="col-md-2">
-          {% block navigation %}
-            <div id="main-menu">
-              {% include 'navigation.jinja2' %}
-            </div>
-          {% endblock navigation %}
-        </div>
-        <div class="col-md-10">
-          {% block content %}
-              <p>No content</p>
-          {% endblock content %}
-        </div>
-      </div>
-      {% block footer %}
-        <span class="copyright">Copyright &copy; Camptocamp / GeoMapFish</span> - <a href="https://github.com/camptocamp/c2cgeoportal">Github Project</a>
-      {% endblock footer %}
+    {% include 'navigation_navbar.jinja2' %}
+
+    <div class="container">
+      {% block content %}
+        <p>No content</p>
+      {% endblock content %}
     </div>
 
   </body>

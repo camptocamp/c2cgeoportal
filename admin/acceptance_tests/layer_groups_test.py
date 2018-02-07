@@ -258,7 +258,7 @@ class TestLayersGroups(TestTreeGroup):
         assert (
             'Value {} does not exist in table treeitem or is not allowed to avoid cycles'.
             format(groups[1].id) ==
-            resp.html.select_one('.item-children_relation .help-block').getText().strip())
+            resp.html.select_one('.item-children_relation + .help-block').getText().strip())
 
     def test_duplicate(self, layer_groups_test_data, test_app, dbsession):
         from c2cgeoportal_commons.models.main import LayerGroup

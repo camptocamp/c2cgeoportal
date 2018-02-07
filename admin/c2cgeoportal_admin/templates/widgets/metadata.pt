@@ -24,11 +24,11 @@
 
       ${field.start_mapping()}
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 col-sm-6">
             <div tal:replace="structure field['id'].render_template(item_template)" ></div>
             <div tal:replace="structure field['name'].render_template(item_template)" ></div>
         </div>
-        <div class="col-md-6 col-value">
+        <div class="col-md-6 col-sm-6 col-value">
             <div tal:repeat="type available_types"
                  tal:replace="structure field[type].render_template(item_template)" >
             </div>
