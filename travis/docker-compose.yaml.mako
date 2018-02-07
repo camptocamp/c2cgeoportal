@@ -26,3 +26,9 @@ services:
     image: camptocamp/testgeomapfish-geoportal:latest
     ports:
       - 8080:80
+    environment:
+      PGHOST: db
+      PGPORT: 5432
+      PGUSER: www-data
+      PGPASSWORD: www-data
+      PGDATABASE: geomapfish
