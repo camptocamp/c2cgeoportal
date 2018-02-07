@@ -113,7 +113,7 @@ def _get_ngeo_version():
     version = _ngeo_version()
     if version is not None:
         return version
-    return "git://github.com/camptocamp/ngeo#{}".format(
+    return "https://api.github.com/repos/camptocamp/ngeo/tarball/{}".format(
         subprocess.check_output(["git", "rev-parse", "HEAD"], cwd="ngeo").decode("utf-8").strip()
     )
 
