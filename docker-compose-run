@@ -3,15 +3,13 @@
 import getpass
 import os
 import sys
-import json
 import subprocess
-import urllib.parse
 
 os.environ["USER_NAME"] = getpass.getuser()
 os.environ["USER_ID"] = str(os.getuid())
 os.environ["GROUP_ID"] = str(os.getgid())
 
 try:
-    subprocess.check_call(["docker-compose", "run", "build", urllib.parse.quote(json.dumps(sys.argv[1:]))])
+    subprocess.check_call(["docker-compose", "run", "build"] + sys.argv[1:])
 except subprocess.CalledProcessError as e:
     exit(e.returncode)

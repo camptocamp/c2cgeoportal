@@ -3,9 +3,7 @@
 import getpass
 import os
 import sys
-import json
 import subprocess
-import urllib.parse
 
 os.environ["USER_NAME"] = getpass.getuser()
 os.environ["USER_ID"] = str(os.getuid())
@@ -16,8 +14,7 @@ try:
         "docker-compose",
         "--file=docker-compose-build.yaml",
         "run",
-        "build",
-        urllib.parse.quote(json.dumps(sys.argv[1:]))
-    ])
+        "build"
+    ] + sys.argv[1:])
 except subprocess.CalledProcessError as e:
     exit(e.returncode)
