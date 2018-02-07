@@ -90,6 +90,10 @@ class Proxy(object):
         if parsed_url.hostname not in self.host_forward_host and "Host" in headers:  # pragma: no cover
             headers.pop("Host")
 
+        # Forward the request tracking ID to the other service. This will allow to follow the logs belonging
+        # to a single request coming from the user
+        headers.setdefault('X-Request-ID', self.request.c2c_request_id)
+
         if not cache:
             headers["Cache-Control"] = "no-cache"
 
