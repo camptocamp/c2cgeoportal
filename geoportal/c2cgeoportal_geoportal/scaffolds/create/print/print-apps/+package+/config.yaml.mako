@@ -59,6 +59,7 @@ templates:
           - !forwardHeaders
             headers:
               - Referer
+              - X-Request-ID
           - !restrictUris
             matchers:
               - !localMatch
