@@ -48,14 +48,14 @@
 <p>c2cgeoportal developers often need to test c2cgeoportal changes in the context
 of an existing c2cgeoportal application. Here is how:</p>
 <p>Build the new containers:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">..</span> <span class="n">prompt</span><span class="p">::</span> <span class="n">bash</span>
-
-  <span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="nd">@github</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="n">camptocamp</span><span class="o">/</span><span class="n">c2cgeoportal</span><span class="o">.</span><span class="n">git</span>
-  <span class="n">cd</span> <span class="n">c2cgeoportal</span>
-  <span class="n">MAJOR_VERSION</span><span class="o">=</span><span class="mf">2.3</span> <span class="o">./</span><span class="n">docker</span><span class="o">-</span><span class="n">run</span> <span class="n">make</span> <span class="n">build</span>
-</pre></div>
-</div>
-<p>Than they are ready to use in the application on the same host.</p>
+<pre class="highlight"><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">git clone git@github.com:camptocamp/c2cgeoportal.git</span>
+<span class="prompt1"><span class="nb">cd</span> c2cgeoportal</span>
+<span class="prompt1"><span class="nv">MAJOR_VERSION</span><span class="o">=</span><span class="m">2</span>.3 ./docker-run make build</span>
+</pre><p>Than they are ready to use in the application on the same host.</p>
 </div>
 <div class="section" id="tests">
 <h2>Tests<a class="headerlink" href="#tests" title="Permalink to this headline">¶</a></h2>
@@ -66,11 +66,7 @@ code, and a make environment for it. So do that first, as described below.</p>
 <div class="section" id="install-c2cgeoportal-from-source">
 <h4>Install c2cgeoportal from source<a class="headerlink" href="#install-c2cgeoportal-from-source" title="Permalink to this headline">¶</a></h4>
 <p>Check out c2cgeoportal from GitHub:</p>
-<pre class="highlight"><style type="text/css">
-span.prompt1:before {
-  content: "$ ";
-}
-</style><span class="prompt1">git clone git@github.com:camptocamp/c2cgeoportal.git</span>
+<pre class="highlight"><span class="prompt1">git clone git@github.com:camptocamp/c2cgeoportal.git</span>
 <span class="prompt1"><span class="nb">cd</span> c2cgeoportal</span>
 </pre><p>Pull all the base images:</p>
 <pre class="highlight"><span class="prompt1">./docker-run make pull</span>
