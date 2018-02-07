@@ -9,9 +9,9 @@ Create development environment in a project
 c2cgeoportal developers often need to test c2cgeoportal changes in the context
 of an existing c2cgeoportal application. Here is how:
 
-Build the new containers::
+Build the new containers:
 
-  .. prompt:: bash
+.. prompt:: bash
 
     git clone git@github.com:camptocamp/c2cgeoportal.git
     cd c2cgeoportal
