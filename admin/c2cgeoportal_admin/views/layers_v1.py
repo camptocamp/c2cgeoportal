@@ -8,9 +8,9 @@ from c2cgeoform.views.abstract_views import ListField
 from c2cgeoportal_commons.models.main import LayerV1
 
 from c2cgeoportal_admin.schemas.metadata import metadatas_schema_node
+from c2cgeoportal_admin.schemas.interfaces import interfaces_schema_node
+from c2cgeoportal_admin.schemas.restrictionareas import restrictionareas_schema_node
 from c2cgeoportal_admin.views.layers import LayerViews
-from c2cgeoportal_admin.views.interfaces import interfaces_schema_node
-from c2cgeoportal_admin.views.restrictionareas import restrictionareas_schema_node
 
 _list_field = partial(ListField, LayerV1)
 

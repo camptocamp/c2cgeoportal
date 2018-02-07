@@ -11,5 +11,5 @@ dimensions_schema_node = colander.SequenceSchema(
         widget=MappingWidget(template='dimension'),
     ),
     name='dimensions',
-    widget=SequenceWidget(category='structural')
+    widget=SequenceWidget(category='structural', template='dimensions')
 )

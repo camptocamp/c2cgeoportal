@@ -3,43 +3,38 @@
 import re
 import pytest
 
-from . import AbstractViewsTests
+from . import AbstractViewsTests, get_test_default_layers, factory_build_layers
 
 
 @pytest.fixture(scope='class')
 @pytest.mark.usefixtures('dbsession')
 def layer_wmts_test_data(dbsession):
-    from c2cgeoportal_commons.models.main import \
-        LayerWMTS, RestrictionArea, Interface
+    from c2cgeoportal_commons.models.main import LayerWMTS, OGCServer
 
     dbsession.begin_nested()
 
-    restrictionareas = [RestrictionArea(name='restrictionarea_{}'.format(i))
-                        for i in range(0, 5)]
+    server = OGCServer(name='server_1')
+    server.url = 'http://wms.geo.admin.ch_1'
+    server.image_type = 'image/png'
 
-    interfaces = [Interface(name) for name in ['desktop', 'mobile', 'edit', 'routing']]
-
-    layers = []
-    for i in range(0, 25):
+    def layer_builder(i):
         name = 'layer_wmts_{}'.format(i)
         layer = LayerWMTS(name=name)
         layer.layer = name
-        layer.url = 'https://server{}.net/wmts'.format(i)
-        layer.restrictionareas = [restrictionareas[i % 5],
-                                  restrictionareas[(i + 2) % 5]]
-        if i % 10 != 1:
-            layer.interfaces = [interfaces[i % 4], interfaces[(i + 2) % 4]]
+        layer.url = 'https:///wms.geo.admin.ch_{}.org?service=wms&request=GetCapabilities'.format(i)
         layer.public = 1 == i % 2
+        layer.geo_table = 'geotable_{}'.format(i)
         layer.image_type = 'image/jpeg'
-        dbsession.add(layer)
-        layers.append(layer)
+        layer.style = 'décontrasté'
+        return layer
 
+    dbsession.begin_nested()
+
+    datas = factory_build_layers(layer_builder, dbsession)
+    datas['default'] = get_test_default_layers(dbsession, server)
     dbsession.flush()
-    yield {
-        'layers': layers,
-        'restrictionareas': restrictionareas,
-        'interfaces': interfaces
-    }
+
+    yield datas
 
     dbsession.rollback()
 
@@ -104,7 +99,7 @@ class TestLayerWMTS(AbstractViewsTests):
         assert layer.public == form['public'].checked
         assert str(layer.geo_table or '') == form['geo_table'].value
         assert str(layer.exclude_properties or '') == form['exclude_properties'].value
-        assert str(layer.url or '') == form['url'].value
+        assert str(layer.url or '') == self.get_first_field_named(form, 'url').value
         assert str(layer.layer or '') == form['layer'].value
         assert str(layer.style or '') == form['style'].value
         assert str(layer.matrix_set or '') == form['matrix_set'].value
@@ -187,6 +182,46 @@ class TestLayerWMTS(AbstractViewsTests):
 
         resp = resp.form.submit('submit')
 
-        AbstractViewsTests.check_one_submission_problem(
-            '{} is already used.'.format(layer.name),
-            resp)
+        self._check_submission_problem(resp, '{} is already used.'.format(layer.name))
+
+    def test_convert_common_fields_copied(self, layer_wmts_test_data, test_app, dbsession):
+        from c2cgeoportal_commons.models.main import LayerWMTS, LayerWMS
+        layer = layer_wmts_test_data['layers'][3]
+        assert 0 == dbsession.query(LayerWMS). \
+            filter(LayerWMS.name == layer.name). \
+            count()
+        assert 1 == dbsession.query(LayerWMTS). \
+            filter(LayerWMTS.name == layer.name). \
+            count()
+
+        resp = test_app.get("/layers_wms/from_wmts/{}".format(layer.id), status=302)
+
+        assert str(layer.id) == re.match('http://localhost/layers_wms/(.*)', resp.location).group(1)
+        assert 1 == dbsession.query(LayerWMS). \
+            filter(LayerWMS.name == layer.name). \
+            count()
+        assert 0 == dbsession.query(LayerWMTS). \
+            filter(LayerWMTS.name == layer.name). \
+            count()
+
+        resp = resp.follow()
+        form = resp.form
+
+        assert str(layer.id) == self.get_first_field_named(form, 'id').value
+        assert layer.name == self.get_first_field_named(form, 'name').value
+        assert str(layer.metadata_url or '') == form['metadata_url'].value
+        assert str(layer.description or '') == self.get_first_field_named(form, 'description').value
+        assert layer.public is True
+        assert layer.public == form['public'].checked
+        assert str(layer.geo_table or '') == form['geo_table'].value
+        assert str(layer.exclude_properties or '') == form['exclude_properties'].value
+        assert str(layer.layer or '') == form['layer'].value
+        assert str(layer.style or '') == form['style'].value
+        assert str(layer_wmts_test_data['default']['wms'].ogc_server_id) == form['ogc_server_id'].value
+        assert str(layer_wmts_test_data['default']['wms'].time_mode) == form['time_mode'].value
+        assert str(layer_wmts_test_data['default']['wms'].time_widget) == form['time_widget'].value
+        interfaces = layer_wmts_test_data['interfaces']
+        self._check_interfaces(form, interfaces, layer)
+        ras = layer_wmts_test_data['restrictionareas']
+        self._check_restrictionsareas(form, ras, layer)
+        self._check_dimensions(resp.html, layer.dimensions)

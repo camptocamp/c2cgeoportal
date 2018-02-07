@@ -203,9 +203,7 @@ class TestRole(AbstractViewsTests):
 
         resp = resp.form.submit('submit')
 
-        AbstractViewsTests.check_one_submission_problem(
-            '{} is already used.'.format(role_proto.name),
-            resp)
+        self._check_submission_problem(resp, '{} is already used.'.format(role_proto.name))
 
     @pytest.mark.usefixtures('raise_db_error_on_query')
     def test_grid_dberror(self, dbsession):

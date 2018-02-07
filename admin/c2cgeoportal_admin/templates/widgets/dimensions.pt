@@ -1,0 +1,3 @@
+<div class="item-dimensions">
+    <tal metal:use-macro='load:sequence.pt'></tal>
+</div>

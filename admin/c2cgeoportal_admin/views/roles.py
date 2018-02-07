@@ -2,36 +2,15 @@ from functools import partial
 from pyramid.view import view_defaults
 from pyramid.view import view_config
 
-import colander
-from c2cgeoform.ext.deform_ext import RelationCheckBoxListWidget
-from c2cgeoform.schema import (
-    GeoFormSchemaNode,
-    GeoFormManyToManySchemaNode,
-    manytomany_validator,
-)
+from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import AbstractViews, ListField
 from sqlalchemy.orm import subqueryload
 
 from c2cgeoportal_commons.models.main import Role
-from c2cgeoportal_admin.views.restrictionareas import restrictionareas_schema_node
-from c2cgeoportal_admin.views.functionalities import functionalities_schema_node
+from c2cgeoportal_admin.schemas.restrictionareas import restrictionareas_schema_node
+from c2cgeoportal_admin.schemas.functionalities import functionalities_schema_node
 
-roles_schema_node = colander.SequenceSchema(
-    GeoFormManyToManySchemaNode(Role),
-    name='restricted_roles',
-    widget=RelationCheckBoxListWidget(
-        Role,
-        'id',
-        'name',
-        order_by='name',
-        edit_url=lambda request, value: request.route_url(
-            'c2cgeoform_item',
-            table='roles',
-            id=value
-        )
-    ),
-    validator=manytomany_validator
-)
+
 _list_field = partial(ListField, Role)
 
 

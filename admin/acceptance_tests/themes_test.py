@@ -3,7 +3,6 @@
 import re
 import pytest
 
-from . import AbstractViewsTests
 from .treegroup_tests import TestTreeGroup
 
 
@@ -239,7 +238,8 @@ class TestTheme(TestTreeGroup):
                 ('formsubmit', 'formsubmit')
             ),
             status=200)
-        assert 'Required' == resp.html.select_one('.item-name .help-block').getText().strip()
+
+        self._check_submission_problem(resp, 'Required')
 
     def test_post_new_with_children_success(self, test_app, dbsession, theme_test_data):
         groups = theme_test_data['groups']
@@ -386,6 +386,4 @@ class TestTheme(TestTreeGroup):
 
         resp = resp.form.submit('submit')
 
-        AbstractViewsTests.check_one_submission_problem(
-            '{} is already used.'.format(theme.name),
-            resp)
+        self._check_submission_problem(resp, '{} is already used.'.format(theme.name))

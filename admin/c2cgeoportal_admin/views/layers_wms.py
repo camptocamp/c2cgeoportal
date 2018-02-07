@@ -1,18 +1,21 @@
 from functools import partial
+from sqlalchemy import insert, delete, update
+from zope.sqlalchemy import mark_changed
 from pyramid.view import view_defaults
 from pyramid.view import view_config
+from pyramid.httpexceptions import HTTPNotFound, HTTPFound
 
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import ListField
 
-from c2cgeoportal_commons.models.main import LayerWMS, OGCServer
+from c2cgeoportal_commons.models.main import LayerWMS, LayerWMTS, OGCServer, TreeItem
 
 from c2cgeoportal_admin import _
-from c2cgeoportal_admin.schemas.dimension import dimensions_schema_node
+from c2cgeoportal_admin.schemas.dimensions import dimensions_schema_node
 from c2cgeoportal_admin.schemas.metadata import metadatas_schema_node
+from c2cgeoportal_admin.schemas.interfaces import interfaces_schema_node
+from c2cgeoportal_admin.schemas.restrictionareas import restrictionareas_schema_node
 from c2cgeoportal_admin.views.dimension_layers import DimensionLayerViews
-from c2cgeoportal_admin.views.interfaces import interfaces_schema_node
-from c2cgeoportal_admin.views.restrictionareas import restrictionareas_schema_node
 
 _list_field = partial(ListField, LayerWMS)
 
@@ -91,3 +94,36 @@ class LayerWmsViews(DimensionLayerViews):
                  renderer='../templates/edit.jinja2')
     def duplicate(self):
         return super().duplicate()
+
+    @view_config(route_name='layers_wms_from_wmts',
+                 request_method='GET')
+    def convert(self):
+        pk = self._request.matchdict.get('wmts_layer_id')
+        src = self._request.dbsession.query(LayerWMTS).get(pk)
+        default_wms = self._request.dbsession.query(LayerWMS).filter(LayerWMS.name == 'wms-defaults').one()
+        if src is None:
+            raise HTTPNotFound()
+        _dbsession = self._request.dbsession
+        with _dbsession.no_autoflush:
+            d = delete(LayerWMTS.__table__)
+            d = d.where(LayerWMTS.__table__.c.id == pk)
+            _dbsession.execute(d)
+            i = insert(LayerWMS.__table__)
+            i = i.values({
+                'id': pk,
+                'layer': src.layer,
+                'style': src.style,
+                'ogc_server_id': default_wms.ogc_server_id,
+                'time_mode': default_wms.time_mode,
+                'time_widget': default_wms.time_widget})
+            _dbsession.execute(i)
+            u = update(TreeItem.__table__)
+            u = u.where(TreeItem.__table__.c.id == pk)
+            u = u.values({'type': 'l_wms'})
+            _dbsession.execute(u)
+            _dbsession.expunge(src)
+
+        _dbsession.flush()
+        mark_changed(_dbsession)
+
+        return HTTPFound(self._request.route_url('c2cgeoform_item', action='edit', id=pk))

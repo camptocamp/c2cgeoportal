@@ -3,7 +3,6 @@
 import re
 import pytest
 
-from . import AbstractViewsTests
 from .treegroup_tests import TestTreeGroup
 
 
@@ -313,9 +312,7 @@ class TestLayersGroups(TestTreeGroup):
 
         resp = resp.form.submit('submit')
 
-        AbstractViewsTests.check_one_submission_problem(
-            '{} is already used.'.format(group.name),
-            resp)
+        self._check_submission_problem(resp, '{} is already used.'.format(group.name))
 
     def test_delete(self, test_app, dbsession, layer_groups_test_data):
         from c2cgeoportal_commons.models.main import LayerGroup, TreeGroup, TreeItem, LayergroupTreeitem

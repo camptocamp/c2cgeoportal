@@ -1,17 +1,20 @@
 from functools import partial
+from sqlalchemy import insert, delete, update
+from zope.sqlalchemy import mark_changed
 from pyramid.view import view_defaults
 from pyramid.view import view_config
-from pyramid.httpexceptions import HTTPNotFound
+from pyramid.httpexceptions import HTTPNotFound, HTTPFound
 
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import ListField
 
-from c2cgeoportal_commons.models.main import LayerWMTS, LayerWMS
-from c2cgeoportal_admin.views.dimension_layers import DimensionLayerViews
-from c2cgeoportal_admin.schemas.dimension import dimensions_schema_node
+from c2cgeoportal_admin import _
+from c2cgeoportal_commons.models.main import LayerWMTS, LayerWMS, TreeItem
+from c2cgeoportal_admin.schemas.dimensions import dimensions_schema_node
 from c2cgeoportal_admin.schemas.metadata import metadatas_schema_node
-from c2cgeoportal_admin.views.interfaces import interfaces_schema_node
-from c2cgeoportal_admin.views.restrictionareas import restrictionareas_schema_node
+from c2cgeoportal_admin.schemas.interfaces import interfaces_schema_node
+from c2cgeoportal_admin.schemas.restrictionareas import restrictionareas_schema_node
+from c2cgeoportal_admin.views.dimension_layers import DimensionLayerViews
 
 _list_field = partial(ListField, LayerWMTS)
 
@@ -50,6 +53,19 @@ class LayerWmtsViews(DimensionLayerViews):
     def grid(self):
         return super().grid()
 
+    def _item_actions(self):
+        actions = super()._item_actions()
+        if not self._is_new():
+            actions.append({
+                'name': 'convert_to_wms',
+                'label': _('Convert to wms'),
+                'url': self._request.route_url(
+                    'layers_wms_from_wmts',
+                    table='layers_wms',
+                    wmts_layer_id=self._request.matchdict.get('id'),
+                    action='from_wmts')})
+        return actions
+
     @view_config(route_name='c2cgeoform_item',
                  request_method='GET',
                  renderer='../templates/edit.jinja2')
@@ -75,34 +91,35 @@ class LayerWmtsViews(DimensionLayerViews):
         return super().duplicate()
 
     @view_config(route_name='layers_wmts_from_wms',
-                 request_method='GET',
-                 renderer='../templates/edit.jinja2')
+                 request_method='GET')
     def convert(self):
         pk = self._request.matchdict.get('wms_layer_id')
         src = self._request.dbsession.query(LayerWMS).get(pk)
+        default_wmts = self._request.dbsession.query(LayerWMTS). \
+            filter(LayerWMTS.name == 'wmts-defaults').one()
         if src is None:
             raise HTTPNotFound()
+        _dbsession = self._request.dbsession
+        with _dbsession.no_autoflush:
+            d = delete(LayerWMS.__table__)
+            d = d.where(LayerWMS.__table__.c.id == pk)
+            _dbsession.execute(d)
+            i = insert(LayerWMTS.__table__)
+            i = i.values({
+                'id': pk,
+                'url': default_wmts.url,
+                'matrix_set': default_wmts.matrix_set,
+                'layer': src.layer,
+                'image_type': src.ogc_server.image_type,
+                'style': src.style})
+            _dbsession.execute(i)
+            u = update(TreeItem.__table__)
+            u = u.where(TreeItem.__table__.c.id == pk)
+            u = u.values({'type': 'l_wmts'})
+            _dbsession.execute(u)
+            _dbsession.expunge(src)
 
-        form = self._form(
-            action=self._request.route_url(
-                'c2cgeoform_item',
-                id='new',
-                table='layers_wmts'))
+        _dbsession.flush()
+        mark_changed(_dbsession)
 
-        with self._request.dbsession.no_autoflush:
-            dest = self.copy_members_if_duplicates(src, dest=LayerWMTS())
-            # TODO, please set the default value from settings
-            dest.url = 'www.default_server.com'
-            dest.image_type = src.ogc_server.image_type
-            dict_ = form.schema.dictify(dest)
-            self._request.dbsession.expunge_all()
-
-        self._populate_widgets(form.schema)
-
-        rendered = form.render(dict_,
-                               request=self._request,
-                               actions=self._item_actions())
-        return {
-            'form': rendered,
-            'deform_dependencies': form.get_widget_resources()
-        }
+        return HTTPFound(self._request.route_url('c2cgeoform_item', action='edit', id=pk))

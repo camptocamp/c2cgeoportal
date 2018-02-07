@@ -3,61 +3,28 @@
 import re
 import pytest
 
-from . import skip_if_ci, AbstractViewsTests
+from . import skip_if_ci, AbstractViewsTests, factory_build_layers
 
 
 @pytest.fixture(scope='class')
 @pytest.mark.usefixtures('dbsession')
 def layer_v1_test_data(dbsession):
-    from c2cgeoportal_commons.models.main import \
-        LayerV1, RestrictionArea, LayergroupTreeitem, \
-        Interface, Metadata, LayerGroup
+    from c2cgeoportal_commons.models.main import LayerV1
 
     dbsession.begin_nested()
 
-    restrictionareas = [RestrictionArea(name='restrictionarea_{}'.format(i))
-                        for i in range(0, 5)]
-
-    interfaces = [Interface(name) for name in ['desktop', 'mobile', 'edit', 'routing']]
-
-    metadatas_protos = [('copyable', 'true'),
-                        ('disclaimer', '© le momo'),
-                        ('snappingConfig', '{"tolerance": 50}')]
-
-    groups = [LayerGroup(name='layer_group_{}'.format(i)) for i in range(0, 5)]
-
-    layers = []
-    for i in range(0, 25):
+    def layer_builder(i):
         layer = LayerV1(name='layer_v1_{}'.format(i))
         layer.public = 1 == i % 2
-        layer.restrictionareas = [restrictionareas[i % 5],
-                                  restrictionareas[(i + 2) % 5]]
         layer.image_type = 'image/jpeg'
-        if i % 10 != 1:
-            layer.interfaces = [interfaces[i % 4], interfaces[(i + 2) % 4]]
+        return layer
 
-        layer.metadatas = [Metadata(name=metadatas_protos[id][0],
-                                    value=metadatas_protos[id][1])
-                           for id in [i % 3, (i + 2) % 3]]
-        for metadata in layer.metadatas:
-            metadata.item = layer
+    dbsession.begin_nested()
 
-        dbsession.add(LayergroupTreeitem(group=groups[i % 5],
-                                         item=layer,
-                                         ordering=len(groups[i % 5].children_relation)))
-        dbsession.add(LayergroupTreeitem(group=groups[(i + 3) % 5],
-                                         item=layer,
-                                         ordering=len(groups[(i + 3) % 5].children_relation)))
-
-        dbsession.add(layer)
-        layers.append(layer)
+    datas = factory_build_layers(layer_builder, dbsession, add_dimension=False)
     dbsession.flush()
 
-    yield {
-        'restrictionareas': restrictionareas,
-        'layers': layers,
-        'interfaces': interfaces
-    }
+    yield datas
 
     dbsession.rollback()
 
@@ -308,9 +275,7 @@ class TestLayerV1Views(AbstractViewsTests):
 
         resp = resp.form.submit('submit')
 
-        AbstractViewsTests.check_one_submission_problem(
-            '{} is already used.'.format(layer.name),
-            resp)
+        self._check_submission_problem(resp, '{} is already used.'.format(layer.name))
 
     def test_delete(self, test_app, dbsession):
         from c2cgeoportal_commons.models.main import LayerV1, Layer, TreeItem
