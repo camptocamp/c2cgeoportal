@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
 
-import json
 import os
 import sys
 import stat
 import subprocess
-import urllib.parse
 
 
 for env in ['GROUP_ID', 'USER_ID', 'USER_NAME']:
@@ -13,8 +11,6 @@ for env in ['GROUP_ID', 'USER_ID', 'USER_NAME']:
         exit('The {} environment variable is required'.format(env))
 
 args = sys.argv[1:]
-if len(args) == 1 and args[0].startswith("%5B"):
-    args = json.loads(urllib.parse.unquote(args[0]))
 
 has_docker = os.path.exists('/var/run/docker.sock')
 docker_group_id = os.stat('/var/run/docker.sock').st_gid if has_docker else -1
