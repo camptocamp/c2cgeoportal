@@ -66,10 +66,11 @@ script:
   - travis/run-on /tmp/travis/nondockertestgeomapfish/ ./docker-run travis/empty-make --makefile=travis.mk build
   - travis/run-on /tmp/travis/nondockertestgeomapfish/ ./docker-run make --makefile=travis.mk checks
   - find
-      /tmp/travis/testgeomapfish/geoportal/setup.py
-      /tmp/travis/testgeomapfish/geoportal/testgeomapfish_geoportal/*.py
-      /tmp/travis/testgeomapfish/geoportal/testgeomapfish_geoportal/views
-      /tmp/travis/testgeomapfish/commons/setup.py /tmp/travis/testgeomapfish/commons/testgeomapfish_commons
+      /tmp/travis/nondockertestgeomapfish/geoportal/setup.py
+      /tmp/travis/nondockertestgeomapfish/geoportal/testgeomapfish_geoportal/*.py
+      /tmp/travis/nondockertestgeomapfish/geoportal/testgeomapfish_geoportal/views
+      /tmp/travis/nondockertestgeomapfish/commons/setup.py
+      /tmp/travis/nondockertestgeomapfish/commons/testgeomapfish_commons
       -name \*.py | xargs travis/squote
   - travis/test-new-project http://localhost/main/wsgi/c2c/health_check
   - travis/test-new-project http://localhost/main/wsgi/c2c/health_check?max_level=100
