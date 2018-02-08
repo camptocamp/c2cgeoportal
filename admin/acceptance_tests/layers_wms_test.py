@@ -67,17 +67,7 @@ class TestLayerWMSViews(AbstractViewsTests):
         self.check_grid_headers(resp, expected)
 
     def test_grid_complex_column_val(self, test_app, layer_wms_test_data):
-        json = test_app.post(
-            '/layers_wms/grid.json',
-            params={
-                'current': 1,
-                'rowCount': 10,
-                'sort[name]': 'asc',
-                'searchPhrase': ''
-            },
-            status=200
-        ).json
-        assert 26 == json['total']
+        json = self.check_search(test_app, sort='name', total=26)
 
         row = json['rows'][0]
         layer = layer_wms_test_data['layers'][0]
@@ -92,27 +82,19 @@ class TestLayerWMSViews(AbstractViewsTests):
         assert 'copyable: true, snappingConfig: {"tolerance": 50}' == row['metadatas']
 
     def test_grid_sort_on_ogc_server(self, test_app, layer_wms_test_data):
-        rows = test_app.post(
-            '/layers_wms/grid.json',
-            params={
-                'current': 1,
-                'rowCount': 10,
-                'sort[ogc_server]': 'asc'
-            },
-            status=200
-        ).json['rows']
+        json = self.check_search(test_app, sort='ogc_server')
         for i, layer in enumerate(sorted(layer_wms_test_data['layers'],
                                          key=lambda layer: (layer.ogc_server.name, layer.id))):
             if i == 10:
                 break
-            assert str(layer.id) == rows[i]['_id_']
+            assert str(layer.id) == json['rows'][i]['_id_']
 
     def test_grid_search(self, test_app):
         # check search on ogc_server.name
-        self.check_search(test_app, 'server_0', 7)
+        self.check_search(test_app, 'server_0', total=7)
 
         # check search on interfaces
-        self.check_search(test_app, 'mobile', 9)
+        self.check_search(test_app, 'mobile', total=9)
 
     def test_base_edit(self, test_app, layer_wms_test_data):
         layer = layer_wms_test_data['layers'][10]

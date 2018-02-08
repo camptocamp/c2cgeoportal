@@ -96,15 +96,9 @@ class TestTheme(TestTreeGroup):
         self.check_grid_headers(resp, expected)
 
     def test_grid_complex_column_val(self, test_app, theme_test_data):
-        first_row = test_app.post(
-            '/themes/grid.json',
-            params={
-                'current': 1,
-                'rowCount': 10
-            },
-            status=200
-        ).json['rows'][0]
+        json = self.check_search(test_app)
 
+        first_row = json['rows'][0]
         first_theme = theme_test_data['themes'][0]
 
         assert first_theme.id == int(first_row['_id_'])
@@ -116,25 +110,25 @@ class TestTheme(TestTreeGroup):
 
     def test_grid_search(self, test_app):
         # search on metadatas key and value parts
-        self.check_search(test_app, 'disclai ©', 16)
+        self.check_search(test_app, 'disclai ©', total=16)
 
         # search on metadatas case insensitive
-        self.check_search(test_app, 'disClaimer: © le momO', 16)
+        self.check_search(test_app, 'disClaimer: © le momO', total=16)
 
         # search on metadatas with no match
-        self.check_search(test_app, 'DIfclaimer momo', 0)
+        self.check_search(test_app, 'DIfclaimer momo', total=0)
 
         # search on interfaces
-        self.check_search(test_app, 'routing', 12)
+        self.check_search(test_app, 'routing', total=12)
 
         # search on roles
-        self.check_search(test_app, 'ary_2', 13)
+        self.check_search(test_app, 'ary_2', total=13)
 
         # search with underscores (wildcard)
-        self.check_search(test_app, 'disclaimer m_m_', 16)
+        self.check_search(test_app, 'disclaimer m_m_', total=16)
 
         # search on functionalities
-        self.check_search(test_app, 'default_basemap value_0', 7)
+        self.check_search(test_app, 'default_basemap value_0', total=7)
 
     def test_public_checkbox_edit(self, test_app, theme_test_data):
         theme = theme_test_data['themes'][10]

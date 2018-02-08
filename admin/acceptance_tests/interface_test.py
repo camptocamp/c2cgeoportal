@@ -66,15 +66,9 @@ class TestInterface(AbstractViewsTests):
         self.check_grid_headers(resp, expected)
 
     def test_grid_complex_column_val(self, test_app, interface_test_data):
-        first_row = test_app.post(
-            '/interfaces/grid.json',
-            params={
-                'current': 1,
-                'rowCount': 10
-            },
-            status=200
-        ).json['rows'][0]
+        json = self.check_search(test_app)
 
+        first_row = json['rows'][0]
         first_interface = interface_test_data['interfaces'][0]
 
         assert first_interface.id == int(first_row['_id_'])
@@ -87,7 +81,7 @@ class TestInterface(AbstractViewsTests):
 
     def test_grid_search(self, test_app):
         # search on interface name
-        self.check_search(test_app, 'interface_0', 1)
+        self.check_search(test_app, 'interface_0', total=1)
 
     def test_submit_new(self, dbsession, test_app):
         from c2cgeoportal_commons.models.main import Interface

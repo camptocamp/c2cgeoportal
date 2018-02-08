@@ -69,17 +69,9 @@ class TestLayerWMTS(AbstractViewsTests):
         self.check_grid_headers(resp, expected)
 
     def test_grid_complex_column_val(self, test_app, layer_wmts_test_data):
-        json = test_app.post(
-            '/layers_wmts/grid.json',
-            params={
-                'current': 1,
-                'rowCount': 10,
-                'sort[name]': 'asc'
-            },
-            status=200
-        ).json
-        row = json['rows'][0]
+        json = self.check_search(test_app, sort='name')
 
+        row = json['rows'][0]
         layer = layer_wmts_test_data['layers'][0]
 
         assert layer.id == int(row['_id_'])

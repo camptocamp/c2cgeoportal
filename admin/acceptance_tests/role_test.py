@@ -208,7 +208,12 @@ class TestRole(AbstractViewsTests):
     @pytest.mark.usefixtures('raise_db_error_on_query')
     def test_grid_dberror(self, dbsession):
         from c2cgeoportal_admin.views.roles import RoleViews
-        request = DummyRequest(dbsession=dbsession,
-                               params={'current': 0, 'rowCount': 10})
+        request = DummyRequest(
+            dbsession=dbsession,
+            params={
+                'offset': 0,
+                'limit': 10
+            }
+        )
         info = RoleViews(request).grid()
-        assert info.status_int == 500, '500 status when db error'
+        assert info.status_int == 500, 'Expected 500 status when db error'

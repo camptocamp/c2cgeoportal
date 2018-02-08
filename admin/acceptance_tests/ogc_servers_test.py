@@ -54,7 +54,7 @@ class TestOGCServer(AbstractViewsTests):
 
     def test_grid_search(self, test_app):
         # search on ogc_server name
-        self.check_search(test_app, 'server_0', 1)
+        self.check_search(test_app, 'server_0', total=1)
 
     def test_submit_new(self, dbsession, test_app):
         from c2cgeoportal_commons.models.main import OGCServer

@@ -77,17 +77,7 @@ class TestLayerV1Views(AbstractViewsTests):
         self.check_grid_headers(resp, expected)
 
     def test_grid_complex_column_val(self, test_app, layer_v1_test_data):
-        json = test_app.post(
-            '/layers_v1/grid.json',
-            params={
-                'current': 1,
-                'rowCount': 10,
-                'sort[name]': 'asc',
-                'searchPhrase': ''
-            },
-            status=200
-        ).json
-        assert 25 == json['total']
+        json = self.check_search(test_app, sort='name', total=25)
 
         row = json['rows'][0]
         layer = layer_v1_test_data['layers'][0]
@@ -102,7 +92,7 @@ class TestLayerV1Views(AbstractViewsTests):
 
     def test_grid_search(self, test_app):
         # check search on interfaces
-        self.check_search(test_app, 'mobile', 9)
+        self.check_search(test_app, 'mobile', total=9)
 
     def test_base_edit(self, test_app, layer_v1_test_data):
         layer = layer_v1_test_data['layers'][10]

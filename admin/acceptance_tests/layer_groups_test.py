@@ -81,40 +81,23 @@ class TestLayersGroups(TestTreeGroup):
         self.check_grid_headers(resp, expected)
 
     def test_grid_complex_column_val(self, test_app, layer_groups_test_data):
-        json = test_app.post(
-            "/layer_groups/grid.json",
-            params={
-                "current": 1,
-                "rowCount": 10,
-                "sort[name]": "asc"
-            },
-            status=200
-        ).json
-        row = json["rows"][4]
+        json = self.check_search(test_app, sort='name')
 
+        row = json['rows'][4]
         group = layer_groups_test_data['groups'][4]
 
-        assert group.id == int(row["_id_"])
-        assert group.name == row["name"]
+        assert group.id == int(row['_id_'])
+        assert group.name == row['name']
         assert 'groups_02, groups_06' == row['parents_relation']
         assert 'disclaimer: © le momo, copyable: true' == row['metadatas']
 
     @pytest.mark.skip(reason="use value to be defined")
     def test_grid_filter_on_parents(self, test_app):
-        json = test_app.post(
-            '/layer_groups/grid.json',
-            params={
-                'current': 1,
-                'rowCount': 10,
-                'searchPhrase': 'groups_11'
-            },
-            status=200
-        ).json
-        assert 4 == json['total']
+        self.check_search(test_app, 'groups_11', total=4)
 
     def test_grid_search(self, test_app):
         # search on metadatas
-        self.check_search(test_app, 'copyable', 8)
+        self.check_search(test_app, 'copyable', total=8)
 
     def test_edit(self, test_app, layer_groups_test_data, dbsession):
         group = layer_groups_test_data['groups'][1]

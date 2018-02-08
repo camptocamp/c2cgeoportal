@@ -108,30 +108,34 @@ class AbstractViewsTests():
 
     def check_grid_headers(self, resp, expected_col_headers):
         pp = pprint.PrettyPrinter(indent=4)
-        effective_cols = [(th.attrs['data-column-id'], th.getText(), th.attrs['data-sortable'])
+        effective_cols = [(th.attrs['data-field'], th.getText(), th.attrs['data-sortable'])
                           for th in resp.html.select('th')]
         expected_col_headers = [(x[0], x[1], len(x) == 3 and x[2] or 'true') for x in expected_col_headers]
         assert expected_col_headers == effective_cols, \
             str.format('\n\n{}\n\n differs from \n\n{}',
                        pp.pformat(expected_col_headers),
                        pp.pformat(effective_cols))
-        commands = resp.html.select_one('th[data-column-id="_id_"]')
+        commands = resp.html.select_one('th[data-field="_id_"]')
         assert 'false' == commands.attrs['data-searchable']
         assert 'false' == commands.attrs['data-sortable']
         assert 1 == len(list(filter(lambda x: str(x.contents) == "['New']",
                                     resp.html.findAll('a'))))
 
-    def check_search(self, test_app, search, total):
+    def check_search(self, test_app, search='', offset=0, limit=10, sort='', order='', total=None):
         json = test_app.post(
             '{}/grid.json'.format(self._prefix),
             params={
-                'current': 1,
-                'rowCount': 10,
-                'searchPhrase': search
+                'offset': offset,
+                'limit': limit,
+                'search': search,
+                'sort': sort,
+                'order': order
             },
             status=200
         ).json
-        assert total == json['total']
+        if total is not None:
+            assert total == json['total']
+        return json
 
     def check_checkboxes(self, form, name, expected):
         for i, exp in enumerate(expected):
