@@ -15,6 +15,7 @@ default_project_file:
     - print/print-apps/.*
     - mapserver/.*
     - project.yaml.mako
+    - docker-compose.yaml.mako
     - setup.py
     - vars.yaml
     - Makefile
