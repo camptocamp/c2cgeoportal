@@ -405,5 +405,5 @@ _formatter = Formatter()
 def confd_env(val):
     replacements = {}
     for _, attr, _, _ in _formatter.parse(val):
-        replacements['attr'] = '{{getenv "' + attr + '"}}'
+        replacements[attr] = '{{getenv "' + attr + '"}}'
     return val.format(**replacements)
