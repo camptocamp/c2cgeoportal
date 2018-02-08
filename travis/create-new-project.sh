@@ -33,7 +33,5 @@ git remote add origin . # add a fake remote
 ./docker-run make --makefile=travis.mk \
     docker-compose-build.yaml \
     geoportal-docker mapserver-docker print-docker testdb-docker
-# Wait DB
-./docker-compose-run sleep 15
 # Create default theme
 ./docker-compose-run create-demo-theme
