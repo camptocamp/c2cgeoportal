@@ -23,8 +23,21 @@ default_project_file:
     - geoportal/{{package}}_geoportal/static-ngeo/js/{{package}}module.js
     - mapserver/Dockerfile
     - mapserver/tinyows.xml.mako
+    - mapserver/demo.map.tmpl.mako
 
 files_to_move:
+  - from: vars_{{package}}.yaml
+    to: vars.yaml
+    version: 2.3
+  - from: alembic.ini.mako
+    to: alembic.ini
+    version: 2.3
+  - from: docker-compose.yml.mako
+    to: docker-compose.yaml.mako
+    version: 2.3
+  - from: CONST_print_url
+    to: print_url
+    version: 2.3
   - from: testDB
     to: testdb
     version: 2.3
@@ -34,20 +47,17 @@ files_to_move:
   - from: testdb/11-schemas.sql.mako
     to: testdb/11-schemas.sql_mako
     version: 2.3
-  - from: vars_{{package}}.yaml
-    to: vars.yaml
+  - from: mapserver/c2cgeoportal.map.mako
+    to: mapserver/c2cgeoportal.map.tmpl.mako
     version: 2.3
-  - from: alembic.ini.mako
-    to: alembic.ini
+  - from: mapserver/demo.map.mako
+    to: mapserver/demo.map.tmpl.mako
+    version: 2.3
+  - from: testgeomapfish/models.py
+    to: commons/testgeomapfish_commons/models.py
     version: 2.3
   - from: Dockerfile
     to: geoportal/Dockerfile.mako
-    version: 2.3
-  - from: docker-compose.yml.mako
-    to: docker-compose.yaml.mako
-    version: 2.3
-  - from: CONST_print_url
-    to: print_url
     version: 2.3
   - from: .dockerignore
     to: geoportal/.dockerignore
@@ -63,9 +73,6 @@ files_to_move:
     version: 2.3
   - from: setup.py
     to: geoportal/setup.py
-    version: 2.3
-  - from: testgeomapfish/models.py
-    to: commons/testgeomapfish_commons/models.py
     version: 2.3
   - from: testgeomapfish
     to: geoportal/testgeomapfish_geoportal
@@ -127,5 +134,8 @@ files_to_remove:
     version: 2.3
     from: 2.2
   - file: alembic_static.ini.mako
+    version: 2.3
+    from: 2.2
+  - file: mapserver/replace_db.sh.mako
     version: 2.3
     from: 2.2
