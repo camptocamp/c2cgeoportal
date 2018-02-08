@@ -173,10 +173,10 @@ function v220 {
     cd $1/testgeomapfish
     head --lines=-23 CONST_vars.yaml > CONST_vars.yaml_
     mv CONST_vars.yaml{_,}
-    echo 'no_interpreted: [reset_password.email_body]' >> vars.yaml
+    echo 'no_interpreted: [reset_password.email_body]' >> CONST_vars.yaml
     cat vars.yaml
     git diff
-    git add docker-run project.yaml.mako CONST_vars.yaml vars.yaml
+    git add docker-run project.yaml.mako CONST_vars.yaml CONST_vars.yaml
     git commit --quiet --message="Start upgrade"
     ./docker-run c2c-template --vars vars_testgeomapfish.yaml --engine mako --files project.yaml.mako
     if [ "$2" == non ]
