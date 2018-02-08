@@ -36,6 +36,7 @@ import urllib.request
 import urllib.parse
 import urllib.error
 
+from string import Formatter
 from pyramid.interfaces import IRoutePregenerator, IStaticURLInfo
 from zope.interface import implementer
 from pyramid.compat import WIN
@@ -396,3 +397,14 @@ class MultiDomainStaticURLInfo(StaticURLInfo):  # pragma: no cover
             extra["pregenerator"] = C2CPregenerator(subdomain=True, version=False)
         return super(MultiDomainStaticURLInfo, self) \
             .add(config, name, spec, **extra)
+
+
+_formatter = Formatter()
+
+
+def confd_env(val):
+    replacements = {}
+    for _, attr, _, _ in _formatter.parse(val):
+        if attr is not None:
+            replacements[attr] = '{{getenv "' + attr + '"}}'
+    return val.format(**replacements)
