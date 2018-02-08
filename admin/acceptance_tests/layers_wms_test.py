@@ -4,6 +4,7 @@ import re
 import pytest
 
 from . import skip_if_ci, AbstractViewsTests, get_test_default_layers, factory_build_layers
+from .selenium.page import IndexPage
 
 
 @pytest.fixture(scope='class')
@@ -351,24 +352,19 @@ class TestLayerWMSViews(AbstractViewsTests):
             sorted([(x.select_one("label").text.strip())
                     for x in resp.html.select("[class~'has-error']")])
 
-    @skip_if_ci
-    @pytest.mark.selenium
-    @pytest.mark.usefixtures('selenium', 'selenium_app')
-    def test_selenium(self, selenium, selenium_app):
+
+@skip_if_ci
+@pytest.mark.selenium
+@pytest.mark.usefixtures('selenium', 'selenium_app', 'layer_wms_test_data')
+class TestLayerWMSSelenium():
+
+    _prefix = '/layers_wms'
+
+    def test_index(self, selenium, selenium_app):
         selenium.get(selenium_app + self._prefix)
 
-        elem = selenium.find_element_by_xpath('//li[@id="language-dropdown"]')
-        elem.click()
-        elem = selenium.find_element_by_xpath('//a[contains(@href,"language=en")]')
-        elem.click()
-
-        from selenium.webdriver.common.by import By
-        from selenium.webdriver.support.ui import WebDriverWait
-        from selenium.webdriver.support import expected_conditions
-        elem = WebDriverWait(selenium, 10).until(
-            expected_conditions.presence_of_element_located((By.XPATH, '//div[@class="infos"]')))
-        assert 'Showing 1 to 10 of 26 entries' == elem.text
-        elem = selenium.find_element_by_xpath('//button[@title="Refresh"]/following-sibling::*')
-        elem.click()
-        elem = selenium.find_element_by_xpath('//a[contains(.,"50")]')
-        elem.click()
+        index_page = IndexPage(selenium)
+        index_page.select_language('en')
+        index_page.check_pagination_info('Showing 1 to 25 of 25 rows', 10)
+        index_page.select_page_size(10)
+        index_page.check_pagination_info('Showing 1 to 10 of 25 rows', 10)
