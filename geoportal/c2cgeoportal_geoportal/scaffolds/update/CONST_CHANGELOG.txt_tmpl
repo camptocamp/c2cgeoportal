@@ -17,3 +17,12 @@ For non Docker upgrade have a look on the nondocker_CHANGELOG
 4. In the file `project.yaml.mako` the checker path should we set to `/c2c/health_check?`.
 
 5. The `shortener.email_body` in the vars files use now the template syntax.
+
+6. In all yout map.mako files you ahould add at the top:
+
+   + <%!
+   + from c2cgeoportal_geoportal.lib import confd_env
+   + %>
+
+   and replace `${host}${entry_point}` by `${host | confd_env}${entry_point | confd_env}`
+   and `${mapserver_connection}` by `${mapserver_connection | confd_env}`

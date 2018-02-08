@@ -98,6 +98,7 @@ def setup_common():
         "sqlalchemy_slave.url": db_url,
         "srid": 21781,
         "schema": "main",
+        "schema_static": "main_static",
         "default_max_age": 86400,
         "app.cfg": "/src/geoportal/tests/config.yaml",
         "package": "c2cgeoportal",
