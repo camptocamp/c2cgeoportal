@@ -379,7 +379,7 @@ clean: template-clean
 		$(OUTPUT_DIR)/ \
 		$(APP_OUTPUT_DIR)/ \
 		geoportal/$(PACKAGE)_geoportal/locale/$(PACKAGE)-*.pot \
-		geoportal/tests/functional/alembic.yaml \
+		alembic.yaml \
 		.UPGRADE*
 ifeq ($(TILECLOUD_CHAIN_LOCAL), TRUE)
 	rm --force $(WMTSCAPABILITIES_FILE)

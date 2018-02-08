@@ -119,6 +119,7 @@ clean:
 	rm --force $(MAKO_FILES:.mako=)
 	rm --recursive --force ngeo
 	rm --force $(APPS_FILES)
+	rm --recursive --force geoportal/tests/functional/alembic.yaml
 
 .PHONY: clean-all
 clean-all: clean
