@@ -5,8 +5,10 @@ from pyramid.view import view_defaults
 from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPNotFound, HTTPFound
 
+from sqlalchemy import inspect
+
 from c2cgeoform.schema import GeoFormSchemaNode
-from c2cgeoform.views.abstract_views import ListField
+from c2cgeoform.views.abstract_views import ListField, ItemAction
 
 from c2cgeoportal_admin import _
 from c2cgeoportal_commons.models.main import LayerWMTS, LayerWMS, TreeItem
@@ -53,17 +55,18 @@ class LayerWmtsViews(DimensionLayerViews):
     def grid(self):
         return super().grid()
 
-    def _item_actions(self):
-        actions = super()._item_actions()
-        if not self._is_new():
-            actions.append({
-                'name': 'convert_to_wms',
-                'label': _('Convert to wms'),
-                'url': self._request.route_url(
+    def _item_actions(self, item, grid=False):
+        actions = super()._item_actions(item, grid)
+        if inspect(item).persistent:
+            actions.insert(1, ItemAction(
+                name='convert_to_wms',
+                label=_('Convert to wms'),
+                icon='glyphicon icon-l_wmts',
+                url=self._request.route_url(
                     'layers_wms_from_wmts',
                     table='layers_wms',
-                    wmts_layer_id=self._request.matchdict.get('id'),
-                    action='from_wmts')})
+                    wmts_layer_id=getattr(item, self._id_field),
+                    action='from_wmts')))
         return actions
 
     @view_config(route_name='c2cgeoform_item',

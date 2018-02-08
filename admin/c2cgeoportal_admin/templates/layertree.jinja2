@@ -10,8 +10,7 @@
 {% endblock extra_scripts %}
 
 {% block content %}
-
-<div id="layertree">
+<div id="layertree" class="container">
 
     <div id="layertree-actions" class="btn-group">
         <button id="layertree-expand" type="button" class="btn btn-default">{{_("Expand all")}}</button>
@@ -28,8 +27,8 @@
             </td>
             <td>
                 <div class="btn-group">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <span class="glyphicon glyphicon-option-horizontal"></span>
+                    <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
                         <li class="action-edit">
