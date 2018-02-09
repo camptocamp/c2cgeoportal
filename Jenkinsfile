@@ -174,7 +174,8 @@ timeout(time: 2, unit: 'HOURS') {
                     sh 'docker run --name geomapfish-db --env=POSTGRES_USER=www-data --env=POSTGRES_PASSWORD=www-data --env=POSTGRES_DB=geomapfish --publish=5432:5432 --detach camptocamp/geomapfish-test-db'
                     // Test Upgrade an convert project
                     sh 'travis/test-upgrade-convert.sh init ${HOME}/workspace'
-                    parallel 'docker': {
+                    sh 'travis/test-upgrade-convert.sh v220-todocker ${HOME}/workspace'
+                    /*parallel 'docker': {
                         sh 'travis/test-upgrade-convert.sh docker ${HOME}/workspace'
                         sh 'travis/test-upgrade-convert.sh tonondocker ${HOME}/workspace'
                     }, 'nondocker': {
@@ -184,7 +185,7 @@ timeout(time: 2, unit: 'HOURS') {
                         sh 'travis/test-upgrade-convert.sh v220-todocker ${HOME}/workspace'
                     }, 'v220 nondocker': {
                         sh 'travis/test-upgrade-convert.sh v220-tonondocker ${HOME}/workspace'
-                    }
+                    }*/
                     sh 'travis/test-upgrade-convert.sh cleanup ${HOME}/workspace'
                 } finally {
                     sh 'docker stop geomapfish-db'

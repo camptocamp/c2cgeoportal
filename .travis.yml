@@ -35,62 +35,62 @@ before_script:
   - ./docker-run make build
 
     ## FOR NON DOCKER TESTS
-  - deactivate
-  - sudo apt-get remove --assume-yes --force-yes python-zope.interface
-  - "sudo aptitude install --assume-yes tree apache2 apache2-dev libapache2-mod-fcgid tomcat7 cgi-mapserver \
-      python3-netifaces python3-pip python3-virtualenv libgdal-dev"
-  # workaround: https://askubuntu.com/questions/569550/
-  #    assertionerror-using-apache2-and-libapache2-mod-wsgi-py3-on-ubuntu-14-04-python
-  - sudo python3 -m pip install mod_wsgi
-  - sudo mod_wsgi-express install-module
-  - echo "LoadModule wsgi_module /usr/lib/apache2/modules/mod_wsgi-py34.cpython-34m.so" > /tmp/wsgi_express.load
-  - echo "WSGIPythonHome /usr/" > /tmp/wsgi_express.conf
-  - sudo mv /tmp/wsgi_express.load /tmp/wsgi_express.conf /etc/apache2/mods-available/
-  - sudo a2enmod wsgi_express
-  - sudo service apache2 restart
-  - sudo chmod o+rx /var/log/apache2/
-  - sudo chmod o+r /var/log/apache2/*.log
-  # Database for the GeoMapFish application
-  - ./docker-run make /build/testdb-docker.timestamp
-  - "docker run --env=POSTGRES_USER=www-data --env=POSTGRES_PASSWORD=www-data --env=POSTGRES_DB=geomapfish \
-      --publish=5432:5432 --detach camptocamp/geomapfish-test-db"
-  - docker build --tag=external-db docker/test-external-db
-  - docker run --publish=5433:5432 --detach external-db ## FOR NON DOCKER TEST
-  - mkdir /tmp/travis
-  - travis/create-new-nondocker-project.sh
-  - travis/run-on /tmp/travis/nondockertestgeomapfish/ ./docker-run travis/empty-make --makefile=travis.mk help
-  - travis/run-on /tmp/travis/nondockertestgeomapfish/ ./docker-run make --makefile=travis.mk build
-  - travis/run-on /tmp/travis/nondockertestgeomapfish/ make --makefile=travis-nondocker.mk build
+#  - deactivate
+#  - sudo apt-get remove --assume-yes --force-yes python-zope.interface
+#  - "sudo aptitude install --assume-yes tree apache2 apache2-dev libapache2-mod-fcgid tomcat7 cgi-mapserver \
+#      python3-netifaces python3-pip python3-virtualenv libgdal-dev"
+#  # workaround: https://askubuntu.com/questions/569550/
+#  #    assertionerror-using-apache2-and-libapache2-mod-wsgi-py3-on-ubuntu-14-04-python
+#  - sudo python3 -m pip install mod_wsgi
+#  - sudo mod_wsgi-express install-module
+#  - echo "LoadModule wsgi_module /usr/lib/apache2/modules/mod_wsgi-py34.cpython-34m.so" > /tmp/wsgi_express.load
+#  - echo "WSGIPythonHome /usr/" > /tmp/wsgi_express.conf
+#  - sudo mv /tmp/wsgi_express.load /tmp/wsgi_express.conf /etc/apache2/mods-available/
+#  - sudo a2enmod wsgi_express
+#  - sudo service apache2 restart
+#  - sudo chmod o+rx /var/log/apache2/
+#  - sudo chmod o+r /var/log/apache2/*.log
+#  # Database for the GeoMapFish application
+#  - ./docker-run make /build/testdb-docker.timestamp
+#  - "docker run --env=POSTGRES_USER=www-data --env=POSTGRES_PASSWORD=www-data --env=POSTGRES_DB=geomapfish \
+#      --publish=5432:5432 --detach camptocamp/geomapfish-test-db"
+#  - docker build --tag=external-db docker/test-external-db
+#  - docker run --publish=5433:5432 --detach external-db ## FOR NON DOCKER TEST
+#  - mkdir /tmp/travis
+#  - travis/create-new-nondocker-project.sh
+#  - travis/run-on /tmp/travis/nondockertestgeomapfish/ ./docker-run travis/empty-make --makefile=travis.mk help
+#  - travis/run-on /tmp/travis/nondockertestgeomapfish/ ./docker-run make --makefile=travis.mk build
+#  - travis/run-on /tmp/travis/nondockertestgeomapfish/ make --makefile=travis-nondocker.mk build
 script:
-  # Test new non Docker project
-  - travis/run-on /tmp/travis/nondockertestgeomapfish/ ./docker-run travis/empty-make --makefile=travis.mk build
-  - travis/run-on /tmp/travis/nondockertestgeomapfish/ ./docker-run make --makefile=travis.mk checks
-  - find
-      /tmp/travis/nondockertestgeomapfish/geoportal/setup.py
-      /tmp/travis/nondockertestgeomapfish/geoportal/testgeomapfish_geoportal/*.py
-      /tmp/travis/nondockertestgeomapfish/geoportal/testgeomapfish_geoportal/views
-      /tmp/travis/nondockertestgeomapfish/commons/setup.py
-      /tmp/travis/nondockertestgeomapfish/commons/testgeomapfish_commons
-      -name \*.py | xargs travis/squote
-  - travis/test-new-project http://localhost/main/wsgi/c2c/health_check
-  - travis/test-new-project http://localhost/main/wsgi/c2c/health_check?max_level=100
-  - cat /var/log/apache2/error.log
-  - cat /var/log/apache2/access.log
-  - sudo cat /var/log/tomcat7/catalina.out
-  - travis/run-on /tmp/travis/nondockertestgeomapfish/ ./docker-run travis/status.sh
-  - travis/run-on /tmp/travis/nondockertestgeomapfish/ ./docker-run rm /build/c2ctemplate-cache.json
-  - "travis/run-on /tmp/travis/nondockertestgeomapfish/ \
-      ./docker-run make --makefile=empty-vars.mk geoportal/config.yaml"
-  - "travis/run-on /tmp/travis/nondockertestgeomapfish/ \
-      ./docker-run make --makefile=travis.mk alembic.ini"
-  - "travis/run-on /tmp/travis/nondockertestgeomapfish/ \
-      ./docker-run alembic --name=main upgrade head"
-  - "travis/run-on /tmp/travis/nondockertestgeomapfish/ \
-      ./docker-run alembic --name=static upgrade head"
-  - "travis/run-on /tmp/travis/nondockertestgeomapfish/ \
-      ./docker-run alembic --name=static downgrade base"
-  - "travis/run-on /tmp/travis/nondockertestgeomapfish/ \
-      ./docker-run alembic --name=main downgrade base"
+#  # Test new non Docker project
+#  - travis/run-on /tmp/travis/nondockertestgeomapfish/ ./docker-run travis/empty-make --makefile=travis.mk build
+#  - travis/run-on /tmp/travis/nondockertestgeomapfish/ ./docker-run make --makefile=travis.mk checks
+#  - find
+#      /tmp/travis/nondockertestgeomapfish/geoportal/setup.py
+#      /tmp/travis/nondockertestgeomapfish/geoportal/testgeomapfish_geoportal/*.py
+#      /tmp/travis/nondockertestgeomapfish/geoportal/testgeomapfish_geoportal/views
+#      /tmp/travis/nondockertestgeomapfish/commons/setup.py
+#      /tmp/travis/nondockertestgeomapfish/commons/testgeomapfish_commons
+#      -name \*.py | xargs travis/squote
+#  - travis/test-new-project http://localhost/main/wsgi/c2c/health_check
+#  - travis/test-new-project http://localhost/main/wsgi/c2c/health_check?max_level=100
+#  - cat /var/log/apache2/error.log
+#  - cat /var/log/apache2/access.log
+#  - sudo cat /var/log/tomcat7/catalina.out
+#  - travis/run-on /tmp/travis/nondockertestgeomapfish/ ./docker-run travis/status.sh
+#  - travis/run-on /tmp/travis/nondockertestgeomapfish/ ./docker-run rm /build/c2ctemplate-cache.json
+#  - "travis/run-on /tmp/travis/nondockertestgeomapfish/ \
+#      ./docker-run make --makefile=empty-vars.mk geoportal/config.yaml"
+#  - "travis/run-on /tmp/travis/nondockertestgeomapfish/ \
+#      ./docker-run make --makefile=travis.mk alembic.ini"
+#  - "travis/run-on /tmp/travis/nondockertestgeomapfish/ \
+#      ./docker-run alembic --name=main upgrade head"
+#  - "travis/run-on /tmp/travis/nondockertestgeomapfish/ \
+#      ./docker-run alembic --name=static upgrade head"
+#  - "travis/run-on /tmp/travis/nondockertestgeomapfish/ \
+#      ./docker-run alembic --name=static downgrade base"
+#  - "travis/run-on /tmp/travis/nondockertestgeomapfish/ \
+#      ./docker-run alembic --name=main downgrade base"
   ## END FOR NON DOCKER TESTS
   - ./docker-run make doc
 
