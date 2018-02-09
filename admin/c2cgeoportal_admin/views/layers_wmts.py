@@ -57,7 +57,7 @@ class LayerWmtsViews(DimensionLayerViews):
     def _item_actions(self, item, grid=False):
         actions = super()._item_actions(item, grid)
         if inspect(item).persistent:
-            actions.insert(1, ItemAction(
+            actions.insert(next((i for i, v in enumerate(actions) if v.name() == 'delete')), ItemAction(
                 name='convert_to_wms',
                 label=_('Convert to WMS'),
                 icon='glyphicon icon-l_wmts',
