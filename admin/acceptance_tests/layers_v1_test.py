@@ -40,7 +40,7 @@ class TestLayerV1Views(AbstractViewsTests):
 
         self.check_left_menu(resp, 'Layers V1')
 
-        expected = [('_id_', '', 'false'),
+        expected = [('actions', '', 'false'),
                     ('name', 'Name'),
                     ('metadata_url', 'Metadata URL'),
                     ('description', 'Description'),

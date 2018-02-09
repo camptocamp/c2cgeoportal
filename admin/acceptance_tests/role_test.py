@@ -70,7 +70,7 @@ class TestRole(AbstractViewsTests):
 
         self.check_left_menu(resp, 'Roles')
 
-        expected = [('_id_', '', 'false'),
+        expected = [('actions', '', 'false'),
                     ('name', 'Name'),
                     ('description', 'Description'),
                     ('functionalities', 'Functionalities', 'false'),
@@ -196,6 +196,12 @@ class TestRole(AbstractViewsTests):
         assert role_proto.functionalities[2].id == role.functionalities[2].id
         assert role_proto.restrictionareas[1].name == role.restrictionareas[1].name
         assert role_proto.restrictionareas[1].id == role.restrictionareas[1].id
+
+    def test_delete(self, test_app, dbsession):
+        from c2cgeoportal_commons.models.main import Role
+        role_id = dbsession.query(Role.id).first().id
+        test_app.delete('/roles/{}'.format(role_id), status=200)
+        assert dbsession.query(Role).get(role_id) is None
 
     def test_unicity_validator(self, roles_test_data, test_app):
         role_proto = roles_test_data['roles'][7]

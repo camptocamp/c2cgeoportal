@@ -3,7 +3,6 @@ from sqlalchemy import insert, delete, update
 from zope.sqlalchemy import mark_changed
 from pyramid.view import view_defaults
 from pyramid.view import view_config
-from pyramid.httpexceptions import HTTPNotFound, HTTPFound
 
 from sqlalchemy import inspect
 
@@ -60,13 +59,13 @@ class LayerWmtsViews(DimensionLayerViews):
         if inspect(item).persistent:
             actions.insert(1, ItemAction(
                 name='convert_to_wms',
-                label=_('Convert to wms'),
+                label=_('Convert to WMS'),
                 icon='glyphicon icon-l_wmts',
                 url=self._request.route_url(
-                    'layers_wms_from_wmts',
-                    table='layers_wms',
-                    wmts_layer_id=getattr(item, self._id_field),
-                    action='from_wmts')))
+                    'convert_to_wms',
+                    id=getattr(item, self._id_field)),
+                method='POST',
+                confirmation=_('Are you sure you want to convert this layer to WMS ?')))
         return actions
 
     @view_config(route_name='c2cgeoform_item',
@@ -82,47 +81,50 @@ class LayerWmtsViews(DimensionLayerViews):
         return super().save()
 
     @view_config(route_name='c2cgeoform_item',
-                 request_method='DELETE')
+                 request_method='DELETE',
+                 renderer='json')
     def delete(self):
         return super().delete()
 
-    @view_config(route_name='c2cgeoform_item_action',
+    @view_config(route_name='c2cgeoform_item_duplicate',
                  request_method='GET',
-                 match_param=('table=layers_wmts', 'action=duplicate'),
                  renderer='../templates/edit.jinja2')
     def duplicate(self):
         return super().duplicate()
 
-    @view_config(route_name='layers_wmts_from_wms',
-                 request_method='GET')
-    def convert(self):
-        pk = self._request.matchdict.get('wms_layer_id')
-        src = self._request.dbsession.query(LayerWMS).get(pk)
-        default_wmts = self._request.dbsession.query(LayerWMTS). \
-            filter(LayerWMTS.name == 'wmts-defaults').one()
-        if src is None:
-            raise HTTPNotFound()
-        _dbsession = self._request.dbsession
-        with _dbsession.no_autoflush:
-            d = delete(LayerWMS.__table__)
-            d = d.where(LayerWMS.__table__.c.id == pk)
-            _dbsession.execute(d)
-            i = insert(LayerWMTS.__table__)
+    @view_config(route_name='convert_to_wms',
+                 request_method='POST',
+                 renderer='json')
+    def convert_to_wms(self):
+        src = self._get_object()
+        dbsession = self._request.dbsession
+        default_wms = dbsession.query(LayerWMS).filter(LayerWMS.name == 'wms-defaults').one()
+        with dbsession.no_autoflush:
+            d = delete(LayerWMTS.__table__)
+            d = d.where(LayerWMTS.__table__.c.id == src.id)
+            dbsession.execute(d)
+            i = insert(LayerWMS.__table__)
             i = i.values({
-                'id': pk,
-                'url': default_wmts.url,
-                'matrix_set': default_wmts.matrix_set,
+                'id': src.id,
                 'layer': src.layer,
-                'image_type': src.ogc_server.image_type,
-                'style': src.style})
-            _dbsession.execute(i)
+                'style': src.style,
+                'ogc_server_id': default_wms.ogc_server_id,
+                'time_mode': default_wms.time_mode,
+                'time_widget': default_wms.time_widget})
+            dbsession.execute(i)
             u = update(TreeItem.__table__)
-            u = u.where(TreeItem.__table__.c.id == pk)
-            u = u.values({'type': 'l_wmts'})
-            _dbsession.execute(u)
-            _dbsession.expunge(src)
+            u = u.where(TreeItem.__table__.c.id == src.id)
+            u = u.values({'type': 'l_wms'})
+            dbsession.execute(u)
+            dbsession.expunge(src)
 
-        _dbsession.flush()
-        mark_changed(_dbsession)
+        dbsession.flush()
+        mark_changed(dbsession)
 
-        return HTTPFound(self._request.route_url('c2cgeoform_item', action='edit', id=pk))
+        return {
+            'success': True,
+            'redirect': self._request.route_url(
+                'c2cgeoform_item',
+                table='layers_wms',
+                id=self._request.matchdict['id'])
+        }

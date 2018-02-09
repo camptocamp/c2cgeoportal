@@ -1,5 +1,5 @@
 import os
-from c2cgeoform.routes import register_models
+from c2cgeoform.routes import register_models, table_pregenerator
 
 
 def includeme(config):
@@ -19,8 +19,12 @@ def includeme(config):
     config.add_route('layertree', '/layertree')
     config.add_route('layertree_unlink', '/layertree/unlink/{group_id}/{item_id}')
     config.add_route('layertree_delete', '/layertree/delete/{item_id}')
-    config.add_route('layers_wmts_from_wms', '/{table:layers_wmts}/from_wms/{wms_layer_id}')
-    config.add_route('layers_wms_from_wmts', '/{table:layers_wms}/from_wmts/{wmts_layer_id}')
+    config.add_route('convert_to_wms',
+                     '/{table:layers_wmts}/{id}/convert_to_wms',
+                     pregenerator=table_pregenerator)
+    config.add_route('convert_to_wmts',
+                     '/{table:layers_wms}/{id}/convert_to_wmts',
+                     pregenerator=table_pregenerator)
 
     from c2cgeoportal_commons.models.main import (
         Role, LayerWMS, LayerWMTS, Theme, LayerGroup, LayerV1, Interface, OGCServer,

@@ -40,7 +40,7 @@ class TestOGCServer(AbstractViewsTests):
 
         self.check_left_menu(resp, 'OGC Servers')
 
-        expected = [('_id_', '', 'false'),
+        expected = [('actions', '', 'false'),
                     ('name', 'Name', 'true'),
                     ('description', 'Description', 'true'),
                     ('url', 'Basic Url', 'true'),

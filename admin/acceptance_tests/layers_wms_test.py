@@ -48,7 +48,7 @@ class TestLayerWMSViews(AbstractViewsTests):
 
         self.check_left_menu(resp, 'WMS Layers')
 
-        expected = [('_id_', '', 'false'),
+        expected = [('actions', '', 'false'),
                     ('name', 'Name'),
                     ('metadata_url', 'Metadata URL'),
                     ('description', 'Description'),
@@ -245,6 +245,7 @@ class TestLayerWMSViews(AbstractViewsTests):
     def test_convert_common_fields_copied(self, layer_wms_test_data, test_app, dbsession):
         from c2cgeoportal_commons.models.main import LayerWMTS, LayerWMS
         layer = layer_wms_test_data['layers'][3]
+
         assert 0 == dbsession.query(LayerWMTS). \
             filter(LayerWMTS.name == layer.name). \
             count()
@@ -252,9 +253,11 @@ class TestLayerWMSViews(AbstractViewsTests):
             filter(LayerWMS.name == layer.name). \
             count()
 
-        resp = test_app.get("/layers_wmts/from_wms/{}".format(layer.id), status=302)
+        resp = test_app.post("/layers_wms/{}/convert_to_wmts".format(layer.id), status=200)
+        assert resp.json['success']
+        assert ('http://localhost/layers_wmts/{}'.format(layer.id) ==
+                resp.json['redirect'])
 
-        assert str(layer.id) == re.match('http://localhost/layers_wmts/(.*)', resp.location).group(1)
         assert 1 == dbsession.query(LayerWMTS). \
             filter(LayerWMTS.name == layer.name). \
             count()
@@ -262,7 +265,7 @@ class TestLayerWMSViews(AbstractViewsTests):
             filter(LayerWMS.name == layer.name). \
             count()
 
-        resp = resp.follow()
+        resp = test_app.get(resp.json['redirect'], status=200)
         form = resp.form
 
         assert str(layer.id) == self.get_first_field_named(form, 'id').value
@@ -286,10 +289,22 @@ class TestLayerWMSViews(AbstractViewsTests):
 
     def test_convert_image_type_from_ogcserver(self, layer_wms_test_data, test_app):
         layer = layer_wms_test_data['layers'][3]
-        resp = test_app.get("/layers_wmts/from_wms/{}".format(layer.id), status=302).follow()
+
+        resp = test_app.post("/layers_wms/{}/convert_to_wmts".format(layer.id), status=200)
+        assert resp.json['success']
+        assert ('http://localhost/layers_wmts/{}'.format(layer.id) ==
+                resp.json['redirect'])
+
+        resp = test_app.get(resp.json['redirect'], status=200)
         assert 'image/png' == resp.form['image_type'].value
+
         layer = layer_wms_test_data['layers'][2]
-        resp = test_app.get("/layers_wmts/from_wms/{}".format(layer.id), status=302).follow()
+        resp = test_app.post("/layers_wms/{}/convert_to_wmts".format(layer.id), status=200)
+        assert resp.json['success']
+        assert ('http://localhost/layers_wmts/{}'.format(layer.id) ==
+                resp.json['redirect'])
+
+        resp = test_app.get(resp.json['redirect'], status=200)
         assert 'image/jpeg' == resp.form['image_type'].value
 
     def test_unicity_validator(self, layer_wms_test_data, test_app):
@@ -302,13 +317,18 @@ class TestLayerWMSViews(AbstractViewsTests):
 
     def test_unicity_validator_does_not_matter_amongst_cousin(self, layer_wms_test_data, test_app, dbsession):
         from c2cgeoportal_commons.models.main import LayerWMS, LayerGroup
-        layer = layer_wms_test_data['layers'][2]
-        resp = test_app.get("/layers_wms/{}/duplicate".format(layer.id), status=200)
+
         assert 1 == dbsession.query(LayerGroup). \
             filter(LayerGroup.name == 'layer_group_0'). \
             count()
-        self.set_first_field_named(resp.form, 'name', 'layer_group_0')
 
+        assert dbsession.query(LayerWMS). \
+            filter(LayerWMS.name == 'layer_group_0'). \
+            one_or_none() is None
+
+        layer = layer_wms_test_data['layers'][2]
+        resp = test_app.get("/layers_wms/{}/duplicate".format(layer.id), status=200)
+        self.set_first_field_named(resp.form, 'name', 'layer_group_0')
         resp = resp.form.submit('submit')
 
         layer = dbsession.query(LayerWMS). \

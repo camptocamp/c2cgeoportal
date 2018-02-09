@@ -115,9 +115,8 @@ class AbstractViewsTests():
             str.format('\n\n{}\n\n differs from \n\n{}',
                        pp.pformat(expected_col_headers),
                        pp.pformat(effective_cols))
-        commands = resp.html.select_one('th[data-field="_id_"]')
-        assert 'false' == commands.attrs['data-searchable']
-        assert 'false' == commands.attrs['data-sortable']
+        actions = resp.html.select_one('th[data-field="actions"]')
+        assert 'false' == actions.attrs['data-sortable']
         assert 1 == len(list(filter(lambda x: str(x.contents) == "['New']",
                                     resp.html.findAll('a'))))
 

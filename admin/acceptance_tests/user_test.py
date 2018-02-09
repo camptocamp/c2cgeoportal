@@ -45,7 +45,7 @@ class TestUser(AbstractViewsTests):
 
         self.check_left_menu(resp, 'Users')
 
-        expected = [('_id_', '', 'false'),
+        expected = [('actions', '', 'false'),
                     ('username', 'Username'),
                     ('role_name', 'Role'),
                     ('email', 'Email')]
@@ -78,17 +78,12 @@ class TestUser(AbstractViewsTests):
             ('secretary_3', False, 'secretary_3')]
         assert resp.form['role_name'].value == user.role_name
 
-    def test_delete_success(self, dbsession, users_test_data):
-        user = users_test_data['users'][9]
-        from c2cgeoportal_admin.views.users import UserViews
-        req = DummyRequest(dbsession=dbsession)
-        req.matchdict.update({'id': str(user.id)})
-
-        UserViews(req).delete()
-
+    def test_delete(self, test_app, users_test_data, dbsession):
         from c2cgeoportal_commons.models.static import User
-        user = dbsession.query(User).filter(User.id == user.id).one_or_none()
-        assert user is None
+        user = users_test_data['users'][9]
+        deleted_id = user.id
+        test_app.delete('/users/{}'.format(deleted_id), status=200)
+        assert dbsession.query(User).get(deleted_id) is None
 
     def test_submit_update(self, dbsession, test_app, users_test_data):
         user = users_test_data['users'][11]

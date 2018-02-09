@@ -40,7 +40,7 @@ class IndexPage(BasePage):
     def find_item_action(self, id_, action):
         td = self.find_element(By.XPATH, '//tr[@data-uniqueid="{}"]/td[@class="actions"]'.format(id_))
         td.find_element(By.XPATH, './/button[@data-target="item-{}-actions"]'.format(id_)).click()
-        return td.find_element(By.XPATH, './/a[@class="c2cgeoform-item-action {} "]'.format(action))
+        return td.find_element(By.XPATH, './/a[contains(@class, "{}")]'.format(action))
 
     def click_delete(self, id_):
         self.find_item_action(id_, 'delete').click()

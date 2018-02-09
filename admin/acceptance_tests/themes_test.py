@@ -81,7 +81,7 @@ class TestTheme(TestTreeGroup):
 
         self.check_left_menu(resp, 'Themes')
 
-        expected = [('_id_', '', 'false'),
+        expected = [('actions', '', 'false'),
                     ('name', 'Name'),
                     ('metadata_url', 'Metadata URL'),
                     ('description', 'Description'),
@@ -373,6 +373,12 @@ class TestTheme(TestTreeGroup):
         assert duplicated.id != theme.id
         assert duplicated.children_relation[0].id != theme.children_relation[0].id
         assert duplicated.children_relation[0].treeitem.id == theme.children_relation[0].treeitem.id
+
+    def test_delete(self, test_app, dbsession):
+        from c2cgeoportal_commons.models.main import Theme
+        theme_id = dbsession.query(Theme.id).first().id
+        test_app.delete('/themes/{}'.format(theme_id), status=200)
+        assert dbsession.query(Theme).get(theme_id) is None
 
     def test_unicity_validator(self, theme_test_data, test_app):
         theme = theme_test_data['themes'][1]
