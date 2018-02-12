@@ -142,27 +142,6 @@
 				<reportElement x="0" y="1" width="300" height="14"/>
 				<text><![CDATA[Développé par Camptocamp SA, info@camptocamp.com]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="0" y="0" width="140" height="52"/>
-				<textElement verticalAlignment="Bottom"/>
-				<text><![CDATA[Suisse
-Camptocamp SA, Lausanne
-Tel + 41 21 619 10 10]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="148" y="0" width="192" height="51"/>
-				<textElement verticalAlignment="Bottom"/>
-				<text><![CDATA[France
-Camptocamp France SAS, Chambéry
-Tél : +33 4 79 44 44 94]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="343" y="0" width="159" height="51"/>
-				<textElement verticalAlignment="Bottom"/>
-				<text><![CDATA[Autriche
-Camptocamp Austria, Vienne
-Tél : +43 1 712 21 94 0]]></text>
-			</staticText>
 			<textField>
 				<reportElement x="496" y="21" width="38" height="30"/>
 				<textElement textAlignment="Right" verticalAlignment="Bottom"/>
