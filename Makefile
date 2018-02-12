@@ -332,11 +332,13 @@ geoportal/c2cgeoportal_geoportal/scaffolds/create/docker-run: docker-run
 
 geoportal/npm-packages: ngeo/package.json $(BUILD_DIR)/requirements.timestamp geoportal/c2cgeoportal_geoportal/scripts/import_ngeo_apps.py
 	$(PRERULE_CMD)
-	$(BUILD_DIR)/venv/bin/import-ngeo-apps --package _ $< $@
+	$(BUILD_DIR)/venv/bin/npm-packages --ngeo \
+		angular-jsdoc angular-mocks coveralls gaze jsdoc jsdom karma karma-coverage \
+		karma-jasmine karma-chrome-launcher $< $@
 
 docker/admin-build/npm-packages: admin/package.json $(BUILD_DIR)/requirements.timestamp geoportal/c2cgeoportal_geoportal/scripts/import_ngeo_apps.py
 	$(PRERULE_CMD)
-	$(BUILD_DIR)/venv/bin/import-ngeo-apps --package _ $< $@
+	$(BUILD_DIR)/venv/bin/npm-packages $< $@
 
 geoportal/package.json: ngeo/package.json $(BUILD_DIR)/requirements.timestamp \
 		geoportal/c2cgeoportal_geoportal/scripts/import_ngeo_apps.py

@@ -28,10 +28,8 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import os
 import re
-import subprocess
-from json import loads, dumps
+from json import dumps
 from urllib.parse import parse_qsl
 from argparse import ArgumentParser
 
@@ -79,55 +77,15 @@ class _RouteDest:
         )
 
 
-RE_NPM_VERSION = re.compile("^([0-9]+)\.([0-9]+)\.([0-9]+)$")
-RE_NPM_PRERELEASE_VERSION = re.compile("^([0-9]+)\.([0-9]+)\.([0-9]+)\.?([a-z]+)([0-9]+)$")
-
-
-def _ngeo_version():
-    if "TRAVIS_TAG" in os.environ and os.environ["TRAVIS_TAG"] != "":
-        match = RE_NPM_VERSION.match(os.environ["TRAVIS_TAG"])
-        prerelease_match = RE_NPM_PRERELEASE_VERSION.match(os.environ["TRAVIS_TAG"])
-        if match is not None:
-            return "{}.{}.{}".format(match.group(1), match.group(2), match.group(3))
-        if prerelease_match is not None:
-            return "{}.{}.{}-{}.{}".format(
-                prerelease_match.group(1),
-                prerelease_match.group(2),
-                prerelease_match.group(3),
-                prerelease_match.group(4),
-                prerelease_match.group(5)
-            )
-    return None
-
-
-def _ngeo_git_version():
-    version = _ngeo_version()
-    return os.environ["VERSION"] if version is None else version
-
-
-def ngeo_git_version():
-    print((_ngeo_git_version()))
-
-
-def _get_ngeo_version():
-    version = _ngeo_version()
-    if version is not None:
-        return version
-    return "https://api.github.com/repos/camptocamp/ngeo/tarball/{}".format(
-        subprocess.check_output(["git", "rev-parse", "HEAD"], cwd="ngeo").decode("utf-8").strip()
-    )
-
-
 def main():
     """
     Import the ngeo apps files
     """
 
-    parser = ArgumentParser(description='import ngeo apps files')
+    parser = ArgumentParser(description='Import ngeo apps files')
 
     parser.add_argument('--html', action="store_true", help="Import the html template")
     parser.add_argument('--js', action="store_true", help="Import the javascript controller")
-    parser.add_argument('--package', action="store_true", help="Import the package JSON")
     parser.add_argument('interface', metavar='INTERFACE', help="The interface we import")
     parser.add_argument('src', metavar='SRC', help="The ngeo source file")
     parser.add_argument('dst', metavar='DST', help="The destination file")
@@ -136,56 +94,33 @@ def main():
 
     with open(args.src) as src:
         data = src.read()
-        if args.package:
-            packages = loads(data).get("devDependencies", loads(data).get("dependencies", []))
-            # freeze the ngeo version
-            packages["ngeo"] = _get_ngeo_version()
-            for package in [
-                "angular-jsdoc",
-                "angular-mocks",
-                "coveralls",
-                "gaze",
-                "jsdoc",
-                "jsdom",
-                "karma",
-                "karma-coverage",
-                "karma-jasmine",
-                "karma-chrome-launcher",
-            ]:
-                if package in packages:
-                    del packages[package]
+        data = re.sub(r"{{", r"\\{\\{", data)
+        data = re.sub(r"}}", r"\\}\\}", data)
 
-            data = " ".join(["{}@{}".format(p, v) for p, v in packages.items()])
-            data = data + "\n"
-
-        else:
-            data = re.sub(r"{{", r"\\{\\{", data)
-            data = re.sub(r"}}", r"\\}\\}", data)
-
-            if args.html:
-                if args.interface == "mobile":
-                    data = _sub(
-                        r"</head>",
-                        """</head>
+        if args.html:
+            if args.interface == "mobile":
+                data = _sub(
+                    r"</head>",
+                    """</head>
   <%
     no_redirect_query = dict(request.GET)
     no_redirect_query['no_redirect'] = u''
   %>
 """,
-                        data,
-                    )
-                    data = _sub(
-                        re.escape(
-                            r"http://camptocamp.github.io/ngeo/master/"
-                            r"examples/contribs/gmf/apps/desktop/?no_redirect"
-                        ),
-                        "${request.route_url('desktop', _query=no_redirect_query) | n}",
-                        data,
-                    )
-                if args.interface == "desktop":
-                    data = _sub(
-                        r"<head>",
-                        """<head>
+                    data,
+                )
+                data = _sub(
+                    re.escape(
+                        r"http://camptocamp.github.io/ngeo/master/"
+                        r"examples/contribs/gmf/apps/desktop/?no_redirect"
+                    ),
+                    "${request.route_url('desktop', _query=no_redirect_query) | n}",
+                    data,
+                )
+            if args.interface == "desktop":
+                data = _sub(
+                    r"<head>",
+                    """<head>
     % if "no_redirect" not in request.params:
             <script>
                 var small_screen = window.matchMedia ? window.matchMedia('(max-width: 1024px)') : false;
@@ -199,17 +134,12 @@ def main():
             </script>
     % endif
 """,  # noqa: E501
-                        data,
-                    )
+                    data,
+                )
 
-            data = re.sub("app", "{{package}}", data)
-            data = re.sub(re.escape("{{package}}lication"), "application", data)
-            data = re.sub(re.escape("{{package}}le"), "apple", data)
-
-# temporary disable ...
-#        if args.js:
-            # Full text search
-#            data = _sub(r"datasetTitle: 'Internal',", r"datasetTitle: '{{project}}',", data)
+        data = re.sub("app", "{{package}}", data)
+        data = re.sub(re.escape("{{package}}lication"), "application", data)
+        data = re.sub(re.escape("{{package}}le"), "apple", data)
 
         if args.html:
             data = "<%\n" \
