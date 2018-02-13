@@ -70,7 +70,7 @@ class TestRole(AbstractViewsTests):
 
         self.check_left_menu(resp, 'Roles')
 
-        expected = [('_id_', '', 'false'),
+        expected = [('actions', '', 'false'),
                     ('name', 'Name'),
                     ('description', 'Description'),
                     ('functionalities', 'Functionalities', 'false'),
@@ -197,6 +197,12 @@ class TestRole(AbstractViewsTests):
         assert role_proto.restrictionareas[1].name == role.restrictionareas[1].name
         assert role_proto.restrictionareas[1].id == role.restrictionareas[1].id
 
+    def test_delete(self, test_app, dbsession):
+        from c2cgeoportal_commons.models.main import Role
+        role_id = dbsession.query(Role.id).first().id
+        test_app.delete('/roles/{}'.format(role_id), status=200)
+        assert dbsession.query(Role).get(role_id) is None
+
     def test_unicity_validator(self, roles_test_data, test_app):
         role_proto = roles_test_data['roles'][7]
         resp = test_app.get("/roles/{}/duplicate".format(role_proto.id), status=200)
@@ -208,7 +214,12 @@ class TestRole(AbstractViewsTests):
     @pytest.mark.usefixtures('raise_db_error_on_query')
     def test_grid_dberror(self, dbsession):
         from c2cgeoportal_admin.views.roles import RoleViews
-        request = DummyRequest(dbsession=dbsession,
-                               params={'current': 0, 'rowCount': 10})
+        request = DummyRequest(
+            dbsession=dbsession,
+            params={
+                'offset': 0,
+                'limit': 10
+            }
+        )
         info = RoleViews(request).grid()
-        assert info.status_int == 500, '500 status when db error'
+        assert info.status_int == 500, 'Expected 500 status when db error'

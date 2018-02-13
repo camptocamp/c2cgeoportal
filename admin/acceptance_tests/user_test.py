@@ -6,6 +6,7 @@ from pyramid.testing import DummyRequest
 from selenium.common.exceptions import NoSuchElementException
 
 from . import skip_if_ci, AbstractViewsTests
+from .selenium.page import IndexPage
 
 
 @pytest.fixture(scope='class')
@@ -44,7 +45,7 @@ class TestUser(AbstractViewsTests):
 
         self.check_left_menu(resp, 'Users')
 
-        expected = [('_id_', '', 'false'),
+        expected = [('actions', '', 'false'),
                     ('username', 'Username'),
                     ('role_name', 'Role'),
                     ('email', 'Email')]
@@ -77,17 +78,12 @@ class TestUser(AbstractViewsTests):
             ('secretary_3', False, 'secretary_3')]
         assert resp.form['role_name'].value == user.role_name
 
-    def test_delete_success(self, dbsession, users_test_data):
-        user = users_test_data['users'][9]
-        from c2cgeoportal_admin.views.users import UserViews
-        req = DummyRequest(dbsession=dbsession)
-        req.matchdict.update({'id': str(user.id)})
-
-        UserViews(req).delete()
-
+    def test_delete(self, test_app, users_test_data, dbsession):
         from c2cgeoportal_commons.models.static import User
-        user = dbsession.query(User).filter(User.id == user.id).one_or_none()
-        assert user is None
+        user = users_test_data['users'][9]
+        deleted_id = user.id
+        test_app.delete('/users/{}'.format(deleted_id), status=200)
+        assert dbsession.query(User).get(deleted_id) is None
 
     def test_submit_update(self, dbsession, test_app, users_test_data):
         user = users_test_data['users'][11]
@@ -184,41 +180,53 @@ class TestUser(AbstractViewsTests):
     @pytest.mark.usefixtures("raise_db_error_on_query")
     def test_grid_dberror(self, dbsession):
         from c2cgeoportal_admin.views.users import UserViews
-        request = DummyRequest(dbsession=dbsession,
-                               params={'current': 0, 'rowCount': 10})
+        request = DummyRequest(
+            dbsession=dbsession,
+            params={
+                'offset': 0,
+                'limit': 10
+            }
+        )
         info = UserViews(request).grid()
-        assert info.status_int == 500, '500 status when db error'
+        assert info.status_int == 500, 'Expected 500 status when db error'
 
-    # in order to make this work, had to install selenium gecko driver
-    @skip_if_ci
-    @pytest.mark.selenium
-    @pytest.mark.usefixtures("selenium", "selenium_app")
-    def test_selenium(self, dbsession, selenium, selenium_app, users_test_data):
+
+@skip_if_ci
+@pytest.mark.selenium
+@pytest.mark.usefixtures('selenium', 'selenium_app', 'users_test_data')
+class TestUserSelenium():
+
+    _prefix = '/users'
+
+    def test_index(self, selenium, selenium_app, users_test_data, dbsession):
         from c2cgeoportal_commons.models.static import User
+
         selenium.get(selenium_app + self._prefix)
 
-        elem = selenium.find_element_by_xpath('//li[@id="language-dropdown"]')
-        elem.click()
-        elem = selenium.find_element_by_xpath("//a[contains(@href,'language=en')]")
-        elem.click()
+        index_page = IndexPage(selenium)
+        index_page.select_language('en')
+        index_page.check_pagination_info('Showing 1 to 23 of 23 rows', 10)
+        index_page.select_page_size(10)
+        index_page.check_pagination_info('Showing 1 to 10 of 23 rows', 10)
 
-        grid_header = selenium.find_element_by_xpath("//div[contains(@id,'grid-header')]")
-        elem = grid_header.find_element_by_xpath("//button[@title='Refresh']/following-sibling::*")
-        elem.click()
-        elem = grid_header.find_element_by_xpath("//a[contains(.,'50')]")
-        elem.click()
+        # delete
+        user = users_test_data['users'][3]
+        index_page.click_delete(user.id)
+        index_page.check_pagination_info('Showing 1 to 10 of 22 rows', 10)
+        with pytest.raises(NoSuchElementException):
+            selenium.find_element_by_xpath("//a[@data-url='{}/users/{}')]"
+                                           .format(selenium_app, user.id))
 
-        user = users_test_data['users'][13]
+        # edit
+        user = users_test_data['users'][4]
+        index_page.find_item_action(user.id, 'edit').click()
 
-        elem = selenium.find_element_by_xpath("//a[@href='{}/users/{}']".format(selenium_app, user.id))
-        elem.click()
         elem = selenium.find_element_by_xpath("//input[@name ='username']")
         elem.clear()
         elem.send_keys('new_name_éôù')
         elem = selenium.find_element_by_xpath("//input[@name ='email']")
         elem.clear()
         elem.send_keys('new_email')
-
         elem = selenium.find_element_by_xpath("//button[@name='formsubmit']")
         elem.click()
 
@@ -226,42 +234,3 @@ class TestUser(AbstractViewsTests):
         dbsession.expire(user)
         assert user.username == 'new_name_éôù'
         assert user.email == 'new_email'
-
-    # in order to make this work, had to install selenium gecko driver
-    @skip_if_ci
-    @pytest.mark.selenium
-    @pytest.mark.usefixtures("selenium", "selenium_app")
-    def test_delete_selenium(self, selenium, selenium_app, users_test_data):
-        user = users_test_data['users'][13]
-        selenium.get(selenium_app + self._prefix)
-
-        elem = selenium.find_element_by_xpath('//li[@id="language-dropdown"]')
-        elem.click()
-        elem = selenium.find_element_by_xpath("//a[contains(@href,'language=en')]")
-        elem.click()
-
-        from selenium.webdriver.common.by import By
-        from selenium.webdriver.support.ui import WebDriverWait
-        from selenium.webdriver.support import expected_conditions
-        elem = WebDriverWait(selenium, 10).until(
-            expected_conditions.presence_of_element_located((By.XPATH, "//div[@class='infos']")))
-        assert 'Showing 1 to 10 of 23 entries' == elem.text
-        elem = selenium.find_element_by_xpath("//button[@title='Refresh']/following-sibling::*")
-        elem.click()
-        elem = selenium.find_element_by_xpath("//a[contains(.,'50')]")
-        elem.click()
-        elem = selenium.find_element_by_xpath("//a[@data-url='{}/users/{}']"
-                                              .format(selenium_app, user.id))
-        elem.click()
-        selenium.switch_to_alert().accept()
-        selenium.switch_to_default_content()
-        selenium.refresh()
-        elem = selenium.find_element_by_xpath("//div[@class='infos']")
-        assert 'Showing 1 to 10 of 22 entries' == elem.text
-        elem = selenium.find_element_by_xpath("//button[@title='Refresh']/following-sibling::*")
-        elem.click()
-        elem = selenium.find_element_by_xpath("//a[contains(.,'50')]")
-        elem.click()
-        with pytest.raises(NoSuchElementException):
-            selenium.find_element_by_xpath("//a[@data-url='{}/users/{}')]"
-                                           .format(selenium_app, user.id))

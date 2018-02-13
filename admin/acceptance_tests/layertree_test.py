@@ -141,7 +141,7 @@ class TestLayerTreeView(AbstractViewsTests):
             link = resp.html.select_one('tr.treegrid-{} li.action-unlink a'.format(path))
             assert 'http://localhost/layertree/unlink/{}/{}'.format(group_id, item_id) == link['data-url']
 
-    def test_unlink_view(self, test_app, layertree_test_data, dbsession):
+    def test_unlink(self, test_app, layertree_test_data, dbsession):
         group = layertree_test_data['groups'][0]
         item = layertree_test_data['layers_wms'][0]
 
@@ -151,10 +151,15 @@ class TestLayerTreeView(AbstractViewsTests):
 
         assert item not in group.children
 
-    @skip_if_ci
-    @pytest.mark.selenium
-    @pytest.mark.usefixtures('selenium', 'selenium_app')
-    def test_unlink_selenium(self, dbsession, selenium, selenium_app, layertree_test_data):
+
+@skip_if_ci
+@pytest.mark.selenium
+@pytest.mark.usefixtures('selenium', 'selenium_app', 'layertree_test_data')
+class TestLayerTreeSelenium():
+
+    _prefix = '/layertree'
+
+    def test_unlink(self, dbsession, selenium, selenium_app, layertree_test_data):
         from selenium.webdriver.common.by import By
         from selenium.webdriver.support import expected_conditions
         from selenium.webdriver.support.ui import WebDriverWait

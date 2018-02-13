@@ -4,6 +4,7 @@ import re
 import pytest
 
 from . import skip_if_ci, AbstractViewsTests, factory_build_layers
+from .selenium.page import IndexPage
 
 
 @pytest.fixture(scope='class')
@@ -39,7 +40,7 @@ class TestLayerV1Views(AbstractViewsTests):
 
         self.check_left_menu(resp, 'Layers V1')
 
-        expected = [('_id_', '', 'false'),
+        expected = [('actions', '', 'false'),
                     ('name', 'Name'),
                     ('metadata_url', 'Metadata URL'),
                     ('description', 'Description'),
@@ -77,17 +78,7 @@ class TestLayerV1Views(AbstractViewsTests):
         self.check_grid_headers(resp, expected)
 
     def test_grid_complex_column_val(self, test_app, layer_v1_test_data):
-        json = test_app.post(
-            '/layers_v1/grid.json',
-            params={
-                'current': 1,
-                'rowCount': 10,
-                'sort[name]': 'asc',
-                'searchPhrase': ''
-            },
-            status=200
-        ).json
-        assert 25 == json['total']
+        json = self.check_search(test_app, sort='name', total=25)
 
         row = json['rows'][0]
         layer = layer_v1_test_data['layers'][0]
@@ -102,7 +93,7 @@ class TestLayerV1Views(AbstractViewsTests):
 
     def test_grid_search(self, test_app):
         # check search on interfaces
-        self.check_search(test_app, 'mobile', 9)
+        self.check_search(test_app, 'mobile', total=9)
 
     def test_base_edit(self, test_app, layer_v1_test_data):
         layer = layer_v1_test_data['layers'][10]
@@ -287,24 +278,19 @@ class TestLayerV1Views(AbstractViewsTests):
         assert dbsession.query(Layer).get(layer_id) is None
         assert dbsession.query(TreeItem).get(layer_id) is None
 
-    @skip_if_ci
-    @pytest.mark.selenium
-    @pytest.mark.usefixtures('selenium', 'selenium_app')
-    def test_selenium(self, selenium, selenium_app):
+
+@skip_if_ci
+@pytest.mark.selenium
+@pytest.mark.usefixtures('selenium', 'selenium_app', 'layer_v1_test_data')
+class TestLayerV1Selenium():
+
+    _prefix = '/layers_v1'
+
+    def test_index(self, selenium, selenium_app):
         selenium.get(selenium_app + self._prefix)
 
-        elem = selenium.find_element_by_xpath('//li[@id="language-dropdown"]')
-        elem.click()
-        elem = selenium.find_element_by_xpath('//a[contains(@href,"language=en")]')
-        elem.click()
-
-        from selenium.webdriver.common.by import By
-        from selenium.webdriver.support.ui import WebDriverWait
-        from selenium.webdriver.support import expected_conditions
-        elem = WebDriverWait(selenium, 10).until(
-            expected_conditions.presence_of_element_located((By.XPATH, '//div[@class="infos"]')))
-        assert 'Showing 1 to 10 of 25 entries' == elem.text
-        elem = selenium.find_element_by_xpath('//button[@title="Refresh"]/following-sibling::*')
-        elem.click()
-        elem = selenium.find_element_by_xpath('//a[contains(.,"50")]')
-        elem.click()
+        index_page = IndexPage(selenium)
+        index_page.select_language('en')
+        index_page.check_pagination_info('Showing 1 to 25 of 25 rows', 10)
+        index_page.select_page_size(10)
+        index_page.check_pagination_info('Showing 1 to 10 of 25 rows', 10)

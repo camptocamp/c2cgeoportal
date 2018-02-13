@@ -12,7 +12,7 @@
 
     <!-- Bootstrap core CSS -->
     <link href="{{request.static_url('c2cgeoportal_admin:node_modules/bootstrap/dist/css/bootstrap.min.css')}}" rel="stylesheet">
-    <link href="{{request.static_url('c2cgeoportal_admin:node_modules/jquery-bootgrid/dist/jquery.bootgrid.min.css')}}" rel="stylesheet">
+    <link href="{{request.static_url('c2cgeoportal_admin:node_modules/bootstrap-table/dist/bootstrap-table.min.css')}}" rel="stylesheet">
     <link href="{{request.static_url('c2cgeoportal_admin:node_modules/jquery-steps/demo/css/jquery.steps.css')}}" rel="stylesheet">
     <link href="{{request.static_url('c2cgeoform:static/theme.css')}}" rel="stylesheet">
     {% block extra_links %}{% endblock extra_links %}
@@ -37,7 +37,8 @@
     <!-- Bootstrap core JavaScript -->
     <script type="text/javascript" src="{{request.static_url('c2cgeoportal_admin:node_modules/jquery/dist/jquery.min.js')}}"></script>
     <script type="text/javascript" src="{{request.static_url('c2cgeoportal_admin:node_modules/bootstrap/dist/js/bootstrap.min.js')}}"></script>
-    <script type="text/javascript" src="{{request.static_url('c2cgeoportal_admin:node_modules/jquery-bootgrid/dist/jquery.bootgrid.min.js')}}"></script>
+    <script type="text/javascript" src="{{request.static_url('c2cgeoportal_admin:node_modules/bootstrap-table/dist/bootstrap-table.min.js')}}"></script>
+    <script type="text/javascript" src="{{request.static_url('c2cgeoportal_admin:node_modules/bootstrap-table/dist/bootstrap-table-locale-all.js')}}"></script>
     <script type="text/javascript" src="{{request.static_url('c2cgeoportal_admin:node_modules/jquery-steps/build/jquery.steps.min.js')}}"></script>
     <script type="text/javascript" src="{{request.static_url('c2cgeoform:static/js/c2cgeoform.js')}}"></script>
     {% block extra_scripts %}{% endblock extra_scripts %}
@@ -55,11 +56,9 @@
 
     {% include 'navigation_navbar.jinja2' %}
 
-    <div class="container">
-      {% block content %}
-        <p>No content</p>
-      {% endblock content %}
-    </div>
+    {% block content %}
+      <p>No content</p>
+    {% endblock content %}
 
   </body>
 </html>

@@ -4,6 +4,7 @@ import re
 import pytest
 
 from . import skip_if_ci, AbstractViewsTests, get_test_default_layers, factory_build_layers
+from .selenium.page import IndexPage
 
 
 @pytest.fixture(scope='class')
@@ -47,7 +48,7 @@ class TestLayerWMSViews(AbstractViewsTests):
 
         self.check_left_menu(resp, 'WMS Layers')
 
-        expected = [('_id_', '', 'false'),
+        expected = [('actions', '', 'false'),
                     ('name', 'Name'),
                     ('metadata_url', 'Metadata URL'),
                     ('description', 'Description'),
@@ -67,17 +68,7 @@ class TestLayerWMSViews(AbstractViewsTests):
         self.check_grid_headers(resp, expected)
 
     def test_grid_complex_column_val(self, test_app, layer_wms_test_data):
-        json = test_app.post(
-            '/layers_wms/grid.json',
-            params={
-                'current': 1,
-                'rowCount': 10,
-                'sort[name]': 'asc',
-                'searchPhrase': ''
-            },
-            status=200
-        ).json
-        assert 26 == json['total']
+        json = self.check_search(test_app, sort='name', total=26)
 
         row = json['rows'][0]
         layer = layer_wms_test_data['layers'][0]
@@ -92,27 +83,19 @@ class TestLayerWMSViews(AbstractViewsTests):
         assert 'copyable: true, snappingConfig: {"tolerance": 50}' == row['metadatas']
 
     def test_grid_sort_on_ogc_server(self, test_app, layer_wms_test_data):
-        rows = test_app.post(
-            '/layers_wms/grid.json',
-            params={
-                'current': 1,
-                'rowCount': 10,
-                'sort[ogc_server]': 'asc'
-            },
-            status=200
-        ).json['rows']
+        json = self.check_search(test_app, sort='ogc_server')
         for i, layer in enumerate(sorted(layer_wms_test_data['layers'],
                                          key=lambda layer: (layer.ogc_server.name, layer.id))):
             if i == 10:
                 break
-            assert str(layer.id) == rows[i]['_id_']
+            assert str(layer.id) == json['rows'][i]['_id_']
 
     def test_grid_search(self, test_app):
         # check search on ogc_server.name
-        self.check_search(test_app, 'server_0', 7)
+        self.check_search(test_app, 'server_0', total=7)
 
         # check search on interfaces
-        self.check_search(test_app, 'mobile', 9)
+        self.check_search(test_app, 'mobile', total=9)
 
     def test_base_edit(self, test_app, layer_wms_test_data):
         layer = layer_wms_test_data['layers'][10]
@@ -262,6 +245,7 @@ class TestLayerWMSViews(AbstractViewsTests):
     def test_convert_common_fields_copied(self, layer_wms_test_data, test_app, dbsession):
         from c2cgeoportal_commons.models.main import LayerWMTS, LayerWMS
         layer = layer_wms_test_data['layers'][3]
+
         assert 0 == dbsession.query(LayerWMTS). \
             filter(LayerWMTS.name == layer.name). \
             count()
@@ -269,9 +253,11 @@ class TestLayerWMSViews(AbstractViewsTests):
             filter(LayerWMS.name == layer.name). \
             count()
 
-        resp = test_app.get("/layers_wmts/from_wms/{}".format(layer.id), status=302)
+        resp = test_app.post("/layers_wms/{}/convert_to_wmts".format(layer.id), status=200)
+        assert resp.json['success']
+        assert ('http://localhost/layers_wmts/{}'.format(layer.id) ==
+                resp.json['redirect'])
 
-        assert str(layer.id) == re.match('http://localhost/layers_wmts/(.*)', resp.location).group(1)
         assert 1 == dbsession.query(LayerWMTS). \
             filter(LayerWMTS.name == layer.name). \
             count()
@@ -279,7 +265,7 @@ class TestLayerWMSViews(AbstractViewsTests):
             filter(LayerWMS.name == layer.name). \
             count()
 
-        resp = resp.follow()
+        resp = test_app.get(resp.json['redirect'], status=200)
         form = resp.form
 
         assert str(layer.id) == self.get_first_field_named(form, 'id').value
@@ -303,10 +289,22 @@ class TestLayerWMSViews(AbstractViewsTests):
 
     def test_convert_image_type_from_ogcserver(self, layer_wms_test_data, test_app):
         layer = layer_wms_test_data['layers'][3]
-        resp = test_app.get("/layers_wmts/from_wms/{}".format(layer.id), status=302).follow()
+
+        resp = test_app.post("/layers_wms/{}/convert_to_wmts".format(layer.id), status=200)
+        assert resp.json['success']
+        assert ('http://localhost/layers_wmts/{}'.format(layer.id) ==
+                resp.json['redirect'])
+
+        resp = test_app.get(resp.json['redirect'], status=200)
         assert 'image/png' == resp.form['image_type'].value
+
         layer = layer_wms_test_data['layers'][2]
-        resp = test_app.get("/layers_wmts/from_wms/{}".format(layer.id), status=302).follow()
+        resp = test_app.post("/layers_wms/{}/convert_to_wmts".format(layer.id), status=200)
+        assert resp.json['success']
+        assert ('http://localhost/layers_wmts/{}'.format(layer.id) ==
+                resp.json['redirect'])
+
+        resp = test_app.get(resp.json['redirect'], status=200)
         assert 'image/jpeg' == resp.form['image_type'].value
 
     def test_unicity_validator(self, layer_wms_test_data, test_app):
@@ -319,13 +317,18 @@ class TestLayerWMSViews(AbstractViewsTests):
 
     def test_unicity_validator_does_not_matter_amongst_cousin(self, layer_wms_test_data, test_app, dbsession):
         from c2cgeoportal_commons.models.main import LayerWMS, LayerGroup
-        layer = layer_wms_test_data['layers'][2]
-        resp = test_app.get("/layers_wms/{}/duplicate".format(layer.id), status=200)
+
         assert 1 == dbsession.query(LayerGroup). \
             filter(LayerGroup.name == 'layer_group_0'). \
             count()
-        self.set_first_field_named(resp.form, 'name', 'layer_group_0')
 
+        assert dbsession.query(LayerWMS). \
+            filter(LayerWMS.name == 'layer_group_0'). \
+            one_or_none() is None
+
+        layer = layer_wms_test_data['layers'][2]
+        resp = test_app.get("/layers_wms/{}/duplicate".format(layer.id), status=200)
+        self.set_first_field_named(resp.form, 'name', 'layer_group_0')
         resp = resp.form.submit('submit')
 
         layer = dbsession.query(LayerWMS). \
@@ -369,24 +372,19 @@ class TestLayerWMSViews(AbstractViewsTests):
             sorted([(x.select_one("label").text.strip())
                     for x in resp.html.select("[class~'has-error']")])
 
-    @skip_if_ci
-    @pytest.mark.selenium
-    @pytest.mark.usefixtures('selenium', 'selenium_app')
-    def test_selenium(self, selenium, selenium_app):
+
+@skip_if_ci
+@pytest.mark.selenium
+@pytest.mark.usefixtures('selenium', 'selenium_app', 'layer_wms_test_data')
+class TestLayerWMSSelenium():
+
+    _prefix = '/layers_wms'
+
+    def test_index(self, selenium, selenium_app):
         selenium.get(selenium_app + self._prefix)
 
-        elem = selenium.find_element_by_xpath('//li[@id="language-dropdown"]')
-        elem.click()
-        elem = selenium.find_element_by_xpath('//a[contains(@href,"language=en")]')
-        elem.click()
-
-        from selenium.webdriver.common.by import By
-        from selenium.webdriver.support.ui import WebDriverWait
-        from selenium.webdriver.support import expected_conditions
-        elem = WebDriverWait(selenium, 10).until(
-            expected_conditions.presence_of_element_located((By.XPATH, '//div[@class="infos"]')))
-        assert 'Showing 1 to 10 of 26 entries' == elem.text
-        elem = selenium.find_element_by_xpath('//button[@title="Refresh"]/following-sibling::*')
-        elem.click()
-        elem = selenium.find_element_by_xpath('//a[contains(.,"50")]')
-        elem.click()
+        index_page = IndexPage(selenium)
+        index_page.select_language('en')
+        index_page.check_pagination_info('Showing 1 to 25 of 25 rows', 10)
+        index_page.select_page_size(10)
+        index_page.check_pagination_info('Showing 1 to 10 of 25 rows', 10)
