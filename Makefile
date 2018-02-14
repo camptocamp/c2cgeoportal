@@ -332,11 +332,18 @@ geoportal/c2cgeoportal_geoportal/scaffolds/create/docker-run: docker-run
 
 geoportal/npm-packages: ngeo/package.json $(BUILD_DIR)/requirements.timestamp geoportal/c2cgeoportal_geoportal/scripts/import_ngeo_apps.py
 	$(PRERULE_CMD)
-	$(BUILD_DIR)/venv/bin/import-ngeo-apps --package _ $< $@
+	$(BUILD_DIR)/venv/bin/npm-packages --ngeo babel-core babel-loader babel-preset-env \
+		@camptocamp/babel-plugin-angularjs-annotate @camptocamp/cesium coveralls \
+		css-loader expose-loader extract-text-webpack-plugin file-loader gaze \
+		google-closure-library googshift html-loader html-webpack-plugin jasmine-core jquery-ui \
+		jquery-ui-touch-punch jsdoc jsdom karma karma-chrome-launcher karma-coverage karma-jasmine \
+		karma-sourcemap-loader karma-webpack less-loader less-plugin-clean-css ls olcs \
+		uglify-js uglifyjs-webpack-plugin url-loader webpack webpack-dev-server \
+		webpack-merge $< $@
 
 docker/admin-build/npm-packages: admin/package.json $(BUILD_DIR)/requirements.timestamp geoportal/c2cgeoportal_geoportal/scripts/import_ngeo_apps.py
 	$(PRERULE_CMD)
-	$(BUILD_DIR)/venv/bin/import-ngeo-apps --package _ $< $@
+	$(BUILD_DIR)/venv/bin/npm-packages $< $@
 
 geoportal/package.json: ngeo/package.json $(BUILD_DIR)/requirements.timestamp \
 		geoportal/c2cgeoportal_geoportal/scripts/import_ngeo_apps.py
