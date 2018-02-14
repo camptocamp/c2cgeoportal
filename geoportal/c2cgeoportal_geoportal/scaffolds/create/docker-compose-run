@@ -5,16 +5,17 @@ import os
 import sys
 import subprocess
 
-os.environ["USER_NAME"] = getpass.getuser()
-os.environ["USER_ID"] = str(os.getuid())
-os.environ["GROUP_ID"] = str(os.getgid())
+os.environ['USER_NAME'] = getpass.getuser()
+os.environ['USER_ID'] = str(os.getuid())
+os.environ['GROUP_ID'] = str(os.getgid())
+os.environ['VISIBLE_ENTRY_POINT'] = os.environ.get('VISIBLE_ENTRY_POINT', '/')
 
 try:
     subprocess.check_call([
-        "docker-compose",
-        "--file=docker-compose-build.yaml",
-        "run",
-        "build"
+        'docker-compose',
+        '--file=docker-compose-build.yaml',
+        'run',
+        'build'
     ] + sys.argv[1:])
 except subprocess.CalledProcessError as e:
     exit(e.returncode)
