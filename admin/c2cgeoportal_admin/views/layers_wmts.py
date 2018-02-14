@@ -102,7 +102,6 @@ class LayerWmtsViews(DimensionLayerViews):
         with dbsession.no_autoflush:
             d = delete(LayerWMTS.__table__)
             d = d.where(LayerWMTS.__table__.c.id == src.id)
-            dbsession.execute(d)
             i = insert(LayerWMS.__table__)
             i = i.values({
                 'id': src.id,
@@ -111,10 +110,11 @@ class LayerWmtsViews(DimensionLayerViews):
                 'ogc_server_id': default_wms.ogc_server_id,
                 'time_mode': default_wms.time_mode,
                 'time_widget': default_wms.time_widget})
-            dbsession.execute(i)
             u = update(TreeItem.__table__)
             u = u.where(TreeItem.__table__.c.id == src.id)
             u = u.values({'type': 'l_wms'})
+            dbsession.execute(d)
+            dbsession.execute(i)
             dbsession.execute(u)
             dbsession.expunge(src)
 
