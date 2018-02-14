@@ -220,3 +220,64 @@ class TestLayerTreeSelenium():
             from selenium.common.exceptions import NoSuchElementException
             with pytest.raises(NoSuchElementException):
                 elem = selenium.find_element_by_css_selector('tr.treegrid-{}'.format(path))
+
+    @skip_if_ci
+    @pytest.mark.selenium
+    @pytest.mark.usefixtures('selenium', 'selenium_app')
+    def test_delete_selenium(self, dbsession, selenium, selenium_app, layertree_test_data):
+        from selenium.webdriver.common.by import By
+        from selenium.webdriver.support import expected_conditions
+        from selenium.webdriver.support.ui import WebDriverWait
+
+        selenium.get(selenium_app + self._prefix)
+
+        elem = WebDriverWait(selenium, 10).until(
+            expected_conditions.element_to_be_clickable((By.ID, 'layertree-expand')))
+        elem.click()
+
+        theme = layertree_test_data['themes'][1]
+        group = layertree_test_data['groups'][1]
+        layer_v1 = layertree_test_data['layers_v1'][1]
+        layer_wms = layertree_test_data['layers_wms'][1]
+        layer_wmts = layertree_test_data['layers_wmts'][1]
+        from c2cgeoportal_commons.models.main import LayerWMS, LayerV1, LayerWMTS, LayerGroup
+        for item_id, path, model in (
+            (layer_wmts.id, '_{}_{}_{}'.format(theme.id, group.id, layer_wmts.id), LayerWMTS),
+            (layer_wms.id, '_{}_{}_{}'.format(theme.id, group.id, layer_wms.id), LayerWMS),
+            (layer_v1.id, '_{}_{}_{}'.format(theme.id, group.id, layer_v1.id), LayerV1),
+            (group.id, '_{}_{}'.format(theme.id, group.id), LayerGroup),
+        ):
+            elem = WebDriverWait(selenium, 10).until(
+                expected_conditions.element_to_be_clickable((
+                    By.CSS_SELECTOR,
+                    'tr.treegrid-{} button.dropdown-toggle'.format(path)
+                ))
+            )
+            elem.click()
+
+            elem = WebDriverWait(selenium, 10).until(
+                expected_conditions.element_to_be_clickable((
+                    By.CSS_SELECTOR,
+                    'tr.treegrid-{} li.action-delete a'.format(path)
+                ))
+            )
+            expected_url = '{}/layertree/delete/{}'.format(selenium_app, item_id)
+            assert expected_url == elem.get_attribute('data-url')
+
+            elem.click()
+            selenium.switch_to_alert().accept()
+            selenium.switch_to_default_content()
+
+            WebDriverWait(selenium, 10).until(
+                lambda driver: driver.execute_script(
+                    'return (window.jQuery != undefined && jQuery.active == 0)'))
+            deleted = dbsession.query(model). \
+                filter(model.id == item_id).one_or_none()
+            assert deleted is None
+
+            dbsession.expire_all()
+            selenium.refresh()
+
+            from selenium.common.exceptions import NoSuchElementException
+            with pytest.raises(NoSuchElementException):
+                elem = selenium.find_element_by_css_selector('tr.treegrid-{}'.format(path))
