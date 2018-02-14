@@ -385,6 +385,6 @@ class TestLayerWMSSelenium():
 
         index_page = IndexPage(selenium)
         index_page.select_language('en')
-        index_page.check_pagination_info('Showing 1 to 25 of 25 rows', 10)
+        index_page.check_pagination_info('Showing 1 to 25 of 26 rows', 10)
         index_page.select_page_size(10)
-        index_page.check_pagination_info('Showing 1 to 10 of 25 rows', 10)
+        index_page.check_pagination_info('Showing 1 to 10 of 26 rows', 10)

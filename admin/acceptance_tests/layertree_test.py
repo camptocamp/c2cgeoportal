@@ -271,9 +271,9 @@ class TestLayerTreeSelenium():
             WebDriverWait(selenium, 10).until(
                 lambda driver: driver.execute_script(
                     'return (window.jQuery != undefined && jQuery.active == 0)'))
-            delete = dbsession.query(model). \
+            deleted = dbsession.query(model). \
                 filter(model.id == item_id).one_or_none()
-            assert delete is None
+            assert deleted is None
 
             dbsession.expire_all()
             selenium.refresh()
