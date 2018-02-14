@@ -4,24 +4,42 @@ version: '2'
 services:
   db:
     image: ${docker_base}-testdb:${docker_tag}
+% if 'environment' in docker_services.get('db', {}):
     environment:
-      POSTGRES_DB: geomapfish
-      POSTGRES_USER: www-data
-      POSTGRES_PASSWORD: www-data
-% if development == "TRUE":
+% for key, value in docker_services['db']['environment'].items():
+      ${key}: ${value}
+% endfor
+% endif
+% if 'port' in docker_services.get('db', {}):
     ports:
-      - 15432:5432
+      - ${docker_services['db']['port']}:5432
 % endif
 
   print:
     image: ${docker_base}-print:${docker_tag}
-% if development == "TRUE":
+% if 'environment' in docker_services.get('print', {}):
+    environment:
+% for key, value in docker_services['print']['environment'].items():
+      ${key}: ${value}
+% endfor
+% endif
+% if 'port' in docker_services.get('print', {}):
     ports:
-      - 8280:8080
+      - ${docker_services['print']['port']}:8080
 % endif
 
   mapserver:
     image: ${docker_base}-mapserver:${docker_tag}
+% if 'environment' in docker_services.get('mapserver', {}):
+    environment:
+% for key, value in docker_services['mapserver']['environment'].items():
+      ${key}: ${value}
+% endfor
+% endif
+% if 'port' in docker_services.get('mapserver', {}):
+    ports:
+      - ${docker_services['mapserver']['port']}:80
+% endif
 % if development == "TRUE":
     ports:
       - 8380:80
@@ -29,20 +47,11 @@ services:
 
   geoportal:
     image: ${docker_base}-geoportal:${docker_tag}
-    ports:
-      - 8080:80
+% if 'environment' in docker_services.get('geoportal', {}):
     environment:
-      PGHOST: db
-      PGHOST_SLAVE: db
-      PGPORT: 5432
-      PGUSER: www-data
-      PGPASSWORD: www-data
-      PGDATABASE: geomapfish
-      PGSCHEMA: main
-      PGSCHEMA_STATIC: main_static
-      VISIBLE_WEB_HOST: localhost:8080
-      VISIBLE_WEB_PROTOCOL: http
-      VISIBLE_ENTRY_POINT: /
-      TINYOWS_URL: http://tinyows/
-      MAPSERVER_URL: http://mapserver/
-      PRINT_URL: http://print:8080/print/
+% for key, value in docker_services['geoportal']['environment'].items():
+      ${key}: ${value}
+% endfor
+% endif
+    ports:
+      - ${docker_services['geoportal']['port']}:80

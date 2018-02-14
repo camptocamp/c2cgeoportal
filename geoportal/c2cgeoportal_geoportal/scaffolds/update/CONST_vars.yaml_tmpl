@@ -18,6 +18,30 @@ vars:
   # Docker base image name (comes from the makefile).
   docker_base: '{DOCKER_BASE}'
   docker_tag: '{DOCKER_TAG}'
+  docker_services:
+    db:
+      environment:
+        POSTGRES_DB: geomapfish
+        POSTGRES_USER: www-data
+        POSTGRES_PASSWORD: www-data
+    geoportal:
+      port: 80
+      environment:
+        PGHOST: 172.17.0.1
+        PGHOST_SLAVE: 172.17.0.1
+        PGPORT: 5432
+        PGUSER: www-data
+        PGPASSWORD: www-data
+        PGDATABASE: geomapfish
+        PGSCHEMA: main
+        PGSCHEMA_STATIC: main_static
+        VISIBLE_WEB_HOST: localhost:80
+        VISIBLE_WEB_PROTOCOL: https
+        VISIBLE_ENTRY_POINT: /
+        TINYOWS_URL: http://tinyows/
+        MAPSERVER_URL: http://mapserver/
+        PRINT_URL: http://print:8080/print/
+
   # database user
   dbuser: '{PGUSER}'
   # database password
