@@ -355,3 +355,30 @@ Your application should be available at:
 
 Where the ``<hostname>`` is directly linked to the virtual host,
 and the ``<instanceid>`` is the value you provided before.
+
+.. _integrator_install_application_migrate_server:
+
+Migrating to a new server
+-------------------------
+
+If you are migrating to a new server, keep in mind that your variable
+``VISIBLE_WEB_HOST`` must contain the exact host name that browsers should use
+to access your site. Consider the following migration scenario:
+your current site runs on server ``old-site.customer.ch`` with the visible host name
+``gis.customer.ch``. You wish to setup a new server ``new-site.customer.ch``,
+install the application and test it, and then switch your DNS so that
+``gis.customer.ch`` now points to ``new-site.customer.ch``.
+To accomplish this, you must proceed as follows:
+
+  * set ``VISIBLE_WEB_HOST`` to ``new-site.customer.ch`` and test the application
+    at ``http://new-site.customer.ch``
+
+  * when going live, you must:
+
+    * change ``VISIBLE_WEB_HOST`` to ``gis.customer.ch``
+
+    * re-build, re-deploy - but do not test yet!
+
+    * change your DNS so that ``gis.customer.ch`` points to ``new-site.customer.ch``.
+
+    * Now test your new live site.
