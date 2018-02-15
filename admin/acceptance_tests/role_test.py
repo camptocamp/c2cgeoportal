@@ -6,9 +6,11 @@ import pytest
 from pyramid.testing import DummyRequest
 
 from geoalchemy2.shape import from_shape, to_shape
+from selenium.webdriver.common.by import By
 from shapely.geometry import box, Polygon, shape
 
-from . import AbstractViewsTests
+from . import skip_if_ci, AbstractViewsTests
+from .selenium.page import IndexPage
 
 
 @pytest.fixture(scope='class')
@@ -223,3 +225,33 @@ class TestRole(AbstractViewsTests):
         )
         info = RoleViews(request).grid()
         assert info.status_int == 500, 'Expected 500 status when db error'
+
+
+@skip_if_ci
+@pytest.mark.selenium
+@pytest.mark.usefixtures('selenium', 'selenium_app', 'roles_test_data')
+class TestRoleSelenium():
+
+    _prefix = '/roles'
+
+    def test_index(self, selenium, selenium_app, roles_test_data, dbsession):
+        from c2cgeoportal_commons.models.static import Role
+        selenium.get(selenium_app + self._prefix)
+
+        index_page = IndexPage(selenium)
+        index_page.select_language('en')
+        index_page.check_pagination_info('Showing 1 to 23 of 23 rows', 10)
+        index_page.select_page_size(10)
+        index_page.check_pagination_info('Showing 1 to 10 of 23 rows', 10)
+
+        # delete
+        role = roles_test_data['roles'][3]
+        deleted_id = role.id
+        index_page.click_delete(deleted_id)
+        index_page.check_pagination_info('Showing 1 to 10 of 22 rows', 10)
+        assert dbsession.query(Role).get(deleted_id) is None
+
+        # edit
+        role = roles_test_data['roles'][4]
+        index_page.find_item_action(role.id, 'edit').click()
+        index_page.find_element(By.XPATH, "//canvas", timeout=5)
