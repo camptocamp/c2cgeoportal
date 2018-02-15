@@ -184,6 +184,58 @@ class TestMetadatasView(AbstractViewsTests):
             '2',
             302)
 
+    def test_invalid_url_metadata(self, test_app, metadatas_test_data):
+        self._post_invalid_metadata(
+            test_app,
+            '/layers_wms/new',
+            self._base_metadata_params(metadatas_test_data),
+            '_url',
+            'gnagnagna',
+            'Must be a URL')
+
+    def test_valid_url_metadata(self, test_app, metadatas_test_data):
+        self._post_metadata(
+            test_app,
+            '/layers_wms/new',
+            self._base_metadata_params(metadatas_test_data),
+            '_url',
+            'www.111111111111111111111111111111111111111111111111111111111111.com',
+            302)
+
+    def test_invalid_json_metadata(self, test_app, metadatas_test_data):
+        self._post_invalid_metadata(
+            test_app,
+            '/layers_wms/new',
+            self._base_metadata_params(metadatas_test_data),
+            '_json',
+            '''{"colors": [{
+                "color": "black",
+                "category": "hue",
+                "type": "primary",
+                "code": {
+                    "rgba": [255,255,255,1,
+                    "hex": "#000"
+                }
+            }]}''',
+            'Parser report: "Expecting \',\' delimiter: line 7 column 26 (char 213)"')
+
+    def test_valid_json_metadata(self, test_app, metadatas_test_data):
+        self._post_metadata(
+            test_app,
+            '/layers_wms/new',
+            self._base_metadata_params(metadatas_test_data),
+            '_json',
+            '''{"colors": [{
+                "color": "black",
+                "category": "hue",
+                "type": "primary",
+                "code": {
+                    "rgba": [255,255,255,1],
+                    "hex": "#000"
+                }
+            }]}''',
+            302)
+
     def _test_edit_treeitem(self, prefix, item, test_app):
         resp = self.get(test_app, '{}/{}'.format(prefix, item.id))
         self._check_metadatas(test_app,
