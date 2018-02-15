@@ -370,10 +370,11 @@ install the application and test it, and then switch your DNS so that
 ``gis.customer.ch`` now points to ``new-site.customer.ch``.
 To accomplish this, you must proceed as follows:
 
-  * set ``VISIBLE_WEB_HOST`` to ``new-site.customer.ch`` and test the application
+  * set ``VISIBLE_WEB_HOST`` to ``new-site.customer.ch``
+  * install the application on ``new-site.customer.ch`` and test the application
     at ``http://new-site.customer.ch``
 
-  * when going live, you must:
+  * later, when going live, you must:
 
     * change ``VISIBLE_WEB_HOST`` to ``gis.customer.ch``
 
