@@ -4,6 +4,7 @@ from pyramid.view import view_config
 
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import ListField
+from deform.widget import FormWidget
 
 from c2cgeoportal_commons.models.main import LayerV1
 
@@ -14,7 +15,7 @@ from c2cgeoportal_admin.views.layers import LayerViews
 
 _list_field = partial(ListField, LayerV1)
 
-base_schema = GeoFormSchemaNode(LayerV1)
+base_schema = GeoFormSchemaNode(LayerV1, widget=FormWidget(fields_template='layer_v1_fields'))
 base_schema.add(interfaces_schema_node.clone())
 base_schema.add(restrictionareas_schema_node.clone())
 base_schema.add(metadatas_schema_node.clone())

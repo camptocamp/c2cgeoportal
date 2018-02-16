@@ -24,9 +24,23 @@ class ChildWidget(MappingWidget):
         return super().serialize(field, cstruct, **kw)
 
 
+class ThemeOrderWidget(MappingWidget):
+
+    template = 'child'
+
+    def serialize(self, field, cstruct, **kw):
+        from c2cgeoportal_commons.models.main import TreeItem
+        if cstruct['id'] == colander.null:
+            kw['treeitem'] = TreeItem()
+        else:
+            kw['treeitem'] = field.schema.dbsession.query(TreeItem).get(int(cstruct['id']))
+        return super().serialize(field, cstruct, **kw)
+
+
 class ChildrenWidget(SequenceWidget):
 
     template = 'children'
+    add_subitem = True
     requirements = SequenceWidget.requirements + (('magicsuggest', None),)
 
     def __init__(self, **kw):

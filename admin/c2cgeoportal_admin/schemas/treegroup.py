@@ -4,6 +4,7 @@ from sqlalchemy.orm import aliased
 from sqlalchemy.sql.expression import func, case
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoportal_commons.models.main import LayergroupTreeitem, TreeItem
+from c2cgeoportal_admin import _
 from c2cgeoportal_admin.widgets import ChildrenWidget, ChildWidget
 
 
@@ -59,7 +60,7 @@ def children_validator(node, cstruct):
         if not dict_['treeitem_id'] in [item.id for item, group in node.treeitems]:
             raise colander.Invalid(
                 node,
-                'Value {} does not exist in table {} or is not allowed to avoid cycles'.
+                _('Value {} does not exist in table {} or is not allowed to avoid cycles').
                 format(dict_['treeitem_id'], TreeItem.__tablename__))
 
 

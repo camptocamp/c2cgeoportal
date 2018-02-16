@@ -3,10 +3,6 @@
   padding-right: 8px;
 }
 
-#layertree-actions {
-  margin-top: 5px;
-  margin-bottom: 5px;
-}
 #layertree-table {
   margin-top: 5px;
   margin-bottom: 5px;
@@ -33,10 +29,15 @@
   color: initial;
 }
 
+.item-theme,
 .item-layergroup_treeitem {
   margin-bottom: 0;
 }
+.item-theme .well,
 .item-layergroup_treeitem .well {
   padding: 10px;
   margin-bottom: 5px;
+}
+.item-theme .deform-close-button {
+  visibility: hidden;
 }
