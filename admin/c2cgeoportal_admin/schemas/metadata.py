@@ -1,7 +1,10 @@
+import json
+from json.decoder import JSONDecodeError
 import colander
 from deform.widget import MappingWidget, SelectWidget, SequenceWidget, TextAreaWidget
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoportal_commons.models.main import Metadata
+from c2cgeoportal_admin import _
 
 
 @colander.deferred
@@ -24,6 +27,13 @@ def metadata_name_widget(node, kw):  # pylint: disable=unused-argument
     )
 
 
+def json_validator(node, value):
+    try:
+        json.loads(value)
+    except JSONDecodeError as e:
+        raise colander.Invalid(node, _('Parser report: "{}"').format(str(e)))
+
+
 class MetadataSchemaNode(GeoFormSchemaNode):
 
     def __init__(self, *args, **kw):
@@ -36,11 +46,12 @@ class MetadataSchemaNode(GeoFormSchemaNode):
         self._add_value_node('boolean', colander.Boolean())
         self._add_value_node('int', colander.Int())
         self._add_value_node('float', colander.Float())
-        self._add_value_node('url', colander.String())
+        self._add_value_node('url', colander.String(), validator=colander.url)
         self._add_value_node(
             'json',
             colander.String(),
-            widget=TextAreaWidget(rows=10))
+            widget=TextAreaWidget(rows=10),
+            validator=json_validator)
 
     def _add_value_node(self, type_name, colander_type, **kw):
         self.add_before(
