@@ -3,7 +3,6 @@
 import pytest
 import re
 from pyramid.testing import DummyRequest
-from selenium.common.exceptions import NoSuchElementException
 
 from . import skip_if_ci, AbstractViewsTests
 from .selenium.page import IndexPage
@@ -211,11 +210,10 @@ class TestUserSelenium():
 
         # delete
         user = users_test_data['users'][3]
-        index_page.click_delete(user.id)
+        deleted_id = user.id
+        index_page.click_delete(deleted_id)
         index_page.check_pagination_info('Showing 1 to 10 of 22 rows', 10)
-        with pytest.raises(NoSuchElementException):
-            selenium.find_element_by_xpath("//a[@data-url='{}/users/{}')]"
-                                           .format(selenium_app, user.id))
+        assert dbsession.query(User).get(deleted_id) is None
 
         # edit
         user = users_test_data['users'][4]
