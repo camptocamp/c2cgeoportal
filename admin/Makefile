@@ -20,7 +20,7 @@ cleanall:
 .PHONY: test
 test: build ${BUILD_DIR}/requirements-dev.timestamp
 	#Run your project's tests.
-	${VENV}/bin/pytest --driver Firefox
+	${VENV}/bin/pytest --driver Chrome
 
 .PHONY: check
 check: flake8

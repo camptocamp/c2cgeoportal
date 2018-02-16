@@ -60,8 +60,8 @@ class LayerWmsViews(DimensionLayerViews):
     def grid(self):
         return super().grid()
 
-    def _item_actions(self, item, grid=False):
-        actions = super()._item_actions(item, grid)
+    def _item_actions(self, item):
+        actions = super()._item_actions(item)
         if inspect(item).persistent:
             actions.insert(next((i for i, v in enumerate(actions) if v.name() == 'delete')), ItemAction(
                 name='convert_to_wmts',

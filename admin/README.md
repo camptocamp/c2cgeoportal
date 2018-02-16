@@ -53,9 +53,9 @@ Open http://localhost:6543/users/
 
 ## Run the tests
 
-### Install the selenium gecko driver
+### Install the selenium chrome driver
 
-https://github.com/mozilla/geckodriver/releases
+https://sites.google.com/a/chromium.org/chromedriver/downloads
 
 ### Create the test database
 ```
