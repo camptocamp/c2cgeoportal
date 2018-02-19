@@ -5,6 +5,7 @@ host: ${host}
 checker_path: /${instanceid}/wsgi/check_collector?
 managed_files: []
 unmanaged_files:
+  - \.gitignore
   - setup\.py
   - Makefile
   - testgeomapfish\.mk
@@ -12,7 +13,8 @@ unmanaged_files:
   - vars\.yaml
   - docker-compose\.yaml\.mako
   - testdb/11-schemas\.sql\_mako
-  - mapserver/c2cgeoportal\.map\.mako
+  - mapserver/\.dockerignore
+  - mapserver/c2cgeoportal\.map\.tmpl\.mako
   - print/print-apps/testgeomapfish/config\.yaml\.mako
   - print/print-apps/testgeomapfish/.*\.jrxml
   - geoportal/testgeomapfish_geoportal/locale/fr/LC_MESSAGES/testgeomapfish-client\.po
