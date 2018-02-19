@@ -69,7 +69,7 @@ setup(
     ],
     extras_require={
         'testing': [
-            'psycopg2',
+            'psycopg2-binary',
             'pytest',
             'pytest-cov',
             'flake8==3.5.0',

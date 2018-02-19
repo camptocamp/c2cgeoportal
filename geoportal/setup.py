@@ -63,7 +63,7 @@ install_requires = [
     'Paste',
     'PasteDeploy',
     'PasteScript',
-    'psycopg2',
+    'psycopg2-binary',
     'pycrypto',
     'pyramid<=1.9.99',
     'pyramid_closure',
