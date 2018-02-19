@@ -190,27 +190,6 @@ $P{mapContext}.getScale().getDenominator()).replace(",","\'")]]></textFieldExpre
 				<reportElement x="0" y="1" width="300" height="14" uuid="54e7e518-a3ee-41f1-b000-9550cad968e1"/>
 				<text><![CDATA[Développé par Camptocamp SA, info@camptocamp.com]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="0" y="0" width="140" height="52" uuid="fb83ed9a-08db-4d93-bfcd-fd4fea0dcf4c"/>
-				<textElement verticalAlignment="Bottom"/>
-				<text><![CDATA[Suisse
-Camptocamp SA, Lausanne
-Tel + 41 21 619 10 10]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="278" y="0" width="192" height="51" uuid="3c8d70fd-5567-4454-8cf9-1a5c163f5bbb"/>
-				<textElement verticalAlignment="Bottom"/>
-				<text><![CDATA[France
-Camptocamp France SAS, Chambéry
-Tél : +33 4 79 44 44 94]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="573" y="0" width="159" height="51" uuid="5869c305-2af5-4e78-b658-32ea2884f985"/>
-				<textElement verticalAlignment="Bottom"/>
-				<text><![CDATA[Autriche
-Camptocamp Austria, Vienne
-Tél : +43 1 712 21 94 0]]></text>
-			</staticText>
 			<textField>
 				<reportElement x="1087" y="21" width="38" height="30" uuid="7db93d89-f1a1-4135-8143-661152955717"/>
 				<textElement textAlignment="Right" verticalAlignment="Bottom"/>

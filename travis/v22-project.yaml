@@ -5,30 +5,31 @@ host: ${host}
 checker_path: /${instanceid}/wsgi/check_collector?
 managed_files: []
 unmanaged_files:
-  - .gitignore
-  - setup.py
+  - \.gitignore
+  - setup\.py
   - Makefile
-  - testgeomapfish.mk
-  - project.yaml.mako
-  - vars.yaml
-  - docker-compose.yaml.mako
-  - testdb/11-schemas.sql_mako
-  - mapserver/.dockerignore
-  - mapserver/c2cgeoportal.map.tmpl.mako
-  - print/print-apps/testgeomapfish/config.yaml.mako
-  - geoportal/testgeomapfish_geoportal/locale/fr/LC_MESSAGES/testgeomapfish-client.po
-  - geoportal/testgeomapfish_geoportal/locale/de/LC_MESSAGES/testgeomapfish-client.po
-  - geoportal/testgeomapfish_geoportal/static-ngeo/js/desktop.js
-  - geoportal/testgeomapfish_geoportal/static-ngeo/js/mobile.js
-  - geoportal/testgeomapfish_geoportal/static-ngeo/less/desktop.less
-  - geoportal/testgeomapfish_geoportal/static-ngeo/less/mobile.less
-  - geoportal/testgeomapfish_geoportal/templates/desktop.html
-  - geoportal/testgeomapfish_geoportal/templates/mobile.html
-  - geoportal/testgeomapfish_geoportal/templates/api/api.js
-  - geoportal/testgeomapfish_geoportal/templates/api/apihelp.html
-  - geoportal/testgeomapfish_geoportal/templates/api/mapconfig.js
-  - geoportal/testgeomapfish_geoportal/templates/api/xapi.js
-  - geoportal/testgeomapfish_geoportal/templates/api/xapihelp.html
+  - testgeomapfish\.mk
+  - project\.yaml\.mako
+  - vars\.yaml
+  - docker-compose\.yaml\.mako
+  - testdb/11-schemas\.sql\_mako
+  - mapserver/\.dockerignore
+  - mapserver/c2cgeoportal\.map\.tmpl\.mako
+  - print/print-apps/testgeomapfish/config\.yaml\.mako
+  - print/print-apps/testgeomapfish/.*\.jrxml
+  - geoportal/testgeomapfish_geoportal/locale/fr/LC_MESSAGES/testgeomapfish-client\.po
+  - geoportal/testgeomapfish_geoportal/locale/de/LC_MESSAGES/testgeomapfish-client\.po
+  - geoportal/testgeomapfish_geoportal/static-ngeo/js/desktop\.js
+  - geoportal/testgeomapfish_geoportal/static-ngeo/js/mobile\.js
+  - geoportal/testgeomapfish_geoportal/static-ngeo/less/desktop\.less
+  - geoportal/testgeomapfish_geoportal/static-ngeo/less/mobile\.less
+  - geoportal/testgeomapfish_geoportal/templates/desktop\.html
+  - geoportal/testgeomapfish_geoportal/templates/mobile\.html
+  - geoportal/testgeomapfish_geoportal/templates/api/api\.js
+  - geoportal/testgeomapfish_geoportal/templates/api/apihelp\.html
+  - geoportal/testgeomapfish_geoportal/templates/api/mapconfig\.js
+  - geoportal/testgeomapfish_geoportal/templates/api/xapi\.js
+  - geoportal/testgeomapfish_geoportal/templates/api/xapihelp\.html
 template_vars:
   package: testgeomapfish
   srid: 21781
