@@ -23,3 +23,12 @@ For non Docker upgrade have a look on the nondocker_CHANGELOG
    + no_interpreted:
    +   - shortener.email_body
    +   - reset_password.email_body
+
+7. In all your `map.mako` files you should add at the top:
+
+   + <%!
+   + from c2cgeoportal_geoportal.lib import confd_env
+   + %>
+
+   and replace `${host}${entry_point}` by `${host | confd_env}${entry_point | confd_env}`
+   and `${mapserver_connection}` by `${mapserver_connection | confd_env}`

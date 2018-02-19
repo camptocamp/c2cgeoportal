@@ -203,6 +203,11 @@ function v220 {
     fi
     if [ ! -e .UPGRADE_SUCCESS ]
     then
+        for f in $(ls -1 *.diff)
+        do
+            echo "--- $f ---"
+            cat "$f"
+        done
         echo "Fail to upgrade"
         exit 1
     fi

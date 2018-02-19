@@ -11,9 +11,9 @@ __pycache__/
 /testdb/12-alembic.sql
 /testdb/13-alembic-static.sql
 /print/print-apps/{{package}}/config.yaml
-/mapserver/c2cgeoportal.map
+/mapserver/c2cgeoportal.map.tmpl
+/mapserver/demo.map.tmpl
 /mapserver/mapserver.map
-/mapserver/demo.map
 /mapserver/tinyows.xml
 /mapserver/replace_db.sh
 /geoportal/jsbuild/app.cfg
