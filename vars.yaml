@@ -1,15 +1,20 @@
 ---
 vars:
-  build_volume_name: BUILD_VOLUME_NAME
+  build_volume_name: '{BUILD_VOLUME_NAME}'
   main_version:
     "'.'.join(__import__('pkg_resources').get_distribution('c2cgeoportal_commons')
     .version.split('.')[0:2])"
-  major_version: MAJOR_VERSION
+  major_version: '{MAJOR_VERSION}'
   dbuser: www-data
   dbpassword: www-data
   dbhost: db
   dbport: 5432
   db: geomapfish_tests
+  sqlalchemy:
+    url: postgresql://{dbuser}:{dbpassword}@{dbhost}:{dbport}/{db}
+  schema: main
+  schema_static: main_static
+  srid: 21781
   mapserver_join_tables: main.restrictionarea AS ra, main.role_restrictionarea AS rra,
     main.layer_restrictionarea AS lra, main.treeitem AS la
   mapserver_join_area: ra.area
@@ -23,16 +28,17 @@ vars:
     main.role_restrictionarea AS rra, main.layer_restrictionarea AS lra, main.treeitem AS la \
     WHERE rra.role_id = %role_id% AND rra.restrictionarea_id = ra.id AND lra.restrictionarea_id = ra.id \
     AND lra.layer_id = la.id AND la.name ="
-  git_branch: GIT_BRANCH
-  tx_version: TX_VERSION
-  tx_languages: LANGUAGES
+  git_branch: '{GIT_BRANCH}'
+  tx_version: '{TX_VERSION}'
+  tx_languages: '{LANGUAGES}'
 
 interpreted:
-  environment:
-    - build_volume_name
-    - tx_version
-    - tx_languages
-    - git_branch
-    - major_version
   python:
     - main_version
+
+environment:
+  - BUILD_VOLUME_NAME
+  - TX_VERSION
+  - LANGUAGES
+  - GIT_BRANCH
+  - MAJOR_VERSION

@@ -5,7 +5,7 @@ extends: vars.yaml
 vars:
   dbsessions:
     travis_test:
-      url: postgresql://{dbuser}:{dbpassword}@external-db:5432/test
+      url: postgresql://{dbuser}:{dbpassword}@external-db:{dbport}/test
 
   layers:
     enum:

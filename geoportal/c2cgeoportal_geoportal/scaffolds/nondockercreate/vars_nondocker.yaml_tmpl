@@ -5,9 +5,9 @@ extends: vars.yaml
 vars:
   instanceid: '{instance}'
   apache_entry_point: '{entry_point}'
-  modwsgi_user: MODWSGI_USER
-  dbhost: DOCKER_HOST_
-  dbhost_slave: DOCKER_HOST_
+  modwsgi_user: '{MODWSGI_USER}'
+  dbhost: '{DOCKER_HOST_}'
+  dbhost_slave: '{DOCKER_HOST_}'
   mapserv_allow: |
     Allow from 127.0.0.1 ::1
     Require ip 127.0.0.1 ::1
@@ -39,8 +39,20 @@ update_paths:
   - checker.phantomjs
   - check_collector
 
-interpreted:
-  environment:
-    - modwsgi_user
-    - dbhost
-    - dbhost_slave
+environment:
+  - MODWSGI_USER
+  - DOCKER_HOST_
+  - VISIBLE_WEB_HOST
+  - VISIBLE_WEB_PROTOCOL
+  - VISIBLE_ENTRY_POINT
+  - PGHOST
+  - PGHOST_SLAVE
+  - PGPORT
+  - PGUSER
+  - PGPASSWORD
+  - PGDATABASE
+  - PGSCHEMA
+  - PGSCHEMA_STATIC
+  - TINYOWS_URL
+  - MAPSERVER_URL
+  - PRINT_URL

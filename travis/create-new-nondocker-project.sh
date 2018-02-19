@@ -48,6 +48,7 @@ sudo a2enmod fcgid
 ./docker-run make --makefile=travis.mk \
     /build/requirements.timestamp \
     alembic.ini \
+    alembic.yaml \
     geoportal/production.ini \
     geoportal/config.yaml \
     docker-compose-build.yaml testdb-docker

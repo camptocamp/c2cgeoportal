@@ -10,6 +10,7 @@
 /geoportal/npm-packages
 /geoportal/tests/functional/test.ini
 /geoportal/tests/functional/alembic.ini
+/geoportal/tests/functional/alembic.yaml
 /geoportal/tests/testegg/production.ini
 /geoportal/c2cgeoportal_geoportal/locale/
 /geoportal/c2cgeoportal_geoportal/scaffolds/create/docker-run

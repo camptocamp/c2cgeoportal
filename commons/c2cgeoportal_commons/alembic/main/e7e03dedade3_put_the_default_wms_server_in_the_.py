@@ -34,7 +34,8 @@ Revises: daf738d5bae4
 Create Date: 2016-08-26 14:39:21.984921
 """
 
-from alembic import op, context
+from alembic import op
+from c2cgeoportal_commons.config import config
 
 # revision identifiers, used by Alembic.
 revision = 'e7e03dedade3'
@@ -44,7 +45,7 @@ depends_on = None
 
 
 def upgrade():
-    schema = context.get_context().config.get_main_option('schema')
+    schema = config['schema']
 
     op.execute("""
         UPDATE "{schema}".ogc_server
@@ -61,7 +62,7 @@ def upgrade():
 
 
 def downgrade():
-    schema = context.get_context().config.get_main_option('schema')
+    schema = config['schema']
 
     op.alter_column('ogc_server', 'url', nullable=True, schema=schema)
     op.drop_constraint('name_unique_ogc_server', 'ogc_server', schema=schema)

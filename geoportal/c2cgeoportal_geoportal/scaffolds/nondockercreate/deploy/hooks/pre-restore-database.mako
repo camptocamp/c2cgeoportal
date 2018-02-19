@@ -22,9 +22,9 @@ fi
 
 # The following line works only with Postgres 9.3 and upper.
 # otherwise the schema should be create manually
-psql -c 'CREATE SCHEMA IF NOT EXISTS ${schema}_static;' ${db}
+psql -c 'CREATE SCHEMA IF NOT EXISTS ${schema_static};' ${db}
 
-psql -c 'CREATE TABLE IF NOT EXISTS ${schema}_static.shorturl (
+psql -c 'CREATE TABLE IF NOT EXISTS ${schema_static}.shorturl (
     id serial PRIMARY KEY,
     url character varying(1000),
     ref character varying(20) NOT NULL UNIQUE,
@@ -34,8 +34,8 @@ psql -c 'CREATE TABLE IF NOT EXISTS ${schema}_static.shorturl (
     nb_hits integer
 );' ${db}
 
-psql -c 'GRANT ALL ON SCHEMA "${schema}_static" TO "${dbuser}";' ${db}
-psql -c 'GRANT ALL ON ALL TABLES IN SCHEMA "${schema}_static" TO "${dbuser}";' ${db}
+psql -c 'GRANT ALL ON SCHEMA "${schema_static}" TO "${dbuser}";' ${db}
+psql -c 'GRANT ALL ON ALL TABLES IN SCHEMA "${schema_static}" TO "${dbuser}";' ${db}
 psql -c 'ALTER TABLE main_static.shorturl OWNER TO "www-data";' ${db}
 
 make --makefile=$TARGET.mk .build/venv/bin/alembic alembic.ini -j2

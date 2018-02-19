@@ -1,5 +1,7 @@
+---
 vars:
   schema: main
+  schema_static: main_static
   srid: 21781
 
   admin_interface:
@@ -60,7 +62,7 @@ vars:
       - name: queryLayers
       - name: printLayers
 
-       # For dev /tests purpose
+      # For dev /tests purpose
       - name: _string
         type: string
       - name: _liste
@@ -77,3 +79,6 @@ vars:
         type: json
       - name: _unknown
         type: unknown
+environment: []
+no_interpreted:
+- admin_interface.map_base_layer

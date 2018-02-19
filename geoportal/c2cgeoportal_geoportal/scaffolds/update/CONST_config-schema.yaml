@@ -1,6 +1,11 @@
 ---
 type: map
 mapping:
+  no_interpreted:
+    type: seq
+    required: True
+    sequence:
+      - type: str
   environment:
     type: seq
     required: True
