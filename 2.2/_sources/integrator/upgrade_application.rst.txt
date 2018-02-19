@@ -19,13 +19,6 @@ proceeding with the update to GeoMapFish 2.2.
 See
 `2.1 upgrade instructions <https://camptocamp.github.io/c2cgeoportal/2.1/integrator/upgrade_application.html>`_.
 
-usage of intranet detection
----------------------------
-If you are using automatic login via intranet detection, beware that the name of the function
-to be used has been changed slightly (``_create_get_user_from_request`` instead of
-``create_get_user_from_request``).
-See :ref:`integrator_intranet` and update your code accordingly.
-
 updating your project environment
 ---------------------------------
 Before upgrading your application to a newer version of c2cgeoportal, you should make sure that

@@ -31,7 +31,6 @@ Content:
    https
    install_application
    internationalization
-   intranet
    legacy_advanced
    legacy_cgxp
    legacy_print
