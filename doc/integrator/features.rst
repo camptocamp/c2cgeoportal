@@ -16,6 +16,5 @@ Features that require additional steps (most of the time):
    print
    api
    reset_password
-   intranet
    urllogin
    pdfreport
