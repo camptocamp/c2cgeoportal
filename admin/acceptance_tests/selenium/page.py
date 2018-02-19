@@ -60,3 +60,24 @@ class IndexPage(BasePage):
 
     def click_delete(self, id_):
         self.click_and_confirm(self.find_item_action(id_, 'delete'))
+
+
+class LayertreePage(BasePage):
+
+    def expand(self):
+        button = self.find_element(By.ID, 'layertree-expand', 10)
+        WebDriverWait(self.driver, 10).until(
+            expected_conditions.visibility_of(button))
+        button.click()
+
+    def find_item(self, path, timeout=None):
+        return self.find_element(By.XPATH, '//tr[contains(@class, "treegrid-{}")]'.format(path), timeout)
+
+    def find_item_action(self, path, action, timeout=None):
+        tr = self.find_item(path, timeout)
+        td = tr.find_element(By.XPATH, './td[@class="actions"]')
+        button = td.find_element(By.XPATH, './/button[@data-toggle="dropdown"]')
+        WebDriverWait(self.driver, 10).until(
+            expected_conditions.visibility_of(button))
+        button.click()
+        return td.find_element(By.XPATH, './/a[contains(@class, "{}")]'.format(action))
