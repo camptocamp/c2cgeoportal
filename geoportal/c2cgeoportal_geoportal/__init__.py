@@ -31,7 +31,6 @@ import time
 import logging
 import mimetypes
 import binascii
-import c2c.template
 from urllib.parse import urlsplit
 import simplejson as json
 from socket import gethostbyname, gaierror
@@ -50,6 +49,7 @@ import c2cwsgiutils.db
 import c2cwsgiutils.pyramid
 from c2cwsgiutils.health_check import HealthCheck
 
+from c2cgeoportal_commons.config import config as configuration
 from c2cgeoportal_geoportal.lib import dbreflection, caching, \
     C2CPregenerator, MultiDomainStaticURLInfo
 
@@ -469,7 +469,8 @@ def includeme(config):
 
     # update the settings object from the YAML application config file
     settings = config.get_settings()
-    settings.update(c2c.template.get_config(settings.get("app.cfg")))
+    configuration.init(settings.get("app.cfg"))
+    settings.update(configuration.get_config())
 
     call_hook(settings, "after_settings", settings)
 

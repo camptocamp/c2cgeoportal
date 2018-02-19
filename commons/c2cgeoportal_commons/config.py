@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-
-# Copyright (c) 2016-2018, Camptocamp SA
+# Copyright (c) 2018, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,34 +26,31 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-"""Rename ServerOGC to OGCServer
-
-Revision ID: 6a412d9437b1
-Revises: 29f2a32859ec
-Create Date: 2016-06-28 18:08:23.888198
-"""
-
-from alembic import op
-from c2cgeoportal_commons.config import config
-
-# revision identifiers, used by Alembic.
-revision = '6a412d9437b1'
-down_revision = '29f2a32859ec'
-branch_labels = None
-depends_on = None
+import c2c.template
+from typing import Dict, Any
 
 
-def upgrade():
-    schema = config['schema']
+class _Config(object):
+    """
+    A central point where we can access to the application configuration.
+    """
 
-    op.rename_table('server_ogc', 'ogc_server', schema=schema)
-    with op.batch_alter_table('layer_wms', schema=schema) as table_op:
-        table_op.alter_column('server_ogc_id', new_column_name='ogc_server_id')
+    _config = None  # type: Dict[str, Any]
+
+    def init(self, configfile: str) -> None:
+        self._config = c2c.template.get_config(configfile)
+
+    def get(self, key: str) -> Any:
+        assert self._config is not None
+        return self._config.get(key)
+
+    def __getitem__(self, key: str) -> Any:
+        assert self._config is not None
+        return self._config[key]
+
+    def get_config(self) -> Dict[str, Any]:
+        assert self._config is not None
+        return self._config
 
 
-def downgrade():
-    schema = config['schema']
-
-    op.rename_table('ogc_server', 'server_ogc', schema=schema)
-    with op.batch_alter_table('layer_wms', schema=schema) as table_op:
-        table_op.alter_column('ogc_server_id', new_column_name='server_ogc_id')
+config = _Config()  # type: _Config

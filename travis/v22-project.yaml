@@ -10,6 +10,8 @@ unmanaged_files:
   - testgeomapfish\.mk
   - project\.yaml\.mako
   - vars\.yaml
+  - docker-compose\.yaml\.mako
+  - testdb/11-schemas\.sql\_mako
   - mapserver/c2cgeoportal\.map\.mako
   - print/print-apps/testgeomapfish/config\.yaml\.mako
   - print/print-apps/testgeomapfish/.*\.jrxml

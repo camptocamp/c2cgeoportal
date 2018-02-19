@@ -28,7 +28,16 @@ services:
       - 8080:80
     environment:
       PGHOST: db
+      PGHOST_SLAVE: db
       PGPORT: 5432
       PGUSER: www-data
       PGPASSWORD: www-data
       PGDATABASE: geomapfish
+      PGSCHEMA: main
+      PGSCHEMA_STATIC: main_static
+      VISIBLE_WEB_HOST: localhost:8080
+      VISIBLE_WEB_PROTOCOL: http
+      VISIBLE_ENTRY_POINT: /
+      TINYOWS_URL: http://tinyows/
+      MAPSERVER_URL: http://mapserver/
+      PRINT_URL: http://print:8080/print/

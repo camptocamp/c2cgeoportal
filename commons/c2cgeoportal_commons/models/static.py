@@ -37,7 +37,8 @@ from sqlalchemy.types import Integer, Boolean, Unicode, String, DateTime
 from deform.widget import HiddenWidget
 from c2cgeoform.ext import deform_ext
 
-from c2cgeoportal_commons.models import Base, schema
+from c2cgeoportal_commons.config import config
+from c2cgeoportal_commons.models import Base
 from c2cgeoportal_commons.models.main import Role
 
 try:
@@ -56,17 +57,12 @@ except ImportError:
 LOG = logging.getLogger(__name__)
 AUTHORIZED_ROLE = 'role_admin'
 
-if schema is not None:
-    _schema = schema
-else:  # pragma: no cover
-    raise Exception(
-        'schema not specified, you need to add it to your config'
-    )
+_schema = config['schema_static']  # type: str
 
 
 class User(Base):
     __tablename__ = 'user'
-    __table_args__ = {'schema': _schema + '_static'}
+    __table_args__ = {'schema': _schema}
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
@@ -197,7 +193,7 @@ class User(Base):
 
 class Shorturl(Base):
     __tablename__ = 'shorturl'
-    __table_args__ = {'schema': _schema + '_static'}
+    __table_args__ = {'schema': _schema}
     __acl__ = [DENY_ALL]
     id = Column(Integer, primary_key=True)
     url = Column(Unicode)

@@ -13,9 +13,9 @@ services:
   db:
     image: ${docker_base}-testdb:${docker_tag}
     environment:
-      POSTGRES_USER: ${dbuser}
-      POSTGRES_DB: ${db}
-      POSTGRES_PASSWORD: ${dbpassword}
+      POSTGRES_DB: geomapfish
+      POSTGRES_USER: www-data
+      POSTGRES_PASSWORD: www-data
 % if development == "TRUE":
     ports:
       - 15432:5432

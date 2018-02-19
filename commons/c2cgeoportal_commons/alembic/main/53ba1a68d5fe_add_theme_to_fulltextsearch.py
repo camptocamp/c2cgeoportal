@@ -34,8 +34,9 @@ Revises: 5109242131ce
 Create Date: 2015-08-05 14:43:30.889188
 """
 
-from alembic import op, context
+from alembic import op
 from sqlalchemy import Column, Integer, ForeignKey, Boolean, String
+from c2cgeoportal_commons.config import config
 
 # revision identifiers, used by Alembic.
 revision = '53ba1a68d5fe'
@@ -43,7 +44,7 @@ down_revision = '5109242131ce'
 
 
 def upgrade():
-    schema = context.get_context().config.get_main_option('schema')
+    schema = config['schema']
 
     op.add_column('tsearch', Column(
         'interface_id', Integer,
@@ -63,7 +64,7 @@ def upgrade():
 
 
 def downgrade():
-    schema = context.get_context().config.get_main_option('schema')
+    schema = config['schema']
 
     op.drop_index('tsearch_search_index', schema=schema)
 

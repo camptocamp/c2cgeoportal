@@ -1,13 +1,15 @@
 from translationstring import TranslationStringFactory
 from pyramid.config import Configurator
 from c2cwsgiutils.health_check import HealthCheck
-import c2c.template
 import c2cgeoportal_admin.routes
 
 import c2cgeoform
 from pkg_resources import resource_filename
-search_paths = ((resource_filename(__name__, 'templates/widgets'),) +
-                c2cgeoform.default_search_paths)
+from c2cgeoportal_commons.config import config as configuration
+search_paths = (
+    (resource_filename(__name__, 'templates/widgets'),) +
+    c2cgeoform.default_search_paths
+)
 c2cgeoform.default_search_paths = search_paths
 
 _ = TranslationStringFactory('admin')
@@ -17,7 +19,8 @@ def main(_, **settings):
     """
     This function returns a Pyramid WSGI application.
     """
-    settings.update(c2c.template.get_config(settings.get('app.cfg')))
+    configuration.init(settings.get('app.cfg'))
+    settings.update(configuration.get_config())
 
     config = Configurator(settings=settings)
     config.include('c2cwsgiutils.pyramid.includeme')

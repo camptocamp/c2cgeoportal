@@ -2,36 +2,38 @@
 
 vars:
   # is in developement mode
-  development: DEVELOPMENT
+  development: '{DEVELOPMENT}'
   # the package name
   package: {{package}}
-  geomapfish_version: GEOMAPFISH_VERSION
+  geomapfish_version: '{GEOMAPFISH_VERSION}'
   instance: main
-  build_volume_name: BUILD_VOLUME_NAME
+  build_volume_name: '{BUILD_VOLUME_NAME}'
 
   srid: -1
 
-  host: VISIBLE_WEB_HOST
-  web_protocol: VISIBLE_WEB_PROTOCOL
-  entry_point: VISIBLE_ENTRY_POINT
+  host: '{VISIBLE_WEB_HOST}'
+  web_protocol: '{VISIBLE_WEB_PROTOCOL}'
+  entry_point: '{VISIBLE_ENTRY_POINT}'
 
   # Docker base image name (comes from the makefile).
-  docker_base: DOCKER_BASE
-  docker_tag: DOCKER_TAG
+  docker_base: '{DOCKER_BASE}'
+  docker_tag: '{DOCKER_TAG}'
   # database user
-  dbuser: www-data
+  dbuser: '{PGUSER}'
   # database password
-  dbpassword: www-data
+  dbpassword: '{PGPASSWORD}'
   # master database host
-  dbhost: db
+  dbhost: '{PGHOST}'
   # slave database host
-  dbhost_slave: db
+  dbhost_slave: '{PGHOST_SLAVE}'
   # database port
-  dbport: 5432
+  dbport: '{PGPORT}'
   # database name
-  db: override_me
+  db: '{PGDATABASE}'
   # sqlalchemy schema
-  schema: main
+  schema: '{PGSCHEMA}'
+  # sqlalchemy static schema
+  schema_static: '{PGSCHEMA_STATIC}'
 
   dbsessions: {}
 
@@ -62,8 +64,8 @@ vars:
   enable_admin_interface: True
 
   directory: __import__('os').getcwd()
-  project_directory: PROJECT_DIRECTORY
-  python_path: PYTHON_PATH
+  project_directory: '{PROJECT_DIRECTORY}'
+  python_path: '{PYTHON_PATH}'
   ps: __import__('os').path.sep
 
   # Authentication settings
@@ -249,7 +251,7 @@ vars:
 
   tinyowsproxy:
     # URL to internal TinyOWS instance
-    tinyows_url: http://tinyows
+    tinyows_url: '{TINYOWS_URL}'
 
     # If the `online_resource` url in the TinyOWS configuration is not set
     # to the TinyOWS proxy url (e.g. when the service is also used without
@@ -278,10 +280,9 @@ vars:
   servers:
     internal: http://localhost/
     local: '{web_protocol}://{host}{entry_point}'
-    mapserver: http://mapserver/
+    mapserver: '{MAPSERVER_URL}'
 
-  host_forward_host:
-    - localhost
+  host_forward_host: []
 
   # The "raster web services" configuration. See the "raster"
   # chapter in the integrator documentation.
@@ -308,10 +309,10 @@ vars:
   hide_capabilities: false
 
   # For print proxy
-  print_url: http://print:8080/print/{package}
+  print_url: '{PRINT_URL}'
 
   pdfreport:
-    print_url: http://print:8080/print/{package}
+    print_url: '{PRINT_URL}'
 
   # For base layers
   tiles_url:
@@ -319,7 +320,7 @@ vars:
     - '{web_protocol}://b.tiles.{host}/tiles'
     - '{web_protocol}://c.tiles.{host}/tiles'
     - '{web_protocol}://d.tiles.{host}/tiles'
-  wmtscapabilities_path: WMTSCAPABILITIES_PATH
+  wmtscapabilities_path: '{WMTSCAPABILITIES_PATH}'
 
   ogcproxy_enable: false
 
@@ -452,20 +453,34 @@ interpreted:
     - ps
     - directory
     - interfaces
-  environment:
-    - geomapfish_version
-    - docker_base
-    - docker_tag
-    - development
-    - wmtscapabilities_path
-    - host
-    - web_protocol
-    - entry_point
-    - build_volume_name
-    - project_directory
-    - python_path
   node:
     vars:
       - closure_library_path
     cmd: ["node", "-e"]
     ignore_error: true
+
+environment:
+  - GEOMAPFISH_VERSION
+  - DOCKER_BASE
+  - DOCKER_TAG
+  - DEVELOPMENT
+  - WMTSCAPABILITIES_PATH
+  - BUILD_VOLUME_NAME
+  - PROJECT_DIRECTORY
+  - PYTHON_PATH
+
+runtime_environment:
+  - VISIBLE_WEB_HOST
+  - VISIBLE_WEB_PROTOCOL
+  - VISIBLE_ENTRY_POINT
+  - PGHOST
+  - PGHOST_SLAVE
+  - PGPORT
+  - PGUSER
+  - PGPASSWORD
+  - PGDATABASE
+  - PGSCHEMA
+  - PGSCHEMA_STATIC
+  - TINYOWS_URL
+  - MAPSERVER_URL
+  - PRINT_URL

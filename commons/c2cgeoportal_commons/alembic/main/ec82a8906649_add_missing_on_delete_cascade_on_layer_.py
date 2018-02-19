@@ -34,7 +34,8 @@ Revises: e7e03dedade3
 Create Date: 2016-08-30 13:43:30.969505
 """
 
-from alembic import op, context
+from alembic import op
+from c2cgeoportal_commons.config import config
 
 # revision identifiers, used by Alembic.
 revision = 'ec82a8906649'
@@ -44,7 +45,7 @@ depends_on = None
 
 
 def upgrade():
-    schema = context.get_context().config.get_main_option('schema')
+    schema = config['schema']
 
     for source, dest in [
         ('layer_wmts', 'layer'),
@@ -64,7 +65,7 @@ def upgrade():
 
 
 def downgrade():
-    schema = context.get_context().config.get_main_option('schema')
+    schema = config['schema']
 
     for source, dest in [
         ('layer_wmts', 'layer'),

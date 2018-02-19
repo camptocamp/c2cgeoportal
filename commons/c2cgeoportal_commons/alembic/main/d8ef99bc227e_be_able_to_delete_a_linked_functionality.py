@@ -34,8 +34,9 @@ Revises: 9268a1dffac0
 Create Date: 2017-09-20 14:49:22.465328
 """
 
-from alembic import op, context
+from alembic import op
 import psycopg2
+from c2cgeoportal_commons.config import config
 
 # revision identifiers, used by Alembic.
 revision = 'd8ef99bc227e'
@@ -45,7 +46,7 @@ depends_on = None
 
 
 def upgrade():
-    schema = context.get_context().config.get_main_option('schema')
+    schema = config['schema']
 
     for source, dest in [
         ('role_functionality', 'role'),
@@ -68,7 +69,7 @@ def upgrade():
 
 
 def downgrade():
-    schema = context.get_context().config.get_main_option('schema')
+    schema = config['schema']
 
     for source, dest in [
         ('role_functionality', 'role'),
