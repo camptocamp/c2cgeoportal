@@ -11,7 +11,6 @@
     "opencollective": "*",
     "bootstrap-table": "https://github.com/wenzhixin/bootstrap-table#da659990acfa1fe42649e7599e8c766e61f7f3d5",
     "jquery": "3.2.1",
-    "jquery-steps": "1.1.0",
     "jquery-treegrid": "0.3.0",
     "jquery.cookie": "1.4.1",
     "magicsuggest-alpine": "1.0.0",

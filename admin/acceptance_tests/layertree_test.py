@@ -3,7 +3,8 @@
 import pytest
 
 from . import skip_if_ci, AbstractViewsTests
-from .selenium.page import BasePage
+from .selenium.page import LayertreePage
+from selenium.common.exceptions import NoSuchElementException
 
 
 @pytest.fixture(scope='function')
@@ -81,25 +82,24 @@ class TestLayerTreeView(AbstractViewsTests):
 
     _prefix = '/layertree'
 
-    def test_index_rendering(self, test_app, layertree_test_data):
-        html = self.get(test_app).html
+    def test_index(self, test_app):
+        self.get(test_app, status=200)
+
+    def test_nodes(self, test_app, layertree_test_data):
+        resp = self.get(test_app, '/nodes', status=200)
+        nodes = resp.json
 
         # check themes are sorted by ordering
-        theme_names = [list(tr.select('td')[0].stripped_strings)[0]
-                       for tr in html.select('tr.theme')]
         expected = [theme.name for theme in sorted(layertree_test_data['themes'],
                                                    key=lambda theme: theme.ordering)]
+        theme_names = [node['name'] for node in nodes if node['item_type'] == 'theme']
         assert expected == theme_names
 
         # check total number of nodes
-        lines = html.select('#layertree-table tr')
         nb_themes = 5
         nb_groups = 10 + 1  # group 1 in group 9
         nb_layers = nb_groups * 3
-        assert nb_themes + nb_groups + nb_layers == len(lines)
-
-    def test_edit_button(self, test_app, layertree_test_data):
-        resp = self.get(test_app)
+        assert nb_themes + nb_groups + nb_layers == len(nodes)
 
         theme = layertree_test_data['themes'][0]
         group = layertree_test_data['groups'][0]
@@ -107,230 +107,192 @@ class TestLayerTreeView(AbstractViewsTests):
         layer_wms = layertree_test_data['layers_wms'][0]
         layer_wmts = layertree_test_data['layers_wmts'][0]
 
-        for table, item_id, path in (
-            ('themes', theme.id, '_{}'.format(theme.id)),
-            ('layer_groups', group.id, '_{}_{}'.format(theme.id, group.id)),
-            ('layers_v1', layer_v1.id, '_{}_{}_{}'.format(theme.id, group.id, layer_v1.id)),
-            ('layers_wms', layer_wms.id, '_{}_{}_{}'.format(theme.id, group.id, layer_wms.id)),
-            ('layers_wmts', layer_wmts.id, '_{}_{}_{}'.format(theme.id, group.id, layer_wmts.id)),
+        # check edit actions
+        for table, item_id in (
+            ('themes', theme.id),
+            ('layer_groups', group.id),
+            ('layers_v1', layer_v1.id),
+            ('layers_wms', layer_wms.id),
+            ('layers_wmts', layer_wmts.id),
         ):
-            link = resp.html.select_one('tr.treegrid-{} li.action-edit a'.format(path))
-            assert 'http://localhost/{}/{}'.format(table, item_id) == link['href']
-            test_app.get(link['href'], status=200)
-
-    def test_unlink_button(self, test_app, layertree_test_data):
-        resp = self.get(test_app)
-
-        theme = layertree_test_data['themes'][0]
-        group = layertree_test_data['groups'][0]
-        layer_v1 = layertree_test_data['layers_v1'][0]
-        layer_wms = layertree_test_data['layers_wms'][0]
-        layer_wmts = layertree_test_data['layers_wmts'][0]
+            node = next(n for n in nodes if n['id'] == item_id)
+            action = next(a for a in node['actions'] if a['name'] == 'edit')
+            assert 'http://localhost/{}/{}'.format(table, item_id) == action['url']
+            test_app.get(action['url'], status=200)
 
         # no unlink on theme
-        assert 0 == len(
-            resp.html.select('tr.treegrid-{} li.action-unlink a'
-                             .format('_{}'.format(theme.id))))
+        theme_node = next(n for n in nodes if n['id'] == theme.id)
+        assert 0 == len([a for a in theme_node['actions'] if a['name'] == 'unlink'])
 
-        for group_id, item_id, path in (
-            (group.id, layer_wmts.id, '_{}_{}_{}'.format(theme.id, group.id, layer_wmts.id)),
-            (group.id, layer_wms.id, '_{}_{}_{}'.format(theme.id, group.id, layer_wms.id)),
-            (group.id, layer_v1.id, '_{}_{}_{}'.format(theme.id, group.id, layer_v1.id)),
-            (theme.id, group.id, '_{}_{}'.format(theme.id, group.id)),
+        # check unlink actions
+        for group_id, item_id in (
+            (group.id, layer_wmts.id),
+            (group.id, layer_wms.id),
+            (group.id, layer_v1.id),
+            (theme.id, group.id),
         ):
-            link = resp.html.select_one('tr.treegrid-{} li.action-unlink a'.format(path))
-            assert 'http://localhost/layertree/unlink/{}/{}'.format(group_id, item_id) == link['data-url']
+            node = next(n for n in nodes if n['id'] == item_id)
+            action = next(a for a in node['actions'] if a['name'] == 'unlink')
+            assert 'http://localhost/layertree/unlink/{}/{}'.format(group_id, item_id) == action['url']
+            test_app.delete(action['url'], status=200)
 
     def test_unlink(self, test_app, layertree_test_data, dbsession):
         group = layertree_test_data['groups'][0]
         item = layertree_test_data['layers_wms'][0]
-
         test_app.delete('/layertree/unlink/{}/{}'.format(group.id, item.id), status=200)
-
         dbsession.expire_all()
-
         assert item not in group.children
 
-    def test_new_button(self, test_app, layertree_test_data):
-        resp = self.get(test_app)
+    def test_new_buttons(self, test_app, layertree_test_data):
+        resp = self.get(test_app, '/nodes', status=200)
+        nodes = resp.json
+
         theme = layertree_test_data['themes'][0]
         group = layertree_test_data['groups'][0]
         ogc_server = layertree_test_data['ogc_servers'][0]
-        layer_wms = layertree_test_data['layers_wms'][0]
-        layer_wmts = layertree_test_data['layers_wmts'][0]
-        # no new on layers
-        for item_id in (layer_wmts.id, layer_wms.id):
-            assert 0 == len(
-                resp.html.select(
-                    'tr.treegrid-{} li.action-new a'.format('_{}_{}_{}'.
-                                                            format(theme.id, group.id, item_id))))
-        for parent_id, path, route_table, title_name, required_fields in (
+
+        for (parent_id, action_name, label, route_table, required_fields) in (
             (
-                group.id,
-                '_{}_{}'.format(theme.id, group.id),
-                'layers_wmts',
-                'WMTS',
+                theme.id,
+                'new_layer_group',
+                'New layer group',
+                'layer_groups',
                 {
-                    'url': 'http://localhost/wmts/fromtree',
-                    'name': 'layer-wmts-from-tree',
-                    'image_type': 'image/jpeg',
-                    'layer': 'layer-wmts-from-tree'
+                    'name': 'new_name_from_layer_group'
                 }
             ), (
                 group.id,
-                '_{}_{}'.format(theme.id, group.id),
+                'new_layer_wms',
+                'New WMS layer',
                 'layers_wms',
-                'WMS',
                 {
                     'ogc_server_id': ogc_server.id,
                     'name': 'layer-wms-from-tree',
                     'layer': 'layer-wms-from-tree'
                 }
             ), (
-                theme.id,
-                '_{}'.format(theme.id),
-                'layer_groups',
-                'Group',
+                group.id,
+                'new_layer_wmts',
+                'New WMTS layer',
+                'layers_wmts',
                 {
-                'name': 'new_name_from_layer_group'
+                    'url': 'http://localhost/wmts/fromtree',
+                    'name': 'layer-wmts-from-tree',
+                    'image_type': 'image/jpeg',
+                    'layer': 'layer-wmts-from-tree'
                 }
             )
         ):
-            resp = self.get(test_app)
-            link = resp.html.select_one('tr.treegrid-{} li.action-new a[title*="{}"]'
-                                        .format(path, title_name))
-            assert 'http://localhost/{}/new?parent_id={}'.format(route_table, parent_id) == link['href']
-            resp = test_app.get(link['href'], status=200)
-            form = resp.form
+            node = next(n for n in nodes if n['id'] == parent_id)
+            action = next(a for a in node['actions'] if a['name'] == action_name)
+            assert label == action['label']
+            assert 'http://localhost/{}/new?parent_id={}'.format(route_table, parent_id) == action['url']
+
+            form = test_app.get(action['url'], status=200).form
             assert form['parent_id'].value == str(parent_id)
             for required_field in required_fields:
                 form[required_field] = required_fields[required_field]
-            resp = form.submit('submit', 302)
-            created_id = resp.follow().form['id'].value
-            resp = self.get(test_app)
-            assert resp.html.select('.treegrid-{}_{}'.format(path, created_id)) is not None
+            form.submit('submit', 302)
+
+
+@skip_if_ci
+@pytest.mark.selenium
+@pytest.mark.usefixtures('selenium', 'selenium_app', 'layertree_test_data')
+class TestLayerTreeSelenium():
+
+    _prefix = '/layertree'
+
+    def test_unlink(self, dbsession, selenium, selenium_app, layertree_test_data):
+        from c2cgeoportal_commons.models.main import LayergroupTreeitem
+
+        themes = layertree_test_data['themes']
+        groups = layertree_test_data['groups']
+        layers_v1 = layertree_test_data['layers_v1']
+        layers_wms = layertree_test_data['layers_wms']
+        layers_wmts = layertree_test_data['layers_wmts']
+
+        selenium.get(selenium_app + self._prefix)
+        page = LayertreePage(selenium)
+        page.expand()
+
+        for group_id, item_id, path in (
+            (
+                groups[0].id,
+                layers_wmts[0].id,
+                '_{}_{}_{}'.format(themes[0].id, groups[0].id, layers_wmts[0].id)),
+            (
+                groups[0].id,
+                layers_wms[0].id,
+                '_{}_{}_{}'.format(themes[0].id, groups[0].id, layers_wms[0].id)),
+            (
+                groups[0].id,
+                layers_v1[0].id,
+                '_{}_{}_{}'.format(themes[0].id, groups[0].id, layers_v1[0].id)),
+            (
+                themes[0].id,
+                groups[0].id,
+                '_{}_{}'.format(themes[0].id, groups[0].id)),
+        ):
+            action_el = page.find_item_action(path, 'unlink', 10)
+            expected_url = '{}/layertree/unlink/{}/{}'.format(selenium_app, group_id, item_id)
+            assert expected_url == action_el.get_attribute('data-url')
+            page.click_and_confirm(action_el)
+
+            dbsession.expire_all()
+            link = dbsession.query(LayergroupTreeitem). \
+                filter(LayergroupTreeitem.treegroup_id == group_id). \
+                filter(LayergroupTreeitem.treeitem_id == item_id). \
+                one_or_none()
+            assert link is None
+
+            selenium.refresh()
+            page.find_item('_{}_{}_{}'.format(themes[0].id, groups[5].id, layers_wmts[5].id), 10)
+            with pytest.raises(NoSuchElementException):
+                page.find_item(path)
 
     @skip_if_ci
     @pytest.mark.selenium
-    @pytest.mark.usefixtures('selenium', 'selenium_app', 'layertree_test_data')
-    class TestLayerTreeSelenium():
+    @pytest.mark.usefixtures('selenium', 'selenium_app')
+    def test_delete_selenium(self, dbsession, selenium, selenium_app, layertree_test_data):
+        from c2cgeoportal_commons.models.main import LayerWMS, LayerV1, LayerWMTS, LayerGroup
 
-        _prefix = '/layertree'
+        themes = layertree_test_data['themes']
+        groups = layertree_test_data['groups']
+        layers_v1 = layertree_test_data['layers_v1']
+        layers_wms = layertree_test_data['layers_wms']
+        layers_wmts = layertree_test_data['layers_wmts']
 
-        def test_unlink(self, dbsession, selenium, selenium_app, layertree_test_data):
-            base_page = BasePage(selenium)
+        selenium.get(selenium_app + self._prefix)
+        page = LayertreePage(selenium)
+        page.expand()
 
-            from selenium.webdriver.common.by import By
-            from selenium.webdriver.support import expected_conditions
-            from selenium.webdriver.support.ui import WebDriverWait
+        for item_id, path, model in (
+            (
+                layers_wmts[1].id,
+                '_{}_{}_{}'.format(themes[1].id, groups[1].id, layers_wmts[1].id), LayerWMTS),
+            (
+                layers_wms[1].id,
+                '_{}_{}_{}'.format(themes[1].id, groups[1].id, layers_wms[1].id), LayerWMS),
+            (
+                layers_v1[1].id,
+                '_{}_{}_{}'.format(themes[1].id, groups[1].id, layers_v1[1].id), LayerV1),
+            (
+                groups[1].id,
+                '_{}_{}'.format(themes[1].id, groups[1].id), LayerGroup),
+        ):
+            action_el = page.find_item_action(path, 'delete', 10)
+            expected_url = '{}/layertree/delete/{}'.format(selenium_app, item_id)
+            assert expected_url == action_el.get_attribute('data-url')
+            page.click_and_confirm(action_el)
+            page.wait_jquery_to_be_active()
 
-            selenium.get(selenium_app + self._prefix)
+            deleted = dbsession.query(model). \
+                filter(model.id == item_id).one_or_none()
+            assert deleted is None
 
-            elem = WebDriverWait(selenium, 10).until(
-                expected_conditions.element_to_be_clickable((By.ID, 'layertree-expand')))
-            elem.click()
+            dbsession.expire_all()
+            selenium.refresh()
 
-            theme = layertree_test_data['themes'][0]
-            group = layertree_test_data['groups'][0]
-            layer_v1 = layertree_test_data['layers_v1'][0]
-            layer_wms = layertree_test_data['layers_wms'][0]
-            layer_wmts = layertree_test_data['layers_wmts'][0]
-
-            for group_id, item_id, path in (
-                (group.id, layer_wmts.id, '_{}_{}_{}'.format(theme.id, group.id, layer_wmts.id)),
-                (group.id, layer_wms.id, '_{}_{}_{}'.format(theme.id, group.id, layer_wms.id)),
-                (group.id, layer_v1.id, '_{}_{}_{}'.format(theme.id, group.id, layer_v1.id)),
-                (theme.id, group.id, '_{}_{}'.format(theme.id, group.id)),
-            ):
-                elem = WebDriverWait(selenium, 10).until(
-                    expected_conditions.element_to_be_clickable((
-                        By.CSS_SELECTOR,
-                        'tr.treegrid-{} button.dropdown-toggle'.format(path)
-                    ))
-                )
-                elem.click()
-
-                elem = WebDriverWait(selenium, 10).until(
-                    expected_conditions.element_to_be_clickable((
-                        By.CSS_SELECTOR,
-                        'tr.treegrid-{} li.action-unlink a'.format(path)
-                    ))
-                )
-                expected_url = '{}/layertree/unlink/{}/{}'.format(selenium_app, group_id, item_id)
-                assert expected_url == elem.get_attribute('data-url')
-
-                base_page.click_and_confirm(elem)
-                base_page.wait_jquery_to_be_active()
-
-                from c2cgeoportal_commons.models.main import LayergroupTreeitem
-                link = dbsession.query(LayergroupTreeitem). \
-                    filter(LayergroupTreeitem.treegroup_id == group_id). \
-                    filter(LayergroupTreeitem.treeitem_id == item_id). \
-                    one_or_none()
-                assert link is None
-
-                dbsession.expire_all()
-                selenium.refresh()
-
-                from selenium.common.exceptions import NoSuchElementException
-                with pytest.raises(NoSuchElementException):
-                    elem = selenium.find_element_by_css_selector('tr.treegrid-{}'.format(path))
-
-        @skip_if_ci
-        @pytest.mark.selenium
-        @pytest.mark.usefixtures('selenium', 'selenium_app')
-        def test_delete_selenium(self, dbsession, selenium, selenium_app, layertree_test_data):
-            base_page = BasePage(selenium)
-
-            from selenium.webdriver.common.by import By
-            from selenium.webdriver.support import expected_conditions
-            from selenium.webdriver.support.ui import WebDriverWait
-
-            selenium.get(selenium_app + self._prefix)
-
-            elem = WebDriverWait(selenium, 10).until(
-                expected_conditions.element_to_be_clickable((By.ID, 'layertree-expand')))
-            elem.click()
-
-            theme = layertree_test_data['themes'][1]
-            group = layertree_test_data['groups'][1]
-            layer_v1 = layertree_test_data['layers_v1'][1]
-            layer_wms = layertree_test_data['layers_wms'][1]
-            layer_wmts = layertree_test_data['layers_wmts'][1]
-            from c2cgeoportal_commons.models.main import LayerWMS, LayerV1, LayerWMTS, LayerGroup
-            for item_id, path, model in (
-                (layer_wmts.id, '_{}_{}_{}'.format(theme.id, group.id, layer_wmts.id), LayerWMTS),
-                (layer_wms.id, '_{}_{}_{}'.format(theme.id, group.id, layer_wms.id), LayerWMS),
-                (layer_v1.id, '_{}_{}_{}'.format(theme.id, group.id, layer_v1.id), LayerV1),
-                (group.id, '_{}_{}'.format(theme.id, group.id), LayerGroup),
-            ):
-                elem = WebDriverWait(selenium, 10).until(
-                    expected_conditions.element_to_be_clickable((
-                        By.CSS_SELECTOR,
-                        'tr.treegrid-{} button.dropdown-toggle'.format(path)
-                    ))
-                )
-                elem.click()
-
-                elem = WebDriverWait(selenium, 10).until(
-                    expected_conditions.element_to_be_clickable((
-                        By.CSS_SELECTOR,
-                        'tr.treegrid-{} li.action-delete a'.format(path)
-                    ))
-                )
-                expected_url = '{}/layertree/delete/{}'.format(selenium_app, item_id)
-                assert expected_url == elem.get_attribute('data-url')
-
-                base_page.click_and_confirm(elem)
-                base_page.wait_jquery_to_be_active()
-
-                deleted = dbsession.query(model). \
-                    filter(model.id == item_id).one_or_none()
-                assert deleted is None
-
-                dbsession.expire_all()
-                selenium.refresh()
-
-                from selenium.common.exceptions import NoSuchElementException
-                with pytest.raises(NoSuchElementException):
-                    elem = selenium.find_element_by_css_selector('tr.treegrid-{}'.format(path))
+            page.find_item('_{}_{}_{}'.format(themes[1].id, groups[6].id, layers_wmts[6].id), 10)
+            with pytest.raises(NoSuchElementException):
+                page.find_item(path)
