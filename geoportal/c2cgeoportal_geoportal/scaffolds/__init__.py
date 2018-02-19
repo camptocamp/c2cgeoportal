@@ -178,7 +178,8 @@ class TemplateUpdate(BaseTemplate):  # pragma: no cover
     _template_dir = "update"
     summary = "Template used to update a c2cgeoportal project"
 
-    def open_project(self, vars_):
+    @staticmethod
+    def open_project(vars_):
         if os.path.exists("project.yaml"):
             with open("project.yaml", "r") as f:
                 project = yaml.safe_load(f)

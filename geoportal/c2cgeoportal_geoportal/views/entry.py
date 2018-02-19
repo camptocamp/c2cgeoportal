@@ -278,9 +278,11 @@ class Entry:
             log.exception(error)
         return wms, errors
 
-    def _create_layer_query(self, role_id, version, interface):
-        """ Create an SQLAlchemy query for Layer and for the role
-            identified to by ``role_id``.
+    @staticmethod
+    def _create_layer_query(role_id, version, interface):
+        """
+        Create an SQLAlchemy query for Layer and for the role
+        identified to by ``role_id``.
         """
 
         if version == 1:
