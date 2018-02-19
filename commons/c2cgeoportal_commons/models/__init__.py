@@ -88,7 +88,7 @@ def get_tm_session(session_factory: sessionmaker, transaction_manager: Transacti
     return dbsession
 
 
-def generate_mappers(settings: dict) -> None:
+def generate_mappers() -> None:
     """
     Initialize the model for a Pyramid app.
     """

@@ -31,13 +31,11 @@
 import warnings
 from typing import Dict, Tuple  # noqa, pylint: disable=unused-import
 
-from sqlalchemy import Table, sql, MetaData
+from sqlalchemy import Table, MetaData
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm.util import class_mapper
 from sqlalchemy.exc import SAWarning
 from sqlalchemy.ext.declarative.api import DeclarativeMeta  # noqa, pylint: disable=unused-import
-
-from geoalchemy2 import Geometry
 
 from papyrus.geo_interface import GeoInterface
 from papyrus.xsd import tag
@@ -116,20 +114,6 @@ def xsd_sequence_callback(tb, cls):
                     for value, in query:
                         with tag(tb, "xsd:enumeration", {"value": value}):
                             pass
-
-
-def _column_reflect_listener(inspector, table, column_info, engine):
-    if isinstance(column_info["type"], Geometry):  # pragma: no cover
-        query = engine.execute(
-            sql.text(SQL_GEOMETRY_COLUMNS),
-            table_schema=table.schema,
-            table_name=table.name,
-            geometry_column=column_info["name"]
-        )
-        results = query.fetchall()
-        if len(results) == 1:
-            column_info["type"].geometry_type = results[0][1]
-            column_info["type"].srid = int(results[0][0])
 
 
 def _get_schema(tablename):

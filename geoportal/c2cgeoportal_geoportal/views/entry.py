@@ -886,7 +886,10 @@ class Entry:
 
     @cache_region.cache_on_arguments()
     def _wms_layers(self, role_id, ogc_server):
-        """ role_id is just for cache """
+        """
+        role_id is just for cache
+        """
+        del role_id  # unused
 
         # retrieve layers metadata via GetCapabilities
         wms, wms_errors = self._wms_getcap(ogc_server)

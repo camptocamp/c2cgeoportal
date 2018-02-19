@@ -44,12 +44,14 @@ def get_cache_version():
 
 
 def version_cache_buster(request, subpath, kw):  # pragma: no cover
+    del request  # unused
     return urljoin(get_cache_version() + "/", subpath), kw
 
 
 class CachebusterTween:
     """ Get back the cachebuster URL. """
     def __init__(self, handler, registry):
+        del registry  # unused
         self.handler = handler
 
     def __call__(self, request):

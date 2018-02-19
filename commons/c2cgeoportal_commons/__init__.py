@@ -40,4 +40,4 @@ def includeme(config: Configurator) -> None:
         reify=True
     )
 
-    generate_mappers(settings)
+    generate_mappers()

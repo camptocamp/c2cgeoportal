@@ -365,6 +365,7 @@ def default_user_validator(request, username, password):
     default user validator.
     Return none if we are anonymous, the string to remember otherwise.
     """
+    del request  # unused
     from c2cgeoportal_commons.models import DBSession
     from c2cgeoportal_commons.models.static import User
     user = DBSession.query(User).filter_by(username=username).first()
@@ -378,6 +379,7 @@ class OgcproxyRoutePredicate:
     "mapserv". It is rather drastic, but works for us. """
 
     def __init__(self, val, config):
+        del val  # unused
         self.private_networks = [
             Network("127.0.0.0/8"),
             Network("10.0.0.0/8"),

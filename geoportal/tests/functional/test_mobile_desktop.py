@@ -119,7 +119,7 @@ class TestMobileDesktop(TestCase):
         transaction.commit()
 
     @staticmethod
-    def _create_entry_obj(username=None, params=None, **kargs):
+    def _create_entry_obj(params=None, **kargs):
         if params is None:
             params = {}
         from c2cgeoportal_geoportal.views.entry import Entry

@@ -245,7 +245,8 @@ class Layers:
 
         layer = self._get_layer_for_request()
 
-        def check_geometry(r, feature, o):
+        def check_geometry(_, feature, obj):
+            del obj  # unused
             geom = feature.geometry
             if geom and not isinstance(geom, geojson.geometry.Default):
                 shape = asShape(geom)
@@ -268,8 +269,7 @@ class Layers:
                 if self._get_validation_setting(layer):
                     self._validate_geometry(spatial_elt)
 
-        protocol = self._get_protocol_for_layer(layer,
-                                                before_create=check_geometry)
+        protocol = self._get_protocol_for_layer(layer, before_create=check_geometry)
         try:
             features = protocol.create(self.request)
             for feature in features.features:
@@ -297,11 +297,11 @@ class Layers:
         feature_id = self.request.matchdict.get("feature_id")
         layer = self._get_layer_for_request()
 
-        def check_geometry(r, feature, o):
+        def check_geometry(_, feature, obj):
             # we need both the "original" and "new" geometry to be
             # within the restriction area
             geom_attr, srid = self._get_geom_col_info(layer)
-            geom_attr = getattr(o, geom_attr)
+            geom_attr = getattr(obj, geom_attr)
             geom = feature.geometry
             allowed = models.DBSession.query(func.count(RestrictionArea.id))
             allowed = allowed.join(RestrictionArea.roles)
@@ -386,8 +386,8 @@ class Layers:
         feature_id = self.request.matchdict.get("feature_id")
         layer = self._get_layer_for_request()
 
-        def security_cb(r, o):
-            geom_attr = getattr(o, self._get_geom_col_info(layer)[0])
+        def security_cb(_, obj):
+            geom_attr = getattr(obj, self._get_geom_col_info(layer)[0])
             allowed = models.DBSession.query(func.count(RestrictionArea.id))
             allowed = allowed.join(RestrictionArea.roles)
             allowed = allowed.join(RestrictionArea.layers)

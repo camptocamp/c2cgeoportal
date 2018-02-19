@@ -54,6 +54,7 @@ class TestshortenerView(TestCase):
         from c2cgeoportal_geoportal.views.shortener import Shortener
 
         def route_url(name, *elements, **kw):
+            del name
             return "https://example.com/short/" + kw["ref"]
 
         request = DummyRequest()
