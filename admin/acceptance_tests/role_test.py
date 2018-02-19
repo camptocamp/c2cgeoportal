@@ -1,4 +1,4 @@
-# pylint: disable=no-self-use
+# pylint: disable=no-self-use,unsubscriptable-object
 
 import json
 import re
@@ -119,9 +119,10 @@ class TestRole(AbstractViewsTests):
                 'label': '{}={}'.format(f.name, f.value),
                 'value': str(f.id),
                 'checked': f in role.functionalities
-            } for f in sum([roles_test_data['functionalities'][name]
-                            for name in ('default_basemap', 'location')],
-                           [])])
+            } for f in sum(
+                [roles_test_data['functionalities'][name] for name in ('default_basemap', 'location')],
+                []
+            )])
 
         ras = roles_test_data['restrictionareas']
         assert set((ras[0].id, ras[1].id)) == set(ra.id for ra in role.restrictionareas)

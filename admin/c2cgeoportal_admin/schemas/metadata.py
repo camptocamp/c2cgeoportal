@@ -36,6 +36,8 @@ def json_validator(node, value):
 
 class MetadataSchemaNode(GeoFormSchemaNode):
 
+    metadata_types = None
+
     def __init__(self, *args, **kw):
         super().__init__(*args, **kw)
 

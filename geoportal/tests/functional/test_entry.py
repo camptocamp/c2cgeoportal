@@ -952,9 +952,10 @@ class TestEntryView(TestCase):
         layer.geo_table = "tiwms"
         layer.public = True
 
-        result = entry._layer(layer)
-        result[0]["icon"] = None
-        self.assertEqual(result, ({
+        layer_info, errors = entry._layer(layer)
+        # pylint: disable=unsupported-assignment-operation
+        layer_info["icon"] = None
+        self.assertEqual(layer_info, {
             "id": 20,
             "name": "test internal WMS",
             "metadataURL": "http://example.com/tiwms",
@@ -973,9 +974,10 @@ class TestEntryView(TestCase):
             "identifierAttribute": "name",
             "public": True,
             "metadata": {},
-        }, {
+        })
+        self.assertEqual(errors, {
             "The layer 'test internal WMS' (test internal WMS) is not defined in WMS capabilities from '__test_ogc_server'"
-        }))
+        })
 
         layer = LayerV1()
         layer.id = 20

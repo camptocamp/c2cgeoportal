@@ -108,7 +108,7 @@ build: c2c-egg \
 doc: $(BUILD_DIR)/sphinx.timestamp
 
 .PHONY: checks
-checks: flake8 mypy git-attributes quote spell yamllint
+checks: flake8 mypy git-attributes quote spell yamllint pylint
 
 .PHONY: clean
 clean:
@@ -223,6 +223,15 @@ flake8:
 		--copyright-check \
 		--copyright-min-file-size=1 \
 		--copyright-regexp="Copyright \(c\) ([0-9][0-9][0-9][0-9]-)?$(shell date +%Y), Camptocamp SA"
+
+.PHONY: pylint
+pylint:
+	pylint --errors-only geoportal/c2cgeoportal_geoportal
+	pylint --errors-only geoportal/tests
+	pylint --errors-only commons/c2cgeoportal_commons
+	pylint --errors-only commons/acceptance_tests
+	pylint --errors-only admin/c2cgeoportal_admin
+	pylint --errors-only admin/acceptance_tests
 
 .PHONY: mypy
 mypy:
