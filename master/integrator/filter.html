@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Filter (Querier) &#8212; c2cgeoportal  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -48,9 +39,9 @@
 <p>In the filter panel, instead of the standard text field,
 it is possible to display combos providing the available values of
 the attributes. The values are automatically retrieved using a
-web service that does a <code class="docutils literal"><span class="pre">SELECT</span> <span class="pre">distinct(&lt;column&gt;)</span> <span class="pre">FROM</span> <span class="pre">&lt;table&gt;</span></code>.</p>
-<p>The web service configuration is done in the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">layers</span><span class="p">:</span>
+web service that does a <code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">distinct(&lt;column&gt;)</span> <span class="pre">FROM</span> <span class="pre">&lt;table&gt;</span></code>.</p>
+<p>The web service configuration is done in the <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file:</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">layers</span><span class="p">:</span>
     <span class="n">enum</span><span class="p">:</span>
         <span class="o">&lt;</span><span class="n">layer_name</span><span class="o">&gt;</span><span class="p">:</span>
             <span class="n">dbsession</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">session</span> <span class="n">name</span><span class="o">&gt;</span>
@@ -61,17 +52,17 @@ web service that does a <code class="docutils literal"><span class="pre">SELECT<
                     <span class="n">separator</span><span class="p">:</span> <span class="s2">&quot;,&quot;</span>
 </pre></div>
 </div>
-<p><code class="docutils literal"><span class="pre">dbsession:</span> <span class="pre">&quot;&lt;session</span> <span class="pre">name&gt;&quot;</span></code> at the <code class="docutils literal"><span class="pre">enum.defaults</span></code> level can be used
+<p><code class="docutils literal notranslate"><span class="pre">dbsession:</span> <span class="pre">&quot;&lt;session</span> <span class="pre">name&gt;&quot;</span></code> at the <code class="docutils literal notranslate"><span class="pre">enum.defaults</span></code> level can be used
 to specify another DB session than the main DB session.
 See <a class="reference internal" href="multiple_databases.html#integrator-multiple-databases"><span class="std std-ref">Using multiple databases</span></a> regarding the setup of multiple databases.
 If omitted, the main DB session is used.</p>
-<p><code class="docutils literal"><span class="pre">table:</span> <span class="pre">&quot;&lt;[schema.]table</span> <span class="pre">name&gt;&quot;</span></code> may be used at the layer <code class="docutils literal"><span class="pre">defaults</span></code> level as a the default
+<p><code class="docutils literal notranslate"><span class="pre">table:</span> <span class="pre">&quot;&lt;[schema.]table</span> <span class="pre">name&gt;&quot;</span></code> may be used at the layer <code class="docutils literal notranslate"><span class="pre">defaults</span></code> level as a the default
 table where following attributes may be found. It can be overridden at the
-attribute level. <code class="docutils literal"><span class="pre">table</span></code> is a mandatory parameter.</p>
-<p>If <code class="docutils literal"><span class="pre">column_name</span></code> is not defined, the attribute name is used.</p>
-<p>If <code class="docutils literal"><span class="pre">separator</span></code> is defined, the column is considered as a list of values.</p>
+attribute level. <code class="docutils literal notranslate"><span class="pre">table</span></code> is a mandatory parameter.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">column_name</span></code> is not defined, the attribute name is used.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">separator</span></code> is defined, the column is considered as a list of values.</p>
 <p>Simple example:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">layers</span>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">layers</span>
     <span class="n">enum</span><span class="p">:</span>
         <span class="n">mapserver_layer</span><span class="p">:</span>
             <span class="n">attributes</span><span class="p">:</span>
@@ -82,9 +73,9 @@ attribute level. <code class="docutils literal"><span class="pre">table</span></
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>If you use cgxp, make sure that the <code class="docutils literal"><span class="pre">cgxp_querier</span></code> plugin has
-the attribute <code class="docutils literal"><span class="pre">attributeURLs</span></code> in the <code class="docutils literal"><span class="pre">viewer.js</span></code> file:</p>
-<div class="code javascript last highlight-default"><div class="highlight"><pre><span></span>{
+<p>If you use cgxp, make sure that the <code class="docutils literal notranslate"><span class="pre">cgxp_querier</span></code> plugin has
+the attribute <code class="docutils literal notranslate"><span class="pre">attributeURLs</span></code> in the <code class="docutils literal notranslate"><span class="pre">viewer.js</span></code> file:</p>
+<div class="code javascript last highlight-default notranslate"><div class="highlight"><pre><span></span>{
     ptype: &quot;cgxp_querier&quot;,
     attributeURLs: ${queryer_attribute_urls | n},
     ...
@@ -133,12 +124,14 @@ the attribute <code class="docutils literal"><span class="pre">attributeURLs</sp
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -149,7 +142,7 @@ the attribute <code class="docutils literal"><span class="pre">attributeURLs</sp
       &copy;2011-2018, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

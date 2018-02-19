@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Editing (with CGXP) &#8212; c2cgeoportal  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -44,33 +35,33 @@
   <div class="section" id="editing-with-cgxp">
 <span id="integrator-legacy-editing"></span><h1>Editing (with CGXP)<a class="headerlink" href="#editing-with-cgxp" title="Permalink to this headline">¶</a></h1>
 <p>Any c2cgeoportal application comes with an editing interface, available at
-<code class="docutils literal"><span class="pre">/edit</span></code> (assuming <code class="docutils literal"><span class="pre">/</span></code> is the application’s root URL).</p>
-<p>The editing interface requires the editing plugin (<code class="docutils literal"><span class="pre">cgxp.plugins.Editing</span></code>),
+<code class="docutils literal notranslate"><span class="pre">/edit</span></code> (assuming <code class="docutils literal notranslate"><span class="pre">/</span></code> is the application’s root URL).</p>
+<p>The editing interface requires the editing plugin (<code class="docutils literal notranslate"><span class="pre">cgxp.plugins.Editing</span></code>),
 which is provided by CGXP as of commit <a class="reference external" href="https://github.com/camptocamp/cgxp/commit/58c931de2f6397ffba223b4305d0b10a18413032">58c931d</a>.
 Make sure your application uses an appropriate version (commit) of CGXP.</p>
-<p>The editing interface is defined in the application’s <code class="docutils literal"><span class="pre">templates/edit.html</span></code>
-and <code class="docutils literal"><span class="pre">templates/edit.js</span></code> files.  The integrator can edit
-<code class="docutils literal"><span class="pre">templates/edit.html</span></code> and <code class="docutils literal"><span class="pre">templates/edit.js</span></code> to customize the editing
+<p>The editing interface is defined in the application’s <code class="docutils literal notranslate"><span class="pre">templates/edit.html</span></code>
+and <code class="docutils literal notranslate"><span class="pre">templates/edit.js</span></code> files.  The integrator can edit
+<code class="docutils literal notranslate"><span class="pre">templates/edit.html</span></code> and <code class="docutils literal notranslate"><span class="pre">templates/edit.js</span></code> to customize the editing
 interface.</p>
 <p>The integrator will probably need to:</p>
 <ul class="simple">
 <li>Add base layers.</li>
-<li>Change the map settings (<code class="docutils literal"><span class="pre">projection</span></code>, <code class="docutils literal"><span class="pre">resolutions</span></code>, etc.).</li>
+<li>Change the map settings (<code class="docutils literal notranslate"><span class="pre">projection</span></code>, <code class="docutils literal notranslate"><span class="pre">resolutions</span></code>, etc.).</li>
 </ul>
 <p>Other customizations, like adding tools to the toolbar, can be done. If layer
-sources and tools are added you will certainly need to edit <code class="docutils literal"><span class="pre">jsbuild/app.cfg</span></code>
-and add scripts in the <code class="docutils literal"><span class="pre">[edit.js]</span></code> sections.</p>
+sources and tools are added you will certainly need to edit <code class="docutils literal notranslate"><span class="pre">jsbuild/app.cfg</span></code>
+and add scripts in the <code class="docutils literal notranslate"><span class="pre">[edit.js]</span></code> sections.</p>
 <p>See the <a class="reference external" href="http://docs.camptocamp.net/cgxp/2.2/lib/plugins/Editing.html">Editing API doc</a> for the list of
 options the plugin can receive.</p>
 <div class="section" id="limitations">
 <h2>Limitations<a class="headerlink" href="#limitations" title="Permalink to this headline">¶</a></h2>
-<p>At the moment only fields of type <code class="docutils literal"><span class="pre">datetime</span></code> and <code class="docutils literal"><span class="pre">date</span></code> are supported. <code class="docutils literal"><span class="pre">time</span></code> is NOT supported.</p>
+<p>At the moment only fields of type <code class="docutils literal notranslate"><span class="pre">datetime</span></code> and <code class="docutils literal notranslate"><span class="pre">date</span></code> are supported. <code class="docutils literal notranslate"><span class="pre">time</span></code> is NOT supported.</p>
 </div>
 <div class="section" id="validation">
 <h2>Validation<a class="headerlink" href="#validation" title="Permalink to this headline">¶</a></h2>
 <p>Checking the validity of a geometry may be enabled using the following
-configuration in <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code>:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
+configuration in <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code>:</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
     <span class="o">...</span>
     <span class="n">layers</span><span class="p">:</span>
         <span class="n">geometry_validation</span><span class="p">:</span> <span class="kc">True</span>
@@ -118,12 +109,14 @@ configuration in <code class="docutils literal"><span class="pre">vars_&lt;proje
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -134,7 +127,7 @@ configuration in <code class="docutils literal"><span class="pre">vars_&lt;proje
       &copy;2011-2018, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

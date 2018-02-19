@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>URL login &#8212; c2cgeoportal  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -45,18 +36,18 @@
 <span id="integrator-urllogin"></span><h1>URL login<a class="headerlink" href="#url-login" title="Permalink to this headline">¶</a></h1>
 <p>We are able to share a permalink of the application to access to protected data.</p>
 <p>First you should configure it in the vars file like it:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">urllogin</span><span class="p">:</span>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">urllogin</span><span class="p">:</span>
     <span class="n">aes_key</span><span class="p">:</span> <span class="n">foobarfoobar1234</span>
 </pre></div>
 </div>
 <p>The AES key must be either 16, 24, or 32 bytes long.</p>
-<p>To do that you should use the urllogin command: <code class="docutils literal"><span class="pre">./docker-run</span> <span class="pre">urllogin</span> <span class="pre">--help</span></code>.</p>
-<p>It generate a token like: <code class="docutils literal"><span class="pre">auth=148b60cc...</span></code> that you can add it in the query string of
+<p>To do that you should use the urllogin command: <code class="docutils literal notranslate"><span class="pre">./docker-run</span> <span class="pre">urllogin</span> <span class="pre">--help</span></code>.</p>
+<p>It generate a token like: <code class="docutils literal notranslate"><span class="pre">auth=148b60cc...</span></code> that you can add it in the query string of
 the permalink.</p>
 <p>When the use use this link he will be connected as a normal user, then you should be sure
 that the session timeout is not too big.</p>
 <p>You can change it in the vars file with:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">authtkt</span><span class="p">:</span>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">authtkt</span><span class="p">:</span>
     <span class="c1"># in secound =&gt; One day</span>
     <span class="n">timeout</span><span class="p">:</span> <span class="mi">86400</span>
 </pre></div>
@@ -64,7 +55,7 @@ that the session timeout is not too big.</p>
 <div class="section" id="how-to-build-your-token-in-your-application">
 <h2>How to build your token in your application?<a class="headerlink" href="#how-to-build-your-token-in-your-application" title="Permalink to this headline">¶</a></h2>
 <p>The token is simply a json like this:</p>
-<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+<div class="code json highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="n">u</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">username</span><span class="o">&gt;</span><span class="p">,</span>
     <span class="n">p</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">password</span><span class="o">&gt;</span><span class="p">,</span>
     <span class="n">t</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">timestamp</span><span class="o">&gt;</span> <span class="o">//</span> <span class="n">end</span> <span class="n">of</span> <span class="n">validity</span> <span class="ow">in</span> <span class="n">secound</span>
@@ -113,12 +104,14 @@ that the session timeout is not too big.</p>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -129,7 +122,7 @@ that the session timeout is not too big.</p>
       &copy;2011-2018, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

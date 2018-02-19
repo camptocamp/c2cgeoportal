@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Security &#8212; c2cgeoportal  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -47,15 +38,15 @@
 <h2>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="the-default-policy">
 <h3>The default policy<a class="headerlink" href="#the-default-policy" title="Permalink to this headline">¶</a></h3>
-<p>By default <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> applications use an <em>auth ticket</em> authentication
-policy (<code class="docutils literal"><span class="pre">AuthTktAuthenticationPolicy</span></code>). With this policy the user name is
+<p>By default <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> applications use an <em>auth ticket</em> authentication
+policy (<code class="docutils literal notranslate"><span class="pre">AuthTktAuthenticationPolicy</span></code>). With this policy the user name is
 obtained from the “auth ticket” cookie set in the request.</p>
 <p>The policy is created, and added to the application’s configuration, in the
-application’s main <code class="docutils literal"><span class="pre">__init__.py</span></code> file.</p>
+application’s main <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> file.</p>
 </div>
 <div class="section" id="using-another-policy">
 <h3>Using another policy<a class="headerlink" href="#using-another-policy" title="Permalink to this headline">¶</a></h3>
-<p>When using <code class="docutils literal"><span class="pre">AuthTktAuthenticationPolicy</span></code> an “auth ticket” cookie should be
+<p>When using <code class="docutils literal notranslate"><span class="pre">AuthTktAuthenticationPolicy</span></code> an “auth ticket” cookie should be
 set in the request for the user to be identified. In some applications using
 another identification mechanism may be needed.</p>
 </div>
@@ -65,14 +56,14 @@ another identification mechanism may be needed.</p>
 integrate with the Nevis single sign-on environment. This SSO system is
 composed of a central auth server, and a proxy running as an Apache module.
 The proxy takes care of communicating with the auth server, and sets the
-username in the <code class="docutils literal"><span class="pre">REMOTE_USER</span></code> environment variable when the user has been
+username in the <code class="docutils literal notranslate"><span class="pre">REMOTE_USER</span></code> environment variable when the user has been
 identified. With this system an “auth ticket” policy cannot be used, obviously.
 A <a class="reference external" href="http://docs.pylonsproject.org/projects/pyramid/en/1.3-branch/api/authentication.html#pyramid.authentication.RemoteUserAuthenticationPolicy">“remote user” authentication policy</a>
 should be used instead.</p>
 <p>To use a “remote user” authentication policy edit the application’s
-main <code class="docutils literal"><span class="pre">__init__.py</span></code> file, and set <code class="docutils literal"><span class="pre">authentication_policy</span></code> to a
-<code class="docutils literal"><span class="pre">RemoteUserAuthenticationPolicy</span></code> instance:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span>from pyramid.config import Configurator
+main <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> file, and set <code class="docutils literal notranslate"><span class="pre">authentication_policy</span></code> to a
+<code class="docutils literal notranslate"><span class="pre">RemoteUserAuthenticationPolicy</span></code> instance:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span>from pyramid.config import Configurator
 from pyramid.authentication import RemoteUserAuthenticationPolicy
 from c2cgeoportal_geoportal import locale_negotiator
 from c2cgeoportal_geoportal.resources import FAModels, defaultgroupsfinder
@@ -89,60 +80,60 @@ def main(global_config, **settings):
     # ...
 </pre></div>
 </div>
-<p><code class="docutils literal"><span class="pre">c2cgeoportal</span></code> provides an authentication policy callback, namely
-<code class="docutils literal"><span class="pre">defaultgroupsfinder</span></code>, that is appropriate in most cases. This callback
-assumes that <code class="docutils literal"><span class="pre">request.user.role</span></code> is a reference to the <code class="docutils literal"><span class="pre">Role</span></code> database
+<p><code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> provides an authentication policy callback, namely
+<code class="docutils literal notranslate"><span class="pre">defaultgroupsfinder</span></code>, that is appropriate in most cases. This callback
+assumes that <code class="docutils literal notranslate"><span class="pre">request.user.role</span></code> is a reference to the <code class="docutils literal notranslate"><span class="pre">Role</span></code> database
 object (more information below). This callback is required for admin users to
 be able to access to the admin interface.</p>
 <p>It is important to note that when using a “remote user” authentication policy
 the authentication process is delegated to an outside system. So calls to
-<code class="docutils literal"><span class="pre">pyramid.security.remember</span></code> and <code class="docutils literal"><span class="pre">pyramid.security.forget</span></code>, as done in
-c2cgeoportal’s <code class="docutils literal"><span class="pre">login</span></code> and <code class="docutils literal"><span class="pre">logout</span></code> views, have no effect.</p>
+<code class="docutils literal notranslate"><span class="pre">pyramid.security.remember</span></code> and <code class="docutils literal notranslate"><span class="pre">pyramid.security.forget</span></code>, as done in
+c2cgeoportal’s <code class="docutils literal notranslate"><span class="pre">login</span></code> and <code class="docutils literal notranslate"><span class="pre">logout</span></code> views, have no effect.</p>
 <p>With an authentication policy set in the application configuration the user
-name can be obtained by calling <code class="docutils literal"><span class="pre">request.unauthenticated_userid</span></code>.
-(This function returns <code class="docutils literal"><span class="pre">None</span></code> if there is currently no authenticated user.)
+name can be obtained by calling <code class="docutils literal notranslate"><span class="pre">request.unauthenticated_userid</span></code>.
+(This function returns <code class="docutils literal notranslate"><span class="pre">None</span></code> if there is currently no authenticated user.)
 But c2cgeoportal applications need to also know about the user’s <em>role</em> to
 work properly.</p>
 <p>So when using an external authentication system this system should also provide
 the c2cgeoportal application with the name of the user’s role. This can be done
-in <code class="docutils literal"><span class="pre">apache/wsgi.conf.mako</span></code> by relying on the <a class="reference external" href="http://httpd.apache.org/docs/2.2/mod/mod_setenvif.html">mod_setenvif</a> Apache module’s
-<code class="docutils literal"><span class="pre">SetEnvIf</span></code> directive. For example:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>SetEnvIf isiwebsectoken &lt;role&gt;(.*)&lt;/role&gt; rolename=$1
+in <code class="docutils literal notranslate"><span class="pre">apache/wsgi.conf.mako</span></code> by relying on the <a class="reference external" href="http://httpd.apache.org/docs/2.2/mod/mod_setenvif.html">mod_setenvif</a> Apache module’s
+<code class="docutils literal notranslate"><span class="pre">SetEnvIf</span></code> directive. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>SetEnvIf isiwebsectoken &lt;role&gt;(.*)&lt;/role&gt; rolename=$1
 </pre></div>
 </div>
 <p>or:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>SetEnvIf isiwebsectoken &#39;&lt;field name=&quot;roles&quot;&gt;([a-zA-Z0-9,\.]*)&lt;/field&gt;&#39; rolename=$1
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>SetEnvIf isiwebsectoken &#39;&lt;field name=&quot;roles&quot;&gt;([a-zA-Z0-9,\.]*)&lt;/field&gt;&#39; rolename=$1
 </pre></div>
 </div>
-<p>With this <code class="docutils literal"><span class="pre">mod_setenvif</span></code> extracts the role name from the <code class="docutils literal"><span class="pre">isiwebsectoken</span></code> header
-and places it in the <code class="docutils literal"><span class="pre">rolename</span></code> environment variable. See the <code class="docutils literal"><span class="pre">mod_setenvif</span></code>
+<p>With this <code class="docutils literal notranslate"><span class="pre">mod_setenvif</span></code> extracts the role name from the <code class="docutils literal notranslate"><span class="pre">isiwebsectoken</span></code> header
+and places it in the <code class="docutils literal notranslate"><span class="pre">rolename</span></code> environment variable. See the <code class="docutils literal notranslate"><span class="pre">mod_setenvif</span></code>
 documentation for more details.</p>
 <p>The connection between the nevisProxy and the application is established using
 an Apache module called NINAP. The above Apache configuration may also contain
 NINAP directives (see nevisProxy documentation). For instance to indicate what
-field in the <code class="docutils literal"><span class="pre">isiwebsectoken</span></code> header contains the username:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">NINAP_UserPattern</span> <span class="s1">&#39;&lt;field name=&quot;loginId&quot;&gt;([a-zA-Z0-9\._-]*)&lt;/field&gt;&#39;</span>
+field in the <code class="docutils literal notranslate"><span class="pre">isiwebsectoken</span></code> header contains the username:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">NINAP_UserPattern</span> <span class="s1">&#39;&lt;field name=&quot;loginId&quot;&gt;([a-zA-Z0-9\._-]*)&lt;/field&gt;&#39;</span>
 </pre></div>
 </div>
 <p>Eventually the following directives activate the access restriction to the
 application:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">Location</span> <span class="o">/&lt;</span><span class="n">instance_id</span><span class="o">&gt;/</span><span class="n">wsgi</span><span class="o">&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">Location</span> <span class="o">/&lt;</span><span class="n">instance_id</span><span class="o">&gt;/</span><span class="n">wsgi</span><span class="o">&gt;</span>
   <span class="n">AuthType</span> <span class="n">sectoken</span>
   <span class="n">Require</span> <span class="n">valid</span><span class="o">-</span><span class="n">user</span>
 <span class="o">&lt;/</span><span class="n">Location</span><span class="o">&gt;</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> code expects that the user data (user name, role name and
-user functionalities) are available through the <code class="docutils literal"><span class="pre">user</span></code> property in the
-<code class="docutils literal"><span class="pre">request</span></code> object. More specifically it expects <code class="docutils literal"><span class="pre">request.user.role.id</span></code> to
-contain the role id, and <code class="docutils literal"><span class="pre">request.user.role.name</span></code> to contain the role name.
-<code class="docutils literal"><span class="pre">request.user.username</span></code> and <code class="docutils literal"><span class="pre">request.user.functionalities</span></code> must be provided
+<p>The <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> code expects that the user data (user name, role name and
+user functionalities) are available through the <code class="docutils literal notranslate"><span class="pre">user</span></code> property in the
+<code class="docutils literal notranslate"><span class="pre">request</span></code> object. More specifically it expects <code class="docutils literal notranslate"><span class="pre">request.user.role.id</span></code> to
+contain the role id, and <code class="docutils literal notranslate"><span class="pre">request.user.role.name</span></code> to contain the role name.
+<code class="docutils literal notranslate"><span class="pre">request.user.username</span></code> and <code class="docutils literal notranslate"><span class="pre">request.user.functionalities</span></code> must be provided
 as well.
 Therefore the application should redefine the callback function that adds
-a <code class="docutils literal"><span class="pre">user</span></code> property to the request. This is done by calling the
-<code class="docutils literal"><span class="pre">set_request_property</span></code> function on the <code class="docutils literal"><span class="pre">Configurator</span></code> object.
-You may for example add to <code class="docutils literal"><span class="pre">__init__.py</span></code>:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_user_from_request</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">username</span><span class="p">):</span>
+a <code class="docutils literal notranslate"><span class="pre">user</span></code> property to the request. This is done by calling the
+<code class="docutils literal notranslate"><span class="pre">set_request_property</span></code> function on the <code class="docutils literal notranslate"><span class="pre">Configurator</span></code> object.
+You may for example add to <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code>:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_user_from_request</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">username</span><span class="p">):</span>
     <span class="kn">from</span> <span class="nn">c2cgeoportal_commons.models</span> <span class="k">import</span> <span class="n">DBSession</span>
     <span class="kn">from</span> <span class="nn">c2cgeoportal_commons.models.main</span> <span class="k">import</span> <span class="n">Role</span>
     <span class="k">class</span> <span class="nc">O</span><span class="p">:</span>
@@ -159,18 +150,18 @@ You may for example add to <code class="docutils literal"><span class="pre">__in
         <span class="k">return</span> <span class="n">user</span>
 </pre></div>
 </div>
-<p>And then, in the application’s <code class="docutils literal"><span class="pre">main</span></code> function:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">config</span><span class="o">.</span><span class="n">set_request_property</span><span class="p">(</span>
+<p>And then, in the application’s <code class="docutils literal notranslate"><span class="pre">main</span></code> function:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">config</span><span class="o">.</span><span class="n">set_request_property</span><span class="p">(</span>
         <span class="n">get_user_from_request</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="nb">property</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">config</span><span class="o">.</span><span class="n">set_request_property</span><span class="p">(</span>
         <span class="n">get_user_from_request</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;get_user&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Please note that <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> expects the admin role to be <code class="docutils literal"><span class="pre">role_admin</span></code>.
+<p>Please note that <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> expects the admin role to be <code class="docutils literal notranslate"><span class="pre">role_admin</span></code>.
 If for some reason you need to use another name for this role, you may define
 an alias in a project-specific callback and use it instead of the standard
-<code class="docutils literal"><span class="pre">defaultgroupsfinder</span></code> as <code class="docutils literal"><span class="pre">AuthenticationPolicy</span></code> argument in <code class="docutils literal"><span class="pre">__init__.py</span></code>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">mygroupsfinder</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+<code class="docutils literal notranslate"><span class="pre">defaultgroupsfinder</span></code> as <code class="docutils literal notranslate"><span class="pre">AuthenticationPolicy</span></code> argument in <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">mygroupsfinder</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
     <span class="n">role</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">role</span>
     <span class="k">if</span> <span class="n">role</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">role</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;&lt;your_admin_rolename&gt;&#39;</span><span class="p">:</span>
@@ -187,21 +178,21 @@ an alias in a project-specific callback and use it instead of the standard
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last"><code class="docutils literal"><span class="pre">c2cgeoportal</span></code> registers its own request property callback for <code class="docutils literal"><span class="pre">user</span></code>.
+<p class="last"><code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> registers its own request property callback for <code class="docutils literal notranslate"><span class="pre">user</span></code>.
 The one registered by the application overwrites it.</p>
 </div>
 <p>You should be set at this point.</p>
 </div>
 <div class="section" id="custom-user-validation">
 <h3>Custom user validation<a class="headerlink" href="#custom-user-validation" title="Permalink to this headline">¶</a></h3>
-<p>For logging in <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> validates the user credentials
-(username/password) by reading the user information from the <code class="docutils literal"><span class="pre">user</span></code> database
+<p>For logging in <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> validates the user credentials
+(username/password) by reading the user information from the <code class="docutils literal notranslate"><span class="pre">user</span></code> database
 table. If a c2cgeoportal application should work with another user information
 source, like LDAP, another <em>client validation</em> mechanism should be set up.
-<code class="docutils literal"><span class="pre">c2cgeoportal</span></code> provides a specific <code class="docutils literal"><span class="pre">Configurator</span></code> function for that, namely
-<code class="docutils literal"><span class="pre">set_user_validator</span></code> which allow to register a custom validator.
+<code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> provides a specific <code class="docutils literal notranslate"><span class="pre">Configurator</span></code> function for that, namely
+<code class="docutils literal notranslate"><span class="pre">set_user_validator</span></code> which allow to register a custom validator.
 Here is an example:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">custom_user_validator</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">custom_user_validator</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
     <span class="kn">from</span> <span class="nn">pyramid_ldap</span> <span class="k">import</span> <span class="n">get_ldap_connector</span>
     <span class="n">connector</span> <span class="o">=</span> <span class="n">get_ldap_connector</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">connector</span><span class="o">.</span><span class="n">authenticate</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
@@ -212,15 +203,15 @@ Here is an example:</p>
 <span class="n">config</span><span class="o">.</span><span class="n">set_user_validator</span><span class="p">(</span><span class="n">custom_user_validator</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The validator function is passed three arguments: <code class="docutils literal"><span class="pre">request</span></code>, <code class="docutils literal"><span class="pre">username</span></code>,
-and <code class="docutils literal"><span class="pre">password</span></code>. The function should return a string containing all the data
-you want to keep if the credentials are valid, and <code class="docutils literal"><span class="pre">None</span></code> otherwise.</p>
+<p>The validator function is passed three arguments: <code class="docutils literal notranslate"><span class="pre">request</span></code>, <code class="docutils literal notranslate"><span class="pre">username</span></code>,
+and <code class="docutils literal notranslate"><span class="pre">password</span></code>. The function should return a string containing all the data
+you want to keep if the credentials are valid, and <code class="docutils literal notranslate"><span class="pre">None</span></code> otherwise.</p>
 <p>In this example the <a class="reference external" href="http://docs.pylonsproject.org/projects/pyramid_ldap/en/latest/">pyramid_ldap package</a> is used as
 the user information source.</p>
 <p>User validators can obviously be chained. For example, a user validator
-function that queries the <code class="docutils literal"><span class="pre">user</span></code> database table if the user does not exist in
+function that queries the <code class="docutils literal notranslate"><span class="pre">user</span></code> database table if the user does not exist in
 LDAP would look like this:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">custom_user_validator</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">custom_user_validator</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
     <span class="kn">from</span> <span class="nn">c2cgeoportal_geoportal</span> <span class="k">import</span> <span class="n">default_user_validator</span>
     <span class="kn">from</span> <span class="nn">pyramid_ldap</span> <span class="k">import</span> <span class="n">get_ldap_connector</span>
     <span class="n">connector</span> <span class="o">=</span> <span class="n">get_ldap_connector</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
@@ -234,7 +225,7 @@ LDAP would look like this:</p>
 <div class="section" id="custom-user-validation-ldap">
 <h3>Custom user validation - LDAP<a class="headerlink" href="#custom-user-validation-ldap" title="Permalink to this headline">¶</a></h3>
 <p>Full example using pyramid_ldap, see <cite># LDAP</cite> / <cite># END LDAP</cite> blocs.</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 
 <span class="kn">from</span> <span class="nn">pyramid.config</span> <span class="k">import</span> <span class="n">Configurator</span>
 <span class="c1"># LDAP</span>
@@ -381,21 +372,21 @@ prompt “unsecure content” warnings.</p>
 configuration is required both on the c2cgeoportal application, and on the
 proxy:</p>
 <ul>
-<li><p class="first">The proxy should add a specific header to the requests. For example <code class="docutils literal"><span class="pre">X-Https</span>
-<span class="pre">on</span></code> (<code class="docutils literal"><span class="pre">X-Https</span></code> is the header name, and <code class="docutils literal"><span class="pre">on</span></code> is the header value).</p>
+<li><p class="first">The proxy should add a specific header to the requests. For example <code class="docutils literal notranslate"><span class="pre">X-Https</span>
+<span class="pre">on</span></code> (<code class="docutils literal notranslate"><span class="pre">X-Https</span></code> is the header name, and <code class="docutils literal notranslate"><span class="pre">on</span></code> is the header value).</p>
 </li>
 <li><p class="first">To make c2cgeoportal generate HTTPS URLs when requests with this header are
 received you will set the <cite>HTTPS</cite> environment variable by adding the
-following in the <code class="docutils literal"><span class="pre">apache/wsgi.conf.mako</span></code> file in the <code class="docutils literal"><span class="pre">&lt;location</span> <span class="pre">...&gt;</span></code>
+following in the <code class="docutils literal notranslate"><span class="pre">apache/wsgi.conf.mako</span></code> file in the <code class="docutils literal notranslate"><span class="pre">&lt;location</span> <span class="pre">...&gt;</span></code>
 section, in our example:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">SetEnvIf</span>    <span class="n">X</span><span class="o">-</span><span class="n">Https</span> <span class="n">on</span> <span class="n">HTTPS</span><span class="o">=</span><span class="mi">1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SetEnvIf</span>    <span class="n">X</span><span class="o">-</span><span class="n">Https</span> <span class="n">on</span> <span class="n">HTTPS</span><span class="o">=</span><span class="mi">1</span>
 </pre></div>
 </div>
 </li>
 </ul>
 <p>In Mako templates, if you need to know what scheme is used, you may test the
-value of <code class="docutils literal"><span class="pre">request.scheme</span></code>. For example:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="n">WMTS_OPTIONS</span> <span class="o">=</span> <span class="p">{</span>
+value of <code class="docutils literal notranslate"><span class="pre">request.scheme</span></code>. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="n">WMTS_OPTIONS</span> <span class="o">=</span> <span class="p">{</span>
 <span class="o">%</span> <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">scheme</span> <span class="o">==</span> <span class="s1">&#39;https&#39;</span><span class="p">:</span>
     <span class="n">url</span><span class="p">:</span> <span class="s1">&#39;https://my.wmts.server/&#39;</span>
 <span class="o">%</span> <span class="k">else</span><span class="p">:</span>
@@ -425,7 +416,7 @@ resourceproxy service as described below.</p>
 <p>If you want to load non https external resources in your https application, you
 must use the resourceproxy service and add the list of hosts you want to access
 in your project <cite>vars_&lt;project&gt;.yaml</cite> configuration file:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span>resourceproxy:
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span>resourceproxy:
     # list of urls from which it is safe to load content
     targets:
       #exempletargetname: http://www.camptocamp.com/?param1=%s&amp;param2=%s
@@ -433,22 +424,22 @@ in your project <cite>vars_&lt;project&gt;.yaml</cite> configuration file:</p>
 </pre></div>
 </div>
 <p>Then you can access resources by building urls using the following schema:
-<code class="docutils literal"><span class="pre">http://&lt;host&gt;/wsgi/resourceproxy?target=&lt;targetname&gt;&amp;values=(&lt;valueparam1&gt;,...)</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">http://&lt;host&gt;/wsgi/resourceproxy?target=&lt;targetname&gt;&amp;values=(&lt;valueparam1&gt;,...)</span></code>.</p>
 <p>For example:</p>
-<p><code class="docutils literal"><span class="pre">http://geoportail.camptocamp.com/main/wsgi/resourceproxy?target=rfinfo&amp;values=(175,2633)</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">http://geoportail.camptocamp.com/main/wsgi/resourceproxy?target=rfinfo&amp;values=(175,2633)</span></code></p>
 </div>
 </div>
 <div class="section" id="reset-password">
 <h2>Reset password<a class="headerlink" href="#reset-password" title="Permalink to this headline">¶</a></h2>
 <p>When a user has forgotten his/her password, a new one may be sent by email if some additional
 GeoMapFish configuration is provided.</p>
-<p>In the <code class="docutils literal"><span class="pre">&lt;package&gt;/template/*.js</span></code> files, in the <code class="docutils literal"><span class="pre">cgxp_login</span></code> plugin you should add the
+<p>In the <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/template/*.js</span></code> files, in the <code class="docutils literal notranslate"><span class="pre">cgxp_login</span></code> plugin you should add the
 service URL with the following configuration:</p>
-<div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="n">loginResetPasswordURL</span><span class="p">:</span> <span class="s2">&quot;${request.route_url(&#39;loginresetpassword&#39;) | n}&quot;</span><span class="p">,</span>
+<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">loginResetPasswordURL</span><span class="p">:</span> <span class="s2">&quot;${request.route_url(&#39;loginresetpassword&#39;) | n}&quot;</span><span class="p">,</span>
 </pre></div>
 </div>
-<p>And to generate the required e-mail, in the <code class="docutils literal"><span class="pre">vars_&lt;package&gt;.yaml</span></code> file, add the following configuration:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="c1"># SMTP configuration could be already there if needed by other feature</span>
+<p>And to generate the required e-mail, in the <code class="docutils literal notranslate"><span class="pre">vars_&lt;package&gt;.yaml</span></code> file, add the following configuration:</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># SMTP configuration could be already there if needed by other feature</span>
 <span class="n">smtp</span><span class="p">:</span>
     <span class="n">host</span><span class="p">:</span> <span class="n">smtp</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="mi">465</span>
     <span class="n">ssl</span><span class="p">:</span> <span class="n">true</span>
@@ -473,28 +464,28 @@ service URL with the following configuration:</p>
 <p>If the SMTP host ends with a colon (<cite>:</cite>) followed by a number, and
 there is no port specified, that suffix will be stripped off and the
 number interpreted as the port number to use.</p>
-<p>Replace the <code class="docutils literal"><span class="pre">smtp.example.com</span></code> value by a working SMTP server name.</p>
+<p>Replace the <code class="docutils literal notranslate"><span class="pre">smtp.example.com</span></code> value by a working SMTP server name.</p>
 </div>
 <div class="section" id="access-to-wms-getcapability">
 <h2>Access to WMS GetCapability<a class="headerlink" href="#access-to-wms-getcapability" title="Permalink to this headline">¶</a></h2>
-<p>Set <code class="docutils literal"><span class="pre">hide_capabilities</span></code> to <code class="docutils literal"><span class="pre">true</span></code> in your <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> to disable
+<p>Set <code class="docutils literal notranslate"><span class="pre">hide_capabilities</span></code> to <code class="docutils literal notranslate"><span class="pre">true</span></code> in your <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code> to disable
 the WMS GetCapability when accessing the Mapserver proxy (mapserverproxy).</p>
-<p>Default: <code class="docutils literal"><span class="pre">false</span></code></p>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
 </div>
 <div class="section" id="access-to-the-admin-interface">
 <h2>Access to the admin interface<a class="headerlink" href="#access-to-the-admin-interface" title="Permalink to this headline">¶</a></h2>
-<p>To disable the admin interface, set <code class="docutils literal"><span class="pre">enable_admin_interface</span></code> to <code class="docutils literal"><span class="pre">false</span></code>
-in your <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file.</p>
-<p>Default: <code class="docutils literal"><span class="pre">true</span></code></p>
+<p>To disable the admin interface, set <code class="docutils literal notranslate"><span class="pre">enable_admin_interface</span></code> to <code class="docutils literal notranslate"><span class="pre">false</span></code>
+in your <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file.</p>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">true</span></code></p>
 </div>
 <div class="section" id="access-to-the-ogc-proxy">
 <h2>Access to the OGC proxy<a class="headerlink" href="#access-to-the-ogc-proxy" title="Permalink to this headline">¶</a></h2>
-<p>To enable the OGC proxy, set <code class="docutils literal"><span class="pre">ogcproxy_enable</span></code> to <code class="docutils literal"><span class="pre">true</span></code> in your
-<code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file.</p>
-<p>Default: <code class="docutils literal"><span class="pre">false</span></code></p>
-<p>And adding the <code class="docutils literal"><span class="pre">papyrus_ogcproxy</span></code> package in the <code class="docutils literal"><span class="pre">install_requires</span></code> of the <code class="docutils literal"><span class="pre">setup.py</span></code> file.</p>
-<p>In the <code class="docutils literal"><span class="pre">viewer.js</span></code> files you should also add the <code class="docutils literal"><span class="pre">OpenLayers.ProxyHost</span></code> configuration:</p>
-<div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="n">OpenLayers</span><span class="o">.</span><span class="n">ProxyHost</span> <span class="o">=</span> <span class="s2">&quot;${request.route_url(&#39;ogcproxy&#39;) | n}?url=&quot;</span><span class="p">;</span>
+<p>To enable the OGC proxy, set <code class="docutils literal notranslate"><span class="pre">ogcproxy_enable</span></code> to <code class="docutils literal notranslate"><span class="pre">true</span></code> in your
+<code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file.</p>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+<p>And adding the <code class="docutils literal notranslate"><span class="pre">papyrus_ogcproxy</span></code> package in the <code class="docutils literal notranslate"><span class="pre">install_requires</span></code> of the <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> file.</p>
+<p>In the <code class="docutils literal notranslate"><span class="pre">viewer.js</span></code> files you should also add the <code class="docutils literal notranslate"><span class="pre">OpenLayers.ProxyHost</span></code> configuration:</p>
+<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">OpenLayers</span><span class="o">.</span><span class="n">ProxyHost</span> <span class="o">=</span> <span class="s2">&quot;${request.route_url(&#39;ogcproxy&#39;) | n}?url=&quot;</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Working without this proxy implies that all external WMS services (from the database and from the WMS browser) should
@@ -503,15 +494,15 @@ have the CORS headers (<a class="reference external" href="http://enable-cors.or
 <div class="section" id="access-to-services-by-external-servers">
 <h2>Access to services by external servers<a class="headerlink" href="#access-to-services-by-external-servers" title="Permalink to this headline">¶</a></h2>
 <p>By default, only localhost can access c2c’s services.
-To permit access to a specific service by an external server, you must set headers CORS (Access-Control-Allow-Origin) in your <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file.</p>
+To permit access to a specific service by an external server, you must set headers CORS (Access-Control-Allow-Origin) in your <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file.</p>
 <p>Add or modify the structure like that:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">headers</span><span class="p">:</span>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">headers</span><span class="p">:</span>
     <span class="o">&lt;</span><span class="n">service_name</span><span class="o">&gt;</span><span class="p">:</span>
         <span class="n">access_control_allow_origin</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;&lt;domain1&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;domain2&gt;&quot;</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
         <span class="n">access_control_max_age</span><span class="p">:</span> <span class="mi">3600</span>
 </pre></div>
 </div>
-<p>A <code class="docutils literal"><span class="pre">&quot;*&quot;</span></code> can be included in <code class="docutils literal"><span class="pre">access_control_allow_origin</span></code> to allow everybody to
+<p>A <code class="docutils literal notranslate"><span class="pre">&quot;*&quot;</span></code> can be included in <code class="docutils literal notranslate"><span class="pre">access_control_allow_origin</span></code> to allow everybody to
 access, but no credentials will be passed in the case.</p>
 <p>Available services are:</p>
 <p>Entry:</p>
@@ -538,8 +529,8 @@ access, but no credentials will be passed in the case.</p>
 <p>To mitigate <a class="reference external" href="https://en.wikipedia.org/wiki/Cross-site_request_forgery">CSRF</a>
 attacks, the server validates the referer against a list of authorized referers.</p>
 <p>By default, only the pages coming from the server are allowed. You can change
-that list by adding an <code class="docutils literal"><span class="pre">authorized_referers</span></code> list in your
-<code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file.</p>
+that list by adding an <code class="docutils literal notranslate"><span class="pre">authorized_referers</span></code> list in your
+<code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file.</p>
 <p>This solution is not the most secure (some people have browser extensions that
 reset the referer), but that is the easiest to implement with all our different
 JS frameworks.</p>
@@ -601,12 +592,14 @@ JS frameworks.</p>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -617,7 +610,7 @@ JS frameworks.</p>
       &copy;2011-2018, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

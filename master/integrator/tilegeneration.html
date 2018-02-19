@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>TileGeneration &#8212; c2cgeoportal  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -103,20 +94,20 @@ EC2, SQS, SNS.</p>
 <li><p class="first">Install the base template template:</p>
 <pre class="highlight"><span class="prompt1">./docker-run pcreate --interactive -s tilecloud_chain ../&lt;project&gt; <span class="nv">package</span><span class="o">=</span>&lt;package&gt;</span>
 </pre></li>
-<li><p class="first">In the <code class="docutils literal"><span class="pre">&lt;prokect&gt;.mk</span></code> activate the tile generation:</p>
-<div class="code highlight-default"><div class="highlight"><pre><span></span>TILECLOUD_CHAIN ?= TRUE
+<li><p class="first">In the <code class="docutils literal notranslate"><span class="pre">&lt;prokect&gt;.mk</span></code> activate the tile generation:</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>TILECLOUD_CHAIN ?= TRUE
 </pre></div>
 </div>
 </li>
 <li><p class="first">If you use local cache activate the capabilities generation with:</p>
-<div class="code highlight-default"><div class="highlight"><pre><span></span>TILECLOUD_CHAIN_LOCAL ?= TRUE
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>TILECLOUD_CHAIN_LOCAL ?= TRUE
 </pre></div>
 </div>
-<p>and set the <code class="docutils literal"><span class="pre">wmtscapabilities_file</span></code> to <code class="docutils literal"><span class="pre">${wmtscapabilities_path}</span></code> in your
-<code class="docutils literal"><span class="pre">tilegeneration/config.yaml.mako</span></code> file.</p>
+<p>and set the <code class="docutils literal notranslate"><span class="pre">wmtscapabilities_file</span></code> to <code class="docutils literal notranslate"><span class="pre">${wmtscapabilities_path}</span></code> in your
+<code class="docutils literal notranslate"><span class="pre">tilegeneration/config.yaml.mako</span></code> file.</p>
 </li>
-<li><p class="first">In your <code class="docutils literal"><span class="pre">&lt;prod&gt;.mk</span></code> you can also set the capabilities file name with:</p>
-<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">WMTSCAPABILITIES_PATH</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">.</span><span class="mi">0</span><span class="o">/</span><span class="n">WMTSCapabilities</span><span class="o">.</span><span class="n">xml</span>
+<li><p class="first">In your <code class="docutils literal notranslate"><span class="pre">&lt;prod&gt;.mk</span></code> you can also set the capabilities file name with:</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">WMTSCAPABILITIES_PATH</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">.</span><span class="mi">0</span><span class="o">/</span><span class="n">WMTSCapabilities</span><span class="o">.</span><span class="n">xml</span>
 </pre></div>
 </div>
 </li>
@@ -128,21 +119,21 @@ EC2, SQS, SNS.</p>
 <div class="section" id="configuration">
 <h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h3>
 <p>The configuration is done in the self-documented file
-<code class="docutils literal"><span class="pre">tilegeneration/config.yaml</span></code>. The original file is available at:
+<code class="docutils literal notranslate"><span class="pre">tilegeneration/config.yaml</span></code>. The original file is available at:
 <a class="reference external" href="https://github.com/sbrunner/tilecloud-chain/blob/master/tilecloud_chain/scaffolds/create/tilegeneration/config.yaml.in_tmpl">https://github.com/sbrunner/tilecloud-chain/blob/master/tilecloud_chain/scaffolds/create/tilegeneration/config.yaml.in_tmpl</a></p>
 <p>The main thing to do is to:</p>
 <ul>
-<li><p class="first">Set the resolutions we want to generate in the <code class="docutils literal"><span class="pre">grids</span></code>.
+<li><p class="first">Set the resolutions we want to generate in the <code class="docutils literal notranslate"><span class="pre">grids</span></code>.
 If we want to generate different resolution per layers we should create
 deferent grid.
-Sub-level of <code class="docutils literal"><span class="pre">grids</span></code> is the grid name.</p>
+Sub-level of <code class="docutils literal notranslate"><span class="pre">grids</span></code> is the grid name.</p>
 </li>
-<li><p class="first">Configure the <code class="docutils literal"><span class="pre">caches</span></code> and set the <code class="docutils literal"><span class="pre">generation</span></code>/<code class="docutils literal"><span class="pre">default_cache</span></code>.
-Sub-level of <code class="docutils literal"><span class="pre">caches</span></code> is the cache name.</p>
+<li><p class="first">Configure the <code class="docutils literal notranslate"><span class="pre">caches</span></code> and set the <code class="docutils literal notranslate"><span class="pre">generation</span></code>/<code class="docutils literal notranslate"><span class="pre">default_cache</span></code>.
+Sub-level of <code class="docutils literal notranslate"><span class="pre">caches</span></code> is the cache name.</p>
 </li>
-<li><p class="first">Configure the <code class="docutils literal"><span class="pre">layer_default</span></code>, the <code class="docutils literal"><span class="pre">layers</span></code>, and the
-<code class="docutils literal"><span class="pre">generation</span></code>/<code class="docutils literal"><span class="pre">default_layers</span></code>.
-Sub-level of <code class="docutils literal"><span class="pre">layers</span></code> is the layer name.</p>
+<li><p class="first">Configure the <code class="docutils literal notranslate"><span class="pre">layer_default</span></code>, the <code class="docutils literal notranslate"><span class="pre">layers</span></code>, and the
+<code class="docutils literal notranslate"><span class="pre">generation</span></code>/<code class="docutils literal notranslate"><span class="pre">default_layers</span></code>.
+Sub-level of <code class="docutils literal notranslate"><span class="pre">layers</span></code> is the layer name.</p>
 </li>
 <li><p class="first">We can drop the empty tiles with an hash comparison,
 tilecloud-chain has a tool to help us:</p>
@@ -158,7 +149,7 @@ Than copy past the result in the layer config.</p>
 </pre></li>
 </ul>
 <p>If you generate the tiles locally you do not need all the configuration
-variables, because many of them in the <code class="docutils literal"><span class="pre">generation</span></code> part are for
+variables, because many of them in the <code class="docutils literal notranslate"><span class="pre">generation</span></code> part are for
 AWS generation.</p>
 </div>
 <div class="section" id="tile-generation-and-management">
@@ -183,24 +174,24 @@ using the command:</p>
 </div>
 <div class="section" id="integration-in-c2cgeoportal">
 <h3>Integration in c2cgeoportal<a class="headerlink" href="#integration-in-c2cgeoportal" title="Permalink to this headline">¶</a></h3>
-<p>In the <code class="docutils literal"><span class="pre">viewer.js</span></code>, <code class="docutils literal"><span class="pre">api/viewer.js</span></code> and <code class="docutils literal"><span class="pre">edit.js</span></code>:</p>
+<p>In the <code class="docutils literal notranslate"><span class="pre">viewer.js</span></code>, <code class="docutils literal notranslate"><span class="pre">api/viewer.js</span></code> and <code class="docutils literal notranslate"><span class="pre">edit.js</span></code>:</p>
 <blockquote>
 <div><ul class="simple">
-<li>Be sure that <code class="docutils literal"><span class="pre">OpenLayers.IMAGE_RELOAD_ATTEMPTS</span></code> is not defined.</li>
-<li>In <code class="docutils literal"><span class="pre">WMTS_OPTION</span></code> url should be ${tiles_url}.</li>
+<li>Be sure that <code class="docutils literal notranslate"><span class="pre">OpenLayers.IMAGE_RELOAD_ATTEMPTS</span></code> is not defined.</li>
+<li>In <code class="docutils literal notranslate"><span class="pre">WMTS_OPTION</span></code> url should be ${tiles_url}.</li>
 </ul>
 </div></blockquote>
-<p>In the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> define <code class="docutils literal"><span class="pre">tiles_url</span></code> to something like, for S3 usage:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">tiles_url</span><span class="p">:</span>
+<p>In the <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code> define <code class="docutils literal notranslate"><span class="pre">tiles_url</span></code> to something like, for S3 usage:</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tiles_url</span><span class="p">:</span>
 <span class="o">-</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">a</span><span class="o">.</span><span class="n">tiles</span><span class="o">.</span><span class="p">{</span><span class="n">host</span><span class="p">}</span><span class="o">/</span>
 <span class="o">-</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">b</span><span class="o">.</span><span class="n">tiles</span><span class="o">.</span><span class="p">{</span><span class="n">host</span><span class="p">}</span><span class="o">/</span>
 <span class="o">-</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">c</span><span class="o">.</span><span class="n">tiles</span><span class="o">.</span><span class="p">{</span><span class="n">host</span><span class="p">}</span><span class="o">/</span>
 <span class="o">-</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">d</span><span class="o">.</span><span class="n">tiles</span><span class="o">.</span><span class="p">{</span><span class="n">host</span><span class="p">}</span><span class="o">/</span>
 </pre></div>
 </div>
-<p>The configuration of the <code class="docutils literal"><span class="pre">tiles</span></code> vhost will be done by the sysadmins.</p>
-<p>To get your tiles URL in the <code class="docutils literal"><span class="pre">viewer.js</span></code> do:</p>
-<div class="code javascript highlight-default"><div class="highlight"><pre><span></span>&lt;%
+<p>The configuration of the <code class="docutils literal notranslate"><span class="pre">tiles</span></code> vhost will be done by the sysadmins.</p>
+<p>To get your tiles URL in the <code class="docutils literal notranslate"><span class="pre">viewer.js</span></code> do:</p>
+<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;%
 from json import dumps
 %&gt;
 var WMTS_OPTIONS = {
@@ -209,8 +200,8 @@ var WMTS_OPTIONS = {
 }
 </pre></div>
 </div>
-<p>And in the <code class="docutils literal"><span class="pre">mobile/config.js</span></code> do:</p>
-<div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="n">dummy</span> <span class="o">=</span> <span class="s2">&quot;&lt;</span><span class="si">% f</span><span class="s2">rom json import dumps %&gt;&quot;</span><span class="p">;</span>
+<p>And in the <code class="docutils literal notranslate"><span class="pre">mobile/config.js</span></code> do:</p>
+<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="n">dummy</span> <span class="o">=</span> <span class="s2">&quot;&lt;</span><span class="si">% f</span><span class="s2">rom json import dumps %&gt;&quot;</span><span class="p">;</span>
 <span class="n">jsonFormat</span> <span class="o">=</span> <span class="n">new</span> <span class="n">OpenLayers</span><span class="o">.</span><span class="n">Format</span><span class="o">.</span><span class="n">JSON</span><span class="p">();</span>
 <span class="k">try</span> <span class="p">{</span>
     <span class="n">App</span><span class="o">.</span><span class="n">tilesURL</span> <span class="o">=</span> <span class="n">jsonFormat</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;${dumps(request.registry.settings[&quot;tiles_url&quot;]) | n}&#39;</span><span class="p">);</span>
@@ -234,8 +225,8 @@ var WMTS_OPTIONS = {
 <div class="section" id="internal-service">
 <h2>Internal service<a class="headerlink" href="#internal-service" title="Permalink to this headline">¶</a></h2>
 <p>If you use an internal service to access to the tiles you can use sub domaine
-to access to them by using that in <code class="docutils literal"><span class="pre">WMTS_OPTION</span></code>:</p>
-<div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="n">url</span><span class="p">:</span> <span class="p">[</span>
+to access to them by using that in <code class="docutils literal notranslate"><span class="pre">WMTS_OPTION</span></code>:</p>
+<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">url</span><span class="p">:</span> <span class="p">[</span>
     <span class="s1">&#39;${request.route_url(&#39;</span><span class="o">&lt;</span><span class="n">view</span><span class="o">&gt;</span><span class="s1">&#39;, subdomain=&#39;</span><span class="n">s1</span><span class="s1">&#39;)}&#39;</span><span class="p">,</span>
     <span class="s1">&#39;${request.route_url(&#39;</span><span class="o">&lt;</span><span class="n">view</span><span class="o">&gt;</span><span class="s1">&#39;, subdomain=&#39;</span><span class="n">s2</span><span class="s1">&#39;)}&#39;</span><span class="p">,</span>
     <span class="s1">&#39;${request.route_url(&#39;</span><span class="o">&lt;</span><span class="n">view</span><span class="o">&gt;</span><span class="s1">&#39;, subdomain=&#39;</span><span class="n">s3</span><span class="s1">&#39;)}&#39;</span><span class="p">,</span>
@@ -243,12 +234,12 @@ to access to them by using that in <code class="docutils literal"><span class="p
 <span class="p">]</span>
 </pre></div>
 </div>
-<p>With <code class="docutils literal"><span class="pre">&lt;view&gt;</span></code> the name of the view that serve the tiles.
+<p>With <code class="docutils literal notranslate"><span class="pre">&lt;view&gt;</span></code> the name of the view that serve the tiles.
 The sub domain should obviously be define in the DNS and in the Apache
 vhost. If the application is served on deferent URL and you want to use
-the sub domain on only one of them you can define in the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code>
+the sub domain on only one of them you can define in the <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code>
 the following:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="c1"># The URL template used to generate the sub domain URL</span>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># The URL template used to generate the sub domain URL</span>
 <span class="c1"># %(sub)s will be replaced by the sub domain value.</span>
 <span class="n">subdomain_url_template</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//%</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span><span class="n">s</span><span class="o">.</span><span class="p">{</span><span class="n">host</span><span class="p">}</span>
 </pre></div>
@@ -304,12 +295,14 @@ the following:</p>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -320,7 +313,7 @@ the following:</p>
       &copy;2011-2018, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Administrate a c2cgeoportal application &#8212; c2cgeoportal  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -43,25 +34,25 @@
             
   <div class="section" id="administrate-a-c2cgeoportal-application">
 <span id="administrator-administrate"></span><h1>Administrate a c2cgeoportal application<a class="headerlink" href="#administrate-a-c2cgeoportal-application" title="Permalink to this headline">¶</a></h1>
-<p>The administration interface is located at <code class="docutils literal"><span class="pre">http://&lt;server&gt;/&lt;project&gt;/admin</span></code>.</p>
-<p>Authentication for the administration interface is done through the main application interface. Role <code class="docutils literal"><span class="pre">role_admin</span></code> is
+<p>The administration interface is located at <code class="docutils literal notranslate"><span class="pre">http://&lt;server&gt;/&lt;project&gt;/admin</span></code>.</p>
+<p>Authentication for the administration interface is done through the main application interface. Role <code class="docutils literal notranslate"><span class="pre">role_admin</span></code> is
 required.</p>
 <div class="section" id="ogc-server">
 <span id="administrator-administrate-ogc-server"></span><h2>OGC Server<a class="headerlink" href="#ogc-server" title="Permalink to this headline">¶</a></h2>
 <p>This is the description of an OGC server (WMS/WFS).
 For one server we try to create only one request when it is possible.</p>
 <p>If you want to query the same server to get PNG and JPEG images,
-you should define two <code class="docutils literal"><span class="pre">OGC</span> <span class="pre">servers</span></code>. Attributes:</p>
+you should define two <code class="docutils literal notranslate"><span class="pre">OGC</span> <span class="pre">servers</span></code>. Attributes:</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">Name</span></code>: the name of the OGC Server.</li>
-<li><code class="docutils literal"><span class="pre">Description</span></code>: a description.</li>
-<li><code class="docutils literal"><span class="pre">URL</span></code>: the server URL, empty to use the internal MapServer.</li>
-<li><code class="docutils literal"><span class="pre">WFS</span> <span class="pre">support</span></code>: whether WFS is supported by the server.</li>
-<li><code class="docutils literal"><span class="pre">WFS</span> <span class="pre">URL</span></code>: the WFS server URL, empty to use the same as the <code class="docutils literal"><span class="pre">URL</span></code>.</li>
-<li><code class="docutils literal"><span class="pre">Type</span></code>: the server type used to know which custom attribute will be used.</li>
-<li><code class="docutils literal"><span class="pre">Image</span> <span class="pre">type</span></code>: the MIME type of the images (e.g.: <code class="docutils literal"><span class="pre">image/png</span></code>).</li>
-<li><code class="docutils literal"><span class="pre">Single</span> <span class="pre">tile</span></code>: whether to use the single tile mode (For future use).</li>
-<li><code class="docutils literal"><span class="pre">Auth</span></code>: the kind of authentication to use (For future use).</li>
+<li><code class="docutils literal notranslate"><span class="pre">Name</span></code>: the name of the OGC Server.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Description</span></code>: a description.</li>
+<li><code class="docutils literal notranslate"><span class="pre">URL</span></code>: the server URL, empty to use the internal MapServer.</li>
+<li><code class="docutils literal notranslate"><span class="pre">WFS</span> <span class="pre">support</span></code>: whether WFS is supported by the server.</li>
+<li><code class="docutils literal notranslate"><span class="pre">WFS</span> <span class="pre">URL</span></code>: the WFS server URL, empty to use the same as the <code class="docutils literal notranslate"><span class="pre">URL</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Type</span></code>: the server type used to know which custom attribute will be used.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Image</span> <span class="pre">type</span></code>: the MIME type of the images (e.g.: <code class="docutils literal notranslate"><span class="pre">image/png</span></code>).</li>
+<li><code class="docutils literal notranslate"><span class="pre">Single</span> <span class="pre">tile</span></code>: whether to use the single tile mode (For future use).</li>
+<li><code class="docutils literal notranslate"><span class="pre">Auth</span></code>: the kind of authentication to use (For future use).</li>
 </ul>
 </div>
 <div class="section" id="metadata">
@@ -70,74 +61,74 @@ you should define two <code class="docutils literal"><span class="pre">OGC</span
 The purpose of this metadata is to trigger specific features, mainly UI features.
 Each metadata entry has the following attributes:</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">Item</span></code>: the tree item the metadata is associated to.</li>
-<li><code class="docutils literal"><span class="pre">Name</span></code>: the type of <code class="docutils literal"><span class="pre">Metadata</span></code> we want to set (the available names are configured in the <code class="docutils literal"><span class="pre">vars</span></code>
-files in <code class="docutils literal"><span class="pre">admin_interface/available_metadata</span></code>).</li>
-<li><code class="docutils literal"><span class="pre">Value</span></code>: the value of the metadata entry.</li>
-<li><code class="docutils literal"><span class="pre">Description</span></code>: a description.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Item</span></code>: the tree item the metadata is associated to.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Name</span></code>: the type of <code class="docutils literal notranslate"><span class="pre">Metadata</span></code> we want to set (the available names are configured in the <code class="docutils literal notranslate"><span class="pre">vars</span></code>
+files in <code class="docutils literal notranslate"><span class="pre">admin_interface/available_metadata</span></code>).</li>
+<li><code class="docutils literal notranslate"><span class="pre">Value</span></code>: the value of the metadata entry.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Description</span></code>: a description.</li>
 </ul>
 <p>To set a metadata entry, create or edit an entry in the Metadata view of the administration UI.
 Regarding effect on the referenced tree item on the client side, you will find a description for each sort of metadata in the <a class="reference external" href="https://camptocamp.github.io/ngeo/master/apidoc/gmfThemes.GmfMetaData.html">NGEO documentation</a>.</p>
 </div>
 <div class="section" id="functionalities">
 <h2>Functionalities<a class="headerlink" href="#functionalities" title="Permalink to this headline">¶</a></h2>
-<p><code class="docutils literal"><span class="pre">Roles</span></code> and <code class="docutils literal"><span class="pre">Themes</span></code> can have some functionalities. Attributes:</p>
+<p><code class="docutils literal notranslate"><span class="pre">Roles</span></code> and <code class="docutils literal notranslate"><span class="pre">Themes</span></code> can have some functionalities. Attributes:</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">Name</span></code>: the type of Metadata we want to set (configured in the <code class="docutils literal"><span class="pre">vars</span></code>
-files in <code class="docutils literal"><span class="pre">admin_interface/available_functionalities</span></code>).</li>
-<li><code class="docutils literal"><span class="pre">Value</span></code>: the value of the metadata.</li>
-<li><code class="docutils literal"><span class="pre">Description</span></code>: a description.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Name</span></code>: the type of Metadata we want to set (configured in the <code class="docutils literal notranslate"><span class="pre">vars</span></code>
+files in <code class="docutils literal notranslate"><span class="pre">admin_interface/available_functionalities</span></code>).</li>
+<li><code class="docutils literal notranslate"><span class="pre">Value</span></code>: the value of the metadata.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Description</span></code>: a description.</li>
 </ul>
 </div>
 <div class="section" id="layers">
 <h2>Layers<a class="headerlink" href="#layers" title="Permalink to this headline">¶</a></h2>
-<p>In version 2, we split the layer table into 2 tables: <code class="docutils literal"><span class="pre">layer_wms</span></code>,
-<code class="docutils literal"><span class="pre">layer_wmts</span></code>, and we copy the previous layer table in <code class="docutils literal"><span class="pre">layerv1</span></code>.
+<p>In version 2, we split the layer table into 2 tables: <code class="docutils literal notranslate"><span class="pre">layer_wms</span></code>,
+<code class="docutils literal notranslate"><span class="pre">layer_wmts</span></code>, and we copy the previous layer table in <code class="docutils literal notranslate"><span class="pre">layerv1</span></code>.
 There is a tool to migrate the layers from the v1 structure to the v2
-structure see <code class="docutils literal"><span class="pre">./docker-run</span> <span class="pre">themev1tov2</span></code>.
+structure see <code class="docutils literal notranslate"><span class="pre">./docker-run</span> <span class="pre">themev1tov2</span></code>.
 Still using the CGXP application? Then you should maintain both version
-of the layers, respectively <code class="docutils literal"><span class="pre">layerv1</span></code> and <code class="docutils literal"><span class="pre">layer_wms</span></code>-<code class="docutils literal"><span class="pre">layer_wmts</span></code>.</p>
-<p>And the <code class="docutils literal"><span class="pre">order</span></code> will be moved in the relation of the tree.</p>
+of the layers, respectively <code class="docutils literal notranslate"><span class="pre">layerv1</span></code> and <code class="docutils literal notranslate"><span class="pre">layer_wms</span></code>-<code class="docutils literal notranslate"><span class="pre">layer_wmts</span></code>.</p>
+<p>And the <code class="docutils literal notranslate"><span class="pre">order</span></code> will be moved in the relation of the tree.</p>
 <div class="section" id="all-layer-type">
 <h3>All layer type<a class="headerlink" href="#all-layer-type" title="Permalink to this headline">¶</a></h3>
 <p>All the layers in the admin interface have the following attributes:</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">Name</span></code>: the name of the WMS layer/group, or the WMTS layer.
+<li><code class="docutils literal notranslate"><span class="pre">Name</span></code>: the name of the WMS layer/group, or the WMTS layer.
 It also used throw OpenLayers.i18n to display the name on the layers tree.</li>
-<li><code class="docutils literal"><span class="pre">Public</span></code>: make the layer public, also it is accessible
-throw the <code class="docutils literal"><span class="pre">Restriction</span> <span class="pre">areas</span></code>.</li>
-<li><code class="docutils literal"><span class="pre">Restrictions</span> <span class="pre">area</span></code>: the areas through which the user can see the layer.</li>
-<li><code class="docutils literal"><span class="pre">Related</span> <span class="pre">Postgres</span> <span class="pre">table</span></code>: the related postgres table,
+<li><code class="docutils literal notranslate"><span class="pre">Public</span></code>: make the layer public, also it is accessible
+throw the <code class="docutils literal notranslate"><span class="pre">Restriction</span> <span class="pre">areas</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Restrictions</span> <span class="pre">area</span></code>: the areas through which the user can see the layer.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Related</span> <span class="pre">Postgres</span> <span class="pre">table</span></code>: the related postgres table,
 used by the <a class="reference internal" href="editing.html#administrator-editing"><span class="std std-ref">Editing</span></a>.</li>
-<li><code class="docutils literal"><span class="pre">Exclude</span> <span class="pre">properties</span></code>: the list of attributes (database columns) that should not appear in
+<li><code class="docutils literal notranslate"><span class="pre">Exclude</span> <span class="pre">properties</span></code>: the list of attributes (database columns) that should not appear in
 the <a class="reference internal" href="editing.html#administrator-editing"><span class="std std-ref">Editing</span></a> so that they cannot be modified by the end user.
 For enumerable attributes (foreign key), the column name should end with ‘_id’.</li>
-<li><code class="docutils literal"><span class="pre">Parents</span></code>: the groups and theme in which the layer is.</li>
-<li><code class="docutils literal"><span class="pre">Metadata</span></code>: Additional metadata.</li>
-<li><code class="docutils literal"><span class="pre">Dimensions</span></code>: the dimensions, if not provided default values are used (v2 only).</li>
+<li><code class="docutils literal notranslate"><span class="pre">Parents</span></code>: the groups and theme in which the layer is.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Metadata</span></code>: Additional metadata.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Dimensions</span></code>: the dimensions, if not provided default values are used (v2 only).</li>
 </ul>
 </div>
 <div class="section" id="wms-layer">
 <h3>WMS layer<a class="headerlink" href="#wms-layer" title="Permalink to this headline">¶</a></h3>
 <p>On internal WMS layers we have the following specific attributes:</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">OGC</span> <span class="pre">Server</span></code>: the used server.</li>
-<li><code class="docutils literal"><span class="pre">Layers</span></code>: the WMS layers. Can be one layer, one group, a coma separated list of layers.
+<li><code class="docutils literal notranslate"><span class="pre">OGC</span> <span class="pre">Server</span></code>: the used server.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Layers</span></code>: the WMS layers. Can be one layer, one group, a coma separated list of layers.
 In the case of a coma separated list of layers, we will get the legend rule for the
 layer icon on the first layer, and the legend will not be supported we should define a legend metadata.</li>
-<li><code class="docutils literal"><span class="pre">Style</span></code>: the used style, can be empty.</li>
-<li><code class="docutils literal"><span class="pre">Time</span> <span class="pre">mode</span></code>: used for the WMS time component.</li>
-<li><code class="docutils literal"><span class="pre">Time</span> <span class="pre">widget</span></code>: the used component type for the WMS time.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Style</span></code>: the used style, can be empty.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">mode</span></code>: used for the WMS time component.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">widget</span></code>: the used component type for the WMS time.</li>
 </ul>
 </div>
 <div class="section" id="wmts-layer">
 <h3>WMTS layer<a class="headerlink" href="#wmts-layer" title="Permalink to this headline">¶</a></h3>
 <p>On WMTS layers we have the following specific attributes:</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">GetCapabilities</span> <span class="pre">URL</span></code>: the URL to the WMTS capabilities.</li>
-<li><code class="docutils literal"><span class="pre">Layer</span></code>: the WMTS layer.</li>
-<li><code class="docutils literal"><span class="pre">Style</span></code>: the used style, if not present we use the default style.</li>
-<li><code class="docutils literal"><span class="pre">Matrix</span> <span class="pre">set</span></code>: the used matrix set, if there is only one matrix set
+<li><code class="docutils literal notranslate"><span class="pre">GetCapabilities</span> <span class="pre">URL</span></code>: the URL to the WMTS capabilities.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Layer</span></code>: the WMTS layer.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Style</span></code>: the used style, if not present we use the default style.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Matrix</span> <span class="pre">set</span></code>: the used matrix set, if there is only one matrix set
 in the capabilities it can be empty.</li>
 </ul>
 </div>
@@ -145,77 +136,77 @@ in the capabilities it can be empty.</li>
 <h3>layerv1 (deprecated in v2)<a class="headerlink" href="#layerv1-deprecated-in-v2" title="Permalink to this headline">¶</a></h3>
 <p>The layers in the admin interface have the following attributes:</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">Metadata</span> <span class="pre">URL</span></code>: optional, for WMS, leave it empty to get it from the capabilities.</li>
-<li><code class="docutils literal"><span class="pre">Visible</span></code>: if it is false the layer is just ignored.</li>
-<li><code class="docutils literal"><span class="pre">Checked</span></code>: the layer is checked by default.</li>
-<li><code class="docutils literal"><span class="pre">Icon</span></code>: icon on the layer tree.</li>
-<li><code class="docutils literal"><span class="pre">KML</span> <span class="pre">3D</span></code>: optional, URL to a KML to display it on the Google earth view.</li>
-<li><code class="docutils literal"><span class="pre">Display</span> <span class="pre">legend</span></code>: it checked the legend is display on the layer tree.</li>
-<li><code class="docutils literal"><span class="pre">Legend</span> <span class="pre">image</span></code>: URL to overwrite the default legend image.</li>
-<li><code class="docutils literal"><span class="pre">Min/Max</span> <span class="pre">resolution</span></code>: resolutions between which data are displayed by
+<li><code class="docutils literal notranslate"><span class="pre">Metadata</span> <span class="pre">URL</span></code>: optional, for WMS, leave it empty to get it from the capabilities.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Visible</span></code>: if it is false the layer is just ignored.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Checked</span></code>: the layer is checked by default.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Icon</span></code>: icon on the layer tree.</li>
+<li><code class="docutils literal notranslate"><span class="pre">KML</span> <span class="pre">3D</span></code>: optional, URL to a KML to display it on the Google earth view.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Display</span> <span class="pre">legend</span></code>: it checked the legend is display on the layer tree.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Legend</span> <span class="pre">image</span></code>: URL to overwrite the default legend image.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Min/Max</span> <span class="pre">resolution</span></code>: resolutions between which data are displayed by
 the given layer, used to zoom to visible scale, with WMS if it is empty
 we get the values from the capabilities.</li>
-<li><code class="docutils literal"><span class="pre">Disclaimer</span></code>: optional, copyright of the layer, used by
+<li><code class="docutils literal notranslate"><span class="pre">Disclaimer</span></code>: optional, copyright of the layer, used by
 <a class="reference external" href="http://docs.camptocamp.net/cgxp/2.2/lib/plugins/Disclaimer.html">Disclaimer</a>.</li>
-<li><code class="docutils literal"><span class="pre">Identifier</span> <span class="pre">attribute</span> <span class="pre">field</span></code>: field used to identify a feature from the
+<li><code class="docutils literal notranslate"><span class="pre">Identifier</span> <span class="pre">attribute</span> <span class="pre">field</span></code>: field used to identify a feature from the
 layer, e.g.: ‘name’, used by
 <a class="reference external" href="http://docs.camptocamp.net/cgxp/2.2/lib/plugins/FeaturesWindow.html">FeaturesWindow</a>.</li>
-<li><code class="docutils literal"><span class="pre">Restrictions</span> <span class="pre">area</span></code>: the areas throw witch the user can see the layer.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Restrictions</span> <span class="pre">area</span></code>: the areas throw witch the user can see the layer.</li>
 </ul>
-<p>On <code class="docutils literal"><span class="pre">internal</span> <span class="pre">WMS</span></code> layer we have the following specific attributes:</p>
+<p>On <code class="docutils literal notranslate"><span class="pre">internal</span> <span class="pre">WMS</span></code> layer we have the following specific attributes:</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">Image</span> <span class="pre">type</span></code>: the type of the images.</li>
-<li><code class="docutils literal"><span class="pre">Style</span></code>: the used style, can be empty.</li>
-<li><code class="docutils literal"><span class="pre">Dimensions</span></code>: a JSON string that gives the dimensions,
-e.g.: <code class="docutils literal"><span class="pre">{</span> <span class="pre">&quot;YEAR&quot;:</span> <span class="pre">&quot;2012&quot;</span> <span class="pre">}</span></code>, if not provided default values are used.</li>
-<li><code class="docutils literal"><span class="pre">Legend</span> <span class="pre">rule</span></code>: the legend rule used to get the layer icon,
-if empty we use the <code class="docutils literal"><span class="pre">Icon</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Image</span> <span class="pre">type</span></code>: the type of the images.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Style</span></code>: the used style, can be empty.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Dimensions</span></code>: a JSON string that gives the dimensions,
+e.g.: <code class="docutils literal notranslate"><span class="pre">{</span> <span class="pre">&quot;YEAR&quot;:</span> <span class="pre">&quot;2012&quot;</span> <span class="pre">}</span></code>, if not provided default values are used.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Legend</span> <span class="pre">rule</span></code>: the legend rule used to get the layer icon,
+if empty we use the <code class="docutils literal notranslate"><span class="pre">Icon</span></code>.</li>
 </ul>
-<p>On <code class="docutils literal"><span class="pre">external</span> <span class="pre">WMS</span></code> layer we have the following specific attributes:</p>
+<p>On <code class="docutils literal notranslate"><span class="pre">external</span> <span class="pre">WMS</span></code> layer we have the following specific attributes:</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">Base</span> <span class="pre">URL</span></code>: the base URL of the WMS server.</li>
-<li><code class="docutils literal"><span class="pre">Image</span> <span class="pre">type</span></code>: the type of the images.</li>
-<li><code class="docutils literal"><span class="pre">Style</span></code>: the used style, can be empty.</li>
-<li><code class="docutils literal"><span class="pre">Legend</span> <span class="pre">rule</span></code>: the legend rule used to get the layer icon,
-if empty we use the <code class="docutils literal"><span class="pre">Icon</span></code>.</li>
-<li><code class="docutils literal"><span class="pre">Single</span> <span class="pre">tile</span></code>: use the single tile mode.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Base</span> <span class="pre">URL</span></code>: the base URL of the WMS server.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Image</span> <span class="pre">type</span></code>: the type of the images.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Style</span></code>: the used style, can be empty.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Legend</span> <span class="pre">rule</span></code>: the legend rule used to get the layer icon,
+if empty we use the <code class="docutils literal notranslate"><span class="pre">Icon</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Single</span> <span class="pre">tile</span></code>: use the single tile mode.</li>
 </ul>
-<p>On <code class="docutils literal"><span class="pre">WMTS</span></code> layer we have the following specific attributes:</p>
+<p>On <code class="docutils literal notranslate"><span class="pre">WMTS</span></code> layer we have the following specific attributes:</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">Base</span> <span class="pre">URL</span></code>: the URL to the WMTS capabilities.</li>
-<li><code class="docutils literal"><span class="pre">Style</span></code>: the used style, if not present we use the default style.</li>
-<li><code class="docutils literal"><span class="pre">Matrix</span> <span class="pre">set</span></code>: the used matrix set, if there is only one matrix set
+<li><code class="docutils literal notranslate"><span class="pre">Base</span> <span class="pre">URL</span></code>: the URL to the WMTS capabilities.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Style</span></code>: the used style, if not present we use the default style.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Matrix</span> <span class="pre">set</span></code>: the used matrix set, if there is only one matrix set
 in the capabilities it can be empty.</li>
-<li><code class="docutils literal"><span class="pre">WMS</span> <span class="pre">server</span> <span class="pre">URL</span></code>: optional, URL to a WMS server to use for printing
+<li><code class="docutils literal notranslate"><span class="pre">WMS</span> <span class="pre">server</span> <span class="pre">URL</span></code>: optional, URL to a WMS server to use for printing
 and querying. The URL to the internal WMS is used if this field is not
 specified.</li>
-<li><code class="docutils literal"><span class="pre">Query</span> <span class="pre">layers</span></code>: optional, a comma-separated list of WMS layers
+<li><code class="docutils literal notranslate"><span class="pre">Query</span> <span class="pre">layers</span></code>: optional, a comma-separated list of WMS layers
 used for querying.</li>
-<li><code class="docutils literal"><span class="pre">WMS</span> <span class="pre">layers</span></code>: optional, a comma-separated list of layers used for
-printing, and for querying if <code class="docutils literal"><span class="pre">Query</span> <span class="pre">layers</span></code> is not set.</li>
+<li><code class="docutils literal notranslate"><span class="pre">WMS</span> <span class="pre">layers</span></code>: optional, a comma-separated list of layers used for
+printing, and for querying if <code class="docutils literal notranslate"><span class="pre">Query</span> <span class="pre">layers</span></code> is not set.</li>
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">You can use both <code class="docutils literal"><span class="pre">WMS</span> <span class="pre">layers</span></code> and <code class="docutils literal"><span class="pre">Query</span> <span class="pre">layers</span></code> if you want that
-different sets of <code class="docutils literal"><span class="pre">WMS</span> <span class="pre">layers</span></code> are used for printing and querying.
-If you want to define <code class="docutils literal"><span class="pre">WMS</span> <span class="pre">layers</span></code> but no <code class="docutils literal"><span class="pre">Query</span> <span class="pre">layers</span></code>,
-set it to <code class="docutils literal"><span class="pre">[]</span></code>.</p>
+<p class="last">You can use both <code class="docutils literal notranslate"><span class="pre">WMS</span> <span class="pre">layers</span></code> and <code class="docutils literal notranslate"><span class="pre">Query</span> <span class="pre">layers</span></code> if you want that
+different sets of <code class="docutils literal notranslate"><span class="pre">WMS</span> <span class="pre">layers</span></code> are used for printing and querying.
+If you want to define <code class="docutils literal notranslate"><span class="pre">WMS</span> <span class="pre">layers</span></code> but no <code class="docutils literal notranslate"><span class="pre">Query</span> <span class="pre">layers</span></code>,
+set it to <code class="docutils literal notranslate"><span class="pre">[]</span></code>.</p>
 </div>
 </div>
 <div class="section" id="queryable-wmts">
 <h3>Queryable WMTS<a class="headerlink" href="#queryable-wmts" title="Permalink to this headline">¶</a></h3>
-<p>To make the WMTS queryable, you should add the following <code class="docutils literal"><span class="pre">Metadata</span></code>:</p>
+<p>To make the WMTS queryable, you should add the following <code class="docutils literal notranslate"><span class="pre">Metadata</span></code>:</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">ogcServer</span></code> with the name of the used <code class="docutils literal"><span class="pre">OGC</span> <span class="pre">server</span></code>,</li>
-<li><code class="docutils literal"><span class="pre">wmsLayers</span></code> or <code class="docutils literal"><span class="pre">queryLayers</span></code> with the layers to query (groups not supported).</li>
+<li><code class="docutils literal notranslate"><span class="pre">ogcServer</span></code> with the name of the used <code class="docutils literal notranslate"><span class="pre">OGC</span> <span class="pre">server</span></code>,</li>
+<li><code class="docutils literal notranslate"><span class="pre">wmsLayers</span></code> or <code class="docutils literal notranslate"><span class="pre">queryLayers</span></code> with the layers to query (groups not supported).</li>
 </ul>
 </div>
 <div class="section" id="print-wmts-in-high-quality">
 <h3>Print WMTS in high quality<a class="headerlink" href="#print-wmts-in-high-quality" title="Permalink to this headline">¶</a></h3>
-<p>To print the layers in high quality, you should add the following <code class="docutils literal"><span class="pre">Metadata</span></code>:</p>
+<p>To print the layers in high quality, you should add the following <code class="docutils literal notranslate"><span class="pre">Metadata</span></code>:</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">ogcServer</span></code> with the name of the used <code class="docutils literal"><span class="pre">OGC</span> <span class="pre">server</span></code>,</li>
-<li><code class="docutils literal"><span class="pre">wmsLayers</span></code> or <code class="docutils literal"><span class="pre">printLayers</span></code> with the layers to print.</li>
+<li><code class="docutils literal notranslate"><span class="pre">ogcServer</span></code> with the name of the used <code class="docutils literal notranslate"><span class="pre">OGC</span> <span class="pre">server</span></code>,</li>
+<li><code class="docutils literal notranslate"><span class="pre">wmsLayers</span></code> or <code class="docutils literal notranslate"><span class="pre">printLayers</span></code> with the layers to print.</li>
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -227,13 +218,13 @@ set it to <code class="docutils literal"><span class="pre">[]</span></code>.</p>
 <h2>LayerGroup<a class="headerlink" href="#layergroup" title="Permalink to this headline">¶</a></h2>
 <p>Attributes:</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">Name</span></code>: used throw OpenLayers.i18n to display the name on the layers tree.</li>
-<li><code class="docutils literal"><span class="pre">Order</span></code>: used to order the layers and group on the layer tree.</li>
-<li><code class="docutils literal"><span class="pre">Metadata</span> <span class="pre">URL</span></code>: optional (deprecated in v2).</li>
-<li><code class="docutils literal"><span class="pre">Expanded</span></code>: is expanded on the layer tree by default (deprecated in v2).</li>
-<li><code class="docutils literal"><span class="pre">Internal</span> <span class="pre">WMS</span></code>: if true it can include only <code class="docutils literal"><span class="pre">Internal</span> <span class="pre">WMS</span></code> layers,
-if false it can include only <code class="docutils literal"><span class="pre">external</span> <span class="pre">WMS</span></code> or <code class="docutils literal"><span class="pre">WMTS</span></code> layers (deprecated in v2).</li>
-<li><code class="docutils literal"><span class="pre">Group</span> <span class="pre">of</span> <span class="pre">base</span> <span class="pre">layers</span></code>: if not <code class="docutils literal"><span class="pre">Internal</span> <span class="pre">WMS</span></code> replace radio button by check box (deprecated in v2).</li>
+<li><code class="docutils literal notranslate"><span class="pre">Name</span></code>: used throw OpenLayers.i18n to display the name on the layers tree.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Order</span></code>: used to order the layers and group on the layer tree.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Metadata</span> <span class="pre">URL</span></code>: optional (deprecated in v2).</li>
+<li><code class="docutils literal notranslate"><span class="pre">Expanded</span></code>: is expanded on the layer tree by default (deprecated in v2).</li>
+<li><code class="docutils literal notranslate"><span class="pre">Internal</span> <span class="pre">WMS</span></code>: if true it can include only <code class="docutils literal notranslate"><span class="pre">Internal</span> <span class="pre">WMS</span></code> layers,
+if false it can include only <code class="docutils literal notranslate"><span class="pre">external</span> <span class="pre">WMS</span></code> or <code class="docutils literal notranslate"><span class="pre">WMTS</span></code> layers (deprecated in v2).</li>
+<li><code class="docutils literal notranslate"><span class="pre">Group</span> <span class="pre">of</span> <span class="pre">base</span> <span class="pre">layers</span></code>: if not <code class="docutils literal notranslate"><span class="pre">Internal</span> <span class="pre">WMS</span></code> replace radio button by check box (deprecated in v2).</li>
 </ul>
 </div>
 <div class="section" id="background-layers">
@@ -292,12 +283,14 @@ if false it can include only <code class="docutils literal"><span class="pre">ex
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -308,7 +301,7 @@ if false it can include only <code class="docutils literal"><span class="pre">ex
       &copy;2011-2018, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

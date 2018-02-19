@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>CGXP &#8212; c2cgeoportal  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -50,17 +41,17 @@ a more modern interface to the end user. It is still possible to keep using
 <h2>Use the CGXP interface<a class="headerlink" href="#use-the-cgxp-interface" title="Permalink to this headline">¶</a></h2>
 <p>If you are currently upgrading your application and want to keep using <cite>CGXP</cite>,
 the following changes are required.</p>
-<p><code class="docutils literal"><span class="pre">index.html</span></code> and <code class="docutils literal"><span class="pre">viewer.js</span></code> files need to be renamed to <code class="docutils literal"><span class="pre">desktop.html</span></code>
-and <code class="docutils literal"><span class="pre">desktop.js</span></code> respectively.</p>
+<p><code class="docutils literal notranslate"><span class="pre">index.html</span></code> and <code class="docutils literal notranslate"><span class="pre">viewer.js</span></code> files need to be renamed to <code class="docutils literal notranslate"><span class="pre">desktop.html</span></code>
+and <code class="docutils literal notranslate"><span class="pre">desktop.js</span></code> respectively.</p>
 <pre class="highlight"><style type="text/css">
 span.prompt1:before {
   content: "$ ";
 }
 </style><span class="prompt1">git mv &lt;package&gt;/templates/index.html &lt;package&gt;/templates/desktop.html</span>
 <span class="prompt1">git mv &lt;package&gt;/templates/viewer.js &lt;package&gt;/templates/desktop.js</span>
-</pre><p>Then apply the following changes in the <code class="docutils literal"><span class="pre">&lt;package&gt;/templates/desktop.html</span></code>
+</pre><p>Then apply the following changes in the <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/templates/desktop.html</span></code>
 file:</p>
-<div class="code diff highlight-default"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="o">%</span> <span class="k">for</span> <span class="n">script</span> <span class="ow">in</span> <span class="n">Merger</span><span class="o">.</span><span class="n">from_fn</span><span class="p">(</span><span class="n">jsbuild_cfg</span><span class="p">,</span> <span class="n">root_dir</span><span class="o">=</span><span class="n">jsbuild_root_dir</span><span class="p">)</span><span class="o">.</span><span class="n">list_run</span><span class="p">([</span><span class="s1">&#39;app.js&#39;</span><span class="p">,</span> <span class="s1">&#39;lang-</span><span class="si">%s</span><span class="s1">.js&#39;</span> <span class="o">%</span> <span class="n">lang</span><span class="p">]):</span>
+<div class="code diff highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="o">%</span> <span class="k">for</span> <span class="n">script</span> <span class="ow">in</span> <span class="n">Merger</span><span class="o">.</span><span class="n">from_fn</span><span class="p">(</span><span class="n">jsbuild_cfg</span><span class="p">,</span> <span class="n">root_dir</span><span class="o">=</span><span class="n">jsbuild_root_dir</span><span class="p">)</span><span class="o">.</span><span class="n">list_run</span><span class="p">([</span><span class="s1">&#39;app.js&#39;</span><span class="p">,</span> <span class="s1">&#39;lang-</span><span class="si">%s</span><span class="s1">.js&#39;</span> <span class="o">%</span> <span class="n">lang</span><span class="p">]):</span>
 <span class="o">+</span> <span class="o">%</span> <span class="k">for</span> <span class="n">script</span> <span class="ow">in</span> <span class="n">Merger</span><span class="o">.</span><span class="n">from_fn</span><span class="p">(</span><span class="n">jsbuild_cfg</span><span class="p">,</span> <span class="n">root_dir</span><span class="o">=</span><span class="n">jsbuild_root_dir</span><span class="p">)</span><span class="o">.</span><span class="n">list_run</span><span class="p">([</span><span class="s1">&#39;desktop.js&#39;</span><span class="p">,</span> <span class="s1">&#39;lang-</span><span class="si">%s</span><span class="s1">.js&#39;</span> <span class="o">%</span> <span class="n">lang</span><span class="p">]):</span>
 
 <span class="o">-</span> <span class="o">&lt;</span><span class="n">script</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;text/javascript&quot;</span> <span class="n">src</span><span class="o">=</span><span class="s2">&quot;${request.static_url(&#39;&lt;package&gt;_geoportal:static/build/app.js&#39;)}&quot;</span><span class="o">&gt;&lt;/</span><span class="n">script</span><span class="o">&gt;</span>
@@ -70,8 +61,8 @@ file:</p>
 <span class="o">+</span> <span class="o">&lt;</span><span class="n">script</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;text/javascript&quot;</span> <span class="n">src</span><span class="o">=</span><span class="s2">&quot;${request.route_url(&#39;desktop.js&#39;, _query=extra_params)}&quot;</span><span class="o">&gt;&lt;/</span><span class="n">script</span><span class="o">&gt;</span>
 </pre></div>
 </div>
-<p>Finally apply the following change in <code class="docutils literal"><span class="pre">jsbuild/app.cfg.mako</span></code>:</p>
-<div class="code diff highlight-default"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="p">[</span><span class="n">app</span><span class="o">.</span><span class="n">js</span><span class="p">]</span>
+<p>Finally apply the following change in <code class="docutils literal notranslate"><span class="pre">jsbuild/app.cfg.mako</span></code>:</p>
+<div class="code diff highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="p">[</span><span class="n">app</span><span class="o">.</span><span class="n">js</span><span class="p">]</span>
 <span class="o">+</span> <span class="p">[</span><span class="n">desktop</span><span class="o">.</span><span class="n">js</span><span class="p">]</span>
   <span class="o">...</span>
   <span class="n">include</span> <span class="o">=</span>
@@ -94,15 +85,15 @@ file:</p>
     <span class="o">...</span>
 </pre></div>
 </div>
-<p>To configure the build of the interface you should set the <code class="docutils literal"><span class="pre">CGXP_INTERFACES</span></code> (and the <code class="docutils literal"><span class="pre">NGEO_INTERFACES</span></code>)
+<p>To configure the build of the interface you should set the <code class="docutils literal notranslate"><span class="pre">CGXP_INTERFACES</span></code> (and the <code class="docutils literal notranslate"><span class="pre">NGEO_INTERFACES</span></code>)
 in your project makefile, e.g.:</p>
-<div class="code make highlight-default"><div class="highlight"><pre><span></span><span class="n">CGXP_INTERFACES</span> <span class="o">=</span> <span class="n">desktop</span> <span class="n">edit</span> <span class="n">routing</span>
+<div class="code make highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CGXP_INTERFACES</span> <span class="o">=</span> <span class="n">desktop</span> <span class="n">edit</span> <span class="n">routing</span>
 <span class="n">NGEO_INTERFACES</span> <span class="o">=</span> <span class="n">mobile</span>
 </pre></div>
 </div>
 <p>You will also need to enable the <cite>CGXP</cite> checker. To do so, add this to your
 project vars file:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
     <span class="o">...</span>
     <span class="n">checker</span><span class="p">:</span>
         <span class="o">...</span>
@@ -114,13 +105,13 @@ project vars file:</p>
 <span class="o">-</span> <span class="n">checker</span><span class="o">.</span><span class="n">lang</span><span class="o">.</span><span class="n">files</span>
 </pre></div>
 </div>
-<p><code class="docutils literal"><span class="pre">externalWFSTypes</span></code> does not exist anymore so you should remove the following line
-from <code class="docutils literal"><span class="pre">&lt;package&gt;/templates/desktop.js</span></code></p>
-<div class="code javascript highlight-default"><div class="highlight"><pre><span></span>externalWFSTypes: ${externalWFSTypes | n},
+<p><code class="docutils literal notranslate"><span class="pre">externalWFSTypes</span></code> does not exist anymore so you should remove the following line
+from <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/templates/desktop.js</span></code></p>
+<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span>externalWFSTypes: ${externalWFSTypes | n},
 </pre></div>
 </div>
-<p>Do the following change in the <code class="docutils literal"><span class="pre">&lt;package&gt;/templates/desktop.html</span></code> file:</p>
-<div class="code diff highlight-default"><div class="highlight"><pre><span></span>- % if not no_redirect and mobile_url is not None:
+<p>Do the following change in the <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/templates/desktop.html</span></code> file:</p>
+<div class="code diff highlight-default notranslate"><div class="highlight"><pre><span></span>- % if not no_redirect and mobile_url is not None:
 + % if &quot;no_redirect&quot; not in request.params:
   &lt;script&gt;
 -     if ((&#39;ontouchstart&#39; in window) || window.DocumentTouch &amp;&amp; document instanceof DocumentTouch) {
@@ -134,15 +125,15 @@ from <code class="docutils literal"><span class="pre">&lt;package&gt;/templates/
 </pre></div>
 </div>
 <p>The OGC proxy is deprecated because with modern browsers it is not required anymore.
-You can simply remove the following line in  <code class="docutils literal"><span class="pre">desktop.js</span></code>, <code class="docutils literal"><span class="pre">edit.js</span></code> and
-<code class="docutils literal"><span class="pre">routing.js</span></code> (in <code class="docutils literal"><span class="pre">&lt;package&gt;/templates</span></code>).</p>
-<div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="n">OpenLayers</span><span class="o">.</span><span class="n">ProxyHost</span> <span class="o">=</span> <span class="s2">&quot;${request.route_url(&#39;ogcproxy&#39;) | n}?url=&quot;</span><span class="p">;</span>
+You can simply remove the following line in  <code class="docutils literal notranslate"><span class="pre">desktop.js</span></code>, <code class="docutils literal notranslate"><span class="pre">edit.js</span></code> and
+<code class="docutils literal notranslate"><span class="pre">routing.js</span></code> (in <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/templates</span></code>).</p>
+<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">OpenLayers</span><span class="o">.</span><span class="n">ProxyHost</span> <span class="o">=</span> <span class="s2">&quot;${request.route_url(&#39;ogcproxy&#39;) | n}?url=&quot;</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Add the new oldPassword field:
-You should add the following line in <code class="docutils literal"><span class="pre">desktop.html</span></code>, <code class="docutils literal"><span class="pre">edit.html</span></code> and
-<code class="docutils literal"><span class="pre">routing.html</span></code> (in <code class="docutils literal"><span class="pre">&lt;package&gt;/templates</span></code>).</p>
-<div class="code diff highlight-default"><div class="highlight"><pre><span></span>  <span class="o">&lt;</span><span class="nb">input</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;password&quot;</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;password&quot;</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;password&quot;</span> <span class="n">autocomplete</span><span class="o">=</span><span class="s2">&quot;on&quot;</span><span class="o">/&gt;</span>
+You should add the following line in <code class="docutils literal notranslate"><span class="pre">desktop.html</span></code>, <code class="docutils literal notranslate"><span class="pre">edit.html</span></code> and
+<code class="docutils literal notranslate"><span class="pre">routing.html</span></code> (in <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/templates</span></code>).</p>
+<div class="code diff highlight-default notranslate"><div class="highlight"><pre><span></span>  <span class="o">&lt;</span><span class="nb">input</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;password&quot;</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;password&quot;</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;password&quot;</span> <span class="n">autocomplete</span><span class="o">=</span><span class="s2">&quot;on&quot;</span><span class="o">/&gt;</span>
 <span class="o">+</span> <span class="o">&lt;</span><span class="nb">input</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;oldPassword&quot;</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;oldPassword&quot;</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;password&quot;</span> <span class="o">/&gt;</span>
   <span class="o">&lt;</span><span class="nb">input</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;newPassword&quot;</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;newPassword&quot;</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;password&quot;</span> <span class="o">/&gt;</span>
 </pre></div>
@@ -155,17 +146,17 @@ found in <a class="reference internal" href="legacy_advanced.html#integrator-leg
 <p>Follow the above instructions if you want to use <cite>ngeo</cite> instead of <cite>CGXP</cite>.</p>
 <pre class="highlight"><span class="prompt1">git rm &lt;package&gt;/templates/desktop.html</span>
 <span class="prompt1">git rm &lt;package&gt;/templates/desktop.js</span>
-</pre><p>Remove the related section in the <code class="docutils literal"><span class="pre">jsbuild/app.cfg.mako</span></code> file.</p>
-<p>Update the interface in your <code class="docutils literal"><span class="pre">&lt;package&gt;/__init__.py</span></code> file
+</pre><p>Remove the related section in the <code class="docutils literal notranslate"><span class="pre">jsbuild/app.cfg.mako</span></code> file.</p>
+<p>Update the interface in your <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/__init__.py</span></code> file
 by removing these following lines if one of them exists:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;desktop&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">INTERFACE_TYPE_CGXP</span><span class="p">])</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;desktop&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">INTERFACE_TYPE_CGXP</span><span class="p">])</span>
 <span class="c1"># or</span>
 <span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>To add an ngeo interface, see also <a class="reference internal" href="ngeo_new_interface.html#integrator-ngeo-new-interface"><span class="std std-ref">Adding a new user interface</span></a>.</p>
-<p>If you remove all the <cite>CGXP</cite> interface, remove the <code class="docutils literal"><span class="pre">vars.checker.lang.files</span></code> from your
-project vars file, and the <code class="docutils literal"><span class="pre">checker.lang.files</span></code> from your update_paths.</p>
+<p>If you remove all the <cite>CGXP</cite> interface, remove the <code class="docutils literal notranslate"><span class="pre">vars.checker.lang.files</span></code> from your
+project vars file, and the <code class="docutils literal notranslate"><span class="pre">checker.lang.files</span></code> from your update_paths.</p>
 </div>
 <div class="section" id="adding-features-in-cgxp">
 <h2>Adding features in CGXP<a class="headerlink" href="#adding-features-in-cgxp" title="Permalink to this headline">¶</a></h2>
@@ -174,18 +165,18 @@ interface’s <em>viewer</em>. It may also require additional steps, like adding
 populating tables in the database.</p>
 <p>A c2cgeoportal project may define multiple viewers. By default a project
 includes two viewers: the <em>main viewer</em> and the <em>editing viewer</em>. The main
-viewer is defined in the <code class="docutils literal"><span class="pre">&lt;package&gt;/templates/viewer.js</span></code> file, while the
-editing viewer is defined in the <code class="docutils literal"><span class="pre">&lt;package&gt;/templates/edit.js</span></code> file. Each
+viewer is defined in the <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/templates/viewer.js</span></code> file, while the
+editing viewer is defined in the <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/templates/edit.js</span></code> file. Each
 viewer includes a number of plugins by default; adding/removing features
 involve adding/removing plugins to/from the viewer.</p>
 <p>See <a class="reference external" href="http://docs.camptocamp.net/cgxp/2.2/lib/plugins.html">http://docs.camptocamp.net/cgxp/2.2/lib/plugins.html</a> for the list of available CGXP plugins.</p>
 </div>
 <div class="section" id="enabling-fulltextsearch-plugin">
 <h2>Enabling FullTextSearch plugin<a class="headerlink" href="#enabling-fulltextsearch-plugin" title="Permalink to this headline">¶</a></h2>
-<p>Enabling the <em>full-text search</em> feature involves adding a <code class="docutils literal"><span class="pre">FullTextSearch</span></code>
+<p>Enabling the <em>full-text search</em> feature involves adding a <code class="docutils literal notranslate"><span class="pre">FullTextSearch</span></code>
 plugin to the viewer, and creating and populating a dedicated table in the
 database.</p>
-<p>The viewer should include a <code class="docutils literal"><span class="pre">FullTextSearch</span></code> plugin for the <em>text search</em>
+<p>The viewer should include a <code class="docutils literal notranslate"><span class="pre">FullTextSearch</span></code> plugin for the <em>text search</em>
 feature to be available in the user interface.</p>
 <p>See the <a class="reference external" href="http://docs.camptocamp.net/cgxp/2.2/lib/plugins/FullTextSearch.html">FullTextSearch API doc</a> for the
 list of options the plugin can receive.</p>
@@ -194,9 +185,9 @@ list of options the plugin can receive.</p>
 <div class="section" id="the-print-plugin">
 <h2>The Print plugin<a class="headerlink" href="#the-print-plugin" title="Permalink to this headline">¶</a></h2>
 <p>Adding the <em>print</em> feature to a c2cgeoportal project involves adding
-a <code class="docutils literal"><span class="pre">cgxp.plugins.Print</span></code> plugin to the viewer, and configuring the MapFish
+a <code class="docutils literal notranslate"><span class="pre">cgxp.plugins.Print</span></code> plugin to the viewer, and configuring the MapFish
 Print.</p>
-<p>The viewer should include a <code class="docutils literal"><span class="pre">Print</span></code> plugin for the <em>print</em> feature to
+<p>The viewer should include a <code class="docutils literal notranslate"><span class="pre">Print</span></code> plugin for the <em>print</em> feature to
 be available in the user interface.</p>
 <p>See the <a class="reference external" href="http://docs.camptocamp.net/cgxp/2.2/lib/plugins/Print.html">Print API doc</a> for the
 list of options the plugin can receive.</p>
@@ -246,12 +237,14 @@ list of options the plugin can receive.</p>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -262,7 +255,7 @@ list of options the plugin can receive.</p>
       &copy;2011-2018, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

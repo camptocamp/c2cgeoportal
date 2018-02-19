@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Adding a new user interface &#8212; c2cgeoportal  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -47,9 +38,9 @@
 (for example, “new”) in a package named &lt;package&gt; (for example, “demo”).</p>
 <div class="section" id="makefile">
 <h2>Makefile<a class="headerlink" href="#makefile" title="Permalink to this headline">¶</a></h2>
-<p>In your project’s makefile, add the new interface to <code class="docutils literal"><span class="pre">NGEO_INTERFACES</span></code>.
+<p>In your project’s makefile, add the new interface to <code class="docutils literal notranslate"><span class="pre">NGEO_INTERFACES</span></code>.
 For example, to have two NGEO interfaces called “mobile” and “new”, set:</p>
-<div class="code makefile highlight-default"><div class="highlight"><pre><span></span><span class="n">NGEO_INTERFACES</span> <span class="o">=</span> <span class="n">mobile</span> <span class="n">new</span>
+<div class="code makefile highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">NGEO_INTERFACES</span> <span class="o">=</span> <span class="n">mobile</span> <span class="n">new</span>
 </pre></div>
 </div>
 </div>
@@ -81,8 +72,8 @@ span.prompt1:before {
 </pre></div>
 <div class="section" id="edit-interface-files">
 <h2>Edit interface files<a class="headerlink" href="#edit-interface-files" title="Permalink to this headline">¶</a></h2>
-<p>In the file <code class="docutils literal"><span class="pre">&lt;package&gt;/static-ngeo/js/&lt;interface&gt;.js</span></code>, adapt the following lines:</p>
-<div class="code js highlight-default"><div class="highlight"><pre><span></span>* This file defines the &quot;&lt;package&gt;_&lt;interface&gt;&quot; Closure namespace, which is be used as
+<p>In the file <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/static-ngeo/js/&lt;interface&gt;.js</span></code>, adapt the following lines:</p>
+<div class="code js highlight-default notranslate"><div class="highlight"><pre><span></span>* This file defines the &quot;&lt;package&gt;_&lt;interface&gt;&quot; Closure namespace, which is be used as
 ...
 goog.provide(&#39;&lt;package&gt;.&lt;Interface&gt;Controller&#39;);
 goog.provide(&#39;&lt;package&gt;_&lt;interface&gt;&#39;);
@@ -94,11 +85,11 @@ ol.inherits(&lt;package&gt;.&lt;Interface&gt;Controller, gmf.AbstractDesktopCont
 geoportal.module.controller(&#39;&lt;Interface&gt;Controller&#39;, &lt;package&gt;.&lt;Interface&gt;Controller);
 </pre></div>
 </div>
-<p>where <code class="docutils literal"><span class="pre">&lt;package&gt;</span></code> is the name of your package, and <code class="docutils literal"><span class="pre">&lt;interface&gt;</span></code> (desktop in the original file) is
+<p>where <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;</span></code> is the name of your package, and <code class="docutils literal notranslate"><span class="pre">&lt;interface&gt;</span></code> (desktop in the original file) is
 the name of your new interface.</p>
-<p>In the file <code class="docutils literal"><span class="pre">&lt;package/static-ngeo/templates/&lt;interface&gt;.html</span></code>, adapt the name of the controller and the
+<p>In the file <code class="docutils literal notranslate"><span class="pre">&lt;package/static-ngeo/templates/&lt;interface&gt;.html</span></code>, adapt the name of the controller and the
 referenced css and js files to the new interface name:</p>
-<div class="code html highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">html</span> <span class="n">lang</span><span class="o">=</span><span class="s2">&quot;{{mainCtrl.lang}}&quot;</span> <span class="n">ng</span><span class="o">-</span><span class="n">app</span><span class="o">=</span><span class="s2">&quot;&lt;package&gt;&quot;</span> <span class="n">ng</span><span class="o">-</span><span class="n">controller</span><span class="o">=</span><span class="s2">&quot;&lt;Interface&gt;Controller as mainCtrl&quot;</span><span class="o">&gt;</span>
+<div class="code html highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">html</span> <span class="n">lang</span><span class="o">=</span><span class="s2">&quot;{{mainCtrl.lang}}&quot;</span> <span class="n">ng</span><span class="o">-</span><span class="n">app</span><span class="o">=</span><span class="s2">&quot;&lt;package&gt;&quot;</span> <span class="n">ng</span><span class="o">-</span><span class="n">controller</span><span class="o">=</span><span class="s2">&quot;&lt;Interface&gt;Controller as mainCtrl&quot;</span><span class="o">&gt;</span>
 
 <span class="o">&lt;</span><span class="n">link</span> <span class="n">rel</span><span class="o">=</span><span class="s2">&quot;stylesheet&quot;</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;${request.static_url(&#39;&lt;package&gt;:static-ngeo/build/&lt;interface&gt;.css&#39;)}&quot;</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;text/css&quot;</span><span class="o">&gt;</span>
 <span class="o">...</span>
@@ -114,19 +105,19 @@ referenced css and js files to the new interface name:</p>
 </pre></div>
 <div class="section" id="package-file">
 <h2>Package file<a class="headerlink" href="#package-file" title="Permalink to this headline">¶</a></h2>
-<p>Update the interface in your <code class="docutils literal"><span class="pre">&lt;package&gt;/__init__.py</span></code> file:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;&lt;interface&gt;&quot;</span><span class="p">,</span> <span class="n">INTERFACE_TYPE_NGEO</span><span class="p">)</span>
+<p>Update the interface in your <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/__init__.py</span></code> file:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;&lt;interface&gt;&quot;</span><span class="p">,</span> <span class="n">INTERFACE_TYPE_NGEO</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The used method has the following API:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">interface_name</span><span class="o">=</span><span class="s2">&quot;&lt;interface&gt;&quot;</span><span class="p">,</span> <span class="n">interface_type</span><span class="o">=</span><span class="n">INTERFACE_TYPE_NGEO</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">interface_name</span><span class="o">=</span><span class="s2">&quot;&lt;interface&gt;&quot;</span><span class="p">,</span> <span class="n">interface_type</span><span class="o">=</span><span class="n">INTERFACE_TYPE_NGEO</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Where <code class="docutils literal"><span class="pre">config</span></code> is the application configuration object,</p>
-<p><code class="docutils literal"><span class="pre">interface_name</span></code> is the name specified in the <code class="docutils literal"><span class="pre">interface</span></code> table,
+<p>Where <code class="docutils literal notranslate"><span class="pre">config</span></code> is the application configuration object,</p>
+<p><code class="docutils literal notranslate"><span class="pre">interface_name</span></code> is the name specified in the <code class="docutils literal notranslate"><span class="pre">interface</span></code> table,
 also used to create the route path,</p>
-<p><code class="docutils literal"><span class="pre">interface_type</span></code> may be either <code class="docutils literal"><span class="pre">INTERFACE_TYPE_CGXP</span></code>, <code class="docutils literal"><span class="pre">INTERFACE_TYPE_NGEO</span></code> or
-<code class="docutils literal"><span class="pre">INTERFACE_TYPE_NGEO_CATALOGUE</span></code>. Constants available in <code class="docutils literal"><span class="pre">c2cgeoportal</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">interface_type</span></code> may be either <code class="docutils literal notranslate"><span class="pre">INTERFACE_TYPE_CGXP</span></code>, <code class="docutils literal notranslate"><span class="pre">INTERFACE_TYPE_NGEO</span></code> or
+<code class="docutils literal notranslate"><span class="pre">INTERFACE_TYPE_NGEO_CATALOGUE</span></code>. Constants available in <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code>.</p>
 </div>
 <div class="section" id="site-specific-configuration">
 <h2>Site-specific configuration<a class="headerlink" href="#site-specific-configuration" title="Permalink to this headline">¶</a></h2>
@@ -136,11 +127,11 @@ some site-specific configuration issues must be considered:</p>
 <div><ul class="simple">
 <li>if you have V1 configuration and this has not yet been migrated to V2 configuration
 on this DB instance, it must be migrated now (if it is for test purposes, clone the
-DB first): run script <code class="docutils literal"><span class="pre">.build/venv/bin/themev1tov2</span></code></li>
+DB first): run script <code class="docutils literal notranslate"><span class="pre">.build/venv/bin/themev1tov2</span></code></li>
 <li>set default theme of the new interface to the desired one (set “defaultTheme”
-in <code class="docutils literal"><span class="pre">&lt;interface&gt;.html</span></code>)</li>
+in <code class="docutils literal notranslate"><span class="pre">&lt;interface&gt;.html</span></code>)</li>
 <li>set meaningful starting zoom level and center coordinates of new interface,
-in <code class="docutils literal"><span class="pre">&lt;interface&gt;.js</span></code></li>
+in <code class="docutils literal notranslate"><span class="pre">&lt;interface&gt;.js</span></code></li>
 <li>after rebuilding, to see the changes in the browser, you probably need to clear
 the browser cache and your URL parameters, and maybe in addition wait some minutes
 in order for the server-side to also be completely up-to-date.</li>
@@ -149,18 +140,18 @@ in order for the server-side to also be completely up-to-date.</li>
 </div>
 <div class="section" id="database">
 <h2>Database<a class="headerlink" href="#database" title="Permalink to this headline">¶</a></h2>
-<p>The administration interface gives access to an <code class="docutils literal"><span class="pre">interface</span></code> table that lists the
+<p>The administration interface gives access to an <code class="docutils literal notranslate"><span class="pre">interface</span></code> table that lists the
 available interfaces (or pages) of the application.
-The default interfaces are <code class="docutils literal"><span class="pre">desktop</span></code> and <code class="docutils literal"><span class="pre">mobile</span></code>.
+The default interfaces are <code class="docutils literal notranslate"><span class="pre">desktop</span></code> and <code class="docutils literal notranslate"><span class="pre">mobile</span></code>.
 Add the name of your interface to the table. This can be done using the admin interface.</p>
 </div>
 <div class="section" id="checker">
 <h2>Checker<a class="headerlink" href="#checker" title="Permalink to this headline">¶</a></h2>
 <p>This section describes how to Enable the checker for the new interface.</p>
-<p>We suggest to add only the main checker in the <code class="docutils literal"><span class="pre">defaults</span></code>. It is what is done by default.
-In the <code class="docutils literal"><span class="pre">all</span></code> (<code class="docutils literal"><span class="pre">vars.checker.all</span></code>) section, check all the ngeo interfaces in standard
+<p>We suggest to add only the main checker in the <code class="docutils literal notranslate"><span class="pre">defaults</span></code>. It is what is done by default.
+In the <code class="docutils literal notranslate"><span class="pre">all</span></code> (<code class="docutils literal notranslate"><span class="pre">vars.checker.all</span></code>) section, check all the ngeo interfaces in standard
 and debug mode:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">phantomjs_routes</span><span class="p">:</span>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">phantomjs_routes</span><span class="p">:</span>
 <span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">interface</span><span class="o">&gt;</span>
   <span class="n">params</span><span class="p">:</span>
     <span class="n">no_redirect</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span>
@@ -218,12 +209,14 @@ and debug mode:</p>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -234,7 +227,7 @@ and debug mode:</p>
       &copy;2011-2018, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

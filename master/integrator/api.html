@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>JavaScript API &#8212; c2cgeoportal  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -54,7 +45,7 @@ OpenLayers only. This API is to be used when a <em>simple</em> map only is neede
 Also, the Simple API works in touch devices, while the Extended API does
 not.</p>
 <p>To load the Simple API in a page the following script tag should be added:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">script</span> <span class="n">src</span><span class="o">=</span><span class="s2">&quot;http://example.com/path-to-wsgi-app/api.js&quot;</span><span class="o">&gt;&lt;/</span><span class="n">script</span><span class="o">&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">script</span> <span class="n">src</span><span class="o">=</span><span class="s2">&quot;http://example.com/path-to-wsgi-app/api.js&quot;</span><span class="o">&gt;&lt;/</span><span class="n">script</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -66,7 +57,7 @@ the Simple API, but it is heavier than the Simple API, and does not on
 mobile.</p>
 <p>To load the Extended API in a page the following script tag should be
 added:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">script</span> <span class="n">src</span><span class="o">=</span><span class="s2">&quot;http://example.com/path-to-wsgi-app/xapi.js&quot;</span><span class="o">&gt;&lt;/</span><span class="n">script</span><span class="o">&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">script</span> <span class="n">src</span><span class="o">=</span><span class="s2">&quot;http://example.com/path-to-wsgi-app/xapi.js&quot;</span><span class="o">&gt;&lt;/</span><span class="n">script</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -81,7 +72,7 @@ or better is required in the project for the APIs.</p>
 1.2 or better. If your project was created using an older c2cgeoportal, and if
 you have just upgraded your project to c2cgeoportal 1.2, then you need to follow
 the below instructions.</p>
-<p>New directories and files are provided by the <code class="docutils literal"><span class="pre">c2cgeoportal_create</span></code> and need
+<p>New directories and files are provided by the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_create</span></code> and need
 to be added manually to the project. The easiest way to get all the necessary
 files involves creating a temporary c2cgeoportal project of the same name as
 the target project, and copying the missing files from there:</p>
@@ -99,11 +90,11 @@ span.prompt1:before {
 <h2>Configuring the API<a class="headerlink" href="#configuring-the-api" title="Permalink to this headline">¶</a></h2>
 <p>As the integrator you will edit four Mako template files to configure the
 APIs:</p>
-<p><code class="docutils literal"><span class="pre">&lt;package&gt;/templates/api/mapconfig.js</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/templates/api/mapconfig.js</span></code></p>
 <blockquote>
 <div>Includes the map configuration, i.e. the resolutions, the base layers, the
 controls, etc. Used for both the Simple and the Extended APIs.</div></blockquote>
-<p><code class="docutils literal"><span class="pre">&lt;package&gt;/templates/api/viewer.js</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/templates/api/viewer.js</span></code></p>
 <blockquote>
 <div>Contains the GXP/CGXP viewer and plugins configuration. Used for the
 Extended API only.</div></blockquote>
@@ -115,64 +106,64 @@ account when setting up their projects’ APIs.</p>
 <blockquote>
 <div><p>Several notes about background/base layers.</p>
 <p>As mentioned already the background/base layers are defined in the map
-configuration, in <code class="docutils literal"><span class="pre">&lt;package&gt;/templates/api/mapconfig.js</span></code>.</p>
-<p>Any <code class="docutils literal"><span class="pre">displayLayerSwitcher</span></code> option set in the <code class="docutils literal"><span class="pre">args</span></code> property of the
+configuration, in <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/templates/api/mapconfig.js</span></code>.</p>
+<p>Any <code class="docutils literal notranslate"><span class="pre">displayLayerSwitcher</span></code> option set in the <code class="docutils literal notranslate"><span class="pre">args</span></code> property of the
 base layers defined in the map config is ignored. The API itself is
 responsible for setting this option. The Simple API sets
-<code class="docutils literal"><span class="pre">displayLayerSwitcher</span></code> to <code class="docutils literal"><span class="pre">true</span></code>, while the Extended API sets it to
-<code class="docutils literal"><span class="pre">false</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">displayLayerSwitcher</span></code> to <code class="docutils literal notranslate"><span class="pre">true</span></code>, while the Extended API sets it to
+<code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
 <p>To control the display of base layers through the UI when the Extended API
-is used the <code class="docutils literal"><span class="pre">MapOpacitySlider</span></code> plugin should be set in the viewer. The
-OpenLayers <code class="docutils literal"><span class="pre">LayerSwitcher</span></code> control will indeed not include base layers
+is used the <code class="docutils literal notranslate"><span class="pre">MapOpacitySlider</span></code> plugin should be set in the viewer. The
+OpenLayers <code class="docutils literal notranslate"><span class="pre">LayerSwitcher</span></code> control will indeed not include base layers
 (and radio buttons) in the case of the Extended API.</p>
 <p>The API user can also have some control on his map’s base layers, through
-the <code class="docutils literal"><span class="pre">backgroundLayers</span></code> option, which is optional.</p>
-<p>The <code class="docutils literal"><span class="pre">backgroundLayers</span></code> option references an array of layer
-names/references, which should correspond to the <code class="docutils literal"><span class="pre">ref</span></code> values in the map
+the <code class="docutils literal notranslate"><span class="pre">backgroundLayers</span></code> option, which is optional.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">backgroundLayers</span></code> option references an array of layer
+names/references, which should correspond to the <code class="docutils literal notranslate"><span class="pre">ref</span></code> values in the map
 config.</p>
-<p>The <code class="docutils literal"><span class="pre">backgroundLayers</span></code> option determines the set of layers to add to the
+<p>The <code class="docutils literal notranslate"><span class="pre">backgroundLayers</span></code> option determines the set of layers to add to the
 map. It also determines the order of layers in the map, but the behavior is
 different in API and XAPI.</p>
 <p>For the Simple API every layer in the map config is an OpenLayers base
-layer. By setting <code class="docutils literal"><span class="pre">backgroundLayers</span></code> the API user specifies the base
+layer. By setting <code class="docutils literal notranslate"><span class="pre">backgroundLayers</span></code> the API user specifies the base
 layers the map will work with, and the order of the base layers in the
-map’s layers array.  The first layer in the <code class="docutils literal"><span class="pre">backgroundLayers</span></code> option is
+map’s layers array.  The first layer in the <code class="docutils literal notranslate"><span class="pre">backgroundLayers</span></code> option is
 the base layer that will be displayed by default.</p>
 <p>For the Extended API, if the viewer includes a map opacity slider plugin
-(<code class="docutils literal"><span class="pre">cgxp_mapopacityslider</span></code>), the backgroundLayers option has no effect on
+(<code class="docutils literal notranslate"><span class="pre">cgxp_mapopacityslider</span></code>), the backgroundLayers option has no effect on
 the layer order, and the background layer that is displayed by default.
 When the viewer includes a map opacity slider plugin the “background layer
 behavior” is indeed entirely determined by the plugin, and the user that
 controls the plugin through the UI.</p>
-<p>If the map opacity slider plugin (<code class="docutils literal"><span class="pre">cgxp_mapopacityslider</span></code>) is enabled,
+<p>If the map opacity slider plugin (<code class="docutils literal notranslate"><span class="pre">cgxp_mapopacityslider</span></code>) is enabled,
 the layer visibility is managed by the plugin. Else the  layer
-<code class="docutils literal"><span class="pre">visibility</span></code> must be set  to <code class="docutils literal"><span class="pre">true</span></code> in
-<code class="docutils literal"><span class="pre">&lt;package&gt;/templates/api/mapconfig.js</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">visibility</span></code> must be set  to <code class="docutils literal notranslate"><span class="pre">true</span></code> in
+<code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/templates/api/mapconfig.js</span></code>.</p>
 <p>When the viewer does not include a map opacity slider plugin the
-<code class="docutils literal"><span class="pre">backgroundLayers</span></code> option determines the order of layers in the map/layer
+<code class="docutils literal notranslate"><span class="pre">backgroundLayers</span></code> option determines the order of layers in the map/layer
 store. But the layers marked as background layers in the map config are
 always before the other layers (non-background layers) in the map/layer
 store.</p>
 </div></blockquote>
 <p>Layer tree</p>
 <blockquote>
-<div>Using the <code class="docutils literal"><span class="pre">LayerTree</span></code> plugin in the API viewer is highly discouraged.
+<div>Using the <code class="docutils literal notranslate"><span class="pre">LayerTree</span></code> plugin in the API viewer is highly discouraged.
 The API user (application developer) is responsible for declaring the
-layers he wants in his map. Adding a <code class="docutils literal"><span class="pre">LayerTree</span></code> plugin would conflict
-with that behavior, as the <code class="docutils literal"><span class="pre">LayerTree</span></code> plugin adds layers to the map
-based on the <code class="docutils literal"><span class="pre">THEMES</span></code> configuration.</div></blockquote>
+layers he wants in his map. Adding a <code class="docutils literal notranslate"><span class="pre">LayerTree</span></code> plugin would conflict
+with that behavior, as the <code class="docutils literal notranslate"><span class="pre">LayerTree</span></code> plugin adds layers to the map
+based on the <code class="docutils literal notranslate"><span class="pre">THEMES</span></code> configuration.</div></blockquote>
 <p>Plugins compatible with the API</p>
 <blockquote>
 <div><p>Here is the list of CGXP plugins that are known to currently work with the
 Extended API:</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">FullTextSearch</span></code></li>
-<li><code class="docutils literal"><span class="pre">Legend</span></code></li>
-<li><code class="docutils literal"><span class="pre">MapOpacitySlider</span></code></li>
-<li><code class="docutils literal"><span class="pre">Measure</span></code></li>
-<li><code class="docutils literal"><span class="pre">MenuShortcut</span></code></li>
-<li><code class="docutils literal"><span class="pre">Zoom</span></code></li>
-<li><code class="docutils literal"><span class="pre">ZoomToExtent</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">FullTextSearch</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">Legend</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">MapOpacitySlider</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">Measure</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">MenuShortcut</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">Zoom</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">ZoomToExtent</span></code></li>
 </ul>
 </div></blockquote>
 </div>
@@ -180,32 +171,32 @@ Extended API:</p>
 <div class="section" id="css">
 <h2>CSS<a class="headerlink" href="#css" title="Permalink to this headline">¶</a></h2>
 <p>Any c2cgeoportal application has its own CSS styles in
-<code class="docutils literal"><span class="pre">&lt;package&gt;/static/css/proj.css</span></code>, <code class="docutils literal"><span class="pre">&lt;package&gt;/static/css/proj-map.css</span></code>, and
-<code class="docutils literal"><span class="pre">&lt;package&gt;/static/css/proj-widgets.css</span></code>. For the APIs it is important
+<code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/static/css/proj.css</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/static/css/proj-map.css</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/static/css/proj-widgets.css</span></code>. For the APIs it is important
 that these files have appropriate contents.</p>
-<p><code class="docutils literal"><span class="pre">&lt;package&gt;/static/css/proj.css</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/static/css/proj.css</span></code></p>
 <blockquote>
 <div>This file includes CSS that is specific to the application viewers. This
 file is not used for the APIs, so it should not contain CSS that pertains
 to OpenLayers and CGXP components used by the Simple and Extended APIs.</div></blockquote>
-<p><code class="docutils literal"><span class="pre">&lt;package&gt;/static/css/proj-map.css</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/static/css/proj-map.css</span></code></p>
 <blockquote>
 <div>This file should include CSS that is relative to the OpenLayers map. This
 file is used by the Simple API. It should include OpenLayers-specific CSS,
 and should not include Ext-related CSS.</div></blockquote>
-<p><code class="docutils literal"><span class="pre">&lt;package&gt;/static/css/proj-widgets.css</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/static/css/proj-widgets.css</span></code></p>
 <blockquote>
 <div>This file should include CSS for CGXP plugins/components used by the
 Extended API. This file is not used by the Simple API.</div></blockquote>
 </div>
 <div class="section" id="internationalization">
 <span id="integrator-api-i18n"></span><h2>Internationalization<a class="headerlink" href="#internationalization" title="Permalink to this headline">¶</a></h2>
-<p>The Simple API loads the files <code class="docutils literal"><span class="pre">&lt;package&gt;/static/js/Proj/Lang/&lt;code&gt;.js</span></code>
-(where <code class="docutils literal"><span class="pre">&lt;code&gt;</span></code> is the language code, <code class="docutils literal"><span class="pre">fr</span></code> for example). This means that
+<p>The Simple API loads the files <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/static/js/Proj/Lang/&lt;code&gt;.js</span></code>
+(where <code class="docutils literal notranslate"><span class="pre">&lt;code&gt;</span></code> is the language code, <code class="docutils literal notranslate"><span class="pre">fr</span></code> for example). This means that
 these files should not include GeoExt-based translations. More specifically
-they should use <code class="docutils literal"><span class="pre">OpenLayers.Util.extend(OpenLayers.Lang.&lt;code&gt;,</span> <span class="pre">{})</span></code> and they
-should not use <code class="docutils literal"><span class="pre">GeoExt.Lang.add(&quot;&lt;code&gt;&quot;,</span> <span class="pre">{})</span></code>. GeoExt-based translations
-should go in <code class="docutils literal"><span class="pre">&lt;package&gt;/static/js/Proj/Lang/GeoExt-&lt;code&gt;.js</span></code> files, which
+they should use <code class="docutils literal notranslate"><span class="pre">OpenLayers.Util.extend(OpenLayers.Lang.&lt;code&gt;,</span> <span class="pre">{})</span></code> and they
+should not use <code class="docutils literal notranslate"><span class="pre">GeoExt.Lang.add(&quot;&lt;code&gt;&quot;,</span> <span class="pre">{})</span></code>. GeoExt-based translations
+should go in <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/static/js/Proj/Lang/GeoExt-&lt;code&gt;.js</span></code> files, which
 are used for the application viewers and for the Extended API.</p>
 </div>
 </div>
@@ -254,12 +245,14 @@ are used for the application viewers and for the Extended API.</p>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -270,7 +263,7 @@ are used for the application viewers and for the Extended API.</p>
       &copy;2011-2018, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

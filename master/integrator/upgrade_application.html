@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Upgrading a GeoMapFish application &#8212; c2cgeoportal  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -55,30 +46,30 @@ span.prompt1:before {
 </div>
 <div class="section" id="convert-a-version-2-3-to-docker">
 <h2>Convert a version 2.3 to Docker<a class="headerlink" href="#convert-a-version-2-3-to-docker" title="Permalink to this headline">¶</a></h2>
-<p>Add <code class="docutils literal"><span class="pre">UPGRADE_ARGS</span> <span class="pre">+=</span> <span class="pre">--force-docker</span> <span class="pre">--new-makefile=Makefile</span></code> in your <code class="docutils literal"><span class="pre">&lt;user&gt;.mk</span></code> file.</p>
+<p>Add <code class="docutils literal notranslate"><span class="pre">UPGRADE_ARGS</span> <span class="pre">+=</span> <span class="pre">--force-docker</span> <span class="pre">--new-makefile=Makefile</span></code> in your <code class="docutils literal notranslate"><span class="pre">&lt;user&gt;.mk</span></code> file.</p>
 <pre class="highlight"><span class="prompt1">git add &lt;user&gt;.mk</span>
 <span class="prompt1">git commit --message<span class="o">=</span><span class="s2">&quot;Start upgrade&quot;</span></span>
 <span class="prompt1">./docker-run --home make --makefile<span class="o">=</span>temp.mk upgrade</span>
 </pre><p>Then follow the instruction</p>
-<p>Remove the <code class="docutils literal"><span class="pre">UPGRADE_ARGS</span></code> in your <code class="docutils literal"><span class="pre">&lt;user&gt;.mk</span></code> file.</p>
+<p>Remove the <code class="docutils literal notranslate"><span class="pre">UPGRADE_ARGS</span></code> in your <code class="docutils literal notranslate"><span class="pre">&lt;user&gt;.mk</span></code> file.</p>
 <pre class="highlight"><span class="prompt1">git add &lt;user&gt;.mk</span>
 <span class="prompt1">git commit --quiet --message<span class="o">=</span><span class="s2">&quot;Finish upgrade&quot;</span></span>
 </pre></div>
 <div class="section" id="convert-a-version-2-3-to-non-docker">
 <h2>Convert a version 2.3 to non-Docker<a class="headerlink" href="#convert-a-version-2-3-to-non-docker" title="Permalink to this headline">¶</a></h2>
-<p>Add the <code class="docutils literal"><span class="pre">vhost</span></code> in the <code class="docutils literal"><span class="pre">template_vars</span></code> of the <code class="docutils literal"><span class="pre">project.yaml.mako</span></code> file.
-Add <code class="docutils literal"><span class="pre">UPGRADE_ARGS</span> <span class="pre">+=</span> <span class="pre">--nondocker</span> <span class="pre">--new-makefile=&lt;package&gt;.mk</span></code> in the <code class="docutils literal"><span class="pre">Makefile</span></code>.</p>
+<p>Add the <code class="docutils literal notranslate"><span class="pre">vhost</span></code> in the <code class="docutils literal notranslate"><span class="pre">template_vars</span></code> of the <code class="docutils literal notranslate"><span class="pre">project.yaml.mako</span></code> file.
+Add <code class="docutils literal notranslate"><span class="pre">UPGRADE_ARGS</span> <span class="pre">+=</span> <span class="pre">--nondocker</span> <span class="pre">--new-makefile=&lt;package&gt;.mk</span></code> in the <code class="docutils literal notranslate"><span class="pre">Makefile</span></code>.</p>
 <pre class="highlight"><span class="prompt1">git add project.yaml.mako Makefile</span>
 <span class="prompt1">git commit --message<span class="o">=</span><span class="s2">&quot;Start upgrade&quot;</span></span>
 <span class="prompt1">./docker-run --home make upgrade</span>
 </pre><p>Then follow the instruction</p>
-<p>Remove the <code class="docutils literal"><span class="pre">UPGRADE_ARGS</span></code> in your <code class="docutils literal"><span class="pre">Makefile</span></code>.</p>
+<p>Remove the <code class="docutils literal notranslate"><span class="pre">UPGRADE_ARGS</span></code> in your <code class="docutils literal notranslate"><span class="pre">Makefile</span></code>.</p>
 </div>
 <div class="section" id="upgrade-a-version-2-2">
 <h2>Upgrade a version 2.2<a class="headerlink" href="#upgrade-a-version-2-2" title="Permalink to this headline">¶</a></h2>
-<p>Add a section <code class="docutils literal"><span class="pre">managed_files:</span> <span class="pre">[...]</span></code> in the <code class="docutils literal"><span class="pre">project.yaml.mako</span></code> file.
+<p>Add a section <code class="docutils literal notranslate"><span class="pre">managed_files:</span> <span class="pre">[...]</span></code> in the <code class="docutils literal notranslate"><span class="pre">project.yaml.mako</span></code> file.
 All the files that’s not in this section will be overwritten except:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="p">{</span><span class="n">package</span><span class="p">}</span><span class="o">/</span><span class="n">templates</span><span class="o">/.*</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="p">{</span><span class="n">package</span><span class="p">}</span><span class="o">/</span><span class="n">templates</span><span class="o">/.*</span>
 <span class="o">-</span> <span class="p">{</span><span class="n">package</span><span class="p">}</span><span class="o">/</span><span class="n">locale</span><span class="o">/.*</span>
 <span class="o">-</span> <span class="p">{</span><span class="n">package</span><span class="p">}</span><span class="o">/</span><span class="n">static</span><span class="o">/.*</span>
 <span class="o">-</span> <span class="p">{</span><span class="n">package</span><span class="p">}</span><span class="o">/</span><span class="n">static</span><span class="o">-</span><span class="n">ngeo</span><span class="o">/.*</span>
@@ -100,7 +91,7 @@ All the files that’s not in this section will be overwritten except:</p>
 <span class="prompt1">make --makefile<span class="o">=</span>&lt;package&gt;.mk project.yaml</span>
 </pre><p>Pull the latest version of the Docker image:</p>
 <pre class="highlight"><span class="prompt1">docker pull camptocamp/geomapfish-build:&lt;version&gt;</span>
-</pre><p>Where <code class="docutils literal"><span class="pre">&lt;version&gt;</span></code> is <code class="docutils literal"><span class="pre">2.3.0</span></code> for the first stable release of the version <code class="docutils literal"><span class="pre">2.3</span></code>.</p>
+</pre><p>Where <code class="docutils literal notranslate"><span class="pre">&lt;version&gt;</span></code> is <code class="docutils literal notranslate"><span class="pre">2.3.0</span></code> for the first stable release of the version <code class="docutils literal notranslate"><span class="pre">2.3</span></code>.</p>
 <p>For Docker:</p>
 <pre class="highlight"><span class="prompt1">./docker-run --home --image<span class="o">=</span>camptocamp/geomapfish-build --version<span class="o">=</span>&lt;version&gt; <span class="se">\</span>
     c2cupgrade --force-docker --new-makefile<span class="o">=</span>Makefile --makefile<span class="o">=</span>&lt;package&gt;.mk</span>
@@ -112,7 +103,7 @@ All the files that’s not in this section will be overwritten except:</p>
 <p class="first admonition-title">Note</p>
 <p>Know issue</p>
 <p>if you have the following message:</p>
-<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">Host</span> <span class="n">key</span> <span class="n">verification</span> <span class="n">failed</span><span class="o">.</span>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Host</span> <span class="n">key</span> <span class="n">verification</span> <span class="n">failed</span><span class="o">.</span>
 <span class="n">fatal</span><span class="p">:</span> <span class="n">Could</span> <span class="ow">not</span> <span class="n">read</span> <span class="kn">from</span> <span class="nn">remote</span> <span class="n">repository</span><span class="o">.</span>
 
 <span class="n">Please</span> <span class="n">make</span> <span class="n">sure</span> <span class="n">you</span> <span class="n">have</span> <span class="n">the</span> <span class="n">correct</span> <span class="n">access</span> <span class="n">rights</span>
@@ -178,12 +169,14 @@ All the files that’s not in this section will be overwritten except:</p>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -194,7 +187,7 @@ All the files that’s not in this section will be overwritten except:</p>
       &copy;2011-2018, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

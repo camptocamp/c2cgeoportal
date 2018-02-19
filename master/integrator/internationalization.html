@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Internationalization &#8212; c2cgeoportal  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -45,30 +36,30 @@
 <span id="id1"></span><h1>Internationalization<a class="headerlink" href="#internationalization" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="ngeo-and-server">
 <h2>ngeo and server<a class="headerlink" href="#ngeo-and-server" title="Permalink to this headline">¶</a></h2>
-<p>In the file <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code>, define the supported languages with (default):</p>
-<div class="code make highlight-default"><div class="highlight"><pre><span></span>LANGUAGES ?= en fr de
+<p>In the file <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;.mk</span></code>, define the supported languages with (default):</p>
+<div class="code make highlight-default notranslate"><div class="highlight"><pre><span></span>LANGUAGES ?= en fr de
 </pre></div>
 </div>
-<p>In the file <code class="docutils literal"><span class="pre">vars_&lt;package&gt;.yaml</span></code>, define the available and default locales:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
+<p>In the file <code class="docutils literal notranslate"><span class="pre">vars_&lt;package&gt;.yaml</span></code>, define the available and default locales:</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
      <span class="o">...</span>
      <span class="n">default_locale_name</span><span class="p">:</span> <span class="n">fr</span>
      <span class="n">available_locale_names</span><span class="p">:</span> <span class="p">[</span><span class="n">en</span><span class="p">,</span> <span class="n">fr</span><span class="p">,</span> <span class="n">de</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>In the file <code class="docutils literal"><span class="pre">language_mapping</span></code>, define any desired locale variants, for example:</p>
-<div class="code make highlight-default"><div class="highlight"><pre><span></span><span class="n">fr</span><span class="o">=</span><span class="n">fr</span><span class="o">-</span><span class="n">ch</span>
+<p>In the file <code class="docutils literal notranslate"><span class="pre">language_mapping</span></code>, define any desired locale variants, for example:</p>
+<div class="code make highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fr</span><span class="o">=</span><span class="n">fr</span><span class="o">-</span><span class="n">ch</span>
 </pre></div>
 </div>
 <p>Build your application.</p>
 <p>The files to translate are:</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">demo/locale/&lt;lang&gt;/LC_MESSAGES/demo-client.po</span></code> for ngeo client</li>
-<li><code class="docutils literal"><span class="pre">demo/locale/&lt;lang&gt;/LC_MESSAGES/demo-server.po</span></code> for the server part (should be empty for ngeo interfaces)</li>
+<li><code class="docutils literal notranslate"><span class="pre">demo/locale/&lt;lang&gt;/LC_MESSAGES/demo-client.po</span></code> for ngeo client</li>
+<li><code class="docutils literal notranslate"><span class="pre">demo/locale/&lt;lang&gt;/LC_MESSAGES/demo-server.po</span></code> for the server part (should be empty for ngeo interfaces)</li>
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">All the <code class="docutils literal"><span class="pre">#,</span> <span class="pre">fuzzy</span></code> strings should be verified and the line should be removed
+<p class="last">All the <code class="docutils literal notranslate"><span class="pre">#,</span> <span class="pre">fuzzy</span></code> strings should be verified and the line should be removed
 (if the line is not removed, the localisation will not be used).</p>
 </div>
 </div>
@@ -76,22 +67,22 @@
 <h2>CGXP<a class="headerlink" href="#cgxp" title="Permalink to this headline">¶</a></h2>
 <p>Translations of the browser interfaces (main viewer, edit interfaces and APIs)
 are included in two kinds of Javascript files, stored in
-<code class="docutils literal"><span class="pre">&lt;package&gt;/static/js/Proj/Lang/</span></code>:</p>
+<code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/static/js/Proj/Lang/</span></code>:</p>
 <ul>
-<li><p class="first"><code class="docutils literal"><span class="pre">&lt;lang&gt;.js</span></code> is used to translate data-related strings such as layernames or
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">&lt;lang&gt;.js</span></code> is used to translate data-related strings such as layernames or
 attributenames (in interrogation results). It is based upon the OpenLayers
 translation syntax. For instance:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">OpenLayers</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">OpenLayers</span><span class="o">.</span><span class="n">Lang</span><span class="o">.&lt;</span><span class="n">lang</span><span class="o">&gt;</span><span class="p">,</span> <span class="p">{</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">OpenLayers</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">OpenLayers</span><span class="o">.</span><span class="n">Lang</span><span class="o">.&lt;</span><span class="n">lang</span><span class="o">&gt;</span><span class="p">,</span> <span class="p">{</span>
     <span class="s2">&quot;layertree&quot;</span><span class="p">:</span> <span class="s2">&quot;Themes&quot;</span>
 <span class="p">});</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first"><code class="docutils literal"><span class="pre">GeoExt-&lt;lang&gt;.js</span></code> is used to adapt the translations of existing plugins/widgets
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">GeoExt-&lt;lang&gt;.js</span></code> is used to adapt the translations of existing plugins/widgets
 or to add translations of project-specific plugins. It is based upon the GeoExt
 translation syntax. Key-value translation pairs are encapsulated by class.
 For instance:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">GeoExt</span><span class="o">.</span><span class="n">Lang</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;&lt;lang&gt;&quot;</span><span class="p">,</span> <span class="p">{</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">GeoExt</span><span class="o">.</span><span class="n">Lang</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;&lt;lang&gt;&quot;</span><span class="p">,</span> <span class="p">{</span>
     <span class="s2">&quot;cgxp.tree.LayerTree.prototype&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="n">moveupText</span><span class="p">:</span> <span class="s2">&quot;Move up&quot;</span>
     <span class="p">}</span>
@@ -157,12 +148,14 @@ separated files because of API constraints. Read more at <a class="reference int
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -173,7 +166,7 @@ separated files because of API constraints. Read more at <a class="reference int
       &copy;2011-2018, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

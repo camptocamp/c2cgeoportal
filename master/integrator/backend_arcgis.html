@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Specific configuration for Arcgis &#8212; c2cgeoportal  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -45,32 +36,32 @@
 <span id="integrator-backend-arcgis"></span><h1>Specific configuration for Arcgis<a class="headerlink" href="#specific-configuration-for-arcgis" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="wfs-namespace">
 <h2>WFS namespace<a class="headerlink" href="#wfs-namespace" title="Permalink to this headline">¶</a></h2>
-<p>In the <code class="docutils literal"><span class="pre">&lt;package&gt;/templates/viewer.js</span></code> file, define the url of the WFS service which will be used
+<p>In the <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/templates/viewer.js</span></code> file, define the url of the WFS service which will be used
 to get the namespace required to parse the WFS response:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cgxp</span><span class="o">.</span><span class="n">WFS_FEATURE_NS</span> <span class="o">=</span> <span class="s2">&quot;http://your.arcgis.server/arcgis/services/SOME/FOLDER/MapServer/WFSServer&quot;</span><span class="p">;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cgxp</span><span class="o">.</span><span class="n">WFS_FEATURE_NS</span> <span class="o">=</span> <span class="s2">&quot;http://your.arcgis.server/arcgis/services/SOME/FOLDER/MapServer/WFSServer&quot;</span><span class="p">;</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="differentiating-wms-and-wfs-services">
 <h2>Differentiating WMS and WFS services<a class="headerlink" href="#differentiating-wms-and-wfs-services" title="Permalink to this headline">¶</a></h2>
 <p>It may be necessary to differentiate the WMS and WFS services url.</p>
-<p>In the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file, define:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">mapserv_url</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">your</span><span class="o">.</span><span class="n">arcgis</span><span class="o">.</span><span class="n">server</span><span class="o">/</span><span class="n">arcgis</span><span class="o">/</span><span class="n">services</span><span class="o">/</span><span class="n">SOME</span><span class="o">/</span><span class="n">FOLDER</span><span class="o">/</span><span class="n">MapServer</span><span class="o">/</span><span class="n">WMSServer</span>
+<p>In the <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file, define:</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mapserv_url</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">your</span><span class="o">.</span><span class="n">arcgis</span><span class="o">.</span><span class="n">server</span><span class="o">/</span><span class="n">arcgis</span><span class="o">/</span><span class="n">services</span><span class="o">/</span><span class="n">SOME</span><span class="o">/</span><span class="n">FOLDER</span><span class="o">/</span><span class="n">MapServer</span><span class="o">/</span><span class="n">WMSServer</span>
 <span class="n">mapserv_wfs_url</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">your</span><span class="o">.</span><span class="n">arcgis</span><span class="o">.</span><span class="n">server</span><span class="o">/</span><span class="n">arcgis</span><span class="o">/</span><span class="n">services</span><span class="o">/</span><span class="n">SOME</span><span class="o">/</span><span class="n">FOLDER</span><span class="o">/</span><span class="n">MapServer</span><span class="o">/</span><span class="n">WFSServer</span>
 </pre></div>
 </div>
 <p>These are the urls which respond respectively to the <em>WMS GetCapabilities</em> and
 <em>WFS GetCapabilities</em>.</p>
 <p>If your project has a parent (in a parent/child architecture),
-in the <code class="docutils literal"><span class="pre">config_child.yaml.mako</span></code> file also define the WFS service separately:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">external_mapserv_wfs_url</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">your</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">arcgis</span><span class="o">.</span><span class="n">server</span><span class="o">/</span><span class="n">arcgis</span><span class="o">/</span><span class="n">services</span><span class="o">/</span><span class="n">SOME</span><span class="o">/</span><span class="n">FOLDER</span><span class="o">/</span><span class="n">MapServer</span><span class="o">/</span><span class="n">WFSServer</span>
+in the <code class="docutils literal notranslate"><span class="pre">config_child.yaml.mako</span></code> file also define the WFS service separately:</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">external_mapserv_wfs_url</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">your</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">arcgis</span><span class="o">.</span><span class="n">server</span><span class="o">/</span><span class="n">arcgis</span><span class="o">/</span><span class="n">services</span><span class="o">/</span><span class="n">SOME</span><span class="o">/</span><span class="n">FOLDER</span><span class="o">/</span><span class="n">MapServer</span><span class="o">/</span><span class="n">WFSServer</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="wfs-geometryname">
 <h2>WFS geometryName<a class="headerlink" href="#wfs-geometryname" title="Permalink to this headline">¶</a></h2>
 <p>Also, the name of the geometry parameter in the WFS response is different in ArcGis.</p>
-<p>in the <code class="docutils literal"><span class="pre">&lt;package&gt;/templates/viewer.js</span></code> file, for the <em>cgxp.plugins.WFSGetFeature</em> or <em>cgxp.plugins.GetFeature</em> plugins, add the
+<p>in the <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/templates/viewer.js</span></code> file, for the <em>cgxp.plugins.WFSGetFeature</em> or <em>cgxp.plugins.GetFeature</em> plugins, add the
 following parameter in the plugin configuration:</p>
 <blockquote>
 <div>geometryName: ‘SHAPE’</div></blockquote>
@@ -130,12 +121,14 @@ queries.</p>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -146,7 +139,7 @@ queries.</p>
       &copy;2011-2018, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
