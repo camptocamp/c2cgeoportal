@@ -1,4 +1,4 @@
-FROM camptocamp/mapfish_print:3.10.6
+FROM camptocamp/mapfish_print:3.10.7
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
 RUN rm -rf webapps/ROOT/print-apps

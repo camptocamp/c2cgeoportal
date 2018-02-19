@@ -180,27 +180,6 @@
 				<textFieldExpression><![CDATA[" / " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="0" width="140" height="52" uuid="fd9e9f4d-1947-4b6b-b5e8-04dba15517ff"/>
-				<textElement verticalAlignment="Bottom"/>
-				<text><![CDATA[Suisse
-Camptocamp SA, Lausanne
-Tel + 41 21 619 10 10]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="148" y="0" width="192" height="51" uuid="9fa0482b-7f43-4eaf-b87d-ecf7cd89be96"/>
-				<textElement verticalAlignment="Bottom"/>
-				<text><![CDATA[France
-Camptocamp France SAS, Chambéry
-Tél : +33 4 79 44 44 94]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="343" y="0" width="159" height="51" uuid="cf8dacec-c331-4aa1-ae51-547ca268861e"/>
-				<textElement verticalAlignment="Bottom"/>
-				<text><![CDATA[Autriche
-Camptocamp Austria, Vienne
-Tél : +43 1 712 21 94 0]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="0" y="1" width="300" height="14" uuid="dc102ea9-973f-4717-a872-0d24d4de1e17"/>
 				<text><![CDATA[Développé par Camptocamp SA, info@camptocamp.com]]></text>
 			</staticText>
