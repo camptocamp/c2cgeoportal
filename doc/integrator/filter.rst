@@ -3,8 +3,8 @@
 Filter (Querier)
 ================
 
-Configuration
--------------
+Configuration - #1 Project file
+-------------------------------
 
 In the filter panel, instead of the standard text field,
 it is possible to display combos providing the available values of
@@ -65,6 +65,17 @@ Simple example:
             attributeURLs: ${queryer_attribute_urls | n},
             ...
         },
+
+Configuration - #2 Administration interface
+-------------------------------------------
+
+The final step is to assign the enumerated attributes to the right layer in the administration.
+Go to the ``metadata`` page, add a ``enumeratedAttributes`` to an existing layer.
+The value is a single string or a list of attributes (that we defined earlier in the ``vars_<project>.yaml`` file)
+separated with a comma.
+
+Client-side documentation related to the enumeratedAttributes metadata is available here:
+`gmfThemes.GmfMetaData <https://camptocamp.github.io/ngeo/master/apidoc/gmfThemes.GmfMetaData.html>`_
 
 Using DB sessions
 -----------------
