@@ -11,6 +11,17 @@ mapping:
     required: True
     sequence:
       - type: str
+  interpreted:
+    type: map
+    required: True
+    mapping:
+      regex;(.+):
+        type: any
+  postprocess:
+    type: seq
+    required: True
+    sequence:
+      - type: str
   vars:
     type: map
     required: True
