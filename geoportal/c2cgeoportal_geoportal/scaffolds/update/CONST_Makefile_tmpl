@@ -592,7 +592,7 @@ $(APP_OUTPUT_DIR)/images/: /usr/lib/node_modules/ngeo/third-party/jquery-ui/imag
 		/opt/googleclosurecompiler-externs/angular-$(ANGULAR_VERSION)-http-promise_templated.js \
 		/opt/googleclosurecompiler-externs/jquery-1.9.js
 	$(PRERULE_CMD)
-	node /usr/lib/node_modules/ngeo/buildtools/build.js $< $@
+	node /usr/lib/node_modules/ngeo/buildtools/build.js --config=$< --output=$@
 
 $(APP_OUTPUT_DIR)/templatecache.js: /build/gmftemplatecache.js
 	$(PRERULE_CMD)
