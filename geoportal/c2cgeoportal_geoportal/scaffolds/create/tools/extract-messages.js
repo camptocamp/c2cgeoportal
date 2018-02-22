@@ -1,10 +1,11 @@
-var async = require('async');
-var fs = require('fs');
-var nomnom = require('nomnom');
-var Extractor = require('angular-gettext-tools').Extractor;
+"use strict";
+let async = require('async');
+let fs = require('fs');
+let options = require('commander');
+let Extractor = require('angular-gettext-tools').Extractor;
 
 function main(inputs) {
-  var extractor = new Extractor();
+  let extractor = new Extractor();
 
   async.eachSeries(inputs,
     function(input, cb) {
@@ -19,12 +20,12 @@ function main(inputs) {
       if (err) {
         throw new Error(err);
       }
-      var messages = [];
-      for (var msgstr in extractor.strings) {
+      let messages = [];
+      for (let msgstr in extractor.strings) {
         if (extractor.strings.hasOwnProperty(msgstr)) {
-          var msg = extractor.strings[msgstr];
-          var contexts = Object.keys(msg).sort();
-          var ref = msg[contexts]['references'].join(', ');
+          let msg = extractor.strings[msgstr];
+          let contexts = Object.keys(msg).sort();
+          let ref = msg[contexts]['references'].join(', ');
           messages.push([ref, msgstr]);
         }
       }
@@ -36,9 +37,8 @@ function main(inputs) {
 
 // If running this module directly then call the main function.
 if (require.main === module) {
-  var options = nomnom.parse();
-  var inputs = options._;
-  main(inputs);
+  options.parse(process.argv);
+  main(options.args);
 }
 
 module.exports = main;
