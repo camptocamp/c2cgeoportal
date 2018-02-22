@@ -538,7 +538,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
 
             if resp.status < 200 or resp.status >= 300:  # pragma: no cover
                 print(colorize(
-                    "ERROR! DescribeFeatureType from URL {} return the error: {1:d} {}".format(
+                    "ERROR! DescribeFeatureType from URL {} return the error: {:d} {}".format(
                         wfs_descrfeat_url, resp.status, resp.reason
                     ),
                     RED,
