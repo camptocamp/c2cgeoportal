@@ -75,6 +75,11 @@ class LayerWmtsViews(DimensionLayerViews):
                  request_method='GET',
                  renderer='../templates/edit.jinja2')
     def view(self):
+        if self._is_new():
+            dbsession = self._request.dbsession
+            default_wmts = LayerWMTS.get_default(dbsession)
+            if default_wmts:
+                return self.copy(default_wmts, excludes=['name', 'layer'])
         return super().edit()
 
     @view_config(route_name='c2cgeoform_item',
@@ -101,7 +106,7 @@ class LayerWmtsViews(DimensionLayerViews):
     def convert_to_wms(self):
         src = self._get_object()
         dbsession = self._request.dbsession
-        default_wms = dbsession.query(LayerWMS).filter(LayerWMS.name == 'wms-defaults').one()
+        default_wms = LayerWMS.get_default(dbsession)
         with dbsession.no_autoflush:
             d = delete(LayerWMTS.__table__)
             d = d.where(LayerWMTS.__table__.c.id == src.id)

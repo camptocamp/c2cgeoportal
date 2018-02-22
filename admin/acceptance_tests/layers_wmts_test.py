@@ -77,6 +77,30 @@ class TestLayerWMTS(AbstractViewsTests):
         assert layer.id == int(row['_id_'])
         assert layer.name == row['name']
 
+    def test_new_no_default(self, test_app, layer_wmts_test_data, dbsession):
+        default_wmts = layer_wmts_test_data['default']['wmts']
+        default_wmts.name = 'so_can_I_not_be found'
+        dbsession.flush()
+
+        form = self.get_item(test_app, 'new').form
+
+        assert '' == self.get_first_field_named(form, 'id').value
+        assert '' == self.get_first_field_named(form, 'name').value
+        assert '' == self.get_first_field_named(form, 'layer').value
+        assert '' == self.get_first_field_named(form, 'url').value
+        assert '' == self.get_first_field_named(form, 'matrix_set').value
+
+    def test_new_default(self, test_app, layer_wmts_test_data):
+        default_wmts = layer_wmts_test_data['default']['wmts']
+
+        form = self.get_item(test_app, 'new').form
+
+        assert '' == self.get_first_field_named(form, 'id').value
+        assert '' == self.get_first_field_named(form, 'name').value
+        assert '' == self.get_first_field_named(form, 'layer').value
+        assert default_wmts.url == self.get_first_field_named(form, 'url').value
+        assert default_wmts.matrix_set == self.get_first_field_named(form, 'matrix_set').value
+
     def test_edit(self, test_app, layer_wmts_test_data, dbsession):
         layer = layer_wmts_test_data['layers'][0]
 

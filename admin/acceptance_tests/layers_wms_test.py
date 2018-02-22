@@ -100,6 +100,32 @@ class TestLayerWMSViews(AbstractViewsTests):
         # check search on interfaces
         self.check_search(test_app, 'mobile', total=9)
 
+    def test_new_no_default(self, test_app, layer_wms_test_data, dbsession):
+        default_wms = layer_wms_test_data['default']['wms']
+        default_wms.name = 'so_can_I_not_be found'
+        dbsession.flush()
+
+        form = self.get_item(test_app, 'new').form
+
+        assert '' == self.get_first_field_named(form, 'id').value
+        assert '' == self.get_first_field_named(form, 'name').value
+        assert '' == self.get_first_field_named(form, 'layer').value
+        assert '' == self.get_first_field_named(form, 'ogc_server_id').value
+        assert 'disabled' == self.get_first_field_named(form, 'time_mode').value
+        assert 'slider' == self.get_first_field_named(form, 'time_widget').value
+
+    def test_new_default(self, test_app, layer_wms_test_data):
+        default_wms = layer_wms_test_data['default']['wms']
+
+        form = self.get_item(test_app, 'new').form
+
+        assert '' == self.get_first_field_named(form, 'id').value
+        assert '' == self.get_first_field_named(form, 'name').value
+        assert '' == self.get_first_field_named(form, 'layer').value
+        assert str(default_wms.ogc_server.id) == self.get_first_field_named(form, 'ogc_server_id').value
+        assert default_wms.time_mode == self.get_first_field_named(form, 'time_mode').value
+        assert default_wms.time_widget == self.get_first_field_named(form, 'time_widget').value
+
     def test_base_edit(self, test_app, layer_wms_test_data):
         layer = layer_wms_test_data['layers'][10]
 
