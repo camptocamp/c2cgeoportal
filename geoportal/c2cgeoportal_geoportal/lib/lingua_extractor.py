@@ -110,6 +110,7 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
             self.config = config.get_config()
         else:
             self.config = None
+        self.tpl = None
 
     def __call__(self, filename, options):
 
@@ -311,6 +312,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                 self.package = yaml.safe_load(f)
         else:
             self.package = None
+        self.env = None
 
     def __call__(self, filename, options):
         messages = []
