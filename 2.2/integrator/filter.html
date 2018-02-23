@@ -46,8 +46,8 @@
             
   <div class="section" id="filter-querier">
 <span id="integrator-querier"></span><h1>Filter (Querier)<a class="headerlink" href="#filter-querier" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="configuration">
-<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="step-1-project-configuration-file">
+<h2>Step 1: Project Configuration file<a class="headerlink" href="#step-1-project-configuration-file" title="Permalink to this headline">¶</a></h2>
 <p>In the filter panel, instead of the standard text field,
 it is possible to display combos providing the available values of
 the attributes. The values are automatically retrieved using a
@@ -92,6 +92,15 @@ attribute level. <code class="docutils literal"><span class="pre">table</span></
 the attribute <code class="docutils literal"><span class="pre">attributeURLs</span></code> in the <code class="docutils literal"><span class="pre">viewer.js</span></code> file:</p>
 </div>
 </div>
+<div class="section" id="step-2-administration-interface">
+<h2>Step 2: Administration interface<a class="headerlink" href="#step-2-administration-interface" title="Permalink to this headline">¶</a></h2>
+<p>The final step is to assign the enumerated attributes to the right layer in the administration.
+Go to the <code class="docutils literal"><span class="pre">metadata</span></code> page, add a <code class="docutils literal"><span class="pre">enumeratedAttributes</span></code> to an existing layer.
+The value is a single string or a list of attributes (that we defined earlier in the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file)
+separated with a comma.</p>
+<p>Client-side documentation related to the enumeratedAttributes metadata is available here:
+<a class="reference external" href="https://camptocamp.github.io/ngeo/master/apidoc/gmfThemes.GmfMetaData.html">gmfThemes.GmfMetaData</a></p>
+</div>
 <div class="section" id="using-db-sessions">
 <h2>Using DB sessions<a class="headerlink" href="#using-db-sessions" title="Permalink to this headline">¶</a></h2>
 <p>As explained above, it is possible to get the attributes lists including
@@ -127,7 +136,8 @@ For instance:</p>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Filter (Querier)</a><ul>
-<li><a class="reference internal" href="#configuration">Configuration</a></li>
+<li><a class="reference internal" href="#step-1-project-configuration-file">Step 1: Project Configuration file</a></li>
+<li><a class="reference internal" href="#step-2-administration-interface">Step 2: Administration interface</a></li>
 <li><a class="reference internal" href="#using-db-sessions">Using DB sessions</a></li>
 </ul>
 </li>
