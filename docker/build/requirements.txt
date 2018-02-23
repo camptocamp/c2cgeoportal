@@ -54,11 +54,11 @@ Shapely==1.6.4.post1  # geoportal
 Sphinx==1.7.0  # doc
 sphinx-prompt==1.0.0  # doc
 tilecloud==0.5.1  # Tile generation
-tilecloud-chain==1.4.0  # Tile generation
+tilecloud-chain==1.4.1  # Tile generation
 transifex-client==0.13.1  # Makefile, rq.filter: !=0.13.0
 virtualenv==15.1.0  # Makefile
 waitress==1.1.0  # pcreate
 WebOb==1.7.4  # geoportal test
 WebTest==2.0.29  # admin tests
-yamllint==1.10.0  # lint
+yamllint==1.11.0  # lint
 zgitignore==0.8.0  # Makefile
