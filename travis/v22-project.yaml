@@ -23,6 +23,7 @@ unmanaged_files:
   - geoportal/testgeomapfish_geoportal/static-ngeo/js/mobile\.js
   - geoportal/testgeomapfish_geoportal/static-ngeo/less/desktop\.less
   - geoportal/testgeomapfish_geoportal/static-ngeo/less/mobile\.less
+  - geoportal/testgeomapfish_geoportal/static-ngeo/components/contextualdata/contextualdata\.html
   - geoportal/testgeomapfish_geoportal/templates/desktop\.html
   - geoportal/testgeomapfish_geoportal/templates/mobile\.html
   - geoportal/testgeomapfish_geoportal/templates/api/api\.js
