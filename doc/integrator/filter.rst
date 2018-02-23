@@ -3,8 +3,8 @@
 Filter (Querier)
 ================
 
-Configuration - #1 Project file
--------------------------------
+Step 1: Project Configuration file
+----------------------------------
 
 In the filter panel, instead of the standard text field,
 it is possible to display combos providing the available values of
@@ -66,8 +66,8 @@ Simple example:
             ...
         },
 
-Configuration - #2 Administration interface
--------------------------------------------
+Step 2: Administration interface
+--------------------------------
 
 The final step is to assign the enumerated attributes to the right layer in the administration.
 Go to the ``metadata`` page, add a ``enumeratedAttributes`` to an existing layer.
