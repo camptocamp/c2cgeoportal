@@ -5,7 +5,7 @@ boto==2.48.0  # Tile generation
 bottle==0.12.13  # i18n
 c2c.cssmin==0.7.dev6  # CGXP build
 c2c.template==2.0.6  # geoportal
-c2cgeoform==2.0.dev20180222  # commons
+c2cgeoform==2.0.dev20180223  # commons
 codacy-coverage==1.3.10  # Codacy send report
 codespell==1.11.0  # Lint
 ColanderAlchemy==0.3.3  # commons
@@ -51,7 +51,7 @@ python-dateutil==2.6.1  # geoportal
 PyYAML==3.12  # geoportal
 rasterio==1.0a12  # geoportal-raster
 Shapely==1.6.4.post1  # geoportal
-Sphinx==1.7.0  # doc
+Sphinx==1.7.1  # doc
 sphinx-prompt==1.0.0  # doc
 tilecloud==0.5.1  # Tile generation
 tilecloud-chain==1.4.1  # Tile generation
