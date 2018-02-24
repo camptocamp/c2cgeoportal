@@ -39,10 +39,6 @@ try:
 except subprocess.CalledProcessError:
     pass
 
-if 'DOCKER_HOST_' in os.environ:
-    with open('/etc/hosts', 'a') as f:
-        f.write('\n{} docker-host\n'.format(os.environ['DOCKER_HOST_']))
-
 # The home directory is required
 if not os.path.exists('/home/' + os.environ['USER_NAME']):
     os.mkdir('/home/' + os.environ['USER_NAME'])
