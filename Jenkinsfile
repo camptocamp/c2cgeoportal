@@ -30,17 +30,10 @@ timeout(time: 2, unit: 'HOURS') {
                 sh 'docker-compose --version'
                 clean()
             }
-            stage('Docker pull') {
-                checkout scm
-                sh 'make pull-base'
-            }
-            stage('Build build Docker image') {
-                checkout scm
-                sh "docker build --tag camptocamp/geomapfish-build-dev:${MAJOR_VERSION} docker/build"
-            }
             stage('Build') {
                 checkout scm
                 sh './docker-run make clean-all'
+                sh 'make docker-build'
                 sh './docker-run travis/empty-make help'
                 sh './docker-run make build'
                 sh './docker-run travis/status.sh'
@@ -72,10 +65,6 @@ timeout(time: 2, unit: 'HOURS') {
                 } finally {
                     sh 'docker-compose down'
                 }
-            }
-            stage('Build geoportal Docker image') {
-                checkout scm
-                sh "docker build --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --tag camptocamp/geomapfish-build:${MAJOR_VERSION} geoportal"
                 sh "./docker-run --image=camptocamp/geomapfish-build grep ${MAJOR_VERSION} /opt/c2cgeoportal_geoportal/c2cgeoportal_geoportal.egg-info/PKG-INFO"
             }
             stage('Test c2cgeoportal') {
