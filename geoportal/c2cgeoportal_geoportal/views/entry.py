@@ -197,9 +197,22 @@ class Entry:
     def _wms_getcap(self, ogc_server=None):
         ogc_server = (ogc_server or self.default_ogc_server)
 
-        return self._wms_getcap_cached(
+        url, content, errors = self._wms_getcap_cached(
             ogc_server, self._get_capabilities_cache_role_key(ogc_server)
         )
+
+        if len(errors) != 0:
+            return None, errors
+
+        wms = None
+        try:
+            wms = WebMapService(None, xml=content)
+        except Exception:  # pragma: no cover
+            error = "WARNING! an error occurred while trying to read the mapfile and recover the themes." \
+                "\nURL: {}\n{}".format(url, content)
+            errors.add(error)
+            log.error(error, exc_info=True)
+        return wms, errors
 
     @cache_region.cache_on_arguments()
     def _wms_getcap_cached(self, ogc_server, _):
@@ -218,7 +231,6 @@ class Entry:
         url = add_url_params(url, sparams)
 
         errors = set()
-        wms = None
 
         url = add_url_params(url, {
             "SERVICE": "WMS",
@@ -245,38 +257,30 @@ class Entry:
         try:
             resp, content = http.request(url, method="GET", headers=headers)
         except Exception:  # pragma: no cover
-            errors.add("Unable to GetCapabilities from url {0!s}".format(url))
-            return None, errors
+            error = "Unable to GetCapabilities from url {}".format(url)
+            errors.add(error)
+            log.error(error, exc_info=True)
+            return url, None, errors
 
         if resp.status < 200 or resp.status >= 300:  # pragma: no cover
-            error = "GetCapabilities from URL {0!s} return the error: {1:d} {2!s}".format(
+            error = "GetCapabilities from URL {} return the error: {:d} {}".format(
                 url, resp.status, resp.reason
             )
             errors.add(error)
-            log.exception(error)
-            return None, errors
+            log.error(error)
+            return url, None, errors
 
         # With wms 1.3 it returns text/xml also in case of error :-(
         if resp.get("content-type").split(";")[0].strip() not in \
                 ["application/vnd.ogc.wms_xml", "text/xml"]:
-            error = "GetCapabilities from URL {0!s} returns a wrong Content-Type: {1!s}\n{2!s}".format(
+            error = "GetCapabilities from URL {} returns a wrong Content-Type: {}\n{}".format(
                 url, resp.get("content-type"), content
             )
             errors.add(error)
-            log.exception(error)
-            return None, errors
+            log.error(error)
+            return url, None, errors
 
-        try:
-            wms = WebMapService(None, xml=content)
-        except Exception:  # pragma: no cover
-            error = _(
-                "WARNING! an error occurred while trying to "
-                "read the mapfile and recover the themes."
-            )
-            error = "{0!s}\nURL: {1!s}\n{2!s}".format(error, url, content)
-            errors.add(error)
-            log.exception(error)
-        return wms, errors
+        return url, content, errors
 
     @staticmethod
     def _create_layer_query(role_id, version, interface):
@@ -886,7 +890,6 @@ class Entry:
         query = self._create_layer_query(role_id, version, interface=interface)
         return [name for (name,) in query.all()]
 
-    @cache_region.cache_on_arguments()
     def _wms_layers(self, role_id, ogc_server):
         """
         role_id is just for cache
@@ -1618,7 +1621,6 @@ class Entry:
             return {
                 "success": True
             }
-        except gaierror as e:
-            log.error("Unable to send the email.")
-            log.exception(e)
+        except gaierror:
+            log.error("Unable to send the email.", exc_info=True)
             raise HTTPBadRequest("See server logs for details")

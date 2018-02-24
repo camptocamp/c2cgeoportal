@@ -27,6 +27,9 @@ vars:
     geoportal:
       port: 80
       environment:
+        VISIBLE_WEB_HOST: localhost:80
+        VISIBLE_WEB_PROTOCOL: https
+        VISIBLE_ENTRY_POINT: /
         PGHOST: 172.17.0.1
         PGHOST_SLAVE: 172.17.0.1
         PGPORT: 5432
@@ -35,12 +38,11 @@ vars:
         PGDATABASE: geomapfish
         PGSCHEMA: main
         PGSCHEMA_STATIC: main_static
-        VISIBLE_WEB_HOST: localhost:80
-        VISIBLE_WEB_PROTOCOL: https
-        VISIBLE_ENTRY_POINT: /
         TINYOWS_URL: http://tinyows/
         MAPSERVER_URL: http://mapserver/
         PRINT_URL: http://print:8080/print/
+        REDIS_HOST: redis
+        REDIS_PORT: 6379
 
   # database user
   dbuser: '{PGUSER}'
@@ -168,7 +170,13 @@ vars:
   #   arguments:
   #   url: 127.0.0.1:11211
   cache:
-    backend: dogpile.cache.memory
+    backend: dogpile.cache.redis
+    arguments:
+      host: '{REDIS_HOST}'
+      port: '{REDIS_PORT}'
+      db: 0
+      redis_expiration_time: 86400  # One day
+      distributed_lock: True
 
   admin_interface:
     # Default values for the admin interface's maps.
@@ -508,3 +516,10 @@ runtime_environment:
   - TINYOWS_URL
   - MAPSERVER_URL
   - PRINT_URL
+  - REDIS_HOST
+  - REDIS_PORT
+
+runtime_postprocess:
+  - expression: int({})
+    vars:
+      - cache.arguments.port

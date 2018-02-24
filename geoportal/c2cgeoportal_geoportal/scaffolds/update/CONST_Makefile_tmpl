@@ -704,7 +704,7 @@ push-docker:
 
 alembic.yaml: vars_testdb.yaml vars.yaml CONST_vars.yaml
 	$(PRERULE_CMD)
-	c2c-template --vars $< --get-config /build/_alembic.yaml srid schema schema_static sqlalchemy.url
+	c2c-template --vars $< --get-config /build/_alembic.yaml srid schema schema_static sqlalchemy.url cache
 	mv /build/_alembic.yaml $@
 
 testdb/11-schemas.sql: vars_testdb.yaml testdb/11-schemas.sql_mako vars.yaml CONST_vars.yaml
@@ -715,11 +715,11 @@ testdb/11-schemas.sql: vars_testdb.yaml testdb/11-schemas.sql_mako vars.yaml CON
 
 testdb/12-alembic.sql: alembic.ini alembic.yaml $(shell ls -1 /opt/alembic/main/*.py)
 	$(PRERULE_CMD)
-	alembic --name=main upgrade --sql head > $@
+	REDIS_HOST=- REDIS_PORT=0 alembic --name=main upgrade --sql head > $@
 
 testdb/13-alembic-static.sql: alembic.ini alembic.yaml $(shell ls -1 /opt/alembic/static/*.py)
 	$(PRERULE_CMD)
-	alembic --name=static upgrade --sql head > $@
+	REDIS_HOST=- REDIS_PORT=0 alembic --name=static upgrade --sql head > $@
 
 .PHONY: testdb-docker
 testdb-docker: testdb/11-schemas.sql testdb/12-alembic.sql testdb/13-alembic-static.sql \

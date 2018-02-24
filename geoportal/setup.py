@@ -74,6 +74,7 @@ install_requires = [
     'PyYAML',
     'SQLAlchemy',
     'Fiona',
+    'redis',
     'rasterio',
 ]
 
