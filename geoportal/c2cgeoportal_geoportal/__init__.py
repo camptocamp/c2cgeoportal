@@ -262,6 +262,10 @@ def _add_static_view(config, name, path):
 def locale_negotiator(request):
     lang = request.params.get("lang")
     if lang is None:
+        lang = request.cookies.get('_LOCALE_')
+    else:
+        request.response.set_cookie('_LOCALE_', lang)
+    if lang is None:
         # if best_match returns None then use the default_locale_name configuration variable
         return request.accept_language.best_match(
             request.registry.settings.get("available_locale_names"),
