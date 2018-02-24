@@ -117,12 +117,12 @@ clean:
 	rm --force geoportal/c2cgeoportal_admin/locale/en/LC_MESSAGES/c2cgeoportal_admin.po
 	rm --recursive --force geoportal/c2cgeoportal_geoportal/static/build
 	rm --force $(MAKO_FILES:.mako=)
-	rm --recursive --force ngeo
 	rm --force $(APPS_FILES)
 	rm --force geoportal/tests/functional/alembic.yaml
 
 .PHONY: clean-all
 clean-all: clean
+	rm --recursive --force ngeo
 	rm --force $(PO_FILES)
 	rm --recursive --force $(BUILD_DIR)/*
 
