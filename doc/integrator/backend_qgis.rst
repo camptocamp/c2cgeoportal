@@ -37,7 +37,7 @@ In the ``apache/mapserv.conf.mako`` do the following changes:
    - ScriptAlias /mapserv /usr/lib/cgi-bin/mapserv
    + ScriptAlias /mapserv /usr/lib/cgi-bin/qgis_mapserv.fcgi
 
-   - SetEnv MS_MAPFILE ${directory}/mapserver/c2cgeoportal.map
+   - SetEnv MS_MAPFILE ${directory}/mapserver/mapserver.map
    + SetEnv QGIS_PROJECT_FILE ${directory}/qgisserver.qgs
 
 Application configuration

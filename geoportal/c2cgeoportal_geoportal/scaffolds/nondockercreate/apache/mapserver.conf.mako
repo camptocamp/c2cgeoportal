@@ -11,5 +11,5 @@ ScriptAlias /${instanceid}/mapserv /usr/lib/cgi-bin/mapserv
    # MapServer run in FastCGI mode by default.
    # If mod_fcgid is not available, replace 'fcgid-script' by 'cgi-script' to
    # use the CGI mode.
-   SetEnv MS_MAPFILE ${project_directory}/mapserver/c2cgeoportal.map
+   SetEnv MS_MAPFILE ${project_directory}/mapserver/mapserver.map
 </Location>

@@ -10,8 +10,10 @@ __pycache__/
 /testdb/11-schemas.sql
 /testdb/12-alembic.sql
 /testdb/13-alembic-static.sql
+/mapcache/
+/tilegeneration/config.yaml
 /print/print-apps/{{package}}/config.yaml
-/mapserver/c2cgeoportal.map.tmpl
+/mapserver/mapserver.map.tmpl
 /mapserver/demo.map.tmpl
 /mapserver/mapserver.map
 /mapserver/tinyows.xml

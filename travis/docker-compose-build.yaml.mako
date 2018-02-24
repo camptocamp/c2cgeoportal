@@ -1,5 +1,7 @@
+<%namespace file="CONST.mako_inc" import="service_defaults"/>\
 ---
-# A compose file for development.
+
+# A compose file for the build.
 
 version: '2'
 
@@ -9,58 +11,30 @@ volumes:
       name: ${build_volume_name}
 
 services:
+  config:
+    image: ${docker_base}-config:${docker_tag}
+
   db:
     image: ${docker_base}-testdb:${docker_tag}
-    environment:
-      POSTGRES_DB: geomapfish
-      POSTGRES_USER: www-data
-      POSTGRES_PASSWORD: www-data
-% if development == "TRUE":
-    ports:
-      - 15432:5432
-% endif
+${service_defaults('db', 5432)}\
 
   external-db:
-    image: camptocamp/testgeomapfish-external-db:latest
-    environment:
-      POSTGRES_DB: test
-      POSTGRES_USER: www-data
-      POSTGRES_PASSWORD: www-data
-% if development == "TRUE":
-    ports:
-      - 25432:5432
-% endif
+    image: ${docker_base}-external-db:latest
+${service_defaults('external-db', 5432)}\
 
   mapserver:
-    image: ${docker_base}-mapserver:${docker_tag}
-% if development == "TRUE":
-    ports:
-      - 8380:80
-% endif
+    image: camptocamp/mapserver:7.0
+    volumes_from:
+      - config:rw
+    links:
+      - db
+${service_defaults('mapserver', 80)}\
 
   build:
     image: camptocamp/geomapfish-build:${geomapfish_version}
     volumes:
       - build:/build
       - .:/src
-    environment:
-      - USER_NAME
-      - USER_ID
-      - GROUP_ID
-      - VISIBLE_WEB_HOST=-
-      - VISIBLE_WEB_PROTOCOL=-
-      - VISIBLE_ENTRY_POINT=-
-      - PGHOST=db
-      - PGHOST_SLAVE=db
-      - PGPORT=5432
-      - PGUSER=www-data
-      - PGPASSWORD=www-data
-      - PGDATABASE=geomapfish
-      - PGSCHEMA=main
-      - PGSCHEMA_STATIC=main_static
-      - TINYOWS_URL=http://tinyows/
-      - MAPSERVER_URL=http://mapserver/
-      - PRINT_URL=http://print:8080/print/
     stdin_open: true
     tty: true
     entrypoint:
@@ -70,3 +44,7 @@ services:
       - db
       - external-db
       - mapserver
+${service_defaults('geoportal', 80, True)}\
+      - USER_NAME
+      - USER_ID
+      - GROUP_ID

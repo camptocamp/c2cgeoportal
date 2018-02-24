@@ -1,0 +1,7 @@
+*
+!front/
+!mapserver/
+!qgisserver/
+!mapcache/
+!tilegeneration/config.yaml
+!print/print-apps/

@@ -3,6 +3,21 @@
 extends: vars.yaml
 
 vars:
+  docker_services:
+    external-db:
+      environment:
+        POSTGRES_USER: www-data
+        POSTGRES_PASSWORD: www-data
+        POSTGRES_DB: test
+
+    geoportal:
+      port: 8080
+      environment:
+        PGHOST: db
+        PGHOST_SLAVE: db
+        VISIBLE_WEB_HOST: localhost:8080
+        VISIBLE_WEB_PROTOCOL: http
+
   dbsessions:
     travis_test:
       url: postgresql://{dbuser}:{dbpassword}@external-db:{dbport}/test
@@ -25,3 +40,4 @@ update_paths:
   - layers
   - checker.lang
   - checker.routes
+  - docker_services.geoportal.environment

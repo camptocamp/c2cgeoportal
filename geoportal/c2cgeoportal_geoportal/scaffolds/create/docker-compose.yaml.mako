@@ -1,32 +1,51 @@
+<%namespace file="CONST.mako_inc" import="service_defaults"/>\
 ---
-<%def name="defaults(service, inner_port, port_required=False)">
-% if 'environment' in docker_services.get(service, {}):
-    environment:
-% for key, value in docker_services[service]['environment'].items():
-      ${key}: ${repr(value)}
-% endfor
-% endif
-% if port_required or 'port' in docker_services.get(service, {}):
-    ports:
-      - ${docker_services[service]['port']}:${inner_port}
-% endif
-</%def>
-# The project Docker compose file.
+
+# The project Docker compose file for development.
+
 version: '2'
 services:
-  db:
-    image: ${docker_base}-testdb:${docker_tag}
-${defaults('db', 5432)}
+  config:
+    image: ${docker_base}-config:${docker_tag}
 
   print:
-    image: ${docker_base}-print:${docker_tag}
-${defaults('print', 8080)}
+    image: camptocamp/mapfish_print:3.12.1
+    volumes_from:
+      - config:ro
+${service_defaults('print', 8080)}\
 
   mapserver:
-    image: ${docker_base}-mapserver:${docker_tag}
-${defaults('mapserver', 80)}
+    image: camptocamp/mapserver:7.0
+    volumes_from:
+      - config:rw
+${service_defaults('mapserver', 80)}\
 
+##  qgisserver:
+##    image: camptocamp/geomapfish-qgisserver
+##    volumes_from:
+##      - config:ro
+##${service_defaults('mapserver', 80)}
+
+  mapcache:
+    image: camptocamp/mapcache:1.6
+    volumes_from:
+      - config:ro
+${service_defaults('mapserver', 80)}\
+
+  memcached:
+    image: memcached:1.5
+${service_defaults('mapserver', 11211)}\
+
+  redis:
+    image: redis:3.2
+${service_defaults('mapserver', 6379)}\
+
+  tilecloudchain:
+    image: camptocamp/tilecloud-chain:1.4.0.dev11
+    volumes_from:
+      - config:ro
+${service_defaults('mapserver', 80)}\
 
   geoportal:
     image: ${docker_base}-geoportal:${docker_tag}
-${defaults('geoportal', 80, True)}
+${service_defaults('geoportal', 80, True)}\

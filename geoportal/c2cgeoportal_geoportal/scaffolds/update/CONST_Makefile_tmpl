@@ -47,6 +47,7 @@ endif
 WEB_RULE ?= $(DEFAULT_WEB_RULE)
 
 DEFAULT_BUILD_RULES ?= geoportal-docker \
+	config-docker \
 	project.yaml \
 	alembic.ini \
 	alembic.yaml \
@@ -66,15 +67,6 @@ endif
 
 
 # Make rules
-ifeq ($(TILECLOUD_CHAIN), TRUE)
-DEFAULT_BUILD_RULES += tilegeneration/config.yaml
-endif
-ifeq ($(PRINT), TRUE)
-DEFAULT_BUILD_RULES += print-docker
-endif
-ifeq ($(MAPSERVER), TRUE)
-DEFAULT_BUILD_RULES += mapserver-docker
-endif
 ifeq (${DEVELOPMENT}, TRUE)
 DEFAULT_BUILD_RULES += testdb-docker
 endif
@@ -374,13 +366,14 @@ yamllint: $(YAML_FILES)
 .PHONY: clean
 clean: template-clean
 	rm --recursive --force /build/*.timestamp \
-		apache/mapcache.xml apache/tiles.conf \
+		mapcache/mapcache.xml apache/tiles.conf \
 		mapserver/mapserver.map \
 		$(OUTPUT_DIR)/ \
 		$(APP_OUTPUT_DIR)/ \
 		geoportal/$(PACKAGE)_geoportal/locale/$(PACKAGE)-*.pot \
 		alembic.yaml \
-		.UPGRADE*
+		.UPGRADE* \
+		mapcache
 ifeq ($(TILECLOUD_CHAIN_LOCAL), TRUE)
 	rm --force $(WMTSCAPABILITIES_FILE)
 endif
@@ -680,24 +673,16 @@ $(CSS_XAPI_OUTPUT): \
 	$(VENV_BIN)/pip install --editable=commons --editable=geoportal
 	touch $@
 
-# Print
-
-.PHONY: print-docker
-print-docker: $(shell docker-required --path print)
-	docker build --tag=$(DOCKER_BASE)-print:$(DOCKER_TAG) print
-
 # Docker
 
 docker-compose-build.yaml: /build/requirements.timestamp
 
-.PHONY: mapserver-docker
-mapserver-docker: $(shell docker-required --path mapserver) \
-		mapserver/mapserver.map
-	docker build --tag=$(DOCKER_BASE)-mapserver:$(DOCKER_TAG) mapserver
-
-mapserver/mapserver.map:
-	$(PRERULE_CMD)
-	echo 'INCLUDE "c2cgeoportal.map"' > $@
+.PHONY: config-docker
+config-docker: $(shell docker-required --path .) \
+		print/print-apps/$(PACKAGE)/config.yaml \
+		mapserver/mapserver.map.tmpl \
+		mapcache/mapcache.xml
+	docker build -t $(DOCKER_BASE)-config:$(DOCKER_TAG) .
 
 .PHONY: geoportal-docker
 geoportal-docker: $(shell docker-required --path geoportal) \
@@ -754,5 +739,13 @@ upgrade%: project.yaml
 	c2cupgrade $(UPGRADE_ARGS) --step $*
 
 # Tilecloud chain
+
+mapcache/mapcache.xml: tilegeneration/config.yaml
+	$(PRERULE_CMD)
+	mkdir --parent $(dir $@)
+	generate_controller --mapcache
+
 $(WMTSCAPABILITIES_FILE): tilegeneration/config.yaml
+	$(PRERULE_CMD)
+	mkdir --parent $(dir $@)
 	generate_controller --capabilities
