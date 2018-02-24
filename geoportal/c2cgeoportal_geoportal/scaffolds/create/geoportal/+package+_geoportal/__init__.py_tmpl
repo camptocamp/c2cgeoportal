@@ -17,6 +17,11 @@ def main(global_config, **settings):
     )
 
     config.include('c2cgeoportal_geoportal')
+    config.get_settings()['pyramid.available_languages'] = 'en'
+    config.include('c2cgeoportal_admin', route_prefix='/admin')
+
+    # use pyramid_retry to retry a request when transient exceptions occur
+    config.include('pyramid_retry')
 
     config.add_translation_dirs('{{package}}_geoportal:locale/')
 

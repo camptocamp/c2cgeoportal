@@ -5,8 +5,8 @@ from sqlalchemy.orm import subqueryload
 
 from c2cgeoform.views.abstract_views import ItemAction
 
-from c2cgeoportal_commons.models.main import \
-    LayergroupTreeitem, Theme, TreeGroup, TreeItem
+from c2cgeoportal_commons.models import DBSession
+from c2cgeoportal_commons.models.main import LayergroupTreeitem, Theme, TreeGroup, TreeItem
 
 from c2cgeoportal_admin import _
 
@@ -24,7 +24,6 @@ class LayerTreeViews():
 
     def __init__(self, request):
         self._request = request
-        self._dbsession = request.dbsession
 
     @view_config(route_name='layertree',
                  renderer='../templates/layertree.jinja2')
@@ -41,10 +40,9 @@ class LayerTreeViews():
             options(subqueryload('children_relation')). \
             all()
 
-        items = self._dbsession.query(TreeItem). \
-            all()
+        items = self._dbsession.query(TreeItem).all()
 
-        themes = self._dbsession.query(Theme). \
+        themes = session.query(Theme). \
             order_by(Theme.ordering). \
             all()
 
@@ -159,14 +157,14 @@ class LayerTreeViews():
     def unlink(self):
         group_id = self._request.matchdict.get('group_id')
         item_id = self._request.matchdict.get('item_id')
-        link = self._request.dbsession.query(LayergroupTreeitem). \
+        session = DBSession()  # pylint: disable=not-callable
+        link = session.query(LayergroupTreeitem). \
             filter(LayergroupTreeitem.treegroup_id == group_id). \
             filter(LayergroupTreeitem.treeitem_id == item_id). \
             one_or_none()
         if link is None:
             raise HTTPNotFound()
         self._request.dbsession.delete(link)
-        self._request.dbsession.flush()
         return {
             'success': True,
             'redirect': self._request.route_url('layertree')
@@ -177,11 +175,11 @@ class LayerTreeViews():
                  renderer='json')
     def delete(self):
         item_id = self._request.matchdict.get('item_id')
-        item = self._request.dbsession.query(TreeItem).get(item_id)
+        session = DBSession()  # pylint: disable=not-callable
+        item = session.query(TreeItem).get(item_id)
         if item is None:
             raise HTTPNotFound()
         self._request.dbsession.delete(item)
-        self._request.dbsession.flush()
         return {
             'success': True,
             'redirect': self._request.route_url('layertree')

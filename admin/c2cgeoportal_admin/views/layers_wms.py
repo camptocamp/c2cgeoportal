@@ -3,12 +3,12 @@ from pyramid.view import view_defaults
 from pyramid.view import view_config
 
 from sqlalchemy import inspect, insert, delete, update
-from zope.sqlalchemy import mark_changed
 
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import ListField, ItemAction
 from deform.widget import FormWidget
 
+from c2cgeoportal_commons.models import DBSession
 from c2cgeoportal_commons.models.main import \
     LayerWMS, LayerWMTS, OGCServer, LayerGroup, TreeItem
 
@@ -50,7 +50,7 @@ class LayerWmsViews(DimensionLayerViews):
 
     def _base_query(self):
         return super()._base_query(
-            self._request.dbsession.query(LayerWMS).distinct().
+            DBSession.query(LayerWMS).distinct().
             outerjoin('ogc_server'))
 
     @view_config(route_name='c2cgeoform_index',
@@ -82,8 +82,7 @@ class LayerWmsViews(DimensionLayerViews):
                  renderer='../templates/edit.jinja2')
     def view(self):
         if self._is_new():
-            dbsession = self._request.dbsession
-            default_wms = LayerWMS.get_default(dbsession)
+            default_wms = LayerWMS.get_default()
             if default_wms:
                 return self.copy(default_wms, excludes=['name', 'layer'])
         return super().edit()
@@ -111,9 +110,9 @@ class LayerWmsViews(DimensionLayerViews):
                  renderer='json')
     def convert_to_wmts(self):
         src = self._get_object()
-        dbsession = self._request.dbsession
-        default_wmts = LayerWMTS.get_default(dbsession)
-        with dbsession.no_autoflush:
+        default_wmts = LayerWMTS.get_default()
+        session = DBSession()  # pylint: disable=not-callable
+        with session.no_autoflush:
             d = delete(LayerWMS.__table__)
             d = d.where(LayerWMS.__table__.c.id == src.id)
             i = insert(LayerWMTS.__table__)
@@ -127,13 +126,10 @@ class LayerWmsViews(DimensionLayerViews):
             u = update(TreeItem.__table__)
             u = u.where(TreeItem.__table__.c.id == src.id)
             u = u.values({'type': 'l_wmts'})
-            dbsession.execute(d)
-            dbsession.execute(i)
-            dbsession.execute(u)
-            dbsession.expunge(src)
-
-        dbsession.flush()
-        mark_changed(dbsession)
+            session.execute(d)
+            session.execute(i)
+            session.execute(u)
+            session.expunge(src)
 
         return {
             'success': True,

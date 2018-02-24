@@ -7,6 +7,7 @@ from sqlalchemy.orm import subqueryload
 from sqlalchemy.sql.functions import concat
 from pyramid.view import view_config
 
+from c2cgeoportal_commons.models import DBSession
 from c2cgeoportal_commons.models.main import TreeItem, Metadata, \
     LayergroupTreeitem, TreeGroup
 
@@ -43,9 +44,10 @@ class TreeItemViews(AbstractViews):
                                          self._appstruct is not None and
                                          self._appstruct.get('parent_id'))
         if has_to_be_registred_in_parent:
-            parent = self._request.dbsession.query(TreeGroup).get(has_to_be_registred_in_parent)
+            session = DBSession()  # pylint: disable=not-callable
+            parent = session.query(TreeGroup).get(has_to_be_registred_in_parent)
             rel = LayergroupTreeitem(parent, self._obj, 100)
-            self._request.dbsession.add(rel)
+            session.add(rel)
         return response
 
     def _base_query(self, query):

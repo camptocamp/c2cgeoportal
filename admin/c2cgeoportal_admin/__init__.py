@@ -5,6 +5,7 @@ from c2cwsgiutils.health_check import HealthCheck
 import c2cgeoform
 from pkg_resources import resource_filename
 
+import c2cgeoportal_commons.models
 from c2cgeoportal_commons.config import config as configuration
 
 
@@ -62,11 +63,16 @@ def main(_, **settings):
     return config.make_wsgi_app()
 
 
-def includeme(config: Configurator):
+def includeme(config):
+    config.include('c2cwsgiutils.pyramid')
     config.include('pyramid_jinja2')
     config.include('c2cgeoform')
     config.include('c2cgeoportal_commons')
-    config.include('c2cgeoportal_admin.routes')
-    # Use pyramid_tm to hook the transaction lifecycle to the request
+    config.include(c2cgeoportal_admin.routes)
+    # use pyramid_tm to hook the transaction lifecycle to the request
     config.include('pyramid_tm')
+    config.add_request_method(
+        lambda request: c2cgeoportal_commons.models.DBSession, 'dbsession', reify=True
+    )
+
     config.scan()

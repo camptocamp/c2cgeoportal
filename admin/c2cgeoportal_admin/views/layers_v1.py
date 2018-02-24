@@ -6,6 +6,7 @@ from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import ListField
 from deform.widget import FormWidget
 
+from c2cgeoportal_commons.models import DBSession
 from c2cgeoportal_commons.models.main import LayerV1
 
 from c2cgeoportal_admin.schemas.metadata import metadatas_schema_node
@@ -56,7 +57,7 @@ class LayerV1Views(LayerViews):
 
     def _base_query(self, query=None):
         return super()._base_query(
-            self._request.dbsession.query(LayerV1).distinct())
+            DBSession.query(LayerV1).distinct())
 
     @view_config(route_name='c2cgeoform_index',
                  renderer='../templates/index.jinja2')

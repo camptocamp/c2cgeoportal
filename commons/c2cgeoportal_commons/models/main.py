@@ -38,7 +38,7 @@ from sqlalchemy.types import Integer, Boolean, Unicode, Float, String, \
     Enum, UserDefinedType
 from sqlalchemy import UniqueConstraint, Column
 from sqlalchemy.schema import Index
-from sqlalchemy.orm import relationship, backref, Session
+from sqlalchemy.orm import relationship, backref
 from geoalchemy2 import Geometry
 from geoalchemy2.shape import to_shape
 
@@ -47,7 +47,7 @@ from deform.widget import HiddenWidget, SelectWidget, TextAreaWidget
 from c2cgeoform.ext import colander_ext, deform_ext
 
 from c2cgeoportal_commons.config import config
-from c2cgeoportal_commons.models import Base
+from c2cgeoportal_commons.models import Base, DBSession
 from c2cgeoportal_commons.models.sqlalchemy import JSONEncodedDict
 
 try:
@@ -976,8 +976,8 @@ class LayerWMS(DimensionLayer):
         self.time_widget = time_widget
 
     @staticmethod
-    def get_default(dbsession: Session) -> DimensionLayer:
-        return dbsession.query(LayerWMS).filter(LayerWMS.name == 'wms-defaults').one_or_none()
+    def get_default() -> DimensionLayer:
+        return DBSession.query(LayerWMS).filter(LayerWMS.name == 'wms-defaults').one_or_none()
 
 
 class LayerWMTS(DimensionLayer):
@@ -1041,8 +1041,8 @@ class LayerWMTS(DimensionLayer):
         self.image_type = image_type
 
     @staticmethod
-    def get_default(dbsession: Session) -> DimensionLayer:
-        return dbsession.query(LayerWMTS).filter(LayerWMTS.name == 'wmts-defaults').one_or_none()
+    def get_default() -> DimensionLayer:
+        return DBSession.query(LayerWMTS).filter(LayerWMTS.name == 'wmts-defaults').one_or_none()
 
 
 # association table role <> restriction area

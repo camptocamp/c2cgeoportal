@@ -11,6 +11,7 @@ from deform.widget import FormWidget
 
 from c2cgeoportal_admin import _
 from c2cgeoportal_admin.schemas.dimensions import dimensions_schema_node
+from c2cgeoportal_commons.models import DBSession
 from c2cgeoportal_commons.models.main import \
     LayerWMTS, LayerWMS, LayerGroup, TreeItem
 from c2cgeoportal_admin.schemas.metadata import metadatas_schema_node
@@ -44,8 +45,7 @@ class LayerWmtsViews(DimensionLayerViews):
     _base_schema = base_schema
 
     def _base_query(self, query=None):
-        return super()._base_query(
-            self._request.dbsession.query(LayerWMTS).distinct())
+        return super()._base_query(DBSession.query(LayerWMTS).distinct())
 
     @view_config(route_name='c2cgeoform_index',
                  renderer='../templates/index.jinja2')
@@ -76,8 +76,7 @@ class LayerWmtsViews(DimensionLayerViews):
                  renderer='../templates/edit.jinja2')
     def view(self):
         if self._is_new():
-            dbsession = self._request.dbsession
-            default_wmts = LayerWMTS.get_default(dbsession)
+            default_wmts = LayerWMTS.get_default()
             if default_wmts:
                 return self.copy(default_wmts, excludes=['name', 'layer'])
         return super().edit()
@@ -105,8 +104,8 @@ class LayerWmtsViews(DimensionLayerViews):
                  renderer='json')
     def convert_to_wms(self):
         src = self._get_object()
-        dbsession = self._request.dbsession
-        default_wms = LayerWMS.get_default(dbsession)
+        default_wms = LayerWMS.get_default()
+        dbsession = DBSession()  # pylint: disable=not-callable
         with dbsession.no_autoflush:
             d = delete(LayerWMTS.__table__)
             d = d.where(LayerWMTS.__table__.c.id == src.id)
