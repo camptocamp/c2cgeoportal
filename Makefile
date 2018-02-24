@@ -97,8 +97,8 @@ build: c2c-egg \
 	$(L10N_PO_FILES) \
 	$(APPS_FILES) \
 	admin/tests.ini \
-	/build/adminbuild-docker.timestamp \
-	/build/build-docker.timestamp \
+	adminbuild-docker \
+	build-docker \
 	prepare-tests
 
 .PHONY: doc
@@ -135,10 +135,9 @@ $(BUILD_DIR)/sphinx.timestamp: $(SPHINX_FILES) $(SPHINX_MAKO_FILES:.mako=)
 	doc/build.sh
 	touch $@
 
-/build/gisdb-docker.timestamp: $(shell docker-required --path docker/gis-db)
-	$(PRERULE_CMD)
+.PHONY: gisdb-docker
+gisdb-docker: $(shell docker-required --path docker/gis-db)
 	docker build --tag=$(DOCKER_TEST_BASE)-gis-db:latest docker/gis-db
-	touch $@
 
 geoportal/tests/functional/alembic.yaml: $(BUILD_DIR)/c2ctemplate-cache.json
 	$(PRERULE_CMD)
@@ -158,49 +157,40 @@ docker/test-db/13-alembic-static.sql: \
 	$(PRERULE_CMD)
 	alembic --config=$< --name=static upgrade --sql head > $@
 
-/build/testdb-docker.timestamp: $(shell docker-required --path docker/test-db) \
+testdb-docker: $(shell docker-required --path docker/test-db) \
 		docker/test-db/12-alembic.sql docker/test-db/13-alembic-static.sql \
-		/build/gisdb-docker.timestamp
-	$(PRERULE_CMD)
+		gisdb-docker
 	docker build --tag=$(DOCKER_TEST_BASE)-db:latest docker/test-db
-	touch $@
 
-/build/testmapserver-docker.timestamp: $(shell docker-required --path docker/test-mapserver)
-	$(PRERULE_CMD)
+testmapserver-docker: $(shell docker-required --path docker/test-mapserver)
 	docker build --tag=$(DOCKER_TEST_BASE)-mapserver:latest docker/test-mapserver
-	touch $@
 
-/build/adminbuild-docker.timestamp: $(shell docker-required --path docker/admin-build) \
-		/build/commons-docker.timestamp \
+adminbuild-docker: $(shell docker-required --path docker/admin-build) \
+		commons-docker \
 		docker/admin-build/npm-packages
-	$(PRERULE_CMD)
 	docker build --tag=$(DOCKER_BASE)-admin-build:$(MAJOR_VERSION) docker/admin-build
-	touch $@
 
-/build/commons-docker.timestamp: $(shell docker-required --path commons --replace-pattern=) \
+commons-docker: $(shell docker-required --path commons --replace-pattern=) \
 		commons/tests.yaml
-	$(PRERULE_CMD)
 	docker build --build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --tag=$(DOCKER_BASE)-commons:$(MAJOR_VERSION) commons
-	touch $@
 
-/build/build-docker.timestamp: $(shell docker-required --path geoportal  --replace-pattern='^test(.*).mako$/test/\1') \
-		/build/commons-docker.timestamp \
+.PHONY: build-docker
+build-docker: $(shell docker-required --path geoportal  --replace-pattern='^test(.*).mako$/test/\1') \
+		commons-docker \
 		geoportal/c2cgeoportal_geoportal/scaffolds/create/docker-run \
 		geoportal/npm-packages \
 		geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/ \
 		geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/CONST_create_template/
-	$(PRERULE_CMD)
 	docker build --build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --tag=$(DOCKER_BASE)-build:$(MAJOR_VERSION) geoportal
-	touch $@
 
 .PHONY: prepare-tests
 prepare-tests: $(BUILD_DIR)/requirements.timestamp \
 		geoportal/tests/functional/test.ini \
 		commons/tests.yaml \
 		docker-compose.yaml \
-		/build/testmapserver-docker.timestamp \
-		/build/testdb-docker.timestamp \
-		/build/adminbuild-docker.timestamp \
+		testmapserver-docker \
+		testdb-docker \
+		adminbuild-docker \
 		$(addprefix geoportal/c2cgeoportal_geoportal/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal_geoportal.po, $(LANGUAGES)))
 
 .PHONY: tests
@@ -301,6 +291,7 @@ transifex-init: $(TX_DEPENDENCIES) \
 .PHONY: import-ngeo-apps
 import-ngeo-apps: $(APPS_FILES)
 
+.PRECIOUS: ngeo
 ngeo: $(BUILD_DIR)/requirements.timestamp
 	$(PRERULE_CMD)
 	if [ ! -e "ngeo" ] ; then git clone --depth 1 --branch=$(shell VERSION=$(VERSION) $(BUILD_DIR)/venv/bin/ngeo-version) https://github.com/camptocamp/ngeo.git ; fi
