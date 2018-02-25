@@ -48,7 +48,7 @@ If you modify something in the folder ``docker/build`` build the base image:
 
 .. prompt:: bash
 
-    docker build --tag camptocamp/geomapfish-build-dev:${major_version} docker/build
+    docker build --tag=camptocamp/geomapfish-build-dev:${major_version} docker/build
 
 Build everything:
 

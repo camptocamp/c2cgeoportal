@@ -46,7 +46,7 @@ CLIENT_CHECK_RULE ?= lint-ngeo
 endif
 WEB_RULE ?= $(DEFAULT_WEB_RULE)
 
-DEFAULT_BUILD_RULES ?= /build/geoportal-docker.timestamp \
+DEFAULT_BUILD_RULES ?= geoportal-docker \
 	project.yaml \
 	alembic.ini \
 	alembic.yaml \
@@ -70,13 +70,13 @@ ifeq ($(TILECLOUD_CHAIN), TRUE)
 DEFAULT_BUILD_RULES += tilegeneration/config.yaml
 endif
 ifeq ($(PRINT), TRUE)
-DEFAULT_BUILD_RULES += /build/print-docker.timestamp
+DEFAULT_BUILD_RULES += print-docker
 endif
 ifeq ($(MAPSERVER), TRUE)
-DEFAULT_BUILD_RULES += /build/mapserver-docker.timestamp
+DEFAULT_BUILD_RULES += mapserver-docker
 endif
 ifeq (${DEVELOPMENT}, TRUE)
-DEFAULT_BUILD_RULES += /build/testdb-docker.timestamp
+DEFAULT_BUILD_RULES += testdb-docker
 endif
 
 BUILD_RULES ?= $(filter-out $(DISABLE_BUILD_RULES),$(DEFAULT_BUILD_RULES))
@@ -683,46 +683,33 @@ $(CSS_XAPI_OUTPUT): \
 # Print
 
 .PHONY: print-docker
-print-docker: /build/print-docker.timestamp
-
-/build/print-docker.timestamp: $(shell docker-required --path print)
-	$(PRERULE_CMD)
-	docker build -t $(DOCKER_BASE)-print:$(DOCKER_TAG) print
-	touch $@
+print-docker: $(shell docker-required --path print)
+	docker build --tag=$(DOCKER_BASE)-print:$(DOCKER_TAG) print
 
 # Docker
 
 docker-compose-build.yaml: /build/requirements.timestamp
 
 .PHONY: mapserver-docker
-mapserver-docker: /build/mapserver-docker.timestamp
-
-/build/mapserver-docker.timestamp: $(shell docker-required --path mapserver) \
+mapserver-docker: $(shell docker-required --path mapserver) \
 		mapserver/mapserver.map
-	$(PRERULE_CMD)
-	docker build -t $(DOCKER_BASE)-mapserver:$(DOCKER_TAG) mapserver
-	touch $@
+	docker build --tag=$(DOCKER_BASE)-mapserver:$(DOCKER_TAG) mapserver
 
 mapserver/mapserver.map:
 	$(PRERULE_CMD)
 	echo 'INCLUDE "c2cgeoportal.map"' > $@
 
 .PHONY: geoportal-docker
-geoportal-docker: /build/geoportal-docker.timestamp
-
-/build/geoportal-docker.timestamp: $(shell docker-required --path geoportal) \
+geoportal-docker: $(shell docker-required --path geoportal) \
 		$(SERVER_LOCALISATION_RULES) \
 		$(WEB_RULE) \
 		geoportal/config.yaml \
-		/build/commons-docker.timestamp
-	$(PRERULE_CMD)
-	docker build -t $(DOCKER_BASE)-geoportal:$(DOCKER_TAG) --build-arg "GIT_HASH=$(GIT_HASH)" geoportal
-	touch $@
+		commons-docker
+	docker build --tag=$(DOCKER_BASE)-geoportal:$(DOCKER_TAG) --build-arg="GIT_HASH=$(GIT_HASH)" geoportal
 
-/build/commons-docker.timestamp: $(shell docker-required --path commons)
-	$(PRERULE_CMD)
-	docker build -t $(DOCKER_BASE)-commons:$(DOCKER_TAG) commons
-	touch $@
+.PHONY: commons-docker
+commons-docker: $(shell docker-required --path commons)
+	docker build --tag=$(DOCKER_BASE)-commons:$(DOCKER_TAG) commons
 
 .PHONY: push-docker
 push-docker:
@@ -750,13 +737,9 @@ testdb/13-alembic-static.sql: alembic.ini alembic.yaml $(shell ls -1 /opt/alembi
 	alembic --name=static upgrade --sql head > $@
 
 .PHONY: testdb-docker
-testdb-docker: /build/testdb-docker.timestamp
-
-/build/testdb-docker.timestamp: testdb/11-schemas.sql testdb/12-alembic.sql testdb/13-alembic-static.sql \
+testdb-docker: testdb/11-schemas.sql testdb/12-alembic.sql testdb/13-alembic-static.sql \
 		$(shell docker-required --path testdb)
-	$(PRERULE_CMD)
-	docker build -t $(DOCKER_BASE)-testdb:$(DOCKER_TAG) testdb
-	touch $@
+	docker build --tag=$(DOCKER_BASE)-testdb:$(DOCKER_TAG) testdb
 
 # Upgrade
 
