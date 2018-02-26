@@ -25,5 +25,6 @@ restrictionareas_schema_node = colander.SequenceSchema(
             )
         )
     ),
-    validator=manytomany_validator
+    validator=manytomany_validator,
+    missing=colander.drop
 )
