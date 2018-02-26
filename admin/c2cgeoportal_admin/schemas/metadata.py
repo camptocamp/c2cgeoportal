@@ -8,9 +8,9 @@ from c2cgeoportal_admin import _
 
 
 @colander.deferred
-def metadata_types(node, kw):  # pylint: disable=unused-argument
+def metadata_definitions(node, kw):  # pylint: disable=unused-argument
     return {
-        m['name']: m.get('type', 'string')
+        m['name']: m
         for m in kw['request'].registry.settings['admin_interface']['available_metadata']
     }
 
@@ -32,6 +32,18 @@ def json_validator(node, value):
         json.loads(value)
     except JSONDecodeError as e:
         raise colander.Invalid(node, _('Parser report: "{}"').format(str(e)))
+
+
+def regex_validator(node, value):
+    definition = node.metadata_definitions[value['name']]
+    if definition.get('type', 'string') == 'regex':
+        validator = colander.Regex(definition['regex'], msg=_(definition['error_message']))
+        try:
+            validator(node['string'], value['string'])
+        except colander.Invalid as e:
+            error = colander.Invalid(node)
+            error.add(e, node.children.index(node['string']))
+            raise error
 
 
 class MetadataSchemaNode(GeoFormSchemaNode):
@@ -76,7 +88,7 @@ class MetadataSchemaNode(GeoFormSchemaNode):
         return dict_
 
     def _ui_type(self, metadata_name):
-        metadata_type = self.metadata_types.get(metadata_name, 'string')
+        metadata_type = self.metadata_definitions[metadata_name].get('type', 'string')
         return metadata_type if metadata_type in self.available_types else 'string'
 
 
@@ -84,7 +96,8 @@ metadatas_schema_node = colander.SequenceSchema(
     MetadataSchemaNode(
         Metadata,
         name='metadata',
-        metadata_types=metadata_types,
+        metadata_definitions=metadata_definitions,
+        validator=regex_validator,
         widget=MappingWidget(template='metadata'),
         overrides={
             'name': {
@@ -93,7 +106,7 @@ metadatas_schema_node = colander.SequenceSchema(
         }
     ),
     name='metadatas',
-    metadata_types=metadata_types,
+    metadata_definitions=metadata_definitions,
     widget=SequenceWidget(
         template='metadatas',
         category='structural')

@@ -236,6 +236,24 @@ class TestMetadatasView(AbstractViewsTests):
             }]}''',
             302)
 
+    def test_invalid_color(self, test_app, metadatas_test_data):
+        self._post_invalid_metadata(
+            test_app,
+            '/layers_wms/new',
+            self._base_metadata_params(metadatas_test_data),
+            '_color',
+            '#W007DCD',
+            'Expecting hex format for color, e.g. #007DCD')
+
+    def test_valid_color(self, test_app, metadatas_test_data):
+        self._post_metadata(
+            test_app,
+            '/layers_wms/new',
+            self._base_metadata_params(metadatas_test_data),
+            '_color',
+            '#007DCD',
+            302)
+
     def _test_edit_treeitem(self, prefix, item, test_app):
         resp = self.get(test_app, '{}/{}'.format(prefix, item.id))
         self._check_metadatas(test_app,
