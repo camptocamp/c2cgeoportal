@@ -12,6 +12,10 @@ vars:
     map_zoom: 10
     map_fit_max_zoom: 14
 
+    color_validator:
+        regex: "^#([A-Fa-f0-9]{{6}}|[A-Fa-f0-9]{{3}})$"
+        msg: "Expecting hex format for color, e.g. #007DCD"
+
     available_metadata:
       # Layers group
       - name: isExpanded
@@ -79,6 +83,9 @@ vars:
         type: json
       - name: _unknown
         type: unknown
+      - name: _color
+        type: color
+
 environment: []
 no_interpreted:
 - admin_interface.map_base_layer
