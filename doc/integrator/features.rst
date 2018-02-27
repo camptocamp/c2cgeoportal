@@ -34,6 +34,5 @@ Features that require additional steps (most of the time):
    shortener
    reset_password
    wmstime
-   intranet
    security
    pdfreport
