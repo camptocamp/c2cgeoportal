@@ -24,5 +24,6 @@ functionalities_schema_node = colander.SequenceSchema(
             table='functionalities', id=value
         )
     ),
-    validator=manytomany_validator
+    validator=manytomany_validator,
+    missing=colander.drop
 )

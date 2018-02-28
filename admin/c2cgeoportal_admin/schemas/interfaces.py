@@ -20,5 +20,6 @@ interfaces_schema_node = colander.SequenceSchema(
             id=value
         )
     ),
-    validator=manytomany_validator
+    validator=manytomany_validator,
+    missing=colander.drop
 )
