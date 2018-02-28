@@ -34,6 +34,12 @@ def json_validator(node, value):
         raise colander.Invalid(node, _('Parser report: "{}"').format(str(e)))
 
 
+@colander.deferred
+def color_validator(node, kw):  # pylint: disable=unused-argument
+    color_val = kw['request'].registry.settings['admin_interface']['color_validator']
+    return colander.Regex(color_val['regex'], msg=_(color_val['msg']))
+
+
 class MetadataSchemaNode(GeoFormSchemaNode):
 
     def __init__(self, *args, **kw):
@@ -51,7 +57,11 @@ class MetadataSchemaNode(GeoFormSchemaNode):
             'json',
             colander.String(),
             widget=TextAreaWidget(rows=10),
-            validator=json_validator)
+            validator=json_validator),
+        self._add_value_node(
+            'color',
+            colander.String(),
+            validator=self.color_validator)
 
     def _add_value_node(self, type_name, colander_type, **kw):
         self.add_before(
@@ -85,6 +95,7 @@ metadatas_schema_node = colander.SequenceSchema(
         Metadata,
         name='metadata',
         metadata_types=metadata_types,
+        color_validator=color_validator,
         widget=MappingWidget(template='metadata'),
         overrides={
             'name': {

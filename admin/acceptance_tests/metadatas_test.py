@@ -70,7 +70,7 @@ class TestMetadatasView(AbstractViewsTests):
     _prefix = '/'
 
     def __metadata_ui_types(self):
-        return ('string', 'liste', 'boolean', 'int', 'float', 'url', 'json')
+        return ('string', 'liste', 'boolean', 'int', 'float', 'url', 'json', 'color')
 
     def __metadata_ui_type(self, test_app, name):
         settings = test_app.app.registry.settings
@@ -234,6 +234,24 @@ class TestMetadatasView(AbstractViewsTests):
                     "hex": "#000"
                 }
             }]}''',
+            302)
+
+    def test_invalid_color(self, test_app, metadatas_test_data):
+        self._post_invalid_metadata(
+            test_app,
+            '/layers_wms/new',
+            self._base_metadata_params(metadatas_test_data),
+            '_color',
+            '#W007DCD',
+            'Expecting hex format for color, e.g. #007DCD')
+
+    def test_valid_color(self, test_app, metadatas_test_data):
+        self._post_metadata(
+            test_app,
+            '/layers_wms/new',
+            self._base_metadata_params(metadatas_test_data),
+            '_color',
+            '#007DCD',
             302)
 
     def _test_edit_treeitem(self, prefix, item, test_app):
