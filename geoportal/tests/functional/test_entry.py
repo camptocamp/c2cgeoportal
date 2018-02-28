@@ -346,8 +346,6 @@ class TestEntryView(TestCase):
         assert "__test_private_layer" not in response["themes"]
 
     def test_index_auth_no_edit_permission(self):
-        import json
-
         entry = self._create_entry_obj(username="__test_user1")
         response = entry.get_cgxp_viewer_vars()
 
@@ -376,8 +374,6 @@ class TestEntryView(TestCase):
         ], [False])
 
     def test_index_auth_edit_permission(self):
-        import json
-
         entry = self._create_entry_obj(username="__test_user2", params={
             "min_levels": "0"
         })
