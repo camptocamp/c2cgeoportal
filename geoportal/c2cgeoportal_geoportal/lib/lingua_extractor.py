@@ -202,7 +202,7 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
         init_region({"backend": "dogpile.cache.memory"})
 
         with open(filename) as config_file:
-            config = yaml.load(config_file)
+            config = yaml.safe_load(config_file)
             # for application config (config.yaml)
             if "vars" in config:
                 return self._collect_app_config(filename)
