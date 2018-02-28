@@ -45,6 +45,7 @@ class TestGetURL(TestCase):
         })
 
         def static_url(path, **kwargs):
+            del kwargs
             return "http://server.org/" + path
         request.static_url = static_url
 

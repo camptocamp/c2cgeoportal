@@ -16,7 +16,7 @@ from sqlalchemy.exc import DBAPIError
 @pytest.fixture(scope='session')
 @pytest.mark.usefixtures("settings")
 def dbsession(settings):
-    generate_mappers(settings)
+    generate_mappers()
     engine = get_engine(settings)
     init_db(engine, force=True)
     session_factory = get_session_factory(engine)

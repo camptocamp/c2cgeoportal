@@ -35,7 +35,7 @@ def main(argv: List[str]=sys.argv) -> None:
     fileConfig(config_uri, defaults=dict(os.environ))
     options.update(os.environ)
     settings = get_appsettings(config_uri, options=options)
-    generate_mappers(settings)
+    generate_mappers()
 
     engine = get_engine(settings)
 

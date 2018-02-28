@@ -180,11 +180,14 @@ class TestThemesViewMetadata(TestCase):
             "admin_interface": {"available_metadata": types}
         })
 
-        def route_url(url, **kargs):
+        def route_url(url, **kwargs):
+            del url
+            del kwargs
             return "http://mapserver.org/"
         request.route_url = route_url
 
-        def static_url(url, **kargs):
+        def static_url(url, **kwargs):
+            del kwargs
             return "http://dummy.org/{}".format(url)
         request.static_url = static_url
         request.params = {

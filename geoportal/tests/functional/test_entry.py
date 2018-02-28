@@ -100,7 +100,7 @@ class TestEntryView(TestCase):
         private_layer.geo_table = "geodata.a_geo_table"
         private_layer.interfaces = [main, mobile]
 
-        ogcserver, ogcserver_external = create_default_ogcserver()
+        ogcserver, _ = create_default_ogcserver()
         ogcserver_normapfile = OGCServer(name="__test_ogc_server_notmapfile")
         ogcserver_normapfile.url = mapserv_url + "?map=not_a_mapfile"
         ogcserver_geoserver = OGCServer(name="__test_ogc_server_geoserver")
@@ -288,7 +288,7 @@ class TestEntryView(TestCase):
             "login": "__test_user1",
         })
         entry = Entry(request)
-        user, username, password, error = entry._loginresetpassword()
+        _, username, password, _ = entry._loginresetpassword()
 
         request = self._create_request_obj(POST={
             "login": username,
@@ -475,7 +475,7 @@ class TestEntryView(TestCase):
 
         from c2cgeoportal_geoportal.lib import caching
         caching.invalidate_region()
-        themes, errors = entry._themes(None, "desktop")
+        _, errors = entry._themes(None, "desktop")
         self.assertEqual({e[:43] for e in errors}, {
             "The layer '__test_public_layer' (__test_pub",
             "The layer '__test_layer_in_group' (__test_l",
@@ -680,7 +680,7 @@ class TestEntryView(TestCase):
         return entry, request
 
     def test_entry_points(self):
-        entry, request = self._create_entry()
+        entry, _ = self._create_entry()
 
         result = entry.get_cgxp_index_vars()
         self.assertEqual(
@@ -1137,7 +1137,7 @@ class TestEntryView(TestCase):
         )
         url = mapserv_url + "?" + "&".join(["=".join(p) for p in params])
         http = httplib2.Http()
-        resp, xml = http.request(url, method="GET")
+        http.request(url, method="GET")
 
         layer = LayerV1()
         layer.id = 20

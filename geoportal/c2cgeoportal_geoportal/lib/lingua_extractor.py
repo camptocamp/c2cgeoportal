@@ -124,6 +124,7 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
                 class Lookup(TemplateLookup):
                     @staticmethod
                     def get_template(uri):
+                        del uri  # unused
                         return empty_template
 
                 class MyTemplate(MakoTemplate):

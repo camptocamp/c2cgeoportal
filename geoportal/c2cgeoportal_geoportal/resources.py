@@ -34,9 +34,11 @@ class Root:
 
 
 def defaultgroupsfinder(username, request):
-    """ The c2cgeoportal default group finder. To be used as the callback of
-    the ``AuthTktAuthenticationPolicy`` or any callback-based authentication
-    policy. """
+    """
+    The c2cgeoportal default group finder. To be used as the callback of the ``AuthTktAuthenticationPolicy``
+    or any callback-based authentication policy.
+    """
+    del username  # unused
     if not hasattr(request, "user") or request.user is None:
         return []  # pragma: no cover
     role = request.user.role

@@ -103,6 +103,7 @@ class PrintProxy(Proxy):  # pragma: no cover
 
     @cache_region.cache_on_arguments()
     def _info(self, templates, query_string, method):
+        del query_string  # unused
         # get URL
         _url = self.config["print_url"] + "info.json"
 
