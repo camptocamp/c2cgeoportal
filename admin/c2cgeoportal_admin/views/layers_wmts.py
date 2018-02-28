@@ -10,11 +10,13 @@ from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import ListField, ItemAction
 
 from c2cgeoportal_admin import _
-from c2cgeoportal_commons.models.main import LayerWMTS, LayerWMS, TreeItem
 from c2cgeoportal_admin.schemas.dimensions import dimensions_schema_node
+from c2cgeoportal_commons.models.main import \
+    LayerWMTS, LayerWMS, LayerGroup, TreeItem
 from c2cgeoportal_admin.schemas.metadata import metadatas_schema_node
 from c2cgeoportal_admin.schemas.interfaces import interfaces_schema_node
 from c2cgeoportal_admin.schemas.restrictionareas import restrictionareas_schema_node
+from c2cgeoportal_admin.schemas.treeitem import parent_id_node
 from c2cgeoportal_admin.views.dimension_layers import DimensionLayerViews
 
 _list_field = partial(ListField, LayerWMTS)
@@ -25,6 +27,7 @@ base_schema.add(metadatas_schema_node.clone())
 base_schema.add(interfaces_schema_node.clone())
 base_schema.add(restrictionareas_schema_node.clone())
 base_schema.add_unique_validator(LayerWMTS.name, LayerWMTS.id)
+base_schema.add(parent_id_node(LayerGroup))
 
 
 @view_defaults(match_param='table=layers_wmts')
