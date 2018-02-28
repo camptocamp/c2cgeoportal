@@ -765,7 +765,8 @@ class OGCServer(Base):
     ]
     __colanderalchemy_config__ = {
         'title': _('OGC Server'),
-        'plural': _('OGC Servers')
+        'plural': _('OGC Servers'),
+        'widget': FormWidget(fields_template='ogcserver_fields')
     }
     __c2cgeoform_config__ = {
         'duplicate': True
@@ -822,7 +823,8 @@ class OGCServer(Base):
                     values=(
                         ('image/jpeg', 'image/jpeg'),
                         ('image/png', 'image/png')
-                    ))}
+                    )),
+                'column': 2}
         })
     auth = Column(
         Enum(
@@ -842,14 +844,15 @@ class OGCServer(Base):
                         (OGCSERVER_AUTH_GEOSERVER, OGCSERVER_AUTH_GEOSERVER),
                         (OGCSERVER_AUTH_PROXY, OGCSERVER_AUTH_PROXY)
                     )
-                )
+                ),
+                'column': 2
             }
         })
     wfs_support = Column(Boolean, info={
-        'colanderalchemy': {'title': _('WFS support')}
+        'colanderalchemy': {'title': _('WFS support'), 'column': 2}
     })
     is_single_tile = Column(Boolean, info={
-        'colanderalchemy': {'title': _('Is single tile')}
+        'colanderalchemy': {'title': _('Is single tile'), 'column': 2}
     })
 
     def __init__(
