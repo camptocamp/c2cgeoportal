@@ -314,6 +314,7 @@ help:
 	@echo
 	@echo  "Main targets:"
 	@echo
+	@echo  "- docker-build   	Pull all the needed Docker images, build all (Outside Docker)"
 	@echo  "- build			Build and configure the project"
 	@echo  "- checks		Perform a number of checks on the code"
 	@echo  "- serve			Run the development server (Pserve)"
@@ -346,6 +347,12 @@ ifdef SECONDARY_HELP
 	@echo $(SECONDARY_HELP)
 endif
 	@echo
+
+.PHONY: docker-build
+docker-build:
+	docker pull camptocamp/geomapfish-build:${MAJOR_VERSION}
+	for image in `find -name Dockerfile -o -name Dockerfile.mako | xargs grep --no-filename FROM | awk '{print $$2}' | sort -u`; do docker pull $$image; done
+	./docker-run make build
 
 .PHONY: build
 build: $(BUILD_RULES)
