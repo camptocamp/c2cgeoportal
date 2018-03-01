@@ -5,6 +5,7 @@ VARS_FILES += vars.yaml
 
 DEVELOPPEMENT ?= FALSE
 
+# PRERULE_CMD display the files imply that the rule is running with the files dates
 ifeq ($(DEBUG), TRUE)
 ifeq ($(OPERATING_SYSTEM), WINDOWS)
 PRERULE_CMD ?= @echo "Build $@ due mofification on $?"; ls -t --full-time --reverse $? $@ || true
@@ -76,7 +77,7 @@ help:
 	@echo
 	@echo "Main targets:"
 	@echo
-	@echo  "- pull   		Pull all the needed Docker images"
+	@echo  "- docker-build   	Pull all the needed Docker images, build all (Outside Docker)"
 	@echo  "- build 		Build and configure the project"
 	@echo  "- doc 			Build the project documentation"
 	@echo  "- tests 		Perform a number of tests on the code"
@@ -85,14 +86,11 @@ help:
 	@echo  "- clean-all 		Remove all the build artefacts"
 	@echo  "- transifex-send	Send the localisation to Transifex"
 
-.PHONY: pull-base
-pull-base:
-	for image in `find -name Dockerfile | xargs grep --no-filename FROM | awk '{print $$2}' | sort -u`; do docker pull $$image; done
-
-.PHONY: pull
-pull: pull-base
-	docker pull $(DOCKER_BASE)-build-dev:$(MAJOR_VERSION)
-	touch --no-create commons/Dockerfile
+.PHONY: docker-build
+docker-build:
+	docker build --tag=camptocamp/geomapfish-build-dev:${MAJOR_VERSION} docker/build
+	for image in `find -name Dockerfile -o -name Dockerfile.mako | xargs grep --no-filename FROM | awk '{print $$2}' | sort -u`; do docker pull $$image; done
+	./docker-run make build
 
 .PHONY: build
 build: c2c-egg \
@@ -260,6 +258,7 @@ yamllint: $(YAML_FILES)
 # i18n
 $(HOME_DIR)/.transifexrc:
 	$(PRERULE_CMD)
+	mkdir --parent $(dir $@)
 	echo "[https://www.transifex.com]" > $@
 	echo "hostname = https://www.transifex.com" >> $@
 	echo "username = c2c" >> $@
