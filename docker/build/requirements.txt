@@ -5,7 +5,7 @@ boto==2.48.0  # Tile generation
 bottle==0.12.13  # i18n
 c2c.cssmin==0.7.dev6  # CGXP build
 c2c.template==2.0.6  # geoportal
-c2cgeoform==2.0.dev20180227  # commons
+c2cgeoform==2.0.dev20180228  # commons
 codacy-coverage==1.3.10  # Codacy send report
 codespell==1.11.0  # Lint
 ColanderAlchemy==0.3.3  # commons
