@@ -117,31 +117,39 @@ timeout(time: 2, unit: 'HOURS') {
                 sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ ./docker-run make --makefile=travis.mk build'
                 sh 'cat ${HOME}/workspace/testgeomapfish/testdb/*.sql'
                 sh 'cat ${HOME}/workspace/testgeomapfish/geoportal/config.yaml'
-                try {
-                    sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ docker-compose up -d'
-                    sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ docker-compose exec -T geoportal wait-for-db'
-                    sh './docker-run travis/waitwsgi http://`netstat --route --numeric|grep ^0.0.0.0|awk \'{print($2)}\'`:8080/'
-                    for (path in ['c2c/health_check', 'c2c/health_check?max_level=100', 'layers/test/values/type enum']) {
-                        def start_lines = [:]
-                        ['db', 'external-db', 'print', 'mapserver', 'geoportal'].each { service ->
-                            def start_line = sh(returnStdout: true, script: "travis/run-on ${HOME}/workspace/testgeomapfish/ docker-compose logs ${service} | wc -l") as Integer
-                            start_lines.service = start_line
-                        }
-                        try {
-                            sh 'travis/test-new-project http://`netstat --route --numeric|grep ^0.0.0.0|awk \'{print($2)}\'`:8080/' + path
-                        } catch (Exception error) {
+                withCredentials([[
+                    $class: 'UsernamePasswordMultiBinding',
+                    credentialsId: 'dockerhub',
+                    usernameVariable: 'USERNAME',
+                    passwordVariable: 'PASSWORD'
+                ]]) {
+                    try {
+                        sh 'docker login -u "$USERNAME" -p "$PASSWORD"'
+                        sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ docker-compose up -d'
+                        sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ docker-compose exec -T geoportal wait-for-db'
+                        sh './docker-run travis/waitwsgi http://`netstat --route --numeric|grep ^0.0.0.0|awk \'{print($2)}\'`:8080/'
+                        for (path in ['c2c/health_check', 'c2c/health_check?max_level=100', 'layers/test/values/type enum']) {
+                            def start_lines = [:]
                             ['db', 'external-db', 'print', 'mapserver', 'geoportal'].each { service ->
-                                def end_line = sh(returnStdout: true, script: "travis/run-on ${HOME}/workspace/testgeomapfish/ docker-compose logs ${service} | wc -l") as Integer
-                                sh "travis/run-on ${HOME}/workspace/testgeomapfish/ docker-compose logs --timestamps --tail=${Math.max(1, end_line - start_lines.service)} ${service}"
+                                def start_line = sh(returnStdout: true, script: "travis/run-on ${HOME}/workspace/testgeomapfish/ docker-compose logs ${service} | wc -l") as Integer
+                                start_lines.service = start_line
                             }
-                            throw error
+                            try {
+                                sh 'travis/test-new-project http://`netstat --route --numeric|grep ^0.0.0.0|awk \'{print($2)}\'`:8080/' + path
+                            } catch (Exception error) {
+                                ['db', 'external-db', 'print', 'mapserver', 'geoportal'].each { service ->
+                                    def end_line = sh(returnStdout: true, script: "travis/run-on ${HOME}/workspace/testgeomapfish/ docker-compose logs ${service} | wc -l") as Integer
+                                    sh "travis/run-on ${HOME}/workspace/testgeomapfish/ docker-compose logs --timestamps --tail=${Math.max(1, end_line - start_lines.service)} ${service}"
+                                }
+                                throw error
+                            }
                         }
+                    } catch (Exception error) {
+                        sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ docker-compose logs --timestamps'
+                        throw error
+                    } finally {
+                        sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ docker-compose down'
                     }
-                } catch (Exception error) {
-                    sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ docker-compose logs --timestamps'
-                    throw error
-                } finally {
-                    sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ docker-compose down'
                 }
                 sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ ./docker-run travis/short-make --makefile=travis.mk build'
                 sh 'travis/run-on ${HOME}/workspace/testgeomapfish/ ./docker-run make --makefile=travis.mk checks'

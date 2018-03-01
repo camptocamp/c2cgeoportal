@@ -9,8 +9,6 @@ export SRID=21781 EXTENT=489246.36,78873.44,837119.76,296543.14
     --ignore-conflicting-name --package-name testgeomapfish ${WORKSPACE}/testgeomapfish
 ./docker-run --image=camptocamp/geomapfish-build --share ${WORKSPACE} pcreate --scaffold=c2cgeoportal_update \
     --ignore-conflicting-name --package-name testgeomapfish ${WORKSPACE}/testgeomapfish
-./docker-run --image=camptocamp/geomapfish-build --share ${WORKSPACE} pcreate --scaffold=tilecloud_chain \
-    ${WORKSPACE}/testgeomapfish
 
 # Copy files for travis build and tests
 cp travis/build.mk ${WORKSPACE}/testgeomapfish/travis.mk
@@ -29,9 +27,7 @@ git add --all
 git commit --quiet --message='Initial commit'
 git remote add origin . # add a fake remote
 
-# Minimal build
-./docker-run make --makefile=travis.mk \
-    docker-compose-build.yaml \
-    geoportal-docker mapserver-docker print-docker testdb-docker
+# Build
+./docker-run make --makefile=travis.mk build testdb-docker
 # Create default theme
 ./docker-compose-run create-demo-theme

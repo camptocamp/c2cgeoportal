@@ -49,7 +49,7 @@ files_to_move:
     to: testdb/11-schemas.sql_mako
     version: 2.3
   - from: mapserver/c2cgeoportal.map.mako
-    to: mapserver/c2cgeoportal.map.tmpl.mako
+    to: mapserver/mapserver.map.tmpl.mako
     version: 2.3
   - from: mapserver/demo.map.mako
     to: mapserver/demo.map.tmpl.mako
@@ -134,6 +134,9 @@ files_to_remove:
   - file: print/WEB-INF
     version: 2.3
     from: 2.2, nondocker
+  - file: print/Dockerfile
+    version: 2.3
+    from: 2.2
   - file: get-pip-dependencies
     version: 2.3
     from: nondocker
@@ -171,5 +174,11 @@ files_to_remove:
     version: 2.3
     from: 2.2
   - file: mapserver/replace_db.sh.mako
+    version: 2.3
+    from: 2.2
+  - file: mapserver/.dockerignore
+    version: 2.3
+    from: 2.2
+  - file: mapserver/Dockerfile
     version: 2.3
     from: 2.2

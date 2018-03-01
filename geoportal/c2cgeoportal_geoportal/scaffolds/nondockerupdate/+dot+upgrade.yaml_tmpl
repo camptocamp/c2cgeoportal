@@ -48,7 +48,7 @@ files_to_move:
     to: testdb/11-schemas.sql_mako
     version: 2.3
   - from: mapserver/c2cgeoportal.map.mako
-    to: mapserver/c2cgeoportal.map.tmpl.mako
+    to: mapserver/mapserver.map.tmpl.mako
     version: 2.3
   - from: mapserver/demo.map.mako
     to: mapserver/demo.map.tmpl.mako
@@ -127,6 +127,9 @@ files_to_remove:
   - file: package.json
     version: 2.3
     from: 2.2
+  - file: print/Dockerfile
+    version: 2.3
+    from: 2.2
   - file: testgeomapfish.egg-info
     version: 2.3
     from: 2.2
@@ -137,5 +140,11 @@ files_to_remove:
     version: 2.3
     from: 2.2
   - file: mapserver/replace_db.sh.mako
+    version: 2.3
+    from: 2.2
+  - file: mapserver/.dockerignore
+    version: 2.3
+    from: 2.2
+  - file: mapserver/Dockerfile
     version: 2.3
     from: 2.2

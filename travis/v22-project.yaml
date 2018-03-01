@@ -13,8 +13,9 @@ unmanaged_files:
   - vars\.yaml
   - docker-compose\.yaml\.mako
   - testdb/11-schemas\.sql\_mako
+  - tilegeneration/config\.yaml\.mako
   - mapserver/\.dockerignore
-  - mapserver/c2cgeoportal\.map\.tmpl\.mako
+  - mapserver/mapserver\.map\.tmpl\.mako
   - print/print-apps/testgeomapfish/config\.yaml\.mako
   - print/print-apps/testgeomapfish/.*\.jrxml
   - geoportal/testgeomapfish_geoportal/locale/fr/LC_MESSAGES/testgeomapfish-client\.po

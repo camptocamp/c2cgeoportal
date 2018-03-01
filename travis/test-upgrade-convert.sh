@@ -12,7 +12,6 @@ function create {
     mkdir --parent $1
     pcreate $1 c2cgeoportal_create
     pcreate $1 c2cgeoportal_update
-    pcreate $1 tilecloud_chain
     cd $1/testgeomapfish
     git init
     git config user.email travis@camptocamp.com
@@ -41,7 +40,6 @@ function createv220 {
     rm --recursive --force $1
     mkdir --parent $1
     cp --recursive ${WORKSPACE}/v220/testgeomapfish $1/testgeomapfish
-    pcreate $1 tilecloud_chain
     cd $1/testgeomapfish
     git init
     git config user.email travis@camptocamp.com

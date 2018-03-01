@@ -1,43 +1,59 @@
+<%namespace file="CONST.mako_inc" import="service_defaults"/>\
 ---
-# A compose file for development.
+
+# The project Docker compose file for development.
+
 version: '2'
 services:
+  config:
+    image: ${docker_base}-config:${docker_tag}
+
   db:
-    image: camptocamp/testgeomapfish-testdb:latest
-    environment:
-      POSTGRES_USER: www-data
-      POSTGRES_PASSWORD: www-data
-      POSTGRES_DB: geomapfish
+    image: ${docker_base}-testdb:${docker_tag}
+${service_defaults('db', 5432)}\
 
   external-db:
     image: camptocamp/testgeomapfish-external-db:latest
-    environment:
-      POSTGRES_USER: www-data
-      POSTGRES_PASSWORD: www-data
-      POSTGRES_DB: test
+${service_defaults('external-db', 5432)}\
 
   print:
-    image: camptocamp/testgeomapfish-print:latest
+    image: camptocamp/mapfish_print:3.12.1
+    volumes_from:
+      - config:ro
+${service_defaults('print', 8080)}\
 
   mapserver:
-    image: camptocamp/testgeomapfish-mapserver:latest
+    image: camptocamp/mapserver:7.0
+    volumes_from:
+      - config:rw
+${service_defaults('mapserver', 80)}\
+
+##  qgisserver:
+##    image: camptocamp/geomapfish-qgisserver
+##    volumes_from:
+##      - config:ro
+##${service_defaults('mapserver', 80)}\
+
+  mapcache:
+    image: camptocamp/mapcache:1.6
+    volumes_from:
+      - config:ro
+${service_defaults('mapserver', 80)}\
+
+  memcached:
+    image: memcached:1.5
+${service_defaults('mapserver', 11211)}\
+
+  redis:
+    image: redis:3.2
+${service_defaults('mapserver', 6379)}\
+
+  tilecloudchain:
+    image: camptocamp/tilecloud-chain:1.4.0.dev11
+    volumes_from:
+      - config:ro
+${service_defaults('mapserver', 80)}\
 
   geoportal:
-    image: camptocamp/testgeomapfish-geoportal:latest
-    ports:
-      - 8080:80
-    environment:
-      PGHOST: db
-      PGHOST_SLAVE: db
-      PGPORT: 5432
-      PGUSER: www-data
-      PGPASSWORD: www-data
-      PGDATABASE: geomapfish
-      PGSCHEMA: main
-      PGSCHEMA_STATIC: main_static
-      VISIBLE_WEB_HOST: localhost:8080
-      VISIBLE_WEB_PROTOCOL: http
-      VISIBLE_ENTRY_POINT: /
-      TINYOWS_URL: http://tinyows/
-      MAPSERVER_URL: http://mapserver/
-      PRINT_URL: http://print:8080/print/
+    image: ${docker_base}-geoportal:${docker_tag}
+${service_defaults('geoportal', 80, True)}\
