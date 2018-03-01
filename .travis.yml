@@ -58,13 +58,13 @@ before_script:
 #  - docker run --publish=5433:5432 --detach external-db ## FOR NON DOCKER TEST
 #  - mkdir /tmp/travis
 #  - travis/create-new-nondocker-project.sh
-#  - travis/run-on /tmp/travis/nondockertestgeomapfish/ ./docker-run travis/empty-make --makefile=travis.mk help
-#  - travis/run-on /tmp/travis/nondockertestgeomapfish/ ./docker-run make --makefile=travis.mk build
-#  - travis/run-on /tmp/travis/nondockertestgeomapfish/ make --makefile=travis-nondocker.mk build
+#  - (cd /tmp/travis/nondockertestgeomapfish/; ./docker-run travis/empty-make --makefile=travis.mk help)
+#  - (cd /tmp/travis/nondockertestgeomapfish/; ./docker-run make --makefile=travis.mk build)
+#  - (cd /tmp/travis/nondockertestgeomapfish/; make --makefile=travis-nondocker.mk build)
 script:
 #  # Test new non Docker project
-#  - travis/run-on /tmp/travis/nondockertestgeomapfish/ ./docker-run travis/empty-make --makefile=travis.mk build
-#  - travis/run-on /tmp/travis/nondockertestgeomapfish/ ./docker-run make --makefile=travis.mk checks
+#  - (cd /tmp/travis/nondockertestgeomapfish/; ./docker-run travis/empty-make --makefile=travis.mk build)
+#  - (cd /tmp/travis/nondockertestgeomapfish/; ./docker-run make --makefile=travis.mk checks)
 #  - find
 #      /tmp/travis/nondockertestgeomapfish/geoportal/setup.py
 #      /tmp/travis/nondockertestgeomapfish/geoportal/testgeomapfish_geoportal/*.py
@@ -77,20 +77,15 @@ script:
 #  - cat /var/log/apache2/error.log
 #  - cat /var/log/apache2/access.log
 #  - sudo cat /var/log/tomcat7/catalina.out
-#  - travis/run-on /tmp/travis/nondockertestgeomapfish/ ./docker-run travis/status.sh
-#  - travis/run-on /tmp/travis/nondockertestgeomapfish/ ./docker-run rm /build/c2ctemplate-cache.json
-#  - "travis/run-on /tmp/travis/nondockertestgeomapfish/ \
-#      ./docker-run make --makefile=empty-vars.mk geoportal/config.yaml"
-#  - "travis/run-on /tmp/travis/nondockertestgeomapfish/ \
-#      ./docker-run make --makefile=travis.mk alembic.ini"
-#  - "travis/run-on /tmp/travis/nondockertestgeomapfish/ \
-#      ./docker-run alembic --name=main upgrade head"
-#  - "travis/run-on /tmp/travis/nondockertestgeomapfish/ \
-#      ./docker-run alembic --name=static upgrade head"
-#  - "travis/run-on /tmp/travis/nondockertestgeomapfish/ \
-#      ./docker-run alembic --name=static downgrade base"
-#  - "travis/run-on /tmp/travis/nondockertestgeomapfish/ \
-#      ./docker-run alembic --name=main downgrade base"
+#  - (cd /tmp/travis/nondockertestgeomapfish/; ./docker-run travis/status.sh)
+#  - (cd /tmp/travis/nondockertestgeomapfish/; ./docker-run rm /build/c2ctemplate-cache.json)
+#  - "(cd /tmp/travis/nondockertestgeomapfish/; \
+#      ./docker-run make --makefile=empty-vars.mk geoportal/config.yaml)"
+#  - (cd /tmp/travis/nondockertestgeomapfish/; ./docker-run make --makefile=travis.mk alembic.ini)
+#  - (cd /tmp/travis/nondockertestgeomapfish/; ./docker-run alembic --name=main upgrade head)
+#  - (cd /tmp/travis/nondockertestgeomapfish/; ./docker-run alembic --name=static upgrade head)
+#  - (cd /tmp/travis/nondockertestgeomapfish/; ./docker-run alembic --name=static downgrade base)
+#  - (cd /tmp/travis/nondockertestgeomapfish/; ./docker-run alembic --name=main downgrade base)
   ## END FOR NON DOCKER TESTS
   - ./docker-run make doc
 
