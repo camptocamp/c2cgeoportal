@@ -176,6 +176,10 @@ mapping:
                     required: True
                   type:
                     type: str
+                  regex:
+                    type: str
+                  error_message:
+                    type: str
           available_functionalities:
             type: seq
             required: True
