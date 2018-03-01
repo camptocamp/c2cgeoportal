@@ -128,11 +128,11 @@ class TestUrlEdit(AbstractViewsTests):
 
     def test_roles_edit(self, edit_url_test_data, test_app):
         resp = self._get(test_app, 'roles', edit_url_test_data['roles'][0].id)
-        self._check_link(test_app, resp, 'functionalities', 'functionalities', 404)
+        self._check_link(test_app, resp, 'functionalities', 'functionalities', 200)
         self._check_link(test_app, resp, 'restrictionareas', 'restrictionareas', 404)
 
     def test_themes_edit(self, edit_url_test_data, test_app):
         resp = self._get(test_app, 'themes', edit_url_test_data['themes'][0].id)
-        self._check_link(test_app, resp, 'functionalities', 'functionalities', 404)
+        self._check_link(test_app, resp, 'functionalities', 'functionalities', 200)
         self._check_link(test_app, resp, 'interfaces', 'interfaces', 200)
         self._check_link(test_app, resp, 'restricted_roles', 'roles', 200)
