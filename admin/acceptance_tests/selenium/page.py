@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.common.action_chains import ActionChains
 
 
 class BasePage(object):
@@ -23,6 +24,21 @@ class BasePage(object):
             '//a[contains(@href,"language={}")]'.format(locale)
         ).click()
 
+    def wait_jquery_to_be_active(self):
+        WebDriverWait(self.driver, 10).until(
+            lambda driver: driver.execute_script(
+                'return (window.jQuery != undefined && jQuery.active == 0)'))
+
+    def dbl_click(self, el):
+        action_chains = ActionChains(self.driver)
+        # following event implies use of chrome selenium web driver instead of gecko (Firefox)
+        action_chains.move_to_element(el).double_click().perform()
+
+    def click_and_confirm(self, el):
+        el.click()
+        self.driver.switch_to_alert().accept()
+        self.driver.switch_to_default_content()
+
 
 class IndexPage(BasePage):
 
@@ -43,6 +59,4 @@ class IndexPage(BasePage):
         return td.find_element(By.XPATH, './/a[contains(@class, "{}")]'.format(action))
 
     def click_delete(self, id_):
-        self.find_item_action(id_, 'delete').click()
-        self.driver.switch_to_alert().accept()
-        self.driver.switch_to_default_content()
+        self.click_and_confirm(self.find_item_action(id_, 'delete'))

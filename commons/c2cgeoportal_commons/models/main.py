@@ -38,7 +38,7 @@ from sqlalchemy.types import Integer, Boolean, Unicode, Float, String, \
     Enum, UserDefinedType
 from sqlalchemy import UniqueConstraint, Column
 from sqlalchemy.schema import Index
-from sqlalchemy.orm import relationship, backref
+from sqlalchemy.orm import relationship, backref, Session
 from geoalchemy2 import Geometry
 from geoalchemy2.shape import to_shape
 
@@ -963,6 +963,10 @@ class LayerWMS(DimensionLayer):
         self.time_mode = time_mode
         self.time_widget = time_widget
 
+    @staticmethod
+    def get_default(dbsession: Session) -> DimensionLayer:
+        return dbsession.query(LayerWMS).filter(LayerWMS.name == 'wms-defaults').one_or_none()
+
 
 class LayerWMTS(DimensionLayer):
     __tablename__ = 'layer_wmts'
@@ -1024,6 +1028,10 @@ class LayerWMTS(DimensionLayer):
     def __init__(self, name: str='', public: bool=True, image_type: str='image/png') -> None:
         DimensionLayer.__init__(self, name=name, public=public)
         self.image_type = image_type
+
+    @staticmethod
+    def get_default(dbsession: Session) -> DimensionLayer:
+        return dbsession.query(LayerWMTS).filter(LayerWMTS.name == 'wmts-defaults').one_or_none()
 
 
 # association table role <> restriction area

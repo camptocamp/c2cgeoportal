@@ -1,7 +1,5 @@
 # pylint: disable=no-self-use
 
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 import re
 import pytest
@@ -99,6 +97,32 @@ class TestLayerWMSViews(AbstractViewsTests):
 
         # check search on interfaces
         self.check_search(test_app, 'mobile', total=9)
+
+    def test_new_no_default(self, test_app, layer_wms_test_data, dbsession):
+        default_wms = layer_wms_test_data['default']['wms']
+        default_wms.name = 'so_can_I_not_be found'
+        dbsession.flush()
+
+        form = self.get_item(test_app, 'new').form
+
+        assert '' == self.get_first_field_named(form, 'id').value
+        assert '' == self.get_first_field_named(form, 'name').value
+        assert '' == self.get_first_field_named(form, 'layer').value
+        assert '' == self.get_first_field_named(form, 'ogc_server_id').value
+        assert 'disabled' == self.get_first_field_named(form, 'time_mode').value
+        assert 'slider' == self.get_first_field_named(form, 'time_widget').value
+
+    def test_new_default(self, test_app, layer_wms_test_data):
+        default_wms = layer_wms_test_data['default']['wms']
+
+        form = self.get_item(test_app, 'new').form
+
+        assert '' == self.get_first_field_named(form, 'id').value
+        assert '' == self.get_first_field_named(form, 'name').value
+        assert '' == self.get_first_field_named(form, 'layer').value
+        assert str(default_wms.ogc_server.id) == self.get_first_field_named(form, 'ogc_server_id').value
+        assert default_wms.time_mode == self.get_first_field_named(form, 'time_mode').value
+        assert default_wms.time_widget == self.get_first_field_named(form, 'time_widget').value
 
     def test_base_edit(self, test_app, layer_wms_test_data):
         layer = layer_wms_test_data['layers'][10]
@@ -393,15 +417,13 @@ class TestLayerWMSSelenium():
         index_page.select_page_size(10)
         index_page.check_pagination_info('Showing 1 to 10 of 26 rows', 10)
 
-        WebDriverWait(selenium, 10).until(
-            lambda driver: driver.execute_script(
-                'return (window.jQuery != undefined && jQuery.active == 0)'))
+        index_page.wait_jquery_to_be_active()
 
         el = index_page.find_element(
             By.XPATH,
             '//td[contains(text(),"{}")]'.format(layer.geo_table),
             timeout=5)
-        action_chains = ActionChains(selenium)
-        # following event implies use of chrome selenium web driver instead of gecko (Firefox)
-        action_chains.move_to_element(el).double_click().perform()
+
+        index_page.dbl_click(el)
+
         assert selenium.current_url.endswith('/layers_wms/{}'.format(layer.id))

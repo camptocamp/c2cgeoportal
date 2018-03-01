@@ -3,6 +3,7 @@
 import pytest
 
 from . import skip_if_ci, AbstractViewsTests
+from .selenium.page import BasePage
 
 
 @pytest.fixture(scope='class')
@@ -219,6 +220,8 @@ class TestLayerTreeView(AbstractViewsTests):
         _prefix = '/layertree'
 
         def test_unlink(self, dbsession, selenium, selenium_app, layertree_test_data):
+            base_page = BasePage(selenium)
+
             from selenium.webdriver.common.by import By
             from selenium.webdriver.support import expected_conditions
             from selenium.webdriver.support.ui import WebDriverWait
@@ -258,13 +261,8 @@ class TestLayerTreeView(AbstractViewsTests):
                 expected_url = '{}/layertree/unlink/{}/{}'.format(selenium_app, group_id, item_id)
                 assert expected_url == elem.get_attribute('data-url')
 
-                elem.click()
-                selenium.switch_to_alert().accept()
-                selenium.switch_to_default_content()
-
-                WebDriverWait(selenium, 10).until(
-                    lambda driver: driver.execute_script(
-                        'return (window.jQuery != undefined && jQuery.active == 0)'))
+                base_page.click_and_confirm(elem)
+                base_page.wait_jquery_to_be_active()
 
                 from c2cgeoportal_commons.models.main import LayergroupTreeitem
                 link = dbsession.query(LayergroupTreeitem). \
@@ -284,6 +282,8 @@ class TestLayerTreeView(AbstractViewsTests):
         @pytest.mark.selenium
         @pytest.mark.usefixtures('selenium', 'selenium_app')
         def test_delete_selenium(self, dbsession, selenium, selenium_app, layertree_test_data):
+            base_page = BasePage(selenium)
+
             from selenium.webdriver.common.by import By
             from selenium.webdriver.support import expected_conditions
             from selenium.webdriver.support.ui import WebDriverWait
@@ -323,13 +323,9 @@ class TestLayerTreeView(AbstractViewsTests):
                 expected_url = '{}/layertree/delete/{}'.format(selenium_app, item_id)
                 assert expected_url == elem.get_attribute('data-url')
 
-                elem.click()
-                selenium.switch_to_alert().accept()
-                selenium.switch_to_default_content()
+                base_page.click_and_confirm(elem)
+                base_page.wait_jquery_to_be_active()
 
-                WebDriverWait(selenium, 10).until(
-                    lambda driver: driver.execute_script(
-                        'return (window.jQuery != undefined && jQuery.active == 0)'))
                 deleted = dbsession.query(model). \
                     filter(model.id == item_id).one_or_none()
                 assert deleted is None
