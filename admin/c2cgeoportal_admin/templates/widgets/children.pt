@@ -11,7 +11,7 @@
                  orderable orderable and 1 or 0;
                  prototype field.widget.prototype(field);
                  title title|field.title;"
-     class="deform-seq item-children_relation"
+     class="deform-seq item-${field.schema.name}"
      id="${oid}">
 
   <style>
@@ -50,7 +50,7 @@
       </div>
     </div>
 
-    <div class="panel-footer">
+    <div class="panel-footer" tal:condition="field.widget.add_subitem">
       <div class="magicsuggest"></div>
     </div>
   </div>

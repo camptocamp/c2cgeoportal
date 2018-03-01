@@ -4,13 +4,13 @@ from pyramid.view import view_defaults
 from pyramid.view import view_config
 
 from c2cgeoform.schema import GeoFormSchemaNode
-
 from c2cgeoform.views.abstract_views import AbstractViews
 from c2cgeoform.views.abstract_views import ListField
+from deform.widget import FormWidget
 
 _list_field = partial(ListField, OGCServer)
 
-base_schema = GeoFormSchemaNode(OGCServer)
+base_schema = GeoFormSchemaNode(OGCServer, widge=FormWidget(fields_template='ogcserver_fields'))
 base_schema.add_unique_validator(OGCServer.name, OGCServer.id)
 
 

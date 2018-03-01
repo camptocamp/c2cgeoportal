@@ -1,13 +1,13 @@
 from functools import partial
-from sqlalchemy import insert, delete, update
-from zope.sqlalchemy import mark_changed
 from pyramid.view import view_defaults
 from pyramid.view import view_config
 
-from sqlalchemy import inspect
+from sqlalchemy import inspect, insert, delete, update
+from zope.sqlalchemy import mark_changed
 
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import ListField, ItemAction
+from deform.widget import FormWidget
 
 from c2cgeoportal_commons.models.main import \
     LayerWMS, LayerWMTS, OGCServer, LayerGroup, TreeItem
@@ -22,7 +22,7 @@ from c2cgeoportal_admin.views.dimension_layers import DimensionLayerViews
 
 _list_field = partial(ListField, LayerWMS)
 
-base_schema = GeoFormSchemaNode(LayerWMS)
+base_schema = GeoFormSchemaNode(LayerWMS, widget=FormWidget(fields_template='layer_fields'))
 base_schema.add(dimensions_schema_node.clone())
 base_schema.add(metadatas_schema_node.clone())
 base_schema.add(interfaces_schema_node.clone())

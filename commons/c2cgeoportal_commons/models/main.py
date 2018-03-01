@@ -43,7 +43,7 @@ from geoalchemy2 import Geometry
 from geoalchemy2.shape import to_shape
 
 import colander
-from deform.widget import HiddenWidget, FormWidget, SelectWidget, TextAreaWidget
+from deform.widget import HiddenWidget, SelectWidget, TextAreaWidget
 from c2cgeoform.ext import colander_ext, deform_ext
 
 from c2cgeoportal_commons.config import config
@@ -405,8 +405,7 @@ class LayerGroup(TreeGroup):
     ]
     __colanderalchemy_config__ = {
         'title': _('Layers group'),
-        'plural': _('Layers groups'),
-        'widget': FormWidget(fields_template='layer_group_fields')
+        'plural': _('Layers groups')
     }
     __mapper_args__ = {'polymorphic_identity': 'group'}
     __c2cgeoform_config__ = {
@@ -461,8 +460,7 @@ class Theme(TreeGroup):
     ]
     __colanderalchemy_config__ = {
         'title': _('Theme'),
-        'plural': _('Themes'),
-        'widget': FormWidget(fields_template='theme_fields')
+        'plural': _('Themes')
     }
     __mapper_args__ = {'polymorphic_identity': 'theme'}
     __c2cgeoform_config__ = {
@@ -475,7 +473,9 @@ class Theme(TreeGroup):
             'widget': HiddenWidget()
         }})
     ordering = Column(Integer, nullable=False, info={
-        'colanderalchemy': {'title': _('Order')}})
+        'colanderalchemy': {
+            'title': _('Order'),
+            'widget': HiddenWidget()}})
     public = Column(Boolean, default=True, nullable=False, info={
         'colanderalchemy': {
             'title': _('Public')
@@ -561,8 +561,7 @@ class LayerV1(Layer):  # Deprecated in v2
     ]
     __colanderalchemy_config__ = {
         'title': _('Layer V1'),
-        'plural': _('Layers V1'),
-        'widget': FormWidget(fields_template='layer_v1_fields')
+        'plural': _('Layers V1')
     }
     __c2cgeoform_config__ = {
         'duplicate': True
@@ -765,8 +764,7 @@ class OGCServer(Base):
     ]
     __colanderalchemy_config__ = {
         'title': _('OGC Server'),
-        'plural': _('OGC Servers'),
-        'widget': FormWidget(fields_template='ogcserver_fields')
+        'plural': _('OGC Servers')
     }
     __c2cgeoform_config__ = {
         'duplicate': True
@@ -882,8 +880,7 @@ class LayerWMS(DimensionLayer):
     ]
     __colanderalchemy_config__ = {
         'title': _('WMS Layer'),
-        'plural': _('WMS Layers'),
-        'widget': FormWidget(fields_template='layer_fields')
+        'plural': _('WMS Layers')
     }
 
     __c2cgeoform_config__ = {
@@ -976,8 +973,7 @@ class LayerWMTS(DimensionLayer):
     ]
     __colanderalchemy_config__ = {
         'title': _('WMTS Layer'),
-        'plural': _('WMTS Layers'),
-        'widget': FormWidget(fields_template='layer_fields')
+        'plural': _('WMTS Layers')
     }
     __c2cgeoform_config__ = {
         'duplicate': True

@@ -6,6 +6,7 @@ from sqlalchemy.orm import subqueryload
 from sqlalchemy.sql.functions import concat
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import ListField
+from deform.widget import FormWidget
 
 from c2cgeoportal_commons.models.main import Theme, Interface, Role, Functionality
 from c2cgeoportal_admin.schemas.treegroup import children_schema_node
@@ -18,7 +19,7 @@ from c2cgeoportal_admin.views.treeitems import TreeItemViews
 
 _list_field = partial(ListField, Theme)
 
-base_schema = GeoFormSchemaNode(Theme)
+base_schema = GeoFormSchemaNode(Theme, widget=FormWidget(fields_template='theme_fields'))
 base_schema.add(children_schema_node(only_groups=True))
 base_schema.add(functionalities_schema_node.clone())
 base_schema.add(roles_schema_node.clone())
