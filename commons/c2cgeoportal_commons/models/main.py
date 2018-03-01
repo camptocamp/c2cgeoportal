@@ -121,10 +121,24 @@ class Functionality(Base):
         'plural': _('Functionalities')
     }
 
-    id = Column(Integer, primary_key=True)
-    name = Column(Unicode, nullable=False)
-    value = Column(Unicode, nullable=False)
-    description = Column(Unicode)
+    __c2cgeoform_config__ = {
+        'duplicate': True
+    }
+
+    id = Column(Integer, primary_key=True, info={
+        'colanderalchemy': {
+            'widget': HiddenWidget()
+        }
+    })
+    name = Column(Unicode, nullable=False, info={
+        'colanderalchemy': {'title': _('Name')}
+    })
+    description = Column(Unicode, info={
+        'colanderalchemy': {'title': _('Description')}
+    })
+    value = Column(Unicode, nullable=False, info={
+        'colanderalchemy': {'title': _('Value')}
+    })
 
     def __init__(self, name: str='', value: str='', description: str='') -> None:
         self.name = name
