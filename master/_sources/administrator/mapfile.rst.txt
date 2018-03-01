@@ -13,7 +13,7 @@ GetFeatureInfo``). WFS is used for the ``box query`` and ``query builder``
 features (``WFS GetFeature``).
 
 The application's mapfile is located in the ``mapserver`` directory, it is
-commonly named ``c2cgeoportal.map.mako``.
+commonly named ``mapserver.map.mako``.
 
 .. note::
 

@@ -193,8 +193,8 @@ following packages:
 If your project is configured for Windows, then ``make`` will expect this folder
 to exist and to contain these wheels.
 
-mapserver/c2cgeoportal.map.mako
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+mapserver/mapserver.map.mako
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 You must specify the path to the MapServer's EPSG file by uncommenting and adapting
 this line under ``MAP`` (use regular slash ``/``) ::
