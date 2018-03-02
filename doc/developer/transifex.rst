@@ -22,6 +22,6 @@ And run the command:
 
 .. prompt:: bash
 
-   make transifex-sync
+   ./docker-run make transifex-sync
 
 It will push the current pot file and get the French and German po files.

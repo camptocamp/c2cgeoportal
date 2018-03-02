@@ -77,7 +77,7 @@ Initialization
 
   .. prompt:: bash
 
-     make build
+     make docker-build
 
 * Install the base template template:
 

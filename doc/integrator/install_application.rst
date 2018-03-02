@@ -237,17 +237,17 @@ on RedHat Enterprise Linux (RHEL) 6.
 Install the application
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Create the application tables, and directly set the version (details later):
-
-.. prompt:: bash
-
-    make upgrade-db
-
 Then you can build and install the application with the command:
 
 .. prompt:: bash
 
-    make build
+    make docker-build
+
+Create the application tables, and directly set the version (details later):
+
+.. prompt:: bash
+
+    ./docker-run make upgrade-db
 
 This previous command will do many things like:
 

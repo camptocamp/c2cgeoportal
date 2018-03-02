@@ -15,7 +15,7 @@ Build the new containers:
 
     git clone git@github.com:camptocamp/c2cgeoportal.git
     cd c2cgeoportal
-    MAJOR_VERSION=${major_version} ./docker-run make build
+    make docker-build
 
 Than they are ready to use in the application on the same host.
 
@@ -27,34 +27,6 @@ Running tests
 
 To be able to run c2cgeoportal tests you need to have the c2cgeoportal source
 code, and a make environment for it. So do that first, as described below.
-
-Install c2cgeoportal from source
-................................
-
-Check out c2cgeoportal from GitHub:
-
-.. prompt:: bash
-
-    git clone git@github.com:camptocamp/c2cgeoportal.git
-    cd c2cgeoportal
-
-Pull all the base images:
-
-.. prompt:: bash
-
-    ./docker-run make pull
-
-If you modify something in the folder ``docker/build`` build the base image:
-
-.. prompt:: bash
-
-    docker build --tag=camptocamp/geomapfish-build-dev:${major_version} docker/build
-
-Build everything:
-
-.. prompt:: bash
-
-    ./docker-run make build
 
 c2cgeoportal has two types of tests: unit tests and functional tests. The unit
 tests are self-contained, and do not require any specific setup. The functional
@@ -106,10 +78,6 @@ To run a specific test use the ``-k`` switch. For example:
 
 Profiling
 ---------
-
-.. prompt:: bash
-
-   .build/venv/bin/pip install wsgi_lineprof
 
 At the end of the file ``apache/application.wsgi`` add:
 
@@ -276,7 +244,7 @@ And run validation:
 
 .. prompt:: bash
 
-    make checks
+    ./docker-run make checks
 
 Dependencies
 ------------
