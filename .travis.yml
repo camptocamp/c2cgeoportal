@@ -17,6 +17,9 @@ env:
     - DOCKER_USERNAME=sbrunner
     - secure: "SosPNhER7I5YnVZy7AoUjrs+P08S60fPje1sFgMdfRNRElI42oLgO6wk1nEFEGGjUevSLzpsDruy7z1m5ilzyMenO1hG\
         1lASf2BeeJC8rRz75MgRKnlf7Py6BA9GbNprzMdgxNPlUtrEkp9ExLvC7MZs7H0RvwxBgQmepQG5Mdg="
+    - TRAVIS_USERNAME=sbrunner
+    - secure: "Vt9O18grAUS3cf4tzbqY1YuQyCJTsPNh5lA79/q8viAcrJg0fAeNQEBoUyCAzztlgL53PrzLWTYIuK6Fw1t+td8hmEST\
+        l7fPSlVbGB6C/iG0d+cnIq31rjnliIdErXIAcB4JwE3yIRx+5aVEMBpAUhRuzBhGCt6iZwjhhFEr/D8="
     - MAIN_BRANCH=master
     - MAJOR_VERSION=2.3
 
@@ -132,14 +135,9 @@ deploy:
       repo: camptocamp/c2cgeoportal
       condition: ( $TRAVIS_BRANCH == $MAIN_BRANCH )
 
-  - provider: pypi
-    user: sbrunner
-    password:
-      secure: "dT4Z3Zk2SGq1BPl+mX2iI0ubK7veSPb1b0fGrKHpvC3gBxuGUDMhtHw5dgopdWWeUhZLzLoPpEZPyCHtJhE2vunG\
-          wZfmJXkrqp/yC1meszZpDgBkpRWzx62u/f1+FmUdGPukvlqTfzgl/vJwertPRzX9Y4hanoFIDQvIKnp37Ls="
+  - provider: script
     skip_cleanup: true
-    skip_upload_docs: true
-    distributions: sdist bdist_wheel
+    script: travis/deploy-pip
     on:
       repo: camptocamp/c2cgeoportal
       condition: $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\..+$
