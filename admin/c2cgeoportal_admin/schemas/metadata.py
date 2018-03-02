@@ -49,6 +49,7 @@ def regex_validator(node, value):
 class MetadataSchemaNode(GeoFormSchemaNode):
 
     metadata_types = None
+    metadata_definitions = None
 
     def __init__(self, *args, **kw):
         super().__init__(*args, **kw)
@@ -90,6 +91,7 @@ class MetadataSchemaNode(GeoFormSchemaNode):
         return dict_
 
     def _ui_type(self, metadata_name):
+        # pylint: disable=unsubscriptable-object
         metadata_type = self.metadata_definitions[metadata_name].get('type', 'string')
         return metadata_type if metadata_type in self.available_types else 'string'
 
