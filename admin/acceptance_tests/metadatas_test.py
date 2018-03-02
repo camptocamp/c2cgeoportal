@@ -5,13 +5,13 @@ import pytest
 from . import AbstractViewsTests
 
 
-@pytest.fixture(scope='class')
-@pytest.mark.usefixtures('dbsession')
-def metadatas_test_data(dbsession):
+@pytest.fixture(scope='function')
+@pytest.mark.usefixtures('dbsession', 'transact')
+def metadatas_test_data(dbsession, transact):
+    del transact
+
     from c2cgeoportal_commons.models.main import \
         LayerWMS, LayerWMTS, LayerV1, OGCServer, Metadata, Theme, LayerGroup
-
-    dbsession.begin_nested()
 
     ogc_server = OGCServer(name='ogc_server')
 
@@ -61,10 +61,8 @@ def metadatas_test_data(dbsession):
         'group': group
     }
 
-    dbsession.rollback()
 
-
-@pytest.mark.usefixtures('metadatas_test_data', 'transact', 'test_app')
+@pytest.mark.usefixtures('metadatas_test_data', 'test_app')
 class TestMetadatasView(AbstractViewsTests):
 
     _prefix = '/'

@@ -6,13 +6,13 @@ import re
 from . import AbstractViewsTests
 
 
-@pytest.fixture(scope='class')
-@pytest.mark.usefixtures('dbsession')
-def ogc_server_test_data(dbsession):
+@pytest.fixture(scope='function')
+@pytest.mark.usefixtures('dbsession', 'transact')
+def ogc_server_test_data(dbsession, transact):
+    del transact
 
     from c2cgeoportal_commons.models.main import OGCServer
 
-    dbsession.begin_nested()
     auth = ['No auth', 'Standard auth', 'Geoserver auth', 'Proxy']
     servers = []
     for i in range(0, 8):
@@ -24,13 +24,15 @@ def ogc_server_test_data(dbsession):
         server.auth = auth[i % 4]
         dbsession.add(server)
         servers.append(server)
+
+    dbsession.flush()
+
     yield {
         'ogc_servers': servers
     }
-    dbsession.rollback()
 
 
-@pytest.mark.usefixtures('ogc_server_test_data', 'transact', 'test_app')
+@pytest.mark.usefixtures('ogc_server_test_data', 'test_app')
 class TestOGCServer(AbstractViewsTests):
 
     _prefix = '/ogc_servers'

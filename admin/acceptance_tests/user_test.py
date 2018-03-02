@@ -8,12 +8,14 @@ from . import skip_if_ci, AbstractViewsTests
 from .selenium.page import IndexPage
 
 
-@pytest.fixture(scope='class')
-@pytest.mark.usefixtures("dbsession")
-def users_test_data(dbsession):
+@pytest.fixture(scope='function')
+@pytest.mark.usefixtures('dbsession', 'transact')
+def users_test_data(dbsession, transact):
+    del transact
+
     from c2cgeoportal_commons.models.static import User
     from c2cgeoportal_commons.models.main import Role
-    dbsession.begin_nested()
+
     roles = []
     for i in range(0, 4):
         roles.append(Role("secretary_" + str(i)))
@@ -27,14 +29,16 @@ def users_test_data(dbsession):
         user.is_password_changed = i % 2 == 1
         users.append(user)
         dbsession.add(user)
+
     dbsession.flush()
+
     yield {
         'roles': roles,
-        'users': users}
-    dbsession.rollback()
+        'users': users
+    }
 
 
-@pytest.mark.usefixtures("users_test_data", "transact", "test_app")
+@pytest.mark.usefixtures("users_test_data", "test_app")
 class TestUser(AbstractViewsTests):
 
     _prefix = '/users'

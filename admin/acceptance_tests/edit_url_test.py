@@ -6,14 +6,14 @@ import pytest
 from . import AbstractViewsTests
 
 
-@pytest.fixture(scope='class')
-@pytest.mark.usefixtures('dbsession')
-def edit_url_test_data(dbsession):
+@pytest.fixture(scope='function')
+@pytest.mark.usefixtures('dbsession', 'transact')
+def edit_url_test_data(dbsession, transact):
+    del transact
+
     from c2cgeoportal_commons.models.main import \
         LayerWMTS, RestrictionArea, Interface, Role, \
         LayerWMS, LayerV1, LayerGroup, Theme, OGCServer, Functionality
-
-    dbsession.begin_nested()
 
     restrictionareas = [RestrictionArea(name='restrictionarea_{}'.format(i))
                         for i in range(0, 5)]
@@ -82,6 +82,7 @@ def edit_url_test_data(dbsession):
     dbsession.add(theme)
 
     dbsession.flush()
+
     yield {
         'ogc_server': ogc_server,
         'layers_wmts': layers_wmts,
@@ -93,8 +94,6 @@ def edit_url_test_data(dbsession):
         'group': group,
         'roles': roles
     }
-
-    dbsession.rollback()
 
 
 @pytest.mark.usefixtures('edit_url_test_data', 'test_app')

@@ -21,15 +21,16 @@ def dbsession(settings):
     init_db(engine, force=True)
     session_factory = get_session_factory(engine)
     session = get_tm_session(session_factory, transaction.manager)
-    return session
+    yield session
 
 
 @pytest.fixture(scope='function')
 @pytest.mark.usefixtures("dbsession")
 def transact(dbsession):
     t = dbsession.begin_nested()
-    yield
+    yield t
     t.rollback()
+    dbsession.expire_all()
 
 
 def raise_db_error(_):

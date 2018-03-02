@@ -5,12 +5,12 @@ import pytest
 from .treegroup_tests import TestTreeGroup
 
 
-@pytest.fixture(scope='class')
-@pytest.mark.usefixtures('dbsession')
-def themes_ordering_test_data(dbsession):
-    from c2cgeoportal_commons.models.main import Theme
+@pytest.fixture(scope='function')
+@pytest.mark.usefixtures('dbsession', 'transact')
+def themes_ordering_test_data(dbsession, transact):
+    del transact
 
-    dbsession.begin_nested()
+    from c2cgeoportal_commons.models.main import Theme
 
     themes = []
     for i in range(0, 25):
@@ -20,14 +20,13 @@ def themes_ordering_test_data(dbsession):
         themes.append(theme)
 
     dbsession.flush()
+
     yield {
         'themes': themes
     }
 
-    dbsession.rollback()
 
-
-@pytest.mark.usefixtures('themes_ordering_test_data', 'transact', 'test_app')
+@pytest.mark.usefixtures('themes_ordering_test_data', 'test_app')
 class TestThemesOrdering(TestTreeGroup):
 
     _prefix = '/layertree/ordering'

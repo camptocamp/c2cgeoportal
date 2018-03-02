@@ -6,13 +6,13 @@ from . import skip_if_ci, AbstractViewsTests
 from .selenium.page import BasePage
 
 
-@pytest.fixture(scope='class')
-@pytest.mark.usefixtures('dbsession')
-def layertree_test_data(dbsession):
+@pytest.fixture(scope='function')
+@pytest.mark.usefixtures('dbsession', 'transact')
+def layertree_test_data(dbsession, transact):
+    del transact
+
     from c2cgeoportal_commons.models.main import \
         LayerGroup, LayergroupTreeitem, LayerV1, LayerWMS, LayerWMTS, OGCServer, Theme
-
-    dbsession.begin_nested()
 
     layers_v1 = []
     for i in range(0, 10):
@@ -75,10 +75,8 @@ def layertree_test_data(dbsession):
         'ogc_servers': [ogc_server]
     })
 
-    dbsession.rollback()
 
-
-@pytest.mark.usefixtures('dbsession', 'layertree_test_data', 'transact', 'test_app')
+@pytest.mark.usefixtures('layertree_test_data', 'test_app')
 class TestLayerTreeView(AbstractViewsTests):
 
     _prefix = '/layertree'

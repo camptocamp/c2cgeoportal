@@ -7,12 +7,12 @@ from . import skip_if_ci, AbstractViewsTests, factory_build_layers
 from .selenium.page import IndexPage
 
 
-@pytest.fixture(scope='class')
-@pytest.mark.usefixtures('dbsession')
-def layer_v1_test_data(dbsession):
-    from c2cgeoportal_commons.models.main import LayerV1
+@pytest.fixture(scope='function')
+@pytest.mark.usefixtures('dbsession', 'transact')
+def layer_v1_test_data(dbsession, transact):
+    del transact
 
-    dbsession.begin_nested()
+    from c2cgeoportal_commons.models.main import LayerV1
 
     def layer_builder(i):
         layer = LayerV1(name='layer_v1_{}'.format(i))
@@ -20,17 +20,14 @@ def layer_v1_test_data(dbsession):
         layer.image_type = 'image/jpeg'
         return layer
 
-    dbsession.begin_nested()
-
     datas = factory_build_layers(layer_builder, dbsession, add_dimension=False)
+
     dbsession.flush()
 
     yield datas
 
-    dbsession.rollback()
 
-
-@pytest.mark.usefixtures('layer_v1_test_data', 'transact', 'test_app')
+@pytest.mark.usefixtures('layer_v1_test_data', 'test_app')
 class TestLayerV1Views(AbstractViewsTests):
 
     _prefix = '/layers_v1'

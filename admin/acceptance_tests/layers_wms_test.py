@@ -8,9 +8,11 @@ from . import skip_if_ci, AbstractViewsTests, get_test_default_layers, factory_b
 from .selenium.page import IndexPage
 
 
-@pytest.fixture(scope='class')
-@pytest.mark.usefixtures('dbsession')
-def layer_wms_test_data(dbsession):
+@pytest.fixture(scope='function')
+@pytest.mark.usefixtures('dbsession', 'transact')
+def layer_wms_test_data(dbsession, transact):
+    del transact
+
     from c2cgeoportal_commons.models.main import LayerWMS, OGCServer
 
     servers = [OGCServer(name='server_{}'.format(i)) for i in range(0, 4)]
@@ -27,19 +29,16 @@ def layer_wms_test_data(dbsession):
         layer.style = 'décontrasté'
         return layer
 
-    dbsession.begin_nested()
-
     datas = factory_build_layers(layer_builder, dbsession)
     datas['servers'] = servers
     datas['default'] = get_test_default_layers(dbsession, servers[1])
+
     dbsession.flush()
 
     yield datas
 
-    dbsession.rollback()
 
-
-@pytest.mark.usefixtures('layer_wms_test_data', 'transact', 'test_app')
+@pytest.mark.usefixtures('layer_wms_test_data', 'test_app')
 class TestLayerWMSViews(AbstractViewsTests):
 
     _prefix = '/layers_wms'

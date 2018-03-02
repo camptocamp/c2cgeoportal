@@ -6,13 +6,12 @@ import re
 from . import AbstractViewsTests
 
 
-@pytest.fixture(scope='class')
-@pytest.mark.usefixtures('dbsession')
-def interface_test_data(dbsession):
+@pytest.fixture(scope='function')
+@pytest.mark.usefixtures('dbsession', 'transact')
+def interface_test_data(dbsession, transact):
+    del transact
 
     from c2cgeoportal_commons.models.main import Interface, Theme, OGCServer, LayerWMS
-
-    dbsession.begin_nested()
 
     themes = []
     for i in range(0, 5):
@@ -42,13 +41,14 @@ def interface_test_data(dbsession):
         dbsession.add(interface)
         interfaces.append(interface)
 
+    dbsession.flush()
+
     yield {
         'interfaces': interfaces
     }
-    dbsession.rollback()
 
 
-@pytest.mark.usefixtures('interface_test_data', 'transact', 'test_app')
+@pytest.mark.usefixtures('interface_test_data', 'test_app')
 class TestInterface(AbstractViewsTests):
 
     _prefix = '/interfaces'
