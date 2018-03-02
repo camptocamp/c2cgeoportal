@@ -10,7 +10,7 @@ from deform.widget import FormWidget
 
 _list_field = partial(ListField, OGCServer)
 
-base_schema = GeoFormSchemaNode(OGCServer, widge=FormWidget(fields_template='ogcserver_fields'))
+base_schema = GeoFormSchemaNode(OGCServer, widget=FormWidget(fields_template='ogcserver_fields'))
 base_schema.add_unique_validator(OGCServer.name, OGCServer.id)
 
 

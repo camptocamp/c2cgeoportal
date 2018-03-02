@@ -1,5 +1,4 @@
 import json
-from json.decoder import JSONDecodeError
 import colander
 from deform.widget import MappingWidget, SelectWidget, SequenceWidget, TextAreaWidget
 from c2cgeoform.schema import GeoFormSchemaNode
@@ -30,7 +29,7 @@ def metadata_name_widget(node, kw):  # pylint: disable=unused-argument
 def json_validator(node, value):
     try:
         json.loads(value)
-    except JSONDecodeError as e:
+    except ValueError as e:
         raise colander.Invalid(node, _('Parser report: "{}"').format(str(e)))
 
 
