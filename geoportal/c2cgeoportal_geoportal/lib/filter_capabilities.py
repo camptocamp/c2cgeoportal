@@ -33,7 +33,7 @@ import httplib2
 import copy
 from io import StringIO
 from urllib.parse import urlsplit, urljoin
-from urllib.request import urlopen
+import urllib.request
 
 import xml.sax.handler
 from xml.sax import saxutils
@@ -156,7 +156,9 @@ def enable_proxies(proxies):  # pragma: no cover
             args = (source,) if base is None else (source, base)
             return old_prepare_input_source(*args)
 
-        document = urlopen(full_uri, proxies=proxies)
+        opener = urllib.request.FancyURLopener(proxies)
+        with opener.open(full_uri) as stream:
+            document = stream.read()
 
         input_source = InputSource()
         input_source.setSystemId(source)

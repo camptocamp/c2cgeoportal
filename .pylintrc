@@ -1,0 +1,8 @@
+[MESSAGES CONTROL]
+disable=
+
+[TYPECHECK]
+ignored-classes=sqlalchemy.orm.scoping.scoped_session,
+    sqlalchemy.sql.selectable.TableClause,
+    pyramid.httpexceptions.HTTPInternalServerError,
+    pyramid.httpexceptions.HTTPBadRequest

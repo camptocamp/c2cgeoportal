@@ -1,4 +1,4 @@
-# pylint: disable=no-self-use
+# pylint: disable=no-self-use,unsubscriptable-object
 
 from selenium.webdriver.common.by import By
 import re
