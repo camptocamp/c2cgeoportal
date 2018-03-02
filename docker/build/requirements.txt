@@ -50,6 +50,7 @@ pytest-cov==2.5.1  # tests
 pytest-selenium==1.11.4  # admin tests
 python-dateutil==2.6.1  # geoportal
 PyYAML==3.12  # geoportal
+redis==2.10.6  # geoportal cache
 rasterio==1.0a12  # geoportal-raster
 Shapely==1.6.4.post1  # geoportal
 Sphinx==1.7.1  # doc

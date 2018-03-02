@@ -21,7 +21,16 @@ mapping:
     type: seq
     required: True
     sequence:
-      - type: str
+      - type: map
+        mapping:
+          expression:
+            type: str
+            required: True
+          vars:
+            type: seq
+            required: True
+            sequence:
+              - type: str
   vars:
     type: map
     required: True
@@ -148,6 +157,11 @@ mapping:
           backend:
             required: True
             type: str
+          arguments:
+            type: map
+            mapping:
+              regex;.+:
+                type: any
       admin_interface:
         type: map
         required: True

@@ -504,8 +504,8 @@ def includeme(config):
     config.include("pyramid_closure")
 
     # dogpile.cache configuration
-    caching.init_region(settings["cache"])
-    caching.invalidate_region()
+    if 'cache' in settings:
+        caching.init_region(settings['cache'])
 
     # Register a tween to get back the cache buster path.
     config.add_tween("c2cgeoportal_geoportal.lib.cacheversion.CachebusterTween")
