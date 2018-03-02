@@ -46,14 +46,8 @@ timeout(time: 2, unit: 'HOURS') {
                 sh './docker-run make geoportal/c2cgeoportal_geoportal/locale/c2cgeoportal_geoportal.pot'
                 sh './docker-run make admin/c2cgeoportal_admin/locale/c2cgeoportal_admin.pot'
                 // lint
-                sh './docker-run make flake8'
-                sh './docker-run make pylint'
-                sh './docker-run make mypy'
-                sh './docker-run make git-attributes'
-                sh './docker-run make quote'
-                sh './docker-run make spell'
+                sh './docker-run make checks'
                 sh './docker-run travis/status.sh'
-                sh './docker-run travis/test-eof-newline'
                 // Test return code
                 sh './docker-run true'
                 sh 'if ./docker-run false; then false; fi'

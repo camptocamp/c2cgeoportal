@@ -106,7 +106,7 @@ build: c2c-egg \
 doc: $(BUILD_DIR)/sphinx.timestamp
 
 .PHONY: checks
-checks: flake8 mypy git-attributes quote spell yamllint pylint additionallint
+checks: flake8 mypy git-attributes quote spell yamllint pylint eof-newline additionallint
 
 .PHONY: clean
 clean:
@@ -263,6 +263,10 @@ YAML_FILES ?= $(shell find -name ngeo -prune -or \( -name "*.yml" -or -name "*.y
 .PHONY: yamllint
 yamllint: $(YAML_FILES)
 	yamllint --strict --config-file=yamllint.yaml -s $(YAML_FILES)
+
+.PHONY: eof-newline
+eof-newline:
+	travis/test-eof-newline
 
 .PHONY: additionallint
 additionallint:
