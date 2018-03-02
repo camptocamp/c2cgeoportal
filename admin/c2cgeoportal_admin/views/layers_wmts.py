@@ -15,7 +15,7 @@ from c2cgeoportal_commons.models.main import \
     LayerWMTS, LayerWMS, LayerGroup, TreeItem
 from c2cgeoportal_admin.schemas.metadata import metadatas_schema_node
 from c2cgeoportal_admin.schemas.interfaces import interfaces_schema_node
-from c2cgeoportal_admin.schemas.restrictionareas import restrictionareas_schema_node
+from c2cgeoportal_admin.schemas.restriction_areas import restrictionareas_schema_node
 from c2cgeoportal_admin.schemas.treeitem import parent_id_node
 from c2cgeoportal_admin.views.dimension_layers import DimensionLayerViews
 

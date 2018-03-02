@@ -165,6 +165,16 @@ class AbstractViewsTests():
                 'checked': ra in item.restrictionareas
             } for ra in sorted(ras, key=lambda ra: ra.name)])
 
+    def _check_roles(self, form, roles, item):
+        self.check_checkboxes(
+            form,
+            'roles',
+            [{
+                'label': role.name,
+                'value': str(role.id),
+                'checked': role in item.roles
+            } for role in sorted(roles, key=lambda role: role.name)])
+
     def get_first_field_named(self, form, name):
         return form.fields.get(name)[0]
 
