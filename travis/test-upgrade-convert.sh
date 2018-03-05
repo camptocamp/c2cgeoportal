@@ -7,7 +7,7 @@ function pcreate {
         --overwrite --ignore-conflicting-name --package-name testgeomapfish
 }
 
-function create {
+function only_create {
     rm --recursive --force $1
     mkdir --parent $1
     pcreate $1 c2cgeoportal_create
@@ -17,22 +17,26 @@ function create {
     git config user.email travis@camptocamp.com
     git config user.name CI
     git remote add origin . # add a fake remote
+    cd -
+}
+
+function create {
+    only_create $1
+    cd $1/testgeomapfish
     git add --all
     git commit --quiet --message="Initial commit"
-    rm .upgrade.yaml
-    rm --recursive --force $(find -name __pycache__)
+    git clean -fX
     cd -
 }
 
 function createnondocker {
-    create $1
+    only_create $1
     pcreate $1 c2cgeoportal_nondockercreate
     pcreate $1 c2cgeoportal_nondockerupdate
     cd $1/testgeomapfish
     git add --all
     git commit --quiet --message="Initial commit"
-    rm .upgrade.yaml
-    rm --recursive --force $(find -name __pycache__)
+    git clean -fX
     cd -
 }
 
@@ -103,11 +107,12 @@ fi
 
 if [ "$1" = "todocker" ]
 then
+    cp travis/v23-project.yaml ${WORKSPACE}/nondocker/testgeomapfish/project.yaml.mako
     cd ${WORKSPACE}/nondocker/testgeomapfish
     echo "UPGRADE_ARGS += --force-docker --new-makefile=Makefile" > temp.mk
     cat testgeomapfish.mk >> temp.mk
     git rm testgeomapfish.mk
-    git add temp.mk
+    git add temp.mk project.yaml.mako
     git commit --quiet --message="Start upgrade"
     ./docker-run make --makefile=temp.mk upgrade
     if [ ! -e .UPGRADE8 ]
@@ -134,12 +139,13 @@ fi
 
 if [ "$1" = "tonondocker" ]
 then
+    cp travis/v23-project.yaml ${WORKSPACE}/docker/testgeomapfish/project.yaml.mako
     cd ${WORKSPACE}/docker/testgeomapfish
     cp Makefile tmp
     echo "UPGRADE_ARGS += --nondocker --new-makefile=testgeomapfish.mk" > Makefile
     cat tmp >> Makefile
     rm tmp
-    git add Makefile
+    git add Makefile project.yaml.mako
     git commit --quiet --message="Start upgrade"
     export APACHE_VHOST=test
     ./docker-run make upgrade
@@ -152,7 +158,7 @@ then
     cp {CONST_create_template/,}testgeomapfish.mk
     cp {CONST_create_template/,}mapserver/tinyows.xml.mako
     cp {CONST_create_template/,}print/print-apps/testgeomapfish/config.yaml.mako
-    ./docker-run make --makefile=testgeomapfish.mk upgrade10
+    ./docker-run make --makefile=testgeomapfish.mk upgrade9
     if [ ! -e .UPGRADE_SUCCESS ]
     then
         echo "Fail to upgrade"

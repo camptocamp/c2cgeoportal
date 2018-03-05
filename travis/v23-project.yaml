@@ -1,0 +1,14 @@
+---
+project_folder: testgeomapfish
+project_package: ${package}
+host: ${host}
+checker_path: /c2c/health_check?
+managed_files: []
+unmanaged_files:
+  - mapserver/mapserver\.map\.mako
+  - mapserver/mapserver\.map\.tmpl\.mako
+template_vars:
+  package: testgeomapfish
+  srid: 21781
+  extent: 489246.36,78873.44,837119.76,296543.14
+  apache_vhost: test

@@ -49,7 +49,7 @@ VERSION = TRAVIS_TAG if TRAVIS_TAG is not None and TRAVIS_TAG != '' else \
 install_requires = [
     'c2cgeoportal-commons==' + VERSION,
     'c2cwsgiutils',
-    'c2c.template>=1.4.0',  # Makefile
+    'c2c.template>=2.0.7',  # Makefile
     'dateutils',
     'defusedxml',
     'dogpile.cache>=0.6',

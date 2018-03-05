@@ -115,7 +115,7 @@ timeout(time: 2, unit: 'HOURS') {
                 ]]) {
                     try {
                         sh 'docker login -u "$USERNAME" -p "$PASSWORD"'
-                        sh '(cd ${HOME}/workspace/testgeomapfish/; docker-compose up -d)'
+                        sh '(cd ${HOME}/workspace/testgeomapfish/; docker-compose up --force-recreate -d)'
                         sh '(cd ${HOME}/workspace/testgeomapfish/; docker-compose exec -T geoportal wait-for-db)'
                         sh './docker-run travis/waitwsgi http://`netstat --route --numeric|grep ^0.0.0.0|awk \'{print($2)}\'`:8080/'
                         for (path in ['c2c/health_check', 'c2c/health_check?max_level=100', 'layers/test/values/type enum']) {
@@ -166,14 +166,16 @@ timeout(time: 2, unit: 'HOURS') {
                 }
                 sh 'rm -rf ${HOME}/workspace/testgeomapfish'
             }
-            stage('Tests upgrades') {
-                checkout scm
-                try {
+            try {
+                stage('Tests upgrades - prepare') {
+                    checkout scm
                     sh 'docker run --name geomapfish-db --env=POSTGRES_USER=www-data --env=POSTGRES_PASSWORD=www-data --env=POSTGRES_DB=geomapfish --publish=5432:5432 --detach camptocamp/geomapfish-test-db'
-                    // Test Upgrade an convert project
                     sh 'travis/test-upgrade-convert.sh init ${HOME}/workspace'
-                    sh 'travis/test-upgrade-convert.sh v220-todocker ${HOME}/workspace'
-                    /*parallel 'docker': {
+                }
+                stage('Tests upgrades') {
+                    checkout scm
+                    // Test Upgrade an convert project
+                    parallel 'docker': {
                         sh 'travis/test-upgrade-convert.sh docker ${HOME}/workspace'
                         sh 'travis/test-upgrade-convert.sh tonondocker ${HOME}/workspace'
                     }, 'nondocker': {
@@ -183,9 +185,11 @@ timeout(time: 2, unit: 'HOURS') {
                         sh 'travis/test-upgrade-convert.sh v220-todocker ${HOME}/workspace'
                     }, 'v220 nondocker': {
                         sh 'travis/test-upgrade-convert.sh v220-tonondocker ${HOME}/workspace'
-                    }*/
+                    }
+                }
+            } finally {
+                stage('Tests upgrades - cleanup') {
                     sh 'travis/test-upgrade-convert.sh cleanup ${HOME}/workspace'
-                } finally {
                     sh 'docker stop geomapfish-db'
                     sh 'docker rm --volumes geomapfish-db'
                 }

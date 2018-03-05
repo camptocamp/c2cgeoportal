@@ -6,7 +6,6 @@ __pycache__/
 /project.yaml
 /docker-compose.yaml
 /docker-compose-build.yaml
-/alembic.ini
 /alembic.yaml
 /testdb/11-schemas.sql
 /testdb/12-alembic.sql
@@ -24,10 +23,13 @@ __pycache__/
 /print/WEB-INF/lib/*.jar
 /print/WEB-INF/classes/logback.xml
 /print/print-apps/{{package}}/config.yaml
+/mapcache
 /mapserver/mapserver.map
 /mapserver/demo.map
+/mapserver/*.map.tmpl.mako
 /mapserver/tinyows.xml
 /mapserver/replace_db.sh
+/tilegeneration/config.yaml
 /geoportal/jsbuild/app.cfg
 /geoportal/Dockerfile
 /geoportal/config.yaml
@@ -48,4 +50,6 @@ __pycache__/
 /geoportal/{{package}}_geoportal/static/mobile/openlayers-mobile.js
 /geoportal/{{package}}_geoportal/static/mobile/bootstrap.js
 /geoportal/{{package}}_geoportal/static/mobile/bootstrap.json
+/c2cgeoportal_geoportal/
+/c2cgeoportal_commons/
 /.upgrade.yaml

@@ -14,17 +14,17 @@ default_project_file:
     - geoportal/{{package}}_geoportal/jsbuild/.*
     - print/print-apps/.*
     - mapserver/.*
-    - project.yaml.mako
-    - docker-compose.yaml.mako
-    - setup.py
-    - vars.yaml
+    - project\.yaml\.mako
+    - docker-compose\.yaml\.mako
+    - setup\.py
+    - vars\.yaml
     - Makefile
   exclude:
-    - geoportal/{{package}}_geoportal/static-ngeo/components/README.md
-    - geoportal/{{package}}_geoportal/static-ngeo/js/{{package}}module.js
+    - geoportal/{{package}}_geoportal/static-ngeo/components/README\.md
+    - geoportal/{{package}}_geoportal/static-ngeo/js/{{package}}module\.js
     - mapserver/Dockerfile
-    - mapserver/tinyows.xml.mako
-    - mapserver/demo.map.tmpl.mako
+    - mapserver/tinyows\.xml\.mako
+    - mapserver/demo\.map\.tmpl\.mako
 
 files_to_remove:
   - file: .build
@@ -156,6 +156,9 @@ files_to_move:
     to: testdb/11-schemas.sql_mako
     version: 2.3
   - from: mapserver/c2cgeoportal.map.mako
+    to: mapserver/mapserver.map.tmpl.mako
+    version: 2.3
+  - from: mapserver/mapserver.map.mako
     to: mapserver/mapserver.map.tmpl.mako
     version: 2.3
   - from: mapserver/demo.map.mako
