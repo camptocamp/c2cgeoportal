@@ -13,11 +13,12 @@ from . import skip_if_ci, AbstractViewsTests
 from .selenium.page import IndexPage
 
 
-@pytest.fixture(scope='class')
-@pytest.mark.usefixtures('dbsession')
-def roles_test_data(dbsession):
+@pytest.fixture(scope='function')
+@pytest.mark.usefixtures('dbsession', 'transact')
+def roles_test_data(dbsession, transact):
+    del transact
+
     from c2cgeoportal_commons.models.main import Role, Functionality, RestrictionArea
-    dbsession.begin_nested()
 
     functionalities = {}
     for name in ('default_basemap', 'location'):
@@ -59,10 +60,8 @@ def roles_test_data(dbsession):
         'roles': roles
     }
 
-    dbsession.rollback()
 
-
-@pytest.mark.usefixtures('roles_test_data', 'transact', 'test_app')
+@pytest.mark.usefixtures('roles_test_data', 'test_app')
 class TestRole(AbstractViewsTests):
 
     _prefix = '/roles'

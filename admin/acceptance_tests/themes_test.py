@@ -6,14 +6,14 @@ import pytest
 from .treegroup_tests import TestTreeGroup
 
 
-@pytest.fixture(scope='class')
-@pytest.mark.usefixtures('dbsession')
-def theme_test_data(dbsession):
+@pytest.fixture(scope='function')
+@pytest.mark.usefixtures('dbsession', 'transact')
+def theme_test_data(dbsession, transact):
+    del transact
+
     from c2cgeoportal_commons.models.main import \
         Theme, Role, Functionality, LayergroupTreeitem, \
         Interface, Metadata, LayerGroup, LayerWMS, OGCServer
-
-    dbsession.begin_nested()
 
     interfaces = [Interface(name) for name in ['desktop', 'mobile', 'edit', 'routing']]
 
@@ -59,6 +59,7 @@ def theme_test_data(dbsession):
         themes.append(theme)
 
     dbsession.flush()
+
     yield {
         'themes': themes,
         'interfaces': interfaces,
@@ -68,10 +69,8 @@ def theme_test_data(dbsession):
         'roles': roles,
     }
 
-    dbsession.rollback()
 
-
-@pytest.mark.usefixtures('theme_test_data', 'transact', 'test_app')
+@pytest.mark.usefixtures('theme_test_data', 'test_app')
 class TestTheme(TestTreeGroup):
 
     _prefix = '/themes'

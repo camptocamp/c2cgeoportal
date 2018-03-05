@@ -6,13 +6,13 @@ import re
 from . import AbstractViewsTests
 
 
-@pytest.fixture(scope='class')
-@pytest.mark.usefixtures('dbsession')
-def functionality_test_data(dbsession):
+@pytest.fixture(scope='function')
+@pytest.mark.usefixtures('dbsession', 'transact')
+def functionality_test_data(dbsession, transact):
+    del transact
 
     from c2cgeoportal_commons.models.main import Functionality
 
-    dbsession.begin_nested()
     functionalities = []
     for i in range(0, 4):
         functionality = Functionality(
@@ -21,13 +21,15 @@ def functionality_test_data(dbsession):
         functionality.description = 'description_{}'.format(i)
         dbsession.add(functionality)
         functionalities.append(functionality)
+
+    dbsession.flush()
+
     yield {
         'functionalities': functionalities
     }
-    dbsession.rollback()
 
 
-@pytest.mark.usefixtures('functionality_test_data', 'transact', 'test_app')
+@pytest.mark.usefixtures('functionality_test_data', 'test_app')
 class TestFunctionality(AbstractViewsTests):
 
     _prefix = '/functionalities'

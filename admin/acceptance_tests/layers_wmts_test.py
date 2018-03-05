@@ -6,12 +6,12 @@ import pytest
 from . import AbstractViewsTests, get_test_default_layers, factory_build_layers
 
 
-@pytest.fixture(scope='class')
-@pytest.mark.usefixtures('dbsession')
-def layer_wmts_test_data(dbsession):
-    from c2cgeoportal_commons.models.main import LayerWMTS, OGCServer
+@pytest.fixture(scope='function')
+@pytest.mark.usefixtures('dbsession', 'transact')
+def layer_wmts_test_data(dbsession, transact):
+    del transact
 
-    dbsession.begin_nested()
+    from c2cgeoportal_commons.models.main import LayerWMTS, OGCServer
 
     server = OGCServer(name='server_1')
     server.url = 'http://wms.geo.admin.ch_1'
@@ -28,18 +28,15 @@ def layer_wmts_test_data(dbsession):
         layer.style = 'décontrasté'
         return layer
 
-    dbsession.begin_nested()
-
     datas = factory_build_layers(layer_builder, dbsession)
     datas['default'] = get_test_default_layers(dbsession, server)
+
     dbsession.flush()
 
     yield datas
 
-    dbsession.rollback()
 
-
-@pytest.mark.usefixtures('layer_wmts_test_data', 'transact', 'test_app')
+@pytest.mark.usefixtures('layer_wmts_test_data', 'test_app')
 class TestLayerWMTS(AbstractViewsTests):
 
     _prefix = '/layers_wmts'

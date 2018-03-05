@@ -6,12 +6,12 @@ import pytest
 from .treegroup_tests import TestTreeGroup
 
 
-@pytest.fixture(scope='class')
-@pytest.mark.usefixtures('dbsession')
-def layer_groups_test_data(dbsession):
-    from c2cgeoportal_commons.models.main import LayerGroup, Metadata, LayergroupTreeitem
+@pytest.fixture(scope='function')
+@pytest.mark.usefixtures('dbsession', 'transact')
+def layer_groups_test_data(dbsession, transact):
+    del transact
 
-    dbsession.begin_nested()
+    from c2cgeoportal_commons.models.main import LayerGroup, Metadata, LayergroupTreeitem
 
     metadatas_protos = [("copyable", "true"),
                         ("disclaimer", "© le momo"),
@@ -50,16 +50,15 @@ def layer_groups_test_data(dbsession):
                 flatten_tree(val, value[val])
 
     flatten_tree(1, tree[1])
+
     dbsession.flush()
 
     yield {
         "groups": groups
     }
 
-    dbsession.rollback()
 
-
-@pytest.mark.usefixtures('layer_groups_test_data', 'transact', 'test_app')
+@pytest.mark.usefixtures('layer_groups_test_data', 'test_app')
 class TestLayersGroups(TestTreeGroup):
 
     _prefix = '/layer_groups'

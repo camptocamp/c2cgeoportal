@@ -5,24 +5,23 @@ import pytest
 from . import AbstractViewsTests
 
 
-@pytest.fixture(scope='class')
-@pytest.mark.usefixtures('dbsession')
-def left_menu_test_data(dbsession):
-    from c2cgeoportal_commons.models.main import Role
+@pytest.fixture(scope='function')
+@pytest.mark.usefixtures('dbsession', 'transact')
+def left_menu_test_data(dbsession, transact):
+    del transact
 
-    dbsession.begin_nested()
+    from c2cgeoportal_commons.models.main import Role
 
     roles = []
     role = Role('secretary')
     dbsession.add(role)
     roles.append(role)
+
     dbsession.flush()
 
     yield {
         'roles': roles
     }
-
-    dbsession.rollback()
 
 
 @pytest.mark.usefixtures('test_app')
