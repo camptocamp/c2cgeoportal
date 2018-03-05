@@ -39,7 +39,7 @@ def includeme(config):
         ('layers_wmts', LayerWMTS),
         ('layers_v1', LayerV1),
         ('ogc_servers', OGCServer),
-        ('restriction areas', RestrictionArea),
+        ('restriction_areas', RestrictionArea),
         ('users', User),
         ('roles', Role),
         ('functionalities', Functionality),

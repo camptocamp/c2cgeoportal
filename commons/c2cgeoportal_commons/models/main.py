@@ -1071,19 +1071,36 @@ class RestrictionArea(Base):
         'title': _('Restriction area'),
         'plural': _('Restriction areas')
     }
-
-    id = Column(Integer, primary_key=True)
+    __c2cgeoform_config__ = {
+        'duplicate': True
+    }
+    id = Column(Integer, primary_key=True, info={
+        'colanderalchemy': {'widget': HiddenWidget()}}
+    )
     area = Column(Geometry('POLYGON', srid=_srid), info={'colanderalchemy': {
         'typ': colander_ext.Geometry('POLYGON', srid=_srid, map_srid=3857)
     }})
 
-    name = Column(Unicode)
-    description = Column(Unicode)
-    readwrite = Column(Boolean, default=False)
+    name = Column(Unicode, info={
+        'colanderalchemy': {
+            'title': _('Name')
+        }})
+    description = Column(Unicode, info={
+        'colanderalchemy': {
+            'title': _('Description')
+        }})
+    readwrite = Column(Boolean, default=False, info={
+        'colanderalchemy': {
+            'title': _('Read/write')
+        }})
 
     # relationship with Role and Layer
     roles = relationship(
-        'Role', secondary=role_ra,
+        'Role', secondary=role_ra, info={
+            'colanderalchemy': {
+                'title': _('Roles'),
+                'exclude': True
+            }},
         cascade='save-update,merge,refresh-expire',
         backref=backref('restrictionareas', info={
             'colanderalchemy': {
@@ -1093,7 +1110,12 @@ class RestrictionArea(Base):
         })
     )
     layers = relationship(
-        'Layer', secondary=layer_ra, cascade='save-update,merge,refresh-expire',
+        'Layer', secondary=layer_ra, info={
+            'colanderalchemy': {
+                'title': _('Layers'),
+                'exclude': True
+            }},
+        cascade='save-update,merge,refresh-expire',
         backref=backref('restrictionareas', info={
             'colanderalchemy': {
                 'title': _('Restriction areas'),

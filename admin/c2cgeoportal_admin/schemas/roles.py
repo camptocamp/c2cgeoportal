@@ -6,19 +6,22 @@ from c2cgeoform.schema import (
 )
 from c2cgeoportal_commons.models.main import Role
 
-roles_schema_node = colander.SequenceSchema(
-    GeoFormManyToManySchemaNode(Role),
-    name='restricted_roles',
-    widget=RelationCheckBoxListWidget(
-        Role,
-        'id',
-        'name',
-        order_by='name',
-        edit_url=lambda request, value: request.route_url(
-            'c2cgeoform_item',
-            table='roles',
-            id=value
-        )
-    ),
-    validator=manytomany_validator
-)
+
+def roles_schema_node(name):
+    return colander.SequenceSchema(
+        GeoFormManyToManySchemaNode(Role),
+        name=name,
+        widget=RelationCheckBoxListWidget(
+            Role,
+            'id',
+            'name',
+            order_by='name',
+            edit_url=lambda request, value: request.route_url(
+                'c2cgeoform_item',
+                table='roles',
+                id=value
+            )
+        ),
+        validator=manytomany_validator,
+        missing=colander.drop
+    )
