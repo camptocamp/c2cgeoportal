@@ -12,6 +12,7 @@
 <script type="text/javascript" src="{{request.static_url('c2cgeoportal_admin:node_modules/bootstrap-table/src/extensions/treegrid/bootstrap-table-treegrid.js')}}"></script>
 <script type="text/javascript" src="{{request.static_url('c2cgeoportal_admin:node_modules/jquery-treegrid/js/jquery.treegrid.js')}}"></script>
 <script type="text/javascript" src="{{request.static_url('c2cgeoportal_admin:node_modules/jquery.cookie/jquery.cookie.js')}}"></script>
+<script type="text/javascript" src="{{request.static_url('c2cgeoportal_admin:node_modules/jquery.scrollintoview/jquery.scrollintoview.js')}}"></script>
 {% endblock extra_scripts %}
 
 {% block content %}
@@ -54,7 +55,7 @@
               class: 'actions',
               formatter: function(value, row, index, field) {
                 var content = '\
-                  <div class="btn-group">\
+                  <div class="btn-group dropdown">\
                     <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" data-target="item-' + row._id_ + '-actions" aria-haspopup="true" aria-expanded="false">\
                       <span class="caret"></span>\
                     </button>\
@@ -126,6 +127,12 @@
           treeShowField: 'name',
           idField: 'path',
           parentIdField: 'parent_path',
+
+          onLoadSuccess: function(data) {
+            $(".dropdown").on("shown.bs.dropdown", function () {
+              $(this).children(".dropdown-menu").scrollintoview({viewPadding: 5});
+            });
+          },
 
           onClickRow: function(row, $element, field) {
             if (field != 'actions') {
