@@ -28,8 +28,6 @@ __pycache__/
 /mapserver/demo.map
 /mapserver/tinyows.xml
 /mapserver/replace_db.sh
-/commons/{{package}}_commons.egg-info/
-/commons/Dockerfile
 /geoportal/jsbuild/app.cfg
 /geoportal/Dockerfile
 /geoportal/config.yaml
@@ -50,6 +48,4 @@ __pycache__/
 /geoportal/{{package}}_geoportal/static/mobile/openlayers-mobile.js
 /geoportal/{{package}}_geoportal/static/mobile/bootstrap.js
 /geoportal/{{package}}_geoportal/static/mobile/bootstrap.json
-/c2cgeoportal_commons/
-/c2cgeoportal_geoportal/
 /.upgrade.yaml

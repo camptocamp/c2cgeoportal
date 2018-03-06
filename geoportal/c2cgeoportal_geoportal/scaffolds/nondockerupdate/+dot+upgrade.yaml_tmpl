@@ -19,64 +19,11 @@ default_project_file:
     - vars.yaml
     - {{package}}.mk
   exclude:
-    - geoportal/testgeomapfish_geoportal/static-ngeo/components/README.md
+    - geoportal/{{package}}_geoportal/static-ngeo/components/README.md
     - geoportal/{{package}}_geoportal/static-ngeo/js/{{package}}module.js
     - mapserver/Dockerfile
     - mapserver/tinyows.xml.mako
     - mapserver/demo.map.tmpl.mako
-
-files_to_move:
-  - from: vars_{{package}}.yaml
-    to: vars.yaml
-    version: 2.3
-  - from: alembic.ini.mako
-    to: alembic.ini
-    version: 2.3
-  - from: docker-compose.yml.mako
-    to: docker-compose.yaml.mako
-    version: 2.3
-  - from: CONST_print_url
-    to: print_url
-    version: 2.3
-  - from: testDB
-    to: testdb
-    version: 2.3
-  - from: testdb/Dockerfile.mako
-    to: testdb/Dockerfile
-    version: 2.3
-  - from: testdb/11-schemas.sql.mako
-    to: testdb/11-schemas.sql_mako
-    version: 2.3
-  - from: mapserver/c2cgeoportal.map.mako
-    to: mapserver/mapserver.map.tmpl.mako
-    version: 2.3
-  - from: mapserver/demo.map.mako
-    to: mapserver/demo.map.tmpl.mako
-    version: 2.3
-  - from: testgeomapfish/models.py
-    to: commons/testgeomapfish_commons/models.py
-    version: 2.3
-  - from: Dockerfile
-    to: geoportal/Dockerfile.mako
-    version: 2.3
-  - from: .dockerignore
-    to: geoportal/.dockerignore
-    version: 2.3
-  - from: jsbuild
-    to: geoportal/jsbuild
-    version: 2.3
-  - from: production.ini.mako
-    to: geoportal/production.ini.mako
-    version: 2.3
-  - from: development.ini.mako
-    to: geoportal/development.ini.mako
-    version: 2.3
-  - from: setup.py
-    to: geoportal/setup.py
-    version: 2.3
-  - from: testgeomapfish
-    to: geoportal/testgeomapfish_geoportal
-    version: 2.3
 
 files_to_remove:
   - file: .build
@@ -85,7 +32,7 @@ files_to_remove:
   - file: .tx
     version: 2.3
     from: 2.2
-  - file: geoportal/{{package}}_geoportal/forms.py
+  - file: {{package}}/forms.py
     version: 2.3
     from: 2.2
   - file: apache
@@ -130,7 +77,7 @@ files_to_remove:
   - file: print/Dockerfile
     version: 2.3
     from: 2.2
-  - file: testgeomapfish.egg-info
+  - file: {{package}}.egg-info
     version: 2.3
     from: 2.2
   - file: CONST_alembic
@@ -148,3 +95,53 @@ files_to_remove:
   - file: mapserver/Dockerfile
     version: 2.3
     from: 2.2
+
+files_to_move:
+  - from: vars_{{package}}.yaml
+    to: vars.yaml
+    version: 2.3
+  - from: alembic.ini.mako
+    to: alembic.ini
+    version: 2.3
+  - from: docker-compose.yml.mako
+    to: docker-compose.yaml.mako
+    version: 2.3
+  - from: CONST_print_url
+    to: print_url
+    version: 2.3
+  - from: testDB
+    to: testdb
+    version: 2.3
+  - from: testdb/Dockerfile.mako
+    to: testdb/Dockerfile
+    version: 2.3
+  - from: testdb/11-schemas.sql.mako
+    to: testdb/11-schemas.sql_mako
+    version: 2.3
+  - from: mapserver/c2cgeoportal.map.mako
+    to: mapserver/mapserver.map.tmpl.mako
+    version: 2.3
+  - from: mapserver/demo.map.mako
+    to: mapserver/demo.map.tmpl.mako
+    version: 2.3
+  - from: Dockerfile
+    to: geoportal/Dockerfile.mako
+    version: 2.3
+  - from: .dockerignore
+    to: geoportal/.dockerignore
+    version: 2.3
+  - from: jsbuild
+    to: geoportal/jsbuild
+    version: 2.3
+  - from: production.ini.mako
+    to: geoportal/production.ini.mako
+    version: 2.3
+  - from: development.ini.mako
+    to: geoportal/development.ini.mako
+    version: 2.3
+  - from: setup.py
+    to: geoportal/setup.py
+    version: 2.3
+  - from: {{package}}
+    to: geoportal/{{package}}_geoportal
+    version: 2.3

@@ -26,7 +26,7 @@ pipeline =
 ###
 
 [loggers]
-keys = root, sqlalchemy, gunicorn.access, gunicorn.error, c2cgeoportal_commons, c2cgeoportal_geoportal, {{package}}_commons, {{package}}_geoportal
+keys = root, sqlalchemy, gunicorn.access, gunicorn.error, c2cgeoportal_commons, c2cgeoportal_geoportal, {{package}}_geoportal
 
 [handlers]
 keys = console
@@ -47,11 +47,6 @@ qualname = c2cgeoportal_commons
 level = %(C2CGEOPORTAL_LOG_LEVEL)s
 handlers =
 qualname = c2cgeoportal_geoportal
-
-[logger_{{package}}_commons]
-level = %(LOG_LEVEL)s
-handlers =
-qualname = {{package}}_commons
 
 [logger_{{package}}_geoportal]
 level = %(LOG_LEVEL)s
