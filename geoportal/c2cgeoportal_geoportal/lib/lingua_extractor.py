@@ -53,6 +53,7 @@ from mako.template import Template
 from mako.lookup import TemplateLookup
 from owslib.wms import WebMapService
 
+import c2cgeoportal_geoportal
 from c2cgeoportal_commons.config import config
 from c2cgeoportal_geoportal.lib import add_url_params, get_url2
 from c2cgeoportal_geoportal.lib.bashcolor import colorize, RED
@@ -235,7 +236,7 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
         config_ = C()
         config_.registry.settings = settings
         from c2cgeoportal_commons import models
-        models.init_dbsessions(settings, config_)
+        c2cgeoportal_geoportal.init_dbsessions(settings, config_)
         from c2cgeoportal_geoportal.views.layers import Layers
         enums = []
         enum_layers = settings.get("layers", {}).get("enum", {})

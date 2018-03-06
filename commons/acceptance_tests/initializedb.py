@@ -12,8 +12,9 @@ from sqlalchemy.engine import Connection
 from sqlalchemy.orm import Session
 
 from c2cgeoportal_commons.models import (
-    Base, get_engine, get_session_factory, get_tm_session, generate_mappers,
+    Base,
 )
+from c2cgeoportal_commons.testing import get_engine, get_session_factory, get_tm_session, generate_mappers
 from c2cgeoportal_commons.config import config
 
 

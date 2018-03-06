@@ -9,7 +9,7 @@ from wsgiref.simple_server import make_server
 import threading
 
 from .initializedb import init_db
-from c2cgeoportal_commons.models import get_engine, get_session_factory, get_tm_session, generate_mappers
+from c2cgeoportal_commons.testing import get_engine, get_session_factory, get_tm_session, generate_mappers
 from sqlalchemy.exc import DBAPIError
 
 

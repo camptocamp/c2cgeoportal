@@ -32,11 +32,15 @@ import logging
 import mimetypes
 import binascii
 from urllib.parse import urlsplit
+
+import c2cwsgiutils
+import re
 import simplejson as json
 from socket import gethostbyname, gaierror
 from ipcalc import IP, Network
 from Crypto.Cipher import AES
 import importlib
+from pyramid.config import Configurator
 
 from pyramid_mako import add_mako_renderer
 from pyramid.interfaces import IStaticURLInfo
@@ -48,8 +52,11 @@ from papyrus.renderers import GeoJSON, XSD
 import c2cwsgiutils.db
 import c2cwsgiutils.pyramid
 from c2cwsgiutils.health_check import HealthCheck
+from sqlalchemy.orm import Session
 
+import c2cgeoportal_commons.models
 from c2cgeoportal_commons.config import config as configuration
+from c2cgeoportal_commons.models import Base
 from c2cgeoportal_geoportal.lib import dbreflection, caching, \
     C2CPregenerator, MultiDomainStaticURLInfo
 
@@ -491,7 +498,6 @@ def includeme(config):
     health_check = HealthCheck(config)
 
     # Initialise DBSessions
-    from c2cgeoportal_commons.models import init_dbsessions
     init_dbsessions(settings, config, health_check)
 
     # initialize the dbreflection module
@@ -704,3 +710,32 @@ def includeme(config):
     # Handles the other HTTP errors raised by the views. Without that,
     # the client receives a status=200 without content.
     config.add_view(error_handler, context=HTTPException)
+
+
+def init_dbsessions(settings: dict, config: Configurator, health_check: HealthCheck=None) -> None:
+    db_chooser = settings.get('db_chooser', {})
+    master_paths = [re.compile(i.replace('//', '/')) for i in db_chooser.get('master', [])]
+    slave_paths = [re.compile(i.replace('//', '/')) for i in db_chooser.get('slave', [])]
+
+    slave_prefix = 'sqlalchemy_slave' if 'sqlalchemy_slave.url' in settings else None
+
+    c2cgeoportal_commons.models.DBSession, rw_bind, _ = c2cwsgiutils.db.setup_session(
+        config, 'sqlalchemy', slave_prefix, force_master=master_paths, force_slave=slave_paths)
+    c2cgeoportal_commons.models.Base.metadata.bind = rw_bind
+    c2cgeoportal_commons.models.DBSessions['dbsession'] = c2cgeoportal_commons.models.DBSession
+
+    for dbsession_name, dbsession_config in settings.get('dbsessions', {}).items():  # pragma: nocover
+        c2cgeoportal_commons.models.DBSessions[dbsession_name] = \
+            c2cwsgiutils.db.create_session(config, dbsession_name, **dbsession_config)
+
+    Base.metadata.clear()
+    from c2cgeoportal_commons.models import main
+
+    if health_check is not None:
+        for name, session in c2cgeoportal_commons.models.DBSessions.items():
+            if name == 'dbsession':
+                health_check.add_db_session_check(session, at_least_one_model=main.Theme)
+            else:  # pragma: no cover
+                def check(session: Session) -> None:
+                    session.execute('SELECT 1')
+                health_check.add_db_session_check(session, query_cb=check)

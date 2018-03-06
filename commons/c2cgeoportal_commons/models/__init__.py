@@ -28,103 +28,15 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import re
 import logging
-from typing import Optional, Dict, Any
+from typing import Dict  # noqa
 
-from c2cwsgiutils.health_check import HealthCheck
-from pyramid.config import Configurator
-from sqlalchemy import engine_from_config
 import sqlalchemy.ext.declarative
-from sqlalchemy.engine import Engine
-from sqlalchemy.orm import sessionmaker, configure_mappers, Session
 import sqlalchemy.ext.declarative.api
-import zope.sqlalchemy
-import c2cwsgiutils
-from transaction import TransactionManager
-import c2cgeoportal_commons.models  # "7/11/17, fix ci build, avoid use of globals"
 
 LOG = logging.getLogger(__name__)
 
-DBSession = None  # Initialized by init_dbsessions
+# Initialized by init_dbsessions
+DBSession = None  # type: sqlalchemy.orm.scoping.ScopedSession
 Base = sqlalchemy.ext.declarative.declarative_base()  # type: sqlalchemy.ext.declarative.api.Base
-DBSessions = {}  # type: Dict[str, Session]
-
-
-def get_engine(settings: dict, prefix: str='sqlalchemy.') -> Engine:
-    return engine_from_config(settings, prefix)
-
-
-def get_session_factory(engine: Engine) -> sessionmaker:
-    factory = sessionmaker()
-    factory.configure(bind=engine)
-    return factory
-
-
-def get_tm_session(session_factory: sessionmaker, transaction_manager: TransactionManager) -> Session:
-    """
-    Get a ``sqlalchemy.orm.Session`` instance backed by a transaction.
-
-    This function will hook the session to the transaction manager which
-    will take care of committing any changes.
-
-    - When using pyramid_tm it will automatically be committed or aborted
-      depending on whether an exception is raised.
-
-    - When using scripts you should wrap the session in a manager yourself.
-      For example::
-
-          import transaction
-
-          engine = get_engine(settings)
-          session_factory = get_session_factory(engine)
-          with transaction.manager:
-              dbsession = get_tm_session(session_factory, transaction.manager)
-
-    """
-    dbsession = session_factory()
-    zope.sqlalchemy.register(
-        dbsession, transaction_manager=transaction_manager)
-    return dbsession
-
-
-def generate_mappers() -> None:
-    """
-    Initialize the model for a Pyramid app.
-    """
-
-    # import or define all models here to ensure they are attached to the
-    # Base.metadata prior to any initialization routines
-    from . import main  # flake8: noqa
-
-    # run configure_mappers after defining all of the models to ensure
-    # all relationships can be setup
-    configure_mappers()
-
-def init_dbsessions(settings: dict, config: Configurator, health_check: HealthCheck=None) -> None:
-    db_chooser = settings.get('db_chooser', {})
-    master_paths = [re.compile(i.replace('//', '/')) for i in db_chooser.get('master', [])]
-    slave_paths = [re.compile(i.replace('//', '/')) for i in db_chooser.get('slave', [])]
-
-    slave_prefix = 'sqlalchemy_slave' if 'sqlalchemy_slave.url' in settings else None
-
-    c2cgeoportal_commons.models.DBSession, rw_bind, _ = c2cwsgiutils.db.setup_session(
-        config, 'sqlalchemy', slave_prefix, force_master=master_paths, force_slave=slave_paths)
-    c2cgeoportal_commons.models.Base.metadata.bind = rw_bind
-    c2cgeoportal_commons.models.DBSessions['dbsession'] = c2cgeoportal_commons.models.DBSession
-
-    for dbsession_name, dbsession_config in settings.get('dbsessions', {}).items():  # pragma: nocover
-        c2cgeoportal_commons.models.DBSessions[dbsession_name] = \
-            c2cwsgiutils.db.create_session(config, dbsession_name, **dbsession_config)
-
-    Base.metadata.clear()
-    from c2cgeoportal_commons.models import main
-
-    if health_check is not None:
-        for name, session in c2cgeoportal_commons.models.DBSessions.items():
-            if name == 'dbsession':
-                health_check.add_db_session_check(session, at_least_one_model=main.Theme)
-            else:  # pragma: no cover
-                def check(session: Session) -> None:
-                    session.execute('SELECT 1')
-                health_check.add_db_session_check(session, query_cb=check)
+DBSessions = {}  # type: Dict[str, sqlalchemy.orm.scoping.ScopedSession]

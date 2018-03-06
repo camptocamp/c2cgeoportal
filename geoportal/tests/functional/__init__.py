@@ -37,6 +37,8 @@ from configparser import ConfigParser
 from webob.acceptparse import Accept
 
 from pyramid import testing
+
+import c2cgeoportal_geoportal
 import tests
 
 from c2cgeoportal_commons.config import config as configuration
@@ -83,7 +85,6 @@ def cleanup_db():
 
 
 def setup_common():
-    from c2cgeoportal_commons import models
     global config
 
     current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -106,7 +107,7 @@ def setup_common():
     }
     config = testing.setUp(settings=configuration.get_config())
 
-    models.init_dbsessions(config.get_settings(), config)
+    c2cgeoportal_geoportal.init_dbsessions(config.get_settings(), config)
     functionality.FUNCTIONALITIES_TYPES = None
 
     cleanup_db()
