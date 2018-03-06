@@ -246,6 +246,7 @@ class TestLayerTreeSelenium():
             assert link is None
 
             selenium.refresh()
+            page.wait_jquery_to_be_active()
             page.find_item('_{}_{}_{}'.format(themes[0].id, groups[5].id, layers_wmts[5].id), 10)
             with pytest.raises(NoSuchElementException):
                 page.find_item(path)
@@ -292,6 +293,7 @@ class TestLayerTreeSelenium():
 
             dbsession.expire_all()
             selenium.refresh()
+            page.wait_jquery_to_be_active()
 
             page.find_item('_{}_{}_{}'.format(themes[1].id, groups[6].id, layers_wmts[6].id), 10)
             with pytest.raises(NoSuchElementException):
