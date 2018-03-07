@@ -3,10 +3,10 @@
   padding-right: 8px;
 }
 
-#layertree-table {
-  margin-top: 5px;
-  margin-bottom: 5px;
-  width: auto;
+.bootstrap-table th.actions,
+.bootstrap-table td.actions
+{
+  width: 30px;
 }
 
 .icon-theme:before {

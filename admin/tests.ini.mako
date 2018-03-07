@@ -12,8 +12,6 @@ pyramid.debug_notfound = false
 pyramid.debug_routematch = false
 pyramid.default_locale_name = en
 pyramid.available_languages = fr en
-pyramid.includes =
-    pyramid_debugtoolbar
 
 app.cfg = %(here)s/config.yaml
 

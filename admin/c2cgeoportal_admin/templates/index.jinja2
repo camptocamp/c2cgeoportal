@@ -1,5 +1,15 @@
 {% extends "layout.jinja2" %}
 
+{% block extra_links %}
+<link href="{{request.static_url('c2cgeoportal_admin:node_modules/bootstrap-table/dist/bootstrap-table.min.css')}}" rel="stylesheet">
+{% endblock extra_links %}
+
+{% block extra_scripts %}
+<script type="text/javascript" src="{{request.static_url('c2cgeoportal_admin:node_modules/bootstrap-table/src/bootstrap-table.js')}}"></script>
+<script type="text/javascript" src="{{request.static_url('c2cgeoportal_admin:node_modules/bootstrap-table/dist/bootstrap-table-locale-all.js')}}"></script>
+<script type="text/javascript" src="{{request.static_url('c2cgeoportal_admin:node_modules/jquery.scrollintoview/jquery.scrollintoview.js')}}"></script>
+{% endblock extra_scripts %}
+
 {% block content %}
 <div class="container-fluid">
   {% include 'c2cgeoform:/templates/grid.jinja2' %}

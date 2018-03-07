@@ -1,18 +1,24 @@
 {% extends "layout.jinja2" %}
 
 {% block extra_links %}
+<link href="{{request.static_url('c2cgeoportal_admin:node_modules/bootstrap-table/dist/bootstrap-table.min.css')}}" rel="stylesheet">
+<link href="{{request.static_url('c2cgeoportal_admin:node_modules/bootstrap-table/src/extensions/filter-control/bootstrap-table-filter-control.css')}}" rel="stylesheet">
 <link href="{{request.static_url('c2cgeoportal_admin:node_modules/jquery-treegrid/css/jquery.treegrid.css')}}" rel="stylesheet">
 {% endblock extra_links %}
 
 {% block extra_scripts %}
+<script type="text/javascript" src="{{request.static_url('c2cgeoportal_admin:node_modules/bootstrap-table/dist/bootstrap-table.js')}}"></script>
+<script type="text/javascript" src="{{request.static_url('c2cgeoportal_admin:node_modules/bootstrap-table/dist/bootstrap-table-locale-all.js')}}"></script>
+<script type="text/javascript" src="{{request.static_url('c2cgeoportal_admin:node_modules/bootstrap-table/src/extensions/treegrid/bootstrap-table-treegrid.js')}}"></script>
 <script type="text/javascript" src="{{request.static_url('c2cgeoportal_admin:node_modules/jquery-treegrid/js/jquery.treegrid.js')}}"></script>
 <script type="text/javascript" src="{{request.static_url('c2cgeoportal_admin:node_modules/jquery.cookie/jquery.cookie.js')}}"></script>
+<script type="text/javascript" src="{{request.static_url('c2cgeoportal_admin:node_modules/jquery.scrollintoview/jquery.scrollintoview.js')}}"></script>
 {% endblock extra_scripts %}
 
 {% block content %}
-<div id="layertree" class="container">
+<div id="layertree" class="container-fluid">
 
-    <div class="btn-toolbar">
+    <div id="toolbar">
       <div class="btn-group">
           <button id="layertree-expand" type="button" class="btn btn-default"><span class="glyphicon glyphicon-chevron-down"></span> {{_("Expand all")}}</button>
           <button id="layertree-collapse" type="button" class="btn btn-default"><span class="glyphicon glyphicon-chevron-up"></span> {{_("Collapse all")}}</button>
@@ -22,129 +28,179 @@
       </div>
     </div>
 
-    <table id="layertree-table" class="tree table table-hover">
-        {% macro render_node(node, parent_id=None, path='') -%}
-        {% set subpath = path ~ '_' ~ node.id %}
-        <tr class="{{ node.item_type }} treegrid-{{ subpath }}{{' treegrid-parent-{}'.format(path) if path else ''}}">
-            <td>
-                <span class="glyphicon icon-{{ node.item_type }}"></span>
-                {{ node.name }}
-            </td>
-            <td>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                       {% if node.item_type == 'theme' %}
-                       <li class="action-new">
-                           <a title="{{_("New Layer Group")}}"
-                               href="{{request.route_url('c2cgeoform_item', table='layer_groups', id='new')}}?parent_id={{node.id}}"
-                               role="button">
-                               <span class="glyphicon glyphicon-plus"></span>
-                               {{_("New Layer Group")}}
-                           </a>
-                       </li>
-                       {% endif %}
-                       {% if node.item_type == 'group'%}
-                       <li class="action-new">
-                            <a title="{{_("New WMS")}}"
-                                href="{{request.route_url('c2cgeoform_item', table='layers_wms', id='new')}}?parent_id={{node.id}}"
-                                role="button">
-                                <span class="glyphicon glyphicon-plus"></span>
-                                {{_("New WMS Layer")}}
-                            </a>
-                        </li>
-                        <li class="action-new">
-                            <a title="{{_("New WMTS")}}"
-                                href="{{request.route_url('c2cgeoform_item', table='layers_wmts', id='new')}}?parent_id={{node.id}}"
-                                role="button">
-                                <span class="glyphicon glyphicon-plus"></span>
-                                {{_("New WMTS Layer")}}
-                            </a>
-                        </li>
-                        {% endif %}
-                        <li class="action-edit">
-                            <a title="{{_("Edit")}}"
-                                href="{{request.route_url('c2cgeoform_item', table=itemtypes_tables[node.item_type], id=node.id)}}">
-                                <span class="glyphicon glyphicon-pencil"></span>
-                                {{_("Edit")}}
-                            </a>
-                        </li>
-                        {% if parent_id %}
-                        <li class="action-unlink">
-                            <a title="{{_("Unlink")}}"
-                                data-url="{{request.route_url('layertree_unlink', group_id=parent_id, item_id=node.id)}}"
-                                href="#"
-                                role="button">
-                                <span class="glyphicon glyphicon-log-out"></span>
-                                {{_("Unlink")}}
-                            </a>
-                        </li>
-                        {% endif %}
-                        <li class="action-delete">
-                            <a title="{{_("Delete")}}"
-                                data-url="{{request.route_url('layertree_delete', item_id=node.id)}}"
-                                href="#"
-                                role="button">
-                                <span class="glyphicon glyphicon-remove"></span>
-                                {{_("Delete")}}
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </td>
-        </tr>
-        {% for child in node.children %}
-        {{ render_node(child, node.id, subpath) }}
-        {% endfor %}
-        {%- endmacro %}
-
-        {% for theme in themes %}
-        {{ render_node(theme) }}
-        {% endfor %}
-    </table>
+    <table id="layertree-table" class="tree table table-condensed table-hover"></table>
 
     <script type="text/javascript">
       $(function() {
-        $('.tree').treegrid({
-          'initialState': 'collapsed',
-          'saveState': true,
-          'saveStateName': 'layertree'
+        var $grid = $('#layertree-table');
+        $grid.bootstrapTable({
+          height: $(window).height() - $('nav').height() - 30,
+          url: "{{request.route_url('layertree_nodes')}}",
+
+          toolbar: "#toolbar",
+          showRefresh: true,
+          showColumns: true,
+
+          {# see: https://github.com/wenzhixin/bootstrap-table/tree/develop/src/locale #}
+          {% set bootstrap_table_locales = {
+              'de': 'de-DE',
+              'en': 'en-US',
+              'fr': 'fr-FR',
+          } %}
+          locale: '{{ bootstrap_table_locales[request.locale_name] }}',
+
+          columns: [
+            {
+              field: 'actions',
+              class: 'actions',
+              formatter: function(value, row, index, field) {
+                var content = '\
+                  <div class="btn-group dropdown">\
+                    <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" data-target="item-' + row._id_ + '-actions" aria-haspopup="true" aria-expanded="false">\
+                      <span class="caret"></span>\
+                    </button>\
+                    <ul id="item-' + row._id_ + '-actions" class="dropdown-menu">';
+
+                row.actions.forEach(function(action) {
+                  if (action.confirmation || action.method) {
+                    content += '\
+                      <li>\
+                        <a class="c2cgeoform-item-action c2cgeoform-action-ajax ' + action.name + ' ' + action.css_class + '"\
+                           href="#"\
+                           data-url="' + action.url + '"\
+                           data-method="' + action.method + '"\
+                           data-confirmation="' + action.confirmation + '">\
+                           <span class="' + action.icon + '"></span>\
+                           ' + action.label + '\
+                        </a>\
+                      </li>';
+                  } else {
+                    content += '\
+                      <li>\
+                        <a class="c2cgeoform-item-action ' + action.name + ' ' + action.css_class + '"\
+                           href="' + action.url + '">\
+                           <span class="' + action.icon + '"></span>\
+                           ' + action.label + '\
+                        </a>\
+                      </li>';
+                  }
+                });
+
+                content += '\
+                    </ul>\
+                  </div>';
+
+                return content
+                return value;
+              }
+            },
+            {
+              field: 'id',
+              title: '{{_('Id')}}',
+              class: 'id',
+              visible: false,
+              formatter: function(value, row, index, field) {
+                return row.id;
+              }
+            },
+            {
+              field: 'name',
+              title: '{{_('Name')}}',
+              class: 'name',
+              formatter: function(value, row, index, field) {
+                return '<span class="glyphicon icon-' + row.item_type + '"></span>&nbsp;&nbsp;' + row.name;
+              }
+            },
+            {
+              field: 'metadata_url',
+              title: '{{_('Metadata URL')}}',
+              class: 'metadata_url'
+            },
+            {
+              field: 'description',
+              title: '{{_('Description')}}',
+              class: 'description'
+            }
+          ],
+
+          // bootstrap-table-treegrid.js
+          treeShowField: 'name',
+          idField: 'path',
+          parentIdField: 'parent_path',
+
+          onLoadSuccess: function(data) {
+            $(".dropdown").on("shown.bs.dropdown", function () {
+              $(this).children(".dropdown-menu").scrollintoview({viewPadding: 5});
+            });
+          },
+
+          onClickRow: function(row, $element, field) {
+            if (field != 'actions') {
+              $element.treegrid('toggle');
+            }
+          },
+
+          onPostBody: function(data) {
+            console.log('onPostBody');
+
+            if (data.length > 0) {
+              const nameIndex = $grid.bootstrapTable('getVisibleColumns').findIndex(function(column) {
+                return column.field == 'name';
+              });
+
+              $grid.treegrid({
+                initialState: 'collapsed',
+                saveState: true,
+                saveStateName: 'layertree',
+                treeColumn: nameIndex,
+                expanderExpandedClass: 'glyphicon glyphicon-triangle-bottom',
+                expanderCollapsedClass: 'glyphicon glyphicon-triangle-right',
+                onChange: function() {
+                  $grid.bootstrapTable('resetWidth');
+                }
+              });
+            }
+
+            $('.treegrid-expander').off();
+          }
         });
 
         $("#layertree-expand").on('click', function() {
-          $('.tree').treegrid('expandAll');
+          $grid.treegrid('expandAll');
         });
 
         $("#layertree-collapse").on('click', function() {
-          $('.tree').treegrid('collapseAll');
+          $grid.treegrid('collapseAll');
         });
 
-        $("#layertree-table li.action-unlink a").on('click', function() {
-          if (window.confirm('{{_("Are your sure ?")}}')) {
-            $.ajax({
-                url: $(this).attr("data-url"),
-                type: 'DELETE',
-                success: function(result) {
-                    location.reload();
+        $grid.on('load-success.bs.table', function (e) {
+
+          $(this).find('a.c2cgeoform-action-ajax').on('click', function(e) {
+            var execute = function() {
+              $.ajax({
+                url: $(this).data('url'),
+                type: $(this).data('method'),
+                success: function(data) {
+                  if (this.type == 'DELETE') {
+                    $grid.bootstrapTable('refresh');
+                  } else {
+                    window.location = data.redirect;
+                  }
                 }
-            });
-          }
-        });
+              });
+            }.bind(this);
 
-        $("#layertree-table li.action-delete a").on('click', function() {
-          if (window.confirm('{{_("Are your sure ?")}}')) {
-            $.ajax({
-                url: $(this).attr("data-url"),
-                type: 'DELETE',
-                success: function(result) {
-                    location.reload();
-                }
-            });
-          }
-        });
+            if ($(this).data('confirmation')) {
+              if (window.confirm($(this).data('confirmation'))) {
+                execute();
+              }
+            } else {
+              execute();
+            }
 
+          });
+
+        });
       });
     </script>
 
