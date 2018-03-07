@@ -1,4 +1,4 @@
-FROM camptocamp/${package}-commons:${docker_tag}
+FROM camptocamp/geomapfish-build:${geomapfish_version}
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
 COPY . /app

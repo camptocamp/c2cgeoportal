@@ -12,7 +12,6 @@ setup(
     url='http://www.{{package}}.com/',
     install_requires=[
         'c2cgeoportal_geoportal',
-        '{{package}}_commons',
     ],
     packages=find_packages(),
     include_package_data=True,

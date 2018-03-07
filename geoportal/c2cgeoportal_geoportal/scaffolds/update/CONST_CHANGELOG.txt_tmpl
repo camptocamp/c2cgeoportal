@@ -8,7 +8,6 @@ For non Docker upgrade have a look on the nondocker_CHANGELOG
 1. The structure of the project change:
    * The package name become `{{package}}_geoportal`.
    * The package is in the folder `geoportal`.
-   * The models will be in `commons/{{package}}_commons`.
 
 2. In the file `project.yaml.mako` the checker path should we set to `/c2c/health_check?`.
 

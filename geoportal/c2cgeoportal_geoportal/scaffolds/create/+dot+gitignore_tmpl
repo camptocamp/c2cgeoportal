@@ -31,6 +31,4 @@ __pycache__/
 /geoportal/{{package}}_geoportal/static-ngeo/fonts/gmf-icons.*
 /geoportal/{{package}}_geoportal/static-ngeo/fonts/fontawesome-webfont.*
 /geoportal/{{package}}_geoportal/static/build/
-/commons/Dockerfile
-/commons/{{package}}_commons.egg-info
 /.upgrade.yaml

@@ -106,7 +106,7 @@ build: c2c-egg \
 doc: $(BUILD_DIR)/sphinx.timestamp
 
 .PHONY: checks
-checks: flake8 mypy git-attributes quote spell yamllint pylint
+checks: flake8 mypy git-attributes quote spell yamllint pylint additionallint
 
 .PHONY: clean
 clean:
@@ -263,6 +263,16 @@ YAML_FILES ?= $(shell find -name ngeo -prune -or \( -name "*.yml" -or -name "*.y
 .PHONY: yamllint
 yamllint: $(YAML_FILES)
 	yamllint --strict --config-file=yamllint.yaml -s $(YAML_FILES)
+
+.PHONY: additionallint
+additionallint:
+	# Verify that we don't directly use the CI project name in the scaffolds
+	if [ "`git grep testgeomapfish geoportal/c2cgeoportal_geoportal/scaffolds`" != "" ]; \
+	then \
+		echo "ERROR: You still have a testgeomapfish in one of your scaffolds"; \
+		git grep testgeomapfish geoportal/c2cgeoportal_geoportal/scaffolds; \
+		false; \
+	fi
 
 # i18n
 $(HOME_DIR)/.transifexrc:

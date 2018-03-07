@@ -270,7 +270,7 @@ else
 CSS_XAPI_FILES := $(DEFAULT_CSS_XAPI_FILES)
 endif
 
-VALIDATE_PY_FOLDERS = commons/$(PACKAGE)_commons admin/$(PACKAGE)_admin \
+VALIDATE_PY_FOLDERS = admin/$(PACKAGE)_admin \
 	geoportal/$(PACKAGE)_geoportal/*.py geoportal/$(PACKAGE)_geoportal/lib \
 	geoportal/$(PACKAGE)_geoportal/scripts geoportal/$(PACKAGE)_geoportal/views
 VALIDATE_PY_TEST_FOLDERS = geoportal/$(PACKAGE)_geoportal/tests
@@ -280,7 +280,7 @@ SPHINX_FILES = $(shell find doc -name "*.rst" -print)
 
 # Server localisation
 ifdef CGXP_INTERFACES
-SERVER_LOCALISATION_SOURCES_FILES += commons/$(PACKAGE)_commons/models.py $(shell find geoportal/$(PACKAGE)_geoportal/templates -type f -name '*.html')
+SERVER_LOCALISATION_SOURCES_FILES += geoportal/$(PACKAGE)_geoportal/models.py $(shell find geoportal/$(PACKAGE)_geoportal/templates -type f -name '*.html')
 SERVER_LOCALISATION_RULES = $(addprefix /build/lang-server-, $(LANGUAGES))
 endif
 
@@ -677,7 +677,7 @@ $(CSS_XAPI_OUTPUT): \
 
 /build/requirements.timestamp: /build/venv.timestamp-noclean geoportal/setup.py
 	$(PRERULE_CMD)
-	$(VENV_BIN)/pip install --editable=commons --editable=geoportal
+	$(VENV_BIN)/pip install --editable=geoportal
 	touch $@
 
 # Docker
@@ -695,13 +695,8 @@ config-docker: $(shell docker-required --path .) \
 geoportal-docker: $(shell docker-required --path geoportal) \
 		$(SERVER_LOCALISATION_RULES) \
 		$(WEB_RULE) \
-		geoportal/config.yaml \
-		commons-docker
+		geoportal/config.yaml
 	docker build --tag=$(DOCKER_BASE)-geoportal:$(DOCKER_TAG) --build-arg="GIT_HASH=$(GIT_HASH)" geoportal
-
-.PHONY: commons-docker
-commons-docker: $(shell docker-required --path commons)
-	docker build --tag=$(DOCKER_BASE)-commons:$(DOCKER_TAG) commons
 
 .PHONY: push-docker
 push-docker:
