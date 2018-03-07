@@ -76,6 +76,7 @@
          valueField: 'id',
          displayField: 'name',
          groupBy: 'group',
+         allowFreeEntries: false,
          maxDropHeight: 500
        });
 
