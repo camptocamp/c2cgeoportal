@@ -27,10 +27,9 @@ ${BUILD_DIR}/venv.timestamp:
 	virtualenv -p python3 ${VENV}
 	touch $@
 
-${BUILD_DIR}/requirements.timestamp: ${BUILD_DIR}/venv.timestamp requirements.txt setup.py
-	#Install the project in editable mode.
-	${VENV}/bin/pip install -r requirements.txt
-	${VENV}/bin/pip install -e "."
+${BUILD_DIR}/requirements.timestamp: ${BUILD_DIR}/venv.timestamp setup.py
+	# Install the project in editable mode.
+	${VENV}/bin/pip install -e .
 	touch $@
 
 ${BUILD_DIR}/requirements-dev.timestamp: ${BUILD_DIR}/venv.timestamp setup.py
