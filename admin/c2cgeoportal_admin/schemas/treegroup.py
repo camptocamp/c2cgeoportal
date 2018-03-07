@@ -40,7 +40,7 @@ def treeitems(node, kw, only_groups=False):  # pylint: disable=unused-argument
             cte(name='ancestors', recursive=True)
         search_alias = aliased(search_ancestors, name='search_ancestors')
         relation_alias = aliased(LayergroupTreeitem, name='relation')
-        search_ancestors = search_alias.union_all(
+        search_ancestors = search_ancestors.union_all(
             dbsession.query(relation_alias.treegroup_id).
             filter(relation_alias.treeitem_id == search_alias.c.treegroup_id))
         ancestors = dbsession.query(search_ancestors.c.treegroup_id).subquery('ancestors')
