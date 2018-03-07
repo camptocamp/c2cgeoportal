@@ -49,11 +49,11 @@ ${BUILD_DIR}/venv.timestamp:
 ${BUILD_DIR}/requirements.timestamp: \
 		${BUILD_DIR}/venv.timestamp \
 		requirements.txt \
-		../commons/requirements.txt ../commons/setup.py
+		../commons/setup.py
 	# Install the project in editable mode.
-	${VENV}/bin/pip install -r ../commons/requirements.txt -r requirements.txt
-	${VENV}/bin/pip install -e "../commons"
-	${VENV}/bin/pip install -e "."
+	${VENV}/bin/pip install -r requirements.txt
+	${VENV}/bin/pip install -e ../commons
+	${VENV}/bin/pip install -e .
 	touch $@
 
 ${BUILD_DIR}/requirements-dev.timestamp: \
@@ -62,6 +62,9 @@ ${BUILD_DIR}/requirements-dev.timestamp: \
 	# Install the project in editable mode with its testing requirements.
 	${VENV}/bin/pip install -r requirements-dev.txt
 	touch $@
+
+package.json:
+	cp ../$@ $@
 
 ${BUILD_DIR}/node_modules.timestamp: package.json
 	npm install

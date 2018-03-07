@@ -12,6 +12,7 @@ setup(
     url='http://www.{{package}}.com/',
     install_requires=[
         'c2cgeoportal_geoportal',
+        'c2cgeoportal_admin',
     ],
     packages=find_packages(),
     include_package_data=True,

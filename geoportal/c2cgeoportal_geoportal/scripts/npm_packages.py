@@ -78,26 +78,27 @@ def main():
     parser = ArgumentParser(description='Extract npm packages')
 
     parser.add_argument('--ngeo', action="store_true", help="Add ngeo package")
+    parser.add_argument('--src', action='append', metavar='SRC', help="The ngeo source file")
+    parser.add_argument('--dst', metavar='DST', help="The destination file")
     parser.add_argument('excludes', nargs='*', metavar='EXCLUDE', help="The npm package to exclude")
-    parser.add_argument('src', metavar='SRC', help="The ngeo source file")
-    parser.add_argument('dst', metavar='DST', help="The destination file")
 
     args = parser.parse_args()
 
-    with open(args.src) as src:
-        input_data = loads(src.read())
-        packages = {}
-        packages.update(input_data.get('devDependencies', {}))
-        packages.update(input_data.get('dependencies', {}))
-        if args.ngeo:
-            # Freeze the ngeo version
-            packages["ngeo"] = _get_ngeo_version()
-        for package in args.excludes:
-            if package in packages:
-                del packages[package]
+    packages = {}
+    for src_ in args.src:
+        with open(src_) as src:
+            input_data = loads(src.read())
+            packages.update(input_data.get('devDependencies', {}))
+            packages.update(input_data.get('dependencies', {}))
+    if args.ngeo:
+        # Freeze the ngeo version
+        packages["ngeo"] = _get_ngeo_version()
+    for package in args.excludes:
+        if package in packages:
+            del packages[package]
 
-        data = " ".join(["{}@{}".format(p, v) for p, v in packages.items()])
-        data = data + "\n"
+    data = " ".join(["{}@{}".format(p, v) for p, v in packages.items()])
+    data = data + "\n"
 
-        with open(args.dst, "wt") as dst:
-            dst.write(data)
+    with open(args.dst, "wt") as dst:
+        dst.write(data)
