@@ -85,7 +85,7 @@ class LayerTreeViews():
                 table=itemtypes_tables[item.item_type],
                 id=item.id)))
 
-        if item.item_type == 'theme':
+        if item.item_type in ('theme', 'group'):
             actions.append(ItemAction(
                 name='new_layer_group',
                 label=_('New layer group'),
