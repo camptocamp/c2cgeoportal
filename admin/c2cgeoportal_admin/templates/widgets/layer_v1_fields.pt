@@ -1,87 +1,59 @@
 <div class="row">
 
   <div class="col-md-4 col-sm-6">
-    <div class="panel panel-default">
-      <div class="panel-heading">General</div>
-      <div class="panel-body">
-        <div tal:repeat="child field.children" tal:omit-tag="">
-          <div
-             tal:condition="getattr(child.schema, 'group', 'general') == 'general' and child.schema.name not in ('interfaces', 'restrictionareas', 'metadatas')"
-             tal:replace="structure child.render_template(field.widget.item_template)">
-          </div>
-        </div>
+    <div tal:repeat="child field.children" tal:omit-tag="">
+      <div
+         tal:condition="getattr(child.schema, 'group', 'general') == 'general' and child.schema.name not in ('interfaces', 'restrictionareas', 'metadatas')"
+         tal:replace="structure child.render_template(field.widget.item_template)">
       </div>
     </div>
-    <div class="panel panel-default">
-      <div class="panel-heading">WMTS</div>
-      <div class="panel-body">
-        <div tal:repeat="child field.children" tal:omit-tag="">
-          <div
-             tal:condition="getattr(child.schema, 'group', 'general') == 'WMTS' and child.schema.name not in ('interfaces', 'restrictionareas', 'metadatas')"
-             tal:replace="structure child.render_template(field.widget.item_template)">
-          </div>
-        </div>
+    <div tal:repeat="child field.children" tal:omit-tag="">
+      <div
+         tal:condition="getattr(child.schema, 'group', 'general') == 'WMTS' and child.schema.name not in ('interfaces', 'restrictionareas', 'metadatas')"
+         tal:replace="structure child.render_template(field.widget.item_template)">
       </div>
     </div>
   </div>
 
   <div class="col-md-4 col-sm-6">
-    <div class="panel panel-default">
-      <div class="panel-heading">Layer tree</div>
-      <div class="panel-body">
-        <div tal:repeat="child field.children" tal:omit-tag="">
-          <div
-             tal:condition="getattr(child.schema, 'group', 'general') == 'tree' and child.schema.name not in ('interfaces', 'restrictionareas', 'metadatas')"
-             tal:replace="structure child.render_template(field.widget.item_template)">
-          </div>
-        </div>
+    <div tal:repeat="child field.children" tal:omit-tag="">
+      <div
+         tal:condition="getattr(child.schema, 'group', 'general') == 'tree' and child.schema.name not in ('interfaces', 'restrictionareas', 'metadatas')"
+         tal:replace="structure child.render_template(field.widget.item_template)">
       </div>
     </div>
-    <div class="panel panel-default">
-      <div class="panel-heading">External</div>
-      <div class="panel-body">
-        <div tal:repeat="child field.children" tal:omit-tag="">
-          <div
-             tal:condition="getattr(child.schema, 'group', 'general') == 'external' and child.schema.name not in ('interfaces', 'restrictionareas', 'metadatas')"
-             tal:replace="structure child.render_template(field.widget.item_template)">
-          </div>
-        </div>
+    <div tal:repeat="child field.children" tal:omit-tag="">
+      <div
+         tal:condition="getattr(child.schema, 'group', 'general') == 'external' and child.schema.name not in ('interfaces', 'restrictionareas', 'metadatas')"
+         tal:replace="structure child.render_template(field.widget.item_template)">
       </div>
     </div>
-    <div class="panel panel-default">
-      <div class="panel-heading">Other</div>
-      <div class="panel-body">
-        <div tal:repeat="child field.children" tal:omit-tag="">
-          <div
-             tal:condition="getattr(child.schema, 'group', 'general') == 'other' and child.schema.name not in ('interfaces', 'restrictionareas', 'metadatas')"
-             tal:replace="structure child.render_template(field.widget.item_template)">
-          </div>
-        </div>
+    <div tal:repeat="child field.children" tal:omit-tag="">
+      <div
+         tal:condition="getattr(child.schema, 'group', 'general') == 'other' and child.schema.name not in ('interfaces', 'restrictionareas', 'metadatas')"
+         tal:replace="structure child.render_template(field.widget.item_template)">
       </div>
     </div>
   </div>
 
   <div class="col-md-4 col-sm-12">
     <div class="row">
-
-      <div class="col-md-6 col-sm-6">
-        <div tal:repeat="child field.children" tal:omit-tag="">
-          <div
-             tal:condition="child.schema.name in ('interfaces')"
-             tal:replace="structure child.render_template(field.widget.item_template)">
+        <div class="col-md-6 col-sm-6">
+          <div tal:repeat="child field.children" tal:omit-tag="">
+            <div
+               tal:condition="child.schema.name in ('interfaces')"
+               tal:replace="structure child.render_template(field.widget.item_template)">
+            </div>
           </div>
         </div>
-      </div>
-
-      <div class="col-md-6 col-sm-6">
-        <div tal:repeat="child field.children" tal:omit-tag="">
-          <div
-             tal:condition="child.schema.name in ('restrictionareas')"
-             tal:replace="structure child.render_template(field.widget.item_template)">
+        <div class="col-md-6 col-sm-6">
+          <div tal:repeat="child field.children" tal:omit-tag="">
+            <div
+               tal:condition="child.schema.name in ('restrictionareas')"
+               tal:replace="structure child.render_template(field.widget.item_template)">
+            </div>
           </div>
         </div>
-      </div>
-
     </div>
   </div>
 
@@ -89,12 +61,12 @@
 <div class="row">
 
   <div class="col-md-6">
-      <div tal:repeat="child field.children" tal:omit-tag="">
-        <div
-           tal:condition="child.schema.name in ('metadatas')"
-           tal:replace="structure child.render_template(field.widget.item_template)">
-        </div>
+    <div tal:repeat="child field.children" tal:omit-tag="">
+      <div
+         tal:condition="child.schema.name in ('metadatas')"
+         tal:replace="structure child.render_template(field.widget.item_template)">
       </div>
+    </div>
   </div>
 
 </div>
