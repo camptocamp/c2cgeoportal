@@ -1,0 +1,43 @@
+<div class="row">
+
+  <div class="col-md-4 col-sm-12">
+    <div tal:repeat="child field.children" tal:omit-tag="">
+      <div
+         tal:condition="child.schema.name not in ('functionalities', 'restrictionareas', 'extent')"
+         tal:replace="structure child.render_template(field.widget.item_template)">
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-8 col-sm-12">
+    <div class="row">
+
+      <div class="col-md-4 col-sm-4">
+        <div tal:repeat="child field.children" tal:omit-tag="">
+          <div
+             tal:condition="child.schema.name in ('restrictionareas')"
+             tal:replace="structure child.render_template(field.widget.item_template)">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-8 col-sm-8">
+        <div tal:repeat="child field.children" tal:omit-tag="">
+          <div
+             tal:condition="child.schema.name in ('functionalities')"
+             tal:replace="structure child.render_template(field.widget.item_template)">
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<div tal:repeat="child field.children" tal:omit-tag="">
+  <div
+     tal:condition="child.schema.name in ('extent')"
+     tal:replace="structure child.render_template(field.widget.item_template)">
+  </div>
+</div>
