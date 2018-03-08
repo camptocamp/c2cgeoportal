@@ -10,10 +10,11 @@ from c2cgeoportal_admin.schemas.roles import roles_schema_node
 
 from c2cgeoform.views.abstract_views import AbstractViews
 from c2cgeoform.views.abstract_views import ListField
+from deform.widget import FormWidget
 
 _list_field = partial(ListField, RestrictionArea)
 
-base_schema = GeoFormSchemaNode(RestrictionArea)
+base_schema = GeoFormSchemaNode(RestrictionArea, widget=FormWidget(fields_template='restriction_area_fields'))
 base_schema['area'].widget = map_widget
 base_schema.add_before('area', roles_schema_node('roles'))
 base_schema.add_unique_validator(RestrictionArea.name, RestrictionArea.id)
