@@ -32,6 +32,12 @@
 
     <script type="text/javascript">
       $(function() {
+        $(window).resize(function() {
+            $('#grid').bootstrapTable('resetView',{
+              height: $(window).height() - $('nav').height() - 30}
+            );
+        });
+
         var $grid = $('#layertree-table');
         $grid.bootstrapTable({
           height: $(window).height() - $('nav').height() - 30,
