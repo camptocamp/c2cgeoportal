@@ -28,15 +28,13 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import logging
-from typing import Dict  # noqa
+from typing import Dict, Union  # noqa
 
+import sqlalchemy.orm  # noqa
 import sqlalchemy.ext.declarative
 import sqlalchemy.ext.declarative.api
 
-LOG = logging.getLogger(__name__)
-
-# Initialized by init_dbsessions
-DBSession = None  # type: sqlalchemy.orm.scoping.ScopedSession
+# Should be filed on application initialisation
+DBSession = None  # type: Union[sqlalchemy.orm.Session, sqlalchemy.orm.scoped_session]
 Base = sqlalchemy.ext.declarative.declarative_base()  # type: sqlalchemy.ext.declarative.api.Base
-DBSessions = {}  # type: Dict[str, sqlalchemy.orm.scoping.ScopedSession]
+DBSessions = {}  # type: Dict[str, Union[sqlalchemy.orm.Session, sqlalchemy.orm.scoped_session]]

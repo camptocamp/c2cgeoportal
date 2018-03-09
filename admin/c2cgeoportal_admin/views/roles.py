@@ -6,6 +6,7 @@ from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import AbstractViews, ListField
 from sqlalchemy.orm import subqueryload
 
+from c2cgeoportal_commons.models import DBSession
 from c2cgeoportal_commons.models.main import Role
 from c2cgeoportal_admin.schemas.map import map_widget
 from c2cgeoportal_admin.schemas.functionalities import functionalities_schema_node
@@ -42,7 +43,7 @@ class RoleViews(AbstractViews):
     _base_schema = base_schema
 
     def _base_query(self):
-        return self._request.dbsession.query(Role). \
+        return DBSession.query(Role). \
             options(subqueryload('functionalities')). \
             options(subqueryload('restrictionareas'))
 

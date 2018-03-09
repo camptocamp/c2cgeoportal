@@ -50,6 +50,7 @@ __pycache__/
 /geoportal/{{package}}_geoportal/static/mobile/openlayers-mobile.js
 /geoportal/{{package}}_geoportal/static/mobile/bootstrap.js
 /geoportal/{{package}}_geoportal/static/mobile/bootstrap.json
-/c2cgeoportal_geoportal/
 /c2cgeoportal_commons/
+/c2cgeoportal_geoportal/
+/c2cgeoportal_admin/
 /.upgrade.yaml

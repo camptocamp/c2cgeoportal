@@ -13,7 +13,7 @@ mapserver:
     - db
 
 build:
-  image: camptocamp/geomapfish-admin-build:${major_version}
+  image: camptocamp/geomapfish-build:${major_version}
   volumes:
     - ${build_volume_name}:/build
     - .:/src

@@ -37,8 +37,7 @@ class LayerGroupsViews(TreeItemViews):
     _base_schema = base_schema
 
     def _base_query(self, query=None):
-        return super()._base_query(
-            self._request.dbsession.query(LayerGroup).distinct())
+        return super()._base_query(DBSession.query(LayerGroup).distinct())
 
     @view_config(route_name='c2cgeoform_index',
                  renderer='../templates/index.jinja2')

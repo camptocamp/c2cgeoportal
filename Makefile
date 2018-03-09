@@ -98,7 +98,6 @@ build: c2c-egg \
 	$(L10N_PO_FILES) \
 	$(APPS_FILES) \
 	admin/tests.ini \
-	adminbuild-docker \
 	build-docker \
 	prepare-tests
 
@@ -166,33 +165,24 @@ testdb-docker: $(shell docker-required --path docker/test-db) \
 testmapserver-docker: $(shell docker-required --path docker/test-mapserver)
 	docker build --tag=$(DOCKER_TEST_BASE)-mapserver:latest docker/test-mapserver
 
-adminbuild-docker: $(shell docker-required --path docker/admin-build) \
-		commons-docker \
-		docker/admin-build/npm-packages
-	docker build --tag=$(DOCKER_BASE)-admin-build:$(MAJOR_VERSION) docker/admin-build
-
-commons-docker: $(shell docker-required --path commons --replace-pattern=) \
-		commons/tests.yaml
-	docker build --build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --tag=$(DOCKER_BASE)-commons:$(MAJOR_VERSION) commons
-
 .PHONY: build-docker
-build-docker: $(shell docker-required --path geoportal  --replace-pattern='^test(.*).mako$/test/\1') \
-		commons-docker \
+build-docker: $(shell docker-required --path . --replace-pattern='^test(.*).mako$/test/\1') \
 		geoportal/c2cgeoportal_geoportal/scaffolds/create/docker-run \
-		geoportal/npm-packages \
+		npm-packages \
 		geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/ \
 		geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/CONST_create_template/
-	docker build --build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --tag=$(DOCKER_BASE)-build:$(MAJOR_VERSION) geoportal
+	docker build --build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --tag=$(DOCKER_BASE)-build:$(MAJOR_VERSION) .
 
 .PHONY: prepare-tests
 prepare-tests: $(BUILD_DIR)/requirements.timestamp \
 		geoportal/tests/functional/test.ini \
 		commons/tests.yaml \
+		admin/tests.ini \
 		docker-compose.yaml \
 		testmapserver-docker \
 		testdb-docker \
-		adminbuild-docker \
-		$(addprefix geoportal/c2cgeoportal_geoportal/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal_geoportal.po, $(LANGUAGES)))
+		$(addprefix geoportal/c2cgeoportal_geoportal/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal_geoportal.po, $(LANGUAGES))) \
+		docker/test-mapserver/mapserver.map
 
 .PHONY: tests
 tests:
@@ -346,16 +336,11 @@ $(APPS_PACKAGE_PATH)/static-ngeo/images/%: ngeo/contribs/gmf/apps/desktop/image/
 	mkdir --parent $(dir $@)
 	cp $< $@
 
-.PRECIOUS: ngeo/package.json
-ngeo/package.json: ngeo
-	$(PRERULE_CMD)
-	touch --no-create $@
-
 geoportal/c2cgeoportal_geoportal/scaffolds/create/docker-run: docker-run
 	$(PRERULE_CMD)
 	cp $< $@
 
-geoportal/npm-packages: ngeo/package.json $(BUILD_DIR)/requirements.timestamp geoportal/c2cgeoportal_geoportal/scripts/import_ngeo_apps.py
+npm-packages: ngeo package.json $(BUILD_DIR)/requirements.timestamp geoportal/c2cgeoportal_geoportal/scripts/import_ngeo_apps.py
 	$(PRERULE_CMD)
 	$(BUILD_DIR)/venv/bin/npm-packages --ngeo babel-core babel-loader babel-preset-env \
 		@camptocamp/babel-plugin-angularjs-annotate @camptocamp/cesium coveralls \
@@ -364,11 +349,8 @@ geoportal/npm-packages: ngeo/package.json $(BUILD_DIR)/requirements.timestamp ge
 		jquery-ui-touch-punch jsdoc jsdom karma karma-chrome-launcher karma-coverage karma-jasmine \
 		karma-sourcemap-loader karma-webpack less-loader less-plugin-clean-css ls olcs \
 		uglify-js uglifyjs-webpack-plugin url-loader webpack webpack-dev-server \
-		webpack-merge $< $@
-
-docker/admin-build/npm-packages: admin/package.json $(BUILD_DIR)/requirements.timestamp geoportal/c2cgeoportal_geoportal/scripts/import_ngeo_apps.py
-	$(PRERULE_CMD)
-	$(BUILD_DIR)/venv/bin/npm-packages $< $@
+		webpack-merge istanbul-instrumenter-loader karma-coverage-istanbul-reporter \
+		--src=ngeo/package.json --src=package.json --dst=$@
 
 geoportal/package.json: ngeo/package.json $(BUILD_DIR)/requirements.timestamp \
 		geoportal/c2cgeoportal_geoportal/scripts/import_ngeo_apps.py

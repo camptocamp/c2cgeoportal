@@ -8,6 +8,7 @@ from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import ListField
 from deform.widget import FormWidget
 
+from c2cgeoportal_commons.models import DBSession
 from c2cgeoportal_commons.models.main import Theme, Interface, Role, Functionality
 from c2cgeoportal_admin.schemas.treegroup import children_schema_node
 from c2cgeoportal_admin.schemas.functionalities import functionalities_schema_node
@@ -60,7 +61,7 @@ class ThemeViews(TreeItemViews):
 
     def _base_query(self, query=None):
         return super()._base_query(
-            self._request.dbsession.query(Theme).distinct().
+            DBSession.query(Theme).distinct().
             outerjoin('interfaces').
             outerjoin('restricted_roles').
             outerjoin('functionalities').

@@ -29,11 +29,6 @@ class TestLeftMenu(AbstractViewsTests):
 
     _prefix = '/roles'
 
-    def test_404(self, test_app):
-        resp = test_app.get('/this/is/notfound/', status=404)
-        assert resp.html.select_one('.navbar') is not None
-        assert resp.html.select_one('.navbar li.active a') is None
-
     def test_index(self, test_app):
         resp = test_app.get('/roles', status=200)
         self.check_left_menu(resp, 'Roles')

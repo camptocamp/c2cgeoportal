@@ -1,9 +1,11 @@
+# -*- coding: utf-8 -*-
 
 import os
 import pytest
 
 import transaction
 from sqlalchemy.exc import DBAPIError
+from sqlalchemy.orm import configure_mappers
 
 from c2cgeoportal_commons.testing.initializedb import init_db
 from c2cgeoportal_commons.testing import get_engine, get_session_factory, get_tm_session, generate_mappers
@@ -13,7 +15,14 @@ from c2cgeoportal_commons.config import config
 @pytest.fixture(scope='session')
 @pytest.mark.usefixtures('settings')
 def dbsession(settings):
-    generate_mappers()
+    # import or define all models here to ensure they are attached to the
+    # Base.metadata prior to any initialization routines
+    import c2cgeoportal_commons.models.main  # flake8: noqa
+
+    # run configure_mappers after defining all of the models to ensure
+    # all relationships can be setup
+    configure_mappers()
+
     engine = get_engine(settings)
     init_db(engine, force=True)
     session_factory = get_session_factory(engine)

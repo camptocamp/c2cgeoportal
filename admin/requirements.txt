@@ -3,8 +3,10 @@ c2cwsgiutils
 deform
 plaster_pastedeploy
 pyproj
-pyramid == 1.9.1
+pyramid
 pyramid_debugtoolbar
 pyramid_jinja2
+pyramid_tm
 transaction
 waitress
+-e git://github.com/camptocamp/c2cgeoform.git@98126ec7859b1bc5b1b2b720fea1c5d5ca9bbbef#egg=c2cgeoform

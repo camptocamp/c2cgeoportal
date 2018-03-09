@@ -3,17 +3,25 @@ from c2cgeoform.routes import register_models, table_pregenerator
 
 
 def includeme(config):
-    config.add_static_view('node_modules', 'c2cgeoportal_admin:node_modules/')
-    path = os.path.join(os.path.dirname(__file__), '..', 'node_modules')
-    if not os.path.exists(path):
-        path = '/usr/lib/node_modules/'
+    config.add_static_view('node_modules', 'c2cgeoportal_admin:node_modules')
+    path = None
+    for path_ in [
+        '/usr/lib/node_modules/',
+        os.path.join(os.path.dirname(__file__), '..', '..', 'node_modules'),
+        os.path.join(os.path.dirname(__file__), '..', 'node_modules'),
+    ]:
+        if os.path.exists(path_):
+            path = path_
+            break
+    if path is None:
+        raise Exception("Unable to find the node_module from path '{}'.".format(os.path.dirname(__file__)))
 
     config.override_asset(
         to_override='c2cgeoportal_admin:node_modules/',
         override_with=path
     )
 
-    config.add_static_view('static', 'static', cache_max_age=3600)
+    config.add_static_view('static', 'c2cgeoportal_admin:static', cache_max_age=3600)
 
     config.add_route('home', '/')
     config.add_route('layertree', '/layertree')

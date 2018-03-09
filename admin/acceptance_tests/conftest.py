@@ -3,6 +3,8 @@ import pytest
 import transaction
 from pyramid import testing
 
+import sqlalchemy.exc
+from sqlalchemy.orm import configure_mappers
 from pyramid.paster import bootstrap
 from webtest import TestApp as WebTestApp  # Avoid warning with pytest
 from wsgiref.simple_server import make_server
@@ -16,11 +18,19 @@ from sqlalchemy.exc import DBAPIError
 @pytest.fixture(scope='session')
 @pytest.mark.usefixtures("settings")
 def dbsession(settings):
-    generate_mappers()
+    # import or define all models here to ensure they are attached to the
+    # Base.metadata prior to any initialization routines
+    import c2cgeoportal_commons.models.main  # flake8: noqa
+
+    # run configure_mappers after defining all of the models to ensure
+    # all relationships can be setup
+    configure_mappers()
+
     engine = get_engine(settings)
     init_db(engine, force=True)
     session_factory = get_session_factory(engine)
     session = get_tm_session(session_factory, transaction.manager)
+    c2cgeoportal_commons.models.DBSession = session
     yield session
 
 
@@ -29,7 +39,10 @@ def dbsession(settings):
 def transact(dbsession):
     t = dbsession.begin_nested()
     yield t
-    t.rollback()
+    try:
+        t.rollback()
+    except sqlalchemy.exc.ResourceClosedError:
+        pass
     dbsession.expire_all()
 
 
@@ -56,8 +69,8 @@ def app_env():
 @pytest.fixture(scope="session")
 @pytest.mark.usefixtures("app_env", "dbsession")
 def app(app_env, dbsession):
+    del dbsession
     config = testing.setUp(registry=app_env['registry'])
-    config.add_request_method(lambda request: dbsession, 'dbsession', reify=True)
     config.add_route('user_add', 'user_add')
     config.add_route('users_nb', 'users_nb')
     config.scan(package='acceptance_tests')

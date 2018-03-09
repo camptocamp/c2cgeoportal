@@ -3,6 +3,8 @@
 import pytest
 from pyramid.view import view_config
 
+from c2cgeoportal_commons.models import DBSession
+
 
 @pytest.fixture(scope='class')
 @pytest.mark.usefixtures('dbsession')
@@ -20,16 +22,15 @@ def insert_users_test_data(dbsession):
 def view_committing_user(request):
     from c2cgeoportal_commons.models.static import User
     user = User("momo")
-    t = request.dbsession.begin_nested()
-    request.dbsession.add(user)
-    t.commit()
+    session = DBSession()  # pylint: disable=not-callable
+    session.add(user)
     return {}
 
 
 @view_config(route_name='users_nb', renderer='./learn_test.jinja2')
 def view_displaying_users_nb(request):
     from c2cgeoportal_commons.models.static import User
-    users = request.dbsession.query(User).all()
+    users = DBSession.query(User).all()
     username = 'None'
     if len(users) > 0:
         username = users[0].username

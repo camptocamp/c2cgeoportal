@@ -136,12 +136,11 @@ ifeq ($(OPERATING_SYSTEM), WINDOWS)
 	.build/venv/Scripts/python -m pip install `./get-pip-dependencies pyramid-closure c2cgeoportal Shapely`
 	.build/venv/Scripts/python -m pip install wheels/Shapely-1.5.13-cp27-none-win32.whl
 else
-	# FIXME c2cgeoform
-	.build/venv/bin/python -m pip install `./get-pip-dependencies pyramid-closure c2cgeoportal-commons c2cgeoportal-geoportal GDAL c2cgeoform flake8-mypy mypy`
+	.build/venv/bin/python -m pip install `./get-pip-dependencies pyramid-closure c2cgeoportal-commons c2cgeoportal-geoportal c2cgeoportal-admin GDAL flake8-mypy mypy`
 endif
 	./docker-run cp -r /opt/c2cgeoportal_commons c2cgeoportal_commons
 	./docker-run cp -r /opt/c2cgeoportal_geoportal c2cgeoportal_geoportal
-	.build/venv/bin/python -m pip install https://github.com/camptocamp/c2cgeoform/archive/87a4191ef3330b76497bd009e9c0220cbc73c625.zip#egg=c2cgeoform
+	./docker-run cp -r /opt/c2cgeoportal_admin c2cgeoportal_admin
 	.build/venv/bin/python -m pip install https://github.com/camptocamp/pyramid_closure/archive/23b45f7989cf471dce46dabb8516537bae0a2789.zip#egg=pyramid_closure
-	.build/venv/bin/python -m pip install --editable=c2cgeoportal_commons --editable=c2cgeoportal_geoportal
+	.build/venv/bin/python -m pip install --editable=c2cgeoportal_commons --editable=c2cgeoportal_geoportal --editable=c2cgeoportal_admin
 	.build/venv/bin/python -m pip install --editable=geoportal

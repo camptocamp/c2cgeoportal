@@ -70,9 +70,7 @@ timeout(time: 2, unit: 'HOURS') {
             }
             stage('Test c2cgeoportal') {
                 checkout scm
-                sh '''./docker-run make docker-compose.yaml \
-                    geoportal/tests/functional/alembic.ini \
-                    docker/test-mapserver/mapserver.map prepare-tests'''
+                sh '''./docker-run make geoportal/tests/functional/alembic.ini prepare-tests'''
                 try {
                     sh './docker-compose-run alembic --config=geoportal/tests/functional/alembic.ini --name=main upgrade head'
                     sh './docker-compose-run alembic --config=geoportal/tests/functional/alembic.ini --name=static upgrade head'
@@ -118,7 +116,7 @@ timeout(time: 2, unit: 'HOURS') {
                         sh '(cd ${HOME}/workspace/testgeomapfish/; docker-compose up --force-recreate -d)'
                         sh '(cd ${HOME}/workspace/testgeomapfish/; docker-compose exec -T geoportal wait-for-db)'
                         sh './docker-run travis/waitwsgi http://`netstat --route --numeric|grep ^0.0.0.0|awk \'{print($2)}\'`:8080/'
-                        for (path in ['c2c/health_check', 'c2c/health_check?max_level=100', 'layers/test/values/type enum']) {
+                        for (path in ['c2c/health_check', 'c2c/health_check?max_level=100', 'layers/test/values/type enum', 'admin/layertree']) {
                             def start_lines = [:]
                             ['db', 'external-db', 'print', 'mapserver', 'geoportal'].each { service ->
                                 def start_line = sh(returnStdout: true, script: "(cd ${HOME}/workspace/testgeomapfish/; docker-compose logs ${service}) | wc -l") as Integer
@@ -169,6 +167,7 @@ timeout(time: 2, unit: 'HOURS') {
             try {
                 stage('Tests upgrades - prepare') {
                     checkout scm
+                    sh './docker-run make build testdb-docker'
                     sh 'docker run --name geomapfish-db --env=POSTGRES_USER=www-data --env=POSTGRES_PASSWORD=www-data --env=POSTGRES_DB=geomapfish --publish=5432:5432 --detach camptocamp/geomapfish-test-db'
                     sh 'travis/test-upgrade-convert.sh init ${HOME}/workspace'
                 }
