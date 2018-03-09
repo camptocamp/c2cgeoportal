@@ -4,6 +4,7 @@ from c2cwsgiutils.health_check import HealthCheck
 
 import c2cgeoform
 from pkg_resources import resource_filename
+
 from c2cgeoportal_commons.config import config as configuration
 
 search_paths = (
@@ -56,7 +57,6 @@ def main(_, **settings):
 
     health_check = HealthCheck(config)
     health_check.add_url_check('http://{}/'.format(settings['healthcheck_host']))
-    # health_check.add_alembic_check(models.DBSession, '/app/alembic.ini', 1)
 
     return config.make_wsgi_app()
 
@@ -66,4 +66,6 @@ def includeme(config: Configurator):
     config.include('c2cgeoform')
     config.include('c2cgeoportal_commons')
     config.include('c2cgeoportal_admin.routes')
+    # use pyramid_tm to hook the transaction lifecycle to the request
+    config.include('pyramid_tm')
     config.scan()

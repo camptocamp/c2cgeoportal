@@ -22,7 +22,6 @@ default_project_file:
   exclude:
     - geoportal/{{package}}_geoportal/static-ngeo/components/README\.md
     - geoportal/{{package}}_geoportal/static-ngeo/js/{{package}}module\.js
-    - mapserver/Dockerfile
     - mapserver/tinyows\.xml\.mako
     - mapserver/demo\.map\.tmpl\.mako
 
