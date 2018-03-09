@@ -1,0 +1,246 @@
+# This file is used to render the examples layers, he can be deleted.
+
+# Europe Layer
+LAYER
+  NAME "borders"
+  TYPE POLYGON
+  STATUS ON
+  TOLERANCE 10
+  TOLERANCEUNITS pixels
+  TEMPLATE fooOnlyForWMSGetFeatureInfo # For GetFeatureInfo
+  EXTENT -31 27 45 71 # Useful for better performance but not mandatory
+  CONNECTIONTYPE postgis
+  PROCESSING "CLOSE_CONNECTION=DEFER" # For performance
+  CONNECTION "${mapserver_connection}"
+  DATA "geom FROM (SELECT geo.* FROM data.europe_borders as geo) as foo using unique gid using srid=4326"
+  PROJECTION
+    "init=epsg:4326"
+  END
+  CLASS
+    NAME "borders"
+    STYLE
+      OUTLINECOLOR 0 0 0
+    END
+  END
+  METADATA
+    "wms_title" "Borders of Europe" # For WMS
+    "wms_srs" "EPSG:{{srid}}" # For WMS
+
+    "wfs_enable_request" "*" # Enable WFS for this layer
+    "gml_include_items" "all" # For GetFeatureInfo and WFS GetFeature (QueryBuilder)
+    "ows_geom_type" "multipolygon" # For returning geometries in GetFeatureInfo
+    "ows_geometries" "geom" # For returning geometries in GetFeatureInfo
+
+    "wms_metadataurl_href" "http://www.example.com/bar" # For metadata URL
+    "wms_metadataurl_format" "text/html" # For metadata URL
+    "wms_metadataurl_type" "TC211" # For metadata URL
+
+    ${mapserver_layer_metadata} # For secured layers
+  END
+END
+
+LAYER
+  NAME "density"
+  TYPE POLYGON
+  STATUS ON
+  TOLERANCE 10
+  TOLERANCEUNITS pixels
+  TEMPLATE fooOnlyForWMSGetFeatureInfo # For GetFeatureInfo
+  EXTENT  -31 27 45 71
+  CONNECTIONTYPE postgis
+  PROCESSING "CLOSE_CONNECTION=DEFER" # For performance
+  CONNECTION "${mapserver_connection}"
+  DATA "geom FROM (SELECT geo.*, (pop2005/(area*10)) AS density FROM data.europe_borders AS geo WHERE %role_id% IN (${mapfile_data_noarea_subselect} 'density')) as foo USING UNIQUE gid USING srid=4326"
+  PROJECTION
+    "init=epsg:4326"
+  END
+#  COMPOSITE
+#    OPACITY 50
+#  END
+  LABELITEM "name"
+  CLASS
+    NAME "[ 6 - 50 ["
+    EXPRESSION ([density] < 49.73)
+    STYLE
+      OUTLINECOLOR 0 0 0
+      COLOR 254 229 217
+    END
+    LABEL
+      COLOR  0 0 0
+      FONT "noto_bold"
+      TYPE truetype
+      SIZE 8
+      OUTLINEWIDTH 2
+      POSITION AUTO
+      PARTIALS FALSE
+      OUTLINECOLOR 253 247 244
+      MINFEATURESIZE 8
+      MINDISTANCE 1000
+      BUFFER 10
+    END
+    LEADER
+      GRIDSTEP 400 # number of pixels between positions that are tested
+      MAXDISTANCE 300 # distance in pixels that leader text can be drawn
+      STYLE # normal line styles are supported
+      COLOR 255 255 255
+      WIDTH 3
+      END
+      STYLE # normal line styles are supported
+      COLOR 0 0 0
+      WIDTH 1
+      END
+    END
+  END
+  CLASS
+    NAME "[ 50 - 92 ["
+    EXPRESSION ([density] >= 49.73 AND [density] < 91.94)
+    STYLE
+      OUTLINECOLOR 0 0 0
+      COLOR 252 174 145
+    END
+    LABEL
+      COLOR  0 0 0
+      FONT "noto_bold"
+      TYPE truetype
+      SIZE 8
+      OUTLINEWIDTH 2
+      POSITION AUTO
+      PARTIALS FALSE
+      OUTLINECOLOR 252 223 213
+      MINFEATURESIZE 8
+      MINDISTANCE 1000
+      BUFFER 10
+    END
+    LEADER
+      GRIDSTEP 400 # number of pixels between positions that are tested
+      MAXDISTANCE 300 # distance in pixels that leader text can be drawn
+      STYLE # normal line styles are supported
+      COLOR 255 255 255
+      WIDTH 3
+      END
+      STYLE # normal line styles are supported
+      COLOR 0 0 0
+      WIDTH 1
+      END
+    END
+  END
+  CLASS
+    NAME "[ 92 - 115 ["
+    EXPRESSION ([density] >= 91.94 AND [density] < 115.08)
+    STYLE
+      OUTLINECOLOR 0 0 0
+      COLOR 251 106 74
+    END
+    LABEL
+      COLOR  0 0 0
+      FONT "noto_bold"
+      TYPE truetype
+      SIZE 8
+      OUTLINEWIDTH 2
+      POSITION AUTO
+      PARTIALS FALSE
+      OUTLINECOLOR 251 220 213
+      MINFEATURESIZE 8
+      MINDISTANCE 1000
+      BUFFER 10
+    END
+    LEADER
+      GRIDSTEP 40 # number of pixels between positions that are tested
+      MAXDISTANCE 300 # distance in pixels that leader text can be drawn
+      STYLE # normal line styles are supported
+      COLOR 255 255 255
+      WIDTH 3
+      END
+      STYLE # normal line styles are supported
+      COLOR 0 0 0
+      WIDTH 1
+      END
+    END
+  END
+  CLASS
+    NAME "[ 115 - 210 ["
+    EXPRESSION ([density] >= 115.08 AND [density] < 210.11)
+    STYLE
+      OUTLINECOLOR 0 0 0
+      COLOR 222 45 38
+    END
+    LABEL
+      COLOR  0 0 0
+      FONT "noto_bold"
+      TYPE truetype
+      SIZE 8
+      OUTLINEWIDTH 2
+      POSITION AUTO
+      PARTIALS FALSE
+      OUTLINECOLOR 237 189 187
+      MINFEATURESIZE 8
+      MINDISTANCE 1000
+      BUFFER 10
+    END
+    LEADER
+      GRIDSTEP 40 # number of pixels between positions that are tested
+      MAXDISTANCE 300 # distance in pixels that leader text can be drawn
+      STYLE # normal line styles are supported
+      COLOR 255 255 255
+      WIDTH 3
+      END
+      STYLE # normal line styles are supported
+      COLOR 0 0 0
+      WIDTH 1
+      END
+    END
+  END
+  CLASS
+    NAME "[ 210 - 18 475 ]"
+    EXPRESSION ([density] >= 210 AND [density] <= 18475)
+    STYLE
+      OUTLINECOLOR 0 0 0
+      COLOR 165 15 21
+    END
+    LABEL
+      COLOR  0 0 0
+      FONT "noto_bold"
+      TYPE truetype
+      SIZE 8
+      OUTLINEWIDTH 2
+      POSITION AUTO
+      PARTIALS FALSE
+      OUTLINECOLOR 208 184 185
+      MINFEATURESIZE 8
+      MINDISTANCE 1000
+      BUFFER 10
+    END
+    LEADER
+      GRIDSTEP 40 # number of pixels between positions that are tested
+      MAXDISTANCE 300 # distance in pixels that leader text can be drawn
+      STYLE # normal line styles are supported
+      COLOR 255 255 255
+      WIDTH 3
+      END
+      STYLE # normal line styles are supported
+      COLOR 0 0 0
+      WIDTH 1
+      END
+    END
+  END
+
+  VALIDATION
+    ${mapserver_layer_validation} # For secured layers
+  END
+
+  METADATA
+    "wms_title" "Density of population" # For WMS
+    "wms_srs" "EPSG:{{srid}}" # For WMS
+
+    "wfs_enable_request" "*" # Enable WFS for this layer
+    "gml_include_items" "all" # For GetFeatureInfo and WFS GetFeature (QueryBuilder)
+    "ows_geom_type" "multipolygon" # For returning geometries in GetFeatureInfo
+    "ows_geometries" "geom" # For returning geometries in GetFeatureInfo
+
+    "wms_metadataurl_href" "http://www.example.com/bar" # For metadata URL
+    "wms_metadataurl_format" "text/html" # For metadata URL
+    "wms_metadataurl_type" "TC211" # For metadata URL
+
+    ${mapserver_layer_metadata} # For secured layers
+  END
+END

@@ -6,7 +6,8 @@ CONFIG_VARS += instanceid
 MODWSGI_USER ?= www-data
 export MODWSGI_USER
 
-ADDITIONAL_MAKO_FILES += $(shell find apache $(FIND_OPTS) -name "*.mako" -print) \
+ADDITIONAL_MAKO_FILES += $(shell find print $(FIND_OPTS) -name "*.mako" -print) \
+	$(shell find apache $(FIND_OPTS) -name "*.mako" -print) \
 	$(shell find deploy $(FIND_OPTS) -name "*.mako" -print) \
 	geoportal/development.ini.mako geoportal/production.ini.mako
 

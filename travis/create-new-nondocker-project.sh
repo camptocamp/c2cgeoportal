@@ -33,9 +33,10 @@ mv travis.mk.new travis.mk
 git init
 git config user.email travis@camptocamp.com
 git config user.name CI
+git remote add origin . # add a fake remote
 git add --all
 git commit --quiet --message="Initial commit"
-git remote add origin . # add a fake remote
+git clean -fX
 
 sudo chmod g+w,o+w /etc/apache2/sites-enabled/
 sudo chmod 777 /var/lib/tomcat7/webapps

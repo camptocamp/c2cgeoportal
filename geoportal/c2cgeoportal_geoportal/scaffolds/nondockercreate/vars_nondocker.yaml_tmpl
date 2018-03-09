@@ -27,6 +27,9 @@ vars:
     - '{web_protocol}:://b.tiles.{host}/{instanceid}/tiles'
     - '{web_protocol}:://c.tiles.{host}/{instanceid}/tiles'
 
+  cache:
+    backend: dogpile.cache.memory_pickle
+
   checker:
     phantomjs:
       routes: []

@@ -306,7 +306,7 @@ class C2cUpgradeTool:
     @Step(2)
     def step2(self, step):
         if os.path.exists("CONST_create_template"):
-            shutil.rmtree("CONST_create_template")
+            check_call(["git", "rm", "-r", "--force", "CONST_create_template/"])
 
         project_path = os.path.join("/tmp", self.project["project_folder"])
         check_call(["ln", "-s", "/src", project_path])
@@ -321,6 +321,8 @@ class C2cUpgradeTool:
             ])
         os.remove(project_path)
 
+        check_call(["git", "add", "--all", "CONST_create_template/"])
+        check_call(["git", "clean", "-Xf", "CONST_create_template/"])
         check_call(["make", "--makefile=" + self.options.makefile, "clean-all"])
         self.run_step(step + 1)
 
@@ -341,23 +343,22 @@ class C2cUpgradeTool:
                 prompt="Fix it and run it again:"
             )
             exit(1)
+        elif "managed_files" not in self.project:
+            self.print_step(
+                step,
+                message="In the new version we will also manage almost all the create "
+                "template files.\n"
+                "By default following regex pattern will not be replaced:\n{}"
+                "Than you should fill the 'managed_files' in you 'project.yaml' file with at least "
+                "`[]`.".format("\n".join([
+                    "- " + e for e in self.project.get('unmanaged_files', [])
+                ])),
+                prompt="Fill it and run it again:"
+            )
         else:
-            if "managed_files" not in self.project:
-                self.print_step(
-                    step,
-                    message="In the new version we will also manage almost all the create "
-                    "template files.\n"
-                    "By default following regex pattern will not be replaced:\n{}"
-                    "Than you should fill the 'managed_files' in you 'project.yaml' file with at least "
-                    "`[]`.".format("\n".join([
-                        "- " + e for e in self.project.get('unmanaged_files', [])
-                    ])),
-                    prompt="Fill it and run it again:"
-                )
-            else:
-                self.options.use_makefile = True
-                self.options.makefile = self.options.new_makefile
-                self.run_step(step + 1)
+            self.options.use_makefile = True
+            self.options.makefile = self.options.new_makefile
+            self.run_step(step + 1)
 
     @Step(4)
     def step4(self, step):
@@ -402,13 +403,14 @@ class C2cUpgradeTool:
             src = element["from"]
             dst = element["to"]
             if os.path.exists(src):
-                type_ = "directory" if os.path.isdir(src) else "file"
                 managed = False
+                type_ = "directory" if os.path.isdir(src) else "file"
                 for pattern in self.project["managed_files"]:
                     if re.match(pattern + '$', src):
                         print(colorize(
                             "The {} '{}' is present in the managed_files as '{}' but he will move.".format(
-                                type_, src, pattern),
+                                type_, src, pattern
+                            ),
                             RED
                         ))
                         error = True
@@ -417,7 +419,8 @@ class C2cUpgradeTool:
                     if re.match(pattern + '$', dst):
                         print(colorize(
                             "The {} '{}' is present in the managed_files as '{}' but he will move.".format(
-                                type_, dst, pattern),
+                                type_, dst, pattern
+                            ),
                             RED
                         ))
                         error = True
@@ -425,13 +428,10 @@ class C2cUpgradeTool:
                         break
                 if not managed and os.path.exists(dst):
                     print(colorize(
-                        "The destination '{}' already exists.".format(dst),
-                        RED
+                        "The destination '{}' already exists, ignoring.".format(dst),
+                        YELLOW
                     ))
-                    error = True
-                    if not pre:
-                        raise InteruptedException("The destination '{}' already exists.".format(dst))
-                if not managed and not pre:
+                if (not managed or 'CI' in os.environ) and not pre:
                     print(colorize("Move the {} '{}' to '{}'.".format(type_, src, dst), GREEN))
                     if "version" in element:
                         print("Needed from version {}.".format(element["version"]))
@@ -445,43 +445,62 @@ class C2cUpgradeTool:
         self.files_to_get()
         self.run_step(step + 1)
 
+    def is_managed(self, file_):
+        default_project_file = self.get_upgrade('default_project_file')
+        managed = False
+        for pattern in default_project_file['include']:
+            if re.match(pattern + '$', file_):
+                print("File '{}' included by migration config pattern '{}'.".format(file_, pattern))
+                managed = True
+                break
+        if managed:
+            for pattern in default_project_file['exclude']:
+                if re.match(pattern + '$', file_):
+                    print("File '{}' excluded by migration config pattern '{}'.".format(file_, pattern))
+                    print('managed', file_, pattern)
+                    managed = False
+                    break
+        if not managed:
+            for pattern in self.project['managed_files']:
+                if re.match(pattern + '$', file_):
+                    print("File '{}' included by progect config pattern (managed_files) '{}'.".format(
+                        file_, pattern
+                    ))
+                    print('managed', file_, pattern)
+                    managed = True
+                    break
+        if managed:
+            for pattern in self.project.get('unmanaged_files', []):
+                if re.match(pattern + '$', file_):
+                    print("File '{}' excluded by progect config pattern (unmanaged_files) '{}'.".format(
+                        file_, pattern
+                    ))
+                    managed = False
+                    break
+
+        return managed
+
     def files_to_get(self, pre=False):
         error = False
-        default_project_file = self.get_upgrade("default_project_file")
         for root, _, files in os.walk("CONST_create_template"):
             root = root[len("CONST_create_template/"):]
             for file_ in files:
                 destination = os.path.join(root, file_)
-                managed = False
-                for pattern in default_project_file["include"]:
-                    if re.match(pattern + '$', destination):
-                        managed = True
-                        break
-                if managed:
-                    for pattern in default_project_file["exclude"]:
-                        if re.match(pattern + '$', destination):
-                            managed = False
-                            break
-                if not managed:
-                    for pattern in self.project["managed_files"]:
-                        if re.match(pattern + '$', destination):
-                            managed = True
-                            break
-                if managed:
-                    for pattern in self.project.get("unmanaged_files", []):
-                        if re.match(pattern + '$', destination):
-                            managed = False
-                            break
+                managed = self.is_managed(destination)
                 source = os.path.join("CONST_create_template", destination)
                 if not managed and (not os.path.exists(destination) or not filecmp.cmp(source, destination)):
+                    print(colorize(
+                        "Get the file '{}' from the create template.".format(destination), GREEN
+                    ))
                     if not pre:
-                        print(colorize(
-                            "Get the file '{}' from the create template.".format(destination), GREEN
-                        ))
                         if os.path.dirname(destination) != "":
                             os.makedirs(os.path.dirname(destination), exist_ok=True)
                         shutil.copyfile(source, destination)
                         shutil.copymode(source, destination)
+                elif os.path.exists(destination) and not filecmp.cmp(source, destination):
+                    print("The file '{}' is managed by the project".format(destination))
+                else:
+                    print("The file '{}' does not change".format(destination))
         return error
 
     @Step(7)

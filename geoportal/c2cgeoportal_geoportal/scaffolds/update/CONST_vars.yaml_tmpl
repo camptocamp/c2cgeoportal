@@ -503,11 +503,14 @@ environment:
 
 runtime_environment:
   - VISIBLE_WEB_HOST
-  - VISIBLE_WEB_PROTOCOL
-  - VISIBLE_ENTRY_POINT
+  - name: VISIBLE_WEB_PROTOCOL
+    default: https
+  - name: VISIBLE_ENTRY_POINT
+    default: /
   - PGHOST
   - PGHOST_SLAVE
-  - PGPORT
+  - name: PGPORT
+    default: '5432'
   - PGUSER
   - PGPASSWORD
   - PGDATABASE
@@ -516,8 +519,10 @@ runtime_environment:
   - TINYOWS_URL
   - MAPSERVER_URL
   - PRINT_URL
-  - REDIS_HOST
-  - REDIS_PORT
+  - name: REDIS_HOST
+    default: undefined  # no error if absent
+  - name: REDIS_PORT
+    default: '6372'
 
 runtime_postprocess:
   - expression: int({})

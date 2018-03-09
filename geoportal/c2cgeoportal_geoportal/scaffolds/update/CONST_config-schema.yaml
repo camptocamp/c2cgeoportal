@@ -10,7 +10,13 @@ mapping:
     type: seq
     required: True
     sequence:
-      - type: str
+      - type: map
+        mapping:
+          name:
+            type: str
+            required: True
+          default:
+            type: str
   interpreted:
     type: map
     required: True
