@@ -55,6 +55,7 @@ from owslib.wms import WebMapService
 
 import c2cgeoportal_geoportal
 from c2cgeoportal_commons.config import config
+from c2cgeoportal_geoportal import init_dbsessions
 from c2cgeoportal_geoportal.lib import add_url_params, get_url2
 from c2cgeoportal_geoportal.lib.bashcolor import colorize, RED
 from c2cgeoportal_geoportal.lib.dbreflection import get_class
@@ -235,6 +236,7 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
 
         config_ = C()
         config_.registry.settings = settings
+        init_dbsessions(settings, config_)
         from c2cgeoportal_commons import models
         c2cgeoportal_geoportal.init_dbsessions(settings, config_)
         from c2cgeoportal_geoportal.views.layers import Layers

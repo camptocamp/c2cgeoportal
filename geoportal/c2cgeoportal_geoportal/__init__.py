@@ -40,8 +40,8 @@ from socket import gethostbyname, gaierror
 from ipcalc import IP, Network
 from Crypto.Cipher import AES
 import importlib
-from pyramid.config import Configurator
 
+from pyramid.config import Configurator
 from pyramid_mako import add_mako_renderer
 from pyramid.interfaces import IStaticURLInfo
 from pyramid.httpexceptions import HTTPException
@@ -50,15 +50,12 @@ import pyramid.security
 from papyrus.renderers import GeoJSON, XSD
 
 import c2cwsgiutils.db
-import c2cwsgiutils.pyramid
 from c2cwsgiutils.health_check import HealthCheck
 from sqlalchemy.orm import Session
 
 import c2cgeoportal_commons.models
-from c2cgeoportal_commons.config import config as configuration
-from c2cgeoportal_commons.models import Base
 from c2cgeoportal_geoportal.lib import dbreflection, caching, \
-    C2CPregenerator, MultiDomainStaticURLInfo
+    C2CPregenerator, MultiDomainStaticURLInfo, checker, check_collector
 
 log = logging.getLogger(__name__)
 
@@ -477,13 +474,13 @@ def call_hook(settings, name, *args, **kwargs):
 
 
 def includeme(config):
-    """ This function returns a Pyramid WSGI application.
+    """
+    This function returns a Pyramid WSGI application.
     """
 
-    # update the settings object from the YAML application config file
     settings = config.get_settings()
-    configuration.init(settings.get("app.cfg"))
-    settings.update(configuration.get_config())
+
+    config.include("c2cgeoportal_commons")
 
     call_hook(settings, "after_settings", settings)
 
@@ -491,19 +488,18 @@ def includeme(config):
     config.add_request_method(get_user_from_request, name="user", property=True)
     config.add_request_method(get_user_from_request, name="get_user")
 
-    # configure 'locale' dir as the translation dir for c2cgeoportal app
+    # Configure 'locale' dir as the translation dir for c2cgeoportal app
     config.add_translation_dirs("c2cgeoportal_geoportal:locale/")
 
-    config.include(c2cwsgiutils.pyramid.includeme)
+    config.include('c2cwsgiutils.pyramid.includeme')
     health_check = HealthCheck(config)
 
     # Initialise DBSessions
     init_dbsessions(settings, config, health_check)
 
-    # initialize the dbreflection module
+    # Initialize the dbreflection module
     dbreflection.init()
 
-    from c2cgeoportal_geoportal.lib import checker, check_collector
     checker.init(config, health_check)
     check_collector.init(config, health_check)
 
@@ -516,28 +512,27 @@ def includeme(config):
     # Register a tween to get back the cache buster path.
     config.add_tween("c2cgeoportal_geoportal.lib.cacheversion.CachebusterTween")
 
-    # bind the mako renderer to other file extensions
+    # Bind the mako renderer to other file extensions
     add_mako_renderer(config, ".html")
     add_mako_renderer(config, ".js")
 
-    # add the "geojson" renderer
+    # Add the "geojson" renderer
     config.add_renderer("geojson", GeoJSON())
 
-    # add decimal json renderer
+    # Add decimal json renderer
     config.add_renderer("decimaljson", DecimalJSON())
 
-    # add the "xsd" renderer
+    # Add the "xsd" renderer
     config.add_renderer("xsd", XSD(
         sequence_callback=dbreflection.xsd_sequence_callback
     ))
 
-    # add the set_user_validator directive, and set a default user
-    # validator
+    # Add the set_user_validator directive, and set a default user validator
     config.add_directive("set_user_validator", set_user_validator)
     config.set_user_validator(default_user_validator)
 
     if settings.get("ogcproxy_enable", False):  # pragma: no cover
-        # add an OGCProxy view
+        # Add an OGCProxy view
         config.add_route_predicate("ogc_server", OgcproxyRoutePredicate)
         config.add_route(
             "ogcproxy", "/ogcproxy",
@@ -545,29 +540,29 @@ def includeme(config):
         )
         config.add_view("papyrus_ogcproxy.views:ogcproxy", route_name="ogcproxy")
 
-    # add routes to the mapserver proxy
+    # Add routes to the mapserver proxy
     config.add_route_predicate("mapserverproxy", MapserverproxyRoutePredicate)
     config.add_route(
         "mapserverproxy", "/mapserv_proxy",
         mapserverproxy=True, pregenerator=C2CPregenerator(role=True),
     )
 
-    # add route to the tinyows proxy
+    # Add route to the tinyows proxy
     config.add_route(
         "tinyowsproxy", "/tinyows_proxy",
         pregenerator=C2CPregenerator(role=True),
     )
 
-    # add routes to csv view
+    # Add routes to csv view
     config.add_route("csvecho", "/csv", request_method="POST")
 
-    # add route to the export GPX/KML view
+    # Add route to the export GPX/KML view
     config.add_route("exportgpxkml", "/exportgpxkml")
 
-    # add routes to the echo service
+    # Add routes to the echo service
     config.add_route("echo", "/echo", request_method="POST")
 
-    # add routes to the entry view class
+    # Add routes to the entry view class
     config.add_route("base", "/", static=True)
     config.add_route("loginform", "/login.html", request_method="GET")
     add_cors_route(config, "/login", "login")
@@ -592,7 +587,7 @@ def includeme(config):
     )
     config.add_route("invalidate", "/invalidate", request_method="GET")
 
-    # print proxy routes
+    # Print proxy routes
     config.add_route("printproxy", "/printproxy", request_method="HEAD")
     add_cors_route(config, "/printproxy/*all", "print")
     config.add_route(
@@ -615,7 +610,7 @@ def includeme(config):
         "printproxy_report_get", "/printproxy/report/{ref}",
         request_method="GET"
     )
-    # v2
+    # For v2
     config.add_route(
         "printproxy_info", "/printproxy/info.json",
         request_method="GET",
@@ -630,7 +625,7 @@ def includeme(config):
         request_method="GET",
     )
 
-    # full text search routes
+    # Full-text search routes
     add_cors_route(config, "/fulltextsearch", "fulltextsearch")
     config.add_route("fulltextsearch", "/fulltextsearch")
 
@@ -642,7 +637,7 @@ def includeme(config):
     config.add_route("profile.csv", "/profile.csv", request_method="POST")
     config.add_route("profile.json", "/profile.json", request_method="POST")
 
-    # shortener
+    # Shortener
     add_cors_route(config, "/short/create", "shortener")
     config.add_route("shortener_create", "/short/create", request_method="POST")
     config.add_route("shortener_get", "/short/{ref}", request_method="GET")
@@ -653,7 +648,7 @@ def includeme(config):
     # PDF report tool
     config.add_route("pdfreport", "/pdfreport/{layername}/{ids}", request_method="GET")
 
-    # add routes for the "layers" web service
+    # Add routes for the "layers" web service
     add_cors_route(config, "/layers/*all", "layers")
     config.add_route(
         "layers_count", "/layers/{layer_id:\\d+}/count",
@@ -686,21 +681,21 @@ def includeme(config):
         request_method="GET",
         pregenerator=C2CPregenerator(),
     )
-    # there is no view corresponding to that route, it is to be used from
+    # There is no view corresponding to that route, it is to be used from
     # mako templates to get the root of the "layers" web service
     config.add_route("layers_root", "/layers/", request_method="HEAD")
 
     # Resource proxy (load external url, useful when loading non https content)
     config.add_route("resourceproxy", "/resourceproxy", request_method="GET")
 
-    # scan view decorator for adding routes
+    # Scan view decorator for adding routes
     config.scan(ignore=["c2cgeoportal_geoportal.scripts", "c2cgeoportal_geoportal.wsgi_app"])
 
     if "subdomains" in settings:  # pragma: no cover
         config.registry.registerUtility(
             MultiDomainStaticURLInfo(), IStaticURLInfo)
 
-    # add the static view (for static resources)
+    # Add the static view (for static resources)
     _add_static_view(config, "static", "c2cgeoportal_geoportal:static")
     _add_static_view(config, "project", "c2cgeoportal_geoportal:project")
 
@@ -728,7 +723,7 @@ def init_dbsessions(settings: dict, config: Configurator, health_check: HealthCh
         c2cgeoportal_commons.models.DBSessions[dbsession_name] = \
             c2cwsgiutils.db.create_session(config, dbsession_name, **dbsession_config)
 
-    Base.metadata.clear()
+    c2cgeoportal_commons.models.Base.metadata.clear()
     from c2cgeoportal_commons.models import main
 
     if health_check is not None:

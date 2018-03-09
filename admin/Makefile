@@ -19,7 +19,7 @@ cleanall:
 
 .PHONY: test
 test: build ${BUILD_DIR}/requirements-dev.timestamp
-	#Run your project's tests.
+	# Run your project's tests.
 	${VENV}/bin/pytest --driver Chrome
 
 .PHONY: check
@@ -31,18 +31,18 @@ flake8: ${BUILD_DIR}/requirements-dev.timestamp
 
 .PHONY: init_db
 init_db: ${BUILD_DIR}/requirements.timestamp
-	#Configure the database:
+	# Configure the database:
 	${VENV}/bin/initialize_db_main development.ini
 
 .PHONY: serve
 serve: build
-	#Run your project.
+	# Run your project.
 	${VENV}/bin/pserve --reload development.ini
 
 ${BUILD_DIR}/venv.timestamp:
-	#Create a Python virtual environment.
+	# Create a Python virtual environment.
 	virtualenv -p python3 ${VENV}
-	#Upgrade packaging tools.
+	# Upgrade packaging tools.
 	${VENV}/bin/pip install --upgrade pip==9.0.1 setuptools==36.5.0
 	touch $@
 
@@ -50,7 +50,7 @@ ${BUILD_DIR}/requirements.timestamp: \
 		${BUILD_DIR}/venv.timestamp \
 		requirements.txt \
 		../commons/requirements.txt ../commons/setup.py
-	#Install the project in editable mode.
+	# Install the project in editable mode.
 	${VENV}/bin/pip install -r ../commons/requirements.txt -r requirements.txt
 	${VENV}/bin/pip install -e "../commons"
 	${VENV}/bin/pip install -e "."
@@ -59,7 +59,7 @@ ${BUILD_DIR}/requirements.timestamp: \
 ${BUILD_DIR}/requirements-dev.timestamp: \
 		${BUILD_DIR}/requirements.timestamp \
 		requirements-dev.txt
-	#Install the project in editable mode with its testing requirements.
+	# Install the project in editable mode with its testing requirements.
 	${VENV}/bin/pip install -r requirements-dev.txt
 	touch $@
 
@@ -70,13 +70,13 @@ ${BUILD_DIR}/node_modules.timestamp: package.json
 .PHONY: docker-build
 docker-build:
 	cd .. ; \
-	docker build -t $(DOCKER_BASE)_admin:$(DOCKER_TAG) --build-arg "GIT_HASH=$(GIT_HASH)" -f admin/Dockerfile .
+	docker build -t $(DOCKER_BASE)_admin:$(DOCKER_TAG) --build-arg GIT_HASH=$(GIT_HASH) -f admin/Dockerfile .
 
 .PHONY: docker-serve
 docker-serve:
-	docker-compose -f docker-compose.yml up
+	docker-compose up
 
 .PHONY: docker-pull
 docker-pull:
 	for image in `find -name Dockerfile | xargs grep --no-filename FROM | awk '{print $$2}' | sort -u`; do docker pull $$image; done
-	for image in `find -name "docker-compose*.yml" | xargs grep --no-filename "image:" | awk '{print $$2}' | sort -u | grep -v $(DOCKER_BASE) | grep -v rancher`; do docker pull $$image; done
+	for image in `find -name docker-compose*.yaml | xargs grep --no-filename image: | awk '{print $$2}' | sort -u | grep -v $(DOCKER_BASE) | grep -v rancher`; do docker pull $$image; done

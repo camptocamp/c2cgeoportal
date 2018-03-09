@@ -43,7 +43,8 @@ Pygments==2.2.0  # doc
 pylint==1.8.2  # lint
 pyproj==1.9.5.1  # geoportal
 https://github.com/camptocamp/pyramid_closure/archive/23b45f7989cf471dce46dabb8516537bae0a2789.zip#egg=pyramid_closure  # ngeo
-pyramid-debugtoolbar==4.4  # geoportal
+pyramid_debugtoolbar==4.4  # geoportal
+pyramid_jinja2==2.7  # admin
 pyramid-mako==1.0.2  # geoportal
 pyramid-multiauth==0.9.0  # geoportal
 pytest-cov==2.5.1  # tests
