@@ -828,6 +828,7 @@ class OGCServer(Base):
             'image/png',
             native_enum=False
         ),
+        nullable=False,
         info={
             'colanderalchemy': {
                 'title': _('Image type'),
@@ -919,7 +920,7 @@ class LayerWMS(DimensionLayer):
                 order_by='name',
                 default_value=('', _('- Select -')))
         }})
-    layer = Column(Unicode, info={
+    layer = Column(Unicode, nullable=False, info={
         'colanderalchemy': {
             'title': _('WMS layer name'),
             'column': 2

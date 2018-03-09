@@ -67,7 +67,8 @@ class TestOGCServer(AbstractViewsTests):
                 'description': 'new description',
                 'url': 'www.randomurl.com',
                 'type': 'mapserver',
-                'auth': 'No auth'
+                'auth': 'No auth',
+                'image_type': 'image/png'
             },
             status=302)
         ogc_server = dbsession.query(OGCServer). \
