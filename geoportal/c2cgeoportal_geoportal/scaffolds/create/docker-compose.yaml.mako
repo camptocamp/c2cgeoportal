@@ -41,7 +41,7 @@ ${service_defaults('mapserver', 11211)}\
 ${service_defaults('mapserver', 6379)}\
 
   tilecloudchain:
-    image: camptocamp/tilecloud-chain:1.4.0.dev11
+    image: camptocamp/tilecloud-chain:1.4.1
     volumes_from:
       - config:ro
 ${service_defaults('mapserver', 80)}\
