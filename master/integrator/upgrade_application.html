@@ -35,13 +35,51 @@
   <div class="section" id="upgrading-a-geomapfish-application">
 <span id="integrator-upgrade-application"></span><h1>Upgrading a GeoMapFish application<a class="headerlink" href="#upgrading-a-geomapfish-application" title="Permalink to this headline">¶</a></h1>
 <p>Then you have 4 different ways…</p>
-<div class="section" id="from-a-version-2-3-and-next">
-<h2>From a version 2.3 and next<a class="headerlink" href="#from-a-version-2-3-and-next" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="upgrade-a-version-2-2">
+<h2>Upgrade a version 2.2<a class="headerlink" href="#upgrade-a-version-2-2" title="Permalink to this headline">¶</a></h2>
+<p>Add a section <code class="docutils literal notranslate"><span class="pre">managed_files:</span> <span class="pre">[...]</span></code> in the <code class="docutils literal notranslate"><span class="pre">project.yaml.mako</span></code> file.
+The files that are not in this section will be overwritten,
+see upgrade config to see original replacements (section <cite>default_project_file</cite>):
+<cite>for non Docker version &lt;https://github.com/camptocamp/c2cgeoportal/blob/HEAD/geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/%2Bdot%2Bupgrade.yaml_tmpl&gt;</cite>,
+<cite>for Docker version &lt;https://github.com/camptocamp/c2cgeoportal/blob/HEAD/geoportal/c2cgeoportal_geoportal/scaffolds/update/%2Bdot%2Bupgrade.yaml_tmpl&gt;</cite>.</p>
+<p>Prepare the upgrade:</p>
 <pre class="highlight"><style type="text/css">
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">./docker-run --home make upgrade</span>
+</style><span class="prompt1">git submodule deinit &lt;package&gt;/static/lib/cgxp/</span>
+<span class="prompt1">git rm .gitmodules</span>
+<span class="prompt1">curl https://raw.githubusercontent.com/camptocamp/c2cgeoportal/master/docker-run &gt; docker-run</span>
+<span class="prompt1">chmod +x docker-run</span>
+<span class="prompt1">git add docker-run project.yaml.mako</span>
+<span class="prompt1">git commit --quiet --message<span class="o">=</span><span class="s2">&quot;Start upgrade&quot;</span></span>
+<span class="prompt1">make --makefile<span class="o">=</span>&lt;package&gt;.mk project.yaml</span>
+</pre><p>Pull the latest version of the Docker image:</p>
+<pre class="highlight"><span class="prompt1">docker pull camptocamp/geomapfish-build:&lt;version&gt;</span>
+</pre><p>Where <code class="docutils literal notranslate"><span class="pre">&lt;version&gt;</span></code> is <code class="docutils literal notranslate"><span class="pre">2.3.0</span></code> for the first stable release of the version <code class="docutils literal notranslate"><span class="pre">2.3</span></code>.</p>
+<p>For Docker:</p>
+<pre class="highlight"><span class="prompt1">./docker-run --home --image<span class="o">=</span>camptocamp/geomapfish-build --version<span class="o">=</span>&lt;version&gt;        c2cupgrade --force-docker --new-makefile<span class="o">=</span>Makefile --makefile<span class="o">=</span>&lt;package&gt;.mk</span>
+</pre><p>And for non-Docker</p>
+<pre class="highlight"><span class="prompt1">./docker-run --home --image<span class="o">=</span>camptocamp/geomapfish-build        c2cupgrade --nondocker --makefile<span class="o">=</span>testgeomapfish.mk</span>
+</pre><p>Then follow the instruction</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Know issue</p>
+<p>if you have the following message:</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Host</span> <span class="n">key</span> <span class="n">verification</span> <span class="n">failed</span><span class="o">.</span>
+<span class="n">fatal</span><span class="p">:</span> <span class="n">Could</span> <span class="ow">not</span> <span class="n">read</span> <span class="kn">from</span> <span class="nn">remote</span> <span class="n">repository</span><span class="o">.</span>
+
+<span class="n">Please</span> <span class="n">make</span> <span class="n">sure</span> <span class="n">you</span> <span class="n">have</span> <span class="n">the</span> <span class="n">correct</span> <span class="n">access</span> <span class="n">rights</span>
+<span class="ow">and</span> <span class="n">the</span> <span class="n">repository</span> <span class="n">exists</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>you can do the following command to fix it:</p>
+<pre class="highlight"><span class="prompt1">ssh-keyscan -t rsa github.com &gt;&gt; ~/.ssh/known_hosts</span>
+</pre></div>
+</div>
+<div class="section" id="from-a-version-2-3-and-next">
+<h2>From a version 2.3 and next<a class="headerlink" href="#from-a-version-2-3-and-next" title="Permalink to this headline">¶</a></h2>
+<pre class="highlight"><span class="prompt1">./docker-run --home make upgrade</span>
 </pre><p>Then follow the instruction</p>
 </div>
 <div class="section" id="convert-a-version-2-3-to-docker">
@@ -64,55 +102,6 @@ Add <code class="docutils literal notranslate"><span class="pre">UPGRADE_ARGS</s
 <span class="prompt1">./docker-run --home make upgrade</span>
 </pre><p>Then follow the instruction</p>
 <p>Remove the <code class="docutils literal notranslate"><span class="pre">UPGRADE_ARGS</span></code> in your <code class="docutils literal notranslate"><span class="pre">Makefile</span></code>.</p>
-</div>
-<div class="section" id="upgrade-a-version-2-2">
-<h2>Upgrade a version 2.2<a class="headerlink" href="#upgrade-a-version-2-2" title="Permalink to this headline">¶</a></h2>
-<p>Add a section <code class="docutils literal notranslate"><span class="pre">managed_files:</span> <span class="pre">[...]</span></code> in the <code class="docutils literal notranslate"><span class="pre">project.yaml.mako</span></code> file.
-All the files that’s not in this section will be overwritten except:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="p">{</span><span class="n">package</span><span class="p">}</span><span class="o">/</span><span class="n">templates</span><span class="o">/.*</span>
-<span class="o">-</span> <span class="p">{</span><span class="n">package</span><span class="p">}</span><span class="o">/</span><span class="n">locale</span><span class="o">/.*</span>
-<span class="o">-</span> <span class="p">{</span><span class="n">package</span><span class="p">}</span><span class="o">/</span><span class="n">static</span><span class="o">/.*</span>
-<span class="o">-</span> <span class="p">{</span><span class="n">package</span><span class="p">}</span><span class="o">/</span><span class="n">static</span><span class="o">-</span><span class="n">ngeo</span><span class="o">/.*</span>
-<span class="o">-</span> <span class="nb">print</span><span class="o">/</span><span class="nb">print</span><span class="o">-</span><span class="n">apps</span><span class="o">/.*</span>
-<span class="o">-</span> <span class="n">mapserver</span><span class="o">/.*</span>
-<span class="o">-</span> <span class="n">project</span><span class="o">.</span><span class="n">yaml</span><span class="o">.</span><span class="n">mako</span>
-<span class="o">-</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span>
-<span class="o">-</span> <span class="nb">vars</span><span class="o">.</span><span class="n">yaml</span>
-<span class="o">-</span> <span class="n">Makefile</span>
-</pre></div>
-</div>
-<p>Prepare the upgrade:</p>
-<pre class="highlight"><span class="prompt1">git submodule deinit &lt;package&gt;/static/lib/cgxp/</span>
-<span class="prompt1">git rm .gitmodules</span>
-<span class="prompt1">curl https://raw.githubusercontent.com/camptocamp/c2cgeoportal/master/docker-run &gt; docker-run</span>
-<span class="prompt1">chmod +x docker-run</span>
-<span class="prompt1">git add docker-run project.yaml.mako</span>
-<span class="prompt1">git commit --quiet --message<span class="o">=</span><span class="s2">&quot;Start upgrade&quot;</span></span>
-<span class="prompt1">make --makefile<span class="o">=</span>&lt;package&gt;.mk project.yaml</span>
-</pre><p>Pull the latest version of the Docker image:</p>
-<pre class="highlight"><span class="prompt1">docker pull camptocamp/geomapfish-build:&lt;version&gt;</span>
-</pre><p>Where <code class="docutils literal notranslate"><span class="pre">&lt;version&gt;</span></code> is <code class="docutils literal notranslate"><span class="pre">2.3.0</span></code> for the first stable release of the version <code class="docutils literal notranslate"><span class="pre">2.3</span></code>.</p>
-<p>For Docker:</p>
-<pre class="highlight"><span class="prompt1">./docker-run --home --image<span class="o">=</span>camptocamp/geomapfish-build --version<span class="o">=</span>&lt;version&gt; <span class="se">\</span>
-    c2cupgrade --force-docker --new-makefile<span class="o">=</span>Makefile --makefile<span class="o">=</span>&lt;package&gt;.mk</span>
-</pre><p>And for non-Docker</p>
-<pre class="highlight"><span class="prompt1">./docker-run --home --image<span class="o">=</span>camptocamp/geomapfish-build <span class="se">\</span>
-    c2cupgrade --nondocker --makefile<span class="o">=</span>testgeomapfish.mk</span>
-</pre><p>Then follow the instruction</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>Know issue</p>
-<p>if you have the following message:</p>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Host</span> <span class="n">key</span> <span class="n">verification</span> <span class="n">failed</span><span class="o">.</span>
-<span class="n">fatal</span><span class="p">:</span> <span class="n">Could</span> <span class="ow">not</span> <span class="n">read</span> <span class="kn">from</span> <span class="nn">remote</span> <span class="n">repository</span><span class="o">.</span>
-
-<span class="n">Please</span> <span class="n">make</span> <span class="n">sure</span> <span class="n">you</span> <span class="n">have</span> <span class="n">the</span> <span class="n">correct</span> <span class="n">access</span> <span class="n">rights</span>
-<span class="ow">and</span> <span class="n">the</span> <span class="n">repository</span> <span class="n">exists</span><span class="o">.</span>
-</pre></div>
-</div>
-<p>you can do the following command to fix it:</p>
-<pre class="highlight"><span class="prompt1">ssh-keyscan -t rsa github.com &gt;&gt; ~/.ssh/known_hosts</span>
-</pre></div>
 <div class="section" id="upgrade-the-database">
 <h3>Upgrade the database<a class="headerlink" href="#upgrade-the-database" title="Permalink to this headline">¶</a></h3>
 <p>The database will be automatically upgraded during the upgrade process.</p>
@@ -139,10 +128,10 @@ All the files that’s not in this section will be overwritten except:</p>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Upgrading a GeoMapFish application</a><ul>
+<li><a class="reference internal" href="#upgrade-a-version-2-2">Upgrade a version 2.2</a></li>
 <li><a class="reference internal" href="#from-a-version-2-3-and-next">From a version 2.3 and next</a></li>
 <li><a class="reference internal" href="#convert-a-version-2-3-to-docker">Convert a version 2.3 to Docker</a></li>
-<li><a class="reference internal" href="#convert-a-version-2-3-to-non-docker">Convert a version 2.3 to non-Docker</a></li>
-<li><a class="reference internal" href="#upgrade-a-version-2-2">Upgrade a version 2.2</a><ul>
+<li><a class="reference internal" href="#convert-a-version-2-3-to-non-docker">Convert a version 2.3 to non-Docker</a><ul>
 <li><a class="reference internal" href="#upgrade-the-database">Upgrade the database</a></li>
 </ul>
 </li>

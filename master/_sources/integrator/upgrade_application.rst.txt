@@ -7,6 +7,69 @@ Upgrading a GeoMapFish application
 
 Then you have 4 different ways...
 
+
+Upgrade a version 2.2
+~~~~~~~~~~~~~~~~~~~~~
+
+Add a section ``managed_files: [...]`` in the ``project.yaml.mako`` file.
+The files that are not in this section will be overwritten,
+see upgrade config to see original replacements (section `default_project_file`):
+`for non Docker version <https://github.com/camptocamp/c2cgeoportal/blob/HEAD/geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/%2Bdot%2Bupgrade.yaml_tmpl>`,
+`for Docker version <https://github.com/camptocamp/c2cgeoportal/blob/HEAD/geoportal/c2cgeoportal_geoportal/scaffolds/update/%2Bdot%2Bupgrade.yaml_tmpl>`.
+
+Prepare the upgrade:
+
+.. prompt:: bash
+
+   git submodule deinit <package>/static/lib/cgxp/
+   git rm .gitmodules
+   curl https://raw.githubusercontent.com/camptocamp/c2cgeoportal/master/docker-run > docker-run
+   chmod +x docker-run
+   git add docker-run project.yaml.mako
+   git commit --quiet --message="Start upgrade"
+   make --makefile=<package>.mk project.yaml
+
+Pull the latest version of the Docker image:
+
+.. prompt:: bash
+
+    docker pull camptocamp/geomapfish-build:<version>
+
+Where ``<version>`` is ``2.3.0`` for the first stable release of the version ``2.3``.
+
+For Docker:
+
+.. prompt:: bash
+
+   ./docker-run --home --image=camptocamp/geomapfish-build --version=<version>        c2cupgrade --force-docker --new-makefile=Makefile --makefile=<package>.mk
+
+And for non-Docker
+
+.. prompt:: bash
+
+   ./docker-run --home --image=camptocamp/geomapfish-build        c2cupgrade --nondocker --makefile=testgeomapfish.mk
+
+Then follow the instruction
+
+.. note:: Know issue
+
+   if you have the following message:
+
+   .. code::
+
+      Host key verification failed.
+      fatal: Could not read from remote repository.
+
+      Please make sure you have the correct access rights
+      and the repository exists.
+
+   you can do the following command to fix it:
+
+   .. prompt:: bash
+
+      ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+
+
 From a version 2.3 and next
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -51,77 +114,6 @@ Add ``UPGRADE_ARGS += --nondocker --new-makefile=<package>.mk`` in the ``Makefil
 Then follow the instruction
 
 Remove the ``UPGRADE_ARGS`` in your ``Makefile``.
-
-Upgrade a version 2.2
-~~~~~~~~~~~~~~~~~~~~~
-
-Add a section ``managed_files: [...]`` in the ``project.yaml.mako`` file.
-All the files that's not in this section will be overwritten except::
-
- - {package}/templates/.*
- - {package}/locale/.*
- - {package}/static/.*
- - {package}/static-ngeo/.*
- - print/print-apps/.*
- - mapserver/.*
- - project.yaml.mako
- - setup.py
- - vars.yaml
- - Makefile
-
-Prepare the upgrade:
-
-.. prompt:: bash
-
-   git submodule deinit <package>/static/lib/cgxp/
-   git rm .gitmodules
-   curl https://raw.githubusercontent.com/camptocamp/c2cgeoportal/master/docker-run > docker-run
-   chmod +x docker-run
-   git add docker-run project.yaml.mako
-   git commit --quiet --message="Start upgrade"
-   make --makefile=<package>.mk project.yaml
-
-Pull the latest version of the Docker image:
-
-.. prompt:: bash
-
-    docker pull camptocamp/geomapfish-build:<version>
-
-Where ``<version>`` is ``2.3.0`` for the first stable release of the version ``2.3``.
-
-For Docker:
-
-.. prompt:: bash
-
-   ./docker-run --home --image=camptocamp/geomapfish-build --version=<version> \
-       c2cupgrade --force-docker --new-makefile=Makefile --makefile=<package>.mk
-
-And for non-Docker
-
-.. prompt:: bash
-
-   ./docker-run --home --image=camptocamp/geomapfish-build \
-       c2cupgrade --nondocker --makefile=testgeomapfish.mk
-
-Then follow the instruction
-
-.. note:: Know issue
-
-   if you have the following message:
-
-   .. code::
-
-      Host key verification failed.
-      fatal: Could not read from remote repository.
-
-      Please make sure you have the correct access rights
-      and the repository exists.
-
-   you can do the following command to fix it:
-
-   .. prompt:: bash
-
-      ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
 
 Upgrade the database
 --------------------
