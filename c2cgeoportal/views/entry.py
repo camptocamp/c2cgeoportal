@@ -747,7 +747,8 @@ class Entry:
         return \
             isinstance(layer, LayerV1) and layer.layer_type == "internal WMS"
 
-    def _get_ogc_servers(self, group, depth=1):
+    @cache_region.cache_on_arguments()
+    def _get_ogc_servers(self, group, depth):
         """ Recurse on all children to get unique identifier for each child. """
         ogc_servers = set()
 
@@ -759,10 +760,10 @@ class Entry:
         # recurse on children
         if isinstance(group, LayerGroup) and len(group.children) > 0:
             for tree_item in group.children:
-                ogc_servers.update(self._get_ogc_servers(tree_item, depth=depth + 1))
+                ogc_servers.update(self._get_ogc_servers(tree_item, depth + 1))
 
         if isinstance(group, LayerWMS):
-            ogc_servers.add(group.ogc_server)
+            ogc_servers.add(group.ogc_server.name)
 
         if isinstance(group, LayerWMTS):
             ogc_servers.add(False)
@@ -794,7 +795,7 @@ class Entry:
         ogc_servers = None
         org_depth = depth
         if depth == 1:
-            ogc_servers = list(self._get_ogc_servers(group))
+            ogc_servers = list(self._get_ogc_servers(group, 1))
             # check if mixed content
             mixed = len(ogc_servers) != 1 or ogc_servers[0] is False
             if not mixed:
@@ -873,7 +874,7 @@ class Entry:
                 g["mixed"] = mixed
                 if org_depth == 1:
                     if not mixed:
-                        g["ogcServer"] = ogc_servers[0].name
+                        g["ogcServer"] = ogc_servers[0]
                         if time.has_time() and time.layer is None:
                             g["time"] = time.to_dict()
 
@@ -902,7 +903,6 @@ class Entry:
 
         return wms, list(wms.contents), wms_errors
 
-    @cache_region.cache_on_arguments()
     def _load_tree_items(self):
         self._layerswms_cache = DBSession.query(LayerWMS).options(
             subqueryload(LayerWMS.dimensions), subqueryload(LayerWMS.metadatas)
