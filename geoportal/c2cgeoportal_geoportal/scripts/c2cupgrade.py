@@ -274,7 +274,7 @@ class C2cUpgradeTool:
             check_call(["git", "status"])
             self.print_step(
                 step + 1, message="Here is the output of 'git status'. Please make sure to commit all your "
-                "changes before going further. All uncommited changes will be lost."
+                "changes before going further. All uncommitted changes will be lost."
             )
 
     @Step(1)

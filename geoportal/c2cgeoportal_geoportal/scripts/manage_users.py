@@ -173,7 +173,7 @@ User can be created if it does not exist yet."""
         sess.add(user)
         transaction.commit()
 
-        print(("Password resetted for user {0!s}".format(username)))
+        print(("Password reset for user {0!s}".format(username)))
 
 
 if __name__ == "__main__":
