@@ -223,10 +223,10 @@ login name.</p>
 </div>
 <div class="section" id="integrator-install-application-install-application">
 <span id="id1"></span><h3>Install the application<a class="headerlink" href="#integrator-install-application-install-application" title="Permalink to this headline">¶</a></h3>
-<p>Create the application tables, and directly set the version (details later):</p>
-<pre class="highlight"><span class="prompt1">make upgrade-db</span>
-</pre><p>Then you can build and install the application with the command:</p>
-<pre class="highlight"><span class="prompt1">make build</span>
+<p>Then you can build and install the application with the command:</p>
+<pre class="highlight"><span class="prompt1">make docker-build</span>
+</pre><p>Create the application tables, and directly set the version (details later):</p>
+<pre class="highlight"><span class="prompt1">./docker-run make upgrade-db</span>
 </pre><p>This previous command will do many things like:</p>
 <blockquote>
 <div><ul class="simple">

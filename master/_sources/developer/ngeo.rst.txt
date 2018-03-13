@@ -14,4 +14,4 @@ We have an automatic task for this:
 
 .. prompt:: bash
 
-   make import-ngeo-app
+   ./docker-run make import-ngeo-app
