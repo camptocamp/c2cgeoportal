@@ -425,7 +425,7 @@ upgrade-db: alembic.ini alembic.yaml
 
 .PHONY: template-clean
 template-clean:
-	rm --force .build/c2ctemplate-cache.json \
+	rm --force /build/c2ctemplate-cache.json \
 		$(ALL_MAKO_FILES:.mako=) \
 		$(ALL_JINJA_FILES:.jinja=) \
 		geoportal/config.yaml

@@ -86,4 +86,4 @@ vars:
 
 environment: []
 no_interpreted:
-- admin_interface.map_base_layer
+  - admin_interface.map_base_layer

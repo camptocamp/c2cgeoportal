@@ -21,7 +21,7 @@ files where available; otherwise directly the ``.rst`` if there is no correspond
 ``mako`` file.
 
 To verify that the syntax of your changes is OK (no trailing whitespace etc.),
-you should execute the following command (in addition to the ``make doc``):
+you should execute the following command (in addition to the ``./docker-run make doc``):
 
 .. prompt:: bash
 

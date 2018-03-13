@@ -106,7 +106,7 @@ build: c2c-egg \
 doc: $(BUILD_DIR)/sphinx.timestamp
 
 .PHONY: checks
-checks: flake8 mypy git-attributes quote spell yamllint pylint additionallint
+checks: flake8 mypy git-attributes quote spell yamllint pylint eof-newline additionallint
 
 .PHONY: clean
 clean:
@@ -259,10 +259,14 @@ spell:
 		$(shell find geoportal/c2cgeoportal_geoportal -name static -prune -or -name '*.py' -print) \
 		$(shell find admin/c2cgeoportal_admin -name '*.py' -print)
 
-YAML_FILES ?= $(shell find -name ngeo -prune -or \( -name "*.yml" -or -name "*.yaml" \) -print)
+YAML_FILES ?= $(shell find -name ngeo -prune -or -name functional -prune -or \( -name "*.yml" -or -name "*.yaml" \) -print)
 .PHONY: yamllint
-yamllint: $(YAML_FILES)
+yamllint:
 	yamllint --strict --config-file=yamllint.yaml -s $(YAML_FILES)
+
+.PHONY: eof-newline
+eof-newline:
+	travis/test-eof-newline
 
 .PHONY: additionallint
 additionallint:

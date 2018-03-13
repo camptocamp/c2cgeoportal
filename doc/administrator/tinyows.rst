@@ -128,7 +128,7 @@ access to a layer to the users of a restriction-area.
 
 After the configuration is made, re-build the c2cgeoportal application::
 
-    make <profile>.mk build
+    make docker-build
 
 Editing a layer with WFS-T
 --------------------------
