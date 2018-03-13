@@ -61,10 +61,14 @@ class ResourceProxy(Proxy):
             cache_control = NO_CACHE
             content_type = resp["content-type"]
 
-            return self._build_response(
+            response = self._build_response(
                 resp, content, cache_control, "externalresource",
                 content_type=content_type
             )
+            for header in response.headers.keys():
+                if header not in self.settings["allowed_headers"]:
+                    response.headers.pop(header)
+            return response
         else:  # pragma: no cover
             log.warning("target url not found: {0!s}".format(target))
             return HTTPBadRequest("url not allowed")
