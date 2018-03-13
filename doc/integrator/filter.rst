@@ -3,8 +3,19 @@
 Filter (Querier)
 ================
 
+Available attributes and operators in filters
+---------------------------------------------
+
+All attributes defined as "exported" in the layer of your map server will be automatically available as
+filterable attribute. If the type, and so the operator on the attribute, is not adequate for
+filtering, you should adapt the type in your layer definition See `administrator_mapfile` (WFS GetFeature)
+for more information (MapServer only).
+
+Enumerate available attributes for a layer
+------------------------------------------
+
 Step 1: Project Configuration file
-----------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In the filter panel, instead of the standard text field,
 it is possible to display combos providing the available values of
@@ -67,7 +78,7 @@ Simple example:
         },
 
 Step 2: Administration interface
---------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The final step is to assign the enumerated attributes to the right layer in the administration.
 Go to the ``metadata`` page, add a ``enumeratedAttributes`` to an existing layer.
@@ -78,7 +89,7 @@ Client-side documentation related to the enumeratedAttributes metadata is availa
 `gmfThemes.GmfMetaData <https://camptocamp.github.io/ngeo/master/apidoc/gmfThemes.GmfMetaData.html>`_
 
 Using DB sessions
------------------
+~~~~~~~~~~~~~~~~~
 
 As explained above, it is possible to get the attributes lists including
 for layers whose data are hosted in external databases, using the
