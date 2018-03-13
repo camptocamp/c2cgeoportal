@@ -46,8 +46,17 @@
             
   <div class="section" id="filter-querier">
 <span id="integrator-querier"></span><h1>Filter (Querier)<a class="headerlink" href="#filter-querier" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="available-attributes-and-operators-in-filters">
+<h2>Available attributes and operators in filters<a class="headerlink" href="#available-attributes-and-operators-in-filters" title="Permalink to this headline">¶</a></h2>
+<p>All attributes defined as “exported” in the layer of your map server will be automatically available as
+filterable attribute. If the type, and so the operator on the attribute, is not adequate for
+filtering, you should adapt the type in your layer definition See <cite>administrator_mapfile</cite> (WFS GetFeature)
+for more information (MapServer only).</p>
+</div>
+<div class="section" id="enumerate-available-attributes-for-a-layer">
+<h2>Enumerate available attributes for a layer<a class="headerlink" href="#enumerate-available-attributes-for-a-layer" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="step-1-project-configuration-file">
-<h2>Step 1: Project Configuration file<a class="headerlink" href="#step-1-project-configuration-file" title="Permalink to this headline">¶</a></h2>
+<h3>Step 1: Project Configuration file<a class="headerlink" href="#step-1-project-configuration-file" title="Permalink to this headline">¶</a></h3>
 <p>In the filter panel, instead of the standard text field,
 it is possible to display combos providing the available values of
 the attributes. The values are automatically retrieved using a
@@ -93,7 +102,7 @@ the attribute <code class="docutils literal"><span class="pre">attributeURLs</sp
 </div>
 </div>
 <div class="section" id="step-2-administration-interface">
-<h2>Step 2: Administration interface<a class="headerlink" href="#step-2-administration-interface" title="Permalink to this headline">¶</a></h2>
+<h3>Step 2: Administration interface<a class="headerlink" href="#step-2-administration-interface" title="Permalink to this headline">¶</a></h3>
 <p>The final step is to assign the enumerated attributes to the right layer in the administration.
 Go to the <code class="docutils literal"><span class="pre">metadata</span></code> page, add a <code class="docutils literal"><span class="pre">enumeratedAttributes</span></code> to an existing layer.
 The value is a single string or a list of attributes (that we defined earlier in the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file)
@@ -102,7 +111,7 @@ separated with a comma.</p>
 <a class="reference external" href="https://camptocamp.github.io/ngeo/master/apidoc/gmfThemes.GmfMetaData.html">gmfThemes.GmfMetaData</a></p>
 </div>
 <div class="section" id="using-db-sessions">
-<h2>Using DB sessions<a class="headerlink" href="#using-db-sessions" title="Permalink to this headline">¶</a></h2>
+<h3>Using DB sessions<a class="headerlink" href="#using-db-sessions" title="Permalink to this headline">¶</a></h3>
 <p>As explained above, it is possible to get the attributes lists including
 for layers whose data are hosted in external databases, using the
 <code class="docutils literal"><span class="pre">dbsession:</span> <span class="pre">&quot;&lt;session</span> <span class="pre">name&gt;&quot;</span></code> parameter.</p>
@@ -123,6 +132,7 @@ For instance:</p>
 </div>
 </div>
 </div>
+</div>
 
 
           </div>
@@ -136,9 +146,13 @@ For instance:</p>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Filter (Querier)</a><ul>
+<li><a class="reference internal" href="#available-attributes-and-operators-in-filters">Available attributes and operators in filters</a></li>
+<li><a class="reference internal" href="#enumerate-available-attributes-for-a-layer">Enumerate available attributes for a layer</a><ul>
 <li><a class="reference internal" href="#step-1-project-configuration-file">Step 1: Project Configuration file</a></li>
 <li><a class="reference internal" href="#step-2-administration-interface">Step 2: Administration interface</a></li>
 <li><a class="reference internal" href="#using-db-sessions">Using DB sessions</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

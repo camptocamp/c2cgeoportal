@@ -65,7 +65,7 @@ a template::
 
     TEMPLATE "fooOnlyForWFSGetFeature"
 
-This is a fake template, but this is required.
+This is a fake template, but this is required by the querier and for the filter.
 
 The ``LAYER`` should also define metadata, with a ``METADATA`` section. For
 example::
@@ -83,8 +83,11 @@ example::
 
 ``gml_types``
 
-  Always set this to ``auto``. This means that the layer's field type
-  information is obtained from the input feature driver (OGC).
+  Set this to ``auto``. This means that the layer's field type information is obtained from
+  the input feature driver (OGC). If the type is not well interpreted (notably if you have a
+  wrong operator within your filter), you can define manually your attribute type
+  with ``"gml_<attribute>_type" "<type>"`` where ``<type>`` is one of
+  these: ``Integer``, ``Long``, ``Real``, ``Character``, ``Date`` or ``Boolean``.
 
 ``gml_featureid``
 
@@ -122,7 +125,7 @@ To support WMS GetFeatureInfo a ``LAYER`` should define a template::
 
 As for WFS GetFeature, this is a fake template, but it is required.
 
-The ``gml_include_items``, ``gml_[geometry name]_type`` and ``gml_geometries``
+The ``gml_include_items``, ``gml_<geometry name>_type`` and ``gml_geometries``
 *METADATA* variables should also be defined in the ``LAYER``. For
 example::
 
@@ -137,22 +140,22 @@ example::
 ``gml_geometries``
 
   This is a string specifying the name used for geometry elements in
-  GetFeatureInfo (GML) responses. This property, and ``gml_[name]_type``,
+  GetFeatureInfo (GML) responses. This property, and ``gml_<name>_type``,
   should be set for the GetFeatureInfo responses to include the features'
   geometries instead of bboxes.
 
 
-``gml_[geometry name]_type``
+``gml_<geometry name>_type``
 
   This specifies the type of a geometry column. Specifying this property is
   necessary if geometries, instead of bboxes should be returned in
-  GetFeatureInfo (GML) responses. ``[geometry name]`` should be replaced the string set
+  GetFeatureInfo (GML) responses. ``<geometry name>`` should be replaced the string set
   with the ``gml_geometries``. For example, if ``geom_geometries`` is set to
   ``the_geom`` then ``gml_the_geom_type`` should be used.
   The possible values are ``point``, ``multipoint``, ``line``, ``multiline``,
   ``polygon``, ``multipolygon``, if you do not set the right type
   for multi geometries only the first will be visible on the map.
-  See also `gml_[geometry name]_type
+  See also `gml_<geometry name>_type
   <http://mapserver.org/ogc/wms_server.html#index-71>`_.
 
 See the `WMS Server MapFile Documentation
