@@ -46,12 +46,51 @@
             
   <div class="section" id="filter-querier">
 <span id="integrator-querier"></span><h1>Filter (Querier)<a class="headerlink" href="#filter-querier" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="filterable-layers">
+<h2>Filterable layers<a class="headerlink" href="#filterable-layers" title="Permalink to this headline">¶</a></h2>
+<p>Per default, layers are not filterable.
+If you wish to provide the filter functionality, proceed as follows:</p>
+<ul class="simple">
+<li>Verify your project vars file to make sure that the functionality <code class="docutils literal"><span class="pre">filterable_layers</span></code>
+is made available in your project template files:<ul>
+<li>If you have a custom definition for <code class="docutils literal"><span class="pre">functionalities.available_in_templates</span></code>
+or <code class="docutils literal"><span class="pre">admin_interface.available_functionalities</span></code>, then ensure that the value
+<code class="docutils literal"><span class="pre">filterable_layers</span></code> is contained in both of these.</li>
+<li>Alternatively, you can add these two paths in the <code class="docutils literal"><span class="pre">update_paths</span></code> variable to use
+the definition provided by <code class="docutils literal"><span class="pre">CONST_vars.yaml</span></code> (and keep the inheritance) instead of replacing it.</li>
+</ul>
+</li>
+<li>If you wish to provide layers for filtering independently of user authorization (in particular,
+for not-logged-in users), add the layer names as follows to your project vars file:</li>
+</ul>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">functionalities</span><span class="p">:</span>
+    <span class="n">anonymous</span><span class="p">:</span>
+        <span class="n">filterable_layers</span><span class="p">:</span>
+        <span class="o">-</span> <span class="n">my_layer_name_1</span>
+        <span class="o">-</span> <span class="n">my_layer_name_2</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>If you wish to provide layers for filtering only for specific user roles, define this in the
+admin interface as follows:<ul>
+<li>Add a functionality <code class="docutils literal"><span class="pre">filterable_layers</span></code>; as value provide the layer name.</li>
+<li>Edit the role that shall be able to use this filter, and activate the corresponding
+functionality checkbox.</li>
+</ul>
+</li>
+<li>Note that if there are functionalities associated to a role, then users with this role will
+not have access to any of the “anonymous” functionalities. Instead, you will need to activate
+all functionalities that this role shall be able to use in the admin interface or, for
+functionalities that all registered users shall have access to, via the
+<code class="docutils literal"><span class="pre">functionalities.registered</span></code> variable of your vars file.</li>
+</ul>
+</div>
 <div class="section" id="available-attributes-and-operators-in-filters">
 <h2>Available attributes and operators in filters<a class="headerlink" href="#available-attributes-and-operators-in-filters" title="Permalink to this headline">¶</a></h2>
 <p>All attributes defined as “exported” in the layer of your map server will be automatically available as
 filterable attribute. If the type, and so the operator on the attribute, is not adequate for
-filtering, you should adapt the type in your layer definition See <cite>administrator_mapfile</cite> (WFS GetFeature)
-for more information (MapServer only).</p>
+filtering, you should adapt the type in your layer definition.
+See <a class="reference internal" href="../administrator/mapfile.html#administrator-mapfile-wfs-getfeature"><span class="std std-ref">WFS GetFeature</span></a> for more information (MapServer only).</p>
 </div>
 <div class="section" id="enumerate-available-attributes-for-a-layer">
 <h2>Enumerate available attributes for a layer<a class="headerlink" href="#enumerate-available-attributes-for-a-layer" title="Permalink to this headline">¶</a></h2>
@@ -146,6 +185,7 @@ For instance:</p>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Filter (Querier)</a><ul>
+<li><a class="reference internal" href="#filterable-layers">Filterable layers</a></li>
 <li><a class="reference internal" href="#available-attributes-and-operators-in-filters">Available attributes and operators in filters</a></li>
 <li><a class="reference internal" href="#enumerate-available-attributes-for-a-layer">Enumerate available attributes for a layer</a><ul>
 <li><a class="reference internal" href="#step-1-project-configuration-file">Step 1: Project Configuration file</a></li>
