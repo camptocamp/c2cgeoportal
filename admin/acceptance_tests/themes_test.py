@@ -90,7 +90,6 @@ class TestTheme(TestTreeGroup):
                     ('functionalities', 'Functionalities', 'false'),
                     ('restricted_roles', 'Roles', 'false'),
                     ('interfaces', 'Interfaces', 'false'),
-                    ('parents_relation', 'Parents', 'false'),
                     ('metadatas', 'Metadatas', 'false')]
         self.check_grid_headers(resp, expected)
 

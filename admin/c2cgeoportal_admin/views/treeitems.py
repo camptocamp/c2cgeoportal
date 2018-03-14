@@ -19,19 +19,21 @@ class TreeItemViews(AbstractViews):
         _list_field('metadata_url'),
         _list_field('description')
     ]
-    _extra_list_fields = [
-        _list_field(
-            'parents_relation',
-            renderer=lambda layer_wms:', '.join(
-                [p.treegroup.name or '' for p in sorted(
-                    layer_wms.parents_relation,
-                    key=lambda p: p.treegroup.name or '')])),
+
+    _extra_list_fields_no_parents = [
         _list_field(
             'metadatas',
             renderer=lambda layers_group: ', '.join(['{}: {}'.format(m.name, m.value) or ''
                                                      for m in layers_group.metadatas]),
             filter_column=concat(Metadata.name, ': ', Metadata.value).label('metadata'))
     ]
+    _extra_list_fields = [
+        _list_field(
+            'parents_relation',
+            renderer=lambda layer_wms:', '.join(
+                [p.treegroup.name or '' for p in sorted(
+                    layer_wms.parents_relation,
+                    key=lambda p: p.treegroup.name or '')]))] + _extra_list_fields_no_parents
 
     @view_config(route_name='c2cgeoform_item',
                  request_method='POST',
