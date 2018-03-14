@@ -52,7 +52,7 @@ class ThemeViews(TreeItemViews):
             renderer=lambda themes: ', '.join(
                 [i.name or '' for i in sorted(themes.interfaces, key=lambda i: i.name)]),
             filter_column=Interface.name
-        )] + TreeItemViews._extra_list_fields
+        )] + TreeItemViews._extra_list_fields_no_parents
 
     _id_field = 'id'
     _model = Theme

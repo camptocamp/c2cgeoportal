@@ -9,6 +9,7 @@ class BasePage(object):
 
     def __init__(self, driver):
         self.driver = driver
+        driver.set_window_size(1024, 1024)
 
     def find_element(self, by, value, timeout=None):
         if timeout:
