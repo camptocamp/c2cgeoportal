@@ -3,13 +3,53 @@
 Filter (Querier)
 ================
 
+Filterable layers
+-----------------
+Per default, layers are not filterable.
+If you wish to provide the filter functionality, proceed as follows:
+
+* Verify your project vars file to make sure that the functionality ``filterable_layers``
+  is made available in your project template files:
+
+  - If you have a custom definition for ``functionalities.available_in_templates``
+    or ``admin_interface.available_functionalities``, then ensure that the value
+    ``filterable_layers`` is contained in both of these.
+
+  - Alternatively, you can add these two paths in the ``update_paths`` variable to use
+    the definition provided by ``CONST_vars.yaml`` (and keep the inheritance) instead of replacing it.
+
+* If you wish to provide layers for filtering independently of user authorization (in particular,
+  for not-logged-in users), add the layer names as follows to your project vars file:
+
+.. code:: yaml
+
+    functionalities:
+        anonymous:
+            filterable_layers:
+            - my_layer_name_1
+            - my_layer_name_2
+
+* If you wish to provide layers for filtering only for specific user roles, define this in the
+  admin interface as follows:
+
+  - Add a functionality ``filterable_layers``; as value provide the layer name.
+
+  - Edit the role that shall be able to use this filter, and activate the corresponding
+    functionality checkbox.
+
+* Note that if there are functionalities associated to a role, then users with this role will
+  not have access to any of the "anonymous" functionalities. Instead, you will need to activate
+  all functionalities that this role shall be able to use in the admin interface or, for
+  functionalities that all registered users shall have access to, via the
+  ``functionalities.registered`` variable of your vars file.
+
 Available attributes and operators in filters
 ---------------------------------------------
 
 All attributes defined as "exported" in the layer of your map server will be automatically available as
 filterable attribute. If the type, and so the operator on the attribute, is not adequate for
-filtering, you should adapt the type in your layer definition See `administrator_mapfile` (WFS GetFeature)
-for more information (MapServer only).
+filtering, you should adapt the type in your layer definition.
+See :ref:`administrator_mapfile_wfs_getfeature` for more information (MapServer only).
 
 Enumerate available attributes for a layer
 ------------------------------------------

@@ -56,6 +56,8 @@ therefore not recommended. ``LABEL``/``MINSIZE`` and ``LABEL``/``MAXSIZE``
 should be used when necessary only, as these parameters do not take the ``MAP``
 resolution into account.
 
+.. _administrator_mapfile_wfs_getfeature:
+
 WFS GetFeature
 --------------
 
