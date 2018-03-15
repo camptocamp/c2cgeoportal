@@ -10,8 +10,8 @@ do
         docker push camptocamp/${IMAGE}:${TRAVIS_TAG}
     elif [ "${TRAVIS_BRANCH}" != "master" ]
     then
-        docker tag camptocamp/${IMAGE}:${MAJOR_VERSION} camptocamp/${IMAGE}:${TRAVIS_BRANCH}
-        docker push camptocamp/${IMAGE}:${TRAVIS_BRANCH}
+        docker tag camptocamp/${IMAGE}:${MAJOR_VERSION} camptocamp/${IMAGE}:${TRAVIS_BRANCH/\//_}
+        docker push camptocamp/${IMAGE}:${TRAVIS_BRANCH/\//_}
     else
         docker push camptocamp/${IMAGE}:${MAJOR_VERSION}
     fi
