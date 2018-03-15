@@ -7,7 +7,7 @@ endif
 
 # The hostname use in the browser to open the application
 APACHE_VHOST ?= {{apache_vhost}}
-TILECLOUD_CHAIN ?= FALSE
+TILECLOUD_CHAIN ?= TRUE
 
 # Deploy branch
 DEPLOY_BRANCH_DIR ?= /var/www/vhosts/$(APACHE_VHOST)/private/deploybranch

@@ -5,6 +5,9 @@ ENVIRONEMENT ?= INSTANCE_ID
 CONFIG_VARS += instanceid
 MODWSGI_USER ?= www-data
 export MODWSGI_USER
+export INSTANCE_ID
+VISIBLE_ENTRY_POINT ?= /$(INSTANCE_ID)/
+export VISIBLE_ENTRY_POINT
 
 ADDITIONAL_MAKO_FILES += $(shell find print $(FIND_OPTS) -name "*.mako" -print) \
 	$(shell find apache $(FIND_OPTS) -name "*.mako" -print) \
@@ -17,10 +20,15 @@ CONF_FILES_MAKO = $(shell ls -1 apache/*.conf.mako 2> /dev/null)
 CONF_FILES_JINJA = $(shell ls -1 apache/*.conf.jinja 2> /dev/null)
 CONF_FILES += $(shell ls -1 apache/*.conf 2> /dev/null) $(CONF_FILES_MAKO:.mako=) $(CONF_FILES_JINJA:.jinja=)
 
+DEFAULT_BUILD_RULES ?= geoportal-docker \
+	config-docker \
+	project.yaml \
+	alembic.ini \
+	alembic.yaml
+
 TILECLOUD_CHAIN ?= TRUE
 ifeq ($(TILECLOUD_CHAIN), TRUE)
-CONF_FILES += apache/tiles.conf apache/mapcache.xml
-DEFAULT_BUILD_RULES += apache/tiles.conf
+CONF_FILES += apache/mapcache.xml
 endif
 
 UPGRADE_ARGS += --nondocker --makefile=$(firstword $(MAKEFILE_LIST))
@@ -37,18 +45,9 @@ apache/mapcache.xml: tilegeneration/config.yaml
 	$(PRERULE_CMD)
 	generate_controller --generate-mapcache-config
 
-apache/tiles.conf: tilegeneration/config.yaml apache/mapcache.xml
-	$(PRERULE_CMD)
-	generate_controller --generate-apache-config
-
-/build/print-docker.timestamp:
+/build/config-docker.timestamp:
 	$(PRERULE_CMD)
 	@echo "Nothing to do for $@"
-	touch $@
-
-/build/mapserver-docker.timestamp:
-	$(PRERULE_CMD)
-	@echo "Nothing to do fo $@"
 	touch $@
 
 node_modules/%: /usr/lib/node_modules/%
@@ -57,7 +56,7 @@ node_modules/%: /usr/lib/node_modules/%
 	rm -rf $@
 	cp -r $< $@
 
-/build/wsgi-docker.timestamp: \
+/build/geoportal-docker.timestamp: \
 		node_modules/ngeo/src \
 		node_modules/ngeo/contribs/gmf/src \
 		node_modules/openlayers/src \

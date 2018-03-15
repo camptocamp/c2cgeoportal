@@ -19,9 +19,6 @@ RewriteEngine on
 WSGIPassAuthorization On
 
 
-RewriteRule ^${apache_entry_point}?$ /${instanceid}/wsgi/${default_interface} [PT]
-RewriteRule ^${apache_entry_point}theme/(.+)$ /${instanceid}/wsgi/${default_interface}/theme/$1 [PT]
-
 % for interface in interfaces:
 RewriteRule ^${apache_entry_point}${interface}/?$ /${instanceid}/wsgi/${interface} [PT]
 RewriteRule ^${apache_entry_point}${interface}/theme/(.+)$ /${instanceid}/wsgi/${interface}/theme/$1 [PT]
