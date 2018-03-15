@@ -104,7 +104,7 @@ Remove the ``UPGRADE_ARGS`` in your ``<user>.mk`` file.
 Convert a version 2.3 to non-Docker
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Add the ``vhost`` in the ``template_vars`` of the ``project.yaml.mako`` file.
+Add the ``apache_vhost`` in the ``template_vars`` of the ``project.yaml.mako`` file.
 Add ``UPGRADE_ARGS += --nondocker --new-makefile=<package>.mk`` in the ``Makefile``.
 
 .. prompt:: bash
