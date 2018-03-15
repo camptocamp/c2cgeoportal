@@ -356,8 +356,6 @@ Your application should be available at:
 Where the ``<hostname>`` is directly linked to the virtual host,
 and the ``<instanceid>`` is the value you provided before.
 
-.. _integrator_install_application_migrate_server:
-
 Migrating to a new server
 -------------------------
 
