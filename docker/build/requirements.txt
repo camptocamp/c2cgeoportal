@@ -49,7 +49,7 @@ pyramid-mako==1.0.2  # geoportal
 pyramid-multiauth==0.9.0  # geoportal
 pytest-cov==2.5.1  # tests
 pytest-selenium==1.11.4  # admin tests
-python-dateutil==2.7.0  # geoportal
+python-dateutil==2.6.1  # geoportal, rq.filter: <2.7.0
 PyYAML==3.12  # geoportal
 redis==2.10.6  # geoportal cache
 rasterio==1.0a12  # geoportal-raster
