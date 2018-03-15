@@ -37,19 +37,19 @@ Pull the latest version of the Docker image:
 
 Where ``<version>`` is ``${major_version}.0`` for the first stable release of the version ``${major_version}``.
 
-For Docker:
+And for non-Docker:
+
+.. prompt:: bash
+
+   ./docker-run --home --image=camptocamp/geomapfish-build \
+       c2cupgrade --nondocker --makefile=<package>.mk
+
+For Docker (experimental):
 
 .. prompt:: bash
 
    ./docker-run --home --image=camptocamp/geomapfish-build --version=<version> \
        c2cupgrade --force-docker --new-makefile=Makefile --makefile=<package>.mk
-
-And for non-Docker
-
-.. prompt:: bash
-
-   ./docker-run --home --image=camptocamp/geomapfish-build \
-       c2cupgrade --nondocker --makefile=testgeomapfish.mk
 
 Then follow the instruction
 
