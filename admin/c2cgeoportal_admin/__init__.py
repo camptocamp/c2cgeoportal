@@ -7,6 +7,7 @@ from pkg_resources import resource_filename
 
 from c2cgeoportal_commons.config import config as configuration
 
+
 search_paths = (
     (resource_filename(__name__, 'templates/widgets'),) +
     c2cgeoform.default_search_paths
@@ -42,7 +43,7 @@ def main(_, **settings):
     session_factory = get_session_factory(get_engine(settings))
     config.registry['dbsession_factory'] = session_factory
 
-    # make request.dbsession available for use in Pyramid
+    # Make request.dbsession available for use in Pyramid
     config.add_request_method(
         # request.tm is the transaction manager used by pyramid_tm
         lambda request: get_tm_session(session_factory, request.tm),

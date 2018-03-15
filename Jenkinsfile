@@ -112,7 +112,13 @@ timeout(time: 2, unit: 'HOURS') {
                         sh '(cd ${HOME}/workspace/testgeomapfish/; docker-compose up --force-recreate -d)'
                         sh '(cd ${HOME}/workspace/testgeomapfish/; docker-compose exec -T geoportal wait-for-db)'
                         sh './docker-run travis/waitwsgi http://`netstat --route --numeric|grep ^0.0.0.0|awk \'{print($2)}\'`:8080/'
-                        for (path in ['c2c/health_check', 'c2c/health_check?max_level=100', 'layers/test/values/type enum']) {
+                        for (path in [
+                            'c2c/health_check',
+                            'c2c/health_check?max_level=100',
+                            'layers/test/values/type enum',
+                            'admin/layertree',
+                            'admin/layertree/nodes?order=asc'
+                        ]) {
                             def start_lines = [:]
                             ['db', 'external-db', 'print', 'mapserver', 'geoportal'].each { service ->
                                 def start_line = sh(returnStdout: true, script: "(cd ${HOME}/workspace/testgeomapfish/; docker-compose logs ${service}) | wc -l") as Integer

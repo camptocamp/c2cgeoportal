@@ -365,7 +365,11 @@ checks: flake8 $(CLIENT_CHECK_RULE) $(NGEO_OUTPUT_JS_INTERFACES_FILES) $(NGEO_OU
 git-attributes:
 	git --no-pager diff --check `git log --oneline | tail -1 | cut --fields=1 --delimiter=' '`
 
-YAML_FILES ?= $(filter-out ./tilegeneration/config.yaml ./geoportal/config.yaml ./alembic.yaml,$(shell find -name .build -prune -or -name cgxp -prune -or \( -name "*.yml" -or -name "*.yaml" \) -print))
+YAML_FILES ?= $(filter-out ./tilegeneration/config.yaml ./geoportal/config.yaml ./alembic.yaml,$(shell find \
+	-name .build -prune -or \
+	-name cgxp -prune -or \
+	-name node_modules -prune -or \
+	\( -name "*.yml" -or -name "*.yaml" \) -print))
 .PHONY: yamllint
 yamllint: $(YAML_FILES)
 	yamllint --strict --config-file=yamllint.yaml -s $(YAML_FILES)

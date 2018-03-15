@@ -26,7 +26,7 @@ pipeline =
 ###
 
 [loggers]
-keys = root, sqlalchemy, c2cgeoportal_commons, c2cgeoportal_geoportal, {{package}}_geoportal
+keys = root, sqlalchemy, c2cgeoportal_commons, c2cgeoportal_geoportal, c2cgeoportal_admin, {{package}}_geoportal
 
 [handlers]
 keys = console
@@ -47,6 +47,11 @@ qualname = c2cgeoportal_commons
 level = WARN
 handlers =
 qualname = c2cgeoportal_geoportal
+
+[logger_c2cgeoportal_admin]
+level = WARN
+handlers =
+qualname = c2cgeoportal_admin
 
 [logger_{{package}}_geoportal]
 level = INFO

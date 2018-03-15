@@ -236,7 +236,11 @@ def add_static_view_ngeo(config):  # pragma: no cover
 
 def add_admin_interface(config):
     if config.get_settings().get("enable_admin_interface", False):
-        pass
+        config.add_request_method(
+            # pylint: disable=not-callable
+            lambda request: c2cgeoportal_commons.models.DBSession(), 'dbsession', reify=True
+        )
+        config.include('c2cgeoportal_admin', route_prefix='/admin')
 
 
 def add_static_view(config):

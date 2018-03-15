@@ -1,15 +1,17 @@
-FROM camptocamp/geomapfish-commons:${major_version}
+FROM camptocamp/geomapfish-build-dev:${major_version}
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
 ARG GIT_TAG
 ARG MAJOR_VERSION
+ENV TRAVIS_TAG=$TRAVIS_TAG MAJOR_VERSION=$MAJOR_VERSION
 
-COPY npm-packages /opt/c2cgeoportal_geoportal/npm-packages
+COPY npm-packages /tmp/npm-packages
 
 RUN \
-  npm install --no-optional --global `cat /opt/c2cgeoportal_geoportal/npm-packages` && \
+  npm install --no-optional --global `cat /tmp/npm-packages` && \
   chmod go+r -R /usr/lib/node_modules/@camptocamp/closure-util/.deps/compiler/* && \
-  rm --recursive --force ~/.npm /usr/lib/node_modules/openlayers/node_modules/
+  rm --recursive --force ~/.npm /usr/lib/node_modules/openlayers/node_modules/ && \
+  rm /tmp/npm-packages
 
 RUN \
   svg2ttf /usr/lib/node_modules/ngeo/contribs/gmf/fonts/gmf-icons.svg \
@@ -27,7 +29,6 @@ RUN \
       /usr/lib/node_modules/ngeo/contribs/gmf/less/$f; \
   done
 
-
 RUN \
   mkdir --parents /opt/googleclosurecompiler-externs && \
   curl --max-redirs 0 --location --output /opt/googleclosurecompiler-externs/angular-1.6.js https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/angular-1.6.js && \
@@ -40,10 +41,16 @@ RUN \
     wget -O /opt/angular-locale/angular-locale_$LANG.js https://raw.githubusercontent.com/angular/angular.js/`grep ^angular.js= /usr/lib/node_modules/ngeo/github_versions | cut --delimiter = --fields 2 | tr --delete '\r\n'`/src/ngLocale/angular-locale_$LANG.js; \
   done
 
-COPY . /opt/c2cgeoportal_geoportal
+COPY commons /opt/c2cgeoportal_commons
+COPY geoportal /opt/c2cgeoportal_geoportal
+COPY admin /opt/c2cgeoportal_admin
 
-RUN chmod go+r -R /opt/c2cgeoportal_geoportal && \
-  pip install --disable-pip-version-check --no-cache-dir --no-deps --editable=/opt/c2cgeoportal_geoportal
+RUN chmod go+r -R /opt/c2cgeoportal_commons /opt/c2cgeoportal_geoportal && \
+  mv /opt/c2cgeoportal_commons/c2cgeoportal_commons/alembic /opt && \
+  pip install --disable-pip-version-check --no-cache-dir --no-deps \
+    --editable=/opt/c2cgeoportal_commons \
+    --editable=/opt/c2cgeoportal_geoportal \
+    --editable=/opt/c2cgeoportal_admin
 
 ENV NODE_PATH=/usr/lib/node_modules \
     LOG_LEVEL=INFO \
