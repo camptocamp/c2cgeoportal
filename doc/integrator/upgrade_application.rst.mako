@@ -111,7 +111,7 @@ Add ``UPGRADE_ARGS += --nondocker --new-makefile=<package>.mk`` in the ``Makefil
 
    git add project.yaml.mako Makefile
    git commit --message="Start upgrade"
-   ./docker-run --home make upgrade
+   ./docker-run --home make --new-makefile=<user>.mk upgrade
 
 Then follow the instruction
 
