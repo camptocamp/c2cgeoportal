@@ -9,7 +9,7 @@ import subprocess
 
 os.environ["DEBUG"] = "TRUE"
 p = subprocess.Popen(["make"] + sys.argv[1:], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-time.sleep(10)
+time.sleep(15)
 if p.poll() is None:
     p.kill()
     print("The second make run take too long, probably a task is running again")
