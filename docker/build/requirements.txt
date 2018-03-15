@@ -5,7 +5,7 @@ boto==2.48.0  # Tile generation
 bottle==0.12.13  # i18n
 c2c.cssmin==0.7.dev6  # CGXP build
 c2c.template==2.0.8  # geoportal
-c2cgeoform==2.0.dev20180308  # commons
+c2cgeoform==2.0.dev20180313  # commons
 codacy-coverage==1.3.10  # Codacy send report
 codespell==1.12.0  # Lint
 ColanderAlchemy==0.3.3  # commons
@@ -49,7 +49,7 @@ pyramid-mako==1.0.2  # geoportal
 pyramid-multiauth==0.9.0  # geoportal
 pytest-cov==2.5.1  # tests
 pytest-selenium==1.11.4  # admin tests
-python-dateutil==2.6.1  # geoportal
+python-dateutil==2.6.1  # geoportal, rq.filter: <2.7.0
 PyYAML==3.12  # geoportal
 redis==2.10.6  # geoportal cache
 rasterio==1.0a12  # geoportal-raster
