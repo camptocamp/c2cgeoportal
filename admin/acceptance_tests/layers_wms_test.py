@@ -415,14 +415,12 @@ class TestLayerWMSSelenium():
         index_page.check_pagination_info('Showing 1 to 25 of 26 rows', 10)
         index_page.select_page_size(10)
         index_page.check_pagination_info('Showing 1 to 10 of 26 rows', 10)
-
         index_page.wait_jquery_to_be_active()
 
         el = index_page.find_element(
             By.XPATH,
             '//td[contains(text(),"{}")]'.format(layer.geo_table),
             timeout=5)
-
         index_page.dbl_click(el)
 
         assert selenium.current_url.endswith('/layers_wms/{}'.format(layer.id))

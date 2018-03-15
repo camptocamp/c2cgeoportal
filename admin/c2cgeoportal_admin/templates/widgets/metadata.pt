@@ -50,6 +50,7 @@
 
        var updateType = function() {
          $metadataItem.find('.col-value .form-group').hide();
+         $metadataItem.find('.col-value .form-group .form-control').attr('disabled', true);
 
          var type = c2cgeoportalAdmin.metadata_definitions[$name.val()].type || 'string';
          $typedFormgroup = $metadataItem.find('.item-' + type);
@@ -57,6 +58,7 @@
            $typedFormgroup = $metadataItem.find('.item-string');
          }
          $typedFormgroup.show();
+         $typedFormgroup.find('.form-control').attr('disabled', false);
        };
        $name.change(function() {
          updateType();

@@ -2,7 +2,7 @@
 
 import pytest
 
-from . import AbstractViewsTests
+from . import AbstractViewsTests, skip_if_ci
 
 
 @pytest.fixture(scope='function')
@@ -273,3 +273,39 @@ class TestMetadatasView(AbstractViewsTests):
 
     def test_group_metadatas(self, metadatas_test_data, test_app):
         self._test_edit_treeitem('layer_groups', metadatas_test_data['group'], test_app)
+
+
+@skip_if_ci
+@pytest.mark.selenium
+@pytest.mark.usefixtures('selenium', 'selenium_app', 'metadatas_test_data')
+class TestMetadatasSelenium():
+
+    def test_hidden_type_validator_does_not_take_precedence_over_visible(
+            self, selenium, selenium_app, metadatas_test_data):
+        layer = metadatas_test_data['layer_wms']
+        selenium.get(selenium_app + '/layers_wms/{}'.format(layer.id))
+        selenium.execute_script("window.scrollBy(0,3000)", "")
+        selenium.find_element_by_xpath(
+            '''//div[contains(., "Metadatas")]
+            /following-sibling::div[@class="panel-footer"]/a[@href="#"]''').click()
+        selenium.execute_script("window.scrollBy(0,3000)", "")
+        selenium.find_elements_by_xpath(
+            '''//div[contains(., "Metadatas")]//label[contains(., "Name")]
+            /following-sibling::select/option[contains(.,"_int")]''')[9].click()
+        selenium.find_elements_by_xpath(
+            '//div[contains(., "Metadatas")]//input[@name="int"]')[9].send_keys('AAA')
+
+        selenium.find_element_by_id('deformformsubmit').click()
+
+        assert '"AAA" is not a number' == selenium.find_element_by_xpath('//p[@class="help-block"]').text
+
+        selenium.find_elements_by_xpath(
+            '''//div[contains(., "Metadatas")]//label[contains(., "Name")]
+            /following-sibling::select/option[contains(.,"_color")]''')[9].click()
+        selenium.find_elements_by_xpath(
+            '//div[contains(., "Metadatas")]//input[@name="string"]')[9].send_keys('BBB')
+
+        selenium.find_element_by_id('deformformsubmit').click()
+
+        assert 'Expecting hex format for color, e.g. #007DCD' == \
+            selenium.find_element_by_xpath('//p[@class="help-block"]').text
