@@ -46,10 +46,9 @@ apache/mapcache.xml: tilegeneration/config.yaml
 	$(PRERULE_CMD)
 	generate_controller --generate-mapcache-config
 
-/build/config-docker.timestamp:
+config-docker:
 	$(PRERULE_CMD)
 	@echo "Nothing to do for $@"
-	touch $@
 
 node_modules/%: /usr/lib/node_modules/%
 	$(PRERULE_CMD)
@@ -57,7 +56,7 @@ node_modules/%: /usr/lib/node_modules/%
 	rm -rf $@
 	cp -r $< $@
 
-/build/geoportal-docker.timestamp: \
+geoportal-docker: \
 		node_modules/ngeo/src \
 		node_modules/ngeo/contribs/gmf/src \
 		node_modules/openlayers/src \
@@ -83,9 +82,7 @@ node_modules/%: /usr/lib/node_modules/%
 		$(CONF_FILES)
 	$(PRERULE_CMD)
 	@echo "Nothing to do for $@"
-	touch $@
 
-/build/testdb-docker.timestamp:
+testdb-docker:
 	$(PRERULE_CMD)
 	@echo "Nothing to do for $@"
-	touch $@
