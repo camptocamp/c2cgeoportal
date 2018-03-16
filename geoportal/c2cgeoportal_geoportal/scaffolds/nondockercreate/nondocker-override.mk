@@ -28,7 +28,8 @@ DEFAULT_BUILD_RULES ?= geoportal-docker \
 
 TILECLOUD_CHAIN ?= TRUE
 ifeq ($(TILECLOUD_CHAIN), TRUE)
-CONF_FILES += apache/mapcache.xml
+MAPCACHE_FILE = apache/mapcache.xml
+CONF_FILES += $(MAPCACHE_FILE)
 endif
 
 UPGRADE_ARGS += --nondocker --makefile=$(firstword $(MAKEFILE_LIST))
