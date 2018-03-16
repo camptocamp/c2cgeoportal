@@ -159,7 +159,7 @@ in all stage of the application setup.
 Command interface and environment variable
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Only use Windows default commande interface::
+Only use Windows default command interface::
 
     Start > Run... > cmd
 
@@ -241,13 +241,19 @@ Then you can build and install the application with the command:
 
 .. prompt:: bash
 
-    make docker-build
+    make --makefile=<user>.mk docker-build
 
 Create the application tables, and directly set the version (details later):
 
 .. prompt:: bash
 
-    ./docker-run make upgrade-db
+    ./docker-run make --makefile=<user>.mk upgrade-db
+
+For non Docker installation:
+
+.. prompt:: bash
+
+    FINALISE=TRUE make --makefile=<user>.mk build
 
 This previous command will do many things like:
 
@@ -256,8 +262,6 @@ This previous command will do many things like:
   * adapt the application configuration to your environment,
 
   * build the javascript and css resources into compressed files,
-
-  * compile the translation files.
 
 Your application should be available at:
 ``http://<hostname>/``.

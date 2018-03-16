@@ -64,7 +64,7 @@ before_script:
   - travis/create-new-nondocker-project.sh
   - (cd /tmp/travis/nondockertestgeomapfish/; ./docker-run travis/empty-make --makefile=travis.mk help)
   - (cd /tmp/travis/nondockertestgeomapfish/; ./docker-run make --makefile=travis.mk build)
-  - (cd /tmp/travis/nondockertestgeomapfish/; make --makefile=travis-nondocker.mk build)
+  - (cd /tmp/travis/nondockertestgeomapfish/; FINALISE=TRUE make --makefile=travis.mk build)
 
 script:
   # Test new non Docker project
