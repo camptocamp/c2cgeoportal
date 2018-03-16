@@ -37,17 +37,17 @@ Pull the latest version of the Docker image:
 
 Where ``<version>`` is ``2.3.0`` for the first stable release of the version ``2.3``.
 
-For Docker:
+And for non-Docker:
+
+.. prompt:: bash
+
+   ./docker-run --home --image=camptocamp/geomapfish-build        c2cupgrade --nondocker --makefile=<package>.mk
+
+For Docker (experimental):
 
 .. prompt:: bash
 
    ./docker-run --home --image=camptocamp/geomapfish-build --version=<version>        c2cupgrade --force-docker --new-makefile=Makefile --makefile=<package>.mk
-
-And for non-Docker
-
-.. prompt:: bash
-
-   ./docker-run --home --image=camptocamp/geomapfish-build        c2cupgrade --nondocker --makefile=testgeomapfish.mk
 
 Then follow the instruction
 
@@ -102,14 +102,14 @@ Remove the ``UPGRADE_ARGS`` in your ``<user>.mk`` file.
 Convert a version 2.3 to non-Docker
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Add the ``vhost`` in the ``template_vars`` of the ``project.yaml.mako`` file.
+Add the ``apache_vhost`` in the ``template_vars`` of the ``project.yaml.mako`` file.
 Add ``UPGRADE_ARGS += --nondocker --new-makefile=<package>.mk`` in the ``Makefile``.
 
 .. prompt:: bash
 
    git add project.yaml.mako Makefile
    git commit --message="Start upgrade"
-   ./docker-run --home make upgrade
+   ./docker-run --home make --new-makefile=<user>.mk upgrade
 
 Then follow the instruction
 

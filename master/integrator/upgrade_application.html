@@ -57,10 +57,10 @@ span.prompt1:before {
 </pre><p>Pull the latest version of the Docker image:</p>
 <pre class="highlight"><span class="prompt1">docker pull camptocamp/geomapfish-build:&lt;version&gt;</span>
 </pre><p>Where <code class="docutils literal notranslate"><span class="pre">&lt;version&gt;</span></code> is <code class="docutils literal notranslate"><span class="pre">2.3.0</span></code> for the first stable release of the version <code class="docutils literal notranslate"><span class="pre">2.3</span></code>.</p>
-<p>For Docker:</p>
+<p>And for non-Docker:</p>
+<pre class="highlight"><span class="prompt1">./docker-run --home --image<span class="o">=</span>camptocamp/geomapfish-build        c2cupgrade --nondocker --makefile<span class="o">=</span>&lt;package&gt;.mk</span>
+</pre><p>For Docker (experimental):</p>
 <pre class="highlight"><span class="prompt1">./docker-run --home --image<span class="o">=</span>camptocamp/geomapfish-build --version<span class="o">=</span>&lt;version&gt;        c2cupgrade --force-docker --new-makefile<span class="o">=</span>Makefile --makefile<span class="o">=</span>&lt;package&gt;.mk</span>
-</pre><p>And for non-Docker</p>
-<pre class="highlight"><span class="prompt1">./docker-run --home --image<span class="o">=</span>camptocamp/geomapfish-build        c2cupgrade --nondocker --makefile<span class="o">=</span>testgeomapfish.mk</span>
 </pre><p>Then follow the instruction</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -95,11 +95,11 @@ span.prompt1:before {
 </pre></div>
 <div class="section" id="convert-a-version-2-3-to-non-docker">
 <h2>Convert a version 2.3 to non-Docker<a class="headerlink" href="#convert-a-version-2-3-to-non-docker" title="Permalink to this headline">¶</a></h2>
-<p>Add the <code class="docutils literal notranslate"><span class="pre">vhost</span></code> in the <code class="docutils literal notranslate"><span class="pre">template_vars</span></code> of the <code class="docutils literal notranslate"><span class="pre">project.yaml.mako</span></code> file.
+<p>Add the <code class="docutils literal notranslate"><span class="pre">apache_vhost</span></code> in the <code class="docutils literal notranslate"><span class="pre">template_vars</span></code> of the <code class="docutils literal notranslate"><span class="pre">project.yaml.mako</span></code> file.
 Add <code class="docutils literal notranslate"><span class="pre">UPGRADE_ARGS</span> <span class="pre">+=</span> <span class="pre">--nondocker</span> <span class="pre">--new-makefile=&lt;package&gt;.mk</span></code> in the <code class="docutils literal notranslate"><span class="pre">Makefile</span></code>.</p>
 <pre class="highlight"><span class="prompt1">git add project.yaml.mako Makefile</span>
 <span class="prompt1">git commit --message<span class="o">=</span><span class="s2">&quot;Start upgrade&quot;</span></span>
-<span class="prompt1">./docker-run --home make upgrade</span>
+<span class="prompt1">./docker-run --home make --new-makefile<span class="o">=</span>&lt;user&gt;.mk upgrade</span>
 </pre><p>Then follow the instruction</p>
 <p>Remove the <code class="docutils literal notranslate"><span class="pre">UPGRADE_ARGS</span></code> in your <code class="docutils literal notranslate"><span class="pre">Makefile</span></code>.</p>
 <div class="section" id="upgrade-the-database">
