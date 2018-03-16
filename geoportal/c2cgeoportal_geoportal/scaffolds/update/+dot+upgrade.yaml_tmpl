@@ -89,7 +89,7 @@ files_to_remove:
   - file: get-pip-dependencies
     version: 2.3
     from: nondocker
-  - file: nondocker.mk
+  - file: nondocker-finalise.mk
     version: 2.3
     from: nondocker
   - file: nondocker-override.mk

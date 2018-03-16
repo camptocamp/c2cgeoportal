@@ -614,14 +614,17 @@ class C2cUpgradeTool:
             command.upgrade(Config("alembic.ini", ini_section="main"), "head")
             command.upgrade(Config("alembic.ini", ini_section="static"), "head")
 
+            args = " --makefile={}".format(self.options.makefile) \
+                if self.options.makefile != "Makefile" else ""
             message = [
                 "The upgrade is nearly done, now you should:",
+                "- Run the finalisation build with 'FINALISE=TRUE make{} build'.".format(args),
                 "- Test your application."
             ]
         else:
             message = [
                 "The upgrade is nearly done, now you should:",
-                "- run `docker-compose up`",
+                "- Run `docker-compose up`.",
                 "- Test your application on 'http://localhost:8480/desktop'."
             ]
 
