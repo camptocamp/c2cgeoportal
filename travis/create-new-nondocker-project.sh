@@ -11,7 +11,6 @@ export SRID=21781 APACHE_VHOST=test EXTENT=489246.36,78873.44,837119.76,296543.1
     --package-name testgeomapfish
 ./docker-run --image=camptocamp/geomapfish-build --share /tmp/travis pcreate --scaffold=c2cgeoportal_nondockerupdate /tmp/travis/nondockertestgeomapfish \
     --overwrite --package-name testgeomapfish
-./docker-run --image=camptocamp/geomapfish-build --share /tmp/travis pcreate --scaffold=tilecloud_chain /tmp/travis/testgeomapfish
 
 cp travis/build-nondocker.mk /tmp/travis/nondockertestgeomapfish/travis.mk
 cp travis/vars-nondocker.yaml /tmp/travis/nondockertestgeomapfish/vars_travis.yaml

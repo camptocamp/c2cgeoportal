@@ -79,12 +79,6 @@ Initialization
 
      make docker-build
 
-* Install the base template template:
-
-  .. prompt:: bash
-
-    ./docker-run pcreate --interactive -s tilecloud_chain ../<project> package=<package>
-
 * In the ``<prokect>.mk`` activate the tile generation:
 
   .. code::
