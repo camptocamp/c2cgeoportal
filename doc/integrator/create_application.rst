@@ -72,7 +72,7 @@ Fetch the Git submodules:
 
 .. prompt:: bash
 
-   git submodules update --init
+   git submodule update --init
 
 Build c2cgeoportal:
 
