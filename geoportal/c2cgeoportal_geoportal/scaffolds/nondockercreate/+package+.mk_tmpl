@@ -5,6 +5,8 @@ VARS_FILE = vars_nondocker.yaml
 VARS_FILES += ${VARS_FILE} vars.yaml
 endif
 
+INSTANCE_ID ?= main
+
 # The hostname use in the browser to open the application
 APACHE_VHOST ?= {{apache_vhost}}
 TILECLOUD_CHAIN ?= TRUE
