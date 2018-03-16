@@ -37,7 +37,7 @@ VALIDATE_PY_TEST_FOLDERS = geoportal/tests
 SPHINX_FILES = $(shell find doc -name "*.rst" -print)
 SPHINX_MAKO_FILES = $(shell find doc -name "*.rst.mako" -print)
 
-HOME=$(HOME_DIR)
+HOME_DIR=$(HOME)
 export TX_VERSION = $(shell echo $(MAJOR_VERSION) | awk -F . '{{print $$1"_"$$2}}')
 TX_DEPENDENCIES = $(HOME_DIR)/.transifexrc .tx/config
 ifeq (,$(wildcard $(HOME_DIR)/.transifexrc))
