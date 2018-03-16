@@ -713,6 +713,7 @@ alembic.yaml: vars_testdb.yaml vars.yaml CONST_vars.yaml
 
 testdb/11-schemas.sql: vars_testdb.yaml testdb/11-schemas.sql_mako vars.yaml CONST_vars.yaml
 	$(PRERULE_CMD)
+	rm --force testdb/11-schemas.sql.mako
 	ln -s 11-schemas.sql_mako testdb/11-schemas.sql.mako
 	c2c-template --vars $< --engine mako --files testdb/11-schemas.sql.mako
 	rm testdb/11-schemas.sql.mako
