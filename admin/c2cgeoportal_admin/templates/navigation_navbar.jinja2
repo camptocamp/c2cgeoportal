@@ -19,7 +19,7 @@
         </li>
         {% for table in tables %}
         <li role="presentation" class="{{'active' if request.matchdict and request.matchdict.get('table') == table['key'] else ''}}">
-          <a href="{{request.route_url('c2cgeoform_index', table=table['key'])}}">{{table['plural']}}</a>
+          <a href="{{request.route_url('c2cgeoform_index', table=table['key'])}}">{{request.localizer.translate(table['plural'])}}</a>
         </li>
         {% endfor %}
       </ul>
@@ -28,8 +28,9 @@
         <li id="language-dropdown" class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{request.locale_name}} <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="{{request.route_url('locale', _query=(('language', 'en'),))}}">en</a></li>
-            <li><a href="{{request.route_url('locale', _query=(('language', 'fr'),))}}">fr</a></li>
+            {% for locale in request.registry.settings['available_locale_names'] %}
+            <li><a href="{{request.route_url('locale', _query=(('language', locale),))}}">{{locale}}</a></li>
+            {% endfor %}
           </ul>
         </li>
       </ul>

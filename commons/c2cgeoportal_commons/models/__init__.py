@@ -34,6 +34,10 @@ import sqlalchemy.orm  # noqa
 import sqlalchemy.ext.declarative
 import sqlalchemy.ext.declarative.api
 
+from pyramid.i18n import TranslationStringFactory
+_ = TranslationStringFactory('c2cgeoportal_admin')
+
+
 # Should be filed on application initialisation
 DBSession = None  # type: Union[sqlalchemy.orm.Session, sqlalchemy.orm.scoped_session]
 Base = sqlalchemy.ext.declarative.declarative_base()  # type: sqlalchemy.ext.declarative.api.Base

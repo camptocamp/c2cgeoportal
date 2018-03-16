@@ -72,6 +72,7 @@ class MetadataSchemaNode(GeoFormSchemaNode):
             colander.SchemaNode(
                 colander_type,
                 name=type_name,
+                title=_('Value'),
                 missing=colander.null,
                 **kw))
         self.available_types.append(type_name)
@@ -108,6 +109,7 @@ metadatas_schema_node = colander.SequenceSchema(
         }
     ),
     name='metadatas',
+    title=_('Metadatas'),
     metadata_definitions=metadata_definitions,
     widget=SequenceWidget(
         template='metadatas',

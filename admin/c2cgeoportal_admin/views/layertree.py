@@ -63,7 +63,7 @@ class LayerTreeViews():
                 'path': subpath,
                 'parent_path': path,
                 'actions': [
-                    action.to_dict() for action in self._item_actions(item, parent_id)
+                    action.to_dict(self._request) for action in self._item_actions(item, parent_id)
                 ]
             })
             if hasattr(item, 'children'):

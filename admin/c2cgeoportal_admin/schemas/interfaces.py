@@ -5,10 +5,12 @@ from c2cgeoform.schema import (
     manytomany_validator,
 )
 from c2cgeoportal_commons.models.main import Interface
+from c2cgeoportal_admin import _
 
 interfaces_schema_node = colander.SequenceSchema(
     GeoFormManyToManySchemaNode(Interface),
     name='interfaces',
+    title=_('Interfaces'),
     widget=RelationCheckBoxListWidget(
         Interface,
         'id',

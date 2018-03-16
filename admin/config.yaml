@@ -4,6 +4,12 @@ vars:
   schema_static: main_static
   srid: 21781
 
+  available_locale_names:
+    - en
+    - fr
+    - de
+    - it
+
   admin_interface:
 
     map_base_layer: "new ol.layer.Tile({ source: new ol.source.OSM() })"

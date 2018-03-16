@@ -58,6 +58,10 @@ SRC_FILES = $(shell ls -1 geoportal/c2cgeoportal_geoportal/*.py) \
 	$(shell find geoportal/c2cgeoportal_geoportal/lib -name "*.py" -print) \
 	$(shell find geoportal/c2cgeoportal_geoportal/views -name "*.py" -print) \
 	$(filter-out geoportal/c2cgeoportal_geoportal/scripts/theme2fts.py, $(shell find geoportal/c2cgeoportal_geoportal/scripts -name "*.py" -print))
+ADMIN_SRC_FILES = $(shell ls -1 commons/c2cgeoportal_commons/models/*.py) \
+	$(shell find admin/c2cgeoportal_admin -name "*.py" -print) \
+	$(shell find admin/c2cgeoportal_admin/templates -name "*.jinja2" -print) \
+	$(shell find admin/c2cgeoportal_admin/templates/widgets -name "*.pt" -print) \
 
 APPS += desktop mobile
 APPS_PACKAGE_PATH = geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal
@@ -181,6 +185,7 @@ prepare-tests: $(BUILD_DIR)/requirements.timestamp \
 		testmapserver-docker \
 		testdb-docker \
 		$(addprefix geoportal/c2cgeoportal_geoportal/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal_geoportal.po, $(LANGUAGES))) \
+		$(addprefix admin/c2cgeoportal_admin/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal_admin.po, $(LANGUAGES))) \
 		docker/test-mapserver/mapserver.map
 
 .PHONY: tests
@@ -395,12 +400,13 @@ geoportal/c2cgeoportal_geoportal/locale/c2cgeoportal_geoportal.pot: \
 		lingua.cfg $(SRC_FILES) $(BUILD_DIR)/requirements.timestamp
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
-	pot-create --keyword _ --config $< --output $@ $(SRC_FILES)
+	pot-create --config $< --keyword _ --output $@ $(SRC_FILES)
 
-admin/c2cgeoportal_admin/locale/c2cgeoportal_admin.pot: lingua.cfg
+admin/c2cgeoportal_admin/locale/c2cgeoportal_admin.pot: \
+		lingua.cfg $(ADMIN_SRC_FILES) $(BUILD_DIR)/requirements.timestamp
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
-	pot-create --keyword _ --config $< --output $@ $(SRC_FILES)
+	pot-create --config $< --keyword _ --output $@ $(ADMIN_SRC_FILES)
 
 geoportal/c2cgeoportal_geoportal/locale/en/LC_MESSAGES/c2cgeoportal_geoportal.po: geoportal/c2cgeoportal_geoportal/locale/c2cgeoportal_geoportal.pot
 	$(PRERULE_CMD)

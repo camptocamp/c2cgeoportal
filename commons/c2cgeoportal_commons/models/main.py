@@ -48,7 +48,7 @@ from deform.widget import HiddenWidget, SelectWidget, TextAreaWidget
 from c2cgeoform.ext import colander_ext, deform_ext
 
 from c2cgeoportal_commons.config import config
-from c2cgeoportal_commons.models import Base
+from c2cgeoportal_commons.models import Base, _
 from c2cgeoportal_commons.models.sqlalchemy import JSONEncodedDict
 
 try:
@@ -56,13 +56,6 @@ try:
 # Fallback if pyramid do not exists, used by QGIS server plugin
 except ImportError:  # pragma: no cover
     Allow = ALL_PERMISSIONS = DENY_ALL = None
-
-try:
-    from pyramid.i18n import TranslationStringFactory
-    _ = TranslationStringFactory('c2cgeoportal')
-except ImportError:
-    def _(s: str) -> str:
-        return s
 
 
 LOG = logging.getLogger(__name__)
@@ -1244,7 +1237,11 @@ class Metadata(Base):
     ]
 
     id = Column(Integer, primary_key=True, info={'colanderalchemy': {'widget': HiddenWidget()}})
-    name = Column(Unicode)
+    name = Column(Unicode, info={
+        'colanderalchemy': {
+            'title': _('Name'),
+        }
+    })
     value = Column(Unicode, info={
         'colanderalchemy': {
             'exclude': True
@@ -1252,6 +1249,7 @@ class Metadata(Base):
     })
     description = Column(Unicode, info={
         'colanderalchemy': {
+            'title': _('Description'),
             'widget': TextAreaWidget()
         }
     })
@@ -1304,10 +1302,19 @@ class Dimension(Base):
     ]
 
     id = Column(Integer, primary_key=True, info={'colanderalchemy': {'widget': HiddenWidget()}})
-    name = Column(Unicode)
-    value = Column(Unicode)
+    name = Column(Unicode, info={
+        'colanderalchemy': {
+            'title': _('Name')
+        }
+    })
+    value = Column(Unicode, info={
+        'colanderalchemy': {
+            'title': _('Value')
+        }
+    })
     description = Column(Unicode, info={
         'colanderalchemy': {
+            'title': _('Description'),
             'widget': TextAreaWidget()
         }
     })

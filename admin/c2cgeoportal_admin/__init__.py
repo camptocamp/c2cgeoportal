@@ -1,11 +1,13 @@
 from translationstring import TranslationStringFactory
 from pyramid.config import Configurator
 from c2cwsgiutils.health_check import HealthCheck
+from pyramid.events import BeforeRender, NewRequest
 
 import c2cgeoform
 from pkg_resources import resource_filename
 
 from c2cgeoportal_commons.config import config as configuration
+from c2cgeoportal_admin.subscribers import add_renderer_globals, add_localizer
 
 
 search_paths = (
@@ -14,7 +16,7 @@ search_paths = (
 )
 c2cgeoform.default_search_paths = search_paths
 
-_ = TranslationStringFactory('admin')
+_ = TranslationStringFactory('c2cgeoportal_admin')
 
 
 def main(_, **settings):
@@ -51,6 +53,9 @@ def main(_, **settings):
         reify=True
     )
 
+    config.add_subscriber(add_renderer_globals, BeforeRender)
+    config.add_subscriber(add_localizer, NewRequest)
+
     generate_mappers()
 
     health_check = HealthCheck(config)
@@ -66,4 +71,5 @@ def includeme(config: Configurator):
     config.include('c2cgeoportal_admin.routes')
     # Use pyramid_tm to hook the transaction lifecycle to the request
     config.include('pyramid_tm')
+    config.add_translation_dirs('c2cgeoportal_admin:locale')
     config.scan()

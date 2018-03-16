@@ -83,6 +83,7 @@ def children_schema_node(only_groups=False):
             widget=ChildWidget()
         ),
         name='children_relation',
+        title=_('Children'),
         treeitems=colander.deferred(partial(treeitems, only_groups=only_groups)),
         validator=children_validator,
         widget=ChildrenWidget(category='structural')
