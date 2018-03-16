@@ -1,7 +1,6 @@
 # This file is used to finalise non Docker production environment
 
 OPERATING_SYSTEM ?= LINUX
-INSTANCE_ID ?= $(shell python -c 'print(__import__("yaml").load(open("geoportal/config.yaml").read())["vars"]["instanceid"])')
 PACKAGE = {{package}}
 
 ifeq ($(OPERATING_SYSTEM), WINDOWS)
