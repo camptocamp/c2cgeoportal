@@ -7,6 +7,7 @@ managed_files: []
 unmanaged_files:
   - mapserver/mapserver\.map\.mako
   - mapserver/mapserver\.map\.tmpl\.mako
+  - tilegeneration/config\.yaml\.mako
 template_vars:
   package: testgeomapfish
   srid: 21781

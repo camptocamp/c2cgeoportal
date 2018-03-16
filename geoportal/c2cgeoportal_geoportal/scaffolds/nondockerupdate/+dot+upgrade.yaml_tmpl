@@ -14,6 +14,7 @@ default_project_file:
     - geoportal/{{package}}_geoportal/jsbuild/.*
     - print/print-apps/.*
     - mapserver/.*
+    - tilegeneration/config.yaml.mako
     - project.yaml.mako
     - setup.py
     - vars.yaml
