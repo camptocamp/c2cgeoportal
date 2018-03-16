@@ -152,7 +152,7 @@ Cygwin, git mingw), only Windows default cmd interface handle paths correctly
 in all stage of the application setup.</p>
 <div class="section" id="command-interface-and-environment-variable">
 <h4>Command interface and environment variable<a class="headerlink" href="#command-interface-and-environment-variable" title="Permalink to this headline">¶</a></h4>
-<p>Only use Windows default commande interface:</p>
+<p>Only use Windows default command interface:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Start</span> <span class="o">&gt;</span> <span class="n">Run</span><span class="o">...</span> <span class="o">&gt;</span> <span class="n">cmd</span>
 </pre></div>
 </div>
@@ -224,16 +224,17 @@ login name.</p>
 <div class="section" id="integrator-install-application-install-application">
 <span id="id1"></span><h3>Install the application<a class="headerlink" href="#integrator-install-application-install-application" title="Permalink to this headline">¶</a></h3>
 <p>Then you can build and install the application with the command:</p>
-<pre class="highlight"><span class="prompt1">make docker-build</span>
+<pre class="highlight"><span class="prompt1">make --makefile<span class="o">=</span>&lt;user&gt;.mk docker-build</span>
 </pre><p>Create the application tables, and directly set the version (details later):</p>
-<pre class="highlight"><span class="prompt1">./docker-run make upgrade-db</span>
+<pre class="highlight"><span class="prompt1">./docker-run make --makefile<span class="o">=</span>&lt;user&gt;.mk upgrade-db</span>
+</pre><p>For non Docker installation:</p>
+<pre class="highlight"><span class="prompt1"><span class="nv">FINALISE</span><span class="o">=</span>TRUE make --makefile<span class="o">=</span>&lt;user&gt;.mk build</span>
 </pre><p>This previous command will do many things like:</p>
 <blockquote>
 <div><ul class="simple">
 <li>download and install the project dependencies,</li>
 <li>adapt the application configuration to your environment,</li>
 <li>build the javascript and css resources into compressed files,</li>
-<li>compile the translation files.</li>
 </ul>
 </div></blockquote>
 <p>Your application should be available at:
