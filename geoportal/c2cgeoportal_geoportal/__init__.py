@@ -41,6 +41,7 @@ from ipcalc import IP, Network
 from Crypto.Cipher import AES
 import importlib
 
+import zope.event.classhandler
 from pyramid.config import Configurator
 from pyramid_mako import add_mako_renderer
 from pyramid.interfaces import IStaticURLInfo
@@ -512,6 +513,12 @@ def includeme(config):
     # dogpile.cache configuration
     if 'cache' in settings:
         caching.init_region(settings['cache'])
+        from c2cgeoportal_commons.models.main import InvalidateCacheEvent
+
+        @zope.event.classhandler.handler(InvalidateCacheEvent)
+        def handle(event: InvalidateCacheEvent):
+            del event
+            caching.invalidate_region()
 
     # Register a tween to get back the cache buster path.
     config.add_tween("c2cgeoportal_geoportal.lib.cacheversion.CachebusterTween")
