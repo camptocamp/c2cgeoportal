@@ -88,8 +88,8 @@ help:
 
 .PHONY: docker-build
 docker-build:
-	docker build --tag=camptocamp/geomapfish-build-dev:${MAJOR_VERSION} docker/build
 	for image in `find -name Dockerfile -o -name Dockerfile.mako | xargs grep --no-filename FROM | awk '{print $$2}' | sort -u`; do docker pull $$image; done
+	docker build --tag=camptocamp/geomapfish-build-dev:${MAJOR_VERSION} docker/build
 	./docker-run make build
 
 .PHONY: build
