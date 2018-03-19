@@ -91,9 +91,6 @@ EC2, SQS, SNS.</p>
 <li><p class="first">Build the project:</p>
 <pre class="highlight"><span class="prompt1">make docker-build</span>
 </pre></li>
-<li><p class="first">Install the base template template:</p>
-<pre class="highlight"><span class="prompt1">./docker-run pcreate --interactive -s tilecloud_chain ../&lt;project&gt; <span class="nv">package</span><span class="o">=</span>&lt;package&gt;</span>
-</pre></li>
 <li><p class="first">In the <code class="docutils literal notranslate"><span class="pre">&lt;prokect&gt;.mk</span></code> activate the tile generation:</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>TILECLOUD_CHAIN ?= TRUE
 </pre></div>
@@ -142,7 +139,7 @@ tilecloud-chain has a tool to help us:</p>
 Than copy past the result in the layer config.</p>
 </li>
 <li><p class="first">If you need it you can generate the WMTS capabilities file:</p>
-<pre class="highlight"><span class="prompt1">./docker-run generate_controller --generate_wmts_capabilities</span>
+<pre class="highlight"><span class="prompt1">./docker-run generate_controller --generate-wmts-capabilities</span>
 </pre></li>
 <li><p class="first">And an OpenLayers test page:</p>
 <pre class="highlight"><span class="prompt1">./docker-run generate_controller --openlayers-test</span>

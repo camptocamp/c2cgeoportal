@@ -79,12 +79,6 @@ Initialization
 
      make docker-build
 
-* Install the base template template:
-
-  .. prompt:: bash
-
-    ./docker-run pcreate --interactive -s tilecloud_chain ../<project> package=<package>
-
 * In the ``<prokect>.mk`` activate the tile generation:
 
   .. code::
@@ -147,7 +141,7 @@ The main thing to do is to:
 
   .. prompt:: bash
 
-     ./docker-run generate_controller --generate_wmts_capabilities
+     ./docker-run generate_controller --generate-wmts-capabilities
 
 * And an OpenLayers test page:
 
