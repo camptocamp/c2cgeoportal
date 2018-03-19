@@ -59,6 +59,7 @@ WMTSCAPABILITIES_PATH ?= 1.0.0/WMTSCapabilities-$(ENVIRONEMENT).xml
 export WMTSCAPABILITIES_PATH
 ifeq ($(TILECLOUD_CHAIN), TRUE)
 WMTSCAPABILITIES_FILE ?= /var/sig/tiles/$(WMTSCAPABILITIES_PATH)
+MAPCACHE_FILE ?= mapcache/mapcache.xml
 DEFAULT_BUILD_RULES += tilegeneration/config.yaml
 ifeq ($(TILECLOUD_CHAIN_LOCAL), TRUE)
 DEFAULT_BUILD_RULES += $(WMTSCAPABILITIES_FILE)
@@ -377,7 +378,7 @@ yamllint: $(YAML_FILES)
 .PHONY: clean
 clean: template-clean
 	rm --recursive --force /build/*.timestamp \
-		mapcache/mapcache.xml apache/tiles.conf \
+		$(MAPCACHE_FILE) \
 		$(OUTPUT_DIR)/ \
 		$(APP_OUTPUT_DIR)/ \
 		geoportal/$(PACKAGE)_geoportal/locale/$(PACKAGE)-*.pot \
@@ -690,7 +691,7 @@ docker-compose-build.yaml: /build/requirements.timestamp
 .PHONY: config-docker
 config-docker: $(shell docker-required --path .) \
 		print/print-apps/$(PACKAGE)/config.yaml \
-		mapcache/mapcache.xml
+		$(MAPCACHE_FILE)
 	docker build -t $(DOCKER_BASE)-config:$(DOCKER_TAG) .
 
 .PHONY: geoportal-docker
@@ -745,7 +746,7 @@ upgrade%: project.yaml
 
 # Tilecloud chain
 
-mapcache/mapcache.xml: tilegeneration/config.yaml
+$(MAPCACHE_FILE): tilegeneration/config.yaml
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	generate_controller --mapcache

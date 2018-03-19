@@ -1,7 +1,7 @@
 # This file is used to finalise non Docker production environment
 
 OPERATING_SYSTEM ?= LINUX
-INSTANCE_ID ?= $(shell python -c 'print(__import__("yaml").load(open("geoportal/config.yaml").read())["vars"]["instanceid"])')
+PACKAGE = {{package}}
 
 ifeq ($(OPERATING_SYSTEM), WINDOWS)
 FIND ?= find.exe
@@ -32,7 +32,16 @@ PRINT_REQUIREMENT += $(PRINT_EXTRA_LIBS) \
 APACHE_VHOST ?= $(PACKAGE)
 APACHE_CONF_DIR ?= /var/www/vhosts/$(APACHE_VHOST)/conf
 APACHE_GRACEFUL ?= sudo /usr/sbin/apache2ctl graceful
+APACHE_CONF = $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf \
 
+TILECLOUD_CHAIN ?= TRUE
+ifeq ($(TILECLOUD_CHAIN), TRUE)
+APACHE_CONF += apache/tiles.conf
+endif
+
+apache/tiles.conf: .build/venv.timestamp tilegeneration/config.yaml apache/mapcache.xml
+	$(PRERULE_CMD)
+	.build/venv/bin/generate_controller --generate-apache-config
 
 .PHONY: help
 help:
@@ -61,9 +70,9 @@ $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf:
 	echo "Include $(shell pwd)/apache/*.conf" > $@
 
 .build/apache.timestamp: \
-		$(APACHE_CONF_DIR)/$(INSTANCE_ID).conf \
+		$(APACHE_CONF) \
 		geoportal/config.yaml \
-		.build/venv \
+		.build/venv.timestamp \
 		geoportal/development.ini geoportal/production.ini
 	$(PRERULE_CMD)
 	$(APACHE_GRACEFUL)
@@ -128,7 +137,7 @@ remove-branch:
 
 # Extract
 
-.build/venv:
+.build/venv.timestamp:
 	mkdir --parent .build
 	rm -rf .build/venv
 	virtualenv --python=python3 --system-site-packages .build/venv

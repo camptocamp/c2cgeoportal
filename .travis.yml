@@ -68,7 +68,7 @@ before_script:
 
 script:
   # Test new non Docker project
-  - (cd /tmp/travis/nondockertestgeomapfish/; ./docker-run travis/empty-make --makefile=travis.mk build)
+  - (cd /tmp/travis/nondockertestgeomapfish/; ./docker-run travis/short-make --makefile=travis.mk build)
   - (cd /tmp/travis/nondockertestgeomapfish/; ./docker-run make --makefile=travis.mk checks)
   - find
       /tmp/travis/nondockertestgeomapfish/geoportal/setup.py

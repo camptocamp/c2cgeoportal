@@ -3,6 +3,7 @@
 extends: vars.yaml
 
 vars:
+  instance: '{INSTANCE_ID}'
   instanceid: '{instance}'
   apache_entry_point: '{entry_point}'
   modwsgi_user: '{MODWSGI_USER}'
@@ -43,6 +44,7 @@ update_paths:
   - check_collector
 
 environment:
+  - INSTANCE_ID
   - MODWSGI_USER
   - DOCKER_HOST_
   - VISIBLE_WEB_HOST

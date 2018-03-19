@@ -16,6 +16,8 @@ __pycache__/
 /apache/wsgi.conf
 /apache/tinyows.conf
 /apache/application.wsgi
+/apache/tiles.conf
+/apache/mapcache.xml
 /deploy/deploy.cfg
 /deploy/hooks/pre-restore-database
 /deploy/hooks/post-restore
@@ -23,7 +25,6 @@ __pycache__/
 /print/WEB-INF/lib/*.jar
 /print/WEB-INF/classes/logback.xml
 /print/print-apps/{{package}}/config.yaml
-/mapcache
 /mapserver/mapserver.map
 /mapserver/demo.map
 /mapserver/*.map.tmpl.mako
