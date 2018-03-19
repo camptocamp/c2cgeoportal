@@ -23,7 +23,7 @@ Prepare the upgrade:
 
    git submodule deinit <package>/static/lib/cgxp/
    git rm .gitmodules
-   curl https://raw.githubusercontent.com/camptocamp/c2cgeoportal/master/docker-run > docker-run
+   curl https://raw.githubusercontent.com/camptocamp/c2cgeoportal/${git_branch}/docker-run > docker-run
    chmod +x docker-run
    git add docker-run project.yaml.mako
    git commit --quiet --message="Start upgrade"
@@ -75,11 +75,14 @@ Then follow the instruction
 From a version 2.3 and next
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Change the version in the file ``.config`` to the wanted version.
+
 .. prompt:: bash
 
    ./docker-run --home make upgrade
 
 Then follow the instruction
+
 
 Convert a version 2.3 to Docker
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -101,6 +104,7 @@ Remove the ``UPGRADE_ARGS`` in your ``<user>.mk`` file.
    git add <user>.mk
    git commit --quiet --message="Finish upgrade"
 
+
 Convert a version 2.3 to non-Docker
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -116,6 +120,7 @@ Add ``UPGRADE_ARGS += --nondocker --new-makefile=<package>.mk`` in the ``Makefil
 Then follow the instruction
 
 Remove the ``UPGRADE_ARGS`` in your ``Makefile``.
+
 
 Upgrade the database
 --------------------
