@@ -9,4 +9,4 @@ pyramid_jinja2
 pyramid_tm
 transaction
 waitress
--e git://github.com/camptocamp/c2cgeoform.git@3c95442c803af7e3bd4d554717e177bbf7fab6ee#egg=c2cgeoform
+-e git://github.com/camptocamp/c2cgeoform.git@13553b5653d278fd92f0bfe35fb500f7c984a9a8#egg=c2cgeoform

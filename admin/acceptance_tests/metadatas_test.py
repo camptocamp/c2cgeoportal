@@ -3,6 +3,7 @@
 import pytest
 
 from . import AbstractViewsTests, skip_if_ci
+from .selenium.page import IndexPage
 
 
 @pytest.fixture(scope='function')
@@ -309,3 +310,12 @@ class TestMetadatasSelenium():
 
         assert 'Expecting hex format for color, e.g. #007DCD' == \
             selenium.find_element_by_xpath('//p[@class="help-block"]').text
+
+        # have to check there are no side effects, especially that modifications held at template side
+        # don't trigger "are you sure you want to leave alert"
+        layer = metadatas_test_data['layer_wms']
+        IndexPage(selenium)
+        selenium.get(selenium_app + '/layers_wms/{}'.format(layer.id))
+
+        selenium.find_element_by_xpath('//a[contains(@href, "roles")]').click()
+        assert selenium.current_url.endswith('/roles')
