@@ -15,7 +15,7 @@
     "jquery.cookie": "1.4.1",
     "jquery.scrollintoview": "1.9.4",
     "magicsuggest-alpine": "1.0.0",
-    "openlayers": "4.6.4",
+    "openlayers": "4.6.5",
     "typeahead.js": "0.11.1"
   }
 }
