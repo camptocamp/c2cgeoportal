@@ -147,7 +147,7 @@ The main thing to do is to:
 
   .. prompt:: bash
 
-     ./docker-run generate_controller --generate_wmts_capabilities
+     ./docker-run generate_controller --capabilities
 
 * And an OpenLayers test page:
 
