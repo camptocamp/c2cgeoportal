@@ -49,7 +49,7 @@ span.prompt1:before {
 }
 </style><span class="prompt1">git submodule deinit &lt;package&gt;/static/lib/cgxp/</span>
 <span class="prompt1">git rm .gitmodules</span>
-<span class="prompt1">curl https://raw.githubusercontent.com/camptocamp/c2cgeoportal/HEAD/docker-run &gt; docker-run</span>
+<span class="prompt1">curl https://raw.githubusercontent.com/camptocamp/c2cgeoportal/master/docker-run &gt; docker-run</span>
 <span class="prompt1">chmod +x docker-run</span>
 <span class="prompt1">git add docker-run project.yaml.mako</span>
 <span class="prompt1">git commit --quiet --message<span class="o">=</span><span class="s2">&quot;Start upgrade&quot;</span></span>
@@ -79,7 +79,6 @@ span.prompt1:before {
 </div>
 <div class="section" id="from-a-version-2-3-and-next">
 <h2>From a version 2.3 and next<a class="headerlink" href="#from-a-version-2-3-and-next" title="Permalink to this headline">¶</a></h2>
-<p>Change the version in the file <code class="docutils literal notranslate"><span class="pre">.config</span></code> to the wanted version.</p>
 <pre class="highlight"><span class="prompt1">./docker-run --home make upgrade</span>
 </pre><p>Then follow the instruction</p>
 </div>
