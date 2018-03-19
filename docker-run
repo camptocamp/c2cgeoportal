@@ -83,7 +83,6 @@ def main():
         ])
 
     for env in [
-        "HOME",
         "SRID",
         "EXTENT",
         "APACHE_VHOST",
@@ -96,6 +95,7 @@ def main():
     else:
         # For Jenkins slave in Docker
         docker_adrs = netifaces.gateways()[netifaces.AF_INET][0][0]
+    # We needs the user HOME directory to correctly create the user in Docker
     docker_cmd.append("--env=HOME_DIR={}".format(os.environ["HOME"]))
     docker_cmd.append("--env=DOCKER_HOST_={}".format(docker_adrs))
     docker_cmd.append("--env=BUILD_VOLUME_NAME={}".format(build_volume_name))

@@ -28,6 +28,7 @@ services:
       - build:/build
       - .:/src
     environment:
+      - HOME_DIR
       - USER_NAME
       - USER_ID
       - GROUP_ID
