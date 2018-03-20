@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import distutils.core
 from pyramid.config import Configurator
 from c2cgeoportal_geoportal import locale_negotiator, add_interface, INTERFACE_TYPE_NGEO
 from c2cgeoportal_geoportal.lib.authentication import create_authentication
@@ -16,7 +17,10 @@ def main(global_config, **settings):
         authentication_policy=create_authentication(settings)
     )
 
+    # Workaround to not have the error: distutils.errors.DistutilsArgError: no commands supplied
+    distutils.core._setup_stop_after = 'config'
     config.include('c2cgeoportal_geoportal')
+    distutils.core._setup_stop_after = None
 
     config.add_translation_dirs('{{package}}_geoportal:locale/')
 
