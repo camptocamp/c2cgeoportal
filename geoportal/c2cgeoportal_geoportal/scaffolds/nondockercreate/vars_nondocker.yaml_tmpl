@@ -28,6 +28,9 @@ vars:
     - '{web_protocol}:://b.tiles.{host}/{instanceid}/tiles'
     - '{web_protocol}:://c.tiles.{host}/{instanceid}/tiles'
 
+  host_forward_host:
+    - localhost
+
   cache:
     backend: dogpile.cache.memory_pickle
 
