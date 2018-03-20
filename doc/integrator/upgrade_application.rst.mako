@@ -77,6 +77,14 @@ From a version 2.3 and next
 
 Change the version in the file ``.config`` to the wanted version.
 
+For non Docker project:
+
+.. prompt:: bash
+
+   ./docker-run --home make --makefile=<user>.mk upgrade
+
+For Docker project:
+
 .. prompt:: bash
 
    ./docker-run --home make upgrade
