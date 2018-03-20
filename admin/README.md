@@ -14,11 +14,6 @@ make docker-serve
 
 Open http://localhost:8888/
 
-The following views are also provided by `c2cwsgiutils`:
- * http://localhost:8888/versions.json
- * http://localhost:8888/stats.json
- * http://localhost:8888/health_check?max_level=3
-
 
 ## Run without docker
 
