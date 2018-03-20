@@ -6,9 +6,9 @@ def includeme(config):
     config.add_static_view('node_modules', 'c2cgeoportal_admin:node_modules')
     path = None
     for path_ in [
-        '/usr/lib/node_modules/',
         os.path.join(os.path.dirname(__file__), '..', '..', 'node_modules'),
         os.path.join(os.path.dirname(__file__), '..', 'node_modules'),
+        '/usr/lib/node_modules/',
     ]:
         if os.path.exists(path_):
             path = path_
