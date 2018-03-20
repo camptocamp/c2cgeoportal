@@ -56,14 +56,15 @@ class CachebusterTween:
 
     def __call__(self, request):
         path = request.path_info.split("/")
-        if path[1] in CACHE_PATH:
+        is_cache = len(path) > 1 and path[1] in CACHE_PATH
+        if is_cache:
             # remove the cache buster
             path.pop(2)
             request.path_info = "/" .join(path)
 
         response = self.handler(request)
 
-        if path[1] in CACHE_PATH:
+        if is_cache:
             response.headers["Access-Control-Allow-Origin"] = "*"
             response.headers["Access-Control-Allow-Headers"] = "X-Requested-With, Content-Type"
 
