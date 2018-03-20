@@ -513,12 +513,18 @@ runtime_environment:
     default: '5432'
   - PGUSER
   - PGPASSWORD
-  - PGDATABASE
-  - PGSCHEMA
-  - PGSCHEMA_STATIC
-  - TINYOWS_URL
-  - MAPSERVER_URL
-  - PRINT_URL
+  - name: PGDATABASE
+    default: geomapfish
+  - name: PGSCHEMA
+    default: main
+  - name: PGSCHEMA_STATIC
+    default: main_static
+  - name: TINYOWS_URL
+    default: http://tinyows/
+  - name: MAPSERVER_URL
+    default: http://mapserver/
+  - name: PRINT_URL
+    default: http://print:8080/print/
   - name: REDIS_HOST
     default: undefined  # no error if absent
   - name: REDIS_PORT

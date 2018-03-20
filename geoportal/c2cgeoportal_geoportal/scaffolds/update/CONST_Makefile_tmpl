@@ -2,6 +2,13 @@ GEOMAPFISH_VERSION ?= {{geomapfish_version}}
 export GEOMAPFISH_VERSION
 export PACKAGE = {{package}}
 
+VISIBLE_WEB_HOST ?= example.com
+VISIBLE_WEB_PROTOCOL ?= https
+VISIBLE_ENTRY_POINT ?= /
+export VISIBLE_WEB_HOST
+export VISIBLE_WEB_PROTOCOL
+export VISIBLE_ENTRY_POINT
+
 MAPSERVER ?= TRUE
 
 ifeq ($(DEBUG), TRUE)
