@@ -7,7 +7,6 @@ MODWSGI_USER ?= www-data
 export MODWSGI_USER
 export INSTANCE_ID
 VISIBLE_ENTRY_POINT ?= /$(INSTANCE_ID)/
-export VISIBLE_ENTRY_POINT
 
 ADDITIONAL_MAKO_FILES += $(shell find print $(FIND_OPTS) -name "*.mako" -print) \
 	$(shell find apache $(FIND_OPTS) -name "*.mako" -print) \
