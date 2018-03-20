@@ -328,10 +328,8 @@ help:
 	@echo  "- update		Update and clean the project (Git, Node, Pip)"
 	@echo  "- upgrade-db		Upgrade the database to the latest version"
 	@echo  "- upgrade		Launch the upgrade process"
-	@echo
-	@echo  "Deploy branch target:"
-	@echo
-	@echo  "- theme2fts		Inport the theme in the full-text search"
+	@echo  "- theme2fts		Import the theme in the full-text search"
+	@echo  "- update-po		Update the localisations files"
 
 ifdef UTILITY_HELP
 	@echo $(UTILITY_HELP)
