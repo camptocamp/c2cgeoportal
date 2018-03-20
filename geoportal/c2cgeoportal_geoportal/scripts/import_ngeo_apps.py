@@ -302,7 +302,7 @@ ${ ',\\n'.join([
             ]:
                 data = _sub(
                     r"module.constant\('%s', "
-                    "'https://geomapfish-demo.camptocamp.net/2.[0-9]/wsgi%s\??([^\']*)'\);" % (
+                    "'https://geomapfish-demo.camptocamp.com/2.[0-9]/wsgi%s\??([^\']*)'\);" % (
                         constant, url_end
                     ),
                     _RouteDest(constant, route),
