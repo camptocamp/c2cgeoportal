@@ -18,6 +18,7 @@ build:
     - ${build_volume_name}:/build
     - .:/src
   environment:
+    - HOME_DIR
     - USER_NAME
     - USER_ID
     - GROUP_ID

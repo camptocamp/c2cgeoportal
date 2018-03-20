@@ -45,6 +45,7 @@ ${service_defaults('mapserver', 80)}\
       - external-db
       - mapserver
 ${service_defaults('geoportal', 80, True)}\
+      - HOME_DIR
       - USER_NAME
       - USER_ID
       - GROUP_ID

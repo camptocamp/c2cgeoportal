@@ -5,6 +5,7 @@ import os
 import sys
 import subprocess
 
+os.environ["HOME_DIR"] = os.environ["HOME"]
 os.environ['USER_NAME'] = getpass.getuser()
 os.environ['USER_ID'] = str(os.getuid())
 os.environ['GROUP_ID'] = str(os.getgid())

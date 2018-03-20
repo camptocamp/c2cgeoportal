@@ -32,6 +32,7 @@ try:
         'useradd',
         '--groups=docker,sudo' if has_docker else '--groups=sudo',
         '--shell=/bin/bash',
+        '--home-dir=' + os.environ['HOME_DIR'],
         '--uid=' + os.environ['USER_ID'],
         '--gid=' + os.environ['GROUP_ID'],
         os.environ['USER_NAME'],
@@ -65,6 +66,7 @@ import subprocess, os
 {umask}
 
 try:
+    os.environ['HOME'] = os.environ['HOME_DIR']
     subprocess.check_call({args})
 except subprocess.CalledProcessError as e:
     exit(e.returncode)

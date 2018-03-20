@@ -16,7 +16,6 @@ PRERULE_CMD ?= @echo "Build \033[1;34m$@\033[0m due modification on \033[1;34m$?
 endif
 
 VENV_BIN ?= /build/venv/bin
-HOME_DIR ?= $(HOME)/
 # Use TileCloud chain
 TILECLOUD_CHAIN ?= TRUE
 TILECLOUD_CHAIN_LOCAL ?= FALSE
@@ -405,8 +404,8 @@ clean-all: clean
 
 .PHONY: clean-all-cache
 clean-all-cache: cleanall
-	rm  --recursive --force $(HOME_DIR).npm \
-		$(HOME_DIR).cache/pip
+	rm  --recursive --force $(HOME)/.npm \
+		$(HOME)/.cache/pip
 
 .PHONY: theme2fts
 theme2fts: $(CLIENT_LOCALISATION_RULES)

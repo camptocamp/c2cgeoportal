@@ -37,13 +37,12 @@ VALIDATE_PY_TEST_FOLDERS = geoportal/tests
 SPHINX_FILES = $(shell find doc -name "*.rst" -print)
 SPHINX_MAKO_FILES = $(shell find doc -name "*.rst.mako" -print)
 
-HOME=$(HOME_DIR)
 export TX_VERSION = $(shell echo $(MAJOR_VERSION) | awk -F . '{{print $$1"_"$$2}}')
-TX_DEPENDENCIES = $(HOME_DIR)/.transifexrc .tx/config
-ifeq (,$(wildcard $(HOME_DIR)/.transifexrc))
-TOUCHBACK_TXRC := touch --no-create --date "$(shell date --iso-8601=seconds)" $(HOME_DIR)/.transifexrc
+TX_DEPENDENCIES = $(HOME)/.transifexrc .tx/config
+ifeq (,$(wildcard $(HOME)/.transifexrc))
+TOUCHBACK_TXRC := touch --no-create --date "$(shell date --iso-8601=seconds)" $(HOME)/.transifexrc
 else
-TOUCHBACK_TXRC := touch --no-create --date "$(shell stat -c '%y' $(HOME_DIR)/.transifexrc)" $(HOME_DIR)/.transifexrc
+TOUCHBACK_TXRC := touch --no-create --date "$(shell stat -c '%y' $(HOME)/.transifexrc)" $(HOME)/.transifexrc
 endif
 LANGUAGES = fr de it
 export LANGUAGES
@@ -269,7 +268,7 @@ additionallint:
 	fi
 
 # i18n
-$(HOME_DIR)/.transifexrc:
+$(HOME)/.transifexrc:
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	echo "[https://www.transifex.com]" > $@
