@@ -116,7 +116,7 @@ class Import:
         self.options = options
         self.imported = set()
 
-        settings = get_config("config.yaml")
+        settings = get_config("geoportal/config.yaml")
         package = settings["package"]
 
         self.fts_languages = settings["fulltextsearch"]["languages"]
@@ -132,7 +132,9 @@ class Import:
         self._ = {}
         for lang in self.languages:
             self._[lang] = translation(
-                "{}-client".format(package), os.path.join(package, "locale/"), [lang])
+                "{}_geoportal-client".format(package),
+                os.path.join("geoportal", "{}_geoportal".format(package), "locale/"), [lang]
+            )
 
         query = self.session.query(Interface)
         if options.interfaces is not None:
