@@ -2,6 +2,7 @@ from pyramid.httpexceptions import HTTPNotFound
 from pyramid.view import view_config
 
 from sqlalchemy.orm import subqueryload
+from translationstring import TranslationStringFactory
 
 from c2cgeoform.views.abstract_views import ItemAction
 
@@ -48,12 +49,15 @@ class LayerTreeViews():
             order_by(Theme.ordering). \
             all()
 
+        client_tsf = TranslationStringFactory('{}-client'.format(self._request.registry.package_name))
+
         def render_node(nodes, item, parent_id=None, path=''):
             subpath = '{}_{}'.format(path, item.id)
             nodes.append({
                 'id': item.id,
                 'item_type': item.item_type,
                 'name': item.name,
+                'translated_name': self._request.localizer.translate(client_tsf(item.name)),
                 'metadata_url': item.metadata_url,
                 'description': item.description,
                 'path': subpath,
