@@ -9,6 +9,11 @@ else
 FIND ?= find
 endif
 
+ifeq ($(DEBUG), TRUE)
+PRERULE_CMD ?= @echo "Build \033[1;34m$@\033[0m due modification on \033[1;34m$?\033[0m" 1>&2; ls -t --full-time --reverse $? $@ 1>&2 || true
+endif
+
+
 # Print
 
 PRINT_WAR ?= print-$(INSTANCE_ID).war
@@ -138,6 +143,7 @@ remove-branch:
 # Extract
 
 .build/venv.timestamp:
+	$(PRERULE_CMD)
 	mkdir --parent .build
 	rm -rf .build/venv
 	virtualenv --python=python3 --system-site-packages .build/venv
@@ -155,3 +161,4 @@ endif
 	.build/venv/bin/python -m pip install --editable=c2cgeoportal_commons --editable=c2cgeoportal_geoportal --editable=c2cgeoportal_admin
 	.build/venv/bin/python -m pip install --editable=geoportal
 	npm install `cat c2cgeoportal_admin/npm-packages`
+	touch $@
