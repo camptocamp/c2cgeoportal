@@ -42,6 +42,7 @@ from sqlalchemy.orm import relationship, backref, Session
 from geoalchemy2 import Geometry
 from geoalchemy2.shape import to_shape
 
+import zope.event
 import colander
 from deform.widget import HiddenWidget, SelectWidget, TextAreaWidget
 from c2cgeoform.ext import colander_ext, deform_ext
@@ -71,12 +72,12 @@ _schema = config['schema']  # type: str
 _srid = config['srid']  # type: int
 
 
-def cache_invalidate_cb(*args: List[Any]) -> None:
-    # caching.invalidate_region()
-
-    # we should probably use this debounce https://gist.github.com/esromneb/8eac6bf5bdfef58304cb
-    # and call the invalidate on the geoportal
+class InvalidateCacheEvent:
     pass
+
+
+def cache_invalidate_cb(*args: List[Any]) -> None:
+    zope.event.notify(InvalidateCacheEvent())
 
 
 class TsVector(UserDefinedType):
