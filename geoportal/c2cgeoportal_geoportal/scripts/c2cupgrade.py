@@ -229,21 +229,21 @@ class C2cUpgradeTool:
 
     def test_checkers(self):
         http = httplib2.Http()
-        for check_type in ("", "type=all"):
-            resp, _ = http.request(
-                "http://localhost{}{}".format(self.project["checker_path"], check_type),
-                method="GET",
-                headers={
-                    "Host": self.project["host"]
-                }
+        resp, _ = http.request(
+            self.project["checker_url"],
+            method="GET",
+            headers=self.project["checker_headers"]
+        )
+        if resp.status < 200 or resp.status >= 300:
+            return False, "\n".join([
+                "Checker error:",
+                "Run `curl {} '{}'` for more information."
+            ]).format(
+                self.project["checker_url"],
+                ' '.join([
+                    '--header={}={}'.format(*i) for i in self.project["checker_headers"].items()
+                ])
             )
-            if resp.status < 200 or resp.status >= 300:
-                return False, "\n".join([
-                    "Checker error:",
-                    "Open `http://{}{}{}` for more information."
-                ]).format(
-                    self.project["host"], self.project["checker_path"], check_type
-                )
 
         return True, None
 

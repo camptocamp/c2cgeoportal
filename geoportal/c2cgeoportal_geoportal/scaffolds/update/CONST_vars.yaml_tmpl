@@ -469,6 +469,10 @@ vars:
   # Statistics are disabled by default
   stats: {}
 
+  # The c2cwsgiutils base path
+  c2c:
+    base_path: /c2c
+
   db_chooser:
     # List of {method path} regexes to force the usage of the master, even for GET and OPTIONS
     # This supersedes the slave list.

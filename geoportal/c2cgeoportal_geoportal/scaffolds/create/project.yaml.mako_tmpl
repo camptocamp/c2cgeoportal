@@ -1,8 +1,9 @@
 ---
 project_folder: {{project}}
 project_package: ${package}
-host: ${host}
-checker_path: /c2c/health_check?
+checker_url: https://localhost/c2c/health_check?
+checker_headers:
+  Host: ${host}
 managed_files: []
 template_vars:
   package: {{package}}

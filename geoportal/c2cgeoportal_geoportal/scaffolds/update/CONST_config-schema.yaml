@@ -50,6 +50,9 @@ mapping:
       ogcproxy_enable:
         type: bool
         required: True
+      c2c.base_path:
+        type: str
+        required: True
       sqlalchemy.url:
         type: str
         required: True
