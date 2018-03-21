@@ -47,11 +47,6 @@ Edit ``CONST_dev-requirements.txt``:
     +c2cgeoportal==2.1.8
     ...
 
-usage of intranet detection
----------------------------
-If you are using automatic login via intranet detection, beware that the necessary code
-has changed with GMF 2.1. See :ref:`integrator_intranet` and update your code accordingly.
-
 -----------------------------
 Updating the application code
 -----------------------------

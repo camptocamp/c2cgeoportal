@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2013-2017, Camptocamp SA
+# Copyright (c) 2013-2018, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -201,7 +201,7 @@ class TestThemesViewMetadata(TestCase):
             "Unable to parse the attribute 'json_wrong'='{\"test\": 123' with the type 'json', error:\n'set' object has no attribute 'append'",
             "The date attribute 'date2'='Sep 25 10:36:28 BRST 2003' should not have any time",
             "The time attribute 'time2'='Sep 25 10:36:28 BRST 2003' should not have any date",
-            "Unable to parse the attribute 'datetime2'='Hello' with the type 'datetime', error:\nUnknown string format",
+            "Unable to parse the attribute 'datetime2'='Hello' with the type 'datetime', error:\n(u'Unknown string format:', u'Hello')",
             "The attribute 'url11'='https:///static/icon.png' is not a valid URL.",
             "The attribute 'url12'='static://test' cannot have an empty path.",
             "The attribute 'url13'='static://test/' cannot have an empty path.",
