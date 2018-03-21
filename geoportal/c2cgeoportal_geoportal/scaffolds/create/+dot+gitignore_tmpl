@@ -13,10 +13,8 @@ __pycache__/
 /tilegeneration/config.yaml
 /print/print-apps/{{package}}/config.yaml
 /mapserver/mapserver.map.tmpl
-/mapserver/demo.map.tmpl
-/mapserver/mapserver.map
+/mapserver/*.map.tmpl
 /mapserver/tinyows.xml
-/mapserver/replace_db.sh
 /geoportal/jsbuild/app.cfg
 /geoportal/Dockerfile
 /geoportal/development.ini
