@@ -146,7 +146,7 @@ I18N_SOURCE_FILES += $(APP_HTML_FILES) \
 	geoportal/config.yaml
 # The theme from the database
 I18N_SOURCE_FILES += geoportal/development.ini
-I18N_DEPENDENCIES += project.yaml
+I18N_DEPENDENCIES += project.yaml /build/requirements.timestamp
 
 
 # CGXP
@@ -466,7 +466,7 @@ geoportal/config.yaml: /build/c2ctemplate-cache.json
 
 .PRECIOUS: geoportal/$(PACKAGE)_geoportal/locale/$(PACKAGE)_geoportal-$(L10N_SERVER_POSTFIX).pot
 geoportal/$(PACKAGE)_geoportal/locale/$(PACKAGE)_geoportal-$(L10N_SERVER_POSTFIX).pot: \
-		lingua-server.cfg \
+		lingua-server.cfg /build/requirements.timestamp \
 		$(SERVER_LOCALISATION_SOURCES_FILES)
 	$(PRERULE_CMD)
 	rm -f $@ # Because of WindowsError, thus only problematic on Windows
