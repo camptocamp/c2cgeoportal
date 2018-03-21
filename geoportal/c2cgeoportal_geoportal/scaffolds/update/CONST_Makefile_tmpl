@@ -408,7 +408,7 @@ clean-all-cache: cleanall
 		$(HOME)/.cache/pip
 
 .PHONY: theme2fts
-theme2fts: $(CLIENT_LOCALISATION_RULES)
+theme2fts: $(CLIENT_LOCALISATION_RULES) /build/requirements.timestamp
 	theme2fts
 
 .PHONY: flake8
