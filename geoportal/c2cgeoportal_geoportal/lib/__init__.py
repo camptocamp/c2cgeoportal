@@ -114,7 +114,7 @@ def get_url2(name, url, request, errors):
         if proj == "":
             proj = "{}_geoportal:static".format(package)
         elif ":" not in proj:
-            proj = "{}:{}".format(package, proj)
+            proj = "{}_geoportal:{}".format(package, proj)
         return request.static_url(
             "{}{}".format(proj, url_split.path)
         )
