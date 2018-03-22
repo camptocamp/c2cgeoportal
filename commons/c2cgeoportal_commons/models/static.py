@@ -38,7 +38,7 @@ from deform.widget import HiddenWidget
 from c2cgeoform.ext import deform_ext
 
 from c2cgeoportal_commons.config import config
-from c2cgeoportal_commons.models import Base
+from c2cgeoportal_commons.models import Base, _
 from c2cgeoportal_commons.models.main import Role
 
 try:
@@ -47,12 +47,6 @@ try:
 except ImportError:  # pragma: no cover
     Allow = ALL_PERMISSIONS = DENY_ALL = None
 
-try:
-    from pyramid.i18n import TranslationStringFactory
-    _ = TranslationStringFactory('c2cgeoportal')
-except ImportError:
-    def _(s: str) -> str:
-        return s
 
 LOG = logging.getLogger(__name__)
 AUTHORIZED_ROLE = 'role_admin'

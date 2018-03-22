@@ -5,10 +5,12 @@ from c2cgeoform.schema import (
     manytomany_validator,
 )
 from c2cgeoportal_commons.models.main import RestrictionArea
+from c2cgeoportal_admin import _
 
 restrictionareas_schema_node = colander.SequenceSchema(
     GeoFormManyToManySchemaNode(RestrictionArea),
     name='restrictionareas',
+    title=_('Restriction areas'),
     widget=RelationCheckBoxListWidget(
         RestrictionArea,
         'id',
