@@ -463,7 +463,7 @@ class C2cUpgradeTool:
         if not managed:
             for pattern in self.project['managed_files']:
                 if re.match(pattern + '$', file_):
-                    print("File '{}' included by progect config pattern (managed_files) '{}'.".format(
+                    print("File '{}' included by project config pattern (managed_files) '{}'.".format(
                         file_, pattern
                     ))
                     print('managed', file_, pattern)
@@ -472,7 +472,7 @@ class C2cUpgradeTool:
         if managed:
             for pattern in self.project.get('unmanaged_files', []):
                 if re.match(pattern + '$', file_):
-                    print("File '{}' excluded by progect config pattern (unmanaged_files) '{}'.".format(
+                    print("File '{}' excluded by project config pattern (unmanaged_files) '{}'.".format(
                         file_, pattern
                     ))
                     managed = False
