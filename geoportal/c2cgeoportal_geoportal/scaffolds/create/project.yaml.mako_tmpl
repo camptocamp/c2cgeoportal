@@ -1,7 +1,7 @@
 ---
 project_folder: {{project}}
 project_package: ${package}
-checker_url: https://localhost/c2c/health_check?
+checker_url: https://localhost/c2c/health_check?max_level=9
 checker_headers:
   Host: ${host}
 managed_files: []
