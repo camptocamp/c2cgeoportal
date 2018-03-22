@@ -43,9 +43,15 @@ vars:
     routes:
       disable: [printproxy_capabilities]
 
+  check_collector:
+    hosts:
+      - display: Main
+        url: '{web_protocol}://{host}:8080{entry_point}'
+
 update_paths:
   - layers
   - checker.lang
   - checker.routes
+  - check_collector
   - docker_services.geoportal.environment
   - admin_interface.available_metadata

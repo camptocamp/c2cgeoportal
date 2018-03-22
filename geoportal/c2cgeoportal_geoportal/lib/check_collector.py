@@ -50,7 +50,7 @@ def init(config, health_check):
             display = host["display"]
             if "host" not in params or display == params["host"]:
                 url_headers = build_url(
-                    "check_collector", "%s%s/health_check" % (host["url"], c2c_base), request
+                    "check_collector", "%s/%s/health_check" % (host["url"], c2c_base), request
                 )
                 r = requests.get(params={"max_level": str(host.get("max_level", max_level))}, **url_headers)
                 r.raise_for_status()

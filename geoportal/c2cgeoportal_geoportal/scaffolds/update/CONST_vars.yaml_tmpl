@@ -445,13 +445,15 @@ vars:
       interfaces: {}
     print:
       spec: {}
-      level: 1
+      level: 3
 
   # Check collector configuration
   check_collector:
-    hosts: []
+    hosts:
+      - display: Main
+        url: '{web_protocol}://{host}{entry_point}'
     max_level: 1
-    level: 1
+    level: 10
 
   # What web page is authorized to use the API
   authorized_referers:

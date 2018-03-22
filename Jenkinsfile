@@ -114,7 +114,8 @@ timeout(time: 2, unit: 'HOURS') {
                         sh './docker-run travis/waitwsgi http://`netstat --route --numeric|grep ^0.0.0.0|awk \'{print($2)}\'`:8080/'
                         for (path in [
                             'c2c/health_check',
-                            'c2c/health_check?max_level=100',
+                            'c2c/health_check?max_level=9',
+                            'c2c/health_check?checks=check_collector',
                             'layers/test/values/type enum',
                             'admin/layertree',
                             'admin/layertree/nodes?order=asc'
