@@ -41,10 +41,7 @@ Read the `Documentation <https://camptocamp.github.io/c2cgeoportal/master/>`_.
 
 `Sources <https://github.com/camptocamp/c2cgeoportal/>`_"""
 
-TRAVIS_TAG = os.environ.get('GIT_TAG')
-MAJOR_VERSION = os.environ.get('MAJOR_VERSION')
-VERSION = TRAVIS_TAG if TRAVIS_TAG is not None and TRAVIS_TAG != '' else \
-    MAJOR_VERSION if MAJOR_VERSION is not None and MAJOR_VERSION != '' else 'dev'
+VERSION = os.environ.get('VERSION', 'dev')
 
 install_requires = [
     'c2cgeoportal-commons==' + VERSION,

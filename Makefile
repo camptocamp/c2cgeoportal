@@ -14,12 +14,12 @@ PRERULE_CMD ?= @echo "Build \033[1;34m$@\033[0m due modification on \033[1;34m$?
 endif
 endif
 
+ifdef TRAVIS_TAG
+export MAJOR_VERSION = $(TRAVIS_TAG)
+export MAIN_BRANCH = $(TRAVIS_TAG)
+else
 export MAJOR_VERSION = 2.3
 export MAIN_BRANCH = master
-ifdef TRAVIS_TAG
-VERSION ?= $(TRAVIS_TAG)
-else
-VERSION ?= $(MAIN_BRANCH)
 endif
 
 DOCKER_BASE = camptocamp/geomapfish
@@ -170,7 +170,7 @@ build-docker: $(shell docker-required --path . --replace-pattern='^test(.*).mako
 		npm-packages admin/npm-packages \
 		geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/ \
 		geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/CONST_create_template/
-	docker build --build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --tag=$(DOCKER_BASE)-build:$(MAJOR_VERSION) .
+	docker build --build-arg=VERSION=$(MAJOR_VERSION) --tag=$(DOCKER_BASE)-build:$(MAJOR_VERSION) .
 
 .PHONY: prepare-tests
 prepare-tests: $(BUILD_DIR)/requirements.timestamp \
@@ -308,7 +308,7 @@ import-ngeo-apps: $(APPS_FILES)
 .PRECIOUS: ngeo
 ngeo: $(BUILD_DIR)/requirements.timestamp
 	$(PRERULE_CMD)
-	if [ ! -e "ngeo" ] ; then git clone --depth 1 --branch=$(shell VERSION=$(VERSION) $(BUILD_DIR)/venv/bin/ngeo-version) https://github.com/camptocamp/ngeo.git ; fi
+	if [ ! -e "ngeo" ] ; then git clone --depth 1 --branch=$(shell VERSION=$(MAIN_BRANCH) $(BUILD_DIR)/venv/bin/ngeo-version) https://github.com/camptocamp/ngeo.git ; fi
 	touch --no-create $@
 
 .PRECIOUS: ngeo/contribs/gmf/apps/%/index.html

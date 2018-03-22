@@ -1,9 +1,8 @@
 FROM camptocamp/geomapfish-build-dev:${major_version}
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
-ARG GIT_TAG
-ARG MAJOR_VERSION
-ENV TRAVIS_TAG=$TRAVIS_TAG MAJOR_VERSION=$MAJOR_VERSION
+ARG VERSION
+ENV VERSION=$VERSION
 
 COPY npm-packages /tmp/npm-packages
 
