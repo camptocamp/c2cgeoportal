@@ -242,6 +242,31 @@ login name.</p>
 <p>Where the <code class="docutils literal notranslate"><span class="pre">&lt;hostname&gt;</span></code> is directly linked to the virtual host.</p>
 </div>
 </div>
+<div class="section" id="migrating-to-a-new-server">
+<h2>Migrating to a new server<a class="headerlink" href="#migrating-to-a-new-server" title="Permalink to this headline">¶</a></h2>
+<p>If you are migrating to a new server, keep in mind that your variable
+<code class="docutils literal notranslate"><span class="pre">VISIBLE_WEB_HOST</span></code> must contain the exact host name that browsers should use
+to access your site. Consider the following migration scenario:
+your current site runs on server <code class="docutils literal notranslate"><span class="pre">old-site.customer.ch</span></code> with the visible host name
+<code class="docutils literal notranslate"><span class="pre">gis.customer.ch</span></code>. You wish to setup a new server <code class="docutils literal notranslate"><span class="pre">new-site.customer.ch</span></code>,
+install the application and test it, and then switch your DNS so that
+<code class="docutils literal notranslate"><span class="pre">gis.customer.ch</span></code> now points to <code class="docutils literal notranslate"><span class="pre">new-site.customer.ch</span></code>.
+To accomplish this, you must proceed as follows:</p>
+<blockquote>
+<div><ul class="simple">
+<li>set <code class="docutils literal notranslate"><span class="pre">VISIBLE_WEB_HOST</span></code> to <code class="docutils literal notranslate"><span class="pre">new-site.customer.ch</span></code></li>
+<li>install the application on <code class="docutils literal notranslate"><span class="pre">new-site.customer.ch</span></code> and test the application
+at <code class="docutils literal notranslate"><span class="pre">http://new-site.customer.ch</span></code></li>
+<li>later, when going live, you must:<ul>
+<li>change <code class="docutils literal notranslate"><span class="pre">VISIBLE_WEB_HOST</span></code> to <code class="docutils literal notranslate"><span class="pre">gis.customer.ch</span></code></li>
+<li>re-build, re-deploy - but do not test yet!</li>
+<li>change your DNS so that <code class="docutils literal notranslate"><span class="pre">gis.customer.ch</span></code> points to <code class="docutils literal notranslate"><span class="pre">new-site.customer.ch</span></code>.</li>
+<li>Now test your new live site.</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+</div>
 </div>
 
 
@@ -277,6 +302,7 @@ login name.</p>
 <li><a class="reference internal" href="#integrator-install-application-install-application">Install the application</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#migrating-to-a-new-server">Migrating to a new server</a></li>
 </ul>
 </li>
 </ul>

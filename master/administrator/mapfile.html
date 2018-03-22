@@ -84,14 +84,14 @@ should be used when necessary only, as these parameters do not take the <code cl
 resolution into account.</p>
 </div>
 <div class="section" id="wfs-getfeature">
-<h2>WFS GetFeature<a class="headerlink" href="#wfs-getfeature" title="Permalink to this headline">¶</a></h2>
+<span id="administrator-mapfile-wfs-getfeature"></span><h2>WFS GetFeature<a class="headerlink" href="#wfs-getfeature" title="Permalink to this headline">¶</a></h2>
 <p>Layers involved in the <code class="docutils literal notranslate"><span class="pre">box</span> <span class="pre">query</span></code> and <code class="docutils literal notranslate"><span class="pre">query</span> <span class="pre">builder</span></code> features should
 support WFS GetFeature. To support WFS GetFeature a <code class="docutils literal notranslate"><span class="pre">LAYER</span></code> should define
 a template:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TEMPLATE</span> <span class="s2">&quot;fooOnlyForWFSGetFeature&quot;</span>
 </pre></div>
 </div>
-<p>This is a fake template, but this is required.</p>
+<p>This is a fake template, but this is required by the querier and for the filter.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">LAYER</span></code> should also define metadata, with a <code class="docutils literal notranslate"><span class="pre">METADATA</span></code> section. For
 example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;gml_include_items&quot;</span> <span class="s2">&quot;all&quot;</span>
@@ -107,8 +107,11 @@ attributes that should be returned in GML responses. <code class="docutils liter
 the attributes of the layer should be returned.</div></blockquote>
 <p><code class="docutils literal notranslate"><span class="pre">gml_types</span></code></p>
 <blockquote>
-<div>Always set this to <code class="docutils literal notranslate"><span class="pre">auto</span></code>. This means that the layer’s field type
-information is obtained from the input feature driver (OGC).</div></blockquote>
+<div>Set this to <code class="docutils literal notranslate"><span class="pre">auto</span></code>. This means that the layer’s field type information is obtained from
+the input feature driver (OGC). If the type is not well interpreted (notably if you have a
+wrong operator within your filter), you can define manually your attribute type
+with <code class="docutils literal notranslate"><span class="pre">&quot;gml_&lt;attribute&gt;_type&quot;</span> <span class="pre">&quot;&lt;type&gt;&quot;</span></code> where <code class="docutils literal notranslate"><span class="pre">&lt;type&gt;</span></code> is one of
+these: <code class="docutils literal notranslate"><span class="pre">Integer</span></code>, <code class="docutils literal notranslate"><span class="pre">Long</span></code>, <code class="docutils literal notranslate"><span class="pre">Real</span></code>, <code class="docutils literal notranslate"><span class="pre">Character</span></code>, <code class="docutils literal notranslate"><span class="pre">Date</span></code> or <code class="docutils literal notranslate"><span class="pre">Boolean</span></code>.</div></blockquote>
 <p><code class="docutils literal notranslate"><span class="pre">gml_featureid</span></code></p>
 <blockquote>
 <div>References the name of layer’s primary key column. Setting this is mandatory
@@ -140,7 +143,7 @@ GetFeatureInfo.</p>
 </pre></div>
 </div>
 <p>As for WFS GetFeature, this is a fake template, but it is required.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">gml_include_items</span></code>, <code class="docutils literal notranslate"><span class="pre">gml_[geometry</span> <span class="pre">name]_type</span></code> and <code class="docutils literal notranslate"><span class="pre">gml_geometries</span></code>
+<p>The <code class="docutils literal notranslate"><span class="pre">gml_include_items</span></code>, <code class="docutils literal notranslate"><span class="pre">gml_&lt;geometry</span> <span class="pre">name&gt;_type</span></code> and <code class="docutils literal notranslate"><span class="pre">gml_geometries</span></code>
 <em>METADATA</em> variables should also be defined in the <code class="docutils literal notranslate"><span class="pre">LAYER</span></code>. For
 example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;gml_include_items&quot;</span> <span class="s2">&quot;all&quot;</span>
@@ -154,20 +157,20 @@ example:</p>
 <p><code class="docutils literal notranslate"><span class="pre">gml_geometries</span></code></p>
 <blockquote>
 <div>This is a string specifying the name used for geometry elements in
-GetFeatureInfo (GML) responses. This property, and <code class="docutils literal notranslate"><span class="pre">gml_[name]_type</span></code>,
+GetFeatureInfo (GML) responses. This property, and <code class="docutils literal notranslate"><span class="pre">gml_&lt;name&gt;_type</span></code>,
 should be set for the GetFeatureInfo responses to include the features’
 geometries instead of bboxes.</div></blockquote>
-<p><code class="docutils literal notranslate"><span class="pre">gml_[geometry</span> <span class="pre">name]_type</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">gml_&lt;geometry</span> <span class="pre">name&gt;_type</span></code></p>
 <blockquote>
 <div>This specifies the type of a geometry column. Specifying this property is
 necessary if geometries, instead of bboxes should be returned in
-GetFeatureInfo (GML) responses. <code class="docutils literal notranslate"><span class="pre">[geometry</span> <span class="pre">name]</span></code> should be replaced the string set
+GetFeatureInfo (GML) responses. <code class="docutils literal notranslate"><span class="pre">&lt;geometry</span> <span class="pre">name&gt;</span></code> should be replaced the string set
 with the <code class="docutils literal notranslate"><span class="pre">gml_geometries</span></code>. For example, if <code class="docutils literal notranslate"><span class="pre">geom_geometries</span></code> is set to
 <code class="docutils literal notranslate"><span class="pre">the_geom</span></code> then <code class="docutils literal notranslate"><span class="pre">gml_the_geom_type</span></code> should be used.
 The possible values are <code class="docutils literal notranslate"><span class="pre">point</span></code>, <code class="docutils literal notranslate"><span class="pre">multipoint</span></code>, <code class="docutils literal notranslate"><span class="pre">line</span></code>, <code class="docutils literal notranslate"><span class="pre">multiline</span></code>,
 <code class="docutils literal notranslate"><span class="pre">polygon</span></code>, <code class="docutils literal notranslate"><span class="pre">multipolygon</span></code>, if you do not set the right type
 for multi geometries only the first will be visible on the map.
-See also <a class="reference external" href="http://mapserver.org/ogc/wms_server.html#index-71">gml_[geometry name]_type</a>.</div></blockquote>
+See also <a class="reference external" href="http://mapserver.org/ogc/wms_server.html#index-71">gml_&lt;geometry name&gt;_type</a>.</div></blockquote>
 <p>See the <a class="reference external" href="http://mapserver.org/ogc/wms_server.html">WMS Server MapFile Documentation</a> for more detail.</p>
 </div>
 <div class="section" id="restricted-layer">
@@ -344,8 +347,8 @@ interface with for instance the following value for the given role:
 <code class="docutils literal notranslate"><span class="pre">columns=t.private</span></code>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">We also be able to use the <code class="docutils literal notranslate"><span class="pre">role_id</span></code> and <code class="docutils literal notranslate"><span class="pre">user_id</span></code> as
-variable substitution, but they are not avalable for cached query like:
+<p class="last">We are also able to use the <code class="docutils literal notranslate"><span class="pre">role_id</span></code> and <code class="docutils literal notranslate"><span class="pre">user_id</span></code> as
+variable substitution, but they are not available for cached query like:
 <code class="docutils literal notranslate"><span class="pre">GetCapabilities</span></code>, <code class="docutils literal notranslate"><span class="pre">GetLegendGraphic</span></code>, <code class="docutils literal notranslate"><span class="pre">DescribeFeatureType</span></code>.</p>
 </div>
 <p><a class="reference external" href="http://mapserver.org/cgi/runsub.html">MapServer documentation</a></p>

@@ -34,8 +34,56 @@
             
   <div class="section" id="filter-querier">
 <span id="integrator-querier"></span><h1>Filter (Querier)<a class="headerlink" href="#filter-querier" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="configuration">
-<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="filterable-layers">
+<h2>Filterable layers<a class="headerlink" href="#filterable-layers" title="Permalink to this headline">¶</a></h2>
+<p>Per default, layers are not filterable.
+If you wish to provide the filter functionality, proceed as follows:</p>
+<ul class="simple">
+<li>Verify your project vars file to make sure that the functionality <code class="docutils literal notranslate"><span class="pre">filterable_layers</span></code>
+is made available in your project template files:<ul>
+<li>If you have a custom definition for <code class="docutils literal notranslate"><span class="pre">functionalities.available_in_templates</span></code>
+or <code class="docutils literal notranslate"><span class="pre">admin_interface.available_functionalities</span></code>, then ensure that the value
+<code class="docutils literal notranslate"><span class="pre">filterable_layers</span></code> is contained in both of these.</li>
+<li>Alternatively, you can add these two paths in the <code class="docutils literal notranslate"><span class="pre">update_paths</span></code> variable to use
+the definition provided by <code class="docutils literal notranslate"><span class="pre">CONST_vars.yaml</span></code> (and keep the inheritance) instead of replacing it.</li>
+</ul>
+</li>
+<li>If you wish to provide layers for filtering independently of user authorization (in particular,
+for not-logged-in users), add the layer names as follows to your project vars file:</li>
+</ul>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">functionalities</span><span class="p">:</span>
+    <span class="n">anonymous</span><span class="p">:</span>
+        <span class="n">filterable_layers</span><span class="p">:</span>
+        <span class="o">-</span> <span class="n">my_layer_name_1</span>
+        <span class="o">-</span> <span class="n">my_layer_name_2</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>If you wish to provide layers for filtering only for specific user roles, define this in the
+admin interface as follows:<ul>
+<li>Add a functionality <code class="docutils literal notranslate"><span class="pre">filterable_layers</span></code>; as value provide the layer name.</li>
+<li>Edit the role that shall be able to use this filter, and activate the corresponding
+functionality checkbox.</li>
+</ul>
+</li>
+<li>Note that if there are functionalities associated to a role, then users with this role will
+not have access to any of the “anonymous” functionalities. Instead, you will need to activate
+all functionalities that this role shall be able to use in the admin interface or, for
+functionalities that all registered users shall have access to, via the
+<code class="docutils literal notranslate"><span class="pre">functionalities.registered</span></code> variable of your vars file.</li>
+</ul>
+</div>
+<div class="section" id="available-attributes-and-operators-in-filters">
+<h2>Available attributes and operators in filters<a class="headerlink" href="#available-attributes-and-operators-in-filters" title="Permalink to this headline">¶</a></h2>
+<p>All attributes defined as “exported” in the layer of your map server will be automatically available as
+filterable attribute. If the type, and so the operator on the attribute, is not adequate for
+filtering, you should adapt the type in your layer definition.
+See <a class="reference internal" href="../administrator/mapfile.html#administrator-mapfile-wfs-getfeature"><span class="std std-ref">WFS GetFeature</span></a> for more information (MapServer only).</p>
+</div>
+<div class="section" id="enumerate-available-attributes-for-a-layer">
+<h2>Enumerate available attributes for a layer<a class="headerlink" href="#enumerate-available-attributes-for-a-layer" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="step-1-project-configuration-file">
+<h3>Step 1: Project Configuration file<a class="headerlink" href="#step-1-project-configuration-file" title="Permalink to this headline">¶</a></h3>
 <p>In the filter panel, instead of the standard text field,
 it is possible to display combos providing the available values of
 the attributes. The values are automatically retrieved using a
@@ -84,6 +132,37 @@ the attribute <code class="docutils literal notranslate"><span class="pre">attri
 </div>
 </div>
 </div>
+<div class="section" id="step-2-administration-interface">
+<h3>Step 2: Administration interface<a class="headerlink" href="#step-2-administration-interface" title="Permalink to this headline">¶</a></h3>
+<p>The final step is to assign the enumerated attributes to the right layer in the administration.
+Go to the <code class="docutils literal notranslate"><span class="pre">metadata</span></code> page, add a <code class="docutils literal notranslate"><span class="pre">enumeratedAttributes</span></code> to an existing layer.
+The value is a single string or a list of attributes (that we defined earlier in the <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file)
+separated with a comma.</p>
+<p>Client-side documentation related to the enumeratedAttributes metadata is available here:
+<a class="reference external" href="https://camptocamp.github.io/ngeo/master/apidoc/gmfThemes.GmfMetaData.html">gmfThemes.GmfMetaData</a></p>
+</div>
+<div class="section" id="using-db-sessions">
+<h3>Using DB sessions<a class="headerlink" href="#using-db-sessions" title="Permalink to this headline">¶</a></h3>
+<p>As explained above, it is possible to get the attributes lists including
+for layers whose data are hosted in external databases, using the
+<code class="docutils literal notranslate"><span class="pre">dbsession:</span> <span class="pre">&quot;&lt;session</span> <span class="pre">name&gt;&quot;</span></code> parameter.</p>
+<p>Such <a class="reference external" href="http://docs.sqlalchemy.org/en/rel_1_0/orm/session_basics.html#getting-a-session">DB session objects</a>
+must be listed in the <code class="docutils literal notranslate"><span class="pre">DBSessions</span></code> dictionary created in c2cgeoportal
+models file. Its default value is:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">DBSessions</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;dbsession&quot;</span><span class="p">:</span> <span class="n">DBSession</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">DBSession</span></code> being the session object linked to the default database.</p>
+<p>You may add your own DB session objects in the application’s <code class="docutils literal notranslate"><span class="pre">models.py</span></code> file.
+For instance:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">c2cgeoportal.models</span> <span class="k">import</span> <span class="n">DBSessions</span>
+<span class="n">DBSessions</span><span class="p">[</span><span class="s1">&#39;some_db_session_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">SomeDbSessionObject</span>
+</pre></div>
+</div>
+</div>
+</div>
 </div>
 
 
@@ -98,7 +177,14 @@ the attribute <code class="docutils literal notranslate"><span class="pre">attri
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Filter (Querier)</a><ul>
-<li><a class="reference internal" href="#configuration">Configuration</a></li>
+<li><a class="reference internal" href="#filterable-layers">Filterable layers</a></li>
+<li><a class="reference internal" href="#available-attributes-and-operators-in-filters">Available attributes and operators in filters</a></li>
+<li><a class="reference internal" href="#enumerate-available-attributes-for-a-layer">Enumerate available attributes for a layer</a><ul>
+<li><a class="reference internal" href="#step-1-project-configuration-file">Step 1: Project Configuration file</a></li>
+<li><a class="reference internal" href="#step-2-administration-interface">Step 2: Administration interface</a></li>
+<li><a class="reference internal" href="#using-db-sessions">Using DB sessions</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

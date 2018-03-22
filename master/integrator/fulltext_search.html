@@ -191,9 +191,26 @@ default is 30.</li>
 <li><code class="docutils literal notranslate"><span class="pre">fulltextsearch_maxlimit</span></code> the max possible limit, default is 200.</li>
 </ul>
 </div>
+<div class="section" id="ranking-system">
+<h2>Ranking system<a class="headerlink" href="#ranking-system" title="Permalink to this headline">¶</a></h2>
+<p>By default, the full-text search uses <cite>tsvector</cite> and <cite>ts_rank_cd</cite> to rank your search results (See:
+<a class="reference external" href="https://www.postgresql.org/docs/9.0/static/textsearch-controls.html">textsearch-controls</a>. These methods
+are useful to handle language-based strings. That means for instance that plural nouns are the same as
+singular nouns. This system only checks if your search word exists in the result. That means that if you search
+<cite>B 12 Zug</cite>, <cite>B 120 Zug</cite> has the same weight because the system only see that the <cite>12</cite> exists in each case.</p>
+<p>Alternatively you can use the <cite>similarity</cite> system of the
+<cite>pg_trgm module &lt;https://www.postgresql.org/docs/9.0/static/pgtrgm.html&gt;</cite>. This is based only on the
+similarities of words, without language analysis, and it cares only about how near is your search with the
+result. <cite>12</cite> is nearer to <cite>12</cite> than <cite>120</cite>.
+To use this system, your request must contains the parameter <cite>rank_system=similarity</cite> and your database must
+have the pg_trgm extension:</p>
+<div class="code sql highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CREATE</span> <span class="n">EXTENSION</span> <span class="n">pg_trgm</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="using-the-unaccent-extension">
 <h2>Using the unaccent extension<a class="headerlink" href="#using-the-unaccent-extension" title="Permalink to this headline">¶</a></h2>
-<p>By the default the full text search is accent-sensitive.
+<p>By the default the full-text search is accent-sensitive.
 To make it accent-insensitive Postgres’s
 <a class="reference external" href="http://www.postgresql.org/docs/9.0/static/unaccent.html">unaccent extension</a>
 can be used.</p>
@@ -254,6 +271,7 @@ configuration is named ‘french’.</p>
 <li><a class="reference internal" href="#interface">Interface</a></li>
 <li><a class="reference internal" href="#lang">Lang</a></li>
 <li><a class="reference internal" href="#configuration">Configuration</a></li>
+<li><a class="reference internal" href="#ranking-system">Ranking system</a></li>
 <li><a class="reference internal" href="#using-the-unaccent-extension">Using the unaccent extension</a></li>
 </ul>
 </li>
