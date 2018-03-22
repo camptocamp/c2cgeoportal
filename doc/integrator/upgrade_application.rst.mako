@@ -51,7 +51,7 @@ For Docker (experimental):
    ./docker-run --home --image=camptocamp/geomapfish-build --version=<version> \
        c2cupgrade --force-docker --new-makefile=Makefile --makefile=<package>.mk
 
-Then follow the instruction
+Then follow the instructions.
 
 .. note:: Know issue
 
@@ -89,7 +89,7 @@ For Docker project:
 
    ./docker-run --home make upgrade
 
-Then follow the instruction
+Then follow the instructions.
 
 
 Convert a version 2.3 to Docker
@@ -103,7 +103,7 @@ Add ``UPGRADE_ARGS += --force-docker --new-makefile=Makefile`` in your ``<user>.
    git commit --message="Start upgrade"
    ./docker-run --home make --makefile=temp.mk upgrade
 
-Then follow the instruction
+Then follow the instructions.
 
 Remove the ``UPGRADE_ARGS`` in your ``<user>.mk`` file.
 
@@ -125,7 +125,7 @@ Add ``UPGRADE_ARGS += --nondocker --new-makefile=<package>.mk`` in the ``Makefil
    git commit --message="Start upgrade"
    ./docker-run --home make --new-makefile=<user>.mk upgrade
 
-Then follow the instruction
+Then follow the instructions.
 
 Remove the ``UPGRADE_ARGS`` in your ``Makefile``.
 
