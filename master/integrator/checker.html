@@ -34,9 +34,8 @@
             
   <div class="section" id="automated-check">
 <span id="integrator-checker"></span><h1>Automated check<a class="headerlink" href="#automated-check" title="Permalink to this headline">¶</a></h1>
-<p>c2cgeoportal applications include functionality for testing
-and assessing that the application is correctly functioning,
-ie. that its web services respond as expected.</p>
+<p>c2cgeoportal applications include functionality for testing and assessing that the application is correctly
+functioning, i.e. that its web services respond as expected.</p>
 <p>For that we have parts: a <em>checker</em> and a <em>check_collector</em>.</p>
 <p>Those (especially the collector) are meant to be used by a
 monitoring system like Nagios to check that the application is alive.</p>
@@ -51,7 +50,24 @@ monitoring system like Nagios to check that the application is alive.</p>
 </div>
 <p>You can access the health_check service with this kind of url:</p>
 <blockquote>
-<div><a class="reference external" href="http://example.com/main/wsgi/c2c/health_check?max_level=3">http://example.com/main/wsgi/c2c/health_check?max_level=3</a></div></blockquote>
+<div>&lt;project_url&gt;/c2c/health_check?max_level=3</div></blockquote>
+<p>The used levels with the default configuration (recommended):</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">1</span></code>: Vital checkers (quick checks).</li>
+<li><code class="docutils literal notranslate"><span class="pre">3</span></code>: Slow service check like print and GetCapabilities.</li>
+<li><code class="docutils literal notranslate"><span class="pre">10</span></code>: collector of different sites.</li>
+</ul>
+<p>See also: <a class="reference external" href="https://github.com/camptocamp/c2cwsgiutils/#health-checks">https://github.com/camptocamp/c2cwsgiutils/#health-checks</a></p>
+<p>The recommended URL that should be checked by e service like Pingdom:</p>
+<blockquote>
+<div>&lt;project_url&gt;/c2c/health_check?checks=check_collector</div></blockquote>
+<p>The recommended URL to use to validate the migration (<code class="docutils literal notranslate"><span class="pre">checker_url</span></code> in <code class="docutils literal notranslate"><span class="pre">proect.yaml.mako</span></code>):</p>
+<blockquote>
+<div>&lt;project_url&gt;/c2c/health_check?max_level=9</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For non Docker project the <code class="docutils literal notranslate"><span class="pre">&lt;project_url&gt;</span></code> should ends with <code class="docutils literal notranslate"><span class="pre">/wsgi</span></code>.</p>
+</div>
 <div class="section" id="checker">
 <h2>Checker<a class="headerlink" href="#checker" title="Permalink to this headline">¶</a></h2>
 <p>The checker use the following configuration structure in <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code>:</p>

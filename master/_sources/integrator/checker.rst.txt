@@ -3,9 +3,8 @@
 Automated check
 ===============
 
-c2cgeoportal applications include functionality for testing
-and assessing that the application is correctly functioning,
-ie. that its web services respond as expected.
+c2cgeoportal applications include functionality for testing and assessing that the application is correctly
+functioning, i.e. that its web services respond as expected.
 
 For that we have parts: a *checker* and a *check_collector*.
 
@@ -23,7 +22,27 @@ They integrate into c2cwsgiutils's health check service. The return code are:
 
 You can access the health_check service with this kind of url:
 
-    http://example.com/main/wsgi/c2c/health_check?max_level=3
+    <project_url>/c2c/health_check?max_level=3
+
+The used levels with the default configuration (recommended):
+
+* ``1``: Vital checkers (quick checks).
+* ``3``: Slow service check like print and GetCapabilities.
+* ``10``: collector of different sites.
+
+See also: https://github.com/camptocamp/c2cwsgiutils/#health-checks
+
+The recommended URL that should be checked by e service like Pingdom:
+
+    <project_url>/c2c/health_check?checks=check_collector
+
+The recommended URL to use to validate the migration (``checker_url`` in ``proect.yaml.mako``):
+
+    <project_url>/c2c/health_check?max_level=9
+
+.. note::
+
+    For non Docker project the ``<project_url>`` should ends with ``/wsgi``.
 
 Checker
 -------
