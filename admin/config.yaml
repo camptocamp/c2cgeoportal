@@ -84,6 +84,25 @@ vars:
         regex: "^#([A-Fa-f0-9]{{6}}|[A-Fa-f0-9]{{3}})$"
         error_message: "Expecting hex format for color, e.g. #007DCD"
 
+  smtp:
+    # Used to send email from various feature
+    host: psemail.epfl.ch
+
+  welcome_email:
+    # Used to send a welcome email for new user
+    email_from: info@camptocamp.com
+    email_subject: Welcome to GeoMapFish demo
+    email_body: |
+      Hello {user},
+
+      You have a new account on GeoMapFish demo: https://geomapfish-demo.camptocamp.com/2.3
+      Your user name is: {user}
+      Your password is: {password}
+
+      Sincerely yours
+      The GeoMapfish team
+
 environment: []
 no_interpreted:
   - admin_interface.map_base_layer
+  - welcome_email.email_body

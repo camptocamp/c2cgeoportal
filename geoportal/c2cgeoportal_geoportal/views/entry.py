@@ -38,7 +38,6 @@ import re
 from random import Random
 from math import sqrt
 from defusedxml.minidom import parseString
-from socket import gaierror
 from collections import Counter
 
 from pyramid.view import view_config
@@ -60,7 +59,7 @@ from c2cgeoportal_geoportal.lib.caching import get_region, invalidate_region,  \
     set_common_headers, NO_CACHE, PUBLIC_CACHE, PRIVATE_CACHE
 from c2cgeoportal_geoportal.lib.functionality import get_functionality, get_mapserver_substitution_params
 from c2cgeoportal_geoportal.lib.wmstparsing import parse_extent, TimeInformation
-from c2cgeoportal_geoportal.lib.email_ import send_email
+from c2cgeoportal_commons.lib.email_ import send_email_config
 from c2cgeoportal_geoportal.views.layers import get_layer_metadatas
 
 _ = TranslationStringFactory("c2cgeoportal")
@@ -1608,19 +1607,12 @@ class Entry:
         if error is not None:
             log.info(error)
             raise HTTPBadRequest("See server logs for details")
-        smtp_config = self.request.registry.settings["smtp"]
-        reset_password_config = self.request.registry.settings["reset_password"]
-        try:
-            send_email(
-                reset_password_config["email_from"], [user.email],
-                reset_password_config["email_body"].format(user=username, password=password).encode("utf-8"),
-                reset_password_config["email_subject"],
-                smtp_config,
-            )
 
-            return {
-                "success": True
-            }
-        except gaierror:
-            log.error("Unable to send the email.", exc_info=True)
-            raise HTTPBadRequest("See server logs for details")
+        send_email_config(
+            self.request.registry.settings, "reset_password", user.email,
+            user=username, password=password
+        )
+
+        return {
+            "success": True
+        }

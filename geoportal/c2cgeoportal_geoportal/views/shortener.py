@@ -40,7 +40,7 @@ from pyramid.view import view_config
 
 from c2cgeoportal_commons.models import DBSession
 from c2cgeoportal_commons.models.static import Shorturl
-from c2cgeoportal_geoportal.lib.email_ import send_email
+from c2cgeoportal_commons.lib.email_ import send_email_config
 from c2cgeoportal_geoportal.lib.caching import set_common_headers, NO_CACHE
 
 
@@ -141,23 +141,12 @@ class Shortener:
 
         email = email or user_email
 
-        smtp_config = self.request.registry.settings.get("smtp", {})
-        if \
-                email is not None and \
-                "email_from" in self.settings and \
-                "email_subject" in self.settings and \
-                "email_body" in self.settings:  # pragma: no cover
-            text = self.settings["email_body"].format(
+        if email is not None:  # pragma: no cover
+            send_email_config(
+                self.request.registry.settings, "shortener", email,
                 full_url=url,
                 short_url=s_url,
                 message=self.request.params.get("message", ""),
-            )
-            send_email(
-                self.settings["email_from"],
-                [email],
-                text.encode("utf-8"),
-                self.settings["email_subject"],
-                smtp_config
             )
 
         set_common_headers(
