@@ -297,9 +297,19 @@ vars:
     # tinyows_host: {host}
 
   resourceproxy:
-    # list of urls from which it is safe to load content
-    targets:
+    # List of urls from which it is safe to load content
+    targets: {}
     #   exempletargetname: http://www.camptocamp.com/?param1=%s&param2=%s
+
+  # List of allowed headers
+  allowed_headers:
+    - Cache-Control
+    - Content-Encoding
+    - Content-Language
+    - Content-Type
+    - Date
+    - ETag
+    - Vary
 
   fulltextsearch:
     defaultlimit: 30

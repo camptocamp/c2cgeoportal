@@ -89,18 +89,34 @@ class TestFulltextsearchView(TestCase):
 
         entry5 = FullTextSearch()
         entry5.label = "label5"
-        entry5.ts = func.to_tsvector("french", "params")
+        entry5.ts = func.to_tsvector("french", "lausanne")
         entry5.public = True
         entry5.params = {"floor": 5}
         entry5.actions = [{"action": "add_layer", "data": "layer1"}]
 
         entry6 = FullTextSearch()
         entry6.label = "label6"
-        entry6.ts = func.to_tsvector("french", "params")
+        entry6.ts = func.to_tsvector("french", "lausanne")
         entry6.interface = Interface("main")
         entry6.public = True
 
-        DBSession.add_all([user1, user2, role1, role2, entry1, entry2, entry3, entry4, entry5, entry6])
+        # To test the similarity ranking method
+        entry7 = FullTextSearch()
+        entry7.label = "A 7 simi"
+        entry7.ts = func.to_tsvector("french", "A 7 simi")
+        entry7.public = True
+
+        entry70 = FullTextSearch()
+        entry70.label = "A 70 simi"
+        entry70.ts = func.to_tsvector("french", "A 70 simi")
+        entry70.public = True
+
+        entry71 = FullTextSearch()
+        entry71.label = "A 71 simi"
+        entry71.ts = func.to_tsvector("french", "A 71 simi")
+        entry71.public = True
+
+        DBSession.add_all([user1, user2, role1, role2, entry1, entry2, entry3, entry4, entry5, entry6, entry71, entry70, entry7])
         transaction.commit()
 
     def teardown_method(self, _):
@@ -126,6 +142,12 @@ class TestFulltextsearchView(TestCase):
             FullTextSearch.label == "label5").delete()
         DBSession.query(FullTextSearch).filter(
             FullTextSearch.label == "label6").delete()
+        DBSession.query(FullTextSearch).filter(
+            FullTextSearch.label == "A 7 simi").delete()
+        DBSession.query(FullTextSearch).filter(
+            FullTextSearch.label == "A 70 simi").delete()
+        DBSession.query(FullTextSearch).filter(
+            FullTextSearch.label == "A 71 simi").delete()
 
         DBSession.query(Interface).filter(
             Interface.name == "main").delete()
@@ -358,7 +380,7 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request(
-            params=dict(query="params", limit=10)
+            params=dict(query="lausanne", limit=10)
         )
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
@@ -373,9 +395,24 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request(
-            params=dict(query="params", limit=10, interface="main")
+            params=dict(query="lausanne", limit=10, interface="main")
         )
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, FeatureCollection))
         self.assertEqual({feature.properties["label"] for feature in response.features}, set(["label5", "label6"]))
+
+    def test_rank_order_with_similarity(self):
+        from geojson.feature import FeatureCollection
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
+
+        request = self._create_dummy_request(
+            params=dict(query="simi", limit=3, ranksystem="similarity")
+        )
+        fts = FullTextSearchView(request)
+        response = fts.fulltextsearch()
+        self.assertTrue(isinstance(response, FeatureCollection))
+        self.assertEqual(len(response.features), 3)
+        self.assertEqual(response.features[0].properties["label"], "A 7 simi")
+        self.assertEqual(response.features[1].properties["label"], "A 70 simi")
+        self.assertEqual(response.features[2].properties["label"], "A 71 simi")
