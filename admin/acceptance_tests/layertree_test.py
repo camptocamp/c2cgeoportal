@@ -5,6 +5,8 @@ import pytest
 from . import skip_if_ci, AbstractViewsTests
 from .selenium.page import LayertreePage
 from selenium.common.exceptions import NoSuchElementException
+import itertools
+from unittest.mock import patch
 
 
 @pytest.fixture(scope='function')
@@ -135,6 +137,20 @@ class TestLayerTreeView(AbstractViewsTests):
             action = next(a for a in node['actions'] if a['name'] == 'unlink')
             assert 'http://localhost/layertree/unlink/{}/{}'.format(group_id, item_id) == action['url']
             test_app.delete(action['url'], status=200)
+
+    @patch(
+        'c2cgeoportal_admin.views.layertree.TranslationStringFactory',
+        new=lambda factory_domain: (str(factory_domain) + '_{}_').format)
+    def test_translation(self, test_app, layertree_test_data):
+        resp = self.get(test_app, '/nodes', status=200)
+        nodes = resp.json
+        all_items = itertools.chain.from_iterable(
+            [layertree_test_data[_type] for _type in [
+                'themes', 'groups', 'layers_v1', 'layers_wms', 'layers_wmts']])
+        for item in all_items:
+            node = next(n for n in nodes if n['id'] == item.id)
+            expected_factory_domain = 'c2cgeoportal_admin-client'
+            assert (expected_factory_domain + '_{}_').format(item.name) == node['translated_name']
 
     def test_unlink(self, test_app, layertree_test_data, dbsession):
         group = layertree_test_data['groups'][0]
