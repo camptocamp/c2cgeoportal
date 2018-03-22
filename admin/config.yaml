@@ -18,6 +18,8 @@ vars:
     map_zoom: 10
     map_fit_max_zoom: 14
 
+    layer_tree_max_nodes: 1000
+
     available_metadata:
       # Layers group
       - name: isExpanded
