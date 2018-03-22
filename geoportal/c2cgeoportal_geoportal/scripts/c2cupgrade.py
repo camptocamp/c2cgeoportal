@@ -232,7 +232,7 @@ class C2cUpgradeTool:
         try:
             resp, _ = requests.get(
                 self.project["checker_url"],
-                headers=self.project["checker_headers"],
+                headers=self.project.get("checker_headers"),
                 verify=False
             )
         except ConnectionRefusedError as e:
