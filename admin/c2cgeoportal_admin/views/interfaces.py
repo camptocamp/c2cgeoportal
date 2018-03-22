@@ -1,4 +1,7 @@
 from c2cgeoportal_commons.models.main import Interface
+
+from sqlalchemy.orm import subqueryload
+
 from functools import partial
 from pyramid.view import view_defaults
 from pyramid.view import view_config
@@ -29,6 +32,11 @@ class InterfacesViews(AbstractViews):
     _id_field = 'id'
     _model = Interface
     _base_schema = base_schema
+
+    def _base_query(self):
+        return self._request.dbsession.query(Interface). \
+            options(subqueryload('layers')). \
+            options(subqueryload('theme'))
 
     @view_config(route_name='c2cgeoform_index',
                  renderer='../templates/index.jinja2')
