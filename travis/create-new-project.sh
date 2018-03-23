@@ -32,3 +32,5 @@ git clean -fX
 ./docker-run make --makefile=travis.mk build testdb-docker
 # Create default theme
 ./docker-compose-run create-demo-theme
+./docker-compose-run make --makefile=travis.mk update-po
+./docker-compose-run make --makefile=travis.mk theme2fts

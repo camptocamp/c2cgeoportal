@@ -31,3 +31,7 @@ For non Docker upgrade have a look on the nondocker_CHANGELOG
 
    and replace `${host}${entry_point}` by `${host | confd_env}${entry_point | confd_env}`
    and `${mapserver_connection}` by `${mapserver_connection | confd_env}`
+
+8. Rename your l10n files with e.-g.:
+
+   mv geoportal/{{package}}_geoportal/locale/fr/LC_MESSAGES/{{package}}{,_geoportal}-client.po
