@@ -121,7 +121,7 @@ class TestInterface(AbstractViewsTests):
 
         interface = interface_test_data['interfaces'][0]
         test_app.delete('/interfaces/{}'.format(interface.id), status=200)
-        assert len(dbsession.query(Interface).filter(Interface.id == 1).all()) == 0
+        assert len(dbsession.query(Interface).filter(Interface.id == interface.id).all()) == 0
 
     def test_duplicate(self, interface_test_data, test_app):
         interface = interface_test_data['interfaces'][3]
