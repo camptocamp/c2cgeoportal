@@ -3,8 +3,8 @@
 Filter (Querier)
 ================
 
-Filterable layers
------------------
+Filterable layers (public)
+--------------------------
 Per default, layers are not filterable.
 If you wish to provide the filter functionality, proceed as follows:
 
@@ -29,10 +29,12 @@ If you wish to provide the filter functionality, proceed as follows:
             - my_layer_name_1
             - my_layer_name_2
 
+Filterable layers (private)
+---------------------------
 * If you wish to provide layers for filtering only for specific user roles, define this in the
   admin interface as follows:
 
-  - Add a functionality ``filterable_layers``; as value provide the layer name.
+  - Add a functionality ``filterable_layers``; as value provide the GeoMapFish layer name (not the WMS layer name).
 
   - Edit the role that shall be able to use this filter, and activate the corresponding
     functionality checkbox.
