@@ -72,6 +72,8 @@ def main():
     ])
 
     if options.home:
+        if options.root:
+            docker_cmd.append("--volume={home}:/root".format(home=os.environ["HOME"]))
         docker_cmd.append("--volume={home}:{home}".format(home=os.environ["HOME"]))
     else:
         docker_cmd.append("--volume={}:/home".format(build_volume_name + "-home"))
