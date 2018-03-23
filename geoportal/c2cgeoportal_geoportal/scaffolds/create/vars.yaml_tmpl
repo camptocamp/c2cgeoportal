@@ -98,7 +98,6 @@ vars:
 
       Sincerely yours
       The GeoMapfish team
-    smtp_server: smtp.example.com
 
   smtp:
     # Used to send email from various feature
@@ -109,7 +108,7 @@ vars:
     starttls: false
 
   reset_password:
-    # Used to send a confirmation email
+    # Used to send a reset password email
     email_from: info@camptocamp.com
     email_subject: New password generated for GeoMapFish
     email_body: |
@@ -117,6 +116,20 @@ vars:
 
       You have asked for an new password,
       the newly generated password is: {password}
+
+      Sincerely yours
+      The GeoMapfish team
+
+  welcome_email:
+    # Used to send a welcome email for new user
+    email_from: info@camptocamp.com
+    email_subject: Welcome to GeoMapFish
+    email_body: |
+      Hello {user},
+
+      You have a new account on GeoMapFish: https://geomapfish-demo.camptocamp.com/2.3
+      Your user name is: {user}
+      Your password is: {password}
 
       Sincerely yours
       The GeoMapfish team
@@ -161,3 +174,4 @@ update_paths:
 no_interpreted:
   - shortener.email_body
   - reset_password.email_body
+  - welcome_email.email_body

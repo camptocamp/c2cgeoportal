@@ -299,15 +299,20 @@ mapping:
       reset_password:
         type: map
         required: True
-        mapping:
+        mapping: &send_email
           email_from:
+            required: True
             type: str
           email_body:
+            required: True
             type: str
           email_subject:
+            required: True
             type: str
-          smtp_server:
-            type: str
+      welcome_email:
+        type: map
+        required: True
+        mapping: *send_email
       servers:
         <<: *free_dict
         required: True
@@ -322,6 +327,7 @@ mapping:
         type: map
         required: True
         mapping:
+          <<: *send_email
           base_url:
             type: str
             required: True
@@ -329,14 +335,6 @@ mapping:
             type: seq
             sequence:
               - type: str
-          email_from:
-            type: str
-          email_subject:
-            type: str
-          email_body:
-            type: str
-          smtp_server:
-            type: str
           length:
             type: int
       hide_capabilities:
