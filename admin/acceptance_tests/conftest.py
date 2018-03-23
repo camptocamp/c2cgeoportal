@@ -18,7 +18,7 @@ from sqlalchemy.exc import DBAPIError
 def dbsession(settings):
     generate_mappers()
     engine = get_engine(settings)
-    init_db(engine, force=True)
+    init_db(engine, settings['alembic_ini'], force=True)
     session_factory = get_session_factory(engine)
     session = get_tm_session(session_factory, transaction.manager)
     yield session

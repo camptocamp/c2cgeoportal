@@ -62,6 +62,7 @@ setup(
     install_requires=install_requires,
     extras_require={
         'tests': [
+            'c2c.template',
             'psycopg2-binary',
             'pytest',
             'pytest-cov',
