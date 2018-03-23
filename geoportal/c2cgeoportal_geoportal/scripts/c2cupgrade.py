@@ -32,7 +32,6 @@ import os
 import re
 import sys
 import argparse
-import httplib2
 import yaml
 import shutil
 import pkg_resources
@@ -42,6 +41,8 @@ from subprocess import check_call, check_output
 from argparse import ArgumentParser
 from alembic.config import Config
 from alembic import command
+import requests
+
 from c2cgeoportal_geoportal.lib.bashcolor import colorize, GREEN, YELLOW, RED
 
 REQUIRED_TEMPLATE_KEYS = ["package", "srid", "extent"]
@@ -228,12 +229,23 @@ class C2cUpgradeTool:
         getattr(self, "step{}".format(step))()
 
     def test_checkers(self):
-        http = httplib2.Http()
-        resp, _ = http.request(
-            self.project["checker_url"],
-            method="GET",
-            headers=self.project["checker_headers"]
-        )
+        try:
+            resp, _ = requests.get(
+                self.project["checker_url"],
+                headers=self.project.get("checker_headers"),
+                verify=False
+            )
+        except ConnectionRefusedError as e:
+            return False, "\n".join([
+                "Connection refused: {}",
+                "Run `curl {} '{}'` for more information."
+            ]).format(
+                e,
+                self.project["checker_url"],
+                ' '.join([
+                    '--header={}={}'.format(*i) for i in self.project["checker_headers"].items()
+                ])
+            )
         if resp.status < 200 or resp.status >= 300:
             return False, "\n".join([
                 "Checker error:",
@@ -554,7 +566,7 @@ class C2cUpgradeTool:
 
         with open("ngeo.diff", "w") as diff_file:
             check_call([
-                "git", "diff", "--",
+                "git", "diff", "--", "--staged",
                 "CONST_create_template/geoportal/{}_geoportal/templates".format(
                     self.project["project_package"]),
                 "CONST_create_template/geoportal/{}_geoportal/static-ngeo".format(
@@ -577,7 +589,7 @@ class C2cUpgradeTool:
 
         status = check_output(["git", "status", "--short", "CONST_create_template"]).decode("utf-8")
         status = [s for s in status.split("\n") if len(s) > 3]
-        status = [s[3:] for s in status if s.startswith(" M ")]
+        status = [s[3:] for s in status if s[:3].strip() == "M"]
         status = [s for s in status if not s.startswith(
             "CONST_create_template/{}/templates/".format(self.project["project_package"]),
         )]
@@ -590,7 +602,7 @@ class C2cUpgradeTool:
 
         if len(status) > 0:
             with open("create.diff", "w") as diff_file:
-                check_call(["git", "diff", "--"] + status, stdout=diff_file)
+                check_call(["git", "diff", "--staged", "--"] + status, stdout=diff_file)
 
             if os.path.getsize("create.diff") == 0:
                 self.run_step(step + 1)
