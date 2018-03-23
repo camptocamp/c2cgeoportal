@@ -313,6 +313,21 @@ mapping:
         type: map
         required: True
         mapping: *send_email
+      smtp:
+        type: map
+        mapping:
+          host:
+            type: str
+            required: True
+          ssl:
+            type: bool
+          user:
+            type: str
+          password:
+            type: str
+          starttls:
+            type: bool
+
       servers:
         <<: *free_dict
         required: True
