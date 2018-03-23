@@ -10,8 +10,8 @@ vars:
   dbhost: '{DOCKER_HOST_}'
   dbhost_slave: '{DOCKER_HOST_}'
   mapserv_allow: |
-    Allow from 127.0.0.1 ::1
-    Require ip 127.0.0.1 ::1
+    Allow from 127.0.0.1 ::1 {DOCKER_HOST_}
+    Require ip 127.0.0.1 ::1 {DOCKER_HOST_}
   waitress_port: 5000
   node_modules_path: "{directory}{ps}node_modules"
   tinyowsproxy:
