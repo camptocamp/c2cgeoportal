@@ -62,7 +62,7 @@ clean-all:
 	rm -f $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf
 	$(TOMCAT_OUTPUT_CMD_PREFIX) rm -rf $(PRINT_OUTPUT)/$(PRINT_WAR)
 	$(TOMCAT_OUTPUT_CMD_PREFIX) rm -rf $(PRINT_OUTPUT)/$(PRINT_WAR:.war=) 2> /dev/null || true
-	rm -rf .build
+	rm --force --recursive c2cgeoportal_commons c2cgeoportal_geoportal c2cgeoportal_admin .build
 
 .PHONY: build
 build: $(PRINT_OUTPUT_WAR) \
