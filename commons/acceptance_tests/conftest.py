@@ -8,7 +8,7 @@ import plaster
 from sqlalchemy.exc import DBAPIError
 import transaction
 
-from c2cgeoportal_commons.testing.initializedb import init_db
+from c2cgeoportal_commons.testing.initializedb import init_db, truncate_tables
 from c2cgeoportal_commons.testing import get_engine, get_session_factory, get_tm_session, generate_mappers
 from c2cgeoportal_commons.config import config
 
@@ -19,6 +19,7 @@ def dbsession(settings):
     generate_mappers()
     engine = get_engine(settings)
     init_db(engine, settings['alembic_ini'], force=True)
+    truncate_tables(engine)
     session_factory = get_session_factory(engine)
     session = get_tm_session(session_factory, transaction.manager)
     return session

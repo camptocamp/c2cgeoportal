@@ -104,6 +104,11 @@ WHERE schema_name = '{}';
     return row[0] == 1
 
 
+def truncate_tables(connection: Connection) -> None:
+    for t in Base.metadata.sorted_tables:
+        connection.execute('TRUNCATE TABLE {}.{} CASCADE;'.format(t.schema, t.name))
+
+
 def setup_test_data(dbsession: Session) -> None:
     from c2cgeoportal_commons.models.main import Role
     from c2cgeoportal_commons.models.static import User
