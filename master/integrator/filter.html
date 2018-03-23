@@ -34,8 +34,8 @@
             
   <div class="section" id="filter-querier">
 <span id="integrator-querier"></span><h1>Filter (Querier)<a class="headerlink" href="#filter-querier" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="filterable-layers">
-<h2>Filterable layers<a class="headerlink" href="#filterable-layers" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="filterable-layers-public">
+<h2>Filterable layers (public)<a class="headerlink" href="#filterable-layers-public" title="Permalink to this headline">¶</a></h2>
 <p>Per default, layers are not filterable.
 If you wish to provide the filter functionality, proceed as follows:</p>
 <ul class="simple">
@@ -58,10 +58,13 @@ for not-logged-in users), add the layer names as follows to your project vars fi
         <span class="o">-</span> <span class="n">my_layer_name_2</span>
 </pre></div>
 </div>
+</div>
+<div class="section" id="filterable-layers-private">
+<h2>Filterable layers (private)<a class="headerlink" href="#filterable-layers-private" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>If you wish to provide layers for filtering only for specific user roles, define this in the
 admin interface as follows:<ul>
-<li>Add a functionality <code class="docutils literal notranslate"><span class="pre">filterable_layers</span></code>; as value provide the layer name.</li>
+<li>Add a functionality <code class="docutils literal notranslate"><span class="pre">filterable_layers</span></code>; as value provide the GeoMapFish layer name (not the WMS layer name).</li>
 <li>Edit the role that shall be able to use this filter, and activate the corresponding
 functionality checkbox.</li>
 </ul>
@@ -177,7 +180,8 @@ For instance:</p>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Filter (Querier)</a><ul>
-<li><a class="reference internal" href="#filterable-layers">Filterable layers</a></li>
+<li><a class="reference internal" href="#filterable-layers-public">Filterable layers (public)</a></li>
+<li><a class="reference internal" href="#filterable-layers-private">Filterable layers (private)</a></li>
 <li><a class="reference internal" href="#available-attributes-and-operators-in-filters">Available attributes and operators in filters</a></li>
 <li><a class="reference internal" href="#enumerate-available-attributes-for-a-layer">Enumerate available attributes for a layer</a><ul>
 <li><a class="reference internal" href="#step-1-project-configuration-file">Step 1: Project Configuration file</a></li>
