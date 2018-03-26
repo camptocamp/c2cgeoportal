@@ -473,13 +473,8 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
             print("\n".join(errors))
             return []
 
-        wms_getcap_url = add_url_params(url, {
-            "SERVICE": "WMS",
-            "VERSION": "1.1.1",
-            "REQUEST": "GetCapabilities",
-        })
-
-        hostname = urlsplit(url).hostname
+        url_split = urlsplit(url)
+        hostname = url_split.hostname
         if url not in self.wmscap_cache:
             print("Get WMS GetCapabilities for URL: {}".format(url))
             self.wmscap_cache[url] = None
@@ -488,7 +483,14 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
             http = httplib2.Http()
             h = {}
             if hostname == "localhost":  # pragma: no cover
-                h["Host"] = self.package["host"]
+                url = url_split._replace(netloc=os.environ["DOCKER_HOST_"]).geturl()
+                h["Host"] = self.config["host"]
+
+            wms_getcap_url = add_url_params(url, {
+                "SERVICE": "WMS",
+                "VERSION": "1.1.1",
+                "REQUEST": "GetCapabilities",
+            })
             try:
                 resp, content = http.request(wms_getcap_url, method="GET", headers=h)
 
@@ -514,21 +516,22 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
 
         wmscap = self.wmscap_cache[url]
 
-        wfs_descrfeat_url = add_url_params(url, {
-            "SERVICE": "WFS",
-            "VERSION": "1.1.0",
-            "REQUEST": "DescribeFeatureType",
-        })
-
         if url not in self.featuretype_cache:
-            print("Get WFS DescribeFeatureType for URL: {}".format(wfs_descrfeat_url))
+            print("Get WFS DescribeFeatureType for URL: {}".format(url))
             self.featuretype_cache[url] = None
 
             # forward request to target (without Host Header)
             http = httplib2.Http()
             h = {}
             if hostname == "localhost":  # pragma: no cover
-                h["Host"] = self.package["host"]
+                url = url_split._replace(netloc=os.environ["DOCKER_HOST_"]).geturl()
+                h["Host"] = self.config["host"]
+
+            wfs_descrfeat_url = add_url_params(url, {
+                "SERVICE": "WFS",
+                "VERSION": "1.1.0",
+                "REQUEST": "DescribeFeatureType",
+            })
             try:
                 resp, content = http.request(wfs_descrfeat_url, method="GET", headers=h)
             except Exception as e:  # pragma: no cover
@@ -538,7 +541,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                     RED,
                 ))
                 if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
-                    return []
+                    return [], []
                 else:
                     raise
 
@@ -550,7 +553,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                     RED,
                 ))
                 if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
-                    return []
+                    return [], []
                 else:
                     raise Exception("Aborted")
 
@@ -571,7 +574,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                 print(colorize(str(e), RED))
                 print("URL: {}\nxml:\n{}".format(wfs_descrfeat_url, content))
                 if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
-                    return []
+                    return [], []
                 else:
                     raise
             except AttributeError:
@@ -582,14 +585,14 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                 ))
                 print("URL: {}\nxml:\n{}".format(wfs_descrfeat_url, content))
                 if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
-                    return []
+                    return [], []
                 else:
                     raise
         else:
             featurestype = self.featuretype_cache[url]
 
         if featurestype is None:
-            return []
+            return [], []
 
         layers = [layer]
         if wmscap is not None and layer in list(wmscap.contents):
