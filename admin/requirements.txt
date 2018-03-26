@@ -3,6 +3,7 @@ c2cgeoportal_commons
 c2cwsgiutils
 colander
 deform
+passwordgenerator
 pyramid
 pyramid_debugtoolbar
 pyramid_jinja2
