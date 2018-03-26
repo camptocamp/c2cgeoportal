@@ -184,6 +184,8 @@ vars:
     map_y: 5860000
     map_zoom: 10
 
+    layer_tree_max_nodes: 1000
+
     # The list of available variable names for the `Metadatas` form.
     available_metadata:
       # Layers group

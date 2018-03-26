@@ -175,6 +175,8 @@ mapping:
         type: map
         required: True
         mapping:
+          layer_tree_max_nodes:
+            type: int
           map_base_layer:
             type: str
           map_x:
