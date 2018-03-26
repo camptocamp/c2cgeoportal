@@ -57,6 +57,7 @@ setup(
     zip_safe=False,
     install_requires=[
         'babel',
+        'c2cgeoform',
         'ColanderAlchemy>=0.3.2',  # why not with c2cgeoform ?
         'deform',
         'lingua>=2.4',
