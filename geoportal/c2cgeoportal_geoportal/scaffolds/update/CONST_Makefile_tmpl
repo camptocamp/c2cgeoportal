@@ -101,10 +101,15 @@ APP_JS_FILES = $(shell find geoportal/$(PACKAGE)_geoportal/static-ngeo/js geopor
 APP_JS_MAKO_FILES += $(shell find geoportal/$(PACKAGE)_geoportal/static-ngeo/js geoportal/$(PACKAGE)_geoportal/static-ngeo/components $(FIND_OPTS) -name "*.js.mako" -print 2> /dev/null)
 APP_JS_JINJA_FILES += $(shell find geoportal/$(PACKAGE)_geoportal/static-ngeo/js geoportal/$(PACKAGE)_geoportal/static-ngeo/components $(FIND_OPTS) -name "*.js.jinja" -print 2> /dev/null)
 APP_JS_FILES +=  $(APP_JS_MAKO_FILES:.mako=) $(APP_JS_JINJA_FILES:.jinja=)
+ifneq ($(ES6), FALSE)
+APP_HTML_FILES += $(addprefix geoportal/$(PACKAGE)_geoportal/static-ngeo/js/apps/, $(addsuffix .html, $(NGEO_INTERFACES)))
+APP_DIRECTIVES_PARTIALS_FILES = $(shell find geoportal/$(PACKAGE)_geoportal/static-ngeo/js geoportal/$(PACKAGE)_geoportal/static-ngeo/partials geoportal/$(PACKAGE)_geoportal/static-ngeo/js -type f -name '*.html' 2> /dev/null)
+else
 APP_HTML_FILES += $(addprefix geoportal/$(PACKAGE)_geoportal/templates/, $(addsuffix .html, $(NGEO_INTERFACES)))
 NGEO_DIRECTIVES_PARTIALS_FILES = $(shell ls -1 /usr/lib/node_modules/$(NGEO_PACKAGE)/src/directives/partials/*.html 2> /dev/null)
 GMF_DIRECTIVES_PARTIALS_FILES = $(shell ls -1 /usr/lib/node_modules/$(NGEO_PACKAGE)/contribs/gmf/src/directives/partials/*.html 2> /dev/null)
 APP_DIRECTIVES_PARTIALS_FILES = $(shell find geoportal/$(PACKAGE)_geoportal/static-ngeo/components geoportal/$(PACKAGE)_geoportal/static-ngeo/partials geoportal/$(PACKAGE)_geoportal/static-ngeo/js -type f -name '*.html' 2> /dev/null)
+endif
 LESS_FILES += $(shell find geoportal/$(PACKAGE)_geoportal/static-ngeo/less geoportal/$(PACKAGE)_geoportal/static-ngeo/components -type f -name '*.less' 2> /dev/null)
 NGEO_GMF_FONTS = $(addprefix geoportal/$(PACKAGE)_geoportal/static-ngeo/fonts/gmf-icons, .woff .ttf .eot)
 NGEO_FONTAWESOME_FONTS = $(addprefix geoportal/$(PACKAGE)_geoportal/static-ngeo/fonts/fontawesome-webfont, .woff .woff2 .ttf .eot)
@@ -114,13 +119,11 @@ L10N_CLIENT_POSTFIX ?= client
 L10N_SERVER_POSTFIX ?= server
 CLIENT_LOCALISATION_RULES = $(addprefix /build/lang-client-, $(LANGUAGES))
 ANGULAR_LOCALES_FILES = $(addprefix $(APP_OUTPUT_DIR)/angular-locale_, $(addsuffix .js, $(LANGUAGES)))
-NGEO_OUTPUT_JS_INTERFACES_FILES = $(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .js, $(NGEO_INTERFACES)))
-NGEO_OUTPUT_CSS_INTERFACES_FILES = $(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .css, $(NGEO_INTERFACES)))
 NGEO_OUTPUT_FILES = $(JSON_CLIENT_LOCALISATION_FILES) \
-	$(APP_OUTPUT_DIR)/templatecache.js \
-	$(NGEO_OUTPUT_JS_INTERFACES_FILES) \
-	$(NGEO_OUTPUT_CSS_INTERFACES_FILES) \
 	$(ANGULAR_LOCALES_FILES)
+ifeq ($(ES6), FALSE)
+NGEO_OUTPUT_FILES += $(NGEO_OUTPUT_JS_INTERFACES_FILES) \
+	$(APP_OUTPUT_DIR)/templatecache.js
 NGEO_LIBS_JS_FILES += \
 	/usr/lib/node_modules/jquery/dist/jquery.min.js \
 	/usr/lib/node_modules/angular/angular.min.js \
@@ -141,9 +144,14 @@ NGEO_LIBS_JS_FILES += \
 	/usr/lib/node_modules/jsts/dist/jsts.min.js \
 	/usr/lib/node_modules/moment/min/moment.min.js \
 	/usr/lib/node_modules/url-polyfill/url-polyfill.min.js \
-	/usr/lib/node_modules/$(NGEO_PACKAGE)/third-party/jquery-ui/jquery-ui.min.js \
-	/usr/lib/node_modules/jquery-datetimepicker/build/jquery.datetimepicker.full.min.js
-NGEO_PROJECT_LIBS_JS_FILES ?=
+	/usr/lib/node_modules/jquery-datetimepicker/build/jquery.datetimepicker.full.min.js \
+	/usr/lib/node_modules/$(NGEO_PACKAGE)/third-party/jquery-ui/jquery-ui.min.js
+else
+NGEO_OUTPUT_JS_INTERFACES_FILES = $(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .js, $(NGEO_INTERFACES)))
+NGEO_OUTPUT_CSS_INTERFACES_FILES = $(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .css, $(NGEO_INTERFACES)))
+NGEO_OUTPUT_FILES += $(NGEO_OUTPUT_CSS_INTERFACES_FILES)
+NGEO_OUTPUT_FILES += .build/apps.timestamp
+endif
 
 # i18n
 I18N_SOURCE_FILES += $(APP_HTML_FILES) \
@@ -369,8 +377,12 @@ docker-build:
 build: $(BUILD_RULES)
 
 .PHONY: checks
-checks: flake8 $(CLIENT_CHECK_RULE) $(NGEO_OUTPUT_JS_INTERFACES_FILES) $(NGEO_OUTPUT_CSS_INTERFACES_FILES) \
-	git-attributes yamllint
+checks: flake8 $(CLIENT_CHECK_RULE)	git-attributes yamllint
+ifeq ($(ES6), FALSE)
+checks: $(NGEO_OUTPUT_JS_INTERFACES_FILES) $(NGEO_OUTPUT_CSS_INTERFACES_FILES)
+else
+checks: .build/apps.timestamp
+endif
 
 .PHONY: git-attributes
 git-attributes:
@@ -547,11 +559,13 @@ $(APP_OUTPUT_DIR)/angular-locale_%.js: /usr/lib/node_modules/$(NGEO_PACKAGE)/git
 	rm --force $@
 	cp /opt/angular-locale/angular-locale_`(grep $* language_mapping || echo $*) | cut --delimiter = --fields 2 | tr --delete '\r\n'`.js $@
 
+ifeq ($(ES6), FALSE)
 $(APP_OUTPUT_DIR)/%.js: /build/%.js $(NGEO_LIBS_JS_FILES) $(NGEO_PROJECT_LIBS_JS_FILES)
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	awk 'FNR==1{print ""}1' $(NGEO_LIBS_JS_FILES) $(NGEO_PROJECT_LIBS_JS_FILES) $< > $@
 	sed -i '/^\/\/# sourceMappingURL=.*\.map$$/d' $@
+endif
 
 .PRECIOUS: geoportal/$(PACKAGE)_geoportal/static-ngeo/fonts/gmf-icons.%
 geoportal/$(PACKAGE)_geoportal/static-ngeo/fonts/gmf-icons.%: /usr/lib/node_modules/$(NGEO_PACKAGE)/contribs/gmf/fonts/gmf-icons.%
@@ -565,6 +579,7 @@ geoportal/$(PACKAGE)_geoportal/static-ngeo/fonts/fontawesome-webfont.%: /usr/lib
 	mkdir --parent $(dir $@)
 	cp $< $@
 
+ifeq ($(ES6), FALSE)
 $(APP_OUTPUT_DIR)/%.css: \
 		geoportal/$(PACKAGE)_geoportal/static-ngeo/less/%.less \
 		$(LESS_FILES) \
@@ -573,10 +588,18 @@ $(APP_OUTPUT_DIR)/%.css: \
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	lessc $(LESS_ARGS) $< $@
+endif
 
+ifeq ($(ES6), FALSE)
 $(APP_OUTPUT_DIR)/images/: /usr/lib/node_modules/$(NGEO_PACKAGE)/third-party/jquery-ui/images/
+else
+$(APP_OUTPUT_DIR)/images/: /usr/lib/node_modules/jquery-ui/themes/base/images
+endif
+	$(PRERULE_CMD)
 	mkdir --parent $@
 	cp -r $</* $@
+
+ifeq ($(ES6), FALSE)
 
 .PRECIOUS: /build/%.json
 /build/%.json: /usr/lib/node_modules/$(NGEO_PACKAGE)/buildtools/mako_build.json
@@ -620,6 +643,21 @@ $(APP_OUTPUT_DIR)/templatecache.js: /build/gmftemplatecache.js
 		$(PACKAGE)_partials:geoportal/$(PACKAGE)_geoportal/static-ngeo/partials \
 		$(PACKAGE)_js:geoportal/$(PACKAGE)_geoportal/static-ngeo/js" \
 		--var "app=$(PACKAGE)" $< > $@
+
+else
+
+.PRECIOUS: .build/apps.timestamp
+.build/apps.timestamp: $(OL_JS_FILES) $(NGEO_JS_FILES) $(APP_JS_FILES) \
+		$(APP_HTML_FILES) webpack.apps.js \
+		.build/node_modules.timestamp
+		$(LESS_FILES) \
+		$(NGEO_FONTS) \
+		$(APP_OUTPUT_DIR)/images/
+	$(PRERULE_CMD)
+	NODE_ENV=prod node_modules/.bin/webpack
+	touch $@
+
+endif
 
 /build/eslint.timestamp: $(APP_JS_FILES)
 	$(PRERULE_CMD)
