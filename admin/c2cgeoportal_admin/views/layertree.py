@@ -30,7 +30,9 @@ class LayerTreeViews():
     @view_config(route_name='layertree',
                  renderer='../templates/layertree.jinja2')
     def index(self):
-        return {}
+        node_limit = self._request.registry.settings['admin_interface'].get('layer_tree_max_nodes')
+        display_layertree = self._dbsession.query(TreeItem).count() < node_limit
+        return {'display_layertree': display_layertree}
 
     @view_config(route_name='layertree_nodes',
                  renderer='json')

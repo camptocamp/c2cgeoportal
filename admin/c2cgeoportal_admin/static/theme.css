@@ -43,3 +43,7 @@
 .item-theme .deform-close-button {
   visibility: hidden;
 }
+
+#layertree .alert-info {
+  margin-top : 30px;
+}
