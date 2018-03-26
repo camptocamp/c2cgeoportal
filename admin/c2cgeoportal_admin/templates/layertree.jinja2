@@ -17,19 +17,25 @@
 
 {% block content %}
 <div id="layertree" class="container-fluid">
-
     <div id="toolbar">
+      {% if display_layertree %}
       <div class="btn-group">
           <button id="layertree-expand" type="button" class="btn btn-default"><span class="glyphicon glyphicon-chevron-down"></span> {{_("Expand all")}}</button>
           <button id="layertree-collapse" type="button" class="btn btn-default"><span class="glyphicon glyphicon-chevron-up"></span> {{_("Collapse all")}}</button>
       </div>
+      {% endif %}
       <div class="btn-group">
         <a id="layertree-ordering" class="btn btn-default" href="{{request.route_url('layertree_ordering')}}"><span class="glyphicon glyphicon-sort"></span> {{_("Edit themes order")}}</a>
       </div>
     </div>
-
+    {% if display_layertree %}
     <table id="layertree-table" class="tree table table-condensed table-hover"></table>
-
+    {% else %}
+    <div class="alert alert-info fade in">
+      <strong>{{_("Warning! ")}}</strong>{{_("Current layer tree has too many nodes and will not be displayed. Please use the")}}
+      <a href="{{request.route_url('c2cgeoform_index', table='themes')}}">{{_("theme tab.")}}</a>
+    </div>
+    {% endif %}
     <script type="text/javascript">
       $(function() {
 
