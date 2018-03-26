@@ -3,9 +3,11 @@
 !commons/c2cgeoportal_commons/
 !commons/setup.py
 !commons/README.md
+!commons/requirements.txt
 !geoportal/c2cgeoportal_geoportal/
 !geoportal/setup.py
 !geoportal/MANIFEST.in
+!geoportal/requirements.txt
 !admin/c2cgeoportal_admin/
 !admin/setup.py
 !admin/MANIFEST.in

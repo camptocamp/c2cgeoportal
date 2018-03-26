@@ -1,64 +1,74 @@
--r fixversions.txt
 alabaster==0.7.10  # Doc theme
+alembic==0.9.9  # geoportal
 Babel==2.5.3  # i18n
 boto==2.48.0  # Tile generation
-bottle==0.12.13  # i18n
+bottle==0.12.13  # geoportal
 c2c.cssmin==0.7.dev6  # CGXP build
 c2c.template==2.0.9  # geoportal
 c2cgeoform==2.0.dev20180325  # commons
 codacy-coverage==1.3.11  # Codacy send report
 codespell==1.12.0  # Lint
+colander==1.4  # commons, admin
 ColanderAlchemy==0.3.3  # commons
 coverage==4.5.1  # Build coverage XML for Codacy
 dateutils==0.6.6  # geoportal pcreate
-deform==2.0.5  # commons
+deform==2.0.5  # commons, admin
 defusedxml==0.5.0  # geoportal
 dogpile.cache==0.6.5  # geoportal
 flake8==3.5.0  # lint
 flake8-copyright==0.2.0  # lint
 flake8-mypy==17.8.0  # lint
 Fiona==1.7.11.post1  # geoportal raster
-GeoAlchemy2==0.4.2  # geoportal
+GeoAlchemy2==0.4.2  # commons, geoportal
 geojson==2.3.0  # geoportal
 glob2==0.6  # ngeo
 htmlmin==0.1.12  # ngeo
 httplib2==0.11.0  # geoportal
 ipcalc==1.99.0  # geoportal
+iso8601==0.1.11  # deform, by default the version 0.1.12 is installed and is incompatible with deform, rq.filter: <=0.1.11
 isodate==0.6.0  # geoportal
 Jinja2==2.10  # c2c.template
 JSTools==1.0  # CGXP build
 lingua==4.13  # i18n
+Mako==1.0.7  # geoportal
 mccabe==0.6.1  # lint
 mypy==0.580  # lint
 OWSLib==0.16.0  # geoportal
-papyrus==2.3  # geoportal
+papyrus==2.3  # commons, geoportal
 PasteScript==2.0.2  # geoportal pcreate
 pep8==1.7.1  # lint
 pep8-naming==0.5.0  # Lint
 Pillow==5.0.0  # Tile generation
 polib==1.1.0  # i18n
+psycopg2-binary==2.7.4  # geoportal
 pycrypto==2.6.1  # geoportal
 pyflakes==1.6.0  # lint
 Pygments==2.2.0  # doc
 pylint==1.8.3  # lint
-pyproj==1.9.5.1  # geoportal
+pyramid==1.9.1
 https://github.com/camptocamp/pyramid_closure/archive/23b45f7989cf471dce46dabb8516537bae0a2789.zip#egg=pyramid_closure  # ngeo
 pyramid_debugtoolbar==4.4  # geoportal
 pyramid_jinja2==2.7  # admin
-pyramid-mako==1.0.2  # geoportal
-pyramid-multiauth==0.9.0  # geoportal
+pyramid_mako==1.0.2  # geoportal
+pyramid_multiauth==0.9.0  # geoportal
+pyramid_tm==2.2  # geoportal
 pytest-cov==2.5.1  # tests
 pytest-selenium==1.12.0  # admin tests
 python-dateutil==2.6.1  # geoportal, rq.filter: <2.7.0
 PyYAML==3.12  # geoportal
-redis==2.10.6  # geoportal cache
 rasterio==1.0a12  # geoportal raster
+requests==2.18.4  # geoportal
+redis==2.10.6  # geoportal cache
 Shapely==1.6.4.post1  # geoportal
+simplejson==3.13.2  # geoportal
 Sphinx==1.7.2  # doc
 sphinx-prompt==1.0.0  # doc
+SQLAlchemy==1.2.5
 tilecloud==0.5.1  # Tile generation
 tilecloud-chain==1.4.1  # Tile generation
+transaction==2.2.0  # commons, geoportal
 transifex-client==0.12.5  # Makefile, rq.filter: !=0.13.0, !=0.13.1
+translationstring==1.3  # admin
 virtualenv==15.2.0  # Makefile
 waitress==1.1.0  # pcreate
 WebOb==1.7.4  # geoportal test

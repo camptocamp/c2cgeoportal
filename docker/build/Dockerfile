@@ -15,7 +15,7 @@ RUN \
   apt-get clean && \
   rm --recursive --force /var/lib/apt/lists/*
 
-COPY requirements.txt fixversions.txt /tmp/
+COPY requirements.txt /tmp/
 
 RUN \
   cd /tmp && \

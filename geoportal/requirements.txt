@@ -1,0 +1,36 @@
+alembic
+bottle
+c2cgeoportal_commons[upgrade]
+c2cwsgiutils
+c2c.template>=2.0.7  # Makefile
+dateutils
+defusedxml
+dogpile.cache>=0.6
+Fiona
+GeoAlchemy2
+geojson
+httplib2
+ipcalc
+isodate  # WMST support
+lingua
+Mako
+OWSLib>=0.6.0
+papyrus
+PasteScript
+psycopg2-binary
+pycrypto
+pyramid<=1.9.99
+pyramid_closure
+pyramid_debugtoolbar  # Needed by the development.ini
+pyramid_mako  # to render the HTML files
+pyramid_multiauth
+pyramid_tm
+python-dateutil
+PyYAML
+rasterio
+requests
+redis
+Shapely
+simplejson
+SQLAlchemy
+transaction

@@ -32,24 +32,19 @@ import os
 from setuptools import setup, find_packages
 
 
-HERE = os.path.abspath(os.path.dirname(__file__))
-
 VERSION = os.environ.get('VERSION', 'dev')
 
-with open(os.path.join(HERE, 'README.md')) as f:
+with open('README.md') as f:
     README = f.read()
 
-with open(os.path.join(HERE, 'requirements.txt')) as f:
-    requires = f.read().splitlines()
-# remove editable:
-requires = [r for r in requires if r[0:2] != '-e'] + \
-    ['c2cgeoportal-commons==' + VERSION, 'c2cgeoform']
+with open('requirements.txt') as f:
+    install_requires = f.read().splitlines()
 
-with open(os.path.join(HERE, 'requirements-dev.txt')) as f:
+with open('requirements-dev.txt') as f:
     tests_require = f.read().splitlines()
 
 setup(
-    name='c2cgeoportal-admin',
+    name='c2cgeoportal_admin',
     version=VERSION,
     description='c2cgeoportal admin',
     long_description=README,
@@ -71,7 +66,7 @@ setup(
     extras_require={
         'testing': tests_require,
     },
-    install_requires=requires,
+    install_requires=install_requires,
     entry_points={
         'paste.app_factory': [
             'main = c2cgeoportal_admin:main',

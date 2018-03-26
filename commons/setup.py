@@ -35,8 +35,11 @@ README = open('README.md').read()
 
 VERSION = os.environ.get('VERSION', 'dev')
 
+with open('requirements.txt') as f:
+    install_requires = f.read().splitlines()
+
 setup(
-    name="c2cgeoportal-commons",
+    name="c2cgeoportal_commons",
     version=VERSION,
     description="c2cgeoportal commons",
     long_description=README,
@@ -55,22 +58,21 @@ setup(
     packages=find_packages(exclude=["tests.*"]),
     include_package_data=True,
     zip_safe=False,
-    install_requires=[
-        'babel',
-        'c2cgeoform',
-        'ColanderAlchemy>=0.3.2',  # why not with c2cgeoform ?
-        'deform',
-        'lingua>=2.4',
-        'papyrus',
-        'pyproj',  # sudo apt install python3-dev", why not with c2cgeoform ?
-    ],
+    install_requires=install_requires,
     extras_require={
-        'testing': [
+        'tests': [
             'psycopg2-binary',
             'pytest',
             'pytest-cov',
             'flake8',
             'PyYAML',
+        ],
+        'testing': [
+            'transaction',
+        ],
+        'upgrade': [
+            'alembic',
+            'psycopg2-binary',
         ],
     },
 )
