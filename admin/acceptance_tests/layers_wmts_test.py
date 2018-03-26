@@ -147,7 +147,7 @@ class TestLayerWMTS(AbstractViewsTests):
 
         resp = form.submit('submit')
         assert str(layer.id) == re.match(
-            'http://localhost{}/(.*)'.format(self._prefix),
+            'http://localhost{}/(.*)\?msg_col=submit_ok'.format(self._prefix),
             resp.location).group(1)
 
         dbsession.expire(layer)
@@ -187,7 +187,9 @@ class TestLayerWMTS(AbstractViewsTests):
         layer = dbsession.query(LayerWMTS). \
             filter(LayerWMTS.name == 'clone'). \
             one()
-        assert str(layer.id) == re.match('http://localhost/layers_wmts/(.*)', resp.location).group(1)
+        assert str(layer.id) == re.match(
+            'http://localhost/layers_wmts/(.*)\?msg_col=submit_ok',
+            resp.location).group(1)
 
     def test_delete(self, test_app, dbsession):
         from c2cgeoportal_commons.models.main import LayerWMTS, Layer, TreeItem
@@ -219,7 +221,7 @@ class TestLayerWMTS(AbstractViewsTests):
             count()
 
         resp = test_app.post("/layers_wmts/{}/convert_to_wms".format(layer.id), status=200)
-        assert ('http://localhost/layers_wms/{}'.format(layer.id) ==
+        assert ('http://localhost/layers_wms/{}?msg_col=submit_ok'.format(layer.id) ==
                 resp.json['redirect'])
 
         assert 1 == dbsession.query(LayerWMS). \
@@ -250,3 +252,5 @@ class TestLayerWMTS(AbstractViewsTests):
         ras = layer_wmts_test_data['restrictionareas']
         self._check_restrictionsareas(form, ras, layer)
         self._check_dimensions(resp.html, layer.dimensions)
+        assert 'Your submission has been taken into account.' == \
+            resp.html.find('div', {'class': 'msg-lbl'}).getText()

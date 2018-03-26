@@ -112,7 +112,7 @@ class TestUser(AbstractViewsTests):
                 'email': 'new_mail',
                 'role_name': 'secretary_2'},
             status=302)
-        assert resp.location == 'http://localhost/users/{}'.format(user.id)
+        assert resp.location == 'http://localhost/users/{}?msg_col=submit_ok'.format(user.id)
 
         dbsession.expire(user)
         assert user.username == 'new_name_withéàô'
@@ -162,7 +162,9 @@ class TestUser(AbstractViewsTests):
         resp = form.submit('submit')
 
         user = dbsession.query(User).filter(User.username == 'clone').one()
-        assert str(user.id) == re.match('http://localhost/users/(.*)', resp.location).group(1)
+        assert str(user.id) == re.match(
+            'http://localhost/users/(.*)\?msg_col=submit_ok',
+            resp.location).group(1)
         assert users_test_data['users'][7].id != str(user.id)
         assert not user.is_password_changed
         assert not user.validate_password('pré$ident')
@@ -201,7 +203,9 @@ class TestUser(AbstractViewsTests):
             filter(User.username == 'new_user'). \
             one()
 
-        assert str(user.id) == re.match('http://localhost/users/(.*)', resp.location).group(1)
+        assert str(user.id) == re.match(
+            'http://localhost/users/(.*)\?msg_col=submit_ok',
+            resp.location).group(1)
 
         assert user.username == 'new_user'
         assert user.email == 'new_mail'

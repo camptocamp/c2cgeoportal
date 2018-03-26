@@ -188,8 +188,9 @@ class TestLayerWMSViews(AbstractViewsTests):
         form['restrictionareas'] = [ras[1].id, ras[3].id]
 
         resp = form.submit('submit')
-        assert str(layer.id) == re.match('http://localhost{}/(.*)'.format(self._prefix),
-                                         resp.location).group(1)
+        assert str(layer.id) == re.match(
+            'http://localhost{}/(.*)\?msg_col=submit_ok'.format(self._prefix),
+            resp.location).group(1)
 
         dbsession.expire(layer)
         for key, value in new_values.items():
@@ -224,7 +225,9 @@ class TestLayerWMSViews(AbstractViewsTests):
         layer = dbsession.query(LayerWMS). \
             filter(LayerWMS.name == 'new_name'). \
             one()
-        assert str(layer.id) == re.match('http://localhost/layers_wms/(.*)', resp.location).group(1)
+        assert str(layer.id) == re.match(
+            'http://localhost/layers_wms/(.*)\?msg_col=submit_ok',
+            resp.location).group(1)
 
     def test_duplicate(self, layer_wms_test_data, test_app, dbsession):
         from c2cgeoportal_commons.models.main import LayerWMS
@@ -262,7 +265,9 @@ class TestLayerWMSViews(AbstractViewsTests):
         layer = dbsession.query(LayerWMS). \
             filter(LayerWMS.name == 'clone'). \
             one()
-        assert str(layer.id) == re.match('http://localhost/layers_wms/(.*)', resp.location).group(1)
+        assert str(layer.id) == re.match(
+            'http://localhost/layers_wms/(.*)\?msg_col=submit_ok',
+            resp.location).group(1)
         assert layer.id == layer.dimensions[0].layer_id
         assert layer.id == layer.metadatas[0].item_id
         assert layer_wms_test_data['layers'][3].metadatas[0].name == layer.metadatas[0].name
@@ -281,7 +286,7 @@ class TestLayerWMSViews(AbstractViewsTests):
 
         resp = test_app.post("/layers_wms/{}/convert_to_wmts".format(layer.id), status=200)
         assert resp.json['success']
-        assert ('http://localhost/layers_wmts/{}'.format(layer.id) ==
+        assert ('http://localhost/layers_wmts/{}?msg_col=submit_ok'.format(layer.id) ==
                 resp.json['redirect'])
 
         assert 1 == dbsession.query(LayerWMTS). \
@@ -313,12 +318,15 @@ class TestLayerWMSViews(AbstractViewsTests):
         self._check_restrictionsareas(form, ras, layer)
         self._check_dimensions(resp.html, layer.dimensions)
 
+        assert 'Your submission has been taken into account.' == \
+            resp.html.find('div', {'class': 'msg-lbl'}).getText()
+
     def test_convert_image_type_from_ogcserver(self, layer_wms_test_data, test_app):
         layer = layer_wms_test_data['layers'][3]
 
         resp = test_app.post("/layers_wms/{}/convert_to_wmts".format(layer.id), status=200)
         assert resp.json['success']
-        assert ('http://localhost/layers_wmts/{}'.format(layer.id) ==
+        assert ('http://localhost/layers_wmts/{}?msg_col=submit_ok'.format(layer.id) ==
                 resp.json['redirect'])
 
         resp = test_app.get(resp.json['redirect'], status=200)
@@ -327,7 +335,7 @@ class TestLayerWMSViews(AbstractViewsTests):
         layer = layer_wms_test_data['layers'][2]
         resp = test_app.post("/layers_wms/{}/convert_to_wmts".format(layer.id), status=200)
         assert resp.json['success']
-        assert ('http://localhost/layers_wmts/{}'.format(layer.id) ==
+        assert ('http://localhost/layers_wmts/{}?msg_col=submit_ok'.format(layer.id) ==
                 resp.json['redirect'])
 
         resp = test_app.get(resp.json['redirect'], status=200)

@@ -62,8 +62,9 @@ class TestFunctionality(AbstractViewsTests):
         functionality = dbsession.query(Functionality). \
             filter(Functionality.name == 'new_name'). \
             one()
-        assert str(functionality.id) == re.match('http://localhost/functionalities/(.*)',
-                                                 resp.location).group(1)
+        assert str(functionality.id) == re.match(
+            'http://localhost/functionalities/(.*)\?msg_col=submit_ok',
+            resp.location).group(1)
         assert functionality.name == 'new_name'
 
     def test_edit(self, test_app, functionality_test_data):
@@ -97,5 +98,6 @@ class TestFunctionality(AbstractViewsTests):
         functionality = dbsession.query(Functionality). \
             filter(Functionality.name == 'clone'). \
             one()
-        assert str(functionality.id) == re.match('http://localhost/functionalities/(.*)',
-                                                 resp.location).group(1)
+        assert str(functionality.id) == re.match(
+            'http://localhost/functionalities/(.*)\?msg_col=submit_ok',
+            resp.location).group(1)

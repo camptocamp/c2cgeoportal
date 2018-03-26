@@ -18,7 +18,9 @@ DATABASE=geomapfish_tests
 sudo -u postgres psql -c "CREATE DATABASE $DATABASE WITH OWNER \"www-data\";"
 sudo -u postgres psql -d $DATABASE -c "CREATE EXTENSION postgis;"
 
-make init_db
+```
+use common/testing/initialized.py to create the database (development.ini at admin side)
+
 ```
 
 ## Run the tests

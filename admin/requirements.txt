@@ -1,12 +1,15 @@
-c2cgeoform==2.0.dev20180325
-c2cgeoportal_commons
+c2cgeoform==2.0.dev20180326
+#c2cgeoportal-commons #  pip -> Could not find a version that satisfies the requirement c2cgeoportal-commons
 c2cwsgiutils
 colander
 deform
+iso8601==0.1.11 # deform, by default the version 0.1.12 is installed and is incompatible with deform, rq.filter: <=0.1.11
 passwordgenerator
+pyproj
 pyramid
 pyramid_debugtoolbar
 pyramid_jinja2
 pyramid_tm
 sqlalchemy
+zope.event
 translationstring

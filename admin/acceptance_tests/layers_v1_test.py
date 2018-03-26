@@ -170,7 +170,9 @@ class TestLayerV1Views(AbstractViewsTests):
         form['restrictionareas'] = [ras[1].id, ras[3].id]
 
         resp = form.submit('submit')
-        assert str(layer.id) == re.match('http://localhost/layers_v1/(.*)', resp.location).group(1)
+        assert str(layer.id) == re.match(
+            'http://localhost/layers_v1/(.*)\?msg_col=submit_ok',
+            resp.location).group(1)
 
         dbsession.expire(layer)
         for key, value in new_values.items():
@@ -204,7 +206,9 @@ class TestLayerV1Views(AbstractViewsTests):
         layer = dbsession.query(LayerV1). \
             filter(LayerV1.name == 'new_name'). \
             one()
-        assert str(layer.id) == re.match('http://localhost/layers_v1/(.*)', resp.location).group(1)
+        assert str(layer.id) == re.match(
+            'http://localhost/layers_v1/(.*)\?msg_col=submit_ok',
+            resp.location).group(1)
 
     def test_duplicate(self, layer_v1_test_data, test_app, dbsession):
         from c2cgeoportal_commons.models.main import LayerV1
@@ -253,7 +257,9 @@ class TestLayerV1Views(AbstractViewsTests):
         layer = dbsession.query(LayerV1). \
             filter(LayerV1.name == 'clone'). \
             one()
-        assert str(layer.id) == re.match('http://localhost/layers_v1/(.*)', resp.location).group(1)
+        assert str(layer.id) == re.match(
+            'http://localhost/layers_v1/(.*)\?msg_col=submit_ok',
+            resp.location).group(1)
         assert layer_v1_test_data['layers'][3].metadatas[0].name == layer.metadatas[0].name
         assert layer_v1_test_data['layers'][3].metadatas[1].name == layer.metadatas[1].name
 
