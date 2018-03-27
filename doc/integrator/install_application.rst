@@ -70,6 +70,13 @@ with ``<db_name>`` replaced by the actual database name.
    Note that the path of the postgis scripts and the template name can
    differ on your host.
 
+Create the "pg_trgm" extension to use the "similarity" function within the
+full-text search:
+
+.. prompt:: bash
+
+  sudo -u postgres psql -c "CREATE EXTENSION pg_trgm" <db_name>
+
 .. _integrator_install_application_create_schema:
 
 Create the schema
