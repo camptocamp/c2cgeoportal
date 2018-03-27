@@ -5,7 +5,7 @@ boto==2.48.0  # Tile generation
 bottle==0.12.13  # geoportal
 c2c.cssmin==0.7.dev6  # CGXP build
 c2c.template==2.0.9  # geoportal
-c2cgeoform==2.0.dev20180325  # commons
+c2cgeoform==2.0.dev20180327  # commons
 codacy-coverage==1.3.11  # Codacy send report
 codespell==1.12.0  # Lint
 colander==1.4  # commons, admin
@@ -23,7 +23,7 @@ GeoAlchemy2==0.4.2  # commons, geoportal
 geojson==2.3.0  # geoportal
 glob2==0.6  # ngeo
 htmlmin==0.1.12  # ngeo
-httplib2==0.11.0  # geoportal
+httplib2==0.11.1  # geoportal
 ipcalc==1.99.0  # geoportal
 iso8601==0.1.11  # deform, by default the version 0.1.12 is installed and is incompatible with deform, rq.filter: <=0.1.11
 isodate==0.6.0  # geoportal
