@@ -6,6 +6,10 @@ from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import AbstractViews, ListField
 
 from c2cgeoportal_commons.models.static import User
+from c2cgeoportal_commons.lib.email_ import send_email_config
+from pyramid.httpexceptions import HTTPFound
+
+from passwordgenerator import pwgenerator
 
 _list_field = partial(ListField, User)
 
@@ -43,6 +47,21 @@ class UserViews(AbstractViews):
                  request_method='POST',
                  renderer='../templates/edit.jinja2')
     def save(self):
+        if self._is_new():
+            save_attempt = super().save()
+            if isinstance(save_attempt, HTTPFound):
+                password = pwgenerator.generate()
+                user = self._obj
+                user.set_temp_password(password)
+                user = self._request.dbsession.merge(user)
+                self._request.dbsession.flush()
+                send_email_config(
+                    settings=self._request.registry.settings,
+                    email_config_name='welcome_email',
+                    email=user.email,
+                    user=user.username,
+                    password=password)
+            return save_attempt
         return super().save()
 
     @view_config(route_name='c2cgeoform_item',

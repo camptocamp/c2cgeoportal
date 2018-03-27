@@ -6,6 +6,8 @@ from pyramid.testing import DummyRequest
 
 from . import skip_if_ci, AbstractViewsTests
 from .selenium.page import IndexPage
+from unittest.mock import patch, MagicMock
+import email
 
 
 @pytest.fixture(scope='function')
@@ -36,6 +38,11 @@ def users_test_data(dbsession, transact):
         'roles': roles,
         'users': users
     }
+
+
+EXPECTED_WELCOME_MAIL = \
+    'Hello {},\n\nYou have a new account on GeoMapFish demo: https://geomapfish-demo.camptocamp.com/2.3\n' + \
+    'Your user name is: {}\nYour password is: {}\n\nSincerely yours\nThe GeoMapfish team\n'
 
 
 @pytest.mark.usefixtures("users_test_data", "test_app")
@@ -88,7 +95,9 @@ class TestUser(AbstractViewsTests):
         test_app.delete('/users/{}'.format(deleted_id), status=200)
         assert dbsession.query(User).get(deleted_id) is None
 
-    def test_submit_update(self, dbsession, test_app, users_test_data):
+    @patch('c2cgeoportal_commons.lib.email_.smtplib.SMTP')
+    @patch('c2cgeoportal_admin.views.users.pwgenerator.generate')
+    def test_submit_update(self, pw_gen_mock, smtp_mock, dbsession, test_app, users_test_data):
         user = users_test_data['users'][11]
 
         resp = test_app.post(
@@ -111,6 +120,9 @@ class TestUser(AbstractViewsTests):
         assert user.role_name == 'secretary_2'
         assert user.validate_password('pré$ident')
 
+        assert not pw_gen_mock.called, 'method should not have been called'
+        assert not smtp_mock.called, 'method should not have been called'
+
     def test_unicity_validator(self, users_test_data, test_app):
         user = users_test_data['users'][11]
 
@@ -129,7 +141,12 @@ class TestUser(AbstractViewsTests):
 
         self._check_submission_problem(resp, '{} is already used.'.format('babar_0'))
 
-    def test_duplicate(self, users_test_data, test_app, dbsession):
+    @patch('c2cgeoportal_commons.lib.email_.smtplib.SMTP')
+    @patch('c2cgeoportal_admin.views.users.pwgenerator.generate')
+    def test_duplicate(self, pw_gen_mock, smtp_mock, users_test_data, test_app, dbsession):
+        sender_mock = MagicMock()
+        smtp_mock.return_value = sender_mock
+        pw_gen_mock.return_value = 'basile'
         from c2cgeoportal_commons.models.static import User
         user = users_test_data['users'][7]
 
@@ -150,8 +167,18 @@ class TestUser(AbstractViewsTests):
         assert not user.is_password_changed
         assert not user.validate_password('pré$ident')
 
+        parts = list(email.message_from_string(sender_mock.method_calls[0][1][2]).walk())
+        assert EXPECTED_WELCOME_MAIL.format('clone', 'clone', 'basile') == \
+            parts[1].get_payload(decode=True).decode('utf8')
+        assert 'mail7' == parts[0].items()[3][1]
+
+    @patch('c2cgeoportal_commons.lib.email_.smtplib.SMTP')
+    @patch('c2cgeoportal_admin.views.users.pwgenerator.generate')
     @pytest.mark.usefixtures("test_app")
-    def test_submit_new(self, dbsession, test_app):
+    def test_submit_new(self, pw_gen_mock, smtp_mock, dbsession, test_app):
+        sender_mock = MagicMock()
+        smtp_mock.return_value = sender_mock
+        pw_gen_mock.return_value = 'basile'
         from c2cgeoportal_commons.models.static import User
 
         resp = test_app.post(
@@ -179,6 +206,11 @@ class TestUser(AbstractViewsTests):
         assert user.username == 'new_user'
         assert user.email == 'new_mail'
         assert user.role_name == 'secretary_2'
+
+        parts = list(email.message_from_string(sender_mock.method_calls[0][1][2]).walk())
+        assert EXPECTED_WELCOME_MAIL.format('new_user', 'new_user', 'basile') == \
+            parts[1].get_payload(decode=True).decode('utf8')
+        assert 'new_mail' == parts[0].items()[3][1]
 
     @pytest.mark.usefixtures("raise_db_error_on_query")
     def test_grid_dberror(self, dbsession):

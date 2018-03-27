@@ -52,7 +52,7 @@ def send_email_config(
     try:
         send_email(
             email_config['email_from'], [email],
-            email_config['email_body'].format(kwargs),
+            email_config['email_body'].format(**kwargs),
             email_config['email_subject'],
             smtp_config,
         )
