@@ -1,0 +1,10 @@
+c2c.template
+c2cgeoform
+ColanderAlchemy>=0.3.2  # why not with c2cgeoform ?
+colander
+deform
+GeoAlchemy2
+papyrus
+pyramid
+sqlalchemy
+transaction

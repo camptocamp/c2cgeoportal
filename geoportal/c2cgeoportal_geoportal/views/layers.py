@@ -48,7 +48,6 @@ from geojson.feature import FeatureCollection, Feature
 from shapely.geometry import asShape
 from shapely.ops import cascaded_union
 from shapely.geos import TopologicalError
-from six import iteritems
 
 from papyrus.protocol import Protocol, create_filter
 from papyrus.xsd import XSDGenerator
@@ -544,7 +543,7 @@ def get_layer_metadatas(layer):
 
 def _convert_column_type(column_type):
     # SIMPLE_XSD_TYPES
-    for cls, xsd_type in iteritems(XSDGenerator.SIMPLE_XSD_TYPES):
+    for cls, xsd_type in XSDGenerator.SIMPLE_XSD_TYPES.items():
         if isinstance(column_type, cls):
             return {"type": xsd_type}
 

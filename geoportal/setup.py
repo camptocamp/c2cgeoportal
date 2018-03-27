@@ -43,46 +43,16 @@ Read the `Documentation <https://camptocamp.github.io/c2cgeoportal/master/>`_.
 
 VERSION = os.environ.get('VERSION', 'dev')
 
-install_requires = [
-    'c2cgeoportal-commons==' + VERSION,
-    'c2cwsgiutils',
-    'c2c.template>=2.0.7',  # Makefile
-    'dateutils',
-    'defusedxml',
-    'dogpile.cache>=0.6',
-    'GeoAlchemy2',
-    'httplib2',
-    'ipcalc',
-    'isodate',  # WMST support
-    'lingua',
-    'OWSLib>=0.6.0',
-    'papyrus',
-    'Paste',
-    'PasteDeploy',
-    'PasteScript',
-    'psycopg2-binary',
-    'pycrypto',
-    'pyramid<=1.9.99',
-    'pyramid_closure',
-    'pyramid_debugtoolbar',  # Needed by the development.ini
-    'pyramid_mako',  # to render the HTML files
-    'pyramid_multiauth',
-    'pyramid_tm',
-    'PyYAML',
-    'SQLAlchemy',
-    'Fiona',
-    'redis',
-    'rasterio',
-]
 
-setup_requires = [
-]
+with open('requirements.txt') as f:
+    install_requires = f.read().splitlines()
 
-tests_require = install_requires + [
-]
+setup_requires = []
+
+tests_require = []
 
 setup(
-    name='c2cgeoportal-geoportal',
+    name='c2cgeoportal_geoportal',
     version=VERSION,
     description='c2cgeoportal',
     long_description=README,
