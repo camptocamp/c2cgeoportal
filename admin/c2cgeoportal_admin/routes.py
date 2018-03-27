@@ -3,7 +3,10 @@ from c2cgeoform.routes import register_models, table_pregenerator
 
 
 def includeme(config):
-    config.add_static_view('node_modules', 'c2cgeoportal_admin:node_modules')
+    config.add_static_view('node_modules_for_insider', 'c2cgeoportal_admin:node_modules')
+    config.add_static_view(
+        'node_modules_for_outsider',
+        '{}:node_modules'.format(config.root_package.__name__))
     path = None
     for path_ in [
         os.path.join(os.path.dirname(__file__), '..', '..', 'node_modules'),
@@ -18,6 +21,10 @@ def includeme(config):
 
     config.override_asset(
         to_override='c2cgeoportal_admin:node_modules/',
+        override_with=path
+    )
+    config.override_asset(
+        to_override='{}:node_modules/'.format(config.root_package.__name__),
         override_with=path
     )
 
