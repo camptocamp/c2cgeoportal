@@ -62,6 +62,7 @@ setup(
         'lingua>=2.4',
         'papyrus',
         'pyproj',  # sudo apt install python3-dev", why not with c2cgeoform ?
+        'zope.event'
     ],
     extras_require={
         'testing': [

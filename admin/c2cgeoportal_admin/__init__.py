@@ -1,6 +1,5 @@
 from translationstring import TranslationStringFactory
 from pyramid.config import Configurator
-from c2cwsgiutils.health_check import HealthCheck
 from pyramid.events import BeforeRender, NewRequest
 
 import c2cgeoform
@@ -27,7 +26,6 @@ def main(_, **settings):
     settings.update(configuration.get_config())
 
     config = Configurator(settings=settings)
-    config.include('c2cwsgiutils.pyramid.includeme')
 
     config.include('c2cgeoportal_admin')
 
@@ -57,9 +55,6 @@ def main(_, **settings):
     config.add_subscriber(add_localizer, NewRequest)
 
     generate_mappers()
-
-    health_check = HealthCheck(config)
-    health_check.add_url_check('http://{}/'.format(settings['healthcheck_host']))
 
     return config.make_wsgi_app()
 

@@ -1,5 +1,4 @@
 c2c.template
-c2cwsgiutils
 deform
 plaster_pastedeploy
 pyproj
@@ -7,6 +6,10 @@ pyramid
 pyramid_debugtoolbar
 pyramid_jinja2
 pyramid_tm
+psycopg2-binary
 transaction
+typing
 waitress
+zope.event
+zope.sqlalchemy
 -e git://github.com/camptocamp/c2cgeoform.git@be7be6c176a658afa9fb4180b42b61e76966811a#egg=c2cgeoform
