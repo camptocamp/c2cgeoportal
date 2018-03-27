@@ -183,7 +183,7 @@ class PrintProxy(Proxy):  # pragma: no cover
         if self.request.method == "GET":
             if resp.status == 200:
                 try:
-                    capabilities = json.loads(content)
+                    capabilities = json.loads(content.decode("utf-8"))
                 except json.JSONDecodeError as e:
                     # log and raise
                     log.error("Unable to parse capabilities.")
