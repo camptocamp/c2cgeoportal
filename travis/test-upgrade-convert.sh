@@ -195,6 +195,9 @@ function v220 {
         echo "Fail to upgrade"
         exit 1
     fi
+    mv geoportal/testgeomapfish_geoportal/locale/en/LC_MESSAGES/testgeomapfish{,_geoportal}-client.po
+    mv geoportal/testgeomapfish_geoportal/locale/fr/LC_MESSAGES/testgeomapfish{,_geoportal}-client.po
+    mv geoportal/testgeomapfish_geoportal/locale/de/LC_MESSAGES/testgeomapfish{,_geoportal}-client.po
     ./docker-run make $MAKE_ARGS upgrade8
     if [ "$2" == non ]
     then

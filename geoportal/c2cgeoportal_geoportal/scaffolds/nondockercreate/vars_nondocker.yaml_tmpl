@@ -9,9 +9,13 @@ vars:
   modwsgi_user: '{MODWSGI_USER}'
   dbhost: '{DOCKER_HOST_}'
   dbhost_slave: '{DOCKER_HOST_}'
+  adrs4: "' '.join([__import__('netifaces').ifaddresses(iface)[2][0]['addr'] \
+    for iface in __import__('netifaces').interfaces() if 2 in __import__('netifaces').ifaddresses(iface)])"
+  adrs6: "' '.join([__import__('netifaces').ifaddresses(iface)[10][0]['addr'].split('%')[0] \
+    for iface in __import__('netifaces').interfaces() if 10 in __import__('netifaces').ifaddresses(iface)])"
   mapserv_allow: |
-    Allow from 127.0.0.1 ::1 {DOCKER_HOST_}
-    Require ip 127.0.0.1 ::1 {DOCKER_HOST_}
+    Allow from {ADDRESSES} {adrs4} {adrs6}
+    Require ip {ADDRESSES} {adrs4} {adrs6}
   waitress_port: 5000
   node_modules_path: "{directory}{ps}node_modules"
   tinyowsproxy:
@@ -47,11 +51,17 @@ vars:
     code_source: /var/www/c2cgeoportal_mapfish/private/c2cgeoportal
     code_destination: /var/www/c2cgeoportal_mapfish/private/c2cgeoportal
 
+interpreted:
+  python:
+    - adrs4
+    - adrs6
+
 update_paths:
   - checker.phantomjs
   - check_collector
 
 environment:
+  - ADDRESSES
   - INSTANCE_ID
   - MODWSGI_USER
   - DOCKER_HOST_

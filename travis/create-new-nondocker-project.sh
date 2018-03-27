@@ -45,13 +45,18 @@ sudo a2enmod fcgid
 
 # Minimal build
 ./docker-run make --makefile=travis.mk \
-    /build/requirements.timestamp \
+    build \
     alembic.ini \
     alembic.yaml \
     geoportal/production.ini \
     geoportal/config.yaml \
     docker-compose-build.yaml testdb-docker
+FINALISE=TRUE make --makefile=travis.mk build
 ./docker-run alembic --name=main upgrade head
 ./docker-run alembic --name=static upgrade head
 # Create default theme
 ./docker-run create-demo-theme
+./docker-run make --makefile=travis.mk update-po
+git add geoportal/testgeomapfish_geoportal/locale/*/LC_MESSAGES/*.po
+git commit -m "Add initial localisation"
+./docker-run make --makefile=travis.mk theme2fts

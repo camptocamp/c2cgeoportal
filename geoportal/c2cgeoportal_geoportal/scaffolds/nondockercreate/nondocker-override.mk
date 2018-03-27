@@ -2,7 +2,7 @@
 
 DEPLOY ?= TRUE
 ENVIRONEMENT ?= INSTANCE_ID
-CONFIG_VARS += instanceid host
+CONFIG_VARS += instanceid
 MODWSGI_USER ?= www-data
 export MODWSGI_USER
 export INSTANCE_ID

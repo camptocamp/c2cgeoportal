@@ -102,6 +102,13 @@ def main():
     docker_cmd.append("--env=DOCKER_HOST_={}".format(docker_adrs))
     docker_cmd.append("--env=BUILD_VOLUME_NAME={}".format(build_volume_name))
     docker_cmd.append("--env=PROJECT_DIRECTORY={}".format(os.getcwd()))
+    ifaddresses = [netifaces.ifaddresses(iface) for iface in netifaces.interfaces()]
+    # IP v4
+    adrs = [e[2][0]['addr'] for e in ifaddresses if 2 in e]
+    # IP v6
+    adrs += [e[10][0]['addr'] for e in ifaddresses if 10 in e]
+    docker_cmd.append("--env=ADDRESSES={}".format(' '.join(adrs)))
+
     if config.getboolean("use_venv", False):
         docker_cmd.append("--env=PYTHON_PATH={}".format(
             os.path.join(
