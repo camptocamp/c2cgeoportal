@@ -29,11 +29,6 @@ check: flake8
 flake8: ${BUILD_DIR}/requirements-dev.timestamp
 	${VENV}/bin/flake8 c2cgeoportal_admin acceptance_tests *.py
 
-.PHONY: init_db
-init_db: ${BUILD_DIR}/requirements.timestamp
-	# Configure the database:
-	${VENV}/bin/initialize_db_main development.ini
-
 .PHONY: serve
 serve: build
 	# Run your project.
