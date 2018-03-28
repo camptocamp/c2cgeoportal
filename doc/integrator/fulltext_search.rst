@@ -196,22 +196,26 @@ following variables:
 Ranking system
 --------------
 
-By default, the full-text search uses `tsvector` and `ts_rank_cd` to rank your search results (See:
-`textsearch-controls <https://www.postgresql.org/docs/9.0/static/textsearch-controls.html>`_. These methods
-are useful to handle language-based strings. That means for instance that plural nouns are the same as
-singular nouns. This system only checks if your search word exists in the result. That means that if you search
-`B 12 Zug`, `B 120 Zug` has the same weight because the system only see that the `12` exists in each case.
+By default, the full-text search uses the `similarity` system of the
+`pg_trgm module <https://www.postgresql.org/docs/9.0/static/pgtrgm.html>`. This
+is based only on the  similarities of words, without language analysis, and it
+cares only about how near is your search with the result. `12` is nearer to `12`
+than `120`.
 
-Alternatively you can use the `similarity` system of the
-`pg_trgm module <https://www.postgresql.org/docs/9.0/static/pgtrgm.html>`. This is based only on the
-similarities of words, without language analysis, and it cares only about how near is your search with the
-result. `12` is nearer to `12` than `120`.
-To use this system, your request must contains the parameter `rank_system=similarity` and your database must
-have the pg_trgm extension:
+Ensure that the extension is created in you database:
 
-.. code:: sql
+.. prompt:: bash
 
-   CREATE EXTENSION pg_trgm;
+  sudo -u postgres psql -c "CREATE EXTENSION pg_trgm" <db_name>
+
+Alternatively, you can use the `tsvector` and `ts_rank_cd` to rank your search
+results (See: `textsearch-controls <https://www.postgresql.org/docs/9.0/static/textsearch-controls.html>`_.
+These methods are useful to handle language-based strings. That means for instance
+that plural nouns are the same as singular nouns. This system only checks if
+your search word exists in the result. That means that if you search `B 12 Zug`,
+`B 120 Zug` has the same weight because the system only see that the `12` exists
+in each case. To use this system, your request must contains the
+parameter `rank_system=ts_rank_cd`.
 
 Using the unaccent extension
 ----------------------------

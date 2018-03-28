@@ -407,7 +407,7 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request(
-            params=dict(query="simi", limit=3, ranksystem="similarity")
+            params=dict(query="simi", limit=3)
         )
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
@@ -416,3 +416,18 @@ class TestFulltextsearchView(TestCase):
         self.assertEqual(response.features[0].properties["label"], "A 7 simi")
         self.assertEqual(response.features[1].properties["label"], "A 70 simi")
         self.assertEqual(response.features[2].properties["label"], "A 71 simi")
+
+    def test_rank_order_with_ts_rank_cd(self):
+        from geojson.feature import FeatureCollection
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
+
+        request = self._create_dummy_request(
+            params=dict(query="simi", limit=3, ranksystem="ts_rank_cd")
+        )
+        fts = FullTextSearchView(request)
+        response = fts.fulltextsearch()
+        self.assertTrue(isinstance(response, FeatureCollection))
+        self.assertEqual(len(response.features), 3)
+        self.assertEqual(response.features[0].properties["label"], "A 70 simi")
+        self.assertEqual(response.features[1].properties["label"], "A 71 simi")
+        self.assertEqual(response.features[2].properties["label"], "A 7 simi")

@@ -123,10 +123,7 @@ class FullTextSearchView:
         ))
 
         rank_system = self.request.params.get("ranksystem")
-        if rank_system == "similarity":
-            # Use similarity ranking system from module pg_trgm.
-            rank = func.similarity(FullTextSearch.label, terms)
-        else:
+        if rank_system == "ts_rank_cd":
             # The numbers used in ts_rank_cd() below indicate a normalization method.
             # Several normalization methods can be combined using |.
             # 2 divides the rank by the document length
@@ -137,6 +134,9 @@ class FullTextSearchView:
             # (the normalization is applied two times with the combination of 2 and 8,
             # so the effect on at least the one-word-results is therefore stronger).
             rank = func.ts_rank_cd(FullTextSearch.ts, func.to_tsquery(language, terms_ts), 2 | 8)
+        else:
+            # Use similarity ranking system from module pg_trgm.
+            rank = func.similarity(FullTextSearch.label, terms)
 
         if partitionlimit:
             # Here we want to partition the search results based on
