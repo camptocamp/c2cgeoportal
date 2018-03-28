@@ -142,7 +142,7 @@ remove-branch:
 
 # Extract
 
-.build/venv.timestamp:
+.build/venv.timestamp: .config
 	$(PRERULE_CMD)
 	mkdir --parent .build
 	rm -rf .build/venv
