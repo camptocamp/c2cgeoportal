@@ -106,7 +106,7 @@ def main():
     # IP v4
     adrs = [e[2][0]['addr'] for e in ifaddresses if 2 in e]
     # IP v6
-    adrs += [e[10][0]['addr'] for e in ifaddresses if 10 in e]
+    adrs += [e[10][0]['addr'].split('%')[0] for e in ifaddresses if 10 in e]
     docker_cmd.append("--env=ADDRESSES={}".format(' '.join(adrs)))
 
     if config.getboolean("use_venv", False):
