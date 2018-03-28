@@ -29,7 +29,7 @@ git commit --quiet --message='Initial commit'
 git clean -fX
 
 # Build
-./docker-run make --makefile=travis.mk build testdb-docker
+./docker-run make --makefile=travis.mk build docker-build-testdb
 # Create default theme
 ./docker-compose-run create-demo-theme
 ./docker-compose-run make --makefile=travis.mk update-po

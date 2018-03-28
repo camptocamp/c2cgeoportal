@@ -52,8 +52,8 @@ CLIENT_CHECK_RULE ?= lint-ngeo
 endif
 WEB_RULE ?= $(DEFAULT_WEB_RULE)
 
-DEFAULT_BUILD_RULES ?= geoportal-docker \
-	config-docker \
+DEFAULT_BUILD_RULES ?= docker-build-geoportal \
+	docker-build-config \
 	project.yaml \
 	alembic.ini \
 	alembic.yaml \
@@ -75,7 +75,7 @@ endif
 
 # Make rules
 ifeq (${DEVELOPMENT}, TRUE)
-DEFAULT_BUILD_RULES += testdb-docker
+DEFAULT_BUILD_RULES += docker-build-testdb
 endif
 
 BUILD_RULES ?= $(filter-out $(DISABLE_BUILD_RULES),$(DEFAULT_BUILD_RULES))
@@ -729,20 +729,20 @@ $(CSS_XAPI_OUTPUT): \
 
 docker-compose-build.yaml: /build/requirements.timestamp
 
-.PHONY: config-docker
-config-docker: $(shell docker-required --path .) \
+.PHONY: docker-build-config
+docker-build-config: $(shell docker-required --path .) \
 		print/print-apps/$(PACKAGE)/config.yaml \
 		$(MAPCACHE_FILE)
 	docker build -t $(DOCKER_BASE)-config:$(DOCKER_TAG) .
 
-.PHONY: geoportal-docker
-geoportal-docker: $(shell docker-required --path geoportal) \
+.PHONY: docker-build-geoportal
+docker-build-geoportal: $(shell docker-required --path geoportal) \
 		$(WEB_RULE) \
 		$(addprefix geoportal/$(PACKAGE)_geoportal/locale/, $(addsuffix /LC_MESSAGES/$(PACKAGE)_geoportal-$(L10N_CLIENT_POSTFIX).mo, $(LANGUAGES))) \
 		geoportal/config.yaml
 	docker build --tag=$(DOCKER_BASE)-geoportal:$(DOCKER_TAG) --build-arg="GIT_HASH=$(GIT_HASH)" geoportal
 ifdef CGXP_INTERFACES
-geoportal-docker: $(addprefix geoportal/$(PACKAGE)_geoportal/locale/, $(addsuffix /LC_MESSAGES/$(PACKAGE)_geoportal-$(L10N_SERVER_POSTFIX).mo, $(LANGUAGES)))
+docker-build-geoportal: $(addprefix geoportal/$(PACKAGE)_geoportal/locale/, $(addsuffix /LC_MESSAGES/$(PACKAGE)_geoportal-$(L10N_SERVER_POSTFIX).mo, $(LANGUAGES)))
 endif
 
 
@@ -772,8 +772,8 @@ testdb/13-alembic-static.sql: alembic.ini alembic.yaml $(shell ls -1 /opt/alembi
 	$(PRERULE_CMD)
 	alembic --name=static upgrade --sql head > $@
 
-.PHONY: testdb-docker
-testdb-docker: testdb/11-schemas.sql testdb/12-alembic.sql testdb/13-alembic-static.sql \
+.PHONY: docker-build-testdb
+docker-build-testdb: testdb/11-schemas.sql testdb/12-alembic.sql testdb/13-alembic-static.sql \
 		$(shell docker-required --path testdb)
 	docker build --tag=$(DOCKER_BASE)-testdb:$(DOCKER_TAG) testdb
 

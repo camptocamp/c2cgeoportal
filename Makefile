@@ -101,7 +101,7 @@ build: c2c-egg \
 	$(L10N_PO_FILES) \
 	$(APPS_FILES) \
 	admin/tests.ini \
-	build-docker \
+	docker-build-build \
 	prepare-tests
 
 .PHONY: doc
@@ -138,8 +138,8 @@ $(BUILD_DIR)/sphinx.timestamp: $(SPHINX_FILES) $(SPHINX_MAKO_FILES:.mako=)
 	doc/build.sh
 	touch $@
 
-.PHONY: gisdb-docker
-gisdb-docker: $(shell docker-required --path docker/gis-db)
+.PHONY: docker-build-gisdb
+docker-build-gisdb: $(shell docker-required --path docker/gis-db)
 	docker build --tag=$(DOCKER_TEST_BASE)-gis-db:latest docker/gis-db
 
 geoportal/tests/functional/alembic.yaml: $(BUILD_DIR)/c2ctemplate-cache.json
@@ -160,16 +160,16 @@ docker/test-db/13-alembic-static.sql: \
 	$(PRERULE_CMD)
 	alembic --config=$< --name=static upgrade --sql head > $@
 
-testdb-docker: $(shell docker-required --path docker/test-db) \
+docker-build-testdb: $(shell docker-required --path docker/test-db) \
 		docker/test-db/12-alembic.sql docker/test-db/13-alembic-static.sql \
-		gisdb-docker
+		docker-build-gisdb
 	docker build --tag=$(DOCKER_TEST_BASE)-db:latest docker/test-db
 
-testmapserver-docker: $(shell docker-required --path docker/test-mapserver)
+docker-build-testmapserver: $(shell docker-required --path docker/test-mapserver)
 	docker build --tag=$(DOCKER_TEST_BASE)-mapserver:latest docker/test-mapserver
 
-.PHONY: build-docker
-build-docker: $(shell docker-required --path . --replace-pattern='^test(.*).mako$/test/\1') \
+.PHONY: docker-build-build
+docker-build-build: $(shell docker-required --path . --replace-pattern='^test(.*).mako$/test/\1') \
 		geoportal/c2cgeoportal_geoportal/scaffolds/create/docker-run \
 		npm-packages admin/npm-packages \
 		geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/ \
@@ -182,8 +182,8 @@ prepare-tests: $(BUILD_DIR)/requirements.timestamp \
 		commons/tests.yaml \
 		admin/tests.ini \
 		docker-compose.yaml \
-		testmapserver-docker \
-		testdb-docker \
+		docker-build-testmapserver \
+		docker-build-testdb \
 		$(addprefix geoportal/c2cgeoportal_geoportal/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal_geoportal.po, $(LANGUAGES))) \
 		$(addprefix admin/c2cgeoportal_admin/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal_admin.po, $(LANGUAGES))) \
 		docker/test-mapserver/mapserver.map
