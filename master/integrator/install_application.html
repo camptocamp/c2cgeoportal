@@ -92,7 +92,10 @@ span.prompt1:before {
 </pre><p class="last">Note that the path of the postgis scripts and the template name can
 differ on your host.</p>
 </div>
-</div>
+<p>Create the “pg_trgm” extension to use the “similarity” function within the
+full-text search:</p>
+<pre class="highlight"><span class="prompt1">sudo -u postgres psql -c <span class="s2">&quot;CREATE EXTENSION pg_trgm&quot;</span> &lt;db_name&gt;</span>
+</pre></div>
 <div class="section" id="create-the-schema">
 <span id="integrator-install-application-create-schema"></span><h3>Create the schema<a class="headerlink" href="#create-the-schema" title="Permalink to this headline">¶</a></h3>
 <p>Each parent or child needs two application-specific schemas,
