@@ -77,15 +77,12 @@ setup(
     tests_require=tests_require,
     entry_points={
         'console_scripts': [
-            'manage_users = c2cgeoportal_geoportal.scripts.manage_users:main',
+            'manage-users = c2cgeoportal_geoportal.scripts.manage_users:main',
             'c2cupgrade = c2cgeoportal_geoportal.scripts.c2cupgrade:main',
             'db2pot = c2cgeoportal_geoportal.scripts.db2pot:main',
             'themev1tov2 = c2cgeoportal_geoportal.scripts.themev1tov2:main',
             'theme2fts = c2cgeoportal_geoportal.scripts.theme2fts:main',
             'l10nv1tov2 = c2cgeoportal_geoportal.scripts.l10nv1tov2:main',
-            'import-ngeo-apps = c2cgeoportal_geoportal.scripts.import_ngeo_apps:main',
-            'npm-packages = c2cgeoportal_geoportal.scripts.npm_packages:main',
-            'ngeo-version = c2cgeoportal_geoportal.scripts.npm_packages:ngeo_git_version',
             'create-demo-theme = c2cgeoportal_geoportal.scripts.create_demo_theme:main',
             'treeitem-uniquename = c2cgeoportal_geoportal.scripts.treeitem_uniquename:main',
             'urllogin = c2cgeoportal_geoportal.scripts.urllogin:main',

@@ -35,7 +35,6 @@ timeout(time: 2, unit: 'HOURS') {
                 sh './docker-run make clean-all'
                 sh 'make docker-build'
                 sh './docker-run travis/empty-make help'
-                sh './docker-run make build'
                 sh './docker-run travis/status.sh'
             }
             stage('Lint') {
@@ -43,8 +42,6 @@ timeout(time: 2, unit: 'HOURS') {
                 sh 'bash -c "test \\"`./docker-run id`\\" == \\"uid=0(root) gid=0(root) groups=0(root)\\""'
                 sh './docker-run travis/short-make build'
                 sh './docker-run make doc'
-                sh './docker-run make geoportal/c2cgeoportal_geoportal/locale/c2cgeoportal_geoportal.pot'
-                sh './docker-run make admin/c2cgeoportal_admin/locale/c2cgeoportal_admin.pot'
                 // lint
                 sh './docker-run make checks'
                 sh './docker-run travis/status.sh'

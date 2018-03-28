@@ -25,7 +25,6 @@ RUN \
   touch /usr/local/lib/python3.6/site-packages/c2c/__init__.py && \
   rm --recursive --force /tmp/* /var/tmp/* /root/.cache/*
 
-COPY run /usr/bin/
 COPY sudoers /etc/
 COPY bin/* /usr/bin/
 
