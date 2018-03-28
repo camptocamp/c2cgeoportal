@@ -122,7 +122,10 @@ ANGULAR_LOCALES_FILES = $(addprefix $(APP_OUTPUT_DIR)/angular-locale_, $(addsuff
 NGEO_OUTPUT_FILES = $(JSON_CLIENT_LOCALISATION_FILES) \
 	$(ANGULAR_LOCALES_FILES)
 ifeq ($(ES6), FALSE)
+NGEO_OUTPUT_JS_INTERFACES_FILES = $(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .js, $(NGEO_INTERFACES)))
+NGEO_OUTPUT_CSS_INTERFACES_FILES = $(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .css, $(NGEO_INTERFACES)))
 NGEO_OUTPUT_FILES += $(NGEO_OUTPUT_JS_INTERFACES_FILES) \
+	$(NGEO_OUTPUT_CSS_INTERFACES_FILES) \
 	$(APP_OUTPUT_DIR)/templatecache.js
 NGEO_LIBS_JS_FILES += \
 	/usr/lib/node_modules/jquery/dist/jquery.min.js \
@@ -147,9 +150,6 @@ NGEO_LIBS_JS_FILES += \
 	/usr/lib/node_modules/jquery-datetimepicker/build/jquery.datetimepicker.full.min.js \
 	/usr/lib/node_modules/$(NGEO_PACKAGE)/third-party/jquery-ui/jquery-ui.min.js
 else
-NGEO_OUTPUT_JS_INTERFACES_FILES = $(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .js, $(NGEO_INTERFACES)))
-NGEO_OUTPUT_CSS_INTERFACES_FILES = $(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .css, $(NGEO_INTERFACES)))
-NGEO_OUTPUT_FILES += $(NGEO_OUTPUT_CSS_INTERFACES_FILES)
 NGEO_OUTPUT_FILES += .build/apps.timestamp
 endif
 

@@ -230,7 +230,7 @@ class C2cUpgradeTool:
 
     def test_checkers(self):
         try:
-            resp, _ = requests.get(
+            resp = requests.get(
                 self.project["checker_url"],
                 headers=self.project.get("checker_headers"),
                 verify=False
@@ -246,7 +246,7 @@ class C2cUpgradeTool:
                     '--header={}={}'.format(*i) for i in self.project["checker_headers"].items()
                 ])
             )
-        if resp.status < 200 or resp.status >= 300:
+        if resp.status_code < 200 or resp.status_code >= 300:
             return False, "\n".join([
                 "Checker error:",
                 "Run `curl {} '{}'` for more information."
