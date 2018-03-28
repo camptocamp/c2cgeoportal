@@ -35,7 +35,7 @@ before_script:
   - python3 -m compileall geoportal/c2cgeoportal_geoportal
   - python3 -m compileall admin/c2cgeoportal_admin
   - docker build --tag=camptocamp/geomapfish-build-dev:${MAJOR_VERSION} docker/build
-  - ./docker-run make build
+  - ./docker-run --env=TRAVIS_TAG make build
 
   ## FOR NON DOCKER TESTS
   - deactivate
