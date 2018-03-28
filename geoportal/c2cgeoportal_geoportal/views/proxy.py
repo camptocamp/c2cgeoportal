@@ -107,46 +107,48 @@ class Proxy(object):
                 resp, content = http.request(
                     url, method=method, headers=headers
                 )
-        except Exception as e:  # pragma: no cover
-            log.error("Error '{0!s}' while getting the URL:\n{1!s}\nMethod: {2!s}.".format(
-                sys.exc_info()[0], url, method
-            ))
-
-            log.error(
-                "--- With headers ---\n{0!s}".format("\n".join(
-                    ["{0!s}: {1!s}".format(*h) for h in list(headers.items())]
-                ))
-            )
-
-            log.error("--- Exception ---")
-            log.exception(e)
-
+        except Exception:  # pragma: no cover
+            errors = [
+                "Error '%s' while getting the URL:",
+                "%s",
+                "Method: %s",
+                "--- With headers ---",
+                "\n".join(["{}: {}".format(*h) for h in list(headers.items())]),
+            ]
+            args = [sys.exc_info()[0], url, method]
             if method in ("POST", "PUT"):
-                log.error("--- With body ---")
-                log.error(body.decode("utf-8"))
+                errors += [
+                    "--- Query with body ---",
+                    body.decode("utf-8")
+                ]
+            errors += [
+                "--- Return content ---",
+                content,
+            ]
+            log.error("\n".join(errors), *args, exc_info=True)
 
             raise HTTPBadGateway("Error on backend<hr>See logs for detail")
 
         if resp.status < 200 or resp.status >= 300:  # pragma: no cover
-            log.error(
-                "Error '{0!s}' in response of URL:\n{1!s}.".format(resp.reason, url)
-            )
-
-            log.error("Status: {0:d}".format(resp.status))
-            log.error("Method: {0!s}".format(method))
-
-            log.error(
-                "--- With headers ---\n{0!s}".format("\n".join(
-                    ["{0!s}: {1!s}".format(*h) for h in list(headers.items())]
-                ))
-            )
-
-            if method == "POST":
-                log.error("--- Query with body ---")
-                log.error(body.decode("utf-8"))
-
-            log.error("--- Return content ---")
-            log.error(content)
+            errors = [
+                "Error '%s' in response of URL:",
+                "%s",
+                "Status: %d",
+                "Method: %s",
+                "--- With headers ---",
+                "\n".join(["{}: {}".format(*h) for h in list(headers.items())]),
+            ]
+            args = [resp.reason, url, resp.status, method]
+            if method in ("POST", "PUT"):
+                errors += [
+                    "--- Query with body ---",
+                    body.decode("utf-8")
+                ]
+            errors += [
+                "--- Return content ---",
+                content,
+            ]
+            log.error("\n".join(errors), *args)
 
             raise HTTPInternalServerError("See logs for details")
 
