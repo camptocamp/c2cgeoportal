@@ -195,7 +195,9 @@ class TestTheme(TestTreeGroup):
         form['restricted_roles'] = []
 
         resp = form.submit('submit')
-        assert str(theme.id) == re.match('http://localhost/themes/(.*)', resp.location).group(1)
+        assert str(theme.id) == re.match(
+            'http://localhost/themes/(.*)\?msg_col=submit_ok',
+            resp.location).group(1)
 
         dbsession.expire(theme)
         for key, value in new_values.items():
@@ -271,7 +273,9 @@ class TestTheme(TestTreeGroup):
             filter(Theme.name == 'new_with_children'). \
             one()
 
-        assert str(theme.id) == re.match('http://localhost/themes/(.*)', resp.location).group(1)
+        assert str(theme.id) == re.match(
+            'http://localhost/themes/(.*)\?msg_col=submit_ok',
+            resp.location).group(1)
 
         assert (
             [groups[1].id, groups[3].id, groups[4].id] ==
@@ -367,7 +371,9 @@ class TestTheme(TestTreeGroup):
             one()
 
         assert str(duplicated.id) == \
-            re.match('http://localhost{}/(.*)'.format(self._prefix), resp.location).group(1)
+            re.match(
+                'http://localhost{}/(.*)\?msg_col=submit_ok'.format(self._prefix),
+                resp.location).group(1)
         assert duplicated.id != theme.id
         assert duplicated.children_relation[0].id != theme.children_relation[0].id
         assert duplicated.children_relation[0].treeitem.id == theme.children_relation[0].treeitem.id

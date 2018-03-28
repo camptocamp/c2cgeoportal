@@ -139,7 +139,9 @@ class TestLayersGroups(TestTreeGroup):
             self.set_first_field_named(form, key, value)
 
         resp = form.submit("submit")
-        assert str(group.id) == re.match('http://localhost/layer_groups/(.*)', resp.location).group(1)
+        assert str(group.id) == re.match(
+            'http://localhost/layer_groups/(.*)\?msg_col=submit_ok',
+            resp.location).group(1)
 
         dbsession.expire(group)
         for key, value in new_values.items():
@@ -209,7 +211,9 @@ class TestLayersGroups(TestTreeGroup):
             filter(LayerGroup.name == 'new_with_children'). \
             one()
 
-        assert str(group.id) == re.match('http://localhost/layer_groups/(.*)', resp.location).group(1)
+        assert str(group.id) == re.match(
+            'http://localhost/layer_groups/(.*)\?msg_col=submit_ok',
+            resp.location).group(1)
 
         assert (
             [groups[3].id, groups[4].id, groups[5].id] ==
@@ -283,7 +287,9 @@ class TestLayersGroups(TestTreeGroup):
             one()
 
         assert str(duplicated.id) == \
-            re.match('http://localhost{}/(.*)'.format(self._prefix), resp.location).group(1)
+            re.match(
+                'http://localhost{}/(.*)\?msg_col=submit_ok'.format(self._prefix),
+                resp.location).group(1)
         assert duplicated.id != group.id
         assert duplicated.children_relation[0].id != group.children_relation[0].id
         assert duplicated.children_relation[0].treeitem.id == group.children_relation[0].treeitem.id

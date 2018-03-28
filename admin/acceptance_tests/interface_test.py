@@ -97,7 +97,9 @@ class TestInterface(AbstractViewsTests):
         interface = dbsession.query(Interface). \
             filter(Interface.name == 'new_name'). \
             one()
-        assert str(interface.id) == re.match('http://localhost/interfaces/(.*)', resp.location).group(1)
+        assert str(interface.id) == re.match(
+            'http://localhost/interfaces/(.*)\?msg_col=submit_ok',
+            resp.location).group(1)
         assert interface.name == 'new_name'
 
     def test_edit(self, test_app, interface_test_data, dbsession):

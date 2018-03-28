@@ -134,5 +134,6 @@ class LayerWmtsViews(DimensionLayerViews):
             'redirect': self._request.route_url(
                 'c2cgeoform_item',
                 table='layers_wms',
-                id=self._request.matchdict['id'])
+                id=self._request.matchdict['id'],
+                _query=[('msg_col', 'submit_ok')])
         }

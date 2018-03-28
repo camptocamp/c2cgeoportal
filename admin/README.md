@@ -41,7 +41,8 @@ sudo -u postgres psql -d $DATABASE -c "CREATE EXTENSION postgis;"
 
 Optionally update sqlachemy.url in development.ini or production.ini then:
 ```
-make init_db
+use common/testing/initialized.py to create the database
+use demo-dump.sql to create and populate the database (demo data)
 ```
 
 ### Run the development web server

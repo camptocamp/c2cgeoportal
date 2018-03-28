@@ -160,7 +160,9 @@ class TestRole(AbstractViewsTests):
 
         resp = form.submit('submit')
 
-        assert str(role.id) == re.match('http://localhost/roles/(.*)', resp.location).group(1)
+        assert str(role.id) == re.match(
+            'http://localhost/roles/(.*)\?msg_col=submit_ok',
+            resp.location).group(1)
 
         dbsession.expire(role)
 
@@ -191,7 +193,9 @@ class TestRole(AbstractViewsTests):
         resp = form.submit('submit')
 
         role = dbsession.query(Role).filter(Role.name == 'clone').one()
-        assert str(role.id) == re.match('http://localhost/roles/(.*)', resp.location).group(1)
+        assert str(role.id) == re.match(
+            'http://localhost/roles/(.*)\?msg_col=submit_ok',
+            resp.location).group(1)
         assert role_proto.id != role.id
         assert role_proto.functionalities[2].name == role.functionalities[2].name
         assert role_proto.functionalities[2].value == role.functionalities[2].value
