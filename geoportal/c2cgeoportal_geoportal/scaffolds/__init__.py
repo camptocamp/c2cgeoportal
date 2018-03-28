@@ -31,6 +31,7 @@
 import re
 import subprocess
 import os
+import glob
 import json
 import requests
 import yaml
@@ -216,13 +217,12 @@ class TemplateNondockerCreate(TemplateCreate):  # pragma: no cover
 
     def post(self, command, output_dir, vars_):
         if os.name == 'posix':
-            for file_ in (
-                "get-pip-dependencies",
-                "deploy/hooks/post-restore-code",
-                "deploy/hooks/pre-restore-database.mako"
+            for glob_ in (
+                    "get-pip-dependencies",
+                    "deploy/hooks/*",
             ):
-                dest = os.path.join(output_dir, file_)
-                subprocess.check_call(["chmod", "+x", dest])
+                for file_ in glob.glob(os.path.join(output_dir, glob_)):
+                    subprocess.check_call(["chmod", "+x", file_])
         return super().post(command, output_dir, vars_)
 
 
@@ -237,12 +237,11 @@ class TemplateNondockerUpdate(TemplateUpdate):  # pragma: no cover
 
     def post(self, command, output_dir, vars_):
         if os.name == 'posix':
-            for file_ in (
+            for glob_ in (
                 "get-pip-dependencies",
-                "deploy/hooks/post-restore-code",
-                "deploy/hooks/pre-restore-database.mako"
+                "deploy/hooks/*",
             ):
-                dest = os.path.join(output_dir, "CONST_create_template", file_)
-                subprocess.check_call(["chmod", "+x", dest])
+                for file_ in glob.glob(os.path.join(output_dir, "CONST_create_template", glob_)):
+                    subprocess.check_call(["chmod", "+x", file_])
 
         return BaseTemplate.post(self, command, output_dir, vars_)
