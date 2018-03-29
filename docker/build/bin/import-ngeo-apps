@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # Copyright (c) 2011-2018, Camptocamp SA
@@ -327,3 +328,7 @@ ${ ',\\n'.join([
 
         with open(args.dst, "wt") as dst:
             dst.write(data)
+
+
+if __name__ == "__main__":
+    main()

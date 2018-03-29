@@ -61,7 +61,7 @@ SRC_FILES = $(shell ls -1 geoportal/c2cgeoportal_geoportal/*.py) \
 ADMIN_SRC_FILES = $(shell ls -1 commons/c2cgeoportal_commons/models/*.py) \
 	$(shell find admin/c2cgeoportal_admin -name "*.py" -print) \
 	$(shell find admin/c2cgeoportal_admin/templates -name "*.jinja2" -print) \
-	$(shell find admin/c2cgeoportal_admin/templates/widgets -name "*.pt" -print) \
+	$(shell find admin/c2cgeoportal_admin/templates/widgets -name "*.pt" -print)
 
 APPS += desktop mobile
 APPS_PACKAGE_PATH = geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal
@@ -96,12 +96,9 @@ docker-build:
 	./docker-run make build
 
 .PHONY: build
-build: c2c-egg \
-	$(MO_FILES) \
-	$(L10N_PO_FILES) \
-	$(APPS_FILES) \
-	admin/tests.ini \
+build: \
 	docker-build-build \
+	docker-build-testdb \
 	prepare-tests
 
 .PHONY: doc
@@ -128,9 +125,6 @@ clean-all: clean
 	rm --recursive --force ngeo
 	rm --force $(PO_FILES)
 	rm --recursive --force $(BUILD_DIR)/*
-
-.PHONY: c2c-egg
-c2c-egg: $(BUILD_DIR)/requirements.timestamp
 
 $(BUILD_DIR)/sphinx.timestamp: $(SPHINX_FILES) $(SPHINX_MAKO_FILES:.mako=)
 	$(PRERULE_CMD)
@@ -173,11 +167,14 @@ docker-build-build: $(shell docker-required --path . --replace-pattern='^test(.*
 		geoportal/c2cgeoportal_geoportal/scaffolds/create/docker-run \
 		npm-packages admin/npm-packages \
 		geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/ \
-		geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/CONST_create_template/
+		geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/CONST_create_template/ \
+		$(MO_FILES) \
+		$(L10N_PO_FILES) \
+		$(APPS_FILES)
 	docker build --build-arg=VERSION=$(MAJOR_VERSION) --tag=$(DOCKER_BASE)-build:$(MAJOR_VERSION) .
 
 .PHONY: prepare-tests
-prepare-tests: $(BUILD_DIR)/requirements.timestamp \
+prepare-tests: \
 		geoportal/tests/functional/test.ini \
 		commons/tests.yaml \
 		admin/tests.ini \
@@ -311,9 +308,9 @@ transifex-init: $(TX_DEPENDENCIES) \
 import-ngeo-apps: $(APPS_FILES)
 
 .PRECIOUS: ngeo
-ngeo: $(BUILD_DIR)/requirements.timestamp
+ngeo:
 	$(PRERULE_CMD)
-	if [ ! -e "ngeo" ] ; then git clone --depth 1 --branch=$(shell VERSION=$(MAIN_BRANCH) $(BUILD_DIR)/venv/bin/ngeo-version) https://github.com/camptocamp/ngeo.git ; fi
+	if [ ! -e "ngeo" ] ; then git clone --depth 1 --branch=$(shell VERSION=$(MAIN_BRANCH) npm-packages --version) https://github.com/camptocamp/ngeo.git ; fi
 	touch --no-create $@
 
 .PRECIOUS: ngeo/contribs/gmf/apps/%/index.html
@@ -326,13 +323,13 @@ ngeo/contribs/gmf/apps/%/js/controller.js: ngeo
 	$(PRERULE_CMD)
 	touch --no-create $@
 
-$(APPS_PACKAGE_PATH)/templates/%.html_tmpl: ngeo/contribs/gmf/apps/%/index.html $(BUILD_DIR)/requirements.timestamp geoportal/c2cgeoportal_geoportal/scripts/import_ngeo_apps.py
+$(APPS_PACKAGE_PATH)/templates/%.html_tmpl: ngeo/contribs/gmf/apps/%/index.html
 	$(PRERULE_CMD)
-	$(BUILD_DIR)/venv/bin/import-ngeo-apps --html $* $< $@
+	import-ngeo-apps --html $* $< $@
 
-$(APPS_PACKAGE_PATH)/static-ngeo/js/%.js_tmpl: ngeo/contribs/gmf/apps/%/js/controller.js $(BUILD_DIR)/requirements.timestamp geoportal/c2cgeoportal_geoportal/scripts/import_ngeo_apps.py
+$(APPS_PACKAGE_PATH)/static-ngeo/js/%.js_tmpl: ngeo/contribs/gmf/apps/%/js/controller.js
 	$(PRERULE_CMD)
-	$(BUILD_DIR)/venv/bin/import-ngeo-apps --js $* $< $@
+	import-ngeo-apps --js $* $< $@
 
 $(APPS_PACKAGE_PATH)/static-ngeo/components/contextualdata/contextualdata.html: ngeo/contribs/gmf/apps/desktop/contextualdata.html
 	$(PRERULE_CMD)
@@ -348,9 +345,9 @@ geoportal/c2cgeoportal_geoportal/scaffolds/create/docker-run: docker-run
 	$(PRERULE_CMD)
 	cp $< $@
 
-npm-packages: ngeo package.json $(BUILD_DIR)/requirements.timestamp geoportal/c2cgeoportal_geoportal/scripts/import_ngeo_apps.py
+npm-packages: ngeo package.json
 	$(PRERULE_CMD)
-	$(BUILD_DIR)/venv/bin/npm-packages --ngeo babel-core babel-loader babel-preset-env \
+	npm-packages --ngeo babel-core babel-loader babel-preset-env \
 		@camptocamp/babel-plugin-angularjs-annotate @camptocamp/cesium coveralls \
 		css-loader expose-loader extract-text-webpack-plugin file-loader gaze \
 		google-closure-library googshift html-loader html-webpack-plugin jasmine-core jquery-ui \
@@ -360,17 +357,16 @@ npm-packages: ngeo package.json $(BUILD_DIR)/requirements.timestamp geoportal/c2
 		webpack-merge istanbul-instrumenter-loader karma-coverage-istanbul-reporter \
 		--src=ngeo/package.json --src=package.json --dst=$@
 
-admin/npm-packages: ngeo package.json $(BUILD_DIR)/requirements.timestamp geoportal/c2cgeoportal_geoportal/scripts/import_ngeo_apps.py
+admin/npm-packages: ngeo package.json
 	$(PRERULE_CMD)
-	$(BUILD_DIR)/venv/bin/npm-packages --src=package.json --dst=$@
+	npm-packages --src=package.json --dst=$@
 
-geoportal/package.json: ngeo/package.json $(BUILD_DIR)/requirements.timestamp \
-		geoportal/c2cgeoportal_geoportal/scripts/import_ngeo_apps.py
+geoportal/package.json: ngeo/package.json
 	$(PRERULE_CMD)
-	$(BUILD_DIR)/venv/bin/import-ngeo-apps --package _ $< $@
+	import-ngeo-apps --package _ $< $@
 
 .PRECIOUS: geoportal/c2cgeoportal_geoportal/scaffolds%update/CONST_create_template/
-geoportal/c2cgeoportal_geoportal/scaffolds%update/CONST_create_template/: geoportal/c2cgeoportal_geoportal/scaffolds%create/
+geoportal/c2cgeoportal_geoportal/scaffolds%update/CONST_create_template/: geoportal/c2cgeoportal_geoportal/scaffolds%create/ $(APPS_FILES)
 	$(PRERULE_CMD)
 	rm -rf $@ || true
 	cp -r $< $@
@@ -388,7 +384,7 @@ $(APPS_PACKAGE_PATH)/static-ngeo/images/%: ngeo/contribs/gmf/apps/desktop/image/
 
 # Templates
 
-$(BUILD_DIR)/c2ctemplate-cache.json: $(VARS_FILES) $(BUILD_DIR)/requirements.timestamp
+$(BUILD_DIR)/c2ctemplate-cache.json: $(VARS_FILES) $(BUILD_DIR)/commons.timestamp
 	$(PRERULE_CMD)
 	$(BUILD_DIR)/venv/bin/python /usr/local/bin/c2c-template --vars $(VARS_FILE) --get-cache $@
 
@@ -397,13 +393,13 @@ $(BUILD_DIR)/c2ctemplate-cache.json: $(VARS_FILES) $(BUILD_DIR)/requirements.tim
 	c2c-template --cache $(BUILD_DIR)/c2ctemplate-cache.json --engine mako --files $<
 
 geoportal/c2cgeoportal_geoportal/locale/c2cgeoportal_geoportal.pot: \
-		lingua.cfg $(SRC_FILES) $(BUILD_DIR)/requirements.timestamp
+		lingua.cfg $(SRC_FILES)
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	pot-create --config $< --keyword _ --output $@ $(SRC_FILES)
 
 admin/c2cgeoportal_admin/locale/c2cgeoportal_admin.pot: \
-		lingua.cfg $(ADMIN_SRC_FILES) $(BUILD_DIR)/requirements.timestamp
+		lingua.cfg $(ADMIN_SRC_FILES)
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	pot-create --config $< --keyword _ --output $@ $(ADMIN_SRC_FILES)
@@ -474,7 +470,7 @@ $(BUILD_DIR)/venv.timestamp:
 	virtualenv --system-site-packages $(BUILD_DIR)/venv
 	touch $@
 
-$(BUILD_DIR)/requirements.timestamp: geoportal/setup.py $(BUILD_DIR)/venv.timestamp
+$(BUILD_DIR)/commons.timestamp: $(BUILD_DIR)/venv.timestamp
 	$(PRERULE_CMD)
-	$(BUILD_DIR)/venv/bin/pip install --editable=commons --editable=geoportal --editable=admin
+	$(BUILD_DIR)/venv/bin/pip install --editable=commons
 	touch $@
