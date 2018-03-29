@@ -406,7 +406,9 @@ clean: template-clean
 		geoportal/$(PACKAGE)_geoportal/locale/$(PACKAGE)-*.pot \
 		alembic.yaml \
 		.UPGRADE* \
-		mapcache
+		mapcache \
+		$(addprefix geoportal/$(PACKAGE)_geoportal/locale/, $(addsuffix /LC_MESSAGES/$(PACKAGE)_geoportal-$(L10N_CLIENT_POSTFIX).mo, $(LANGUAGES))) \
+		$(addprefix geoportal/$(PACKAGE)_geoportal/locale/, $(addsuffix /LC_MESSAGES/$(PACKAGE)_geoportal-$(L10N_SERVER_POSTFIX).mo, $(LANGUAGES)))
 ifeq ($(TILECLOUD_CHAIN_LOCAL), TRUE)
 	rm --force $(WMTSCAPABILITIES_FILE)
 endif
@@ -549,9 +551,6 @@ $(APP_OUTPUT_DIR)/%.json: \
 		geoportal/$(PACKAGE)_geoportal/locale/$*/LC_MESSAGES/$(PACKAGE)_geoportal-$(L10N_CLIENT_POSTFIX).po > $@
 
 /opt/c2cgeoportal_geoportal/c2cgeoportal_geoportal/locale/en/LC_MESSAGES/%.po:
-	echo "Nothing to do for $@"
-
-geoportal/$(PACKAGE)_geoportal/locale/en/LC_MESSAGES/%.po:
 	echo "Nothing to do for $@"
 
 $(APP_OUTPUT_DIR)/angular-locale_%.js: /usr/lib/node_modules/$(NGEO_PACKAGE)/github_versions language_mapping
@@ -739,6 +738,7 @@ config-docker: $(shell docker-required --path .) \
 .PHONY: geoportal-docker
 geoportal-docker: $(shell docker-required --path geoportal) \
 		$(WEB_RULE) \
+		$(addprefix geoportal/$(PACKAGE)_geoportal/locale/, $(addsuffix /LC_MESSAGES/$(PACKAGE)_geoportal-$(L10N_CLIENT_POSTFIX).mo, $(LANGUAGES))) \
 		geoportal/config.yaml
 	docker build --tag=$(DOCKER_BASE)-geoportal:$(DOCKER_TAG) --build-arg="GIT_HASH=$(GIT_HASH)" geoportal
 ifdef CGXP_INTERFACES
