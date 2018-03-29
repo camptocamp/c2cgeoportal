@@ -14,12 +14,12 @@ PRERULE_CMD ?= @echo "Build \033[1;34m$@\033[0m due modification on \033[1;34m$?
 endif
 endif
 
-ifdef TRAVIS_TAG
-export MAJOR_VERSION = $(TRAVIS_TAG)
-export MAIN_BRANCH = $(TRAVIS_TAG)
-else
 export MAJOR_VERSION = 2.3
 export MAIN_BRANCH = master
+ifdef TRAVIS_TAG
+export VERSION = $(TRAVIS_TAG)
+else
+export VERSION = dev
 endif
 
 DOCKER_BASE = camptocamp/geomapfish
