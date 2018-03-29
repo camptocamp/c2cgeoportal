@@ -39,6 +39,7 @@ from random import Random
 from math import sqrt
 from defusedxml.minidom import parseString
 from collections import Counter
+from datetime import datetime
 
 from pyramid.view import view_config
 from pyramid.i18n import TranslationStringFactory
@@ -1469,6 +1470,7 @@ class Entry:
         user = self.request.registry.validate_user(self.request, login, password)
         if user is not None:
             headers = remember(self.request, user)
+            self._set_last_login(login)
             log.info("User '{0!s}' logged in.".format(login))
 
             came_from = self.request.params.get("came_from")
@@ -1483,7 +1485,7 @@ class Entry:
                     )), headers=headers),
                 )
         else:
-            log.info("bad credentials for login '{0!s}'.".format(login))
+            log.info("Expired login or bad credentials for login '{0!s}'.".format(login))
             raise HTTPBadRequest("See server logs for details")
 
     @view_config(route_name="logout")
@@ -1597,6 +1599,12 @@ class Entry:
         user.set_temp_password(password)
 
         return user, username, password, None
+
+    def _set_last_login(self, username):
+        sess = models.DBSession()
+        user = sess.query(static.User).filter(static.User.username == username).one()
+        user.last_login = datetime.now()
+        sess.add(user)
 
     @view_config(route_name="loginresetpassword", renderer="json")
     def loginresetpassword(self):  # pragma: no cover
