@@ -670,7 +670,7 @@ class C2cUpgradeTool:
         self.print_step(
             step + 1, message="We will commit all the above files!\n"
             "If there are some files which should not be committed, then you should "
-            "add them into the `.gitignore` file and launch upgrade5 again.",
+            "add them into the `.gitignore` file and launch upgrade{} again.".format(step),
             prompt="Then to commit your changes type:")
 
     @Step(13)
