@@ -20,6 +20,7 @@ default_project_file:
     - setup\.py
     - vars\.yaml
     - Makefile
+    - README.rst
   exclude:
     - geoportal/{{package}}_geoportal/static-ngeo/components/README\.md
     - geoportal/{{package}}_geoportal/static-ngeo/js/{{package}}module\.js
