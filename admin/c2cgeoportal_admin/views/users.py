@@ -22,7 +22,9 @@ class UserViews(AbstractViews):
     _list_fields = [
         _list_field('username'),
         _list_field('role_name'),
-        _list_field('email')]
+        _list_field('email'),
+        _list_field('expiration_date'),
+        _list_field('last_login')]
     _id_field = 'id'
     _model = User
     _base_schema = base_schema

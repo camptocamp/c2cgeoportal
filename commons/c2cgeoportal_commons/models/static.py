@@ -29,6 +29,7 @@
 
 
 import logging
+from datetime import date
 from hashlib import sha1
 from typing import Optional
 
@@ -109,6 +110,18 @@ class User(Base):
     _cached_role_name = None  # type: str
     _cached_role = None  # type: Optional[Role]
 
+    last_login = Column(DateTime, info={
+        'colanderalchemy': {
+            'title': _('Last login')
+        }
+    })
+
+    expiration_date = Column(DateTime, info={
+        'colanderalchemy': {
+            'title': _('Expiration date')
+        }
+    })
+
     @property
     def role(self) -> Optional[Role]:
         if self._cached_role_name == self.role_name:
@@ -132,7 +145,7 @@ class User(Base):
 
     def __init__(
         self, username: str='', password: str='', email: str='', is_password_changed: bool=False,
-        role: Role=None
+        role: Role=None, expiration_date: date=None
     ) -> None:
         self.username = username
         self.password = password
@@ -140,6 +153,7 @@ class User(Base):
         self.is_password_changed = is_password_changed
         if role is not None:
             self.role_name = role.name
+        self.expiration_date =  expiration_date
 
     @property
     def password(self) -> str:
