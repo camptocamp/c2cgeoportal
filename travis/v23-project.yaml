@@ -6,6 +6,7 @@ checker_headers:
   Host: ${host}
 managed_files: []
 unmanaged_files:
+  - README\.rst
   - mapserver/mapserver\.map\.mako
   - mapserver/mapserver\.map\.tmpl\.mako
   - tilegeneration/config\.yaml\.mako

@@ -6,6 +6,7 @@ checker_path: /${instanceid}/wsgi/check_collector?
 managed_files: []
 unmanaged_files:
   - \.gitignore
+  - README\.rst
   - setup\.py
   - Makefile
   - testgeomapfish\.mk

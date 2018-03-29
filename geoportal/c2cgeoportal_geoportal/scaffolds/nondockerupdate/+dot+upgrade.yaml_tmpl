@@ -14,16 +14,17 @@ default_project_file:
     - geoportal/{{package}}_geoportal/jsbuild/.*
     - print/print-apps/.*
     - mapserver/.*
-    - tilegeneration/config.yaml.mako
-    - project.yaml.mako
-    - setup.py
-    - vars.yaml
-    - {{package}}.mk
+    - tilegeneration/config\.yaml\.mako
+    - project\.yaml\.mako
+    - setup\.py
+    - vars\.yaml
+    - {{package}}\.mk
+    - README\.rst
   exclude:
-    - geoportal/{{package}}_geoportal/static-ngeo/components/README.md
-    - geoportal/{{package}}_geoportal/static-ngeo/js/{{package}}module.js
-    - mapserver/tinyows.xml.mako
-    - mapserver/demo.map.mako
+    - geoportal/{{package}}_geoportal/static-ngeo/components/README\.md
+    - geoportal/{{package}}_geoportal/static-ngeo/js/{{package}}module\.js
+    - mapserver/tinyows\.xml\.mako
+    - mapserver/demo\.map\.mako
 
 files_to_remove:
   - file: .build
