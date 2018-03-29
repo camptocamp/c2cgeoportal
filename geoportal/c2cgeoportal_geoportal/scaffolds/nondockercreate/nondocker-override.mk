@@ -19,8 +19,8 @@ CONF_FILES_MAKO = $(shell ls -1 apache/*.conf.mako 2> /dev/null)
 CONF_FILES_JINJA = $(shell ls -1 apache/*.conf.jinja 2> /dev/null)
 CONF_FILES += $(shell ls -1 apache/*.conf 2> /dev/null) $(CONF_FILES_MAKO:.mako=) $(CONF_FILES_JINJA:.jinja=)
 
-DEFAULT_BUILD_RULES ?= geoportal-docker \
-	config-docker \
+DEFAULT_BUILD_RULES ?= docker-build-geoportal \
+	docker-build-config \
 	project.yaml \
 	alembic.ini \
 	alembic.yaml
@@ -45,7 +45,7 @@ apache/mapcache.xml: tilegeneration/config.yaml
 	$(PRERULE_CMD)
 	generate_controller --generate-mapcache-config
 
-config-docker:
+docker-build-config:
 	$(PRERULE_CMD)
 	@echo "Nothing to do for $@"
 
@@ -55,7 +55,7 @@ node_modules/%: /usr/lib/node_modules/%
 	rm -rf $@
 	cp -r $< $@
 
-geoportal-docker: \
+docker-build-geoportal: \
 		node_modules/ngeo/src \
 		node_modules/ngeo/contribs/gmf/src \
 		node_modules/openlayers/src \
@@ -82,6 +82,6 @@ geoportal-docker: \
 	$(PRERULE_CMD)
 	@echo "Nothing to do for $@"
 
-testdb-docker:
+docker-build-testdb:
 	$(PRERULE_CMD)
 	@echo "Nothing to do for $@"
