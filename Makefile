@@ -14,12 +14,12 @@ PRERULE_CMD ?= @echo "Build \033[1;34m$@\033[0m due modification on \033[1;34m$?
 endif
 endif
 
-ifdef TRAVIS_TAG
-export MAJOR_VERSION = $(TRAVIS_TAG)
-export MAIN_BRANCH = $(TRAVIS_TAG)
-else
 export MAJOR_VERSION = 2.3
 export MAIN_BRANCH = master
+ifdef TRAVIS_TAG
+export VERSION = $(TRAVIS_TAG)
+else
+export VERSION = $(MAJOR_VERSION)
 endif
 
 DOCKER_BASE = camptocamp/geomapfish
@@ -171,7 +171,7 @@ docker-build-build: $(shell docker-required --path . --replace-pattern='^test(.*
 		$(MO_FILES) \
 		$(L10N_PO_FILES) \
 		$(APPS_FILES)
-	docker build --build-arg=VERSION=$(MAJOR_VERSION) --tag=$(DOCKER_BASE)-build:$(MAJOR_VERSION) .
+	docker build --build-arg=VERSION=$(VERSION) --tag=$(DOCKER_BASE)-build:$(MAJOR_VERSION) .
 
 .PHONY: prepare-tests
 prepare-tests: \
