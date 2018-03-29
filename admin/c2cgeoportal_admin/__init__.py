@@ -64,6 +64,24 @@ def main(_, **settings):
     return config.make_wsgi_app()
 
 
+class PermissionSetter:
+
+    def __init__(self, config):
+        self.default_permission_to_revert = None
+        self.config = config
+
+    def __enter__(self):
+        self.config.commit()  # avoid .ConfigurationConflictError
+        if self.config.introspector.get_category('default permission'):
+            self.default_permission_to_revert = \
+                self.config.introspector.get_category('default permission')[0]['introspectable']['value']
+        self.config.set_default_permission('admin')
+
+    def __exit__(self, _type, value, traceback):
+        self.config.commit()  # avoid .ConfigurationConflictError
+        self.config.set_default_permission(self.default_permission_to_revert)
+
+
 def includeme(config: Configurator):
     config.include('pyramid_jinja2')
     config.include('c2cgeoform')
@@ -72,4 +90,6 @@ def includeme(config: Configurator):
     # Use pyramid_tm to hook the transaction lifecycle to the request
     config.include('pyramid_tm')
     config.add_translation_dirs('c2cgeoportal_admin:locale')
-    config.scan()
+
+    with PermissionSetter(config):
+        config.scan()
