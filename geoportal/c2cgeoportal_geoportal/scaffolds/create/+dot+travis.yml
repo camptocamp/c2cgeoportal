@@ -2,15 +2,10 @@
 
 sudo: false
 
-language: node_js
-
-node_js:
-  - '6'
-
 addons:
   apt:
     packages:
-      - python-virtualenv
+      - python3-netifaces
 
 script:
-  - make checks
+  - ./docker-run make --makefile={{project}}.mk checks
