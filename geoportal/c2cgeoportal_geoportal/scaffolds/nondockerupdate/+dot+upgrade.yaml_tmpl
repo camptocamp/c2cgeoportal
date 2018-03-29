@@ -35,9 +35,6 @@ files_to_remove:
   - file: {{package}}/forms.py
     version: 2.3
     from: 2.2
-  - file: deploy
-    version: 2.3
-    from: 2.2
   - file: travis.mk
     version: 2.3
     from: 2.2
