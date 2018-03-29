@@ -382,7 +382,14 @@ def default_user_validator(request, username, password):
     from c2cgeoportal_commons.models import DBSession
     from c2cgeoportal_commons.models.static import User
     user = DBSession.query(User).filter_by(username=username).first()
-    return username if user and user.validate_password(password) else None
+    login_expired = False
+    if user.expiration_date is not None:
+        now = time.time()
+        expiration_timestamp = time.mktime(user.expiration_date.timetuple())
+        if now > expiration_timestamp:
+            login_expired = now > expiration_timestamp
+            log.info("The user with the username {} is expired".format(username))
+    return username if user and user.validate_password(password) and not login_expired else None
 
 
 class OgcproxyRoutePredicate:
