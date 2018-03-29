@@ -14,13 +14,13 @@ default_project_file:
     - geoportal/{{package}}_geoportal/jsbuild/.*
     - print/print-apps/.*
     - mapserver/.*
-    - tilegeneration/config.yaml.mako
+    - tilegeneration/config\.yaml\.mako
     - project\.yaml\.mako
     - docker-compose\.yaml\.mako
     - setup\.py
     - vars\.yaml
     - Makefile
-    - README.rst
+    - README\.rst
   exclude:
     - geoportal/{{package}}_geoportal/static-ngeo/components/README\.md
     - geoportal/{{package}}_geoportal/static-ngeo/js/{{package}}module\.js
