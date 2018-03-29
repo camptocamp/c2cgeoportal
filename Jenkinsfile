@@ -57,7 +57,6 @@ timeout(time: 2, unit: 'HOURS') {
                 } finally {
                     sh 'docker-compose down'
                 }
-                sh "./docker-run --image=camptocamp/geomapfish-build grep ${MAJOR_VERSION} /opt/c2cgeoportal_geoportal/c2cgeoportal_geoportal.egg-info/PKG-INFO"
             }
             stage('Test c2cgeoportal') {
                 checkout scm
