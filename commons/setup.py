@@ -31,11 +31,12 @@
 import os
 from setuptools import setup, find_packages
 
-README = open('README.md').read()
-
+HERE = os.path.abspath(os.path.dirname(__file__))
 VERSION = os.environ.get('VERSION', 'dev')
 
-with open('requirements.txt') as f:
+with open(os.path.join(HERE, 'README.md')) as f:
+    README = f.read()
+with open(os.path.join(HERE, 'requirements.txt')) as f:
     install_requires = f.read().splitlines()
 
 setup(

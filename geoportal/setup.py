@@ -32,7 +32,7 @@ import os
 
 from setuptools import setup, find_packages
 
-here = os.path.abspath(os.path.dirname(__file__))
+HERE = os.path.abspath(os.path.dirname(__file__))
 README = """c2cgeoportal is the server part of `GeoMapFish <http://geomapfish.org/>`_,
 the client part is `ngeo <https://github.com/camptocamp/ngeo/>`_,
 the old client and API part is `CGXP <https://github.com/camptocamp/cgxp/>`_.
@@ -40,11 +40,10 @@ the old client and API part is `CGXP <https://github.com/camptocamp/cgxp/>`_.
 Read the `Documentation <https://camptocamp.github.io/c2cgeoportal/master/>`_.
 
 `Sources <https://github.com/camptocamp/c2cgeoportal/>`_"""
-
 VERSION = os.environ.get('VERSION', 'dev')
 
 
-with open('requirements.txt') as f:
+with open(os.path.join(HERE, 'requirements.txt')) as f:
     install_requires = f.read().splitlines()
 
 setup_requires = []
@@ -54,7 +53,7 @@ tests_require = []
 setup(
     name='c2cgeoportal_geoportal',
     version=VERSION,
-    description='c2cgeoportal',
+    description='c2cgeoportal geoportal',
     long_description=README,
     classifiers=[
         'Programming Language :: Python',
