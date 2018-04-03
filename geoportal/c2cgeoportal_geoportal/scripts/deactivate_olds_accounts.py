@@ -34,12 +34,13 @@ import transaction
 from argparse import ArgumentParser
 from logging.config import fileConfig
 from datetime import datetime, timedelta
+import pytz
 
 
 def main():
     parser = ArgumentParser(
         prog=sys.argv[0], add_help=True,
-        description="Tool used to deactivate accounts that was not logged since X days. Deactivate an account means set its expiration_date value to now.",
+        description="Tool used to deactivate accounts that was not logged since X days.",
     )
 
     parser.add_argument(
@@ -53,7 +54,8 @@ def main():
         "--days",
         dest="days",
         default=365,
-        help="The maximum numbers of days between now and the last login date. Older account will be deactivated. Default to 365 days."
+        help="The maximum numbers of days between now and the last login date. "
+             "Older accounts will be deactivated. Default to 365 days."
     )
     options = parser.parse_args()
 
@@ -66,12 +68,9 @@ def main():
     from c2cgeoportal_commons.models.static import User
 
     session = DBSession()
-    now = datetime.now();
-    limite = now - timedelta(days)
+    limite = datetime.now(pytz.utc) - timedelta(days)
 
-    for user in self.session.query(User).filter(User.last_login >= limite).all():
-        user.expiraion_date = now
-        session.add(user)
-        print("User with username {} is now deactivated".format(User.username))
-
-    transaction.commit()
+    with transaction:
+        for user in session.query(User).filter(User.last_login >= limite):
+            user.deactivated = True
+            print("User with username {} is now deactivated".format(User.username))

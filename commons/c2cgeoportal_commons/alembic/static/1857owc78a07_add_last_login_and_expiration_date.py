@@ -27,7 +27,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-"""                                                                              
+"""
 Add column last_login and expiration_date (both datetime) on
 table main_static."user".
 
@@ -36,27 +36,46 @@ Revises: 5472fbc19f39
 Create Date: 2018-03-29 13:15:23.228907
 """
 
-from alembic import op, context
-from sqlalchemy import Column, DateTime
+from alembic import op
+from sqlalchemy import Boolean, Column, DateTime
+from sqlalchemy.schema import MetaData, Table
 from c2cgeoportal_commons.config import config
+from datetime import datetime
+import pytz
 
 # revision identifiers, used by Alembic.
 revision = '1857owc78a07'
 down_revision = '5472fbc19f39'
 
+
 def upgrade():
-    schema = config['schema']
     staticschema = config['schema_static']
 
     # Instructions
-    op.add_column('user', Column('last_login', DateTime), schema=staticschema)
-    op.add_column('user', Column('expiration_date', DateTime), schema=staticschema)
+    op.add_column('user', Column('last_login', DateTime(timezone=True)), schema=staticschema)
+    op.add_column('user', Column('expire_on', DateTime(timezone=True)), schema=staticschema)
+    op.add_column('user', Column('deactivated', Boolean, default=False), schema=staticschema)
+
+    metadata = MetaData()
+    user = Table(
+        'user',
+        metadata,
+        Column('last_login', DateTime(timezone=True)),
+        Column('deactivated', Boolean),
+        schema=staticschema
+    )
+    op.execute(
+        user.update().values({
+            'last_login': datetime.now(pytz.utc),
+            'deactivated': False
+        })
+    )
 
 
 def downgrade():
-    schema = config['schema']
     staticschema = config['schema_static']
 
     # Instructions
-    op.drop_column('user', 'expiration_date', schema=staticschema)
+    op.drop_column('user', 'deactivated', schema=staticschema)
+    op.drop_column('user', 'expire_on', schema=staticschema)
     op.drop_column('user', 'last_login', schema=staticschema)
