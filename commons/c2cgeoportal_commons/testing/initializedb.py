@@ -80,7 +80,7 @@ def init_db(connection: Connection, alembic_ini: str=None, force: bool=False, te
     else:
         def upgrade(schema: str) -> None:
             cfg = alembic_config.Config(alembic_ini, ini_section=schema)
-            cfg.attributes['connection'] = connection
+            cfg.attributes['connection'] = connection  # pylint: disable=unsupported-assignment-operation
             command.upgrade(cfg, 'head')
         upgrade('main')
         upgrade('static')
