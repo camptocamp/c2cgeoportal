@@ -69,6 +69,7 @@ class TestLayersGroups(TestTreeGroup):
         self.check_left_menu(resp, 'Layers groups')
 
         expected = [('actions', '', 'false'),
+                    ('id', 'id', 'true'),
                     ('name', 'Name'),
                     ('metadata_url', 'Metadata URL'),
                     ('description', 'Description'),

@@ -49,6 +49,7 @@ class TestRestrictionAreaViews(AbstractViewsTests):
         self.check_left_menu(resp, 'Restriction areas')
 
         expected = [('actions', '', 'false'),
+                    ('id', 'id', 'true'),
                     ('name', 'Name', 'true'),
                     ('description', 'Description', 'true'),
                     ('readwrite', 'Read/write', 'true'),

@@ -40,6 +40,7 @@ class TestFunctionality(AbstractViewsTests):
         self.check_left_menu(resp, 'Functionalities')
 
         expected = [('actions', '', 'false'),
+                    ('id', 'id', 'true'),
                     ('name', 'Name', 'true'),
                     ('description', 'Description', 'true'),
                     ('value', 'Value', 'true')]

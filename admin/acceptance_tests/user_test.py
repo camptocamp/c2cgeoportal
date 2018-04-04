@@ -56,6 +56,7 @@ class TestUser(AbstractViewsTests):
         self.check_left_menu(resp, 'Users')
 
         expected = [('actions', '', 'false'),
+                    ('id', 'id', 'true'),
                     ('username', 'Username'),
                     ('role_name', 'Role'),
                     ('email', 'Email')]

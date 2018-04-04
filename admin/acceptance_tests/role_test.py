@@ -72,6 +72,7 @@ class TestRole(AbstractViewsTests):
         self.check_left_menu(resp, 'Roles')
 
         expected = [('actions', '', 'false'),
+                    ('id', 'id', 'true'),
                     ('name', 'Name'),
                     ('description', 'Description'),
                     ('functionalities', 'Functionalities', 'false'),

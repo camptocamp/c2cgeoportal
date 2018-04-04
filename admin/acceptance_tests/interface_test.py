@@ -59,6 +59,7 @@ class TestInterface(AbstractViewsTests):
         self.check_left_menu(resp, 'Interfaces')
 
         expected = [('actions', '', 'false'),
+                    ('id', 'id', 'true'),
                     ('name', 'Name', 'true'),
                     ('description', 'Description', 'true'),
                     ('layers', 'Layers', 'false'),
