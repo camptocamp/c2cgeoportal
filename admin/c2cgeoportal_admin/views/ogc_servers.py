@@ -17,6 +17,7 @@ base_schema.add_unique_validator(OGCServer.name, OGCServer.id)
 @view_defaults(match_param='table=ogc_servers')
 class OGCServerViews(AbstractViews):
     _list_fields = [
+        _list_field('id'),
         _list_field('name'),
         _list_field('description'),
         _list_field('url'),
