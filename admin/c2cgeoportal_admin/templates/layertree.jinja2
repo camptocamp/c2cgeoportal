@@ -153,10 +153,14 @@
           },
 
           onPostBody: function(data) {
-
+            // use some instead of findIndex for IE11 support
             if (data.length > 0) {
-              const nameIndex = $grid.bootstrapTable('getVisibleColumns').findIndex(function(column) {
-                return column.field == 'name';
+              var nameIndex = -1
+              $grid.bootstrapTable('getVisibleColumns').some(function(column, i) {
+                if (column.field == 'name') {
+                  nameIndex = i;
+                  return true;
+                }
               });
 
               $grid.treegrid({
