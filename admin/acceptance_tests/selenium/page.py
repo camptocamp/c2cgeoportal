@@ -72,13 +72,19 @@ class LayertreePage(BasePage):
         button.click()
 
     def find_item(self, path, timeout=None):
-        return self.find_element(By.XPATH, '//tr[contains(@class, "treegrid-{}")]'.format(path), timeout)
+        return self.find_element(
+            By.CSS_SELECTOR,
+            'li.jstree-node[id="{}"]'.format(path), timeout)
 
     def find_item_action(self, path, action, timeout=None):
-        tr = self.find_item(path, timeout)
-        td = tr.find_element(By.XPATH, './td[@class="actions"]')
-        button = td.find_element(By.XPATH, './/button[@data-toggle="dropdown"]')
+        dropdown = self.find_element(
+            By.CSS_SELECTOR,
+            '.jstree-grid-column.actions '
+            '.jstree-grid-cell[data-jstreegrid="' + path + '"] '
+            '.dropdown',
+            timeout=10)
+        button = dropdown.find_element(By.XPATH, './/button[@data-toggle="dropdown"]')
         WebDriverWait(self.driver, 10).until(
             expected_conditions.visibility_of(button))
         button.click()
-        return td.find_element(By.XPATH, './/a[contains(@class, "{}")]'.format(action))
+        return dropdown.find_element(By.CSS_SELECTOR, 'a.{}'.format(action))

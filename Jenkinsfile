@@ -114,7 +114,7 @@ timeout(time: 2, unit: 'HOURS') {
                             'c2c/health_check?checks=check_collector',
                             'layers/test/values/type enum',
                             'admin/layertree',
-                            'admin/layertree/nodes?order=asc'
+                            'admin/layertree/children'
                         ]) {
                             def start_lines = [:]
                             ['db', 'external-db', 'print', 'mapserver', 'geoportal'].each { service ->

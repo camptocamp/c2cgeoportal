@@ -81,7 +81,7 @@ script:
   - travis/test-new-project http://localhost/main/wsgi/c2c/health_check?max_level=9
   - travis/test-new-project http://localhost/main/wsgi/c2c/health_check?checks=check_collector
   - travis/test-new-project http://localhost/main/wsgi/admin/layertree
-  - travis/test-new-project http://localhost/main/wsgi/admin/layertree/nodes?order=asc
+  - travis/test-new-project http://localhost/main/wsgi/admin/layertree/children
   - cat /var/log/apache2/error.log
   - cat /var/log/apache2/access.log
   - sudo cat /var/log/tomcat7/catalina.out

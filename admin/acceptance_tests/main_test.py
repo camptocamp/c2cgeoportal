@@ -9,4 +9,4 @@ def test_main(app_env):
     config = testing.setUp(registry=app_env['registry'])
     app = config.make_wsgi_app()
     testapp = WebTestApp(app)
-    testapp.get('/layertree/nodes', status=200)
+    testapp.get('/layertree/children', status=200)

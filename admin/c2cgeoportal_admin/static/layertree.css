@@ -1,0 +1,102 @@
+#toolbar {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.jstree-grid-wrapper {
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+.jstree-grid-wrapper .jstree-grid-header {
+  border-bottom: 1px solid #ddd;
+  background-color: inherit;
+}
+.jstree-grid-wrapper .jstree-grid-column {
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}
+.jstree-grid-wrapper div.jstree-grid-cell-root-tree {
+  line-height: inherit;
+}
+
+.jstree-grid-column.actions,
+.jstree-grid-column.actions .jstree-grid-cell {
+  overflow: visible;
+}
+
+.jstree-grid-wrapper .jstree-grid-header-cell {
+  padding: 8px;
+  line-height: 24px;
+  vertical-align: top;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 700;
+}
+.jstree-grid-wrapper .jstree-grid-separator {
+  display: none;
+}
+.jstree.jstree-grid-cell {
+  padding-left: 0px;
+}
+
+
+.jstree-grid-wrapper .jstree-node,
+.jstree-grid-wrapper .jstree-grid-cell-regular {
+  border-top: 1px solid #ddd;
+}
+.jstree-grid-wrapper .jstree-grid-cell-regular {
+  height: 34px;
+}
+.jstree-grid-wrapper .jstree-anchor {
+  display: inline-block;
+  height: 33px;
+}
+.jstree-default .jstree-wholerow {
+  height: 33px;
+}
+
+.jstree-grid-wrapper .jstree-grid-cell-regular,
+.jstree-grid-wrapper .jstree-anchor {
+  line-height: 24px;
+  padding: 5px;
+}
+
+.jstree-grid-wrapper .jstree-grid-cell-regular span.cell-content {
+  display: block;
+  vertical-align: middle;
+}
+
+.jstree-icon.jstree-ocl {
+  background-image: none;
+  position: relative;
+  display: inline-block;
+  width: 16px;
+  height: 32px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.jstree-default .jstree-anchor .jstree-icon {
+  float: left;
+  width: 16px;
+  line-height: inherit;
+}
+
+.jstree-icon {
+  font-family: 'Glyphicons Halflings';
+  font-style: normal;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+}
+
+.jstree-open .jstree-icon.jstree-ocl:before {
+  content: "\e252";
+}
+.jstree-closed .jstree-icon.jstree-ocl:before {
+  content: "\e250";
+}
+.jstree-leaf .jstree-icon.jstree-ocl:before {
+  content: "";
+}
