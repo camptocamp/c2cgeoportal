@@ -60,7 +60,6 @@ class LayerTreeViews():
                 'item_type': item.item_type,
                 'name': item.name,
                 'translated_name': self._request.localizer.translate(client_tsf(item.name)),
-                'metadata_url': item.metadata_url,
                 'description': item.description,
                 'path': subpath,
                 'parent_path': path,
