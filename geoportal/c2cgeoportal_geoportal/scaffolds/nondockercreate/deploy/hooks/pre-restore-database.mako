@@ -35,7 +35,7 @@ psql -c 'CREATE TABLE IF NOT EXISTS ${schema_static}.shorturl (
 
 psql -c 'GRANT ALL ON SCHEMA "${schema_static}" TO "${dbuser}";' ${db}
 psql -c 'GRANT ALL ON ALL TABLES IN SCHEMA "${schema_static}" TO "${dbuser}";' ${db}
-psql -c 'ALTER TABLE main_static.shorturl OWNER TO "www-data";' ${db}
+psql -c 'ALTER TABLE ${schema_static}.shorturl OWNER TO "www-data";' ${db}
 
 ./docker-run make --makefile=$TARGET.mk alembic.ini alembic.yaml
 ./docker-run alembic --name=static upgrade head
