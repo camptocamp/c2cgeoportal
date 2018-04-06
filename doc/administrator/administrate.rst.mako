@@ -51,16 +51,21 @@ Functionalities
 * ``Name``: the type of Metadata we want to set (configured in the ``vars``
   files in ``admin_interface/available_functionalities``).
 * ``Value``: the value of the metadata.
-* ``Descritpion``: a description.
+* ``Description``: a description.
+
+.. _administrator_administrate_layers:
 
 Layers
 ------
 
+Layer definition for the ngeo client is considered "version 2",
+whereas layer definition for the CGXP client is considered "version 1".
 In version 2, we split the layer table into 2 tables: ``layer_wms``,
 ``layer_wmts``, and we copy the previous layer table in ``layerv1``.
-There is a tool to migrate the layers from the v1 structure to the v2
-structure see ``.build/venv/bin/themev1tov2``.
-Still using the CGXP application? Then you should maintain both version
+For information on migrating layers from CGXP to ngeo, see
+:ref:`integrator_upgrade_application_cgxp_to_ngeo`.
+
+Still using the CGXP client? Then you should maintain both version
 of the layers, respectively ``layerv1`` and ``layer_wms``-``layer_wmts``.
 
 And the ``order`` will be moved in the relation of the tree.
