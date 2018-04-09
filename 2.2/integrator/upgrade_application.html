@@ -162,6 +162,22 @@ commands</p>
 </pre></div>
 </div>
 </div>
+<div class="section" id="from-cgxp-to-ngeo">
+<span id="integrator-upgrade-application-cgxp-to-ngeo"></span><h2>From CGXP to ngeo<a class="headerlink" href="#from-cgxp-to-ngeo" title="Permalink to this headline">¶</a></h2>
+<p>Layer definition for ngeo clients is separate and different from layer
+definition for CGXP clients, see <a class="reference internal" href="../administrator/administrate.html#administrator-administrate-layers"><span class="std std-ref">Layers</span></a>
+for details.
+To migrate the layer definitions from the CGXP structure to the ngeo
+structure, you can use the script <code class="docutils literal"><span class="pre">.build/venv/bin/themev1tov2</span></code>.</p>
+<p>Text translations for ngeo clients are separate and different from text
+translations for CGXP clients.
+To migrate the text translations from CGXP to ngeo, you can use the script
+<code class="docutils literal"><span class="pre">.build/venv/bin/l10nv1tov2</span></code>.
+For example, for converting french texts the script can be used as follows:</p>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">build</span><span class="o">/</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">l10nv1tov2</span> <span class="n">fr</span> <span class="n">geoportal</span><span class="o">/</span><span class="n">static</span><span class="o">/</span><span class="n">js</span><span class="o">/</span><span class="n">Proj</span><span class="o">/</span><span class="n">Lang</span><span class="o">/</span><span class="n">fr</span><span class="o">.</span><span class="n">js</span>    <span class="n">geoportal</span><span class="o">/</span><span class="n">locale</span><span class="o">/</span><span class="n">fr</span><span class="o">/</span><span class="n">LC_MESSAGES</span><span class="o">/</span><span class="n">geoportal</span><span class="o">-</span><span class="n">client</span><span class="o">.</span><span class="n">po</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 
@@ -183,6 +199,7 @@ commands</p>
 </li>
 <li><a class="reference internal" href="#upgrading-the-application">Upgrading the application</a></li>
 <li><a class="reference internal" href="#upgrade-the-database">Upgrade the database</a></li>
+<li><a class="reference internal" href="#from-cgxp-to-ngeo">From CGXP to ngeo</a></li>
 </ul>
 </li>
 </ul>
