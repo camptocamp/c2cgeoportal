@@ -631,8 +631,8 @@ class LayerV1(Layer):  # Deprecated in v2
                 'widget': SelectWidget(
                     values=(
                         ('', _('- Select -')),
-                        ('image/jpeg', _('image/jpeg')),
-                        ('image/png', _('image/png'))
+                        ('image/jpeg', 'image/jpeg'),
+                        ('image/png', 'image/png')
                     ))}
         })  # for WMS
     style = Column(Unicode, info={
