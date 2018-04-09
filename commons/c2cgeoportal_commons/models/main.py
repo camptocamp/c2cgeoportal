@@ -51,15 +51,8 @@ from c2cgeoportal_commons.config import config
 from c2cgeoportal_commons.models import Base, _
 from c2cgeoportal_commons.models.sqlalchemy import JSONEncodedDict
 
-try:
-    from pyramid.security import Allow, ALL_PERMISSIONS, DENY_ALL
-# Fallback if pyramid do not exists, used by QGIS server plugin
-except ImportError:  # pragma: no cover
-    Allow = ALL_PERMISSIONS = DENY_ALL = None
-
 
 LOG = logging.getLogger(__name__)
-AUTHORIZED_ROLE = 'role_admin'
 
 _schema = config['schema']  # type: str
 _srid = config['srid']  # type: int
@@ -86,7 +79,6 @@ class FullTextSearch(GeoInterface, Base):
         Index('tsearch_ts_idx', 'ts', postgresql_using='gin'),
         {'schema': _schema}
     )
-    __acl__ = [DENY_ALL]
 
     id = Column(Integer, primary_key=True)
     label = Column(Unicode)
@@ -107,9 +99,6 @@ class FullTextSearch(GeoInterface, Base):
 class Functionality(Base):
     __tablename__ = 'functionality'
     __table_args__ = {'schema': _schema}
-    __acl__ = [
-        (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
-    ]
     __colanderalchemy_config__ = {
         'title': _('Functionality'),
         'plural': _('Functionalities')
@@ -167,9 +156,6 @@ theme_functionality = Table(
 class Role(Base):
     __tablename__ = 'role'
     __table_args__ = {'schema': _schema}
-    __acl__ = [
-        (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
-    ]
     __colanderalchemy_config__ = {
         'title': _('Role'),
         'plural': _('Roles')
@@ -243,7 +229,6 @@ class TreeItem(Base):
         UniqueConstraint('type', 'name'),
         {'schema': _schema},
     )  # type: Union[Tuple, Dict[str, Any]]
-    __acl__ = [DENY_ALL]
     item_type = Column('type', String(10), nullable=False, info={
         'colanderalchemy': {
             'exclude': True
@@ -295,9 +280,6 @@ event.listen(TreeItem, 'after_delete', cache_invalidate_cb, propagate=True)
 class LayergroupTreeitem(Base):
     __tablename__ = 'layergroup_treeitem'
     __table_args__ = {'schema': _schema}
-    __acl__ = [
-        (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
-    ]
 
     # required by formalchemy
     id = Column(Integer, primary_key=True, info={
@@ -368,7 +350,6 @@ event.listen(LayergroupTreeitem, 'after_delete', cache_invalidate_cb, propagate=
 class TreeGroup(TreeItem):
     __tablename__ = 'treegroup'
     __table_args__ = {'schema': _schema}
-    __acl__ = [DENY_ALL]
     __mapper_args__ = {
         'polymorphic_identity': 'treegroup'  # needed for _identity_class
     }
@@ -408,9 +389,6 @@ class TreeGroup(TreeItem):
 class LayerGroup(TreeGroup):
     __tablename__ = 'layergroup'
     __table_args__ = {'schema': _schema}
-    __acl__ = [
-        (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
-    ]
     __colanderalchemy_config__ = {
         'title': _('Layers group'),
         'plural': _('Layers groups')
@@ -463,9 +441,6 @@ restricted_role_theme = Table(
 class Theme(TreeGroup):
     __tablename__ = 'theme'
     __table_args__ = {'schema': _schema}
-    __acl__ = [
-        (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
-    ]
     __colanderalchemy_config__ = {
         'title': _('Theme'),
         'plural': _('Themes')
@@ -530,7 +505,6 @@ event.listen(Theme.functionalities, 'remove', cache_invalidate_cb)
 class Layer(TreeItem):
     __tablename__ = 'layer'
     __table_args__ = {'schema': _schema}
-    __acl__ = [DENY_ALL]
     __mapper_args__ = {
         'polymorphic_identity': 'layer'  # needed for _identity_class
     }
@@ -555,7 +529,6 @@ class Layer(TreeItem):
 
 
 class DimensionLayer(Layer):
-    __acl__ = [DENY_ALL]
     __mapper_args__ = {
         'polymorphic_identity': 'dimensionlayer'  # needed for _identity_class
     }
@@ -564,9 +537,6 @@ class DimensionLayer(Layer):
 class LayerV1(Layer):  # Deprecated in v2
     __tablename__ = 'layerv1'
     __table_args__ = {'schema': _schema}
-    __acl__ = [
-        (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
-    ]
     __colanderalchemy_config__ = {
         'title': _('Layer V1'),
         'plural': _('Layers V1')
@@ -767,9 +737,6 @@ OGCSERVER_AUTH_PROXY = 'Proxy'
 class OGCServer(Base):
     __tablename__ = 'ogc_server'
     __table_args__ = {'schema': _schema}
-    __acl__ = [
-        (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
-    ]
     __colanderalchemy_config__ = {
         'title': _('OGC Server'),
         'plural': _('OGC Servers')
@@ -884,9 +851,6 @@ class OGCServer(Base):
 class LayerWMS(DimensionLayer):
     __tablename__ = 'layer_wms'
     __table_args__ = {'schema': _schema}
-    __acl__ = [
-        (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
-    ]
     __colanderalchemy_config__ = {
         'title': _('WMS Layer'),
         'plural': _('WMS Layers')
@@ -977,9 +941,6 @@ class LayerWMS(DimensionLayer):
 class LayerWMTS(DimensionLayer):
     __tablename__ = 'layer_wmts'
     __table_args__ = {'schema': _schema}
-    __acl__ = [
-        (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
-    ]
     __colanderalchemy_config__ = {
         'title': _('WMTS Layer'),
         'plural': _('WMTS Layers')
@@ -1059,9 +1020,6 @@ layer_ra = Table(
 class RestrictionArea(Base):
     __tablename__ = 'restrictionarea'
     __table_args__ = {'schema': _schema}
-    __acl__ = [
-        (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
-    ]
     __colanderalchemy_config__ = {
         'title': _('Restriction area'),
         'plural': _('Restriction areas')
@@ -1162,9 +1120,6 @@ interface_theme = Table(
 class Interface(Base):
     __tablename__ = 'interface'
     __table_args__ = {'schema': _schema}
-    __acl__ = [
-        (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
-    ]
     __c2cgeoform_config__ = {
         'duplicate': True
     }
@@ -1232,9 +1187,6 @@ class Interface(Base):
 class Metadata(Base):
     __tablename__ = 'metadata'
     __table_args__ = {'schema': _schema}
-    __acl__ = [
-        (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
-    ]
 
     id = Column(Integer, primary_key=True, info={'colanderalchemy': {'widget': HiddenWidget()}})
     name = Column(Unicode, info={
@@ -1297,9 +1249,6 @@ event.listen(Metadata, 'after_delete', cache_invalidate_cb, propagate=True)
 class Dimension(Base):
     __tablename__ = 'dimension'
     __table_args__ = {'schema': _schema}
-    __acl__ = [
-        (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
-    ]
 
     id = Column(Integer, primary_key=True, info={'colanderalchemy': {'widget': HiddenWidget()}})
     name = Column(Unicode, info={

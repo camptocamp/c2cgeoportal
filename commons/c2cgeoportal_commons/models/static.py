@@ -41,15 +41,8 @@ from c2cgeoportal_commons.config import config
 from c2cgeoportal_commons.models import Base, _
 from c2cgeoportal_commons.models.main import Role
 
-try:
-    from pyramid.security import Allow, ALL_PERMISSIONS, DENY_ALL
-# Fallback if pyramid do not exists, used by QGIS server plugin
-except ImportError:  # pragma: no cover
-    Allow = ALL_PERMISSIONS = DENY_ALL = None
-
 
 LOG = logging.getLogger(__name__)
-AUTHORIZED_ROLE = 'role_admin'
 
 _schema = config['schema_static']  # type: str
 
@@ -57,9 +50,6 @@ _schema = config['schema_static']  # type: str
 class User(Base):
     __tablename__ = 'user'
     __table_args__ = {'schema': _schema}
-    __acl__ = [
-        (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
-    ]
     __colanderalchemy_config__ = {
         'title': _('User'),
         'plural': _('Users')
@@ -188,7 +178,6 @@ class User(Base):
 class Shorturl(Base):
     __tablename__ = 'shorturl'
     __table_args__ = {'schema': _schema}
-    __acl__ = [DENY_ALL]
     id = Column(Integer, primary_key=True)
     url = Column(Unicode)
     ref = Column(String(20), index=True, unique=True, nullable=False)
