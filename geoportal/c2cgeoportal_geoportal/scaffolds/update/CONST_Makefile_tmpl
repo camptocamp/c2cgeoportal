@@ -142,7 +142,7 @@ NGEO_LIBS_JS_FILES += \
 	/usr/lib/node_modules/floatthead/dist/jquery.floatThead.min.js \
 	/usr/lib/node_modules/proj4/dist/proj4.js \
 	/usr/lib/node_modules/d3/build/d3.min.js \
-	/usr/lib/node_modules/file-saver/dist/FileSaver.min.js \
+	/usr/lib/node_modules/file-saver/FileSaver.min.js \
 	/usr/lib/node_modules/corejs-typeahead/dist/typeahead.bundle.min.js \
 	/usr/lib/node_modules/jsts/dist/jsts.min.js \
 	/usr/lib/node_modules/moment/min/moment.min.js \

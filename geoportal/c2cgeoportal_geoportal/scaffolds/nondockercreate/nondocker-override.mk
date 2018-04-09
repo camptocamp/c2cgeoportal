@@ -73,7 +73,7 @@ docker-build-geoportal: \
 		node_modules/floatthead/dist/jquery.floatThead.min.js \
 		node_modules/proj4/dist/proj4.js \
 		node_modules/d3/build/d3.min.js \
-		node_modules/file-saver/dist/FileSaver.min.js \
+		node_modules/file-saver/FileSaver.min.js \
 		node_modules/corejs-typeahead/dist/typeahead.bundle.min.js \
 		node_modules/jsts/dist/jsts.min.js \
 		node_modules/moment/min/moment.min.js \
