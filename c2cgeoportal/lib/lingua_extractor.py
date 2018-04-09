@@ -435,7 +435,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
         url = get_url2("Layer", url, request, errors)
         if len(errors) > 0:
             print("\n".join(errors))
-            return []
+            return [], []
 
         wms_getcap_url = add_url_params(url, {
             "SERVICE": "WMS",
@@ -502,7 +502,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                     RED,
                 ))
                 if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
-                    return []
+                    return [], []
                 else:
                     raise
 
@@ -514,7 +514,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                     RED,
                 ))
                 if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
-                    return []
+                    return [], []
                 else:
                     raise Exception("Aborted")
 
@@ -535,7 +535,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                 print(colorize(str(e), RED))
                 print(u"URL: {0!s}\nxml:\n{1!s}".format(wfs_descrfeat_url, content))
                 if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
-                    return []
+                    return [], []
                 else:
                     raise
             except AttributeError:
@@ -546,14 +546,14 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                 ))
                 print(u"URL: {0!s}\nxml:\n{1!s}".format(wfs_descrfeat_url, content))
                 if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
-                    return []
+                    return [], []
                 else:
                     raise
         else:
             featurestype = self.featuretype_cache[url]
 
         if featurestype is None:
-            return []
+            return [], []
 
         layers = [layer]
         if wmscap is not None and layer in list(wmscap.contents):
