@@ -31,7 +31,6 @@
 import logging
 from datetime import datetime
 from hashlib import sha1
-import pytz
 from typing import Optional
 
 from sqlalchemy import Column
@@ -146,7 +145,7 @@ class User(Base):
 
     def __init__(
         self, username: str='', password: str='', email: str='', is_password_changed: bool=False,
-        role: Role=None, expire_on: datetime=None
+        role: Role=None, expire_on: datetime=None, deactivated: bool=False
     ) -> None:
         self.username = username
         self.password = password
@@ -155,6 +154,7 @@ class User(Base):
         if role is not None:
             self.role_name = role.name
         self.expire_on = expire_on
+        self.deactivated = deactivated
 
     @property
     def password(self) -> str:
@@ -197,10 +197,10 @@ class User(Base):
         return False
 
     def expired(self) -> bool:
-        return self.expire_on is not None and self.expire_on < datetime.now(pytz.utc)
+        return self.expire_on is not None and self.expire_on < datetime.utcnow()
 
     def set_last_login(self) -> None:
-        self.last_login = datetime.now(pytz.utc)
+        self.last_login = datetime.utcnow()
 
     def __unicode__(self) -> str:
         return self.username or ''  # pragma: no cover

@@ -385,7 +385,7 @@ def default_user_validator(request, username, password):
     if user.deactivated:
         log.info('Deactivated user "{}" tried to log in'.format(username))
         return None
-    if user.expired:
+    if user.expired():
         log.info('Expired user "{}" tried to log in'.format(username))
         return None
     if not user.validate_password(password):

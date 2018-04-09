@@ -28,7 +28,7 @@
 
 
 """
-Add column last_login and expiration_date (both datetime) on
+Add columns last_login, expire_on (both datetime) and deactivated (boolean) on
 table main_static."user".
 
 Revision ID: 1857owc78a07
@@ -40,8 +40,6 @@ from alembic import op
 from sqlalchemy import Boolean, Column, DateTime
 from sqlalchemy.schema import MetaData, Table
 from c2cgeoportal_commons.config import config
-from datetime import datetime
-import pytz
 
 # revision identifiers, used by Alembic.
 revision = '1857owc78a07'
@@ -60,17 +58,14 @@ def upgrade():
     user = Table(
         'user',
         metadata,
-        Column('last_login', DateTime(timezone=True)),
         Column('deactivated', Boolean),
         schema=staticschema
     )
     op.execute(
         user.update().values({
-            'last_login': datetime.now(pytz.utc),
             'deactivated': False
         })
     )
-
 
 def downgrade():
     staticschema = config['schema_static']

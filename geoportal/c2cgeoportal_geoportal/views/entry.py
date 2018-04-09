@@ -1469,7 +1469,7 @@ class Entry:
         user = self.request.registry.validate_user(self.request, login, password)
         if user is not None:
             headers = remember(self.request, user)
-            user.set_last_login()
+            self._set_last_login(user)
             log.info("User '{0!s}' logged in.".format(login))
             came_from = self.request.params.get("came_from")
             if came_from:
@@ -1485,6 +1485,10 @@ class Entry:
         else:
             log.info("Expired login or bad credentials for login '{0!s}'.".format(login))
             raise HTTPBadRequest("See server logs for details")
+
+    def _set_last_login(self, username):
+        user = models.DBSession.query(static.User).filter(static.User.username == username).one()
+        user.set_last_login()
 
     @view_config(route_name="logout")
     def logout(self):
