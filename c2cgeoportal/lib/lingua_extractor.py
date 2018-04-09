@@ -453,7 +453,9 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
             if hostname == "localhost":  # pragma: no cover
                 h["Host"] = self.package["host"]
             try:
-                print(u"Get WMS GetCapabilities for URL {} with headers {}".format(wms_getcap_url, h))
+                print(u"Get WMS GetCapabilities for URL {}".format(wms_getcap_url))
+                for key, value in h.items():
+                    print(u"--- GetCapabilities using header {} with value {}".format(key, value))
                 resp, content = http.request(wms_getcap_url, method="GET", headers=h)
 
                 try:
