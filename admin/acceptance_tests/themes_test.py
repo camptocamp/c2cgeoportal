@@ -81,6 +81,7 @@ class TestTheme(TestTreeGroup):
         self.check_left_menu(resp, 'Themes')
 
         expected = [('actions', '', 'false'),
+                    ('id', 'id', 'true'),
                     ('name', 'Name'),
                     ('metadata_url', 'Metadata URL'),
                     ('description', 'Description'),

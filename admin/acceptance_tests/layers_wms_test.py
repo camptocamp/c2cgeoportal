@@ -49,6 +49,7 @@ class TestLayerWMSViews(AbstractViewsTests):
         self.check_left_menu(resp, 'WMS Layers')
 
         expected = [('actions', '', 'false'),
+                    ('id', 'id', 'true'),
                     ('name', 'Name'),
                     ('metadata_url', 'Metadata URL'),
                     ('description', 'Description'),

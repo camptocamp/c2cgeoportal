@@ -26,6 +26,7 @@ base_schema.add_unique_validator(Role.name, Role.id)
 @view_defaults(match_param='table=roles')
 class RoleViews(AbstractViews):
     _list_fields = [
+        _list_field('id'),
         _list_field('name'),
         _list_field('description'),
         _list_field(

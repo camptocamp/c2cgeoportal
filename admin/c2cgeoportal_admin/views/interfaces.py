@@ -15,6 +15,7 @@ base_schema = GeoFormSchemaNode(Interface)
 @view_defaults(match_param='table=interfaces')
 class InterfacesViews(AbstractViews):
     _list_fields = [
+        _list_field('id'),
         _list_field('name'),
         _list_field('description'),
         _list_field(

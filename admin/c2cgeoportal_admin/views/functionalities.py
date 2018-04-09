@@ -16,6 +16,7 @@ base_schema = GeoFormSchemaNode(Functionality)
 @view_defaults(match_param='table=functionalities')
 class FunctionalityViews(AbstractViews):
     _list_fields = [
+        _list_field('id'),
         _list_field('name'),
         _list_field('description'),
         _list_field('value')

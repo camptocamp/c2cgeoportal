@@ -20,6 +20,7 @@ base_schema.add_unique_validator(User.username, User.id)
 @view_defaults(match_param='table=users')
 class UserViews(AbstractViews):
     _list_fields = [
+        _list_field('id'),
         _list_field('username'),
         _list_field('role_name'),
         _list_field('email')]
