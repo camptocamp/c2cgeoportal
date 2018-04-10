@@ -35,3 +35,17 @@ For non Docker upgrade have a look on the nondocker_CHANGELOG
 8. Rename your l10n files with e.-g.:
 
    mv geoportal/{{package}}_geoportal/locale/fr/LC_MESSAGES/{{package}}{,_geoportal}-client.po
+
+9. Update access control list (ACL) in root context to allow user with role 'role_admin' to acess views requiring 'admin' permission.
+
+   edit 'geoportal/{{package}}_geoportal/resources.py' file, Root class __acl__ attribute should look so:
+
+   '''...
+   from pyramid.security import Allow, ALL_PERMISSIONS
+   ...
+
+   class Root:
+       __acl__ = [
+           (Allow, 'role_admin', ALL_PERMISSIONS),
+           ]
+   ...'''
