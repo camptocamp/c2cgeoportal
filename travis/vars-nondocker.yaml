@@ -8,6 +8,10 @@ vars:
       files: [ngeo]
     routes:
       disable: [printproxy_capabilities]
+  lingua_extractor:
+    host_map:
+      localhost:
+        netloc: '{DOCKER_HOST_}'
 
 update_paths:
   - layers

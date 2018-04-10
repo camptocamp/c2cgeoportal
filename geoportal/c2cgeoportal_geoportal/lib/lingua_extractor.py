@@ -462,6 +462,20 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                 (".".join([item_type, name]), layer.encode("ascii", "replace"))
             ))
 
+    def _build_url(self, url):
+        url_split = urlsplit(url)
+        hostname = url_split.hostname
+        host_map = self.config.get('lingua_extractor', {}).get('host_map', {})
+        if hostname in host_map:
+            map_ = host_map[hostname]
+            if 'netloc' in map_:
+                url_split = url_split._replace(netloc=map_['netloc'])
+            if 'scheme' in map_:
+                url_split = url_split._replace(scheme=map_['scheme'])
+            url = url_split.geturl()
+            return url_split.geturl(), map_.get('headers', {})
+        return url, {}
+
     def _layer_attributes(self, url, layer):
         errors = set()
 
@@ -473,26 +487,20 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
             print("\n".join(errors))
             return []
 
-        url_split = urlsplit(url)
-        hostname = url_split.hostname
         if url not in self.wmscap_cache:
             print("Get WMS GetCapabilities for URL: {}".format(url))
             self.wmscap_cache[url] = None
 
             # forward request to target (without Host Header)
             http = httplib2.Http()
-            h = {}
-            if hostname == "localhost":  # pragma: no cover
-                url = url_split._replace(netloc=os.environ["DOCKER_HOST_"]).geturl()
-                h["Host"] = self.config["host"]
-
+            url, headers = self._build_url(url)
             wms_getcap_url = add_url_params(url, {
                 "SERVICE": "WMS",
                 "VERSION": "1.1.1",
                 "REQUEST": "GetCapabilities",
             })
             try:
-                resp, content = http.request(wms_getcap_url, method="GET", headers=h)
+                resp, content = http.request(wms_getcap_url, method="GET", headers=headers)
 
                 try:
                     self.wmscap_cache[url] = WebMapService(None, xml=content)
@@ -508,7 +516,9 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
             except Exception as e:  # pragma: no cover
                 print(colorize(str(e), RED))
                 print(colorize(
-                    "ERROR! Unable to GetCapabilities from URL: {}".format(wms_getcap_url),
+                    "ERROR! Unable to GetCapabilities from URL: {},\nwith headers: {}".format(
+                        wms_getcap_url, " ".join(["=".join(h) for h in headers.items()])
+                    ),
                     RED,
                 ))
                 if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
@@ -522,18 +532,14 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
 
             # forward request to target (without Host Header)
             http = httplib2.Http()
-            h = {}
-            if hostname == "localhost":  # pragma: no cover
-                url = url_split._replace(netloc=os.environ["DOCKER_HOST_"]).geturl()
-                h["Host"] = self.config["host"]
-
+            url, headers = self._build_url(url)
             wfs_descrfeat_url = add_url_params(url, {
                 "SERVICE": "WFS",
                 "VERSION": "1.1.0",
                 "REQUEST": "DescribeFeatureType",
             })
             try:
-                resp, content = http.request(wfs_descrfeat_url, method="GET", headers=h)
+                resp, content = http.request(wfs_descrfeat_url, method="GET", headers=headers)
             except Exception as e:  # pragma: no cover
                 print(colorize(str(e), RED))
                 print(colorize(

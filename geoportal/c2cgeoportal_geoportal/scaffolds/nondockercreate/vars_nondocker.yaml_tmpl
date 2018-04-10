@@ -32,6 +32,14 @@ vars:
     - '{web_protocol}:://b.tiles.{host}/{instanceid}/tiles'
     - '{web_protocol}:://c.tiles.{host}/{instanceid}/tiles'
 
+  lingua_extractor:
+    host_map:
+      localhost:
+        netloc: '{DOCKER_HOST_}'
+        scheme: https
+        headers:
+          Host: '{host}'
+
   host_forward_host:
     - localhost
 

@@ -430,6 +430,26 @@ mapping:
         type: seq
         sequence:
           - type: str
+
+      lingua_extractor:
+        type: map
+        mapping:
+          host_map:
+            type: map
+            mapping:
+              regex;(.+):
+                type: map
+                mapping:
+                  netloc:
+                    type: str
+                  scheme:
+                    type: str
+                  headers:
+                    type: map
+                    mapping:
+                      regex;(.+):
+                        type: str
+
       checker:
         type: map
         required: True
