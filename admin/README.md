@@ -58,6 +58,8 @@ Open http://localhost:6543/users/
 
 https://sites.google.com/a/chromium.org/chromedriver/downloads
 
+### Requires Chrome Version > 65
+
 ### Create the test database
 ```
 sudo -u postgres psql -c "CREATE USER \"www-data\" WITH PASSWORD 'www-data';"

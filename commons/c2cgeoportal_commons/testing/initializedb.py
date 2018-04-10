@@ -10,6 +10,7 @@ from pyramid.paster import get_appsettings
 from pyramid.scripts.common import parse_vars
 from sqlalchemy.engine import Connection
 from sqlalchemy.orm import Session
+from alembic import command, config as alembic_config
 
 from c2cgeoportal_commons.models import (
     Base,
@@ -56,7 +57,7 @@ def main(argv: List[str]=sys.argv) -> None:
     """
 
 
-def init_db(connection: Connection, force: bool=False, test: bool=False) -> None:
+def init_db(connection: Connection, alembic_ini: str=None, force: bool=False, test: bool=False) -> None:
     import c2cgeoportal_commons.models.main  # noqa: F401
     import c2cgeoportal_commons.models.static  # noqa: F401
 
@@ -74,7 +75,15 @@ def init_db(connection: Connection, force: bool=False, test: bool=False) -> None
     if not schema_exists(connection, schema_static):
         connection.execute('CREATE SCHEMA "{}";'.format(schema_static))
 
-    Base.metadata.create_all(connection)
+    if alembic_ini is None:
+        Base.metadata.create_all(connection)
+    else:
+        def upgrade(schema: str) -> None:
+            cfg = alembic_config.Config(alembic_ini, ini_section=schema)
+            cfg.attributes['connection'] = connection  # pylint: disable=unsupported-assignment-operation
+            command.upgrade(cfg, 'head')
+        upgrade('main')
+        upgrade('static')
 
     session_factory = get_session_factory(connection)
 
@@ -93,6 +102,11 @@ WHERE schema_name = '{}';
     result = connection.execute(sql)
     row = result.first()
     return row[0] == 1
+
+
+def truncate_tables(connection: Connection) -> None:
+    for t in Base.metadata.sorted_tables:
+        connection.execute('TRUNCATE TABLE {}.{} CASCADE;'.format(t.schema, t.name))
 
 
 def setup_test_data(dbsession: Session) -> None:

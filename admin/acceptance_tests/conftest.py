@@ -8,7 +8,7 @@ from webtest import TestApp as WebTestApp  # Avoid warning with pytest
 from wsgiref.simple_server import make_server
 import threading
 
-from c2cgeoportal_commons.testing.initializedb import init_db
+from c2cgeoportal_commons.testing.initializedb import init_db, truncate_tables
 from c2cgeoportal_commons.testing import get_engine, get_session_factory, get_tm_session, generate_mappers
 from sqlalchemy.exc import DBAPIError
 
@@ -18,7 +18,8 @@ from sqlalchemy.exc import DBAPIError
 def dbsession(settings):
     generate_mappers()
     engine = get_engine(settings)
-    init_db(engine, force=True)
+    init_db(engine, settings['alembic_ini'], force=True)
+    truncate_tables(engine)
     session_factory = get_session_factory(engine)
     session = get_tm_session(session_factory, transaction.manager)
     yield session

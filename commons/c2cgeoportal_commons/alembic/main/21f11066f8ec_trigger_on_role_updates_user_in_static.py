@@ -1,7 +1,6 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2013-2017, Camptocamp SA
+# Copyright (c) 2017-2018, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -28,53 +27,47 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-import os
-from setuptools import setup, find_packages
+"""trigger_on_role_updates_user_in_static
 
-HERE = os.path.abspath(os.path.dirname(__file__))
-VERSION = os.environ.get('VERSION', 'dev')
+Revision ID: 21f11066f8ec
+Revises: d48a63b348f1
+Create Date: 2018-03-23 09:08:56.910629
+"""
 
-with open(os.path.join(HERE, 'README.md')) as f:
-    README = f.read()
-with open(os.path.join(HERE, 'requirements.txt')) as f:
-    install_requires = f.read().splitlines()
+from alembic import op
+from c2cgeoportal_commons.config import config
 
-setup(
-    name="c2cgeoportal_commons",
-    version=VERSION,
-    description="c2cgeoportal commons",
-    long_description=README,
-    classifiers=[
-        "Programming Language :: Python",
-        "Programming Language :: Python :: 3",
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-        "Framework :: Pyramid",
-        "Topic :: Internet :: WWW/HTTP",
-        "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
-    ],
-    author="Camptocamp",
-    author_email="info@camptocamp.com",
-    url="http://www.camptocamp.com/solutions/geospatial/",
-    packages=find_packages(exclude=["tests.*"]),
-    include_package_data=True,
-    zip_safe=False,
-    install_requires=install_requires,
-    extras_require={
-        'tests': [
-            'c2c.template',
-            'psycopg2-binary',
-            'pytest',
-            'pytest-cov',
-            'flake8',
-            'PyYAML',
-        ],
-        'testing': [
-            'transaction',
-        ],
-        'upgrade': [
-            'alembic',
-            'psycopg2-binary',
-        ],
-    },
-)
+# revision identifiers, used by Alembic.
+revision = '21f11066f8ec'
+down_revision = 'd48a63b348f1'
+branch_labels = None
+depends_on = None
+
+
+def upgrade():
+    schema = config['schema']
+    staticschema = config['schema_static']
+
+    op.execute("""
+CREATE OR REPLACE FUNCTION {schema}.on_role_name_change()
+RETURNS trigger AS
+$$
+BEGIN
+IF NEW.name <> OLD.name THEN
+UPDATE {staticschema}."user" SET role_name = NEW.name WHERE role_name = OLD.name;
+END IF;
+RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql""".format(schema=schema, staticschema=staticschema))
+
+
+def downgrade():
+    schema = config['schema']
+
+    op.execute('DROP TRIGGER on_role_name_change ON {schema}.role'.format(
+        schema=schema
+    ))
+    op.execute('DROP FUNCTION {schema}.on_role_name_change()'.format(
+        schema=schema
+    ))

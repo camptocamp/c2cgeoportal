@@ -19,6 +19,7 @@ def roles_test_data(dbsession, transact):
     del transact
 
     from c2cgeoportal_commons.models.main import Role, Functionality, RestrictionArea
+    from c2cgeoportal_commons.models.static import User
 
     functionalities = {}
     for name in ('default_basemap', 'location'):
@@ -52,11 +53,23 @@ def roles_test_data(dbsession, transact):
         dbsession.add(role)
         roles.append(role)
 
+    # Users must be updated when role name changes
+    users = []
+    for i in range(0, 23):
+        user = User("babar_" + str(i),
+                    email='mail' + str(i),
+                    role=roles[i])
+        user.password = 'pré$ident'
+        user.is_password_changed = i % 2 == 1
+        users.append(user)
+        dbsession.add(user)
+
     dbsession.flush()
 
     yield {
         'functionalities': functionalities,
         'restrictionareas': restrictionareas,
+        'users': users,
         'roles': roles
     }
 
