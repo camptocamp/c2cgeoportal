@@ -39,6 +39,7 @@ vars:
         scheme: https
         headers:
           Host: '{host}'
+        verify: False
 
   host_forward_host:
     - localhost

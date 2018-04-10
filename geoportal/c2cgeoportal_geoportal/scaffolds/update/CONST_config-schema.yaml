@@ -444,6 +444,8 @@ mapping:
                     type: str
                   scheme:
                     type: str
+                  verify:
+                    type: any
                   headers:
                     type: map
                     mapping:
