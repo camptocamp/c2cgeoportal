@@ -31,6 +31,7 @@
 import logging
 import os
 from decimal import Decimal
+from repoze.lru import LRUCache
 
 import fiona
 import rasterio
@@ -41,12 +42,19 @@ from c2cgeoportal_geoportal.lib.caching import set_common_headers, NO_CACHE
 
 log = logging.getLogger(__name__)
 
+_rasters = None
+
 
 class Raster:
 
     def __init__(self, request):
         self.request = request
         self.rasters = self.request.registry.settings["raster"]
+        global _rasters
+        if _rasters is None:
+            cache_size = self.rasters.get('cache_size', 10)
+            log.debug('initialize LRUCache with size %d' % cache_size)
+            _rasters = LRUCache(cache_size)
 
     @view_config(route_name="raster", renderer="decimaljson")
     def raster(self):
@@ -88,9 +96,10 @@ class Raster:
                 tiles[0]["properties"]["location"],
             )
 
-        with rasterio.open(path) as dataset:
-            index = dataset.index(lon, lat)
-            result = dataset.read(1)[index[0] - 1][index[1] - 1]
+        dataset, band = self._get_raster(path)
+
+        index = dataset.index(lon, lat)
+        result = band[index[0] - 1][index[1] - 1]
 
         if "round" in layer:
             result = self._round(result, layer["round"])
@@ -98,6 +107,17 @@ class Raster:
             result = Decimal(str(result))
 
         return result
+
+    @staticmethod
+    def _get_raster(path):
+        if path not in _rasters.data:
+            dataset = rasterio.open(path)
+            band = dataset.read(1)  # pylint: disable=no-member
+            _rasters.put(path, (dataset, band))
+            log.debug('raster cache miss for %s' % path)
+        else:
+            log.debug('raster cache hit for %s' % path)
+        return _rasters.get(path)
 
     @staticmethod
     def _round(value, round_to):
