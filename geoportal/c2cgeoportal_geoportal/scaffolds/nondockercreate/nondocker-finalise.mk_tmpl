@@ -157,8 +157,9 @@ endif
 	./docker-run cp -r /opt/c2cgeoportal_commons c2cgeoportal_commons
 	./docker-run cp -r /opt/c2cgeoportal_geoportal c2cgeoportal_geoportal
 	./docker-run cp -r /opt/c2cgeoportal_admin c2cgeoportal_admin
+	./docker-run cp /opt/npm-packages .
 	.build/venv/bin/python -m pip install https://github.com/camptocamp/pyramid_closure/archive/23b45f7989cf471dce46dabb8516537bae0a2789.zip#egg=pyramid_closure
 	.build/venv/bin/python -m pip install --editable=c2cgeoportal_commons --editable=c2cgeoportal_geoportal --editable=c2cgeoportal_admin
 	.build/venv/bin/python -m pip install --editable=geoportal
-	npm install `cat c2cgeoportal_admin/npm-packages`
+	npm install `cat npm-packages`
 	touch $@

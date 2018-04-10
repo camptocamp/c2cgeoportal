@@ -49,36 +49,7 @@ docker-build-config:
 	$(PRERULE_CMD)
 	@echo "Nothing to do for $@"
 
-node_modules/%: /usr/lib/node_modules/%
-	$(PRERULE_CMD)
-	mkdir --parent $(dir $@)
-	rm -rf $@
-	cp -r $< $@
-
-docker-build-geoportal: \
-		node_modules/ngeo/src \
-		node_modules/ngeo/contribs/gmf/src \
-		node_modules/openlayers/src \
-		node_modules/jquery/dist/jquery.min.js \
-		node_modules/angular/angular.min.js \
-		node_modules/angular-animate/angular-animate.min.js \
-		node_modules/angular-float-thead/angular-floatThead.js \
-		node_modules/angular-gettext/dist/angular-gettext.min.js \
-		node_modules/angular-sanitize/angular-sanitize.min.js \
-		node_modules/angular-touch/angular-touch.min.js \
-		node_modules/angular-dynamic-locale/dist/tmhDynamicLocale.min.js \
-		node_modules/angular-ui-date/dist/date.js \
-		node_modules/angular-ui-slider/src/slider.js \
-		node_modules/bootstrap/dist/js/bootstrap.min.js \
-		node_modules/floatthead/dist/jquery.floatThead.min.js \
-		node_modules/proj4/dist/proj4.js \
-		node_modules/d3/build/d3.min.js \
-		node_modules/file-saver/FileSaver.min.js \
-		node_modules/corejs-typeahead/dist/typeahead.bundle.min.js \
-		node_modules/jsts/dist/jsts.min.js \
-		node_modules/moment/min/moment.min.js \
-		node_modules/ngeo/third-party/jquery-ui/jquery-ui.min.js \
-		$(CONF_FILES)
+docker-build-geoportal: $(CONF_FILES)
 	$(PRERULE_CMD)
 	@echo "Nothing to do for $@"
 

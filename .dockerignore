@@ -14,5 +14,4 @@
 !admin/README.md
 !admin/requirements.txt
 !admin/requirements-dev.txt
-!admin/npm-packages
 **/__pycache__/

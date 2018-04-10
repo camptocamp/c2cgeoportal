@@ -52,6 +52,7 @@ __pycache__/
 /c2cgeoportal_commons/
 /c2cgeoportal_geoportal/
 /c2cgeoportal_admin/
+/npm-packages
 /node_modules
 /package-lock.json
 /.upgrade.yaml

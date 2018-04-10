@@ -90,6 +90,9 @@ files_to_remove:
   - file: mapserver/Dockerfile
     version: 2.3
     from: 2.2
+  - file: apache/README.txt.mako
+    version: 2.3
+    from: 2.2
 
 files_to_move:
   - from: vars_{{package}}.yaml
