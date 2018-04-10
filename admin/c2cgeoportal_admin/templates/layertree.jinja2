@@ -1,74 +1,81 @@
 {% extends "layout.jinja2" %}
 
 {% block extra_links %}
-<link href="{{request.static_url('c2cgeoportal_admin:node_modules/bootstrap-table/dist/bootstrap-table.min.css')}}" rel="stylesheet">
-<link href="{{request.static_url('c2cgeoportal_admin:node_modules/bootstrap-table/src/extensions/filter-control/bootstrap-table-filter-control.css')}}" rel="stylesheet">
-<link href="{{request.static_url('c2cgeoportal_admin:node_modules/jquery-treegrid/css/jquery.treegrid.css')}}" rel="stylesheet">
+<link href="{{request.static_url('c2cgeoportal_admin:node_modules/jstree/dist/themes/default/style.min.css')}}" rel="stylesheet">
+<link href="{{request.static_url('c2cgeoportal_admin:static/layertree.css')}}" rel="stylesheet">
 {% endblock extra_links %}
 
 {% block extra_scripts %}
-<script type="text/javascript" src="{{request.static_url('c2cgeoportal_admin:node_modules/bootstrap-table/dist/bootstrap-table.js')}}"></script>
-<script type="text/javascript" src="{{request.static_url('c2cgeoportal_admin:node_modules/bootstrap-table/dist/bootstrap-table-locale-all.js')}}"></script>
-<script type="text/javascript" src="{{request.static_url('c2cgeoportal_admin:node_modules/bootstrap-table/src/extensions/treegrid/bootstrap-table-treegrid.js')}}"></script>
-<script type="text/javascript" src="{{request.static_url('c2cgeoportal_admin:node_modules/jquery-treegrid/js/jquery.treegrid.js')}}"></script>
-<script type="text/javascript" src="{{request.static_url('c2cgeoportal_admin:node_modules/jquery.cookie/jquery.cookie.js')}}"></script>
+<script type="text/javascript" src="{{request.static_url('c2cgeoportal_admin:node_modules/jstree/dist/jstree.js')}}"></script>
+<script type="text/javascript" src="{{request.static_url('c2cgeoportal_admin:node_modules/jstreegrid/jstreegrid.js')}}"></script>
 <script type="text/javascript" src="{{request.static_url('c2cgeoportal_admin:node_modules/jquery.scrollintoview/jquery.scrollintoview.js')}}"></script>
 {% endblock extra_scripts %}
 
 {% block content %}
 <div id="layertree" class="container-fluid">
     <div id="toolbar">
-      {% if display_layertree %}
       <div class="btn-group">
-          <button id="layertree-expand" type="button" class="btn btn-default"><span class="glyphicon glyphicon-chevron-down"></span> {{_("Expand all")}}</button>
-          <button id="layertree-collapse" type="button" class="btn btn-default"><span class="glyphicon glyphicon-chevron-up"></span> {{_("Collapse all")}}</button>
+        {% if limit_exceeded %}
+        <button id="layertree-expand" type="button" class="btn btn-default"><span class="glyphicon glyphicon-chevron-down"></span> {{_("Expand all")}}</button>
+        {% endif %}
+        <button id="layertree-collapse" type="button" class="btn btn-default"><span class="glyphicon glyphicon-chevron-up"></span> {{_("Collapse all")}}</button>
       </div>
-      {% endif %}
       <div class="btn-group">
         <a id="layertree-ordering" class="btn btn-default" href="{{request.route_url('layertree_ordering')}}"><span class="glyphicon glyphicon-sort"></span> {{_("Edit themes order")}}</a>
       </div>
     </div>
-    {% if display_layertree %}
-    <table id="layertree-table" class="tree table table-condensed table-hover"></table>
-    {% else %}
-    <div class="alert alert-info fade in">
-      <strong>{{_("Warning! ")}}</strong>{{_("Current layer tree has too many nodes and will not be displayed. Please use the")}}
-      <a href="{{request.route_url('c2cgeoform_index', table='themes')}}">{{_("theme tab.")}}</a>
-    </div>
-    {% endif %}
+
+    <div id="tree"></div>
+
     <script type="text/javascript">
-      $(function() {
-
-        const $grid = $('#layertree-table');
-        $grid.bootstrapTable({
-          height: $(window).height() - $('nav').height() - 30,
-          url: "{{request.route_url('layertree_nodes')}}",
-
-          toolbar: "#toolbar",
-          showRefresh: true,
-          showColumns: true,
-
-          {# see: https://github.com/wenzhixin/bootstrap-table/tree/develop/src/locale #}
-          {% set bootstrap_table_locales = {
-              'de': 'de-DE',
-              'en': 'en-US',
-              'fr': 'fr-FR',
-          } %}
-          locale: '{{ bootstrap_table_locales[request.locale_name] }}',
-
+    $(function () {
+      const $jstree = $('#tree').jstree({
+        core: {
+          data: function(node, callback) {
+            var url = "{{ request.route_url('layertree_children') }}";
+            if (node.id != '#') {
+              url += "?group_id=" + node.data.id + "&path=" + node.id;
+            }
+            $.ajax({ url: url })
+            .done(function(data) {
+              callback.call(this, data.map(function(item) {
+                return {
+                  id: item.path,
+                  text: '&nbsp;' + item.name,
+                  icon: 'glyphicon icon-' + item.item_type,
+                  children: ['theme', 'group'].indexOf(item.item_type) != -1,
+                  data: item
+                };
+              }));
+            })
+          },
+          themes: {
+            dots: false
+          },
+        },
+        plugins: ["grid", "wholerow", "state"],
+        grid: {
+          height: $(window).height() - $('nav').height() - 100,
+          width: '100%',
           columns: [
             {
-              field: 'actions',
-              class: 'actions',
-              formatter: function(value, row, index, field) {
+              header: '&nbsp;',
+              headerClass: 'actions',
+              columnClass: 'actions',
+              cellClass: 'cell-content',
+              wideCellClass: 'wideCellClass',
+              valueClassPrefix: 'valueClassPrefix',
+              wideValueClass: 'wideValueClass',
+              wideValueClassPrefix: 'wideValueClassPrefix',
+              value: function(node) {
                 var content = '\
                   <div class="btn-group dropdown">\
-                    <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" data-target="item-' + row._id_ + '-actions" aria-haspopup="true" aria-expanded="false">\
+                    <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" data-target="item-' + node.id + '-actions" aria-haspopup="true" aria-expanded="false">\
                       <span class="caret"></span>\
                     </button>\
-                    <ul id="item-' + row._id_ + '-actions" class="dropdown-menu">';
+                    <ul id="item-' + node.id + '-actions" class="dropdown-menu">';
 
-                row.actions.forEach(function(action) {
+                node.data.actions.forEach(function(action) {
                   if (action.confirmation || action.method) {
                     content += '\
                       <li>\
@@ -98,122 +105,106 @@
                   </div>';
 
                 return content
-                return value;
               }
             },
             {
-              field: 'id',
-              title: '{{_('Id')}}',
-              class: 'id',
-              visible: false,
-              formatter: function(value, row, index, field) {
-                return row.id;
-              }
+              header: 'Id',
+              cellClass: 'cell-content',
+              value: 'id'
             },
             {
-              field: 'name',
-              title: '{{_('Name')}}',
-              class: 'name',
-              formatter: function(value, row, index, field) {
-                return '<span class="glyphicon icon-' + row.item_type + '"></span>&nbsp;&nbsp;' + row.name;
-              }
+              header: 'Name',
+              cellClass: 'cell-content',
+              tree: true
             },
             {
-              field: 'translated_name',
-              title: '{{_('Name ({})').format(request.locale_name)}}',
-              class: 'translated_name'
+              header: '{{_('Name ({})').format(request.locale_name)}}',
+              cellClass: 'cell-content',
+              value: 'translated_name'
             },
             {
-              field: 'description',
-              title: '{{_('Description')}}',
-              class: 'description'
+              header: '{{_('Description')}}',
+              cellClass: 'cell-content',
+              value: 'description'
             }
-          ],
+          ]
+        }
+      });
 
-          // bootstrap-table-treegrid.js
-          treeShowField: 'name',
-          idField: 'path',
-          parentIdField: 'parent_path',
+      // on click do not select but toggle
+      $jstree.on('select_node.jstree', function (e, data) {
+        $jstree.jstree(true).deselect_node(data.node);
+        if (!$jstree.jstree(true).is_leaf(data.node)) {
+          $jstree.jstree(true).toggle_node(data.node);
+        }
+      });
+      // prevent toggle on non tree columns
+      $jstree.on("select_cell.jstree-grid", function(event, data) {
+        if (data.column != 'name') {
+          event.preventDefault();
+        }
+      });
 
-          onLoadSuccess: function(data) {
-            $(".dropdown").on("shown.bs.dropdown", function () {
-              $(this).children(".dropdown-menu").scrollintoview({viewPadding: 5});
+      var bindEvents = function(node_id) {
+        const $column = $($jstree.jstree(true)._domManipulation.columns[0]);
+        const $cell = $column.find('.jstree-grid-cell[data-jstreegrid="' + node_id + '"]');
+        const $dropdown = $cell.find('.dropdown');
+
+        // scroll on dropdown when shown
+        $dropdown.on("shown.bs.dropdown", function () {
+          $(this).children(".dropdown-menu").scrollintoview({viewPadding: 5});
+          console.log('scrollintoview');
+        });
+
+        $dropdown.find('a.c2cgeoform-action-ajax').on('click', function(e) {
+          var execute = function() {
+            $.ajax({
+              url: $(this).data('url'),
+              type: $(this).data('method'),
+              success: function(data) {
+                if (this.type == 'DELETE') {
+                  //$grid.bootstrapTable('refresh');
+                  $jstree.jstree(true).delete_node(node_id);
+                } else {
+                  window.location = data.redirect;
+                }
+              }
             });
-          },
+          }.bind(this);
 
-          onClickRow: function(row, $element, field) {
-            if (field != 'actions') {
-              $element.treegrid('toggle');
-            }
-          },
-
-          onPostBody: function(data) {
-
-            if (data.length > 0) {
-              const nameIndex = $grid.bootstrapTable('getVisibleColumns').findIndex(function(column) {
-                return column.field == 'name';
-              });
-
-              $grid.treegrid({
-                initialState: 'collapsed',
-                saveState: true,
-                saveStateName: 'layertree',
-                treeColumn: nameIndex,
-                expanderExpandedClass: 'glyphicon glyphicon-triangle-bottom',
-                expanderCollapsedClass: 'glyphicon glyphicon-triangle-right',
-                onChange: function() {
-                  $grid.bootstrapTable('resetWidth');
-                }
-              });
-            }
-
-            $('.treegrid-expander').off();
-          }
-        });
-
-        $(window).resize(function() {
-          $grid.bootstrapTable('resetView', {
-            height: $(window).height() - $('nav').height() - 30
-          });
-        });
-
-        $("#layertree-expand").on('click', function() {
-          $grid.treegrid('expandAll');
-        });
-
-        $("#layertree-collapse").on('click', function() {
-          $grid.treegrid('collapseAll');
-        });
-
-        $grid.on('load-success.bs.table', function (e) {
-
-          $(this).find('a.c2cgeoform-action-ajax').on('click', function(e) {
-            var execute = function() {
-              $.ajax({
-                url: $(this).data('url'),
-                type: $(this).data('method'),
-                success: function(data) {
-                  if (this.type == 'DELETE') {
-                    $grid.bootstrapTable('refresh');
-                  } else {
-                    window.location = data.redirect;
-                  }
-                }
-              });
-            }.bind(this);
-
-            if ($(this).data('confirmation')) {
-              if (window.confirm($(this).data('confirmation'))) {
-                execute();
-              }
-            } else {
+          if ($(this).data('confirmation')) {
+            if (window.confirm($(this).data('confirmation'))) {
               execute();
             }
-
-          });
+          } else {
+            execute();
+          }
 
         });
+
+        const node = $jstree.jstree(true).get_node(node_id);
+        node.children.forEach(bindEvents);
+      };
+
+      $jstree.on("render_cell.jstree-grid", function(event, data) {
+        if (data.column == '&nbsp;') {
+          bindEvents(data.node.attr('id'));
+        }
       });
+
+      $("#layertree-expand").on('click', function() {
+        $jstree.jstree(true).open_all();
+      });
+
+      $("#layertree-collapse").on('click', function() {
+        $jstree.jstree(true).close_all();
+      });
+
+      $(window).resize(function() {
+        $('.jstree-grid-wrapper').height($(window).height() - $('nav').height() - $('#toolbar').height() - 50);
+        $('.jstree-grid-wrapper').width('100%');
+      });
+    });
     </script>
 
 </div>

@@ -32,7 +32,7 @@ def includeme(config):
 
     config.add_route('home', '/')
     config.add_route('layertree', '/layertree')
-    config.add_route('layertree_nodes', '/layertree/nodes')
+    config.add_route('layertree_children', '/layertree/children')
     config.add_route('layertree_ordering', '/layertree/ordering')
     config.add_route('layertree_unlink', '/layertree/unlink/{group_id}/{item_id}')
     config.add_route('layertree_delete', '/layertree/delete/{item_id}')

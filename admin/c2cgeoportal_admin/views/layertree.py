@@ -1,13 +1,11 @@
 from pyramid.httpexceptions import HTTPNotFound
 from pyramid.view import view_config
-
-from sqlalchemy.orm import subqueryload
 from translationstring import TranslationStringFactory
 
 from c2cgeoform.views.abstract_views import ItemAction
 
 from c2cgeoportal_commons.models.main import \
-    LayergroupTreeitem, Theme, TreeGroup, TreeItem
+    LayergroupTreeitem, Theme, TreeItem
 
 from c2cgeoportal_admin import _
 
@@ -31,53 +29,38 @@ class LayerTreeViews():
                  renderer='../templates/layertree.jinja2')
     def index(self):
         node_limit = self._request.registry.settings['admin_interface'].get('layer_tree_max_nodes')
-        display_layertree = self._dbsession.query(TreeItem).count() < node_limit
-        return {'display_layertree': display_layertree}
+        limit_exceeded = self._dbsession.query(LayergroupTreeitem).count() < node_limit
+        return {'limit_exceeded': limit_exceeded}
 
-    @view_config(route_name='layertree_nodes',
+    @view_config(route_name='layertree_children',
                  renderer='json')
-    def nodes(self):
-        # Preload treeitems and treegroups children relations.
-        # Note that session.identity_map only keep weak references
-        # so we need to keep strong references until the end nodes rendering.
-        groups = self._dbsession.query(TreeGroup). \
-            options(subqueryload('children_relation')). \
-            all()
-
-        items = self._dbsession.query(TreeItem). \
-            all()
-
-        themes = self._dbsession.query(Theme). \
-            order_by(Theme.ordering). \
-            all()
+    def children(self):
+        group_id = self._request.params.get('group_id', None)
+        path = self._request.params.get('path', '')
 
         client_tsf = TranslationStringFactory('{}-client'.format(self._request.registry.package_name))
 
-        def render_node(nodes, item, parent_id=None, path=''):
-            subpath = '{}_{}'.format(path, item.id)
-            nodes.append({
+        if group_id is None:
+            items = self._dbsession.query(Theme). \
+                order_by(Theme.ordering)
+        else:
+            items = self._dbsession.query(TreeItem). \
+                join(TreeItem.parents_relation). \
+                filter(LayergroupTreeitem.treegroup_id == group_id)
+
+        return [
+            {
                 'id': item.id,
                 'item_type': item.item_type,
                 'name': item.name,
                 'translated_name': self._request.localizer.translate(client_tsf(item.name)),
                 'description': item.description,
-                'path': subpath,
+                'path': '{}_{}'.format(path, item.id),
                 'parent_path': path,
                 'actions': [
-                    action.to_dict(self._request) for action in self._item_actions(item, parent_id)
+                    action.to_dict(self._request) for action in self._item_actions(item, group_id)
                 ]
-            })
-            if hasattr(item, 'children'):
-                for child in item.children:
-                    render_node(nodes, child, item.id, subpath)
-
-        nodes = []
-        for theme in themes:
-            render_node(nodes, theme)
-
-        del groups, items, themes
-
-        return nodes
+            } for item in items]
 
     def _item_actions(self, item, parent_id=None):
         actions = []
