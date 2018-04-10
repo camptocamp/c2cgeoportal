@@ -143,14 +143,16 @@ geoportal/tests/functional/alembic.yaml: $(BUILD_DIR)/c2ctemplate-cache.json
 docker/test-db/12-alembic.sql: \
 		geoportal/tests/functional/alembic.ini \
 		geoportal/tests/functional/alembic.yaml \
-		$(shell ls -1 commons/c2cgeoportal_commons/alembic/main/*.py)
+		$(shell ls -1 commons/c2cgeoportal_commons/alembic/main/*.py) \
+		$(BUILD_DIR)/commons.timestamp
 	$(PRERULE_CMD)
 	alembic --config=$< --name=main upgrade --sql head > $@
 
 docker/test-db/13-alembic-static.sql: \
 		geoportal/tests/functional/alembic.ini \
 		geoportal/tests/functional/alembic.yaml \
-		$(shell ls -1 commons/c2cgeoportal_commons/alembic/static/*.py)
+		$(shell ls -1 commons/c2cgeoportal_commons/alembic/static/*.py) \
+		$(BUILD_DIR)/commons.timestamp
 	$(PRERULE_CMD)
 	alembic --config=$< --name=static upgrade --sql head > $@
 
@@ -388,9 +390,9 @@ $(APPS_PACKAGE_PATH)/static-ngeo/images/%: ngeo/contribs/gmf/apps/desktop/image/
 
 # Templates
 
-$(BUILD_DIR)/c2ctemplate-cache.json: $(VARS_FILES) $(BUILD_DIR)/commons.timestamp
+$(BUILD_DIR)/c2ctemplate-cache.json: $(VARS_FILES)
 	$(PRERULE_CMD)
-	$(BUILD_DIR)/venv/bin/python /usr/local/bin/c2c-template --vars $(VARS_FILE) --get-cache $@
+	c2c-template --vars $(VARS_FILE) --get-cache $@
 
 %: %.mako $(BUILD_DIR)/c2ctemplate-cache.json
 	$(PRERULE_CMD)

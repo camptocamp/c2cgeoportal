@@ -33,11 +33,11 @@ ourselves!*
 
 :ref:`releasenotes`.
 
-`Demo <https://geomapfish-demo.camptocamp.net/${main_version}>`_,
-`with features grid <https://camptocamp.github.io/ngeo/${main_version}/examples/contribs/gmf/apps/desktop_alt/>`_,
+`Demo <https://geomapfish-demo.camptocamp.net/${major_version}>`_,
+`with features grid <https://camptocamp.github.io/ngeo/${major_version}/examples/contribs/gmf/apps/desktop_alt/>`_,
 to test the editing you can use the username 'demo' with the password 'demo'.
 
-`ngeo (client) documentation <https://camptocamp.github.io/ngeo/${main_version}/apidoc/>`_.
+`ngeo (client) documentation <https://camptocamp.github.io/ngeo/${major_version}/apidoc/>`_.
 `CGXP (old client) documentation <http://docs.camptocamp.net/cgxp/master/>`_.
 
 .. toctree::
