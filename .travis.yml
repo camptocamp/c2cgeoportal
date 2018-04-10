@@ -51,6 +51,7 @@ before_script:
   - echo "WSGIPythonHome /usr/" > /tmp/wsgi_express.conf
   - sudo mv /tmp/wsgi_express.load /tmp/wsgi_express.conf /etc/apache2/mods-available/
   - sudo a2enmod wsgi_express
+  - sudo a2enmod proxy
   - sudo service apache2 restart
   - sudo chmod o+rx /var/log/apache2/
   - sudo chmod o+r /var/log/apache2/*.log
