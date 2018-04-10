@@ -367,6 +367,8 @@ vars:
 
   ogcproxy_enable: false
 
+  lingua_extractor: {}
+
   # Control the HTTP headers
   headers:
     index: &header

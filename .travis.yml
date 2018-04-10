@@ -26,10 +26,12 @@ env:
 install:
   - docker --version
   - docker-compose --version
+  - ifconfig
   - sudo service postgresql stop
   - git config --global user.email travis@camptocamp.com
   - git config --global user.name Travis
   - python3 -m pip install --requirement=travis/requirements.txt
+
 before_script:
   - python3 -m compileall commons/c2cgeoportal_commons
   - python3 -m compileall geoportal/c2cgeoportal_geoportal
