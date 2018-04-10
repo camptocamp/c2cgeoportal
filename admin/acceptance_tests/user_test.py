@@ -175,7 +175,7 @@ class TestUser(AbstractViewsTests):
         assert not user.is_password_changed
         assert not user.validate_password('pré$ident')
 
-        parts = list(email.message_from_string(sender_mock.method_calls[0][1][2]).walk())
+        parts = list(email.message_from_string(sender_mock.sendmail.mock_calls[0][1][2]).walk())
         assert EXPECTED_WELCOME_MAIL.format('clone', 'clone', 'basile') == \
             parts[1].get_payload(decode=True).decode('utf8')
         assert 'mail7' == parts[0].items()[3][1]
@@ -217,7 +217,7 @@ class TestUser(AbstractViewsTests):
         assert user.email == 'new_mail'
         assert user.role_name == 'secretary_2'
 
-        parts = list(email.message_from_string(sender_mock.method_calls[0][1][2]).walk())
+        parts = list(email.message_from_string(sender_mock.sendmail.mock_calls[0][1][2]).walk())
         assert EXPECTED_WELCOME_MAIL.format('new_user', 'new_user', 'basile') == \
             parts[1].get_payload(decode=True).decode('utf8')
         assert 'new_mail' == parts[0].items()[3][1]
