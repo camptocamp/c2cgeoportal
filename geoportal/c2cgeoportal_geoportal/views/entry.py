@@ -1466,11 +1466,12 @@ class Entry:
                 "available in request params."
             )
             raise HTTPBadRequest("See server logs for details")
-        user = self.request.registry.validate_user(self.request, login, password)
-        if user is not None:
-            headers = remember(self.request, user)
-            self._set_last_login(user)
-            log.info("User '{0!s}' logged in.".format(login))
+        username = self.request.registry.validate_user(self.request, login, password)
+        if username is not None:
+            user = models.DBSession.query(static.User).filter(static.User.username == username).one()
+            user.update_last_login()
+            headers = remember(self.request, username)
+            log.info("User '{0!s}' logged in.".format(username))
             came_from = self.request.params.get("came_from")
             if came_from:
                 return HTTPFound(location=came_from, headers=headers)
@@ -1479,16 +1480,11 @@ class Entry:
                 return set_common_headers(
                     self.request, "login", NO_CACHE,
                     response=Response(json.dumps(self._user(
-                        self.request.get_user(user)
+                        self.request.get_user(username)
                     )), headers=headers),
                 )
         else:
-            log.info("Expired login or bad credentials for login '{0!s}'.".format(login))
             raise HTTPBadRequest("See server logs for details")
-
-    def _set_last_login(self, username):
-        user = models.DBSession.query(static.User).filter(static.User.username == username).one()
-        user.set_last_login()
 
     @view_config(route_name="logout")
     def logout(self):

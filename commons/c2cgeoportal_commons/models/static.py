@@ -199,7 +199,7 @@ class User(Base):
     def expired(self) -> bool:
         return self.expire_on is not None and self.expire_on < datetime.utcnow()
 
-    def set_last_login(self) -> None:
+    def update_last_login(self) -> None:
         self.last_login = datetime.utcnow()
 
     def __unicode__(self) -> str:
