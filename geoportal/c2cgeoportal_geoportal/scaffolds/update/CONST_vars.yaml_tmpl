@@ -89,7 +89,6 @@ vars:
     AND lra.layer_id = la.id AND la.name = "
   enable_admin_interface: True
 
-  directory: __import__('os').getcwd()
   project_directory: '{PROJECT_DIRECTORY}'
   python_path: '{PYTHON_PATH}'
   ps: __import__('os').path.sep
@@ -110,8 +109,8 @@ vars:
 
   # For debug mode
   jsbuild:
-    config: "{directory}/jsbuild/app.cfg"
-    root_dir: "{directory}"
+    config: /src/jsbuild/app.cfg
+    root_dir: /src
 
   # used for the "node_modules" and "closure" static views
   closure_library_path: 'process.stdout.write(require("@camptocamp/closure-util").getLibraryPath())'
@@ -501,7 +500,6 @@ interpreted:
   python:
     - authtkt.secret
     - ps
-    - directory
     - interfaces
   node:
     vars:
