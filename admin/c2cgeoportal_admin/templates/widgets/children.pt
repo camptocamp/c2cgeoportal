@@ -99,7 +99,7 @@
              deform.appendSequenceItem('#'+ oid);
 
              // Set title and treeitem_id
-             var $itemnode = $('#'+ oid).find('.deform-seq-item').last();
+             var $itemnode = $('#'+ oid).find('.deform-insert-before').last().prev();
              $itemnode.find('.well').html('<span class="glyphicon icon-' + selecteditem.item_type + '"></span> ' + selecteditem.name);
              $itemnode.find('input[name="treeitem_id"]').val(selecteditem.id);
              $itemnode.find('.deform-order-button').show();
