@@ -4,13 +4,12 @@ LABEL maintainer Camptocamp "info@camptocamp.com"
 ARG VERSION
 ENV VERSION=$VERSION
 
-COPY npm-packages /tmp/npm-packages
+COPY npm-packages /opt/npm-packages
 
 RUN \
-  npm install --no-optional --global `cat /tmp/npm-packages` && \
+  npm install --no-optional --global `cat /opt/npm-packages` && \
   chmod go+r -R /usr/lib/node_modules/@camptocamp/closure-util/.deps/compiler/* && \
-  rm --recursive --force ~/.npm /usr/lib/node_modules/openlayers/node_modules/ && \
-  rm /tmp/npm-packages
+  rm --recursive --force ~/.npm /usr/lib/node_modules/openlayers/node_modules/
 
 RUN \
   svg2ttf /usr/lib/node_modules/ngeo/contribs/gmf/fonts/gmf-icons.svg \
