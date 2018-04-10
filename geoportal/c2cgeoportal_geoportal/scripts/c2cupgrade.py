@@ -241,20 +241,20 @@ class C2cUpgradeTool:
                 "Run `curl {} '{}'` for more information."
             ]).format(
                 e,
-                self.project["checker_url"],
                 ' '.join([
                     '--header={}={}'.format(*i) for i in self.project.get("checker_headers", {}).items()
-                ])
+                ]),
+                self.project["checker_url"],
             )
         if resp.status_code < 200 or resp.status_code >= 300:
             return False, "\n".join([
                 "Checker error:",
                 "Run `curl {} '{}'` for more information."
             ]).format(
-                self.project["checker_url"],
                 ' '.join([
                     '--header={}={}'.format(*i) for i in self.project.get("checker_headers", {}).items()
-                ])
+                ]),
+                self.project["checker_url"],
             )
 
         return True, None
