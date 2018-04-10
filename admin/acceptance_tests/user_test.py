@@ -59,7 +59,11 @@ class TestUser(AbstractViewsTests):
                     ('id', 'id', 'true'),
                     ('username', 'Username'),
                     ('role_name', 'Role'),
-                    ('email', 'Email')]
+                    ('email', 'Email'),
+                    ('last_login', 'Last login'),
+                    ('expire_on', 'Expiration date'),
+                    ('deactivated', 'Deactivated')]
+
         self.check_grid_headers(resp, expected)
 
     @pytest.mark.skip(reason="Translation is not finished")
@@ -163,6 +167,7 @@ class TestUser(AbstractViewsTests):
         resp = form.submit('submit')
 
         user = dbsession.query(User).filter(User.username == 'clone').one()
+
         assert str(user.id) == re.match(
             'http://localhost/users/(.*)\?msg_col=submit_ok',
             resp.location).group(1)

@@ -50,8 +50,8 @@ def upgrade():
     staticschema = config['schema_static']
 
     # Instructions
-    op.add_column('user', Column('last_login', DateTime(timezone=True)), schema=staticschema)
-    op.add_column('user', Column('expire_on', DateTime(timezone=True)), schema=staticschema)
+    op.add_column('user', Column('last_login', DateTime), schema=staticschema)
+    op.add_column('user', Column('expire_on', DateTime), schema=staticschema)
     op.add_column('user', Column('deactivated', Boolean, default=False), schema=staticschema)
 
     metadata = MetaData()

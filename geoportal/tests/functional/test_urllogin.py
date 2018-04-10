@@ -29,7 +29,7 @@
 
 
 from unittest import TestCase
-
+import datetime
 import transaction
 import pyramid.security
 from c2cgeoportal_geoportal import create_get_user_from_request
@@ -51,6 +51,18 @@ class TestUrllogin(TestCase):
 
         user = User(username="__test_user1", password="__test_user1")
         DBSession.add(user)
+
+        user2 = User(username="__test_user2", password="__test_user2", deactivated=True)
+        DBSession.add(user2)
+
+        now = datetime.datetime.utcnow()
+        user3 = User(username="__test_user3", password="__test_user3", expire_on=now)
+        DBSession.add(user3)
+
+        tomorrow = now + datetime.timedelta(days=1)
+        user4 = User(username="__test_user4", password="__test_user4", expire_on=tomorrow)
+        DBSession.add(user4)
+
         DBSession.flush()
 
         self.old_remember = pyramid.security.remember
@@ -67,6 +79,9 @@ class TestUrllogin(TestCase):
         from c2cgeoportal_commons.models.static import User
 
         DBSession.query(User).filter(User.username == "__test_user1").delete()
+        DBSession.query(User).filter(User.username == "__test_user2").delete()
+        DBSession.query(User).filter(User.username == "__test_user3").delete()
+        DBSession.query(User).filter(User.username == "__test_user4").delete()
         transaction.commit()
 
         pyramid.security.remember = None
@@ -88,7 +103,7 @@ class TestUrllogin(TestCase):
         self.assertIsNotNone(user)
         self.assertEqual(user, "__test_user1")
 
-    def test_expired(self):
+    def test_token_expired(self):
         self.assertIsNone(self.get_user("foobar1234567891", "__test_user1", "__test_user1", -1))
 
     def test_wrong_user(self):
@@ -107,3 +122,13 @@ class TestUrllogin(TestCase):
         get_user_from_request = create_get_user_from_request(request.registry.settings)
         get_user_from_request(request)
         self.assertIsNone(self.user)
+
+    def test_user_deactivated(self):
+        self.assertIsNone(self.get_user("foobar1234567891", "__test_user2", "__test_user2", 1))
+
+    def test_user_expired(self):
+        self.assertIsNone(self.get_user("foobar1234567891", "__test_user3", "__test_user3", 1))
+
+    def test_user_currently_not_expired(self):
+        user = self.get_user("foobar1234567891", "__test_user4", "__test_user4", 1)
+        self.assertEqual(user, "__test_user4")
