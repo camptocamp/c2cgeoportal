@@ -253,7 +253,7 @@ class C2cUpgradeTool:
             ]).format(
                 self.project["checker_url"],
                 ' '.join([
-                    '--header={}={}'.format(*i) for i in self.project["checker_headers"].items()
+                    '--header={}={}'.format(*i) for i in self.project.get("checker_headers", {}).items()
                 ])
             )
 
