@@ -48,7 +48,7 @@ def upgrade():
     schema = config['schema']
 
     op.execute("""
-CREATE OR REPLACE FUNCTION {schema}.on_role_name_change()
+CREATE FUNCTION {schema}.on_role_name_change()
 RETURNS trigger AS
 $$
 BEGIN
@@ -71,9 +71,9 @@ LANGUAGE plpgsql""".format(schema=schema))
 def downgrade():
     schema = config['schema']
 
-    op.execute('DROP TRIGGER IF EXISTS on_role_name_change ON {schema}.role'.format(
+    op.execute('DROP TRIGGER on_role_name_change ON {schema}.role'.format(
         schema=schema
     ))
-    op.execute('DROP FUNCTION IF EXISTS {schema}.on_role_name_change()'.format(
+    op.execute('DROP FUNCTION {schema}.on_role_name_change()'.format(
         schema=schema
     ))
