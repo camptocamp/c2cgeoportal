@@ -8,3 +8,4 @@ papyrus
 pyramid
 sqlalchemy
 transaction
+zope.event
