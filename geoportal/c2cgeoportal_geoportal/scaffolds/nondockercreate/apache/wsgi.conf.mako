@@ -20,7 +20,7 @@ WSGIPassAuthorization On
 
 
 RewriteRule ^${apache_entry_point}?$ /${instanceid}/wsgi [PT]
-RewriteRule ^${apache_entry_point}/theme/(.+)$ /${instanceid}/wsgi/theme/$1 [PT]
+RewriteRule ^${apache_entry_point}theme/(.+)$ /${instanceid}/wsgi/theme/$1 [PT]
 
 % for interface in interfaces:
 RewriteRule ^${apache_entry_point}${interface}/?$ /${instanceid}/wsgi/${interface} [PT]
