@@ -63,9 +63,9 @@ vars:
 
   # For base layers
   tiles_url:
-    - '{web_protocol}://a.tiles.{host}{entry_point}/tiles'
-    - '{web_protocol}://b.tiles.{host}{entry_point}/tiles'
-    - '{web_protocol}://c.tiles.{host}{entry_point}/tiles'
+    - '{web_protocol}://a.tiles.{host}{entry_point}tiles'
+    - '{web_protocol}://b.tiles.{host}{entry_point}tiles'
+    - '{web_protocol}://c.tiles.{host}{entry_point}tiles'
 
   # The URL template used to generate the sub domain URL
   # %(sub)s will be replaced by the sub domain value.
