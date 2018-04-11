@@ -244,8 +244,8 @@ APACHE_GRACEFUL ?= path/to/your/Apache/bin/httpd.exe -k restart -n &lt;servicena
 </div>
 </div>
 </div>
-<div class="section" id="rhel-6-specific-configuration">
-<h3>RHEL 6 Specific Configuration<a class="headerlink" href="#rhel-6-specific-configuration" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="redhat-specific-configuration">
+<h3>RedHat Specific Configuration<a class="headerlink" href="#redhat-specific-configuration" title="Permalink to this headline">¶</a></h3>
 <p>Specific settings are required when the c2cgeoportal application is to be run
 on RedHat Enterprise Linux (RHEL) 6.</p>
 <div class="admonition note">
@@ -262,9 +262,8 @@ in <code class="docutils literal"><span class="pre">/var/www/vhosts/&lt;vhost&gt
 is the name of the Apache virtual host, and <code class="docutils literal"><span class="pre">&lt;username&gt;</span></code> is your Unix
 login name.</p>
 </div>
-</div>
 <div class="section" id="id1">
-<h3>&lt;project&gt;.mk<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<h4>&lt;project&gt;.mk<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
 <p>Configure some <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> RedHat specifics:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span># Service base command for Tomcat on RedHat
 TOMCAT_SERVICE_COMMAND ?= sudo service tomcat-tomcat1
@@ -280,6 +279,7 @@ APACHE_GRACEFUL ?= sudo /usr/sbin/apachectl graceful
 DISABLE_BUILD_RULES += test-packages test-packages-tilecloud-chain test-packages-mobile test-packages-ngeo
 </pre></div>
 </div>
+</div>
 <div class="section" id="id2">
 <h4>apache/mapserver.conf.mako<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
 <p>On RHEL 6 the <code class="docutils literal"><span class="pre">mapserv</span></code> binary is located in <code class="docutils literal"><span class="pre">/usr/libexec/</span></code>. The
@@ -288,6 +288,12 @@ DISABLE_BUILD_RULES += test-packages test-packages-tilecloud-chain test-packages
 <div class="highlight-default"><div class="highlight"><pre><span></span>ScriptAlias /${instanceid}/mapserv /usr/libexec/mapserv
 </pre></div>
 </div>
+</div>
+<div class="section" id="apache-application-wsgi-mako">
+<h4>apache/application.wsgi.mako<a class="headerlink" href="#apache-application-wsgi-mako" title="Permalink to this headline">¶</a></h4>
+<p>Ensure that the regular expression used in <code class="docutils literal"><span class="pre">apache/application.wsgi.mako</span></code> to modify the <code class="docutils literal"><span class="pre">sys.path</span></code>
+matches the system directories containing python packages. If you are installing from scratch, this should
+already be the case; otherwise look at <code class="docutils literal"><span class="pre">scaffolds/create/apache/application.wsgi.mako</span></code> for an example.</p>
 </div>
 </div>
 <div class="section" id="integrator-install-application-install-application">
@@ -393,9 +399,10 @@ at <code class="docutils literal"><span class="pre">http://new-site.customer.ch<
 <li><a class="reference internal" href="#project-mk">&lt;project&gt;.mk</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#rhel-6-specific-configuration">RHEL 6 Specific Configuration</a></li>
-<li><a class="reference internal" href="#id1">&lt;project&gt;.mk</a><ul>
+<li><a class="reference internal" href="#redhat-specific-configuration">RedHat Specific Configuration</a><ul>
+<li><a class="reference internal" href="#id1">&lt;project&gt;.mk</a></li>
 <li><a class="reference internal" href="#id2">apache/mapserver.conf.mako</a></li>
+<li><a class="reference internal" href="#apache-application-wsgi-mako">apache/application.wsgi.mako</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#integrator-install-application-install-application">Install the application</a></li>
