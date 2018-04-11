@@ -47,5 +47,5 @@ For non Docker upgrade have a look on the nondocker_CHANGELOG
    class Root:
        __acl__ = [
            (Allow, 'role_admin', ALL_PERMISSIONS),
-           ]
+       ]
    ...'''

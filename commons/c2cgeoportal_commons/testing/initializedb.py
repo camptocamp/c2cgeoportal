@@ -48,14 +48,6 @@ def main(argv: List[str]=sys.argv) -> None:
             test='--test' in options
         )
 
-    """
-    # generate the Alembic version table and stamp it with the latest revision
-    alembic_cfg = Config('alembic.ini')
-    alembic_cfg.set_section_option(
-        'alembic', 'sqlalchemy.url', engine.url.__str__())
-    command.stamp(alembic_cfg, 'head')
-    """
-
 
 def init_db(connection: Connection, alembic_ini: str=None, force: bool=False, test: bool=False) -> None:
     import c2cgeoportal_commons.models.main  # noqa: F401

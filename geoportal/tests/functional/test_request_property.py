@@ -95,6 +95,8 @@ class TestRequestProperty(TestCase):
 
     def test_request_auth_overwritten_property(self):
         def setter(request):
+            del request  # Unused
+
             class User:
                 pass
 

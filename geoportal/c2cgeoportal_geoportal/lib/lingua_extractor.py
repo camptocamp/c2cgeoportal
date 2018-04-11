@@ -83,18 +83,26 @@ class _Request:  # pragma: no cover
 
     @staticmethod
     def static_url(*args, **kwargs):
+        del args
+        del kwargs
         return ""
 
     @staticmethod
     def static_path(*args, **kwargs):
+        del args
+        del kwargs
         return ""
 
     @staticmethod
     def route_url(*args, **kwargs):
+        del args
+        del kwargs
         return ""
 
     @staticmethod
     def current_route_url(*args, **kwargs):
+        del args
+        del kwargs
         return ""
 
 
@@ -130,16 +138,18 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
                         return empty_template
 
                 class MyTemplate(MakoTemplate):
-                    def prepare(self, **options):
+                    tpl = None
+
+                    def prepare(self, **kwargs):
                         options.update({"input_encoding": self.encoding})
-                        lookup = Lookup(**options)
+                        lookup = Lookup(**kwargs)
                         if self.source:
-                            self.tpl = Template(self.source, lookup=lookup, **options)
+                            self.tpl = Template(self.source, lookup=lookup, **kwargs)
                         else:
                             self.tpl = Template(
                                 uri=self.name,
                                 filename=self.filename,
-                                lookup=lookup, **options)
+                                lookup=lookup, **kwargs)
 
                 try:
                     processed = template(

@@ -57,6 +57,7 @@ class TestUrllogin(TestCase):
         self.user = None
 
         def remember(request, user=None):
+            del request  # Unused
             self.user = user
 
         pyramid.security.remember = remember

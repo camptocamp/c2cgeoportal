@@ -103,7 +103,8 @@ class PrintProxy(Proxy):  # pragma: no cover
 
     @cache_region.cache_on_arguments()
     def _info(self, templates, query_string, method):
-        del query_string  # unused
+        del query_string  # Just for caching
+        del method  # Just for caching
         # get URL
         _url = self.config["print_url"] + "info.json"
 
@@ -175,6 +176,8 @@ class PrintProxy(Proxy):  # pragma: no cover
 
     @cache_region.cache_on_arguments()
     def _capabilities(self, templates, query_string, method):
+        del query_string  # Just for caching
+        del method  # Just for caching
         # get URL
         _url = self.config["print_url"] + "/capabilities.json"
 

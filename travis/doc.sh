@@ -1,6 +1,6 @@
 #!/bin/bash -ex
 
-GIT_REV=`git log | head --lines=1 | awk '{{print $2}}'`
+GIT_REV=$(git log | head --lines=1 | awk '{{print $2}}')
 
 ./docker-run make doc
 
