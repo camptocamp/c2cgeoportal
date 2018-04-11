@@ -587,7 +587,7 @@ class LayerV1(Layer):  # Deprecated in v2
         })
     url = Column(Unicode, info={
         'colanderalchemy': {
-            'title': _('Url'),
+            'title': _('URL'),
             'group': 'external'
         }})  # for externals
     image_type = Column(
@@ -621,12 +621,12 @@ class LayerV1(Layer):  # Deprecated in v2
         }})  # for WMTS
     wms_url = Column(Unicode, info={
         'colanderalchemy': {
-            'title': _('Wms url'),
+            'title': _('WMS URL'),
             'group': 'WMTS'
         }})  # for WMTS
     wms_layers = Column(Unicode, info={
         'colanderalchemy': {
-            'title': _('Wms layers'),
+            'title': _('WMS layers'),
             'group': 'WMTS'
         }})  # for WMTS
     query_layers = Column(Unicode, info={
@@ -636,12 +636,12 @@ class LayerV1(Layer):  # Deprecated in v2
         }})  # for WMTS
     kml = Column(Unicode, info={
         'colanderalchemy': {
-            'title': _('Kml'),
+            'title': _('KML'),
             'group': 'other'
         }})  # for kml 3D
     is_single_tile = Column(Boolean, info={
         'colanderalchemy': {
-            'title': _('Is single title'),
+            'title': _('Is single tile'),
             'group': 'external'
         }})  # for extenal WMS
     legend = Column(Boolean, default=True, info={
@@ -756,10 +756,10 @@ class OGCServer(Base):
         'colanderalchemy': {'title': _('Description')}
     })
     url = Column(Unicode, nullable=False, info={
-        'colanderalchemy': {'title': _('Basic Url')}
+        'colanderalchemy': {'title': _('Basic URL')}
     })
     url_wfs = Column(Unicode, info={
-        'colanderalchemy': {'title': _('WFS Url')}
+        'colanderalchemy': {'title': _('WFS URL')}
     })
     type = Column(
         Enum(
