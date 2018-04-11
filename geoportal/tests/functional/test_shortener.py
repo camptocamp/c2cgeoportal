@@ -53,9 +53,10 @@ class TestshortenerView(TestCase):
         from pyramid.httpexceptions import HTTPNotFound, HTTPBadRequest
         from c2cgeoportal_geoportal.views.shortener import Shortener
 
-        def route_url(name, *elements, **kw):
-            del name
-            return "https://example.com/short/" + kw["ref"]
+        def route_url(name, *args, **kwargs):
+            del name  # Unused
+            del args  # Unused
+            return "https://example.com/short/" + kwargs["ref"]
 
         request = DummyRequest()
         request.user = None

@@ -144,6 +144,8 @@ class TestThemesPrivateView(TestCase):
         request.static_url = lambda url: "/dummy/static/url"
 
         def route_url(name, _query=None, **kwargs):
+            del name  # Unused
+            del kwargs  # Unused
             if _query is None:
                 return "http://localhost/travis/mapserv"
             else:

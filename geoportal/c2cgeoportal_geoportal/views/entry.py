@@ -1132,6 +1132,7 @@ class Entry:
 
     @cache_region.cache_on_arguments()
     def _functionality_cached(self, role):
+        del role  # Just for caching
         functionality = {}
         for func_ in get_setting(
                 self.settings,
