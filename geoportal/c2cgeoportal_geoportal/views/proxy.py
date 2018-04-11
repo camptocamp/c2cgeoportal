@@ -113,18 +113,23 @@ class Proxy(object):
                 "%s",
                 "Method: %s",
                 "--- With headers ---",
+                "%s",
+            ]
+            args = [
+                sys.exc_info()[0], url, method,
                 "\n".join(["{}: {}".format(*h) for h in list(headers.items())]),
             ]
-            args = [sys.exc_info()[0], url, method]
             if method in ("POST", "PUT"):
                 errors += [
                     "--- Query with body ---",
-                    body.decode("utf-8")
+                    "%s",
                 ]
+                args.append(body.decode("utf-8"))
             errors += [
                 "--- Return content ---",
-                content,
+                "%s",
             ]
+            args.append(content.decode("utf-8"))
             log.error("\n".join(errors), *args, exc_info=True)
 
             raise HTTPBadGateway("Error on backend<hr>See logs for detail")
@@ -136,18 +141,23 @@ class Proxy(object):
                 "Status: %d",
                 "Method: %s",
                 "--- With headers ---",
+                "%s",
+            ]
+            args = [
+                resp.reason, url, resp.status, method,
                 "\n".join(["{}: {}".format(*h) for h in list(headers.items())]),
             ]
-            args = [resp.reason, url, resp.status, method]
             if method in ("POST", "PUT"):
                 errors += [
                     "--- Query with body ---",
-                    body.decode("utf-8")
+                    "%s",
                 ]
+                args.append(body.decode("utf-8"))
             errors += [
                 "--- Return content ---",
-                content,
+                "%s",
             ]
+            args.append(content.decode("utf-8"))
             log.error("\n".join(errors), *args)
 
             raise HTTPInternalServerError("See logs for details")
