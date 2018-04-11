@@ -113,8 +113,9 @@ vars:
     root_dir: /src
 
   # used for the "node_modules" and "closure" static views
-  closure_library_path: 'process.stdout.write(require("@camptocamp/closure-util").getLibraryPath())'
-  node_modules_path: "/usr/lib/node_modules"
+  closure_library_path: process.stdout.write(require("@camptocamp/closure-util").getLibraryPath())
+  node_modules_path: /usr/lib/node_modules
+  app_path: /app
 
   # pyramid_closure configuration
   # Each item in the roots_with_prefix array is an array with two elements. The
@@ -124,13 +125,27 @@ vars:
   # the HTML page.
   pyramid_closure:
     roots_with_prefix:
-      - ["{closure_library_path}/closure/goog", "{closure_library_path}/closure/goog"]
-      - ["{package}_geoportal:static-ngeo/js", "/app/{package}_geoportal/static-ngeo/js"]
-      - ["{package}_geoportal:static-ngeo/components", "/app/{package}_geoportal/static-ngeo/components"]
-      - ["{node_modules_path}{ps}openlayers/src", "{node_modules_path}{ps}openlayers/src"]
-      - ["{node_modules_path}{ps}openlayers/build", "{node_modules_path}{ps}openlayers/build"]
-      - ["{node_modules_path}{ps}ngeo/src", "{node_modules_path}{ps}ngeo/src"]
-      - ["{node_modules_path}{ps}ngeo/contribs/gmf/src", "{node_modules_path}{ps}ngeo/contribs/gmf/src"]
+      -
+        - "{closure_library_path}/closure/goog"
+        - "{closure_library_path}/closure/goog"
+      -
+        - "{package}_geoportal:static-ngeo/js"
+        - "{app_path}/geoportal/{package}_geoportal/static-ngeo/js"
+      -
+        - "{package}_geoportal:static-ngeo/components"
+        - "{app_path}/geoportal/{package}_geoportal/static-ngeo/components"
+      -
+        - "{node_modules_path}{ps}openlayers/src"
+        - "{node_modules_path}{ps}openlayers/src"
+      -
+        - "{node_modules_path}{ps}openlayers/build"
+        - "{node_modules_path}{ps}openlayers/build"
+      -
+        - "{node_modules_path}{ps}ngeo/src"
+        - "{node_modules_path}{ps}ngeo/src"
+      -
+        - "{node_modules_path}{ps}ngeo/contribs/gmf/src"
+        - "{node_modules_path}{ps}ngeo/contribs/gmf/src"
 
   # The application's default language. This is the language used by
   # the application if no specific language is specified in the URLs.
