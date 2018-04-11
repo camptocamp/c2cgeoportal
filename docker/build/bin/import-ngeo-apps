@@ -194,7 +194,7 @@ def main():
     <script src="${{request.static_url('%s/closure/goog/base.js' % request.registry.settings['closure_library_path'])}}"></script>
     <script src="${{request.route_url('deps.js')}}"></script>
     <script>
-        goog.require('{{{{package}}}}_{interface}');
+        goog.require('{{{{package}}}}.{interface}.Controller');
     </script>
     <script src="${{request.static_url('{{{{package}}}}_geoportal:static-ngeo/build/templatecache.js')}}"></script>
     <script src="${{request.static_url('%s/ngeo/utils/watchwatchers.js' % request.registry.settings['node_modules_path'])}}"></script>
