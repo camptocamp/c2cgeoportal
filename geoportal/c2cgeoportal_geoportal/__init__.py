@@ -382,6 +382,9 @@ def default_user_validator(request, username, password):
     from c2cgeoportal_commons.models import DBSession
     from c2cgeoportal_commons.models.static import User
     user = DBSession.query(User).filter_by(username=username).first()
+    if user is None:
+        log.info('Unknow user "{}" tried to log in'.format(username))
+        return None
     if user.deactivated:
         log.info('Deactivated user "{}" tried to log in'.format(username))
         return None

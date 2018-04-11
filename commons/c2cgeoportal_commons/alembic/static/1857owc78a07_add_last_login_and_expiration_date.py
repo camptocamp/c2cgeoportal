@@ -67,6 +67,7 @@ def upgrade():
         })
     )
 
+
 def downgrade():
     staticschema = config['schema_static']
 
