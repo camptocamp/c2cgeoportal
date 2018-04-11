@@ -245,7 +245,7 @@ The following configuration override must be added to your ``<project>.mk``::
     # Where <servicename> is the name of the Apache service, look at your
     # Windows services panel (Start > Search > Services)
 
-RHEL 6 Specific Configuration
+RedHat Specific Configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Specific settings are required when the c2cgeoportal application is to be run
@@ -267,7 +267,7 @@ on RedHat Enterprise Linux (RHEL) 6.
 
 
 <project>.mk
-~~~~~~~~~~~~
+^^^^^^^^^^^^
 
 Configure some ``<package>.mk`` RedHat specifics::
 
@@ -292,6 +292,13 @@ On RHEL 6 the ``mapserv`` binary is located in ``/usr/libexec/``. The
 ``/usr/lib/cgi-bin/``, and should therefore be changed::
 
     ScriptAlias /${instanceid}/mapserv /usr/libexec/mapserv
+
+apache/application.wsgi.mako
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Ensure that the regular expression used in ``apache/application.wsgi.mako`` to modify the ``sys.path``
+matches the system directories containing python packages. If you are installing from scratch, this should
+already be the case; otherwise look at ``scaffolds/create/apache/application.wsgi.mako`` for an example.
 
 
 .. _integrator_install_application_install_application:
