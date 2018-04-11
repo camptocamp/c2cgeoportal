@@ -290,8 +290,8 @@ vars:
     # to the TinyOWS proxy url (e.g. when the service is also used without
     # the proxy), the proxy can replace the original `online_resource`
     # url with the proxy url.
-    # proxy_online_resource: http://{host}{entry_point}/tinyows_proxy
-    # online_resource: http://localhost{entry_point}/tinyows
+    # proxy_online_resource: http://{host}{entry_point}tinyows_proxy
+    # online_resource: http://localhost{entry_point}tinyows
 
     # When running a c2cgeoportal appl. in debug mode (with `make serve`)
     # the host has to be set explicitly in a vhost environment.
@@ -344,7 +344,7 @@ vars:
   # The shortener base configuration
   shortener:
     # The base of created URL
-    base_url: '{web_protocol}://{host}{entry_point}/s/'
+    base_url: '{web_protocol}://{host}{entry_point}s/'
     allowed_hosts:
       - '{host}'
 
