@@ -130,15 +130,16 @@ class InteruptedException(Exception):
 
 
 class Step:
-    def __init__(self, step_number):
+    def __init__(self, step_number, file_marker=True):
         self.step_number = step_number
+        self.file_marker = file_marker
 
     def __call__(self, current_step):
         def decorate(c2cupgradetool, *args, **kwargs):
             try:
                 if os.path.isfile(".UPGRADE{}".format(self.step_number - 1)):
                     os.unlink(".UPGRADE{}".format(self.step_number - 1))
-                if self.step_number not in [0, 12]:
+                if self.file_marker:
                     with open(".UPGRADE{}".format(self.step_number), "w"):
                         pass
                 print("Start step {}.".format(self.step_number))
@@ -262,7 +263,7 @@ class C2cUpgradeTool:
     def upgrade(self):
         self.run_step(self.options.step)
 
-    @Step(0)
+    @Step(0, file_marker=False)
     def step0(self, step):
         project_template_keys = list(self.project.get("template_vars").keys())
         messages = []
@@ -677,7 +678,7 @@ class C2cUpgradeTool:
             "add them into the `.gitignore` file and launch upgrade{} again.".format(step),
             prompt="Then to commit your changes type:")
 
-    @Step(13)
+    @Step(13, file_marker=False)
     def step13(self, _):
         check_call(["git", "commit", "--message=Upgrade to GeoMapFish {}".format(
             pkg_resources.get_distribution("c2cgeoportal_commons").version
