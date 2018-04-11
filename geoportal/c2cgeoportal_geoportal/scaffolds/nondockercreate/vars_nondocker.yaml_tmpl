@@ -9,9 +9,11 @@ vars:
   modwsgi_user: '{MODWSGI_USER}'
   dbhost: '{DOCKER_HOST_}'
   dbhost_slave: '{DOCKER_HOST_}'
-  adrs4: "' '.join([__import__('netifaces').ifaddresses(iface)[2][0]['addr'] \
+  adrs4: "' '.join(['{}/{}'.format(__import__('netifaces').ifaddresses(iface)[2][0]['addr'], \
+    __import__('netifaces').ifaddresses(iface)[2][0]['netmask']) \
     for iface in __import__('netifaces').interfaces() if 2 in __import__('netifaces').ifaddresses(iface)])"
-  adrs6: "' '.join([__import__('netifaces').ifaddresses(iface)[10][0]['addr'].split('%')[0] \
+  adrs6: "' '.join(['{}/{}'.format(__import__('netifaces').ifaddresses(iface)[10][0]['addr'].split('%')[0], \
+    __import__('netifaces').ifaddresses(iface)[10][0]['netmask']) \
     for iface in __import__('netifaces').interfaces() if 10 in __import__('netifaces').ifaddresses(iface)])"
   mapserv_allow: |
     Allow from {ADDRESSES} {adrs4} {adrs6}
