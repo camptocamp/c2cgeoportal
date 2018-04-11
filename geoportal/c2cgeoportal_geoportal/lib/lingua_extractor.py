@@ -28,12 +28,12 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import httplib2
 import subprocess
 import os
 import yaml
 import re
 import traceback
+import requests
 from typing import Dict  # noqa, pylint: disable=unused-import
 from json import loads
 from urllib.parse import urlsplit
@@ -472,9 +472,9 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                 url_split = url_split._replace(netloc=map_['netloc'])
             if 'scheme' in map_:
                 url_split = url_split._replace(scheme=map_['scheme'])
-            url = url_split.geturl()
-            return url_split.geturl(), map_.get('headers', {})
-        return url, {}
+            kwargs = {'verify': map_['verify']} if 'verify' in map_ else {}
+            return url_split.geturl(), map_.get('headers', {}), kwargs
+        return url, {}, {}
 
     def _layer_attributes(self, url, layer):
         errors = set()
@@ -492,25 +492,24 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
             self.wmscap_cache[url] = None
 
             # forward request to target (without Host Header)
-            http = httplib2.Http()
-            url, headers = self._build_url(url)
+            url, headers, kwargs = self._build_url(url)
             wms_getcap_url = add_url_params(url, {
                 "SERVICE": "WMS",
                 "VERSION": "1.1.1",
                 "REQUEST": "GetCapabilities",
             })
             try:
-                resp, content = http.request(wms_getcap_url, method="GET", headers=headers)
+                response = requests.get(wms_getcap_url, headers=headers, **kwargs)
 
                 try:
-                    self.wmscap_cache[url] = WebMapService(None, xml=content)
+                    self.wmscap_cache[url] = WebMapService(None, xml=response.content)
                 except Exception as e:
                     print(colorize(
                         "ERROR! an error occurred while trying to "
                         "parse the GetCapabilities document.",
                         RED))
                     print(colorize(str(e), RED))
-                    print("URL: {}\nxml:\n{}".format(wms_getcap_url, content))
+                    print("URL: {}\nxml:\n{}".format(wms_getcap_url, response.text))
                     if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
                         raise
             except Exception as e:  # pragma: no cover
@@ -531,15 +530,14 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
             self.featuretype_cache[url] = None
 
             # forward request to target (without Host Header)
-            http = httplib2.Http()
-            url, headers = self._build_url(url)
+            url, headers, kwargs = self._build_url(url)
             wfs_descrfeat_url = add_url_params(url, {
                 "SERVICE": "WFS",
                 "VERSION": "1.1.0",
                 "REQUEST": "DescribeFeatureType",
             })
             try:
-                resp, content = http.request(wfs_descrfeat_url, method="GET", headers=headers)
+                response = requests.get(wfs_descrfeat_url, headers=headers, **kwargs)
             except Exception as e:  # pragma: no cover
                 print(colorize(str(e), RED))
                 print(colorize(
@@ -551,10 +549,10 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                 else:
                     raise
 
-            if resp.status < 200 or resp.status >= 300:  # pragma: no cover
+            if not response.ok:  # pragma: no cover
                 print(colorize(
                     "ERROR! DescribeFeatureType from URL {} return the error: {:d} {}".format(
-                        wfs_descrfeat_url, resp.status, resp.reason
+                        wfs_descrfeat_url, response.status_code, response.reason
                     ),
                     RED,
                 ))
@@ -564,7 +562,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                     raise Exception("Aborted")
 
             try:
-                describe = parseString(content)
+                describe = parseString(response.text)
                 featurestype = {}
                 self.featuretype_cache[url] = featurestype
                 for type_element in describe.getElementsByTagNameNS(
@@ -578,7 +576,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                     RED
                 ))
                 print(colorize(str(e), RED))
-                print("URL: {}\nxml:\n{}".format(wfs_descrfeat_url, content))
+                print("URL: {}\nxml:\n{}".format(wfs_descrfeat_url, response.text))
                 if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
                     return [], []
                 else:
@@ -589,7 +587,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                     "read the Mapfile and recover the themes.",
                     RED
                 ))
-                print("URL: {}\nxml:\n{}".format(wfs_descrfeat_url, content))
+                print("URL: {}\nxml:\n{}".format(wfs_descrfeat_url, response.text))
                 if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
                     return [], []
                 else:
