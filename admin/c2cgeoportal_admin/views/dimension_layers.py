@@ -17,7 +17,7 @@ class DimensionLayerViews(LayerViews):
         _list_field(
             'dimensions',
             renderer=lambda layer_wms: '; '.join(
-                ['{}: {}'.format(group[0], ', '.join([d.value for d in group[1]]))
+                ['{}: {}'.format(group[0], ', '.join([d.value or 'NULL' for d in group[1]]))
                  for group in groupby(layer_wms.dimensions, lambda d: d.name)]))
     ] + LayerViews._extra_list_fields
 

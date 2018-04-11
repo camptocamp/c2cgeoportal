@@ -98,6 +98,16 @@ class TestLayerWMSViews(AbstractViewsTests):
         # check search on interfaces
         self.check_search(test_app, 'mobile', total=9)
 
+    def test_grid_empty_dimension(self, test_app, layer_wms_test_data):
+        from c2cgeoportal_commons.models.main import Dimension
+        layer = layer_wms_test_data['layers'][0]
+        layer.dimensions.append(
+            Dimension(name='Empty',
+                      value=None))
+        json = self.check_search(test_app, layer.name, total=1)
+        row = json['rows'][0]
+        assert 'Empty: NULL' in row['dimensions']
+
     def test_new_no_default(self, test_app, layer_wms_test_data, dbsession):
         default_wms = layer_wms_test_data['default']['wms']
         default_wms.name = 'so_can_I_not_be found'
