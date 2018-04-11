@@ -353,7 +353,7 @@ npm-packages: ngeo package.json
 		@camptocamp/babel-plugin-angularjs-annotate @camptocamp/cesium coveralls \
 		css-loader expose-loader extract-text-webpack-plugin file-loader gaze \
 		google-closure-library googshift html-loader html-webpack-plugin jasmine-core jquery-ui \
-		jquery-ui-touch-punch jsdoc jsdom karma karma-chrome-launcher karma-coverage karma-jasmine \
+		jsdoc jsdom karma karma-chrome-launcher karma-coverage karma-jasmine \
 		karma-sourcemap-loader karma-webpack less-loader less-plugin-clean-css ls olcs \
 		uglify-js uglifyjs-webpack-plugin url-loader webpack webpack-dev-server \
 		webpack-merge istanbul-instrumenter-loader karma-coverage-istanbul-reporter \
