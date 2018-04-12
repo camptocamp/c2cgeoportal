@@ -86,7 +86,8 @@ class User(Base):
                            info={'colanderalchemy': {'exclude': True}})
     email = Column(Unicode, nullable=False, info={
         'colanderalchemy': {
-            'title': _('Email')
+            'title': _('Email'),
+            'validator': colander.Email()
         }
     })
     is_password_changed = Column(Boolean, default=False,
