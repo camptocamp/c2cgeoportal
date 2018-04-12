@@ -136,11 +136,13 @@ class Entry:
                     main.OGCServer.name == self.mapserver_settings["default_ogc_server"]
                 ).one()
             except NoResultFound:  # pragma: no cover
-                log.error("Unable to find the OGC server named: {}.".format(
-                    self.mapserver_settings["default_ogc_server"])
-                )
-                log.error("Available OGC servers: {}".format(
-                    ", ".join([i[0] for i in models.DBSession.query(main.OGCServer.name).all()]))
+                log.error(
+                    "\n".join([
+                        "Unable to find the default OGC server named: %s.",
+                        "Available OGC servers: %s",
+                    ]),
+                    self.mapserver_settings["default_ogc_server"],
+                    ", ".join([i[0] for i in models.DBSession.query(main.OGCServer.name).all()])
                 )
 
         if "external_ogc_server" in self.mapserver_settings:
@@ -149,11 +151,13 @@ class Entry:
                     main.OGCServer.name == self.mapserver_settings["external_ogc_server"]
                 ).one()
             except NoResultFound:  # pragma: no cover
-                log.error("Unable to find the OGC server named: {}.".format(
-                    self.mapserver_settings["external_ogc_server"])
-                )
-                log.error("Available OGC servers: {}".format(
-                    ", ".join([i[0] for i in models.DBSession.query(main.OGCServer.name).all()]))
+                log.error(
+                    "\n".join([
+                        "Unable to find the external OGC server named: %s.",
+                        "Available OGC servers: %s",
+                    ]),
+                    self.mapserver_settings["external_ogc_server"],
+                    ", ".join([i[0] for i in models.DBSession.query(main.OGCServer.name).all()])
                 )
 
     @view_config(route_name="testi18n", renderer="testi18n.html")
@@ -752,7 +756,7 @@ class Entry:
 
         # escape loop
         if depth > 30:
-            log.error("Error: too many recursions with group '{0!s}'".format(group.name))
+            log.error("Error: too many recursions with group '%s'", group.name)
             return ogc_servers
 
         # recurse on children
@@ -1267,7 +1271,7 @@ class Entry:
                 "label": t,
             } for t in wfs_types]
         else:  # pragma: no cover
-            log.error("Error while getting the WFS params: \n{}".format("\n".join(add_errors)))
+            log.error("Error while getting the WFS params: \n%s", "\n".join(add_errors))
             vars_["wfs_types"] = []
 
         return vars_

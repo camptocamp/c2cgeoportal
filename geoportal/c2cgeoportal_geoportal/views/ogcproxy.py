@@ -80,8 +80,11 @@ class OGCProxy(Proxy):
             DBSession.expunge(result)
             return result
         except NoResultFound:  # pragma nocover
-            log.error("OGSServer '{}' does not exists (existing: {}).".format(
-                name, ",".join([t[0] for t in DBSession.query(OGCServer.name).all()])))
+            log.error(
+                "OGSServer '%s' does not exists (existing: %s).",
+                name,
+                ",".join([t[0] for t in DBSession.query(OGCServer.name).all()])
+            )
             raise
 
     def _get_ogc_server(self):
