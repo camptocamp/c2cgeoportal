@@ -38,7 +38,6 @@ Create Date: 2018-03-29 13:15:23.228907
 
 from alembic import op
 from sqlalchemy import Boolean, Column, DateTime
-from sqlalchemy.schema import MetaData, Table
 from c2cgeoportal_commons.config import config
 
 # revision identifiers, used by Alembic.
@@ -53,19 +52,6 @@ def upgrade():
     op.add_column('user', Column('last_login', DateTime), schema=staticschema)
     op.add_column('user', Column('expire_on', DateTime), schema=staticschema)
     op.add_column('user', Column('deactivated', Boolean, default=False), schema=staticschema)
-
-    metadata = MetaData()
-    user = Table(
-        'user',
-        metadata,
-        Column('deactivated', Boolean),
-        schema=staticschema
-    )
-    op.execute(
-        user.update().values({
-            'deactivated': False
-        })
-    )
 
 
 def downgrade():

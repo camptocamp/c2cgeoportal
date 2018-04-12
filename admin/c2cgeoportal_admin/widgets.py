@@ -13,12 +13,12 @@ registry.set_css_resources(
 
 
 # temporary workaround for https://github.com/Pylons/deform/pull/369
-widget.DateTimeInputWidget._pstruct_schema = SchemaNode(
+widget.DateTimeInputWidget._pstruct_schema = SchemaNode(  # pylint: disable=W0212
     Mapping(),
-    SchemaNode(widget._StrippedString(), name='date'),
-    SchemaNode(widget._StrippedString(), name='time'),
-    SchemaNode(widget._StrippedString(), name='date_submit', missing=''),
-    SchemaNode(widget._StrippedString(), name='time_submit', missing='')
+    SchemaNode(widget._StrippedString(), name='date'),  # pylint: disable=W0212
+    SchemaNode(widget._StrippedString(), name='time'),  # pylint: disable=W0212
+    SchemaNode(widget._StrippedString(), name='date_submit', missing=''),  # pylint: disable=W0212
+    SchemaNode(widget._StrippedString(), name='time_submit', missing='')  # pylint: disable=W0212
 )
 
 
