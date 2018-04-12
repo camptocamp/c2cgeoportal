@@ -12,7 +12,7 @@ from deform.widget import FormWidget
 from c2cgeoportal_admin import _
 from c2cgeoportal_admin.schemas.dimensions import dimensions_schema_node
 from c2cgeoportal_commons.models.main import \
-    LayerWMTS, LayerWMS, LayerGroup, TreeItem
+    LayerWMTS, LayerWMS, LayerGroup, OGCServer, TreeItem
 from c2cgeoportal_admin.schemas.metadata import metadatas_schema_node
 from c2cgeoportal_admin.schemas.interfaces import interfaces_schema_node
 from c2cgeoportal_admin.schemas.restriction_areas import restrictionareas_schema_node
@@ -107,17 +107,25 @@ class LayerWmtsViews(DimensionLayerViews):
         src = self._get_object()
         dbsession = self._request.dbsession
         default_wms = LayerWMS.get_default(dbsession)
+        values = {
+            'ogc_server_id': default_wms.ogc_server_id,
+            'time_mode': default_wms.time_mode,
+            'time_widget': default_wms.time_widget
+        } if default_wms else {
+            'ogc_server_id': dbsession.query(OGCServer.id).order_by(OGCServer.id).first()[0],
+            'time_mode': 'disabled',
+            'time_widget': 'slider'
+        }
         with dbsession.no_autoflush:
             d = delete(LayerWMTS.__table__)
             d = d.where(LayerWMTS.__table__.c.id == src.id)
             i = insert(LayerWMS.__table__)
-            i = i.values({
+            values.update({
                 'id': src.id,
                 'layer': src.layer,
-                'style': src.style,
-                'ogc_server_id': default_wms.ogc_server_id,
-                'time_mode': default_wms.time_mode,
-                'time_widget': default_wms.time_widget})
+                'style': src.style
+            })
+            i = i.values(values)
             u = update(TreeItem.__table__)
             u = u.where(TreeItem.__table__.c.id == src.id)
             u = u.values({'type': 'l_wms'})

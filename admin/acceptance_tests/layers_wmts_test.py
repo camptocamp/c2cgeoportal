@@ -255,3 +255,9 @@ class TestLayerWMTS(AbstractViewsTests):
         self._check_dimensions(resp.html, layer.dimensions)
         assert 'Your submission has been taken into account.' == \
             resp.html.find('div', {'class': 'msg-lbl'}).getText()
+
+    def test_convert_without_wms_defaults(self, test_app, layer_wmts_test_data, dbsession):
+        from c2cgeoportal_commons.models.main import LayerWMS
+        dbsession.delete(LayerWMS.get_default(dbsession))
+        layer = layer_wmts_test_data['layers'][3]
+        test_app.post("/layers_wmts/{}/convert_to_wms".format(layer.id), status=200)

@@ -352,6 +352,12 @@ class TestLayerWMSViews(AbstractViewsTests):
         resp = test_app.get(resp.json['redirect'], status=200)
         assert 'image/jpeg' == resp.form['image_type'].value
 
+    def test_convert_without_wmts_defaults(self, test_app, layer_wms_test_data, dbsession):
+        from c2cgeoportal_commons.models.main import LayerWMTS
+        dbsession.delete(LayerWMTS.get_default(dbsession))
+        layer = layer_wms_test_data['layers'][3]
+        test_app.post("/layers_wms/{}/convert_to_wmts".format(layer.id), status=200)
+
     def test_unicity_validator(self, layer_wms_test_data, test_app):
         layer = layer_wms_test_data['layers'][2]
         resp = test_app.get("/layers_wms/{}/duplicate".format(layer.id), status=200)
