@@ -20,12 +20,12 @@ def users_test_data(dbsession, transact):
 
     roles = []
     for i in range(0, 4):
-        roles.append(Role("secretary_" + str(i)))
+        roles.append(Role('secretary_{}'.format(i)))
         dbsession.add(roles[i])
     users = []
     for i in range(0, 23):
-        user = User("babar_" + str(i),
-                    email='mail' + str(i),
+        user = User('babar_{}'.format(i),
+                    email='mail{}@valid.net'.format(i),
                     role=roles[i % 4])
         user.password = 'pré$ident'
         user.is_password_changed = i % 2 == 1
@@ -114,14 +114,14 @@ class TestUser(AbstractViewsTests):
                 'item_type': 'user',
                 'id': user.id,
                 'username': 'new_name_withéàô',
-                'email': 'new_mail',
+                'email': 'new_mail@valid.net',
                 'role_name': 'secretary_2'},
             status=302)
         assert resp.location == 'http://localhost/users/{}?msg_col=submit_ok'.format(user.id)
 
         dbsession.expire(user)
         assert user.username == 'new_name_withéàô'
-        assert user.email == 'new_mail'
+        assert user.email == 'new_mail@valid.net'
         assert user.role_name == 'secretary_2'
         assert user.validate_password('pré$ident')
 
@@ -164,7 +164,7 @@ class TestUser(AbstractViewsTests):
         assert user.role_name == form['role_name'].value
         assert user.is_password_changed
         form['username'].value = 'clone'
-        resp = form.submit('submit')
+        resp = form.submit('submit', status=302)
 
         user = dbsession.query(User).filter(User.username == 'clone').one()
 
@@ -178,7 +178,7 @@ class TestUser(AbstractViewsTests):
         parts = list(email.message_from_string(sender_mock.sendmail.mock_calls[0][1][2]).walk())
         assert EXPECTED_WELCOME_MAIL.format('clone', 'clone', 'basile') == \
             parts[1].get_payload(decode=True).decode('utf8')
-        assert 'mail7' == parts[0].items()[3][1]
+        assert 'mail7@valid.net' == parts[0].items()[3][1]
 
     @patch('c2cgeoportal_commons.lib.email_.smtplib.SMTP')
     @patch('c2cgeoportal_admin.views.users.pwgenerator.generate')
@@ -198,7 +198,7 @@ class TestUser(AbstractViewsTests):
                 'item_type': 'user',
                 'id': '',
                 'username': 'new_user',
-                'email': 'new_mail',
+                'email': 'valid@email.net',
                 'role_name': 'secretary_2',
                 'is_password_changed': 'false',
                 '_password': 'da39a3ee5e6b4b0d3255bfef95601890afd80709',
@@ -214,13 +214,31 @@ class TestUser(AbstractViewsTests):
             resp.location).group(1)
 
         assert user.username == 'new_user'
-        assert user.email == 'new_mail'
+        assert user.email == 'valid@email.net'
         assert user.role_name == 'secretary_2'
 
         parts = list(email.message_from_string(sender_mock.sendmail.mock_calls[0][1][2]).walk())
         assert EXPECTED_WELCOME_MAIL.format('new_user', 'new_user', 'basile') == \
             parts[1].get_payload(decode=True).decode('utf8')
-        assert 'new_mail' == parts[0].items()[3][1]
+        assert 'valid@email.net' == parts[0].items()[3][1]
+
+    def test_invalid_email(self, test_app):
+        resp = test_app.post(
+            '/users/new',
+            {
+                '__formid__': 'deform',
+                '_charset_': 'UTF-8',
+                'formsubmit': 'formsubmit',
+                'item_type': 'user',
+                'id': '',
+                'username': 'invalid_email',
+                'email': 'new_mail',
+                'role_name': 'secretary_2',
+                'is_password_changed': 'false',
+                '_password': 'da39a3ee5e6b4b0d3255bfef95601890afd80709',
+                'temp_password': ''},
+            status=200)
+        self._check_submission_problem(resp, 'Invalid email address')
 
     @pytest.mark.usefixtures("raise_db_error_on_query")
     def test_grid_dberror(self, dbsession):
@@ -270,11 +288,11 @@ class TestUserSelenium():
         elem.send_keys('new_name_éôù')
         elem = selenium.find_element_by_xpath("//input[@name ='email']")
         elem.clear()
-        elem.send_keys('new_email')
+        elem.send_keys('new_email@valid.net')
         elem = selenium.find_element_by_xpath("//button[@name='formsubmit']")
         elem.click()
 
         user = dbsession.query(User).filter(User.id == user.id).one()
         dbsession.expire(user)
         assert user.username == 'new_name_éôù'
-        assert user.email == 'new_email'
+        assert user.email == 'new_email@valid.net'
