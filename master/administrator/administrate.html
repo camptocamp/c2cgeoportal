@@ -81,12 +81,14 @@ files in <code class="docutils literal notranslate"><span class="pre">admin_inte
 </ul>
 </div>
 <div class="section" id="layers">
-<h2>Layers<a class="headerlink" href="#layers" title="Permalink to this headline">¶</a></h2>
-<p>In version 2, we split the layer table into 2 tables: <code class="docutils literal notranslate"><span class="pre">layer_wms</span></code>,
+<span id="administrator-administrate-layers"></span><h2>Layers<a class="headerlink" href="#layers" title="Permalink to this headline">¶</a></h2>
+<p>Layer definition for the ngeo client is considered “version 2”,
+whereas layer definition for the CGXP client is considered “version 1”.
+In version 2, we split the layer table into 2 tables: <code class="docutils literal notranslate"><span class="pre">layer_wms</span></code>,
 <code class="docutils literal notranslate"><span class="pre">layer_wmts</span></code>, and we copy the previous layer table in <code class="docutils literal notranslate"><span class="pre">layerv1</span></code>.
-There is a tool to migrate the layers from the v1 structure to the v2
-structure see <code class="docutils literal notranslate"><span class="pre">./docker-run</span> <span class="pre">themev1tov2</span></code>.
-Still using the CGXP application? Then you should maintain both version
+For information on migrating layers from CGXP to ngeo, see
+<a class="reference internal" href="../integrator/upgrade_application.html#integrator-upgrade-application-cgxp-to-ngeo"><span class="std std-ref">From CGXP to ngeo</span></a>.</p>
+<p>Still using the CGXP client? Then you should maintain both version
 of the layers, respectively <code class="docutils literal notranslate"><span class="pre">layerv1</span></code> and <code class="docutils literal notranslate"><span class="pre">layer_wms</span></code>-<code class="docutils literal notranslate"><span class="pre">layer_wmts</span></code>.</p>
 <p>And the <code class="docutils literal notranslate"><span class="pre">order</span></code> will be moved in the relation of the tree.</p>
 <div class="section" id="all-layer-type">

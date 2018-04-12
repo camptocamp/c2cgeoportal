@@ -218,7 +218,7 @@ The following configuration override must be added to your ``<project>.mk``::
     # Path to cygwin
     CYGWIN_PATH ?= c:/path/to/cygwin
 
-RHEL 6 Specific Configuration
+RedHat Specific Configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Specific settings are required when the c2cgeoportal application is to be run
@@ -237,6 +237,14 @@ on RedHat Enterprise Linux (RHEL) 6.
     in ``/var/www/vhosts/<vhost>/private/dev/<username>/``, where ``<vhost>``
     is the name of the Apache virtual host, and ``<username>`` is your Unix
     login name.
+
+
+apache/application.wsgi.mako
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Ensure that the regular expression used in ``apache/application.wsgi.mako`` to modify the ``sys.path``
+matches the system directories containing python packages. If you are installing from scratch, this should
+already be the case; otherwise look at ``scaffolds/create/apache/application.wsgi.mako`` for an example.
 
 
 .. _integrator_install_application_install_application:
