@@ -8,8 +8,7 @@
   "author": "",
   "dependencies": {
     "bootstrap": "3.3.7",
-    "opencollective": "1.0.3",
-    "bootstrap-table": "https://github.com/wenzhixin/bootstrap-table#da659990acfa1fe42649e7599e8c766e61f7f3d5",
+    "bootstrap-table": "1.12.1",
     "jquery": "3.3.1",
     "jquery.scrollintoview": "1.9.4",
     "jstree": "3.3.5",
