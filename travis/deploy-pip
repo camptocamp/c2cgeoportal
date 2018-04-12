@@ -8,6 +8,8 @@ echo "repository:https://upload.pypi.org/legacy/" >> ~/.pypirc
 echo "username:${TRAVIS_USERNAME}" >> ~/.pypirc
 echo "password:${TRAVIS_PASSWORD}" >> ~/.pypirc
 
+export VERSION=${TRAVIS_TAG}
+
 # Deploy all the packages on pypi
 python commons/setup.py egg_info sdist bdist_wheel upload -r pypi
 python geoportal/setup.py egg_info sdist bdist_wheel upload -r pypi
