@@ -495,7 +495,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
         url = get_url2("Layer", url, request, errors)
         if len(errors) > 0:
             print("\n".join(errors))
-            return []
+            return [], []
         url, headers, kwargs = self._build_url(url)
 
         if url not in self.wmscap_cache:
@@ -508,6 +508,9 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                 "REQUEST": "GetCapabilities",
             })
             try:
+                print(u"Get WMS GetCapabilities for URL {},\nwith headers: {}".format(
+                    wms_getcap_url, " ".join(["=".join(h) for h in headers.items()])
+                ))
                 response = requests.get(wms_getcap_url, headers=headers, **kwargs)
 
                 try:
