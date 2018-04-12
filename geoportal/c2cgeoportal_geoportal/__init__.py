@@ -332,7 +332,7 @@ def create_get_user_from_request(settings):
                             headers = pyramid.security.remember(request, auth["u"])
                             request.response.headerlist.extend(headers)
         except Exception as e:
-            log.error("URL login error: {}".format(e), exc_info=True)
+            log.error("URL login error: %s.", e, exc_info=True)
 
         if not hasattr(request, "is_valid_referer"):
             request.is_valid_referer = is_valid_referer(request, settings)
