@@ -113,17 +113,24 @@ class LayerWmsViews(DimensionLayerViews):
         src = self._get_object()
         dbsession = self._request.dbsession
         default_wmts = LayerWMTS.get_default(dbsession)
+        values = {
+            'url': default_wmts.url,
+            'matrix_set': default_wmts.matrix_set
+        } if default_wmts else {
+            'url': '',
+            'matrix_set': ''
+        }
         with dbsession.no_autoflush:
             d = delete(LayerWMS.__table__)
             d = d.where(LayerWMS.__table__.c.id == src.id)
             i = insert(LayerWMTS.__table__)
-            i = i.values({
+            values.update({
                 'id': src.id,
-                'url': default_wmts.url,
-                'matrix_set': default_wmts.matrix_set,
                 'layer': src.layer,
                 'image_type': src.ogc_server.image_type,
-                'style': src.style})
+                'style': src.style
+            })
+            i = i.values(values)
             u = update(TreeItem.__table__)
             u = u.where(TreeItem.__table__.c.id == src.id)
             u = u.values({'type': 'l_wmts'})
