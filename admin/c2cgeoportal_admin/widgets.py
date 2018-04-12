@@ -1,4 +1,5 @@
 import colander
+from colander import Mapping, SchemaNode
 from deform import widget
 from deform.widget import MappingWidget, SequenceWidget
 
@@ -8,6 +9,16 @@ registry.set_js_resources(
 )
 registry.set_css_resources(
     'magicsuggest', None, 'c2cgeoportal_admin:node_modules/magicsuggest-alpine/magicsuggest-min.css'
+)
+
+
+# temporary workaround for https://github.com/Pylons/deform/pull/369
+widget.DateTimeInputWidget._pstruct_schema = SchemaNode(  # pylint: disable=W0212
+    Mapping(),
+    SchemaNode(widget._StrippedString(), name='date'),  # pylint: disable=W0212
+    SchemaNode(widget._StrippedString(), name='time'),  # pylint: disable=W0212
+    SchemaNode(widget._StrippedString(), name='date_submit', missing=''),  # pylint: disable=W0212
+    SchemaNode(widget._StrippedString(), name='time_submit', missing='')  # pylint: disable=W0212
 )
 
 

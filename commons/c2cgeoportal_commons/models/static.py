@@ -29,12 +29,15 @@
 
 
 import logging
+from datetime import datetime
 from hashlib import sha1
 from typing import Optional
 
 from sqlalchemy import Column
 from sqlalchemy.types import Integer, Boolean, Unicode, String, DateTime
-from deform.widget import HiddenWidget
+
+import colander
+from deform.widget import HiddenWidget, DateTimeInputWidget
 from c2cgeoform.ext import deform_ext
 
 from c2cgeoportal_commons.config import config
@@ -99,6 +102,26 @@ class User(Base):
     _cached_role_name = None  # type: str
     _cached_role = None  # type: Optional[Role]
 
+    last_login = Column(DateTime(timezone=True), info={
+        'colanderalchemy': {
+            'title': _('Last login'),
+            'missing': colander.drop,
+            'widget': DateTimeInputWidget(readonly=True)
+        }
+    })
+
+    expire_on = Column(DateTime(timezone=True), info={
+        'colanderalchemy': {
+            'title': _('Expiration date')
+        }
+    })
+
+    deactivated = Column(Boolean, default=False, info={
+        'colanderalchemy': {
+            'title': _('Deactivated')
+        }
+    })
+
     @property
     def role(self) -> Optional[Role]:
         if self._cached_role_name == self.role_name:
@@ -122,7 +145,7 @@ class User(Base):
 
     def __init__(
         self, username: str='', password: str='', email: str='', is_password_changed: bool=False,
-        role: Role=None
+        role: Role=None, expire_on: datetime=None, deactivated: bool=False
     ) -> None:
         self.username = username
         self.password = password
@@ -130,6 +153,8 @@ class User(Base):
         self.is_password_changed = is_password_changed
         if role is not None:
             self.role_name = role.name
+        self.expire_on = expire_on
+        self.deactivated = deactivated
 
     @property
     def password(self) -> str:
@@ -170,6 +195,12 @@ class User(Base):
             self.is_password_changed = True
             return True
         return False
+
+    def expired(self) -> bool:
+        return self.expire_on is not None and self.expire_on < datetime.utcnow()
+
+    def update_last_login(self) -> None:
+        self.last_login = datetime.utcnow()
 
     def __unicode__(self) -> str:
         return self.username or ''  # pragma: no cover

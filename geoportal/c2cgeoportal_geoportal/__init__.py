@@ -376,13 +376,25 @@ def default_user_validator(request, username, password):
     """
     Validate the username/password. This is c2cgeoportal's
     default user validator.
-    Return none if we are anonymous, the string to remember otherwise.
+    Return None if we are anonymous, the string to remember otherwise.
     """
     del request  # unused
     from c2cgeoportal_commons.models import DBSession
     from c2cgeoportal_commons.models.static import User
     user = DBSession.query(User).filter_by(username=username).first()
-    return username if user and user.validate_password(password) else None
+    if user is None:
+        log.info('Unknow user "{}" tried to log in'.format(username))
+        return None
+    if user.deactivated:
+        log.info('Deactivated user "{}" tried to log in'.format(username))
+        return None
+    if user.expired():
+        log.info('Expired user "{}" tried to log in'.format(username))
+        return None
+    if not user.validate_password(password):
+        log.info('User "{}" tried to log in with bad credentials'.format(username))
+        return None
+    return username
 
 
 class OgcproxyRoutePredicate:
