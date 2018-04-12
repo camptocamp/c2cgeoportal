@@ -10,7 +10,7 @@
 }
 .jstree-grid-wrapper .jstree-grid-header {
   border-bottom: 1px solid #ddd;
-  background-color: inherit;
+  background-color: white;
 }
 .jstree-grid-wrapper .jstree-grid-column {
   border-right: 1px solid #ddd;
