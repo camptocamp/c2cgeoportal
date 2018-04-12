@@ -150,6 +150,7 @@ deploy:
     script: travis/deploy-pip
     on:
       repo: camptocamp/c2cgeoportal
+      tags: true
       condition: $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\..+$
 
 notifications:
