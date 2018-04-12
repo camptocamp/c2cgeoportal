@@ -154,3 +154,26 @@ Upgrade the static schema:
 .. prompt:: bash
 
    ./docker-run alembic --name=static upgrade head
+
+.. _integrator_upgrade_application_cgxp_to_ngeo:
+
+-----------------
+From CGXP to ngeo
+-----------------
+
+Layer definition for ngeo clients is separate and different from layer
+definition for CGXP clients, see :ref:`administrator_administrate_layers`
+for details.
+To migrate the layer definitions from the CGXP structure to the ngeo
+structure, you can use the script ``.build/venv/bin/themev1tov2``.
+
+Text translations for ngeo clients are separate and different from text
+translations for CGXP clients.
+To migrate the text translations from CGXP to ngeo, you can use the script
+``.build/venv/bin/l10nv1tov2``.
+For example, for converting french texts the script can be used as follows:
+
+.. code:: bash
+
+   .build/venv/bin/l10nv1tov2 fr geoportal/static/js/Proj/Lang/fr.js \
+   geoportal/locale/fr/LC_MESSAGES/geoportal-client.po
