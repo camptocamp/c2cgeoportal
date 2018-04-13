@@ -30,11 +30,12 @@
 
 from unittest import TestCase
 from pyramid import testing
+from pyramid.testing import DummyRequest
 
 from c2cgeoportal_commons.config import config
 import c2cgeoportal_geoportal
 from c2cgeoportal_geoportal import call_hook, set_user_validator, \
-    default_user_validator, create_get_user_from_request, _match_url_start
+    default_user_validator, create_get_user_from_request, is_valid_referer
 
 
 class TestIncludeme(TestCase):
@@ -112,9 +113,16 @@ class TestReferer(TestCase):
         return get_user(MockRequest(to=to, ref=ref, method=method))
 
     def test_match_url(self):
-        def match(ref, val, expected):
-            self.assertEqual(_match_url_start(ref, val), expected)
+        def match(reference, value, expected):
+            r = DummyRequest()
+            r.referer = value
+            self.assertEqual(is_valid_referer(r, {
+                "authorized_referers": [reference]
+            }), expected)
 
+        match("http://example.com/app/", "http://example.com/app?k=v", True)
+        match("http://example.com/app/", "http://example.com/app?k=v#link", True)
+        match("http://example.com/app/", "http://example.com/app#link", True)
         match("http://example.com/app/", "http://example.com/app", True)
         match("http://example.com/app", "http://example.com/app/", True)
         match("http://example.com/app", "http://example.com/app/x/y", True)
