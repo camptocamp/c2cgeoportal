@@ -48,7 +48,7 @@ def build_url(name, url, request, headers=None):
     else:
         url_ = url
 
-    log.error("%s, URL: %s => %s", name, url, url_)
+    log.debug("%s, URL: %s => %s", name, url, url_)
     return {"url": url_, "headers": headers}
 
 
