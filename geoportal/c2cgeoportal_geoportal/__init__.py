@@ -282,19 +282,20 @@ def locale_negotiator(request):
     return lang
 
 
-def _match_url_start(ref, val):
+def _match_url_start(reference, value):
     """
     Checks that the val URL starts like the ref URL.
     """
-    ref_parts = ref.rstrip("/").split("/")
-    val_parts = val.rstrip("/").split("/")[0:len(ref_parts)]
-    return ref_parts == val_parts
+    reference_parts = reference.rstrip("/").split("/")
+    value_parts = value[0:len(reference_parts)]
+    return reference_parts == value_parts
 
 
 def is_valid_referer(request, settings):
     if request.referer is not None:
+        referer = urlsplit(request.referer)._replace(query="", fragment="").geturl().rstrip("/").split("/")
         list_ = settings.get("authorized_referers", [])
-        return any(_match_url_start(x, request.referer) for x in list_)
+        return any(_match_url_start(e, referer) for e in list_)
     else:
         return True
 
