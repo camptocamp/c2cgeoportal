@@ -121,6 +121,7 @@ then
         exit 1
     fi
     cp {CONST_create_template/,}project.yaml.mako
+    cp {CONST_create_template/,}vars.yaml
     cp {CONST_create_template/,}mapserver/tinyows.xml.mako
     cp {CONST_create_template/,}print/print-apps/testgeomapfish/config.yaml.mako
     ./docker-run make upgrade9
@@ -155,6 +156,7 @@ then
         exit 1
     fi
     cp {CONST_create_template/,}project.yaml.mako
+    cp {CONST_create_template/,}vars.yaml
     cp {CONST_create_template/,}testgeomapfish.mk
     cp {CONST_create_template/,}mapserver/tinyows.xml.mako
     cp {CONST_create_template/,}print/print-apps/testgeomapfish/config.yaml.mako
