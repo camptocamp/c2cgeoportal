@@ -45,6 +45,23 @@ export DOCKER_BASE
 DOCKER_TAG ?= latest
 export DOCKER_TAG
 
+PGHOST ?= localhost
+export PGHOST
+PGHOST_SLAVE ?= localhost
+export PGHOST_SLAVE
+PGPORT ?= 5432
+export PGPORT
+PGUSER ?= www-data
+export PGUSER
+PGPASSWORD ?= www-data
+export PGPASSWORD
+PGDATABASE ?= geomapfish
+export PGDATABASE
+PGSCHEMA ?= main
+export PGSCHEMA
+PGSCHEMA_STATIC ?= main_static
+export PGSCHEMA_STATIC
+
 DEFAULT_WEB_RULE += $(JSBUILD_OUTPUT_FILES) $(CSS_CGXP_OUTPUT)
 ifneq ($(NGEO_INTERFACES), "")
 DEFAULT_WEB_RULE += $(NGEO_OUTPUT_FILES)

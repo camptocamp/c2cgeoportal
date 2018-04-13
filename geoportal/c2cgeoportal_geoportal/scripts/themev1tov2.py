@@ -80,8 +80,13 @@ def main():
     app_name = options.app_name
     if app_name is None and "#" in app_config:
         app_config, app_name = app_config.split("#", 1)
-    fileConfig(app_config, defaults=os.environ)
-    app = get_app(app_config, app_name, options=os.environ)
+    env = {}
+    env.update(os.environ)
+    env["LOG_LEVEL"] = "INFO"
+    env["GUNICORN_ACCESS_LOG_LEVEL"] = "INFO"
+    env["C2CGEOPORTAL_LOG_LEVEL"] = "WARN"
+    fileConfig(app_config, defaults=env)
+    app = get_app(app_config, app_name, options=env)
 
     # must be done only once we have loaded the project config
     from c2cgeoportal_commons.models import DBSession
