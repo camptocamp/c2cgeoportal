@@ -292,8 +292,10 @@ class C2cUpgradeTool:
 
     @Step(1)
     def step1(self, step):
+        shutil.copyfile("project.yaml", "/tmp/project.yaml")
         check_call(["git", "reset", "--hard"])
         check_call(["git", "clean", "--force", "-d"])
+        shutil.copyfile("/tmp/project.yaml", "project.yaml")
 
         branch = check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode("utf-8").strip()
         # remove all no more existing branches
@@ -361,7 +363,9 @@ class C2cUpgradeTool:
 
         check_call(["git", "add", "--all", "CONST_create_template/"])
         check_call(["git", "clean", "-Xf", "CONST_create_template/"])
+        shutil.copyfile("project.yaml", "/tmp/project.yaml")
         check_call(["make", "--makefile=" + self.options.makefile, "clean-all"])
+        shutil.copyfile("/tmp/project.yaml", "project.yaml")
         self.run_step(step + 1)
 
     @Step(4)

@@ -805,7 +805,7 @@ upgrade: project.yaml
 	c2cupgrade $(UPGRADE_ARGS)
 
 .PHONY: upgrade%
-upgrade%: project.yaml
+upgrade%:
 	c2cupgrade $(UPGRADE_ARGS) --step $*
 
 # Tilecloud chain
