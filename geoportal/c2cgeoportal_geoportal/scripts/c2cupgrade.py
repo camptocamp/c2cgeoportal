@@ -642,9 +642,8 @@ class C2cUpgradeTool:
                 self.run_step(step + 1)
             else:
                 self.print_step(
-                    step + 1, message="This is an optional step but it helps to have a standard project.\n"
-                    "The `create.diff` file is a recommendation of the changes that you should apply "
-                    "to your project.\n" + DIFF_NOTICE
+                    step + 1, message="The `create.diff` file is a recommendation of the changes that you "
+                    "should apply to your project.\n" + DIFF_NOTICE
                 )
         else:
             self.run_step(step + 1)
