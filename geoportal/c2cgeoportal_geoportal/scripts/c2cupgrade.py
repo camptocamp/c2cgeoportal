@@ -149,7 +149,9 @@ class Step:
             except subprocess.CalledProcessError as e:
                 c2cupgradetool.print_step(
                     self.step_number, error=True,
-                    message="The command '{}' returns the error code {}.".format(e.cmd, e.returncode),
+                    message="The command `./docker-run {}` returns the error code {}.".format(
+                        " ".join(["'{}'".format(e) for e in e.cmd]), e.returncode
+                    ),
                     prompt="Fix it and run it again:"
                 )
                 exit(1)
@@ -673,7 +675,7 @@ class C2cUpgradeTool:
                 if self.options.makefile != "Makefile" else ""
             message = [
                 "The upgrade is nearly done, now you should:",
-                "- Run the finalisation build with 'FINALISE=TRUE make{} build'.".format(args),
+                "- Run the finalisation build with `FINALISE=TRUE make{} build`.".format(args),
                 "- Test your application."
             ]
         else:
