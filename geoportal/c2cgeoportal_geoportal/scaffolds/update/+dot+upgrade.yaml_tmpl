@@ -103,9 +103,6 @@ files_to_remove:
   - file: vars_nondocker.yaml
     version: 2.3
     from: nondocker
-  - file: CONST_nondocker_CHANGELOG.txt
-    version: 2.3
-    from: nondocker
   - file: vars_nondocker.mk
     version: 2.3
     from: nondocker

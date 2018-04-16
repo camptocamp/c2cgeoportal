@@ -569,27 +569,6 @@ class C2cUpgradeTool:
         if os.path.isfile("changelog.diff"):
             os.unlink("changelog.diff")
 
-        status = check_output(["git", "status", "--short", "CONST_nondocker_CHANGELOG.txt"]).decode("utf-8")
-        if status.strip() == "?? CONST_nondocker_CHANGELOG.txt":
-            check_call(["cp", "CONST_nondocker_CHANGELOG.txt", "nondocker-changelog.diff"])
-        else:
-            with open("nondocker-changelog.diff", "w") as diff_file:
-                check_call(["git", "diff", "--", "CONST_nondocker_CHANGELOG.txt"], stdout=diff_file)
-
-        if os.path.getsize("nondocker-changelog.diff") == 0:
-            self.run_step(step + 1)
-        else:
-            self.print_step(
-                step + 1,
-                message="Apply the manual migration steps based on what is in the "
-                "CONST_nondocker_CHANGELOG.txt file (listed in the `nondocker-changelog.diff` file)."
-            )
-
-    @Step(10)
-    def step10(self, step):
-        if os.path.isfile("nondocker-changelog.diff"):
-            os.unlink("nondocker-changelog.diff")
-
         with open("ngeo.diff", "w") as diff_file:
             check_call([
                 "git", "diff", "--", "--staged",
@@ -608,8 +587,8 @@ class C2cUpgradeTool:
                 DIFF_NOTICE
             )
 
-    @Step(11)
-    def step11(self, step):
+    @Step(10)
+    def step10(self, step):
         if os.path.isfile("ngeo.diff"):
             os.unlink("ngeo.diff")
 
@@ -645,8 +624,8 @@ class C2cUpgradeTool:
         else:
             self.run_step(step + 1)
 
-    @Step(12)
-    def step12(self, step):
+    @Step(11)
+    def step11(self, step):
         if os.path.isfile("create.diff"):
             os.unlink("create.diff")
 
@@ -682,8 +661,8 @@ class C2cUpgradeTool:
             pass
         self.print_step(step + 1, message="\n".join(message))
 
-    @Step(13)
-    def step13(self, step):
+    @Step(12)
+    def step12(self, step):
         if os.path.isfile(".UPGRADE_SUCCESS"):
             os.unlink(".UPGRADE_SUCCESS")
         ok, message = self.test_checkers()
@@ -703,8 +682,8 @@ class C2cUpgradeTool:
             "add them into the `.gitignore` file and launch upgrade{} again.".format(step),
             prompt="Then to commit your changes type:")
 
-    @Step(14, file_marker=False)
-    def step14(self, _):
+    @Step(13, file_marker=False)
+    def step13(self, _):
         check_call(["git", "commit", "--message=Upgrade to GeoMapFish {}".format(
             pkg_resources.get_distribution("c2cgeoportal_commons").version
         )])
