@@ -28,6 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import atexit
 import os
 import re
 import sys
@@ -159,6 +160,15 @@ class Step:
                     prompt="Fix it and run it again:"
                 )
                 exit(1)
+            except Exception as e:
+                def message():
+                    c2cupgradetool.print_step(
+                        self.step_number, error=True,
+                        message="The step get an error '{}'.".format(e),  # noqa: F821
+                        prompt="Fix it and run it again:"
+                    )
+                atexit.register(message)
+                raise
         return decorate
 
 
