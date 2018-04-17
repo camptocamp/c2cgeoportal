@@ -37,7 +37,7 @@ import shutil
 import pkg_resources
 import subprocess
 import filecmp
-from subprocess import check_call, check_output
+from subprocess import check_call, call, check_output
 from argparse import ArgumentParser
 from alembic.config import Config
 from alembic import command
@@ -318,6 +318,31 @@ class C2cUpgradeTool:
 
     @Step(2)
     def step2(self, step):
+        project_path = os.path.join("/tmp", self.project["project_folder"])
+        check_call([
+            "pcreate", "--ignore-conflicting-name", "--overwrite",
+            "--scaffold=c2cgeoportal_update", project_path
+        ])
+        if self.options.nondocker:
+            check_call([
+                "pcreate", "--ignore-conflicting-name", "--overwrite",
+                "--scaffold=c2cgeoportal_nondockerupdate", project_path
+            ])
+
+        shutil.copyfile(os.path.join(project_path, ".upgrade.yaml"), ".upgrade.yaml")
+        self.files_to_move(pre=True, prefix="COSNT_create_template")
+
+        shutil.rmtree(project_path)
+        os.remove(".upgrade.yaml")
+
+        check_call(["git", "add", "--all", "CONST_create_template/"])
+        check_call(["git", "clean", "-Xf", "CONST_create_template/"])
+        call(["git", "commit", "--message=Do the moves int the CONST_create_template folder"])
+
+        self.run_step(step + 1)
+
+    @Step(3)
+    def step3(self, step):
         if os.path.exists("CONST_create_template"):
             check_call(["git", "rm", "-r", "--force", "CONST_create_template/"])
 
@@ -339,8 +364,8 @@ class C2cUpgradeTool:
         check_call(["make", "--makefile=" + self.options.makefile, "clean-all"])
         self.run_step(step + 1)
 
-    @Step(3)
-    def step3(self, step):
+    @Step(4)
+    def step4(self, step):
         error = False
 
         print("Files to remove")
@@ -373,8 +398,8 @@ class C2cUpgradeTool:
             self.options.makefile = self.options.new_makefile
             self.run_step(step + 1)
 
-    @Step(4)
-    def step4(self, step):
+    @Step(5)
+    def step5(self, step):
         self.files_to_remove()
         self.run_step(step + 1)
 
@@ -405,16 +430,16 @@ class C2cUpgradeTool:
                         os.remove(file_)
         return error
 
-    @Step(5)
-    def step5(self, step):
+    @Step(6)
+    def step6(self, step):
         self.files_to_move()
         self.run_step(step + 1)
 
-    def files_to_move(self, pre=False):
+    def files_to_move(self, pre=False, prefix=""):
         error = False
         for element in self.get_upgrade("files_to_move"):
-            src = element["from"]
-            dst = element["to"]
+            src = os.path.join(prefix, element["from"])
+            dst = os.path.join(prefix, element["to"])
             if os.path.exists(src):
                 managed = False
                 type_ = "directory" if os.path.isdir(src) else "file"
@@ -453,8 +478,8 @@ class C2cUpgradeTool:
                     os.rename(src, dst)
         return error
 
-    @Step(6)
-    def step6(self, step):
+    @Step(7)
+    def step7(self, step):
         self.files_to_get()
         self.run_step(step + 1)
 
@@ -516,8 +541,8 @@ class C2cUpgradeTool:
                     print("The file '{}' does not change".format(destination))
         return error
 
-    @Step(7)
-    def step7(self, step):
+    @Step(8)
+    def step8(self, step):
         with open("changelog.diff", "w") as diff_file:
             check_call(["git", "diff", "--", "CONST_CHANGELOG.txt"], stdout=diff_file)
 
@@ -539,8 +564,8 @@ class C2cUpgradeTool:
                 "file (listed in the `changelog.diff` file)."
             )
 
-    @Step(8)
-    def step8(self, step):
+    @Step(9)
+    def step9(self, step):
         if os.path.isfile("changelog.diff"):
             os.unlink("changelog.diff")
 
@@ -560,8 +585,8 @@ class C2cUpgradeTool:
                 "CONST_nondocker_CHANGELOG.txt file (listed in the `nondocker-changelog.diff` file)."
             )
 
-    @Step(9)
-    def step9(self, step):
+    @Step(10)
+    def step10(self, step):
         if os.path.isfile("nondocker-changelog.diff"):
             os.unlink("nondocker-changelog.diff")
 
@@ -583,8 +608,8 @@ class C2cUpgradeTool:
                 DIFF_NOTICE
             )
 
-    @Step(10)
-    def step10(self, step):
+    @Step(11)
+    def step11(self, step):
         if os.path.isfile("ngeo.diff"):
             os.unlink("ngeo.diff")
 
@@ -620,8 +645,8 @@ class C2cUpgradeTool:
         else:
             self.run_step(step + 1)
 
-    @Step(11)
-    def step11(self, step):
+    @Step(12)
+    def step12(self, step):
         if os.path.isfile("create.diff"):
             os.unlink("create.diff")
 
@@ -657,8 +682,8 @@ class C2cUpgradeTool:
             pass
         self.print_step(step + 1, message="\n".join(message))
 
-    @Step(12)
-    def step12(self, step):
+    @Step(13)
+    def step13(self, step):
         if os.path.isfile(".UPGRADE_SUCCESS"):
             os.unlink(".UPGRADE_SUCCESS")
         ok, message = self.test_checkers()
@@ -678,8 +703,8 @@ class C2cUpgradeTool:
             "add them into the `.gitignore` file and launch upgrade{} again.".format(step),
             prompt="Then to commit your changes type:")
 
-    @Step(13, file_marker=False)
-    def step13(self, _):
+    @Step(14, file_marker=False)
+    def step14(self, _):
         check_call(["git", "commit", "--message=Upgrade to GeoMapFish {}".format(
             pkg_resources.get_distribution("c2cgeoportal_commons").version
         )])
