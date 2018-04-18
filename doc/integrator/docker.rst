@@ -3,6 +3,12 @@
 Use Docker to deploy your application
 =====================================
 
+Architecture schema
+-------------------
+
+.. image:: docker.png
+.. source file is docker.dia.
+
 Configure your project
 ----------------------
 
