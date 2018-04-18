@@ -146,7 +146,7 @@ docker/test-db/12-alembic.sql: \
 		$(shell ls -1 commons/c2cgeoportal_commons/alembic/main/*.py) \
 		$(BUILD_DIR)/commons.timestamp
 	$(PRERULE_CMD)
-	alembic --config=$< --name=main upgrade --sql head > $@
+	$(BUILD_DIR)/venv/bin/python /usr/local/bin/alembic --config=$< --name=main upgrade --sql head > $@
 
 docker/test-db/13-alembic-static.sql: \
 		geoportal/tests/functional/alembic.ini \
@@ -154,7 +154,7 @@ docker/test-db/13-alembic-static.sql: \
 		$(shell ls -1 commons/c2cgeoportal_commons/alembic/static/*.py) \
 		$(BUILD_DIR)/commons.timestamp
 	$(PRERULE_CMD)
-	alembic --config=$< --name=static upgrade --sql head > $@
+	$(BUILD_DIR)/venv/bin/python /usr/local/bin/alembic --config=$< --name=static upgrade --sql head > $@
 
 docker-build-testdb: $(shell docker-required --path docker/test-db) \
 		docker/test-db/12-alembic.sql docker/test-db/13-alembic-static.sql \
@@ -216,13 +216,13 @@ flake8:
 		--copyright-regexp="Copyright \(c\) ([0-9][0-9][0-9][0-9]-)?$(shell date +%Y), Camptocamp SA"
 
 .PHONY: pylint
-pylint:
-	pylint --errors-only geoportal/c2cgeoportal_geoportal
-	pylint --errors-only geoportal/tests
+pylint: $(BUILD_DIR)/commons.timestamp
+	$(BUILD_DIR)/venv/bin/python /usr/local/bin/pylint --errors-only geoportal/c2cgeoportal_geoportal
+	$(BUILD_DIR)/venv/bin/python /usr/local/bin/pylint --errors-only geoportal/tests
 	pylint --errors-only commons/c2cgeoportal_commons
-	pylint --errors-only commons/acceptance_tests
-	pylint --errors-only admin/c2cgeoportal_admin
-	pylint --errors-only admin/acceptance_tests
+	$(BUILD_DIR)/venv/bin/python /usr/local/bin/pylint --errors-only commons/acceptance_tests
+	$(BUILD_DIR)/venv/bin/python /usr/local/bin/pylint --errors-only admin/c2cgeoportal_admin
+	$(BUILD_DIR)/venv/bin/python /usr/local/bin/pylint --errors-only admin/acceptance_tests
 
 .PHONY: mypy
 mypy:
