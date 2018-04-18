@@ -1021,10 +1021,12 @@ class Dimension(Base):
             cascade="save-update,merge,delete,delete-orphan",
         ),
     )
+    field = Column(Unicode, label=_(u"Field"))
 
-    def __init__(self, name="", value="", layer=None):
+    def __init__(self, name="", value="", layer=None, field=None):
         self.name = name
         self.value = value
+        self.field = field
         if layer is not None:
             self.layer = layer
 

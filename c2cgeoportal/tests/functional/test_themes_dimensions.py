@@ -96,6 +96,12 @@ class TestThemesView(TestCase):
         layer_wms_6.ogc_server = ogc_server
         Dimension("FILTER", "countries:\"name\" IN ( 'Germany' , 'Italy' )", layer_wms_6)
 
+        layer_wms_7 = LayerWMS(name=u"__test_layer_wms_7", public=True)
+        layer_wms_7.layer = "__test_layer_wms_7"
+        layer_wms_7.interfaces = [main]
+        layer_wms_7.ogc_server = ogc_server
+        Dimension("FLOOR", None, layer_wms_7, "etage")
+
         layer_wmts = LayerWMTS(name=u"__test_layer_wmts", public=True)
         layer_wmts.url = "http://example.com/1.0.0/WMTSCapabilities.xml"
         layer_wmts.layer = "map"
@@ -126,11 +132,15 @@ class TestThemesView(TestCase):
         layer_group_6 = LayerGroup(name=u"__test_layer_group_6")
         layer_group_6.children = [layer_wms_3]
 
+        layer_group_7 = LayerGroup(name=u"__test_layer_group_7")
+        layer_group_7.children = [layer_wms_7]
+
         theme = Theme(name=u"__test_theme")
         theme.interfaces = [main]
         theme.children = [
             layer_group_1, layer_group_2, layer_group_3,
             layer_group_4, layer_group_5, layer_group_6,
+            layer_group_7,
         ]
 
         DBSession.add(theme)
@@ -206,7 +216,7 @@ class TestThemesView(TestCase):
             "The layer '__test_layer_wmts_2' has an unsupported dimension value 'countries:\"name\" IN ( 'Germany' , 'Italy' )' ('FILTER')."
         ]))
         self.assertEquals(
-            [self._only_name(t, ["name", "dimensions"]) for t in themes["themes"]],
+            [self._only_name(t, ["name", "dimensions", "dimensions_filters"]) for t in themes["themes"]],
             [{
                 "children": [{
                     "name": u"__test_layer_group_1",
@@ -264,6 +274,15 @@ class TestThemesView(TestCase):
                         "name": u"__test_layer_wms_3",
                     }],
                     "dimensions": {u"A": None},
+                }, {
+                    "name": u"__test_layer_group_7",
+                    "children": [{
+                        "name": u"__test_layer_wms_7",
+                        "dimensions_filters": {
+                            "FLOOR": { "field": "etage", "value": None }
+                        }
+                    }],
+                    'dimensions': {},
                 }],
                 "name": u"__test_theme",
             }]
