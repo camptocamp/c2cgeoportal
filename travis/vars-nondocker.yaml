@@ -1,6 +1,6 @@
 ---
 
-extends: vars_nondocker.yaml
+extends: vars.yaml
 
 vars:
   checker:
