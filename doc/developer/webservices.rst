@@ -173,6 +173,12 @@ WMS Layer
             "minResolutionHint": <minResolutionHint>,
             "maxResolutionHint": <maxResolutionHint>
         }],
+        "dimensionsFilters": {
+            "<name>: {
+               "field": "<field_name>",
+               "value": "<value>"
+            }
+        },
         "edit_columns":[{
             "maxLength": <maxLength>,
             "name": "<name>",
