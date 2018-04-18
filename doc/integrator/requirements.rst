@@ -7,26 +7,20 @@ To install a GeoMapFish application you need to have the following
 components installed on your system:
 
 * **Git** (preferably to other revision control systems)
-* **Python** 2.7 (2.5 or 3.x do not work, 2.6 should work but is not supported) with development files (``python-dev``)
+* **Python**  >= 3.4 with development files (``python-dev``), ``python3-pip``, ``python3-venv``.
+* **Python-netifaces**
 * **VirtualEnv** >= 1.7
 * Oracle **Java** SE Development Kit 6 or 7
 * **Tomcat** >= 6.0
 * **Apache** >= 2.2
 * **PostgreSQL** >= 9.1/**PostGIS** >= 2.1, with library (``libpq-dev``)
-* **MapServer** 7.0 or **QGIS**-mapserver 2.2 and upper
+* **MapServer** 7.2 (for the filters) or **QGIS**-mapserver 2.2 and upper
 * **MapCache** >= 1.0.0 with memcached support
 * **TinyOWS** >= 1.1.0
 * **ImageMagick**
 * **GCC** GNU Compiler Collection >= 4.6
 * **Deploy** >= 0.4
 * **libproj** >= 4.7
-* **gettext** >= 0.18
-
-For ngeo
-~~~~~~~~
-
-* **node** >= 6.0
-* **npm** >= 3.0
 
 Required Apache modules
 ~~~~~~~~~~~~~~~~~~~~~~~
