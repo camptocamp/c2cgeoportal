@@ -8,6 +8,7 @@ COPY npm-packages /opt/npm-packages
 
 RUN \
   npm install --no-optional --global `cat /opt/npm-packages` && \
+  npm cache clear && \
   chmod go+r -R /usr/lib/node_modules/@camptocamp/closure-util/.deps/compiler/* && \
   rm --recursive --force ~/.npm /usr/lib/node_modules/openlayers/node_modules/
 
@@ -44,7 +45,7 @@ COPY geoportal /opt/c2cgeoportal_geoportal
 COPY admin /opt/c2cgeoportal_admin
 
 RUN chmod go+r -R /opt/c2cgeoportal_commons /opt/c2cgeoportal_geoportal && \
-  mv /opt/c2cgeoportal_commons/c2cgeoportal_commons/alembic /opt && \
+  ln -s /opt/c2cgeoportal_commons/c2cgeoportal_commons/alembic /opt && \
   pip install --disable-pip-version-check --no-cache-dir --no-deps \
     --editable=/opt/c2cgeoportal_commons \
     --editable=/opt/c2cgeoportal_geoportal \

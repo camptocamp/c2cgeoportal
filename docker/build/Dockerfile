@@ -30,6 +30,4 @@ COPY bin/* /usr/bin/
 
 WORKDIR /src
 
-ENV PYTHONPATH /build/venv/lib/python3.6/site-packages/
-
 ENTRYPOINT ["run"]

@@ -55,7 +55,7 @@ FINALISE=TRUE make --makefile=travis.mk build
 ./docker-run alembic --name=main upgrade head
 ./docker-run alembic --name=static upgrade head
 # Create default theme
-./docker-run create-demo-theme
+./docker-run /build/venv/bin/python /usr/local/bin/create-demo-theme
 ./docker-run make --makefile=travis.mk update-po
 git add geoportal/testgeomapfish_geoportal/locale/*/LC_MESSAGES/*.po
 git commit -m "Add initial localisation"

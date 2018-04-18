@@ -5,6 +5,8 @@ extends: vars.yaml
 vars:
   instance: '{INSTANCE_ID}'
   instanceid: '{instance}'
+  python_path: "{project_directory}/.build/venv/lib/python{EXTERNAL_PYTHON_VERSION_MAJOR}.\
+    {EXTERNAL_PYTHON_VERSION_MINOR}/site-packages"
   apache_entry_point: '{entry_point}'
   modwsgi_user: '{MODWSGI_USER}'
   dbhost: '{DOCKER_HOST_}'
@@ -101,3 +103,5 @@ environment:
   - TINYOWS_URL
   - MAPSERVER_URL
   - PRINT_URL
+  - EXTERNAL_PYTHON_VERSION_MAJOR
+  - EXTERNAL_PYTHON_VERSION_MINOR

@@ -90,7 +90,6 @@ vars:
   enable_admin_interface: True
 
   project_directory: '{PROJECT_DIRECTORY}'
-  python_path: '{PYTHON_PATH}'
   ps: __import__('os').path.sep
 
   # Authentication settings
@@ -532,7 +531,6 @@ environment:
   - WMTSCAPABILITIES_PATH
   - BUILD_VOLUME_NAME
   - PROJECT_DIRECTORY
-  - PYTHON_PATH
 
 runtime_environment:
   - VISIBLE_WEB_HOST

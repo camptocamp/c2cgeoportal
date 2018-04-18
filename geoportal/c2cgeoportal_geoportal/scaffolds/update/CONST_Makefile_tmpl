@@ -432,7 +432,7 @@ clean-all-cache: cleanall
 .PHONY: theme2fts
 theme2fts: /build/requirements.timestamp geoportal/config.yaml \
 		$(addprefix geoportal/$(PACKAGE)_geoportal/locale/, $(addsuffix /LC_MESSAGES/$(PACKAGE)_geoportal-$(L10N_CLIENT_POSTFIX).mo, $(LANGUAGES)))
-	theme2fts
+	$(VENV_BIN)/python /usr/local/bin/theme2fts
 
 .PHONY: flake8
 flake8:
@@ -501,7 +501,7 @@ geoportal/$(PACKAGE)_geoportal/locale/$(PACKAGE)_geoportal-$(L10N_CLIENT_POSTFIX
 		lingua-client.cfg $(I18N_DEPENDENCIES) $(I18N_SOURCE_FILES)
 	$(PRERULE_CMD)
 	rm -f $@ # Because of WindowsError, thus only problematic on Windows
-	pot-create --config $< --output $@ $(I18N_SOURCE_FILES)
+	$(VENV_BIN)/python /usr/local/bin/pot-create --config $< --output $@ $(I18N_SOURCE_FILES)
 	chmod go+r $@
 
 .PHONY: update-po

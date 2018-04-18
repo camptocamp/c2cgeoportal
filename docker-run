@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 
-import sys
 import os
 import argparse
 import subprocess
 import netifaces
-import distutils.sysconfig
 import configparser
 import pwd
+import sys
 
 
 def main():
@@ -108,19 +107,8 @@ def main():
     # IP v6
     adrs += [e[10][0]['addr'].split('%')[0] for e in ifaddresses if 10 in e]
     docker_cmd.append("--env=ADDRESSES={}".format(' '.join(adrs)))
-
-    if config.getboolean("use_venv", False):
-        docker_cmd.append("--env=PYTHON_PATH={}".format(
-            os.path.join(
-                os.getcwd(),
-                ".build/venv/lib/python{}.{}/site-packages".format(
-                    sys.version_info.major,
-                    sys.version_info.minor,
-                )
-            )
-        ))
-    else:
-        docker_cmd.append("--env=PYTHON_PATH={}".format(distutils.sysconfig.get_python_lib()))
+    docker_cmd.append("--env=EXTERNAL_PYTHON_VERSION_MAJOR={}".format(sys.version_info.major))
+    docker_cmd.append("--env=EXTERNAL_PYTHON_VERSION_MINOR={}".format(sys.version_info.minor))
 
     if options.root:
         docker_cmd.extend(["--entrypoint", options.cmd])
