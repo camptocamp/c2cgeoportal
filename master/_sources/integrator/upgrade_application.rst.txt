@@ -14,8 +14,8 @@ Upgrade a version 2.2
 Add a section ``managed_files: [...]`` in the ``project.yaml.mako`` file.
 The files that are not in this section will be overwritten,
 see upgrade config to see original replacements (section `default_project_file`):
-`for non Docker version <https://github.com/camptocamp/c2cgeoportal/blob/HEAD/geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/%2Bdot%2Bupgrade.yaml_tmpl>`,
-`for Docker version <https://github.com/camptocamp/c2cgeoportal/blob/HEAD/geoportal/c2cgeoportal_geoportal/scaffolds/update/%2Bdot%2Bupgrade.yaml_tmpl>`.
+`for non Docker version <https://github.com/camptocamp/c2cgeoportal/blob/HEAD/geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/%2Bdot%2Bupgrade.yaml_tmpl>_`,
+`for Docker version <https://github.com/camptocamp/c2cgeoportal/blob/HEAD/geoportal/c2cgeoportal_geoportal/scaffolds/update/%2Bdot%2Bupgrade.yaml_tmpl>_`.
 
 Prepare the upgrade:
 
@@ -29,25 +29,21 @@ Prepare the upgrade:
    git commit --quiet --message="Start upgrade"
    make --makefile=<package>.mk project.yaml
 
-Pull the latest version of the Docker image:
+For non-Docker:
 
 .. prompt:: bash
 
-    docker pull camptocamp/geomapfish-build:<version>
+   ./docker-run --version=<version> --home --image=camptocamp/geomapfish-build c2cupgrade \
+       --nondocker --makefile=<user>.mk
+
+And for Docker (experimental):
+
+.. prompt:: bash
+
+   ./docker-run --version=<version> --home --image=camptocamp/geomapfish-build c2cupgrade \
+       --force-docker --new-makefile=Makefile --makefile=<package>.mk
 
 Where ``<version>`` is ``2.3.0`` for the first stable release of the version ``2.3``.
-
-And for non-Docker:
-
-.. prompt:: bash
-
-   ./docker-run --home --image=camptocamp/geomapfish-build        c2cupgrade --nondocker --makefile=<package>.mk
-
-For Docker (experimental):
-
-.. prompt:: bash
-
-   ./docker-run --home --image=camptocamp/geomapfish-build --version=<version>        c2cupgrade --force-docker --new-makefile=Makefile --makefile=<package>.mk
 
 Then follow the instructions.
 
