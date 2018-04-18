@@ -28,6 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import atexit
 import os
 import re
 import sys
@@ -148,7 +149,9 @@ class Step:
             except subprocess.CalledProcessError as e:
                 c2cupgradetool.print_step(
                     self.step_number, error=True,
-                    message="The command '{}' returns the error code {}.".format(e.cmd, e.returncode),
+                    message="The command `./docker-run {}` returns the error code {}.".format(
+                        " ".join(["'{}'".format(e) for e in e.cmd]), e.returncode
+                    ),
                     prompt="Fix it and run it again:"
                 )
                 exit(1)
@@ -159,6 +162,15 @@ class Step:
                     prompt="Fix it and run it again:"
                 )
                 exit(1)
+            except Exception as e:
+                def message():
+                    c2cupgradetool.print_step(
+                        self.step_number, error=True,
+                        message="The step get an error '{}'.".format(e),  # noqa: F821
+                        prompt="Fix it and run it again:"
+                    )
+                atexit.register(message)
+                raise
         return decorate
 
 
@@ -292,8 +304,10 @@ class C2cUpgradeTool:
 
     @Step(1)
     def step1(self, step):
+        shutil.copyfile("project.yaml", "/tmp/project.yaml")
         check_call(["git", "reset", "--hard"])
         check_call(["git", "clean", "--force", "-d"])
+        shutil.copyfile("/tmp/project.yaml", "project.yaml")
 
         branch = check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode("utf-8").strip()
         # remove all no more existing branches
@@ -361,7 +375,9 @@ class C2cUpgradeTool:
 
         check_call(["git", "add", "--all", "CONST_create_template/"])
         check_call(["git", "clean", "-Xf", "CONST_create_template/"])
+        shutil.copyfile("project.yaml", "/tmp/project.yaml")
         check_call(["make", "--makefile=" + self.options.makefile, "clean-all"])
+        shutil.copyfile("/tmp/project.yaml", "project.yaml")
         self.run_step(step + 1)
 
     @Step(4)
@@ -638,9 +654,8 @@ class C2cUpgradeTool:
                 self.run_step(step + 1)
             else:
                 self.print_step(
-                    step + 1, message="This is an optional step but it helps to have a standard project.\n"
-                    "The `create.diff` file is a recommendation of the changes that you should apply "
-                    "to your project.\n" + DIFF_NOTICE
+                    step + 1, message="The `create.diff` file is a recommendation of the changes that you "
+                    "should apply to your project.\n" + DIFF_NOTICE
                 )
         else:
             self.run_step(step + 1)
@@ -660,7 +675,7 @@ class C2cUpgradeTool:
                 if self.options.makefile != "Makefile" else ""
             message = [
                 "The upgrade is nearly done, now you should:",
-                "- Run the finalisation build with 'FINALISE=TRUE make{} build'.".format(args),
+                "- Run the finalisation build with `FINALISE=TRUE make{} build`.".format(args),
                 "- Test your application."
             ]
         else:

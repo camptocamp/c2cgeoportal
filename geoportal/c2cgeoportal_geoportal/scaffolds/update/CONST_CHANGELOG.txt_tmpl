@@ -9,34 +9,15 @@ For non Docker upgrade have a look on the nondocker_CHANGELOG
    * The package name become `{{package}}_geoportal`.
    * The package is in the folder `geoportal`.
 
-2. In the file `project.yaml.mako` the checker path should we set to `/c2c/health_check?`.
+2. The `shortener.email_body` in the vars files use now the template syntax.
 
-3. In the file `Makefile` replace `vars_{{package}}.yaml` by `vars.yaml`.
-
-4. The `checker` section of the file `vars.yaml` should be rewritten like it's in `CONST_create_template/vars.yaml`.
-
-5. The `shortener.email_body` in the vars files use now the template syntax.
-
-6. Add at the end of the `vars.yaml` file add the following lines:
-
-   + no_interpreted:
-   +   - shortener.email_body
-   +   - reset_password.email_body
-
-7. For the docker version: In all your `mapserver/*.map.mako` files you should add at the top:
-
-   + <%!
-   + from c2cgeoportal_geoportal.lib import confd_env
-   + %>
-
-   and replace `${host}${entry_point}` by `${host | confd_env}${entry_point | confd_env}`
-   and `${mapserver_connection}` by `${mapserver_connection | confd_env}`
-
-8. Rename your l10n files with e.-g.:
+3. Rename your l10n files with e.-g.:
 
    mv geoportal/{{package}}_geoportal/locale/fr/LC_MESSAGES/{{package}}{,_geoportal}-client.po
+   mv geoportal/{{package}}_geoportal/locale/fr/LC_MESSAGES/{{package}}{,_geoportal}-server.po
 
-9. Update access control list (ACL) in root context to allow user with role 'role_admin' to acess views requiring 'admin' permission.
+4. Update access control list (ACL) in root context to allow user with role 'role_admin' to access views
+   requiring 'admin' permission.
 
    edit 'geoportal/{{package}}_geoportal/resources.py' file, Root class __acl__ attribute should look so:
 
