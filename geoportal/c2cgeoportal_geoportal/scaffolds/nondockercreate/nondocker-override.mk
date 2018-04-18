@@ -7,6 +7,12 @@ MODWSGI_USER ?= www-data
 export MODWSGI_USER
 export INSTANCE_ID
 VISIBLE_ENTRY_POINT ?= /$(INSTANCE_ID)/
+TINYOWS_URL ?= http://tinyows/
+export TINYOWS_URL
+MAPSERVER_URL ?= http://mapserver/
+export MAPSERVER_URL
+PRINT_URL ?= http://print:8080/print/
+export PRINT_URL
 
 ADDITIONAL_MAKO_FILES += $(shell find print $(FIND_OPTS) -name "*.mako" -print) \
 	$(shell find apache $(FIND_OPTS) -name "*.mako" -print) \

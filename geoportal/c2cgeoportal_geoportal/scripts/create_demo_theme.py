@@ -57,8 +57,13 @@ def main():
     options = parser.parse_args()
 
     # read the configuration
-    fileConfig(options.iniconfig, defaults=os.environ)
-    get_app(options.iniconfig, options.app_name, options=os.environ)
+    env = {}
+    env.update(os.environ)
+    env["LOG_LEVEL"] = "INFO"
+    env["GUNICORN_ACCESS_LOG_LEVEL"] = "INFO"
+    env["C2CGEOPORTAL_LOG_LEVEL"] = "WARN"
+    fileConfig(options.iniconfig, defaults=env)
+    get_app(options.iniconfig, options.app_name, options=env)
 
     from c2cgeoportal_commons.models import DBSession
     from c2cgeoportal_commons.models.main import Interface, OGCServer, Theme, LayerGroup, LayerWMS
