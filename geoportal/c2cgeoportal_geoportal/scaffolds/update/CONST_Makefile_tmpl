@@ -687,6 +687,8 @@ endif
 
 geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/: cgxp_revision
 	$(PRERULE_CMD)
+	# Sometimes we have an empty directory
+	rmdir $@ || true
 	if [ ! -e $@ ]; then git clone $(CGXP_GIT_ARGS) $(CGXP_GIT_REMOTE) $@; fi
 	cd $@ && git fetch
 	cd $@ && git reset --hard $(shell cat $<)
