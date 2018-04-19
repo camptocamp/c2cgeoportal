@@ -215,28 +215,28 @@ class C2cUpgradeTool:
                     args, step if step != 0 else "",
                 ), GREEN))
             else:
-                cmd = " ".join([
+                cmd = [
                     "./docker-run",
                     "--home",
                     "--image=camptocamp/geomapfish-build",
                     "--version=" + pkg_resources.get_distribution("c2cgeoportal_commons").version,
                     "c2cupgrade",
-                ])
+                ]
                 if self.options.windows:
-                    cmd += "--windows "
+                    cmd.append("--windows")
                 if self.options.nondocker:
-                    cmd += "--nondocker "
+                    cmd.append("--nondocker")
                 if self.options.force_docker:
-                    cmd += "--force-docker "
+                    cmd.append("--force-docker")
                 if self.options.git_remote != "origin":
-                    cmd += "--git-remote={} ".format(self.options.git_remote)
+                    cmd.append("--git-remote={}".format(self.options.git_remote))
                 if self.options.makefile != "Makefile":
-                    cmd += "--makefile={} ".format(self.options.makefile)
+                    cmd.append("--makefile={}".format(self.options.makefile))
                 if self.options.new_makefile is not None:
-                    cmd += "--new-makefile={} ".format(self.options.new_makefile)
+                    cmd.append("--new-makefile={}".format(self.options.new_makefile))
                 if step != 0:
-                    cmd += "--step={}".format(step)
-                print(colorize(cmd, GREEN))
+                    cmd.append("--step={}".format(step))
+                print(colorize(" ".join(cmd), GREEN))
 
     def run_step(self, step):
         getattr(self, "step{}".format(step))()
@@ -344,13 +344,16 @@ class C2cUpgradeTool:
             ])
 
         shutil.copyfile(os.path.join(project_path, ".upgrade.yaml"), ".upgrade.yaml")
-        self.files_to_move(pre=True, prefix="COSNT_create_template")
+        self.files_to_move(prefix="CONST_create_template", force=True)
 
         shutil.rmtree(project_path)
         os.remove(".upgrade.yaml")
 
-        check_call(["git", "add", "--all", "CONST_create_template/"])
-        check_call(["git", "clean", "-Xf", "CONST_create_template/"])
+        # To be removed in 2.4
+        check_call(["sed", "--in-place", "s/- /  - /g", "CONST_create_template/vars.yaml"])
+        check_call(["sed", "--in-place", "s/    /  /g", "CONST_create_template/vars.yaml"])
+
+        check_call(["git", "add", "--all", "--force", "CONST_create_template/"])
         call(["git", "commit", "--message=Do the moves int the CONST_create_template folder"])
 
         self.run_step(step + 1)
@@ -451,7 +454,7 @@ class C2cUpgradeTool:
         self.files_to_move()
         self.run_step(step + 1)
 
-    def files_to_move(self, pre=False, prefix=""):
+    def files_to_move(self, pre=False, prefix="", force=False):
         error = False
         for element in self.get_upgrade("files_to_move"):
             src = os.path.join(prefix, element["from"])
@@ -459,33 +462,36 @@ class C2cUpgradeTool:
             if os.path.exists(src):
                 managed = False
                 type_ = "directory" if os.path.isdir(src) else "file"
-                for pattern in self.project["managed_files"]:
-                    if re.match(pattern + '$', src):
-                        print(colorize(
-                            "The {} '{}' is present in the managed_files as '{}' but he will move.".format(
-                                type_, src, pattern
-                            ),
-                            RED
-                        ))
-                        error = True
-                        managed = True
-                        break
-                    if re.match(pattern + '$', dst):
-                        print(colorize(
-                            "The {} '{}' is present in the managed_files as '{}' but he will move.".format(
-                                type_, dst, pattern
-                            ),
-                            RED
-                        ))
-                        error = True
-                        managed = True
-                        break
+                if not force:
+                    for pattern in self.project["managed_files"]:
+                        if re.match(pattern + '$', src):
+                            print(colorize(
+                                "The {} '{}' is present in the managed_files as '{}' but he will move."
+                                .format(
+                                    type_, src, pattern
+                                ),
+                                RED
+                            ))
+                            error = True
+                            managed = True
+                            break
+                        if re.match(pattern + '$', dst):
+                            print(colorize(
+                                "The {} '{}' is present in the managed_files as '{}' but he will move."
+                                .format(
+                                    type_, dst, pattern
+                                ),
+                                RED
+                            ))
+                            error = True
+                            managed = True
+                            break
                 if not managed and os.path.exists(dst):
                     print(colorize(
                         "The destination '{}' already exists, ignoring.".format(dst),
                         YELLOW
                     ))
-                if (not managed or 'CI' in os.environ) and not pre:
+                if not managed and not pre:
                     print(colorize("Move the {} '{}' to '{}'.".format(type_, src, dst), GREEN))
                     if "version" in element:
                         print("Needed from version {}.".format(element["version"]))

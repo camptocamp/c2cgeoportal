@@ -15,7 +15,7 @@ vars:
     __import__('netifaces').ifaddresses(iface)[2][0]['netmask']) \
     for iface in __import__('netifaces').interfaces() if 2 in __import__('netifaces').ifaddresses(iface)])"
   adrs6: "' '.join(['{}/{}'.format(__import__('netifaces').ifaddresses(iface)[10][0]['addr'].split('%')[0], \
-    __import__('netifaces').ifaddresses(iface)[10][0]['netmask']) \
+    __import__('netifaces').ifaddresses(iface)[10][0]['netmask'].split('/')[-1]) \
     for iface in __import__('netifaces').interfaces() if 10 in __import__('netifaces').ifaddresses(iface)])"
   mapserv_allow: |
     Allow from {ADDRESSES} {adrs4} {adrs6}

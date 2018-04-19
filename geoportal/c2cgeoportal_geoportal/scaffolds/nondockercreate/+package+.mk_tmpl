@@ -2,13 +2,12 @@ ifdef VARS_FILE
 VARS_FILES += ${VARS_FILE} vars_nondocker.yaml vars.yaml
 else
 VARS_FILE = vars.yaml
-VARS_FILES += ${VARS_FILE} vars.yaml
+VARS_FILES += ${VARS_FILE} vars_nondocker.yaml
 endif
-
-INSTANCE_ID ?= main
 
 # The hostname use in the browser to open the application
 APACHE_VHOST ?= {{apache_vhost}}
+INSTANCE_ID ?= {{package}}
 TILECLOUD_CHAIN ?= TRUE
 
 # Deploy branch
