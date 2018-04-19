@@ -14,8 +14,8 @@ Upgrade a version 2.2
 Add a section ``managed_files: [...]`` in the ``project.yaml.mako`` file.
 The files that are not in this section will be overwritten,
 see upgrade config to see original replacements (section `default_project_file`):
-`for non Docker version <https://github.com/camptocamp/c2cgeoportal/blob/${git_branch}/geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/%2Bdot%2Bupgrade.yaml_tmpl>_`,
-`for Docker version <https://github.com/camptocamp/c2cgeoportal/blob/${git_branch}/geoportal/c2cgeoportal_geoportal/scaffolds/update/%2Bdot%2Bupgrade.yaml_tmpl>_`.
+`for non Docker version <https://github.com/camptocamp/c2cgeoportal/blob/${git_branch}/geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/%2Bdot%2Bupgrade.yaml_tmpl>`_,
+`for Docker version <https://github.com/camptocamp/c2cgeoportal/blob/${git_branch}/geoportal/c2cgeoportal_geoportal/scaffolds/update/%2Bdot%2Bupgrade.yaml_tmpl>`_.
 
 Prepare the upgrade:
 
@@ -27,21 +27,21 @@ Prepare the upgrade:
    chmod +x docker-run
    git add docker-run project.yaml.mako
    git commit --quiet --message="Start upgrade"
-   make --makefile=<package>.mk project.yaml
+   make --makefile=<user>.mk project.yaml
 
 For non-Docker:
 
 .. prompt:: bash
 
-   ./docker-run --version=<version> --home --image=camptocamp/geomapfish-build c2cupgrade ${'\\'}
-       --nondocker --makefile=<user>.mk
+   ./docker-run --version=<version> --home --image=camptocamp/geomapfish-build ${'\\'}
+       c2cupgrade --nondocker --makefile=<user>.mk
 
 And for Docker (experimental):
 
 .. prompt:: bash
 
-   ./docker-run --version=<version> --home --image=camptocamp/geomapfish-build c2cupgrade ${'\\'}
-       --force-docker --new-makefile=Makefile --makefile=<package>.mk
+   ./docker-run --version=<version> --home --image=camptocamp/geomapfish-build ${'\\'}
+       c2cupgrade --force-docker --new-makefile=Makefile --makefile=<package>.mk
 
 Where ``<version>`` is ``${major_version}.0`` for the first stable release of the version ``${major_version}``.
 
