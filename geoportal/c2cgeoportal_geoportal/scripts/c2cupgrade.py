@@ -491,7 +491,7 @@ class C2cUpgradeTool:
                         "The destination '{}' already exists, ignoring.".format(dst),
                         YELLOW
                     ))
-                if (not managed or 'CI' in os.environ) and not pre:
+                if not managed and not pre:
                     print(colorize("Move the {} '{}' to '{}'.".format(type_, src, dst), GREEN))
                     if "version" in element:
                         print("Needed from version {}.".format(element["version"]))
