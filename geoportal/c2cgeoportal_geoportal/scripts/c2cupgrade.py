@@ -215,28 +215,28 @@ class C2cUpgradeTool:
                     args, step if step != 0 else "",
                 ), GREEN))
             else:
-                cmd = " ".join([
+                cmd = [
                     "./docker-run",
                     "--home",
                     "--image=camptocamp/geomapfish-build",
                     "--version=" + pkg_resources.get_distribution("c2cgeoportal_commons").version,
                     "c2cupgrade",
-                ])
+                ]
                 if self.options.windows:
-                    cmd += "--windows "
+                    cmd.append("--windows")
                 if self.options.nondocker:
-                    cmd += "--nondocker "
+                    cmd.append("--nondocker")
                 if self.options.force_docker:
-                    cmd += "--force-docker "
+                    cmd.append("--force-docker")
                 if self.options.git_remote != "origin":
-                    cmd += "--git-remote={} ".format(self.options.git_remote)
+                    cmd.append("--git-remote={}".format(self.options.git_remote))
                 if self.options.makefile != "Makefile":
-                    cmd += "--makefile={} ".format(self.options.makefile)
+                    cmd.append("--makefile={}".format(self.options.makefile))
                 if self.options.new_makefile is not None:
-                    cmd += "--new-makefile={} ".format(self.options.new_makefile)
+                    cmd.append("--new-makefile={}".format(self.options.new_makefile))
                 if step != 0:
-                    cmd += "--step={}".format(step)
-                print(colorize(cmd, GREEN))
+                    cmd.append("--step={}".format(step))
+                print(colorize(" ".join(cmd), GREEN))
 
     def run_step(self, step):
         getattr(self, "step{}".format(step))()
