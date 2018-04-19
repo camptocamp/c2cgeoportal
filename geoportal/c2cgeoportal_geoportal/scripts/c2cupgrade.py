@@ -344,13 +344,12 @@ class C2cUpgradeTool:
             ])
 
         shutil.copyfile(os.path.join(project_path, ".upgrade.yaml"), ".upgrade.yaml")
-        self.files_to_move(pre=True, prefix="COSNT_create_template")
+        self.files_to_move(prefix="CONST_create_template", force=True)
 
         shutil.rmtree(project_path)
         os.remove(".upgrade.yaml")
 
-        check_call(["git", "add", "--all", "CONST_create_template/"])
-        check_call(["git", "clean", "-Xf", "CONST_create_template/"])
+        check_call(["git", "add", "--all", "--force", "CONST_create_template/"])
         call(["git", "commit", "--message=Do the moves int the CONST_create_template folder"])
 
         self.run_step(step + 1)
@@ -451,7 +450,7 @@ class C2cUpgradeTool:
         self.files_to_move()
         self.run_step(step + 1)
 
-    def files_to_move(self, pre=False, prefix=""):
+    def files_to_move(self, pre=False, prefix="", force=False):
         error = False
         for element in self.get_upgrade("files_to_move"):
             src = os.path.join(prefix, element["from"])
@@ -459,27 +458,30 @@ class C2cUpgradeTool:
             if os.path.exists(src):
                 managed = False
                 type_ = "directory" if os.path.isdir(src) else "file"
-                for pattern in self.project["managed_files"]:
-                    if re.match(pattern + '$', src):
-                        print(colorize(
-                            "The {} '{}' is present in the managed_files as '{}' but he will move.".format(
-                                type_, src, pattern
-                            ),
-                            RED
-                        ))
-                        error = True
-                        managed = True
-                        break
-                    if re.match(pattern + '$', dst):
-                        print(colorize(
-                            "The {} '{}' is present in the managed_files as '{}' but he will move.".format(
-                                type_, dst, pattern
-                            ),
-                            RED
-                        ))
-                        error = True
-                        managed = True
-                        break
+                if not force:
+                    for pattern in self.project["managed_files"]:
+                        if re.match(pattern + '$', src):
+                            print(colorize(
+                                "The {} '{}' is present in the managed_files as '{}' but he will move."
+                                .format(
+                                    type_, src, pattern
+                                ),
+                                RED
+                            ))
+                            error = True
+                            managed = True
+                            break
+                        if re.match(pattern + '$', dst):
+                            print(colorize(
+                                "The {} '{}' is present in the managed_files as '{}' but he will move."
+                                .format(
+                                    type_, dst, pattern
+                                ),
+                                RED
+                            ))
+                            error = True
+                            managed = True
+                            break
                 if not managed and os.path.exists(dst):
                     print(colorize(
                         "The destination '{}' already exists, ignoring.".format(dst),
