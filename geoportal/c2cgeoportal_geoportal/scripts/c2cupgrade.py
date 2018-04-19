@@ -682,7 +682,7 @@ class C2cUpgradeTool:
             pass
         self.print_step(step + 1, message="\n".join(message))
 
-    @Step(12)
+    @Step(12, file_marker=False)
     def step12(self, step):
         if os.path.isfile(".UPGRADE_SUCCESS"):
             os.unlink(".UPGRADE_SUCCESS")
