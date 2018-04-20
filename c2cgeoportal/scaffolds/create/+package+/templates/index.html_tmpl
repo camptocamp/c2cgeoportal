@@ -82,6 +82,7 @@
         <form method="POST" id="loginForm" style="display: none">
             <input id="login" name="login" type="text" autocomplete="on"/>
             <input id="password" name="password" type="password" autocomplete="on"/>
+            <input id="oldPassword" name="oldPassword" type="password" />
             <input id="newPassword" name="newPassword" type="password" />
             <input id="confirmNewPassword" name="confirmNewPassword" type="password" />
         </form>
