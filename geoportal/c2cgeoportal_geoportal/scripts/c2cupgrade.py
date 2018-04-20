@@ -163,10 +163,12 @@ class Step:
                 )
                 exit(1)
             except Exception as e:
+                ex = e
+
                 def message():
                     c2cupgradetool.print_step(
                         self.step_number, error=True,
-                        message="The step get an error '{}'.".format(e),  # noqa: F821
+                        message="The step get an error '{}'.".format(ex),
                         prompt="Fix it and run it again:"
                     )
                 atexit.register(message)
