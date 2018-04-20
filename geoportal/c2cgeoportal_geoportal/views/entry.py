@@ -227,7 +227,7 @@ class Entry:
             ogc_server.url, self.request, errors
         )
         if len(errors):  # pragma: no cover
-            return None, errors
+            return url, None, errors
 
         # add functionalities params
         sparams = get_mapserver_substitution_params(self.request)
