@@ -5,17 +5,25 @@ Upgrading a GeoMapFish application
 ==================================
 
 
-Then you have 4 different ways...
+From a version 2.2
+~~~~~~~~~~~~~~~~~~
 
-
-Upgrade a version 2.2
-~~~~~~~~~~~~~~~~~~~~~
-
-Add a section ``managed_files: [...]`` in the ``project.yaml.mako`` file.
-The files that are not in this section will be overwritten,
-see upgrade config to see original replacements (section `default_project_file`):
-`for non Docker version <https://github.com/camptocamp/c2cgeoportal/blob/${git_branch}/geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/%2Bdot%2Bupgrade.yaml_tmpl>`_,
+Add a section ``managed_files:`` in the file ``project.yaml.mako``.
+In this section, you must list the project files you need to keep, and that are not handled by the GeoMapFish upgrade
+process. You can see in the GeoMapFish upgrade configuration, section ``default_project_file``, which files will
+get handled by the GeoMapFish upgrade process:
+`for non-Docker version <https://github.com/camptocamp/c2cgeoportal/blob/${git_branch}/geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/%2Bdot%2Bupgrade.yaml_tmpl>`_,
 `for Docker version <https://github.com/camptocamp/c2cgeoportal/blob/${git_branch}/geoportal/c2cgeoportal_geoportal/scaffolds/update/%2Bdot%2Bupgrade.yaml_tmpl>`_.
+Any files in your project that are not listed in the section ``managed_files`` will be overwritten by the upgrade process.
+Here an example that may apply to your situation:
+
+.. code:: yaml
+
+    managed_files:
+    - deploy/deploy\.cfg\.mako
+    - apache/application\.wsgi\.mako
+
+If you have no such managed files, define an empty section like this: ``managed_files: []``
 
 Prepare the upgrade:
 
@@ -43,13 +51,15 @@ And for Docker (experimental):
    ./docker-run --version=<version> --home --image=camptocamp/geomapfish-build ${'\\'}
        c2cupgrade --force-docker --new-makefile=Makefile --makefile=<package>.mk
 
-Where ``<version>`` is ``${major_version}.0`` for the first stable release of the version ``${major_version}``.
+Where ``<version>`` is the version number of GeoMapFish you want to use.
+You will find available versions on `Dockerhub <https://hub.docker.com/r/camptocamp/geomapfish-build>`_.
+For example, ``${major_version}.0`` is the first stable release of the version ``${major_version}``.
 
 Then follow the instructions.
 
-.. note:: Know issue
+.. note:: Known issue
 
-   if you have the following message:
+   If you have the following message:
 
    .. code::
 
@@ -59,12 +69,13 @@ Then follow the instructions.
       Please make sure you have the correct access rights
       and the repository exists.
 
-   you can do the following command to fix it:
+   you can fix it by using the following command:
 
    .. prompt:: bash
 
       ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
 
+   and then re-executing the step that failed.
 
 From a version 2.3 and next
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -125,7 +136,7 @@ Remove the ``UPGRADE_ARGS`` in your ``Makefile``.
 
 
 Upgrade the database
---------------------
+~~~~~~~~~~~~~~~~~~~~
 
 The database will be automatically upgraded during the upgrade process.
 
@@ -151,9 +162,8 @@ Upgrade the static schema:
 
 .. _integrator_upgrade_application_cgxp_to_ngeo:
 
------------------
 From CGXP to ngeo
------------------
+~~~~~~~~~~~~~~~~~
 
 Layer definition for ngeo clients is separate and different from layer
 definition for CGXP clients, see :ref:`administrator_administrate_layers`
