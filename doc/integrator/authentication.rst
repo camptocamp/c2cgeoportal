@@ -309,21 +309,21 @@ Full example using pyramid_ldap, see `# LDAP` / `# END LDAP` blocs.
         config.ldap_setup(
             'ldap://ldap.server.host',
             bind='CN=ldap user,CN=Users,DC=example,DC=com',
-            passwd='ld@pu5er'
+            passwd='ld@pu5er',
         )
 
         config.ldap_set_login_query(
             base_dn='CN=Users,DC=example,DC=com',
             filter_tmpl='(uid=%(login)s)',
             scope = ldap.SCOPE_ONELEVEL,
-            )
+        )
 
         config.ldap_set_groups_query(
             base_dn='CN=Users,DC=example,DC=com',
             filter_tmpl='(&(objectCategory=group)(member=%(userdn)s))',
             scope = ldap.SCOPE_SUBTREE,
             cache_period = 600,
-            )
+        )
         # END LDAP
 
         # scan view decorator for adding routes

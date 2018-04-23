@@ -5,7 +5,7 @@ To check before create a new issue:
 
 For commiters:
 
-* I have assigned a blue and a green label.
+* I have assigned a green label.
 * I have assigned a milestone.
 
 -- All the above line should be removed --
