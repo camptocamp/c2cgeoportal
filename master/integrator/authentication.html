@@ -312,21 +312,21 @@ LDAP would look like this:</p>
     <span class="n">config</span><span class="o">.</span><span class="n">ldap_setup</span><span class="p">(</span>
         <span class="s1">&#39;ldap://ldap.server.host&#39;</span><span class="p">,</span>
         <span class="n">bind</span><span class="o">=</span><span class="s1">&#39;CN=ldap user,CN=Users,DC=example,DC=com&#39;</span><span class="p">,</span>
-        <span class="n">passwd</span><span class="o">=</span><span class="s1">&#39;ld@pu5er&#39;</span>
+        <span class="n">passwd</span><span class="o">=</span><span class="s1">&#39;ld@pu5er&#39;</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">config</span><span class="o">.</span><span class="n">ldap_set_login_query</span><span class="p">(</span>
         <span class="n">base_dn</span><span class="o">=</span><span class="s1">&#39;CN=Users,DC=example,DC=com&#39;</span><span class="p">,</span>
         <span class="n">filter_tmpl</span><span class="o">=</span><span class="s1">&#39;(uid=</span><span class="si">%(login)s</span><span class="s1">)&#39;</span><span class="p">,</span>
         <span class="n">scope</span> <span class="o">=</span> <span class="n">ldap</span><span class="o">.</span><span class="n">SCOPE_ONELEVEL</span><span class="p">,</span>
-        <span class="p">)</span>
+    <span class="p">)</span>
 
     <span class="n">config</span><span class="o">.</span><span class="n">ldap_set_groups_query</span><span class="p">(</span>
         <span class="n">base_dn</span><span class="o">=</span><span class="s1">&#39;CN=Users,DC=example,DC=com&#39;</span><span class="p">,</span>
         <span class="n">filter_tmpl</span><span class="o">=</span><span class="s1">&#39;(&amp;(objectCategory=group)(member=</span><span class="si">%(userdn)s</span><span class="s1">))&#39;</span><span class="p">,</span>
         <span class="n">scope</span> <span class="o">=</span> <span class="n">ldap</span><span class="o">.</span><span class="n">SCOPE_SUBTREE</span><span class="p">,</span>
         <span class="n">cache_period</span> <span class="o">=</span> <span class="mi">600</span><span class="p">,</span>
-        <span class="p">)</span>
+    <span class="p">)</span>
     <span class="c1"># END LDAP</span>
 
     <span class="c1"># scan view decorator for adding routes</span>
