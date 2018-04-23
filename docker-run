@@ -5,7 +5,6 @@ import argparse
 import subprocess
 import netifaces
 import configparser
-import pwd
 import sys
 
 
@@ -53,9 +52,11 @@ def main():
         login = os.getlogin()
     except FileNotFoundError:
         # workaround on strange error
+        import pwd
         login = pwd.getpwuid(os.getuid())[0]
     except OSError:
         # workaround on strange error
+        import pwd
         login = pwd.getpwuid(os.getuid())[0]
 
     docker_cmd.extend([
