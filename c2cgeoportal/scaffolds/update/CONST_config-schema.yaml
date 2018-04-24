@@ -155,6 +155,8 @@ mapping:
                                     required: True
                                 type:
                                     type: str
+                                translate:
+                                    type: bool
                     available_functionalities:
                         type: seq
                         required: True
