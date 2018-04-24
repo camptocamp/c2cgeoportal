@@ -138,8 +138,6 @@ class Shortener:
         else:
             s_url = self.request.route_url("shortener_get", ref=ref)
 
-        email = email or user_email
-
         smtp_config = self.request.registry.settings.get("smtp", {})
         if \
                 email is not None and \
