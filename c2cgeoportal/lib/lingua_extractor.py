@@ -209,7 +209,7 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
         raster = [
             Message(
                 None, raster_layer, None, [], u"", u"",
-                (filename, u"raster/{0!s}".format(raster_layer))
+                (filename, u"raster/{}".format(raster_layer))
             )
             for raster_layer in config["vars"].get("raster", {}).keys()
         ]
@@ -229,13 +229,31 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
                 for value, in values:
                     if value != "":
                         msgid = value if isinstance(value, unicode) else str(value)
-                        location = "/layers/{0!s}/values/{1!s}/{2!s}".format(
+                        location = "/layers/{}/values/{}/{}".format(
                             layername,
                             fieldname,
                             value.encode("ascii", errors="replace") if isinstance(value, unicode) else value)
                         enums.append(Message(None, msgid, None, [], u"", u"", (filename, location)))
 
-        return raster + enums
+        metadata = []
+        defs = config["vars"]["admin_interface"]["available_metadata"]
+        names = [e["name"] for e in defs if e.get("translate", False)]
+
+        if len(names) > 0:
+            import c2cgeoportal.models
+            import sqlalchemy
+            engine = sqlalchemy.create_engine(config["vars"]["sqlalchemy.url"])
+            Session = sqlalchemy.orm.session.sessionmaker()  # noqa
+            Session.configure(bind=engine)
+            session = Session()
+
+            query = session.query(c2cgeoportal.models.Metadata) \
+                .filter(c2cgeoportal.models.Metadata.name.in_(names))
+            for metadata in query.all():
+                location = "metadata/{}/{}".format(metadata.name, metadata.id)
+                metadata.append(Message(None, metadata.value, None, [], u"", u"", (filename, location)))
+
+        return raster + enums + metadata
 
     @classmethod
     def _enumerate_attributes_values(cls, dbsessions, layers, layerinfos, fieldname):
@@ -266,7 +284,7 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
             result += [
                 Message(
                     None, attribute, None, [], u"", u"",
-                    (filename, u"template/{0!s}/{1!s}".format(template_, attribute))
+                    (filename, u"template/{}/{}".format(template_, attribute))
                 )
                 for attribute in config.get("templates")[template_].attributes.keys()
             ]
