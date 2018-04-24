@@ -87,7 +87,7 @@ User can be created if it does not exist yet."""
     )
     parser.add_argument(
         'user',
-        nargs='1',
+        nargs=1,
         help="The user"
     )
 
