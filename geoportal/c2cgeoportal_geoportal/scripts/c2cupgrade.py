@@ -289,6 +289,12 @@ class C2cUpgradeTool:
                         required, required, TEMPLATE_EXAMPLE.get('required', '')
                     )
                 )
+        if self.project.get("managed_files") is None:
+            messages.append(
+                "The element 'managed_files' is missing in the file 'project.yaml.mako', "
+                "you must define this element with a list of regular expressions or with an empty array. "
+                "See upgrade documentation for more information."
+            )
         if len(messages) > 0:
             self.print_step(
                 step, error=True, message="\n".join(messages),
