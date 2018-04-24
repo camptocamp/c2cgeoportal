@@ -9,12 +9,13 @@ From a version 2.2
 ~~~~~~~~~~~~~~~~~~
 
 Add a section ``managed_files:`` in the file ``project.yaml.mako``.
-In this section, you must list the project files you need to keep, and that are not handled by the GeoMapFish upgrade
-process. You can see in the GeoMapFish upgrade configuration, section ``default_project_file``, which files will
-get handled by the GeoMapFish upgrade process:
+In this section, you must select by a regular expression the project files you need to keep, and that are
+not handled by the GeoMapFish upgrade process. You can see in the GeoMapFish upgrade configuration, section
+``default_project_file``, which files will get handled by the GeoMapFish upgrade process:
 `for non-Docker version <https://github.com/camptocamp/c2cgeoportal/blob/HEAD/geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/%2Bdot%2Bupgrade.yaml_tmpl>`_,
 `for Docker version <https://github.com/camptocamp/c2cgeoportal/blob/HEAD/geoportal/c2cgeoportal_geoportal/scaffolds/update/%2Bdot%2Bupgrade.yaml_tmpl>`_.
-Any files in your project that are not listed in the section ``managed_files`` will be overwritten by the upgrade process.
+Any files in your project that are not listed in the section ``managed_files`` will be overwritten by the
+upgrade process.
 Here an example that may apply to your situation:
 
 .. code:: yaml
@@ -24,6 +25,12 @@ Here an example that may apply to your situation:
     - apache/application\.wsgi\.mako
 
 If you have no such managed files, define an empty section like this: ``managed_files: []``
+
+If in your project you have files from the GeoMapFish templates which you did not customize, you can add
+these in a section ``unmanaged_files``. This will simplify the upgrade process for you, because the update
+script will then simply update these project files with the new GeoMapFish template files, and not list any
+changes for these in the "diff" file, therefore making it faster for you to review the differences during
+the upgrade process. The syntax for ``unmanaged_files`` is the same as for ``managed_files``.
 
 Prepare the upgrade:
 

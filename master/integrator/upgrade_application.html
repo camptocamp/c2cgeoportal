@@ -37,12 +37,13 @@
 <div class="section" id="from-a-version-2-2">
 <h2>From a version 2.2<a class="headerlink" href="#from-a-version-2-2" title="Permalink to this headline">¶</a></h2>
 <p>Add a section <code class="docutils literal notranslate"><span class="pre">managed_files:</span></code> in the file <code class="docutils literal notranslate"><span class="pre">project.yaml.mako</span></code>.
-In this section, you must list the project files you need to keep, and that are not handled by the GeoMapFish upgrade
-process. You can see in the GeoMapFish upgrade configuration, section <code class="docutils literal notranslate"><span class="pre">default_project_file</span></code>, which files will
-get handled by the GeoMapFish upgrade process:
+In this section, you must select by a regular expression the project files you need to keep, and that are
+not handled by the GeoMapFish upgrade process. You can see in the GeoMapFish upgrade configuration, section
+<code class="docutils literal notranslate"><span class="pre">default_project_file</span></code>, which files will get handled by the GeoMapFish upgrade process:
 <a class="reference external" href="https://github.com/camptocamp/c2cgeoportal/blob/HEAD/geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/%2Bdot%2Bupgrade.yaml_tmpl">for non-Docker version</a>,
 <a class="reference external" href="https://github.com/camptocamp/c2cgeoportal/blob/HEAD/geoportal/c2cgeoportal_geoportal/scaffolds/update/%2Bdot%2Bupgrade.yaml_tmpl">for Docker version</a>.
-Any files in your project that are not listed in the section <code class="docutils literal notranslate"><span class="pre">managed_files</span></code> will be overwritten by the upgrade process.
+Any files in your project that are not listed in the section <code class="docutils literal notranslate"><span class="pre">managed_files</span></code> will be overwritten by the
+upgrade process.
 Here an example that may apply to your situation:</p>
 <div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">managed_files</span><span class="p">:</span>
 <span class="o">-</span> <span class="n">deploy</span><span class="o">/</span><span class="n">deploy</span>\<span class="o">.</span><span class="n">cfg</span>\<span class="o">.</span><span class="n">mako</span>
@@ -50,6 +51,11 @@ Here an example that may apply to your situation:</p>
 </pre></div>
 </div>
 <p>If you have no such managed files, define an empty section like this: <code class="docutils literal notranslate"><span class="pre">managed_files:</span> <span class="pre">[]</span></code></p>
+<p>If in your project you have files from the GeoMapFish templates which you did not customize, you can add
+these in a section <code class="docutils literal notranslate"><span class="pre">unmanaged_files</span></code>. This will simplify the upgrade process for you, because the update
+script will then simply update these project files with the new GeoMapFish template files, and not list any
+changes for these in the “diff” file, therefore making it faster for you to review the differences during
+the upgrade process. The syntax for <code class="docutils literal notranslate"><span class="pre">unmanaged_files</span></code> is the same as for <code class="docutils literal notranslate"><span class="pre">managed_files</span></code>.</p>
 <p>Prepare the upgrade:</p>
 <pre class="highlight"><style type="text/css">
 span.prompt1:before {
