@@ -142,23 +142,37 @@ remove-branch:
 
 # Extract
 
+ifeq ($(OPERATING_SYSTEM), WINDOWS)
+PYTHON = python
+PYTHON_BIN = .build/venv/Scripts
+DOCKER_RUN = python docker-run
+else
+PYTHON = python3
+PYTHON_BIN = .build/venv/bin
+DOCKER_RUN = ./docker-run
+endif
+
 .build/venv.timestamp: .config
 	$(PRERULE_CMD)
 	mkdir --parent .build
 	rm -rf .build/venv
+ifdef CI
 	virtualenv --python=python3 --system-site-packages .build/venv
-ifeq ($(OPERATING_SYSTEM), WINDOWS)
-	.build/venv/Scripts/python -m pip install `./get-pip-dependencies c2cgeoportal Shapely`
-	.build/venv/Scripts/python -m pip install wheels/Shapely-1.5.13-cp27-none-win32.whl
 else
-	.build/venv/bin/python -m pip install `./get-pip-dependencies c2cgeoportal-commons c2cgeoportal-geoportal c2cgeoportal-admin GDAL flake8-mypy mypy`
+	$(PYTHON) -m venv --system-site-packages .build/venv
+endif
+ifeq ($(OPERATING_SYSTEM), WINDOWS)
+	$(PYTHON_BIN)/python -m pip install `./get-pip-dependencies c2cgeoportal Shapely`
+	$(PYTHON_BIN)/python -m pip install wheels/Shapely-1.5.13-cp27-none-win32.whl
+else
+	$(PYTHON_BIN)/python -m pip install `./get-pip-dependencies c2cgeoportal-commons c2cgeoportal-geoportal c2cgeoportal-admin GDAL flake8-mypy mypy`
 endif
 	rm --force --recursive c2cgeoportal_commons c2cgeoportal_geoportal c2cgeoportal_admin
-	./docker-run cp -r /opt/c2cgeoportal_commons c2cgeoportal_commons
-	./docker-run cp -r /opt/c2cgeoportal_geoportal c2cgeoportal_geoportal
-	./docker-run cp -r /opt/c2cgeoportal_admin c2cgeoportal_admin
-	./docker-run cp /opt/npm-packages .
-	.build/venv/bin/python -m pip install --editable=c2cgeoportal_commons --editable=c2cgeoportal_geoportal --editable=c2cgeoportal_admin
-	.build/venv/bin/python -m pip install --editable=geoportal
-	npm install `cat npm-packages`
+	$(DOCKER_RUN) cp -r /opt/c2cgeoportal_commons c2cgeoportal_commons
+	$(DOCKER_RUN) cp -r /opt/c2cgeoportal_geoportal c2cgeoportal_geoportal
+	$(DOCKER_RUN) cp -r /opt/c2cgeoportal_admin c2cgeoportal_admin
+	$(DOCKER_RUN) cp /opt/npm-packages .
+	$(PYTHON_BIN)/python -m pip install --editable=c2cgeoportal_commons --editable=c2cgeoportal_geoportal --editable=c2cgeoportal_admin
+	$(PYTHON_BIN)/python -m pip install --editable=geoportal
+	cat npm-packages | xargs npm install
 	touch $@
