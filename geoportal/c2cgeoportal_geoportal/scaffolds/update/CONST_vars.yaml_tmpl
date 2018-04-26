@@ -25,7 +25,6 @@ vars:
         POSTGRES_USER: www-data
         POSTGRES_PASSWORD: www-data
     geoportal:
-      port: 80
       environment:
         VISIBLE_WEB_HOST: localhost:80
         VISIBLE_WEB_PROTOCOL: https
@@ -43,6 +42,8 @@ vars:
         PRINT_URL: http://print:8080/print/
         REDIS_HOST: redis
         REDIS_PORT: 6379
+    front:
+      port: 80
 
   # database user
   dbuser: '{PGUSER}'

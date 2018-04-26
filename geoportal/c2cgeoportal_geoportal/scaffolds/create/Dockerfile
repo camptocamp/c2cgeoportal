@@ -15,3 +15,6 @@ VOLUME /tilecloudchain
 
 COPY print/print-apps /usr/local/tomcat/webapps/ROOT/print-apps
 VOLUME /usr/local/tomcat/webapps/ROOT/print-apps
+
+COPY front /etc/haproxy
+VOLUME /etc/haproxy

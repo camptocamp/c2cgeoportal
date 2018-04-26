@@ -32,7 +32,7 @@ ${service_defaults('mapserver', 80)}\
       - run
     links:
       - mapserver
-${service_defaults('geoportal', 80, True)}\
+${service_defaults('geoportal', 80)}\
       - HOME_DIR
       - USER_NAME
       - USER_ID
