@@ -1,33 +1,27 @@
 /**
- * @fileoverview This file provides the "{{package}}" namespace, which is the
+ * This file provides the "{{package}}" namespace, which is the
  * application's main namespace. And it defines the application's Angular
  * module.
  */
-goog.provide('{{package}}');
 
+/**
+ * @module {{package}}
+ */
+const exports = {};
+
+import ngeoUtils from 'ngeo/utils.js';
 
 /**
  * @type {!angular.Module}
  */
-{{package}}.module = angular.module('{{package}}', []);
+exports.module = angular.module('{{package}}', []);
 
-/**
- * The components template based URL, used as is by the template cache.
- * @type {string}
- * @export
- */
-{{package}}.componentsBaseTemplateUrl = '{{package}}_components';
+exports.module.config(['$compileProvider', function($compileProvider) {
+  if (!('debug' in ngeoUtils.decodeQueryString(window.location.search))) {
+    // Disable the debug info
+    $compileProvider.debugInfoEnabled(false);
+  }
+}]);
 
-/**
- * The template based URL, used to overwrite template from ngeo, used as is by the template cache.
- * @type {string}
- * @export
- */
-{{package}}.partialsBaseTemplateUrl = '{{package}}_partials';
 
-/**
- * The default template based URL, used as is by the template cache.
- * @type {string}
- * @export
- */
-{{package}}.baseTemplateUrl = '{{package}}_js';
+export default exports;

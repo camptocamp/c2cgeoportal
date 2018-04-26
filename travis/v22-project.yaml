@@ -21,13 +21,13 @@ unmanaged_files:
   - print/print-apps/testgeomapfish/.*\.jrxml
   - geoportal/testgeomapfish_geoportal/locale/fr/LC_MESSAGES/testgeomapfish-client\.po
   - geoportal/testgeomapfish_geoportal/locale/de/LC_MESSAGES/testgeomapfish-client\.po
-  - geoportal/testgeomapfish_geoportal/static-ngeo/js/desktop\.js
-  - geoportal/testgeomapfish_geoportal/static-ngeo/js/mobile\.js
+  - geoportal/testgeomapfish_geoportal/static-ngeo/js/apps/Controllerdesktop\.js
+  - geoportal/testgeomapfish_geoportal/static-ngeo/js/apps/Controllermobile\.js
+  - geoportal/testgeomapfish_geoportal/static-ngeo/components/contextualdata/contextualdata\.html
+  - geoportal/testgeomapfish_geoportal/static-ngeo/js/apps/desktop\.html.mako
+  - geoportal/testgeomapfish_geoportal/static-ngeo/js/apps/mobile\.html.mako
   - geoportal/testgeomapfish_geoportal/static-ngeo/less/desktop\.less
   - geoportal/testgeomapfish_geoportal/static-ngeo/less/mobile\.less
-  - geoportal/testgeomapfish_geoportal/static-ngeo/components/contextualdata/contextualdata\.html
-  - geoportal/testgeomapfish_geoportal/templates/desktop\.html
-  - geoportal/testgeomapfish_geoportal/templates/mobile\.html
   - geoportal/testgeomapfish_geoportal/templates/api/api\.js
   - geoportal/testgeomapfish_geoportal/templates/api/apihelp\.html
   - geoportal/testgeomapfish_geoportal/templates/api/mapconfig\.js

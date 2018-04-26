@@ -14,7 +14,8 @@
     "jstree": "3.3.5",
     "jstreegrid": "3.9.3",
     "magicsuggest-alpine": "1.0.0",
-    "openlayers": "4.6.5",
-    "typeahead.js": "0.11.1"
+    "openlayers": "https://api.github.com/repos/openlayers/openlayers/tarball/f284b95cb897b3ce1b49b985b58ebe1ca76be1fe",
+    "typeahead.js": "0.11.1",
+    "webpack-replace": "1.0.0"
   }
 }

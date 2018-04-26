@@ -11,6 +11,8 @@ vars:
 
   srid: -1
 
+  request:
+
   host: '{VISIBLE_WEB_HOST}'
   web_protocol: '{VISIBLE_WEB_PROTOCOL}'
   entry_point: '{VISIBLE_ENTRY_POINT}'
@@ -111,41 +113,6 @@ vars:
   jsbuild:
     config: /src/jsbuild/app.cfg
     root_dir: /src
-
-  # used for the "node_modules" and "closure" static views
-  closure_library_path: process.stdout.write(require("@camptocamp/closure-util").getLibraryPath())
-  node_modules_path: /usr/lib/node_modules
-  app_path: /app
-
-  # pyramid_closure configuration
-  # Each item in the roots_with_prefix array is an array with two elements. The
-  # first element is the path pyramid_closure passed to request.static_url. The
-  # second element is the file system path where js source files are searched.
-  # For this to work window.CLOSURE_BASE_PATH being set to the empty string in
-  # the HTML page.
-  pyramid_closure:
-    roots_with_prefix:
-      -
-        - "{closure_library_path}/closure/goog"
-        - "{closure_library_path}/closure/goog"
-      -
-        - "{package}_geoportal:static-ngeo/js"
-        - "{app_path}/geoportal/{package}_geoportal/static-ngeo/js"
-      -
-        - "{package}_geoportal:static-ngeo/components"
-        - "{app_path}/geoportal/{package}_geoportal/static-ngeo/components"
-      -
-        - "{node_modules_path}{ps}openlayers/src"
-        - "{node_modules_path}{ps}openlayers/src"
-      -
-        - "{node_modules_path}{ps}openlayers/build"
-        - "{node_modules_path}{ps}openlayers/build"
-      -
-        - "{node_modules_path}{ps}ngeo/src"
-        - "{node_modules_path}{ps}ngeo/src"
-      -
-        - "{node_modules_path}{ps}ngeo/contribs/gmf/src"
-        - "{node_modules_path}{ps}ngeo/contribs/gmf/src"
 
   # The application's default language. This is the language used by
   # the application if no specific language is specified in the URLs.
@@ -429,10 +396,10 @@ vars:
           params:
             no_redirect: "true"
           level: 1
-        - name: mobile
-          params:
-            no_redirect: "true"
-          level: 3
+          # - name: mobile
+          #   params:
+          #     no_redirect: "true"
+          #   level: 3
           # - name: desktop
           #   params:
           #     no_redirect: "true"
@@ -518,11 +485,6 @@ interpreted:
     - authtkt.secret
     - ps
     - interfaces
-  node:
-    vars:
-      - closure_library_path
-    cmd: ["node", "-e"]
-    ignore_error: true
 
 environment:
   - GEOMAPFISH_VERSION

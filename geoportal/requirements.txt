@@ -20,7 +20,6 @@ PasteScript
 psycopg2-binary
 pycrypto
 pyramid<=1.9.99
-pyramid_closure
 pyramid_debugtoolbar  # Needed by the development.ini
 pyramid_mako  # to render the HTML files
 pyramid_multiauth

@@ -65,8 +65,8 @@ ADMIN_SRC_FILES = $(shell ls -1 commons/c2cgeoportal_commons/models/*.py) \
 
 APPS += desktop mobile
 APPS_PACKAGE_PATH = geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal
-APPS_HTML_FILES = $(addprefix $(APPS_PACKAGE_PATH)/templates/, $(addsuffix .html_tmpl, $(APPS)))
-APPS_JS_FILES = $(addprefix $(APPS_PACKAGE_PATH)/static-ngeo/js/, $(addsuffix .js_tmpl, $(APPS)))
+APPS_HTML_FILES = $(addprefix $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/, $(addsuffix .html.mako_tmpl, $(APPS)))
+APPS_JS_FILES = $(addprefix $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/Controller, $(addsuffix .js_tmpl, $(APPS)))
 APPS_FILES = $(APPS_HTML_FILES) $(APPS_JS_FILES) \
 	$(addprefix $(APPS_PACKAGE_PATH)/static-ngeo/images/,favicon.ico logo.png background-layer-button.png) \
 	$(APPS_PACKAGE_PATH)/static-ngeo/components/contextualdata/contextualdata.html \
@@ -320,17 +320,19 @@ ngeo/contribs/gmf/apps/%/index.html: ngeo
 	$(PRERULE_CMD)
 	touch --no-create $@
 
-.PRECIOUS: ngeo/contribs/gmf/apps/%/js/controller.js
-ngeo/contribs/gmf/apps/%/js/controller.js: ngeo
+.PRECIOUS: ngeo/contribs/gmf/apps/%/Controller.js
+ngeo/contribs/gmf/apps/%/Controller.js: ngeo
 	$(PRERULE_CMD)
 	touch --no-create $@
 
-$(APPS_PACKAGE_PATH)/templates/%.html_tmpl: ngeo/contribs/gmf/apps/%/index.html
+$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/%.html.mako_tmpl: ngeo/contribs/gmf/apps/%/index.html
 	$(PRERULE_CMD)
+	mkdir --parent $(dir $@)
 	import-ngeo-apps --html $* $< $@
 
-$(APPS_PACKAGE_PATH)/static-ngeo/js/%.js_tmpl: ngeo/contribs/gmf/apps/%/js/controller.js
+$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/Controller%.js_tmpl: ngeo/contribs/gmf/apps/%/Controller.js
 	$(PRERULE_CMD)
+	mkdir --parent $(dir $@)
 	import-ngeo-apps --js $* $< $@
 
 $(APPS_PACKAGE_PATH)/static-ngeo/components/contextualdata/contextualdata.html: ngeo/contribs/gmf/apps/desktop/contextualdata.html
@@ -349,14 +351,9 @@ geoportal/c2cgeoportal_geoportal/scaffolds/create/docker-run: docker-run
 
 npm-packages: ngeo package.json
 	$(PRERULE_CMD)
-	npm-packages --ngeo babel-core babel-loader babel-preset-env \
-		@camptocamp/babel-plugin-angularjs-annotate @camptocamp/cesium coveralls \
-		css-loader expose-loader extract-text-webpack-plugin file-loader gaze \
-		google-closure-library googshift html-loader html-webpack-plugin jasmine-core jquery-ui \
-		jsdoc jsdom karma karma-chrome-launcher karma-coverage karma-jasmine \
-		karma-sourcemap-loader karma-webpack less-loader less-plugin-clean-css ls olcs \
-		uglify-js uglifyjs-webpack-plugin url-loader webpack webpack-dev-server \
-		webpack-merge istanbul-instrumenter-loader karma-coverage-istanbul-reporter \
+	npm-packages --ngeo \
+		coveralls gaze jasmine-core jsdoc jsdom karma karma-chrome-launcher karma-coverage \
+		karma-jasmine karma-sourcemap-loader karma-webpack \
 		--src=ngeo/package.json --src=package.json --dst=$@
 
 admin/npm-packages: ngeo package.json

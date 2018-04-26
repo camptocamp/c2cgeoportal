@@ -47,7 +47,6 @@ pyflakes==1.6.0  # lint
 Pygments==2.2.0  # doc
 pylint==1.8.4  # lint
 pyramid==1.9.1
-https://github.com/camptocamp/pyramid_closure/archive/23b45f7989cf471dce46dabb8516537bae0a2789.zip#egg=pyramid_closure  # ngeo
 pyramid_debugtoolbar==4.4  # geoportal
 pyramid_jinja2==2.7  # admin
 pyramid_mako==1.0.2  # geoportal

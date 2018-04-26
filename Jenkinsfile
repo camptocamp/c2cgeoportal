@@ -7,6 +7,7 @@ env.MAIN_BRANCH = MAIN_BRANCH
 final MAJOR_VERSION = '2.3'
 env.MAJOR_VERSION = MAJOR_VERSION
 env.CI = 'true'
+env.NODE_ENV = 'development'
 
 def clean() {
     sh 'git clean -dx --force'
