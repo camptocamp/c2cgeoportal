@@ -119,12 +119,21 @@ Simple example:
 Step 2: Administration interface
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The final step is to assign the enumerated attributes to the right layer in the administration.
-Go to the ``metadata`` page, add a ``enumeratedAttributes`` to an existing layer.
-The value is a single string or a list of attributes (that we defined earlier in the ``vars_<project>.yaml`` file)
-separated with a comma.
+You can add some additional configuration in the administration interface as follows.
 
-Client-side documentation related to the enumeratedAttributes metadata is available here:
+It is possible to define enumerated or directed attributes, to wms layers only, via metadata.
+The metadata to look at is ``enumeratedAttributes`` or ``directedFilterAttributes``.
+
+For enumerated attributes, the value is a single string or a list of attributes (that we defined earlier
+in the ``vars.yaml`` file) separated with a comma.
+
+For directed attributes, it is a single string or a list of attributes defined in the mapfile
+(columns and aliases from the selected table).
+
+The difference is that enumerated attributes are configurable (like pointing to a specific database table),
+while directed attributes are ready-to-use values that come directly from the mapfile configuration.
+
+Client-side documentation related to the enumeratedAttributes and directedFilterAttributes metadata is available here:
 `gmfThemes.GmfMetaData <https://camptocamp.github.io/ngeo/master/apidoc/gmfThemes.GmfMetaData.html>`_
 
 Using DB sessions
