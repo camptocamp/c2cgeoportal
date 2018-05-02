@@ -302,6 +302,18 @@ CONFIG_VARS += sqlalchemy.url sqlalchemy_slave.url schema schema_static enable_a
 	lingua_extractor interfaces_config interfaces default_interface
 MAKE_FILES = $(wildcard *.mk) CONST_Makefile
 
+# Secrets
+
+ifndef DESABLE_DEFAULT_GPG_KEYS
+GPG_KEYS += D1D6A94C # Stéphane Brunner
+GPG_KEYS += B42AF223 # Patrick Valsecchi
+GPG_KEYS += C27D570B # Roman Zoller
+GPG_KEYS += CF8E9976 # Guillaume Beraudo
+GPG_KEYS += 3EA11D26 # Elisabeth Leu
+GPG_KEYS += 0875810F # Frederic Junod
+GPG_KEYS += 1DAFEE6A # Oliver Christen
+endif
+
 # Disabling Make built-in rules to speed up execution time
 .SUFFIXES:
 
@@ -705,3 +717,18 @@ $(WMTSCAPABILITIES_FILE): tilegeneration/config.yaml
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	generate_controller --capabilities
+
+# Secrets
+
+secrets.tar.bz2.gpg:
+	tar -jcf secrets.tar.bz2 $^
+	gpg --keyserver pgp.mit.edu --keyserver-options timeout=20 --recv-keys $(GPG_KEYS)
+	rm -f $@
+	gpg --always-trust --output $@ --encrypt $(addprefix --recipient ,$(GPG_KEYS)) secrets.tar.bz2
+	rm secrets.tar.bz2
+
+.PHONY: secrets
+secrets:
+	gpg --output secrets.tar.bz2 --decrypt secrets.tar.bz2.gpg
+	tar -jxf secrets.tar.bz2
+	rm secrets.tar.bz2
