@@ -555,10 +555,10 @@ $(APP_OUTPUT_DIR)/images/: /usr/lib/node_modules/jquery-ui/themes/base/images
 		$(APP_OUTPUT_DIR)/images/
 	$(PRERULE_CMD)
 	# Workaround to make Webpack working for ol/index.js
-	rm -f node_modules
-	ln -s /usr/lib/node_modules/ .
+	rm --force --recursive node_modules
+	ln --symbolic /usr/lib/node_modules/ .
 	webpack --progress --debug
-	rm -f node_modules
+	rm --force node_modules
 	touch $@
 
 /build/eslint.timestamp: $(APP_JS_FILES)

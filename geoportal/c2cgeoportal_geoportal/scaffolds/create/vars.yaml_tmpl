@@ -55,7 +55,7 @@ vars:
         gmfProfileCsvUrl: profile.csv
         gmfShortenerCreateUrl: shortener_create
       static:
-        assetsBaseUrl: '{package}:static-ngeo/'
+        assetsBaseUrl: '{package}_geoportal:static-ngeo/'
       wfs_permalink:
         wfsTypes:
           - featureType: fuel

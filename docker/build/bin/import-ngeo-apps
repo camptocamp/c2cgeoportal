@@ -155,19 +155,31 @@ def main():
                 )
             else:
                 data = _sub(
-                    r'<img src="image/([^"]+)"( alt="")? ?/>',
-                    '<img src="/${instance}/wsgi/static-ngeo/BUSTING_VERSION/images/\\1\')}" />',
+                    r'( *)<img src="image/([^"]+)"( alt="")? ?/>',
+                    '%if request is None:\n'
+                    '\1<img src="/${instance}/wsgi/static-ngeo/BUSTING_VERSION/images/\\2\" />\n'
+                    '%else:\n'
+                    '\1<img src="${request.static_url("{{package}}_geoportal:static-ngeo/images/\\2")}" />\n'
+                    '%endif',
                     data,
                 )
             data = _sub(
-                r'<link rel="shortcut icon" href="image/favicon.ico"/>',
-                '<link rel="shortcut icon" href="/${instance}/wsgi/static-ngeo/BUSTING_VERSION/images/favicon.ico\')}"/>',  # noqa: E501
+                r'( *)<link rel="shortcut icon" href="image/favicon.ico"/>',
+                '%if request is None:\n'
+                '\1<link rel="shortcut icon" href="/${instance}/wsgi/static-ngeo/BUSTING_VERSION/images/favicon.ico"/>\n'  # noqa: E501
+                '%else:\n'
+                '\1<link rel="shortcut icon" href="${request.static_url("{{package}}_geoportal:static-ngeo/images/favicon.ico")}"/>\n'  # noqa: E501
+                '%endif',
                 data,
             )  # noqa: E501
             data = _sub(
-                re.escape('<script src="https://geomapfish-demo.camptocamp.com/2.') + '[0-9]' +
+                '( *)' + re.escape('<script src="https://geomapfish-demo.camptocamp.com/2.') + '[0-9]' +
                 re.escape('/wsgi/dynamic.js?interface={}"></script>'.format(args.interface)),
-                '<script src="/${{instance}}/wsgi/dynamic.js?interface={}"></script>'.format(args.interface),
+                '%if request is None:\n'
+                '\1<script src="/${{instance}}/wsgi/dynamic.js?interface={interface}"></script>\n'
+                '%else:\n'
+                '\1<script src="${{request.route_url("dynamic.js", _query={{"interface": "{interface}"}})}}"></script>\n'  # noqa: E501
+                '%endif'.format(interface=args.interface),
                 data
             )
 
