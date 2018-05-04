@@ -121,17 +121,6 @@ compatible, the resolutions should be the same as in the previous
 application.</p>
 </div>
 </div>
-<div class="section" id="externs">
-<h2>Externs<a class="headerlink" href="#externs" title="Permalink to this headline">¶</a></h2>
-<p>Adding additional external dependencies requires <a class="reference external" href="https://developers.google.com/closure/compiler/docs/api-tutorial3#externs">declaring them as externs</a>.
-This prevents the closure-compiler from renaming the objects and their properties and allows type-checking.
-Good examples for such externs can be found in <a class="reference external" href="https://github.com/camptocamp/ngeo/tree/master/externs">ngeo</a> or directly in the <a class="reference external" href="https://github.com/google/closure-compiler/tree/master/contrib/externs">closure-compiler</a> project.</p>
-<p>Project-specific externs are best placed in <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/static-ngeo/externs/</span></code>.</p>
-<p>These externs need to be referenced in the <code class="docutils literal notranslate"><span class="pre">MAKO_BUILD_ARGS</span></code> variable in your <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;.mk</span></code>, example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">MAKO_BUILD_ARGS</span> <span class="o">=</span> <span class="o">--</span><span class="n">var</span> <span class="n">externs</span><span class="o">=</span><span class="n">package</span><span class="o">/</span><span class="n">static</span><span class="o">-</span><span class="n">ngeo</span><span class="o">/</span><span class="n">externs</span><span class="o">/</span><span class="n">recaptcha</span><span class="o">.</span><span class="n">js</span><span class="p">,</span><span class="n">package</span><span class="o">/</span><span class="n">static</span><span class="o">-</span><span class="n">ngeo</span><span class="o">/</span><span class="n">externs</span><span class="o">/</span><span class="n">anotherdep</span><span class="o">.</span><span class="n">js</span>
-</pre></div>
-</div>
-</div>
 </div>
 
 
@@ -149,7 +138,6 @@ Good examples for such externs can be found in <a class="reference external" hre
 <li><a class="reference internal" href="#organisation">Organisation</a></li>
 <li><a class="reference internal" href="#html-file">HTML file</a></li>
 <li><a class="reference internal" href="#controller-js-file">Controller (js file)</a></li>
-<li><a class="reference internal" href="#externs">Externs</a></li>
 </ul>
 </li>
 </ul>
