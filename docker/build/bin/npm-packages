@@ -75,7 +75,7 @@ def main():
 
     parser.add_argument('--version', action="store_true", help="Get the ngeo version and exit")
     parser.add_argument('--ngeo', action="store_true", help="Add ngeo package")
-    parser.add_argument('--src', action='append', metavar='SRC', help="The ngeo source file")
+    parser.add_argument('--src', action='append', default=[], metavar='SRC', help="The ngeo source file")
     parser.add_argument('--dst', metavar='DST', help="The destination file")
     parser.add_argument('excludes', nargs='*', metavar='EXCLUDE', help="The npm package to exclude")
 
@@ -84,6 +84,7 @@ def main():
     if args.version:
         version = _ngeo_version()
         print(os.environ["VERSION"] if version is None else version)
+        exit(0)
 
     packages = {}
     for src_ in args.src:

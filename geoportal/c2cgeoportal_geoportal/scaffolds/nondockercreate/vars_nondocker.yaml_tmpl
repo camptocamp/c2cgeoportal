@@ -22,12 +22,6 @@ vars:
     Require ip {ADDRESSES} {adrs4} {adrs6}
   waitress_port: 5000
 
-  # used for the "node_modules" and "closure" static views
-  closure_library_path: 'process.stdout.write("{project_directory}" +
-    require("@camptocamp/closure-util").getLibraryPath().substring(4))'
-  node_modules_path: "{project_directory}{ps}node_modules"
-  app_path: '{project_directory}'
-
   tinyowsproxy:
     tinyows_url: http://localhost/{instanceid}/tinyows
   print_url: http://localhost:8080/print-{instanceid}/print/{package}
@@ -70,11 +64,6 @@ interpreted:
   python:
     - adrs4
     - adrs6
-  node:
-    vars:
-      - closure_library_path
-    cmd: ["node", "-e"]
-    ignore_error: true
 
 update_paths:
   - checker.phantomjs

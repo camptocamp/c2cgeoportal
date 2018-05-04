@@ -21,6 +21,56 @@ vars:
 
   default_interface: desktop
 
+  interfaces_config:
+    mobile: &interface
+      constants: &constants
+        defaultTheme: Demo
+        defaultLang: en
+        gmfSearchGroups: [osm, district]
+        gmfSearchActions:
+          - action: add_theme
+            title: Add a theme
+          - action: add_group
+            title: Add a sub theme
+          - action: add_layer
+            title: Add a layer
+        gmfExternalOGCServers:
+          - name: Swiss Topo WMS
+            type: WMS
+            url: https://wms.geo.admin.ch/?lang=fr
+          - name: Swiss Topo WMTS
+            type: WMTS
+            url: https://wmts.geo.admin.ch/1.0.0/WMTSCapabilities.xml?lang=fr
+          - name: ASIT VD
+            type: WMTS
+            url: https://ows.asitvd.ch/wmts/1.0.0/WMTSCapabilities.xml
+      fulltextsearch_params:
+        limit: 30
+        partitionlimit: 5
+      routes: &routes
+        authenticationBaseUrl: base
+        fulltextsearchUrl: fulltextsearch
+        gmfLayersUrl: layers_root
+        gmfRasterUrl: raster
+        gmfProfileCsvUrl: profile.csv
+        gmfShortenerCreateUrl: shortener_create
+      static:
+        assetsBaseUrl: '{package}:static-ngeo/'
+      wfs_permalink:
+        wfsTypes:
+          - featureType: fuel
+            label: display_name
+          - featureType: osm_scale
+            label: display_name
+        defaultFeatureNS: http://mapserver.gis.umn.edu/mapserver
+        defaultFeaturePrefix: feature
+    desktop:
+      <<: *interface
+      routes:
+        <<: *routes
+        gmfProfileJsonUrl: profile.json
+        gmfPrintUrl: printproxy
+
   authtkt:
     # One day
     timeout: 86400

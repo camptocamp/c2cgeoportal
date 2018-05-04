@@ -104,7 +104,7 @@ def main():
                     r"</head>",
                     """</head>
   <%
-    no_redirect_query = dict(request.GET)
+    no_redirect_query = dict({} if request is None else request.GET)
     no_redirect_query['no_redirect'] = u''
   %>
 """,
@@ -115,14 +115,14 @@ def main():
                         r"http://camptocamp.github.io/ngeo/master/"
                         r"examples/contribs/gmf/apps/desktop/?no_redirect"
                     ),
-                    "${request.route_url('desktop', _query=no_redirect_query) | n}",
+                    "${'' if request is None else request.route_url('desktop', _query=no_redirect_query) | n}",  # noqa: E501
                     data,
                 )
             if args.interface == "desktop":
                 data = _sub(
                     r"<head>",
                     """<head>
-    % if "no_redirect" not in request.params:
+    % if request is not None and "no_redirect" not in request.params:
             <script>
                 var small_screen = window.matchMedia ? window.matchMedia('(max-width: 1024px)') : false;
                 if (small_screen && (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch)) {
@@ -143,11 +143,6 @@ def main():
         data = re.sub(re.escape("{{package}}le"), "apple", data)
 
         if args.html:
-            data = "<%\n" \
-                "from json import dumps\n" \
-                "from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version\n" \
-                "%>\n" + \
-                data
             # back for ng-app
             data = _sub(r"ng-{{package}}", r"ng-app", data)
             # back for gmf-app- css prefix
@@ -161,169 +156,19 @@ def main():
             else:
                 data = _sub(
                     r'<img src="image/([^"]+)"( alt="")? ?/>',
-                    '<img src="${request.static_url(\'{{package}}_geoportal:static-ngeo/images/\\1\')}" />',
+                    '<img src="/${instance}/wsgi/static-ngeo/BUSTING_VERSION/images/\\1\')}" />',
                     data,
                 )
             data = _sub(
                 r'<link rel="shortcut icon" href="image/favicon.ico"/>',
-                '<link rel="shortcut icon" href="${request.static_url(\'{{package}}_geoportal:static-ngeo/images/favicon.ico\')}"/>',  # noqa: E501
+                '<link rel="shortcut icon" href="/${instance}/wsgi/static-ngeo/BUSTING_VERSION/images/favicon.ico\')}"/>',  # noqa: E501
                 data,
             )  # noqa: E501
-            # Styles
             data = _sub(
-                r'    <link rel="stylesheet.*/build/{}.css">'.format(args.interface),
-                r"""    <link rel="stylesheet" href="${{request.static_url('{{{{package}}}}_geoportal:static-ngeo/build/{interface}.css')}}" type="text/css">""".format(interface=args.interface),  # noqa: E501
-                data,
-                count=1,
-                flags=re.DOTALL
-            )
-            # Scripts
-            data = _sub(
-                "({})".format(re.escape(r'<script src="../../../../')),
-                r"""% if debug:
-    <script>
-        window.CLOSURE_BASE_PATH = '';
-        window.CLOSURE_NO_DEPS = true;
-    </script>
-    \1""",
-                data, count=1
-            )
-            data = _sub(
-                re.escape('    <script src="/@?main=') + ".*" + re.escape('watchwatchers.js"></script>'),
-                r"""
-    <script src="${{request.static_url('%s/closure/goog/base.js' % request.registry.settings['closure_library_path'])}}"></script>
-    <script src="${{request.route_url('deps.js')}}"></script>
-    <script>
-        goog.require('{{{{package}}}}.{interface}.Controller');
-    </script>
-    <script src="${{request.static_url('{{{{package}}}}_geoportal:static-ngeo/build/templatecache.js')}}"></script>
-    <script src="${{request.static_url('%s/ngeo/utils/watchwatchers.js' % request.registry.settings['node_modules_path'])}}"></script>
-    <script>
-        {{{{package}}}}.componentsBaseTemplateUrl = '${{request.static_url("{{{{package}}}}_geoportal:static-ngeo/components")}}';
-        // {{{{package}}}}.partialsBaseTemplateUrl = '${{request.static_url("{{{{package}}}}_geoportal:static-ngeo/partials")}}';
-        // {{{{package}}}}.baseTemplateUrl = '${{request.static_url("{{{{package}}}}_geoportal:static-ngeo/js")}}';
-    </script>
-% else:
-    <script src="${{request.static_url('{{{{package}}}}_geoportal:static-ngeo/build/{interface}.js')}}"></script>
-% endif""".format(interface=args.interface),  # noqa: E501
-                data,
-                count=1,
-                flags=re.DOTALL
-            )
-            data = _sub(
-                '{}([^"]+){}(.*){}'.format(
-                    re.escape('<script src="../../../../node_modules/'),
-                    re.escape('"'),
-                    re.escape("></script>"),
-                ),
-                r"""<script src="${request.static_url('%s/\1' % request.registry.settings['node_modules_path'])}"\2></script>""",  # noqa: E501
-                data,
-            )
-            data = _sub(
-                '{}([^"]+){}(.*){}'.format(
-                    re.escape('<script src="../../../../'),
-                    re.escape('"'),
-                    re.escape("></script>"),
-                ),
-                r"""<script src="${request.static_url('%s/ngeo/\1' % request.registry.settings['node_modules_path'])}"\2></script>""",  # noqa: E501
-                data,
-            )
-            # i18n
-            data = _sub(
-                "module.constant\('defaultLang', 'en'\);",
-                "module.constant('defaultLang', "
-                "'${request.registry.settings[\"default_locale_name\"]}');",
-                data,
-            )
-            data = _sub(re.escape(r"""
-        var cacheVersion = '0';
-"""), "", data)
-            data = _sub(
-                re.escape(r"""
-        var angularLocaleScriptUrlElements = urlElements.slice(0, urlElements.length - 3);
-        angularLocaleScriptUrlElements.push('build', 'angular-locale_\{\{locale\}\}.js?cache_version=' + cacheVersion);"""),  # noqa: E501
-                "",
-                data,
-            )
-            data = _sub(
-                re.escape(
-                    "gmfModule.constant('angularLocaleScript', "
-                    "angularLocaleScriptUrlElements.join('/'));"
-                ),
-                "gmfModule.constant('angularLocaleScript', "
-                "'${request.static_url('{{package}}_geoportal:static-ngeo/build/')}"
-                "angular-locale_\{\{locale\}\}.js');",
-                data,
-            )
-            data = _sub(
-                re.escape("""
-        var langUrls = {};
-        ['en', 'fr', 'de'].forEach(function(lang) {
-          var langUrlElements = urlElements.slice(0, urlElements.length - 3);
-          langUrlElements.push('build', 'gmf-' + lang + '.json?cache_version=' + cacheVersion)
-          langUrls[lang] = langUrlElements.join('/')
-        });"""),
-                r"""        var langUrls = {
-${ ',\\n'.join([
-    "          '{lang}': '{url}'".format(
-        lang=lang,
-        url=request.static_url('{{package}}_geoportal:static-ngeo/build/{lang}.json'.format(lang=lang))
-    )
-    for lang in request.registry.settings["available_locale_names"]
-]) | n}
-        };""",
-                data,
-            )
-            data = _sub(
-                re.escape("module.constant('cacheVersion', cacheVersion);"),
-                "module.constant('cacheVersion', '${get_cache_version()}');",
-                data,
-            )
-            data = _subs(
-                [(
-                    "module.constant\('gmfSearchGroups', \[\]\);",
-                    False
-                ), (
-                    "module.constant\('gmfSearchGroups', \[[^\]]*\]\);",
-                    "module.constant('gmfSearchGroups', ${dumps(fulltextsearch_groups) | n});",
-                )],
-                data,
-            )
-
-            # replace routes
-            for constant, url_end, route, required in [
-                ("authenticationBaseUrl", r"", "base", True),
-                ("fulltextsearchUrl", r"/fulltextsearch", "fulltextsearch", True),
-                ("gmfRasterUrl", r"/raster", "raster", args.interface != "mobile"),
-                ("gmfProfileJsonUrl", r"/profile.json", "profile.json", args.interface != "mobile"),
-                ("gmfPrintUrl", r"/printproxy", "printproxy", args.interface != "mobile"),
-                ("gmfTreeUrl", r"/themes", "themes", True),
-                ("gmfShortenerCreateUrl", r"/short/create", "shortener_create", args.interface != "mobile"),
-                ("gmfLayersUrl", r"/layers", "layers_root", args.interface != "mobile"),
-            ]:
-                data = _sub(
-                    r"module.constant\('%s', "
-                    "'https://geomapfish-demo.camptocamp.com/2.[0-9]/wsgi%s\??([^\']*)'\);" % (
-                        constant, url_end
-                    ),
-                    _RouteDest(constant, route),
-                    data,
-                    required=required,
-                )
-            data = _sub(
-                re.escape("module.constant('gmfContextualdatacontentTemplateUrl', window.location.pathname + 'contextualdata.html');"),  # noqa: E501
-                "module.constant('gmfContextualdatacontentTemplateUrl', {{package}}.componentsBaseTemplateUrl + '/contextualdata/contextualdata.html');",  # noqa: E501
-                data, required=False
-            )
-            data = _sub(
-                re.escape("module.value('ngeoWfsPermalinkOptions',") + ".*defaultFeatureNS",
-                """module.value('ngeoWfsPermalinkOptions', /** @type {ngeox.WfsPermalinkOptions} */ ({
-              url: '${request.route_url('mapserverproxy') | n}',
-              wfsTypes: ${dumps(wfs_types) | n},
-              defaultFeatureNS""",
-                data,
-                count=1,
-                flags=re.DOTALL,
+                re.escape('<script src="https://geomapfish-demo.camptocamp.com/2.') + '[0-9]' +
+                re.escape('/wsgi/dynamic.js?interface={}"></script>'.format(args.interface)),
+                '<script src="/${{instance}}/wsgi/dynamic.js?interface={}"></script>'.format(args.interface),
+                data
             )
 
         with open(args.dst, "wt") as dst:

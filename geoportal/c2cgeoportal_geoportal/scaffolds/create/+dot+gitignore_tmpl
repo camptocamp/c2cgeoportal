@@ -25,7 +25,10 @@ __pycache__/
 /geoportal/{{package}}_geoportal/locale/*/LC_MESSAGES/*.mo
 /geoportal/{{package}}_geoportal/locale/{{package}}_geoportal-*.pot
 /geoportal/{{package}}_geoportal/static-ngeo/build/
+/geoportal/{{package}}_geoportal/static-ngeo/js/apps/desktop.html
+/geoportal/{{package}}_geoportal/static-ngeo/js/apps/mobile.html
 /geoportal/{{package}}_geoportal/static-ngeo/fonts/gmf-icons.*
 /geoportal/{{package}}_geoportal/static-ngeo/fonts/fontawesome-webfont.*
 /geoportal/{{package}}_geoportal/static/build/
+/webpack.apps.js
 /.upgrade.yaml

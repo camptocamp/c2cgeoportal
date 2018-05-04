@@ -46,6 +46,8 @@ __pycache__/
 /geoportal/{{package}}_geoportal/static/mobile/resources/css/app.css
 /geoportal/{{package}}_geoportal/static/mobile/archive/
 /geoportal/{{package}}_geoportal/static/mobile/build/
+/geoportal/{{package}}_geoportal/static-ngeo/js/apps/desktop.html
+/geoportal/{{package}}_geoportal/static-ngeo/js/apps/mobile.html
 /geoportal/{{package}}_geoportal/static/mobile/openlayers-mobile.js
 /geoportal/{{package}}_geoportal/static/mobile/bootstrap.js
 /geoportal/{{package}}_geoportal/static/mobile/bootstrap.json
@@ -56,3 +58,4 @@ __pycache__/
 /node_modules
 /package-lock.json
 /.upgrade.yaml
+/webpack.apps.js

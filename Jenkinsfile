@@ -7,13 +7,14 @@ env.MAIN_BRANCH = MAIN_BRANCH
 final MAJOR_VERSION = '2.3'
 env.MAJOR_VERSION = MAJOR_VERSION
 env.CI = 'true'
+env.NODE_ENV = 'development'
 
 def clean() {
     sh 'git clean -dx --force'
 
-    sh 'docker ps --all | grep camptocamp/c2cgeoportal | awk \'{print($1)}\' | xargs --no-run-if-empty docker rm --volumes'
-    sh 'docker ps --all | grep camptocamp/geomapfish | awk \'{print($1)}\' | xargs --no-run-if-empty docker rm --volumes'
-    sh 'docker ps --all | grep camptocamp/testgeomapfish | awk \'{print($1)}\' | xargs --no-run-if-empty docker rm --volumes'
+    sh 'docker ps --all | grep camptocamp/c2cgeoportal | awk \'{print($1)}\' | xargs --no-run-if-empty docker rm --force --volumes'
+    sh 'docker ps --all | grep camptocamp/geomapfish | awk \'{print($1)}\' | xargs --no-run-if-empty docker rm --force --volumes'
+    sh 'docker ps --all | grep camptocamp/testgeomapfish | awk \'{print($1)}\' | xargs --no-run-if-empty docker rm --force --volumes'
     sh 'docker volume ls | grep home-jenkins-slave-workspace | awk \'{print($2)}\' | xargs --no-run-if-empty docker volume rm'
 
     sh 'docker ps'
@@ -169,6 +170,15 @@ timeout(time: 2, unit: 'HOURS') {
                     sh 'docker run --name geomapfish-db --env=POSTGRES_USER=www-data --env=POSTGRES_PASSWORD=www-data --env=POSTGRES_DB=geomapfish --publish=5432:5432 --detach camptocamp/geomapfish-test-db'
                     sh 'travis/test-upgrade-convert.sh init ${HOME}/workspace'
                 }
+                stage('Tests upgrades v220') {
+                    checkout scm
+                    // Test Upgrade an convert project
+                    parallel 'v220 docker': {
+                        sh 'travis/test-upgrade-convert.sh v220-todocker ${HOME}/workspace'
+                    }, 'v220 nondocker': {
+                        sh 'travis/test-upgrade-convert.sh v220-tonondocker ${HOME}/workspace'
+                    }
+                }
                 stage('Tests upgrades') {
                     checkout scm
                     // Test Upgrade an convert project
@@ -178,10 +188,6 @@ timeout(time: 2, unit: 'HOURS') {
                     }, 'nondocker': {
                         sh 'travis/test-upgrade-convert.sh nondocker ${HOME}/workspace'
                         sh 'travis/test-upgrade-convert.sh todocker ${HOME}/workspace'
-                    }, 'v220 docker': {
-                        sh 'travis/test-upgrade-convert.sh v220-todocker ${HOME}/workspace'
-                    }, 'v220 nondocker': {
-                        sh 'travis/test-upgrade-convert.sh v220-tonondocker ${HOME}/workspace'
                     }
                 }
             } finally {

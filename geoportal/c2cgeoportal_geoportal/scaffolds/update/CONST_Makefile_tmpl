@@ -104,29 +104,18 @@ GIT_REMOTE ?= origin
 GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 GIT_HASH ?= $(shell git rev-parse HEAD)
 
-# $(NGEO_PACKAGE)
-ES6 ?= FALSE
-ifeq ($(ES6), FALSE)
-NGEO_PACKAGE = ngeo
-else
-NGEO_PACKAGE = ngeo-es6
-endif
+# ngeo
+NODE_ENV=production
+export NODE_ENV
 ANGULAR_VERSION = 1.6
 APP_OUTPUT_DIR = geoportal/$(PACKAGE)_geoportal/static-ngeo/build
-GCC_JS_FILES = $(shell find /usr/lib/node_modules/openlayers/src/ol /usr/lib/node_modules/$(NGEO_PACKAGE)/src /usr/lib/node_modules/ol-cesium/src -type f -name '*.js' 2> /dev/null)
+GCC_JS_FILES = $(shell find /usr/lib/node_modules/openlayers/src/ol /usr/lib/node_modules/ngeo/src /usr/lib/node_modules/ol-cesium/src -type f -name '*.js' 2> /dev/null)
 APP_JS_FILES = $(shell find geoportal/$(PACKAGE)_geoportal/static-ngeo/js geoportal/$(PACKAGE)_geoportal/static-ngeo/components -type f -name '*.js' 2> /dev/null)
 APP_JS_MAKO_FILES += $(shell find geoportal/$(PACKAGE)_geoportal/static-ngeo/js geoportal/$(PACKAGE)_geoportal/static-ngeo/components $(FIND_OPTS) -name "*.js.mako" -print 2> /dev/null)
 APP_JS_JINJA_FILES += $(shell find geoportal/$(PACKAGE)_geoportal/static-ngeo/js geoportal/$(PACKAGE)_geoportal/static-ngeo/components $(FIND_OPTS) -name "*.js.jinja" -print 2> /dev/null)
 APP_JS_FILES +=  $(APP_JS_MAKO_FILES:.mako=) $(APP_JS_JINJA_FILES:.jinja=)
-ifneq ($(ES6), FALSE)
 APP_HTML_FILES += $(addprefix geoportal/$(PACKAGE)_geoportal/static-ngeo/js/apps/, $(addsuffix .html, $(NGEO_INTERFACES)))
-APP_DIRECTIVES_PARTIALS_FILES = $(shell find geoportal/$(PACKAGE)_geoportal/static-ngeo/js geoportal/$(PACKAGE)_geoportal/static-ngeo/partials geoportal/$(PACKAGE)_geoportal/static-ngeo/js -type f -name '*.html' 2> /dev/null)
-else
-APP_HTML_FILES += $(addprefix geoportal/$(PACKAGE)_geoportal/templates/, $(addsuffix .html, $(NGEO_INTERFACES)))
-NGEO_DIRECTIVES_PARTIALS_FILES = $(shell ls -1 /usr/lib/node_modules/$(NGEO_PACKAGE)/src/directives/partials/*.html 2> /dev/null)
-GMF_DIRECTIVES_PARTIALS_FILES = $(shell ls -1 /usr/lib/node_modules/$(NGEO_PACKAGE)/contribs/gmf/src/directives/partials/*.html 2> /dev/null)
 APP_DIRECTIVES_PARTIALS_FILES = $(shell find geoportal/$(PACKAGE)_geoportal/static-ngeo/components geoportal/$(PACKAGE)_geoportal/static-ngeo/partials geoportal/$(PACKAGE)_geoportal/static-ngeo/js -type f -name '*.html' 2> /dev/null)
-endif
 LESS_FILES += $(shell find geoportal/$(PACKAGE)_geoportal/static-ngeo/less geoportal/$(PACKAGE)_geoportal/static-ngeo/components -type f -name '*.less' 2> /dev/null)
 NGEO_GMF_FONTS = $(addprefix geoportal/$(PACKAGE)_geoportal/static-ngeo/fonts/gmf-icons, .woff .ttf .eot)
 NGEO_FONTAWESOME_FONTS = $(addprefix geoportal/$(PACKAGE)_geoportal/static-ngeo/fonts/fontawesome-webfont, .woff .woff2 .ttf .eot)
@@ -138,38 +127,7 @@ CLIENT_LOCALISATION_RULES = $(addprefix /build/lang-client-, $(LANGUAGES))
 ANGULAR_LOCALES_FILES = $(addprefix $(APP_OUTPUT_DIR)/angular-locale_, $(addsuffix .js, $(LANGUAGES)))
 NGEO_OUTPUT_FILES = $(JSON_CLIENT_LOCALISATION_FILES) \
 	$(ANGULAR_LOCALES_FILES)
-ifeq ($(ES6), FALSE)
-NGEO_OUTPUT_JS_INTERFACES_FILES = $(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .js, $(NGEO_INTERFACES)))
-NGEO_OUTPUT_CSS_INTERFACES_FILES = $(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .css, $(NGEO_INTERFACES)))
-NGEO_OUTPUT_FILES += $(NGEO_OUTPUT_JS_INTERFACES_FILES) \
-	$(NGEO_OUTPUT_CSS_INTERFACES_FILES) \
-	$(APP_OUTPUT_DIR)/templatecache.js
-NGEO_LIBS_JS_FILES += \
-	/usr/lib/node_modules/jquery/dist/jquery.min.js \
-	/usr/lib/node_modules/angular/angular.min.js \
-	/usr/lib/node_modules/angular-animate/angular-animate.min.js \
-	/usr/lib/node_modules/angular-float-thead/angular-floatThead.js \
-	/usr/lib/node_modules/angular-gettext/dist/angular-gettext.min.js \
-	/usr/lib/node_modules/angular-sanitize/angular-sanitize.min.js \
-	/usr/lib/node_modules/angular-touch/angular-touch.min.js \
-	/usr/lib/node_modules/angular-dynamic-locale/dist/tmhDynamicLocale.min.js \
-	/usr/lib/node_modules/angular-ui-date/dist/date.js \
-	/usr/lib/node_modules/angular-ui-slider/src/slider.js \
-	/usr/lib/node_modules/bootstrap/dist/js/bootstrap.min.js \
-	/usr/lib/node_modules/floatthead/dist/jquery.floatThead.min.js \
-	/usr/lib/node_modules/proj4/dist/proj4.js \
-	/usr/lib/node_modules/d3/build/d3.min.js \
-	/usr/lib/node_modules/file-saver/FileSaver.min.js \
-	/usr/lib/node_modules/corejs-typeahead/dist/typeahead.bundle.min.js \
-	/usr/lib/node_modules/jsts/dist/jsts.min.js \
-	/usr/lib/node_modules/moment/min/moment.min.js \
-	/usr/lib/node_modules/url-polyfill/url-polyfill.min.js \
-	/usr/lib/node_modules/jquery-datetimepicker/build/jquery.datetimepicker.full.min.js \
-	/usr/lib/node_modules/$(NGEO_PACKAGE)/third-party/jquery-ui/jquery-ui.min.js \
-	/usr/lib/node_modules/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js
-else
-NGEO_OUTPUT_FILES += .build/apps.timestamp
-endif
+NGEO_OUTPUT_FILES += /build/apps.timestamp
 
 # i18n
 I18N_SOURCE_FILES += $(APP_HTML_FILES) \
@@ -336,13 +294,12 @@ EXTRA_EXCLUDE = $(foreach ELEM, print mapfile jsbuild tilegeneration,-path ./$(E
 VARS_FILES += CONST_vars.yaml $(VARS_FILE)
 VARS_DEPENDS += $(VARS_FILES)
 CONFIG_VARS += sqlalchemy.url sqlalchemy_slave.url schema schema_static enable_admin_interface \
-	pyramid_closure node_modules_path closure_library_path default_locale_name servers layers \
-	available_locale_names cache admin_interface functionalities \
+	default_locale_name servers layers available_locale_names cache admin_interface functionalities \
 	raster shortener hide_capabilities mapserverproxy tinyowsproxy resourceproxy print_url \
 	tiles_url checker check_collector default_max_age jsbuild package srid \
 	reset_password fulltextsearch headers authorized_referers hooks stats db_chooser \
 	ogcproxy_enable dbsessions urllogin host_forward_host smtp c2c.base_path welcome_email host \
-	lingua_extractor
+	lingua_extractor interfaces_config interfaces default_interface
 MAKE_FILES = $(wildcard *.mk) CONST_Makefile
 
 # Disabling Make built-in rules to speed up execution time
@@ -397,11 +354,6 @@ build: $(BUILD_RULES)
 
 .PHONY: checks
 checks: flake8 $(CLIENT_CHECK_RULE)	git-attributes yamllint
-ifeq ($(ES6), FALSE)
-checks: $(NGEO_OUTPUT_JS_INTERFACES_FILES) $(NGEO_OUTPUT_CSS_INTERFACES_FILES)
-else
-checks: .build/apps.timestamp
-endif
 
 .PHONY: git-attributes
 git-attributes:
@@ -572,21 +524,13 @@ $(APP_OUTPUT_DIR)/%.json: \
 /opt/c2cgeoportal_geoportal/c2cgeoportal_geoportal/locale/en/LC_MESSAGES/%.po:
 	echo "Nothing to do for $@"
 
-$(APP_OUTPUT_DIR)/angular-locale_%.js: /usr/lib/node_modules/$(NGEO_PACKAGE)/github_versions language_mapping
+$(APP_OUTPUT_DIR)/angular-locale_%.js: /usr/lib/node_modules/ngeo/package.json language_mapping
 	mkdir --parent $(dir $@)
 	rm --force $@
 	cp /opt/angular-locale/angular-locale_`(grep $* language_mapping || echo $*) | cut --delimiter = --fields 2 | tr --delete '\r\n'`.js $@
 
-ifeq ($(ES6), FALSE)
-$(APP_OUTPUT_DIR)/%.js: /build/%.js $(NGEO_LIBS_JS_FILES) $(NGEO_PROJECT_LIBS_JS_FILES)
-	$(PRERULE_CMD)
-	mkdir --parent $(dir $@)
-	awk 'FNR==1{print ""}1' $(NGEO_LIBS_JS_FILES) $(NGEO_PROJECT_LIBS_JS_FILES) $< > $@
-	sed -i '/^\/\/# sourceMappingURL=.*\.map$$/d' $@
-endif
-
 .PRECIOUS: geoportal/$(PACKAGE)_geoportal/static-ngeo/fonts/gmf-icons.%
-geoportal/$(PACKAGE)_geoportal/static-ngeo/fonts/gmf-icons.%: /usr/lib/node_modules/$(NGEO_PACKAGE)/contribs/gmf/fonts/gmf-icons.%
+geoportal/$(PACKAGE)_geoportal/static-ngeo/fonts/gmf-icons.%: /usr/lib/node_modules/ngeo/contribs/gmf/fonts/gmf-icons.%
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	cp $< $@
@@ -597,85 +541,25 @@ geoportal/$(PACKAGE)_geoportal/static-ngeo/fonts/fontawesome-webfont.%: /usr/lib
 	mkdir --parent $(dir $@)
 	cp $< $@
 
-ifeq ($(ES6), FALSE)
-$(APP_OUTPUT_DIR)/%.css: \
-		geoportal/$(PACKAGE)_geoportal/static-ngeo/less/%.less \
-		$(LESS_FILES) \
-		$(NGEO_FONTS) \
-		$(APP_OUTPUT_DIR)/images/
-	$(PRERULE_CMD)
-	mkdir --parent $(dir $@)
-	lessc $(LESS_ARGS) $< $@
-endif
 
-ifeq ($(ES6), FALSE)
-$(APP_OUTPUT_DIR)/images/: /usr/lib/node_modules/$(NGEO_PACKAGE)/third-party/jquery-ui/images/
-else
 $(APP_OUTPUT_DIR)/images/: /usr/lib/node_modules/jquery-ui/themes/base/images
-endif
 	$(PRERULE_CMD)
 	mkdir --parent $@
 	cp -r $</* $@
 
-ifeq ($(ES6), FALSE)
-
-.PRECIOUS: /build/%.json
-/build/%.json: /usr/lib/node_modules/$(NGEO_PACKAGE)/buildtools/mako_build.json
-	$(PRERULE_CMD)
-	PYTHONIOENCODING=UTF-8 mako-render \
-		--var 'src=geoportal/$(PACKAGE)_geoportal/static-ngeo/js/*.js,geoportal/$(PACKAGE)_geoportal/static-ngeo/components/**/*.js' \
-		--var src_set=contribs_gmf \
-		--var entry_point=$(PACKAGE).$*.Controller \
-		--var ngeo_folder=/usr/lib/node_modules/$(NGEO_PACKAGE)/ \
-		$(MAKO_BUILD_ARGS) \
-		--var generate_exports=true $< | \
-		sed 's/\.build\/externs/\/opt\/googleclosurecompiler-externs/g' | \
-		sed 's/\.build/\/build/g' | \
-		sed 's/"node_modules\//"\/usr\/lib\/node_modules\//g' > $@
-
-.PRECIOUS: /build/%.js
-/build/%.js: /build/%.json $(GCC_JS_FILES) $(APP_JS_FILES) \
-		/build/gmftemplatecache.js \
-		/opt/googleclosurecompiler-externs/angular-$(ANGULAR_VERSION).js \
-		/opt/googleclosurecompiler-externs/angular-$(ANGULAR_VERSION)-q_templated.js \
-		/opt/googleclosurecompiler-externs/angular-$(ANGULAR_VERSION)-http-promise_templated.js \
-		/opt/googleclosurecompiler-externs/jquery-1.9.js
-	$(PRERULE_CMD)
-	node /usr/lib/node_modules/$(NGEO_PACKAGE)/buildtools/build.js --config=$< --output=$@
-
-$(APP_OUTPUT_DIR)/templatecache.js: /build/gmftemplatecache.js
-	$(PRERULE_CMD)
-	mkdir --parent $(dir $@)
-	cp $< $@
-
-.PRECIOUS: /build/gmftemplatecache.js
-/build/gmftemplatecache.js: /usr/lib/node_modules/$(NGEO_PACKAGE)/buildtools/templatecache.mako.js \
-		$(APP_DIRECTIVES_PARTIALS_FILES) \
-		$(GMF_DIRECTIVES_PARTIALS_FILES) \
-		$(NGEO_DIRECTIVES_PARTIALS_FILES)
-	$(PRERULE_CMD)
-	PYTHONIOENCODING=UTF-8 mako-render \
-		--var "partials=$(NGEO_PACKAGE):/usr/lib/node_modules/$(NGEO_PACKAGE)/src \
-		gmf:/usr/lib/node_modules/$(NGEO_PACKAGE)/contribs/gmf/src \
-		$(PACKAGE)_components:geoportal/$(PACKAGE)_geoportal/static-ngeo/components \
-		$(PACKAGE)_partials:geoportal/$(PACKAGE)_geoportal/static-ngeo/partials \
-		$(PACKAGE)_js:geoportal/$(PACKAGE)_geoportal/static-ngeo/js" \
-		--var "app=$(PACKAGE)" $< > $@
-
-else
-
-.PRECIOUS: .build/apps.timestamp
-.build/apps.timestamp: $(OL_JS_FILES) $(NGEO_JS_FILES) $(APP_JS_FILES) \
-		$(APP_HTML_FILES) webpack.apps.js \
-		.build/node_modules.timestamp
+.PRECIOUS: /build/apps.timestamp
+/build/apps.timestamp: $(OL_JS_FILES) $(NGEO_JS_FILES) $(APP_JS_FILES) \
+		$(APP_HTML_FILES) webpack.apps.js webpack.config.js \
 		$(LESS_FILES) \
 		$(NGEO_FONTS) \
 		$(APP_OUTPUT_DIR)/images/
 	$(PRERULE_CMD)
-	NODE_ENV=prod node_modules/.bin/webpack
+	# Workaround to make Webpack working for ol/index.js
+	rm -f node_modules
+	ln -s /usr/lib/node_modules/ .
+	webpack --progress --debug
+	rm -f node_modules
 	touch $@
-
-endif
 
 /build/eslint.timestamp: $(APP_JS_FILES)
 	$(PRERULE_CMD)
