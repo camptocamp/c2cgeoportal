@@ -55,7 +55,7 @@ vars:
         gmfProfileCsvUrl: profile.csv
         gmfShortenerCreateUrl: shortener_create
       static:
-        assetsBaseUrl: '{package}:static-ngeo/'
+        assetsBaseUrl: '{package}_geoportal:static-ngeo/'
       wfs_permalink:
         wfsTypes:
           - featureType: fuel
@@ -64,8 +64,52 @@ vars:
             label: display_name
         defaultFeatureNS: http://mapserver.gis.umn.edu/mapserver
         defaultFeaturePrefix: feature
+    mobile_alt:
+      <<: *interface
+      constants:
+        <<: *constants
+        gmfTreeManagerModeFlush: false
+        # FIXME: gmfSearchActions: []
     desktop:
       <<: *interface
+      routes:
+        <<: *routes
+        gmfProfileJsonUrl: profile.json
+        gmfPrintUrl: printproxy
+    desktop_alt:
+      <<: *interface
+      constants:
+        <<: *constants
+        gmfTreeManagerModeFlush: false
+        ngeoRoutingOptions:
+          - backendUrl: https://routing.osm.ch/
+          - profiles:
+              - label: Car
+                profile: routed-car
+              - label: Bike (City)
+                profile: routed-bike
+              - label: Bike (Touring)
+                profile: routed-bike-touring
+              - label: Foot
+                profile: routed-foot
+              - label: Hiking
+                profile: routed-hiking
+        ngeoNominatimSearchDefaultParams:
+          - countrycodes: CH
+      routes:
+        <<: *routes
+        gmfProfileJsonUrl: profile.json
+        gmfPrintUrl: printproxy
+    oeview:
+      <<: *interface
+      # FIXME: gmfContextualdatacontentTemplateUrl
+      routes:
+        <<: *routes
+        gmfProfileJsonUrl: profile.json
+        gmfPrintUrl: printproxy
+    oeedit:
+      <<: *interface
+      # FIXME: gmfContextualdatacontentTemplateUrl
       routes:
         <<: *routes
         gmfProfileJsonUrl: profile.json

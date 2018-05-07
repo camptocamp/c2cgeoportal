@@ -46,16 +46,15 @@ class WebpackTween:
         default_interface = request.registry.settings['default_interface']
         default = False
 
-        if request.path_info in interfaces:
+        if request.path_info == '' \
+                or self._RE_DEFAULT_THEME.match(request.path_info):
+            request.path_info = '/static-ngeo/unused-cache-buster/build/{}.html'.format(default_interface)
+            default = True
+        elif request.path_info[1:] in interfaces:
             request.path_info = '/static-ngeo/unused-cache-buster/build/{}.html'.format(request.path_info)
             default = True
         elif request.path_info == '/commons.js' or request.path_info == '/{}.js'.format(default_interface):
             request.path_info = '/static-ngeo/unused-cache-buster/build' + request.path_info
-            default = True
-        elif request.path_info == '/' \
-                or request.path_info == '/' + default_interface  \
-                or self._RE_DEFAULT_THEME.match(request.path_info):
-            request.path_info = '/static-ngeo/unused-cache-buster/build/{}.html'.format(default_interface)
             default = True
         else:
             match = self._RE_THEME.match(request.path_info)
