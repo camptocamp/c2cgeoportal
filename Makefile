@@ -251,10 +251,12 @@ quote:
 
 .PHONY: spell
 spell:
-	codespell --ignore-words=spell-ignore-words.txt geoportal/setup.py \
-		$(shell find commons/c2cgeoportal_commons -name '*.py' -print) \
-		$(shell find geoportal/c2cgeoportal_geoportal -name static -prune -or -name '*.py' -print) \
-		$(shell find admin/c2cgeoportal_admin -name '*.py' -print)
+	codespell --quiet-level=2 --check-filenames --ignore-words=spell-ignore-words.txt \
+		$(shell find -name node_modules -prune -or -name .build -prune -or -name .git -prune -or -name ngeo -prune \
+		-or -name '__pycache__' -prune -or -name _build -prune \
+		-or \( -type f -and -not -name '*.png' -and -not -name '*.mo' -and -not -name '*.po*' \
+		-and -not -name 'CONST_Makefile_tmpl' \) -print)
+
 
 YAML_FILES ?= $(shell find -name node_modules -prune -or -name .build -prune -or -name ngeo -prune -or -name functional -prune -or \( -name "*.yml" -or -name "*.yaml" \) -print)
 .PHONY: yamllint
