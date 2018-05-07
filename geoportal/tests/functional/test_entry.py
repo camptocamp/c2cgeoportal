@@ -431,7 +431,7 @@ class TestEntryView(TestCase):
             "__test_public_layer",
         })
 
-        # autenticated on parent
+        # authenticated on parent
         request.params = {
             "role_id": DBSession.query(User).filter_by(username="__test_user1").one().role.id
         }
@@ -442,7 +442,7 @@ class TestEntryView(TestCase):
         self.assertTrue("__test_public_layer" in layers)
         self.assertTrue("__test_private_layer" in layers)
 
-        # autenticated
+        # authenticated
         request.params = {}
         request.user = DBSession.query(User).filter_by(username="__test_user1").one()
         themes, errors = entry._themes(request.user.role.id)
@@ -503,7 +503,7 @@ class TestEntryView(TestCase):
             "The layer '__test_public_layer_no_layers' do not have any layers",
         })
 
-        # autenticated
+        # authenticated
         request.params = {
             "version": "2"
         }
@@ -544,7 +544,7 @@ class TestEntryView(TestCase):
             "__test_layer_group_1",
         })
 
-        # autenticated v1
+        # authenticated v1
         request.params = {}
         request.user = DBSession.query(User).filter_by(username="__test_user1").one()
         themes, errors = entry._themes(request.user.role.id)
@@ -576,7 +576,7 @@ class TestEntryView(TestCase):
             "__test_public_layer_not_mapfile",
         })
 
-        # autenticated v2
+        # authenticated v2
         request.params = {
             "version": "2"
         }

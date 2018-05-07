@@ -172,7 +172,7 @@ Only use Windows default command interface::
 
 Cygwin and git mingw are not compatible. Powershell is untested.
 
-Complementarily you need to add all the ressource paths to your system PATH
+Complementarily you need to add all the resource paths to your system PATH
 environment variable, for cygwin, git and node binaries.
 
 Cygwin

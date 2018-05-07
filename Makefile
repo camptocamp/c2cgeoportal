@@ -3,7 +3,7 @@ MAKO_FILES = docker-compose.yaml.mako $(shell find .tx doc docker geoportal/test
 VARS_FILE ?= vars.yaml
 VARS_FILES += vars.yaml
 
-DEVELOPPEMENT ?= FALSE
+DEVELOPMENT ?= FALSE
 
 # PRERULE_CMD display the files imply that the rule is running with the files dates
 ifeq ($(DEBUG), TRUE)
@@ -86,7 +86,7 @@ help:
 	@echo  "- tests 		Perform a number of tests on the code"
 	@echo  "- checks		Perform a number of checks on the code"
 	@echo  "- clean 		Remove generated files"
-	@echo  "- clean-all 		Remove all the build artefacts"
+	@echo  "- clean-all 		Remove all the build artifacts"
 	@echo  "- transifex-send	Send the localisation to Transifex"
 
 .PHONY: docker-build

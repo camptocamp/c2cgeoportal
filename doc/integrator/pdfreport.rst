@@ -75,12 +75,12 @@ as in the following example:
 with the following parameters:
 
 * ``print_url`` is the local URL of the MapFish Print version 3 instance.
-* ``defaults`` contains the default values of parameters not provided explicitely for a given layer.
+* ``defaults`` contains the default values of parameters not provided explicitly for a given layer.
 * ``layers`` is an optional per-layer list of settings specific to the listed layers. The entries of the list are the layernames provided as argument of the webservice. If a layer is not listed, the default parameters above are used.
 
 ``defaults`` and ``layers``-specific parameters are:
 
-* ``check_credentials``: boolean, wether layer credentials are checked before generating the report. Defaults to ``True``.
+* ``check_credentials``: boolean, whether layer credentials are checked before generating the report. Defaults to ``True``.
 * ``srs``: projection code (required when showing the map).
 * ``spec``: optional template used to build the ``spec`` argument sent to the MapFish Print webapp.
 * ``map``: optional the map configuration.
@@ -88,7 +88,7 @@ with the following parameters:
 
 The map configuration can contains the following:
 
-* ``backgroundlayers``: string containing a comma-separated list of WMS layers that should be displayed on the map. If the curent layer must also be displayed, it should be added to the list. Please note that layernames must be embedded in double-quotes ("). Defaults to ``""``.
+* ``backgroundlayers``: string containing a comma-separated list of WMS layers that should be displayed on the map. If the current layer must also be displayed, it should be added to the list. Please note that layernames must be embedded in double-quotes ("). Defaults to ``""``.
 * ``imageformat``: format of the generated map. Defaults to ``image/png``.
 * ``zoomType``: The type of zoom, default is ``extent``.
 * ``minScale``: The minimum zoom scale, default is ``1000``.

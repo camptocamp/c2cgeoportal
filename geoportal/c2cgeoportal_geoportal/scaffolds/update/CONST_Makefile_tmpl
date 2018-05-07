@@ -78,7 +78,7 @@ DEFAULT_BUILD_RULES ?= docker-build-geoportal \
 	docker-compose-build.yaml
 
 # TileCloud-chain
-WMTSCAPABILITIES_PATH ?= 1.0.0/WMTSCapabilities-$(ENVIRONEMENT).xml
+WMTSCAPABILITIES_PATH ?= 1.0.0/WMTSCapabilities-$(ENVIRONMENT).xml
 export WMTSCAPABILITIES_PATH
 ifeq ($(TILECLOUD_CHAIN), TRUE)
 WMTSCAPABILITIES_FILE ?= /var/sig/tiles/$(WMTSCAPABILITIES_PATH)
@@ -316,8 +316,8 @@ help:
 	@echo  "- checks		Perform a number of checks on the code"
 	@echo  "- serve			Run the development server (Pserve)"
 	@echo  "- clean			Remove generated files"
-	@echo  "- clean-all		Remove all the build artefacts"
-	@echo  "- clean-all-cache	Remove all the build artefacts and the extra caches (npm and pip)"
+	@echo  "- clean-all		Remove all the build artifacts"
+	@echo  "- clean-all-cache	Remove all the build artifacts and the extra caches (npm and pip)"
 	@echo
 	@echo  "Utility targets:"
 	@echo
@@ -582,7 +582,7 @@ geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/: cgxp_revision
 
 # CGXP build
 
-# Workaround to fix stange Make missing rule error
+# Workaround to fix strange Make missing rule error
 $(OUTPUT_DIR)/api-lang-en.js: \
 		$(JSBUILD_MAIN_CONFIG) \
 		$(JSBUILD_MAIN_FILES) \
