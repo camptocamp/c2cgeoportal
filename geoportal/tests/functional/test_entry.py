@@ -1158,7 +1158,7 @@ class TestEntryView(TestCase):
             "minResolutionHint": 1.76,
             "maxResolutionHint": 8.8200000000000003,
             "public": True,
-            "queryable": 0,
+            "queryable": 1,
             "metadataUrls": [{
                 "url": "http://example.com/wmsfeatures.metadata",
                 "type": "TC211",

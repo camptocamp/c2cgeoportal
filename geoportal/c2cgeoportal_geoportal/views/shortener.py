@@ -139,8 +139,6 @@ class Shortener:
         else:
             s_url = self.request.route_url("shortener_get", ref=ref)
 
-        email = email or user_email
-
         if email is not None:  # pragma: no cover
             send_email_config(
                 self.request.registry.settings, "shortener", email,
