@@ -3,8 +3,8 @@ This file includes migration steps for each release of c2cgeoportal.
 Version 2.3.0
 =============
 
-Informations
-------------
+Information
+-----------
 
 1. The structure of the project change:
    * The package name becomes `{{package}}_geoportal`.

@@ -240,10 +240,10 @@ Result HTTP code:
 * 200 Success: Success.
 * 400 Bad request: When something wrong.
 
-User informations
------------------
+User information
+----------------
 
-Used to get the user informations.
+Used to get the user information.
 
 URL: ``.../loginuser``
 

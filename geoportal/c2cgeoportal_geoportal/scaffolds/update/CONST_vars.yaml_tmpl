@@ -99,7 +99,7 @@ vars:
     # Cookie session secret
     secret: __import__('uuid').uuid4().hex
     cookie_name: auth_tkt_{instance}
-  # Database informations
+  # Database information
   sqlalchemy:
     url: postgresql://{dbuser}:{dbpassword}@{dbhost}:{dbport}/{db}
   sqlalchemy_slave:
