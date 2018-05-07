@@ -1145,16 +1145,16 @@ class TestEntryView(TestCase):
         layer.public = True
         self.assertEqual(entry._layer(layer), ({
             "id": 20,
-            "name": u"test_wmsfeaturesgroup",
+            "name": "test_wmsfeaturesgroup",
             "type": "internal WMS",
             "isChecked": False,
             "legend": False,
             "isLegendExpanded": False,
-            "imageType": u"image/png",
+            "imageType": "image/png",
             "minResolutionHint": 1.76,
             "maxResolutionHint": 8.8200000000000003,
             "public": True,
-            "queryable": 0,
+            "queryable": 1,
             "metadataUrls": [{
                 "url": "http://example.com/wmsfeatures.metadata",
                 "type": "TC211",
@@ -1162,7 +1162,7 @@ class TestEntryView(TestCase):
             }],
             "metadata": {},
             "childLayers": [{
-                "name": u"test_wmsfeatures",
+                "name": "test_wmsfeatures",
                 "minResolutionHint": 1.76,
                 "maxResolutionHint": 8.8200000000000003,
                 "queryable": 1,
