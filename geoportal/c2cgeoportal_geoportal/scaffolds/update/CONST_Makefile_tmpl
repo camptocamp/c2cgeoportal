@@ -139,6 +139,10 @@ I18N_SOURCE_FILES += geoportal/development.ini
 I18N_DEPENDENCIES += project.yaml /build/requirements.timestamp
 
 
+# Alembic
+
+ALEMBIC_YAML_FILE ?= vars_testdb.yaml
+
 # CGXP
 JSBUILD_MAIN_FILES = $(shell find geoportal/$(PACKAGE)_geoportal/static/lib/cgxp geoportal/$(PACKAGE)_geoportal/static/js -name "*.js" -print 2> /dev/null)
 JSBUILD_MAIN_CONFIG = geoportal/jsbuild/app.cfg
@@ -165,8 +169,8 @@ CGXP_GIT_REMOTE ?= https://github.com/camptocamp/cgxp.git
 
 
 ifeq ($(DEVELOPMENT), FALSE)
-	CSSMIN_ARGS += --compress
-	LESS_ARGS += --clean-css="--s0"
+CSSMIN_ARGS += --compress
+LESS_ARGS += --clean-css="--s0"
 endif
 LESS_ARGS += --autoprefix
 DEFAULT_CSS_BASE_FILES += \
@@ -657,12 +661,12 @@ push-docker:
 	docker push $(DOCKER_BASE)-geoportal:$(DOCKER_TAG)
 	docker push $(DOCKER_BASE)-mapserver:$(DOCKER_TAG)
 
-alembic.yaml: vars_testdb.yaml vars.yaml CONST_vars.yaml
+alembic.yaml: $(ALEMBIC_YAML_FILE) vars.yaml CONST_vars.yaml
 	$(PRERULE_CMD)
 	c2c-template --vars $< --get-config /build/_alembic.yaml srid schema schema_static sqlalchemy.url cache
 	mv /build/_alembic.yaml $@
 
-testdb/11-schemas.sql: vars_testdb.yaml testdb/11-schemas.sql_mako vars.yaml CONST_vars.yaml
+testdb/11-schemas.sql: $(ALEMBIC_YAML_FILE) testdb/11-schemas.sql_mako vars.yaml CONST_vars.yaml
 	$(PRERULE_CMD)
 	rm --force testdb/11-schemas.sql.mako
 	ln -s 11-schemas.sql_mako testdb/11-schemas.sql.mako
