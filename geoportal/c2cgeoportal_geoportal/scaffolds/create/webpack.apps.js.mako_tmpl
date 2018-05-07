@@ -13,13 +13,13 @@ const dev = nodeEnv == 'development'
 process.traceDeprecation = true;
 
 for (const filename of ls(path.resolve(
-  __dirname, 'geoportal/{{package}}_geoportal/static-ngeo/js/apps/*.html' + (dev ? '.mako' : '')
+  __dirname, 'geoportal/{{package}}_geoportal/static-ngeo/js/apps/*.html.ejs'
 ))) {
   const name = filename.file.split('.')[0];
   entry[name] = path.resolve(__dirname, 'geoportal/{{package}}_geoportal/static-ngeo/js/apps/Controller' + name + '.js');
   plugins.push(
     new HtmlWebpackPlugin({
-      inject: 'head',
+      inject: false,
       template: filename.full,
       chunksSortMode: 'manual',
       filename: name + '.html',
@@ -64,29 +64,13 @@ const rules = [
 ];
 
 
-if (dev) {
-  rules.push({
-    test: /.html.mako/,
-    use: [
-    {
-      loader: 'html-loader'
-    },
-    {
-      loader: 'webpack-replace',
-      options: {
-        search: '/${'$'}{instance}/',
-        replace: '/${instance}/'
-      }
-    }],
-  });
-}
 rules.push(annotateRule);
 
 
 module.exports = {
   output: {
     path: path.resolve(__dirname, 'geoportal/{{package}}_geoportal/static-ngeo/build/'),
-    publicPath: dev ? '/${instance}/dev/' : '/${instance}/static-ngeo/UNUSED_CACHE_VERSION/build/'
+    publicPath: dev ? '/${instance}/dev/' : '${entry_point}static-ngeo/UNUSED_CACHE_VERSION/build/'
   },
   entry: entry,
   optimization: {

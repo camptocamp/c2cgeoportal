@@ -187,8 +187,11 @@ files_to_move:
     to: geoportal/{{package}}_geoportal/static-ngeo/js/apps/Controllermobile.js
     version: 2.3
   - from: geoportal/{{package}}_geoportal/templates/desktop.html
-    to: geoportal/{{package}}_geoportal/static-ngeo/js/apps/desktop.html.mako
+    to: geoportal/{{package}}_geoportal/static-ngeo/js/apps/desktop.html.ejs
     version: 2.3
   - from: geoportal/{{package}}_geoportal/templates/mobile.html
-    to: geoportal/{{package}}_geoportal/static-ngeo/js/apps/mobile.html.mako
+    to: geoportal/{{package}}_geoportal/static-ngeo/js/apps/mobile.html.ejs
+    version: 2.3
+  - from: geoportal/{{package}}_geoportal/static-ngeo/images
+    to: geoportal/{{package}}_geoportal/static-ngeo/js/apps/image
     version: 2.3

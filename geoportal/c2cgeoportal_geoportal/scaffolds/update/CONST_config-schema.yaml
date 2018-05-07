@@ -150,6 +150,10 @@ mapping:
                 mapping:
                   regex;.+:
                     type: any
+              redirect_interface:
+                type: str
+              do_redirect:
+                type: bool
       authorized_referers:
         type: seq
         sequence:
