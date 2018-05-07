@@ -1250,7 +1250,7 @@ class Entry:
     def get_ngeo_index_vars(self, vars_=None):
         if vars_ is None:
             vars_ = {}
-        set_common_headers(self.request, "index", NO_CACHE)
+        set_common_headers(self.request, "index", NO_CACHE, content_type="application/javascript")
 
         vars_["debug"] = self.debug
 
