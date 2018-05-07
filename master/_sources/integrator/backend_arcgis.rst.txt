@@ -48,7 +48,7 @@ Note
 ----
 
 ArcGis (even 10.2) does not understand "application/vnd.ogc.gml" for *INFO_FORMAT* in
-a *GetFeatureInfo* request and returns only a simple XML formated response
+a *GetFeatureInfo* request and returns only a simple XML formatted response
 instead of GML.
 
 This kind of result can not be parsed correctly by the *cgxp.plugins.GetFeature* plugin,

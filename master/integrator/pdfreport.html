@@ -98,12 +98,12 @@ as in the following example:</p>
 <p>with the following parameters:</p>
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">print_url</span></code> is the local URL of the MapFish Print version 3 instance.</li>
-<li><code class="docutils literal notranslate"><span class="pre">defaults</span></code> contains the default values of parameters not provided explicitely for a given layer.</li>
+<li><code class="docutils literal notranslate"><span class="pre">defaults</span></code> contains the default values of parameters not provided explicitly for a given layer.</li>
 <li><code class="docutils literal notranslate"><span class="pre">layers</span></code> is an optional per-layer list of settings specific to the listed layers. The entries of the list are the layernames provided as argument of the webservice. If a layer is not listed, the default parameters above are used.</li>
 </ul>
 <p><code class="docutils literal notranslate"><span class="pre">defaults</span></code> and <code class="docutils literal notranslate"><span class="pre">layers</span></code>-specific parameters are:</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">check_credentials</span></code>: boolean, wether layer credentials are checked before generating the report. Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">check_credentials</span></code>: boolean, whether layer credentials are checked before generating the report. Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</li>
 <li><code class="docutils literal notranslate"><span class="pre">srs</span></code>: projection code (required when showing the map).</li>
 <li><code class="docutils literal notranslate"><span class="pre">spec</span></code>: optional template used to build the <code class="docutils literal notranslate"><span class="pre">spec</span></code> argument sent to the MapFish Print webapp.</li>
 <li><code class="docutils literal notranslate"><span class="pre">map</span></code>: optional the map configuration.</li>
@@ -111,7 +111,7 @@ as in the following example:</p>
 </ul>
 <p>The map configuration can contains the following:</p>
 <ul>
-<li><p class="first"><code class="docutils literal notranslate"><span class="pre">backgroundlayers</span></code>: string containing a comma-separated list of WMS layers that should be displayed on the map. If the curent layer must also be displayed, it should be added to the list. Please note that layernames must be embedded in double-quotes (“). Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>.</p>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">backgroundlayers</span></code>: string containing a comma-separated list of WMS layers that should be displayed on the map. If the current layer must also be displayed, it should be added to the list. Please note that layernames must be embedded in double-quotes (“). Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>.</p>
 </li>
 <li><p class="first"><code class="docutils literal notranslate"><span class="pre">imageformat</span></code>: format of the generated map. Defaults to <code class="docutils literal notranslate"><span class="pre">image/png</span></code>.</p>
 </li>

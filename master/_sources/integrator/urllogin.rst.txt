@@ -27,7 +27,7 @@ You can change it in the vars file with:
 .. code:: yaml
 
     authtkt:
-        # in secound => One day
+        # in second => One day
         timeout: 86400
 
 How to build your token in your application?
@@ -40,7 +40,7 @@ The token is simply a json like this:
     {
         u: <username>,
         p: <password>,
-        t: <timestamp> // end of validity in secound
+        t: <timestamp> // end of validity in second
     }
 
 Witch is encrypted in AES with the provided key, and encoded in hexadecimal.
