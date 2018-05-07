@@ -317,25 +317,6 @@ class C2cUpgradeTool:
         check_call(["git", "clean", "--force", "-d"])
         shutil.copyfile("/tmp/project.yaml", "project.yaml")
 
-        branch = check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode("utf-8").strip()
-        # remove all no more existing branches
-        check_call(["git", "fetch", self.options.git_remote, "--prune"])
-        branches = check_output(["git", "branch", "--all"]).decode("utf-8").split("\n")
-        if "  remotes/{}/{}".format(self.options.git_remote, branch) in branches:
-            try:
-                check_call(["git", "pull", "--rebase", self.options.git_remote, branch])
-            except subprocess.CalledProcessError:
-                self.print_step(
-                    step, error=True, message="The pull (rebase) failed.",
-                    prompt="Please solve the rebase and run it again:")
-                exit(1)
-
-        if len(check_output(["git", "status", "-z"]).decode("utf-8").strip()) != 0:
-            self.print_step(
-                step, error=True, message="The pull is not fast forward.",
-                prompt="Please solve the rebase and run it again:")
-            exit(1)
-
         self.run_step(step + 1)
 
     @Step(2)
