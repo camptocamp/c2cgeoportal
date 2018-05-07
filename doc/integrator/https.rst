@@ -52,7 +52,7 @@ If you apply ssl encryption on your application, you should take care of the
 tiles url to use https scheme to avoid secure and insecure contents: change
 *tiles_url* in the vars_xxx.yaml file.
 
-Finaly, you should redirect all http request to https scheme. On Camptocamp's
+Finally, you should redirect all http request to https scheme. On Camptocamp's
 server, this should be asked to our sysadmin team.
 
 In case you load http external resources into your application, you should use

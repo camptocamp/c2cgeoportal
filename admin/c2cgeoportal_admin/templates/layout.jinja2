@@ -15,7 +15,7 @@
     <link href="{{request.static_url('c2cgeoform:static/theme.css')}}" rel="stylesheet">
     {% block extra_links %}{% endblock extra_links %}
 
-    <!-- Deform dependecies CSS -->
+    <!-- Deform dependencies CSS -->
     {% if deform_dependencies %}
     <link rel="stylesheet" href="{{request.static_url('deform:static/css/form.css')}}" type="text/css" />
     {% for css in deform_dependencies['css'] %}

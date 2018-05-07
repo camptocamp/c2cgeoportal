@@ -1,7 +1,7 @@
 ---
 
 vars:
-  # is in developement mode
+  # is in development mode
   development: '{DEVELOPMENT}'
   # the package name
   package: {{package}}

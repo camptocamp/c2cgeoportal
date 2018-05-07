@@ -116,7 +116,7 @@ to change the host parameter.
 You can have several sections. A section start with a name with [] and
 finish with a blanck line. This file should be a unix file.
 
-On QGIS deskop, when creating a new PostGIS connection, give it a name and use
+On QGIS desktop, when creating a new PostGIS connection, give it a name and use
 the service name (`geomapfish` in our example) in the connection parameters
 form.
 

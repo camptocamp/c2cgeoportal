@@ -84,7 +84,7 @@ class TestMobileDesktop(TestCase):
 
         # the following theme should not appear in the list of themes on desktop
         # nor on mobile
-        # It should be accessible by explicitely loading it in mobile though
+        # It should be accessible by explicitly loading it in mobile though
         mobile_private_group = LayerGroup(name="__test_mobile_private_layer_group")
         mobile_private_group.children = [layer]
         mobile_private_theme = Theme(name="__test_mobile_private_theme")
