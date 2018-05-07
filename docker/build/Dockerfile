@@ -1,4 +1,4 @@
-FROM camptocamp/c2cwsgiutils:1.7
+FROM camptocamp/c2cwsgiutils:1
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
 RUN \
