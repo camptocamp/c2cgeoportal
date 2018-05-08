@@ -1,3 +1,6 @@
+<%
+import re
+%>
 #
 # The Apache mod_wsgi configuration file.
 #
@@ -18,9 +21,15 @@ RewriteEngine on
 # http://code.google.com/p/modwsgi/wiki/FrequentlyAskedQuestions#Access_Control_Mechanisms
 WSGIPassAuthorization On
 
-
-RewriteRule ^${apache_entry_point}?$ /${instanceid}/wsgi [PT]
+% if apache_entry_point != '/':
+RewriteRule ^${apache_entry_point[:-1]}$ ${apache_entry_point} [R]
+% endif
+RewriteRule ^${apache_entry_point}$ /${instanceid}/wsgi [PT]
 RewriteRule ^${apache_entry_point}theme/(.+)$ /${instanceid}/wsgi/theme/$1 [PT]
+
+RewriteRule ^${apache_entry_point}dynamic.js?$ /${instanceid}/wsgi/dynamic.js [R]
+RewriteRule ^${apache_entry_point}(${'|'.join([re.escape(e) for e in interfaces])}|theme)/dynamic.js$ /${instanceid}/wsgi/dynamic.js [R]
+RewriteRule ^${apache_entry_point}(${'|'.join([re.escape(e) for e in interfaces])})/theme/dynamic.js$ /${instanceid}/wsgi/dynamic.js [R]
 
 % for interface in interfaces:
 RewriteRule ^${apache_entry_point}${interface}/?$ /${instanceid}/wsgi/${interface} [PT]
