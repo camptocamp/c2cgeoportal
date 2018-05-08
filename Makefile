@@ -65,14 +65,13 @@ ADMIN_SRC_FILES = $(shell ls -1 commons/c2cgeoportal_commons/models/*.py) \
 
 APPS += desktop mobile
 APPS_PACKAGE_PATH = geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal
-APPS_HTML_FILES = $(addprefix $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/, $(addsuffix .html.mako_tmpl, $(APPS)))
+APPS_HTML_FILES = $(addprefix $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/, $(addsuffix .html.ejs_tmpl, $(APPS)))
 APPS_JS_FILES = $(addprefix $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/Controller, $(addsuffix .js_tmpl, $(APPS)))
 APPS_FILES = $(APPS_HTML_FILES) $(APPS_JS_FILES) \
-	$(addprefix $(APPS_PACKAGE_PATH)/static-ngeo/images/,favicon.ico logo.png background-layer-button.png) \
 	$(APPS_PACKAGE_PATH)/static-ngeo/components/contextualdata/contextualdata.html \
-	$(APPS_PACKAGE_PATH)/static-ngeo/images/background-layer-button.png \
-	$(APPS_PACKAGE_PATH)/static-ngeo/images/favicon.ico \
-	$(APPS_PACKAGE_PATH)/static-ngeo/images/logo.png
+	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/background-layer-button.png \
+	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/favicon.ico \
+	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/logo.png
 
 .PHONY: help
 help:
@@ -315,8 +314,8 @@ ngeo:
 	if [ ! -e "ngeo" ] ; then git clone --depth 1 --branch=$(shell VERSION=$(MAIN_BRANCH) npm-packages --version) https://github.com/camptocamp/ngeo.git ; fi
 	touch --no-create $@
 
-.PRECIOUS: ngeo/contribs/gmf/apps/%/index.html
-ngeo/contribs/gmf/apps/%/index.html: ngeo
+.PRECIOUS: ngeo/contribs/gmf/apps/%/index.html.ejs
+ngeo/contribs/gmf/apps/%/index.html.ejs: ngeo
 	$(PRERULE_CMD)
 	touch --no-create $@
 
@@ -325,7 +324,7 @@ ngeo/contribs/gmf/apps/%/Controller.js: ngeo
 	$(PRERULE_CMD)
 	touch --no-create $@
 
-$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/%.html.mako_tmpl: ngeo/contribs/gmf/apps/%/index.html
+$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/%.html.ejs_tmpl: ngeo/contribs/gmf/apps/%/index.html.ejs
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	import-ngeo-apps --html $* $< $@
@@ -340,7 +339,7 @@ $(APPS_PACKAGE_PATH)/static-ngeo/components/contextualdata/contextualdata.html: 
 	mkdir --parent $(dir $@)
 	cp $< $@
 
-$(APPS_PACKAGE_PATH)/static-ngeo/images/%: ngeo/contribs/gmf/apps/desktop/image/%
+$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/%: ngeo/contribs/gmf/apps/desktop/image/%
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	cp $< $@

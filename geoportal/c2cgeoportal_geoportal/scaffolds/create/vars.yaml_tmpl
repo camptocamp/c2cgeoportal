@@ -22,7 +22,7 @@ vars:
   default_interface: desktop
 
   interfaces_config:
-    mobile: &interface
+    default: &interface
       constants: &constants
         defaultTheme: Demo
         defaultLang: en
@@ -64,6 +64,9 @@ vars:
             label: display_name
         defaultFeatureNS: http://mapserver.gis.umn.edu/mapserver
         defaultFeaturePrefix: feature
+    mobile:
+      <<: *interface
+      redirect_interface: desktop
     mobile_alt:
       <<: *interface
       constants:
@@ -72,6 +75,8 @@ vars:
         # FIXME: gmfSearchActions: []
     desktop:
       <<: *interface
+      redirect_interface: mobile
+      do_redirect: True
       routes:
         <<: *routes
         gmfProfileJsonUrl: profile.json

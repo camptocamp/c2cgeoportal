@@ -88,6 +88,39 @@ The following variables may be set in the makefiles:
 * ``TILECLOUD_CHAIN``: ``TRUE`` to indicate that we use TileCloud-chain, default to ``TRUE``.
 
 
+Secrets
+-------
+
+We provide an easy way to secure some files into your repository, for that you should add
+in your project makefile:
+
+.. code:: make
+
+   GPG_KEYS += <allowed pgp key id> # <the owner name>
+
+   secrets.tar.bz2.gpg: <the files to encrypt>
+
+Add the files that should be encrypted in the ``.gitignore`` file.
+
+To encrypt the files run:
+
+.. prompt:: bash
+
+   make --makefile=<user>.mk secrets.tar.bz2.gpg
+
+Add the file ``secrets.tar.bz2.gpg`` to git:
+
+.. prompt:: bash
+
+   git add secrets.tar.bz2.gpg
+
+To decrypt the files run:
+
+.. prompt:: bash
+
+   make --makefile=<user>.mk secrets
+
+
 Custom rules
 ------------
 

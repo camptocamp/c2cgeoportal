@@ -114,7 +114,7 @@ APP_JS_FILES = $(shell find geoportal/$(PACKAGE)_geoportal/static-ngeo/js geopor
 APP_JS_MAKO_FILES += $(shell find geoportal/$(PACKAGE)_geoportal/static-ngeo/js geoportal/$(PACKAGE)_geoportal/static-ngeo/components $(FIND_OPTS) -name "*.js.mako" -print 2> /dev/null)
 APP_JS_JINJA_FILES += $(shell find geoportal/$(PACKAGE)_geoportal/static-ngeo/js geoportal/$(PACKAGE)_geoportal/static-ngeo/components $(FIND_OPTS) -name "*.js.jinja" -print 2> /dev/null)
 APP_JS_FILES +=  $(APP_JS_MAKO_FILES:.mako=) $(APP_JS_JINJA_FILES:.jinja=)
-APP_HTML_FILES += $(addprefix geoportal/$(PACKAGE)_geoportal/static-ngeo/js/apps/, $(addsuffix .html, $(NGEO_INTERFACES)))
+APP_HTML_FILES += $(addprefix geoportal/$(PACKAGE)_geoportal/static-ngeo/js/apps/, $(addsuffix .html.ejs, $(NGEO_INTERFACES)))
 APP_DIRECTIVES_PARTIALS_FILES = $(shell find geoportal/$(PACKAGE)_geoportal/static-ngeo/components geoportal/$(PACKAGE)_geoportal/static-ngeo/partials geoportal/$(PACKAGE)_geoportal/static-ngeo/js -type f -name '*.html' 2> /dev/null)
 LESS_FILES += $(shell find geoportal/$(PACKAGE)_geoportal/static-ngeo/less geoportal/$(PACKAGE)_geoportal/static-ngeo/components -type f -name '*.less' 2> /dev/null)
 NGEO_GMF_FONTS = $(addprefix geoportal/$(PACKAGE)_geoportal/static-ngeo/fonts/gmf-icons, .woff .ttf .eot)
@@ -128,6 +128,12 @@ ANGULAR_LOCALES_FILES = $(addprefix $(APP_OUTPUT_DIR)/angular-locale_, $(addsuff
 NGEO_OUTPUT_FILES = $(JSON_CLIENT_LOCALISATION_FILES) \
 	$(ANGULAR_LOCALES_FILES)
 NGEO_OUTPUT_FILES += /build/apps.timestamp
+
+ifdef CI
+WEBPACK_ARGS ?= --debug
+else
+WEBPACK_ARGS ?= --progress --debug
+endif
 
 # i18n
 I18N_SOURCE_FILES += $(APP_HTML_FILES) \
@@ -305,6 +311,18 @@ CONFIG_VARS += sqlalchemy.url sqlalchemy_slave.url schema schema_static enable_a
 	ogcproxy_enable dbsessions urllogin host_forward_host smtp c2c.base_path welcome_email host \
 	lingua_extractor interfaces_config interfaces default_interface
 MAKE_FILES = $(wildcard *.mk) CONST_Makefile
+
+# Secrets
+
+ifndef DESABLE_DEFAULT_GPG_KEYS
+GPG_KEYS += D1D6A94C # Stéphane Brunner
+GPG_KEYS += B42AF223 # Patrick Valsecchi
+GPG_KEYS += C27D570B # Roman Zoller
+GPG_KEYS += CF8E9976 # Guillaume Beraudo
+GPG_KEYS += 3EA11D26 # Elisabeth Leu
+GPG_KEYS += 0875810F # Frederic Junod
+GPG_KEYS += 1DAFEE6A # Oliver Christen
+endif
 
 # Disabling Make built-in rules to speed up execution time
 .SUFFIXES:
@@ -561,7 +579,7 @@ $(APP_OUTPUT_DIR)/images/: /usr/lib/node_modules/jquery-ui/themes/base/images
 	# Workaround to make Webpack working for ol/index.js
 	rm --force --recursive node_modules
 	ln --symbolic /usr/lib/node_modules/ .
-	webpack --progress --debug
+	webpack $(WEBPACK_ARGS)
 	rm --force node_modules
 	touch $@
 
@@ -709,3 +727,18 @@ $(WMTSCAPABILITIES_FILE): tilegeneration/config.yaml
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	generate_controller --capabilities
+
+# Secrets
+
+secrets.tar.bz2.gpg:
+	tar -jcf secrets.tar.bz2 $^
+	gpg --keyserver pgp.mit.edu --keyserver-options timeout=20 --recv-keys $(GPG_KEYS)
+	rm -f $@
+	gpg --always-trust --output $@ --encrypt $(addprefix --recipient ,$(GPG_KEYS)) secrets.tar.bz2
+	rm secrets.tar.bz2
+
+.PHONY: secrets
+secrets:
+	gpg --output secrets.tar.bz2 --decrypt secrets.tar.bz2.gpg
+	tar -jxf secrets.tar.bz2
+	rm secrets.tar.bz2
