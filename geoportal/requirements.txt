@@ -18,7 +18,7 @@ OWSLib>=0.6.0
 papyrus
 PasteScript
 psycopg2-binary
-pycrypto
+pycryptodome
 pyramid<=1.9.99
 pyramid_debugtoolbar  # Needed by the development.ini
 pyramid_mako  # to render the HTML files

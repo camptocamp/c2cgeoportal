@@ -45,12 +45,13 @@ def create_token(aeskey, user, password, valid):
     if aeskey is None:
         print("urllogin is not configured")
         exit(1)
-    cipher = AES.new(aeskey)
+    cipher = AES.new(aeskey.encode("ascii"), AES.MODE_EAX)
     data = json.dumps(auth)
     mod_len = len(data) % 16
     if mod_len != 0:
         data += "".join([" " for i in range(16 - mod_len)])
-    return binascii.hexlify(cipher.encrypt(data.encode("utf-8"))).decode("utf-8")
+    ciphertext, tag = cipher.encrypt_and_digest(data.encode("utf-8"))
+    return binascii.hexlify(cipher.nonce + tag + ciphertext).decode("ascii")
 
 
 def main():

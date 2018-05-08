@@ -319,8 +319,12 @@ def create_get_user_from_request(settings):
                     if aeskey is None:  # pragma: nocover
                         raise Exception("urllogin is not configured")
                     now = int(time.time())
-                    cipher = AES.new(aeskey)
-                    auth = json.loads(cipher.decrypt(binascii.unhexlify(auth_enc)))
+                    data = binascii.unhexlify(auth_enc.encode('ascii'))
+                    nonce = data[0:16]
+                    tag = data[16:32]
+                    ciphertext = data[32:]
+                    cipher = AES.new(aeskey.encode("ascii"), AES.MODE_EAX, nonce)
+                    auth = json.loads(cipher.decrypt_and_verify(ciphertext, tag).decode("utf-8"))
 
                     if "t" in auth and "u" in auth and "p" in auth:
                         timestamp = int(auth["t"])
