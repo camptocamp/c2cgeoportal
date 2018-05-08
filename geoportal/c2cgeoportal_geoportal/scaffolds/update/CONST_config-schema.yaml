@@ -243,6 +243,8 @@ mapping:
                     type: str
                   error_message:
                     type: str
+                  translate:
+                    type: bool
           available_functionalities:
             type: seq
             required: True

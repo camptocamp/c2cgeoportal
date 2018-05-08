@@ -247,7 +247,8 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
         config_ = C()
         config_.registry.settings = settings
         init_dbsessions(settings, config_)
-        from c2cgeoportal_commons import models
+        from c2cgeoportal_commons.models import DBSessions
+        from c2cgeoportal_commons.models.main import Metadata
         c2cgeoportal_geoportal.init_dbsessions(settings, config_)
         from c2cgeoportal_geoportal.views.layers import Layers
         enums = []
@@ -256,17 +257,33 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
             layerinfos = enum_layers.get(layername, {})
             attributes = layerinfos.get("attributes", {})
             for fieldname in list(attributes.keys()):
-                values = self._enumerate_attributes_values(models.DBSessions, Layers, layerinfos, fieldname)
+                values = self._enumerate_attributes_values(DBSessions, Layers, layerinfos, fieldname)
                 for value, in values:
                     if value != "":
-                        msgid = value if isinstance(value, str) else value
+                        msgid = value
                         location = "/layers/{}/values/{}/{}".format(
                             layername,
                             fieldname,
                             value.encode("ascii", errors="replace") if isinstance(value, str) else value)
                         enums.append(Message(None, msgid, None, [], "", "", (filename, location)))
 
-        return raster + enums
+        metadata = []
+        defs = config["admin_interface"]["available_metadata"]
+        names = [e["name"] for e in defs if e.get("translate", False)]
+
+        if len(names) > 0:
+            import sqlalchemy
+            engine = sqlalchemy.create_engine(config["sqlalchemy.url"])
+            Session = sqlalchemy.orm.session.sessionmaker()  # noqa
+            Session.configure(bind=engine)
+            session = Session()
+
+            query = session.query(Metadata).filter(Metadata.name.in_(names))
+            for metadata in query.all():
+                location = "metadata/{}/{}".format(metadata.name, metadata.id)
+                metadata.append(Message(None, metadata.value, None, [], u"", u"", (filename, location)))
+
+        return raster + enums + metadata
 
     @staticmethod
     def _enumerate_attributes_values(dbsessions, layers, layerinfos, fieldname):
@@ -508,7 +525,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                 "REQUEST": "GetCapabilities",
             })
             try:
-                print(u"Get WMS GetCapabilities for URL {},\nwith headers: {}".format(
+                print("Get WMS GetCapabilities for URL {},\nwith headers: {}".format(
                     wms_getcap_url, " ".join(["=".join(h) for h in headers.items()])
                 ))
                 response = requests.get(wms_getcap_url, headers=headers, **kwargs)

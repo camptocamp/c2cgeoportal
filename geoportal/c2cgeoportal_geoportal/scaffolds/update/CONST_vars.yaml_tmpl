@@ -186,6 +186,7 @@ vars:
       - name: metadataUrl
         type: url
       - name: disclaimer
+        translate: True
       - name: isChecked
         type: boolean
       - name: identifierAttributeField
