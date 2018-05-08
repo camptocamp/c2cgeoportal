@@ -341,7 +341,7 @@ class C2cUpgradeTool:
         # To be removed in 2.4
         with open("CONST_create_template/vars.yaml", "r") as f:
             new_syntax = f.readline() == "---\n"
-        if new_syntax:
+        if not new_syntax:
             check_call(["sed", "--in-place", "s/- /  - /g", "CONST_create_template/vars.yaml"])
             check_call(["sed", "--in-place", "s/    /  /g", "CONST_create_template/vars.yaml"])
 
