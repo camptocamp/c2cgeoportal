@@ -98,46 +98,6 @@ def main():
         data = re.sub(r"{{", r"\\{\\{", data)
         data = re.sub(r"}}", r"\\}\\}", data)
 
-        if args.html:
-            if args.interface == "mobile":
-                data = _sub(
-                    r"</head>",
-                    """</head>
-  <%
-    no_redirect_query = dict({} if request is None else request.GET)
-    no_redirect_query['no_redirect'] = u''
-  %>
-""",
-                    data,
-                )
-                data = _sub(
-                    re.escape(
-                        r"http://camptocamp.github.io/ngeo/master/"
-                        r"examples/contribs/gmf/apps/desktop/?no_redirect"
-                    ),
-                    "${'' if request is None else request.route_url('desktop', _query=no_redirect_query) | n}",  # noqa: E501
-                    data,
-                )
-            if args.interface == "desktop":
-                data = _sub(
-                    r"<head>",
-                    """<head>
-    % if request is not None and "no_redirect" not in request.params:
-            <script>
-                var small_screen = window.matchMedia ? window.matchMedia('(max-width: 1024px)') : false;
-                if (small_screen && (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch)) {
-    % if "themes" in request.matchdict:
-                    window.location = "${request.route_url('mobiletheme', themes=request.matchdict['themes'], _query=dict(request.GET)) | n}";
-    % else:
-                    window.location = "${request.route_url('mobile', _query=dict(request.GET)) | n}";
-    % endif
-                }
-            </script>
-    % endif
-""",  # noqa: E501
-                    data,
-                )
-
         data = re.sub("app", "{{package}}", data)
         data = re.sub(re.escape("{{package}}lication"), "application", data)
         data = re.sub(re.escape("{{package}}le"), "apple", data)
@@ -147,39 +107,16 @@ def main():
             data = _sub(r"ng-{{package}}", r"ng-app", data)
             # back for gmf-app- css prefix
             data = _sub(r"gmf-{{package}}-", r"gmf-app-", data, required=False)
-            if args.interface == "mobile":
+            if args.interface == "mobile" or args.interface == "mobile_alt":
                 # back for mobile-web-app-capable
                 data = _sub(
                     r"mobile-web-{{package}}-capable",
                     r"mobile-web-app-capable", data
                 )
-            else:
-                data = _sub(
-                    r'( *)<img src="image/([^"]+)"( alt="")? ?/>',
-                    '%if request is None:\n'
-                    '\1<img src="/${instance}/wsgi/static-ngeo/BUSTING_VERSION/images/\\2\" />\n'
-                    '%else:\n'
-                    '\1<img src="${request.static_url("{{package}}_geoportal:static-ngeo/images/\\2")}" />\n'
-                    '%endif',
-                    data,
-                )
             data = _sub(
-                r'( *)<link rel="shortcut icon" href="image/favicon.ico"/>',
-                '%if request is None:\n'
-                '\1<link rel="shortcut icon" href="/${instance}/wsgi/static-ngeo/BUSTING_VERSION/images/favicon.ico"/>\n'  # noqa: E501
-                '%else:\n'
-                '\1<link rel="shortcut icon" href="${request.static_url("{{package}}_geoportal:static-ngeo/images/favicon.ico")}"/>\n'  # noqa: E501
-                '%endif',
-                data,
-            )  # noqa: E501
-            data = _sub(
-                '( *)' + re.escape('<script src="https://geomapfish-demo.camptocamp.com/2.') + '[0-9]' +
+                re.escape('<script src="https://geomapfish-demo.camptocamp.com/2.') + '[0-9]' +
                 re.escape('/wsgi/dynamic.js?interface={}"></script>'.format(args.interface)),
-                '%if request is None:\n'
-                '\1<script src="/${{instance}}/wsgi/dynamic.js?interface={interface}"></script>\n'
-                '%else:\n'
-                '\1<script src="${{request.route_url("dynamic.js", _query={{"interface": "{interface}"}})}}"></script>\n'  # noqa: E501
-                '%endif'.format(interface=args.interface),
+                '<script src="dynamic.js?interface={interface}"></script>'.format(interface=args.interface),
                 data
             )
 

@@ -32,10 +32,7 @@ import re
 
 
 class WebpackTween:
-    _RE_DEFAULT_THEME = re.compile(r'/theme/.+(?<!\.js|css)$')
-    _RE_THEME = re.compile(r'/([a-z]+)/theme/.+(?<!\.js|css)$')
-    _RE_RESSOURCES = re.compile(r'/[a-z]+.(js|css)$')
-    _RE_THEME_RESSOURCES = re.compile(r'/theme/([a-z]+).(js|css)$')
+    _RE_RESOURCES = re.compile(r'.+\.(js|css|png|ico|cur)$')
 
     def __init__(self, handler, registry):
         del registry
@@ -46,20 +43,34 @@ class WebpackTween:
         default_interface = request.registry.settings['default_interface']
         default = False
 
-        if request.path_info == '' \
-                or self._RE_DEFAULT_THEME.match(request.path_info):
+        path_info = request.path_info.split('/')
+        # Dynamic.js
+        if request.path_info in ('/dynamic.js', '/theme/dynamic.js'):
+            request.path_info = '/dynamic.js'
+        # Default interface root
+        # e.-g.: /
+        # e.-g.: /theme/OSM
+        elif len(path_info) == 1 or (
+            len(path_info) == 3 and
+            path_info[1] == 'theme' and
+            not self._RE_RESOURCES.match(path_info[2])
+        ):
             request.path_info = '/static-ngeo/unused-cache-buster/build/{}.html'.format(default_interface)
             default = True
-        elif request.path_info[1:] in interfaces:
-            request.path_info = '/static-ngeo/unused-cache-buster/build/{}.html'.format(request.path_info)
-            default = True
-        elif request.path_info == '/commons.js' or request.path_info == '/{}.js'.format(default_interface):
-            request.path_info = '/static-ngeo/unused-cache-buster/build' + request.path_info
-            default = True
-        else:
-            match = self._RE_THEME.match(request.path_info)
-            if match:
-                request.path_info = '/static-ngeo/unused-cache-buster/build/{}.html'.format(match.group(1))
+        # Other interfaces
+        elif path_info[1] in interfaces:
+            # Root
+            # e.-g.: /mobile
+            # e.-g.: /mobile/
+            # e.-g.: /mobile/theme/OSM
+            if len(path_info) == 2 or (
+                len(path_info) == 3 and path_info[2] == ''
+            ) or (
+                len(path_info) == 4 and
+                path_info[2] == 'theme' and
+                not self._RE_RESOURCES.match(path_info[3])
+            ):
+                request.path_info = '/static-ngeo/unused-cache-buster/build/{}.html'.format(path_info[1])
                 default = True
 
         response = self.handler(request)

@@ -11,8 +11,6 @@ vars:
 
   srid: -1
 
-  request:
-
   host: '{VISIBLE_WEB_HOST}'
   web_protocol: '{VISIBLE_WEB_PROTOCOL}'
   entry_point: '{VISIBLE_ENTRY_POINT}'

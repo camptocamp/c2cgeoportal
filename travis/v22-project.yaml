@@ -21,11 +21,12 @@ unmanaged_files:
   - print/print-apps/testgeomapfish/.*\.jrxml
   - geoportal/testgeomapfish_geoportal/locale/fr/LC_MESSAGES/testgeomapfish-client\.po
   - geoportal/testgeomapfish_geoportal/locale/de/LC_MESSAGES/testgeomapfish-client\.po
+  - geoportal/testgeomapfish_geoportal/static-ngeo/js/apps/desktop\.html\.ejs
+  - geoportal/testgeomapfish_geoportal/static-ngeo/js/apps/mobile\.html\.ejs
   - geoportal/testgeomapfish_geoportal/static-ngeo/js/apps/Controllerdesktop\.js
   - geoportal/testgeomapfish_geoportal/static-ngeo/js/apps/Controllermobile\.js
+  - geoportal/testgeomapfish_geoportal/static-ngeo/js/apps/image/.*
   - geoportal/testgeomapfish_geoportal/static-ngeo/components/contextualdata/contextualdata\.html
-  - geoportal/testgeomapfish_geoportal/static-ngeo/js/apps/desktop\.html.mako
-  - geoportal/testgeomapfish_geoportal/static-ngeo/js/apps/mobile\.html.mako
   - geoportal/testgeomapfish_geoportal/static-ngeo/less/desktop\.less
   - geoportal/testgeomapfish_geoportal/static-ngeo/less/mobile\.less
   - geoportal/testgeomapfish_geoportal/templates/api/api\.js

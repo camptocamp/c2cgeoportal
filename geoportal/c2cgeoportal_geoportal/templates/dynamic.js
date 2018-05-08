@@ -25,21 +25,56 @@ wfs_permalink.update(interface_config.get('wfs_permalink', {}))
 
 (function() {
   var module = angular.module('App' + ${interface});
-%for name, value in interface_config['constants'].items():
+% for name, value in interface_config['constants'].items():
   module.constant('${name}', ${json.dumps(value) | n})
-%endfor
+% endfor
   module.constant('langUrls', ${json.dumps(lang_urls) | n});
   module.constant('cacheVersion', '${get_cache_version()}');
   module.constant('ngeoWfsPermalinkOptions', ${json.dumps(wfs_permalink) | n});
-%for constant, route in simple_routes.items():
+% for constant, route in simple_routes.items():
   module.constant('${constant}', '${request.route_url(route) | n}');
-%endfor
+% endfor
   module.constant('gmfTreeUrl', '${request.route_url('themes', _query=tree_params) | n}');
   module.constant('fulltextsearchUrl', '${request.route_url('fulltextsearch', _query=fulltextsearch_params) | n}');
-%for constant, static_ in interface_config.get('static', {}).items():
+% for constant, static_ in interface_config.get('static', {}).items():
   module.constant('${constant}', '${request.static_url(static_)}');
-%endfor
+% endfor
   module.constant('ngeoWfsPermalinkOptions', ${json.dumps(wfs_permalink) | n});
+
+% if 'redirect_interface' in interface_config:
+<%
+    import urllib.parse
+    no_redirect_query = {
+        'no_redirect': None
+    }
+    if 'Referer' in request.headers:
+        spliturl = urllib.parse.urlsplit(request.headers['Referer'])
+        query = urllib.parse.parse_qs(spliturl.query)
+        no_redirect_query.update(query)
+    else:
+        query = {}
+    if 'themes' in request.matchdict:
+        url = request.route_url(
+            interface_config['redirect_interface'] + 'theme',
+            themes=request.matchdict['themes'],
+            _query=no_redirect_query
+        )
+    else:
+        url = request.route_url(
+            interface_config['redirect_interface'],
+            _query=no_redirect_query
+        )
+%>
+% if 'no_redirect' in query:
+    module.constant('redirectUrl', '');
+% else:
+% if interface_config.get('do_redirect', False):
+    window.location = '${url | n}';
+% else:
+    module.constant('redirectUrl', '${url | n}');
+% endif
+% endif
+% endif
 
   var gmfAbstractAppControllerModule = angular.module('GmfAbstractAppControllerModule');
   gmfAbstractAppControllerModule.constant('angularLocaleScript', '${request.static_url(request.registry.settings['package'] + '_geoportal:static-ngeo/build/')}angular-locale_{{locale}}.js');
