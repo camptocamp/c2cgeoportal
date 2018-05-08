@@ -247,7 +247,8 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
         config_ = C()
         config_.registry.settings = settings
         init_dbsessions(settings, config_)
-        from c2cgeoportal_commons import models
+        from c2cgeoportal_commons.models import DBSessions
+        from c2cgeoportal_commons.models.main import Metadata
         c2cgeoportal_geoportal.init_dbsessions(settings, config_)
         from c2cgeoportal_geoportal.views.layers import Layers
         enums = []
@@ -256,7 +257,7 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
             layerinfos = enum_layers.get(layername, {})
             attributes = layerinfos.get("attributes", {})
             for fieldname in list(attributes.keys()):
-                values = self._enumerate_attributes_values(models.DBSessions, Layers, layerinfos, fieldname)
+                values = self._enumerate_attributes_values(DBSessions, Layers, layerinfos, fieldname)
                 for value, in values:
                     if value != "":
                         msgid = value
@@ -277,8 +278,7 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
             Session.configure(bind=engine)
             session = Session()
 
-            query = session.query(c2cgeoportal_commons.models.Metadata) \
-                .filter(c2cgeoportal_commons.models.Metadata.name.in_(names))
+            query = session.query(Metadata).filter(Metadata.name.in_(names))
             for metadata in query.all():
                 location = "metadata/{}/{}".format(metadata.name, metadata.id)
                 metadata.append(Message(None, metadata.value, None, [], u"", u"", (filename, location)))
