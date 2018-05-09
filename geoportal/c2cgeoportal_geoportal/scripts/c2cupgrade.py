@@ -234,7 +234,7 @@ class C2cUpgradeTool:
                     cmd.append("--git-remote={}".format(self.options.git_remote))
                 if self.options.makefile != "Makefile":
                     cmd.append("--makefile={}".format(self.options.makefile))
-                if self.options.new_makefile is not None:
+                if self.options.new_makefile != self.options.makefile:
                     cmd.append("--new-makefile={}".format(self.options.new_makefile))
                 if step != 0:
                     cmd.append("--step={}".format(step))
