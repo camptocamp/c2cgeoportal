@@ -35,17 +35,6 @@ const babelPresets = [['env',{
   "modules": false,
   "loose": true,
 }]]
-const babelUse = {
-  loader: 'babel-loader',
-  options: {
-    presets: babelPresets,
-    plugins: ['@camptocamp/babel-plugin-angularjs-annotate'],
-  }
-}
-const annotateRule = {
-  test: /geoportal\/{{package}}_geoportal\/static-ngeo\/js\/.*\.js$/,
-  use: babelUse,
-}
 
 // Transform code to ES2015 and annotate injectable functions with an $inject array.
 const projectRule = {
@@ -62,9 +51,6 @@ const projectRule = {
 const rules = [
   projectRule
 ];
-
-
-rules.push(annotateRule);
 
 
 module.exports = {
