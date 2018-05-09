@@ -1,7 +1,5 @@
 #!/bin/bash -ex
 
-./docker-run --image=camptocamp/geomapfish-build make clean-all
-
 export SRID=21781 APACHE_VHOST=test EXTENT=489246.36,78873.44,837119.76,296543.14
 ./docker-run --image=camptocamp/geomapfish-build --share /tmp/travis pcreate --scaffold=c2cgeoportal_create /tmp/travis/nondockertestgeomapfish \
     --package-name testgeomapfish
