@@ -7,15 +7,20 @@ Informations
 ------------
 
 1. The structure of the project change:
-   * The package name become `{{package}}_geoportal`.
+   * The package name becomes `{{package}}_geoportal`.
    * The package is in the folder `geoportal`.
 
-2. The `shortener.email_body` in the vars files use now the template syntax.
+2. All the images will be moved from `geoportal/{{package}}_geoportal/static-ngeo/images`
+   to `geoportal/{{package}}_geoportal/static-ngeo/js/apps/image`, this is required for the apps.
+   If some images are used directly by the apps (e.g. the theme icons) they should be moved back to their
+   original folder.
 
-3. Update access control list (ACL) in root context to allow user with role 'role_admin' to access views
+3. The `shortener.email_body` in the vars files now uses the template syntax.
+
+4. Update access control list (ACL) in root context to allow users with role 'role_admin' to access views
    requiring 'admin' permission.
 
-   edit 'geoportal/{{package}}_geoportal/resources.py' file, Root class __acl__ attribute should look so:
+   edit 'geoportal/{{package}}_geoportal/resources.py' file, Root class __acl__ attribute should look like:
 
    '''...
    from pyramid.security import Allow, ALL_PERMISSIONS
