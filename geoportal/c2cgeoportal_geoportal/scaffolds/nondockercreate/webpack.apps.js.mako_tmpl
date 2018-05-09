@@ -59,12 +59,12 @@ module.exports = {
     publicPath: dev ? '/${instanceid}/dev/' : '/${instanceid}/wsgi/static-ngeo/UNUSED_CACHE_VERSION/build/'
   },
   entry: entry,
-  optimization: {
+/*  optimization: {
     splitChunks: {
       chunks: 'all',
       name: 'commons',
     }
-  },
+  },*/
   module: {
     rules
   },
