@@ -34,320 +34,26 @@
 <h1>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="the-default-policy">
 <h2>The default policy<a class="headerlink" href="#the-default-policy" title="Permalink to this headline">¶</a></h2>
-<p>By default <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> applications use an <em>auth ticket</em> authentication
-policy (<code class="docutils literal notranslate"><span class="pre">AuthTktAuthenticationPolicy</span></code>). With this policy the user name is
-obtained from the “auth ticket” cookie set in the request.</p>
-<p>The policy is created, and added to the application’s configuration, in the
+<p>By default, <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> applications use an <em>auth ticket</em> authentication
+policy (<code class="docutils literal notranslate"><span class="pre">AuthTktAuthenticationPolicy</span></code>). With this policy, the user name is
+obtained from the “auth ticket” cookie set in the request.
+The policy is created, and added to the application’s configuration, in the
 application’s main <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> file.</p>
 </div>
 <div class="section" id="using-another-policy">
 <h2>Using another policy<a class="headerlink" href="#using-another-policy" title="Permalink to this headline">¶</a></h2>
-<p>When using <code class="docutils literal notranslate"><span class="pre">AuthTktAuthenticationPolicy</span></code> an “auth ticket” cookie should be
-set in the request for the user to be identified. In some applications using
-another identification mechanism may be needed.</p>
+<p>When using <code class="docutils literal notranslate"><span class="pre">AuthTktAuthenticationPolicy</span></code>, an “auth ticket” cookie should be
+set in the request for the user to be identified. In some applications, using
+a custom identification mechanism may be needed instead, for instance to use SSO.
+Our knowledge base has an example of how this can be achieved.</p>
 </div>
-<div class="section" id="example-with-a-remote-user-policy">
-<h2>Example with a “remote user” policy<a class="headerlink" href="#example-with-a-remote-user-policy" title="Permalink to this headline">¶</a></h2>
-<p>For example, in a project of ours, the c2cgeoportal application needs to
-integrate with the Nevis single sign-on environment. This SSO system is
-composed of a central auth server, and a proxy running as an Apache module.
-The proxy takes care of communicating with the auth server, and sets the
-username in the <code class="docutils literal notranslate"><span class="pre">REMOTE_USER</span></code> environment variable when the user has been
-identified. With this system an “auth ticket” policy cannot be used, obviously.
-A <a class="reference external" href="http://docs.pylonsproject.org/projects/pyramid/en/1.3-branch/api/authentication.html#pyramid.authentication.RemoteUserAuthenticationPolicy">“remote user” authentication policy</a>
-should be used instead.</p>
-<p>To use a “remote user” authentication policy edit the application’s
-main <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> file, and set <code class="docutils literal notranslate"><span class="pre">authentication_policy</span></code> to a
-<code class="docutils literal notranslate"><span class="pre">RemoteUserAuthenticationPolicy</span></code> instance:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span>from pyramid.config import Configurator
-from pyramid.authentication import RemoteUserAuthenticationPolicy
-from c2cgeoportal_geoportal import locale_negotiator
-from c2cgeoportal_geoportal.resources import FAModels, defaultgroupsfinder
-from ${package}.resources import Root
-
-def main(global_config, **settings):
-    &quot;&quot;&quot; This function returns a Pyramid WSGI application.
-    &quot;&quot;&quot;
-    authentication_policy = RemoteUserAuthenticationPolicy(
-            callback=defaultgroupsfinder)
-    config = Configurator(root_factory=Root, settings=settings,
-            locale_negotiator=locale_negotiator,
-            authentication_policy=authentication_policy)
-    # ...
-</pre></div>
-</div>
-<p><code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> provides an authentication policy callback, namely
-<code class="docutils literal notranslate"><span class="pre">defaultgroupsfinder</span></code>, that is appropriate in most cases. This callback
-assumes that <code class="docutils literal notranslate"><span class="pre">request.user.role</span></code> is a reference to the <code class="docutils literal notranslate"><span class="pre">Role</span></code> database
-object (more information below). This callback is required for admin users to
-be able to access to the admin interface.</p>
-<p>It is important to note that when using a “remote user” authentication policy
-the authentication process is delegated to an outside system. So calls to
-<code class="docutils literal notranslate"><span class="pre">pyramid.security.remember</span></code> and <code class="docutils literal notranslate"><span class="pre">pyramid.security.forget</span></code>, as done in
-c2cgeoportal’s <code class="docutils literal notranslate"><span class="pre">login</span></code> and <code class="docutils literal notranslate"><span class="pre">logout</span></code> views, have no effect.</p>
-<p>With an authentication policy set in the application configuration the user
-name can be obtained by calling <code class="docutils literal notranslate"><span class="pre">request.unauthenticated_userid</span></code>.
-(This function returns <code class="docutils literal notranslate"><span class="pre">None</span></code> if there is currently no authenticated user.)
-But c2cgeoportal applications need to also know about the user’s <em>role</em> to
-work properly.</p>
-<p>So when using an external authentication system this system should also provide
-the c2cgeoportal application with the name of the user’s role. This can be done
-in <code class="docutils literal notranslate"><span class="pre">apache/wsgi.conf.mako</span></code> by relying on the <a class="reference external" href="http://httpd.apache.org/docs/2.2/mod/mod_setenvif.html">mod_setenvif</a> Apache module’s
-<code class="docutils literal notranslate"><span class="pre">SetEnvIf</span></code> directive. For example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>SetEnvIf isiwebsectoken &lt;role&gt;(.*)&lt;/role&gt; rolename=$1
-</pre></div>
-</div>
-<p>or:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>SetEnvIf isiwebsectoken &#39;&lt;field name=&quot;roles&quot;&gt;([a-zA-Z0-9,\.]*)&lt;/field&gt;&#39; rolename=$1
-</pre></div>
-</div>
-<p>With this <code class="docutils literal notranslate"><span class="pre">mod_setenvif</span></code> extracts the role name from the <code class="docutils literal notranslate"><span class="pre">isiwebsectoken</span></code> header
-and places it in the <code class="docutils literal notranslate"><span class="pre">rolename</span></code> environment variable. See the <code class="docutils literal notranslate"><span class="pre">mod_setenvif</span></code>
-documentation for more details.</p>
-<p>The connection between the nevisProxy and the application is established using
-an Apache module called NINAP. The above Apache configuration may also contain
-NINAP directives (see nevisProxy documentation). For instance to indicate what
-field in the <code class="docutils literal notranslate"><span class="pre">isiwebsectoken</span></code> header contains the username:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">NINAP_UserPattern</span> <span class="s1">&#39;&lt;field name=&quot;loginId&quot;&gt;([a-zA-Z0-9\._-]*)&lt;/field&gt;&#39;</span>
-</pre></div>
-</div>
-<p>Eventually the following directives activate the access restriction to the
-application:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">Location</span> <span class="o">/&lt;</span><span class="n">instance_id</span><span class="o">&gt;/</span><span class="n">wsgi</span><span class="o">&gt;</span>
-  <span class="n">AuthType</span> <span class="n">sectoken</span>
-  <span class="n">Require</span> <span class="n">valid</span><span class="o">-</span><span class="n">user</span>
-<span class="o">&lt;/</span><span class="n">Location</span><span class="o">&gt;</span>
-</pre></div>
-</div>
-<p>The <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> code expects that the user data (user name, role name and
-user functionalities) are available through the <code class="docutils literal notranslate"><span class="pre">user</span></code> property in the
-<code class="docutils literal notranslate"><span class="pre">request</span></code> object. More specifically it expects <code class="docutils literal notranslate"><span class="pre">request.user.role.id</span></code> to
-contain the role id, and <code class="docutils literal notranslate"><span class="pre">request.user.role.name</span></code> to contain the role name.
-<code class="docutils literal notranslate"><span class="pre">request.user.username</span></code> and <code class="docutils literal notranslate"><span class="pre">request.user.functionalities</span></code> must be provided
-as well.
-Therefore the application should redefine the callback function that adds
-a <code class="docutils literal notranslate"><span class="pre">user</span></code> property to the request. This is done by calling the
-<code class="docutils literal notranslate"><span class="pre">set_request_property</span></code> function on the <code class="docutils literal notranslate"><span class="pre">Configurator</span></code> object.
-You may for example add to <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code>:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_user_from_request</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">username</span><span class="p">):</span>
-    <span class="kn">from</span> <span class="nn">c2cgeoportal_commons.models</span> <span class="k">import</span> <span class="n">DBSession</span>
-    <span class="kn">from</span> <span class="nn">c2cgeoportal_commons.models.main</span> <span class="k">import</span> <span class="n">Role</span>
-    <span class="k">class</span> <span class="nc">O</span><span class="p">:</span>
-        <span class="k">pass</span>
-    <span class="k">if</span> <span class="n">username</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">username</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">unauthenticated_userid</span>
-    <span class="k">if</span> <span class="n">username</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">user</span> <span class="o">=</span> <span class="n">O</span><span class="p">()</span>
-        <span class="n">user</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">username</span>
-        <span class="n">rolename</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;rolename&#39;</span><span class="p">)</span>
-        <span class="n">user</span><span class="o">.</span><span class="n">role_name</span> <span class="o">=</span> <span class="n">rolename</span>
-        <span class="n">user</span><span class="o">.</span><span class="n">role</span> <span class="o">=</span> <span class="n">DBSession</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Role</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">rolename</span><span class="p">)</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
-        <span class="n">user</span><span class="o">.</span><span class="n">functionalities</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">return</span> <span class="n">user</span>
-</pre></div>
-</div>
-<p>And then, in the application’s <code class="docutils literal notranslate"><span class="pre">main</span></code> function:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">config</span><span class="o">.</span><span class="n">set_request_property</span><span class="p">(</span>
-        <span class="n">get_user_from_request</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="nb">property</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">config</span><span class="o">.</span><span class="n">set_request_property</span><span class="p">(</span>
-        <span class="n">get_user_from_request</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;get_user&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Please note that <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> expects the admin role to be <code class="docutils literal notranslate"><span class="pre">role_admin</span></code>.
-If for some reason you need to use another name for this role, you may define
-an alias in a project-specific callback and use it instead of the standard
-<code class="docutils literal notranslate"><span class="pre">defaultgroupsfinder</span></code> as <code class="docutils literal notranslate"><span class="pre">AuthenticationPolicy</span></code> argument in <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">mygroupsfinder</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
-    <span class="n">role</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">role</span>
-    <span class="k">if</span> <span class="n">role</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">role</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;&lt;your_admin_rolename&gt;&#39;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;role_admin&#39;</span><span class="p">]</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">role</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
-    <span class="k">return</span> <span class="p">[]</span>
-
-<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">global_config</span><span class="p">,</span> <span class="o">**</span><span class="n">settings</span><span class="p">):</span>
-    <span class="o">...</span>
-    <span class="n">authentication_policy</span> <span class="o">=</span> <span class="n">RemoteUserAuthenticationPolicy</span><span class="p">(</span>
-        <span class="n">callback</span><span class="o">=</span><span class="n">mygroupsfinder</span><span class="p">)</span>
-    <span class="o">...</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last"><code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> registers its own request property callback for <code class="docutils literal notranslate"><span class="pre">user</span></code>.
-The one registered by the application overwrites it.</p>
-</div>
-<p>You should be set at this point.</p>
-</div>
-<div class="section" id="custom-user-validation">
-<h2>Custom user validation<a class="headerlink" href="#custom-user-validation" title="Permalink to this headline">¶</a></h2>
-<p>For logging in <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> validates the user credentials
+<div class="section" id="user-validation">
+<h2>User validation<a class="headerlink" href="#user-validation" title="Permalink to this headline">¶</a></h2>
+<p>For logging in, <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> validates the user credentials
 (username/password) by reading the user information from the <code class="docutils literal notranslate"><span class="pre">user</span></code> database
 table. If a c2cgeoportal application should work with another user information
-source, like LDAP, another <em>client validation</em> mechanism should be set up.
-<code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> provides a specific <code class="docutils literal notranslate"><span class="pre">Configurator</span></code> function for that, namely
-<code class="docutils literal notranslate"><span class="pre">set_user_validator</span></code> which allow to register a custom validator.
-Here is an example:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">custom_user_validator</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
-    <span class="kn">from</span> <span class="nn">pyramid_ldap</span> <span class="k">import</span> <span class="n">get_ldap_connector</span>
-    <span class="n">connector</span> <span class="o">=</span> <span class="n">get_ldap_connector</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">connector</span><span class="o">.</span><span class="n">authenticate</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">return</span> <span class="kc">None</span>
-<span class="o">...</span>
-<span class="n">config</span><span class="o">.</span><span class="n">set_user_validator</span><span class="p">(</span><span class="n">custom_user_validator</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>The validator function is passed three arguments: <code class="docutils literal notranslate"><span class="pre">request</span></code>, <code class="docutils literal notranslate"><span class="pre">username</span></code>,
-and <code class="docutils literal notranslate"><span class="pre">password</span></code>. The function should return a string containing all the data
-you want to keep if the credentials are valid, and <code class="docutils literal notranslate"><span class="pre">None</span></code> otherwise.</p>
-<p>In this example the <a class="reference external" href="http://docs.pylonsproject.org/projects/pyramid_ldap/en/latest/">pyramid_ldap package</a> is used as
-the user information source.</p>
-<p>User validators can obviously be chained. For example, a user validator
-function that queries the <code class="docutils literal notranslate"><span class="pre">user</span></code> database table if the user does not exist in
-LDAP would look like this:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">custom_user_validator</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
-    <span class="kn">from</span> <span class="nn">c2cgeoportal_geoportal</span> <span class="k">import</span> <span class="n">default_user_validator</span>
-    <span class="kn">from</span> <span class="nn">pyramid_ldap</span> <span class="k">import</span> <span class="n">get_ldap_connector</span>
-    <span class="n">connector</span> <span class="o">=</span> <span class="n">get_ldap_connector</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">connector</span><span class="o">.</span><span class="n">authenticate</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">default_user_validator</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="custom-user-validation-ldap">
-<h2>Custom user validation - LDAP<a class="headerlink" href="#custom-user-validation-ldap" title="Permalink to this headline">¶</a></h2>
-<p>Full example using pyramid_ldap, see <cite># LDAP</cite> / <cite># END LDAP</cite> blocs.</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-
-<span class="kn">from</span> <span class="nn">pyramid.config</span> <span class="k">import</span> <span class="n">Configurator</span>
-<span class="c1"># LDAP</span>
-<span class="c1"># get_user_from_request also needed for the same reason</span>
-<span class="kn">from</span> <span class="nn">c2cgeoportal_geoportal</span> <span class="k">import</span> <span class="n">locale_negotiator</span><span class="p">,</span> <span class="n">add_interface</span><span class="p">,</span> \
-    <span class="n">INTERFACE_TYPE_NGEO</span><span class="p">,</span> <span class="n">get_user_from_request</span>
-<span class="c1"># END LDAP</span>
-<span class="kn">from</span> <span class="nn">c2cgeoportal_geoportal.lib.authentication</span> <span class="k">import</span> <span class="n">create_authentication</span>
-<span class="kn">from</span> <span class="nn">yourproject.resources</span> <span class="k">import</span> <span class="n">Root</span>
-
-<span class="kn">import</span> <span class="nn">logging</span>
-
-<span class="c1"># LDAP</span>
-<span class="c1"># dependencies</span>
-<span class="kn">import</span> <span class="nn">ldap</span>
-<span class="kn">from</span> <span class="nn">json</span> <span class="k">import</span> <span class="n">dumps</span><span class="p">,</span> <span class="n">loads</span>
-<span class="c1"># END LDAP</span>
-
-<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
-
-<span class="c1"># LDAP</span>
-<span class="c1"># authenticate on LDAP and return cleaned user data</span>
-<span class="k">def</span> <span class="nf">custom_user_validator</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
-    <span class="kn">from</span> <span class="nn">c2cgeoportal_geoportal</span> <span class="k">import</span> <span class="n">default_user_validator</span>
-    <span class="kn">from</span> <span class="nn">pyramid_ldap</span> <span class="k">import</span> <span class="n">get_ldap_connector</span>
-    <span class="n">connector</span> <span class="o">=</span> <span class="n">get_ldap_connector</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">connector</span><span class="o">.</span><span class="n">authenticate</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;user </span><span class="si">%s</span><span class="s1"> found in ldap&#39;</span> <span class="o">%</span> <span class="n">username</span><span class="p">)</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">pp</span><span class="o">.</span><span class="n">pformat</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
-        <span class="n">user</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;uid&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;roles&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]}</span>
-        <span class="k">return</span> <span class="n">dumps</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
-
-    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;user </span><span class="si">%s</span><span class="s2"> not found in ldap, searching locally&quot;</span> <span class="o">%</span> <span class="n">username</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">default_user_validator</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
-
-<span class="c1"># get custom user data from request and link with existing c2cgeoportal</span>
-<span class="c1"># role in your project</span>
-<span class="k">def</span> <span class="nf">custom_get_user_from_request</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">identity</span><span class="p">):</span>
-
-    <span class="k">class</span> <span class="nc">O</span><span class="p">:</span>
-        <span class="k">pass</span>
-
-    <span class="kn">from</span> <span class="nn">c2cgeoportal_commons.models</span> <span class="k">import</span> <span class="n">DBSession</span>
-    <span class="kn">from</span> <span class="nn">c2cgeoportal_commons.models.main</span> <span class="k">import</span> <span class="n">Role</span>
-
-    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;_user&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">identity</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="c1"># avoid recursive calls from</span>
-        <span class="c1"># get_user_from_request -&gt; request.authenticated_userid -&gt; ...</span>
-        <span class="k">return</span> <span class="n">request</span><span class="o">.</span><span class="n">_user</span>
-
-    <span class="n">user</span> <span class="o">=</span> <span class="n">get_user_from_request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;user is not authenticated or is a ldap user&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">identity</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-           <span class="n">identity</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">unauthenticated_userid</span>
-        <span class="k">if</span> <span class="n">identity</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">identity</span> <span class="o">=</span> <span class="n">loads</span><span class="p">(</span><span class="n">identity</span><span class="p">)</span>
-            <span class="n">user</span> <span class="o">=</span> <span class="n">O</span><span class="p">()</span>
-            <span class="n">user</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">identity</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span>
-            <span class="n">user</span><span class="o">.</span><span class="n">functionalities</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">user</span><span class="o">.</span><span class="n">is_password_changed</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="n">user</span><span class="o">.</span><span class="n">role_name</span> <span class="o">=</span> <span class="n">identity</span><span class="p">[</span><span class="s1">&#39;role&#39;</span><span class="p">]</span>
-            <span class="n">user</span><span class="o">.</span><span class="n">role</span> <span class="o">=</span> <span class="n">DBSession</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Role</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">identity</span><span class="p">[</span><span class="s1">&#39;role&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
-            <span class="n">user</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-            <span class="n">request</span><span class="o">.</span><span class="n">_user</span> <span class="o">=</span> <span class="n">user</span>
-
-    <span class="k">return</span> <span class="n">user</span>
-<span class="c1"># END LDAP</span>
-
-<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">global_config</span><span class="p">,</span> <span class="o">**</span><span class="n">settings</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; This function returns a Pyramid WSGI application.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">config</span> <span class="o">=</span> <span class="n">Configurator</span><span class="p">(</span>
-        <span class="n">root_factory</span><span class="o">=</span><span class="n">Root</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
-        <span class="n">locale_negotiator</span><span class="o">=</span><span class="n">locale_negotiator</span><span class="p">,</span>
-        <span class="n">authentication_policy</span><span class="o">=</span><span class="n">create_authentication</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
-    <span class="p">)</span>
-
-    <span class="n">config</span><span class="o">.</span><span class="n">include</span><span class="p">(</span><span class="s2">&quot;c2cgeoportal&quot;</span><span class="p">)</span>
-
-    <span class="c1"># LDAP</span>
-    <span class="c1"># dependencies</span>
-    <span class="n">config</span><span class="o">.</span><span class="n">include</span><span class="p">(</span><span class="s1">&#39;pyramid_ldap&#39;</span><span class="p">)</span>
-
-    <span class="c1"># LDAP config</span>
-    <span class="n">config</span><span class="o">.</span><span class="n">ldap_setup</span><span class="p">(</span>
-        <span class="s1">&#39;ldap://ldap.server.host&#39;</span><span class="p">,</span>
-        <span class="n">bind</span><span class="o">=</span><span class="s1">&#39;CN=ldap user,CN=Users,DC=example,DC=com&#39;</span><span class="p">,</span>
-        <span class="n">passwd</span><span class="o">=</span><span class="s1">&#39;ld@pu5er&#39;</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="n">config</span><span class="o">.</span><span class="n">ldap_set_login_query</span><span class="p">(</span>
-        <span class="n">base_dn</span><span class="o">=</span><span class="s1">&#39;CN=Users,DC=example,DC=com&#39;</span><span class="p">,</span>
-        <span class="n">filter_tmpl</span><span class="o">=</span><span class="s1">&#39;(uid=</span><span class="si">%(login)s</span><span class="s1">)&#39;</span><span class="p">,</span>
-        <span class="n">scope</span> <span class="o">=</span> <span class="n">ldap</span><span class="o">.</span><span class="n">SCOPE_ONELEVEL</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="n">config</span><span class="o">.</span><span class="n">ldap_set_groups_query</span><span class="p">(</span>
-        <span class="n">base_dn</span><span class="o">=</span><span class="s1">&#39;CN=Users,DC=example,DC=com&#39;</span><span class="p">,</span>
-        <span class="n">filter_tmpl</span><span class="o">=</span><span class="s1">&#39;(&amp;(objectCategory=group)(member=</span><span class="si">%(userdn)s</span><span class="s1">))&#39;</span><span class="p">,</span>
-        <span class="n">scope</span> <span class="o">=</span> <span class="n">ldap</span><span class="o">.</span><span class="n">SCOPE_SUBTREE</span><span class="p">,</span>
-        <span class="n">cache_period</span> <span class="o">=</span> <span class="mi">600</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="c1"># END LDAP</span>
-
-    <span class="c1"># scan view decorator for adding routes</span>
-    <span class="n">config</span><span class="o">.</span><span class="n">scan</span><span class="p">()</span>
-
-    <span class="c1"># add the interfaces</span>
-    <span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-    <span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;edit&quot;</span><span class="p">)</span>
-    <span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;routing&quot;</span><span class="p">)</span>
-    <span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;mobile&quot;</span><span class="p">,</span> <span class="n">INTERFACE_TYPE_NGEO</span><span class="p">)</span>
-
-    <span class="c1"># LDAP</span>
-    <span class="c1"># register the customized function</span>
-    <span class="n">config</span><span class="o">.</span><span class="n">set_user_validator</span><span class="p">(</span><span class="n">custom_user_validator</span><span class="p">)</span>
-    <span class="n">config</span><span class="o">.</span><span class="n">add_request_method</span><span class="p">(</span><span class="n">custom_get_user_from_request</span><span class="p">,</span> <span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="nb">property</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">config</span><span class="o">.</span><span class="n">add_request_method</span><span class="p">(</span><span class="n">custom_get_user_from_request</span><span class="p">,</span> <span class="s1">&#39;get_user&#39;</span><span class="p">)</span>
-    <span class="c1"># END LDAP</span>
-
-    <span class="k">return</span> <span class="n">config</span><span class="o">.</span><span class="n">make_wsgi_app</span><span class="p">()</span>
-</pre></div>
-</div>
+source, like LDAP, a custom <em>client validation</em> mechanism can be set up.
+Our knowledge base has an example of how this can be achieved.</p>
 </div>
 </div>
 
@@ -365,9 +71,7 @@ LDAP would look like this:</p>
 <li><a class="reference internal" href="#">Authentication</a><ul>
 <li><a class="reference internal" href="#the-default-policy">The default policy</a></li>
 <li><a class="reference internal" href="#using-another-policy">Using another policy</a></li>
-<li><a class="reference internal" href="#example-with-a-remote-user-policy">Example with a “remote user” policy</a></li>
-<li><a class="reference internal" href="#custom-user-validation">Custom user validation</a></li>
-<li><a class="reference internal" href="#custom-user-validation-ldap">Custom user validation - LDAP</a></li>
+<li><a class="reference internal" href="#user-validation">User validation</a></li>
 </ul>
 </li>
 </ul>
