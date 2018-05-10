@@ -69,7 +69,10 @@ wfs_permalink.update(interface_config.get('wfs_permalink', {}))
     module.constant('redirectUrl', '');
 % else:
 % if interface_config.get('do_redirect', False):
-    window.location = '${url | n}';
+    var small_screen = window.matchMedia ? window.matchMedia('(max-width: 1024px)') : false;
+    if (small_screen && (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch)) {
+      window.location = '${url | n}';
+    }
 % else:
     module.constant('redirectUrl', '${url | n}');
 % endif
