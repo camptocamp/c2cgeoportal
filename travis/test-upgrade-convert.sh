@@ -86,6 +86,7 @@ then
     rm --recursive --force .UPGRADE9 .UPGRADE_SUCCESS \
         commons/testgeomapfish_commons.egg-info geoportal/testgeomapfish_geoportal.egg-info
     cd -
+    find ${WORKSPACE}/docker -type d -empty -delete
     diff --recursive --exclude=.git ${WORKSPACE}/dockerref ${WORKSPACE}/docker
 fi
 
@@ -102,6 +103,7 @@ then
     rm --recursive --force .UPGRADE9 .UPGRADE_SUCCESS \
         commons/testgeomapfish_commons.egg-info geoportal/testgeomapfish_geoportal.egg-info
     cd -
+    find ${WORKSPACE}/nondocker -type d -empty -delete
     diff --recursive --exclude=.git ${WORKSPACE}/nondockerref ${WORKSPACE}/nondocker
 fi
 
@@ -135,6 +137,7 @@ then
     rm --recursive --force .UPGRADE11 .UPGRADE_SUCCESS \
         commons/testgeomapfish_commons.egg-info geoportal/testgeomapfish_geoportal.egg-info
     cd -
+    find ${WORKSPACE}/nondocker -type d -empty -delete
     diff --recursive --exclude=.git ${WORKSPACE}/dockerref ${WORKSPACE}/nondocker
 fi
 
@@ -170,6 +173,7 @@ then
     rm --recursive --force .UPGRADE11 .UPGRADE_SUCCESS \
         commons/testgeomapfish_commons.egg-info geoportal/testgeomapfish_geoportal.egg-info
     cd -
+    find ${WORKSPACE}/docker -type d -empty -delete
     diff --recursive --exclude=.git ${WORKSPACE}/nondockerref ${WORKSPACE}/docker
 fi
 
@@ -215,6 +219,7 @@ function v220 {
     rm --recursive --force .UPGRADE9 .UPGRADE_SUCCESS \
         commons/testgeomapfish_commons.egg-info geoportal/testgeomapfish_geoportal.egg-info
     cd -
+    find $1 -type d -empty -delete
     diff --recursive --exclude=.git --exclude=locale ${WORKSPACE}/$2dockerref $1
 }
 
