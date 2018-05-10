@@ -706,7 +706,7 @@ docker-build-testdb: testdb/11-schemas.sql testdb/12-alembic.sql testdb/13-alemb
 
 # Upgrade
 
-UPGRADE_ARGS += "--use-makefile"
+UPGRADE_ARGS += --use-makefile
 
 .PHONY: upgrade
 upgrade: project.yaml
