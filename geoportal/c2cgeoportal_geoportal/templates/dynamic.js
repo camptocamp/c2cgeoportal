@@ -24,7 +24,7 @@ wfs_permalink.update(interface_config.get('wfs_permalink', {}))
 %>
 
 (function() {
-  var module = angular.module('App' + ${interface});
+  var module = angular.module('App${interface_name}');
 % for name, value in interface_config['constants'].items():
   module.constant('${name}', ${json.dumps(value) | n})
 % endfor
