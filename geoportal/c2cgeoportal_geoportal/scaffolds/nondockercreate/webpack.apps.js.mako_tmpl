@@ -35,17 +35,6 @@ const babelPresets = [['env',{
   "modules": false,
   "loose": true,
 }]]
-const babelUse = {
-  loader: 'babel-loader',
-  options: {
-    presets: babelPresets,
-    plugins: ['@camptocamp/babel-plugin-angularjs-annotate'],
-  }
-}
-const annotateRule = {
-  test: /geoportal\/{{package}}_geoportal\/static-ngeo\/js\/.*\.js$/,
-  use: babelUse,
-}
 
 // Transform code to ES2015 and annotate injectable functions with an $inject array.
 const projectRule = {
@@ -64,21 +53,18 @@ const rules = [
 ];
 
 
-rules.push(annotateRule);
-
-
 module.exports = {
   output: {
     path: path.resolve(__dirname, 'geoportal/{{package}}_geoportal/static-ngeo/build/'),
     publicPath: dev ? '/${instanceid}/dev/' : '/${instanceid}/wsgi/static-ngeo/UNUSED_CACHE_VERSION/build/'
   },
   entry: entry,
-  optimization: {
+/*  optimization: {
     splitChunks: {
       chunks: 'all',
       name: 'commons',
     }
-  },
+  },*/
   module: {
     rules
   },
