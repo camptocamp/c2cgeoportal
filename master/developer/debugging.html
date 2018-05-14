@@ -35,22 +35,34 @@
   <div class="section" id="debugging">
 <span id="developer-debugging"></span><h1>Debugging<a class="headerlink" href="#debugging" title="Permalink to this headline">¶</a></h1>
 <p>The goal of this document is to give some troubleshooting tips.</p>
-<div class="section" id="general">
-<h2>General<a class="headerlink" href="#general" title="Permalink to this headline">¶</a></h2>
-<p>First you should add <code class="docutils literal notranslate"><span class="pre">?debug</span></code> in the application URL to have all the
-JavaScript and stylesheets in separated non-minified files.</p>
-<p>Using a browser-integrated debugging tool usually available with the <code class="docutils literal notranslate"><span class="pre">F12</span></code> key.</p>
-<p>If the <code class="docutils literal notranslate"><span class="pre">pyramid_debugtoolbar</span></code> is enabled the error is directly returned
-in the query that fails.</p>
+<div class="section" id="webpack">
+<h2>Webpack<a class="headerlink" href="#webpack" title="Permalink to this headline">¶</a></h2>
+<p>For debugging purposes, it is better to have all the JavaScript and Style Sheets in separated, non-minified
+files. To achieve this, you can simply use the sources maps, function activable in the browsers debugging
+tool. And to have faster build you need to use the Webpack dev server; you can achieve this as follows.</p>
+<p>Add in your makefile <code class="docutils literal notranslate"><span class="pre">&lt;user&gt;.mk</span></code> (Each developer should have a different port, e.g.: 8081):</p>
+<div class="code makefile highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">DEV_SERVER_PORT</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">dev</span><span class="o">-</span><span class="n">server</span><span class="o">-</span><span class="n">port</span><span class="o">&gt;</span>
+</pre></div>
 </div>
-<div class="section" id="mapserver">
-<h2>Mapserver<a class="headerlink" href="#mapserver" title="Permalink to this headline">¶</a></h2>
-<p>Sometime more information are available by using this command:</p>
 <pre class="highlight"><style type="text/css">
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">shp2img -m &lt;mapfile&gt; -o test.png -e &lt;minx&gt; &lt;miny&gt; &lt;maxx&gt; &lt;maxy&gt; -s &lt;sizex&gt; &lt;sizey&gt; -l &lt;layers&gt;</span>
+</style><span class="prompt1">make serve</span>
+</pre><p>Open in the browser an URL like: <code class="docutils literal notranslate"><span class="pre">https://&lt;host&gt;&lt;entry-point&gt;/dev/&lt;interface&gt;.html</span></code>.</p>
+</div>
+<div class="section" id="browser">
+<h2>Browser<a class="headerlink" href="#browser" title="Permalink to this headline">¶</a></h2>
+<p>Using a browser-integrated debugging tool usually available with the <code class="docutils literal notranslate"><span class="pre">F12</span></code> key.</p>
+</div>
+<div class="section" id="pyramid">
+<h2>Pyramid<a class="headerlink" href="#pyramid" title="Permalink to this headline">¶</a></h2>
+<p>If the <code class="docutils literal notranslate"><span class="pre">pyramid_debugtoolbar</span></code> is enabled the error is directly shown in the query that fails.</p>
+</div>
+<div class="section" id="mapserver">
+<h2>Mapserver<a class="headerlink" href="#mapserver" title="Permalink to this headline">¶</a></h2>
+<p>Sometime more information are available by using this command:</p>
+<pre class="highlight"><span class="prompt1">shp2img -m &lt;mapfile&gt; -o test.png -e &lt;minx&gt; &lt;miny&gt; &lt;maxx&gt; &lt;maxy&gt; -s &lt;sizex&gt; &lt;sizey&gt; -l &lt;layers&gt;</span>
 </pre><p>You may also activate MapServer’s debug mode and set environment variable of the MapServer container
 <code class="docutils literal notranslate"><span class="pre">MS_DEBUGLEVEL</span></code> to <code class="docutils literal notranslate"><span class="pre">5</span></code> (most verbose level, default is 0).</p>
 <p><a class="reference external" href="http://mapserver.org/optimization/debugging.html?highlight=debug#debug-levels">More informations</a></p>
@@ -106,7 +118,9 @@ to test it).</p>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Debugging</a><ul>
-<li><a class="reference internal" href="#general">General</a></li>
+<li><a class="reference internal" href="#webpack">Webpack</a></li>
+<li><a class="reference internal" href="#browser">Browser</a></li>
+<li><a class="reference internal" href="#pyramid">Pyramid</a></li>
 <li><a class="reference internal" href="#mapserver">Mapserver</a></li>
 <li><a class="reference internal" href="#postgresql">PostgreSQL</a></li>
 <li><a class="reference internal" href="#makefile">Makefile</a></li>
