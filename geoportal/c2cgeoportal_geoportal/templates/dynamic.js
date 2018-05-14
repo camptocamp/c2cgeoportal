@@ -74,7 +74,7 @@ wfs_permalink.update(interface_config.get('wfs_permalink', {}))
       window.location = '${url | n}';
     }
 % else:
-    module.constant('redirectUrl', '${url | n}');
+  module.constant('redirectUrl', '${url | n}');
 % endif
 % endif
 % endif
