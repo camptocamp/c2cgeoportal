@@ -10,6 +10,10 @@ python:
 service:
   - docker
 
+addons:
+  apt:
+    update: true
+
 env:
   global:
     - secure: "aZWcHZWV8lN2SNU2fcUsG8+fVQLOxwDUFYDvuftZALebRG2AHINTkbS31sKbeSwS19ZYpjcuVOKC9HxNAlnMxsdO1Nvv\
