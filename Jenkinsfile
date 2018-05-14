@@ -22,8 +22,8 @@ def clean() {
     sh 'docker volume ls'
 }
 
-timeout(time: 2, unit: 'HOURS') {
-    dockerBuild {
+dockerBuild {
+    timeout(time: 2, unit: 'HOURS') {
         try {
             stage('Clean') {
                 checkout scm
