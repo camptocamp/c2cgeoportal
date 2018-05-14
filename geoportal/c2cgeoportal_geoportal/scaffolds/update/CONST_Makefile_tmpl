@@ -4,10 +4,12 @@ export PACKAGE = {{package}}
 
 VISIBLE_WEB_HOST ?= example.com
 VISIBLE_WEB_PROTOCOL ?= https
+VISIBLE_WEB_PORT ?= 443
 VISIBLE_ENTRY_POINT ?= /
 export VISIBLE_WEB_HOST
 export VISIBLE_WEB_PROTOCOL
 export VISIBLE_ENTRY_POINT
+export DEV_SERVER_PORT
 
 MAPSERVER ?= TRUE
 
@@ -435,10 +437,6 @@ build-cgxp: $(JSBUILD_OUTPUT_FILES) $(CSS_CGXP_OUTPUT)
 .PHONY: lint-ngeo
 lint-ngeo: /build/eslint.timestamp
 
-.PHONY: serve
-serve: geoportal/development.ini build
-	pserve --reload --monitor-restart $<
-
 .PHONY: upgrade-db
 upgrade-db: alembic.ini alembic.yaml
 	alembic --name=main upgrade head
@@ -582,6 +580,11 @@ $(APP_OUTPUT_DIR)/images/: /usr/lib/node_modules/jquery-ui/themes/base/images
 	webpack $(WEBPACK_ARGS)
 	rm --force node_modules
 	touch $@
+
+.PHONY: serve
+serve: build
+	NODE_ENV=dev node_modules/.bin/webpack-dev-server --port $(DEV_SERVER_PORT) -d --watch --progress \
+		--public $(VISIBLE_WEB_HOST):$(VISIBLE_WEB_PORT)
 
 /build/eslint.timestamp: $(APP_JS_FILES)
 	$(PRERULE_CMD)

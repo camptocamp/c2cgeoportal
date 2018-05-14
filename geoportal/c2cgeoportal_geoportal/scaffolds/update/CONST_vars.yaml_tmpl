@@ -14,6 +14,7 @@ vars:
   host: '{VISIBLE_WEB_HOST}'
   web_protocol: '{VISIBLE_WEB_PROTOCOL}'
   entry_point: '{VISIBLE_ENTRY_POINT}'
+  dev_server_port: '{DEV_SERVER_PORT}'
 
   # Docker base image name (comes from the makefile).
   docker_base: '{DOCKER_BASE}'
@@ -493,6 +494,8 @@ environment:
   - WMTSCAPABILITIES_PATH
   - BUILD_VOLUME_NAME
   - PROJECT_DIRECTORY
+  - name: DEV_SERVER_PORT
+    default: 8081
 
 runtime_environment:
   - VISIBLE_WEB_HOST

@@ -5,16 +5,34 @@ Debugging
 
 The goal of this document is to give some troubleshooting tips.
 
-General
+Webpack
 -------
 
-First you should add ``?debug`` in the application URL to have all the
-JavaScript and stylesheets in separated non-minified files.
+For debugging purposes, it is better to have all the JavaScript and Style Sheets in separated, non-minified
+files. To achieve this, you can simply use the sources maps, function activable in the browsers debugging
+tool. And to have faster build you need to use the Webpack dev server; you can achieve this as follows.
+
+Add in your makefile ``<user>.mk`` (Each developer should have a different port, e.g.: 8081):
+
+.. code:: makefile
+
+   DEV_SERVER_PORT = <dev-server-port>
+
+.. prompt:: bash
+
+   make serve
+
+Open in the browser an URL like: ``https://<host><entry-point>/dev/<interface>.html``.
+
+Browser
+-------
 
 Using a browser-integrated debugging tool usually available with the ``F12`` key.
 
-If the ``pyramid_debugtoolbar`` is enabled the error is directly returned
-in the query that fails.
+Pyramid
+-------
+
+If the ``pyramid_debugtoolbar`` is enabled the error is directly shown in the query that fails.
 
 Mapserver
 ---------

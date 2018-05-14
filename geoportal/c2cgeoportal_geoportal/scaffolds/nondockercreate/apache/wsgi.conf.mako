@@ -25,6 +25,11 @@ WSGIPassAuthorization On
 RewriteRule ^${apache_entry_point[:-1]}$ ${apache_entry_point} [R]
 % endif
 RewriteRule ^${apache_entry_point}$ /${instanceid}/wsgi [PT]
+
+# Dev server
+RewriteCond %{REQUEST_URI} "${apache_entry_point}dev/"
+RewriteRule ".*" "http://127.0.0.1:${dev_server_port}$0" [P]
+
 RewriteRule ^${apache_entry_point}theme/(.+)$ /${instanceid}/wsgi/theme/$1 [PT]
 
 RewriteRule ^${apache_entry_point}dynamic.js?$ /${instanceid}/wsgi/dynamic.js [R]
