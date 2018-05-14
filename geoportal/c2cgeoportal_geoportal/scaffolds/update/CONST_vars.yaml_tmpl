@@ -494,8 +494,7 @@ environment:
   - WMTSCAPABILITIES_PATH
   - BUILD_VOLUME_NAME
   - PROJECT_DIRECTORY
-  - name: DEV_SERVER_PORT
-    default: 8081
+  - DEV_SERVER_PORT
 
 runtime_environment:
   - VISIBLE_WEB_HOST
