@@ -18,3 +18,4 @@ Features that require additional steps (most of the time):
    reset_password
    urllogin
    pdfreport
+   routing
