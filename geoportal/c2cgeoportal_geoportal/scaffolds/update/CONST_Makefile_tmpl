@@ -316,7 +316,7 @@ MAKE_FILES = $(wildcard *.mk) CONST_Makefile
 
 # Secrets
 
-ifndef DESABLE_DEFAULT_GPG_KEYS
+ifndef DISABLE_DEFAULT_GPG_KEYS
 GPG_KEYS += D1D6A94C # Stéphane Brunner
 GPG_KEYS += B42AF223 # Patrick Valsecchi
 GPG_KEYS += C27D570B # Roman Zoller
