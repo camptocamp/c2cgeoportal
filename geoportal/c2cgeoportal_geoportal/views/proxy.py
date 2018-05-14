@@ -125,11 +125,6 @@ class Proxy(object):
                     "%s",
                 ]
                 args.append(body.decode("utf-8"))
-            errors += [
-                "--- Return content ---",
-                "%s",
-            ]
-            args.append(content.decode("utf-8"))
             log.error("\n".join(errors), *args, exc_info=True)
 
             raise HTTPBadGateway("Error on backend<hr>See logs for detail")
