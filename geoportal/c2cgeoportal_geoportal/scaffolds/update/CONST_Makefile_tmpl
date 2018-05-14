@@ -9,6 +9,7 @@ VISIBLE_ENTRY_POINT ?= /
 export VISIBLE_WEB_HOST
 export VISIBLE_WEB_PROTOCOL
 export VISIBLE_ENTRY_POINT
+DEV_SERVER_PORT ?= 8081
 export DEV_SERVER_PORT
 
 MAPSERVER ?= TRUE
@@ -338,7 +339,7 @@ help:
 	@echo  "- docker-build   	Pull all the needed Docker images, build all (Outside Docker)"
 	@echo  "- build			Build and configure the project"
 	@echo  "- checks		Perform a number of checks on the code"
-	@echo  "- serve			Run the development server (Pserve)"
+	@echo  "- serve			Run the development server (Outside Docker)"
 	@echo  "- clean			Remove generated files"
 	@echo  "- clean-all		Remove all the build artifacts"
 	@echo  "- clean-all-cache	Remove all the build artifacts and the extra caches (npm and pip)"
@@ -582,9 +583,9 @@ $(APP_OUTPUT_DIR)/images/: /usr/lib/node_modules/jquery-ui/themes/base/images
 	touch $@
 
 .PHONY: serve
-serve: build
-	NODE_ENV=dev node_modules/.bin/webpack-dev-server --port $(DEV_SERVER_PORT) -d --watch --progress \
-		--public $(VISIBLE_WEB_HOST):$(VISIBLE_WEB_PORT)
+serve:
+	node_modules/.bin/webpack-dev-server --port=$(DEV_SERVER_PORT) -d --watch --progress \
+		--public=$(VISIBLE_WEB_HOST):$(VISIBLE_WEB_PORT) --mode=development --inline=false
 
 /build/eslint.timestamp: $(APP_JS_FILES)
 	$(PRERULE_CMD)
