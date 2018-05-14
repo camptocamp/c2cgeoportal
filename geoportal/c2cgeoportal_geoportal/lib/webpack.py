@@ -50,7 +50,7 @@ class WebpackTween:
         # Default interface root
         # e.-g.: /
         # e.-g.: /theme/OSM
-        elif len(path_info) == 1 or (
+        elif request.path_info in ('', '/') or (
             len(path_info) == 3 and
             path_info[1] == 'theme' and
             not self._RE_RESOURCES.match(path_info[2])
