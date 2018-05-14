@@ -27,12 +27,14 @@ RewriteRule ^${apache_entry_point[:-1]}$ ${apache_entry_point} [R]
 RewriteRule ^${apache_entry_point}$ /${instanceid}/wsgi [PT]
 
 # Dev server
-RewriteCond %{REQUEST_URI} "${apache_entry_point}dev/"
-RewriteRule ".*" "http://127.0.0.1:${dev_server_port}$0" [P]
+RewriteRule ^${apache_entry_point}dev/dynamic.js$ http://localhost/${instanceid}/wsgi/dynamic.js [P]
+RewriteRule ^${apache_entry_point}dev/(${'|'.join([re.escape(e) for e in interfaces])}).html/theme/dynamic.js$ http://localhost/${instanceid}/wsgi/dynamic.js [P]
+RewriteRule ^${apache_entry_point}dev/(${'|'.join([re.escape(e) for e in interfaces])}).html/theme/.* http://127.0.0.1:8081/${instanceid}/dev/$1.html [P]
+RewriteRule ^${apache_entry_point}dev/ http://127.0.0.1:${dev_server_port}$0 [P]
 
 RewriteRule ^${apache_entry_point}theme/(.+)$ /${instanceid}/wsgi/theme/$1 [PT]
 
-RewriteRule ^${apache_entry_point}dynamic.js?$ /${instanceid}/wsgi/dynamic.js [R]
+RewriteRule ^${apache_entry_point}dynamic.js$ /${instanceid}/wsgi/dynamic.js [R]
 RewriteRule ^${apache_entry_point}(${'|'.join([re.escape(e) for e in interfaces])}|theme)/dynamic.js$ /${instanceid}/wsgi/dynamic.js [R]
 RewriteRule ^${apache_entry_point}(${'|'.join([re.escape(e) for e in interfaces])})/theme/dynamic.js$ /${instanceid}/wsgi/dynamic.js [R]
 
