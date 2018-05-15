@@ -7,6 +7,7 @@ WORKDIR /app
 ARG GIT_HASH
 
 RUN pip install --disable-pip-version-check --no-cache-dir --no-deps --editable=/app/ && \
+    python -m compileall -q /app/${package}_geoportal -x /app/${package}_geoportal/static.* && \
     c2cwsgiutils_genversion.py $GIT_HASH
 
 ENV NODE_PATH=/usr/lib/node_modules \

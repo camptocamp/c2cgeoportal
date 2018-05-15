@@ -174,5 +174,8 @@ endif
 	$(DOCKER_RUN) cp /opt/npm-packages .
 	$(PYTHON_BIN)/python -m pip install --editable=c2cgeoportal_commons --editable=c2cgeoportal_geoportal --editable=c2cgeoportal_admin
 	$(PYTHON_BIN)/python -m pip install --editable=geoportal
+	$(PYTHON_BIN)/python -m compileall -q .build/venv || true
+	$(PYTHON_BIN)/python -m compileall -q c2cgeoportal_*
+	$(PYTHON_BIN)/python -m compileall -q geoportal/$(PACKAGE)_geoportal -x geoportal/$(PACKAGE)_geoportal/static.*
 	cat npm-packages | xargs npm install
 	touch $@
