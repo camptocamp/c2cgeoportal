@@ -612,6 +612,8 @@ class C2cUpgradeTool:
         )]
         matcher = re.compile(r"CONST_create_tremplate.*/CONST_.+")
         status = [s for s in status if not matcher.match(s)]
+        matcher = re.compile(r"\.po$")
+        status = [s for s in status if not matcher.match(s)]
         status = [
             s for s in status if
             not os.path.exists(s[len("CONST_create_template/"):]) or
