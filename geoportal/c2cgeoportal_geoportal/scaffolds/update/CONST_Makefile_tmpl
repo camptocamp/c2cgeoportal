@@ -2,7 +2,6 @@ GEOMAPFISH_VERSION ?= {{geomapfish_version}}
 export GEOMAPFISH_VERSION
 export PACKAGE = {{package}}
 
-VISIBLE_WEB_HOST ?= example.com
 VISIBLE_WEB_PROTOCOL ?= https
 VISIBLE_WEB_PORT ?= 443
 VISIBLE_ENTRY_POINT ?= /
