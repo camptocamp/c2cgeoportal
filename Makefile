@@ -67,6 +67,10 @@ APPS += desktop mobile
 APPS_PACKAGE_PATH = geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal
 APPS_HTML_FILES = $(addprefix $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/, $(addsuffix .html.ejs_tmpl, $(APPS)))
 APPS_JS_FILES = $(addprefix $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/Controller, $(addsuffix .js_tmpl, $(APPS)))
+APPS_ALT += desktop_alt mobile_alt oeedit oeview
+APPS_PACKAGE_PATH_ALT = geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/geoportal/+package+_geoportal/
+APPS_HTML_FILES += $(addprefix $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/, $(addsuffix .html.ejs_tmpl, $(APPS_ALT)))
+APPS_JS_FILES += $(addprefix $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/Controller, $(addsuffix .js_tmpl, $(APPS_ALT)))
 APPS_FILES = $(APPS_HTML_FILES) $(APPS_JS_FILES) \
 	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/contextualdata.html \
 	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/background-layer-button.png \
@@ -330,6 +334,16 @@ $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/%.html.ejs_tmpl: ngeo/contribs/gmf/apps
 	import-ngeo-apps --html $* $< $@
 
 $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/Controller%.js_tmpl: ngeo/contribs/gmf/apps/%/Controller.js
+	$(PRERULE_CMD)
+	mkdir --parent $(dir $@)
+	import-ngeo-apps --js $* $< $@
+
+$(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/%.html.ejs_tmpl: ngeo/contribs/gmf/apps/%/index.html.ejs
+	$(PRERULE_CMD)
+	mkdir --parent $(dir $@)
+	import-ngeo-apps --html $* $< $@
+
+$(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/Controller%.js_tmpl: ngeo/contribs/gmf/apps/%/Controller.js
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	import-ngeo-apps --js $* $< $@
