@@ -173,6 +173,9 @@ vars:
   # Do not works with pyramid debug toolbar
   # subdomains: [s1, s2, s3]
 
+  mapserverproxy:
+    default_ogc_server: source for image/png
+
   fulltextsearch:
     languages:
       fr: french

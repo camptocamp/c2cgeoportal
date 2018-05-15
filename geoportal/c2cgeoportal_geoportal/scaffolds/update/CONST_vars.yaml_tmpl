@@ -261,9 +261,6 @@ vars:
 
   urllogin: {}
 
-  mapserverproxy:
-    default_ogc_server: source for image/png
-
   tinyowsproxy:
     # URL to internal TinyOWS instance
     tinyows_url: '{TINYOWS_URL}'
