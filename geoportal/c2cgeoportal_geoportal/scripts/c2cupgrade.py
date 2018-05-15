@@ -405,8 +405,6 @@ class C2cUpgradeTool:
                 prompt="Fill it and run it again:"
             )
         else:
-            self.options.use_makefile = True
-            self.options.makefile = self.options.new_makefile
             self.run_step(step + 1)
 
     @Step(5)
@@ -617,6 +615,9 @@ class C2cUpgradeTool:
             not os.path.exists(s[len("CONST_create_template/"):]) or
             not filecmp.cmp(s, s[len("CONST_create_template/"):])
         ]
+
+        self.options.use_makefile = True
+        self.options.makefile = self.options.new_makefile
 
         if len(status) > 0:
             with open("create.diff", "w") as diff_file:
