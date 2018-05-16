@@ -57,7 +57,7 @@ DIFF_NOTICE = "You should apply the changes shown in the diff file on `a/CONST_c
     "Some advice to be more efficient: if the changes on a file concern a file that you never customize, " \
     "you can simply copy the new file from `CONST_create_template` (`cp CONST_create_template/<file> <file>`)." \
     "If the changes shown on a file concern a file that you have heavily customized, you can probably " \
-    "ignore the changes."
+    "ignore the changes and add the file to the `unmanaged_files` section of the `project.yaml.mako` file."
 
 
 def main():
@@ -706,7 +706,7 @@ class C2cUpgradeTool:
         print(colorize("Congratulations, your upgrade was successful.", GREEN))
         print("")
         branch = check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode("utf-8").strip()
-        print("Now all your files can be committed, you should do a git push:")
+        print("Now all your files are committed; you should do a git push:")
         print("git push {0!s} {1!s}.".format(
             self.options.git_remote, branch
         ))
