@@ -608,7 +608,7 @@ class C2cUpgradeTool:
         status = [s for s in status if not s.startswith(
             "CONST_create_template/{}/static-ngeo/".format(self.project["project_package"]),
         )]
-        matcher = re.compile(r"CONST_create_tremplate.*/CONST_.+")
+        matcher = re.compile(r"CONST_create_template.*/CONST_.+")
         status = [s for s in status if not matcher.match(s)]
         matcher = re.compile(r"\.po$")
         status = [s for s in status if not matcher.match(s)]
