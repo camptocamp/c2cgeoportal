@@ -55,7 +55,9 @@ TEMPLATE_EXAMPLE = {
 DIFF_NOTICE = "You should apply the changes shown in the diff file on `a/CONST_create_template/<file>` " \
     "on your project's `<file>`.\n" \
     "Some advice to be more efficient: if the changes on a file concern a file that you never customize, " \
-    "you can simply copy the new file from `CONST_create_template` (`cp CONST_create_template/<file> <file>`)."
+    "you can simply copy the new file from `CONST_create_template` (`cp CONST_create_template/<file> <file>`)." \
+    "You can furthermore add this file to the `unmanaged_files` section of the `project.yaml.mako` file, " \
+    "to avoid its contents appearing in the diff file for the next upgrade."
 
 
 def main():
