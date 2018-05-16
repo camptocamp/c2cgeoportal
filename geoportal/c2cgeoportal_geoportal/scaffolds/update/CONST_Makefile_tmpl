@@ -107,7 +107,7 @@ GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 GIT_HASH ?= $(shell git rev-parse HEAD)
 
 # ngeo
-NODE_ENV=production
+NODE_ENV ?= production
 export NODE_ENV
 ANGULAR_VERSION = 1.6
 APP_OUTPUT_DIR = geoportal/$(PACKAGE)_geoportal/static-ngeo/build
