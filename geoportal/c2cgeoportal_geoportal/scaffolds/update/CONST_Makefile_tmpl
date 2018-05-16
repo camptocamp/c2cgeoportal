@@ -575,10 +575,11 @@ $(APP_OUTPUT_DIR)/images/: /usr/lib/node_modules/jquery-ui/themes/base/images
 		$(APP_OUTPUT_DIR)/images/
 	$(PRERULE_CMD)
 	# Workaround to make Webpack working for ol/index.js
-	rm --force --recursive node_modules
+	if [ -e node_modules ]; then mv node_modules node_modules_bak; fi
 	ln --symbolic /usr/lib/node_modules/ .
 	webpack $(WEBPACK_ARGS)
-	rm --force node_modules
+	rm node_modules
+	if [ -e node_modules_bak ]; then mv node_modules_bak node_modules; fi
 	touch $@
 
 .PHONY: serve
