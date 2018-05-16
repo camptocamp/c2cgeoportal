@@ -55,7 +55,8 @@ TEMPLATE_EXAMPLE = {
 DIFF_NOTICE = "You should apply the changes shown in the diff file on `a/CONST_create_template/<file>` " \
     "on your project's `<file>`.\n" \
     "Some advice to be more efficient: if the changes on a file concern a file that you never customize, " \
-    "you can simply copy the new file from `CONST_create_template` (`cp CONST_create_template/<file> <file>`)." \
+    "you can simply copy the new file from `CONST_create_template` " \
+    "(`cp CONST_create_template/<file> <file>`)." \
     "You can furthermore add this file to the `unmanaged_files` section of the `project.yaml.mako` file, " \
     "to avoid its contents appearing in the diff file for the next upgrade."
 
@@ -679,7 +680,8 @@ class C2cUpgradeTool:
             os.unlink(".UPGRADE_SUCCESS")
         ok, message = self.test_checkers()
         if not ok:
-            self.print_step(step, error=True, message=message, prompt="Correct the checker, then run the step again:")
+            self.print_step(step, error=True, message=message,
+                            prompt="Correct the checker, then run the step again:")
             exit(1)
 
         # Required to remove from the Git stage the ignored file when we lunch the step again
