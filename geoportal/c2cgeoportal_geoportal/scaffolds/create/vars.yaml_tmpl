@@ -85,6 +85,7 @@ vars:
       <<: *interface
       constants:
         <<: *constants
+        gmfPrintOptions: {scaleInput: true}
         gmfTreeManagerModeFlush: false
         ngeoRoutingOptions:
           - backendUrl: https://routing.osm.ch/
