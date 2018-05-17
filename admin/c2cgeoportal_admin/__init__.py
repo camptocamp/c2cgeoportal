@@ -56,6 +56,8 @@ def main(_, **settings):
     config.add_subscriber(add_renderer_globals, BeforeRender)
     config.add_subscriber(add_localizer, NewRequest)
 
+    config.add_tween("c2cgeoportal_admin.cache_tween.CacheTween")
+
     generate_mappers()
 
     health_check = HealthCheck(config)
