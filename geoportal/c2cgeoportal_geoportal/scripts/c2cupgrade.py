@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2014-2017, Camptocamp SA
+# Copyright (c) 2014-2018, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -52,11 +52,13 @@ TEMPLATE_EXAMPLE = {
     "srid": "${srid}",
     "extent": "489246, 78873, 837119, 296543",
 }
-DIFF_NOTICE = "The changes visible on `a/CONST_create_template/<file>` should be done on `<file>`.\n" \
-    "An advise to be more effective: in most cases it concerns a file that you never customize, " \
-    "or a file that you have heavily customized, then respectively copy the new file from " \
-    "`CONST_create_template` (`cp CONST_create_template/<file> <file>`), respectively ignore " \
-    "the changes."
+DIFF_NOTICE = "You should apply the changes shown in the diff file on `a/CONST_create_template/<file>` " \
+    "on your project's `<file>`.\n" \
+    "Some advice to be more efficient: if the changes on a file concern a file that you never customize, " \
+    "you can simply copy the new file from `CONST_create_template` " \
+    "(`cp CONST_create_template/<file> <file>`)." \
+    "You can furthermore add this file to the `unmanaged_files` section of the `project.yaml.mako` file, " \
+    "to avoid its contents appearing in the diff file for the next upgrade."
 
 
 def main():
@@ -71,7 +73,7 @@ def main():
     if options.new_makefile is None:
         options.new_makefile = options.makefile
 
-    print("Start the upgrade with the options:")
+    print("Starting the upgrade with options:")
     if options.windows:
         print("- windows")
     if options.nondocker:
@@ -102,7 +104,7 @@ def _fill_arguments():
     parser.add_argument(
         "--force-docker",
         action="store_true",
-        help="Use the desable the nondocker upgrade",
+        help="Disable the nondocker upgrade",
     )
     parser.add_argument(
         "--git-remote",
@@ -117,7 +119,7 @@ def _fill_arguments():
         "--new-makefile", help="The makefile used to override the makefile",
     )
     parser.add_argument(
-        "--use-makefile", action="store_true", help="c2cupgrade is running form a makefile",
+        "--use-makefile", action="store_true", help="c2cupgrade is running from a makefile",
     )
     parser.add_argument(
         "--step", type=int, help=argparse.SUPPRESS, default=0
@@ -152,14 +154,14 @@ class Step:
                     message="The command `./docker-run {}` returns the error code {}.".format(
                         " ".join(["'{}'".format(e) for e in e.cmd]), e.returncode
                     ),
-                    prompt="Fix it and run it again:"
+                    prompt="Fix the error and run the step again:"
                 )
                 exit(1)
             except InteruptedException as e:
                 c2cupgradetool.print_step(
                     self.step_number, error=True,
-                    message="It was an error: {}.".format(e),
-                    prompt="Fix it and run it again:"
+                    message="There was an error: {}.".format(e),
+                    prompt="Fix the error and run the step again:"
                 )
                 exit(1)
             except Exception as e:
@@ -169,7 +171,7 @@ class Step:
                     c2cupgradetool.print_step(
                         self.step_number, error=True,
                         message="The step get an error '{}'.".format(ex),
-                        prompt="Fix it and run it again:"
+                        prompt="Fix the error and run the step again:"
                     )
                 atexit.register(message)
                 raise
@@ -203,7 +205,7 @@ class C2cUpgradeTool:
         with open(".upgrade.yaml", "r") as f:
             return yaml.safe_load(f)[section]
 
-    def print_step(self, step, error=False, message=None, prompt="To continue type:"):
+    def print_step(self, step, error=False, message=None, prompt="To continue, type:"):
         print("")
         print(self.color_bar)
         if message is not None:
@@ -285,7 +287,7 @@ class C2cUpgradeTool:
             if required not in project_template_keys:
                 messages.append(
                     "The element '{}' is missing in the 'template_vars' of "
-                    "the file 'project.yaml.mako', you should for example: {}: {}.".format(
+                    "the file 'project.yaml.mako', you should have for example: {}: {}.".format(
                         required, required, TEMPLATE_EXAMPLE.get('required', '')
                     )
                 )
@@ -346,7 +348,7 @@ class C2cUpgradeTool:
             check_call(["sed", "--in-place", "s/    /  /g", "CONST_create_template/vars.yaml"])
 
         check_call(["git", "add", "--all", "--force", "CONST_create_template/"])
-        call(["git", "commit", "--message=Do the moves int the CONST_create_template folder"])
+        call(["git", "commit", "--message=Perform the move into the CONST_create_template folder"])
 
         self.run_step(step + 1)
 
@@ -388,21 +390,21 @@ class C2cUpgradeTool:
 
         if error:
             self.print_step(
-                step, error=True, message="There was some error on your project configuration, see above",
-                prompt="Fix it and run it again:"
+                step, error=True, message="There is an error in your project configuration, see above",
+                prompt="Fix it and run the step again:"
             )
             exit(1)
         elif "managed_files" not in self.project:
             self.print_step(
                 step,
-                message="In the new version we will also manage almost all the create "
+                message="In the new version, we will also manage almost all the create "
                 "template files.\n"
-                "By default following regex pattern will not be replaced:\n{}"
-                "Than you should fill the 'managed_files' in you 'project.yaml' file with at least "
+                "By default, files conforming to the following regex pattern will not be replaced:\n{}"
+                "Therefore, you should fill the 'managed_files' in you 'project.yaml' file with at least "
                 "`[]`.".format("\n".join([
                     "- " + e for e in self.project.get('unmanaged_files', [])
                 ])),
-                prompt="Fill it and run it again:"
+                prompt="Fill it and run the step again:"
             )
         else:
             self.run_step(step + 1)
@@ -421,8 +423,8 @@ class C2cUpgradeTool:
                 for pattern in self.project["managed_files"]:
                     if re.match(pattern + '$', file_):
                         print(colorize(
-                            "The file '{}' is no more use but not delete "
-                            "because he is in the managed_files as '{}'.".format(file_, pattern),
+                            "The file '{}' is no longer used used, but not deleted "
+                            "because it is in the managed_files as '{}'.".format(file_, pattern),
                             RED
                         ))
                         error = True
@@ -456,7 +458,7 @@ class C2cUpgradeTool:
                     for pattern in self.project["managed_files"]:
                         if re.match(pattern + '$', src):
                             print(colorize(
-                                "The {} '{}' is present in the managed_files as '{}' but he will move."
+                                "The {} '{}' is present in the managed_files as '{}', but it will move."
                                 .format(
                                     type_, src, pattern
                                 ),
@@ -467,7 +469,7 @@ class C2cUpgradeTool:
                             break
                         if re.match(pattern + '$', dst):
                             print(colorize(
-                                "The {} '{}' is present in the managed_files as '{}' but he will move."
+                                "The {} '{}' is present in the managed_files as '{}', but it will move."
                                 .format(
                                     type_, dst, pattern
                                 ),
@@ -678,7 +680,8 @@ class C2cUpgradeTool:
             os.unlink(".UPGRADE_SUCCESS")
         ok, message = self.test_checkers()
         if not ok:
-            self.print_step(step, error=True, message=message, prompt="Correct the checker, the it again:")
+            self.print_step(step, error=True, message=message,
+                            prompt="Correct the checker, then run the step again:")
             exit(1)
 
         # Required to remove from the Git stage the ignored file when we lunch the step again
@@ -702,10 +705,10 @@ class C2cUpgradeTool:
         print("")
         print(self.color_bar)
         print("")
-        print(colorize("Congratulations your upgrade is a success.", GREEN))
+        print(colorize("Congratulations, your upgrade was successful.", GREEN))
         print("")
         branch = check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode("utf-8").strip()
-        print("Now all your files will be committed, you should do a git push:")
+        print("Now all your files are committed; you should do a git push:")
         print("git push {0!s} {1!s}.".format(
             self.options.git_remote, branch
         ))
