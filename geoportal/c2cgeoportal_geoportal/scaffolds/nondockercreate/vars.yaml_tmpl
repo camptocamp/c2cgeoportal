@@ -271,6 +271,7 @@ vars:
 update_paths:
   - shortener
   - fulltextsearch
+  - authorized_referers
   - authtkt
   - admin_interface
   - checker.fulltextsearch
