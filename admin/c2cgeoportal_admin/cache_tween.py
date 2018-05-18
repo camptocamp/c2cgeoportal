@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+route_prefix = None
+
 
 class CacheTween:
 
@@ -37,6 +39,7 @@ class CacheTween:
     def __call__(self, request):
         # Never cache admin pages
         response = self.handler(request)
-        response.cache_control.no_cache = True
-        response.cache_control.max_age = 0
+        if route_prefix is None or request.path_info.startsWith(route_prefix):
+            response.cache_control.no_cache = True
+            response.cache_control.max_age = 0
         return response

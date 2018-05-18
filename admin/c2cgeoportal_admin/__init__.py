@@ -93,5 +93,9 @@ def includeme(config: Configurator):
     config.include('pyramid_tm')
     config.add_translation_dirs('c2cgeoportal_admin:locale')
 
+    import c2cgeoportal_admin.cache_tween
+    c2cgeoportal_admin.cache_tween.route_prefix = config.route_prefix
+    config.add_tween('c2cgeoportal_admin.cache_tween.CacheTween')
+
     with PermissionSetter(config):
         config.scan()
