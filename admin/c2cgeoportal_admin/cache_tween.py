@@ -39,7 +39,7 @@ class CacheTween:
     def __call__(self, request):
         # Never cache admin pages
         response = self.handler(request)
-        if route_prefix is None or request.path_info.startsWith(route_prefix):
+        if route_prefix is None or request.path_info.startswith(route_prefix):
             response.cache_control.no_cache = True
             response.cache_control.max_age = 0
         return response
