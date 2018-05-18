@@ -35,9 +35,8 @@ class CacheTween:
         self.handler = handler
 
     def __call__(self, request):
+        # Never cache admin pages
         response = self.handler(request)
-
-        if 'grid.json' in request.path_info:
-            response.cache_control.no_cache = True
-            response.cache_control.max_age = 0
+        response.cache_control.no_cache = True
+        response.cache_control.max_age = 0
         return response
