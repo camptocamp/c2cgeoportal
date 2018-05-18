@@ -19,6 +19,7 @@ sudo -u postgres psql -d $DATABASE -c "CREATE EXTENSION postgis;"
 Optionally update sqlachemy.url in development.ini or production.ini then:
 ```
 admin/.build/venv/bin/python3 commons/c2cgeoportal_commons/testing/initializedb.py # to create the database
+# or
 sudo -u postgres psql -d c2cgeoportal -f ./docker/demo-dump.sql # to create and populate the database (demo data)
 ```
 
