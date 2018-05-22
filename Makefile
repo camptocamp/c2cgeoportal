@@ -181,6 +181,7 @@ docker-build-build: $(shell docker-required --path . --replace-pattern='^test(.*
 .PHONY: prepare-tests
 prepare-tests: \
 		geoportal/tests/functional/test.ini \
+		geoportal/tests/functional/alembic.ini \
 		commons/tests.yaml \
 		admin/tests.ini \
 		docker-compose.yaml \
