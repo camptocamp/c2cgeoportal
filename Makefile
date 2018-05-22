@@ -255,7 +255,7 @@ spell:
 		$(shell find geoportal/c2cgeoportal_geoportal -name static -prune -or -name '*.py' -print) \
 		$(shell find admin/c2cgeoportal_admin -name '*.py' -print)
 
-YAML_FILES ?= $(shell find -name ngeo -prune -or -name functional -prune -or \( -name "*.yml" -or -name "*.yaml" \) -print)
+YAML_FILES ?= $(shell find -name node_modules -prune -or -name .build -prune -or -name ngeo -prune -or -name functional -prune -or \( -name "*.yml" -or -name "*.yaml" \) -print)
 .PHONY: yamllint
 yamllint:
 	yamllint --strict --config-file=yamllint.yaml -s $(YAML_FILES)

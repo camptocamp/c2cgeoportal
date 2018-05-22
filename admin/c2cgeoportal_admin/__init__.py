@@ -56,6 +56,8 @@ def main(_, **settings):
     config.add_subscriber(add_renderer_globals, BeforeRender)
     config.add_subscriber(add_localizer, NewRequest)
 
+    config.add_tween('c2cgeoportal_admin.cache_tween.CacheTween')
+
     generate_mappers()
 
     health_check = HealthCheck(config)
@@ -90,6 +92,10 @@ def includeme(config: Configurator):
     # Use pyramid_tm to hook the transaction lifecycle to the request
     config.include('pyramid_tm')
     config.add_translation_dirs('c2cgeoportal_admin:locale')
+
+    import c2cgeoportal_admin.cache_tween
+    c2cgeoportal_admin.cache_tween.route_prefix = config.route_prefix
+    config.add_tween('c2cgeoportal_admin.cache_tween.CacheTween')
 
     with PermissionSetter(config):
         config.scan()
