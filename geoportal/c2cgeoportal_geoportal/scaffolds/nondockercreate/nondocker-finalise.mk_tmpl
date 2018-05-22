@@ -177,5 +177,6 @@ endif
 	$(PYTHON_BIN)/python -m compileall -q .build/venv || true
 	$(PYTHON_BIN)/python -m compileall -q c2cgeoportal_*
 	$(PYTHON_BIN)/python -m compileall -q geoportal/$(PACKAGE)_geoportal -x geoportal/$(PACKAGE)_geoportal/static.*
+	rm --force --recursive node_modules
 	cat npm-packages | xargs npm install
 	touch $@
