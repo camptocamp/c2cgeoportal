@@ -2,6 +2,8 @@
 
 WORKSPACE=$2
 
+export NODE_ENV=development
+
 function pcreate {
     ./docker-run --image=camptocamp/geomapfish-build --share $1 pcreate --scaffold=$2 $1/testgeomapfish \
         --overwrite --ignore-conflicting-name --package-name testgeomapfish
@@ -76,7 +78,7 @@ fi
 if [ "$1" = "docker" ]
 then
     cd ${WORKSPACE}/docker/testgeomapfish
-    ./docker-run make upgrade
+    ./docker-run --env=NODE_ENV make upgrade
     if [ ! -e .UPGRADE_SUCCESS ]
     then
         echo "Fail to upgrade"
@@ -93,7 +95,7 @@ fi
 if [ "$1" = "nondocker" ]
 then
     cd ${WORKSPACE}/nondocker/testgeomapfish
-    ./docker-run make --makefile=testgeomapfish.mk upgrade
+    ./docker-run --env=NODE_ENV make --makefile=testgeomapfish.mk upgrade
     if [ ! -e .UPGRADE_SUCCESS ]
     then
         echo "Fail to upgrade"
@@ -126,7 +128,7 @@ then
     cp {CONST_create_template/,}vars.yaml
     cp {CONST_create_template/,}mapserver/tinyows.xml.mako
     cp {CONST_create_template/,}print/print-apps/testgeomapfish/config.yaml.mako
-    ./docker-run make upgrade11
+    ./docker-run --env=NODE_ENV make upgrade11
     if [ ! -e .UPGRADE_SUCCESS ]
     then
         echo "Fail to upgrade"
@@ -152,7 +154,7 @@ then
     git add Makefile project.yaml.mako
     git commit --quiet --message="Start upgrade"
     export APACHE_VHOST=test
-    ./docker-run make upgrade
+    ./docker-run --env=NODE_ENV make upgrade
     if [ ! -e .UPGRADE10 ]
     then
         echo "Fail to upgrade"
@@ -163,7 +165,7 @@ then
     cp {CONST_create_template/,}testgeomapfish.mk
     cp {CONST_create_template/,}mapserver/tinyows.xml.mako
     cp {CONST_create_template/,}print/print-apps/testgeomapfish/config.yaml.mako
-    ./docker-run make --makefile=testgeomapfish.mk upgrade11
+    ./docker-run --env=NODE_ENV make --makefile=testgeomapfish.mk upgrade11
     if [ ! -e .UPGRADE_SUCCESS ]
     then
         echo "Fail to upgrade"
@@ -237,6 +239,5 @@ if [ "$1" = "cleanup" ]
 then
     rm --recursive --force ${WORKSPACE}/nondockerref ${WORKSPACE}/dockerref \
         ${WORKSPACE}/nondocker ${WORKSPACE}/docker \
-        ${WORKSPACE}/v220-todocker ${WORKSPACE}/v220-tonondocker \
-        ${WORKSPACE}/testgeomapfish
+        ${WORKSPACE}/v220-todocker ${WORKSPACE}/v220-tonondocker
 fi

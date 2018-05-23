@@ -7,7 +7,6 @@ env.MAIN_BRANCH = MAIN_BRANCH
 final MAJOR_VERSION = '2.3'
 env.MAJOR_VERSION = MAJOR_VERSION
 env.CI = 'true'
-env.NODE_ENV = 'development'
 
 def clean() {
     sh 'git clean -dx --force'
@@ -20,6 +19,9 @@ def clean() {
     sh 'docker ps'
     sh 'docker ps --all --filter status=exited'
     sh 'docker volume ls'
+
+    sh 'travis/test-upgrade-convert.sh cleanup ${HOME}/workspace'
+    sh 'rm -rf ${HOME}/workspace/testgeomapfish'
 }
 
 dockerBuild {
@@ -168,7 +170,6 @@ dockerBuild {
                     sh 'travis/test-upgrade-convert.sh nondocker ${HOME}/workspace'
                     sh 'travis/test-upgrade-convert.sh todocker ${HOME}/workspace'
                 } finally {
-                    sh 'travis/test-upgrade-convert.sh cleanup ${HOME}/workspace'
                     sh 'docker stop geomapfish-db'
                     sh 'docker rm --volumes geomapfish-db'
                 }
