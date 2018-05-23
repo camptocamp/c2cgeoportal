@@ -1,0 +1,200 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>ngeo &#8212; c2cgeoportal  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Specific Backend Configuration" href="backend.html" />
+    <link rel="prev" title="Build configuration" href="make.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="ngeo">
+<span id="integrator-ngeo"></span><h1>ngeo<a class="headerlink" href="#ngeo" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="organisation">
+<h2>Organisation<a class="headerlink" href="#organisation" title="Permalink to this headline">¶</a></h2>
+<p>The main page where we can redefine the header
+is in the file: <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/templates/&lt;interface&gt;.html</span></code>,
+where <code class="docutils literal notranslate"><span class="pre">&lt;interface&gt;</span></code> is the interface name or “index” for the default interface.</p>
+<p>The viewer (map and all related tools)
+is defined in the file: <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/static-ngeo/js/&lt;interface&gt;.js</span></code>,
+where <code class="docutils literal notranslate"><span class="pre">&lt;interface&gt;</span></code> is the interface name or “main” for the default interface.</p>
+<p>Finally, the image should be placed in the folder <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/static-ngeo/images/</span></code>.</p>
+<p>The style sheet file for the whole project is <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/static-ngeo/less/&lt;package&gt;.less</span></code>.</p>
+<p>The style sheet file for a specific interface is <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/static-ngeo/less/&lt;interface&gt;.less</span></code>.</p>
+</div>
+<div class="section" id="html-file">
+<h2>HTML file<a class="headerlink" href="#html-file" title="Permalink to this headline">¶</a></h2>
+<p>In this file you can add some blocks like</p>
+<div class="code html highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">gmf</span><span class="o">-</span><span class="n">authentication</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;login&quot;</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;slide&quot;</span> <span class="n">data</span><span class="o">-</span><span class="n">header</span><span class="o">-</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Login&quot;</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">gmf</span><span class="o">-</span><span class="n">authentication</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>to include a directive.</p>
+<p>You can find the available directives in the
+<a class="reference external" href="http://camptocamp.github.io/ngeo/master/apidoc/">ngeo documentation</a>
+in the sections <code class="docutils literal notranslate"><span class="pre">gmf/Directives</span></code> and <code class="docutils literal notranslate"><span class="pre">ngeo/Directives</span></code>.</p>
+<p>The controller (<code class="docutils literal notranslate"><span class="pre">js</span></code> file) is commonly named <code class="docutils literal notranslate"><span class="pre">mainCtrl</span></code>. So you can use a value
+from the controller by doing the following (here, the controller is the <code class="docutils literal notranslate"><span class="pre">DesktopController</span></code>):</p>
+<div class="code html highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">html</span> <span class="n">lang</span><span class="o">=</span><span class="s2">&quot;{{desktopCtrl.lang}}&quot;</span> <span class="n">ng</span><span class="o">-</span><span class="n">app</span><span class="o">=</span><span class="s2">&quot;mydemo&quot;</span> <span class="n">ng</span><span class="o">-</span><span class="n">controller</span><span class="o">=</span><span class="s2">&quot;DesktopController as mainCtrl&quot;</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">head</span><span class="o">&gt;</span>
+  <span class="o">...</span>
+  <span class="o">&lt;/</span><span class="n">head</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">body</span><span class="o">&gt;</span>
+  <span class="o">...</span>
+  <span class="o">&lt;</span><span class="n">gmf</span><span class="o">-</span><span class="n">mydirective</span> <span class="n">gmf</span><span class="o">-</span><span class="n">mydirective</span><span class="o">-</span><span class="n">variableproperty</span><span class="o">=</span><span class="s2">&quot;mainCtrl.open&quot;</span>
+                   <span class="n">gmf</span><span class="o">-</span><span class="n">mydirective</span><span class="o">-</span><span class="n">staticproperty</span><span class="o">=</span><span class="s2">&quot;::mainCtrl.map&quot;</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">gmf</span><span class="o">-</span><span class="n">mydirective</span><span class="o">&gt;</span>
+  <span class="o">...</span>
+  <span class="o">&lt;/</span><span class="n">body</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">html</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">js</span></code> constants of the application are defined at the end of the file:</p>
+<div class="code html highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">script</span><span class="o">&gt;</span>
+  <span class="p">(</span><span class="n">function</span><span class="p">()</span> <span class="p">{</span>
+     <span class="n">var</span> <span class="n">module</span> <span class="o">=</span> <span class="n">angular</span><span class="o">.</span><span class="n">module</span><span class="p">(</span><span class="s1">&#39;&lt;package&gt;&#39;</span><span class="p">);</span>
+     <span class="n">var</span> <span class="n">serverVars</span> <span class="o">=</span> <span class="p">{</span>
+         <span class="o">/**</span>
+          <span class="o">*</span> <span class="n">Here</span> <span class="n">the</span> <span class="n">i18n</span> <span class="ow">is</span> <span class="n">configured</span>
+          <span class="o">*/</span>
+       <span class="n">serviceUrls</span><span class="p">:</span> <span class="p">{</span>
+         <span class="o">/**</span>
+          <span class="o">*</span> <span class="n">Here</span> <span class="n">you</span> <span class="n">configure</span> <span class="n">the</span> <span class="n">services</span> <span class="n">URL</span>
+          <span class="o">*/</span>
+       <span class="p">}</span>
+     <span class="p">};</span>
+     <span class="n">module</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;serverVars&#39;</span><span class="p">,</span> <span class="n">serverVars</span><span class="p">);</span>
+   <span class="p">})();</span>
+<span class="o">&lt;/</span><span class="n">script</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="controller-js-file">
+<h2>Controller (js file)<a class="headerlink" href="#controller-js-file" title="Permalink to this headline">¶</a></h2>
+<p>In the controller you have some lines like:</p>
+<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/**</span> <span class="nd">@suppress</span> <span class="p">{</span><span class="n">extraRequire</span><span class="p">}</span> <span class="o">*/</span>
+<span class="n">goog</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="s1">&#39;gmf.authenticationDirective&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>This is needed to include the javascript of the used directives.</p>
+<p>The map configuration will be here:</p>
+<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span>goog.base(
+      this, {
+        srid: 21781,
+        mapViewConfig: {
+          center: [632464, 185457],
+          zoom: 3,
+          resolutions: [250, 100, 50, 20, 10, 5, 2, 1, 0.5, 0.25, 0.1, 0.05]
+        }
+      },
+      $scope, $injector);
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you previously had a CGXP application and want to keep your permalinks
+compatible, the resolutions should be the same as in the previous
+application.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">ngeo</a><ul>
+<li><a class="reference internal" href="#organisation">Organisation</a></li>
+<li><a class="reference internal" href="#html-file">HTML file</a></li>
+<li><a class="reference internal" href="#controller-js-file">Controller (js file)</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+  <li><a href="configuration.html">Configuration Guide for advanced settings</a><ul>
+      <li>Previous: <a href="make.html" title="previous chapter">Build configuration</a></li>
+      <li>Next: <a href="backend.html" title="next chapter">Specific Backend Configuration</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/integrator/ngeo.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2018, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/integrator/ngeo.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

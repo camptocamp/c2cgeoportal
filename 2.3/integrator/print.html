@@ -1,0 +1,210 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Print &#8212; c2cgeoportal  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="JavaScript API" href="api.html" />
+    <link rel="prev" title="Digital Elevation Tools" href="raster.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="print">
+<span id="integrator-print"></span><h1>Print<a class="headerlink" href="#print" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="using-mapfish-print-v3">
+<h2>Using MapFish Print v3<a class="headerlink" href="#using-mapfish-print-v3" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="migration-from-the-v2">
+<h3>Migration from the v2<a class="headerlink" href="#migration-from-the-v2" title="Permalink to this headline">¶</a></h3>
+<p>Start the migration by instantiating the default template:</p>
+<pre class="highlight"><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1"><span class="nb">cd</span> &lt;project_root&gt;</span>
+<span class="prompt1">cp -r print ~</span>
+<span class="prompt1">git rm -r print</span>
+<span class="prompt1"><span class="nv">SRID</span><span class="o">=</span>-1 ./docker-run pcreate --interactive --scaffold<span class="o">=</span>c2cgeoportal_create --package-name<span class="o">=</span>&lt;package&gt; /tmp/&lt;project&gt;</span>
+<span class="prompt1">./docker-run pcreate --interactive --scaffold<span class="o">=</span>c2cgeoportal_update --package-name<span class="o">=</span>&lt;package&gt; /tmp/&lt;project&gt;</span>
+<span class="prompt1">mv /tmp/&lt;project&gt;/print .</span>
+<span class="prompt1">rm -rf /tmp/&lt;project&gt;</span>
+</pre><p>Then in <code class="docutils literal notranslate"><span class="pre">~/print</span></code> you will have a backup of the old template, and in the <code class="docutils literal notranslate"><span class="pre">print</span></code> folder you will have the new print configuration.</p>
+<p>In the <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;.mk</span></code> you should remove the <code class="docutils literal notranslate"><span class="pre">PRINT_VERSION</span> <span class="pre">=</span> <span class="pre">2</span></code> (it is <code class="docutils literal notranslate"><span class="pre">3</span></code> by default).</p>
+<p>In the concerned viewer javascript files, in the <code class="docutils literal notranslate"><span class="pre">cgxp_print</span></code> plugin add the following lines:</p>
+<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">version</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+<span class="n">encodeLayer</span><span class="p">:</span> <span class="p">{},</span>
+<span class="n">encodeExternalLayer</span><span class="p">:</span> <span class="p">{},</span>
+<span class="n">additionalAttributes</span><span class="p">:</span> <span class="p">[]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="template-configuration">
+<h3>Template configuration<a class="headerlink" href="#template-configuration" title="Permalink to this headline">¶</a></h3>
+<p>All print-related files are located in the <code class="docutils literal notranslate"><span class="pre">print/</span></code> folder, and the files related to the template in the
+<code class="docutils literal notranslate"><span class="pre">print/print-apps/&lt;package&gt;</span></code> folder.</p>
+<p>The main configuration file is <code class="docutils literal notranslate"><span class="pre">print/print-apps/&lt;package&gt;/config.yaml</span></code>.</p>
+<ul class="simple">
+<li><a class="reference external" href="http://mapfish.github.io/mapfish-print-doc/">MapFish print documentation</a></li>
+<li><a class="reference external" href="http://mapfish.github.io/mapfish-print-doc/#/jasperReports">Startup with Jasper Reports</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="using-a-single-print-server-in-a-set-of-sites">
+<h2>Using a single print server in a set of sites<a class="headerlink" href="#using-a-single-print-server-in-a-set-of-sites" title="Permalink to this headline">¶</a></h2>
+<p>For memory issues it is recommended to only use a single print server for a set of sites.</p>
+<p>For that we need to have only one <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code> which can easily be
+generated by the templating. Then we should do:</p>
+<ul>
+<li><p class="first">Remove the print from the <code class="docutils literal notranslate"><span class="pre">children</span></code> projects by
+removing the <code class="docutils literal notranslate"><span class="pre">print</span></code> folder:</p>
+<pre class="highlight"><span class="prompt1">git rm print</span>
+</pre></li>
+<li><p class="first">Deactivate the print compilation by adding the following lines
+in the <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;.mk</span></code> file:</p>
+<div class="code make highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">PRINT_VERSION</span> <span class="o">=</span> <span class="n">NONE</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Point to the parent print server by editing the following lines
+in the <code class="docutils literal notranslate"><span class="pre">vars_&lt;package&gt;.yaml</span></code> file:</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
+    <span class="o">...</span>
+    <span class="c1"># For print proxy</span>
+    <span class="c1"># This value means that we use the parent print server</span>
+    <span class="n">print_url</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="p">{</span><span class="n">host</span><span class="p">}:</span><span class="mi">8080</span><span class="o">/</span><span class="nb">print</span><span class="o">/</span><span class="n">pdf</span><span class="o">/</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">If needed set the print templates used by anonymous users by adding the
+following in the application configuration (<code class="docutils literal notranslate"><span class="pre">vars_&lt;package&gt;.yaml</span></code>):</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
+  <span class="o">...</span>
+  <span class="n">functionalities</span><span class="p">:</span>
+      <span class="n">anonymous</span><span class="p">:</span>
+          <span class="n">print_template</span><span class="p">:</span>
+          <span class="o">-</span> <span class="mi">1</span> <span class="n">A4</span> <span class="n">child</span>
+          <span class="o">-</span> <span class="mi">2</span> <span class="n">A3</span> <span class="n">child</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This system works for print v2 but must be adapted for
+print v3 (although that is the same idea).</p>
+</div>
+</div>
+<div class="section" id="having-a-dedicated-print-instance">
+<h2>Having a dedicated print instance<a class="headerlink" href="#having-a-dedicated-print-instance" title="Permalink to this headline">¶</a></h2>
+<p>The goal is to be able to create a custom makefile with which one we make:</p>
+<pre class="highlight"><span class="prompt1">make --makefile<span class="o">=</span>&lt;file&gt;.mk</span>
+</pre><p>To have only the print.</p>
+<p>For this, create a makefile with:</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">BUILD_RULES</span> <span class="o">=</span> <span class="n">test</span><span class="o">-</span><span class="n">packages</span> <span class="nb">print</span>
+<span class="n">TEST_PACKAGES</span> <span class="o">=</span> <span class="n">main</span> <span class="nb">print</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Print</a><ul>
+<li><a class="reference internal" href="#using-mapfish-print-v3">Using MapFish Print v3</a><ul>
+<li><a class="reference internal" href="#migration-from-the-v2">Migration from the v2</a></li>
+<li><a class="reference internal" href="#template-configuration">Template configuration</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#using-a-single-print-server-in-a-set-of-sites">Using a single print server in a set of sites</a></li>
+<li><a class="reference internal" href="#having-a-dedicated-print-instance">Having a dedicated print instance</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+  <li><a href="features.html">Additional features</a><ul>
+      <li>Previous: <a href="raster.html" title="previous chapter">Digital Elevation Tools</a></li>
+      <li>Next: <a href="api.html" title="next chapter">JavaScript API</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/integrator/print.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2018, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/integrator/print.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

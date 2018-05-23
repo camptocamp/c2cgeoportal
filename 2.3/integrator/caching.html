@@ -1,0 +1,137 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Caching &#8212; c2cgeoportal  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Create a cluster" href="cluster.html" />
+    <link rel="prev" title="Specific configuration for GeoServer" href="backend_geoserver.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="caching">
+<span id="integrator-caching"></span><h1>Caching<a class="headerlink" href="#caching" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="headers">
+<h2>Headers<a class="headerlink" href="#headers" title="Permalink to this headline">¶</a></h2>
+<p>By default most of the elements will be cached for 10 days by the browser.</p>
+<p>To change this value for all the application change in the
+<code class="docutils literal notranslate"><span class="pre">vars_&lt;package&gt;.yaml</span></code> file the <code class="docutils literal notranslate"><span class="pre">vars/default_max_age</span></code> value. <code class="docutils literal notranslate"><span class="pre">0</span></code> will mean <code class="docutils literal notranslate"><span class="pre">no-cache</span></code>.
+The specified value is in seconds.</p>
+<p>To change this value for a specific service add the following stricture in the
+<code class="docutils literal notranslate"><span class="pre">vars_&lt;package&gt;.yaml</span></code>:</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
+    <span class="n">headers</span><span class="p">:</span>
+        <span class="o">&lt;</span><span class="n">service_name</span><span class="o">&gt;</span><span class="p">:</span>
+            <span class="n">cache_control_max_age</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">max_age</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Where <code class="docutils literal notranslate"><span class="pre">&lt;service_name&gt;</span></code> can be: <code class="docutils literal notranslate"><span class="pre">entry</span></code>, <code class="docutils literal notranslate"><span class="pre">fulltextsearch</span></code>, <code class="docutils literal notranslate"><span class="pre">mapserver</span></code>,
+<code class="docutils literal notranslate"><span class="pre">print</span></code> or <code class="docutils literal notranslate"><span class="pre">layers</span></code> (editing).</p>
+</div>
+<div class="section" id="internal">
+<h2>Internal<a class="headerlink" href="#internal" title="Permalink to this headline">¶</a></h2>
+<p>The application also has an internal cache, that will be invalidated on
+application start and after each modification in the <code class="docutils literal notranslate"><span class="pre">Theme</span></code> or the
+<code class="docutils literal notranslate"><span class="pre">RestrictionArea</span></code>.</p>
+<p>The internal cache can also be invalidated by calling the URL
+<code class="docutils literal notranslate"><span class="pre">http://&lt;server&gt;/&lt;instance&gt;/wsgi/invalidate</span></code>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Caching</a><ul>
+<li><a class="reference internal" href="#headers">Headers</a></li>
+<li><a class="reference internal" href="#internal">Internal</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+  <li><a href="configuration.html">Configuration Guide for advanced settings</a><ul>
+      <li>Previous: <a href="backend_geoserver.html" title="previous chapter">Specific configuration for GeoServer</a></li>
+      <li>Next: <a href="cluster.html" title="next chapter">Create a cluster</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/integrator/caching.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2018, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/integrator/caching.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

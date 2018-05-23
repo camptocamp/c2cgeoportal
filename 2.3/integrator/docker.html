@@ -1,0 +1,314 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Use Docker to deploy your application &#8212; c2cgeoportal  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Application Operation" href="operations.html" />
+    <link rel="prev" title="Routing interface" href="routing.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="use-docker-to-deploy-your-application">
+<span id="integrator-docker"></span><h1>Use Docker to deploy your application<a class="headerlink" href="#use-docker-to-deploy-your-application" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="architecture-schema">
+<h2>Architecture schema<a class="headerlink" href="#architecture-schema" title="Permalink to this headline">¶</a></h2>
+<img alt="../_images/docker.png" src="../_images/docker.png" />
+</div>
+<div class="section" id="configure-your-project">
+<h2>Configure your project<a class="headerlink" href="#configure-your-project" title="Permalink to this headline">¶</a></h2>
+<p>Edit the <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;.mk</span></code> file and add those lines:</p>
+<div class="code make highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">DOCKER</span> <span class="o">=</span> <span class="n">TRUE</span>
+<span class="n">DOCKER_BASE</span> <span class="o">=</span> <span class="n">camptocamp</span><span class="o">/&lt;</span><span class="n">project_name</span><span class="o">&gt;</span>
+<span class="n">JASPERREPORTS_VERSION</span> <span class="o">=</span> <span class="mf">6.1</span><span class="o">.</span><span class="mi">1</span>
+</pre></div>
+</div>
+<p>After that, a <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">--makefile=&lt;xxx.mk&gt;</span> <span class="pre">build</span></code> will create Docker images named like
+that:</p>
+<ul class="simple">
+<li>camptocamp/&lt;project_name&gt;_wsgi:latest</li>
+<li>camptocamp/&lt;project_name&gt;_mapserver:latest</li>
+<li>camptocamp/&lt;project_name&gt;_print:latest</li>
+</ul>
+<p>The tag is by default <code class="docutils literal notranslate"><span class="pre">latest</span></code>, but you can change it by setting the
+<code class="docutils literal notranslate"><span class="pre">DOCKER_TAG</span></code> Makefile variable.</p>
+<p>Edit <code class="docutils literal notranslate"><span class="pre">vars_&lt;package&gt;.yaml</span></code> and add:</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dbhost</span><span class="p">:</span> <span class="n">db</span>
+<span class="n">dbhost_slave</span><span class="p">:</span> <span class="n">db</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="database-container">
+<h2>Database container<a class="headerlink" href="#database-container" title="Permalink to this headline">¶</a></h2>
+<p>You can add scripts to populate the DB container by adding <code class="docutils literal notranslate"><span class="pre">.sql</span></code> or <code class="docutils literal notranslate"><span class="pre">.sh</span></code>
+files in the <code class="docutils literal notranslate"><span class="pre">testdb</span></code> directory. They must start with 2 digits, followed by
+an underscore. Please start at number 20.</p>
+</div>
+<div class="section" id="developer-composition">
+<h2>Developer composition<a class="headerlink" href="#developer-composition" title="Permalink to this headline">¶</a></h2>
+<p>A <code class="docutils literal notranslate"><span class="pre">docker-compose.yml.mako</span></code> file is created as a starting point.</p>
+<p>If you want to host the database on your local machine, you must add a
+<code class="docutils literal notranslate"><span class="pre">dbhost</span></code> and <code class="docutils literal notranslate"><span class="pre">dbhost_slave</span></code> entry pointing to <code class="docutils literal notranslate"><span class="pre">172.17.0.1</span></code> (your host address for Docker
+container) in your <code class="docutils literal notranslate"><span class="pre">vars_&lt;package&gt;.yaml</span></code> file. Then you need to make sure
+Postgres is configured to listen on that interface and accepts authentication.</p>
+<p>If you want to use an external serveur for the database, just put it is address
+in the <code class="docutils literal notranslate"><span class="pre">dbhost</span></code> and <code class="docutils literal notranslate"><span class="pre">dbhost_slave</span></code> entry.</p>
+</div>
+<div class="section" id="run-the-developer-composition">
+<h2>Run the developer composition<a class="headerlink" href="#run-the-developer-composition" title="Permalink to this headline">¶</a></h2>
+<pre class="highlight"><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">make --makefile<span class="o">=</span>&lt;xxx.mk&gt; build <span class="o">&amp;&amp;</span> docker-compose up</span>
+</pre><p>You can then access your application with <a class="reference external" href="http://localhost:8480/">http://localhost:8480/</a></p>
+</div>
+<div class="section" id="run-with-a-local-c2cgeoportal">
+<h2>Run with a local c2cgeoportal<a class="headerlink" href="#run-with-a-local-c2cgeoportal" title="Permalink to this headline">¶</a></h2>
+<p>If you need to fix bugs in c2cgeoportal or test new features, you need to hack
+the Docker image creation to use your version of c2cgeoportal.</p>
+<p>First, you need to move/copy you c2cgeoportal clone into you project root
+directory. That is needed to allow Docker to see those files.</p>
+<p>Then, add this line to your <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;.mk</span></code> file (before the <code class="docutils literal notranslate"><span class="pre">include</span> <span class="pre">...</span></code>):</p>
+<div class="code make highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TEMPLATE_EXCLUDE</span> <span class="o">=</span> <span class="n">c2cgeoportal</span>
+</pre></div>
+</div>
+<p>Edit your <code class="docutils literal notranslate"><span class="pre">.dockerignore</span></code> file and add those lines at the end:</p>
+<div class="code docker highlight-default notranslate"><div class="highlight"><pre><span></span>!c2cgeoportal/c2cgeoportal*
+!c2cgeoportal/setup.*
+!c2cgeoportal/requirements.txt
+</pre></div>
+</div>
+<p>Finally, edit your <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code> and add those lines just before the step #2:</p>
+<div class="code docker highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">COPY</span> <span class="n">c2cgeoportal</span> <span class="o">/</span><span class="n">app</span><span class="o">/</span><span class="n">c2cgeoportal</span>
+<span class="n">RUN</span> <span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">editable</span><span class="o">=</span><span class="n">c2cgeoportal</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="make-your-docker-images-configurable-from-the-composition">
+<h2>Make your Docker images configurable from the composition<a class="headerlink" href="#make-your-docker-images-configurable-from-the-composition" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="wsgi">
+<h3>WSGI<a class="headerlink" href="#wsgi" title="Permalink to this headline">¶</a></h3>
+<p>To make the DB connection used by your WSGI configurable from the
+composition, you can add this in your <code class="docutils literal notranslate"><span class="pre">vars_&lt;package&gt;.yaml</span></code> file:</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hooks</span><span class="p">:</span>
+  <span class="n">after_setup</span><span class="p">:</span> <span class="p">{{</span><span class="n">package</span><span class="p">}}</span><span class="o">.</span><span class="n">after_setup_hook</span>
+</pre></div>
+</div>
+<p>Then, in your <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/__init__.py</span></code> file, add this function:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">after_settings_hook</span><span class="p">(</span><span class="n">settings</span><span class="p">):</span>
+    <span class="n">DB_KEY</span> <span class="o">=</span> <span class="s2">&quot;sqlalchemy.url&quot;</span>
+    <span class="n">orig</span> <span class="o">=</span> <span class="n">settings</span><span class="p">[</span><span class="n">DB_KEY</span><span class="p">]</span>
+    <span class="n">new</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;SQLALCHEMY_URL&quot;</span><span class="p">,</span> <span class="n">orig</span><span class="p">)</span>
+    <span class="n">settings</span><span class="p">[</span><span class="n">DB_KEY</span><span class="p">]</span> <span class="o">=</span> <span class="n">new</span>
+</pre></div>
+</div>
+<p>By setting the <code class="docutils literal notranslate"><span class="pre">SQLALCHEMY_URL</span></code> environment variable in your composition
+for the WSGI image, you’ll be able to change the DB connection used.</p>
+<p>You can change your <code class="docutils literal notranslate"><span class="pre">production.ini</span></code> and <code class="docutils literal notranslate"><span class="pre">development.ini</span></code> files to use
+environment variables for configuring the loggers. Here is an example for
+the part about the logging:</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>[loggers]
+keys = root, sqlalchemy, c2cgeoportal
+
+[handlers]
+keys = console, logstash
+
+[formatters]
+keys = generic
+
+[logger_root]
+level = %(OTHER_LOG_LEVEL)s
+handlers = %(LOG_TYPE)s
+
+[logger_c2cgeoportal]
+level = %(C2C_LOG_LEVEL)s
+handlers =
+qualname = c2cgeoportal
+
+[logger_sqlalchemy]
+level = %(SQL_LOG_LEVEL)s
+handlers =
+qualname = sqlalchemy.engine
+
+[handler_console]
+class = StreamHandler
+args = (sys.stdout,)
+level = NOTSET
+formatter = generic
+
+[formatter_generic]
+format = %(levelname)-5.5s %(message)s
+
+[handler_logstash]
+class = cee_syslog_handler.CeeSysLogHandler
+args = [(&quot;%(LOG_HOST)s&quot;, %(LOG_PORT)s)]
+level = NOTSET
+</pre></div>
+</div>
+<p>Please note that to use
+<code class="docutils literal notranslate"><span class="pre">CeeSysLogHandler</span></code> you need to add <code class="docutils literal notranslate"><span class="pre">cee_syslog_handler&gt;=0.3.3</span></code> to your
+dependencies.</p>
+<p>Define default values for all those environment variables in your
+<code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code> and then you can change them in your composition. For example
+add the following at the end of your <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code>:</p>
+<blockquote>
+<div><div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ENV</span> <span class="n">LOG_TYPE</span> <span class="n">console</span>
+<span class="n">ENV</span> <span class="n">LOG_HOST</span> <span class="n">localhost</span>
+<span class="n">ENV</span> <span class="n">LOG_PORT</span> <span class="mi">514</span>
+<span class="n">ENV</span> <span class="n">C2C_LOG_LEVEL</span> <span class="n">WARN</span>
+<span class="n">ENV</span> <span class="n">SQL_LOG_LEVEL</span> <span class="n">WARN</span>
+<span class="n">ENV</span> <span class="n">OTHER_LOG_LEVEL</span> <span class="n">WARN</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="mapserver">
+<h3>MapServer<a class="headerlink" href="#mapserver" title="Permalink to this headline">¶</a></h3>
+<p>The created <code class="docutils literal notranslate"><span class="pre">mapserver/Dockerfile</span></code> file installs a hook to make the setup of
+the DB possible. Just set the <code class="docutils literal notranslate"><span class="pre">DB_CONNECTION</span></code> environment variable to
+something like that:</p>
+<div class="code docker highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">environment</span><span class="p">:</span>
+  <span class="n">DB_CONNECTION</span><span class="p">:</span> <span class="n">user</span><span class="o">=</span><span class="n">www</span><span class="o">-</span><span class="n">data</span> <span class="n">password</span><span class="o">=</span><span class="n">toto</span> <span class="n">dbname</span><span class="o">=</span><span class="n">geoacordaDev</span> <span class="n">host</span><span class="o">=</span><span class="n">db</span>
+</pre></div>
+</div>
+<p>To have the right URL in the GetCapabilities:</p>
+<ul>
+<li><p class="first">In the Admin interface configure an OGC server with the URL: “<a class="reference external" href="http://mapserver/mapserv_proxy">http://mapserver/mapserv_proxy</a>”.</p>
+</li>
+<li><p class="first">In the project vars file add this:</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
+    <span class="o">...</span>
+    <span class="n">host_formard_host</span><span class="p">:</span>
+    <span class="o">-</span> <span class="n">mapserver</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="keep-your-db-schema-up-to-date">
+<h2>Keep your DB schema up to date<a class="headerlink" href="#keep-your-db-schema-up-to-date" title="Permalink to this headline">¶</a></h2>
+<p>The WSGI image contains Alembic. You can use it as a start once container and
+add something like that in your composition:</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span>alembic:
+  labels:
+    io.rancher.container.start_once: &#39;true&#39;
+  image: company/prefix_wsgi:tag
+  environment:
+    SQLALCHEMY_URL: postgresql://postgres:${DB_PASSWORD}@db:5432/${DB_NAME}
+  links:
+    - db
+  command: ./run_alembic.sh
+</pre></div>
+</div>
+<p>When you do an upgrade, backup your DB and upgrade this container first. It will update your
+DB schema, if needed.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Use Docker to deploy your application</a><ul>
+<li><a class="reference internal" href="#architecture-schema">Architecture schema</a></li>
+<li><a class="reference internal" href="#configure-your-project">Configure your project</a></li>
+<li><a class="reference internal" href="#database-container">Database container</a></li>
+<li><a class="reference internal" href="#developer-composition">Developer composition</a></li>
+<li><a class="reference internal" href="#run-the-developer-composition">Run the developer composition</a></li>
+<li><a class="reference internal" href="#run-with-a-local-c2cgeoportal">Run with a local c2cgeoportal</a></li>
+<li><a class="reference internal" href="#make-your-docker-images-configurable-from-the-composition">Make your Docker images configurable from the composition</a><ul>
+<li><a class="reference internal" href="#wsgi">WSGI</a></li>
+<li><a class="reference internal" href="#mapserver">MapServer</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#keep-your-db-schema-up-to-date">Keep your DB schema up to date</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+      <li>Previous: <a href="routing.html" title="previous chapter">Routing interface</a></li>
+      <li>Next: <a href="operations.html" title="next chapter">Application Operation</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/integrator/docker.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2018, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/integrator/docker.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

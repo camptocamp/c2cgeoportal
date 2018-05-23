@@ -1,0 +1,128 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Authentication &#8212; c2cgeoportal  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="authentication">
+<h1>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="the-default-policy">
+<h2>The default policy<a class="headerlink" href="#the-default-policy" title="Permalink to this headline">¶</a></h2>
+<p>By default, <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> applications use an <em>auth ticket</em> authentication
+policy (<code class="docutils literal notranslate"><span class="pre">AuthTktAuthenticationPolicy</span></code>). With this policy, the user name is
+obtained from the “auth ticket” cookie set in the request.
+The policy is created, and added to the application’s configuration, in the
+application’s main <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> file.</p>
+</div>
+<div class="section" id="using-another-policy">
+<h2>Using another policy<a class="headerlink" href="#using-another-policy" title="Permalink to this headline">¶</a></h2>
+<p>When using <code class="docutils literal notranslate"><span class="pre">AuthTktAuthenticationPolicy</span></code>, an “auth ticket” cookie should be
+set in the request for the user to be identified. In some applications, using
+a custom identification mechanism may be needed instead, for instance to use SSO.
+Our knowledge base has an example of how this can be achieved.</p>
+</div>
+<div class="section" id="user-validation">
+<h2>User validation<a class="headerlink" href="#user-validation" title="Permalink to this headline">¶</a></h2>
+<p>For logging in, <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> validates the user credentials
+(username/password) by reading the user information from the <code class="docutils literal notranslate"><span class="pre">user</span></code> database
+table. If a c2cgeoportal application should work with another user information
+source, like LDAP, a custom <em>client validation</em> mechanism can be set up.
+Our knowledge base has an example of how this can be achieved.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Authentication</a><ul>
+<li><a class="reference internal" href="#the-default-policy">The default policy</a></li>
+<li><a class="reference internal" href="#using-another-policy">Using another policy</a></li>
+<li><a class="reference internal" href="#user-validation">User validation</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/integrator/authentication.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2018, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/integrator/authentication.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

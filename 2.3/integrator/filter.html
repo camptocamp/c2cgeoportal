@@ -1,0 +1,256 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Filter (Querier) &#8212; c2cgeoportal  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Full-text search" href="fulltext_search.html" />
+    <link rel="prev" title="Create a cluster" href="cluster.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="filter-querier">
+<span id="integrator-querier"></span><h1>Filter (Querier)<a class="headerlink" href="#filter-querier" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="filterable-layers-public">
+<h2>Filterable layers (public)<a class="headerlink" href="#filterable-layers-public" title="Permalink to this headline">¶</a></h2>
+<p>Per default, layers are not filterable.
+If you wish to provide the filter functionality, proceed as follows:</p>
+<ul class="simple">
+<li>Verify your project vars file to make sure that the functionality <code class="docutils literal notranslate"><span class="pre">filterable_layers</span></code>
+is made available in your project template files:<ul>
+<li>If you have a custom definition for <code class="docutils literal notranslate"><span class="pre">functionalities.available_in_templates</span></code>
+or <code class="docutils literal notranslate"><span class="pre">admin_interface.available_functionalities</span></code>, then ensure that the value
+<code class="docutils literal notranslate"><span class="pre">filterable_layers</span></code> is contained in both of these.</li>
+<li>Alternatively, you can add these two paths in the <code class="docutils literal notranslate"><span class="pre">update_paths</span></code> variable to use
+the definition provided by <code class="docutils literal notranslate"><span class="pre">CONST_vars.yaml</span></code> (and keep the inheritance) instead of replacing it.</li>
+</ul>
+</li>
+<li>If you wish to provide layers for filtering independently of user authorization (in particular,
+for not-logged-in users), add the layer names as follows to your project vars file:</li>
+</ul>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">functionalities</span><span class="p">:</span>
+    <span class="n">anonymous</span><span class="p">:</span>
+        <span class="n">filterable_layers</span><span class="p">:</span>
+        <span class="o">-</span> <span class="n">my_layer_name_1</span>
+        <span class="o">-</span> <span class="n">my_layer_name_2</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="filterable-layers-private">
+<h2>Filterable layers (private)<a class="headerlink" href="#filterable-layers-private" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>If you wish to provide layers for filtering only for specific user roles, define this in the
+admin interface as follows:<ul>
+<li>Add a functionality <code class="docutils literal notranslate"><span class="pre">filterable_layers</span></code>; as value provide the GeoMapFish layer name (not the WMS layer name).</li>
+<li>Edit the role that shall be able to use this filter, and activate the corresponding
+functionality checkbox.</li>
+</ul>
+</li>
+<li>Note that if there are functionalities associated to a role, then users with this role will
+not have access to any of the “anonymous” functionalities. Instead, you will need to activate
+all functionalities that this role shall be able to use in the admin interface or, for
+functionalities that all registered users shall have access to, via the
+<code class="docutils literal notranslate"><span class="pre">functionalities.registered</span></code> variable of your vars file.</li>
+</ul>
+</div>
+<div class="section" id="available-attributes-and-operators-in-filters">
+<h2>Available attributes and operators in filters<a class="headerlink" href="#available-attributes-and-operators-in-filters" title="Permalink to this headline">¶</a></h2>
+<p>All attributes defined as “exported” in the layer of your map server will be automatically available as
+filterable attribute. If the type, and so the operator on the attribute, is not adequate for
+filtering, you should adapt the type in your layer definition.
+See <a class="reference internal" href="../administrator/mapfile.html#administrator-mapfile-wfs-getfeature"><span class="std std-ref">WFS GetFeature</span></a> for more information (MapServer only).</p>
+</div>
+<div class="section" id="enumerate-available-attributes-for-a-layer">
+<h2>Enumerate available attributes for a layer<a class="headerlink" href="#enumerate-available-attributes-for-a-layer" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="step-1-project-configuration-file">
+<h3>Step 1: Project Configuration file<a class="headerlink" href="#step-1-project-configuration-file" title="Permalink to this headline">¶</a></h3>
+<p>In the filter panel, instead of the standard text field,
+it is possible to display combos providing the available values of
+the attributes. The values are automatically retrieved using a
+web service that does a <code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">distinct(&lt;column&gt;)</span> <span class="pre">FROM</span> <span class="pre">&lt;table&gt;</span></code>.</p>
+<p>The web service configuration is done in the <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file:</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">layers</span><span class="p">:</span>
+    <span class="n">enum</span><span class="p">:</span>
+        <span class="o">&lt;</span><span class="n">layer_name</span><span class="o">&gt;</span><span class="p">:</span>
+            <span class="n">dbsession</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">session</span> <span class="n">name</span><span class="o">&gt;</span>
+            <span class="n">attributes</span><span class="p">:</span>
+                <span class="o">&lt;</span><span class="n">attribute</span> <span class="n">name</span><span class="o">&gt;</span><span class="p">:</span>
+                    <span class="n">table</span><span class="p">:</span> <span class="o">&lt;</span><span class="p">[</span><span class="n">schema</span><span class="o">.</span><span class="p">]</span><span class="n">table</span> <span class="n">name</span><span class="o">&gt;</span>
+                    <span class="n">column_name</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">column</span> <span class="n">name</span><span class="o">&gt;</span>
+                    <span class="n">separator</span><span class="p">:</span> <span class="s2">&quot;,&quot;</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">dbsession:</span> <span class="pre">&quot;&lt;session</span> <span class="pre">name&gt;&quot;</span></code> at the <code class="docutils literal notranslate"><span class="pre">enum.defaults</span></code> level can be used
+to specify another DB session than the main DB session.
+See <a class="reference internal" href="multiple_databases.html#integrator-multiple-databases"><span class="std std-ref">Using multiple databases</span></a> regarding the setup of multiple databases.
+If omitted, the main DB session is used.</p>
+<p><code class="docutils literal notranslate"><span class="pre">table:</span> <span class="pre">&quot;&lt;[schema.]table</span> <span class="pre">name&gt;&quot;</span></code> may be used at the layer <code class="docutils literal notranslate"><span class="pre">defaults</span></code> level as a the default
+table where following attributes may be found. It can be overridden at the
+attribute level. <code class="docutils literal notranslate"><span class="pre">table</span></code> is a mandatory parameter.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">column_name</span></code> is not defined, the attribute name is used.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">separator</span></code> is defined, the column is considered as a list of values.</p>
+<p>Simple example:</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">layers</span>
+    <span class="n">enum</span><span class="p">:</span>
+        <span class="n">mapserver_layer</span><span class="p">:</span>
+            <span class="n">attributes</span><span class="p">:</span>
+                <span class="nb">type</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">layers</span><span class="o">-</span><span class="n">enum</span><span class="o">-</span><span class="n">mapserver</span><span class="o">-</span><span class="n">layer</span><span class="o">-</span><span class="n">defaults</span>
+                    <span class="n">table</span><span class="p">:</span> <span class="n">geodata</span><span class="o">.</span><span class="n">table</span>
+                <span class="n">country</span><span class="p">:</span> <span class="o">*</span><span class="n">layers</span><span class="o">-</span><span class="n">enum</span><span class="o">-</span><span class="n">mapserver</span><span class="o">-</span><span class="n">layer</span><span class="o">-</span><span class="n">defaults</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>If you use cgxp, make sure that the <code class="docutils literal notranslate"><span class="pre">cgxp_querier</span></code> plugin has
+the attribute <code class="docutils literal notranslate"><span class="pre">attributeURLs</span></code> in the <code class="docutils literal notranslate"><span class="pre">viewer.js</span></code> file:</p>
+<div class="code javascript last highlight-default notranslate"><div class="highlight"><pre><span></span>{
+    ptype: &quot;cgxp_querier&quot;,
+    attributeURLs: ${queryer_attribute_urls | n},
+    ...
+},
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="step-2-administration-interface">
+<h3>Step 2: Administration interface<a class="headerlink" href="#step-2-administration-interface" title="Permalink to this headline">¶</a></h3>
+<p>You can add some additional configuration in the administration interface as follows.</p>
+<p>It is possible to define enumerated or directed attributes, to wms layers only, via metadata.
+The metadata to look at is <code class="docutils literal notranslate"><span class="pre">enumeratedAttributes</span></code> or <code class="docutils literal notranslate"><span class="pre">directedFilterAttributes</span></code>.</p>
+<p>For enumerated attributes, the value is a single string or a list of attributes (that we defined earlier
+in the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file) separated with a comma.</p>
+<p>For directed attributes, it is a single string or a list of attributes defined in the mapfile
+(columns and aliases from the selected table).</p>
+<p>The difference is that enumerated attributes are configurable (like pointing to a specific database table),
+while directed attributes are ready-to-use values that come directly from the mapfile configuration.</p>
+<p>Client-side documentation related to the enumeratedAttributes and directedFilterAttributes metadata is available here:
+<a class="reference external" href="https://camptocamp.github.io/ngeo/master/apidoc/gmfThemes.GmfMetaData.html">gmfThemes.GmfMetaData</a></p>
+</div>
+<div class="section" id="using-db-sessions">
+<h3>Using DB sessions<a class="headerlink" href="#using-db-sessions" title="Permalink to this headline">¶</a></h3>
+<p>As explained above, it is possible to get the attributes lists including
+for layers whose data are hosted in external databases, using the
+<code class="docutils literal notranslate"><span class="pre">dbsession:</span> <span class="pre">&quot;&lt;session</span> <span class="pre">name&gt;&quot;</span></code> parameter.</p>
+<p>Such <a class="reference external" href="http://docs.sqlalchemy.org/en/rel_1_0/orm/session_basics.html#getting-a-session">DB session objects</a>
+must be listed in the <code class="docutils literal notranslate"><span class="pre">DBSessions</span></code> dictionary created in c2cgeoportal
+models file. Its default value is:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">DBSessions</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;dbsession&quot;</span><span class="p">:</span> <span class="n">DBSession</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">DBSession</span></code> being the session object linked to the default database.</p>
+<p>You may add your own DB session objects in the application’s <code class="docutils literal notranslate"><span class="pre">models.py</span></code> file.
+For instance:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">c2cgeoportal.models</span> <span class="k">import</span> <span class="n">DBSessions</span>
+<span class="n">DBSessions</span><span class="p">[</span><span class="s1">&#39;some_db_session_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">SomeDbSessionObject</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Filter (Querier)</a><ul>
+<li><a class="reference internal" href="#filterable-layers-public">Filterable layers (public)</a></li>
+<li><a class="reference internal" href="#filterable-layers-private">Filterable layers (private)</a></li>
+<li><a class="reference internal" href="#available-attributes-and-operators-in-filters">Available attributes and operators in filters</a></li>
+<li><a class="reference internal" href="#enumerate-available-attributes-for-a-layer">Enumerate available attributes for a layer</a><ul>
+<li><a class="reference internal" href="#step-1-project-configuration-file">Step 1: Project Configuration file</a></li>
+<li><a class="reference internal" href="#step-2-administration-interface">Step 2: Administration interface</a></li>
+<li><a class="reference internal" href="#using-db-sessions">Using DB sessions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+  <li><a href="configuration.html">Configuration Guide for advanced settings</a><ul>
+      <li>Previous: <a href="cluster.html" title="previous chapter">Create a cluster</a></li>
+      <li>Next: <a href="fulltext_search.html" title="next chapter">Full-text search</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/integrator/filter.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2018, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/integrator/filter.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

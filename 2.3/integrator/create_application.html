@@ -1,0 +1,384 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Create a new application &#8212; c2cgeoportal  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Install an existing application" href="install_application.html" />
+    <link rel="prev" title="Requirements" href="requirements.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="create-a-new-application">
+<span id="integrator-create-application"></span><h1>Create a new application<a class="headerlink" href="#create-a-new-application" title="Permalink to this headline">¶</a></h1>
+<p>Creating a new c2cgeoportal application is done by applying two Paste skeletons
+(a.k.a. templates and scaffolds). These skeletons are provided by the
+<code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> package. So to be able to create a c2cgeoportal application
+the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> package must be installed.</p>
+<p>If you already have a c2cgeoportal application installed, and if that
+application uses a version of c2cgeoportal that fits you, then you do not need
+to install c2cgeoportal again. Instead, you can use the version of c2cgeoportal
+that is already alongside the existing c2cgeoportal application.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Some c2cgeoportal applications provide their own skeletons. For example
+a <em>parent</em> application may provide a skeleton for creating <em>child</em>
+applications. In that case, the c2cgeoportal skeletons, as well as the
+application skeletons, should be applied.</p>
+</div>
+<div class="section" id="project-structure">
+<h2>Project structure<a class="headerlink" href="#project-structure" title="Permalink to this headline">¶</a></h2>
+<p>In the simple case the root directory of the application is the directory
+created by the c2cgeoportal skeletons (the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_create</span></code> and
+<code class="docutils literal notranslate"><span class="pre">c2cgeoportal_update</span></code> skeletons).</p>
+</div>
+<div class="section" id="install-c2cgeoportal">
+<h2>Install c2cgeoportal<a class="headerlink" href="#install-c2cgeoportal" title="Permalink to this headline">¶</a></h2>
+<p>This step is required if you cannot, or do not want, to create the c2cgeoportal
+application from an existing one. For example, if you are creating a child
+application from an existing parent application, it means you already have
+<code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> installed, so you can just skip this section, and directly go
+to the next.</p>
+<p>Also, installing <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code>, as described in this section, requires
+access to the c2cgeoportal GitHub repository. If you cannot view the
+<a class="reference external" href="https://github.com/camptocamp/c2cgeoportal">https://github.com/camptocamp/c2cgeoportal</a> page in your browser that means you
+do not have the required permissions. Please contact Camptocamp in that case.</p>
+<p>To get <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> you first need to get the related docker image:</p>
+<pre class="highlight"><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">docker pull camptocamp/geomapfish-build &lt;release<span class="p">|</span>version&gt;</span>
+<span class="prompt1">wget https://raw.githubusercontent.com/camptocamp/c2cgeoportal/master/docker-run</span>
+</pre></div>
+<div class="section" id="list-existing-skeletons">
+<h2>List existing skeletons<a class="headerlink" href="#list-existing-skeletons" title="Permalink to this headline">¶</a></h2>
+<p>To list the available skeletons/templates use the following command, either
+from the root directory of c2cgeoportal (if you have followed the instructions
+from the previous section), or from the root directory of the existing
+c2cgeoportal application you want to create the new application from:</p>
+<pre class="highlight"><span class="prompt1">./docker-run pcreate -l</span>
+</pre><p>You should at least see the c2cgeoportal skeletons:</p>
+<ul class="simple">
+<li>c2cgeoportal_create</li>
+<li>c2cgeoportal_update</li>
+</ul>
+</div>
+<div class="section" id="create-the-new-application">
+<h2>Create the new application<a class="headerlink" href="#create-the-new-application" title="Permalink to this headline">¶</a></h2>
+<p>The first step in the project creation is to chose a project name
+<code class="docutils literal notranslate"><span class="pre">&lt;project&gt;</span></code>, and a package name <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;</span></code>.</p>
+<p>Normally the project name should be the same name as the Git repository name.</p>
+<p>The package name should not contain an underscore (<code class="docutils literal notranslate"><span class="pre">_</span></code>) because of an
+issue with Pip.</p>
+<p>To create the application first apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_create</span></code> skeleton:</p>
+<pre class="highlight"><span class="prompt1">./docker-run pcreate -s c2cgeoportal_create &lt;project&gt;</span>
+</pre><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Do not add any ‘/’ after the project name.</p>
+</div>
+<p>You’ll be asked to enter the SRID and the Apache vhost for this project. Note
+that the default extent would be defined directly from the srid. You can change
+it later.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>You can define these information directly in the command line using
+parameters:</p>
+<blockquote class="last">
+<div><pre class="highlight"><span class="prompt1"><span class="nv">SRID</span><span class="o">=</span><span class="m">21781</span> <span class="nv">EXTENT</span><span class="o">=</span><span class="s2">&quot;420000 30000 900000 350000&quot;</span> <span class="se">\</span>
+   ./docker-run pcreate -s c2cgeoportal_create --package-name &lt;package&gt; &lt;project&gt;</span>
+</pre></div></blockquote>
+</div>
+<p>This will create a directory named <code class="docutils literal notranslate"><span class="pre">&lt;project&gt;</span></code> that will be next to the
+<code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> directory, or to the directory of the application you are
+creating this application from.</p>
+<p>Now apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_update</span></code> skeleton:</p>
+<pre class="highlight"><span class="prompt1"><span class="nv">SRID</span><span class="o">=</span><span class="m">21781</span> ./docker-run pcreate -s c2cgeoportal_update --package-name &lt;package&gt; &lt;project&gt;</span>
+</pre><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Do not add any ‘/’ after the project name.</p>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_update</span></code> scaffold is also used to update the
+application. The files generated by this skeleton are prefixed with
+<code class="docutils literal notranslate"><span class="pre">CONST_</span></code>, which means they are <em>constant</em> files that should not be changed.
+Following this rule is important for easier updates.</p>
+<p>Go to your new project:</p>
+<pre class="highlight"><span class="prompt1"><span class="nb">cd</span> &lt;project&gt;</span>
+</pre></div>
+<div class="section" id="put-the-application-under-revision-control">
+<h2>Put the application under revision control<a class="headerlink" href="#put-the-application-under-revision-control" title="Permalink to this headline">¶</a></h2>
+<p>Now is a good time to put the application source code under revision
+control (Git preferably).</p>
+<div class="section" id="to-add-a-project-in-a-new-repository">
+<h3>To add a project in a new repository<a class="headerlink" href="#to-add-a-project-in-a-new-repository" title="Permalink to this headline">¶</a></h3>
+<p>Add the project:</p>
+<pre class="highlight"><span class="prompt1">git init</span>
+<span class="prompt1">git add .</span>
+<span class="prompt1">git remote add origin git@github.com:camptocamp/&lt;project&gt;.git</span>
+</pre><p>Commit and push on the main repository:</p>
+<pre class="highlight"><span class="prompt1">git commit -m <span class="s2">&quot;Initial commit&quot;</span></span>
+<span class="prompt1">git push origin master</span>
+</pre></div>
+</div>
+<div class="section" id="configuration-of-different-environment-in-your-project">
+<h2>Configuration of different environment in your project<a class="headerlink" href="#configuration-of-different-environment-in-your-project" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="concepts">
+<h3>Concepts<a class="headerlink" href="#concepts" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Makefile: These files are environment configuration files. Each environment will
+have its configuration file (developer, preprod, prod)</li>
+<li>vars_xxx.yaml: These files are application configuration files. Generally only
+one file is needed to configure your application.</li>
+</ul>
+</div>
+<div class="section" id="hierarchy-and-extending-your-configuration-files">
+<h3>Hierarchy and extending your configuration files<a class="headerlink" href="#hierarchy-and-extending-your-configuration-files" title="Permalink to this headline">¶</a></h3>
+<p>The configuration files (Makefile and vars) have a hierarchy between them.
+These files extend other files. A Makefile extends another Makefile
+and similarly a vars file extends another vars file. This extension is visible
+in Makefile files:</p>
+<div class="code make highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">include</span> <span class="n">CONST_Makefile</span>
+</pre></div>
+</div>
+<p>and vars files:</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">extends</span><span class="p">:</span> <span class="n">CONST_vars</span><span class="o">.</span><span class="n">yaml</span>
+</pre></div>
+</div>
+<p>CONST files are files that should not be changed because they are replaced
+during application updates, so your changes will be systematically lost. You can
+extend these files as many times as you like, although it is not recommended to
+exceed 3-4 levels for readability and simplicity.</p>
+<img alt="../_images/doc_hierarchie.png" src="../_images/doc_hierarchie.png" />
+<p>Whenever possible, it is strongly advised not to extend the
+<code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file, and we recommend that you use dynamic variables as
+described below. However some use cases may need to do so:</p>
+<ul class="simple">
+<li>Configuring really different environments.</li>
+<li>Configuration of a multi-project (see below for this specific use case).</li>
+</ul>
+</div>
+<div class="section" id="use-of-dynamic-variable">
+<h3>Use of dynamic variable<a class="headerlink" href="#use-of-dynamic-variable" title="Permalink to this headline">¶</a></h3>
+<p>Variables used in the application configuration files (files <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code>)
+can be made dynamic by means of environment variable. In the main file
+<code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code>, added the <code class="docutils literal notranslate"><span class="pre">interpreted</span></code> block at the bottom of the
+file.</p>
+<p>In this same file, you can change the value of a parameter by putting it in
+uppercase (example: <code class="docutils literal notranslate"><span class="pre">host:</span> <span class="pre">HOST</span></code>). This parameter must be listed in the
+interpreted parameters section:</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">extends</span><span class="p">:</span> <span class="n">CONST_vars</span><span class="o">.</span><span class="n">yaml</span>
+
+<span class="nb">vars</span><span class="p">:</span>
+    <span class="n">host</span><span class="p">:</span> <span class="n">HOST</span>
+<span class="o">...</span>
+<span class="n">interpreted</span><span class="p">:</span>
+    <span class="n">environment</span><span class="p">:</span>
+        <span class="o">-</span> <span class="n">log_level</span>
+        <span class="o">-</span> <span class="n">host</span>
+</pre></div>
+</div>
+<p>In the <code class="docutils literal notranslate"><span class="pre">&lt;project&gt;.mk</span></code> file, add parameters you want to change as exported
+parameters:</p>
+<div class="code make highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">HOST</span> <span class="o">=</span> <span class="n">domaine</span><span class="o">.</span><span class="n">different</span><span class="o">.</span><span class="n">com</span>
+<span class="n">export</span> <span class="n">LOG_LEVEL</span>
+</pre></div>
+</div>
+<p>In the Makefiles that extend this main file, you only need to define the
+environment variables:</p>
+<div class="code make highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">HOST</span> <span class="o">=</span> <span class="n">prod</span><span class="o">.</span><span class="n">different</span><span class="o">.</span><span class="n">com</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="configure-the-application">
+<h2>Configure the application<a class="headerlink" href="#configure-the-application" title="Permalink to this headline">¶</a></h2>
+<p>As the integrator you need to edit the <code class="docutils literal notranslate"><span class="pre">vars_&lt;package&gt;.yaml</span></code> and
+<code class="docutils literal notranslate"><span class="pre">&lt;package&gt;.mk</span></code> files to configure the application.</p>
+<p>Do not miss to add your changes to git:</p>
+<pre class="highlight"><span class="prompt1">git add vars_&lt;package&gt;.yaml</span>
+<span class="prompt1">git commit -m <span class="s2">&quot;Configure the project&quot;</span></span>
+<span class="prompt1">git push origin master</span>
+</pre><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you use the check collector do not miss to add the new child to
+the parent site check_collector configuration.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Additional notes for Windows users:</p>
+<p>To have a working PNG print you should get and edit the file
+<code class="docutils literal notranslate"><span class="pre">print/WEB-INF/classes/imagemagick-mapfish-spring-application-context-override.xml</span></code>,
+get it:</p>
+<pre class="highlight"><span class="prompt1">wget https://raw.github.com/mapfish/mapfish-print/master/sample-spring/imagemagick/WEB-INF/classes/imagemagick-mapfish-spring-application-context-override.xml</span>
+<span class="prompt1">mv imagemagick-mapfish-spring-application-context-override.xml print/WEB-INF/classes/</span>
+<span class="prompt1">git add print/WEB-INF/classes/imagemagick-mapfish-spring-application-context-override.xml</span>
+</pre><p>and replace the lines:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;!-- &lt;property name=&quot;cmd&quot;&gt;
+    &lt;value&gt;C:\Program Files\ImageMagick-6.7.8-Q16\convert&lt;/value&gt;
+&lt;/property&gt; --&gt;
+</pre></div>
+</div>
+<p>by those ones:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="nb">property</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;cmd&quot;</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span><span class="n">C</span><span class="p">:</span>\<span class="n">Program</span> <span class="n">Files</span>\<span class="n">ImageMagick</span><span class="o">-</span><span class="mf">6.7</span><span class="o">.</span><span class="mi">8</span><span class="o">-</span><span class="n">Q16</span>\<span class="n">convert</span><span class="o">&lt;/</span><span class="n">value</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="nb">property</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p class="last">with the right path to <code class="docutils literal notranslate"><span class="pre">convert</span></code>.</p>
+</div>
+<p>After creation and minimal setup the application is ready to be installed.
+Then follow the sections in the install application guide:</p>
+<ul class="simple">
+<li><a class="reference internal" href="install_application.html#integrator-install-application-create-schema"><span class="std std-ref">Create the schema</span></a>.</li>
+<li><a class="reference internal" href="install_application.html#integrator-install-application-create-user"><span class="std std-ref">Create a database user</span></a>.</li>
+<li><a class="reference internal" href="install_application.html#integrator-install-application-install-application"><span class="std std-ref">Install the application</span></a>.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>After that if you want a default theme you can run:</p>
+<pre class="highlight"><span class="prompt1">./docker-compose-run create-demo-theme</span>
+</pre></div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you create the main instance you should do the whole
+database creation as described in <a class="reference internal" href="install_application.html#integrator-install-application"><span class="std std-ref">Install an existing application</span></a>,
+except the ‘Get the application source tree’ chapter.</p>
+</div>
+</div>
+<div class="section" id="dynamic-configuration-and-autogenerated-files">
+<h2>Dynamic configuration and autogenerated files<a class="headerlink" href="#dynamic-configuration-and-autogenerated-files" title="Permalink to this headline">¶</a></h2>
+<p>Several files are autogenerated, their content depending of the variables you
+have set either in the main <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;.mk</span></code> or a <code class="docutils literal notranslate"><span class="pre">&lt;user&gt;.mk</span></code></p>
+<p>The files can have the extension <code class="docutils literal notranslate"><span class="pre">.mako</span></code></p>
+<div class="section" id="mako">
+<h3>.mako<a class="headerlink" href="#mako" title="Permalink to this headline">¶</a></h3>
+<p>If you use <code class="docutils literal notranslate"><span class="pre">.mako</span></code>, you can also use all the possibilities allowed by the Mako
+templating system, such as for loops, conditions, sub-templates, etc.</p>
+<p>Please see the Mako documentation for details:</p>
+<p><a class="reference external" href="http://docs.makotemplates.org/en/latest/">http://docs.makotemplates.org/en/latest/</a></p>
+<p>The result is also a file without the .mako.</p>
+<p><strong>Syntax</strong></p>
+<p>In <code class="docutils literal notranslate"><span class="pre">.mako</span></code> files, the variable replacement syntax is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>${&lt;variablename&gt;}
+</pre></div>
+</div>
+<p>for example:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">${directory}</span></code></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Create a new application</a><ul>
+<li><a class="reference internal" href="#project-structure">Project structure</a></li>
+<li><a class="reference internal" href="#install-c2cgeoportal">Install c2cgeoportal</a></li>
+<li><a class="reference internal" href="#list-existing-skeletons">List existing skeletons</a></li>
+<li><a class="reference internal" href="#create-the-new-application">Create the new application</a></li>
+<li><a class="reference internal" href="#put-the-application-under-revision-control">Put the application under revision control</a><ul>
+<li><a class="reference internal" href="#to-add-a-project-in-a-new-repository">To add a project in a new repository</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configuration-of-different-environment-in-your-project">Configuration of different environment in your project</a><ul>
+<li><a class="reference internal" href="#concepts">Concepts</a></li>
+<li><a class="reference internal" href="#hierarchy-and-extending-your-configuration-files">Hierarchy and extending your configuration files</a></li>
+<li><a class="reference internal" href="#use-of-dynamic-variable">Use of dynamic variable</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configure-the-application">Configure the application</a></li>
+<li><a class="reference internal" href="#dynamic-configuration-and-autogenerated-files">Dynamic configuration and autogenerated files</a><ul>
+<li><a class="reference internal" href="#mako">.mako</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+      <li>Previous: <a href="requirements.html" title="previous chapter">Requirements</a></li>
+      <li>Next: <a href="install_application.html" title="next chapter">Install an existing application</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/integrator/create_application.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2018, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/integrator/create_application.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

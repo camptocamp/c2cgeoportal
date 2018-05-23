@@ -1,0 +1,231 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Upgrading a GeoMapFish application &#8212; c2cgeoportal  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Configuration Guide for advanced settings" href="configuration.html" />
+    <link rel="prev" title="Install an existing application" href="install_application.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="upgrading-a-geomapfish-application">
+<span id="integrator-upgrade-application"></span><h1>Upgrading a GeoMapFish application<a class="headerlink" href="#upgrading-a-geomapfish-application" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="from-a-version-2-2">
+<h2>From a version 2.2<a class="headerlink" href="#from-a-version-2-2" title="Permalink to this headline">¶</a></h2>
+<p>Add a section <code class="docutils literal notranslate"><span class="pre">managed_files:</span></code> in the file <code class="docutils literal notranslate"><span class="pre">project.yaml.mako</span></code>.
+In this section, you must select by a regular expression the project files you need to keep, and that are
+not handled by the GeoMapFish upgrade process. You can see in the GeoMapFish upgrade configuration, section
+<code class="docutils literal notranslate"><span class="pre">default_project_file</span></code>, which files will get handled by the GeoMapFish upgrade process:
+<a class="reference external" href="https://github.com/camptocamp/c2cgeoportal/blob/HEAD/geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/%2Bdot%2Bupgrade.yaml_tmpl">for non-Docker version</a>,
+<a class="reference external" href="https://github.com/camptocamp/c2cgeoportal/blob/HEAD/geoportal/c2cgeoportal_geoportal/scaffolds/update/%2Bdot%2Bupgrade.yaml_tmpl">for Docker version</a>.
+Any files in your project that are not listed in the section <code class="docutils literal notranslate"><span class="pre">managed_files</span></code> will be overwritten by the
+upgrade process.
+Here an example that may apply to your situation:</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">managed_files</span><span class="p">:</span>
+<span class="o">-</span> <span class="n">deploy</span><span class="o">/</span><span class="n">deploy</span>\<span class="o">.</span><span class="n">cfg</span>\<span class="o">.</span><span class="n">mako</span>
+<span class="o">-</span> <span class="n">apache</span><span class="o">/</span><span class="n">application</span>\<span class="o">.</span><span class="n">wsgi</span>\<span class="o">.</span><span class="n">mako</span>
+</pre></div>
+</div>
+<p>If you have no such managed files, define an empty section like this: <code class="docutils literal notranslate"><span class="pre">managed_files:</span> <span class="pre">[]</span></code></p>
+<p>If in your project you have files from the GeoMapFish templates which you did not customize, you can add
+these in a section <code class="docutils literal notranslate"><span class="pre">unmanaged_files</span></code>. This will simplify the upgrade process for you, because the update
+script will then simply update these project files with the new GeoMapFish template files, and not list any
+changes for these in the “diff” file, therefore making it faster for you to review the differences during
+the upgrade process. The syntax for <code class="docutils literal notranslate"><span class="pre">unmanaged_files</span></code> is the same as for <code class="docutils literal notranslate"><span class="pre">managed_files</span></code>.</p>
+<p>Prepare the upgrade:</p>
+<pre class="highlight"><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">git submodule deinit &lt;package&gt;/static/lib/cgxp/</span>
+<span class="prompt1">git rm .gitmodules</span>
+<span class="prompt1">curl https://raw.githubusercontent.com/camptocamp/c2cgeoportal/HEAD/docker-run &gt; docker-run</span>
+<span class="prompt1">chmod +x docker-run</span>
+<span class="prompt1">git add docker-run project.yaml.mako</span>
+<span class="prompt1">git commit --quiet --message<span class="o">=</span><span class="s2">&quot;Start upgrade&quot;</span></span>
+<span class="prompt1">make --makefile<span class="o">=</span>&lt;user&gt;.mk project.yaml</span>
+</pre><p>For non-Docker:</p>
+<pre class="highlight"><span class="prompt1">./docker-run --version<span class="o">=</span>&lt;version&gt; --home --image<span class="o">=</span>camptocamp/geomapfish-build <span class="se">\</span>
+    c2cupgrade --nondocker --makefile<span class="o">=</span>&lt;user&gt;.mk</span>
+</pre><p>And for Docker (experimental):</p>
+<pre class="highlight"><span class="prompt1">./docker-run --version<span class="o">=</span>&lt;version&gt; --home --image<span class="o">=</span>camptocamp/geomapfish-build <span class="se">\</span>
+    c2cupgrade --force-docker --new-makefile<span class="o">=</span>Makefile --makefile<span class="o">=</span>&lt;package&gt;.mk</span>
+</pre><p>Where <code class="docutils literal notranslate"><span class="pre">&lt;version&gt;</span></code> is the version number of GeoMapFish you want to use.
+You will find available versions on <a class="reference external" href="https://hub.docker.com/r/camptocamp/geomapfish-build">Dockerhub</a>.
+For example, <code class="docutils literal notranslate"><span class="pre">2.3.0</span></code> is the first stable release of the version <code class="docutils literal notranslate"><span class="pre">2.3</span></code>.</p>
+<p>Then follow the instructions.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Known issue</p>
+<p>If you have the following message:</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Host</span> <span class="n">key</span> <span class="n">verification</span> <span class="n">failed</span><span class="o">.</span>
+<span class="n">fatal</span><span class="p">:</span> <span class="n">Could</span> <span class="ow">not</span> <span class="n">read</span> <span class="kn">from</span> <span class="nn">remote</span> <span class="n">repository</span><span class="o">.</span>
+
+<span class="n">Please</span> <span class="n">make</span> <span class="n">sure</span> <span class="n">you</span> <span class="n">have</span> <span class="n">the</span> <span class="n">correct</span> <span class="n">access</span> <span class="n">rights</span>
+<span class="ow">and</span> <span class="n">the</span> <span class="n">repository</span> <span class="n">exists</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>you can fix it by using the following command:</p>
+<pre class="highlight"><span class="prompt1">ssh-keyscan -t rsa github.com &gt;&gt; ~/.ssh/known_hosts</span>
+</pre><p class="last">and then re-executing the step that failed.</p>
+</div>
+</div>
+<div class="section" id="from-a-version-2-3-and-next">
+<h2>From a version 2.3 and next<a class="headerlink" href="#from-a-version-2-3-and-next" title="Permalink to this headline">¶</a></h2>
+<p>Change the version in the file <code class="docutils literal notranslate"><span class="pre">.config</span></code> to the wanted version.</p>
+<p>For non Docker project:</p>
+<pre class="highlight"><span class="prompt1">./docker-run --home make --makefile<span class="o">=</span>&lt;user&gt;.mk upgrade</span>
+</pre><p>For Docker project:</p>
+<pre class="highlight"><span class="prompt1">./docker-run --home make upgrade</span>
+</pre><p>Then follow the instructions.</p>
+</div>
+<div class="section" id="convert-a-version-2-3-to-docker">
+<h2>Convert a version 2.3 to Docker<a class="headerlink" href="#convert-a-version-2-3-to-docker" title="Permalink to this headline">¶</a></h2>
+<p>Add <code class="docutils literal notranslate"><span class="pre">UPGRADE_ARGS</span> <span class="pre">+=</span> <span class="pre">--force-docker</span> <span class="pre">--new-makefile=Makefile</span></code> in your <code class="docutils literal notranslate"><span class="pre">&lt;user&gt;.mk</span></code> file.</p>
+<pre class="highlight"><span class="prompt1">git add &lt;user&gt;.mk</span>
+<span class="prompt1">git commit --message<span class="o">=</span><span class="s2">&quot;Start upgrade&quot;</span></span>
+<span class="prompt1">./docker-run --home make --makefile<span class="o">=</span>temp.mk upgrade</span>
+</pre><p>Then follow the instructions.</p>
+<p>Remove the <code class="docutils literal notranslate"><span class="pre">UPGRADE_ARGS</span></code> in your <code class="docutils literal notranslate"><span class="pre">&lt;user&gt;.mk</span></code> file.</p>
+<pre class="highlight"><span class="prompt1">git add &lt;user&gt;.mk</span>
+<span class="prompt1">git commit --quiet --message<span class="o">=</span><span class="s2">&quot;Finish upgrade&quot;</span></span>
+</pre></div>
+<div class="section" id="convert-a-version-2-3-to-non-docker">
+<h2>Convert a version 2.3 to non-Docker<a class="headerlink" href="#convert-a-version-2-3-to-non-docker" title="Permalink to this headline">¶</a></h2>
+<p>Add the <code class="docutils literal notranslate"><span class="pre">apache_vhost</span></code> in the <code class="docutils literal notranslate"><span class="pre">template_vars</span></code> of the <code class="docutils literal notranslate"><span class="pre">project.yaml.mako</span></code> file.
+Add <code class="docutils literal notranslate"><span class="pre">UPGRADE_ARGS</span> <span class="pre">+=</span> <span class="pre">--nondocker</span> <span class="pre">--new-makefile=&lt;package&gt;.mk</span></code> in the <code class="docutils literal notranslate"><span class="pre">Makefile</span></code>.</p>
+<pre class="highlight"><span class="prompt1">git add project.yaml.mako Makefile</span>
+<span class="prompt1">git commit --message<span class="o">=</span><span class="s2">&quot;Start upgrade&quot;</span></span>
+<span class="prompt1">./docker-run --home make --new-makefile<span class="o">=</span>&lt;user&gt;.mk upgrade</span>
+</pre><p>Then follow the instructions.</p>
+<p>Remove the <code class="docutils literal notranslate"><span class="pre">UPGRADE_ARGS</span></code> in your <code class="docutils literal notranslate"><span class="pre">Makefile</span></code>.</p>
+</div>
+<div class="section" id="upgrade-the-database">
+<h2>Upgrade the database<a class="headerlink" href="#upgrade-the-database" title="Permalink to this headline">¶</a></h2>
+<p>The database will be automatically upgraded during the upgrade process.</p>
+<p>To upgrade only the database you can use alembic directly.</p>
+<p>The help:</p>
+<pre class="highlight"><span class="prompt1">./docker-run alembic --help</span>
+</pre><p>Upgrade the main schema:</p>
+<pre class="highlight"><span class="prompt1">./docker-run alembic --name<span class="o">=</span>main upgrade head</span>
+</pre><p>Upgrade the static schema:</p>
+<pre class="highlight"><span class="prompt1">./docker-run alembic --name<span class="o">=</span>static upgrade head</span>
+</pre></div>
+<div class="section" id="from-cgxp-to-ngeo">
+<span id="integrator-upgrade-application-cgxp-to-ngeo"></span><h2>From CGXP to ngeo<a class="headerlink" href="#from-cgxp-to-ngeo" title="Permalink to this headline">¶</a></h2>
+<p>Layer definition for ngeo clients is separate and different from layer
+definition for CGXP clients, see <a class="reference internal" href="../administrator/administrate.html#administrator-administrate-layers"><span class="std std-ref">Layers</span></a>
+for details.
+To migrate the layer definitions from the CGXP structure to the ngeo
+structure, you can use the script <code class="docutils literal notranslate"><span class="pre">.build/venv/bin/themev1tov2</span></code>.</p>
+<p>Text translations for ngeo clients are separate and different from text
+translations for CGXP clients.
+To migrate the text translations from CGXP to ngeo, you can use the script
+<code class="docutils literal notranslate"><span class="pre">.build/venv/bin/l10nv1tov2</span></code>.
+For example, for converting french texts the script can be used as follows:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">build</span><span class="o">/</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">l10nv1tov2</span> <span class="n">fr</span> <span class="n">geoportal</span><span class="o">/</span><span class="n">static</span><span class="o">/</span><span class="n">js</span><span class="o">/</span><span class="n">Proj</span><span class="o">/</span><span class="n">Lang</span><span class="o">/</span><span class="n">fr</span><span class="o">.</span><span class="n">js</span>    <span class="n">geoportal</span><span class="o">/</span><span class="n">locale</span><span class="o">/</span><span class="n">fr</span><span class="o">/</span><span class="n">LC_MESSAGES</span><span class="o">/</span><span class="n">geoportal</span><span class="o">-</span><span class="n">client</span><span class="o">.</span><span class="n">po</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Upgrading a GeoMapFish application</a><ul>
+<li><a class="reference internal" href="#from-a-version-2-2">From a version 2.2</a></li>
+<li><a class="reference internal" href="#from-a-version-2-3-and-next">From a version 2.3 and next</a></li>
+<li><a class="reference internal" href="#convert-a-version-2-3-to-docker">Convert a version 2.3 to Docker</a></li>
+<li><a class="reference internal" href="#convert-a-version-2-3-to-non-docker">Convert a version 2.3 to non-Docker</a></li>
+<li><a class="reference internal" href="#upgrade-the-database">Upgrade the database</a></li>
+<li><a class="reference internal" href="#from-cgxp-to-ngeo">From CGXP to ngeo</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+      <li>Previous: <a href="install_application.html" title="previous chapter">Install an existing application</a></li>
+      <li>Next: <a href="configuration.html" title="next chapter">Configuration Guide for advanced settings</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/integrator/upgrade_application.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2018, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/integrator/upgrade_application.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

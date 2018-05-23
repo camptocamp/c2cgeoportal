@@ -1,0 +1,189 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Debugging &#8212; c2cgeoportal  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Development procedure" href="development_procedure.html" />
+    <link rel="prev" title="Cache management" href="cache.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="debugging">
+<span id="developer-debugging"></span><h1>Debugging<a class="headerlink" href="#debugging" title="Permalink to this headline">¶</a></h1>
+<p>The goal of this document is to give some troubleshooting tips.</p>
+<div class="section" id="webpack">
+<h2>Webpack<a class="headerlink" href="#webpack" title="Permalink to this headline">¶</a></h2>
+<p>For debugging purposes, it is better to have all the JavaScript and Style Sheets in separated, non-minified
+files. To achieve this, you can simply use the sources maps, function activable in the browsers debugging
+tool. And to have faster build you need to use the Webpack dev server; you can achieve this as follows.</p>
+<p>Add in your makefile <code class="docutils literal notranslate"><span class="pre">&lt;user&gt;.mk</span></code> (Each developer should have a different port, e.g.: 8081):</p>
+<div class="code makefile highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">DEV_SERVER_PORT</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">dev</span><span class="o">-</span><span class="n">server</span><span class="o">-</span><span class="n">port</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<pre class="highlight"><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">make serve</span>
+</pre><p>Open in the browser an URL like: <code class="docutils literal notranslate"><span class="pre">https://&lt;host&gt;&lt;entry-point&gt;/dev/&lt;interface&gt;.html</span></code>.</p>
+</div>
+<div class="section" id="browser">
+<h2>Browser<a class="headerlink" href="#browser" title="Permalink to this headline">¶</a></h2>
+<p>Using a browser-integrated debugging tool usually available with the <code class="docutils literal notranslate"><span class="pre">F12</span></code> key.</p>
+</div>
+<div class="section" id="pyramid">
+<h2>Pyramid<a class="headerlink" href="#pyramid" title="Permalink to this headline">¶</a></h2>
+<p>If the <code class="docutils literal notranslate"><span class="pre">pyramid_debugtoolbar</span></code> is enabled the error is directly shown in the query that fails.</p>
+</div>
+<div class="section" id="mapserver">
+<h2>Mapserver<a class="headerlink" href="#mapserver" title="Permalink to this headline">¶</a></h2>
+<p>Sometime more information are available by using this command:</p>
+<pre class="highlight"><span class="prompt1">shp2img -m &lt;mapfile&gt; -o test.png -e &lt;minx&gt; &lt;miny&gt; &lt;maxx&gt; &lt;maxy&gt; -s &lt;sizex&gt; &lt;sizey&gt; -l &lt;layers&gt;</span>
+</pre><p>You may also activate MapServer’s debug mode and set environment variable of the MapServer container
+<code class="docutils literal notranslate"><span class="pre">MS_DEBUGLEVEL</span></code> to <code class="docutils literal notranslate"><span class="pre">5</span></code> (most verbose level, default is 0).</p>
+<p><a class="reference external" href="http://mapserver.org/optimization/debugging.html?highlight=debug#debug-levels">More informations</a></p>
+</div>
+<div class="section" id="postgresql">
+<h2>PostgreSQL<a class="headerlink" href="#postgresql" title="Permalink to this headline">¶</a></h2>
+<p>In the <code class="docutils literal notranslate"><span class="pre">/etc/postgresql/9.*/main/postgresql.conf</span></code> configuration file
+you can set <code class="docutils literal notranslate"><span class="pre">log_statement</span></code> to <code class="docutils literal notranslate"><span class="pre">all</span></code> to see all the called statements.
+This file must be edited using the <code class="docutils literal notranslate"><span class="pre">postgres</span></code> user.</p>
+<p>Reloading PostgreSQL is required so that the new configuration is taken into
+account:</p>
+<pre class="highlight"><span class="prompt1">sudo /etc/init.d/postgres reload</span>
+</pre><p>Logs are available in the <code class="docutils literal notranslate"><span class="pre">/var/log/postgresql/postgresql-9.*-main.log</span></code> file.</p>
+</div>
+<div class="section" id="makefile">
+<h2>Makefile<a class="headerlink" href="#makefile" title="Permalink to this headline">¶</a></h2>
+<p>You can run <cite>DEBUG=TRUE make …</cite> to have some debug message.
+Actually we display the running rule and why she is running (dependence update).</p>
+</div>
+<div class="section" id="docker">
+<h2>Docker<a class="headerlink" href="#docker" title="Permalink to this headline">¶</a></h2>
+<p>Edit a file in a running apache WSGI container</p>
+<pre class="highlight"><span class="prompt1">docker <span class="nb">exec</span> -ti &lt;package&gt;_wsgi_1 bash</span>
+<span class="prompt1">vi ...</span>
+<span class="prompt1"><span class="nb">kill</span> -s USR1 <span class="m">1</span>  <span class="c1"># graceful</span></span>
+</pre></div>
+<div class="section" id="performance-or-network-error">
+<h2>Performance or network error<a class="headerlink" href="#performance-or-network-error" title="Permalink to this headline">¶</a></h2>
+<p>For performance and proxy issues make sure that all internal URLs in the config file
+use localhost (use <code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">&quot;http://localhost/&lt;path&gt;&quot;</span> <span class="pre">-H</span> <span class="pre">Host:&lt;server_name&gt;</span></code>
+to test it).</p>
+<div class="section" id="tilecloud-chain">
+<h3>Tilecloud chain<a class="headerlink" href="#tilecloud-chain" title="Permalink to this headline">¶</a></h3>
+<p>Points to check with TileCloud chain:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>* Disabling metatiles should be avoided.
+* Make sure that``empty_metatile_detection`` and ``empty_tile_detection`` are configured correctly.
+* Make sure to not generate tiles with a higher resolution than in the raster sources.
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Debugging</a><ul>
+<li><a class="reference internal" href="#webpack">Webpack</a></li>
+<li><a class="reference internal" href="#browser">Browser</a></li>
+<li><a class="reference internal" href="#pyramid">Pyramid</a></li>
+<li><a class="reference internal" href="#mapserver">Mapserver</a></li>
+<li><a class="reference internal" href="#postgresql">PostgreSQL</a></li>
+<li><a class="reference internal" href="#makefile">Makefile</a></li>
+<li><a class="reference internal" href="#docker">Docker</a></li>
+<li><a class="reference internal" href="#performance-or-network-error">Performance or network error</a><ul>
+<li><a class="reference internal" href="#tilecloud-chain">Tilecloud chain</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Developer Guide</a><ul>
+      <li>Previous: <a href="cache.html" title="previous chapter">Cache management</a></li>
+      <li>Next: <a href="development_procedure.html" title="next chapter">Development procedure</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/developer/debugging.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2018, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/developer/debugging.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
