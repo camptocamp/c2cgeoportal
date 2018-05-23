@@ -29,7 +29,7 @@ def main():
         help="The docker image to use"
     )
     parser.add_argument(
-        "--version", default=config.get("version", "2.3"),
+        "--version", default=config.get("version", "2.4"),
         help="The docker image version to use"
     )
     parser.add_argument("cmd", metavar="CMD", help="The command to run")
