@@ -140,7 +140,7 @@ deploy:
     script: travis/doc.sh
     on:
       repo: camptocamp/c2cgeoportal
-      condition: ( $TRAVIS_BRANCH == $MAIN_BRANCH )
+      all_branches: true
 
   - provider: script
     skip_cleanup: true
