@@ -129,6 +129,9 @@ vars:
 
   default_interface: desktop
 
+  interfaces_theme:
+    desktop: desktop
+
   # The dogpile.cache configuration.
   #
   # Do not touch if unsure.
