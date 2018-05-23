@@ -4,7 +4,7 @@ import static com.camptocamp.utils.*
 
 final MAIN_BRANCH = 'master'
 env.MAIN_BRANCH = MAIN_BRANCH
-final MAJOR_VERSION = '2.3'
+final MAJOR_VERSION = '2.4'
 env.MAJOR_VERSION = MAJOR_VERSION
 env.CI = 'true'
 

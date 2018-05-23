@@ -14,7 +14,7 @@ PRERULE_CMD ?= @echo "Build \033[1;34m$@\033[0m due modification on \033[1;34m$?
 endif
 endif
 
-export MAJOR_VERSION = 2.3
+export MAJOR_VERSION = 2.4
 export MAIN_BRANCH = master
 ifdef TRAVIS_TAG
 export VERSION = $(TRAVIS_TAG)
