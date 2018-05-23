@@ -232,10 +232,11 @@ class Entry:
 
         errors = set()
         wms = None
+        version = ogc_server.version_wms or "1.1.1"
 
         url = add_url_params(url, {
             "SERVICE": "WMS",
-            "VERSION": "1.1.1",
+            "VERSION": version,
             "REQUEST": "GetCapabilities",
         })
 
@@ -279,16 +280,20 @@ class Entry:
             log.exception(error)
             return None, errors
 
+        # Fix for owslib / QGIS 3 compatibility
+        content = content.replace('<MetadataURL/>', '')
+
         try:
-            wms = WebMapService(None, xml=content)
-        except:  # pragma: no cover
+            wms = WebMapService(None, xml=content, version=version)
+        except Exception as e:  # pragma: no cover
             error = _(
                 "WARNING! an error occurred while trying to "
                 "read the mapfile and recover the themes."
             )
-            error = u"{0!s}\nURL: {1!s}\n{2!s}".format(error, url, content.encode("utf-8"))
+            error = u"{0!s}\nURL: {1!s}".format(error, url)
             errors.add(error)
             log.exception(error)
+            log.exception(e, exc_info=True)
         return wms, errors
 
     def _create_layer_query(self, role_id, version, interface):
