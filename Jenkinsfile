@@ -2,7 +2,7 @@
 @Library('c2c-pipeline-library')
 import static com.camptocamp.utils.*
 
-final MAIN_BRANCH = 'master'
+final MAIN_BRANCH = '2.3'
 env.MAIN_BRANCH = MAIN_BRANCH
 final MAJOR_VERSION = '2.3'
 env.MAJOR_VERSION = MAJOR_VERSION

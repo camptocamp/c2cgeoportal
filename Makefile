@@ -15,7 +15,7 @@ endif
 endif
 
 export MAJOR_VERSION = 2.3
-export MAIN_BRANCH = master
+export MAIN_BRANCH = 2.3
 ifdef TRAVIS_TAG
 export VERSION = $(TRAVIS_TAG)
 else

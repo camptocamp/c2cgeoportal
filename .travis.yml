@@ -24,7 +24,7 @@ env:
     - TRAVIS_USERNAME=sbrunner
     - secure: "Vt9O18grAUS3cf4tzbqY1YuQyCJTsPNh5lA79/q8viAcrJg0fAeNQEBoUyCAzztlgL53PrzLWTYIuK6Fw1t+td8hmEST\
         l7fPSlVbGB6C/iG0d+cnIq31rjnliIdErXIAcB4JwE3yIRx+5aVEMBpAUhRuzBhGCt6iZwjhhFEr/D8="
-    - MAIN_BRANCH=master
+    - MAIN_BRANCH=2.3
     - MAJOR_VERSION=2.3
 
 install:
