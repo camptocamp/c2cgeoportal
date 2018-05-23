@@ -612,7 +612,7 @@ class C2cUpgradeTool:
         )]
         matcher = re.compile(r"CONST_create_template.*/CONST_.+")
         status = [s for s in status if not matcher.match(s)]
-        matcher = re.compile(r"\.po$")
+        matcher = re.compile(r".*\.po$")
         status = [s for s in status if not matcher.match(s)]
         status = [
             s for s in status if
