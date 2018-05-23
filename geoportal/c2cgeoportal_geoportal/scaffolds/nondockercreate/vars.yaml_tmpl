@@ -269,17 +269,18 @@ vars:
     code_destination: /var/www/c2cgeoportal_mapfish/private/c2cgeoportal
 
 update_paths:
-  - shortener
-  - fulltextsearch
+  - admin_interface
   - authorized_referers
   - authtkt
-  - admin_interface
-  - checker.fulltextsearch
-  - checker.print
   - check_collector.disabled
   - check_collector.hosts
+  - checker.fulltextsearch
+  - checker.print
+  - fulltextsearch
+  - interfaces_theme
+  - shortener
 
 no_interpreted:
-  - shortener.email_body
   - reset_password.email_body
+  - shortener.email_body
   - welcome_email.email_body

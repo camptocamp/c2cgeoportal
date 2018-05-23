@@ -1,4 +1,5 @@
 const webpackMerge = require('webpack-merge');
+const apps = require('./webpack.apps.js');
 const commons = require('ngeo/buildtools/webpack.commons');
 
 let config = commons.config;
@@ -16,6 +17,6 @@ switch (nodeEnv) {
     process.exit(2);
 }
 
-config = webpackMerge(config, require('./webpack.apps.js'));
+config = webpackMerge(config, apps);
 
 module.exports = config;

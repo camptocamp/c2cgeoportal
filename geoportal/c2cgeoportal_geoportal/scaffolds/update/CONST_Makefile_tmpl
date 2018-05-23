@@ -567,17 +567,22 @@ $(APP_OUTPUT_DIR)/images/: /usr/lib/node_modules/jquery-ui/themes/base/images
 	mkdir --parent $@
 	cp -r $</* $@
 
+
 .PRECIOUS: /build/apps.timestamp
-/build/apps.timestamp: $(OL_JS_FILES) $(NGEO_JS_FILES) $(APP_JS_FILES) \
-		$(APP_HTML_FILES) webpack.apps.js webpack.config.js \
-		$(LESS_FILES) \
-		$(NGEO_FONTS) \
-		$(APP_OUTPUT_DIR)/images/
+/build/apps.timestamp: webpack.apps.js $(addprefix /build/apps., $(addsuffix .timestamp, $(NGEO_INTERFACES)))
+	touch $@
+
+.PRECIOUS: /build/apps.%.timestamp
+/build/apps.%.timestamp: $(OL_JS_FILES) $(NGEO_JS_FILES) $(APP_JS_FILES) \
+			$(APP_HTML_FILES) webpack.config.js \
+			$(LESS_FILES) \
+			$(NGEO_FONTS) \
+			$(APP_OUTPUT_DIR)/images/
 	$(PRERULE_CMD)
 	# Workaround to make Webpack working for ol/index.js
-	if [ -e node_modules ]; then mv node_modules node_modules_bak; fi
+	if [ -e node_modules ]; then rm --force node_modules_bak; mv node_modules node_modules_bak; fi
 	ln --symbolic /usr/lib/node_modules/ .
-	THEME=desktop webpack $(WEBPACK_ARGS)
+	INTERFACE=$* webpack $(WEBPACK_ARGS)
 	rm node_modules
 	if [ -e node_modules_bak ]; then mv node_modules_bak node_modules; fi
 	touch $@
