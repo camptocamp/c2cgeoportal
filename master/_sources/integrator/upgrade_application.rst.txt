@@ -60,7 +60,7 @@ And for Docker (experimental):
 
 Where ``<version>`` is the version number of GeoMapFish you want to use.
 You will find available versions on `Dockerhub <https://hub.docker.com/r/camptocamp/geomapfish-build>`_.
-For example, ``2.3.0`` is the first stable release of the version ``2.3``.
+For example, ``2.4.0`` is the first stable release of the version ``2.4``.
 
 Then follow the instructions.
 
