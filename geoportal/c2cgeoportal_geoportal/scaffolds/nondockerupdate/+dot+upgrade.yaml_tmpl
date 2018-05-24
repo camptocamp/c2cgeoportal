@@ -125,12 +125,6 @@ files_to_move:
   - from: mapserver/mapserver.map.tmpl.mako
     to: mapserver/mapserver.map.mako
     version: 2.3
-  - from: Dockerfile
-    to: geoportal/Dockerfile.mako
-    version: 2.3
-  - from: .dockerignore
-    to: geoportal/.dockerignore
-    version: 2.3
   - from: jsbuild
     to: geoportal/jsbuild
     version: 2.3
