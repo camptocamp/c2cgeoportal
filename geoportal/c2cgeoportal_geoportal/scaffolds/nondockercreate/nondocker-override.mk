@@ -14,6 +14,13 @@ export MAPSERVER_URL
 PRINT_URL ?= http://print:8080/print/
 export PRINT_URL
 
+VISIBLE_WEB_PROTOCOL ?= https
+VISIBLE_WEB_PORT ?= 443
+VISIBLE_ENTRY_POINT ?= /
+export VISIBLE_WEB_HOST
+export VISIBLE_WEB_PROTOCOL
+export VISIBLE_ENTRY_POINT
+
 ADDITIONAL_MAKO_FILES += $(shell find print $(FIND_OPTS) -name "*.mako" -print) \
 	$(shell find apache $(FIND_OPTS) -name "*.mako" -print) \
 	$(shell find deploy $(FIND_OPTS) -name "*.mako" -print) \
