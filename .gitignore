@@ -6,7 +6,6 @@
 /npm-packages
 /Dockerfile
 /commons/tests.yaml
-/commons/.build/
 /commons/c2cgeoportal_commons.egg-info/
 /geoportal/package.json
 /geoportal/tests/functional/test.ini
@@ -24,11 +23,6 @@
 /geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/CONST_create_template/
 /geoportal/c2cgeoportal_geoportal.egg-info/
 /admin/tests.ini
-/admin/.build/
-/admin/.pytest_cache/
-/admin/package-lock.json
-/admin/package.json
-/admin/node_modules/
 /admin/npm-packages
 /admin/c2cgeoportal_admin/locale/
 /admin/c2cgeoportal_admin.egg-info/

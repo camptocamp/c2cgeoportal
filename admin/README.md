@@ -1,5 +1,28 @@
 # c2cgeoportal_admin
 
+## Run with docker
+
+To build:
+```
+make docker-build
+```
+
+To build & run the application:
+```
+make docker-serve
+```
+
+Open http://localhost:8888/
+
+The following views are also provided by `c2cwsgiutils`:
+ * http://localhost:8888/versions.json
+ * http://localhost:8888/stats.json
+ * http://localhost:8888/health_check?max_level=3
+
+
+## Run without docker
+
+
 ### Checkout
 
 ```
@@ -18,9 +41,8 @@ sudo -u postgres psql -d $DATABASE -c "CREATE EXTENSION postgis;"
 
 Optionally update sqlachemy.url in development.ini or production.ini then:
 ```
-admin/.build/venv/bin/python3 commons/c2cgeoportal_commons/testing/initializedb.py # to create the database
-# or
-sudo -u postgres psql -d c2cgeoportal -f ./docker/demo-dump.sql # to create and populate the database (demo data)
+use common/testing/initialized.py to create the database
+use demo-dump.sql to create and populate the database (demo data)
 ```
 
 ### Run the development web server
