@@ -10,6 +10,8 @@ unmanaged_files:
   - mapserver/mapserver\.map\.mako
   - mapserver/mapserver\.map\.tmpl\.mako
   - tilegeneration/config\.yaml\.mako
+  - geoportal/testgeomapfish_geoportal/static-ngeo/js/apps/desktop\.html\.ejs
+  - geoportal/testgeomapfish_geoportal/static-ngeo/js/apps/mobile\.html\.ejs
 template_vars:
   package: testgeomapfish
   srid: 21781

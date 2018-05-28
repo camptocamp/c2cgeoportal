@@ -604,6 +604,8 @@ $(APP_OUTPUT_DIR)/images/: /usr/lib/node_modules/jquery-ui/themes/base/images
 	INTERFACE=$* webpack $(WEBPACK_ARGS)
 	rm node_modules
 	if [ -e node_modules_bak ]; then mv node_modules_bak node_modules; fi
+	mv $(APP_OUTPUT_DIR)/$*.html $(APP_OUTPUT_DIR)/$*.html.tmpl
+	ls -1 $(APP_OUTPUT_DIR)/$*.*.css|while read file; do mv $${file} $${file}.tmpl; done
 	touch $@
 
 .PHONY: serve

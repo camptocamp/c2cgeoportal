@@ -64,8 +64,10 @@ ADMIN_SRC_FILES = $(shell ls -1 commons/c2cgeoportal_commons/models/*.py) \
 	$(shell find admin/c2cgeoportal_admin/templates/widgets -name "*.pt" -print)
 
 APPS += desktop mobile
+APPS_PACKAGE_PATH_NONDOCKER = geoportal/c2cgeoportal_geoportal/scaffolds/nondockercreate/geoportal/+package+_geoportal
+APPS_HTML_FILES = $(addprefix $(APPS_PACKAGE_PATH_NONDOCKER)/static-ngeo/js/apps/, $(addsuffix .html.ejs_tmpl, $(APPS)))
 APPS_PACKAGE_PATH = geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal
-APPS_HTML_FILES = $(addprefix $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/, $(addsuffix .html.ejs_tmpl, $(APPS)))
+APPS_HTML_FILES += $(addprefix $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/, $(addsuffix .html.ejs_tmpl, $(APPS)))
 APPS_JS_FILES = $(addprefix $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/Controller, $(addsuffix .js_tmpl, $(APPS)))
 APPS_ALT += desktop_alt mobile_alt oeedit oeview
 APPS_PACKAGE_PATH_ALT = geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/geoportal/+package+_geoportal/
@@ -335,6 +337,11 @@ $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/%.html.ejs_tmpl: ngeo/contribs/gmf/apps
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	import-ngeo-apps --html $* $< $@
+
+$(APPS_PACKAGE_PATH_NONDOCKER)/static-ngeo/js/apps/%.html.ejs_tmpl: ngeo/contribs/gmf/apps/%/index.html.ejs
+	$(PRERULE_CMD)
+	mkdir --parent $(dir $@)
+	import-ngeo-apps --html --non-docker $* $< $@
 
 $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/Controller%.js_tmpl: ngeo/contribs/gmf/apps/%/Controller.js
 	$(PRERULE_CMD)

@@ -25,6 +25,9 @@ plugins.push(
     chunksSortMode: 'manual',
     filename: name + '.html',
     chunks: [name],
+    vars: {
+      entry_point: '${entry_point}',
+    },
   })
 );
 
@@ -49,7 +52,7 @@ const projectRule = {
 };
 
 const rules = [
-  projectRule
+  projectRule,
 ];
 
 
