@@ -1,4 +1,4 @@
-c2cgeoform==2.0.dev20180412
+c2cgeoform
 #c2cgeoportal-commons #  pip -> Could not find a version that satisfies the requirement c2cgeoportal-commons
 c2cwsgiutils
 colander
