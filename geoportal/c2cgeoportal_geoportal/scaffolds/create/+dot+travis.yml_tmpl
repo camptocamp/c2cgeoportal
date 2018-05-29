@@ -8,4 +8,4 @@ addons:
       - python3-netifaces
 
 script:
-  - ./docker-run make --makefile={{project}}.mk checks
+  - ./docker-run make --makefile={{package}}.mk checks
