@@ -6,7 +6,7 @@ vars:
   # the package name
   package: {{package}}
   geomapfish_version: '{GEOMAPFISH_VERSION}'
-  instance: main
+  instance: '{INSTANCE}'
   build_volume_name: '{BUILD_VOLUME_NAME}'
 
   srid: -1
@@ -19,6 +19,7 @@ vars:
   # Docker base image name (comes from the makefile).
   docker_base: '{DOCKER_BASE}'
   docker_tag: '{DOCKER_TAG}'
+  docker_global_front: false
   docker_services:
     db:
       environment:
@@ -29,7 +30,7 @@ vars:
       environment:
         VISIBLE_WEB_HOST: localhost:80
         VISIBLE_WEB_PROTOCOL: https
-        VISIBLE_ENTRY_POINT: /
+        VISIBLE_ENTRY_POINT: '{DOCKER_ENTRY_POINT}'
         PGHOST: 172.17.0.1
         PGHOST_SLAVE: 172.17.0.1
         PGPORT: 5432
@@ -490,14 +491,17 @@ environment:
   - GEOMAPFISH_VERSION
   - DOCKER_BASE
   - DOCKER_TAG
+  - DOCKER_ENTRY_POINT
   - DEVELOPMENT
   - WMTSCAPABILITIES_PATH
   - BUILD_VOLUME_NAME
   - PROJECT_DIRECTORY
   - DEV_SERVER_PORT
+  - INSTANCE
 
 runtime_environment:
-  - VISIBLE_WEB_HOST
+  - name: VISIBLE_WEB_HOST
+    default: localhost
   - name: VISIBLE_WEB_PROTOCOL
     default: https
   - name: VISIBLE_ENTRY_POINT
