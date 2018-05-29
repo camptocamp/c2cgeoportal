@@ -57,7 +57,7 @@ backend geoportal
 
 
 backend tilecloudchain
-    option httpchk GET /tiles HTTP/1.0\r\nUser-Agent:\ healthcheck
+    option httpchk GET ${VISIBLE_ENTRY_POINT}tiles HTTP/1.0\r\nUser-Agent:\ healthcheck
     http-check expect status 200
     server linked tilecloudchain:80 resolvers dns #check
 
@@ -69,7 +69,7 @@ frontend plain
     http-request set-var(req.path) path
 
     # If the path starts with /tiles/, use the tilecloudchain backend
-    acl is_tiles var(req.path) -m beg /tiles/
+    acl is_tiles var(req.path) -m beg ${VISIBLE_ENTRY_POINT}tiles/
     use_backend tilecloudchain if is_tiles
 
     # Redirect all to geoportal by default
