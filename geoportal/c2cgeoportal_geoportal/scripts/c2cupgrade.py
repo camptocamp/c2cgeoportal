@@ -255,11 +255,11 @@ class C2cUpgradeTool:
         except ConnectionRefusedError as e:
             return False, "\n".join([
                 "Connection refused: {}",
-                "Run `curl {} '{}'` for more information."
+                "Run `curl --insecure {} '{}'` for more information."
             ]).format(
                 e,
                 ' '.join([
-                    '--header={}={}'.format(*i) for i in self.project.get("checker_headers", {}).items()
+                    '--header {}={}'.format(*i) for i in self.project.get("checker_headers", {}).items()
                 ]),
                 self.project["checker_url"],
             )
@@ -658,7 +658,7 @@ class C2cUpgradeTool:
         else:
             message = [
                 "The upgrade is nearly done, now you should:",
-                "- Run `docker-compose up`.",
+                "- Run `docker-compose up -d`.",
                 "- Test your application on 'http://localhost:8480/desktop'."
             ]
 
