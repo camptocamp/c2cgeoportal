@@ -55,6 +55,7 @@ vars:
     tilecloudchain:
       environment:
         VISIBLE_ENTRY_POINT: '{docker_entry_point}'
+        TILEGENERATION_CONFIGFILE: /etc/tilegeneration/config.yaml
     front:
       port: 80
 

@@ -26,5 +26,5 @@ RUN pip install --disable-pip-version-check --no-cache-dir --no-deps --editable=
     python -m compileall -q /app/${package}_geoportal -x /app/${package}_geoportal/static.* && \
     c2cwsgiutils_genversion.py $GIT_HASH
 
-ENTRYPOINT []
+ENTRYPOINT [ "/usr/bin/eval-templates" ]
 CMD ["c2cwsgiutils_run"]
