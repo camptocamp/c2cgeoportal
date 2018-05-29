@@ -117,7 +117,7 @@ class Shortener:
                 break
             tries += 1  # pragma: no cover
             if tries > 20:  # pragma: no cover
-                message = "No free ref found, considere to increase the length"
+                message = "No free ref found, considered to increase the length"
                 logging.error(message)
                 raise HTTPInternalServerError(message)
 

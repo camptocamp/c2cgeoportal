@@ -1,2 +1,2 @@
-docker-compose==1.20.1
-netifaces==0.10.6
+docker-compose==1.21.2
+netifaces==0.10.7
