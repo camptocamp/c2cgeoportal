@@ -132,6 +132,11 @@ vars:
 
   interfaces_theme:
     desktop: desktop
+    desktop_alt: desktop_alt
+    mobile: mobile
+    mobile_alt: mobile
+    oeview: desktop
+    oeedit: desktop
 
   # The dogpile.cache configuration.
   #
