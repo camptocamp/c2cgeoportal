@@ -148,6 +148,17 @@ class BaseTemplate(Template):  # pragma: no cover
             return None
 
 
+def fix_executables(output_dir, patterns, in_const_create_template=False):
+    if os.name == 'posix':
+        for pattern in patterns:
+            if in_const_create_template:
+                pattern = os.path.join(output_dir, "CONST_create_template", pattern)
+            else:
+                pattern = os.path.join(output_dir, pattern)
+            for file_ in glob.glob(pattern):
+                subprocess.check_call(["chmod", "+x", file_])
+
+
 class TemplateCreate(BaseTemplate):  # pragma: no cover
     _template_dir = "create"
     summary = "Template used to create a c2cgeoportal project"
@@ -157,10 +168,7 @@ class TemplateCreate(BaseTemplate):  # pragma: no cover
         Overrides the base template class to print the next step.
         """
 
-        if os.name == 'posix':
-            for file_ in ("docker-run", "docker-compose-run", "bin/eval-templates"):
-                dest = os.path.join(output_dir, file_)
-                subprocess.check_call(["chmod", "+x", dest])
+        fix_executables(output_dir, ("docker-run", "docker-compose-run", "bin/*"))
 
         self.out("\nContinue with:")
         self.out(colorize(
@@ -198,10 +206,8 @@ class TemplateUpdate(BaseTemplate):  # pragma: no cover
         after a successful scaffolding rendering.
         """
 
-        if os.name == 'posix':
-            for file_ in ("docker-run", "docker-compose-run", "bin/eval-templates"):
-                dest = os.path.join(output_dir, "CONST_create_template", file_)
-                subprocess.check_call(["chmod", "+x", dest])
+        fix_executables(output_dir, ("docker-run", "docker-compose-run", "bin/*"), True)
+
         self.out(colorize("\nWelcome to c2cgeoportal!", GREEN))
 
         return BaseTemplate.post(self, command, output_dir, vars_)
@@ -216,13 +222,8 @@ class TemplateNondockerCreate(TemplateCreate):  # pragma: no cover
         return super().pre(command, output_dir, vars_)
 
     def post(self, command, output_dir, vars_):
-        if os.name == 'posix':
-            for glob_ in (
-                    "get-pip-dependencies",
-                    "deploy/hooks/*",
-            ):
-                for file_ in glob.glob(os.path.join(output_dir, glob_)):
-                    subprocess.check_call(["chmod", "+x", file_])
+        fix_executables(output_dir, ("get-pip-dependencies", "deploy/hooks/*"))
+
         return super().post(command, output_dir, vars_)
 
 
@@ -236,12 +237,6 @@ class TemplateNondockerUpdate(TemplateUpdate):  # pragma: no cover
         return BaseTemplate.pre(self, command, output_dir, vars_)
 
     def post(self, command, output_dir, vars_):
-        if os.name == 'posix':
-            for glob_ in (
-                "get-pip-dependencies",
-                "deploy/hooks/*",
-            ):
-                for file_ in glob.glob(os.path.join(output_dir, "CONST_create_template", glob_)):
-                    subprocess.check_call(["chmod", "+x", file_])
+        fix_executables(output_dir, ("get-pip-dependencies", "deploy/hooks/*"), True)
 
         return BaseTemplate.post(self, command, output_dir, vars_)
