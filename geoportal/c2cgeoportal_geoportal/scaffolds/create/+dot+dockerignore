@@ -1,4 +1,5 @@
 *
+!bin/
 !front/
 !mapserver/
 !qgisserver/

@@ -15,12 +15,20 @@ vars:
   web_protocol: '{VISIBLE_WEB_PROTOCOL}'
   entry_point: '{VISIBLE_ENTRY_POINT}'
   dev_server_port: '{DEV_SERVER_PORT}'
+  docker_entry_point: '{DOCKER_ENTRY_POINT}'
+  docker_host: '{DOCKER_WEB_HOST}'
+  docker_web_protocol: '{DOCKER_WEB_PROTOCOL}'
 
   # Docker base image name (comes from the makefile).
   docker_base: '{DOCKER_BASE}'
   docker_tag: '{DOCKER_TAG}'
   docker_global_front: false
   docker_services:
+    config:
+      environment:
+        VISIBLE_WEB_HOST: '{docker_entry_point}'
+        VISIBLE_WEB_PROTOCOL: '{docker_web_protocol}'
+        VISIBLE_ENTRY_POINT: '{docker_entry_point}'
     db:
       environment:
         POSTGRES_DB: geomapfish
@@ -28,9 +36,9 @@ vars:
         POSTGRES_PASSWORD: www-data
     geoportal:
       environment:
-        VISIBLE_WEB_HOST: localhost:80
-        VISIBLE_WEB_PROTOCOL: https
-        VISIBLE_ENTRY_POINT: '{DOCKER_ENTRY_POINT}'
+        VISIBLE_WEB_HOST: '{docker_entry_point}'
+        VISIBLE_WEB_PROTOCOL: '{docker_web_protocol}'
+        VISIBLE_ENTRY_POINT: '{docker_entry_point}'
         PGHOST: 172.17.0.1
         PGHOST_SLAVE: 172.17.0.1
         PGPORT: 5432
@@ -44,6 +52,10 @@ vars:
         PRINT_URL: http://print:8080/print/
         REDIS_HOST: redis
         REDIS_PORT: 6379
+    tilecloudchain:
+      environment:
+        VISIBLE_ENTRY_POINT: '{docker_entry_point}'
+        TILEGENERATION_CONFIGFILE: /etc/tilegeneration/config.yaml
     front:
       port: 80
 
@@ -496,6 +508,8 @@ environment:
   - GEOMAPFISH_VERSION
   - DOCKER_BASE
   - DOCKER_TAG
+  - DOCKER_WEB_PROTOCOL
+  - DOCKER_WEB_HOST
   - DOCKER_ENTRY_POINT
   - DEVELOPMENT
   - WMTSCAPABILITIES_PATH
