@@ -162,8 +162,7 @@ else
 	$(PYTHON) -m venv --system-site-packages .build/venv
 endif
 ifeq ($(OPERATING_SYSTEM), WINDOWS)
-	$(PYTHON_BIN)/python -m pip install `./get-pip-dependencies c2cgeoportal Shapely`
-	$(PYTHON_BIN)/python -m pip install wheels/Shapely-1.5.13-cp27-none-win32.whl
+	$(PYTHON_BIN)/python -m pip install `./get-pip-dependencies c2cgeoportal-commons c2cgeoportal-geoportal c2cgeoportal-admin Shapely Fiona rasterio GDAL flake8-mypy mypy`
 else
 	$(PYTHON_BIN)/python -m pip install `./get-pip-dependencies c2cgeoportal-commons c2cgeoportal-geoportal c2cgeoportal-admin GDAL flake8-mypy mypy`
 endif
