@@ -55,15 +55,22 @@ const rules = [
   projectRule,
 ];
 
+const noDevServer = process.env['NO_DEV_SERVER'] != 'FALSE';
+devServer = dev && !noDevServer;
 
 module.exports = {
   output: {
     path: path.resolve(__dirname, 'geoportal/{{package}}_geoportal/static-ngeo/build/'),
-    publicPath: dev ? '/${instance}/dev/' : '${entry_point}static-ngeo/UNUSED_CACHE_VERSION/build/'
+    publicPath: devServer ? '/${instance}/dev/' : '${entry_point}static-ngeo/UNUSED_CACHE_VERSION/build/'
   },
   entry: entry,
   module: {
     rules
   },
   plugins: plugins,
+  resolve: {
+    alias: {
+      {{package}}: path.resolve(__dirname, 'geoportal/{{package}}_geoportal/static-ngeo/js'),
+    }
+  }
 };
