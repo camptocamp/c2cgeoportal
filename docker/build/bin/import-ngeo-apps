@@ -87,6 +87,7 @@ def main():
 
     parser.add_argument('--html', action="store_true", help="Import the html template")
     parser.add_argument('--js', action="store_true", help="Import the javascript controller")
+    parser.add_argument('--non-docker', action="store_false", dest="docker", help="Import for non Docker")
     parser.add_argument('interface', metavar='INTERFACE', help="The interface we import")
     parser.add_argument('src', metavar='SRC', help="The ngeo source file")
     parser.add_argument('dst', metavar='DST', help="The destination file")
@@ -116,7 +117,9 @@ def main():
             data = _sub(
                 re.escape('<script src="https://geomapfish-demo.camptocamp.com/2.') + '[0-9]' +
                 re.escape('/wsgi/dynamic.js?interface={}"></script>'.format(args.interface)),
-                '<script src="dynamic.js?interface={interface}"></script>'.format(interface=args.interface),
+                '<script src="{entry_point}dynamic.js?interface={interface}"></script>'.format(
+                    entry_point='${htmlWebpackPlugin.options.vars.entry_point}' if args.docker else '',
+                    interface=args.interface),
                 data
             )
 

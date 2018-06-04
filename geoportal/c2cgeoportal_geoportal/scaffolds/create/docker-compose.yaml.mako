@@ -48,6 +48,8 @@ ${service_defaults('mapserver', 80)}\
 
   geoportal:
     image: ${docker_base}-geoportal:${docker_tag}
+    volumes:
+      - /var/sig:/var/sig:ro
 ${service_defaults('geoportal', 80)}\
 
   front:

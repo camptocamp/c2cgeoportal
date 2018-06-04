@@ -1,7 +1,8 @@
 *
+!alembic.ini
 !config.yaml
-!{{package}}_geoportal
+!eval_templates.sh
+!production.ini
 !setup.cfg
 !setup.py
-!production.ini
-!alembic.ini
+!{{package}}_geoportal
