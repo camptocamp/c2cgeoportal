@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (C) 2018  Camptocamp
+  ~ Copyright (C) 2014-2018  Camptocamp
   ~
   ~ This file is part of MapFish Print
   ~
