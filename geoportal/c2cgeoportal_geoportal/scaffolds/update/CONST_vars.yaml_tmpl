@@ -26,7 +26,7 @@ vars:
   docker_services:
     config:
       environment:
-        VISIBLE_WEB_HOST: '{docker_entry_point}'
+        VISIBLE_WEB_HOST: '{docker_host}'
         VISIBLE_WEB_PROTOCOL: '{docker_web_protocol}'
         VISIBLE_ENTRY_POINT: '{docker_entry_point}'
     db:
@@ -36,7 +36,7 @@ vars:
         POSTGRES_PASSWORD: www-data
     geoportal:
       environment:
-        VISIBLE_WEB_HOST: '{docker_entry_point}'
+        VISIBLE_WEB_HOST: '{docker_host}'
         VISIBLE_WEB_PROTOCOL: '{docker_web_protocol}'
         VISIBLE_ENTRY_POINT: '{docker_entry_point}'
         PGHOST: 172.17.0.1
