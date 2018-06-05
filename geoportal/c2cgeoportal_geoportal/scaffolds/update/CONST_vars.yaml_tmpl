@@ -29,6 +29,12 @@ vars:
         VISIBLE_WEB_HOST: '{docker_entry_point}'
         VISIBLE_WEB_PROTOCOL: '{docker_web_protocol}'
         VISIBLE_ENTRY_POINT: '{docker_entry_point}'
+        PGHOST: 172.17.0.1
+        PGHOST_SLAVE: 172.17.0.1
+        PGPORT: 5432
+        PGUSER: www-data
+        PGPASSWORD: www-data
+        PGDATABASE: geomapfish
     db:
       environment:
         POSTGRES_DB: geomapfish

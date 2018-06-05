@@ -7,6 +7,7 @@ version: '2'
 services:
   config:
     image: ${docker_base}-config:${docker_tag}
+${service_defaults('config')}\
 
   print:
     image: camptocamp/mapfish_print:3.12.1
@@ -18,6 +19,9 @@ ${service_defaults('print', 8080)}\
     image: camptocamp/mapserver:7.0
     volumes_from:
       - config:rw
+    volumes:
+      - /var/sig:/var/sig:ro
+    entrypoint: []
 ${service_defaults('mapserver', 80)}\
 
 ##  qgisserver:
@@ -30,15 +34,15 @@ ${service_defaults('mapserver', 80)}\
     image: camptocamp/mapcache:1.6
     volumes_from:
       - config:ro
-${service_defaults('mapserver', 80)}\
+${service_defaults('mapcache', 80)}\
 
   memcached:
     image: memcached:1.5
-${service_defaults('mapserver', 11211)}\
+${service_defaults('memcached', 11211)}\
 
   redis:
     image: redis:3.2
-${service_defaults('mapserver', 6379)}\
+${service_defaults('redis', 6379)}\
 
   tilecloudchain:
     image: camptocamp/tilecloud-chain:1.5.0
