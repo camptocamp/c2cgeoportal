@@ -79,16 +79,31 @@ account:</p>
 </div>
 <div class="section" id="makefile">
 <h2>Makefile<a class="headerlink" href="#makefile" title="Permalink to this headline">¶</a></h2>
-<p>You can run <cite>DEBUG=TRUE make …</cite> to have some debug message.
-Actually we display the running rule and why she is running (dependence update).</p>
+<p>To obtain additional debug messages, you can rebuild your project as follows:</p>
+<pre class="highlight"><span class="prompt1"><span class="nv">DEBUG</span><span class="o">=</span>TRUE make ...</span>
+</pre><p>Actually we display the running rule and why she is running (dependence update).</p>
 </div>
 <div class="section" id="docker">
 <h2>Docker<a class="headerlink" href="#docker" title="Permalink to this headline">¶</a></h2>
-<p>Edit a file in a running apache WSGI container</p>
-<pre class="highlight"><span class="prompt1">docker <span class="nb">exec</span> -ti &lt;package&gt;_wsgi_1 bash</span>
+<div class="section" id="edit-a-file-in-a-running-apache-wsgi-container">
+<h3>Edit a file in a running apache WSGI container<a class="headerlink" href="#edit-a-file-in-a-running-apache-wsgi-container" title="Permalink to this headline">¶</a></h3>
+<pre class="highlight"><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal bash</span>
 <span class="prompt1">vi ...</span>
 <span class="prompt1"><span class="nb">kill</span> -s USR1 <span class="m">1</span>  <span class="c1"># graceful</span></span>
 </pre></div>
+<div class="section" id="mount-c2cgeoportal-in-the-container">
+<h3>Mount c2cgeoportal in the container<a class="headerlink" href="#mount-c2cgeoportal-in-the-container" title="Permalink to this headline">¶</a></h3>
+<p>Add in the <code class="docutils literal notranslate"><span class="pre">docker-compose.yaml</span></code> file, in the <code class="docutils literal notranslate"><span class="pre">geoportal</span></code> service the following lines:</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">:</span>
+  <span class="n">geoportal</span><span class="p">:</span>
+    <span class="n">volumes</span><span class="p">:</span>
+      <span class="o">-</span> <span class="o">&lt;</span><span class="n">c2cgeoportal_git_root</span><span class="o">&gt;/</span><span class="n">geoportal</span><span class="o">/</span><span class="n">c2cgeoportal_commons</span><span class="p">:</span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">c2cgeoportal_geoportal</span><span class="o">/</span><span class="n">c2cgeoportal_commons</span>
+      <span class="o">-</span> <span class="o">&lt;</span><span class="n">c2cgeoportal_git_root</span><span class="o">&gt;/</span><span class="n">geoportal</span><span class="o">/</span><span class="n">c2cgeoportal_geoportal</span><span class="p">:</span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">c2cgeoportal_geoportal</span><span class="o">/</span><span class="n">c2cgeoportal_geoportal</span>
+      <span class="o">-</span> <span class="o">&lt;</span><span class="n">c2cgeoportal_git_root</span><span class="o">&gt;/</span><span class="n">geoportal</span><span class="o">/</span><span class="n">c2cgeoportal_admin</span><span class="p">:</span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">c2cgeoportal_geoportal</span><span class="o">/</span><span class="n">c2cgeoportal_admin</span>
+</pre></div>
+</div>
+</div>
+</div>
 <div class="section" id="performance-or-network-error">
 <h2>Performance or network error<a class="headerlink" href="#performance-or-network-error" title="Permalink to this headline">¶</a></h2>
 <p>For performance and proxy issues make sure that all internal URLs in the config file
@@ -124,7 +139,11 @@ to test it).</p>
 <li><a class="reference internal" href="#mapserver">Mapserver</a></li>
 <li><a class="reference internal" href="#postgresql">PostgreSQL</a></li>
 <li><a class="reference internal" href="#makefile">Makefile</a></li>
-<li><a class="reference internal" href="#docker">Docker</a></li>
+<li><a class="reference internal" href="#docker">Docker</a><ul>
+<li><a class="reference internal" href="#edit-a-file-in-a-running-apache-wsgi-container">Edit a file in a running apache WSGI container</a></li>
+<li><a class="reference internal" href="#mount-c2cgeoportal-in-the-container">Mount c2cgeoportal in the container</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#performance-or-network-error">Performance or network error</a><ul>
 <li><a class="reference internal" href="#tilecloud-chain">Tilecloud chain</a></li>
 </ul>
