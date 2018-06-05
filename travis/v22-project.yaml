@@ -18,6 +18,7 @@ unmanaged_files:
   - mapserver/mapserver\.map\.mako
   - mapserver/mapserver\.map\.tmpl\.mako
   - print/print-apps/testgeomapfish/config\.yaml\.mako
+  - print/print-apps/testgeomapfish/config\.yaml\.tmpl
   - print/print-apps/testgeomapfish/.*\.jrxml
   - geoportal/testgeomapfish_geoportal/locale/fr/LC_MESSAGES/testgeomapfish-client\.po
   - geoportal/testgeomapfish_geoportal/locale/de/LC_MESSAGES/testgeomapfish-client\.po

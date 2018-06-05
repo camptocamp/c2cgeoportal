@@ -158,3 +158,6 @@ files_to_move:
   - from: geoportal/{{package}}_geoportal/static-ngeo/components/contextualdata/contextualdata.html
     to: geoportal/{{package}}_geoportal/static-ngeo/js/apps/contextualdata.html
     version: 2.3
+  - from: print/print-apps/{{package}}/config.yaml.tmpl
+    to: print/print-apps/{{package}}/config.yaml.mako
+    version: 2.3

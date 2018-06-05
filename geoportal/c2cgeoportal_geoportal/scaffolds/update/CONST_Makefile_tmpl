@@ -303,7 +303,8 @@ endif
 
 # Print
 PRINT_BASE_DIR ?= print
-I18N_SOURCE_FILES += print/print-apps/$(PACKAGE)/config.yaml
+PRINT_CONFIG_FILE ?= print/print-apps/$(PACKAGE)/config.yaml.tmpl
+I18N_SOURCE_FILES += $(PRINT_CONFIG_FILE)
 
 PY_FILES = $(shell find $(PACKAGE) -type f -name '*.py' -print)
 
@@ -685,7 +686,7 @@ docker-compose-build.yaml: /build/requirements.timestamp
 
 .PHONY: docker-build-config
 docker-build-config: $(shell docker-required --path .) \
-		print/print-apps/$(PACKAGE)/config.yaml \
+		$(PRINT_CONFIG_FILE) \
 		$(MAPCACHE_FILE)
 	docker build -t $(DOCKER_BASE)-config:$(DOCKER_TAG) .
 

@@ -35,6 +35,7 @@ vars:
         PGUSER: www-data
         PGPASSWORD: www-data
         PGDATABASE: geomapfish
+        GEOPORTAL_INTERNAL_URL: 'http://geoportal/'
     db:
       environment:
         POSTGRES_DB: geomapfish
