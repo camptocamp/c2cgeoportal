@@ -67,19 +67,39 @@ Logs are available in the ``/var/log/postgresql/postgresql-9.*-main.log`` file.
 Makefile
 --------
 
-You can run `DEBUG=TRUE make ...` to have some debug message.
+To obtain additional debug messages, you can rebuild your project as follows:
+
+.. prompt:: bash
+
+   DEBUG=TRUE make ...
+
 Actually we display the running rule and why she is running (dependence update).
 
 Docker
 ------
 
 Edit a file in a running apache WSGI container
+..............................................
 
 .. prompt:: bash
 
-   docker exec -ti <package>_wsgi_1 bash
+   docker-compose exec geoportal bash
    vi ...
    kill -s USR1 1  # graceful
+
+Mount c2cgeoportal in the container
+...................................
+
+Add in the ``docker-compose.yaml`` file, in the ``geoportal`` service the following lines:
+
+.. code:: yaml
+
+   services:
+     geoportal:
+       volumes:
+         - <c2cgeoportal_git_root>/geoportal/c2cgeoportal_commons:/opt/c2cgeoportal_geoportal/c2cgeoportal_commons
+         - <c2cgeoportal_git_root>/geoportal/c2cgeoportal_geoportal:/opt/c2cgeoportal_geoportal/c2cgeoportal_geoportal
+         - <c2cgeoportal_git_root>/geoportal/c2cgeoportal_admin:/opt/c2cgeoportal_geoportal/c2cgeoportal_admin
 
 
 Performance or network error
