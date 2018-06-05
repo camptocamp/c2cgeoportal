@@ -32,6 +32,7 @@ Information
        ]
    ...'''
 
+
 Changes to apply
 ----------------
 
@@ -45,3 +46,9 @@ Changes to apply
 
 3. If you have some custom Angular components you should follow these instructions:
    https://github.com/camptocamp/ngeo/blob/master/docs/how_to_migrate_from_2.2_to_2.3.md
+
+
+Changes to apply on Docker version
+----------------------------------
+
+1. Move all yours `mapserver/*.map.mako` files to `mapserver/*.map.tmpl.mako`.
