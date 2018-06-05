@@ -45,7 +45,7 @@ import zope.event.classhandler
 from pyramid.config import Configurator
 from pyramid_mako import add_mako_renderer
 from pyramid.interfaces import IStaticURLInfo
-from pyramid.httpexceptions import HTTPException
+from pyramid.httpexceptions import HTTPException, HTTPNotFound
 import pyramid.security
 
 from papyrus.renderers import GeoJSON, XSD
@@ -492,12 +492,19 @@ def call_hook(settings, name, *args, **kwargs):
     function(*args, **kwargs)
 
 
+def notfound(request):
+    del request
+    return HTTPNotFound()
+
+
 def includeme(config):
     """
     This function returns a Pyramid WSGI application.
     """
 
     settings = config.get_settings()
+
+    config.add_notfound_view(notfound, append_slash=True)
 
     config.include("c2cgeoportal_commons")
 
