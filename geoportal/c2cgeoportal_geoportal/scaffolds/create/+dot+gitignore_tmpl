@@ -11,7 +11,7 @@ __pycache__/
 /testdb/13-alembic-static.sql
 /mapcache/
 /tilegeneration/config.yaml
-/print/print-apps/{{package}}/config.yaml
+/print/print-apps/{{package}}/config.yaml.mako
 /mapserver/mapserver.map.tmpl
 /mapserver/*.map.tmpl
 /mapserver/tinyows.xml

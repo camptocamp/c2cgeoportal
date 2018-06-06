@@ -208,7 +208,7 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
     GeoMapfish config extractor (raster layers, and print templates)
     """
 
-    extensions = [".yaml"]
+    extensions = [".yaml", ".tmpl"]
 
     def __call__(self, filename, options):
         init_region({"backend": "dogpile.cache.memory"})
