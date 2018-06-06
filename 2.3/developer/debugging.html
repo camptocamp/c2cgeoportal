@@ -85,11 +85,15 @@ account:</p>
 </div>
 <div class="section" id="docker">
 <h2>Docker<a class="headerlink" href="#docker" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="edit-a-file-in-a-running-apache-wsgi-container">
-<h3>Edit a file in a running apache WSGI container<a class="headerlink" href="#edit-a-file-in-a-running-apache-wsgi-container" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="run-gunicorn-to-reload-on-modifications-of-python-files">
+<h3>Run gunicorn to reload on modifications of Python files<a class="headerlink" href="#run-gunicorn-to-reload-on-modifications-of-python-files" title="Permalink to this headline">¶</a></h3>
+<p>Add the following environment variable to the geoportal container:</p>
+<p><code class="docutils literal notranslate"><span class="pre">GUNICORN_PARAMS=&quot;-b</span> <span class="pre">:80</span> <span class="pre">--worker-class</span> <span class="pre">gthread</span> <span class="pre">--threads</span> <span class="pre">1</span> <span class="pre">--workers</span> <span class="pre">1</span> <span class="pre">--reload&quot;</span></code></p>
+</div>
+<div class="section" id="do-a-graceful-restart-of-the-running-geoportal-container">
+<h3>Do a graceful restart of the running geoportal container<a class="headerlink" href="#do-a-graceful-restart-of-the-running-geoportal-container" title="Permalink to this headline">¶</a></h3>
 <pre class="highlight"><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal bash</span>
-<span class="prompt1">vi ...</span>
-<span class="prompt1"><span class="nb">kill</span> -s USR1 <span class="m">1</span>  <span class="c1"># graceful</span></span>
+<span class="prompt1"><span class="nb">kill</span> -s HUP <span class="sb">`</span>ps aux<span class="p">|</span>grep gunicorn<span class="p">|</span>head --lines<span class="o">=</span><span class="m">1</span><span class="p">|</span>awk <span class="s1">&#39;{print $2}&#39;</span><span class="sb">`</span>  <span class="c1"># graceful</span></span>
 </pre></div>
 <div class="section" id="mount-c2cgeoportal-in-the-container">
 <h3>Mount c2cgeoportal in the container<a class="headerlink" href="#mount-c2cgeoportal-in-the-container" title="Permalink to this headline">¶</a></h3>
@@ -140,7 +144,8 @@ to test it).</p>
 <li><a class="reference internal" href="#postgresql">PostgreSQL</a></li>
 <li><a class="reference internal" href="#makefile">Makefile</a></li>
 <li><a class="reference internal" href="#docker">Docker</a><ul>
-<li><a class="reference internal" href="#edit-a-file-in-a-running-apache-wsgi-container">Edit a file in a running apache WSGI container</a></li>
+<li><a class="reference internal" href="#run-gunicorn-to-reload-on-modifications-of-python-files">Run gunicorn to reload on modifications of Python files</a></li>
+<li><a class="reference internal" href="#do-a-graceful-restart-of-the-running-geoportal-container">Do a graceful restart of the running geoportal container</a></li>
 <li><a class="reference internal" href="#mount-c2cgeoportal-in-the-container">Mount c2cgeoportal in the container</a></li>
 </ul>
 </li>
