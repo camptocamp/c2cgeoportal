@@ -78,14 +78,20 @@ Actually we display the running rule and why she is running (dependence update).
 Docker
 ------
 
-Edit a file in a running apache WSGI container
-..............................................
+Run gunicorn to reload on modifications of Python files
+.......................................................
+
+Add the following environment variable to the geoportal container:
+
+``GUNICORN_PARAMS="-b :80 --worker-class gthread --threads 1 --workers 1 --reload"``
+
+Do a graceful restart of the running geoportal container
+........................................................
 
 .. prompt:: bash
 
    docker-compose exec geoportal bash
-   vi ...
-   kill -s USR1 1  # graceful
+   kill -s HUP `ps aux|grep gunicorn|head --lines=1|awk '{print $2}'`  # graceful
 
 Mount c2cgeoportal in the container
 ...................................
