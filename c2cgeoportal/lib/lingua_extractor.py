@@ -235,7 +235,7 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
                             value.encode("ascii", errors="replace") if isinstance(value, unicode) else value)
                         enums.append(Message(None, msgid, None, [], u"", u"", (filename, location)))
 
-        metadata = []
+        metadata_list = []
         defs = config["vars"]["admin_interface"]["available_metadata"]
         names = [e["name"] for e in defs if e.get("translate", False)]
 
@@ -251,9 +251,11 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
                 .filter(c2cgeoportal.models.Metadata.name.in_(names))
             for metadata in query.all():
                 location = "metadata/{}/{}".format(metadata.name, metadata.id)
-                metadata.append(Message(None, metadata.value, None, [], u"", u"", (filename, location)))
+                metadata_list.append(
+                    Message(None, metadata.value, None, [], u"", u"", (filename, location))
+                )
 
-        return raster + enums + metadata
+        return raster + enums + metadata_list
 
     @classmethod
     def _enumerate_attributes_values(cls, dbsessions, layers, layerinfos, fieldname):
