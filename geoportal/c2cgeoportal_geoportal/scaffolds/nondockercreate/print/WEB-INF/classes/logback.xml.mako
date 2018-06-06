@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (C) 2014  Camptocamp
+  ~ Copyright (C) 2014-2018  Camptocamp
   ~
   ~ This file is part of MapFish Print
   ~
@@ -45,7 +45,7 @@
     <logger name="net.sf.jasperreports" level="WARN" />
     <logger name="org.springframework" level="WARN" />
     <logger name="org.apache" level="WARN" />
-    <!-- Set spec logger to INFO to log all print spec json data -->
+    <!-- Set spec logger to DEBUG to log all print spec json data -->
     <logger name="org.mapfish.print.servlet.BaseMapServlet.spec" level="OFF" />
     <logger name="com.codahale.metrics" level="INFO" />
     <logger name="com.codahale.metrics.JmxReporter" level="INFO" />
