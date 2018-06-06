@@ -56,4 +56,4 @@ ${service_defaults('mapserver', 80)}\
 
   geoportal:
     image: ${docker_base}-geoportal:${docker_tag}
-${service_defaults('geoportal', 80, True)}\
+${service_defaults('geoportal', 8080, True)}\

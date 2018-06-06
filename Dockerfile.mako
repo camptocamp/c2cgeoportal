@@ -16,17 +16,13 @@ RUN \
   ttf2eot /usr/lib/node_modules/ngeo/contribs/gmf/fonts/gmf-icons.ttf \
     /usr/lib/node_modules/ngeo/contribs/gmf/fonts/gmf-icons.eot && \
   ttf2woff /usr/lib/node_modules/ngeo/contribs/gmf/fonts/gmf-icons.ttf \
-    /usr/lib/node_modules/ngeo/contribs/gmf/fonts/gmf-icons.woff && \
-  convert /usr/lib/node_modules/ngeo/contribs/gmf/cursors/grab.png \
-    /usr/lib/node_modules/ngeo/contribs/gmf/cursors/grab.cur && \
-  convert /usr/lib/node_modules/ngeo/contribs/gmf/cursors/grabbing.png \
-    /usr/lib/node_modules/ngeo/contribs/gmf/cursors/grabbing.cur
+    /usr/lib/node_modules/ngeo/contribs/gmf/fonts/gmf-icons.woff
 
 RUN \
   mkdir --parents /opt/angular-locale && \
   for LANG in en fr de it en-ch fr-ch de-ch it-ch; \
   do \
-    wget -O /opt/angular-locale/angular-locale_$LANG.js https://raw.githubusercontent.com/angular/angular.js/v`grep '"angular"' /usr/lib/node_modules/ngeo/package.json | cut --delimiter \" --fields 4 | tr --delete '\r\n'`/src/ngLocale/angular-locale_$LANG.js; \
+    curl --output /opt/angular-locale/angular-locale_$LANG.js https://raw.githubusercontent.com/angular/angular.js/v`grep '"angular"' /usr/lib/node_modules/ngeo/package.json | cut --delimiter \" --fields 4 | tr --delete '\r\n'`/src/ngLocale/angular-locale_$LANG.js; \
   done
 
 COPY commons /opt/c2cgeoportal_commons
