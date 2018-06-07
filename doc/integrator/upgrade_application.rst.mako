@@ -87,6 +87,12 @@ Then follow the instructions.
 From a version 2.3 and next
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Build the project file:
+
+.. prompt:: bash
+
+   ./docker-run make project.yaml.mako
+
 Change the version in the file ``.config`` to the wanted version.
 
 For non Docker project:
