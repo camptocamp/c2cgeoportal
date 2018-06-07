@@ -14,6 +14,8 @@ export MAPSERVER_URL
 PRINT_URL ?= http://print:8080/print/
 export PRINT_URL
 PRINT_CONFIG_FILE ?= print/print-apps/$(PACKAGE)/config.yaml
+MAPCACHE_FILE ?= mapcache/mapcache.xml
+TILEGENERATION_CONFIG_FILE = tilegeneration/config.yaml
 
 VISIBLE_WEB_PROTOCOL ?= https
 VISIBLE_WEB_PORT ?= 443

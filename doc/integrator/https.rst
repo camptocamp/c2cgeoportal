@@ -49,8 +49,7 @@ for all url except for some parameters that should always use http (actually
 all request on localhost): *url* parameter in tilegeneration configuration.
 
 If you apply ssl encryption on your application, you should take care of the
-tiles url to use https scheme to avoid secure and insecure contents: change
-*tiles_url* in the vars_xxx.yaml file.
+tiles url to use https scheme to avoid secure and insecure contents.
 
 Finally, you should redirect all http request to https scheme. On Camptocamp's
 server, this should be asked to our sysadmin team.

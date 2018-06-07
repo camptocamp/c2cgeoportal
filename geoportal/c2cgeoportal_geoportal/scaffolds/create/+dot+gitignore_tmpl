@@ -10,7 +10,8 @@ __pycache__/
 /testdb/12-alembic.sql
 /testdb/13-alembic-static.sql
 /mapcache/
-/tilegeneration/config.yaml
+/tilegeneration/config.yaml.tmpl
+/tilegeneration/config.yaml.mako
 /print/print-apps/{{package}}/config.yaml.mako
 /mapserver/mapserver.map.tmpl
 /mapserver/*.map.tmpl

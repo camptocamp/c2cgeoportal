@@ -45,10 +45,20 @@ ${service_defaults('memcached', 11211)}\
 ${service_defaults('redis', 6379)}\
 
   tilecloudchain:
-    image: camptocamp/tilecloud-chain:1.5.0
+    image: camptocamp/tilecloud-chain:1.6
     volumes_from:
       - config:ro
-${service_defaults('mapserver', 80)}\
+${service_defaults('tilecloudchain', 80)}\
+
+  tilegeneration:
+    image: camptocamp/tilecloud-chain:1.6
+    volumes_from:
+      - config:ro
+${service_defaults('tilecloudchain')}\
+    entrypoint:
+      - bash
+      - -c
+      - sleep infinity
 
   geoportal:
     image: ${docker_base}-geoportal:${docker_tag}

@@ -14,7 +14,7 @@ caches:
         folder: /var/sig/tiles
         wmtscapabilities_file: ${wmtscapabilities_path}
         # for GetCapabilities
-        http_url: ${web_protocol}://${host}${entry_point}tiles/
+        http_url: ${web_protocol}://${host}${entry_point}
     s3:
         type: s3
         bucket: tiles
@@ -33,7 +33,7 @@ defaults:
         # The minimum resolution to seed, useful to use with mapcache, optional.
         # min_resolution_seed: 1
         # the URL of the WMS server to used
-        url: http://mapserver/
+        url: ${mapserver_url}
         # Set the headers to get the right virtual host, and don't get any cached result
         headers:
             Host: '${host}'
@@ -101,8 +101,14 @@ generation:
     # maximum allowed consecutive errors, after it exit [default to 10]
     maxconsecutive_errors: 10
 
+server:
+    mapcache_base: '${mapcache_url}'
+    wmts_path: tiles
+    static_path: static_tiles
+    expires: 8  # 8 hours
+
 mapcache:
-    config_file: mapcache/mapcache.xml
+    config_file: mapcache/mapcache.xml.tmpl
     memcache_host: localhost
     memcache_port: 11211
 
