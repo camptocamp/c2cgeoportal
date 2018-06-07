@@ -150,6 +150,8 @@ vars:
         # Layers group
         - name: isExpanded
           type: boolean
+        - name: printNativeAngle
+          type: boolean
         # Layer
         - name: copy_to  # V1
         - name: copyable
