@@ -761,7 +761,7 @@ $(WMTSCAPABILITIES_FILE): tilegeneration/config.yaml
 
 secrets.tar.bz2.gpg:
 	tar -jcf secrets.tar.bz2 $^
-	gpg --keyserver pgp.mit.edu --keyserver-options timeout=20 --recv-keys $(GPG_KEYS)
+	gpg --keyserver pool.sks-keyservers.net --keyserver-options timeout=20 --recv-keys $(GPG_KEYS)
 	rm -f $@
 	gpg --always-trust --output $@ --encrypt $(addprefix --recipient ,$(GPG_KEYS)) secrets.tar.bz2
 	rm secrets.tar.bz2
