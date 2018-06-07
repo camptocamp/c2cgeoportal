@@ -14,13 +14,7 @@ caches:
         folder: /var/sig/tiles
         wmtscapabilities_file: ${wmtscapabilities_path}
         # for GetCapabilities
-        http_url: https://%(host)s/tiles/
-        hosts:
-        - wmts0.<host>
-        - wmts1.<host>
-        - wmts2.<host>
-        - wmts3.<host>
-        - wmts4.<host>
+        http_url: ${web_protocol}://${host}${entry_point}tiles/
     s3:
         type: s3
         bucket: tiles

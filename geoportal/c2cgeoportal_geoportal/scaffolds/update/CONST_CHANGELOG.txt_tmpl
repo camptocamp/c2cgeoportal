@@ -3,8 +3,8 @@ This file includes migration steps for each release of c2cgeoportal.
 Version 2.3.0
 =============
 
-Informations
-------------
+Information
+-----------
 
 1. The structure of the project change:
    * The package name becomes `{{package}}_geoportal`.
@@ -32,6 +32,7 @@ Informations
        ]
    ...'''
 
+
 Changes to apply
 ----------------
 
@@ -40,5 +41,14 @@ Changes to apply
    mv geoportal/{{package}}_geoportal/locale/fr/LC_MESSAGES/{{package}}{,_geoportal}-client.po
    mv geoportal/{{package}}_geoportal/locale/fr/LC_MESSAGES/{{package}}{,_geoportal}-server.po
 
-2. If you have some custom Angular components you should follow these instructions:
+2. Move all your components from `geoportal/{{package}}_geoportal/static-ngeo/components/<name>`
+   to `geoportal/{{package}}_geoportal/static-ngeo/js/<name>`.
+
+3. If you have some custom Angular components you should follow these instructions:
    https://github.com/camptocamp/ngeo/blob/master/docs/how_to_migrate_from_2.2_to_2.3.md
+
+
+Changes to apply on Docker version
+----------------------------------
+
+1. Move all yours `mapserver/*.map.mako` files to `mapserver/*.map.tmpl.mako`.

@@ -9,7 +9,9 @@ def includeme(config):
         '{}:node_modules'.format(config.root_package.__name__))
     path = None
     for path_ in [
+        os.path.join(os.path.dirname(__file__), '..', '..', 'admin', 'node_modules'),
         os.path.join(os.path.dirname(__file__), '..', '..', 'node_modules'),
+        os.path.join(os.path.dirname(__file__), '..', 'admin', 'node_modules'),
         os.path.join(os.path.dirname(__file__), '..', 'node_modules'),
         '/usr/lib/node_modules/',
     ]:

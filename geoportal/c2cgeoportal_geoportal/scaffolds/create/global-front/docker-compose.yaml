@@ -1,0 +1,13 @@
+---
+version: '2'
+services:
+  config:
+    build: .
+    image: global-config
+
+  front:
+    image: nginx:1.14
+    volumes_from:
+      - config:ro
+    ports:
+      - 80:80

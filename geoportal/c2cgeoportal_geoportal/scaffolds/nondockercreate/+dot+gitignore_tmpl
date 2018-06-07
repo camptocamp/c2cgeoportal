@@ -6,6 +6,7 @@ __pycache__/
 /project.yaml
 /docker-compose.yaml
 /docker-compose-build.yaml
+/admin/
 /alembic.yaml
 /testdb/11-schemas.sql
 /testdb/12-alembic.sql
@@ -25,6 +26,7 @@ __pycache__/
 /print/WEB-INF/lib/*.jar
 /print/WEB-INF/classes/logback.xml
 /print/print-apps/{{package}}/config.yaml
+/print/print-apps/{{package}}/config.yaml.tmpl
 /mapserver/*.map
 /mapserver/*.map.tmpl.mako
 /mapserver/tinyows.xml

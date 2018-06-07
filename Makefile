@@ -64,8 +64,10 @@ ADMIN_SRC_FILES = $(shell ls -1 commons/c2cgeoportal_commons/models/*.py) \
 	$(shell find admin/c2cgeoportal_admin/templates/widgets -name "*.pt" -print)
 
 APPS += desktop mobile
+APPS_PACKAGE_PATH_NONDOCKER = geoportal/c2cgeoportal_geoportal/scaffolds/nondockercreate/geoportal/+package+_geoportal
+APPS_HTML_FILES = $(addprefix $(APPS_PACKAGE_PATH_NONDOCKER)/static-ngeo/js/apps/, $(addsuffix .html.ejs_tmpl, $(APPS)))
 APPS_PACKAGE_PATH = geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal
-APPS_HTML_FILES = $(addprefix $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/, $(addsuffix .html.ejs_tmpl, $(APPS)))
+APPS_HTML_FILES += $(addprefix $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/, $(addsuffix .html.ejs_tmpl, $(APPS)))
 APPS_JS_FILES = $(addprefix $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/Controller, $(addsuffix .js_tmpl, $(APPS)))
 APPS_ALT += desktop_alt mobile_alt oeedit oeview
 APPS_PACKAGE_PATH_ALT = geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/geoportal/+package+_geoportal/
@@ -251,12 +253,14 @@ quote:
 
 .PHONY: spell
 spell:
-	codespell --ignore-words=spell-ignore-words.txt geoportal/setup.py \
-		$(shell find commons/c2cgeoportal_commons -name '*.py' -print) \
-		$(shell find geoportal/c2cgeoportal_geoportal -name static -prune -or -name '*.py' -print) \
-		$(shell find admin/c2cgeoportal_admin -name '*.py' -print)
+	codespell --quiet-level=2 --check-filenames --ignore-words=spell-ignore-words.txt \
+		$(shell find -name node_modules -prune -or -name .build -prune -or -name .git -prune -or -name ngeo -prune \
+		-or -name '__pycache__' -prune -or -name _build -prune \
+		-or \( -type f -and -not -name '*.png' -and -not -name '*.mo' -and -not -name '*.po*' \
+		-and -not -name 'CONST_Makefile_tmpl' \) -print)
 
-YAML_FILES ?= $(shell find -name node_modules -prune -or -name .build -prune -or -name ngeo -prune -or -name functional -prune -or \( -name "*.yml" -or -name "*.yaml" \) -print)
+
+YAML_FILES ?= $(shell find -name ngeo -prune -or -name functional -prune -or \( -name "*.yml" -or -name "*.yaml" \) -print)
 .PHONY: yamllint
 yamllint:
 	yamllint --strict --config-file=yamllint.yaml -s $(YAML_FILES)
@@ -334,6 +338,11 @@ $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/%.html.ejs_tmpl: ngeo/contribs/gmf/apps
 	mkdir --parent $(dir $@)
 	import-ngeo-apps --html $* $< $@
 
+$(APPS_PACKAGE_PATH_NONDOCKER)/static-ngeo/js/apps/%.html.ejs_tmpl: ngeo/contribs/gmf/apps/%/index.html.ejs
+	$(PRERULE_CMD)
+	mkdir --parent $(dir $@)
+	import-ngeo-apps --html --non-docker $* $< $@
+
 $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/Controller%.js_tmpl: ngeo/contribs/gmf/apps/%/Controller.js
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
@@ -369,6 +378,7 @@ npm-packages: ngeo package.json
 		coveralls gaze jasmine-core jsdoc jsdom karma karma-chrome-launcher karma-coverage \
 		karma-jasmine karma-sourcemap-loader karma-webpack \
 		--src=ngeo/package.json --src=package.json --dst=$@
+	echo googshift eslint-plugin-googshift >> $@
 
 admin/npm-packages: ngeo package.json
 	$(PRERULE_CMD)

@@ -492,12 +492,21 @@ def call_hook(settings, name, *args, **kwargs):
     function(*args, **kwargs)
 
 
+def notfound(request):
+    return {
+        "message": request.path_info,
+        "status": 404,
+    }
+
+
 def includeme(config):
     """
     This function returns a Pyramid WSGI application.
     """
 
     settings = config.get_settings()
+
+    config.add_notfound_view(notfound, append_slash=True, renderer='json', http_cache=0)
 
     config.include("c2cgeoportal_commons")
 

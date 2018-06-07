@@ -46,7 +46,7 @@ Sometime more information are available by using this command:
 You may also activate MapServer's debug mode and set environment variable of the MapServer container
 ``MS_DEBUGLEVEL`` to ``5`` (most verbose level, default is 0).
 
-`More informations <http://mapserver.org/optimization/debugging.html?highlight=debug#debug-levels>`_
+`More information <http://mapserver.org/optimization/debugging.html?highlight=debug#debug-levels>`_
 
 PostgreSQL
 ----------
@@ -67,19 +67,45 @@ Logs are available in the ``/var/log/postgresql/postgresql-9.*-main.log`` file.
 Makefile
 --------
 
-You can run `DEBUG=TRUE make ...` to have some debug message.
+To obtain additional debug messages, you can rebuild your project as follows:
+
+.. prompt:: bash
+
+   DEBUG=TRUE make ...
+
 Actually we display the running rule and why she is running (dependence update).
 
 Docker
 ------
 
-Edit a file in a running apache WSGI container
+Run gunicorn to reload on modifications of Python files
+.......................................................
+
+Add the following environment variable to the geoportal container:
+
+``GUNICORN_PARAMS="-b :80 --worker-class gthread --threads 1 --workers 1 --reload"``
+
+Do a graceful restart of the running geoportal container
+........................................................
 
 .. prompt:: bash
 
-   docker exec -ti <package>_wsgi_1 bash
-   vi ...
-   kill -s USR1 1  # graceful
+   docker-compose exec geoportal bash
+   kill -s HUP `ps aux|grep gunicorn|head --lines=1|awk '{print $2}'`  # graceful
+
+Mount c2cgeoportal in the container
+...................................
+
+Add in the ``docker-compose.yaml`` file, in the ``geoportal`` service the following lines:
+
+.. code:: yaml
+
+   services:
+     geoportal:
+       volumes:
+         - <c2cgeoportal_git_root>/geoportal/c2cgeoportal_commons:/opt/c2cgeoportal_geoportal/c2cgeoportal_commons
+         - <c2cgeoportal_git_root>/geoportal/c2cgeoportal_geoportal:/opt/c2cgeoportal_geoportal/c2cgeoportal_geoportal
+         - <c2cgeoportal_git_root>/geoportal/c2cgeoportal_admin:/opt/c2cgeoportal_geoportal/c2cgeoportal_admin
 
 
 Performance or network error

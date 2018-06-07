@@ -11,6 +11,6 @@ echo "password:${TRAVIS_PASSWORD}" >> ~/.pypirc
 export VERSION=${TRAVIS_TAG}
 
 # Deploy all the packages on pypi
-python commons/setup.py egg_info sdist bdist_wheel upload -r pypi
-python geoportal/setup.py egg_info sdist bdist_wheel upload -r pypi
-python admin/setup.py egg_info sdist bdist_wheel upload -r pypi
+(cd commons; python setup.py egg_info sdist bdist_wheel upload -r pypi)
+(cd geoportal; python setup.py egg_info sdist bdist_wheel upload -r pypi)
+(cd admin; python setup.py egg_info sdist bdist_wheel upload -r pypi)

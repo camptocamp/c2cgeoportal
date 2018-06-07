@@ -1,15 +1,6 @@
 FROM camptocamp/geomapfish-build:${geomapfish_version}
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
-COPY . /app
-WORKDIR /app
-
-ARG GIT_HASH
-
-RUN pip install --disable-pip-version-check --no-cache-dir --no-deps --editable=/app/ && \
-    python -m compileall -q /app/${package}_geoportal -x /app/${package}_geoportal/static.* && \
-    c2cwsgiutils_genversion.py $GIT_HASH
-
 ENV NODE_PATH=/usr/lib/node_modules \
     LOG_LEVEL=INFO \
     GUNICORN_ACCESS_LOG_LEVEL=INFO \
@@ -26,5 +17,14 @@ ENV NODE_PATH=/usr/lib/node_modules \
     MAPSERVER_URL=http://mapserver/ \
     PRINT_URL=http://print:8080/print/
 
-ENTRYPOINT []
+WORKDIR /app
+COPY . /app
+
+ARG GIT_HASH
+
+RUN pip install --disable-pip-version-check --no-cache-dir --no-deps --editable=/app/ && \
+    python -m compileall -q /app/${package}_geoportal -x /app/${package}_geoportal/static.* && \
+    c2cwsgiutils_genversion.py $GIT_HASH
+
+ENTRYPOINT [ "/usr/bin/eval-templates" ]
 CMD ["c2cwsgiutils_run"]
