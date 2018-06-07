@@ -57,6 +57,7 @@ function createv220 {
 }
 
 function printdiff {
+    ls -l .UPGRADE*
     for f in $(ls -1 *.diff)
     do
         echo "--- $f ---"
@@ -252,11 +253,21 @@ fi
 if [ "$1" = "v230-docker" ]
 then
     cp travis/old-project.yaml ${WORKSPACE}/v230-docker/testgeomapfish/project.yaml.mako
+    cd ${WORKSPACE}/v230-docker/testgeomapfish
+    ./docker-run make project.yaml
+    cd -
     cp travis/from23-config ${WORKSPACE}/v230-docker/testgeomapfish/.config
     cd ${WORKSPACE}/v230-docker/testgeomapfish
     git add project.yaml.mako .config
     git commit --quiet --message="Start upgrade"
     ./docker-run --env=NODE_ENV make upgrade
+    if [ ! -e .UPGRADE8 ]
+    then
+        printdiff
+        echo "Fail to upgrade"
+        exit 1
+    fi
+    ./docker-run --env=NODE_ENV make upgrade9
     if [ ! -e .UPGRADE_SUCCESS ]
     then
         printdiff
@@ -274,6 +285,9 @@ fi
 if [ "$1" = "v230-nondocker" ]
 then
     cp travis/old-project.yaml ${WORKSPACE}/v230-nondocker/testgeomapfish/project.yaml.mako
+    cd ${WORKSPACE}/v230-docker/testgeomapfish
+    ./docker-run make project.yaml
+    cd -
     cp travis/from23-config ${WORKSPACE}/v230-nondocker/testgeomapfish/.config
     cd ${WORKSPACE}/v230-nondocker/testgeomapfish
     echo "UPGRADE_ARGS += --force-docker --new-makefile=Makefile" > temp.mk
@@ -282,6 +296,13 @@ then
     git add project.yaml.mako .config temp.mk
     git commit --quiet --message="Start upgrade"
     ./docker-run --env=NODE_ENV make --makefile=temp.mk upgrade
+    if [ ! -e .UPGRADE8 ]
+    then
+        printdiff
+        echo "Fail to upgrade"
+        exit 1
+    fi
+    ./docker-run --env=NODE_ENV make upgrade9
     if [ ! -e .UPGRADE_SUCCESS ]
     then
         echo "Fail to upgrade"
