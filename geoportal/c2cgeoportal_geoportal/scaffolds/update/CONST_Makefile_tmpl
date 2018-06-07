@@ -407,7 +407,7 @@ spell:
 		$(shell find -name node_modules -prune -or -name .git -prune -or -name '__pycache__' -prune \
 		-or -name 'build' -prune -or -name '.build' -prune -or -name 'cgxp' -prune -or -name 'c2cgeoportal_*' -prune \
 		-or \( -type f -and -not -name '*.png' -and -not -name '*.mo' -and -not -name '*.po*' \
-		-and -not -name 'CONST_Makefile' \) -print)
+		-and -not -name 'CONST_Makefile' -and -not -name 'package-lock.json' \) -print)
 
 .PHONY: clean
 clean: template-clean
