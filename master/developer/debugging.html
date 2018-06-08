@@ -65,7 +65,7 @@ span.prompt1:before {
 <pre class="highlight"><span class="prompt1">shp2img -m &lt;mapfile&gt; -o test.png -e &lt;minx&gt; &lt;miny&gt; &lt;maxx&gt; &lt;maxy&gt; -s &lt;sizex&gt; &lt;sizey&gt; -l &lt;layers&gt;</span>
 </pre><p>You may also activate MapServer’s debug mode and set environment variable of the MapServer container
 <code class="docutils literal notranslate"><span class="pre">MS_DEBUGLEVEL</span></code> to <code class="docutils literal notranslate"><span class="pre">5</span></code> (most verbose level, default is 0).</p>
-<p><a class="reference external" href="http://mapserver.org/optimization/debugging.html?highlight=debug#debug-levels">More informations</a></p>
+<p><a class="reference external" href="http://mapserver.org/optimization/debugging.html?highlight=debug#debug-levels">More information</a></p>
 </div>
 <div class="section" id="postgresql">
 <h2>PostgreSQL<a class="headerlink" href="#postgresql" title="Permalink to this headline">¶</a></h2>
@@ -79,16 +79,35 @@ account:</p>
 </div>
 <div class="section" id="makefile">
 <h2>Makefile<a class="headerlink" href="#makefile" title="Permalink to this headline">¶</a></h2>
-<p>You can run <cite>DEBUG=TRUE make …</cite> to have some debug message.
-Actually we display the running rule and why she is running (dependence update).</p>
+<p>To obtain additional debug messages, you can rebuild your project as follows:</p>
+<pre class="highlight"><span class="prompt1"><span class="nv">DEBUG</span><span class="o">=</span>TRUE make ...</span>
+</pre><p>Actually we display the running rule and why she is running (dependence update).</p>
 </div>
 <div class="section" id="docker">
 <h2>Docker<a class="headerlink" href="#docker" title="Permalink to this headline">¶</a></h2>
-<p>Edit a file in a running apache WSGI container</p>
-<pre class="highlight"><span class="prompt1">docker <span class="nb">exec</span> -ti &lt;package&gt;_wsgi_1 bash</span>
-<span class="prompt1">vi ...</span>
-<span class="prompt1"><span class="nb">kill</span> -s USR1 <span class="m">1</span>  <span class="c1"># graceful</span></span>
+<div class="section" id="run-gunicorn-to-reload-on-modifications-of-python-files">
+<h3>Run gunicorn to reload on modifications of Python files<a class="headerlink" href="#run-gunicorn-to-reload-on-modifications-of-python-files" title="Permalink to this headline">¶</a></h3>
+<p>Add the following environment variable to the geoportal container:</p>
+<p><code class="docutils literal notranslate"><span class="pre">GUNICORN_PARAMS=&quot;-b</span> <span class="pre">:80</span> <span class="pre">--worker-class</span> <span class="pre">gthread</span> <span class="pre">--threads</span> <span class="pre">1</span> <span class="pre">--workers</span> <span class="pre">1</span> <span class="pre">--reload&quot;</span></code></p>
+</div>
+<div class="section" id="do-a-graceful-restart-of-the-running-geoportal-container">
+<h3>Do a graceful restart of the running geoportal container<a class="headerlink" href="#do-a-graceful-restart-of-the-running-geoportal-container" title="Permalink to this headline">¶</a></h3>
+<pre class="highlight"><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal bash</span>
+<span class="prompt1"><span class="nb">kill</span> -s HUP <span class="sb">`</span>ps aux<span class="p">|</span>grep gunicorn<span class="p">|</span>head --lines<span class="o">=</span><span class="m">1</span><span class="p">|</span>awk <span class="s1">&#39;{print $2}&#39;</span><span class="sb">`</span>  <span class="c1"># graceful</span></span>
 </pre></div>
+<div class="section" id="mount-c2cgeoportal-in-the-container">
+<h3>Mount c2cgeoportal in the container<a class="headerlink" href="#mount-c2cgeoportal-in-the-container" title="Permalink to this headline">¶</a></h3>
+<p>Add in the <code class="docutils literal notranslate"><span class="pre">docker-compose.yaml</span></code> file, in the <code class="docutils literal notranslate"><span class="pre">geoportal</span></code> service the following lines:</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">:</span>
+  <span class="n">geoportal</span><span class="p">:</span>
+    <span class="n">volumes</span><span class="p">:</span>
+      <span class="o">-</span> <span class="o">&lt;</span><span class="n">c2cgeoportal_git_root</span><span class="o">&gt;/</span><span class="n">geoportal</span><span class="o">/</span><span class="n">c2cgeoportal_commons</span><span class="p">:</span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">c2cgeoportal_geoportal</span><span class="o">/</span><span class="n">c2cgeoportal_commons</span>
+      <span class="o">-</span> <span class="o">&lt;</span><span class="n">c2cgeoportal_git_root</span><span class="o">&gt;/</span><span class="n">geoportal</span><span class="o">/</span><span class="n">c2cgeoportal_geoportal</span><span class="p">:</span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">c2cgeoportal_geoportal</span><span class="o">/</span><span class="n">c2cgeoportal_geoportal</span>
+      <span class="o">-</span> <span class="o">&lt;</span><span class="n">c2cgeoportal_git_root</span><span class="o">&gt;/</span><span class="n">geoportal</span><span class="o">/</span><span class="n">c2cgeoportal_admin</span><span class="p">:</span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">c2cgeoportal_geoportal</span><span class="o">/</span><span class="n">c2cgeoportal_admin</span>
+</pre></div>
+</div>
+</div>
+</div>
 <div class="section" id="performance-or-network-error">
 <h2>Performance or network error<a class="headerlink" href="#performance-or-network-error" title="Permalink to this headline">¶</a></h2>
 <p>For performance and proxy issues make sure that all internal URLs in the config file
@@ -124,7 +143,12 @@ to test it).</p>
 <li><a class="reference internal" href="#mapserver">Mapserver</a></li>
 <li><a class="reference internal" href="#postgresql">PostgreSQL</a></li>
 <li><a class="reference internal" href="#makefile">Makefile</a></li>
-<li><a class="reference internal" href="#docker">Docker</a></li>
+<li><a class="reference internal" href="#docker">Docker</a><ul>
+<li><a class="reference internal" href="#run-gunicorn-to-reload-on-modifications-of-python-files">Run gunicorn to reload on modifications of Python files</a></li>
+<li><a class="reference internal" href="#do-a-graceful-restart-of-the-running-geoportal-container">Do a graceful restart of the running geoportal container</a></li>
+<li><a class="reference internal" href="#mount-c2cgeoportal-in-the-container">Mount c2cgeoportal in the container</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#performance-or-network-error">Performance or network error</a><ul>
 <li><a class="reference internal" href="#tilecloud-chain">Tilecloud chain</a></li>
 </ul>

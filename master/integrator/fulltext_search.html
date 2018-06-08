@@ -60,7 +60,7 @@ span.prompt1:before {
 </pre><p>with <code class="docutils literal notranslate"><span class="pre">&lt;schema_name&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;srid&gt;</span></code>, and <code class="docutils literal notranslate"><span class="pre">&lt;db_name&gt;</span></code>  substituted as appropriate.</p>
 <p>Also make sure that the db user can <code class="docutils literal notranslate"><span class="pre">SELECT</span></code> in the <code class="docutils literal notranslate"><span class="pre">tsearch</span></code> table:</p>
 <pre class="highlight"><span class="prompt1">sudo -u postgres psql -c <span class="s1">&#39;GRANT SELECT ON TABLE &lt;schema_name&gt;.tsearch TO &quot;&lt;db_user&gt;&quot;;&#39;</span> &lt;db_name&gt;</span>
-</pre><p>with <code class="docutils literal notranslate"><span class="pre">&lt;db_user&gt;</span></code>, and <code class="docutils literal notranslate"><span class="pre">&lt;db_name&gt;</span></code> substituded as appropriately.</p>
+</pre><p>with <code class="docutils literal notranslate"><span class="pre">&lt;db_user&gt;</span></code>, and <code class="docutils literal notranslate"><span class="pre">&lt;db_name&gt;</span></code> substituted as appropriately.</p>
 </div>
 <div class="section" id="populate-the-full-text-search-table">
 <h2>Populate the full-text search table<a class="headerlink" href="#populate-the-full-text-search-table" title="Permalink to this headline">¶</a></h2>
