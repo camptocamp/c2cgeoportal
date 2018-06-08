@@ -1,8 +1,9 @@
 ---
 project_folder: testgeomapfish
 project_package: ${package}
-host: ${host}
-checker_path: /${instanceid}/wsgi/check_collector?
+checker_url: http://localhost/c2c/health_check?
+checker_headers:
+  Host: ${host}
 managed_files: []
 unmanaged_files:
   - \.gitignore
@@ -20,8 +21,9 @@ unmanaged_files:
   - print/print-apps/testgeomapfish/config\.yaml\.mako
   - print/print-apps/testgeomapfish/config\.yaml\.tmpl
   - print/print-apps/testgeomapfish/.*\.jrxml
-  - geoportal/testgeomapfish_geoportal/locale/fr/LC_MESSAGES/testgeomapfish-client\.po
-  - geoportal/testgeomapfish_geoportal/locale/de/LC_MESSAGES/testgeomapfish-client\.po
+  - geoportal/testgeomapfish_geoportal/locale/fr/LC_MESSAGES/testgeomapfish_geoportal-client\.po
+  - geoportal/testgeomapfish_geoportal/locale/de/LC_MESSAGES/testgeomapfish_geoportal-client\.po
+  - geoportal/testgeomapfish_geoportal/locale/it/LC_MESSAGES/testgeomapfish_geoportal-client\.po
   - geoportal/testgeomapfish_geoportal/static-ngeo/js/apps/desktop\.html\.ejs
   - geoportal/testgeomapfish_geoportal/static-ngeo/js/apps/mobile\.html\.ejs
   - geoportal/testgeomapfish_geoportal/static-ngeo/js/apps/Controllerdesktop\.js

@@ -5,15 +5,15 @@ WORKSPACE=$2
 export NODE_ENV=development
 
 function pcreate {
-    ./docker-run --image=camptocamp/geomapfish-build --share $1 pcreate --scaffold=$2 $1/testgeomapfish \
+    ./docker-run --image=camptocamp/geomapfish-build $3 --share $1 pcreate --scaffold=$2 $1/testgeomapfish \
         --overwrite --ignore-conflicting-name --package-name testgeomapfish
 }
 
 function only_create {
     rm --recursive --force $1
     mkdir --parent $1
-    pcreate $1 c2cgeoportal_create
-    pcreate $1 c2cgeoportal_update
+    pcreate $1 c2cgeoportal_create $2
+    pcreate $1 c2cgeoportal_update $2
     cd $1/testgeomapfish
     git init
     git config user.email travis@camptocamp.com
@@ -23,7 +23,7 @@ function only_create {
 }
 
 function create {
-    only_create $1
+    only_create $1 $2
     cd $1/testgeomapfish
     git add --all
     git commit --quiet --message="Initial commit"
@@ -33,8 +33,8 @@ function create {
 
 function createnondocker {
     only_create $1
-    pcreate $1 c2cgeoportal_nondockercreate
-    pcreate $1 c2cgeoportal_nondockerupdate
+    pcreate $1 c2cgeoportal_nondockercreate $2
+    pcreate $1 c2cgeoportal_nondockerupdate $2
     cd $1/testgeomapfish
     git add --all
     git commit --quiet --message="Initial commit"
@@ -57,6 +57,7 @@ function createv220 {
 }
 
 function printdiff {
+    ls -l .UPGRADE*
     for f in $(ls -1 *.diff)
     do
         echo "--- $f ---"
@@ -76,6 +77,8 @@ then
     create ${WORKSPACE}/dockerref
     createnondocker ${WORKSPACE}/nondocker
     createnondocker ${WORKSPACE}/nondockerref
+    create ${WORKSPACE}/v230-docker --version=2.3.0
+    createnondocker ${WORKSPACE}/v230-nondocker --version=2.3.0
     unset SRID APACHE_VHOST EXTENT
     mkdir --parent ${WORKSPACE}/v220
     ./docker-run --share=${WORKSPACE} tar --extract  --bzip2 --file=travis/v220.tar.bz2  --directory=${WORKSPACE}/v220
@@ -128,7 +131,7 @@ then
     git rm testgeomapfish.mk
     git add temp.mk project.yaml.mako
     git commit --quiet --message="Start upgrade"
-    ./docker-run make --makefile=temp.mk upgrade
+    ./docker-run --env=NODE_ENV make --makefile=temp.mk upgrade
     if [ ! -e .UPGRADE10 ]
     then
         printdiff
@@ -195,7 +198,7 @@ fi
 
 function v220 {
     cp docker-run $1/testgeomapfish
-    cp travis/v22-project.yaml $1/testgeomapfish/project.yaml.mako
+    cp travis/old-project.yaml $1/testgeomapfish/project.yaml.mako
     cd $1/testgeomapfish
     head --lines=-23 CONST_vars.yaml > CONST_vars.yaml_
     mv CONST_vars.yaml{_,}
@@ -221,7 +224,7 @@ function v220 {
     mv geoportal/testgeomapfish_geoportal/locale/en/LC_MESSAGES/testgeomapfish{,_geoportal}-client.po
     mv geoportal/testgeomapfish_geoportal/locale/fr/LC_MESSAGES/testgeomapfish{,_geoportal}-client.po
     mv geoportal/testgeomapfish_geoportal/locale/de/LC_MESSAGES/testgeomapfish{,_geoportal}-client.po
-    ./docker-run make $MAKE_ARGS upgrade9
+    ./docker-run --env=NODE_ENV make $MAKE_ARGS upgrade9
     if [ ! -e .UPGRADE_SUCCESS ]
     then
         printdiff
@@ -246,9 +249,55 @@ then
     v220 ${WORKSPACE}/v220-tonondocker non
 fi
 
+function v230 {
+    DOCKER_ARGS=''
+    MAKE_ARGS=''
+    if [ "$1" = 'non' ]
+    then
+        MAKE_ARGS='--makefile=testgeomapfish.mk'
+        DOCKER_ARGS='--env=VISIBLE_WEB_HOST=example.com --env=VISIBLE_WEB_PROTOCOL=https --env=VISIBLE_ENTRY_POINT=/'
+    fi
+    cp travis/old-project.yaml ${WORKSPACE}/v230-$1docker/testgeomapfish/project.yaml.mako
+    cd ${WORKSPACE}/v230-$1docker/testgeomapfish
+    ./docker-run ${DOCKER_ARGS} make ${MAKE_ARGS} project.yaml
+    cd -
+    cp travis/from23-config ${WORKSPACE}/v230-$1docker/testgeomapfish/.config
+    cd ${WORKSPACE}/v230-$1docker/testgeomapfish
+    git add project.yaml.mako .config
+    git commit --quiet --message="Start upgrade"
+    ./docker-run --env=NODE_ENV make ${MAKE_ARGS} upgrade
+    if [ -e .UPGRADE8 ]
+    then
+        ./docker-run --env=NODE_ENV make ${MAKE_ARGS} upgrade9
+    fi
+    if [ ! -e .UPGRADE_SUCCESS ]
+    then
+        printdiff
+        echo "Fail to upgrade"
+        exit 1
+    fi
+    ./docker-run make ${MAKE_ARGS} clean-all
+    rm --recursive --force .UPGRADE* \
+        commons/testgeomapfish_commons.egg-info geoportal/testgeomapfish_geoportal.egg-info
+    cd -
+    find ${WORKSPACE}/v230-$1docker -type d -empty -delete
+    diff --recursive --exclude=.git ${WORKSPACE}/$1dockerref ${WORKSPACE}/v230-$1docker
+}
+
+if [ "$1" = "v230-docker" ]
+then
+    v230 ''
+fi
+
+if [ "$1" = "v230-nondocker" ]
+then
+    v230 'non'
+fi
+
 if [ "$1" = "cleanup" ]
 then
     rm --recursive --force ${WORKSPACE}/nondockerref ${WORKSPACE}/dockerref \
         ${WORKSPACE}/nondocker ${WORKSPACE}/docker \
-        ${WORKSPACE}/v220-todocker ${WORKSPACE}/v220-tonondocker
+        ${WORKSPACE}/v220-todocker ${WORKSPACE}/v220-tonondocker \
+        ${WORKSPACE}/v230-docker ${WORKSPACE}/v230-nondocker
 fi
