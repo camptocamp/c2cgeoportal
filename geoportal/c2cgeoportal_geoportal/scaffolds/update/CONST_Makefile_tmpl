@@ -2,14 +2,22 @@ GEOMAPFISH_VERSION ?= {{geomapfish_version}}
 export GEOMAPFISH_VERSION
 export PACKAGE = {{package}}
 
-VISIBLE_WEB_PROTOCOL ?= https
-VISIBLE_WEB_PORT ?= 443
-VISIBLE_ENTRY_POINT ?= /
-export VISIBLE_WEB_HOST
-export VISIBLE_WEB_PROTOCOL
-export VISIBLE_ENTRY_POINT
 DEV_SERVER_PORT ?= 8081
 export DEV_SERVER_PORT
+
+INSTANCE ?= main
+export INSTANCE
+
+ifeq ($(INSTANCE), main)
+DOCKER_ENTRY_POINT ?= /
+else
+DOCKER_ENTRY_POINT ?= /_$(INSTANCE)/
+endif
+DOCKER_WEB_HOST ?= localhost
+DOCKER_WEB_PROTOCOL ?= https
+export DOCKER_ENTRY_POINT
+export DOCKER_WEB_HOST
+export DOCKER_WEB_PROTOCOL
 
 MAPSERVER ?= TRUE
 
@@ -295,7 +303,8 @@ endif
 
 # Print
 PRINT_BASE_DIR ?= print
-I18N_SOURCE_FILES += print/print-apps/$(PACKAGE)/config.yaml
+PRINT_CONFIG_FILE ?= print/print-apps/$(PACKAGE)/config.yaml.tmpl
+I18N_SOURCE_FILES += $(PRINT_CONFIG_FILE)
 
 PY_FILES = $(shell find $(PACKAGE) -type f -name '*.py' -print)
 
@@ -377,7 +386,7 @@ docker-build:
 build: $(BUILD_RULES)
 
 .PHONY: checks
-checks: flake8 $(CLIENT_CHECK_RULE)	git-attributes yamllint
+checks: flake8 $(CLIENT_CHECK_RULE) git-attributes yamllint spell
 
 .PHONY: git-attributes
 git-attributes:
@@ -391,6 +400,14 @@ YAML_FILES ?= $(filter-out ./tilegeneration/config.yaml ./geoportal/config.yaml 
 .PHONY: yamllint
 yamllint: $(YAML_FILES)
 	yamllint --strict --config-file=yamllint.yaml -s $(YAML_FILES)
+
+.PHONY: spell
+spell:
+	codespell --quiet-level=2 --check-filenames --ignore-words=spell-ignore-words.txt \
+		$(shell find -name node_modules -prune -or -name .git -prune -or -name '__pycache__' -prune \
+		-or -name 'build' -prune -or -name '.build' -prune -or -name 'cgxp' -prune -or -name 'c2cgeoportal_*' -prune \
+		-or \( -type f -and -not -name '*.png' -and -not -name '*.mo' -and -not -name '*.po*' \
+		-and -not -name 'CONST_Makefile' -and -not -name 'package-lock.json' \) -print)
 
 .PHONY: clean
 clean: template-clean
@@ -461,11 +478,13 @@ endif
 
 %: %.mako /build/c2ctemplate-cache.json
 	$(PRERULE_CMD)
-	c2c-template --cache /build/c2ctemplate-cache.json --engine mako --files $<
+	c2c-template --cache /build/c2ctemplate-cache.json --engine mako \
+		--runtime-environment-pattern '$${{'{{'}}{}}}' --files $<
 
 %: %.jinja /build/c2ctemplate-cache.json
 	$(PRERULE_CMD)
-	c2c-template --cache /build/c2ctemplate-cache.json --engine jinja --files $<
+	c2c-template --cache /build/c2ctemplate-cache.json --engine jinja \
+		--runtime-environment-pattern '$${{'{{'}}{}}}' --files $<
 
 geoportal/config.yaml: /build/c2ctemplate-cache.json
 	$(PRERULE_CMD)
@@ -580,11 +599,11 @@ $(APP_OUTPUT_DIR)/images/: /usr/lib/node_modules/jquery-ui/themes/base/images
 			$(APP_OUTPUT_DIR)/images/
 	$(PRERULE_CMD)
 	# Workaround to make Webpack working for ol/index.js
-	if [ -e node_modules ]; then rm --force node_modules_bak; mv node_modules node_modules_bak; fi
 	ln --symbolic /usr/lib/node_modules/ .
 	INTERFACE=$* webpack $(WEBPACK_ARGS)
 	rm node_modules
-	if [ -e node_modules_bak ]; then mv node_modules_bak node_modules; fi
+	mv $(APP_OUTPUT_DIR)/$*.html $(APP_OUTPUT_DIR)/$*.html.tmpl
+	ls -1 $(APP_OUTPUT_DIR)/$*.*.css|while read file; do mv $${file} $${file}.tmpl; done
 	touch $@
 
 .PHONY: serve
@@ -667,7 +686,7 @@ docker-compose-build.yaml: /build/requirements.timestamp
 
 .PHONY: docker-build-config
 docker-build-config: $(shell docker-required --path .) \
-		print/print-apps/$(PACKAGE)/config.yaml \
+		$(PRINT_CONFIG_FILE) \
 		$(MAPCACHE_FILE)
 	docker build -t $(DOCKER_BASE)-config:$(DOCKER_TAG) .
 
@@ -697,7 +716,8 @@ testdb/11-schemas.sql: $(ALEMBIC_YAML_FILE) testdb/11-schemas.sql_mako vars.yaml
 	$(PRERULE_CMD)
 	rm --force testdb/11-schemas.sql.mako
 	ln -s 11-schemas.sql_mako testdb/11-schemas.sql.mako
-	c2c-template --vars $< --engine mako --files testdb/11-schemas.sql.mako
+	c2c-template --vars $< --engine mako --runtime-environment-pattern '$${{'{{'}}{}}}' \
+		--files testdb/11-schemas.sql.mako
 	rm testdb/11-schemas.sql.mako
 
 testdb/12-alembic.sql: alembic.ini alembic.yaml $(shell ls -1 /opt/alembic/main/*.py)

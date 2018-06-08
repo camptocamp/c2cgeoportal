@@ -6,7 +6,6 @@
 /npm-packages
 /Dockerfile
 /commons/tests.yaml
-/commons/.build/
 /commons/c2cgeoportal_commons.egg-info/
 /geoportal/package.json
 /geoportal/tests/functional/test.ini
@@ -18,17 +17,12 @@
 /geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/locale/
 /geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/static-ngeo/images/
 /geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/static-ngeo/js/apps/
-/geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/static-ngeo/components/
 /geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_Makefile_tmpl.mk
 /geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/
+/geoportal/c2cgeoportal_geoportal/scaffolds/nondockercreate/geoportal/+package+_geoportal/static-ngeo/js/apps/
 /geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/CONST_create_template/
 /geoportal/c2cgeoportal_geoportal.egg-info/
 /admin/tests.ini
-/admin/.build/
-/admin/.pytest_cache/
-/admin/package-lock.json
-/admin/package.json
-/admin/node_modules/
 /admin/npm-packages
 /admin/c2cgeoportal_admin/locale/
 /admin/c2cgeoportal_admin.egg-info/

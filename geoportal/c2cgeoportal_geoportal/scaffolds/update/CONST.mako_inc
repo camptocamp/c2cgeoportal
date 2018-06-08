@@ -1,4 +1,4 @@
-<%def name="service_defaults(service, inner_port, port_required=False)">\
+<%def name="service_defaults(service, inner_port=None, port_required=False)">\
 % if port_required or 'port' in docker_services.get(service, {}):
     ports:
       - ${docker_services[service]['port']}:${inner_port}

@@ -1,0 +1,11 @@
+#!/bin/bash -e
+
+export VISIBLE_WEB_HOST_RE_ESCAPED=`python -c "print(__import__('re').escape('${VISIBLE_WEB_HOST}'))"`
+export VISIBLE_ENTRY_POINT_RE_ESCAPED=`python -c "print(__import__('re').escape('${VISIBLE_ENTRY_POINT}'))"`
+
+find /etc /mapcache /usr/local/tomcat/webapps/ -name '*.tmpl' -print | while read file
+do
+    envsubst < ${file} > ${file%.tmpl}
+done
+
+exec "$@"

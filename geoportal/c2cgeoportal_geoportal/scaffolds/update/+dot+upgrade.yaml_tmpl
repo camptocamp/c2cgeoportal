@@ -112,6 +112,9 @@ files_to_remove:
   - file: development.ini.mako
     version: 2.3
     from: nondocker
+  - file: requirements.txt
+    version: 2.3
+    from: nondocker
   - file: {{package}}.egg-info
     version: 2.3
     from: 2.2
@@ -162,12 +165,6 @@ files_to_move:
   - from: mapserver/demo.map.mako
     to: mapserver/demo.map.tmpl.mako
     version: 2.3
-  - from: Dockerfile
-    to: geoportal/Dockerfile.mako
-    version: 2.3
-  - from: .dockerignore
-    to: geoportal/.dockerignore
-    version: 2.3
   - from: jsbuild
     to: geoportal/jsbuild
     version: 2.3
@@ -197,4 +194,10 @@ files_to_move:
     version: 2.3
   - from: geoportal/{{package}}_geoportal/static-ngeo/components/contextualdata/contextualdata.html
     to: geoportal/{{package}}_geoportal/static-ngeo/js/apps/contextualdata.html
+    version: 2.3
+  - from: print/print-apps/{{package}}/config.yaml.mako
+    to: print/print-apps/{{package}}/config.yaml.tmpl
+    version: 2.3
+  - from: front/haproxy.cfg
+    to: front/haproxy.cfg.tmpl
     version: 2.3

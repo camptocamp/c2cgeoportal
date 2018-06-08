@@ -162,11 +162,11 @@ else
 	$(PYTHON) -m venv --system-site-packages .build/venv
 endif
 ifeq ($(OPERATING_SYSTEM), WINDOWS)
-	$(PYTHON_BIN)/python -m pip install `./get-pip-dependencies c2cgeoportal Shapely`
-	$(PYTHON_BIN)/python -m pip install wheels/Shapely-1.5.13-cp27-none-win32.whl
+	$(PYTHON_BIN)/python -m pip install `./get-pip-dependencies c2cgeoportal-commons c2cgeoportal-geoportal c2cgeoportal-admin Shapely Fiona rasterio GDAL flake8-mypy mypy`
 else
 	$(PYTHON_BIN)/python -m pip install `./get-pip-dependencies c2cgeoportal-commons c2cgeoportal-geoportal c2cgeoportal-admin GDAL flake8-mypy mypy`
 endif
+	$(PYTHON_BIN)/python -m pip install -r requirements.txt
 	rm --force --recursive c2cgeoportal_commons c2cgeoportal_geoportal c2cgeoportal_admin
 	$(DOCKER_RUN) cp -r /opt/c2cgeoportal_commons c2cgeoportal_commons
 	$(DOCKER_RUN) cp -r /opt/c2cgeoportal_geoportal c2cgeoportal_geoportal
@@ -174,9 +174,10 @@ endif
 	$(DOCKER_RUN) cp /opt/npm-packages .
 	$(PYTHON_BIN)/python -m pip install --editable=c2cgeoportal_commons --editable=c2cgeoportal_geoportal --editable=c2cgeoportal_admin
 	$(PYTHON_BIN)/python -m pip install --editable=geoportal
-	$(PYTHON_BIN)/python -m compileall -q .build/venv || true
-	$(PYTHON_BIN)/python -m compileall -q c2cgeoportal_*
-	$(PYTHON_BIN)/python -m compileall -q geoportal/$(PACKAGE)_geoportal -x geoportal/$(PACKAGE)_geoportal/static.*
-	rm --force --recursive node_modules
-	cat npm-packages | xargs npm install
+	$(PYTHON_BIN)/python -m compileall -q .build/venv 2&>/dev/null|| true
+	$(PYTHON_BIN)/python -m compileall -q c2cgeoportal_* 2&>/dev/null || true
+	$(PYTHON_BIN)/python -m compileall -q geoportal/$(PACKAGE)_geoportal -x geoportal/$(PACKAGE)_geoportal/static.* 2&>/dev/null || true
+	rm --force --recursive admin/node_modules
+	mkdir --parent admin
+	cat npm-packages | xargs npm install --prefix ./admin
 	touch $@

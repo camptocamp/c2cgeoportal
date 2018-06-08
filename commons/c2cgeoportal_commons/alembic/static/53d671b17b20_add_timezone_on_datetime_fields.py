@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2018, Camptocamp SA
+# Copyright (c) 2017-2018, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,19 +27,40 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-route_prefix = None
+"""Add timezone on datetime fields
+
+Revision ID: 53d671b17b20
+Revises: 1857owc78a07
+Create Date: 2018-05-29 08:44:17.675988
+"""
+
+from alembic import op
+from c2cgeoportal_commons.config import config
+
+# revision identifiers, used by Alembic.
+revision = '53d671b17b20'
+down_revision = '1857owc78a07'
+branch_labels = None
+depends_on = None
 
 
-class CacheTween:
+def upgrade():
+    staticschema = config['schema_static']
 
-    def __init__(self, handler, registry):
-        del registry
-        self.handler = handler
+    op.execute("""
+SET TIME ZONE 'UTC';
+ALTER TABLE {staticschema}.user ALTER COLUMN last_login TYPE timestamp with time zone;
+SET TIME ZONE LOCAL;
+ALTER TABLE {staticschema}.user ALTER COLUMN expire_on TYPE timestamp with time zone;
+""".format(staticschema=staticschema))
 
-    def __call__(self, request):
-        # Never cache admin pages
-        response = self.handler(request)
-        if route_prefix is None or request.path_info.startswith('/' + route_prefix):
-            response.cache_control.no_cache = True
-            response.cache_control.max_age = 0
-        return response
+
+def downgrade():
+    staticschema = config['schema_static']
+
+    op.execute("""
+SET TIME ZONE 'UTC';
+ALTER TABLE {staticschema}.user ALTER COLUMN last_login TYPE timestamp without time zone;
+SET TIME ZONE LOCAL;
+ALTER TABLE {staticschema}.user ALTER COLUMN expire_on TYPE timestamp without time zone;
+""".format(staticschema=staticschema))

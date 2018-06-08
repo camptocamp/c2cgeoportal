@@ -271,7 +271,15 @@ update_paths:
   - check_collector.disabled
   - check_collector.hosts
   - checker.fulltextsearch
+  - checker.lang
+  - checker.phantomjs
+  - checker.routes
+  - checker.themes
   - checker.print
+  - docker_services.config.environment
+  - docker_services.db.environment
+  - docker_services.geoportal.environment
+  - docker_services.tilecloudchain.environment
   - fulltextsearch
   - interfaces_theme
   - shortener

@@ -49,7 +49,7 @@ templates:
         httpProcessors:
           - !mapUri
             mapping:
-              (https?)://${__import__('re').escape(host)}/(.*): "http://127.0.0.1/$2"
+              (https?)://${VISIBLE_WEB_HOST_RE_ESCAPED}/(.*): "http://${GEOPORTAL_INTERNAL_URL}/$2"
           - !forwardHeaders
             matchers:
               - !localMatch {}
@@ -63,9 +63,9 @@ templates:
           - !restrictUris
             matchers:
               - !localMatch
-                pathRegex: '${entry_point}mapserv_proxy'
+                pathRegex: '${VISIBLE_ENTRY_POINT_RE_ESCAPED}mapserv_proxy'
               - !localMatch
-                pathRegex: '${entry_point}tiles/.*'
+                pathRegex: '${VISIBLE_ENTRY_POINT_RE_ESCAPED}tiles/.*'
               - !localMatch
                 reject: true
               - !ipMatch

@@ -31,6 +31,7 @@
 import logging
 from datetime import datetime
 from hashlib import sha1
+import pytz
 from typing import Optional
 
 from sqlalchemy import Column
@@ -198,10 +199,10 @@ class User(Base):
         return False
 
     def expired(self) -> bool:
-        return self.expire_on is not None and self.expire_on < datetime.utcnow()
+        return self.expire_on is not None and self.expire_on < datetime.now(pytz.utc)
 
     def update_last_login(self) -> None:
-        self.last_login = datetime.utcnow()
+        self.last_login = datetime.now(pytz.utc)
 
     def __unicode__(self) -> str:
         return self.username or ''  # pragma: no cover

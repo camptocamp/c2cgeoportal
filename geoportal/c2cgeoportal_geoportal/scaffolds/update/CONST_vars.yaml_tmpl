@@ -6,7 +6,7 @@ vars:
   # the package name
   package: {{package}}
   geomapfish_version: '{GEOMAPFISH_VERSION}'
-  instance: main
+  instance: '{INSTANCE}'
   build_volume_name: '{BUILD_VOLUME_NAME}'
 
   srid: -1
@@ -15,11 +15,27 @@ vars:
   web_protocol: '{VISIBLE_WEB_PROTOCOL}'
   entry_point: '{VISIBLE_ENTRY_POINT}'
   dev_server_port: '{DEV_SERVER_PORT}'
+  docker_entry_point: '{DOCKER_ENTRY_POINT}'
+  docker_host: '{DOCKER_WEB_HOST}'
+  docker_web_protocol: '{DOCKER_WEB_PROTOCOL}'
 
   # Docker base image name (comes from the makefile).
   docker_base: '{DOCKER_BASE}'
   docker_tag: '{DOCKER_TAG}'
+  docker_global_front: false
   docker_services:
+    config:
+      environment:
+        VISIBLE_WEB_HOST: '{docker_host}'
+        VISIBLE_WEB_PROTOCOL: '{docker_web_protocol}'
+        VISIBLE_ENTRY_POINT: '{docker_entry_point}'
+        PGHOST: 172.17.0.1
+        PGHOST_SLAVE: 172.17.0.1
+        PGPORT: 5432
+        PGUSER: www-data
+        PGPASSWORD: www-data
+        PGDATABASE: geomapfish
+        GEOPORTAL_INTERNAL_URL: 'http://geoportal/'
     db:
       environment:
         POSTGRES_DB: geomapfish
@@ -27,9 +43,9 @@ vars:
         POSTGRES_PASSWORD: www-data
     geoportal:
       environment:
-        VISIBLE_WEB_HOST: localhost:80
-        VISIBLE_WEB_PROTOCOL: https
-        VISIBLE_ENTRY_POINT: /
+        VISIBLE_WEB_HOST: '{docker_host}'
+        VISIBLE_WEB_PROTOCOL: '{docker_web_protocol}'
+        VISIBLE_ENTRY_POINT: '{docker_entry_point}'
         PGHOST: 172.17.0.1
         PGHOST_SLAVE: 172.17.0.1
         PGPORT: 5432
@@ -43,6 +59,10 @@ vars:
         PRINT_URL: http://print:8080/print/
         REDIS_HOST: redis
         REDIS_PORT: 6379
+    tilecloudchain:
+      environment:
+        VISIBLE_ENTRY_POINT: '{docker_entry_point}'
+        TILEGENERATION_CONFIGFILE: /etc/tilegeneration/config.yaml
     front:
       port: 80
 
@@ -99,7 +119,7 @@ vars:
     # Cookie session secret
     secret: __import__('uuid').uuid4().hex
     cookie_name: auth_tkt_{instance}
-  # Database informations
+  # Database information
   sqlalchemy:
     url: postgresql://{dbuser}:{dbpassword}@{dbhost}:{dbport}/{db}
   sqlalchemy_slave:
@@ -131,6 +151,11 @@ vars:
 
   interfaces_theme:
     desktop: desktop
+    desktop_alt: desktop_alt
+    mobile: mobile
+    mobile_alt: mobile
+    oeview: desktop
+    oeedit: desktop
 
   # The dogpile.cache configuration.
   #
@@ -490,14 +515,19 @@ environment:
   - GEOMAPFISH_VERSION
   - DOCKER_BASE
   - DOCKER_TAG
+  - DOCKER_WEB_PROTOCOL
+  - DOCKER_WEB_HOST
+  - DOCKER_ENTRY_POINT
   - DEVELOPMENT
   - WMTSCAPABILITIES_PATH
   - BUILD_VOLUME_NAME
   - PROJECT_DIRECTORY
   - DEV_SERVER_PORT
+  - INSTANCE
 
 runtime_environment:
-  - VISIBLE_WEB_HOST
+  - name: VISIBLE_WEB_HOST
+    default: localhost
   - name: VISIBLE_WEB_PROTOCOL
     default: https
   - name: VISIBLE_ENTRY_POINT

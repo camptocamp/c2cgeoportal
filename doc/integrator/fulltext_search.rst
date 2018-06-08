@@ -37,7 +37,7 @@ Also make sure that the db user can ``SELECT`` in the ``tsearch`` table:
 
     sudo -u postgres psql -c 'GRANT SELECT ON TABLE <schema_name>.tsearch TO "<db_user>";' <db_name>
 
-with ``<db_user>``, and ``<db_name>`` substituded as appropriately.
+with ``<db_user>``, and ``<db_name>`` substituted as appropriately.
 
 Populate the full-text search table
 -----------------------------------
