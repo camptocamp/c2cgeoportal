@@ -92,8 +92,9 @@ WMTSCAPABILITIES_PATH ?= 1.0.0/WMTSCapabilities-$(ENVIRONMENT).xml
 export WMTSCAPABILITIES_PATH
 ifeq ($(TILECLOUD_CHAIN), TRUE)
 WMTSCAPABILITIES_FILE ?= /var/sig/tiles/$(WMTSCAPABILITIES_PATH)
-MAPCACHE_FILE ?= mapcache/mapcache.xml
-DEFAULT_BUILD_RULES += tilegeneration/config.yaml
+MAPCACHE_FILE ?= mapcache/mapcache.xml.tmpl
+TILEGENERATION_CONFIG_FILE ?= tilegeneration/config.yaml.tmpl
+DEFAULT_BUILD_RULES += $(TILEGENERATION_CONFIG_FILE)
 ifeq ($(TILECLOUD_CHAIN_LOCAL), TRUE)
 DEFAULT_BUILD_RULES += $(WMTSCAPABILITIES_FILE)
 endif
@@ -747,21 +748,21 @@ upgrade%:
 
 # Tilecloud chain
 
-$(MAPCACHE_FILE): tilegeneration/config.yaml
+$(MAPCACHE_FILE): $(TILEGENERATION_CONFIG_FILE)
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
-	generate_controller --mapcache
+	generate_controller --config=$< --mapcache
 
-$(WMTSCAPABILITIES_FILE): tilegeneration/config.yaml
+$(WMTSCAPABILITIES_FILE): $(TILEGENERATION_CONFIG_FILE)
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
-	generate_controller --capabilities
+	generate_controller --config=$< --capabilities
 
 # Secrets
 
 secrets.tar.bz2.gpg:
 	tar -jcf secrets.tar.bz2 $^
-	gpg --keyserver pgp.mit.edu --keyserver-options timeout=20 --recv-keys $(GPG_KEYS)
+	gpg --keyserver pool.sks-keyservers.net --keyserver-options timeout=20 --recv-keys $(GPG_KEYS)
 	rm -f $@
 	gpg --always-trust --output $@ --encrypt $(addprefix --recipient ,$(GPG_KEYS)) secrets.tar.bz2
 	rm secrets.tar.bz2

@@ -56,6 +56,14 @@ function createv220 {
     cd -
 }
 
+function printdiff {
+    for f in $(ls -1 *.diff)
+    do
+        echo "--- $f ---"
+        cat "$f"
+    done
+}
+
 if [ "$1" = "init" ]
 then
     rm --recursive --force ${WORKSPACE}/nondockerref ${WORKSPACE}/dockerref \
@@ -81,6 +89,7 @@ then
     ./docker-run --env=NODE_ENV make upgrade
     if [ ! -e .UPGRADE_SUCCESS ]
     then
+        printdiff
         echo "Fail to upgrade"
         exit 1
     fi
@@ -98,6 +107,7 @@ then
     ./docker-run --env=NODE_ENV make --makefile=testgeomapfish.mk upgrade
     if [ ! -e .UPGRADE_SUCCESS ]
     then
+        printdiff
         echo "Fail to upgrade"
         exit 1
     fi
@@ -121,6 +131,7 @@ then
     ./docker-run make --makefile=temp.mk upgrade
     if [ ! -e .UPGRADE10 ]
     then
+        printdiff
         echo "Fail to upgrade"
         exit 1
     fi
@@ -131,6 +142,7 @@ then
     ./docker-run --env=NODE_ENV make upgrade11
     if [ ! -e .UPGRADE_SUCCESS ]
     then
+        printdiff
         echo "Fail to upgrade"
         exit 1
     fi
@@ -157,6 +169,7 @@ then
     ./docker-run --env=NODE_ENV make upgrade
     if [ ! -e .UPGRADE10 ]
     then
+        printdiff
         echo "Fail to upgrade"
         exit 1
     fi
@@ -168,6 +181,7 @@ then
     ./docker-run --env=NODE_ENV make --makefile=testgeomapfish.mk upgrade11
     if [ ! -e .UPGRADE_SUCCESS ]
     then
+        printdiff
         echo "Fail to upgrade"
         exit 1
     fi
@@ -200,6 +214,7 @@ function v220 {
     fi
     if [ ! -e .UPGRADE8 ]
     then
+        printdiff
         echo "Fail to upgrade"
         exit 1
     fi
@@ -209,11 +224,7 @@ function v220 {
     ./docker-run make $MAKE_ARGS upgrade9
     if [ ! -e .UPGRADE_SUCCESS ]
     then
-        for f in $(ls -1 *.diff)
-        do
-            echo "--- $f ---"
-            cat "$f"
-        done
+        printdiff
         echo "Fail to upgrade"
         exit 1
     fi

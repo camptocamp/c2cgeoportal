@@ -198,3 +198,6 @@ files_to_move:
   - from: print/print-apps/{{package}}/config.yaml.mako
     to: print/print-apps/{{package}}/config.yaml.tmpl
     version: 2.3
+  - from: tilegeneration/config.yaml.mako
+    to: tilegeneration/config.yaml.tmpl.mako
+    version: 2.3
