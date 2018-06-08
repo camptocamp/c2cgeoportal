@@ -169,78 +169,6 @@ using the command:</p>
 </pre><p class="last">If you forget it you will get an explicit message.</p>
 </div>
 </div>
-<div class="section" id="integration-in-c2cgeoportal">
-<h3>Integration in c2cgeoportal<a class="headerlink" href="#integration-in-c2cgeoportal" title="Permalink to this headline">¶</a></h3>
-<p>In the <code class="docutils literal notranslate"><span class="pre">viewer.js</span></code>, <code class="docutils literal notranslate"><span class="pre">api/viewer.js</span></code> and <code class="docutils literal notranslate"><span class="pre">edit.js</span></code>:</p>
-<blockquote>
-<div><ul class="simple">
-<li>Be sure that <code class="docutils literal notranslate"><span class="pre">OpenLayers.IMAGE_RELOAD_ATTEMPTS</span></code> is not defined.</li>
-<li>In <code class="docutils literal notranslate"><span class="pre">WMTS_OPTION</span></code> url should be ${tiles_url}.</li>
-</ul>
-</div></blockquote>
-<p>In the <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code> define <code class="docutils literal notranslate"><span class="pre">tiles_url</span></code> to something like, for S3 usage:</p>
-<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tiles_url</span><span class="p">:</span>
-<span class="o">-</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">a</span><span class="o">.</span><span class="n">tiles</span><span class="o">.</span><span class="p">{</span><span class="n">host</span><span class="p">}</span><span class="o">/</span>
-<span class="o">-</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">b</span><span class="o">.</span><span class="n">tiles</span><span class="o">.</span><span class="p">{</span><span class="n">host</span><span class="p">}</span><span class="o">/</span>
-<span class="o">-</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">c</span><span class="o">.</span><span class="n">tiles</span><span class="o">.</span><span class="p">{</span><span class="n">host</span><span class="p">}</span><span class="o">/</span>
-<span class="o">-</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">d</span><span class="o">.</span><span class="n">tiles</span><span class="o">.</span><span class="p">{</span><span class="n">host</span><span class="p">}</span><span class="o">/</span>
-</pre></div>
-</div>
-<p>The configuration of the <code class="docutils literal notranslate"><span class="pre">tiles</span></code> vhost will be done by the sysadmins.</p>
-<p>To get your tiles URL in the <code class="docutils literal notranslate"><span class="pre">viewer.js</span></code> do:</p>
-<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;%
-from json import dumps
-%&gt;
-var WMTS_OPTIONS = {
-    url: ${dumps(request.registry.settings[&#39;tiles_url&#39;]) | n},
-    ...
-}
-</pre></div>
-</div>
-<p>And in the <code class="docutils literal notranslate"><span class="pre">mobile/config.js</span></code> do:</p>
-<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="n">dummy</span> <span class="o">=</span> <span class="s2">&quot;&lt;</span><span class="si">% f</span><span class="s2">rom json import dumps %&gt;&quot;</span><span class="p">;</span>
-<span class="n">jsonFormat</span> <span class="o">=</span> <span class="n">new</span> <span class="n">OpenLayers</span><span class="o">.</span><span class="n">Format</span><span class="o">.</span><span class="n">JSON</span><span class="p">();</span>
-<span class="k">try</span> <span class="p">{</span>
-    <span class="n">App</span><span class="o">.</span><span class="n">tilesURL</span> <span class="o">=</span> <span class="n">jsonFormat</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;${dumps(request.registry.settings[&quot;tiles_url&quot;]) | n}&#39;</span><span class="p">);</span>
-<span class="p">}</span>
-<span class="n">catch</span> <span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">App</span><span class="o">.</span><span class="n">tilesURL</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="n">var</span> <span class="n">WMTS_OPTIONS</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="n">url</span><span class="p">:</span> <span class="n">App</span><span class="o">.</span><span class="n">tilesURL</span><span class="p">,</span>
-    <span class="o">...</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="switchablewmts">
-<h2>SwitchableWMTS<a class="headerlink" href="#switchablewmts" title="Permalink to this headline">¶</a></h2>
-<p>Useful tool to switch from TileCloud to MapCache.</p>
-<p>See: <a class="reference external" href="https://github.com/camptocamp/cgxp/blob/master/openlayers.addins/SwitchableWMTS/lib/OpenLayers/Layer/SwitchableWMTS.js">https://github.com/camptocamp/cgxp/blob/master/openlayers.addins/SwitchableWMTS/lib/OpenLayers/Layer/SwitchableWMTS.js</a></p>
-</div>
-<div class="section" id="internal-service">
-<h2>Internal service<a class="headerlink" href="#internal-service" title="Permalink to this headline">¶</a></h2>
-<p>If you use an internal service to access to the tiles you can use sub domaine
-to access to them by using that in <code class="docutils literal notranslate"><span class="pre">WMTS_OPTION</span></code>:</p>
-<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">url</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s1">&#39;${request.route_url(&#39;</span><span class="o">&lt;</span><span class="n">view</span><span class="o">&gt;</span><span class="s1">&#39;, subdomain=&#39;</span><span class="n">s1</span><span class="s1">&#39;)}&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;${request.route_url(&#39;</span><span class="o">&lt;</span><span class="n">view</span><span class="o">&gt;</span><span class="s1">&#39;, subdomain=&#39;</span><span class="n">s2</span><span class="s1">&#39;)}&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;${request.route_url(&#39;</span><span class="o">&lt;</span><span class="n">view</span><span class="o">&gt;</span><span class="s1">&#39;, subdomain=&#39;</span><span class="n">s3</span><span class="s1">&#39;)}&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;${request.route_url(&#39;</span><span class="o">&lt;</span><span class="n">view</span><span class="o">&gt;</span><span class="s1">&#39;, subdomain=&#39;</span><span class="n">s4</span><span class="s1">&#39;)}&#39;</span>
-<span class="p">]</span>
-</pre></div>
-</div>
-<p>With <code class="docutils literal notranslate"><span class="pre">&lt;view&gt;</span></code> the name of the view that serve the tiles.
-The sub domain should obviously be define in the DNS and in the Apache
-vhost. If the application is served on deferent URL and you want to use
-the sub domain on only one of them you can define in the <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code>
-the following:</p>
-<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># The URL template used to generate the sub domain URL</span>
-<span class="c1"># %(sub)s will be replaced by the sub domain value.</span>
-<span class="n">subdomain_url_template</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//%</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span><span class="n">s</span><span class="o">.</span><span class="p">{</span><span class="n">host</span><span class="p">}</span>
-</pre></div>
-</div>
 </div>
 </div>
 
@@ -262,11 +190,8 @@ the following:</p>
 <li><a class="reference internal" href="#initialization">Initialization</a></li>
 <li><a class="reference internal" href="#configuration">Configuration</a></li>
 <li><a class="reference internal" href="#tile-generation-and-management">Tile Generation and management</a></li>
-<li><a class="reference internal" href="#integration-in-c2cgeoportal">Integration in c2cgeoportal</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#switchablewmts">SwitchableWMTS</a></li>
-<li><a class="reference internal" href="#internal-service">Internal service</a></li>
 </ul>
 </li>
 </ul>
