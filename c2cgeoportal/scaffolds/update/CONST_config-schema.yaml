@@ -100,6 +100,9 @@ mapping:
                             access_control_max_age:
                                 required: True
                                 type: int
+                            cache_control_max_age:
+                                required: True
+                                type: int
                     index: *header
                     config: *header
                     api: *header
