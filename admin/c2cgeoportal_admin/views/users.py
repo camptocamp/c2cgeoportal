@@ -56,8 +56,10 @@ class UserViews(AbstractViews):
 
             if isinstance(response, HTTPFound):
                 password = pwgenerator.generate()
+
                 user = self._obj
-                user.set_temp_password(password)
+                user.password = password
+                user.is_password_changed = False
                 user = self._request.dbsession.merge(user)
                 self._request.dbsession.flush()
 
