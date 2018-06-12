@@ -66,6 +66,15 @@ ${service_defaults('tilecloudchain')}\
       - /var/sig:/var/sig:ro
 ${service_defaults('geoportal', 8080)}\
 
+  alembic:
+    image: ${docker_base}-geoportal:${docker_tag}
+    command:
+      - alembic
+      - --name=static
+      - upgrade
+      - head
+${service_defaults('geoportal', 80)}\
+
   front:
     image: haproxy:1.8
     volumes_from:

@@ -1,5 +1,6 @@
 *
 !alembic.ini
+!alembic.yaml
 !config.yaml
 !eval_templates.sh
 !production.ini
