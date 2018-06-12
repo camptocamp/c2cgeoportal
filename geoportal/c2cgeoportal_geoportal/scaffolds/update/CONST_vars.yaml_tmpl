@@ -425,28 +425,18 @@ vars:
         - name: desktop
           params:
             no_redirect: "true"
-          level: 1
-          # - name: mobile
-          #   params:
-          #     no_redirect: "true"
-          #   level: 3
-          # - name: desktop
-          #   params:
-          #     no_redirect: "true"
-          #     debug: "true"
-          #   level: 3
-          # - name: mobile
-          #   params:
-          #     no_redirect: "true"
-          #     debug: "true"
-          #   level: 3
+          level: 3
+        - name: mobile
+          params:
+            no_redirect: "true"
+          level: 3
     routes:
       disable: []
       routes:
-        # - name: apijs
-        #   level: 3
-        # - name: xapijs
-        #   level: 3
+        - name: apijs
+          level: 3
+        - name: xapijs
+          level: 3
         - name: printproxy_capabilities
           level: 3
         - name: mapserverproxy
