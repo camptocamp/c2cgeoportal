@@ -36,8 +36,10 @@ vars:
         PGPASSWORD: www-data
         PGDATABASE: geomapfish
         GEOPORTAL_INTERNAL_URL: 'http://geoportal/'
-        MAPCACHE_URL: http://mapcache/
+        MAPCACHE_URL: http://mapcache/mapcache/
         MAPSERVER_URL: http://mapserver/
+        MEMCACHED_HOST: memcached
+        MEMCACHED_PORT: 11211
     db:
       environment:
         POSTGRES_DB: geomapfish
@@ -365,6 +367,8 @@ vars:
   print_url: '{PRINT_URL}'
   mapserver_url: '{MAPSERVER_URL}'
   mapcache_url: '{MAPCACHE_URL}'
+  memcached_host: '{MEMCACHED_HOST}'
+  memcached_port: '{MEMCACHED_PORT}'
 
   pdfreport:
     print_url: '{print_url}'
@@ -548,9 +552,13 @@ runtime_environment:
   - name: MAPCACHE_URL
     default: http://mapcache/
   - name: REDIS_HOST
-    default: undefined  # no error if absent
+    default: redis
   - name: REDIS_PORT
     default: '6372'
+  - name: MEMCACHED_HOST
+    default: memcached
+  - name: MEMCACHED_PORT
+    default: '11211'
 
 runtime_postprocess:
   - expression: int({})
