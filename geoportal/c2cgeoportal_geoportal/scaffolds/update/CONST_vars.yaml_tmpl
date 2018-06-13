@@ -368,6 +368,7 @@ vars:
   print_url: '{PRINT_URL}'
   mapserver_url: '{MAPSERVER_URL}'
   mapcache_url: '{MAPCACHE_URL}'
+  devserver_url: '{DEVSERVER_URL}'
   memcached_host: '{MEMCACHED_HOST}'
   memcached_port: '{MEMCACHED_PORT}'
   tilegeneration_sqs_queue: '{TILEGENERATION_SQS_QUEUE}'
@@ -553,6 +554,8 @@ runtime_environment:
     default: http://print:8080/print/
   - name: MAPCACHE_URL
     default: http://mapcache/
+  - name: DEVSERVER_URL
+    default: http://webpack-dev-server:8080
   - name: REDIS_HOST
     default: redis
   - name: REDIS_PORT

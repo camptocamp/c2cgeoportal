@@ -6,6 +6,7 @@ __pycache__/
 /project.yaml
 /docker-compose.yaml
 /docker-compose-build.yaml
+/docker-compose-dev.yaml
 /admin/
 /geoportal/alembic.yaml
 /testdb/11-schemas.sql
@@ -54,11 +55,11 @@ __pycache__/
 /geoportal/{{package}}_geoportal/static/mobile/openlayers-mobile.js
 /geoportal/{{package}}_geoportal/static/mobile/bootstrap.js
 /geoportal/{{package}}_geoportal/static/mobile/bootstrap.json
+/geoportal/node_modules
+/geoportal/webpack.apps.js
 /c2cgeoportal_commons/
 /c2cgeoportal_geoportal/
 /c2cgeoportal_admin/
 /npm-packages
-/node_modules
 /package-lock.json
 /.upgrade.yaml
-/webpack.apps.js

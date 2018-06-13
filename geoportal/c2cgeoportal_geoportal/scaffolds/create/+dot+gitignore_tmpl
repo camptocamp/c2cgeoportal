@@ -5,6 +5,7 @@ __pycache__/
 /project.yaml
 /docker-compose.yaml
 /docker-compose-build.yaml
+/docker-compose-dev.yaml
 /geoportal/alembic.yaml
 /testdb/11-schemas.sql
 /testdb/12-alembic.sql
@@ -31,6 +32,6 @@ __pycache__/
 /geoportal/{{package}}_geoportal/static-ngeo/fonts/gmf-icons.*
 /geoportal/{{package}}_geoportal/static-ngeo/fonts/fontawesome-webfont.*
 /geoportal/{{package}}_geoportal/static/build/
-/node_modules
-/webpack.apps.js
+/geoportal/node_modules
+/geoportal/webpack.apps.js
 /.upgrade.yaml

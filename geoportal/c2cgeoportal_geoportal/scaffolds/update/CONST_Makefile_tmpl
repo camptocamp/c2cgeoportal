@@ -85,7 +85,8 @@ DEFAULT_BUILD_RULES ?= docker-build-geoportal \
 	geoportal/alembic.ini \
 	geoportal/alembic.yaml \
 	docker-compose.yaml \
-	docker-compose-build.yaml
+	docker-compose-build.yaml \
+	docker-compose-dev.yaml
 
 # TileCloud-chain
 WMTSCAPABILITIES_PATH ?= 1.0.0/WMTSCapabilities-$(ENVIRONMENT).xml
@@ -321,7 +322,7 @@ CONFIG_VARS += sqlalchemy.url sqlalchemy_slave.url schema schema_static enable_a
 	tiles_url checker check_collector default_max_age jsbuild package srid \
 	reset_password fulltextsearch headers authorized_referers hooks stats db_chooser \
 	ogcproxy_enable dbsessions urllogin host_forward_host smtp c2c.base_path welcome_email host \
-	lingua_extractor interfaces_config interfaces default_interface
+	lingua_extractor interfaces_config interfaces default_interface devserver_url
 MAKE_FILES = $(wildcard *.mk) CONST_Makefile
 
 # Secrets
@@ -589,20 +590,20 @@ $(APP_OUTPUT_DIR)/images/: /usr/lib/node_modules/jquery-ui/themes/base/images
 
 
 .PRECIOUS: /build/apps.timestamp
-/build/apps.timestamp: webpack.apps.js $(addprefix /build/apps., $(addsuffix .timestamp, $(NGEO_INTERFACES)))
+/build/apps.timestamp: geoportal/webpack.apps.js $(addprefix /build/apps., $(addsuffix .timestamp, $(NGEO_INTERFACES)))
 	touch $@
 
 .PRECIOUS: /build/apps.%.timestamp
 /build/apps.%.timestamp: $(OL_JS_FILES) $(NGEO_JS_FILES) $(APP_JS_FILES) \
-			$(APP_HTML_FILES) webpack.config.js \
+			$(APP_HTML_FILES) geoportal/webpack.config.js \
 			$(LESS_FILES) \
 			$(NGEO_FONTS) \
 			$(APP_OUTPUT_DIR)/images/
 	$(PRERULE_CMD)
 	# Workaround to make Webpack working for ol/index.js
-	ln --symbolic /usr/lib/node_modules/ .
-	INTERFACE=$* webpack $(WEBPACK_ARGS)
-	rm node_modules
+	ln --symbolic /usr/lib/node_modules/ geoportal/
+	(cd geoportal; INTERFACE=$* webpack $(WEBPACK_ARGS))
+	rm geoportal/node_modules
 	mv $(APP_OUTPUT_DIR)/$*.html $(APP_OUTPUT_DIR)/$*.html.tmpl
 	ls -1 $(APP_OUTPUT_DIR)/$*.*.css|while read file; do mv $${file} $${file}.tmpl; done
 	touch $@

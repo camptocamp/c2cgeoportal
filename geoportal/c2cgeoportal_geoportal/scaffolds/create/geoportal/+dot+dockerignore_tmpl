@@ -1,6 +1,8 @@
 *
 !alembic.ini
 !alembic.yaml
+!webpack.apps.js
+!webpack.config.js
 !config.yaml
 !eval_templates.sh
 !production.ini

@@ -4,6 +4,7 @@
 # The project Docker compose file for development.
 
 version: '2'
+
 services:
   config:
     image: ${docker_base}-config:${docker_tag}
