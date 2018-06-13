@@ -80,11 +80,11 @@ Services:
 - login
 - error
 
-Authorized referers
--------------------
+Authorized referrers
+--------------------
 
 To mitigate `CSRF <https://en.wikipedia.org/wiki/Cross-site_request_forgery>`_
-attacks, the server validates the referer against a list of authorized referers.
+attacks, the server validates the referer against a list of authorized referrers.
 
 By default, only the pages coming from the server are allowed. You can change
 that list by adding an ``authorized_referers`` list in your

@@ -201,3 +201,6 @@ files_to_move:
   - from: tilegeneration/config.yaml.mako
     to: tilegeneration/config.yaml.tmpl.mako
     version: 2.3
+  - from: front/haproxy.cfg
+    to: front/haproxy.cfg.tmpl
+    version: 2.3

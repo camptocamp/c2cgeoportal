@@ -36,6 +36,8 @@ dockerBuild {
             stage('Build') {
                 checkout scm
                 sh 'make docker-build'
+                sh 'docker run --name geomapfish-db --env=POSTGRES_USER=www-data --env=POSTGRES_PASSWORD=www-data --env=POSTGRES_DB=geomapfish --publish=5432:5432 --detach camptocamp/geomapfish-test-db'
+                sh 'travis/test-upgrade-convert.sh init ${HOME}/workspace'
             }
             stage('Tests') {
                 checkout scm
@@ -164,25 +166,28 @@ dockerBuild {
                         sh '(cd ${HOME}/workspace/testgeomapfish/; docker-compose --file=docker-compose-build.yaml down)'
                     }
                     sh 'rm -rf ${HOME}/workspace/testgeomapfish'
-                }, 'Tests upgrades': {
-                    try {
-                        sh 'docker run --name geomapfish-db --env=POSTGRES_USER=www-data --env=POSTGRES_PASSWORD=www-data --env=POSTGRES_DB=geomapfish --publish=5432:5432 --detach camptocamp/geomapfish-test-db'
-                        sh 'travis/test-upgrade-convert.sh init ${HOME}/workspace'
-                        // Test Upgrade an convert project
-                        sh 'travis/test-upgrade-convert.sh v220-todocker ${HOME}/workspace'
-                        sh 'travis/test-upgrade-convert.sh v220-tonondocker ${HOME}/workspace'
-                        sh 'travis/test-upgrade-convert.sh docker ${HOME}/workspace'
-                        sh 'travis/test-upgrade-convert.sh tonondocker ${HOME}/workspace'
-                        sh 'travis/test-upgrade-convert.sh nondocker ${HOME}/workspace'
-                        sh 'travis/test-upgrade-convert.sh todocker ${HOME}/workspace'
-                    } finally {
-                        sh 'docker stop geomapfish-db'
-                        sh 'docker rm --volumes geomapfish-db'
-                    }
+                }, 'Tests upgrades 220': {
+                    // Test Upgrade an convert project
+                    sh 'travis/test-upgrade-convert.sh v220-todocker ${HOME}/workspace'
+                    sh 'travis/test-upgrade-convert.sh v220-tonondocker ${HOME}/workspace'
+                }
+            }
+            stage('Test Upgrade') {
+                parallel 'Tests upgrades Docker': {
+                    sh 'travis/test-upgrade-convert.sh docker ${HOME}/workspace'
+                    sh 'travis/test-upgrade-convert.sh tonondocker ${HOME}/workspace'
+                }, 'Tests upgrades non Docker': {
+                    sh 'travis/test-upgrade-convert.sh nondocker ${HOME}/workspace'
+                    sh 'travis/test-upgrade-convert.sh todocker ${HOME}/workspace'
+                }, 'Tests upgrades 230': {
+                    sh 'travis/test-upgrade-convert.sh v230-docker ${HOME}/workspace'
+                    sh 'travis/test-upgrade-convert.sh v230-nondocker ${HOME}/workspace'
                 }
             }
         } finally {
             stage('Clean') {
+                sh 'docker stop geomapfish-db'
+                sh 'docker rm --volumes geomapfish-db'
                 clean()
             }
         }

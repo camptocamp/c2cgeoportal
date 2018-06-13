@@ -14,7 +14,7 @@ export MAPSERVER_URL
 PRINT_URL ?= http://print:8080/print/
 export PRINT_URL
 PRINT_CONFIG_FILE ?= print/print-apps/$(PACKAGE)/config.yaml
-MAPCACHE_FILE ?= mapcache/mapcache.xml
+MAPCACHE_FILE ?= apache/mapcache.xml
 TILEGENERATION_CONFIG_FILE = tilegeneration/config.yaml
 
 VISIBLE_WEB_PROTOCOL ?= https
@@ -43,7 +43,6 @@ DEFAULT_BUILD_RULES ?= docker-build-geoportal \
 
 TILECLOUD_CHAIN ?= TRUE
 ifeq ($(TILECLOUD_CHAIN), TRUE)
-MAPCACHE_FILE = apache/mapcache.xml
 CONF_FILES += $(MAPCACHE_FILE)
 endif
 

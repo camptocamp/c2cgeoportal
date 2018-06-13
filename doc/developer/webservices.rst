@@ -251,7 +251,7 @@ Result HTTP code:
 
 * 200 Success: Success.
 
-Annoymous JSON result
+Anonymous JSON result
 ~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: json
