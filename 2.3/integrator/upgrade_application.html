@@ -96,7 +96,9 @@ For example, <code class="docutils literal notranslate"><span class="pre">2.3.0<
 </div>
 <div class="section" id="from-a-version-2-3-and-next">
 <h2>From a version 2.3 and next<a class="headerlink" href="#from-a-version-2-3-and-next" title="Permalink to this headline">¶</a></h2>
-<p>Change the version in the file <code class="docutils literal notranslate"><span class="pre">.config</span></code> to the wanted version.</p>
+<p>Build the project file:</p>
+<pre class="highlight"><span class="prompt1">./docker-run make project.yaml.mako</span>
+</pre><p>Change the version in the file <code class="docutils literal notranslate"><span class="pre">.config</span></code> to the wanted version.</p>
 <p>For non Docker project:</p>
 <pre class="highlight"><span class="prompt1">./docker-run --home make --makefile<span class="o">=</span>&lt;user&gt;.mk upgrade</span>
 </pre><p>For Docker project:</p>
