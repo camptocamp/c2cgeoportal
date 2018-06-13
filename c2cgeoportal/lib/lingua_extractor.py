@@ -391,8 +391,12 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                         column = column_property.columns[0]
                         if not column.primary_key and not isinstance(column.type, Geometry):
                             if column.foreign_keys:
-                                name = "type_" if column.name == "type_id" else \
-                                    column.name[0:column.name.rindex("_id")]
+                                if column.name == "type_id":
+                                    name = "type_"
+                                elif column.name.endswith("_id"):
+                                    name = column.name[:-3]
+                                else:
+                                    name = column.name + "_"
                             else:
                                 name = column_property.key
                             messages.append(Message(
