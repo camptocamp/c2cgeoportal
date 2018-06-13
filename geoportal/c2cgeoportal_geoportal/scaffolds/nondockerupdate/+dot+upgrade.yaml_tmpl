@@ -99,7 +99,7 @@ files_to_move:
     to: vars.yaml
     version: 2.3
   - from: alembic.ini.mako
-    to: alembic.ini
+    to: geoportal/alembic.ini
     version: 2.3
   - from: docker-compose.yml.mako
     to: docker-compose.yaml.mako
@@ -166,4 +166,7 @@ files_to_move:
     version: 2.3
   - from: front/haproxy.cfg
     to: front/haproxy.cfg.tmpl
+    version: 2.3
+  - from: alembic.ini
+    to: geoportal/alembic.ini
     version: 2.3

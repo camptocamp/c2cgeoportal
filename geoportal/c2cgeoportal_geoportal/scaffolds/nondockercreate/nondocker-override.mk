@@ -38,8 +38,8 @@ CONF_FILES += $(shell ls -1 apache/*.conf 2> /dev/null) $(CONF_FILES_MAKO:.mako=
 DEFAULT_BUILD_RULES ?= docker-build-geoportal \
 	docker-build-config \
 	project.yaml \
-	alembic.ini \
-	alembic.yaml
+	geoportal/alembic.ini \
+	geoportal/alembic.yaml
 
 TILECLOUD_CHAIN ?= TRUE
 ifeq ($(TILECLOUD_CHAIN), TRUE)

@@ -153,12 +153,12 @@ dockerBuild {
                         -name \\*.py | xargs travis/squote'''
                     sh '(cd ${HOME}/workspace/testgeomapfish/; ./docker-run travis/status.sh)'
                     sh '(cd ${HOME}/workspace/testgeomapfish/; ./docker-run make --makefile=empty-vars.mk geoportal/config.yaml)'
-                    sh '(cd ${HOME}/workspace/testgeomapfish/; ./docker-run make --makefile=travis.mk alembic.ini)'
+                    sh '(cd ${HOME}/workspace/testgeomapfish/; ./docker-run make --makefile=travis.mk geoportal/alembic.ini)'
                     try {
-                        sh '(cd ${HOME}/workspace/testgeomapfish/; ./docker-compose-run alembic --name=main upgrade head)'
-                        sh '(cd ${HOME}/workspace/testgeomapfish/; ./docker-compose-run alembic --name=static upgrade head)'
-                        sh '(cd ${HOME}/workspace/testgeomapfish/; ./docker-compose-run alembic --name=static downgrade base)'
-                        sh '(cd ${HOME}/workspace/testgeomapfish/; ./docker-compose-run alembic --name=main downgrade base)'
+                        sh '(cd ${HOME}/workspace/testgeomapfish/; ./docker-compose-run alembic --config=geoportal/alembic.ini --name=main upgrade head)'
+                        sh '(cd ${HOME}/workspace/testgeomapfish/; ./docker-compose-run alembic --config=geoportal/alembic.ini --name=static upgrade head)'
+                        sh '(cd ${HOME}/workspace/testgeomapfish/; ./docker-compose-run alembic --config=geoportal/alembic.ini --name=static downgrade base)'
+                        sh '(cd ${HOME}/workspace/testgeomapfish/; ./docker-compose-run alembic --config=geoportal/alembic.ini --name=main downgrade base)'
                     } catch (Exception error) {
                         sh '(cd ${HOME}/workspace/testgeomapfish/; docker-compose --file=docker-compose-build.yaml logs)'
                         throw error

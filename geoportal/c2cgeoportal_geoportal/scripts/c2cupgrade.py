@@ -645,8 +645,8 @@ class C2cUpgradeTool:
         check_call(["make", "--makefile=" + self.options.new_makefile, "build"])
 
         if self.options.nondocker:
-            command.upgrade(Config("alembic.ini", ini_section="main"), "head")
-            command.upgrade(Config("alembic.ini", ini_section="static"), "head")
+            command.upgrade(Config("geoportal/alembic.ini", ini_section="main"), "head")
+            command.upgrade(Config("geoportal/alembic.ini", ini_section="static"), "head")
 
             args = " --makefile={}".format(self.options.makefile) \
                 if self.options.makefile != "Makefile" else ""
