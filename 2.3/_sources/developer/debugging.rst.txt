@@ -121,5 +121,5 @@ Tilecloud chain
 Points to check with TileCloud chain:
 
 * Disabling metatiles should be avoided.
-* Make sure that``empty_metatile_detection`` and ``empty_tile_detection`` are configured correctly.
+* Make sure that ``empty_metatile_detection`` and ``empty_tile_detection`` are configured correctly.
 * Make sure to not generate tiles with a higher resolution than in the raster sources.
