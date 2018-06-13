@@ -105,8 +105,10 @@ dockerBuild {
                         try {
                             sh 'docker login -u "$USERNAME" -p "$PASSWORD"'
                             sh '(cd ${HOME}/workspace/testgeomapfish/; docker-compose up --force-recreate -d)'
-                            sh '(cd ${HOME}/workspace/testgeomapfish/; docker-compose exec -T geoportal wait-for-db)'
-                            sh './docker-run travis/waitwsgi http://`netstat --route --numeric|grep ^0.0.0.0|awk \'{print($2)}\'`:8080/'
+                            timeout(time: 2, unit: 'MINUTES') {
+                                sh '(cd ${HOME}/workspace/testgeomapfish/; docker-compose exec -T geoportal wait-for-db)'
+                                sh './docker-run travis/waitwsgi http://`netstat --route --numeric|grep ^0.0.0.0|awk \'{print($2)}\'`:8080/'
+                            }
                             for (path in [
                                 'c2c/health_check',
                                 'c2c/health_check?max_level=9',

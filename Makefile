@@ -232,11 +232,11 @@ pylint: $(BUILD_DIR)/commons.timestamp
 
 .PHONY: mypy
 mypy:
-	MYPYPATH=/usr/local/lib/python3.6/site-packages:/opt/c2cwsgiutils \
+	MYPYPATH=/usr/local/lib/python3.6/dist-packages:/opt/c2cwsgiutils \
 		mypy --disallow-untyped-defs --strict-optional --follow-imports skip \
 			commons/c2cgeoportal_commons
 	# TODO: add --disallow-untyped-defs
-	MYPYPATH=/usr/local/lib/python3.6/site-packages/ \
+	MYPYPATH=/usr/local/lib/python3.6/dist-packages/ \
 		mypy --ignore-missing-imports --strict-optional --follow-imports skip \
 			geoportal/c2cgeoportal_geoportal \
 			admin/c2cgeoportal_admin \

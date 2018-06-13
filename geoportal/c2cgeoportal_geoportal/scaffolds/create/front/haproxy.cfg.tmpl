@@ -53,7 +53,7 @@ defaults
 backend geoportal
     option httpchk GET / HTTP/1.0\r\nUser-Agent:\ healthcheck
     http-check expect status 200
-    server linked geoportal:80 resolvers dns #check
+    server linked geoportal:8080 resolvers dns #check
 
 
 backend tilecloudchain

@@ -64,7 +64,7 @@ ${service_defaults('tilecloudchain')}\
     image: ${docker_base}-geoportal:${docker_tag}
     volumes:
       - /var/sig:/var/sig:ro
-${service_defaults('geoportal', 80)}\
+${service_defaults('geoportal', 8080)}\
 
   front:
     image: haproxy:1.8
