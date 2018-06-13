@@ -46,10 +46,8 @@ vars:
         POSTGRES_DB: geomapfish
         POSTGRES_USER: www-data
         POSTGRES_PASSWORD: www-data
-    geoportal:
-      environment:
-        VISIBLE_WEB_HOST: '{docker_host}'
-        VISIBLE_WEB_PROTOCOL: '{docker_web_protocol}'
+    geoportal-build:
+      environment: &geo-run-env
         VISIBLE_ENTRY_POINT: '{docker_entry_point}'
         PGHOST: 172.17.0.1
         PGHOST_SLAVE: 172.17.0.1
@@ -59,11 +57,18 @@ vars:
         PGDATABASE: geomapfish
         PGSCHEMA: main
         PGSCHEMA_STATIC: main_static
+    geoportal:
+      environment:
+        <<: *geo-run-env
+        VISIBLE_WEB_HOST: '{docker_host}'
+        VISIBLE_WEB_PROTOCOL: '{docker_web_protocol}'
         TINYOWS_URL: http://tinyows/
         MAPSERVER_URL: http://mapserver/
         PRINT_URL: http://print:8080/print/
         REDIS_HOST: redis
         REDIS_PORT: 6379
+        C2C_REDIS_URL: redis://redis:6379
+        C2C_BROADCAST_PREFIX: c2cgeoportal_
     tilecloudchain:
       environment:
         VISIBLE_ENTRY_POINT: '{docker_entry_point}'
