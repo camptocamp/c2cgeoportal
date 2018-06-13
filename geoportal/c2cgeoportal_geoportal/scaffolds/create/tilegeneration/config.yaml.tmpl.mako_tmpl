@@ -105,7 +105,7 @@ sqs:
     # The region where the SQS queue is
     region: eu-west-1
     # The SQS queue name, it should already exists
-    queue: <queue_name>
+    queue: '${tilegeneration_sqs_queue}'
 
 server:
     mapcache_base: '${mapcache_url}'

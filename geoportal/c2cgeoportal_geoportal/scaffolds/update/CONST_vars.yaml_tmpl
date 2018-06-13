@@ -40,6 +40,7 @@ vars:
         MAPSERVER_URL: http://mapserver/
         MEMCACHED_HOST: memcached
         MEMCACHED_PORT: 11211
+        TILEGENERATION_SQS_QUEUE: '<queue_name>'
     db:
       environment:
         POSTGRES_DB: geomapfish
@@ -369,6 +370,7 @@ vars:
   mapcache_url: '{MAPCACHE_URL}'
   memcached_host: '{MEMCACHED_HOST}'
   memcached_port: '{MEMCACHED_PORT}'
+  tilegeneration_sqs_queue: '{TILEGENERATION_SQS_QUEUE}'
 
   pdfreport:
     print_url: '{print_url}'
@@ -559,6 +561,8 @@ runtime_environment:
     default: memcached
   - name: MEMCACHED_PORT
     default: '11211'
+  - name: TILEGENERATION_SQS_QUEUE
+    default: queue_name
 
 runtime_postprocess:
   - expression: int({})
