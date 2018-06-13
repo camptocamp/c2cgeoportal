@@ -218,6 +218,11 @@ class Entry:
         return wms, errors
 
     @cache_region.cache_on_arguments()
+    def get_http_cached(self, url, headers):
+        http = httplib2.Http()
+        return http.request(url, method="GET", headers=headers)
+
+    @cache_region.cache_on_arguments()
     def _wms_getcap_cached(self, ogc_server, _):
         """ _ is just for cache on the role id """
 
@@ -244,7 +249,6 @@ class Entry:
         log.info("Get WMS GetCapabilities for url: {0!s}".format(url))
 
         # forward request to target (without Host Header)
-        http = httplib2.Http()
         headers = dict(self.request.headers)
 
         role = None if self.request.user is None else self.request.user.role
@@ -258,7 +262,7 @@ class Entry:
             headers.pop("Host")
 
         try:
-            resp, content = http.request(url, method="GET", headers=headers)
+            resp, content = self.get_http_cached(url, headers)
         except Exception:  # pragma: no cover
             error = "Unable to GetCapabilities from url {}".format(url)
             errors.add(error)
@@ -1092,13 +1096,12 @@ class Entry:
         log.info("WFS GetCapabilities for base url: {0!s}".format(wfsgc_url))
 
         # forward request to target (without Host Header)
-        http = httplib2.Http()
         headers = dict(self.request.headers)
         if urllib.parse.urlsplit(wfsgc_url).hostname != "localhost" and "Host" in headers:
             headers.pop("Host")  # pragma nocover
 
         try:
-            resp, get_capabilities_xml = http.request(wfsgc_url, method="GET", headers=headers)
+            resp, get_capabilities_xml = self.get_http_cached(wfsgc_url, headers)
         except Exception:  # pragma: no cover
             errors.add("Unable to GetCapabilities from url {0!s}".format(wfsgc_url))
             return None, errors
