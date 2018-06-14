@@ -30,6 +30,7 @@
 import time
 import logging
 import mimetypes
+import os
 import binascii
 from urllib.parse import urlsplit
 
@@ -772,6 +773,12 @@ def init_dbsessions(settings: dict, config: Configurator, health_check: HealthCh
         for name, session in c2cgeoportal_commons.models.DBSessions.items():
             if name == 'dbsession':
                 health_check.add_db_session_check(session, at_least_one_model=main.Theme)
+                alembic_ini = os.path.join(os.path.abspath(os.path.curdir), 'alembic.ini')
+                if os.path.exists(alembic_ini):
+                    health_check.add_alembic_check(session, alembic_ini_path=alembic_ini, name='main',
+                                                   version_schema=settings['schema'])
+                    health_check.add_alembic_check(session, alembic_ini_path=alembic_ini, name='static',
+                                                   version_schema=settings['schema_static'])
             else:  # pragma: no cover
                 def check(session: Session) -> None:
                     session.execute('SELECT 1')
