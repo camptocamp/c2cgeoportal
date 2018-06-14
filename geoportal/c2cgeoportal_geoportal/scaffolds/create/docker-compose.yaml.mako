@@ -76,7 +76,7 @@ ${service_defaults('geoportal', 8080)}\
 ${service_defaults('geoportal', 80)}\
 
   front:
-    image: haproxy:1.8
+    image: haproxy:1.8.8
     volumes_from:
       - config:ro
     volumes:
