@@ -16,6 +16,7 @@ unmanaged_files:
   - docker-compose\.yaml\.mako
   - testdb/11-schemas\.sql\_mako
   - tilegeneration/config\.yaml\.mako
+  - tilegeneration/config\.yaml\.tmpl\.mako
   - mapserver/mapserver\.map\.mako
   - mapserver/mapserver\.map\.tmpl\.mako
   - print/print-apps/testgeomapfish/config\.yaml\.mako
