@@ -195,9 +195,9 @@ prepare-tests: \
 
 .PHONY: tests
 tests:
-	py.test --color=yes --cov=commons/c2cgeoportal_commons commons/acceptance_tests
-	py.test --color=yes --cov-append --cov=geoportal/c2cgeoportal_geoportal geoportal/tests
-	py.test --color=yes --cov-append --cov=admin/c2cgeoportal_admin admin/acceptance_tests
+	py.test --verbose --color=yes --cov=commons/c2cgeoportal_commons commons/acceptance_tests
+	py.test --verbose --color=yes --cov-append --cov=geoportal/c2cgeoportal_geoportal geoportal/tests
+	py.test --verbose --color=yes --cov-append --cov=admin/c2cgeoportal_admin admin/acceptance_tests
 
 .PHONY: flake8
 flake8:
