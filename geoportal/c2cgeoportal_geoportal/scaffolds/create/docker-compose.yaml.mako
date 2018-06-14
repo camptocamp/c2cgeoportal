@@ -74,7 +74,7 @@ ${service_defaults('geoportal', 8080)}\
       - --name=static
       - upgrade
       - head
-${service_defaults('geoportal', 80)}\
+${service_defaults('geoportal')}\
 
   front:
     image: haproxy:1.8.8
@@ -86,7 +86,7 @@ ${service_defaults('geoportal', 80)}\
       - haproxy
       - -f
       - /etc/haproxy
-${service_defaults('front', 80, not docker_global_front)}
+${service_defaults('front', 80, True, docker_global_front)}
 %if docker_global_front:
     networks:
       default: {}
