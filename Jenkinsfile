@@ -96,8 +96,6 @@ dockerBuild {
                     sh '(cd ${HOME}/workspace/testgeomapfish/; git commit -m "Upgrade the po files")'
                     sh '(cd ${HOME}/workspace/testgeomapfish/; ./docker-run travis/empty-make --makefile=travis.mk help)'
                     sh '(cd ${HOME}/workspace/testgeomapfish/; ./docker-run make --makefile=travis.mk build)'
-                    sh 'cat ${HOME}/workspace/testgeomapfish/testdb/*.sql'
-                    sh 'cat ${HOME}/workspace/testgeomapfish/geoportal/config.yaml'
                     withCredentials([[
                         $class: 'UsernamePasswordMultiBinding',
                         credentialsId: 'dockerhub',
@@ -106,9 +104,10 @@ dockerBuild {
                     ]]) {
                         try {
                             sh 'docker login -u "$USERNAME" -p "$PASSWORD"'
-                            sh '(cd ${HOME}/workspace/testgeomapfish/; docker-compose up --force-recreate -d)'
+                            sh '(cd ${HOME}/workspace/testgeomapfish/; docker-compose up -d)'
                             timeout(time: 2, unit: 'MINUTES') {
                                 sh '(cd ${HOME}/workspace/testgeomapfish/; docker-compose exec -T geoportal wait-for-db)'
+                                sh '(cd ${HOME}/workspace/testgeomapfish/; docker-compose exec -T geoportal create-demo-theme)'
                                 sh './docker-run travis/waitwsgi http://`netstat --route --numeric|grep ^0.0.0.0|awk \'{print($2)}\'`:8080/'
                             }
                             for (path in [
