@@ -210,6 +210,8 @@ vars:
       # Layers group
       - name: isExpanded
         type: boolean
+      - name: printNativeAngle
+        type: boolean
       # Layer
       - name: copyTo  # V1
       - name: copyable
@@ -396,6 +398,7 @@ vars:
   # Control the HTTP headers
   headers:
     index: &header
+      cache_control_max_age: 600  # 10 minutes
       access_control_max_age: 600  # 10 minutes
       access_control_allow_origin:
         - "*"
@@ -407,6 +410,7 @@ vars:
     exportgpxkml: *header
     error: *header
     themes: &auth_header
+      cache_control_max_age: 600  # 10 minutes
       access_control_max_age: 600  # 10 minutes
       access_control_allow_origin:
         - "{web_protocol}://{host}"
@@ -419,6 +423,7 @@ vars:
     layers: *auth_header
     shortener: *auth_header
     login:
+      cache_control_max_age: 600  # 10 minutes
       access_control_max_age: 600  # 10 minutes
       access_control_allow_origin:
         - "{web_protocol}://{host}"

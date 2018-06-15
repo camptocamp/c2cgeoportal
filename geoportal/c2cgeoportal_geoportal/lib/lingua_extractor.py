@@ -267,7 +267,7 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
                             value.encode("ascii", errors="replace") if isinstance(value, str) else value)
                         enums.append(Message(None, msgid, None, [], "", "", (filename, location)))
 
-        metadata = []
+        metadata_list = []
         defs = config["admin_interface"]["available_metadata"]
         names = [e["name"] for e in defs if e.get("translate", False)]
 
@@ -281,9 +281,11 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
             query = session.query(Metadata).filter(Metadata.name.in_(names))
             for metadata in query.all():
                 location = "metadata/{}/{}".format(metadata.name, metadata.id)
-                metadata.append(Message(None, metadata.value, None, [], u"", u"", (filename, location)))
+                metadata_list.append(
+                    Message(None, metadata.value, None, [], u"", u"", (filename, location))
+                )
 
-        return raster + enums + metadata
+        return raster + enums + metadata_list
 
     @staticmethod
     def _enumerate_attributes_values(dbsessions, layers, layerinfos, fieldname):
@@ -433,8 +435,12 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                         column = column_property.columns[0]
                         if not column.primary_key and not isinstance(column.type, Geometry):
                             if column.foreign_keys:
-                                name = "type_" if column.name == "type_id" else \
-                                    column.name[0:column.name.rindex("_id")]
+                                if column.name == "type_id":
+                                    name = "type_"
+                                elif column.name.endswith("_id"):
+                                    name = column.name[:-3]
+                                else:
+                                    name = column.name + "_"
                             else:
                                 name = column_property.key
                             messages.append(Message(

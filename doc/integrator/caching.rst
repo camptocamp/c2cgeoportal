@@ -22,6 +22,12 @@ To change this value for a specific service add the following stricture in the
             <service_name>:
                 cache_control_max_age: <max_age>
 
+    ...
+
+    update_paths:
+      - headers.<service_name>
+
+
 Where ``<service_name>`` can be: ``entry``, ``fulltextsearch``, ``mapserver``,
 ``print`` or ``layers`` (editing).
 
