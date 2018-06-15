@@ -107,6 +107,13 @@ account:</p>
 </pre></div>
 </div>
 </div>
+<div class="section" id="use-webpack-dev-server">
+<h3>Use Webpack dev server<a class="headerlink" href="#use-webpack-dev-server" title="Permalink to this headline">¶</a></h3>
+<p>In the file <code class="docutils literal notranslate"><span class="pre">docker-compose-dev.yaml</span></code> set the <code class="docutils literal notranslate"><span class="pre">INTERFACE</span></code> to the wanted value.</p>
+<p>Run:</p>
+<pre class="highlight"><span class="prompt1">docker-compose --file<span class="o">=</span>docker-compose.yaml --file<span class="o">=</span>docker-compose-dev.yaml up</span>
+</pre><p>Open the application with on the following path: <code class="docutils literal notranslate"><span class="pre">https://&lt;host&gt;/&lt;entry_point&gt;/dev/&lt;interface&gt;.html</span></code>.</p>
+</div>
 </div>
 <div class="section" id="performance-or-network-error">
 <h2>Performance or network error<a class="headerlink" href="#performance-or-network-error" title="Permalink to this headline">¶</a></h2>
@@ -147,6 +154,7 @@ to test it).</p>
 <li><a class="reference internal" href="#run-gunicorn-to-reload-on-modifications-of-python-files">Run gunicorn to reload on modifications of Python files</a></li>
 <li><a class="reference internal" href="#do-a-graceful-restart-of-the-running-geoportal-container">Do a graceful restart of the running geoportal container</a></li>
 <li><a class="reference internal" href="#mount-c2cgeoportal-in-the-container">Mount c2cgeoportal in the container</a></li>
+<li><a class="reference internal" href="#use-webpack-dev-server">Use Webpack dev server</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#performance-or-network-error">Performance or network error</a><ul>
