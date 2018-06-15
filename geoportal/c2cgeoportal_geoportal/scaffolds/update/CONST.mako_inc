@@ -1,4 +1,5 @@
-<%def name="service_defaults(service, inner_port=None, port_required=False)">\
+<%def name="service_defaults(service, inner_port=None, port_required=False, global_front=False)">\
+% if not  global_front:
 % if port_required or 'port' in docker_services.get(service, {}):
 <%
 if 'port' not in docker_services[service]:
@@ -7,6 +8,7 @@ endif
 %>
     ports:
       - ${docker_services[service]['port']}:${inner_port}
+% endif
 % endif
 % if 'environment' in docker_services.get(service, {}):
     environment:
