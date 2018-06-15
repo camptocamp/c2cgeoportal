@@ -207,3 +207,9 @@ files_to_move:
   - from: alembic.ini
     to: geoportal/alembic.ini
     version: 2.3
+  - from: webpack.config.js
+    to: geoportal/webpack.config.js
+    version: 2.3
+  - from: webpack.apps.js.mako
+    to: geoportal/webpack.apps.js.mako
+    version: 2.3

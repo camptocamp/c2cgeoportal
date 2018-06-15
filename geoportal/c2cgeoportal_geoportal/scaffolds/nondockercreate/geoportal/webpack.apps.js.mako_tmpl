@@ -17,7 +17,7 @@ process.traceDeprecation = true;
 const name = process.env.INTERFACE;
 process.env.THEME = INTERFACE_THEME[name];
 
-entry[name] = path.resolve(__dirname, 'geoportal/${package}_geoportal/static-ngeo/js/apps/Controller' + name + '.js');
+entry[name] = path.resolve(__dirname, '${package}_geoportal/static-ngeo/js/apps/Controller' + name + '.js');
 plugins.push(
   new HtmlWebpackPlugin({
     inject: false,
@@ -25,9 +25,6 @@ plugins.push(
     chunksSortMode: 'manual',
     filename: name + '.html',
     chunks: [name],
-    vars: {
-      entry_point: '${entry_point}',
-    },
   })
 );
 
@@ -41,7 +38,7 @@ const babelPresets = [['env',{
 
 // Transform code to ES2015 and annotate injectable functions with an $inject array.
 const projectRule = {
-  test: /geoportal\/{{package}}_geoportal\/static-ngeo\/js\/.*\.js$/,
+  test: /{{package}}_geoportal\/static-ngeo\/js\/.*\.js$/,
   use: {
     loader: 'babel-loader',
     options: {
@@ -52,25 +49,18 @@ const projectRule = {
 };
 
 const rules = [
-  projectRule,
+  projectRule
 ];
 
-const noDevServer = process.env['NO_DEV_SERVER'] != 'FALSE';
-devServer = dev && !noDevServer;
 
 module.exports = {
   output: {
-    path: path.resolve(__dirname, 'geoportal/{{package}}_geoportal/static-ngeo/build/'),
-    publicPath: devServer ? '/${instance}/dev/' : '${entry_point}static-ngeo/UNUSED_CACHE_VERSION/build/'
+    path: path.resolve(__dirname, '{{package}}_geoportal/static-ngeo/build/'),
+    publicPath: dev ? '/${instanceid}/dev/' : '/${instanceid}/wsgi/static-ngeo/UNUSED_CACHE_VERSION/build/'
   },
   entry: entry,
   module: {
     rules
   },
   plugins: plugins,
-  resolve: {
-    alias: {
-      {{package}}: path.resolve(__dirname, 'geoportal/{{package}}_geoportal/static-ngeo/js'),
-    }
-  }
 };

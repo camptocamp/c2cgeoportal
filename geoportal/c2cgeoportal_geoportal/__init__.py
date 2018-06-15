@@ -731,6 +731,9 @@ def includeme(config):
     # Resource proxy (load external url, useful when loading non https content)
     config.add_route("resourceproxy", "/resourceproxy", request_method="GET")
 
+    # Dev
+    config.add_route("dev", "/dev/*path", request_method="GET")
+
     # Scan view decorator for adding routes
     config.scan(ignore=["c2cgeoportal_geoportal.scripts", "c2cgeoportal_geoportal.wsgi_app"])
 

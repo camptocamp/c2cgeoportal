@@ -107,6 +107,19 @@ Add in the ``docker-compose.yaml`` file, in the ``geoportal`` service the follow
          - <c2cgeoportal_git_root>/geoportal/c2cgeoportal_geoportal:/opt/c2cgeoportal_geoportal/c2cgeoportal_geoportal
          - <c2cgeoportal_git_root>/geoportal/c2cgeoportal_admin:/opt/c2cgeoportal_geoportal/c2cgeoportal_admin
 
+Use Webpack dev server
+......................
+
+In the file ``docker-compose-dev.yaml`` set the ``INTERFACE`` to the wanted value.
+
+Run:
+
+.. prompt:: bash
+
+   docker-compose --file=docker-compose.yaml --file=docker-compose-dev.yaml up
+
+Open the application with on the following path: ``https://<host>/<entry_point>/dev/<interface>.html``.
+
 
 Performance or network error
 ----------------------------
