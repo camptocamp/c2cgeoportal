@@ -85,41 +85,6 @@ account:</p>
 </div>
 <div class="section" id="docker">
 <h2>Docker<a class="headerlink" href="#docker" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="multiple-dev-on-one-server">
-<h3>Multiple dev on one server<a class="headerlink" href="#multiple-dev-on-one-server" title="Permalink to this headline">¶</a></h3>
-<p>When you want to run multiple instances on the same server you should:</p>
-<ul class="simple">
-<li>Use the global front</li>
-<li>Use a different docker tag for each instance</li>
-<li>Use a different project name for each instance</li>
-</ul>
-</div>
-<div class="section" id="global-front">
-<h3>Global front<a class="headerlink" href="#global-front" title="Permalink to this headline">¶</a></h3>
-<p>The global front will offer a unique entry point on port 80 that provide the ‘main’ project on <cite>/</cite> and the
-others on <cite>/&lt;project_name&gt;/</cite>.</p>
-<p>Activate it in the vars:</p>
-<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
-  <span class="n">docker_global_front</span><span class="p">:</span> <span class="n">true</span>
-</pre></div>
-</div>
-<p>Build the project:</p>
-<pre class="highlight"><span class="prompt1">./docker-run make build</span>
-</pre><p>Run the global front:</p>
-<pre class="highlight"><span class="prompt1"><span class="o">(</span><span class="nb">cd</span> global-front<span class="p">;</span> docker-compose --project-name<span class="o">=</span>global up --build<span class="o">)</span></span>
-</pre><p>And we should defined different instance name for the build:</p>
-<pre class="highlight"><span class="prompt1"><span class="nv">INSTANCE</span><span class="o">=</span>&lt;name&gt; ./docker-run make build</span>
-</pre></div>
-<div class="section" id="use-a-different-docker-tag">
-<h3>Use a different docker tag<a class="headerlink" href="#use-a-different-docker-tag" title="Permalink to this headline">¶</a></h3>
-<p>Just define an environment variable in the build:</p>
-<pre class="highlight"><span class="prompt1"><span class="nv">DOCKER_TAG</span><span class="o">=</span>&lt;tag&gt; ./docker-run make build</span>
-</pre></div>
-<div class="section" id="use-a-different-project-name">
-<h3>Use a different project name<a class="headerlink" href="#use-a-different-project-name" title="Permalink to this headline">¶</a></h3>
-<p>Define the project name when you run the Docker composition:</p>
-<pre class="highlight"><span class="prompt1">docker-compose --project-name<span class="o">=</span>&lt;name&gt; ...</span>
-</pre></div>
 <div class="section" id="run-gunicorn-to-reload-on-modifications-of-python-files">
 <h3>Run gunicorn to reload on modifications of Python files<a class="headerlink" href="#run-gunicorn-to-reload-on-modifications-of-python-files" title="Permalink to this headline">¶</a></h3>
 <p>Add the following environment variable to the geoportal container:</p>
@@ -142,21 +107,6 @@ others on <cite>/&lt;project_name&gt;/</cite>.</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="expose-a-service">
-<h3>Expose a service<a class="headerlink" href="#expose-a-service" title="Permalink to this headline">¶</a></h3>
-<p>To expose a service out of the Docker composition you can add a port for the service in the vars, e.g.:</p>
-<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
-  <span class="n">docker_services</span><span class="p">:</span>
-    <span class="o">&lt;</span><span class="n">service</span><span class="o">&gt;</span><span class="p">:</span>
-      <span class="n">port</span><span class="p">:</span> <span class="mi">8086</span>
-</pre></div>
-</div>
-<p>Be careful one port can be open only one time on a server.
-Within the Docker composition you can access a port of a container, you can achieve this via curl.
-This way, you do not need to publish this port on the main host.</p>
-<pre class="highlight"><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal bash</span>
-<span class="prompt1">curl <span class="s2">&quot;&lt;url&gt;&quot;</span></span>
-</pre></div>
 <div class="section" id="use-webpack-dev-server">
 <h3>Use Webpack dev server<a class="headerlink" href="#use-webpack-dev-server" title="Permalink to this headline">¶</a></h3>
 <p>In the file <code class="docutils literal notranslate"><span class="pre">docker-compose-dev.yaml</span></code> set the <code class="docutils literal notranslate"><span class="pre">INTERFACE</span></code> to the wanted value.</p>
@@ -201,14 +151,9 @@ to test it).</p>
 <li><a class="reference internal" href="#postgresql">PostgreSQL</a></li>
 <li><a class="reference internal" href="#makefile">Makefile</a></li>
 <li><a class="reference internal" href="#docker">Docker</a><ul>
-<li><a class="reference internal" href="#multiple-dev-on-one-server">Multiple dev on one server</a></li>
-<li><a class="reference internal" href="#global-front">Global front</a></li>
-<li><a class="reference internal" href="#use-a-different-docker-tag">Use a different docker tag</a></li>
-<li><a class="reference internal" href="#use-a-different-project-name">Use a different project name</a></li>
 <li><a class="reference internal" href="#run-gunicorn-to-reload-on-modifications-of-python-files">Run gunicorn to reload on modifications of Python files</a></li>
 <li><a class="reference internal" href="#do-a-graceful-restart-of-the-running-geoportal-container">Do a graceful restart of the running geoportal container</a></li>
 <li><a class="reference internal" href="#mount-c2cgeoportal-in-the-container">Mount c2cgeoportal in the container</a></li>
-<li><a class="reference internal" href="#expose-a-service">Expose a service</a></li>
 <li><a class="reference internal" href="#use-webpack-dev-server">Use Webpack dev server</a></li>
 </ul>
 </li>
