@@ -31,6 +31,12 @@ ${service_defaults('mapserver', 80)}\
 ##      - config:ro
 ##${service_defaults('qgisserver', 80)}
 
+  tinyows:
+    image: camptocamp/tinyows
+    volumes_from:
+      - config:ro
+${service_defaults('tinyows', 80)}\
+
   mapcache:
     image: camptocamp/mapcache:1.6
     volumes_from:

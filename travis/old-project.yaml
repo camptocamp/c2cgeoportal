@@ -19,6 +19,8 @@ unmanaged_files:
   - tilegeneration/config\.yaml\.tmpl\.mako
   - mapserver/mapserver\.map\.mako
   - mapserver/mapserver\.map\.tmpl\.mako
+  - mapserver/tinyows\.xml\.mako
+  - mapserver/tinyows\.xml\.tmpl\.mako
   - print/print-apps/testgeomapfish/config\.yaml\.mako
   - print/print-apps/testgeomapfish/config\.yaml\.tmpl
   - print/print-apps/testgeomapfish/.*\.jrxml

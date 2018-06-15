@@ -140,7 +140,7 @@ then
     fi
     cp {CONST_create_template/,}project.yaml.mako
     cp {CONST_create_template/,}vars.yaml
-    cp {CONST_create_template/,}mapserver/tinyows.xml.mako
+    cp {CONST_create_template/,}mapserver/tinyows.xml.tmpl.mako
     cp {CONST_create_template/,}print/print-apps/testgeomapfish/config.yaml.tmpl
     ./docker-run --env=NODE_ENV make upgrade11
     if [ ! -e .UPGRADE_SUCCESS ]
