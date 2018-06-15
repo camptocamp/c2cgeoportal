@@ -20,7 +20,7 @@ caches:
         bucket: tiles
         folder: ''
         # for GetCapabilities
-        http_url: https://%(host)s/%(bucket)s/%(folder)s/
+        http_url: ${web_protocol}://${host}${entry_point}
         cache_control: 'public, max-age=14400'
         hosts:
         - wmts0.<host>
@@ -59,7 +59,7 @@ defaults:
         # the meta tiles definition [default to off]
         meta: on
         # the meta tiles size [default to 8]
-        meta_size: 8
+        meta_size: 5
         # the meta tiles buffer [default to 128]
         meta_buffer: 128
         # connexion an sql to get geometries (in column named geom) where we want to generate tiles
