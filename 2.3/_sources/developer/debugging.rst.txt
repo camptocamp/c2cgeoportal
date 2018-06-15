@@ -78,6 +78,66 @@ Actually we display the running rule and why she is running (dependence update).
 Docker
 ------
 
+Multiple dev on one server
+..........................
+
+When you want to run multiple instances on the same server you should:
+
+- Use the global front
+- Use a different docker tag for each instance
+- Use a different project name for each instance
+
+Global front
+............
+
+The global front will offer a unique entry point on port 80 that provide the 'main' project on `/` and the
+others on `/<project_name>/`.
+
+Activate it in the vars:
+
+.. code:: yaml
+
+   vars:
+     docker_global_front: true
+
+Build the project:
+
+.. prompt:: bash
+
+   ./docker-run make build
+
+Run the global front:
+
+.. prompt:: bash
+
+   (cd global-front; docker-compose --project-name=global up --build)
+
+
+And we should defined different instance name for the build:
+
+.. prompt:: bash
+
+   INSTANCE=<name> ./docker-run make build
+
+
+Use a different docker tag
+..........................
+
+Just define an environment variable in the build:
+
+.. prompt:: bash
+
+   DOCKER_TAG=<tag> ./docker-run make build
+
+Use a different project name
+............................
+
+Define the project name when you run the Docker composition:
+
+.. prompt:: bash
+
+   docker-compose --project-name=<name> ...
+
 Run gunicorn to reload on modifications of Python files
 .......................................................
 
@@ -107,6 +167,27 @@ Add in the ``docker-compose.yaml`` file, in the ``geoportal`` service the follow
          - <c2cgeoportal_git_root>/geoportal/c2cgeoportal_geoportal:/opt/c2cgeoportal_geoportal/c2cgeoportal_geoportal
          - <c2cgeoportal_git_root>/geoportal/c2cgeoportal_admin:/opt/c2cgeoportal_geoportal/c2cgeoportal_admin
 
+Expose a service
+................
+
+To expose a service out of the Docker composition you can add a port for the service in the vars, e.g.:
+
+.. code:: yaml
+
+   vars:
+     docker_services:
+       <service>:
+         port: 8086
+
+Be careful one port can be open only one time on a server.
+Within the Docker composition you can access a port of a container, you can achieve this via curl.
+This way, you do not need to publish this port on the main host.
+
+.. prompt:: bash
+
+   docker-compose exec geoportal bash
+   curl "<url>"
+
 Use Webpack dev server
 ......................
 
@@ -119,7 +200,6 @@ Run:
    docker-compose --file=docker-compose.yaml --file=docker-compose-dev.yaml up
 
 Open the application with on the following path: ``https://<host>/<entry_point>/dev/<interface>.html``.
-
 
 Performance or network error
 ----------------------------
