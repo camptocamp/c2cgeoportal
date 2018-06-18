@@ -18,9 +18,9 @@ Default is:
 .. code:: makefile
 
     ifdef VARS_FILE
-    VARS_FILES += ${VARS_FILE} vars_<package>.yaml
+    VARS_FILES += ${VARS_FILE} vars.yaml
     else
-    VARS_FILE = vars_<package>.yaml
+    VARS_FILE = vars.yaml
     VARS_FILES += ${VARS_FILE}
     endif
 
@@ -37,7 +37,7 @@ Default is:
 Vars files
 ----------
 
-The project variables are set in the ``vars_<package>.yaml`` file,
+The project variables are set in the ``vars.yaml`` file,
 which extends the default ``CONST_vars.yaml``.
 
 To make such variables available to the python code, for instance using

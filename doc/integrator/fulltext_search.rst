@@ -39,6 +39,7 @@ Also make sure that the db user can ``SELECT`` in the ``tsearch`` table:
 
 with ``<db_user>``, and ``<db_name>`` substituted as appropriately.
 
+
 Populate the full-text search table
 -----------------------------------
 
@@ -78,6 +79,7 @@ Here is another example where rows from a ``SELECT`` are inserted:
     be ``fr``. In other words c2cgeoportal assumes that the database language
     and the application's default language match.
 
+
 Populate with the themes
 ------------------------
 
@@ -86,6 +88,7 @@ A script is available to fill the full-text search table, for more information t
 .. prompt:: bash
 
    ./docker-compose-run theme2fts --help
+
 
 Security
 --------
@@ -121,6 +124,7 @@ available to users of the corresponding role.
            to_tsvector('german', regexp_replace(text, E'[\\[\\]\\(\\):&\\*]', ' ', 'g'))
         FROM table;
 
+
 .. _integrator_fulltext_search_params:
 
 Params
@@ -137,8 +141,6 @@ For instance to specify a ``floor``:
 
 Query string ``floor=1`` is then automatically appended to all WMS requests.
 
-See `FloorSlider <http://docs.camptocamp.net/cgxp/2.2/lib/plugins/FloorSlider.html>`_
-for more information.
 
 Actions
 -------
@@ -173,15 +175,18 @@ Example of ``SQL`` ``INSERT`` of ``actions`` data to add the layer "cadastre" on
    INSERT INTO app_schema.tsearch (..., actions)
    VALUES (..., '[{"action": "add_layer", "data": "cadastre"}]')
 
+
 Interface
 ---------
 
 If the ``interface_id`` column contains a value it means that the result is only for an interface.
 
+
 Lang
 ----
 
 If the ``lang`` column contains a value it means that the result is only for a language.
+
 
 Configuration
 -------------
@@ -192,6 +197,7 @@ following variables:
 *  ``fulltextsearch_defaultlimit`` the default limit on the results,
    default is 30.
 *  ``fulltextsearch_maxlimit`` the max possible limit, default is 200.
+
 
 Ranking system
 --------------
@@ -208,14 +214,15 @@ Ensure that the extension is created in you database:
 
   sudo -u postgres psql -c "CREATE EXTENSION pg_trgm" <db_name>
 
-Alternatively, you can use the `tsvector` and `ts_rank_cd` to rank your search
+Alternatively, you can use the ``tsvector`` and ``ts_rank_cd`` to rank your search
 results (See: `textsearch-controls <https://www.postgresql.org/docs/9.0/static/textsearch-controls.html>`_.
 These methods are useful to handle language-based strings. That means for instance
 that plural nouns are the same as singular nouns. This system only checks if
 your search word exists in the result. That means that if you search `B 12 Zug`,
 `B 120 Zug` has the same weight because the system only see that the `12` exists
 in each case. To use this system, your request must contains the
-parameter `rank_system=ts_rank_cd`.
+parameter ``rank_system=ts_rank_cd``.
+
 
 Using the unaccent extension
 ----------------------------

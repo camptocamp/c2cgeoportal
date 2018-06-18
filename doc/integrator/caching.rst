@@ -9,11 +9,11 @@ Headers
 By default most of the elements will be cached for 10 days by the browser.
 
 To change this value for all the application change in the
-``vars_<package>.yaml`` file the ``vars/default_max_age`` value. ``0`` will mean ``no-cache``.
+``vars.yaml`` file the ``vars/default_max_age`` value. ``0`` will mean ``no-cache``.
 The specified value is in seconds.
 
-To change this value for a specific service add the following stricture in the
-``vars_<package>.yaml``:
+To change this value for a specific service add the following structure in the
+``vars.yaml``:
 
 .. code:: yaml
 

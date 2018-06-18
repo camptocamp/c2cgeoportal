@@ -4,14 +4,7 @@ Reset password
 When a user has forgotten his/her password, a new one may be sent by email if some additional
 GeoMapFish configuration is provided.
 
-In the ``<package>/template/*.js`` files, in the ``cgxp_login`` plugin you should add the
-service URL with the following configuration:
-
-.. code:: javascript
-
-   loginResetPasswordURL: "${request.route_url('loginresetpassword') | n}",
-
-And to generate the required e-mail, in the ``vars_<package>.yaml`` file, add the following configuration:
+And to generate the required e-mail, in the ``vars.yaml`` file, add the following configuration:
 
 .. code:: yaml
 

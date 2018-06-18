@@ -31,19 +31,8 @@ One of the primary goals of the c2cgeoportal project is sharing as much as
 functionality and code as possible between applications. *Do not repeat
 ourselves!*
 
-:ref:`releasenotes`.
-
 `Demo <https://geomapfish-demo.camptocamp.net/${major_version}>`_,
 `with features grid <https://camptocamp.github.io/ngeo/${major_version}/examples/contribs/gmf/apps/desktop_alt/>`_,
 to test the editing you can use the username 'demo' with the password 'demo'.
 
 `ngeo (client) documentation <https://camptocamp.github.io/ngeo/${major_version}/apidoc/>`_.
-`CGXP (old client) documentation <http://docs.camptocamp.net/cgxp/master/>`_.
-
-.. toctree::
-   :hidden:
-
-   releasenotes
-   builddoc
-
-See the :ref:`build_doc` section to know how to build this doc.
