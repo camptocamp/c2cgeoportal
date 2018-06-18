@@ -68,12 +68,14 @@ vars:
         REDIS_HOST: redis
         REDIS_PORT: 6379
         C2C_REDIS_URL: redis://redis:6379
-        C2C_BROADCAST_PREFIX: c2cgeoportal_
+        C2C_BROADCAST_PREFIX: broadcast_geoportal_
     tilecloudchain:
       environment:
         VISIBLE_ENTRY_POINT: '{docker_entry_point}'
         TILEGENERATION_CONFIGFILE: /etc/tilegeneration/config.yaml
         C2C_BASE_PATH: /c2c_tiles
+        C2C_REDIS_URL: redis://redis:6379
+        C2C_BROADCAST_PREFIX: broadcast_tilecloudchain_
     front:
       port: 80
 

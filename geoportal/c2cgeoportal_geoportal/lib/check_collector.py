@@ -56,6 +56,7 @@ def init(config, health_check):
                 )
                 r = requests.get(params={"max_level": str(host.get("max_level", max_level))}, **url_headers)
                 r.raise_for_status()
+                return r.json()
 
         health_check.add_custom_check(
             name="check_collector_" + host["display"],
