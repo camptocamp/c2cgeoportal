@@ -20,7 +20,7 @@ Add in your makefile ``<user>.mk`` (Each developer should have a different port,
 
 .. prompt:: bash
 
-   make serve
+   make serve-<interface>
 
 Open in the browser an URL like: ``https://<host><entry-point>/dev/<interface>.html``.
 
