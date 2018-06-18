@@ -43,6 +43,16 @@ ${service_defaults('memcached', 11211)}\
 
   redis:
     image: redis:3.2
+    command:
+      - redis-server
+      - --save
+      - ''
+      - --appendonly
+      - 'no'
+      - --maxmemory
+      - 512mb
+      - --maxmemory-policy
+      - allkeys-lru
 ${service_defaults('redis', 6379)}\
 
   tilecloudchain:
