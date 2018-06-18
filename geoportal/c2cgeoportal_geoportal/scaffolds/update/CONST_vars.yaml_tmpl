@@ -76,6 +76,9 @@ vars:
         C2C_BASE_PATH: /c2c_tiles
         C2C_REDIS_URL: redis://redis:6379
         C2C_BROADCAST_PREFIX: broadcast_tilecloudchain_
+    print:
+      environment:
+        CATALINA_OPTS: -Xmx1024m
     front:
       port: 80
 
