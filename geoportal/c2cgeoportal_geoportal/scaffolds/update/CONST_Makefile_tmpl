@@ -609,9 +609,9 @@ $(APP_OUTPUT_DIR)/images/: /usr/lib/node_modules/jquery-ui/themes/base/images
 	touch $@
 
 .PHONY: serve
-serve:
-	node_modules/.bin/webpack-dev-server --port=$(DEV_SERVER_PORT) -d --watch --progress \
-		--public=$(VISIBLE_WEB_HOST):$(VISIBLE_WEB_PORT) --mode=development --inline=false
+serve-%:
+	(cd geoportal; INTERFACE=$* ../node_modules/.bin/webpack-dev-server --port=$(DEV_SERVER_PORT) -d --watch --progress \
+		--public=$(VISIBLE_WEB_HOST):$(VISIBLE_WEB_PORT) --mode=development --inline=false)
 
 /build/eslint.timestamp: $(APP_JS_FILES)
 	$(PRERULE_CMD)

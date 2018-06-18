@@ -21,7 +21,7 @@ entry[name] = path.resolve(__dirname, '${package}_geoportal/static-ngeo/js/apps/
 plugins.push(
   new HtmlWebpackPlugin({
     inject: false,
-    template: '/src/geoportal/${package}_geoportal/static-ngeo/js/apps/' + name + '.html.ejs',
+    template: path.resolve(__dirname, '${package}_geoportal/static-ngeo/js/apps/' + name + '.html.ejs'),
     chunksSortMode: 'manual',
     filename: name + '.html',
     chunks: [name],
