@@ -507,7 +507,7 @@ def includeme(config):
 
     settings = config.get_settings()
 
-    config.add_notfound_view(notfound, append_slash=True, renderer='json', http_cache=0)
+    config.add_notfound_view(notfound, append_slash=True, renderer='fast_json', http_cache=0)
 
     config.include("c2cgeoportal_commons")
 
