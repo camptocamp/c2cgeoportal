@@ -44,9 +44,9 @@ GeoMapFish developers.</p>
 Default is:</p>
 <pre class="code makefile literal-block">
 <span class="name variable"></span><span class="comment preproc">ifdef VARS_FILE
-</span><span class="name variable">VARS_FILES</span> <span class="operator">+=</span> <span class="literal string interpol">${</span><span class="name variable">VARS_FILE</span><span class="literal string interpol">}</span> vars_&lt;package&gt;.yaml
+</span><span class="name variable">VARS_FILES</span> <span class="operator">+=</span> <span class="literal string interpol">${</span><span class="name variable">VARS_FILE</span><span class="literal string interpol">}</span> vars.yaml
 <span class="comment preproc">else
-</span><span class="name variable">VARS_FILE</span> <span class="operator">=</span> vars_&lt;package&gt;.yaml
+</span><span class="name variable">VARS_FILE</span> <span class="operator">=</span> vars.yaml
 <span class="name variable">VARS_FILES</span> <span class="operator">+=</span> <span class="literal string interpol">${</span><span class="name variable">VARS_FILE</span><span class="literal string interpol">}</span>
 <span class="comment preproc">endif
 </span>
@@ -62,7 +62,7 @@ Default is:</p>
 </div>
 <div class="section" id="vars-files">
 <h2>Vars files<a class="headerlink" href="#vars-files" title="Permalink to this headline">¶</a></h2>
-<p>The project variables are set in the <code class="docutils literal notranslate"><span class="pre">vars_&lt;package&gt;.yaml</span></code> file,
+<p>The project variables are set in the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file,
 which extends the default <code class="docutils literal notranslate"><span class="pre">CONST_vars.yaml</span></code>.</p>
 <p>To make such variables available to the python code, for instance using</p>
 <div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">request</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;some_config_var&#39;</span><span class="p">)</span>

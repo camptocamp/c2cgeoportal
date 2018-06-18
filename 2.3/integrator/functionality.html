@@ -37,15 +37,11 @@ the application according to the user’s permissions.</p>
 <p>A functionality may be associated to users through different ways:</p>
 <ol class="arabic simple">
 <li>Functionalities for anonymous users are defined through the
-<code class="docutils literal notranslate"><span class="pre">functionalities:anonymous</span></code> variable in the <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code>
-configuration file.</li>
+<code class="docutils literal notranslate"><span class="pre">functionalities:anonymous</span></code> variable in the <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code> configuration file.</li>
 <li>Functionalities for authenticated users are defined through the
-<code class="docutils literal notranslate"><span class="pre">functionalities:registered</span></code> variable in the <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code>
-configuration file.</li>
-<li>Functionalities for specific roles are defined in the database through the
-administration interface.</li>
-<li>Functionalities for specific users are defined in the database through the
-administration interface.</li>
+<code class="docutils literal notranslate"><span class="pre">functionalities:registered</span></code> variable in the <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code> configuration file.</li>
+<li>Functionalities for specific roles are defined in the database through the administration interface.</li>
+<li>Functionalities for specific users are defined in the database through the administration interface.</li>
 </ol>
 <p>Each level overrides the previous ones in the same order as indicated above.
 For example, if the user is authenticated and has associated functionalities in
@@ -159,92 +155,10 @@ project’s <code class="docutils literal notranslate"><span class="pre">viewer.
 </pre></div>
 </div>
 </div>
-<div class="section" id="limiting-access-to-some-cgxp-plugins-using-functionalities">
-<h3>Limiting Access to some CGXP Plugins using Functionalities<a class="headerlink" href="#limiting-access-to-some-cgxp-plugins-using-functionalities" title="Permalink to this headline">¶</a></h3>
-<p>Functionalities may also be used to enable some CGXP plugins only for users
-with specific roles.</p>
-<p>To do so, add <code class="docutils literal notranslate"><span class="pre">authorized_plugins</span></code> to the list of functionalities that must be
-available in the administration interface and to the list of functionalities
-provided to the templates. Set also <code class="docutils literal notranslate"><span class="pre">authorized_plugins</span></code> as an empty list for
-anonymous users. In <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code>:</p>
-<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">admin_interface</span><span class="p">:</span>
-    <span class="c1"># ...</span>
-    <span class="n">available_functionalities</span><span class="p">:</span>
-        <span class="o">-</span> <span class="n">default_basemap</span>
-        <span class="o">-</span> <span class="n">print_template</span>
-        <span class="o">-</span> <span class="n">mapserver_substitution</span>
-        <span class="o">-</span> <span class="n">authorized_plugins</span>
-
-<span class="n">functionalities</span><span class="p">:</span>
-    <span class="c1"># ...</span>
-    <span class="n">anonymous</span><span class="p">:</span>
-        <span class="c1"># ...</span>
-        <span class="n">default_basemap</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">some_basemap</span><span class="o">&gt;</span>
-        <span class="n">authorized_plugins</span><span class="p">:</span> <span class="p">[]</span>
-
-    <span class="n">available_in_templates</span><span class="p">:</span> <span class="p">[</span><span class="n">default_basemap</span><span class="p">,</span> <span class="n">authorized_plugins</span><span class="p">]</span>
-</pre></div>
-</div>
-<p>Then you may test in your project’s <code class="docutils literal notranslate"><span class="pre">viewer.js</span></code> template if the current user
-has been granted access to some protected plugins:</p>
-<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">app</span> <span class="o">=</span> <span class="n">new</span> <span class="n">gxp</span><span class="o">.</span><span class="n">Viewer</span><span class="p">({</span>
-    <span class="o">//</span> <span class="o">...</span>
-    <span class="n">tools</span><span class="p">:</span> <span class="p">[{</span>
-        <span class="o">//...</span>
-    <span class="p">},</span>
-    <span class="o">%</span> <span class="k">if</span> <span class="s1">&#39;&lt;some_protected_plugin&gt;&#39;</span> <span class="ow">in</span> <span class="n">functionality</span><span class="p">[</span><span class="s1">&#39;authorized_plugins&#39;</span><span class="p">]:</span>
-    <span class="p">{</span>
-        <span class="n">ptype</span><span class="p">:</span> <span class="o">...</span>
-        <span class="o">//...</span>
-    <span class="p">},</span>
-    <span class="o">%</span> <span class="n">endif</span>
-    <span class="p">{</span>
-        <span class="o">//...</span>
-    <span class="p">}]</span>
-<span class="p">});</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="using-functionalities-list-to-configure-the-layers-in-the-querybuilder">
-<h3>Using Functionalities list to configure the layers in the QueryBuilder<a class="headerlink" href="#using-functionalities-list-to-configure-the-layers-in-the-querybuilder" title="Permalink to this headline">¶</a></h3>
-<p>Add the new <code class="docutils literal notranslate"><span class="pre">querybuilder_layer</span></code> functionality to the list of
-<code class="docutils literal notranslate"><span class="pre">available_functionalities</span></code> in your <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file:</p>
-<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">admin_interface</span><span class="p">:</span>
-    <span class="n">available_functionalities</span><span class="p">:</span>
-        <span class="o">...</span>
-        <span class="o">-</span> <span class="n">querybuilder_layer</span>
-</pre></div>
-</div>
-<p>Make sure that the <code class="docutils literal notranslate"><span class="pre">dumps</span></code> function is imported in
-<code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/templates/viewer.js</span></code> using:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;%</span>
-<span class="kn">from</span> <span class="nn">json</span> <span class="k">import</span> <span class="n">dumps</span>
-<span class="o">%&gt;</span>
-</pre></div>
-</div>
-<p>And configure your plugin like that:</p>
-<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span>{
-    ptype: &quot;cgxp_querier&quot;,
-    featureTypes: ${dumps(functionality[&#39;querybuilder_layer&#39;]) | n},
-    ...
-}
-</pre></div>
-</div>
-<p>This way you may assign more than one layer per role using functionalities.</p>
-</div>
 <div class="section" id="using-functionalities-to-configure-the-basemap-to-use-for-each-theme">
 <h3>Using Functionalities to configure the basemap to use for each theme<a class="headerlink" href="#using-functionalities-to-configure-the-basemap-to-use-for-each-theme" title="Permalink to this headline">¶</a></h3>
 <p>A default basemap may be automatically loaded when the user selects a given
 theme.</p>
-<p>To do so make sure that the <code class="docutils literal notranslate"><span class="pre">MapOpacitySlider</span></code> plugin has a reference to the
-layertree plugin. For instance:</p>
-<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="n">ptype</span><span class="p">:</span> <span class="s2">&quot;cgxp_mapopacityslider&quot;</span><span class="p">,</span>
-    <span class="n">layerTreeId</span><span class="p">:</span> <span class="s2">&quot;layertree&quot;</span><span class="p">,</span>
-    <span class="n">defaultBaseLayerRef</span><span class="p">:</span> <span class="s2">&quot;${functionality[&#39;default_basemap&#39;][0] | n}&quot;</span>
-<span class="p">}</span>
-</pre></div>
-</div>
 <p>Then, in the administration interface, if not available yet, define a
 <code class="docutils literal notranslate"><span class="pre">default_basemap</span></code> functionality containing the basemap reference. Edit the
 theme and select the basemap to load in the <code class="docutils literal notranslate"><span class="pre">default_basemap</span></code> list. If
@@ -269,8 +183,6 @@ taken into account.</p>
 <li><a class="reference internal" href="#configuration">Configuration</a></li>
 <li><a class="reference internal" href="#usage-in-templates">Usage in Templates</a><ul>
 <li><a class="reference internal" href="#example-of-the-default-basemap-functionality">Example of the default_basemap Functionality</a></li>
-<li><a class="reference internal" href="#limiting-access-to-some-cgxp-plugins-using-functionalities">Limiting Access to some CGXP Plugins using Functionalities</a></li>
-<li><a class="reference internal" href="#using-functionalities-list-to-configure-the-layers-in-the-querybuilder">Using Functionalities list to configure the layers in the QueryBuilder</a></li>
 <li><a class="reference internal" href="#using-functionalities-to-configure-the-basemap-to-use-for-each-theme">Using Functionalities to configure the basemap to use for each theme</a></li>
 </ul>
 </li>

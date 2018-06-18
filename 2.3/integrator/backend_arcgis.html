@@ -34,47 +34,22 @@
             
   <div class="section" id="specific-configuration-for-arcgis">
 <span id="integrator-backend-arcgis"></span><h1>Specific configuration for Arcgis<a class="headerlink" href="#specific-configuration-for-arcgis" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="wfs-namespace">
-<h2>WFS namespace<a class="headerlink" href="#wfs-namespace" title="Permalink to this headline">¶</a></h2>
-<p>In the <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/templates/viewer.js</span></code> file, define the url of the WFS service which will be used
-to get the namespace required to parse the WFS response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cgxp</span><span class="o">.</span><span class="n">WFS_FEATURE_NS</span> <span class="o">=</span> <span class="s2">&quot;http://your.arcgis.server/arcgis/services/SOME/FOLDER/MapServer/WFSServer&quot;</span><span class="p">;</span>
-</pre></div>
-</div>
-</div>
 <div class="section" id="differentiating-wms-and-wfs-services">
 <h2>Differentiating WMS and WFS services<a class="headerlink" href="#differentiating-wms-and-wfs-services" title="Permalink to this headline">¶</a></h2>
 <p>It may be necessary to differentiate the WMS and WFS services url.</p>
-<p>In the <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file, define:</p>
+<p>In the <code class="docutils literal notranslate"><span class="pre">OgcServer</span></code> file, define:</p>
 <div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mapserv_url</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">your</span><span class="o">.</span><span class="n">arcgis</span><span class="o">.</span><span class="n">server</span><span class="o">/</span><span class="n">arcgis</span><span class="o">/</span><span class="n">services</span><span class="o">/</span><span class="n">SOME</span><span class="o">/</span><span class="n">FOLDER</span><span class="o">/</span><span class="n">MapServer</span><span class="o">/</span><span class="n">WMSServer</span>
 <span class="n">mapserv_wfs_url</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">your</span><span class="o">.</span><span class="n">arcgis</span><span class="o">.</span><span class="n">server</span><span class="o">/</span><span class="n">arcgis</span><span class="o">/</span><span class="n">services</span><span class="o">/</span><span class="n">SOME</span><span class="o">/</span><span class="n">FOLDER</span><span class="o">/</span><span class="n">MapServer</span><span class="o">/</span><span class="n">WFSServer</span>
 </pre></div>
 </div>
 <p>These are the urls which respond respectively to the <em>WMS GetCapabilities</em> and
 <em>WFS GetCapabilities</em>.</p>
-<p>If your project has a parent (in a parent/child architecture),
-in the <code class="docutils literal notranslate"><span class="pre">config_child.yaml.mako</span></code> file also define the WFS service separately:</p>
-<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">external_mapserv_wfs_url</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">your</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">arcgis</span><span class="o">.</span><span class="n">server</span><span class="o">/</span><span class="n">arcgis</span><span class="o">/</span><span class="n">services</span><span class="o">/</span><span class="n">SOME</span><span class="o">/</span><span class="n">FOLDER</span><span class="o">/</span><span class="n">MapServer</span><span class="o">/</span><span class="n">WFSServer</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="wfs-geometryname">
-<h2>WFS geometryName<a class="headerlink" href="#wfs-geometryname" title="Permalink to this headline">¶</a></h2>
-<p>Also, the name of the geometry parameter in the WFS response is different in ArcGis.</p>
-<p>in the <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/templates/viewer.js</span></code> file, for the <em>cgxp.plugins.WFSGetFeature</em> or <em>cgxp.plugins.GetFeature</em> plugins, add the
-following parameter in the plugin configuration:</p>
-<blockquote>
-<div>geometryName: ‘SHAPE’</div></blockquote>
 </div>
 <div class="section" id="note">
 <h2>Note<a class="headerlink" href="#note" title="Permalink to this headline">¶</a></h2>
 <p>ArcGis (even 10.2) does not understand “application/vnd.ogc.gml” for <em>INFO_FORMAT</em> in
 a <em>GetFeatureInfo</em> request and returns only a simple XML formatted response
 instead of GML.</p>
-<p>This kind of result can not be parsed correctly by the <em>cgxp.plugins.GetFeature</em> plugin,
-meaning a WMS GetFeatureInfo result will not display correctly.</p>
-<p>It is recommended to use the <em>cgxp.plugins.WFSGetFeature</em> plugin that does <em>only</em> WFS
-queries.</p>
 </div>
 </div>
 
@@ -90,9 +65,7 @@ queries.</p>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Specific configuration for Arcgis</a><ul>
-<li><a class="reference internal" href="#wfs-namespace">WFS namespace</a></li>
 <li><a class="reference internal" href="#differentiating-wms-and-wfs-services">Differentiating WMS and WFS services</a></li>
-<li><a class="reference internal" href="#wfs-geometryname">WFS geometryName</a></li>
 <li><a class="reference internal" href="#note">Note</a></li>
 </ul>
 </li>

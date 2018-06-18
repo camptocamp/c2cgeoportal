@@ -55,7 +55,7 @@ that:</p>
 </ul>
 <p>The tag is by default <code class="docutils literal notranslate"><span class="pre">latest</span></code>, but you can change it by setting the
 <code class="docutils literal notranslate"><span class="pre">DOCKER_TAG</span></code> Makefile variable.</p>
-<p>Edit <code class="docutils literal notranslate"><span class="pre">vars_&lt;package&gt;.yaml</span></code> and add:</p>
+<p>Edit <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> and add:</p>
 <div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dbhost</span><span class="p">:</span> <span class="n">db</span>
 <span class="n">dbhost_slave</span><span class="p">:</span> <span class="n">db</span>
 </pre></div>
@@ -72,9 +72,9 @@ an underscore. Please start at number 20.</p>
 <p>A <code class="docutils literal notranslate"><span class="pre">docker-compose.yml.mako</span></code> file is created as a starting point.</p>
 <p>If you want to host the database on your local machine, you must add a
 <code class="docutils literal notranslate"><span class="pre">dbhost</span></code> and <code class="docutils literal notranslate"><span class="pre">dbhost_slave</span></code> entry pointing to <code class="docutils literal notranslate"><span class="pre">172.17.0.1</span></code> (your host address for Docker
-container) in your <code class="docutils literal notranslate"><span class="pre">vars_&lt;package&gt;.yaml</span></code> file. Then you need to make sure
+container) in your <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file. Then you need to make sure
 Postgres is configured to listen on that interface and accepts authentication.</p>
-<p>If you want to use an external serveur for the database, just put it is address
+<p>If you want to use an external server for the database, just put its address
 in the <code class="docutils literal notranslate"><span class="pre">dbhost</span></code> and <code class="docutils literal notranslate"><span class="pre">dbhost_slave</span></code> entry.</p>
 </div>
 <div class="section" id="run-the-developer-composition">
@@ -113,7 +113,7 @@ directory. That is needed to allow Docker to see those files.</p>
 <div class="section" id="wsgi">
 <h3>WSGI<a class="headerlink" href="#wsgi" title="Permalink to this headline">¶</a></h3>
 <p>To make the DB connection used by your WSGI configurable from the
-composition, you can add this in your <code class="docutils literal notranslate"><span class="pre">vars_&lt;package&gt;.yaml</span></code> file:</p>
+composition, you can add this in your <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file:</p>
 <div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hooks</span><span class="p">:</span>
   <span class="n">after_setup</span><span class="p">:</span> <span class="p">{{</span><span class="n">package</span><span class="p">}}</span><span class="o">.</span><span class="n">after_setup_hook</span>
 </pre></div>

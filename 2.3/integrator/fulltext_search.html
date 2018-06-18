@@ -143,8 +143,6 @@ For instance to specify a <code class="docutils literal notranslate"><span class
 </pre></div>
 </div>
 <p>Query string <code class="docutils literal notranslate"><span class="pre">floor=1</span></code> is then automatically appended to all WMS requests.</p>
-<p>See <a class="reference external" href="http://docs.camptocamp.net/cgxp/2.2/lib/plugins/FloorSlider.html">FloorSlider</a>
-for more information.</p>
 </div>
 <div class="section" id="actions">
 <h2>Actions<a class="headerlink" href="#actions" title="Permalink to this headline">¶</a></h2>
@@ -200,14 +198,14 @@ cares only about how near is your search with the result. <cite>12</cite> is nea
 than <cite>120</cite>.</p>
 <p>Ensure that the extension is created in you database:</p>
 <pre class="highlight"><span class="prompt1">sudo -u postgres psql -c <span class="s2">&quot;CREATE EXTENSION pg_trgm&quot;</span> &lt;db_name&gt;</span>
-</pre><p>Alternatively, you can use the <cite>tsvector</cite> and <cite>ts_rank_cd</cite> to rank your search
+</pre><p>Alternatively, you can use the <code class="docutils literal notranslate"><span class="pre">tsvector</span></code> and <code class="docutils literal notranslate"><span class="pre">ts_rank_cd</span></code> to rank your search
 results (See: <a class="reference external" href="https://www.postgresql.org/docs/9.0/static/textsearch-controls.html">textsearch-controls</a>.
 These methods are useful to handle language-based strings. That means for instance
 that plural nouns are the same as singular nouns. This system only checks if
 your search word exists in the result. That means that if you search <cite>B 12 Zug</cite>,
 <cite>B 120 Zug</cite> has the same weight because the system only see that the <cite>12</cite> exists
 in each case. To use this system, your request must contains the
-parameter <cite>rank_system=ts_rank_cd</cite>.</p>
+parameter <code class="docutils literal notranslate"><span class="pre">rank_system=ts_rank_cd</span></code>.</p>
 </div>
 <div class="section" id="using-the-unaccent-extension">
 <h2>Using the unaccent extension<a class="headerlink" href="#using-the-unaccent-extension" title="Permalink to this headline">¶</a></h2>

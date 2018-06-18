@@ -236,14 +236,14 @@ environment variables:
 Configure the application
 -------------------------
 
-As the integrator you need to edit the ``vars_<package>.yaml`` and
+As the integrator you need to edit the ``vars.yaml`` and
 ``<package>.mk`` files to configure the application.
 
 Do not miss to add your changes to git:
 
 .. prompt:: bash
 
-    git add vars_<package>.yaml
+    git add vars.yaml
     git commit -m "Configure the project"
     git push origin master
 

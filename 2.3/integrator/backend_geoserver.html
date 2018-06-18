@@ -34,21 +34,9 @@
             
   <div class="section" id="specific-configuration-for-geoserver">
 <span id="integrator-backend-geoserver"></span><h1>Specific configuration for GeoServer<a class="headerlink" href="#specific-configuration-for-geoserver" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="viewer-configuration">
-<h2>Viewer configuration<a class="headerlink" href="#viewer-configuration" title="Permalink to this headline">¶</a></h2>
-<p>In the <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/templates/viewer.js</span></code> file, make sure no namespace is added for WFS:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cgxp</span><span class="o">.</span><span class="n">WFS_FEATURE_NS</span> <span class="o">=</span> <span class="n">undefined</span><span class="p">;</span>
-</pre></div>
-</div>
-</div>
 <div class="section" id="application-configuration">
 <h2>Application configuration<a class="headerlink" href="#application-configuration" title="Permalink to this headline">¶</a></h2>
 <p>Add an OGC server in the admin interface for Geoserver (type: geoserver, auth: Geoserver auth).</p>
-<p>In the <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file, define in the <code class="docutils literal notranslate"><span class="pre">vars</span></code> section:</p>
-<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mapserverproxy</span><span class="p">:</span>
-    <span class="n">default_ogc_server</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">ogc</span> <span class="n">server</span> <span class="n">name</span><span class="o">&gt;</span>
-</pre></div>
-</div>
 </div>
 </div>
 
@@ -64,7 +52,6 @@
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Specific configuration for GeoServer</a><ul>
-<li><a class="reference internal" href="#viewer-configuration">Viewer configuration</a></li>
 <li><a class="reference internal" href="#application-configuration">Application configuration</a></li>
 </ul>
 </li>

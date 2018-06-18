@@ -34,26 +34,6 @@
             
   <div class="section" id="specific-configuration-for-qgis-mapserver">
 <span id="integrator-backend-qgis"></span><h1>Specific configuration for QGIS mapserver<a class="headerlink" href="#specific-configuration-for-qgis-mapserver" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="viewer-configuration">
-<h2>Viewer configuration<a class="headerlink" href="#viewer-configuration" title="Permalink to this headline">¶</a></h2>
-<p>In the <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/templates/viewer.js</span></code> file, define the url of the WFS service
-which will be used to get the namespace required to parse the WFS response,
-and indicate that we do not want duplicate layer name above the legend:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cgxp</span><span class="o">.</span><span class="n">WMS_FEATURE_NS</span> <span class="o">=</span> <span class="s2">&quot;http://www.qgis.org/gml&quot;</span><span class="p">;</span>
-<span class="n">cgxp</span><span class="o">.</span><span class="n">LEGEND_INCLUDE_LAYER_NAME</span> <span class="o">=</span> <span class="n">false</span><span class="p">;</span>
-</pre></div>
-</div>
-<p>Change the DPI value to use the same as in the server:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">OpenLayers</span><span class="o">.</span><span class="n">DOTS_PER_INCH</span> <span class="o">=</span> <span class="mi">92</span><span class="p">;</span>
-<span class="o">+</span> <span class="n">OpenLayers</span><span class="o">.</span><span class="n">DOTS_PER_INCH</span> <span class="o">=</span> <span class="mf">2.54</span> <span class="o">/</span> <span class="mi">100</span> <span class="o">/</span> <span class="mf">0.00028</span><span class="p">;</span>
-</pre></div>
-</div>
-<p>In the <code class="docutils literal notranslate"><span class="pre">cgxp_print</span></code> plugin add the following configuration:</p>
-<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">encodeLayer</span><span class="p">:</span> <span class="p">{</span> <span class="n">useNativeAngle</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span> <span class="n">serverType</span><span class="p">:</span> <span class="s1">&#39;qgisserver&#39;</span> <span class="p">}</span>
-<span class="n">encodeExternalLayer</span><span class="p">:</span> <span class="p">{</span> <span class="n">useNativeAngle</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span> <span class="n">serverType</span><span class="p">:</span> <span class="s1">&#39;qgisserver&#39;</span> <span class="p">}</span>
-</pre></div>
-</div>
-</div>
 <div class="section" id="apache-configuration">
 <h2>Apache configuration<a class="headerlink" href="#apache-configuration" title="Permalink to this headline">¶</a></h2>
 <p>In the <code class="docutils literal notranslate"><span class="pre">apache/mapserv.conf.mako</span></code> do the following changes:</p>
@@ -62,20 +42,6 @@ and indicate that we do not want duplicate layer name above the legend:</p>
 
 - SetEnv MS_MAPFILE ${directory}/mapserver/mapserver.map
 + SetEnv QGIS_PROJECT_FILE ${directory}/qgisserver.qgs
-</pre></div>
-</div>
-</div>
-<div class="section" id="application-configuration">
-<h2>Application configuration<a class="headerlink" href="#application-configuration" title="Permalink to this headline">¶</a></h2>
-<p>Add an OGC server in the admin interface for QGIS server (type: qgisserver, auth: Standard auth).</p>
-<p>In the <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file, define:</p>
-<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
-    <span class="o">...</span>
-    <span class="n">mapserverproxy</span><span class="p">:</span>
-        <span class="n">default_ogc_server</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">ogc</span> <span class="n">server</span> <span class="n">name</span><span class="o">&gt;</span>
-<span class="n">update_paths</span><span class="p">:</span>
-<span class="o">...</span>
-<span class="o">-</span> <span class="n">mapserverproxy</span>
 </pre></div>
 </div>
 </div>
@@ -107,9 +73,9 @@ change.</p>
 <h3>Connect to Postgres database<a class="headerlink" href="#connect-to-postgres-database" title="Permalink to this headline">¶</a></h3>
 <p>This section is subject to change when the QGIS plugin is available.</p>
 <p>The way you should connect QGIS to the database is based on an external file
-called. pg_service.conf located in the home directory. The content of this file
-is as follow:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">geomapfish</span><span class="p">]</span>
+called <code class="docutils literal notranslate"><span class="pre">pg_service.conf</span></code> located in the home directory. The content of this file
+is as follows:</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">geomapfish</span><span class="p">]</span>
 <span class="n">host</span><span class="o">=</span><span class="n">localhost</span>
 <span class="n">dbname</span><span class="o">=</span><span class="n">geomapfish</span>
 <span class="n">user</span><span class="o">=</span><span class="n">www</span><span class="o">-</span><span class="n">data</span>
@@ -123,22 +89,18 @@ is as follow:</p>
 Ask to your database administrator the correct parameters. You probably just need
 to change the host parameter.</p>
 <p>You can have several sections. A section start with a name with [] and
-finish with a blanck line. This file should be a unix file.</p>
+finish with a blank line. This file should be a unix file.</p>
 <p>On QGIS desktop, when creating a new PostGIS connection, give it a name and use
-the service name (<cite>geomapfish</cite> in our example) in the connection parameters
+the service name (<code class="docutils literal notranslate"><span class="pre">geomapfish</span></code> in our example) in the connection parameters
 form.</p>
-<p>Copy past this file in the server, change the parameters to fit with the server
+<p>Copy-past this file in the server, change the parameters to fit with the server
 settings and add the variable environment setting in the Apache config:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[..]
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>[..]
 SetEnv QGIS_PROJECT_FILE ${directory}/qgisserver.qgs
 + SetEnv PGSERVICEFILE path/to/pg_service.conf
 </pre></div>
 </div>
 <p>Don’t forget to restart Apache.</p>
-</div>
-<div class="section" id="deploy-notes">
-<h3>Deploy notes<a class="headerlink" href="#deploy-notes" title="Permalink to this headline">¶</a></h3>
-<p>TODO</p>
 </div>
 </div>
 </div>
@@ -155,14 +117,11 @@ SetEnv QGIS_PROJECT_FILE ${directory}/qgisserver.qgs
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Specific configuration for QGIS mapserver</a><ul>
-<li><a class="reference internal" href="#viewer-configuration">Viewer configuration</a></li>
 <li><a class="reference internal" href="#apache-configuration">Apache configuration</a></li>
-<li><a class="reference internal" href="#application-configuration">Application configuration</a></li>
 <li><a class="reference internal" href="#cleanup">Cleanup</a></li>
 <li><a class="reference internal" href="#qgis-desktop-configuration">QGIS Desktop configuration</a><ul>
 <li><a class="reference internal" href="#ows-configuration">OWS configuration</a></li>
 <li><a class="reference internal" href="#connect-to-postgres-database">Connect to Postgres database</a></li>
-<li><a class="reference internal" href="#deploy-notes">Deploy notes</a></li>
 </ul>
 </li>
 </ul>

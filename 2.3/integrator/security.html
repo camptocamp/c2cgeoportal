@@ -138,12 +138,7 @@ in your project <cite>vars_&lt;project&gt;.yaml</cite> configuration file:</p>
 <h2>Reset password<a class="headerlink" href="#reset-password" title="Permalink to this headline">¶</a></h2>
 <p>When a user has forgotten his/her password, a new one may be sent by email if some additional
 GeoMapFish configuration is provided.</p>
-<p>In the <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/template/*.js</span></code> files, in the <code class="docutils literal notranslate"><span class="pre">cgxp_login</span></code> plugin you should add the
-service URL with the following configuration:</p>
-<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">loginResetPasswordURL</span><span class="p">:</span> <span class="s2">&quot;${request.route_url(&#39;loginresetpassword&#39;) | n}&quot;</span><span class="p">,</span>
-</pre></div>
-</div>
-<p>And to generate the required e-mail, in the <code class="docutils literal notranslate"><span class="pre">vars_&lt;package&gt;.yaml</span></code> file, add the following configuration:</p>
+<p>And to generate the required e-mail, in the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file, add the following configuration:</p>
 <div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># SMTP configuration could be already there if needed by other feature</span>
 <span class="n">smtp</span><span class="p">:</span>
     <span class="n">host</span><span class="p">:</span> <span class="n">smtp</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="mi">465</span>
