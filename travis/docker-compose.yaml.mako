@@ -17,7 +17,7 @@ ${service_defaults('db', 5432)}\
 ${service_defaults('external-db', 5432)}\
 
   print:
-    image: camptocamp/mapfish_print:3.12.1
+    image: camptocamp/mapfish_print:3.14
     volumes_from:
       - config:ro
 ${service_defaults('print', 8080)}\

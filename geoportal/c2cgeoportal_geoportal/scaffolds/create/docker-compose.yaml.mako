@@ -11,7 +11,7 @@ services:
 ${service_defaults('config')}\
 
   print:
-    image: camptocamp/mapfish_print:3.12.1
+    image: camptocamp/mapfish_print:3.14
     volumes_from:
       - config:ro
 ${service_defaults('print', 8080)}\
