@@ -22,7 +22,6 @@ setup(
             'main = {{package}}_geoportal:main',
         ],
         'console_scripts': [
-            'create_db = {{package}}_geoportal.scripts.create_db:main',
         ],
     },
 )
