@@ -269,13 +269,24 @@ vars:
     code_destination: /var/www/c2cgeoportal_mapfish/private/c2cgeoportal
 
 update_paths:
-  - admin_interface
+  - admin_interface.available_functionalities
+  - admin_interface.available_metadata
+  - admin_interface.functionalities
+  - admin_interface.available_in_templates
   - authorized_referers
   - authtkt
   - check_collector.disabled
   - check_collector.hosts
   - checker.fulltextsearch
+  - checker.lang
+  - checker.phantomjs
   - checker.print
+  - checker.routes
+  - checker.themes
+  - docker_services.config.environment
+  - docker_services.db.environment
+  - docker_services.geoportal.environment
+  - docker_services.tilecloudchain.environment
   - fulltextsearch
   - interfaces_theme
   - shortener
