@@ -7,15 +7,11 @@ the application according to the user's permissions.
 A functionality may be associated to users through different ways:
 
 1. Functionalities for anonymous users are defined through the
-   ``functionalities:anonymous`` variable in the ``vars_<project>.yaml``
-   configuration file.
+   ``functionalities:anonymous`` variable in the ``vars_<project>.yaml`` configuration file.
 2. Functionalities for authenticated users are defined through the
-   ``functionalities:registered`` variable in the ``vars_<project>.yaml``
-   configuration file.
-3. Functionalities for specific roles are defined in the database through the
-   administration interface.
-4. Functionalities for specific users are defined in the database through the
-   administration interface.
+   ``functionalities:registered`` variable in the ``vars_<project>.yaml`` configuration file.
+3. Functionalities for specific roles are defined in the database through the administration interface.
+4. Functionalities for specific users are defined in the database through the administration interface.
 
 Each level overrides the previous ones in the same order as indicated above.
 For example, if the user is authenticated and has associated functionalities in
@@ -154,107 +150,12 @@ project's ``viewer.js`` template:
         defaultBaseLayerRef: "${functionality['default_basemap'][0] | n}"
     }
 
-Limiting Access to some CGXP Plugins using Functionalities
-..........................................................
-
-Functionalities may also be used to enable some CGXP plugins only for users
-with specific roles.
-
-To do so, add ``authorized_plugins`` to the list of functionalities that must be
-available in the administration interface and to the list of functionalities
-provided to the templates. Set also ``authorized_plugins`` as an empty list for
-anonymous users. In ``vars_<project>.yaml``:
-
-.. code:: yaml
-
-    admin_interface:
-        # ...
-        available_functionalities:
-            - default_basemap
-            - print_template
-            - mapserver_substitution
-            - authorized_plugins
-
-    functionalities:
-        # ...
-        anonymous:
-            # ...
-            default_basemap: <some_basemap>
-            authorized_plugins: []
-
-        available_in_templates: [default_basemap, authorized_plugins]
-
-Then you may test in your project's ``viewer.js`` template if the current user
-has been granted access to some protected plugins:
-
-.. code:: javascript
-
-    app = new gxp.Viewer({
-        // ...
-        tools: [{
-            //...
-        },
-        % if '<some_protected_plugin>' in functionality['authorized_plugins']:
-        {
-            ptype: ...
-            //...
-        },
-        % endif
-        {
-            //...
-        }]
-    });
-
-Using Functionalities list to configure the layers in the QueryBuilder
-......................................................................
-
-Add the new ``querybuilder_layer`` functionality to the list of
-``available_functionalities`` in your ``vars_<project>.yaml`` file:
-
-.. code:: yaml
-
-    admin_interface:
-        available_functionalities:
-            ...
-            - querybuilder_layer
-
-Make sure that the ``dumps`` function is imported in
-``<package>/templates/viewer.js`` using:
-
-.. code:: python
-
-   <%
-   from json import dumps
-   %>
-
-And configure your plugin like that:
-
-.. code:: javascript
-
-    {
-        ptype: "cgxp_querier",
-        featureTypes: ${dumps(functionality['querybuilder_layer']) | n},
-        ...
-    }
-
-This way you may assign more than one layer per role using functionalities.
 
 Using Functionalities to configure the basemap to use for each theme
 ....................................................................
 
 A default basemap may be automatically loaded when the user selects a given
 theme.
-
-To do so make sure that the ``MapOpacitySlider`` plugin has a reference to the
-layertree plugin. For instance:
-
-.. code:: javascript
-
-    {
-        ptype: "cgxp_mapopacityslider",
-        layerTreeId: "layertree",
-        defaultBaseLayerRef: "${functionality['default_basemap'][0] | n}"
-    }
 
 Then, in the administration interface, if not available yet, define a
 ``default_basemap`` functionality containing the basemap reference. Edit the
