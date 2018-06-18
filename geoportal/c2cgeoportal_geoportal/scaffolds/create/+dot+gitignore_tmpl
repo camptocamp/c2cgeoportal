@@ -16,7 +16,8 @@ __pycache__/
 /print/print-apps/{{package}}/config.yaml.mako
 /mapserver/mapserver.map.tmpl
 /mapserver/*.map.tmpl
-/mapserver/tinyows.xml
+/mapserver/tinyows.xml.mako
+/mapserver/tinyows.xml.tmpl
 /geoportal/jsbuild/app.cfg
 /geoportal/Dockerfile
 /geoportal/development.ini

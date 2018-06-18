@@ -24,7 +24,6 @@ default_project_file:
   exclude:
     - geoportal/{{package}}_geoportal/static-ngeo/components/README\.md
     - geoportal/{{package}}_geoportal/static-ngeo/js/{{package}}module\.js
-    - mapserver/tinyows\.xml\.mako
     - mapserver/demo\.map\.tmpl\.mako
 
 files_to_remove:
@@ -212,4 +211,7 @@ files_to_move:
     version: 2.3
   - from: webpack.apps.js.mako
     to: geoportal/webpack.apps.js.mako
+    version: 2.3
+  - from: mapserver/tinyows.xml.mako
+    to: mapserver/tinyows.xml.tmpl.mako
     version: 2.3

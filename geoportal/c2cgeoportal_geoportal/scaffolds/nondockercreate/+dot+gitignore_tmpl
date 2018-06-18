@@ -31,6 +31,7 @@ __pycache__/
 /mapserver/*.map
 /mapserver/*.map.tmpl.mako
 /mapserver/tinyows.xml
+/mapserver/tinyows.xml.tmpl.mako
 /tilegeneration/config.yaml
 /tilegeneration/config.yaml.tmpl.mako
 /geoportal/jsbuild/app.cfg

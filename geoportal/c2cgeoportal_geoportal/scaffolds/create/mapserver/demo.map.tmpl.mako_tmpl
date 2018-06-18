@@ -1,9 +1,5 @@
 # This file is used to render the examples layers, he can be deleted.
 
-<%!
-from c2cgeoportal_geoportal.lib import confd_env
-%>
-
 # Europe Layer
 LAYER
   NAME "borders"
@@ -15,7 +11,7 @@ LAYER
   EXTENT -31 27 45 71 # Useful for better performance but not mandatory
   CONNECTIONTYPE postgis
   PROCESSING "CLOSE_CONNECTION=DEFER" # For performance
-  CONNECTION "${mapserver_connection | confd_env}"
+  CONNECTION "${mapserver_connection}"
   DATA "geom FROM (SELECT geo.* FROM data.europe_borders as geo) as foo using unique gid using srid=4326"
   PROJECTION
     "init=epsg:4326"

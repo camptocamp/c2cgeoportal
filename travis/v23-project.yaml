@@ -9,6 +9,8 @@ unmanaged_files:
   - README\.rst
   - mapserver/mapserver\.map\.mako
   - mapserver/mapserver\.map\.tmpl\.mako
+  - mapserver/tinyows\.xml\.mako
+  - mapserver/tinyows\.xml\.tmpl\.mako
   - tilegeneration/config\.yaml\.mako
   - tilegeneration/config\.yaml\.tmpl\.mako
   - geoportal/testgeomapfish_geoportal/static-ngeo/js/apps/desktop\.html\.ejs
