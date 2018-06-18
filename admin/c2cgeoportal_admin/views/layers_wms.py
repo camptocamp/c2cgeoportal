@@ -59,7 +59,7 @@ class LayerWmsViews(DimensionLayerViews):
         return super().index()
 
     @view_config(route_name='c2cgeoform_grid',
-                 renderer='json')
+                 renderer='fast_json')
     def grid(self):
         return super().grid()
 
@@ -96,7 +96,7 @@ class LayerWmsViews(DimensionLayerViews):
 
     @view_config(route_name='c2cgeoform_item',
                  request_method='DELETE',
-                 renderer='json')
+                 renderer='fast_json')
     def delete(self):
         return super().delete()
 
@@ -108,7 +108,7 @@ class LayerWmsViews(DimensionLayerViews):
 
     @view_config(route_name='convert_to_wmts',
                  request_method='POST',
-                 renderer='json')
+                 renderer='fast_json')
     def convert_to_wmts(self):
         src = self._get_object()
         dbsession = self._request.dbsession

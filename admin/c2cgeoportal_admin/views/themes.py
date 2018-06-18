@@ -74,7 +74,7 @@ class ThemeViews(TreeItemViews):
         return super().index()
 
     @view_config(route_name='c2cgeoform_grid',
-                 renderer='json')
+                 renderer='fast_json')
     def grid(self):
         return super().grid()
 
@@ -92,7 +92,7 @@ class ThemeViews(TreeItemViews):
 
     @view_config(route_name='c2cgeoform_item',
                  request_method='DELETE',
-                 renderer='json')
+                 renderer='fast_json')
     def delete(self):
         return super().delete()
 
