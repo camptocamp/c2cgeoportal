@@ -39,6 +39,9 @@ ${service_defaults('mapcache', 80)}\
 
   memcached:
     image: memcached:1.5
+    command:
+      - memcached
+      - --memory-limit=512
 ${service_defaults('memcached', 11211)}\
 
   redis:
