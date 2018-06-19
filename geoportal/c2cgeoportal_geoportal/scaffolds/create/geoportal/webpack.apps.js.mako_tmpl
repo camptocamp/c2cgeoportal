@@ -55,7 +55,7 @@ const rules = [
   projectRule,
 ];
 
-const noDevServer = process.env['NO_DEV_SERVER'] != 'FALSE';
+const noDevServer = process.env['NO_DEV_SERVER'] == 'TRUE';
 devServer = dev && !noDevServer;
 
 module.exports = {

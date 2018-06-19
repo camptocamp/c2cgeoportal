@@ -35,7 +35,7 @@ vars:
         PGUSER: www-data
         PGPASSWORD: www-data
         PGDATABASE: geomapfish
-        GEOPORTAL_INTERNAL_URL: 'http://geoportal/'
+        GEOPORTAL_INTERNAL_URL: http://geoportal/
         MAPCACHE_URL: http://mapcache/mapcache/
         MAPSERVER_URL: http://mapserver/
         MEMCACHED_HOST: memcached
@@ -65,6 +65,7 @@ vars:
         TINYOWS_URL: http://tinyows/
         MAPSERVER_URL: http://mapserver/
         PRINT_URL: http://print:8080/print/
+        DEVSERVER_URL: http://webpack-dev-server:8080${entry_point}
         REDIS_HOST: redis
         REDIS_PORT: 6379
         C2C_REDIS_URL: redis://redis:6379
@@ -570,7 +571,7 @@ runtime_environment:
   - name: MAPCACHE_URL
     default: http://mapcache/
   - name: DEVSERVER_URL
-    default: http://webpack-dev-server:8080
+    default: http://webpack-dev-server:8080/
   - name: REDIS_HOST
     default: redis
   - name: REDIS_PORT

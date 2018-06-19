@@ -56,6 +56,7 @@ from c2cwsgiutils.health_check import HealthCheck
 from sqlalchemy.orm import Session
 
 import c2cgeoportal_commons.models
+import c2cgeoportal_geoportal.views
 from c2cgeoportal_geoportal.lib import dbreflection, caching, \
     C2CPregenerator, MultiDomainStaticURLInfo, checker, check_collector
 
@@ -234,11 +235,13 @@ def add_static_view_ngeo(config):  # pragma: no cover
 
 
 def add_admin_interface(config):
-    if config.get_settings().get("enable_admin_interface", False):
+    if config.get_settings().get('enable_admin_interface', False):
         config.add_request_method(
             # pylint: disable=not-callable
             lambda request: c2cgeoportal_commons.models.DBSession(), 'dbsession', reify=True
         )
+        config.add_view(c2cgeoportal_geoportal.views.add_ending_slash, 'add_ending_slash')
+        config.add_route('add_ending_slash', '/admin', request_method='GET')
         config.include('c2cgeoportal_admin', route_prefix='/admin')
 
 
@@ -493,21 +496,12 @@ def call_hook(settings, name, *args, **kwargs):
     function(*args, **kwargs)
 
 
-def notfound(request):
-    return {
-        "message": request.path_info,
-        "status": 404,
-    }
-
-
 def includeme(config):
     """
     This function returns a Pyramid WSGI application.
     """
 
     settings = config.get_settings()
-
-    config.add_notfound_view(notfound, append_slash=True, renderer='fast_json', http_cache=0)
 
     config.include("c2cgeoportal_commons")
 
@@ -735,7 +729,11 @@ def includeme(config):
     config.add_route("dev", "/dev/*path", request_method="GET")
 
     # Scan view decorator for adding routes
-    config.scan(ignore=["c2cgeoportal_geoportal.scripts", "c2cgeoportal_geoportal.wsgi_app"])
+    config.scan(ignore=[
+        "c2cgeoportal_geoportal.lib",
+        "c2cgeoportal_geoportal.scaffolds",
+        "c2cgeoportal_geoportal.scripts"
+    ])
 
     if "subdomains" in settings:  # pragma: no cover
         config.registry.registerUtility(

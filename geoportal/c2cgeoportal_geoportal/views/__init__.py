@@ -29,10 +29,15 @@
 
 import logging
 from pyramid.view import view_config
+from pyramid.httpexceptions import HTTPFound
 
 from c2cgeoportal_geoportal.lib.caching import set_common_headers, NO_CACHE
 
 log = logging.getLogger(__name__)
+
+
+def add_ending_slash(request):
+    return HTTPFound(location=request.path + '/')
 
 
 @view_config(context=Exception, renderer="json", http_cache=0)

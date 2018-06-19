@@ -181,3 +181,11 @@ endif
 	mkdir --parent admin
 	cat npm-packages | xargs npm install --prefix ./admin
 	touch $@
+
+.PHONY: serve-%
+serve-%:
+	rm -f geoportal/node_modules
+	ln -s ../admin/node_modules geoportal
+	(cd geoportal; INTERFACE=$* NODE_ENV=development node_modules/.bin/webpack-dev-server --port=$(DEV_SERVER_PORT) -d --watch --progress \
+		--public=$(VISIBLE_WEB_HOST):$(VISIBLE_WEB_PORT) --disable-host-check --mode=development)
+	rm geoportal/node_modules

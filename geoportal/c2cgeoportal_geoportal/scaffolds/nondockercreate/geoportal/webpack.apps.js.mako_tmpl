@@ -52,11 +52,13 @@ const rules = [
   projectRule
 ];
 
+const noDevServer = process.env['NO_DEV_SERVER'] == 'TRUE';
+devServer = dev && !noDevServer;
 
 module.exports = {
   output: {
     path: path.resolve(__dirname, '{{package}}_geoportal/static-ngeo/build/'),
-    publicPath: dev ? '/${instanceid}/dev/' : '/${instanceid}/wsgi/static-ngeo/UNUSED_CACHE_VERSION/build/'
+    publicPath: devServer ? '/${instanceid}/wsgi/dev/' : '/${instanceid}/wsgi/static-ngeo/UNUSED_CACHE_VERSION/build/'
   },
   entry: entry,
   module: {

@@ -1,6 +1,7 @@
 # This file override and improve some rules for CONST_Makefile for non Docker production environment
 
 DEPLOY ?= TRUE
+DOCKER ?= FALSE
 ENVIRONMENT ?= INSTANCE_ID
 CONFIG_VARS += instanceid
 MODWSGI_USER ?= www-data
