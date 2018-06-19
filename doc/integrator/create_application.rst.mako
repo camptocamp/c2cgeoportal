@@ -45,8 +45,9 @@ To get ``c2cgeoportal`` you first need to get the related docker image:
 
 .. prompt:: bash
 
-    docker pull camptocamp/geomapfish-build <release|version>
-    wget https://raw.githubusercontent.com/camptocamp/c2cgeoportal/master/docker-run
+   docker pull camptocamp/geomapfish-build:<release|version>
+   wget https://raw.githubusercontent.com/camptocamp/c2cgeoportal/${git_branch}/docker-run
+   chmod +x docker-run
 
 List existing skeletons
 -----------------------
@@ -58,7 +59,7 @@ c2cgeoportal application you want to create the new application from:
 
 .. prompt:: bash
 
-    ./docker-run pcreate -l
+    ./docker-run --image=camptocamp/geomapfish-build pcreate -l
 
 You should at least see the c2cgeoportal skeletons:
 
@@ -80,7 +81,8 @@ To create the application first apply the ``c2cgeoportal_create`` skeleton:
 
 .. prompt:: bash
 
-    ./docker-run pcreate -s c2cgeoportal_create <project>
+   ./docker-run -ti --image=camptocamp/geomapfish-build \
+       pcreate -s c2cgeoportal_create <project>
 
 .. note::
 
@@ -97,8 +99,9 @@ it later.
 
      .. prompt:: bash
 
-         SRID=21781 EXTENT="420000 30000 900000 350000" \
-            ./docker-run pcreate -s c2cgeoportal_create --package-name <package> <project>
+        ./docker-run -ti --image=camptocamp/geomapfish-build \
+            --env=SRID=21781 --env=EXTENT="420000,30000,900000,350000"
+            pcreate -s c2cgeoportal_create --package-name <package> <project>
 
 This will create a directory named ``<project>`` that will be next to the
 ``c2cgeoportal`` directory, or to the directory of the application you are
@@ -108,7 +111,8 @@ Now apply the ``c2cgeoportal_update`` skeleton:
 
 .. prompt:: bash
 
-    SRID=21781 ./docker-run pcreate -s c2cgeoportal_update --package-name <package> <project>
+   ./docker-run -ti --env=SRID=21781 --image=camptocamp/geomapfish-build \
+       pcreate -s c2cgeoportal_update --package-name <package> <project>
 
 .. note::
 
@@ -324,10 +328,12 @@ The result is also a file without the .mako.
 
 **Syntax**
 
-In ``.mako`` files, the variable replacement syntax is as follows::
+In ``.mako`` files, the variable replacement syntax is as follows:
 
-  ${<variablename>}
+.. code:: mako
+
+  ${'$'}{<variablename>}
 
 for example:
 
-* ``${directory}``
+* ``${'$'}{directory}``

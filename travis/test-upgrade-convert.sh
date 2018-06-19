@@ -2,11 +2,13 @@
 
 WORKSPACE=$2
 
+DOCKER_RUN_ARGS="--env=SRID=21781 --env=APACHE_VHOST=test --env=EXTENT=489246.36,78873.44,837119.76,296543.14 --image=camptocamp/geomapfish-build"
+PCREATE_ARGS="--ignore-conflicting-name --overwrite --package-name testgeomapfish"
+
 export NODE_ENV=development
 
 function pcreate {
-    ./docker-run --image=camptocamp/geomapfish-build $3 --share $1 pcreate --scaffold=$2 $1/testgeomapfish \
-        --overwrite --ignore-conflicting-name --package-name testgeomapfish
+    ./docker-run ${DOCKER_RUN_ARGS} $3 --share=$1 pcreate --scaffold=$2 $1/testgeomapfish ${PCREATE_ARGS}
 }
 
 function only_create {
@@ -72,14 +74,12 @@ then
         ${WORKSPACE}/v220-todocker ${WORKSPACE}/v220-tonondocker \
         ${WORKSPACE}/testgeomapfish
     rm --recursive --force $(find c2cgeoportal/scaffolds -name __pycache__)
-    export SRID=21781 APACHE_VHOST=test EXTENT=489246.36,78873.44,837119.76,296543.14
     create ${WORKSPACE}/docker
     create ${WORKSPACE}/dockerref
     createnondocker ${WORKSPACE}/nondocker
     createnondocker ${WORKSPACE}/nondockerref
     create ${WORKSPACE}/v230-docker --version=2.3.0
     createnondocker ${WORKSPACE}/v230-nondocker --version=2.3.0
-    unset SRID APACHE_VHOST EXTENT
     mkdir --parent ${WORKSPACE}/v220
     ./docker-run --share=${WORKSPACE} tar --extract  --bzip2 --file=travis/v220.tar.bz2  --directory=${WORKSPACE}/v220
     createv220 ${WORKSPACE}/v220-todocker

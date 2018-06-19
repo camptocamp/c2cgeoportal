@@ -690,14 +690,14 @@ docker-compose-build.yaml: /build/requirements.timestamp
 docker-build-config: $(shell docker-required --path .) \
 		$(PRINT_CONFIG_FILE) \
 		$(MAPCACHE_FILE)
-	docker build -t $(DOCKER_BASE)-config:$(DOCKER_TAG) .
+	docker build --tag=$(DOCKER_BASE)-config:$(DOCKER_TAG) .
 
 .PHONY: docker-build-geoportal
 docker-build-geoportal: $(shell docker-required --path geoportal) \
 		$(WEB_RULE) \
 		$(addprefix geoportal/$(PACKAGE)_geoportal/locale/, $(addsuffix /LC_MESSAGES/$(PACKAGE)_geoportal-$(L10N_CLIENT_POSTFIX).mo, $(LANGUAGES))) \
 		geoportal/config.yaml
-	docker build --tag=$(DOCKER_BASE)-geoportal:$(DOCKER_TAG) --build-arg="GIT_HASH=$(GIT_HASH)" geoportal
+	docker build --tag=$(DOCKER_BASE)-geoportal:$(DOCKER_TAG) --build-arg=GIT_HASH=$(GIT_HASH) geoportal
 ifdef CGXP_INTERFACES
 docker-build-geoportal: $(addprefix geoportal/$(PACKAGE)_geoportal/locale/, $(addsuffix /LC_MESSAGES/$(PACKAGE)_geoportal-$(L10N_SERVER_POSTFIX).mo, $(LANGUAGES)))
 endif
