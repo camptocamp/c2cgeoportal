@@ -499,6 +499,8 @@ class C2cUpgradeTool:
 
     def is_managed(self, file_):
         default_project_file = self.get_upgrade('default_project_file')
+
+        # managed means managed by the application owner, not the c2cupgrade
         managed = False
         for pattern in default_project_file['include']:
             if re.match(pattern + '$', file_):
@@ -512,6 +514,13 @@ class C2cUpgradeTool:
                     print('managed', file_, pattern)
                     managed = False
                     break
+
+        if not managed and not os.path.exists(file_):
+            for pattern in self.get_upgrade('extra'):
+                if re.match(pattern + '$', file_):
+                    print("File '{}' is an extra by migration config pattern '{}'.".format(file_, pattern))
+                    managed = True
+
         if not managed:
             for pattern in self.project['managed_files']:
                 if re.match(pattern + '$', file_):
@@ -578,17 +587,29 @@ class C2cUpgradeTool:
                 "file (listed in the `changelog.diff` file)."
             )
 
+    def get_modified(self, status_path):
+        status = check_output(["git", "status", "--short", status_path]).decode("utf-8")
+        status = [s for s in status.split("\n") if len(s) > 3]
+        status = [s[3:] for s in status if s[:3].strip() == "M"]
+        for pattern in self.get_upgrade('no_diff'):
+            matcher = re.compile('CONST_create_template/{}$'.format(pattern))
+            status = [s for s in status if not matcher.match(s)]
+        status = [s for s in status if os.path.exists(s[len("CONST_create_template/"):])]
+        status = [s for s in status if not filecmp.cmp(s, s[len("CONST_create_template/"):])]
+        return status
+
     @Step(9)
     def step9(self, step):
         if os.path.isfile("changelog.diff"):
             os.unlink("changelog.diff")
 
+        status = self.get_modified("CONST_create_template/geoportal/{}_geoportal/static-ngeo".format(
+            self.project["project_package"]
+        ))
+
         with open("ngeo.diff", "w") as diff_file:
-            check_call([
-                "git", "diff", "--", "--staged",
-                "CONST_create_template/geoportal/{}_geoportal/static-ngeo".format(
-                    self.project["project_package"]),
-            ], stdout=diff_file)
+            if len(status) != 0:
+                check_call(["git", "diff", "--staged", "--"] + status, stdout=diff_file)
 
         if os.path.getsize("ngeo.diff") == 0:
             self.run_step(step + 1)
@@ -604,28 +625,20 @@ class C2cUpgradeTool:
         if os.path.isfile("ngeo.diff"):
             os.unlink("ngeo.diff")
 
-        status = check_output(["git", "status", "--short", "CONST_create_template"]).decode("utf-8")
-        status = [s for s in status.split("\n") if len(s) > 3]
-        status = [s[3:] for s in status if s[:3].strip() == "M"]
+        status = self.get_modified("CONST_create_template")
         status = [s for s in status if not s.startswith(
-            "CONST_create_template/{}/static-ngeo/".format(self.project["project_package"]),
+            "CONST_create_template/geoportal/{}_geoportal/static-ngeo/".format(
+                self.project["project_package"]
+            ),
         )]
-        matcher = re.compile(r"CONST_create_template.*/CONST_.+")
-        status = [s for s in status if not matcher.match(s)]
-        matcher = re.compile(r".*\.po$")
-        status = [s for s in status if not matcher.match(s)]
-        status = [
-            s for s in status if
-            not os.path.exists(s[len("CONST_create_template/"):]) or
-            not filecmp.cmp(s, s[len("CONST_create_template/"):])
-        ]
 
         self.options.use_makefile = True
         self.options.makefile = self.options.new_makefile
 
         if len(status) > 0:
             with open("create.diff", "w") as diff_file:
-                check_call(["git", "diff", "--staged", "--"] + status, stdout=diff_file)
+                if len(status) != 0:
+                    check_call(["git", "diff", "--staged", "--"] + status, stdout=diff_file)
 
             if os.path.getsize("create.diff") == 0:
                 self.run_step(step + 1)

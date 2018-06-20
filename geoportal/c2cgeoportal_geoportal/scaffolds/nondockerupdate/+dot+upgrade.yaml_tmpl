@@ -25,6 +25,20 @@ default_project_file:
     - geoportal/{{package}}_geoportal/static-ngeo/js/{{package}}module\.js
     - mapserver/demo\.map\.mako
 
+no_diff:
+  - .*\.po
+  - CONST_.+
+  - .*/CONST_.+
+extra:
+  - geoportal/demo_geoportal/static-ngeo/js/apps/desktop_alt\.html\.ejs
+  - geoportal/demo_geoportal/static-ngeo/js/apps/mobile_alt\.html\.ejs
+  - geoportal/demo_geoportal/static-ngeo/js/apps/oeview\.html\.ejs
+  - geoportal/demo_geoportal/static-ngeo/js/apps/oeedit\.html\.ejs
+  - geoportal/demo_geoportal/static-ngeo/js/apps/Controllerdesktop_alt\.js
+  - geoportal/demo_geoportal/static-ngeo/js/apps/Controllermobile_alt\.js
+  - geoportal/demo_geoportal/static-ngeo/js/apps/Controlleroeview\.js
+  - geoportal/demo_geoportal/static-ngeo/js/apps/Controlleroeedit\.js
+
 files_to_remove:
   - file: .build
     version: 2.3
