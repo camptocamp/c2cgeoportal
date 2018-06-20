@@ -34,8 +34,8 @@
             
   <div class="section" id="create-a-new-application">
 <span id="integrator-create-application"></span><h1>Create a new application<a class="headerlink" href="#create-a-new-application" title="Permalink to this headline">¶</a></h1>
-<p>Creating a new c2cgeoportal application is done by applying two Paste skeletons
-(a.k.a. templates and scaffolds). These skeletons are provided by the
+<p>Creating a new c2cgeoportal application is done by applying two Paste scaffolds
+(a.k.a. templates and scaffolds). These scaffolds are provided by the
 <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> package. So to be able to create a c2cgeoportal application
 the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> package must be installed.</p>
 <p>If you already have a c2cgeoportal application installed, and if that
@@ -44,16 +44,16 @@ to install c2cgeoportal again. Instead, you can use the version of c2cgeoportal
 that is already alongside the existing c2cgeoportal application.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Some c2cgeoportal applications provide their own skeletons. For example
-a <em>parent</em> application may provide a skeleton for creating <em>child</em>
-applications. In that case, the c2cgeoportal skeletons, as well as the
-application skeletons, should be applied.</p>
+<p class="last">Some c2cgeoportal applications provide their own scaffolds. For example
+a <em>parent</em> application may provide a scaffold for creating <em>child</em>
+applications. In that case, the c2cgeoportal scaffolds, as well as the
+application scaffolds, should be applied.</p>
 </div>
 <div class="section" id="project-structure">
 <h2>Project structure<a class="headerlink" href="#project-structure" title="Permalink to this headline">¶</a></h2>
 <p>In the simple case the root directory of the application is the directory
-created by the c2cgeoportal skeletons (the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_create</span></code> and
-<code class="docutils literal notranslate"><span class="pre">c2cgeoportal_update</span></code> skeletons).</p>
+created by the c2cgeoportal scaffolds (the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_create</span></code> and
+<code class="docutils literal notranslate"><span class="pre">c2cgeoportal_update</span></code> scaffolds).</p>
 </div>
 <div class="section" id="install-c2cgeoportal">
 <h2>Install c2cgeoportal<a class="headerlink" href="#install-c2cgeoportal" title="Permalink to this headline">¶</a></h2>
@@ -71,19 +71,22 @@ do not have the required permissions. Please contact Camptocamp in that case.</p
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">docker pull camptocamp/geomapfish-build &lt;release<span class="p">|</span>version&gt;</span>
-<span class="prompt1">wget https://raw.githubusercontent.com/camptocamp/c2cgeoportal/master/docker-run</span>
+</style><span class="prompt1">docker pull camptocamp/geomapfish-build:&lt;release<span class="p">|</span>version&gt;</span>
+<span class="prompt1">wget https://raw.githubusercontent.com/camptocamp/c2cgeoportal/HEAD/docker-run</span>
+<span class="prompt1">chmod +x docker-run</span>
 </pre></div>
-<div class="section" id="list-existing-skeletons">
-<h2>List existing skeletons<a class="headerlink" href="#list-existing-skeletons" title="Permalink to this headline">¶</a></h2>
-<p>To list the available skeletons/templates use the following command, either
+<div class="section" id="list-existing-scaffolds">
+<h2>List existing scaffolds<a class="headerlink" href="#list-existing-scaffolds" title="Permalink to this headline">¶</a></h2>
+<p>To list the available scaffolds use the following command, either
 from the root directory of c2cgeoportal (if you have followed the instructions
 from the previous section), or from the root directory of the existing
 c2cgeoportal application you want to create the new application from:</p>
-<pre class="highlight"><span class="prompt1">./docker-run pcreate -l</span>
-</pre><p>You should at least see the c2cgeoportal skeletons:</p>
+<pre class="highlight"><span class="prompt1">./docker-run --image<span class="o">=</span>camptocamp/geomapfish-build pcreate -l</span>
+</pre><p>You should at least see the c2cgeoportal scaffolds:</p>
 <ul class="simple">
 <li>c2cgeoportal_create</li>
+<li>c2cgeoportal_nondockercreate</li>
+<li>c2cgeoportal_nondockerupdate</li>
 <li>c2cgeoportal_update</li>
 </ul>
 </div>
@@ -94,8 +97,10 @@ c2cgeoportal application you want to create the new application from:</p>
 <p>Normally the project name should be the same name as the Git repository name.</p>
 <p>The package name should not contain an underscore (<code class="docutils literal notranslate"><span class="pre">_</span></code>) because of an
 issue with Pip.</p>
-<p>To create the application first apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_create</span></code> skeleton:</p>
-<pre class="highlight"><span class="prompt1">./docker-run pcreate -s c2cgeoportal_create &lt;project&gt;</span>
+<p>To create the application first apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_create</span></code> scaffold:</p>
+<pre class="highlight"><span class="prompt1">./docker-run -ti --image<span class="o">=</span>camptocamp/geomapfish-build        pcreate -s c2cgeoportal_create &lt;project&gt;</span>
+</pre><p>And for the non Docker version, apply also the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_nondockercreate</span></code> scaffold:</p>
+<pre class="highlight"><span class="prompt1">./docker-run -ti --image<span class="o">=</span>camptocamp/geomapfish-build        pcreate -s c2cgeoportal_nondockercreate &lt;project&gt;</span>
 </pre><div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Do not add any ‘/’ after the project name.</p>
@@ -108,21 +113,23 @@ it later.</p>
 <p>You can define these information directly in the command line using
 parameters:</p>
 <blockquote class="last">
-<div><pre class="highlight"><span class="prompt1"><span class="nv">SRID</span><span class="o">=</span><span class="m">21781</span> <span class="nv">EXTENT</span><span class="o">=</span><span class="s2">&quot;420000 30000 900000 350000&quot;</span> <span class="se">\</span>
-   ./docker-run pcreate -s c2cgeoportal_create --package-name &lt;package&gt; &lt;project&gt;</span>
+<div><pre class="highlight"><span class="prompt1">./docker-run -ti --image<span class="o">=</span>camptocamp/geomapfish-build             --env<span class="o">=</span><span class="nv">SRID</span><span class="o">=</span><span class="m">21781</span> --env<span class="o">=</span><span class="nv">EXTENT</span><span class="o">=</span><span class="s2">&quot;420000,30000,900000,350000&quot;</span></span>
+<span class="prompt1">    pcreate -s c2cgeoportal_create --package-name &lt;package&gt; &lt;project&gt;</span>
 </pre></div></blockquote>
 </div>
 <p>This will create a directory named <code class="docutils literal notranslate"><span class="pre">&lt;project&gt;</span></code> that will be next to the
 <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> directory, or to the directory of the application you are
 creating this application from.</p>
-<p>Now apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_update</span></code> skeleton:</p>
-<pre class="highlight"><span class="prompt1"><span class="nv">SRID</span><span class="o">=</span><span class="m">21781</span> ./docker-run pcreate -s c2cgeoportal_update --package-name &lt;package&gt; &lt;project&gt;</span>
+<p>Now apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_update</span></code> scaffold:</p>
+<pre class="highlight"><span class="prompt1">./docker-run -ti --env<span class="o">=</span><span class="nv">SRID</span><span class="o">=</span><span class="m">21781</span> --image<span class="o">=</span>camptocamp/geomapfish-build        pcreate -s c2cgeoportal_update --package-name &lt;package&gt; &lt;project&gt;</span>
+</pre><p>And for the non Docker version, apply also the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_nondockerupdate</span></code> scaffold:</p>
+<pre class="highlight"><span class="prompt1">./docker-run -ti --env<span class="o">=</span><span class="nv">SRID</span><span class="o">=</span><span class="m">21781</span> --image<span class="o">=</span>camptocamp/geomapfish-build        pcreate -s c2cgeoportal_nondockerupdate --package-name &lt;package&gt; &lt;project&gt;</span>
 </pre><div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Do not add any ‘/’ after the project name.</p>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_update</span></code> scaffold is also used to update the
-application. The files generated by this skeleton are prefixed with
+application. The files generated by this scaffold are prefixed with
 <code class="docutils literal notranslate"><span class="pre">CONST_</span></code>, which means they are <em>constant</em> files that should not be changed.
 Following this rule is important for easier updates.</p>
 <p>Go to your new project:</p>
@@ -282,7 +289,7 @@ templating system, such as for loops, conditions, sub-templates, etc.</p>
 <p>The result is also a file without the .mako.</p>
 <p><strong>Syntax</strong></p>
 <p>In <code class="docutils literal notranslate"><span class="pre">.mako</span></code> files, the variable replacement syntax is as follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>${&lt;variablename&gt;}
+<div class="code mako highlight-default notranslate"><div class="highlight"><pre><span></span>${&lt;variablename&gt;}
 </pre></div>
 </div>
 <p>for example:</p>
@@ -307,7 +314,7 @@ templating system, such as for loops, conditions, sub-templates, etc.</p>
 <li><a class="reference internal" href="#">Create a new application</a><ul>
 <li><a class="reference internal" href="#project-structure">Project structure</a></li>
 <li><a class="reference internal" href="#install-c2cgeoportal">Install c2cgeoportal</a></li>
-<li><a class="reference internal" href="#list-existing-skeletons">List existing skeletons</a></li>
+<li><a class="reference internal" href="#list-existing-scaffolds">List existing scaffolds</a></li>
 <li><a class="reference internal" href="#create-the-new-application">Create the new application</a></li>
 <li><a class="reference internal" href="#put-the-application-under-revision-control">Put the application under revision control</a><ul>
 <li><a class="reference internal" href="#to-add-a-project-in-a-new-repository">To add a project in a new repository</a></li>
