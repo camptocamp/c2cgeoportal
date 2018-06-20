@@ -48,8 +48,16 @@ def main():
     build_volume_name = dir_path.replace(":", "-").replace("\\", "-") \
         if is_windows else dir_path[1:].replace("/", "-")
 
-    git_branch = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode("utf-8").strip()
-    git_hash = subprocess.check_output(["git", "rev-parse", "HEAD"]).decode("utf-8").strip()
+    try:
+        git_branch = subprocess.check_output([
+            "git", "rev-parse", "--abbrev-ref", "HEAD"
+        ]).decode("utf-8").strip()
+        git_hash = subprocess.check_output([
+            "git", "rev-parse", "HEAD"
+        ]).decode("utf-8").strip()
+    except subprocess.CalledProcessError as e:
+        git_branch = "unknown"
+        git_hash = "unknown"
 
     try:
         login = os.getlogin()
@@ -92,12 +100,7 @@ def main():
             "--env=SSH_AUTH_SOCK",
         ])
 
-    for env in [
-        "SRID",
-        "EXTENT",
-        "APACHE_VHOST",
-        "CI",
-    ] + options.env:
+    for env in ["CI"] + options.env:
         docker_cmd.append("--env={}".format(env))
 
     if 'docker0' in netifaces.interfaces():

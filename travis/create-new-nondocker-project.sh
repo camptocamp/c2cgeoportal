@@ -1,14 +1,11 @@
 #!/bin/bash -ex
 
-export SRID=21781 APACHE_VHOST=test EXTENT=489246.36,78873.44,837119.76,296543.14
-./docker-run --image=camptocamp/geomapfish-build --share /tmp/travis pcreate --scaffold=c2cgeoportal_create /tmp/travis/nondockertestgeomapfish \
-    --package-name testgeomapfish
-./docker-run --image=camptocamp/geomapfish-build --share /tmp/travis pcreate --scaffold=c2cgeoportal_nondockercreate /tmp/travis/nondockertestgeomapfish \
-    --overwrite --package-name testgeomapfish
-./docker-run --image=camptocamp/geomapfish-build --share /tmp/travis pcreate --scaffold=c2cgeoportal_update /tmp/travis/nondockertestgeomapfish \
-    --package-name testgeomapfish
-./docker-run --image=camptocamp/geomapfish-build --share /tmp/travis pcreate --scaffold=c2cgeoportal_nondockerupdate /tmp/travis/nondockertestgeomapfish \
-    --overwrite --package-name testgeomapfish
+DOCKER_RUN_ARGS="--env=SRID=21781 --env=APACHE_VHOST=test --env=EXTENT=489246.36,78873.44,837119.76,296543.14 --image=camptocamp/geomapfish-build --share=/tmp/travis"
+PCREATE_CMD="pcreate --overwrite --package-name testgeomapfish /tmp/travis/nondockertestgeomapfish"
+./docker-run ${DOCKER_RUN_ARGS} ${PCREATE_CMD} --scaffold=c2cgeoportal_create
+./docker-run ${DOCKER_RUN_ARGS} ${PCREATE_CMD} --scaffold=c2cgeoportal_nondockercreate
+./docker-run ${DOCKER_RUN_ARGS} ${PCREATE_CMD} --scaffold=c2cgeoportal_update
+./docker-run ${DOCKER_RUN_ARGS} ${PCREATE_CMD} --scaffold=c2cgeoportal_nondockerupdate
 
 cp travis/build-nondocker.mk /tmp/travis/nondockertestgeomapfish/travis.mk
 cp travis/vars-nondocker.yaml /tmp/travis/nondockertestgeomapfish/vars_travis.yaml

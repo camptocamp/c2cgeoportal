@@ -33,6 +33,7 @@
 /docker/test-mapserver/mapserver.map
 /doc/index.rst
 /doc/developer/server_side.rst
+/doc/integrator/create_application.rst
 /doc/integrator/upgrade_application.rst
 /dist/
 /docker-compose.yaml
