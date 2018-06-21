@@ -33,6 +33,7 @@ import logging
 from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config
 import re
+import os
 
 logger = logging.getLogger(__name__)
 
@@ -44,12 +45,14 @@ class Dev(Proxy):
     def __init__(self, request):
         super().__init__(request)
         self.dev_url = self.request.registry.settings['devserver_url']
+        if 'VISIBLE_ENTRY_POINT' in os.environ:
+            self.dev_url = self.dev_url.replace('${VISIBLE_ENTRY_POINT}', os.environ['VISIBLE_ENTRY_POINT'])
 
     @view_config(route_name='dev')
     def dev(self):
         path = self.THEME_RE.sub('', self.request.path_info)
         if self.request.path.endswith('/dynamic.js'):
-            return HTTPFound(location=self.request.route_url('dynamic'))
+            return HTTPFound(location=self.request.route_url('dynamic'), _query=self.request.params)
         else:
             return self._proxy_response('dev', "{}/{}".format(
                 self.dev_url.rstrip('/'), path.lstrip('/')

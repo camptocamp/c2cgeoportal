@@ -2,9 +2,6 @@ GEOMAPFISH_VERSION ?= {{geomapfish_version}}
 export GEOMAPFISH_VERSION
 export PACKAGE = {{package}}
 
-DEV_SERVER_PORT ?= 8081
-export DEV_SERVER_PORT
-
 INSTANCE ?= main
 export INSTANCE
 
@@ -602,6 +599,7 @@ $(APP_OUTPUT_DIR)/images/: /usr/lib/node_modules/jquery-ui/themes/base/images
 			$(APP_OUTPUT_DIR)/images/
 	$(PRERULE_CMD)
 	# Workaround to make Webpack working for ol/index.js
+	rm --force geoportal/node_modules
 	ln --symbolic /usr/lib/node_modules/ geoportal/
 	(cd geoportal; INTERFACE=$* webpack $(WEBPACK_ARGS))
 	rm geoportal/node_modules

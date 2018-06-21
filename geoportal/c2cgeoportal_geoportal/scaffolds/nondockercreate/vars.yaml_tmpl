@@ -288,6 +288,7 @@ update_paths:
   - docker_services.geoportal.environment
   - docker_services.tilecloudchain.environment
   - fulltextsearch
+  - functionalities.available_in_templates
   - interfaces_theme
   - shortener
 
