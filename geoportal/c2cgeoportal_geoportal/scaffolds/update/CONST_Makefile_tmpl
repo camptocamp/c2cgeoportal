@@ -2,9 +2,6 @@ GEOMAPFISH_VERSION ?= {{geomapfish_version}}
 export GEOMAPFISH_VERSION
 export PACKAGE = {{package}}
 
-DEV_SERVER_PORT ?= 8081
-export DEV_SERVER_PORT
-
 INSTANCE ?= main
 export INSTANCE
 

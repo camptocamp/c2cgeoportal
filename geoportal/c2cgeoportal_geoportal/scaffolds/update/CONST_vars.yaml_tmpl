@@ -14,7 +14,6 @@ vars:
   host: '{VISIBLE_WEB_HOST}'
   web_protocol: '{VISIBLE_WEB_PROTOCOL}'
   entry_point: '{VISIBLE_ENTRY_POINT}'
-  dev_server_port: '{DEV_SERVER_PORT}'
   docker_entry_point: '{DOCKER_ENTRY_POINT}'
   docker_host: '{DOCKER_WEB_HOST}'
   docker_web_protocol: '{DOCKER_WEB_PROTOCOL}'
@@ -540,7 +539,6 @@ environment:
   - WMTSCAPABILITIES_PATH
   - BUILD_VOLUME_NAME
   - PROJECT_DIRECTORY
-  - DEV_SERVER_PORT
   - INSTANCE
 
 runtime_environment:

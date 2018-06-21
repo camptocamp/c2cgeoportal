@@ -25,6 +25,7 @@ vars:
   tinyowsproxy:
     tinyows_url: http://localhost/{instanceid}/tinyows
   print_url: http://localhost:8080/print-{instanceid}/print/{package}
+  devserver_url: http://localhost:{DEV_SERVER_PORT}/{instanceid}/wsgi/
   pdfreport:
     print_url: http://localhost:8080/print-{instanceid}/print/{package}
   servers:
@@ -90,3 +91,4 @@ environment:
   - PRINT_URL
   - EXTERNAL_PYTHON_VERSION_MAJOR
   - EXTERNAL_PYTHON_VERSION_MINOR
+  - DEV_SERVER_PORT
