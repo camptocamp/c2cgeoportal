@@ -21,7 +21,9 @@ WORKDIR /app
 COPY . /app
 
 RUN mv webpack.apps.js webpack.apps.js.tmpl && \
-    ln --symbolic /usr/lib/node_modules/ .
+    ln --symbolic /usr/lib/node_modules/ . && \
+    chmod g+w -R . && \
+    adduser www-data root
 
 ARG GIT_HASH
 
