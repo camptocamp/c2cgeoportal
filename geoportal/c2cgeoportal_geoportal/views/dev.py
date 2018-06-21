@@ -47,8 +47,8 @@ class Dev(Proxy):
 
     @view_config(route_name='dev')
     def dev(self):
-        path = self.THEME_RE.sub('', self.request.path)
-        if self.request.path.endswith('/dynamics.js'):
+        path = self.THEME_RE.sub('', self.request.path_info)
+        if self.request.path.endswith('/dynamic.js'):
             return HTTPFound(location=self.request.route_url('dynamic'))
         else:
             return self._proxy_response('dev', "{}/{}".format(
