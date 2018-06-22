@@ -15,7 +15,9 @@ export MAPSERVER_URL
 PRINT_URL ?= http://print:8080/print/
 export PRINT_URL
 PRINT_CONFIG_FILE ?= print/print-apps/$(PACKAGE)/config.yaml
+ifeq ($(TILECLOUD_CHAIN), TRUE)
 MAPCACHE_FILE ?= apache/mapcache.xml
+endif
 TILEGENERATION_CONFIG_FILE = tilegeneration/config.yaml
 
 VISIBLE_WEB_PROTOCOL ?= https
