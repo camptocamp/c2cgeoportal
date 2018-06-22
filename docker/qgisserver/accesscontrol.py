@@ -84,8 +84,8 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
 
     def get_restriction_areas(self, gmf_layers, rw=False, role=False):
         """
-        None => full acces
-        [] => no acces
+        None => full access
+        [] => no access
         shapely.ops.cascaded_union(result) => geom of access
         """
         if role is False:
