@@ -34,7 +34,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
     EXPRESSION_TYPE = ["GPKG", "PostgreSQL database with PostGIS extension"]
 
     def __init__(self, server_iface):
-        super(QgsAccessControlFilter, self).__init__(server_iface)
+        super().__init__(server_iface)
 
         self.server_iface = server_iface
         self.area_cache = {}
@@ -72,7 +72,8 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             QgsMessageLog.logMessage(str(e))
             raise
 
-    def get_role(self):
+    @staticmethod
+    def get_role():
         from c2cgeoportal.models import DBSession, Role
 
         # headers = self.serverInterface().requestHandler()
@@ -188,7 +189,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             gmf_layers = self.layers[layer.name()]
             for l in gmf_layers:
                 if l.public is True:
-                    rights.canRead is True
+                    rights.canRead = True
 
             if not rights.canRead:
                 role = self.get_role()
@@ -206,8 +207,11 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             QgsMessageLog.logMessage(traceback.format_exc())
             raise
 
-    def authorizedLayerAttributes(self, layer, attributes):  # NOQA
+    @staticmethod
+    def authorizedLayerAttributes(layer, attributes):  # NOQA
         """ Return the authorised layer attributes """
+
+        del layer
 
         # TODO
         return attributes

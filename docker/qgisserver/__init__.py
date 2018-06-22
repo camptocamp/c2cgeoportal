@@ -13,11 +13,6 @@ Contact: info@camptocamp.com
 from qgis.core import QgsMessageLog
 from geomapfish_qgisserver.accesscontrol import GMFException
 
-try:
-    import pkg_resources
-except:
-    pass
-
 
 def serverClassFactory(serverIface):  # noqa
     QgsMessageLog.logMessage("Starting GeoMapFish access restriction...")
