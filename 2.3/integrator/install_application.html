@@ -226,7 +226,7 @@ already be the case; otherwise look at <code class="docutils literal notranslate
 <div class="section" id="integrator-install-application-install-application">
 <span id="id1"></span><h3>Install the application<a class="headerlink" href="#integrator-install-application-install-application" title="Permalink to this headline">¶</a></h3>
 <p>You can build and install the application with the command:</p>
-<pre class="highlight"><span class="prompt1">make --makefile<span class="o">=</span>&lt;user&gt;.mk docker-build</span>
+<pre class="highlight"><span class="prompt1">./docker-run make --makefile<span class="o">=</span>&lt;user&gt;.mk build</span>
 </pre><p>Create the application tables, and directly set the version (details later):</p>
 <pre class="highlight"><span class="prompt1">./docker-run make --makefile<span class="o">=</span>&lt;user&gt;.mk upgrade-db</span>
 </pre><p>For non Docker installation:</p>

@@ -255,7 +255,7 @@ You can build and install the application with the command:
 
 .. prompt:: bash
 
-    make --makefile=<user>.mk docker-build
+    ./docker-run make --makefile=<user>.mk build
 
 Create the application tables, and directly set the version (details later):
 
