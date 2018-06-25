@@ -65,4 +65,9 @@ module.exports = {
     rules
   },
   plugins: plugins,
+  resolve: {
+    alias: {
+      {{package}}: path.resolve(__dirname, '{{package}}_geoportal/static-ngeo/js'),
+    }
+  },
 };
