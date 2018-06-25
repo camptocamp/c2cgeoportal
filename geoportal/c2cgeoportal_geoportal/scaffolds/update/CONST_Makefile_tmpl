@@ -459,8 +459,8 @@ lint-ngeo: /build/eslint.timestamp
 
 .PHONY: upgrade-db
 upgrade-db: geoportal/alembic.ini geoportal/alembic.yaml
-	alembic --name=main upgrade head
-	alembic --name=static upgrade head
+	alembic --config=$< --name=main upgrade head
+	alembic --config=$< --name=static upgrade head
 
 # Templates
 
