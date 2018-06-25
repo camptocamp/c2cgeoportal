@@ -32,6 +32,7 @@ from unittest import TestCase
 
 from pyramid import testing
 from pyramid.response import Response
+import webob.acceptparse
 
 from tests.functional import (  # noqa
     teardown_common as teardown_module,
@@ -181,11 +182,10 @@ class TestFulltextsearchView(TestCase):
     def test_no_default_laguage(self):
         from pyramid.httpexceptions import HTTPInternalServerError
         from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
-        from webob.acceptparse import Accept
 
         request = self._create_dummy_request()
         del(request.registry.settings["default_locale_name"])
-        request.accept_language = Accept("es")
+        request.accept_language = webob.acceptparse.create_accept_language_header("es")
 
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
@@ -194,11 +194,10 @@ class TestFulltextsearchView(TestCase):
     def test_unknown_laguage(self):
         from pyramid.httpexceptions import HTTPInternalServerError
         from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
-        from webob.acceptparse import Accept
 
         request = self._create_dummy_request()
         request.registry.settings["default_locale_name"] = "it"
-        request.accept_language = Accept("es")
+        request.accept_language = webob.acceptparse.create_accept_language_header("es")
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, HTTPInternalServerError))
