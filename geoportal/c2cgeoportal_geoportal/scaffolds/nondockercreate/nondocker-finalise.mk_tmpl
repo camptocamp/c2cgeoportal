@@ -15,7 +15,8 @@ endif
 
 
 # Print
-
+PRINT ?= TRUE
+ifeq ($(PRINT), TRUE)
 PRINT_WAR ?= print-$(INSTANCE_ID).war
 PRINT_OUTPUT ?= /srv/tomcat/tomcat1/webapps
 JASPERREPORTS_VERSION ?= 6.1.1
@@ -31,6 +32,7 @@ PRINT_REQUIREMENT += $(PRINT_EXTRA_LIBS) \
 	print/WEB-INF/classes/mapfish-spring-application-context-override.xml \
 	print/print-servlet.war \
 	$(shell $(FIND) print/print-apps)
+endif
 
 # Apache
 

@@ -17,8 +17,6 @@ export DOCKER_ENTRY_POINT
 export DOCKER_WEB_HOST
 export DOCKER_WEB_PROTOCOL
 
-MAPSERVER ?= TRUE
-
 ifeq ($(DEBUG), TRUE)
 PRERULE_CMD ?= @echo "Build \033[1;34m$@\033[0m due modification on \033[1;34m$?\033[0m" 1>&2; ls -t --full-time --reverse $? $@ 1>&2 || true
 endif
@@ -45,7 +43,7 @@ CGXP_API ?= TRUE
 CGXP_XAPI ?= FALSE
 INTERFACES += $(NGEO_INTERFACES) $(CGXP_INTERFACES)
 export INTERFACES
-# Used print version
+# Use print
 PRINT ?= TRUE
 # Enable Docker target
 DOCKER_BASE ?= camptocamp/{{package}}
@@ -302,9 +300,11 @@ SERVER_LOCALISATION_RULES = $(addprefix /build/lang-server-, $(LANGUAGES))
 endif
 
 # Print
+ifeq ($(PRINT), TRUE)
 PRINT_BASE_DIR ?= print
 PRINT_CONFIG_FILE ?= print/print-apps/$(PACKAGE)/config.yaml.tmpl
 I18N_SOURCE_FILES += $(PRINT_CONFIG_FILE)
+endif
 
 PY_FILES = $(shell find $(PACKAGE) -type f -name '*.py' -print)
 
