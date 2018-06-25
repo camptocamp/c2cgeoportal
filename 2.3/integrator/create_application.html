@@ -45,7 +45,7 @@ that is already alongside the existing c2cgeoportal application.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Some c2cgeoportal applications provide their own scaffolds. For example
-a <em>parent</em> application may provide a scaffold for creating <em>child</em>
+in a multi-project, a <em>parent</em> application may provide a scaffold for creating <em>child</em>
 applications. In that case, the c2cgeoportal scaffolds, as well as the
 application scaffolds, should be applied.</p>
 </div>
@@ -57,16 +57,7 @@ created by the c2cgeoportal scaffolds (the <code class="docutils literal notrans
 </div>
 <div class="section" id="install-c2cgeoportal">
 <h2>Install c2cgeoportal<a class="headerlink" href="#install-c2cgeoportal" title="Permalink to this headline">¶</a></h2>
-<p>This step is required if you cannot, or do not want, to create the c2cgeoportal
-application from an existing one. For example, if you are creating a child
-application from an existing parent application, it means you already have
-<code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> installed, so you can just skip this section, and directly go
-to the next.</p>
-<p>Also, installing <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code>, as described in this section, requires
-access to the c2cgeoportal GitHub repository. If you cannot view the
-<a class="reference external" href="https://github.com/camptocamp/c2cgeoportal">https://github.com/camptocamp/c2cgeoportal</a> page in your browser that means you
-do not have the required permissions. Please contact Camptocamp in that case.</p>
-<p>To get <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> you first need to get the related docker image:</p>
+<p>To get <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code>, you need to get the related docker image:</p>
 <pre class="highlight"><style type="text/css">
 span.prompt1:before {
   content: "$ ";
@@ -92,7 +83,7 @@ c2cgeoportal application you want to create the new application from:</p>
 </div>
 <div class="section" id="create-the-new-application">
 <h2>Create the new application<a class="headerlink" href="#create-the-new-application" title="Permalink to this headline">¶</a></h2>
-<p>The first step in the project creation is to chose a project name
+<p>The first step in the project creation is to choose a project name
 <code class="docutils literal notranslate"><span class="pre">&lt;project&gt;</span></code>, and a package name <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;</span></code>.</p>
 <p>Normally the project name should be the same name as the Git repository name.</p>
 <p>The package name should not contain an underscore (<code class="docutils literal notranslate"><span class="pre">_</span></code>) because of an
@@ -110,7 +101,7 @@ that the default extent would be defined directly from the srid. You can change
 it later.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>You can define these information directly in the command line using
+<p>You can define this information directly in the command line using
 parameters:</p>
 <blockquote class="last">
 <div><pre class="highlight"><span class="prompt1">./docker-run -ti --image<span class="o">=</span>camptocamp/geomapfish-build             --env<span class="o">=</span><span class="nv">SRID</span><span class="o">=</span><span class="m">21781</span> --env<span class="o">=</span><span class="nv">EXTENT</span><span class="o">=</span><span class="s2">&quot;420000,30000,900000,350000&quot;</span></span>
@@ -150,8 +141,8 @@ control (Git preferably).</p>
 <span class="prompt1">git push origin master</span>
 </pre></div>
 </div>
-<div class="section" id="configuration-of-different-environment-in-your-project">
-<h2>Configuration of different environment in your project<a class="headerlink" href="#configuration-of-different-environment-in-your-project" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="configuration-of-different-environments-in-your-project">
+<h2>Configuration of different environments in your project<a class="headerlink" href="#configuration-of-different-environments-in-your-project" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="concepts">
 <h3>Concepts<a class="headerlink" href="#concepts" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
@@ -163,36 +154,34 @@ one file is needed to configure your application.</li>
 </div>
 <div class="section" id="hierarchy-and-extending-your-configuration-files">
 <h3>Hierarchy and extending your configuration files<a class="headerlink" href="#hierarchy-and-extending-your-configuration-files" title="Permalink to this headline">¶</a></h3>
-<p>The configuration files (Makefile and vars) have a hierarchy between them.
-These files extend other files. A Makefile extends another Makefile
-and similarly a vars file extends another vars file. This extension is visible
-in Makefile files:</p>
+<p>The configuration files (Makefile and vars) are organized in a hierarchy.
+A Makefile extends another Makefile and similarly a vars file extends another vars file.
+This extension mechanism is used in Makefile files as follows:</p>
 <div class="code make highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">include</span> <span class="n">CONST_Makefile</span>
 </pre></div>
 </div>
-<p>and vars files:</p>
+<p>and in vars files as follows:</p>
 <div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">extends</span><span class="p">:</span> <span class="n">CONST_vars</span><span class="o">.</span><span class="n">yaml</span>
 </pre></div>
 </div>
-<p>CONST files are files that should not be changed because they are replaced
+<p><code class="docutils literal notranslate"><span class="pre">CONST</span></code> files are files that should not be changed because they are replaced
 during application updates, so your changes will be systematically lost. You can
 extend these files as many times as you like, although it is not recommended to
 exceed 3-4 levels for readability and simplicity.</p>
 <img alt="../_images/doc_hierarchie.png" src="../_images/doc_hierarchie.png" />
-<p>Whenever possible, it is strongly advised not to extend the
-<code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file, and we recommend that you use dynamic variables as
-described below. However some use cases may need to do so:</p>
+<p>Whenever possible, it is strongly advised not to extend the <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file.
+We recommend instead that you use dynamic variables as described below.
+However, in some use cases extending <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code> may be needed:</p>
 <ul class="simple">
-<li>Configuring really different environments.</li>
-<li>Configuration of a multi-project (see below for this specific use case).</li>
+<li>Configuring highly specific environments</li>
+<li>Configuration of a multi-project</li>
 </ul>
 </div>
-<div class="section" id="use-of-dynamic-variable">
-<h3>Use of dynamic variable<a class="headerlink" href="#use-of-dynamic-variable" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="use-of-dynamic-variables">
+<h3>Use of dynamic variables<a class="headerlink" href="#use-of-dynamic-variables" title="Permalink to this headline">¶</a></h3>
 <p>Variables used in the application configuration files (files <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code>)
-can be made dynamic by means of environment variable. In the main file
-<code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code>, added the <code class="docutils literal notranslate"><span class="pre">interpreted</span></code> block at the bottom of the
-file.</p>
+can be made dynamic by means of environment variable. For this, in the main file
+<code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code>, add a block <code class="docutils literal notranslate"><span class="pre">interpreted</span></code> at the bottom of the file.</p>
 <p>In this same file, you can change the value of a parameter by putting it in
 uppercase (example: <code class="docutils literal notranslate"><span class="pre">host:</span> <span class="pre">HOST</span></code>). This parameter must be listed in the
 interpreted parameters section:</p>
@@ -224,13 +213,13 @@ environment variables:</p>
 <h2>Configure the application<a class="headerlink" href="#configure-the-application" title="Permalink to this headline">¶</a></h2>
 <p>As the integrator you need to edit the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> and
 <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;.mk</span></code> files to configure the application.</p>
-<p>Do not miss to add your changes to git:</p>
+<p>Do not forget to add your changes to git:</p>
 <pre class="highlight"><span class="prompt1">git add vars.yaml</span>
 <span class="prompt1">git commit -m <span class="s2">&quot;Configure the project&quot;</span></span>
 <span class="prompt1">git push origin master</span>
 </pre><div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">If you use the check collector do not miss to add the new child to
+<p class="last">If you are using a multi-project, you should add all new children to
 the parent site check_collector configuration.</p>
 </div>
 <div class="admonition note">
@@ -259,7 +248,7 @@ get it:</p>
 <p>After creation and minimal setup the application is ready to be installed.
 Then follow the sections in the install application guide:</p>
 <ul class="simple">
-<li><a class="reference internal" href="install_application.html#integrator-install-application-create-schema"><span class="std std-ref">Create the schema</span></a>.</li>
+<li><a class="reference internal" href="install_application.html#integrator-install-application-create-schema"><span class="std std-ref">Create the schemas</span></a>.</li>
 <li><a class="reference internal" href="install_application.html#integrator-install-application-create-user"><span class="std std-ref">Create a database user</span></a>.</li>
 <li><a class="reference internal" href="install_application.html#integrator-install-application-install-application"><span class="std std-ref">Install the application</span></a>.</li>
 </ul>
@@ -286,7 +275,7 @@ have set either in the main <code class="docutils literal notranslate"><span cla
 templating system, such as for loops, conditions, sub-templates, etc.</p>
 <p>Please see the Mako documentation for details:</p>
 <p><a class="reference external" href="http://docs.makotemplates.org/en/latest/">http://docs.makotemplates.org/en/latest/</a></p>
-<p>The result is also a file without the .mako.</p>
+<p>The result is also a file without the <code class="docutils literal notranslate"><span class="pre">.mako</span></code>.</p>
 <p><strong>Syntax</strong></p>
 <p>In <code class="docutils literal notranslate"><span class="pre">.mako</span></code> files, the variable replacement syntax is as follows:</p>
 <div class="code mako highlight-default notranslate"><div class="highlight"><pre><span></span>${&lt;variablename&gt;}
@@ -320,10 +309,10 @@ templating system, such as for loops, conditions, sub-templates, etc.</p>
 <li><a class="reference internal" href="#to-add-a-project-in-a-new-repository">To add a project in a new repository</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#configuration-of-different-environment-in-your-project">Configuration of different environment in your project</a><ul>
+<li><a class="reference internal" href="#configuration-of-different-environments-in-your-project">Configuration of different environments in your project</a><ul>
 <li><a class="reference internal" href="#concepts">Concepts</a></li>
 <li><a class="reference internal" href="#hierarchy-and-extending-your-configuration-files">Hierarchy and extending your configuration files</a></li>
-<li><a class="reference internal" href="#use-of-dynamic-variable">Use of dynamic variable</a></li>
+<li><a class="reference internal" href="#use-of-dynamic-variables">Use of dynamic variables</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#configure-the-application">Configure the application</a></li>

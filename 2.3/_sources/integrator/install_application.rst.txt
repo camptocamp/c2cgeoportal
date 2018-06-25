@@ -3,21 +3,17 @@
 Install an existing application
 ===============================
 
-On this page we explain all the procedures to build an application from
+On this page we explain the procedure to build an application from
 only the code.
 
-For example If you want to use an existing database you should ignore
+If you want to use an existing database, you should ignore
 all the commands concerning the database.
 
-This guide considers that:
- - We use a server manages by Camptocamp, meaning:
-    - all dependencies described in the
-      :ref:`requirements <integrator_requirements>` are installed,
-    - Postgres has a GIS template ``template_postgis`` and a user ``www-data``,
-    - Apache uses the user ``www-data``.
- - Use Git as revision control.
+This guide assumes that:
+ - all dependencies described in the :ref:`requirements <integrator_requirements>` are installed,
+ - Git is used as revision control.
 
-For the others system there is some notes to give some help.
+For specific environments, this page contains some notes to give some help.
 
 Set up the database
 -------------------
@@ -28,7 +24,8 @@ tables are located in a specific schema of the database.
 
 .. note::
 
-    Multiple specific schemas are actually used in a parent/child architecture.
+    In a multi-project application architecture, multiple specific schemas
+    must be used.
 
 If the application has MapServer layers linked to PostGIS tables, these tables
 and the application-specific tables must be in the same database, preferably in
@@ -79,11 +76,11 @@ full-text search:
 
 .. _integrator_install_application_create_schema:
 
-Create the schema
-~~~~~~~~~~~~~~~~~
+Create the schemas
+~~~~~~~~~~~~~~~~~~
 
-Each parent or child needs two application-specific schemas,
-then to create it use:
+Each application needs two application-specific schemas.
+To create them, do:
 
 .. prompt:: bash
 
@@ -92,6 +89,8 @@ then to create it use:
 
 with ``<db_name>`` and ``<schema_name>`` replaced by the actual database name,
 and schema name ('main' by default), respectively.
+Note that if you are using a multi-project, you need to define both schemas
+for the parent and for each child.
 
 .. _integrator_install_application_create_user:
 
@@ -108,7 +107,7 @@ We use a specific user for the application, ``www-data`` by default.
 
         sudo -u postgres createuser -P <db_user>
 
-Give the rights to the user:
+Give the necessary rights to the user:
 
 .. prompt:: bash
 
@@ -119,7 +118,7 @@ Give the rights to the user:
 
 .. note::
 
-   If you do not use the www-data user for Apache replace it by the right user.
+   If you do not use the ``www-data`` user for Apache, replace it by the right user.
 
 
 Install the application
@@ -128,7 +127,7 @@ Install the application
 Get the application source tree
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If Git is used for the application use the following command to get the
+If GitHub is used for the application, use the following command to get the
 application source tree:
 
 .. prompt:: bash
@@ -156,7 +155,7 @@ Index (PyPI) and they have to be downloaded manually and stored. This is
 because these packages use DLLs and binaries which would have to be compiled
 using a C compiler.
 
-Furthermore, some changes in the apache WSGI and MapServer configurations are
+Furthermore, some changes in the Apache WSGI and MapServer configurations are
 required to make c2cgeoportal work on Windows.
 
 Also, between all the different command interfaces available on Windows (cmd,
@@ -172,7 +171,7 @@ Only use Windows default command interface::
 
 Cygwin and git mingw are not compatible. Powershell is untested.
 
-Complementarily you need to add all the resource paths to your system PATH
+In addition, you need to add all the resource paths to your system PATH
 environment variable, for cygwin, git and node binaries.
 
 Cygwin
@@ -252,7 +251,7 @@ already be the case; otherwise look at ``scaffolds/create/apache/application.wsg
 Install the application
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Then you can build and install the application with the command:
+You can build and install the application with the command:
 
 .. prompt:: bash
 
@@ -278,7 +277,7 @@ This previous command will do many things like:
 
   * build the javascript and css resources into compressed files,
 
-Your application should be available at:
+Your application should now be available at:
 ``http://<hostname>/``.
 
 Where the ``<hostname>`` is directly linked to the virtual host.

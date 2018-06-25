@@ -34,29 +34,19 @@
             
   <div class="section" id="install-an-existing-application">
 <span id="integrator-install-application"></span><h1>Install an existing application<a class="headerlink" href="#install-an-existing-application" title="Permalink to this headline">¶</a></h1>
-<p>On this page we explain all the procedures to build an application from
+<p>On this page we explain the procedure to build an application from
 only the code.</p>
-<p>For example If you want to use an existing database you should ignore
+<p>If you want to use an existing database, you should ignore
 all the commands concerning the database.</p>
 <dl class="docutils">
-<dt>This guide considers that:</dt>
+<dt>This guide assumes that:</dt>
 <dd><ul class="first last simple">
-<li><dl class="first docutils">
-<dt>We use a server manages by Camptocamp, meaning:</dt>
-<dd><ul class="first last">
-<li>all dependencies described in the
-<a class="reference internal" href="requirements.html#integrator-requirements"><span class="std std-ref">requirements</span></a> are installed,</li>
-<li>Postgres has a GIS template <code class="docutils literal notranslate"><span class="pre">template_postgis</span></code> and a user <code class="docutils literal notranslate"><span class="pre">www-data</span></code>,</li>
-<li>Apache uses the user <code class="docutils literal notranslate"><span class="pre">www-data</span></code>.</li>
+<li>all dependencies described in the <a class="reference internal" href="requirements.html#integrator-requirements"><span class="std std-ref">requirements</span></a> are installed,</li>
+<li>Git is used as revision control.</li>
 </ul>
 </dd>
 </dl>
-</li>
-<li>Use Git as revision control.</li>
-</ul>
-</dd>
-</dl>
-<p>For the others system there is some notes to give some help.</p>
+<p>For specific environments, this page contains some notes to give some help.</p>
 <div class="section" id="set-up-the-database">
 <h2>Set up the database<a class="headerlink" href="#set-up-the-database" title="Permalink to this headline">¶</a></h2>
 <p>Any c2cgeoportal application requires a PostgreSQL/PostGIS database. The
@@ -64,7 +54,8 @@ application works with its own tables, which store users, layers, etc. These
 tables are located in a specific schema of the database.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Multiple specific schemas are actually used in a parent/child architecture.</p>
+<p class="last">In a multi-project application architecture, multiple specific schemas
+must be used.</p>
 </div>
 <p>If the application has MapServer layers linked to PostGIS tables, these tables
 and the application-specific tables must be in the same database, preferably in
@@ -96,14 +87,16 @@ differ on your host.</p>
 full-text search:</p>
 <pre class="highlight"><span class="prompt1">sudo -u postgres psql -c <span class="s2">&quot;CREATE EXTENSION pg_trgm&quot;</span> &lt;db_name&gt;</span>
 </pre></div>
-<div class="section" id="create-the-schema">
-<span id="integrator-install-application-create-schema"></span><h3>Create the schema<a class="headerlink" href="#create-the-schema" title="Permalink to this headline">¶</a></h3>
-<p>Each parent or child needs two application-specific schemas,
-then to create it use:</p>
+<div class="section" id="create-the-schemas">
+<span id="integrator-install-application-create-schema"></span><h3>Create the schemas<a class="headerlink" href="#create-the-schemas" title="Permalink to this headline">¶</a></h3>
+<p>Each application needs two application-specific schemas.
+To create them, do:</p>
 <pre class="highlight"><span class="prompt1">sudo -u postgres psql -c <span class="s2">&quot;CREATE SCHEMA &lt;schema_name&gt;;&quot;</span> &lt;db_name&gt;</span>
 <span class="prompt1">sudo -u postgres psql -c <span class="s2">&quot;CREATE SCHEMA &lt;schema_name&gt;_static;&quot;</span> &lt;db_name&gt;</span>
 </pre><p>with <code class="docutils literal notranslate"><span class="pre">&lt;db_name&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;schema_name&gt;</span></code> replaced by the actual database name,
-and schema name (‘main’ by default), respectively.</p>
+and schema name (‘main’ by default), respectively.
+Note that if you are using a multi-project, you need to define both schemas
+for the parent and for each child.</p>
 </div>
 <div class="section" id="create-a-database-user">
 <span id="integrator-install-application-create-user"></span><h3>Create a database user<a class="headerlink" href="#create-a-database-user" title="Permalink to this headline">¶</a></h3>
@@ -113,14 +106,14 @@ and schema name (‘main’ by default), respectively.</p>
 <p>It the user does not already exist in your database, create it first:</p>
 <pre class="highlight"><span class="prompt1">sudo -u postgres createuser -P &lt;db_user&gt;</span>
 </pre></div>
-<p>Give the rights to the user:</p>
+<p>Give the necessary rights to the user:</p>
 <pre class="highlight"><span class="prompt1">sudo -u postgres psql -c <span class="s1">&#39;GRANT SELECT ON TABLE spatial_ref_sys TO &quot;www-data&quot;&#39;</span> &lt;db_name&gt;</span>
 <span class="prompt1">sudo -u postgres psql -c <span class="s1">&#39;GRANT ALL ON TABLE geometry_columns TO &quot;www-data&quot;&#39;</span> &lt;db_name&gt;</span>
 <span class="prompt1">sudo -u postgres psql -c <span class="s1">&#39;GRANT ALL ON SCHEMA &lt;schema_name&gt; TO &quot;www-data&quot;&#39;</span> &lt;db_name&gt;</span>
 <span class="prompt1">sudo -u postgres psql -c <span class="s1">&#39;GRANT ALL ON SCHEMA &lt;schema_name&gt;_static TO &quot;www-data&quot;&#39;</span> &lt;db_name&gt;</span>
 </pre><div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">If you do not use the www-data user for Apache replace it by the right user.</p>
+<p class="last">If you do not use the <code class="docutils literal notranslate"><span class="pre">www-data</span></code> user for Apache, replace it by the right user.</p>
 </div>
 </div>
 </div>
@@ -128,7 +121,7 @@ and schema name (‘main’ by default), respectively.</p>
 <h2>Install the application<a class="headerlink" href="#install-the-application" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="get-the-application-source-tree">
 <h3>Get the application source tree<a class="headerlink" href="#get-the-application-source-tree" title="Permalink to this headline">¶</a></h3>
-<p>If Git is used for the application use the following command to get the
+<p>If GitHub is used for the application, use the following command to get the
 application source tree:</p>
 <pre class="highlight"><span class="prompt1">git clone git@github.com:camptocamp/&lt;project&gt;.git</span>
 <span class="prompt1"><span class="nb">cd</span> &lt;project&gt;</span>
@@ -148,7 +141,7 @@ application source tree:</p>
 Index (PyPI) and they have to be downloaded manually and stored. This is
 because these packages use DLLs and binaries which would have to be compiled
 using a C compiler.</p>
-<p>Furthermore, some changes in the apache WSGI and MapServer configurations are
+<p>Furthermore, some changes in the Apache WSGI and MapServer configurations are
 required to make c2cgeoportal work on Windows.</p>
 <p>Also, between all the different command interfaces available on Windows (cmd,
 Cygwin, git mingw), only Windows default cmd interface handle paths correctly
@@ -160,7 +153,7 @@ in all stage of the application setup.</p>
 </pre></div>
 </div>
 <p>Cygwin and git mingw are not compatible. Powershell is untested.</p>
-<p>Complementarily you need to add all the resource paths to your system PATH
+<p>In addition, you need to add all the resource paths to your system PATH
 environment variable, for cygwin, git and node binaries.</p>
 </div>
 <div class="section" id="cygwin">
@@ -232,7 +225,7 @@ already be the case; otherwise look at <code class="docutils literal notranslate
 </div>
 <div class="section" id="integrator-install-application-install-application">
 <span id="id1"></span><h3>Install the application<a class="headerlink" href="#integrator-install-application-install-application" title="Permalink to this headline">¶</a></h3>
-<p>Then you can build and install the application with the command:</p>
+<p>You can build and install the application with the command:</p>
 <pre class="highlight"><span class="prompt1">make --makefile<span class="o">=</span>&lt;user&gt;.mk docker-build</span>
 </pre><p>Create the application tables, and directly set the version (details later):</p>
 <pre class="highlight"><span class="prompt1">./docker-run make --makefile<span class="o">=</span>&lt;user&gt;.mk upgrade-db</span>
@@ -246,7 +239,7 @@ already be the case; otherwise look at <code class="docutils literal notranslate
 <li>build the javascript and css resources into compressed files,</li>
 </ul>
 </div></blockquote>
-<p>Your application should be available at:
+<p>Your application should now be available at:
 <code class="docutils literal notranslate"><span class="pre">http://&lt;hostname&gt;/</span></code>.</p>
 <p>Where the <code class="docutils literal notranslate"><span class="pre">&lt;hostname&gt;</span></code> is directly linked to the virtual host.</p>
 </div>
@@ -292,7 +285,7 @@ at <code class="docutils literal notranslate"><span class="pre">http://new-site.
 <li><a class="reference internal" href="#">Install an existing application</a><ul>
 <li><a class="reference internal" href="#set-up-the-database">Set up the database</a><ul>
 <li><a class="reference internal" href="#create-the-database">Create the database</a></li>
-<li><a class="reference internal" href="#create-the-schema">Create the schema</a></li>
+<li><a class="reference internal" href="#create-the-schemas">Create the schemas</a></li>
 <li><a class="reference internal" href="#create-a-database-user">Create a database user</a></li>
 </ul>
 </li>
