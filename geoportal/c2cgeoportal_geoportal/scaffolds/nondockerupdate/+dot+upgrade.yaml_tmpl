@@ -106,6 +106,9 @@ files_to_remove:
   - file: apache/README.txt.mako
     version: 2.3
     from: 2.2
+  - file: alembic.yaml
+    version: 2.3.2
+    from: 2.3.0
 
 files_to_move:
   - from: vars_{{package}}.yaml
