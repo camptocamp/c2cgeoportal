@@ -34,7 +34,7 @@ Pyramid application test package
 
 import os
 from configparser import ConfigParser
-from webob.acceptparse import Accept
+import webob.acceptparse
 
 from pyramid import testing
 
@@ -168,7 +168,7 @@ def create_dummy_request(additional_settings=None, authentication=True, user=Non
             "geometry_validation": True
         }
     }, *args, **kargs)
-    request.accept_language = Accept("fr-CH,fr;q=0.8,en;q=0.5,en-US;q=0.3")
+    request.accept_language = webob.acceptparse.create_accept_language_header("fr-CH,fr;q=0.8,en;q=0.5,en-US;q=0.3")
     request.registry.settings.update(additional_settings)
     request.referer = "http://example.com/app"
     request.path_info_peek = lambda: "main"
