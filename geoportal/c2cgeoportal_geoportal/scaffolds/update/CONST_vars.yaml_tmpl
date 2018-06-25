@@ -78,6 +78,12 @@ vars:
         C2C_BROADCAST_PREFIX: broadcast_geoportal_
     tilecloudchain:
       environment:
+        GUNICORN_PARAMS:
+          --bind=:8080
+          --worker-class=gthread
+          --threads=10
+          --workers=5
+          --worker-connections=1000
         VISIBLE_ENTRY_POINT: '{docker_entry_point}'
         TILEGENERATION_CONFIGFILE: /etc/tilegeneration/config.yaml
         C2C_BASE_PATH: /c2c_tiles
