@@ -30,18 +30,7 @@ created by the c2cgeoportal scaffolds (the ``c2cgeoportal_create`` and
 Install c2cgeoportal
 --------------------
 
-This step is required if you cannot, or do not want to, create the c2cgeoportal
-application from an existing one. For example, if you are creating a child
-application from an existing parent application, it means you already have
-``c2cgeoportal`` installed, so you can just skip this section, and directly go
-to the next.
-
-Also, installing ``c2cgeoportal``, as described in this section, requires
-access to the c2cgeoportal GitHub repository. If you cannot view the
-https://github.com/camptocamp/c2cgeoportal page in your browser that means you
-do not have the required permissions. Please contact Camptocamp in that case.
-
-To get ``c2cgeoportal`` you first need to get the related docker image:
+To get ``c2cgeoportal``, you need to get the related docker image:
 
 .. prompt:: bash
 
