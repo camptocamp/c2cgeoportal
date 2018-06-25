@@ -704,9 +704,8 @@ endif
 
 .PHONY: push-docker
 push-docker:
-	docker push $(DOCKER_BASE)-print:$(DOCKER_TAG)
+	docker push $(DOCKER_BASE)-config:$(DOCKER_TAG)
 	docker push $(DOCKER_BASE)-geoportal:$(DOCKER_TAG)
-	docker push $(DOCKER_BASE)-mapserver:$(DOCKER_TAG)
 
 geoportal/alembic.yaml: $(ALEMBIC_YAML_FILE) vars.yaml CONST_vars.yaml
 	$(PRERULE_CMD)
