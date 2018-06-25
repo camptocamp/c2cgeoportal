@@ -68,7 +68,8 @@ clean-all:
 
 .PHONY: build
 build: $(PRINT_OUTPUT_WAR) \
-	.build/apache.timestamp
+	.build/apache.timestamp \
+	.build/npm.timestamp \
 
 # Apache
 
@@ -154,7 +155,21 @@ PYTHON_BIN = .build/venv/bin
 DOCKER_RUN = ./docker-run
 endif
 
-.build/venv.timestamp: .config
+extract-docker: c2cgeoportal_commons c2cgeoportal_geoportal c2cgeoportal_admin npm-packages
+
+c2cgeoportal_commons: .config
+	rm --force --recursive c2cgeoportal_commons
+	$(DOCKER_RUN) cp -r /opt/c2cgeoportal_commons c2cgeoportal_commons
+
+c2cgeoportal_geoportal: .config
+	rm --force --recursive c2cgeoportal_geoportal
+	$(DOCKER_RUN) cp -r /opt/c2cgeoportal_geoportal c2cgeoportal_geoportal
+
+c2cgeoportal_admin: .config
+	rm --force --recursive c2cgeoportal_admin
+	$(DOCKER_RUN) cp -r /opt/c2cgeoportal_admin c2cgeoportal_admin
+
+.build/venv.timestamp: .config c2cgeoportal_commons c2cgeoportal_geoportal c2cgeoportal_admin
 	$(PRERULE_CMD)
 	mkdir --parent .build
 	rm -rf .build/venv
@@ -170,16 +185,16 @@ else
 	$(PYTHON_BIN)/python -m pip install `./get-pip-dependencies c2cgeoportal-commons c2cgeoportal-geoportal c2cgeoportal-admin GDAL flake8-mypy mypy`
 endif
 	$(PYTHON_BIN)/python -m pip install -r requirements.txt
-	rm --force --recursive c2cgeoportal_commons c2cgeoportal_geoportal c2cgeoportal_admin
-	$(DOCKER_RUN) cp -r /opt/c2cgeoportal_commons c2cgeoportal_commons
-	$(DOCKER_RUN) cp -r /opt/c2cgeoportal_geoportal c2cgeoportal_geoportal
-	$(DOCKER_RUN) cp -r /opt/c2cgeoportal_admin c2cgeoportal_admin
-	$(DOCKER_RUN) cp /opt/npm-packages .
 	$(PYTHON_BIN)/python -m pip install --editable=c2cgeoportal_commons --editable=c2cgeoportal_geoportal --editable=c2cgeoportal_admin
 	$(PYTHON_BIN)/python -m pip install --editable=geoportal
 	$(PYTHON_BIN)/python -m compileall -q .build/venv >/dev/null || true
 	$(PYTHON_BIN)/python -m compileall -q c2cgeoportal_* >/dev/null || true
 	$(PYTHON_BIN)/python -m compileall -q geoportal/$(PACKAGE)_geoportal -x geoportal/$(PACKAGE)_geoportal/static.* >/dev/null || true
+
+npm-packages: .config
+	$(DOCKER_RUN) cp /opt/npm-packages .
+
+.build/npm.timestamp: .config npm-packages
 	rm --force --recursive admin/node_modules
 	mkdir --parent admin
 	cat npm-packages | xargs npm install --prefix ./admin
