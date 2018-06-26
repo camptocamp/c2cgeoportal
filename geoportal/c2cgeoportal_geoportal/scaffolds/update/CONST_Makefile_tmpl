@@ -115,6 +115,8 @@ GIT_HASH ?= $(shell git rev-parse HEAD)
 # ngeo
 NODE_ENV ?= production
 export NODE_ENV
+NO_DEV_SERVER ?= TRUE
+export NO_DEV_SERVER
 ANGULAR_VERSION = 1.6
 APP_OUTPUT_DIR = geoportal/$(PACKAGE)_geoportal/static-ngeo/build
 GCC_JS_FILES = $(shell find /usr/lib/node_modules/openlayers/src/ol /usr/lib/node_modules/ngeo/src /usr/lib/node_modules/ol-cesium/src -type f -name '*.js' 2> /dev/null)
