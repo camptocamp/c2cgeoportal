@@ -580,7 +580,7 @@ runtime_environment:
   - name: PRINT_URL
     default: http://print:8080/print/
   - name: MAPCACHE_URL
-    default: http://mapcache/
+    default: http://mapcache:8080/
   - name: DEVSERVER_URL
     default: http://webpack-dev-server:8080/
   - name: REDIS_HOST

@@ -41,9 +41,10 @@ ${service_defaults('tinyows', 80)}\
 
   mapcache:
     image: camptocamp/mapcache:1.6
+    user: www-data
     volumes_from:
       - config:ro
-${service_defaults('mapcache', 80)}\
+${service_defaults('mapcache', 8080)}\
 
   memcached:
     image: memcached:1.5
