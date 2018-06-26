@@ -35,9 +35,10 @@ ${service_defaults('mapserver', 80)}\
 
   tinyows:
     image: camptocamp/tinyows
+    user: www-data
     volumes_from:
       - config:ro
-${service_defaults('tinyows', 80)}\
+${service_defaults('tinyows', 8080)}\
 
   mapcache:
     image: camptocamp/mapcache:1.6
