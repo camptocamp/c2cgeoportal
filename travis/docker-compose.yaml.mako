@@ -27,6 +27,7 @@ ${service_defaults('print', 8080)}\
 
   mapserver:
     image: camptocamp/mapserver:7.0
+    user: www-data
     volumes_from:
       - config:rw
     entrypoint: []

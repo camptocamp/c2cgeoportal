@@ -20,12 +20,13 @@ ${service_defaults('print', 8080)}\
 
   mapserver:
     image: camptocamp/mapserver:7.0
+    user: www-data
     volumes_from:
       - config:rw
     volumes:
       - /var/sig:/var/sig:ro
     entrypoint: []
-${service_defaults('mapserver', 80)}\
+${service_defaults('mapserver', 8080)}\
 
 ##  qgisserver:
 ##    image: camptocamp/qgis-server:latest
