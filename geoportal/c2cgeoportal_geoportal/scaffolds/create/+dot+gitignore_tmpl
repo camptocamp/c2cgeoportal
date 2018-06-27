@@ -18,6 +18,7 @@ __pycache__/
 /mapserver/*.map.tmpl
 /mapserver/tinyows.xml.mako
 /mapserver/tinyows.xml.tmpl
+/qgisserver/geomapfish.yaml
 /geoportal/jsbuild/app.cfg
 /geoportal/Dockerfile
 /geoportal/development.ini

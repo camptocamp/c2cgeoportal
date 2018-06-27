@@ -107,6 +107,7 @@ docker-build:
 .PHONY: build
 build: \
 	docker-build-build \
+	docker-build-qgisserver \
 	docker-build-testdb \
 	prepare-tests
 
@@ -184,6 +185,18 @@ docker-build-build: $(shell docker-required --path . --replace-pattern='^test(.*
 		$(APPS_FILES) \
 		$(APPS_FILES_ALT)
 	docker build --build-arg=VERSION=$(VERSION) --tag=$(DOCKER_BASE)-build:$(MAJOR_VERSION) .
+
+docker/qgisserver/commons: commons
+	rm --recursive --force $@
+	cp --recursive $< $@
+	rm --recursive --force $@/c2cgeoportal_commons/alembic
+	rm $@/tests.yaml.mako
+	touch $@
+
+.PHONY: docker-build-qgisserver
+docker-build-qgisserver: $(shell docker-required --path docker/qgisserver) docker/qgisserver/commons
+	docker build --tag=$(DOCKER_BASE)-qgisserver:$(MAJOR_VERSION) docker/qgisserver
+
 
 .PHONY: prepare-tests
 prepare-tests: \

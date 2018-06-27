@@ -26,6 +26,7 @@
 /admin/npm-packages
 /admin/c2cgeoportal_admin/locale/
 /admin/c2cgeoportal_admin.egg-info/
+/docker/qgisserver/commons/
 /docker/admin-build/Dockerfile
 /docker/admin-build/npm-packages
 /docker/test-db/12-alembic.sql

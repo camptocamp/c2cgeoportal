@@ -237,6 +237,11 @@ vars:
       Sincerely yours
       The GeoMapfish team
 
+  docker_services:
+    qgisserver:
+      environment:
+        GEOMAPFISH_OGCSERVER: <OGC server name>
+
   # Checker configuration
   checker:
     fulltextsearch:

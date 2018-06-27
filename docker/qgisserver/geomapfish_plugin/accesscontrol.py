@@ -11,16 +11,21 @@ Contact: info@camptocamp.com
 
 from qgis.core import QgsMessageLog
 
+import json
 import os
 import traceback
 from shapely import ops
 import geoalchemy2
 import sqlalchemy
-import sqlahelper
 
 from qgis.server import QgsAccessControlFilter
 from qgis.core import QgsDataSourceUri
-import c2cgeoportal
+
+from sqlalchemy.orm import configure_mappers
+from sqlalchemy.orm import scoped_session
+from sqlalchemy.orm import sessionmaker
+
+from c2cgeoportal_commons.config import config
 
 
 class GMFException(Exception):
@@ -39,48 +44,43 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
         self.server_iface = server_iface
         self.area_cache = {}
 
-        try:
-            if "GEOMAPFISH_SCHEMA" not in os.environ:
-                raise GMFException("The environment variable 'GEOMAPFISH_SCHEMA' is not defined.")
-            if "GEOMAPFISH_SRID" not in os.environ:
-                raise GMFException("The environment variable 'GEOMAPFISH_SRID' is not defined.")
-            if "GEOMAPFISH_OGCSERVER" not in os.environ:
-                raise GMFException("The environment variable 'GEOMAPFISH_OGCSERVER' is not defined.")
-            if "GEOMAPFISH_SQLALCHEMYURL" not in os.environ:
-                raise GMFException("The environment variable 'GEOMAPFISH_SQLALCHEMYURL' is not defined.")
+        if "GEOMAPFISH_OGCSERVER" not in os.environ:
+            raise GMFException("The environment variable 'GEOMAPFISH_OGCSERVER' is not defined.")
 
-            c2cgeoportal.schema = os.environ["GEOMAPFISH_SCHEMA"]
-            c2cgeoportal.srid = os.environ["GEOMAPFISH_SRID"]
+        self.srid = os.environ["GEOMAPFISH_SRID"]
 
-            sqlahelper.add_engine(sqlalchemy.create_engine(os.environ["GEOMAPFISH_SQLALCHEMYURL"]))
+        config.init(os.environ.get('GEOMAPFISH_CONFIG', '/etc/qgisserver/geomapfish.yaml'))
+        self.config = config
 
-            from c2cgeoportal.models import DBSession, LayerWMS, OGCServer
+        from c2cgeoportal_commons.models.main import LayerWMS, OGCServer
+        configure_mappers()
 
-            self.ogcserver = DBSession.query(OGCServer).filter(OGCServer.name == unicode(os.environ["GEOMAPFISH_OGCSERVER"])).one()
+        engine = sqlalchemy.create_engine(config.get('sqlalchemy_slave.url'))
+        session_factory = sessionmaker()
+        session_factory.configure(bind=engine)
+        self.DBSession = scoped_session(session_factory)
 
-            self.layers = {}
-            # TODO manage groups ...
-            for layer in DBSession.query(LayerWMS).filter(LayerWMS.ogc_server_id == self.ogcserver.id).all():
-                for name in layer.layer.split(','):
-                    if name not in self.layers:
-                        self.layers[name] = []
-                    self.layers[name].append(layer)
+        self.ogcserver = self.DBSession.query(OGCServer) \
+            .filter(OGCServer.name == os.environ["GEOMAPFISH_OGCSERVER"]) \
+            .one()
 
-            server_iface.registerAccessControl(self, 100)
-        except Exception as e:
-            QgsMessageLog.logMessage(traceback.format_tb(e))
-            QgsMessageLog.logMessage(str(e))
-            raise
+        self.layers = {}
+        # TODO manage groups ...
+        for layer in self.DBSession.query(LayerWMS).filter(LayerWMS.ogc_server_id == self.ogcserver.id).all():
+            for name in layer.layer.split(','):
+                if name not in self.layers:
+                    self.layers[name] = []
+                self.layers[name].append(layer)
+        QgsMessageLog.logMessage('[accesscontrol] layers: {}'.format(
+            json.dumps(self.layers, sort_keys=True, indent=4)
+        ))
 
-    @staticmethod
-    def get_role():
-        from c2cgeoportal.models import DBSession, Role
+        server_iface.registerAccessControl(self, int(os.environ.get("GEOMAPFISH_POSITION", 100)))
 
-        # headers = self.serverInterface().requestHandler()
-
-        # return DBSession.query(User).get(headers.parameterMap()['USER_ID']).role
-        # return DBSession.query(Role).get(headers.parameterMap()['ROLE'])
-        return DBSession.query(Role).first()
+    def get_role(self):
+        from c2cgeoportal_commons.models.main import Role
+        parameters = self.serverInterface().requestHandler().parameterMap()
+        return self.DBSession.query(Role).get(parameters['ROLE_ID'])
 
     def get_restriction_areas(self, gmf_layers, rw=False, role=False):
         """
@@ -134,9 +134,9 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             if area is None:
                 return None
             area = "ST_GeomFromText('{}', {})".format(
-                area, c2cgeoportal.srid
+                area, self.srid
             )
-            if int(c2cgeoportal.srid) != layer.crs().postgisSrid():
+            if self.srid != layer.crs().postgisSrid():
                 area = "ST_transform({}, {})".format(
                     area, layer.crs().postgisSrid()
                 )
@@ -169,7 +169,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             # TODO cache the union
             # TODO verify the geometry
             return "intersects($geometry, transform(geom_from_wkt('{}'), 'EPSG:{}', 'EPSG:{}')".format(
-                area, c2cgeoportal.srid, layer.crs().projectionAcronym()
+                area, self.srid, layer.crs().projectionAcronym()
             )
         except Exception:
             QgsMessageLog.logMessage(traceback.format_exc())

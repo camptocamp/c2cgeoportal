@@ -38,14 +38,14 @@ dockerBuild {
                 sh 'make docker-build'
                 sh 'docker run --name geomapfish-db --env=POSTGRES_USER=www-data --env=POSTGRES_PASSWORD=www-data --env=POSTGRES_DB=geomapfish --publish=5432:5432 --detach camptocamp/geomapfish-test-db'
                 sh 'travis/test-upgrade-convert.sh init ${HOME}/workspace'
+                sh './docker-run travis/status.sh'
+                sh './docker-run travis/short-make build'
             }
             stage('Tests') {
                 checkout scm
                 parallel 'Lint and test c2cgeoportal': {
-                    sh './docker-run travis/status.sh'
                     sh './docker-run travis/empty-make help'
                     sh 'bash -c "test \\"`./docker-run id`\\" == \\"uid=0(root) gid=0(root) groups=0(root)\\""'
-                    sh './docker-run travis/short-make build'
                     sh './docker-run make doc'
                     // lint
                     sh './docker-run make checks'

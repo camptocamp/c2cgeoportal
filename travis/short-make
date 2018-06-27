@@ -15,4 +15,7 @@ if p.poll() is None:
     os.environ["DEBUG"] = "TRUE"
     subprocess.call(["make"] + sys.argv[1:])
     exit(2)
+if p.returncode != 0:
+    print("make call error:")
+    subprocess.call(["make"] + sys.argv[1:])
 exit(p.returncode)
