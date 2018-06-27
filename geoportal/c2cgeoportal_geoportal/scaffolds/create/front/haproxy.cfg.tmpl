@@ -59,7 +59,7 @@ backend geoportal
 backend tilecloudchain
     option httpchk GET ${VISIBLE_ENTRY_POINT}c2c_tiles/health_check HTTP/1.0\r\nUser-Agent:\ healthcheck
     http-check expect status 200
-    server linked tilecloudchain:80 resolvers dns #check
+    server linked tilecloudchain:8080 resolvers dns #check
 
 
 frontend plain
