@@ -13,7 +13,7 @@ GeoAlchemy2==0.2.4
 GeoFormAlchemy2==2.0.dev3
 geojson==1.0.9
 http-parser==0.8.3
-httplib2==0.9
+httplib2==0.11.3
 isodate==0.5.1
 Jinja2==2.7.3
 js.jqgrid==4.4.4
