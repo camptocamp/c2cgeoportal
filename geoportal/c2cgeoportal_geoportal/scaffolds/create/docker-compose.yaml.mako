@@ -38,6 +38,7 @@ ${service_defaults('mapserver', 80)}\
     user: www-data
     volumes_from:
       - config:ro
+    entrypoint: []
 ${service_defaults('tinyows', 8080)}\
 
   mapcache:
