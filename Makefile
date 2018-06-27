@@ -195,8 +195,9 @@ docker/qgisserver/commons: commons
 
 .PHONY: docker-build-qgisserver
 docker-build-qgisserver: $(shell docker-required --path docker/qgisserver) docker/qgisserver/commons
-	docker build --tag=$(DOCKER_BASE)-qgisserver:$(MAJOR_VERSION) docker/qgisserver
-
+	docker build --tag=$(DOCKER_BASE)-qgisserver:gmf$(MAJOR_VERSION)-qgismaster docker/qgisserver
+	docker build --tag=$(DOCKER_BASE)-qgisserver:gmf$(MAJOR_VERSION)-qgis3.2 \
+		--file=docker/qgisserver/Dockerfile32 docker/qgisserver
 
 .PHONY: prepare-tests
 prepare-tests: \
