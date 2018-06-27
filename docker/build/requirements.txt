@@ -1,11 +1,11 @@
 alabaster==0.7.11  # Doc theme
 alembic==0.9.9  # geoportal
 Babel==2.6.0  # i18n
-boto3==1.7.45  # Tile generation
+boto3==1.7.46  # Tile generation
 bottle==0.12.13  # geoportal
 c2c.cssmin==0.7.dev6  # CGXP build
 c2c.template==2.1.0  # geoportal
-c2cgeoform==2.0.dev20180626  # commons
+c2cgeoform==2.0.dev20180627  # commons
 codacy-coverage==1.3.11  # Codacy send report
 codespell==1.13.0  # Lint
 colander==1.4  # commons, admin
@@ -55,7 +55,7 @@ pyramid_tm==2.2  # geoportal
 pytest-cov==2.5.1  # tests
 pytest-selenium==1.13.0  # admin tests
 python-dateutil==2.6.1  # geoportal, rq.filter: <2.7.0
-PyYAML==3.12  # geoportal
+PyYAML==4.1  # geoportal
 rasterio==1.0b4  # geoportal raster
 requests==2.19.1  # geoportal
 redis==2.10.6  # geoportal cache
