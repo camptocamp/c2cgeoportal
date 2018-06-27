@@ -395,7 +395,8 @@ git-attributes:
 	git --no-pager diff --check `git log --oneline | tail -1 | cut --fields=1 --delimiter=' '`
 
 YAML_FILES ?= $(filter-out ./tilegeneration/config.yaml ./geoportal/config.yaml \
-	./geoportal/alembic.yaml ./docker-compose-dev.yaml ./docker-compose.yaml, \
+	./qgisserver/geomapfish.yaml ./geoportal/alembic.yaml \
+	./docker-compose-dev.yaml ./docker-compose.yaml, \
 	$(shell find \
 		-name .build -prune -or \
 		-name cgxp -prune -or \
@@ -422,6 +423,7 @@ clean: template-clean
 		$(APP_OUTPUT_DIR)/ \
 		geoportal/$(PACKAGE)_geoportal/locale/$(PACKAGE)-*.pot \
 		geoportal/alembic.yaml \
+		qgisserver/geomapfish.yaml \
 		.UPGRADE* \
 		mapcache \
 		$(addprefix geoportal/$(PACKAGE)_geoportal/locale/, $(addsuffix /LC_MESSAGES/$(PACKAGE)_geoportal-$(L10N_CLIENT_POSTFIX).mo, $(LANGUAGES))) \
@@ -496,6 +498,13 @@ geoportal/config.yaml: /build/c2ctemplate-cache.json
 	c2c-template --cache /build/c2ctemplate-cache.json --get-config /build/_config.yaml $(CONFIG_VARS)
 	pykwalify --data-file /build/_config.yaml --schema-file CONST_config-schema.yaml
 	mv /build/_config.yaml $@
+	touch $@
+
+qgisserver/geomapfish.yaml: /build/c2ctemplate-cache.json
+	$(PRERULE_CMD)
+	mkdir --parent $(dir $@)
+	c2c-template --cache /build/c2ctemplate-cache.json --get-config $@ \
+		sqlalchemy_slave.url schema schema_static srid
 	touch $@
 
 # server localisation
@@ -690,7 +699,8 @@ docker-compose-build.yaml: /build/requirements.timestamp
 .PHONY: docker-build-config
 docker-build-config: $(shell docker-required --path .) \
 		$(PRINT_CONFIG_FILE) \
-		$(MAPCACHE_FILE)
+		$(MAPCACHE_FILE) \
+		qgisserver/geomapfish.yaml
 	docker build --tag=$(DOCKER_BASE)-config:$(DOCKER_TAG) .
 
 .PHONY: docker-build-geoportal

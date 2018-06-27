@@ -44,21 +44,12 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
         self.server_iface = server_iface
         self.area_cache = {}
 
-        if "GEOMAPFISH_SCHEMA" not in os.environ:
-            raise GMFException("The environment variable 'GEOMAPFISH_SCHEMA' is not defined.")
-        if "GEOMAPFISH_SRID" not in os.environ:
-            raise GMFException("The environment variable 'GEOMAPFISH_SRID' is not defined.")
         if "GEOMAPFISH_OGCSERVER" not in os.environ:
             raise GMFException("The environment variable 'GEOMAPFISH_OGCSERVER' is not defined.")
-        if "GEOMAPFISH_SQLALCHEMYURL" not in os.environ:
-            raise GMFException("The environment variable 'GEOMAPFISH_SQLALCHEMYURL' is not defined.")
 
         self.srid = os.environ["GEOMAPFISH_SRID"]
 
-        # TODO: open the geomapfish config file
-        config._config = {}
-        config._config['schema'] = os.environ["GEOMAPFISH_SCHEMA"]
-        config._config['srid'] = os.environ["GEOMAPFISH_SRID"]
+        config.init(os.environ.get('GEOMAPFISH_CONFIG', '/etc/qgisserver/geomapfish.yaml'))
         self.config = config
 
         from c2cgeoportal_commons.models.main import LayerWMS, OGCServer
@@ -84,7 +75,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             json.dumps(self.layers, sort_keys=True, indent=4)
         ))
 
-        server_iface.registerAccessControl(self, 100)
+        server_iface.registerAccessControl(self, int(os.environ.get("GEOMAPFISH_POSITION", 100)))
 
     def get_role(self):
         from c2cgeoportal_commons.models.main import Role
@@ -145,7 +136,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             area = "ST_GeomFromText('{}', {})".format(
                 area, self.srid
             )
-            if int(self.srid) != layer.crs().postgisSrid():
+            if self.srid != layer.crs().postgisSrid():
                 area = "ST_transform({}, {})".format(
                     area, layer.crs().postgisSrid()
                 )

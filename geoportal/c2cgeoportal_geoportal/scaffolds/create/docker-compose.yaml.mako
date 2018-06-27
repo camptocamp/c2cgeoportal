@@ -29,7 +29,7 @@ ${service_defaults('print', 8080)}\
 ${service_defaults('mapserver', 8080)}\
 
 ##  qgisserver:
-##    image: camptocamp/qgis-server:latest
+##    image: camptocamp/geomapfish-qgisserver:2.3
 ##    volumes_from:
 ##      - config:ro
 ##${service_defaults('qgisserver', 80)}
