@@ -39,38 +39,33 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
         self.server_iface = server_iface
         self.area_cache = {}
 
-        try:
-            if "GEOMAPFISH_SCHEMA" not in os.environ:
-                raise GMFException("The environment variable 'GEOMAPFISH_SCHEMA' is not defined.")
-            if "GEOMAPFISH_SRID" not in os.environ:
-                raise GMFException("The environment variable 'GEOMAPFISH_SRID' is not defined.")
-            if "GEOMAPFISH_OGCSERVER" not in os.environ:
-                raise GMFException("The environment variable 'GEOMAPFISH_OGCSERVER' is not defined.")
-            if "GEOMAPFISH_SQLALCHEMYURL" not in os.environ:
-                raise GMFException("The environment variable 'GEOMAPFISH_SQLALCHEMYURL' is not defined.")
+        if "GEOMAPFISH_SCHEMA" not in os.environ:
+            raise GMFException("The environment variable 'GEOMAPFISH_SCHEMA' is not defined.")
+        if "GEOMAPFISH_SRID" not in os.environ:
+            raise GMFException("The environment variable 'GEOMAPFISH_SRID' is not defined.")
+        if "GEOMAPFISH_OGCSERVER" not in os.environ:
+            raise GMFException("The environment variable 'GEOMAPFISH_OGCSERVER' is not defined.")
+        if "GEOMAPFISH_SQLALCHEMYURL" not in os.environ:
+            raise GMFException("The environment variable 'GEOMAPFISH_SQLALCHEMYURL' is not defined.")
 
-            c2cgeoportal.schema = os.environ["GEOMAPFISH_SCHEMA"]
-            c2cgeoportal.srid = os.environ["GEOMAPFISH_SRID"]
+        c2cgeoportal.schema = os.environ["GEOMAPFISH_SCHEMA"]
+        c2cgeoportal.srid = os.environ["GEOMAPFISH_SRID"]
 
-            sqlahelper.add_engine(sqlalchemy.create_engine(os.environ["GEOMAPFISH_SQLALCHEMYURL"]))
+        sqlahelper.add_engine(sqlalchemy.create_engine(os.environ["GEOMAPFISH_SQLALCHEMYURL"]))
 
-            from c2cgeoportal.models import DBSession, LayerWMS, OGCServer
+        from c2cgeoportal.models import DBSession, LayerWMS, OGCServer
 
-            self.ogcserver = DBSession.query(OGCServer).filter(OGCServer.name == unicode(os.environ["GEOMAPFISH_OGCSERVER"])).one()
+        self.ogcserver = DBSession.query(OGCServer).filter(OGCServer.name == unicode(os.environ["GEOMAPFISH_OGCSERVER"])).one()
 
-            self.layers = {}
-            # TODO manage groups ...
-            for layer in DBSession.query(LayerWMS).filter(LayerWMS.ogc_server_id == self.ogcserver.id).all():
-                for name in layer.layer.split(','):
-                    if name not in self.layers:
-                        self.layers[name] = []
-                    self.layers[name].append(layer)
+        self.layers = {}
+        # TODO manage groups ...
+        for layer in DBSession.query(LayerWMS).filter(LayerWMS.ogc_server_id == self.ogcserver.id).all():
+            for name in layer.layer.split(','):
+                if name not in self.layers:
+                    self.layers[name] = []
+                self.layers[name].append(layer)
 
-            server_iface.registerAccessControl(self, 100)
-        except Exception as e:
-            QgsMessageLog.logMessage(traceback.format_tb(e))
-            QgsMessageLog.logMessage(str(e))
-            raise
+        server_iface.registerAccessControl(self, 100)
 
     @staticmethod
     def get_role():
