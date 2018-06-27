@@ -69,7 +69,7 @@ vars:
           --max-requests-jitter=100
         VISIBLE_WEB_HOST: '{docker_host}'
         VISIBLE_WEB_PROTOCOL: '{docker_web_protocol}'
-        TINYOWS_URL: http://tinyows/
+        TINYOWS_URL: http://tinyows:8080/
         MAPSERVER_URL: http://mapserver/
         PRINT_URL: http://print:8080/print/
         DEVSERVER_URL: http://webpack-dev-server:8080${entry_point}
