@@ -47,10 +47,8 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
         if "GEOMAPFISH_OGCSERVER" not in os.environ:
             raise GMFException("The environment variable 'GEOMAPFISH_OGCSERVER' is not defined.")
 
-        self.srid = os.environ["GEOMAPFISH_SRID"]
-
         config.init(os.environ.get('GEOMAPFISH_CONFIG', '/etc/qgisserver/geomapfish.yaml'))
-        self.config = config
+        self.srid = config.get('srid')
 
         from c2cgeoportal_commons.models.main import LayerWMS, OGCServer
         configure_mappers()
