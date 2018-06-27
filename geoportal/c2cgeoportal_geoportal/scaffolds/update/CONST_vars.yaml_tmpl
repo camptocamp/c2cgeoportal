@@ -14,7 +14,6 @@ vars:
   host: '{VISIBLE_WEB_HOST}'
   web_protocol: '{VISIBLE_WEB_PROTOCOL}'
   entry_point: '{VISIBLE_ENTRY_POINT}'
-  dev_server_port: '{DEV_SERVER_PORT}'
   docker_entry_point: '{DOCKER_ENTRY_POINT}'
   docker_host: '{DOCKER_WEB_HOST}'
   docker_web_protocol: '{DOCKER_WEB_PROTOCOL}'
@@ -35,16 +34,19 @@ vars:
         PGUSER: www-data
         PGPASSWORD: www-data
         PGDATABASE: geomapfish
-        GEOPORTAL_INTERNAL_URL: 'http://geoportal/'
+        GEOPORTAL_INTERNAL_URL: http://geoportal/
+        MAPCACHE_URL: http://mapcache/mapcache/
+        MAPSERVER_URL: http://mapserver:8080/
+        MEMCACHED_HOST: memcached
+        MEMCACHED_PORT: 11211
+        TILEGENERATION_SQS_QUEUE: '<queue_name>'
     db:
       environment:
         POSTGRES_DB: geomapfish
         POSTGRES_USER: www-data
         POSTGRES_PASSWORD: www-data
-    geoportal:
-      environment:
-        VISIBLE_WEB_HOST: '{docker_host}'
-        VISIBLE_WEB_PROTOCOL: '{docker_web_protocol}'
+    geoportal-build:
+      environment: &geo-run-env
         VISIBLE_ENTRY_POINT: '{docker_entry_point}'
         PGHOST: 172.17.0.1
         PGHOST_SLAVE: 172.17.0.1
@@ -54,15 +56,44 @@ vars:
         PGDATABASE: geomapfish
         PGSCHEMA: main
         PGSCHEMA_STATIC: main_static
-        TINYOWS_URL: http://tinyows/
-        MAPSERVER_URL: http://mapserver/
+    geoportal:
+      environment:
+        <<: *geo-run-env
+        GUNICORN_PARAMS:
+          --bind=:8080
+          --worker-class=gthread
+          --threads=10
+          --workers=5
+          --timeout=60
+          --max-requests=1000
+          --max-requests-jitter=100
+        VISIBLE_WEB_HOST: '{docker_host}'
+        VISIBLE_WEB_PROTOCOL: '{docker_web_protocol}'
+        TINYOWS_URL: http://tinyows:8080/
+        MAPSERVER_URL: http://mapserver:8080/
         PRINT_URL: http://print:8080/print/
+        DEVSERVER_URL: http://webpack-dev-server:8080${entry_point}
         REDIS_HOST: redis
         REDIS_PORT: 6379
+        C2C_REDIS_URL: redis://redis:6379
+        C2C_BROADCAST_PREFIX: broadcast_geoportal_
     tilecloudchain:
       environment:
+        GUNICORN_PARAMS:
+          --bind=:8080
+          --worker-class=gthread
+          --threads=10
+          --workers=5
+          --max-requests=1000
+          --max-requests-jitter=100
         VISIBLE_ENTRY_POINT: '{docker_entry_point}'
         TILEGENERATION_CONFIGFILE: /etc/tilegeneration/config.yaml
+        C2C_BASE_PATH: /c2c_tiles
+        C2C_REDIS_URL: redis://redis:6379
+        C2C_BROADCAST_PREFIX: broadcast_tilecloudchain_
+    print:
+      environment:
+        CATALINA_OPTS: -Xmx1024m
     front:
       port: 80
 
@@ -198,6 +229,8 @@ vars:
     available_metadata:
       # Layers group
       - name: isExpanded
+        type: boolean
+      - name: printNativeAngle
         type: boolean
       # Layer
       - name: copyTo  # V1
@@ -360,9 +393,15 @@ vars:
 
   # For print proxy
   print_url: '{PRINT_URL}'
+  mapserver_url: '{MAPSERVER_URL}'
+  mapcache_url: '{MAPCACHE_URL}'
+  devserver_url: '{DEVSERVER_URL}'
+  memcached_host: '{MEMCACHED_HOST}'
+  memcached_port: '{MEMCACHED_PORT}'
+  tilegeneration_sqs_queue: '{TILEGENERATION_SQS_QUEUE}'
 
   pdfreport:
-    print_url: '{PRINT_URL}'
+    print_url: '{print_url}'
 
   # For base layers
   tiles_url:
@@ -379,6 +418,7 @@ vars:
   # Control the HTTP headers
   headers:
     index: &header
+      cache_control_max_age: 600  # 10 minutes
       access_control_max_age: 600  # 10 minutes
       access_control_allow_origin:
         - "*"
@@ -390,6 +430,7 @@ vars:
     exportgpxkml: *header
     error: *header
     themes: &auth_header
+      cache_control_max_age: 600  # 10 minutes
       access_control_max_age: 600  # 10 minutes
       access_control_allow_origin:
         - "{web_protocol}://{host}"
@@ -402,6 +443,7 @@ vars:
     layers: *auth_header
     shortener: *auth_header
     login:
+      cache_control_max_age: 600  # 10 minutes
       access_control_max_age: 600  # 10 minutes
       access_control_allow_origin:
         - "{web_protocol}://{host}"
@@ -420,28 +462,18 @@ vars:
         - name: desktop
           params:
             no_redirect: "true"
-          level: 1
-          # - name: mobile
-          #   params:
-          #     no_redirect: "true"
-          #   level: 3
-          # - name: desktop
-          #   params:
-          #     no_redirect: "true"
-          #     debug: "true"
-          #   level: 3
-          # - name: mobile
-          #   params:
-          #     no_redirect: "true"
-          #     debug: "true"
-          #   level: 3
+          level: 3
+        - name: mobile
+          params:
+            no_redirect: "true"
+          level: 3
     routes:
       disable: []
       routes:
-        # - name: apijs
-        #   level: 3
-        # - name: xapijs
-        #   level: 3
+        - name: apijs
+          level: 3
+        - name: xapijs
+          level: 3
         - name: printproxy_capabilities
           level: 3
         - name: mapserverproxy
@@ -522,7 +554,6 @@ environment:
   - WMTSCAPABILITIES_PATH
   - BUILD_VOLUME_NAME
   - PROJECT_DIRECTORY
-  - DEV_SERVER_PORT
   - INSTANCE
 
 runtime_environment:
@@ -550,10 +581,20 @@ runtime_environment:
     default: http://mapserver/
   - name: PRINT_URL
     default: http://print:8080/print/
+  - name: MAPCACHE_URL
+    default: http://mapcache:8080/
+  - name: DEVSERVER_URL
+    default: http://webpack-dev-server:8080/
   - name: REDIS_HOST
-    default: undefined  # no error if absent
+    default: redis
   - name: REDIS_PORT
     default: '6372'
+  - name: MEMCACHED_HOST
+    default: memcached
+  - name: MEMCACHED_PORT
+    default: '11211'
+  - name: TILEGENERATION_SQS_QUEUE
+    default: queue_name
 
 runtime_postprocess:
   - expression: int({})

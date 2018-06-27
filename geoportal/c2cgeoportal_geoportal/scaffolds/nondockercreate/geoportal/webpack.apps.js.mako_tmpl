@@ -4,7 +4,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-const INTERFACE_THEME = ${__import__('json').dumps(interfaces_theme)};
+const INTERFACE_THEME = ${__import__('ujson').dumps(interfaces_theme)};
 
 const plugins = [];
 const entry = {};
@@ -17,17 +17,14 @@ process.traceDeprecation = true;
 const name = process.env.INTERFACE;
 process.env.THEME = INTERFACE_THEME[name];
 
-entry[name] = path.resolve(__dirname, 'geoportal/${package}_geoportal/static-ngeo/js/apps/Controller' + name + '.js');
+entry[name] = path.resolve(__dirname, '${package}_geoportal/static-ngeo/js/apps/Controller' + name + '.js');
 plugins.push(
   new HtmlWebpackPlugin({
     inject: false,
-    template: '/src/geoportal/${package}_geoportal/static-ngeo/js/apps/' + name + '.html.ejs',
+    template: path.resolve(__dirname, '${package}_geoportal/static-ngeo/js/apps/' + name + '.html.ejs'),
     chunksSortMode: 'manual',
     filename: name + '.html',
     chunks: [name],
-    vars: {
-      entry_point: '${entry_point}',
-    },
   })
 );
 
@@ -41,7 +38,7 @@ const babelPresets = [['env',{
 
 // Transform code to ES2015 and annotate injectable functions with an $inject array.
 const projectRule = {
-  test: /geoportal\/{{package}}_geoportal\/static-ngeo\/js\/.*\.js$/,
+  test: /{{package}}_geoportal\/static-ngeo\/js\/.*\.js$/,
   use: {
     loader: 'babel-loader',
     options: {
@@ -52,16 +49,19 @@ const projectRule = {
 };
 
 const rules = [
-  projectRule,
+  projectRule
 ];
 
-const noDevServer = process.env['NO_DEV_SERVER'] != 'FALSE';
+const noDevServer = process.env['NO_DEV_SERVER'] == 'TRUE';
 devServer = dev && !noDevServer;
+
+console.log("Use dev mode: " + dev)
+console.log("Use dev server mode: " + devServer)
 
 module.exports = {
   output: {
-    path: path.resolve(__dirname, 'geoportal/{{package}}_geoportal/static-ngeo/build/'),
-    publicPath: devServer ? '/${instance}/dev/' : '${entry_point}static-ngeo/UNUSED_CACHE_VERSION/build/'
+    path: path.resolve(__dirname, '{{package}}_geoportal/static-ngeo/build/'),
+    publicPath: devServer ? '/${instanceid}/wsgi/dev/' : '/${instanceid}/wsgi/static-ngeo/UNUSED_CACHE_VERSION/build/'
   },
   entry: entry,
   module: {
@@ -70,7 +70,7 @@ module.exports = {
   plugins: plugins,
   resolve: {
     alias: {
-      {{package}}: path.resolve(__dirname, 'geoportal/{{package}}_geoportal/static-ngeo/js'),
+      {{package}}: path.resolve(__dirname, '{{package}}_geoportal/static-ngeo/js'),
     }
-  }
+  },
 };

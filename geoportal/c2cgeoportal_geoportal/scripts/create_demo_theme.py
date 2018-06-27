@@ -45,7 +45,7 @@ def main():
     )
     parser.add_argument(
         '-i', '--iniconfig',
-        default='geoportal/production.ini',
+        default='production.ini',
         help='project .ini config file'
     )
     parser.add_argument(
@@ -90,6 +90,8 @@ def main():
     session.add(theme)
 
     transaction.commit()
+
+    print("Successfully added the demo theme")
 
 
 if __name__ == "__main__":

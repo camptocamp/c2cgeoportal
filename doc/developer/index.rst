@@ -18,7 +18,6 @@ Content:
     cache
     debugging
     development_procedure
-    documentation_infrastructure
     ngeo
     principles
     python_packaging

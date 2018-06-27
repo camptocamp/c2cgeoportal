@@ -47,7 +47,6 @@ _ = TranslationStringFactory("c2cgeoportal")
 class Profile(Raster):
 
     def __init__(self, request):
-        self.request = request
         Raster.__init__(self, request)
 
     @view_config(route_name="profile.json", renderer="decimaljson")

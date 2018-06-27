@@ -14,13 +14,13 @@ caches:
         folder: /var/sig/tiles
         wmtscapabilities_file: ${wmtscapabilities_path}
         # for GetCapabilities
-        http_url: ${web_protocol}://${host}${entry_point}tiles/
+        http_url: ${web_protocol}://${host}${entry_point}
     s3:
         type: s3
         bucket: tiles
         folder: ''
         # for GetCapabilities
-        http_url: https://%(host)s/%(bucket)s/%(folder)s/
+        http_url: ${web_protocol}://${host}${entry_point}
         cache_control: 'public, max-age=14400'
         hosts:
         - wmts0.<host>
@@ -33,7 +33,7 @@ defaults:
         # The minimum resolution to seed, useful to use with mapcache, optional.
         # min_resolution_seed: 1
         # the URL of the WMS server to used
-        url: http://mapserver/
+        url: ${mapserver_url}
         # Set the headers to get the right virtual host, and don't get any cached result
         headers:
             Host: '${host}'
@@ -59,7 +59,7 @@ defaults:
         # the meta tiles definition [default to off]
         meta: on
         # the meta tiles size [default to 8]
-        meta_size: 8
+        meta_size: 5
         # the meta tiles buffer [default to 128]
         meta_buffer: 128
         # connexion an sql to get geometries (in column named geom) where we want to generate tiles
@@ -101,10 +101,23 @@ generation:
     # maximum allowed consecutive errors, after it exit [default to 10]
     maxconsecutive_errors: 10
 
+sqs:
+    # The region where the SQS queue is
+    region: eu-west-1
+    # The SQS queue name, it should already exists
+    queue: '${tilegeneration_sqs_queue}'
+
+server:
+    mapcache_base: '${mapcache_url}'
+    wmts_path: tiles
+    static_path: static_tiles
+    expires: 8  # 8 hours
+
 mapcache:
-    config_file: mapcache/mapcache.xml
-    memcache_host: localhost
-    memcache_port: 11211
+    config_file: mapcache/mapcache.xml.tmpl
+    location: ''
+    memcache_host: '${memcached_host}'
+    memcache_port: '${memcached_port}'
 
 process:
     optipng_test:

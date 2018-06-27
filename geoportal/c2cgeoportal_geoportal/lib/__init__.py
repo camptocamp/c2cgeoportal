@@ -400,22 +400,3 @@ class MultiDomainStaticURLInfo(StaticURLInfo):  # pragma: no cover
 
 
 _formatter = Formatter()
-
-
-def confd_env(val):
-    """
-    This is a Mako filter build used in conjunction with c2c.template to create confd TOML files.
-    I we put in the vars file:
-    ```
-    vars:
-      host: '{HOST}'
-    runtime_environment:
-      - HOST
-    ```
-    `${host|confd_env}`will be transformed as `{{getenv "HOST"}}`
-    """
-    replacements = {}
-    for _, attr, _, _ in _formatter.parse(val):
-        if attr is not None:
-            replacements[attr] = '{{getenv "' + attr + '"}}'
-    return val.format(**replacements)

@@ -16,7 +16,7 @@ The webservice is called using the following URL schema:
 Configuration
 -------------
 
-The service is configured in the main ``vars_<package>.yaml`` file of the project
+The service is configured in the main ``vars.yaml`` file of the project
 as in the following example:
 
 .. code:: yaml

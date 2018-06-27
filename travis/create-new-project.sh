@@ -3,11 +3,10 @@
 WORKSPACE=$1
 mkdir --parent ${WORKSPACE}/testgeomapfish
 
-export SRID=21781 EXTENT=489246.36,78873.44,837119.76,296543.14
-./docker-run --image=camptocamp/geomapfish-build --share ${WORKSPACE} pcreate --scaffold=c2cgeoportal_create \
-    --ignore-conflicting-name --package-name testgeomapfish ${WORKSPACE}/testgeomapfish
-./docker-run --image=camptocamp/geomapfish-build --share ${WORKSPACE} pcreate --scaffold=c2cgeoportal_update \
-    --ignore-conflicting-name --package-name testgeomapfish ${WORKSPACE}/testgeomapfish
+DOCKER_RUN_ARGS="--env=SRID=21781 --env=EXTENT=489246.36,78873.44,837119.76,296543.14 --image=camptocamp/geomapfish-build --share=${WORKSPACE}"
+PCREATE_CMD="pcreate --ignore-conflicting-name --overwrite --package-name testgeomapfish ${WORKSPACE}/testgeomapfish"
+./docker-run ${DOCKER_RUN_ARGS} ${PCREATE_CMD} --scaffold=c2cgeoportal_create
+./docker-run ${DOCKER_RUN_ARGS} ${PCREATE_CMD} --scaffold=c2cgeoportal_update
 
 # Copy files for travis build and tests
 cp travis/build.mk ${WORKSPACE}/testgeomapfish/travis.mk
@@ -29,7 +28,5 @@ git clean -fX
 
 # Build
 ./docker-run make --makefile=travis.mk build docker-build-testdb
-# Create default theme
-./docker-compose-run /build/venv/bin/python /usr/local/bin/create-demo-theme
 ./docker-compose-run make --makefile=travis.mk update-po
 ./docker-compose-run make --makefile=travis.mk theme2fts

@@ -41,6 +41,7 @@ from sqlalchemy.schema import Index
 from sqlalchemy.orm import relationship, backref, Session
 from geoalchemy2 import Geometry
 from geoalchemy2.shape import to_shape
+from c2cwsgiutils import broadcast
 
 import zope.event
 import colander
@@ -63,6 +64,11 @@ class InvalidateCacheEvent:
 
 
 def cache_invalidate_cb(*args: List[Any]) -> None:
+    _cache_invalidate_cb()
+
+
+@broadcast.decorator()
+def _cache_invalidate_cb() -> None:
     zope.event.notify(InvalidateCacheEvent())
 
 

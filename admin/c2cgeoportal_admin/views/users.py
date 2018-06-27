@@ -37,7 +37,7 @@ class UserViews(AbstractViews):
         return super().index()
 
     @view_config(route_name='c2cgeoform_grid',
-                 renderer='json')
+                 renderer='fast_json')
     def grid(self):
         return super().grid()
 
@@ -56,8 +56,10 @@ class UserViews(AbstractViews):
 
             if isinstance(response, HTTPFound):
                 password = pwgenerator.generate()
+
                 user = self._obj
-                user.set_temp_password(password)
+                user.password = password
+                user.is_password_changed = False
                 user = self._request.dbsession.merge(user)
                 self._request.dbsession.flush()
 
@@ -74,7 +76,7 @@ class UserViews(AbstractViews):
 
     @view_config(route_name='c2cgeoform_item',
                  request_method='DELETE',
-                 renderer='json')
+                 renderer='fast_json')
     def delete(self):
         return super().delete()
 

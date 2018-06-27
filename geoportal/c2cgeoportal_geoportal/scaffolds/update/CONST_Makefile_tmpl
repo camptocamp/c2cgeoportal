@@ -2,12 +2,10 @@ GEOMAPFISH_VERSION ?= {{geomapfish_version}}
 export GEOMAPFISH_VERSION
 export PACKAGE = {{package}}
 
-DEV_SERVER_PORT ?= 8081
-export DEV_SERVER_PORT
-
 INSTANCE ?= main
 export INSTANCE
 
+DOCKER ?= TRUE
 ifeq ($(INSTANCE), main)
 DOCKER_ENTRY_POINT ?= /
 else
@@ -18,8 +16,6 @@ DOCKER_WEB_PROTOCOL ?= https
 export DOCKER_ENTRY_POINT
 export DOCKER_WEB_HOST
 export DOCKER_WEB_PROTOCOL
-
-MAPSERVER ?= TRUE
 
 ifeq ($(DEBUG), TRUE)
 PRERULE_CMD ?= @echo "Build \033[1;34m$@\033[0m due modification on \033[1;34m$?\033[0m" 1>&2; ls -t --full-time --reverse $? $@ 1>&2 || true
@@ -47,7 +43,7 @@ CGXP_API ?= TRUE
 CGXP_XAPI ?= FALSE
 INTERFACES += $(NGEO_INTERFACES) $(CGXP_INTERFACES)
 export INTERFACES
-# Used print version
+# Use print
 PRINT ?= TRUE
 # Enable Docker target
 DOCKER_BASE ?= camptocamp/{{package}}
@@ -82,18 +78,20 @@ WEB_RULE ?= $(DEFAULT_WEB_RULE)
 DEFAULT_BUILD_RULES ?= docker-build-geoportal \
 	docker-build-config \
 	project.yaml \
-	alembic.ini \
-	alembic.yaml \
+	geoportal/alembic.ini \
+	geoportal/alembic.yaml \
 	docker-compose.yaml \
-	docker-compose-build.yaml
+	docker-compose-build.yaml \
+	docker-compose-dev.yaml
 
 # TileCloud-chain
 WMTSCAPABILITIES_PATH ?= 1.0.0/WMTSCapabilities-$(ENVIRONMENT).xml
 export WMTSCAPABILITIES_PATH
 ifeq ($(TILECLOUD_CHAIN), TRUE)
 WMTSCAPABILITIES_FILE ?= /var/sig/tiles/$(WMTSCAPABILITIES_PATH)
-MAPCACHE_FILE ?= mapcache/mapcache.xml
-DEFAULT_BUILD_RULES += tilegeneration/config.yaml
+MAPCACHE_FILE ?= mapcache/mapcache.xml.tmpl
+TILEGENERATION_CONFIG_FILE ?= tilegeneration/config.yaml.tmpl
+DEFAULT_BUILD_RULES += $(TILEGENERATION_CONFIG_FILE)
 ifeq ($(TILECLOUD_CHAIN_LOCAL), TRUE)
 DEFAULT_BUILD_RULES += $(WMTSCAPABILITIES_FILE)
 endif
@@ -117,6 +115,8 @@ GIT_HASH ?= $(shell git rev-parse HEAD)
 # ngeo
 NODE_ENV ?= production
 export NODE_ENV
+NO_DEV_SERVER ?= TRUE
+export NO_DEV_SERVER
 ANGULAR_VERSION = 1.6
 APP_OUTPUT_DIR = geoportal/$(PACKAGE)_geoportal/static-ngeo/build
 GCC_JS_FILES = $(shell find /usr/lib/node_modules/openlayers/src/ol /usr/lib/node_modules/ngeo/src /usr/lib/node_modules/ol-cesium/src -type f -name '*.js' 2> /dev/null)
@@ -302,9 +302,11 @@ SERVER_LOCALISATION_RULES = $(addprefix /build/lang-server-, $(LANGUAGES))
 endif
 
 # Print
+ifeq ($(PRINT), TRUE)
 PRINT_BASE_DIR ?= print
 PRINT_CONFIG_FILE ?= print/print-apps/$(PACKAGE)/config.yaml.tmpl
 I18N_SOURCE_FILES += $(PRINT_CONFIG_FILE)
+endif
 
 PY_FILES = $(shell find $(PACKAGE) -type f -name '*.py' -print)
 
@@ -320,7 +322,7 @@ CONFIG_VARS += sqlalchemy.url sqlalchemy_slave.url schema schema_static enable_a
 	tiles_url checker check_collector default_max_age jsbuild package srid \
 	reset_password fulltextsearch headers authorized_referers hooks stats db_chooser \
 	ogcproxy_enable dbsessions urllogin host_forward_host smtp c2c.base_path welcome_email host \
-	lingua_extractor interfaces_config interfaces default_interface
+	lingua_extractor interfaces_config interfaces default_interface devserver_url
 MAKE_FILES = $(wildcard *.mk) CONST_Makefile
 
 # Secrets
@@ -392,11 +394,15 @@ checks: flake8 $(CLIENT_CHECK_RULE) git-attributes yamllint spell
 git-attributes:
 	git --no-pager diff --check `git log --oneline | tail -1 | cut --fields=1 --delimiter=' '`
 
-YAML_FILES ?= $(filter-out ./tilegeneration/config.yaml ./geoportal/config.yaml ./alembic.yaml,$(shell find \
-	-name .build -prune -or \
-	-name cgxp -prune -or \
-	-name node_modules -prune -or \
-	\( -name "*.yml" -or -name "*.yaml" \) -print))
+YAML_FILES ?= $(filter-out ./tilegeneration/config.yaml ./geoportal/config.yaml \
+	./qgisserver/geomapfish.yaml ./geoportal/alembic.yaml \
+	./docker-compose-dev.yaml ./docker-compose.yaml, \
+	$(shell find \
+		-name .build -prune -or \
+		-name cgxp -prune -or \
+		-name node_modules -prune -or \
+		\( -name "*.yml" -or -name "*.yaml" \) -print \
+	))
 .PHONY: yamllint
 yamllint: $(YAML_FILES)
 	yamllint --strict --config-file=yamllint.yaml -s $(YAML_FILES)
@@ -416,7 +422,8 @@ clean: template-clean
 		$(OUTPUT_DIR)/ \
 		$(APP_OUTPUT_DIR)/ \
 		geoportal/$(PACKAGE)_geoportal/locale/$(PACKAGE)-*.pot \
-		alembic.yaml \
+		geoportal/alembic.yaml \
+		qgisserver/geomapfish.yaml \
 		.UPGRADE* \
 		mapcache \
 		$(addprefix geoportal/$(PACKAGE)_geoportal/locale/, $(addsuffix /LC_MESSAGES/$(PACKAGE)_geoportal-$(L10N_CLIENT_POSTFIX).mo, $(LANGUAGES))) \
@@ -455,9 +462,9 @@ build-cgxp: $(JSBUILD_OUTPUT_FILES) $(CSS_CGXP_OUTPUT)
 lint-ngeo: /build/eslint.timestamp
 
 .PHONY: upgrade-db
-upgrade-db: alembic.ini alembic.yaml
-	alembic --name=main upgrade head
-	alembic --name=static upgrade head
+upgrade-db: geoportal/alembic.ini geoportal/alembic.yaml
+	alembic --config=$< --name=main upgrade head
+	alembic --config=$< --name=static upgrade head
 
 # Templates
 
@@ -491,6 +498,13 @@ geoportal/config.yaml: /build/c2ctemplate-cache.json
 	c2c-template --cache /build/c2ctemplate-cache.json --get-config /build/_config.yaml $(CONFIG_VARS)
 	pykwalify --data-file /build/_config.yaml --schema-file CONST_config-schema.yaml
 	mv /build/_config.yaml $@
+	touch $@
+
+qgisserver/geomapfish.yaml: /build/c2ctemplate-cache.json
+	$(PRERULE_CMD)
+	mkdir --parent $(dir $@)
+	c2c-template --cache /build/c2ctemplate-cache.json --get-config $@ \
+		sqlalchemy_slave.url schema schema_static srid
 	touch $@
 
 # server localisation
@@ -588,28 +602,26 @@ $(APP_OUTPUT_DIR)/images/: /usr/lib/node_modules/jquery-ui/themes/base/images
 
 
 .PRECIOUS: /build/apps.timestamp
-/build/apps.timestamp: webpack.apps.js $(addprefix /build/apps., $(addsuffix .timestamp, $(NGEO_INTERFACES)))
+/build/apps.timestamp: geoportal/webpack.apps.js $(addprefix /build/apps., $(addsuffix .timestamp, $(NGEO_INTERFACES)))
 	touch $@
 
 .PRECIOUS: /build/apps.%.timestamp
 /build/apps.%.timestamp: $(OL_JS_FILES) $(NGEO_JS_FILES) $(APP_JS_FILES) \
-			$(APP_HTML_FILES) webpack.config.js \
+			$(APP_HTML_FILES) geoportal/webpack.config.js \
 			$(LESS_FILES) \
 			$(NGEO_FONTS) \
 			$(APP_OUTPUT_DIR)/images/
 	$(PRERULE_CMD)
 	# Workaround to make Webpack working for ol/index.js
-	ln --symbolic /usr/lib/node_modules/ .
-	INTERFACE=$* webpack $(WEBPACK_ARGS)
-	rm node_modules
+	rm --force geoportal/node_modules
+	ln --symbolic /usr/lib/node_modules/ geoportal/
+	(cd geoportal; INTERFACE=$* webpack $(WEBPACK_ARGS))
+	rm geoportal/node_modules
+ifeq ($(DOCKER), TRUE)
 	mv $(APP_OUTPUT_DIR)/$*.html $(APP_OUTPUT_DIR)/$*.html.tmpl
 	ls -1 $(APP_OUTPUT_DIR)/$*.*.css|while read file; do mv $${file} $${file}.tmpl; done
+endif
 	touch $@
-
-.PHONY: serve
-serve:
-	node_modules/.bin/webpack-dev-server --port=$(DEV_SERVER_PORT) -d --watch --progress \
-		--public=$(VISIBLE_WEB_HOST):$(VISIBLE_WEB_PORT) --mode=development --inline=false
 
 /build/eslint.timestamp: $(APP_JS_FILES)
 	$(PRERULE_CMD)
@@ -687,15 +699,16 @@ docker-compose-build.yaml: /build/requirements.timestamp
 .PHONY: docker-build-config
 docker-build-config: $(shell docker-required --path .) \
 		$(PRINT_CONFIG_FILE) \
-		$(MAPCACHE_FILE)
-	docker build -t $(DOCKER_BASE)-config:$(DOCKER_TAG) .
+		$(MAPCACHE_FILE) \
+		qgisserver/geomapfish.yaml
+	docker build --tag=$(DOCKER_BASE)-config:$(DOCKER_TAG) .
 
 .PHONY: docker-build-geoportal
 docker-build-geoportal: $(shell docker-required --path geoportal) \
 		$(WEB_RULE) \
 		$(addprefix geoportal/$(PACKAGE)_geoportal/locale/, $(addsuffix /LC_MESSAGES/$(PACKAGE)_geoportal-$(L10N_CLIENT_POSTFIX).mo, $(LANGUAGES))) \
 		geoportal/config.yaml
-	docker build --tag=$(DOCKER_BASE)-geoportal:$(DOCKER_TAG) --build-arg="GIT_HASH=$(GIT_HASH)" geoportal
+	docker build --tag=$(DOCKER_BASE)-geoportal:$(DOCKER_TAG) --build-arg=GIT_HASH=$(GIT_HASH) geoportal
 ifdef CGXP_INTERFACES
 docker-build-geoportal: $(addprefix geoportal/$(PACKAGE)_geoportal/locale/, $(addsuffix /LC_MESSAGES/$(PACKAGE)_geoportal-$(L10N_SERVER_POSTFIX).mo, $(LANGUAGES)))
 endif
@@ -703,11 +716,10 @@ endif
 
 .PHONY: push-docker
 push-docker:
-	docker push $(DOCKER_BASE)-print:$(DOCKER_TAG)
+	docker push $(DOCKER_BASE)-config:$(DOCKER_TAG)
 	docker push $(DOCKER_BASE)-geoportal:$(DOCKER_TAG)
-	docker push $(DOCKER_BASE)-mapserver:$(DOCKER_TAG)
 
-alembic.yaml: $(ALEMBIC_YAML_FILE) vars.yaml CONST_vars.yaml
+geoportal/alembic.yaml: $(ALEMBIC_YAML_FILE) vars.yaml CONST_vars.yaml
 	$(PRERULE_CMD)
 	c2c-template --vars $< --get-config /build/_alembic.yaml srid schema schema_static sqlalchemy.url cache
 	mv /build/_alembic.yaml $@
@@ -720,13 +732,13 @@ testdb/11-schemas.sql: $(ALEMBIC_YAML_FILE) testdb/11-schemas.sql_mako vars.yaml
 		--files testdb/11-schemas.sql.mako
 	rm testdb/11-schemas.sql.mako
 
-testdb/12-alembic.sql: alembic.ini alembic.yaml $(shell ls -1 /opt/alembic/main/*.py)
+testdb/12-alembic.sql: geoportal/alembic.ini geoportal/alembic.yaml $(shell ls -1 /opt/alembic/main/*.py)
 	$(PRERULE_CMD)
-	alembic --name=main upgrade --sql head > $@
+	alembic --config=$< --name=main upgrade --sql head > $@
 
-testdb/13-alembic-static.sql: alembic.ini alembic.yaml $(shell ls -1 /opt/alembic/static/*.py)
+testdb/13-alembic-static.sql: geoportal/alembic.ini geoportal/alembic.yaml $(shell ls -1 /opt/alembic/static/*.py)
 	$(PRERULE_CMD)
-	alembic --name=static upgrade --sql head > $@
+	alembic --config=$< --name=static upgrade --sql head > $@
 
 .PHONY: docker-build-testdb
 docker-build-testdb: testdb/11-schemas.sql testdb/12-alembic.sql testdb/13-alembic-static.sql \
@@ -747,21 +759,21 @@ upgrade%:
 
 # Tilecloud chain
 
-$(MAPCACHE_FILE): tilegeneration/config.yaml
+$(MAPCACHE_FILE): $(TILEGENERATION_CONFIG_FILE)
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
-	generate_controller --mapcache
+	generate_controller --config=$< --mapcache
 
-$(WMTSCAPABILITIES_FILE): tilegeneration/config.yaml
+$(WMTSCAPABILITIES_FILE): $(TILEGENERATION_CONFIG_FILE)
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
-	generate_controller --capabilities
+	generate_controller --config=$< --capabilities
 
 # Secrets
 
 secrets.tar.bz2.gpg:
 	tar -jcf secrets.tar.bz2 $^
-	gpg --keyserver pgp.mit.edu --keyserver-options timeout=20 --recv-keys $(GPG_KEYS)
+	gpg --keyserver pool.sks-keyservers.net --keyserver-options timeout=20 --recv-keys $(GPG_KEYS)
 	rm -f $@
 	gpg --always-trust --output $@ --encrypt $(addprefix --recipient ,$(GPG_KEYS)) secrets.tar.bz2
 	rm secrets.tar.bz2

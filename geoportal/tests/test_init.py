@@ -45,7 +45,7 @@ class TestIncludeme(TestCase):
     def setup_method(self, _):
         # the c2cgeoportal includeme function requires a number
         # of settings
-        config._config = {
+        self.config = testing.setUp(settings={
             "sqlalchemy.url": "postgresql://www-data:www-data@db:5432/geomapfish_tests",
             "srid": 3857,
             "schema": "main",
@@ -53,9 +53,8 @@ class TestIncludeme(TestCase):
             "default_max_age": 86400,
             "app.cfg": "/src/geoportal/tests/config.yaml",
             "package": "c2cgeoportal",
-            "enable_admin_interface": True,
-        }
-        self.config = testing.setUp(settings=config.get_config())
+            "enable_admin_interface": False,
+        })
 
     def test_set_user_validator_directive(self):
         self.config.include(c2cgeoportal_geoportal.includeme)
@@ -79,8 +78,7 @@ class TestIncludeme(TestCase):
             del password  # Unused
             return False  # pragma: no cover
         self.config.set_user_validator(custom_validator)
-        self.assertEqual(self.config.registry.validate_user,
-                         custom_validator)
+        self.assertEqual(self.config.registry.validate_user, custom_validator)
 
 
 class TestReferer(TestCase):

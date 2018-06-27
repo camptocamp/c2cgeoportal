@@ -194,7 +194,7 @@ class User(Base):
                 self.temp_password == self.__encrypt_password(passwd):
             self._password = self.temp_password
             self.temp_password = None
-            self.is_password_changed = True
+            self.is_password_changed = False
             return True
         return False
 

@@ -5,6 +5,7 @@ Filter (Querier)
 
 Filterable layers (public)
 --------------------------
+
 Per default, layers are not filterable.
 If you wish to provide the filter functionality, proceed as follows:
 
@@ -29,8 +30,10 @@ If you wish to provide the filter functionality, proceed as follows:
             - my_layer_name_1
             - my_layer_name_2
 
+
 Filterable layers (private)
 ---------------------------
+
 * If you wish to provide layers for filtering only for specific user roles, define this in the
   admin interface as follows:
 
@@ -45,6 +48,7 @@ Filterable layers (private)
   functionalities that all registered users shall have access to, via the
   ``functionalities.registered`` variable of your vars file.
 
+
 Available attributes and operators in filters
 ---------------------------------------------
 
@@ -52,6 +56,7 @@ All attributes defined as "exported" in the layer of your map server will be aut
 filterable attribute. If the type, and so the operator on the attribute, is not adequate for
 filtering, you should adapt the type in your layer definition.
 See :ref:`administrator_mapfile_wfs_getfeature` for more information (MapServer only).
+
 
 Enumerate available attributes for a layer
 ------------------------------------------
@@ -103,18 +108,6 @@ Simple example:
                         table: geodata.table
                     country: *layers-enum-mapserver-layer-defaults
 
-.. note::
-
-    If you use cgxp, make sure that the ``cgxp_querier`` plugin has
-    the attribute ``attributeURLs`` in the ``viewer.js`` file:
-
-    .. code:: javascript
-
-        {
-            ptype: "cgxp_querier",
-            attributeURLs: ${queryer_attribute_urls | n},
-            ...
-        },
 
 Step 2: Administration interface
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -38,7 +38,7 @@ import logging
 from urllib.parse import urlparse, parse_qs
 
 from pyramid.response import Response
-from pyramid.httpexceptions import HTTPBadGateway, HTTPInternalServerError
+from pyramid.httpexceptions import HTTPBadGateway, exception_response
 
 from c2cgeoportal_geoportal.lib.caching import get_region, \
     set_common_headers, NO_CACHE, PUBLIC_CACHE, PRIVATE_CACHE
@@ -127,9 +127,9 @@ class Proxy(object):
                 args.append(body.decode("utf-8"))
             log.error("\n".join(errors), *args, exc_info=True)
 
-            raise HTTPBadGateway("Error on backend<hr>See logs for detail")
+            raise HTTPBadGateway("Error on backend, See logs for detail")
 
-        if resp.status < 200 or resp.status >= 300:  # pragma: no cover
+        if resp.status >= 300:  # pragma: no cover
             errors = [
                 "Error '%s' in response of URL:",
                 "%s",
@@ -155,7 +155,7 @@ class Proxy(object):
             args.append(content.decode("utf-8"))
             log.error("\n".join(errors), *args)
 
-            raise HTTPInternalServerError("See logs for details")
+            raise exception_response(resp.status)
 
         return resp, content
 

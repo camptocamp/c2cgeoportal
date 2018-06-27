@@ -1,6 +1,7 @@
 # This file override and improve some rules for CONST_Makefile for non Docker production environment
 
 DEPLOY ?= TRUE
+DOCKER ?= FALSE
 ENVIRONMENT ?= INSTANCE_ID
 CONFIG_VARS += instanceid
 MODWSGI_USER ?= www-data
@@ -14,6 +15,10 @@ export MAPSERVER_URL
 PRINT_URL ?= http://print:8080/print/
 export PRINT_URL
 PRINT_CONFIG_FILE ?= print/print-apps/$(PACKAGE)/config.yaml
+ifeq ($(TILECLOUD_CHAIN), TRUE)
+MAPCACHE_FILE ?= apache/mapcache.xml
+endif
+TILEGENERATION_CONFIG_FILE = tilegeneration/config.yaml
 
 VISIBLE_WEB_PROTOCOL ?= https
 VISIBLE_WEB_PORT ?= 443
@@ -36,12 +41,11 @@ CONF_FILES += $(shell ls -1 apache/*.conf 2> /dev/null) $(CONF_FILES_MAKO:.mako=
 DEFAULT_BUILD_RULES ?= docker-build-geoportal \
 	docker-build-config \
 	project.yaml \
-	alembic.ini \
-	alembic.yaml
+	geoportal/alembic.ini \
+	geoportal/alembic.yaml
 
 TILECLOUD_CHAIN ?= TRUE
 ifeq ($(TILECLOUD_CHAIN), TRUE)
-MAPCACHE_FILE = apache/mapcache.xml
 CONF_FILES += $(MAPCACHE_FILE)
 endif
 

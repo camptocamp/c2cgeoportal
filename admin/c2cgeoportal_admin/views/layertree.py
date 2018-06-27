@@ -33,7 +33,7 @@ class LayerTreeViews():
         return {'limit_exceeded': limit_exceeded}
 
     @view_config(route_name='layertree_children',
-                 renderer='json')
+                 renderer='fast_json')
     def children(self):
         group_id = self._request.params.get('group_id', None)
         path = self._request.params.get('path', '')
@@ -143,7 +143,7 @@ class LayerTreeViews():
 
     @view_config(route_name='layertree_unlink',
                  request_method='DELETE',
-                 renderer='json')
+                 renderer='fast_json')
     def unlink(self):
         group_id = self._request.matchdict.get('group_id')
         item_id = self._request.matchdict.get('item_id')
@@ -162,7 +162,7 @@ class LayerTreeViews():
 
     @view_config(route_name='layertree_delete',
                  request_method='DELETE',
-                 renderer='json')
+                 renderer='fast_json')
     def delete(self):
         item_id = self._request.matchdict.get('item_id')
         item = self._request.dbsession.query(TreeItem).get(item_id)

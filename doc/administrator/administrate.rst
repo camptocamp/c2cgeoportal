@@ -131,14 +131,11 @@ The layers in the admin interface have the following attributes:
 * ``Min/Max resolution``: resolutions between which data are displayed by
   the given layer, used to zoom to visible scale, with WMS if it is empty
   we get the values from the capabilities.
-* ``Disclaimer``: optional, copyright of the layer, used by
-  `Disclaimer <http://docs.camptocamp.net/cgxp/2.2/lib/plugins/Disclaimer.html>`_.
-* ``Identifier attribute field``: field used to identify a feature from the
-  layer, e.g.: 'name', used by
-  `FeaturesWindow <http://docs.camptocamp.net/cgxp/2.2/lib/plugins/FeaturesWindow.html>`_.
-* ``Restrictions area``: the areas throw witch the user can see the layer.
+* ``Disclaimer``: optional, copyright of the layer.
+* ``Identifier attribute field``: field used to identify a feature from the layer, e.g.: 'name'.
+* ``Restrictions area``: the areas through which the user can see the layer.
 
-On ``internal WMS`` layer we have the following specific attributes:
+On ``internal WMS`` layers we have the following specific attributes:
 
 * ``Image type``: the type of the images.
 * ``Style``: the used style, can be empty.

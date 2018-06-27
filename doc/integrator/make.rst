@@ -18,9 +18,9 @@ Default is:
 .. code:: makefile
 
     ifdef VARS_FILE
-    VARS_FILES += ${VARS_FILE} vars_<package>.yaml
+    VARS_FILES += ${VARS_FILE} vars.yaml
     else
-    VARS_FILE = vars_<package>.yaml
+    VARS_FILE = vars.yaml
     VARS_FILES += ${VARS_FILE}
     endif
 
@@ -37,7 +37,7 @@ Default is:
 Vars files
 ----------
 
-The project variables are set in the ``vars_<package>.yaml`` file,
+The project variables are set in the ``vars.yaml`` file,
 which extends the default ``CONST_vars.yaml``.
 
 To make such variables available to the python code, for instance using
@@ -78,14 +78,13 @@ The following variables may be set in the makefiles:
 
 * ``CONFIG_VARS``: The list of parameters read from the project YAML configuration file.
 * ``DEVELOPMENT``: If ``TRUE`` the ``CSS`` and ``JS`` files are not minified and the
-    ``development.ini`` pyramid config file is used, default to ``FALSE``.
+    ``development.ini`` pyramid config file is used, default is ``FALSE``.
 * ``DISABLE_BUILD_RULES``: List of rules we want to disable, default is empty.
-* ``LANGUAGES``: List of available languages.
+* ``LANGUAGES``: List of available languages, default is ``en fr de``.
 * ``CGXP_INTERFACES``: List of CGXP interfaces, default is empty.
 * ``NGEO_INTERFACES``: List of ngeo interfaces, default is ``mobile desktop``.
-* ``PRINT``: Mapfish print is enable, default to ``TRUE``.
-* ``MAPSERVER``: MapServer is enable, default to ``TRUE``.
-* ``TILECLOUD_CHAIN``: ``TRUE`` to indicate that we use TileCloud-chain, default to ``TRUE``.
+* ``PRINT``: Mapfish print is enabled, default is ``TRUE``.
+* ``TILECLOUD_CHAIN``: ``TRUE`` to indicate that we use TileCloud-chain, default is ``TRUE``.
 
 
 Secrets

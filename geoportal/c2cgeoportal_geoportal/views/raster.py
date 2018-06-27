@@ -33,7 +33,7 @@ import os
 from decimal import Decimal
 from repoze.lru import LRUCache
 
-import fiona
+from fiona.collection import Collection
 import rasterio
 from pyramid.httpexceptions import HTTPNotFound
 from pyramid.view import view_config
@@ -82,7 +82,7 @@ class Raster:
         path = layer["file"]
         if layer.get("type", "shp_index") == "shp_index":
 
-            with fiona.open(path) as collection:
+            with Collection(path) as collection:
                 tiles = [e for e in collection.filter(mask={
                     "type": "Point",
                     "coordinates": [lon, lat],
