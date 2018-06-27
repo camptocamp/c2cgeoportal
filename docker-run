@@ -122,6 +122,7 @@ def main():
     docker_cmd.append("--env=ADDRESSES={}".format(' '.join(adrs)))
     docker_cmd.append("--env=EXTERNAL_PYTHON_VERSION_MAJOR={}".format(sys.version_info.major))
     docker_cmd.append("--env=EXTERNAL_PYTHON_VERSION_MINOR={}".format(sys.version_info.minor))
+    docker_cmd.append("--env=GEOMAPFISH_VERSION={}".format(options.version))
 
     if options.root:
         docker_cmd.extend(["--entrypoint", options.cmd])
