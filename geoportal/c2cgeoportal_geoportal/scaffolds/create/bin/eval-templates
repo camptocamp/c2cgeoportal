@@ -3,7 +3,13 @@
 export VISIBLE_WEB_HOST_RE_ESCAPED=`python3 -c "print(__import__('re').escape('${VISIBLE_WEB_HOST}'))"`
 export VISIBLE_ENTRY_POINT_RE_ESCAPED=`python3 -c "print(__import__('re').escape('${VISIBLE_ENTRY_POINT}'))"`
 
-find /etc /usr/local/tomcat/webapps/ -name '*.tmpl' -print | while read file
+DIRS="/etc /usr/local/tomcat/webapps/"
+if [ -d /project ]
+then
+    DIRS="${DIRS} /project"
+fi
+
+find ${DIRS} -name '*.tmpl' -print | while read file
 do
     echo "Evaluate: ${file}"
     envsubst < ${file} > ${file%.tmpl}

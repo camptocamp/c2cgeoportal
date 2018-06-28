@@ -36,4 +36,5 @@ __pycache__/
 /geoportal/{{package}}_geoportal/static/build/
 /geoportal/node_modules
 /geoportal/webpack.apps.js
+/qgisserver/project.qgs.tmpl
 /.upgrade.yaml
