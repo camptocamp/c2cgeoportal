@@ -8,5 +8,4 @@ Legacy components
 
    legacy_cgxp
    legacy_editing
-   legacy_print
    legacy_advanced

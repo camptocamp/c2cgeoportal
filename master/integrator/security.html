@@ -112,8 +112,7 @@ requests will be redirect to https. So you should change the scheme to https
 for all url except for some parameters that should always use http (actually
 all request on localhost): <em>url</em> parameter in tilegeneration configuration.</p>
 <p>If you apply ssl encryption on your application, you should take care of the
-tiles url to use https scheme to avoid secure and insecure contents: change
-<em>tiles_url</em> in the vars_xxx.yaml file.</p>
+tiles url to use https scheme to avoid secure and insecure contents.</p>
 <p>Finally, you should redirect all http request to https scheme. On Camptocamp’s
 server, this should be asked to our sysadmin team.</p>
 <p>In case you load http external resources into your application, you should use
@@ -141,12 +140,7 @@ in your project <cite>vars_&lt;project&gt;.yaml</cite> configuration file:</p>
 <h2>Reset password<a class="headerlink" href="#reset-password" title="Permalink to this headline">¶</a></h2>
 <p>When a user has forgotten his/her password, a new one may be sent by email if some additional
 GeoMapFish configuration is provided.</p>
-<p>In the <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/template/*.js</span></code> files, in the <code class="docutils literal notranslate"><span class="pre">cgxp_login</span></code> plugin you should add the
-service URL with the following configuration:</p>
-<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">loginResetPasswordURL</span><span class="p">:</span> <span class="s2">&quot;${request.route_url(&#39;loginresetpassword&#39;) | n}&quot;</span><span class="p">,</span>
-</pre></div>
-</div>
-<p>And to generate the required e-mail, in the <code class="docutils literal notranslate"><span class="pre">vars_&lt;package&gt;.yaml</span></code> file, add the following configuration:</p>
+<p>And to generate the required e-mail, in the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file, add the following configuration:</p>
 <div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># SMTP configuration could be already there if needed by other feature</span>
 <span class="n">smtp</span><span class="p">:</span>
     <span class="n">host</span><span class="p">:</span> <span class="n">smtp</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="mi">465</span>

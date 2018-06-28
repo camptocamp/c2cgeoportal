@@ -46,9 +46,9 @@ GeoMapFish developers.</p>
 Default is:</p>
 <pre class="code makefile literal-block">
 <span class="name variable"></span><span class="comment preproc">ifdef VARS_FILE
-</span><span class="name variable">VARS_FILES</span> <span class="operator">+=</span> <span class="literal string interpol">${</span><span class="name variable">VARS_FILE</span><span class="literal string interpol">}</span> vars_&lt;package&gt;.yaml
+</span><span class="name variable">VARS_FILES</span> <span class="operator">+=</span> <span class="literal string interpol">${</span><span class="name variable">VARS_FILE</span><span class="literal string interpol">}</span> vars.yaml
 <span class="comment preproc">else
-</span><span class="name variable">VARS_FILE</span> <span class="operator">=</span> vars_&lt;package&gt;.yaml
+</span><span class="name variable">VARS_FILE</span> <span class="operator">=</span> vars.yaml
 <span class="name variable">VARS_FILES</span> <span class="operator">+=</span> <span class="literal string interpol">${</span><span class="name variable">VARS_FILE</span><span class="literal string interpol">}</span>
 <span class="comment preproc">endif
 </span>
@@ -64,7 +64,7 @@ Default is:</p>
 </div>
 <div class="section" id="vars-files">
 <h2>Vars files<a class="headerlink" href="#vars-files" title="Permalink to this headline">¶</a></h2>
-<p>The project variables are set in the <code class="docutils literal notranslate"><span class="pre">vars_&lt;package&gt;.yaml</span></code> file,
+<p>The project variables are set in the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file,
 which extends the default <code class="docutils literal notranslate"><span class="pre">CONST_vars.yaml</span></code>.</p>
 <p>To make such variables available to the python code, for instance using</p>
 <div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">request</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;some_config_var&#39;</span><span class="p">)</span>
@@ -96,16 +96,15 @@ which extends the default <code class="docutils literal notranslate"><span class
 <li><code class="docutils literal notranslate"><span class="pre">CONFIG_VARS</span></code>: The list of parameters read from the project YAML configuration file.</li>
 <li><dl class="first docutils">
 <dt><code class="docutils literal notranslate"><span class="pre">DEVELOPMENT</span></code>: If <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> the <code class="docutils literal notranslate"><span class="pre">CSS</span></code> and <code class="docutils literal notranslate"><span class="pre">JS</span></code> files are not minified and the</dt>
-<dd><code class="docutils literal notranslate"><span class="pre">development.ini</span></code> pyramid config file is used, default to <code class="docutils literal notranslate"><span class="pre">FALSE</span></code>.</dd>
+<dd><code class="docutils literal notranslate"><span class="pre">development.ini</span></code> pyramid config file is used, default is <code class="docutils literal notranslate"><span class="pre">FALSE</span></code>.</dd>
 </dl>
 </li>
 <li><code class="docutils literal notranslate"><span class="pre">DISABLE_BUILD_RULES</span></code>: List of rules we want to disable, default is empty.</li>
-<li><code class="docutils literal notranslate"><span class="pre">LANGUAGES</span></code>: List of available languages.</li>
+<li><code class="docutils literal notranslate"><span class="pre">LANGUAGES</span></code>: List of available languages, default is <code class="docutils literal notranslate"><span class="pre">en</span> <span class="pre">fr</span> <span class="pre">de</span></code>.</li>
 <li><code class="docutils literal notranslate"><span class="pre">CGXP_INTERFACES</span></code>: List of CGXP interfaces, default is empty.</li>
 <li><code class="docutils literal notranslate"><span class="pre">NGEO_INTERFACES</span></code>: List of ngeo interfaces, default is <code class="docutils literal notranslate"><span class="pre">mobile</span> <span class="pre">desktop</span></code>.</li>
-<li><code class="docutils literal notranslate"><span class="pre">PRINT</span></code>: Mapfish print is enable, default to <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>.</li>
-<li><code class="docutils literal notranslate"><span class="pre">MAPSERVER</span></code>: MapServer is enable, default to <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>.</li>
-<li><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN</span></code>: <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> to indicate that we use TileCloud-chain, default to <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">PRINT</span></code>: Mapfish print is enabled, default is <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN</span></code>: <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> to indicate that we use TileCloud-chain, default is <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>.</li>
 </ul>
 </div>
 <div class="section" id="secrets">
