@@ -282,6 +282,8 @@ class TestEntryView(TestCase):
         self.assertEqual(response.body.decode("utf-8"), "true")
 
     def test_reset_password(self):
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.static import User
         from c2cgeoportal_geoportal.views.entry import Entry
 
         request = self._create_request_obj(POST={
@@ -299,11 +301,16 @@ class TestEntryView(TestCase):
         self.assertEqual(json.loads(response.body.decode("utf-8")), {
             "success": True,
             "username": "__test_user1",
-            "is_password_changed": True,
+            "is_password_changed": False,
             "role_name": "__test_role1",
             "role_id": self.role1_id,
             "functionalities": {},
         })
+
+        user = DBSession.query(User).filter(User.username == '__test_user1').first()
+        self.assertIsNone(user.temp_password)
+        self.assertIsNotNone(user.password)
+        self.assertNotEqual(len(user.password), 0)
 
     #
     # viewer view tests

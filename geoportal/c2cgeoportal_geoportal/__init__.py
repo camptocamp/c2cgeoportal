@@ -30,6 +30,7 @@
 import time
 import logging
 import mimetypes
+import os
 import binascii
 from urllib.parse import urlsplit
 
@@ -55,6 +56,7 @@ from c2cwsgiutils.health_check import HealthCheck
 from sqlalchemy.orm import Session
 
 import c2cgeoportal_commons.models
+import c2cgeoportal_geoportal.views
 from c2cgeoportal_geoportal.lib import dbreflection, caching, \
     C2CPregenerator, MultiDomainStaticURLInfo, checker, check_collector
 
@@ -233,11 +235,13 @@ def add_static_view_ngeo(config):  # pragma: no cover
 
 
 def add_admin_interface(config):
-    if config.get_settings().get("enable_admin_interface", False):
+    if config.get_settings().get('enable_admin_interface', False):
         config.add_request_method(
             # pylint: disable=not-callable
             lambda request: c2cgeoportal_commons.models.DBSession(), 'dbsession', reify=True
         )
+        config.add_view(c2cgeoportal_geoportal.views.add_ending_slash, 'add_ending_slash')
+        config.add_route('add_ending_slash', '/admin', request_method='GET')
         config.include('c2cgeoportal_admin', route_prefix='/admin')
 
 
@@ -492,21 +496,12 @@ def call_hook(settings, name, *args, **kwargs):
     function(*args, **kwargs)
 
 
-def notfound(request):
-    return {
-        "message": request.path_info,
-        "status": 404,
-    }
-
-
 def includeme(config):
     """
     This function returns a Pyramid WSGI application.
     """
 
     settings = config.get_settings()
-
-    config.add_notfound_view(notfound, append_slash=True, renderer='json', http_cache=0)
 
     config.include("c2cgeoportal_commons")
 
@@ -730,8 +725,15 @@ def includeme(config):
     # Resource proxy (load external url, useful when loading non https content)
     config.add_route("resourceproxy", "/resourceproxy", request_method="GET")
 
+    # Dev
+    config.add_route("dev", "/dev/*path", request_method="GET")
+
     # Scan view decorator for adding routes
-    config.scan(ignore=["c2cgeoportal_geoportal.scripts", "c2cgeoportal_geoportal.wsgi_app"])
+    config.scan(ignore=[
+        "c2cgeoportal_geoportal.lib",
+        "c2cgeoportal_geoportal.scaffolds",
+        "c2cgeoportal_geoportal.scripts"
+    ])
 
     if "subdomains" in settings:  # pragma: no cover
         config.registry.registerUtility(
@@ -772,6 +774,12 @@ def init_dbsessions(settings: dict, config: Configurator, health_check: HealthCh
         for name, session in c2cgeoportal_commons.models.DBSessions.items():
             if name == 'dbsession':
                 health_check.add_db_session_check(session, at_least_one_model=main.Theme)
+                alembic_ini = os.path.join(os.path.abspath(os.path.curdir), 'alembic.ini')
+                if os.path.exists(alembic_ini):
+                    health_check.add_alembic_check(session, alembic_ini_path=alembic_ini, name='main',
+                                                   version_schema=settings['schema'])
+                    health_check.add_alembic_check(session, alembic_ini_path=alembic_ini, name='static',
+                                                   version_schema=settings['schema_static'])
             else:  # pragma: no cover
                 def check(session: Session) -> None:
                     session.execute('SELECT 1')

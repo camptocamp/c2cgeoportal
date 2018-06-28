@@ -12,6 +12,7 @@ vars:
     host_map:
       localhost:
         netloc: '{DOCKER_HOST_}'
+  devserver_url: http://localhost:8081/{instanceid}/wsgi/
 
 update_paths:
   - layers

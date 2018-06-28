@@ -2,6 +2,7 @@
 
 find /app/ -name '*.tmpl' -print | while read file
 do
+    echo "Evaluate: ${file}"
     envsubst < ${file} > ${file%.tmpl}
 done
 

@@ -65,19 +65,23 @@ ADMIN_SRC_FILES = $(shell ls -1 commons/c2cgeoportal_commons/models/*.py) \
 
 APPS += desktop mobile
 APPS_PACKAGE_PATH_NONDOCKER = geoportal/c2cgeoportal_geoportal/scaffolds/nondockercreate/geoportal/+package+_geoportal
-APPS_HTML_FILES = $(addprefix $(APPS_PACKAGE_PATH_NONDOCKER)/static-ngeo/js/apps/, $(addsuffix .html.ejs_tmpl, $(APPS)))
 APPS_PACKAGE_PATH = geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal
+APPS_HTML_FILES = $(addprefix $(APPS_PACKAGE_PATH_NONDOCKER)/static-ngeo/js/apps/, $(addsuffix .html.ejs_tmpl, $(APPS)))
 APPS_HTML_FILES += $(addprefix $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/, $(addsuffix .html.ejs_tmpl, $(APPS)))
 APPS_JS_FILES = $(addprefix $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/Controller, $(addsuffix .js_tmpl, $(APPS)))
-APPS_ALT += desktop_alt mobile_alt oeedit oeview
-APPS_PACKAGE_PATH_ALT = geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/geoportal/+package+_geoportal/
-APPS_HTML_FILES += $(addprefix $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/, $(addsuffix .html.ejs_tmpl, $(APPS_ALT)))
-APPS_JS_FILES += $(addprefix $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/Controller, $(addsuffix .js_tmpl, $(APPS_ALT)))
 APPS_FILES = $(APPS_HTML_FILES) $(APPS_JS_FILES) \
 	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/contextualdata.html \
 	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/background-layer-button.png \
 	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/favicon.ico \
 	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/logo.png
+
+APPS_ALT += desktop_alt mobile_alt oeedit oeview
+APPS_PACKAGE_PATH_ALT_NONDOCKER = geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/CONST_create_template/geoportal/+package+_geoportal
+APPS_PACKAGE_PATH_ALT = geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/geoportal/+package+_geoportal
+APPS_HTML_FILES_ALT = $(addprefix $(APPS_PACKAGE_PATH_ALT_NONDOCKER)/static-ngeo/js/apps/, $(addsuffix .html.ejs_tmpl, $(APPS_ALT)))
+APPS_HTML_FILES_ALT += $(addprefix $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/, $(addsuffix .html.ejs_tmpl, $(APPS_ALT)))
+APPS_JS_FILES_ALT += $(addprefix $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/Controller, $(addsuffix .js_tmpl, $(APPS_ALT)))
+APPS_FILES_ALT = $(APPS_HTML_FILES_ALT) $(APPS_JS_FILES_ALT)
 
 .PHONY: help
 help:
@@ -103,6 +107,7 @@ docker-build:
 .PHONY: build
 build: \
 	docker-build-build \
+	docker-build-qgisserver \
 	docker-build-testdb \
 	prepare-tests
 
@@ -122,7 +127,7 @@ clean:
 	rm --force geoportal/c2cgeoportal_admin/locale/en/LC_MESSAGES/c2cgeoportal_admin.po
 	rm --recursive --force geoportal/c2cgeoportal_geoportal/static/build
 	rm --force $(MAKO_FILES:.mako=)
-	rm --force $(APPS_FILES)
+	rm --force $(APPS_FILES) $(APPS_FILES_ALT)
 	rm --force geoportal/tests/functional/alembic.yaml
 
 .PHONY: clean-all
@@ -177,8 +182,21 @@ docker-build-build: $(shell docker-required --path . --replace-pattern='^test(.*
 		geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/CONST_create_template/ \
 		$(MO_FILES) \
 		$(L10N_PO_FILES) \
-		$(APPS_FILES)
+		$(APPS_FILES) \
+		$(APPS_FILES_ALT)
 	docker build --build-arg=VERSION=$(VERSION) --tag=$(DOCKER_BASE)-build:$(MAJOR_VERSION) .
+
+docker/qgisserver/commons: commons
+	rm --recursive --force $@
+	cp --recursive $< $@
+	rm --recursive --force $@/c2cgeoportal_commons/alembic
+	rm $@/tests.yaml.mako
+	touch $@
+
+.PHONY: docker-build-qgisserver
+docker-build-qgisserver: $(shell docker-required --path docker/qgisserver) docker/qgisserver/commons
+	docker build --tag=$(DOCKER_BASE)-qgisserver:$(MAJOR_VERSION) docker/qgisserver
+
 
 .PHONY: prepare-tests
 prepare-tests: \
@@ -195,9 +213,9 @@ prepare-tests: \
 
 .PHONY: tests
 tests:
-	py.test --color=yes --cov=commons/c2cgeoportal_commons commons/acceptance_tests
-	py.test --color=yes --cov-append --cov=geoportal/c2cgeoportal_geoportal geoportal/tests
-	py.test --color=yes --cov-append --cov=admin/c2cgeoportal_admin admin/acceptance_tests
+	py.test --verbose --color=yes --cov=commons/c2cgeoportal_commons commons/acceptance_tests
+	py.test --verbose --color=yes --cov-append --cov=geoportal/c2cgeoportal_geoportal geoportal/tests
+	py.test --verbose --color=yes --cov-append --cov=admin/c2cgeoportal_admin admin/acceptance_tests
 
 .PHONY: flake8
 flake8:
@@ -232,11 +250,11 @@ pylint: $(BUILD_DIR)/commons.timestamp
 
 .PHONY: mypy
 mypy:
-	MYPYPATH=/usr/local/lib/python3.6/site-packages:/opt/c2cwsgiutils \
+	MYPYPATH=/usr/local/lib/python3.6/dist-packages:/opt/c2cwsgiutils \
 		mypy --disallow-untyped-defs --strict-optional --follow-imports skip \
 			commons/c2cgeoportal_commons
 	# TODO: add --disallow-untyped-defs
-	MYPYPATH=/usr/local/lib/python3.6/site-packages/ \
+	MYPYPATH=/usr/local/lib/python3.6/dist-packages/ \
 		mypy --ignore-missing-imports --strict-optional --follow-imports skip \
 			geoportal/c2cgeoportal_geoportal \
 			admin/c2cgeoportal_admin \
@@ -315,7 +333,7 @@ transifex-init: $(TX_DEPENDENCIES) \
 # Import ngeo templates
 
 .PHONY: import-ngeo-apps
-import-ngeo-apps: $(APPS_FILES)
+import-ngeo-apps: $(APPS_FILES) $(APPS_FILES_ALT)
 
 .PRECIOUS: ngeo
 ngeo:
@@ -348,12 +366,23 @@ $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/Controller%.js_tmpl: ngeo/contribs/gmf/
 	mkdir --parent $(dir $@)
 	import-ngeo-apps --js $* $< $@
 
-$(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/%.html.ejs_tmpl: ngeo/contribs/gmf/apps/%/index.html.ejs
+$(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/%.html.ejs_tmpl: \
+		ngeo/contribs/gmf/apps/%/index.html.ejs \
+		geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	import-ngeo-apps --html $* $< $@
 
-$(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/Controller%.js_tmpl: ngeo/contribs/gmf/apps/%/Controller.js
+$(APPS_PACKAGE_PATH_ALT_NONDOCKER)/static-ngeo/js/apps/%.html.ejs_tmpl: \
+		ngeo/contribs/gmf/apps/%/index.html.ejs \
+		geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/
+	$(PRERULE_CMD)
+	mkdir --parent $(dir $@)
+	import-ngeo-apps --html --non-docker $* $< $@
+
+$(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/Controller%.js_tmpl: \
+		ngeo/contribs/gmf/apps/%/Controller.js \
+		geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	import-ngeo-apps --js $* $< $@

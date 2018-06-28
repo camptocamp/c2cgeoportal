@@ -20,6 +20,11 @@ ENV NODE_PATH=/usr/lib/node_modules \
 WORKDIR /app
 COPY . /app
 
+RUN mv webpack.apps.js webpack.apps.js.tmpl && \
+    ln --symbolic /usr/lib/node_modules/ . && \
+    chmod g+w -R . && \
+    adduser www-data root
+
 ARG GIT_HASH
 
 RUN pip install --disable-pip-version-check --no-cache-dir --no-deps --editable=/app/ && \

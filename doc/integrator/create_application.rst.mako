@@ -3,8 +3,8 @@
 Create a new application
 ========================
 
-Creating a new c2cgeoportal application is done by applying two Paste skeletons
-(a.k.a. templates and scaffolds). These skeletons are provided by the
+Creating a new c2cgeoportal application is done by applying two Paste scaffolds
+(a.k.a. templates and scaffolds). These scaffolds are provided by the
 ``c2cgeoportal`` package. So to be able to create a c2cgeoportal application
 the ``c2cgeoportal`` package must be installed.
 
@@ -15,60 +15,52 @@ that is already alongside the existing c2cgeoportal application.
 
 .. note::
 
-    Some c2cgeoportal applications provide their own skeletons. For example
-    a *parent* application may provide a skeleton for creating *child*
-    applications. In that case, the c2cgeoportal skeletons, as well as the
-    application skeletons, should be applied.
+    Some c2cgeoportal applications provide their own scaffolds. For example
+    in a multi-project, a *parent* application may provide a scaffold for creating *child*
+    applications. In that case, the c2cgeoportal scaffolds, as well as the
+    application scaffolds, should be applied.
 
 Project structure
 -----------------
 
 In the simple case the root directory of the application is the directory
-created by the c2cgeoportal skeletons (the ``c2cgeoportal_create`` and
-``c2cgeoportal_update`` skeletons).
+created by the c2cgeoportal scaffolds (the ``c2cgeoportal_create`` and
+``c2cgeoportal_update`` scaffolds).
 
 Install c2cgeoportal
 --------------------
 
-This step is required if you cannot, or do not want, to create the c2cgeoportal
-application from an existing one. For example, if you are creating a child
-application from an existing parent application, it means you already have
-``c2cgeoportal`` installed, so you can just skip this section, and directly go
-to the next.
-
-Also, installing ``c2cgeoportal``, as described in this section, requires
-access to the c2cgeoportal GitHub repository. If you cannot view the
-https://github.com/camptocamp/c2cgeoportal page in your browser that means you
-do not have the required permissions. Please contact Camptocamp in that case.
-
-To get ``c2cgeoportal`` you first need to get the related docker image:
+To get ``c2cgeoportal``, you need to get the related docker image:
 
 .. prompt:: bash
 
-    docker pull camptocamp/geomapfish-build <release|version>
-    wget https://raw.githubusercontent.com/camptocamp/c2cgeoportal/master/docker-run
+   docker pull camptocamp/geomapfish-build:<release|version>
+   wget https://raw.githubusercontent.com/camptocamp/c2cgeoportal/${git_branch}/docker-run
+   chmod +x docker-run
 
-List existing skeletons
+List existing scaffolds
 -----------------------
 
-To list the available skeletons/templates use the following command, either
+To list the available scaffolds use the following command, either
 from the root directory of c2cgeoportal (if you have followed the instructions
 from the previous section), or from the root directory of the existing
 c2cgeoportal application you want to create the new application from:
 
 .. prompt:: bash
 
-    ./docker-run pcreate -l
+    ./docker-run --image=camptocamp/geomapfish-build pcreate -l
 
-You should at least see the c2cgeoportal skeletons:
+You should at least see the c2cgeoportal scaffolds:
 
 * c2cgeoportal_create
+* c2cgeoportal_nondockercreate
+* c2cgeoportal_nondockerupdate
 * c2cgeoportal_update
 
 Create the new application
 --------------------------
 
-The first step in the project creation is to chose a project name
+The first step in the project creation is to choose a project name
 ``<project>``, and a package name ``<package>``.
 
 Normally the project name should be the same name as the Git repository name.
@@ -76,11 +68,19 @@ Normally the project name should be the same name as the Git repository name.
 The package name should not contain an underscore (``_``) because of an
 issue with Pip.
 
-To create the application first apply the ``c2cgeoportal_create`` skeleton:
+To create the application first apply the ``c2cgeoportal_create`` scaffold:
 
 .. prompt:: bash
 
-    ./docker-run pcreate -s c2cgeoportal_create <project>
+   ./docker-run -ti --image=camptocamp/geomapfish-build \
+       pcreate -s c2cgeoportal_create <project>
+
+And for the non Docker version, apply also the ``c2cgeoportal_nondockercreate`` scaffold:
+
+.. prompt:: bash
+
+   ./docker-run -ti --image=camptocamp/geomapfish-build \
+       pcreate -s c2cgeoportal_nondockercreate <project>
 
 .. note::
 
@@ -92,30 +92,40 @@ it later.
 
 .. note::
 
-    You can define these information directly in the command line using
+    You can define this information directly in the command line using
     parameters:
 
      .. prompt:: bash
 
-         SRID=21781 EXTENT="420000 30000 900000 350000" \
-            ./docker-run pcreate -s c2cgeoportal_create --package-name <package> <project>
+        ./docker-run -ti --image=camptocamp/geomapfish-build \
+            --env=SRID=21781 --env=EXTENT="420000,30000,900000,350000"
+            pcreate -s c2cgeoportal_create --package-name <package> <project>
 
 This will create a directory named ``<project>`` that will be next to the
 ``c2cgeoportal`` directory, or to the directory of the application you are
 creating this application from.
 
-Now apply the ``c2cgeoportal_update`` skeleton:
+Now apply the ``c2cgeoportal_update`` scaffold:
 
 .. prompt:: bash
 
-    SRID=21781 ./docker-run pcreate -s c2cgeoportal_update --package-name <package> <project>
+   ./docker-run -ti --env=SRID=21781 --image=camptocamp/geomapfish-build \
+       pcreate -s c2cgeoportal_update --package-name <package> <project>
+
+And for the non Docker version, apply also the ``c2cgeoportal_nondockerupdate`` scaffold:
+
+.. prompt:: bash
+
+   ./docker-run -ti --env=SRID=21781 --image=camptocamp/geomapfish-build \
+       pcreate -s c2cgeoportal_nondockerupdate --package-name <package> <project>
+
 
 .. note::
 
     Do not add any '/' after the project name.
 
 The ``c2cgeoportal_update`` scaffold is also used to update the
-application. The files generated by this skeleton are prefixed with
+application. The files generated by this scaffold are prefixed with
 ``CONST_``, which means they are *constant* files that should not be changed.
 Following this rule is important for easier updates.
 
@@ -151,8 +161,8 @@ Commit and push on the main repository:
     git commit -m "Initial commit"
     git push origin master
 
-Configuration of different environment in your project
-------------------------------------------------------
+Configuration of different environments in your project
+-------------------------------------------------------
 
 Concepts
 ........
@@ -165,42 +175,40 @@ Concepts
 Hierarchy and extending your configuration files
 ................................................
 
-The configuration files (Makefile and vars) have a hierarchy between them.
-These files extend other files. A Makefile extends another Makefile
-and similarly a vars file extends another vars file. This extension is visible
-in Makefile files:
+The configuration files (Makefile and vars) are organized in a hierarchy.
+A Makefile extends another Makefile and similarly a vars file extends another vars file.
+This extension mechanism is used in Makefile files as follows:
 
 .. code:: make
 
    include CONST_Makefile
 
-and vars files:
+and in vars files as follows:
 
 .. code:: yaml
 
     extends: CONST_vars.yaml
 
-CONST files are files that should not be changed because they are replaced
+``CONST`` files are files that should not be changed because they are replaced
 during application updates, so your changes will be systematically lost. You can
 extend these files as many times as you like, although it is not recommended to
 exceed 3-4 levels for readability and simplicity.
 
 .. image:: ../_static/doc_hierarchie.png
 
-Whenever possible, it is strongly advised not to extend the
-``vars_<project>.yaml`` file, and we recommend that you use dynamic variables as
-described below. However some use cases may need to do so:
+Whenever possible, it is strongly advised not to extend the ``vars_<project>.yaml`` file.
+We recommend instead that you use dynamic variables as described below.
+However, in some use cases extending ``vars_<project>.yaml`` may be needed:
 
-* Configuring really different environments.
-* Configuration of a multi-project (see below for this specific use case).
+* Configuring highly specific environments
+* Configuration of a multi-project
 
-Use of dynamic variable
-.......................
+Use of dynamic variables
+........................
 
 Variables used in the application configuration files (files ``vars_<project>.yaml``)
-can be made dynamic by means of environment variable. In the main file
-``vars_<project>.yaml``, added the ``interpreted`` block at the bottom of the
-file.
+can be made dynamic by means of environment variable. For this, in the main file
+``vars_<project>.yaml``, add a block ``interpreted`` at the bottom of the file.
 
 In this same file, you can change the value of a parameter by putting it in
 uppercase (example: ``host: HOST``). This parameter must be listed in the
@@ -236,20 +244,20 @@ environment variables:
 Configure the application
 -------------------------
 
-As the integrator you need to edit the ``vars_<package>.yaml`` and
+As the integrator you need to edit the ``vars.yaml`` and
 ``<package>.mk`` files to configure the application.
 
-Do not miss to add your changes to git:
+Do not forget to add your changes to git:
 
 .. prompt:: bash
 
-    git add vars_<package>.yaml
+    git add vars.yaml
     git commit -m "Configure the project"
     git push origin master
 
 .. note::
 
-    If you use the check collector do not miss to add the new child to
+    If you are using a multi-project, you should add all new children to
     the parent site check_collector configuration.
 
 .. note::
@@ -320,14 +328,16 @@ Please see the Mako documentation for details:
 
 http://docs.makotemplates.org/en/latest/
 
-The result is also a file without the .mako.
+The result is also a file without the ``.mako``.
 
 **Syntax**
 
-In ``.mako`` files, the variable replacement syntax is as follows::
+In ``.mako`` files, the variable replacement syntax is as follows:
 
-  ${<variablename>}
+.. code:: mako
+
+  ${'$'}{<variablename>}
 
 for example:
 
-* ``${directory}``
+* ``${'$'}{directory}``

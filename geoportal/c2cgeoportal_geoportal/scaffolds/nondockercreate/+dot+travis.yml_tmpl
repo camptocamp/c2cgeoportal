@@ -1,0 +1,11 @@
+---
+
+sudo: false
+
+addons:
+  apt:
+    packages:
+      - python3-netifaces
+
+script:
+  - ./docker-run make --makefile={{package}}.mk checks

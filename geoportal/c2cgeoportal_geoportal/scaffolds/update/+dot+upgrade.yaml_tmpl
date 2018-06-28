@@ -14,7 +14,7 @@ default_project_file:
     - geoportal/{{package}}_geoportal/jsbuild/.*
     - print/print-apps/.*
     - mapserver/.*
-    - tilegeneration/config\.yaml\.mako
+    - tilegeneration/config\.yaml\.tmpl\.mako
     - project\.yaml\.mako
     - docker-compose\.yaml\.mako
     - setup\.py
@@ -24,8 +24,21 @@ default_project_file:
   exclude:
     - geoportal/{{package}}_geoportal/static-ngeo/components/README\.md
     - geoportal/{{package}}_geoportal/static-ngeo/js/{{package}}module\.js
-    - mapserver/tinyows\.xml\.mako
     - mapserver/demo\.map\.tmpl\.mako
+
+no_diff:
+  - .*\.po
+  - CONST_.+
+  - .*/CONST_.+
+extra:
+  - geoportal/demo_geoportal/static-ngeo/js/apps/desktop_alt\.html\.ejs
+  - geoportal/demo_geoportal/static-ngeo/js/apps/mobile_alt\.html\.ejs
+  - geoportal/demo_geoportal/static-ngeo/js/apps/oeview\.html\.ejs
+  - geoportal/demo_geoportal/static-ngeo/js/apps/oeedit\.html\.ejs
+  - geoportal/demo_geoportal/static-ngeo/js/apps/Controllerdesktop_alt\.js
+  - geoportal/demo_geoportal/static-ngeo/js/apps/Controllermobile_alt\.js
+  - geoportal/demo_geoportal/static-ngeo/js/apps/Controlleroeview\.js
+  - geoportal/demo_geoportal/static-ngeo/js/apps/Controlleroeedit\.js
 
 files_to_remove:
   - file: .build
@@ -133,6 +146,9 @@ files_to_remove:
   - file: mapserver/Dockerfile
     version: 2.3
     from: 2.2
+  - file: alembic.yaml
+    version: 2.3.2
+    from: 2.3.0
 
 files_to_move:
   - from: vars_{{package}}.yaml
@@ -142,7 +158,7 @@ files_to_move:
     to: Makefile
     version: 2.3
   - from: alembic.ini.mako
-    to: alembic.ini
+    to: geoportal/alembic.ini
     version: 2.3
   - from: docker-compose.yml.mako
     to: docker-compose.yaml.mako
@@ -198,6 +214,21 @@ files_to_move:
   - from: print/print-apps/{{package}}/config.yaml.mako
     to: print/print-apps/{{package}}/config.yaml.tmpl
     version: 2.3
+  - from: tilegeneration/config.yaml.mako
+    to: tilegeneration/config.yaml.tmpl.mako
+    version: 2.3
   - from: front/haproxy.cfg
     to: front/haproxy.cfg.tmpl
+    version: 2.3
+  - from: alembic.ini
+    to: geoportal/alembic.ini
+    version: 2.3
+  - from: webpack.config.js
+    to: geoportal/webpack.config.js
+    version: 2.3
+  - from: webpack.apps.js.mako
+    to: geoportal/webpack.apps.js.mako
+    version: 2.3
+  - from: mapserver/tinyows.xml.mako
+    to: mapserver/tinyows.xml.tmpl.mako
     version: 2.3

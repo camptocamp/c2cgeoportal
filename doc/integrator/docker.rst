@@ -30,7 +30,7 @@ that:
 The tag is by default ``latest``, but you can change it by setting the
 ``DOCKER_TAG`` Makefile variable.
 
-Edit ``vars_<package>.yaml`` and add:
+Edit ``vars.yaml`` and add:
 
 .. code:: yaml
 
@@ -51,10 +51,10 @@ A ``docker-compose.yml.mako`` file is created as a starting point.
 
 If you want to host the database on your local machine, you must add a
 ``dbhost`` and ``dbhost_slave`` entry pointing to ``172.17.0.1`` (your host address for Docker
-container) in your ``vars_<package>.yaml`` file. Then you need to make sure
+container) in your ``vars.yaml`` file. Then you need to make sure
 Postgres is configured to listen on that interface and accepts authentication.
 
-If you want to use an external serveur for the database, just put it is address
+If you want to use an external server for the database, just put its address
 in the ``dbhost`` and ``dbhost_slave`` entry.
 
 Run the developer composition
@@ -105,7 +105,7 @@ WSGI
 ....
 
 To make the DB connection used by your WSGI configurable from the
-composition, you can add this in your ``vars_<package>.yaml`` file:
+composition, you can add this in your ``vars.yaml`` file:
 
 .. code:: yaml
 

@@ -39,7 +39,6 @@ import pkg_resources
 
 from pyramid.scaffolds.template import Template
 from pyramid.compat import input_
-from c2cgeoportal_geoportal.lib.bashcolor import colorize, GREEN
 
 
 class BaseTemplate(Template):  # pragma: no cover
@@ -170,13 +169,6 @@ class TemplateCreate(BaseTemplate):  # pragma: no cover
 
         fix_executables(output_dir, ("docker-run", "docker-compose-run", "bin/*"))
 
-        self.out("\nContinue with:")
-        self.out(colorize(
-            "SRID={vars[srid]} EXTENT={vars[extent]} ./docker-run pcreate --scaffold c2cgeoportal_update "
-            "--ignore-conflicting-name --package-name {vars[package]} ../{vars[project]}".format(vars=vars_),
-            GREEN
-        ))
-
         return BaseTemplate.post(self, command, output_dir, vars_)
 
 
@@ -207,8 +199,6 @@ class TemplateUpdate(BaseTemplate):  # pragma: no cover
         """
 
         fix_executables(output_dir, ("docker-run", "docker-compose-run", "bin/*"), True)
-
-        self.out(colorize("\nWelcome to c2cgeoportal!", GREEN))
 
         return BaseTemplate.post(self, command, output_dir, vars_)
 

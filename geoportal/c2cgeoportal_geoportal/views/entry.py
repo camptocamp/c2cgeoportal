@@ -49,13 +49,15 @@ from sqlalchemy import func
 from sqlalchemy.orm import subqueryload
 from sqlalchemy.orm.exc import NoResultFound
 from owslib.wms import WebMapService
+from typing import Dict, Tuple, Set  # noqa # pylint: disable=unused-import
+import zope.event.classhandler
 
 from c2cgeoportal_commons import models
 from c2cgeoportal_commons.models import main, static
 from c2cgeoportal_geoportal.lib import get_setting, get_protected_layers_query, \
     get_url2, get_url, get_typed, get_types_map, add_url_params
 from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
-from c2cgeoportal_geoportal.lib.caching import get_region, invalidate_region,  \
+from c2cgeoportal_geoportal.lib.caching import get_region, \
     set_common_headers, NO_CACHE, PUBLIC_CACHE, PRIVATE_CACHE
 from c2cgeoportal_geoportal.lib.functionality import get_functionality, get_mapserver_substitution_params
 from c2cgeoportal_geoportal.lib.wmstparsing import parse_extent, TimeInformation
@@ -115,6 +117,7 @@ class Entry:
     WFS_NS = "http://www.opengis.net/wfs"
     default_ogc_server = None
     external_ogc_server = None
+    server_wms_capabilities = {}  # type: Dict[int, Tuple[WebMapService, Set[str]]]
 
     def __init__(self, request):
         self.request = request
@@ -160,6 +163,13 @@ class Entry:
                     ", ".join([i[0] for i in models.DBSession.query(main.OGCServer.name).all()])
                 )
 
+        from c2cgeoportal_commons.models.main import InvalidateCacheEvent
+
+        @zope.event.classhandler.handler(InvalidateCacheEvent)
+        def handle(event: InvalidateCacheEvent):
+            del event
+            Entry.server_wms_capabilities = {}
+
     @view_config(route_name="testi18n", renderer="testi18n.html")
     def testi18n(self):  # pragma: no cover
         _ = self.request.translate
@@ -200,6 +210,9 @@ class Entry:
     def _wms_getcap(self, ogc_server=None):
         ogc_server = (ogc_server or self.default_ogc_server)
 
+        if ogc_server.id in self.server_wms_capabilities:
+            return self.server_wms_capabilities[ogc_server.id]
+
         url, content, errors = self._wms_getcap_cached(
             ogc_server, self._get_capabilities_cache_role_key(ogc_server)
         )
@@ -215,7 +228,15 @@ class Entry:
                 "\nURL: {}\n{}".format(url, content)
             errors.add(error)
             log.error(error, exc_info=True)
+
+        self.server_wms_capabilities[ogc_server.id] = (wms, errors)
+
         return wms, errors
+
+    @cache_region.cache_on_arguments()
+    def get_http_cached(self, url, headers):
+        http = httplib2.Http()
+        return http.request(url, method="GET", headers=headers)
 
     @cache_region.cache_on_arguments()
     def _wms_getcap_cached(self, ogc_server, _):
@@ -244,7 +265,6 @@ class Entry:
         log.info("Get WMS GetCapabilities for url: {0!s}".format(url))
 
         # forward request to target (without Host Header)
-        http = httplib2.Http()
         headers = dict(self.request.headers)
 
         role = None if self.request.user is None else self.request.user.role
@@ -258,7 +278,7 @@ class Entry:
             headers.pop("Host")
 
         try:
-            resp, content = http.request(url, method="GET", headers=headers)
+            resp, content = self.get_http_cached(url, headers)
         except Exception:  # pragma: no cover
             error = "Unable to GetCapabilities from url {}".format(url)
             errors.add(error)
@@ -1004,7 +1024,7 @@ class Entry:
     @staticmethod
     @view_config(route_name="invalidate", renderer="json")
     def invalidate_cache():  # pragma: no cover
-        invalidate_region()
+        main.cache_invalidate_cb()
         return {
             "success": True
         }
@@ -1092,13 +1112,12 @@ class Entry:
         log.info("WFS GetCapabilities for base url: {0!s}".format(wfsgc_url))
 
         # forward request to target (without Host Header)
-        http = httplib2.Http()
         headers = dict(self.request.headers)
         if urllib.parse.urlsplit(wfsgc_url).hostname != "localhost" and "Host" in headers:
             headers.pop("Host")  # pragma nocover
 
         try:
-            resp, get_capabilities_xml = http.request(wfsgc_url, method="GET", headers=headers)
+            resp, get_capabilities_xml = self.get_http_cached(wfsgc_url, headers)
         except Exception:  # pragma: no cover
             errors.add("Unable to GetCapabilities from url {0!s}".format(wfsgc_url))
             return None, errors

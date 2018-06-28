@@ -43,7 +43,7 @@ docker-compose will also:
 
 * Have a testing database and a testing MapServer.
 
-Docker images dependencies::
+Docker images dependencies:
 
 .. image:: docker.png
 .. source file is docker.dia.

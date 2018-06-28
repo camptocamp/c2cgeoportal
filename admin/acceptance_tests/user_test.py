@@ -199,10 +199,7 @@ class TestUser(AbstractViewsTests):
                 'id': '',
                 'username': 'new_user',
                 'email': 'valid@email.net',
-                'role_name': 'secretary_2',
-                'is_password_changed': 'false',
-                '_password': 'da39a3ee5e6b4b0d3255bfef95601890afd80709',
-                'temp_password': ''},
+                'role_name': 'secretary_2'},
             status=302)
 
         user = dbsession.query(User). \
@@ -216,6 +213,9 @@ class TestUser(AbstractViewsTests):
         assert user.username == 'new_user'
         assert user.email == 'valid@email.net'
         assert user.role_name == 'secretary_2'
+        assert user.password is not None and len(user.password)
+        assert user.temp_password is None
+        assert user.is_password_changed == False
 
         parts = list(email.message_from_string(sender_mock.sendmail.mock_calls[0][1][2]).walk())
         assert EXPECTED_WELCOME_MAIL.format('new_user', 'new_user', 'basile') == \
