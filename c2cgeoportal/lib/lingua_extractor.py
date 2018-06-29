@@ -374,7 +374,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
         disable_ssl_certificate_validation = False
         if http_options is not None:
             disable_ssl_certificate_validation = http_options.get("disable_ssl_certificate_validation", False)
-        http = httplib2.Http(disable_ssl_certificate_validation = disable_ssl_certificate_validation)
+        http = httplib2.Http(disable_ssl_certificate_validation=disable_ssl_certificate_validation)
         return http
 
     def _import_layer_wms(self, layer, messages):
