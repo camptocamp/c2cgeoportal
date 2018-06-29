@@ -165,6 +165,13 @@ mapping:
                         required: True
                         sequence:
                         -   type: str
+            http_options:
+                type: map
+                required: False
+                mapping:
+                    disable_ssl_certificate_validation:
+                        type: bool
+                        required: False
             layers:
                 type: map
                 required: True

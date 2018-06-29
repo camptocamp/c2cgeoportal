@@ -370,12 +370,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                 callback(item, messages)
 
     def _get_http(self):
-        http_options = self.config.get("http_options")
-        disable_ssl_certificate_validation = False
-        if http_options is not None:
-            disable_ssl_certificate_validation = http_options.get("disable_ssl_certificate_validation", False)
-        http = httplib2.Http(disable_ssl_certificate_validation=disable_ssl_certificate_validation)
-        return http
+        return httplib2.Http(**self.config.get("http_options", {}))
 
     def _import_layer_wms(self, layer, messages):
         server = layer.ogc_server
