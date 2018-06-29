@@ -245,6 +245,10 @@ vars:
     # architecture.
     external_themes_url:
 
+    # Available options for http sessions created within c2cgeoportal
+    http_options:
+        disable_ssl_certificate_validation: False
+
     urllogin: {}
 
     mapserverproxy:

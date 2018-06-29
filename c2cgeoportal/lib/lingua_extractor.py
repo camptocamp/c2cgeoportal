@@ -369,6 +369,9 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
             if callback is not None:
                 callback(item, messages)
 
+    def _get_http(self):
+        return httplib2.Http(**self.config.get("http_options", {}))
+
     def _import_layer_wms(self, layer, messages):
         server = layer.ogc_server
         url = server.url_wfs or server.url
@@ -472,7 +475,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
             self.wmscap_cache[url] = None
 
             # forward request to target (without Host Header)
-            http = httplib2.Http()
+            http = self._get_http()
             h = {}
             if hostname == "localhost":  # pragma: no cover
                 h["Host"] = self.package["host"]
@@ -515,7 +518,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
             self.featuretype_cache[url] = None
 
             # forward request to target (without Host Header)
-            http = httplib2.Http()
+            http = self._get_http()
             h = {}
             if hostname == "localhost":  # pragma: no cover
                 h["Host"] = self.package["host"]
