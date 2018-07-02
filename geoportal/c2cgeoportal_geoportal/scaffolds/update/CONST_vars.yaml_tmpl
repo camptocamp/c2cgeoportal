@@ -114,6 +114,8 @@ vars:
   # sqlalchemy static schema
   schema_static: '{PGSCHEMA_STATIC}'
 
+  alembic_yaml_file: '{ALEMBIC_YAML_FILE}'
+
   dbsessions: {}
 
   # mapserver connexion string
@@ -555,6 +557,7 @@ environment:
   - BUILD_VOLUME_NAME
   - PROJECT_DIRECTORY
   - INSTANCE
+  - ALEMBIC_YAML_FILE
 
 runtime_environment:
   - name: VISIBLE_WEB_HOST

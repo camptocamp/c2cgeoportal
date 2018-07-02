@@ -109,6 +109,9 @@ files_to_remove:
   - file: alembic.yaml
     version: 2.3.2
     from: 2.3.0
+  - file: vars_testdb.yaml
+    version: 2.3.2
+    from: 2.3.0
 
 files_to_move:
   - from: vars_{{package}}.yaml
