@@ -132,8 +132,13 @@ class InteruptedException(Exception):
     pass
 
 
+current_step_number = 0
+
+
 class Step:
     def __init__(self, step_number, file_marker=True):
+        global current_step_number
+        current_step_number = step_number
         self.step_number = step_number
         self.file_marker = file_marker
 
@@ -167,13 +172,15 @@ class Step:
             except Exception as e:
                 ex = e
 
-                def message():
-                    c2cupgradetool.print_step(
-                        self.step_number, error=True,
-                        message="The step get an error '{}'.".format(ex),
-                        prompt="Fix the error and run the step again:"
-                    )
-                atexit.register(message)
+                global current_step_number
+                if self.step_number == current_step_number:
+                    def message():
+                        c2cupgradetool.print_step(
+                            self.step_number, error=True,
+                            message="The step get an error '{}'.".format(ex),
+                            prompt="Fix the error and run the step again:"
+                        )
+                    atexit.register(message)
                 raise
         return decorate
 
@@ -386,7 +393,7 @@ class C2cUpgradeTool:
         print("Files to move")
         error |= self.files_to_move(pre=True)
         print("Files to get")
-        error |= self.files_to_get(pre=True)
+        error |= self.files_to_get(step, pre=True)
 
         if error:
             self.print_step(
@@ -494,7 +501,7 @@ class C2cUpgradeTool:
 
     @Step(7)
     def step7(self, step):
-        self.files_to_get()
+        self.files_to_get(step)
         self.run_step(step + 1)
 
     def is_managed(self, file_):
@@ -541,7 +548,7 @@ class C2cUpgradeTool:
 
         return managed
 
-    def files_to_get(self, pre=False):
+    def files_to_get(self, step, pre=False):
         error = False
         for root, _, files in os.walk("CONST_create_template"):
             root = root[len("CONST_create_template/"):]
@@ -556,8 +563,18 @@ class C2cUpgradeTool:
                     if not pre:
                         if os.path.dirname(destination) != "":
                             os.makedirs(os.path.dirname(destination), exist_ok=True)
-                        shutil.copyfile(source, destination)
-                        shutil.copymode(source, destination)
+                        try:
+                            shutil.copyfile(source, destination)
+                            shutil.copymode(source, destination)
+                        except PermissionError as e:
+                            self.print_step(
+                                step, error=True, message=(
+                                    "All your project files should be own by your user, "
+                                    "current error:\n" + str(e)
+                                ),
+                                prompt="Fix it and run again the upgrade:")
+                            exit(1)
+
                 elif os.path.exists(destination) and not filecmp.cmp(source, destination):
                     print("The file '{}' is managed by the project".format(destination))
                 else:
