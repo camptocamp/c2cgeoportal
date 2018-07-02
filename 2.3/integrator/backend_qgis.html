@@ -102,6 +102,33 @@ SetEnv QGIS_PROJECT_FILE ${directory}/qgisserver.qgs
 </div>
 <p>Don’t forget to restart Apache.</p>
 </div>
+<div class="section" id="docker">
+<h3>Docker<a class="headerlink" href="#docker" title="Permalink to this headline">¶</a></h3>
+<p>In a Docker mode, QGIS is configured in the <code class="docutils literal notranslate"><span class="pre">qgisserver/</span></code> directory. To edit the configuration,
+run this target and open the <code class="docutils literal notranslate"><span class="pre">/etc/project/project.qgs</span></code> file:</p>
+<pre class="highlight"><span class="prompt1">./docker-run make edit-qgis-project</span>
+</pre><p>If you want to add PostGIS layers on the main DB, create/edit your <code class="docutils literal notranslate"><span class="pre">$HOME/.pg_service.conf</span></code> file
+and add a section for the DB you want to access:</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>[demo_geomapfish]
+host=10.27.10.57
+dbname=demo_geomapfish_2_3
+user=&lt;???&gt;
+password=&lt;???&gt;
+port=5432
+</pre></div>
+</div>
+<p>Then, in QGIS, fill only the <code class="docutils literal notranslate"><span class="pre">name</span></code> and <code class="docutils literal notranslate"><span class="pre">service</span></code> fields when you create the DB connection.
+Then, you can create/edit a <code class="docutils literal notranslate"><span class="pre">qgisserver/pg_service.conf.tmpl</span></code> file and add a section looking
+like that:</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>[demo_geomapfish]
+host=${PGHOST}
+dbname=${PGDATABASE}
+user=${PGUSER}
+password=${PGPASSWORD}
+port=${PGPORT}
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 
@@ -122,6 +149,7 @@ SetEnv QGIS_PROJECT_FILE ${directory}/qgisserver.qgs
 <li><a class="reference internal" href="#qgis-desktop-configuration">QGIS Desktop configuration</a><ul>
 <li><a class="reference internal" href="#ows-configuration">OWS configuration</a></li>
 <li><a class="reference internal" href="#connect-to-postgres-database">Connect to Postgres database</a></li>
+<li><a class="reference internal" href="#docker">Docker</a></li>
 </ul>
 </li>
 </ul>
