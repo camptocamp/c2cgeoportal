@@ -11,7 +11,7 @@ try:
     p.wait(20)
 except subprocess.TimeoutExpired:
     p.kill()
-    print("The second make run take too long, probably a task is running again")
+    print("The second make run takes too long, probably a task is running again")
     os.environ["DEBUG"] = "TRUE"
     subprocess.call(["make"] + sys.argv[1:])
     exit(2)
