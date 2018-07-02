@@ -28,7 +28,6 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import httplib2
 import logging
 import json
 import sys
@@ -52,7 +51,7 @@ from sqlalchemy.orm.exc import NoResultFound
 from owslib.wms import WebMapService
 
 from c2cgeoportal.lib import get_setting, get_protected_layers_query, \
-    get_url2, get_url, get_typed, get_types_map, add_url_params
+    get_url2, get_url, get_typed, get_types_map, add_url_params, get_http
 from c2cgeoportal.lib.cacheversion import get_cache_version
 from c2cgeoportal.lib.caching import get_region, invalidate_region,  \
     set_common_headers, NO_CACHE, PUBLIC_CACHE, PRIVATE_CACHE
@@ -232,7 +231,7 @@ class Entry:
         log.info(u"Get WMS GetCapabilities for url: {0!s}".format(url))
 
         # forward request to target (without Host Header)
-        http = httplib2.Http()
+        http = get_http(self.request)
         headers = dict(self.request.headers)
 
         role = None if self.request.user is None else self.request.user.role
@@ -1088,7 +1087,7 @@ class Entry:
         log.info(u"WFS GetCapabilities for base url: {0!s}".format(wfsgc_url))
 
         # forward request to target (without Host Header)
-        http = httplib2.Http()
+        http = get_http(self.request)
         headers = dict(self.request.headers)
         if urlparse.urlsplit(wfsgc_url).hostname != "localhost" and "Host" in headers:  # pragma: no cover
             headers.pop("Host")
@@ -1156,7 +1155,7 @@ class Entry:
         ])
 
         # forward request to target (without Host Header)
-        http = httplib2.Http()
+        http = get_http(self.request)
         headers = dict(self.request.headers)
         if urlparse.urlsplit(ext_url).hostname != "localhost" and "Host" in headers:  # pragma: no cover
             headers.pop("Host")

@@ -436,6 +436,9 @@ mapping:
 
                             regex;(.+):
                                 type: any
+                    rewrite_as_http_localhost:
+                        type: bool
+                        required: False
             check_collector:
                 type: map
                 required: True

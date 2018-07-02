@@ -214,21 +214,32 @@ class C2cTool:
             return yaml.safe_load(f)
 
     def test_checkers(self):
-        http = httplib2.Http()
+        # Read project options for checker http session connection
+        checker_url_base = self.project.get("checker_url")
+        # If parameter not present, use legacy parameter
+        if checker_url_base is None:
+            print("test_checkers missing configuration setting checker_url, using legacy configuration")
+            checker_url_base = "http://localhost{}".format(self.project["checker_path"])
+
+        http = httplib2.Http(disable_ssl_certificate_validation=True)
         for check_type in ("", "type=all"):
+            checker_url = "{}{}".format(checker_url_base, check_type)
+            checker_headers = {"Host": self.project["host"]}
+            print("Calling checker via URL {}, headers {}".format(checker_url, checker_headers))
             resp, _ = http.request(
-                "http://localhost{}{}".format(self.project["checker_path"], check_type),
+                checker_url,
                 method="GET",
-                headers={
-                    "Host": self.project["host"]
-                }
+                headers=checker_headers
             )
             if resp.status < 200 or resp.status >= 300:
                 return False, "\n".join([
                     "Checker error:",
-                    "Open `http://{}{}{}` for more informations."
+                    "Run `curl {} '{}'` for more information."
                 ]).format(
-                    self.project["host"], self.project["checker_path"], check_type
+                    ' '.join([
+                        '--header={}={}'.format(*i) for i in checker_headers.items()
+                    ]),
+                    checker_url
                 )
 
         return True, None

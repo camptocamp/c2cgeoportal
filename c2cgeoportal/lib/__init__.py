@@ -30,6 +30,7 @@
 
 import datetime
 import dateutil
+import httplib2
 import json
 import re
 import urllib
@@ -51,6 +52,10 @@ def get_types_map(types_array):
         else:
             types_map[type_["name"]] = type_
     return types_map
+
+
+def get_http(request):
+    return httplib2.Http(**request.registry.settings.get("http_options", {}))
 
 
 def get_url(url, request, default=None, errors=None):

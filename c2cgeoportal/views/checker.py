@@ -32,7 +32,6 @@ import os
 import urllib
 import httplib
 import logging
-from httplib2 import Http
 from json import dumps, loads
 from time import sleep
 from urlparse import urlsplit, urlunsplit
@@ -41,7 +40,7 @@ from subprocess import check_output, CalledProcessError
 from pyramid.view import view_config
 from pyramid.response import Response
 
-from c2cgeoportal.lib import add_url_params
+from c2cgeoportal.lib import add_url_params, get_http
 
 log = logging.getLogger(__name__)
 
@@ -51,17 +50,20 @@ def build_url(name, url, request, headers=None):
         headers = {}
     headers["Cache-Control"] = "no-cache"
 
-    urlfragments = urlsplit(url)
-    if urlfragments.netloc == request.environ.get("SERVER_NAME") or \
-            urlfragments.netloc.startswith("localhost:"):
-        url_ = urlunsplit((
-            "http", "localhost", urlfragments.path, urlfragments.query, urlfragments.fragment
-        ))
-        headers["Host"] = urlfragments.netloc
-    else:
-        url_ = url
-
     settings = request.registry.settings.get("checker", {})
+    rewrite_as_http_localhost = settings.get("rewrite_as_http_localhost", True)
+    log.info("build_url rewrite_as_http_localhost: {}".format(rewrite_as_http_localhost))
+
+    url_ = url
+    if rewrite_as_http_localhost:
+        urlfragments = urlsplit(url)
+        if urlfragments.netloc == request.environ.get("SERVER_NAME") or \
+           urlfragments.netloc.startswith("localhost:"):
+            url_ = urlunsplit((
+                "http", "localhost", urlfragments.path, urlfragments.query, urlfragments.fragment
+            ))
+            headers["Host"] = urlfragments.netloc
+
     for header in settings.get("forward_headers", []):
         value = request.headers.get(header)
         if value is not None:
@@ -96,7 +98,7 @@ class Checker:  # pragma: no cover
     def testurl(self, url):
         url, headers = build_url("Check", url, self.request)
 
-        h = Http()
+        h = get_http(self.request)
         resp, content = h.request(url, headers=headers)
 
         if resp.status != httplib.OK:
@@ -142,7 +144,7 @@ class Checker:  # pragma: no cover
             "Content-Type": "application/json;charset=utf-8",
         })
 
-        h = Http()
+        h = get_http(self.request)
         resp, content = h.request(url, "POST", headers=headers, body=body)
 
         if resp.status != httplib.OK:
@@ -187,7 +189,7 @@ class Checker:  # pragma: no cover
         })
         url, headers = build_url("Check the fulltextsearch", url, self.request)
 
-        h = Http()
+        h = get_http(self.request)
         resp, content = h.request(url, headers=headers)
 
         if resp.status != httplib.OK:
@@ -209,7 +211,7 @@ class Checker:  # pragma: no cover
         settings = self.settings.get("themes", {})
 
         url = self.request.route_url("themes")
-        h = Http()
+        h = get_http(self.request)
         default_params = settings.get("default", {}).get("params", {})
         results = []
         for interface, in DBSession.query(Interface.name).all():
