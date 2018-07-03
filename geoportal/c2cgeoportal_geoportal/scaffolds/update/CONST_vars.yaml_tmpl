@@ -155,8 +155,16 @@ vars:
   # Database information
   sqlalchemy:
     url: postgresql://{dbuser}:{dbpassword}@{dbhost}:{dbport}/{db}
+    pool_recycle: 30
+    pool_size: 5
+    max_overflow: 25
+    use_batch_mode: true
   sqlalchemy_slave:
     url: postgresql://{dbuser}:{dbpassword}@{dbhost_slave}:{dbport}/{db}
+    pool_recycle: 30
+    pool_size: 5
+    max_overflow: 25
+    use_batch_mode: true
 
   # 10 days of default cache
   default_max_age: 864000
