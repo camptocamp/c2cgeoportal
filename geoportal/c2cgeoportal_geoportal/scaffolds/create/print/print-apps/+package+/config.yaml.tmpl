@@ -63,11 +63,10 @@ templates:
           - !restrictUris
             matchers:
               - !localMatch
-                pathRegex: '${VISIBLE_ENTRY_POINT_RE_ESCAPED}mapserv_proxy'
-              - !localMatch
-                pathRegex: '${VISIBLE_ENTRY_POINT_RE_ESCAPED}tiles/.*'
-              - !localMatch
                 reject: true
+              - !hostnameMatch
+                host: geoportal
+                port: 8080
               - !ipMatch
                 ip: 10.0.0.0
                 mask: 255.0.0.0
