@@ -185,7 +185,7 @@ def get_class(tablename, session=None, exclude_properties=None, primary_key=None
     if exclude_properties is None:
         exclude_properties = []
     tablename, schema = _get_schema(tablename)
-    cache_key = (schema, tablename, ",".join(exclude_properties))
+    cache_key = (schema, tablename, ",".join(exclude_properties), primary_key)
 
     if cache_key in _class_cache:
         return _class_cache[cache_key]
