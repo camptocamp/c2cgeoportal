@@ -34,8 +34,8 @@ vars:
         PGUSER: www-data
         PGPASSWORD: www-data
         PGDATABASE: geomapfish
-        GEOPORTAL_INTERNAL_URL: http://geoportal/
-        MAPCACHE_URL: http://mapcache/mapcache/
+        GEOPORTAL_INTERNAL_URL: http://geoportal:8080
+        MAPCACHE_URL: http://mapcache:8080/mapcache/
         MAPSERVER_URL: http://mapserver:8080/
         MEMCACHED_HOST: memcached
         MEMCACHED_PORT: 11211
