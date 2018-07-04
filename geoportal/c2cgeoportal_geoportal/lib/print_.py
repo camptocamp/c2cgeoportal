@@ -120,8 +120,12 @@ class PrintCredential(yaml.YAMLObject):
     yaml_tag = "!credential"
 
 
-class PrintDmsMatch(yaml.YAMLObject):
+class PrintDnsMatch(yaml.YAMLObject):
     yaml_tag = "!dnsMatch"
+
+
+class PrintHostnameMatch(yaml.YAMLObject):
+    yaml_tag = "!hostnameMatch"
 
 
 class PrintIpMatch(yaml.YAMLObject):
