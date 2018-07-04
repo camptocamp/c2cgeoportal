@@ -184,7 +184,7 @@ vars:
 
   interfaces_theme:
     desktop: desktop
-    desktop_alt: desktop_alt
+    desktop_alt: desktop
     mobile: mobile
     mobile_alt: mobile
     oeview: desktop
