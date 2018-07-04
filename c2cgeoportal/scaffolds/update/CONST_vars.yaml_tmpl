@@ -427,6 +427,7 @@ vars:
             routes:
             - name: apijs
             - name: printproxy_capabilities
+        rewrite_as_http_localhost: True
 
     # Check collector configuration
     check_collector:

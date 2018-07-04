@@ -30,12 +30,12 @@
 
 import logging
 import httplib
-from httplib2 import Http
 from time import time
 
 from pyramid.view import view_config
 from pyramid.response import Response
 
+from c2cgeoportal.lib import get_http
 from c2cgeoportal.views.checker import build_url
 
 log = logging.getLogger(__name__)
@@ -84,7 +84,7 @@ class CheckerCollector:  # pragma: no cover
     def _testurl(self, url):
         url, headers = build_url("Collect", url, self.request)
 
-        h = Http()
+        h = get_http(self.request)
         resp, content = h.request(url, headers=headers)
 
         if resp.status != httplib.OK:
