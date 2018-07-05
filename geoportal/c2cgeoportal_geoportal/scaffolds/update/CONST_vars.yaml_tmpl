@@ -427,6 +427,14 @@ vars:
 
   lingua_extractor: {}
 
+  global_headers:
+    X-Frame-Options: SAMEORIGIN
+    X-Xss-Protection: 1; mode=block
+    X-Content-Type-Options: nosniff
+    Referrer-Policy: origin
+    Strict-Transport-Security: max-age=31536000; includeSubDomains
+    Content-Security-Policy: script-src 'self'; frame-src 'self'; form-action 'self'
+
   # Control the HTTP headers
   headers:
     index: &header
@@ -521,7 +529,7 @@ vars:
 
   # What web page is authorized to use the API
   authorized_referers:
-    - '{web_protocol}://{host}{entry_point}'
+    - '{web_protocol}://{host}/'
 
   # Hooks that can be called at different moments in the life of the
   # application. The value is the full python name

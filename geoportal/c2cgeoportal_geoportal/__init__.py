@@ -539,6 +539,7 @@ def includeme(config):
     # Register a tween to get back the cache buster path.
     config.add_tween("c2cgeoportal_geoportal.lib.cacheversion.CachebusterTween")
     config.add_tween("c2cgeoportal_geoportal.lib.webpack.WebpackTween")
+    config.add_tween("c2cgeoportal_geoportal.lib.headers.HeadersTween")
 
     # Bind the mako renderer to other file extensions
     add_mako_renderer(config, ".html")
