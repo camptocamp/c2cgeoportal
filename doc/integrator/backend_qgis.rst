@@ -96,6 +96,13 @@ Don't forget to restart Apache.
 Docker
 ******
 
+Create a tunnel to the database:
+
+.. prompt:: bash
+
+   IP=$(ip addr show dev $(route | grep default | awk '{print $(NF)}' | head -1) | awk '$1 ~ /^inet/ { sub("/.*", "", $2); print $2 }' | head -1)
+   ssh -L ${IP}:5432:localhost:5432 <remote server>
+
 In a Docker mode, QGIS is configured in the ``qgisserver/`` directory. To edit the configuration,
 run this target and open the ``/etc/project/project.qgs`` file:
 
@@ -108,11 +115,11 @@ and add a section for the DB you want to access:
 
 .. code::
 
-   [demo_geomapfish]
-   host=10.27.10.57
-   dbname=demo_geomapfish_2_3
-   user=<???>
-   password=<???>
+   [geomapfish]
+   host=<host>  # Localhost addresse of the Docker network interface (=> ${IP})
+   dbname=<database name>
+   user=<database user>
+   password=<database password>
    port=5432
 
 Then, in QGIS, fill only the ``name`` and ``service`` fields when you create the DB connection.
@@ -121,7 +128,7 @@ like that:
 
 .. code::
 
-   [demo_geomapfish]
+   [geomapfish]
    host=${PGHOST}
    dbname=${PGDATABASE}
    user=${PGUSER}
