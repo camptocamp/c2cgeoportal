@@ -38,6 +38,15 @@ To get ``c2cgeoportal``, you need to get the related docker image:
    wget https://raw.githubusercontent.com/camptocamp/c2cgeoportal/HEAD/docker-run
    chmod +x docker-run
 
+.. note::
+
+   If you are behind a proxy, you may pass proxy connection information to the ``docker`` command,
+   respectively to the ``docker-run`` script, with ``--env`` parameters, like this:
+
+   .. code:: bash
+
+       --env http_proxy=...
+
 List existing scaffolds
 -----------------------
 

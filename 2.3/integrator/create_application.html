@@ -65,7 +65,15 @@ span.prompt1:before {
 </style><span class="prompt1">docker pull camptocamp/geomapfish-build:&lt;release<span class="p">|</span>version&gt;</span>
 <span class="prompt1">wget https://raw.githubusercontent.com/camptocamp/c2cgeoportal/HEAD/docker-run</span>
 <span class="prompt1">chmod +x docker-run</span>
+</pre><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>If you are behind a proxy, you may pass proxy connection information to the <code class="docutils literal notranslate"><span class="pre">docker</span></code> command,
+respectively to the <code class="docutils literal notranslate"><span class="pre">docker-run</span></code> script, with <code class="docutils literal notranslate"><span class="pre">--env</span></code> parameters, like this:</p>
+<div class="code bash last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">--</span><span class="n">env</span> <span class="n">http_proxy</span><span class="o">=...</span>
 </pre></div>
+</div>
+</div>
+</div>
 <div class="section" id="list-existing-scaffolds">
 <h2>List existing scaffolds<a class="headerlink" href="#list-existing-scaffolds" title="Permalink to this headline">¶</a></h2>
 <p>To list the available scaffolds use the following command, either
