@@ -64,7 +64,7 @@ monitoring system like Nagios to check that the application is alive.</p>
 </div>
 <div class="section" id="checker">
 <h2>Checker<a class="headerlink" href="#checker" title="Permalink to this headline">¶</a></h2>
-<p>The checker use the following configuration structure:</p>
+<p>The checker uses the following configuration structure:</p>
 <div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
     <span class="c1"># Global configuration</span>
     <span class="o">...</span>
@@ -82,6 +82,25 @@ monitoring system like Nagios to check that the application is alive.</p>
 in the underlying requests.</p>
 <div class="code yaml last highlight-default"><div class="highlight"><pre><span></span><span class="n">checker</span><span class="p">:</span>
     <span class="n">forward_headers</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Cookie&#39;</span><span class="p">,</span> <span class="s1">&#39;Authorisation&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The checker assumes that it can access the c2cgeoportal services via <code class="docutils literal"><span class="pre">http://localhost</span></code>.
+If this is not allowed on your server, you can override this behaviour as follows.
+In your <code class="docutils literal"><span class="pre">vars</span></code> file, add the following:</p>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
+    <span class="n">checker</span><span class="p">:</span>
+        <span class="n">rewrite_as_http_localhost</span><span class="p">:</span> <span class="kc">False</span>
+</pre></div>
+</div>
+<p>Now, in your configuration file <code class="docutils literal"><span class="pre">project.yaml.mako</span></code>, instead of defining the <code class="docutils literal"><span class="pre">checker_path</span></code>,
+define a <code class="docutils literal"><span class="pre">checker_url</span></code> with the full URL to be used, for example:</p>
+<div class="code yaml last highlight-default"><div class="highlight"><pre><span></span>...
+host: ${host}
+checker_url: https://${host}/${instanceid}/wsgi/check_collector?
+...
 </pre></div>
 </div>
 </div>
