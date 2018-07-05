@@ -720,7 +720,7 @@ def includeme(config):
     )
     # There is no view corresponding to that route, it is to be used from
     # mako templates to get the root of the "layers" web service
-    config.add_route("layers_root", "/layers/", request_method="HEAD")
+    config.add_route("layers_root", "/layers", request_method="HEAD")
 
     # Resource proxy (load external url, useful when loading non https content)
     config.add_route("resourceproxy", "/resourceproxy", request_method="GET")
