@@ -29,7 +29,6 @@
 
 
 import logging
-import httplib2
 import copy
 from io import StringIO
 from urllib.parse import urlsplit, urljoin
@@ -47,7 +46,7 @@ from owslib.wms import WebMapService
 
 from c2cgeoportal_geoportal.lib import caching, get_protected_layers_query, \
     get_writable_layers_query, add_url_params, get_ogc_server_wms_url_ids,\
-    get_ogc_server_wfs_url_ids
+    get_ogc_server_wfs_url_ids, get_http
 from c2cgeoportal_commons.models import DBSession
 from c2cgeoportal_commons.models.main import LayerWMS, OGCServer
 
@@ -83,7 +82,7 @@ def get_writable_layers(role_id, ogc_server_ids):
 
 
 @cache_region.cache_on_arguments()
-def wms_structure(wms_url, host):
+def wms_structure(wms_url, host, request):
     url = urlsplit(wms_url)
     wms_url = add_url_params(wms_url, {
         "SERVICE": "WMS",
@@ -92,7 +91,7 @@ def wms_structure(wms_url, host):
     })
 
     # Forward request to target (without Host Header)
-    http = httplib2.Http()
+    http = get_http(request)
     headers = dict()
     if url.hostname == "localhost" and host is not None:  # pragma: no cover
         headers["Host"] = host
@@ -174,7 +173,7 @@ def filter_capabilities(content, role_id, wms, url, headers, proxies, request):
     if proxies:  # pragma: no cover
         enable_proxies(proxies)
 
-    wms_structure_ = wms_structure(url, headers.get("Host"))
+    wms_structure_ = wms_structure(url, headers.get("Host"), request)
 
     ogc_server_ids = (
         get_ogc_server_wms_url_ids(request) if wms else

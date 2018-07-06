@@ -31,7 +31,7 @@
 import warnings
 from typing import Dict, Tuple  # noqa, pylint: disable=unused-import
 
-from sqlalchemy import Table, MetaData
+from sqlalchemy import Table, MetaData, Column, Integer
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm.util import class_mapper
 from sqlalchemy.exc import SAWarning
@@ -125,7 +125,7 @@ def _get_schema(tablename):
     return tablename, schema
 
 
-def get_table(tablename, schema=None, session=None):
+def get_table(tablename, schema=None, session=None, primary_key=None):
     if schema is None:
         tablename, schema = _get_schema(tablename)
 
@@ -144,16 +144,20 @@ def get_table(tablename, schema=None, session=None):
             "ignore",
             "Did not recognize type 'geometry' of column",
             SAWarning)
+        args = [tablename, metadata]
+        if primary_key is not None:
+            # Ensure we have a primary key to be able to edit views
+            args.append(Column(primary_key, Integer, primary_key=True))
         table = Table(
-            tablename, metadata,
+            *args,
             schema=schema,
             autoload=True,
-            autoload_with=engine,
+            autoload_with=engine
         )
     return table
 
 
-def get_class(tablename, session=None, exclude_properties=None):
+def get_class(tablename, session=None, exclude_properties=None, primary_key=None):
     """
     Get the SQLAlchemy mapped class for "tablename". If no class exists
     for "tablename" one is created, and added to the cache. "tablename"
@@ -164,12 +168,12 @@ def get_class(tablename, session=None, exclude_properties=None):
     if exclude_properties is None:
         exclude_properties = []
     tablename, schema = _get_schema(tablename)
-    cache_key = (schema, tablename, ",".join(exclude_properties))
+    cache_key = (schema, tablename, ",".join(exclude_properties), primary_key)
 
     if cache_key in _class_cache:
         return _class_cache[cache_key]
 
-    table = get_table(tablename, schema, session)
+    table = get_table(tablename, schema, session, primary_key=primary_key)
 
     # create the mapped class
     cls = _create_class(table, exclude_properties)

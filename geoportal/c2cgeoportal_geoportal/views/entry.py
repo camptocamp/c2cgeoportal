@@ -28,7 +28,6 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import httplib2
 import logging
 import json
 import sys
@@ -55,7 +54,7 @@ import zope.event.classhandler
 from c2cgeoportal_commons import models
 from c2cgeoportal_commons.models import main, static
 from c2cgeoportal_geoportal.lib import get_setting, get_protected_layers_query, \
-    get_url2, get_url, get_typed, get_types_map, add_url_params
+    get_url2, get_url, get_typed, get_types_map, add_url_params, get_http
 from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
 from c2cgeoportal_geoportal.lib.caching import get_region, \
     set_common_headers, NO_CACHE, PUBLIC_CACHE, PRIVATE_CACHE
@@ -235,7 +234,7 @@ class Entry:
 
     @cache_region.cache_on_arguments()
     def get_http_cached(self, url, headers):
-        http = httplib2.Http()
+        http = get_http(self.request)
         return http.request(url, method="GET", headers=headers)
 
     @cache_region.cache_on_arguments()

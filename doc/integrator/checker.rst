@@ -68,6 +68,29 @@ The checker use the following configuration structure in ``vars_<project>.yaml``
         checker:
             forward_headers: ['Cookie', 'Authorisation']
 
+.. note::
+
+    The checker assumes that it can access the c2cgeoportal services via ``http://localhost``.
+    If this is not allowed on your server, you can override this behaviour as follows.
+    In your ``vars`` file, add the following:
+
+    .. code:: yaml
+
+        vars:
+            checker:
+                rewrite_as_http_localhost: False
+
+    Now, in your configuration file ``project.yaml.mako``, instead of defining the ``checker_path``,
+    define a ``checker_url`` with the full URL to be used, for example:
+
+    .. code:: yaml
+
+        ...
+        host: ${host}
+        checker_url: https://${host}/${instanceid}/wsgi/check_collector?
+        ...
+
+
 ``print``
 ~~~~~~~~~
 

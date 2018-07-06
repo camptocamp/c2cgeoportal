@@ -205,7 +205,7 @@ Performance or network error
 ----------------------------
 
 For performance and proxy issues make sure that all internal URLs in the config file
-use localhost (use ``curl "http://localhost/<path>" -H Host:<server_name>``
+use localhost (use ``curl "http://localhost/<path>" --header Host:<server_name>``
 to test it).
 
 Tilecloud chain

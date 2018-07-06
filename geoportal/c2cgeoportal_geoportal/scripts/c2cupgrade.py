@@ -276,7 +276,7 @@ class C2cUpgradeTool:
                 "Run `curl {} '{}'` for more information."
             ]).format(
                 ' '.join([
-                    '--header={}={}'.format(*i) for i in self.project.get("checker_headers", {}).items()
+                    '--header {}={}'.format(*i) for i in self.project.get("checker_headers", {}).items()
                 ]),
                 self.project["checker_url"],
             )
