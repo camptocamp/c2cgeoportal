@@ -29,7 +29,6 @@
 
 
 import sys
-import httplib2
 import urllib.request
 import urllib.parse
 import urllib.error
@@ -40,6 +39,7 @@ from urllib.parse import urlparse, parse_qs
 from pyramid.response import Response
 from pyramid.httpexceptions import HTTPBadGateway, exception_response
 
+from c2cgeoportal_geoportal.lib import get_http
 from c2cgeoportal_geoportal.lib.caching import get_region, \
     set_common_headers, NO_CACHE, PUBLIC_CACHE, PRIVATE_CACHE
 
@@ -80,7 +80,7 @@ class Proxy(object):
             method = self.request.method
 
         # forward request to target (without Host Header)
-        http = httplib2.Http()
+        http = get_http(self.request)
 
         if headers is None:  # pragma: no cover
             headers = dict(self.request.headers)
