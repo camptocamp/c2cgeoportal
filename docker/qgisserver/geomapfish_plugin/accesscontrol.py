@@ -88,23 +88,24 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
     def get_role(self):
         from c2cgeoportal_commons.models.main import Role
         parameters = self.serverInterface().requestHandler().parameterMap()
-        return self.DBSession.query(Role).get(parameters['ROLE_ID'])
+        return self.DBSession.query(Role).get(parameters['ROLE_ID']) if 'ROLE_ID' in parameters else None
 
-    def get_restriction_areas(self, gmf_layers, rw=False, role=False):
+    def get_restriction_areas(self, gmf_layers, rw=False, role=None):
         """
         None => full access
         [] => no access
         shapely.ops.cascaded_union(result) => geom of access
         """
-        if role is False:
-            role = self.get_role()
+
+        if role is None:
+            return []
 
         restriction_areas = []
         for layer in gmf_layers:
             for restriction_area in layer.restrictionareas:
                 if role in restriction_area.roles and rw is False or restriction_area.readwrite is True:
                     if restriction_area.area is None:
-                        return None
+                        return []
                     else:
                         restriction_areas.append(geoalchemy2.shape.to_shape(
                             restriction_area.area
@@ -114,7 +115,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
 
     def get_area(self, layer, rw=False):
         role = self.get_role()
-        key = (layer.name(), role.name, rw)
+        key = (layer.name(), role.name if role is not None else None, rw)
 
         if key in self.area_cache:
             return self.area_cache[key]
@@ -122,8 +123,8 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
         gmf_layers = self.layers[layer.name()]
         restriction_areas = self.get_restriction_areas(gmf_layers, role=role)
 
-        if restriction_areas is None:
-            self.area_cache[key] = None
+        if len(restriction_areas) == 0:
+            self.area_cache[key] = []
             return None
 
         area = ops.unary_union(restriction_areas).wkt
@@ -179,8 +180,8 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
                 return None
 
             QgsMessageLog.logMessage("intersects($geometry, geom_from_wkt('{}'))".format(area))
-            #return "geometry = '{}'".format(ops.unary_union(restriction_areas).wkt)
-            #return "fid = 2"
+            # return "geometry = '{}'".format(ops.unary_union(restriction_areas).wkt)
+            # return "fid = 2"
             # TODO cache the union
             # TODO verify the geometry
             return "intersects($geometry, transform(geom_from_wkt('{}'), 'EPSG:{}', 'EPSG:{}')".format(
@@ -210,16 +211,14 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
                 if l.public is True:
                     rights.canRead = True
 
+            role = self.get_role()
             if not rights.canRead:
-                role = self.get_role()
                 restriction_areas = self.get_restriction_areas(gmf_layers, role=role)
-                if restriction_areas is not None and len(restriction_areas) == 0:
-                    return rights
-                rights.canRead = True
+                if len(restriction_areas) > 0:
+                    rights.canRead = True
 
             restriction_areas = self.get_restriction_areas(gmf_layers, rw=True, role=role)
-            rights.canInsert = rights.canUpdate = rights.canDelete = \
-                restriction_areas is None or len(restriction_areas) > 0
+            rights.canInsert = rights.canUpdate = rights.canDelete = len(restriction_areas) > 0
 
             return rights
         except Exception as e:
