@@ -790,12 +790,12 @@ secrets:
 
 .PHONY: edit-qgis-project
 edit-qgis-project:
-	IP=$$(ip addr show dev $$(route | grep default | awk '{print $$(NF)}' | head -1)  | awk '$$1 ~ /^inet/ { sub("/.*", "", $$2); print $$2 }' | head -1); \
+	IP=$$(ip addr show dev $$(route | grep default | awk '{print $$(NF)}' | head -1) | awk '$$1 ~ /^inet/ { sub("/.*", "", $$2); print $$2 }' | head -1); \
 	docker run -ti \
-		--add-host=db:$$IP \
-		--volume $$PWD/qgisserver:/etc/qgisserver \
-		--volume /tmp/.X11-unix:/tmp/.X11-unix \
-		--volume $$HOME:$$HOME \
-		--env DISPLAY=unix$${DISPLAY} \
-		--env "PGSERVICEFILE=$$HOME/.pg_service.conf" \
-		--rm camptocamp/qgis-server:3.2 /usr/local/bin/start-client
+		--add-host=db:$${IP} \
+		--volume=$${PWD}/qgisserver:/etc/qgisserver \
+		--volume=/tmp/.X11-unix:/tmp/.X11-unix \
+		--volume=$${HOME}:$${HOME} \
+		--env=DISPLAY=unix$${DISPLAY} \
+		--env=PGSERVICEFILE=$$HOME/.pg_service.conf \
+		--rm camptocamp/qgis-server:3.2 /usr/local/bin/start-client /etc/qgisserver/project.qgs
