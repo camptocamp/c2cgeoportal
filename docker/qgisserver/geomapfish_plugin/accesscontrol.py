@@ -90,7 +90,8 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
         parameters = self.serverInterface().requestHandler().parameterMap()
         return self.DBSession.query(Role).get(parameters['ROLE_ID']) if 'ROLE_ID' in parameters else None
 
-    def get_restriction_areas(self, gmf_layers, rw=False, role=None):
+    @staticmethod
+    def get_restriction_areas(gmf_layers, rw=False, role=None):
         """
         None => full access
         [] => no access
