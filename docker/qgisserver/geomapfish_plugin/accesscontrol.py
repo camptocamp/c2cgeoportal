@@ -43,37 +43,45 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
 
         self.server_iface = server_iface
         self.area_cache = {}
+        self.layers = None
 
-        if "GEOMAPFISH_OGCSERVER" not in os.environ:
-            raise GMFException("The environment variable 'GEOMAPFISH_OGCSERVER' is not defined.")
+        try:
+            if "GEOMAPFISH_OGCSERVER" not in os.environ:
+                raise GMFException("The environment variable 'GEOMAPFISH_OGCSERVER' is not defined.")
 
-        print("Use OGC server named '{}'".format(os.environ["GEOMAPFISH_OGCSERVER"]))
+            print("Use OGC server named '{}'".format(os.environ["GEOMAPFISH_OGCSERVER"]))
 
-        config.init(os.environ.get('GEOMAPFISH_CONFIG', '/etc/qgisserver/geomapfish.yaml'))
-        self.srid = config.get('srid')
+            config.init(os.environ.get('GEOMAPFISH_CONFIG', '/etc/qgisserver/geomapfish.yaml'))
+            self.srid = config.get('srid')
 
-        from c2cgeoportal_commons.models.main import LayerWMS, OGCServer
-        configure_mappers()
+            from c2cgeoportal_commons.models.main import LayerWMS, OGCServer
+            configure_mappers()
 
-        engine = sqlalchemy.create_engine(config.get('sqlalchemy_slave.url'))
-        session_factory = sessionmaker()
-        session_factory.configure(bind=engine)
-        self.DBSession = scoped_session(session_factory)
+            engine = sqlalchemy.create_engine(config.get('sqlalchemy_slave.url'))
+            session_factory = sessionmaker()
+            session_factory.configure(bind=engine)
+            self.DBSession = scoped_session(session_factory)
 
-        self.ogcserver = self.DBSession.query(OGCServer) \
-            .filter(OGCServer.name == os.environ["GEOMAPFISH_OGCSERVER"]) \
-            .one()
+            self.ogcserver = self.DBSession.query(OGCServer) \
+                .filter(OGCServer.name == os.environ["GEOMAPFISH_OGCSERVER"]) \
+                .one()
 
-        self.layers = {}
-        # TODO manage groups ...
-        for layer in self.DBSession.query(LayerWMS).filter(LayerWMS.ogc_server_id == self.ogcserver.id).all():
-            for name in layer.layer.split(','):
-                if name not in self.layers:
-                    self.layers[name] = []
-                self.layers[name].append(layer)
-        QgsMessageLog.logMessage('[accesscontrol] layers: {}'.format(
-            json.dumps(dict([(k, [l.name for l in v]) for k, v in self.layers.items()]), sort_keys=True, indent=4)
-        ))
+            layers = {}
+            # TODO manage groups ...
+            for layer in self.DBSession.query(LayerWMS).filter(LayerWMS.ogc_server_id == self.ogcserver.id).all():
+                for name in layer.layer.split(','):
+                    if name not in layers:
+                        layers[name] = []
+                    layers[name].append(layer)
+            QgsMessageLog.logMessage('[accesscontrol] layers: {}'.format(
+                json.dumps(dict([(k, [l.name for l in v]) for k, v in layers.items()]), sort_keys=True, indent=4)
+            ))
+            self.layers = layers
+
+        except Exception as e:
+            QgsMessageLog.logMessage(traceback.format_tb(e))
+            QgsMessageLog.logMessage(str(e))
+            raise
 
         server_iface.registerAccessControl(self, int(os.environ.get("GEOMAPFISH_POSITION", 100)))
 
@@ -126,6 +134,9 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
         """ Return an additional subset string (typically SQL) filter """
         QgsMessageLog.logMessage("layerFilterSubsetString {}".format(layer.dataProvider().storageType()))
 
+        if self.layers is None:
+            raise Exception("The plugin is not initialised")
+
         try:
             if layer.dataProvider().storageType() not in self.EXPRESSION_TYPE:
                 return None
@@ -146,13 +157,17 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             return "ST_intersects({}, {})".format(
                 QgsDataSourceUri(layer.dataProvider().dataSourceUri()).geometryColumn(), area
             )
-        except Exception:
-            QgsMessageLog.logMessage(traceback.format_exc())
+        except Exception as e:
+            QgsMessageLog.logMessage(traceback.format_tb(e))
+            QgsMessageLog.logMessage(str(e))
             raise
 
     def layerFilterExpression(self, layer):  # NOQA
         """ Return an additional expression filter """
         QgsMessageLog.logMessage("layerFilterExpression {}".format(layer.dataProvider().storageType()))
+
+        if self.layers is None:
+            raise Exception("The plugin is not initialised")
 
         try:
             if layer.dataProvider().storageType() in self.EXPRESSION_TYPE:
@@ -171,13 +186,17 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             return "intersects($geometry, transform(geom_from_wkt('{}'), 'EPSG:{}', 'EPSG:{}')".format(
                 area, self.srid, layer.crs().projectionAcronym()
             )
-        except Exception:
-            QgsMessageLog.logMessage(traceback.format_exc())
+        except Exception as e:
+            QgsMessageLog.logMessage(traceback.format_tb(e))
+            QgsMessageLog.logMessage(str(e))
             raise
 
     def layerPermissions(self, layer):  # NOQA
         """ Return the layer rights """
         QgsMessageLog.logMessage("layerPermissions {}".format(layer.name()))
+
+        if self.layers is None:
+            raise Exception("The plugin is not initialised")
 
         try:
             rights = QgsAccessControlFilter.LayerPermissions()
@@ -203,8 +222,9 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
                 restriction_areas is None or len(restriction_areas) > 0
 
             return rights
-        except Exception:
-            QgsMessageLog.logMessage(traceback.format_exc())
+        except Exception as e:
+            QgsMessageLog.logMessage(traceback.format_tb(e))
+            QgsMessageLog.logMessage(str(e))
             raise
 
     @staticmethod
@@ -220,12 +240,16 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
         """ Are we authorise to modify the following geometry """
         QgsMessageLog.logMessage("allowToEdit")
 
+        if self.layers is None:
+            raise Exception("The plugin is not initialised")
+
         try:
             area = self.get_area(layer, rw=True)
 
             return area is None or area.intersect(feature.geom)
-        except Exception:
-            QgsMessageLog.logMessage(traceback.format_exc())
+        except Exception as e:
+            QgsMessageLog.logMessage(traceback.format_tb(e))
+            QgsMessageLog.logMessage(str(e))
             raise
 
     def cacheKey(self):  # NOQA
