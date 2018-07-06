@@ -72,7 +72,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
                     self.layers[name] = []
                 self.layers[name].append(layer)
         QgsMessageLog.logMessage('[accesscontrol] layers: {}'.format(
-            json.dumps(self.layers, sort_keys=True, indent=4)
+            json.dumps(dict([(k, [l.name for l in v]) for k, v in self.layers.items()]), sort_keys=True, indent=4)
         ))
 
         server_iface.registerAccessControl(self, int(os.environ.get("GEOMAPFISH_POSITION", 100)))
