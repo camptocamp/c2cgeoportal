@@ -88,6 +88,25 @@ in the underlying requests.</p>
 </pre></div>
 </div>
 </div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The checker assumes that it can access the c2cgeoportal services via <code class="docutils literal notranslate"><span class="pre">http://localhost</span></code>.
+If this is not allowed on your server, you can override this behaviour as follows.
+In your <code class="docutils literal notranslate"><span class="pre">vars</span></code> file, add the following:</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
+    <span class="n">checker</span><span class="p">:</span>
+        <span class="n">rewrite_as_http_localhost</span><span class="p">:</span> <span class="kc">False</span>
+</pre></div>
+</div>
+<p>Now, in your configuration file <code class="docutils literal notranslate"><span class="pre">project.yaml.mako</span></code>, instead of defining the <code class="docutils literal notranslate"><span class="pre">checker_path</span></code>,
+define a <code class="docutils literal notranslate"><span class="pre">checker_url</span></code> with the full URL to be used, for example:</p>
+<div class="code yaml last highlight-default notranslate"><div class="highlight"><pre><span></span>...
+host: ${host}
+checker_url: https://${host}/${instanceid}/wsgi/check_collector?
+...
+</pre></div>
+</div>
+</div>
 <div class="section" id="print">
 <h3><code class="docutils literal notranslate"><span class="pre">print</span></code><a class="headerlink" href="#print" title="Permalink to this headline">¶</a></h3>
 <p>Check the print version 3.x (try to print a page).</p>
