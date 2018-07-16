@@ -35,7 +35,7 @@ Create Date: 2018-03-23 09:08:56.910629
 """
 
 from alembic import op
-from c2cgeoportal_commons.config import config
+from c2c.template.config import config
 
 # revision identifiers, used by Alembic.
 revision = '21f11066f8ec'

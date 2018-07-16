@@ -30,7 +30,7 @@
 
 from unittest import TestCase
 from pyramid import testing
-from c2cgeoportal_commons.config import config
+from c2c.template.config import config
 
 
 def setup_module():  # noqa

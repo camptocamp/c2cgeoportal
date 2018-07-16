@@ -32,7 +32,7 @@ from unittest import TestCase
 from pyramid import testing
 from pyramid.testing import DummyRequest
 
-from c2cgeoportal_commons.config import config
+from c2c.template.config import config
 import c2cgeoportal_geoportal
 from c2cgeoportal_geoportal import call_hook, set_user_validator, \
     default_user_validator, create_get_user_from_request, is_valid_referer

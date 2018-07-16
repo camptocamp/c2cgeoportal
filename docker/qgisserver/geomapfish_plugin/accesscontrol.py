@@ -25,7 +25,7 @@ from sqlalchemy.orm import configure_mappers
 from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm import sessionmaker
 
-from c2cgeoportal_commons.config import config
+from c2c.template.config import config
 
 
 class GMFException(Exception):

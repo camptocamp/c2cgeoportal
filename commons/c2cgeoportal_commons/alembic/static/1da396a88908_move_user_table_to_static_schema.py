@@ -39,7 +39,7 @@ from hashlib import sha1
 from alembic import op
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy.types import Integer, String, Unicode, Boolean
-from c2cgeoportal_commons.config import config
+from c2c.template.config import config
 
 # revision identifiers, used by Alembic.
 revision = '1da396a88908'

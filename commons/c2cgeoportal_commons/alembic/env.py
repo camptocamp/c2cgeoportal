@@ -30,7 +30,7 @@
 from alembic import context
 from sqlalchemy import engine_from_config, pool
 from logging.config import fileConfig
-from c2cgeoportal_commons.config import config
+from c2c.template.config import config
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.

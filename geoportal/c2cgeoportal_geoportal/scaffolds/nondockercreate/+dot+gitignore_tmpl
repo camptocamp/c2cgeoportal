@@ -8,7 +8,6 @@ __pycache__/
 /docker-compose-build.yaml
 /docker-compose-dev.yaml
 /admin/
-/geoportal/alembic.yaml
 /testdb/11-schemas.sql
 /testdb/12-alembic.sql
 /testdb/13-alembic-static.sql
@@ -35,11 +34,13 @@ __pycache__/
 /qgisserver/geomapfish.yaml
 /tilegeneration/config.yaml
 /tilegeneration/config.yaml.tmpl.mako
+/geoportal/alembic.yaml
 /geoportal/jsbuild/app.cfg
 /geoportal/Dockerfile
 /geoportal/config.yaml
 /geoportal/development.ini
 /geoportal/production.ini
+/geoportal/dist/
 /geoportal/{{package}}_geoportal.egg-info/
 /geoportal/{{package}}_geoportal/static/lib/cgxp/
 /geoportal/{{package}}_geoportal/locale/*/LC_MESSAGES/*.mo

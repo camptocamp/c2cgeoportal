@@ -36,7 +36,7 @@ Create Date: ${create_date}
 """
 
 from alembic import op
-from c2cgeoportal_commons.config import config
+from c2c.template.config import config
 
 # revision identifiers, used by Alembic.
 revision = ${repr(up_revision)}

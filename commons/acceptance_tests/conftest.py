@@ -10,7 +10,7 @@ import transaction
 
 from c2cgeoportal_commons.testing.initializedb import init_db, truncate_tables
 from c2cgeoportal_commons.testing import get_engine, get_session_factory, get_tm_session, generate_mappers
-from c2cgeoportal_commons.config import config
+from c2c.template.config import config
 
 
 @pytest.fixture(scope='session')

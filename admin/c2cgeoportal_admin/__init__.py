@@ -6,7 +6,7 @@ from pyramid.events import BeforeRender, NewRequest
 import c2cgeoform
 from pkg_resources import resource_filename
 
-from c2cgeoportal_commons.config import config as configuration
+from c2c.template.config import config as configuration
 from c2cgeoportal_admin.subscribers import add_renderer_globals, add_localizer
 
 
