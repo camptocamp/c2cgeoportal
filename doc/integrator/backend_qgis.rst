@@ -92,3 +92,45 @@ settings and add the variable environment setting in the Apache config:
     + SetEnv PGSERVICEFILE path/to/pg_service.conf
 
 Don't forget to restart Apache.
+
+Docker
+******
+
+Create a tunnel to the database:
+
+.. prompt:: bash
+
+   IP=$(ip addr show dev $(route | grep default | awk '{print $(NF)}' | head -1) | awk '$1 ~ /^inet/ { sub("/.*", "", $2); print $2 }' | head -1)
+   ssh -L ${IP}:5432:localhost:5432 <remote server>
+
+In a Docker mode, QGIS is configured in the ``qgisserver/`` directory. To edit the configuration,
+run this target and open the ``/etc/project/project.qgs`` file:
+
+.. prompt:: bash
+
+   ./docker-run make edit-qgis-project
+
+If you want to add PostGIS layers on the main DB, create/edit your ``$HOME/.pg_service.conf`` file
+and add a section for the DB you want to access:
+
+.. code::
+
+   [geomapfish]
+   host=<host>  # Localhost addresse of the Docker network interface (=> ${IP})
+   dbname=<database name>
+   user=<database user>
+   password=<database password>
+   port=5432
+
+Then, in QGIS, fill only the ``name`` and ``service`` fields when you create the DB connection.
+Then, you can create/edit a ``qgisserver/pg_service.conf.tmpl`` file and add a section looking
+like that:
+
+.. code::
+
+   [geomapfish]
+   host=${PGHOST}
+   dbname=${PGDATABASE}
+   user=${PGUSER}
+   password=${PGPASSWORD}
+   port=${PGPORT}

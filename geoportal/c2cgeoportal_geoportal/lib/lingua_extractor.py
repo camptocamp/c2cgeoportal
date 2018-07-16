@@ -58,7 +58,6 @@ from c2cgeoportal_commons.config import config
 from c2cgeoportal_geoportal import init_dbsessions
 from c2cgeoportal_geoportal.lib import add_url_params, get_url2
 from c2cgeoportal_geoportal.lib.bashcolor import colorize, RED
-from c2cgeoportal_geoportal.lib.dbreflection import get_class
 from c2cgeoportal_geoportal.lib.caching import init_region
 
 from c2cgeoportal_geoportal.lib.print_ import *  # noqa
@@ -421,15 +420,9 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
         for wms_layer in layer.layer.split(","):
             self._import_layer_attributes(url, wms_layer, layer.item_type, layer.name, messages)
         if layer.geo_table is not None and layer.geo_table != "":
-            exclude = [] if layer.exclude_properties is None else layer.exclude_properties.split(",")
-            last_update_date = layer.get_metadatas("lastUpdateDateColumn")
-            if len(last_update_date) == 1:
-                exclude.append(last_update_date[0].value)
-            last_update_user = layer.get_metadatas("lastUpdateUserColumn")
-            if len(last_update_user) == 1:
-                exclude.append(last_update_user[0].value)
             try:
-                cls = get_class(layer.geo_table, exclude_properties=exclude)
+                from c2cgeoportal_geoportal.views.layers import get_layer_class
+                cls = get_layer_class(layer)
                 for column_property in class_mapper(cls).iterate_properties:
                     if isinstance(column_property, ColumnProperty) and len(column_property.columns) == 1:
                         column = column_property.columns[0]

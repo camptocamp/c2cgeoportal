@@ -539,6 +539,7 @@ def includeme(config):
     # Register a tween to get back the cache buster path.
     config.add_tween("c2cgeoportal_geoportal.lib.cacheversion.CachebusterTween")
     config.add_tween("c2cgeoportal_geoportal.lib.webpack.WebpackTween")
+    config.add_tween("c2cgeoportal_geoportal.lib.headers.HeadersTween")
 
     # Bind the mako renderer to other file extensions
     add_mako_renderer(config, ".html")
@@ -720,7 +721,7 @@ def includeme(config):
     )
     # There is no view corresponding to that route, it is to be used from
     # mako templates to get the root of the "layers" web service
-    config.add_route("layers_root", "/layers/", request_method="HEAD")
+    config.add_route("layers_root", "/layers", request_method="HEAD")
 
     # Resource proxy (load external url, useful when loading non https content)
     config.add_route("resourceproxy", "/resourceproxy", request_method="GET")

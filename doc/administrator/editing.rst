@@ -133,3 +133,24 @@ Example:
 
    * Source and destination layers must have the same geometry type.
    * Only the geometry will be copied, the attributes will not be.
+
+Edit views
+----------
+
+To be able to edit PostgreSQL views a primary key must be manually configured.
+Add a layer metadata ``geotablePrimaryKey`` with value the name of the column to use as primary key.
+That column must be of type ``Integer``.
+
+Example:
+
+    * geotablePrimaryKey: ``id``
+
+Enable snapping
+---------------
+
+To be able to snap while editing, the ``snappingConfig`` must be set on the layer metadata.
+The value is a ``json`` object containing the following optional properties:
+
+    * edge (boolean): whether to allow snapping on edges or not;
+    * vertex (boolean): whether to allow snapping on vertices or not;
+    * tolerance (number): the pixel tolerance.

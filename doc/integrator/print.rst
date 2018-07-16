@@ -82,3 +82,9 @@ For this, create a makefile with:
 
    BUILD_RULES = test-packages print
    TEST_PACKAGES = main print
+
+Notes about the scales
+----------------------
+
+The web map and the map printing do not use the same scales. Therefore, if you change the configuration
+of min/max scaling, you should also test map printing to be sure that it also works as expected.
