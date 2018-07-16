@@ -47,6 +47,8 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
         if "GEOMAPFISH_OGCSERVER" not in os.environ:
             raise GMFException("The environment variable 'GEOMAPFISH_OGCSERVER' is not defined.")
 
+        print("Use OGC server named '{}'".format(os.environ["GEOMAPFISH_OGCSERVER"]))
+
         config.init(os.environ.get('GEOMAPFISH_CONFIG', '/etc/qgisserver/geomapfish.yaml'))
         self.srid = config.get('srid')
 

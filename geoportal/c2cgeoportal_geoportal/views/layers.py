@@ -80,7 +80,7 @@ class Layers:
         This function assumes that the names of geometry attributes
         in the mapped class are the same as those of geometry columns.
         """
-        mapped_class = get_class(layer.geo_table)
+        mapped_class = get_layer_class(layer)
         for p in class_mapper(mapped_class).iterate_properties:
             if not isinstance(p, ColumnProperty):
                 continue  # pragma: no cover
@@ -134,7 +134,7 @@ class Layers:
 
     def _get_protocol_for_layer(self, layer, **kwargs):
         """ Returns a papyrus ``Protocol`` for the ``Layer`` object. """
-        cls = get_class(layer.geo_table)
+        cls = get_layer_class(layer)
         geom_attr = self._get_geom_col_info(layer)[0]
         return Protocol(models.DBSession, cls, geom_attr, **kwargs)
 
@@ -354,16 +354,16 @@ class Layers:
                 raise TopologicalError(reason)
 
     def _log_last_update(self, layer, feature):
-        last_update_date = self._get_metadata(layer, "lastUpdateDateColumn")
+        last_update_date = self.get_metadata(layer, "lastUpdateDateColumn")
         if last_update_date is not None:
             setattr(feature, last_update_date, datetime.now())
 
-        last_update_user = self._get_metadata(layer, "lastUpdateUserColumn")
+        last_update_user = self.get_metadata(layer, "lastUpdateUserColumn")
         if last_update_user is not None:
             setattr(feature, last_update_user, self.request.user.id)
 
     @staticmethod
-    def _get_metadata(layer, key, default=None):
+    def get_metadata(layer, key, default=None):
         metadatas = layer.get_metadatas(key)
         if len(metadatas) == 1:
             metadata = metadatas[0]
@@ -372,7 +372,7 @@ class Layers:
 
     def _get_validation_setting(self, layer):
         # The validation UIMetadata is stored as a string, not a boolean
-        should_validate = self._get_metadata(layer, "geometryValidation", None)
+        should_validate = self.get_metadata(layer, "geometryValidation", None)
         if should_validate:
             return should_validate.lower() != "false"
         return self.settings.get("geometry_validation", False)
@@ -416,19 +416,7 @@ class Layers:
         if not layer.public and self.request.user is None:
             raise HTTPForbidden()
 
-        # exclude the columns used to record the last features update
-        exclude = [] if layer.exclude_properties is None else layer.exclude_properties.split(",")
-        last_update_date = self._get_metadata(layer, "lastUpdateDateColumn")
-        if last_update_date is not None:
-            exclude.append(last_update_date)
-        last_update_user = self._get_metadata(layer, "lastUpdateUserColumn")
-        if last_update_user is not None:
-            exclude.append(last_update_user)
-
-        return get_class(
-            layer.geo_table,
-            exclude_properties=exclude
-        )
+        return get_layer_class(layer)
 
     @view_config(route_name="layers_enumerate_attribute_values", renderer="json")
     def enumerate_attribute_values(self):
@@ -481,24 +469,26 @@ class Layers:
         return dbsession.query(distinct(attribute)).order_by(attribute).all()
 
 
-def get_layer_metadatas(layer):
+def get_layer_class(layer):
     # exclude the columns used to record the last features update
     exclude = [] if layer.exclude_properties is None else layer.exclude_properties.split(",")
-
-    date_metadata = layer.get_metadatas("lastUpdateDateColumn")
-    last_update_date = date_metadata[0] if len(date_metadata) == 1 else None
+    last_update_date = Layers.get_metadata(layer, "lastUpdateDateColumn")
     if last_update_date is not None:
-        exclude.append(last_update_date.value)
-    user_metadata = layer.get_metadatas("lastUpdateUserColumn")
-    last_update_user = user_metadata[0] if len(user_metadata) == 1 else None
+        exclude.append(last_update_date)
+    last_update_user = Layers.get_metadata(layer, "lastUpdateUserColumn")
     if last_update_user is not None:
-        exclude.append(last_update_user.value)
+        exclude.append(last_update_user)
 
-    cls = get_class(
-        layer.geo_table,
-        exclude_properties=exclude
+    primary_key = Layers.get_metadata(layer, "geotablePrimaryKey")
+    return get_class(
+        str(layer.geo_table),
+        exclude_properties=exclude,
+        primary_key=primary_key
     )
 
+
+def get_layer_metadatas(layer):
+    cls = get_layer_class(layer)
     edit_columns = []
 
     for column_property in class_mapper(cls).iterate_properties:

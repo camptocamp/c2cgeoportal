@@ -59,9 +59,25 @@ mapping:
       sqlalchemy.url:
         type: str
         required: True
+      sqlalchemy.pool_recycle:
+        type: int
+      sqlalchemy.pool_size:
+        type: int
+      sqlalchemy.pool_overflow:
+        type: int
+      sqlalchemy.use_batch_mode:
+        type: bool
       sqlalchemy_slave.url:
         type: str
         required: True
+      sqlalchemy_slave.pool_recycle:
+        type: int
+      sqlalchemy_slave.pool_size:
+        type: int
+      sqlalchemy_slave.pool_overflow:
+        type: int
+      sqlalchemy_slave.use_batch_mode:
+        type: bool
       default_max_age:
         type: int
         required: True
@@ -158,6 +174,12 @@ mapping:
         type: seq
         sequence:
           - type: str
+      global_headers:
+        type: map
+        required: True
+        mapping:
+          regex;.+:
+            type: str
       headers:
         type: map
         required: True

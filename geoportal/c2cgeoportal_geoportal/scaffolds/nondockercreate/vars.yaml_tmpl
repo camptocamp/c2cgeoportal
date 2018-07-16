@@ -289,6 +289,23 @@ update_paths:
   - docker_services.tilecloudchain.environment
   - fulltextsearch
   - functionalities.available_in_templates
+  - headers.index
+  - headers.api
+  - headers.profile
+  - headers.raster
+  - headers.echo
+  - headers.csvecho
+  - headers.exportgpxkml
+  - headers.error
+  - headers.themes
+  - headers.config
+  - headers.print
+  - headers.fulltextsearch
+  - headers.mapserver
+  - headers.tinyows
+  - headers.layers
+  - headers.shortener
+  - headers.login
   - interfaces_theme
   - shortener
 
