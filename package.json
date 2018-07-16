@@ -14,6 +14,7 @@
     "jstree": "3.3.5",
     "jstreegrid": "3.9.4",
     "magicsuggest-alpine": "1.0.0",
+    "ngeo": "2.4.0-daily.20180716T092301Z.76f80c4.HEAD",
     "openlayers": "https://api.github.com/repos/openlayers/openlayers/tarball/f284b95cb897b3ce1b49b985b58ebe1ca76be1fe",
     "typeahead.js": "0.11.1"
   }

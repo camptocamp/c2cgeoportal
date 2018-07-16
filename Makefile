@@ -338,7 +338,9 @@ import-ngeo-apps: $(APPS_FILES) $(APPS_FILES_ALT)
 .PRECIOUS: ngeo
 ngeo:
 	$(PRERULE_CMD)
-	if [ ! -e "ngeo" ] ; then git clone --depth 1 --branch=$(shell VERSION=$(MAIN_BRANCH) npm-packages --version) https://github.com/camptocamp/ngeo.git ; fi
+	if [ ! -e "ngeo" ] ; then git clone --depth=100 --branch=$(shell VERSION=$(MAIN_BRANCH) npm-packages --branch) https://github.com/camptocamp/ngeo.git ; fi
+	git fetch origin
+	git reset --hard $(shell VERSION=$(MAIN_BRANCH) npm-packages --hash)
 	touch --no-create $@
 
 .PRECIOUS: ngeo/contribs/gmf/apps/%/index.html.ejs
@@ -411,7 +413,7 @@ npm-packages: ngeo package.json
 
 admin/npm-packages: ngeo package.json
 	$(PRERULE_CMD)
-	npm-packages --src=package.json --dst=$@
+	npm-packages ngeo --src=package.json --dst=$@
 
 geoportal/package.json: ngeo/package.json
 	$(PRERULE_CMD)
