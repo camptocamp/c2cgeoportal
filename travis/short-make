@@ -2,16 +2,16 @@
 
 # Check that the make command don't execute any rules and had an unexpected error
 
-import time
 import sys
 import os
 import subprocess
 
 p = subprocess.Popen(["make"] + sys.argv[1:], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-time.sleep(15)
-if p.poll() is None:
+try:
+    p.wait(20)
+except subprocess.TimeoutExpired:
     p.kill()
-    print("The second make run take too long, probably a task is running again")
+    print("The second make run takes too long, probably a task is running again")
     os.environ["DEBUG"] = "TRUE"
     subprocess.call(["make"] + sys.argv[1:])
     exit(2)

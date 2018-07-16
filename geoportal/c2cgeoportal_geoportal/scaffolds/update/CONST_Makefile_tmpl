@@ -156,8 +156,8 @@ I18N_DEPENDENCIES += project.yaml /build/requirements.timestamp
 
 
 # Alembic
-
-ALEMBIC_YAML_FILE ?= vars_testdb.yaml
+ALEMBIC_YAML_FILE ?= $(VARS_FILE)
+export ALEMBIC_YAML_FILE
 
 # CGXP
 JSBUILD_MAIN_FILES = $(shell find geoportal/$(PACKAGE)_geoportal/static/lib/cgxp geoportal/$(PACKAGE)_geoportal/static/js -name "*.js" -print 2> /dev/null)
@@ -316,11 +316,13 @@ ALL_JINJA_FILES = $(shell find $(FIND_OPTS) -name "*.jinja" -print)
 EXTRA_EXCLUDE = $(foreach ELEM, print mapfile jsbuild tilegeneration,-path ./$(ELEM) -prune -o)
 VARS_FILES += CONST_vars.yaml $(VARS_FILE)
 VARS_DEPENDS += $(VARS_FILES)
-CONFIG_VARS += sqlalchemy.url sqlalchemy_slave.url schema schema_static enable_admin_interface \
+CONFIG_VARS += sqlalchemy.url sqlalchemy.pool_recycle sqlalchemy.pool_size sqlalchemy.max_overflow \
+	sqlalchemy.use_batch_mode sqlalchemy_slave.url sqlalchemy_slave.pool_recycle sqlalchemy_slave.pool_size \
+	sqlalchemy_slave.max_overflow sqlalchemy_slave.use_batch_mode schema schema_static enable_admin_interface \
 	default_locale_name servers layers available_locale_names cache admin_interface functionalities \
 	raster shortener hide_capabilities mapserverproxy tinyowsproxy resourceproxy print_url \
 	tiles_url checker check_collector default_max_age jsbuild package srid \
-	reset_password fulltextsearch headers authorized_referers hooks stats db_chooser \
+	reset_password fulltextsearch global_headers headers authorized_referers hooks stats db_chooser \
 	ogcproxy_enable dbsessions urllogin host_forward_host smtp c2c.base_path welcome_email host \
 	lingua_extractor interfaces_config interfaces default_interface devserver_url
 MAKE_FILES = $(wildcard *.mk) CONST_Makefile
@@ -724,7 +726,7 @@ geoportal/alembic.yaml: $(ALEMBIC_YAML_FILE) vars.yaml CONST_vars.yaml
 	c2c-template --vars $< --get-config /build/_alembic.yaml srid schema schema_static sqlalchemy.url cache
 	mv /build/_alembic.yaml $@
 
-testdb/11-schemas.sql: $(ALEMBIC_YAML_FILE) testdb/11-schemas.sql_mako vars.yaml CONST_vars.yaml
+testdb/11-schemas.sql: vars_alembic.yaml $(ALEMBIC_YAML_FILE) testdb/11-schemas.sql_mako vars.yaml CONST_vars.yaml
 	$(PRERULE_CMD)
 	rm --force testdb/11-schemas.sql.mako
 	ln -s 11-schemas.sql_mako testdb/11-schemas.sql.mako
@@ -783,3 +785,17 @@ secrets:
 	gpg --output secrets.tar.bz2 --decrypt secrets.tar.bz2.gpg
 	tar -jxf secrets.tar.bz2
 	rm secrets.tar.bz2
+
+# QGIS
+
+.PHONY: edit-qgis-project
+edit-qgis-project:
+	IP=$$(ip addr show dev $$(route | grep default | awk '{print $$(NF)}' | head -1) | awk '$$1 ~ /^inet/ { sub("/.*", "", $$2); print $$2 }' | head -1); \
+	docker run -ti \
+		--add-host=db:$${IP} \
+		--volume=$${PWD}/qgisserver:/etc/qgisserver \
+		--volume=/tmp/.X11-unix:/tmp/.X11-unix \
+		--volume=$${HOME}:$${HOME} \
+		--env=DISPLAY=unix$${DISPLAY} \
+		--env=PGSERVICEFILE=$$HOME/.pg_service.conf \
+		--rm camptocamp/qgis-server:3.2 /usr/local/bin/start-client /etc/qgisserver/project.qgs

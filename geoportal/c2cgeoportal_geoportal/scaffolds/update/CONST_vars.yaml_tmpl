@@ -34,8 +34,8 @@ vars:
         PGUSER: www-data
         PGPASSWORD: www-data
         PGDATABASE: geomapfish
-        GEOPORTAL_INTERNAL_URL: http://geoportal/
-        MAPCACHE_URL: http://mapcache/mapcache/
+        GEOPORTAL_INTERNAL_URL: http://geoportal:8080
+        MAPCACHE_URL: http://mapcache:8080/mapcache/
         MAPSERVER_URL: http://mapserver:8080/
         MEMCACHED_HOST: memcached
         MEMCACHED_PORT: 11211
@@ -77,6 +77,8 @@ vars:
         REDIS_PORT: 6379
         C2C_REDIS_URL: redis://redis:6379
         C2C_BROADCAST_PREFIX: broadcast_geoportal_
+    qgisserver:
+      environment: *geo-run-env
     tilecloudchain:
       environment:
         GUNICORN_PARAMS:
@@ -113,6 +115,8 @@ vars:
   schema: '{PGSCHEMA}'
   # sqlalchemy static schema
   schema_static: '{PGSCHEMA_STATIC}'
+
+  alembic_yaml_file: '{ALEMBIC_YAML_FILE}'
 
   dbsessions: {}
 
@@ -153,8 +157,16 @@ vars:
   # Database information
   sqlalchemy:
     url: postgresql://{dbuser}:{dbpassword}@{dbhost}:{dbport}/{db}
+    pool_recycle: 30
+    pool_size: 5
+    max_overflow: 25
+    use_batch_mode: true
   sqlalchemy_slave:
     url: postgresql://{dbuser}:{dbpassword}@{dbhost_slave}:{dbport}/{db}
+    pool_recycle: 30
+    pool_size: 5
+    max_overflow: 25
+    use_batch_mode: true
 
   # 10 days of default cache
   default_max_age: 864000
@@ -182,7 +194,7 @@ vars:
 
   interfaces_theme:
     desktop: desktop
-    desktop_alt: desktop_alt
+    desktop_alt: desktop
     mobile: mobile
     mobile_alt: mobile
     oeview: desktop
@@ -415,6 +427,14 @@ vars:
 
   lingua_extractor: {}
 
+  global_headers:
+    X-Frame-Options: SAMEORIGIN
+    X-Xss-Protection: 1; mode=block
+    X-Content-Type-Options: nosniff
+    Referrer-Policy: origin
+    Strict-Transport-Security: max-age=31536000; includeSubDomains
+    Content-Security-Policy: script-src 'self'; frame-src 'self'; form-action 'self'
+
   # Control the HTTP headers
   headers:
     index: &header
@@ -509,7 +529,7 @@ vars:
 
   # What web page is authorized to use the API
   authorized_referers:
-    - '{web_protocol}://{host}{entry_point}'
+    - '{web_protocol}://{host}/'
 
   # Hooks that can be called at different moments in the life of the
   # application. The value is the full python name
@@ -555,6 +575,7 @@ environment:
   - BUILD_VOLUME_NAME
   - PROJECT_DIRECTORY
   - INSTANCE
+  - ALEMBIC_YAML_FILE
 
 runtime_environment:
   - name: VISIBLE_WEB_HOST

@@ -195,8 +195,9 @@ docker/qgisserver/commons: commons
 
 .PHONY: docker-build-qgisserver
 docker-build-qgisserver: $(shell docker-required --path docker/qgisserver) docker/qgisserver/commons
-	docker build --tag=$(DOCKER_BASE)-qgisserver:$(MAJOR_VERSION) docker/qgisserver
-
+	docker build --tag=$(DOCKER_BASE)-qgisserver:gmf$(MAJOR_VERSION)-qgismaster docker/qgisserver
+	docker build --tag=$(DOCKER_BASE)-qgisserver:gmf$(MAJOR_VERSION)-qgis3.2 \
+		--file=docker/qgisserver/Dockerfile32 docker/qgisserver
 
 .PHONY: prepare-tests
 prepare-tests: \
@@ -275,7 +276,7 @@ spell:
 		$(shell find -name node_modules -prune -or -name .build -prune -or -name .git -prune -or -name ngeo -prune \
 		-or -name '__pycache__' -prune -or -name _build -prune \
 		-or \( -type f -and -not -name '*.png' -and -not -name '*.mo' -and -not -name '*.po*' \
-		-and -not -name 'CONST_Makefile_tmpl' \) -print)
+		-and -not -name 'CONST_Makefile_tmpl' -and -not -name 'package-lock.json' \) -print)
 
 
 YAML_FILES ?= $(shell find -name ngeo -prune -or -name functional -prune -or \( -name "*.yml" -or -name "*.yaml" \) -print)
