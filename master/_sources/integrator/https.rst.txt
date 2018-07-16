@@ -78,3 +78,17 @@ Then you can access resources by building urls using the following schema:
 For example:
 
 ``http://geoportail.camptocamp.com/main/wsgi/resourceproxy?target=rfinfo&values=(175,2633)``
+
+Local certificate checks
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Certain c2cgeoportal features open a http session to your c2cgeoportal services,
+for example the ``checker`` or the ``lingua_extractor``.
+If you are running your server in https and wish to disable certificate checks in these
+connections, you can achieve this by adding the following configuration element to your ``vars`` file:
+
+.. code:: yaml
+
+    vars:
+        http_options:
+            disable_ssl_certificate_validation: True

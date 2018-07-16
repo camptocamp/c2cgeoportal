@@ -165,6 +165,30 @@ layer names, separated by commas.</li>
 </ul>
 </div>
 </div>
+<div class="section" id="edit-views">
+<h2>Edit views<a class="headerlink" href="#edit-views" title="Permalink to this headline">¶</a></h2>
+<p>To be able to edit PostgreSQL views a primary key must be manually configured.
+Add a layer metadata <code class="docutils literal notranslate"><span class="pre">geotablePrimaryKey</span></code> with value the name of the column to use as primary key.
+That column must be of type <code class="docutils literal notranslate"><span class="pre">Integer</span></code>.</p>
+<p>Example:</p>
+<blockquote>
+<div><ul class="simple">
+<li>geotablePrimaryKey: <code class="docutils literal notranslate"><span class="pre">id</span></code></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="enable-snapping">
+<h2>Enable snapping<a class="headerlink" href="#enable-snapping" title="Permalink to this headline">¶</a></h2>
+<p>To be able to snap while editing, the <code class="docutils literal notranslate"><span class="pre">snappingConfig</span></code> must be set on the layer metadata.
+The value is a <code class="docutils literal notranslate"><span class="pre">json</span></code> object containing the following optional properties:</p>
+<blockquote>
+<div><ul class="simple">
+<li>edge (boolean): whether to allow snapping on edges or not;</li>
+<li>vertex (boolean): whether to allow snapping on vertices or not;</li>
+<li>tolerance (number): the pixel tolerance.</li>
+</ul>
+</div></blockquote>
+</div>
 </div>
 
 
@@ -184,6 +208,8 @@ layer names, separated by commas.</li>
 <li><a class="reference internal" href="#adding-or-making-layers-editable">Adding or making layers editable</a></li>
 <li><a class="reference internal" href="#configuring-security">Configuring security</a></li>
 <li><a class="reference internal" href="#enabling-copy-to-functionality-cgxp-only">Enabling <cite>Copy to</cite> functionality (CGXP only)</a></li>
+<li><a class="reference internal" href="#edit-views">Edit views</a></li>
+<li><a class="reference internal" href="#enable-snapping">Enable snapping</a></li>
 </ul>
 </li>
 </ul>

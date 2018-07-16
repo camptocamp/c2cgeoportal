@@ -105,6 +105,18 @@ in your project <cite>vars_&lt;project&gt;.yaml</cite> configuration file:</p>
 <p>For example:</p>
 <p><code class="docutils literal notranslate"><span class="pre">http://geoportail.camptocamp.com/main/wsgi/resourceproxy?target=rfinfo&amp;values=(175,2633)</span></code></p>
 </div>
+<div class="section" id="local-certificate-checks">
+<h2>Local certificate checks<a class="headerlink" href="#local-certificate-checks" title="Permalink to this headline">¶</a></h2>
+<p>Certain c2cgeoportal features open a http session to your c2cgeoportal services,
+for example the <code class="docutils literal notranslate"><span class="pre">checker</span></code> or the <code class="docutils literal notranslate"><span class="pre">lingua_extractor</span></code>.
+If you are running your server in https and wish to disable certificate checks in these
+connections, you can achieve this by adding the following configuration element to your <code class="docutils literal notranslate"><span class="pre">vars</span></code> file:</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
+    <span class="n">http_options</span><span class="p">:</span>
+        <span class="n">disable_ssl_certificate_validation</span><span class="p">:</span> <span class="kc">True</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 
@@ -123,6 +135,7 @@ in your project <cite>vars_&lt;project&gt;.yaml</cite> configuration file:</p>
 <li><a class="reference internal" href="#application-behind-a-proxy">Application behind a proxy</a></li>
 <li><a class="reference internal" href="#application-and-ssl-certificate-on-the-same-server">Application and SSL certificate on the same server</a></li>
 <li><a class="reference internal" href="#loading-non-https-external-resources">Loading non https external resources</a></li>
+<li><a class="reference internal" href="#local-certificate-checks">Local certificate checks</a></li>
 </ul>
 </li>
 </ul>
