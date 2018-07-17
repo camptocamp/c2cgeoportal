@@ -243,7 +243,8 @@ flake8:
 pylint: $(BUILD_DIR)/commons.timestamp
 	pylint --errors-only commons/c2cgeoportal_commons
 	$(BUILD_DIR)/venv/bin/python /usr/local/bin/pylint --errors-only commons/acceptance_tests
-	$(BUILD_DIR)/venv/bin/python /usr/local/bin/pylint --errors-only geoportal/c2cgeoportal_geoportal
+	$(BUILD_DIR)/venv/bin/python /usr/local/bin/pylint --errors-only --disable=assignment-from-no-return \
+		geoportal/c2cgeoportal_geoportal
 	$(BUILD_DIR)/venv/bin/python /usr/local/bin/pylint --errors-only geoportal/tests
 	$(BUILD_DIR)/venv/bin/python /usr/local/bin/pylint --errors-only admin/c2cgeoportal_admin
 	$(BUILD_DIR)/venv/bin/python /usr/local/bin/pylint --errors-only admin/acceptance_tests
