@@ -69,7 +69,7 @@ clean-all:
 .PHONY: build
 build: $(PRINT_OUTPUT_WAR) \
 	.build/apache.timestamp \
-	.build/npm.timestamp \
+	.build/admin-npm.timestamp \
 
 # Apache
 
@@ -192,18 +192,25 @@ endif
 	$(PYTHON_BIN)/python -m compileall -q geoportal/$(PACKAGE)_geoportal -x geoportal/$(PACKAGE)_geoportal/static.* >/dev/null || true
 
 npm-packages: .config
-	$(DOCKER_RUN) cp /opt/npm-packages .
+	$(DOCKER_RUN) cp /opt/c2cgeoportal_admin/npm-packages $@
 
-.build/npm.timestamp: .config npm-packages
+geoportal/npm-packages: .config
+	$(DOCKER_RUN) cp /opt/npm-packages $@
+
+.build/admin-npm.timestamp: npm-packages
 	rm --force --recursive admin/node_modules
 	mkdir --parent admin
-	cat npm-packages | xargs npm install --prefix ./admin
+	cat $< | xargs npm install --prefix ./admin
+	touch $@
+
+.build/geoportal-npm.timestamp: geoportal/npm-packages
+	rm --force --recursive admin/node_modules
+	mkdir --parent admin
+	cat $< | xargs npm install --prefix ./geoportal
 	touch $@
 
 .PHONY: serve-%
-serve-%:
-	rm -f geoportal/node_modules
-	ln -s ../admin/node_modules geoportal
+serve-%: .build/geoportal-npm.timestamp
 	(cd geoportal; INTERFACE=$* NODE_ENV=development node_modules/.bin/webpack-dev-server --port=$(DEV_SERVER_PORT) -d --watch --progress \
 		--public=$(VISIBLE_WEB_HOST):$(VISIBLE_WEB_PORT) --disable-host-check --mode=development)
 	rm geoportal/node_modules
