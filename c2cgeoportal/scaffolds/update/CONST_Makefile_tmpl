@@ -810,7 +810,6 @@ $(INSTANCE_ID_MARKER):
 upgrade: .build/requirements.timestamp project.yaml
 	.build/venv/bin/pip install \
 		--trusted-host pypi.camptocamp.net \
-		--index-url http://pypi.camptocamp.net/pypi \
 		--find-links http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal \
 		c2cgeoportal==${VERSION}
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION}

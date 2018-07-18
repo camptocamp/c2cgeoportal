@@ -1,4 +1,3 @@
---index-url http://pypi.camptocamp.net/pypi
 c2c.cssmin
 c2c.template==1.1.2
 c2cgeoportal/tests/testegg/dist/testegg-1.0.tar.gz
