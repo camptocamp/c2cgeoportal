@@ -200,7 +200,8 @@ def filter_capabilities(content, role_id, wms, url, headers, proxies, request):
     downstream_handler = XMLGenerator(result, "utf-8")
     filter_handler = _CapabilitiesFilter(
         parser, downstream_handler,
-        "Layer" if wms else "FeatureType",
+        ("http://www.opengis.net/wms", "Layer") if wms
+        else ("http://www.opengis.net/wfs/2.0", "FeatureType"),
         layers_blacklist=private_layers
     )
     filter_handler.parse(StringIO(content))
@@ -226,7 +227,7 @@ def filter_wfst_capabilities(content, role_id, wfs_url, proxies, request):
     downstream_handler = XMLGenerator(result, "utf-8")
     filter_handler = _CapabilitiesFilter(
         parser, downstream_handler,
-        "FeatureType",
+        ("http://www.opengis.net/wfs/2.0", "FeatureType"),
         layers_whitelist=writable_layers
     )
     filter_handler.parse(StringIO(content))
@@ -274,7 +275,8 @@ class _CapabilitiesFilter(XMLFilterBase):
 
         self.layers_path = []
         self.in_name = False
-        self.tag_name = tag_name
+        self.uri = tag_name[0]
+        self.tag_name = tag_name[1]
         self.level = 0
 
     def _complete_text_node(self):
@@ -314,31 +316,40 @@ class _CapabilitiesFilter(XMLFilterBase):
         self._downstream.endPrefixMapping(prefix)
 
     def startElement(self, name, attrs):  # noqa
-        if name == self.tag_name:
-            self.level += 1
-            parent_layer = None
-            if len(self.layers_path) > 0:
-                parent_layer = self.layers_path[-1]
-                parent_layer.has_children = True
-                parent_layer.children_nb += 1
-            layer = _Layer(
-                parent_layer.self_hidden
-            ) if len(self.layers_path) > 1 else _Layer()
-            self.layers_path.append(layer)
-
-            if parent_layer is not None:
-                parent_layer.accumul.append(
-                    lambda: self._add_child(layer)
-                )
-        elif name == "Name" and len(self.layers_path) != 0:
-            self.in_name = True
-
         self._do(lambda: self._downstream.startElement(name, attrs))
 
     def endElement(self, name):  # noqa
         self._do(lambda: self._downstream.endElement(name))
 
-        if name == self.tag_name:
+    def startElementNS(self, tag, qname, attrs):  # pragma: no cover  # noqa
+        uri, name = tag
+        if uri == self.uri:
+            if name == self.tag_name:
+                self.level += 1
+                parent_layer = None
+                if len(self.layers_path) > 0:
+                    parent_layer = self.layers_path[-1]
+                    parent_layer.has_children = True
+                    parent_layer.children_nb += 1
+                layer = _Layer(
+                    parent_layer.self_hidden
+                ) if len(self.layers_path) > 1 else _Layer()
+                self.layers_path.append(layer)
+
+                if parent_layer is not None:
+                    parent_layer.accumul.append(
+                        lambda: self._add_child(layer)
+                    )
+            elif name == "Name" and len(self.layers_path) != 0:
+                self.in_name = True
+
+        self._do(lambda: self._downstream.startElementNS(tag, qname, attrs))
+
+    def endElementNS(self, tag, qname):  # pragma: no cover  # noqa
+        self._do(lambda: self._downstream.endElementNS(tag, qname))
+
+        uri, name = tag
+        if name == self.tag_name and uri == self.uri:
             self.level -= 1
             if self.level == 0 and not self.layers_path[0].hidden:
                 for action in self.layers_path[0].accumul:
@@ -347,12 +358,6 @@ class _CapabilitiesFilter(XMLFilterBase):
             self.layers_path.pop()
         elif name == "Name":
             self.in_name = False
-
-    def startElementNS(self, name, qname, attrs):  # pragma: no cover  # noqa
-        self._do(lambda: self._downstream.startElementNS(name, qname, attrs))
-
-    def endElementNS(self, name, qname):  # pragma: no cover  # noqa
-        self._do(lambda: self._downstream.endElementNS(name, qname))
 
     def _keep_layer(self, layer_name):
         return (
