@@ -147,7 +147,7 @@ The main thing to do is to:
 
   .. prompt:: bash
 
-     .build/venv/bin/generate_controller --generate_wmts_capabilities
+     .build/venv/bin/generate_controller --capabilities
 
 * And an OpenLayers test page:
 
