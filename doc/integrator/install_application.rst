@@ -257,7 +257,13 @@ You can build and install the application with the command:
 
     ./docker-run make --makefile=<user>.mk build
 
-Create the application tables, and directly set the version (details later):
+This previous command will do many things like:
+
+  * adapt the application configuration to your environment,
+
+  * build the JavaScript and CSS resources into compressed files.
+
+Then create the application tables:
 
 .. prompt:: bash
 
@@ -273,12 +279,11 @@ This previous command will do many things like:
 
   * download and install the project dependencies,
 
-  * adapt the application configuration to your environment,
+  * deploy the MapFish Print service if it is configured for building.
 
-  * build the javascript and css resources into compressed files,
 
 Your application should now be available at:
-``http://<hostname>/``.
+``https://<hostname>/``.
 
 Where the ``<hostname>`` is directly linked to the virtual host.
 
