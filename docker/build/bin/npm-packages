@@ -31,8 +31,7 @@
 
 import os
 import re
-import subprocess
-from json import loads
+import json
 from argparse import ArgumentParser
 
 
@@ -57,15 +56,6 @@ def _ngeo_version():
     return None
 
 
-def _get_ngeo_version():
-    version = _ngeo_version()
-    if version is not None:
-        return version
-    return "https://api.github.com/repos/camptocamp/ngeo/tarball/{}".format(
-        subprocess.check_output(["git", "rev-parse", "HEAD"], cwd="ngeo").decode("utf-8").strip()
-    )
-
-
 def main():
     """
     Extract npm packages
@@ -73,7 +63,8 @@ def main():
 
     parser = ArgumentParser(description='Extract npm packages')
 
-    parser.add_argument('--version', action="store_true", help="Get the ngeo version and exit")
+    parser.add_argument('--branch', action="store_true", help="Get the ngeo branch and exit")
+    parser.add_argument('--hash', action="store_true", help="Get the ngeo commit hash and exit")
     parser.add_argument('--ngeo', action="store_true", help="Add ngeo package")
     parser.add_argument('--src', action='append', default=[], metavar='SRC', help="The ngeo source file")
     parser.add_argument('--dst', metavar='DST', help="The destination file")
@@ -81,20 +72,30 @@ def main():
 
     args = parser.parse_args()
 
-    if args.version:
+    if args.branch:
         version = _ngeo_version()
         print(os.environ["VERSION"] if version is None else version)
+        exit(0)
+
+    if args.hash:
+        version = _ngeo_version()
+        if version is None:
+            with open("package.json") as package_file:
+                version = json.loads(package_file)["dependencies"]["ngeo"].split(".")[-2]
+        print(version)
         exit(0)
 
     packages = {}
     for src_ in args.src:
         with open(src_) as src:
-            input_data = loads(src.read())
+            input_data = json.loads(src.read())
             packages.update(input_data.get('devDependencies', {}))
             packages.update(input_data.get('dependencies', {}))
     if args.ngeo:
         # Freeze the ngeo version
-        packages["ngeo"] = _get_ngeo_version()
+        version = _ngeo_version()
+        if version is not None:
+            packages["ngeo"] = version
     for package in args.excludes:
         if package in packages:
             del packages[package]
