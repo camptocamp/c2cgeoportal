@@ -148,6 +148,12 @@ class MapservProxy(OGCProxy):
             url=_url, params=self.params, cache=use_cache,
             headers=headers, body=self.request.body
         )
+
+        if self.lower_params.get("request") == "getmap" and \
+                not response.content_type.startswith('image/') and \
+                response.status_code < 400:
+            response.status_code = 400
+
         return response
 
     def _proxy_callback(
