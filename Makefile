@@ -153,18 +153,16 @@ geoportal/tests/functional/alembic.yaml: $(BUILD_DIR)/c2ctemplate-cache.json
 docker/test-db/12-alembic.sql: \
 		geoportal/tests/functional/alembic.ini \
 		geoportal/tests/functional/alembic.yaml \
-		$(shell ls -1 commons/c2cgeoportal_commons/alembic/main/*.py) \
-		$(BUILD_DIR)/commons.timestamp
+		$(shell ls -1 commons/c2cgeoportal_commons/alembic/main/*.py)
 	$(PRERULE_CMD)
-	$(BUILD_DIR)/venv/bin/python /usr/local/bin/alembic --config=$< --name=main upgrade --sql head > $@
+	alembic --config=$< --name=main upgrade --sql head > $@
 
 docker/test-db/13-alembic-static.sql: \
 		geoportal/tests/functional/alembic.ini \
 		geoportal/tests/functional/alembic.yaml \
-		$(shell ls -1 commons/c2cgeoportal_commons/alembic/static/*.py) \
-		$(BUILD_DIR)/commons.timestamp
+		$(shell ls -1 commons/c2cgeoportal_commons/alembic/static/*.py)
 	$(PRERULE_CMD)
-	$(BUILD_DIR)/venv/bin/python /usr/local/bin/alembic --config=$< --name=static upgrade --sql head > $@
+	alembic --config=$< --name=static upgrade --sql head > $@
 
 docker-build-testdb: $(shell docker-required --path docker/test-db) \
 		docker/test-db/12-alembic.sql docker/test-db/13-alembic-static.sql \
@@ -242,10 +240,10 @@ flake8:
 
 .PHONY: pylint
 pylint: $(BUILD_DIR)/commons.timestamp
-	$(BUILD_DIR)/venv/bin/python /usr/local/bin/pylint --errors-only geoportal/c2cgeoportal_geoportal
-	$(BUILD_DIR)/venv/bin/python /usr/local/bin/pylint --errors-only geoportal/tests
 	pylint --errors-only commons/c2cgeoportal_commons
 	$(BUILD_DIR)/venv/bin/python /usr/local/bin/pylint --errors-only commons/acceptance_tests
+	$(BUILD_DIR)/venv/bin/python /usr/local/bin/pylint --errors-only geoportal/c2cgeoportal_geoportal
+	$(BUILD_DIR)/venv/bin/python /usr/local/bin/pylint --errors-only geoportal/tests
 	$(BUILD_DIR)/venv/bin/python /usr/local/bin/pylint --errors-only admin/c2cgeoportal_admin
 	$(BUILD_DIR)/venv/bin/python /usr/local/bin/pylint --errors-only admin/acceptance_tests
 

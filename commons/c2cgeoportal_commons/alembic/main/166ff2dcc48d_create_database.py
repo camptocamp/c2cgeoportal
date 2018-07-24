@@ -40,7 +40,7 @@ from alembic import op
 from sqlalchemy import ForeignKey, Column, Table, MetaData
 from sqlalchemy.types import Integer, Boolean, Unicode, String, Float, \
     UserDefinedType, DateTime
-from c2cgeoportal_commons.config import config
+from c2c.template.config import config
 
 # revision identifiers, used by Alembic.
 revision = '166ff2dcc48d'

@@ -41,7 +41,7 @@ from pyramid import testing
 import c2cgeoportal_geoportal
 import tests
 
-from c2cgeoportal_commons.config import config as configuration
+from c2c.template.config import config as configuration
 from c2cgeoportal_geoportal.lib import functionality, caching
 
 

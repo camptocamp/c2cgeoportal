@@ -36,7 +36,7 @@ Create Date: 2017-09-20 14:49:22.465328
 
 from alembic import op
 import psycopg2
-from c2cgeoportal_commons.config import config
+from c2c.template.config import config
 
 # revision identifiers, used by Alembic.
 revision = 'd8ef99bc227e'

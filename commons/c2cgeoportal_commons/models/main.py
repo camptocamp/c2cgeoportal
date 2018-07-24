@@ -48,7 +48,7 @@ import colander
 from deform.widget import HiddenWidget, SelectWidget, TextAreaWidget
 from c2cgeoform.ext import colander_ext, deform_ext
 
-from c2cgeoportal_commons.config import config
+from c2c.template.config import config
 from c2cgeoportal_commons.models import Base, _
 from c2cgeoportal_commons.models.sqlalchemy import JSONEncodedDict
 

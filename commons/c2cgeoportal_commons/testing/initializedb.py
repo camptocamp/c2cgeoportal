@@ -16,7 +16,7 @@ from c2cgeoportal_commons.models import (
     Base,
 )
 from c2cgeoportal_commons.testing import get_engine, get_session_factory, get_tm_session, generate_mappers
-from c2cgeoportal_commons.config import config
+from c2c.template.config import config
 
 
 def usage(argv: List[str]) -> None:

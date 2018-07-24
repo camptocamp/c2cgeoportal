@@ -37,7 +37,7 @@ Create Date: 2014-10-23 16:00:47.940216
 from alembic import op
 from sqlalchemy import Column, ForeignKey, Table, MetaData
 from sqlalchemy.types import Integer, Boolean, Unicode, Float
-from c2cgeoportal_commons.config import config
+from c2c.template.config import config
 
 # revision identifiers, used by Alembic.
 revision = '415746eb9f6'

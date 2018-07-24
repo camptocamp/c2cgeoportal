@@ -41,7 +41,7 @@ import colander
 from deform.widget import HiddenWidget, DateTimeInputWidget
 from c2cgeoform.ext import deform_ext
 
-from c2cgeoportal_commons.config import config
+from c2c.template.config import config
 from c2cgeoportal_commons.models import Base, _
 from c2cgeoportal_commons.models.main import Role
 

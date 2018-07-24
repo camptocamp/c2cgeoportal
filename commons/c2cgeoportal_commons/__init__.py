@@ -3,7 +3,7 @@ from typing import Optional  # noqa, pylint: disable=unused-import
 
 from pyramid.config import Configurator
 
-from c2cgeoportal_commons.config import config as configuration
+from c2c.template.config import config as configuration
 
 
 def includeme(config: Configurator) -> None:

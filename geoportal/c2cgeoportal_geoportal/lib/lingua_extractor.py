@@ -54,7 +54,7 @@ from mako.lookup import TemplateLookup
 from owslib.wms import WebMapService
 
 import c2cgeoportal_geoportal
-from c2cgeoportal_commons.config import config
+from c2c.template.config import config
 from c2cgeoportal_geoportal import init_dbsessions
 from c2cgeoportal_geoportal.lib import add_url_params, get_url2
 from c2cgeoportal_geoportal.lib.bashcolor import colorize, RED
