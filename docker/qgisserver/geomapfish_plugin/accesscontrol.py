@@ -85,6 +85,10 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
 
         server_iface.registerAccessControl(self, int(os.environ.get("GEOMAPFISH_POSITION", 100)))
 
+    def assert_plugin_initialised(self):
+        if self.layers is None:
+            raise Exception("The plugin is not initialised")
+
     def get_role(self):
         from c2cgeoportal_commons.models.main import Role
         parameters = self.serverInterface().requestHandler().parameterMap()
@@ -136,8 +140,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
         """ Return an additional subset string (typically SQL) filter """
         QgsMessageLog.logMessage("layerFilterSubsetString {}".format(layer.dataProvider().storageType()))
 
-        if self.layers is None:
-            raise Exception("The plugin is not initialised")
+        self.assert_plugin_initialised()
 
         try:
             if layer.dataProvider().storageType() not in self.EXPRESSION_TYPE:
@@ -168,8 +171,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
         """ Return an additional expression filter """
         QgsMessageLog.logMessage("layerFilterExpression {}".format(layer.dataProvider().storageType()))
 
-        if self.layers is None:
-            raise Exception("The plugin is not initialised")
+        self.assert_plugin_initialised()
 
         try:
             if layer.dataProvider().storageType() in self.EXPRESSION_TYPE:
@@ -197,8 +199,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
         """ Return the layer rights """
         QgsMessageLog.logMessage("layerPermissions {}".format(layer.name()))
 
-        if self.layers is None:
-            raise Exception("The plugin is not initialised")
+        self.assert_plugin_initialised()
 
         try:
             rights = QgsAccessControlFilter.LayerPermissions()
@@ -240,8 +241,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
         """ Are we authorise to modify the following geometry """
         QgsMessageLog.logMessage("allowToEdit")
 
-        if self.layers is None:
-            raise Exception("The plugin is not initialised")
+        self.assert_plugin_initialised()
 
         try:
             area = self.get_area(layer, rw=True)
