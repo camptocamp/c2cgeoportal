@@ -1,14 +1,9 @@
 dist: precise
 language: python
 
-dist: precise
-
 python:
 - 2.6
 - 2.7
-
-services:
-- postgresql
 
 env:
   global:
@@ -17,71 +12,24 @@ env:
 before_install:
 - git fetch
 - cat /etc/apt/sources.list.d/*
-- sudo apt-get remove --assume-yes --force-yes postgresql-9.1-postgis-2.2-scripts
 - sudo apt-get install -y --force-yes aptitude
-- sudo add-apt-repository -y ppa:stephane-brunner/precise-gis
 - sudo apt-get update
-- sudo aptitude install -y apache2 facter libapache2-mod-wsgi tomcat7 deploy cgi-mapserver postgis=2.0.3-2~precise4 postgresql-9.1-postgis-2.0=2.0.3-2~precise4 postgresql-9.1-postgis-2.0-scripts=2.0.3-2~precise4 gettext
-- dpkg -l | grep postgis
-- sudo -u postgres psql --version
-
-- sudo -u postgres createdb -E UTF8 -T template0 template_postgis
-- psql -d template_postgis -U postgres -f /usr/share/postgresql/9.1/contrib/postgis-2.0/postgis.sql > /dev/null
-- psql -d template_postgis -U postgres -f /usr/share/postgresql/9.1/contrib/postgis-2.0/spatial_ref_sys.sql > /dev/null
-#- psql -d template_postgis -U postgres -c "CREATE EXTENSION postgis;"
-
-- sudo -u postgres createdb -E UTF8 -T template_postgis c2cgeoportal_test
-- sudo -u postgres createdb -E UTF8 -T template_postgis geomapfish
-
-- sudo -u postgres createuser www-data --no-superuser --no-createdb --no-createrole
-- sudo -u postgres psql -q -d c2cgeoportal_test -f travis/db.sql
+- sudo aptitude install -y deploy
 
 install:
 - make -f travis.mk c2c-egg
-- .build/venv/bin/pcreate -s c2cgeoportal_create /tmp/test package=test srid=21781 mobile_application_title="Mobile App éàè" apache_vhost=test extent= > /dev/null
-- .build/venv/bin/pcreate -s c2cgeoportal_update /tmp/test package=test srid=21781 mobile_application_title="Mobile App éàè" apache_vhost=test > /dev/null # on create
-- cp /tmp/test/project.yaml.mako project.yaml
-- .build/venv/bin/pcreate -s c2cgeoportal_update /tmp/test > /dev/null  # on upgrade - don't add any argument on this command
-- rm project.yaml
-- travis/build-new-project.sh
-- make -f travis.mk build
-- sudo /usr/sbin/apache2ctl graceful
-- .build/venv/bin/flake8 --version
 
 script:
 - if [ ${TRAVIS_PULL_REQUEST} != "false" ] ; then git fetch origin ${TRAVIS_BRANCH}:${TRAVIS_BRANCH}; fi
 - if [ ${TRAVIS_PULL_REQUEST} != "false" ] ; then git diff --check ${TRAVIS_BRANCH} -- ; fi
-- find /tmp/test/CONST_alembic -name \*.py | xargs .build/venv/bin/flake8 --copyright-check --copyright-min-file-size=1 --copyright-regexp="Copyright \(c\) [0-9\-]*$(shell date +%Y), Camptocamp SA" --max-line-length=100
-- find /tmp/test/setup.py /tmp/test/test/*.py /tmp/test/test/views -name \*.py | xargs .build/venv/bin/flake8 --max-line-length=100
-- find /tmp/test/setup.py /tmp/test/test/*.py /tmp/test/test/views -name \*.py | xargs travis/quote
-# Actually don't work on travis see:
-# https://travis-ci.org/camptocamp/c2cgeoportal/jobs/48455036#L5312
-#- travis/test-new-project.sh
-- travis/status.sh /tmp/test/
-- travis/empty-make-new-project.sh
-- travis/empty-make.sh -f travis.mk build
-- cp travis/empty-vars.mk /tmp/test/
-- travis/run-on.sh /tmp/test/ 'make -f empty-vars.mk .build/config.yaml'
 - make -f travis.mk doc
-- make -f travis.mk checks
-- make -f travis.mk c2cgeoportal/tests/functional/alembic.ini
 - travis/quote `find c2cgeoportal/lib c2cgeoportal/scaffolds c2cgeoportal/templates c2cgeoportal/tests c2cgeoportal/views -name '*.py'` c2cgeoportal/*.py setup.py
-- .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic.ini heads
-- .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic_static.ini heads
-- .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic.ini upgrade head
-- .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic_static.ini upgrade head
-- .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic_static.ini downgrade base
-- .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic.ini downgrade base
-- .build/venv/bin/python setup.py nosetests --stop --nocapture --nologcapture
 - git checkout c2cgeoportal/locale/*/LC_MESSAGES/c2cgeoportal.po
 - travis/status.sh
 # verify c2cgeoportal version
 - if [[ ${TRAVIS_TAG} =~ ^[0-9]+.[0-9]+.[0-9]+(dev[0-9]+|rc[0-9]|\.[0-9]+)?$ ]] ; then test `grep c2cgeoportal== c2cgeoportal/scaffolds/update/CONST_requirements.txt|awk -F '==' '{{print $2}}'` = ${TRAVIS_TAG} ; fi
 - if [[ ${TRAVIS_TAG} =~ ^[0-9]+.[0-9]+.[0-9]+(dev[0-9]+|rc[0-9]|\.[0-9]+)?$ ]] ; then test `grep c2cgeoportal-win== c2cgeoportal/scaffolds/update/CONST_requirements_windows.txt|awk -F '==' '{{print $2}}'` = ${TRAVIS_TAG} ; fi
 - if [[ ${TRAVIS_TAG} =~ ^[0-9]+.[0-9]+.[0-9]+(dev[0-9]+|rc[0-9]|\.[0-9]+)?$ ]] ; then test `python setup.py --version` = ${TRAVIS_TAG} ; fi
-
-after_failure:
-- .build/venv/bin/python setup.py nosetests
 
 after_success:
 - travis/deploy.sh
