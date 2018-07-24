@@ -32,7 +32,7 @@ JSTools==1.0  # CGXP build
 lingua==4.13  # i18n
 Mako==1.0.7  # geoportal
 mccabe==0.6.1  # lint
-mypy==0.610  # lint
+mypy==0.620  # lint
 OWSLib==0.16.0  # geoportal
 papyrus==2.3  # commons, geoportal
 passwordgenerator # geoportal

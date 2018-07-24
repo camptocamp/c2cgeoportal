@@ -69,6 +69,7 @@ setup(
     url='http://www.camptocamp.com/solutions/geospatial/',
     keywords='web gis geoportail c2cgeoportal geocommune pyramid',
     packages=find_packages(exclude=['tests.*']),
+    package_data={'c2cgeoportal_geoportal': ['py.typed']},
     include_package_data=True,
     zip_safe=False,
     install_requires=install_requires,
