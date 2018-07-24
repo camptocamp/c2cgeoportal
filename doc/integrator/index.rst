@@ -17,6 +17,7 @@ Content:
    create_application
    install_application
    upgrade_application
+   database
    configuration
    customise
    security
