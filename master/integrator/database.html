@@ -1,0 +1,131 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Database &#8212; c2cgeoportal  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Configuration Guide for advanced settings" href="configuration.html" />
+    <link rel="prev" title="Upgrading a GeoMapFish application" href="upgrade_application.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="database">
+<span id="integrator-database"></span><h1>Database<a class="headerlink" href="#database" title="Permalink to this headline">¶</a></h1>
+<p>To be able to do a rollback the integration and the production data should be in the same database,
+but the schema will be different.</p>
+<p>For the static schema will have one for the integration and one for the production environments, e.-g.:
+<code class="docutils literal notranslate"><span class="pre">integration_static</span></code> for the integration environment,
+and <code class="docutils literal notranslate"><span class="pre">production_static</span></code> for the production environment.</p>
+<p>For the main schema will have one for each version of the application. We will have the following livecycle:</p>
+<p>Current version:
+integration and production =&gt; <code class="docutils literal notranslate"><span class="pre">main_2017</span></code></p>
+<p>Start an upgrade (application or admin (layertree)), create an new schema and use it on integration:
+integration = <code class="docutils literal notranslate"><span class="pre">main_2018</span></code>, and production =&gt; <code class="docutils literal notranslate"><span class="pre">main_2017</span></code></p>
+<p>Do the changes or the upgrade.</p>
+<p>Publish the new version:
+integration and production =&gt; <code class="docutils literal notranslate"><span class="pre">main_2018</span></code></p>
+<p>The schema <code class="docutils literal notranslate"><span class="pre">main_2017</span></code> still exists to be able to rollback the production.</p>
+<p>To do that we should manage the <code class="docutils literal notranslate"><span class="pre">PGSCHEMA</span></code> and the <code class="docutils literal notranslate"><span class="pre">PGSCHEMA_STATIC</span></code> variable in your makefiles.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">PGSCHEMA</span></code> should be set in the <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> and the <code class="docutils literal notranslate"><span class="pre">PGSCHEMA_STATIC</span></code> for the production should be
+set in a specific makefile for the production e.-g. <code class="docutils literal notranslate"><span class="pre">production.mk</span></code>.</p>
+<p>To to the schema we provide a Postgres function, to create it:</p>
+<pre class="highlight"><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">sudo -u postgres psql &lt;database&gt; --file<span class="o">=</span>scripts/CONST_clone_schema.sql</span>
+</pre><p>To use it:</p>
+<div class="code sql highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">clone_schema</span><span class="p">(</span><span class="s1">&#39;&lt;current_schema_name&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;new_schema_name&gt;&#39;</span><span class="p">,</span> <span class="n">TRUE</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+      <li>Previous: <a href="upgrade_application.html" title="previous chapter">Upgrading a GeoMapFish application</a></li>
+      <li>Next: <a href="configuration.html" title="next chapter">Configuration Guide for advanced settings</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/integrator/database.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2018, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+      |
+      <a href="../_sources/integrator/database.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
