@@ -18,6 +18,7 @@ before_install:
 
 install:
 - make -f travis.mk c2c-egg
+- make -f travis.mk build
 
 script:
 - if [ ${TRAVIS_PULL_REQUEST} != "false" ] ; then git fetch origin ${TRAVIS_BRANCH}:${TRAVIS_BRANCH}; fi
