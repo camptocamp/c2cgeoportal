@@ -14,7 +14,7 @@ before_install:
 - cat /etc/apt/sources.list.d/*
 - sudo apt-get install -y --force-yes aptitude
 - sudo apt-get update
-- sudo aptitude install -y deploy
+- sudo aptitude install -y facter deploy
 
 install:
 - make -f travis.mk c2c-egg
