@@ -1,2 +1,2 @@
-@import "{{package}}.less";
-@import "/usr/lib/node_modules/ngeo/contribs/gmf/less/desktop.less";
+@import "{{package}}.scss";
+@import "~gmf/less/desktop.scss";

@@ -125,10 +125,7 @@ APP_JS_JINJA_FILES += $(shell find geoportal/$(PACKAGE)_geoportal/static-ngeo/js
 APP_JS_FILES +=  $(APP_JS_MAKO_FILES:.mako=) $(APP_JS_JINJA_FILES:.jinja=)
 APP_HTML_FILES += $(addprefix geoportal/$(PACKAGE)_geoportal/static-ngeo/js/apps/, $(addsuffix .html.ejs, $(NGEO_INTERFACES)))
 APP_DIRECTIVES_PARTIALS_FILES = $(shell find geoportal/$(PACKAGE)_geoportal/static-ngeo/components geoportal/$(PACKAGE)_geoportal/static-ngeo/partials geoportal/$(PACKAGE)_geoportal/static-ngeo/js -type f -name '*.html' 2> /dev/null)
-LESS_FILES += $(shell find geoportal/$(PACKAGE)_geoportal/static-ngeo/less geoportal/$(PACKAGE)_geoportal/static-ngeo/components -type f -name '*.less' 2> /dev/null)
-NGEO_GMF_FONTS = $(addprefix geoportal/$(PACKAGE)_geoportal/static-ngeo/fonts/gmf-icons, .woff .ttf .eot)
-NGEO_FONTAWESOME_FONTS = $(addprefix geoportal/$(PACKAGE)_geoportal/static-ngeo/fonts/fontawesome-webfont, .woff .woff2 .ttf .eot)
-NGEO_FONTS = $(NGEO_GMF_FONTS) $(NGEO_FONTAWESOME_FONTS)
+SASS_FILES += $(shell find geoportal/$(PACKAGE)_geoportal/static-ngeo/sass geoportal/$(PACKAGE)_geoportal/static-ngeo/components -type f -name '*.scss' 2> /dev/null)
 JSON_CLIENT_LOCALISATION_FILES = $(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .json, $(LANGUAGES)))
 L10N_CLIENT_POSTFIX ?= client
 L10N_SERVER_POSTFIX ?= server
@@ -416,9 +413,15 @@ yamllint: $(YAML_FILES)
 .PHONY: spell
 spell:
 	codespell --quiet-level=2 --check-filenames --ignore-words=spell-ignore-words.txt \
-		$(shell find -name node_modules -prune -or -name .git -prune -or -name '__pycache__' -prune \
-		-or -name 'build' -prune -or -name '.build' -prune -or -name 'cgxp' -prune -or -name 'c2cgeoportal_*' -prune \
-		-or \( -type f -and -not -name '*.png' -and -not -name '*.mo' -and -not -name '*.po*' \
+		$(shell find \
+		-name node_modules -prune -or \
+		-name .git -prune -or \
+		-name '__pycache__' -prune -or \
+		-name 'build' -prune -or \
+		-name '.build' -prune -or \
+		-name 'cgxp' -prune -or \
+		-name 'c2cgeoportal_*' -prune -or \
+		\( -type f -and -not -name '*.png' -and -not -name '*.mo' -and -not -name '*.po*' \
 		-and -not -name 'CONST_Makefile' -and -not -name 'package-lock.json' \) -print)
 
 .PHONY: clean
@@ -592,19 +595,6 @@ $(APP_OUTPUT_DIR)/angular-locale_%.js: /usr/lib/node_modules/ngeo/package.json l
 	rm --force $@
 	cp /opt/angular-locale/angular-locale_`(grep $* language_mapping || echo $*) | cut --delimiter = --fields 2 | tr --delete '\r\n'`.js $@
 
-.PRECIOUS: geoportal/$(PACKAGE)_geoportal/static-ngeo/fonts/gmf-icons.%
-geoportal/$(PACKAGE)_geoportal/static-ngeo/fonts/gmf-icons.%: /usr/lib/node_modules/ngeo/contribs/gmf/fonts/gmf-icons.%
-	$(PRERULE_CMD)
-	mkdir --parent $(dir $@)
-	cp $< $@
-
-.PRECIOUS: geoportal/$(PACKAGE)_geoportal/static-ngeo/fonts/fontawesome-webfont.%
-geoportal/$(PACKAGE)_geoportal/static-ngeo/fonts/fontawesome-webfont.%: /usr/lib/node_modules/font-awesome/fonts/fontawesome-webfont.%
-	$(PRERULE_CMD)
-	mkdir --parent $(dir $@)
-	cp $< $@
-
-
 $(APP_OUTPUT_DIR)/images/: /usr/lib/node_modules/jquery-ui/themes/base/images
 	$(PRERULE_CMD)
 	mkdir --parent $@
@@ -618,8 +608,7 @@ $(APP_OUTPUT_DIR)/images/: /usr/lib/node_modules/jquery-ui/themes/base/images
 .PRECIOUS: /build/apps.%.timestamp
 /build/apps.%.timestamp: $(OL_JS_FILES) $(NGEO_JS_FILES) $(APP_JS_FILES) \
 			$(APP_HTML_FILES) geoportal/webpack.config.js \
-			$(LESS_FILES) \
-			$(NGEO_FONTS) \
+			$(SASS_FILES) \
 			$(APP_OUTPUT_DIR)/images/
 	$(PRERULE_CMD)
 	# Workaround to make Webpack working for ol/index.js

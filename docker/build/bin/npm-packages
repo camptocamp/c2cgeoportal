@@ -29,7 +29,6 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import os
 import re
 import json
 from argparse import ArgumentParser
@@ -39,23 +38,6 @@ RE_NPM_VERSION = re.compile("^([0-9]+)\.([0-9]+)\.([0-9]+)$")
 RE_NPM_PRERELEASE_VERSION = re.compile("^([0-9]+)\.([0-9]+)\.([0-9]+)\.?([a-z]+)([0-9]+)$")
 
 
-def _ngeo_version():
-    if "TRAVIS_TAG" in os.environ and os.environ["TRAVIS_TAG"] != "":
-        match = RE_NPM_VERSION.match(os.environ["TRAVIS_TAG"])
-        prerelease_match = RE_NPM_PRERELEASE_VERSION.match(os.environ["TRAVIS_TAG"])
-        if match is not None:
-            return "{}.{}.{}".format(match.group(1), match.group(2), match.group(3))
-        if prerelease_match is not None:
-            return "{}.{}.{}-{}.{}".format(
-                prerelease_match.group(1),
-                prerelease_match.group(2),
-                prerelease_match.group(3),
-                prerelease_match.group(4),
-                prerelease_match.group(5)
-            )
-    return None
-
-
 def main():
     """
     Extract npm packages
@@ -63,27 +45,11 @@ def main():
 
     parser = ArgumentParser(description='Extract npm packages')
 
-    parser.add_argument('--branch', action="store_true", help="Get the ngeo branch and exit")
-    parser.add_argument('--hash', action="store_true", help="Get the ngeo commit hash and exit")
-    parser.add_argument('--ngeo', action="store_true", help="Add ngeo package")
     parser.add_argument('--src', action='append', default=[], metavar='SRC', help="The ngeo source file")
     parser.add_argument('--dst', metavar='DST', help="The destination file")
     parser.add_argument('excludes', nargs='*', metavar='EXCLUDE', help="The npm package to exclude")
 
     args = parser.parse_args()
-
-    if args.branch:
-        version = _ngeo_version()
-        print(os.environ["VERSION"] if version is None else version)
-        exit(0)
-
-    if args.hash:
-        version = _ngeo_version()
-        if version is None:
-            with open("package.json") as package_file:
-                version = json.loads(package_file)["dependencies"]["ngeo"].split(".")[-2]
-        print(version)
-        exit(0)
 
     packages = {}
     for src_ in args.src:
@@ -91,11 +57,6 @@ def main():
             input_data = json.loads(src.read())
             packages.update(input_data.get('devDependencies', {}))
             packages.update(input_data.get('dependencies', {}))
-    if args.ngeo:
-        # Freeze the ngeo version
-        version = _ngeo_version()
-        if version is not None:
-            packages["ngeo"] = version
     for package in args.excludes:
         if package in packages:
             del packages[package]

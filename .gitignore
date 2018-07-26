@@ -4,6 +4,9 @@
 **/__pycache__/
 */.pytest_cache/
 /npm-packages
+/ngeo
+/node_modules/
+/package-lock.json
 /Dockerfile
 /commons/tests.yaml
 /commons/c2cgeoportal_commons.egg-info/
