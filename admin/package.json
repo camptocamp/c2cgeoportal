@@ -1,10 +1,7 @@
 {
-  "name": "GeoMapFishAdminUI",
+  "name": "GeoMapFish-Admin",
   "version": "1.0.0",
   "description": "GeoMapFish administration interface",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "author": "",
   "dependencies": {
     "bootstrap": "3.3.7",
@@ -14,7 +11,6 @@
     "jstree": "3.3.5",
     "jstreegrid": "3.9.4",
     "magicsuggest-alpine": "1.0.0",
-    "ngeo": "2.4.0-latest.20180727T081517Z.f1a2745.HEAD",
     "openlayers": "4.6.5",
     "typeahead.js": "0.11.1"
   }

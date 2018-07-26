@@ -121,6 +121,7 @@ checks: flake8 mypy git-attributes quote spell yamllint pylint eof-newline addit
 clean:
 	rm --force $(BUILD_DIR)/venv.timestamp
 	rm --force $(BUILD_DIR)/c2ctemplate-cache.json
+	rm --force $(BUILD_DIR)/ngeo.timestamp
 	rm --force geoportal/c2cgeoportal_geoportal/locale/*.pot
 	rm --force geoportal/c2cgeoportal_admin/locale/*.pot
 	rm --force geoportal/c2cgeoportal_geoportal/locale/en/LC_MESSAGES/c2cgeoportal_geoportal.po
@@ -132,7 +133,7 @@ clean:
 
 .PHONY: clean-all
 clean-all: clean
-	rm --recursive --force ngeo
+	rm --recursive --force geoportal/node_modules
 	rm --force $(PO_FILES)
 	rm --recursive --force $(BUILD_DIR)/*
 
@@ -274,7 +275,6 @@ spell:
 		-name node_modules -prune -or \
 		-name .build -prune -or \
 		-name .git -prune -or \
-		-name ngeo -prune -or \
 		-name '__pycache__' -prune -or \
 		-name _build -prune -or \
 		\( -type f -and -not -name '*.png' -and -not -name '*.mo' -and -not -name '*.po*' \
@@ -283,7 +283,6 @@ spell:
 
 YAML_FILES ?= $(shell find \
 	-name node_modules -prune -or \
-	-name ngeo -prune -or \
 	-name functional -prune -or \
 	\( -name "*.yml" -or -name "*.yaml" \) -print)
 .PHONY: yamllint
@@ -342,65 +341,64 @@ transifex-init: $(TX_DEPENDENCIES) \
 .PHONY: import-ngeo-apps
 import-ngeo-apps: $(APPS_FILES) $(APPS_FILES_ALT)
 
-.PRECIOUS: ngeo
-ngeo:
+.PRECIOUS: $(BUILD_DIR)/ngeo.timestamp
+$(BUILD_DIR)/ngeo.timestamp: geoportal/package.json
 	$(PRERULE_CMD)
-	npm install
-	ln -s node_modules/ngeo .
-	touch --no-create $@
+	(cd geoportal; npm install)
+	touch $@
 
 .PRECIOUS: ngeo/contribs/gmf/apps/%/index.html.ejs
-ngeo/contribs/gmf/apps/%/index.html.ejs: ngeo
+geoportal/node_modules/ngeo/contribs/gmf/apps/%/index.html.ejs: $(BUILD_DIR)/ngeo.timestamp
 	$(PRERULE_CMD)
 	touch --no-create $@
 
 .PRECIOUS: ngeo/contribs/gmf/apps/%/Controller.js
-ngeo/contribs/gmf/apps/%/Controller.js: ngeo
+geoportal/node_modules/ngeo/contribs/gmf/apps/%/Controller.js: $(BUILD_DIR)/ngeo.timestamp
 	$(PRERULE_CMD)
 	touch --no-create $@
 
-$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/%.html.ejs_tmpl: ngeo/contribs/gmf/apps/%/index.html.ejs
+$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/%.html.ejs_tmpl: geoportal/node_modules/ngeo/contribs/gmf/apps/%/index.html.ejs
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	import-ngeo-apps --html $* $< $@
 
-$(APPS_PACKAGE_PATH_NONDOCKER)/static-ngeo/js/apps/%.html.ejs_tmpl: ngeo/contribs/gmf/apps/%/index.html.ejs
+$(APPS_PACKAGE_PATH_NONDOCKER)/static-ngeo/js/apps/%.html.ejs_tmpl: geoportal/node_modules/ngeo/contribs/gmf/apps/%/index.html.ejs
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	import-ngeo-apps --html --non-docker $* $< $@
 
-$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/Controller%.js_tmpl: ngeo/contribs/gmf/apps/%/Controller.js
+$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/Controller%.js_tmpl: geoportal/node_modules/ngeo/contribs/gmf/apps/%/Controller.js
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	import-ngeo-apps --js $* $< $@
 
 $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/%.html.ejs_tmpl: \
-		ngeo/contribs/gmf/apps/%/index.html.ejs \
+		geoportal/node_modules/ngeo/contribs/gmf/apps/%/index.html.ejs \
 		geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	import-ngeo-apps --html $* $< $@
 
 $(APPS_PACKAGE_PATH_ALT_NONDOCKER)/static-ngeo/js/apps/%.html.ejs_tmpl: \
-		ngeo/contribs/gmf/apps/%/index.html.ejs \
+		geoportal/node_modules/ngeo/contribs/gmf/apps/%/index.html.ejs \
 		geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	import-ngeo-apps --html --non-docker $* $< $@
 
 $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/Controller%.js_tmpl: \
-		ngeo/contribs/gmf/apps/%/Controller.js \
+		geoportal/node_modules/ngeo/contribs/gmf/apps/%/Controller.js \
 		geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	import-ngeo-apps --js $* $< $@
 
-$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/contextualdata.html: ngeo/contribs/gmf/apps/desktop/contextualdata.html
+$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/contextualdata.html: geoportal/node_modules/ngeo/contribs/gmf/apps/desktop/contextualdata.html
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	cp $< $@
 
-$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/%: ngeo/contribs/gmf/apps/desktop/image/%
+$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/%: geoportal/node_modules/ngeo/contribs/gmf/apps/desktop/image/%
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	cp $< $@
@@ -409,22 +407,16 @@ geoportal/c2cgeoportal_geoportal/scaffolds/create/docker-run: docker-run
 	$(PRERULE_CMD)
 	cp $< $@
 
-npm-packages: ngeo package.json
+npm-packages: $(BUILD_DIR)/ngeo.timestamp admin/package.json
 	$(PRERULE_CMD)
 	npm-packages \
 		coveralls gaze jasmine-core jsdoc jsdom karma karma-chrome-launcher karma-coverage \
 		karma-jasmine karma-sourcemap-loader karma-webpack \
-		bootstrap-table jquery.scrollintoview jstree jstreegrid magicsuggest-alpine typeahead.js \
-		--src=package.json --src=ngeo/package.json --dst=$@
-	echo googshift eslint-plugin-googshift loader-utils co eslint-plugin-import >> $@
+		--src=geoportal/node_modules/ngeo/package.json --src=geoportal/package.json --dst=$@
 
-admin/npm-packages: ngeo package.json
+admin/npm-packages: admin/package.json
 	$(PRERULE_CMD)
-	npm-packages ngeo --src=package.json --dst=$@
-
-geoportal/package.json: ngeo/package.json
-	$(PRERULE_CMD)
-	import-ngeo-apps --package _ $< $@
+	npm-packages --src=admin/package.json --dst=$@
 
 .PRECIOUS: geoportal/c2cgeoportal_geoportal/scaffolds%update/CONST_create_template/
 geoportal/c2cgeoportal_geoportal/scaffolds%update/CONST_create_template/: \
@@ -436,13 +428,13 @@ geoportal/c2cgeoportal_geoportal/scaffolds%update/CONST_create_template/: \
 	rm -rf $@ || true
 	cp -r $< $@
 
-.PRECIOUS: ngeo/contribs/gmf/apps/desktop/image/%
-ngeo/contribs/gmf/apps/desktop/image/%: ngeo
+.PRECIOUS: geoportal/node_modules/ngeo/contribs/gmf/apps/desktop/image/%
+geoportal/node_modules/ngeo/contribs/gmf/apps/desktop/image/%: $(BUILD_DIR)/ngeo.timestamp
 	$(PRERULE_CMD)
 	touch --no-create $@
 
 .PRECIOUS: $(APPS_PACKAGE_PATH)/static-ngeo/images/%
-$(APPS_PACKAGE_PATH)/static-ngeo/images/%: ngeo/contribs/gmf/apps/desktop/image/%
+$(APPS_PACKAGE_PATH)/static-ngeo/images/%: geoportal/node_modules/ngeo/contribs/gmf/apps/desktop/image/%
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	cp $< $@

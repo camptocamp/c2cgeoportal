@@ -4,13 +4,11 @@
 **/__pycache__/
 */.pytest_cache/
 /npm-packages
-/ngeo
-/node_modules/
-/package-lock.json
 /Dockerfile
 /commons/tests.yaml
 /commons/c2cgeoportal_commons.egg-info/
-/geoportal/package.json
+/geoportal/node_modules/
+/geoportal/package-lock.json
 /geoportal/tests/functional/test.ini
 /geoportal/tests/functional/alembic.ini
 /geoportal/tests/functional/alembic.yaml
