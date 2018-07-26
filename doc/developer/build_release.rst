@@ -205,13 +205,15 @@ When a new release or a new version is done you should do the following tasks:
    curl 'http://pypi.camptocamp.net/internal-pypi/regenerate-index' --data '' \
        --max-time 1000
 
-* Upgrade the demo in your home folder with ``c2ctool``.
-* Update the demo on the main folder with:
+* Upgrade the demo project in your home folder, by following upgrade application
+  instructions and pushing the results to the repository.
+* Update the demo on the main folder as follows, using a Makefile appropriate
+  for the server settings:
 
   .. prompt:: bash
 
-    sudo -u sigdev make -f demo.mk update
-    sudo -u sigdev make -f demo.mk build
+    sudo -u sigdev make -f <makefile> update
+    sudo -u sigdev make -f <makefile> build
 
 * Test the demo.
 * Move all the open issues to a new milestone and close the current milestone
