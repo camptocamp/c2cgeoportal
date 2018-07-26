@@ -406,7 +406,7 @@ npm-packages: ngeo package.json
 	npm-packages --ngeo \
 		coveralls gaze jasmine-core jsdoc jsdom karma karma-chrome-launcher karma-coverage \
 		karma-jasmine karma-sourcemap-loader karma-webpack \
-		--src=ngeo/package.json --src=package.json --dst=$@
+		--src=ngeo/package.json --dst=$@
 	echo googshift eslint-plugin-googshift >> $@
 
 admin/npm-packages: ngeo package.json

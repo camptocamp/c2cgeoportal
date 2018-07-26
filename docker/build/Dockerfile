@@ -4,7 +4,7 @@ LABEL maintainer Camptocamp "info@camptocamp.com"
 RUN \
   . /etc/os-release && \
   apt-get update && \
-  apt-get install --assume-yes --no-install-recommends tree apt-transport-https gettext sudo && \
+  apt-get install --assume-yes --no-install-recommends tree apt-transport-https gettext sudo libxml2-utils && \
   echo "deb https://deb.nodesource.com/node_6.x ${VERSION_CODENAME} main" > /etc/apt/sources.list.d/nodesource.list && \
   curl --silent https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - && \
 # Docker source list should be like it but actually it's empty...
