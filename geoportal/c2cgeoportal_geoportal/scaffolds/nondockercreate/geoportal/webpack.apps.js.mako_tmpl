@@ -17,16 +17,22 @@ process.traceDeprecation = true;
 const name = process.env.INTERFACE;
 process.env.THEME = INTERFACE_THEME[name];
 
-entry[name] = path.resolve(__dirname, '${package}_geoportal/static-ngeo/js/apps/Controller' + name + '.js');
-plugins.push(
-  new HtmlWebpackPlugin({
-    inject: false,
-    template: path.resolve(__dirname, '${package}_geoportal/static-ngeo/js/apps/' + name + '.html.ejs'),
-    chunksSortMode: 'manual',
-    filename: name + '.html',
-    chunks: [name],
-  })
-);
+for (const filename of ls(path.resolve(__dirname, '${package}_geoportal/static-ngeo/js/apps/*.html.ejs'))) {
+  const name = filename.file.substr(0, filename.file.length - '.html.ejs'.length);
+  entry[name] = '${package}/apps/Controller' + name + '.js';
+  plugins.push(
+    new HtmlWebpackPlugin({
+      template: filename.full,
+      inject: false,
+      chunksSortMode: 'manual',
+      filename: name + '.html',
+      chunks: ['commons', name],
+      vars: {
+        entry_point: '${entry_point}',
+       },
+    })
+  );
+}
 
 const babelPresets = [['env',{
   "targets": {

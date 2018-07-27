@@ -602,11 +602,7 @@ $(APP_OUTPUT_DIR)/images/: /usr/lib/node_modules/jquery-ui/themes/base/images
 
 
 .PRECIOUS: /build/apps.timestamp
-/build/apps.timestamp: geoportal/webpack.apps.js $(addprefix /build/apps., $(addsuffix .timestamp, $(NGEO_INTERFACES)))
-	touch $@
-
-.PRECIOUS: /build/apps.%.timestamp
-/build/apps.%.timestamp: $(OL_JS_FILES) $(NGEO_JS_FILES) $(APP_JS_FILES) \
+/build/apps.timestamp: geoportal/webpack.apps.js $(OL_JS_FILES) $(NGEO_JS_FILES) $(APP_JS_FILES) \
 			$(APP_HTML_FILES) geoportal/webpack.config.js \
 			$(SASS_FILES) \
 			$(APP_OUTPUT_DIR)/images/
@@ -614,10 +610,10 @@ $(APP_OUTPUT_DIR)/images/: /usr/lib/node_modules/jquery-ui/themes/base/images
 	# Workaround to make Webpack working for ol/index.js
 	rm --force geoportal/node_modules
 	ln --symbolic /usr/lib/node_modules/ geoportal/
-	(cd geoportal; INTERFACE=$* webpack $(WEBPACK_ARGS))
+	(cd geoportal; webpack $(WEBPACK_ARGS))
 	rm geoportal/node_modules
 ifeq ($(DOCKER), TRUE)
-	mv $(APP_OUTPUT_DIR)/$*.html $(APP_OUTPUT_DIR)/$*.html.tmpl
+	ls -1 $(APP_OUTPUT_DIR)/$*.*.html|while read file; do mv $${file} $${file}.tmpl; done
 	ls -1 $(APP_OUTPUT_DIR)/$*.*.css|while read file; do mv $${file} $${file}.tmpl; done
 endif
 	touch $@

@@ -4,8 +4,6 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-const INTERFACE_THEME = ${__import__('ujson').dumps(interfaces_theme)};
-
 const plugins = [];
 const entry = {};
 
@@ -14,22 +12,22 @@ const nodeEnv = process.env['NODE_ENV'] || 'development';
 const dev = nodeEnv == 'development'
 process.traceDeprecation = true;
 
-const name = process.env.INTERFACE;
-process.env.THEME = INTERFACE_THEME[name];
-
-entry[name] = '${package}/apps/Controller' + name + '.js';
-plugins.push(
-  new HtmlWebpackPlugin({
-    inject: false,
-    template: path.resolve(__dirname, '${package}_geoportal/static-ngeo/js/apps/' + name + '.html.ejs'),
-    chunksSortMode: 'manual',
-    filename: name + '.html',
-    chunks: [name],
-    vars: {
-      entry_point: '${entry_point}',
-    },
-  })
-);
+for (const filename of ls(path.resolve(__dirname, '${package}_geoportal/static-ngeo/js/apps/*.html.ejs'))) {
+  const name = filename.file.substr(0, filename.file.length - '.html.ejs'.length);
+  entry[name] = '${package}/apps/Controller' + name + '.js';
+  plugins.push(
+    new HtmlWebpackPlugin({
+      template: filename.full,
+      inject: false,
+      chunksSortMode: 'manual',
+      filename: name + '.html',
+      chunks: ['commons', name],
+      vars: {
+        entry_point: '${entry_point}',
+       },
+    })
+  );
+}
 
 const babelPresets = [['env',{
   "targets": {
@@ -74,6 +72,12 @@ module.exports = {
   resolve: {
     alias: {
       {{package}}: path.resolve(__dirname, '{{package}}_geoportal/static-ngeo/js'),
+    }
+  },
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+      name: 'commons',
     }
   },
 };

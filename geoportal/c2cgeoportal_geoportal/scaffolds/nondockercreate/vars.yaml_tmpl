@@ -305,7 +305,6 @@ update_paths:
   - headers.layers
   - headers.shortener
   - headers.login
-  - interfaces_theme
   - shortener
 
 no_interpreted:
