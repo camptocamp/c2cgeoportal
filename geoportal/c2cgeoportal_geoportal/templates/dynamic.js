@@ -28,6 +28,9 @@ wfs_permalink.update(interface_config.get('wfs_permalink', {}))
 % for name, value in interface_config['constants'].items():
   module.constant('${name}', ${json.dumps(value) | n})
 % endfor
+% if 'gmfSearchGroups' not in interface_config['constants']:
+  module.constant('gmfSearchGroups', ${json.dumps(fulltextsearch_groups) | n});
+% endif
   module.constant('langUrls', ${json.dumps(lang_urls) | n});
   module.constant('cacheVersion', '${get_cache_version()}');
   module.constant('ngeoWfsPermalinkOptions', ${json.dumps(wfs_permalink) | n});

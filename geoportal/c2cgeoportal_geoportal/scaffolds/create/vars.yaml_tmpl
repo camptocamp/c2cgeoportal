@@ -26,7 +26,6 @@ vars:
       constants: &constants
         defaultTheme: Demo
         defaultLang: en
-        gmfSearchGroups: [osm, district]
         gmfSearchActions:
           - action: add_theme
             title: Add a theme
@@ -66,6 +65,9 @@ vars:
     mobile:
       <<: *interface
       redirect_interface: desktop
+      constants:
+        <<: *constants
+        gmfSearchGroups: []
     mobile_alt:
       <<: *interface
       constants:
@@ -76,6 +78,9 @@ vars:
       <<: *interface
       redirect_interface: mobile
       do_redirect: True
+      constants:
+        <<: *constants
+        gmfSearchGroups: []
       routes:
         <<: *routes
         gmfProfileJsonUrl: profile.json
