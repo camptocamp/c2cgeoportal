@@ -45,7 +45,7 @@ def create_authentication(settings):
         callback=defaultgroupsfinder,
         cookie_name=settings["authtkt_cookie_name"],
         timeout=timeout, max_age=timeout, reissue_time=reissue_time,
-        hashalg="sha512", http_only=True
+        hashalg="sha512", http_only=True, secure=True,
     )
     basic_authentication_policy = BasicAuthAuthenticationPolicy(c2cgeoportal_check)
     policies = [cookie_authentication_policy, basic_authentication_policy]

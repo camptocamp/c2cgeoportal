@@ -49,7 +49,6 @@ vars:
         partitionlimit: 5
       routes: &routes
         authenticationBaseUrl: base
-        fulltextsearchUrl: fulltextsearch
         gmfLayersUrl: layers_root
         gmfRasterUrl: raster
         gmfProfileCsvUrl: profile.csv

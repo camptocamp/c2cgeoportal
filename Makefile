@@ -270,13 +270,22 @@ quote:
 .PHONY: spell
 spell:
 	codespell --quiet-level=2 --check-filenames --ignore-words=spell-ignore-words.txt \
-		$(shell find -name node_modules -prune -or -name .build -prune -or -name .git -prune -or -name ngeo -prune \
-		-or -name '__pycache__' -prune -or -name _build -prune \
-		-or \( -type f -and -not -name '*.png' -and -not -name '*.mo' -and -not -name '*.po*' \
+		$(shell find \
+		-name node_modules -prune -or \
+		-name .build -prune -or \
+		-name .git -prune -or \
+		-name ngeo -prune -or \
+		-name '__pycache__' -prune -or \
+		-name _build -prune -or \
+		\( -type f -and -not -name '*.png' -and -not -name '*.mo' -and -not -name '*.po*' \
 		-and -not -name 'CONST_Makefile_tmpl' -and -not -name 'package-lock.json' \) -print)
 
 
-YAML_FILES ?= $(shell find -name ngeo -prune -or -name functional -prune -or \( -name "*.yml" -or -name "*.yaml" \) -print)
+YAML_FILES ?= $(shell find \
+	-name node_modules -prune -or \
+	-name ngeo -prune -or \
+	-name functional -prune -or \
+	\( -name "*.yml" -or -name "*.yaml" \) -print)
 .PHONY: yamllint
 yamllint:
 	yamllint --strict --config-file=yamllint.yaml -s $(YAML_FILES)
@@ -336,9 +345,8 @@ import-ngeo-apps: $(APPS_FILES) $(APPS_FILES_ALT)
 .PRECIOUS: ngeo
 ngeo:
 	$(PRERULE_CMD)
-	if [ ! -e "ngeo" ] ; then git clone --depth=100 --branch=$(shell VERSION=$(MAIN_BRANCH) npm-packages --branch) https://github.com/camptocamp/ngeo.git ; fi
-	git fetch origin
-	git reset --hard $(shell VERSION=$(MAIN_BRANCH) npm-packages --hash)
+	npm install
+	ln -s node_modules/ngeo .
 	touch --no-create $@
 
 .PRECIOUS: ngeo/contribs/gmf/apps/%/index.html.ejs
@@ -403,11 +411,12 @@ geoportal/c2cgeoportal_geoportal/scaffolds/create/docker-run: docker-run
 
 npm-packages: ngeo package.json
 	$(PRERULE_CMD)
-	npm-packages --ngeo \
+	npm-packages \
 		coveralls gaze jasmine-core jsdoc jsdom karma karma-chrome-launcher karma-coverage \
 		karma-jasmine karma-sourcemap-loader karma-webpack \
-		--src=ngeo/package.json --src=package.json --dst=$@
-	echo googshift eslint-plugin-googshift >> $@
+		bootstrap-table jquery.scrollintoview jstree jstreegrid magicsuggest-alpine typeahead.js \
+		--src=package.json --src=ngeo/package.json --dst=$@
+	echo googshift eslint-plugin-googshift loader-utils co eslint-plugin-import >> $@
 
 admin/npm-packages: ngeo package.json
 	$(PRERULE_CMD)

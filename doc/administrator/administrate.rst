@@ -181,6 +181,11 @@ To make the WMTS queryable, you should add the following ``Metadata``:
 * ``ogcServer`` with the name of the used ``OGC server``,
 * ``wmsLayers`` or ``queryLayers`` with the layers to query (groups not supported).
 
+It is possible to give some scale limits for the queryable layers by setting
+a ``minResolution`` and/or a ``maxResolution Metadata`` value(s) for the
+WMTS layer. These values correspond to the WMTS layer resolution(s) which should
+be the zoom limit.
+
 Print WMTS in high quality
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 To print the layers in high quality, you should add the following ``Metadata``:

@@ -7,16 +7,16 @@ ENV VERSION=$VERSION
 COPY npm-packages /opt/npm-packages
 
 RUN \
-  npm install --no-optional --global `cat /opt/npm-packages` && \
-  npm cache clear
+  npm install --no-optional --global --unsafe-perm `cat /opt/npm-packages` && \
+  npm cache clear --force
 
 RUN \
-  svg2ttf /usr/lib/node_modules/ngeo/contribs/gmf/fonts/gmf-icons.svg \
-    /usr/lib/node_modules/ngeo/contribs/gmf/fonts/gmf-icons.ttf && \
-  ttf2eot /usr/lib/node_modules/ngeo/contribs/gmf/fonts/gmf-icons.ttf \
-    /usr/lib/node_modules/ngeo/contribs/gmf/fonts/gmf-icons.eot && \
-  ttf2woff /usr/lib/node_modules/ngeo/contribs/gmf/fonts/gmf-icons.ttf \
-    /usr/lib/node_modules/ngeo/contribs/gmf/fonts/gmf-icons.woff
+  svg2ttf /usr/lib/node_modules/ngeo/contribs/gmf/src/fonts/gmf-icons.svg \
+    /usr/lib/node_modules/ngeo/contribs/gmf/src/fonts/gmf-icons.ttf && \
+  ttf2eot /usr/lib/node_modules/ngeo/contribs/gmf/src/fonts/gmf-icons.ttf \
+    /usr/lib/node_modules/ngeo/contribs/gmf/src/fonts/gmf-icons.eot && \
+  ttf2woff /usr/lib/node_modules/ngeo/contribs/gmf/src/fonts/gmf-icons.ttf \
+    /usr/lib/node_modules/ngeo/contribs/gmf/src/fonts/gmf-icons.woff
 
 RUN \
   mkdir --parents /opt/angular-locale && \
@@ -29,7 +29,10 @@ COPY commons /opt/c2cgeoportal_commons
 COPY geoportal /opt/c2cgeoportal_geoportal
 COPY admin /opt/c2cgeoportal_admin
 
-RUN chmod go+r -R /opt/c2cgeoportal_commons /opt/c2cgeoportal_geoportal && \
+RUN \
+  (cd /opt/c2cgeoportal_admin/; npm install --no-optional `cat npm-packages`) && \
+  npm cache clear --force && \
+  chmod go+r -R /opt/c2cgeoportal_commons /opt/c2cgeoportal_geoportal /opt/c2cgeoportal_admin && \
   ln -s /opt/c2cgeoportal_commons/c2cgeoportal_commons/alembic /opt && \
   pip install --disable-pip-version-check --no-cache-dir --no-deps \
     --editable=/opt/c2cgeoportal_commons \
