@@ -1,0 +1,14 @@
+{
+    "groups": {
+        "admin": {
+            "packages": [
+                "admin/package.json"
+            ]
+        },
+        "geoportal": {
+            "packages": [
+                "geoportal/package.json"
+            ]
+        }
+    }
+}
