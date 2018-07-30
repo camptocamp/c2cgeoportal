@@ -220,4 +220,4 @@ When a new release or a new version is done you should do the following tasks:
   in `cgxp <https://github.com/camptocamp/cgxp/milestones>_`
   and in `c2cgeoportal <https://github.com/camptocamp/c2cgeoportal/milestones>_`.
 * Send a release email to the ``geomapfish@googlegroups.com``
-  and ``geospatial@lists.camptocamp.com`` mailing lists.
+  and ``geospatial-list@camptocamp.com`` mailing lists.
