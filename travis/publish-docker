@@ -10,8 +10,10 @@ do
         docker push camptocamp/${IMAGE}:${TRAVIS_TAG}
     elif [ "${TRAVIS_BRANCH}" != "master" ]
     then
-        docker tag camptocamp/${IMAGE}:${MAJOR_VERSION} camptocamp/${IMAGE}:${TRAVIS_BRANCH/\//_}
-        docker push camptocamp/${IMAGE}:${TRAVIS_BRANCH/\//_}
+        BRANCH=${TRAVIS_BRANCH/\//_}
+        BRANCH=${BRANCH/\//_}
+        docker tag camptocamp/${IMAGE}:${MAJOR_VERSION} camptocamp/${IMAGE}:${BRANCH}
+        docker push camptocamp/${IMAGE}:${BRANCH}
     else
         docker push camptocamp/${IMAGE}:${MAJOR_VERSION}
     fi
@@ -26,9 +28,11 @@ do
         docker push camptocamp/geomapfish-qgisserver:gmf${TRAVIS_TAG}-qgis${QGIS_VERSION}
     elif [ "${TRAVIS_BRANCH}" != "master" ]
     then
+        BRANCH=${TRAVIS_BRANCH/\//_}
+        BRANCH=${BRANCH/\//_}
         docker tag camptocamp/geomapfish-qgisserver:gmf${MAJOR_VERSION}-qgis${QGIS_VERSION} \
-            camptocamp/geomapfish-qgisserver:gmf${TRAVIS_BRANCH/\//_}-qgis${QGIS_VERSION}
-        docker push camptocamp/geomapfish-qgisserver:gmf${TRAVIS_BRANCH/\//_}-qgis${QGIS_VERSION}
+            camptocamp/geomapfish-qgisserver:gmf${BRANCH}-qgis${QGIS_VERSION}
+        docker push camptocamp/geomapfish-qgisserver:gmf${BRANCH}-qgis${QGIS_VERSION}
     else
         docker push camptocamp/geomapfish-qgisserver:gmf${MAJOR_VERSION}-qgis${QGIS_VERSION}
     fi
