@@ -26,7 +26,7 @@ ${service_defaults('external-db', 5432)}\
 ${service_defaults('print', 8080)}\
 
   mapserver:
-    image: camptocamp/mapserver:7.0
+    image: camptocamp/mapserver:7.2
     user: www-data
     volumes_from:
       - config:rw

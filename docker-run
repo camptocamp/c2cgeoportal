@@ -49,9 +49,11 @@ def main():
         if is_windows else dir_path[1:].replace("/", "-")
 
     try:
-        git_branch = subprocess.check_output([
-            "git", "rev-parse", "--abbrev-ref", "HEAD"
-        ]).decode("utf-8").strip()
+        git_branch = \
+            os.environ['TRAVIS_BRANCH'] if 'TRAVIS_BRANCH' in os.environ else \
+            subprocess.check_output([
+                "git", "rev-parse", "--abbrev-ref", "HEAD"
+            ]).decode("utf-8").strip()
         git_hash = subprocess.check_output([
             "git", "rev-parse", "HEAD"
         ]).decode("utf-8").strip()

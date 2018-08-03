@@ -23,7 +23,7 @@ ${service_defaults('db', 5432)}\
 ${service_defaults('external-db', 5432)}\
 
   mapserver:
-    image: camptocamp/mapserver:7.0
+    image: camptocamp/mapserver:7.2
     volumes_from:
       - config:rw
     links:
