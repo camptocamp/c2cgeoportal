@@ -11,14 +11,6 @@ RUN \
   npm cache clear --force
 
 RUN \
-  svg2ttf /usr/lib/node_modules/ngeo/contribs/gmf/src/fonts/gmf-icons.svg \
-    /usr/lib/node_modules/ngeo/contribs/gmf/src/fonts/gmf-icons.ttf && \
-  ttf2eot /usr/lib/node_modules/ngeo/contribs/gmf/src/fonts/gmf-icons.ttf \
-    /usr/lib/node_modules/ngeo/contribs/gmf/src/fonts/gmf-icons.eot && \
-  ttf2woff /usr/lib/node_modules/ngeo/contribs/gmf/src/fonts/gmf-icons.ttf \
-    /usr/lib/node_modules/ngeo/contribs/gmf/src/fonts/gmf-icons.woff
-
-RUN \
   mkdir --parents /opt/angular-locale && \
   for LANG in en fr de it en-ch fr-ch de-ch it-ch; \
   do \
