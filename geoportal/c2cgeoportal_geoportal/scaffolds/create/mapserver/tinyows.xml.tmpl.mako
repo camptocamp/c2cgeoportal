@@ -1,7 +1,7 @@
 <tinyows
     online_resource="${web_protocol}://${host}${entry_point}tinyows_proxy"
     schema_dir="/usr/share/tinyows/schema/"
-    log="tinyows.log"
+    log="/var/log/tinyows.log"
     log_level="1"
     check_schema="0">
 
