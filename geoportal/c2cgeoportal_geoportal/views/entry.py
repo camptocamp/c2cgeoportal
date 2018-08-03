@@ -1122,7 +1122,7 @@ class Entry:
             return None, errors
 
         if resp.status < 200 or resp.status >= 300:  # pragma: no cover
-            errors.add("GetCapabilities from URL {} return the error: {1:d} {}".format(
+            errors.add("GetCapabilities from URL {} return the error: {:d} {}".format(
                 wfsgc_url, resp.status, resp.reason
             ))
             return None, errors
