@@ -21,9 +21,7 @@ import sqlalchemy
 from qgis.server import QgsAccessControlFilter
 from qgis.core import QgsDataSourceUri
 
-from sqlalchemy.orm import configure_mappers
-from sqlalchemy.orm import scoped_session
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import configure_mappers, scoped_session, sessionmaker
 
 from c2cgeoportal_commons.config import config
 
@@ -73,7 +71,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
                     if name not in layers:
                         layers[name] = []
                     layers[name].append(layer)
-            QgsMessageLog.logMessage('[accesscontrol] layers: {}'.format(
+            QgsMessageLog.logMessage('[accesscontrol] layers:\n{}'.format(
                 json.dumps(dict([(k, [l.name for l in v]) for k, v in layers.items()]), sort_keys=True, indent=4)
             ))
             self.layers = layers
@@ -92,7 +90,9 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
     def get_role(self):
         from c2cgeoportal_commons.models.main import Role
         parameters = self.serverInterface().requestHandler().parameterMap()
-        return self.DBSession.query(Role).get(parameters['ROLE_ID']) if 'ROLE_ID' in parameters else None
+        role = self.DBSession.query(Role).get(parameters['ROLE_ID']) if 'ROLE_ID' in parameters else None
+        QgsMessageLog.logMessage("Role: {}".format(role.name if role else '-'))
+        return role
 
     @staticmethod
     def get_restriction_areas(gmf_layers, rw=False, role=None):

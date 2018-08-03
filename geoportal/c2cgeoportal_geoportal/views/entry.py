@@ -279,7 +279,7 @@ class Entry:
         try:
             resp, content = self.get_http_cached(url, headers)
         except Exception:  # pragma: no cover
-            error = "Unable to GetCapabilities from url {}".format(url)
+            error = "Unable to GetCapabilities from URL {}".format(url)
             errors.add(error)
             log.error(error, exc_info=True)
             return url, None, errors
@@ -1118,11 +1118,11 @@ class Entry:
         try:
             resp, get_capabilities_xml = self.get_http_cached(wfsgc_url, headers)
         except Exception:  # pragma: no cover
-            errors.add("Unable to GetCapabilities from url {0!s}".format(wfsgc_url))
+            errors.add("Unable to GetCapabilities from URL {}".format(wfsgc_url))
             return None, errors
 
         if resp.status < 200 or resp.status >= 300:  # pragma: no cover
-            errors.add("GetCapabilities from url {0!s} return the error: {1:d} {2!s}".format(
+            errors.add("GetCapabilities from URL {} return the error: {1:d} {}".format(
                 wfsgc_url, resp.status, resp.reason
             ))
             return None, errors
