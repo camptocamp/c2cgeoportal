@@ -97,18 +97,18 @@ class MapservProxy(OGCProxy):
             if "request" not in self.lower_params:
                 self.params = {}  # pragma: no cover
             else:
-                use_cache = self.lower_params["request"] in (
-                    "getcapabilities",
-                    "getlegendgraphic",
-                    "describelayer",
-                    "describefeaturetype",
-                )
+                if self._get_ogc_server().type != main.OGCSERVER_TYPE_QGISSERVER or \
+                        "user_id" not in self.params:
 
-                # no user_id and role_id or cached queries
-                if use_cache and "user_id" in self.params:
-                    del self.params["user_id"]
-                if use_cache and "role_id" in self.params:
-                    del self.params["role_id"]
+                    use_cache = self.lower_params["request"] in (
+                        "getlegendgraphic",
+                    )
+
+                    # no user_id and role_id or cached queries
+                    if use_cache and "user_id" in self.params:
+                        del self.params["user_id"]
+                    if use_cache and "role_id" in self.params:
+                        del self.params["role_id"]
 
             if "service" in self.lower_params and self.lower_params["service"] == "wfs":
                 _url = self._get_wfs_url()
