@@ -72,7 +72,7 @@ vars:
         TINYOWS_URL: http://tinyows:8080/
         MAPSERVER_URL: http://mapserver:8080/
         PRINT_URL: http://print:8080/print/
-        DEVSERVER_URL: http://webpack-dev-server:8080${entry_point}
+        DEVSERVER_HOST: webpack-dev-server:8080
         REDIS_HOST: redis
         REDIS_PORT: 6379
         C2C_REDIS_URL: redis://redis:6379
@@ -272,6 +272,8 @@ vars:
       - name: geometryValidation  # V1
         type: boolean
       - name: excludeProperties  # not yet used
+      - name: customOpenLayersOptions
+        type: json
       # WMS
       - name: directedFilterAttributes
         type: list
@@ -399,7 +401,7 @@ vars:
   print_url: '{PRINT_URL}'
   mapserver_url: '{MAPSERVER_URL}'
   mapcache_url: '{MAPCACHE_URL}'
-  devserver_url: '{DEVSERVER_URL}'
+  devserver_url: http://{DEVSERVER_HOST}{entry_point}
   memcached_host: '{MEMCACHED_HOST}'
   memcached_port: '{MEMCACHED_PORT}'
   tilegeneration_sqs_queue: '{TILEGENERATION_SQS_QUEUE}'
@@ -596,8 +598,8 @@ runtime_environment:
     default: http://print:8080/print/
   - name: MAPCACHE_URL
     default: http://mapcache:8080/
-  - name: DEVSERVER_URL
-    default: http://webpack-dev-server:8080/
+  - name: DEVSERVER_HOST
+    default: webpack-dev-server:8080
   - name: REDIS_HOST
     default: redis
   - name: REDIS_PORT

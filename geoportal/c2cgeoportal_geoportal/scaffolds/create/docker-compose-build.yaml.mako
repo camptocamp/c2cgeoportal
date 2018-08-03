@@ -15,7 +15,7 @@ services:
     image: ${docker_base}-config:${docker_tag}
 
   mapserver:
-    image: camptocamp/mapserver:7.0
+    image: camptocamp/mapserver:7.2
     volumes_from:
       - config:rw
 ${service_defaults('mapserver', 80)}\

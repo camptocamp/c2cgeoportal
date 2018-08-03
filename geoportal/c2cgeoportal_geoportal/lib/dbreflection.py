@@ -26,8 +26,7 @@
 # The views and conclusions contained in the software and documentation are those
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
-
-
+import threading
 import warnings
 from typing import Dict, Tuple  # noqa, pylint: disable=unused-import
 
@@ -125,6 +124,9 @@ def _get_schema(tablename):
     return tablename, schema
 
 
+_get_table_lock = threading.RLock()
+
+
 def get_table(tablename, schema=None, session=None, primary_key=None):
     if schema is None:
         tablename, schema = _get_schema(tablename)
@@ -148,12 +150,13 @@ def get_table(tablename, schema=None, session=None, primary_key=None):
         if primary_key is not None:
             # Ensure we have a primary key to be able to edit views
             args.append(Column(primary_key, Integer, primary_key=True))
-        table = Table(
-            *args,
-            schema=schema,
-            autoload=True,
-            autoload_with=engine
-        )
+        with _get_table_lock:
+            table = Table(
+                *args,
+                schema=schema,
+                autoload=True,
+                autoload_with=engine
+            )
     return table
 
 
