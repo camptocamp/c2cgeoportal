@@ -189,6 +189,8 @@ vars:
         - name: geometry_validation  # V1
           type: boolean
         - name: excludeProperties  # not yet used
+        - name: customOpenLayersOptions
+          type: json
         # WMS
         - name: directedFilterAttributes
           type: list
