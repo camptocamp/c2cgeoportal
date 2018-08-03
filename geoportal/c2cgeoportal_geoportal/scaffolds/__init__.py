@@ -139,7 +139,7 @@ class BaseTemplate(Template):  # pragma: no cover
             )
             r2 = r.json()[0]
             return [r1["x"], r2["y"], r2["x"], r1["y"]]
-        except requests.packages.urllib3.connection.HTTPConnection:
+        except requests.RequestException:
             print("Failed to establish a connexion to epsg.io.")
             return None
         except json.JSONDecodeError:
