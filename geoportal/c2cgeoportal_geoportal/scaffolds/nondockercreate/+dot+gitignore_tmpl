@@ -46,8 +46,6 @@ __pycache__/
 /geoportal/{{package}}_geoportal/locale/*/LC_MESSAGES/*.mo
 /geoportal/{{package}}_geoportal/locale/{{package}}_geoportal-*.pot
 /geoportal/{{package}}_geoportal/static-ngeo/build/
-/geoportal/{{package}}_geoportal/static-ngeo/fonts/gmf-icons.*
-/geoportal/{{package}}_geoportal/static-ngeo/fonts/fontawesome-webfont.*
 /geoportal/{{package}}_geoportal/static/build/
 /geoportal/{{package}}_geoportal/static/mobile/resources/sass/.sass-cache
 /geoportal/{{package}}_geoportal/static/mobile/resources/css/app.css
