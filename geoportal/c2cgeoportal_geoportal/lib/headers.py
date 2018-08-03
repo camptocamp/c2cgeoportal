@@ -28,16 +28,23 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import re
+
+
 class HeadersTween:
 
     def __init__(self, handler, registry):
         self.handler = handler
-        self.settings = registry.settings['global_headers']
+        self.settings = [
+            (re.compile(e['pattern']), e['headers']) for e in registry.settings['global_headers']
+        ]
 
     def __call__(self, request):
         response = self.handler(request)
 
-        for header, value in self.settings.items():
-            response.headers[header] = value
+        for pattern, headers in self.settings:
+            if pattern.match(request.path_info):
+                for header, value in headers.items():
+                    response.headers[header] = value
 
         return response

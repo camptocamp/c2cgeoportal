@@ -175,11 +175,19 @@ mapping:
         sequence:
           - type: str
       global_headers:
-        type: map
-        required: True
-        mapping:
-          regex;.+:
-            type: str
+        type: seq
+        sequence:
+          - type: map
+            mapping:
+              pattern:
+                type: str
+                required: True
+              headers:
+                type: map
+                required: True
+                mapping:
+                  regex;.+:
+                    type: str
       headers:
         type: map
         required: True

@@ -430,12 +430,17 @@ vars:
   lingua_extractor: {}
 
   global_headers:
-    X-Frame-Options: SAMEORIGIN
-    X-Xss-Protection: 1; mode=block
-    X-Content-Type-Options: nosniff
-    Referrer-Policy: origin
-    Strict-Transport-Security: max-age=31536000; includeSubDomains
-    Content-Security-Policy: script-src 'self'; frame-src 'self'; form-action 'self'
+    - pattern: '.*'
+      headers:
+        X-Frame-Options: SAMEORIGIN
+        X-Xss-Protection: 1; mode=block
+        X-Content-Type-Options: nosniff
+        Referrer-Policy: origin
+        Strict-Transport-Security: max-age=31536000; includeSubDomains
+        Content-Security-Policy: script-src 'self'; frame-src 'self'; form-action 'self'
+    - pattern: '^/admin/.*'
+      headers:
+        Content-Security-Policy: script-src 'self' 'unsafe-inline'; frame-src 'self'; form-action 'self'
 
   # Control the HTTP headers
   headers:
