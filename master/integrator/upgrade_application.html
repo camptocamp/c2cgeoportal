@@ -42,8 +42,8 @@
 In this section, you must select by a regular expression the project files you need to keep, and that are
 not handled by the GeoMapFish upgrade process. You can see in the GeoMapFish upgrade configuration, section
 <code class="docutils literal notranslate"><span class="pre">default_project_file</span></code>, which files will get handled by the GeoMapFish upgrade process:
-<a class="reference external" href="https://github.com/camptocamp/c2cgeoportal/blob/HEAD/geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/%2Bdot%2Bupgrade.yaml_tmpl">for non-Docker version</a>,
-<a class="reference external" href="https://github.com/camptocamp/c2cgeoportal/blob/HEAD/geoportal/c2cgeoportal_geoportal/scaffolds/update/%2Bdot%2Bupgrade.yaml_tmpl">for Docker version</a>.
+<a class="reference external" href="https://github.com/camptocamp/c2cgeoportal/blob/master/geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/%2Bdot%2Bupgrade.yaml_tmpl">for non-Docker version</a>,
+<a class="reference external" href="https://github.com/camptocamp/c2cgeoportal/blob/master/geoportal/c2cgeoportal_geoportal/scaffolds/update/%2Bdot%2Bupgrade.yaml_tmpl">for Docker version</a>.
 Any files in your project that are not listed in the section <code class="docutils literal notranslate"><span class="pre">managed_files</span></code> will be overwritten by the
 upgrade process.
 Here an example that may apply to your situation:</p>
@@ -65,7 +65,7 @@ span.prompt1:before {
 }
 </style><span class="prompt1">git submodule deinit &lt;package&gt;/static/lib/cgxp/</span>
 <span class="prompt1">git rm .gitmodules</span>
-<span class="prompt1">curl https://raw.githubusercontent.com/camptocamp/c2cgeoportal/HEAD/docker-run &gt; docker-run</span>
+<span class="prompt1">curl https://raw.githubusercontent.com/camptocamp/c2cgeoportal/master/docker-run &gt; docker-run</span>
 <span class="prompt1">chmod +x docker-run</span>
 <span class="prompt1">git add docker-run project.yaml.mako</span>
 <span class="prompt1">git commit --quiet --message<span class="o">=</span><span class="s2">&quot;Start upgrade&quot;</span></span>
