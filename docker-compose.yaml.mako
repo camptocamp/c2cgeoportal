@@ -9,6 +9,8 @@ db:
 
 mapserver:
   image: camptocamp/geomapfish-test-mapserver:latest
+  user: www-data
+  entrypoint: []
   links:
     - db
 
