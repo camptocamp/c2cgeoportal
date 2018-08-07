@@ -39,7 +39,7 @@ from c2cgeoportal_geoportal.lib.caching import get_region, NO_CACHE, PUBLIC_CACH
 from c2cgeoportal_geoportal.lib.functionality import get_mapserver_substitution_params
 from c2cgeoportal_geoportal.lib.filter_capabilities import filter_capabilities
 from c2cgeoportal_geoportal.views.ogcproxy import OGCProxy
-from c2cgeoportal_commons.models.main import OGCSERVER_AUTH_GEOSERVER, OGCSERVER_AUTH_STANDARD
+from c2cgeoportal_commons.models import main
 
 cache_region = get_region()
 log = logging.getLogger(__name__)
@@ -66,7 +66,7 @@ class MapservProxy(OGCProxy):
 
             role = self.user.role
             if role is not None:
-                if self._get_ogc_server().auth == OGCSERVER_AUTH_STANDARD:
+                if self._get_ogc_server().auth == main.OGCSERVER_AUTH_STANDARD:
                     self.params["role_id"] = role.id
 
                     # In some application we want to display the features owned by a user
@@ -97,18 +97,18 @@ class MapservProxy(OGCProxy):
             if "request" not in self.lower_params:
                 self.params = {}  # pragma: no cover
             else:
-                use_cache = self.lower_params["request"] in (
-                    "getcapabilities",
-                    "getlegendgraphic",
-                    "describelayer",
-                    "describefeaturetype",
-                )
+                if self._get_ogc_server().type != main.OGCSERVER_TYPE_QGISSERVER or \
+                        "user_id" not in self.params:
 
-                # no user_id and role_id or cached queries
-                if use_cache and "user_id" in self.params:
-                    del self.params["user_id"]
-                if use_cache and "role_id" in self.params:
-                    del self.params["role_id"]
+                    use_cache = self.lower_params["request"] in (
+                        "getlegendgraphic",
+                    )
+
+                    # no user_id and role_id or cached queries
+                    if use_cache and "user_id" in self.params:
+                        del self.params["user_id"]
+                    if use_cache and "role_id" in self.params:
+                        del self.params["role_id"]
 
             if "service" in self.lower_params and self.lower_params["service"] == "wfs":
                 _url = self._get_wfs_url()
@@ -138,7 +138,7 @@ class MapservProxy(OGCProxy):
 
         headers = self._get_headers()
         # Add headers for Geoserver
-        if self._get_ogc_server().auth == OGCSERVER_AUTH_GEOSERVER and \
+        if self._get_ogc_server().auth == main.OGCSERVER_AUTH_GEOSERVER and \
                 self.user is not None:
             headers["sec-username"] = self.user.username
             headers["sec-roles"] = role.name

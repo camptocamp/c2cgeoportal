@@ -291,7 +291,10 @@ update_paths:
   - docker_services.config.environment
   - docker_services.db.environment
   - docker_services.geoportal.environment
+  - docker_services.qgisserver.environment
   - docker_services.tilecloudchain.environment
+  - docker_services.print.environment
+  - docker_services.front
   - fulltextsearch
   - functionalities.available_in_templates
   - headers.index

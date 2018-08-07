@@ -30,7 +30,8 @@ VALIDATE_PY_FOLDERS = commons admin \
 	geoportal/c2cgeoportal_geoportal/*.py \
 	geoportal/c2cgeoportal_geoportal/lib \
 	geoportal/c2cgeoportal_geoportal/scripts \
-	geoportal/c2cgeoportal_geoportal/views
+	geoportal/c2cgeoportal_geoportal/views \
+	docker/qgisserver/geomapfish_plugin
 VALIDATE_TEMPLATE_PY_FOLDERS = geoportal/c2cgeoportal_geoportal/scaffolds
 VALIDATE_PY_TEST_FOLDERS = geoportal/tests
 
@@ -248,6 +249,8 @@ pylint: $(BUILD_DIR)/commons.timestamp
 	$(BUILD_DIR)/venv/bin/python /usr/local/bin/pylint --errors-only commons/acceptance_tests
 	$(BUILD_DIR)/venv/bin/python /usr/local/bin/pylint --errors-only admin/c2cgeoportal_admin
 	$(BUILD_DIR)/venv/bin/python /usr/local/bin/pylint --errors-only admin/acceptance_tests
+	$(BUILD_DIR)/venv/bin/python /usr/local/bin/pylint --errors-only --disable=import-error \
+		docker/qgisserver/geomapfish_plugin
 
 .PHONY: mypy
 mypy:
@@ -259,6 +262,7 @@ mypy:
 		mypy --ignore-missing-imports --strict-optional --follow-imports skip \
 			geoportal/c2cgeoportal_geoportal \
 			admin/c2cgeoportal_admin \
+			docker/qgisserver/geomapfish_plugin
 
 .PHONY: git-attributes
 git-attributes:
