@@ -407,6 +407,7 @@ vars:
 
   # For print proxy
   print_url: '{PRINT_URL}'
+
   mapserver_url: '{MAPSERVER_URL}'
   mapcache_url: '{MAPCACHE_URL}'
   devserver_url: http://{DEVSERVER_HOST}{entry_point}
