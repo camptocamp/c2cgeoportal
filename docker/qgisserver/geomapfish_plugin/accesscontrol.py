@@ -288,7 +288,8 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             raise
 
     def cacheKey(self):  # NOQA
+        role = self.get_role()
         return "{}-{}".format(
             self.serverInterface().requestHandler().parameter("Host"),
-            self.get_role().name,
+            role.id if role is not None else '',
         )
