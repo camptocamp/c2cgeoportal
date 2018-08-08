@@ -87,7 +87,11 @@ def _pdf3(settings, health_check):
         url_headers = build_url("Check the printproxy request (create)", url, request)
 
         session = requests.session()
-        resp = session.post(json=print_settings["spec"], **url_headers)
+        resp = session.post(
+            json=print_settings["spec"],
+            timeout=30,
+            **url_headers
+        )
         resp.raise_for_status()
 
         job = resp.json()
@@ -97,7 +101,10 @@ def _pdf3(settings, health_check):
         done = False
         while not done:
             sleep(1)
-            resp = session.get(**url_headers)
+            resp = session.get(
+                timeout=30,
+                **url_headers
+            )
             resp.raise_for_status()
 
             status = resp.json()
@@ -107,7 +114,10 @@ def _pdf3(settings, health_check):
 
         url = request.route_url("printproxy_report_get", ref=job["ref"])
         url_headers = build_url("Check the printproxy pdf retrieve", url, request)
-        resp = session.get(**url_headers)
+        resp = session.get(
+            timeout=30,
+            **url_headers
+        )
         resp.raise_for_status()
 
     health_check.add_custom_check(name="checker_print", check_cb=check, level=print_settings["level"])
@@ -152,7 +162,11 @@ def _themes_errors(settings, health_check):
 
             interface_url_headers = build_url("checker_themes " + interface, url, request)
 
-            response = session.get(params=params, **interface_url_headers)
+            response = session.get(
+                params=params,
+                timeout=120,
+                **interface_url_headers
+            )
             response.raise_for_status()
 
             result = response.json()

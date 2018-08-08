@@ -30,33 +30,20 @@
 
 import sys
 import json
-import subprocess
+import urllib.request
 
 initial_error_length = 0
 initial_access_length = 0
 
-curl_args = ["--connect-timeout", "1", "--max-time", "400", "--retry", "1"]
-
 url = sys.argv[1]
 
-try:
-    status_code = subprocess.check_output(
-        ["curl", "--write-out", "%{http_code}"] + curl_args + ["--silent", "--output", "/dev/null", url]
-    ).decode("utf-8")
-except subprocess.CalledProcessError as e:
-    print("Exception on curl call: {}".format(e))
+result = urllib.request.urlopen(url, timeout=300)
 
-    print("RESULT:")
-    sys.stdout.flush()
-    subprocess.call(["curl"] + curl_args + ["--verbose", url])
-    exit(2)
-
-if status_code == "200":
+if result.status == 200:
     if len(sys.argv) == 3 and sys.argv[2] == "enum":
-        result = subprocess.check_output(
-            ["curl"] + curl_args + [url]
-        ).decode("utf-8")
-        if json.loads(result) == {
+        result = urllib.request.urlopen(url, timeout=600)
+        data = result.read().decode('urf-8')
+        if result.status == 200 and json.loads(data) == {
             "items": [{
                 "label": "car",
                 "value": "car"
@@ -68,15 +55,13 @@ if status_code == "200":
             print("enum OK")
             exit()
         else:
-            print("Incorrect result:")
-            print(result)
+            print("Incorrect result ({}):".format(result.status))
+            print(data)
             exit(2)
     print("OK")
-    exit()
 else:
-    print("Bad status code {}".format(status_code))
+    print("Bad status code {}".format(result.status))
 
     print("RESULT:")
-    sys.stdout.flush()
-    subprocess.call(["curl"] + curl_args + ["--verbose", url])
+    print(result.read().decode('urf-8'))
     exit(2)
