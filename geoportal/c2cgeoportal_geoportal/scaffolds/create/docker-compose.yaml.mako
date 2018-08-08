@@ -74,14 +74,14 @@ ${service_defaults('memcached', 11211)}\
 ${service_defaults('redis', 6379)}\
 
   tilecloudchain:
-    image: camptocamp/tilecloud-chain:1.6
+    image: camptocamp/tilecloud-chain:1.7
     user: www-data
     volumes_from:
       - config:ro
 ${service_defaults('tilecloudchain', 8080)}\
 
   tilegeneration_slave:
-    image: camptocamp/tilecloud-chain:1.6
+    image: camptocamp/tilecloud-chain:1.7
     user: www-data
     volumes_from:
       - config:ro
