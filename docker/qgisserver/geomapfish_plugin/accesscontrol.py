@@ -45,6 +45,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
         self.area_cache = {}
         self.layers = None
         self.lock = Lock()
+        self.project = None
 
         try:
             if "GEOMAPFISH_OGCSERVER" not in os.environ:
@@ -77,10 +78,11 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
         with self.lock:
             from c2cgeoportal_commons.models.main import LayerWMS
 
-            if self.layers is not None:
+            if self.layers is not None and self.project == QgsProject.instance():
                 return self.layers
 
-            project = QgsProject.instance()
+            self.project = QgsProject.instance()
+
             groups = {}
 
             def browse(names, layer):
@@ -94,13 +96,13 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
                 for l in layer.children():
                     browse(new_names, l)
 
-            browse([], project.layerTreeRoot())
+            browse([], self.project.layerTreeRoot())
 
             layers = {}
             for layer in self.DBSession.query(LayerWMS) \
                     .filter(LayerWMS.ogc_server_id == self.ogcserver.id).all():
                 for group in layer.layer.split(','):
-                    for name in groups[group]:
+                    for name in groups.get(group, []):
                         layers.setdefault(name, []).append(layer)
             QgsMessageLog.logMessage('[accesscontrol] layers:\n{}'.format(
                 json.dumps(
@@ -113,7 +115,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
 
     def assert_plugin_initialised(self):
         if self.ogcserver is None:
-            raise Exception("The plugin is not initialised")
+            raise Exception("The plugin is not correctly initialised")
 
     def get_role(self):
         from c2cgeoportal_commons.models.main import Role
