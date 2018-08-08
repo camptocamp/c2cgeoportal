@@ -9,22 +9,22 @@ Contact: info@camptocamp.com
     option) any later version.
 """
 
-from qgis.core import QgsMessageLog
 
+import geoalchemy2
 import json
 import os
-import sys
-import traceback
 from shapely import ops
-import geoalchemy2
 import sqlalchemy
-from threading import Lock
-
-from qgis.server import QgsAccessControlFilter
-from qgis.core import QgsDataSourceUri, QgsProject
-
 from sqlalchemy.orm import configure_mappers, scoped_session, sessionmaker
+import sys
+from threading import Lock
+import traceback
+import zope.event.classhandler
 
+from qgis.core import QgsMessageLog, QgsDataSourceUri, QgsProject
+from qgis.server import QgsAccessControlFilter
+
+import c2cwsgiutils.broadcast
 from c2cgeoportal_commons.config import config
 
 
@@ -51,10 +51,21 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             if "GEOMAPFISH_OGCSERVER" not in os.environ:
                 raise GMFException("The environment variable 'GEOMAPFISH_OGCSERVER' is not defined.")
 
-            print("Use OGC server named '{}'".format(os.environ["GEOMAPFISH_OGCSERVER"]))
+            QgsMessageLog.logMessage("Use OGC server named '{}'".format(os.environ["GEOMAPFISH_OGCSERVER"]))
 
             config.init(os.environ.get('GEOMAPFISH_CONFIG', '/etc/qgisserver/geomapfish.yaml'))
             self.srid = config.get('srid')
+
+            c2cwsgiutils.broadcast.init(None)
+
+            from c2cgeoportal_commons.models.main import InvalidateCacheEvent
+
+            @zope.event.classhandler.handler(InvalidateCacheEvent)
+            def handle(event: InvalidateCacheEvent):
+                del event
+                QgsMessageLog.logMessage("=== invalidate ===")
+                with self.lock:
+                    self.layers = None
 
             from c2cgeoportal_commons.models.main import OGCServer
             configure_mappers()

@@ -78,7 +78,10 @@ vars:
         C2C_REDIS_URL: redis://redis:6379
         C2C_BROADCAST_PREFIX: broadcast_geoportal_
     qgisserver:
-      environment: *geo-run-env
+      environment:
+        <<: *geo-run-env
+        C2C_REDIS_URL: redis://redis:6379
+        C2C_BROADCAST_PREFIX: broadcast_geoportal_
     tilecloudchain:
       environment:
         GUNICORN_PARAMS:
