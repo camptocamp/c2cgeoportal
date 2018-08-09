@@ -308,6 +308,12 @@ def main():
                 r"""<script src="${request.static_url('%s/ngeo/\1' % request.registry.settings['node_modules_path'])}"\2></script>""",  # noqa: E501
                 data,
             )
+            data = _sub(
+                "module.constant\('defaultTheme', 'Demo'\);",
+                "module.constant('defaultTheme', "
+                "'${request.registry.settings[\"viewer\"][\"default_theme\"]}');",
+                data,
+            )
             # i18n
             data = _sub(
                 "module.constant\('defaultLang', 'en'\);",
