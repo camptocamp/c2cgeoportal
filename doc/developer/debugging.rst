@@ -12,6 +12,9 @@ For debugging purposes, it is better to have all the JavaScript and Style Sheets
 files. To achieve this, you can simply use the sources maps, function activable in the browsers debugging
 tool. And to have faster build you need to use the Webpack dev server; you can achieve this as follows.
 
+In the ``geoportal/demo_geoportal/static-ngeo/js/apps/<interface>.html.ejs`` file
+remove the ``ng-strict-di`` in the ``html`` tag.
+
 Add in your makefile ``<user>.mk`` (Each developer should have a different port, e.g.: 8081):
 
 .. code:: makefile
