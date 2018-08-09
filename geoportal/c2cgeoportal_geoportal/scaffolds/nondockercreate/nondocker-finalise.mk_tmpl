@@ -199,12 +199,12 @@ geoportal/npm-packages: .config
 
 .build/admin-npm.timestamp: npm-packages
 	mkdir --parent admin
-	cat $< | xargs npm install --prefix ./admin
+	(cd admin; cat ../$< | xargs npm install)
 	touch $@
 
 .build/geoportal-npm.timestamp: geoportal/npm-packages
 	mkdir --parent admin
-	cat $< | xargs npm install --prefix ./geoportal
+	(cd geoportal; cat ../$< | xargs npm install)
 	touch $@
 
 .PHONY: serve-%
