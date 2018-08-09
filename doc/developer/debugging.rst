@@ -20,7 +20,7 @@ Add in your makefile ``<user>.mk`` (Each developer should have a different port,
 
 .. prompt:: bash
 
-   FINALISE=TRUE make serve-<interface>
+   FINALISE=TRUE make --makefile=<user>.mk serve-<interface>
 
 Open in the browser an URL like: ``https://<host>/<instanceid>/wsgi/dev/<interface>.html``.
 
