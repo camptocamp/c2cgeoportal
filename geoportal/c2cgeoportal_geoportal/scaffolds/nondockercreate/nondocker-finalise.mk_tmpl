@@ -198,13 +198,11 @@ geoportal/npm-packages: .config
 	$(DOCKER_RUN) cp /opt/npm-packages $@
 
 .build/admin-npm.timestamp: npm-packages
-	rm --force --recursive admin/node_modules
 	mkdir --parent admin
 	cat $< | xargs npm install --prefix ./admin
 	touch $@
 
 .build/geoportal-npm.timestamp: geoportal/npm-packages
-	rm --force --recursive admin/node_modules
 	mkdir --parent admin
 	cat $< | xargs npm install --prefix ./geoportal
 	touch $@
