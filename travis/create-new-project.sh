@@ -28,6 +28,6 @@ git clean -fX
 
 # Build
 ./docker-run make --makefile=travis.mk build docker-build-testdb
-./docker-compose-run bash -c 'wait-for-db; PGHOST=external-db; wait-for-db;'
+./docker-compose-run bash -c 'wait-db && PGHOST=externaldb PGDATABASE=test wait-db;'
 ./docker-compose-run make --makefile=travis.mk update-po
 ./docker-compose-run make --makefile=travis.mk theme2fts

@@ -30,7 +30,7 @@ ${service_defaults('mapserver', 80)}\
     stdin_open: true
     tty: true
     entrypoint:
-      - wait-for-db
+      - wait-db-and-run
       - run
     links:
       - mapserver

@@ -28,21 +28,25 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-import sys
 import json
+import urllib.error
 import urllib.request
+import sys
 
 initial_error_length = 0
 initial_access_length = 0
 
 url = sys.argv[1]
 
-result = urllib.request.urlopen(url, timeout=600)
+try:
+    # See also:
+    # travis/vars.yaml geoportal/GUNICORN_PARAMS
+    # Jenkinsfile timeout line 130
+    result = urllib.request.urlopen(url, timeout=240)
 
-if result.status == 200:
     if len(sys.argv) == 3 and sys.argv[2] == "enum":
         result = urllib.request.urlopen(url, timeout=30)
-        data = result.read().decode('urf-8')
+        data = result.read().decode('utf-8')
         if result.status == 200 and json.loads(data) == {
             "items": [{
                 "label": "car",
@@ -59,9 +63,9 @@ if result.status == 200:
             print(data)
             exit(2)
     print("OK")
-else:
-    print("Bad status code {}".format(result.status))
+except urllib.error.HTTPError as e:
+    print("Bad status code {}".format(e.code))
 
     print("RESULT:")
-    print(result.read().decode('urf-8'))
+    print(e.fp.read().decode('utf-8'))
     exit(2)

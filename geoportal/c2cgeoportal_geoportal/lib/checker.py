@@ -29,9 +29,9 @@
 
 import requests
 import logging
+import subprocess
 from time import sleep
 from urllib.parse import urlsplit, urlunsplit
-from subprocess import check_output, CalledProcessError
 
 log = logging.getLogger(__name__)
 
@@ -74,9 +74,13 @@ def _routes(settings, health_check):
                 return build_url("route", request.route_url(route["name"]), request)
 
             health_check.add_url_check(
-                url=lambda r: get_both(r)["url"], name=name,
+                url=lambda r: get_both(r)["url"],
+                name=name,
                 params=route.get("params", None),
-                headers=lambda r: get_both(r)["headers"], level=route["level"])
+                headers=lambda r: get_both(r)["headers"],
+                level=route["level"],
+                timeout=30,
+            )
 
 
 def _pdf3(settings, health_check):
@@ -134,12 +138,14 @@ def _fts(settings, health_check):
             raise Exception("No result")
 
     health_check.add_url_check(
-        name="checker_fulltextsearch", url=lambda r: get_both(r)["url"],
-        headers=lambda r: get_both(r)["headers"], params={
+        name="checker_fulltextsearch",
+        url=lambda r: get_both(r)["url"],
+        headers=lambda r: get_both(r)["headers"],
+        params={
             "query": fts_settings["search"],
             "limit": "1",
         },
-        check_cb=check
+        check_cb=check,
     )
 
 
@@ -206,13 +212,19 @@ def _lang_files(global_settings, settings, health_check):
                     request)
 
             health_check.add_url_check(
-                name=name, url=lambda r: get_both(r)["url"],
-                headers=lambda r: get_both(r)["headers"], level=lang_settings["level"])
+                name=name,
+                url=lambda r: get_both(r)["url"],
+                headers=lambda r: get_both(r)["headers"],
+                level=lang_settings["level"],
+            )
 
 
 def _phantomjs(settings, health_check):
     phantomjs_settings = settings["phantomjs"]
     for route in phantomjs_settings["routes"]:
+        if route["name"] in phantomjs_settings["disable"]:
+            continue
+
         def check(request):
             url = request.route_url(route["name"], _query=route.get("params", {}))
             if urlsplit(url).netloc.startswith("localhost:"):
@@ -224,11 +236,15 @@ def _phantomjs(settings, health_check):
                 "/usr/lib/node_modules/ngeo/buildtools/check-example.js", url
             ]
 
-            # check_output throws a CalledProcessError if return code is > 0
             try:
-                check_output(cmd)
-            except CalledProcessError as e:
+                subprocess.check_output(cmd, timeout=10)
+            except subprocess.CalledProcessError as e:
                 raise Exception(e.output.decode("utf-8"))
+            except subprocess.TimeoutExpired as e:
+                raise Exception("""Timeout:
+command: {}
+output:
+{}""".format(" ".join(e.cmd), e.output.decode("utf-8")))
         name = "checker_phantomjs_" + route.get("display_name", route["name"])
         health_check.add_custom_check(name=name, check_cb=check, level=route["level"])
 
