@@ -40,6 +40,8 @@
 <p>For debugging purposes, it is better to have all the JavaScript and Style Sheets in separated, non-minified
 files. To achieve this, you can simply use the sources maps, function activable in the browsers debugging
 tool. And to have faster build you need to use the Webpack dev server; you can achieve this as follows.</p>
+<p>In the <code class="docutils literal notranslate"><span class="pre">geoportal/demo_geoportal/static-ngeo/js/apps/&lt;interface&gt;.html.ejs</span></code> file
+remove the <code class="docutils literal notranslate"><span class="pre">ng-strict-di</span></code> in the <code class="docutils literal notranslate"><span class="pre">html</span></code> tag.</p>
 <p>Add in your makefile <code class="docutils literal notranslate"><span class="pre">&lt;user&gt;.mk</span></code> (Each developer should have a different port, e.g.: 8081):</p>
 <div class="code makefile highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">DEV_SERVER_PORT</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">dev</span><span class="o">-</span><span class="n">server</span><span class="o">-</span><span class="n">port</span><span class="o">&gt;</span>
 </pre></div>
@@ -48,7 +50,7 @@ tool. And to have faster build you need to use the Webpack dev server; you can a
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1"><span class="nv">FINALISE</span><span class="o">=</span>TRUE make serve-&lt;interface&gt;</span>
+</style><span class="prompt1"><span class="nv">FINALISE</span><span class="o">=</span>TRUE make --makefile<span class="o">=</span>&lt;user&gt;.mk serve-&lt;interface&gt;</span>
 </pre><p>Open in the browser an URL like: <code class="docutils literal notranslate"><span class="pre">https://&lt;host&gt;/&lt;instanceid&gt;/wsgi/dev/&lt;interface&gt;.html</span></code>.</p>
 </div>
 <div class="section" id="browser">
