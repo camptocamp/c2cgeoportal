@@ -37,11 +37,11 @@ initial_access_length = 0
 
 url = sys.argv[1]
 
-result = urllib.request.urlopen(url, timeout=300)
+result = urllib.request.urlopen(url, timeout=600)
 
 if result.status == 200:
     if len(sys.argv) == 3 and sys.argv[2] == "enum":
-        result = urllib.request.urlopen(url, timeout=600)
+        result = urllib.request.urlopen(url, timeout=30)
         data = result.read().decode('urf-8')
         if result.status == 200 and json.loads(data) == {
             "items": [{
