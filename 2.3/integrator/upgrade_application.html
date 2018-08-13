@@ -133,9 +133,9 @@ Add <code class="docutils literal notranslate"><span class="pre">UPGRADE_ARGS</s
 <p>The help:</p>
 <pre class="highlight"><span class="prompt1">./docker-run alembic --help</span>
 </pre><p>Upgrade the main schema:</p>
-<pre class="highlight"><span class="prompt1">./docker-run alembic --name<span class="o">=</span>main upgrade head</span>
+<pre class="highlight"><span class="prompt1">./docker-run alembic --name<span class="o">=</span>main --config<span class="o">=</span>geoportal/alembic.ini upgrade head</span>
 </pre><p>Upgrade the static schema:</p>
-<pre class="highlight"><span class="prompt1">./docker-run alembic --name<span class="o">=</span>static upgrade head</span>
+<pre class="highlight"><span class="prompt1">./docker-run alembic --name<span class="o">=</span>static --config<span class="o">=</span>geoportal/alembic.ini upgrade head</span>
 </pre></div>
 <div class="section" id="from-cgxp-to-ngeo">
 <span id="integrator-upgrade-application-cgxp-to-ngeo"></span><h2>From CGXP to ngeo<a class="headerlink" href="#from-cgxp-to-ngeo" title="Permalink to this headline">¶</a></h2>
