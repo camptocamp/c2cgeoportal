@@ -34,13 +34,32 @@ Build your application.
 
 The files to translate are:
 
-* ``demo/locale/<lang>/LC_MESSAGES/demo-client.po`` for ngeo client
-* ``demo/locale/<lang>/LC_MESSAGES/demo-server.po`` for the server part (should be empty for ngeo interfaces)
+* ``geoportal/<package>_geoportal/locale/<lang>/LC_MESSAGES/demo-client.po`` for ngeo client
+* ``geoportal/<package>_geoportal/locale/<lang>/LC_MESSAGES/demo-server.po`` for the server part (should be empty for ngeo interfaces)
 
 .. note::
 
    All the ``#, fuzzy`` strings should be verified and the line should be removed
    (if the line is not removed, the localisation will not be used).
+
+To update the po files you should run this specific target:
+
+.. code:: bash
+
+   ./docker-run make --makefile=<package>.mk update-po
+
+.. note::
+
+   You should run this command when you changed something in the following:
+
+     * new layer in mapfile
+     * new layer in Administration
+     * print template
+     * full text search
+     * application (JavaScript and HTML files)
+     * layer enumeration
+     * some metadata as diclaimer
+     * editable layer (database structure, data or enumerations)
 
 ----
 CGXP
