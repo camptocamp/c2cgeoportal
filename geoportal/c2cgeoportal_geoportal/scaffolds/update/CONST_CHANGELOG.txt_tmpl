@@ -32,6 +32,12 @@ Information
        ]
    ...'''
 
+5. To update the po files you should now run a specific target each time you change or add a new layer
+   (mapfile, layer item in admin interface, etc.) or add a new feature:
+
+   '''
+   ./docker-run make --makefile=<package>.mk update-po
+   '''
 
 Changes to apply
 ----------------
