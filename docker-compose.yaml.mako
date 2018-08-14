@@ -33,7 +33,7 @@ build:
   stdin_open: true
   tty: true
   entrypoint:
-    - wait-for-db
+    - wait-db-and-run
     - run
   links:
     - db
