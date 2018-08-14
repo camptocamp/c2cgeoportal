@@ -74,7 +74,7 @@ class LayerWmsViews(DimensionLayerViews):
                     'convert_to_wmts',
                     id=getattr(item, self._id_field)),
                 method='POST',
-                confirmation=_('Are you sure you want to convert this layer to WMTS ?')))
+                confirmation=_('Are you sure you want to convert this layer to WMTS?')))
         return actions
 
     @view_config(route_name='c2cgeoform_item',
