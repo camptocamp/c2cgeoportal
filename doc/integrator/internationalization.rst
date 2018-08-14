@@ -52,8 +52,9 @@ To update the ``po`` files, you must run this specific target:
 
    You should run this command when you change something in the following:
 
-     * new layer in mapfile
-     * new layer in Administration
+     * layer in mapfile (new or modified)
+     * layer in administration (new or modified)
+     * raster layer in the vars file (new or modified)
      * print template
      * full text search
      * application (JavaScript and HTML files)
