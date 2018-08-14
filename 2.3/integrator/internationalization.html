@@ -54,13 +54,34 @@
 <p>Build your application.</p>
 <p>The files to translate are:</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">demo/locale/&lt;lang&gt;/LC_MESSAGES/demo-client.po</span></code> for ngeo client</li>
-<li><code class="docutils literal notranslate"><span class="pre">demo/locale/&lt;lang&gt;/LC_MESSAGES/demo-server.po</span></code> for the server part (should be empty for ngeo interfaces)</li>
+<li><code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/locale/&lt;lang&gt;/LC_MESSAGES/demo-client.po</span></code> for the ngeo client</li>
+<li><code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/locale/&lt;lang&gt;/LC_MESSAGES/demo-server.po</span></code> for the server part (should be empty for ngeo interfaces)</li>
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">All the <code class="docutils literal notranslate"><span class="pre">#,</span> <span class="pre">fuzzy</span></code> strings should be verified and the line should be removed
 (if the line is not removed, the localisation will not be used).</p>
+</div>
+<p>To update the <code class="docutils literal notranslate"><span class="pre">po</span></code> files, you must run this specific target:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">docker</span><span class="o">-</span><span class="n">run</span> <span class="n">make</span> <span class="o">--</span><span class="n">makefile</span><span class="o">=&lt;</span><span class="n">package</span><span class="o">&gt;.</span><span class="n">mk</span> <span class="n">update</span><span class="o">-</span><span class="n">po</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>You should run this command when you change something in the following:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>layer in mapfile (new or modified)</li>
+<li>layer in administration (new or modified)</li>
+<li>raster layer in the vars file (new or modified)</li>
+<li>print template</li>
+<li>full text search</li>
+<li>application (JavaScript and HTML files)</li>
+<li>layer enumeration</li>
+<li>some metadata as disclaimer</li>
+<li>editable layer (database structure, data or enumerations)</li>
+</ul>
+</div></blockquote>
 </div>
 </div>
 <div class="section" id="cgxp">
