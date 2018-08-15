@@ -15,7 +15,8 @@ RUN \
   for LANG in en fr de it en-ch fr-ch de-ch it-ch; \
   do \
     curl --output /opt/angular-locale/angular-locale_$LANG.js https://raw.githubusercontent.com/angular/angular.js/v`grep '"angular"' /usr/lib/node_modules/ngeo/package.json | cut --delimiter \" --fields 4 | tr --delete '\r\n'`/src/ngLocale/angular-locale_$LANG.js; \
-  done
+  done && \
+  curl --output /opt/jasperreport.xsd http://jasperreports.sourceforge.net/xsd/jasperreport.xsd
 
 COPY commons /opt/c2cgeoportal_commons
 COPY geoportal /opt/c2cgeoportal_geoportal
