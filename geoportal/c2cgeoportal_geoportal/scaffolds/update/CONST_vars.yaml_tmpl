@@ -39,6 +39,8 @@ vars:
         MAPSERVER_URL: http://mapserver:8080/
         MEMCACHED_HOST: memcached
         MEMCACHED_PORT: 11211
+        REDIS_HOST: redis
+        REDIS_PORT: 6379
         TILEGENERATION_SQS_QUEUE: '<queue_name>'
     db:
       environment:
