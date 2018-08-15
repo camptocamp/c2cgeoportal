@@ -77,11 +77,16 @@ vars:
         REDIS_PORT: 6379
         C2C_REDIS_URL: redis://redis:6379
         C2C_BROADCAST_PREFIX: broadcast_geoportal_
+        PGOPTIONS: '-c statement_timeout=30000'
+    mapserver:
+      environment:
+        PGOPTIONS: '-c statement_timeout=30000'
     qgisserver:
       environment:
         <<: *geo-run-env
         C2C_REDIS_URL: redis://redis:6379
         C2C_BROADCAST_PREFIX: broadcast_geoportal_
+        PGOPTIONS: '-c statement_timeout=30000'
     tilecloudchain:
       environment:
         GUNICORN_PARAMS:
@@ -99,6 +104,7 @@ vars:
     print:
       environment:
         CATALINA_OPTS: -Xmx1024m
+        PGOPTIONS: '-c statement_timeout=30000'
     front:
       port: 80
 
