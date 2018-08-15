@@ -27,7 +27,7 @@ vars:
         GUNICORN_PARAMS:
           --bind=:8080
           --timeout=240
-          --workers=2
+          --workers=4
 
   dbsessions:
     travis_test:
@@ -53,8 +53,6 @@ vars:
       files: [ngeo]
     routes:
       disable: [printproxy_capabilities]
-    phantomjs:
-      disable: [desktop, mobile]
 
   check_collector:
     hosts:
