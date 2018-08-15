@@ -28,11 +28,12 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import logging
 import json
-import sys
+import logging
 import urllib.parse
 import re
+import requests
+import sys
 
 from random import Random
 from math import sqrt
@@ -53,8 +54,9 @@ import zope.event.classhandler
 
 from c2cgeoportal_commons import models
 from c2cgeoportal_commons.models import main, static
-from c2cgeoportal_geoportal.lib import get_setting, get_protected_layers_query, \
-    get_url2, get_url, get_typed, get_types_map, add_url_params, get_http
+from c2cgeoportal_geoportal.lib import get_setting, get_url2, get_url, get_typed, get_types_map, \
+    add_url_params
+from c2cgeoportal_geoportal.lib.layers import get_protected_layers_query
 from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
 from c2cgeoportal_geoportal.lib.caching import get_region, \
     set_common_headers, NO_CACHE, PUBLIC_CACHE, PRIVATE_CACHE
@@ -122,6 +124,7 @@ class Entry:
         self.request = request
         self.settings = request.registry.settings
         self.mapserver_settings = self.settings.get("mapserverproxy", {})
+        self.http_options = self.request.registry.settings.get("http_options", {})
         self.debug = "debug" in request.params
         self.lang = request.locale_name
         self.metadata_type = get_types_map(
@@ -234,8 +237,7 @@ class Entry:
 
     @cache_region.cache_on_arguments()
     def get_http_cached(self, url, headers):
-        http = get_http(self.request)
-        return http.request(url, method="GET", headers=headers)
+        return requests.get(url, headers=headers, **self.http_options)
 
     @cache_region.cache_on_arguments()
     def _wms_getcap_cached(self, ogc_server, _):
@@ -277,32 +279,32 @@ class Entry:
             headers.pop("Host")
 
         try:
-            resp, content = self.get_http_cached(url, headers)
+            response = self.get_http_cached(url, headers)
         except Exception:  # pragma: no cover
             error = "Unable to GetCapabilities from URL {}".format(url)
             errors.add(error)
             log.error(error, exc_info=True)
             return url, None, errors
 
-        if resp.status < 200 or resp.status >= 300:  # pragma: no cover
+        if not response.ok:  # pragma: no cover
             error = "GetCapabilities from URL {} return the error: {:d} {}".format(
-                url, resp.status, resp.reason
+                url, response.status_code, response.reason
             )
             errors.add(error)
             log.error(error)
             return url, None, errors
 
         # With wms 1.3 it returns text/xml also in case of error :-(
-        if resp.get("content-type").split(";")[0].strip() not in \
+        if response.headers["Content-Type"].split(";")[0].strip() not in \
                 ["application/vnd.ogc.wms_xml", "text/xml"]:
             error = "GetCapabilities from URL {} returns a wrong Content-Type: {}\n{}".format(
-                url, resp.get("content-type"), content
+                url, response.headers["Content-Type"], response.text
             )
             errors.add(error)
             log.error(error)
             return url, None, errors
 
-        return url, content, errors
+        return url, response.content, errors
 
     @staticmethod
     def _create_layer_query(role_id, version, interface):
@@ -1116,19 +1118,19 @@ class Entry:
             headers.pop("Host")  # pragma nocover
 
         try:
-            resp, get_capabilities_xml = self.get_http_cached(wfsgc_url, headers)
+            response = self.get_http_cached(wfsgc_url, headers)
         except Exception:  # pragma: no cover
             errors.add("Unable to GetCapabilities from URL {}".format(wfsgc_url))
             return None, errors
 
-        if resp.status < 200 or resp.status >= 300:  # pragma: no cover
+        if not response.ok:  # pragma: no cover
             errors.add("GetCapabilities from URL {} return the error: {:d} {}".format(
-                wfsgc_url, resp.status, resp.reason
+                wfsgc_url, response.status_code, response.reason
             ))
             return None, errors
 
         try:
-            get_capabilities_dom = parseString(get_capabilities_xml)
+            get_capabilities_dom = parseString(response.text)
             featuretypes = []
             for featureType in get_capabilities_dom.getElementsByTagNameNS(
                     self.WFS_NS, "FeatureType"):
@@ -1145,7 +1147,7 @@ class Entry:
                     log.warn("Feature type without name: {0!s}".format(featureType.toxml()))
             return featuretypes, errors
         except Exception:  # pragma: no cover
-            return get_capabilities_xml, errors
+            return response.text, errors
 
     def _functionality(self):
         return self._functionality_cached(

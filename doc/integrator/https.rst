@@ -91,4 +91,7 @@ connections, you can achieve this by adding the following configuration element 
 
     vars:
         http_options:
-            disable_ssl_certificate_validation: True
+            verify: False
+
+See other options in parameters of
+`requests.Request <http://docs.python-requests.org/en/latest/api.html#requests.Request>`_

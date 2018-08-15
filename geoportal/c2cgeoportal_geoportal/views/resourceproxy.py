@@ -56,13 +56,13 @@ class ResourceProxy(Proxy):
             values = ast.literal_eval(self.request.params.get("values"))
             url = url % values
 
-            resp, content = self._proxy(url=url)
+            response = self._proxy(url=url)
 
             cache_control = NO_CACHE
-            content_type = resp["content-type"]
+            content_type = response.headers["Content-Type"]
 
             response = self._build_response(
-                resp, content, cache_control, "externalresource",
+                response, response.text, cache_control, "externalresource",
                 content_type=content_type
             )
             for header in response.headers.keys():

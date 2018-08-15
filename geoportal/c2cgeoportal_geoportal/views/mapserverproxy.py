@@ -162,14 +162,14 @@ class MapservProxy(OGCProxy):
         callback = params.get("callback")
         if callback is not None:
             del params["callback"]
-        resp, content = self._proxy(url=url, params=params, **kwargs)
+        response = self._proxy(url=url, params=params, **kwargs)
 
+        content = response.content
         if self.lower_params.get("request") == "getcapabilities":
             content = filter_capabilities(
-                content.decode("utf-8"), role_id, self.lower_params.get("service") == "wms",
+                response.text, role_id, self.lower_params.get("service") == "wms",
                 url,
                 self.request.headers,
-                self.mapserver_settings.get("proxies"),
                 self.request
             ).encode("utf-8")
 
@@ -180,9 +180,9 @@ class MapservProxy(OGCProxy):
                 content.decode("utf-8").replace("'", "\\'").splitlines()
             )).encode("utf-8")
         else:
-            content_type = resp["content-type"]
+            content_type = response.headers["Content-Type"]
 
         return self._build_response(
-            resp, content, cache_control, "mapserver",
+            response, content, cache_control, "mapserver",
             content_type=content_type
         )

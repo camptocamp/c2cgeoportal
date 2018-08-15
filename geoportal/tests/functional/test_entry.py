@@ -31,6 +31,7 @@
 from unittest import TestCase
 
 import re
+import requests
 import transaction
 import json
 from geoalchemy2 import WKTElement
@@ -923,7 +924,6 @@ class TestEntryView(TestCase):
         self.assertEqual(result["permalink_themes"], ["theme1", "theme2"])
 
     def test_layer(self):
-        import httplib2
         from c2cgeoportal_geoportal.views.entry import Entry
         from c2cgeoportal_commons.models.main import LayerV1, LayerGroup
         from c2cgeoportal_geoportal.lib.wmstparsing import TimeInformation
@@ -1141,8 +1141,8 @@ class TestEntryView(TestCase):
             ("REQUEST", "GetCapabilities"),
         )
         url = mapserv_url + "?" + "&".join(["=".join(p) for p in params])
-        http = httplib2.Http()
-        http.request(url, method="GET")
+        response = requests.get(url)
+        assert response.status_code == 200
 
         layer = LayerV1()
         layer.id = 20

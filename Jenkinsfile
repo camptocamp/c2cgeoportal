@@ -37,7 +37,6 @@ dockerBuild {
                 checkout scm
                 sh 'make docker-build'
                 sh 'docker run --name geomapfish-db --env=POSTGRES_USER=www-data --env=POSTGRES_PASSWORD=www-data --env=POSTGRES_DB=geomapfish --publish=5432:5432 --detach camptocamp/geomapfish-test-db'
-                sh 'travis/test-upgrade-convert.sh init ${HOME}/workspace'
                 sh './docker-run travis/status.sh'
                 sh './docker-run travis/short-make build'
             }
@@ -172,6 +171,7 @@ dockerBuild {
                     }
                     sh 'rm -rf ${HOME}/workspace/testgeomapfish'
                 }, 'Tests upgrades 220': {
+                    sh 'travis/test-upgrade-convert.sh init ${HOME}/workspace'
                     // Test Upgrade an convert project
                     sh 'travis/test-upgrade-convert.sh v220-todocker ${HOME}/workspace'
                     sh 'travis/test-upgrade-convert.sh v220-tonondocker ${HOME}/workspace'

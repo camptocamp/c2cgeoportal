@@ -28,9 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import urllib.request
 import urllib.parse
-import urllib.error
 import logging
 
 import json
@@ -53,18 +51,18 @@ class PrintProxy(Proxy):  # pragma: no cover
         self.config = self.request.registry.settings
 
     def _get_capabilities_proxy(self, filter_, *args, **kwargs):
-        resp, content = self._proxy(*args, **kwargs)
+        response = self._proxy(*args, **kwargs)
 
         if self.request.method == "GET":
-            if resp.status == 200:
+            if response.ok:
                 try:
-                    capabilities = json.loads(content.decode('utf-8'))
-                except json.JSONDecodeError as e:
+                    capabilities = response.json()
+                except json.decoder.JSONDecodeError as e:
                     # log and raise
                     log.error("Unable to parse capabilities.")
                     log.exception(e)
-                    log.error(content)
-                    return HTTPBadGateway(content)
+                    log.error(response.text)
+                    return HTTPBadGateway(response.text)
 
                 pretty = self.request.params.get("pretty", "false") == "true"
                 content = json.dumps(
@@ -75,7 +73,7 @@ class PrintProxy(Proxy):  # pragma: no cover
             content = ""
 
         return self._build_response(
-            resp, content, PRIVATE_CACHE, "print",
+            response, content, PRIVATE_CACHE, "print",
         )
 
     @view_config(route_name="printproxy_capabilities")
@@ -107,18 +105,18 @@ class PrintProxy(Proxy):  # pragma: no cover
         # get URL
         _url = self.config["print_url"] + "/capabilities.json"
 
-        resp, content = self._proxy(_url)
+        response = self._proxy(_url)
 
         if self.request.method == "GET":
-            if resp.status == 200:
+            if response.ok:
                 try:
-                    capabilities = json.loads(content.decode("utf-8"))
-                except json.JSONDecodeError as e:
+                    capabilities = response.json()
+                except json.decoder.JSONDecodeError as e:
                     # log and raise
                     log.error("Unable to parse capabilities.")
                     log.exception(e)
-                    log.error(content)
-                    raise HTTPBadGateway(content)
+                    log.error(response.text)
+                    raise HTTPBadGateway(response.text)
 
                 capabilities["layouts"] = list(
                     layout for layout in capabilities["layouts"] if
@@ -132,7 +130,7 @@ class PrintProxy(Proxy):  # pragma: no cover
         else:
             content = ""
 
-        return resp, content
+        return response, content
 
     @view_config(route_name="printproxy_report_create")
     def report_create(self):
