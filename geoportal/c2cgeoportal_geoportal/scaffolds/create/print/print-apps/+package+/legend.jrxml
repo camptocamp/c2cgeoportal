@@ -15,11 +15,6 @@
 		</band>
 		<band height="14" splitType="Stretch">
 			<printWhenExpression><![CDATA[!$F{report}.equals("")]]></printWhenExpression>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="0" y="0" width="185" height="1"/>
-				<box topPadding="10"/>
-				<textFieldExpression><![CDATA["BB"]]></textFieldExpression>
-			</textField>
 			<subreport>
 				<reportElement x="0" y="0" width="185" height="10" uuid="fa145068-76a5-4834-98ed-ce65b1976b3d">
 					<property name="local_mesure_unitheight" value="pixel"/>
