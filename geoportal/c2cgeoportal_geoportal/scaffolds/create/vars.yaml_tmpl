@@ -70,6 +70,7 @@ vars:
         gmfSearchGroups: []
     mobile_alt:
       <<: *interface
+      redirect_interface: desktop_alt
       constants:
         <<: *constants
         gmfTreeManagerModeFlush: false
@@ -87,6 +88,7 @@ vars:
         gmfPrintUrl: printproxy
     desktop_alt:
       <<: *interface
+      redirect_interface: mobile_alt
       constants:
         <<: *constants
         gmfPrintOptions: {scaleInput: true}
