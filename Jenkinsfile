@@ -116,8 +116,7 @@ dockerBuild {
                                 'c2c/health_check',
                                 'c2c/health_check?max_level=9',
                                 'c2c/health_check?checks=check_collector',
-// TODO: activate gunicon logs to debug this test
-//                                'layers/test/values/type enum',
+                                'layers/test/values/type enum',
                                 'admin/layertree',
                                 'admin/layertree/children'
                             ]) {
