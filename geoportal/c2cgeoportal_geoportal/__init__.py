@@ -648,20 +648,6 @@ def includeme(config):
         "printproxy_report_get", "/printproxy/report/{ref}",
         request_method="GET"
     )
-    # For v2
-    config.add_route(
-        "printproxy_info", "/printproxy/info.json",
-        request_method="GET",
-        pregenerator=C2CPregenerator(role=True),
-    )
-    config.add_route(
-        "printproxy_create", "/printproxy/create.json",
-        request_method="POST",
-    )
-    config.add_route(
-        "printproxy_get", "/printproxy/{file}.printout",
-        request_method="GET",
-    )
 
     # Full-text search routes
     add_cors_route(config, "/fulltextsearch", "fulltextsearch")
