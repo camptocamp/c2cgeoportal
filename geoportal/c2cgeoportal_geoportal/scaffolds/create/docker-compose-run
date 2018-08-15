@@ -10,12 +10,27 @@ os.environ['USER_NAME'] = getpass.getuser()
 os.environ['USER_ID'] = str(os.getuid()) if os.name == "posix" else "1000"
 os.environ['GROUP_ID'] = str(os.getgid()) if os.name == "posix" else "1000"
 
+return_code = 0
 try:
     subprocess.check_call([
         'docker-compose',
         '--file=docker-compose-build.yaml',
+        'up',
+        '-d',
+    ])
+    subprocess.check_call([
+        'docker-compose',
+        '--file=docker-compose-build.yaml',
         'run',
-        'build'
+        'build',
     ] + sys.argv[1:])
 except subprocess.CalledProcessError as e:
-    exit(e.returncode)
+    return_code = e.returncode
+finally:
+    subprocess.check_call([
+        'docker-compose',
+        '--file=docker-compose-build.yaml',
+        'stop',
+    ])
+
+exit(return_code)

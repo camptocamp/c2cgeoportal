@@ -4,6 +4,11 @@ extends: vars.yaml
 
 vars:
   docker_services:
+    config:
+      environment:
+        PGHOST: db
+        PGHOST_SLAVE: db
+
     externaldb:
       environment:
         POSTGRES_USER: www-data
@@ -11,7 +16,6 @@ vars:
         POSTGRES_DB: test
 
     geoportal:
-      port: 8080
       environment:
         C2C_SECRET: c2c
         C2C_DEBUG_VIEW_ENABLED: True
@@ -28,6 +32,14 @@ vars:
           --bind=:8080
           --timeout=240
           --workers=4
+
+    geoportal-build:
+      environment: &geo-run-env
+        PGHOST: db
+        PGHOST_SLAVE: db
+
+    front:
+      port: 8080
 
   dbsessions:
     travis_test:
@@ -52,7 +64,7 @@ vars:
     lang:
       files: [ngeo]
     routes:
-      disable: [printproxy_capabilities]
+      disable: [apijs, xapijs]
 
   check_collector:
     hosts:
@@ -65,5 +77,7 @@ update_paths:
   - checker.routes
   - checker.phantomjs
   - check_collector
+  - docker_services.config.environment
   - docker_services.geoportal.environment
+  - docker_services.geoportal-build.environment
   - admin_interface.available_metadata
