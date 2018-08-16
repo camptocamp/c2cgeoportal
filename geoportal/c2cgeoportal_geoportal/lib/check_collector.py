@@ -54,7 +54,11 @@ def init(config, health_check):
                     "%s/%s/health_check" % (host["url"].rstrip("/"), c2c_base.strip("/")),
                     request
                 )
-                r = requests.get(params={"max_level": str(host.get("max_level", max_level))}, **url_headers)
+                r = requests.get(
+                    params={"max_level": str(host.get("max_level", max_level))},
+                    timeout=120,
+                    **url_headers
+                )
                 r.raise_for_status()
                 return r.json()
 

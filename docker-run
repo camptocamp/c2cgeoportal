@@ -105,7 +105,25 @@ def main():
     for env in ["CI"] + options.env:
         docker_cmd.append("--env={}".format(env))
 
-    if 'docker0' in netifaces.interfaces():
+    if is_windows:
+        import winreg
+
+        def get_connection_name_from_guid(iface_guid):
+            reg = winreg.ConnectRegistry(None, winreg.HKEY_LOCAL_MACHINE)
+            reg_key = winreg.OpenKey(
+                reg, r'SYSTEM\CurrentControlSet\Control\Network\{4d36e972-e325-11ce-bfc1-08002be10318}'
+            )
+            try:
+                reg_subkey = winreg.OpenKey(reg_key, iface_guid + r'\Connection')
+                return winreg.QueryValueEx(reg_subkey, 'Name')[0]
+            except FileNotFoundError:
+                return None
+
+        for x in netifaces.interfaces():
+            if get_connection_name_from_guid(x) == 'Ethernet':
+                docker_adrs = netifaces.ifaddresses(x)[2][0]['addr']
+                break
+    elif 'docker0' in netifaces.interfaces():
         docker_adrs = netifaces.ifaddresses('docker0')[2][0]['addr']
     else:
         # For Jenkins slave in Docker

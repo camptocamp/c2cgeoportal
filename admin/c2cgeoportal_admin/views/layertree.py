@@ -127,7 +127,7 @@ class LayerTreeViews():
                     group_id=parent_id,
                     item_id=item.id),
                 method='DELETE',
-                confirmation=_('Are your sure you want to unlink this record from his parent ?')))
+                confirmation=_('Are your sure you want to unlink this record from his parent?')))
 
         actions.append(ItemAction(
             name='delete',
@@ -137,7 +137,7 @@ class LayerTreeViews():
                 'layertree_delete',
                 item_id=item.id),
             method='DELETE',
-            confirmation=_('Are your sure you want to delete this record ?')))
+            confirmation=_('Are your sure you want to delete this record?')))
 
         return actions
 

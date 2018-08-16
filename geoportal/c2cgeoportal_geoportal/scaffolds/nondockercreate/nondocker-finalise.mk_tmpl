@@ -180,7 +180,7 @@ else
 endif
 ifeq ($(OPERATING_SYSTEM), WINDOWS)
 	$(PYTHON_BIN)/python -m pip install --upgrade pip
-	$(PYTHON_BIN)/python -m pip install $(shell python ./get-pip-dependencies c2cgeoportal-commons c2cgeoportal-geoportal c2cgeoportal-admin Shapely Fiona rasterio GDAL flake8-mypy mypy)
+	$(PYTHON_BIN)/python -m pip install $(shell python ./get-pip-dependencies c2cgeoportal-commons c2cgeoportal-geoportal c2cgeoportal-admin linesman networkx pygraphviz Shapely Fiona rasterio GDAL flake8-mypy mypy)
 else
 	$(PYTHON_BIN)/python -m pip install `./get-pip-dependencies c2cgeoportal-commons c2cgeoportal-geoportal c2cgeoportal-admin GDAL flake8-mypy mypy`
 endif
@@ -198,15 +198,13 @@ geoportal/npm-packages: .config
 	$(DOCKER_RUN) cp /opt/npm-packages $@
 
 .build/admin-npm.timestamp: npm-packages
-	rm --force --recursive admin/node_modules
 	mkdir --parent admin
-	cat $< | xargs npm install --prefix ./admin
+	(cd admin; cat ../$< | xargs npm install)
 	touch $@
 
 .build/geoportal-npm.timestamp: geoportal/npm-packages
-	rm --force --recursive admin/node_modules
 	mkdir --parent admin
-	cat $< | xargs npm install --prefix ./geoportal
+	(cd geoportal; cat ../$< | xargs npm install)
 	touch $@
 
 .PHONY: serve-%

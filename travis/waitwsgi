@@ -34,9 +34,10 @@ import time
 import requests
 
 sleep_time = 1
+max_sleep = 30
 
-# wait for the DB to be UP
-while True:
+# wait for the WSGI to be UP
+while sleep_time < max_sleep:
     print("Waiting for the WSGI server to be reachable")
     try:
         requests.get(sys.argv[1], timeout=1)
@@ -46,3 +47,4 @@ while True:
         print("Waiting for the WSGI server to be reachable")
         time.sleep(sleep_time)
         sleep_time *= 2
+exit(1)

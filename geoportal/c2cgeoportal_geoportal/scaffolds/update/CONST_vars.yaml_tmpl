@@ -39,6 +39,8 @@ vars:
         MAPSERVER_URL: http://mapserver:8080/
         MEMCACHED_HOST: memcached
         MEMCACHED_PORT: 11211
+        REDIS_HOST: redis
+        REDIS_PORT: 6379
         TILEGENERATION_SQS_QUEUE: '<queue_name>'
     db:
       environment:
@@ -77,8 +79,16 @@ vars:
         REDIS_PORT: 6379
         C2C_REDIS_URL: redis://redis:6379
         C2C_BROADCAST_PREFIX: broadcast_geoportal_
+        PGOPTIONS: '-c statement_timeout=30000'
+    mapserver:
+      environment:
+        PGOPTIONS: '-c statement_timeout=30000'
     qgisserver:
-      environment: *geo-run-env
+      environment:
+        <<: *geo-run-env
+        C2C_REDIS_URL: redis://redis:6379
+        C2C_BROADCAST_PREFIX: broadcast_geoportal_
+        PGOPTIONS: '-c statement_timeout=30000'
     tilecloudchain:
       environment:
         GUNICORN_PARAMS:
@@ -96,6 +106,7 @@ vars:
     print:
       environment:
         CATALINA_OPTS: -Xmx1024m
+        PGOPTIONS: '-c statement_timeout=30000'
     front:
       port: 80
 
@@ -399,12 +410,14 @@ vars:
 
   # For print proxy
   print_url: '{PRINT_URL}'
+
   mapserver_url: '{MAPSERVER_URL}'
   mapcache_url: '{MAPCACHE_URL}'
   devserver_url: http://{DEVSERVER_HOST}{entry_point}
   memcached_host: '{MEMCACHED_HOST}'
   memcached_port: '{MEMCACHED_PORT}'
   tilegeneration_sqs_queue: '{TILEGENERATION_SQS_QUEUE}'
+  tilegeneration_redis: 'redis://{REDIS_HOST}:{REDIS_PORT}'
 
   pdfreport:
     print_url: '{print_url}'
@@ -422,12 +435,25 @@ vars:
   lingua_extractor: {}
 
   global_headers:
-    X-Frame-Options: SAMEORIGIN
-    X-Xss-Protection: 1; mode=block
-    X-Content-Type-Options: nosniff
-    Referrer-Policy: origin
-    Strict-Transport-Security: max-age=31536000; includeSubDomains
-    Content-Security-Policy: script-src 'self'; frame-src 'self'; form-action 'self'
+    - pattern: '.*'
+      headers:
+        X-Frame-Options: SAMEORIGIN
+        X-Xss-Protection: 1; mode=block
+        X-Content-Type-Options: nosniff
+        Referrer-Policy: origin
+        Strict-Transport-Security: max-age=31536000; includeSubDomains
+        Content-Security-Policy: "default-src 'self'; \
+            script-src 'self' https://cdn.polyfill.io/ https://maps.googleapis.com/; \
+            style-src 'self' 'unsafe-inline'; \
+            img-src * data:; \
+            connect-src *"
+    - pattern: '^/admin/.*'
+      headers:
+        Content-Security-Policy: "default-src 'self'; \
+            script-src 'self' 'unsafe-inline'; \
+            style-src 'self' 'unsafe-inline'; \
+            img-src * data:; \
+            worker-src 'self' blob:"
 
   # Control the HTTP headers
   headers:

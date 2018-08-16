@@ -483,7 +483,7 @@ class TestEntryView(TestCase):
             "The layer '__test_public_layer' (__test_pub",
             "The layer '__test_layer_in_group' (__test_l",
             "The layer 'test_wmsfeaturesgroup' (test_wms",
-            "GetCapabilities from URL http://mapserver/?"
+            "GetCapabilities from URL http://mapserver:8"
         })
 
     def test_themev2(self):
