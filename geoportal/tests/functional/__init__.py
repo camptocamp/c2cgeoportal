@@ -45,7 +45,7 @@ from c2c.template.config import config as configuration
 from c2cgeoportal_geoportal.lib import functionality, caching
 
 
-mapserv_url = "http://mapserver/"
+mapserv_url = "http://mapserver:8080/"
 config = None
 
 

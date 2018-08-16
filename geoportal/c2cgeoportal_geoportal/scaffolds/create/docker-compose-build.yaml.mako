@@ -16,6 +16,8 @@ services:
 
   mapserver:
     image: camptocamp/mapserver:7.2
+    user: www-data
+    entrypoint: []
     volumes_from:
       - config:rw
 ${service_defaults('mapserver', 80)}\
@@ -28,7 +30,7 @@ ${service_defaults('mapserver', 80)}\
     stdin_open: true
     tty: true
     entrypoint:
-      - wait-for-db
+      - wait-db-and-run
       - run
     links:
       - mapserver

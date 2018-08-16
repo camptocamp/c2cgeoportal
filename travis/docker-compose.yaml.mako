@@ -14,12 +14,13 @@ ${service_defaults('config')}\
     image: ${docker_base}-testdb:${docker_tag}
 ${service_defaults('db', 5432)}\
 
-  external-db:
+  externaldb:
     image: camptocamp/testgeomapfish-external-db:latest
-${service_defaults('external-db', 5432)}\
+    command: -c log_statement=all
+${service_defaults('externaldb', 5432)}\
 
   print:
-    image: camptocamp/mapfish_print:3.14
+    image: camptocamp/mapfish_print:3.15
     user: www-data
     volumes_from:
       - config:ro

@@ -28,35 +28,26 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-import sys
 import json
-import subprocess
+import urllib.error
+import urllib.request
+import sys
 
 initial_error_length = 0
 initial_access_length = 0
 
-curl_args = ["--connect-timeout", "1", "--max-time", "400", "--retry", "1"]
-
 url = sys.argv[1]
 
 try:
-    status_code = subprocess.check_output(
-        ["curl", "--write-out", "%{http_code}"] + curl_args + ["--silent", "--output", "/dev/null", url]
-    ).decode("utf-8")
-except subprocess.CalledProcessError as e:
-    print("Exception on curl call: {}".format(e))
+    # See also:
+    # travis/vars.yaml geoportal/GUNICORN_PARAMS
+    # Jenkinsfile timeout line 130
+    result = urllib.request.urlopen(url, timeout=240)
 
-    print("RESULT:")
-    sys.stdout.flush()
-    subprocess.call(["curl"] + curl_args + ["--verbose", url])
-    exit(2)
-
-if status_code == "200":
     if len(sys.argv) == 3 and sys.argv[2] == "enum":
-        result = subprocess.check_output(
-            ["curl"] + curl_args + [url]
-        ).decode("utf-8")
-        if json.loads(result) == {
+        result = urllib.request.urlopen(url, timeout=30)
+        data = result.read().decode('utf-8')
+        if result.status == 200 and json.loads(data) == {
             "items": [{
                 "label": "car",
                 "value": "car"
@@ -68,15 +59,13 @@ if status_code == "200":
             print("enum OK")
             exit()
         else:
-            print("Incorrect result:")
-            print(result)
+            print("Incorrect result ({}):".format(result.status))
+            print(data)
             exit(2)
     print("OK")
-    exit()
-else:
-    print("Bad status code {}".format(status_code))
+except urllib.error.HTTPError as e:
+    print("Bad status code {}".format(e.code))
 
     print("RESULT:")
-    sys.stdout.flush()
-    subprocess.call(["curl"] + curl_args + ["--verbose", url])
+    print(e.fp.read().decode('utf-8'))
     exit(2)

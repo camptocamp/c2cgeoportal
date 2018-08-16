@@ -18,9 +18,10 @@ services:
     image: ${docker_base}-testdb:${docker_tag}
 ${service_defaults('db', 5432)}\
 
-  external-db:
+  externaldb:
     image: ${docker_base}-external-db:latest
-${service_defaults('external-db', 5432)}\
+    command: -c log_statement=all
+${service_defaults('externaldb', 5432)}\
 
   mapserver:
     image: camptocamp/mapserver:7.2
@@ -38,11 +39,11 @@ ${service_defaults('mapserver', 80)}\
     stdin_open: true
     tty: true
     entrypoint:
-      - wait-for-db
+      - wait-db-and-run
       - run
     links:
       - db
-      - external-db
+      - externaldb
       - mapserver
 ${service_defaults('geoportal-build', 80)}\
       - HOME_DIR

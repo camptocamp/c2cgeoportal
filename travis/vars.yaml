@@ -4,7 +4,7 @@ extends: vars.yaml
 
 vars:
   docker_services:
-    external-db:
+    externaldb:
       environment:
         POSTGRES_USER: www-data
         POSTGRES_PASSWORD: www-data
@@ -13,14 +13,25 @@ vars:
     geoportal:
       port: 8080
       environment:
+        C2C_SECRET: c2c
+        C2C_DEBUG_VIEW_ENABLED: True
+        C2C_LOG_VIEW_ENABLED: True
+        C2C_SQL_PROFILER_ENABLED: True
         PGHOST: db
         PGHOST_SLAVE: db
         VISIBLE_WEB_HOST: localhost:8080
         VISIBLE_WEB_PROTOCOL: http
+        # See also:
+        # Jenkinsfile timeout line 130
+        # test-new-project timeout
+        GUNICORN_PARAMS:
+          --bind=:8080
+          --timeout=240
+          --workers=4
 
   dbsessions:
     travis_test:
-      url: postgresql://{dbuser}:{dbpassword}@external-db:{dbport}/test
+      url: postgresql://{dbuser}:{dbpassword}@externaldb:{dbport}/test
 
   admin_interface:
     available_metadata:
@@ -52,6 +63,7 @@ update_paths:
   - layers
   - checker.lang
   - checker.routes
+  - checker.phantomjs
   - check_collector
   - docker_services.geoportal.environment
   - admin_interface.available_metadata

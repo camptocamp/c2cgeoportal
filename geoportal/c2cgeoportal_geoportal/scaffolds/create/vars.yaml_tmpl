@@ -70,6 +70,7 @@ vars:
         gmfSearchGroups: []
     mobile_alt:
       <<: *interface
+      redirect_interface: desktop_alt
       constants:
         <<: *constants
         gmfTreeManagerModeFlush: false
@@ -87,6 +88,7 @@ vars:
         gmfPrintUrl: printproxy
     desktop_alt:
       <<: *interface
+      redirect_interface: mobile_alt
       constants:
         <<: *constants
         gmfPrintOptions: {scaleInput: true}
@@ -291,7 +293,10 @@ update_paths:
   - docker_services.config.environment
   - docker_services.db.environment
   - docker_services.geoportal.environment
+  - docker_services.qgisserver.environment
   - docker_services.tilecloudchain.environment
+  - docker_services.print.environment
+  - docker_services.front
   - fulltextsearch
   - functionalities.available_in_templates
   - headers.index

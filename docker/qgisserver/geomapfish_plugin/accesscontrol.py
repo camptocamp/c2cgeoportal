@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright: (C) 2016 by Camptocamp SA
+Copyright: (C) 2016-2018 by Camptocamp SA
 Contact: info@camptocamp.com
 
 .. note:: This program is free software; you can redistribute it and/or modify
@@ -9,23 +9,23 @@ Contact: info@camptocamp.com
     option) any later version.
 """
 
-from qgis.core import QgsMessageLog
 
+import geoalchemy2
 import json
 import os
-import traceback
 from shapely import ops
-import geoalchemy2
 import sqlalchemy
-
-from qgis.server import QgsAccessControlFilter
-from qgis.core import QgsDataSourceUri
-
-from sqlalchemy.orm import configure_mappers
-from sqlalchemy.orm import scoped_session
-from sqlalchemy.orm import sessionmaker
-
+from sqlalchemy.orm import configure_mappers, scoped_session, sessionmaker
+import sys
+from threading import Lock
+import traceback
+import zope.event.classhandler
 from c2c.template.config import config
+
+from qgis.core import QgsMessageLog, QgsDataSourceUri, QgsProject
+from qgis.server import QgsAccessControlFilter
+
+import c2cwsgiutils.broadcast
 
 
 class GMFException(Exception):
@@ -36,7 +36,7 @@ class GMFException(Exception):
 class GeoMapFishAccessControl(QgsAccessControlFilter):
     """ Implements GeoMapFish access restriction """
 
-    EXPRESSION_TYPE = ["GPKG", "PostgreSQL database with PostGIS extension"]
+    SUBSETSTRING_TYPE = ["GPKG", "PostgreSQL database with PostGIS extension"]
 
     def __init__(self, server_iface):
         super().__init__(server_iface)
@@ -44,17 +44,30 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
         self.server_iface = server_iface
         self.area_cache = {}
         self.layers = None
+        self.lock = Lock()
+        self.project = None
 
         try:
             if "GEOMAPFISH_OGCSERVER" not in os.environ:
                 raise GMFException("The environment variable 'GEOMAPFISH_OGCSERVER' is not defined.")
 
-            print("Use OGC server named '{}'".format(os.environ["GEOMAPFISH_OGCSERVER"]))
+            QgsMessageLog.logMessage("Use OGC server named '{}'".format(os.environ["GEOMAPFISH_OGCSERVER"]))
 
             config.init(os.environ.get('GEOMAPFISH_CONFIG', '/etc/qgisserver/geomapfish.yaml'))
             self.srid = config.get('srid')
 
-            from c2cgeoportal_commons.models.main import LayerWMS, OGCServer
+            c2cwsgiutils.broadcast.init(None)
+
+            from c2cgeoportal_commons.models.main import InvalidateCacheEvent
+
+            @zope.event.classhandler.handler(InvalidateCacheEvent)
+            def handle(event: InvalidateCacheEvent):
+                del event
+                QgsMessageLog.logMessage("=== invalidate ===")
+                with self.lock:
+                    self.layers = None
+
+            from c2cgeoportal_commons.models.main import OGCServer
             configure_mappers()
 
             engine = sqlalchemy.create_engine(config.get('sqlalchemy_slave.url'))
@@ -66,33 +79,62 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
                 .filter(OGCServer.name == os.environ["GEOMAPFISH_OGCSERVER"]) \
                 .one()
 
-            layers = {}
-            # TODO manage groups ...
-            for layer in self.DBSession.query(LayerWMS).filter(LayerWMS.ogc_server_id == self.ogcserver.id).all():
-                for name in layer.layer.split(','):
-                    if name not in layers:
-                        layers[name] = []
-                    layers[name].append(layer)
-            QgsMessageLog.logMessage('[accesscontrol] layers: {}'.format(
-                json.dumps(dict([(k, [l.name for l in v]) for k, v in layers.items()]), sort_keys=True, indent=4)
-            ))
-            self.layers = layers
-
         except Exception as e:
-            QgsMessageLog.logMessage(traceback.format_tb(e))
-            QgsMessageLog.logMessage(str(e))
+            QgsMessageLog.logMessage(''.join(traceback.format_exception(*sys.exc_info())))
             raise
 
         server_iface.registerAccessControl(self, int(os.environ.get("GEOMAPFISH_POSITION", 100)))
 
+    def get_layers(self):
+        with self.lock:
+            from c2cgeoportal_commons.models.main import LayerWMS
+
+            if self.layers is not None and self.project == QgsProject.instance():
+                return self.layers
+
+            self.project = QgsProject.instance()
+
+            groups = {}
+
+            def browse(names, layer):
+                groups[layer.name()] = [layer.name()]
+
+                for name in names:
+                    groups[name].append(layer.name())
+
+                new_names = list(names)
+                new_names.append(layer.name())
+                for l in layer.children():
+                    browse(new_names, l)
+
+            browse([], self.project.layerTreeRoot())
+
+            layers = {}
+            for layer in self.DBSession.query(LayerWMS) \
+                    .filter(LayerWMS.ogc_server_id == self.ogcserver.id).all():
+                for group in layer.layer.split(','):
+                    for name in groups.get(group, []):
+                        layers.setdefault(name, []).append(layer)
+            QgsMessageLog.logMessage('[accesscontrol] layers:\n{}'.format(
+                json.dumps(
+                    dict([(k, [l.name for l in v]) for k, v in layers.items()]),
+                    sort_keys=True, indent=4
+                )
+            ))
+            self.layers = layers
+            return layers
+
     def assert_plugin_initialised(self):
-        if self.layers is None:
-            raise Exception("The plugin is not initialised")
+        if self.ogcserver is None:
+            raise Exception("The plugin is not correctly initialised")
 
     def get_role(self):
         from c2cgeoportal_commons.models.main import Role
+
         parameters = self.serverInterface().requestHandler().parameterMap()
-        return self.DBSession.query(Role).get(parameters['ROLE_ID']) if 'ROLE_ID' in parameters else None
+        role = self.DBSession.query(Role).get(parameters['ROLE_ID']) if 'ROLE_ID' in parameters else None
+        QgsMessageLog.logMessage("Role: {}".format(role.name if role else '-'))
+        return role
 
     @staticmethod
     def get_restriction_areas(gmf_layers, rw=False, role=None):
@@ -125,7 +167,10 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
         if key in self.area_cache:
             return self.area_cache[key]
 
-        gmf_layers = self.layers[layer.name()]
+        if layer.name() not in self.get_layers():
+            raise Exception("Access to an unknown layer")
+
+        gmf_layers = self.get_layers()[layer.name()]
         restriction_areas = self.get_restriction_areas(gmf_layers, role=role)
 
         if len(restriction_areas) == 0:
@@ -138,17 +183,22 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
 
     def layerFilterSubsetString(self, layer):  # NOQA
         """ Return an additional subset string (typically SQL) filter """
-        QgsMessageLog.logMessage("layerFilterSubsetString {}".format(layer.dataProvider().storageType()))
+        QgsMessageLog.logMessage("layerFilterSubsetString {} {}".format(
+            layer.name(), layer.dataProvider().storageType())
+        )
 
         self.assert_plugin_initialised()
 
         try:
-            if layer.dataProvider().storageType() not in self.EXPRESSION_TYPE:
+            if layer.dataProvider().storageType() not in self.SUBSETSTRING_TYPE:
+                QgsMessageLog.logMessage("layerFilterSubsetString not in type")
                 return None
 
             area = self.get_area(layer)
             if area is None:
+                QgsMessageLog.logMessage("layerFilterSubsetString no area")
                 return None
+
             area = "ST_GeomFromText('{}', {})".format(
                 area, self.srid
             )
@@ -156,43 +206,41 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
                 area = "ST_transform({}, {})".format(
                     area, layer.crs().postgisSrid()
                 )
-            QgsMessageLog.logMessage("ST_intersects({}, {})".format(
-                QgsDataSourceUri(layer.dataProvider().dataSourceUri()).geometryColumn(), area
-            ))
-            return "ST_intersects({}, {})".format(
+            result = "ST_intersects({}, {})".format(
                 QgsDataSourceUri(layer.dataProvider().dataSourceUri()).geometryColumn(), area
             )
+            QgsMessageLog.logMessage("layerFilterSubsetString filter: {}".format(result))
+            return result
         except Exception as e:
-            QgsMessageLog.logMessage(traceback.format_tb(e))
-            QgsMessageLog.logMessage(str(e))
+            QgsMessageLog.logMessage(''.join(traceback.format_exception(*sys.exc_info())))
             raise
 
     def layerFilterExpression(self, layer):  # NOQA
         """ Return an additional expression filter """
-        QgsMessageLog.logMessage("layerFilterExpression {}".format(layer.dataProvider().storageType()))
+        QgsMessageLog.logMessage("layerFilterExpression {} {}".format(
+            layer.name(), layer.dataProvider().storageType()
+        ))
 
         self.assert_plugin_initialised()
 
         try:
-            if layer.dataProvider().storageType() in self.EXPRESSION_TYPE:
+            if layer.dataProvider().storageType() in self.SUBSETSTRING_TYPE:
+                QgsMessageLog.logMessage("layerFilterExpression not in type")
                 return None
 
             area = self.get_area(layer)
 
             if area is None:
+                QgsMessageLog.logMessage("layerFilterExpression no area")
                 return None
 
-            QgsMessageLog.logMessage("intersects($geometry, geom_from_wkt('{}'))".format(area))
-            # return "geometry = '{}'".format(ops.unary_union(restriction_areas).wkt)
-            # return "fid = 2"
-            # TODO cache the union
-            # TODO verify the geometry
-            return "intersects($geometry, transform(geom_from_wkt('{}'), 'EPSG:{}', 'EPSG:{}')".format(
-                area, self.srid, layer.crs().projectionAcronym()
+            result = "intersects($geometry, transform(geom_from_wkt('{}'), 'EPSG:{}', '{}'))".format(
+                area, self.srid, layer.crs().authid()
             )
+            QgsMessageLog.logMessage("layerFilterExpression filter: {}".format(result))
+            return result
         except Exception as e:
-            QgsMessageLog.logMessage(traceback.format_tb(e))
-            QgsMessageLog.logMessage(str(e))
+            QgsMessageLog.logMessage(''.join(traceback.format_exception(*sys.exc_info())))
             raise
 
     def layerPermissions(self, layer):  # NOQA
@@ -205,10 +253,10 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             rights = QgsAccessControlFilter.LayerPermissions()
             rights.canRead = rights.canInsert = rights.canUpdate = rights.canDelete = False
 
-            if layer.name() not in self.layers:
+            if layer.name() not in self.get_layers():
                 return rights
 
-            gmf_layers = self.layers[layer.name()]
+            gmf_layers = self.get_layers()[layer.name()]
             for l in gmf_layers:
                 if l.public is True:
                     rights.canRead = True
@@ -224,8 +272,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
 
             return rights
         except Exception as e:
-            QgsMessageLog.logMessage(traceback.format_tb(e))
-            QgsMessageLog.logMessage(str(e))
+            QgsMessageLog.logMessage(''.join(traceback.format_exception(*sys.exc_info())))
             raise
 
     @staticmethod
@@ -248,12 +295,12 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
 
             return area is None or area.intersect(feature.geom)
         except Exception as e:
-            QgsMessageLog.logMessage(traceback.format_tb(e))
-            QgsMessageLog.logMessage(str(e))
+            QgsMessageLog.logMessage(''.join(traceback.format_exception(*sys.exc_info())))
             raise
 
     def cacheKey(self):  # NOQA
+        role = self.get_role()
         return "{}-{}".format(
             self.serverInterface().requestHandler().parameter("Host"),
-            self.get_role().name,
+            role.id if role is not None else '',
         )

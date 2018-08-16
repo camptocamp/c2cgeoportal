@@ -81,6 +81,7 @@ templates:
                 reject: true
               - !acceptAll {}
       - !prepareLegend
+        maxWidth: 185
         template: legend.jrxml
       - !createMap {}
       - !createNorthArrow {}
