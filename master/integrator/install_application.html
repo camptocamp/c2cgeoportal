@@ -229,7 +229,14 @@ already be the case; otherwise look at <code class="docutils literal notranslate
 <span id="id1"></span><h3>Install the application<a class="headerlink" href="#integrator-install-application-install-application" title="Permalink to this headline">¶</a></h3>
 <p>You can build and install the application with the command:</p>
 <pre class="highlight"><span class="prompt1">./docker-run make --makefile<span class="o">=</span>&lt;user&gt;.mk build</span>
-</pre><p>Create the application tables, and directly set the version (details later):</p>
+</pre><p>This previous command will do many things like:</p>
+<blockquote>
+<div><ul class="simple">
+<li>adapt the application configuration to your environment,</li>
+<li>build the JavaScript and CSS resources into compressed files.</li>
+</ul>
+</div></blockquote>
+<p>Then create the application tables:</p>
 <pre class="highlight"><span class="prompt1">./docker-run make --makefile<span class="o">=</span>&lt;user&gt;.mk upgrade-db</span>
 </pre><p>For non Docker installation:</p>
 <pre class="highlight"><span class="prompt1"><span class="nv">FINALISE</span><span class="o">=</span>TRUE make --makefile<span class="o">=</span>&lt;user&gt;.mk build</span>
@@ -237,12 +244,11 @@ already be the case; otherwise look at <code class="docutils literal notranslate
 <blockquote>
 <div><ul class="simple">
 <li>download and install the project dependencies,</li>
-<li>adapt the application configuration to your environment,</li>
-<li>build the javascript and css resources into compressed files,</li>
+<li>deploy the MapFish Print service if it is configured for building.</li>
 </ul>
 </div></blockquote>
 <p>Your application should now be available at:
-<code class="docutils literal notranslate"><span class="pre">http://&lt;hostname&gt;/</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">https://&lt;hostname&gt;/</span></code>.</p>
 <p>Where the <code class="docutils literal notranslate"><span class="pre">&lt;hostname&gt;</span></code> is directly linked to the virtual host.</p>
 </div>
 </div>
