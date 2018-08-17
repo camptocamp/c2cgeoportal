@@ -1,7 +1,7 @@
 alabaster==0.7.11  # Doc theme
 alembic==1.0.0  # geoportal
 Babel==2.6.0  # i18n
-boto3==1.7.78  # Tile generation
+boto3==1.7.79  # Tile generation
 bottle==0.12.13  # geoportal
 c2c.cssmin==0.7.dev6  # CGXP build
 c2c.template==2.1.0  # geoportal
@@ -42,7 +42,7 @@ pep8-naming==0.7.0  # Lint
 Pillow==5.2.0  # Tile generation
 polib==1.1.0  # i18n
 psycopg2-binary==2.7.5  # geoportal
-pycryptodome==3.6.5  # geoportal
+pycryptodome==3.6.6  # geoportal
 pyflakes==1.6.0  # lint, flake8 requires < 1.7.0, rq.filter: <1.7.0
 Pygments==2.2.0  # doc
 pylint==2.1.1  # lint
