@@ -108,7 +108,7 @@ run this target and open the ``/etc/project/project.qgs`` file:
 
 .. prompt:: bash
 
-   ./docker-run make edit-qgis-project
+   make edit-qgis-project
 
 If you want to add PostGIS layers on the main DB, create/edit your ``$HOME/.pg_service.conf`` file
 and add a section for the DB you want to access:

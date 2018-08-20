@@ -109,7 +109,7 @@ SetEnv QGIS_PROJECT_FILE ${directory}/qgisserver.qgs
 <span class="prompt1">ssh -L <span class="si">${</span><span class="nv">IP</span><span class="si">}</span>:5432:localhost:5432 &lt;remote server&gt;</span>
 </pre><p>In a Docker mode, QGIS is configured in the <code class="docutils literal notranslate"><span class="pre">qgisserver/</span></code> directory. To edit the configuration,
 run this target and open the <code class="docutils literal notranslate"><span class="pre">/etc/project/project.qgs</span></code> file:</p>
-<pre class="highlight"><span class="prompt1">./docker-run make edit-qgis-project</span>
+<pre class="highlight"><span class="prompt1">make edit-qgis-project</span>
 </pre><p>If you want to add PostGIS layers on the main DB, create/edit your <code class="docutils literal notranslate"><span class="pre">$HOME/.pg_service.conf</span></code> file
 and add a section for the DB you want to access:</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">geomapfish</span><span class="p">]</span>
