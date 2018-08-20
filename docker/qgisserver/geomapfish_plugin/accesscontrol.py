@@ -224,12 +224,12 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
         self.assert_plugin_initialised()
 
         try:
-            if layer.dataProvider().storageType() in self.SUBSETSTRING_TYPE:
-                QgsMessageLog.logMessage("layerFilterExpression not in type")
-                return None
+            # Actually layerFilterSubsetString don't works on groups
+            # if layer.dataProvider().storageType() in self.SUBSETSTRING_TYPE:
+            #     QgsMessageLog.logMessage("layerFilterExpression not in type")
+            #     return None
 
             area = self.get_area(layer)
-
             if area is None:
                 QgsMessageLog.logMessage("layerFilterExpression no area")
                 return None
