@@ -457,6 +457,7 @@ vars:
             connect-src *"
     - pattern: '^/admin/.*'
       headers:
+        Referrer-Policy: same-origin
         Content-Security-Policy: "default-src 'self'; \
             script-src 'self' 'unsafe-inline'; \
             style-src 'self' 'unsafe-inline'; \
