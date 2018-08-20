@@ -16,6 +16,7 @@ cp travis/docker-compose.yaml.mako ${WORKSPACE}/testgeomapfish/docker-compose.ya
 cp travis/docker-compose-build.yaml.mako ${WORKSPACE}/testgeomapfish/docker-compose-build.yaml.mako
 cp --recursive travis ${WORKSPACE}/testgeomapfish/travis
 cd ${WORKSPACE}/testgeomapfish
+echo no_external_network=true >> .config
 
 # Init Git repository
 git init

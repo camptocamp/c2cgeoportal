@@ -13,14 +13,20 @@ volumes:
 services:
   config:
     image: ${docker_base}-config:${docker_tag}
+    networks:
+      - internal
 
   db:
     image: ${docker_base}-testdb:${docker_tag}
+    networks:
+      - internal
 ${service_defaults('db', 5432)}\
 
   externaldb:
     image: ${docker_base}-external-db:latest
     command: -c log_statement=all
+    networks:
+      - internal
 ${service_defaults('externaldb', 5432)}\
 
   mapserver:
@@ -29,6 +35,8 @@ ${service_defaults('externaldb', 5432)}\
       - config:rw
     links:
       - db
+    networks:
+      - internal
 ${service_defaults('mapserver', 80)}\
 
   build:
@@ -45,8 +53,14 @@ ${service_defaults('mapserver', 80)}\
       - db
       - externaldb
       - mapserver
+    networks:
+      - internal
 ${service_defaults('geoportal-build', 80)}\
       - HOME_DIR
       - USER_NAME
       - USER_ID
       - GROUP_ID
+
+networks:
+  internal:
+    internal: true

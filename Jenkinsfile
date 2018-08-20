@@ -103,13 +103,13 @@ dockerBuild {
                     ]]) {
                         try {
                             sh 'docker login -u "$USERNAME" -p "$PASSWORD"'
-                            sh ('cat ${HOME}/workspace/testgeomapfish/docker-compose.yaml')
+                            sh 'cat ${HOME}/workspace/testgeomapfish/docker-compose.yaml'
                             sh '(cd ${HOME}/workspace/testgeomapfish/; docker-compose up -d)'
                             timeout(time: 2, unit: 'MINUTES') {
                                 sh '(cd ${HOME}/workspace/testgeomapfish/; docker-compose exec -T geoportal wait-db)'
                                 sh '(cd ${HOME}/workspace/testgeomapfish/; docker-compose exec -T geoportal bash -c "PGHOST=externaldb PGDATABASE=test wait-db;")'
                                 sh '(cd ${HOME}/workspace/testgeomapfish/; docker-compose exec -T geoportal create-demo-theme)'
-                                sh './docker-run travis/waitwsgi http://`netstat --route --numeric|grep ^0.0.0.0|awk \'{print($2)}\'`:8080/'
+                                sh './docker-run --network=testgeomapfish_internal travis/waitwsgi http://front/'
                             }
                             for (path in [
                                 'c2c/health_check',
@@ -129,10 +129,10 @@ dockerBuild {
                                     // travis/vars.yaml geoportal/GUNICORN_PARAMS
                                     // test-new-project timeout
                                     timeout(3) {
-                                        sh 'travis/test-new-project http://`netstat --route --numeric|grep ^0.0.0.0|awk \'{print($2)}\'`:8080/' + path
+                                        sh './docker-run --network=testgeomapfish_internal travis/test-new-project http://front/${path}'
                                     }
                                 } catch (Exception error) {
-                                    sh 'curl http://`netstat --route --numeric|grep ^0.0.0.0|awk \'{print($2)}\'`:8080/c2c/debug/stacks?secret=c2c'
+                                    sh './docker-run --network=testgeomapfish_internal curl http://front/c2c/debug/stacks?secret=c2c'
                                     ['db', 'externaldb', 'print', 'mapserver', 'geoportal'].each { service ->
                                         def end_line = sh(returnStdout: true, script: "(cd ${HOME}/workspace/testgeomapfish/; docker-compose logs ${service}) | wc -l") as Integer
                                         sh "(cd ${HOME}/workspace/testgeomapfish/; docker-compose logs --timestamps --tail=${Math.max(1, end_line - start_lines.service)} ${service})"

@@ -269,6 +269,8 @@ vars:
             longitudeFirst: true
             layers: []
           legend: {}
+    phantomjs:
+      disable: [desktop, mobile]
 
   check_collector:
     hosts: []
