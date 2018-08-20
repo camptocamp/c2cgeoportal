@@ -109,6 +109,7 @@ script:
       ./docker-run alembic --config=geoportal/alembic.ini --name=main downgrade base)"
   ## END FOR NON DOCKER TESTS
   - ./docker-run make doc
+  - travis/create-new-project.sh /tmp/travis geomapfish
 
 after_success:
   - git config --global user.email travis@camptocamp.com
