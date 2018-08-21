@@ -688,7 +688,8 @@ class C2cUpgradeTool:
         else:
             message = [
                 "The upgrade is nearly done, now you should:",
-                "- Run `docker-compose down; docker-compose up -d`.",
+                "- Run `docker-compose pull --ignore-pull-failures; "
+                "docker-compose down; docker-compose up -d`.",
                 "- Test your application on 'http://localhost:8480/desktop'."
             ]
 
