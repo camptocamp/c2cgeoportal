@@ -50,32 +50,6 @@ class PrintProxy(Proxy):  # pragma: no cover
         Proxy.__init__(self, request)
         self.config = self.request.registry.settings
 
-    def _get_capabilities_proxy(self, filter_, *args, **kwargs):
-        response = self._proxy(*args, **kwargs)
-
-        if self.request.method == "GET":
-            if response.ok:
-                try:
-                    capabilities = response.json()
-                except json.decoder.JSONDecodeError as e:
-                    # log and raise
-                    log.error("Unable to parse capabilities.")
-                    log.exception(e)
-                    log.error(response.text)
-                    return HTTPBadGateway(response.text)
-
-                pretty = self.request.params.get("pretty", "false") == "true"
-                content = json.dumps(
-                    filter_(capabilities), separators=None if pretty else (",", ":"),
-                    indent=4 if pretty else None
-                )
-        else:
-            content = ""
-
-        return self._build_response(
-            response, content, PRIVATE_CACHE, "print",
-        )
-
     @view_config(route_name="printproxy_capabilities")
     def capabilities(self):
         """ Get print capabilities. """
