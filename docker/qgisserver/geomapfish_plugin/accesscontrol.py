@@ -174,7 +174,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
         restriction_areas = self.get_restriction_areas(gmf_layers, role=role)
 
         if len(restriction_areas) == 0:
-            self.area_cache[key] = []
+            self.area_cache[key] = None
             return None
 
         area = ops.unary_union(restriction_areas).wkt
