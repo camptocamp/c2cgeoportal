@@ -113,9 +113,11 @@ If you are running your server in https and wish to disable certificate checks i
 connections, you can achieve this by adding the following configuration element to your <code class="docutils literal notranslate"><span class="pre">vars</span></code> file:</p>
 <div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
     <span class="n">http_options</span><span class="p">:</span>
-        <span class="n">disable_ssl_certificate_validation</span><span class="p">:</span> <span class="kc">True</span>
+        <span class="n">verify</span><span class="p">:</span> <span class="kc">False</span>
 </pre></div>
 </div>
+<p>See other options in parameters of
+<a class="reference external" href="http://docs.python-requests.org/en/latest/api.html#requests.Request">requests.Request</a></p>
 </div>
 </div>
 
@@ -179,7 +181,7 @@ connections, you can achieve this by adding the following configuration element 
       &copy;2011-2018, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.7</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
       |
