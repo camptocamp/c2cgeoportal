@@ -30,18 +30,14 @@
 
 import datetime
 import dateutil
-import httplib2
 import json
-import re
-import urllib.request
-import urllib.parse
-import urllib.error
-
-from string import Formatter
-from pyramid.interfaces import IRoutePregenerator, IStaticURLInfo
-from zope.interface import implementer
 from pyramid.compat import WIN
 from pyramid.config.views import StaticURLInfo
+from pyramid.interfaces import IRoutePregenerator, IStaticURLInfo
+import re
+from string import Formatter
+import urllib.parse
+from zope.interface import implementer
 
 
 def get_types_map(types_array):
@@ -54,10 +50,6 @@ def get_types_map(types_array):
         else:
             types_map[type_["name"]] = type_
     return types_map
-
-
-def get_http(request):
-    return httplib2.Http(**request.registry.settings.get("http_options", {}))
 
 
 def get_url(url, request, default=None, errors=None):
@@ -302,37 +294,6 @@ def get_ogc_server_wfs_url_ids(request):
                 servers[url] = []
             servers.get(url).append(ogc_server.id)
     return servers
-
-
-def _get_layers_query(role_id, what):
-    from c2cgeoportal_commons.models import DBSession
-    from c2cgeoportal_commons.models.main import Layer, RestrictionArea, Role
-
-    q = DBSession.query(what)
-    q = q.join(Layer.restrictionareas)
-    q = q.join(RestrictionArea.roles)
-    q = q.filter(Role.id == role_id)
-
-    return q
-
-
-def get_protected_layers_query(role_id, ogc_server_ids, what=None, version=1):
-    from c2cgeoportal_commons.models.main import Layer, LayerWMS, OGCServer
-    q = _get_layers_query(role_id, what)
-    q = q.filter(Layer.public.is_(False))
-    if version == 2 and ogc_server_ids is not None:
-        q = q.join(LayerWMS.ogc_server)
-        q = q.filter(OGCServer.id.in_(ogc_server_ids))
-    return q
-
-
-def get_writable_layers_query(role_id, ogc_server_ids):
-    from c2cgeoportal_commons.models.main import RestrictionArea, LayerWMS, OGCServer
-    q = _get_layers_query(role_id, LayerWMS)
-    return q \
-        .filter(RestrictionArea.readwrite.is_(True)) \
-        .join(LayerWMS.ogc_server) \
-        .filter(OGCServer.id.in_(ogc_server_ids))
 
 
 @implementer(IRoutePregenerator)

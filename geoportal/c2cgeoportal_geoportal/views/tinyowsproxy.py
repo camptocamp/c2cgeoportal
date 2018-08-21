@@ -34,9 +34,10 @@ from pyramid.view import view_config
 from defusedxml import ElementTree
 from pyramid.httpexceptions import HTTPForbidden, HTTPBadRequest, HTTPUnauthorized
 
+from c2cgeoportal_geoportal.lib.layers import get_writable_layers
 from c2cgeoportal_geoportal.lib.caching import get_region, NO_CACHE, PRIVATE_CACHE
 from c2cgeoportal_geoportal.lib.filter_capabilities import filter_wfst_capabilities, \
-    normalize_tag, normalize_typename, get_writable_layers
+    normalize_tag, normalize_typename
 from c2cgeoportal_geoportal.views.ogcproxy import OGCProxy
 
 cache_region = get_region()
@@ -137,14 +138,12 @@ class TinyOWSProxy(OGCProxy):
         return headers
 
     def _proxy_callback(self, operation, role_id, cache_control, *args, **kwargs):
-        resp, content = self._proxy(*args, **kwargs)
-        content = content.decode("utf-8")
+        response = self._proxy(*args, **kwargs)
+        content = response.text
 
         if operation == "getcapabilities":
             content = filter_wfst_capabilities(
-                content, role_id,
-                super(TinyOWSProxy, self)._get_wfs_url(),
-                self.settings.get("proxies"), self.request
+                content, role_id, super(TinyOWSProxy, self)._get_wfs_url(), self.request
             )
 
         content = self._filter_urls(
@@ -154,7 +153,7 @@ class TinyOWSProxy(OGCProxy):
         )
 
         return self._build_response(
-            resp, content.encode("utf-8"), cache_control, "tinyows"
+            response, content, cache_control, "tinyows"
         )
 
     @staticmethod

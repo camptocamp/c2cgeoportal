@@ -30,8 +30,7 @@
 import logging
 from json import dumps, loads
 
-from c2cgeoportal_geoportal.lib.filter_capabilities import get_protected_layers, \
-    get_private_layers
+from c2cgeoportal_geoportal.lib.layers import get_protected_layers, get_private_layers
 
 from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPForbidden, HTTPBadRequest
@@ -56,7 +55,7 @@ class PdfReport(OGCProxy):  # pragma: no cover
 
         headers = dict(self.request.headers)
         headers["Content-Type"] = "application/json"
-        resp, content = self._proxy(
+        response = self._proxy(
             "{0!s}/buildreport.{1!s}".format(
                 self.config["print_url"],
                 spec["outputFormat"]
@@ -67,7 +66,7 @@ class PdfReport(OGCProxy):  # pragma: no cover
         )
 
         return self._build_response(
-            resp, content, NO_CACHE, "pdfreport",
+            response, response.text, NO_CACHE, "pdfreport",
         )
 
     @staticmethod

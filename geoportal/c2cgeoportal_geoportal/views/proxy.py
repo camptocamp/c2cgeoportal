@@ -29,19 +29,16 @@
 
 
 import sys
-import urllib.request
 import urllib.parse
-import urllib.error
 import logging
-
-from urllib.parse import urlparse, parse_qs
+import requests
 
 from pyramid.response import Response
 from pyramid.httpexceptions import HTTPBadGateway, exception_response
 
-from c2cgeoportal_geoportal.lib import get_http
-from c2cgeoportal_geoportal.lib.caching import get_region, \
-    set_common_headers, NO_CACHE, PUBLIC_CACHE, PRIVATE_CACHE
+from c2cgeoportal_geoportal.lib.caching import get_region, set_common_headers, \
+    NO_CACHE, PUBLIC_CACHE, PRIVATE_CACHE
+
 
 log = logging.getLogger(__name__)
 cache_region = get_region()
@@ -52,12 +49,13 @@ class Proxy(object):
     def __init__(self, request):
         self.request = request
         self.host_forward_host = request.registry.settings["host_forward_host"]
+        self.http_options = self.request.registry.settings.get("http_options", {})
 
     def _proxy(self, url, params=None, method=None, cache=False, body=None, headers=None):
         # get query string
         params = dict(self.request.params) if params is None else params
-        parsed_url = urlparse(url)
-        all_params = parse_qs(parsed_url.query)
+        parsed_url = urllib.parse.urlparse(url)
+        all_params = urllib.parse.parse_qs(parsed_url.query)
         for p in all_params:  # pragma: no cover
             all_params[p] = ",".join(all_params[p])
         all_params.update(params)
@@ -79,12 +77,10 @@ class Proxy(object):
         if method is None:
             method = self.request.method
 
-        # forward request to target (without Host Header)
-        http = get_http(self.request)
-
         if headers is None:  # pragma: no cover
             headers = dict(self.request.headers)
 
+        # Forward request to target (without Host Header)
         if parsed_url.hostname not in self.host_forward_host and "Host" in headers:  # pragma: no cover
             headers.pop("Host")
 
@@ -100,12 +96,12 @@ class Proxy(object):
 
         try:
             if method in ("POST", "PUT"):
-                resp, content = http.request(
-                    url, method=method, body=body, headers=headers
+                response = requests.request(
+                    method, url, data=body, headers=headers, **self.http_options
                 )
             else:
-                resp, content = http.request(
-                    url, method=method, headers=headers
+                response = requests.request(
+                    method, url, headers=headers, **self.http_options
                 )
         except Exception:  # pragma: no cover
             errors = [
@@ -129,7 +125,7 @@ class Proxy(object):
 
             raise HTTPBadGateway("Error on backend, See logs for detail")
 
-        if resp.status >= 300:  # pragma: no cover
+        if not response.ok:  # pragma: no cover
             errors = [
                 "Error '%s' in response of URL:",
                 "%s",
@@ -139,7 +135,7 @@ class Proxy(object):
                 "%s",
             ]
             args = [
-                resp.reason, url, resp.status, method,
+                response.reason, url, response.status_code, method,
                 "\n".join(["{}: {}".format(*h) for h in list(headers.items())]),
             ]
             if method in ("POST", "PUT"):
@@ -152,12 +148,12 @@ class Proxy(object):
                 "--- Return content ---",
                 "%s",
             ]
-            args.append(content.decode("utf-8"))
+            args.append(response.text)
             log.error("\n".join(errors), *args)
 
-            raise exception_response(resp.status)
+            raise exception_response(response.status_code)
 
-        return resp, content
+        return response
 
     @cache_region.cache_on_arguments()
     def _proxy_cache(self, method, *args, **kwargs):  # pragma: no cover
@@ -173,52 +169,58 @@ class Proxy(object):
             headers_update = {}
         cache = kwargs.get("cache", False)
         if cache is True:
-            resp, content = self._proxy_cache(
+            response = self._proxy_cache(
                 url,
                 self.request.method,
                 **kwargs
             )
         else:
-            resp, content = self._proxy(url, **kwargs)
+            response = self._proxy(url, **kwargs)
 
         cache_control = (PUBLIC_CACHE if public else PRIVATE_CACHE) if cache else NO_CACHE
         return self._build_response(
-            resp, content, cache_control, service_name,
+            response, response.text, cache_control, service_name,
             headers_update=headers_update
         )
 
     def _build_response(
-        self, resp, content, cache_control, service_name,
+        self, response, content, cache_control, service_name,
         headers=None, headers_update=None, content_type=None
     ):
+        if isinstance(content, str):
+            content = content.encode("utf-8")
         if headers_update is None:
             headers_update = {}
-        headers = dict(resp) if headers is None else headers
+        headers = response.headers if headers is None else headers
 
         # Hop-by-hop Headers are not supported by WSGI
         # See:
         # https://www.python.org/dev/peps/pep-3333/#other-http-features
         # chapter 13.5.1 at http://www.faqs.org/rfcs/rfc2616.html
         for header in [
-                "connection",
-                "keep-alive",
-                "proxy-authenticate",
-                "proxy-authorization",
+                "Connection",
+                "Keep-Alive",
+                "Proxy-Authenticate",
+                "Proxy-Authorization",
                 "te",
-                "trailers",
-                "transfer-encoding",
-                "upgrade"
+                "Trailers",
+                "Transfer-Encoding",
+                "Upgrade",
         ]:  # pragma: no cover
             if header in headers:
                 del headers[header]
         # Other problematic headers
-        for header in ["content-length", "content-location"]:  # pragma: no cover
+        for header in [
+            "Content-Length",
+            "Content-Location",
+            "Content-Encoding",
+        ]:  # pragma: no cover
             if header in headers:
                 del headers[header]
 
         headers.update(headers_update)
 
-        response = Response(content, status=resp.status, headers=headers)
+        response = Response(content, status=response.status_code, headers=headers)
 
         return set_common_headers(
             self.request, service_name, cache_control,

@@ -546,7 +546,7 @@ class TestMapserverproxyView(TestCase):
         return request
 
     def test_private_layer(self):
-        from c2cgeoportal_geoportal.lib.filter_capabilities import get_private_layers
+        from c2cgeoportal_geoportal.lib.layers import get_private_layers
 
         pl = get_private_layers([self.ogc_server_id])
         self.assertEqual(
@@ -555,7 +555,7 @@ class TestMapserverproxyView(TestCase):
         )
 
     def test_protected_layers1(self):
-        from c2cgeoportal_geoportal.lib.filter_capabilities import get_protected_layers
+        from c2cgeoportal_geoportal.lib.layers import get_protected_layers
 
         pl = get_protected_layers(self.role1_id, [self.ogc_server_id])
         self.assertEqual(
@@ -564,7 +564,7 @@ class TestMapserverproxyView(TestCase):
         )
 
     def test_protected_layers2(self):
-        from c2cgeoportal_geoportal.lib.filter_capabilities import get_protected_layers
+        from c2cgeoportal_geoportal.lib.layers import get_protected_layers
 
         pl = get_protected_layers(self.role2_id, [self.ogc_server_id])
         self.assertEqual(
@@ -573,7 +573,7 @@ class TestMapserverproxyView(TestCase):
         )
 
     def test_protected_layers3(self):
-        from c2cgeoportal_geoportal.lib.filter_capabilities import get_protected_layers
+        from c2cgeoportal_geoportal.lib.layers import get_protected_layers
 
         pl = get_protected_layers(self.role3_id, [self.ogc_server_id])
         self.assertEqual(
@@ -582,7 +582,7 @@ class TestMapserverproxyView(TestCase):
         )
 
     def test_writable_layers1(self):
-        from c2cgeoportal_geoportal.lib.filter_capabilities import get_writable_layers
+        from c2cgeoportal_geoportal.lib.layers import get_writable_layers
 
         pl = get_writable_layers(self.role1_id, [self.ogc_server_id])
         self.assertEqual(
@@ -590,7 +590,7 @@ class TestMapserverproxyView(TestCase):
         )
 
     def test_writable_layers2(self):
-        from c2cgeoportal_geoportal.lib.filter_capabilities import get_writable_layers
+        from c2cgeoportal_geoportal.lib.layers import get_writable_layers
 
         pl = get_writable_layers(self.role2_id, [self.ogc_server_id])
         self.assertEqual(
@@ -598,7 +598,7 @@ class TestMapserverproxyView(TestCase):
         )
 
     def test_writable_layers3(self):
-        from c2cgeoportal_geoportal.lib.filter_capabilities import get_writable_layers
+        from c2cgeoportal_geoportal.lib.layers import get_writable_layers
 
         pl = get_writable_layers(self.role3_id, [self.ogc_server_id])
         self.assertEqual(

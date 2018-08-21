@@ -28,57 +28,24 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import logging
 import copy
-from io import StringIO
-from urllib.parse import urlsplit, urljoin
-import urllib.request
-
-import xml.sax.handler
-from xml.sax import saxutils
-from xml.sax.saxutils import XMLFilterBase, XMLGenerator
-from xml.sax.xmlreader import InputSource
 import defusedxml.expatreader
+import logging
+import requests
+import xml.sax.handler
 
-from pyramid.httpexceptions import HTTPBadGateway
-
+from io import StringIO
 from owslib.wms import WebMapService
+from pyramid.httpexceptions import HTTPBadGateway
+from urllib.parse import urlsplit
+from xml.sax.saxutils import XMLFilterBase, XMLGenerator
 
-from c2cgeoportal_geoportal.lib import caching, get_protected_layers_query, \
-    get_writable_layers_query, add_url_params, get_ogc_server_wms_url_ids,\
-    get_ogc_server_wfs_url_ids, get_http
-from c2cgeoportal_commons.models import DBSession
-from c2cgeoportal_commons.models.main import LayerWMS, OGCServer
+from c2cgeoportal_geoportal.lib import caching, add_url_params, get_ogc_server_wms_url_ids,\
+    get_ogc_server_wfs_url_ids
+from c2cgeoportal_geoportal.lib.layers import get_protected_layers, get_writable_layers, get_private_layers
 
 cache_region = caching.get_region()
 log = logging.getLogger(__name__)
-
-
-@cache_region.cache_on_arguments()
-def get_protected_layers(role_id, ogc_server_ids):
-    q = get_protected_layers_query(role_id, ogc_server_ids, what=LayerWMS, version=2)
-    results = q.all()
-    DBSession.expunge_all()
-    return {r.id: r for r in results}
-
-
-@cache_region.cache_on_arguments()
-def get_private_layers(ogc_server_ids):
-    q = DBSession.query(LayerWMS) \
-        .filter(LayerWMS.public.is_(False)) \
-        .join(LayerWMS.ogc_server) \
-        .filter(OGCServer.id.in_(ogc_server_ids))
-    results = q.all()
-    DBSession.expunge_all()
-    return {r.id: r for r in results}
-
-
-@cache_region.cache_on_arguments()
-def get_writable_layers(role_id, ogc_server_ids):
-    q = get_writable_layers_query(role_id, ogc_server_ids)
-    results = q.all()
-    DBSession.expunge_all()
-    return {r.id: r for r in results}
 
 
 @cache_region.cache_on_arguments()
@@ -91,24 +58,26 @@ def wms_structure(wms_url, host, request):
     })
 
     # Forward request to target (without Host Header)
-    http = get_http(request)
     headers = dict()
     if url.hostname == "localhost" and host is not None:  # pragma: no cover
         headers["Host"] = host
     try:
-        resp, content = http.request(wms_url, method="GET", headers=headers)
+        response = requests.get(
+            wms_url, headers=headers,
+            **request.registry.settings.get("http_options", {})
+        )
     except Exception:  # pragma: no cover
         raise HTTPBadGateway("Unable to GetCapabilities from wms_url {0!s}".format(wms_url))
 
-    if resp.status < 200 or resp.status >= 300:  # pragma: no cover
+    if not response.ok:  # pragma: no cover
         raise HTTPBadGateway(
             "GetCapabilities from wms_url {0!s} return the error: {1:d} {2!s}".format(
-                wms_url, resp.status, resp.reason
+                wms_url, response.status_code, response.reason
             )
         )
 
     try:
-        wms = WebMapService(None, xml=content)
+        wms = WebMapService(None, xml=response.content)
         result = {}
 
         def _fill(name, parent):
@@ -126,52 +95,19 @@ def wms_structure(wms_url, host, request):
     except AttributeError:  # pragma: no cover
         error = "WARNING! an error occurred while trying to " \
             "read the mapfile and recover the themes."
-        error = "{0!s}\nurl: {1!s}\nxml:\n{2!s}".format(error, wms_url, content)
+        error = "{0!s}\nurl: {1!s}\nxml:\n{2!s}".format(error, wms_url, response.text)
         log.exception(error)
         raise HTTPBadGateway(error)
 
     except SyntaxError:  # pragma: no cover
         error = "WARNING! an error occurred while trying to " \
             "read the mapfile and recover the themes."
-        error = "{0!s}\nurl: {1!s}\nxml:\n{2!s}".format(error, wms_url, content)
+        error = "{0!s}\nurl: {1!s}\nxml:\n{2!s}".format(error, wms_url, response.text)
         log.exception(error)
         raise HTTPBadGateway(error)
 
 
-def enable_proxies(proxies):  # pragma: no cover
-    old_prepare_input_source = saxutils.prepare_input_source
-
-    def caching_prepare_input_source(source, base=None):
-        if isinstance(source, InputSource):
-            return source
-
-        full_uri = urljoin(base or "", source)
-
-        # Convert StringIO to string
-        if hasattr(full_uri, "getvalue"):
-            full_uri = full_uri.getvalue()
-
-        if not full_uri.startswith("http:"):
-            args = (source,) if base is None else (source, base)
-            return old_prepare_input_source(*args)
-
-        opener = urllib.request.FancyURLopener(proxies)
-        with opener.open(full_uri) as stream:
-            document = stream.read()
-
-        input_source = InputSource()
-        input_source.setSystemId(source)
-        input_source.setByteStream(document)
-
-        return input_source
-
-    saxutils.prepare_input_source = caching_prepare_input_source
-
-
-def filter_capabilities(content, role_id, wms, url, headers, proxies, request):
-
-    if proxies:  # pragma: no cover
-        enable_proxies(proxies)
+def filter_capabilities(content, role_id, wms, url, headers, request):
 
     wms_structure_ = wms_structure(url, headers.get("Host"), request)
 
@@ -207,11 +143,7 @@ def filter_capabilities(content, role_id, wms, url, headers, proxies, request):
     return result.getvalue()
 
 
-def filter_wfst_capabilities(content, role_id, wfs_url, proxies, request):
-
-    if proxies:  # pragma: no cover
-        enable_proxies(proxies)
-
+def filter_wfst_capabilities(content, role_id, wfs_url, request):
     writable_layers = []
     ogc_server_ids = get_ogc_server_wfs_url_ids(request).get(wfs_url)
     for gmflayer in list(get_writable_layers(role_id, ogc_server_ids).values()):

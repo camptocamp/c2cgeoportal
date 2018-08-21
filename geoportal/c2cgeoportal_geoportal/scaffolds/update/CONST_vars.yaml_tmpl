@@ -77,6 +77,7 @@ vars:
         DEVSERVER_HOST: webpack-dev-server:8080
         REDIS_HOST: redis
         REDIS_PORT: 6379
+        C2C_REQUESTS_DEFAULT_TIMEOUT: 30
         C2C_REDIS_URL: redis://redis:6379
         C2C_BROADCAST_PREFIX: broadcast_geoportal_
         PGOPTIONS: '-c statement_timeout=30000'
@@ -100,6 +101,7 @@ vars:
           --max-requests-jitter=100
         VISIBLE_ENTRY_POINT: '{docker_entry_point}'
         TILEGENERATION_CONFIGFILE: /etc/tilegeneration/config.yaml
+        C2C_REQUESTS_DEFAULT_TIMEOUT: 30
         C2C_BASE_PATH: /c2c_tiles
         C2C_REDIS_URL: redis://redis:6379
         C2C_BROADCAST_PREFIX: broadcast_tilecloudchain_
