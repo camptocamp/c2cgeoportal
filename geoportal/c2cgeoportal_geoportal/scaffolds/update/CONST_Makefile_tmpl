@@ -482,7 +482,7 @@ template-clean:
 		$(ALL_JINJA_FILES:.jinja=) \
 		geoportal/config.yaml
 
-/build/c2ctemplate-cache.json: $(VARS_DEPENDS) $(MAKE_FILES)
+/build/c2ctemplate-cache.json: .config $(VARS_DEPENDS) $(MAKE_FILES)
 	$(PRERULE_CMD)
 ifeq ($(origin VARS_FILE), undefined)
 	@echo "Error: the variable VARS_FILE is required."
