@@ -1,22 +1,34 @@
 #!/bin/bash -ex
 
 WORKSPACE=$1
-mkdir --parent ${WORKSPACE}/testgeomapfish
+if [ $# -ge 2 ]
+then
+    PACKAGE=$2
+else
+    PACKAGE=testgeomapfish
+fi
+mkdir --parent ${WORKSPACE}/${PACKAGE}
 
 DOCKER_RUN_ARGS="--env=SRID=21781 --env=EXTENT=489246.36,78873.44,837119.76,296543.14 --image=camptocamp/geomapfish-build --share=${WORKSPACE}"
-PCREATE_CMD="pcreate --ignore-conflicting-name --overwrite --package-name testgeomapfish ${WORKSPACE}/testgeomapfish"
+PCREATE_CMD="pcreate --ignore-conflicting-name --overwrite --package-name ${PACKAGE} ${WORKSPACE}/${PACKAGE}"
 ./docker-run ${DOCKER_RUN_ARGS} ${PCREATE_CMD} --scaffold=c2cgeoportal_create
 ./docker-run ${DOCKER_RUN_ARGS} ${PCREATE_CMD} --scaffold=c2cgeoportal_update
 
 # Copy files for travis build and tests
-cp travis/build.mk ${WORKSPACE}/testgeomapfish/travis.mk
-cp travis/empty-vars.mk ${WORKSPACE}/testgeomapfish/empty-vars.mk
-cp travis/vars.yaml ${WORKSPACE}/testgeomapfish/vars_travis.yaml
-cp travis/docker-compose.yaml.mako ${WORKSPACE}/testgeomapfish/docker-compose.yaml.mako
-cp travis/docker-compose-build.yaml.mako ${WORKSPACE}/testgeomapfish/docker-compose-build.yaml.mako
-cp --recursive travis ${WORKSPACE}/testgeomapfish/travis
-cd ${WORKSPACE}/testgeomapfish
-echo no_external_network=true >> .config
+if [ $# -lt 2 ]
+then
+    cp travis/build.mk ${WORKSPACE}/${PACKAGE}/travis.mk
+    cp travis/empty-vars.mk ${WORKSPACE}/${PACKAGE}/empty-vars.mk
+    cp travis/vars.yaml ${WORKSPACE}/${PACKAGE}/vars_travis.yaml
+    cp travis/docker-compose.yaml.mako ${WORKSPACE}/${PACKAGE}/docker-compose.yaml.mako
+    cp travis/docker-compose-build.yaml.mako ${WORKSPACE}/${PACKAGE}/docker-compose-build.yaml.mako
+    cp --recursive travis ${WORKSPACE}/${PACKAGE}/travis
+fi
+cd ${WORKSPACE}/${PACKAGE}
+if [ $# -lt 2 ]
+then
+    echo no_external_network=true >> .config
+fi
 
 # Init Git repository
 git init
@@ -28,7 +40,12 @@ git commit --quiet --message='Initial commit'
 git clean -fX
 
 # Build
-./docker-run make --makefile=travis.mk build docker-build-testdb
-./docker-compose-run bash -c 'wait-db && PGHOST=externaldb PGDATABASE=test wait-db;'
-./docker-compose-run make --makefile=travis.mk update-po
-./docker-compose-run make --makefile=travis.mk theme2fts
+if [ $# -lt 2 ]
+then
+    ./docker-run make --makefile=travis.mk build docker-build-testdb
+    ./docker-compose-run bash -c 'wait-db && PGHOST=externaldb PGDATABASE=test wait-db;'
+    ./docker-compose-run make --makefile=travis.mk update-po
+    ./docker-compose-run make --makefile=travis.mk theme2fts
+else
+    ./docker-run --env=DOCKER_TAG=${MAJOR_VERSION} make build
+fi
