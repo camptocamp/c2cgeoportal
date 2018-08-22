@@ -49,9 +49,7 @@ class TinyOWSProxy(OGCProxy):
         OGCProxy.__init__(self, request)
         self.settings = request.registry.settings.get("tinyowsproxy", {})
 
-        assert \
-            "tinyows_url" in self.settings, \
-            "tinyowsproxy.tinyows_url must be set"
+        assert "tinyows_url" in self.settings, "tinyowsproxy.tinyows_url must be set"
         assert self.default_ogc_server, "mapserverproxy.default_ogc_server must be set"
 
         self.user = self.request.user
