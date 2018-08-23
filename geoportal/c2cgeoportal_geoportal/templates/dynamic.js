@@ -30,6 +30,20 @@ tree_params = dict(
 tree_params.update(interface_config.get('tree_params', {}))
 wfs_permalink = dict(url=request.route_url('mapserverproxy'))
 wfs_permalink.update(interface_config.get('wfs_permalink', {}))
+
+layers = request.registry.get("layers", {})
+layers_enum = {}
+if "enum" in layers:
+  for layer_name, layer in layers["enum"].items():
+    layer_enum = {}
+    layers_enum[layer_name] = layer_enum
+    for attribute in list(layer["attributes"].keys()):
+      layer_enum[attribute] = self.request.route_url(
+        "layers_enumerate_attribute_values",
+        layer_name=layer_name,
+        field_name=attribute,
+        path=""
+      )
 %>
 
 (function() {
@@ -51,6 +65,7 @@ wfs_permalink.update(interface_config.get('wfs_permalink', {}))
   module.constant('gmfTreeUrl', '${request.route_url('themes', _query=tree_params) | n}');
   module.constant('fulltextsearchUrl', '${request.route_url('fulltextsearch', _query=fulltextsearch_params) | n}');
   module.constant('ngeoWfsPermalinkOptions', ${json.dumps(wfs_permalink) | n});
+  module.constant('ngeoLayerEnumeratedAttributes', ${json.dumps(layers_enum) | n});
 
 % if 'redirect_interface' in interface_config:
 <%
