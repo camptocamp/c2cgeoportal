@@ -178,7 +178,8 @@ class TestThemesPrivateView(TestCase):
     def _get_filtered_errors(themes):
         return {
             e for e in themes["errors"]
-            if e != "The layer '' (__test_layer_external_wms) is not defined in WMS capabilities"
+            if e != "The layer '' (__test_layer_external_wms) is not defined in WMS capabilities" and
+            not e.startswith("Unable to get DescribeFeatureType from URL ")
         }
 
     def test_public(self):
@@ -186,7 +187,7 @@ class TestThemesPrivateView(TestCase):
             "version": "2"
         })
         themes = entry.themes()
-        self.assertEquals(themes["errors"], [])
+        self.assertEquals(self._get_filtered_errors(themes), set())
         self.assertEquals(
             [self._only_name(t) for t in themes["themes"]],
             [{
@@ -209,7 +210,7 @@ class TestThemesPrivateView(TestCase):
             "version": "2"
         }, user=DBSession.query(User).filter_by(username=u"__test_user").one())
         themes = entry.themes()
-        self.assertEquals(themes["errors"], [])
+        self.assertEquals(self._get_filtered_errors(themes), set())
         self.assertEquals(
             [self._only_name(t) for t in themes["themes"]],
             [{

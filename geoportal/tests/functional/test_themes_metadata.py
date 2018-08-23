@@ -145,8 +145,12 @@ class TestThemesViewMetadata(TestCase):
     @staticmethod
     def _get_filtered_errors(themes):
         errors = themes["errors"]
-        regex = re.compile(r"The (GeoMapFish|WMS) layer name '[a-z0-9_.]*', cannot be two times in the same block \(first level group\).")
-        errors = [e for e in errors if not regex.match(e)]
+        regex1 = re.compile(r"The (GeoMapFish|WMS) layer name '[a-z0-9_.]*', cannot be two times in the same block \(first level group\).")
+        regex2 = re.compile(r"Error \'mismatched tag: line [0-9]+, column [0-9]+\' on reading DescribeFeatureType:.*")
+        errors = [
+            e for e in errors if not regex1.match(e) and not regex2.match(e) and
+            not e.startswith("Unable to get DescribeFeatureType from URL ")
+        ]
         return set(errors)
 
     def test_metadata(self):
