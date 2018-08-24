@@ -14,6 +14,7 @@ ${service_defaults('config')}\
   print:
     image: camptocamp/mapfish_print:3.15
     user: www-data
+    restart: on-failure
     volumes_from:
       - config:ro
 ${service_defaults('print', 8080)}\
@@ -21,6 +22,7 @@ ${service_defaults('print', 8080)}\
   mapserver:
     image: camptocamp/mapserver:7.2
     user: www-data
+    restart: on-failure
     volumes_from:
       - config:rw
     volumes:
@@ -31,6 +33,7 @@ ${service_defaults('mapserver', 8080)}\
 ##  qgisserver:
 ##    image: camptocamp/geomapfish-qgisserver:gmf2.3-qgis3.2
 ##    user: www-data
+##    restart: on-failure
 ##    volumes_from:
 ##      - config:ro
 ##${service_defaults('qgisserver', 8080)}
@@ -38,6 +41,7 @@ ${service_defaults('mapserver', 8080)}\
   tinyows:
     image: camptocamp/tinyows
     user: www-data
+    restart: on-failure
     volumes_from:
       - config:ro
     entrypoint: []
@@ -46,6 +50,7 @@ ${service_defaults('tinyows', 8080)}\
   mapcache:
     image: camptocamp/mapcache:1.6
     user: www-data
+    restart: on-failure
     volumes_from:
       - config:ro
 ${service_defaults('mapcache', 8080)}\
@@ -53,6 +58,7 @@ ${service_defaults('mapcache', 8080)}\
   memcached:
     image: memcached:1.5
     user: www-data
+    restart: on-failure
     command:
       - memcached
       - --memory-limit=512
@@ -61,6 +67,7 @@ ${service_defaults('memcached', 11211)}\
   redis:
     image: redis:3.2
     user: www-data
+    restart: on-failure
     command:
       - redis-server
       - --save
@@ -76,6 +83,7 @@ ${service_defaults('redis', 6379)}\
   tilecloudchain:
     image: camptocamp/tilecloud-chain:1.7
     user: www-data
+    restart: on-failure
     volumes_from:
       - config:ro
 ${service_defaults('tilecloudchain', 8080)}\
@@ -83,6 +91,7 @@ ${service_defaults('tilecloudchain', 8080)}\
   tilegeneration_slave:
     image: camptocamp/tilecloud-chain:1.7
     user: www-data
+    restart: on-failure
     volumes_from:
       - config:ro
 ${service_defaults('tilecloudchain')}\
@@ -94,6 +103,7 @@ ${service_defaults('tilecloudchain')}\
   geoportal:
     image: ${docker_base}-geoportal:${docker_tag}
     user: www-data
+    restart: on-failure
     volumes:
       - /var/sig:/var/sig:ro
 ${service_defaults('geoportal', 8080)}\
@@ -110,6 +120,7 @@ ${service_defaults('geoportal')}\
 
   front:
     image: haproxy:1.8.8
+    restart: on-failure
     volumes_from:
       - config:ro
     volumes:

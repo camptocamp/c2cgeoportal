@@ -5,6 +5,7 @@ services:
 
   nginx:
     image: nginx:1
+    restart: on-failure
     ports:
       - 8081:80
     volumes_from:
