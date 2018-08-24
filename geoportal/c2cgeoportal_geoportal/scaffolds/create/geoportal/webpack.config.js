@@ -1,6 +1,6 @@
 const webpackMerge = require('webpack-merge');
 const apps = require('./webpack.apps.js');
-const commons = require('ngeo/buildtools/webpack.commons');
+const commons = require('./webpack.commons');
 
 let config = commons.config;
 
@@ -13,7 +13,7 @@ switch (nodeEnv) {
     config = webpackMerge(config, require('ngeo/buildtools/webpack.prod'));
     break;
   default:
-    console.log(`The 'NODE_ENV' environment variable is set to an invalid value: ${process.env.NODE_ENV}.` );
+    console.log(`The 'NODE_ENV' environment variable is set to an invalid value: ${process.env.NODE_ENV}.`);
     process.exit(2);
 }
 
