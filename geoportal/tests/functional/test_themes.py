@@ -190,7 +190,8 @@ class TestThemesView(TestCase):
     def _get_filtered_errors(themes):
         return {
             e for e in themes["errors"]
-            if e != "The layer '' (__test_layer_external_wms) is not defined in WMS capabilities"
+            if e != "The layer '' (__test_layer_external_wms) is not defined in WMS capabilities" and
+            not e.startswith("Unable to get DescribeFeatureType from URL ")
         }
 
     def test_version(self):
@@ -509,6 +510,7 @@ class TestThemesView(TestCase):
                     "type": "mapserver",
                     "imageType": "image/png",
                     "credential": True,
+                    "namespace": None,
                 },
                 "__test_ogc_server": {
                     "wfsSupport": True,
@@ -518,6 +520,7 @@ class TestThemesView(TestCase):
                     "type": "mapserver",
                     "imageType": "image/png",
                     "credential": True,
+                    "namespace": None,
                 },
                 "__test_ogc_server_chtopo": {
                     "wfsSupport": False,
@@ -527,6 +530,7 @@ class TestThemesView(TestCase):
                     "type": "mapserver",
                     "imageType": "image/jpeg",
                     "credential": False,
+                    "namespace": 'http://mapserver.gis.umn.edu/mapserver',
                 }
             },
         )

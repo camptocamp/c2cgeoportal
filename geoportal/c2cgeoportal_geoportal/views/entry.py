@@ -34,23 +34,23 @@ import urllib.parse
 import re
 import requests
 import sys
+import xml.dom.minidom  # noqa # pylint: disable=unused-import
+import zope.event.classhandler
 
-from random import Random
-from math import sqrt
-from defusedxml.minidom import parseString
 from collections import Counter
-
-from pyramid.view import view_config
-from pyramid.i18n import TranslationStringFactory
+from defusedxml.minidom import parseString
+from math import sqrt
+from owslib.wms import WebMapService
 from pyramid.httpexceptions import HTTPFound, HTTPBadRequest, HTTPForbidden, HTTPBadGateway
-from pyramid.security import remember, forget
+from pyramid.i18n import TranslationStringFactory
 from pyramid.response import Response
+from pyramid.security import remember, forget
+from pyramid.view import view_config
+from random import Random
 from sqlalchemy import func
 from sqlalchemy.orm import subqueryload
 from sqlalchemy.orm.exc import NoResultFound
-from owslib.wms import WebMapService
 from typing import Dict, Tuple, Set  # noqa # pylint: disable=unused-import
-import zope.event.classhandler
 
 from c2cgeoportal_commons import models
 from c2cgeoportal_commons.models import main, static
@@ -119,6 +119,7 @@ class Entry:
     default_ogc_server = None
     external_ogc_server = None
     server_wms_capabilities = {}  # type: Dict[int, Tuple[WebMapService, Set[str]]]
+    server_wfs_feature_type = {}  # type: Dict[int, xml.dom.minidom.Document]
 
     def __init__(self, request):
         self.request = request
@@ -171,6 +172,7 @@ class Entry:
         def handle(event: InvalidateCacheEvent):
             del event
             Entry.server_wms_capabilities = {}
+            Entry.server_wfs_feature_type = {}
 
     @view_config(route_name="testi18n", renderer="testi18n.html")
     def testi18n(self):  # pragma: no cover
@@ -263,7 +265,7 @@ class Entry:
             "REQUEST": "GetCapabilities",
         })
 
-        log.info("Get WMS GetCapabilities for url: {0!s}".format(url))
+        log.info("Get WMS GetCapabilities for url: {}".format(url))
 
         # forward request to target (without Host Header)
         headers = dict(self.request.headers)
@@ -399,8 +401,8 @@ class Entry:
             resolution = self._get_layer_resolution_hint(child_layer)
             child_layer_info = {
                 "name": child_layer.name,
-                "minResolutionHint": float("{0:0.2f}".format(resolution[0])),
-                "maxResolutionHint": float("{0:0.2f}".format(resolution[1])),
+                "minResolutionHint": float("{:0.2f}".format(resolution[0])),
+                "maxResolutionHint": float("{:0.2f}".format(resolution[1])),
             }
             if hasattr(child_layer, "queryable"):
                 child_layer_info["queryable"] = child_layer.queryable
@@ -417,8 +419,8 @@ class Entry:
         resolution = self._get_layer_resolution_hint(layer)
         layer_info = {
             "name": layer.name,
-            "minResolutionHint": float("{0:0.2f}".format(resolution[0])),
-            "maxResolutionHint": float("{0:0.2f}".format(resolution[1])),
+            "minResolutionHint": float("{:0.2f}".format(resolution[0])),
+            "maxResolutionHint": float("{:0.2f}".format(resolution[1])),
         }
         layer_info["queryable"] = layer.queryable == 1 \
             if hasattr(layer, "queryable") else True
@@ -522,7 +524,7 @@ class Entry:
 
         except ValueError:  # pragma no cover
             errors.add(
-                "Error while handling time for layer '{0!s}': {1!s}".format(layer.name, sys.exc_info()[1])
+                "Error while handling time for layer '{}': {}".format(layer.name, sys.exc_info()[1])
             )
 
         return errors
@@ -646,9 +648,9 @@ class Entry:
             resolutions = self._get_layer_resolution_hint(wms_layer_obj)
             if resolutions[0] <= resolutions[1]:
                 if "minResolutionHint" not in l:
-                    l["minResolutionHint"] = float("{0:0.2f}".format(resolutions[0]))
+                    l["minResolutionHint"] = float("{:0.2f}".format(resolutions[0]))
                 if "maxResolutionHint" not in l:
-                    l["maxResolutionHint"] = float("{0:0.2f}".format(resolutions[1]))
+                    l["maxResolutionHint"] = float("{:0.2f}".format(resolutions[1]))
             l["childLayers"] = self._get_child_layers_info_1(wms_layer_obj)
             if hasattr(wms_layer_obj, "queryable"):
                 l["queryable"] = wms_layer_obj.queryable
@@ -701,7 +703,7 @@ class Entry:
             try:
                 l["dimensions"] = json.loads(layer.dimensions)
             except Exception:  # pragma: no cover
-                errors.add("Unexpected error: '{0!s}' while reading '{1!s}' in layer '{2!s}'".format(
+                errors.add("Unexpected error: '{}' while reading '{}' in layer '{}'".format(
                     sys.exc_info()[0], layer.dimensions, layer.name
                 ))
 
@@ -747,10 +749,10 @@ class Entry:
 
                 if resolutions[0] != float("Inf"):
                     ql["minResolutionHint"] = float(
-                        "{0:0.2f}".format(resolutions[0]))
+                        "{:0.2f}".format(resolutions[0]))
                 if resolutions[1] != 0:
                     ql["maxResolutionHint"] = float(
-                        "{0:0.2f}".format(resolutions[1]))
+                        "{:0.2f}".format(resolutions[1]))
 
                 l["queryLayers"].append(ql)
 
@@ -811,7 +813,7 @@ class Entry:
         # escape loop
         if depth > 30:
             errors.add(
-                "Too many recursions with group '{0!s}'".format(group.name)
+                "Too many recursions with group '{}'".format(group.name)
             )
             return None, errors
 
@@ -831,7 +833,7 @@ class Entry:
                 if isinstance(group, main.Theme) or catalogue or \
                         group.is_internal_wms == tree_item.is_internal_wms:
                     gp, gp_errors = self._group(
-                        u"{0!s}/{1!s}".format(path, tree_item.name),
+                        u"{}/{}".format(path, tree_item.name),
                         tree_item, layers, depth=depth, min_levels=min_levels,
                         catalogue=catalogue, role_id=role_id, version=version, mixed=mixed,
                         time=time, dim=dim, wms_layers=wms_layers, layers_name=layers_name, **kwargs
@@ -840,7 +842,7 @@ class Entry:
                     if gp is not None:
                         children.append(gp)
                 else:
-                    errors.add("Group '{0!s}' cannot be in group '{1!s}' (internal/external mix).".format(
+                    errors.add("Group '{}' cannot be in group '{}' (internal/external mix).".format(
                         tree_item.name, group.name
                     ))
             elif self._layer_included(tree_item, version):
@@ -857,14 +859,14 @@ class Entry:
                         errors |= l_errors
                         if l is not None:
                             if depth < min_levels:
-                                errors.add("The Layer '{0!s}' is under indented ({1:d}/{2:d}).".format(
+                                errors.add("The Layer '{}' is under indented ({:d}/{:d}).".format(
                                     path + "/" + tree_item.name, depth, min_levels
                                 ))
                             else:
                                 children.append(l)
                     else:
                         errors.add(
-                            "Layer '{0!s}' cannot be in the group '{1!s}' (internal/external mix).".format(
+                            "Layer '{}' cannot be in the group '{}' (internal/external mix).".format(
                                 tree_item.name, group.name
                             )
                         )
@@ -1036,7 +1038,7 @@ class Entry:
         for item in theme.children:
             if isinstance(item, main.LayerGroup):
                 gp, gp_errors = self._group(
-                    "{0!s}/{1!s}".format(theme.name, item.name),
+                    "{}/{}".format(theme.name, item.name),
                     item, layers,
                     role_id=role_id, version=version, catalogue=catalogue,
                     min_levels=min_levels
@@ -1046,7 +1048,7 @@ class Entry:
                     children.append(gp)
             elif self._layer_included(item, version):
                 if min_levels > 0:
-                    errors.add("The Layer '{0!s}' cannot be directly in the theme '{1!s}' (0/{2:d}).".format(
+                    errors.add("The Layer '{}' cannot be directly in the theme '{}' (0/{:d}).".format(
                         item.name, theme.name, min_levels
                     ))
                 elif item.name in layers:
@@ -1110,7 +1112,7 @@ class Entry:
         }
         wfsgc_url = add_url_params(wfs_url, params)
 
-        log.info("WFS GetCapabilities for base url: {0!s}".format(wfsgc_url))
+        log.info("WFS GetCapabilities for base url: {}".format(wfsgc_url))
 
         # forward request to target (without Host Header)
         headers = dict(self.request.headers)
@@ -1144,7 +1146,7 @@ class Entry:
                         name_value = name_value.split(":")[1]  # pragma nocover
                     featuretypes.append(name_value)
                 else:  # pragma nocover
-                    log.warn("Feature type without name: {0!s}".format(featureType.toxml()))
+                    log.warn("Feature type without name: {}".format(featureType.toxml()))
             return featuretypes, errors
         except Exception:  # pragma: no cover
             return response.text, errors
@@ -1369,6 +1371,45 @@ class Entry:
             "debug": self.debug,
         }
 
+    def _wms_get_features_type(self, ogc_server_id, wfs_url):
+        errors = set()
+
+        if ogc_server_id in self.server_wfs_feature_type:
+            return self.server_wfs_feature_type[ogc_server_id], errors
+
+        params = {
+            "SERVICE": "WFS",
+            "VERSION": "1.0.0",
+            "REQUEST": "DescribeFeatureType",
+        }
+        wfs_url = add_url_params(wfs_url, params)
+
+        log.info("WFS DescribeFeatureType for base url: {}".format(wfs_url))
+
+        # forward request to target (without Host Header)
+        headers = dict(self.request.headers)
+        if urllib.parse.urlsplit(wfs_url).hostname != "localhost" and "Host" in headers:
+            headers.pop("Host")  # pragma nocover
+
+        try:
+            response = self.get_http_cached(wfs_url, headers)
+        except Exception:  # pragma: no cover
+            errors.add("Unable to get DescribeFeatureType from URL {}".format(wfs_url))
+            return None, errors
+
+        if not response.ok:  # pragma: no cover
+            errors.add("DescribeFeatureType from URL {} return the error: {:d} {}".format(
+                wfs_url, response.status_code, response.reason
+            ))
+            return None, errors
+
+        try:
+            self.server_wfs_feature_type[ogc_server_id] = parseString(response.text)
+            return self.server_wfs_feature_type[ogc_server_id], errors
+        except Exception as e:  # pragma: no cover
+            errors.add("Error '{}' on reading DescribeFeatureType:\n{}".format(str(e), response.text))
+            return None, errors
+
     @view_config(route_name="themes", renderer="json")
     def themes(self):
         role_id = self.request.params.get("role_id")
@@ -1410,6 +1451,8 @@ class Entry:
                         "The OGC server (WFS) '{}'".format(ogc_server.name),
                         ogc_server.url_wfs, self.request, errors=all_errors
                     ) if ogc_server.url_wfs is not None else url
+                feature_type, errors = self._wms_get_features_type(ogc_server.id, url_wfs)
+                all_errors |= errors
                 result["ogcServers"][ogc_server.name] = {
                     "url": url,
                     "urlWfs": url_wfs,
@@ -1418,6 +1461,8 @@ class Entry:
                     "imageType": ogc_server.image_type,
                     "wfsSupport": ogc_server.wfs_support,
                     "isSingleTile": ogc_server.is_single_tile,
+                    "namespace": feature_type.documentElement.getAttribute("targetNamespace")
+                    if feature_type is not None else None,
                 }
         if export_themes:
             themes, errors = self._themes(
@@ -1495,7 +1540,7 @@ class Entry:
             user = models.DBSession.query(static.User).filter(static.User.username == username).one()
             user.update_last_login()
             headers = remember(self.request, username)
-            log.info("User '{0!s}' logged in.".format(username))
+            log.info("User '{}' logged in.".format(username))
             came_from = self.request.params.get("came_from")
             if came_from:
                 return HTTPFound(location=came_from, headers=headers)
@@ -1520,7 +1565,7 @@ class Entry:
             log.info("Logout on non login user.")
             raise HTTPBadRequest("See server logs for details")
 
-        log.info("User '{0!s}' ({1:d}) logging out.".format(
+        log.info("User '{}' ({:d}) logging out.".format(
             self.request.user.username,
             self.request.user.id
         ))
@@ -1574,7 +1619,7 @@ class Entry:
             self.request, self.request.user.username, old_password
         )
         if user is None:
-            log.info("The old password is wrong for user '{0!s}'.".format(user))
+            log.info("The old password is wrong for user '{}'.".format(user))
             raise HTTPBadRequest("See server logs for details")
 
         if new_password != new_password_confirm:
@@ -1588,7 +1633,7 @@ class Entry:
         u.password = new_password
         u.is_password_changed = True
         models.DBSession.flush()
-        log.info("Password changed for user '{0!s}'".format(self.request.user.username))
+        log.info("Password changed for user '{}'".format(self.request.user.username))
 
         return {
             "success": "true"
@@ -1610,12 +1655,12 @@ class Entry:
         try:
             user = models.DBSession.query(static.User).filter(static.User.username == username).one()
         except NoResultFound:  # pragma: no cover
-            return None, None, None, "The login '{0!s}' does not exist.".format(username)
+            return None, None, None, "The login '{}' does not exist.".format(username)
 
         if user.email is None or user.email == "":  # pragma: no cover
             return \
                 None, None, None, \
-                "The user '{0!s}' has no registered email address.".format(user.username),
+                "The user '{}' has no registered email address.".format(user.username),
 
         password = self.generate_password()
         user.set_temp_password(password)
