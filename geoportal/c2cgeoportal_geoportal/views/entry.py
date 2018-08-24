@@ -644,9 +644,9 @@ class Entry:
             resolutions = self._get_layer_resolution_hint(wms_layer_obj)
             if resolutions[0] <= resolutions[1]:
                 if "minResolutionHint" not in l:
-                    l["minResolutionHint"] = float("{0:0.2f}".format(resolutions[0]))
+                    l["minResolutionHint"] = float("{:0.2f}".format(resolutions[0]))
                 if "maxResolutionHint" not in l:
-                    l["maxResolutionHint"] = float("{0:0.2f}".format(resolutions[1]))
+                    l["maxResolutionHint"] = float("{:0.2f}".format(resolutions[1]))
             l["childLayers"] = self._get_child_layers_info_1(wms_layer_obj)
             if hasattr(wms_layer_obj, "queryable"):
                 l["queryable"] = wms_layer_obj.queryable
