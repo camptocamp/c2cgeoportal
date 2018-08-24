@@ -105,6 +105,10 @@ vars:
       <<: *interface
       constants:
         <<: *constants
+        ngeoQueryOptions:
+          tolerance: 20
+          limit: 5
+          queryCountFirst: true
         gmfPrintOptions:
           scaleInput: true
           gmfPrintOptions:
