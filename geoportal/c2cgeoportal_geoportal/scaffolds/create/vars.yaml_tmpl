@@ -107,6 +107,10 @@ vars:
       redirect_interface: mobile_alt
       constants:
         <<: *constants
+        ngeoQueryOptions:
+          tolerance: 20
+          limit: 5
+          queryCountFirst: true
         gmfPrintOptions:
           scaleInput: true
           gmfPrintOptions:
