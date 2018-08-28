@@ -37,6 +37,7 @@ import sys
 import xml.dom.minidom  # noqa # pylint: disable=unused-import
 import zope.event.classhandler
 
+from defusedxml import lxml
 from collections import Counter
 from defusedxml.minidom import parseString
 from math import sqrt
@@ -1404,10 +1405,12 @@ class Entry:
             return None, errors
 
         try:
-            self.server_wfs_feature_type[ogc_server_id] = parseString(response.text)
+            self.server_wfs_feature_type[ogc_server_id] = lxml.XML(response.text.encode('utf-8'))
             return self.server_wfs_feature_type[ogc_server_id], errors
         except Exception as e:  # pragma: no cover
-            errors.add("Error '{}' on reading DescribeFeatureType:\n{}".format(str(e), response.text))
+            errors.add("Error '{}' on reading DescribeFeatureType from URL {}:\n{}".format(
+                str(e), wfs_url, response.text
+            ))
             return None, errors
 
     @view_config(route_name="themes", renderer="json")
@@ -1453,6 +1456,36 @@ class Entry:
                     ) if ogc_server.url_wfs is not None else url
                 feature_type, errors = self._wms_get_features_type(ogc_server.id, url_wfs)
                 all_errors |= errors
+                attributes = None
+
+                if feature_type is not None:
+                    types = {}
+                    elements = {}
+                    for child in feature_type.getchildren():
+                        if child.tag == '{http://www.w3.org/2001/XMLSchema}element':
+                            elements[child.attrib['name']] = child.attrib['type'].split(':')[1]
+
+                        if child.tag == '{http://www.w3.org/2001/XMLSchema}complexType':
+                            s = child.find('.//{http://www.w3.org/2001/XMLSchema}sequence')
+                            attrib = {}
+                            for c in s.getchildren():
+                                namespace = None
+                                type_ = c.attrib['type']
+                                if len(type_.split(':')) == 2:
+                                    namespace, type_ = type_.split(':')
+                                namespace = c.nsmap[namespace]
+                                attrib[c.attrib['name']] = {
+                                    'namespace': namespace,
+                                    'type': type_,
+                                }
+                                if 'alias' in c.attrib:
+                                    attrib[c.attrib['name']] = c.attrib['alias']
+                            types[child.attrib['name']] = attrib
+
+                    attributes = {}
+                    for name, type_ in elements.items():
+                        attributes[name] = types[type_]
+
                 result["ogcServers"][ogc_server.name] = {
                     "url": url,
                     "urlWfs": url_wfs,
@@ -1461,8 +1494,9 @@ class Entry:
                     "imageType": ogc_server.image_type,
                     "wfsSupport": ogc_server.wfs_support,
                     "isSingleTile": ogc_server.is_single_tile,
-                    "namespace": feature_type.documentElement.getAttribute("targetNamespace")
+                    "namespace": feature_type.attrib["targetNamespace"]
                     if feature_type is not None else None,
+                    "attributes": attributes,
                 }
         if export_themes:
             themes, errors = self._themes(

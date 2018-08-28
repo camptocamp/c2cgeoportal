@@ -503,34 +503,53 @@ class TestThemesView(TestCase):
         self.assertEqual(
             themes["ogcServers"], {
                 "__test_external_ogc_server": {
-                    "wfsSupport": True,
-                    "url": "http://localhost/travis/mapserv?ogcserver=__test_external_ogc_server",
-                    "isSingleTile": False,
-                    "urlWfs": "http://localhost/travis/mapserv?ogcserver=__test_external_ogc_server",
-                    "type": "mapserver",
-                    "imageType": "image/png",
+                    "attributes": None,
                     "credential": True,
+                    "imageType": "image/png",
+                    "isSingleTile": False,
                     "namespace": None,
+                    "type": "mapserver",
+                    "url": "http://localhost/travis/mapserv?ogcserver=__test_external_ogc_server",
+                    "urlWfs": "http://localhost/travis/mapserv?ogcserver=__test_external_ogc_server",
+                    "wfsSupport": True,
                 },
                 "__test_ogc_server": {
-                    "wfsSupport": True,
-                    "url": "http://localhost/travis/mapserv?ogcserver=__test_ogc_server",
-                    "isSingleTile": False,
-                    "urlWfs": "http://localhost/travis/mapserv?ogcserver=__test_ogc_server",
-                    "type": "mapserver",
-                    "imageType": "image/png",
+                    "attributes": None,
                     "credential": True,
+                    "imageType": "image/png",
+                    "isSingleTile": False,
                     "namespace": None,
+                    "type": "mapserver",
+                    "url": "http://localhost/travis/mapserv?ogcserver=__test_ogc_server",
+                    "urlWfs": "http://localhost/travis/mapserv?ogcserver=__test_ogc_server",
+                    "wfsSupport": True,
                 },
                 "__test_ogc_server_chtopo": {
-                    "wfsSupport": False,
-                    "url": "http://wms.geo.admin.ch/",
-                    "isSingleTile": False,
-                    "urlWfs": "http://wms.geo.admin.ch/",
-                    "type": "mapserver",
-                    "imageType": "image/jpeg",
+                    "attributes": {
+                        'ch.astra.strassenverkehrszaehlung_messstellen-regional_lokal-status_netz': {
+                            'Nummer': {'namespace': 'http://www.w3.org/2001/XMLSchema', 'type': 'string'},
+                            'msGeometry': {'namespace': 'http://www.opengis.net/gml', 'type': 'GeometryPropertyType'}
+                        },
+                        'ch.swisstopo.swissnames3d_feature_line': {
+                            'msGeometry': {'namespace': 'http://www.opengis.net/gml', 'type': 'GeometryPropertyType'}
+                        },
+                        'ch.swisstopo.swissnames3d_feature_point': {
+                            'Objektart': {'namespace': 'http://www.w3.org/2001/XMLSchema', 'type': 'string'},
+                            'msGeometry': {'namespace': 'http://www.opengis.net/gml', 'type': 'GeometryPropertyType'}
+                        },
+                        'ch.swisstopo.swissnames3d_feature_poly': {
+                            'Objektart': {'namespace': 'http://www.w3.org/2001/XMLSchema', 'type': 'string'},
+                            'msGeometry': {'namespace': 'http://www.opengis.net/gml', 'type': 'GeometryPropertyType'}
+                        },
+                    },
                     "credential": False,
+                    "imageType": "image/jpeg",
+                    "isSingleTile": False,
                     "namespace": 'http://mapserver.gis.umn.edu/mapserver',
+                    "type": "mapserver",
+                    "url": "http://wms.geo.admin.ch/",
+                    "urlWfs": "http://wms.geo.admin.ch/",
+                    "wfsSupport": False,
                 }
             },
         )
