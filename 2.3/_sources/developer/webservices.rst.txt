@@ -339,6 +339,7 @@ Success JSON result
        "success": "true"
    }
 
+.. _developer_webservices_fts:
 
 Full-Text Search
 ================
