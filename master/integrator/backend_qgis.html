@@ -112,7 +112,7 @@ SetEnv QGIS_PROJECT_FILE ${directory}/qgisserver.qgs
 <span class="prompt1">ssh -L <span class="si">${</span><span class="nv">IP</span><span class="si">}</span>:5432:localhost:5432 &lt;remote server&gt;</span>
 </pre><p>In a Docker mode, QGIS is configured in the <code class="docutils literal notranslate"><span class="pre">qgisserver/</span></code> directory. To edit the configuration,
 run this target and open the <code class="docutils literal notranslate"><span class="pre">/etc/project/project.qgs</span></code> file:</p>
-<pre class="highlight"><span class="prompt1">./docker-run make edit-qgis-project</span>
+<pre class="highlight"><span class="prompt1">make edit-qgis-project</span>
 </pre><p>If you want to add PostGIS layers on the main DB, create/edit your <code class="docutils literal notranslate"><span class="pre">$HOME/.pg_service.conf</span></code> file
 and add a section for the DB you want to access:</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">geomapfish</span><span class="p">]</span>
@@ -135,6 +135,25 @@ port=${PGPORT}
 </pre></div>
 </div>
 </div>
+</div>
+<div class="section" id="ogc-server">
+<h2>OGC server<a class="headerlink" href="#ogc-server" title="Permalink to this headline">¶</a></h2>
+<p>In the project file you should set the online resource URL
+(Project/Properties…/QGIS Server/General information/Online resource) to
+<code class="docutils literal notranslate"><span class="pre">https://&lt;host&gt;/&lt;entrypoint&gt;/mapservproxy?ogcserver=&lt;name&gt;</span></code>, e.-g.
+<code class="docutils literal notranslate"><span class="pre">https://geomapfish-demo.camptocamp.com/mapservproxy?ogcserver=QGIS%20server</span></code>.</p>
+<p>To use the QGIS server in authenticated mode through the mapserv proxy, it’s required to be in docker mode,
+and he should be configured as follow:</p>
+<ul class="simple">
+<li>Name: <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code>, e.-g. <code class="docutils literal notranslate"><span class="pre">QGIS</span> <span class="pre">server</span></code></li>
+<li>Base URL: <code class="docutils literal notranslate"><span class="pre">http://qgisserver:8080/</span></code></li>
+<li>WFS URL: empty</li>
+<li>Server type: <code class="docutils literal notranslate"><span class="pre">qgisserver</span></code></li>
+<li>Image type: recommended to be <code class="docutils literal notranslate"><span class="pre">image/png</span></code></li>
+<li>Authentication type: <code class="docutils literal notranslate"><span class="pre">Standard</span> <span class="pre">auth</span></code></li>
+<li>WFS support: recommended to be <code class="docutils literal notranslate"><span class="pre">[X]</span></code></li>
+<li>Is single tile:  recommended to be <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">]</span></code></li>
+</ul>
 </div>
 </div>
 
