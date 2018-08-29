@@ -108,3 +108,22 @@ The map configuration will be here:
    If you previously had a CGXP application and want to keep your permalinks
    compatible, the resolutions should be the same as in the previous
    application.
+
+Dynamic.js view
+---------------
+
+To configure the ngeo constants with dynamic or configurable values we have the dynamic view.
+
+This view is configurable in the vars files in the section ``interfaces_config``.
+The sub section is the interface name, and after we have:
+
+* ``redirect_interface``: interface to be redirected to if an unexpected device type is used (mobile/desktop).
+* ``do_redirect``: directly do the redirect.
+* ``constants``: Directly define an ``angular`` constant in the vars file.
+* ``routes``: key: constant name, value: name of the route witch one we want to have the URL.
+* ``static``: key: constant name, value: name of the static view that we want to have the URL.
+* ``fulltextsearch_params``: Additional parameters to the full text search view, see
+  :ref:`developer_webservices_fts` for more information.
+* ``wfs_permalink``: Additional values for the ``ngeoWfsPermalinkOptions`` constant, see:
+  `ngeox.WfsPermalinkOptions <https://github.com/camptocamp/ngeo/blob/2.3/options/ngeox.js#L837>_`
+  for more information.

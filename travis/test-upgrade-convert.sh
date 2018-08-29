@@ -78,8 +78,8 @@ then
     create ${WORKSPACE}/dockerref
     createnondocker ${WORKSPACE}/nondocker
     createnondocker ${WORKSPACE}/nondockerref
-    create ${WORKSPACE}/v230-docker --version=2.3.0
-    createnondocker ${WORKSPACE}/v230-nondocker --version=2.3.0
+    create ${WORKSPACE}/v230-docker --version=2.3.1
+    createnondocker ${WORKSPACE}/v230-nondocker --version=2.3.1
     mkdir --parent ${WORKSPACE}/v220
     ./docker-run --share=${WORKSPACE} tar --extract  --bzip2 --file=travis/v220.tar.bz2  --directory=${WORKSPACE}/v220
     createv220 ${WORKSPACE}/v220-todocker

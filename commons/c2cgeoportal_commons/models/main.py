@@ -854,6 +854,11 @@ class OGCServer(Base):
         return self.name or ''  # pragma: no cover
 
 
+event.listen(OGCServer, 'after_insert', cache_invalidate_cb, propagate=True)
+event.listen(OGCServer, 'after_update', cache_invalidate_cb, propagate=True)
+event.listen(OGCServer, 'after_delete', cache_invalidate_cb, propagate=True)
+
+
 class LayerWMS(DimensionLayer):
     __tablename__ = 'layer_wms'
     __table_args__ = {'schema': _schema}
