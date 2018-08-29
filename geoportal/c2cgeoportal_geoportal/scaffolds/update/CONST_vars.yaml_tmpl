@@ -450,8 +450,8 @@ vars:
         X-Content-Type-Options: nosniff
         Referrer-Policy: origin
         Strict-Transport-Security: max-age=31536000; includeSubDomains
-        Content-Security-Policy: "default-src 'self'; \
-            script-src 'self' https://cdn.polyfill.io/ https://maps.googleapis.com/; \
+        Content-Security-Policy: "default-src 'self' https://*; \
+            script-src 'self' 'unsafe-inline' https://cdn.polyfill.io/ https://maps.googleapis.com/; \
             style-src 'self' 'unsafe-inline'; \
             img-src * data:; \
             connect-src *"
