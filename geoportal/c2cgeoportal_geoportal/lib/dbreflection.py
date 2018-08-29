@@ -64,9 +64,10 @@ def init():
 class _AssociationProxy(object):
     # A specific "association proxy" implementation
 
-    def __init__(self, target, value_attr):
+    def __init__(self, target, value_attr, nullable=True):
         self.target = target
         self.value_attr = value_attr
+        self.nullable = nullable
 
     def __get__(self, obj, type_=None):
         if obj is None:
@@ -74,7 +75,7 @@ class _AssociationProxy(object):
             # and class levels we could return an SQL expression here.
             # The code of hybrid_property in SQLAlchemy illustrates
             # how to do that.
-            raise AttributeError  # pragma: no cover
+            return self
         target = getattr(obj, self.target)
         return getattr(target, self.value_attr) if target else None
 
@@ -103,8 +104,9 @@ def xsd_sequence_callback(tb, cls):
         target_cls = relationship_property.argument
         query = DBSession.query(getattr(target_cls, p.value_attr))
         attrs = {}
-        attrs["minOccurs"] = "0"
-        attrs["nillable"] = "true"
+        if p.nullable:
+            attrs["minOccurs"] = "0"
+            attrs["nillable"] = "true"
         attrs["name"] = k
         with tag(tb, "xsd:element", attrs) as tb:
             with tag(tb, "xsd:simpleType") as tb:
@@ -234,7 +236,12 @@ def _add_association_proxy(cls, col):
                                  lazy="immediate")
     setattr(cls, rel, relationship_)
 
-    setattr(cls, proxy, _AssociationProxy(rel, "name"))
+    nullable = True
+    cls_column_property = getattr(cls, col.name).property
+    for column in cls_column_property.columns:
+        nullable = nullable and column.nullable
+
+    setattr(cls, proxy, _AssociationProxy(rel, "name", nullable=nullable))
 
     if cls.__add_properties__ is None:
         cls.__add_properties__ = [proxy]

@@ -89,7 +89,8 @@ class TestReflection(TestCase):
             ),
             Column(
                 "child2_id", types.Integer,
-                ForeignKey("public.{0!s}_child.id".format(tablename))
+                ForeignKey("public.{0!s}_child.id".format(tablename)),
+                nullable=False
             ),
             Column("point", Geometry("POINT")),
             Column("linestring", Geometry("LINESTRING")),
@@ -115,7 +116,7 @@ class TestReflection(TestCase):
     def test_get_class(self):
         from geoalchemy2 import Geometry
         import c2cgeoportal_geoportal.lib.dbreflection
-        from c2cgeoportal_geoportal.lib.dbreflection import get_class
+        from c2cgeoportal_geoportal.lib.dbreflection import get_class, _AssociationProxy
 
         self._create_table("table_a")
         modelclass = get_class("table_a")
@@ -131,6 +132,11 @@ class TestReflection(TestCase):
         self.assertTrue(isinstance(modelclass.multipoint.type, Geometry))
         self.assertTrue(isinstance(modelclass.multilinestring.type, Geometry))
         self.assertTrue(isinstance(modelclass.multipolygon.type, Geometry))
+
+        self.assertTrue(isinstance(modelclass.child1, _AssociationProxy))
+        self.assertTrue(modelclass.child1.nullable)
+        self.assertTrue(isinstance(modelclass.child2, _AssociationProxy))
+        self.assertFalse(modelclass.child2.nullable)
 
         # test the Table object
         table = modelclass.__table__
@@ -252,7 +258,7 @@ class TestXSDSequenceCallback(TestCase):
             child1_ = relationship(Child, primaryjoin=(child1_id == Child.id))
             child1 = _AssociationProxy("child1_", "name")
             child2_ = relationship(Child, primaryjoin=(child2_id == Child.id))
-            child2 = _AssociationProxy("child2_", "name")
+            child2 = _AssociationProxy("child2_", "name", nullable=False)
 
         Child.__table__.create()
         Parent.__table__.create()
@@ -280,7 +286,7 @@ class TestXSDSequenceCallback(TestCase):
             xsd_sequence_callback(tb, self.cls)
         e = tb.close()
         self.assertIsNotNone(re.search(
-            '<xsd:element minOccurs="0" name="child2" nillable="true">'
+            '<xsd:element name="child2">'
             '<xsd:simpleType>'
             '<xsd:restriction base="xsd:string">'
             '<xsd:enumeration value="foo" />'
