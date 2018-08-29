@@ -1,7 +1,7 @@
 alabaster==0.7.11  # Doc theme
 alembic==1.0.0  # geoportal
 Babel==2.6.0  # i18n
-boto3==1.8.2  # Tile generation
+boto3==1.8.3  # Tile generation
 bottle==0.12.13  # geoportal
 c2c.cssmin==0.7.dev6  # CGXP build
 c2c.template==2.1.0  # geoportal
@@ -60,7 +60,7 @@ requests==2.19.1  # geoportal
 redis==2.10.6  # geoportal cache
 Shapely==1.6.4.post2  # geoportal
 simplejson==3.16.0  # geoportal
-Sphinx==1.7.7  # doc
+Sphinx==1.7.8  # doc
 sphinx-prompt==1.0.0  # doc
 SQLAlchemy==1.2.11
 tilecloud==1.1.0  # Tile generation
