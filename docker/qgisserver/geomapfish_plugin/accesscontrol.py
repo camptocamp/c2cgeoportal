@@ -174,7 +174,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
         restriction_areas = self.get_restriction_areas(gmf_layers, role=role)
 
         if len(restriction_areas) == 0:
-            self.area_cache[key] = []
+            self.area_cache[key] = None
             return None
 
         area = ops.unary_union(restriction_areas).wkt
@@ -224,12 +224,12 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
         self.assert_plugin_initialised()
 
         try:
-            if layer.dataProvider().storageType() in self.SUBSETSTRING_TYPE:
-                QgsMessageLog.logMessage("layerFilterExpression not in type")
-                return None
+            # Actually layerFilterSubsetString don't works on groups
+            # if layer.dataProvider().storageType() in self.SUBSETSTRING_TYPE:
+            #     QgsMessageLog.logMessage("layerFilterExpression not in type")
+            #     return None
 
             area = self.get_area(layer)
-
             if area is None:
                 QgsMessageLog.logMessage("layerFilterExpression no area")
                 return None
