@@ -1,7 +1,7 @@
 alabaster==0.7.11  # Doc theme
 alembic==1.0.0  # geoportal
 Babel==2.6.0  # i18n
-boto3==1.8.3  # Tile generation
+boto3==1.8.4  # Tile generation
 bottle==0.12.13  # geoportal
 c2c.cssmin==0.7.dev6  # CGXP build
 c2c.template==2.1.0  # geoportal
@@ -12,7 +12,7 @@ colander==1.4  # commons, admin
 ColanderAlchemy==0.3.3  # commons
 coverage==4.5.1  # Build coverage XML for Codacy
 dateutils==0.6.6  # geoportal pcreate
-deform==2.0.5  # commons, admin
+deform==2.0.6  # commons, admin
 defusedxml==0.5.0  # geoportal
 dogpile.cache==0.6.7  # geoportal
 flake8==3.5.0  # lint, TODO remove filter on pyflakes
@@ -72,7 +72,7 @@ virtualenv==16.0.0  # Makefile
 waitress==1.1.0  # pcreate
 WebOb==1.8.2  # geoportal test
 WebTest==2.0.30  # admin tests
-wsgi_lineprof==0.4.0  # profiling
+wsgi-lineprof==0.5.0  # profiling
 yamllint==1.11.1  # lint
 zgitignore==0.8.0  # Makefile
 zope.event==4.3.0  # commons, geoportal
