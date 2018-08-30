@@ -34,7 +34,7 @@ for (const filename of ls(path.resolve(__dirname, '${package}_geoportal/static-n
   );
 }
 
-const babelPresets = [['env',{
+const babelPresets = [['@babel/preset-env',{
   "targets": {
     "browsers": ["last 2 versions", "Firefox ESR", "ie 11"],
   },
@@ -49,7 +49,11 @@ const projectRule = {
     loader: 'babel-loader',
     options: {
       presets: babelPresets,
-      plugins: ['@camptocamp/babel-plugin-angularjs-annotate'],
+      plugins: [
+        '@babel/plugin-syntax-object-rest-spread',
+        '@babel/plugin-transform-spread',
+        '@camptocamp/babel-plugin-angularjs-annotate',
+      ],
     }
   },
 };
