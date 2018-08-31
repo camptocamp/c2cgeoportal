@@ -412,7 +412,7 @@ npm-packages: ngeo package.json
 		coveralls gaze jasmine-core jsdoc jsdom karma karma-chrome-launcher karma-coverage \
 		karma-jasmine karma-sourcemap-loader karma-webpack \
 		--src=ngeo/package.json --dst=$@
-	echo googshift eslint-plugin-googshift >> $@
+	echo jscodeshift googshift eslint-plugin-googshift >> $@
 
 admin/npm-packages: ngeo package.json
 	$(PRERULE_CMD)
