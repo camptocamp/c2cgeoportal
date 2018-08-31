@@ -9,6 +9,11 @@ lang_urls = {
   ))
   for lang in request.registry.settings["available_locale_names"]
 }
+fulltextsearch_groups = [
+  group[0] for group in models.DBSession.query(
+    func.distinct(main.FullTextSearch.layer_name)
+  ).filter(main.FullTextSearch.layer_name.isnot(None)).all()
+]
 simple_routes = dict(currentInterfaceUrl=interface_name)
 simple_routes.update(interface_config['routes'])
 fulltextsearch_params = dict(interface=interface_name)
