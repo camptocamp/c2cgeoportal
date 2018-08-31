@@ -50,9 +50,6 @@ Changes to apply
 2. Move all your components from `geoportal/{{package}}_geoportal/static-ngeo/components/<name>`
    to `geoportal/{{package}}_geoportal/static-ngeo/js/<name>`.
 
-3. If you have some custom Angular components you should follow these instructions:
-   https://github.com/camptocamp/ngeo/blob/master/docs/how_to_migrate_from_2.2_to_2.3.md
-
 
 Changes to apply on Docker version
 ----------------------------------
