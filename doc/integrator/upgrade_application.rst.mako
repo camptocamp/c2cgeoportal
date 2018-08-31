@@ -8,6 +8,10 @@ Upgrading a GeoMapFish application
 From a version 2.2
 ~~~~~~~~~~~~~~~~~~
 
+If you have some custom Angular components you should first follow these instructions:
+`Migration from ngeo 2.2 to ngeo 2.3
+<https://github.com/camptocamp/ngeo/blob/2.3/docs/how_to_migrate_from_2.2_to_2.3.md>`_
+
 Add a section ``managed_files:`` in the file ``project.yaml.mako``.
 In this section, you must select by a regular expression the project files you need to keep, and that are
 not handled by the GeoMapFish upgrade process. You can see in the GeoMapFish upgrade configuration, section
