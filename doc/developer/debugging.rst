@@ -25,7 +25,8 @@ Add in your makefile ``<user>.mk`` (Each developer should have a different port,
 
    FINALISE=TRUE make --makefile=<user>.mk serve-<interface>
 
-Open in the browser an URL like: ``https://<host>/<instanceid>/wsgi/dev/<interface>.html``.
+Open in the browser an URL like: ``https://<host>/<instanceid>/wsgi/dev/<interface>.html``,
+for Docker version: ``https://<host>/<instanceid>/dev/<interface>.html``.
 
 Browser
 -------
