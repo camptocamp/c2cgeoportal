@@ -50,9 +50,8 @@ wfs_permalink.update(interface_config.get('wfs_permalink', {}))
     no_redirect_query = {
         'no_redirect': 't'
     }
-    if 'Referer' in request.headers:
-        spliturl = urllib.parse.urlsplit(request.headers['Referer'])
-        query = urllib.parse.parse_qs(spliturl.query)
+    if 'query' in request.params:
+        query = urllib.parse.parse_qs(request.params['query'][1:])
         no_redirect_query.update(query)
     else:
         query = {}
