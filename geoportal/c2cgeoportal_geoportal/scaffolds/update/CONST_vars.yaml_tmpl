@@ -35,6 +35,7 @@ vars:
         PGPASSWORD: www-data
         PGDATABASE: geomapfish
         GEOPORTAL_INTERNAL_URL: http://geoportal:8080
+        TILECLOUDCHAIN_INTERNAL_URL: http://tilecloudchain:8080
         MAPCACHE_URL: http://mapcache:8080/mapcache/
         MAPSERVER_URL: http://mapserver:8080/
         MEMCACHED_HOST: memcached
