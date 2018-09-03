@@ -139,6 +139,10 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
         from c2cgeoportal_commons.models.main import Role
 
         parameters = self.serverInterface().requestHandler().parameterMap()
+
+        if parameters.get('ROLE_ID') == "0" and parameters.get('USER_ID') == "0":
+            return "ROOT"
+
         role = self.DBSession.query(Role).get(parameters['ROLE_ID']) if 'ROLE_ID' in parameters else None
         QgsMessageLog.logMessage("Role: {}".format(role.name if role else '-'))
         return role
@@ -150,6 +154,10 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
         [] => no access
         shapely.ops.cascaded_union(result) => geom of access
         """
+
+        # Root...
+        if role == "ROOT":
+            return Access.FULL, None
 
         if not rw:
             for l in gmf_layers:
@@ -320,7 +328,12 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             raise
 
     def cacheKey(self):  # NOQA
+        # Root...
         role = self.get_role()
+        if role == "ROOT":
+            return "{}-{}".format(
+                self.serverInterface().requestHandler().parameter("Host"), -1
+            )
         return "{}-{}".format(
             self.serverInterface().requestHandler().parameter("Host"),
             role.id if role is not None else '',
