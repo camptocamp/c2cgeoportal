@@ -16,11 +16,6 @@ endif
 
 export MAJOR_VERSION = 2.3
 export MAIN_BRANCH = 2.3
-ifdef TRAVIS_TAG
-export VERSION = $(TRAVIS_TAG)
-else
-export VERSION = $(MAJOR_VERSION)
-endif
 
 DOCKER_BASE = camptocamp/geomapfish
 DOCKER_TEST_BASE = $(DOCKER_BASE)-test
@@ -185,7 +180,7 @@ docker-build-build: $(shell docker-required --path . --replace-pattern='^test(.*
 		$(L10N_PO_FILES) \
 		$(APPS_FILES) \
 		$(APPS_FILES_ALT)
-	docker build --build-arg=VERSION=$(VERSION) --tag=$(DOCKER_BASE)-build:$(MAJOR_VERSION) .
+	docker build --build-arg=VERSION=$(MAJOR_VERSION) --tag=$(DOCKER_BASE)-build:$(MAJOR_VERSION) .
 
 docker/qgisserver/commons: commons
 	rm --recursive --force $@
