@@ -482,7 +482,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                         "parse the GetCapabilities document.",
                         RED))
                     print(colorize(str(e), RED))
-                    print(u"URL: {0!s}\nxml:\n{1!s}".format(wms_getcap_url, content))
+                    print(u"URL: {0!s}\nxml:\n{1!s}i, Layer: {}".format(wms_getcap_url, content, layer))
                     if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
                         raise
             except Exception as e:  # pragma: no cover
