@@ -40,8 +40,8 @@ def create_authentication(settings):
     timeout = None if timeout is None else int(timeout)
     reissue_time = settings.get("reissue_time")
     reissue_time = None if reissue_time is None else int(reissue_time)
-    https_only = settings.get("auth_https_only")
-    https_only = True if https_only is None else https_only != "False"
+    http_only = settings.get("auth_http_only")
+    http_only = True if http_only is None else http_only != "False"
     secure = settings.get("auth_secure")
     secure = True if secure is None else secure != "False"
     cookie_authentication_policy = AuthTktAuthenticationPolicy(
@@ -49,7 +49,7 @@ def create_authentication(settings):
         callback=defaultgroupsfinder,
         cookie_name=settings["authtkt_cookie_name"],
         timeout=timeout, max_age=timeout, reissue_time=reissue_time,
-        hashalg="sha512", http_only=https_only, secure=secure,
+        hashalg="sha512", http_only=http_only, secure=secure,
     )
     basic_authentication_policy = BasicAuthAuthenticationPolicy(c2cgeoportal_check)
     policies = [cookie_authentication_policy, basic_authentication_policy]
