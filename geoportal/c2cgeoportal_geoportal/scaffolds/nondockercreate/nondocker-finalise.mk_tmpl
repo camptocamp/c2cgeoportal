@@ -190,6 +190,7 @@ endif
 	$(PYTHON_BIN)/python -m compileall -q .build/venv >/dev/null || true
 	$(PYTHON_BIN)/python -m compileall -q c2cgeoportal_* >/dev/null || true
 	$(PYTHON_BIN)/python -m compileall -q geoportal/$(PACKAGE)_geoportal -x geoportal/$(PACKAGE)_geoportal/static.* >/dev/null || true
+	touch $@
 
 npm-packages: .config
 	$(DOCKER_RUN) cp /opt/c2cgeoportal_admin/npm-packages $@
