@@ -151,7 +151,10 @@ BEGIN
 -- add FK constraint
   FOR qry IN
     SELECT 'ALTER TABLE ' || quote_ident(dest_schema) || '.' || quote_ident(rn.relname)
-        || ' ADD CONSTRAINT ' || quote_ident(ct.conname) || ' ' || pg_get_constraintdef(ct.oid) || ';'
+        || ' ADD CONSTRAINT ' || quote_ident(ct.conname) || ' '
+        || replace(pg_get_constraintdef(ct.oid),
+            ') REFERENCES ' || source_schema || '.',
+            ') REFERENCES ' || dest_schema || '.') || ';'
     FROM pg_constraint ct
     JOIN pg_class rn ON rn.oid = ct.conrelid
     WHERE connamespace = src_oid
