@@ -15,17 +15,17 @@ args = sys.argv[1:]
 has_docker = os.path.exists('/var/run/docker.sock')
 docker_group_id = os.stat('/var/run/docker.sock').st_gid if has_docker else -1
 
-try:
-    subprocess.check_call(['groupadd', '--gid=' + os.environ['GROUP_ID'], 'geomapfish'])
-except subprocess.CalledProcessError:
-    pass
-
 if has_docker:
     try:
         subprocess.check_call(['groupdel', 'docker'])
         subprocess.check_call(['groupadd', '--gid={}'.format(docker_group_id), 'docker'])
     except subprocess.CalledProcessError:
         pass
+
+try:
+    subprocess.check_call(['groupadd', '--gid=' + os.environ['GROUP_ID'], 'geomapfish'])
+except subprocess.CalledProcessError:
+    pass
 
 try:
     subprocess.check_call([
