@@ -1,6 +1,10 @@
 <%
 import json
+from sqlalchemy import func
+from c2cgeoportal_commons import models
+from c2cgeoportal_commons.models import main
 from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
+
 interface_name = request.params['interface']
 interface_config = request.registry.settings['interfaces_config'][interface_name]
 lang_urls = {
