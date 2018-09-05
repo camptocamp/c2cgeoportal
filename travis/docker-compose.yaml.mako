@@ -20,7 +20,7 @@ ${service_defaults('db', 5432)}\
 ${service_defaults('externaldb', 5432)}\
 
   print:
-    image: camptocamp/mapfish_print:3.15
+    image: camptocamp/mapfish_print:3.16
     user: www-data
     volumes_from:
       - config:ro
