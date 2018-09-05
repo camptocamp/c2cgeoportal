@@ -40,9 +40,9 @@ def create_authentication(settings):
     timeout = None if timeout is None else int(timeout)
     reissue_time = settings.get("reissue_time")
     reissue_time = None if reissue_time is None else int(reissue_time)
-    http_only = settings.get("auth_http_only")
+    http_only = settings.get("authtk_http_only")
     http_only = True if http_only is None else http_only != "False"
-    secure = settings.get("auth_secure")
+    secure = settings.get("authtk_secure")
     secure = True if secure is None else secure != "False"
     cookie_authentication_policy = AuthTktAuthenticationPolicy(
         settings["authtkt_secret"],
