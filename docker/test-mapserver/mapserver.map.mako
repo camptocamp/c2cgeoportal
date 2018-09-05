@@ -41,6 +41,7 @@ MAP
             "wms_title" "changeme"
             "wms_abstract" "changeme"
             "wms_onlineresource" "changeme"
+            "wfs_onlineresource" "changeme"
             "wms_encoding" "UTF-8"
             "wms_enable_request" "*"
             "ows_title" "changeme"

@@ -4,13 +4,13 @@
 # Test requests:
 #
 # WMS GetCapabilities:
-# /mapserv?service=wms&version=1.1.1&request=getcapabilities
+# /wsgi/mapserv_proxy?service=wms&version=1.1.1&request=getcapabilities
 #
 # WMS GetMap:
-# /mapserv?service=wms&version=1.1.1&request=getmap&bbox=-180,-90,180,90&layers=countries&width=600&height=400&srs=EPSG:4326&format=image/png
+# /wsgi/mapserv_proxy?service=wms&version=1.1.1&request=getmap&bbox=-180,-90,180,90&layers=countries&width=600&height=400&srs=EPSG:4326&format=image/png
 #
 # WMS GetFeatureInfo:
-# /mapserv?service=wms&version=1.1.1&request=getfeatureinfo&bbox=-180,-90,180,90&layers=countries&query_layers=countries&width=600&height=400&srs=EPSG:4326&format=image/png&x=180&y=90&info_format=application/vnd.ogc.gml
+# /wsgi/mapserv_proxy?service=wms&version=1.1.1&request=getfeatureinfo&bbox=-180,-90,180,90&layers=countries&query_layers=countries&width=600&height=400&srs=EPSG:4326&format=image/png&x=180&y=90&info_format=application/vnd.ogc.gml
 #
 
 MAP
@@ -71,6 +71,7 @@ MAP
             "wms_title" "changeme"
             "wms_abstract" "changeme"
             "wms_onlineresource" "http://${host}/${instanceid}/wsgi/mapserv_proxy"
+            "wfs_onlineresource" "http://${host}/${instanceid}/wsgi/mapserv_proxy"
             "wms_srs" "EPSG:{{srid}}"
             "wms_encoding" "UTF-8"
             "wms_enable_request" "*"
