@@ -12,7 +12,7 @@ services:
 ${service_defaults('config')}\
 
   print:
-    image: camptocamp/mapfish_print:3.15
+    image: camptocamp/mapfish_print:3.16
     user: www-data
     restart: on-failure
     volumes_from:
