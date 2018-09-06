@@ -9,3 +9,4 @@
 !setup.cfg
 !setup.py
 !{{package}}_geoportal
+{{package}}_geoportal/static/lib/cgxp
