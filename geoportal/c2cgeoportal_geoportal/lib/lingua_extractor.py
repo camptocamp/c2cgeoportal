@@ -105,9 +105,9 @@ class _Request:  # pragma: no cover
         return ""
 
 
-class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
+class GeomapfishAngularExtractor(Extractor):  # pragma: no cover
     """
-    GeoMapfish angular extractor
+    GeoMapFish angular extractor
     """
 
     extensions = [".js", ".html"]
@@ -202,9 +202,9 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
             raise
 
 
-class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
+class GeomapfishConfigExtractor(Extractor):  # pragma: no cover
     """
-    GeoMapfish config extractor (raster layers, and print templates)
+    GeoMapFish config extractor (raster layers, and print templates)
     """
 
     extensions = [".yaml", ".tmpl"]
@@ -322,9 +322,9 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
         return result
 
 
-class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
+class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
     """
-    GeoMapfish theme extractor
+    GeoMapFish theme extractor
     """
 
     # Run on the development.ini file

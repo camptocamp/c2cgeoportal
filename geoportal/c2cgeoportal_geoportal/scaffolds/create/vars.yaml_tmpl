@@ -238,7 +238,7 @@ vars:
       {message}
 
       Sincerely yours
-      The GeoMapfish team
+      The GeoMapFish team
 
   smtp:
     # Used to send email from various feature
@@ -259,7 +259,7 @@ vars:
       the newly generated password is: {password}
 
       Sincerely yours
-      The GeoMapfish team
+      The GeoMapFish team
 
   welcome_email:
     # Used to send a welcome email for new user
@@ -273,7 +273,7 @@ vars:
       Your password is: {password}
 
       Sincerely yours
-      The GeoMapfish team
+      The GeoMapFish team
 
   docker_services:
     qgisserver:
