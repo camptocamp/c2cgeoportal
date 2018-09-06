@@ -48,19 +48,19 @@ Prepare the upgrade:
    git commit --quiet --message="Start upgrade"
    make --makefile=<user>.mk project.yaml
 
+For Docker (recommended):
+
+.. prompt:: bash
+
+   ./docker-run --version=<version> --home --image=camptocamp/geomapfish-build ${'\\'}
+       c2cupgrade --force-docker --new-makefile=Makefile --makefile=<package>.mk
+
 For non-Docker:
 
 .. prompt:: bash
 
    ./docker-run --version=<version> --home --image=camptocamp/geomapfish-build ${'\\'}
        c2cupgrade --nondocker --makefile=<user>.mk
-
-And for Docker (experimental):
-
-.. prompt:: bash
-
-   ./docker-run --version=<version> --home --image=camptocamp/geomapfish-build ${'\\'}
-       c2cupgrade --force-docker --new-makefile=Makefile --makefile=<package>.mk
 
 Where ``<version>`` is the version number of GeoMapFish you want to use.
 You will find available versions on `Dockerhub <https://hub.docker.com/r/camptocamp/geomapfish-build>`_.
