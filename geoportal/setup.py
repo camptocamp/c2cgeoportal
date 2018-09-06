@@ -93,9 +93,9 @@ setup(
             'c2cgeoportal_nondockerupdate = c2cgeoportal_geoportal.scaffolds:TemplateNondockerUpdate',
         ],
         'lingua.extractors': [
-            'geomapfish-theme = c2cgeoportal_geoportal.lib.lingua_extractor:GeoMapfishThemeExtractor',
-            'geomapfish-config = c2cgeoportal_geoportal.lib.lingua_extractor:GeoMapfishConfigExtractor',
-            'geomapfish-angular = c2cgeoportal_geoportal.lib.lingua_extractor:GeoMapfishAngularExtractor',
+            'geomapfish-theme = c2cgeoportal_geoportal.lib.lingua_extractor:GeomapfishThemeExtractor',
+            'geomapfish-config = c2cgeoportal_geoportal.lib.lingua_extractor:GeomapfishConfigExtractor',
+            'geomapfish-angular = c2cgeoportal_geoportal.lib.lingua_extractor:GeomapfishAngularExtractor',
         ],
     }
 )
