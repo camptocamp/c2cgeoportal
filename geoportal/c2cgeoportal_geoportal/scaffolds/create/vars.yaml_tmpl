@@ -349,6 +349,7 @@ update_paths:
   - headers.shortener
   - headers.login
   - interfaces_theme
+  - servers
   - shortener
 
 no_interpreted:
