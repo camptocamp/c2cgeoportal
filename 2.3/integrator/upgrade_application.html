@@ -70,12 +70,12 @@ span.prompt1:before {
 <span class="prompt1">git add docker-run project.yaml.mako</span>
 <span class="prompt1">git commit --quiet --message<span class="o">=</span><span class="s2">&quot;Start upgrade&quot;</span></span>
 <span class="prompt1">make --makefile<span class="o">=</span>&lt;user&gt;.mk project.yaml</span>
+</pre><p>For Docker (recommended):</p>
+<pre class="highlight"><span class="prompt1">./docker-run --version<span class="o">=</span>&lt;version&gt; --home --image<span class="o">=</span>camptocamp/geomapfish-build <span class="se">\</span>
+    c2cupgrade --force-docker --new-makefile<span class="o">=</span>Makefile --makefile<span class="o">=</span>&lt;package&gt;.mk</span>
 </pre><p>For non-Docker:</p>
 <pre class="highlight"><span class="prompt1">./docker-run --version<span class="o">=</span>&lt;version&gt; --home --image<span class="o">=</span>camptocamp/geomapfish-build <span class="se">\</span>
     c2cupgrade --nondocker --makefile<span class="o">=</span>&lt;user&gt;.mk</span>
-</pre><p>And for Docker (experimental):</p>
-<pre class="highlight"><span class="prompt1">./docker-run --version<span class="o">=</span>&lt;version&gt; --home --image<span class="o">=</span>camptocamp/geomapfish-build <span class="se">\</span>
-    c2cupgrade --force-docker --new-makefile<span class="o">=</span>Makefile --makefile<span class="o">=</span>&lt;package&gt;.mk</span>
 </pre><p>Where <code class="docutils literal notranslate"><span class="pre">&lt;version&gt;</span></code> is the version number of GeoMapFish you want to use.
 You will find available versions on <a class="reference external" href="https://hub.docker.com/r/camptocamp/geomapfish-build">Dockerhub</a>.
 For example, <code class="docutils literal notranslate"><span class="pre">2.3.0</span></code> is the first stable release of the version <code class="docutils literal notranslate"><span class="pre">2.3</span></code>.</p>
