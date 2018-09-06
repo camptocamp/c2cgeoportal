@@ -141,7 +141,7 @@ OGC server
 In the project file you should set the online resource URL
 (Project/Properties.../QGIS Server/General information/Online resource) to
 ``https://<host>/<entrypoint>/mapservproxy?ogcserver=<name>``, e.-g.
-``https://geomapfish-demo.camptocamp.com/mapservproxy?ogcserver=QGIS%20server``.
+``https://geomapfish-demo-ci.camptocamp.com/mapservproxy?ogcserver=QGIS%20server``.
 
 To use the QGIS server in authenticated mode through the mapserv proxy, it's required to be in docker mode,
 and he should be configured as follow:
