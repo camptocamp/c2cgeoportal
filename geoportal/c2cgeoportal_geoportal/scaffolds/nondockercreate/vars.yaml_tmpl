@@ -257,7 +257,7 @@ vars:
     email_body: |
       Hello {user},
 
-      You have a new account on GeoMapFish: https://geomapfish-demo.camptocamp.com/2.3
+      You have a new account on GeoMapFish: https://geomapfish-demo-ci.camptocamp.com/2.4
       Your user name is: {user}
       Your password is: {password}
 

@@ -31,8 +31,8 @@ One of the primary goals of the c2cgeoportal project is sharing as much as
 functionality and code as possible between applications. *Do not repeat
 ourselves!*
 
-`Demo <https://geomapfish-demo.camptocamp.net/${major_version}>`_,
-`with features grid <https://camptocamp.github.io/ngeo/${major_version}/examples/contribs/gmf/apps/desktop_alt/>`_,
+`Demo <https://geomapfish-demo-ci.camptocamp.com/${major_version}>`_,
+`with features grid <https://geomapfish-demo-ci.camptocamp.com/${major_version}/desktop_alt/>`_,
 to test the editing you can use the username 'demo' with the password 'demo'.
 
 `ngeo (client) documentation <https://camptocamp.github.io/ngeo/${major_version}/apidoc/>`_.
