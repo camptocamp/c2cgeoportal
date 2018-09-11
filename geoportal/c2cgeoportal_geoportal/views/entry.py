@@ -264,6 +264,8 @@ class Entry:
             "SERVICE": "WMS",
             "VERSION": "1.1.1",
             "REQUEST": "GetCapabilities",
+            "ROLE_ID": "0",
+            "USER_ID": "0",
         })
 
         log.info("Get WMS GetCapabilities for url: {}".format(url))
@@ -1110,6 +1112,8 @@ class Entry:
             "SERVICE": "WFS",
             "VERSION": "1.0.0",
             "REQUEST": "GetCapabilities",
+            "ROLE_ID": "0",
+            "USER_ID": "0",
         }
         wfsgc_url = add_url_params(wfs_url, params)
 
@@ -1135,8 +1139,7 @@ class Entry:
         try:
             get_capabilities_dom = parseString(response.text)
             featuretypes = []
-            for featureType in get_capabilities_dom.getElementsByTagNameNS(
-                    self.WFS_NS, "FeatureType"):
+            for featureType in get_capabilities_dom.getElementsByTagNameNS(self.WFS_NS, "FeatureType"):
                 # do not includes FeatureType without name
                 name = featureType.getElementsByTagNameNS(self.WFS_NS, "Name").item(0)
                 if name:
@@ -1147,7 +1150,7 @@ class Entry:
                         name_value = name_value.split(":")[1]  # pragma nocover
                     featuretypes.append(name_value)
                 else:  # pragma nocover
-                    log.warn("Feature type without name: {}".format(featureType.toxml()))
+                    log.warning("Feature type without name: {}".format(featureType.toxml()))
             return featuretypes, errors
         except Exception:  # pragma: no cover
             return response.text, errors

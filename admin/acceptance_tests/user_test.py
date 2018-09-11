@@ -42,7 +42,7 @@ def users_test_data(dbsession, transact):
 
 EXPECTED_WELCOME_MAIL = \
     'Hello {},\n\nYou have a new account on GeoMapFish demo: https://geomapfish-demo.camptocamp.com/2.3\n' + \
-    'Your user name is: {}\nYour password is: {}\n\nSincerely yours\nThe GeoMapfish team\n'
+    'Your user name is: {}\nYour password is: {}\n\nSincerely yours\nThe GeoMapFish team\n'
 
 
 @pytest.mark.usefixtures("users_test_data", "test_app")

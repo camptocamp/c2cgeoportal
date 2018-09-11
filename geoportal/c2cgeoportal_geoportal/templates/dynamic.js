@@ -1,6 +1,10 @@
 <%
 import json
+from sqlalchemy import func
+from c2cgeoportal_commons import models
+from c2cgeoportal_commons.models import main
 from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
+
 interface_name = request.params['interface']
 interface_config = request.registry.settings['interfaces_config'][interface_name]
 lang_urls = {
@@ -9,8 +13,13 @@ lang_urls = {
   ))
   for lang in request.registry.settings["available_locale_names"]
 }
-simple_routes = dict(currentInterfaceUrl=interface_name)
-simple_routes.update(interface_config['routes'])
+fulltextsearch_groups = [
+  group[0] for group in models.DBSession.query(
+    func.distinct(main.FullTextSearch.layer_name)
+  ).filter(main.FullTextSearch.layer_name.isnot(None)).all()
+]
+routes = dict(currentInterfaceUrl=interface_name)
+routes.update(interface_config['routes'])
 fulltextsearch_params = dict(interface=interface_name)
 fulltextsearch_params.update(interface_config['fulltextsearch_params'])
 tree_params = dict(
@@ -28,20 +37,19 @@ wfs_permalink.update(interface_config.get('wfs_permalink', {}))
 % for name, value in interface_config['constants'].items():
   module.constant('${name}', ${json.dumps(value) | n})
 % endfor
-% if 'gmfSearchGroups' not in interface_config['constants']:
-  module.constant('gmfSearchGroups', ${json.dumps(fulltextsearch_groups) | n});
-% endif
-  module.constant('langUrls', ${json.dumps(lang_urls) | n});
-  module.constant('cacheVersion', '${get_cache_version()}');
-  module.constant('ngeoWfsPermalinkOptions', ${json.dumps(wfs_permalink) | n});
-% for constant, route in simple_routes.items():
+% for constant, route in routes.items():
   module.constant('${constant}', '${request.route_url(route) | n}');
 % endfor
-  module.constant('gmfTreeUrl', '${request.route_url('themes', _query=tree_params) | n}');
-  module.constant('fulltextsearchUrl', '${request.route_url('fulltextsearch', _query=fulltextsearch_params) | n}');
 % for constant, static_ in interface_config.get('static', {}).items():
   module.constant('${constant}', '${request.static_url(static_)}');
 % endfor
+  module.constant('cacheVersion', '${get_cache_version()}');
+  module.constant('langUrls', ${json.dumps(lang_urls) | n});
+% if 'gmfSearchGroups' not in interface_config['constants']:
+  module.constant('gmfSearchGroups', ${json.dumps(fulltextsearch_groups) | n});
+% endif
+  module.constant('gmfTreeUrl', '${request.route_url('themes', _query=tree_params) | n}');
+  module.constant('fulltextsearchUrl', '${request.route_url('fulltextsearch', _query=fulltextsearch_params) | n}');
   module.constant('ngeoWfsPermalinkOptions', ${json.dumps(wfs_permalink) | n});
 
 % if 'redirect_interface' in interface_config:
@@ -50,9 +58,8 @@ wfs_permalink.update(interface_config.get('wfs_permalink', {}))
     no_redirect_query = {
         'no_redirect': 't'
     }
-    if 'Referer' in request.headers:
-        spliturl = urllib.parse.urlsplit(request.headers['Referer'])
-        query = urllib.parse.parse_qs(spliturl.query)
+    if 'query' in request.params:
+        query = urllib.parse.parse_qs(request.params['query'][1:])
         no_redirect_query.update(query)
     else:
         query = {}
