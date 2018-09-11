@@ -116,10 +116,10 @@ def main():
                 )
             data = _sub(
                 re.escape('<script src="https://geomapfish-demo-dc.camptocamp.com/2.') + '[0-9]' +
-                re.escape('/dynamic.js?interface={}"></script>'.format(args.interface)),
-                '<script src="{entry_point}dynamic.js?interface={interface}"></script>'.format(
-                    entry_point='${htmlWebpackPlugin.options.vars.entry_point}' if args.docker else '',
-                    interface=args.interface),
+                re.escape('/dynamic.js?'),
+                '<script src="{entry_point}dynamic.js?'.format(
+                     entry_point='${htmlWebpackPlugin.options.vars.entry_point}' if args.docker else '',
+                ),
                 data
             )
 

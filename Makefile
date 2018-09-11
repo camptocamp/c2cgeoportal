@@ -413,7 +413,7 @@ geoportal/c2cgeoportal_geoportal/scaffolds/create/docker-run: docker-run
 	$(PRERULE_CMD)
 	cp $< $@
 
-npm-packages: $(BUILD_DIR)/ngeo.timestamp admin/package.json
+npm-packages: $(BUILD_DIR)/ngeo.timestamp
 	$(PRERULE_CMD)
 	npm-packages \
 		coveralls gaze jasmine-core jsdoc jsdom karma karma-chrome-launcher karma-coverage \

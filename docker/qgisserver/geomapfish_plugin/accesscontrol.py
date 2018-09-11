@@ -21,6 +21,7 @@ from threading import Lock
 import traceback
 import zope.event.classhandler
 from c2c.template.config import config
+from enum import Enum
 
 from qgis.core import QgsMessageLog, QgsDataSourceUri, QgsProject
 from qgis.server import QgsAccessControlFilter
@@ -31,6 +32,12 @@ import c2cwsgiutils.broadcast
 class GMFException(Exception):
     def __init__(self, msg):
         super(GMFException, self).__init__(msg)
+
+
+class Access(Enum):
+    NO = 1
+    AREA = 2
+    FULL = 3
 
 
 class GeoMapFishAccessControl(QgsAccessControlFilter):
@@ -132,6 +139,10 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
         from c2cgeoportal_commons.models.main import Role
 
         parameters = self.serverInterface().requestHandler().parameterMap()
+
+        if parameters.get('ROLE_ID') == "0" and parameters.get('USER_ID') == "0":
+            return "ROOT"
+
         role = self.DBSession.query(Role).get(parameters['ROLE_ID']) if 'ROLE_ID' in parameters else None
         QgsMessageLog.logMessage("Role: {}".format(role.name if role else '-'))
         return role
@@ -144,21 +155,31 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
         shapely.ops.cascaded_union(result) => geom of access
         """
 
+        # Root...
+        if role == "ROOT":
+            return Access.FULL, None
+
+        if not rw:
+            for l in gmf_layers:
+                if l.public:
+                    return Access.FULL, None
+
         if role is None:
-            return []
+            return Access.NO, None
 
         restriction_areas = []
         for layer in gmf_layers:
             for restriction_area in layer.restrictionareas:
                 if role in restriction_area.roles and rw is False or restriction_area.readwrite is True:
                     if restriction_area.area is None:
-                        return []
+                        return Access.FULL, None
                     else:
-                        restriction_areas.append(geoalchemy2.shape.to_shape(
-                            restriction_area.area
-                        ))
+                        restriction_areas.append(geoalchemy2.shape.to_shape(restriction_area.area))
 
-        return restriction_areas
+        if len(restriction_areas) == 0:
+            return Access.NO, None
+
+        return Access.AREA, restriction_areas
 
     def get_area(self, layer, rw=False):
         role = self.get_role()
@@ -171,15 +192,15 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             raise Exception("Access to an unknown layer")
 
         gmf_layers = self.get_layers()[layer.name()]
-        restriction_areas = self.get_restriction_areas(gmf_layers, role=role)
+        access, restriction_areas = self.get_restriction_areas(gmf_layers, role=role)
 
-        if len(restriction_areas) == 0:
-            self.area_cache[key] = None
-            return None
+        if access is not Access.AREA:
+            self.area_cache[key] = (access, None)
+            return access, None
 
         area = ops.unary_union(restriction_areas).wkt
-        self.area_cache[key] = area
-        return area
+        self.area_cache[key] = (Access.AREA, area)
+        return (Access.AREA, area)
 
     def layerFilterSubsetString(self, layer):  # NOQA
         """ Return an additional subset string (typically SQL) filter """
@@ -194,10 +215,13 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
                 QgsMessageLog.logMessage("layerFilterSubsetString not in type")
                 return None
 
-            area = self.get_area(layer)
-            if area is None:
+            access, area = self.get_area(layer)
+            if access is Access.FULL:
                 QgsMessageLog.logMessage("layerFilterSubsetString no area")
                 return None
+            elif access is Access.NO:
+                QgsMessageLog.logMessage("layerFilterSubsetString not allowed")
+                return "0"
 
             area = "ST_GeomFromText('{}', {})".format(
                 area, self.srid
@@ -211,7 +235,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             )
             QgsMessageLog.logMessage("layerFilterSubsetString filter: {}".format(result))
             return result
-        except Exception as e:
+        except Exception:
             QgsMessageLog.logMessage(''.join(traceback.format_exception(*sys.exc_info())))
             raise
 
@@ -229,10 +253,13 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             #     QgsMessageLog.logMessage("layerFilterExpression not in type")
             #     return None
 
-            area = self.get_area(layer)
-            if area is None:
+            access, area = self.get_area(layer)
+            if access is Access.FULL:
                 QgsMessageLog.logMessage("layerFilterExpression no area")
                 return None
+            elif access is Access.NO:
+                QgsMessageLog.logMessage("layerFilterExpression not allowed")
+                return "0"
 
             result = "intersects($geometry, transform(geom_from_wkt('{}'), 'EPSG:{}', '{}'))".format(
                 area, self.srid, layer.crs().authid()
@@ -257,21 +284,17 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
                 return rights
 
             gmf_layers = self.get_layers()[layer.name()]
-            for l in gmf_layers:
-                if l.public is True:
-                    rights.canRead = True
 
             role = self.get_role()
-            if not rights.canRead:
-                restriction_areas = self.get_restriction_areas(gmf_layers, role=role)
-                if len(restriction_areas) > 0:
-                    rights.canRead = True
+            access, _ = self.get_restriction_areas(gmf_layers, role=role)
+            if access is not Access.NO:
+                rights.canRead = True
 
-            restriction_areas = self.get_restriction_areas(gmf_layers, rw=True, role=role)
-            rights.canInsert = rights.canUpdate = rights.canDelete = len(restriction_areas) > 0
+            access, _ = self.get_restriction_areas(gmf_layers, rw=True, role=role)
+            rights.canInsert = rights.canUpdate = rights.canDelete = access is not Access.NO
 
             return rights
-        except Exception as e:
+        except Exception:
             QgsMessageLog.logMessage(''.join(traceback.format_exception(*sys.exc_info())))
             raise
 
@@ -291,15 +314,26 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
         self.assert_plugin_initialised()
 
         try:
-            area = self.get_area(layer, rw=True)
+            access, area = self.get_area(layer, rw=True)
+            if access is Access.FULL:
+                QgsMessageLog.logMessage("layerFilterExpression no area")
+                return True
+            elif access is Access.NO:
+                QgsMessageLog.logMessage("layerFilterExpression not allowed")
+                return False
 
-            return area is None or area.intersect(feature.geom)
-        except Exception as e:
+            return area.intersect(feature.geom)
+        except Exception:
             QgsMessageLog.logMessage(''.join(traceback.format_exception(*sys.exc_info())))
             raise
 
     def cacheKey(self):  # NOQA
+        # Root...
         role = self.get_role()
+        if role == "ROOT":
+            return "{}-{}".format(
+                self.serverInterface().requestHandler().parameter("Host"), -1
+            )
         return "{}-{}".format(
             self.serverInterface().requestHandler().parameter("Host"),
             role.id if role is not None else '',

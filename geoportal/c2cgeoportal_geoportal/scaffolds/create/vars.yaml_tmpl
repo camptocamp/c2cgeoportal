@@ -113,7 +113,7 @@ vars:
           queryCountFirst: true
         gmfPrintOptions:
           scaleInput: true
-          gmfPrintOptions:
+          legend:
             useBbox: false
         gmfTreeManagerModeFlush: false
         ngeoRoutingOptions:
@@ -131,6 +131,15 @@ vars:
                 profile: routed-hiking
         ngeoNominatimSearchDefaultParams:
           - countrycodes: CH
+        ngeoWfsPermalinkOptions:
+          url: https://geomapfish-demo.camptocamp.com/docker/mapserv_proxy?ogcserver=QGIS%20server
+          wfsTypes:
+            - featureType: osm_hospitals
+              label: name
+            - featureType: osm_firestations
+              label: name
+          defaultFeatureNS: http://www.qgis.org/gml
+          defaultFeaturePrefix: feature
       routes:
         <<: *routes
         gmfProfileJsonUrl: profile.json
@@ -229,7 +238,7 @@ vars:
       {message}
 
       Sincerely yours
-      The GeoMapfish team
+      The GeoMapFish team
 
   smtp:
     # Used to send email from various feature
@@ -250,7 +259,7 @@ vars:
       the newly generated password is: {password}
 
       Sincerely yours
-      The GeoMapfish team
+      The GeoMapFish team
 
   welcome_email:
     # Used to send a welcome email for new user
@@ -264,7 +273,7 @@ vars:
       Your password is: {password}
 
       Sincerely yours
-      The GeoMapfish team
+      The GeoMapFish team
 
   docker_services:
     qgisserver:
@@ -317,7 +326,9 @@ update_paths:
   - checker.themes
   - docker_services.config.environment
   - docker_services.db.environment
+  - docker_services.geoportal-build.environment
   - docker_services.geoportal.environment
+  - docker_services.mapserver.environment
   - docker_services.qgisserver.environment
   - docker_services.tilecloudchain.environment
   - docker_services.print.environment
@@ -341,6 +352,8 @@ update_paths:
   - headers.layers
   - headers.shortener
   - headers.login
+  - interfaces_theme
+  - servers
   - shortener
 
 no_interpreted:

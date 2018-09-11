@@ -420,9 +420,15 @@ spell:
 		-name 'build' -prune -or \
 		-name '.build' -prune -or \
 		-name 'cgxp' -prune -or \
-		-name 'c2cgeoportal_*' -prune -or \
-		\( -type f -and -not -name '*.png' -and -not -name '*.mo' -and -not -name '*.po*' \
-		-and -not -name 'CONST_Makefile' -and -not -name 'package-lock.json' \) -print)
+		-name 'c2cgeoportal_*' -prune -or \( \
+		-type f -and \
+		-not -name '*.png' -and \
+		-not -name '*.mo' -and \
+		-not -name '*.po*' -and \
+		-not -name '*.qgs*' -and \
+		-not -name '*.qgz*' -and \
+		-not -name 'CONST_Makefile' -and \
+		-not -name 'package-lock.json' \) -print)
 
 .PHONY: clean
 clean: template-clean
