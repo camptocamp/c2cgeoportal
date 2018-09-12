@@ -81,7 +81,7 @@ ${service_defaults('memcached', 11211)}\
 ${service_defaults('redis', 6379)}\
 
   tilecloudchain:
-    image: camptocamp/tilecloud-chain:1.7
+    image: camptocamp/tilecloud-chain:1.8
     user: www-data
     restart: on-failure
     volumes_from:
@@ -89,7 +89,7 @@ ${service_defaults('redis', 6379)}\
 ${service_defaults('tilecloudchain', 8080)}\
 
   tilegeneration_slave:
-    image: camptocamp/tilecloud-chain:1.7
+    image: camptocamp/tilecloud-chain:1.8
     user: www-data
     restart: on-failure
     volumes_from:
