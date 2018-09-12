@@ -282,7 +282,9 @@ I18N_SOURCE_FILES += development.ini
 endif
 I18N_DEPENDENCIES += $(VENV_BIN)/pot-create$(PYTHON_BIN_POSTFIX)
 I18N_DEPENDENCIES += project.yaml
-I18N_DEPENDENCIES += .build/apache.timestamp
+ifeq (${MAPSERVER}, TRUE)
+I18N_DEPENDENCIES += .build/mapserver.timestamp
+endif
 
 
 # CGXP
@@ -1228,6 +1230,8 @@ $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf:
 
 .build/mapserver.timestamp: \
 		$(MAP_FILES) \
+		apache/application.wsgi \
+		apache/wsgi.conf \
 		apache/mapserver.conf \
 		$(APACHE_CONF_DIR)/$(INSTANCE_ID).conf
 	$(PRERULE_CMD)
