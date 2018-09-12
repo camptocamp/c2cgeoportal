@@ -49,10 +49,10 @@ templates:
         httpProcessors:
           - !mapUri
             mapping:
-              (https?)://${VISIBLE_WEB_HOST_RE_ESCAPED}${VISIBLE_ENTRY_POINT_RE_ESCAPED}tiles(.*): "${TILECLOUDCHAIN_INTERNAL_URL}${VISIBLE_ENTRY_POINT}tiles$2"
+              https?://${VISIBLE_WEB_HOST_RE_ESCAPED}${VISIBLE_ENTRY_POINT_RE_ESCAPED}tiles(.*): "${TILECLOUDCHAIN_INTERNAL_URL}${VISIBLE_ENTRY_POINT}tiles$1"
           - !mapUri
             mapping:
-              (https?)://${VISIBLE_WEB_HOST_RE_ESCAPED}${VISIBLE_ENTRY_POINT_RE_ESCAPED}(.*): "${GEOPORTAL_INTERNAL_URL}${VISIBLE_ENTRY_POINT}$2"
+              https?://${VISIBLE_WEB_HOST_RE_ESCAPED}${VISIBLE_ENTRY_POINT_RE_ESCAPED}(.*): "${GEOPORTAL_INTERNAL_URL}${VISIBLE_ENTRY_POINT}$1"
           - !forwardHeaders
             matchers:
               - !localMatch {}
@@ -68,11 +68,11 @@ templates:
               - !localMatch
                 reject: true
               - !hostnameMatch
-                host: geoportal
-                port: 8080
+                host: ${GEOPORTAL_INTERNAL_HOST}
+                port: ${GEOPORTAL_INTERNAL_PORT}
               - !hostnameMatch
-                host: tilecloudchain
-                port: 8080
+                host: ${TILECLOUDCHAIN_INTERNAL_HOST}
+                port: ${TILECLOUDCHAIN_INTERNAL_PORT}
               - !ipMatch
                 ip: 10.0.0.0
                 mask: 255.0.0.0
