@@ -710,6 +710,7 @@ class OGCServer(Base):
     name = Column(Unicode, label=_(u"Name"), nullable=False, unique=True)
     description = Column(Unicode, label=_(u"Description"))
     url = Column(Unicode, label=_(u"Base URL"), nullable=False)
+    version_wms = Column(Unicode, label=_(u"WMS version"))
     url_wfs = Column(Unicode, label=_(u"WFS URL"))
     type = Column(Enum(
         OGCSERVER_TYPE_MAPSERVER,
@@ -1021,10 +1022,12 @@ class Dimension(Base):
             cascade="save-update,merge,delete,delete-orphan",
         ),
     )
+    field = Column(Unicode, label=_(u"Field"))
 
-    def __init__(self, name="", value="", layer=None):
+    def __init__(self, name="", value="", layer=None, field=None):
         self.name = name
         self.value = value
+        self.field = field
         if layer is not None:
             self.layer = layer
 
