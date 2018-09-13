@@ -1230,6 +1230,8 @@ $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf:
 
 .build/mapserver.timestamp: \
 		$(MAP_FILES) \
+		apache/application.wsgi \
+		apache/wsgi.conf \
 		apache/mapserver.conf \
 		$(APACHE_CONF_DIR)/$(INSTANCE_ID).conf
 	$(PRERULE_CMD)
