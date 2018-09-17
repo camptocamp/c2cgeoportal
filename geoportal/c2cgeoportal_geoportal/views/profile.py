@@ -110,8 +110,8 @@ class Profile(Raster):
             has_one = False
             for ref in list(rasters.keys()):
                 value = self._get_raster_value(self.rasters[ref], coord[0], coord[1])
+                values[ref] = value
                 if value is not None:
-                    values[ref] = value
                     has_one = True
 
             if has_one:
