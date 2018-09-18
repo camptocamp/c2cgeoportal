@@ -20,6 +20,9 @@
 
 @include icon('layers', '\e600', 'C2cgeoportal');
 
+body {
+  touch-action: none;
+}
 body.x-ios.x-phone {
   font-size: 100%; // This accommodates the iPhone, at 163ppi
 }
