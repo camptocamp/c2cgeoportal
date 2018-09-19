@@ -57,12 +57,12 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             engine = sqlalchemy.create_engine(config.get('sqlalchemy_slave.url'))
             session_factory = sessionmaker()
             session_factory.configure(bind=engine)
-            self.DBSession = scoped_session(session_factory)
+            DBSession = scoped_session(session_factory)  # noqa: N806
 
             if "GEOMAPFISH_OGCSERVER" in os.environ:
                 self.single = True
                 self.ogcserver_accesscontrol = OGCServerAccessControl(
-                    server_iface, os.environ['GEOMAPFISH_OGCSERVER']
+                    server_iface, os.environ['GEOMAPFISH_OGCSERVER'], DBSession
                 )
 
                 QgsMessageLog.logMessage("Use OGC server named '{}'.".format(
@@ -76,7 +76,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
 
                 for map, map_config in ac_config.get("map_config").items():
                     map_config["access_control"] = OGCServerAccessControl(
-                        server_iface, map_config["ogc_server"]
+                        server_iface, map_config["ogc_server"], DBSession
                     )
                     self.ogcserver_accesscontrols[map] = map_config
                 QgsMessageLog.logMessage("Use config '{}'.".format(
@@ -136,10 +136,11 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
     SUBSETSTRING_TYPE = ["GPKG", "PostgreSQL database with PostGIS extension"]
 
-    def __init__(self, server_iface, ogcserver_name):
+    def __init__(self, server_iface, ogcserver_name, DBSession):  # noqa: N803
         super().__init__(server_iface)
 
         self.server_iface = server_iface
+        self.DBSession = DBSession
         self.area_cache = {}
         self.layers = None
         self.lock = Lock()
