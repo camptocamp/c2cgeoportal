@@ -67,9 +67,8 @@ class Profile(Raster):
             # Handles cases when a layer is undefined, thus when not all raster
             # have the same geographical coverage
             for l in layers:
-                if l not in point["values"]:
+                if point["values"][l] is None:
                     point["values"][l] = -9999
-
             r = template % tuple((str(point["values"][l]) for l in layers))
             result += "\n{},{},{:.1f},{:.1f}".format(str(point["dist"]), r, point["x"], point["y"])
 
@@ -110,8 +109,8 @@ class Profile(Raster):
             has_one = False
             for ref in list(rasters.keys()):
                 value = self._get_raster_value(self.rasters[ref], coord[0], coord[1])
+                values[ref] = value
                 if value is not None:
-                    values[ref] = value
                     has_one = True
 
             if has_one:
