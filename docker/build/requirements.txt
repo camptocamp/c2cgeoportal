@@ -1,7 +1,7 @@
 alabaster==0.7.11  # Doc theme
 alembic==1.0.0  # geoportal
 Babel==2.6.0  # i18n
-boto3==1.9.6  # Tile generation
+boto3==1.9.8  # Tile generation
 bottle==0.12.13  # geoportal
 c2c.cssmin==0.7.dev6  # CGXP build
 c2c.template==2.1.0  # geoportal
@@ -32,7 +32,7 @@ lingua==4.13  # i18n
 Mako==1.0.7  # geoportal
 mccabe==0.6.1  # lint
 mypy==0.630  # lint
-OWSLib==0.16.0  # geoportal
+OWSLib==0.17.0  # geoportal
 papyrus==2.3  # commons, geoportal
 passwordgenerator # geoportal
 PasteScript==2.0.2  # geoportal pcreate
@@ -62,7 +62,7 @@ Shapely==1.6.4.post2  # geoportal
 simplejson==3.16.0  # geoportal, rq.filter: !=3.16.1
 Sphinx==1.8.0  # doc
 sphinx-prompt==1.0.0  # doc
-SQLAlchemy==1.2.11
+SQLAlchemy==1.2.12
 tilecloud==1.1.0  # Tile generation
 tilecloud-chain==1.8.0  # Tile generation
 transaction==2.2.1  # commons, geoportal
