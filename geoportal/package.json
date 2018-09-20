@@ -4,7 +4,7 @@
     "description": "GeoMapFish geoportal interface",
     "author": "",
     "dependencies": {
-        "ngeo": "2.4.0-latest.20180919T165844Z.d0c4572.HEAD",
+        "ngeo": "2.4.0-latest.20180920T072731Z.453c721.HEAD",
         "googshift": "0.9.10",
         "eslint-plugin-googshift": "0.9.3"
     }
