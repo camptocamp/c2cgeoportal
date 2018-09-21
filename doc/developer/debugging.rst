@@ -151,16 +151,18 @@ Do a graceful restart of the running geoportal container
 Mount c2cgeoportal in the container
 ...................................
 
-Add in the ``docker-compose.yaml`` file, in the ``geoportal`` service the following lines:
+Add a ``docker-compose.override.yaml`` file with a ``geoportal`` service containing the following lines:
 
 .. code:: yaml
+
+   version: '2'
 
    services:
      geoportal:
        volumes:
-         - <c2cgeoportal_git_root>/geoportal/c2cgeoportal_commons:/opt/c2cgeoportal_geoportal/c2cgeoportal_commons
+         - <c2cgeoportal_git_root>/commons/c2cgeoportal_commons:/opt/c2cgeoportal_commons/c2cgeoportal_commons
          - <c2cgeoportal_git_root>/geoportal/c2cgeoportal_geoportal:/opt/c2cgeoportal_geoportal/c2cgeoportal_geoportal
-         - <c2cgeoportal_git_root>/geoportal/c2cgeoportal_admin:/opt/c2cgeoportal_geoportal/c2cgeoportal_admin
+         - <c2cgeoportal_git_root>/admin/c2cgeoportal_admin:/opt/c2cgeoportal_admin/c2cgeoportal_admin
 
 Expose a service
 ................
