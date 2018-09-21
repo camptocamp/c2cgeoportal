@@ -133,15 +133,6 @@ Just define an environment variable in the build:
 
    DOCKER_TAG=<tag> ./docker-run make build
 
-Use a different project name
-............................
-
-Define the project name when you run the Docker composition:
-
-.. prompt:: bash
-
-   docker-compose --project-name=<name> ...
-
 Run gunicorn to reload on modifications of Python files
 .......................................................
 
