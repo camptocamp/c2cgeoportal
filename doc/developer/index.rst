@@ -14,13 +14,9 @@ Content:
 .. toctree::
     :maxdepth: 1
 
-    build_release
-    cache
-    debugging
-    development_procedure
-    ngeo
-    principles
-    python_packaging
     server_side
+    debugging
     transifex
     webservices
+    cache
+    build_release
