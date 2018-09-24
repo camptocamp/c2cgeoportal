@@ -1,12 +1,34 @@
-#!/bin/bash -e
+#!/usr/bin/env python3
 
-export VISIBLE_WEB_HOST_RE_ESCAPED=`python3 -c "print(__import__('re').escape('${VISIBLE_WEB_HOST}'))"`
-export VISIBLE_ENTRY_POINT_RE_ESCAPED=`python3 -c "print(__import__('re').escape('${VISIBLE_ENTRY_POINT}'))"`
+import glob
+import os
+import re
+import urllib.parse
+import subprocess
 
-find /etc /usr/local/tomcat/webapps/ -name '*.tmpl' -print | while read file
-do
-    echo "Evaluate: ${file}"
-    envsubst < ${file} > ${file%.tmpl}
-done
+os.environ["VISIBLE_WEB_HOST_RE_ESCAPED"] = re.escape(os.environ.get('VISIBLE_WEB_HOST'))
+os.environ["VISIBLE_ENTRY_POINT_RE_ESCAPED"] = re.escape(os.environ.get('VISIBLE_ENTRY_POINT'))
 
-exec "$@"
+SCHEME_PORT = {
+    "http": 80,
+    "https": 443,
+}
+for name in ("GEOPORTAL", "TILECLOUDCHAIN"):
+    if name + "_INTERNAL_URL" in os.environ:
+        url = urllib.parse.urlparse(os.environ[name + "_INTERNAL_URL"])
+        os.environ[name + "_INTERNAL_HOST"] = url.hostname
+        os.environ[name + "_INTERNAL_PORT"] = str(url.port or SCHEME_PORT.get(url.scheme, "NULL"))
+
+
+def evaluate(filename):
+    print("Evaluate: " + filename)
+    with open(filename) as in_:
+        with open(filename[:-5], "w") as out:
+            subprocess.check_call(["envsubst"], stdin=in_, stdout=out)
+
+
+for filename in glob.glob("/etc/**/*.tmpl", recursive=True):
+    evaluate(filename)
+
+for filename in glob.glob("/usr/local/tomcat/webapps/**/*.tmpl", recursive=True):
+    evaluate(filename)

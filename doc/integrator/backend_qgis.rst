@@ -32,20 +32,22 @@ QGIS Desktop configuration
 OWS configuration
 *****************
 
-You should setup your OWS service in the QGIS project properties in the OWS
-tab.
+You should setup your OWS service in the QGIS project properties in the OWS tab.
 
-You should take care to **uncheck** the checkbox *User Layer ids as names*. If
-this checkbox is enabled you will have unreliable layers name.
+You should **check** *Service Capabilities* and **fill** *Online resource* to correctly generate
+the URL's in the capabilities.
 
-You should **check** the checkbox *Add geometry to feature response* in order
-to make the WMS GetFeatureInfo working correctly.
+In the *WMS capabilities* section, you should take care to **uncheck** the checkbox *User layer ids as
+names*. If this checkbox is enabled you will have unreliable layers name.
 
-In the *WFS capabilities* section, you should check the layers that need to be
-available in the WFS service.
+In the *WMS capabilities* section, you should **check** the checkbox *Add geometry to feature response* in
+order to make the WMS GetFeatureInfo working correctly.
 
-Finally, your QGIS project layers CRS should all be in the same CSR. This is subject to
-change.
+In the *WFS capabilities* section, you should check the layers that need to be available in the WFS service.
+Also take care on the Update Insert delete column to make the layer available throw the WFS transactional
+API.
+
+Finally, your QGIS project layers CRS should all be in the same CSR. This is subject to change.
 
 Connect to Postgres database
 ****************************
@@ -53,8 +55,7 @@ Connect to Postgres database
 This section is subject to change when the QGIS plugin is available.
 
 The way you should connect QGIS to the database is based on an external file
-called ``pg_service.conf`` located in the home directory. The content of this file
-is as follows:
+called ``pg_service.conf`` located in the home directory. The content of this file is as follows:
 
 .. code::
 
@@ -79,8 +80,7 @@ You can have several sections. A section start with a name with [] and
 finish with a blank line. This file should be a unix file.
 
 On QGIS desktop, when creating a new PostGIS connection, give it a name and use
-the service name (``geomapfish`` in our example) in the connection parameters
-form.
+the service name (``geomapfish`` in our example) in the connection parameters form.
 
 Copy-past this file in the server, change the parameters to fit with the server
 settings and add the variable environment setting in the Apache config:
@@ -93,8 +93,8 @@ settings and add the variable environment setting in the Apache config:
 
 Don't forget to restart Apache.
 
-Docker
-******
+Run the client with Docker
+**************************
 
 Create a tunnel to the database:
 
@@ -154,3 +154,29 @@ and he should be configured as follow:
 * Authentication type: ``Standard auth``
 * WFS support: recommended to be ``[X]``
 * Is single tile:  recommended to be ``[ ]``
+
+Access Restriction
+******************
+
+The access restriction is available only for Docker projects
+
+We provide an Docker image named ``camptocamp/geomapfish-qgisserver`` with tag pattern:
+``gmf<Major GeoMapFish version}-qgis${Major QGIS}``.
+
+Configuration for a single project, just provide the OGC server name in the environment variable named:
+``GEOMAPFISH_OGCSERVER``.
+
+If you need to provide more than one QGIS projects you should write a config file named, e.g.
+``qgisserver/accesscontrol_config.yaml``, with the content:
+
+.. code:: yaml
+
+   map_config:
+     <project file path>:
+       ogc_server: <OGC server name>
+
+``<project file path>`` should have exactly the same value a the ``MAP`` parameter in the ``Base URL``
+vavalue of the OGC sever.
+
+And finally you should provide the ``GEOMAPFISH_ACCESSCONTROL_CONFIG`` to point to config file e.-g.
+``/etc/qgisserver/accesscontrol_config.yaml``, and ``QGIS_PROJECT_FILE`` to be empty.

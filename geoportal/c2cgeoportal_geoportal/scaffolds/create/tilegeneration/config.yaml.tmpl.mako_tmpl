@@ -12,7 +12,6 @@ caches:
     local:
         type: filesystem
         folder: /var/sig/tiles
-        wmtscapabilities_file: ${wmtscapabilities_path}
         # for GetCapabilities
         http_url: ${web_protocol}://${host}${entry_point}
     s3:

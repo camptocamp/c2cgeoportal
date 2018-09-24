@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM debian:stretch
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
 RUN \
@@ -27,4 +27,4 @@ VOLUME /etc/mapserver \
     /usr/local/tomcat/webapps/ROOT/print-apps \
     /etc/haproxy
 
-ENTRYPOINT [ "/usr/bin/eval-templates" ]
+ENTRYPOINT [ "/usr/bin/entrypoint" ]
