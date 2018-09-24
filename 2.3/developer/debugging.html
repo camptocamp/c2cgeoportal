@@ -118,11 +118,6 @@ others on <cite>/&lt;project_name&gt;/</cite>.</p>
 <p>Just define an environment variable in the build:</p>
 <pre class="highlight"><span class="prompt1"><span class="nv">DOCKER_TAG</span><span class="o">=</span>&lt;tag&gt; ./docker-run make build</span>
 </pre></div>
-<div class="section" id="use-a-different-project-name">
-<h3>Use a different project name<a class="headerlink" href="#use-a-different-project-name" title="Permalink to this headline">¶</a></h3>
-<p>Define the project name when you run the Docker composition:</p>
-<pre class="highlight"><span class="prompt1">docker-compose --project-name<span class="o">=</span>&lt;name&gt; ...</span>
-</pre></div>
 <div class="section" id="run-gunicorn-to-reload-on-modifications-of-python-files">
 <h3>Run gunicorn to reload on modifications of Python files<a class="headerlink" href="#run-gunicorn-to-reload-on-modifications-of-python-files" title="Permalink to this headline">¶</a></h3>
 <p>Add the following environment variable to the geoportal container:</p>
@@ -135,13 +130,15 @@ others on <cite>/&lt;project_name&gt;/</cite>.</p>
 </pre></div>
 <div class="section" id="mount-c2cgeoportal-in-the-container">
 <h3>Mount c2cgeoportal in the container<a class="headerlink" href="#mount-c2cgeoportal-in-the-container" title="Permalink to this headline">¶</a></h3>
-<p>Add in the <code class="docutils literal notranslate"><span class="pre">docker-compose.yaml</span></code> file, in the <code class="docutils literal notranslate"><span class="pre">geoportal</span></code> service the following lines:</p>
-<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">:</span>
+<p>Add a <code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code> file with a <code class="docutils literal notranslate"><span class="pre">geoportal</span></code> service containing the following lines:</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">version</span><span class="p">:</span> <span class="s1">&#39;2&#39;</span>
+
+<span class="n">services</span><span class="p">:</span>
   <span class="n">geoportal</span><span class="p">:</span>
     <span class="n">volumes</span><span class="p">:</span>
-      <span class="o">-</span> <span class="o">&lt;</span><span class="n">c2cgeoportal_git_root</span><span class="o">&gt;/</span><span class="n">geoportal</span><span class="o">/</span><span class="n">c2cgeoportal_commons</span><span class="p">:</span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">c2cgeoportal_geoportal</span><span class="o">/</span><span class="n">c2cgeoportal_commons</span>
+      <span class="o">-</span> <span class="o">&lt;</span><span class="n">c2cgeoportal_git_root</span><span class="o">&gt;/</span><span class="n">commons</span><span class="o">/</span><span class="n">c2cgeoportal_commons</span><span class="p">:</span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">c2cgeoportal_commons</span><span class="o">/</span><span class="n">c2cgeoportal_commons</span>
       <span class="o">-</span> <span class="o">&lt;</span><span class="n">c2cgeoportal_git_root</span><span class="o">&gt;/</span><span class="n">geoportal</span><span class="o">/</span><span class="n">c2cgeoportal_geoportal</span><span class="p">:</span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">c2cgeoportal_geoportal</span><span class="o">/</span><span class="n">c2cgeoportal_geoportal</span>
-      <span class="o">-</span> <span class="o">&lt;</span><span class="n">c2cgeoportal_git_root</span><span class="o">&gt;/</span><span class="n">geoportal</span><span class="o">/</span><span class="n">c2cgeoportal_admin</span><span class="p">:</span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">c2cgeoportal_geoportal</span><span class="o">/</span><span class="n">c2cgeoportal_admin</span>
+      <span class="o">-</span> <span class="o">&lt;</span><span class="n">c2cgeoportal_git_root</span><span class="o">&gt;/</span><span class="n">admin</span><span class="o">/</span><span class="n">c2cgeoportal_admin</span><span class="p">:</span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">c2cgeoportal_admin</span><span class="o">/</span><span class="n">c2cgeoportal_admin</span>
 </pre></div>
 </div>
 </div>
@@ -207,7 +204,6 @@ to test it).</p>
 <li><a class="reference internal" href="#multiple-dev-on-one-server">Multiple dev on one server</a></li>
 <li><a class="reference internal" href="#global-front">Global front</a></li>
 <li><a class="reference internal" href="#use-a-different-docker-tag">Use a different docker tag</a></li>
-<li><a class="reference internal" href="#use-a-different-project-name">Use a different project name</a></li>
 <li><a class="reference internal" href="#run-gunicorn-to-reload-on-modifications-of-python-files">Run gunicorn to reload on modifications of Python files</a></li>
 <li><a class="reference internal" href="#do-a-graceful-restart-of-the-running-geoportal-container">Do a graceful restart of the running geoportal container</a></li>
 <li><a class="reference internal" href="#mount-c2cgeoportal-in-the-container">Mount c2cgeoportal in the container</a></li>
