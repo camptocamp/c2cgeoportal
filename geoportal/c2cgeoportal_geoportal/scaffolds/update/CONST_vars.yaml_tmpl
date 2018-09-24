@@ -621,9 +621,9 @@ runtime_environment:
   - name: PGSCHEMA_STATIC
     default: main_static
   - name: TINYOWS_URL
-    default: http://tinyows/
+    default: http://tinyows:8080/
   - name: MAPSERVER_URL
-    default: http://mapserver/
+    default: http://mapserver:8080/
   - name: PRINT_URL
     default: http://print:8080/print/
   - name: MAPCACHE_URL

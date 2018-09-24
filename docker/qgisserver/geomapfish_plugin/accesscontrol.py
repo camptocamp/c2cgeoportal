@@ -10,23 +10,22 @@ Contact: info@camptocamp.com
 """
 
 
+import c2cwsgiutils.broadcast
 import geoalchemy2
 import json
 import os
-from shapely import ops
 import sqlalchemy
-from sqlalchemy.orm import configure_mappers, scoped_session, sessionmaker
 import sys
-from threading import Lock
 import traceback
+import yaml
 import zope.event.classhandler
 from c2c.template.config import config
 from enum import Enum
-
 from qgis.core import QgsMessageLog, QgsDataSourceUri, QgsProject
 from qgis.server import QgsAccessControlFilter
-
-import c2cwsgiutils.broadcast
+from shapely import ops
+from sqlalchemy.orm import configure_mappers, scoped_session, sessionmaker
+from threading import Lock
 
 
 class GMFException(Exception):
@@ -41,30 +40,112 @@ class Access(Enum):
 
 
 class GeoMapFishAccessControl(QgsAccessControlFilter):
-    """ Implements GeoMapFish access restriction """
-
-    SUBSETSTRING_TYPE = ["GPKG", "PostgreSQL database with PostGIS extension"]
 
     def __init__(self, server_iface):
         super().__init__(server_iface)
 
         self.server_iface = server_iface
+
+        try:
+            config.init(os.environ.get('GEOMAPFISH_CONFIG', '/etc/qgisserver/geomapfish.yaml'))
+            self.srid = config.get('srid')
+
+            c2cwsgiutils.broadcast.init(None)
+
+            configure_mappers()
+            engine = sqlalchemy.create_engine(config.get('sqlalchemy_slave.url'))
+            session_factory = sessionmaker()
+            session_factory.configure(bind=engine)
+            DBSession = scoped_session(session_factory)  # noqa: N806
+
+            if "GEOMAPFISH_OGCSERVER" in os.environ:
+                self.single = True
+                self.ogcserver_accesscontrol = OGCServerAccessControl(
+                    server_iface, os.environ['GEOMAPFISH_OGCSERVER'], DBSession
+                )
+
+                QgsMessageLog.logMessage("Use OGC server named '{}'.".format(
+                    os.environ["GEOMAPFISH_OGCSERVER"]
+                ))
+            elif "GEOMAPFISH_ACCESSCONTROL_CONFIG" in os.environ:
+                self.single = False
+                self.ogcserver_accesscontrols = {}
+                with open(os.environ["GEOMAPFISH_ACCESSCONTROL_CONFIG"]) as ac_config_file:
+                    ac_config = yaml.load(ac_config_file.read())
+
+                for map, map_config in ac_config.get("map_config").items():
+                    map_config["access_control"] = OGCServerAccessControl(
+                        server_iface, map_config["ogc_server"], DBSession
+                    )
+                    self.ogcserver_accesscontrols[map] = map_config
+                QgsMessageLog.logMessage("Use config '{}'.".format(
+                    os.environ["GEOMAPFISH_ACCESSCONTROL_CONFIG"]
+                ))
+            else:
+                raise GMFException(
+                    "The environment variable 'GEOMAPFISH_OGCSERVER' or "
+                    "'GEOMAPFISH_ACCESSCONTROL_CONFIG' is not defined."
+                )
+
+        except Exception:
+            QgsMessageLog.logMessage(''.join(traceback.format_exception(*sys.exc_info())))
+            raise
+
+        server_iface.registerAccessControl(self, int(os.environ.get("GEOMAPFISH_POSITION", 100)))
+
+    def get_ogcserver_accesscontrol_config(self):
+        if self.single:
+            raise GMFException(
+                "The method 'get_ogcserver_accesscontrol_config' can't be called on 'single' server"
+            )
+
+    def get_ogcserver_accesscontrol(self):
+        if self.single:
+            return self.ogcserver_accesscontrol
+        else:
+            parameters = self.serverInterface().requestHandler().parameterMap()
+            return self.ogcserver_accesscontrols[parameters["MAP"]]["access_control"]
+
+    def layerFilterSubsetString(self, layer):  # NOQA
+        """ Return an additional subset string (typically SQL) filter """
+        return self.get_ogcserver_accesscontrol().layerFilterSubsetString(layer)
+
+    def layerFilterExpression(self, layer):  # NOQA
+        """ Return an additional expression filter """
+        return self.get_ogcserver_accesscontrol().layerFilterExpression(layer)
+
+    def layerPermissions(self, layer):  # NOQA
+        """ Return the layer rights """
+        return self.get_ogcserver_accesscontrol().layerPermissions(layer)
+
+    def authorizedLayerAttributes(self, layer, attributes):  # NOQA
+        """ Return the authorised layer attributes """
+        return self.get_ogcserver_accesscontrol().layauthorizedLayerAttributeserPermissions(layer, attributes)
+
+    def allowToEdit(self, layer, feature):  # NOQA
+        """ Are we authorise to modify the following geometry """
+        return self.get_ogcserver_accesscontrol().allowToEdit(layer, feature)
+
+    def cacheKey(self):  # NOQA
+        return self.get_ogcserver_accesscontrol().cacheKey()
+
+
+class OGCServerAccessControl(QgsAccessControlFilter):
+    """ Implements GeoMapFish access restriction """
+
+    SUBSETSTRING_TYPE = ["GPKG", "PostgreSQL database with PostGIS extension"]
+
+    def __init__(self, server_iface, ogcserver_name, DBSession):  # noqa: N803
+        super().__init__(server_iface)
+
+        self.server_iface = server_iface
+        self.DBSession = DBSession
         self.area_cache = {}
         self.layers = None
         self.lock = Lock()
         self.project = None
 
         try:
-            if "GEOMAPFISH_OGCSERVER" not in os.environ:
-                raise GMFException("The environment variable 'GEOMAPFISH_OGCSERVER' is not defined.")
-
-            QgsMessageLog.logMessage("Use OGC server named '{}'".format(os.environ["GEOMAPFISH_OGCSERVER"]))
-
-            config.init(os.environ.get('GEOMAPFISH_CONFIG', '/etc/qgisserver/geomapfish.yaml'))
-            self.srid = config.get('srid')
-
-            c2cwsgiutils.broadcast.init(None)
-
             from c2cgeoportal_commons.models.main import InvalidateCacheEvent
 
             @zope.event.classhandler.handler(InvalidateCacheEvent)
@@ -75,22 +156,14 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
                     self.layers = None
 
             from c2cgeoportal_commons.models.main import OGCServer
-            configure_mappers()
-
-            engine = sqlalchemy.create_engine(config.get('sqlalchemy_slave.url'))
-            session_factory = sessionmaker()
-            session_factory.configure(bind=engine)
-            self.DBSession = scoped_session(session_factory)
 
             self.ogcserver = self.DBSession.query(OGCServer) \
-                .filter(OGCServer.name == os.environ["GEOMAPFISH_OGCSERVER"]) \
+                .filter(OGCServer.name == ogcserver_name) \
                 .one()
 
-        except Exception as e:
+        except Exception:
             QgsMessageLog.logMessage(''.join(traceback.format_exception(*sys.exc_info())))
             raise
-
-        server_iface.registerAccessControl(self, int(os.environ.get("GEOMAPFISH_POSITION", 100)))
 
     def get_layers(self):
         with self.lock:
@@ -266,7 +339,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             )
             QgsMessageLog.logMessage("layerFilterExpression filter: {}".format(result))
             return result
-        except Exception as e:
+        except Exception:
             QgsMessageLog.logMessage(''.join(traceback.format_exception(*sys.exc_info())))
             raise
 
