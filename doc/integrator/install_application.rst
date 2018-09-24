@@ -312,3 +312,100 @@ To accomplish this, you must proceed as follows:
     * change your DNS so that ``gis.customer.ch`` points to ``new-site.customer.ch``.
 
     * Now test your new live site.
+
+
+
+Installing the application alongside the demo
+------------------------------
+
+Getting Started: building an existing project
+=========
+
+The goal of this chapter is to get the c2cgeoportal site up and running
+
+
+Step 1
+-------
+
+Build the demo application
+
+Clone the repository in your home dir (https://github.com/camptocamp/demo_geomapfish)
+
+Create or modify your makefile (user.mk)
+
+
+    DOCKER_ENTRY_POINT = /userVersion/
+    DOCKER_PORT = 8188
+    DOCKER_TAG = userVersion
+    INSTANCE = userVersion
+    NODE_ENV = development
+    include Makefile
+
+The userVersion must be unique, and the port number must not be already used.
+
+
+
+Step 2
+-------
+
+Create you user environment
+
+Open /var/www/vhosts/geomapfish-demo/conf/proxies.conf
+
+And add the following
+
+
+    ProxyPass "/userVersion"  "http://localhost:8188/userVersion"
+    ProxyPassReverse "/userVersion"  "http://localhost:8188/userVersion"
+    ProxyPreserveHost On
+    RequestHeader set X-Forwarded-Proto "https"
+    RequestHeader set X-Forwarded-Port "443"
+    ProxyRequests Off
+    #XForwardedSupport localhost
+
+
+Save and restart apache
+
+
+Step 3
+-------
+
+Mount c2cgeoportal in the container
+
+Add a docker-compose.override.yml in the demo directory.
+
+Add the following
+
+    version: "2"
+
+    services:
+      geoportal:
+        volumes:
+          - ../c2cgeoportal/commons/c2cgeoportal_commons:/opt/c2cgeoportal_commons/c2cgeoportal_commons
+          - ../c2cgeoportal/geoportal/c2cgeoportal_geoportal:/opt/c2cgeoportal_geoportal/c2cgeoportal_geoportal
+          - ../c2cgeoportal/admin/c2cgeoportal_admin:/opt/c2cgeoportal_admin/c2cgeoportal_admin
+
+Then build the application
+
+
+    ./docker-run make -f user.mk build
+
+
+Step 4
+-------
+
+Clone the c2cgeoportal repository
+
+
+    ./docker-run make build
+
+
+Step 5
+-------
+
+Start the application
+
+Go back to the demo directory
+
+
+    docker-compose up -d

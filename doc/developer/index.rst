@@ -14,6 +14,7 @@ Content:
 .. toctree::
     :maxdepth: 1
 
+    getting_started
     build_release
     cache
     debugging
