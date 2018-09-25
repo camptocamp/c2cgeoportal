@@ -1488,7 +1488,12 @@ class Entry:
                     for name, type_ in elements.items():
                         if type_ in types:
                             attributes[name] = types[type_]
-
+                        else:
+                            log.warning(
+                                "The provided type '{}' does not exist, available types are {}.".format(
+                                    type_, ', '.join(types.keys())
+                                )
+                            )
                 result["ogcServers"][ogc_server.name] = {
                     "url": url,
                     "urlWfs": url_wfs,
