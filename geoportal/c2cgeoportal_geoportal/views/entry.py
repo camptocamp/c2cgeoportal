@@ -1484,11 +1484,16 @@ class Entry:
                                 if 'alias' in c.attrib:
                                     attrib[c.attrib['name']] = c.attrib['alias']
                             types[child.attrib['name']] = attrib
-
                     attributes = {}
                     for name, type_ in elements.items():
-                        attributes[name] = types[type_]
-
+                        if type_ in types:
+                            attributes[name] = types[type_]
+                        else:
+                            log.warning(
+                                "The provided type '{}' does not exist, available types are {}.".format(
+                                    type_, ', '.join(types.keys())
+                                )
+                            )
                 result["ogcServers"][ogc_server.name] = {
                     "url": url,
                     "urlWfs": url_wfs,
