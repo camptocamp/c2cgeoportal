@@ -76,13 +76,15 @@ APPS_FILES = $(APPS_HTML_FILES) $(APPS_JS_FILES) \
 	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/favicon.ico \
 	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/logo.png
 
+
 APPS_ALT += desktop_alt mobile_alt oeedit oeview
 APPS_PACKAGE_PATH_ALT_NONDOCKER = geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/CONST_create_template/geoportal/+package+_geoportal
 APPS_PACKAGE_PATH_ALT = geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/geoportal/+package+_geoportal
 APPS_HTML_FILES_ALT = $(addprefix $(APPS_PACKAGE_PATH_ALT_NONDOCKER)/static-ngeo/js/apps/, $(addsuffix .html.ejs_tmpl, $(APPS_ALT)))
 APPS_HTML_FILES_ALT += $(addprefix $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/, $(addsuffix .html.ejs_tmpl, $(APPS_ALT)))
 APPS_JS_FILES_ALT += $(addprefix $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/Controller, $(addsuffix .js_tmpl, $(APPS_ALT)))
-APPS_FILES_ALT = $(APPS_HTML_FILES_ALT) $(APPS_JS_FILES_ALT)
+APPS_SASS_FILES_ALT += $(addprefix $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/sass/, $(addsuffix .scss, $(APPS_ALT)))
+APPS_FILES_ALT = $(APPS_HTML_FILES_ALT) $(APPS_JS_FILES_ALT) $(SASS_FILES_ALT)
 
 .PHONY: help
 help:
@@ -398,6 +400,11 @@ $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/Controller%.js_tmpl: \
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	import-ngeo-apps --js $* $< $@
+
+$(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/sass/%.scss: contribs/gmf/apps/%/sass/%.scss
+	$(PRERULE_CMD)
+	mkdir --parent $(dir $@)
+	cp $< $@
 
 $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/contextualdata.html: geoportal/node_modules/ngeo/contribs/gmf/apps/desktop/contextualdata.html
 	$(PRERULE_CMD)
