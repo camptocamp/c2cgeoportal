@@ -68,7 +68,7 @@ export PGSCHEMA
 PGSCHEMA_STATIC ?= main_static
 export PGSCHEMA_STATIC
 
-DEFAULT_WEB_RULE += $(JSBUILD_OUTPUT_FILES) $(CSS_CGXP_OUTPUT)
+DEFAULT_WEB_RULE += $(JSBUILD_OUTPUT_FILES) $(CSS_CGXP_OUTPUT) $(CSS_API_OUTPUT) $(CSS_XAPI_OUTPUT)
 ifneq ($(NGEO_INTERFACES), "")
 DEFAULT_WEB_RULE += $(NGEO_OUTPUT_FILES)
 CLIENT_CHECK_RULE ?= lint-ngeo
@@ -170,7 +170,7 @@ endif
 ifeq ($(CGXP_XAPI), TRUE)
 JSBUILD_OUTPUT_FILES += xapi.js
 JSBUILD_OUTPUT_FILES += $(addprefix lang-, $(addsuffix .js, $(LANGUAGES)))
-CSS_API_OUTPUT = $(OUTPUT_DIR)/xapi.css
+CSS_XAPI_OUTPUT = $(OUTPUT_DIR)/xapi.css
 endif
 ifeq ($(CGXP_API), TRUE)
 JSBUILD_OUTPUT_FILES += api.js
@@ -474,7 +474,7 @@ flake8:
 	flake8 $(PACKAGE)
 
 .PHONY: build-cgxp
-build-cgxp: $(JSBUILD_OUTPUT_FILES) $(CSS_CGXP_OUTPUT)
+build-cgxp: $(JSBUILD_OUTPUT_FILES) $(CSS_CGXP_OUTPUT) $(CSS_API_OUTPUT) $(CSS_XAPI_OUTPUT)
 
 .PHONY: lint-ngeo
 lint-ngeo: /build/eslint.timestamp

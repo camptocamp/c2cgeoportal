@@ -433,10 +433,7 @@ vars:
 
   # For base layers
   tiles_url:
-    - '{web_protocol}://a.tiles.{host}/tiles'
-    - '{web_protocol}://b.tiles.{host}/tiles'
-    - '{web_protocol}://c.tiles.{host}/tiles'
-    - '{web_protocol}://d.tiles.{host}/tiles'
+    - '{web_protocol}://{host}/{instance}/tiles/'
   wmtscapabilities_path: '{WMTSCAPABILITIES_PATH}'
 
   ogcproxy_enable: false
@@ -444,6 +441,11 @@ vars:
   lingua_extractor: {}
 
   global_headers:
+    - pattern: '^/apihelp.html'
+      headers:
+        Content-Security-Policy: "default-src 'self'; \
+            script-src 'self' 'unsafe-inline' 'unsafe-eval'; \
+            style-src 'self' 'unsafe-inline';"
     - pattern: '.*'
       headers:
         X-Frame-Options: SAMEORIGIN
