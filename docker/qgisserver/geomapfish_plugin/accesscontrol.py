@@ -72,13 +72,13 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
                 self.single = False
                 self.ogcserver_accesscontrols = {}
                 with open(os.environ["GEOMAPFISH_ACCESSCONTROL_CONFIG"]) as ac_config_file:
-                    ac_config = yaml.load(ac_config_file.read())
+                    ac_config = yaml.safe_load(ac_config_file.read())
 
-                for map, map_config in ac_config.get("map_config").items():
+                for map_, map_config in ac_config.get("map_config").items():
                     map_config["access_control"] = OGCServerAccessControl(
                         server_iface, map_config["ogc_server"], DBSession
                     )
-                    self.ogcserver_accesscontrols[map] = map_config
+                    self.ogcserver_accesscontrols[map_] = map_config
                 QgsMessageLog.logMessage("Use config '{}'.".format(
                     os.environ["GEOMAPFISH_ACCESSCONTROL_CONFIG"]
                 ))
