@@ -499,6 +499,7 @@ class TestThemesView(TestCase):
         })
 
         themes = entry.themes()
+        themes["ogcServers"]["__test_ogc_server_chtopo"]["attributes"] = {}
         self.assertEqual(self._get_filtered_errors(themes), set())
         self.assertEqual(
             themes["ogcServers"], {
@@ -525,27 +526,11 @@ class TestThemesView(TestCase):
                     "wfsSupport": True,
                 },
                 "__test_ogc_server_chtopo": {
-                    "attributes": {
-                        'ch.astra.strassenverkehrszaehlung_messstellen-regional_lokal-status_netz': {
-                            'Nummer': {'namespace': 'http://www.w3.org/2001/XMLSchema', 'type': 'string'},
-                            'msGeometry': {'namespace': 'http://www.opengis.net/gml', 'type': 'GeometryPropertyType'}
-                        },
-                        'ch.swisstopo.swissnames3d_feature_line': {
-                            'msGeometry': {'namespace': 'http://www.opengis.net/gml', 'type': 'GeometryPropertyType'}
-                        },
-                        'ch.swisstopo.swissnames3d_feature_point': {
-                            'Objektart': {'namespace': 'http://www.w3.org/2001/XMLSchema', 'type': 'string'},
-                            'msGeometry': {'namespace': 'http://www.opengis.net/gml', 'type': 'GeometryPropertyType'}
-                        },
-                        'ch.swisstopo.swissnames3d_feature_poly': {
-                            'Objektart': {'namespace': 'http://www.w3.org/2001/XMLSchema', 'type': 'string'},
-                            'msGeometry': {'namespace': 'http://www.opengis.net/gml', 'type': 'GeometryPropertyType'}
-                        },
-                    },
+                    "attributes": {},
                     "credential": False,
                     "imageType": "image/jpeg",
                     "isSingleTile": False,
-                    "namespace": 'http://mapserver.gis.umn.edu/mapserver',
+                    "namespace": "http://mapserver.gis.umn.edu/mapserver",
                     "type": "mapserver",
                     "url": "http://wms.geo.admin.ch/",
                     "urlWfs": "http://wms.geo.admin.ch/",
