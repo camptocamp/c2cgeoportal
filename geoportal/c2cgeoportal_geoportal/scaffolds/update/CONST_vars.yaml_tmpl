@@ -459,7 +459,8 @@ vars:
       headers:
         Content-Security-Policy: "default-src 'self'; \
             script-src 'self' 'unsafe-inline' 'unsafe-eval'; \
-            style-src 'self' 'unsafe-inline';"
+            style-src 'self' 'unsafe-inline'; \
+            img-src *;"
     - pattern: '^/admin/.*'
       headers:
         Referrer-Policy: same-origin
