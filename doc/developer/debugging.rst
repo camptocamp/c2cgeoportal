@@ -1,7 +1,7 @@
 .. _developer_debugging:
 
-Debugging
-=========
+Application debugging
+=====================
 
 The goal of this document is to give some troubleshooting tips.
 
@@ -150,6 +150,8 @@ Do a graceful restart of the running geoportal container
 
 Mount c2cgeoportal in the container
 ...................................
+
+Clone and build c2cgeoportal, see: developer_server_side.
 
 Add a ``docker-compose.override.yaml`` file with a ``geoportal`` service containing the following lines:
 
