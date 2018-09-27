@@ -11,3 +11,4 @@
 !{{package}}_geoportal
 {{package}}_geoportal/static/lib/cgxp
 !{{package}}_geoportal/static/lib/cgxp/core/src/theme
+!{{package}}_geoportal/static/lib/cgxp/openlayers/theme
