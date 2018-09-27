@@ -29,6 +29,33 @@ Remove the MapServer folder:
 QGIS Desktop configuration
 ==========================
 
+
+Create a tunnel on the database server
+**************************************
+
+If you cannot connect directly to the database you can create a tunnel to be able to connect to them:
+
+.. prompt:: bash
+
+   ssh -L 5432:localhost:5432 <server>
+
+If you run QGIS in Docker you should bind to a specific IP:
+
+.. prompt:: bash
+
+   IP=$(ip addr show dev $(route | grep default | awk '{print $(NF)}' | head -1) | awk '$1 ~ /^inet/ { sub("/.*", "", $2); print $2 }' | head -1)
+   ssh -L ${IP}:5432:localhost:5432 <remote server>
+
+Run the client with Docker
+**************************
+
+In a Docker mode, QGIS is configured in the ``qgisserver/`` directory. To edit the configuration,
+run this target and open the ``/etc/project/project.qgs`` file:
+
+.. prompt:: bash
+
+   make edit-qgis-project
+
 OWS configuration
 *****************
 
@@ -52,88 +79,87 @@ Finally, your QGIS project layers CRS should all be in the same CSR. This is sub
 Connect to Postgres database
 ****************************
 
-This section is subject to change when the QGIS plugin is available.
-
-The way you should connect QGIS to the database is based on an external file
-called ``pg_service.conf`` located in the home directory. The content of this file is as follows:
-
-.. code::
-
-    [geomapfish]
-    host=localhost
-    dbname=geomapfish
-    user=www-data
-    password=www-data
-    port=5433
-
-You probably need to create a tunnel with ssh:
-
-.. prompt:: bash
-
-   ssh -L 5432:localhost:54532 <server>
-
-Note that if you can connect directly to the database, you don't need this tunnel.
-Ask to your database administrator the correct parameters. You probably just need
-to change the host parameter.
-
-You can have several sections. A section start with a name with [] and
-finish with a blank line. This file should be a unix file.
-
-On QGIS desktop, when creating a new PostGIS connection, give it a name and use
-the service name (``geomapfish`` in our example) in the connection parameters form.
-
-Copy-past this file in the server, change the parameters to fit with the server
-settings and add the variable environment setting in the Apache config:
-
-.. code::
-
-    [..]
-    SetEnv QGIS_PROJECT_FILE ${directory}/qgisserver.qgs
-    + SetEnv PGSERVICEFILE path/to/pg_service.conf
-
-Don't forget to restart Apache.
-
-Run the client with Docker
-**************************
-
-Create a tunnel to the database:
-
-.. prompt:: bash
-
-   IP=$(ip addr show dev $(route | grep default | awk '{print $(NF)}' | head -1) | awk '$1 ~ /^inet/ { sub("/.*", "", $2); print $2 }' | head -1)
-   ssh -L ${IP}:5432:localhost:5432 <remote server>
-
-In a Docker mode, QGIS is configured in the ``qgisserver/`` directory. To edit the configuration,
-run this target and open the ``/etc/project/project.qgs`` file:
-
-.. prompt:: bash
-
-   make edit-qgis-project
-
 If you want to add PostGIS layers on the main DB, create/edit your ``$HOME/.pg_service.conf`` file
 and add a section for the DB you want to access:
 
 .. code::
 
-   [geomapfish]
-   host=<host>  # Localhost addresse of the Docker network interface (=> ${IP})
+   [<project>]
+   host=<host>  # Localhost address of the Docker network interface (=> ${IP})
    dbname=<database name>
    user=<database user>
    password=<database password>
    port=5432
 
+`<host>` can be:
+
+* If you use the tunnel with QGIS on your host: ``localhost``.
+* If you use the tunnel with QGIS on Docker: localhost address of the Docker network interface
+  (=> `${IP}`, e.-g.: `172.17.0.1`).
+* If you know the host you should use, use it.
+
+Note that if you can connect directly to the database, you don't need this tunnel.
+Ask to your database administrator the correct parameters. You probably just need
+to change the host parameter.
+
+
 Then, in QGIS, fill only the ``name`` and ``service`` fields when you create the DB connection.
-Then, you can create/edit a ``qgisserver/pg_service.conf.tmpl`` file and add a section looking
-like that:
+
+In the project repository you should have a ``qgisserver/pg_service.conf.tmpl`` file
+with a section looking like that:
 
 .. code::
 
-   [geomapfish]
+   [<package>]
    host=${PGHOST}
    dbname=${PGDATABASE}
    user=${PGUSER}
    password=${PGPASSWORD}
    port=${PGPORT}
+
+If you don't use Docker you also should add this int the Apache QGIS configuration:
+
+.. code::
+
+    SetEnv QGIS_PROJECT_FILE ${directory}/qgisserver.qgs
+    + SetEnv PGSERVICEFILE ${directory}/pg_service.conf
+
+Don't forget to graceful Apache.
+
+Extra PostGIS connexion
+***********************
+
+If you need to add other database connection just add a new section in the
+``$HOME/.pg_service.conf``.
+
+In the and ``qgisserver/pg_service.conf.tmpl`` files add a new section like that:
+
+.. code::
+
+   [<package>]
+   host=${EXTRA_PGHOST}
+   dbname=${EXTRA_PGDATABASE}
+   user=${EXTRA_PGUSER}
+   password=${EXTRA_PGPASSWORD}
+   port=${EXTRA_PGPORT}
+
+And in your ``vars.yaml`` file:
+
+.. code:: yaml
+
+   vars:
+     docker_services:
+       qgisserver:
+         environment:
+           EXTRA_PGHOST: <host>
+           EXTRA_PGDATABASE: <database>
+           EXTRA_PGUSER: <user>
+           EXTRA_PGPASSWORD: <pass>
+           EXTRA_PGPORT: <port>
+
+With that you can respect that the connection should be passed throw the environments variables
+to be able change the database connexion without rebuilding your application.
+
 
 OGC server
 ==========
