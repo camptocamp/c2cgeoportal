@@ -443,11 +443,6 @@ vars:
   lingua_extractor: {}
 
   global_headers:
-    - pattern: '^/apihelp.html'
-      headers:
-        Content-Security-Policy: "default-src 'self'; \
-            script-src 'self' 'unsafe-inline' 'unsafe-eval'; \
-            style-src 'self' 'unsafe-inline';"
     - pattern: '.*'
       headers:
         X-Frame-Options: SAMEORIGIN
@@ -460,6 +455,12 @@ vars:
             style-src 'self' 'unsafe-inline'; \
             img-src * data:; \
             connect-src *"
+    - pattern: '^/apihelp.html'
+      headers:
+        Content-Security-Policy: "default-src 'self'; \
+            script-src 'self' 'unsafe-inline' 'unsafe-eval'; \
+            style-src 'self' 'unsafe-inline'; \
+            img-src *;"
     - pattern: '^/admin/.*'
       headers:
         Referrer-Policy: same-origin
