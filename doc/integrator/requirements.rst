@@ -28,7 +28,7 @@ components installed on your system:
 * **zip** >= 3.0
 * **unzip** >= 6.0
 * **graphviz-dev**
-* **node** >= 6.0
+* **node** >= 8.0
 * **npm** >= 3.10
 * **Deploy** >= 0.4.7
 
