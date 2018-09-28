@@ -246,6 +246,8 @@ vars:
     # The list of available variable names for the `Metadatas` form.
     available_metadata:
       # Layers group
+      - name: exclusiveGroup
+        type: boolean
       - name: isExpanded
         type: boolean
       - name: printNativeAngle
