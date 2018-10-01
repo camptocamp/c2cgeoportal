@@ -45,6 +45,8 @@ class TestLayers(TestCase):
     _tables = None
 
     def setup_method(self, _):
+        setup_module()
+
         import transaction
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import Role, Interface
@@ -691,6 +693,20 @@ class TestLayers(TestCase):
         layers = Layers(request)
         cls = layers.metadata()
         self.assertFalse(hasattr(cls, "name"))
+
+    def test_metadata_columns_order(self):
+        from c2cgeoportal_geoportal.views.layers import Layers
+        from c2cgeoportal_commons.models.main import Metadata
+
+        attributes_order = "name,email,child_id"
+
+        layer_id = self._create_layer(metadatas=[Metadata('editingAttributesOrder', attributes_order)])
+        request = self._get_request(layer_id, username="__test_user")
+
+        layers = Layers(request)
+        cls = layers.metadata()
+
+        self.assertEqual(attributes_order.split(','), cls.__attributes_order__)
 
     # # # With None area # # #
     def test_read_public_none_area(self):

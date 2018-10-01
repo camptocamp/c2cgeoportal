@@ -28,7 +28,6 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import re
 from unittest import TestCase
 
 from tests.functional import (  # noqa
@@ -135,8 +134,10 @@ class TestReflection(TestCase):
 
         self.assertTrue(isinstance(modelclass.child1, _AssociationProxy))
         self.assertTrue(modelclass.child1.nullable)
+        self.assertEqual(modelclass.child1_id.info.get('association_proxy'), 'child1')
         self.assertTrue(isinstance(modelclass.child2, _AssociationProxy))
         self.assertFalse(modelclass.child2.nullable)
+        self.assertEqual(modelclass.child2_id.info.get('association_proxy'), 'child2')
 
         # test the Table object
         table = modelclass.__table__
@@ -174,7 +175,7 @@ class TestReflection(TestCase):
 
         # the class should now be in the cache
         self.assertTrue(
-            ("public", "table_a", "", None) in
+            ("public", "table_a", (), None, ()) in
             c2cgeoportal_geoportal.lib.dbreflection._class_cache
         )
         _modelclass = get_class("table_a")
@@ -219,91 +220,23 @@ class TestReflection(TestCase):
 
         # the class should now be in the cache
         self.assertTrue(
-            ("public", "table_d", "foo,bar", None) in
+            ("public", "table_d", ("foo", "bar"), None, ()) in
             c2cgeoportal_geoportal.lib.dbreflection._class_cache
         )
 
+    def test_get_class_attributes_order(self):
+        import c2cgeoportal_geoportal.lib.dbreflection
+        from c2cgeoportal_geoportal.lib.dbreflection import get_class
 
-class TestXSDSequenceCallback(TestCase):
+        attributes_order = ["child1_id", "point", "child2_id"]
 
-    _tables = None
+        self._create_table("table_d")
+        cls = get_class("table_d", attributes_order=attributes_order)
 
-    def setup_method(self, _):
-        import transaction
-        from sqlalchemy import Column, types, ForeignKey
-        from sqlalchemy.orm import relationship
-        from sqlalchemy.ext.declarative import declarative_base
-        from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_geoportal.lib.dbreflection import _AssociationProxy
+        self.assertEqual(attributes_order, cls.__attributes_order__)
 
-        # Always see the diff
-        # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
-        self.maxDiff = None
-
-        Base = declarative_base(bind=DBSession.c2c_rw_bind)  # noqa
-
-        class Child(Base):
-            __tablename__ = "child"
-            id = Column(types.Integer, primary_key=True)
-            name = Column(types.Unicode)
-
-            def __init__(self, name):
-                self.name = name
-
-        class Parent(Base):
-            __tablename__ = "parent"
-            id = Column(types.Integer, primary_key=True)
-            child1_id = Column(types.Integer, ForeignKey("child.id"))
-            child2_id = Column(types.Integer, ForeignKey("child.id"))
-            child1_ = relationship(Child, primaryjoin=(child1_id == Child.id))
-            child1 = _AssociationProxy("child1_", "name")
-            child2_ = relationship(Child, primaryjoin=(child2_id == Child.id))
-            child2 = _AssociationProxy("child2_", "name", nullable=False)
-
-        Child.__table__.create()
-        Parent.__table__.create()
-        self._tables = [Parent.__table__, Child.__table__]
-
-        DBSession.add_all([Child("foo"), Child("bar")])
-        transaction.commit()
-        self.metadata = Base.metadata
-        self.cls = Parent
-
-    def teardown_method(self, _):
-        import transaction
-        transaction.commit()
-
-        if self._tables is not None:
-            for table in self._tables:
-                table.drop()
-
-    def test_xsd_sequence_callback(self):
-        from xml.etree.ElementTree import TreeBuilder, tostring
-        from c2cgeoportal_geoportal.lib.dbreflection import xsd_sequence_callback
-        from papyrus.xsd import tag
-        tb = TreeBuilder()
-        with tag(tb, "xsd:sequence") as tb:
-            xsd_sequence_callback(tb, self.cls)
-        e = tb.close()
-        self.assertIsNotNone(re.search(
-            '<xsd:element name="child2">'
-            '<xsd:simpleType>'
-            '<xsd:restriction base="xsd:string">'
-            '<xsd:enumeration value="foo" />'
-            '<xsd:enumeration value="bar" />'
-            '</xsd:restriction>'
-            '</xsd:simpleType>'
-            '</xsd:element>',
-            tostring(e).decode("utf-8"),
-        ))
-        self.assertIsNotNone(re.search(
-            '<xsd:element minOccurs="0" name="child1" nillable="true">'
-            '<xsd:simpleType>'
-            '<xsd:restriction base="xsd:string">'
-            '<xsd:enumeration value="foo" />'
-            '<xsd:enumeration value="bar" />'
-            '</xsd:restriction>'
-            '</xsd:simpleType>'
-            '</xsd:element>',
-            tostring(e).decode("utf-8"),
-        ))
+        # the class should now be in the cache
+        self.assertTrue(
+            ("public", "table_d", (), None, ("child1_id", "point", "child2_id")) in
+            c2cgeoportal_geoportal.lib.dbreflection._class_cache
+        )

@@ -478,13 +478,35 @@ def get_layer_class(layer):
     last_update_user = Layers.get_metadata(layer, "lastUpdateUserColumn")
     if last_update_user is not None:
         exclude.append(last_update_user)
+    m = Layers.get_metadata(layer, "editingAttributesOrder")
+    attributes_order = m.split(',') if m else None
 
     primary_key = Layers.get_metadata(layer, "geotablePrimaryKey")
-    return get_class(
+    cls = get_class(
         str(layer.geo_table),
         exclude_properties=exclude,
-        primary_key=primary_key
+        primary_key=primary_key,
+        attributes_order=attributes_order
     )
+
+    mapper = class_mapper(cls)
+    column_properties = [p.key for p in mapper.iterate_properties if isinstance(p, ColumnProperty)]
+    for attribute_name in attributes_order or []:
+        if attribute_name not in column_properties:
+            table = mapper.mapped_table
+            log.warning(
+                'Attribute "{}" does not exists in table "{}".\n'
+                'Please correct metadata "editingAttributesOrder" in layer "{}" (id={}).\n'
+                'Available attributes are: {}.'.format(
+                    attribute_name,
+                    '{}.{}'.format(table.schema, table.name),
+                    layer.name,
+                    layer.id,
+                    ', '.join(column_properties)
+                )
+            )
+
+    return cls
 
 
 def get_layer_metadatas(layer):
