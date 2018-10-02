@@ -5,7 +5,10 @@ from c2cgeoportal_commons import models
 from c2cgeoportal_commons.models import main
 from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
 
-interface_name = request.params['interface']
+interface_name = request.params.get('interface')
+if interface_name not in request.registry.settings.get('interfaces'):
+    interface_name = request.registry.settings.get('default_interface')
+
 interface_config = request.registry.settings['interfaces_config'][interface_name]
 lang_urls = {
   lang: request.static_url('{package}_geoportal:static-ngeo/build/{lang}.json'.format(
