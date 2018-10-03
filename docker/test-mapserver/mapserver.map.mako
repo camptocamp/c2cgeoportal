@@ -40,7 +40,7 @@ MAP
         METADATA
             "wms_title" "changeme"
             "wms_abstract" "changeme"
-            "wms_onlineresource" "changeme"
+            "ows_onlineresource" "changeme"
             "wms_encoding" "UTF-8"
             "wms_enable_request" "*"
             "ows_title" "changeme"
