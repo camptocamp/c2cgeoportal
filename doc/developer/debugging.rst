@@ -153,7 +153,7 @@ Mount c2cgeoportal in the container
 
 Clone and build c2cgeoportal, see: developer_server_side.
 
-Add a ``docker-compose.override.yaml`` file with a ``geoportal`` service containing the following lines:
+Add a ``docker-compose.override.yml`` file with a ``geoportal`` service containing the following lines:
 
 .. code:: yaml
 
