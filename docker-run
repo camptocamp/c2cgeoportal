@@ -52,6 +52,9 @@ def main():
     for share in options.share:
         docker_cmd.append("--volume={}:{}".format(share, share))
 
+    for host in options.add_host:
+        docker_cmd.append("--add-host={}".format(host))
+
     dir_path = os.path.dirname(os.path.realpath(__file__))
     build_volume_name = dir_path.replace(":", "-").replace("\\", "-") \
         if is_windows else dir_path[1:].replace("/", "-")
