@@ -460,7 +460,7 @@ clean-all: clean
 		node_modules  # for nondocker
 
 .PHONY: clean-all-cache
-clean-all-cache: cleanall
+clean-all-cache: clean-all
 	rm  --recursive --force $(HOME)/.npm \
 		$(HOME)/.cache/pip
 
