@@ -121,7 +121,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
 
     def authorizedLayerAttributes(self, layer, attributes):  # NOQA
         """ Return the authorised layer attributes """
-        return self.get_ogcserver_accesscontrol().layauthorizedLayerAttributeserPermissions(layer, attributes)
+        return self.get_ogcserver_accesscontrol().authorizedLayerAttributes(layer, attributes)
 
     def allowToEdit(self, layer, feature):  # NOQA
         """ Are we authorise to modify the following geometry """
