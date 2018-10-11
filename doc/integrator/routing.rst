@@ -14,7 +14,7 @@ To add this feature, you need a `OSRM backend server <https://github.com/Project
 Adding the routing interface to the template
 --------------------------------------------
 
-For a working example, check the `alternative example desktop app <https://github.com/camptocamp/ngeo/blob/master/contribs/gmf/apps/desktop_alt/index.html>`_ of ngeo.
+For a working example, check the `alternative example desktop app <https://github.com/camptocamp/ngeo/blob/2.3/contribs/gmf/apps/desktop_alt/index.html.ejs>`_ of ngeo.
 
 
 Add the button to the ``gmf-app-bar``::
