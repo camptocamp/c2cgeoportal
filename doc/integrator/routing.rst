@@ -44,9 +44,10 @@ Then, add the routing component to the ``gmf-app-tools-content`` area::
 Configuration
 -------------
 
-In the same interface template where the button and the component were added, the `ngeoRoutingOptions` and `ngeoNominatimSearchDefaultParams` can be defined. `Example <https://github.com/camptocamp/ngeo/blob/2.3/contribs/gmf/apps/desktop_alt/Controller.js>`_::
+In the same interface template where the button and the component were added, the `ngeoRoutingOptions` and `ngeoNominatimSearchDefaultParams` can be defined. Example::
 
-    exports.module.constant('ngeoRoutingOptions', {
+    var module = angular.module('app');
+    module.constant('ngeoRoutingOptions', {
       'backendUrl': 'http://routing.osm.ch/',
       'profiles': [
         {label : 'Car', profile: 'routed-car'},
@@ -54,7 +55,7 @@ In the same interface template where the button and the component were added, th
       ]
     });
 
-    exports.module.constant('ngeoNominatimSearchDefaultParams', {
+    module.constant('ngeoNominatimSearchDefaultParams', {
         'countrycodes': 'CH'
     });
 
