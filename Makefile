@@ -8,7 +8,7 @@ DEVELOPMENT ?= FALSE
 # PRERULE_CMD display the files imply that the rule is running with the files dates
 ifeq ($(DEBUG), TRUE)
 ifeq ($(OPERATING_SYSTEM), WINDOWS)
-PRERULE_CMD ?= @echo "Build $@ due mofification on $?"; ls -t --full-time --reverse $? $@ || true
+PRERULE_CMD ?= @echo "Build $@ due modification on $?"; ls -t --full-time --reverse $? $@ || true
 else
 PRERULE_CMD ?= @echo "Build \033[1;34m$@\033[0m due modification on \033[1;34m$?\033[0m" 1>&2; ls -t --full-time --reverse $? $@ 1>&2 || true
 endif

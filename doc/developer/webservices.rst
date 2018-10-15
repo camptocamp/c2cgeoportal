@@ -149,7 +149,7 @@ WMS Layer
         # end derecated
         "metadata": {
             "identifier_attribute_field": "<display_name>",
-            "disclaimer": "<disclamer>",
+            "disclaimer": "<disclaimer>",
             "legend": (true|false),
             "legend_rule": "<legend_rule>",
             "max_resolution": <max_resolution>,
