@@ -66,19 +66,22 @@
 </div>
 <div class="section" id="configuration">
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
-<p>In the same interface template where the button and the component were added, the <cite>ngeoRoutingOptions</cite> and <cite>ngeoNominatimSearchDefaultParams</cite> can be defined. Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="n">module</span> <span class="o">=</span> <span class="n">angular</span><span class="o">.</span><span class="n">module</span><span class="p">(</span><span class="s1">&#39;app&#39;</span><span class="p">);</span>
-<span class="n">module</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;ngeoRoutingOptions&#39;</span><span class="p">,</span> <span class="p">{</span>
-  <span class="s1">&#39;backendUrl&#39;</span><span class="p">:</span> <span class="s1">&#39;http://routing.osm.ch/&#39;</span><span class="p">,</span>
-  <span class="s1">&#39;profiles&#39;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="p">{</span><span class="n">label</span> <span class="p">:</span> <span class="s1">&#39;Car&#39;</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="s1">&#39;routed-car&#39;</span><span class="p">},</span>
-    <span class="p">{</span><span class="n">label</span> <span class="p">:</span> <span class="s1">&#39;Bike (City)&#39;</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="s1">&#39;routed-bike&#39;</span><span class="p">}</span>
-  <span class="p">]</span>
-<span class="p">});</span>
-
-<span class="n">module</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;ngeoNominatimSearchDefaultParams&#39;</span><span class="p">,</span> <span class="p">{</span>
-    <span class="s1">&#39;countrycodes&#39;</span><span class="p">:</span> <span class="s1">&#39;CH&#39;</span>
-<span class="p">});</span>
+<p>To configure the routing feature the constants <cite>ngeoRoutingOptions</cite> and <cite>ngeoNominatimSearchDefaultParams</cite> can be defined. Add them to your <cite>interfaces_config</cite> section in your <cite>vars.yaml</cite> file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">interfaces_config</span><span class="p">:</span>
+    <span class="p">[</span><span class="o">...</span><span class="p">]</span>
+    <span class="n">your_interface</span><span class="p">:</span>
+        <span class="o">&lt;&lt;</span><span class="p">:</span> <span class="o">*</span><span class="n">interface</span>
+            <span class="n">constants</span><span class="p">:</span>
+                <span class="o">&lt;&lt;</span><span class="p">:</span> <span class="o">*</span><span class="n">constants</span>
+                <span class="n">ngeoRoutingOptions</span><span class="p">:</span>
+                    <span class="o">-</span> <span class="n">backendUrl</span><span class="p">:</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">routing</span><span class="o">.</span><span class="n">osm</span><span class="o">.</span><span class="n">ch</span><span class="o">/</span>
+                    <span class="o">-</span> <span class="n">profiles</span><span class="p">:</span>
+                        <span class="o">-</span> <span class="n">label</span><span class="p">:</span> <span class="n">Car</span>
+                          <span class="n">profile</span><span class="p">:</span> <span class="n">routed</span><span class="o">-</span><span class="n">car</span>
+                        <span class="o">-</span> <span class="n">label</span><span class="p">:</span> <span class="n">Bike</span> <span class="p">(</span><span class="n">City</span><span class="p">)</span>
+                          <span class="n">profile</span><span class="p">:</span> <span class="n">routed</span><span class="o">-</span><span class="n">bike</span>
+                <span class="n">ngeoNominatimSearchDefaultParams</span><span class="p">:</span>
+                    <span class="o">-</span> <span class="n">countrycodes</span><span class="p">:</span> <span class="n">CH</span>
 </pre></div>
 </div>
 <div class="section" id="backendurl">
