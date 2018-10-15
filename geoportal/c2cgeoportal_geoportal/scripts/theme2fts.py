@@ -28,15 +28,15 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import os
 import sys
 import transaction
+
 from argparse import ArgumentParser
-from gettext import translation
-from pyramid.paster import get_app
-from sqlalchemy import func
 from c2c.template import get_config
-from logging.config import fileConfig
-import os
+from c2cgeoportal_geoportal.scripts import fill_arguments, get_app
+from gettext import translation
+from sqlalchemy import func
 
 
 def main():
@@ -87,31 +87,10 @@ def main():
         "--package",
         help="the application package",
     )
-    parser.add_argument(
-        "-i", "--app-config",
-        default="geoportal/production.ini",
-        dest="app_config",
-        help="the application .ini config file (optional, default is 'production.ini')"
-    )
-    parser.add_argument(
-        "-n", "--app-name",
-        default="app",
-        dest="app_name",
-        help="the application name (optional, default is 'app')"
-    )
+    fill_arguments(parser)
     options = parser.parse_args()
 
-    app_config = options.app_config
-    app_name = options.app_name
-    if app_name is None and "#" in app_config:
-        app_config, app_name = app_config.split("#", 1)
-    env = {}
-    env.update(os.environ)
-    env["LOG_LEVEL"] = "INFO"
-    env["GUNICORN_ACCESS_LOG_LEVEL"] = "INFO"
-    env["C2CGEOPORTAL_LOG_LEVEL"] = "WARN"
-    fileConfig(app_config, defaults=env)
-    get_app(app_config, app_name, options=env)
+    get_app(options, parser)
 
     Import(options)
 

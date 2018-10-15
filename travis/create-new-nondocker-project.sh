@@ -52,7 +52,7 @@ ${DOCKER_RUN_ALEMBIC} --config=geoportal/alembic.ini --name=main upgrade head
 ${DOCKER_RUN_ALEMBIC} --config=geoportal/alembic.ini --name=static upgrade head
 # Create default theme
 (cd geoportal; python3 setup.py sdist)
-./docker-run --env=PYTHONPATH=geoportal create-demo-theme --iniconfig geoportal/production.ini
+./docker-run --env=PYTHONPATH=geoportal create-demo-theme --app-config geoportal/production.ini
 ./docker-run make --makefile=travis.mk update-po
 git add geoportal/testgeomapfish_geoportal/locale/*/LC_MESSAGES/*.po
 git commit -m "Add initial localisation"

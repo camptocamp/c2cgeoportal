@@ -28,12 +28,11 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import logging
 import argparse
+import logging
 import transaction
-from pyramid.paster import get_app
-from logging.config import fileConfig
-import os
+
+from c2cgeoportal_geoportal.scripts import fill_arguments, get_app
 
 
 LOG = logging.getLogger(__name__)
@@ -43,27 +42,11 @@ def main():
     parser = argparse.ArgumentParser(
         description="Create and populate the database tables."
     )
-    parser.add_argument(
-        '-i', '--iniconfig',
-        default='production.ini',
-        help='project .ini config file'
-    )
-    parser.add_argument(
-        '-n', '--app-name',
-        default="app",
-        help='The application name (optional, default is "app")'
-    )
+    fill_arguments(parser)
 
     options = parser.parse_args()
 
-    # read the configuration
-    env = {}
-    env.update(os.environ)
-    env["LOG_LEVEL"] = "INFO"
-    env["GUNICORN_ACCESS_LOG_LEVEL"] = "INFO"
-    env["C2CGEOPORTAL_LOG_LEVEL"] = "WARN"
-    fileConfig(options.iniconfig, defaults=env)
-    get_app(options.iniconfig, options.app_name, options=env)
+    get_app(options, parser)
 
     from c2cgeoportal_commons.models import DBSession
     from c2cgeoportal_commons.models.main import Interface, OGCServer, Theme, LayerGroup, LayerWMS
