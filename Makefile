@@ -283,6 +283,7 @@ spell:
 		-name .build -prune -or \
 		-name .venv -prune -or \
 		-name .git -prune -or \
+		-name .mypy_cache -prune -or \
 		-name '__pycache__' -prune -or \
 		-name _build -prune -or \
 		\( -type f -and -not -name '*.png' -and -not -name '*.mo' -and -not -name '*.po*' \
