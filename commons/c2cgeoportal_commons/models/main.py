@@ -649,7 +649,7 @@ class LayerV1(Layer):  # Deprecated in v2
         'colanderalchemy': {
             'title': _('Is single tile'),
             'group': 'external'
-        }})  # for extenal WMS
+        }})  # for external WMS
     legend = Column(Boolean, default=True, info={
         'colanderalchemy': {
             'title': _('Legend'),
