@@ -45,7 +45,7 @@ RewriteRule ^${apache_entry_point}apihelp.html$ /${instanceid}/wsgi/apihelp.html
 RewriteRule ^${apache_entry_point}xapihelp.html$ /${instanceid}/wsgi/xapihelp.html [PT]
 RewriteRule ^${apache_entry_point}admin/?$ /${instanceid}/wsgi/admin/ [PT]
 RewriteRule ^${apache_entry_point}search$ /${instanceid}/wsgi/fulltextsearch [PT]
-RewriteRule ^${apache_entry_point}s/(.*)$ /${instanceid}/wsgi/short/$1 [PT]
+RewriteRule ^${apache_entry_point}s/(.*)$ /${instanceid}/wsgi/s/$1 [PT]
 
 # define a process group
 # WSGIDaemonProcess must be commented/removed when running the project on windows
