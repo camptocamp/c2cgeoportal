@@ -111,7 +111,7 @@ User can be created if it does not exist yet."""
     warnings.simplefilter("ignore", DeprecationWarning)
 
     fileConfig(app_config, defaults=os.environ)
-    get_app(app_name, options.app_name, options=os.environ)
+    get_app(app_config, options.app_name, options=os.environ)
 
     # must be done only once we have loaded the project config
     from c2cgeoportal_commons.models import DBSession, main, static
