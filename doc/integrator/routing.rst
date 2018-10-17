@@ -55,12 +55,14 @@ To configure the routing feature the constants `ngeoRoutingOptions` and `ngeoNom
                     ngeoRoutingOptions:
                         - backendUrl: https://routing.osm.ch/
                         - profiles:
-                            - label: Car
+                            -
+                              label: Car
                               profile: routed-car
-                            - label: Bike (City)
+                            -
+                              label: Bike (City)
                               profile: routed-bike
                     ngeoNominatimSearchDefaultParams:
-                        - countrycodes: CH
+                        countrycodes: CH
 
 backendUrl
 ^^^^^^^^^^
