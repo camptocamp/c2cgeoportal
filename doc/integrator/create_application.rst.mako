@@ -81,14 +81,14 @@ To create the application first apply the ``c2cgeoportal_create`` scaffold:
 
 .. prompt:: bash
 
-   ./docker-run -ti --image=camptocamp/geomapfish-build \
+   ./docker-run -ti --image=camptocamp/geomapfish-build ${'\\'}
        pcreate -s c2cgeoportal_create <project>
 
 And for the non Docker version, apply also the ``c2cgeoportal_nondockercreate`` scaffold:
 
 .. prompt:: bash
 
-   ./docker-run -ti --image=camptocamp/geomapfish-build \
+   ./docker-run -ti --image=camptocamp/geomapfish-build ${'\\'}
        pcreate -s c2cgeoportal_nondockercreate <project>
 
 .. note::
@@ -106,8 +106,8 @@ it later.
 
      .. prompt:: bash
 
-        ./docker-run -ti --image=camptocamp/geomapfish-build \
-            --env=SRID=21781 --env=EXTENT="420000,30000,900000,350000"
+        ./docker-run -ti --image=camptocamp/geomapfish-build ${'\\'}
+            --env=SRID=21781 --env=EXTENT="420000,30000,900000,350000" ${'\\'}
             pcreate -s c2cgeoportal_create --package-name <package> <project>
 
 This will create a directory named ``<project>`` that will be next to the
@@ -118,14 +118,14 @@ Now apply the ``c2cgeoportal_update`` scaffold:
 
 .. prompt:: bash
 
-   ./docker-run -ti --env=SRID=21781 --image=camptocamp/geomapfish-build \
+   ./docker-run -ti --env=SRID=21781 --image=camptocamp/geomapfish-build ${'\\'}
        pcreate -s c2cgeoportal_update --package-name <package> <project>
 
 And for the non Docker version, apply also the ``c2cgeoportal_nondockerupdate`` scaffold:
 
 .. prompt:: bash
 
-   ./docker-run -ti --env=SRID=21781 --image=camptocamp/geomapfish-build \
+   ./docker-run -ti --env=SRID=21781 --image=camptocamp/geomapfish-build ${'\\'}
        pcreate -s c2cgeoportal_nondockerupdate --package-name <package> <project>
 
 

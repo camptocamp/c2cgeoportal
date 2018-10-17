@@ -196,5 +196,5 @@ For example, for converting french texts the script can be used as follows:
 
 .. code:: bash
 
-   .build/venv/bin/l10nv1tov2 fr geoportal/static/js/Proj/Lang/fr.js \
+   .build/venv/bin/l10nv1tov2 fr geoportal/static/js/Proj/Lang/fr.js ${'\\'}
    geoportal/locale/fr/LC_MESSAGES/geoportal-client.po
