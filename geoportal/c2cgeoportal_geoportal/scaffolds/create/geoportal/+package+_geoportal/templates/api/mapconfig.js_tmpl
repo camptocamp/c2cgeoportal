@@ -4,7 +4,7 @@ Extended APIs.
 </%doc>
 
         var WMTS_OPTIONS = {
-            url: '${tiles_url}',
+            url: ${tiles_url | n},
             displayInLayerSwitcher: false,
             requestEncoding: 'REST',
             buffer: 0,
@@ -76,14 +76,14 @@ Extended APIs.
                     minRatio: 64,
                     maxRatio: 64,
                     layers: [new OpenLayers.Layer.OSM("OSM", [
-                            'http://a.tile.openstreetmap.org/${"${z}/${x}/${y}"}.png',
-                            'http://b.tile.openstreetmap.org/${"${z}/${x}/${y}"}.png',
-                            'http://c.tile.openstreetmap.org/${"${z}/${x}/${y}"}.png'
+                            'https://a.tile.openstreetmap.org/${"${z}/${x}/${y}"}.png',
+                            'https://b.tile.openstreetmap.org/${"${z}/${x}/${y}"}.png',
+                            'https://c.tile.openstreetmap.org/${"${z}/${x}/${y}"}.png'
                         ], {
                             transitionEffect: 'resize',
                             attribution: [
-                                "(c) <a href='http://openstreetmap.org/'>OSM</a>",
-                                "<a href='http://creativecommons.org/licenses/by-sa/2.0/'>by-sa</a>"
+                                "(c) <a href='https://openstreetmap.org/'>OSM</a>",
+                                "<a href='https://creativecommons.org/licenses/by-sa/2.0/'>by-sa</a>"
                             ].join(' ')
                         }
                     )]

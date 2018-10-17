@@ -1272,6 +1272,11 @@ class Dimension(Base):
             'title': _('Value')
         }
     })
+    field = Column(Unicode, info={
+        'colanderalchemy': {
+            'title': _('Field')
+        }
+    })
     description = Column(Unicode, info={
         'colanderalchemy': {
             'title': _('Description'),
@@ -1307,9 +1312,10 @@ class Dimension(Base):
         )
     )
 
-    def __init__(self, name: str='', value: str='', layer: str=None) -> None:
+    def __init__(self, name: str='', value: str='', layer: str=None, field: str=None) -> None:
         self.name = name
         self.value = value
+        self.field = field
         if layer is not None:
             self.layer = layer
 

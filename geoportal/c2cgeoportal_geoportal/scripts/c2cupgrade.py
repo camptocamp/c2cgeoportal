@@ -52,7 +52,7 @@ TEMPLATE_EXAMPLE = {
     "srid": "${srid}",
     "extent": "489246, 78873, 837119, 296543",
 }
-DIFF_NOTICE = "You should apply the changes shown in the diff file on `a/CONST_create_template/<file>` " \
+DIFF_NOTICE = "You should apply the changes shown in the diff file on `CONST_create_template/<file>` " \
     "on your project's `<file>`.\n" \
     "Some advice to be more efficient: if the changes on a file concern a file that you never customize, " \
     "you can simply copy the new file from `CONST_create_template` " \

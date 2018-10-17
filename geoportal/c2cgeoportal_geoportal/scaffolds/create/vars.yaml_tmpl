@@ -146,6 +146,10 @@ vars:
         gmfPrintUrl: printproxy
     oeview:
       <<: *interface
+      constants:
+        <<: *constants
+        gmfPermalinkOptions:
+          pointRecenterZoom: 10
       # FIXME: gmfContextualdatacontentTemplateUrl
       routes:
         <<: *routes
@@ -339,6 +343,7 @@ update_paths:
   - docker_services.front
   - fulltextsearch
   - functionalities.available_in_templates
+  - global_headers
   - headers.index
   - headers.api
   - headers.profile
