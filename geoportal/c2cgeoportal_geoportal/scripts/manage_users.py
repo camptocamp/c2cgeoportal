@@ -28,26 +28,23 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import os.path
 import argparse
+import transaction
 import warnings
 
-from pyramid.paster import get_app
-import transaction
-from logging.config import fileConfig
-import os
+from c2cgeoportal_geoportal.scripts import fill_arguments, get_app
 
 
 def main():
     """
     Emergency user create and password reset script
     example, reset toto password to foobar:
-    ./docker-compose-run manage_users -p foobar toto
+    ./docker-compose-run manage_users --password=foobar toto
     example, create user foo with password bar and role admin:
-    ./docker-compose-run manage_users -c -r role_admin -p bar foo
+    ./docker-compose-run manage_users --create --rolename=role_admin --password=bar foo
 
     to get the options list, do:
-    ./docker-compose-run manage_users -h
+    ./docker-compose-run manage_users --help
     """
 
     usage = """Usage: %prog [options] USERNAME
@@ -57,33 +54,23 @@ The username is used as password if the password is not provided with the corres
 User can be created if it does not exist yet."""
 
     parser = argparse.ArgumentParser(description=usage)
+    fill_arguments(parser)
     parser.add_argument(
-        "-i", "--app-config",
-        default="geoportal/production.ini", dest="app_config",
-        help="The application .ini config file (optional, default is "
-        "'production.ini')"
-    )
-    parser.add_argument(
-        "-n", "--app-name",
-        default="app", dest="app_name",
-        help="The application name (optional, default is 'app')"
-    )
-    parser.add_argument(
-        "-p", "--password",
+        "--password", "-p",
         help="Set password (if not set, username is used as password"
     )
     parser.add_argument(
-        "-c", "--create",
+        "--create", "-c",
         action="store_true", default=False,
         help="Create user if it does not already exist"
     )
     parser.add_argument(
-        "-r", "--rolename",
+        "--rolename", "-r",
         default="role_admin",
         help="The role name which must exist in the database"
     )
     parser.add_argument(
-        "-e", "--email",
+        "--email", "-e",
         default=None,
         help="The user email"
     )
@@ -96,22 +83,13 @@ User can be created if it does not exist yet."""
     options = parser.parse_args()
     username = options.user
 
-    app_config = options.app_config
-    app_name = options.app_name
-
-    if app_name is None and "#" in app_config:
-        app_config, app_name = app_config.split("#", 1)
-    if not os.path.isfile(app_config):
-        parser.error("Cannot find config file: {0!s}".format(app_config))
-
     # loading schema name from config and setting its value to the
     # corresponding global variable from c2cgeoportal_geoportal
 
     # Ignores pyramid deprecation warnings
     warnings.simplefilter("ignore", DeprecationWarning)
 
-    fileConfig(app_config, defaults=os.environ)
-    get_app(app_name, options.app_name, options=os.environ)
+    get_app(options, parser)
 
     # must be done only once we have loaded the project config
     from c2cgeoportal_commons.models import DBSession, main, static

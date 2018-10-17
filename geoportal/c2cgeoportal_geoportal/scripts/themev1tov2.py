@@ -28,14 +28,13 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import re
 import sys
 import transaction
-import re
-from json import loads
+
 from argparse import ArgumentParser
-from pyramid.paster import get_app
-from logging.config import fileConfig
-import os
+from c2cgeoportal_geoportal.scripts import fill_arguments, get_app
+from json import loads
 
 
 def main():
@@ -44,18 +43,7 @@ def main():
         description="Tool used to migrate your old layers from the old structure to the new one.",
     )
 
-    parser.add_argument(
-        "-i", "--app-config",
-        default="geoportal/production.ini",
-        dest="app_config",
-        help="the application .ini config file (optional, default is 'production.ini')"
-    )
-    parser.add_argument(
-        "-n", "--app-name",
-        default="app",
-        dest="app_name",
-        help="the application name (optional, default is 'app')"
-    )
+    fill_arguments(parser)
     parser.add_argument(
         "--no-layers",
         dest="layers",
@@ -76,17 +64,7 @@ def main():
     )
     options = parser.parse_args()
 
-    app_config = options.app_config
-    app_name = options.app_name
-    if app_name is None and "#" in app_config:
-        app_config, app_name = app_config.split("#", 1)
-    env = {}
-    env.update(os.environ)
-    env["LOG_LEVEL"] = "INFO"
-    env["GUNICORN_ACCESS_LOG_LEVEL"] = "INFO"
-    env["C2CGEOPORTAL_LOG_LEVEL"] = "WARN"
-    fileConfig(app_config, defaults=env)
-    app = get_app(app_config, app_name, options=env)
+    app = get_app(options, parser)
 
     # must be done only once we have loaded the project config
     from c2cgeoportal_commons.models import DBSession

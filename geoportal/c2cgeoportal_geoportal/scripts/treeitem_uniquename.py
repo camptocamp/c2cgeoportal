@@ -30,36 +30,19 @@
 
 import argparse
 import transaction
-from pyramid.paster import get_app
-from logging.config import fileConfig
-import os
+
+from c2cgeoportal_geoportal.scripts import fill_arguments, get_app
 
 
 def main():
     parser = argparse.ArgumentParser(
         description="This script will rename all the theme elements to removes duplicated elements."
     )
-    parser.add_argument(
-        '-i', '--iniconfig',
-        default='geoportal/production.ini',
-        help='project .ini config file',
-    )
-    parser.add_argument(
-        '-n', '--app-name',
-        default="app",
-        help='The application name (optional, default is "app")',
-    )
+    fill_arguments(parser)
 
     options = parser.parse_args()
 
-    # Read the configuration
-    env = {}
-    env.update(os.environ)
-    env["LOG_LEVEL"] = "INFO"
-    env["GUNICORN_ACCESS_LOG_LEVEL"] = "INFO"
-    env["C2CGEOPORTAL_LOG_LEVEL"] = "WARN"
-    fileConfig(options.iniconfig, defaults=env)
-    get_app(options.iniconfig, options.app_name, options=env)
+    get_app(options, parser)
 
     from c2cgeoportal_commons.models import DBSession
     from c2cgeoportal_commons.models.main import LayerV1, LayerWMS, LayerWMTS, LayerGroup, Theme
