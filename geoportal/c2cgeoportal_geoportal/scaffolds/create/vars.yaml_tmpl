@@ -146,6 +146,10 @@ vars:
         gmfPrintUrl: printproxy
     oeview:
       <<: *interface
+      constants:
+        <<: *constants
+        gmfPermalinkOptions:
+          pointRecenterZoom: 10
       # FIXME: gmfContextualdatacontentTemplateUrl
       routes:
         <<: *routes
