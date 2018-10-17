@@ -430,7 +430,7 @@ class C2cUpgradeTool:
                 for pattern in self.project["managed_files"]:
                     if re.match(pattern + '$', file_):
                         print(colorize(
-                            "The file '{}' is no longer used used, but not deleted "
+                            "The file '{}' is no longer used, but not deleted "
                             "because it is in the managed_files as '{}'.".format(file_, pattern),
                             RED
                         ))
