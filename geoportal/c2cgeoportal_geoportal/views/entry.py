@@ -73,15 +73,17 @@ cache_region = get_region()
 
 class DimensionInformation:
 
-    URL_PART_RE = re.compile("[a-zA-Z0-9_\-\+~\.]+$")
+    URL_PART_RE = re.compile("[a-zA-Z0-9_\-\+~\.]*$")
 
     def __init__(self):
         self._dimensions = {}
+        self._dimension_filters = {}
 
     def merge(self, layer, layer_node, mixed):
         errors = set()
 
         dimensions = {}
+        dimensions_filters = {}
         for dimension in layer.dimensions:
             if not isinstance(layer, main.LayerWMS) and dimension.value is not None and \
                     not self.URL_PART_RE.match(dimension.value):
@@ -93,8 +95,16 @@ class DimensionInformation:
                     layer.name, dimension.name
                 ))
             else:
-                dimensions[dimension.name] = dimension.value
+                if dimension.field:
+                    dimensions_filters[dimension.name] = {
+                        'field': dimension.field,
+                        'value': dimension.value
+                    }
+                else:
+                    dimensions[dimension.name] = dimension.value
 
+        if dimensions_filters:
+            layer_node["dimensionsFilters"] = dimensions_filters
         if mixed:
             layer_node["dimensions"] = dimensions
         else:
@@ -832,12 +842,11 @@ class Entry:
 
         for tree_item in group.children:
             if isinstance(tree_item, main.LayerGroup):
-                depth += 1
                 if isinstance(group, main.Theme) or catalogue or \
                         group.is_internal_wms == tree_item.is_internal_wms:
                     gp, gp_errors = self._group(
                         u"{}/{}".format(path, tree_item.name),
-                        tree_item, layers, depth=depth, min_levels=min_levels,
+                        tree_item, layers, depth=depth + 1, min_levels=min_levels,
                         catalogue=catalogue, role_id=role_id, version=version, mixed=mixed,
                         time=time, dim=dim, wms_layers=wms_layers, layers_name=layers_name, **kwargs
                     )

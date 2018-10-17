@@ -34,6 +34,8 @@ vars:
         PGUSER: www-data
         PGPASSWORD: www-data
         PGDATABASE: geomapfish
+        PGSCHEMA: main
+        PGSCHEMA_STATIC: main_static
         GEOPORTAL_INTERNAL_URL: http://geoportal:8080
         TILECLOUDCHAIN_INTERNAL_URL: http://tilecloudchain:8080
         MAPCACHE_URL: http://mapcache:8080/mapcache/
@@ -429,10 +431,7 @@ vars:
 
   # For base layers
   tiles_url:
-    - '{web_protocol}://a.tiles.{host}/tiles'
-    - '{web_protocol}://b.tiles.{host}/tiles'
-    - '{web_protocol}://c.tiles.{host}/tiles'
-    - '{web_protocol}://d.tiles.{host}/tiles'
+    - '{web_protocol}://{host}/{instance}/tiles/'
   wmtscapabilities_path: '{WMTSCAPABILITIES_PATH}'
 
   ogcproxy_enable: false
@@ -452,6 +451,12 @@ vars:
             style-src 'self' 'unsafe-inline'; \
             img-src * data:; \
             connect-src *"
+    - pattern: '^/apihelp.html'
+      headers:
+        Content-Security-Policy: "default-src 'self'; \
+            script-src 'self' 'unsafe-inline' 'unsafe-eval'; \
+            style-src 'self' 'unsafe-inline'; \
+            img-src *;"
     - pattern: '^/admin/.*'
       headers:
         Referrer-Policy: same-origin

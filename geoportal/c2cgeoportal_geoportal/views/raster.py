@@ -35,7 +35,7 @@ from repoze.lru import LRUCache
 
 from fiona.collection import Collection
 import rasterio
-from pyramid.httpexceptions import HTTPNotFound
+from pyramid.httpexceptions import HTTPNotFound, HTTPBadRequest
 from pyramid.view import view_config
 
 from c2cgeoportal_geoportal.lib.caching import set_common_headers, NO_CACHE
@@ -58,8 +58,22 @@ class Raster:
 
     @view_config(route_name="raster", renderer="decimaljson")
     def raster(self):
-        lon = float(self.request.params["lon"])
-        lat = float(self.request.params["lat"])
+        if 'lon' not in self.request.params:
+            raise HTTPBadRequest("'lon' should be in the query string parameters")
+        if 'lat' not in self.request.params:
+            raise HTTPBadRequest("'lat' should be in the query string parameters")
+        try:
+            lon = float(self.request.params["lon"])
+        except ValueError:
+            raise HTTPBadRequest("'lon' ({}) parameters should be a number".format(
+                self.request.params["lon"]
+            ))
+        try:
+            lat = float(self.request.params["lat"])
+        except ValueError:
+            raise HTTPBadRequest("'lat' ({}) parameters should be a number".format(
+                self.request.params["lat"]
+            ))
         if "layers" in self.request.params:
             rasters = {}
             layers = self.request.params["layers"].split(",")
