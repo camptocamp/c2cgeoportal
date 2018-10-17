@@ -44,20 +44,23 @@ Then, add the routing component to the ``gmf-app-tools-content`` area::
 Configuration
 -------------
 
-In the same interface template where the button and the component were added, the `ngeoRoutingOptions` and `ngeoNominatimSearchDefaultParams` can be defined. Example::
+To configure the routing feature the constants `ngeoRoutingOptions` and `ngeoNominatimSearchDefaultParams` can be defined. Add them to your `interfaces_config` section in your `vars.yaml` file::
 
-    var module = angular.module('app');
-    module.constant('ngeoRoutingOptions', {
-      'backendUrl': 'http://routing.osm.ch/',
-      'profiles': [
-        {label : 'Car', profile: 'routed-car'},
-        {label : 'Bike (City)', profile: 'routed-bike'}
-      ]
-    });
-
-    module.constant('ngeoNominatimSearchDefaultParams', {
-        'countrycodes': 'CH'
-    });
+    interfaces_config:
+        [...]
+        your_interface:
+            <<: *interface
+                constants:
+                    <<: *constants
+                    ngeoRoutingOptions:
+                        - backendUrl: https://routing.osm.ch/
+                        - profiles:
+                            - label: Car
+                              profile: routed-car
+                            - label: Bike (City)
+                              profile: routed-bike
+                    ngeoNominatimSearchDefaultParams:
+                        - countrycodes: CH
 
 backendUrl
 ^^^^^^^^^^

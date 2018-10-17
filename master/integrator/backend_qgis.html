@@ -60,6 +60,20 @@ span.prompt1:before {
 </pre></div>
 <div class="section" id="qgis-desktop-configuration">
 <h2>QGIS Desktop configuration<a class="headerlink" href="#qgis-desktop-configuration" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="create-a-tunnel-on-the-database-server">
+<h3>Create a tunnel on the database server<a class="headerlink" href="#create-a-tunnel-on-the-database-server" title="Permalink to this headline">¶</a></h3>
+<p>If you cannot connect directly to the database you can create a tunnel to be able to connect to them:</p>
+<pre class="highlight"><span class="prompt1">ssh -L <span class="m">5432</span>:localhost:5432 &lt;server&gt;</span>
+</pre><p>If you run QGIS in Docker you should bind to a specific IP:</p>
+<pre class="highlight"><span class="prompt1"><span class="nv">IP</span><span class="o">=</span><span class="k">$(</span>ip addr show dev <span class="k">$(</span>route <span class="p">|</span> grep default <span class="p">|</span> awk <span class="s1">&#39;{print $(NF)}&#39;</span> <span class="p">|</span> head -1<span class="k">)</span> <span class="p">|</span> awk <span class="s1">&#39;$1 ~ /^inet/ { sub(&quot;/.*&quot;, &quot;&quot;, $2); print $2 }&#39;</span> <span class="p">|</span> head -1<span class="k">)</span></span>
+<span class="prompt1">ssh -L <span class="si">${</span><span class="nv">IP</span><span class="si">}</span>:5432:localhost:5432 &lt;remote server&gt;</span>
+</pre></div>
+<div class="section" id="run-the-client-with-docker">
+<h3>Run the client with Docker<a class="headerlink" href="#run-the-client-with-docker" title="Permalink to this headline">¶</a></h3>
+<p>In a Docker mode, QGIS is configured in the <code class="docutils literal notranslate"><span class="pre">qgisserver/</span></code> directory. To edit the configuration,
+run this target and open the <code class="docutils literal notranslate"><span class="pre">/etc/project/project.qgs</span></code> file:</p>
+<pre class="highlight"><span class="prompt1">make edit-qgis-project</span>
+</pre></div>
 <div class="section" id="ows-configuration">
 <h3>OWS configuration<a class="headerlink" href="#ows-configuration" title="Permalink to this headline">¶</a></h3>
 <p>You should setup your OWS service in the QGIS project properties in the OWS tab.</p>
@@ -76,57 +90,30 @@ API.</p>
 </div>
 <div class="section" id="connect-to-postgres-database">
 <h3>Connect to Postgres database<a class="headerlink" href="#connect-to-postgres-database" title="Permalink to this headline">¶</a></h3>
-<p>This section is subject to change when the QGIS plugin is available.</p>
-<p>The way you should connect QGIS to the database is based on an external file
-called <code class="docutils literal notranslate"><span class="pre">pg_service.conf</span></code> located in the home directory. The content of this file is as follows:</p>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">geomapfish</span><span class="p">]</span>
-<span class="n">host</span><span class="o">=</span><span class="n">localhost</span>
-<span class="n">dbname</span><span class="o">=</span><span class="n">geomapfish</span>
-<span class="n">user</span><span class="o">=</span><span class="n">www</span><span class="o">-</span><span class="n">data</span>
-<span class="n">password</span><span class="o">=</span><span class="n">www</span><span class="o">-</span><span class="n">data</span>
-<span class="n">port</span><span class="o">=</span><span class="mi">5433</span>
-</pre></div>
-</div>
-<p>You probably need to create a tunnel with ssh:</p>
-<pre class="highlight"><span class="prompt1">ssh -L <span class="m">5432</span>:localhost:54532 &lt;server&gt;</span>
-</pre><p>Note that if you can connect directly to the database, you don’t need this tunnel.
-Ask to your database administrator the correct parameters. You probably just need
-to change the host parameter.</p>
-<p>You can have several sections. A section start with a name with [] and
-finish with a blank line. This file should be a unix file.</p>
-<p>On QGIS desktop, when creating a new PostGIS connection, give it a name and use
-the service name (<code class="docutils literal notranslate"><span class="pre">geomapfish</span></code> in our example) in the connection parameters form.</p>
-<p>Copy-past this file in the server, change the parameters to fit with the server
-settings and add the variable environment setting in the Apache config:</p>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>[..]
-SetEnv QGIS_PROJECT_FILE ${directory}/qgisserver.qgs
-+ SetEnv PGSERVICEFILE path/to/pg_service.conf
-</pre></div>
-</div>
-<p>Don’t forget to restart Apache.</p>
-</div>
-<div class="section" id="run-the-client-with-docker">
-<h3>Run the client with Docker<a class="headerlink" href="#run-the-client-with-docker" title="Permalink to this headline">¶</a></h3>
-<p>Create a tunnel to the database:</p>
-<pre class="highlight"><span class="prompt1"><span class="nv">IP</span><span class="o">=</span><span class="k">$(</span>ip addr show dev <span class="k">$(</span>route <span class="p">|</span> grep default <span class="p">|</span> awk <span class="s1">&#39;{print $(NF)}&#39;</span> <span class="p">|</span> head -1<span class="k">)</span> <span class="p">|</span> awk <span class="s1">&#39;$1 ~ /^inet/ { sub(&quot;/.*&quot;, &quot;&quot;, $2); print $2 }&#39;</span> <span class="p">|</span> head -1<span class="k">)</span></span>
-<span class="prompt1">ssh -L <span class="si">${</span><span class="nv">IP</span><span class="si">}</span>:5432:localhost:5432 &lt;remote server&gt;</span>
-</pre><p>In a Docker mode, QGIS is configured in the <code class="docutils literal notranslate"><span class="pre">qgisserver/</span></code> directory. To edit the configuration,
-run this target and open the <code class="docutils literal notranslate"><span class="pre">/etc/project/project.qgs</span></code> file:</p>
-<pre class="highlight"><span class="prompt1">make edit-qgis-project</span>
-</pre><p>If you want to add PostGIS layers on the main DB, create/edit your <code class="docutils literal notranslate"><span class="pre">$HOME/.pg_service.conf</span></code> file
+<p>If you want to add PostGIS layers on the main DB, create/edit your <code class="docutils literal notranslate"><span class="pre">$HOME/.pg_service.conf</span></code> file
 and add a section for the DB you want to access:</p>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">geomapfish</span><span class="p">]</span>
-<span class="n">host</span><span class="o">=&lt;</span><span class="n">host</span><span class="o">&gt;</span>  <span class="c1"># Localhost addresse of the Docker network interface (=&gt; ${IP})</span>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">project</span><span class="o">&gt;</span><span class="p">]</span>
+<span class="n">host</span><span class="o">=&lt;</span><span class="n">host</span><span class="o">&gt;</span>  <span class="c1"># Localhost address of the Docker network interface (=&gt; ${IP})</span>
 <span class="n">dbname</span><span class="o">=&lt;</span><span class="n">database</span> <span class="n">name</span><span class="o">&gt;</span>
 <span class="n">user</span><span class="o">=&lt;</span><span class="n">database</span> <span class="n">user</span><span class="o">&gt;</span>
 <span class="n">password</span><span class="o">=&lt;</span><span class="n">database</span> <span class="n">password</span><span class="o">&gt;</span>
 <span class="n">port</span><span class="o">=</span><span class="mi">5432</span>
 </pre></div>
 </div>
-<p>Then, in QGIS, fill only the <code class="docutils literal notranslate"><span class="pre">name</span></code> and <code class="docutils literal notranslate"><span class="pre">service</span></code> fields when you create the DB connection.
-Then, you can create/edit a <code class="docutils literal notranslate"><span class="pre">qgisserver/pg_service.conf.tmpl</span></code> file and add a section looking
-like that:</p>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>[geomapfish]
+<p><cite>&lt;host&gt;</cite> can be:</p>
+<ul class="simple">
+<li>If you use the tunnel with QGIS on your host: <code class="docutils literal notranslate"><span class="pre">localhost</span></code>.</li>
+<li>If you use the tunnel with QGIS on Docker: localhost address of the Docker network interface
+(=&gt; <cite>${IP}</cite>, e.-g.: <cite>172.17.0.1</cite>).</li>
+<li>If you know the host you should use, use it.</li>
+</ul>
+<p>Note that if you can connect directly to the database, you don’t need this tunnel.
+Ask to your database administrator the correct parameters. You probably just need
+to change the host parameter.</p>
+<p>Then, in QGIS, fill only the <code class="docutils literal notranslate"><span class="pre">name</span></code> and <code class="docutils literal notranslate"><span class="pre">service</span></code> fields when you create the DB connection.</p>
+<p>In the project repository you should have a <code class="docutils literal notranslate"><span class="pre">qgisserver/pg_service.conf.tmpl</span></code> file
+with a section looking like that:</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>[&lt;package&gt;]
 host=${PGHOST}
 dbname=${PGDATABASE}
 user=${PGUSER}
@@ -134,6 +121,40 @@ password=${PGPASSWORD}
 port=${PGPORT}
 </pre></div>
 </div>
+<p>If you don’t use Docker you also should add this int the Apache QGIS configuration:</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>SetEnv QGIS_PROJECT_FILE ${directory}/qgisserver.qgs
++ SetEnv PGSERVICEFILE ${directory}/pg_service.conf
+</pre></div>
+</div>
+<p>Don’t forget to graceful Apache.</p>
+</div>
+<div class="section" id="extra-postgis-connexion">
+<h3>Extra PostGIS connexion<a class="headerlink" href="#extra-postgis-connexion" title="Permalink to this headline">¶</a></h3>
+<p>If you need to add other database connection just add a new section in the
+<code class="docutils literal notranslate"><span class="pre">$HOME/.pg_service.conf</span></code>.</p>
+<p>In the and <code class="docutils literal notranslate"><span class="pre">qgisserver/pg_service.conf.tmpl</span></code> files add a new section like that:</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>[&lt;package&gt;]
+host=${EXTRA_PGHOST}
+dbname=${EXTRA_PGDATABASE}
+user=${EXTRA_PGUSER}
+password=${EXTRA_PGPASSWORD}
+port=${EXTRA_PGPORT}
+</pre></div>
+</div>
+<p>And in your <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file:</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
+  <span class="n">docker_services</span><span class="p">:</span>
+    <span class="n">qgisserver</span><span class="p">:</span>
+      <span class="n">environment</span><span class="p">:</span>
+        <span class="n">EXTRA_PGHOST</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">host</span><span class="o">&gt;</span>
+        <span class="n">EXTRA_PGDATABASE</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">database</span><span class="o">&gt;</span>
+        <span class="n">EXTRA_PGUSER</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">user</span><span class="o">&gt;</span>
+        <span class="n">EXTRA_PGPASSWORD</span><span class="p">:</span> <span class="o">&lt;</span><span class="k">pass</span><span class="o">&gt;</span>
+        <span class="n">EXTRA_PGPORT</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">port</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>With that you can respect that the connection should be passed throw the environments variables
+to be able change the database connexion without rebuilding your application.</p>
 </div>
 </div>
 <div class="section" id="ogc-server">

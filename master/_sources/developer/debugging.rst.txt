@@ -1,7 +1,7 @@
 .. _developer_debugging:
 
-Debugging
-=========
+Application debugging
+=====================
 
 The goal of this document is to give some troubleshooting tips.
 
@@ -133,15 +133,6 @@ Just define an environment variable in the build:
 
    DOCKER_TAG=<tag> ./docker-run make build
 
-Use a different project name
-............................
-
-Define the project name when you run the Docker composition:
-
-.. prompt:: bash
-
-   docker-compose --project-name=<name> ...
-
 Run gunicorn to reload on modifications of Python files
 .......................................................
 
@@ -160,16 +151,20 @@ Do a graceful restart of the running geoportal container
 Mount c2cgeoportal in the container
 ...................................
 
-Add in the ``docker-compose.yaml`` file, in the ``geoportal`` service the following lines:
+Clone and build c2cgeoportal, see: developer_server_side.
+
+Add a ``docker-compose.override.yml`` file with a ``geoportal`` service containing the following lines:
 
 .. code:: yaml
+
+   version: '2'
 
    services:
      geoportal:
        volumes:
-         - <c2cgeoportal_git_root>/geoportal/c2cgeoportal_commons:/opt/c2cgeoportal_geoportal/c2cgeoportal_commons
+         - <c2cgeoportal_git_root>/commons/c2cgeoportal_commons:/opt/c2cgeoportal_commons/c2cgeoportal_commons
          - <c2cgeoportal_git_root>/geoportal/c2cgeoportal_geoportal:/opt/c2cgeoportal_geoportal/c2cgeoportal_geoportal
-         - <c2cgeoportal_git_root>/geoportal/c2cgeoportal_admin:/opt/c2cgeoportal_geoportal/c2cgeoportal_admin
+         - <c2cgeoportal_git_root>/admin/c2cgeoportal_admin:/opt/c2cgeoportal_admin/c2cgeoportal_admin
 
 Expose a service
 ................
