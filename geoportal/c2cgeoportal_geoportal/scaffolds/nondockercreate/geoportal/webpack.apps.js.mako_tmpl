@@ -2,7 +2,6 @@ const path = require('path');
 const ls = require('ls');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const INTERFACE_THEME = ${__import__('ujson').dumps(interfaces_theme)};
 
@@ -12,7 +11,6 @@ const entry = {};
 // The dev mode will be used for builds on local machine outside docker
 const nodeEnv = process.env['NODE_ENV'] || 'development';
 const dev = nodeEnv == 'development'
-process.traceDeprecation = true;
 
 const name = process.env.INTERFACE;
 process.env.THEME = INTERFACE_THEME[name];
@@ -26,7 +24,7 @@ for (const filename of ls(path.resolve(__dirname, '${package}_geoportal/static-n
       inject: false,
       chunksSortMode: 'manual',
       filename: name + '.html',
-      chunks: ['commons', name],
+      chunks: [name],
       vars: {
         entry_point: '${entry_point}',
        },
