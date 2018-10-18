@@ -1,2 +1,0 @@
-@import "{{package}}.scss";
-@import "~gmf/less/mobile.scss";

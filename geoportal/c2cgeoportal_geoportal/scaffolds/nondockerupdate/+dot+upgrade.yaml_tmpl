@@ -112,6 +112,18 @@ files_to_remove:
   - file: vars_testdb.yaml
     version: 2.3.2
     from: 2.3.0
+  - file: geoportal/{{package}}_geoportal/static-ngeo/less/desktop.less
+    version: 2.4
+    from: 2.3
+  - file: geoportal/{{package}}_geoportal/static-ngeo/less/mobile.less
+    version: 2.4
+    from: 2.3
+  - file: {{package}}/static-ngeo/less/desktop.less
+    version: 2.4
+    from: 2.2
+  - file: {{package}}/static-ngeo/less/mobile.less
+    version: 2.4
+    from: 2.2
 
 files_to_move:
   - from: vars_{{package}}.yaml
