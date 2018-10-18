@@ -191,8 +191,8 @@ Or in c2cgeoportal root directory:
 
 .. prompt:: bash
 
-    ./docker-compose-run alembic \
-        --config geoportal/tests/functional/alembic.ini --name=[main|static] \
+    ./docker-compose-run alembic ${'\\'}
+        --config geoportal/tests/functional/alembic.ini --name=[main|static] ${'\\'}
         revision --message "<Explicit name>"
 
 This will generate the migration script in
