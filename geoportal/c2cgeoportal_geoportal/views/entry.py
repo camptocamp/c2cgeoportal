@@ -842,7 +842,7 @@ class Entry:
 
         for tree_item in group.children:
             if isinstance(tree_item, main.LayerGroup):
-                if isinstance(group, main.Theme) or catalogue or \
+                if version == 2 or isinstance(group, main.Theme) or catalogue or \
                         group.is_internal_wms == tree_item.is_internal_wms:
                     gp, gp_errors = self._group(
                         u"{}/{}".format(path, tree_item.name),
