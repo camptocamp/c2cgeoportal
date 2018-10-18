@@ -130,7 +130,7 @@ vars:
               - label: Hiking
                 profile: routed-hiking
         ngeoNominatimSearchDefaultParams:
-          - countrycodes: CH
+          countrycodes: CH
         ngeoWfsPermalinkOptions:
           url: https://geomapfish-demo.camptocamp.com/docker/mapserv_proxy?ogcserver=QGIS%20server
           wfsTypes:
