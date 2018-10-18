@@ -165,7 +165,9 @@ docker image. So developers who modify the <code class="docutils literal notrans
 <p>Add a new script call from the application’s root directory:</p>
 <pre class="highlight"><span class="prompt1">./docker-compose-run alembic --name<span class="o">=[</span>main<span class="p">|</span>static<span class="o">]</span> revision --message <span class="s2">&quot;&lt;Explicit name&gt;&quot;</span></span>
 </pre><p>Or in c2cgeoportal root directory:</p>
-<pre class="highlight"><span class="prompt1">./docker-compose-run alembic         --config geoportal/tests/functional/alembic.ini --name<span class="o">=[</span>main<span class="p">|</span>static<span class="o">]</span>         revision --message <span class="s2">&quot;&lt;Explicit name&gt;&quot;</span></span>
+<pre class="highlight"><span class="prompt1">./docker-compose-run alembic <span class="se">\</span>
+    --config geoportal/tests/functional/alembic.ini --name<span class="o">=[</span>main<span class="p">|</span>static<span class="o">]</span> <span class="se">\</span>
+    revision --message <span class="s2">&quot;&lt;Explicit name&gt;&quot;</span></span>
 </pre><p>This will generate the migration script in
 <code class="docutils literal notranslate"><span class="pre">commons/c2cgeoportal/commons/alembic/[main|static]/xxx_&lt;Explicite_name&gt;.py</span></code>.</p>
 <p>To get the project schema use:
