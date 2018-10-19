@@ -26,7 +26,7 @@ for (const filename of ls(path.resolve(__dirname, '${package}_geoportal/static-n
       inject: false,
       chunksSortMode: 'manual',
       filename: name + '.html',
-      chunks: ['commons', name],
+      chunks: [name],
       vars: {
         entry_point: '${entry_point}',
        },
