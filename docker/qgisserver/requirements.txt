@@ -5,9 +5,9 @@ ColanderAlchemy==0.3.3  # commons
 colander==1.5.1  # commons, admin
 deform==2.0.6  # commons, admin
 GeoAlchemy2==0.5.0  # commons, geoportal
-geojson==2.4.0  # geoportal
+geojson==2.4.1  # geoportal
 iso8601==0.1.11  # deform, by default the version 0.1.12 is installed and is incompatible with deform, rq.filter: <=0.1.11
 papyrus==2.3  # commons, geoportal
 redis==2.10.6  # geoportal cache
 SQLAlchemy==1.2.12
-transaction==2.2.1  # commons, geoportal
+transaction==2.3.0  # commons, geoportal
