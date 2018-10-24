@@ -84,7 +84,7 @@ and add a section for the DB you want to access:
 
 .. code::
 
-   [<project>]
+   [<package>]
    host=<host>  # Localhost address of the Docker network interface (=> ${IP})
    dbname=<database name>
    user=<database user>
