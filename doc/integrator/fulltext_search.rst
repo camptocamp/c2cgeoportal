@@ -87,7 +87,7 @@ A script is available to fill the full-text search table, for more information t
 
 .. prompt:: bash
 
-   ./docker-compose-run theme2fts --help
+   docker-compose exec geoportal theme2fts --help
 
 
 Security

@@ -81,6 +81,7 @@ DEFAULT_BUILD_RULES ?= docker-build-geoportal \
 	geoportal/alembic.ini \
 	geoportal/alembic.yaml \
 	docker-compose.yaml \
+	.env \
 	docker-compose-build.yaml \
 	docker-compose-dev.yaml
 
