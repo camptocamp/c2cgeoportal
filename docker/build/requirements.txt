@@ -1,7 +1,7 @@
 alabaster==0.7.12  # Doc theme
 alembic==1.0.1  # geoportal
 Babel==2.6.0  # i18n
-boto3==1.9.29  # Tile generation
+boto3==1.9.30  # Tile generation
 bottle==0.12.13  # geoportal
 c2c.cssmin==0.7.dev6  # CGXP build
 c2c.template==2.1.0  # geoportal
@@ -15,7 +15,7 @@ dateutils==0.6.6  # geoportal pcreate
 deform==2.0.6  # commons, admin
 defusedxml==0.5.0  # geoportal
 dogpile.cache==0.6.7  # geoportal
-flake8==3.5.0  # lint, TODO remove filter on pyflakes
+flake8==3.6.0  # lint, TODO remove filter on pyflakes
 flake8-copyright==0.2.2  # lint
 flake8-mypy==17.8.0  # lint
 Fiona==1.7.13  # geoportal raster
@@ -42,7 +42,7 @@ Pillow==5.3.0  # Tile generation
 polib==1.1.0  # i18n
 psycopg2-binary==2.7.5  # geoportal
 pycryptodome==3.6.6  # geoportal
-pyflakes==1.6.0  # lint, flake8 requires < 1.7.0, rq.filter: <1.7.0
+pyflakes==2.0.0  # lint, flake8
 Pygments==2.2.0  # doc
 pylint==2.1.1  # lint
 pyramid==1.9.2
@@ -50,7 +50,7 @@ pyramid-debugtoolbar==4.5  # geoportal
 pyramid_jinja2==2.7  # admin
 pyramid_mako==1.0.2  # geoportal
 pyramid_multiauth==0.9.0  # geoportal
-pyramid_tm==2.2  # geoportal
+pyramid-tm==2.2.1  # geoportal
 pytest-cov==2.6.0  # tests
 pytest-selenium==1.14.0  # admin tests
 python-dateutil==2.6.1  # geoportal, rq.filter: <2.7.0
@@ -65,7 +65,7 @@ sphinx-prompt==1.0.0  # doc
 SQLAlchemy==1.2.12
 tilecloud==1.1.0  # Tile generation
 tilecloud-chain==1.8.1  # Tile generation
-transaction==2.3.0  # commons, geoportal
+transaction==2.4.0  # commons, geoportal
 transifex-client==0.12.5  # Makefile, rq.filter: <=0.12.5
 translationstring==1.3  # admin
 virtualenv==16.0.0  # Makefile

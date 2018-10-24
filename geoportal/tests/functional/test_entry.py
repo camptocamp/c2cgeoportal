@@ -343,7 +343,9 @@ class TestEntryView(TestCase):
 
     @staticmethod
     def _get_filtered_errors(errors):
-        regex = re.compile("The layer \\'[a-z0-9_]*\\' \([a-z0-9_]*\) is not defined in WMS capabilities from \\'[a-z0-9_]*\\'")
+        regex = re.compile(
+            r"The layer \'[a-z0-9_]*\' \([a-z0-9_]*\) is not defined in WMS capabilities from \'[a-z0-9_]*\'"
+        )
         errors = [e for e in errors if not regex.match(e)]
         return set(errors)
 

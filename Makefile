@@ -227,7 +227,7 @@ flake8:
 		-not \( -path "*/.build" -prune \) \
 		-not \( -path "*/node_modules" -prune \) \
 		-name \*.py | xargs flake8 \
-		--ignore=E712 \
+		--ignore=E712,E252,W503 \
 		--copyright-check \
 		--copyright-min-file-size=1 \
 		--copyright-regexp="Copyright \(c\) ([0-9][0-9][0-9][0-9]-)?$(shell date +%Y), Camptocamp SA"
@@ -237,7 +237,7 @@ flake8:
 		--copyright-regexp="Copyright \(c\) ([0-9][0-9][0-9][0-9]-)?$(shell date +%Y), Camptocamp SA"
 	find $(VALIDATE_TEMPLATE_PY_FOLDERS) -name \*.py | xargs flake8 --config=setup.cfg
 	find $(VALIDATE_PY_TEST_FOLDERS) -name \*.py | xargs flake8 \
-		--ignore=E501 \
+		--ignore=E501,W503 \
 		--copyright-check \
 		--copyright-min-file-size=1 \
 		--copyright-regexp="Copyright \(c\) ([0-9][0-9][0-9][0-9]-)?$(shell date +%Y), Camptocamp SA"

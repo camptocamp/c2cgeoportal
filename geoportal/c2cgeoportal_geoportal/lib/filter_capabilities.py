@@ -193,9 +193,8 @@ class _CapabilitiesFilter(XMLFilterBase):
         assert layers_blacklist is not None or layers_whitelist is not None, \
             "either layers_blacklist OR layers_whitelist must be set"
         assert not (
-            layers_blacklist is not None and
-            layers_whitelist is not None), \
-            "only either layers_blacklist OR layers_whitelist can be set"
+            layers_blacklist is not None and layers_whitelist is not None
+        ), "only either layers_blacklist OR layers_whitelist can be set"
 
         if layers_blacklist is not None:
             layers_blacklist = [layer.lower() for layer in layers_blacklist]
@@ -288,10 +287,10 @@ class _CapabilitiesFilter(XMLFilterBase):
 
     def _keep_layer(self, layer_name):
         return (
-            self.layers_blacklist is not None and
-            layer_name not in self.layers_blacklist) or (
-            self.layers_whitelist is not None and
-            layer_name in self.layers_whitelist)
+            self.layers_blacklist is not None and layer_name not in self.layers_blacklist
+        ) or (
+            self.layers_whitelist is not None and layer_name in self.layers_whitelist
+        )
 
     def characters(self, content):
         if self.in_name and len(self.layers_path) != 0 and not \

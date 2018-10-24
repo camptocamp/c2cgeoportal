@@ -73,10 +73,10 @@ class TestRestrictionAreaViews(AbstractViewsTests):
 
         restriction_area = dbsession.query(RestrictionArea). \
             filter(RestrictionArea.name == 'new_name').one()
-        assert str(restriction_area.id) == \
-            re.match(
-                'http://localhost/restriction_areas/(.*)\?msg_col=submit_ok',
-                resp.location).group(1)
+        assert str(restriction_area.id) == re.match(
+            r'http://localhost/restriction_areas/(.*)\?msg_col=submit_ok',
+            resp.location
+        ).group(1)
         assert restriction_area.name == 'new_name'
 
     def test_unicity_validator(self, restriction_area_test_data, test_app):
@@ -135,7 +135,7 @@ class TestRestrictionAreaViews(AbstractViewsTests):
 
         assert resp.status_int == 302
         restriction_area = dbsession.query(RestrictionArea).filter(RestrictionArea.name == 'clone').one()
-        assert str(restriction_area.id) == \
-            re.match(
-                'http://localhost/restriction_areas/(.*)\?msg_col=submit_ok',
-                resp.location).group(1)
+        assert str(restriction_area.id) == re.match(
+            r'http://localhost/restriction_areas/(.*)\?msg_col=submit_ok',
+            resp.location
+        ).group(1)

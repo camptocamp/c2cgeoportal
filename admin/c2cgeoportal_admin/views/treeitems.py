@@ -36,15 +36,19 @@ class TreeItemViews(AbstractViews):
                     layer_wms.parents_relation,
                     key=lambda p: p.treegroup.name or '')]))] + _extra_list_fields_no_parents
 
-    @view_config(route_name='c2cgeoform_item',
-                 request_method='POST',
-                 renderer='../templates/edit.jinja2')
+    @view_config(
+        route_name='c2cgeoform_item',
+        request_method='POST',
+        renderer='../templates/edit.jinja2'
+    )
     def save(self):
         response = super().save()
         # correctly handles the validation error as if there is a validation error, cstruct is empty
-        has_to_be_registred_in_parent = (hasattr(self, '_appstruct') and
-                                         self._appstruct is not None and
-                                         self._appstruct.get('parent_id'))
+        has_to_be_registred_in_parent = (
+            hasattr(self, '_appstruct')
+            and self._appstruct is not None
+            and self._appstruct.get('parent_id')
+        )
         if has_to_be_registred_in_parent:
             parent = self._request.dbsession.query(TreeGroup).get(has_to_be_registred_in_parent)
             rel = LayergroupTreeitem(parent, self._obj, 100)
