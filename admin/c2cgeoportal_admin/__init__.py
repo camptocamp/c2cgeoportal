@@ -11,8 +11,8 @@ from c2cgeoportal_admin.subscribers import add_renderer_globals, add_localizer
 
 
 search_paths = (
-    (resource_filename(__name__, 'templates/widgets'),) +
-    c2cgeoform.default_search_paths
+    (resource_filename(__name__, 'templates/widgets'),)
+    + c2cgeoform.default_search_paths
 )
 c2cgeoform.default_search_paths = search_paths
 

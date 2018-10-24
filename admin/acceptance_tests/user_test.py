@@ -169,8 +169,9 @@ class TestUser(AbstractViewsTests):
         user = dbsession.query(User).filter(User.username == 'clone').one()
 
         assert str(user.id) == re.match(
-            'http://localhost/users/(.*)\?msg_col=submit_ok',
-            resp.location).group(1)
+            r'http://localhost/users/(.*)\?msg_col=submit_ok',
+            resp.location
+        ).group(1)
         assert users_test_data['users'][7].id != str(user.id)
         assert not user.is_password_changed
         assert not user.validate_password('pré$ident')
@@ -207,8 +208,9 @@ class TestUser(AbstractViewsTests):
             one()
 
         assert str(user.id) == re.match(
-            'http://localhost/users/(.*)\?msg_col=submit_ok',
-            resp.location).group(1)
+            r'http://localhost/users/(.*)\?msg_col=submit_ok',
+            resp.location
+        ).group(1)
 
         assert user.username == 'new_user'
         assert user.email == 'valid@email.net'
@@ -236,7 +238,8 @@ class TestUser(AbstractViewsTests):
                 'role_name': 'secretary_2',
                 'is_password_changed': 'false',
                 '_password': 'da39a3ee5e6b4b0d3255bfef95601890afd80709',
-                'temp_password': ''},
+                'temp_password': ''
+            },
             status=200)
         self._check_submission_problem(resp, 'Invalid email address')
 

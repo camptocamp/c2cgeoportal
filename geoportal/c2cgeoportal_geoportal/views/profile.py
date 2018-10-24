@@ -130,8 +130,8 @@ class Profile(Raster):
     def _dist(coord1, coord2):
         """Compute the distance between 2 points"""
         return math.sqrt(
-            math.pow(coord1[0] - coord2[0], 2.0) +
-            math.pow(coord1[1] - coord2[1], 2.0)
+            math.pow(coord1[0] - coord2[0], 2.0)
+            + math.pow(coord1[1] - coord2[1], 2.0)
         )
 
     def _create_points(self, coords, nb_points):

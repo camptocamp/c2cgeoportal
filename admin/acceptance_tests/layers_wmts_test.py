@@ -148,8 +148,9 @@ class TestLayerWMTS(AbstractViewsTests):
 
         resp = form.submit('submit')
         assert str(layer.id) == re.match(
-            'http://localhost{}/(.*)\?msg_col=submit_ok'.format(self._prefix),
-            resp.location).group(1)
+            r'http://localhost{}/(.*)\?msg_col=submit_ok'.format(self._prefix),
+            resp.location
+        ).group(1)
 
         dbsession.expire(layer)
         for key, value in new_values.items():
@@ -189,8 +190,9 @@ class TestLayerWMTS(AbstractViewsTests):
             filter(LayerWMTS.name == 'clone'). \
             one()
         assert str(layer.id) == re.match(
-            'http://localhost/layers_wmts/(.*)\?msg_col=submit_ok',
-            resp.location).group(1)
+            r'http://localhost/layers_wmts/(.*)\?msg_col=submit_ok',
+            resp.location
+        ).group(1)
 
     def test_delete(self, test_app, dbsession):
         from c2cgeoportal_commons.models.main import LayerWMTS, Layer, TreeItem
@@ -222,8 +224,10 @@ class TestLayerWMTS(AbstractViewsTests):
             count()
 
         resp = test_app.post("/layers_wmts/{}/convert_to_wms".format(layer.id), status=200)
-        assert ('http://localhost/layers_wms/{}?msg_col=submit_ok'.format(layer.id) ==
-                resp.json['redirect'])
+        assert (
+            'http://localhost/layers_wms/{}?msg_col=submit_ok'.format(layer.id)
+            == resp.json['redirect']
+        )
 
         assert 1 == dbsession.query(LayerWMS). \
             filter(LayerWMS.name == layer.name). \

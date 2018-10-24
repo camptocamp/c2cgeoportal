@@ -633,8 +633,8 @@ class C2cUpgradeTool:
         else:
             self.print_step(
                 step + 1,
-                message="Manually apply the ngeo application changes as shown in the `ngeo.diff` file.\n" +
-                DIFF_NOTICE
+                message="Manually apply the ngeo application changes as shown in the `ngeo.diff` file.\n"
+                + DIFF_NOTICE
             )
 
     @Step(10)

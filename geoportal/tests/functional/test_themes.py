@@ -190,8 +190,8 @@ class TestThemesView(TestCase):
     def _get_filtered_errors(themes):
         return {
             e for e in themes["errors"]
-            if e != "The layer '' (__test_layer_external_wms) is not defined in WMS capabilities" and
-            not e.startswith("Unable to get DescribeFeatureType from URL ")
+            if e != "The layer '' (__test_layer_external_wms) is not defined in WMS capabilities"
+            and not e.startswith("Unable to get DescribeFeatureType from URL ")
         }
 
     def test_version(self):

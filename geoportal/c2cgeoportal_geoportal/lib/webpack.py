@@ -51,9 +51,9 @@ class WebpackTween:
         # e.-g.: /
         # e.-g.: /theme/OSM
         elif request.path_info in ('', '/') or (
-            len(path_info) == 3 and
-            path_info[1] == 'theme' and
-            not self._RE_RESOURCES.match(path_info[2])
+            len(path_info) == 3
+            and path_info[1] == 'theme'
+            and not self._RE_RESOURCES.match(path_info[2])
         ):
             request.path_info = '/static-ngeo/unused-cache-buster/build/{}.html'.format(default_interface)
             default = True
@@ -66,9 +66,9 @@ class WebpackTween:
             if len(path_info) == 2 or (
                 len(path_info) == 3 and path_info[2] == ''
             ) or (
-                len(path_info) == 4 and
-                path_info[2] == 'theme' and
-                not self._RE_RESOURCES.match(path_info[3])
+                len(path_info) == 4
+                and path_info[2] == 'theme'
+                and not self._RE_RESOURCES.match(path_info[3])
             ):
                 request.path_info = '/static-ngeo/unused-cache-buster/build/{}.html'.format(path_info[1])
                 default = True

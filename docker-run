@@ -62,7 +62,7 @@ def main():
         git_hash = subprocess.check_output([
             "git", "rev-parse", "HEAD"
         ]).decode("utf-8").strip()
-    except subprocess.CalledProcessError as e:
+    except subprocess.CalledProcessError:
         git_branch = "unknown"
         git_hash = "unknown"
 

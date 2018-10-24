@@ -99,7 +99,7 @@ class TestInterface(AbstractViewsTests):
             filter(Interface.name == 'new_name'). \
             one()
         assert str(interface.id) == re.match(
-            'http://localhost/interfaces/(.*)\?msg_col=submit_ok',
+            r'http://localhost/interfaces/(.*)\?msg_col=submit_ok',
             resp.location).group(1)
         assert interface.name == 'new_name'
 

@@ -64,7 +64,7 @@ class TestFunctionality(AbstractViewsTests):
             filter(Functionality.name == 'new_name'). \
             one()
         assert str(functionality.id) == re.match(
-            'http://localhost/functionalities/(.*)\?msg_col=submit_ok',
+            r'http://localhost/functionalities/(.*)\?msg_col=submit_ok',
             resp.location).group(1)
         assert functionality.name == 'new_name'
 
@@ -100,5 +100,5 @@ class TestFunctionality(AbstractViewsTests):
             filter(Functionality.name == 'clone'). \
             one()
         assert str(functionality.id) == re.match(
-            'http://localhost/functionalities/(.*)\?msg_col=submit_ok',
+            r'http://localhost/functionalities/(.*)\?msg_col=submit_ok',
             resp.location).group(1)

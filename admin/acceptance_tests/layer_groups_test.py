@@ -13,9 +13,11 @@ def layer_groups_test_data(dbsession, transact):
 
     from c2cgeoportal_commons.models.main import LayerGroup, Metadata, LayergroupTreeitem
 
-    metadatas_protos = [("copyable", "true"),
-                        ("disclaimer", "© le momo"),
-                        ("snappingConfig", '{"tolerance": 50}')]
+    metadatas_protos = [
+        ("copyable", "true"),
+        ("disclaimer", "© le momo"),
+        ("snappingConfig", '{"tolerance": 50}')
+    ]
 
     groups = []
     for i in range(0, 12):
@@ -141,8 +143,9 @@ class TestLayersGroups(TestTreeGroup):
 
         resp = form.submit("submit")
         assert str(group.id) == re.match(
-            'http://localhost/layer_groups/(.*)\?msg_col=submit_ok',
-            resp.location).group(1)
+            r'http://localhost/layer_groups/(.*)\?msg_col=submit_ok',
+            resp.location
+        ).group(1)
 
         dbsession.expire(group)
         for key, value in new_values.items():
@@ -213,12 +216,13 @@ class TestLayersGroups(TestTreeGroup):
             one()
 
         assert str(group.id) == re.match(
-            'http://localhost/layer_groups/(.*)\?msg_col=submit_ok',
-            resp.location).group(1)
+            r'http://localhost/layer_groups/(.*)\?msg_col=submit_ok',
+            resp.location
+        ).group(1)
 
         assert (
-            [groups[3].id, groups[4].id, groups[5].id] ==
-            [rel.treeitem_id for rel in group.children_relation]
+            [groups[3].id, groups[4].id, groups[5].id]
+            == [rel.treeitem_id for rel in group.children_relation]
         )
 
     def test_post_with_ancestor(self, layer_groups_test_data, test_app):
@@ -243,8 +247,8 @@ class TestLayersGroups(TestTreeGroup):
             status=200)
         assert (
             'Value {} does not exist in table treeitem or is not allowed to avoid cycles'.
-            format(groups[1].id) ==
-            resp.html.select_one('.item-children_relation + .help-block').getText().strip())
+            format(groups[1].id)
+            == resp.html.select_one('.item-children_relation + .help-block').getText().strip())
 
     def test_duplicate(self, layer_groups_test_data, test_app, dbsession):
         from c2cgeoportal_commons.models.main import LayerGroup
@@ -287,10 +291,10 @@ class TestLayersGroups(TestTreeGroup):
             filter(LayerGroup.name == 'duplicated'). \
             one()
 
-        assert str(duplicated.id) == \
-            re.match(
-                'http://localhost{}/(.*)\?msg_col=submit_ok'.format(self._prefix),
-                resp.location).group(1)
+        assert str(duplicated.id) == re.match(
+            r'http://localhost{}/(.*)\?msg_col=submit_ok'.format(self._prefix),
+            resp.location
+        ).group(1)
         assert duplicated.id != group.id
         assert duplicated.children_relation[0].id != group.children_relation[0].id
         assert duplicated.children_relation[0].treeitem.id == group.children_relation[0].treeitem.id

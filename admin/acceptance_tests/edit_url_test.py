@@ -107,7 +107,7 @@ class TestUrlEdit(AbstractViewsTests):
 
     def _check_link(self, test_app, resp, item, table, status):
         link = resp.html.select_one('.form-group.item-{} a'.format(item))
-        assert re.match('http://localhost/{}/\d+'.format(table), link['href']) is not None
+        assert re.match(r'http://localhost/{}/\d+'.format(table), link['href']) is not None
         test_app.get(link.get('href'), status=status)
 
     def test_layer_wms_edit(self, edit_url_test_data, test_app):

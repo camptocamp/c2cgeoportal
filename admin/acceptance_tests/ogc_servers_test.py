@@ -76,8 +76,9 @@ class TestOGCServer(AbstractViewsTests):
             filter(OGCServer.name == 'new_name'). \
             one()
         assert str(ogc_server.id) == re.match(
-            'http://localhost/ogc_servers/(.*)\?msg_col=submit_ok',
-            resp.location).group(1)
+            r'http://localhost/ogc_servers/(.*)\?msg_col=submit_ok',
+            resp.location
+        ).group(1)
         assert ogc_server.name == 'new_name'
 
     def test_edit(self, test_app, ogc_server_test_data):
@@ -112,8 +113,9 @@ class TestOGCServer(AbstractViewsTests):
             filter(OGCServer.name == 'clone'). \
             one()
         assert str(server.id) == re.match(
-            'http://localhost/ogc_servers/(.*)\?msg_col=submit_ok',
-            resp.location).group(1)
+            r'http://localhost/ogc_servers/(.*)\?msg_col=submit_ok',
+            resp.location
+        ).group(1)
 
     def test_unicity_validator(self, ogc_server_test_data, test_app):
         ogc_server = ogc_server_test_data['ogc_servers'][3]

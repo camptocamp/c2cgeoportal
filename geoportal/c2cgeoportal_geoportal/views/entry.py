@@ -73,7 +73,7 @@ cache_region = get_region()
 
 class DimensionInformation:
 
-    URL_PART_RE = re.compile("[a-zA-Z0-9_\-\+~\.]*$")
+    URL_PART_RE = re.compile(r"[a-zA-Z0-9_\-\+~\.]*$")
 
     def __init__(self):
         self._dimensions = {}
@@ -197,8 +197,8 @@ class Entry:
 
     def _get_capabilities_cache_role_key(self, ogc_server):
         return self._get_role_id() if (
-            ogc_server.auth != main.OGCSERVER_AUTH_NOAUTH and
-            ogc_server.type != main.OGCSERVER_TYPE_MAPSERVER
+            ogc_server.auth != main.OGCSERVER_AUTH_NOAUTH
+            and ogc_server.type != main.OGCSERVER_TYPE_MAPSERVER
         ) else None
 
     def _get_metadata(self, item, metadata, errors):
@@ -859,9 +859,10 @@ class Entry:
                     ))
             elif self._layer_included(tree_item, version):
                 if tree_item.name in layers:
-                    if (catalogue or not isinstance(tree_item, main.LayerV1) or
-                        (isinstance(tree_item, main.LayerV1) and group.is_internal_wms ==
-                            self._is_internal_wms(tree_item))):
+                    if (catalogue or not isinstance(tree_item, main.LayerV1) or (
+                        isinstance(tree_item, main.LayerV1) and group.is_internal_wms
+                        == self._is_internal_wms(tree_item)
+                    )):
 
                         layers_name.append(tree_item.name)
                         if isinstance(tree_item, main.LayerWMS):

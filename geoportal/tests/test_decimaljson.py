@@ -72,7 +72,7 @@ class TestDecimalJSON(TestCase):
         request.params["callback"] = "jsonp_cb"
         result = renderer(value, {"request": request})
         self.assertEqual(
-            json.loads(re.search("jsonp_cb\((.*)\);", result).group(1)),
+            json.loads(re.search(r"jsonp_cb\((.*)\);", result).group(1)),
             {
                 "int": 1,
                 "dec": 1.2,

@@ -197,7 +197,7 @@ class TestTheme(TestTreeGroup):
 
         resp = form.submit('submit')
         assert str(theme.id) == re.match(
-            'http://localhost/themes/(.*)\?msg_col=submit_ok',
+            r'http://localhost/themes/(.*)\?msg_col=submit_ok',
             resp.location).group(1)
 
         dbsession.expire(theme)
@@ -275,12 +275,12 @@ class TestTheme(TestTreeGroup):
             one()
 
         assert str(theme.id) == re.match(
-            'http://localhost/themes/(.*)\?msg_col=submit_ok',
+            r'http://localhost/themes/(.*)\?msg_col=submit_ok',
             resp.location).group(1)
 
         assert (
-            [groups[1].id, groups[3].id, groups[4].id] ==
-            [rel.treeitem_id for rel in theme.children_relation]
+            [groups[1].id, groups[3].id, groups[4].id]
+            == [rel.treeitem_id for rel in theme.children_relation]
         )
 
     def test_post_new_with_child_layer(self, theme_test_data, test_app):
@@ -310,8 +310,8 @@ class TestTheme(TestTreeGroup):
             status=200)
         assert (
             'Value {} does not exist in table treeitem or is not allowed to avoid cycles'.
-            format(layers[0].id) ==
-            resp.html.select_one('.item-children_relation + .help-block').getText().strip())
+            format(layers[0].id)
+            == resp.html.select_one('.item-children_relation + .help-block').getText().strip())
 
     def test_duplicate(self, theme_test_data, test_app, dbsession):
         from c2cgeoportal_commons.models.main import Theme
@@ -371,10 +371,10 @@ class TestTheme(TestTreeGroup):
             filter(Theme.name == 'duplicated'). \
             one()
 
-        assert str(duplicated.id) == \
-            re.match(
-                'http://localhost{}/(.*)\?msg_col=submit_ok'.format(self._prefix),
-                resp.location).group(1)
+        assert str(duplicated.id) == re.match(
+            r'http://localhost{}/(.*)\?msg_col=submit_ok'.format(self._prefix),
+            resp.location
+        ).group(1)
         assert duplicated.id != theme.id
         assert duplicated.children_relation[0].id != theme.children_relation[0].id
         assert duplicated.children_relation[0].treeitem.id == theme.children_relation[0].treeitem.id
