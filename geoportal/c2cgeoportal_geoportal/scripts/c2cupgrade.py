@@ -124,6 +124,9 @@ def _fill_arguments():
     parser.add_argument(
         "--step", type=int, help=argparse.SUPPRESS, default=0
     )
+    parser.add_arguement(
+        "--demo", type=bool, help="true if building on the demo server",
+    )
 
     return parser
 
@@ -692,7 +695,12 @@ class C2cUpgradeTool:
                 "docker-compose down; docker-compose up -d`.",
                 "- Test your application on 'http://localhost:8480/desktop'."
             ]
-
+        if self.options.demo:
+           message.append(
+               "Please run the following:"
+               "./docker-run rm /build/c2ctemplate-cache.json"
+               "./docker-run --home make --makefile=<user>.mk docker-compose.yaml"
+           )
         if self.options.windows:
             message.append(
                 "You are running on Windows, please restart your Apache server,"
@@ -743,6 +751,8 @@ class C2cUpgradeTool:
         print("git push {0!s} {1!s}.".format(
             self.options.git_remote, branch
         ))
+        if self.options.demo:
+            print('Now execute ./scripts/publish <instance>')
 
 
 if __name__ == "__main__":
