@@ -10,4 +10,4 @@ iso8601==0.1.11  # deform, by default the version 0.1.12 is installed and is inc
 papyrus==2.3  # commons, geoportal
 redis==2.10.6  # geoportal cache
 SQLAlchemy==1.2.12
-transaction==2.3.0  # commons, geoportal
+transaction==2.4.0  # commons, geoportal
