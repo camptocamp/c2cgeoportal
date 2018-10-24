@@ -125,7 +125,7 @@ def _fill_arguments():
         "--step", type=int, help=argparse.SUPPRESS, default=0
     )
     parser.add_arguement(
-        "--demo", type=bool, help="true if building on the demo server",
+        "--demo", type=bool, help="true if building on the demo server", default=False,
     )
 
     return parser
@@ -676,7 +676,7 @@ class C2cUpgradeTool:
             os.unlink("create.diff")
 
         check_call(["make", "--makefile=" + self.options.new_makefile, "build"])
-
+        self.options.use_makefile = True
         if self.options.nondocker:
             command.upgrade(Config("geoportal/alembic.ini", ini_section="main"), "head")
             command.upgrade(Config("geoportal/alembic.ini", ini_section="static"), "head")
