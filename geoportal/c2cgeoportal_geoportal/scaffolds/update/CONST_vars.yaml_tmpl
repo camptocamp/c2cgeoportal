@@ -297,6 +297,10 @@ vars:
         type: list
       - name: enumeratedAttributes
         type: list
+      - name: attributesOrder
+        type: list
+      - name: readonlyAttributes
+        type: list
       # WMTS layers
       - name: ogcServer
       - name: wmsLayers
