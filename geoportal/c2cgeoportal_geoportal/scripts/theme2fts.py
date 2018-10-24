@@ -105,11 +105,18 @@ def main():
     app_name = options.app_name
     if app_name is None and "#" in app_config:
         app_config, app_name = app_config.split("#", 1)
-    env = {}
+    env = {
+        "VISIBLE_ENTRY_POINT": "cli",
+        "LOG_LEVEL": "INFO",
+        "C2CGEOPORTAL_LOG_LEVEL": "WARN",
+        "GUNICORN_LOG_LEVEL": "INFO",
+        "GUNICORN_ACCESS_LOG_LEVEL": "INFO",
+        "SQL_LOG_LEVEL": "INFO",
+        "OTHER_LOG_LEVEL": "INFO",
+        "LOG_HOST": "localhost",
+        "LOG_PORT": "0",
+    }
     env.update(os.environ)
-    env["LOG_LEVEL"] = "INFO"
-    env["GUNICORN_ACCESS_LOG_LEVEL"] = "INFO"
-    env["C2CGEOPORTAL_LOG_LEVEL"] = "WARN"
     fileConfig(app_config, defaults=env)
     get_app(app_config, app_name, options=env)
 
