@@ -37,7 +37,6 @@ from sqlalchemy.exc import SAWarning
 from sqlalchemy.ext.declarative.api import DeclarativeMeta  # noqa, pylint: disable=unused-import
 
 from papyrus.geo_interface import GeoInterface
-from papyrus.xsd import tag
 
 
 _class_cache = {}  # type: Dict[Tuple[str, str, str], DeclarativeMeta]
@@ -94,29 +93,6 @@ class _AssociationProxy(object):
             setattr(obj, self.target, o)
 
 
-def xsd_sequence_callback(tb, cls):
-    from c2cgeoportal_commons.models import DBSession
-    for k, p in cls.__dict__.items():
-        if not isinstance(p, _AssociationProxy):
-            continue
-        relationship_property = class_mapper(cls) \
-            .get_property(p.target)
-        target_cls = relationship_property.argument
-        query = DBSession.query(getattr(target_cls, p.value_attr))
-        attrs = {}
-        if p.nullable:
-            attrs["minOccurs"] = "0"
-            attrs["nillable"] = "true"
-        attrs["name"] = k
-        with tag(tb, "xsd:element", attrs) as tb:
-            with tag(tb, "xsd:simpleType") as tb:
-                with tag(tb, "xsd:restriction",
-                         {"base": "xsd:string"}) as tb:
-                    for value, in query:
-                        with tag(tb, "xsd:enumeration", {"value": value}):
-                            pass
-
-
 def _get_schema(tablename):
     if "." in tablename:
         schema, tablename = tablename.split(".", 1)
@@ -162,7 +138,7 @@ def get_table(tablename, schema=None, session=None, primary_key=None):
     return table
 
 
-def get_class(tablename, session=None, exclude_properties=None, primary_key=None):
+def get_class(tablename, session=None, exclude_properties=None, primary_key=None, attributes_order=None):
     """
     Get the SQLAlchemy mapped class for "tablename". If no class exists
     for "tablename" one is created, and added to the cache. "tablename"
@@ -170,10 +146,15 @@ def get_class(tablename, session=None, exclude_properties=None, primary_key=None
     tablename in the database a NoSuchTableError SQLAlchemy exception
     is raised.
     """
-    if exclude_properties is None:
-        exclude_properties = []
+
     tablename, schema = _get_schema(tablename)
-    cache_key = (schema, tablename, ",".join(exclude_properties), primary_key)
+    cache_key = (
+        schema,
+        tablename,
+        tuple(exclude_properties or ()),
+        primary_key,
+        tuple(attributes_order or ())
+    )
 
     if cache_key in _class_cache:
         return _class_cache[cache_key]
@@ -181,7 +162,11 @@ def get_class(tablename, session=None, exclude_properties=None, primary_key=None
     table = get_table(tablename, schema, session, primary_key=primary_key)
 
     # create the mapped class
-    cls = _create_class(table, exclude_properties)
+    cls = _create_class(
+        table,
+        exclude_properties=exclude_properties,
+        attributes_order=attributes_order
+    )
 
     # add class to cache
     _class_cache[cache_key] = cls
@@ -189,17 +174,18 @@ def get_class(tablename, session=None, exclude_properties=None, primary_key=None
     return cls
 
 
-def _create_class(table, exclude_properties=None):
+def _create_class(table, exclude_properties=None, attributes_order=None):
     from c2cgeoportal_commons.models.main import Base
 
-    if exclude_properties is None:  # pragma: nocover
-        exclude_properties = []
+    exclude_properties = exclude_properties or ()
+
     cls = type(
         table.name.capitalize(),
         (GeoInterface, Base),
         dict(
             __table__=table,
-            __mapper_args__={"exclude_properties": exclude_properties}
+            __mapper_args__={"exclude_properties": exclude_properties},
+            __attributes_order__=attributes_order
         ),
     )
 
@@ -247,3 +233,5 @@ def _add_association_proxy(cls, col):
         cls.__add_properties__ = [proxy]
     else:
         cls.__add_properties__.append(proxy)
+
+    col.info['association_proxy'] = proxy

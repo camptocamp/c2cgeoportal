@@ -289,17 +289,16 @@ vars:
         type: json
       - name: geometryValidation  # V1
         type: boolean
-      - name: excludeProperties  # not yet used
       - name: customOpenLayersOptions
         type: json
+      - name: editingAttributesOrder
+        type: list
+      - name: readonlyAttributes
+        type: list
       # WMS
       - name: directedFilterAttributes
         type: list
       - name: enumeratedAttributes
-        type: list
-      - name: attributesOrder
-        type: list
-      - name: readonlyAttributes
         type: list
       # WMTS layers
       - name: ogcServer

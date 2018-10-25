@@ -49,7 +49,8 @@ from pyramid.interfaces import IStaticURLInfo
 from pyramid.httpexceptions import HTTPException
 import pyramid.security
 
-from papyrus.renderers import GeoJSON, XSD
+from papyrus.renderers import GeoJSON
+from c2cgeoportal_geoportal.lib.xsd import XSD
 
 import c2cwsgiutils.db
 from c2cwsgiutils.health_check import HealthCheck
@@ -553,7 +554,7 @@ def includeme(config):
 
     # Add the "xsd" renderer
     config.add_renderer("xsd", XSD(
-        sequence_callback=dbreflection.xsd_sequence_callback
+        include_foreign_keys=True
     ))
 
     # Add the set_user_validator directive, and set a default user validator
