@@ -17,7 +17,7 @@ Then ``<release>`` can be ``1.6.0rc1`` for the first release candidate
 of the version ``1.6.0``, ``1.6.0`` for the final release, ``1.6.1`` for
 the first bug fix release, and ``<version>`` can be ``1.6``, ``2.0``, ...
 
-`For ngeo see here <https://github.com/camptocamp/ngeo/blob/master/docs/developer-guide.md#create-a-package-on-npm>_`.
+`For ngeo see here <https://github.com/camptocamp/ngeo/blob/master/docs/developer-guide.md#create-a-dev-package-on-npm>_`.
 
 c2cgeoportal
 ------------
