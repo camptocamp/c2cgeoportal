@@ -87,11 +87,27 @@ def main():
         "--package",
         help="the application package",
     )
+    c2c_config = "geoportal/config.yaml" if os.path.exists("geoportal/config.yaml") else "config.yaml"
+    parser.add_argument(
+        "--config",
+        default=c2c_config,
+        help="the geoportal config, default is '{}'".format(c2c_config),
+    )
+    app_config = "geoportal/production.ini" if os.path.exists("geoportal/production.ini") \
+        else "production.ini"
     parser.add_argument(
         "-i", "--app-config",
-        default="geoportal/production.ini",
+        default=app_config,
         dest="app_config",
-        help="the application .ini config file (optional, default is 'production.ini')"
+        help="the application .ini config file (optional, default is '{}')".format(app_config)
+    )
+    locale_path_1 = os.path.join("{package}_geoportal", "locale", "")
+    locale_path_2 = os.path.join("geoportal", locale_path_1)
+    locale_path = locale_path_2 if os.path.exists("geoportal") else locale_path_1
+    parser.add_argument(
+        "--locale-folder",
+        default=locale_path,
+        help="The folder where the locale files are stored",
     )
     parser.add_argument(
         "-n", "--app-name",
@@ -105,11 +121,18 @@ def main():
     app_name = options.app_name
     if app_name is None and "#" in app_config:
         app_config, app_name = app_config.split("#", 1)
-    env = {}
+    env = {
+        "VISIBLE_ENTRY_POINT": "cli",
+        "LOG_LEVEL": "INFO",
+        "C2CGEOPORTAL_LOG_LEVEL": "WARN",
+        "GUNICORN_LOG_LEVEL": "INFO",
+        "GUNICORN_ACCESS_LOG_LEVEL": "INFO",
+        "SQL_LOG_LEVEL": "INFO",
+        "OTHER_LOG_LEVEL": "INFO",
+        "LOG_HOST": "localhost",
+        "LOG_PORT": "0",
+    }
     env.update(os.environ)
-    env["LOG_LEVEL"] = "INFO"
-    env["GUNICORN_ACCESS_LOG_LEVEL"] = "INFO"
-    env["C2CGEOPORTAL_LOG_LEVEL"] = "WARN"
     fileConfig(app_config, defaults=env)
     get_app(app_config, app_name, options=env)
 
@@ -121,7 +144,7 @@ class Import:
         self.options = options
         self.imported = set()
 
-        settings = get_config("geoportal/config.yaml")
+        settings = get_config(options.config)
         package = settings["package"]
 
         self.fts_languages = settings["fulltextsearch"]["languages"]
@@ -138,7 +161,7 @@ class Import:
         for lang in self.languages:
             self._[lang] = translation(
                 "{}_geoportal-client".format(package),
-                os.path.join("geoportal", "{}_geoportal".format(package), "locale/"), [lang]
+                options.locale_folder.format(package=package)
             )
 
         query = self.session.query(Interface)
