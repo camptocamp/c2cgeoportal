@@ -321,7 +321,7 @@ CONFIG_VARS += sqlalchemy.url sqlalchemy.pool_recycle sqlalchemy.pool_size sqlal
 	reset_password fulltextsearch global_headers headers authorized_referers hooks stats db_chooser \
 	ogcproxy_enable dbsessions urllogin host_forward_host smtp c2c.base_path welcome_email host \
 	lingua_extractor interfaces_config interfaces default_interface devserver_url
-MAKE_FILES = $(wildcard *.mk) CONST_Makefile
+MAKE_FILES = $(MAKEFILE_LIST)
 
 # Secrets
 
@@ -743,7 +743,7 @@ docker-build-testdb: testdb/11-schemas.sql testdb/12-alembic.sql testdb/13-alemb
 
 # Upgrade
 
-UPGRADE_ARGS += --use-makefile
+UPGRADE_ARGS += --use-makefile --makefile=$(firstword $(MAKEFILE_LIST))
 
 .PHONY: upgrade
 upgrade: project.yaml
