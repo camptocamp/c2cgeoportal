@@ -188,13 +188,16 @@ BEGIN
 
 -- Create functions
   FOR func_oid IN
-    SELECT oid
+    SELECT oid, proname, proowner
     FROM pg_proc
     WHERE pronamespace = src_oid
   LOOP
     SELECT pg_get_functiondef(func_oid) INTO qry;
     SELECT replace(qry, source_schema, dest_schema) INTO dest_qry;
     EXECUTE dest_qry;
+    SELECT rolname FROM pg_roles WHERE oid = proowner INTO owner;
+    SELECT pg_get_function_identity_arguments(oid) INTO args;
+    EXECUTE 'ALTER FUNCTION ' || dest_schema || '.' || proname || '(' || args || ') OWNER TO ' || quote_ident(owner);
   END LOOP;
 
   RETURN;
