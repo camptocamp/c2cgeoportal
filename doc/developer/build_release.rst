@@ -17,6 +17,45 @@ Then ``<release>`` can be ``1.6.0rc1`` for the first release candidate
 of the version ``1.6.0``, ``1.6.0`` for the final release, ``1.6.1`` for
 the first bug fix release, and ``<version>`` can be ``1.6``, ``2.0``, ...
 
+.. _developer_build_release_pre_release_task:
+
+Pre release task
+----------------
+
+Before doing a release you should merge all the previous branch on this one:
+
+* Merge the release changes (on ``ngeo`` and on ``c2cgeoportal``)
+  to the upper branches i.e.: ``1.6`` => ``2.2``, ..., ``2.3`` => ``2.4``.
+
+  .. note::
+
+     On ``c2cgeoportal`` merge see if an alembic merge should be done:
+
+     .. prompt:: bash
+
+        ./docker-compose-run alembic \
+            --config=tests/functional/alembic.ini \
+            --name=main heads
+        ./docker-compose-run alembic \
+            --config=tests/functional/alembic.ini \
+            --name=static heads
+
+     If yes create the merge with:
+
+     .. prompt:: bash
+
+        ./docker-compose-run alembic \
+            --config=tests/functional/alembic.ini --name=[main|static] \
+            merge --message="Merge <src> and <dst> branches" \
+            <rev 1> <rev 2>
+
+     Remove the import and replace the core of the method by ``pass`` in the generated file.
+
+     And finally add the new file.
+
+ngeo
+----
+
 `For ngeo see here <https://github.com/camptocamp/ngeo/blob/master/docs/developer-guide.md#create-a-package-on-npm>_`.
 
 c2cgeoportal
@@ -96,8 +135,8 @@ Create a new Transifex resource:
 
 Then continue by creating the release.
 
-New release
-~~~~~~~~~~~
+Do the new release
+~~~~~~~~~~~~~~~~~~
 
 Checkout the code:
 
@@ -125,49 +164,16 @@ Post release tasks
 
 When a new release or a new version is done you should do the following tasks:
 
-* Merge the release changes (on ``ngeo`` and on ``c2cgeoportal``)
-  to the upper branches i.e.: ``1.6`` => ``2.0``, ``2.0`` => ``master``.
+* Merge the version into the upper one to the master i.e.: ``2.4`` => ``2.5``, ``2.5`` => ``master``.
 
-  .. note::
+See :ref:`developer_build_release_pre_release_task` for more information.
 
-     On ``c2cgeoportal`` merge see if an alembic merge should be done:
+* Upgrade the demo in your home folder, see :ref:`integrator_upgrade_application`.
+* Some specific things for the demo:
+  `UPGRADE.rst <https://github.com/camptocamp/demo_geomapfish/blob/2.4/UPGRADE.rst>_`.
 
-     .. prompt:: bash
-
-        ./docker-compose-run alembic \
-            --config=tests/functional/alembic.ini \
-            --name=main heads
-        ./docker-compose-run alembic \
-            --config=tests/functional/alembic.ini \
-            --name=static heads
-
-     If yes create the merge with:
-
-     .. prompt:: bash
-
-        ./docker-compose-run alembic \
-            --config=tests/functional/alembic.ini --name=[main|static] \
-            merge --message="Merge <src> and <dst> branches" \
-            <rev 1> <rev 2>
-
-     Remove the import and replace the core of the method by ``pass`` in the generated file.
-
-     And finally add the new file.
-
-* Upgrade the demo in your home folder with ``make upgrade``.
-* Update the demo on the test server in the main folder with:
-
-  .. prompt:: bash
-
-    sudo -u sigdev make --makefile=demo.mk update
-    sudo -u sigdev make --makefile=demo.mk build
-
-* Test the `demo <http://testgmf.sig.cloud.camptocamp.net/>_`.
-* Deploy on the demo server with:
-
-  .. prompt:: bash
-
-     sudo -u deploy deploy -r deploy/deploy.cfg demo_server
+For non dev release
+-------------------
 
 * Rename the milestone on `c2cgeoportal <https://github.com/camptocamp/c2cgeoportal/milestones>_`
   and on `ngeo <https://github.com/camptocamp/ngeo/milestones>_` from ``x.y`` to ``x.y.z``.
