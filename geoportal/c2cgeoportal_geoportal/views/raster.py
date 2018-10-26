@@ -81,7 +81,7 @@ class Raster:
                 if layer in self.rasters:
                     rasters[layer] = self.rasters[layer]
                 else:
-                    raise HTTPNotFound("Layer {0!s} not found".format(layer))
+                    raise HTTPNotFound("Layer {} not found".format(layer))
         else:
             rasters = self.rasters
 
@@ -113,7 +113,13 @@ class Raster:
         dataset, band = self._get_raster(path)
 
         index = dataset.index(lon, lat)
-        result = band[index[0] - 1][index[1] - 1]
+        if index[0] - 1 < len(band) or index[1] - 1 < len(band[index[0] - 1]):
+            result = band[index[0] - 1][index[1] - 1]
+        else:
+            log.warning("Unable to get value for layer: {}, lon: {}, lat: {}, in {}.".format(
+                layer, lon, lat, path
+            ))
+            result = None
 
         if "round" in layer:
             result = self._round(result, layer["round"])
