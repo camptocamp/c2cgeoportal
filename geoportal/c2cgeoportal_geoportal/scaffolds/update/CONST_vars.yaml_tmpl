@@ -451,7 +451,10 @@ vars:
         Referrer-Policy: origin
         Strict-Transport-Security: max-age=31536000; includeSubDomains
         Content-Security-Policy: "default-src 'self' https://*; \
-            script-src 'self' 'unsafe-inline' https://cdn.polyfill.io/ https://maps.googleapis.com/; \
+            script-src 'self' 'unsafe-inline' \
+               https://cdn.polyfill.io/ \
+               https://maps.googleapis.com/ \
+               https://www.google-analytics.com/; \
             style-src 'self' 'unsafe-inline'; \
             img-src * data:; \
             connect-src *"
