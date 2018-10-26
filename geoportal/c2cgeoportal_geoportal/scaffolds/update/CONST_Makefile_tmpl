@@ -316,7 +316,6 @@ ALL_MAKO_FILES = $(shell find $(FIND_OPTS) -name "*.mako" -print)
 ALL_JINJA_FILES = $(shell find $(FIND_OPTS) -name "*.jinja" -print)
 EXTRA_EXCLUDE = $(foreach ELEM, print mapfile jsbuild tilegeneration,-path ./$(ELEM) -prune -o)
 VARS_FILES += CONST_vars.yaml $(VARS_FILE)
-VARS_DEPENDS += $(VARS_FILES)
 CONFIG_VARS += sqlalchemy.url sqlalchemy.pool_recycle sqlalchemy.pool_size sqlalchemy.max_overflow \
 	sqlalchemy.use_batch_mode sqlalchemy_slave.url sqlalchemy_slave.pool_recycle sqlalchemy_slave.pool_size \
 	sqlalchemy_slave.max_overflow sqlalchemy_slave.use_batch_mode schema schema_static enable_admin_interface \
@@ -326,7 +325,6 @@ CONFIG_VARS += sqlalchemy.url sqlalchemy.pool_recycle sqlalchemy.pool_size sqlal
 	reset_password fulltextsearch global_headers headers authorized_referers hooks stats db_chooser \
 	ogcproxy_enable dbsessions urllogin host_forward_host smtp c2c.base_path welcome_email host \
 	lingua_extractor interfaces_config interfaces default_interface devserver_url
-MAKE_FILES = $(wildcard *.mk) CONST_Makefile
 
 # Secrets
 
@@ -494,7 +492,16 @@ template-clean:
 		$(ALL_JINJA_FILES:.jinja=) \
 		geoportal/config.yaml
 
-/build/c2ctemplate-cache.json: .config $(VARS_DEPENDS) $(MAKE_FILES)
+/build/makefile-%:
+	$(PRERULE_CMD)
+	rm -f /build/makefile-*
+	touch $@
+
+/build/c2ctemplate-cache.json: \
+		.config \
+		$(VARS_FILES) \
+		$(MAKEFILE_LIST) \
+		/build/makefile-$(firstword $(MAKEFILE_LIST))
 	$(PRERULE_CMD)
 ifeq ($(origin VARS_FILE), undefined)
 	@echo "Error: the variable VARS_FILE is required."

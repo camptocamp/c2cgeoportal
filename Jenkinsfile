@@ -82,7 +82,7 @@ dockerBuild {
                     sh 'docker build --tag=camptocamp/testgeomapfish-external-db:latest docker/test-external-db'
                     try {
                         sh 'travis/create-new-project.sh ${HOME}/workspace'
-                        sh '(cd ${HOME}/workspace/testgeomapfish/; ./docker-compose-run make update-po)'
+                        sh '(cd ${HOME}/workspace/testgeomapfish/; ./docker-compose-run make --makefile=travis.mk update-po)'
                     } catch (Exception error) {
                         sh '(cd ${HOME}/workspace/testgeomapfish/; docker-compose --file=docker-compose-build.yaml logs --timestamps)'
                         throw error
