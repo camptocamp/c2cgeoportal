@@ -34,7 +34,9 @@ from logging.config import fileConfig
 
 
 def fill_arguments(parser):
-    default_app_config = "production.ini" if os.path.isfile("production.ini") else "geoportal/production.ini"
+    default_app_config = "geoportal/production.ini" \
+        if os.path.isfile("geoportal/production.ini") \
+        else "production.ini"
 
     parser.add_argument(
         "--app-config", "-i",
@@ -57,11 +59,18 @@ def get_app(options, parser):
     if not os.path.isfile(app_config):
         parser.error("Cannot find config file: {}".format(app_config))
 
-    # read the configuration
-    env = {}
+    # Read the configuration
+    env = {
+        "VISIBLE_ENTRY_POINT": "cli",
+        "LOG_LEVEL": "INFO",
+        "C2CGEOPORTAL_LOG_LEVEL": "WARN",
+        "GUNICORN_LOG_LEVEL": "INFO",
+        "GUNICORN_ACCESS_LOG_LEVEL": "INFO",
+        "SQL_LOG_LEVEL": "INFO",
+        "OTHER_LOG_LEVEL": "INFO",
+        "LOG_HOST": "localhost",
+        "LOG_PORT": "0",
+    }
     env.update(os.environ)
-    env["LOG_LEVEL"] = "INFO"
-    env["GUNICORN_ACCESS_LOG_LEVEL"] = "INFO"
-    env["C2CGEOPORTAL_LOG_LEVEL"] = "WARN"
     fileConfig(app_config, defaults=env)
     return paster_get_app(app_config, options.app_name, options=os.environ)
