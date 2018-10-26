@@ -688,6 +688,8 @@ class C2cUpgradeTool:
         else:
             message = [
                 "The upgrade is nearly done, now you should:",
+                "- To upgrade the database run `./docker-compose-run alembic --name=main "
+                "--config=geoportal/alembic.ini upgrade head`",
                 "- Run `docker-compose pull --ignore-pull-failures; "
                 "docker-compose down; docker-compose up -d`.",
                 "- Test your application on 'http://localhost:8480/desktop'."
