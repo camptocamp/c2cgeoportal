@@ -7,6 +7,7 @@ __pycache__/
 /docker-compose.yaml
 /docker-compose-build.yaml
 /docker-compose-dev.yaml
+/.env
 /admin/
 /geoportal/alembic.yaml
 /testdb/11-schemas.sql
