@@ -67,7 +67,7 @@ class Profile(Raster):
             # Handles cases when a layer is undefined, thus when not all raster
             # have the same geographical coverage
             for l in layers:
-                if l not in point["values"]:
+                if l not in point["values"] or point["values"][l] is None:
                     point["values"][l] = -9999
 
             r = template % tuple((str(point["values"][l]) for l in layers))
@@ -107,22 +107,18 @@ class Profile(Raster):
                 dist += self._dist(prev_coord, coord)
 
             values = {}
-            has_one = False
             for ref in list(rasters.keys()):
                 value = self._get_raster_value(self.rasters[ref], coord[0], coord[1])
-                if value is not None:
-                    values[ref] = value
-                    has_one = True
+                values[ref] = value
 
-            if has_one:
-                # 10cm accuracy is enough for distances
-                rounded_dist = Decimal(str(dist)).quantize(Decimal("0.1"))
-                points.append({
-                    "dist": rounded_dist,
-                    "values": values,
-                    "x": coord[0],
-                    "y": coord[1]
-                })
+            # 10cm accuracy is enough for distances
+            rounded_dist = Decimal(str(dist)).quantize(Decimal("0.1"))
+            points.append({
+                "dist": rounded_dist,
+                "values": values,
+                "x": coord[0],
+                "y": coord[1]
+            })
             prev_coord = coord
 
         return layers, points

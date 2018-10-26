@@ -81,7 +81,7 @@ class Raster:
                 if layer in self.rasters:
                     rasters[layer] = self.rasters[layer]
                 else:
-                    raise HTTPNotFound("Layer {0!s} not found".format(layer))
+                    raise HTTPNotFound("Layer {} not found".format(layer))
         else:
             rasters = self.rasters
 
