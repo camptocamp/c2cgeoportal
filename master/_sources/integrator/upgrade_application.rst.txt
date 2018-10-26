@@ -99,13 +99,13 @@ Build the project file:
 
 Change the version in the file ``.config`` to the wanted version.
 
-For non Docker project:
+If you should specify a makefile:
 
 .. prompt:: bash
 
    ./docker-run --home make --makefile=<user>.mk upgrade
 
-For Docker project:
+Also:
 
 .. prompt:: bash
 

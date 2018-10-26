@@ -47,6 +47,39 @@ from start of 2014 both projects will synchronize their major versions.</p>
 <p>Then <code class="docutils literal notranslate"><span class="pre">&lt;release&gt;</span></code> can be <code class="docutils literal notranslate"><span class="pre">1.6.0rc1</span></code> for the first release candidate
 of the version <code class="docutils literal notranslate"><span class="pre">1.6.0</span></code>, <code class="docutils literal notranslate"><span class="pre">1.6.0</span></code> for the final release, <code class="docutils literal notranslate"><span class="pre">1.6.1</span></code> for
 the first bug fix release, and <code class="docutils literal notranslate"><span class="pre">&lt;version&gt;</span></code> can be <code class="docutils literal notranslate"><span class="pre">1.6</span></code>, <code class="docutils literal notranslate"><span class="pre">2.0</span></code>, …</p>
+</div>
+<div class="section" id="pre-release-task">
+<span id="developer-build-release-pre-release-task"></span><h2>Pre release task<a class="headerlink" href="#pre-release-task" title="Permalink to this headline">¶</a></h2>
+<p>Before doing a release you should merge all the previous branch on this one:</p>
+<ul>
+<li><p class="first">Merge the release changes (on <code class="docutils literal notranslate"><span class="pre">ngeo</span></code> and on <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code>)
+to the upper branches i.e.: <code class="docutils literal notranslate"><span class="pre">1.6</span></code> =&gt; <code class="docutils literal notranslate"><span class="pre">2.2</span></code>, …, <code class="docutils literal notranslate"><span class="pre">2.3</span></code> =&gt; <code class="docutils literal notranslate"><span class="pre">2.4</span></code>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>On <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> merge see if an alembic merge should be done:</p>
+<pre class="highlight"><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">./docker-compose-run alembic <span class="se">\</span>
+    --config<span class="o">=</span>tests/functional/alembic.ini <span class="se">\</span>
+    --name<span class="o">=</span>main heads</span>
+<span class="prompt1">./docker-compose-run alembic <span class="se">\</span>
+    --config<span class="o">=</span>tests/functional/alembic.ini <span class="se">\</span>
+    --name<span class="o">=</span>static heads</span>
+</pre><p>If yes create the merge with:</p>
+<pre class="highlight"><span class="prompt1">./docker-compose-run alembic <span class="se">\</span>
+    --config<span class="o">=</span>tests/functional/alembic.ini --name<span class="o">=[</span>main<span class="p">|</span>static<span class="o">]</span> <span class="se">\</span>
+    merge --message<span class="o">=</span><span class="s2">&quot;Merge &lt;src&gt; and &lt;dst&gt; branches&quot;</span> <span class="se">\</span>
+    &lt;rev <span class="m">1</span>&gt; &lt;rev <span class="m">2</span>&gt;</span>
+</pre><p>Remove the import and replace the core of the method by <code class="docutils literal notranslate"><span class="pre">pass</span></code> in the generated file.</p>
+<p class="last">And finally add the new file.</p>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="ngeo">
+<h2>ngeo<a class="headerlink" href="#ngeo" title="Permalink to this headline">¶</a></h2>
 <p><cite>For ngeo see here &lt;https://github.com/camptocamp/ngeo/blob/master/docs/developer-guide.md#create-a-package-on-npm&gt;_</cite>.</p>
 </div>
 <div class="section" id="c2cgeoportal">
@@ -54,11 +87,7 @@ the first bug fix release, and <code class="docutils literal notranslate"><span 
 <div class="section" id="new-version">
 <h3>New version<a class="headerlink" href="#new-version" title="Permalink to this headline">¶</a></h3>
 <p>Checkout the code:</p>
-<pre class="highlight"><style type="text/css">
-span.prompt1:before {
-  content: "$ ";
-}
-</style><span class="prompt1">git fetch</span>
+<pre class="highlight"><span class="prompt1">git fetch</span>
 <span class="prompt1">git checkout master</span>
 <span class="prompt1">git reset --hard origin/master</span>
 </pre><p>Get the localisation from Transifex:</p>
@@ -104,8 +133,8 @@ span.prompt1:before {
 <span class="prompt1">./docker-run make transifex-init</span>
 </pre><p>Then continue by creating the release.</p>
 </div>
-<div class="section" id="new-release">
-<h3>New release<a class="headerlink" href="#new-release" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="do-the-new-release">
+<h3>Do the new release<a class="headerlink" href="#do-the-new-release" title="Permalink to this headline">¶</a></h3>
 <p>Checkout the code:</p>
 <pre class="highlight"><span class="prompt1">git fetch</span>
 <span class="prompt1">git checkout &lt;version&gt;</span>
@@ -123,51 +152,28 @@ a new release will automatically be created on Travis CI.</p>
 <div class="section" id="post-release-tasks">
 <h2>Post release tasks<a class="headerlink" href="#post-release-tasks" title="Permalink to this headline">¶</a></h2>
 <p>When a new release or a new version is done you should do the following tasks:</p>
-<ul>
-<li><p class="first">Merge the release changes (on <code class="docutils literal notranslate"><span class="pre">ngeo</span></code> and on <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code>)
-to the upper branches i.e.: <code class="docutils literal notranslate"><span class="pre">1.6</span></code> =&gt; <code class="docutils literal notranslate"><span class="pre">2.0</span></code>, <code class="docutils literal notranslate"><span class="pre">2.0</span></code> =&gt; <code class="docutils literal notranslate"><span class="pre">master</span></code>.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>On <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> merge see if an alembic merge should be done:</p>
-<pre class="highlight"><span class="prompt1">./docker-compose-run alembic <span class="se">\</span>
-    --config<span class="o">=</span>tests/functional/alembic.ini <span class="se">\</span>
-    --name<span class="o">=</span>main heads</span>
-<span class="prompt1">./docker-compose-run alembic <span class="se">\</span>
-    --config<span class="o">=</span>tests/functional/alembic.ini <span class="se">\</span>
-    --name<span class="o">=</span>static heads</span>
-</pre><p>If yes create the merge with:</p>
-<pre class="highlight"><span class="prompt1">./docker-compose-run alembic <span class="se">\</span>
-    --config<span class="o">=</span>tests/functional/alembic.ini --name<span class="o">=[</span>main<span class="p">|</span>static<span class="o">]</span> <span class="se">\</span>
-    merge --message<span class="o">=</span><span class="s2">&quot;Merge &lt;src&gt; and &lt;dst&gt; branches&quot;</span> <span class="se">\</span>
-    &lt;rev <span class="m">1</span>&gt; &lt;rev <span class="m">2</span>&gt;</span>
-</pre><p>Remove the import and replace the core of the method by <code class="docutils literal notranslate"><span class="pre">pass</span></code> in the generated file.</p>
-<p class="last">And finally add the new file.</p>
+<ul class="simple">
+<li>Merge the version into the upper one to the master i.e.: <code class="docutils literal notranslate"><span class="pre">2.4</span></code> =&gt; <code class="docutils literal notranslate"><span class="pre">2.5</span></code>, <code class="docutils literal notranslate"><span class="pre">2.5</span></code> =&gt; <code class="docutils literal notranslate"><span class="pre">master</span></code>.</li>
+</ul>
+<p>See <a class="reference internal" href="#developer-build-release-pre-release-task"><span class="std std-ref">Pre release task</span></a> for more information.</p>
+<ul class="simple">
+<li>Upgrade the demo in your home folder, see <a class="reference internal" href="../integrator/upgrade_application.html#integrator-upgrade-application"><span class="std std-ref">Upgrading a GeoMapFish application</span></a>.</li>
+<li>Some specific things for the demo:
+<cite>UPGRADE.rst &lt;https://github.com/camptocamp/demo_geomapfish/blob/2.4/UPGRADE.rst&gt;_</cite>.</li>
+</ul>
 </div>
-</li>
-<li><p class="first">Upgrade the demo in your home folder with <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">upgrade</span></code>.</p>
-</li>
-<li><p class="first">Update the demo on the test server in the main folder with:</p>
-<pre class="highlight"><span class="prompt1">sudo -u sigdev make --makefile<span class="o">=</span>demo.mk update</span>
-<span class="prompt1">sudo -u sigdev make --makefile<span class="o">=</span>demo.mk build</span>
-</pre></li>
-<li><p class="first">Test the <cite>demo &lt;http://testgmf.sig.cloud.camptocamp.net/&gt;_</cite>.</p>
-</li>
-<li><p class="first">Deploy on the demo server with:</p>
-<pre class="highlight"><span class="prompt1">sudo -u deploy deploy -r deploy/deploy.cfg demo_server</span>
-</pre></li>
-<li><p class="first">Rename the milestone on <cite>c2cgeoportal &lt;https://github.com/camptocamp/c2cgeoportal/milestones&gt;_</cite>
-and on <cite>ngeo &lt;https://github.com/camptocamp/ngeo/milestones&gt;_</cite> from <code class="docutils literal notranslate"><span class="pre">x.y</span></code> to <code class="docutils literal notranslate"><span class="pre">x.y.z</span></code>.</p>
-</li>
-<li><p class="first">Create again the milestone on <cite>c2cgeoportal &lt;https://github.com/camptocamp/c2cgeoportal/milestones&gt;_</cite>
-and on <cite>ngeo &lt;https://github.com/camptocamp/ngeo/milestones&gt;_</cite> for <code class="docutils literal notranslate"><span class="pre">x.y</span></code>.</p>
-</li>
-<li><p class="first">Move all the open issues to the new milestone and close the current milestone
+<div class="section" id="for-non-dev-release">
+<h2>For non dev release<a class="headerlink" href="#for-non-dev-release" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Rename the milestone on <cite>c2cgeoportal &lt;https://github.com/camptocamp/c2cgeoportal/milestones&gt;_</cite>
+and on <cite>ngeo &lt;https://github.com/camptocamp/ngeo/milestones&gt;_</cite> from <code class="docutils literal notranslate"><span class="pre">x.y</span></code> to <code class="docutils literal notranslate"><span class="pre">x.y.z</span></code>.</li>
+<li>Create again the milestone on <cite>c2cgeoportal &lt;https://github.com/camptocamp/c2cgeoportal/milestones&gt;_</cite>
+and on <cite>ngeo &lt;https://github.com/camptocamp/ngeo/milestones&gt;_</cite> for <code class="docutils literal notranslate"><span class="pre">x.y</span></code>.</li>
+<li>Move all the open issues to the new milestone and close the current milestone
 in <cite>ngeo &lt;https://github.com/camptocamp/ngeo/milestones&gt;_</cite>
-and in <cite>c2cgeoportal &lt;https://github.com/camptocamp/c2cgeoportal/milestones&gt;_</cite>.</p>
-</li>
-<li><p class="first">Send a release email to the <code class="docutils literal notranslate"><span class="pre">geomapfish&#64;googlegroups.com</span></code>
-and <code class="docutils literal notranslate"><span class="pre">gmf2&#64;lists.camptocamp.com</span></code> mailing lists.</p>
-</li>
+and in <cite>c2cgeoportal &lt;https://github.com/camptocamp/c2cgeoportal/milestones&gt;_</cite>.</li>
+<li>Send a release email to the <code class="docutils literal notranslate"><span class="pre">geomapfish&#64;googlegroups.com</span></code>
+and <code class="docutils literal notranslate"><span class="pre">gmf2&#64;lists.camptocamp.com</span></code> mailing lists.</li>
 </ul>
 </div>
 </div>
