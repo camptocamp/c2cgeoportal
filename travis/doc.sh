@@ -4,12 +4,12 @@ GIT_REV=$(git log | head --lines=1 | awk '{{print $2}}')
 
 ./docker-run make doc
 
-DOC=false
+PUBLISH=false
 BRANCH=${MAIN_BRANCH}
 
-if [[ ${TRAVIS_BRANCH} =~ ^(master|[0-9]+.[0-9]+)$ ]] && [ ${TRAVIS_PULL_REQUEST} == false ]
+if [[ ${BRANCH_NAME} =~ ^(master|[0-9]+.[0-9]+)$ ]]
 then
-    DOC=true
+    PUBLISH=true
 fi
 
 
@@ -18,26 +18,26 @@ echo == Build the doc ==
 git fetch origin gh-pages:gh-pages
 git checkout gh-pages
 
-if [ -e ${BRANCH} ]
+if [ -e ${MAIN_BRANCH} ]
 then
-    git rm -r --force -- ${BRANCH}
+    git rm -r --force -- ${MAIN_BRANCH}
 fi
-mkdir --parent ${BRANCH}
-mv doc/_build/html/* ${BRANCH}
+mkdir --parent ${MAIN_BRANCH}
+mv doc/_build/html/* ${MAIN_BRANCH}
 
-if [ ${DOC} == true ]
+if [ ${PUBLISH} == true ]
 then
-    git add --all ${BRANCH}
-    git commit --message="Update documentation for the revision ${TRAVIS_COMMIT}" | true
+    git add --all ${MAIN_BRANCH}
+    git commit --message="Update documentation for the revision ${GIT_REV}" | true
     git push origin gh-pages
 else
-    git checkout ${BRANCH}/searchindex.js || true
-    git checkout ${BRANCH}/_sources || true
-    git checkout ${BRANCH}/_static || true
+    git checkout ${MAIN_BRANCH}/searchindex.js || true
+    git checkout ${MAIN_BRANCH}/_sources || true
+    git checkout ${MAIN_BRANCH}/_static || true
     git status
     git diff
     git reset --hard
 fi
 
-# back to the original branch
+# Back to the original branch
 git checkout ${GIT_REV}

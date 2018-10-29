@@ -2,16 +2,33 @@
 
 docker login --username ${DOCKER_USERNAME} --password ${DOCKER_PASSWORD}
 
+git fetch --tags
+TAG=`git tag --list --points-at=HEAD`
+LAST_TAG=`git describe --abbrev=0 --tags`
+COMMIT=FALSE
+
+if [[ ${TAG} =~ ^[0-9]\.[0-9]\.[0-9]$ ]]
+then
+    .venv/bin/python travis/get-minor --reset
+    COMMIT=TRUE
+else
+    if [[ ${BRANCH_NAME} =~ ^[0-9]\.[0-9]$ ]]
+    then
+        TAG=${LAST_TAG}.`.venv/bin/python travis/get-minor`
+        COMMIT=TRUE
+    fi
+fi
+
 for IMAGE in geomapfish-build-dev geomapfish-build
 do
-    if [ "${TRAVIS_TAG}" != "" ]
+    if [ "${TAG}" != "" ]
     then
-        docker tag camptocamp/${IMAGE}:${MAJOR_VERSION} camptocamp/${IMAGE}:${TRAVIS_TAG}
-        docker push camptocamp/${IMAGE}:${TRAVIS_TAG}
-    elif [ "${TRAVIS_BRANCH}" != "master" ]
+        docker tag camptocamp/${IMAGE}:${MAJOR_VERSION} camptocamp/${IMAGE}:${TAG}
+        docker push camptocamp/${IMAGE}:${TAG}
+    elif [ "${BRANCH_NAME}" != "master" ]
     then
-        docker tag camptocamp/${IMAGE}:${MAJOR_VERSION} camptocamp/${IMAGE}:${TRAVIS_BRANCH/\//_}
-        docker push camptocamp/${IMAGE}:${TRAVIS_BRANCH/\//_}
+        docker tag camptocamp/${IMAGE}:${MAJOR_VERSION} camptocamp/${IMAGE}:${BRANCH_NAME/\//_}
+        docker push camptocamp/${IMAGE}:${BRANCH_NAME/\//_}
     else
         docker push camptocamp/${IMAGE}:${MAJOR_VERSION}
     fi
@@ -19,17 +36,24 @@ done
 
 for QGIS_VERSION in 3.2 master
 do
-    if [ "${TRAVIS_TAG}" != "" ]
+    if [ "${TAG}" != "" ]
     then
         docker tag camptocamp/geomapfish-qgisserver:gmf${MAJOR_VERSION}-qgis${QGIS_VERSION} \
-            camptocamp/geomapfish-qgisserver:gmf${TRAVIS_TAG}-qgis${QGIS_VERSION}
-        docker push camptocamp/geomapfish-qgisserver:gmf${TRAVIS_TAG}-qgis${QGIS_VERSION}
-    elif [ "${TRAVIS_BRANCH}" != "master" ]
+            camptocamp/geomapfish-qgisserver:gmf${TAG}-qgis${QGIS_VERSION}
+        docker push camptocamp/geomapfish-qgisserver:gmf${TAG}-qgis${QGIS_VERSION}
+    elif [ "${BRANCH_NAME}" != "master" ]
     then
         docker tag camptocamp/geomapfish-qgisserver:gmf${MAJOR_VERSION}-qgis${QGIS_VERSION} \
-            camptocamp/geomapfish-qgisserver:gmf${TRAVIS_BRANCH/\//_}-qgis${QGIS_VERSION}
-        docker push camptocamp/geomapfish-qgisserver:gmf${TRAVIS_BRANCH/\//_}-qgis${QGIS_VERSION}
+            camptocamp/geomapfish-qgisserver:gmf${BRANCH_NAME/\//_}-qgis${QGIS_VERSION}
+        docker push camptocamp/geomapfish-qgisserver:gmf${BRANCH_NAME/\//_}-qgis${QGIS_VERSION}
     else
         docker push camptocamp/geomapfish-qgisserver:gmf${MAJOR_VERSION}-qgis${QGIS_VERSION}
     fi
 done
+
+if [ ${COMMIT} == TRUE ]
+then
+    git add travis/ci.yaml
+    git commit -m "Update the minor version"
+    git push origin ${BRANCH_NAME}
+fi
