@@ -46,6 +46,20 @@ def main():
         "from the theme information.",
     )
 
+    c2c_config = "geoportal/config.yaml" if os.path.exists("geoportal/config.yaml") else "config.yaml"
+    parser.add_argument(
+        "--config",
+        default=c2c_config,
+        help="the geoportal config, default is '{}'".format(c2c_config),
+    )
+    locale_path_1 = os.path.join("{package}_geoportal", "locale", "")
+    locale_path_2 = os.path.join("geoportal", locale_path_1)
+    locale_path = locale_path_2 if os.path.exists("geoportal") else locale_path_1
+    parser.add_argument(
+        "--locale-folder",
+        default=locale_path,
+        help="The folder where the locale files are stored",
+    )
     parser.add_argument(
         "--interfaces",
         nargs='+',
@@ -100,7 +114,7 @@ class Import:
         self.options = options
         self.imported = set()
 
-        settings = get_config("geoportal/config.yaml")
+        settings = get_config(options.config)
         package = settings["package"]
 
         self.fts_languages = settings["fulltextsearch"]["languages"]
@@ -117,7 +131,7 @@ class Import:
         for lang in self.languages:
             self._[lang] = translation(
                 "{}_geoportal-client".format(package),
-                os.path.join("geoportal", "{}_geoportal".format(package), "locale/"), [lang]
+                options.locale_folder.format(package=package)
             )
 
         query = self.session.query(Interface)

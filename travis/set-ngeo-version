@@ -33,7 +33,7 @@ import json
 import os
 import re
 
-if len(os.environ.get("TRAVIS_TAG")) == 0:
+if len(os.environ.get("TRAVIS_TAG", "")) == 0:
     exit(0)
 
 version = os.environ["TRAVIS_TAG"]

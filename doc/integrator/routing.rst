@@ -60,7 +60,7 @@ To configure the routing feature the constants `ngeoRoutingOptions` and `ngeoNom
                             - label: Bike (City)
                               profile: routed-bike
                     ngeoNominatimSearchDefaultParams:
-                        - countrycodes: CH
+                        countrycodes: CH
 
 backendUrl
 ^^^^^^^^^^
