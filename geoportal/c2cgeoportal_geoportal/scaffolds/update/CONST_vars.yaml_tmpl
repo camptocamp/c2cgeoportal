@@ -349,6 +349,9 @@ vars:
 
   urllogin: {}
 
+  http_options:
+    timeout: 300
+
   tinyowsproxy:
     # URL to internal TinyOWS instance
     tinyows_url: '{TINYOWS_URL}'
