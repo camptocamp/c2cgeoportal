@@ -79,7 +79,7 @@ def get_url(url, request, default=None, errors=None):
         server = request.registry.settings.get("servers", {}).get(obj.netloc)
         if server is None:
             if default is None and errors is not None:
-                errors.add("The server '{0!s}' is not found in the config".format(obj.netloc))
+                errors.add("The server '{}' is not found in the config".format(obj.netloc))
             return default
         else:
             return "{0!s}{1!s}?{2!s}".format(server, obj.path, obj.query)
@@ -133,7 +133,10 @@ def get_url2(name, url, request, errors):
         server = request.registry.settings.get("servers", {}).get(url_split.netloc)
         if server is None:
             errors.add(
-                "The server '{}' is not found in the config".format(url_split.netloc)
+                "{}: The server '{}' ({}) is not found in the config: [{}]".format(
+                    name, url_split.netloc, url,
+                    ', '.join(request.registry.settings.get("servers", {}).keys())
+                )
             )
             return None
         if url_split.path != "":
@@ -147,13 +150,14 @@ def get_url2(name, url, request, errors):
         )
 
 
-def get_typed(name, value, types, request, errors):
+def get_typed(name, value, types, request, errors, layer_name=None):
+    prefix = "Layer '{}': ".format(layer_name) if layer_name is not None else ""
     type_ = {
         "type": "not init"
     }
     try:
         if name not in types:
-            errors.add("Type '{}' not defined.".format(name))
+            errors.add("{}Type '{}' not defined.".format(prefix, name))
             return None
         type_ = types[name]
         if type_.get("type", "string") == "string":
@@ -168,9 +172,9 @@ def get_typed(name, value, types, request, errors):
                 return False
             else:
                 errors.add(
-                    "The boolean attribute '{}'='{}' is not in "
+                    "{}The boolean attribute '{}'='{}' is not in "
                     "[yes, y, on, 1, true, no, n, off, 0, false].".format(
-                        name, value.lower()
+                        prefix, name, value.lower()
                     )
                 )
         elif type_["type"] == "integer":
@@ -182,8 +186,8 @@ def get_typed(name, value, types, request, errors):
                 value, default=datetime.datetime(1, 1, 1, 0, 0, 0)
             )
             if date.time() != datetime.time(0, 0, 0):
-                errors.add("The date attribute '{}'='{}' should not have any time".format(
-                    name, value,
+                errors.add("{}The date attribute '{}'='{}' should not have any time".format(
+                    prefix, name, value,
                 ))
             else:
                 return datetime.date.strftime(
@@ -194,8 +198,8 @@ def get_typed(name, value, types, request, errors):
                 value, default=datetime.datetime(1, 1, 1, 0, 0, 0)
             )
             if date.date() != datetime.date(1, 1, 1):
-                errors.add("The time attribute '{}'='{}' should not have any date".format(
-                    name, value,
+                errors.add("{}The time attribute '{}'='{}' should not have any date".format(
+                    prefix, name, value,
                 ))
             else:
                 return datetime.time.strftime(
@@ -209,21 +213,21 @@ def get_typed(name, value, types, request, errors):
                 date, "%Y-%m-%dT%H:%M:%S"
             )
         elif type_["type"] == "url":
-            return get_url2("The attribute '{}'".format(name), value, request, errors)
+            return get_url2("{}The attribute '{}'".format(prefix, name), value, request, errors)
         elif type_["type"] == "json":
             try:
                 return json.loads(value)
             except Exception as e:
-                errors.append("The attribute '{}'='{}' has an error: {}".format(
-                    name, value, str(e),
+                errors.append("{}The attribute '{}'='{}' has an error: {}".format(
+                    prefix, name, value, str(e),
                 ))
         else:
-            errors.add("Unknown type '{}'.".format(type_["type"]))
+            errors.add("{}Unknown type '{}'.".format(prefix, type_["type"]))
     except Exception as e:
         errors.add(
-            "Unable to parse the attribute '{}'='{}' with the type '{}', error:\n{}"
+            "{}Unable to parse the attribute '{}'='{}' with the type '{}', error:\n{}"
             .format(
-                name, value, type_.get("type", "string"), str(e)
+                prefix, name, value, type_.get("type", "string"), str(e)
             )
         )
     return None

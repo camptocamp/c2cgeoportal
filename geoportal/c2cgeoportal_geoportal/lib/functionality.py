@@ -39,10 +39,12 @@ def _get_config_functionality(name, registered, types, request, errors):
 
     if registered:
         result = get_setting(
-            request.registry.settings, ("functionalities", "registered", name))
+            request.registry.settings, ("functionalities", "registered", name)
+        )
     if result is None:
         result = get_setting(
-            request.registry.settings, ("functionalities", "anonymous", name))
+            request.registry.settings, ("functionalities", "anonymous", name)
+        )
 
     if result is None:
         result = []
