@@ -207,7 +207,8 @@ class Entry:
             None if len(metadatas) == 0 \
             else get_typed(
                 metadata, metadatas[0].value,
-                self.metadata_type, self.request, errors
+                self.metadata_type, self.request, errors,
+                layer_name=item.name
             )
 
     def _get_metadatas(self, item, errors):

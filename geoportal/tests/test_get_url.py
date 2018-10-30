@@ -88,4 +88,4 @@ class TestGetURL(TestCase):
         self.assertEqual(get_url2("test", "https://example.com/icon.png", request, set()), "https://example.com/icon.png")
         errors = set()
         self.assertEqual(get_url2("test", "config://srv2/icon.png", request, errors=errors), None)
-        self.assertEqual(errors, set(["The server 'srv2' is not found in the config"]))
+        self.assertEqual(errors, set(["test: The server 'srv2' (config://srv2/icon.png) is not found in the config: [srv, srv_alt, full_url]"]))

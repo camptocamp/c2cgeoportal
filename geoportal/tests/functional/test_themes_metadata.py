@@ -211,7 +211,7 @@ class TestThemesViewMetadata(TestCase):
             "The attribute 'url12'='static://test' cannot have an empty path.",
             "The attribute 'url13'='static://test/' cannot have an empty path.",
             "The attribute 'url14'='config:///static/icon.png' cannot have an empty netloc.",
-            "The server 'unknown_server' is not found in the config",
+            "The attribute 'url15': The server 'unknown_server' (config://unknown_server) is not found in the config: [server]",
             "The attribute 'url16'='https://' is not a valid URL.",
             "The attribute 'url17'='https:///' is not a valid URL.",
             "The attribute 'url18'='https:///static' is not a valid URL.",

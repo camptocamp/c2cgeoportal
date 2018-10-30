@@ -57,7 +57,8 @@ c2cgeoportal application you want to create the new application from:
 
 .. prompt:: bash
 
-    ./docker-run --image=camptocamp/geomapfish-build pcreate -l
+    ./docker-run --image=camptocamp/geomapfish-build ${'\\'}
+        --version=<release|version> pcreate -l
 
 You should at least see the c2cgeoportal scaffolds:
 
@@ -82,6 +83,7 @@ To create the application first apply the ``c2cgeoportal_create`` scaffold:
 .. prompt:: bash
 
    ./docker-run -ti --image=camptocamp/geomapfish-build ${'\\'}
+       --version=<release|version> ${'\\'}
        pcreate -s c2cgeoportal_create <project>
 
 And for the non Docker version, apply also the ``c2cgeoportal_nondockercreate`` scaffold:
@@ -89,6 +91,7 @@ And for the non Docker version, apply also the ``c2cgeoportal_nondockercreate`` 
 .. prompt:: bash
 
    ./docker-run -ti --image=camptocamp/geomapfish-build ${'\\'}
+       --version=<release|version> ${'\\'}
        pcreate -s c2cgeoportal_nondockercreate <project>
 
 .. note::
@@ -107,6 +110,7 @@ it later.
      .. prompt:: bash
 
         ./docker-run -ti --image=camptocamp/geomapfish-build ${'\\'}
+            --version=<release|version> ${'\\'}
             --env=SRID=21781 --env=EXTENT="420000,30000,900000,350000" ${'\\'}
             pcreate -s c2cgeoportal_create --package-name <package> <project>
 
@@ -118,14 +122,16 @@ Now apply the ``c2cgeoportal_update`` scaffold:
 
 .. prompt:: bash
 
-   ./docker-run -ti --env=SRID=21781 --image=camptocamp/geomapfish-build ${'\\'}
+   ./docker-run -ti --env=SRID=21781 ${'\\'}
+       --image=camptocamp/geomapfish-build --version=<release|version> ${'\\'}
        pcreate -s c2cgeoportal_update --package-name <package> <project>
 
 And for the non Docker version, apply also the ``c2cgeoportal_nondockerupdate`` scaffold:
 
 .. prompt:: bash
 
-   ./docker-run -ti --env=SRID=21781 --image=camptocamp/geomapfish-build ${'\\'}
+   ./docker-run -ti --env=SRID=21781 ${'\\'}
+       --image=camptocamp/geomapfish-build --version=<release|version> ${'\\'}
        pcreate -s c2cgeoportal_nondockerupdate --package-name <package> <project>
 
 
