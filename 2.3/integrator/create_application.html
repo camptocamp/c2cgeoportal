@@ -80,7 +80,8 @@ respectively to the <code class="docutils literal notranslate"><span class="pre"
 from the root directory of c2cgeoportal (if you have followed the instructions
 from the previous section), or from the root directory of the existing
 c2cgeoportal application you want to create the new application from:</p>
-<pre class="highlight"><span class="prompt1">./docker-run --image<span class="o">=</span>camptocamp/geomapfish-build pcreate -l</span>
+<pre class="highlight"><span class="prompt1">./docker-run --image<span class="o">=</span>camptocamp/geomapfish-build <span class="se">\</span>
+    --version<span class="o">=</span>&lt;release<span class="p">|</span>version&gt; pcreate -l</span>
 </pre><p>You should at least see the c2cgeoportal scaffolds:</p>
 <ul class="simple">
 <li>c2cgeoportal_create</li>
@@ -97,9 +98,13 @@ c2cgeoportal application you want to create the new application from:</p>
 <p>The package name should not contain an underscore (<code class="docutils literal notranslate"><span class="pre">_</span></code>) because of an
 issue with Pip.</p>
 <p>To create the application first apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_create</span></code> scaffold:</p>
-<pre class="highlight"><span class="prompt1">./docker-run -ti --image<span class="o">=</span>camptocamp/geomapfish-build        pcreate -s c2cgeoportal_create &lt;project&gt;</span>
+<pre class="highlight"><span class="prompt1">./docker-run -ti --image<span class="o">=</span>camptocamp/geomapfish-build <span class="se">\</span>
+    --version<span class="o">=</span>&lt;release<span class="p">|</span>version&gt; <span class="se">\</span>
+    pcreate -s c2cgeoportal_create &lt;project&gt;</span>
 </pre><p>And for the non Docker version, apply also the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_nondockercreate</span></code> scaffold:</p>
-<pre class="highlight"><span class="prompt1">./docker-run -ti --image<span class="o">=</span>camptocamp/geomapfish-build        pcreate -s c2cgeoportal_nondockercreate &lt;project&gt;</span>
+<pre class="highlight"><span class="prompt1">./docker-run -ti --image<span class="o">=</span>camptocamp/geomapfish-build <span class="se">\</span>
+    --version<span class="o">=</span>&lt;release<span class="p">|</span>version&gt; <span class="se">\</span>
+    pcreate -s c2cgeoportal_nondockercreate &lt;project&gt;</span>
 </pre><div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Do not add any ‘/’ after the project name.</p>
@@ -112,17 +117,23 @@ it later.</p>
 <p>You can define this information directly in the command line using
 parameters:</p>
 <blockquote class="last">
-<div><pre class="highlight"><span class="prompt1">./docker-run -ti --image<span class="o">=</span>camptocamp/geomapfish-build             --env<span class="o">=</span><span class="nv">SRID</span><span class="o">=</span><span class="m">21781</span> --env<span class="o">=</span><span class="nv">EXTENT</span><span class="o">=</span><span class="s2">&quot;420000,30000,900000,350000&quot;</span></span>
-<span class="prompt1">    pcreate -s c2cgeoportal_create --package-name &lt;package&gt; &lt;project&gt;</span>
+<div><pre class="highlight"><span class="prompt1">./docker-run -ti --image<span class="o">=</span>camptocamp/geomapfish-build <span class="se">\</span>
+    --version<span class="o">=</span>&lt;release<span class="p">|</span>version&gt; <span class="se">\</span>
+    --env<span class="o">=</span><span class="nv">SRID</span><span class="o">=</span><span class="m">21781</span> --env<span class="o">=</span><span class="nv">EXTENT</span><span class="o">=</span><span class="s2">&quot;420000,30000,900000,350000&quot;</span> <span class="se">\</span>
+    pcreate -s c2cgeoportal_create --package-name &lt;package&gt; &lt;project&gt;</span>
 </pre></div></blockquote>
 </div>
 <p>This will create a directory named <code class="docutils literal notranslate"><span class="pre">&lt;project&gt;</span></code> that will be next to the
 <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> directory, or to the directory of the application you are
 creating this application from.</p>
 <p>Now apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_update</span></code> scaffold:</p>
-<pre class="highlight"><span class="prompt1">./docker-run -ti --env<span class="o">=</span><span class="nv">SRID</span><span class="o">=</span><span class="m">21781</span> --image<span class="o">=</span>camptocamp/geomapfish-build        pcreate -s c2cgeoportal_update --package-name &lt;package&gt; &lt;project&gt;</span>
+<pre class="highlight"><span class="prompt1">./docker-run -ti --env<span class="o">=</span><span class="nv">SRID</span><span class="o">=</span><span class="m">21781</span> <span class="se">\</span>
+    --image<span class="o">=</span>camptocamp/geomapfish-build --version<span class="o">=</span>&lt;release<span class="p">|</span>version&gt; <span class="se">\</span>
+    pcreate -s c2cgeoportal_update --package-name &lt;package&gt; &lt;project&gt;</span>
 </pre><p>And for the non Docker version, apply also the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_nondockerupdate</span></code> scaffold:</p>
-<pre class="highlight"><span class="prompt1">./docker-run -ti --env<span class="o">=</span><span class="nv">SRID</span><span class="o">=</span><span class="m">21781</span> --image<span class="o">=</span>camptocamp/geomapfish-build        pcreate -s c2cgeoportal_nondockerupdate --package-name &lt;package&gt; &lt;project&gt;</span>
+<pre class="highlight"><span class="prompt1">./docker-run -ti --env<span class="o">=</span><span class="nv">SRID</span><span class="o">=</span><span class="m">21781</span> <span class="se">\</span>
+    --image<span class="o">=</span>camptocamp/geomapfish-build --version<span class="o">=</span>&lt;release<span class="p">|</span>version&gt; <span class="se">\</span>
+    pcreate -s c2cgeoportal_nondockerupdate --package-name &lt;package&gt; &lt;project&gt;</span>
 </pre><div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Do not add any ‘/’ after the project name.</p>
