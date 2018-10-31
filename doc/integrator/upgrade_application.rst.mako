@@ -163,19 +163,19 @@ The help:
 
 .. prompt:: bash
 
-   ./docker-run alembic --help
+   ./docker-compose-run alembic --help
 
 Upgrade the main schema:
 
 .. prompt:: bash
 
-   ./docker-run alembic --name=main --config=geoportal/alembic.ini upgrade head
+   ./docker-compose-run alembic --name=main --config=geoportal/alembic.ini upgrade head
 
 Upgrade the static schema:
 
 .. prompt:: bash
 
-   ./docker-run alembic --name=static --config=geoportal/alembic.ini upgrade head
+   ./docker-compose-run alembic --name=static --config=geoportal/alembic.ini upgrade head
 
 .. _integrator_upgrade_application_cgxp_to_ngeo:
 
