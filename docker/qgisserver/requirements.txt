@@ -9,5 +9,5 @@ geojson==2.4.1  # geoportal
 iso8601==0.1.11  # deform, by default the version 0.1.12 is installed and is incompatible with deform, rq.filter: <=0.1.11
 papyrus==2.3  # commons, geoportal
 redis==2.10.6  # geoportal cache
-SQLAlchemy==1.2.12
+SQLAlchemy==1.2.13
 transaction==2.4.0  # commons, geoportal
