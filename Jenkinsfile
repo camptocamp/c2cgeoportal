@@ -35,17 +35,13 @@ dockerBuild {
                 clean()
             }
             stage('Build') {
-                checkout scm
-
-                // Makes sure jenkins will not build his own commit
+                // Makes sure Jenkins will not build his own commit
                 if (sh(returnStdout: true, script: "git show --no-patch --format='%ae' HEAD") == 'ci@camptocamp.com') {
                     exit(0)
                 }
                 sh 'git config user.email ci@camptocamp.com'
                 sh 'git config user.name CI'
-                try {
-                    sh 'git branch --delete --force ${BRANCH_NAME}'
-                } catch (Exception error) {}
+                sh 'git branch --delete --force ${BRANCH_NAME} || true'
                 sh 'git checkout -b ${BRANCH_NAME}'
                 sh 'git remote set-url origin git@github.com:camptocamp/c2cgeoportal.git'
 
@@ -59,7 +55,6 @@ dockerBuild {
                 sh './docker-run travis/short-make build'
             }
             stage('Tests') {
-                checkout scm
                 parallel 'Lint and test c2cgeoportal': {
                     sh './docker-run travis/empty-make help'
                     sh 'bash -c "test \\"`./docker-run id`\\" == \\"uid=0(root) gid=0(root) groups=0(root)\\""'
