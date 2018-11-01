@@ -281,8 +281,8 @@ spell:
 		$(shell find \
 		-name node_modules -prune -or \
 		-name .build -prune -or \
-		-name .venv -prune -or \
 		-name .git -prune -or \
+		-name .venv -prune -or \
 		-name .mypy_cache -prune -or \
 		-name '__pycache__' -prune -or \
 		-name _build -prune -or \
