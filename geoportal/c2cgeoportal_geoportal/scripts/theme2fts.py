@@ -131,7 +131,8 @@ class Import:
         for lang in self.languages:
             self._[lang] = translation(
                 "{}_geoportal-client".format(package),
-                options.locale_folder.format(package=package)
+                options.locale_folder.format(package=package),
+                [lang],
             )
 
         query = self.session.query(Interface)

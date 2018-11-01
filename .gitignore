@@ -47,3 +47,8 @@
 /.tx/config
 /.coverage
 /.mypy_cache/
+/.venv/
+# Jenkins files
+/build.current-commit
+/build.remote-url
+/build.triggers
