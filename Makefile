@@ -277,9 +277,16 @@ quote:
 .PHONY: spell
 spell:
 	codespell --quiet-level=2 --check-filenames --ignore-words=spell-ignore-words.txt \
-		$(shell find -name node_modules -prune -or -name .build -prune -or -name .git -prune -or -name ngeo -prune \
-		-or -name '__pycache__' -prune -or -name _build -prune \
-		-or \( -type f -and -not -name '*.png' -and -not -name '*.mo' -and -not -name '*.po*' \
+		$(shell find \
+		-name node_modules -prune -or \
+		-name .build -prune -or \
+		-name .git -prune -or \
+		-name .venv -prune -or \
+		-name .mypy_cache -prune -or \
+		-name ngeo -prune -or \
+		-name '__pycache__' -prune -or \
+		-name _build -prune -or \
+		\( -type f -and -not -name '*.png' -and -not -name '*.mo' -and -not -name '*.po*' \
 		-and -not -name 'CONST_Makefile_tmpl' -and -not -name 'package-lock.json' \) -print)
 
 

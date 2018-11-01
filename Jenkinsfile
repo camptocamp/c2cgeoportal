@@ -7,6 +7,7 @@ env.MAIN_BRANCH = MAIN_BRANCH
 final MAJOR_VERSION = '2.3'
 env.MAJOR_VERSION = MAJOR_VERSION
 env.CI = 'true'
+env.DOCKER_USERNAME = 'amplerancid'
 
 def clean() {
     sh 'git clean -dx --force'
@@ -35,6 +36,22 @@ dockerBuild {
             }
             stage('Build') {
                 checkout scm
+
+                // Makes sure jenkins will not build his own commit
+                if (sh(returnStdout: true, script: "git show --no-patch --format='%ae' HEAD") == 'ci@camptocamp.com') {
+                    exit(0)
+                }
+                sh 'git config user.email ci@camptocamp.com'
+                sh 'git config user.name CI'
+                try {
+                    sh 'git branch --delete --force ${BRANCH_NAME}'
+                } catch (Exception error) {}
+                sh 'git checkout -b ${BRANCH_NAME}'
+                sh 'git remote set-url origin git@github.com:camptocamp/c2cgeoportal.git'
+
+                sh 'python3 -m venv .venv'
+                sh '.venv/bin/python .venv/bin/pip install --requirement=travis/requirements.txt'
+
                 sh 'make docker-build'
                 sh 'docker run --name geomapfish-db --env=POSTGRES_USER=www-data --env=POSTGRES_PASSWORD=www-data --env=POSTGRES_DB=geomapfish --publish=5432:5432 --detach camptocamp/geomapfish-test-db'
                 sh 'travis/test-upgrade-convert.sh init ${HOME}/workspace'
@@ -189,6 +206,33 @@ dockerBuild {
                 }, 'Tests upgrades 230': {
                     sh 'travis/test-upgrade-convert.sh v230-docker ${HOME}/workspace'
                     sh 'travis/test-upgrade-convert.sh v230-nondocker ${HOME}/workspace'
+                }
+            }
+            stage('Publish') {
+                parallel 'Push to Docker hub': {
+                    withCredentials([string(credentialsId: 'docker-hub', variable: 'DOCKER_PASSWORD')]) {
+                        env.DOCKER_PASSWORD = DOCKER_PASSWORD
+                        sshagent (credentials: ['c2c-infra-ci']) {
+                            sh 'travis/publish-docker'
+                        }
+                    }
+                }, 'Push to Transifex': {
+                    branch = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD')
+                    if (branch == MAIN_BRANCH) {
+                        withCredentials([string(credentialsId: 'transifex-sbrunner', variable: 'TRANSIFEX_PASSWORD')]) {
+                            sh 'echo "[https://www.transifex.com]" > ~/.transifexrc'
+                            sh 'echo "hostname = https://www.transifex.com" >> ~/.transifexrc'
+                            sh 'echo "username = stephane.brunner@camptocamp.com" >> ~/.transifexrc'
+                            sh "echo 'password = ${TRANSIFEX_PASSWORD}' >> ~/.transifexrc"
+                            sh 'echo "token =" >> ~/.transifexrc'
+                            sh './docker-run --home make transifex-send'
+                        }
+                    }
+                }
+            }
+            stage('Publish documentation to GitHub.io') {
+                sshagent (credentials: ['c2c-infra-ci']) {
+                    sh 'travis/doc.sh'
                 }
             }
         } finally {
