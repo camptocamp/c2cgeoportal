@@ -16,8 +16,8 @@ Add a section ``managed_files:`` in the file ``project.yaml.mako``.
 In this section, you must select by a regular expression the project files you need to keep, and that are
 not handled by the GeoMapFish upgrade process. You can see in the GeoMapFish upgrade configuration, section
 ``default_project_file``, which files will get handled by the GeoMapFish upgrade process:
-`for non-Docker version <https://github.com/camptocamp/c2cgeoportal/blob/2.3/geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/%2Bdot%2Bupgrade.yaml_tmpl>`_,
-`for Docker version <https://github.com/camptocamp/c2cgeoportal/blob/2.3/geoportal/c2cgeoportal_geoportal/scaffolds/update/%2Bdot%2Bupgrade.yaml_tmpl>`_.
+`for non-Docker version <https://github.com/camptocamp/c2cgeoportal/blob/0.0/geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/%2Bdot%2Bupgrade.yaml_tmpl>`_,
+`for Docker version <https://github.com/camptocamp/c2cgeoportal/blob/0.0/geoportal/c2cgeoportal_geoportal/scaffolds/update/%2Bdot%2Bupgrade.yaml_tmpl>`_.
 Any files in your project that are not listed in the section ``managed_files`` will be overwritten by the
 upgrade process.
 Here an example that may apply to your situation:
@@ -42,7 +42,7 @@ Prepare the upgrade:
 
    git submodule deinit <package>/static/lib/cgxp/
    git rm .gitmodules
-   curl https://raw.githubusercontent.com/camptocamp/c2cgeoportal/2.3/docker-run > docker-run
+   curl https://raw.githubusercontent.com/camptocamp/c2cgeoportal/0.0/docker-run > docker-run
    chmod +x docker-run
    git add docker-run project.yaml.mako
    git commit --quiet --message="Start upgrade"
