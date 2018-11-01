@@ -65,7 +65,7 @@ User can be created if it does not exist yet."""
     )
     parser.add_argument(
         "-n", "--app-name",
-        default="app", dest="app_name",
+        default="app",
         help="The application name (optional, default is 'app')"
     )
     parser.add_argument(
@@ -74,7 +74,8 @@ User can be created if it does not exist yet."""
     )
     parser.add_argument(
         "-c", "--create",
-        action="store_true", default=False,
+        action="store_true",
+        default=False,
         help="Create user if it does not already exist"
     )
     parser.add_argument(
@@ -89,7 +90,6 @@ User can be created if it does not exist yet."""
     )
     parser.add_argument(
         'user',
-        nargs=1,
         help="The user"
     )
 
@@ -102,7 +102,7 @@ User can be created if it does not exist yet."""
     if app_name is None and "#" in app_config:
         app_config, app_name = app_config.split("#", 1)
     if not os.path.isfile(app_config):
-        parser.error("Cannot find config file: {0!s}".format(app_config))
+        parser.error("Cannot find config file: {}".format(app_config))
 
     # loading schema name from config and setting its value to the
     # corresponding global variable from c2cgeoportal_geoportal
@@ -120,43 +120,41 @@ User can be created if it does not exist yet."""
 
     # check that user exists
     sess = DBSession()
-    query = sess.query(static.User).filter_by(username="{0!s}".format(username))
+    query = sess.query(static.User).filter_by(username=username)
 
     result = query.count()
     if result == 0:
         if not options.create:
-            # if doesn"t exist and no -c option, throw error
-            raise Exception("User {0!s} does not exist in database".format(username))
+            # if doesn't exist and no -c option, throw error
+            print("User {} does not exist in database".format(username))
+            exit(1)
         else:
-            print(("User {0!s} does not exist in database, creating".format(username)))
-            # if does not exist and -c option, create user
-
-            password = options.password if options.password is not None else username
-            email = options.email if options.email is not None else username
+            if options.password is None:
+                parser.error("The password is mandatory on user creation")
+            if options.email is None:
+                parser.error("The email is mandatory on user creation")
 
             # get roles
-            query_role = sess.query(main.Role).filter(
-                main.Role.name == "{0!s}".format(options.rolename))
+            query_role = sess.query(main.Role).filter(main.Role.name == options.rolename)
 
             if query_role.count() == 0:
                 # role not found in db?
-                raise Exception("Role matching {0!s} does not exist in database".format(
-                    options.rolename
-                ))
+                print("Role matching {} does not exist in database".format(options.rolename))
+                exit(1)
 
             role = query_role.first()
 
             user = static.User(
-                username="{0!s}".format(username),
-                password="{0!s}".format(password),
-                email="{0!s}".format(email),
+                username=username,
+                password=options.password,
+                email=options.email,
                 role=role
             )
             sess.add(user)
             transaction.commit()
 
-            print(("User {0!s} created with password {1!s} and role {2!s}".format(
-                username, password, options.rolename
+            print(("User {} created with password {} and role {}".format(
+                username, options.password, options.rolename
             )))
 
     else:
@@ -164,8 +162,8 @@ User can be created if it does not exist yet."""
         user = query.first()
 
         if options.password is not None:
-            print(("Password set to: {0!s}".format(options.password)))
-            user.password = "{0!s}".format(options.password)
+            print("Password set to: {}".format(options.password))
+            user.password = "{}".format(options.password)
 
         if options.email is not None:
             user.email = options.email
@@ -173,7 +171,7 @@ User can be created if it does not exist yet."""
         sess.add(user)
         transaction.commit()
 
-        print(("Password reset for user {0!s}".format(username)))
+        print("Password reset for user {}".format(username))
 
 
 if __name__ == "__main__":
