@@ -25,20 +25,29 @@ def clean() {
     sh 'rm -rf ${HOME}/workspace/testgeomapfish'
 }
 
+def abort_ci() {
+    // Makes sure Jenkins will not build his own commit
+    COMMITTER = sh(returnStdout: true, script: "git show --no-patch --format='%ae' HEAD").trim()
+    if (COMMITTER == 'ci@camptocamp.com') {
+        // Return here instead of throwing error to keep the build "green"
+        currentBuild.result = 'SUCCESS'
+        return true
+    }
+    return false
+}
+
 dockerBuild {
     timeout(time: 2, unit: 'HOURS') {
         try {
             stage('Clean') {
                 checkout scm
+                if (abort_ci()) { return }
                 sh 'docker --version'
                 sh 'docker-compose --version'
                 clean()
             }
             stage('Build') {
-                // Makes sure Jenkins will not build his own commit
-                if (sh(returnStdout: true, script: "git show --no-patch --format='%ae' HEAD") == 'ci@camptocamp.com') {
-                    exit(0)
-                }
+                if (abort_ci()) { return }
                 sh 'git config user.email ci@camptocamp.com'
                 sh 'git config user.name CI'
                 sh 'git branch --delete --force ${BRANCH_NAME} || true'
@@ -55,6 +64,7 @@ dockerBuild {
                 sh './docker-run travis/short-make build'
             }
             stage('Tests') {
+                if (abort_ci()) { return }
                 parallel 'Lint and test c2cgeoportal': {
                     sh './docker-run travis/empty-make help'
                     sh 'bash -c "test \\"`./docker-run id`\\" == \\"uid=0(root) gid=0(root) groups=0(root)\\""'
@@ -192,6 +202,7 @@ dockerBuild {
                 }
             }
             stage('Test Upgrade') {
+                if (abort_ci()) { return }
                 parallel 'Tests upgrades Docker': {
                     sh 'travis/test-upgrade-convert.sh docker ${HOME}/workspace'
                     sh 'travis/test-upgrade-convert.sh tonondocker ${HOME}/workspace'
@@ -204,6 +215,7 @@ dockerBuild {
                 }
             }
             stage('Publish') {
+                if (abort_ci()) { return }
                 parallel 'Push to Docker hub': {
                     withCredentials([string(credentialsId: 'docker-hub', variable: 'DOCKER_PASSWORD')]) {
                         env.DOCKER_PASSWORD = DOCKER_PASSWORD
@@ -226,12 +238,14 @@ dockerBuild {
                 }
             }
             stage('Publish documentation to GitHub.io') {
+                if (abort_ci()) { return }
                 sshagent (credentials: ['c2c-infra-ci']) {
                     sh 'travis/doc.sh'
                 }
             }
         } finally {
             stage('Clean') {
+                if (abort_ci()) { return }
                 sh 'docker stop geomapfish-db'
                 sh 'docker rm --volumes geomapfish-db'
                 clean()
