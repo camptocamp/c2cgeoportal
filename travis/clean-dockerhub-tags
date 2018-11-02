@@ -1,0 +1,76 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+import json
+import os
+import re
+import requests
+import subprocess
+
+
+token = requests.post(
+    "https://hub.docker.com/v2/users/login/",
+    headers={
+        "Content-Type": "application/json"
+    },
+    data=json.dumps({
+        "username": os.environ["DOCKER_USERNAME"],
+        "password": os.environ["DOCKER_PASSWORD"]
+    })
+).json()["token"]
+
+
+def clean_images(image, tag_=lambda tag: tag):
+    docker_tags = [
+        tag['name'] for tag in
+        requests.get('https://registry.hub.docker.com/v1/repositories/camptocamp/{image}/tags'.format(
+            image=image,
+        )).json()
+    ]
+
+    git_tags = subprocess.check_output(['git', 'tag']).decode().split('\n')
+    git_branch = [
+        b[len('  remotes/ssh/'):] for b in
+        subprocess.check_output(['git', 'branch', '--all']).decode().split('\n')
+        if b.startswith('  remotes/ssh/')
+    ]
+
+    docker_tags_to_remove = {
+        tag for tag in docker_tags
+        if tag_(tag) not in (git_tags + git_branch)
+    }
+
+    minor_re = re.compile(r'^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$')
+    docker_tags_to_remove = {
+        tag for tag in docker_tags_to_remove
+        if not minor_re.match(tag_(tag))
+    }
+    print("Docker tags to be removed for image camptocamp/" + image)
+    print(docker_tags_to_remove)
+
+    for tag in docker_tags_to_remove:
+        requests.delete(
+            'https://hub.docker.com/v2/repositories/camptocamp/{image}/tags/{tag}/'.format(
+                image=image,
+                tag=tag,
+            ),
+            headers={
+                "Authorization": "JWT " + token
+            }
+        )
+
+
+for image in ["geomapfish-build", "geomapfish-build-dev", "geomapfish-geoportal"]:
+    clean_images(image)
+
+
+qgis_tag_re = re.compile(r'^gmf(.+)-qgis.+$')
+
+
+def qgis_tag(tag):
+    match = qgis_tag_re.match(tag)
+    # 2.0 mean not to be deleted
+    return "2.0" if match is None else match.group(1)
+
+
+clean_images("geomapfish-qgisserver", qgis_tag)

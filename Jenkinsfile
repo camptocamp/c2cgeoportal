@@ -23,6 +23,7 @@ def clean() {
 
     sh 'travis/test-upgrade-convert.sh cleanup ${HOME}/workspace'
     sh 'rm -rf ${HOME}/workspace/testgeomapfish'
+    sh 'rm -rf ${HOME}/workspace/geomapfish'
 }
 
 dockerBuild {
@@ -209,9 +210,16 @@ dockerBuild {
             }
             stage('Publish') {
                 parallel 'Push to Docker hub': {
+                    sh 'git remote add full https://github.com/camptocamp/c2cgeoportal.git || true'
+                    sh 'git remote set-url full https://github.com/camptocamp/c2cgeoportal.git'
+                    sh 'git fetch --tags --prune full'
+
                     sh "travis/create-new-project.sh ${HOME}/workspace geomapfish"
                     withCredentials([string(credentialsId: 'docker-hub', variable: 'DOCKER_PASSWORD')]) {
                         env.DOCKER_PASSWORD = DOCKER_PASSWORD
+
+                        sh '.venv/bin/python travis/clean-dockerhub-tags'
+
                         sshagent (credentials: ['c2c-infra-ci']) {
                             sh 'travis/publish-docker'
                         }
