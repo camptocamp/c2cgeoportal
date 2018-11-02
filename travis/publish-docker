@@ -19,6 +19,13 @@ else
     fi
 fi
 
+if [ ${COMMIT} == TRUE ]
+then
+    git add travis/ci.yaml
+    git commit -m "Update the minor version"
+    git push origin ${BRANCH_NAME}
+fi
+
 for IMAGE in geomapfish-build-dev geomapfish-build geomapfish-geoportal
 do
     if [ "${TAG}" != "" ]
@@ -50,10 +57,3 @@ do
         docker push camptocamp/geomapfish-qgisserver:gmf${MAJOR_VERSION}-qgis${QGIS_VERSION}
     fi
 done
-
-if [ ${COMMIT} == TRUE ]
-then
-    git add travis/ci.yaml
-    git commit -m "Update the minor version"
-    git push origin ${BRANCH_NAME}
-fi
