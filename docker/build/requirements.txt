@@ -1,7 +1,7 @@
 alabaster==0.7.12  # Doc theme
 alembic==1.0.2  # geoportal
 Babel==2.6.0  # i18n
-boto3==1.9.34  # Tile generation
+boto3==1.9.36  # Tile generation
 bottle==0.12.13  # geoportal
 c2c.cssmin==0.7.dev6  # CGXP build
 c2c.template==2.1.0  # geoportal
@@ -45,7 +45,7 @@ pycryptodome==3.7.0  # geoportal
 pyflakes==2.0.0  # lint, flake8
 Pygments==2.2.0  # doc
 pylint==2.1.1  # lint
-pyramid==1.9.2  # rq.filter: <=1.9.99
+pyramid==1.9.3  # rq.filter: <=1.9.99
 pyramid-debugtoolbar==4.5  # geoportal
 pyramid_jinja2==2.7  # admin
 pyramid_mako==1.0.2  # geoportal
