@@ -30,9 +30,8 @@ def clean_images(image, tag_=lambda tag: tag):
 
     git_tags = subprocess.check_output(['git', 'tag']).decode().split('\n')
     git_branch = [
-        b[len('  remotes/ssh/'):] for b in
+        b.split(' ')[-1].split('/')[-1] for b in
         subprocess.check_output(['git', 'branch', '--all']).decode().split('\n')
-        if b.startswith('  remotes/ssh/')
     ]
 
     docker_tags_to_remove = {
