@@ -115,6 +115,7 @@ class Raster:
         index = dataset.index(lon, lat)
         if index[0] - 1 < len(band) or index[1] - 1 < len(band[index[0] - 1]):
             result = band[index[0] - 1][index[1] - 1]
+            result = None if result == layer.get("nodata", dataset.nodata) else result
         else:
             log.warning("Unable to get value for layer: {}, lon: {}, lat: {}, in {}.".format(
                 layer, lon, lat, path
