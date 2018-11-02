@@ -129,13 +129,14 @@ def _pdf3(settings, health_check):
 
 def _fts(settings, health_check):
     fts_settings = settings["fulltextsearch"]
+    if fts_settings.get("disable", False):
+        return
 
     def get_both(request):
         return build_url("Check the fulltextsearch", request.route_url("fulltextsearch"), request)
 
     def check(_request, response):
-        if response.json()["features"] == 0:
-            raise Exception("No result")
+        assert len(response.json()["features"]) > 0, "No result"
 
     health_check.add_url_check(
         name="checker_fulltextsearch",
@@ -177,8 +178,10 @@ def _themes_errors(settings, health_check):
 
             result = response.json()
             if len(result["errors"]) != 0:
-                raise Exception("Interface '{}': Theme with error\n{}".format(
-                    interface, "\n".join(result["errors"])))
+                raise health_check.JsonCheckException(
+                    "Interface '{}' has error in Theme.".format(interface),
+                    result["errors"]
+                )
 
     health_check.add_custom_check(name="checker_themes", check_cb=check, level=themes_settings["level"])
 
@@ -188,9 +191,11 @@ def _lang_files(global_settings, settings, health_check):
     available_locale_names = global_settings["available_locale_names"]
 
     default_name = global_settings["default_locale_name"]
-    if default_name not in available_locale_names:
-        raise Exception("default_locale_name '%s' not in available_locale_names: %s" %
-                        (default_name, ", ".join(available_locale_names)))
+    assert \
+        default_name in available_locale_names, \
+        "default_locale_name '{}' not in available_locale_names: {}".format(
+            default_name, ", ".join(available_locale_names)
+        )
 
     for type_ in lang_settings.get("files", []):
         for lang in available_locale_names:

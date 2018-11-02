@@ -536,6 +536,8 @@ mapping:
               search:
                 type: str
                 required: True
+              disable:
+                type: bool
           lang:
             type: map
             required: True
