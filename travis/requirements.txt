@@ -1,4 +1,4 @@
 docker-compose==1.23.1
 netifaces==0.10.7
 PyYAML==3.13
-requests==2.18.4
+requests==2.20.0
