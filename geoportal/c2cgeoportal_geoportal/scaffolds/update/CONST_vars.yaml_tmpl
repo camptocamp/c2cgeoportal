@@ -82,6 +82,9 @@ vars:
         REDIS_PORT: 6379
         C2C_REDIS_URL: redis://redis:6379
         C2C_BROADCAST_PREFIX: broadcast_geoportal_
+        C2C_LOG_VIEW_ENABLED: TRUE
+        C2C_SQL_PROFILER_ENABLED: TRUE
+        C2C_DEBUG_VIEW_ENABLED: TRUE
         PGOPTIONS: '-c statement_timeout=30000'
     mapserver:
       environment:
@@ -106,6 +109,8 @@ vars:
         C2C_BASE_PATH: /c2c_tiles
         C2C_REDIS_URL: redis://redis:6379
         C2C_BROADCAST_PREFIX: broadcast_tilecloudchain_
+        C2C_LOG_VIEW_ENABLED: TRUE
+        C2C_DEBUG_VIEW_ENABLED: TRUE
     print:
       environment:
         CATALINA_OPTS: -Xmx1024m
