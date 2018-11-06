@@ -397,6 +397,7 @@ vars:
     internal: http://localhost/
     local: '{web_protocol}://{host}{entry_point}'
     mapserver: '{MAPSERVER_URL}'
+    wmts_capabilities: '{TILECLOUDCHAIN_INTERNAL_URL}/1.0.0/WMTSCapabilities.xml'
 
   host_forward_host: []
 
