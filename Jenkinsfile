@@ -28,7 +28,8 @@ def clean() {
 def abort_ci() {
     // Makes sure Jenkins will not build his own commit
     COMMITTER = sh(returnStdout: true, script: "git show --no-patch --format='%ae' HEAD").trim()
-    if (COMMITTER == 'ci@camptocamp.com') {
+    TAG = sh(returnStdout: true, script: 'git tag --list --points-at=HEAD').trim()
+    if (COMMITTER == 'ci@camptocamp.com' && TAG != "") {
         // Return here instead of throwing error to keep the build "green"
         currentBuild.result = 'SUCCESS'
         return true
@@ -41,13 +42,11 @@ dockerBuild {
         try {
             stage('Clean') {
                 checkout scm
-                if (abort_ci()) { return }
                 sh 'docker --version'
                 sh 'docker-compose --version'
                 clean()
             }
             stage('Build') {
-                if (abort_ci()) { return }
                 sh 'git config user.email ci@camptocamp.com'
                 sh 'git config user.name CI'
                 sh 'git branch --delete --force ${BRANCH_NAME} || true'
@@ -56,6 +55,8 @@ dockerBuild {
                 sshagent (credentials: ['c2c-infra-ci']) {
                     sh 'git fetch --tags'
                 }
+
+                if (abort_ci()) { return }
 
                 sh 'python3 -m venv .venv'
                 sh '.venv/bin/python .venv/bin/pip install --requirement=travis/requirements.txt'
