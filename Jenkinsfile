@@ -78,7 +78,7 @@ dockerBuild {
                 sh 'make docker-build'
                 sh 'docker run --name geomapfish-db --env=POSTGRES_USER=www-data --env=POSTGRES_PASSWORD=www-data --env=POSTGRES_DB=geomapfish --publish=5432:5432 --detach camptocamp/geomapfish-test-db'
                 sh './docker-run travis/status.sh'
-                sh './docker-run travis/short-make build'
+                sh './docker-run --env=RELEASE_TAG travis/short-make build'
                 sh "docker tag camptocamp/geomapfish-build:${MAJOR_VERSION} camptocamp/geomapfish-build:${RELEASE_TAG}"
                 sh 'travis/test-upgrade-convert.sh init ${HOME}/workspace'
             }
