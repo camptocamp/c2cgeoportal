@@ -33,7 +33,7 @@ install:
 
 before_script:
   - docker build --tag=camptocamp/geomapfish-build-dev:${MAJOR_VERSION} docker/build
-  - ./docker-run --env=TRAVIS_TAG make build
+  - ./docker-run make build
 
   ## FOR NON DOCKER TESTS
   - deactivate
@@ -60,8 +60,6 @@ before_script:
   - docker build --tag=external-db docker/test-external-db
   - docker run --publish=5433:5432 --detach external-db
   - mkdir /tmp/travis
-  - 'if [ "${TRAVIS_TAG}" != "" ]; then docker tag camptocamp/geomapfish-build:${MAJOR_VERSION}
-      camptocamp/geomapfish-build:${TRAVIS_TAG}; fi'
   - travis/create-new-nondocker-project.sh
   - (cd /tmp/travis/nondockertestgeomapfish/; ./docker-run travis/empty-make --makefile=travis.mk help)
   - (cd /tmp/travis/nondockertestgeomapfish/; ./docker-run make --makefile=travis.mk build)

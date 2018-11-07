@@ -2,7 +2,6 @@
 
 docker login --username ${DOCKER_USERNAME} --password ${DOCKER_PASSWORD}
 
-git fetch --tags
 TAG=`git tag --list --points-at=HEAD`
 LAST_TAG=`git describe --abbrev=0 --tags`
 COMMIT=FALSE

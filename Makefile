@@ -16,8 +16,8 @@ endif
 
 export MAJOR_VERSION = 2.3
 export MAIN_BRANCH = 2.3
-ifdef TRAVIS_TAG
-export VERSION = $(TRAVIS_TAG)
+ifdef RELEASE_TAG
+export VERSION = $(RELEASE_TAG)
 else
 export VERSION = $(MAJOR_VERSION)
 endif
@@ -103,7 +103,7 @@ help:
 docker-build:
 	for image in `find -name Dockerfile -o -name Dockerfile.mako | xargs grep --no-filename FROM | awk '{print $$2}' | sort -u`; do docker pull $$image; done
 	docker build --tag=camptocamp/geomapfish-build-dev:${MAJOR_VERSION} docker/build
-	./docker-run make build
+	./docker-run --env=RELEASE_TAG make build
 
 .PHONY: build
 build: \

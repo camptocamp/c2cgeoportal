@@ -114,6 +114,13 @@ Tag the new release:
     git tag <release>
     git push origin <release>
 
+Run a new job for the <version> branch on Jenkins.
+
+.. note::
+
+    It's possible to do a version only on the latest commit on a branch,
+    If you relay need to do that, you should create a new branch.
+
 Notes about Travis
 ~~~~~~~~~~~~~~~~~~
 
