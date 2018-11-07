@@ -10,10 +10,13 @@ p = subprocess.Popen(["make"] + sys.argv[1:], stdout=subprocess.PIPE, stderr=sub
 try:
     p.wait(20)
 except subprocess.TimeoutExpired:
-    p.kill()
     print("The second make run takes too long, probably a task is running again")
+    sys.stdout.flush()
+    p.kill()
+    print("Rerun in debug mode")
+    sys.stdout.flush()
     os.environ["DEBUG"] = "TRUE"
-    subprocess.call(["make"] + sys.argv[1:])
+    subprocess.call(["make"] + sys.argv[1:], env=os.environ)
     exit(2)
 if p.returncode != 0:
     print("make call error:")
