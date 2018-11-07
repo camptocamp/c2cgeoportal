@@ -109,7 +109,13 @@ span.prompt1:before {
 </pre><p>Tag the new release:</p>
 <pre class="highlight"><span class="prompt1">git tag &lt;release&gt;</span>
 <span class="prompt1">git push origin &lt;release&gt;</span>
-</pre></div>
+</pre><p>Run a new job for the &lt;version&gt; branch on Jenkins.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It’s possible to do a version only on the latest commit on a branch,
+If you relay need to do that, you should create a new branch.</p>
+</div>
+</div>
 <div class="section" id="notes-about-travis">
 <h3>Notes about Travis<a class="headerlink" href="#notes-about-travis" title="Permalink to this headline">¶</a></h3>
 <p>When you push a tag with the pattern <code class="docutils literal notranslate"><span class="pre">^[0-9]+\.[0-9]+\..+$</span></code>
