@@ -7,7 +7,7 @@ ENV VERSION=$VERSION
 COPY npm-packages /opt/npm-packages
 
 RUN \
-  npm install --no-optional --global --unsafe-perm `cat /opt/npm-packages` && \
+  npm install --no-optional --only=production --global --unsafe-perm `cat /opt/npm-packages` && \
   npm cache clear --force
 
 RUN \
@@ -23,7 +23,7 @@ COPY geoportal /opt/c2cgeoportal_geoportal
 COPY admin /opt/c2cgeoportal_admin
 
 RUN \
-  (cd /opt/c2cgeoportal_admin/; npm install --no-optional `cat npm-packages`) && \
+  (cd /opt/c2cgeoportal_admin/; npm install --only=production --no-optional `cat npm-packages`) && \
   npm cache clear --force && \
   chmod go+r -R /opt/c2cgeoportal_commons /opt/c2cgeoportal_geoportal /opt/c2cgeoportal_admin && \
   ln -s /opt/c2cgeoportal_commons/c2cgeoportal_commons/alembic /opt && \
