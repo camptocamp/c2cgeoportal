@@ -53,9 +53,26 @@ dockerBuild {
                 sh 'git branch --delete --force ${BRANCH_NAME} || true'
                 sh 'git checkout -b ${BRANCH_NAME}'
                 sh 'git remote set-url origin git@github.com:camptocamp/c2cgeoportal.git'
+                sshagent (credentials: ['c2c-infra-ci']) {
+                    sh 'git fetch --tags'
+                }
 
                 sh 'python3 -m venv .venv'
                 sh '.venv/bin/python .venv/bin/pip install --requirement=travis/requirements.txt'
+
+                TAG = sh(returnStdout: true, script: 'git tag --list --points-at=HEAD').trim()
+                LAST_TAG = sh(returnStdout: true, script: 'git describe --abbrev=0 --tags').trim()
+                RELEASE_TAG = MAJOR_VERSION
+                if (TAG =~ /^[0-9]\.[0-9]\.[0-9]$/) {
+                    RELEASE_TAG = TAG
+                }
+                else {
+                    if (BRANCH_NAME =~ /^[0-9]\.[0-9]$/) {
+                        MINOR = sh(returnStdout: true, script: '.venv/bin/python travis/get-minor --no-save').trim()
+                        RELEASE_TAG = "${LAST_TAG}.${MINOR}"
+                    }
+                }
+                env.RELEASE_TAG = RELEASE_TAG
 
                 sh 'make docker-build'
                 sh 'docker run --name geomapfish-db --env=POSTGRES_USER=www-data --env=POSTGRES_PASSWORD=www-data --env=POSTGRES_DB=geomapfish --publish=5432:5432 --detach camptocamp/geomapfish-test-db'
