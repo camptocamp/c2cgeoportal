@@ -178,6 +178,7 @@ docker-build-testmapserver: $(shell docker-required --path docker/test-mapserver
 
 .PHONY: docker-build-build
 docker-build-build: $(shell docker-required --path . --replace-pattern='^test(.*).mako$/test/\1') \
+		webpack.config.js \
 		geoportal/c2cgeoportal_geoportal/scaffolds/create/docker-run \
 		npm-packages admin/npm-packages \
 		geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/ \

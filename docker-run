@@ -4,6 +4,7 @@ import argparse
 import configparser
 import netifaces
 import os
+import re
 import subprocess
 import sys
 
@@ -62,9 +63,28 @@ def main():
         git_hash = subprocess.check_output([
             "git", "rev-parse", "HEAD"
         ]).decode("utf-8").strip()
+
+        git_tag = subprocess.check_output([
+            'git', 'tag', '--list', '--points-at=HEAD'
+        ]).decode("utf-8").strip()
+        if git_tag == '':
+            if re.match(r'^[0-9]+.[0-9]+$', git_branch):
+                last_git_tag = subprocess.check_output([
+                    'git', 'describe', '--abbrev=0', '--tags'
+                ])
+                minor = subprocess.check_output([
+                    '.venv/bin/python', 'travis/get-minor', '--no-write'
+                ])
+                version = "{}.{}".format(last_git_tag, minor)
+            else:
+                version = git_branch
+        else:
+            version = git_tag
+
     except subprocess.CalledProcessError:
         git_branch = "unknown"
         git_hash = "unknown"
+        version = "unknown"
 
     try:
         login = os.getlogin()
@@ -89,6 +109,7 @@ def main():
         "--env=GROUP_ID={}".format(os.getgid() if os.name == "posix" else 1000),
         "--env=GIT_BRANCH={}".format(git_branch),
         "--env=GIT_HASH={}".format(git_hash),
+        "--env=VERSION={}".format(version),
     ])
 
     if options.home:
