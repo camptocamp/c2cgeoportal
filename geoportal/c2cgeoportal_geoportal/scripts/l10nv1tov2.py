@@ -93,5 +93,5 @@ msgstr ""
                 destination.write(("""
 msgid "{0!s}"
 msgstr "{1!s}"
-""".format(key, value.replace('"', '\\"'))).encode("utf-8"),
+""".format(key, value.replace('"', '\\"'))),
                 )
