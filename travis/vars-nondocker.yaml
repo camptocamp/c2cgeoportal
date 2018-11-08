@@ -4,6 +4,8 @@ extends: vars.yaml
 
 vars:
   checker:
+    fulltextsearch:
+      disable: True
     lang:
       files: [ngeo]
     routes:
@@ -16,6 +18,7 @@ vars:
 
 update_paths:
   - layers
+  - checker.fulltextsearch
   - checker.lang
   - checker.routes
   - check_collector.disabled
