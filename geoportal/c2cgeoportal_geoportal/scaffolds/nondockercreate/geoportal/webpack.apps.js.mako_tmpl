@@ -71,6 +71,7 @@ module.exports = {
   resolve: {
     alias: {
       {{package}}: path.resolve(__dirname, '{{package}}_geoportal/static-ngeo/js'),
-    }
+    },
+    modules: ['/usr/lib/node_modules'],
   },
 };
