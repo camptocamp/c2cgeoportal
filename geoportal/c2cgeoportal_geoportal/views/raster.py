@@ -113,7 +113,7 @@ class Raster:
         dataset, band = self._get_raster(path)
 
         index = dataset.index(lon, lat)
-        if index[0] - 1 < len(band) or index[1] - 1 < len(band[index[0] - 1]):
+        if index[0] - 1 < len(band) and index[1] - 1 < len(band[index[0] - 1]):
             result = band[index[0] - 1][index[1] - 1]
             result = None if result == layer.get("nodata", dataset.nodata) else result
         else:
