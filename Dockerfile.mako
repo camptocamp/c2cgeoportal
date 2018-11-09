@@ -8,7 +8,8 @@ COPY npm-packages /opt/npm-packages
 
 RUN \
   npm install --no-optional --global --unsafe-perm `cat /opt/npm-packages` && \
-  npm cache clear --force
+  npm cache clear --force && \
+  rm -rf /tmp/*
 
 RUN \
   mkdir --parents /opt/angular-locale && \
