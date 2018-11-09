@@ -425,7 +425,7 @@ npm-packages: $(BUILD_DIR)/ngeo.timestamp
 	$(PRERULE_CMD)
 	npm-packages \
 		coveralls gaze jasmine-core jsdoc jsdom karma karma-chrome-launcher karma-coverage \
-		karma-jasmine karma-sourcemap-loader karma-webpack \
+		karma-jasmine karma-sourcemap-loader karma-webpack angular-jsdoc \
 		--src=geoportal/node_modules/ngeo/package.json --src=geoportal/package.json --dst=$@
 
 admin/npm-packages: admin/package.json
