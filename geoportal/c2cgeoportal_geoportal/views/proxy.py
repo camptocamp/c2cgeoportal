@@ -179,7 +179,7 @@ class Proxy(object):
 
         cache_control = (PUBLIC_CACHE if public else PRIVATE_CACHE) if cache else NO_CACHE
         return self._build_response(
-            response, response.text, cache_control, service_name,
+            response, response.content, cache_control, service_name,
             headers_update=headers_update
         )
 
