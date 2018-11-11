@@ -60,9 +60,9 @@ requests==2.20.1  # geoportal
 redis==2.10.6  # geoportal cache
 Shapely==1.6.4.post2  # geoportal
 simplejson==3.16.0  # geoportal, rq.filter: !=3.16.1
-Sphinx==1.8.1  # doc
+Sphinx==1.8.2  # doc
 sphinx-prompt==1.0.0  # doc
-SQLAlchemy==1.2.13
+SQLAlchemy==1.2.14
 tilecloud==1.1.0  # Tile generation
 tilecloud-chain==1.8.2  # Tile generation
 transaction==2.4.0  # commons, geoportal
