@@ -1,4 +1,4 @@
-c2cgeoform==2.0.dev20181105  # commons
+c2cgeoform==2.0.dev20181112  # commons
 c2cwsgiutils>=2,<3  # commons
 c2c.template==2.1.0  # geoportal
 ColanderAlchemy==0.3.3  # commons
@@ -9,5 +9,5 @@ geojson==2.4.1  # geoportal
 iso8601==0.1.11  # deform, by default the version 0.1.12 is installed and is incompatible with deform, rq.filter: <=0.1.11
 papyrus==2.3  # commons, geoportal
 redis==2.10.6  # geoportal cache
-SQLAlchemy==1.2.13
+SQLAlchemy==1.2.14
 transaction==2.4.0  # commons, geoportal
