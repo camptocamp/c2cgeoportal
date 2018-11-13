@@ -64,7 +64,7 @@ ADMIN_SRC_FILES = $(shell ls -1 commons/c2cgeoportal_commons/models/*.py) \
 	$(shell find admin/c2cgeoportal_admin/templates -name "*.jinja2" -print) \
 	$(shell find admin/c2cgeoportal_admin/templates/widgets -name "*.pt" -print)
 
-APPS += desktop mobile
+APPS += desktop mobile iframe_api
 APPS_PACKAGE_PATH_NONDOCKER = geoportal/c2cgeoportal_geoportal/scaffolds/nondockercreate/geoportal/+package+_geoportal
 APPS_PACKAGE_PATH = geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal
 APPS_HTML_FILES = $(addprefix $(APPS_PACKAGE_PATH_NONDOCKER)/static-ngeo/js/apps/, $(addsuffix .html.ejs_tmpl, $(APPS)))
@@ -77,7 +77,7 @@ APPS_FILES = $(APPS_HTML_FILES) $(APPS_JS_FILES) \
 	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/logo.png
 
 
-APPS_ALT += desktop_alt mobile_alt oeedit oeview
+APPS_ALT += desktop_alt mobile_alt oeedit oeview iframe_api
 APPS_PACKAGE_PATH_ALT_NONDOCKER = geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/CONST_create_template/geoportal/+package+_geoportal
 APPS_PACKAGE_PATH_ALT = geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/geoportal/+package+_geoportal
 APPS_HTML_FILES_ALT = $(addprefix $(APPS_PACKAGE_PATH_ALT_NONDOCKER)/static-ngeo/js/apps/, $(addsuffix .html.ejs_tmpl, $(APPS_ALT)))

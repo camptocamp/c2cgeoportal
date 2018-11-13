@@ -29,8 +29,10 @@ unmanaged_files:
   - geoportal/testgeomapfish_geoportal/locale/it/LC_MESSAGES/testgeomapfish_geoportal-client\.po
   - geoportal/testgeomapfish_geoportal/static-ngeo/js/apps/desktop\.html\.ejs
   - geoportal/testgeomapfish_geoportal/static-ngeo/js/apps/mobile\.html\.ejs
+  - geoportal/testgeomapfish_geoportal/static-ngeo/js/apps/iframe_api\.html\.ejs
   - geoportal/testgeomapfish_geoportal/static-ngeo/js/apps/Controllerdesktop\.js
   - geoportal/testgeomapfish_geoportal/static-ngeo/js/apps/Controllermobile\.js
+  - geoportal/testgeomapfish_geoportal/static-ngeo/js/apps/Controlleriframe_api\.js
   - geoportal/testgeomapfish_geoportal/static-ngeo/js/apps/image/.*
   - geoportal/testgeomapfish_geoportal/static-ngeo/js/apps/contextualdata\.html
   - geoportal/testgeomapfish_geoportal/static-ngeo/less/desktop\.less

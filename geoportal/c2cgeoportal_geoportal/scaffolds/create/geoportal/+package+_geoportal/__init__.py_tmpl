@@ -32,5 +32,6 @@ def main(global_config, **settings):
     # add the interfaces
     add_interface(config, 'desktop', INTERFACE_TYPE_NGEO, default=True)
     add_interface(config, 'mobile', INTERFACE_TYPE_NGEO)
+    add_interface(config, 'iframe_api', INTERFACE_TYPE_NGEO)
 
     return config.make_wsgi_app()
