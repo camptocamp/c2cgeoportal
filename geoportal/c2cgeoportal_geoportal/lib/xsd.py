@@ -98,6 +98,15 @@ class XSDGenerator(PapyrusXSDGenerator):
                     for value, in query:
                         with tag(tb, "xsd:enumeration", {"value": value}):
                             pass
+            self.element_callback(tb, column)
+
+    # pylint: disable=method-hidden, no-self-use
+    def element_callback(self, tb, column):
+        if column.info.get('readonly'):
+            with tag(tb, 'xsd:annotation'):
+                with tag(tb, 'xsd:appinfo'):
+                    with tag(tb, 'readonly', {'value': 'true'}):
+                        pass
 
 
 class XSD(object):
@@ -105,12 +114,14 @@ class XSD(object):
         self,
         include_primary_keys=False,
         include_foreign_keys=False,
-        sequence_callback=None
+        sequence_callback=None,
+        element_callback=None
     ):
         self.generator = XSDGenerator(
             include_primary_keys=include_primary_keys,
             include_foreign_keys=include_foreign_keys,
-            sequence_callback=sequence_callback
+            sequence_callback=sequence_callback,
+            element_callback=element_callback
         )
 
     def __call__(self, table):

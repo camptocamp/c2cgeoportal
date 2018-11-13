@@ -71,6 +71,9 @@ class TestXSDGenerator(TestCase):
             child1_id = Column(types.Integer, ForeignKey("child.id"))
             child2_id = Column(types.Integer, ForeignKey("child.id"))
             other = Column(types.String)
+            readonly = Column(types.String, info={
+                'readonly': True
+            })
             child1_ = relationship(Child, primaryjoin=(child1_id == Child.id))
             child1 = _AssociationProxy("child1_", "name")
             child1_id.info['association_proxy'] = 'child1'
@@ -108,7 +111,7 @@ class TestXSDGenerator(TestCase):
             kall[0][1].class_attribute.name
             for kall in column_mock.call_args_list
         ]
-        assert len(called_properties) == 4
+        assert len(called_properties) == 5
         assert self.cls.__attributes_order__ == called_properties[:len(self.cls.__attributes_order__)]
 
     @patch('c2cgeoportal_geoportal.lib.xsd.XSDGenerator.add_association_proxy_xsd')
@@ -129,6 +132,29 @@ class TestXSDGenerator(TestCase):
         p = mapper.attrs['other']
         gen.add_column_property_xsd(tb, p)
         column_mock.assert_called_once_with(tb, p)
+
+    def test_add_column_readonly(self):
+        from c2cgeoportal_geoportal.lib.xsd import XSDGenerator
+        from sqlalchemy.orm.util import class_mapper
+        from xml.etree.ElementTree import TreeBuilder, tostring
+
+        gen = XSDGenerator(include_foreign_keys=True)
+        mapper = class_mapper(self.cls)
+        tb = TreeBuilder()
+
+        p = mapper.attrs['readonly']
+        gen.add_column_property_xsd(tb, p)
+        e = tb.close()
+
+        self.assertEqual(
+            '<xsd:element minOccurs="0" name="readonly" nillable="true" type="xsd:string">'
+            '<xsd:annotation>'
+            '<xsd:appinfo>'
+            '<readonly value="true" />'
+            '</xsd:appinfo>'
+            '</xsd:annotation>'
+            '</xsd:element>',
+            tostring(e).decode("utf-8"))
 
     def test_add_association_proxy_xsd(self):
         from xml.etree.ElementTree import TreeBuilder, tostring

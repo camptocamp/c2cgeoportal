@@ -33,7 +33,7 @@ Mako==1.0.7  # geoportal
 mccabe==0.6.1  # lint
 mypy==0.641  # lint
 OWSLib==0.17.0  # geoportal
-papyrus==2.3  # commons, geoportal
+papyrus==2.4  # commons, geoportal
 passwordgenerator # geoportal
 PasteScript==2.0.2  # geoportal pcreate
 pep8==1.7.1  # lint
