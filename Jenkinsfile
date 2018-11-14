@@ -29,7 +29,7 @@ def abort_ci() {
     // Makes sure Jenkins will not build his own commit
     COMMITTER = sh(returnStdout: true, script: "git show --no-patch --format='%ae' HEAD").trim()
     TAG = sh(returnStdout: true, script: 'git tag --list --points-at=HEAD').trim()
-    if (COMMITTER == 'ci@camptocamp.com' && TAG != "") {
+    if (COMMITTER == 'ci@camptocamp.com' && TAG == "") {
         // Return here instead of throwing error to keep the build "green"
         currentBuild.result = 'SUCCESS'
         return true
