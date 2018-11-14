@@ -29,7 +29,8 @@ def abort_ci() {
     // Makes sure Jenkins will not build his own commit
     COMMITTER = sh(returnStdout: true, script: "git show --no-patch --format='%ae' HEAD").trim()
     TAG = sh(returnStdout: true, script: 'git tag --list --points-at=HEAD').trim()
-    if (COMMITTER == 'ci@camptocamp.com' && TAG == "") {
+    USER_START = currentBuild.getBuildCauses()[0].get('shortDescription').startsWith('Started by user ')
+    if (COMMITTER == 'ci@camptocamp.com' && TAG == "" && !USER_START) {
         // Return here instead of throwing error to keep the build "green"
         currentBuild.result = 'SUCCESS'
         return true
