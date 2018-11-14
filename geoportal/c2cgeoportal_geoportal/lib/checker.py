@@ -205,16 +205,17 @@ def _lang_files(global_settings, settings, health_check):
                                 "available values [cgxp, cgxp-api, ngeo]" % type_)
             name = "checker_lang_{}_{}".format(type_, lang)
 
-            def get_both(request):
+            def get_both(url, lang, request):
                 return build_url(
                     name,
                     request.static_url(url.format(package=global_settings["package"], lang=lang)),
-                    request)
+                    request
+                )
 
             health_check.add_url_check(
                 name=name,
-                url=lambda r: get_both(r)["url"],
-                headers=lambda r: get_both(r)["headers"],
+                url=lambda r, u=url, la=lang: get_both(u, la, r)["url"],
+                headers=lambda r, u=url, la=lang: get_both(u, la, r)["headers"],
                 level=lang_settings["level"],
             )
 
