@@ -9,7 +9,6 @@ __pycache__/
 /docker-compose-dev.yaml
 /.env
 /admin/
-/testdb/11-schemas.sql
 /testdb/12-alembic.sql
 /testdb/13-alembic-static.sql
 /apache/README.txt

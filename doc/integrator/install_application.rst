@@ -74,24 +74,6 @@ full-text search:
 
   sudo -u postgres psql -c "CREATE EXTENSION pg_trgm" <db_name>
 
-.. _integrator_install_application_create_schema:
-
-Create the schemas
-~~~~~~~~~~~~~~~~~~
-
-Each application needs two application-specific schemas.
-To create them, do:
-
-.. prompt:: bash
-
-    sudo -u postgres psql -c "CREATE SCHEMA <schema_name>;" <db_name>
-    sudo -u postgres psql -c "CREATE SCHEMA <schema_name>_static;" <db_name>
-
-with ``<db_name>`` and ``<schema_name>`` replaced by the actual database name,
-and schema name ('main' by default), respectively.
-Note that if you are using a multi-project, you need to define both schemas
-for the parent and for each child.
-
 .. _integrator_install_application_create_user:
 
 Create a database user

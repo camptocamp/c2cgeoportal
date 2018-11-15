@@ -14,6 +14,7 @@ unmanaged_files:
   - project\.yaml\.mako
   - vars\.yaml
   - docker-compose\.yaml\.mako
+  - testdb/11-extentions\.sql
   - testdb/11-schemas\.sql\_mako
   - tilegeneration/config\.yaml\.mako
   - tilegeneration/config\.yaml\.tmpl\.mako

@@ -60,6 +60,9 @@ def upgrade():
     parentschema = config.get('parentschema')
     srid = config.get('srid')
 
+    op.execute('CREATE SCHEMA IF NOT EXISTS {}'.format(schema))
+    op.execute('CREATE SCHEMA IF NOT EXISTS {}'.format(schema_static))
+
     engine = op.get_bind().engine
     if type(engine).__name__ != 'MockConnection' and \
             op.get_context().dialect.has_table(
