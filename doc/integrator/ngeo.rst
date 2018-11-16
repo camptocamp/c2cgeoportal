@@ -120,10 +120,11 @@ The sub section is the interface name, and after we have:
 * ``redirect_interface``: interface to be redirected to if an unexpected device type is used (mobile/desktop).
 * ``do_redirect``: directly do the redirect.
 * ``constants``: Directly define an ``angular`` constant in the vars file.
-* ``routes``: key: constant name, value: name of the route witch one we want to have the URL.
+* ``dynamic_constants``: Define an ``angular`` constant from a dynamic values.
 * ``static``: key: constant name, value: name of the static view that we want to have the URL.
-* ``fulltextsearch_params``: Additional parameters to the full text search view, see
-  :ref:`developer_webservices_fts` for more information.
-* ``wfs_permalink``: Additional values for the ``ngeoWfsPermalinkOptions`` constant, see:
-  `ngeox.WfsPermalinkOptions <https://github.com/camptocamp/ngeo/blob/2.3/options/ngeox.js#L837>_`
-  for more information.
+* ``routes``: key: constant name, value:
+    ``name``: name of the route witch one we want to have the URL.
+    ``params``: view parameters.
+    ``dynamic_params``: view parameters from dynamic values.
+
+The dynamic values names are: ``interface``, ``cache_version``, ``lang_urls``, ``fulltextsearch_groups``.
