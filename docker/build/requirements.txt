@@ -1,7 +1,7 @@
 alabaster==0.7.12  # Doc theme
 alembic==1.0.3  # geoportal
 Babel==2.6.0  # i18n
-boto3==1.9.45  # Tile generation
+boto3==1.9.47  # Tile generation
 bottle==0.12.13  # geoportal
 c2c.cssmin==0.7.dev6  # CGXP build
 c2c.template==2.1.0  # geoportal
@@ -18,7 +18,7 @@ dogpile.cache==0.6.7  # geoportal
 flake8==3.6.0  # lint, TODO remove filter on pyflakes
 flake8-copyright==0.2.2  # lint
 flake8-mypy==17.8.0  # lint
-Fiona==1.8.0  # geoportal raster
+Fiona==1.8.1  # geoportal raster
 GeoAlchemy2==0.5.0  # commons, geoportal
 geojson==2.4.1  # geoportal
 glob2==0.6  # ngeo
@@ -57,7 +57,7 @@ python-dateutil==2.6.1  # geoportal, rq.filter: <2.7.0
 PyYAML==3.13  # geoportal
 rasterio==1.0.2  # geoportal raster, rq.filter: <=1.0.2
 requests==2.20.1  # geoportal
-redis==3.0.0.post1  # geoportal cache
+redis==3.0.1  # geoportal cache
 Shapely==1.6.4.post2  # geoportal
 simplejson==3.16.0  # geoportal, rq.filter: !=3.16.1
 Sphinx==1.8.2  # doc
