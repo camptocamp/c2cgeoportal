@@ -133,14 +133,17 @@ The sub section is the interface name, and after we have:</p>
 <li><code class="docutils literal notranslate"><span class="pre">redirect_interface</span></code>: interface to be redirected to if an unexpected device type is used (mobile/desktop).</li>
 <li><code class="docutils literal notranslate"><span class="pre">do_redirect</span></code>: directly do the redirect.</li>
 <li><code class="docutils literal notranslate"><span class="pre">constants</span></code>: Directly define an <code class="docutils literal notranslate"><span class="pre">angular</span></code> constant in the vars file.</li>
-<li><code class="docutils literal notranslate"><span class="pre">routes</span></code>: key: constant name, value: name of the route witch one we want to have the URL.</li>
+<li><code class="docutils literal notranslate"><span class="pre">dynamic_constants</span></code>: Define an <code class="docutils literal notranslate"><span class="pre">angular</span></code> constant from a dynamic values.</li>
 <li><code class="docutils literal notranslate"><span class="pre">static</span></code>: key: constant name, value: name of the static view that we want to have the URL.</li>
-<li><code class="docutils literal notranslate"><span class="pre">fulltextsearch_params</span></code>: Additional parameters to the full text search view, see
-<a class="reference internal" href="../developer/webservices.html#developer-webservices-fts"><span class="std std-ref">Full-Text Search</span></a> for more information.</li>
-<li><code class="docutils literal notranslate"><span class="pre">wfs_permalink</span></code>: Additional values for the <code class="docutils literal notranslate"><span class="pre">ngeoWfsPermalinkOptions</span></code> constant, see:
-<cite>ngeox.WfsPermalinkOptions &lt;https://github.com/camptocamp/ngeo/blob/2.3/options/ngeox.js#L837&gt;_</cite>
-for more information.</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">routes</span></code>: key: constant name, value:</dt>
+<dd><code class="docutils literal notranslate"><span class="pre">name</span></code>: name of the route witch one we want to have the URL.
+<code class="docutils literal notranslate"><span class="pre">params</span></code>: view parameters.
+<code class="docutils literal notranslate"><span class="pre">dynamic_params</span></code>: view parameters from dynamic values.</dd>
+</dl>
+</li>
 </ul>
+<p>The dynamic values names are: <code class="docutils literal notranslate"><span class="pre">interface</span></code>, <code class="docutils literal notranslate"><span class="pre">cache_version</span></code>, <code class="docutils literal notranslate"><span class="pre">lang_urls</span></code>, <code class="docutils literal notranslate"><span class="pre">fulltextsearch_groups</span></code>.</p>
 </div>
 </div>
 
