@@ -44,7 +44,6 @@ ${service_defaults('mapserver', 8080)}\
     restart: on-failure
     volumes_from:
       - config:ro
-    entrypoint: []
 ${service_defaults('tinyows', 8080)}\
 
   mapcache:
