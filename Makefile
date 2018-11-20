@@ -1,5 +1,5 @@
 BUILD_DIR ?= /build
-MAKO_FILES = docker-compose.yaml.mako $(shell find .tx doc docker geoportal/tests/functional -type f -name "*.mako" -print)
+MAKO_FILES = Dockerfile.mako docker-compose.yaml.mako $(shell find .tx doc docker geoportal/tests/functional -type f -name "*.mako" -print)
 VARS_FILE ?= vars.yaml
 VARS_FILES += vars.yaml
 
