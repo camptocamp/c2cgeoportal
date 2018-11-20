@@ -11,6 +11,14 @@ RUN \
   npm cache clear --force && \
   rm -rf /tmp/*
 
+ENV NODE_PATH=/usr/lib/node_modules
+
+COPY webpack.config.js /tmp
+
+RUN \
+  extract-ngeo-dependencies > /tmp/deps.js && \
+  (cd /tmp; webpack --mode production --profile --json > stats.json)
+
 RUN \
   mkdir --parents /opt/angular-locale && \
   for LANG in en fr de it en-ch fr-ch de-ch it-ch; \
@@ -32,5 +40,3 @@ RUN \
     --editable=/opt/c2cgeoportal_commons \
     --editable=/opt/c2cgeoportal_geoportal \
     --editable=/opt/c2cgeoportal_admin
-
-ENV NODE_PATH=/usr/lib/node_modules

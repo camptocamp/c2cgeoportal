@@ -29,6 +29,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import os
 import re
 from json import dumps
 from urllib.parse import parse_qsl
@@ -117,8 +118,13 @@ def main():
             data = _sub(
                 re.escape('<script src="https://geomapfish-demo-dc.camptocamp.com/2.') + '[0-9]' +
                 re.escape('/dynamic.js?'),
-                '<script src="{entry_point}dynamic.js?'.format(
-                     entry_point='${htmlWebpackPlugin.options.vars.entry_point}' if args.docker else '',
+                (
+                    '<script src="{entry_point}static-ngeo/UNUSED_CACHE_VERSION/build/vendor.js'
+                    '?{version}"></script>\n'
+                    '<script src="{entry_point}dynamic.js?'
+                ).format(
+                    entry_point='${htmlWebpackPlugin.options.vars.entry_point}' if args.docker else '',
+                    version=os.environ.get("VERSION", "")
                 ),
                 data
             )

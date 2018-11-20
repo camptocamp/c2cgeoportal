@@ -6,6 +6,7 @@ import yaml
 
 parser = argparse.ArgumentParser(description='Get and upgrade the minor version.')
 parser.add_argument('--reset', action='store_true')
+parser.add_argument('--no-write', action='store_true')
 args = parser.parse_args()
 
 with open("travis/ci.yaml") as ci_file:
@@ -15,5 +16,6 @@ minor = 0 if args.reset else ci['minor'] + 1
 ci['minor'] = minor
 print(minor)
 
-with open("travis/ci.yaml", "w") as ci_file:
-    ci_file.write(yaml.dump(ci, default_flow_style=False, explicit_start=True))
+if not args.no_write:
+    with open("travis/ci.yaml", "w") as ci_file:
+        ci_file.write(yaml.dump(ci, default_flow_style=False, explicit_start=True))

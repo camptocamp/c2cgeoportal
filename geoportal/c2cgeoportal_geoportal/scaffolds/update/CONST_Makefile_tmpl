@@ -614,12 +614,18 @@ $(APP_OUTPUT_DIR)/images/: /usr/lib/node_modules/jquery-ui/themes/base/images
 	mkdir --parent $@
 	cp -r $</* $@
 
+.PRECIOUS: $(APP_OUTPUT_DIR)/vendor%
+$(APP_OUTPUT_DIR)/vendor%: /opt/vendor%
+	$(PRERULE_CMD)
+	cp $< $@
 
 .PRECIOUS: /build/apps.timestamp
 /build/apps.timestamp: geoportal/webpack.apps.js $(OL_JS_FILES) $(NGEO_JS_FILES) $(APP_JS_FILES) \
 			$(APP_HTML_FILES) geoportal/webpack.config.js \
 			$(SASS_FILES) \
-			$(APP_OUTPUT_DIR)/images/
+			$(APP_OUTPUT_DIR)/images/ \
+			$(APP_OUTPUT_DIR)/vendor.js \
+			$(APP_OUTPUT_DIR)/vendor.js.map
 	$(PRERULE_CMD)
 	rm --force $(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .*, $(NGEO_INTERFACES)))
 	# Workaround to make Webpack working for ol/index.js
