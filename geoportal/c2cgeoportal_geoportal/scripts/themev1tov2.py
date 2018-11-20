@@ -46,7 +46,7 @@ def main():
 
     parser.add_argument(
         "-i", "--app-config",
-        default="geoportal/production.ini",
+        default="production.ini",
         dest="app_config",
         help="the application .ini config file (optional, default is 'production.ini')"
     )
