@@ -43,9 +43,7 @@ class DynamicView:
         self.settings = request.registry.settings
         self.interfaces_config = self.settings['interfaces_config']
 
-    @view_config(route_name="dynamic", renderer="c2cgeoportal_geoportal:templates/dynamic.js")
     def dynamic(self):
-        
         interface_name = self.request.params.get('interface')
         if interface_name not in self.settings.get('interfaces'):
             interface_name = self.settings.get('default_interface')
@@ -117,14 +115,35 @@ class DynamicView:
                 else:
                     constants['redirectUrl'] = url
 
+        other_constants = {
+            'angularLocaleScript': self.request.static_url(
+                self.request.registry.settings['package'] + '_geoportal:static-ngeo/build/'
+            ) + 'angular-locale_{{locale}}.js',
+        }
+
+        return constants, interface_name, do_redirect, url, other_constants
+
+    @view_config(route_name="dynamic_js", renderer="c2cgeoportal_geoportal:templates/dynamic.js")
+    def dynamic_js(self):
+        constants, interface_name, do_redirect, url, other_constants = self.dynamic()
+
         return {
             'constants': constants,
             'interface_name': interface_name,
             'do_redirect': do_redirect,
             'redirect_url': url,
             'other_constants': {
-                'angularLocaleScript': self.request.static_url(
-                    self.request.registry.settings['package'] + '_geoportal:static-ngeo/build/'
-                ) + 'angular-locale_{{locale}}.js',
+                'angularLocaleScript': other_constants
             }
+        }
+
+    @view_config(route_name='dynamic', renderer='fast_json')
+    def dynamic_json(self):
+        constants, interface_name, do_redirect, url, other_constants = self.dynamic()
+        constants.update(other_constants)
+        return {
+            'constants': constants,
+            'interfaceName': interface_name,
+            'doRedirect': do_redirect,
+            'redirectUrl': url,
         }
