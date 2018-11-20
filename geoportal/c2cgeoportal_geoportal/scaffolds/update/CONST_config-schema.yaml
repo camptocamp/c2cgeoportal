@@ -134,38 +134,38 @@ mapping:
             type: map
             mapping:
               constants:
-                required: True
                 type: map
                 mapping:
                   regex;.+:
                     type: any
-              routes:
-                required: True
+              dynamic_constants:
                 type: map
                 mapping:
                   regex;.+:
                     type: str
+              routes:
+                type: map
+                mapping:
+                  regex;.+:
+                    type: map
+                    mapping:
+                      name:
+                        type: str
+                      params:
+                        type: map
+                        mapping:
+                          regex;.+:
+                            type: text
+                      dynamic_params:
+                        type: map
+                        mapping:
+                          regex;.+:
+                            type: str
               static:
                 type: map
                 mapping:
                   regex;.+:
                     type: str
-              fulltextsearch_params:
-                required: True
-                type: map
-                mapping:
-                  regex;.+:
-                    type: scalar
-              tree_params:
-                type: map
-                mapping:
-                  regex;.+:
-                    type: scalar
-              wfs_permalink:
-                type: map
-                mapping:
-                  regex;.+:
-                    type: any
               redirect_interface:
                 type: str
               do_redirect:

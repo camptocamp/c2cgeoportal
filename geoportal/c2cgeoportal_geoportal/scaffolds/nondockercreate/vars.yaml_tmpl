@@ -43,25 +43,47 @@ vars:
           - name: ASIT VD
             type: WMTS
             url: https://ows.asitvd.ch/wmts/1.0.0/WMTSCapabilities.xml
-      fulltextsearch_params:
-        limit: 30
-        partitionlimit: 5
-      routes: &routes
-        authenticationBaseUrl: base
-        gmfLayersUrl: layers_root
-        gmfRasterUrl: raster
-        gmfProfileCsvUrl: profile.csv
-        gmfShortenerCreateUrl: shortener_create
+        ngeoWfsPermalinkOptions:
+          wfsTypes:
+            - featureType: fuel
+              label: display_name
+            - featureType: osm_scale
+              label: display_name
+          defaultFeatureNS: http://mapserver.gis.umn.edu/mapserver
+          defaultFeaturePrefix: feature
+      dynamic_constants:
+        cacheVersion: cache_version
+        langUrls: lang_urls
+        gmfSearchGroups: fulltextsearch_groups
       static:
         assetsBaseUrl: '{package}_geoportal:static-ngeo/'
-      wfs_permalink:
-        wfsTypes:
-          - featureType: fuel
-            label: display_name
-          - featureType: osm_scale
-            label: display_name
-        defaultFeatureNS: http://mapserver.gis.umn.edu/mapserver
-        defaultFeaturePrefix: feature
+      routes: &routes
+        authenticationBaseUrl:
+          name: base
+        gmfLayersUrl:
+          name: layers_root
+        gmfRasterUrl:
+          name: raster
+        gmfProfileCsvUrl:
+          name: profile.csv
+        gmfShortenerCreateUrl:
+          name: shortener_create
+        ngeoPermalinkOgcserverUrl:
+          name: mapserverproxy
+        fulltextsearchUrl:
+          name: fulltextsearch
+          params:
+            limit: 30
+            partitionlimit: 5
+          dynamic_params:
+            interface: interface
+        gmfTreeUrl:
+          name: themes
+          params:
+            version: 2
+            background: background
+          dynamic_params:
+            interface: interface
     mobile:
       <<: *interface
       redirect_interface: desktop
@@ -99,8 +121,10 @@ vars:
         gmfSearchGroups: []
       routes:
         <<: *routes
-        gmfProfileJsonUrl: profile.json
-        gmfPrintUrl: printproxy
+        gmfProfileJsonUrl:
+          name: profile.json
+        gmfPrintUrl:
+          name: printproxy
     desktop_alt:
       <<: *interface
       constants:
@@ -140,22 +164,28 @@ vars:
           defaultFeaturePrefix: feature
       routes:
         <<: *routes
-        gmfProfileJsonUrl: profile.json
-        gmfPrintUrl: printproxy
+        gmfProfileJsonUrl:
+          name: profile.json
+        gmfPrintUrl:
+          name: printproxy
     oeview:
       <<: *interface
       # FIXME: gmfContextualdatacontentTemplateUrl
       routes:
         <<: *routes
-        gmfProfileJsonUrl: profile.json
-        gmfPrintUrl: printproxy
+        gmfProfileJsonUrl:
+          name: profile.json
+        gmfPrintUrl:
+          name: printproxy
     oeedit:
       <<: *interface
       # FIXME: gmfContextualdatacontentTemplateUrl
       routes:
         <<: *routes
-        gmfProfileJsonUrl: profile.json
-        gmfPrintUrl: printproxy
+        gmfProfileJsonUrl:
+          name: profile.json
+        gmfPrintUrl:
+          name: printproxy
 
   authtkt:
     # One day

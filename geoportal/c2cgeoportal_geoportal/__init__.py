@@ -553,14 +553,7 @@ def includeme(config):
     config.set_user_validator(default_user_validator)
 
     # Cannot be at the header to don"t load the model too early
-    from c2cgeoportal_geoportal.views.entry import Entry
     config.add_route('dynamic', '/dynamic.js', request_method="GET")
-    config.add_view(
-        Entry,
-        attr="get_ngeo_index_vars",
-        route_name='dynamic',
-        renderer='/dynamic.js'
-    )
     if settings.get("ogcproxy_enable", False):  # pragma: no cover
         # Add an OGCProxy view
         config.add_route_predicate("ogc_server", OgcproxyRoutePredicate)
