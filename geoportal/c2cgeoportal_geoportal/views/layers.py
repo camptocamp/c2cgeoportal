@@ -416,7 +416,7 @@ class Layers:
         if not layer.public and self.request.user is None:
             raise HTTPForbidden()
 
-        return get_layer_class(layer)
+        return get_layer_class(layer, with_exclude=True)
 
     @view_config(route_name="layers_enumerate_attribute_values", renderer="json")
     def enumerate_attribute_values(self):
@@ -469,15 +469,18 @@ class Layers:
         return dbsession.query(distinct(attribute)).order_by(attribute).all()
 
 
-def get_layer_class(layer):
-    # exclude the columns used to record the last features update
-    exclude = [] if layer.exclude_properties is None else layer.exclude_properties.split(",")
-    last_update_date = Layers.get_metadata(layer, "lastUpdateDateColumn")
-    if last_update_date is not None:
-        exclude.append(last_update_date)
-    last_update_user = Layers.get_metadata(layer, "lastUpdateUserColumn")
-    if last_update_user is not None:
-        exclude.append(last_update_user)
+def get_layer_class(layer, with_exclude=False):
+    if with_exclude:
+        # Exclude the columns used to record the last features update
+        exclude = [] if layer.exclude_properties is None else layer.exclude_properties.split(",")
+        last_update_date = Layers.get_metadata(layer, "lastUpdateDateColumn")
+        if last_update_date is not None:
+            exclude.append(last_update_date)
+        last_update_user = Layers.get_metadata(layer, "lastUpdateUserColumn")
+        if last_update_user is not None:
+            exclude.append(last_update_user)
+    else:
+        exclude = []
 
     primary_key = Layers.get_metadata(layer, "geotablePrimaryKey")
     return get_class(
@@ -488,7 +491,7 @@ def get_layer_class(layer):
 
 
 def get_layer_metadatas(layer):
-    cls = get_layer_class(layer)
+    cls = get_layer_class(layer, with_exclude=True)
     edit_columns = []
 
     for column_property in class_mapper(cls).iterate_properties:
