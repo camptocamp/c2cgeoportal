@@ -175,7 +175,7 @@ class TestReflection(TestCase):
 
         # the class should now be in the cache
         self.assertTrue(
-            ("public", "table_a", (), None, ()) in
+            ("public", "table_a", (), None, (), ()) in
             c2cgeoportal_geoportal.lib.dbreflection._class_cache
         )
         _modelclass = get_class("table_a")
@@ -220,7 +220,7 @@ class TestReflection(TestCase):
 
         # the class should now be in the cache
         self.assertTrue(
-            ("public", "table_d", ("foo", "bar"), None, ()) in
+            ("public", "table_d", ("foo", "bar"), None, (), ()) in
             c2cgeoportal_geoportal.lib.dbreflection._class_cache
         )
 
@@ -237,6 +237,24 @@ class TestReflection(TestCase):
 
         # the class should now be in the cache
         self.assertTrue(
-            ("public", "table_d", (), None, ("child1_id", "point", "child2_id")) in
+            ("public", "table_d", (), None, ("child1_id", "point", "child2_id"), ()) in
+            c2cgeoportal_geoportal.lib.dbreflection._class_cache
+        )
+
+    def test_get_class_readonly_attributes(self):
+        import c2cgeoportal_geoportal.lib.dbreflection
+        from c2cgeoportal_geoportal.lib.dbreflection import get_class
+
+        readonly_attributes = ["child1_id", "point"]
+
+        self._create_table("table_d")
+        cls = get_class("table_d", readonly_attributes=readonly_attributes)
+
+        self.assertEqual(True, cls.child1_id.info.get('readonly'))
+        self.assertEqual(True, cls.point.info.get('readonly'))
+
+        # the class should now be in the cache
+        self.assertTrue(
+            ("public", "table_d", (), None, (), ("child1_id", "point")) in
             c2cgeoportal_geoportal.lib.dbreflection._class_cache
         )

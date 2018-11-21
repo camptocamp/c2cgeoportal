@@ -138,7 +138,8 @@ def get_table(tablename, schema=None, session=None, primary_key=None):
     return table
 
 
-def get_class(tablename, session=None, exclude_properties=None, primary_key=None, attributes_order=None):
+def get_class(tablename, session=None, exclude_properties=None, primary_key=None, attributes_order=None,
+              readonly_attributes=None):
     """
     Get the SQLAlchemy mapped class for "tablename". If no class exists
     for "tablename" one is created, and added to the cache. "tablename"
@@ -153,7 +154,8 @@ def get_class(tablename, session=None, exclude_properties=None, primary_key=None
         tablename,
         tuple(exclude_properties or ()),
         primary_key,
-        tuple(attributes_order or ())
+        tuple(attributes_order or ()),
+        tuple(readonly_attributes or ()),
     )
 
     if cache_key in _class_cache:
@@ -165,7 +167,8 @@ def get_class(tablename, session=None, exclude_properties=None, primary_key=None
     cls = _create_class(
         table,
         exclude_properties=exclude_properties,
-        attributes_order=attributes_order
+        attributes_order=attributes_order,
+        readonly_attributes=readonly_attributes,
     )
 
     # add class to cache
@@ -174,7 +177,7 @@ def get_class(tablename, session=None, exclude_properties=None, primary_key=None
     return cls
 
 
-def _create_class(table, exclude_properties=None, attributes_order=None):
+def _create_class(table, exclude_properties=None, attributes_order=None, readonly_attributes=None):
     from c2cgeoportal_commons.models.main import Base
 
     exclude_properties = exclude_properties or ()
@@ -185,11 +188,13 @@ def _create_class(table, exclude_properties=None, attributes_order=None):
         dict(
             __table__=table,
             __mapper_args__={"exclude_properties": exclude_properties},
-            __attributes_order__=attributes_order
+            __attributes_order__=attributes_order,
         ),
     )
 
     for col in table.columns:
+        if col.name in (readonly_attributes or []):
+            col.info['readonly'] = True
         if col.foreign_keys and col.name not in exclude_properties:
             _add_association_proxy(cls, col)
 

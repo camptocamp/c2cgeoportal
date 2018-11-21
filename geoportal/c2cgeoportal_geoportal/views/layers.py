@@ -480,13 +480,16 @@ def get_layer_class(layer):
         exclude.append(last_update_user)
     m = Layers.get_metadata(layer, "editingAttributesOrder")
     attributes_order = m.split(',') if m else None
+    m = Layers.get_metadata(layer, "readonlyAttributes")
+    readonly_attributes = m.split(',') if m else None
 
     primary_key = Layers.get_metadata(layer, "geotablePrimaryKey")
     cls = get_class(
         str(layer.geo_table),
         exclude_properties=exclude,
         primary_key=primary_key,
-        attributes_order=attributes_order
+        attributes_order=attributes_order,
+        readonly_attributes=readonly_attributes
     )
 
     mapper = class_mapper(cls)
