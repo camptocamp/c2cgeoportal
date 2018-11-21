@@ -1,2 +1,0 @@
-@import "{{package}}.less";
-@import "/usr/lib/node_modules/ngeo/contribs/gmf/less/desktop.less";
