@@ -712,11 +712,18 @@ class C2cUpgradeTool:
         if os.path.isfile(".UPGRADE_SUCCESS"):
             os.unlink(".UPGRADE_SUCCESS")
         ok, message = self.test_checkers()
-        if not ok:
-            self.print_step(step, error=True, message=message,
-                            prompt="Correct the checker, then run the step again:")
+        if ok:
+            self.run_step(step + 1)
+        else:
+            self.print_step(
+                step, error=True, message=message,
+                prompt="Correct the checker, then run the step again "
+                       "(If you want to fix it later you can pass to the next step):"
+            )
             exit(1)
 
+    @Step(13, file_marker=False)
+    def step13(self, step):
         # Required to remove from the Git stage the ignored file when we lunch the step again
         check_call(["git", "reset", "--mixed"])
 
@@ -729,8 +736,8 @@ class C2cUpgradeTool:
             "add them into the `.gitignore` file and launch upgrade{} again.".format(step),
             prompt="Then to commit your changes type:")
 
-    @Step(13, file_marker=False)
-    def step13(self, _):
+    @Step(14, file_marker=False)
+    def step14(self, _):
         check_call(["git", "commit", "--message=Upgrade to GeoMapFish {}".format(
             pkg_resources.get_distribution("c2cgeoportal_commons").version
         )])
