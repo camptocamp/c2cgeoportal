@@ -377,7 +377,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
         if layer.geo_table is not None and layer.geo_table != "":
             try:
                 from c2cgeoportal.views.layers import get_layer_class
-                cls = get_layer_class(layer)
+                cls = get_layer_class(layer, with_exclude=True)
                 for column_property in class_mapper(cls).iterate_properties:
                     if isinstance(column_property, ColumnProperty) and len(column_property.columns) == 1:
                         column = column_property.columns[0]
