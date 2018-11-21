@@ -208,6 +208,155 @@ vars:
 
   default_interface: desktop
 
+  interfaces_config:
+    default:
+      constants:
+        gmfSearchActions:
+          - action: add_theme
+            title: Add a theme
+          - action: add_group
+            title: Add a sub theme
+          - action: add_layer
+            title: Add a layer
+        gmfExternalOGCServers:
+          - name: Swiss Topo WMS
+            type: WMS
+            url: https://wms.geo.admin.ch/?lang=fr
+          - name: Swiss Topo WMTS
+            type: WMTS
+            url: https://wmts.geo.admin.ch/1.0.0/WMTSCapabilities.xml?lang=fr
+          - name: ASIT VD
+            type: WMTS
+            url: https://ows.asitvd.ch/wmts/1.0.0/WMTSCapabilities.xml
+      dynamic_constants:
+        cacheVersion: cache_version
+        langUrls: lang_urls
+        gmfSearchGroups: fulltextsearch_groups
+      static:
+        assetsBaseUrl: '{package}_geoportal:static-ngeo/'
+      routes:
+        authenticationBaseUrl:
+          name: base
+        gmfLayersUrl:
+          name: layers_root
+        gmfRasterUrl:
+          name: raster
+        gmfProfileCsvUrl:
+          name: profile.csv
+        gmfShortenerCreateUrl:
+          name: shortener_create
+        ngeoPermalinkOgcserverUrl:
+          name: mapserverproxy
+        fulltextsearchUrl:
+          name: fulltextsearch
+          params:
+            limit: 30
+            partitionlimit: 5
+          dynamic_params:
+            interface: interface
+        gmfTreeUrl:
+          name: themes
+          params:
+            version: 2
+            background: background
+          dynamic_params:
+            interface: interface
+    mobile:
+      redirect_interface: desktop
+      constants:
+        gmfSearchGroups: []
+    mobile_alt:
+      redirect_interface: desktop_alt
+      constants:
+        gmfTreeManagerModeFlush: false
+        # FIXME: gmfSearchActions: []
+    desktop:
+      redirect_interface: mobile
+      do_redirect: True
+      constants:
+        gmfPrintOptions:
+          legend:
+            # See:
+            # https://www.mapserver.org/development/rfc/ms-rfc-101.html
+            # https://docs.qgis.org/testing/en/docs/user_manual/working_with_ogc/server/services.html#getlegendgraphics
+            useBbox: true
+            label:
+              qgis: false
+            params:
+              # See:
+              # https://docs.qgis.org/testing/en/docs/user_manual/working_with_ogc/server/services.html#getlegendgraphics
+              qgis:
+                LAYERFONTFAMILY: DejaVu Sans
+                ITEMFONTFAMILY: DejaVu Sans
+                LAYERFONTSIZE: '10'
+                ITEMFONTSIZE: '8'
+        gmfSearchGroups: []
+      routes:
+        gmfProfileJsonUrl:
+          name: profile.json
+        gmfPrintUrl:
+          name: printproxy
+    desktop_alt:
+      redirect_interface: mobile_alt
+      constants:
+        ngeoQueryOptions:
+          tolerance: 20
+          limit: 5
+          queryCountFirst: true
+        gmfPrintOptions:
+          scaleInput: true
+          legend:
+            useBbox: false
+        gmfTreeManagerModeFlush: false
+        ngeoRoutingOptions:
+          - backendUrl: https://routing.osm.ch/
+          - profiles:
+              - label: Car
+                profile: routed-car
+              - label: Bike (City)
+                profile: routed-bike
+              - label: Bike (Touring)
+                profile: routed-bike-touring
+              - label: Foot
+                profile: routed-foot
+              - label: Hiking
+                profile: routed-hiking
+        ngeoNominatimSearchDefaultParams:
+          countrycodes: CH
+        ngeoWfsPermalinkOptions:
+          wfsTypes:
+            - featureType: osm_hospitals
+              label: name
+            - featureType: osm_firestations
+              label: name
+          defaultFeatureNS: http://www.qgis.org/gml
+          defaultFeaturePrefix: feature
+      routes:
+        gmfProfileJsonUrl:
+          name: profile.json
+        gmfPrintUrl:
+          name: printproxy
+    iframe_api:
+      constants:
+        gmfSearchGroups: []
+    oeview:
+      constants:
+        gmfPermalinkOptions:
+          pointRecenterZoom: 10
+      # FIXME: gmfContextualdatacontentTemplateUrl
+      routes:
+        gmfProfileJsonUrl:
+          name: profile.json
+        gmfPrintUrl:
+          name: printproxy
+    oeedit:
+      # FIXME: gmfContextualdatacontentTemplateUrl
+      routes:
+        gmfProfileJsonUrl:
+          name: profile.json
+        gmfPrintUrl:
+          name: printproxy
+
   # The dogpile.cache configuration.
   #
   # Do not touch if unsure.

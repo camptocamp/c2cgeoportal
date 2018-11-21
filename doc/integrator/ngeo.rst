@@ -128,3 +128,7 @@ The sub section is the interface name, and after we have:
     ``dynamic_params``: view parameters from dynamic values.
 
 The dynamic values names are: ``interface``, ``cache_version``, ``lang_urls``, ``fulltextsearch_groups``.
+
+You also have a ``default`` entry from where we can give the base values for ``constants``,
+``dynamic_constants``, ``static`` and ``routes``. Values that will be updated with interfaces configuration
+(can't be removed with interface configuration).
