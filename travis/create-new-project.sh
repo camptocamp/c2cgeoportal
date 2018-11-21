@@ -20,8 +20,8 @@ then
     cp travis/build.mk ${WORKSPACE}/${PACKAGE}/travis.mk
     cp travis/empty-vars.mk ${WORKSPACE}/${PACKAGE}/empty-vars.mk
     cp travis/vars.yaml ${WORKSPACE}/${PACKAGE}/vars_travis.yaml
-    cp travis/docker-compose.yaml.mako ${WORKSPACE}/${PACKAGE}/docker-compose.yaml.mako
-    cp travis/docker-compose-build.yaml.mako ${WORKSPACE}/${PACKAGE}/docker-compose-build.yaml.mako
+    cp travis/docker-compose.yaml ${WORKSPACE}/${PACKAGE}/docker-compose.yaml
+    cp travis/docker-compose-build.yaml ${WORKSPACE}/${PACKAGE}/docker-compose-build.yaml
     cp --recursive travis ${WORKSPACE}/${PACKAGE}/travis
 fi
 cd ${WORKSPACE}/${PACKAGE}
@@ -42,7 +42,7 @@ git clean -fX
 # Build
 if [ $# -lt 2 ]
 then
-    ./docker-run make --makefile=travis.mk build docker-build-testdb
+    ./docker-run --network=internal make --makefile=travis.mk build
     ./docker-compose-run bash -c 'wait-db && PGHOST=externaldb PGDATABASE=test wait-db;'
     ./docker-compose-run make --makefile=travis.mk update-po
 else

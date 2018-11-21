@@ -1,12 +1,12 @@
+---
+
 version: '2'
+
 services:
   config:
-    image: ${docker_base}-globalconfig:${docker_tag}
+    image: ${DOCKER_BASE}-globalconfig:${DOCKER_TAG}
 
   nginx:
-    image: nginx:1
-    restart: on-failure
-    ports:
-      - 8081:80
-    volumes_from:
-      - config:ro
+    extends:
+      file: docker-compose-lib.yaml
+      service: global_front

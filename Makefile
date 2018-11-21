@@ -111,7 +111,6 @@ docker-build:
 build: \
 	docker-build-build \
 	docker-build-qgisserver \
-	docker-build-testdb \
 	prepare-tests
 
 .PHONY: doc
@@ -146,13 +145,11 @@ $(BUILD_DIR)/sphinx.timestamp: $(SPHINX_FILES) $(SPHINX_MAKO_FILES:.mako=)
 	doc/build.sh
 	touch $@
 
-.PHONY: docker-build-gisdb
-docker-build-gisdb: $(shell docker-required --path docker/gis-db)
-	docker build --tag=$(DOCKER_TEST_BASE)-gis-db:latest docker/gis-db
-
 geoportal/tests/functional/alembic.yaml: $(BUILD_DIR)/c2ctemplate-cache.json
 	$(PRERULE_CMD)
 	c2c-template --cache $(BUILD_DIR)/c2ctemplate-cache.json --get-config $@ srid schema schema_static sqlalchemy.url
+
+docker-build-test: docker-build-testdb docker-build-testexternaldb docker-build-testmapserver
 
 docker/test-db/12-alembic.sql: \
 		geoportal/tests/functional/alembic.ini \
@@ -168,11 +165,20 @@ docker/test-db/13-alembic-static.sql: \
 	$(PRERULE_CMD)
 	alembic --config=$< --name=static upgrade --sql head > $@
 
-docker-build-testdb: $(shell docker-required --path docker/test-db) \
-		docker/test-db/12-alembic.sql docker/test-db/13-alembic-static.sql \
+.PHONY: docker-build-gisdb
+docker-build-gisdb: $(shell docker-required --path docker/gis-db)
+	docker build --tag=$(DOCKER_TEST_BASE)-gis-db:latest docker/gis-db
+
+.PHONY: docker-build-testdb
+docker-build-testdb: docker/test-db/12-alembic.sql docker/test-db/13-alembic-static.sql \
 		docker-build-gisdb
 	docker build --tag=$(DOCKER_TEST_BASE)-db:latest docker/test-db
 
+.PHONY: docker-build-testexternaldb
+docker-build-testexternaldb: docker-build-gisdb
+	docker build --tag=$(DOCKER_TEST_BASE)-external-db:latest docker/test-external-db
+
+.PHONY: docker-build-testmapserver
 docker-build-testmapserver: $(shell docker-required --path docker/test-mapserver)
 	docker build --tag=$(DOCKER_TEST_BASE)-mapserver:latest docker/test-mapserver
 
@@ -281,6 +287,7 @@ spell:
 	codespell --quiet-level=2 --check-filenames --ignore-words=spell-ignore-words.txt \
 		$(shell find \
 		-name node_modules -prune -or \
+		-name ngeo -prune -or \
 		-name .build -prune -or \
 		-name .git -prune -or \
 		-name .venv -prune -or \

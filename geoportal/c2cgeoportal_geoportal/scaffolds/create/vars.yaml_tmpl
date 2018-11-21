@@ -311,15 +311,6 @@ vars:
       Sincerely yours
       The GeoMapFish team
 
-  docker_services:
-    qgisserver:
-      environment:
-        # Single QGIS project files
-        QGIS_PROJECT_FILE: /etc/qgisserver/project.qgz
-        GEOMAPFISH_OGCSERVER: <OGC server name>
-        # Multiple QGIS project files
-        # QGIS_PROJECT_FILE:
-        # GEOMAPFISH_ACCESSCONTROL_CONFIG: /etc/qgisserver/accesscontrol_config.yaml
   # Checker configuration
   checker:
     fulltextsearch:

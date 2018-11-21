@@ -143,19 +143,18 @@ In the and ``qgisserver/pg_service.conf.tmpl`` files add a new section like that
    password=${EXTRA_PGPASSWORD}
    port=${EXTRA_PGPORT}
 
-And in your ``vars.yaml`` file:
+And in your ``docker-compose.yaml`` file:
 
 .. code:: yaml
 
-   vars:
-     docker_services:
-       qgisserver:
-         environment:
-           EXTRA_PGHOST: <host>
-           EXTRA_PGDATABASE: <database>
-           EXTRA_PGUSER: <user>
-           EXTRA_PGPASSWORD: <pass>
-           EXTRA_PGPORT: <port>
+   services:
+     qgisserver:
+       environment:
+         EXTRA_PGHOST=<host>
+         EXTRA_PGDATABASE=<database>
+         EXTRA_PGUSER=<user>
+         EXTRA_PGPASSWORD=<pass>
+         EXTRA_PGPORT=<port>
 
 With that you can respect that the connection should be passed throw the environments variables
 to be able change the database connexion without rebuilding your application.
