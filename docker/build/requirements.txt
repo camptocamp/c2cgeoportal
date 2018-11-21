@@ -1,7 +1,7 @@
 alabaster==0.7.12  # Doc theme
 alembic==1.0.3  # geoportal
 Babel==2.6.0  # i18n
-boto3==1.9.47  # Tile generation
+boto3==1.9.49  # Tile generation
 bottle==0.12.13  # geoportal
 c2c.cssmin==0.7.dev6  # CGXP build
 c2c.template==2.1.0  # geoportal
@@ -33,7 +33,7 @@ Mako==1.0.7  # geoportal
 mccabe==0.6.1  # lint
 mypy==0.641  # lint
 OWSLib==0.17.0  # geoportal
-papyrus==2.3  # commons, geoportal
+papyrus==2.4  # commons, geoportal
 passwordgenerator # geoportal
 PasteScript==2.0.2  # geoportal pcreate
 pep8==1.7.1  # lint
