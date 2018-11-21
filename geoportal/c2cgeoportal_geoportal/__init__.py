@@ -553,7 +553,8 @@ def includeme(config):
     config.set_user_validator(default_user_validator)
 
     # Cannot be at the header to don"t load the model too early
-    config.add_route('dynamic', '/dynamic.js', request_method="GET")
+    config.add_route('dynamic_js', '/dynamic.js', request_method="GET")
+    config.add_route('dynamic', '/dynamic.json', request_method="GET")
     if settings.get("ogcproxy_enable", False):  # pragma: no cover
         # Add an OGCProxy view
         config.add_route_predicate("ogc_server", OgcproxyRoutePredicate)
