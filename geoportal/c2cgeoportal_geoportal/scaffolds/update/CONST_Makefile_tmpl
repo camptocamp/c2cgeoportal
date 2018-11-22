@@ -36,7 +36,7 @@ DEVELOPMENT ?= FALSE
 export DEVELOPMENT
 # Language provided by the application
 LANGUAGES ?= en fr de
-NGEO_INTERFACES ?= desktop mobile
+NGEO_INTERFACES ?= desktop mobile iframe_api
 CGXP_INTERFACES ?=
 CGXP_API ?= TRUE
 CGXP_XAPI ?= FALSE

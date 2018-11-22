@@ -169,6 +169,11 @@ vars:
           name: profile.json
         gmfPrintUrl:
           name: printproxy
+    iframe_api:
+      <<: *interface
+      constants:
+        <<: *constants
+        gmfSearchGroups: []
     oeview:
       <<: *interface
       constants:

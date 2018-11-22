@@ -15,6 +15,7 @@ unmanaged_files:
   - tilegeneration/config\.yaml\.tmpl\.mako
   - geoportal/testgeomapfish_geoportal/static-ngeo/js/apps/desktop\.html\.ejs
   - geoportal/testgeomapfish_geoportal/static-ngeo/js/apps/mobile\.html\.ejs
+  - geoportal/testgeomapfish_geoportal/static-ngeo/js/apps/iframe_api\.html\.ejs
 template_vars:
   package: testgeomapfish
   srid: 21781
