@@ -29,8 +29,13 @@
 
 
 import os
-from pyramid.paster import get_app as paster_get_app
-from logging.config import fileConfig
+from plaster.uri import parse_uri
+from pyramid.paster import get_app as paster_get_app, get_appsettings as paster_get_appsettings
+from pyramid.scripts.common import get_config_loader
+import transaction
+from c2c.template.config import config as configuration
+from c2cgeoportal_commons.testing import (
+    get_engine, get_session_factory, get_tm_session, generate_mappers)
 
 
 def fill_arguments(parser):
@@ -50,16 +55,22 @@ def fill_arguments(parser):
     )
 
 
-def get_app(options, parser):
+def get_app_config(options, parser):
+    app_config = options.app_config
+    if not os.path.isfile(app_config):
+        parser.error("Cannot find config file: {}".format(uri.path))
+    return app_config
+
+
+def get_app_name(options):
     app_config = options.app_config
     app_name = options.app_name
-
     if app_name is None and "#" in app_config:
         app_config, app_name = app_config.split("#", 1)
-    if not os.path.isfile(app_config):
-        parser.error("Cannot find config file: {}".format(app_config))
+    return app_name
 
-    # Read the configuration
+
+def get_defaults():
     env = {
         "VISIBLE_ENTRY_POINT": "cli",
         "LOG_LEVEL": "INFO",
@@ -72,5 +83,38 @@ def get_app(options, parser):
         "LOG_PORT": "0",
     }
     env.update(os.environ)
-    fileConfig(app_config, defaults=env)
-    return paster_get_app(app_config, options.app_name, options=os.environ)
+    return env
+
+
+def get_appsettings(options, parser):
+    app_config = get_app_config(options, parser)
+    app_name = get_app_name(options)
+    defaults = get_defaults()
+
+    loader = get_config_loader(app_config)
+    loader.setup_logging(defaults=defaults)
+    settings = loader.get_wsgi_app_settings(app_name, defaults=defaults)
+
+    # update the settings object from the YAML application config file
+    configuration.init(settings.get('app.cfg'))
+    settings.update(configuration.get_config())
+
+    return settings
+
+
+def get_app(options, parser):
+    app_config = get_app_config(options, parser)
+    app_name = get_app_name(options)
+    defaults = get_defaults()
+
+    loader = get_config_loader(app_config)
+    loader.setup_logging(defaults=defaults)
+    return loader.get_wsgi_app(app_name, options=defaults)
+
+
+def get_session(settings):
+    generate_mappers()
+    engine = get_engine(settings)
+    session_factory = get_session_factory(engine)
+    session = get_tm_session(session_factory, transaction.manager)
+    return session

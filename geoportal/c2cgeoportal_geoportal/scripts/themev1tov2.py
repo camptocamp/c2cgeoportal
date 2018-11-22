@@ -33,7 +33,7 @@ import sys
 import transaction
 
 from argparse import ArgumentParser
-from c2cgeoportal_geoportal.scripts import fill_arguments, get_app
+from c2cgeoportal_geoportal.scripts import fill_arguments, get_appsettings, get_session
 from json import loads
 
 
@@ -64,13 +64,11 @@ def main():
     )
     options = parser.parse_args()
 
-    app = get_app(options, parser)
+    settings = get_appsettings(options, parser)
+    session = get_session(settings)
 
     # must be done only once we have loaded the project config
-    from c2cgeoportal_commons.models import DBSession
     from c2cgeoportal_commons.models.main import OGCServer, Theme, LayerWMS, LayerWMTS, LayerV1, LayerGroup
-
-    session = DBSession()
 
     if options.layers:
         table_list = [LayerWMTS, LayerWMS, OGCServer]
@@ -82,7 +80,7 @@ def main():
                 session.delete(t)
 
         # list and create all distinct ogc_server
-        ogc_server(session, app.registry.settings)
+        ogc_server(session, settings)
 
         print("Converting layerv1.")
         for layer in session.query(LayerV1).all():
