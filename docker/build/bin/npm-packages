@@ -29,13 +29,41 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import os
 import re
 import json
+import subprocess
 from argparse import ArgumentParser
 
 
 RE_NPM_VERSION = re.compile(r"^([0-9]+)\.([0-9]+)\.([0-9]+)$")
 RE_NPM_PRERELEASE_VERSION = re.compile(r"^([0-9]+)\.([0-9]+)\.([0-9]+)\.?([a-z]+)([0-9]+)$")
+
+
+def _ngeo_version():
+    if "RELEASE_TAG" in os.environ and os.environ["RELEASE_TAG"] != "":
+        match = RE_NPM_VERSION.match(os.environ["RELEASE_TAG"])
+        prerelease_match = RE_NPM_PRERELEASE_VERSION.match(os.environ["RELEASE_TAG"])
+        if match is not None:
+            return "{}.{}.{}".format(match.group(1), match.group(2), match.group(3))
+        if prerelease_match is not None:
+            return "{}.{}.{}-{}.{}".format(
+                prerelease_match.group(1),
+                prerelease_match.group(2),
+                prerelease_match.group(3),
+                prerelease_match.group(4),
+                prerelease_match.group(5)
+            )
+    return None
+
+
+def _get_ngeo_version():
+    version = _ngeo_version()
+    if version is not None:
+        return version
+    return "https://api.github.com/repos/camptocamp/ngeo/tarball/{}".format(
+        subprocess.check_output(["git", "rev-parse", "HEAD"], cwd="ngeo").decode("utf-8").strip()
+    )
 
 
 def main():

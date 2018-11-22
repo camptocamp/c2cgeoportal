@@ -1,5 +1,5 @@
 BUILD_DIR ?= /build
-MAKO_FILES = docker-compose.yaml.mako $(shell find .tx doc docker geoportal/tests/functional -type f -name "*.mako" -print)
+MAKO_FILES = Dockerfile.mako docker-compose.yaml.mako $(shell find .tx doc docker geoportal/tests/functional -type f -name "*.mako" -print)
 VARS_FILE ?= vars.yaml
 VARS_FILES += vars.yaml
 
@@ -16,8 +16,8 @@ endif
 
 export MAJOR_VERSION = 2.4
 export MAIN_BRANCH = master
-ifdef TRAVIS_TAG
-export VERSION = $(TRAVIS_TAG)
+ifdef RELEASE_TAG
+export VERSION = $(RELEASE_TAG)
 else
 export VERSION = $(MAJOR_VERSION)
 endif
@@ -105,7 +105,7 @@ help:
 docker-build:
 	for image in `find -name Dockerfile -o -name Dockerfile.mako | xargs grep --no-filename FROM | awk '{print $$2}' | sort -u`; do docker pull $$image; done
 	docker build --tag=camptocamp/geomapfish-build-dev:${MAJOR_VERSION} docker/build
-	./docker-run make build
+	./docker-run --env=RELEASE_TAG make build
 
 .PHONY: build
 build: \
@@ -293,6 +293,9 @@ spell:
 
 YAML_FILES ?= $(shell find \
 	-name node_modules -prune -or \
+	-name .git -prune -or \
+	-name .venv -prune -or \
+	-name .mypy_cache -prune -or \
 	-name functional -prune -or \
 	\( -name "*.yml" -or -name "*.yaml" \) -print)
 .PHONY: yamllint
@@ -492,6 +495,7 @@ geoportal/c2cgeoportal_geoportal/locale/%/LC_MESSAGES/c2cgeoportal_geoportal.po:
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	tx pull --language $* --resource geomapfish.c2cgeoportal_geoportal-$(TX_VERSION) --force
+	sed -i 's/[[:space:]]\+$///' $@
 	$(TOUCHBACK_TXRC)
 	test -s $@
 
@@ -499,6 +503,7 @@ geoportal/c2cgeoportal_geoportal/locale/%/LC_MESSAGES/ngeo.po: $(TX_DEPENDENCIES
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	tx pull --language $* --resource ngeo.ngeo-$(TX_VERSION) --force
+	sed -i 's/[[:space:]]\+$///' $@
 	$(TOUCHBACK_TXRC)
 	test -s $@
 
@@ -506,6 +511,7 @@ geoportal/c2cgeoportal_geoportal/locale/%/LC_MESSAGES/gmf.po: $(TX_DEPENDENCIES)
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	tx pull --language $* --resource ngeo.gmf-$(TX_VERSION) --force
+	sed -i 's/[[:space:]]\+$///' $@
 	$(TOUCHBACK_TXRC)
 	test -s $@
 
@@ -513,6 +519,7 @@ admin/c2cgeoportal_admin/locale/%/LC_MESSAGES/c2cgeoportal_admin.po: $(TX_DEPEND
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	tx pull --language $* --resource geomapfish.c2cgeoportal_admin-$(TX_VERSION) --force
+	sed -i 's/[[:space:]]\+$///' $@
 	$(TOUCHBACK_TXRC)
 	test -s $@
 
@@ -521,6 +528,7 @@ geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	tx pull --language $* --resource ngeo.gmf-apps-$(TX_VERSION) --force
+	sed -i 's/[[:space:]]\+$///' $@
 	$(TOUCHBACK_TXRC)
 	test -s $@
 

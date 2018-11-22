@@ -39,7 +39,7 @@ keys = generic
 
 [logger_root]
 level = %(OTHER_LOG_LEVEL)s
-handlers = console
+handlers = %(LOG_TYPE)s
 
 [logger_c2cgeoportal_commons]
 level = %(C2CGEOPORTAL_LOG_LEVEL)s
@@ -90,9 +90,6 @@ args = (sys.stderr,)
 level = NOTSET
 formatter = generic
 
-[formatter_generic]
-format = %(asctime)s %(levelname)-5.5s [%(name)s][%(thread)s] %(message)s
-
 [handler_logstash]
 class = c2cwsgiutils.pyramid_logging.PyramidCeeSysLogHandler
 args = [("%(LOG_HOST)s", %(LOG_PORT)s)]
@@ -102,3 +99,6 @@ level = NOTSET
 class = c2cwsgiutils.pyramid_logging.JsonLogHandler
 args = (sys.stdout,)
 level = NOTSET
+
+[formatter_generic]
+format = %(asctime)s %(levelname)-5.5s [%(name)s][%(thread)s] %(message)s
