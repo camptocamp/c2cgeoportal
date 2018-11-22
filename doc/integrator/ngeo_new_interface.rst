@@ -4,7 +4,7 @@ Adding a new user interface
 ---------------------------
 
 This section describes how to add a new user interface to be named <interface>
-(for example, "new") in a package named <package> (for example, "demo").
+(for example, "new") in a package named ``<package>``.
 
 Makefile
 ~~~~~~~~
@@ -17,82 +17,62 @@ For example, to have two NGEO interfaces called "mobile" and "new", set:
 
 Copy files from template
 ~~~~~~~~~~~~~~~~~~~~~~~~
-First, be sure you have all the required files from the templates; if not,
-copy them as follows:
+
+If you want a new mobile interface, get the default files as follows:
 
 .. prompt:: bash
 
-   mkdir <package>/static-ngeo
-   cp -r CONST_create_template/<package>/static-ngeo/components <package>/static-ngeo/
-   cp -r CONST_create_template/<package>/static-ngeo/images <package>/static-ngeo/
-   mkdir <package>/static-ngeo/js
-   cp CONST_create_template/<package>/static-ngeo/js/<package>module.js <package>/static-ngeo/js/
-   mkdir <package>/static-ngeo/less
-   cp CONST_create_template/<package>/static-ngeo/less/<package>.less <package>/static-ngeo/less/
-   # Add all the new files to Git
-   git add <package>/static-ngeo
-
-Then, if you want a new mobile interface, get the default files as follows:
-
-.. prompt:: bash
-
-  cp CONST_create_template/<package>/templates/mobile.html <package>/templates/<interface>.html
-  cp CONST_create_template/<package>/static-ngeo/less/mobile.less <package>/static-ngeo/less/<interface>.less
-  cp CONST_create_template/<package>/static-ngeo/js/mobile.js <package>/static-ngeo/js/<interface>.js
+  cp CONST_create_template/geoportal/<package>_geoportal/static-ngeo/js/apps/mobile.html.ejs \
+    geoportal/<package>_geoportal/static-ngeo/js/apps/<interface>.html.ejs
+  cp CONST_create_template/geoportal/<package>_geoportal/static-ngeo/js/apps/Controllermobile.js \
+    geoportal/<package>_geoportal/static-ngeo/js/apps/Controller<interface>.js
 
 If you want a new desktop interface, get the default files as follows:
 
 .. prompt:: bash
 
-  cp CONST_create_template/<package>/templates/desktop.html <package>/templates/<interface>.html
-  cp CONST_create_template/<package>/static-ngeo/less/desktop.less <package>/static-ngeo/less/<interface>.less
-  cp CONST_create_template/<package>/static-ngeo/js/desktop.js <package>/static-ngeo/js/<interface>.js
+  cp CONST_create_template/geoportal/<package>_geoportal/static-ngeo/js/apps/desktop.html.ejs \
+    geoportal/<package>_geoportal/static-ngeo/js/apps/<interface>.html.ejs
+  cp CONST_create_template/geoportal/<package>_geoportal/static-ngeo/js/apps/Controllerdesktop.js \
+    geoportal/<package>_geoportal/static-ngeo/js/apps/Controller<interface>.js
 
 Edit interface files
 ~~~~~~~~~~~~~~~~~~~~
-In the file ``<package>/static-ngeo/js/<interface>.js``, adapt the following lines:
+In the file ``geoportal/<package>_geoportal/static-ngeo/js/apps/Controller<interface>.js``,
+adapt the following lines:
 
 .. code:: js
 
-   * This file defines the "<package>_<interface>" Closure namespace, which is be used as
    ...
-   goog.provide('<package>.<Interface>Controller');
-   goog.provide('<package>_<interface>');
+   exports.module = angular.module('App<interface>', [
    ...
-   geoportal.<Interface>Controller = function($scope, $injector) {
+   exports.module.controller('<Interface>Controller', exports);
    ...
-   ol.inherits(<package>.<Interface>Controller, gmf.AbstractDesktopController);
-   ...
-   geoportal.module.controller('<Interface>Controller', <package>.<Interface>Controller);
 
-where ``<package>`` is the name of your package, and ``<interface>`` (desktop in the original file) is
-the name of your new interface.
+where  ``<interface>`` (desktop in the original file) is the name of your new interface.
 
-In the file ``<package/static-ngeo/templates/<interface>.html``, adapt the name of the controller and the
-referenced css and js files to the new interface name:
+In the file ``geoportal/<package>_geoportal/static-ngeo/static-ngeo/js/apps/<interface>.html.ejs``,
+adapt the name of the controller and the referenced css and js files to the new interface name:
 
 .. code:: html
 
-   <html lang="{{mainCtrl.lang}}" ng-app="<package>" ng-controller="<Interface>Controller as mainCtrl">
-
-   <link rel="stylesheet" href="${request.static_url('<package>:static-ngeo/build/<interface>.css')}" type="text/css">
    ...
-   goog.require('<package>_<interface>');
+   <html lang="{{mainCtrl.lang}}" ng-app="App<interface>" ng-controller="<Interface>Controller as mainCtrl">
    ...
-   <script src="${request.static_url('<package>:static-ngeo/build/<interface>.js')}"></script>
+   'interface=<interface>&' +
+   ...
 
 Add the new interface files to Git:
 
 .. prompt:: bash
 
-  git add <package>/templates/<inferface>.html
-  git add <package>/templates/<inferface>.less
-  git add <package>/static-ngeo/js/<inferface>.js
+  git add geoportal/<package>_geoportal/static-ngeo/js/apps/<interface>.html.ejs
+  git add geoportal/<package>_geoportal/static-ngeo/js/apps/Controller<interface>.js
 
 Package file
 ~~~~~~~~~~~~
 
-Update the interface in your ``<package>/__init__.py`` file:
+Update the interface in your ``geoportal/<package>_geoportal/__init__.py`` file:
 
 .. code:: python
 
