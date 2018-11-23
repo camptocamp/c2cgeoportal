@@ -18,21 +18,6 @@ for (const plugin of config.plugins) {
   }
 }
 
-for (const rule of config.module.rules) {
-  if (rule.use.loader === 'babel-loader') {
-    const plugins = [];
-    for (const plugin of rule.use.options.plugins) {
-      plugins.push(require.resolve(plugin));
-    }
-    rule.use.options.plugins = plugins;
-    const presets = [];
-    for (const preset of rule.use.options.presets) {
-      presets.push([require.resolve(preset[0]), preset[1]]);
-    }
-    rule.use.options.presets = presets;
-  }
-}
-
 module.exports = {
   config,
 };
