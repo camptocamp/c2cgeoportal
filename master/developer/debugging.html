@@ -169,6 +169,30 @@ This way, you do not need to publish this port on the main host.</p>
 </pre><p>Open the application with on the following path: <code class="docutils literal notranslate"><span class="pre">https://&lt;host&gt;/&lt;entry_point&gt;/dev/&lt;interface&gt;.html</span></code>.</p>
 </div>
 </div>
+<div class="section" id="use-a-specific-version-of-ngeo">
+<h2>Use a specific version of ngeo<a class="headerlink" href="#use-a-specific-version-of-ngeo" title="Permalink to this headline">¶</a></h2>
+<p>Clone ngeo and build:</p>
+<pre class="highlight"><span class="prompt1"><span class="nb">cd</span> geoportal</span>
+<span class="prompt1">git clone https://github.com/camptocamp/ngeo.git</span>
+<span class="prompt1"><span class="nb">cd</span> ngeo</span>
+<span class="prompt1">git check &lt;branch&gt;</span>
+<span class="prompt1">npm install</span>
+<span class="prompt1">npm prepublish</span>
+<span class="prompt1"><span class="nb">cd</span> ../..</span>
+</pre><p>Add the following alias in your <code class="docutils literal notranslate"><span class="pre">webpack.apps.js.mako</span></code> file:</p>
+<div class="code js highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="n">resolve</span><span class="p">:</span> <span class="p">{</span>
+   <span class="n">alias</span><span class="p">:</span> <span class="p">{</span>
+     <span class="o">&lt;</span><span class="n">package</span><span class="o">&gt;</span><span class="p">:</span> <span class="o">...</span><span class="p">,</span>
+<span class="o">+</span>    <span class="n">ngeo</span><span class="p">:</span> <span class="n">path</span><span class="o">.</span><span class="n">resolve</span><span class="p">(</span><span class="n">__dirname</span><span class="p">,</span> <span class="s1">&#39;ngeo/src&#39;</span><span class="p">),</span>
+<span class="o">+</span>    <span class="n">gmf</span><span class="p">:</span> <span class="n">path</span><span class="o">.</span><span class="n">resolve</span><span class="p">(</span><span class="n">__dirname</span><span class="p">,</span> <span class="s1">&#39;ngeo/contribs/gmf/src&#39;</span><span class="p">),</span>
+   <span class="p">}</span>
+ <span class="p">}</span>
+</pre></div>
+</div>
+<p>Force rebuild the application:</p>
+<pre class="highlight"><span class="prompt1">./docker-run rm /build/apps.&lt;interface&gt;.timestamp</span>
+<span class="prompt1">./docker-run make build</span>
+</pre></div>
 <div class="section" id="performance-or-network-error">
 <h2>Performance or network error<a class="headerlink" href="#performance-or-network-error" title="Permalink to this headline">¶</a></h2>
 <p>For performance and proxy issues make sure that all internal URLs in the config file

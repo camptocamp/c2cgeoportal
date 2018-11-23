@@ -186,15 +186,37 @@ Layer definition for ngeo clients is separate and different from layer
 definition for CGXP clients, see :ref:`administrator_administrate_layers`
 for details.
 To migrate the layer definitions from the CGXP structure to the ngeo
-structure, you can use the script ``.build/venv/bin/themev1tov2``.
+structure, you can use the script themev1tov2.
+
+In non docker context, run the script from venv:
+
+.. prompt:: bash
+
+   .build/venv/bin/themev1tov2 -i geoportal/production.ini
+
+In docker context, run the script from geoportal service:
+
+.. prompt:: bash
+
+   docker-compose up -d
+   docker-compose run --rm geoportal themev1tov2 -i production.ini
 
 Text translations for ngeo clients are separate and different from text
 translations for CGXP clients.
 To migrate the text translations from CGXP to ngeo, you can use the script
+
 ``.build/venv/bin/l10nv1tov2``.
-For example, for converting french texts the script can be used as follows:
+For example, for converting french texts, in non docker context, the script can
+be used as follows:
 
 .. code:: bash
 
-   .build/venv/bin/l10nv1tov2 fr geoportal/static/js/Proj/Lang/fr.js \
+   .build/venv/bin/l10nv1tov2 fr geoportal/<package>_geoportal/static/js/Proj/Lang/fr.js \
    geoportal/locale/fr/LC_MESSAGES/geoportal-client.po
+
+In docker context, run the script using docker-compose-run:
+
+.. prompt:: bash
+
+   docker-compose up -d
+   ./docker-compose-run l10nv1tov2 fr geoportal/<package>_geoportal/static/js/Proj/Lang/fr.js    geoportal/<package>_geoportal/locale/fr/LC_MESSAGES/geoportal-client.po

@@ -56,7 +56,7 @@ Before doing a release you should merge all the previous branch on this one:
 ngeo
 ----
 
-`For ngeo see here <https://github.com/camptocamp/ngeo/blob/master/docs/developer-guide.md#create-a-package-on-npm>_`.
+`For ngeo see here <https://github.com/camptocamp/ngeo/blob/master/docs/developer-guide.md#create-a-package-on-npm>`_.
 
 c2cgeoportal
 ------------
@@ -153,6 +153,13 @@ Tag the new release:
     git tag <release>
     git push origin <release>
 
+Run a new job for the <version> branch on Jenkins.
+
+.. note::
+
+    It's possible to do a version only on the latest commit on a branch,
+    If you relay need to do that, you should create a new branch.
+
 Notes about Travis
 ~~~~~~~~~~~~~~~~~~
 
@@ -175,12 +182,12 @@ See :ref:`developer_build_release_pre_release_task` for more information.
 For non dev release
 -------------------
 
-* Rename the milestone on `c2cgeoportal <https://github.com/camptocamp/c2cgeoportal/milestones>_`
-  and on `ngeo <https://github.com/camptocamp/ngeo/milestones>_` from ``x.y`` to ``x.y.z``.
-* Create again the milestone on `c2cgeoportal <https://github.com/camptocamp/c2cgeoportal/milestones>_`
-  and on `ngeo <https://github.com/camptocamp/ngeo/milestones>_` for ``x.y``.
+* Rename the milestone on `c2cgeoportal <https://github.com/camptocamp/c2cgeoportal/milestones>`_
+  and on `ngeo <https://github.com/camptocamp/ngeo/milestones>`_ from ``x.y`` to ``x.y.z``.
+* Create again the milestone on `c2cgeoportal <https://github.com/camptocamp/c2cgeoportal/milestones>`_
+  and on `ngeo <https://github.com/camptocamp/ngeo/milestones>`_ for ``x.y``.
 * Move all the open issues to the new milestone and close the current milestone
-  in `ngeo <https://github.com/camptocamp/ngeo/milestones>_`
-  and in `c2cgeoportal <https://github.com/camptocamp/c2cgeoportal/milestones>_`.
+  in `ngeo <https://github.com/camptocamp/ngeo/milestones>`_
+  and in `c2cgeoportal <https://github.com/camptocamp/c2cgeoportal/milestones>`_.
 * Send a release email to the ``geomapfish@googlegroups.com``
   and ``gmf2@lists.camptocamp.com`` mailing lists.
