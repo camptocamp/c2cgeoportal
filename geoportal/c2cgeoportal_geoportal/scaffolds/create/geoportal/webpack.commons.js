@@ -19,7 +19,7 @@ for (const plugin of config.plugins) {
 }
 
 for (const rule of config.module.rules) {
-  if (rule.use.loader == 'babel-loader') {
+  if (rule.use.loader === 'babel-loader') {
     const plugins = [];
     for (const plugin of rule.use.options.plugins) {
       plugins.push(require.resolve(plugin));
