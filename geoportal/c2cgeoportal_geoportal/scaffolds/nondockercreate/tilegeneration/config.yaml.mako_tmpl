@@ -57,11 +57,11 @@ defaults:
         #dimensions:
         #    -   name: DATE
         #        # the default value for the WMTS capabilities
-        #        default: 2012
-        #        # the generated value
-        #        value: 2012
+        #        default: '2012'
+        #        # the generated values
+        #        generate: ['2012']
         #        # all the available values in the WMTS capabilities
-        #        values: [2012]
+        #        values: ['2012']
         # the meta tiles definition [default to off]
         meta: on
         # the meta tiles size [default to 8]

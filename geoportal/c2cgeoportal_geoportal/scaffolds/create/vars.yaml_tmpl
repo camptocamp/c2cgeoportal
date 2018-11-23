@@ -3,8 +3,6 @@
 extends: CONST_vars.yaml
 
 vars:
-  # Database name
-  db: geomapfish
 
   srid: {{srid}}
 

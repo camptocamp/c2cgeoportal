@@ -73,7 +73,7 @@ def main():
                     'git', 'describe', '--abbrev=0', '--tags'
                 ])
                 minor = subprocess.check_output([
-                    '.venv/bin/python', 'travis/get-minor', '--no-write'
+                    '.venv/bin/python', 'travis/get-minor', '--no-save'
                 ])
                 version = "{}.{}".format(last_git_tag, minor)
             else:

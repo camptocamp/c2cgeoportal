@@ -200,6 +200,41 @@ Run:
 
 Open the application with on the following path: ``https://<host>/<entry_point>/dev/<interface>.html``.
 
+Use a specific version of ngeo
+------------------------------
+
+Clone ngeo and build:
+
+.. prompt:: bash
+
+   cd geoportal
+   git clone https://github.com/camptocamp/ngeo.git
+   cd ngeo
+   git check <branch>
+   npm install
+   npm prepublish
+   cd ../..
+
+Add the following alias in your ``webpack.apps.js.mako`` file:
+
+.. code:: js
+
+    resolve: {
+      alias: {
+        <package>: ...,
+   +    ngeo: path.resolve(__dirname, 'ngeo/src'),
+   +    gmf: path.resolve(__dirname, 'ngeo/contribs/gmf/src'),
+      }
+    }
+
+Force rebuild the application:
+
+.. prompt:: bash
+
+   ./docker-run rm /build/apps.<interface>.timestamp
+   ./docker-run make build
+
+
 Performance or network error
 ----------------------------
 

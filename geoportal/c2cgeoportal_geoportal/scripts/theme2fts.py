@@ -28,6 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import gettext
 import os
 import sys
 import transaction
@@ -35,7 +36,6 @@ import transaction
 from argparse import ArgumentParser
 from c2c.template import get_config
 from c2cgeoportal_geoportal.scripts import fill_arguments, get_app
-from gettext import translation
 from sqlalchemy import func
 
 
@@ -129,11 +129,15 @@ class Import:
 
         self._ = {}
         for lang in self.languages:
-            self._[lang] = translation(
-                "{}_geoportal-client".format(package),
-                options.locale_folder.format(package=package),
-                [lang],
-            )
+            try:
+                self._[lang] = gettext.translation(
+                    "{}_geoportal-client".format(package),
+                    options.locale_folder.format(package=package),
+                    [lang],
+                )
+            except OSError as e:
+                self._[lang] = gettext.NullTranslations()
+                print("Warning: {} (language: {})".format(e, lang))
 
         query = self.session.query(Interface)
         if options.interfaces is not None:
