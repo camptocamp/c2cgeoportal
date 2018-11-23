@@ -496,7 +496,7 @@ geoportal/c2cgeoportal_geoportal/locale/%/LC_MESSAGES/c2cgeoportal_geoportal.po:
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	tx pull --language $* --resource geomapfish.c2cgeoportal_geoportal-$(TX_VERSION) --force
-	sed -i 's/[[:space:]]\+$///' $@
+	sed -i 's/[[:space:]]\+$$//' $@
 	$(TOUCHBACK_TXRC)
 	test -s $@
 
@@ -504,7 +504,7 @@ geoportal/c2cgeoportal_geoportal/locale/%/LC_MESSAGES/ngeo.po: $(TX_DEPENDENCIES
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	tx pull --language $* --resource ngeo.ngeo-$(TX_VERSION) --force
-	sed -i 's/[[:space:]]\+$///' $@
+	sed -i 's/[[:space:]]\+$$//' $@
 	$(TOUCHBACK_TXRC)
 	test -s $@
 
@@ -512,7 +512,7 @@ geoportal/c2cgeoportal_geoportal/locale/%/LC_MESSAGES/gmf.po: $(TX_DEPENDENCIES)
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	tx pull --language $* --resource ngeo.gmf-$(TX_VERSION) --force
-	sed -i 's/[[:space:]]\+$///' $@
+	sed -i 's/[[:space:]]\+$$//' $@
 	$(TOUCHBACK_TXRC)
 	test -s $@
 
@@ -520,7 +520,7 @@ admin/c2cgeoportal_admin/locale/%/LC_MESSAGES/c2cgeoportal_admin.po: $(TX_DEPEND
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	tx pull --language $* --resource geomapfish.c2cgeoportal_admin-$(TX_VERSION) --force
-	sed -i 's/[[:space:]]\+$///' $@
+	sed -i 's/[[:space:]]\+$$//' $@
 	$(TOUCHBACK_TXRC)
 	test -s $@
 
@@ -529,7 +529,7 @@ geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	tx pull --language $* --resource ngeo.gmf-apps-$(TX_VERSION) --force
-	sed -i 's/[[:space:]]\+$///' $@
+	sed -i 's/[[:space:]]\+$$//' $@
 	$(TOUCHBACK_TXRC)
 	test -s $@
 
