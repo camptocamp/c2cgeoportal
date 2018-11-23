@@ -59,7 +59,6 @@ from c2cgeoportal_geoportal import init_dbsessions
 from c2cgeoportal_geoportal.lib import add_url_params, get_url2
 from c2cgeoportal_geoportal.lib.bashcolor import colorize, RED
 from c2cgeoportal_geoportal.lib.caching import init_region
-
 from c2cgeoportal_geoportal.lib.print_ import *  # noqa
 
 
@@ -422,7 +421,7 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
         if layer.geo_table is not None and layer.geo_table != "":
             try:
                 from c2cgeoportal_geoportal.views.layers import get_layer_class
-                cls = get_layer_class(layer, with_exclude=True)
+                cls = get_layer_class(layer, with_last_update_columns=True)
                 for column_property in class_mapper(cls).iterate_properties:
                     if isinstance(column_property, ColumnProperty) and len(column_property.columns) == 1:
                         column = column_property.columns[0]

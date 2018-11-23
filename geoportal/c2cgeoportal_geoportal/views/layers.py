@@ -416,7 +416,7 @@ class Layers:
         if not layer.public and self.request.user is None:
             raise HTTPForbidden()
 
-        return get_layer_class(layer, with_exclude=True)
+        return get_layer_class(layer, with_last_update_columns=True)
 
     @view_config(route_name="layers_enumerate_attribute_values", renderer="json")
     def enumerate_attribute_values(self):
@@ -469,10 +469,19 @@ class Layers:
         return dbsession.query(distinct(attribute)).order_by(attribute).all()
 
 
-def get_layer_class(layer, with_exclude=False):
-    if with_exclude:
-        # Exclude the columns used to record the last features update
-        exclude = [] if layer.exclude_properties is None else layer.exclude_properties.split(",")
+def get_layer_class(layer, with_last_update_columns=False):
+    """
+    Get the SQLAlchemy class to edit a GeoMapFish layer
+
+    :param layer:
+    :param with_last_update_columns: False to just have a class to access to the table and be able to
+           modify the last_update_columns, True to have a correct class to build the UI
+           (without the hidden column).
+    :return: SQLAlchemy class
+    """
+    # Exclude the columns used to record the last features update
+    exclude = [] if layer.exclude_properties is None else layer.exclude_properties.split(",")
+    if with_last_update_columns:
         last_update_date = Layers.get_metadata(layer, "lastUpdateDateColumn")
         if last_update_date is not None:
             exclude.append(last_update_date)
@@ -481,6 +490,7 @@ def get_layer_class(layer, with_exclude=False):
             exclude.append(last_update_user)
     else:
         exclude = []
+
     m = Layers.get_metadata(layer, "editingAttributesOrder")
     attributes_order = m.split(',') if m else None
     m = Layers.get_metadata(layer, "readonlyAttributes")
@@ -516,7 +526,7 @@ def get_layer_class(layer, with_exclude=False):
 
 
 def get_layer_metadatas(layer):
-    cls = get_layer_class(layer, with_exclude=True)
+    cls = get_layer_class(layer, with_last_update_columns=True)
     edit_columns = []
 
     for column_property in class_mapper(cls).iterate_properties:
