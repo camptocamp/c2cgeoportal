@@ -21,177 +21,6 @@ vars:
 
   default_interface: desktop
 
-  interfaces_config:
-    default: &interface
-      constants: &constants
-        defaultTheme: Demo
-        defaultLang: en
-        gmfSearchActions:
-          - action: add_theme
-            title: Add a theme
-          - action: add_group
-            title: Add a sub theme
-          - action: add_layer
-            title: Add a layer
-        gmfExternalOGCServers:
-          - name: Swiss Topo WMS
-            type: WMS
-            url: https://wms.geo.admin.ch/?lang=fr
-          - name: Swiss Topo WMTS
-            type: WMTS
-            url: https://wmts.geo.admin.ch/1.0.0/WMTSCapabilities.xml?lang=fr
-          - name: ASIT VD
-            type: WMTS
-            url: https://ows.asitvd.ch/wmts/1.0.0/WMTSCapabilities.xml
-        ngeoWfsPermalinkOptions:
-          wfsTypes:
-            - featureType: fuel
-              label: display_name
-            - featureType: osm_scale
-              label: display_name
-          defaultFeatureNS: http://mapserver.gis.umn.edu/mapserver
-          defaultFeaturePrefix: feature
-      dynamic_constants:
-        cacheVersion: cache_version
-        langUrls: lang_urls
-        gmfSearchGroups: fulltextsearch_groups
-      static:
-        assetsBaseUrl: '{package}_geoportal:static-ngeo/'
-      routes: &routes
-        authenticationBaseUrl:
-          name: base
-        gmfLayersUrl:
-          name: layers_root
-        gmfRasterUrl:
-          name: raster
-        gmfProfileCsvUrl:
-          name: profile.csv
-        gmfShortenerCreateUrl:
-          name: shortener_create
-        ngeoPermalinkOgcserverUrl:
-          name: mapserverproxy
-        fulltextsearchUrl:
-          name: fulltextsearch
-          params:
-            limit: 30
-            partitionlimit: 5
-          dynamic_params:
-            interface: interface
-        gmfTreeUrl:
-          name: themes
-          params:
-            version: 2
-            background: background
-          dynamic_params:
-            interface: interface
-    mobile:
-      <<: *interface
-      redirect_interface: desktop
-      constants:
-        <<: *constants
-        gmfSearchGroups: []
-    mobile_alt:
-      <<: *interface
-      constants:
-        <<: *constants
-        gmfTreeManagerModeFlush: false
-        # FIXME: gmfSearchActions: []
-    desktop:
-      <<: *interface
-      redirect_interface: mobile
-      do_redirect: True
-      constants:
-        <<: *constants
-        gmfPrintOptions:
-          legend:
-            # See:
-            # https://www.mapserver.org/development/rfc/ms-rfc-101.html
-            # https://docs.qgis.org/testing/en/docs/user_manual/working_with_ogc/server/services.html#getlegendgraphics
-            useBbox: true
-            label:
-              qgis: false
-            params:
-              # See:
-              # https://docs.qgis.org/testing/en/docs/user_manual/working_with_ogc/server/services.html#getlegendgraphics
-              qgis:
-                LAYERFONTFAMILY: DejaVu Sans
-                ITEMFONTFAMILY: DejaVu Sans
-                LAYERFONTSIZE: '10'
-                ITEMFONTSIZE: '8'
-        gmfSearchGroups: []
-      routes:
-        <<: *routes
-        gmfProfileJsonUrl:
-          name: profile.json
-        gmfPrintUrl:
-          name: printproxy
-    desktop_alt:
-      <<: *interface
-      constants:
-        <<: *constants
-        ngeoQueryOptions:
-          tolerance: 20
-          limit: 5
-          queryCountFirst: true
-        gmfPrintOptions:
-          scaleInput: true
-          gmfPrintOptions:
-            useBbox: false
-        gmfTreeManagerModeFlush: false
-        ngeoRoutingOptions:
-          - backendUrl: https://routing.osm.ch/
-          - profiles:
-              - label: Car
-                profile: routed-car
-              - label: Bike (City)
-                profile: routed-bike
-              - label: Bike (Touring)
-                profile: routed-bike-touring
-              - label: Foot
-                profile: routed-foot
-              - label: Hiking
-                profile: routed-hiking
-        ngeoNominatimSearchDefaultParams:
-          countrycodes: CH
-        ngeoWfsPermalinkOptions:
-          url: https://geomapfish-demo.camptocamp.com/docker/mapserv_proxy?ogcserver=QGIS%20server
-          wfsTypes:
-            - featureType: osm_hospitals
-              label: name
-            - featureType: osm_firestations
-              label: name
-          defaultFeatureNS: http://www.qgis.org/gml
-          defaultFeaturePrefix: feature
-      routes:
-        <<: *routes
-        gmfProfileJsonUrl:
-          name: profile.json
-        gmfPrintUrl:
-          name: printproxy
-    iframe_api:
-      <<: *interface
-      constants:
-        <<: *constants
-        gmfSearchGroups: []
-    oeview:
-      <<: *interface
-      # FIXME: gmfContextualdatacontentTemplateUrl
-      routes:
-        <<: *routes
-        gmfProfileJsonUrl:
-          name: profile.json
-        gmfPrintUrl:
-          name: printproxy
-    oeedit:
-      <<: *interface
-      # FIXME: gmfContextualdatacontentTemplateUrl
-      routes:
-        <<: *routes
-        gmfProfileJsonUrl:
-          name: profile.json
-        gmfPrintUrl:
-          name: printproxy
-
   authtkt:
     # One day
     timeout: 86400
@@ -377,6 +206,38 @@ update_paths:
   - headers.layers
   - headers.shortener
   - headers.login
+  - interface.default.constants
+  - interface.default.dynamic_constants
+  - interface.default.static
+  - interface.default.routes
+  - interface.desktop.constants
+  - interface.desktop.dynamic_constants
+  - interface.desktop.static
+  - interface.desktop.routes
+  - interface.desktop_alt.constants
+  - interface.desktop_alt.dynamic_constants
+  - interface.desktop_alt.static
+  - interface.desktop_alt.routes
+  - interface.mobile.constants
+  - interface.mobile.dynamic_constants
+  - interface.mobile.static
+  - interface.mobile.routes
+  - interface.mobile_alt.constants
+  - interface.mobile_alt.dynamic_constants
+  - interface.mobile_alt.static
+  - interface.mobile_alt.routes
+  - interface.iframe_api.constants
+  - interface.iframe_api.dynamic_constants
+  - interface.iframe_api.static
+  - interface.iframe_api.routes
+  - interface.oeview.constants
+  - interface.oeview.dynamic_constants
+  - interface.oeview.static
+  - interface.oeview.routes
+  - interface.oeedit.constants
+  - interface.oeedit.dynamic_constants
+  - interface.oeedit.static
+  - interface.oeedit.routes
   - interfaces_theme
   - servers
   - shortener

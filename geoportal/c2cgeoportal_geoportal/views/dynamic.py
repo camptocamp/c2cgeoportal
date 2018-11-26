@@ -42,6 +42,12 @@ class DynamicView:
         self.request = request
         self.settings = request.registry.settings
         self.interfaces_config = self.settings['interfaces_config']
+        self.default = self.interfaces_config.get('default', {})
+
+    def get(self, value, interface):
+        result = dict(self.default.get(value, {}))
+        result.update(self.interfaces_config.get(interface, {}).get(value, {}))
+        return result
 
     def dynamic(self):
         interface_name = self.request.params.get('interface')
@@ -65,18 +71,18 @@ class DynamicView:
             ],
         }
 
-        constants = {name: value for name, value in interface_config.get('constants', {}).items()}
+        constants = {name: value for name, value in self.get('constants', interface_name).items()}
         constants.update({
             name: dynamic[value]
-            for name, value in interface_config.get('dynamic_constants', {}).items()
+            for name, value in self.get('dynamic_constants', interface_name).items()
         })
         constants.update({
             name: self.request.static_url(static_)
-            for name, static_ in interface_config.get('static', {}).items()
+            for name, static_ in self.get('static', interface_name).items()
         })
 
         routes = dict(currentInterfaceUrl=interface_name)
-        routes.update(interface_config.get('routes', {}))
+        routes.update(self.get('routes', interface_name))
         for constant, config in routes.items():
             params = {}
             params.update(config.get('params', {}))
