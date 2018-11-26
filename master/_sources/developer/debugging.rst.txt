@@ -169,14 +169,14 @@ Add a ``docker-compose.override.yml`` file with a ``geoportal`` service containi
 Expose a service
 ................
 
-To expose a service out of the Docker composition you can add a port for the service in the vars, e.g.:
+To expose a service out of the Docker composition you can add a port in your ``docker-compose.yaml``, e.g.:
 
 .. code:: yaml
 
-   vars:
-     docker_services:
-       <service>:
-         port: 8086
+   services:
+     <service>:
+       port:
+         - 8086:80
 
 Be careful one port can be open only one time on a server.
 Within the Docker composition you can access a port of a container, you can achieve this via curl.

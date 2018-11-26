@@ -140,16 +140,15 @@ password=${EXTRA_PGPASSWORD}
 port=${EXTRA_PGPORT}
 </pre></div>
 </div>
-<p>And in your <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file:</p>
-<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
-  <span class="n">docker_services</span><span class="p">:</span>
-    <span class="n">qgisserver</span><span class="p">:</span>
-      <span class="n">environment</span><span class="p">:</span>
-        <span class="n">EXTRA_PGHOST</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">host</span><span class="o">&gt;</span>
-        <span class="n">EXTRA_PGDATABASE</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">database</span><span class="o">&gt;</span>
-        <span class="n">EXTRA_PGUSER</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">user</span><span class="o">&gt;</span>
-        <span class="n">EXTRA_PGPASSWORD</span><span class="p">:</span> <span class="o">&lt;</span><span class="k">pass</span><span class="o">&gt;</span>
-        <span class="n">EXTRA_PGPORT</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">port</span><span class="o">&gt;</span>
+<p>And in your <code class="docutils literal notranslate"><span class="pre">docker-compose.yaml</span></code> file:</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">:</span>
+  <span class="n">qgisserver</span><span class="p">:</span>
+    <span class="n">environment</span><span class="p">:</span>
+      <span class="n">EXTRA_PGHOST</span><span class="o">=&lt;</span><span class="n">host</span><span class="o">&gt;</span>
+      <span class="n">EXTRA_PGDATABASE</span><span class="o">=&lt;</span><span class="n">database</span><span class="o">&gt;</span>
+      <span class="n">EXTRA_PGUSER</span><span class="o">=&lt;</span><span class="n">user</span><span class="o">&gt;</span>
+      <span class="n">EXTRA_PGPASSWORD</span><span class="o">=&lt;</span><span class="k">pass</span><span class="o">&gt;</span>
+      <span class="n">EXTRA_PGPORT</span><span class="o">=&lt;</span><span class="n">port</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <p>With that you can respect that the connection should be passed throw the environments variables

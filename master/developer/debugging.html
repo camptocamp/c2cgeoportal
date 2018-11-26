@@ -148,11 +148,11 @@ others on <cite>/&lt;project_name&gt;/</cite>.</p>
 </div>
 <div class="section" id="expose-a-service">
 <h3>Expose a service<a class="headerlink" href="#expose-a-service" title="Permalink to this headline">¶</a></h3>
-<p>To expose a service out of the Docker composition you can add a port for the service in the vars, e.g.:</p>
-<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
-  <span class="n">docker_services</span><span class="p">:</span>
-    <span class="o">&lt;</span><span class="n">service</span><span class="o">&gt;</span><span class="p">:</span>
-      <span class="n">port</span><span class="p">:</span> <span class="mi">8086</span>
+<p>To expose a service out of the Docker composition you can add a port in your <code class="docutils literal notranslate"><span class="pre">docker-compose.yaml</span></code>, e.g.:</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">:</span>
+  <span class="o">&lt;</span><span class="n">service</span><span class="o">&gt;</span><span class="p">:</span>
+    <span class="n">port</span><span class="p">:</span>
+      <span class="o">-</span> <span class="mi">8086</span><span class="p">:</span><span class="mi">80</span>
 </pre></div>
 </div>
 <p>Be careful one port can be open only one time on a server.
