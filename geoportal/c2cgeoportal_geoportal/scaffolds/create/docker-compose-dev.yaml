@@ -1,0 +1,11 @@
+---
+
+# The project Docker compose file for development.
+
+version: '2'
+
+services:
+  webpack_dev_server:
+    extends:
+      file: docker-compose-lib.yaml
+      service: webpack_dev_server

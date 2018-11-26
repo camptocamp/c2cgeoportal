@@ -4,9 +4,6 @@
 __pycache__/
 /.build
 /project.yaml
-/docker-compose.yaml
-/docker-compose-build.yaml
-/docker-compose-dev.yaml
 /.env
 /admin/
 /testdb/11-schemas.sql

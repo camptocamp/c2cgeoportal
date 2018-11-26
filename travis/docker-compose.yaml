@@ -1,0 +1,54 @@
+---
+
+# The project Docker compose file for development.
+
+version: '2'
+
+services:
+  config:
+    extends:
+      file: docker-compose-lib.yaml
+      service: config
+
+  print:
+    extends:
+      file: docker-compose-lib.yaml
+      service: print
+    volumes_from:
+      - config:ro
+
+  mapserver:
+    extends:
+      file: docker-compose-lib.yaml
+      service: mapserver
+    volumes_from:
+      - config:rw
+
+  redis:
+    extends:
+      file: docker-compose-lib.yaml
+      service: redis
+
+  tilecloudchain:
+    extends:
+      file: docker-compose-lib.yaml
+      service: tilecloudchain
+    volumes_from:
+      - config:ro
+
+  geoportal:
+    extends:
+      file: docker-compose-lib.yaml
+      service: geoportal
+
+  front:
+    extends:
+      file: docker-compose-lib.yaml
+      service: front
+    volumes_from:
+      - config:ro
+
+networks:
+  default:
+    external:
+      name: internal

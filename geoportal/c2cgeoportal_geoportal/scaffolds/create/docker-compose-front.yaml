@@ -1,0 +1,12 @@
+---
+
+version: '2'
+
+services:
+  config:
+    image: ${DOCKER_BASE}-globalconfig:${DOCKER_TAG}
+
+  nginx:
+    extends:
+      file: docker-compose-lib.yaml
+      service: global_front

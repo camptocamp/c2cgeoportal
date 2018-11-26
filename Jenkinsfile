@@ -16,6 +16,7 @@ def clean() {
     sh 'docker ps --all | grep camptocamp/geomapfish | awk \'{print($1)}\' | xargs --no-run-if-empty docker rm --force --volumes'
     sh 'docker ps --all | grep camptocamp/testgeomapfish | awk \'{print($1)}\' | xargs --no-run-if-empty docker rm --force --volumes'
     sh 'docker volume ls | grep home-jenkins-slave-workspace | awk \'{print($2)}\' | xargs --no-run-if-empty docker volume rm'
+    sh 'docker network rm internal || true'
 
     sh 'docker ps'
     sh 'docker ps --all --filter status=exited'
@@ -120,8 +121,16 @@ dockerBuild {
                     sh './docker-run travis/codacy.sh'
                     sh './docker-run travis/status.sh'
                 }, 'Test Docker app': {
+                    // Use an internal network to be sure that we have everything we needs in the Docker images
+                    sh 'docker network create --internal internal'
+                    sh './docker-run make docker-build-test'
+                    sh 'docker run --detach --network=internal --name=test-db --network-alias=db camptocamp/geomapfish-test-db:latest'
+                    sh 'docker run --detach --network=internal --name=test-externaldb --network-alias=externaldb camptocamp/geomapfish-test-external-db:latest'
+                    env.PGHOST='db'
+                    env.PGHOST_SLAVE='db'
+
                     sh 'rm -rf ${HOME}/workspace/testgeomapfish'
-                    sh 'docker build --tag=camptocamp/testgeomapfish-external-db:latest docker/test-external-db'
+
                     try {
                         sh 'travis/create-new-project.sh ${HOME}/workspace'
                         sh '(cd ${HOME}/workspace/testgeomapfish/; ./docker-compose-run make --makefile=travis.mk update-po)'
@@ -153,7 +162,7 @@ dockerBuild {
                                 sh '(cd ${HOME}/workspace/testgeomapfish/; docker-compose exec -T geoportal bash -c "PGHOST=externaldb PGDATABASE=test wait-db;")'
                                 sh '(cd ${HOME}/workspace/testgeomapfish/; docker-compose exec -T geoportal create-demo-theme)'
                                 sh '(cd ${HOME}/workspace/testgeomapfish/; docker-compose exec -T geoportal theme2fts)'
-                                sh './docker-run --network=testgeomapfishmain_internal travis/waitwsgi http://front/'
+                                sh './docker-run --network=internal travis/waitwsgi http://front/'
                             }
                             for (path in [
                                 'c2c/health_check',
@@ -164,7 +173,7 @@ dockerBuild {
                                 'admin/layertree/children'
                             ]) {
                                 def start_lines = [:]
-                                ['db', 'externaldb', 'print', 'mapserver', 'geoportal'].each { service ->
+                                ['print', 'mapserver', 'geoportal'].each { service ->
                                     def start_line = sh(returnStdout: true, script: "(cd ${HOME}/workspace/testgeomapfish/; docker-compose logs ${service}) | wc -l") as Integer
                                     start_lines.service = start_line
                                 }
@@ -173,11 +182,11 @@ dockerBuild {
                                     // travis/vars.yaml geoportal/GUNICORN_PARAMS
                                     // test-new-project timeout
                                     timeout(3) {
-                                        sh './docker-run --network=testgeomapfishmain_internal travis/test-new-project http://front/${path}'
+                                        sh './docker-run --network=internal travis/test-new-project http://front/${path}'
                                     }
                                 } catch (Exception error) {
-                                    sh './docker-run --network=testgeomapfishmain_internal curl http://front/c2c/debug/stacks?secret=c2c'
-                                    ['db', 'externaldb', 'print', 'mapserver', 'geoportal'].each { service ->
+                                    sh './docker-run --network=internal curl http://front/c2c/debug/stacks?secret=c2c'
+                                    ['print', 'mapserver', 'geoportal'].each { service ->
                                         def end_line = sh(returnStdout: true, script: "(cd ${HOME}/workspace/testgeomapfish/; docker-compose logs ${service}) | wc -l") as Integer
                                         sh "(cd ${HOME}/workspace/testgeomapfish/; docker-compose logs --timestamps --tail=${Math.max(1, end_line - start_lines.service)} ${service})"
                                     }
@@ -186,6 +195,8 @@ dockerBuild {
                             }
                         } catch (Exception error) {
                             sh '(cd ${HOME}/workspace/testgeomapfish/; docker-compose logs --timestamps)'
+                            sh 'docker logs test-db'
+                            sh 'docker logs test-externaldb'
                             throw error
                         } finally {
                             sh '(cd ${HOME}/workspace/testgeomapfish/; docker-compose down)'

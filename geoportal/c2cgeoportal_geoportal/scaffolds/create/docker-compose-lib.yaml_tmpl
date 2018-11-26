@@ -1,0 +1,217 @@
+---
+
+version: '2'
+
+services:
+  config:
+    image: ${DOCKER_BASE}-config:${DOCKER_TAG}
+    user: www-data
+    environment:
+      - VISIBLE_WEB_HOST
+      - VISIBLE_WEB_PROTOCOL
+      - VISIBLE_ENTRY_POINT
+      - PGHOST
+      - PGHOST_SLAVE
+      - PGPORT
+      - PGUSER
+      - PGPASSWORD
+      - PGDATABASE
+      - PGSCHEMA
+      - PGSCHEMA_STATIC
+      - GEOPORTAL_INTERNAL_URL
+      - TILECLOUDCHAIN_INTERNAL_URL
+      - MAPCACHE_URL
+      - MAPSERVER_URL
+      - MEMCACHED_HOST
+      - MEMCACHED_PORT
+      - REDIS_HOST
+      - REDIS_PORT
+      - TILEGENERATION_SQS_QUEUE
+
+  print:
+    image: camptocamp/mapfish_print:3.16
+    user: www-data
+    restart: unless-stopped
+    environment:
+      - CATALINA_OPTS
+      - PGOPTIONS
+
+  mapserver:
+    image: camptocamp/mapserver:7.2
+    user: www-data
+    restart: unless-stopped
+    entrypoint: []
+    environment:
+      - PGOPTIONS
+
+  qgisserver:
+    image: camptocamp/geomapfish-qgisserver:gmf2.3-qgis3.2
+    user: www-data
+    restart: unless-stopped
+    environment:
+      - VISIBLE_ENTRY_POINT
+      - PGHOST
+      - PGHOST_SLAVE
+      - PGPORT
+      - PGUSER
+      - PGPASSWORD
+      - PGDATABASE
+      - PGSCHEMA
+      - PGSCHEMA_STATIC
+      - C2C_REDIS_URL
+      - C2C_BROADCAST_PREFIX
+      - PGOPTIONS
+
+  tinyows:
+    image: camptocamp/tinyows
+    user: www-data
+    restart: unless-stopped
+
+  mapcache:
+    image: camptocamp/mapcache:1.6
+    user: www-data
+    restart: unless-stopped
+
+  memcached:
+    image: memcached:1.5
+    user: www-data
+    restart: unless-stopped
+    command:
+      - memcached
+      - --memory-limit=512
+
+  redis:
+    image: redis:3.2
+    user: www-data
+    restart: unless-stopped
+    command:
+      - redis-server
+      - --save
+      - ''
+      - --appendonly
+      - 'no'
+      - --maxmemory
+      - 512mb
+      - --maxmemory-policy
+      - allkeys-lru
+
+  tilecloudchain:
+    image: camptocamp/tilecloud-chain:1.8
+    user: www-data
+    restart: unless-stopped
+    environment:
+      - GUNICORN_PARAMS
+      - VISIBLE_ENTRY_POINT
+      - C2C_REDIS_URL
+      - TILEGENERATION_CONFIGFILE=/etc/tilegeneration/config.yaml
+      - C2C_BASE_PATH=/c2c_tiles
+      - C2C_BROADCAST_PREFIX=broadcast_tilecloudchain_
+      - C2C_LOG_VIEW_ENABLED=TRUE
+      - C2C_DEBUG_VIEW_ENABLED=TRUE
+      - C2C_SQL_PROFILER_ENABLED=TRUE
+      - C2C_SECRET
+
+  tilegeneration_slave:
+    image: camptocamp/tilecloud-chain:1.8
+    user: www-data
+    restart: unless-stopped
+    entrypoint:
+      - generate_tiles
+      - --role=slave
+      - --daemon
+
+  geoportal:
+    image: ${DOCKER_BASE}-geoportal:${DOCKER_TAG}
+    user: www-data
+    restart: unless-stopped
+    environment:
+      - VISIBLE_ENTRY_POINT
+      - PGHOST
+      - PGHOST_SLAVE
+      - PGPORT
+      - PGUSER
+      - PGPASSWORD
+      - PGDATABASE
+      - PGSCHEMA
+      - PGSCHEMA_STATIC
+      - GUNICORN_PARAMS
+      - VISIBLE_WEB_HOST
+      - VISIBLE_WEB_PROTOCOL
+      - TINYOWS_URL
+      - MAPSERVER_URL
+      - PRINT_URL
+      - DEVSERVER_HOST
+      - REDIS_HOST
+      - REDIS_PORT
+      - C2C_REDIS_URL
+      - PGOPTIONS
+      - C2C_BROADCAST_PREFIX_
+      - C2C_LOG_VIEW_ENABLED=TRUE
+      - C2C_SQL_PROFILER_ENABLED=TRUE
+      - C2C_DEBUG_VIEW_ENABLED=TRUE
+      - C2C_SECRET
+
+  alembic:
+    image: ${DOCKER_BASE}-geoportal:${DOCKER_TAG}
+    user: www-data
+    command:
+      - alembic
+      - --name=static
+      - upgrade
+      - head
+
+  front:
+    image: haproxy:1.8.8
+    restart: unless-stopped
+    volumes:
+      - /dev/log:/dev/log:rw
+    command:
+      - haproxy
+      - -f
+      - /etc/haproxy
+
+  global_front:
+    image: nginx:1
+    restart: unless-stopped
+    ports:
+      - 8081:${PORT}
+
+  build:
+    image: camptocamp/geomapfish-build:${GEOMAPFISH_VERSION}
+    volumes:
+      - build:/build
+      - .:/src
+    stdin_open: true
+    tty: true
+    entrypoint:
+      - wait-db-and-run
+      - run
+    environment:
+      - VISIBLE_ENTRY_POINT
+      - PGHOST
+      - PGHOST_SLAVE
+      - PGPORT
+      - PGUSER
+      - PGPASSWORD
+      - PGDATABASE
+      - PGSCHEMA
+      - PGSCHEMA_STATIC
+      - HOME_DIR
+      - USER_NAME
+      - USER_ID
+      - GROUP_ID
+
+  webpack_dev_server:
+    image: ${DOCKER_BASE}-geoportal:${DOCKER_TAG}
+    volumes:
+      - ${PROJECT_DIRECTORY}/geoportal/{{package}}_geoportal/static-ngeo:/app/{{package}}_geoportal/static-ngeo
+    command:
+      - webpack-dev-server
+      - --mode=development
+      - --host=webpack-dev-server
+      - --port=8080
+      - --debug
+      - --watch
+      - --progress
+    environment:
+      - INTERFACE=desktop

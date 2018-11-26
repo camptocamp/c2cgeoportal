@@ -1,0 +1,26 @@
+---
+
+# A compose file for the build.
+
+version: '2'
+
+volumes:
+  build:
+    external:
+      name: ${BUILD_VOLUME_NAME}
+
+services:
+  config:
+    image: ${DOCKER_BASE}-config:${DOCKER_TAG}
+
+  mapserver:
+    extends:
+      file: docker-compose-lib.yaml
+      service: mapserver
+    volumes_from:
+      - config:rw
+
+  build:
+    extends:
+      file: docker-compose-lib.yaml
+      service: build

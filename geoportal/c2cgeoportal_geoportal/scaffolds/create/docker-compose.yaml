@@ -1,0 +1,111 @@
+---
+
+# The project Docker compose file for development.
+
+version: '2'
+
+services:
+  config:
+    extends:
+      file: docker-compose-lib.yaml
+      service: config
+
+  print:
+    extends:
+      file: docker-compose-lib.yaml
+      service: print
+    volumes_from:
+      - config:ro
+
+  mapserver:
+    extends:
+      file: docker-compose-lib.yaml
+      service: mapserver
+    volumes_from:
+      - config:rw
+    volumes:
+      - /var/sig:/var/sig:ro
+
+  ## qgisserver:
+  ##   extends:
+  ##     file: docker-compose-lib.yaml
+  ##     service: qgisserver
+  ##   volumes_from:
+  ##     - config:ro
+  ##   environment:
+  ##     # Single QGIS project files
+  ##     QGIS_PROJECT_FILE: /etc/qgisserver/project.qgz
+  ##     GEOMAPFISH_OGCSERVER: <OGC server name>
+  ##     # Multiple QGIS project files
+  ##     # QGIS_PROJECT_FILE:
+  ##     # GEOMAPFISH_ACCESSCONTROL_CONFIG: /etc/qgisserver/accesscontrol_config.yaml
+
+  tinyows:
+    extends:
+      file: docker-compose-lib.yaml
+      service: tinyows
+    volumes_from:
+      - config:ro
+
+  mapcache:
+    extends:
+      file: docker-compose-lib.yaml
+      service: mapcache
+    volumes_from:
+      - config:ro
+
+  memcached:
+    extends:
+      file: docker-compose-lib.yaml
+      service: memcached
+
+  redis:
+    extends:
+      file: docker-compose-lib.yaml
+      service: redis
+
+  tilecloudchain:
+    extends:
+      file: docker-compose-lib.yaml
+      service: tilecloudchain
+    volumes_from:
+      - config:ro
+
+  tilegeneration_slave:
+    extends:
+      file: docker-compose-lib.yaml
+      service: tilegeneration_slave
+    volumes_from:
+      - config:ro
+
+  geoportal:
+    extends:
+      file: docker-compose-lib.yaml
+      service: geoportal
+    volumes:
+      - /var/sig:/var/sig:ro
+
+  alembic:
+    extends:
+      file: docker-compose-lib.yaml
+      service: alembic
+
+  front:
+    extends:
+      file: docker-compose-lib.yaml
+      service: front
+    volumes_from:
+      - config:ro
+## if docker_global_front:
+##     networks:
+##       default: {}
+##       global:
+##         aliases:
+##           - ${instance}
+
+## networks:
+##   default: {}
+##   global:
+##     external:
+##       name: global_default
+## endif
