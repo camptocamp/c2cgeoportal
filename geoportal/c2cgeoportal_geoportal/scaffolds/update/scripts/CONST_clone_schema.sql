@@ -12,8 +12,10 @@ $BODY$
 
 DECLARE
   src_oid oid;
-  func_oid oid;
+  func record;
+  args text;
   object text;
+  seq record;
   buffer text;
   srctbl text;
   default_ text;
@@ -25,13 +27,6 @@ DECLARE
   grantor text;
   privilege_type text;
   sq_last_value bigint;
-  sq_max_value bigint;
-  sq_start_value bigint;
-  sq_increment_by bigint;
-  sq_min_value bigint;
-  sq_cache_value bigint;
-  sq_is_called boolean;
-  sq_is_cycled boolean;
   sq_cycled char(10);
 
 BEGIN
@@ -42,7 +37,7 @@ BEGIN
    WHERE nspname = quote_ident(source_schema);
   IF NOT FOUND
     THEN
-    RAISE NOTICE 'source schema % does not exist!', source_schema;
+    RAISE EXCEPTION 'source schema % does not exist!', source_schema;
     RETURN;
   END IF;
 
@@ -52,53 +47,57 @@ BEGIN
    WHERE nspname = quote_ident(dest_schema);
   IF FOUND
     THEN
-    RAISE NOTICE 'dest schema % already exists!', dest_schema;
+    RAISE EXCEPTION 'dest schema % already exists!', dest_schema;
+    RETURN;
+  END IF;
+
+  IF quote_ident(dest_schema) != dest_schema
+  THEN
+     RAISE EXCEPTION 'dest schema % must be a valid identifier!', dest_schema;
     RETURN;
   END IF;
 
   EXECUTE 'CREATE SCHEMA ' || quote_ident(dest_schema);
   EXECUTE 'SELECT schema_owner
     FROM information_schema.schemata
-    WHERE schema_name = ''' || quote_ident(source_schema) || ''';'
+    WHERE schema_name = ' || quote_literal(source_schema) || ';'
     INTO owner;
   EXECUTE 'ALTER SCHEMA ' || quote_ident(dest_schema) || ' OWNER TO ' || quote_ident(owner);
 
   -- Create sequences
   -- TODO: Find a way to make this sequence's owner is the correct table.
-  FOR object IN
-    SELECT sequence_name::text
+  FOR seq IN
+    SELECT sequence_name::text, start_value, minimum_value, maximum_value, increment, cycle_option
     FROM information_schema.sequences
     WHERE sequence_schema = quote_ident(source_schema)
   LOOP
-    EXECUTE 'CREATE SEQUENCE ' || quote_ident(dest_schema) || '.' || quote_ident(object);
-    srctbl := quote_ident(source_schema) || '.' || quote_ident(object);
+    EXECUTE 'CREATE SEQUENCE ' || quote_ident(dest_schema) || '.' || quote_ident(seq.sequence_name);
+    srctbl := quote_ident(source_schema) || '.' || quote_ident(seq.sequence_name);
 
-    EXECUTE 'SELECT last_value, max_value, start_value, increment_by, min_value, cache_value, is_cycled, is_called
-        FROM ' || quote_ident(source_schema) || '.' || quote_ident(object) || ';'
-        INTO sq_last_value, sq_max_value, sq_start_value, sq_increment_by, sq_min_value, sq_cache_value, sq_is_cycled, sq_is_called;
+    EXECUTE 'SELECT last_value FROM ' || quote_ident(source_schema) || '.' || quote_ident(seq.sequence_name) || ';'
+        INTO sq_last_value;
 
-    IF sq_is_cycled
+    IF seq.cycle_option = 'YES'
     THEN
       sq_cycled := 'CYCLE';
     ELSE
       sq_cycled := 'NO CYCLE';
     END IF;
 
-    EXECUTE 'ALTER SEQUENCE ' || quote_ident(dest_schema) || '.' || quote_ident(object)
-        || ' INCREMENT BY ' || sq_increment_by
-        || ' MINVALUE ' || sq_min_value
-        || ' MAXVALUE ' || sq_max_value
-        || ' START WITH ' || sq_start_value
-        || ' RESTART ' || sq_min_value
-        || ' CACHE ' || sq_cache_value
+    EXECUTE 'ALTER SEQUENCE ' || quote_ident(dest_schema) || '.' || quote_ident(seq.sequence_name)
+        || ' INCREMENT BY ' || seq.increment
+        || ' MINVALUE ' || seq.minimum_value
+        || ' MAXVALUE ' || seq.maximum_value
+        || ' START WITH ' || seq.start_value
+        || ' RESTART ' || seq.minimum_value
         || sq_cycled || ';';
 
-    buffer := quote_ident(dest_schema) || '.' || quote_ident(object);
+    buffer := quote_ident(dest_schema) || '.' || quote_ident(seq.sequence_name);
     IF include_recs
     THEN
-      EXECUTE 'SELECT setval( ''' || buffer || ''', ' || sq_last_value || ', ' || sq_is_called || ');';
+      EXECUTE 'SELECT setval( ''' || buffer || ''', ' || sq_last_value || ');';
     ELSE
-      EXECUTE 'SELECT setval( ''' || buffer || ''', ' || sq_start_value || ', ' || sq_is_called || ');';
+      EXECUTE 'SELECT setval( ''' || buffer || ''', ' || seq.start_value || ');';
     END IF;
   END LOOP;
 
@@ -109,13 +108,13 @@ BEGIN
     WHERE table_schema = quote_ident(source_schema)
       AND table_type = 'BASE TABLE'
   LOOP
-    buffer := dest_schema || '.' || quote_ident(object);
+    buffer := quote_ident(dest_schema) || '.' || quote_ident(object);
     EXECUTE 'CREATE TABLE ' || buffer || ' (LIKE ' || quote_ident(source_schema) || '.' || quote_ident(object)
         || ' INCLUDING ALL)';
 
     EXECUTE 'SELECT tableowner
       FROM pg_catalog.pg_tables
-      WHERE schemaname = ''' || quote_ident(source_schema) || ''' AND tablename = ''' || quote_ident(object) || ''';'
+      WHERE schemaname = ' || quote_literal(source_schema) || ' AND tablename = ' || quote_literal(object) || ';'
       INTO owner;
     EXECUTE 'ALTER TABLE ' || quote_ident(dest_schema) || '.' || quote_ident(object) || ' OWNER TO ' || quote_ident(owner);
 
@@ -153,8 +152,8 @@ BEGIN
     SELECT 'ALTER TABLE ' || quote_ident(dest_schema) || '.' || quote_ident(rn.relname)
         || ' ADD CONSTRAINT ' || quote_ident(ct.conname) || ' '
         || replace(pg_get_constraintdef(ct.oid),
-            ') REFERENCES ' || source_schema || '.',
-            ') REFERENCES ' || dest_schema || '.') || ';'
+            ') REFERENCES ' || quote_ident(source_schema) || '.',
+            ') REFERENCES ' || quote_ident(dest_schema) || '.') || ';'
     FROM pg_constraint ct
     JOIN pg_class rn ON rn.oid = ct.conrelid
     WHERE connamespace = src_oid
@@ -171,7 +170,7 @@ BEGIN
     FROM information_schema.views
     WHERE table_schema = quote_ident(source_schema)
   LOOP
-    buffer := dest_schema || '.' || quote_ident(object);
+    buffer := quote_ident(dest_schema) || '.' || quote_ident(object);
     SELECT view_definition INTO v_def
     FROM information_schema.views
     WHERE table_schema = quote_ident(source_schema)
@@ -181,23 +180,23 @@ BEGIN
 
     EXECUTE 'SELECT viewowner
       FROM pg_catalog.pg_views
-      WHERE schemaname = ''' || quote_ident(source_schema) || ''' AND viewname = ''' || quote_ident(object) || ''';'
+      WHERE schemaname = ' || quote_literal(source_schema) || ' AND viewname = ' || quote_literal(object) || ';'
     INTO owner;
     EXECUTE 'ALTER SCHEMA ' || quote_ident(dest_schema) || ' OWNER TO ' || quote_ident(owner);
   END LOOP;
 
 -- Create functions
-  FOR func_oid IN
+  FOR func IN
     SELECT oid, proname, proowner
     FROM pg_proc
     WHERE pronamespace = src_oid
   LOOP
-    SELECT pg_get_functiondef(func_oid) INTO qry;
+    SELECT pg_get_functiondef(func.oid) INTO qry;
     SELECT replace(qry, source_schema, dest_schema) INTO dest_qry;
     EXECUTE dest_qry;
-    SELECT rolname FROM pg_roles WHERE oid = proowner INTO owner;
-    SELECT pg_get_function_identity_arguments(oid) INTO args;
-    EXECUTE 'ALTER FUNCTION ' || dest_schema || '.' || proname || '(' || args || ') OWNER TO ' || quote_ident(owner);
+    SELECT rolname FROM pg_roles WHERE oid = func.proowner INTO owner;
+    SELECT pg_get_function_identity_arguments(func.oid) INTO args;
+    EXECUTE 'ALTER FUNCTION ' || quote_ident(dest_schema) || '.' || quote_ident(func.proname) || '(' || args || ') OWNER TO ' || quote_ident(owner);
   END LOOP;
 
   RETURN;
