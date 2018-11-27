@@ -67,7 +67,8 @@ then
     # Publish the Python eggs
     for PKG in commons geoportal admin
     do
-        ./docker-run --home python3 ${PKG}/setup.py egg_info --no-date sdist bdist_wheel upload -r pypi
+        ./docker-run --env=VERSION --home python3 \
+            ${PKG}/setup.py egg_info --no-date sdist bdist_wheel upload -r pypi
     done
 fi
 
