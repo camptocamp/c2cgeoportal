@@ -1,4 +1,5 @@
-FROM camptocamp/qgis-server:latest
+ARG VERSION=latest
+FROM camptocamp/qgis-server:${VERSION}
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
 COPY requirements.txt /tmp/
