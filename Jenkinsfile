@@ -236,11 +236,22 @@ dockerBuild {
             }
             stage('Publish') {
                 if (abort_ci()) { return }
-                parallel 'Push to Docker hub': {
-                    withCredentials([string(credentialsId: 'docker-hub', variable: 'DOCKER_PASSWORD')]) {
+                parallel 'Push to Docker hub and Pypi': {
+                    withCredentials([
+                        string(credentialsId: 'docker-hub', variable: 'DOCKER_PASSWORD'),
+                        [
+                             $class: 'UsernamePasswordMultiBinding',
+                             credentialsId: 'pypi_sbrunner',
+                             usernameVariable: 'PYPI_USERNAME',
+                             passwordVariable: 'PYPI_PASSWORD',
+                        ]
+                    ]) {
                         env.DOCKER_PASSWORD = DOCKER_PASSWORD
+                        env.PYPI_USERNAME = PYPI_USERNAME
+                        env.PYPI_PASSWORD = PYPI_PASSWORD
+
                         sshagent (credentials: ['c2c-infra-ci']) {
-                            sh 'travis/publish-docker'
+                            sh 'travis/publish'
                         }
                     }
                 }, 'Push to Transifex': {
