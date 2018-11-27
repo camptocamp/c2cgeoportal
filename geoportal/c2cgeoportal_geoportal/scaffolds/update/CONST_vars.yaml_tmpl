@@ -447,11 +447,11 @@ vars:
 
   lingua_extractor: {}
 
-  Content-Security-Policy_extra_script-src: \
+  Content-Security-Policy_extra_script-src: "\
     https://maps.google.com/ \
     https://maps.googleapis.com/ \
     https://fonts.googleapis.com/ \
-    https://www.google-analytics.com/
+    https://www.google-analytics.com/"
   global_headers:
     - pattern: '.*'
       headers:
