@@ -125,5 +125,5 @@ The sub section is the interface name, and after we have:
 * ``fulltextsearch_params``: Additional parameters to the full text search view, see
   :ref:`developer_webservices_fts` for more information.
 * ``wfs_permalink``: Additional values for the ``ngeoWfsPermalinkOptions`` constant, see:
-  `ngeox.WfsPermalinkOptions <https://github.com/camptocamp/ngeo/blob/2.3/options/ngeox.js#L837>_`
+  `ngeox.WfsPermalinkOptions <https://github.com/camptocamp/ngeo/blob/2.3/options/ngeox.js#L837>`_
   for more information.

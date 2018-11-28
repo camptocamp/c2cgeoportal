@@ -17,7 +17,7 @@ Then ``<release>`` can be ``1.6.0rc1`` for the first release candidate
 of the version ``1.6.0``, ``1.6.0`` for the final release, ``1.6.1`` for
 the first bug fix release, and ``<version>`` can be ``1.6``, ``2.0``, ...
 
-`For ngeo see here <https://github.com/camptocamp/ngeo/blob/master/docs/developer-guide.md#create-a-package-on-npm>_`.
+`For ngeo see here <https://github.com/camptocamp/ngeo/blob/master/docs/developer-guide.md#create-a-package-on-npm>`_.
 
 c2cgeoportal
 ------------
@@ -169,19 +169,19 @@ When a new release or a new version is done you should do the following tasks:
     sudo -u sigdev make --makefile=demo.mk update
     sudo -u sigdev make --makefile=demo.mk build
 
-* Test the `demo <http://testgmf.sig.cloud.camptocamp.net/>_`.
+* Test the `demo <http://testgmf.sig.cloud.camptocamp.net/>`_.
 * Deploy on the demo server with:
 
   .. prompt:: bash
 
      sudo -u deploy deploy -r deploy/deploy.cfg demo_server
 
-* Rename the milestone on `c2cgeoportal <https://github.com/camptocamp/c2cgeoportal/milestones>_`
-  and on `ngeo <https://github.com/camptocamp/ngeo/milestones>_` from ``x.y`` to ``x.y.z``.
-* Create again the milestone on `c2cgeoportal <https://github.com/camptocamp/c2cgeoportal/milestones>_`
-  and on `ngeo <https://github.com/camptocamp/ngeo/milestones>_` for ``x.y``.
+* Rename the milestone on `c2cgeoportal <https://github.com/camptocamp/c2cgeoportal/milestones>`_
+  and on `ngeo <https://github.com/camptocamp/ngeo/milestones>`_ from ``x.y`` to ``x.y.z``.
+* Create again the milestone on `c2cgeoportal <https://github.com/camptocamp/c2cgeoportal/milestones>`_
+  and on `ngeo <https://github.com/camptocamp/ngeo/milestones>`_ for ``x.y``.
 * Move all the open issues to the new milestone and close the current milestone
-  in `ngeo <https://github.com/camptocamp/ngeo/milestones>_`
-  and in `c2cgeoportal <https://github.com/camptocamp/c2cgeoportal/milestones>_`.
+  in `ngeo <https://github.com/camptocamp/ngeo/milestones>`_
+  and in `c2cgeoportal <https://github.com/camptocamp/c2cgeoportal/milestones>`_.
 * Send a release email to the ``geomapfish@googlegroups.com``
   and ``gmf2@lists.camptocamp.com`` mailing lists.
