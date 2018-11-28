@@ -56,26 +56,14 @@ done
 
 if [ ${DEPLOY_PIP} == TRUE ]
 then
-    # Prepare .pypirc config
-    echo "[distutils]" > ~/.pypirc
-    echo "index-servers = pypi" >> ~/.pypirc
-    echo "[pypi]" >> ~/.pypirc
-    echo "username:${PYPI_USERNAME}" >> ~/.pypirc
-    echo "password:${PYPI_PASSWORD}" >> ~/.pypirc
-
     # Publish the Python eggs
     for PKG in commons geoportal admin
     do
-        ./docker-run --env=VERSION --home python3 \
-            ${PKG}/setup.py egg_info --no-date sdist bdist_wheel upload -r pypi
+        ./docker-run --env=PYPI_USERNAME --env=PYPI_PASSWORD --env=VERSION --env=PKG travis/publish-pip
     done
 fi
 
 # Cleanup
-if [ -e ~/.pypirc ]
-then
-    rm --recursive --force ~/.pypirc
-fi
 if [ -e ~/.docker ]
 then
     rm --recursive --force ~/.docker
