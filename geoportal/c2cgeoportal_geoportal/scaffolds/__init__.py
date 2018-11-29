@@ -92,7 +92,9 @@ class BaseTemplate(Template):  # pragma: no cover
             # is named "root"
             package_logger = "app"
         vars_["package_logger"] = package_logger
-        vars_["geomapfish_version"] = pkg_resources.get_distribution('c2cgeoportal_commons').version
+        geomapfish_version = pkg_resources.get_distribution('c2cgeoportal_commons').version
+        vars_["geomapfish_version"] = geomapfish_version
+        vars_["geomapfish_main_version"] = '.'.join(geomapfish_version.split('.')[:2])
 
         return ret
 
