@@ -39,7 +39,4 @@ update_paths:
   - checker.routes
   - checker.phantomjs
   - check_collector
-  - docker_services.config.environment
-  - docker_services.geoportal.environment
-  - docker_services.geoportal-build.environment
   - admin_interface.available_metadata
