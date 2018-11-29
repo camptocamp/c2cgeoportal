@@ -184,6 +184,9 @@ files_to_remove:
   - file: {{package}}/static-ngeo/less/mobile.less
     version: 2.4
     from: 2.2
+  - file: CONST.mako_inc
+    version: 2.4
+    from: 2.3
 
 files_to_move:
   - from: vars_{{package}}.yaml
