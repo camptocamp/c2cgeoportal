@@ -81,12 +81,12 @@ class DynamicView:
             for name, static_ in self.get('static', interface_name).items()
         })
 
-        routes = dict(currentInterfaceUrl=interface_name)
+        routes = dict(currentInterfaceUrl={'name': interface_name})
         routes.update(self.get('routes', interface_name))
         for constant, config in routes.items():
             params = {}
             params.update(config.get('params', {}))
-            for name, dyn in config.get('dynamic_params', {}):
+            for name, dyn in config.get('dynamic_params', {}).items():
                 params[name] = dynamic[dyn]
             constants[constant] = self.request.route_url(config['name'], _query=params)
 
@@ -133,14 +133,14 @@ class DynamicView:
     def dynamic_js(self):
         constants, interface_name, do_redirect, url, other_constants = self.dynamic()
 
+        self.request.response.content_type = 'application/javascript'
+
         return {
             'constants': constants,
             'interface_name': interface_name,
             'do_redirect': do_redirect,
             'redirect_url': url,
-            'other_constants': {
-                'angularLocaleScript': other_constants
-            }
+            'other_constants': other_constants,
         }
 
     @view_config(route_name='dynamic', renderer='fast_json')

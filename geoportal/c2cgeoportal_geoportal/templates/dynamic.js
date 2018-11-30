@@ -12,6 +12,7 @@ import json
   if (small_screen && (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch)) {
     window.location = '${redirect_url | n}';
   }
+% endif
 
   var gmfAbstractAppControllerModule = angular.module('GmfAbstractAppControllerModule');
 % for name, value in other_constants.items():
