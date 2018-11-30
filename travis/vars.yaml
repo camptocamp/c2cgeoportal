@@ -27,6 +27,17 @@ vars:
       files: [ngeo]
     routes:
       disable: [apijs, xapijs]
+      routes:
+        - name: dynamic_js
+          display_name: Dynamic JS
+          params:
+            interface: desktop
+          level: 3
+        - name: dynamic
+          display_name: Dynamic JSON
+          params:
+            interface: desktop
+          level: 3
 
   check_collector:
     hosts:

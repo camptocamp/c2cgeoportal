@@ -222,38 +222,38 @@ update_paths:
   - headers.layers
   - headers.shortener
   - headers.login
-  - interface.default.constants
-  - interface.default.dynamic_constants
-  - interface.default.static
-  - interface.default.routes
-  - interface.desktop.constants
-  - interface.desktop.dynamic_constants
-  - interface.desktop.static
-  - interface.desktop.routes
-  - interface.desktop_alt.constants
-  - interface.desktop_alt.dynamic_constants
-  - interface.desktop_alt.static
-  - interface.desktop_alt.routes
-  - interface.mobile.constants
-  - interface.mobile.dynamic_constants
-  - interface.mobile.static
-  - interface.mobile.routes
-  - interface.mobile_alt.constants
-  - interface.mobile_alt.dynamic_constants
-  - interface.mobile_alt.static
-  - interface.mobile_alt.routes
-  - interface.iframe_api.constants
-  - interface.iframe_api.dynamic_constants
-  - interface.iframe_api.static
-  - interface.iframe_api.routes
-  - interface.oeview.constants
-  - interface.oeview.dynamic_constants
-  - interface.oeview.static
-  - interface.oeview.routes
-  - interface.oeedit.constants
-  - interface.oeedit.dynamic_constants
-  - interface.oeedit.static
-  - interface.oeedit.routes
+  - interfaces_config.default.constants
+  - interfaces_config.default.dynamic_constants
+  - interfaces_config.default.static
+  - interfaces_config.default.routes
+  - interfaces_config.desktop.constants
+  - interfaces_config.desktop.dynamic_constants
+  - interfaces_config.desktop.static
+  - interfaces_config.desktop.routes
+  - interfaces_config.desktop_alt.constants
+  - interfaces_config.desktop_alt.dynamic_constants
+  - interfaces_config.desktop_alt.static
+  - interfaces_config.desktop_alt.routes
+  - interfaces_config.mobile.constants
+  - interfaces_config.mobile.dynamic_constants
+  - interfaces_config.mobile.static
+  - interfaces_config.mobile.routes
+  - interfaces_config.mobile_alt.constants
+  - interfaces_config.mobile_alt.dynamic_constants
+  - interfaces_config.mobile_alt.static
+  - interfaces_config.mobile_alt.routes
+  - interfaces_config.iframe_api.constants
+  - interfaces_config.iframe_api.dynamic_constants
+  - interfaces_config.iframe_api.static
+  - interfaces_config.iframe_api.routes
+  - interfaces_config.oeview.constants
+  - interfaces_config.oeview.dynamic_constants
+  - interfaces_config.oeview.static
+  - interfaces_config.oeview.routes
+  - interfaces_config.oeedit.constants
+  - interfaces_config.oeedit.dynamic_constants
+  - interfaces_config.oeedit.static
+  - interfaces_config.oeedit.routes
   - interfaces_theme
   - servers
   - shortener
