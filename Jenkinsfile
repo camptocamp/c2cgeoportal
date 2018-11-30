@@ -67,7 +67,10 @@ dockerBuild {
                 TAG = sh(returnStdout: true, script: 'git tag --list --points-at=HEAD').trim()
                 LAST_TAG = sh(returnStdout: true, script: 'git describe --abbrev=0 --tags').trim()
                 RELEASE_TAG = MAJOR_VERSION
-                if (TAG =~ /^[0-9]\.[0-9]\.[0-9]$/) {
+                if (TAG =~ /^[0-9]+\.[0-9]+\.[0-9]+$/) {
+                    RELEASE_TAG = TAG
+                }
+                else if (TAG =~ /^[0-9]+\.[0-9]+\.[0-9]+\.dev[0-9]+$/) {
                     RELEASE_TAG = TAG
                 }
                 else {
