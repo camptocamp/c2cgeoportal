@@ -1,7 +1,7 @@
 alabaster==0.7.12  # Doc theme
 alembic==1.0.5  # geoportal
 Babel==2.6.0  # i18n
-boto3==1.9.55  # Tile generation
+boto3==1.9.57  # Tile generation
 bottle==0.12.14  # geoportal
 c2c.cssmin==0.7.dev6  # CGXP build
 c2c.template==2.1.0  # geoportal
@@ -72,7 +72,7 @@ virtualenv==16.1.0  # Makefile
 waitress==1.1.0  # pcreate
 WebOb==1.8.4  # geoportal test
 WebTest==2.0.32  # admin tests
-wsgi-lineprof==0.5.0  # profiling
+wsgi-lineprof==0.6.0  # profiling
 yamllint==1.13.0  # lint
 zgitignore==0.8.2  # Makefile
 zope.event==4.4  # commons, geoportal
