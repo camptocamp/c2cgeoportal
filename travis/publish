@@ -9,12 +9,13 @@ VERSION_QGIS=FALSE
 
 if [[ ${TAG} =~ ^[0-9]\.[0-9]\.[0-9]$ ]]
 then
+    VERSION_QGIS=${TAG}
     .venv/bin/python travis/get-minor --reset
     COMMIT=TRUE
 else
     if [[ ${BRANCH_NAME} =~ ^[0-9]\.[0-9]$ ]]
     then
-        VERSION_QGIS=${TAG}
+        VERSION_QGIS=${BRANCH_NAME}
         TAG=${LAST_TAG}.`.venv/bin/python travis/get-minor`
         COMMIT=TRUE
     fi
