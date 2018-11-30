@@ -1,4 +1,3 @@
-include *.txt *.ini *.cfg *.rst
-recursive-include c2cgeoportal *.png *.html *.mo
-recursive-include c2cgeoportal/scaffolds *
-prune c2cgeoportal/static/examples
+include requirements.txt
+recursive-include c2cgeoportal_geoportal *.png *.html *.mo
+recursive-include c2cgeoportal_geoportal/scaffolds *
