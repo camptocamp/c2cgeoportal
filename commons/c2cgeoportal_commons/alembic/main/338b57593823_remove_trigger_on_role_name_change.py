@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2019, Camptocamp SA
+# Copyright (c) 2017-2018, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,49 +27,56 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+"""Remove trigger on_role_name_change
 
-from unittest import TestCase
+Revision ID: 338b57593823
+Revises: dba87f2647f9
+Create Date: 2018-12-05 09:13:21.191424
+"""
 
-from tests.functional import (  # noqa
-    teardown_common as teardown_module,
-    setup_common as setup_module,
-    create_dummy_request,
-)
+from alembic import op
+from c2c.template.config import config
+
+# revision identifiers, used by Alembic.
+revision = '338b57593823'
+down_revision = 'dba87f2647f9'
+branch_labels = None
+depends_on = None
 
 
-class TestGroupsFinder(TestCase):
+def upgrade():
+    schema = config['schema']
 
-    def setup_method(self, _):
-        import transaction
-        from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import Role
-        from c2cgeoportal_commons.models.static import User
+    op.execute('DROP TRIGGER on_role_name_change ON {schema}.role'.format(
+        schema=schema
+    ))
+    op.execute('DROP FUNCTION {schema}.on_role_name_change()'.format(
+        schema=schema
+    ))
 
-        r = Role(name="__test_role")
-        u = User(
-            username="__test_user",
-            password="__test_user",
-            settings_role=r,
-            roles=[r]
+
+def downgrade():
+    schema = config['schema']
+    staticschema = config['schema_static']
+
+    op.execute(
+        """
+CREATE OR REPLACE FUNCTION {schema}.on_role_name_change()
+RETURNS trigger AS
+$$
+BEGIN
+IF NEW.name <> OLD.name THEN
+UPDATE {staticschema}."user" SET role_name = NEW.name WHERE role_name = OLD.name;
+END IF;
+RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql""".
+        format(schema=schema, staticschema=staticschema)
+    )
+    op.execute(
+        'CREATE TRIGGER on_role_name_change AFTER UPDATE ON {schema}.role FOR EACH ROW '
+        'EXECUTE PROCEDURE {schema}.on_role_name_change()'.format(
+            schema=schema
         )
-
-        DBSession.add_all([r, u])
-        transaction.commit()
-
-    def teardown_method(self, _):
-        import transaction
-        from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import Role
-        from c2cgeoportal_commons.models.static import User
-
-        transaction.commit()
-
-        DBSession.query(User).filter_by(username="__test_user").delete()
-        DBSession.query(Role).filter_by(name="__test_role").delete()
-        transaction.commit()
-
-    def test_it(self):
-        from c2cgeoportal_geoportal.resources import defaultgroupsfinder
-        request = create_dummy_request(authentication=False, user="__test_user")
-        roles = defaultgroupsfinder("__test_user", request)
-        self.assertEqual(roles, ["__test_role"])
+    )

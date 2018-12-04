@@ -125,7 +125,8 @@ User can be created if it does not exist yet."""
                 username=username,
                 password=options.password,
                 email=options.email,
-                role=role
+                settings_role=role,
+                roles=[role]
             )
             sess.add(user)
             transaction.commit()
