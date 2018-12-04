@@ -188,6 +188,15 @@ def add_interface_ngeo(
             return f(root, request)
         return new_f
 
+    config.add_route(route_name, route, request_method="GET")
+    config.add_view(
+        Entry,
+        decorator=add_interface,
+        attr="get_ngeo_index_vars",
+        route_name=route_name,
+        renderer=renderer,
+        permission=permission
+    )
     # permalink theme: recover the theme for generating custom viewer.js url
     config.add_route(
         "{}theme".format(route_name),
