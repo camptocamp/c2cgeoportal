@@ -27,30 +27,9 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-import logging
-from pyramid.view import view_config
+
 from pyramid.httpexceptions import HTTPFound
-
-from c2cgeoportal_geoportal.lib.caching import set_common_headers, NO_CACHE
-
-log = logging.getLogger(__name__)
 
 
 def add_ending_slash(request):
     return HTTPFound(location=request.path + '/')
-
-
-@view_config(context=Exception, renderer="json", http_cache=0)
-def other_error(exception, request):  # pragma: no cover
-    set_common_headers(request, "index", NO_CACHE)
-    return _do_error(request, 500, exception)
-
-
-def _do_error(request, status, exception):  # pragma: no cover
-    log.error(
-        "%s %s returned status code %s: %s",
-        request.method, request.url, status, str(exception),
-        extra={"referer": request.referer}, exc_info=True)
-    request.response.status_code = status
-    response = {"message": str(exception), "status": status}
-    return response
