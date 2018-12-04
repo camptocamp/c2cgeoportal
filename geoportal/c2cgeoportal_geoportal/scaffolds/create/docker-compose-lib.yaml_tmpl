@@ -81,7 +81,7 @@ services:
       - --memory-limit=512
 
   redis:
-    image: redis:3.2
+    image: redis:5
     user: www-data
     restart: unless-stopped
     command:
@@ -94,6 +94,8 @@ services:
       - 512mb
       - --maxmemory-policy
       - allkeys-lru
+      - --tcp-keepalive
+      - '30'
 
   tilecloudchain:
     image: camptocamp/tilecloud-chain:1.8
