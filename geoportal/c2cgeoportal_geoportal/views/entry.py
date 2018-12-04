@@ -48,7 +48,6 @@ from pyramid.response import Response
 from pyramid.security import remember, forget
 from pyramid.view import view_config
 from random import Random
-from sqlalchemy import func
 from sqlalchemy.orm import subqueryload
 from sqlalchemy.orm.exc import NoResultFound
 from typing import Dict, Tuple, Set  # noqa # pylint: disable=unused-import
@@ -1284,42 +1283,9 @@ class Entry:
 
         return d
 
-    def get_ngeo_index_vars(self, vars_=None):
-        if vars_ is None:
-            vars_ = {}
+    def get_ngeo_index_vars(self):
         set_common_headers(self.request, "index", NO_CACHE, content_type="application/javascript")
-
-        vars_["debug"] = self.debug
-
-        vars_["fulltextsearch_groups"] = [
-            group[0] for group in models.DBSession.query(
-                func.distinct(main.FullTextSearch.layer_name)
-            ).filter(main.FullTextSearch.layer_name.isnot(None)).all()
-        ]
-
-        url, add_errors = self._get_wfs_url()
-        if len(add_errors) > 0:  # pragma: no cover
-            wfs_types = None
-        else:
-            wfs_types, add_errors = self._wfs_types_cached(url)
-        if len(add_errors) == 0:
-            vars_["wfs_types"] = [{
-                "featureType": t,
-                "label": t,
-            } for t in wfs_types]
-        else:  # pragma: no cover
-            log.error("Error while getting the WFS params: \n%s", "\n".join(add_errors))
-            vars_["wfs_types"] = []
-
-        return vars_
-
-    def get_ngeo_permalinktheme_vars(self):
-        # recover themes from url route
-        themes = self.request.matchdict["themes"]
-        d = {}
-        d["permalink_themes"] = themes
-        # call home with extra params
-        return self.get_ngeo_index_vars(d)
+        return {}
 
     @view_config(route_name="apijs", renderer="api/api.js")
     def apijs(self):

@@ -20,6 +20,7 @@ default_project_file:
     - vars\.yaml
     - {{package}}\.mk
     - README\.rst
+    - docker-compose\.yaml
   exclude:
     - geoportal/{{package}}_geoportal/static-ngeo/js/{{package}}module\.js
     - mapserver/demo\.map\.mako

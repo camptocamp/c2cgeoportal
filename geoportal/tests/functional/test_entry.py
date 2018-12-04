@@ -705,15 +705,6 @@ class TestEntryView(TestCase):
             '{{"layer_test": {{"label": "{0!s}"}}}}'.format(mapserv_url)
         )
 
-        result = entry.get_ngeo_index_vars()
-        self.assertEqual(set(result.keys()), {
-            "debug", "fulltextsearch_groups", "wfs_types"
-        })
-        result = entry.get_ngeo_permalinktheme_vars()
-        self.assertEqual(set(result.keys()), {
-            "debug", "fulltextsearch_groups", "permalink_themes", "wfs_types"
-        })
-
         result = entry.apijs()
         self.assertEqual(
             set(result.keys()),
@@ -728,14 +719,6 @@ class TestEntryView(TestCase):
         self.assertEqual(set(result.keys()), {"lang", "debug"})
         result = entry.xapihelp()
         self.assertEqual(set(result.keys()), {"lang", "debug"})
-
-    def test_ngeo_vars(self):
-        entry, _ = self._create_entry()
-        result = entry.get_ngeo_index_vars()
-        self.assertEqual(
-            set(result["fulltextsearch_groups"]),
-            {"layer1"},
-        )
 
     def test_auth_home(self):
         from c2cgeoportal_geoportal.views.entry import Entry
