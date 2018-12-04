@@ -1549,7 +1549,7 @@ class Entry:
             log.info("Logout on non login user.")
             raise HTTPBadRequest("See server logs for details")
 
-        log.info(u"User '{0!s}' ({1:s}) logging out.".format(
+        log.info(u"User '{}' ({}) logging out.".format(
             self.request.user.username,
             self.request.user.id
         ))
