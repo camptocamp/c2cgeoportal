@@ -32,9 +32,10 @@ import logging
 from datetime import datetime
 from hashlib import sha1
 import pytz
-from typing import Optional
+from typing import List
 
-from sqlalchemy import Column
+from sqlalchemy import Column, ForeignKey, Table
+from sqlalchemy.orm import relationship
 from sqlalchemy.types import Integer, Boolean, Unicode, String, DateTime
 
 import colander
@@ -49,6 +50,15 @@ from c2cgeoportal_commons.models.main import Role
 LOG = logging.getLogger(__name__)
 
 _schema = config['schema_static']  # type: str
+
+# association table user <> role
+user_role = Table(
+    'user_role',
+    Base.metadata,
+    Column('user_id', Integer, ForeignKey(_schema + '.user.id'), primary_key=True),
+    Column('role_id', Integer, primary_key=True),
+    schema=_schema
+)
 
 
 class User(Base):
@@ -93,16 +103,43 @@ class User(Base):
     })
     is_password_changed = Column(Boolean, default=False,
                                  info={'colanderalchemy': {'exclude': True}})
-    role_name = Column(String, info={
+
+    settings_role_id = Column(Integer, info={
         'colanderalchemy': {
-            'title': _('Role'),
+            'title': _('Settings from role'),
+            'description': 'Only used for settings not for permissions',
             'widget': deform_ext.RelationSelect2Widget(
-                Role, 'name', 'name', order_by='name', default_value=('', _('- Select -'))
+                Role,
+                'id',
+                'name',
+                order_by='name',
+                default_value=('', _('- Select -'))
             )
         }
     })
-    _cached_role_name = None  # type: str
-    _cached_role = None  # type: Optional[Role]
+
+    settings_role = relationship(
+        Role,
+        foreign_keys='User.settings_role_id',
+        primaryjoin='Role.id==User.settings_role_id',
+        info={
+            'colanderalchemy': {
+                'title': _('Settings role'),
+                'exclude': True
+            }
+        })
+
+    roles = relationship(
+        Role,
+        secondary=user_role,
+        secondaryjoin=Role.id == user_role.c.role_id,
+        info={
+            'colanderalchemy': {
+                'title': _('Roles'),
+                'exclude': True
+            }
+        }
+    )
 
     last_login = Column(DateTime(timezone=True), info={
         'colanderalchemy': {
@@ -124,37 +161,17 @@ class User(Base):
         }
     })
 
-    @property
-    def role(self) -> Optional[Role]:
-        if self._cached_role_name == self.role_name:
-            return self._cached_role
-
-        if self.role_name is None or self.role_name == '':  # pragma: no cover
-            self._cached_role_name = self.role_name
-            self._cached_role = None
-            return None
-
-        result = self._sa_instance_state.session.query(Role).filter(
-            Role.name == self.role_name
-        ).all()
-        if len(result) == 0:  # pragma: no cover
-            self._cached_role = None
-        else:
-            self._cached_role = result[0]
-
-        self._cached_role_name = self.role_name
-        return self._cached_role
-
     def __init__(
         self, username: str='', password: str='', email: str='', is_password_changed: bool=False,
-        role: Role=None, expire_on: datetime=None, deactivated: bool=False
+        settings_role: Role=None, roles: List[Role]=[], expire_on: datetime=None, deactivated: bool=False
     ) -> None:
         self.username = username
         self.password = password
         self.email = email
         self.is_password_changed = is_password_changed
-        if role is not None:
-            self.role_name = role.name
+        if settings_role:
+            self.settings_role = settings_role
+        self.roles = roles
         self.expire_on = expire_on
         self.deactivated = deactivated
 
