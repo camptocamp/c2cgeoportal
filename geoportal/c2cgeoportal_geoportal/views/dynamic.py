@@ -32,6 +32,7 @@ import urllib.parse
 from c2cgeoportal_commons import models
 from c2cgeoportal_commons.models import main
 from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
+from c2cgeoportal_geoportal.lib.caching import set_common_headers, NO_CACHE
 from pyramid.view import view_config
 from sqlalchemy import func
 
@@ -127,6 +128,7 @@ class DynamicView:
             ) + 'angular-locale_{{locale}}.js',
         }
 
+        set_common_headers(self.request, "dynamic", NO_CACHE)
         return constants, interface_name, do_redirect, url, other_constants
 
     @view_config(route_name="dynamic_js", renderer="c2cgeoportal_geoportal:templates/dynamic.js")
