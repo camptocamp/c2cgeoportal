@@ -61,7 +61,7 @@ class TestThemesPrivateView(TestCase):
 
         main = Interface(name=u"desktop")
         role = Role(name=u"__test_role")
-        user = User(username=u"__test_user", password=u"__test_user", role=role)
+        user = User(username=u"__test_user", password=u"__test_user", settings_role=role, roles=[role])
         user.email = "__test_user@example.com"
         ogc_server_internal, _ = create_default_ogcserver()
 
