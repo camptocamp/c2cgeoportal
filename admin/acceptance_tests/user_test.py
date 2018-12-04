@@ -26,7 +26,8 @@ def users_test_data(dbsession, transact):
     for i in range(0, 23):
         user = User('babar_{}'.format(i),
                     email='mail{}@valid.net'.format(i),
-                    role=roles[i % 4])
+                    settings_role=roles[i % 4],
+                    roles=[roles[i % 4]])
         user.password = 'pré$ident'
         user.is_password_changed = i % 2 == 1
         users.append(user)
@@ -58,11 +59,13 @@ class TestUser(AbstractViewsTests):
         expected = [('actions', '', 'false'),
                     ('id', 'id', 'true'),
                     ('username', 'Username'),
-                    ('role_name', 'Role'),
                     ('email', 'Email'),
                     ('last_login', 'Last login'),
                     ('expire_on', 'Expiration date'),
-                    ('deactivated', 'Deactivated')]
+                    ('deactivated', 'Deactivated'),
+                    ('settings_role', 'Settings role'),
+                    ('roles', 'Roles', 'false'),
+                    ]
 
         self.check_grid_headers(resp, expected)
 
@@ -80,49 +83,81 @@ class TestUser(AbstractViewsTests):
 
     def test_view_edit(self, test_app, users_test_data):
         user = users_test_data['users'][9]
+        roles = users_test_data['roles']
 
         resp = test_app.get('/users/{}'.format(user.id), status=200)
 
         assert resp.form['username'].value == user.username
         assert resp.form['email'].value == user.email
-        assert resp.form['role_name'].options == [
-            ('', False, '- Select -'),
-            ('secretary_0', False, 'secretary_0'),
-            ('secretary_1', True, 'secretary_1'),
-            ('secretary_2', False, 'secretary_2'),
-            ('secretary_3', False, 'secretary_3')]
-        assert resp.form['role_name'].value == user.role_name
+        assert resp.form['settings_role_id'].options == [
+            ('', False, '- Select -')
+        ] + [
+            (str(role.id), role.name == 'secretary_1', role.name)
+            for role in roles
+        ]
+        assert resp.form['settings_role_id'].value == str(user.settings_role_id)
+        self._check_roles(resp.form, roles, user)
+
+        assert user.roles == [roles[1]]
+
+        new_values = {
+            'username': 'new_name',
+            'email': 'new_email@domain.com',
+            'settings_role_id': roles[2].id
+        }
+        for key, value in new_values.items():
+            self.set_first_field_named(resp.form, key, value)
+        resp.form['roles'] = [roles[2].id, roles[3].id]
+        resp.form.submit('submit')
+
+        for key, value in new_values.items():
+            if isinstance(value, bool):
+                assert value == getattr(user, key)
+            else:
+                assert str(value or '') == str(getattr(user, key) or '')
+        assert set([roles[2].id, roles[3].id]) == set(
+            [role.id for role in user.roles])
 
     def test_delete(self, test_app, users_test_data, dbsession):
-        from c2cgeoportal_commons.models.static import User
+        from c2cgeoportal_commons.models.static import User, user_role
         user = users_test_data['users'][9]
         deleted_id = user.id
         test_app.delete('/users/{}'.format(deleted_id), status=200)
         assert dbsession.query(User).get(deleted_id) is None
+        assert dbsession.query(user_role). \
+            filter(user_role.c.user_id == user.id). \
+            count() == 0
 
     @patch('c2cgeoportal_commons.lib.email_.smtplib.SMTP')
     @patch('c2cgeoportal_admin.views.users.pwgenerator.generate')
     def test_submit_update(self, pw_gen_mock, smtp_mock, dbsession, test_app, users_test_data):
         user = users_test_data['users'][11]
+        roles = users_test_data['roles']
 
         resp = test_app.post(
             '/users/{}'.format(user.id),
-            {
-                '__formid__': 'deform',
-                '_charset_': 'UTF-8',
-                'formsubmit': 'formsubmit',
-                'item_type': 'user',
-                'id': user.id,
-                'username': 'new_name_withéàô',
-                'email': 'new_mail@valid.net',
-                'role_name': 'secretary_2'},
+            (
+                ('__formid__', 'deform'),
+                ('_charset_', 'UTF-8'),
+                ('formsubmit', 'formsubmit'),
+                ('item_type', 'user'),
+                ('id', user.id),
+                ('username', 'new_name_withéàô'),
+                ('email', 'new_mail@valid.net'),
+                ('settings_role_id', roles[2].id),
+                ('__start__', 'roles:sequence'),
+                ('roles', roles[0].id),
+                ('roles', roles[3].id),
+                ('__end__', 'roles:sequence'),
+            ),
             status=302)
         assert resp.location == 'http://localhost/users/{}?msg_col=submit_ok'.format(user.id)
 
         dbsession.expire(user)
         assert user.username == 'new_name_withéàô'
         assert user.email == 'new_mail@valid.net'
-        assert user.role_name == 'secretary_2'
+        assert user.settings_role.name == 'secretary_2'
+        assert set(r.id for r in user.roles) == set(roles[i].id for i in [0, 3])
         assert user.validate_password('pré$ident')
 
         assert not pw_gen_mock.called, 'method should not have been called'
@@ -130,6 +165,7 @@ class TestUser(AbstractViewsTests):
 
     def test_unicity_validator(self, users_test_data, test_app):
         user = users_test_data['users'][11]
+        roles = users_test_data['roles']
 
         resp = test_app.post(
             '/users/{}'.format(user.id),
@@ -141,7 +177,8 @@ class TestUser(AbstractViewsTests):
                 'id': user.id,
                 'username': 'babar_0',
                 'email': 'new_mail',
-                'role_name': 'secretary_2'},
+                'settings_role_id': roles[2].id
+            },
             status=200)
 
         self._check_submission_problem(resp, '{} is already used.'.format('babar_0'))
@@ -154,6 +191,7 @@ class TestUser(AbstractViewsTests):
         pw_gen_mock.return_value = 'basile'
         from c2cgeoportal_commons.models.static import User
         user = users_test_data['users'][7]
+        roles = users_test_data['roles']
 
         resp = test_app.get("/users/{}/duplicate".format(user.id), status=200)
         form = resp.form
@@ -161,20 +199,25 @@ class TestUser(AbstractViewsTests):
         assert '' == form['id'].value
         assert user.username == form['username'].value
         assert user.email == form['email'].value
-        assert user.role_name == form['role_name'].value
+        assert str(user.settings_role_id) == form['settings_role_id'].value
+        self._check_roles(resp.form, roles, user)
         assert user.is_password_changed
+
         form['username'].value = 'clone'
         resp = form.submit('submit', status=302)
 
-        user = dbsession.query(User).filter(User.username == 'clone').one()
+        new_user = dbsession.query(User).filter(User.username == 'clone').one()
 
-        assert str(user.id) == re.match(
+        assert str(new_user.id) == re.match(
             r'http://localhost/users/(.*)\?msg_col=submit_ok',
             resp.location
         ).group(1)
-        assert users_test_data['users'][7].id != str(user.id)
-        assert not user.is_password_changed
-        assert not user.validate_password('pré$ident')
+        assert user.id != new_user.id
+        assert user.settings_role_id == new_user.settings_role_id
+        assert set([role.id for role in user.roles]) == set(
+            [role.id for role in new_user.roles])
+        assert not new_user.is_password_changed
+        assert not new_user.validate_password('pré$ident')
 
         parts = list(email.message_from_string(sender_mock.sendmail.mock_calls[0][1][2]).walk())
         assert EXPECTED_WELCOME_MAIL.format('clone', 'clone', 'basile') == \
@@ -184,23 +227,25 @@ class TestUser(AbstractViewsTests):
     @patch('c2cgeoportal_commons.lib.email_.smtplib.SMTP')
     @patch('c2cgeoportal_admin.views.users.pwgenerator.generate')
     @pytest.mark.usefixtures("test_app")
-    def test_submit_new(self, pw_gen_mock, smtp_mock, dbsession, test_app):
+    def test_submit_new(self, pw_gen_mock, smtp_mock, dbsession, test_app, users_test_data):
         sender_mock = MagicMock()
         smtp_mock.return_value = sender_mock
         pw_gen_mock.return_value = 'basile'
         from c2cgeoportal_commons.models.static import User
+        roles = users_test_data['roles']
 
         resp = test_app.post(
             '/users/new',
-            {
-                '__formid__': 'deform',
-                '_charset_': 'UTF-8',
-                'formsubmit': 'formsubmit',
-                'item_type': 'user',
-                'id': '',
-                'username': 'new_user',
-                'email': 'valid@email.net',
-                'role_name': 'secretary_2'},
+            (
+                ('__formid__', 'deform'),
+                ('_charset_', 'UTF-8'),
+                ('formsubmit', 'formsubmit'),
+                ('item_type', 'user'),
+                ('id', ''),
+                ('username', 'new_user'),
+                ('email', 'valid@email.net'),
+                ('settings_role_id', roles[2].id),
+            ),
             status=302)
 
         user = dbsession.query(User). \
@@ -214,7 +259,7 @@ class TestUser(AbstractViewsTests):
 
         assert user.username == 'new_user'
         assert user.email == 'valid@email.net'
-        assert user.role_name == 'secretary_2'
+        assert user.settings_role_id == roles[2].id
         assert user.password is not None and len(user.password)
         assert user.temp_password is None
         assert user.is_password_changed == False

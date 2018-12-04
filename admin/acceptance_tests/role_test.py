@@ -53,12 +53,13 @@ def roles_test_data(dbsession, transact):
         dbsession.add(role)
         roles.append(role)
 
-    # Users must be updated when role name changes
+    # Users roles must not be broken with role name changes
     users = []
     for i in range(0, 23):
         user = User("babar_" + str(i),
                     email='mail' + str(i),
-                    role=roles[i])
+                    settings_role=roles[i],
+                    roles=[roles[i]])
         user.password = 'pré$ident'
         user.is_password_changed = i % 2 == 1
         users.append(user)
