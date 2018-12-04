@@ -110,10 +110,12 @@ def setup_test_data(dbsession: Session) -> None:
     dbsession.merge(User(
         username='admin',
         email='admin@camptocamp.com',
-        role=role_admin
+        settings_role=role_admin,
+        roles=[role_admin]
     ))
     dbsession.merge(User(
         username='user',
         email='user@camptocamp.com',
-        role=role_user
+        settings_role=role_user,
+        roles=[role_user]
     ))
