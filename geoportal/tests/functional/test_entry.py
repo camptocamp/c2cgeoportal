@@ -357,7 +357,7 @@ class TestEntryView(TestCase):
         entry = Entry(request)
 
         # unautenticated
-        themes, errors = entry._themes(None, "desktop")
+        themes, errors = entry._themes("desktop")
         self.assertEqual(errors, {
             "The layer '__test_layer_in_group' (__test_layer_in_group) is not defined in WMS capabilities from '__test_ogc_server'",
         })
@@ -383,7 +383,7 @@ class TestEntryView(TestCase):
         # authenticated
         request.params = {}
         request.user = DBSession.query(User).filter_by(username="__test_user1").one()
-        themes, errors = entry._themes(request.user.role.id)
+        themes, errors = entry._themes()
         self.assertEqual(errors, {
             "The layer '__test_layer_in_group' (__test_layer_in_group) is not defined in WMS capabilities from '__test_ogc_server'",
         })
@@ -409,7 +409,7 @@ class TestEntryView(TestCase):
 
         from c2cgeoportal_geoportal.lib import caching
         caching.invalidate_region()
-        _, errors = entry._themes(None, "desktop")
+        _, errors = entry._themes("desktop")
         self.assertEqual({e[:43] for e in errors}, {
             "The layer '__test_public_layer' (__test_pub",
             "The layer '__test_layer_in_group' (__test_l",
@@ -472,7 +472,7 @@ class TestEntryView(TestCase):
         entry = Entry(request)
 
         # unautenticated v1
-        themes, errors = entry._themes(None, "desktop")
+        themes, errors = entry._themes("desktop")
         self.assertEqual(errors, set())
         self.assertEqual(len(themes), 1)
         layers = {l["name"] for l in themes[0]["children"][0]["children"]}
@@ -485,7 +485,7 @@ class TestEntryView(TestCase):
         # authenticated v1
         request.params = {}
         request.user = DBSession.query(User).filter_by(username="__test_user1").one()
-        themes, errors = entry._themes(request.user.role.id)
+        themes, errors = entry._themes()
         self.assertEqual(errors, set())
         self.assertEqual(len(themes), 1)
         layers = {l["name"] for l in themes[0]["children"][0]["children"]}

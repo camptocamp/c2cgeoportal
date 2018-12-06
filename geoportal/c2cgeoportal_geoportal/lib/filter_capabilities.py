@@ -37,9 +37,11 @@ import xml.sax.handler
 from io import StringIO
 from owslib.wms import WebMapService
 from pyramid.httpexceptions import HTTPBadGateway
+from typing import List  # noqa, pylint: disable=unused-import
 from urllib.parse import urlsplit
 from xml.sax.saxutils import XMLFilterBase, XMLGenerator
 
+from c2cgeoportal_commons.models import static
 from c2cgeoportal_geoportal.lib import caching, add_url_params, get_ogc_server_wms_url_ids,\
     get_ogc_server_wfs_url_ids
 from c2cgeoportal_geoportal.lib.layers import get_protected_layers, get_writable_layers, get_private_layers
@@ -107,7 +109,7 @@ def wms_structure(wms_url, host, request):
         raise HTTPBadGateway(error)
 
 
-def filter_capabilities(content, role_id, wms, url, headers, request):
+def filter_capabilities(content, user: static.User, wms, url, headers, request):
 
     wms_structure_ = wms_structure(url, headers.get("Host"), request)
 
@@ -116,7 +118,7 @@ def filter_capabilities(content, role_id, wms, url, headers, request):
         get_ogc_server_wfs_url_ids(request)
     ).get(url)
     gmf_private_layers = copy.copy(get_private_layers(ogc_server_ids))
-    for id_ in list(get_protected_layers(role_id, ogc_server_ids).keys()):
+    for id_ in list(get_protected_layers(user, ogc_server_ids).keys()):
         if id_ in gmf_private_layers:
             del gmf_private_layers[id_]
 
@@ -143,10 +145,10 @@ def filter_capabilities(content, role_id, wms, url, headers, request):
     return result.getvalue()
 
 
-def filter_wfst_capabilities(content, role_id, wfs_url, request):
-    writable_layers = []
+def filter_wfst_capabilities(content, user: static.User, wfs_url, request):
+    writable_layers = []  # type: List[str]
     ogc_server_ids = get_ogc_server_wfs_url_ids(request).get(wfs_url)
-    for gmflayer in list(get_writable_layers(role_id, ogc_server_ids).values()):
+    for gmflayer in list(get_writable_layers(user, ogc_server_ids).values()):
         writable_layers += gmflayer.layer.split(",")
 
     parser = defusedxml.expatreader.create_parser(forbid_external=False)
