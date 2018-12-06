@@ -13,7 +13,7 @@ URL: ``.../themes``
 Parameters
 ----------
 
-* ``version``: ``1`` or ``2``, API version, default is ``1``.
+* ``version``: ``2``, API version, default is ``2``.
 * ``interface``: used interface (optional).
 * ``sets``: kind of data we want to get, can be ``all``, ``themes``, ``group``
   or ``background_layers``, default is ``all``.
@@ -25,12 +25,12 @@ Parameters
 
 Requests examples:
 
-* themes?version=2
-* themes?version=2&background=background
-* themes?version=2&group=Transport
+* themes
+* themes?background=background
+* themes?group=Transport
 
-Result in v2
-------------
+Result
+------
 
 Base for all possible results:
 
