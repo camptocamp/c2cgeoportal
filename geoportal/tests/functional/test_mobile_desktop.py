@@ -130,20 +130,3 @@ class TestMobileDesktop(TestCase):
         request.params = params
 
         return Entry(request)
-
-    def test_desktop_layers(self):
-        entry = self._create_entry_obj()
-        response_vars = entry.get_cgxp_viewer_vars()
-
-        import json
-        themes = json.loads(response_vars["themes"])
-        self.assertEqual(
-            {t["name"] for t in themes},
-            set(["__test_desktop_only_theme", "__test_theme"]),
-        )
-        theme = [t for t in themes if t["name"] == "__test_theme"]
-        layers = theme[0]["children"][0]["children"]
-        self.assertEqual(
-            {l["name"] for l in layers},
-            set(["__test_layer", "__test_desktop_only_layer"]),
-        )
