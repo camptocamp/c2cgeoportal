@@ -207,6 +207,7 @@ mapping:
                 required: True
                 type: int
           index: *header
+          dynamic: *header
           config: *header
           api: *header
           themes: *header

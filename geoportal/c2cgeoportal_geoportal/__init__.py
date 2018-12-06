@@ -118,7 +118,6 @@ def add_interface(
         route = "/" if default else "/{0!s}".format(interface_name)
         add_interface_ngeo(
             config,
-            interface_name=interface_name,
             route_name=interface_name,
             route=route,
             renderer="/{0!s}.html".format(interface_name),
@@ -177,17 +176,18 @@ def add_interface_cgxp(
 ngeo_static_init = False
 
 
-def add_interface_ngeo(
-        config, interface_name, route_name, route, renderer, permission=None):  # pragma: no cover
+def add_interface_ngeo(config, route_name, route, renderer=None, permission=None):  # pragma: no cover
     # Cannot be at the header to do not load the model too early
     from c2cgeoportal_geoportal.views.entry import Entry
 
-    def add_interface(f):
-        def new_f(root, request):
-            request.interface_name = interface_name
-            return f(root, request)
-        return new_f
-
+    config.add_route(route_name, route, request_method="GET")
+    config.add_view(
+        Entry,
+        attr="get_ngeo_index_vars",
+        route_name=route_name,
+        renderer=renderer,
+        permission=permission
+    )
     # permalink theme: recover the theme for generating custom viewer.js url
     config.add_route(
         "{}theme".format(route_name),
@@ -196,8 +196,7 @@ def add_interface_ngeo(
     )
     config.add_view(
         Entry,
-        decorator=add_interface,
-        attr="get_ngeo_permalinktheme_vars",
+        attr="get_ngeo_index_vars",
         route_name="{}theme".format(route_name),
         renderer=renderer,
         permission=permission
