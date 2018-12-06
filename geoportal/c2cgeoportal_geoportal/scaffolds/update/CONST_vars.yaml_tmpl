@@ -141,7 +141,11 @@ vars:
         langUrls: lang_urls
         gmfSearchGroups: fulltextsearch_groups
       static:
-        assetsBaseUrl: '{package}_geoportal:static-ngeo/'
+        assetsBaseUrl:
+          name: '{package}_geoportal:static-ngeo/'
+        angularLocaleScript:
+          name: '{package}_geoportal:static-ngeo/build/'
+          append: angular-locale_\{\{locale\}\}.js
       routes:
         authenticationBaseUrl:
           name: base
@@ -722,3 +726,6 @@ runtime_postprocess:
   - expression: int({})
     vars:
       - cache.arguments.port
+
+no_interpreted:
+  - interfaces_config.default.static.angularLocaleScript.append

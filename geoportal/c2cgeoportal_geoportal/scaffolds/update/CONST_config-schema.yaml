@@ -151,6 +151,7 @@ mapping:
                     mapping:
                       name:
                         type: str
+                        required: True
                       params:
                         type: map
                         mapping:
@@ -165,7 +166,13 @@ mapping:
                 type: map
                 mapping:
                   regex;.+:
-                    type: str
+                    type: map
+                    mapping:
+                      name:
+                        type: str
+                        required: True
+                      append:
+                        type: str
               redirect_interface:
                 type: str
               do_redirect:
