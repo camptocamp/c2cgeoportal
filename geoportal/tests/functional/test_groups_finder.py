@@ -49,7 +49,8 @@ class TestGroupsFinder(TestCase):
         u = User(
             username="__test_user",
             password="__test_user",
-            role=r
+            settings_role=r,
+            roles=[r]
         )
 
         DBSession.add_all([r, u])

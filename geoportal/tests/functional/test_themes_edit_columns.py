@@ -66,7 +66,8 @@ class TestThemesEditColumns(TestCase):
         self.user = User(
             username="__test_user",
             password="__test_user",
-            role=self.role
+            settings_role=self.role,
+            roles=[self.role]
         )
         self.main = Interface(name="main")
 

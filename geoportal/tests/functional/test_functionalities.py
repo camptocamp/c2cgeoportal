@@ -51,13 +51,15 @@ class TestFunctionalities(TestCase):
         user1 = User(
             username="__test_user1",
             password="__test_user1",
-            role=role1
+            settings_role=[role1],
+            roles=[role1]
         )
         role2 = Role(name="__test_role2")
         user2 = User(
             username="__test_user2",
             password="__test_user2",
-            role=role2
+            settings_role=role2,
+            roles=[role2]
         )
 
         functionality1 = Functionality("__test_s", "db")

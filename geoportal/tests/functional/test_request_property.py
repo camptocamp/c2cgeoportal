@@ -48,7 +48,7 @@ class TestRequestProperty(TestCase):
 
         r = Role(name="__test_role")
         u = User(
-            username="__test_user", password="__test_user", role=r
+            username="__test_user", password="__test_user", settings_role=r, roles=[r]
         )
 
         DBSession.add_all([u, r])
