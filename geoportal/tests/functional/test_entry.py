@@ -68,13 +68,13 @@ class TestEntryView(TestCase):
         cleanup_db()
 
         role1 = Role(name="__test_role1")
-        user1 = User(username="__test_user1", password="__test_user1", role=role1)
+        user1 = User(username="__test_user1", password="__test_user1", settings_role=role1, roles=[role1])
         user1.email = "__test_user1@example.com"
 
         role2 = Role(name="__test_role2", extent=WKTElement(
             "POLYGON((1 2, 1 4, 3 4, 3 2, 1 2))", srid=21781
         ))
-        user2 = User(username="__test_user2", password="__test_user2", role=role2)
+        user2 = User(username="__test_user2", password="__test_user2", settings_role=role2, roles=[role2])
 
         main = Interface(name="desktop")
         mobile = Interface(name="mobile")
