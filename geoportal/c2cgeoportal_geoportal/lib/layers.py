@@ -28,27 +28,32 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from c2cgeoportal_commons.models import static
 from c2cgeoportal_geoportal.lib import caching
 
 
 cache_region = caching.get_region()
 
 
-def _get_layers_query(role_id, what):
+def _get_layers_query(user: static.User, what):
     from c2cgeoportal_commons.models import DBSession, main
+
+    assert user is not None
 
     q = DBSession.query(what)
     q = q.join(main.Layer.restrictionareas)
     q = q.join(main.RestrictionArea.roles)
-    q = q.filter(main.Role.id == role_id)
+    q = q.filter(main.Role.id.in_([r.id for r in user.roles]))
 
     return q
 
 
-def get_protected_layers_query(role_id, ogc_server_ids, what=None):
+def get_protected_layers_query(user: static.User, ogc_server_ids, what=None):
     from c2cgeoportal_commons.models import main
 
-    q = _get_layers_query(role_id, what)
+    assert user is not None
+
+    q = _get_layers_query(user, what)
     q = q.filter(main.Layer.public.is_(False))
     if ogc_server_ids is not None:
         q = q.join(main.LayerWMS.ogc_server)
@@ -56,31 +61,37 @@ def get_protected_layers_query(role_id, ogc_server_ids, what=None):
     return q
 
 
-def get_writable_layers_query(role_id, ogc_server_ids):
+def get_writable_layers_query(user: static.User, ogc_server_ids):
     from c2cgeoportal_commons.models import main
 
-    q = _get_layers_query(role_id, main.LayerWMS)
+    assert user is not None
+
+    q = _get_layers_query(user, main.LayerWMS)
     return q \
         .filter(main.RestrictionArea.readwrite.is_(True)) \
         .join(main.LayerWMS.ogc_server) \
         .filter(main.OGCServer.id.in_(ogc_server_ids))
 
 
-@cache_region.cache_on_arguments()
-def get_protected_layers(role_id, ogc_server_ids):
+def get_protected_layers(user: static.User, ogc_server_ids):
     from c2cgeoportal_commons.models import DBSession, main
 
-    q = get_protected_layers_query(role_id, ogc_server_ids, what=main.LayerWMS)
+    if user is None:
+        return {}
+
+    q = get_protected_layers_query(user, ogc_server_ids, what=main.LayerWMS)
     results = q.all()
     DBSession.expunge_all()
     return {r.id: r for r in results}
 
 
-@cache_region.cache_on_arguments()
-def get_writable_layers(role_id, ogc_server_ids):
+def get_writable_layers(user: static.User, ogc_server_ids):
     from c2cgeoportal_commons.models import DBSession
 
-    q = get_writable_layers_query(role_id, ogc_server_ids)
+    if user is None:
+        return {}
+
+    q = get_writable_layers_query(user, ogc_server_ids)
     results = q.all()
     DBSession.expunge_all()
     return {r.id: r for r in results}

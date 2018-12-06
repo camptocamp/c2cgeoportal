@@ -97,5 +97,5 @@ class TestLoopTheme(TestCase):
         request.client_addr = None
         request.user = None
         entry = Entry(request)
-        _, errors = entry._themes(None, "desktop2", True, 2)
+        _, errors = entry._themes("desktop2", True, 2)
         self.assertEqual(len([e for e in errors if e == "Too many recursions with group '__test_layer_group'"]), 1)
