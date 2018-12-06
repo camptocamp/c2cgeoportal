@@ -24,8 +24,10 @@ Parameters
 
 Requests examples:
 
+* themes
 * themes?background=background
-* themes?group=Transport%sets=group
+* themes?group=Transport
+* themes?group=Transport&sets=group
 
 Result
 ------

@@ -217,7 +217,6 @@ class TestFunctionalities(TestCase):
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
         from tests.functional import create_dummy_request
-        from c2cgeoportal_geoportal.views.entry import Entry
 
         request = create_dummy_request()
         request.static_url = lambda url: "http://example.com/dummy/static/url"
@@ -248,10 +247,3 @@ class TestFunctionalities(TestCase):
         request.registry.settings.update(settings)
         request1.registry.settings.update(settings)
         request2.registry.settings.update(settings)
-
-        annon = Entry(request).get_cgxp_viewer_vars()
-        u1 = Entry(request1).get_cgxp_viewer_vars()
-        u2 = Entry(request2).get_cgxp_viewer_vars()
-        self.assertEqual(annon["functionality"], {"__test_s": ["anonymous"], "__test_a": ["a1", "a2"]})
-        self.assertEqual(u1["functionality"], {"__test_s": ["registered"], "__test_a": ["r1", "r2"]})
-        self.assertEqual(u2["functionality"], {"__test_s": ["db"], "__test_a": ["db1", "db2"]})

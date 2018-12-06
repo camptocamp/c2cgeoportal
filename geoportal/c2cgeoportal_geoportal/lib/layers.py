@@ -45,12 +45,12 @@ def _get_layers_query(role_id, what):
     return q
 
 
-def get_protected_layers_query(role_id, ogc_server_ids, what=None, version=1):
+def get_protected_layers_query(role_id, ogc_server_ids, what=None):
     from c2cgeoportal_commons.models import main
 
     q = _get_layers_query(role_id, what)
     q = q.filter(main.Layer.public.is_(False))
-    if version == 2 and ogc_server_ids is not None:
+    if ogc_server_ids is not None:
         q = q.join(main.LayerWMS.ogc_server)
         q = q.filter(main.OGCServer.id.in_(ogc_server_ids))
     return q
@@ -70,7 +70,7 @@ def get_writable_layers_query(role_id, ogc_server_ids):
 def get_protected_layers(role_id, ogc_server_ids):
     from c2cgeoportal_commons.models import DBSession, main
 
-    q = get_protected_layers_query(role_id, ogc_server_ids, what=main.LayerWMS, version=2)
+    q = get_protected_layers_query(role_id, ogc_server_ids, what=main.LayerWMS)
     results = q.all()
     DBSession.expunge_all()
     return {r.id: r for r in results}
