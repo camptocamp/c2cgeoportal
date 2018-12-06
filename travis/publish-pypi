@@ -8,6 +8,7 @@ echo "username:${PYPI_USERNAME}" >> ~/.pypirc
 echo "password:${PYPI_PASSWORD}" >> ~/.pypirc
 
 # Publish the Python eggs
-python3 ${PKG}/setup.py egg_info --no-date sdist bdist_wheel upload -r pypi
+cd ${PKG}
+python3 setup.py egg_info --no-date sdist bdist_wheel upload -r pypi
 
 rm ~/.pypirc
