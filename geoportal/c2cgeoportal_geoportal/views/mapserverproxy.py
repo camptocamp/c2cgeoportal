@@ -39,7 +39,7 @@ from c2cgeoportal_geoportal.lib.caching import get_region, NO_CACHE, PUBLIC_CACH
 from c2cgeoportal_geoportal.lib.functionality import get_mapserver_substitution_params
 from c2cgeoportal_geoportal.lib.filter_capabilities import filter_capabilities
 from c2cgeoportal_geoportal.views.ogcproxy import OGCProxy
-from c2cgeoportal_commons.models import main
+from c2cgeoportal_commons.models import main, static
 
 cache_region = get_region()
 log = logging.getLogger(__name__)
@@ -134,8 +134,6 @@ class MapservProxy(OGCProxy):
         elif method != "GET":
             cache_control = NO_CACHE
 
-        role = None if self.user is None else self.user.role
-
         headers = self._get_headers()
         # Add headers for Geoserver
         if self._get_ogc_server().auth == main.OGCSERVER_AUTH_GEOSERVER and \
@@ -144,9 +142,8 @@ class MapservProxy(OGCProxy):
             headers["sec-roles"] = role.name
 
         response = self._proxy_callback(
-            role.id if role is not None else None, cache_control,
-            url=_url, params=self.params, cache=use_cache,
-            headers=headers, body=self.request.body
+            self.user, cache_control,
+            url=_url, params=self.params, cache=use_cache, headers=headers, body=self.request.body
         )
 
         if self.lower_params.get("request") == "getmap" and \
@@ -157,7 +154,7 @@ class MapservProxy(OGCProxy):
         return response
 
     def _proxy_callback(
-        self, role_id: int, cache_control: int, url: str, params: dict, **kwargs: Any
+        self, user: static.User, cache_control: int, url: str, params: dict, **kwargs: Any
     ) -> Response:
         callback = params.get("callback")
         if callback is not None:
@@ -167,7 +164,7 @@ class MapservProxy(OGCProxy):
         content = response.content
         if self.lower_params.get("request") == "getcapabilities":
             content = filter_capabilities(
-                response.text, role_id, self.lower_params.get("service") == "wms",
+                response.text, user, self.lower_params.get("service") == "wms",
                 url,
                 self.request.headers,
                 self.request

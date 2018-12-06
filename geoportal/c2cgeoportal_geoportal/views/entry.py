@@ -265,7 +265,7 @@ class Entry:
         if len(errors):  # pragma: no cover
             return url, None, errors
 
-        # add functionalities params
+        # add functionality params
         sparams = get_mapserver_substitution_params(self.request)
         url = add_url_params(url, sparams)
 
@@ -322,8 +322,7 @@ class Entry:
 
         return url, response.content, errors
 
-    @staticmethod
-    def _create_layer_query(role_id, interface):
+    def _create_layer_query(self, interface):
         """
         Create an SQLAlchemy query for Layer and for the role
         identified to by ``role_id``.
@@ -339,13 +338,13 @@ class Entry:
             query = query.join(main.Layer.interfaces)
             query = query.filter(main.Interface.name == interface)
 
-        if role_id is not None:
-            query2 = get_protected_layers_query(role_id, None, what=main.LayerWMS.name)
+        if self.request.user is not None:
+            query2 = get_protected_layers_query(self.request.user, None, what=main.LayerWMS.name)
             if interface is not None:
                 query2 = query2.join(main.Layer.interfaces)
                 query2 = query2.filter(main.Interface.name == interface)
             query = query.union(query2)
-            query3 = get_protected_layers_query(role_id, None, what=main.LayerWMTS.name)
+            query3 = get_protected_layers_query(self.request.user, None, what=main.LayerWMTS.name)
             if interface is not None:
                 query3 = query3.join(main.Layer.interfaces)
                 query3 = query3.filter(main.Interface.name == interface)
@@ -660,7 +659,6 @@ class Entry:
     def _layer_included(tree_item):
         return isinstance(tree_item, main.Layer)
 
-    @cache_region.cache_on_arguments()
     def _get_ogc_servers(self, group, depth):
         """ Recurse on all children to get unique identifier for each child. """
         ogc_servers = set()
@@ -684,9 +682,8 @@ class Entry:
         return ogc_servers
 
     def _group(
-        self, path, group, layers, depth=1, min_levels=1,
-        catalogue=True, role_id=None, mixed=True, time=None, dim=None,
-        wms_layers=None, layers_name=None, **kwargs
+        self, path, group, layers, depth=1, min_levels=1, catalogue=True, mixed=True, time=None,
+        dim=None, wms_layers=None, layers_name=None, **kwargs
     ):
         if wms_layers is None:
             wms_layers = []
@@ -719,7 +716,7 @@ class Entry:
             if isinstance(tree_item, main.LayerGroup):
                 gp, gp_errors = self._group(
                     u"{}/{}".format(path, tree_item.name), tree_item, layers,
-                    depth=depth + 1, min_levels=min_levels, catalogue=catalogue, role_id=role_id,
+                    depth=depth + 1, min_levels=min_levels, catalogue=catalogue,
                     mixed=mixed, time=time, dim=dim, wms_layers=wms_layers, layers_name=layers_name, **kwargs
                 )
                 errors |= gp_errors
@@ -770,9 +767,8 @@ class Entry:
         else:
             return None, errors
 
-    @cache_region.cache_on_arguments()
-    def _layers(self, role_id, interface):
-        query = self._create_layer_query(role_id, interface=interface)
+    def _layers(self, interface):
+        query = self._create_layer_query(interface=interface)
         return [name for (name,) in query.all()]
 
     def _wms_layers(self, role_id, ogc_server):
@@ -804,23 +800,22 @@ class Entry:
             subqueryload(main.Theme.children_relation)
         ).all()
 
-    @cache_region.cache_on_arguments()
-    def _themes(self, role_id, interface="desktop", filter_themes=True, catalogue=False, min_levels=1):
+    def _themes(self, interface="desktop", filter_themes=True, catalogue=False, min_levels=1):
         """
         This function returns theme information for the role identified
         by ``role_id``.
         """
         self._load_tree_items()
         errors = set()
-        layers = self._layers(role_id, interface)
+        layers = self._layers(interface)
 
         themes = models.DBSession.query(main.Theme)
         themes = themes.filter(main.Theme.public.is_(True))
-        if role_id is not None:
+        if self.request.user is not None:
             auth_themes = models.DBSession.query(main.Theme)
             auth_themes = auth_themes.filter(main.Theme.public.is_(False))
             auth_themes = auth_themes.join(main.Theme.restricted_roles)
-            auth_themes = auth_themes.filter(main.Role.id == role_id)
+            auth_themes = auth_themes.filter(main.Role.id.in_([r.id for r in self.request.user.roles]))
 
             themes = themes.union(auth_themes)
 
@@ -836,9 +831,7 @@ class Entry:
                 errors.add("The theme has an unsupported name '{}'.".format(theme.name))
                 continue
 
-            children, children_errors = self._get_children(
-                theme, layers, catalogue, min_levels, role_id
-            )
+            children, children_errors = self._get_children(theme, layers, catalogue, min_levels)
             errors |= children_errors
 
             # test if the theme is visible for the current user
@@ -880,14 +873,14 @@ class Entry:
             "success": True
         }
 
-    def _get_children(self, theme, layers, catalogue, min_levels, role_id):
+    def _get_children(self, theme, layers, catalogue, min_levels):
         children = []
         errors = set()
         for item in theme.children:
             if isinstance(item, main.LayerGroup):
                 gp, gp_errors = self._group(
                     "{}/{}".format(theme.name, item.name), item, layers,
-                    role_id=role_id, catalogue=catalogue, min_levels=min_levels
+                    catalogue=catalogue, min_levels=min_levels
                 )
                 errors |= gp_errors
                 if gp is not None:
@@ -1003,7 +996,6 @@ class Entry:
             self.request.user.role.name if self.request.user is not None else None
         )
 
-    @cache_region.cache_on_arguments()
     def _functionality_cached(self, role):
         del role  # Just for caching
         functionality = {}
@@ -1149,12 +1141,6 @@ class Entry:
 
     @view_config(route_name="themes", renderer="json")
     def themes(self):
-        role_id = self.request.params.get("role_id")
-        if role_id is None and self.request.user is not None:
-            role_id = self.request.user.role.id
-        elif self.request.client_addr != "127.0.0.1":
-            role_id = None
-
         interface = self.request.params.get("interface", "desktop")
         sets = self.request.params.get("set", "all")
         version = int(self.request.params.get("version", 1))
@@ -1238,7 +1224,7 @@ class Entry:
                     "attributes": attributes,
                 }
         if export_themes:
-            themes, errors = self._themes(role_id, interface, True, catalogue, min_levels)
+            themes, errors = self._themes(interface, True, catalogue, min_levels)
 
             if version == 1:
                 return themes
@@ -1247,13 +1233,13 @@ class Entry:
             all_errors |= errors
 
         if export_group:
-            group, errors = self._get_group(group, role_id, interface)
+            group, errors = self._get_group(group, interface)
             if group is not None:
                 result["group"] = group
             all_errors |= errors
 
         if export_background:
-            group, errors = self._get_group(background_layers_group, role_id, interface)
+            group, errors = self._get_group(background_layers_group, interface)
             result["background_layers"] = group["children"] if group is not None else []
             all_errors |= errors
 
@@ -1262,11 +1248,11 @@ class Entry:
             log.info("Theme errors:\n{}".format("\n".join(all_errors)))
         return result
 
-    def _get_group(self, group, role_id, interface):
-        layers = self._layers(role_id, interface)
+    def _get_group(self, group, interface):
+        layers = self._layers(interface)
         try:
             lg = models.DBSession.query(main.LayerGroup).filter(main.LayerGroup.name == group).one()
-            return self._group(lg.name, lg, layers, role_id=role_id)
+            return self._group(lg.name, lg, layers)
         except NoResultFound:  # pragma: no cover
             return None, set(["Unable to find the Group named: {}, Available Groups: {}".format(
                 group, ", ".join([i[0] for i in models.DBSession.query(main.LayerGroup.name).all()])

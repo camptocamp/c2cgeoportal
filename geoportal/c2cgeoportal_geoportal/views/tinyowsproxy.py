@@ -34,6 +34,7 @@ from pyramid.view import view_config
 from defusedxml import ElementTree
 from pyramid.httpexceptions import HTTPForbidden, HTTPBadRequest, HTTPUnauthorized
 
+from c2cgeoportal_commons.models import static
 from c2cgeoportal_geoportal.lib.layers import get_writable_layers
 from c2cgeoportal_geoportal.lib.caching import get_region, NO_CACHE, PRIVATE_CACHE
 from c2cgeoportal_geoportal.lib.filter_capabilities import filter_wfst_capabilities, \
@@ -54,7 +55,6 @@ class TinyOWSProxy(OGCProxy):
         assert self.default_ogc_server, "mapserverproxy.default_ogc_server must be set"
 
         self.user = self.request.user
-        self.role_id = None if self.user is None else self.user.role.id
 
         # params hold the parameters we are going to send to TinyOWS
         self.lower_params = self._get_lower_params(dict(self.request.params))
@@ -111,7 +111,7 @@ class TinyOWSProxy(OGCProxy):
         cache_control = PRIVATE_CACHE if use_cache else NO_CACHE
 
         response = self._proxy_callback(
-            operation, self.role_id, cache_control,
+            operation, self.user, cache_control,
             url=self._get_wfs_url(), params=dict(self.request.params), cache=use_cache,
             headers=self._get_headers(), body=self.request.body,
         )
@@ -124,7 +124,7 @@ class TinyOWSProxy(OGCProxy):
         """
 
         writable_layers = set()
-        for gmflayer in list(get_writable_layers(self.role_id, [self.default_ogc_server.id]).values()):
+        for gmflayer in list(get_writable_layers(self.request.user, [self.default_ogc_server.id]).values()):
             for ogclayer in gmflayer.layer.split(","):
                 writable_layers.add(ogclayer)
         return typenames.issubset(writable_layers)
@@ -135,13 +135,13 @@ class TinyOWSProxy(OGCProxy):
             headers["Host"] = self.settings.get("tinyows_host")
         return headers
 
-    def _proxy_callback(self, operation, role_id, cache_control, *args, **kwargs):
+    def _proxy_callback(self, operation, user: static.User, cache_control, *args, **kwargs):
         response = self._proxy(*args, **kwargs)
         content = response.text
 
         if operation == "getcapabilities":
             content = filter_wfst_capabilities(
-                content, role_id, super(TinyOWSProxy, self)._get_wfs_url(), self.request
+                content, user, super(TinyOWSProxy, self)._get_wfs_url(), self.request
             )
 
         content = self._filter_urls(

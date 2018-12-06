@@ -153,18 +153,17 @@ class TestMapserverproxyView(TestCase):
 
         pt1 = Functionality(name="print_template", value="1 Wohlen A4 portrait")
         pt2 = Functionality(name="print_template", value="2 Wohlen A3 landscape")
-        user1 = User(username="__test_user1", password="__test_user1")
         role1 = Role(name="__test_role1", description="__test_role1", functionalities=[pt1, pt2])
-        user1.role_name = role1.name
+        user1 = User(username="__test_user1", password="__test_user1", roles=[role1])
         user1.email = "Tarenpion"
 
-        user2 = User(username="__test_user2", password="__test_user2")
         role2 = Role(name="__test_role2", description="__test_role2", functionalities=[pt1, pt2])
+        user2 = User(username="__test_user2", password="__test_user2", roles=[role2])
         user2.role_name = role2.name
         user2.email = "Tarenpion"
 
-        user3 = User(username="__test_user3", password="__test_user3")
         role3 = Role(name="__test_role3", description="__test_role3", functionalities=[pt1, pt2])
+        user3 = User(username="__test_user3", password="__test_user3", roles=[role3])
         user3.role_name = role3.name
 
         main = Interface(name="main")
@@ -200,9 +199,9 @@ class TestMapserverproxyView(TestCase):
         self.id_lausanne = p1.id
         self.id_paris = p3.id
         self.ogc_server_id = ogc_server_internal.id
-        self.role1_id = role1.id
-        self.role2_id = role2.id
-        self.role3_id = role3.id
+        self.user1 = user1
+        self.user2 = user2
+        self.user3 = user3
 
         transaction.commit()
 
@@ -557,7 +556,7 @@ class TestMapserverproxyView(TestCase):
     def test_protected_layers1(self):
         from c2cgeoportal_geoportal.lib.layers import get_protected_layers
 
-        pl = get_protected_layers(self.role1_id, [self.ogc_server_id])
+        pl = get_protected_layers(self.user1, [self.ogc_server_id])
         self.assertEqual(
             {pl[l].name for l in pl},
             {"testpoint_protected", "testpoint_protected_query_with_collect"}
@@ -566,7 +565,7 @@ class TestMapserverproxyView(TestCase):
     def test_protected_layers2(self):
         from c2cgeoportal_geoportal.lib.layers import get_protected_layers
 
-        pl = get_protected_layers(self.role2_id, [self.ogc_server_id])
+        pl = get_protected_layers(self.user2, [self.ogc_server_id])
         self.assertEqual(
             {pl[l].name for l in pl},
             {"testpoint_protected", "testpoint_protected_query_with_collect"}
@@ -575,7 +574,7 @@ class TestMapserverproxyView(TestCase):
     def test_protected_layers3(self):
         from c2cgeoportal_geoportal.lib.layers import get_protected_layers
 
-        pl = get_protected_layers(self.role3_id, [self.ogc_server_id])
+        pl = get_protected_layers(self.user3, [self.ogc_server_id])
         self.assertEqual(
             {pl[l].name for l in pl},
             {"testpoint_protected", "testpoint_protected_query_with_collect"}
@@ -584,7 +583,7 @@ class TestMapserverproxyView(TestCase):
     def test_writable_layers1(self):
         from c2cgeoportal_geoportal.lib.layers import get_writable_layers
 
-        pl = get_writable_layers(self.role1_id, [self.ogc_server_id])
+        pl = get_writable_layers(self.user1, [self.ogc_server_id])
         self.assertEqual(
             {pl[l].name for l in pl}, set()
         )
@@ -592,7 +591,7 @@ class TestMapserverproxyView(TestCase):
     def test_writable_layers2(self):
         from c2cgeoportal_geoportal.lib.layers import get_writable_layers
 
-        pl = get_writable_layers(self.role2_id, [self.ogc_server_id])
+        pl = get_writable_layers(self.user2, [self.ogc_server_id])
         self.assertEqual(
             {pl[l].name for l in pl}, set()
         )
@@ -600,7 +599,7 @@ class TestMapserverproxyView(TestCase):
     def test_writable_layers3(self):
         from c2cgeoportal_geoportal.lib.layers import get_writable_layers
 
-        pl = get_writable_layers(self.role3_id, [self.ogc_server_id])
+        pl = get_writable_layers(self.user3, [self.ogc_server_id])
         self.assertEqual(
             {pl[l].name for l in pl},
             {"testpoint_protected_query_with_collect"}
