@@ -12,8 +12,6 @@ unmanaged_files:
   - Makefile
   - testgeomapfish\.mk
   - project\.yaml\.mako
-  - vars\.yaml
-  - docker-compose\.yaml
   - testdb/11-schemas\.sql\_mako
   - tilegeneration/config\.yaml\.mako
   - tilegeneration/config\.yaml\.tmpl\.mako
