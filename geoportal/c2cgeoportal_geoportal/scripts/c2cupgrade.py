@@ -508,23 +508,25 @@ class C2cUpgradeTool:
         self.files_to_get(step)
         self.run_step(step + 1)
 
-    def is_managed(self, file_):
+    def is_managed(self, file_, files_to_get=False):
         default_project_file = self.get_upgrade('default_project_file')
 
         # managed means managed by the application owner, not the c2cupgrade
         managed = False
-        for pattern in default_project_file['include']:
-            if re.match(pattern + '$', file_):
-                print("File '{}' included by migration config pattern '{}'.".format(file_, pattern))
-                managed = True
-                break
-        if managed:
-            for pattern in default_project_file['exclude']:
+        if not files_to_get or (not os.path.exists(file_)) and \
+            check_output(["git", "status", "--short", file_]).decode("utf-8").startwith("?? "):
+            for pattern in default_project_file['include']:
                 if re.match(pattern + '$', file_):
-                    print("File '{}' excluded by migration config pattern '{}'.".format(file_, pattern))
-                    print('managed', file_, pattern)
-                    managed = False
+                    print("File '{}' included by migration config pattern '{}'.".format(file_, pattern))
+                    managed = True
                     break
+            if managed:
+                for pattern in default_project_file['exclude']:
+                    if re.match(pattern + '$', file_):
+                        print("File '{}' excluded by migration config pattern '{}'.".format(file_, pattern))
+                        print('managed', file_, pattern)
+                        managed = False
+                        break
 
         if not managed and not os.path.exists(file_):
             for pattern in self.get_upgrade('extra'):
@@ -558,10 +560,9 @@ class C2cUpgradeTool:
             root = root[len("CONST_create_template/"):]
             for file_ in files:
                 destination = os.path.join(root, file_)
-                managed = self.is_managed(destination)
+                managed = self.is_managed(destination, True)
                 source = os.path.join("CONST_create_template", destination)
-                if not os.path.exists(destination) or not managed and \
-                        (not os.path.exists(destination) or not filecmp.cmp(source, destination)):
+                if not managed and (not os.path.exists(destination) or not filecmp.cmp(source, destination)):
                     print(colorize(
                         "Get the file '{}' from the create template.".format(destination), GREEN
                     ))
