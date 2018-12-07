@@ -52,7 +52,8 @@ class TestUser:
             filter(user_role.c.user_id == user.id).\
             count()
 
-    def test_edit(self, dbsession):
+    @staticmethod
+    def test_edit(dbsession):
         from c2cgeoportal_commons.models.static import User
         from c2cgeoportal_commons.models.main import Role
         from c2cgeoportal_commons.models.static import user_role
