@@ -1,0 +1,6 @@
+[bandit]
+exclude: /commons/c2cgeoportal_commons/alembic/main/,
+    /commons/c2cgeoportal_commons/alembic/static/,
+    /commons/tests/,
+    /geoportal/tests/,
+    /admin/tests/
