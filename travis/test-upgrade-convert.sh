@@ -224,6 +224,7 @@ function v220 {
     mv geoportal/testgeomapfish_geoportal/locale/en/LC_MESSAGES/testgeomapfish{,_geoportal}-client.po
     mv geoportal/testgeomapfish_geoportal/locale/fr/LC_MESSAGES/testgeomapfish{,_geoportal}-client.po
     mv geoportal/testgeomapfish_geoportal/locale/de/LC_MESSAGES/testgeomapfish{,_geoportal}-client.po
+    ls -als
     ./docker-run --env=NODE_ENV make $MAKE_ARGS upgrade9
     if [ ! -e .UPGRADE_SUCCESS ]
     then
