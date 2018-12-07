@@ -560,7 +560,8 @@ class C2cUpgradeTool:
                 destination = os.path.join(root, file_)
                 managed = self.is_managed(destination)
                 source = os.path.join("CONST_create_template", destination)
-                if not managed and (not os.path.exists(destination) or not filecmp.cmp(source, destination)):
+                if not os.path.exists(destination) or not managed and \
+                        (not os.path.exists(destination) or not filecmp.cmp(source, destination)):
                     print(colorize(
                         "Get the file '{}' from the create template.".format(destination), GREEN
                     ))

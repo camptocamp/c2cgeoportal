@@ -16,7 +16,8 @@ default_project_file:
     - mapserver/.*
     - tilegeneration/config\.yaml\.tmpl\.mako
     - project\.yaml\.mako
-    - docker-compose\.yaml\.mako
+    - docker-compose\.yaml
+    - \.env\.mako
     - setup\.py
     - vars\.yaml
     - Makefile
