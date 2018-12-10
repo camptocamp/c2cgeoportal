@@ -98,7 +98,7 @@ services:
       - '30'
 
   tilecloudchain:
-    image: camptocamp/tilecloud-chain:1.8
+    image: camptocamp/tilecloud-chain:1.9
     user: www-data
     restart: unless-stopped
     environment:
@@ -114,7 +114,7 @@ services:
       - C2C_SECRET
 
   tilegeneration_slave:
-    image: camptocamp/tilecloud-chain:1.8
+    image: camptocamp/tilecloud-chain:1.9
     user: www-data
     restart: unless-stopped
     entrypoint:

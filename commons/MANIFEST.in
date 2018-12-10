@@ -1,1 +1,2 @@
 include README.rst requirements.txt
+recursive-include c2cgeoportal_commons/alembic *.py
