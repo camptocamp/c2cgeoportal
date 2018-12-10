@@ -50,6 +50,7 @@ class DynamicView:
         result.update(self.interfaces_config.get(interface, {}).get(value, {}))
         return result
 
+    @view_config(route_name='dynamic', renderer='fast_json')
     def dynamic(self):
         interface_name = self.request.params.get('interface')
         if interface_name not in self.settings.get('interfaces'):
@@ -78,7 +79,7 @@ class DynamicView:
             for name, value in self.get('dynamic_constants', interface_name).items()
         })
         constants.update({
-            name: self.request.static_url(static_)
+            name: self.request.static_url(static_['name']) + static_.get('append', '')
             for name, static_ in self.get('static', interface_name).items()
         })
 
@@ -122,36 +123,9 @@ class DynamicView:
                 else:
                     constants['redirectUrl'] = url
 
-        other_constants = {
-            'angularLocaleScript': self.request.static_url(
-                self.request.registry.settings['package'] + '_geoportal:static-ngeo/build/'
-            ) + 'angular-locale_{{locale}}.js',
-        }
-
         set_common_headers(self.request, "dynamic", NO_CACHE)
-        return constants, interface_name, do_redirect, url, other_constants
-
-    @view_config(route_name="dynamic_js", renderer="c2cgeoportal_geoportal:templates/dynamic.js")
-    def dynamic_js(self):
-        constants, interface_name, do_redirect, url, other_constants = self.dynamic()
-
-        self.request.response.content_type = 'application/javascript'
-
         return {
             'constants': constants,
-            'interface_name': interface_name,
-            'do_redirect': do_redirect,
-            'redirect_url': url,
-            'other_constants': other_constants,
-        }
-
-    @view_config(route_name='dynamic', renderer='fast_json')
-    def dynamic_json(self):
-        constants, interface_name, do_redirect, url, other_constants = self.dynamic()
-        constants.update(other_constants)
-        return {
-            'constants': constants,
-            'interfaceName': interface_name,
             'doRedirect': do_redirect,
             'redirectUrl': url,
         }

@@ -29,7 +29,6 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import os
 import re
 from json import dumps
 from urllib.parse import parse_qsl
@@ -100,34 +99,26 @@ def main():
         data = re.sub(r"{{", r"\\{\\{", data)
         data = re.sub(r"}}", r"\\}\\}", data)
 
-        data = re.sub("app", "{{package}}", data)
-        data = re.sub(re.escape("{{package}}lication"), "application", data)
-        data = re.sub(re.escape("{{package}}le"), "apple", data)
-
         if args.html:
-            # back for ng-app
-            data = _sub(r"ng-{{package}}", r"ng-app", data)
-            # back for gmf-app- css prefix
-            data = _sub(r"gmf-{{package}}-", r"gmf-app-", data, required=False)
-            if args.interface == "mobile" or args.interface == "mobile_alt":
-                # back for mobile-web-app-capable
-                data = _sub(
-                    r"mobile-web-{{package}}-capable",
-                    r"mobile-web-app-capable", data
-                )
             data = _sub(
-                re.escape('<script src="https://geomapfish-demo-dc.camptocamp.com/2.') + '[0-9]' +
-                re.escape('/dynamic.js?'),
-                (
-                    '<script src="{entry_point}static-ngeo/UNUSED_CACHE_VERSION/build/vendor.js'
-                    '?{version}"></script>\n'
-                    '<script src="{entry_point}dynamic.js?'
-                ).format(
+                r'( +)(' + re.escape('<% for (var chunk in htmlWebpackPlugin.files.chunks) { %>') + r')',
+                r'\1<script src="{entry_point}static-ngeo/UNUSED_CACHE_VERSION/build/vendor.js?{version}">'
+                r'</script>\n\1\2'.format(
                     entry_point='${htmlWebpackPlugin.options.vars.entry_point}' if args.docker else '',
-                    version=os.environ.get("VERSION", "")
+                    version='${htmlWebpackPlugin.options.vars.version}' if args.docker else ''
                 ),
                 data
             )
+            data = _sub(
+                re.escape('<meta name="dynamicUrl" content="https://geomapfish-demo-dc.camptocamp.com/2.') +
+                '[0-9]' + re.escape('/dynamic.json">'),
+                '<meta name="dynamicUrl" content="{entry_point}dynamic.json">'.format(
+                    entry_point='${htmlWebpackPlugin.options.vars.entry_point}' if args.docker else '',
+                ),
+                data
+            )
+        else:
+            data = re.sub("app", "{{package}}", data)
 
         with open(args.dst, "wt") as dst:
             dst.write(data)

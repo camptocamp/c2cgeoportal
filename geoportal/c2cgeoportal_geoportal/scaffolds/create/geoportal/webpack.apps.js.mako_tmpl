@@ -27,6 +27,7 @@ for (const filename of ls(path.resolve(__dirname, '${package}_geoportal/static-n
       chunks: [name],
       vars: {
         entry_point: '${entry_point}',
+        version: '${geomapfish_version}',
        },
     })
   );

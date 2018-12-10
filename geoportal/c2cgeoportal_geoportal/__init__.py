@@ -402,6 +402,7 @@ class OgcproxyRoutePredicate:
 
     def __init__(self, val, config):
         del val  # unused
+        del config  # unused
         self.private_networks = [
             Network("127.0.0.0/8"),
             Network("10.0.0.0/8"),
@@ -483,8 +484,8 @@ def call_hook(settings, name, *args, **kwargs):
         return
     parts = hook.split(".")
     module = importlib.import_module(".".join(parts[0:-1]))
-    function = getattr(module, parts[-1])
-    function(*args, **kwargs)
+    function_ = getattr(module, parts[-1])
+    function_(*args, **kwargs)
 
 
 def includeme(config):
@@ -551,8 +552,6 @@ def includeme(config):
     config.add_directive("set_user_validator", set_user_validator)
     config.set_user_validator(default_user_validator)
 
-    # Cannot be at the header to don"t load the model too early
-    config.add_route('dynamic_js', '/dynamic.js', request_method="GET")
     config.add_route('dynamic', '/dynamic.json', request_method="GET")
     if settings.get("ogcproxy_enable", False):  # pragma: no cover
         # Add an OGCProxy view
@@ -753,6 +752,6 @@ def init_dbsessions(settings: dict, config: Configurator, health_check: HealthCh
                     health_check.add_alembic_check(session, alembic_ini_path=alembic_ini, name='static',
                                                    version_schema=settings['schema_static'])
             else:  # pragma: no cover
-                def check(session: Session) -> None:
-                    session.execute('SELECT 1')
+                def check(session_: Session) -> None:
+                    session_.execute('SELECT 1')
                 health_check.add_db_session_check(session, query_cb=check)
