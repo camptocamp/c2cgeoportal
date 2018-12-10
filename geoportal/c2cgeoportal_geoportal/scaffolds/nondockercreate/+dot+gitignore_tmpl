@@ -4,6 +4,10 @@
 __pycache__/
 /.build
 /project.yaml
+/docker-compose-dev.yaml
+/docker-compose-front.yaml
+/docker-compose-lib.yaml_tmpl
+/docker-compose.yaml
 /.env.mako
 /admin/
 /testdb/11-schemas.sql
