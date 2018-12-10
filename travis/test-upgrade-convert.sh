@@ -134,15 +134,12 @@ then
     ./docker-run --env=NODE_ENV make --makefile=temp.mk upgrade
     if [ ! -e .UPGRADE10 ]
     then
-        printdiff
-        echo "Fail to upgrade"
-        exit 1
+        ./docker-run --env=NODE_ENV make upgrade11
     fi
     cp {CONST_create_template/,}project.yaml.mako
     cp {CONST_create_template/,}vars.yaml
     cp {CONST_create_template/,}mapserver/tinyows.xml.tmpl.mako
     cp {CONST_create_template/,}print/print-apps/testgeomapfish/config.yaml.tmpl
-    ./docker-run --env=NODE_ENV make upgrade11
     if [ ! -e .UPGRADE_SUCCESS ]
     then
         printdiff
@@ -170,18 +167,15 @@ then
     git commit --quiet --message="Start upgrade"
     export APACHE_VHOST=test
     ./docker-run --env=NODE_ENV make upgrade
-    if [ ! -e .UPGRADE10 ]
+    if [ -e .UPGRADE10 ]
     then
-        printdiff
-        echo "Fail to upgrade"
-        exit 1
+        ./docker-run --env=NODE_ENV make --makefile=testgeomapfish.mk upgrade11
     fi
     cp {CONST_create_template/,}project.yaml.mako
     cp {CONST_create_template/,}vars.yaml
     cp {CONST_create_template/,}testgeomapfish.mk
     cp {CONST_create_template/,}mapserver/tinyows.xml.mako
     cp {CONST_create_template/,}print/print-apps/testgeomapfish/config.yaml.mako
-    ./docker-run --env=NODE_ENV make --makefile=testgeomapfish.mk upgrade11
     if [ ! -e .UPGRADE_SUCCESS ]
     then
         printdiff
