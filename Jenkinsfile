@@ -251,19 +251,29 @@ dockerBuild {
             }
             stage('Publish') {
                 if (abort_ci()) { return }
-                parallel 'Push to Docker hub': {
+                parallel 'Push to Docker hub and Pypi': {
                     sh 'git remote add full https://github.com/camptocamp/c2cgeoportal.git || true'
                     sh 'git remote set-url full https://github.com/camptocamp/c2cgeoportal.git'
                     sh 'git fetch --tags --prune full'
 
                     sh "travis/create-new-project.sh ${HOME}/workspace geomapfish"
-                    withCredentials([string(credentialsId: 'docker-hub', variable: 'DOCKER_PASSWORD')]) {
+                    withCredentials([
+                        string(credentialsId: 'docker-hub', variable: 'DOCKER_PASSWORD'),
+                        [
+                             $class: 'UsernamePasswordMultiBinding',
+                             credentialsId: 'pypi_sbrunner',
+                             usernameVariable: 'PYPI_USERNAME',
+                             passwordVariable: 'PYPI_PASSWORD',
+                        ]
+                    ]) {
                         env.DOCKER_PASSWORD = DOCKER_PASSWORD
+                        env.PYPI_USERNAME = PYPI_USERNAME
+                        env.PYPI_PASSWORD = PYPI_PASSWORD
 
                         sh '.venv/bin/python travis/clean-dockerhub-tags'
 
                         sshagent (credentials: ['c2c-infra-ci']) {
-                            sh 'travis/publish-docker'
+                            sh 'travis/publish'
                         }
                     }
                 }, 'Push to Transifex': {

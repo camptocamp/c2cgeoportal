@@ -204,9 +204,12 @@ docker/qgisserver/commons: commons
 
 .PHONY: docker-build-qgisserver
 docker-build-qgisserver: $(shell docker-required --path docker/qgisserver) docker/qgisserver/commons
-	docker build --tag=$(DOCKER_BASE)-qgisserver:gmf$(MAJOR_VERSION)-qgismaster docker/qgisserver
-	docker build --tag=$(DOCKER_BASE)-qgisserver:gmf$(MAJOR_VERSION)-qgis3.2 \
-		--file=docker/qgisserver/Dockerfile32 docker/qgisserver
+	docker build --build-arg=VERSION=latest \
+		--tag=$(DOCKER_BASE)-qgisserver:gmf$(MAJOR_VERSION)-qgismaster docker/qgisserver
+	docker build --build-arg=VERSION=3.2 \
+		--tag=$(DOCKER_BASE)-qgisserver:gmf$(MAJOR_VERSION)-qgis3.2 docker/qgisserver
+	docker build --build-arg=VERSION=3.4 \
+		--tag=$(DOCKER_BASE)-qgisserver:gmf$(MAJOR_VERSION)-qgis3.4 docker/qgisserver
 
 .PHONY: prepare-tests
 prepare-tests: \
@@ -502,7 +505,7 @@ geoportal/c2cgeoportal_geoportal/locale/%/LC_MESSAGES/c2cgeoportal_geoportal.po:
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	tx pull --language $* --resource geomapfish.c2cgeoportal_geoportal-$(TX_VERSION) --force
-	sed -i 's/[[:space:]]\+$///' $@
+	sed -i 's/[[:space:]]\+$$//' $@
 	$(TOUCHBACK_TXRC)
 	test -s $@
 
@@ -510,7 +513,7 @@ geoportal/c2cgeoportal_geoportal/locale/%/LC_MESSAGES/ngeo.po: $(TX_DEPENDENCIES
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	tx pull --language $* --resource ngeo.ngeo-$(TX_VERSION) --force
-	sed -i 's/[[:space:]]\+$///' $@
+	sed -i 's/[[:space:]]\+$$//' $@
 	$(TOUCHBACK_TXRC)
 	test -s $@
 
@@ -518,7 +521,7 @@ geoportal/c2cgeoportal_geoportal/locale/%/LC_MESSAGES/gmf.po: $(TX_DEPENDENCIES)
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	tx pull --language $* --resource ngeo.gmf-$(TX_VERSION) --force
-	sed -i 's/[[:space:]]\+$///' $@
+	sed -i 's/[[:space:]]\+$$//' $@
 	$(TOUCHBACK_TXRC)
 	test -s $@
 
@@ -526,7 +529,7 @@ admin/c2cgeoportal_admin/locale/%/LC_MESSAGES/c2cgeoportal_admin.po: $(TX_DEPEND
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	tx pull --language $* --resource geomapfish.c2cgeoportal_admin-$(TX_VERSION) --force
-	sed -i 's/[[:space:]]\+$///' $@
+	sed -i 's/[[:space:]]\+$$//' $@
 	$(TOUCHBACK_TXRC)
 	test -s $@
 
@@ -535,7 +538,7 @@ geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	tx pull --language $* --resource ngeo.gmf-apps-$(TX_VERSION) --force
-	sed -i 's/[[:space:]]\+$///' $@
+	sed -i 's/[[:space:]]\+$$//' $@
 	$(TOUCHBACK_TXRC)
 	test -s $@
 

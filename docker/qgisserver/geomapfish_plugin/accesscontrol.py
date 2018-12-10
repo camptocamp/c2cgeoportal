@@ -48,7 +48,6 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
 
         try:
             config.init(os.environ.get('GEOMAPFISH_CONFIG', '/etc/qgisserver/geomapfish.yaml'))
-            self.srid = config.get('srid')
 
             c2cwsgiutils.broadcast.init(None)
 
@@ -61,7 +60,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             if "GEOMAPFISH_OGCSERVER" in os.environ:
                 self.single = True
                 self.ogcserver_accesscontrol = OGCServerAccessControl(
-                    server_iface, os.environ['GEOMAPFISH_OGCSERVER'], DBSession
+                    server_iface, os.environ['GEOMAPFISH_OGCSERVER'], config.get('srid'), DBSession
                 )
 
                 QgsMessageLog.logMessage("Use OGC server named '{}'.".format(
@@ -75,7 +74,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
 
                 for map_, map_config in ac_config.get("map_config").items():
                     map_config["access_control"] = OGCServerAccessControl(
-                        server_iface, map_config["ogc_server"], DBSession
+                        server_iface, map_config["ogc_server"], config.get('srid'), DBSession
                     )
                     self.ogcserver_accesscontrols[map_] = map_config
                 QgsMessageLog.logMessage("Use config '{}'.".format(
@@ -135,7 +134,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
     SUBSETSTRING_TYPE = ["GPKG", "PostgreSQL database with PostGIS extension"]
 
-    def __init__(self, server_iface, ogcserver_name, DBSession):  # noqa: N803
+    def __init__(self, server_iface, ogcserver_name, srid, DBSession):  # noqa: N803
         super().__init__(server_iface)
 
         self.server_iface = server_iface
@@ -144,6 +143,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         self.layers = None
         self.lock = Lock()
         self.project = None
+        self.srid = srid
 
         try:
             from c2cgeoportal_commons.models.main import InvalidateCacheEvent
