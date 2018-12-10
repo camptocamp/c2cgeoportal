@@ -101,4 +101,4 @@ args = (sys.stdout,)
 level = NOTSET
 
 [formatter_generic]
-format = %(asctime)s %(levelname)-5.5s [%(name)s][%(thread)s] %(message)s
+format = %(levelname)-5.5s [%(name)s] %(message)s
