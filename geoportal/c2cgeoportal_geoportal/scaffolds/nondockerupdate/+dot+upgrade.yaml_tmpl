@@ -148,6 +148,30 @@ files_to_remove:
   - file: CONST.mako_inc
     version: 2.4
     from: 2.3
+  - file: docker-compose.yml.mako
+    version: 2.4
+    from: 2.2
+  - file: docker-compose.yaml.mako
+    version: 2.4
+    from: docker
+  - file: docker-compose.yaml
+    version: 2.4
+    from: docker
+  - file: docker-compose-dev.yaml.mako
+    version: 2.4
+    from: docker
+  - file: docker-compose-dev.yaml
+    version: 2.4
+    from: docker
+  - file: docker-compose-front.yaml.mako
+    version: 2.4
+    from: docker
+  - file: docker-compose-front.yaml
+    version: 2.4
+    from: docker
+  - file: .env.mako
+    version: 2.4
+    from: docker
 
 files_to_move:
   - from: vars_{{package}}.yaml
