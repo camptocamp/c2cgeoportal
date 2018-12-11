@@ -35,7 +35,7 @@ then
     VERSION=${TAG}
 elif [ "${BRANCH_NAME}" != "master" ]
 then
-    VERSION=${BRANCH_NAME/\//_}
+    VERSION=${BRANCH_NAME//\//_}
     DEPLOY_PIP=FALSE
 else
     VERSION=${MAJOR_VERSION}
