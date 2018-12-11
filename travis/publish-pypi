@@ -9,6 +9,11 @@ echo "password:${PYPI_PASSWORD}" >> ~/.pypirc
 
 # Publish the Python eggs
 cd ${PKG}
-python3 setup.py egg_info --no-date sdist bdist_wheel upload -r pypi
+if [ "${VERSION}" == "${MAJOR_VERSION}" ]
+then
+    python3 setup.py egg_info sdist bdist_wheel upload -r pypi
+else
+    python3 setup.py egg_info --no-date sdist bdist_wheel upload -r pypi
+fi
 
 rm ~/.pypirc
