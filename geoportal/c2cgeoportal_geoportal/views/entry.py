@@ -53,6 +53,7 @@ import zope.event.classhandler
 
 from c2cgeoportal_commons import models
 from c2cgeoportal_commons.models import main, static
+from c2cgeoportal_geoportal import is_valid_referer
 from c2cgeoportal_geoportal.lib import get_setting, get_protected_layers_query, \
     get_url2, get_url, get_typed, get_types_map, add_url_params, get_http
 from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
@@ -1470,8 +1471,18 @@ class Entry:
                 group, ", ".join([i[0] for i in models.DBSession.query(main.LayerGroup.name).all()])
             )])
 
+    def _referer_log(self):
+        if not hasattr(self.request, "is_valid_referer"):
+            self.request.is_valid_referer = is_valid_referer(self.request)
+        if not self.request.is_valid_referer:
+            log.error(
+                "Invalid referer for %s: %s", self.request.path_qs, repr(self.request.referer)
+            )
+
     @view_config(context=HTTPForbidden, renderer="login.html")
     def loginform403(self):
+        self._referer_log()
+
         if self.request.authenticated_userid:
             return HTTPForbidden()  # pragma: no cover
 
@@ -1484,6 +1495,8 @@ class Entry:
 
     @view_config(route_name="loginform", renderer="login.html")
     def loginform(self):
+        self._referer_log()
+
         set_common_headers(self.request, "login", PUBLIC_CACHE, vary=True)
 
         return {
@@ -1493,6 +1506,8 @@ class Entry:
 
     @view_config(route_name="login")
     def login(self):
+        self._referer_log()
+
         login = self.request.POST.get("login")
         password = self.request.POST.get("password")
         if login is None or password is None:  # pragma nocover
@@ -1558,6 +1573,8 @@ class Entry:
 
     @view_config(route_name="loginuser", renderer="json")
     def loginuser(self):
+        self._referer_log()
+
         set_common_headers(self.request, "login", NO_CACHE)
 
         return self._user()

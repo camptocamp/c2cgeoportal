@@ -137,6 +137,7 @@ class TestEntryView(TestCase):
         from c2cgeoportal_geoportal.views.entry import Entry
 
         request = DummyRequest()
+        request.is_valid_referer = True
         request.user = None
         entry = Entry(request)
 

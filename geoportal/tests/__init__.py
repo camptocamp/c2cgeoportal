@@ -45,6 +45,7 @@ def create_dummy_request(additional_settings=None, *args, **kargs):
         "default_max_age": 1000,
     }
     request.registry.settings.update(additional_settings)
+    request.is_valid_referer = True
     return request
 
 
