@@ -601,9 +601,9 @@ $(APP_OUTPUT_DIR)/%.json: \
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	node /usr/bin/compile-catalog \
+		geoportal/$(PACKAGE)_geoportal/locale/$*/LC_MESSAGES/$(PACKAGE)_geoportal-$(L10N_CLIENT_POSTFIX).po \
 		/opt/c2cgeoportal_geoportal/c2cgeoportal_geoportal/locale/$*/LC_MESSAGES/gmf.po \
-		/opt/c2cgeoportal_geoportal/c2cgeoportal_geoportal/locale/$*/LC_MESSAGES/ngeo.po \
-		geoportal/$(PACKAGE)_geoportal/locale/$*/LC_MESSAGES/$(PACKAGE)_geoportal-$(L10N_CLIENT_POSTFIX).po > $@
+		/opt/c2cgeoportal_geoportal/c2cgeoportal_geoportal/locale/$*/LC_MESSAGES/ngeo.po > $@
 
 /opt/c2cgeoportal_geoportal/c2cgeoportal_geoportal/locale/en/LC_MESSAGES/%.po:
 	echo "Nothing to do for $@"
