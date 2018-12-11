@@ -29,7 +29,6 @@
 
 import time
 import logging
-import mimetypes
 import os
 import binascii
 from urllib.parse import urlsplit
@@ -60,6 +59,7 @@ import c2cgeoportal_commons.models
 import c2cgeoportal_geoportal.views
 from c2cgeoportal_geoportal.lib import dbreflection, caching, \
     C2CPregenerator, MultiDomainStaticURLInfo, checker, check_collector
+
 
 log = logging.getLogger(__name__)
 
@@ -173,9 +173,6 @@ def add_interface_cgxp(
     )
 
 
-ngeo_static_init = False
-
-
 def add_interface_ngeo(config, route_name, route, renderer=None, permission=None):  # pragma: no cover
     # Cannot be at the header to do not load the model too early
     from c2cgeoportal_geoportal.views.entry import Entry
@@ -202,28 +199,6 @@ def add_interface_ngeo(config, route_name, route, renderer=None, permission=None
         permission=permission
     )
 
-    global ngeo_static_init
-    if not ngeo_static_init:
-        add_static_view_ngeo(config)
-        ngeo_static_init = True
-
-
-def add_static_view_ngeo(config):  # pragma: no cover
-    """ Add the project static view for ngeo """
-    package = config.get_settings()["package"]
-    _add_static_view(config, "static-ngeo", "{0!s}_geoportal:static-ngeo".format(package))
-    config.override_asset(
-        to_override="c2cgeoportal_geoportal:project/",
-        override_with="{0!s}_geoportal:static-ngeo/".format(package)
-    )
-    config.add_static_view(
-        name=package,
-        path="{0!s}_geoportal:static".format(package),
-        cache_max_age=int(config.get_settings()["default_max_age"])
-    )
-
-    mimetypes.add_type("text/css", ".less")
-
 
 def add_admin_interface(config):
     if config.get_settings().get('enable_admin_interface', False):
@@ -234,30 +209,6 @@ def add_admin_interface(config):
         config.add_view(c2cgeoportal_geoportal.views.add_ending_slash, 'add_ending_slash')
         config.add_route('add_ending_slash', '/admin', request_method='GET')
         config.include('c2cgeoportal_admin', route_prefix='/admin')
-
-
-def add_static_view(config):
-    """ Add the project static view for CGXP """
-    package = config.get_settings()["package"]
-    _add_static_view(config, "static-cgxp", "{0!s}_geoportal:static".format(package))
-    config.override_asset(
-        to_override="c2cgeoportal_geoportal:project/",
-        override_with="{0!s}_geoportal:static/".format(package)
-    )
-
-
-CACHE_PATH = []
-
-
-def _add_static_view(config, name, path):
-    from c2cgeoportal_geoportal.lib.cacheversion import version_cache_buster
-    config.add_static_view(
-        name=name,
-        path=path,
-        cache_max_age=int(config.get_settings()["default_max_age"]),
-    )
-    config.add_cache_buster(path, version_cache_buster)
-    CACHE_PATH.append(name)
 
 
 def locale_negotiator(request):
@@ -488,7 +439,7 @@ def call_hook(settings, name, *args, **kwargs):
     function_(*args, **kwargs)
 
 
-def includeme(config):
+def includeme(config: pyramid.config.Configurator):
     """
     This function returns a Pyramid WSGI application.
     """
@@ -529,6 +480,8 @@ def includeme(config):
             caching.invalidate_region()
 
     # Register a tween to get back the cache buster path.
+    if 'cache_path' not in config.get_settings():
+        config.get_settings()['cache_path'] = ['static']
     config.add_tween("c2cgeoportal_geoportal.lib.cacheversion.CachebusterTween")
     config.add_tween("c2cgeoportal_geoportal.lib.webpack.WebpackTween")
     config.add_tween("c2cgeoportal_geoportal.lib.headers.HeadersTween")
@@ -710,12 +663,24 @@ def includeme(config):
         config.registry.registerUtility(
             MultiDomainStaticURLInfo(), IStaticURLInfo)
 
-    # Add the static view (for static resources)
-    _add_static_view(config, "static", "c2cgeoportal_geoportal:static")
-    _add_static_view(config, "project", "c2cgeoportal_geoportal:project")
-
     add_admin_interface(config)
-    add_static_view(config)
+
+    # Add the project static view with cache buster
+    from c2cgeoportal_geoportal.lib.cacheversion import version_cache_buster
+    package = config.get_settings()["package"]
+    config.add_static_view(
+        name="static",
+        path="{}_geoportal:static".format(package),
+        cache_max_age=int(config.get_settings()["default_max_age"]),
+    )
+    config.add_cache_buster("{}_geoportal:static".format(package), version_cache_buster)
+
+    # Add the project static view without cache buster
+    config.add_static_view(
+        name="static-ngeo",
+        path="{}_geoportal:static-ngeo".format(package),
+        cache_max_age=int(config.get_settings()["default_max_age"]),
+    )
 
     # Handles the other HTTP errors raised by the views. Without that,
     # the client receives a status=200 without content.

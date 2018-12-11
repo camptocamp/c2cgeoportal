@@ -55,7 +55,7 @@ class WebpackTween:
             and path_info[1] == 'theme'
             and not self._RE_RESOURCES.match(path_info[2])
         ):
-            request.path_info = '/static-ngeo/unused-cache-buster/build/{}.html'.format(default_interface)
+            request.path_info = '/static-ngeo/build/{}.html'.format(default_interface)
             default = True
         # Other interfaces
         elif path_info[1] in interfaces:
@@ -70,7 +70,7 @@ class WebpackTween:
                 and path_info[2] == 'theme'
                 and not self._RE_RESOURCES.match(path_info[3])
             ):
-                request.path_info = '/static-ngeo/unused-cache-buster/build/{}.html'.format(path_info[1])
+                request.path_info = '/static-ngeo/build/{}.html'.format(path_info[1])
                 default = True
 
         response = self.handler(request)

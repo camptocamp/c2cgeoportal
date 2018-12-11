@@ -27,9 +27,10 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+
+import pyramid.registry
 from unittest import TestCase
 from pyramid.testing import DummyRequest
-from c2cgeoportal_geoportal import CACHE_PATH
 from c2cgeoportal_geoportal.lib.caching import init_region
 
 
@@ -51,23 +52,19 @@ class TestCacheBuster(TestCase):
     def test_replace(self):
         from c2cgeoportal_geoportal.lib.cacheversion import CachebusterTween
 
-        CACHE_PATH.append("test")
-        ctf = CachebusterTween(handler, None)
+        registry = pyramid.registry.Registry()
+        registry.settings = {'cache_path': ['test']}
+        ctf = CachebusterTween(handler, registry)
         request = MyRequest("/test/123456/build.css")
-        response = ctf(request)
+        ctf(request)
         self.assertEqual(request.path_info, "/test/build.css")
-        # test CORS
-        self.assertEqual(response.headers["Access-Control-Allow-Origin"], "*")
-        self.assertEqual(response.headers["Access-Control-Allow-Headers"], "X-Requested-With, Content-Type")
 
     def test_noreplace(self):
         from c2cgeoportal_geoportal.lib.cacheversion import CachebusterTween
 
-        CACHE_PATH.append("test")
-        ctf = CachebusterTween(handler, None)
+        registry = pyramid.registry.Registry()
+        registry.settings = {'cache_path': ['test']}
+        ctf = CachebusterTween(handler, registry)
         request = MyRequest("/test2/123456/build.css")
-        response = ctf(request)
+        ctf(request)
         self.assertEqual(request.path_info, "/test2/123456/build.css")
-        # test no CORS
-        self.assertNotIn("Access-Control-Allow-Origin", list(response.headers.keys()))
-        self.assertNotIn("Access-Control-Allow-Headers", list(response.headers.keys()))

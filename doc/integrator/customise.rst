@@ -44,8 +44,8 @@ In the admin interface we can use in all the URLs the following special schema:
 
 * ``static``: to use a static route,
 
-  * ``static:///icon.png`` will get the URL of the ``static-ngeo`` static route of the project.
-  * ``static://static-cgxp/icon.png`` will get the URL of the ``static-cgxp`` static route of the project.
+  * ``static:///icon.png`` will get the URL of the ``static`` static route of the project.
+  * ``static://custom-static/icon.png`` will get the URL of the ``custom-static`` static route of the project.
   * ``static://prj:img/icon.png`` will get the URL of the ``img`` static route of ``prj``.
 
 * ``config``: to get the server name from the URL, with the config from the ``vars`` file:
