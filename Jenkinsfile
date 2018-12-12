@@ -99,12 +99,12 @@ dockerBuild {
             }
             stage('Tests') {
                 if (abort_ci()) { return }
-                parallel 'Lint and test c2cgeoportal': {
+                parallel 'Lint c2cgeoportal': {
+                    // lint
+                    sh './docker-run make checks'
                     sh './docker-run travis/empty-make help'
                     sh 'bash -c "test \\"`./docker-run id`\\" == \\"uid=0(root) gid=0(root) groups=0(root)\\""'
                     sh './docker-run make doc'
-                    // lint
-                    sh './docker-run make checks'
                     // Test return code
                     sh './docker-run true'
                     sh 'if ./docker-run false; then false; fi'
@@ -117,7 +117,7 @@ dockerBuild {
                     } finally {
                         sh 'docker-compose down'
                     }
-
+                }, 'Test c2cgeoportal': {
                     sh './docker-run make prepare-tests'
                     sh './docker-run travis/status.sh'
                     try {
