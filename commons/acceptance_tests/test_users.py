@@ -10,6 +10,7 @@ def insert_users_test_data(dbsession):
     user.roles = [Role(name='Role1'), Role(name='Role2')]
     t = dbsession.begin_nested()
     dbsession.add(user)
+    dbsession.flush()
     yield
     t.rollback()
 
