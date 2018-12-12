@@ -64,7 +64,7 @@ class TestGroupsFinder(TestCase):
 
         transaction.commit()
 
-        DBSession.query(User).filter_by(username="__test_user").delete()
+        DBSession.delete(DBSession.query(User).filter_by(username="__test_user").one())
         DBSession.query(Role).filter_by(name="__test_role").delete()
         transaction.commit()
 
