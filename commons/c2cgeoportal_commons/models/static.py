@@ -35,7 +35,7 @@ import pytz
 from typing import List
 
 from sqlalchemy import Column, ForeignKey, Table
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 from sqlalchemy.types import Integer, Boolean, Unicode, String, DateTime
 
 import colander
@@ -133,6 +133,7 @@ class User(Base):
         Role,
         secondary=user_role,
         secondaryjoin=Role.id == user_role.c.role_id,
+        backref=backref('users', info={'colanderalchemy': {'exclude': True}}),
         info={
             'colanderalchemy': {
                 'title': _('Roles'),
