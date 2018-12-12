@@ -292,9 +292,11 @@ def _match_url_start(reference, value):
     return reference_parts == value_parts
 
 
-def is_valid_referer(request, settings):
+def is_valid_referer(request, settings=None):
     if request.referer is not None:
         referer = urlsplit(request.referer)._replace(query="", fragment="").geturl().rstrip("/").split("/")
+        if settings is None:
+            settings = request.registry.settings
         list_ = settings.get("authorized_referers", [])
         return any(_match_url_start(e, referer) for e in list_)
     else:
@@ -343,9 +345,7 @@ def create_get_user_from_request(settings):
         if not hasattr(request, "is_valid_referer"):
             request.is_valid_referer = is_valid_referer(request, settings)
         if not request.is_valid_referer:
-            log.warning(
-                "Invalid referer for %s: %s", request.path_qs, repr(request.referer)
-            )
+            log.debug("Invalid referer for %s: %s", request.path_qs, repr(request.referer))
             return None
 
         if not hasattr(request, "user_"):
