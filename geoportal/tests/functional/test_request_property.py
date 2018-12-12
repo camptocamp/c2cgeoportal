@@ -47,9 +47,7 @@ class TestRequestProperty(TestCase):
         from c2cgeoportal_commons.models.static import User
 
         r = Role(name="__test_role")
-        u = User(
-            username="__test_user", password="__test_user", settings_role=r, roles=[r]
-        )
+        u = User(username="__test_user", password="__test_user", settings_role=r, roles=[r])
 
         DBSession.add_all([u, r])
         transaction.commit()
@@ -62,7 +60,7 @@ class TestRequestProperty(TestCase):
 
         transaction.commit()
 
-        DBSession.query(User).filter_by(username="__test_user").delete()
+        DBSession.delete(DBSession.query(User).filter_by(username="__test_user").one())
         DBSession.query(Role).filter_by(name="__test_role").delete()
         transaction.commit()
 
