@@ -114,7 +114,9 @@ dockerBuild {
                     try {
                         sh './docker-compose-run alembic --config=geoportal/tests/functional/alembic.ini --name=main upgrade head'
                         sh './docker-compose-run alembic --config=geoportal/tests/functional/alembic.ini --name=static upgrade head'
-                        sh './docker-compose-run make tests'
+                        timeout(time: 10, unit: 'MINUTES') {
+                            sh './docker-compose-run make tests'
+                        }
                     } catch (Exception error) {
                         sh 'docker-compose logs --timestamps'
                         throw error
