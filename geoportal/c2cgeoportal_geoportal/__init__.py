@@ -334,7 +334,7 @@ def create_get_user_from_request(settings):
         if not hasattr(request, "is_valid_referer"):
             request.is_valid_referer = is_valid_referer(request, settings)
         if not request.is_valid_referer:
-            log.warning(
+            log.info(
                 "Invalid referer for %s: %s", request.path_qs, repr(request.referer)
             )
             return None
