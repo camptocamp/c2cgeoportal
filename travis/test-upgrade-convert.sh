@@ -132,14 +132,16 @@ then
     git add temp.mk project.yaml.mako
     git commit --quiet --message="Start upgrade"
     ./docker-run --env=NODE_ENV make --makefile=temp.mk upgrade
-    if [ ! -e .UPGRADE10 ]
-    then
-        ./docker-run --env=NODE_ENV make upgrade11
-    fi
     cp {CONST_create_template/,}project.yaml.mako
     cp {CONST_create_template/,}vars.yaml
     cp {CONST_create_template/,}mapserver/tinyows.xml.tmpl.mako
     cp {CONST_create_template/,}print/print-apps/testgeomapfish/config.yaml.tmpl
+    cp {CONST_create_template/,}.env.mako
+    cp {CONST_create_template/,}docker-compose.yaml
+    if [ -e .UPGRADE10 ]
+    then
+        ./docker-run --env=NODE_ENV make upgrade11
+    fi
     if [ ! -e .UPGRADE_SUCCESS ]
     then
         printdiff
@@ -167,15 +169,15 @@ then
     git commit --quiet --message="Start upgrade"
     export APACHE_VHOST=test
     ./docker-run --env=NODE_ENV make upgrade
-    if [ -e .UPGRADE10 ]
-    then
-        ./docker-run --env=NODE_ENV make --makefile=testgeomapfish.mk upgrade11
-    fi
     cp {CONST_create_template/,}project.yaml.mako
     cp {CONST_create_template/,}vars.yaml
     cp {CONST_create_template/,}testgeomapfish.mk
     cp {CONST_create_template/,}mapserver/tinyows.xml.mako
     cp {CONST_create_template/,}print/print-apps/testgeomapfish/config.yaml.mako
+    if [ -e .UPGRADE10 ]
+    then
+        ./docker-run --env=NODE_ENV make --makefile=testgeomapfish.mk upgrade11
+    fi
     if [ ! -e .UPGRADE_SUCCESS ]
     then
         printdiff
@@ -218,6 +220,11 @@ function v220 {
     mv geoportal/testgeomapfish_geoportal/locale/en/LC_MESSAGES/testgeomapfish{,_geoportal}-client.po
     mv geoportal/testgeomapfish_geoportal/locale/fr/LC_MESSAGES/testgeomapfish{,_geoportal}-client.po
     mv geoportal/testgeomapfish_geoportal/locale/de/LC_MESSAGES/testgeomapfish{,_geoportal}-client.po
+    if [ "$2" != non ]
+    then
+        cp CONST_create_template/docker-compose.yaml .
+        cp CONST_create_template/.env.mako .
+    fi
     ./docker-run --env=NODE_ENV make $MAKE_ARGS upgrade9
     if [ ! -e .UPGRADE_SUCCESS ]
     then
@@ -263,6 +270,12 @@ function v230 {
     if [ -e .UPGRADE8 ]
     then
         ./docker-run --env=NODE_ENV make ${MAKE_ARGS} upgrade9
+    fi
+    if [ -e .UPGRADE10 ] && [ "$2" != non ]
+    then
+        cp CONST_create_template/docker-compose.yaml .
+        cp CONST_create_template/.env.mako .
+        ./docker-run --env=NODE_ENV make ${MAKE_ARGS} upgrade11
     fi
     if [ ! -e .UPGRADE_SUCCESS ]
     then

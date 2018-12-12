@@ -513,7 +513,7 @@ class C2cUpgradeTool:
 
         # managed means managed by the application owner, not the c2cupgrade
         managed = False
-        if not files_to_get or (not os.path.exists(file_)) and \
+        if not files_to_get or os.path.exists(file_) or not \
                 check_output(["git", "status", "--short", file_]).decode("utf-8").startswith("?? "):
             for pattern in default_project_file['include']:
                 if re.match(pattern + '$', file_):
@@ -582,11 +582,13 @@ class C2cUpgradeTool:
                                 ),
                                 prompt="Fix it and run again the upgrade:")
                             exit(1)
-
-                elif os.path.exists(destination) and not filecmp.cmp(source, destination):
-                    print("The file '{}' is managed by the project".format(destination))
+                elif managed:
+                    print("The file '{}' is managed by the project.".format(destination))
+                elif os.path.exists(destination) and filecmp.cmp(source, destination):
+                    print("The file '{}' does not change.".format(destination))
                 else:
-                    print("The file '{}' does not change".format(destination))
+                    print("Unknown stat for the file '{}'.".format(destination))
+                    exit(2)
         return error
 
     @Step(8)
