@@ -11,7 +11,7 @@ echo "password:${PYPI_PASSWORD}" >> ~/.pypirc
 cd ${PKG}
 if [ "${VERSION}" == "${MAJOR_VERSION}" ]
 then
-    python3 setup.py egg_info --tag-date sdist bdist_wheel upload -r pypi
+    python3 setup.py egg_info --tag-date sdist bdist_wheel upload -r pypi || true
 else
     python3 setup.py egg_info --no-date sdist bdist_wheel upload -r pypi
 fi
