@@ -119,15 +119,9 @@ class TestThemesPrivateView(TestCase):
         for item in DBSession.query(TreeItem).all():
             DBSession.delete(item)
         DBSession.query(OGCServer).delete()
-        DBSession.query(Interface).filter(
-            Interface.name == "main"
-        ).delete()
-        DBSession.query(User).filter(
-            User.username == "__test_user"
-        ).delete()
-        DBSession.query(Role).filter(
-            Role.name == "__test_role"
-        ).delete()
+        DBSession.query(Interface).filter(Interface.name == "main").delete()
+        DBSession.delete(DBSession.query(User).filter(User.username == "__test_user").one())
+        DBSession.query(Role).filter(Role.name == "__test_role").delete()
 
         transaction.commit()
 
