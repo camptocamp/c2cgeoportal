@@ -132,7 +132,9 @@ APP_JS_JINJA_FILES += $(shell find geoportal/$(PACKAGE)_geoportal/static-ngeo/js
 APP_JS_FILES +=  $(APP_JS_MAKO_FILES:.mako=) $(APP_JS_JINJA_FILES:.jinja=)
 APP_HTML_FILES += $(addprefix geoportal/$(PACKAGE)_geoportal/static-ngeo/js/apps/, $(addsuffix .html.ejs, $(NGEO_INTERFACES)))
 APP_DIRECTIVES_PARTIALS_FILES = $(shell find geoportal/$(PACKAGE)_geoportal/static-ngeo/js -type f -name '*.html' 2> /dev/null)
-LESS_FILES += $(shell find geoportal/$(PACKAGE)_geoportal/static-ngeo/less -type f -name '*.less' 2> /dev/null)
+HTML_FILES += $(shell find geoportal/$(PACKAGE)_geoportal/static-ngeo/js -type f -name '*.html' 2> /dev/null)
+LESS_FILES += $(shell find geoportal/$(PACKAGE)_geoportal/static-ngeo/js -type f -name '*.less' 2> /dev/null)
+CSS_FILES += $(shell find geoportal/$(PACKAGE)_geoportal/static-ngeo/js -type f -name '*.css' 2> /dev/null)
 NGEO_GMF_FONTS = $(addprefix geoportal/$(PACKAGE)_geoportal/static-ngeo/fonts/gmf-icons, .woff .ttf .eot)
 NGEO_FONTAWESOME_FONTS = $(addprefix geoportal/$(PACKAGE)_geoportal/static-ngeo/fonts/fontawesome-webfont, .woff .woff2 .ttf .eot)
 NGEO_FONTS = $(NGEO_GMF_FONTS) $(NGEO_FONTAWESOME_FONTS)
@@ -637,9 +639,12 @@ $(APP_OUTPUT_DIR)/images/: /usr/lib/node_modules/jquery-ui/themes/base/images
 	touch $@
 
 .PRECIOUS: /build/apps.%.timestamp
-/build/apps.%.timestamp: $(OL_JS_FILES) $(NGEO_JS_FILES) $(APP_JS_FILES) \
-			$(APP_HTML_FILES) geoportal/webpack.config.js \
+/build/apps.%.timestamp: $(OL_JS_FILES) $(NGEO_JS_FILES) \
+			geoportal/webpack.config.js \
+			$(APP_JS_FILES) \
+			$(HTML_FILES) \
 			$(LESS_FILES) \
+			${CSS_FILES} \
 			$(NGEO_FONTS) \
 			$(APP_OUTPUT_DIR)/images/
 	$(PRERULE_CMD)
