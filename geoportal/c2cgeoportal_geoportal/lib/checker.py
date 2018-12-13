@@ -30,6 +30,7 @@
 import requests
 import logging
 import subprocess
+import c2cwsgiutils.health_check
 from time import sleep
 from urllib.parse import urlsplit, urlunsplit
 
@@ -178,7 +179,7 @@ def _themes_errors(settings, health_check):
 
             result = response.json()
             if len(result["errors"]) != 0:
-                raise health_check.JsonCheckException(
+                raise c2cwsgiutils.health_check.JsonCheckException(
                     "Interface '{}' has error in Theme.".format(interface),
                     result["errors"]
                 )
