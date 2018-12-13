@@ -21,6 +21,18 @@ vars:
 
   default_interface: desktop
 
+  interfaces_config:
+    default:
+      constants:
+        defaultTheme: Demo
+        defaultLang: en
+        ngeoWfsPermalinkOptions:
+          wfsTypes:
+            - featureType: fuel
+              label: display_name
+            - featureType: osm_scale
+              label: display_name
+
   authtkt:
     # One day
     timeout: 86400
@@ -203,6 +215,7 @@ update_paths:
   - headers.shortener
   - headers.login
   - interfaces_config.default.constants
+  - interfaces_config.default.constants.ngeoWfsPermalinkOptions
   - interfaces_config.default.dynamic_constants
   - interfaces_config.default.static
   - interfaces_config.default.routes

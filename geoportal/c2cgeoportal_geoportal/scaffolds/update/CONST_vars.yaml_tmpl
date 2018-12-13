@@ -136,6 +136,10 @@ vars:
           - name: ASIT VD
             type: WMTS
             url: https://ows.asitvd.ch/wmts/1.0.0/WMTSCapabilities.xml
+        ngeoWfsPermalinkOptions:
+          wfsTypes: []
+          defaultFeatureNS: http://mapserver.gis.umn.edu/mapserver
+          defaultFeaturePrefix: feature
       dynamic_constants:
         cacheVersion: cache_version
         langUrls: lang_urls
@@ -159,6 +163,8 @@ vars:
           name: shortener_create
         ngeoPermalinkOgcserverUrl:
           name: mapserverproxy
+          params:
+            ogcserver: source for image/png
         fulltextsearchUrl:
           name: fulltextsearch
           params:
@@ -235,14 +241,6 @@ vars:
                 profile: routed-hiking
         ngeoNominatimSearchDefaultParams:
           countrycodes: CH
-        ngeoWfsPermalinkOptions:
-          wfsTypes:
-            - featureType: osm_hospitals
-              label: name
-            - featureType: osm_firestations
-              label: name
-          defaultFeatureNS: http://www.qgis.org/gml
-          defaultFeaturePrefix: feature
       routes:
         gmfProfileJsonUrl:
           name: profile.json
