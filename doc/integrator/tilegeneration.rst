@@ -36,7 +36,7 @@ The chosen solution is a combination of two tools:
 
 * `MapCache <http://mapserver.org/trunk/mapcache/>`_ for the last zoom level.
 
-* `TileCloud-Chain <https://github.com/sbrunner/tilecloud-chain>`_ for the tile generation.
+* `TileCloud-Chain <https://github.com/camptocamp/tilecloud-chain>`_ for the tile generation.
 
 MapCache
 --------
@@ -56,7 +56,7 @@ To clear/flush Memcached cache, use the following command:
     echo "flush_all" | /bin/netcat -q 2 127.0.0.1 11211
 
 See the `TileCloud-chain documentation for more details
-<https://github.com/sbrunner/tilecloud-chain#configure-mapcache>`_
+<https://github.com/camptocamp/tilecloud-chain#configure-mapcache>`_
 
 TileCloud-chain
 ---------------
@@ -111,7 +111,7 @@ Configuration
 
 The configuration is done in the self-documented file
 ``tilegeneration/config.yaml``. The original file is available at:
-https://github.com/sbrunner/tilecloud-chain/blob/master/tilecloud_chain/scaffolds/create/tilegeneration/config.yaml.in_tmpl
+https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/scaffolds/create/tilegeneration/config.yaml.mako_tmpl
 
 The main thing to do is to:
 
