@@ -27,6 +27,10 @@ services:
       - REDIS_HOST
       - REDIS_PORT
       - TILEGENERATION_SQS_QUEUE
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_DEFAULT_REGION
+      - AWS_S3_ENDPOINT
 
   print:
     image: camptocamp/mapfish_print:3.16
@@ -61,6 +65,14 @@ services:
       - C2C_REDIS_URL
       - C2C_BROADCAST_PREFIX
       - PGOPTIONS
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_DEFAULT_REGION
+      - AWS_S3_ENDPOINT
+      - CPL_VSIL_CURL_USE_CACHE
+      - CPL_VSIL_CURL_CACHE_SIZE
+      - CPL_VSIL_CURL_USE_HEAD
+      - GDAL_DISABLE_READDIR_ON_OPEN
 
   tinyows:
     image: camptocamp/tinyows
@@ -112,6 +124,8 @@ services:
       - C2C_DEBUG_VIEW_ENABLED=TRUE
       - C2C_SQL_PROFILER_ENABLED=TRUE
       - C2C_SECRET
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
 
   tilegeneration_slave:
     image: camptocamp/tilecloud-chain:1.9
@@ -121,6 +135,8 @@ services:
       - generate_tiles
       - --role=slave
       - --daemon
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
 
   geoportal:
     image: ${DOCKER_BASE}-geoportal:${DOCKER_TAG}
