@@ -31,7 +31,6 @@
 from unittest import TestCase
 
 import re
-import requests
 import transaction
 import json
 from geoalchemy2 import WKTElement
@@ -57,7 +56,7 @@ class TestEntryView(TestCase):
         self._tables = []
 
         from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import Role, LayerV1, \
+        from c2cgeoportal_commons.models.main import Role, \
             RestrictionArea, Theme, LayerGroup, Functionality, Interface, \
             LayerWMS, OGCServer, FullTextSearch, OGCSERVER_TYPE_GEOSERVER, OGCSERVER_AUTH_GEOSERVER
         from c2cgeoportal_commons.models.static import User
@@ -93,14 +92,6 @@ class TestEntryView(TestCase):
         a_geo_table.drop(checkfirst=True)
         a_geo_table.create()
 
-        public_layer = LayerV1(name="__test_public_layer", public=True)
-        public_layer.is_checked = False
-        public_layer.interfaces = [main, mobile]
-
-        private_layer = LayerV1(name="__test_private_layer", public=False)
-        private_layer.geo_table = "geodata.a_geo_table"
-        private_layer.interfaces = [main, mobile]
-
         ogcserver, _ = create_default_ogcserver()
         ogcserver_normapfile = OGCServer(name="__test_ogc_server_notmapfile")
         ogcserver_normapfile.url = mapserv_url + "?map=not_a_mapfile"
@@ -135,20 +126,9 @@ class TestEntryView(TestCase):
         public_layer_no_layers.interfaces = [main, mobile]
         public_layer_no_layers.ogc_server = ogcserver
 
-        layer_in_group = LayerV1(name="__test_layer_in_group")
-        layer_in_group.interfaces = [main, mobile]
-        layer_group = LayerGroup(name="__test_layer_group_1")
-        layer_group.children = [layer_in_group]
-
-        layer_wmsgroup = LayerV1(name="test_wmsfeaturesgroup")
-        layer_wmsgroup.is_checked = False
-        layer_wmsgroup.interfaces = [main, mobile]
-
         group = LayerGroup(name="__test_layer_group_2")
         group.children = [
-            public_layer, private_layer, private_layerv2, layer_group, layer_wmsgroup,
-            public_layer2, public_layer_not_mapfile, public_layer_no_layers,
-            private_layer2
+            private_layerv2, public_layer2, public_layer_not_mapfile, public_layer_no_layers, private_layer2
         ]
         theme = Theme(name="__test_theme")
         theme.children = [group]
@@ -162,13 +142,13 @@ class TestEntryView(TestCase):
 
         area = WKTElement(poly, srid=21781)
         RestrictionArea(
-            name="__test_ra1", description="", layers=[private_layer, private_layerv2, private_layer2],
+            name="__test_ra1", description="", layers=[private_layerv2, private_layer2],
             roles=[role1], area=area
         )
 
         area = WKTElement(poly, srid=21781)
         RestrictionArea(
-            name="__test_ra2", description="", layers=[private_layer, private_layerv2, private_layer2],
+            name="__test_ra2", description="", layers=[private_layerv2, private_layer2],
             roles=[role2], area=area, readwrite=True
         )
 
@@ -194,9 +174,8 @@ class TestEntryView(TestCase):
         entry3.public = True
 
         DBSession.add_all([
-            user1, user2, ogcserver_normapfile, ogcserver_geoserver,
-            public_layer, private_layer, private_layerv2, public_layer2, private_layer2,
-            entry1, entry2, entry3,
+            user1, user2, ogcserver_normapfile, ogcserver_geoserver, private_layerv2, public_layer2,
+            private_layer2, entry1, entry2, entry3,
         ])
 
         DBSession.flush()
@@ -574,568 +553,12 @@ class TestEntryView(TestCase):
         result = entry.xapihelp()
         self.assertEqual(set(result.keys()), {"lang", "debug"})
 
-    def test_layer(self):
-        from c2cgeoportal_geoportal.views.entry import Entry
-        from c2cgeoportal_commons.models.main import LayerV1, LayerGroup
-        from c2cgeoportal_geoportal.lib.wmstparsing import TimeInformation
-
-        request = self._create_request_obj()
-        request.static_url = lambda name: "/dummy/static/" + name
-        request.route_url = lambda name: "/dummy/route/" + name
-        request.registry.settings["package"] = "test_layer"
-        entry = Entry(request)
-
-        self.assertEqual(entry._group(
-            "", LayerGroup(), layers=[]), (None, set())
-        )
-
-        layer = LayerV1()
-        layer.id = 20
-        layer.name = "test internal WMS"
-        layer.layer = "test internal WMS"
-        layer.metadata_url = "http://example.com/tiwms"
-        layer.is_checked = True
-        layer.layer_type = "internal WMS"
-        layer.image_type = "image/png"
-        layer.style = "my-style"
-        layer.kml = "static:///tiwms.kml"
-        layer.legend = True
-        layer.legend_rule = "rule"
-        layer.legend_image = "static://legend:static/tiwms-legend.png"
-        layer.is_legend_expanded = False
-        layer.min_resolution = 10
-        layer.max_resolution = 1000
-        layer.disclaimer = "Camptocamp"
-        layer.identifier_attribute_field = "name"
-        layer.geo_table = "tiwms"
-        layer.public = True
-
-        layer_info, errors = entry._layer(layer)
-        # pylint: disable=unsupported-assignment-operation
-        layer_info["icon"] = None
-        self.assertEqual(layer_info, {
-            "id": 20,
-            "name": "test internal WMS",
-            "metadataURL": "http://example.com/tiwms",
-            "isChecked": True,
-            "icon": None,
-            "type": "internal WMS",
-            "imageType": "image/png",
-            "style": "my-style",
-            "kml": "/dummy/static/c2cgeoportal:project/tiwms.kml",
-            "legend": True,
-            "legendImage": "/dummy/static/legend:static/tiwms-legend.png",
-            "isLegendExpanded": False,
-            "minResolutionHint": 10,
-            "maxResolutionHint": 1000,
-            "disclaimer": "Camptocamp",
-            "identifierAttribute": "name",
-            "public": True,
-            "metadata": {},
-        })
-        self.assertEqual(errors, {
-            "The layer 'test internal WMS' (test internal WMS) is not defined in WMS capabilities from '__test_ogc_server'"
-        })
-
-        layer = LayerV1()
-        layer.id = 20
-        layer.name = "test external WMS"
-        layer.layer = "test external WMS"
-        layer.is_checked = False
-        layer.icon = "static:///tewms.png"
-        layer.layer_type = "external WMS"
-        layer.url = "http://example.com"
-        layer.image_type = "image/jpeg"
-        layer.is_single_tile = True
-        layer.legend = False
-        layer.is_legend_expanded = False
-        layer.min_resolution = 10
-        layer.max_resolution = 1000
-        layer.public = True
-        self.assertEqual(entry._layer(layer), ({
-            "id": 20,
-            "name": "test external WMS",
-            "icon": "/dummy/static/c2cgeoportal:project/tewms.png",
-            "isChecked": False,
-            "type": "external WMS",
-            "url": "http://example.com",
-            "imageType": "image/jpeg",
-            "isSingleTile": True,
-            "legend": False,
-            "isLegendExpanded": False,
-            "minResolutionHint": 10,
-            "maxResolutionHint": 1000,
-            "public": True,
-            "metadata": {},
-        }, set()))
-
-        layer = LayerV1()
-        layer.id = 20
-        layer.name = "test WMTS"
-        layer.layer = "test WMTS"
-        layer.is_checked = False
-        layer.layer_type = "WMTS"
-        layer.url = "http://example.com/WMTS-Capabilities.xml"
-        layer.style = "wmts-style"
-        layer.dimensions = '{"DATE": "1012"}'
-        layer.matrix_set = "swissgrid"
-        layer.wms_url = "http://example.com/"
-        layer.wms_layers = "test"
-        layer.legend = False
-        layer.is_legend_expanded = False
-        layer.min_resolution = 10
-        layer.max_resolution = 1000
-        layer.public = True
-        self.assertEqual(entry._layer(layer), ({
-            "id": 20,
-            "name": "test WMTS",
-            "isChecked": False,
-            "type": "WMTS",
-            "url": "http://example.com/WMTS-Capabilities.xml",
-            "style": "wmts-style",
-            "dimensions": {"DATE": "1012"},
-            "matrixSet": "swissgrid",
-            "wmsUrl": "http://example.com/",
-            "wmsLayers": "test",
-            "legend": False,
-            "isLegendExpanded": False,
-            "minResolutionHint": 10,
-            "maxResolutionHint": 1000,
-            "public": True,
-            "metadata": {},
-        }, set()))
-
-        layer = LayerV1()
-        layer.id = 20
-        layer.name = "test WMTS"
-        layer.layer = "test WMTS"
-        layer.is_checked = False
-        layer.layer_type = "WMTS"
-        layer.url = "http://example.com/WMTS-Capabilities.xml"
-        layer.wms_url = "http://example.com/"
-        layer.legend = False
-        layer.is_legend_expanded = False
-        layer.min_resolution = 10
-        layer.max_resolution = 1000
-        layer.public = True
-        self.assertEqual(entry._layer(layer), ({
-            "id": 20,
-            "name": "test WMTS",
-            "isChecked": False,
-            "type": "WMTS",
-            "url": "http://example.com/WMTS-Capabilities.xml",
-            "wmsUrl": "http://example.com/",
-            "wmsLayers": "test WMTS",
-            "legend": False,
-            "isLegendExpanded": False,
-            "minResolutionHint": 10,
-            "maxResolutionHint": 1000,
-            "public": True,
-            "metadata": {},
-        }, set()))
-
-        layer = LayerV1()
-        layer.id = 20
-        layer.name = "test WMTS"
-        layer.layer = "test WMTS"
-        layer.is_checked = False
-        layer.layer_type = "WMTS"
-        layer.url = "http://example.com/WMTS-Capabilities.xml"
-        layer.wms_layers = "test"
-        layer.legend = False
-        layer.is_legend_expanded = False
-        layer.min_resolution = 10
-        layer.max_resolution = 1000
-        layer.public = True
-        self.assertEqual(entry._layer(layer), ({
-            "id": 20,
-            "name": "test WMTS",
-            "isChecked": False,
-            "type": "WMTS",
-            "url": "http://example.com/WMTS-Capabilities.xml",
-            "wmsUrl": "/dummy/route/mapserverproxy",
-            "wmsLayers": "test",
-            "queryLayers": [],
-            "legend": False,
-            "isLegendExpanded": False,
-            "minResolutionHint": 10,
-            "maxResolutionHint": 1000,
-            "public": True,
-            "metadata": {},
-        }, set()))
-
-        layer = LayerV1()
-        layer.id = 20
-        layer.name = "test no 2D"
-        layer.layer = "test no 2D"
-        layer.is_checked = False
-        layer.layer_type = "no 2D"
-        layer.legend = False
-        layer.is_legend_expanded = False
-        layer.metadata_url = "http://example.com/wmsfeatures.metadata"
-        layer.public = True
-        self.assertEqual(entry._layer(layer), ({
-            "id": 20,
-            "name": "test no 2D",
-            "isChecked": False,
-            "type": "no 2D",
-            "legend": False,
-            "isLegendExpanded": False,
-            "metadataURL": "http://example.com/wmsfeatures.metadata",
-            "public": True,
-            "metadata": {},
-        }, set()))
-
-        params = (
-            ("SERVICE", "WMS"),
-            ("VERSION", "1.1.1"),
-            ("REQUEST", "GetCapabilities"),
-        )
-        url = mapserv_url + "?" + "&".join(["=".join(p) for p in params])
-        response = requests.get(url)
-        assert response.status_code == 200
-
-        layer = LayerV1()
-        layer.id = 20
-        layer.name = "test_wmsfeaturesgroup"
-        layer.layer = "test_wmsfeaturesgroup"
-        layer.layer_type = "internal WMS"
-        layer.image_type = "image/png"
-        layer.is_checked = False
-        layer.legend = False
-        layer.is_legend_expanded = False
-        layer.public = True
-        self.assertEqual(entry._layer(layer), ({
-            "id": 20,
-            "name": "test_wmsfeaturesgroup",
-            "type": "internal WMS",
-            "isChecked": False,
-            "legend": False,
-            "isLegendExpanded": False,
-            "imageType": "image/png",
-            "minResolutionHint": 1.76,
-            "maxResolutionHint": 8.8200000000000003,
-            "public": True,
-            "queryable": 1,
-            "metadataUrls": [{
-                "url": "http://example.com/wmsfeatures.metadata",
-                "type": "TC211",
-                "format": "text/plain",
-            }],
-            "metadata": {},
-            "childLayers": [{
-                "name": "test_wmsfeatures",
-                "minResolutionHint": 1.76,
-                "maxResolutionHint": 8.8200000000000003,
-                "queryable": 1,
-            }],
-        }, set()))
-
-        layer_t1 = LayerV1()
-        layer_t1.id = 20
-        layer_t1.name = "test_wmstime"
-        layer_t1.layer = "test_wmstime"
-        layer_t1.layer_type = "internal WMS"
-        layer_t1.image_type = "image/png"
-        layer_t1.is_checked = False
-        layer_t1.legend = False
-        layer_t1.is_legend_expanded = False
-        layer_t1.public = True
-        layer_t1.time_mode = "value"
-        time = TimeInformation()
-        entry._layer(layer_t1, time=time, mixed=False)
-        self.assertEqual(time.to_dict(), {
-            "resolution": "year",
-            "interval": (1, 0, 0, 0),
-            "maxValue": "2010-01-01T00:00:00Z",
-            "minValue": "2000-01-01T00:00:00Z",
-            "mode": "value",
-            "widget": "slider",
-            "minDefValue": "2000-01-01T00:00:00Z",
-            "maxDefValue": None,
-        })
-
-        layer_t2 = LayerV1()
-        layer_t2.id = 30
-        layer_t2.name = "test_wmstime2"
-        layer_t2.layer = "test_wmstime2"
-        layer_t2.layer_type = "internal WMS"
-        layer_t2.image_type = "image/png"
-        layer_t2.is_checked = False
-        layer_t2.legend = False
-        layer_t2.is_legend_expanded = False
-        layer_t2.public = True
-        layer_t2.time_mode = "value"
-        layer_t2.time_widget = "slider"
-        time = TimeInformation()
-        entry._layer(layer_t2, time=time, mixed=False)
-        self.assertEqual(time.to_dict(), {
-            "resolution": "year",
-            "interval": (1, 0, 0, 0),
-            "maxValue": "2020-01-01T00:00:00Z",
-            "minValue": "2015-01-01T00:00:00Z",
-            "mode": "value",
-            "widget": "slider",
-            "minDefValue": "2015-01-01T00:00:00Z",
-            "maxDefValue": None,
-        })
-
-        group = LayerGroup()
-        group.name = "time"
-        group.children = [layer_t1, layer_t2]
-        time = TimeInformation()
-        entry._group(
-            "", group, [layer_t1.name, layer_t2.name],
-            time=time, mixed=False, depth=2
-        )
-        self.assertEqual(time.to_dict(), {
-            "resolution": "year",
-            "interval": (1, 0, 0, 0),
-            "maxValue": "2020-01-01T00:00:00Z",
-            "minValue": "2000-01-01T00:00:00Z",
-            "mode": "value",
-            "widget": "slider",
-            "minDefValue": "2000-01-01T00:00:00Z",
-            "maxDefValue": None,
-        })
-
-        layer = LayerV1()
-        layer.id = 20
-        layer.name = "test_wmstimegroup"
-        layer.layer = "test_wmstimegroup"
-        layer.layer_type = "internal WMS"
-        layer.image_type = "image/png"
-        layer.is_checked = False
-        layer.legend = False
-        layer.is_legend_expanded = False
-        layer.public = True
-        layer.time_mode = "value"
-        layer.time_widget = "datepicker"
-        time = TimeInformation()
-        entry._layer(layer, time=time, mixed=False)
-        self.assertEqual(time.to_dict(), {
-            "resolution": "year",
-            "interval": (1, 0, 0, 0),
-            "maxValue": "2020-01-01T00:00:00Z",
-            "minValue": "2000-01-01T00:00:00Z",
-            "mode": "value",
-            "widget": "datepicker",
-            "minDefValue": "2000-01-01T00:00:00Z",
-            "maxDefValue": None,
-        })
-
-        layer = LayerV1()
-        layer.id = 20
-        layer.name = "test WMTS"
-        layer.layer = "test WMTS"
-        layer.is_checked = False
-        layer.layer_type = "WMTS"
-        layer.url = "http://example.com/WMTS-Capabilities.xml"
-        layer.wms_layers = "test_wmsfeatures"
-        layer.legend = False
-        layer.is_legend_expanded = False
-        layer.public = True
-        self.assertEqual(entry._layer(layer), ({
-            "id": 20,
-            "name": "test WMTS",
-            "isChecked": False,
-            "type": "WMTS",
-            "url": "http://example.com/WMTS-Capabilities.xml",
-            "wmsUrl": "/dummy/route/mapserverproxy",
-            "wmsLayers": "test_wmsfeatures",
-            "queryLayers": [{
-                "name": "test_wmsfeatures",
-                "minResolutionHint": 1.76,
-                "maxResolutionHint": 8.8200000000000003
-            }],
-            "legend": False,
-            "isLegendExpanded": False,
-            "public": True,
-            "metadata": {},
-        }, set()))
-
-        layer = LayerV1()
-        layer.id = 20
-        layer.name = "test WMTS"
-        layer.layer = "test WMTS"
-        layer.is_checked = False
-        layer.layer_type = "WMTS"
-        layer.url = "http://example.com/WMTS-Capabilities.xml"
-        layer.wms_layers = "foo"
-        layer.query_layers = "test_wmsfeatures"
-        layer.legend = False
-        layer.is_legend_expanded = False
-        layer.public = True
-        self.assertEqual(entry._layer(layer), ({
-            "id": 20,
-            "name": "test WMTS",
-            "isChecked": False,
-            "type": "WMTS",
-            "url": "http://example.com/WMTS-Capabilities.xml",
-            "wmsUrl": "/dummy/route/mapserverproxy",
-            "wmsLayers": "foo",
-            "queryLayers": [{
-                "name": "test_wmsfeatures",
-                "minResolutionHint": 1.76,
-                "maxResolutionHint": 8.8200000000000003
-            }],
-            "legend": False,
-            "isLegendExpanded": False,
-            "public": True,
-            "metadata": {},
-        }, set()))
-
-        group1 = LayerGroup()
-        group1.name = "block"
-        group1.id = 11
-        group2 = LayerGroup()
-        group2.id = 12
-        group2.name = "node"
-        group2.metadata_url = "http://example.com/group.metadata"
-        layer = LayerV1()
-        layer.id = 20
-        layer.name = "test layer in group"
-        layer.layer = "test layer in group"
-        layer.is_checked = False
-        layer.layer_type = "internal WMS"
-        layer.image_type = "image/png"
-        layer.legend = False
-        layer.is_legend_expanded = False
-        layer.public = True
-        group1.children = [group2]
-        group2.children = [layer]
-
-        self.assertEqual(entry._group(
-            "", group1, [layer.name],
-        ), ({
-            "id": 11,
-            "isExpanded": False,
-            "isInternalWMS": True,
-            "name": "block",
-            "isBaseLayer": False,
-            "metadata": {},
-            "mixed": False,
-            "children": [{
-                "id": 12,
-                "isExpanded": False,
-                "isInternalWMS": True,
-                "name": "node",
-                "isBaseLayer": False,
-                "metadataURL": "http://example.com/group.metadata",
-                "metadata": {},
-                "mixed": False,
-                "children": [{
-                    "name": "test layer in group",
-                    "id": 20,
-                    "isChecked": False,
-                    "type": "internal WMS",
-                    "legend": False,
-                    "isLegendExpanded": False,
-                    "imageType": "image/png",
-                    "public": True,
-                    "metadata": {},
-                }]
-            }]
-        }, {"The layer 'test layer in group' (test layer in group) is not defined in WMS capabilities from '__test_ogc_server'"}))
-
     def _assert_has_error(self, errors, error):
         self.assertIn(error, errors)
         self.assertEqual(
             len([e for e in errors if e == error]), 1,
             "Error '{0!s}' more than one time in errors:\n{1!r}".format(error, errors),
         )
-
-    def test_internalwms(self):
-        from c2cgeoportal_geoportal.views.entry import Entry
-        from c2cgeoportal_commons.models.main import LayerV1, LayerGroup
-
-        request = self._create_request_obj()
-        request.static_url = lambda name: "/dummy/static/" + name
-        request.route_url = lambda name: "/dummy/route/" + name
-        request.registry.settings["package"] = "test_layer"
-        entry = Entry(request)
-
-        group1 = LayerGroup()
-        group1.is_internal_wms = True
-        group2 = LayerGroup()
-        group2.is_internal_wms = False
-        group1.children = [group2]
-        _, errors = entry._group("", group1, [], catalogue=False)
-        self._assert_has_error(errors, "Group '' cannot be in group '' (internal/external mix).")
-
-        group1 = LayerGroup()
-        group1.is_internal_wms = False
-        group2 = LayerGroup()
-        group2.is_internal_wms = True
-        group1.children = [group2]
-        _, errors = entry._group("", group1, [], catalogue=False)
-        self._assert_has_error(errors, "Group '' cannot be in group '' (internal/external mix).")
-
-        group = LayerGroup()
-        group.is_internal_wms = True
-        layer = LayerV1()
-        layer.layer_type = "internal WMS"
-        group.children = [layer]
-        _, errors = entry._group("", group, [layer.name], catalogue=False)
-        self.assertEqual(errors, {
-            "The layer '' () is not defined in WMS capabilities from '__test_ogc_server'",
-        })
-
-        group = LayerGroup()
-        group.is_internal_wms = True
-        layer = LayerV1()
-        layer.layer_type = "external WMS"
-        group.children = [layer]
-        _, errors = entry._group("", group, [layer.name], catalogue=False)
-        self._assert_has_error(errors, "Layer '' cannot be in the group '' (internal/external mix).")
-
-        group = LayerGroup()
-        group.is_internal_wms = True
-        layer = LayerV1()
-        layer.layer_type = "WMTS"
-        group.children = [layer]
-        _, errors = entry._group("", group, [layer.name], catalogue=False)
-        self._assert_has_error(errors, "Layer '' cannot be in the group '' (internal/external mix).")
-
-        group = LayerGroup()
-        group.is_internal_wms = True
-        layer = LayerV1()
-        layer.layer_type = "no 2D"
-        group.children = [layer]
-        _, errors = entry._group("", group, [layer.name], catalogue=False)
-        self._assert_has_error(errors, "Layer '' cannot be in the group '' (internal/external mix).")
-
-        group = LayerGroup()
-        group.is_internal_wms = False
-        layer = LayerV1()
-        layer.layer_type = "internal WMS"
-        group.children = [layer]
-        _, errors = entry._group("", group, [layer.name], catalogue=False)
-        self._assert_has_error(errors, "Layer '' cannot be in the group '' (internal/external mix).")
-
-        group = LayerGroup()
-        group.is_internal_wms = False
-        layer = LayerV1()
-        layer.layer_type = "external WMS"
-        group.children = [layer]
-        _, errors = entry._group("", group, [layer.name], catalogue=False, min_levels=0)
-        self.assertEqual(errors, set())
-
-        group = LayerGroup()
-        group.is_internal_wms = False
-        layer = LayerV1()
-        layer.layer_type = "WMTS"
-        group.children = [layer]
-        _, errors = entry._group("", group, [layer.name], catalogue=False, min_levels=0)
-        self.assertEqual(errors, set())
-
-        group = LayerGroup()
-        group.is_internal_wms = False
-        layer = LayerV1()
-        layer.layer_type = "no 2D"
-        group.children = [layer]
-        _, errors = entry._group("", group, [layer.name], catalogue=False, min_levels=0)
-        self.assertEqual(errors, set())
 
     def test_loginchange_no_params(self):
         from pyramid.httpexceptions import HTTPBadRequest
