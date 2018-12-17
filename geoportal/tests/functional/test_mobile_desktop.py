@@ -33,7 +33,6 @@ from unittest import TestCase
 import transaction
 from pyramid import testing
 
-from c2cgeoportal_geoportal.lib import functionality
 from tests.functional import (  # noqa
     teardown_common as teardown_module,
     setup_common as setup_module,
@@ -99,6 +98,7 @@ class TestMobileDesktop(TestCase):
     def teardown_method(self, _):
         testing.tearDown()
 
+        from c2cgeoportal_geoportal.lib import functionality
         functionality.FUNCTIONALITIES_TYPES = None
 
         from c2cgeoportal_commons.models import DBSession

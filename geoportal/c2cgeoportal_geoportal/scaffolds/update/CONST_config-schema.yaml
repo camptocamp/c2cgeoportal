@@ -265,7 +265,7 @@ mapping:
           available_metadata:
             type: seq
             required: True
-            sequence: &types
+            sequence:
               - type: map
                 mapping:
                   name:
@@ -283,7 +283,19 @@ mapping:
             type: seq
             required: True
             sequence:
-              - type: str
+              - type: map
+                mapping:
+                  name:
+                    type: str
+                    required: True
+                  type:
+                    type: str
+                  regex:
+                    type: str
+                  error_message:
+                    type: str
+                  single:
+                    type: bool
       layers:
         type: map
         required: True

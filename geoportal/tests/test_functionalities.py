@@ -36,7 +36,7 @@ class TestFunctionalities(TestCase):
         from c2cgeoportal_geoportal.lib import get_types_map
         from c2cgeoportal_geoportal.lib import functionality
 
-        types = get_types_map(["func"])
+        types = get_types_map([{"name": "func"}])
 
         class Registry:
             settings = {}
