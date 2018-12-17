@@ -137,8 +137,8 @@ class TestThemeEditing(TestCase):
             RestrictionArea, Theme, LayerGroup, Interface, OGCServer
         from c2cgeoportal_commons.models.static import User
 
-        DBSession.query(User).filter(User.username == "__test_user1").delete()
-        DBSession.query(User).filter(User.username == "__test_user2").delete()
+        DBSession.delete(DBSession.query(User).filter(User.username == "__test_user1").one())
+        DBSession.delete(DBSession.query(User).filter(User.username == "__test_user2").one())
 
         ra = DBSession.query(RestrictionArea).filter(
             RestrictionArea.name == "__test_ra1"
