@@ -49,9 +49,8 @@ class TestMapserverproxyViewGroup(TestCase):
 
         ogc_server_internal, _ = create_default_ogcserver()
 
-        user1 = User(username="__test_user1", password="__test_user1")
         role1 = Role(name="__test_role1", description="__test_role1")
-        user1.role_name = role1.name
+        user1 = User(username="__test_user1", password="__test_user1", settings_role=role1, roles=[role1])
         user1.email = "Tarenpion"
 
         main = Interface(name="main")
@@ -81,7 +80,7 @@ class TestMapserverproxyViewGroup(TestCase):
             Interface, OGCServer
         from c2cgeoportal_commons.models.static import User
 
-        DBSession.query(User).filter(User.username == "__test_user1").delete()
+        DBSession.delete(DBSession.query(User).filter(User.username == "__test_user1").one())
 
         ra = DBSession.query(RestrictionArea).filter(
             RestrictionArea.name == "__test_ra1"

@@ -66,7 +66,6 @@ import sqlalchemy.ext.declarative
 from geoalchemy2 import Geometry, WKTElement
 import transaction
 
-from c2cgeoportal_geoportal.lib import functionality
 from tests.functional import (  # noqa
     teardown_common as teardown_module,
     setup_common as setup_module,
@@ -158,13 +157,11 @@ class TestMapserverproxyView(TestCase):
         user1.email = "Tarenpion"
 
         role2 = Role(name="__test_role2", description="__test_role2", functionalities=[pt1, pt2])
-        user2 = User(username="__test_user2", password="__test_user2", roles=[role2])
-        user2.role_name = role2.name
+        user2 = User(username="__test_user2", password="__test_user2", settings_role=role2, roles=[role2])
         user2.email = "Tarenpion"
 
         role3 = Role(name="__test_role3", description="__test_role3", functionalities=[pt1, pt2])
-        user3 = User(username="__test_user3", password="__test_user3", roles=[role3])
-        user3.role_name = role3.name
+        user3 = User(username="__test_user3", password="__test_user3", settings_role=role3, roles=[role3])
 
         main = Interface(name="main")
 
@@ -208,6 +205,7 @@ class TestMapserverproxyView(TestCase):
     def teardown_method(self, _):
         from c2cgeoportal_commons.models import DBSession
 
+        from c2cgeoportal_geoportal.lib import functionality
         functionality.FUNCTIONALITIES_TYPES = None
 
         cleanup_db()
@@ -218,10 +216,11 @@ class TestMapserverproxyView(TestCase):
     def _create_dummy_request(username=None):
         request = create_dummy_request({
             "admin_interface": {
-                "available_functionalities": [
-                    "mapserver_substitution",
-                    "print_template",
-                ]
+                "available_functionalities": [{
+                    "name": "mapserver_substitution"
+                }, {
+                    "name": "print_template"
+                }]
             }
         }, user=username)
         return request
@@ -858,9 +857,9 @@ class TestMapserverproxyView(TestCase):
         assert "Swiss" not in response.body.decode("utf-8")
 
         request = self._create_dummy_request()
-        request.registry.settings["admin_interface"] = {"available_functionalities": [
-            "mapserver_substitution"
-        ]}
+        request.registry.settings["admin_interface"] = {"available_functionalities": [{
+            "name": "mapserver_substitution"
+        }]}
         request.method = "POST"
         request.body = SUBSTITUTION_GETFEATURE_REQUEST
         request.registry.settings["functionalities"]["anonymous"] = {

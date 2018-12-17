@@ -980,7 +980,7 @@ class Entry:
                 name = featureType.getElementsByTagNameNS(self.WFS_NS, "Name").item(0)
                 if name:
                     name_value = name.childNodes[0].data
-                    # ignore namespace when not using geoserver
+                    # Ignore namespace when not using geoserver
                     if name_value.find(":") >= 0 and \
                             not self.default_ogc_server.type == main.OGCSERVER_TYPE_GEOSERVER:
                         name_value = name_value.split(":")[1]  # pragma nocover
@@ -992,12 +992,6 @@ class Entry:
             return response.text, errors
 
     def _functionality(self):
-        return self._functionality_cached(
-            self.request.user.role.name if self.request.user is not None else None
-        )
-
-    def _functionality_cached(self, role):
-        del role  # Just for caching
         functionality = {}
         for func_ in get_setting(
                 self.settings,
@@ -1350,8 +1344,7 @@ class Entry:
             "success": True,  # for Extjs
             "username": user.username,
             "is_password_changed": user.is_password_changed,
-            "role_name": user.role_name,
-            "role_id": user.role.id
+            "roles": [{"name": r.name, "id": r.id} for r in user.roles],
         } if user else {}
 
         result["functionalities"] = self._functionality()
