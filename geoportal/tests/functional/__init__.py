@@ -42,7 +42,7 @@ import c2cgeoportal_geoportal
 import tests
 
 from c2c.template.config import config as configuration
-from c2cgeoportal_geoportal.lib import functionality, caching
+from c2cgeoportal_geoportal.lib import caching
 
 
 mapserv_url = "http://mapserver:8080/"
@@ -108,6 +108,7 @@ def setup_common():
     config = testing.setUp(settings=configuration.get_config())
 
     c2cgeoportal_geoportal.init_dbsessions(config.get_settings(), config)
+    from c2cgeoportal_geoportal.lib import functionality
     functionality.FUNCTIONALITIES_TYPES = None
 
     cleanup_db()
@@ -117,6 +118,7 @@ def teardown_common():
     from c2cgeoportal_commons import models
     cleanup_db()
     testing.tearDown()
+    from c2cgeoportal_geoportal.lib import functionality
     functionality.FUNCTIONALITIES_TYPES = None
 
     models.DBSession.close()

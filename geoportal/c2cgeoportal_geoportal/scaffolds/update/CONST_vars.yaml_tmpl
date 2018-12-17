@@ -368,13 +368,17 @@ vars:
     # The list of functionalities that can be configured
     # through the admin interface.
     available_functionalities:
-      - default_basemap
-      - default_theme
-      - print_template
-      - mapserver_substitution
-      - filterable_layers
-      - preset_layer_filter
-      - open_panel
+      - name: default_basemap
+        single: true
+      - name: default_theme
+        single: true
+      - name: print_template
+      - name: mapserver_substitution
+      - name: filterable_layers
+      - name: preset_layer_filter
+        single: true
+      - name: open_panel
+        single: true
 
   functionalities:
     # Functionalities that are accessible to anonymous
