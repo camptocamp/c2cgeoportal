@@ -62,8 +62,13 @@
 <p class="last">All the <code class="docutils literal notranslate"><span class="pre">#,</span> <span class="pre">fuzzy</span></code> strings should be verified and the line should be removed
 (if the line is not removed, the localisation will not be used).</p>
 </div>
-<p>To update the <code class="docutils literal notranslate"><span class="pre">po</span></code> files, you must run this specific target:</p>
+<p>To update the <code class="docutils literal notranslate"><span class="pre">po</span></code> files, you must run this specific targets.</p>
+<p>For non Docker project:</p>
 <div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">docker</span><span class="o">-</span><span class="n">run</span> <span class="n">make</span> <span class="o">--</span><span class="n">makefile</span><span class="o">=&lt;</span><span class="n">package</span><span class="o">&gt;.</span><span class="n">mk</span> <span class="n">update</span><span class="o">-</span><span class="n">po</span>
+</pre></div>
+</div>
+<p>For Docker project:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">docker</span><span class="o">-</span><span class="n">compose</span><span class="o">-</span><span class="n">run</span>  <span class="n">make</span> <span class="o">--</span><span class="n">makefile</span><span class="o">=&lt;</span><span class="n">package</span><span class="o">&gt;.</span><span class="n">mk</span> <span class="n">update</span><span class="o">-</span><span class="n">po</span>
 </pre></div>
 </div>
 <div class="admonition note">
