@@ -55,11 +55,12 @@ def _get_config_functionality(name, registered, types, request, errors):
     return [r for r in result if r is not None]
 
 
-def _get_db_functionality(name, role, types, request, errors):
+def _get_db_functionality(name, roles, types, request, errors):
     result = [
         get_typed(name, functionality.value, types, request, errors)
-        for functionality in role.functionalities
-        if functionality.name == name
+        for functionality in set(
+            [f for role in roles for f in role.functionalities if f.name == name]
+        )
     ]
     return [r for r in result if r is not None]
 
@@ -78,9 +79,9 @@ def get_functionality(name, request):
             .get("available_functionalities", [])
         )
 
-    if request.user is not None and request.user.role is not None:
+    if request.user is not None and len(request.user.roles) > 0:
         result = _get_db_functionality(
-            name, request.user.role,
+            name, request.user.roles,
             FUNCTIONALITIES_TYPES, request, errors
         )
     if len(result) == 0:
