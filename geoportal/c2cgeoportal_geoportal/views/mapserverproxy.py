@@ -64,10 +64,10 @@ class MapservProxy(OGCProxy):
             # send layer_name, but MapServer should not use the DATA
             # string for GetLegendGraphic.
 
-            role = self.user.role
-            if role is not None:
+            roles = self.user.roles
+            if len(roles):
                 if self._get_ogc_server().auth == main.OGCSERVER_AUTH_STANDARD:
-                    self.params["role_id"] = role.id
+                    self.params["role_ids"] = ",".join([str(r.id) for r in roles])
 
                     # In some application we want to display the features owned by a user
                     # than we need his id.
@@ -107,8 +107,8 @@ class MapservProxy(OGCProxy):
                     # no user_id and role_id or cached queries
                     if use_cache and "user_id" in self.params:
                         del self.params["user_id"]
-                    if use_cache and "role_id" in self.params:
-                        del self.params["role_id"]
+                    if use_cache and "role_ids" in self.params:
+                        del self.params["role_ids"]
 
             if "service" in self.lower_params and self.lower_params["service"] == "wfs":
                 _url = self._get_wfs_url()
@@ -139,7 +139,7 @@ class MapservProxy(OGCProxy):
         if self._get_ogc_server().auth == main.OGCSERVER_AUTH_GEOSERVER and \
                 self.user is not None:
             headers["sec-username"] = self.user.username
-            headers["sec-roles"] = role.name
+            headers["sec-roles"] = ";".join([r.name for r in roles])
 
         response = self._proxy_callback(
             self.user, cache_control,

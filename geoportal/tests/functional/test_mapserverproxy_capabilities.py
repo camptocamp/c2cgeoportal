@@ -118,8 +118,8 @@ class TestMapserverproxyCapabilities(TestCase):
         request = create_dummy_request({
             "admin_interface": {
                 "available_functionalities": [
-                    "mapserver_substitution",
-                    "print_template",
+                    {"name": "mapserver_substitution"},
+                    {"name": "print_template"},
                 ]
             },
             "servers": {
@@ -141,8 +141,8 @@ class TestMapserverproxyCapabilities(TestCase):
         request = create_dummy_request({
             "admin_interface": {
                 "available_functionalities": [
-                    "mapserver_substitution",
-                    "print_template",
+                    {"name": "mapserver_substitution"},
+                    {"name": "print_template"},
                 ]
             },
             "servers": {
