@@ -30,8 +30,22 @@ vars:
               label: display_name
             - featureType: osm_scale
               label: display_name
-          defaultFeatureNS: http://mapserver.gis.umn.edu/mapserver
+    desktop_alt:
+      constants:
+        ngeoWfsPermalinkOptions:
+          wfsTypes:
+            - featureType: osm_hospitals
+              label: name
+            - featureType: osm_firestations
+              label: name
+          defaultFeatureNS: http://www.qgis.org/gml
           defaultFeaturePrefix: feature
+      routes:
+        ngeoPermalinkOgcserverUrl:
+          name: mapserverproxy
+          params:
+            ogcserver: QGIS server
+
 
   authtkt:
     # One day
@@ -214,6 +228,7 @@ update_paths:
   - headers.shortener
   - headers.login
   - interfaces_config.default.constants
+  - interfaces_config.default.constants.ngeoWfsPermalinkOptions
   - interfaces_config.default.dynamic_constants
   - interfaces_config.default.static
   - interfaces_config.default.routes
