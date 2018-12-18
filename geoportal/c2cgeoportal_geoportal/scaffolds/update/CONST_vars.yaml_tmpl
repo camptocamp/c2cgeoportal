@@ -538,6 +538,14 @@ vars:
             style-src 'self' 'unsafe-inline'; \
             img-src * data:; \
             worker-src 'self' blob:"
+    - pattern: '^/static/.*'
+      headers:
+        Access-Control-Allow-Origin: '*'
+        Access-Control-Allow-Headers: X-Requested-With, Content-Type
+    - pattern: '^/static-ngeo/.*'
+      headers:
+        Access-Control-Allow-Origin: '*'
+        Access-Control-Allow-Headers: X-Requested-With, Content-Type
 
   # Control the HTTP headers
   headers:

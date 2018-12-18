@@ -43,6 +43,7 @@ def create_dummy_request(additional_settings=None, *args, **kargs):
         "available_locale_names": ["en", "fr", "de"],
         "default_locale_name": "fr",
         "default_max_age": 1000,
+        "package": "package_for_test"
     }
     request.registry.settings.update(additional_settings)
     return request

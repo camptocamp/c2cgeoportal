@@ -111,6 +111,11 @@ def get_url2(name, url, request, errors):
         if proj == "":
             proj = "{}_geoportal:static".format(package)
         elif ":" not in proj:
+            if proj == "static-ngeo":
+                errors.add(
+                    "{}='{}' static-ngeo shouldn't be used out of webpack because it don't has "
+                    "cache bustering.".format(name, url)
+                )
             proj = "{}_geoportal:{}".format(package, proj)
         return request.static_url(
             "{}{}".format(proj, url_split.path)
