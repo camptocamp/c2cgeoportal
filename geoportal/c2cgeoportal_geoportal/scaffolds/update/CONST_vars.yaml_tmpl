@@ -52,17 +52,17 @@ vars:
   # mapserver visible area
   mapserver_join_area: ra.area
   # mapserver join close
-  mapserver_join_where: "rra.role_id = %role_id% AND rra.restrictionarea_id = ra.id AND \
+  mapserver_join_where: "rra.role_id in (%role_ids%) AND rra.restrictionarea_id = ra.id AND \
     lra.restrictionarea_id = ra.id AND lra.layer_id = la.id AND la.name = "
   # mapserver metadata for validation
   mapserver_layer_metadata: ""
   mapserver_layer_validation: |
-    "default_role_id" "-1"
-    "role_id" "^-?[0-9]*$"
+    "default_role_ids" "-1"
+    "role_ids" "^-?[0-9,]*$"
   # mapfile data subselect
   mapfile_data_subselect: "SELECT ST_Collect(ra.area) FROM main.restrictionarea AS ra, \
     main.role_restrictionarea AS rra, main.layer_restrictionarea AS lra, main.treeitem AS la \
-    WHERE rra.role_id = %role_id% AND rra.restrictionarea_id = ra.id AND lra.restrictionarea_id = ra.id \
+    WHERE rra.role_id in (%role_ids%) AND rra.restrictionarea_id = ra.id AND lra.restrictionarea_id = ra.id \
     AND lra.layer_id = la.id AND la.name = "
   # mapserver filter on role id only
   mapfile_data_noarea_subselect: "SELECT rra.role_id FROM {mapserver_join_tables} \
