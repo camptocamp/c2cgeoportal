@@ -496,13 +496,13 @@ class Entry:
 
     def _fill_editable(self, l, layer):
         if self.request.user:
-            c = models.DBSession.query(main.RestrictionArea) \
-                .filter(main.RestrictionArea.roles.any(
-                    main.Role.id == self.request.user.role.id)) \
+            count = models.DBSession.query(main.RestrictionArea) \
+                .join(main.RestrictionArea.roles) \
+                .filter(main.Role.id.in_([r.id for r in self.request.user.roles])) \
                 .filter(main.RestrictionArea.layers.any(main.Layer.id == layer.id)) \
                 .filter(main.RestrictionArea.readwrite.is_(True)) \
                 .count()
-            if c > 0:
+            if count > 0:
                 l["editable"] = True
                 l["edit_columns"] = get_layer_metadatas(layer)
 

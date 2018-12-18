@@ -95,7 +95,7 @@ class FullTextSearchView:
                             for w in IGNORED_CHARS_RE.sub(" ", terms).split(" ") if w != "")
         _filter = FullTextSearch.ts.op("@@")(func.to_tsquery(language, terms_ts))
 
-        if self.request.user is None or self.request.user.role is None:
+        if self.request.user is None:
             _filter = and_(_filter, FullTextSearch.public.is_(True))
         else:
             _filter = and_(
@@ -103,7 +103,7 @@ class FullTextSearchView:
                 or_(
                     FullTextSearch.public.is_(True),
                     FullTextSearch.role_id.is_(None),
-                    FullTextSearch.role_id == self.request.user.role.id
+                    FullTextSearch.role_id.in_([r.id for r in self.request.user.roles])
                 )
             )
 
