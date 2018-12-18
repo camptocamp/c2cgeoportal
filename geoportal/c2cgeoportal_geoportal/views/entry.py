@@ -30,39 +30,40 @@
 
 import json
 import logging
-import urllib.parse
 import re
-import requests
 import sys
+import urllib.parse
 import xml.dom.minidom  # noqa # pylint: disable=unused-import
-import zope.event.classhandler
-
-from defusedxml import lxml
 from collections import Counter
-from defusedxml.minidom import parseString
 from math import sqrt
+from random import Random
+from typing import Dict, Set, Tuple  # noqa # pylint: disable=unused-import
+
+import requests
+import zope.event.classhandler
+from defusedxml import lxml
+from defusedxml.minidom import parseString
 from owslib.wms import WebMapService
-from pyramid.httpexceptions import HTTPFound, HTTPBadRequest, HTTPForbidden, HTTPBadGateway
+from pyramid.httpexceptions import HTTPBadGateway, HTTPBadRequest, HTTPForbidden, HTTPFound
 from pyramid.i18n import TranslationStringFactory
 from pyramid.response import Response
-from pyramid.security import remember, forget
+from pyramid.security import forget, remember
 from pyramid.view import view_config
-from random import Random
 from sqlalchemy.orm import subqueryload
 from sqlalchemy.orm.exc import NoResultFound
-from typing import Dict, Tuple, Set  # noqa # pylint: disable=unused-import
 
 from c2cgeoportal_commons import models
-from c2cgeoportal_commons.models import main, static
-from c2cgeoportal_geoportal.lib import get_setting, get_url2, get_url, get_typed, get_types_map, \
-    add_url_params
-from c2cgeoportal_geoportal.lib.layers import get_protected_layers_query
-from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
-from c2cgeoportal_geoportal.lib.caching import get_region, \
-    set_common_headers, NO_CACHE, PUBLIC_CACHE, PRIVATE_CACHE
-from c2cgeoportal_geoportal.lib.functionality import get_functionality, get_mapserver_substitution_params
-from c2cgeoportal_geoportal.lib.wmstparsing import parse_extent, TimeInformation
 from c2cgeoportal_commons.lib.email_ import send_email_config
+from c2cgeoportal_commons.models import main, static
+from c2cgeoportal_geoportal import is_valid_referer
+from c2cgeoportal_geoportal.lib import (
+    add_url_params, get_setting, get_typed, get_types_map, get_url, get_url2)
+from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
+from c2cgeoportal_geoportal.lib.caching import (
+    NO_CACHE, PRIVATE_CACHE, PUBLIC_CACHE, get_region, set_common_headers)
+from c2cgeoportal_geoportal.lib.functionality import get_functionality, get_mapserver_substitution_params
+from c2cgeoportal_geoportal.lib.layers import get_protected_layers_query
+from c2cgeoportal_geoportal.lib.wmstparsing import TimeInformation, parse_extent
 from c2cgeoportal_geoportal.views.layers import get_layer_metadatas
 
 _ = TranslationStringFactory("c2cgeoportal")
@@ -1523,8 +1524,18 @@ class Entry:
                 group, ", ".join([i[0] for i in models.DBSession.query(main.LayerGroup.name).all()])
             )])
 
+    def _referer_log(self):
+        if not hasattr(self.request, "is_valid_referer"):
+            self.request.is_valid_referer = is_valid_referer(self.request)
+        if not self.request.is_valid_referer:
+            log.error(
+                "Invalid referer for %s: %s", self.request.path_qs, repr(self.request.referer)
+            )
+
     @view_config(context=HTTPForbidden, renderer="login.html")
     def loginform403(self):
+        self._referer_log()
+
         if self.request.authenticated_userid:
             return HTTPForbidden()  # pragma: no cover
 
@@ -1537,6 +1548,8 @@ class Entry:
 
     @view_config(route_name="loginform", renderer="login.html")
     def loginform(self):
+        self._referer_log()
+
         set_common_headers(self.request, "login", PUBLIC_CACHE, vary=True)
 
         return {
@@ -1546,6 +1559,8 @@ class Entry:
 
     @view_config(route_name="login")
     def login(self):
+        self._referer_log()
+
         login = self.request.POST.get("login")
         password = self.request.POST.get("password")
         if login is None or password is None:  # pragma nocover
@@ -1611,6 +1626,8 @@ class Entry:
 
     @view_config(route_name="loginuser", renderer="json")
     def loginuser(self):
+        self._referer_log()
+
         set_common_headers(self.request, "login", NO_CACHE)
 
         return self._user()

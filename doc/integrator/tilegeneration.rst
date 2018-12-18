@@ -36,7 +36,7 @@ The chosen solution is a combination of two tools:
 
 * `MapCache <http://mapserver.org/trunk/mapcache/>`_ for the last zoom level.
 
-* `TileCloud-Chain <https://github.com/sbrunner/tilecloud-chain>`_ for the tile generation.
+* `TileCloud-Chain <https://github.com/camptocamp/tilecloud-chain>`_ for the tile generation.
 
 MapCache
 --------
@@ -56,7 +56,7 @@ To clear/flush Memcached cache, use the following command:
     echo "flush_all" | /bin/netcat -q 2 127.0.0.1 11211
 
 See the `TileCloud-chain documentation for more details
-<https://github.com/sbrunner/tilecloud-chain#configure-mapcache>`_
+<https://github.com/camptocamp/tilecloud-chain#configure-mapcache>`_
 
 TileCloud-chain
 ---------------
@@ -111,7 +111,7 @@ Configuration
 
 The configuration is done in the self-documented file
 ``tilegeneration/config.yaml``. The original file is available at:
-https://github.com/sbrunner/tilecloud-chain/blob/master/tilecloud_chain/scaffolds/create/tilegeneration/config.yaml.in_tmpl
+https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/scaffolds/create/tilegeneration/config.yaml.mako_tmpl
 
 The main thing to do is to:
 
@@ -132,7 +132,7 @@ The main thing to do is to:
 
   .. prompt:: bash
 
-     ./docker-run generate_tiles --get-hash <max-zoom>/0/0 --layer <layer>
+     docker-compose exec tilecloudchain generate_tiles --get-hash <max-zoom>/0/0 --layer <layer>
 
   We consider that the first tile of the max zoom is empty.
   Than copy past the result in the layer config.
@@ -141,13 +141,13 @@ The main thing to do is to:
 
   .. prompt:: bash
 
-     ./docker-run generate_controller --generate-wmts-capabilities
+     docker-compose exec tilecloudchain generate_controller --generate-wmts-capabilities
 
 * And an OpenLayers test page:
 
   .. prompt:: bash
 
-     ./docker-run generate_controller --openlayers-test
+     docker-compose exec tilecloudchain generate_controller --openlayers-test
 
 If you generate the tiles locally you do not need all the configuration
 variables, because many of them in the ``generation`` part are for
@@ -161,26 +161,26 @@ see help:
 
 .. prompt:: bash
 
-    ./docker-run generate_tiles --help
+    docker-compose exec tilecloudchain generate_tiles --help
 
 one to generate the tiles using AWS, see help:
 
 .. prompt:: bash
 
-    ./docker-run generate_controller --help
+    docker-compose exec tilecloudchain generate_controller --help
 
 Before start a tile generation on S3 measure the cost:
 
 .. prompt:: bash
 
-    ./docker-run generate_controller --cost
+    docker-compose exec tilecloudchain generate_controller --cost
 
 If you setup all the default options you can generate the tiles by
 using the command:
 
 .. prompt:: bash
 
-    ./docker-run generate_tiles
+    docker-compose exec tilecloudchain generate_tiles
 
 .. note:: Make sure you export AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY:
 
