@@ -41,5 +41,4 @@ def defaultgroupsfinder(username, request):
     del username  # unused
     if not hasattr(request, "user") or request.user is None:
         return []  # pragma: no cover
-    role = request.user.role
-    return [role.name] if role else []
+    return [role.name for role in request.user.roles]
