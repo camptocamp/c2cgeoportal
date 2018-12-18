@@ -31,30 +31,34 @@
 import logging
 import os
 from decimal import Decimal
-from repoze.lru import LRUCache
+from typing import Dict, Union  # noqa, pylint: disable=unused-import
 
 from fiona.collection import Collection
 import rasterio
-from pyramid.httpexceptions import HTTPNotFound, HTTPBadRequest
+import zope.event.classhandler
+from pyramid.httpexceptions import HTTPBadRequest, HTTPNotFound
 from pyramid.view import view_config
 
-from c2cgeoportal_geoportal.lib.caching import set_common_headers, NO_CACHE
+from c2cgeoportal_geoportal.lib.caching import NO_CACHE, set_common_headers
 
 log = logging.getLogger(__name__)
 
-_rasters = None
-
 
 class Raster:
+    data = {}  # type: Dict[str, Union[Collection, rasterio.DatasetReader]]
 
     def __init__(self, request):
         self.request = request
         self.rasters = self.request.registry.settings["raster"]
-        global _rasters
-        if _rasters is None:
-            cache_size = self.rasters.get('cache_size', 10)
-            log.debug('initialize LRUCache with size %d' % cache_size)
-            _rasters = LRUCache(cache_size)
+
+        from c2cgeoportal_commons.models.main import InvalidateCacheEvent
+
+        @zope.event.classhandler.handler(InvalidateCacheEvent)
+        def handle(event: InvalidateCacheEvent):  # pylint: disable=unused-variable
+            del event
+            for _, v in Raster.data.items():
+                v.close()
+            Raster.data = {}
 
     @view_config(route_name="raster", renderer="decimaljson")
     def raster(self):
@@ -87,20 +91,28 @@ class Raster:
 
         result = {}
         for ref in list(rasters.keys()):
-            result[ref] = self._get_raster_value(rasters[ref], lon, lat)
+            result[ref] = self._get_raster_value(rasters[ref], ref, lon, lat)
 
         set_common_headers(self.request, "raster", NO_CACHE)
         return result
 
-    def _get_raster_value(self, layer, lon, lat):
-        path = layer["file"]
-        if layer.get("type", "shp_index") == "shp_index":
+    def _get_data(self, layer, name):
+        if name not in self.data:
+            path = layer["file"]
+            if layer.get("type", "shp_index") == "shp_index":
+                self.data[name] = Collection(path)
+            elif layer.get("type") == "gdal":
+                self.data[name] = rasterio.open(path)
 
-            with Collection(path) as collection:
-                tiles = [e for e in collection.filter(mask={
-                    "type": "Point",
-                    "coordinates": [lon, lat],
-                })]
+        return self.data[name]
+
+    def _get_raster_value(self, layer, name, lon, lat):
+        data = self._get_data(layer, name)
+        if layer.get("type", "shp_index") == "shp_index":
+            tiles = [e for e in data.filter(mask={
+                "type": "Point",
+                "coordinates": [lon, lat],
+            })]
 
             if len(tiles) == 0:
                 return None
@@ -110,17 +122,10 @@ class Raster:
                 tiles[0]["properties"]["location"],
             )
 
-        dataset, band = self._get_raster(path)
-
-        index = dataset.index(lon, lat)
-        if index[0] - 1 < len(band) and index[1] - 1 < len(band[index[0] - 1]):
-            result = band[index[0] - 1][index[1] - 1]
-            result = None if result == layer.get("nodata", dataset.nodata) else result
-        else:
-            log.warning("Unable to get value for layer: {}, lon: {}, lat: {}, in {}.".format(
-                layer, lon, lat, path
-            ))
-            result = None
+            with rasterio.open(path) as dataset:
+                result = self._get_value(layer, name, dataset, lon, lat)
+        elif layer.get("type") == "gdal":
+            result = self._get_value(layer, name, data, lon, lat)
 
         if "round" in layer:
             result = self._round(result, layer["round"])
@@ -130,15 +135,28 @@ class Raster:
         return result
 
     @staticmethod
-    def _get_raster(path):
-        if path not in _rasters.data:
-            dataset = rasterio.open(path)
-            band = dataset.read(1)  # pylint: disable=no-member
-            _rasters.put(path, (dataset, band))
-            log.debug('raster cache miss for %s' % path)
+    def _get_value(layer, name, dataset, lon, lat):
+        index = dataset.index(lon, lat)
+
+        shape = dataset.shape
+        if index[0] >= 0 and index[1] >= 0 and index[0] < shape[0] and index[1] < shape[1]:
+            def get_index(index_):
+                return (index_, index_ + 1)
+            result = dataset.read(1, window=(
+                get_index(index[0]),
+                get_index(index[1]),
+            ))[0][0]  # pylint: disable=no-member
+            result = None if result == layer.get("nodata", dataset.nodata) else result
         else:
-            log.debug('raster cache hit for %s' % path)
-        return _rasters.get(path)
+            log.debug(
+                "Out of index for layer: %s (%s), "
+                "lon/lat: %dx%d, index: %dx%d, shape: %dx%d.",
+                name, layer["file"],
+                lon, lat, index[0], index[1], dataset.shape[0], dataset.shape[1],
+            )
+            result = None
+
+        return result
 
     @staticmethod
     def _round(value, round_to):

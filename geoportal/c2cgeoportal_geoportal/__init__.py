@@ -532,7 +532,7 @@ def includeme(config):
         from c2cgeoportal_commons.models.main import InvalidateCacheEvent
 
         @zope.event.classhandler.handler(InvalidateCacheEvent)
-        def handle(event: InvalidateCacheEvent):
+        def handle(event: InvalidateCacheEvent):  # pylint: disable=unused-variable
             del event
             caching.invalidate_region()
 
@@ -728,6 +728,10 @@ def includeme(config):
 
     # Dev
     config.add_route("dev", "/dev/*path", request_method="GET")
+
+    # Used memory in caches
+    add_cors_route(config, "/memory", "memory")
+    config.add_route("memory", "/memory", request_method="GET")
 
     # Scan view decorator for adding routes
     config.scan(ignore=[
