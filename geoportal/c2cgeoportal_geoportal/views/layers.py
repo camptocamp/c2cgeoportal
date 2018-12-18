@@ -157,7 +157,7 @@ class Layers:
         ras = models.DBSession.query(RestrictionArea.area, RestrictionArea.area.ST_SRID())
         ras = ras.join(RestrictionArea.roles)
         ras = ras.join(RestrictionArea.layers)
-        ras = ras.filter(Role.id == user.role.id)
+        ras = ras.filter(Role.id.in_([role.id for role in user.roles]))
         ras = ras.filter(Layer.id == layer.id)
         collect_ra = []
         use_srid = -1
@@ -215,7 +215,7 @@ class Layers:
         allowed = models.DBSession.query(func.count(RestrictionArea.id))
         allowed = allowed.join(RestrictionArea.roles)
         allowed = allowed.join(RestrictionArea.layers)
-        allowed = allowed.filter(Role.id == self.request.user.role.id)
+        allowed = allowed.filter(Role.id.in_([role.id for role in self.request.user.roles]))
         allowed = allowed.filter(Layer.id == layer.id)
         allowed = allowed.filter(or_(
             RestrictionArea.area.is_(None),
@@ -255,7 +255,7 @@ class Layers:
                 allowed = allowed.join(RestrictionArea.roles)
                 allowed = allowed.join(RestrictionArea.layers)
                 allowed = allowed.filter(RestrictionArea.readwrite.is_(True))
-                allowed = allowed.filter(Role.id == self.request.user.role.id)
+                allowed = allowed.filter(Role.id.in_([r.id for r in self.request.user.roles]))
                 allowed = allowed.filter(Layer.id == layer.id)
                 allowed = allowed.filter(or_(
                     RestrictionArea.area.is_(None),
@@ -306,7 +306,7 @@ class Layers:
             allowed = allowed.join(RestrictionArea.roles)
             allowed = allowed.join(RestrictionArea.layers)
             allowed = allowed.filter(RestrictionArea.readwrite.is_(True))
-            allowed = allowed.filter(Role.id == self.request.user.role.id)
+            allowed = allowed.filter(Role.id.in_([role.id for role in self.request.user.roles]))
             allowed = allowed.filter(Layer.id == layer.id)
             allowed = allowed.filter(or_(
                 RestrictionArea.area.is_(None),
@@ -391,7 +391,7 @@ class Layers:
             allowed = allowed.join(RestrictionArea.roles)
             allowed = allowed.join(RestrictionArea.layers)
             allowed = allowed.filter(RestrictionArea.readwrite.is_(True))
-            allowed = allowed.filter(Role.id == self.request.user.role.id)
+            allowed = allowed.filter(Role.id.in_([role.id for role in self.request.user.roles]))
             allowed = allowed.filter(Layer.id == layer.id)
             allowed = allowed.filter(or_(
                 RestrictionArea.area.is_(None),
