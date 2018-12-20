@@ -34,7 +34,6 @@ import json
 from pyramid.compat import WIN
 from pyramid.config.views import StaticURLInfo
 from pyramid.interfaces import IRoutePregenerator, IStaticURLInfo
-import re
 from string import Formatter
 import urllib.parse
 from zope.interface import implementer
@@ -42,34 +41,6 @@ from zope.interface import implementer
 
 def get_types_map(types_array):
     return {type_["name"]: type_ for type_ in types_array}
-
-
-def get_url(url, request, default=None, errors=None):
-    if url is None:
-        return default
-
-    if re.match("^[a-z]*://", url) is None:  # pragma: no cover
-        return url
-
-    obj = urllib.parse.urlsplit(url)
-    if obj.scheme == "static":
-        netloc = obj.netloc
-        if netloc == "":
-            netloc = "c2cgeoportal:project"
-
-        return request.static_url(netloc + obj.path)
-
-    if obj.scheme == "config":
-        server = request.registry.settings.get("servers", {}).get(obj.netloc)
-        if server is None:
-            if default is None and errors is not None:
-                errors.add("The server '{}' is not found in the config".format(obj.netloc))
-            return default
-        else:
-            return "{}{}?{}".format(server, obj.path, obj.query)
-
-    else:
-        return url
 
 
 def get_url2(name, url, request, errors):
