@@ -57,8 +57,7 @@ from c2cgeoportal_commons import models
 from c2cgeoportal_commons.lib.email_ import send_email_config
 from c2cgeoportal_commons.models import main, static
 from c2cgeoportal_geoportal import is_valid_referer
-from c2cgeoportal_geoportal.lib import (
-    add_url_params, get_setting, get_typed, get_types_map, get_url, get_url2)
+from c2cgeoportal_geoportal.lib import add_url_params, get_setting, get_typed, get_types_map, get_url2
 from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
 from c2cgeoportal_geoportal.lib.caching import (
     NO_CACHE, PRIVATE_CACHE, PUBLIC_CACHE, get_region, set_common_headers)
@@ -190,13 +189,8 @@ class Entry:
         _ = self.request.translate
         return {"title": _("title i18n")}
 
-    def _get_cache_role_key(self, ogc_server):
-        return self._get_role_id() if (
-            ogc_server.auth != main.OGCSERVER_AUTH_NOAUTH
-        ) else None
-
     def _get_capabilities_cache_role_key(self, ogc_server):
-        return self._get_role_id() if (
+        return self._get_role_ids() if (
             ogc_server.auth != main.OGCSERVER_AUTH_NOAUTH
             and ogc_server.type != main.OGCSERVER_TYPE_MAPSERVER
         ) else None
@@ -448,15 +442,14 @@ class Entry:
         errors |= dim.merge(layer, layer_info, mixed)
 
         if isinstance(layer, main.LayerWMS):
-            role_id = self._get_cache_role_key(layer.ogc_server)
-            wms, wms_layers, wms_errors = self._wms_layers(role_id, layer.ogc_server)
+            wms, wms_layers, wms_errors = self._wms_layers(layer.ogc_server)
             errors |= wms_errors
             if layer.layer is None or layer.layer == "":
                 errors.add("The layer '{}' do not have any layers".format(layer.name))
                 return None, errors
             layer_info["type"] = "WMS"
             layer_info["layers"] = layer.layer
-            self._fill_wms(layer_info, layer, errors, role_id, mixed=mixed)
+            self._fill_wms(layer_info, layer, errors, mixed=mixed)
             errors |= self._merge_time(time, layer_info, layer, wms, wms_layers)
 
         elif isinstance(layer, main.LayerWMTS):
@@ -508,8 +501,8 @@ class Entry:
                 l["editable"] = True
                 l["edit_columns"] = get_layer_metadatas(layer)
 
-    def _fill_wms(self, l, layer, errors, role_id, mixed):
-        wms, wms_layers, wms_errors = self._wms_layers(role_id, layer.ogc_server)
+    def _fill_wms(self, l, layer, errors, mixed):
+        wms, wms_layers, wms_errors = self._wms_layers(layer.ogc_server)
         errors |= wms_errors
 
         l["imageType"] = layer.ogc_server.image_type
@@ -563,21 +556,6 @@ class Entry:
         if mixed:
             l["ogcServer"] = layer.ogc_server.name
 
-    def _fill_wms_v1(self, l, layer):
-        l["imageType"] = layer.image_type
-        if layer.legend_rule:
-            l["icon"] = add_url_params(self.request.route_url("mapserverproxy"), {
-                "SERVICE": "WMS",
-                "VERSION": "1.1.1",
-                "REQUEST": "GetLegendGraphic",
-                "LAYER": layer.name,
-                "FORMAT": "image/png",
-                "TRANSPARENT": "TRUE",
-                "RULE": layer.legend_rule,
-            })
-        if layer.style:
-            l["style"] = layer.style
-
     @staticmethod
     def _fill_legend_rule_query_string(l, layer, url):
         if layer.legend_rule and url:
@@ -590,56 +568,6 @@ class Entry:
                 "TRANSPARENT": "TRUE",
                 "RULE": layer.legend_rule,
             })
-
-    def _fill_internal_wms(self, l, layer, wms, wms_layers, errors):
-        self._fill_wms_v1(l, layer)
-
-        self._fill_legend_rule_query_string(
-            l, layer,
-            self.request.route_url("mapserverproxy")
-        )
-
-        # this is a leaf, ie. a Mapserver layer
-        if layer.min_resolution is not None:
-            l["minResolutionHint"] = layer.min_resolution
-        if layer.max_resolution is not None:
-            l["maxResolutionHint"] = layer.max_resolution
-
-        wmslayer = layer.layer
-        # now look at what is in the WMS capabilities doc
-        if wmslayer in wms_layers:
-            wms_layer_obj = wms[wmslayer]
-            metadata_urls = self._get_layer_metadata_urls(wms_layer_obj)
-            if len(metadata_urls) > 0:
-                l["metadataUrls"] = metadata_urls
-            resolutions = self._get_layer_resolution_hint(wms_layer_obj)
-            if resolutions[0] <= resolutions[1]:
-                if "minResolutionHint" not in l:
-                    l["minResolutionHint"] = float("{:0.2f}".format(resolutions[0]))
-                if "maxResolutionHint" not in l:
-                    l["maxResolutionHint"] = float("{:0.2f}".format(resolutions[1]))
-            l["childLayers"] = self._get_child_layers_info_1(wms_layer_obj)
-            if hasattr(wms_layer_obj, "queryable"):
-                l["queryable"] = wms_layer_obj.queryable
-        else:
-            if self.default_ogc_server.type != main.OGCSERVER_TYPE_GEOSERVER:
-                errors.add(
-                    "The layer '{}' ({}) is not defined in WMS capabilities from '{}'".format(
-                        wmslayer, layer.name, self.default_ogc_server.name
-                    )
-                )
-
-    def _fill_external_wms(self, l, layer, errors):
-        self._fill_wms_v1(l, layer)
-        self._fill_legend_rule_query_string(l, layer, layer.url)
-
-        if layer.min_resolution is not None:
-            l["minResolutionHint"] = layer.min_resolution
-        if layer.max_resolution is not None:
-            l["maxResolutionHint"] = layer.max_resolution
-
-        l["url"] = get_url(layer.url, self.request, errors=errors)
-        l["isSingleTile"] = layer.is_single_tile
 
     def _fill_wmts(self, l, layer, errors):
         l["url"] = get_url2(
@@ -771,12 +699,7 @@ class Entry:
         query = self._create_layer_query(interface=interface)
         return [name for (name,) in query.all()]
 
-    def _wms_layers(self, role_id, ogc_server):
-        """
-        role_id is just for cache
-        """
-        del role_id  # unused
-
+    def _wms_layers(self, ogc_server):
         # retrieve layers metadata via GetCapabilities
         wms, wms_errors = self._wms_getcap(ogc_server)
         if len(wms_errors) > 0:
@@ -1019,9 +942,9 @@ class Entry:
                     )
         return layers_enum
 
-    def _get_role_id(self):
-        return None if self.request.user is None or self.request.user.role is None else \
-            self.request.user.role.id
+    def _get_role_ids(self):
+        return None if self.request.user is None else \
+            {role.id for role in self.request.user.roles}
 
     def get_ngeo_index_vars(self):
         set_common_headers(self.request, "index", NO_CACHE, content_type="application/javascript")
