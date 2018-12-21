@@ -47,10 +47,12 @@ application config (<code class="docutils literal notranslate"><span class="pre"
 <div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">raster</span><span class="p">:</span>
     <span class="n">cache_size</span><span class="p">:</span> <span class="mi">21</span>
     <span class="n">mns</span><span class="p">:</span>
-        <span class="n">file</span><span class="p">:</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">sig</span><span class="o">/</span><span class="n">altimetrie</span><span class="o">/</span><span class="n">mns</span><span class="o">.</span><span class="n">shp</span>
+        <span class="n">file</span><span class="p">:</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">sig</span><span class="o">/</span><span class="n">altimetrie</span><span class="o">/</span><span class="n">mns</span><span class="o">.</span><span class="n">vrt</span>
+        <span class="nb">type</span><span class="p">:</span> <span class="n">gdal</span>
         <span class="nb">round</span><span class="p">:</span> <span class="mi">1</span>
     <span class="n">mnt</span><span class="p">:</span>
-        <span class="n">file</span><span class="p">:</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">sig</span><span class="o">/</span><span class="n">altimetrie</span><span class="o">/</span><span class="n">mnt</span><span class="o">.</span><span class="n">shp</span>
+        <span class="n">file</span><span class="p">:</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">sig</span><span class="o">/</span><span class="n">altimetrie</span><span class="o">/</span><span class="n">mnt</span><span class="o">.</span><span class="n">vrt</span>
+        <span class="nb">type</span><span class="p">:</span> <span class="n">gdal</span>
         <span class="nb">round</span><span class="p">:</span> <span class="mi">1</span>
 </pre></div>
 </div>
@@ -60,7 +62,10 @@ but there could be more.</p>
 <p><code class="docutils literal notranslate"><span class="pre">file</span></code> provides the path to the shape index that references the raster files.
 The raster files should be in the Binary Terrain (BT/VTP .bt 1.3) format.
 One may use GDAL/OGR to convert data to such a format.</p>
-<p><code class="docutils literal notranslate"><span class="pre">round</span></code> specifies how the result values should be rounded.
+<p><code class="docutils literal notranslate"><span class="pre">type</span></code> <code class="docutils literal notranslate"><span class="pre">shp_index</span></code> (default) for Mapserver shape index, or <code class="docutils literal notranslate"><span class="pre">gdal</span></code> for all supported GDAL sources.
+We recommand to use a <a class="reference external" href="https://www.gdal.org/gdal_vrttut.html">vrt</a> file built with
+<a class="reference external" href="https://www.gdal.org/gdalbuildvrt.html">gdalbuildvrt</a>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">round</span></code> specifigdalbuildvrtes how the result values should be rounded.
 For instance ‘1’: round to the unit, ‘0.01’: round to the hundredth, etc.</p>
 <p>The application viewer should be configured with one (or more) of the
 <code class="docutils literal notranslate"><span class="pre">ContextualData</span></code> and the <code class="docutils literal notranslate"><span class="pre">Profile</span></code> <code class="docutils literal notranslate"><span class="pre">CGXP</span></code> plugins for
