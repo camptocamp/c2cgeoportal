@@ -71,7 +71,7 @@ class TestRequestProperty(TestCase):
     def test_request_auth(self):
         request = create_dummy_request(authentication=False, user="__test_user")
         self.assertEqual(request.user.username, "__test_user")
-        self.assertEqual(request.user.role.name, "__test_role")
+        self.assertEqual([role.name for role in request.user.roles], ["__test_role"])
 
     def test_request_right_auth(self):
         request = create_dummy_request(headers={
@@ -101,13 +101,15 @@ class TestRequestProperty(TestCase):
             class Role:
                 pass
 
-            u = User()
-            u.username = "__foo"
-            u.role = Role()
-            u.role.name = "__bar"
-            return u
+            user = User()
+            user.username = "__foo"
+            role = Role()
+            role.name = "__bar"
+            user.settings_role = role
+            user.roles = [role]
+            return user
 
         request = create_dummy_request(authentication=False, user="__test_user")
         request.set_property(setter, name="user", reify=True)
         self.assertEqual(request.user.username, "__foo")
-        self.assertEqual(request.user.role.name, "__bar")
+        self.assertEqual([role.name for role in request.user.roles], ["__bar"])
