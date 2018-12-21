@@ -196,7 +196,6 @@ class TestThemeEditing(TestCase):
         request = self._create_request_obj()
         request.params = {
             "interface": "main",
-            "version": "2"
         }
         entry = Entry(request)
         themes = entry.themes()
@@ -209,7 +208,6 @@ class TestThemeEditing(TestCase):
         request = self._create_request_obj(username="__test_user1")
         request.params = {
             "interface": "main",
-            "version": "2"
         }
         entry = Entry(request)
         themes = entry.themes()
@@ -229,7 +227,6 @@ class TestThemeEditing(TestCase):
         })
         request.params = {
             "interface": "main",
-            "version": "2"
         }
 
         entry = Entry(request)
