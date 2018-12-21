@@ -195,7 +195,6 @@ class TestThemesViewMetadata(TestCase):
             return "http://dummy.org/{}".format(url)
         request.static_url = static_url
         request.params = {
-            "version": "2",
             "interface": "desktop",
         }
         entry = Entry(request)

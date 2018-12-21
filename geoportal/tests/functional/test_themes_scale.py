@@ -166,9 +166,7 @@ class TestThemesScale(TestCase):
         return result
 
     def test_scale(self):
-        entry = self._create_entry_obj(params={
-            "version": "2",
-        })
+        entry = self._create_entry_obj()
         themes = entry.themes()
         self.assertEqual(set(themes["errors"]), set())
         self.assertEqual(

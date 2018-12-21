@@ -609,7 +609,7 @@ class Entry:
         return ogc_servers
 
     def _group(
-        self, path, group, layers, depth=1, min_levels=1, catalogue=True, mixed=True, time=None,
+        self, path, group, layers, depth=1, min_levels=1, mixed=True, time=None,
         dim=None, wms_layers=None, layers_name=None, **kwargs
     ):
         if wms_layers is None:
@@ -643,7 +643,7 @@ class Entry:
             if isinstance(tree_item, main.LayerGroup):
                 gp, gp_errors = self._group(
                     u"{}/{}".format(path, tree_item.name), tree_item, layers,
-                    depth=depth + 1, min_levels=min_levels, catalogue=catalogue,
+                    depth=depth + 1, min_levels=min_levels,
                     mixed=mixed, time=time, dim=dim, wms_layers=wms_layers, layers_name=layers_name, **kwargs
                 )
                 errors |= gp_errors
@@ -722,7 +722,7 @@ class Entry:
             subqueryload(main.Theme.children_relation)
         ).all()
 
-    def _themes(self, interface="desktop", filter_themes=True, catalogue=False, min_levels=1):
+    def _themes(self, interface="desktop", filter_themes=True, min_levels=1):
         """
         This function returns theme information for the role identified
         by ``role_id``.
@@ -753,7 +753,7 @@ class Entry:
                 errors.add("The theme has an unsupported name '{}'.".format(theme.name))
                 continue
 
-            children, children_errors = self._get_children(theme, layers, catalogue, min_levels)
+            children, children_errors = self._get_children(theme, layers, min_levels)
             errors |= children_errors
 
             # test if the theme is visible for the current user
@@ -795,14 +795,13 @@ class Entry:
             "success": True
         }
 
-    def _get_children(self, theme, layers, catalogue, min_levels):
+    def _get_children(self, theme, layers, min_levels):
         children = []
         errors = set()
         for item in theme.children:
             if isinstance(item, main.LayerGroup):
                 gp, gp_errors = self._group(
-                    "{}/{}".format(theme.name, item.name), item, layers,
-                    catalogue=catalogue, min_levels=min_levels
+                    "{}/{}".format(theme.name, item.name), item, layers, min_levels=min_levels
                 )
                 errors |= gp_errors
                 if gp is not None:
@@ -1059,8 +1058,6 @@ class Entry:
     def themes(self):
         interface = self.request.params.get("interface", "desktop")
         sets = self.request.params.get("set", "all")
-        version = int(self.request.params.get("version", 1))
-        catalogue = self.request.params.get("catalogue", "false") == "true"
         min_levels = int(self.request.params.get("min_levels", 1))
         group = self.request.params.get("group")
         background_layers_group = self.request.params.get("background")
@@ -1073,77 +1070,72 @@ class Entry:
 
         result = {}
         all_errors = set()
-        if version == 2:
+        result["ogcServers"] = {}
+        for ogc_server in models.DBSession.query(main.OGCServer).all():
+            # required to do every time to validate the url.
+            if ogc_server.auth != main.OGCSERVER_AUTH_NOAUTH:
+                url = self.request.route_url("mapserverproxy", _query={"ogcserver": ogc_server.name})
+                url_wfs = url
+            else:
+                url = get_url2(
+                    "The OGC server '{}'".format(ogc_server.name),
+                    ogc_server.url, self.request, errors=all_errors
+                )
+                url_wfs = get_url2(
+                    "The OGC server (WFS) '{}'".format(ogc_server.name),
+                    ogc_server.url_wfs, self.request, errors=all_errors
+                ) if ogc_server.url_wfs is not None else url
+            feature_type, errors = self._wms_get_features_type(ogc_server.id, url_wfs)
+            all_errors |= errors
+            attributes = None
 
-            result["ogcServers"] = {}
-            for ogc_server in models.DBSession.query(main.OGCServer).all():
-                # required to do every time to validate the url.
-                if ogc_server.auth != main.OGCSERVER_AUTH_NOAUTH:
-                    url = self.request.route_url("mapserverproxy", _query={"ogcserver": ogc_server.name})
-                    url_wfs = url
-                else:
-                    url = get_url2(
-                        "The OGC server '{}'".format(ogc_server.name),
-                        ogc_server.url, self.request, errors=all_errors
-                    )
-                    url_wfs = get_url2(
-                        "The OGC server (WFS) '{}'".format(ogc_server.name),
-                        ogc_server.url_wfs, self.request, errors=all_errors
-                    ) if ogc_server.url_wfs is not None else url
-                feature_type, errors = self._wms_get_features_type(ogc_server.id, url_wfs)
-                all_errors |= errors
-                attributes = None
+            if feature_type is not None:
+                types = {}
+                elements = {}
+                for child in feature_type.getchildren():
+                    if child.tag == '{http://www.w3.org/2001/XMLSchema}element':
+                        elements[child.attrib['name']] = child.attrib['type'].split(':')[1]
 
-                if feature_type is not None:
-                    types = {}
-                    elements = {}
-                    for child in feature_type.getchildren():
-                        if child.tag == '{http://www.w3.org/2001/XMLSchema}element':
-                            elements[child.attrib['name']] = child.attrib['type'].split(':')[1]
-
-                        if child.tag == '{http://www.w3.org/2001/XMLSchema}complexType':
-                            s = child.find('.//{http://www.w3.org/2001/XMLSchema}sequence')
-                            attrib = {}
-                            for c in s.getchildren():
-                                namespace = None
-                                type_ = c.attrib['type']
-                                if len(type_.split(':')) == 2:
-                                    namespace, type_ = type_.split(':')
-                                namespace = c.nsmap[namespace]
-                                attrib[c.attrib['name']] = {
-                                    'namespace': namespace,
-                                    'type': type_,
-                                }
-                                if 'alias' in c.attrib:
-                                    attrib[c.attrib['name']] = c.attrib['alias']
-                            types[child.attrib['name']] = attrib
-                    attributes = {}
-                    for name, type_ in elements.items():
-                        if type_ in types:
-                            attributes[name] = types[type_]
-                        else:
-                            log.warning(
-                                "The provided type '{}' does not exist, available types are {}.".format(
-                                    type_, ', '.join(types.keys())
-                                )
+                    if child.tag == '{http://www.w3.org/2001/XMLSchema}complexType':
+                        s = child.find('.//{http://www.w3.org/2001/XMLSchema}sequence')
+                        attrib = {}
+                        for c in s.getchildren():
+                            namespace = None
+                            type_ = c.attrib['type']
+                            if len(type_.split(':')) == 2:
+                                namespace, type_ = type_.split(':')
+                            namespace = c.nsmap[namespace]
+                            attrib[c.attrib['name']] = {
+                                'namespace': namespace,
+                                'type': type_,
+                            }
+                            if 'alias' in c.attrib:
+                                attrib[c.attrib['name']] = c.attrib['alias']
+                        types[child.attrib['name']] = attrib
+                attributes = {}
+                for name, type_ in elements.items():
+                    if type_ in types:
+                        attributes[name] = types[type_]
+                    else:
+                        log.warning(
+                            "The provided type '{}' does not exist, available types are {}.".format(
+                                type_, ', '.join(types.keys())
                             )
-                result["ogcServers"][ogc_server.name] = {
-                    "url": url,
-                    "urlWfs": url_wfs,
-                    "type": ogc_server.type,
-                    "credential": ogc_server.auth != main.OGCSERVER_AUTH_NOAUTH,
-                    "imageType": ogc_server.image_type,
-                    "wfsSupport": ogc_server.wfs_support,
-                    "isSingleTile": ogc_server.is_single_tile,
-                    "namespace": feature_type.attrib["targetNamespace"]
-                    if feature_type is not None else None,
-                    "attributes": attributes,
-                }
+                        )
+            result["ogcServers"][ogc_server.name] = {
+                "url": url,
+                "urlWfs": url_wfs,
+                "type": ogc_server.type,
+                "credential": ogc_server.auth != main.OGCSERVER_AUTH_NOAUTH,
+                "imageType": ogc_server.image_type,
+                "wfsSupport": ogc_server.wfs_support,
+                "isSingleTile": ogc_server.is_single_tile,
+                "namespace": feature_type.attrib["targetNamespace"]
+                if feature_type is not None else None,
+                "attributes": attributes,
+            }
         if export_themes:
-            themes, errors = self._themes(interface, True, catalogue, min_levels)
-
-            if version == 1:
-                return themes
+            themes, errors = self._themes(interface, True, min_levels)
 
             result["themes"] = themes
             all_errors |= errors
