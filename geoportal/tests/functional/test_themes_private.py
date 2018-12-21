@@ -178,9 +178,7 @@ class TestThemesPrivateView(TestCase):
         }
 
     def test_public(self):
-        entry = self._create_entry_obj(params={
-            "version": "2"
-        })
+        entry = self._create_entry_obj()
         themes = entry.themes()
         self.assertEquals(self._get_filtered_errors(themes), set())
         self.assertEquals(
@@ -201,9 +199,7 @@ class TestThemesPrivateView(TestCase):
     def test_private(self):
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
-        entry = self._create_entry_obj(params={
-            "version": "2"
-        }, user=DBSession.query(User).filter_by(username=u"__test_user").one())
+        entry = self._create_entry_obj(user=DBSession.query(User).filter_by(username=u"__test_user").one())
         themes = entry.themes()
         self.assertEquals(self._get_filtered_errors(themes), set())
         self.assertEquals(

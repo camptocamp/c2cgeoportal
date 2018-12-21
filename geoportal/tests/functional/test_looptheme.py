@@ -89,9 +89,7 @@ class TestLoopTheme(TestCase):
     def test_theme(self):
         from c2cgeoportal_geoportal.views.entry import Entry
 
-        request = testing.DummyRequest({
-            "version": "2",
-        })
+        request = testing.DummyRequest()
         request.static_url = lambda url: "http://example.com/dummy/static/url"
         request.route_url = lambda url, _query={}: mapserv_url
         request.client_addr = None

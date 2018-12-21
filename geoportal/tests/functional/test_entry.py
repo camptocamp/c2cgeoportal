@@ -407,10 +407,7 @@ class TestEntryView(TestCase):
         request = self._create_request_obj()
         entry = Entry(request)
 
-        # unautenticated
-        request.params = {
-            "version": "2"
-        }
+        # Unautenticated
         themes = entry.themes()
         self.assertEqual(len(themes["themes"]), 1)
         layers = {l["name"] for l in themes["themes"][0]["children"][0]["children"]}
@@ -424,10 +421,7 @@ class TestEntryView(TestCase):
             "The layer '__test_public_layer_no_layers' do not have any layers",
         })
 
-        # authenticated
-        request.params = {
-            "version": "2"
-        }
+        # Authenticated
         request.user = DBSession.query(User).filter_by(username="__test_user1").one()
         themes = entry.themes()
         self.assertEqual(len(themes["themes"]), 1)
@@ -479,11 +473,8 @@ class TestEntryView(TestCase):
             "__test_layer_group_1",
         })
 
-        # do not test anything related to geoserver ...
-        # unautenticated v2
-        request.params = {
-            "version": "2"
-        }
+        # Do not test anything related to geoserver ...
+        # Unautenticated
         request.user = None
         themes = entry.themes()
         self.assertEqual(set(themes["errors"]), {
@@ -497,10 +488,7 @@ class TestEntryView(TestCase):
             "__test_public_layer_not_mapfile",
         })
 
-        # authenticated v2
-        request.params = {
-            "version": "2"
-        }
+        # Authenticated
         request.user = DBSession.query(User).filter_by(username="__test_user1").one()
         themes = entry.themes()
         self.assertEqual(set(themes["errors"]), {

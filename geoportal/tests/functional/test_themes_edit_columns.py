@@ -220,7 +220,6 @@ class TestThemesEditColumns(TestCase):
 
         layer_id = self._create_layer(geom_type=True)
         entry = Entry(self._get_request(layer_id, username="__test_user", params={
-            "version": "2",
             "interface": "main"
         }))
 
@@ -328,7 +327,6 @@ class TestThemesEditColumns(TestCase):
         ]
         layer_id = self._create_layer(geom_type=False, exclude_properties=True, metadatas=metadatas)
         entry = Entry(self._get_request(layer_id, username="__test_user", params={
-            "version": "2",
             "interface": "main"
         }))
 
