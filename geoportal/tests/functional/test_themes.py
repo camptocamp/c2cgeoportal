@@ -60,10 +60,6 @@ class TestThemesView(TestCase):
         mobile = Interface(name="mobile")
         min_levels = Interface(name="min_levels")
 
-        layer_v1 = LayerV1(name="__test_layer_v1", public=True)
-        layer_v1.interfaces = [main]
-        layer_v1.metadatas = [Metadata("test", "v1")]
-
         ogc_server_internal, _ = create_default_ogcserver()
         ogc_server_external = OGCServer(
             name="__test_ogc_server_chtopo", url="http://wms.geo.admin.ch/",
@@ -90,7 +86,7 @@ class TestThemesView(TestCase):
         layer_wmts.dimensions = [Dimension("year", "2015")]
 
         layer_group_1 = LayerGroup(name="__test_layer_group_1")
-        layer_group_1.children = [layer_v1, layer_internal_wms, layer_external_wms, layer_wmts]
+        layer_group_1.children = [layer_internal_wms, layer_external_wms, layer_wmts]
         layer_group_1.metadatas = [Metadata("test", "group_1")]
 
         layer_group_2 = LayerGroup(name="__test_layer_group_2")
@@ -195,23 +191,7 @@ class TestThemesView(TestCase):
         }
 
     def test_version(self):
-        entry = self._create_entry_obj()
-        themes = entry.themes()
-        self.assertEqual(
-            [self._only_name(t) for t in themes],
-            [{
-                "name": "__test_theme",
-                "children": [{
-                    "name": "__test_layer_group_1",
-                    "children": [{
-                        "name": "__test_layer_v1"
-                    }]
-                }]
-            }]
-        )
-
         entry = self._create_entry_obj(params={
-            "version": "2",
             "catalogue": "true",
         })
         themes = entry.themes()
