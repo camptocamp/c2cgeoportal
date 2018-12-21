@@ -168,6 +168,12 @@ def create_dummy_request(additional_settings=None, authentication=True, user=Non
         },
         "layers": {
             "geometry_validation": True
+        },
+        "admin_interface": {
+            "available_functionalities": [{
+                "name": "mapserver_substitution",
+                "single": False,
+            }]
         }
     }, *args, **kargs)
     request.accept_language = webob.acceptparse.create_accept_language_header("fr-CH,fr;q=0.8,en;q=0.5,en-US;q=0.3")

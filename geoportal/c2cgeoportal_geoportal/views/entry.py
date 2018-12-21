@@ -258,7 +258,7 @@ class Entry:
         if len(errors):  # pragma: no cover
             return url, None, errors
 
-        # add functionality params
+        # Add functionality params
         sparams = get_mapserver_substitution_params(self.request)
         url = add_url_params(url, sparams)
 
@@ -274,15 +274,14 @@ class Entry:
 
         log.info("Get WMS GetCapabilities for url: {}".format(url))
 
-        # forward request to target (without Host Header)
+        # Forward request to target (without Host Header)
         headers = dict(self.request.headers)
-
-        role = None if self.request.user is None else self.request.user.role
 
         # Add headers for Geoserver
         if ogc_server.auth == main.OGCSERVER_AUTH_GEOSERVER and self.request.user is not None:
             headers["sec-username"] = self.request.user.username
-            headers["sec-roles"] = role.name
+            headers["sec-roles"] = "" if self.request.user is None else \
+                ";".join([role.name for role in self.request.user.roles])
 
         if urllib.parse.urlsplit(url).hostname != "localhost" and "Host" in headers:  # pragma: no cover
             headers.pop("Host")

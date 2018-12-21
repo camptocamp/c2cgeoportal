@@ -53,8 +53,7 @@ class TestThemesView(TestCase):
 
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import \
-            Theme, LayerGroup, Functionality, Interface, \
-            LayerV1, OGCServer, LayerWMS, LayerWMTS, \
+            Theme, LayerGroup, Functionality, Interface, OGCServer, LayerWMS, LayerWMTS, \
             Metadata, Dimension, OGCSERVER_AUTH_NOAUTH
 
         main = Interface(name="desktop")
@@ -169,7 +168,7 @@ class TestThemesView(TestCase):
         from c2cgeoportal_geoportal.views.entry import Entry
 
         kwargs["additional_settings"] = {
-            "admin_interface": {"available_metadata": ["test"]}
+            "admin_interface": {"available_metadata": [{"name": "test"}]}
         }
         return Entry(self._create_request_obj(**kwargs))
 
@@ -188,6 +187,7 @@ class TestThemesView(TestCase):
 
     @staticmethod
     def _get_filtered_errors(themes):
+        print(themes["errors"])
         return {
             e for e in themes["errors"]
             if e != "The layer '' (__test_layer_external_wms) is not defined in WMS capabilities"
