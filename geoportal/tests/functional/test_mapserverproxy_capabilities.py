@@ -77,8 +77,7 @@ class TestMapserverproxyCapabilities(TestCase):
         ogcserver_wfs2.auth = OGCSERVER_AUTH_STANDARD
 
         role = Role(name="__test_role", description="__test_role")
-        user = User(username="__test_user", password="__test_user")
-        user.role_name = "__test_role"
+        user = User(username="__test_user", password="__test_user", settings_role=role, roles=[role])
 
         main = Interface(name="main")
 

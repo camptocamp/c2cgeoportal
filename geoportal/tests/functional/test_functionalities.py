@@ -30,7 +30,6 @@
 
 from unittest import TestCase
 
-from c2cgeoportal_geoportal.lib import functionality
 from tests.functional import (  # noqa
     teardown_common as teardown_module,
     setup_common as setup_module,
@@ -76,6 +75,7 @@ class TestFunctionalities(TestCase):
         from c2cgeoportal_commons.models.main import Role, Functionality, OGCServer
         from c2cgeoportal_commons.models.static import User
 
+        from c2cgeoportal_geoportal.lib import functionality
         functionality.FUNCTIONALITIES_TYPES = None
 
         transaction.commit()
@@ -113,6 +113,7 @@ class TestFunctionalities(TestCase):
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
         from c2cgeoportal_geoportal.lib.functionality import get_functionality
+        from c2cgeoportal_geoportal.lib import functionality
 
         request = create_dummy_request()
         request.user = None
@@ -127,7 +128,7 @@ class TestFunctionalities(TestCase):
                 "registered": {},
             },
             "admin_interface": {
-                "available_functionalities": ["__test_a", "__test_s"]
+                "available_functionalities": [{"name": "__test_a"}, {"name": "__test_s"}]
             }
         }
         functionality.FUNCTIONALITIES_TYPES = None
@@ -150,7 +151,7 @@ class TestFunctionalities(TestCase):
                 }
             },
             "admin_interface": {
-                "available_functionalities": ["__test_a", "__test_s"]
+                "available_functionalities": [{"name": "__test_a"}, {"name": "__test_s"}]
             }
         }
         functionality.FUNCTIONALITIES_TYPES = None
@@ -173,7 +174,7 @@ class TestFunctionalities(TestCase):
                 "registered": {}
             },
             "admin_interface": {
-                "available_functionalities": ["__test_a", "__test_s"]
+                "available_functionalities": [{"name": "__test_a"}, {"name": "__test_s"}]
             }
         }
         functionality.FUNCTIONALITIES_TYPES = None
@@ -199,7 +200,7 @@ class TestFunctionalities(TestCase):
                 }
             },
             "admin_interface": {
-                "available_functionalities": ["__test_a", "__test_s"]
+                "available_functionalities": [{"name": "__test_a"}, {"name": "__test_s"}]
             }
         }
         functionality.FUNCTIONALITIES_TYPES = None
@@ -217,6 +218,7 @@ class TestFunctionalities(TestCase):
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
         from tests.functional import create_dummy_request
+        from c2cgeoportal_geoportal.lib import functionality
 
         request = create_dummy_request()
         request.static_url = lambda url: "http://example.com/dummy/static/url"
@@ -240,7 +242,7 @@ class TestFunctionalities(TestCase):
                 "available_in_templates": ["__test_s", "__test_a"],
             },
             "admin_interface": {
-                "available_functionalities": ["__test_a", "__test_s"]
+                "available_functionalities": [{"name": "__test_a"}, {"name": "__test_s"}]
             },
         }
         functionality.FUNCTIONALITIES_TYPES = None

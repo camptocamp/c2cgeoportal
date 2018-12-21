@@ -41,15 +41,7 @@ from zope.interface import implementer
 
 
 def get_types_map(types_array):
-    types_map = {}
-    for type_ in types_array:
-        if isinstance(type_, str):
-            types_map[type_] = {
-                "name": type_,
-            }
-        else:
-            types_map[type_["name"]] = type_
-    return types_map
+    return {type_["name"]: type_ for type_ in types_array}
 
 
 def get_url(url, request, default=None, errors=None):
@@ -74,7 +66,7 @@ def get_url(url, request, default=None, errors=None):
                 errors.add("The server '{}' is not found in the config".format(obj.netloc))
             return default
         else:
-            return "{0!s}{1!s}?{2!s}".format(server, obj.path, obj.query)
+            return "{}{}?{}".format(server, obj.path, obj.query)
 
     else:
         return url

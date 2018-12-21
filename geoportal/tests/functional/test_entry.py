@@ -217,8 +217,10 @@ class TestEntryView(TestCase):
             "success": True,
             "username": "__test_user1",
             "is_password_changed": False,
-            "role_name": "__test_role1",
-            "role_id": self.role1_id,
+            "roles": [{
+                "name": "__test_role1",
+                "id": self.role1_id,
+            }],
             "functionalities": {},
         })
 
@@ -282,8 +284,10 @@ class TestEntryView(TestCase):
             "success": True,
             "username": "__test_user1",
             "is_password_changed": False,
-            "role_name": "__test_role1",
-            "role_id": self.role1_id,
+            "roles": [{
+                "name": "__test_role1",
+                "id": self.role1_id,
+            }],
             "functionalities": {},
         })
 

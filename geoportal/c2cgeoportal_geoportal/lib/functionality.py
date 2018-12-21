@@ -29,6 +29,7 @@
 
 
 import logging
+from c2cgeoportal_commons.models import static
 from c2cgeoportal_geoportal.lib import get_setting, get_typed, get_types_map
 
 log = logging.getLogger(__name__)
@@ -55,13 +56,28 @@ def _get_config_functionality(name, registered, types, request, errors):
     return [r for r in result if r is not None]
 
 
-def _get_db_functionality(name, role, types, request, errors):
-    result = [
-        get_typed(name, functionality.value, types, request, errors)
-        for functionality in role.functionalities
-        if functionality.name == name
-    ]
-    return [r for r in result if r is not None]
+def _get_db_functionality(name, user: static.User, types, request, errors):
+    if types[name].get('single', False):
+        values = [
+            get_typed(name, functionality.value, types, request, errors)
+            for functionality in user.settings_role.functionalities
+            if functionality.name == name
+        ]
+        return [r for r in values if r is not None]
+
+    else:
+        functionalities = {
+            functionality.value
+            for role in user.roles
+            for functionality in role.functionalities
+            if functionality.name == name
+        }
+        values = [
+            get_typed(name, functionality_value, types, request, errors)
+            for functionality_value in functionalities
+        ]
+
+        return [r for r in values if r is not None]
 
 
 FUNCTIONALITIES_TYPES = None
@@ -74,14 +90,12 @@ def get_functionality(name, request):
     errors = set()
     if FUNCTIONALITIES_TYPES is None:
         FUNCTIONALITIES_TYPES = get_types_map(
-            request.registry.settings.get("admin_interface", {})
-            .get("available_functionalities", [])
+            request.registry.settings.get("admin_interface", {}).get("available_functionalities", [])
         )
 
-    if request.user is not None and request.user.role is not None:
+    if request.user is not None:
         result = _get_db_functionality(
-            name, request.user.role,
-            FUNCTIONALITIES_TYPES, request, errors
+            name, request.user, FUNCTIONALITIES_TYPES, request, errors
         )
     if len(result) == 0:
         result = _get_config_functionality(
