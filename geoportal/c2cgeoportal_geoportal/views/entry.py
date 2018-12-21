@@ -180,7 +180,7 @@ class Entry:
         from c2cgeoportal_commons.models.main import InvalidateCacheEvent
 
         @zope.event.classhandler.handler(InvalidateCacheEvent)
-        def handle(event: InvalidateCacheEvent):
+        def handle(event: InvalidateCacheEvent):  # pylint: disable=unused-variable
             del event
             Entry.server_wms_capabilities = {}
             Entry.server_wfs_feature_type = {}

@@ -1,0 +1,15 @@
+<VRTDataset rasterXSize="7" rasterYSize="7">
+  <SRS>PROJCS["CH1903_LV03",GEOGCS["GCS_CH1903",DATUM["D_CH1903",SPHEROID["Bessel_1841",6377397.155,299.1528128]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433]],PROJECTION["Hotine_Oblique_Mercator_Azimuth_Center"],PARAMETER["latitude_of_center",46.95240555555556],PARAMETER["longitude_of_center",7.439583333333333],PARAMETER["azimuth",90],PARAMETER["rectified_grid_angle",0],PARAMETER["scale_factor",1],PARAMETER["false_easting",600000],PARAMETER["false_northing",200000],UNIT["metre",1,AUTHORITY["EPSG","9001"]]]</SRS>
+  <GeoTransform>  5.4798990841145662e+05,  1.0000000154167148e+00,  0.0000000000000000e+00,  2.1601000080037274e+05,  0.0000000000000000e+00, -1.0000000154707647e+00</GeoTransform>
+  <VRTRasterBand dataType="Float32" band="1">
+    <NoDataValue>-32768</NoDataValue>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">dem4.bt</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="7" RasterYSize="7" DataType="Float32" BlockXSize="1" BlockYSize="7" />
+      <SrcRect xOff="0" yOff="0" xSize="7" ySize="7" />
+      <DstRect xOff="0" yOff="0" xSize="7" ySize="7" />
+      <NODATA>-32768</NODATA>
+    </ComplexSource>
+  </VRTRasterBand>
+</VRTDataset>
