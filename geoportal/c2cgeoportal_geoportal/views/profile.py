@@ -107,7 +107,7 @@ class Profile(Raster):
 
             values = {}
             for ref in list(rasters.keys()):
-                value = self._get_raster_value(self.rasters[ref], coord[0], coord[1])
+                value = self._get_raster_value(self.rasters[ref], ref, coord[0], coord[1])
                 values[ref] = value
 
             # 10cm accuracy is enough for distances
