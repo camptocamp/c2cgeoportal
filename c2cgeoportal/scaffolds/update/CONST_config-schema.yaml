@@ -344,7 +344,7 @@ mapping:
                                         type: bool
                                         required: True
                                     srs:
-                                        type: int
+                                        type: str
                                         required: True
                                     spec:
                                         type: any
