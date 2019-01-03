@@ -1,6 +1,7 @@
 alabaster==0.7.10  # Doc theme
 alembic==0.9.9  # geoportal
 Babel==2.5.3  # i18n
+beautifulsoup4==4.6.3  # admin tests
 boto3==1.7.4  # Tile generation
 bottle==0.12.13  # geoportal
 c2c.cssmin==0.7.dev6  # CGXP build

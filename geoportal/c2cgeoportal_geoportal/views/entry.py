@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2018, Camptocamp SA
+# Copyright (c) 2011-2019, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -1546,7 +1546,7 @@ class Entry:
             log.info("Logout on non login user.")
             raise HTTPBadRequest("See server logs for details")
 
-        log.info("User '{0!s}' ({1:d}) logging out.".format(
+        log.info("User '{}' ({}) logging out.".format(
             self.request.user.username,
             self.request.user.id
         ))
