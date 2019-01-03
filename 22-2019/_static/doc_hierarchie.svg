@@ -1,0 +1,1166 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="doc_hierarchie.svg">
+  <defs
+     id="defs4">
+    <linearGradient
+       id="linearGradient5405">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1;"
+         offset="0"
+         id="stop5407" />
+      <stop
+         id="stop5415"
+         offset="0.5"
+         style="stop-color:#ffffff;stop-opacity:0.8745098;" />
+      <stop
+         id="stop5413"
+         offset="1"
+         style="stop-color:#ffffff;stop-opacity:0;" />
+    </linearGradient>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Lend"
+       style="overflow:visible;">
+      <path
+         id="path3871"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;"
+         transform="scale(0.8) rotate(180) translate(12.5,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-4"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path3871-9"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-4-1"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path3871-9-6"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-2"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path3871-1"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5405"
+       id="linearGradient5419"
+       gradientUnits="userSpaceOnUse"
+       x1="786.90887"
+       y1="149.28581"
+       x2="680.84283"
+       y2="147.26549"
+       gradientTransform="matrix(1,0,0,0.90851735,0,27.888421)" />
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-2-7"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path3871-1-8"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5405-7"
+       id="linearGradient5419-4"
+       gradientUnits="userSpaceOnUse"
+       x1="786.90887"
+       y1="149.28581"
+       x2="680.84283"
+       y2="147.26549"
+       gradientTransform="matrix(1,0,0,0.90851735,-3.0304663,481.44692)" />
+    <linearGradient
+       id="linearGradient5405-7">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1;"
+         offset="0"
+         id="stop5407-0" />
+      <stop
+         id="stop5415-0"
+         offset="0.5"
+         style="stop-color:#ffffff;stop-opacity:0.8745098;" />
+      <stop
+         id="stop5413-7"
+         offset="1"
+         style="stop-color:#ffffff;stop-opacity:0;" />
+    </linearGradient>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker5638"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path5640"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker5642"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path5644"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker5646"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path5648"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-1"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path3871-5"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-4-1-9"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path3871-9-6-9"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-4-7"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path3871-9-7"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker5656"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path5658"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker5660"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path5662"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker5664"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path5666"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker5668"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path5670"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="199.80429"
+     inkscape:cy="673.9891"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1145"
+     inkscape:window-x="-2"
+     inkscape:window-y="-3"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect5417"
+       width="844.48755"
+       height="357.59399"
+       x="1.0101526"
+       y="1.8035324"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie_multiproject.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="opacity:1;fill:#9a8981;fill-opacity:1;stroke:#765f55;stroke-width:3.79999999999999982;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect2985"
+       width="165.66502"
+       height="238.396"
+       x="34.345188"
+       y="33.118263"
+       ry="6.7371583"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie_multiproject.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:#879f83;fill-opacity:1;stroke:#547a4c;stroke-width:3.79999995000000013;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3755"
+       width="175.76654"
+       height="240.41631"
+       x="223.24371"
+       y="32.108112"
+       ry="6.7371583"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie_multiproject.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:#708bac;fill-opacity:1;stroke:#3f5c80;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3755-7"
+       width="175.76654"
+       height="240.41631"
+       x="421.23361"
+       y="34.128414"
+       ry="6.7371583"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie_multiproject.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <g
+       id="g3855"
+       transform="translate(-24.243661,-113.13709)"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie_multiproject.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <rect
+         ry="0"
+         y="298.28329"
+         x="83.842659"
+         height="33.335033"
+         width="119.198"
+         id="rect3810-5-1"
+         style="opacity:0.7;fill:#ffffff;fill-opacity:1;stroke:#765f55;stroke-width:3.79999995000000013;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <flowRoot
+         transform="translate(49.497474,259.60921)"
+         style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         id="flowRoot3794"
+         xml:space="preserve"><flowRegion
+           id="flowRegion3796"><rect
+             style="font-size:12px"
+             y="46.250248"
+             x="42.426407"
+             height="24.24366"
+             width="118.18785"
+             id="rect3798" /></flowRegion><flowPara
+           id="flowPara3800">CONST_Makefile</flowPara></flowRoot>    </g>
+    <g
+       id="g3830"
+       transform="translate(-1.0101525,-255.56859)"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie_multiproject.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <rect
+         ry="0"
+         y="330.10312"
+         x="59.598999"
+         height="33.335033"
+         width="119.198"
+         id="rect3810"
+         style="opacity:0.7;fill:#ffffff;fill-opacity:1;stroke:#765f55;stroke-width:3.79999995000000013;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <flowRoot
+         transform="translate(6.0609153,279.81226)"
+         style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         id="flowRoot3802"
+         xml:space="preserve"><flowRegion
+           id="flowRegion3804"><rect
+             style="font-size:12px"
+             y="57.361927"
+             x="60.609154"
+             height="20.203047"
+             width="116.16755"
+             id="rect3806" /></flowRegion><flowPara
+           id="flowPara3808">CONST_vars.yaml</flowPara></flowRoot>    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="m 119.04578,185.1462 -0.70572,-77.27664"
+       id="path3862"
+       inkscape:connector-type="polyline"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie_multiproject.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       inkscape:connection-end-point="d4"
+       inkscape:connection-end="#g3830"
+       inkscape:connection-start-point="d4"
+       inkscape:connection-start="#g3855" />
+    <g
+       id="g3855-2"
+       transform="translate(171.22086,-113.38963)"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie_multiproject.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <rect
+         ry="0"
+         y="298.28329"
+         x="83.842659"
+         height="33.335033"
+         width="119.198"
+         id="rect3810-5-1-5"
+         style="opacity:0.69999999999999996;fill:#ffffff;fill-opacity:1;stroke:#547a4c;stroke-width:3.79999995000000013;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <flowRoot
+         transform="translate(67.68022,259.60921)"
+         style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         id="flowRoot3794-1"
+         xml:space="preserve"><flowRegion
+           id="flowRegion3796-8"><rect
+             style="font-size:12px"
+             y="46.250248"
+             x="42.426407"
+             height="24.24366"
+             width="118.18785"
+             id="rect3798-6" /></flowRegion><flowPara
+           id="flowPara3800-7">project.mk</flowPara></flowRoot>    </g>
+    <g
+       id="g3830-8"
+       transform="translate(194.45437,-255.82112)"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie_multiproject.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <rect
+         ry="0"
+         y="330.10312"
+         x="59.598999"
+         height="33.335033"
+         width="119.198"
+         id="rect3810-9"
+         style="opacity:0.69999999999999996;fill:#ffffff;fill-opacity:1;stroke:#547a4c;stroke-width:3.79999995000000013;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <flowRoot
+         transform="translate(6.0609153,279.81226)"
+         style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         id="flowRoot3802-4"
+         xml:space="preserve"><flowRegion
+           id="flowRegion3804-5"><rect
+             style="font-size:12px"
+             y="57.361927"
+             x="60.609154"
+             height="20.203047"
+             width="116.16755"
+             id="rect3806-2" /></flowRegion><flowPara
+           id="flowPara3808-9">vars_project.yaml</flowPara></flowRoot>    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker-end:url(#Arrow1Lend)"
+       d="m 254.05337,91.026514 -76.26653,0.09853"
+       id="path4543"
+       inkscape:connector-type="polyline"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie_multiproject.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       inkscape:connection-start-point="d4"
+       inkscape:connection-start="#g3830-8"
+       inkscape:connection-end-point="d4"
+       inkscape:connection-end="#g3830" />
+    <g
+       id="g3855-2-2"
+       transform="translate(368.22091,-112.37947)"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie_multiproject.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <rect
+         ry="0"
+         y="298.28329"
+         x="83.842659"
+         height="33.335033"
+         width="119.198"
+         id="rect3810-5-1-5-0"
+         style="opacity:0.7;fill:#ffffff;fill-opacity:1;stroke:#3f5c80;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <flowRoot
+         transform="translate(58.588847,259.60921)"
+         style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         id="flowRoot3794-1-0"
+         xml:space="preserve"><flowRegion
+           id="flowRegion3796-8-3"><rect
+             style="font-size:12px"
+             y="46.250248"
+             x="42.426407"
+             height="24.24366"
+             width="118.18785"
+             id="rect3798-6-2" /></flowRegion><flowPara
+           id="flowPara3800-7-4">subproject.mk</flowPara></flowRoot>    </g>
+    <g
+       id="g3830-8-7"
+       transform="translate(393.45442,-254.81096)"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie_multiproject.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <rect
+         ry="0"
+         y="330.28772"
+         x="43.621162"
+         height="32.965828"
+         width="145.09274"
+         id="rect3810-9-6"
+         style="opacity:0.7;fill:#ffffff;fill-opacity:1;stroke:#3f5c80;stroke-width:4.16920757;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <flowRoot
+         transform="translate(-9.0913729,280.82241)"
+         style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         id="flowRoot3802-4-0"
+         xml:space="preserve"><flowRegion
+           id="flowRegion3804-5-6"><rect
+             style="font-size:12px"
+             y="57.361927"
+             x="60.609154"
+             height="19.192892"
+             width="132.32999"
+             id="rect3806-2-0" /></flowRegion><flowPara
+           id="flowPara3808-9-4">vars_subproject.yaml</flowPara></flowRoot>    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:4, 4;stroke-dashoffset:0;marker-mid:none;marker-end:url(#Arrow1Lend)"
+       d="m 511.35508,185.90382 -1.42904,-77.46123"
+       id="path4727-0"
+       inkscape:connector-type="polyline"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie_multiproject.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       inkscape:connection-end-point="d4"
+       inkscape:connection-end="#g3830-8-7"
+       inkscape:connection-start-point="d4"
+       inkscape:connection-start="#g3855-2-2" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:none;marker-end:url(#Arrow1Lend-4)"
+       d="m 255.06352,201.63818 -76.26652,0.0985"
+       id="path5153"
+       inkscape:connector-type="polyline"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie_multiproject.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       inkscape:connection-start-point="d4"
+       inkscape:connection-start="#g3855-2"
+       inkscape:connection-end-point="d4"
+       inkscape:connection-end="#g3855" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:3, 3;stroke-dashoffset:0;marker-end:url(#Arrow1Lend-4)"
+       d="m 452.06357,202.26573 -77.80205,-0.39894"
+       id="path5523"
+       inkscape:connector-type="polyline"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie_multiproject.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       inkscape:connection-start-point="d4"
+       inkscape:connection-start="#g3855-2-2"
+       inkscape:connection-end-point="d4"
+       inkscape:connection-end="#g3855-2" />
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="51.807583"
+       y="287.59299"
+       id="text5895"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie_multiproject.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan5897"
+         x="51.807583"
+         y="287.59299"
+         style="font-size:12px">GeoMapFish core</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="276.09378"
+       y="290.21735"
+       id="text5895-1"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie_multiproject.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan5897-2"
+         x="276.09378"
+         y="290.21735"
+         style="font-size:12px">Project</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="474.75458"
+       y="292.23764"
+       id="text5895-7"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie_multiproject.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan5897-3"
+         x="474.75458"
+         y="292.23764"
+         style="font-size:12px">Sub-project</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker-end:url(#Arrow1Lend-4-1)"
+       d="m 314.5103,184.89366 -0.70572,-77.27663"
+       id="path3197"
+       inkscape:connector-type="polyline"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie_multiproject.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       inkscape:connection-end-point="d4"
+       inkscape:connection-end="#g3830-8"
+       inkscape:connection-start-point="d4"
+       inkscape:connection-start="#g3855-2" />
+    <rect
+       style="fill:#708bac;fill-opacity:1;stroke:#3f5c80;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3755-7-9"
+       width="175.76654"
+       height="240.41631"
+       x="627.30475"
+       y="35.085442"
+       ry="6.7371583"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie_multiproject.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <g
+       id="g3855-2-2-4"
+       transform="translate(576.29203,-111.42244)"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie_multiproject.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <rect
+         ry="0"
+         y="298.28329"
+         x="83.842659"
+         height="33.335033"
+         width="119.198"
+         id="rect3810-5-1-5-0-1"
+         style="opacity:0.7;fill:#ffffff;fill-opacity:1;stroke:#3f5c80;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <flowRoot
+         transform="translate(58.588847,259.60921)"
+         style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         id="flowRoot3794-1-0-7"
+         xml:space="preserve"><flowRegion
+           id="flowRegion3796-8-3-7"><rect
+             style="font-size:12px"
+             y="46.250248"
+             x="42.426407"
+             height="24.24366"
+             width="118.18785"
+             id="rect3798-6-2-9" /></flowRegion><flowPara
+           id="flowPara3800-7-4-1">userproject.mk</flowPara></flowRoot>    </g>
+    <g
+       id="g3830-8-7-0"
+       transform="translate(599.52554,-253.85393)"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie_multiproject.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <rect
+         ry="0"
+         y="330.10312"
+         x="59.598999"
+         height="33.335033"
+         width="119.198"
+         id="rect3810-9-6-8"
+         style="opacity:0.7;fill:#ffffff;fill-opacity:1;stroke:#3f5c80;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <flowRoot
+         transform="translate(6.0609153,279.81226)"
+         style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         id="flowRoot3802-4-0-3"
+         xml:space="preserve"><flowRegion
+           id="flowRegion3804-5-6-8"><rect
+             style="font-size:12px"
+             y="57.361927"
+             x="60.609154"
+             height="20.203047"
+             width="116.16755"
+             id="rect3806-2-0-3" /></flowRegion><flowPara
+           id="flowPara3808-9-4-9">vars_project.yaml</flowPara></flowRoot>    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:4, 4;stroke-dashoffset:0;marker-mid:none;marker-end:url(#Arrow1Lend)"
+       d="m 719.58147,186.86085 -0.70572,-77.27663"
+       id="path4727-0-9"
+       inkscape:connector-type="polyline"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie_multiproject.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       inkscape:connection-end-point="d4"
+       inkscape:connection-end="#g3830-8-7-0"
+       inkscape:connection-start-point="d4"
+       inkscape:connection-start="#g3855-2-2-4" />
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="680.82568"
+       y="293.19464"
+       id="text5895-7-0"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie_multiproject.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan5897-3-2"
+         x="680.82568"
+         y="293.19464"
+         style="font-size:12px">User project</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:4, 4;stroke-dashoffset:0;marker-end:url(#Arrow1Lend-2)"
+       d="M 437.07558,91.585721 373.25137,91.256729"
+       id="path4833"
+       inkscape:connector-type="polyline"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie_multiproject.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       inkscape:connection-start-point="d4"
+       inkscape:connection-start="#g3830-8-7"
+       inkscape:connection-end-point="d4"
+       inkscape:connection-end="#g3830-8" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:3, 3;stroke-dashoffset:0;marker-end:url(#Arrow1Lend-2)"
+       d="M 659.12454,92.643928 582.16833,92.291709"
+       id="path5023"
+       inkscape:connector-type="polyline"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie_multiproject.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       inkscape:connection-start-point="d4"
+       inkscape:connection-start="#g3830-8-7-0"
+       inkscape:connection-end-point="d4"
+       inkscape:connection-end="#g3830-8-7" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:3, 3;stroke-dashoffset:0;marker-end:url(#Arrow1Lend-2)"
+       d="m 660.13469,203.25424 -88.87312,-0.40877"
+       id="path5213"
+       inkscape:connector-type="polyline"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie_multiproject.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       inkscape:connection-start-point="d4"
+       inkscape:connection-start="#g3855-2-2-4"
+       inkscape:connection-end-point="d4"
+       inkscape:connection-end="#g3855-2-2" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend-2);display:inline"
+       d="m 45.814008,320.00159 33.471707,-0.13941"
+       id="path5421"
+       inkscape:connector-type="polyline"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie_multiproject.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="88.471397"
+       y="322.15497"
+       id="text5611"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie_multiproject.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan5613"
+         x="88.471397"
+         y="322.15497">call the file</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:3,3;stroke-dashoffset:0"
+       d="m 45.714286,342.71932 33.571429,0"
+       id="path5615"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie_multiproject.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="87.891319"
+       y="346.64789"
+       id="text5617"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie_multiproject.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan5619"
+         x="87.891319"
+         y="346.64789"
+         style="font-size:12px">Option</tspan></text>
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect5417-3"
+       width="621.24384"
+       height="357.59399"
+       x="-2.0203135"
+       y="455.36203"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:#9a8981;fill-opacity:1;stroke:#765f55;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect2985-0"
+       width="165.66502"
+       height="238.396"
+       x="31.314709"
+       y="486.67676"
+       ry="6.7371583"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:#879f83;fill-opacity:1;stroke:#547a4c;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3755-8"
+       width="175.76654"
+       height="240.41631"
+       x="220.21326"
+       y="485.66663"
+       ry="6.7371583"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:#708bac;fill-opacity:1;stroke:#3f5c80;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3755-7-91"
+       width="175.76654"
+       height="240.41631"
+       x="418.20312"
+       y="487.68692"
+       ry="6.7371583"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <g
+       id="g3855-5"
+       transform="translate(-27.274126,340.42141)"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <rect
+         ry="0"
+         y="298.28329"
+         x="83.842659"
+         height="33.335033"
+         width="119.198"
+         id="rect3810-5-1-6"
+         style="opacity:0.7;fill:#ffffff;fill-opacity:1;stroke:#765f55;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <flowRoot
+         transform="translate(49.497474,259.60921)"
+         style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         id="flowRoot3794-0"
+         xml:space="preserve"><flowRegion
+           id="flowRegion3796-88"><rect
+             style="font-size:12px"
+             y="46.250248"
+             x="42.426407"
+             height="24.24366"
+             width="118.18785"
+             id="rect3798-1" /></flowRegion><flowPara
+           id="flowPara3800-3">CONST_Makefile</flowPara></flowRoot>    </g>
+    <g
+       id="g3830-86"
+       transform="translate(-4.0406163,197.98991)"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <rect
+         ry="0"
+         y="330.10312"
+         x="59.598999"
+         height="33.335033"
+         width="119.198"
+         id="rect3810-4"
+         style="opacity:0.7;fill:#ffffff;fill-opacity:1;stroke:#765f55;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <flowRoot
+         transform="translate(6.0609153,279.81226)"
+         style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         id="flowRoot3802-8"
+         xml:space="preserve"><flowRegion
+           id="flowRegion3804-6"><rect
+             style="font-size:12px"
+             y="57.361927"
+             x="60.609154"
+             height="20.203047"
+             width="116.16755"
+             id="rect3806-6" /></flowRegion><flowPara
+           id="flowPara3808-5">CONST_vars.yaml</flowPara></flowRoot>    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="M 116.01532,638.7047 115.3096,561.42806"
+       id="path3862-4"
+       inkscape:connector-type="polyline"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       inkscape:connection-end-point="d4"
+       inkscape:connection-end="#g3830-86"
+       inkscape:connection-start-point="d4"
+       inkscape:connection-start="#g3855-5" />
+    <g
+       id="g3855-2-23"
+       transform="translate(168.19039,340.16887)"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <rect
+         ry="0"
+         y="298.28329"
+         x="83.842659"
+         height="33.335033"
+         width="119.198"
+         id="rect3810-5-1-5-4"
+         style="opacity:0.7;fill:#ffffff;fill-opacity:1;stroke:#547a4c;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <flowRoot
+         transform="translate(67.68022,259.60921)"
+         style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         id="flowRoot3794-1-3"
+         xml:space="preserve"><flowRegion
+           id="flowRegion3796-8-2"><rect
+             style="font-size:12px"
+             y="46.250248"
+             x="42.426407"
+             height="24.24366"
+             width="118.18785"
+             id="rect3798-6-8" /></flowRegion><flowPara
+           id="flowPara3800-7-8">project.mk</flowPara></flowRoot>    </g>
+    <g
+       id="g3830-8-3"
+       transform="translate(191.4239,197.73738)"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <rect
+         ry="0"
+         y="330.10312"
+         x="59.598999"
+         height="33.335033"
+         width="119.198"
+         id="rect3810-9-9"
+         style="opacity:0.7;fill:#ffffff;fill-opacity:1;stroke:#547a4c;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <flowRoot
+         transform="translate(6.0609153,279.81226)"
+         style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         id="flowRoot3802-4-7"
+         xml:space="preserve"><flowRegion
+           id="flowRegion3804-5-0"><rect
+             style="font-size:12px"
+             y="57.361927"
+             x="60.609154"
+             height="20.203047"
+             width="116.16755"
+             id="rect3806-2-2" /></flowRegion><flowPara
+           id="flowPara3808-9-7">vars_project.yaml</flowPara></flowRoot>    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker-end:url(#Arrow1Lend)"
+       d="m 251.0229,544.58501 -76.26652,0.0985"
+       id="path4543-8"
+       inkscape:connector-type="polyline"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       inkscape:connection-start-point="d4"
+       inkscape:connection-start="#g3830-8-3"
+       inkscape:connection-end-point="d4"
+       inkscape:connection-end="#g3830-86" />
+    <g
+       id="g3855-2-2-3"
+       transform="translate(365.19045,341.17903)"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <rect
+         ry="0"
+         y="298.28329"
+         x="83.842659"
+         height="33.335033"
+         width="119.198"
+         id="rect3810-5-1-5-0-0"
+         style="opacity:0.7;fill:#ffffff;fill-opacity:1;stroke:#3f5c80;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <flowRoot
+         transform="translate(58.588847,259.60921)"
+         style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         id="flowRoot3794-1-0-5"
+         xml:space="preserve"><flowRegion
+           id="flowRegion3796-8-3-0"><rect
+             style="font-size:12px"
+             y="46.250248"
+             x="42.426407"
+             height="24.24366"
+             width="118.18785"
+             id="rect3798-6-2-3" /></flowRegion><flowPara
+           id="flowPara3800-7-4-6">userproject.mk</flowPara></flowRoot>    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:none;marker-end:url(#Arrow1Lend-4)"
+       d="m 252.03305,655.19668 -76.26652,0.0985"
+       id="path5153-2"
+       inkscape:connector-type="polyline"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       inkscape:connection-start-point="d4"
+       inkscape:connection-start="#g3855-2-23"
+       inkscape:connection-end-point="d4"
+       inkscape:connection-end="#g3855-5" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:3, 3;stroke-dashoffset:0;marker-end:url(#Arrow1Lend-4)"
+       d="m 449.03311,655.82423 -77.80206,-0.39894"
+       id="path5523-5"
+       inkscape:connector-type="polyline"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       inkscape:connection-start-point="d4"
+       inkscape:connection-start="#g3855-2-2-3"
+       inkscape:connection-end-point="d4"
+       inkscape:connection-end="#g3855-2-23" />
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="48.777111"
+       y="741.15149"
+       id="text5895-77"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan5897-0"
+         x="48.777111"
+         y="741.15149"
+         style="font-size:12px">GeoMapFish core</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="273.06329"
+       y="743.77582"
+       id="text5895-1-0"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan5897-2-9"
+         x="273.06329"
+         y="743.77582"
+         style="font-size:12px">Project</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="471.72409"
+       y="745.79614"
+       id="text5895-7-00"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan5897-3-29"
+         x="471.72409"
+         y="745.79614"
+         style="font-size:12px">User project</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker-end:url(#Arrow1Lend-4-1)"
+       d="m 311.47983,638.45216 -0.70572,-77.27663"
+       id="path3197-8"
+       inkscape:connector-type="polyline"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       inkscape:connection-end-point="d4"
+       inkscape:connection-end="#g3830-8-3"
+       inkscape:connection-start-point="d4"
+       inkscape:connection-start="#g3855-2-23" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend-2);display:inline"
+       d="m 42.783544,773.56009 33.4717,-0.13941"
+       id="path5421-0"
+       inkscape:connector-type="polyline"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="85.440926"
+       y="775.71344"
+       id="text5611-9"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan5613-9"
+         x="85.440926"
+         y="775.71344">Call the file</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:3, 3;stroke-dashoffset:0"
+       d="m 42.683814,796.27782 33.57143,0"
+       id="path5615-2"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="84.860847"
+       y="800.20636"
+       id="text5617-1"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan5619-8"
+         x="84.860847"
+         y="800.20636"
+         style="font-size:12px">Option</tspan></text>
+    <rect
+       style="fill:url(#linearGradient5419);fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect5403"
+       width="229.30463"
+       height="290.92392"
+       x="610.13214"
+       y="13.925363"
+       inkscape:export-filename="/home/yjacolin/Documents/Projets/rd/c2cgeoportail/c2cgeoportal/doc/_static/doc_hierarchie_multiproject.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+  </g>
+</svg>
