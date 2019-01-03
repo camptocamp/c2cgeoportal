@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright: (C) 2016-2018 by Camptocamp SA
+Copyright: (C) 2016-2019 by Camptocamp SA
 Contact: info@camptocamp.com
 
 .. note:: This program is free software; you can redistribute it and/or modify
