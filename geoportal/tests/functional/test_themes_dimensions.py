@@ -205,7 +205,6 @@ class TestThemesView(TestCase):
 
     def test_theme_dimensions(self):
         entry = self._create_entry_obj(params={
-            "version": "2",
             "interface": "main",
         })
         themes = entry.themes()

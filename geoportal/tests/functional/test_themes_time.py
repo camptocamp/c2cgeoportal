@@ -188,9 +188,7 @@ class TestThemesTimeView(TestCase):
         return set(errors)
 
     def test_time(self):
-        entry = self._create_entry_obj(params={
-            "version": "2",
-        })
+        entry = self._create_entry_obj()
         themes = entry.themes()
         self.assertEqual(self._get_filtered_errors(themes), set([
             "Error while handling time for layer '__test_layer_time_group': Could not mix time mode 'range' and 'value'"

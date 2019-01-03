@@ -190,45 +190,9 @@ class TestThemesView(TestCase):
             and not e.startswith("Unable to get DescribeFeatureType from URL ")
         }
 
-    def test_version(self):
-        entry = self._create_entry_obj(params={
-            "catalogue": "true",
-        })
-        themes = entry.themes()
-        self.assertEqual(self._get_filtered_errors(themes), set())
-        self.assertEqual(
-            [self._only_name(t) for t in themes["themes"]],
-            [{
-                "name": "__test_theme",
-                "children": [{
-                    "name": "__test_layer_group_1",
-                    # order is important
-                    "children": [{
-                        "name": "__test_layer_internal_wms"
-                    }, {
-                        "name": "__test_layer_external_wms"
-                    }, {
-                        "name": "__test_layer_wmts"
-                    }]
-                }, {
-                    "name": "__test_layer_group_2",
-                    # order is important
-                    "children": [{
-                        "name": "__test_layer_wmts"
-                    }, {
-                        "name": "__test_layer_internal_wms"
-                    }, {
-                        "name": "__test_layer_external_wms"
-                    }]
-                }]
-            }]
-        )
-
     def test_group(self):
         entry = self._create_entry_obj(params={
-            "version": "2",
             "group": "__test_layer_group_3",
-            "catalogue": "true",
         })
         themes = entry.themes()
         self.assertEqual(self._get_filtered_errors(themes), set())
@@ -248,9 +212,7 @@ class TestThemesView(TestCase):
         )
 
         entry = self._create_entry_obj(params={
-            "version": "2",
             "group": "__test_layer_group_4",
-            "catalogue": "true",
         })
         themes = entry.themes()
         self.assertEqual(self._get_filtered_errors(themes), set())
@@ -280,9 +242,7 @@ class TestThemesView(TestCase):
         transaction.commit()
 
         entry = self._create_entry_obj(params={
-            "version": "2",
             "group": "__test_layer_group_3",
-            "catalogue": "true",
         })
         themes = entry.themes()
         self.assertEqual(self._get_filtered_errors(themes), set())
@@ -301,7 +261,6 @@ class TestThemesView(TestCase):
 
     def test_min_levels(self):
         entry = self._create_entry_obj(params={
-            "version": "2",
             "interface": "min_levels",
         })
         themes = entry.themes()
@@ -310,7 +269,6 @@ class TestThemesView(TestCase):
         ]))
 
         entry = self._create_entry_obj(params={
-            "version": "2",
             "min_levels": "2",
         })
         themes = entry.themes()
@@ -325,7 +283,6 @@ class TestThemesView(TestCase):
 
     def test_theme_layer(self):
         entry = self._create_entry_obj(params={
-            "version": "2",
             "interface": "min_levels",
             "min_levels": "0",
         })
@@ -341,65 +298,9 @@ class TestThemesView(TestCase):
             }]
         )
 
-    def test_catalogue(self):
-        entry = self._create_entry_obj(params={
-            "version": "2",
-        })
-        themes = entry.themes()
-
-        self.assertEqual(self._get_filtered_errors(themes), set([]))
-
-        self.assertEqual(
-            [self._only_name(t) for t in themes["themes"]],
-            [{
-                "name": "__test_theme",
-                "children": [{
-                    "name": "__test_layer_group_1",
-                    "children": [{
-                        "name": "__test_layer_internal_wms"
-                    }, {
-                        "name": "__test_layer_external_wms"
-                    }, {
-                        "name": "__test_layer_wmts"
-                    }]
-                }, {
-                    "name": "__test_layer_group_2",
-                    "children": [{
-                        "name": "__test_layer_wmts"
-                    }, {
-                        "name": "__test_layer_internal_wms"
-                    }, {
-                        "name": "__test_layer_external_wms"
-                    }]
-                }]
-            }]
-        )
-
-        self.assertEqual(
-            [self._only_name(t, "mixed") for t in themes["themes"]],
-            [{
-                "children": [{
-                    "children": [{}, {}, {}],
-                    "mixed": True
-                }, {
-                    "children": [{}, {}, {}],
-                    "mixed": True}
-                ]
-            }]
-        )
-
-        entry = self._create_entry_obj(params={
-            "version": "2",
-            "catalogue": "true",
-        })
-        themes = entry.themes()
-        self.assertEqual(self._get_filtered_errors(themes), set())
-
     def test_interface(self):
         entry = self._create_entry_obj(params={
-            "version": "2",
             "interface": "mobile",
-            "catalogue": "true",
         })
         themes = entry.themes()
         self.assertEqual(self._get_filtered_errors(themes), set())
@@ -422,10 +323,7 @@ class TestThemesView(TestCase):
         )
 
     def test_metadata(self):
-        entry = self._create_entry_obj(params={
-            "version": "2",
-            "catalogue": "true",
-        })
+        entry = self._create_entry_obj()
         themes = entry.themes()
         self.assertEqual(self._get_filtered_errors(themes), set())
         self.assertEqual(
@@ -473,10 +371,7 @@ class TestThemesView(TestCase):
         )
 
     def test_ogc_server(self):
-        entry = self._create_entry_obj(params={
-            "version": "2",
-            "catalogue": "true",
-        })
+        entry = self._create_entry_obj()
 
         themes = entry.themes()
         themes["ogcServers"]["__test_ogc_server_chtopo"]["attributes"] = {}
@@ -543,9 +438,7 @@ class TestThemesView(TestCase):
 
     def test_dimensions(self):
         entry = self._create_entry_obj(params={
-            "version": "2",
             "group": "__test_layer_group_3",
-            "catalogue": "true",
         })
         themes = entry.themes()
         self.assertEqual(self._get_filtered_errors(themes), set())
@@ -565,7 +458,6 @@ class TestThemesView(TestCase):
 
     def test_background(self):
         entry = self._create_entry_obj(params={
-            "version": "2",
             "background": "__test_layer_group_3",
             "set": "background",
         })
