@@ -46,6 +46,7 @@ pycryptodome==3.7.2  # geoportal
 pyflakes==2.0.0  # lint, flake8
 Pygments==2.3.0  # doc
 pylint==2.2.2  # lint
+Pympler==0.6  # geoportal, memory view
 pyramid==1.9.3  # rq.filter: <=1.9.99
 pyramid-debugtoolbar==4.5  # geoportal
 pyramid_jinja2==2.7  # admin
