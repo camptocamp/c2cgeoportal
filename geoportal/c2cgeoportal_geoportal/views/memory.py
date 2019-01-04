@@ -32,17 +32,18 @@ import inspect
 import logging
 import sys
 
+from c2cwsgiutils import broadcast
+from c2cwsgiutils.auth import SECRET_ENV, SECRET_PROP, auth_view
 from pyramid.view import view_config
 
 from c2cgeoportal_geoportal.views import entry, raster
-from c2cwsgiutils import broadcast
 
 LOG = logging.getLogger(__name__)
 
 
 @view_config(route_name="memory", renderer="fastjson")
 def memory(request):
-    del request
+    auth_view(request, SECRET_ENV, SECRET_PROP)
     return _memory()
 
 
