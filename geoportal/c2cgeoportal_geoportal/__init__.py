@@ -688,6 +688,25 @@ def includeme(config: pyramid.config.Configurator):
     # the client receives a status=200 without content.
     config.add_view(error_handler, context=HTTPException)
 
+    c2cwsgiutils.index.additional_title = "<h2>GeoMapFish</h2>"
+    c2cwsgiutils.index.additional_auth.extend([
+        '<p><a href="../tiles_admin/?{secret_qs}">TileCloud chain admin</a></p>',
+        '<p><a href="../invalidate?{secret_qs}">Invalidate the cache</a></p>',
+        '<p><a href="../memory?{secret_qs}">Memory status</a></p>',
+    ])
+
+    if config.get_settings().get('enable_admin_interface', False):
+        c2cwsgiutils.index.additional_noauth.append('<p><a href="../admin/">Admin</a></p>')
+    c2cwsgiutils.index.additional_noauth.append('<p><a href="../">Default interface</a></p>')
+    for interface in config.get_settings().get("interfaces", []):
+        if interface != config.get_settings().get("default_interface"):
+            c2cwsgiutils.index.additional_noauth.append(
+                '<p><a href="../{interface}">{interface} interface</a></p>'.format(
+                    interface=interface
+                )
+            )
+    c2cwsgiutils.index.additional_noauth.append('<p><a href="../apihelp.html">API help</a></p>')
+
 
 def init_dbsessions(settings: dict, config: Configurator, health_check: HealthCheck=None) -> None:
     db_chooser = settings.get('db_chooser', {})
