@@ -37,7 +37,7 @@ from pyramid.view import view_config
 from c2cgeoportal_geoportal.views import entry, raster
 from c2cwsgiutils import broadcast
 
-log = logging.getLogger(__name__)
+LOG = logging.getLogger(__name__)
 
 
 @view_config(route_name="memory", renderer="fastjson")
