@@ -1,0 +1,198 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Working with Object storage (like S3) &#8212; c2cgeoportal  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Customise the application" href="customise.html" />
+    <link rel="prev" title="Configuring Windows tools required to connect to our servers" href="windows_tools.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="working-with-object-storage-like-s3">
+<span id="integrator-objectstorage"></span><h1>Working with Object storage (like S3)<a class="headerlink" href="#working-with-object-storage-like-s3" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="generalities">
+<h2>Generalities<a class="headerlink" href="#generalities" title="Permalink to this headline">¶</a></h2>
+<p>In this we will consider to use the S3-like from Exoscale.</p>
+<p>First of all we should set the following variables on the <code class="docutils literal notranslate"><span class="pre">geoportal</span></code>, <code class="docutils literal notranslate"><span class="pre">config</span></code> and <code class="docutils literal notranslate"><span class="pre">qgisserver</span></code> services.</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">AWS_ACCESS_KEY_ID</span></code>: The project access key.</li>
+<li><code class="docutils literal notranslate"><span class="pre">AWS_SECRET_ACCESS_KEY</span></code>: The project secret key.</li>
+<li><code class="docutils literal notranslate"><span class="pre">AWS_DEFAULT_REGION=ch-dk-2</span></code>: The region used by Exoscale.</li>
+<li><code class="docutils literal notranslate"><span class="pre">AWS_S3_ENDPOINT=sos-ch-dk-2.exo.io</span></code>: The endpoint used by Exoscale.</li>
+</ul>
+<p>For better performance, we should set the following variables on the <code class="docutils literal notranslate"><span class="pre">geoportal</span></code> and <code class="docutils literal notranslate"><span class="pre">qgisserver</span></code> services.</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">CPL_VSIL_CURL_USE_CACHE=TRUE</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">CPL_VSIL_CURL_CACHE_SIZE=128000000</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">CPL_VSIL_CURL_USE_HEAD=FALSE</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">GDAL_DISABLE_READDIR_ON_OPEN=TRUE</span></code></li>
+</ul>
+<p>Use the aws client to list the files:</p>
+<pre class="highlight"><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">aws --endpoint-url https://sos-ch-dk-2.exo.io/ --region ch-dk-2 s3 ls s3://&lt;bucket&gt;/&lt;folder&gt;</span>
+</pre><p>Create the vrt file for a raster layer:</p>
+<pre class="highlight"><span class="prompt1">gdalbuildvrt <span class="sb">`</span>aws --endpoint-url https://sos-ch-dk-2.exo.io/ --region ch-dk-2 s3 ls <span class="se">\</span>
+     s3://&lt;bucket&gt;/&lt;folder&gt;/*.geotiff<span class="p">|</span>awk <span class="s1">&#39;{print $4}&#39;</span><span class="sb">`</span> s3://&lt;bucket&gt;/&lt;folder&gt;/index.vrt</span>
+</pre></div>
+<div class="section" id="mapserver">
+<h2>MapServer<a class="headerlink" href="#mapserver" title="Permalink to this headline">¶</a></h2>
+<p>Create the shape index file for a raster layer:</p>
+<pre class="highlight"><span class="prompt1">gdaltindex mapserver/index.shp <span class="sb">`</span>aws --endpoint-url https://sos-ch-dk-2.exo.io/ --region ch-dk-2 s3 ls <span class="se">\</span>
+     s3://&lt;bucket&gt;/&lt;folder&gt;/*.geotiff<span class="p">|</span>awk <span class="s1">&#39;{print $4}&#39;</span><span class="sb">`</span></span>
+</pre><p>Add the following config in the <code class="docutils literal notranslate"><span class="pre">mapserver/mapserver.map.tmpl</span></code> file:</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="s2">&quot;CPL_VSIL_CURL_USE_CACHE&quot;</span> <span class="s2">&quot;TRUE&quot;</span>
+<span class="n">CONFIG</span> <span class="s2">&quot;CPL_VSIL_CURL_CACHE_SIZE&quot;</span> <span class="s2">&quot;128000000&quot;</span>
+<span class="n">CONFIG</span> <span class="s2">&quot;CPL_VSIL_CURL_USE_HEAD&quot;</span> <span class="s2">&quot;FALSE&quot;</span>
+<span class="n">CONFIG</span> <span class="s2">&quot;GDAL_DISABLE_READDIR_ON_OPEN&quot;</span> <span class="s2">&quot;TRUE&quot;</span>
+
+<span class="n">CONFIG</span> <span class="s2">&quot;AWS_ACCESS_KEY_ID&quot;</span> <span class="s2">&quot;$</span><span class="si">{AWS_ACCESS_KEY_ID}</span><span class="s2">&quot;</span>
+<span class="n">CONFIG</span> <span class="s2">&quot;AWS_SECRET_ACCESS_KEY&quot;</span> <span class="s2">&quot;$</span><span class="si">{AWS_SECRET_ACCESS_KEY}</span><span class="s2">&quot;</span>
+<span class="n">CONFIG</span> <span class="s2">&quot;AWS_DEFAULT_REGION&quot;</span> <span class="s2">&quot;$</span><span class="si">{AWS_DEFAULT_REGION}</span><span class="s2">&quot;</span>
+<span class="n">CONFIG</span> <span class="s2">&quot;AWS_S3_ENDPOINT&quot;</span> <span class="s2">&quot;$</span><span class="si">{AWS_S3_ENDPOINT}</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+<p>Use the shape index in the layer:</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TYPE</span> <span class="n">RASTER</span>
+<span class="n">STATUS</span> <span class="n">ON</span>
+<span class="n">PROCESSING</span> <span class="s2">&quot;RESAMPLE=AVERAGE&quot;</span>
+<span class="n">CONNECTIONTYPE</span> <span class="n">OGR</span>
+<span class="n">TILEINDEX</span> <span class="s2">&quot;index.shp&quot;</span>
+<span class="n">TILEITEM</span> <span class="s2">&quot;LOCATION&quot;</span>
+</pre></div>
+</div>
+<p>Add a vector layer for the object storage:</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONNECTIONTYPE</span> <span class="n">OGR</span>
+<span class="n">CONNECTION</span> <span class="s2">&quot;/vsis3/&lt;bucket&gt;/&lt;path&gt;/&lt;name&gt;.shp&quot;</span>
+<span class="n">DATA</span> <span class="s2">&quot;&lt;name&gt;&quot;</span>
+</pre></div>
+</div>
+<p><a class="reference external" href="https://github.com/mapserver/mapserver/wiki/Render-images-straight-out-of-S3-with-the-vsicurl-driver">Some more information</a></p>
+</div>
+<div class="section" id="qgis-client">
+<h2>QGIS client<a class="headerlink" href="#qgis-client" title="Permalink to this headline">¶</a></h2>
+<p>Open settings, Option and define the following environment variables:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">AWS_ACCESS_KEY_ID</span></code>: The project access key.</li>
+<li><code class="docutils literal notranslate"><span class="pre">AWS_SECRET_ACCESS_KEY</span></code>: The project secret key.</li>
+<li><code class="docutils literal notranslate"><span class="pre">AWS_DEFAULT_REGION=ch-dk-2</span></code>: The region used by Exoscale.</li>
+<li><code class="docutils literal notranslate"><span class="pre">AWS_S3_ENDPOINT=sos-ch-dk-2.exo.io</span></code>: The endpoint used by Exoscale.</li>
+</ul>
+<p>On Windows also add:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">GDAL_HTTP_UNSAFESSL=YES</span></code></li>
+</ul>
+<p>Then you can add a raster layer with:</p>
+<ul class="simple">
+<li>Open Data Source Manager,</li>
+<li>Raster,</li>
+<li>Protocol: HTTP(S), cloud, etc.,</li>
+<li>Type: AWS S3</li>
+<li>Bucket or container: &lt;bucket&gt;</li>
+<li>Object key: &lt;folder&gt;/index.vrt</li>
+</ul>
+<p>You can add a vector layer in an analogous manner.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Working with Object storage (like S3)</a><ul>
+<li><a class="reference internal" href="#generalities">Generalities</a></li>
+<li><a class="reference internal" href="#mapserver">MapServer</a></li>
+<li><a class="reference internal" href="#qgis-client">QGIS client</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+  <li><a href="configuration.html">Configuration Guide for advanced settings</a><ul>
+      <li>Previous: <a href="windows_tools.html" title="previous chapter">Configuring Windows tools required to connect to our servers</a></li>
+      <li>Next: <a href="customise.html" title="next chapter">Customise the application</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/integrator/objectstorage.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2019, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/integrator/objectstorage.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
