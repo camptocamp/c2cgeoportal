@@ -55,7 +55,7 @@ def _memory():
             id: get_size(wms_capabilities_cache[id]) for id in wms_capabilities_cache
         },
         "raster_data": {
-            id: get_size(wms_capabilities_cache[id]) for id in raster_data
+            id: get_size(raster_data[id]) for id in raster_data
         }
     }
 
