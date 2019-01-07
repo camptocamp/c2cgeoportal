@@ -41,6 +41,7 @@ from typing import Dict, Set, Tuple  # noqa # pylint: disable=unused-import
 
 import requests
 import zope.event.classhandler
+from c2cwsgiutils.auth import SECRET_ENV, SECRET_PROP, auth_view
 from defusedxml import lxml
 from defusedxml.minidom import parseString
 from owslib.wms import WebMapService
@@ -1038,9 +1039,9 @@ class Entry:
                 result[functionality.name] = [functionality.value]
         return result
 
-    @staticmethod
     @view_config(route_name="invalidate", renderer="json")
-    def invalidate_cache():  # pragma: no cover
+    def invalidate_cache(self):  # pragma: no cover
+        auth_view(self.request, SECRET_ENV, SECRET_PROP)
         main.cache_invalidate_cb()
         return {
             "success": True

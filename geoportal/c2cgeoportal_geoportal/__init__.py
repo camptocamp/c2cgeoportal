@@ -52,6 +52,7 @@ from papyrus.renderers import GeoJSON
 from c2cgeoportal_geoportal.lib.xsd import XSD
 
 import c2cwsgiutils.db
+import c2cwsgiutils.index
 from c2cwsgiutils.health_check import HealthCheck
 from sqlalchemy.orm import Session
 
@@ -61,9 +62,7 @@ from c2cgeoportal_geoportal.lib import dbreflection, caching, \
     C2CPregenerator, MultiDomainStaticURLInfo, checker, check_collector
 
 
-log = logging.getLogger(__name__)
-
-# used by (sql|form)alchemy
+LOG = logging.getLogger(__name__)
 
 # Header predicate to accept only JSON content
 # OL/cgxp are not setting the correct content type for JSON. We have to accept
@@ -282,12 +281,12 @@ def create_get_user_from_request(settings):
                             headers = pyramid.security.remember(request, auth["u"])
                             request.response.headerlist.extend(headers)
         except Exception as e:
-            log.error("URL login error: %s.", e, exc_info=True)
+            LOG.error("URL login error: %s.", e, exc_info=True)
 
         if not hasattr(request, "is_valid_referer"):
             request.is_valid_referer = is_valid_referer(request, settings)
         if not request.is_valid_referer:
-            log.debug("Invalid referer for %s: %s", request.path_qs, repr(request.referer))
+            LOG.debug("Invalid referer for %s: %s", request.path_qs, repr(request.referer))
             return None
 
         if not hasattr(request, "user_"):
@@ -331,16 +330,16 @@ def default_user_validator(request, username, password):
     from c2cgeoportal_commons.models.static import User
     user = DBSession.query(User).filter_by(username=username).first()
     if user is None:
-        log.info('Unknow user "{}" tried to log in'.format(username))
+        LOG.info('Unknow user "%s" tried to log in', username)
         return None
     if user.deactivated:
-        log.info('Deactivated user "{}" tried to log in'.format(username))
+        LOG.info('Deactivated user "%s" tried to log in', username)
         return None
     if user.expired():
-        log.info('Expired user "{}" tried to log in'.format(username))
+        LOG.info('Expired user %s tried to log in', username)
         return None
     if not user.validate_password(password):
-        log.info('User "{}" tried to log in with bad credentials'.format(username))
+        LOG.info('User "%s" tried to log in with bad credentials', username)
         return None
     return username
 
@@ -370,7 +369,7 @@ class OgcproxyRoutePredicate:
         try:
             ip = IP(gethostbyname(parts.netloc))
         except gaierror as e:
-            log.info("Unable to get host name for {0!s}: {1!s}".format(url, e))
+            LOG.info("Unable to get host name for %s: %s", url, e)
             return False
         for net in self.private_networks:
             if ip in net:
@@ -421,8 +420,7 @@ def error_handler(http_exception, request):  # pragma: no cover
     """
     View callable for handling all the exceptions that are not already handled.
     """
-    log.warning("%s returned status code %s", request.url,
-                http_exception.status_code)
+    LOG.warning("%s returned status code %s", request.url, http_exception.status_code)
     return caching.set_common_headers(
         request, "error", caching.NO_CACHE, http_exception, vary=True
     )
@@ -689,6 +687,25 @@ def includeme(config: pyramid.config.Configurator):
     # Handles the other HTTP errors raised by the views. Without that,
     # the client receives a status=200 without content.
     config.add_view(error_handler, context=HTTPException)
+
+    c2cwsgiutils.index.additional_title = "<h2>GeoMapFish</h2>"
+    c2cwsgiutils.index.additional_auth.extend([
+        '<p><a href="../tiles_admin/?{secret_qs}">TileCloud chain admin</a></p>',
+        '<p><a href="../invalidate?{secret_qs}">Invalidate the cache</a></p>',
+        '<p><a href="../memory?{secret_qs}">Memory status</a></p>',
+    ])
+
+    if config.get_settings().get('enable_admin_interface', False):
+        c2cwsgiutils.index.additional_noauth.append('<p><a href="../admin/">Admin</a></p>')
+    c2cwsgiutils.index.additional_noauth.append('<p><a href="../">Default interface</a></p>')
+    for interface in config.get_settings().get("interfaces", []):
+        if interface != config.get_settings().get("default_interface"):
+            c2cwsgiutils.index.additional_noauth.append(
+                '<p><a href="../{interface}">{interface} interface</a></p>'.format(
+                    interface=interface
+                )
+            )
+    c2cwsgiutils.index.additional_noauth.append('<p><a href="../apihelp.html">API help</a></p>')
 
 
 def init_dbsessions(settings: dict, config: Configurator, health_check: HealthCheck=None) -> None:
