@@ -28,15 +28,15 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import inspect
 import logging
-import sys
+from typing import Any, Dict, List
 
 from c2cwsgiutils import broadcast
 from c2cwsgiutils.auth import SECRET_ENV, SECRET_PROP, auth_view
 from pyramid.view import view_config
 
 from c2cgeoportal_geoportal.views import entry, raster
+from pympler import asizeof, muppy
 
 LOG = logging.getLogger(__name__)
 
@@ -44,50 +44,65 @@ LOG = logging.getLogger(__name__)
 @view_config(route_name="memory", renderer="fastjson")
 def memory(request):
     auth_view(request, SECRET_ENV, SECRET_PROP)
-    return _memory()
+    return _memory(
+        with_all=request.registry.param.get("with_all", "false").lower() in ["1", "on", "true"],
+        with_repr=request.registry.param.get("with_repr", "false").lower() in ["1", "on", "true"],
+    )
 
 
 @broadcast.decorator(expect_answers=True)
-def _memory():
+def _memory(with_all: bool, with_repr: bool) -> Dict[str, Any]:
     wms_capabilities_cache = entry.Entry.server_wms_capabilities
     raster_data = raster.Raster.data
     return {
         "parsed_wms_capabilities_cache_by_ogcserver_id": {
-            id: get_size(wms_capabilities_cache[id]) for id in wms_capabilities_cache
+            id: asizeof.asizeof(wms_capabilities_cache[id]) for id in wms_capabilities_cache
         },
         "raster_data": {
-            id: get_size(wms_capabilities_cache[id]) for id in raster_data
-        }
+            id: asizeof.asizeof(raster_data[id]) for id in raster_data
+        },
+        "others": _get_used_memory(with_all, with_repr)
     }
 
 
-# Get from https://github.com/bosswissam/pysize
-# Licence: MIT - https://github.com/bosswissam/pysize/blob/master/LICENSE.txt
-def get_size(obj, seen=None):
-    """Recursively finds size of objects in bytes"""
-    size = sys.getsizeof(obj)
-    if seen is None:
-        seen = set()
-    obj_id = id(obj)
-    if obj_id in seen:
-        return 0
-    # Important mark as seen *before* entering recursion to gracefully handle
-    # self-referential objects
-    seen.add(obj_id)
-    if hasattr(obj, '__dict__'):
-        for cls in obj.__class__.__mro__:
-            if '__dict__' in cls.__dict__:
-                d = cls.__dict__['__dict__']
-                if inspect.isgetsetdescriptor(d) or inspect.ismemberdescriptor(d):
-                    size += get_size(obj.__dict__, seen)
-                break
-    if isinstance(obj, dict):
-        size += sum((get_size(v, seen) for v in obj.values()))
-        size += sum((get_size(k, seen) for k in obj.keys()))
-    elif hasattr(obj, '__iter__') and not isinstance(obj, (str, bytes, bytearray)):
-        size += sum((get_size(i, seen) for i in obj))
+def _filter(module_: str, with_all: bool) -> bool:
+    return with_all or (
+        module_ not in ("builtins", "<unknown>") and not module_.startswith("_")
+    )
 
-    if hasattr(obj, '__slots__'):  # Can have __slots__ with __dict__
-        size += sum(get_size(getattr(obj, s), seen) for s in obj.__slots__ if hasattr(obj, s))
 
-    return size
+def _get_used_memory(with_all: bool, with_repr: bool) -> Dict[str, Any]:
+    all_objects = [(
+        ".".join((type(o).__module__, type(o).__name__)),
+        o,
+        asizeof.asizeof(o)
+    ) for o in muppy.get_objects() if _filter(type(o).__module__, with_all)]
+    result = {}  # type: Dict[str, Any]
+    for name, obj, size in all_objects:
+        path = name.split(".")
+        _fill_path(result, path, obj, size, with_repr)
+    return result
+
+
+def _fill_path(base: Dict[str, Any], path: List[str], object_: Any, size: int, with_repr: bool):
+    if len(path) == 1:
+        base.setdefault(path[0], {
+            "size": 0,
+            "numbers": 0,
+        })
+        obj = base[path[0]]
+        obj["size"] += size
+        obj["numbers"] += 1
+        if with_repr:
+            obj.setdefault("objects", [])
+            obj["objects"].append((repr(object_), size))
+    else:
+        base.setdefault(path[0], {
+            "size": 0,
+            "numbers": 0,
+            "children": {},
+        })
+        obj = base[path[0]]
+        obj["size"] += size
+        obj["numbers"] += 1
+        _fill_path(obj["children"], path[1:], object_, size, with_repr)
