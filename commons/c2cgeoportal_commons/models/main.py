@@ -647,7 +647,7 @@ class LayerV1(Layer):  # Deprecated in v2
         }})  # for kml 3D
     is_single_tile = Column(Boolean, info={
         'colanderalchemy': {
-            'title': _('Is single tile'),
+            'title': _('Single tile'),
             'group': 'external'
         }})  # for external WMS
     legend = Column(Boolean, default=True, info={
@@ -832,7 +832,7 @@ class OGCServer(Base):
         'colanderalchemy': {'title': _('WFS support'), 'column': 2}
     })
     is_single_tile = Column(Boolean, info={
-        'colanderalchemy': {'title': _('Is single tile'), 'column': 2}
+        'colanderalchemy': {'title': _('Single tile'), 'column': 2}
     })
 
     def __init__(
