@@ -450,7 +450,9 @@ class TestEntryView(TestCase):
 
         # unautenticated v1
         themes, errors = entry._themes("desktop")
-        self.assertEqual(errors, set())
+        self.assertEqual(errors, {
+            "The layer '__test_public_layer_not_in_mapfile' (__test_public_layer_not_mapfile) is not defined in WMS capabilities from '__test_ogc_server'",
+        })
         self.assertEqual(len(themes), 1)
         layers = {l["name"] for l in themes[0]["children"][0]["children"]}
         self.assertEqual(layers, {
