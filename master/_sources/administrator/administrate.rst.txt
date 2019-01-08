@@ -21,13 +21,13 @@ you should define two ``OGC servers``. Attributes:
 
 * ``Name``: the name of the OGC Server.
 * ``Description``: a description.
-* ``URL``: the server URL, empty to use the internal MapServer.
-* ``WFS support``: whether WFS is supported by the server.
-* ``WFS URL``: the WFS server URL, empty to use the same as the ``URL``.
-* ``Type``: the server type used to know which custom attribute will be used.
+* ``Basis URL``: the server URL.
+* ``WFS URL``: the WFS server URL. If empty, the ``Basis URL`` is used.
+* ``Server type``: the server type which is used to know which custom attribute will be used.
 * ``Image type``: the MIME type of the images (e.g.: ``image/png``).
+* ``Authentication type``: the kind of authentication to use.
+* ``WFS support``: whether WFS is supported by the server.
 * ``Single tile``: whether to use the single tile mode (For future use).
-* ``Auth``: the kind of authentication to use (For future use).
 
 .. _administrator_administrate_metadata:
 
@@ -38,41 +38,36 @@ You can associate metadata to all theme elements (tree items).
 The purpose of this metadata is to trigger specific features, mainly UI features.
 Each metadata entry has the following attributes:
 
-* ``Item``: the tree item the metadata is associated to.
 * ``Name``: the type of ``Metadata`` we want to set (the available names are configured in the ``vars``
   files in ``admin_interface/available_metadata``).
 * ``Value``: the value of the metadata entry.
 * ``Description``: a description.
 
 To set a metadata entry, create or edit an entry in the Metadata view of the administration UI.
-Regarding effect on the referenced tree item on the client side, you will find a description for each sort of metadata in the `NGEO documentation <https://camptocamp.github.io/ngeo/master/apidoc/gmfThemes.GmfMetaData.html>`_.
+Regarding effect on the referenced tree item on the client side, you will find a description for each sort
+of metadata in the `NGEO documentation
+<https://camptocamp.github.io/ngeo/master/apidoc/gmfThemes.GmfMetaData.html>`_.
+
+.. TODO: the URL should be fixed when the ngeo documentation will be generated.
 
 Functionalities
 ---------------
 
 ``Roles`` and ``Themes`` can have some functionalities. Attributes:
 
-* ``Name``: the type of Metadata we want to set (configured in the ``vars``
+* ``Name``: the type of functionality we want to set (configured in the ``vars``
   files in ``admin_interface/available_functionalities``).
-* ``Value``: the value of the metadata.
 * ``Description``: a description.
+* ``Value``: the value of the functionality.
 
 .. _administrator_administrate_layers:
 
 Layers
 ------
 
-Layer definition for the ngeo client is considered "version 2",
-whereas layer definition for the CGXP client is considered "version 1".
-In version 2, we split the layer table into 2 tables: ``layer_wms``,
-``layer_wmts``, and we copy the previous layer table in ``layerv1``.
-For information on migrating layers from CGXP to ngeo, see
-:ref:`integrator_upgrade_application_cgxp_to_ngeo`.
-
-Still using the CGXP client? Then you should maintain both version
-of the layers, respectively ``layerv1`` and ``layer_wms``-``layer_wmts``.
-
-And the ``order`` will be moved in the relation of the tree.
+Layer definitiions are found in to two tables: ``layer_wms`` and ``layer_wmts``.
+The legacy table ``layerv1`` is still present, but only for being able to migration the application,
+for information on migrating layers, see :ref:`integrator_upgrade_application_cgxp_to_ngeo`.
 
 All layer type
 ~~~~~~~~~~~~~~
@@ -80,25 +75,30 @@ All layer type
 All the layers in the admin interface have the following attributes:
 
 * ``Name``: the name of the WMS layer/group, or the WMTS layer.
-  It also used throw OpenLayers.i18n to display the name on the layers tree.
-* ``Public``: make the layer public, also it is accessible
-  throw the ``Restriction areas``.
-* ``Restrictions area``: the areas through which the user can see the layer.
-* ``Related Postgres table``: the related postgres table,
+  It is used through the i18n tools to display the name on the layers tree.
+* ``Metadata URL``: deprecated
+
+.. TODO: remove deprecated field
+
+* ``Description``: a description.
+* ``Public``: makes the layer public. You must use the ``Restriction areas`` to make
+  private layer accessible.
+* ``Geo table``: the related database table,
   used by the :ref:`administrator_editing`.
 * ``Exclude properties``: the list of attributes (database columns) that should not appear in
   the :ref:`administrator_editing` so that they cannot be modified by the end user.
   For enumerable attributes (foreign key), the column name should end with '_id'.
-* ``Parents``: the groups and theme in which the layer is.
+* ``Interfaces``: visible in the checked interfaces.
+* ``Restriction areas``: the areas through which the user can see the layer.
 * ``Metadata``: Additional metadata.
-* ``Dimensions``: the dimensions, if not provided default values are used (v2 only).
+* ``Dimensions``: the dimensions, if not provided default values are used.
 
 WMS layer
 ~~~~~~~~~
 On internal WMS layers we have the following specific attributes:
 
 * ``OGC Server``: the used server.
-* ``Layers``: the WMS layers. Can be one layer, one group, a coma separated list of layers.
+* ``WMS layer name``: the WMS layers. Can be one layer, one group, a comma separated list of layers.
   In the case of a coma separated list of layers, we will get the legend rule for the
   layer icon on the first layer, and the legend will not be supported we should define a legend metadata.
 * ``Style``: the used style, can be empty.
@@ -111,68 +111,11 @@ WMTS layer
 On WMTS layers we have the following specific attributes:
 
 * ``GetCapabilities URL``: the URL to the WMTS capabilities.
-* ``Layer``: the WMTS layer.
+* ``WMTS layer name``: the WMTS layer.
 * ``Style``: the used style, if not present we use the default style.
 * ``Matrix set``: the used matrix set, if there is only one matrix set
   in the capabilities it can be empty.
-
-layerv1 (deprecated in v2)
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The layers in the admin interface have the following attributes:
-
-* ``Metadata URL``: optional, for WMS, leave it empty to get it from the capabilities.
-* ``Visible``: if it is false the layer is just ignored.
-* ``Checked``: the layer is checked by default.
-* ``Icon``: icon on the layer tree.
-* ``KML 3D``: optional, URL to a KML to display it on the Google earth view.
-* ``Display legend``: it checked the legend is display on the layer tree.
-* ``Legend image``: URL to overwrite the default legend image.
-* ``Min/Max resolution``: resolutions between which data are displayed by
-  the given layer, used to zoom to visible scale, with WMS if it is empty
-  we get the values from the capabilities.
-* ``Disclaimer``: optional, copyright of the layer.
-* ``Identifier attribute field``: field used to identify a feature from the layer, e.g.: 'name'.
-* ``Restrictions area``: the areas through which the user can see the layer.
-
-On ``internal WMS`` layers we have the following specific attributes:
-
-* ``Image type``: the type of the images.
-* ``Style``: the used style, can be empty.
-* ``Dimensions``: a JSON string that gives the dimensions,
-  e.g.: ``{ "YEAR": "2012" }``, if not provided default values are used.
-* ``Legend rule``: the legend rule used to get the layer icon,
-  if empty we use the ``Icon``.
-
-On ``external WMS`` layer we have the following specific attributes:
-
-* ``Base URL``: the base URL of the WMS server.
-* ``Image type``: the type of the images.
-* ``Style``: the used style, can be empty.
-* ``Legend rule``: the legend rule used to get the layer icon,
-  if empty we use the ``Icon``.
-* ``Single tile``: use the single tile mode.
-
-On ``WMTS`` layer we have the following specific attributes:
-
-* ``Base URL``: the URL to the WMTS capabilities.
-* ``Style``: the used style, if not present we use the default style.
-* ``Matrix set``: the used matrix set, if there is only one matrix set
-  in the capabilities it can be empty.
-* ``WMS server URL``: optional, URL to a WMS server to use for printing
-  and querying. The URL to the internal WMS is used if this field is not
-  specified.
-* ``Query layers``: optional, a comma-separated list of WMS layers
-  used for querying.
-* ``WMS layers``: optional, a comma-separated list of layers used for
-  printing, and for querying if ``Query layers`` is not set.
-
-.. note::
-
-    You can use both ``WMS layers`` and ``Query layers`` if you want that
-    different sets of ``WMS layers`` are used for printing and querying.
-    If you want to define ``WMS layers`` but no ``Query layers``,
-    set it to ``[]``.
+* ``Image type``: the MIME type of the images (e.g.: ``image/png``).
 
 Queryable WMTS
 ~~~~~~~~~~~~~~
@@ -188,7 +131,9 @@ be the zoom limit.
 
 Print WMTS in high quality
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
-To print the layers in high quality, you should add the following ``Metadata``:
+To print the layers in high quality, you can define that the image shall be retrieved with a
+``GetMap`` on the original WMS server.
+To activate this, you should add the following ``Metadata``:
 
 * ``ogcServer`` with the name of the used ``OGC server``,
 * ``wmsLayers`` or ``printLayers`` with the layers to print.
@@ -197,22 +142,53 @@ To print the layers in high quality, you should add the following ``Metadata``:
 
    See also: :ref:`administrator_administrate_metadata`, :ref:`administrator_administrate_ogc_server`.
 
-
 LayerGroup
 ----------
 
 Attributes:
 
-* ``Name``: used throw OpenLayers.i18n to display the name on the layers tree.
-* ``Order``: used to order the layers and group on the layer tree.
-* ``Metadata URL``: optional (deprecated in v2).
-* ``Expanded``: is expanded on the layer tree by default (deprecated in v2).
-* ``Internal WMS``: if true it can include only ``Internal WMS`` layers,
-  if false it can include only ``external WMS`` or ``WMTS`` layers (deprecated in v2).
-* ``Group of base layers``: if not ``Internal WMS`` replace radio button by check box (deprecated in v2).
+* ``Name``: It is used through the i18n tools to display the name on the layers tree.
+* ``Metadata URL``: (deprecated).
+* ``Description``: a description.
+* ``Expanded``: (deprecated).
+* ``Internal WMS``: (deprecated).
+* ``Base layers group``: (deprecated).
+* ``Children``: the ordered children elements.
+* ``Metadata``: Additional metadata.
+
+.. TODO: remove the deprecated fields if it's correctly migrated.
 
 Background layers
 -----------------
 
 The background layers are configured in the database, with the layer group named
 **background** (by default).
+
+Theme
+-----
+
+* ``Name``: It is used through the i18n tools to display the name on the layers tree.
+* ``Metadata URL``: (deprecated).
+* ``Description``: a description.
+* ``Public``: makes the layer public. You must use the ``Restriction Roles`` to make
+  private theme accessible.
+* ``Icon``: the icon URL.
+* ``Interfaces``: visible in the checked interfaces.
+* ``Restricted Roles``: Restricted to the following roles.
+* ``Functionalities``: The linked functionalities.
+* ``Children``: the ordered children elements.
+* ``Metadata``: Additional metadata.
+
+.. TODO: remove the deprecated fields if it's correctly migrated.
+
+Restricted area
+---------------
+
+A restricted area is an area for which a user must possess a specific role in order to be able
+to see (and edit, if applicable) the features within this area.
+
+* ``Name``: a name.
+* ``Description``: a description.
+* ``Roles``: Restricted to the following roles.
+* ``Read/write``: Allows the linked users to change the objects.
+* ``Area``: Active in the following area, if not defined it is active everywhere.
