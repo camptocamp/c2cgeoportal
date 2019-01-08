@@ -58,7 +58,7 @@ class TestLayerV1Views(AbstractViewsTests):
                     ('wms_layers', 'WMS layers'),
                     ('query_layers', 'Query layers'),
                     ('kml', 'KML'),
-                    ('is_single_tile', 'Is single tile'),
+                    ('is_single_tile', 'Single tile'),
                     ('legend', 'Legend'),
                     ('legend_image', 'Legend image'),
                     ('legend_rule', 'Legend rule'),

@@ -52,7 +52,7 @@ class TestOGCServer(AbstractViewsTests):
                     ('image_type', 'Image type', 'true'),
                     ('auth', 'Authentication type', 'true'),
                     ('wfs_support', 'WFS support', 'true'),
-                    ('is_single_tile', 'Is single tile', 'true')]
+                    ('is_single_tile', 'Single tile', 'true')]
         self.check_grid_headers(resp, expected)
 
     def test_grid_search(self, test_app):
