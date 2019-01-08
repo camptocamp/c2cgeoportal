@@ -122,7 +122,7 @@ class TestEntryView(TestCase):
         public_layer_not_mapfile.ogc_server = ogcserver
 
         public_layer_no_layers = LayerWMS(
-            name="__test_public_layer_no_layers", public=True)
+            name="__test_public_layer_no_layers", layer="__test_public_layer_no_layers", public=True)
         public_layer_no_layers.interfaces = [main, mobile]
         public_layer_no_layers.ogc_server = ogcserver
 
