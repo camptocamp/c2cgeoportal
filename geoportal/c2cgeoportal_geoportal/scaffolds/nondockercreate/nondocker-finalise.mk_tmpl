@@ -180,11 +180,12 @@ else
 endif
 ifeq ($(OPERATING_SYSTEM), WINDOWS)
 	$(PYTHON_BIN)/python -m pip install --upgrade pip
-	$(PYTHON_BIN)/python -m pip install $(shell python ./get-pip-dependencies c2cgeoportal-commons c2cgeoportal-geoportal c2cgeoportal-admin linesman networkx pygraphviz Shapely Fiona rasterio GDAL flake8-mypy mypy)
+	$(PYTHON_BIN)/python -m pip install -r requirements.txt
+	$(PYTHON_BIN)/python -m pip install $(shell python ./get-pip-dependencies c2cgeoportal-commons c2cgeoportal-geoportal c2cgeoportal-admin linesman networkx pygraphviz pyproj Shapely Fiona rasterio GDAL flake8-mypy mypy)
 else
 	$(PYTHON_BIN)/python -m pip install `./get-pip-dependencies c2cgeoportal-commons c2cgeoportal-geoportal c2cgeoportal-admin GDAL flake8-mypy mypy`
-endif
 	$(PYTHON_BIN)/python -m pip install -r requirements.txt
+endif
 	$(PYTHON_BIN)/python -m pip install --editable=c2cgeoportal_commons --editable=c2cgeoportal_geoportal --editable=c2cgeoportal_admin
 	$(PYTHON_BIN)/python -m pip install --editable=geoportal
 	$(PYTHON_BIN)/python -m compileall -q .build/venv >/dev/null || true
