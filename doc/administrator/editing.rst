@@ -3,12 +3,10 @@
 Editing
 =======
 
-This section describes how to set up feature editing in c2cgeoportal
-applications.
+This section explains how to configure the edit function in c2cgeoportal.
 
-Just like most administrative tasks setting up editing in a c2cgeoportal
-application involves intervening in the database, through the c2cgeoportal
-administration interface.
+Just like most administrative tasks, the configuration of the editing functionality involves intervening
+in the database via the c2cgeoportal administration interface.
 
 Requirements
 ------------
@@ -30,31 +28,11 @@ To be editable a layer should satisfy the following requirements:
         id          | integer     | not null default nextval('public.table_id_seq'::regclass)
 
 4. The PostGIS table should include one geometry column only. You
-   will get errors if the table has multiple geometry columns, even
-   if one of them only is declared in PostGIS' ``geometry_columns``
-   table.
+   will get errors if the table has multiple geometry columns.
 
-5. The PostGIS table's geometry column should be declared in PostGIS'
-   ``geometry_columns`` table. c2cgeoportal indeed queries the
-   ``geometry_columns`` table to get the information it needs.
-
-   .. note::
-
-       Creating a geometry column and populating ``geometry_columns`` is
-       typically done using the `AddGeometryColumn function
-       <http://postgis.net/docs/AddGeometryColumn.html>`_.  The
-       `Populate_Geometry_Columns function
-       <http://postgis.net/docs/Populate_Geometry_Columns.html>`_ can also be
-       useful for registering already created geometry columns in
-       ``geometry_columns``.
-
-   .. note::
-
-       The following geometry types are supported:
-       POINT, LINESTRING, POLYGON
-       The following geometry types are partially supported:
-       MULTIPOINT, MULTILINESTRING, MULTIPOLYGON
-
+5. The following geometry types are supported: ``POINT``, ``LINESTRING``, ``POLYGON``.
+   The following geometry types are partially supported:
+   ``MULTIPOINT``, ``MULTILINESTRING``, ``MULTIPOLYGON``.
 
 6. If the PostGIS table has a many-to-one relationship to another table
    (typically a dictionary table) there are additional requirements:
@@ -99,40 +77,8 @@ roles of authorized users.
 The restriction area should have its ``readwrite`` field set to ``true`` in the
 administration interface.
 
-.. note::
-
-    * By default a restriction areas has its ``readwrite`` field set to ``false``.
-    * A restriction area whose ``readwrite`` field is ``true`` applies to both
-      ``read`` and ``write`` operations.
-
-Binding restriction areas and layers together can be done from either the
-``Restriction Area`` objects or the ``Layer`` objects in the admin interface.
-Likewise for binding roles and restriction areas.
-
-
-Enabling `Copy to` functionality (CGXP only)
---------------------------------------------
-
-In the ``edit`` interface, you can give the user the possibility to copy
-features from one layer (source layer) to another layer (destination layer).
-
-In the ``admin`` interface, open the ``Metadatas`` list and add a new record:
-
-    * Name: Select ``copyTo``.
-    * Value: Enter the list of choices for destination layer, as mapserver
-      layer names, separated by commas.
-    * Item: Select the source layer.
-
-Example:
-
-    * Name: ``copyTo``
-    * Value: ``polygon2,polygon3,polygon4``
-    * Item: ``polygon``
-
-.. note::
-
-   * Source and destination layers must have the same geometry type.
-   * Only the geometry will be copied, the attributes will not be.
+Binding restriction areas and layers together can be done from the ``Layer`` objects in the admin interface.
+Likewise for binding from the ``Restriction areas``.
 
 Edit views
 ----------
@@ -141,15 +87,13 @@ To be able to edit PostgreSQL views a primary key must be manually configured.
 Add a layer metadata ``geotablePrimaryKey`` with value the name of the column to use as primary key.
 That column must be of type ``Integer``.
 
-Example:
-
-    * geotablePrimaryKey: ``id``
+Example: ``geotablePrimaryKey``: ``id``
 
 Enable snapping
 ---------------
 
 To be able to snap while editing, the ``snappingConfig`` must be set on the layer metadata.
-The value is a ``json`` object containing the following optional properties:
+The value is a ``json`` object containing the following optional properties::
 
     * edge (boolean): whether to allow snapping on edges or not;
     * vertex (boolean): whether to allow snapping on vertices or not;

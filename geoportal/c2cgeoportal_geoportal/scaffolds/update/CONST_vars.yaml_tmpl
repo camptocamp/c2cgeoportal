@@ -314,7 +314,6 @@ vars:
       - name: printNativeAngle
         type: boolean
       # Layer
-      - name: copyTo  # V1
       - name: copyable
         type: boolean
       - name: legend
@@ -346,7 +345,7 @@ vars:
       - name: lastUpdateUserColumn
       - name: snappingConfig
         type: json
-      - name: geometryValidation  # V1
+      - name: geometryValidation
         type: boolean
       - name: customOpenLayersOptions
         type: json
