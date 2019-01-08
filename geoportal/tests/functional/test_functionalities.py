@@ -140,7 +140,7 @@ class TestFunctionalities(TestCase):
         self.assertEqual(get_functionality("__test_s", request1), [])
         self.assertEqual(get_functionality("__test_a", request1), [])
         self.assertEqual(get_functionality("__test_s", request2), ["db"])
-        self.assertEqual(get_functionality("__test_a", request2), ["db1", "db2"])
+        self.assertEqual(set(get_functionality("__test_a", request2)), {"db1", "db2"})
 
         settings = {
             "functionalities": {
