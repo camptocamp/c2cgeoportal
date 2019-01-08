@@ -23,9 +23,7 @@ def layer_groups_test_data(dbsession, transact):
     for i in range(0, 12):
         group = LayerGroup(
             name='groups_{num:02d}'.format(num=i),
-            is_expanded=False,
-            is_internal_wms=True,
-            is_base_layer=False)
+            is_expanded=False)
         group.metadatas = [Metadata(name=metadatas_protos[id][0],
                                     value=metadatas_protos[id][1])
                            for id in [i % 3, (i + 2) % 3]]
@@ -76,8 +74,6 @@ class TestLayersGroups(TestTreeGroup):
                     ('metadata_url', 'Metadata URL'),
                     ('description', 'Description'),
                     ('is_expanded', 'Expanded'),
-                    ('is_internal_wms', 'Internal WMS'),
-                    ('is_base_layer', 'Base layers group'),
                     ('parents_relation', 'Parents', 'false'),
                     ('metadatas', 'Metadatas', 'false')]
         self.check_grid_headers(resp, expected)
@@ -113,10 +109,6 @@ class TestLayersGroups(TestTreeGroup):
         assert str(group.description or '') == self.get_first_field_named(form, 'description').value
         assert group.is_expanded is False
         assert group.is_expanded == form['is_expanded'].checked
-        assert group.is_internal_wms is True
-        assert group.is_internal_wms == form['is_internal_wms'].checked
-        assert group.is_base_layer is False
-        assert group.is_base_layer == form['is_base_layer'].checked
 
         self.check_children(
             form,
@@ -135,8 +127,6 @@ class TestLayersGroups(TestTreeGroup):
             'metadata_url': 'https://new_metadata_url',
             'description': 'new description',
             'is_expanded': True,
-            'is_internal_wms': False,
-            'is_base_layer': True
         }
         for key, value in new_values.items():
             self.set_first_field_named(form, key, value)
@@ -188,7 +178,6 @@ class TestLayersGroups(TestTreeGroup):
                 ('metadata_url', ''),
                 ('description', ''),
                 ('id', ''),
-                ('is_internal_wms', 'true'),
                 ('__start__', 'children_relation:sequence'),
                 ('__start__', 'layergroup_treeitem:mapping'),
                 ('id', ''),
@@ -267,10 +256,6 @@ class TestLayersGroups(TestTreeGroup):
         assert str(group.description or '') == self.get_first_field_named(form, 'description').value
         assert group.is_expanded is False
         assert group.is_expanded == form['is_expanded'].checked
-        assert group.is_internal_wms is True
-        assert group.is_internal_wms == form['is_internal_wms'].checked
-        assert group.is_base_layer is False
-        assert group.is_base_layer == form['is_base_layer'].checked
 
         self.check_children(
             form,

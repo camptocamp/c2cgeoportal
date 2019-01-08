@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# -*- coding: utf-8 -*-
 
 # Copyright (c) 2019, Camptocamp SA
 # All rights reserved.
@@ -28,32 +27,34 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-"""${message}
+"""Remove deprecated columns
 
-Revision ID: ${up_revision}
-Revises: ${down_revision}
-Create Date: ${create_date}
+Revision ID: c75124553bf3
+Revises: dba87f2647f9
+Create Date: 2019-01-08 10:55:29.356477
 """
 
 from alembic import op
 from c2c.template.config import config
+from sqlalchemy import Column
+from sqlalchemy.types import Boolean
 
 # revision identifiers, used by Alembic.
-revision = ${repr(up_revision)}
-down_revision = ${repr(down_revision)}
-branch_labels = ${repr(branch_labels)}
-depends_on = ${repr(depends_on)}
+revision = 'c75124553bf3'
+down_revision = '338b57593823'
+branch_labels = None
+depends_on = None
 
 
 def upgrade():
     schema = config['schema']
-    staticschema = config['schema_static']
 
-    ${upgrades if upgrades else '# Instructions'}
+    op.drop_column('layergroup', 'is_internal_wms', schema=schema)
+    op.drop_column('layergroup', 'is_base_layer', schema=schema)
 
 
 def downgrade():
     schema = config['schema']
-    staticschema = config['schema_static']
 
-    ${downgrades if downgrades else '# Instructions'}
+    op.add_column('layergroup', Column('is_internal_wms', Boolean), schema=schema)
+    op.add_column('layergroup', Column('is_base_layer', Boolean), schema=schema)
