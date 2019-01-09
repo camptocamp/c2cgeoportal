@@ -318,7 +318,7 @@ CONFIG_VARS += sqlalchemy.url sqlalchemy.pool_recycle sqlalchemy.pool_size sqlal
 	sqlalchemy.use_batch_mode sqlalchemy_slave.url sqlalchemy_slave.pool_recycle sqlalchemy_slave.pool_size \
 	sqlalchemy_slave.max_overflow sqlalchemy_slave.use_batch_mode schema schema_static enable_admin_interface \
 	default_locale_name servers layers available_locale_names cache admin_interface functionalities \
-	raster shortener hide_capabilities mapserverproxy tinyowsproxy resourceproxy print_url \
+	raster shortener hide_capabilities mapserverproxy tinyowsproxy resourceproxy print_url print_get_redirect \
 	tiles_url checker check_collector default_max_age jsbuild package srid \
 	reset_password fulltextsearch global_headers headers authorized_referers hooks stats db_chooser \
 	ogcproxy_enable dbsessions urllogin host_forward_host smtp c2c.base_path welcome_email host \

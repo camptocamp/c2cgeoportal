@@ -482,6 +482,7 @@ vars:
 
   # For print proxy
   print_url: '{PRINT_URL}'
+  print_get_redirect: false  # if true, redirects (302) directly to the print to fetch the report
 
   mapserver_url: '{MAPSERVER_URL}'
   mapcache_url: '{MAPCACHE_URL}'
