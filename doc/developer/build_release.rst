@@ -7,15 +7,15 @@ Vocabulary
 ----------
 
 On this page I use the word ``version`` for a major version of MapFish
-Geoportal (1.6), and the word ``release`` for each step in this version
-(1.6.0rc1, 1.6.0, 1.6.1, ...).
+Geoportal (2.0), and the word ``release`` for each step in this version
+(2.0.0rc1, 2.0.0, 2.0.1, ...).
 
-``MapFish Geoportal`` is the pack that includes CGXP and c2cgeoportal,
+``MapFish Geoportal`` is the pack that includes ngeo and c2cgeoportal,
 from start of 2014 both projects will synchronize their major versions.
 
-Then ``<release>`` can be ``1.6.0rc1`` for the first release candidate
-of the version ``1.6.0``, ``1.6.0`` for the final release, ``1.6.1`` for
-the first bug fix release, and ``<version>`` can be ``1.6``, ``2.0``, ...
+Then ``<release>`` can be ``2.0.0rc1`` for the first release candidate
+of the version ``2.0``, ``2.0.0`` for the final release, ``2.0.1`` for
+the first bug fix release, and ``<version>`` can be ``2.0``, ``2.1``, ...
 
 .. _developer_build_release_pre_release_task:
 
@@ -25,7 +25,7 @@ Pre release task
 Before doing a release you should merge all the previous branch on this one:
 
 * Merge the release changes (on ``ngeo`` and on ``c2cgeoportal``)
-  to the upper branches i.e.: ``1.6`` => ``2.2``, ..., ``2.3`` => ``2.4``.
+  to the upper branches i.e.: ``2.2`` => ``2.3``, ``2.3`` => ``2.4`` (master).
 
   .. note::
 

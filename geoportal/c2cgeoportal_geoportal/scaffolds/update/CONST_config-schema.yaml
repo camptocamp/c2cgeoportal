@@ -226,9 +226,6 @@ mapping:
           profile: *header
           raster: *header
           shortener: *header
-          echo: *header
-          csvecho: *header
-          exportgpxkml: *header
           error: *header
 
       urllogin:

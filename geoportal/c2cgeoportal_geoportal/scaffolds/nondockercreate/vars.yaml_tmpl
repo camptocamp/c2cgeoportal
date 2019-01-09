@@ -201,9 +201,6 @@ update_paths:
   - headers.api
   - headers.profile
   - headers.raster
-  - headers.echo
-  - headers.csvecho
-  - headers.exportgpxkml
   - headers.error
   - headers.themes
   - headers.config

@@ -36,20 +36,14 @@ It will be done automatically by the ``route_url`` method.
  * **public_cache**: add the query param named ``cache_version``.
  * **private_cache**: add the query param named ``cache_version`` and ``role``.
 
-With ``CGXP`` interface you have the variables ``version_params``, ``version_role_params``
-and ``version_role_user_params`` that help you to create the right url.
-
-With ``ngeo`` interface you have the ``cache_version`` variable.
-
 Service list
 ------------
 
 No cache
 ~~~~~~~~
 
- * cgxp_index
- * ngeo index
- * mobile index
+ * interface pages
+ * dynamic
  * api js
  * xapi js
  * api help
@@ -89,8 +83,6 @@ Public cache
 Private cache
 ~~~~~~~~~~~~~
 
- * cgxp viewer
- * mobile config
  * themes
  * layers/metadata
  * WMS/GetCapabilities

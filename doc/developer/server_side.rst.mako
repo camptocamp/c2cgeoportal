@@ -76,70 +76,6 @@ To run a specific test use the ``-k`` switch. For example:
 
     ./docker-compose-run py.tests -k test_catalogue geoportal/tests
 
-Profiling
----------
-
-At the end of the file ``apache/application.wsgi`` add:
-
-.. code:: python
-
-   from wsgi_lineprof.middleware import LineProfilerMiddleware
-   from wsgi_lineprof.filters import FilenameFilter, TotalTimeSorter
-
-   filters = [
-       FilenameFilter("entry.py"),
-       TotalTimeSorter(),
-   ]
-   application = LineProfilerMiddleware(application, stream=open('/tmp/pro', 'w'), filters=filters)
-
-.. prompt:: bash
-
-   sudo apache2ctl graceful
-
-Do your request(s).
-
-The profile result will be in the file ``/tmp/pro``.
-
-
-Upgrade dependencies
---------------------
-
-When we start a new version of c2cgeoportal or just before a new development
-phase it is a good idea to update the dependencies.
-
-Eggs
-~~~~
-
-All the ``c2cgeoportal`` (and ``tilecloud-chain``) dependencies are present in
-the ``c2cgeoportal/scaffolds/update/CONST_versions.mako`` file.
-
-To update them you can simply get them from a travis build in the
-``./docker-run pip freeze`` task.
-
-Submodules
-~~~~~~~~~~
-
-Go to the OpenLayers folder:
-
-.. prompt:: bash
-
-    cd c2cgeoportal/static/lib/openlayers/
-
-Get the new revision of OpenLayers:
-
-.. prompt:: bash
-
-    git fetch
-    git checkout release-<version>
-
-Then you can commit it:
-
-.. prompt:: bash
-
-    cd -
-    git add c2cgeoportal/static/lib/openlayers/
-    git commit -m "update OpenLayers to <version>"
-
 
 Database
 --------
@@ -155,20 +91,13 @@ Object model
 
 ``FullTextSearch`` references a first level ``LayerGroup`` but without any constrains.
 
-it is not visible on this schema, but the ``User`` of a child schema has a link (``parent_role``)
-to the ``Role`` of the parent schema.
-
 ``metadata`` vs ``functionality``
 ....................................
 
 Technically the same ``functionality`` can be reused by more than one element.
 
-``functionalities`` are designed to configure and customize various parts of
-the application. For instance to change the default basemap when a new theme
-is loaded.
-
-To do that in the CGXP application we trigger an event when we load a theme the
-new ``functionnalities``.
+``functionalities`` are designed to configure and customize various parts of the application.
+For instance, via a functionality you can define which basemap is to be used when a new theme is loaded.
 
 The ``metadata`` contains attributes that are directly related to the element.
 For example the layer disclaimer, ...
@@ -215,22 +144,6 @@ More information at:
  * http://alembic.readthedocs.org/en/latest/tutorial.html#create-a-migration-script
  * http://alembic.readthedocs.org/en/latest/ops.html
 
-Sub domain
-----------
-
-All the static resources used sub domains by using the configurations variables:
-``subdomain_url_template`` and ``subdomains``.
-
-To be able to use sub domain in a view we should configure the route as this::
-
-    from c2cgeoportal_geoportal.lib import MultiDomainPregenerator
-    config.add_route(
-        '<name>', '<path>',
-        pregenerator=MultiDomainPregenerator())
-
-And use the ``route_url`` with an additional argument ``subdomain``::
-
-    request.route_url('<name>', subdomain='<subdomain>')}",
 
 Code
 ----

@@ -73,21 +73,6 @@ class TestEntryView(TestCase):
         )
         self.assertEqual(request.response.content_type, "application/json")
 
-        request.params = {"callback": "abc"}
-        self.assertEqual(
-            renderer({"a": Decimal("3.3")}, system),
-            'abc({"a": 3.3});'
-        )
-        self.assertEqual(request.response.content_type, "text/javascript")
-
-        renderer = DecimalJSON(jsonp_param_name="cb")(None)
-        request.params = {"cb": "def"}
-        self.assertEqual(
-            renderer({"a": Decimal("3.3")}, system),
-            'def({"a": 3.3});'
-        )
-        self.assertEqual(request.response.content_type, "text/javascript")
-
     def test__get_child_layers_info_with_scalehint(self):
         import math
         from pyramid.testing import DummyRequest
