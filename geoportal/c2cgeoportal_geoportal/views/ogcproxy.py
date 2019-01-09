@@ -30,15 +30,17 @@
 import logging
 from typing import Dict  # noqa, pylint: disable=unused-import
 
+from pyramid.httpexceptions import HTTPBadRequest
 from sqlalchemy.orm.exc import NoResultFound
-from c2cgeoportal_geoportal.lib import get_url2
-from c2cgeoportal_geoportal.views.proxy import Proxy
+
 from c2cgeoportal_commons.models import DBSession
 from c2cgeoportal_commons.models.main import OGCServer
+from c2cgeoportal_geoportal.lib import get_url2
 from c2cgeoportal_geoportal.lib.caching import get_region
+from c2cgeoportal_geoportal.views.proxy import Proxy
 
-cache_region = get_region()
-log = logging.getLogger(__name__)
+CACHE_REGION = get_region()
+LOG = logging.getLogger(__name__)
 
 
 class OGCProxy(Proxy):
@@ -47,17 +49,6 @@ class OGCProxy(Proxy):
 
     def __init__(self, request):
         Proxy.__init__(self, request)
-
-        self.mapserver_settings = request.registry.settings.get("mapserverproxy", {})
-        if "default_ogc_server" in self.mapserver_settings:
-            self.default_ogc_server = self.get_ogcserver_byname(
-                self.mapserver_settings["default_ogc_server"]
-            )
-
-        if "external_ogc_server" in self.mapserver_settings:
-            self.external_ogc_server = self.get_ogcserver_byname(
-                self.mapserver_settings["external_ogc_server"]
-            )
 
         # params hold the parameters we"re going to send to backend
         self.params = dict(self.request.params)
@@ -69,44 +60,38 @@ class OGCProxy(Proxy):
             del self.params["user_id"]
 
         self.lower_params = self._get_lower_params(self.params)
-        self.ogc_server = self.get_ogcserver_byname(self.params["ogcserver"]) \
-            if "ogcserver" in self.params else None
-        self.external = bool(self.request.params.get("EXTERNAL"))
+        if "ogcserver" not in self.params:
+            raise HTTPBadRequest("The querytring argument 'ogcserver' is required")
+        self.ogc_server = self._get_ogcserver_byname(self.params["ogcserver"])
 
-    @cache_region.cache_on_arguments()
-    def get_ogcserver_byname(self, name):
+    @CACHE_REGION.cache_on_arguments()
+    def _get_ogcserver_byname(self, name):
         try:
             result = DBSession.query(OGCServer).filter(OGCServer.name == name).one()
             DBSession.expunge(result)
             return result
         except NoResultFound:  # pragma nocover
-            log.error(
+            raise HTTPBadRequest(
                 "OGSServer '%s' does not exists (existing: %s).",
                 name,
                 ",".join([t[0] for t in DBSession.query(OGCServer.name).all()])
             )
-            raise
-
-    def _get_ogc_server(self):
-        return self.ogc_server or (
-            self.external_ogc_server if self.external else self.default_ogc_server
-        )
 
     def _get_wms_url(self):
-        ogc_server = self._get_ogc_server()
+        ogc_server = self.ogc_server
         errors = set()
         url = get_url2("The OGC server '{}'".format(ogc_server.name), ogc_server.url, self.request, errors)
         if len(errors) > 0:  # pragma: no cover
-            log.error("\n".join(errors))
+            LOG.error("\n".join(errors))
         return url
 
     def _get_wfs_url(self):
-        ogc_server = self._get_ogc_server()
+        ogc_server = self.ogc_server
         errors = set()
         url = get_url2(
             "The OGC server (WFS) '{}'".format(ogc_server.name),
             ogc_server.url_wfs or ogc_server.url, self.request, errors
         )
         if len(errors) > 0:  # pragma: no cover
-            log.error("\n".join(errors))
+            LOG.error("\n".join(errors))
         return url

@@ -203,7 +203,7 @@ dockerBuild {
                                         // travis/vars.yaml geoportal/GUNICORN_PARAMS
                                         // test-new-project timeout
                                         timeout(3) {
-                                            sh './docker-run --network=internal travis/test-new-project http://front/${path}'
+                                            sh "./docker-run --network=internal travis/test-new-project http://front/${path}"
                                         }
                                     } catch (Exception error) {
                                         sh './docker-run --network=internal curl http://front/c2c/debug/stacks?secret=c2c'

@@ -66,7 +66,7 @@ class MapservProxy(OGCProxy):
 
             roles = self.user.roles
             if len(roles):
-                if self._get_ogc_server().auth == main.OGCSERVER_AUTH_STANDARD:
+                if self.ogc_server.auth == main.OGCSERVER_AUTH_STANDARD:
                     self.params["role_ids"] = ",".join([str(r.id) for r in roles])
 
                     # In some application we want to display the features owned by a user
@@ -97,7 +97,7 @@ class MapservProxy(OGCProxy):
             if "request" not in self.lower_params:
                 self.params = {}  # pragma: no cover
             else:
-                if self._get_ogc_server().type != main.OGCSERVER_TYPE_QGISSERVER or \
+                if self.ogc_server.type != main.OGCSERVER_TYPE_QGISSERVER or \
                         "user_id" not in self.params:
 
                     use_cache = self.lower_params["request"] in (
@@ -136,7 +136,7 @@ class MapservProxy(OGCProxy):
 
         headers = self._get_headers()
         # Add headers for Geoserver
-        if self._get_ogc_server().auth == main.OGCSERVER_AUTH_GEOSERVER and \
+        if self.ogc_server.auth == main.OGCSERVER_AUTH_GEOSERVER and \
                 self.user is not None:
             headers["sec-username"] = self.user.username
             headers["sec-roles"] = ";".join([r.name for r in roles])

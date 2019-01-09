@@ -418,6 +418,7 @@ vars:
   tinyowsproxy:
     # URL to internal TinyOWS instance
     tinyows_url: '{TINYOWS_URL}'
+    ogc_server: source for image/png
 
     # If the `online_resource` url in the TinyOWS configuration is not set
     # to the TinyOWS proxy url (e.g. when the service is also used without
@@ -429,6 +430,9 @@ vars:
     # When running a c2cgeoportal appl. in debug mode (with `make serve`)
     # the host has to be set explicitly in a vhost environment.
     # tinyows_host: {host}
+
+  api:
+    ogc_server: source for image/png
 
   resourceproxy:
     # List of urls from which it is safe to load content
@@ -617,6 +621,7 @@ vars:
             SERVICE: WMS
             VERSION: 1.1.1
             REQUEST: GetCapabilities
+            ogcserver: source for image/png
           level: 3
         - name: mapserverproxy
           display_name: mapserverproxy_wfs
@@ -624,6 +629,7 @@ vars:
             SERVICE: WFS
             VERSION: 1.1.0
             REQUEST: GetCapabilities
+            ogcserver: source for image/png
           level: 3
     themes:
       params:

@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access
+
 
 from unittest import TestCase
 import transaction
@@ -148,14 +150,12 @@ class TestMapserverproxyCapabilities(TestCase):
             "servers": {
                 "srv": "http://example.com"
             },
-            "mapserverproxy": {
-                "default_ogc_server": ogcserver,
-            },
         }, user=username)
         request.params.update(dict(
             service=service,
             version="1.1.1",
             request="getcapabilities",
+            ogcserver=ogcserver
         ))
         return MapservProxy(request).proxy()
 

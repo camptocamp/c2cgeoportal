@@ -30,19 +30,20 @@
 
 import logging
 
-from pyramid.view import view_config
 from defusedxml import ElementTree
-from pyramid.httpexceptions import HTTPForbidden, HTTPBadRequest, HTTPUnauthorized
+from pyramid.httpexceptions import HTTPBadRequest, HTTPForbidden, HTTPUnauthorized
+from pyramid.view import view_config
 
-from c2cgeoportal_commons.models import static
+from c2cgeoportal_commons import models
+from c2cgeoportal_commons.models import main, static
+from c2cgeoportal_geoportal.lib.caching import NO_CACHE, PRIVATE_CACHE
+from c2cgeoportal_geoportal.lib.filter_capabilities import (filter_wfst_capabilities, normalize_tag,
+                                                            normalize_typename)
 from c2cgeoportal_geoportal.lib.layers import get_writable_layers
-from c2cgeoportal_geoportal.lib.caching import get_region, NO_CACHE, PRIVATE_CACHE
-from c2cgeoportal_geoportal.lib.filter_capabilities import filter_wfst_capabilities, \
-    normalize_tag, normalize_typename
 from c2cgeoportal_geoportal.views.ogcproxy import OGCProxy
 
-cache_region = get_region()
-log = logging.getLogger(__name__)
+
+LOG = logging.getLogger(__name__)
 
 
 class TinyOWSProxy(OGCProxy):
@@ -52,7 +53,9 @@ class TinyOWSProxy(OGCProxy):
         self.settings = request.registry.settings.get("tinyowsproxy", {})
 
         assert "tinyows_url" in self.settings, "tinyowsproxy.tinyows_url must be set"
-        assert self.default_ogc_server, "mapserverproxy.default_ogc_server must be set"
+        self.ogc_server = models.DBSession.query(main.OGCServer).filter(
+            main.OGCServer.name == self.settings["ogc_server"]
+        ).one()
 
         self.user = self.request.user
 
@@ -82,10 +85,9 @@ class TinyOWSProxy(OGCProxy):
                 (operation, typenames_post) = \
                     self._parse_body(self.request.body)
             except Exception as e:
-                log.error("Error while parsing POST request body")
-                log.exception(e)
-                raise HTTPBadRequest(
-                    "Error parsing the request (see logs for more details)")
+                LOG.error("Error while parsing POST request body")
+                LOG.exception(e)
+                raise HTTPBadRequest("Error parsing the request (see logs for more details)")
 
             typenames = typenames.union(typenames_post)
 
@@ -124,7 +126,7 @@ class TinyOWSProxy(OGCProxy):
         """
 
         writable_layers = set()
-        for gmflayer in list(get_writable_layers(self.request.user, [self.default_ogc_server.id]).values()):
+        for gmflayer in list(get_writable_layers(self.request.user, [self.ogc_server.id]).values()):
             for ogclayer in gmflayer.layer.split(","):
                 writable_layers.add(ogclayer)
         return typenames.issubset(writable_layers)
