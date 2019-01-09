@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>WFS-T with TinyOWS &#8212; c2cgeoportal  documentation</title>
+    <title>Transactional WFS with TinyOWS &#8212; c2cgeoportal  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css" />
@@ -35,43 +35,23 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="wfs-t-with-tinyows">
-<span id="administrator-tinyows"></span><h1>WFS-T with TinyOWS<a class="headerlink" href="#wfs-t-with-tinyows" title="Permalink to this headline">¶</a></h1>
-<p>Based on <a class="reference external" href="http://mapserver.org/tinyows/">TinyOWS</a> c2cgeoportal layers can be
-edited via WFS-T, for example using QGIS as a client. c2cgeoportal acts as a
+  <div class="section" id="transactional-wfs-with-tinyows">
+<span id="administrator-tinyows"></span><h1>Transactional WFS with TinyOWS<a class="headerlink" href="#transactional-wfs-with-tinyows" title="Permalink to this headline">¶</a></h1>
+<p>Based on <a class="reference external" href="http://mapserver.org/tinyows/">TinyOWS</a> c2cgeoportal mapserver layers can be
+edited via Transactional WFS (WFS-T), for example using QGIS as a client. c2cgeoportal acts as a
 proxy to TinyOWS to limit access to authorized users.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This is not needed for QGIS server because he nativela support Transactional WFS.</p>
+</div>
 <p>The following explains how to configure WFS-T for a c2cgeoportal layer.</p>
-<div class="section" id="apache-configuration-for-tinyows">
-<h2>Apache configuration for TinyOWS<a class="headerlink" href="#apache-configuration-for-tinyows" title="Permalink to this headline">¶</a></h2>
-<p>When creating a c2cgeoportal project using the <a class="reference internal" href="../integrator/create_application.html#integrator-create-application"><span class="std std-ref">Paste skeletons</span></a>
-there will already be a default Apache configuration file for TinyOWS under the
-location <code class="docutils literal notranslate"><span class="pre">apache/tinyows.conf.mako</span></code>. Uncomment the lines in this file to
-enable TinyOWS:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>ScriptAlias /tinyows /usr/lib/cgi-bin/tinyows
-&lt;Location /tinyows&gt;
-  SetEnv TINYOWS_CONFIG_FILE ${directory}/mapserver/tinyows.xml
-
-  # restrict access to localhost so that all requests go through the proxy
-  Options All
-  Order deny,allow
-  Deny from all
-  Allow from 127.0.0.1 ::1
-&lt;/Location&gt;
-</pre></div>
-</div>
-<p>Make sure that the location of TinyOWS (<code class="docutils literal notranslate"><span class="pre">/usr/lib/cgi-bin/tinyows</span></code>) matches
-your installation. The configuration restricts the access to TinyOWS to
-<code class="docutils literal notranslate"><span class="pre">localhost</span></code> so that all external requests go through the TinyOWS proxy of
-c2cgeoportal.</p>
-</div>
 <div class="section" id="tinyows-configuration">
 <h2>TinyOWS configuration<a class="headerlink" href="#tinyows-configuration" title="Permalink to this headline">¶</a></h2>
 <p>The configuration of TinyOWS is made in a XML file, which is located at
 <code class="docutils literal notranslate"><span class="pre">mapserver/tinyows.xml.mako</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">tinyows</span>
+<div class="code xml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">tinyows</span>
     <span class="n">online_resource</span><span class="o">=</span><span class="s2">&quot;http://$</span><span class="si">{host}</span><span class="s2">/wsgi/tinyows_proxy&quot;</span>
     <span class="n">schema_dir</span><span class="o">=</span><span class="s2">&quot;/usr/share/tinyows/schema/&quot;</span>
-    <span class="n">log</span><span class="o">=</span><span class="s2">&quot;tinyows.log&quot;</span>
     <span class="n">log_level</span><span class="o">=</span><span class="s2">&quot;1&quot;</span>
     <span class="n">check_schema</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="o">&gt;</span>
 
@@ -105,25 +85,28 @@ c2cgeoportal.</p>
 </pre></div>
 </div>
 <p>In the root element <code class="docutils literal notranslate"><span class="pre">tinyows</span></code> the following properties have to be set:</p>
-<ol class="arabic simple">
+<ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">online_resource</span></code> - This should be the URL to the TinyOWS proxy, usually
 <code class="docutils literal notranslate"><span class="pre">http://${host}/wsgi/tinyows_proxy</span></code>.</li>
-<li><code class="docutils literal notranslate"><span class="pre">schema_dir</span></code> - The path to the TinyOWS schema directory. Adapt this path
-according to your installation.</li>
-<li><code class="docutils literal notranslate"><span class="pre">log</span></code> - Path to the TinyOWS log file. This file must be writable.</li>
-<li><code class="docutils literal notranslate"><span class="pre">log_level</span></code> - The log level (default: 1). Please refer to the
-<a class="reference external" href="http://mapserver.org/tinyows/configfile.html#tinyows-element">TinyOWS documentation</a>
-for more information.</li>
-<li><code class="docutils literal notranslate"><span class="pre">check_schema</span></code> - If the input data is validated against the schema when
-creating new features. In a vhost environment the schema check has to be
+<li><code class="docutils literal notranslate"><span class="pre">schema_dir</span></code> - The path to the TinyOWS schema directory. Adapt this path according to your installation.</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">log_level</span></code> - The log level (default: 1). Please refer to the</dt>
+<dd><a class="reference external" href="http://mapserver.org/tinyows/configfile.html#tinyows-element">TinyOWS documentation</a>
+for more information.</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">check_schema</span></code> - If the input data is validated against the schema when</dt>
+<dd>creating new features. In a vhost environment the schema check has to be
 disabled, so that the proxy can function properly. This does not disable
-the validation database-side though!</li>
-</ol>
+the validation database-side though!</dd>
+</dl>
+</li>
+</ul>
 <p>The database connection is configured in the element <code class="docutils literal notranslate"><span class="pre">pg</span></code>. By default the
 same database as for the c2cgeoportal application will be used.</p>
-<p>The layers that should be accessible with TinyOWS have to specified with
-<code class="docutils literal notranslate"><span class="pre">layer</span></code> elements:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">layer</span>
+<p>The layers that should be accessible with TinyOWS have to specified with <code class="docutils literal notranslate"><span class="pre">layer</span></code> elements:</p>
+<div class="code xml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">layer</span>
     <span class="n">retrievable</span><span class="o">=</span><span class="s2">&quot;1&quot;</span>
     <span class="n">writable</span><span class="o">=</span><span class="s2">&quot;1&quot;</span>
     <span class="n">ns_prefix</span><span class="o">=</span><span class="s2">&quot;tows&quot;</span>
@@ -154,10 +137,12 @@ TinyOWS XML configuration. Please refer to the
 for more information.</p>
 </div>
 <p>After the configuration is made, re-build the c2cgeoportal application:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">docker</span><span class="o">-</span><span class="n">build</span>
+<pre class="highlight"><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">./docker-run make build</span>
 </pre></div>
-</div>
-</div>
 <div class="section" id="editing-a-layer-with-wfs-t">
 <h2>Editing a layer with WFS-T<a class="headerlink" href="#editing-a-layer-with-wfs-t" title="Permalink to this headline">¶</a></h2>
 <p>The configured layers can now be edited using your favorite GIS supporting

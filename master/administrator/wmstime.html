@@ -18,7 +18,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Integrator Guide" href="../integrator/index.html" />
-    <link rel="prev" title="WFS-T with TinyOWS" href="tinyows.html" />
+    <link rel="prev" title="Transactional WFS with TinyOWS" href="tinyows.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -46,8 +46,7 @@ is added to this group in the layer tree which enables changing the layer time.<
 is also some configuration to do in the administration interface.</p>
 <div class="section" id="mapfile">
 <h3>Mapfile<a class="headerlink" href="#mapfile" title="Permalink to this headline">¶</a></h3>
-<p>In the mapfile, a WMS Time layer is configured with the help of the layer
-metadata:</p>
+<p>In the mapfile, a WMS Time layer is configured with the help of the layer metadata:</p>
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">wms_timeextent</span></code></li>
 <li><code class="docutils literal notranslate"><span class="pre">wms_timeitem</span></code></li>
@@ -61,10 +60,8 @@ formats are supported to define the time:</p>
 </ul>
 <p>The format <code class="docutils literal notranslate"><span class="pre">min/max/interval</span></code> allows specifying a time range by giving a start
 date, an end date and an interval between the time stops.</p>
-<p>The format <code class="docutils literal notranslate"><span class="pre">value1,value2,value3,...</span></code> allows specifying a time range by
-listing discrete values.</p>
-<p>The dates (<code class="docutils literal notranslate"><span class="pre">min</span></code>, <code class="docutils literal notranslate"><span class="pre">max</span></code> and <code class="docutils literal notranslate"><span class="pre">valueN</span></code>) could be specified using any of the
-following formats:</p>
+<p>The format <code class="docutils literal notranslate"><span class="pre">value1,value2,value3,...</span></code> allows specifying a time range by listing discrete values.</p>
+<p>The dates (<code class="docutils literal notranslate"><span class="pre">min</span></code>, <code class="docutils literal notranslate"><span class="pre">max</span></code> and <code class="docutils literal notranslate"><span class="pre">valueN</span></code>) could be specified using any of the following formats:</p>
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">YYYY</span></code></li>
 <li><code class="docutils literal notranslate"><span class="pre">YYYY-MM</span></code></li>
@@ -91,8 +88,7 @@ ISO 8601 and its duration/time intervals definition (see
 <p>Most of the configuration is done in the mapfile as described in the above
 section. However the time widget must be configured via the admin interface.
 Two different widget types are available: A time slider and a datepicker
-widget. The preferred widget can be selected in the admin interface (field
-<code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">widget</span></code>).</p>
+widget. The preferred widget can be selected in the admin interface (field <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">widget</span></code>).</p>
 <p>Besides, the time mode can be changed. The time mode is one of:</p>
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">value</span></code></li>
@@ -122,13 +118,11 @@ Time layers of the same group.</p>
 <li>The WMS Time layers of a same group must all be configured with either a
 list of discrete values or an interval. It is not possible to mix the two
 different types of definition within the same group,</li>
-<li>If the WMS Time layers of a group use the <code class="docutils literal notranslate"><span class="pre">min/max/interval</span></code>, they must
-all use the same interval.</li>
+<li>If the WMS Time layers of a group use the <code class="docutils literal notranslate"><span class="pre">min/max/interval</span></code>, they must   all use the same interval.</li>
 </ul>
 <p>There is also a limitation that applies to the admin interface: all the WMS Time
 layers of a group should be configured to use the same widget and the same time mode
-(<code class="docutils literal notranslate"><span class="pre">single</span></code> or <code class="docutils literal notranslate"><span class="pre">range</span></code>) except for layers with time mode <code class="docutils literal notranslate"><span class="pre">disabled</span></code> that can be mixed
-within others.</p>
+(<code class="docutils literal notranslate"><span class="pre">single</span></code> or <code class="docutils literal notranslate"><span class="pre">range</span></code>) except for layers with time mode <code class="docutils literal notranslate"><span class="pre">disabled</span></code> that can be mixed within others.</p>
 </div>
 </div>
 
@@ -170,7 +164,7 @@ within others.</p>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="index.html">Administrator Guide</a><ul>
-      <li>Previous: <a href="tinyows.html" title="previous chapter">WFS-T with TinyOWS</a></li>
+      <li>Previous: <a href="tinyows.html" title="previous chapter">Transactional WFS with TinyOWS</a></li>
       <li>Next: <a href="../integrator/index.html" title="next chapter">Integrator Guide</a></li>
   </ul></li>
   </ul></li>

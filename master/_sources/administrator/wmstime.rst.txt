@@ -17,8 +17,7 @@ is also some configuration to do in the administration interface.
 Mapfile
 ~~~~~~~
 
-In the mapfile, a WMS Time layer is configured with the help of the layer
-metadata:
+In the mapfile, a WMS Time layer is configured with the help of the layer metadata:
 
 * ``wms_timeextent``
 * ``wms_timeitem``
@@ -33,11 +32,9 @@ formats are supported to define the time:
 The format ``min/max/interval`` allows specifying a time range by giving a start
 date, an end date and an interval between the time stops.
 
-The format ``value1,value2,value3,...`` allows specifying a time range by
-listing discrete values.
+The format ``value1,value2,value3,...`` allows specifying a time range by listing discrete values.
 
-The dates (``min``, ``max`` and ``valueN``) could be specified using any of the
-following formats:
+The dates (``min``, ``max`` and ``valueN``) could be specified using any of the following formats:
 
 * ``YYYY``
 * ``YYYY-MM``
@@ -68,8 +65,7 @@ Admin interface
 Most of the configuration is done in the mapfile as described in the above
 section. However the time widget must be configured via the admin interface.
 Two different widget types are available: A time slider and a datepicker
-widget. The preferred widget can be selected in the admin interface (field
-``Time widget``).
+widget. The preferred widget can be selected in the admin interface (field ``Time widget``).
 
 Besides, the time mode can be changed. The time mode is one of:
 
@@ -103,10 +99,8 @@ Some of those limitations apply to the mapfile:
 * The WMS Time layers of a same group must all be configured with either a
   list of discrete values or an interval. It is not possible to mix the two
   different types of definition within the same group,
-* If the WMS Time layers of a group use the ``min/max/interval``, they must
-  all use the same interval.
+* If the WMS Time layers of a group use the ``min/max/interval``, they must   all use the same interval.
 
 There is also a limitation that applies to the admin interface: all the WMS Time
 layers of a group should be configured to use the same widget and the same time mode
-(``single`` or ``range``) except for layers with time mode ``disabled`` that can be mixed
-within others.
+(``single`` or ``range``) except for layers with time mode ``disabled`` that can be mixed within others.

@@ -1,47 +1,29 @@
 .. _administrator_tinyows:
 
-WFS-T with TinyOWS
-==================
-Based on `TinyOWS <http://mapserver.org/tinyows/>`__ c2cgeoportal layers can be
-edited via WFS-T, for example using QGIS as a client. c2cgeoportal acts as a
+Transactional WFS with TinyOWS
+==============================
+
+Based on `TinyOWS <http://mapserver.org/tinyows/>`_ c2cgeoportal mapserver layers can be
+edited via Transactional WFS (WFS-T), for example using QGIS as a client. c2cgeoportal acts as a
 proxy to TinyOWS to limit access to authorized users.
 
+.. note::
+
+   This is not needed for QGIS server because he nativela support Transactional WFS.
+
 The following explains how to configure WFS-T for a c2cgeoportal layer.
-
-Apache configuration for TinyOWS
----------------------------------
-
-When creating a c2cgeoportal project using the :ref:`Paste skeletons <integrator_create_application>`
-there will already be a default Apache configuration file for TinyOWS under the
-location ``apache/tinyows.conf.mako``. Uncomment the lines in this file to
-enable TinyOWS::
-
-    ScriptAlias /tinyows /usr/lib/cgi-bin/tinyows
-    <Location /tinyows>
-      SetEnv TINYOWS_CONFIG_FILE ${directory}/mapserver/tinyows.xml
-
-      # restrict access to localhost so that all requests go through the proxy
-      Options All
-      Order deny,allow
-      Deny from all
-      Allow from 127.0.0.1 ::1
-    </Location>
-
-Make sure that the location of TinyOWS (``/usr/lib/cgi-bin/tinyows``) matches
-your installation. The configuration restricts the access to TinyOWS to
-``localhost`` so that all external requests go through the TinyOWS proxy of
-c2cgeoportal.
 
 TinyOWS configuration
 ---------------------
 
 The configuration of TinyOWS is made in a XML file, which is located at
-``mapserver/tinyows.xml.mako``::
+``mapserver/tinyows.xml.mako``:
+
+.. code:: xml
 
     <tinyows
         online_resource="http://${host}/wsgi/tinyows_proxy"
         schema_dir="/usr/share/tinyows/schema/"
-        log="tinyows.log"
         log_level="1"
         check_schema="0">
 
@@ -75,15 +57,13 @@ The configuration of TinyOWS is made in a XML file, which is located at
 
 In the root element ``tinyows`` the following properties have to be set:
 
-1. ``online_resource`` - This should be the URL to the TinyOWS proxy, usually
-   ``http://${host}/wsgi/tinyows_proxy``.
-2. ``schema_dir`` - The path to the TinyOWS schema directory. Adapt this path
-   according to your installation.
-3. ``log`` - Path to the TinyOWS log file. This file must be writable.
-4. ``log_level`` - The log level (default: 1). Please refer to the
+* ``online_resource`` - This should be the URL to the TinyOWS proxy, usually
+  ``http://${host}/wsgi/tinyows_proxy``.
+* ``schema_dir`` - The path to the TinyOWS schema directory. Adapt this path according to your installation.
+* ``log_level`` - The log level (default: 1). Please refer to the
    `TinyOWS documentation <http://mapserver.org/tinyows/configfile.html#tinyows-element>`__
    for more information.
-5. ``check_schema`` - If the input data is validated against the schema when
+* ``check_schema`` - If the input data is validated against the schema when
    creating new features. In a vhost environment the schema check has to be
    disabled, so that the proxy can function properly. This does not disable
    the validation database-side though!
@@ -91,8 +71,9 @@ In the root element ``tinyows`` the following properties have to be set:
 The database connection is configured in the element ``pg``. By default the
 same database as for the c2cgeoportal application will be used.
 
-The layers that should be accessible with TinyOWS have to specified with
-``layer`` elements::
+The layers that should be accessible with TinyOWS have to specified with ``layer`` elements:
+
+.. code:: xml
 
       <layer
           retrievable="1"
@@ -126,9 +107,11 @@ access to a layer to the users of a restriction-area.
     `TinyOWS documentation <http://mapserver.org/tinyows/configfile.html#layer-element>`__
     for more information.
 
-After the configuration is made, re-build the c2cgeoportal application::
+After the configuration is made, re-build the c2cgeoportal application:
 
-    make docker-build
+.. prompt:: bash
+
+    ./docker-run make build
 
 Editing a layer with WFS-T
 --------------------------
