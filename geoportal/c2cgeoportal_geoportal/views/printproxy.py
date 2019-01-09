@@ -34,7 +34,7 @@ import logging
 import json
 
 from pyramid.view import view_config
-from pyramid.httpexceptions import HTTPBadGateway
+from pyramid.httpexceptions import HTTPBadGateway, HTTPFound
 
 from c2cgeoportal_geoportal.lib.caching import get_region, PRIVATE_CACHE
 from c2cgeoportal_geoportal.lib.functionality import get_functionality
@@ -142,10 +142,8 @@ class PrintProxy(Proxy):  # pragma: no cover
     @view_config(route_name="printproxy_report_get")
     def report_get(self):
         """ Get the PDF. """
-        return self._proxy_response(
-            "print",
-            "{0!s}/report/{1!s}".format(
-                self.config["print_url"],
-                self.request.matchdict.get("ref")
-            ),
-        )
+        url = "{0!s}/report/{1!s}".format(self.config["print_url"], self.request.matchdict.get("ref"))
+        if self.config.get('print_get_redirect', False):
+            raise HTTPFound(location=url)
+        else:
+            return self._proxy_response("print", url)
