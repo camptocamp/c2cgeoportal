@@ -9,7 +9,7 @@ vars:
     lang:
       files: [ngeo]
     routes:
-      disable: [printproxy_capabilities]
+      disable: [printproxy_capabilities, apijs, xapijs]
   lingua_extractor:
     host_map:
       localhost:
@@ -21,4 +21,3 @@ update_paths:
   - checker.fulltextsearch
   - checker.lang
   - checker.routes
-  - check_collector.disabled

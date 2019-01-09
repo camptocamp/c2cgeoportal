@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access
+
 
 from unittest import TestCase
 
@@ -111,6 +113,7 @@ class TestMapserverproxyViewGroup(TestCase):
         request = create_dummy_request()
         request.user = None if username is None else \
             DBSession.query(User).filter_by(username=username).one()
+        request.params.update({"ogcserver": "__test_ogc_server"})
         return request
 
     def test_wms_get_capabilities(self):

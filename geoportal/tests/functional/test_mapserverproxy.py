@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access
+
 
 #
 #
@@ -223,6 +225,7 @@ class TestMapserverproxyView(TestCase):
                 }]
             }
         }, user=username)
+        request.params.update({"ogcserver": "__test_ogc_server"})
         return request
 
     def test_no_params(self):
@@ -477,13 +480,12 @@ class TestMapserverproxyView(TestCase):
         self.assertIn(md5sum, TWO_POINTS)
 
     @staticmethod
-    def _create_getcap_request(username=None, additional_settings=None):
-        if additional_settings is None:
-            additional_settings = {}
+    def _create_getcap_request(username=None):
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
 
-        request = create_dummy_request(additional_settings)
+        request = create_dummy_request()
+        request.params.update({"ogcserver": "__test_ogc_server"})
         request.user = None if username is None else \
             DBSession.query(User).filter_by(username=username).one()
         return request
@@ -761,7 +763,7 @@ class TestMapserverproxyView(TestCase):
         )
         request.params.update(dict(
             service="wfs", version="1.0.0", request="getfeature", typename="testpoint_unprotected",
-            featureid=featureid
+            featureid=featureid, ogcserver="__test_external_ogc_server"
         ))
         response = MapservProxy(request).proxy()
 
@@ -779,9 +781,8 @@ class TestMapserverproxyView(TestCase):
             fid2=self.id_paris
         )
         request.params.update(dict(
-            service="wfs", version="1.0.0",
-            request="getfeature", typename="testpoint_unprotected",
-            featureid=featureid
+            service="wfs", version="1.0.0", request="getfeature", typename="testpoint_unprotected",
+            featureid=featureid, ogcserver="__test_external_ogc_server"
         ))
         response = MapservProxy(request).proxy()
 
@@ -886,11 +887,7 @@ class TestMapserverproxyView(TestCase):
     def test_geoserver(self):
         from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
-        request = self._create_getcap_request(username="__test_user1", additional_settings={
-            "mapserverproxy": {
-                "default_ogc_server": "__test_ogc_server_geoserver",
-            }
-        })
+        request = self._create_getcap_request(username="__test_user1")
         request.params.update(dict(
             service="wms", version="1.1.1", request="getcapabilities",
         ))

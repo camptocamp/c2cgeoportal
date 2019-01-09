@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access
+
 
 from unittest import TestCase
 
@@ -163,7 +165,7 @@ class TestFunctionalities(TestCase):
         self.assertEqual(get_functionality("__test_s", request1), ["registered"])
         self.assertEqual(get_functionality("__test_a", request1), ["r1", "r2"])
         self.assertEqual(get_functionality("__test_s", request2), ["db"])
-        self.assertEqual(get_functionality("__test_a", request2), ["db1", "db2"])
+        self.assertEqual(set(get_functionality("__test_a", request2)), {"db1", "db2"})
 
         settings = {
             "functionalities": {
@@ -186,7 +188,7 @@ class TestFunctionalities(TestCase):
         self.assertEqual(get_functionality("__test_s", request1), ["anonymous"])
         self.assertEqual(get_functionality("__test_a", request1), ["a1", "a2"])
         self.assertEqual(get_functionality("__test_s", request2), ["db"])
-        self.assertEqual(get_functionality("__test_a", request2), ["db1", "db2"])
+        self.assertEqual(set(get_functionality("__test_a", request2)), {"db1", "db2"})
 
         settings = {
             "functionalities": {
@@ -212,7 +214,7 @@ class TestFunctionalities(TestCase):
         self.assertEqual(get_functionality("__test_s", request1), ["registered"])
         self.assertEqual(get_functionality("__test_a", request1), ["r1", "r2"])
         self.assertEqual(get_functionality("__test_s", request2), ["db"])
-        self.assertEqual(get_functionality("__test_a", request2), ["db1", "db2"])
+        self.assertEqual(set(get_functionality("__test_a", request2)), {"db1", "db2"})
 
     def test_web_client_functionalities(self):
         from c2cgeoportal_commons.models import DBSession

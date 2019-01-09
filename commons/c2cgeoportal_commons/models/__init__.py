@@ -39,6 +39,6 @@ _ = TranslationStringFactory('c2cgeoportal_admin')
 
 
 # Should be filed on application initialisation
-DBSession = None  # type: Union[sqlalchemy.orm.Session, sqlalchemy.orm.scoped_session]
+DBSession = None  # type: sqlalchemy.orm.Session
 Base = sqlalchemy.ext.declarative.declarative_base()  # type: sqlalchemy.ext.declarative.api.Base
-DBSessions = {}  # type: Dict[str, Union[sqlalchemy.orm.Session, sqlalchemy.orm.scoped_session]]
+DBSessions = {}  # type: Dict[str, sqlalchemy.orm.Session]

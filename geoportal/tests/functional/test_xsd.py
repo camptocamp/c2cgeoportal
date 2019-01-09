@@ -27,7 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-# pylint: attribute-defined-outside-init
+# pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access,attribute-defined-outside-init
+
 
 from unittest import TestCase
 from unittest.mock import Mock, patch

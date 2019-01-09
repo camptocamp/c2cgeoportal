@@ -43,7 +43,6 @@ import requests
 import zope.event.classhandler
 from c2cwsgiutils.auth import SECRET_ENV, SECRET_PROP, auth_view
 from defusedxml import lxml
-from defusedxml.minidom import parseString
 from owslib.wms import WebMapService
 from pyramid.httpexceptions import HTTPBadGateway, HTTPBadRequest, HTTPForbidden, HTTPFound
 from pyramid.i18n import TranslationStringFactory
@@ -67,8 +66,8 @@ from c2cgeoportal_geoportal.lib.wmstparsing import TimeInformation, parse_extent
 from c2cgeoportal_geoportal.views.layers import get_layer_metadatas
 
 _ = TranslationStringFactory("c2cgeoportal")
-log = logging.getLogger(__name__)
-cache_region = get_region()
+LOG = logging.getLogger(__name__)
+CACHE_REGION = get_region()
 
 
 class DimensionInformation:
@@ -127,15 +126,12 @@ class DimensionInformation:
 class Entry:
 
     WFS_NS = "http://www.opengis.net/wfs"
-    default_ogc_server = None
-    external_ogc_server = None
     server_wms_capabilities = {}  # type: Dict[int, Tuple[WebMapService, Set[str]]]
     server_wfs_feature_type = {}  # type: Dict[int, xml.dom.minidom.Document]
 
     def __init__(self, request):
         self.request = request
         self.settings = request.registry.settings
-        self.mapserver_settings = self.settings.get("mapserverproxy", {})
         self.http_options = self.request.registry.settings.get("http_options", {})
         self.debug = "debug" in request.params
         self.lang = request.locale_name
@@ -146,35 +142,6 @@ class Entry:
         self._layerswmts_cache = None
         self._layergroup_cache = None
         self._themes_cache = None
-        if "default_ogc_server" in self.mapserver_settings:
-            try:
-                self.default_ogc_server = models.DBSession.query(main.OGCServer).filter(
-                    main.OGCServer.name == self.mapserver_settings["default_ogc_server"]
-                ).one()
-            except NoResultFound:  # pragma: no cover
-                log.error(
-                    "\n".join([
-                        "Unable to find the default OGC server named: %s.",
-                        "Available OGC servers: %s",
-                    ]),
-                    self.mapserver_settings["default_ogc_server"],
-                    ", ".join([i[0] for i in models.DBSession.query(main.OGCServer.name).all()])
-                )
-
-        if "external_ogc_server" in self.mapserver_settings:
-            try:
-                self.external_ogc_server = models.DBSession.query(main.OGCServer).filter(
-                    main.OGCServer.name == self.mapserver_settings["external_ogc_server"]
-                ).one()
-            except NoResultFound:  # pragma: no cover
-                log.error(
-                    "\n".join([
-                        "Unable to find the external OGC server named: %s.",
-                        "Available OGC servers: %s",
-                    ]),
-                    self.mapserver_settings["external_ogc_server"],
-                    ", ".join([i[0] for i in models.DBSession.query(main.OGCServer.name).all()])
-                )
 
         from c2cgeoportal_commons.models.main import InvalidateCacheEvent
 
@@ -217,9 +184,7 @@ class Entry:
 
         return metadatas
 
-    def _wms_getcap(self, ogc_server=None):
-        ogc_server = (ogc_server or self.default_ogc_server)
-
+    def _wms_getcap(self, ogc_server):
         if ogc_server.id in self.server_wms_capabilities:
             return self.server_wms_capabilities[ogc_server.id]
 
@@ -237,17 +202,17 @@ class Entry:
             error = "WARNING! an error occurred while trying to read the mapfile and recover the themes." \
                 "\nURL: {}\n{}".format(url, content)
             errors.add(error)
-            log.error(error, exc_info=True)
+            LOG.error(error, exc_info=True)
 
         self.server_wms_capabilities[ogc_server.id] = (wms, errors)
 
         return wms, errors
 
-    @cache_region.cache_on_arguments()
+    @CACHE_REGION.cache_on_arguments()
     def get_http_cached(self, url, headers):
         return requests.get(url, headers=headers, **self.http_options)
 
-    @cache_region.cache_on_arguments()
+    @CACHE_REGION.cache_on_arguments()
     def _wms_getcap_cached(self, ogc_server, _):
         """ _ is just for cache on the role id """
 
@@ -273,7 +238,7 @@ class Entry:
             "USER_ID": "0",
         })
 
-        log.info("Get WMS GetCapabilities for url: {}".format(url))
+        LOG.info("Get WMS GetCapabilities for url: {}".format(url))
 
         # Forward request to target (without Host Header)
         headers = dict(self.request.headers)
@@ -292,7 +257,7 @@ class Entry:
         except Exception:  # pragma: no cover
             error = "Unable to GetCapabilities from URL {}".format(url)
             errors.add(error)
-            log.error(error, exc_info=True)
+            LOG.error(error, exc_info=True)
             return url, None, errors
 
         if not response.ok:  # pragma: no cover
@@ -300,7 +265,7 @@ class Entry:
                 url, response.status_code, response.reason
             )
             errors.add(error)
-            log.error(error)
+            LOG.error(error)
             return url, None, errors
 
         # With wms 1.3 it returns text/xml also in case of error :-(
@@ -310,7 +275,7 @@ class Entry:
                 url, response.headers["Content-Type"], response.text
             )
             errors.add(error)
-            log.error(error)
+            LOG.error(error)
             return url, None, errors
 
         return url, response.content, errors
@@ -592,7 +557,7 @@ class Entry:
 
         # escape loop
         if depth > 30:
-            log.error("Error: too many recursions with group '%s'", group.name)
+            LOG.error("Error: too many recursions with group '%s'", group.name)
             return ogc_servers
 
         # recurse on children
@@ -818,100 +783,6 @@ class Entry:
                         children.append(l)
         return children, errors
 
-    def _get_wfs_url(self):
-        errors = set()
-        ogc_server = self.default_ogc_server
-        url = get_url2(
-            "The OGC server '{}'".format(ogc_server.name),
-            ogc_server.url_wfs or ogc_server.url,
-            self.request, errors=errors,
-        )
-        return url, errors
-
-    def _internal_wfs_types(self, role_id):
-        url, errors = self._get_wfs_url()
-        if len(errors) > 0:  # pragma: no cover
-            return None, errors
-        return self._wfs_types(url, role_id)
-
-    def _get_external_wfs_url(self):
-        errors = set()
-        ogc_server = self.external_ogc_server
-        url = get_url2(
-            "The OGC server '{}'".format(ogc_server.name),
-            ogc_server.url_wfs or ogc_server.url,
-            self.request, errors=errors,
-        )
-        return url, errors
-
-    def _external_wfs_types(self, role_id):
-        url, errors = self._get_external_wfs_url()
-        if len(errors) > 0:  # pragma: no cover
-            return None, errors
-        return self._wfs_types(url, role_id)
-
-    def _wfs_types(self, wfs_url, role_id):
-        # add functionalities query_string
-        sparams = get_mapserver_substitution_params(self.request)
-        wfs_url = add_url_params(wfs_url, sparams)
-
-        if role_id is not None:
-            wfs_url = add_url_params(wfs_url, {"role_id": str(role_id)})
-
-        return self._wfs_types_cached(wfs_url)
-
-    @cache_region.cache_on_arguments()
-    def _wfs_types_cached(self, wfs_url):
-        errors = set()
-
-        # retrieve layers metadata via GetCapabilities
-        params = {
-            "SERVICE": "WFS",
-            "VERSION": "1.0.0",
-            "REQUEST": "GetCapabilities",
-            "ROLE_ID": "0",
-            "USER_ID": "0",
-        }
-        wfsgc_url = add_url_params(wfs_url, params)
-
-        log.info("WFS GetCapabilities for base url: {}".format(wfsgc_url))
-
-        # forward request to target (without Host Header)
-        headers = dict(self.request.headers)
-        if urllib.parse.urlsplit(wfsgc_url).hostname != "localhost" and "Host" in headers:
-            headers.pop("Host")  # pragma nocover
-
-        try:
-            response = self.get_http_cached(wfsgc_url, headers)
-        except Exception:  # pragma: no cover
-            errors.add("Unable to GetCapabilities from URL {}".format(wfsgc_url))
-            return None, errors
-
-        if not response.ok:  # pragma: no cover
-            errors.add("GetCapabilities from URL {} return the error: {:d} {}".format(
-                wfsgc_url, response.status_code, response.reason
-            ))
-            return None, errors
-
-        try:
-            get_capabilities_dom = parseString(response.text)
-            featuretypes = []
-            for featureType in get_capabilities_dom.getElementsByTagNameNS(self.WFS_NS, "FeatureType"):
-                # do not includes FeatureType without name
-                name = featureType.getElementsByTagNameNS(self.WFS_NS, "Name").item(0)
-                if name:
-                    name_value = name.childNodes[0].data
-                    # Ignore namespace when not using geoserver
-                    if name_value.find(":") >= 0 and \
-                            not self.default_ogc_server.type == main.OGCSERVER_TYPE_GEOSERVER:
-                        name_value = name_value.split(":")[1]  # pragma nocover
-                    featuretypes.append(name_value)
-                else:  # pragma nocover
-                    log.warning("Feature type without name: {}".format(featureType.toxml()))
-            return featuretypes, errors
-        except Exception:  # pragma: no cover
-            return response.text, errors
-
     def _functionality(self):
         functionality = {}
         for func_ in get_setting(
@@ -923,7 +794,7 @@ class Entry:
             )
         return functionality
 
-    @cache_region.cache_on_arguments()
+    @CACHE_REGION.cache_on_arguments()
     def _get_layers_enum(self):
         layers_enum = {}
         if "enum" in self.settings.get("layers", {}):
@@ -950,7 +821,10 @@ class Entry:
 
     @view_config(route_name="apijs", renderer="api/api.js")
     def apijs(self):
-        wms, wms_errors = self._wms_getcap()
+        ogc_server = models.DBSession.query(main.OGCServer).filter(
+            main.OGCServer.name == self.settings["api"]["ogc_server"]
+        ).one()
+        wms, wms_errors = self._wms_getcap(ogc_server)
         if len(wms_errors) > 0:  # pragma: no cover
             raise HTTPBadGateway("\n".join(wms_errors))
         queryable_layers = [
@@ -973,7 +847,10 @@ class Entry:
 
     @view_config(route_name="xapijs", renderer="api/xapi.js")
     def xapijs(self):
-        wms, wms_errors = self._wms_getcap()
+        ogc_server = models.DBSession.query(main.OGCServer).filter(
+            main.OGCServer.name == self.settings["api"]["ogc_server"]
+        ).one()
+        wms, wms_errors = self._wms_getcap(ogc_server)
         if len(wms_errors) > 0:  # pragma: no cover
             raise HTTPBadGateway("\n".join(wms_errors))
         queryable_layers = [
@@ -1026,7 +903,7 @@ class Entry:
         }
         wfs_url = add_url_params(wfs_url, params)
 
-        log.info("WFS DescribeFeatureType for base url: {}".format(wfs_url))
+        LOG.info("WFS DescribeFeatureType for base url: %s", wfs_url)
 
         # forward request to target (without Host Header)
         headers = dict(self.request.headers)
@@ -1117,10 +994,9 @@ class Entry:
                     if type_ in types:
                         attributes[name] = types[type_]
                     else:
-                        log.warning(
-                            "The provided type '{}' does not exist, available types are {}.".format(
-                                type_, ', '.join(types.keys())
-                            )
+                        LOG.warning(
+                            "The provided type '%s' does not exist, available types are %s.",
+                            type_, ', '.join(types.keys())
                         )
             result["ogcServers"][ogc_server.name] = {
                 "url": url,
@@ -1153,7 +1029,7 @@ class Entry:
 
         result["errors"] = list(all_errors)
         if len(all_errors) > 0:
-            log.info("Theme errors:\n{}".format("\n".join(all_errors)))
+            LOG.info("Theme errors:\n%s", "\n".join(all_errors))
         return result
 
     def _get_group(self, group, interface):
@@ -1170,7 +1046,7 @@ class Entry:
         if not hasattr(self.request, "is_valid_referer"):
             self.request.is_valid_referer = is_valid_referer(self.request)
         if not self.request.is_valid_referer:
-            log.error(
+            LOG.error(
                 "Invalid referer for %s: %s", self.request.path_qs, repr(self.request.referer)
             )
 
@@ -1206,17 +1082,14 @@ class Entry:
         login = self.request.POST.get("login")
         password = self.request.POST.get("password")
         if login is None or password is None:  # pragma nocover
-            log.info(
-                "'login' and 'password' should be "
-                "available in request params."
-            )
+            LOG.info("'login' and 'password' should be available in request params.")
             raise HTTPBadRequest("See server logs for details")
         username = self.request.registry.validate_user(self.request, login, password)
         if username is not None:
             user = models.DBSession.query(static.User).filter(static.User.username == username).one()
             user.update_last_login()
             headers = remember(self.request, username)
-            log.info("User '{}' logged in.".format(username))
+            LOG.info("User '%s' logged in.", username)
             came_from = self.request.params.get("came_from")
             if came_from:
                 return HTTPFound(location=came_from, headers=headers)
@@ -1238,13 +1111,10 @@ class Entry:
         # if there is no user to log out, we send a 404 Not Found (which
         # is the status code that applies best here)
         if not self.request.user:
-            log.info("Logout on non login user.")
+            LOG.info("Logout on non login user.")
             raise HTTPBadRequest("See server logs for details")
 
-        log.info("User '{}' ({}) logging out.".format(
-            self.request.user.username,
-            self.request.user.id
-        ))
+        LOG.info("User '%s' (%s) logging out.", self.request.user.username, self.request.user.id)
 
         headers.append(("Content-Type", "text/json"))
         return set_common_headers(
@@ -1281,7 +1151,7 @@ class Entry:
         new_password = self.request.POST.get("newPassword")
         new_password_confirm = self.request.POST.get("confirmNewPassword")
         if new_password is None or new_password_confirm is None or old_password is None:
-            log.info(
+            LOG.info(
                 "'oldPassword', 'newPassword' and 'confirmNewPassword' should be "
                 "available in request params."
             )
@@ -1289,18 +1159,18 @@ class Entry:
 
         # check if logged in
         if not self.request.user:  # pragma nocover
-            log.info("Change password on non login user.")
+            LOG.info("Change password on non login user.")
             raise HTTPBadRequest("See server logs for details")
 
         user = self.request.registry.validate_user(
             self.request, self.request.user.username, old_password
         )
         if user is None:
-            log.info("The old password is wrong for user '{}'.".format(user))
+            LOG.info("The old password is wrong for user '%s'.", user)
             raise HTTPBadRequest("See server logs for details")
 
         if new_password != new_password_confirm:
-            log.info(
+            LOG.info(
                 "The new password and the new password "
                 "confirmation do not match for user '%s'." % user
             )
@@ -1310,7 +1180,7 @@ class Entry:
         u.password = new_password
         u.is_password_changed = True
         models.DBSession.flush()
-        log.info("Password changed for user '{}'".format(self.request.user.username))
+        LOG.info("Password changed for user '%s'", self.request.user.username)
 
         return {
             "success": "true"
@@ -1352,7 +1222,7 @@ class Entry:
 
         user, username, password, error = self._loginresetpassword()
         if error is not None:
-            log.info(error)
+            LOG.info(error)
             raise HTTPBadRequest("See server logs for details")
 
         send_email_config(
