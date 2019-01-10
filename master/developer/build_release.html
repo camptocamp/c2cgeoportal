@@ -39,20 +39,20 @@
 <div class="section" id="vocabulary">
 <h2>Vocabulary<a class="headerlink" href="#vocabulary" title="Permalink to this headline">¶</a></h2>
 <p>On this page I use the word <code class="docutils literal notranslate"><span class="pre">version</span></code> for a major version of MapFish
-Geoportal (1.6), and the word <code class="docutils literal notranslate"><span class="pre">release</span></code> for each step in this version
-(1.6.0rc1, 1.6.0, 1.6.1, …).</p>
-<p><code class="docutils literal notranslate"><span class="pre">MapFish</span> <span class="pre">Geoportal</span></code> is the pack that includes CGXP and c2cgeoportal,
+Geoportal (2.0), and the word <code class="docutils literal notranslate"><span class="pre">release</span></code> for each step in this version
+(2.0.0rc1, 2.0.0, 2.0.1, …).</p>
+<p><code class="docutils literal notranslate"><span class="pre">MapFish</span> <span class="pre">Geoportal</span></code> is the pack that includes ngeo and c2cgeoportal,
 from start of 2014 both projects will synchronize their major versions.</p>
-<p>Then <code class="docutils literal notranslate"><span class="pre">&lt;release&gt;</span></code> can be <code class="docutils literal notranslate"><span class="pre">1.6.0rc1</span></code> for the first release candidate
-of the version <code class="docutils literal notranslate"><span class="pre">1.6.0</span></code>, <code class="docutils literal notranslate"><span class="pre">1.6.0</span></code> for the final release, <code class="docutils literal notranslate"><span class="pre">1.6.1</span></code> for
-the first bug fix release, and <code class="docutils literal notranslate"><span class="pre">&lt;version&gt;</span></code> can be <code class="docutils literal notranslate"><span class="pre">1.6</span></code>, <code class="docutils literal notranslate"><span class="pre">2.0</span></code>, …</p>
+<p>Then <code class="docutils literal notranslate"><span class="pre">&lt;release&gt;</span></code> can be <code class="docutils literal notranslate"><span class="pre">2.0.0rc1</span></code> for the first release candidate
+of the version <code class="docutils literal notranslate"><span class="pre">2.0</span></code>, <code class="docutils literal notranslate"><span class="pre">2.0.0</span></code> for the final release, <code class="docutils literal notranslate"><span class="pre">2.0.1</span></code> for
+the first bug fix release, and <code class="docutils literal notranslate"><span class="pre">&lt;version&gt;</span></code> can be <code class="docutils literal notranslate"><span class="pre">2.0</span></code>, <code class="docutils literal notranslate"><span class="pre">2.1</span></code>, …</p>
 </div>
 <div class="section" id="pre-release-task">
 <span id="developer-build-release-pre-release-task"></span><h2>Pre release task<a class="headerlink" href="#pre-release-task" title="Permalink to this headline">¶</a></h2>
 <p>Before doing a release you should merge all the previous branch on this one:</p>
 <ul>
 <li><p class="first">Merge the release changes (on <code class="docutils literal notranslate"><span class="pre">ngeo</span></code> and on <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code>)
-to the upper branches i.e.: <code class="docutils literal notranslate"><span class="pre">1.6</span></code> =&gt; <code class="docutils literal notranslate"><span class="pre">2.2</span></code>, …, <code class="docutils literal notranslate"><span class="pre">2.3</span></code> =&gt; <code class="docutils literal notranslate"><span class="pre">2.4</span></code>.</p>
+to the upper branches i.e.: <code class="docutils literal notranslate"><span class="pre">2.2</span></code> =&gt; <code class="docutils literal notranslate"><span class="pre">2.3</span></code>, <code class="docutils literal notranslate"><span class="pre">2.3</span></code> =&gt; <code class="docutils literal notranslate"><span class="pre">2.4</span></code> (master).</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>On <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> merge see if an alembic merge should be done:</p>

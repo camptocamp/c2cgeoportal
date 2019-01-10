@@ -94,47 +94,6 @@ tests require to run with <code class="docutils literal notranslate"><span class
 </pre></div>
 </div>
 </div>
-<div class="section" id="profiling">
-<h2>Profiling<a class="headerlink" href="#profiling" title="Permalink to this headline">¶</a></h2>
-<p>At the end of the file <code class="docutils literal notranslate"><span class="pre">apache/application.wsgi</span></code> add:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">wsgi_lineprof.middleware</span> <span class="k">import</span> <span class="n">LineProfilerMiddleware</span>
-<span class="kn">from</span> <span class="nn">wsgi_lineprof.filters</span> <span class="k">import</span> <span class="n">FilenameFilter</span><span class="p">,</span> <span class="n">TotalTimeSorter</span>
-
-<span class="n">filters</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">FilenameFilter</span><span class="p">(</span><span class="s2">&quot;entry.py&quot;</span><span class="p">),</span>
-    <span class="n">TotalTimeSorter</span><span class="p">(),</span>
-<span class="p">]</span>
-<span class="n">application</span> <span class="o">=</span> <span class="n">LineProfilerMiddleware</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;/tmp/pro&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">),</span> <span class="n">filters</span><span class="o">=</span><span class="n">filters</span><span class="p">)</span>
-</pre></div>
-</div>
-<pre class="highlight"><span class="prompt1">sudo apache2ctl graceful</span>
-</pre><p>Do your request(s).</p>
-<p>The profile result will be in the file <code class="docutils literal notranslate"><span class="pre">/tmp/pro</span></code>.</p>
-</div>
-<div class="section" id="upgrade-dependencies">
-<h2>Upgrade dependencies<a class="headerlink" href="#upgrade-dependencies" title="Permalink to this headline">¶</a></h2>
-<p>When we start a new version of c2cgeoportal or just before a new development
-phase it is a good idea to update the dependencies.</p>
-<div class="section" id="eggs">
-<h3>Eggs<a class="headerlink" href="#eggs" title="Permalink to this headline">¶</a></h3>
-<p>All the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> (and <code class="docutils literal notranslate"><span class="pre">tilecloud-chain</span></code>) dependencies are present in
-the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal/scaffolds/update/CONST_versions.mako</span></code> file.</p>
-<p>To update them you can simply get them from a travis build in the
-<code class="docutils literal notranslate"><span class="pre">./docker-run</span> <span class="pre">pip</span> <span class="pre">freeze</span></code> task.</p>
-</div>
-<div class="section" id="submodules">
-<h3>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h3>
-<p>Go to the OpenLayers folder:</p>
-<pre class="highlight"><span class="prompt1"><span class="nb">cd</span> c2cgeoportal/static/lib/openlayers/</span>
-</pre><p>Get the new revision of OpenLayers:</p>
-<pre class="highlight"><span class="prompt1">git fetch</span>
-<span class="prompt1">git checkout release-&lt;version&gt;</span>
-</pre><p>Then you can commit it:</p>
-<pre class="highlight"><span class="prompt1"><span class="nb">cd</span> -</span>
-<span class="prompt1">git add c2cgeoportal/static/lib/openlayers/</span>
-<span class="prompt1">git commit -m <span class="s2">&quot;update OpenLayers to &lt;version&gt;&quot;</span></span>
-</pre></div>
-</div>
 <div class="section" id="database">
 <h2>Database<a class="headerlink" href="#database" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="object-model">
@@ -142,16 +101,11 @@ the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal/sc
 <img alt="../_images/database.png" src="../_images/database.png" />
 <p><code class="docutils literal notranslate"><span class="pre">TreeItem</span></code> and <code class="docutils literal notranslate"><span class="pre">TreeGroup</span></code> are abstract (cannot be create) class used to create the tree.</p>
 <p><code class="docutils literal notranslate"><span class="pre">FullTextSearch</span></code> references a first level <code class="docutils literal notranslate"><span class="pre">LayerGroup</span></code> but without any constrains.</p>
-<p>it is not visible on this schema, but the <code class="docutils literal notranslate"><span class="pre">User</span></code> of a child schema has a link (<code class="docutils literal notranslate"><span class="pre">parent_role</span></code>)
-to the <code class="docutils literal notranslate"><span class="pre">Role</span></code> of the parent schema.</p>
 <div class="section" id="metadata-vs-functionality">
 <h4><code class="docutils literal notranslate"><span class="pre">metadata</span></code> vs <code class="docutils literal notranslate"><span class="pre">functionality</span></code><a class="headerlink" href="#metadata-vs-functionality" title="Permalink to this headline">¶</a></h4>
 <p>Technically the same <code class="docutils literal notranslate"><span class="pre">functionality</span></code> can be reused by more than one element.</p>
-<p><code class="docutils literal notranslate"><span class="pre">functionalities</span></code> are designed to configure and customize various parts of
-the application. For instance to change the default basemap when a new theme
-is loaded.</p>
-<p>To do that in the CGXP application we trigger an event when we load a theme the
-new <code class="docutils literal notranslate"><span class="pre">functionnalities</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">functionalities</span></code> are designed to configure and customize various parts of the application.
+For instance, via a functionality you can define which basemap is to be used when a new theme is loaded.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">metadata</span></code> contains attributes that are directly related to the element.
 For example the layer disclaimer, …</p>
 </div>
@@ -184,22 +138,6 @@ docker image. So developers who modify the <code class="docutils literal notrans
 </ul>
 </dd>
 </dl>
-</div>
-</div>
-<div class="section" id="sub-domain">
-<h2>Sub domain<a class="headerlink" href="#sub-domain" title="Permalink to this headline">¶</a></h2>
-<p>All the static resources used sub domains by using the configurations variables:
-<code class="docutils literal notranslate"><span class="pre">subdomain_url_template</span></code> and <code class="docutils literal notranslate"><span class="pre">subdomains</span></code>.</p>
-<p>To be able to use sub domain in a view we should configure the route as this:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">c2cgeoportal_geoportal.lib</span> <span class="k">import</span> <span class="n">MultiDomainPregenerator</span>
-<span class="n">config</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span>
-    <span class="s1">&#39;&lt;name&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;path&gt;&#39;</span><span class="p">,</span>
-    <span class="n">pregenerator</span><span class="o">=</span><span class="n">MultiDomainPregenerator</span><span class="p">())</span>
-</pre></div>
-</div>
-<p>And use the <code class="docutils literal notranslate"><span class="pre">route_url</span></code> with an additional argument <code class="docutils literal notranslate"><span class="pre">subdomain</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">request</span><span class="o">.</span><span class="n">route_url</span><span class="p">(</span><span class="s1">&#39;&lt;name&gt;&#39;</span><span class="p">,</span> <span class="n">subdomain</span><span class="o">=</span><span class="s1">&#39;&lt;subdomain&gt;&#39;</span><span class="p">)}</span><span class="s2">&quot;,</span>
-</pre></div>
 </div>
 </div>
 <div class="section" id="code">

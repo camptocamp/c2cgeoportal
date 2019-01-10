@@ -13,24 +13,22 @@ URL: ``.../themes``
 Parameters
 ----------
 
-* ``version``: ``1`` or ``2``, API version, default is ``1``.
-* ``interface``: used interface (optional).
+* ``version``: ``2``, API version, default is ``2``.
+* ``interface``: used interface, default is ``desktop``.
 * ``sets``: kind of data we want to get, can be ``all``, ``themes``, ``group``
   or ``background_layers``, default is ``all``.
 * ``background``: parent group of background layers to get.
 * ``group``: the group to get.
-* ``catalog``: ``true`` or ``false``, different error reporting for catalog mode, default is ``false``.
 * ``min_levels``: minimum number of group levels that is required, default is ``1``.
 * ``role``: role name, not used by the server but it is required for the cache management.
 
 Requests examples:
 
-* themes?version=2
-* themes?version=2&background=background
-* themes?version=2&group=Transport
+* themes?background=background
+* themes?group=Transport%sets=group
 
-Result in v2
-------------
+Result
+------
 
 Base for all possible results:
 
@@ -137,12 +135,6 @@ WMS Layer
         "style": "<style>",
         # if not mixed
         "ogcServer": "<server name>",
-        # derecated
-        "url": "<wms server url>",
-        "urlWfs": "<wfs server url>",
-        "wfsSupport": (true|false),
-        "isSingleTile": (true|false),
-        "imageType": "image/(jpeg|png)",
         "serverType": "(mapserver|geoserver|qgisserver)",
         "minResolutionHint": <minResolutionHint>,
         "maxResolutionHint": <maxResolutionHint>,
@@ -360,7 +352,6 @@ Parameters
 * ``partitionlimit``: The maximum number of results per layer (optional).
 * ``lang``: The used language (optional).
 * ``interface``: The used interface (optional).
-* ``callback``: Name of the callback function (optional, deprecated in v2).
 
 Result
 ------
@@ -417,7 +408,7 @@ Result
 
 
 Update feature
-------------------
+--------------
 
 URL: ``.../layers/<layer_name>/<layer_id>/<feature_id>``
 
@@ -464,7 +455,7 @@ Error :
     }
 
 Update feature
-------------------
+--------------
 
 URL: ``.../layers/<layer_name>/<layer_id>``
 
@@ -523,7 +514,6 @@ Parameters
 * ``lon``: The longitude.
 * ``lat``: The latitude.
 * ``layers``: The raster layers we want to query.
-* ``callback``: Function name to do the callback (optional, deprecated in v2).
 
 Result
 ------
@@ -549,7 +539,6 @@ Parameters
 * ``geom``: Geometry field used to get the profile data.
 * ``layers``: On witch layers, default to all.
 * ``nbPoints``: Maximum number of points.
-* ``callback``: Function name to do the callback (optional, deprecated in v2).
 
 Result
 ------
@@ -573,7 +562,6 @@ Parameters
 * ``url``: URL to shorten.
 * ``email``: Email address to send a message to (optional).
 * ``message``: The user message to add in the email (optional).
-* ``callback``: Function name to do the callback (optional, deprecated in v2).
 
 Result
 ~~~~~~
@@ -591,48 +579,6 @@ URL: ``short/<ref>``
 
 Result: code: 302, redirect to the original URL.
 
-
-Echo
-====
-
-This service returns a file containing data submitted in the POST request as the "file" field.
-This is used to be able to get the data in the client from a file select by the user.
-
-URL: ``.../echo``
-
-Result
-------
-
-The 'Content-Type' header is 'text/html', and the data is:
-
-.. code:: json
-
-    {
-        "filename": <The base64 encoded file>
-        "success": true
-    }
-
-
-Export CSV
-==========
-
-This service returns a file containing data submitted in the POST request as the "csv" field.
-This is used to be able to get as a download file csv data build on the client.
-
-URL: ``.../csv``
-
-Parameters
-----------
-
-* ``csv_extension``: File extension, default to 'csv'.
-* ``csv_encoding``: Character encoding, default to 'UTF-8',
-* ``name``: File name without extension set in the 'Content-Disposition', default to 'export'.
-
-Result
-------
-
-The 'Content-Type' header is 'text/csv',
-and the data contains the given 'csv' data.
 
 Geometry processing
 ===================
