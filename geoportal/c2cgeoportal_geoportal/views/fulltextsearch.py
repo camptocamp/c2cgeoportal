@@ -190,5 +190,4 @@ class FullTextSearchView:
                 )
                 features.append(feature)
 
-        # TODO: add callback function if provided in self.request, else return geojson
         return FeatureCollection(features)

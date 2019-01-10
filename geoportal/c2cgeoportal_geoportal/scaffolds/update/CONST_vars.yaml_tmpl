@@ -175,7 +175,6 @@ vars:
         gmfTreeUrl:
           name: themes
           params:
-            version: 2
             background: background
           dynamic_params:
             interface: interface
@@ -556,9 +555,6 @@ vars:
     api: *header
     profile: *header
     raster: *header
-    echo: *header
-    csvecho: *header
-    exportgpxkml: *header
     error: *header
     themes: &auth_header
       cache_control_max_age: 600  # 10 minutes

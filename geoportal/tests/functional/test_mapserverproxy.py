@@ -326,61 +326,6 @@ class TestMapserverproxyView(TestCase):
         self.assertEqual(response_body.decode("utf-8"), expected_response)
         self.assertEqual(str(response.cache_control), "max-age=0, must-revalidate, no-cache, no-store")
 
-    def test_get_feature_info_jsonp(self):
-        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
-
-        request = self._create_dummy_request()
-        request.params.update(dict(
-            service="wms", version="1.1.1",
-            request="getfeatureinfo", bbox="599910,199955,600090,200000",
-            layers="testpoint_unprotected",
-            query_layers="testpoint_unprotected",
-            srs="EPSG:21781", format="image/png",
-            info_format="application/vnd.ogc.gml",
-            width="600", height="400", x="0", y="400",
-            callback="cb"
-        ))
-        response = MapservProxy(request).proxy()
-
-        expected_response = """
-        <?xmlversion="1.0"encoding="UTF-8"?>
-        <msGMLOutput
-         xmlns:gml="http://www.opengis.net/gml"
-         xmlns:xlink="http://www.w3.org/1999/xlink"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-        <testpoint_unprotected_layer>
-        <gml:name>countries</gml:name>
-                <testpoint_unprotected_feature>
-                        <gml:boundedBy>
-                                <gml:Box srsName="EPSG:21781">
-                                        <gml:coordinates>599910.000000,199955.000000 599910.000000,199955.000000</gml:coordinates>
-                                </gml:Box>
-                        </gml:boundedBy>
-                        <geom>
-                        <gml:Point srsName="EPSG:21781">
-                          <gml:coordinates>599910.000000,199955.000000</gml:coordinates>
-                        </gml:Point>
-                        </geom>
-                        <name>foo</name>
-                        <city>Lausanne</city>
-                        <country>Swiss</country>
-                </testpoint_unprotected_feature>
-        </testpoint_unprotected_layer>
-        </msGMLOutput>
-        """
-        import re
-        pattern = re.compile(r"\s+")
-        expected_response = "".join(
-            re.sub(pattern, "", l) for l in expected_response.splitlines()
-        )
-        expected_response = "{0!s}('{1!s}');".format("cb", expected_response)
-        response_body = "".join(
-            re.sub(pattern, "", l) for l in response.body.decode("utf-8").splitlines()
-        )
-        self.assertEqual(response_body, expected_response)
-        self.assertFalse(response.cache_control.public)
-        self.assertEqual(str(response.cache_control), "max-age=0, must-revalidate, no-cache, no-store")
-
     def test_get_map_unprotected_layer_anonymous(self):
         from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
@@ -774,28 +719,6 @@ class TestMapserverproxyView(TestCase):
         assert "Chambéry" not in response.body.decode("utf-8")
         self.assertEqual(response.content_type, "text/xml")
 
-    def test_get_feature_feature_id_get_jsonp(self):
-        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
-
-        request = self._create_dummy_request()
-
-        featureid = "{typename!s}.{fid1!s},{typename!s}.{fid2!s}".format(
-            typename="testpoint_unprotected",
-            fid1=self.id_lausanne,
-            fid2=self.id_paris
-        )
-        request.params.update(dict(
-            service="wfs", version="1.0.0",
-            request="getfeature", typename="testpoint_unprotected",
-            featureid=featureid, callback="cb"
-        ))
-        response = MapservProxy(request).proxy()
-        assert "Lausanne" in response.body.decode("utf-8")
-        assert "Paris" in response.body.decode("utf-8")
-        assert "Londre" not in response.body.decode("utf-8")
-        assert "Chambéry" not in response.body.decode("utf-8")
-        self.assertEqual(response.content_type, "application/javascript")
-
     def test_get_feature_wfs_url(self):
         from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
@@ -809,7 +732,7 @@ class TestMapserverproxyView(TestCase):
         request.params.update(dict(
             service="wfs", version="1.0.0",
             request="getfeature", typename="testpoint_unprotected",
-            featureid=featureid, callback="cb"
+            featureid=featureid
         ))
         response = MapservProxy(request).proxy()
 
@@ -827,9 +750,8 @@ class TestMapserverproxyView(TestCase):
             fid2=self.id_paris
         )
         request.params.update(dict(
-            service="wfs", version="1.0.0",
-            request="getfeature", typename="testpoint_unprotected",
-            featureid=featureid, callback="cb", EXTERNAL=1
+            service="wfs", version="1.0.0", request="getfeature", typename="testpoint_unprotected",
+            featureid=featureid
         ))
         response = MapservProxy(request).proxy()
 
@@ -849,7 +771,7 @@ class TestMapserverproxyView(TestCase):
         request.params.update(dict(
             service="wfs", version="1.0.0",
             request="getfeature", typename="testpoint_unprotected",
-            featureid=featureid, callback="cb", EXTERNAL=1
+            featureid=featureid
         ))
         response = MapservProxy(request).proxy()
 

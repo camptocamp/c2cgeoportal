@@ -5,33 +5,35 @@ Application debugging
 
 The goal of this document is to give some troubleshooting tips.
 
-Webpack
--------
-
-For debugging purposes, it is better to have all the JavaScript and Style Sheets in separated, non-minified
-files. To achieve this, you can simply use the sources maps, function activable in the browsers debugging
-tool. And to have faster build you need to use the Webpack dev server; you can achieve this as follows.
-
-In the ``geoportal/demo_geoportal/static-ngeo/js/apps/<interface>.html.ejs`` file
-remove the ``ng-strict-di`` in the ``html`` tag.
-
-Add in your makefile ``<user>.mk`` (Each developer should have a different port, e.g.: 8081):
-
-.. code:: makefile
-
-   DEV_SERVER_PORT = <dev-server-port>
-
-.. prompt:: bash
-
-   FINALISE=TRUE make --makefile=<user>.mk serve-<interface>
-
-Open in the browser an URL like: ``https://<host>/<instanceid>/wsgi/dev/<interface>.html``,
-for Docker version: ``https://<host>/<instanceid>/dev/<interface>.html``.
-
 Browser
 -------
 
 Using a browser-integrated debugging tool usually available with the ``F12`` key.
+
+Sources map
+-----------
+
+For debugging purposes, it is better to have all the JavaScript and Style Sheets in separated, non-minified
+files. To achieve this, you can simply use the sources maps, function activable in the browsers debugging
+tool.
+
+Webpack
+-------
+
+To have faster builds you need to use the Webpack dev server; you can achieve this as follows.
+
+In the ``geoportal/demo_geoportal/static-ngeo/js/apps/<interface>.html.ejs`` file
+remove the ``ng-strict-di`` in the ``html`` tag.
+
+In the file ``docker-compose-dev.yaml`` set the ``INTERFACE`` to the wanted value.
+
+Run:
+
+.. prompt:: bash
+
+   docker-compose --file=docker-compose.yaml --file=docker-compose-dev.yaml up
+
+Open the application at the following URL: ``https://<host>/<entry_point>/dev/<interface>.html``.
 
 Pyramid
 -------
@@ -45,7 +47,8 @@ Sometime more information are available by using this command:
 
 .. prompt:: bash
 
-    shp2img -m <mapfile> -o test.png -e <minx> <miny> <maxx> <maxy> -s <sizex> <sizey> -l <layers>
+    docker-compose exec mapserver shp2img -m <mapfile> -o test.png -e <minx> <miny> <maxx> <maxy> \
+        -s <sizex> <sizey> -l <layers>
 
 You may also activate MapServer's debug mode and set environment variable of the MapServer container
 ``MS_DEBUGLEVEL`` to ``5`` (most verbose level, default is 0).
@@ -75,12 +78,36 @@ To obtain additional debug messages, you can rebuild your project as follows:
 
 .. prompt:: bash
 
-   DEBUG=TRUE make ...
+   ./docker-run --env=DEBUG=TRUE make ...
 
-Actually we display the running rule and why she is running (dependence update).
+It will add a message at the start of each rule with the list of files that required an update, e.-g.:
 
-Docker
-------
+.. code::
+
+   Build /build/c2ctemplate-cache.json due modification on vars.yaml
+   -rw-r--r-- 1 sbrunner geomapfish 1321 2019-01-09 16:59:20.845623078 +0000 /build/c2ctemplate-cache.json
+   -rw-rw-r-- 1 sbrunner geomapfish 1299 2019-01-10 08:31:35.707376156 +0000 vars.yaml
+
+Docker-compose
+--------------
+
+Logs
+....
+
+With the following command you can access the logs:
+
+.. prompt:: bash
+
+   docker-compose logs [<service_name>]
+
+Go inside a container
+.....................
+
+With the following command you can get a terminal in a container:
+
+.. prompt:: bash
+
+   docker-compose exec [--user=root] <service_name> bash
 
 Multiple dev on one server
 ..........................
@@ -133,20 +160,29 @@ Just define an environment variable in the build:
 
    DOCKER_TAG=<tag> ./docker-run make build
 
-Run gunicorn to reload on modifications of Python files
-.......................................................
+
+Developing in Python
+--------------------
 
 Add the following environment variable to the geoportal container:
 
 ``GUNICORN_PARAMS="-b :80 --worker-class gthread --threads 1 --workers 1 --reload"``
 
-Do a graceful restart of the running geoportal container
-........................................................
+TODO
+
+You can also do a graceful restart of the running gunicorn:
 
 .. prompt:: bash
 
    docker-compose exec geoportal bash
    kill -s HUP `ps aux|grep gunicorn|head --lines=1|awk '{print $2}'`  # graceful
+
+And finally if you stop and start the container you will see your modifications:
+
+.. prompt:: bash
+
+   docker-compose stop geoportal
+   docker-compose start geoportal
 
 Mount c2cgeoportal in the container
 ...................................
@@ -166,39 +202,26 @@ Add a ``docker-compose.override.yml`` file with a ``geoportal`` service containi
          - <c2cgeoportal_git_root>/geoportal/c2cgeoportal_geoportal:/opt/c2cgeoportal_geoportal/c2cgeoportal_geoportal
          - <c2cgeoportal_git_root>/admin/c2cgeoportal_admin:/opt/c2cgeoportal_admin/c2cgeoportal_admin
 
-Expose a service
-................
+Access to a hidden service
+--------------------------
 
-To expose a service out of the Docker composition you can add a port in your ``docker-compose.yaml``, e.g.:
+Within the Docker composition you can access a port of a container, you can achieve this via curl, e.-g.:
+
+.. prompt: bash
+
+   curl "http://mapserver:8080?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetCapabilities"
+
+You can also expose a service out of the Docker composition. For that, add a port in your
+``docker-compose.yaml``, e.g.:
 
 .. code:: yaml
 
    services:
      <service>:
        port:
-         - 8086:80
+         - 8086:8080
 
 Be careful one port can be open only one time on a server.
-Within the Docker composition you can access a port of a container, you can achieve this via curl.
-This way, you do not need to publish this port on the main host.
-
-.. prompt:: bash
-
-   docker-compose exec geoportal bash
-   curl "<url>"
-
-Use Webpack dev server
-......................
-
-In the file ``docker-compose-dev.yaml`` set the ``INTERFACE`` to the wanted value.
-
-Run:
-
-.. prompt:: bash
-
-   docker-compose --file=docker-compose.yaml --file=docker-compose-dev.yaml up
-
-Open the application with on the following path: ``https://<host>/<entry_point>/dev/<interface>.html``.
 
 Use a specific version of ngeo
 ------------------------------

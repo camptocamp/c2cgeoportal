@@ -71,23 +71,12 @@ JSON_CONTENT_TYPE = "Content-Type:application/(?:json|xml)"
 
 
 class DecimalJSON:
-    def __init__(self, jsonp_param_name="callback"):
-        self.jsonp_param_name = jsonp_param_name
-
     def __call__(self, info):
         def _render(value, system):
             ret = json.dumps(value, use_decimal=True)
             request = system.get("request")
             if request is not None:
-                callback = request.params.get(self.jsonp_param_name)
-                if callback is None:
-                    request.response.content_type = "application/json"
-                else:
-                    request.response.content_type = "text/javascript"
-                    ret = "{callback!s}({json!s});".format(
-                        callback=callback,
-                        json=ret
-                    )
+                request.response.content_type = "application/json"
             return ret
         return _render
 
@@ -525,15 +514,6 @@ def includeme(config: pyramid.config.Configurator):
         "tinyowsproxy", "/tinyows_proxy",
         pregenerator=C2CPregenerator(role=True),
     )
-
-    # Add routes to csv view
-    config.add_route("csvecho", "/csv", request_method="POST")
-
-    # Add route to the export GPX/KML view
-    config.add_route("exportgpxkml", "/exportgpxkml")
-
-    # Add routes to the echo service
-    config.add_route("echo", "/echo", request_method="POST")
 
     # Add routes to the entry view class
     config.add_route("base", "/", static=True)
