@@ -9,5 +9,5 @@ for IT-operations.
 .. toctree::
    :maxdepth: 1
 
+   c2cwsgiutils
    checker
-   statistics

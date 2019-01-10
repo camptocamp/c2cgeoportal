@@ -58,6 +58,8 @@ In the admin interface we can use in all the URLs the following special schema:
   ``config://my_server/icon.png`` will be transformed into
   the URL ``http://example.com/test/icon.png``.
 
+.. _integrator_functionality:
+
 .. include:: functionality.rst
 
 .. include:: extend_data_model.rst

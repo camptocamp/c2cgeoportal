@@ -4,28 +4,6 @@
 Specific configuration for QGIS mapserver
 =========================================
 
-Apache configuration
-====================
-
-In the ``apache/mapserv.conf.mako`` do the following changes:
-
-.. code::
-
-   - ScriptAlias /mapserv /usr/lib/cgi-bin/mapserv
-   + ScriptAlias /mapserv /usr/lib/cgi-bin/qgis_mapserv.fcgi
-
-   - SetEnv MS_MAPFILE ${directory}/mapserver/mapserver.map
-   + SetEnv QGIS_PROJECT_FILE ${directory}/qgisserver.qgs
-
-Cleanup
-=======
-
-Remove the MapServer folder:
-
-.. prompt:: bash
-
-   git rm mapserver
-
 QGIS Desktop configuration
 ==========================
 

@@ -4,13 +4,12 @@ Digital Elevation Tools
 =======================
 
 c2cgeoportal applications include web services for getting
-`DEM <http://en.wikipedia.org/wiki/Digital_elevation_model>`_.
-information.
+`DEM <http://en.wikipedia.org/wiki/Digital_elevation_model>`_ information.
 The ``raster`` web service allows getting information for points.
 The ``profile`` web service allows getting information for lines.
 
 To configure these web services you need to set the ``raster`` variable in the
-application config (``vars_<project>.yaml``).  For example:
+application config (``vars.yaml``).  For example:
 
 .. code:: yaml
 
@@ -25,8 +24,7 @@ application config (``vars_<project>.yaml``).  For example:
             type: gdal
             round: 1
 
-``raster`` is a list of "DEM layers". There are only two entries in this example,
-but there could be more.
+``raster`` is a list of "DEM layers". There are only two entries in this example, but there could be more.
 
 ``cache_size`` is the number of DEM files to keep in cache. Default is 10.
 
@@ -40,7 +38,3 @@ We recommand to use a `vrt <https://www.gdal.org/gdal_vrttut.html>`_ file built 
 
 ``round`` specifigdalbuildvrtes how the result values should be rounded.
 For instance '1': round to the unit, '0.01': round to the hundredth, etc.
-
-The application viewer should be configured with one (or more) of the
-``ContextualData`` and the ``Profile`` ``CGXP`` plugins for
-the DEM data to be viewable in the web application.

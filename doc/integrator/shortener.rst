@@ -3,7 +3,7 @@
 Configure short URL
 ===================
 
-The configuration in ``vars_<project>.yaml`` looks like this:
+The configuration in ``vars.yaml`` looks like this:
 
 .. code:: yaml
 

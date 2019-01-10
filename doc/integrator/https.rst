@@ -62,7 +62,7 @@ Loading non https external resources
 
 If you want to load non https external resources in your https application, you
 must use the resourceproxy service and add the list of hosts you want to access
-in your project `vars_<project>.yaml` configuration file:
+in your project `vars.yaml` configuration file:
 
 .. code:: yaml
 

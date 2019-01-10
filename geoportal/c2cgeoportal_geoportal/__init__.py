@@ -82,7 +82,6 @@ class DecimalJSON:
 
 
 INTERFACE_TYPE_NGEO = "ngeo"
-INTERFACE_TYPE_NGEO_CATALOGUE = "ngeo"
 
 
 def add_interface(

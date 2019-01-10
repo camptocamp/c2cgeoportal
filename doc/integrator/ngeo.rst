@@ -3,22 +3,20 @@
 ngeo
 ====
 
-Organisation
+Organization
 ------------
 
-The main page where we can redefine the header
-is in the file: ``<package>/templates/<interface>.html``,
-where ``<interface>`` is the interface name or "index" for the default interface.
+The main page where we can redefine the header is in the file:
+``geoportal/<package>_geoportal/static-ngeo/js/apps/<interface>.html.ejs`` and
+``geoportal/<package>_geoportal/static-ngeo/js/apps/Controller<interface>.js``
+where ``<interface>`` is the interface name.
 
-The viewer (map and all related tools)
-is defined in the file: ``<package>/static-ngeo/js/<interface>.js``,
-where ``<interface>`` is the interface name or "main" for the default interface.
+The style sheet file is ``geoportal/demo_geoportal/static-ngeo/js/apps/sass/<interface>.scss``.
 
-Finally, the image should be placed in the folder ``<package>/static-ngeo/images/``.
+The images used by the application code should be placed in the folder ``geoportal/<package>_geoportal/static-ngeo/images/``.
 
-The style sheet file for the whole project is ``<package>/static-ngeo/less/<package>.less``.
+The images used from the admin interface should be placed in the folder ``geoportal/<package>_geoportal/static/images/``.
 
-The style sheet file for a specific interface is ``<package>/static-ngeo/less/<interface>.less``.
 
 HTML file
 ---------
@@ -33,8 +31,7 @@ In this file you can add some blocks like
 to include a directive.
 
 You can find the available directives in the
-`ngeo documentation <http://camptocamp.github.io/ngeo/master/apidoc/>`_
-in the sections ``gmf/Directives`` and ``ngeo/Directives``.
+`ngeo documentation <http://camptocamp.github.io/ngeo/master/apidoc/>`_.
 
 The controller (``js`` file) is commonly named ``mainCtrl``. So you can use a value
 from the controller by doing the following (here, the controller is the ``DesktopController``):
@@ -54,27 +51,6 @@ from the controller by doing the following (here, the controller is the ``Deskto
       </body>
     </html>
 
-The ``js`` constants of the application are defined at the end of the file:
-
-.. code:: html
-
-    <script>
-      (function() {
-         var module = angular.module('<package>');
-         var serverVars = {
-             /**
-              * Here the i18n is configured
-              */
-           serviceUrls: {
-             /**
-              * Here you configure the services URL
-              */
-           }
-         };
-         module.constant('serverVars', serverVars);
-       })();
-    </script>
-
 
 Controller (js file)
 --------------------
@@ -83,8 +59,7 @@ In the controller you have some lines like:
 
 .. code:: javascript
 
-   /** @suppress {extraRequire} */
-   goog.require('gmf.authenticationDirective');
+   import gmf<Component>Component from 'gmf/<component>/component.js';
 
 This is needed to include the javascript of the used directives.
 
@@ -106,11 +81,10 @@ The map configuration will be here:
 .. note::
 
    If you previously had a CGXP application and want to keep your permalinks
-   compatible, the resolutions should be the same as in the previous
-   application.
+   compatible, the resolutions should be the same as in the previous application.
 
-Dynamic.js view
----------------
+Dynamic.json view
+-----------------
 
 To configure the ngeo constants with dynamic or configurable values we have the dynamic view.
 

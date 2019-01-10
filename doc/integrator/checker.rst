@@ -47,7 +47,7 @@ The recommended URL to use to validate the migration (``checker_url`` in ``proec
 Checker
 -------
 
-The checker use the following configuration structure in ``vars_<project>.yaml``:
+The checker use the following configuration structure in ``vars.yaml``:
 
 .. code:: yaml
 
