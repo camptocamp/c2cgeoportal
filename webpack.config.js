@@ -1,9 +1,9 @@
-const webpack = require("webpack");
+const webpack = require('webpack');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
   entry: {
-    'vendor': ['/tmp/deps.js'],
+    vendor: ['/tmp/deps.js'],
   },
   output: {
     path: '/opt/',
@@ -22,11 +22,11 @@ module.exports = {
             presets: [[
               require.resolve('@babel/preset-env'),
               {
-                'targets': {
-                  'browsers': ['last 2 versions', 'Firefox ESR', 'ie 11'],
+                targets: {
+                  browsers: ['last 2 versions', 'Firefox ESR', 'ie 11'],
                 },
-                'modules': false,
-                'loose': true,
+                modules: false,
+                loose: true,
               }
             ]],
           },
@@ -57,23 +57,12 @@ module.exports = {
     modules: ['/usr/lib/node_modules'],
   },
   resolve: {
-    modules: ['/usr/lib/node_modules'],
+    modules: ['/usr/lib/node_modules', '/usr/lib/node_modules/d3/node_modules'],
     alias: {
       'jsts': 'jsts/org/locationtech/jts',
       'olcs': 'ol-cesium/src/olcs',
       'jquery-ui/datepicker': 'jquery-ui/ui/widgets/datepicker', // For angular-ui-date
       'proj4': 'proj4/lib',
-      'd3-timer': 'd3-transition/node_modules/d3-timer',
-      'd3-dispatch': 'd3-zoom/node_modules/d3-dispatch',
-      'd3-drag': 'd3-zoom/node_modules/d3-drag',
-      'd3-ease': 'd3-transition/node_modules/d3-ease',
-      'd3-color': 'd3-transition/node_modules/d3-color',
-      'd3-path': 'd3-shape/node_modules/d3-path',
-      'd3-interpolate': 'd3-scale/node_modules/d3-interpolate',
-      'd3-format': 'd3-scale/node_modules/d3-format',
-      'd3-collection': 'd3-scale/node_modules/d3-collection',
-      'd3-time': 'd3-scale/node_modules/d3-time',
-      'd3-time-format': 'd3-scale/node_modules/d3-time-format',
       'rbush': 'ol/node_modules/rbush',
       'quickselect': '/usr/lib/node_modules/ol/node_modules/quickselect',
       'mgrs': '/usr/lib/node_modules/proj4/node_modules/mgrs',
