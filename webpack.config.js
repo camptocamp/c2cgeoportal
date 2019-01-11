@@ -1,9 +1,9 @@
-const webpack = require("webpack");
+const webpack = require('webpack');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
   entry: {
-    'vendor': ['/tmp/deps.js'],
+    vendor: ['/tmp/deps.js'],
   },
   output: {
     path: '/opt/',
@@ -22,11 +22,11 @@ module.exports = {
             presets: [[
               require.resolve('@babel/preset-env'),
               {
-                'targets': {
-                  'browsers': ['last 2 versions', 'Firefox ESR', 'ie 11'],
+                targets: {
+                  browsers: ['last 2 versions', 'Firefox ESR', 'ie 11'],
                 },
-                'modules': false,
-                'loose': true,
+                modules: false,
+                loose: true,
               }
             ]],
           },
