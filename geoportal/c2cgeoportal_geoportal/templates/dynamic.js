@@ -67,12 +67,21 @@ wfs_permalink.update(interface_config.get('wfs_permalink', {}))
     else:
         query = {}
     if 'themes' in request.matchdict:
+        no_redirect_url = request.route_url(
+            interface_config['redirect_interface'] + 'theme',
+            themes=request.matchdict['themes'],
+            _query=no_redirect_query
+        )
         url = request.route_url(
             interface_config['redirect_interface'] + 'theme',
             themes=request.matchdict['themes'],
             _query=no_redirect_query
         )
     else:
+        no_redirect_url = request.route_url(
+            interface_config['redirect_interface'],
+            _query=no_redirect_query
+        )
         url = request.route_url(
             interface_config['redirect_interface'],
             _query=no_redirect_query
@@ -87,7 +96,7 @@ wfs_permalink.update(interface_config.get('wfs_permalink', {}))
       window.location = '${url | n}';
     }
 % else:
-  module.constant('redirectUrl', '${url | n}');
+  module.constant('redirectUrl', '${no_redirect_url | n}');
 % endif
 % endif
 % endif
