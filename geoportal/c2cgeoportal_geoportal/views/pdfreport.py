@@ -147,7 +147,7 @@ class PdfReport(OGCProxy):  # pragma: no cover
                 "request": "GetFeature",
                 "typeName": self.layername,
                 "featureid": ",".join(features_ids),
-                "srsName": "epsg:{}".format(srs)
+                "srsName": srs
             }
         )
 
