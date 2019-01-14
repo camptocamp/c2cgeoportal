@@ -49,7 +49,7 @@ services:
       - PGOPTIONS
 
   qgisserver:
-    image: camptocamp/geomapfish-qgisserver:gmf{{geomapfish_main_version}}-qgis3.2
+    image: camptocamp/geomapfish-qgisserver:gmf{{geomapfish_main_version}}-qgis3.4
     user: www-data
     restart: unless-stopped
     environment:
