@@ -75,7 +75,7 @@ wfs_permalink.update(interface_config.get('wfs_permalink', {}))
         url = request.route_url(
             interface_config['redirect_interface'] + 'theme',
             themes=request.matchdict['themes'],
-            _query=no_redirect_query
+            _query=query
         )
     else:
         no_redirect_url = request.route_url(
@@ -84,7 +84,7 @@ wfs_permalink.update(interface_config.get('wfs_permalink', {}))
         )
         url = request.route_url(
             interface_config['redirect_interface'],
-            _query=no_redirect_query
+            _query=query
         )
 %>
 % if 'no_redirect' in query:
