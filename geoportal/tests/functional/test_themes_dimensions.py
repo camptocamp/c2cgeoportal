@@ -214,7 +214,7 @@ class TestThemesView(TestCase):
             "The layer '__test_layer_wms_2' has a wrong dimension value 'b' for 'A', expected 'a' or empty.",
             "The layer '__test_layer_wmts_2' has an unsupported dimension value 'countries:\"name\" IN ( 'Germany' , 'Italy' )' ('FILTER')."
         ]))
-        self.assertEquals(
+        self.assertEqual(
             [self._only_name(t, ["name", "dimensions", "dimensionsFilters"]) for t in themes["themes"]],
             [{
                 "children": [{
