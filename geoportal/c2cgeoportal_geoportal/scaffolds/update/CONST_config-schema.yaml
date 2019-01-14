@@ -269,7 +269,7 @@ mapping:
           available_metadata:
             type: seq
             required: True
-            sequence: &types
+            sequence:
               - type: map
                 mapping:
                   name:
@@ -287,7 +287,19 @@ mapping:
             type: seq
             required: True
             sequence:
-              - type: str
+              - type: map
+                mapping:
+                  name:
+                    type: str
+                    required: True
+                  type:
+                    type: str
+                  regex:
+                    type: str
+                  error_message:
+                    type: str
+                  single:
+                    type: bool
       layers:
         type: map
         required: True
@@ -338,19 +350,13 @@ mapping:
             required: True
             sequence:
               - type: str
-      mapserverproxy:
-        type: map
-        required: True
-        mapping:
-          default_ogc_server:
-            type: str
-            required: True
-          default_external_ogc_server:
-            type: str
       tinyowsproxy:
         type: map
         required: True
         mapping:
+          ogc_server:
+            type: str
+            required: True
           tinyows_url:
             type: str
             required: True
@@ -360,6 +366,13 @@ mapping:
             type: str
           tinyows_host:
             type: str
+      api:
+        type: map
+        required: True
+        mapping:
+          ogc_server:
+            type: str
+            required: True
       fulltextsearch:
         type: map
         required: True
@@ -466,6 +479,9 @@ mapping:
               regex;(.+):
                 type: map
                 mapping:
+                  ogc_server:
+                    type: str
+                    required: True
                   check_credentials:
                     type: bool
                     required: True

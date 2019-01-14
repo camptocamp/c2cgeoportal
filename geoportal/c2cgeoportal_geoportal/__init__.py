@@ -81,83 +81,21 @@ class DecimalJSON:
         return _render
 
 
-INTERFACE_TYPE_CGXP = "cgxp"
 INTERFACE_TYPE_NGEO = "ngeo"
 INTERFACE_TYPE_NGEO_CATALOGUE = "ngeo"
 
 
 def add_interface(
-    config, interface_name="desktop", interface_type=INTERFACE_TYPE_CGXP, default=False, **kwargs
+    config, interface_name="desktop", interface_type=INTERFACE_TYPE_NGEO, default=False, **kwargs
 ):  # pragma: no cover
-    if interface_type == INTERFACE_TYPE_CGXP:
-        add_interface_cgxp(
-            config,
-            interface_name=interface_name,
-            route_names=(interface_name, interface_name + ".js"),
-            routes=(
-                "/" if default else "/{0!s}".format(interface_name),
-                "/{0!s}.js".format(interface_name)
-            ),
-            renderers=("/{0!s}.html".format(interface_name), "/{0!s}.js".format(interface_name)),
-            **kwargs
-        )
-
-    elif interface_type == INTERFACE_TYPE_NGEO:
-        route = "/" if default else "/{0!s}".format(interface_name)
-        add_interface_ngeo(
-            config,
-            route_name=interface_name,
-            route=route,
-            renderer="/{0!s}.html".format(interface_name),
-            **kwargs
-        )
-
-
-def add_interface_cgxp(
-        config, interface_name, route_names, routes, renderers, permission=None):  # pragma: no cover
-    # Cannot be at the header to don"t load the model too early
-    from c2cgeoportal_geoportal.views.entry import Entry
-
-    def add_interface(f):
-        def new_f(root, request):
-            request.interface_name = interface_name
-            return f(root, request)
-        return new_f
-
-    config.add_route(route_names[0], routes[0])
-    config.add_view(
-        Entry,
-        decorator=add_interface,
-        attr="get_cgxp_index_vars",
-        route_name=route_names[0],
-        renderer=renderers[0],
-        permission=permission
-    )
-    # permalink theme: recover the theme for generating custom viewer.js url
-    config.add_route(
-        "{0!s}theme".format(route_names[0]),
-        "{0!s}{1!s}theme/{{themes}}".format(routes[0], "" if routes[0][-1] == "/" else "/"),
-    )
-    config.add_view(
-        Entry,
-        decorator=add_interface,
-        attr="get_cgxp_permalinktheme_vars",
-        route_name="{0!s}theme".format(route_names[0]),
-        renderer=renderers[0],
-        permission=permission
-    )
-    config.add_route(
-        route_names[1], routes[1],
-        request_method="GET",
-        pregenerator=C2CPregenerator(role=True),
-    )
-    config.add_view(
-        Entry,
-        decorator=add_interface,
-        attr="get_cgxp_viewer_vars",
-        route_name=route_names[1],
-        renderer=renderers[1],
-        permission=permission
+    del interface_type  # unused
+    route = "/" if default else "/{0!s}".format(interface_name)
+    add_interface_ngeo(
+        config,
+        route_name=interface_name,
+        route=route,
+        renderer="/{0!s}.html".format(interface_name),
+        **kwargs
     )
 
 

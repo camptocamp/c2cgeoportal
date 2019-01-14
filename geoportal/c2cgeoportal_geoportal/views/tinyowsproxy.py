@@ -30,18 +30,20 @@
 
 import logging
 
-from pyramid.view import view_config
 from defusedxml import ElementTree
-from pyramid.httpexceptions import HTTPForbidden, HTTPBadRequest, HTTPUnauthorized
+from pyramid.httpexceptions import HTTPBadRequest, HTTPForbidden, HTTPUnauthorized
+from pyramid.view import view_config
 
+from c2cgeoportal_commons import models
+from c2cgeoportal_commons.models import main, static
+from c2cgeoportal_geoportal.lib.caching import NO_CACHE, PRIVATE_CACHE
+from c2cgeoportal_geoportal.lib.filter_capabilities import (filter_wfst_capabilities, normalize_tag,
+                                                            normalize_typename)
 from c2cgeoportal_geoportal.lib.layers import get_writable_layers
-from c2cgeoportal_geoportal.lib.caching import get_region, NO_CACHE, PRIVATE_CACHE
-from c2cgeoportal_geoportal.lib.filter_capabilities import filter_wfst_capabilities, \
-    normalize_tag, normalize_typename
 from c2cgeoportal_geoportal.views.ogcproxy import OGCProxy
 
-cache_region = get_region()
-log = logging.getLogger(__name__)
+
+LOG = logging.getLogger(__name__)
 
 
 class TinyOWSProxy(OGCProxy):
@@ -51,10 +53,11 @@ class TinyOWSProxy(OGCProxy):
         self.settings = request.registry.settings.get("tinyowsproxy", {})
 
         assert "tinyows_url" in self.settings, "tinyowsproxy.tinyows_url must be set"
-        assert self.default_ogc_server, "mapserverproxy.default_ogc_server must be set"
+        self.ogc_server = models.DBSession.query(main.OGCServer).filter(
+            main.OGCServer.name == self.settings["ogc_server"]
+        ).one()
 
         self.user = self.request.user
-        self.role_id = None if self.user is None else self.user.role.id
 
         # params hold the parameters we are going to send to TinyOWS
         self.lower_params = self._get_lower_params(dict(self.request.params))
@@ -82,10 +85,9 @@ class TinyOWSProxy(OGCProxy):
                 (operation, typenames_post) = \
                     self._parse_body(self.request.body)
             except Exception as e:
-                log.error("Error while parsing POST request body")
-                log.exception(e)
-                raise HTTPBadRequest(
-                    "Error parsing the request (see logs for more details)")
+                LOG.error("Error while parsing POST request body")
+                LOG.exception(e)
+                raise HTTPBadRequest("Error parsing the request (see logs for more details)")
 
             typenames = typenames.union(typenames_post)
 
@@ -111,7 +113,7 @@ class TinyOWSProxy(OGCProxy):
         cache_control = PRIVATE_CACHE if use_cache else NO_CACHE
 
         response = self._proxy_callback(
-            operation, self.role_id, cache_control,
+            operation, self.user, cache_control,
             url=self._get_wfs_url(), params=dict(self.request.params), cache=use_cache,
             headers=self._get_headers(), body=self.request.body,
         )
@@ -124,7 +126,7 @@ class TinyOWSProxy(OGCProxy):
         """
 
         writable_layers = set()
-        for gmflayer in list(get_writable_layers(self.role_id, [self.default_ogc_server.id]).values()):
+        for gmflayer in list(get_writable_layers(self.request.user, [self.ogc_server.id]).values()):
             for ogclayer in gmflayer.layer.split(","):
                 writable_layers.add(ogclayer)
         return typenames.issubset(writable_layers)
@@ -135,13 +137,13 @@ class TinyOWSProxy(OGCProxy):
             headers["Host"] = self.settings.get("tinyows_host")
         return headers
 
-    def _proxy_callback(self, operation, role_id, cache_control, *args, **kwargs):
+    def _proxy_callback(self, operation, user: static.User, cache_control, *args, **kwargs):
         response = self._proxy(*args, **kwargs)
         content = response.text
 
         if operation == "getcapabilities":
             content = filter_wfst_capabilities(
-                content, role_id, super(TinyOWSProxy, self)._get_wfs_url(), self.request
+                content, user, super(TinyOWSProxy, self)._get_wfs_url(), self.request
             )
 
         content = self._filter_urls(

@@ -27,7 +27,7 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-# pylint: disable=no-value-for-parameter
+# pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access,no-value-for-parameter
 
 
 from urllib.parse import urlencode
@@ -66,7 +66,8 @@ class TestThemesEditColumns(TestCase):
         self.user = User(
             username="__test_user",
             password="__test_user",
-            role=self.role
+            settings_role=self.role,
+            roles=[self.role]
         )
         self.main = Interface(name="main")
 
@@ -219,7 +220,6 @@ class TestThemesEditColumns(TestCase):
 
         layer_id = self._create_layer(geom_type=True)
         entry = Entry(self._get_request(layer_id, username="__test_user", params={
-            "version": "2",
             "interface": "main"
         }))
 
@@ -327,7 +327,6 @@ class TestThemesEditColumns(TestCase):
         ]
         layer_id = self._create_layer(geom_type=False, exclude_properties=True, metadatas=metadatas)
         entry = Entry(self._get_request(layer_id, username="__test_user", params={
-            "version": "2",
             "interface": "main"
         }))
 

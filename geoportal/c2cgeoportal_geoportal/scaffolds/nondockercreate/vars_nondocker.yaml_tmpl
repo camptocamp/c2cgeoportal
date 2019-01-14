@@ -24,6 +24,7 @@ vars:
 
   tinyowsproxy:
     tinyows_url: http://localhost/{instanceid}/tinyows
+    ogc_server: source for image/png
   print_url: http://localhost:8080/print-{instanceid}/print/{package}
   devserver_url: http://localhost:{DEV_SERVER_PORT}/{instanceid}/wsgi/
   pdfreport:

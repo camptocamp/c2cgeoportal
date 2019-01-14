@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access
+
 
 import base64
 from unittest import TestCase
@@ -47,9 +49,7 @@ class TestRequestProperty(TestCase):
         from c2cgeoportal_commons.models.static import User
 
         r = Role(name="__test_role")
-        u = User(
-            username="__test_user", password="__test_user", role=r
-        )
+        u = User(username="__test_user", password="__test_user", settings_role=r, roles=[r])
 
         DBSession.add_all([u, r])
         transaction.commit()
@@ -62,7 +62,7 @@ class TestRequestProperty(TestCase):
 
         transaction.commit()
 
-        DBSession.query(User).filter_by(username="__test_user").delete()
+        DBSession.delete(DBSession.query(User).filter_by(username="__test_user").one())
         DBSession.query(Role).filter_by(name="__test_role").delete()
         transaction.commit()
 
@@ -73,7 +73,7 @@ class TestRequestProperty(TestCase):
     def test_request_auth(self):
         request = create_dummy_request(authentication=False, user="__test_user")
         self.assertEqual(request.user.username, "__test_user")
-        self.assertEqual(request.user.role.name, "__test_role")
+        self.assertEqual([role.name for role in request.user.roles], ["__test_role"])
 
     def test_request_right_auth(self):
         request = create_dummy_request(headers={
@@ -103,13 +103,15 @@ class TestRequestProperty(TestCase):
             class Role:
                 pass
 
-            u = User()
-            u.username = "__foo"
-            u.role = Role()
-            u.role.name = "__bar"
-            return u
+            user = User()
+            user.username = "__foo"
+            role = Role()
+            role.name = "__bar"
+            user.settings_role = role
+            user.roles = [role]
+            return user
 
         request = create_dummy_request(authentication=False, user="__test_user")
         request.set_property(setter, name="user", reify=True)
         self.assertEqual(request.user.username, "__foo")
-        self.assertEqual(request.user.role.name, "__bar")
+        self.assertEqual([role.name for role in request.user.roles], ["__bar"])

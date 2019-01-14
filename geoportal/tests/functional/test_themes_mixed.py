@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access
+
 
 import re
 import transaction
@@ -176,7 +178,6 @@ class TestThemesView(TestCase):
 
     def test_theme_mixed(self):
         entry = self._create_entry_obj(params={
-            "version": "2",
             "interface": "main",
         })
         themes = entry.themes()

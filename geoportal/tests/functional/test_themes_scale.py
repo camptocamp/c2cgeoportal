@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access
+
 
 import transaction
 
@@ -166,9 +168,7 @@ class TestThemesScale(TestCase):
         return result
 
     def test_scale(self):
-        entry = self._create_entry_obj(params={
-            "version": "2",
-        })
+        entry = self._create_entry_obj()
         themes = entry.themes()
         self.assertEqual(set(themes["errors"]), set())
         self.assertEqual(

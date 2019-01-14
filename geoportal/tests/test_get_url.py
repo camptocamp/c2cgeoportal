@@ -27,37 +27,14 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access
+
 
 from unittest import TestCase
 from tests import create_dummy_request
 
 
 class TestGetURL(TestCase):
-
-    def test_get_url(self):
-        from c2cgeoportal_geoportal.lib import get_url
-
-        request = create_dummy_request({
-            "package": "my_project",
-            "servers": {
-                "srv": "https://example.com/test",
-            },
-        })
-
-        def static_url(path, **kwargs):
-            del kwargs
-            return "http://server.org/" + path
-        request.static_url = static_url
-
-        self.assertEqual(get_url("static://pr:st/icon.png", request), "http://server.org/pr:st/icon.png")
-        self.assertEqual(get_url("static:///icon.png", request), "http://server.org/c2cgeoportal:project/icon.png")
-        self.assertEqual(get_url("config://srv/icon.png", request), "https://example.com/test/icon.png?")
-        self.assertEqual(get_url("config://srv2/icon.png", request, "/icon2.png"), "/icon2.png")
-        self.assertEqual(get_url("http://example.com/icon.png", request), "http://example.com/icon.png")
-        self.assertEqual(get_url("https://example.com/icon.png", request), "https://example.com/icon.png")
-        errors = set()
-        self.assertEqual(get_url("config://srv2/icon.png", request, errors=errors), None)
-        self.assertEqual(errors, set(["The server 'srv2' is not found in the config"]))
 
     def test_get_url2(self):
         from c2cgeoportal_geoportal.lib import get_url2

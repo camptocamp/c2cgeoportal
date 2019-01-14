@@ -126,7 +126,9 @@ dockerBuild {
                         try {
                             sh './docker-compose-run alembic --config=geoportal/tests/functional/alembic.ini --name=main upgrade head'
                             sh './docker-compose-run alembic --config=geoportal/tests/functional/alembic.ini --name=static upgrade head'
-                            sh './docker-compose-run make tests'
+                            timeout(time: 10, unit: 'MINUTES') {
+                                sh './docker-compose-run make tests'
+                            }
                         } catch (Exception error) {
                             sh 'docker-compose logs --timestamps'
                             throw error
@@ -201,7 +203,7 @@ dockerBuild {
                                         // travis/vars.yaml geoportal/GUNICORN_PARAMS
                                         // test-new-project timeout
                                         timeout(3) {
-                                            sh './docker-run --network=internal travis/test-new-project http://front/${path}'
+                                            sh "./docker-run --network=internal travis/test-new-project http://front/${path}"
                                         }
                                     } catch (Exception error) {
                                         sh './docker-run --network=internal curl http://front/c2c/debug/stacks?secret=c2c'

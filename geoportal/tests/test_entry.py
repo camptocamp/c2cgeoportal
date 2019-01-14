@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access
+
 
 from unittest import TestCase
 from pyramid import testing
@@ -163,7 +165,7 @@ class TestEntryView(TestCase):
                 "available_in_templates": ["func"]
             },
             "admin_interface": {
-                "available_functionalities": ["func"]
+                "available_functionalities": [{"name": "func"}]
             }
         }
         entry = Entry(request)
@@ -188,8 +190,7 @@ class TestEntryView(TestCase):
             def __init__(self, role="__test_role", functionalities=None):
                 if functionalities is None:
                     functionalities = []
-                self.role_name = role
-                self.role = G(role, functionalities)
+                self.roles = [G(role, functionalities)]
 
         request.user = U()
         entry = Entry(request)
@@ -197,8 +198,10 @@ class TestEntryView(TestCase):
             "success": True,
             "username": "__test_user",
             "is_password_changed": True,
-            "role_name": "__test_role",
-            "role_id": 123,
+            "roles": [{
+                "name": "__test_role",
+                "id": 123,
+            }],
             "functionalities": {
                 "func": ["reg"]
             }
@@ -215,8 +218,10 @@ class TestEntryView(TestCase):
             "success": True,
             "username": "__test_user",
             "is_password_changed": True,
-            "role_name": "__test_role2",
-            "role_id": 123,
+            "roles": [{
+                "name": "__test_role2",
+                "id": 123,
+            }],
             "functionalities": {
                 "func": ["user"]
             }

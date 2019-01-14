@@ -30,16 +30,17 @@
 import logging
 from json import dumps, loads
 
-from c2cgeoportal_geoportal.lib.layers import get_protected_layers, get_private_layers
-
+from pyramid.httpexceptions import HTTPBadRequest, HTTPForbidden
 from pyramid.view import view_config
-from pyramid.httpexceptions import HTTPForbidden, HTTPBadRequest
 
-from c2cgeoportal_geoportal.lib.caching import NO_CACHE
+from c2cgeoportal_commons import models
+from c2cgeoportal_commons.models import main
 from c2cgeoportal_geoportal.lib import add_url_params
+from c2cgeoportal_geoportal.lib.caching import NO_CACHE
+from c2cgeoportal_geoportal.lib.layers import get_private_layers, get_protected_layers
 from c2cgeoportal_geoportal.views.ogcproxy import OGCProxy
 
-log = logging.getLogger(__name__)
+LOG = logging.getLogger(__name__)
 
 
 class PdfReport(OGCProxy):  # pragma: no cover
@@ -119,16 +120,16 @@ class PdfReport(OGCProxy):  # pragma: no cover
             else [self.layername + "." + ids]
 
         if layer_config["check_credentials"]:
-            # check user credentials
-            role_id = None if self.request.user is None else self.request.user.role.id
-
             # FIXME: support of mapserver groups
-            ogc_server_ids = [self.default_ogc_server.id]
+            ogc_server = models.DBSession.query(main.OGCServer).filter(
+                main.OGCServer.name == layer_config["ogc_server"]
+            ).one()
+            ogc_server_ids = [ogc_server]
 
             private_layers_object = get_private_layers(ogc_server_ids)
             private_layers_names = [private_layers_object[oid].name for oid in private_layers_object]
 
-            protected_layers_object = get_protected_layers(role_id, ogc_server_ids)
+            protected_layers_object = get_protected_layers(self.request.user, ogc_server_ids)
             protected_layers_names = [protected_layers_object[oid].name for oid in protected_layers_object]
 
             if self.layername in private_layers_names and self.layername not in protected_layers_names:

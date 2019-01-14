@@ -42,7 +42,7 @@ import c2cgeoportal_geoportal
 import tests
 
 from c2c.template.config import config as configuration
-from c2cgeoportal_geoportal.lib import functionality, caching
+from c2cgeoportal_geoportal.lib import caching
 
 
 mapserv_url = "http://mapserver:8080/"
@@ -66,10 +66,10 @@ def cleanup_db():
         DBSession.delete(ti)
     DBSession.query(OGCServer).delete()
     DBSession.query(Interface).delete()
-    DBSession.query(User).delete()
     for r in DBSession.query(Role).all():
         r.functionnalities = []
         DBSession.delete(r)
+    DBSession.query(User).delete()
     DBSession.query(Functionality).delete()
     DBSession.query(FullTextSearch).delete()
     DBSession.query(Shorturl).delete()
@@ -108,6 +108,7 @@ def setup_common():
     config = testing.setUp(settings=configuration.get_config())
 
     c2cgeoportal_geoportal.init_dbsessions(config.get_settings(), config)
+    from c2cgeoportal_geoportal.lib import functionality
     functionality.FUNCTIONALITIES_TYPES = None
 
     cleanup_db()
@@ -117,6 +118,7 @@ def teardown_common():
     from c2cgeoportal_commons import models
     cleanup_db()
     testing.tearDown()
+    from c2cgeoportal_geoportal.lib import functionality
     functionality.FUNCTIONALITIES_TYPES = None
 
     models.DBSession.close()
@@ -155,10 +157,6 @@ def create_dummy_request(additional_settings=None, authentication=True, user=Non
     from c2cgeoportal_geoportal.lib.authentication import create_authentication
     request = tests.create_dummy_request({
         "host_forward_host": [],
-        "mapserverproxy": {
-            "default_ogc_server": "__test_ogc_server",
-            "external_ogc_server": "__test_external_ogc_server",
-        },
         "functionalities": {
             "registered": {},
             "anonymous": {},
@@ -166,6 +164,12 @@ def create_dummy_request(additional_settings=None, authentication=True, user=Non
         },
         "layers": {
             "geometry_validation": True
+        },
+        "admin_interface": {
+            "available_functionalities": [{
+                "name": "mapserver_substitution",
+                "single": False,
+            }]
         }
     }, *args, **kargs)
     request.accept_language = webob.acceptparse.create_accept_language_header("fr-CH,fr;q=0.8,en;q=0.5,en-US;q=0.3")

@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access
+
 
 import transaction
 
@@ -61,7 +63,7 @@ class TestThemesPrivateView(TestCase):
 
         main = Interface(name=u"desktop")
         role = Role(name=u"__test_role")
-        user = User(username=u"__test_user", password=u"__test_user", role=role)
+        user = User(username=u"__test_user", password=u"__test_user", settings_role=role, roles=[role])
         user.email = "__test_user@example.com"
         ogc_server_internal, _ = create_default_ogcserver()
 
@@ -119,15 +121,10 @@ class TestThemesPrivateView(TestCase):
         for item in DBSession.query(TreeItem).all():
             DBSession.delete(item)
         DBSession.query(OGCServer).delete()
-        DBSession.query(Interface).filter(
-            Interface.name == "main"
-        ).delete()
-        DBSession.query(User).filter(
-            User.username == "__test_user"
-        ).delete()
-        DBSession.query(Role).filter(
-            Role.name == "__test_role"
-        ).delete()
+        DBSession.query(Interface).filter(Interface.name == "main").delete()
+        for user in DBSession.query(User).filter(User.username == "__test_user").all():
+            DBSession.delete(user)
+        DBSession.query(Role).filter(Role.name == "__test_role").delete()
 
         transaction.commit()
 
@@ -183,9 +180,7 @@ class TestThemesPrivateView(TestCase):
         }
 
     def test_public(self):
-        entry = self._create_entry_obj(params={
-            "version": "2"
-        })
+        entry = self._create_entry_obj()
         themes = entry.themes()
         self.assertEquals(self._get_filtered_errors(themes), set())
         self.assertEquals(
@@ -206,9 +201,7 @@ class TestThemesPrivateView(TestCase):
     def test_private(self):
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
-        entry = self._create_entry_obj(params={
-            "version": "2"
-        }, user=DBSession.query(User).filter_by(username=u"__test_user").one())
+        entry = self._create_entry_obj(user=DBSession.query(User).filter_by(username=u"__test_user").one())
         themes = entry.themes()
         self.assertEquals(self._get_filtered_errors(themes), set())
         self.assertEquals(

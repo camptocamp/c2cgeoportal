@@ -7,3 +7,6 @@ ignored-classes=sqlalchemy.orm.scoping.scoped_session,
     pyramid.httpexceptions.HTTPInternalServerError,
     pyramid.httpexceptions.HTTPBadRequest
 generated-members=requests.packages
+
+[FORMAT]
+max-line-length=110

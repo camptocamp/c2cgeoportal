@@ -27,10 +27,11 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access
+
 
 from unittest import TestCase
 
-from c2cgeoportal_geoportal.lib import functionality
 from tests.functional import (  # noqa
     teardown_common as teardown_module,
     setup_common as setup_module,
@@ -51,13 +52,15 @@ class TestFunctionalities(TestCase):
         user1 = User(
             username="__test_user1",
             password="__test_user1",
-            role=role1
+            settings_role=role1,
+            roles=[role1]
         )
         role2 = Role(name="__test_role2")
         user2 = User(
             username="__test_user2",
             password="__test_user2",
-            role=role2
+            settings_role=role2,
+            roles=[role2]
         )
 
         functionality1 = Functionality("__test_s", "db")
@@ -74,6 +77,7 @@ class TestFunctionalities(TestCase):
         from c2cgeoportal_commons.models.main import Role, Functionality, OGCServer
         from c2cgeoportal_commons.models.static import User
 
+        from c2cgeoportal_geoportal.lib import functionality
         functionality.FUNCTIONALITIES_TYPES = None
 
         transaction.commit()
@@ -111,6 +115,7 @@ class TestFunctionalities(TestCase):
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
         from c2cgeoportal_geoportal.lib.functionality import get_functionality
+        from c2cgeoportal_geoportal.lib import functionality
 
         request = create_dummy_request()
         request.user = None
@@ -125,7 +130,7 @@ class TestFunctionalities(TestCase):
                 "registered": {},
             },
             "admin_interface": {
-                "available_functionalities": ["__test_a", "__test_s"]
+                "available_functionalities": [{"name": "__test_a"}, {"name": "__test_s"}]
             }
         }
         functionality.FUNCTIONALITIES_TYPES = None
@@ -137,7 +142,7 @@ class TestFunctionalities(TestCase):
         self.assertEqual(get_functionality("__test_s", request1), [])
         self.assertEqual(get_functionality("__test_a", request1), [])
         self.assertEqual(get_functionality("__test_s", request2), ["db"])
-        self.assertEqual(get_functionality("__test_a", request2), ["db1", "db2"])
+        self.assertEqual(set(get_functionality("__test_a", request2)), {"db1", "db2"})
 
         settings = {
             "functionalities": {
@@ -148,7 +153,7 @@ class TestFunctionalities(TestCase):
                 }
             },
             "admin_interface": {
-                "available_functionalities": ["__test_a", "__test_s"]
+                "available_functionalities": [{"name": "__test_a"}, {"name": "__test_s"}]
             }
         }
         functionality.FUNCTIONALITIES_TYPES = None
@@ -160,7 +165,7 @@ class TestFunctionalities(TestCase):
         self.assertEqual(get_functionality("__test_s", request1), ["registered"])
         self.assertEqual(get_functionality("__test_a", request1), ["r1", "r2"])
         self.assertEqual(get_functionality("__test_s", request2), ["db"])
-        self.assertEqual(get_functionality("__test_a", request2), ["db1", "db2"])
+        self.assertEqual(set(get_functionality("__test_a", request2)), {"db1", "db2"})
 
         settings = {
             "functionalities": {
@@ -171,7 +176,7 @@ class TestFunctionalities(TestCase):
                 "registered": {}
             },
             "admin_interface": {
-                "available_functionalities": ["__test_a", "__test_s"]
+                "available_functionalities": [{"name": "__test_a"}, {"name": "__test_s"}]
             }
         }
         functionality.FUNCTIONALITIES_TYPES = None
@@ -183,7 +188,7 @@ class TestFunctionalities(TestCase):
         self.assertEqual(get_functionality("__test_s", request1), ["anonymous"])
         self.assertEqual(get_functionality("__test_a", request1), ["a1", "a2"])
         self.assertEqual(get_functionality("__test_s", request2), ["db"])
-        self.assertEqual(get_functionality("__test_a", request2), ["db1", "db2"])
+        self.assertEqual(set(get_functionality("__test_a", request2)), {"db1", "db2"})
 
         settings = {
             "functionalities": {
@@ -197,7 +202,7 @@ class TestFunctionalities(TestCase):
                 }
             },
             "admin_interface": {
-                "available_functionalities": ["__test_a", "__test_s"]
+                "available_functionalities": [{"name": "__test_a"}, {"name": "__test_s"}]
             }
         }
         functionality.FUNCTIONALITIES_TYPES = None
@@ -209,13 +214,13 @@ class TestFunctionalities(TestCase):
         self.assertEqual(get_functionality("__test_s", request1), ["registered"])
         self.assertEqual(get_functionality("__test_a", request1), ["r1", "r2"])
         self.assertEqual(get_functionality("__test_s", request2), ["db"])
-        self.assertEqual(get_functionality("__test_a", request2), ["db1", "db2"])
+        self.assertEqual(set(get_functionality("__test_a", request2)), {"db1", "db2"})
 
     def test_web_client_functionalities(self):
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
         from tests.functional import create_dummy_request
-        from c2cgeoportal_geoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.lib import functionality
 
         request = create_dummy_request()
         request.static_url = lambda url: "http://example.com/dummy/static/url"
@@ -239,17 +244,10 @@ class TestFunctionalities(TestCase):
                 "available_in_templates": ["__test_s", "__test_a"],
             },
             "admin_interface": {
-                "available_functionalities": ["__test_a", "__test_s"]
+                "available_functionalities": [{"name": "__test_a"}, {"name": "__test_s"}]
             },
         }
         functionality.FUNCTIONALITIES_TYPES = None
         request.registry.settings.update(settings)
         request1.registry.settings.update(settings)
         request2.registry.settings.update(settings)
-
-        annon = Entry(request).get_cgxp_viewer_vars()
-        u1 = Entry(request1).get_cgxp_viewer_vars()
-        u2 = Entry(request2).get_cgxp_viewer_vars()
-        self.assertEqual(annon["functionality"], {"__test_s": ["anonymous"], "__test_a": ["a1", "a2"]})
-        self.assertEqual(u1["functionality"], {"__test_s": ["registered"], "__test_a": ["r1", "r2"]})
-        self.assertEqual(u2["functionality"], {"__test_s": ["db"], "__test_a": ["db1", "db2"]})

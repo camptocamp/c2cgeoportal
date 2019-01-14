@@ -27,13 +27,14 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access
+
 
 from unittest import TestCase
 
 import transaction
 from pyramid import testing
 
-from c2cgeoportal_geoportal.lib import functionality
 from tests.functional import (  # noqa
     teardown_common as teardown_module,
     setup_common as setup_module,
@@ -99,6 +100,7 @@ class TestMobileDesktop(TestCase):
     def teardown_method(self, _):
         testing.tearDown()
 
+        from c2cgeoportal_geoportal.lib import functionality
         functionality.FUNCTIONALITIES_TYPES = None
 
         from c2cgeoportal_commons.models import DBSession
@@ -130,20 +132,3 @@ class TestMobileDesktop(TestCase):
         request.params = params
 
         return Entry(request)
-
-    def test_desktop_layers(self):
-        entry = self._create_entry_obj()
-        response_vars = entry.get_cgxp_viewer_vars()
-
-        import json
-        themes = json.loads(response_vars["themes"])
-        self.assertEqual(
-            {t["name"] for t in themes},
-            set(["__test_desktop_only_theme", "__test_theme"]),
-        )
-        theme = [t for t in themes if t["name"] == "__test_theme"]
-        layers = theme[0]["children"][0]["children"]
-        self.assertEqual(
-            {l["name"] for l in layers},
-            set(["__test_layer", "__test_desktop_only_layer"]),
-        )

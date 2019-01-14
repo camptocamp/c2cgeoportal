@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access
+
 
 from unittest import TestCase
 import transaction
@@ -77,8 +79,7 @@ class TestMapserverproxyCapabilities(TestCase):
         ogcserver_wfs2.auth = OGCSERVER_AUTH_STANDARD
 
         role = Role(name="__test_role", description="__test_role")
-        user = User(username="__test_user", password="__test_user")
-        user.role_name = "__test_role"
+        user = User(username="__test_user", password="__test_user", settings_role=role, roles=[role])
 
         main = Interface(name="main")
 
@@ -119,8 +120,8 @@ class TestMapserverproxyCapabilities(TestCase):
         request = create_dummy_request({
             "admin_interface": {
                 "available_functionalities": [
-                    "mapserver_substitution",
-                    "print_template",
+                    {"name": "mapserver_substitution"},
+                    {"name": "print_template"},
                 ]
             },
             "servers": {
@@ -142,21 +143,19 @@ class TestMapserverproxyCapabilities(TestCase):
         request = create_dummy_request({
             "admin_interface": {
                 "available_functionalities": [
-                    "mapserver_substitution",
-                    "print_template",
+                    {"name": "mapserver_substitution"},
+                    {"name": "print_template"},
                 ]
             },
             "servers": {
                 "srv": "http://example.com"
-            },
-            "mapserverproxy": {
-                "default_ogc_server": ogcserver,
             },
         }, user=username)
         request.params.update(dict(
             service=service,
             version="1.1.1",
             request="getcapabilities",
+            ogcserver=ogcserver
         ))
         return MapservProxy(request).proxy()
 

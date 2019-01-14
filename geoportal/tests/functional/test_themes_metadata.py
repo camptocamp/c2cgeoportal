@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access
+
 
 import re
 import transaction
@@ -195,7 +197,6 @@ class TestThemesViewMetadata(TestCase):
             return "http://dummy.org/{}".format(url)
         request.static_url = static_url
         request.params = {
-            "version": "2",
             "interface": "desktop",
         }
         entry = Entry(request)

@@ -52,17 +52,17 @@ vars:
   # mapserver visible area
   mapserver_join_area: ra.area
   # mapserver join close
-  mapserver_join_where: "rra.role_id = %role_id% AND rra.restrictionarea_id = ra.id AND \
+  mapserver_join_where: "rra.role_id in (%role_ids%) AND rra.restrictionarea_id = ra.id AND \
     lra.restrictionarea_id = ra.id AND lra.layer_id = la.id AND la.name = "
   # mapserver metadata for validation
   mapserver_layer_metadata: ""
   mapserver_layer_validation: |
-    "default_role_id" "-1"
-    "role_id" "^-?[0-9]*$"
+    "default_role_ids" "-1"
+    "role_ids" "^-?[0-9,]*$"
   # mapfile data subselect
   mapfile_data_subselect: "SELECT ST_Collect(ra.area) FROM main.restrictionarea AS ra, \
     main.role_restrictionarea AS rra, main.layer_restrictionarea AS lra, main.treeitem AS la \
-    WHERE rra.role_id = %role_id% AND rra.restrictionarea_id = ra.id AND lra.restrictionarea_id = ra.id \
+    WHERE rra.role_id in (%role_ids%) AND rra.restrictionarea_id = ra.id AND lra.restrictionarea_id = ra.id \
     AND lra.layer_id = la.id AND la.name = "
   # mapserver filter on role id only
   mapfile_data_noarea_subselect: "SELECT rra.role_id FROM {mapserver_join_tables} \
@@ -366,13 +366,17 @@ vars:
     # The list of functionalities that can be configured
     # through the admin interface.
     available_functionalities:
-      - default_basemap
-      - default_theme
-      - print_template
-      - mapserver_substitution
-      - filterable_layers
-      - preset_layer_filter
-      - open_panel
+      - name: default_basemap
+        single: true
+      - name: default_theme
+        single: true
+      - name: print_template
+      - name: mapserver_substitution
+      - name: filterable_layers
+      - name: preset_layer_filter
+        single: true
+      - name: open_panel
+        single: true
 
   functionalities:
     # Functionalities that are accessible to anonymous
@@ -412,6 +416,7 @@ vars:
   tinyowsproxy:
     # URL to internal TinyOWS instance
     tinyows_url: '{TINYOWS_URL}'
+    ogc_server: source for image/png
 
     # If the `online_resource` url in the TinyOWS configuration is not set
     # to the TinyOWS proxy url (e.g. when the service is also used without
@@ -423,6 +428,9 @@ vars:
     # When running a c2cgeoportal appl. in debug mode (with `make serve`)
     # the host has to be set explicitly in a vhost environment.
     # tinyows_host: {host}
+
+  api:
+    ogc_server: source for image/png
 
   resourceproxy:
     # List of urls from which it is safe to load content
@@ -609,6 +617,7 @@ vars:
             SERVICE: WMS
             VERSION: 1.1.1
             REQUEST: GetCapabilities
+            ogcserver: source for image/png
           level: 3
         - name: mapserverproxy
           display_name: mapserverproxy_wfs
@@ -616,6 +625,7 @@ vars:
             SERVICE: WFS
             VERSION: 1.1.0
             REQUEST: GetCapabilities
+            ogcserver: source for image/png
           level: 3
     themes:
       params:

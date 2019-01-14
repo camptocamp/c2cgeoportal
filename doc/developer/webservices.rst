@@ -24,8 +24,10 @@ Parameters
 
 Requests examples:
 
+* themes
 * themes?background=background
-* themes?group=Transport%sets=group
+* themes?group=Transport
+* themes?group=Transport&sets=group
 
 Result
 ------
@@ -256,7 +258,7 @@ Anonymous JSON result
 
    {
        "functionality": {
-           "<functionnality_name>": ["functionnality_value"],
+           "<functionality_name>": ["functionality_value"],
            ...
        }
    }
@@ -271,10 +273,12 @@ Connected JSON result
    {
        "username": "<username>",
        "is_password_changed": "True"/"False", # If false the user should change his password
-       "role_name": "<role_name>",
-       "role_id": <role_id>
+       "roles": [{
+           "name": "<role_name>",
+           "id": <role_id>
+       }, ...],
        "functionality": {
-           "<functionnality_name>": ["functionnality_value"],
+           "<functionality_name>": ["functionality_value"],
            ...
        }
    }

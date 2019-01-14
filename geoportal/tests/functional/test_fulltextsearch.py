@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access
+
 
 from unittest import TestCase
 
@@ -51,13 +53,11 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal_commons.models.main import FullTextSearch, Role, Interface
         from c2cgeoportal_commons.models.static import User
 
-        user1 = User(username="__test_user1", password="__test_user1")
         role1 = Role(name="__test_role1", description="__test_role1")
-        user1.role_name = role1.name
+        user1 = User(username="__test_user1", password="__test_user1", settings_role=role1, roles=[role1])
 
-        user2 = User(username="__test_user2", password="__test_user2")
         role2 = Role(name="__test_role2", description="__test_role2")
-        user2.role_name = role2.name
+        user2 = User(username="__test_user2", password="__test_user2", settings_role=role2, roles=[role2])
 
         entry1 = FullTextSearch()
         entry1.label = "label1"
@@ -128,8 +128,8 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal_commons.models.main import FullTextSearch, Role, Interface
         from c2cgeoportal_commons.models.static import User
 
-        DBSession.query(User).filter(User.username == "__test_user1").delete()
-        DBSession.query(User).filter(User.username == "__test_user2").delete()
+        DBSession.delete(DBSession.query(User).filter(User.username == "__test_user1").one())
+        DBSession.delete(DBSession.query(User).filter(User.username == "__test_user2").one())
 
         DBSession.query(FullTextSearch).filter(
             FullTextSearch.label == "label1").delete()

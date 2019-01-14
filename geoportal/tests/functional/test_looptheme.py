@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access
+
 
 from unittest import TestCase
 
@@ -89,13 +91,11 @@ class TestLoopTheme(TestCase):
     def test_theme(self):
         from c2cgeoportal_geoportal.views.entry import Entry
 
-        request = testing.DummyRequest({
-            "version": "2",
-        })
+        request = testing.DummyRequest()
         request.static_url = lambda url: "http://example.com/dummy/static/url"
         request.route_url = lambda url, _query={}: mapserv_url
         request.client_addr = None
         request.user = None
         entry = Entry(request)
-        _, errors = entry._themes(None, "desktop2", True, 2)
+        _, errors = entry._themes("desktop2", True, 2)
         self.assertEqual(len([e for e in errors if e == "Too many recursions with group '__test_layer_group'"]), 1)

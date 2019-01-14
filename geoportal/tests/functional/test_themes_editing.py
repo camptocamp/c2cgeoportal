@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access
+
 
 from unittest import TestCase
 
@@ -34,7 +36,6 @@ import transaction
 from geoalchemy2 import WKTElement
 from pyramid import testing
 
-from c2cgeoportal_geoportal.lib import functionality
 from tests.functional import (  # noqa
     teardown_common as teardown_module,
     setup_common as setup_module,
@@ -53,6 +54,7 @@ class TestThemeEditing(TestCase):
         self.maxDiff = None
         self._tables = []
 
+        from c2cgeoportal_geoportal.lib import functionality
         functionality.FUNCTIONALITIES_TYPES = None
 
         from c2cgeoportal_commons.models import DBSession
@@ -76,13 +78,13 @@ class TestThemeEditing(TestCase):
 
         role1 = Role(name="__test_role1")
         role1.id = 999
-        user1 = User(username="__test_user1", password="__test_user1", role=role1)
+        user1 = User(username="__test_user1", password="__test_user1", settings_role=role1, roles=[role1])
         user1.email = "__test_user1@example.com"
 
         role2 = Role(name="__test_role2", extent=WKTElement(
             "POLYGON((1 2, 1 4, 3 4, 3 2, 1 2))", srid=21781
         ))
-        user2 = User(username="__test_user2", password="__test_user2", role=role2)
+        user2 = User(username="__test_user2", password="__test_user2", settings_role=role2, roles=[role2])
 
         main = Interface(name="main")
 
@@ -130,6 +132,7 @@ class TestThemeEditing(TestCase):
     def teardown_method(self, _):
         testing.tearDown()
 
+        from c2cgeoportal_geoportal.lib import functionality
         functionality.FUNCTIONALITIES_TYPES = None
 
         from c2cgeoportal_commons.models import DBSession
@@ -137,8 +140,8 @@ class TestThemeEditing(TestCase):
             RestrictionArea, Theme, LayerGroup, Interface, OGCServer
         from c2cgeoportal_commons.models.static import User
 
-        DBSession.query(User).filter(User.username == "__test_user1").delete()
-        DBSession.query(User).filter(User.username == "__test_user2").delete()
+        DBSession.delete(DBSession.query(User).filter(User.username == "__test_user1").one())
+        DBSession.delete(DBSession.query(User).filter(User.username == "__test_user2").one())
 
         ra = DBSession.query(RestrictionArea).filter(
             RestrictionArea.name == "__test_ra1"
@@ -195,7 +198,6 @@ class TestThemeEditing(TestCase):
         request = self._create_request_obj()
         request.params = {
             "interface": "main",
-            "version": "2"
         }
         entry = Entry(request)
         themes = entry.themes()
@@ -208,7 +210,6 @@ class TestThemeEditing(TestCase):
         request = self._create_request_obj(username="__test_user1")
         request.params = {
             "interface": "main",
-            "version": "2"
         }
         entry = Entry(request)
         themes = entry.themes()
@@ -228,7 +229,6 @@ class TestThemeEditing(TestCase):
         })
         request.params = {
             "interface": "main",
-            "version": "2"
         }
 
         entry = Entry(request)

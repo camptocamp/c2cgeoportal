@@ -23,18 +23,15 @@ vars:
             table: main.test
 
   checker:
+    fulltextsearch:
+      disable: True
     lang:
       files: [ngeo]
     routes:
       disable: [apijs, xapijs]
       routes:
-        - name: dynamic_js
-          display_name: Dynamic JS
-          params:
-            interface: desktop
-          level: 3
         - name: dynamic
-          display_name: Dynamic JSON
+          display_name: Dynamic
           params:
             interface: desktop
           level: 3
@@ -46,8 +43,8 @@ vars:
 
 update_paths:
   - layers
+  - checker.fulltextsearch
   - checker.lang
   - checker.routes
-  - checker.phantomjs
   - check_collector
   - admin_interface.available_metadata

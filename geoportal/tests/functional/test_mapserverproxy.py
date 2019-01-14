@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access
+
 
 #
 #
@@ -66,7 +68,6 @@ import sqlalchemy.ext.declarative
 from geoalchemy2 import Geometry, WKTElement
 import transaction
 
-from c2cgeoportal_geoportal.lib import functionality
 from tests.functional import (  # noqa
     teardown_common as teardown_module,
     setup_common as setup_module,
@@ -153,19 +154,16 @@ class TestMapserverproxyView(TestCase):
 
         pt1 = Functionality(name="print_template", value="1 Wohlen A4 portrait")
         pt2 = Functionality(name="print_template", value="2 Wohlen A3 landscape")
-        user1 = User(username="__test_user1", password="__test_user1")
         role1 = Role(name="__test_role1", description="__test_role1", functionalities=[pt1, pt2])
-        user1.role_name = role1.name
+        user1 = User(username="__test_user1", password="__test_user1", roles=[role1])
         user1.email = "Tarenpion"
 
-        user2 = User(username="__test_user2", password="__test_user2")
         role2 = Role(name="__test_role2", description="__test_role2", functionalities=[pt1, pt2])
-        user2.role_name = role2.name
+        user2 = User(username="__test_user2", password="__test_user2", settings_role=role2, roles=[role2])
         user2.email = "Tarenpion"
 
-        user3 = User(username="__test_user3", password="__test_user3")
         role3 = Role(name="__test_role3", description="__test_role3", functionalities=[pt1, pt2])
-        user3.role_name = role3.name
+        user3 = User(username="__test_user3", password="__test_user3", settings_role=role3, roles=[role3])
 
         main = Interface(name="main")
 
@@ -200,15 +198,16 @@ class TestMapserverproxyView(TestCase):
         self.id_lausanne = p1.id
         self.id_paris = p3.id
         self.ogc_server_id = ogc_server_internal.id
-        self.role1_id = role1.id
-        self.role2_id = role2.id
-        self.role3_id = role3.id
+        self.user1_id = user1.id
+        self.user2_id = user2.id
+        self.user3_id = user3.id
 
         transaction.commit()
 
     def teardown_method(self, _):
         from c2cgeoportal_commons.models import DBSession
 
+        from c2cgeoportal_geoportal.lib import functionality
         functionality.FUNCTIONALITIES_TYPES = None
 
         cleanup_db()
@@ -219,12 +218,14 @@ class TestMapserverproxyView(TestCase):
     def _create_dummy_request(username=None):
         request = create_dummy_request({
             "admin_interface": {
-                "available_functionalities": [
-                    "mapserver_substitution",
-                    "print_template",
-                ]
+                "available_functionalities": [{
+                    "name": "mapserver_substitution"
+                }, {
+                    "name": "print_template"
+                }]
             }
         }, user=username)
+        request.params.update({"ogcserver": "__test_ogc_server"})
         return request
 
     def test_no_params(self):
@@ -479,13 +480,12 @@ class TestMapserverproxyView(TestCase):
         self.assertIn(md5sum, TWO_POINTS)
 
     @staticmethod
-    def _create_getcap_request(username=None, additional_settings=None):
-        if additional_settings is None:
-            additional_settings = {}
+    def _create_getcap_request(username=None):
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
 
-        request = create_dummy_request(additional_settings)
+        request = create_dummy_request()
+        request.params.update({"ogcserver": "__test_ogc_server"})
         request.user = None if username is None else \
             DBSession.query(User).filter_by(username=username).one()
         return request
@@ -500,52 +500,64 @@ class TestMapserverproxyView(TestCase):
         )
 
     def test_protected_layers1(self):
+        from c2cgeoportal_commons.models import DBSession, static
         from c2cgeoportal_geoportal.lib.layers import get_protected_layers
 
-        pl = get_protected_layers(self.role1_id, [self.ogc_server_id])
+        pl = get_protected_layers(DBSession.query(static.User).get(self.user1_id),
+                                  [self.ogc_server_id])
         self.assertEqual(
             {pl[l].name for l in pl},
             {"testpoint_protected", "testpoint_protected_query_with_collect"}
         )
 
     def test_protected_layers2(self):
+        from c2cgeoportal_commons.models import DBSession, static
         from c2cgeoportal_geoportal.lib.layers import get_protected_layers
 
-        pl = get_protected_layers(self.role2_id, [self.ogc_server_id])
+        pl = get_protected_layers(DBSession.query(static.User).get(self.user2_id),
+                                  [self.ogc_server_id])
         self.assertEqual(
             {pl[l].name for l in pl},
             {"testpoint_protected", "testpoint_protected_query_with_collect"}
         )
 
     def test_protected_layers3(self):
+        from c2cgeoportal_commons.models import DBSession, static
         from c2cgeoportal_geoportal.lib.layers import get_protected_layers
 
-        pl = get_protected_layers(self.role3_id, [self.ogc_server_id])
+        pl = get_protected_layers(DBSession.query(static.User).get(self.user3_id),
+                                  [self.ogc_server_id])
         self.assertEqual(
             {pl[l].name for l in pl},
             {"testpoint_protected", "testpoint_protected_query_with_collect"}
         )
 
     def test_writable_layers1(self):
+        from c2cgeoportal_commons.models import DBSession, static
         from c2cgeoportal_geoportal.lib.layers import get_writable_layers
 
-        pl = get_writable_layers(self.role1_id, [self.ogc_server_id])
+        pl = get_writable_layers(DBSession.query(static.User).get(self.user1_id),
+                                 [self.ogc_server_id])
         self.assertEqual(
             {pl[l].name for l in pl}, set()
         )
 
     def test_writable_layers2(self):
+        from c2cgeoportal_commons.models import DBSession, static
         from c2cgeoportal_geoportal.lib.layers import get_writable_layers
 
-        pl = get_writable_layers(self.role2_id, [self.ogc_server_id])
+        pl = get_writable_layers(DBSession.query(static.User).get(self.user2_id),
+                                 [self.ogc_server_id])
         self.assertEqual(
             {pl[l].name for l in pl}, set()
         )
 
     def test_writable_layers3(self):
+        from c2cgeoportal_commons.models import DBSession, static
         from c2cgeoportal_geoportal.lib.layers import get_writable_layers
 
-        pl = get_writable_layers(self.role3_id, [self.ogc_server_id])
+        pl = get_writable_layers(DBSession.query(static.User).get(self.user3_id),
+                                 [self.ogc_server_id])
         self.assertEqual(
             {pl[l].name for l in pl},
             {"testpoint_protected_query_with_collect"}
@@ -751,7 +763,7 @@ class TestMapserverproxyView(TestCase):
         )
         request.params.update(dict(
             service="wfs", version="1.0.0", request="getfeature", typename="testpoint_unprotected",
-            featureid=featureid
+            featureid=featureid, ogcserver="__test_external_ogc_server"
         ))
         response = MapservProxy(request).proxy()
 
@@ -769,9 +781,8 @@ class TestMapserverproxyView(TestCase):
             fid2=self.id_paris
         )
         request.params.update(dict(
-            service="wfs", version="1.0.0",
-            request="getfeature", typename="testpoint_unprotected",
-            featureid=featureid
+            service="wfs", version="1.0.0", request="getfeature", typename="testpoint_unprotected",
+            featureid=featureid, ogcserver="__test_external_ogc_server"
         ))
         response = MapservProxy(request).proxy()
 
@@ -859,9 +870,9 @@ class TestMapserverproxyView(TestCase):
         assert "Swiss" not in response.body.decode("utf-8")
 
         request = self._create_dummy_request()
-        request.registry.settings["admin_interface"] = {"available_functionalities": [
-            "mapserver_substitution"
-        ]}
+        request.registry.settings["admin_interface"] = {"available_functionalities": [{
+            "name": "mapserver_substitution"
+        }]}
         request.method = "POST"
         request.body = SUBSTITUTION_GETFEATURE_REQUEST
         request.registry.settings["functionalities"]["anonymous"] = {
@@ -876,11 +887,7 @@ class TestMapserverproxyView(TestCase):
     def test_geoserver(self):
         from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
-        request = self._create_getcap_request(username="__test_user1", additional_settings={
-            "mapserverproxy": {
-                "default_ogc_server": "__test_ogc_server_geoserver",
-            }
-        })
+        request = self._create_getcap_request(username="__test_user1")
         request.params.update(dict(
             service="wms", version="1.1.1", request="getcapabilities",
         ))
