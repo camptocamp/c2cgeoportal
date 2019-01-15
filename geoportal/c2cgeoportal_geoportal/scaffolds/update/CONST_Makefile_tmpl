@@ -66,7 +66,7 @@ export PGSCHEMA
 PGSCHEMA_STATIC ?= main_static
 export PGSCHEMA_STATIC
 
-DEFAULT_WEB_RULE += $(JSBUILD_OUTPUT_FILES) $(CSS_CGXP_OUTPUT) $(CSS_API_OUTPUT) $(CSS_XAPI_OUTPUT)
+DEFAULT_WEB_RULE += $(JSBUILD_OUTPUT_FILES) $(CSS_API_OUTPUT) $(CSS_XAPI_OUTPUT)
 ifneq ($(NGEO_INTERFACES), "")
 DEFAULT_WEB_RULE += $(NGEO_OUTPUT_FILES)
 CLIENT_CHECK_RULE ?= lint-ngeo
@@ -107,8 +107,6 @@ BUILD_RULES ?= $(filter-out $(DISABLE_BUILD_RULES),$(DEFAULT_BUILD_RULES))
 OUTPUT_DIR = geoportal/$(PACKAGE)_geoportal/static/build
 
 # Git
-GIT_REMOTE ?= origin
-GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 GIT_HASH ?= $(shell git rev-parse HEAD)
 
 # ngeo
@@ -116,7 +114,6 @@ NODE_ENV ?= production
 export NODE_ENV
 NO_DEV_SERVER ?= TRUE
 export NO_DEV_SERVER
-ANGULAR_VERSION = 1.6
 APP_OUTPUT_DIR = geoportal/$(PACKAGE)_geoportal/static-ngeo/build
 GCC_JS_FILES = $(shell find /usr/lib/node_modules/openlayers/src/ol /usr/lib/node_modules/ngeo/src /usr/lib/node_modules/ol-cesium/src -type f -name '*.js' 2> /dev/null)
 APP_JS_FILES = $(shell find geoportal/$(PACKAGE)_geoportal/static-ngeo/js -type f -name '*.js' 2> /dev/null)
@@ -182,28 +179,6 @@ CSSMIN_ARGS += --compress
 LESS_ARGS += --clean-css="--s0"
 endif
 LESS_ARGS += --autoprefix
-DEFAULT_CSS_BASE_FILES += \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/ext-all.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/xtheme-gray.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/openlayers/theme/default/style.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/geoext/resources/css/popup.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/geoext/resources/css/gxtheme-gray.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/geoext.ux/ux/Measure/resources/css/measure.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/sandbox/FeatureEditing/resources/css/feature-editing.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/styler/theme/css/styler.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/gxp/src/theme/all.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/core/src/theme/all.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext.ux/ColorPicker/ressources/colorpicker.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/examples/ux/css/Spinner.css \
-	geoportal/$(PACKAGE)_geoportal/static/css/proj.css \
-	geoportal/$(PACKAGE)_geoportal/static/css/proj-map.css \
-	geoportal/$(PACKAGE)_geoportal/static/css/proj-widgets.css
-ifdef CSS_BASE_FILES
-CSS_BASE_FILES := $(DEFAULT_CSS_BASE_FILES) $(CSS_BASE_FILES)
-else
-CSS_BASE_FILES := $(DEFAULT_CSS_BASE_FILES)
-endif
-
 DEFAULT_CSS_API_FILES += \
 	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/openlayers/theme/default/style.css \
 	geoportal/$(PACKAGE)_geoportal/static/css/proj-map.css
@@ -460,7 +435,7 @@ flake8:
 	flake8 $(PACKAGE)
 
 .PHONY: build-cgxp
-build-cgxp: $(JSBUILD_OUTPUT_FILES) $(CSS_CGXP_OUTPUT) $(CSS_API_OUTPUT) $(CSS_XAPI_OUTPUT)
+build-cgxp: $(JSBUILD_OUTPUT_FILES) $(CSS_API_OUTPUT) $(CSS_XAPI_OUTPUT)
 
 .PHONY: lint-ngeo
 lint-ngeo: /build/eslint.timestamp
@@ -661,14 +636,6 @@ $(OUTPUT_DIR)/%.js: \
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	jsbuild $< $(JSBUILD_ARGS) -j $(notdir $@) -o $(dir $@)
-
-$(CSS_CGXP_OUTPUT): \
-		geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ \
-		geoportal/$(PACKAGE)_geoportal/static/css/proj.css \
-		geoportal/$(PACKAGE)_geoportal/static/css/proj-map.css \
-		geoportal/$(PACKAGE)_geoportal/static/css/proj-widgets.css
-	$(PRERULE_CMD)
-	c2c-cssmin $(CSSMIN_ARGS) $@ $(CSS_BASE_FILES)
 
 $(CSS_API_OUTPUT): \
 		geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ \
