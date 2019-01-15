@@ -66,7 +66,7 @@ span.prompt1:before {
   content: "$ ";
 }
 </style><span class="prompt1">docker pull camptocamp/geomapfish-build:&lt;release<span class="p">|</span>version&gt;</span>
-<span class="prompt1">wget https://raw.githubusercontent.com/camptocamp/c2cgeoportal/master/docker-run</span>
+<span class="prompt1">wget https://raw.githubusercontent.com/camptocamp/c2cgeoportal/&lt;version&gt;/docker-run</span>
 <span class="prompt1">chmod +x docker-run</span>
 </pre><div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -191,9 +191,9 @@ during application updates, so your changes will be systematically lost. You can
 extend these files as many times as you like, although it is not recommended to
 exceed 3-4 levels for readability and simplicity.</p>
 <img alt="../_images/doc_hierarchie.png" src="../_images/doc_hierarchie.png" />
-<p>Whenever possible, it is strongly advised not to extend the <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file.
+<p>Whenever possible, it is strongly advised not to extend the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file.
 We recommend instead that you use dynamic variables as described below.
-However, in some use cases extending <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code> may be needed:</p>
+However, in some use cases extending <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> may be needed:</p>
 <ul class="simple">
 <li>Configuring highly specific environments</li>
 <li>Configuration of a multi-project</li>
@@ -201,9 +201,9 @@ However, in some use cases extending <code class="docutils literal notranslate">
 </div>
 <div class="section" id="use-of-dynamic-variables">
 <h3>Use of dynamic variables<a class="headerlink" href="#use-of-dynamic-variables" title="Permalink to this headline">¶</a></h3>
-<p>Variables used in the application configuration files (files <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code>)
+<p>Variables used in the application configuration files (files <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code>)
 can be made dynamic by means of environment variable. For this, in the main file
-<code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code>, add a block <code class="docutils literal notranslate"><span class="pre">interpreted</span></code> at the bottom of the file.</p>
+<code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code>, add a block <code class="docutils literal notranslate"><span class="pre">interpreted</span></code> at the bottom of the file.</p>
 <p>In this same file, you can change the value of a parameter by putting it in
 uppercase (example: <code class="docutils literal notranslate"><span class="pre">host:</span> <span class="pre">HOST</span></code>). This parameter must be listed in the
 interpreted parameters section:</p>

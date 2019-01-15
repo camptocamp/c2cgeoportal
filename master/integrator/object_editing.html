@@ -37,29 +37,26 @@
             
   <div class="section" id="objectediting">
 <span id="integrator-objectediting"></span><h1>ObjectEditing<a class="headerlink" href="#objectediting" title="Permalink to this headline">¶</a></h1>
-<p>This section describes how to set up editing for one feature at a time in
-c2cgeoportal applications.
+<p>This section describes how to set up editing for one feature at a time in c2cgeoportal applications.
 It is accessed via a URL defining the feature and the layer to edit, and
-opens an object-editing interface which centers on the feature. The feature
-can then be edited and saved.</p>
+opens an object-editing interface which centers on the feature. The feature can then be edited and saved.</p>
 <div class="section" id="requirements">
 <h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
-<p>This feature is available only in NGEO.
-The layer has to be editable (see <a class="reference internal" href="../administrator/editing.html#administrator-editing"><span class="std std-ref">Editing</span></a>).
+<p>The layer has to be editable (see <a class="reference internal" href="../administrator/editing.html#administrator-editing"><span class="std std-ref">Editing</span></a>).
 The user has to have the right to edit it (already logged in or using login
 via URL, see <a class="reference internal" href="urllogin.html#integrator-urllogin"><span class="std std-ref">URL login</span></a>).</p>
 </div>
 <div class="section" id="access-via-url">
 <h2>Access via URL<a class="headerlink" href="#access-via-url" title="Permalink to this headline">¶</a></h2>
 <p>The following parameters can be set in the URL and allow to use the
-ObjectEditing interface available under /oeedit :</p>
+ObjectEditing interface available under /oeedit:</p>
 <blockquote>
 <div><ul class="simple">
-<li>objectediting_geomtype: MultiPolygon</li>
-<li>objectediting_layer: the layer ID from the Admin Interface</li>
-<li>objectediting_theme: the theme name (untranslated) from the Admin Interface</li>
-<li>objectediting_property: the key for searching the feature in the database</li>
-<li>objectediting_id: the value of the key for searching the feature in
+<li><code class="docutils literal notranslate"><span class="pre">objectediting_geomtype</span></code>: MultiPolygon</li>
+<li><code class="docutils literal notranslate"><span class="pre">objectediting_layer</span></code>: the layer ID from the Admin Interface</li>
+<li><code class="docutils literal notranslate"><span class="pre">objectediting_theme</span></code>: the theme name (untranslated) from the Admin Interface</li>
+<li><code class="docutils literal notranslate"><span class="pre">objectediting_property</span></code>: the key for searching the feature in the database</li>
+<li><code class="docutils literal notranslate"><span class="pre">objectediting_id</span></code>: the value of the key for searching the feature in
 the database. If not found, a new feature with this value will be created.</li>
 </ul>
 </div></blockquote>
@@ -73,14 +70,12 @@ the database. If not found, a new feature with this value will be created.</li>
 <dt>Editing of this one feature (only one).</dt>
 <dd><ul class="first last">
 <li>No tool chosen: Change the feature</li>
-<li>Plus-tool chosen: Add new parts to the feature (supports
-multi-point, multi-line, multi-polygon)</li>
+<li>Plus-tool chosen: Add new parts to the feature (supports multi-point, multi-line, multi-polygon)</li>
 <li>Minus-tool chosen: Remove parts from the feature</li>
 <li>Triangle-tool chosen: Draw a fixed-sized by clicking on the map</li>
-<li>Copy from: Copy a geometry from another layer. The layer needs WFS
-and a copyable Metadata.</li>
-<li>Cut from: Cut the feature with a geometry from another layer. The
-layer needs WFS and a copyable Metadata.</li>
+<li>Copy from: Copy a geometry from another layer. The layer needs WFS and a copyable Metadata.</li>
+<li>Cut from: Cut the feature with a geometry from another layer. The layer needs WFS and a
+copyable Metadata.</li>
 </ul>
 </dd>
 </dl>

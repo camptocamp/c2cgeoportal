@@ -54,8 +54,10 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 </ul>
 <p>Requests examples:</p>
 <ul class="simple">
+<li>themes</li>
 <li>themes?background=background</li>
-<li>themes?group=Transport%sets=group</li>
+<li>themes?group=Transport</li>
+<li>themes?group=Transport&amp;sets=group</li>
 </ul>
 </div>
 <div class="section" id="result">
@@ -261,7 +263,7 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <h4>Anonymous JSON result<a class="headerlink" href="#anonymous-json-result" title="Permalink to this headline">¶</a></h4>
 <div class="code json highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;functionality&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;&lt;functionnality_name&gt;&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;functionnality_value&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;&lt;functionality_name&gt;&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;functionality_value&quot;</span><span class="p">],</span>
         <span class="o">...</span>
     <span class="p">}</span>
 <span class="p">}</span>
@@ -273,10 +275,12 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <div class="code json highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;username&gt;&quot;</span><span class="p">,</span>
     <span class="s2">&quot;is_password_changed&quot;</span><span class="p">:</span> <span class="s2">&quot;True&quot;</span><span class="o">/</span><span class="s2">&quot;False&quot;</span><span class="p">,</span> <span class="c1"># If false the user should change his password</span>
-    <span class="s2">&quot;role_name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;role_name&gt;&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;role_id&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">role_id</span><span class="o">&gt;</span>
+    <span class="s2">&quot;roles&quot;</span><span class="p">:</span> <span class="p">[{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;role_name&gt;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">role_id</span><span class="o">&gt;</span>
+    <span class="p">},</span> <span class="o">...</span><span class="p">],</span>
     <span class="s2">&quot;functionality&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;&lt;functionnality_name&gt;&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;functionnality_value&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;&lt;functionality_name&gt;&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;functionality_value&quot;</span><span class="p">],</span>
         <span class="o">...</span>
     <span class="p">}</span>
 <span class="p">}</span>

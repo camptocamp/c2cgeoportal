@@ -37,56 +37,27 @@
             
   <div class="section" id="routing-interface">
 <span id="integrator-routing"></span><h1>Routing interface<a class="headerlink" href="#routing-interface" title="Permalink to this headline">¶</a></h1>
-<p>This section describes how to add the <a class="reference external" href="http://project-osrm.org/">OSRM routing</a> interface to a c2cgeoprtal application.</p>
+<p>This section describes how to add the <a class="reference external" href="http://project-osrm.org/">OSRM routing</a> interface to a
+c2cgeoportal application.</p>
 <div class="section" id="requirements">
 <h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
-<p>To add this feature, you need a <a class="reference external" href="https://github.com/Project-OSRM/osrm-backend">OSRM backend server</a> with version &gt;= 5.8.</p>
+<p>To add this feature, you need a <a class="reference external" href="https://github.com/Project-OSRM/osrm-backend">OSRM backend server</a>
+with version &gt;= 5.8.</p>
 </div>
 <div class="section" id="adding-the-routing-interface-to-the-template">
 <h2>Adding the routing interface to the template<a class="headerlink" href="#adding-the-routing-interface-to-the-template" title="Permalink to this headline">¶</a></h2>
-<p>For a working example, check the <a class="reference external" href="https://github.com/camptocamp/ngeo/blob/master/contribs/gmf/apps/desktop_alt/index.html">alternative example desktop app</a> of ngeo.</p>
+<p>For a working example, check the
+<a class="reference external" href="https://github.com/camptocamp/ngeo/blob/master/contribs/gmf/apps/desktop_alt/index.html">alternative example desktop app</a>
+of ngeo.</p>
 <p>Add the button to the <code class="docutils literal notranslate"><span class="pre">gmf-app-bar</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">button</span> <span class="n">ngeo</span><span class="o">-</span><span class="n">btn</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;btn btn-default&quot;</span> <span class="n">ng</span><span class="o">-</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;mainCtrl.routingfeatureActive&quot;</span>
-        <span class="n">data</span><span class="o">-</span><span class="n">toggle</span><span class="o">=</span><span class="s2">&quot;tooltip&quot;</span> <span class="n">data</span><span class="o">-</span><span class="n">placement</span><span class="o">=</span><span class="s2">&quot;left&quot;</span> <span class="n">data</span><span class="o">-</span><span class="n">original</span><span class="o">-</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;{{&#39;Routing&#39;|translate}}&quot;</span><span class="o">&gt;</span>
-  <span class="o">&lt;</span><span class="n">span</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;fa fa-map-signs&quot;</span><span class="o">&gt;&lt;/</span><span class="n">span</span><span class="o">&gt;</span>
-<span class="o">&lt;/</span><span class="n">button</span><span class="o">&gt;</span>
-</pre></div>
-</div>
 <p>Then, add the routing component to the <code class="docutils literal notranslate"><span class="pre">gmf-app-tools-content</span></code> area:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">div</span> <span class="n">ng</span><span class="o">-</span><span class="n">show</span><span class="o">=</span><span class="s2">&quot;mainCtrl.routingfeatureActive&quot;</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;row&quot;</span><span class="o">&gt;</span>
-  <span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;col-sm-12&quot;</span><span class="o">&gt;</span>
-    <span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;gmf-app-tools-content-heading&quot;</span><span class="o">&gt;</span>
-      <span class="p">{{</span><span class="s1">&#39;Routing&#39;</span><span class="o">|</span><span class="n">translate</span><span class="p">}}</span>
-      <span class="o">&lt;</span><span class="n">a</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;btn close&quot;</span> <span class="n">ng</span><span class="o">-</span><span class="n">click</span><span class="o">=</span><span class="s2">&quot;mainCtrl.routingfeatureActive = false&quot;</span><span class="o">&gt;&amp;</span><span class="n">times</span><span class="p">;</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span>
-    <span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
-    <span class="o">&lt;</span><span class="n">ngeo</span><span class="o">-</span><span class="n">routing</span> <span class="n">ngeo</span><span class="o">-</span><span class="n">routing</span><span class="o">-</span><span class="nb">map</span><span class="o">=</span><span class="s2">&quot;mainCtrl.map&quot;</span><span class="o">&gt;</span>
-    <span class="o">&lt;/</span><span class="n">ngeo</span><span class="o">-</span><span class="n">routing</span><span class="o">&gt;</span>
-  <span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
-<span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
-</pre></div>
-</div>
-<p><cite>mainCtrl.routingfeatureActive</cite> and <cite>mainCtrl.map</cite> are part of <cite>gmf.AbstractDesktopController</cite> and do not need to be defined in your interface controller, as long as it extends AbstractDesktopController.</p>
+<p><cite>mainCtrl.routingfeatureActive</cite> and <cite>mainCtrl.map</cite> are part of <cite>gmf.AbstractDesktopController</cite> and do not
+need to be defined in your interface controller, as long as it extends AbstractDesktopController.</p>
 </div>
 <div class="section" id="configuration">
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
-<p>To configure the routing feature the constants <cite>ngeoRoutingOptions</cite> and <cite>ngeoNominatimSearchDefaultParams</cite> can be defined. Add them to your <cite>interfaces_config</cite> section in your <cite>vars.yaml</cite> file:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">interfaces_config</span><span class="p">:</span>
-    <span class="p">[</span><span class="o">...</span><span class="p">]</span>
-    <span class="n">your_interface</span><span class="p">:</span>
-        <span class="o">&lt;&lt;</span><span class="p">:</span> <span class="o">*</span><span class="n">interface</span>
-            <span class="n">constants</span><span class="p">:</span>
-                <span class="o">&lt;&lt;</span><span class="p">:</span> <span class="o">*</span><span class="n">constants</span>
-                <span class="n">ngeoRoutingOptions</span><span class="p">:</span>
-                    <span class="o">-</span> <span class="n">backendUrl</span><span class="p">:</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">routing</span><span class="o">.</span><span class="n">osm</span><span class="o">.</span><span class="n">ch</span><span class="o">/</span>
-                    <span class="o">-</span> <span class="n">profiles</span><span class="p">:</span>
-                        <span class="o">-</span> <span class="n">label</span><span class="p">:</span> <span class="n">Car</span>
-                          <span class="n">profile</span><span class="p">:</span> <span class="n">routed</span><span class="o">-</span><span class="n">car</span>
-                        <span class="o">-</span> <span class="n">label</span><span class="p">:</span> <span class="n">Bike</span> <span class="p">(</span><span class="n">City</span><span class="p">)</span>
-                          <span class="n">profile</span><span class="p">:</span> <span class="n">routed</span><span class="o">-</span><span class="n">bike</span>
-                <span class="n">ngeoNominatimSearchDefaultParams</span><span class="p">:</span>
-                    <span class="n">countrycodes</span><span class="p">:</span> <span class="n">CH</span>
-</pre></div>
-</div>
+<p>To configure the routing feature the constants <cite>ngeoRoutingOptions</cite> and <cite>ngeoNominatimSearchDefaultParams</cite>
+can be defined. Add them to your <cite>interfaces_config</cite> section in your <cite>vars.yaml</cite> file:</p>
 <div class="section" id="backendurl">
 <h3>backendUrl<a class="headerlink" href="#backendurl" title="Permalink to this headline">¶</a></h3>
 <p>required, string
@@ -103,12 +74,14 @@ URL to an <a class="reference external" href="https://github.com/Project-OSRM/os
 <span class="n">backendUrl</span>           <span class="o">|</span>  <span class="n">profile</span>  <span class="o">|</span> <span class="n">osrm</span> <span class="n">query</span>
 </pre></div>
 </div>
-<p>If more than one profile are supplied, the component will show a drop-down-menu for the user to select a profile.</p>
+<p>If more than one profile is supplied, the component will show a drop-down-menu for the user to select a
+profile.</p>
 </div>
 <div class="section" id="ngeonominatimsearchdefaultparams">
 <h3>ngeoNominatimSearchDefaultParams<a class="headerlink" href="#ngeonominatimsearchdefaultparams" title="Permalink to this headline">¶</a></h3>
 <p>not required, dictionary of string-parameters</p>
-<p>Configures the nominatim search, which is used to search for addresses and features in the routing search fields.
+<p>Configures the nominatim search, which is used to search for addresses and features in the routing search
+fields.
 Check the  OpenStreetMap wiki for a <a class="reference external" href="https://wiki.openstreetmap.org/wiki/Nominatim#Parameters">list of all available parameters</a>.</p>
 <p>In the example, <code class="docutils literal notranslate"><span class="pre">'countrycodes':</span> <span class="pre">'CH'</span></code> restricts the search to Switzerland.</p>
 </div>

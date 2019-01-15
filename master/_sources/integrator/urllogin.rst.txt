@@ -16,8 +16,7 @@ The AES key must be either 16, 24, or 32 bytes long.
 
 To do that you should use the urllogin command: ``./docker-run urllogin --help``.
 
-It generate a token like: ``auth=148b60cc...`` that you can add it in the query string of
-the permalink.
+It generates a token like: ``auth=148b60cc...`` that you can add in the query string of the permalink.
 
 When the use use this link he will be connected as a normal user, then you should be sure
 that the session timeout is not too big.
@@ -31,7 +30,7 @@ You can change it in the vars file with:
         timeout: 86400
 
 How to build your token in your application?
----------------------------------------------
+--------------------------------------------
 
 The token is simply a json like this:
 

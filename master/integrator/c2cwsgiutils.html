@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Sub domain &#8212; c2cgeoportal  documentation</title>
+    <title>c2cwsgiutils &#8212; c2cgeoportal  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css" />
@@ -17,8 +17,8 @@
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="TileGeneration" href="tilegeneration.html" />
-    <link rel="prev" title="Configure short URL" href="shortener.html" />
+    <link rel="next" title="Automated check" href="checker.html" />
+    <link rel="prev" title="Application Operation" href="operations.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -35,24 +35,12 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="sub-domain">
-<span id="integrator-subdomain"></span><h1>Sub domain<a class="headerlink" href="#sub-domain" title="Permalink to this headline">¶</a></h1>
-<p>If you want to optimize the parallelization of static resource download you
-can use sub domain to do that you should define in the <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code>
-something like this:</p>
-<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># The used sub domain for the static resources</span>
-<span class="n">subdommains</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;s1&#39;</span><span class="p">,</span> <span class="s1">&#39;s2&#39;</span><span class="p">,</span> <span class="s1">&#39;s3&#39;</span><span class="p">,</span> <span class="s1">&#39;s4&#39;</span><span class="p">]</span>
-</pre></div>
-</div>
-<p>Those sub domain should obviously be define in the DNS and in the Apache
-vhost. If the application is served on deferent URL and you want to use
-the sub domain on only one of them you can define in the <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code>
-the following:</p>
-<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># The URL template used to generate the sub domain URL</span>
-<span class="c1"># %(sub)s will be replaced by the sub domain value.</span>
-<span class="n">subdomain_url_template</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//%</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span><span class="n">s</span><span class="o">.</span><span class="p">{</span><span class="n">host</span><span class="p">}</span>
-</pre></div>
-</div>
+  <div class="section" id="c2cwsgiutils">
+<span id="integrator-c2cwsgiutils"></span><h1>c2cwsgiutils<a class="headerlink" href="#c2cwsgiutils" title="Permalink to this headline">¶</a></h1>
+<p>c2cgeoportal uses c2cwsgiutils. You can use functionalities from c2cwsgiutils to assist in integration tasks.
+See its <a class="reference external" href="https://github.com/camptocamp/c2cwsgiutils/#camptocamp-wsgi-utilities">documentation</a>.</p>
+<p>The entry point URL is <code class="docutils literal notranslate"><span class="pre">&lt;application</span> <span class="pre">main</span> <span class="pre">URL&gt;/c2c</span></code> And here we will have a dashboard with the
+c2cwsgiutils and c2cgeoportal services.</p>
 </div>
 
 
@@ -93,9 +81,9 @@ the following:</p>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="index.html">Integrator Guide</a><ul>
-  <li><a href="configuration.html">Configuration Guide for advanced settings</a><ul>
-      <li>Previous: <a href="shortener.html" title="previous chapter">Configure short URL</a></li>
-      <li>Next: <a href="tilegeneration.html" title="next chapter">TileGeneration</a></li>
+  <li><a href="operations.html">Application Operation</a><ul>
+      <li>Previous: <a href="operations.html" title="previous chapter">Application Operation</a></li>
+      <li>Next: <a href="checker.html" title="next chapter">Automated check</a></li>
   </ul></li>
   </ul></li>
   </ul></li>
@@ -133,7 +121,7 @@ the following:</p>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
-      <a href="../_sources/integrator/subdomain.rst.txt"
+      <a href="../_sources/integrator/c2cwsgiutils.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 

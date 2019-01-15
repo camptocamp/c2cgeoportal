@@ -37,17 +37,15 @@
             
   <div class="section" id="ngeo">
 <span id="integrator-ngeo"></span><h1>ngeo<a class="headerlink" href="#ngeo" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="organisation">
-<h2>Organisation<a class="headerlink" href="#organisation" title="Permalink to this headline">¶</a></h2>
-<p>The main page where we can redefine the header
-is in the file: <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/templates/&lt;interface&gt;.html</span></code>,
-where <code class="docutils literal notranslate"><span class="pre">&lt;interface&gt;</span></code> is the interface name or “index” for the default interface.</p>
-<p>The viewer (map and all related tools)
-is defined in the file: <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/static-ngeo/js/&lt;interface&gt;.js</span></code>,
-where <code class="docutils literal notranslate"><span class="pre">&lt;interface&gt;</span></code> is the interface name or “main” for the default interface.</p>
-<p>Finally, the image should be placed in the folder <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/static-ngeo/images/</span></code>.</p>
-<p>The style sheet file for the whole project is <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/static-ngeo/less/&lt;package&gt;.less</span></code>.</p>
-<p>The style sheet file for a specific interface is <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/static-ngeo/less/&lt;interface&gt;.less</span></code>.</p>
+<div class="section" id="organization">
+<h2>Organization<a class="headerlink" href="#organization" title="Permalink to this headline">¶</a></h2>
+<p>The main page where we can redefine the header is in the file:
+<code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/&lt;interface&gt;.html.ejs</span></code> and
+<code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/Controller&lt;interface&gt;.js</span></code>
+where <code class="docutils literal notranslate"><span class="pre">&lt;interface&gt;</span></code> is the interface name.</p>
+<p>The style sheet file is <code class="docutils literal notranslate"><span class="pre">geoportal/demo_geoportal/static-ngeo/js/apps/sass/&lt;interface&gt;.scss</span></code>.</p>
+<p>The images used by the application code should be placed in the folder <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static-ngeo/images/</span></code>.</p>
+<p>The images used from the admin interface should be placed in the folder <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static/images/</span></code>.</p>
 </div>
 <div class="section" id="html-file">
 <h2>HTML file<a class="headerlink" href="#html-file" title="Permalink to this headline">¶</a></h2>
@@ -58,8 +56,7 @@ where <code class="docutils literal notranslate"><span class="pre">&lt;interface
 </div>
 <p>to include a directive.</p>
 <p>You can find the available directives in the
-<a class="reference external" href="http://camptocamp.github.io/ngeo/master/apidoc/">ngeo documentation</a>
-in the sections <code class="docutils literal notranslate"><span class="pre">gmf/Directives</span></code> and <code class="docutils literal notranslate"><span class="pre">ngeo/Directives</span></code>.</p>
+<a class="reference external" href="http://camptocamp.github.io/ngeo/master/apidoc/">ngeo documentation</a>.</p>
 <p>The controller (<code class="docutils literal notranslate"><span class="pre">js</span></code> file) is commonly named <code class="docutils literal notranslate"><span class="pre">mainCtrl</span></code>. So you can use a value
 from the controller by doing the following (here, the controller is the <code class="docutils literal notranslate"><span class="pre">DesktopController</span></code>):</p>
 <div class="code html highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">html</span> <span class="n">lang</span><span class="o">=</span><span class="s2">&quot;{{desktopCtrl.lang}}&quot;</span> <span class="n">ng</span><span class="o">-</span><span class="n">app</span><span class="o">=</span><span class="s2">&quot;mydemo&quot;</span> <span class="n">ng</span><span class="o">-</span><span class="n">controller</span><span class="o">=</span><span class="s2">&quot;DesktopController as mainCtrl&quot;</span><span class="o">&gt;</span>
@@ -76,31 +73,11 @@ from the controller by doing the following (here, the controller is the <code cl
 <span class="o">&lt;/</span><span class="n">html</span><span class="o">&gt;</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">js</span></code> constants of the application are defined at the end of the file:</p>
-<div class="code html highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">script</span><span class="o">&gt;</span>
-  <span class="p">(</span><span class="n">function</span><span class="p">()</span> <span class="p">{</span>
-     <span class="n">var</span> <span class="n">module</span> <span class="o">=</span> <span class="n">angular</span><span class="o">.</span><span class="n">module</span><span class="p">(</span><span class="s1">&#39;&lt;package&gt;&#39;</span><span class="p">);</span>
-     <span class="n">var</span> <span class="n">serverVars</span> <span class="o">=</span> <span class="p">{</span>
-         <span class="o">/**</span>
-          <span class="o">*</span> <span class="n">Here</span> <span class="n">the</span> <span class="n">i18n</span> <span class="ow">is</span> <span class="n">configured</span>
-          <span class="o">*/</span>
-       <span class="n">serviceUrls</span><span class="p">:</span> <span class="p">{</span>
-         <span class="o">/**</span>
-          <span class="o">*</span> <span class="n">Here</span> <span class="n">you</span> <span class="n">configure</span> <span class="n">the</span> <span class="n">services</span> <span class="n">URL</span>
-          <span class="o">*/</span>
-       <span class="p">}</span>
-     <span class="p">};</span>
-     <span class="n">module</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;serverVars&#39;</span><span class="p">,</span> <span class="n">serverVars</span><span class="p">);</span>
-   <span class="p">})();</span>
-<span class="o">&lt;/</span><span class="n">script</span><span class="o">&gt;</span>
-</pre></div>
-</div>
 </div>
 <div class="section" id="controller-js-file">
 <h2>Controller (js file)<a class="headerlink" href="#controller-js-file" title="Permalink to this headline">¶</a></h2>
 <p>In the controller you have some lines like:</p>
-<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/**</span> <span class="nd">@suppress</span> <span class="p">{</span><span class="n">extraRequire</span><span class="p">}</span> <span class="o">*/</span>
-<span class="n">goog</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="s1">&#39;gmf.authenticationDirective&#39;</span><span class="p">);</span>
+<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gmf</span><span class="o">&lt;</span><span class="n">Component</span><span class="o">&gt;</span><span class="n">Component</span> <span class="kn">from</span> <span class="s1">&#39;gmf/&lt;component&gt;/component.js&#39;</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>This is needed to include the javascript of the used directives.</p>
@@ -120,12 +97,11 @@ from the controller by doing the following (here, the controller is the <code cl
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">If you previously had a CGXP application and want to keep your permalinks
-compatible, the resolutions should be the same as in the previous
-application.</p>
+compatible, the resolutions should be the same as in the previous application.</p>
 </div>
 </div>
-<div class="section" id="dynamic-js-view">
-<h2>Dynamic.js view<a class="headerlink" href="#dynamic-js-view" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="dynamic-json-view">
+<h2>Dynamic.json view<a class="headerlink" href="#dynamic-json-view" title="Permalink to this headline">¶</a></h2>
 <p>To configure the ngeo constants with dynamic or configurable values we have the dynamic view.</p>
 <p>This view is configurable in the vars files in the section <code class="docutils literal notranslate"><span class="pre">interfaces_config</span></code>.
 The sub section is the interface name, and after we have:</p>

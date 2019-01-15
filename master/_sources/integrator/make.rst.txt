@@ -81,7 +81,6 @@ The following variables may be set in the makefiles:
     ``development.ini`` pyramid config file is used, default is ``FALSE``.
 * ``DISABLE_BUILD_RULES``: List of rules we want to disable, default is empty.
 * ``LANGUAGES``: List of available languages, default is ``en fr de``.
-* ``CGXP_INTERFACES``: List of CGXP interfaces, default is empty.
 * ``NGEO_INTERFACES``: List of ngeo interfaces, default is ``mobile desktop``.
 * ``PRINT``: Mapfish print is enabled, default is ``TRUE``.
 * ``TILECLOUD_CHAIN``: ``TRUE`` to indicate that we use TileCloud-chain, default is ``TRUE``.

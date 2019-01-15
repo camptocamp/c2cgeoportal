@@ -37,32 +37,16 @@
             
   <div class="section" id="specific-configuration-for-qgis-mapserver">
 <span id="integrator-backend-qgis"></span><h1>Specific configuration for QGIS mapserver<a class="headerlink" href="#specific-configuration-for-qgis-mapserver" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="apache-configuration">
-<h2>Apache configuration<a class="headerlink" href="#apache-configuration" title="Permalink to this headline">¶</a></h2>
-<p>In the <code class="docutils literal notranslate"><span class="pre">apache/mapserv.conf.mako</span></code> do the following changes:</p>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>- ScriptAlias /mapserv /usr/lib/cgi-bin/mapserv
-+ ScriptAlias /mapserv /usr/lib/cgi-bin/qgis_mapserv.fcgi
-
-- SetEnv MS_MAPFILE ${directory}/mapserver/mapserver.map
-+ SetEnv QGIS_PROJECT_FILE ${directory}/qgisserver.qgs
-</pre></div>
-</div>
-</div>
-<div class="section" id="cleanup">
-<h2>Cleanup<a class="headerlink" href="#cleanup" title="Permalink to this headline">¶</a></h2>
-<p>Remove the MapServer folder:</p>
-<pre class="highlight"><style type="text/css">
-span.prompt1:before {
-  content: "$ ";
-}
-</style><span class="prompt1">git rm mapserver</span>
-</pre></div>
 <div class="section" id="qgis-desktop-configuration">
 <h2>QGIS Desktop configuration<a class="headerlink" href="#qgis-desktop-configuration" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="create-a-tunnel-on-the-database-server">
 <h3>Create a tunnel on the database server<a class="headerlink" href="#create-a-tunnel-on-the-database-server" title="Permalink to this headline">¶</a></h3>
 <p>If you cannot connect directly to the database you can create a tunnel to be able to connect to them:</p>
-<pre class="highlight"><span class="prompt1">ssh -L <span class="m">5432</span>:localhost:5432 &lt;server&gt;</span>
+<pre class="highlight"><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">ssh -L <span class="m">5432</span>:localhost:5432 &lt;server&gt;</span>
 </pre><p>If you run QGIS in Docker you should bind to a specific IP:</p>
 <pre class="highlight"><span class="prompt1"><span class="nv">IP</span><span class="o">=</span><span class="k">$(</span>ip addr show dev <span class="k">$(</span>route <span class="p">|</span> grep default <span class="p">|</span> awk <span class="s1">&#39;{print $(NF)}&#39;</span> <span class="p">|</span> head -1<span class="k">)</span> <span class="p">|</span> awk <span class="s1">&#39;$1 ~ /^inet/ { sub(&quot;/.*&quot;, &quot;&quot;, $2); print $2 }&#39;</span> <span class="p">|</span> head -1<span class="k">)</span></span>
 <span class="prompt1">ssh -L <span class="si">${</span><span class="nv">IP</span><span class="si">}</span>:5432:localhost:5432 &lt;remote server&gt;</span>

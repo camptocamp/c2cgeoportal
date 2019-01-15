@@ -40,9 +40,9 @@ the application according to the user’s permissions.</p>
 <p>A functionality may be associated to users through different ways:</p>
 <ol class="arabic simple">
 <li>Functionalities for anonymous users are defined through the
-<code class="docutils literal notranslate"><span class="pre">functionalities:anonymous</span></code> variable in the <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code> configuration file.</li>
+<code class="docutils literal notranslate"><span class="pre">functionalities:anonymous</span></code> variable in the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> configuration file.</li>
 <li>Functionalities for authenticated users are defined through the
-<code class="docutils literal notranslate"><span class="pre">functionalities:registered</span></code> variable in the <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code> configuration file.</li>
+<code class="docutils literal notranslate"><span class="pre">functionalities:registered</span></code> variable in the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> configuration file.</li>
 <li>Functionalities for specific roles are defined in the database through the administration interface.</li>
 <li>Functionalities for specific users are defined in the database through the administration interface.</li>
 </ol>
@@ -53,12 +53,11 @@ the <code class="docutils literal notranslate"><span class="pre">user</span></co
 functionality associated with his/her role, will be ignored.</p>
 <div class="section" id="configuration">
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file includes variables for managing <em>functionalities</em>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file includes variables for managing <em>functionalities</em>.</p>
 <dl class="docutils">
 <dt><code class="docutils literal notranslate"><span class="pre">admin_interface</span></code>/<code class="docutils literal notranslate"><span class="pre">available_functionalities</span></code></dt>
-<dd><p class="first">List of functionality types that should be available in the
-administration interface (and added to the <code class="docutils literal notranslate"><span class="pre">functionality</span></code> table in the
-database).</p>
+<dd><p class="first">List of functionality types that should be available in the administration interface (and added to the
+<code class="docutils literal notranslate"><span class="pre">functionality</span></code> table in the database).</p>
 <p>For example:</p>
 <div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">admin_interface</span><span class="p">:</span>
     <span class="n">available_functionalities</span><span class="p">:</span>
@@ -108,56 +107,11 @@ key/value pair: <code class="docutils literal notranslate"><span class="pre">&qu
 </dd>
 </dl>
 </div>
-<div class="section" id="usage-in-templates">
-<h2>Usage in Templates<a class="headerlink" href="#usage-in-templates" title="Permalink to this headline">¶</a></h2>
-<p>As explained in the configuration section above,
-a functionality can be used in the Mako templates as long as it has been
-enabled using the <code class="docutils literal notranslate"><span class="pre">functionalities:available_in_templates</span></code> parameter in the
-<code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code> configuration file.</p>
-<p>Functionalities may be used in templates for various purposes. The examples
-below explain how to set the default basemap and how to limit access to some
-plugins according to the user’s permissions.</p>
-<div class="section" id="example-of-the-default-basemap-functionality">
-<h3>Example of the default_basemap Functionality<a class="headerlink" href="#example-of-the-default-basemap-functionality" title="Permalink to this headline">¶</a></h3>
-<p>Using functionalities, it is easy to set the default basemap that will be
-displayed when a user loads the application depending on whether he/she is
-anonymous, authenticated or has some specific role.</p>
-<p>First make sure that <code class="docutils literal notranslate"><span class="pre">default_basemap</span></code> is made available in the templates
-using the <code class="docutils literal notranslate"><span class="pre">functionalities:available_in_templates</span></code> parameter in the
-<code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code> configuration file:</p>
-<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">functionalities</span><span class="p">:</span>
-    <span class="n">available_in_templates</span><span class="p">:</span> <span class="p">[</span><span class="n">default_basemap</span><span class="p">]</span>
-</pre></div>
-</div>
-<p>Then indicate (still in <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code>) what default basemap should be used
-for anonymous users:</p>
-<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">functionalities</span><span class="p">:</span>
-    <span class="n">anonymous</span><span class="p">:</span>
-        <span class="c1"># some other configs...</span>
-        <span class="n">default_basemap</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">some_basemap</span><span class="o">&gt;</span>
-</pre></div>
-</div>
-<p>Optionally you may also indicate what basemap to use for authenticated users
-(if omitted, the anonymous <code class="docutils literal notranslate"><span class="pre">default_basemap</span></code> value will be used):</p>
-<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">functionalities</span><span class="p">:</span>
-    <span class="n">anonymous</span><span class="p">:</span>
-        <span class="c1"># ...</span>
-    <span class="n">registered</span><span class="p">:</span>
-        <span class="n">default_basemap</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">some_other_basemap</span><span class="o">&gt;</span>
-</pre></div>
-</div>
-<p>Finally you may link <code class="docutils literal notranslate"><span class="pre">default_basemap</span></code> functionalities to some roles or
-users in the administration interface.</p>
-<p>So that the <code class="docutils literal notranslate"><span class="pre">default_basemap</span></code> is actually provided to the
-<code class="docutils literal notranslate"><span class="pre">cgxp_mapopacityslider</span></code> plugin, use the following configuration in your
-project’s <code class="docutils literal notranslate"><span class="pre">viewer.js</span></code> template:</p>
-<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="n">ptype</span><span class="p">:</span> <span class="s2">&quot;cgxp_mapopacityslider&quot;</span><span class="p">,</span>
-    <span class="n">defaultBaseLayerRef</span><span class="p">:</span> <span class="s2">&quot;${functionality[&#39;default_basemap&#39;][0] | n}&quot;</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</div>
+<div class="section" id="usage-in-javascript-client">
+<h2>Usage in Javascript client<a class="headerlink" href="#usage-in-javascript-client" title="Permalink to this headline">¶</a></h2>
+<p>The functionalities will be send to the Javascript client application through the user web service.
+To be published a functionality should be present in <code class="docutils literal notranslate"><span class="pre">functionalities:available_in_templates</span></code> parameter
+in the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> configuration file.</p>
 <div class="section" id="using-functionalities-to-configure-the-basemap-to-use-for-each-theme">
 <h3>Using Functionalities to configure the basemap to use for each theme<a class="headerlink" href="#using-functionalities-to-configure-the-basemap-to-use-for-each-theme" title="Permalink to this headline">¶</a></h3>
 <p>A default basemap may be automatically loaded when the user selects a given

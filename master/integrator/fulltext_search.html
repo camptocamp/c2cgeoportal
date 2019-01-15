@@ -42,38 +42,41 @@
 <p>The <em>text search</em> feature requires a dedicated PostgreSQL table. The full-text
 search table should be named <code class="docutils literal notranslate"><span class="pre">tsearch</span></code> (for <em>text search</em>) and should be in
 the application-specific schema.</p>
-<p>You do not need to create the table yourself, as it is created by the
-<code class="docutils literal notranslate"><span class="pre">create_db</span></code> command line (see the section
-<a class="reference internal" href="install_application.html#integrator-install-application"><span class="std std-ref">Install an existing application</span></a>).</p>
-<p>If you did want to create the table manually you would use the following commands:</p>
-<pre class="highlight"><style type="text/css">
-span.prompt1:before {
-  content: "$ ";
-}
-</style><span class="prompt1">sudo -u postgres psql -c <span class="s2">&quot;CREATE TABLE &lt;schema_name&gt;.tsearch ( \</span>
-<span class="s2">    id SERIAL PRIMARY KEY, \</span>
-<span class="s2">    layer_name TEXT, \</span>
-<span class="s2">    label TEXT, \</span>
-<span class="s2">    public BOOLEAN DEFAULT &#39;t&#39;, \</span>
-<span class="s2">    params TEXT, \</span>
-<span class="s2">    role_id INTEGER REFERENCES &lt;schema_name&gt;.role, \</span>
-<span class="s2">    ts TSVECTOR);&quot;</span> &lt;db_name&gt;</span>
-<span class="prompt1">sudo -u postgres psql -c <span class="s2">&quot;SELECT AddGeometryColumn(&#39;&lt;schema_name&gt;&#39;, &#39;tsearch&#39;, &#39;the_geom&#39;, &lt;srid&gt;, &#39;GEOMETRY&#39;, 2);&quot;</span> &lt;db_name&gt;</span>
-<span class="prompt1">sudo -u postgres psql -c <span class="s2">&quot;CREATE INDEX tsearch_ts_idx ON &lt;schema_name&gt;.tsearch USING gin(ts);&quot;</span> &lt;db_name&gt;</span>
-</pre><p>with <code class="docutils literal notranslate"><span class="pre">&lt;schema_name&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;srid&gt;</span></code>, and <code class="docutils literal notranslate"><span class="pre">&lt;db_name&gt;</span></code>  substituted as appropriate.</p>
+<p>You do not need to create the table yourself, as it was already created during application installation
+(see the section <a class="reference internal" href="install_application.html#integrator-install-application"><span class="std std-ref">Install an existing application</span></a>).</p>
+<p>If you did want to create the table manually you would use the following SQL commands:</p>
+<div class="code sql highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CREATE</span> <span class="n">TABLE</span> <span class="o">&lt;</span><span class="n">schema_name</span><span class="o">&gt;.</span><span class="n">tsearch</span> <span class="p">(</span> \
+    <span class="nb">id</span> <span class="n">SERIAL</span> <span class="n">PRIMARY</span> <span class="n">KEY</span><span class="p">,</span> \
+    <span class="n">layer_name</span> <span class="n">TEXT</span><span class="p">,</span> \
+    <span class="n">label</span> <span class="n">TEXT</span><span class="p">,</span> \
+    <span class="n">public</span> <span class="n">BOOLEAN</span> <span class="n">DEFAULT</span> <span class="s1">&#39;t&#39;</span><span class="p">,</span> \
+    <span class="n">params</span> <span class="n">TEXT</span><span class="p">,</span> \
+    <span class="n">role_id</span> <span class="n">INTEGER</span> <span class="n">REFERENCES</span> <span class="o">&lt;</span><span class="n">schema_name</span><span class="o">&gt;.</span><span class="n">role</span><span class="p">,</span> \
+    <span class="n">ts</span> <span class="n">TSVECTOR</span><span class="p">);</span>
+<span class="n">SELECT</span> <span class="n">AddGeometryColumn</span><span class="p">(</span><span class="s1">&#39;&lt;schema_name&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;tsearch&#39;</span><span class="p">,</span> <span class="s1">&#39;the_geom&#39;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">srid</span><span class="o">&gt;</span><span class="p">,</span> <span class="s1">&#39;GEOMETRY&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+<span class="n">CREATE</span> <span class="n">INDEX</span> <span class="n">tsearch_ts_idx</span> <span class="n">ON</span> <span class="o">&lt;</span><span class="n">schema_name</span><span class="o">&gt;.</span><span class="n">tsearch</span> <span class="n">USING</span> <span class="n">gin</span><span class="p">(</span><span class="n">ts</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>with <code class="docutils literal notranslate"><span class="pre">&lt;schema_name&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;srid&gt;</span></code> substituted as appropriate.</p>
 <p>Also make sure that the db user can <code class="docutils literal notranslate"><span class="pre">SELECT</span></code> in the <code class="docutils literal notranslate"><span class="pre">tsearch</span></code> table:</p>
-<pre class="highlight"><span class="prompt1">sudo -u postgres psql -c <span class="s1">&#39;GRANT SELECT ON TABLE &lt;schema_name&gt;.tsearch TO &quot;&lt;db_user&gt;&quot;;&#39;</span> &lt;db_name&gt;</span>
-</pre><p>with <code class="docutils literal notranslate"><span class="pre">&lt;db_user&gt;</span></code>, and <code class="docutils literal notranslate"><span class="pre">&lt;db_name&gt;</span></code> substituted as appropriately.</p>
+<div class="code sql highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">GRANT</span> <span class="n">SELECT</span> <span class="n">ON</span> <span class="n">TABLE</span> <span class="o">&lt;</span><span class="n">schema_name</span><span class="o">&gt;.</span><span class="n">tsearch</span> <span class="n">TO</span> <span class="s2">&quot;&lt;db_user&gt;&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>with <code class="docutils literal notranslate"><span class="pre">&lt;db_user&gt;</span></code> substituted as appropriately.</p>
 </div>
 <div class="section" id="populate-the-full-text-search-table">
 <h2>Populate the full-text search table<a class="headerlink" href="#populate-the-full-text-search-table" title="Permalink to this headline">¶</a></h2>
 <p>Here is an example of an insertion in the <code class="docutils literal notranslate"><span class="pre">tsearch</span></code> table:</p>
 <div class="code sql highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">INSERT</span> <span class="n">INTO</span> <span class="n">app_schema</span><span class="o">.</span><span class="n">tsearch</span>
   <span class="p">(</span><span class="n">the_geom</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">public</span><span class="p">,</span> <span class="n">role_id</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
-<span class="n">VALUES</span>
-  <span class="p">(</span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="s1">&#39;POINT(2660000 1140000)&#39;</span><span class="p">,</span> <span class="mi">21781</span><span class="p">),</span> <span class="s1">&#39;Layer group&#39;</span><span class="p">,</span>
-   <span class="s1">&#39;text to display&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span>
-   <span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;french&#39;</span><span class="p">,</span> <span class="n">regexp_replace</span><span class="p">(</span><span class="s1">&#39;text to search&#39;</span><span class="p">,</span> <span class="n">E</span><span class="s1">&#39;[</span><span class="se">\\</span><span class="s1">[</span><span class="se">\\</span><span class="s1">]</span><span class="se">\\</span><span class="s1">(</span><span class="se">\\</span><span class="s1">):&amp;</span><span class="se">\\</span><span class="s1">*]&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">)));</span>
+<span class="n">VALUES</span> <span class="p">(</span>
+   <span class="n">ST_GeomFromText</span><span class="p">(</span><span class="s1">&#39;POINT(2660000 1140000)&#39;</span><span class="p">,</span> <span class="mi">21781</span><span class="p">),</span>
+   <span class="s1">&#39;Layer group&#39;</span><span class="p">,</span>
+   <span class="s1">&#39;text to display&#39;</span><span class="p">,</span>
+   <span class="s1">&#39;t&#39;</span><span class="p">,</span>
+   <span class="n">NULL</span><span class="p">,</span>
+   <span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;french&#39;</span><span class="p">,</span> <span class="n">regexp_replace</span><span class="p">(</span><span class="s1">&#39;text to search&#39;</span><span class="p">,</span> <span class="n">E</span><span class="s1">&#39;[</span><span class="se">\\</span><span class="s1">[</span><span class="se">\\</span><span class="s1">]</span><span class="se">\\</span><span class="s1">(</span><span class="se">\\</span><span class="s1">):&amp;</span><span class="se">\\</span><span class="s1">*]&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">))</span>
+<span class="p">);</span>
 </pre></div>
 </div>
 <p>Where <code class="docutils literal notranslate"><span class="pre">Layer</span> <span class="pre">group</span></code> is the name of the layer group that should be activated,
@@ -84,7 +87,11 @@ span.prompt1:before {
 <div class="code sql highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">INSERT</span> <span class="n">INTO</span> <span class="n">app_schema</span><span class="o">.</span><span class="n">tsearch</span>
   <span class="p">(</span><span class="n">the_geom</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">public</span><span class="p">,</span> <span class="n">role_id</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
 <span class="n">SELECT</span>
-  <span class="n">geom</span><span class="p">,</span> <span class="s1">&#39;layer group name&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span>
+  <span class="n">geom</span><span class="p">,</span>
+  <span class="s1">&#39;layer group name&#39;</span><span class="p">,</span>
+  <span class="n">text</span><span class="p">,</span>
+  <span class="s1">&#39;t&#39;</span><span class="p">,</span>
+  <span class="n">NULL</span><span class="p">,</span>
   <span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;german&#39;</span><span class="p">,</span> <span class="n">regexp_replace</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">E</span><span class="s1">&#39;[</span><span class="se">\\</span><span class="s1">[</span><span class="se">\\</span><span class="s1">]</span><span class="se">\\</span><span class="s1">(</span><span class="se">\\</span><span class="s1">):&amp;</span><span class="se">\\</span><span class="s1">*]&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">))</span>
 <span class="n">FROM</span> <span class="n">table</span><span class="p">;</span>
 </pre></div>
@@ -93,7 +100,7 @@ span.prompt1:before {
 <p class="first admonition-title">Note</p>
 <p class="last">The language string used as the first argument to the <code class="docutils literal notranslate"><span class="pre">to_tsvector</span></code>
 function should match that defined in the <code class="docutils literal notranslate"><span class="pre">default_locale_name</span></code> variable of
-the application configuration (<code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code>). For example if you have
+the application configuration (<code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code>). For example if you have
 “french” text in the database the application’s <code class="docutils literal notranslate"><span class="pre">default_locale_name</span></code> should
 be <code class="docutils literal notranslate"><span class="pre">fr</span></code>. In other words c2cgeoportal assumes that the database language
 and the application’s default language match.</p>
@@ -102,7 +109,11 @@ and the application’s default language match.</p>
 <div class="section" id="populate-with-the-themes">
 <h2>Populate with the themes<a class="headerlink" href="#populate-with-the-themes" title="Permalink to this headline">¶</a></h2>
 <p>A script is available to fill the full-text search table, for more information type:</p>
-<pre class="highlight"><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal theme2fts --help</span>
+<pre class="highlight"><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal theme2fts --help</span>
 </pre></div>
 <div class="section" id="security">
 <h2>Security<a class="headerlink" href="#security" title="Permalink to this headline">¶</a></h2>
@@ -122,14 +133,22 @@ are <code class="docutils literal notranslate"><span class="pre">1</span></code>
 <div class="code sql last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">INSERT</span> <span class="n">INTO</span> <span class="n">app_schema</span><span class="o">.</span><span class="n">tsearch</span>
    <span class="p">(</span><span class="n">the_geom</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">public</span><span class="p">,</span> <span class="n">role_id</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
 <span class="n">SELECT</span>
-   <span class="n">geom</span><span class="p">,</span> <span class="s1">&#39;layer group name&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>
+   <span class="n">geom</span><span class="p">,</span>
+   <span class="s1">&#39;layer group name&#39;</span><span class="p">,</span>
+   <span class="n">text</span><span class="p">,</span>
+   <span class="s1">&#39;f&#39;</span><span class="p">,</span>
+   <span class="mi">1</span><span class="p">,</span>
    <span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;german&#39;</span><span class="p">,</span> <span class="n">regexp_replace</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">E</span><span class="s1">&#39;[</span><span class="se">\\</span><span class="s1">[</span><span class="se">\\</span><span class="s1">]</span><span class="se">\\</span><span class="s1">(</span><span class="se">\\</span><span class="s1">):&amp;</span><span class="se">\\</span><span class="s1">*]&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">))</span>
 <span class="n">FROM</span> <span class="n">table</span><span class="p">;</span>
 
 <span class="n">INSERT</span> <span class="n">INTO</span> <span class="n">app_schema</span><span class="o">.</span><span class="n">tsearch</span>
    <span class="p">(</span><span class="n">the_geom</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">public</span><span class="p">,</span> <span class="n">role_id</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
 <span class="n">SELECT</span>
-   <span class="n">geom</span><span class="p">,</span> <span class="s1">&#39;layer group name&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span>
+   <span class="n">geom</span><span class="p">,</span>
+   <span class="s1">&#39;layer group name&#39;</span><span class="p">,</span>
+   <span class="n">text</span><span class="p">,</span>
+   <span class="s1">&#39;f&#39;</span><span class="p">,</span>
+   <span class="mi">2</span><span class="p">,</span>
    <span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;german&#39;</span><span class="p">,</span> <span class="n">regexp_replace</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">E</span><span class="s1">&#39;[</span><span class="se">\\</span><span class="s1">[</span><span class="se">\\</span><span class="s1">]</span><span class="se">\\</span><span class="s1">(</span><span class="se">\\</span><span class="s1">):&amp;</span><span class="se">\\</span><span class="s1">*]&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">))</span>
 <span class="n">FROM</span> <span class="n">table</span><span class="p">;</span>
 </pre></div>
@@ -184,11 +203,9 @@ For instance to specify a <code class="docutils literal notranslate"><span class
 </div>
 <div class="section" id="configuration">
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
-<p>In the configuration file <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code> you can add the
-following variables:</p>
+<p>In the configuration file <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> you can add the following variables:</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">fulltextsearch_defaultlimit</span></code> the default limit on the results,
-default is 30.</li>
+<li><code class="docutils literal notranslate"><span class="pre">fulltextsearch_defaultlimit</span></code> the default limit on the results, default is 30.</li>
 <li><code class="docutils literal notranslate"><span class="pre">fulltextsearch_maxlimit</span></code> the max possible limit, default is 200.</li>
 </ul>
 </div>
@@ -239,16 +256,14 @@ instead of ‘french’. For example:</p>
    <span class="s1">&#39;Accent text to display (éàè)&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;fr&#39;</span><span class="p">,</span> <span class="s1">&#39;Accent text to search (éàè)&#39;</span><span class="p">));</span>
 </pre></div>
 </div>
-<p>And define the configuration in the <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file:</p>
+<p>And define the configuration in the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file:</p>
 <div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fulltextsearch</span><span class="p">:</span>
     <span class="n">languages</span><span class="p">:</span>
         <span class="n">fr</span><span class="p">:</span> <span class="n">fr</span>
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">fr:</span> <span class="pre">fr</span></code> is a link between the pyramid language and
-the text search configuration, by default the it is
-<code class="docutils literal notranslate"><span class="pre">fr:</span> <span class="pre">french</span></code> because the default french text search
-configuration is named ‘french’.</p>
+<p><code class="docutils literal notranslate"><span class="pre">fr:</span> <span class="pre">fr</span></code> is a link between the pyramid language and the text search configuration, by default it is
+<code class="docutils literal notranslate"><span class="pre">fr:</span> <span class="pre">french</span></code> because the default french text search configuration is named ‘french’.</p>
 </div>
 </div>
 
