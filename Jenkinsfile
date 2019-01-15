@@ -77,13 +77,16 @@ dockerBuild {
                 LAST_TAG = sh(returnStdout: true, script: 'git describe --abbrev=0 --tags').trim()
                 RELEASE_TAG = MAJOR_VERSION
                 if (TAG =~ /^[0-9]+\.[0-9]+\.[0-9]+$/) {
+                    println("Release detected")
                     RELEASE_TAG = TAG
                 }
                 else if (TAG =~ /^[0-9]+\.[0-9]+\.[0-9]+\.dev[0-9]+$/) {
+                    println("Dev release detected")
                     RELEASE_TAG = TAG
                 }
                 else {
                     if (BRANCH_NAME =~ /^[0-9]\.[0-9]$/) {
+                        println("Release branch detected")
                         MINOR = sh(returnStdout: true, script: '.venv/bin/python travis/get-minor --no-save').trim()
                         RELEASE_TAG = "${LAST_TAG}.${MINOR}"
                     }
