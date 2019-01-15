@@ -183,3 +183,13 @@ vavalue of the OGC sever.
 
 And finally you should provide the ``GEOMAPFISH_ACCESSCONTROL_CONFIG`` to point to config file e.-g.
 ``/etc/qgisserver/accesscontrol_config.yaml``, and ``QGIS_PROJECT_FILE`` to be empty.
+
+Project in Database
+*******************
+
+If you store the project in the database you should set the ``QGIS_PROJECT_FILE`` environment variable
+to something like that:
+``postgresql://<dbuser>:<dbpass>@<dbhost>:<dbport>?sslmode=disable&dbname=<dbname>&schema=<dbschema>&project=<projectname>``.
+
+If you specify it in the `MAP` parameter for the  OGC proxy, don't forget to correctly encode it, you can use this
+`service <https://www.url-encode-decode.com/>`__ to encode it.
