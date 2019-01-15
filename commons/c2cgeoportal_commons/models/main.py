@@ -414,25 +414,10 @@ class LayerGroup(TreeGroup):
             'title': _('Expanded'),
             'column': 2
         }})  # shouldn't be used in V3
-    is_internal_wms = Column(Boolean, info={
-        'colanderalchemy': {
-            'title': _('Internal WMS'),
-            'column': 2
-        }})
-    # children have radio button instance of check box
-    is_base_layer = Column(Boolean, info={
-        'colanderalchemy': {
-            'title': _('Base layers group'),
-            'column': 2
-        }})  # Should not be used in V3
 
-    def __init__(
-        self, name: str='', is_expanded: bool=False, is_internal_wms: bool=True, is_base_layer: bool=False
-    ) -> None:
+    def __init__(self, name: str='', is_expanded: bool=False) -> None:
         TreeGroup.__init__(self, name=name)
         self.is_expanded = is_expanded
-        self.is_internal_wms = is_internal_wms
-        self.is_base_layer = is_base_layer
 
 
 # role theme link for restricted theme

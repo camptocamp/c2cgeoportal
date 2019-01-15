@@ -76,10 +76,7 @@ All the layers in the admin interface have the following attributes:
 
 * ``Name``: the name of the WMS layer/group, or the WMTS layer.
   It is used through the i18n tools to display the name on the layers tree.
-* ``Metadata URL``: deprecated
-
-.. TODO: remove deprecated field
-
+* ``Metadata URL``: (deprecated)
 * ``Description``: a description.
 * ``Public``: makes the layer public. You must use the ``Restriction areas`` to make
   private layer accessible.
@@ -151,12 +148,8 @@ Attributes:
 * ``Metadata URL``: (deprecated).
 * ``Description``: a description.
 * ``Expanded``: (deprecated).
-* ``Internal WMS``: (deprecated).
-* ``Base layers group``: (deprecated).
 * ``Children``: the ordered children elements.
 * ``Metadata``: Additional metadata.
-
-.. TODO: remove the deprecated fields if it's correctly migrated.
 
 Background layers
 -----------------
@@ -178,8 +171,6 @@ Theme
 * ``Functionalities``: The linked functionalities.
 * ``Children``: the ordered children elements.
 * ``Metadata``: Additional metadata.
-
-.. TODO: remove the deprecated fields if it's correctly migrated.
 
 Restricted area
 ---------------

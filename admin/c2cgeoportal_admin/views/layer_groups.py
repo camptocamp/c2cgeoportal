@@ -26,10 +26,8 @@ base_schema.add(parent_id_node(TreeGroup))
 @view_defaults(match_param='table=layer_groups')
 class LayerGroupsViews(TreeItemViews):
 
-    _list_fields = TreeItemViews._list_fields + [
-        _list_field('is_expanded'),
-        _list_field('is_internal_wms'),
-        _list_field('is_base_layer')] + \
+    _list_fields = TreeItemViews._list_fields + \
+        [_list_field('is_expanded')] + \
         TreeItemViews._extra_list_fields
 
     _id_field = 'id'
