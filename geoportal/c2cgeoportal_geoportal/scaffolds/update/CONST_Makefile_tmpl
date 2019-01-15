@@ -37,10 +37,9 @@ export DEVELOPMENT
 # Language provided by the application
 LANGUAGES ?= en fr de
 NGEO_INTERFACES ?= desktop mobile iframe_api
-CGXP_INTERFACES ?=
 CGXP_API ?= TRUE
 CGXP_XAPI ?= FALSE
-INTERFACES += $(NGEO_INTERFACES) $(CGXP_INTERFACES)
+INTERFACES += $(NGEO_INTERFACES)
 export INTERFACES
 # Use print
 PRINT ?= TRUE
@@ -161,11 +160,6 @@ export ALEMBIC_YAML_FILE
 # CGXP
 JSBUILD_MAIN_FILES = $(shell find geoportal/$(PACKAGE)_geoportal/static/lib/cgxp geoportal/$(PACKAGE)_geoportal/static/js -name "*.js" -print 2> /dev/null)
 JSBUILD_MAIN_CONFIG = geoportal/jsbuild/app.cfg
-ifdef CGXP_INTERFACES
-JSBUILD_OUTPUT_FILES ?= $(addsuffix .js, $(CGXP_INTERFACES))
-JSBUILD_OUTPUT_FILES += $(addprefix lang-, $(addsuffix .js, $(LANGUAGES)))
-CSS_CGXP_OUTPUT = $(OUTPUT_DIR)/app.css
-endif
 ifeq ($(CGXP_XAPI), TRUE)
 JSBUILD_OUTPUT_FILES += xapi.js
 JSBUILD_OUTPUT_FILES += $(addprefix lang-, $(addsuffix .js, $(LANGUAGES)))
@@ -293,12 +287,6 @@ VALIDATE_PY_TEST_FOLDERS = geoportal/$(PACKAGE)_geoportal/tests
 
 # Documentation
 SPHINX_FILES = $(shell find doc -name "*.rst" -print)
-
-# Server localisation
-ifdef CGXP_INTERFACES
-SERVER_LOCALISATION_SOURCES_FILES += geoportal/$(PACKAGE)_geoportal/models.py $(shell find geoportal/$(PACKAGE)_geoportal/templates -type f -name '*.html')
-SERVER_LOCALISATION_RULES = $(addprefix /build/lang-server-, $(LANGUAGES))
-endif
 
 # Print
 ifeq ($(PRINT), TRUE)
@@ -719,10 +707,6 @@ docker-build-geoportal: $(shell docker-required --path geoportal) \
 		geoportal/config.yaml \
 		geoportal/alembic.yaml
 	docker build --tag=$(DOCKER_BASE)-geoportal:$(DOCKER_TAG) --build-arg=GIT_HASH=$(GIT_HASH) geoportal
-ifdef CGXP_INTERFACES
-docker-build-geoportal: $(addprefix geoportal/$(PACKAGE)_geoportal/locale/, $(addsuffix /LC_MESSAGES/$(PACKAGE)_geoportal-$(L10N_SERVER_POSTFIX).mo, $(LANGUAGES)))
-endif
-
 
 .PHONY: push-docker
 push-docker:

@@ -3,18 +3,12 @@
 Create a cluster
 ================
 
-A cluster is a configuration where several servers are used to serve the application
-in production.
-
-Creating a cluster implies to separate the database and the application to
-make sure that the data are the same on all servers.
-
-A possibility is to have the same database for all servers (integration, production).
-A single schema for static data is shared, whereas a dedicated main schema will
-be used for each server.
+A cluster is a configuration where several servers are used to serve the application in production.
 
 Deploying data from integration to production may be done by
-`cloning the main integration schema <https://wiki.postgresql.org/wiki/Clone_schema>`_.
+`cloning the main integration schema <https://wiki.postgresql.org/wiki/Clone_schema>`_,
+a customized version of the script, applicable for c2cgeoportal, is available in
+``scripts/CONST_clone_schema.sql``.
 
 For the next steps it is important to figure out if the main goal is the scalability
 or the robustness of the application.
@@ -22,17 +16,9 @@ or the robustness of the application.
 In general the scalability is more important because the main cause of
 down time is due of too much traffic.
 
-In this case the first thing to do is to separate the services:
-
- * PostgreSQL / PostGIS
- * Print
- * WSGI application
- * MapServer / MapCache / Memcached
-
 To have better DB performances, one can setup multiple Postgres servers in a
 `master/slave <https://wiki.postgresql.org/wiki/Binary_Replication_Tutorial>`_
-configuration. To enable this feature on GeoMapFish, you must add this to your
-``vars_<project>.yaml``:
+configuration. To enable this feature on GeoMapFish, you must add this to your ``vars.yaml``:
 
 .. code:: yaml
 
@@ -42,7 +28,7 @@ Then, all the GET and OPTIONS requests will use one of the slave Postgres instan
 rest will use the master instance.
 It is assumed, here, that the views handling the GET and OPTIONS queries do not cause write
 operations to the database (not supported by slave instances). If it is not the case in your
-application (bad practice), add entries to ``db_chooser/master`` in your ``vars_<project>.yaml``.
+application (bad practice), add entries to ``db_chooser/master`` in your ``vars.yaml``.
 For forcing the use of a slave for a POST/PUT/DELETE, add entries to the ``db_chooser/slave``
 configuration.
 

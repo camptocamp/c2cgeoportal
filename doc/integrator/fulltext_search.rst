@@ -10,34 +10,33 @@ The *text search* feature requires a dedicated PostgreSQL table. The full-text
 search table should be named ``tsearch`` (for *text search*) and should be in
 the application-specific schema.
 
-You do not need to create the table yourself, as it is created by the
-``create_db`` command line (see the section
-:ref:`integrator_install_application`).
+You do not need to create the table yourself, as it was already created during application installation
+(see the section :ref:`integrator_install_application`).
 
-If you did want to create the table manually you would use the following commands:
+If you did want to create the table manually you would use the following SQL commands:
 
-.. prompt:: bash
+.. code:: sql
 
-    sudo -u postgres psql -c "CREATE TABLE <schema_name>.tsearch ( \
+    CREATE TABLE <schema_name>.tsearch ( \
         id SERIAL PRIMARY KEY, \
         layer_name TEXT, \
         label TEXT, \
         public BOOLEAN DEFAULT 't', \
         params TEXT, \
         role_id INTEGER REFERENCES <schema_name>.role, \
-        ts TSVECTOR);" <db_name>
-    sudo -u postgres psql -c "SELECT AddGeometryColumn('<schema_name>', 'tsearch', 'the_geom', <srid>, 'GEOMETRY', 2);" <db_name>
-    sudo -u postgres psql -c "CREATE INDEX tsearch_ts_idx ON <schema_name>.tsearch USING gin(ts);" <db_name>
+        ts TSVECTOR);
+    SELECT AddGeometryColumn('<schema_name>', 'tsearch', 'the_geom', <srid>, 'GEOMETRY', 2);
+    CREATE INDEX tsearch_ts_idx ON <schema_name>.tsearch USING gin(ts);
 
-with ``<schema_name>``, ``<srid>``, and ``<db_name>``  substituted as appropriate.
+with ``<schema_name>`` and ``<srid>`` substituted as appropriate.
 
 Also make sure that the db user can ``SELECT`` in the ``tsearch`` table:
 
-.. prompt:: bash
+.. code:: sql
 
-    sudo -u postgres psql -c 'GRANT SELECT ON TABLE <schema_name>.tsearch TO "<db_user>";' <db_name>
+    GRANT SELECT ON TABLE <schema_name>.tsearch TO "<db_user>";
 
-with ``<db_user>``, and ``<db_name>`` substituted as appropriately.
+with ``<db_user>`` substituted as appropriately.
 
 
 Populate the full-text search table
@@ -49,10 +48,14 @@ Here is an example of an insertion in the ``tsearch`` table:
 
     INSERT INTO app_schema.tsearch
       (the_geom, layer_name, label, public, role_id, ts)
-    VALUES
-      (ST_GeomFromText('POINT(2660000 1140000)', 21781), 'Layer group',
-       'text to display', 't', NULL,
-       to_tsvector('french', regexp_replace('text to search', E'[\\[\\]\\(\\):&\\*]', ' ', 'g')));
+    VALUES (
+       ST_GeomFromText('POINT(2660000 1140000)', 21781),
+       'Layer group',
+       'text to display',
+       't',
+       NULL,
+       to_tsvector('french', regexp_replace('text to search', E'[\\[\\]\\(\\):&\\*]', ' ', 'g'))
+    );
 
 Where ``Layer group`` is the name of the layer group that should be activated,
 ``text to display`` is the text that is displayed in the results,
@@ -66,7 +69,11 @@ Here is another example where rows from a ``SELECT`` are inserted:
     INSERT INTO app_schema.tsearch
       (the_geom, layer_name, label, public, role_id, ts)
     SELECT
-      geom, 'layer group name', text, 't', NULL,
+      geom,
+      'layer group name',
+      text,
+      't',
+      NULL,
       to_tsvector('german', regexp_replace(text, E'[\\[\\]\\(\\):&\\*]', ' ', 'g'))
     FROM table;
 
@@ -74,7 +81,7 @@ Here is another example where rows from a ``SELECT`` are inserted:
 
     The language string used as the first argument to the ``to_tsvector``
     function should match that defined in the ``default_locale_name`` variable of
-    the application configuration (``vars_<project>.yaml``). For example if you have
+    the application configuration (``vars.yaml``). For example if you have
     "french" text in the database the application's ``default_locale_name`` should
     be ``fr``. In other words c2cgeoportal assumes that the database language
     and the application's default language match.
@@ -113,14 +120,22 @@ available to users of the corresponding role.
         INSERT INTO app_schema.tsearch
            (the_geom, layer_name, label, public, role_id, ts)
         SELECT
-           geom, 'layer group name', text, 'f', 1,
+           geom,
+           'layer group name',
+           text,
+           'f',
+           1,
            to_tsvector('german', regexp_replace(text, E'[\\[\\]\\(\\):&\\*]', ' ', 'g'))
         FROM table;
 
         INSERT INTO app_schema.tsearch
            (the_geom, layer_name, label, public, role_id, ts)
         SELECT
-           geom, 'layer group name', text, 'f', 2,
+           geom,
+           'layer group name',
+           text,
+           'f',
+           2,
            to_tsvector('german', regexp_replace(text, E'[\\[\\]\\(\\):&\\*]', ' ', 'g'))
         FROM table;
 
@@ -191,11 +206,9 @@ If the ``lang`` column contains a value it means that the result is only for a l
 Configuration
 -------------
 
-In the configuration file ``vars_<project>.yaml`` you can add the
-following variables:
+In the configuration file ``vars.yaml`` you can add the following variables:
 
-*  ``fulltextsearch_defaultlimit`` the default limit on the results,
-   default is 30.
+*  ``fulltextsearch_defaultlimit`` the default limit on the results, default is 30.
 *  ``fulltextsearch_maxlimit`` the max possible limit, default is 200.
 
 
@@ -265,7 +278,7 @@ instead of 'french'. For example:
       (ST_GeomFromText('POINT(2660000 1140000)', 21781), 'Layer group',
        'Accent text to display (éàè)', 't', NULL, to_tsvector('fr', 'Accent text to search (éàè)'));
 
-And define the configuration in the ``vars_<project>.yaml`` file:
+And define the configuration in the ``vars.yaml`` file:
 
 .. code:: yaml
 
@@ -273,7 +286,5 @@ And define the configuration in the ``vars_<project>.yaml`` file:
         languages:
             fr: fr
 
-``fr: fr`` is a link between the pyramid language and
-the text search configuration, by default the it is
-``fr: french`` because the default french text search
-configuration is named 'french'.
+``fr: fr`` is a link between the pyramid language and the text search configuration, by default it is
+``fr: french`` because the default french text search configuration is named 'french'.

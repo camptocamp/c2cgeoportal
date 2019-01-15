@@ -89,11 +89,12 @@ Where ``config`` is the application configuration object,
 ``interface_name`` is the name specified in the ``interface`` table,
 also used to create the route path,
 
-``interface_type`` may be either ``INTERFACE_TYPE_CGXP``, ``INTERFACE_TYPE_NGEO`` or
+``interface_type`` may be either ``INTERFACE_TYPE_NGEO`` or
 ``INTERFACE_TYPE_NGEO_CATALOGUE``. Constants available in ``c2cgeoportal``.
 
 Site-specific configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 After rebuilding your project and verifying that the new interface has no technical errors,
 some site-specific configuration issues must be considered:
 

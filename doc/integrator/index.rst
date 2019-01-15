@@ -24,4 +24,3 @@ Content:
    features
    docker
    operations
-   legacy

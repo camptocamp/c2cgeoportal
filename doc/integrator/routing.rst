@@ -3,21 +3,27 @@
 Routing interface
 =================
 
-This section describes how to add the `OSRM routing <http://project-osrm.org/>`_ interface to a c2cgeoprtal application.
+This section describes how to add the `OSRM routing <http://project-osrm.org/>`_ interface to a
+c2cgeoportal application.
 
 
 Requirements
 ------------
-To add this feature, you need a `OSRM backend server <https://github.com/Project-OSRM/osrm-backend>`_ with version >= 5.8.
+To add this feature, you need a `OSRM backend server <https://github.com/Project-OSRM/osrm-backend>`_
+with version >= 5.8.
 
 
 Adding the routing interface to the template
 --------------------------------------------
 
-For a working example, check the `alternative example desktop app <https://github.com/camptocamp/ngeo/blob/master/contribs/gmf/apps/desktop_alt/index.html>`_ of ngeo.
+For a working example, check the
+`alternative example desktop app <https://github.com/camptocamp/ngeo/blob/master/contribs/gmf/apps/desktop_alt/index.html>`_
+of ngeo.
 
 
-Add the button to the ``gmf-app-bar``::
+Add the button to the ``gmf-app-bar``:
+
+.. code: html
 
   <button ngeo-btn class="btn btn-default" ng-model="mainCtrl.routingfeatureActive"
           data-toggle="tooltip" data-placement="left" data-original-title="{{'Routing'|translate}}">
@@ -25,7 +31,9 @@ Add the button to the ``gmf-app-bar``::
   </button>
 
 
-Then, add the routing component to the ``gmf-app-tools-content`` area::
+Then, add the routing component to the ``gmf-app-tools-content`` area:
+
+.. code: html
 
     <div ng-show="mainCtrl.routingfeatureActive" class="row">
       <div class="col-sm-12">
@@ -38,13 +46,17 @@ Then, add the routing component to the ``gmf-app-tools-content`` area::
       </div>
     </div>
 
-`mainCtrl.routingfeatureActive` and `mainCtrl.map` are part of `gmf.AbstractDesktopController` and do not need to be defined in your interface controller, as long as it extends AbstractDesktopController.
+`mainCtrl.routingfeatureActive` and `mainCtrl.map` are part of `gmf.AbstractDesktopController` and do not
+need to be defined in your interface controller, as long as it extends AbstractDesktopController.
 
 
 Configuration
 -------------
 
-To configure the routing feature the constants `ngeoRoutingOptions` and `ngeoNominatimSearchDefaultParams` can be defined. Add them to your `interfaces_config` section in your `vars.yaml` file::
+To configure the routing feature the constants `ngeoRoutingOptions` and `ngeoNominatimSearchDefaultParams`
+can be defined. Add them to your `interfaces_config` section in your `vars.yaml` file:
+
+.. code: yaml
 
     interfaces_config:
         [...]
@@ -64,12 +76,14 @@ To configure the routing feature the constants `ngeoRoutingOptions` and `ngeoNom
 
 backendUrl
 ^^^^^^^^^^
+
 required, string
 URL to an `OSRM backend server instance <https://github.com/Project-OSRM/osrm-backend>`_ with version >= 5.8
 
 
 profiles
 ^^^^^^^^
+
 not required, ngeox.RoutingProfile
 
 label: string, label to display in the drop-down-menu for the profile
@@ -81,14 +95,18 @@ profile: string, url-path of the profile, example::
         '                |     '     |    '
     backendUrl           |  profile  | osrm query
 
-If more than one profile are supplied, the component will show a drop-down-menu for the user to select a profile.
+If more than one profile is supplied, the component will show a drop-down-menu for the user to select a
+profile.
 
 
 ngeoNominatimSearchDefaultParams
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 not required, dictionary of string-parameters
 
-Configures the nominatim search, which is used to search for addresses and features in the routing search fields.
-Check the  OpenStreetMap wiki for a `list of all available parameters <https://wiki.openstreetmap.org/wiki/Nominatim#Parameters>`_.
+Configures the nominatim search, which is used to search for addresses and features in the routing search
+fields.
+Check the  OpenStreetMap wiki for a `list of all available parameters
+<https://wiki.openstreetmap.org/wiki/Nominatim#Parameters>`_.
 
 In the example, ``'countrycodes': 'CH'`` restricts the search to Switzerland.

@@ -9,75 +9,21 @@ components installed on your system:
 * **Git** (preferably to other revision control systems)
 * **Docker** >= 1.12
 * **Docker-compose** >= 1.8
-* **Python** >= 3.5 with development files (``python-dev``), ``python3-pip``, ``python3-venv``.
+* **Python** >= 3.5
 * **Python-netifaces**
-* Oracle **Java** SE Development Kit 6 or 7
-* **Tomcat** >= 6.0
-* **Apache** >= 2.4 (with ``mod_wsgi`` for Python 3)
-* **PostgreSQL** >= 9.1/**PostGIS** >= 2.1, with library (``libpq-dev``)
-* **MapServer** 7.2 (for the filters) or **QGIS**-mapserver 2.2 and upper
-* **Java** >= 7.0
-* **MapCache** >= 1.0.0 with memcached support
-* **Memcached** >= 1.4
-* **TinyOWS** >= 1.1.0
-* **ImageMagick**
-* **GCC** GNU Compiler Collection >= 4.6
-* **libproj** >= 4.7
-* **gdal** >= 1.9 (with ``libgdal-dev``)
-* **geos** >= 3.3
-* **zip** >= 3.0
-* **unzip** >= 6.0
-* **graphviz-dev**
-* **node** >= 8.0
-* **npm** >= 3.10
-* **Deploy** >= 0.4.7
+* **Apache** >= 2.4
+* **PostgreSQL** >= 9.1/**PostGIS** >= 2.1
+* **gnupg** (with **dirmngr**) optional
 
 
 Required Apache modules
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-* ``mod_expires``
-* ``mod_headers``
 * ``mod_proxy``
 * ``mod_proxy_http``
-* ``mod_rewrite``
-* ``mod_wsgi``
-* ``mod_mapcache``
-
-Conflicting Apache modules
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-* ``mod_php*``
-
-
-Print
-~~~~~
-
-The print requires a Tomcat server listening by default on port 8080.
-To change it you should overwrite the ``print_url`` vars in ``config.yaml.in``,
-default is: ``http://localhost:8080/print/pdf/``.
-
-MapFishPrint must be installed in version 3 or later.
 
 Additional notes for Windows users
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-GeoMapFish can be used under Windows, but you will need to install Cygwin
-and some additional stuff for Python.
-
-We assume that Python 2.7 is used.
-
-Once Python is installed, you should add two folders to your ``path`` environment
-variable:
-
-* ``C:\path_to_python\Python27``
-* ``C:\path_to_python\Python27\Scripts``
-
-Python
-^^^^^^
-
-* Install Microsoft Visual C++ Compiler for Python 2.7 (http://aka.ms/vcpython27)
-* Be sure to have at least pip >= 9.x in your project . Using virtualenv >= 15 should resolve that.
 
 Cygwin
 ^^^^^^
@@ -115,19 +61,3 @@ Cygwin's git for Windows. To do so:
 
 * Open a Cygwin bash
 * Run ``git config core.autocrlf true``
-
-Print
-^^^^^^
-
-In your makefile, define the following variables:
-
-.. prompt:: bash
-
-    PRINT_TMP = tmp
-    TOMCAT_START_COMMAND = net START Tomcat7
-    TOMCAT_STOP_COMMAND = net STOP Tomcat7
-
-The first line disables the tmp folder, which is not working on Windows.
-The next two lines define the commands to start and stop your Tomcat service
-(here it would be ``Tomcat7``). On Windows, these commands differ from the one
-used on Linux.

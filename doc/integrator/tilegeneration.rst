@@ -9,9 +9,7 @@ Introduction
 With this solution we solve the following issue:
 
 * Managing millions of files on the file system is difficult.
-
 * We should be able to update all the generated tiles.
-
 * We should not have thousands of expired files.
 
 To do so we need need a tool that can generate the tiles,
@@ -21,12 +19,10 @@ On-the-fly tiles generation introduces some issues such as having a growing
 number of tiles that may become unmanageable. For example when updating the
 data, it is not possible to figure out what tiles should be updated.
 
-For the high usage website we want to put the tiles on S3
-with the same tool.
+For the high usage website we want to put the tiles on S3 with the same tool.
 
-One issue we have if we want to generate all the tiles, the generation
-time can grow to more than one month, especially if we have
-a high resolution (low if in m/px) on the last zoom level.
+One issue we have if we want to generate all the tiles, the generation time can grow to more than one month,
+especially if we have a high resolution (low if in m/px) on the last zoom level.
 Than for the last zoom level we should generate the tiles on the fly
 with a low expiry (4 hours for example).
 We should use metatiles to do not have too may request to postgres.
@@ -49,7 +45,7 @@ since it is the only system that offers automatic deletion of the expired tiles.
 To use it you should have MapCache and Memcached installed on your computer.
 And Memcached should listen on port 11211.
 
-To clear/flush Memcached cache, use the following command:
+To clear/flush Memcached cache, use the following command in the container:
 
 .. prompt:: bash
 
@@ -116,19 +112,16 @@ https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/scaffo
 The main thing to do is to:
 
 * Set the resolutions we want to generate in the ``grids``.
-  If we want to generate different resolution per layers we should create
-  deferent grid.
+  If we want to generate different resolutions par layer, we should create different grids.
   Sub-level of ``grids`` is the grid name.
 
 * Configure the ``caches`` and set the ``generation``/``default_cache``.
   Sub-level of ``caches`` is the cache name.
 
-* Configure the ``layer_default``, the ``layers``, and the
-  ``generation``/``default_layers``.
+* Configure the ``layer_default``, the ``layers``, and the ``generation``/``default_layers``.
   Sub-level of ``layers`` is the layer name.
 
-* We can drop the empty tiles with an hash comparison,
-  tilecloud-chain has a tool to help us:
+* We can drop the empty tiles with a hash comparison, tilecloud-chain has a tool to help us:
 
   .. prompt:: bash
 
@@ -156,8 +149,7 @@ AWS generation.
 Tile Generation and management
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This package offers two commands lines, one to generate the tiles locally,
-see help:
+This package offers two command line tools, one to generate the tiles locally, see help:
 
 .. prompt:: bash
 
@@ -175,8 +167,7 @@ Before start a tile generation on S3 measure the cost:
 
     docker-compose exec tilecloudchain generate_controller --cost
 
-If you setup all the default options you can generate the tiles by
-using the command:
+If you setup all the default options you can generate the tiles by using the command:
 
 .. prompt:: bash
 

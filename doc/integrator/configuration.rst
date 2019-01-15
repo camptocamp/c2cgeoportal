@@ -17,7 +17,6 @@ This chapter describes advanced configuration settings.
    fulltext_search
    internationalization
    shortener
-   subdomain
    tilegeneration
    ngeo_new_interface
    multiple_databases
