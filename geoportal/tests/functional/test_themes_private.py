@@ -182,8 +182,8 @@ class TestThemesPrivateView(TestCase):
     def test_public(self):
         entry = self._create_entry_obj()
         themes = entry.themes()
-        self.assertEquals(self._get_filtered_errors(themes), set())
-        self.assertEquals(
+        self.assertEqual(self._get_filtered_errors(themes), set())
+        self.assertEqual(
             [self._only_name(t) for t in themes["themes"]],
             [{
                 "name": "__test_theme",
@@ -203,8 +203,8 @@ class TestThemesPrivateView(TestCase):
         from c2cgeoportal_commons.models.static import User
         entry = self._create_entry_obj(user=DBSession.query(User).filter_by(username=u"__test_user").one())
         themes = entry.themes()
-        self.assertEquals(self._get_filtered_errors(themes), set())
-        self.assertEquals(
+        self.assertEqual(self._get_filtered_errors(themes), set())
+        self.assertEqual(
             [self._only_name(t) for t in themes["themes"]],
             [{
                 "name": u"__test_theme",
