@@ -194,6 +194,7 @@ update_paths:
   - admin_interface.available_metadata
   - admin_interface.functionalities
   - admin_interface.available_in_templates
+  - api
   - authorized_referers
   - authtkt
   - check_collector.disabled
@@ -257,6 +258,7 @@ update_paths:
   - interfaces_theme
   - servers
   - shortener
+  - tinyowsproxy
 
 no_interpreted:
   - reset_password.email_body
