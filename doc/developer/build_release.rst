@@ -33,19 +33,19 @@ Before doing a release you should merge all the previous branch on this one:
 
      .. prompt:: bash
 
-        ./docker-compose-run alembic \
-            --config=tests/functional/alembic.ini \
+        ./docker-run alembic \
+            --config=geoportal/tests/functional/alembic.ini \
             --name=main heads
-        ./docker-compose-run alembic \
-            --config=tests/functional/alembic.ini \
+        ./docker-run alembic \
+            --config=geoportal/tests/functional/alembic.ini \
             --name=static heads
 
      If yes create the merge with:
 
      .. prompt:: bash
 
-        ./docker-compose-run alembic \
-            --config=tests/functional/alembic.ini --name=[main|static] \
+        ./docker-run alembic \
+            --config=geoportal/tests/functional/alembic.ini --name=[main|static] \
             merge --message="Merge <src> and <dst> branches" \
             <rev 1> <rev 2>
 
