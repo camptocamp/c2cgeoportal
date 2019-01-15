@@ -176,6 +176,14 @@ vavalue of the OGC sever.</p>
 <p>And finally you should provide the <code class="docutils literal notranslate"><span class="pre">GEOMAPFISH_ACCESSCONTROL_CONFIG</span></code> to point to config file e.-g.
 <code class="docutils literal notranslate"><span class="pre">/etc/qgisserver/accesscontrol_config.yaml</span></code>, and <code class="docutils literal notranslate"><span class="pre">QGIS_PROJECT_FILE</span></code> to be empty.</p>
 </div>
+<div class="section" id="project-in-database">
+<h3>Project in Database<a class="headerlink" href="#project-in-database" title="Permalink to this headline">¶</a></h3>
+<p>If you store the project in the database you should set the <code class="docutils literal notranslate"><span class="pre">QGIS_PROJECT_FILE</span></code> environment variable
+to something like that:
+<code class="docutils literal notranslate"><span class="pre">postgresql://&lt;dbuser&gt;:&lt;dbpass&gt;&#64;&lt;dbhost&gt;:&lt;dbport&gt;?sslmode=disable&amp;dbname=&lt;dbname&gt;&amp;schema=&lt;dbschema&gt;&amp;project=&lt;projectname&gt;</span></code>.</p>
+<p>If you specify it in the <cite>MAP</cite> parameter for the  OGC proxy, don’t forget to correctly encode it, you can use this
+<a class="reference external" href="https://www.url-encode-decode.com/">service</a> to encode it.</p>
+</div>
 </div>
 </div>
 

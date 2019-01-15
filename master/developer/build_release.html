@@ -60,15 +60,15 @@ to the upper branches i.e.: <code class="docutils literal notranslate"><span cla
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">./docker-compose-run alembic <span class="se">\</span>
-    --config<span class="o">=</span>tests/functional/alembic.ini <span class="se">\</span>
+</style><span class="prompt1">./docker-run alembic <span class="se">\</span>
+    --config<span class="o">=</span>geoportal/tests/functional/alembic.ini <span class="se">\</span>
     --name<span class="o">=</span>main heads</span>
-<span class="prompt1">./docker-compose-run alembic <span class="se">\</span>
-    --config<span class="o">=</span>tests/functional/alembic.ini <span class="se">\</span>
+<span class="prompt1">./docker-run alembic <span class="se">\</span>
+    --config<span class="o">=</span>geoportal/tests/functional/alembic.ini <span class="se">\</span>
     --name<span class="o">=</span>static heads</span>
 </pre><p>If yes create the merge with:</p>
-<pre class="highlight"><span class="prompt1">./docker-compose-run alembic <span class="se">\</span>
-    --config<span class="o">=</span>tests/functional/alembic.ini --name<span class="o">=[</span>main<span class="p">|</span>static<span class="o">]</span> <span class="se">\</span>
+<pre class="highlight"><span class="prompt1">./docker-run alembic <span class="se">\</span>
+    --config<span class="o">=</span>geoportal/tests/functional/alembic.ini --name<span class="o">=[</span>main<span class="p">|</span>static<span class="o">]</span> <span class="se">\</span>
     merge --message<span class="o">=</span><span class="s2">&quot;Merge &lt;src&gt; and &lt;dst&gt; branches&quot;</span> <span class="se">\</span>
     &lt;rev <span class="m">1</span>&gt; &lt;rev <span class="m">2</span>&gt;</span>
 </pre><p>Remove the import and replace the core of the method by <code class="docutils literal notranslate"><span class="pre">pass</span></code> in the generated file.</p>
