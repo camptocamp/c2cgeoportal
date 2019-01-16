@@ -23,7 +23,7 @@ def clean() {
     sh 'docker volume ls'
 
     sh 'travis/test-upgrade-convert.sh cleanup ${HOME}/workspace'
-    sh 'rm -rf ${HOME}/workspace/testgeomapfish'
+    sh 'rm -rf ${HOME}/workspace/testgeomapfishapp'
     sh 'rm -rf ${HOME}/workspace/geomapfish'
 }
 
@@ -149,26 +149,26 @@ dockerBuild {
                     env.PGHOST='db'
                     env.PGHOST_SLAVE='db'
 
-                    sh 'rm -rf ${HOME}/workspace/testgeomapfish'
+                    sh 'rm -rf ${HOME}/workspace/testgeomapfishapp'
 
                     lock("docker-compose-run-${env.NODE_NAME}") {
                         try {
                             sh 'travis/create-new-project.sh ${HOME}/workspace'
-                            sh '(cd ${HOME}/workspace/testgeomapfish/; ./docker-compose-run make --makefile=travis.mk update-po)'
+                            sh '(cd ${HOME}/workspace/testgeomapfishapp/; ./docker-compose-run make --makefile=travis.mk update-po)'
                         } catch (Exception error) {
-                            sh '(cd ${HOME}/workspace/testgeomapfish/; docker-compose --file=docker-compose-build.yaml logs --timestamps)'
+                            sh '(cd ${HOME}/workspace/testgeomapfishapp/; docker-compose --file=docker-compose-build.yaml logs --timestamps)'
                             throw error
                         } finally {
                             // down will lost the default theme
-                            sh '(cd ${HOME}/workspace/testgeomapfish/; docker-compose --file=docker-compose-build.yaml stop)'
+                            sh '(cd ${HOME}/workspace/testgeomapfishapp/; docker-compose --file=docker-compose-build.yaml stop)'
                         }
                     }
                     // Commit the l10n files modifications
                     // To prevent fail on modification files check
-                    sh '(cd ${HOME}/workspace/testgeomapfish/; git add geoportal/testgeomapfish_geoportal/locale/*/LC_MESSAGES/testgeomapfish_geoportal-*.po)'
-                    sh '(cd ${HOME}/workspace/testgeomapfish/; git commit -m "Upgrade the po files")'
-                    sh '(cd ${HOME}/workspace/testgeomapfish/; ./docker-run travis/empty-make --makefile=travis.mk help)'
-                    sh '(cd ${HOME}/workspace/testgeomapfish/; ./docker-run make --makefile=travis.mk build)'
+                    sh '(cd ${HOME}/workspace/testgeomapfishapp/; git add geoportal/testgeomapfishapp_geoportal/locale/*/LC_MESSAGES/testgeomapfishapp_geoportal-*.po)'
+                    sh '(cd ${HOME}/workspace/testgeomapfishapp/; git commit -m "Upgrade the po files")'
+                    sh '(cd ${HOME}/workspace/testgeomapfishapp/; ./docker-run travis/empty-make --makefile=travis.mk help)'
+                    sh '(cd ${HOME}/workspace/testgeomapfishapp/; ./docker-run make --makefile=travis.mk build)'
                     withCredentials([[
                         $class: 'UsernamePasswordMultiBinding',
                         credentialsId: 'dockerhub',
@@ -178,13 +178,13 @@ dockerBuild {
                         lock("docker-compose-run-${env.NODE_NAME}") {
                             try {
                                 sh 'docker login -u "$USERNAME" -p "$PASSWORD"'
-                                sh 'cat ${HOME}/workspace/testgeomapfish/docker-compose.yaml'
-                                sh '(cd ${HOME}/workspace/testgeomapfish/; docker-compose up -d)'
+                                sh 'cat ${HOME}/workspace/testgeomapfishapp/docker-compose.yaml'
+                                sh '(cd ${HOME}/workspace/testgeomapfishapp/; docker-compose up -d)'
                                 timeout(time: 2, unit: 'MINUTES') {
-                                    sh '(cd ${HOME}/workspace/testgeomapfish/; docker-compose exec -T geoportal wait-db)'
-                                    sh '(cd ${HOME}/workspace/testgeomapfish/; docker-compose exec -T geoportal bash -c "PGHOST=externaldb PGDATABASE=test wait-db;")'
-                                    sh '(cd ${HOME}/workspace/testgeomapfish/; docker-compose exec -T geoportal create-demo-theme)'
-                                    sh '(cd ${HOME}/workspace/testgeomapfish/; docker-compose exec -T geoportal theme2fts)'
+                                    sh '(cd ${HOME}/workspace/testgeomapfishapp/; docker-compose exec -T geoportal wait-db)'
+                                    sh '(cd ${HOME}/workspace/testgeomapfishapp/; docker-compose exec -T geoportal bash -c "PGHOST=externaldb PGDATABASE=test wait-db;")'
+                                    sh '(cd ${HOME}/workspace/testgeomapfishapp/; docker-compose exec -T geoportal create-demo-theme)'
+                                    sh '(cd ${HOME}/workspace/testgeomapfishapp/; docker-compose exec -T geoportal theme2fts)'
                                     sh './docker-run --network=internal travis/waitwsgi http://front/'
                                 }
                                 for (path in [
@@ -197,7 +197,7 @@ dockerBuild {
                                 ]) {
                                     def start_lines = [:]
                                     ['print', 'mapserver', 'geoportal'].each { service ->
-                                        def start_line = sh(returnStdout: true, script: "(cd ${HOME}/workspace/testgeomapfish/; docker-compose logs ${service}) | wc -l") as Integer
+                                        def start_line = sh(returnStdout: true, script: "(cd ${HOME}/workspace/testgeomapfishapp/; docker-compose logs ${service}) | wc -l") as Integer
                                         start_lines.service = start_line
                                     }
                                     try {
@@ -210,48 +210,48 @@ dockerBuild {
                                     } catch (Exception error) {
                                         sh './docker-run --network=internal curl http://front/c2c/debug/stacks?secret=c2c'
                                         ['print', 'mapserver', 'geoportal'].each { service ->
-                                            def end_line = sh(returnStdout: true, script: "(cd ${HOME}/workspace/testgeomapfish/; docker-compose logs ${service}) | wc -l") as Integer
-                                            sh "(cd ${HOME}/workspace/testgeomapfish/; docker-compose logs --timestamps --tail=${Math.max(1, end_line - start_lines.service)} ${service})"
+                                            def end_line = sh(returnStdout: true, script: "(cd ${HOME}/workspace/testgeomapfishapp/; docker-compose logs ${service}) | wc -l") as Integer
+                                            sh "(cd ${HOME}/workspace/testgeomapfishapp/; docker-compose logs --timestamps --tail=${Math.max(1, end_line - start_lines.service)} ${service})"
                                         }
                                         throw error
                                     }
                                 }
                             } catch (Exception error) {
-                                sh '(cd ${HOME}/workspace/testgeomapfish/; docker-compose logs --timestamps)'
+                                sh '(cd ${HOME}/workspace/testgeomapfishapp/; docker-compose logs --timestamps)'
                                 sh 'docker logs test-db'
                                 sh 'docker logs test-externaldb'
                                 throw error
                             } finally {
-                                sh '(cd ${HOME}/workspace/testgeomapfish/; docker-compose down)'
+                                sh '(cd ${HOME}/workspace/testgeomapfishapp/; docker-compose down)'
                             }
                         }
                     }
-                    sh '(cd ${HOME}/workspace/testgeomapfish/; ./docker-run travis/short-make --makefile=travis.mk build)'
-                    sh '(cd ${HOME}/workspace/testgeomapfish/; ./docker-run make --makefile=travis.mk checks)'
+                    sh '(cd ${HOME}/workspace/testgeomapfishapp/; ./docker-run travis/short-make --makefile=travis.mk build)'
+                    sh '(cd ${HOME}/workspace/testgeomapfishapp/; ./docker-run make --makefile=travis.mk checks)'
                     sh '''find \
-                        ${HOME}/workspace/testgeomapfish/geoportal/setup.py \
-                        ${HOME}/workspace/testgeomapfish/geoportal/testgeomapfish_geoportal/*.py \
-                        ${HOME}/workspace/testgeomapfish/geoportal/testgeomapfish_geoportal/views \
-                        ${HOME}/workspace/testgeomapfish/commons/setup.py \
-                        ${HOME}/workspace/testgeomapfish/commons/testgeomapfish_commons \
+                        ${HOME}/workspace/testgeomapfishapp/geoportal/setup.py \
+                        ${HOME}/workspace/testgeomapfishapp/geoportal/testgeomapfishapp_geoportal/*.py \
+                        ${HOME}/workspace/testgeomapfishapp/geoportal/testgeomapfishapp_geoportal/views \
+                        ${HOME}/workspace/testgeomapfishapp/commons/setup.py \
+                        ${HOME}/workspace/testgeomapfishapp/commons/testgeomapfishapp_commons \
                         -name \\*.py | xargs travis/squote'''
-                    sh '(cd ${HOME}/workspace/testgeomapfish/; ./docker-run travis/status.sh)'
-                    sh '(cd ${HOME}/workspace/testgeomapfish/; ./docker-run make --makefile=empty-vars.mk geoportal/config.yaml)'
-                    sh '(cd ${HOME}/workspace/testgeomapfish/; ./docker-run make --makefile=travis.mk geoportal/alembic.ini)'
+                    sh '(cd ${HOME}/workspace/testgeomapfishapp/; ./docker-run travis/status.sh)'
+                    sh '(cd ${HOME}/workspace/testgeomapfishapp/; ./docker-run make --makefile=empty-vars.mk geoportal/config.yaml)'
+                    sh '(cd ${HOME}/workspace/testgeomapfishapp/; ./docker-run make --makefile=travis.mk geoportal/alembic.ini)'
                     lock("docker-compose-run-${env.NODE_NAME}") {
                         try {
-                            sh '(cd ${HOME}/workspace/testgeomapfish/; ./docker-compose-run alembic --config=geoportal/alembic.ini --name=main upgrade head)'
-                            sh '(cd ${HOME}/workspace/testgeomapfish/; ./docker-compose-run alembic --config=geoportal/alembic.ini --name=static upgrade head)'
-                            sh '(cd ${HOME}/workspace/testgeomapfish/; ./docker-compose-run alembic --config=geoportal/alembic.ini --name=static downgrade base)'
-                            sh '(cd ${HOME}/workspace/testgeomapfish/; ./docker-compose-run alembic --config=geoportal/alembic.ini --name=main downgrade base)'
+                            sh '(cd ${HOME}/workspace/testgeomapfishapp/; ./docker-compose-run alembic --config=geoportal/alembic.ini --name=main upgrade head)'
+                            sh '(cd ${HOME}/workspace/testgeomapfishapp/; ./docker-compose-run alembic --config=geoportal/alembic.ini --name=static upgrade head)'
+                            sh '(cd ${HOME}/workspace/testgeomapfishapp/; ./docker-compose-run alembic --config=geoportal/alembic.ini --name=static downgrade base)'
+                            sh '(cd ${HOME}/workspace/testgeomapfishapp/; ./docker-compose-run alembic --config=geoportal/alembic.ini --name=main downgrade base)'
                         } catch (Exception error) {
-                            sh '(cd ${HOME}/workspace/testgeomapfish/; docker-compose --file=docker-compose-build.yaml logs --timestamps)'
+                            sh '(cd ${HOME}/workspace/testgeomapfishapp/; docker-compose --file=docker-compose-build.yaml logs --timestamps)'
                             throw error
                         } finally {
-                            sh '(cd ${HOME}/workspace/testgeomapfish/; docker-compose --file=docker-compose-build.yaml down)'
+                            sh '(cd ${HOME}/workspace/testgeomapfishapp/; docker-compose --file=docker-compose-build.yaml down)'
                         }
                     }
-                    sh 'rm -rf ${HOME}/workspace/testgeomapfish'
+                    sh 'rm -rf ${HOME}/workspace/testgeomapfishapp'
                 }, 'Tests upgrades 220': {
                     sh 'travis/test-upgrade-convert.sh init ${HOME}/workspace'
                     // Test Upgrade an convert project
