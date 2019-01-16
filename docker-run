@@ -27,6 +27,8 @@ def main():
     parser.add_argument("--network", help="Use a specific docker network")
     parser.add_argument("--share", action='append', default=[], help="A folder to share as a volume")
     parser.add_argument(
+        "--add-host", action='append', default=[], help="Add a custom host-to-IP mapping (host:ip)")
+    parser.add_argument(
         "--mount", action='append', default=[], help="Attach a filesystem mount to the container")
     parser.add_argument(
         "-v", "--volume", action='append', default=[], help="Bind mount a volume (default [])")
@@ -49,6 +51,9 @@ def main():
 
     for share in options.share:
         docker_cmd.append("--volume={}:{}".format(share, share))
+
+    for host in options.add_host:
+        docker_cmd.append("--add-host={}".format(host))
 
     dir_path = os.path.dirname(os.path.realpath(__file__))
     build_volume_name = dir_path.replace(":", "-").replace("\\", "-") \
