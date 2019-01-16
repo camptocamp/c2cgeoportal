@@ -177,6 +177,15 @@ services:
       - --name=static
       - upgrade
       - head
+    environment:
+      - PGHOST
+      - PGHOST_SLAVE
+      - PGPORT
+      - PGUSER
+      - PGPASSWORD
+      - PGDATABASE
+      - PGSCHEMA
+      - PGSCHEMA_STATIC
 
   front:
     image: haproxy:1.8.8

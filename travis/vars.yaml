@@ -24,7 +24,7 @@ vars:
 
   checker:
     fulltextsearch:
-      disable: True
+      disable: true
     lang:
       files: [ngeo]
     routes:
