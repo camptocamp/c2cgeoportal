@@ -101,9 +101,15 @@ help:
 	@echo  "- clean-all 		Remove all the build artifacts"
 	@echo  "- transifex-send	Send the localisation to Transifex"
 
-.PHONY: docker-build
-docker-build:
+.PHONY: docker-pull
+docker-pull:
 	for image in `find -name Dockerfile -o -name Dockerfile.mako | xargs grep --no-filename FROM | awk '{print $$2}' | sort -u`; do docker pull $$image; done
+	docker pull camptocamp/qgis-server:latest
+	docker pull camptocamp/qgis-server:3.2
+	docker pull camptocamp/qgis-server:3.4
+
+.PHONY: docker-build
+docker-build: docker-pull
 	docker build --tag=camptocamp/geomapfish-build-dev:${MAJOR_VERSION} docker/build
 	./docker-run --env=RELEASE_TAG make build
 

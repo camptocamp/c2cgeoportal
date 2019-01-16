@@ -90,6 +90,8 @@ dockerBuild {
                 }
                 env.RELEASE_TAG = RELEASE_TAG
 
+                sh 'make docker-pull'
+                sh 'docker images'
                 sh 'make docker-build'
                 sh 'docker run --name geomapfish-db --env=POSTGRES_USER=www-data --env=POSTGRES_PASSWORD=www-data --env=POSTGRES_DB=geomapfish --publish=5432:5432 --detach camptocamp/geomapfish-test-db'
                 sh './docker-run travis/status.sh'
