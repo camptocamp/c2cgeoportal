@@ -5,7 +5,7 @@ if [ $# -ge 2 ]
 then
     PACKAGE=$2
 else
-    PACKAGE=testgeomapfish
+    PACKAGE=testgeomapfishapp
 fi
 mkdir --parent ${WORKSPACE}/${PACKAGE}
 
