@@ -614,6 +614,8 @@ class Entry:
                 errors |= gp_errors
                 if gp is not None:
                     children.append(gp)
+            elif isinstance(tree_item, main.LayerV1):
+                pass
             elif self._layer_included(tree_item):
                 if tree_item.name in layers:
                     layers_name.append(tree_item.name)
