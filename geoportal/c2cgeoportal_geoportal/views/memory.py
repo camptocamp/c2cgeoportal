@@ -33,60 +33,89 @@ from typing import Any, Dict, List
 
 from c2cwsgiutils import broadcast
 from c2cwsgiutils.auth import auth_view
+from pympler import asizeof, muppy
 from pyramid.view import view_config
 
 from c2cgeoportal_geoportal.views import entry, raster
-from pympler import asizeof, muppy
 
 LOG = logging.getLogger(__name__)
 
 
-@view_config(route_name="memory", renderer="fastjson")
+@view_config(route_name="memory", renderer="fast_json")
 def memory(request):
     auth_view(request)
     return _memory(
-        with_all=request.registry.param.get("with_all", "false").lower() in ["1", "on", "true"],
-        with_repr=request.registry.param.get("with_repr", "false").lower() in ["1", "on", "true"],
+        with_others=request.params.get("with_others", "false").lower() in ["1", "on", "true"],
+        with_all=request.params.get("with_all", "false").lower() in ["1", "on", "true"],
+        with_repr=request.params.get("with_repr", "false").lower() in ["1", "on", "true"],
     )
 
 
-@broadcast.decorator(expect_answers=True)
-def _memory(with_all: bool, with_repr: bool) -> Dict[str, Any]:
+@broadcast.decorator(expect_answers=True, timeout=110)
+def _memory(with_others: bool, with_all: bool, with_repr: bool) -> Dict[str, Any]:
     wms_capabilities_cache = entry.Entry.server_wms_capabilities
+    wfs_feature_type_cache = entry.Entry.server_wfs_feature_type
     raster_data = raster.Raster.data
-    return {
+    result = {
         "parsed_wms_capabilities_cache_by_ogcserver_id": {
-            id: asizeof.asizeof(wms_capabilities_cache[id]) for id in wms_capabilities_cache
+            id: _get_size(wms_capabilities_cache[id]) / 1024 / 1024 for id in wms_capabilities_cache
+        },
+        "parsed_wfs_feature_type_cache_by_ogcserver_id": {
+            id: _get_size(wfs_feature_type_cache[id]) / 1024 / 1024 for id in wfs_feature_type_cache
         },
         "raster_data": {
-            id: asizeof.asizeof(raster_data[id]) for id in raster_data
+            id: _get_size(raster_data[id]) / 1024 / 1024 for id in raster_data
         },
-        "others": _get_used_memory(with_all, with_repr)
-    }
+    }  # type: Dict[str, Any]
+
+    if with_others:
+        result['others'] = _get_used_memory(with_all, with_repr)
+
+    return result
 
 
 def _filter(module_: str, with_all: bool) -> bool:
     return with_all or (
-        module_ not in ("builtins", "<unknown>") and not module_.startswith("_")
+        module_ not in ("builtins", "<unknown>")
+        and not module_.startswith("_")
+        and not module_.startswith("pkg_resources")
     )
 
 
-def _get_used_memory(with_all: bool, with_repr: bool) -> Dict[str, Any]:
+def _get_size(obj: Any) -> int:
+    try:
+        return asizeof.asizeof(obj)
+    except Exception:
+        LOG.exception("Unable to get the size")
+        return 0
+
+
+def _order_by_size(elements: Dict[str, Any]) -> List[Dict[str, Any]]:
+    for name, elem in elements.items():
+        if 'children' in elem:
+            elem['children'] = _order_by_size(elem['children'])
+
+    return sorted(elements.values(), key=lambda elem: elem['size'])
+
+
+def _get_used_memory(with_all: bool, with_repr: bool) -> List[Dict[str, Any]]:
     all_objects = [(
         ".".join((type(o).__module__, type(o).__name__)),
         o,
-        asizeof.asizeof(o)
+        _get_size(o)
     ) for o in muppy.get_objects() if _filter(type(o).__module__, with_all)]
     result = {}  # type: Dict[str, Any]
     for name, obj, size in all_objects:
         path = name.split(".")
         _fill_path(result, path, obj, size, with_repr)
-    return result
+
+    return _order_by_size(result)
 
 
 def _fill_path(base: Dict[str, Any], path: List[str], object_: Any, size: int, with_repr: bool):
     if len(path) == 1:
         base.setdefault(path[0], {
+            "name": path[0],
             "size": 0,
             "numbers": 0,
         })
@@ -98,6 +127,7 @@ def _fill_path(base: Dict[str, Any], path: List[str], object_: Any, size: int, w
             obj["objects"].append((repr(object_), size))
     else:
         base.setdefault(path[0], {
+            "name": path[0],
             "size": 0,
             "numbers": 0,
             "children": {},
