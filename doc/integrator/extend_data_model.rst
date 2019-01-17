@@ -240,7 +240,7 @@ And finally in ``geoportal/<package>_geoportal/__init__.py`` replace ``config.sc
         ('interfaces', Interface),
         ('userdetail', UserDetail),
         ('title', Title),
-    ))
+    ), 'admin')
 
     with PermissionSetter(config):
         # Scan view decorator for adding routes
