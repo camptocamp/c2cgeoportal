@@ -6,6 +6,6 @@
     "dependencies": {
         "eslint-plugin-googshift": "0.9.3",
         "googshift": "0.9.10",
-        "ngeo": "2.4.0-latest.20190117T152446Z.a850fe6.HEAD"
+        "ngeo": "2.4.0-latest.20190118T075327Z.a8bd68f.HEAD"
     }
 }
