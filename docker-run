@@ -64,31 +64,35 @@ def main():
             os.environ['TRAVIS_BRANCH'] if 'TRAVIS_BRANCH' in os.environ else \
             subprocess.check_output([
                 "git", "rev-parse", "--abbrev-ref", "HEAD"
-            ]).decode("utf-8").strip()
+            ], stderr=subprocess.DEVNULL).decode("utf-8").strip()
+    except subprocess.CalledProcessError:
+        git_branch = "unknown"
+
+    try:
         git_hash = subprocess.check_output([
             "git", "rev-parse", "HEAD"
         ]).decode("utf-8").strip()
+    except subprocess.CalledProcessError:
+        git_hash = "unknown"
 
+    try:
         git_tag = subprocess.check_output([
             'git', 'tag', '--list', '--points-at=HEAD'
-        ]).decode("utf-8").strip()
+        ], stderr=subprocess.DEVNULL).decode("utf-8").strip()
         if git_tag == '':
             if re.match(r'^[0-9]+.[0-9]+$', git_branch):
                 last_git_tag = subprocess.check_output([
                     'git', 'describe', '--abbrev=0', '--tags'
-                ])
+                ], stderr=subprocess.DEVNULL)
                 minor = subprocess.check_output([
                     '.venv/bin/python', 'travis/get-minor', '--no-save'
-                ])
+                ], stderr=subprocess.DEVNULL)
                 version = "{}.{}".format(last_git_tag, minor)
             else:
                 version = git_branch
         else:
             version = git_tag
-
     except subprocess.CalledProcessError:
-        git_branch = "unknown"
-        git_hash = "unknown"
         version = "unknown"
 
     try:
