@@ -70,7 +70,7 @@ pyramid-multiauth==0.9.0
 pyramid-tm==2.1
 python-dateutil==2.6.0
 pytz==2017.2
-PyYAML==3.12
+PyYAML==3.13
 repoze.lru==0.6
 requests[security]==2.20.1
 restkit==4.2.2
