@@ -15,7 +15,8 @@ ENV NODE_PATH=/usr/lib/node_modules \
     PGSCHEMA_STATIC=main_static \
     TINYOWS_URL=http://tinyows/ \
     MAPSERVER_URL=http://mapserver/ \
-    PRINT_URL=http://print:8080/print/
+    PRINT_URL=http://print:8080/print/ \
+    SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
 
 WORKDIR /app
 COPY . /app
