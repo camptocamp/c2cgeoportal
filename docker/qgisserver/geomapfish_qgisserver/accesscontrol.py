@@ -166,6 +166,15 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             raise
 
     def get_layers(self):
+        """
+        Get the list of GMF WMS layers that can give access to each QGIS layer or group.
+        That is, for each QGIS layer tree node, the list of GMF WMS layers that:
+            - correspond to this ogc_server
+            - contains QGIS node name in the layer_wms.layer field.
+        Returns a dict with:
+            key: QGIS layer tree node name
+            value: list of c2cgeoportal_commons.models.main.LayerWMS instances.
+        """
         with self.lock:
             from c2cgeoportal_commons.models.main import LayerWMS
 
@@ -174,26 +183,25 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
             self.project = QgsProject.instance()
 
-            groups = {}
+            nodes = {}  # dict { node name : list of ancestor node names }
 
-            def browse(names, layer):
-                groups[layer.name()] = [layer.name()]
+            def browse(path, node):
+                nodes[node.name()] = [node.name()]
 
-                for name in names:
-                    groups[name].append(layer.name())
+                for name in path:
+                    nodes[name].append(node.name())
 
-                new_names = list(names)
-                new_names.append(layer.name())
-                for l in layer.children():
-                    browse(new_names, l)
+                for l in node.children():
+                    browse(path + [node.name()], l)
 
             browse([], self.project.layerTreeRoot())
 
-            layers = {}
+            # transform ancestor names in LayerWMS instances
+            layers = {}  # dict( node name : list of LayerWMS }
             for layer in self.DBSession.query(LayerWMS) \
                     .filter(LayerWMS.ogc_server_id == self.ogcserver.id).all():
-                for group in layer.layer.split(','):
-                    for name in groups.get(group, []):
+                for node_name in layer.layer.split(','):
+                    for name in nodes.get(node_name, []):
                         layers.setdefault(name, []).append(layer)
             QgsMessageLog.logMessage('[accesscontrol] layers:\n{}'.format(
                 json.dumps(
@@ -208,28 +216,45 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         if self.ogcserver is None:
             raise Exception("The plugin is not correctly initialised")
 
-    def get_role(self):
+    def get_roles(self):
+        """
+        Get the current user's available roles based on request parameter USER_ID.
+        Returns:
+        - List of c2cgeoportal_commons.models.main.Role instances.
+        """
         from c2cgeoportal_commons.models.main import Role
+        from c2cgeoportal_commons.models.static import User
 
         parameters = self.serverInterface().requestHandler().parameterMap()
 
-        if parameters.get('ROLE_ID') == "0" and parameters.get('USER_ID') == "0":
+        if parameters.get('USER_ID') == "0":
             return "ROOT"
 
-        role = self.DBSession.query(Role).get(parameters['ROLE_ID']) if 'ROLE_ID' in parameters else None
-        QgsMessageLog.logMessage("Role: {}".format(role.name if role else '-'))
-        return role
+        roles = self.DBSession.query(Role). \
+            join(Role.users). \
+            filter(User.id == parameters.get('USER_ID')). \
+            all()
+
+        QgsMessageLog.logMessage("Roles: {}".format(
+            ','.join([role.name for role in roles]) if roles else '-'))
+        return roles
 
     @staticmethod
-    def get_restriction_areas(gmf_layers, rw=False, role=None):
+    def get_restriction_areas(gmf_layers, rw=False, roles=[]):
         """
-        None => full access
-        [] => no access
-        shapely.ops.cascaded_union(result) => geom of access
+        Get access areas given by GMF layers and user roles for an access mode.
+
+        If roles is "ROOT" => full access
+        If roles is [] => no access
+        Else shapely.ops.cascaded_union(result) => area of access
+
+        Returns:
+        - Access mode (NO | AREA | FULL)
+        - List of access areas as shapely geometric objects
         """
 
         # Root...
-        if role == "ROOT":
+        if roles == "ROOT":
             return Access.FULL, None
 
         if not rw:
@@ -237,35 +262,48 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                 if l.public:
                     return Access.FULL, None
 
-        if role is None:
+        if not roles:
             return Access.NO, None
 
-        restriction_areas = []
+        restriction_areas = set()
         for layer in gmf_layers:
             for restriction_area in layer.restrictionareas:
-                if role in restriction_area.roles and rw is False or restriction_area.readwrite is True:
-                    if restriction_area.area is None:
-                        return Access.FULL, None
-                    else:
-                        restriction_areas.append(geoalchemy2.shape.to_shape(restriction_area.area))
+                for role in roles:
+                    if (
+                        role in restriction_area.roles and (
+                            rw is False
+                            or restriction_area.readwrite is True
+                        )
+                    ):
+                        if restriction_area.area is None:
+                            return Access.FULL, None
+                        else:
+                            restriction_areas.update({restriction_area})
 
         if len(restriction_areas) == 0:
             return Access.NO, None
 
-        return Access.AREA, restriction_areas
+        return Access.AREA, [geoalchemy2.shape.to_shape(restriction_area.area)
+                             for restriction_area in restriction_areas]
 
     def get_area(self, layer, rw=False):
-        role = self.get_role()
-        key = (layer.name(), role.name if role is not None else None, rw)
+        """
+        Calculate access area for a QgsMapLayer and an access mode.
+        Returns:
+        - Access mode (NO | AREA | FULL)
+        - Access area as WKT or None
+        """
+        roles = self.get_roles()
+        key = (layer.name(), tuple(sorted(role.id for role in roles)), rw)
 
         if key in self.area_cache:
             return self.area_cache[key]
 
-        if layer.name() not in self.get_layers():
+        gmf_layers = self.get_layers().get(layer.name(), None)
+        if gmf_layers is None:
             raise Exception("Access to an unknown layer")
 
-        gmf_layers = self.get_layers()[layer.name()]
-        access, restriction_areas = self.get_restriction_areas(gmf_layers, role=role)
+        access, restriction_areas = self.get_restriction_areas(gmf_layers, rw, roles=roles)
 
         if access is not Access.AREA:
             self.area_cache[key] = (access, None)
@@ -276,7 +314,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         return (Access.AREA, area)
 
     def layerFilterSubsetString(self, layer):  # NOQA
-        """ Return an additional subset string (typically SQL) filter """
+        """ Returns an additional subset string (typically SQL) filter """
         QgsMessageLog.logMessage("layerFilterSubsetString {} {}".format(
             layer.name(), layer.dataProvider().storageType())
         )
@@ -313,7 +351,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             raise
 
     def layerFilterExpression(self, layer):  # NOQA
-        """ Return an additional expression filter """
+        """ Returns an additional expression filter """
         QgsMessageLog.logMessage("layerFilterExpression {} {}".format(
             layer.name(), layer.dataProvider().storageType()
         ))
@@ -344,7 +382,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             raise
 
     def layerPermissions(self, layer):  # NOQA
-        """ Return the layer rights """
+        """ Returns the layer rights """
         QgsMessageLog.logMessage("layerPermissions {}".format(layer.name()))
 
         self.assert_plugin_initialised()
@@ -358,12 +396,12 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
             gmf_layers = self.get_layers()[layer.name()]
 
-            role = self.get_role()
-            access, _ = self.get_restriction_areas(gmf_layers, role=role)
+            roles = self.get_roles()
+            access, _ = self.get_restriction_areas(gmf_layers, roles=roles)
             if access is not Access.NO:
                 rights.canRead = True
 
-            access, _ = self.get_restriction_areas(gmf_layers, rw=True, role=role)
+            access, _ = self.get_restriction_areas(gmf_layers, rw=True, roles=roles)
             rights.canInsert = rights.canUpdate = rights.canDelete = access is not Access.NO
 
             return rights
@@ -373,7 +411,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
     @staticmethod
     def authorizedLayerAttributes(layer, attributes):  # NOQA
-        """ Return the authorised layer attributes """
+        """ Returns the authorised layer attributes """
 
         del layer
 
@@ -402,12 +440,12 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
     def cacheKey(self):  # NOQA
         # Root...
-        role = self.get_role()
-        if role == "ROOT":
+        roles = self.get_roles()
+        if roles == "ROOT":
             return "{}-{}".format(
                 self.serverInterface().requestHandler().parameter("Host"), -1
             )
         return "{}-{}".format(
             self.serverInterface().requestHandler().parameter("Host"),
-            role.id if role is not None else '',
+            ','.join(str(role.id) for role in sorted(roles, key=lambda role: role.id)),
         )

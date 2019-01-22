@@ -1,0 +1,6 @@
+---
+map_config:
+  qgsproject1:
+    ogc_server: qgisserver1
+  qgsproject2:
+    ogc_server: qgisserver2
