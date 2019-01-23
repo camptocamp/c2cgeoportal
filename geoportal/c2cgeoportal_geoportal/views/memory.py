@@ -32,7 +32,7 @@ import logging
 from typing import Any, Dict, List
 
 from c2cwsgiutils import broadcast
-from c2cwsgiutils.auth import SECRET_ENV, SECRET_PROP, auth_view
+from c2cwsgiutils.auth import auth_view
 from pyramid.view import view_config
 
 from c2cgeoportal_geoportal.views import entry, raster
@@ -43,7 +43,7 @@ LOG = logging.getLogger(__name__)
 
 @view_config(route_name="memory", renderer="fastjson")
 def memory(request):
-    auth_view(request, SECRET_ENV, SECRET_PROP)
+    auth_view(request)
     return _memory(
         with_all=request.registry.param.get("with_all", "false").lower() in ["1", "on", "true"],
         with_repr=request.registry.param.get("with_repr", "false").lower() in ["1", "on", "true"],

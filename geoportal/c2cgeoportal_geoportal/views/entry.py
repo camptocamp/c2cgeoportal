@@ -41,7 +41,7 @@ from typing import Dict, Set, Tuple  # noqa # pylint: disable=unused-import
 
 import requests
 import zope.event.classhandler
-from c2cwsgiutils.auth import SECRET_ENV, SECRET_PROP, auth_view
+from c2cwsgiutils.auth import auth_view
 from defusedxml import lxml
 from owslib.wms import WebMapService
 from pyramid.httpexceptions import HTTPBadGateway, HTTPBadRequest, HTTPForbidden, HTTPFound
@@ -756,7 +756,7 @@ class Entry:
 
     @view_config(route_name="invalidate", renderer="json")
     def invalidate_cache(self):  # pragma: no cover
-        auth_view(self.request, SECRET_ENV, SECRET_PROP)
+        auth_view(self.request)
         main.cache_invalidate_cb()
         return {
             "success": True
