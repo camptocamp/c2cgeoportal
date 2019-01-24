@@ -607,9 +607,9 @@ def includeme(config: pyramid.config.Configurator):
 
     c2cwsgiutils.index.additional_title = "<h2>GeoMapFish</h2>"
     c2cwsgiutils.index.additional_auth.extend([
-        '<p><a href="../tiles_admin/?{secret_qs}">TileCloud chain admin</a></p>',
-        '<p><a href="../invalidate?{secret_qs}">Invalidate the cache</a></p>',
-        '<p><a href="../memory?{secret_qs}">Memory status</a></p>',
+        '<p><a href="../tiles/admin/">TileCloud chain admin</a></p>',
+        '<p><a href="../invalidate">Invalidate the cache</a></p>',
+        '<p><a href="../memory">Memory status</a></p>',
     ])
 
     if config.get_settings().get('enable_admin_interface', False):

@@ -118,7 +118,7 @@ services:
       - VISIBLE_ENTRY_POINT
       - C2C_REDIS_URL
       - TILEGENERATION_CONFIGFILE=/etc/tilegeneration/config.yaml
-      - C2C_BASE_PATH=/c2c_tiles
+      - C2C_BASE_PATH=/tiles/c2c
       - C2C_BROADCAST_PREFIX=broadcast_tilecloudchain_
       - C2C_LOG_VIEW_ENABLED=TRUE
       - C2C_DEBUG_VIEW_ENABLED=TRUE
