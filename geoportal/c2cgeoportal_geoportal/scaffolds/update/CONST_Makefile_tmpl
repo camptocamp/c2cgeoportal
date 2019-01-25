@@ -819,7 +819,7 @@ secrets.tar.bz2.gpg:
 .PHONY: secrets
 secrets:
 	gpg --output secrets.tar.bz2 --decrypt secrets.tar.bz2.gpg
-	tar -jxf secrets.tar.bz2
+	tar --touch -jxf secrets.tar.bz2
 	rm secrets.tar.bz2
 
 # QGIS
