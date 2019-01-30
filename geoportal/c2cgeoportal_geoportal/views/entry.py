@@ -329,7 +329,7 @@ class Entry:
             query = models.DBSession.query(main.LayerV1.name)
         else:
             query = models.DBSession.query(main.Layer.name).filter(
-                ~main.Layer.item_type.in_(["layerv1"])
+                main.Layer.item_type.notin_(["layerv1"])
             )
 
         query = query.filter(main.Layer.public.is_(True))
