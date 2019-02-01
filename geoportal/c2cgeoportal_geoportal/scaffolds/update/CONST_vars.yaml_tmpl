@@ -584,6 +584,7 @@ vars:
         - "{web_protocol}://{host}"
 
   # Checker configuration
+  checker_ogc_server: source for image/png
   checker:
     fulltextsearch:
       level: 1
@@ -617,7 +618,7 @@ vars:
             SERVICE: WMS
             VERSION: 1.1.1
             REQUEST: GetCapabilities
-            ogcserver: source for image/png
+            ogcserver: '{checker_ogc_server}'
           level: 3
         - name: mapserverproxy
           display_name: mapserverproxy_wfs
@@ -625,7 +626,7 @@ vars:
             SERVICE: WFS
             VERSION: 1.1.0
             REQUEST: GetCapabilities
-            ogcserver: source for image/png
+            ogcserver: '{checker_ogc_server}'
           level: 3
     themes:
       params:
