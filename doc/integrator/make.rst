@@ -118,6 +118,17 @@ To decrypt the files run:
 
    make --makefile=<user>.mk secrets
 
+.. note::
+
+   If you have an issue that call about the ``dirmngr`` package you can try to add:
+   ``pinentry-mode loopback`` in your ``~/.gnupg/gpg.conf`` file and
+   ``allow-loopback-pinentry``in your ``~/.gnupg/gpg-agent.conf`` file.
+   Than it should be fixet or you can also try to run it in Docker:
+   ``./docker-run --home make --makefile=<user>.mk secrets``
+
+   If you have an error about opennig ``/dev/tty`` try to run it in Docker as root:
+   ``./docker-run --root --home make --makefile=<user>.mk secrets``
+
 
 Custom rules
 ------------

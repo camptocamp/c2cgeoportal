@@ -104,15 +104,24 @@ class DynamicView:
             else:
                 query = {}
             if 'themes' in self.request.matchdict:
-                url = self.request.route_url(
+                no_redirect_url = self.request.route_url(
                     interface_config['redirect_interface'] + 'theme',
                     themes=self.request.matchdict['themes'],
                     _query=no_redirect_query
                 )
-            else:
                 url = self.request.route_url(
+                    interface_config['redirect_interface'] + 'theme',
+                    themes=self.request.matchdict['themes'],
+                    _query=query
+                )
+            else:
+                no_redirect_url = self.request.route_url(
                     interface_config['redirect_interface'],
                     _query=no_redirect_query
+                )
+                url = self.request.route_url(
+                    interface_config['redirect_interface'],
+                    _query=query
                 )
 
             if 'no_redirect' in query:
@@ -121,7 +130,7 @@ class DynamicView:
                 if interface_config.get('do_redirect', False):
                     do_redirect = True
                 else:
-                    constants['redirectUrl'] = url
+                    constants['redirectUrl'] = no_redirect_url
 
         set_common_headers(self.request, "dynamic", NO_CACHE)
         return {

@@ -292,7 +292,7 @@ class TestEchoView(TestCase):
                 'redirectUrl': '/dummy/route/url/test_redirect?no_redirect=t',
             },
             'doRedirect': False,
-            'redirectUrl': '/dummy/route/url/test_redirect?no_redirect=t',
+            'redirectUrl': '/dummy/route/url/test_redirect?',
         }
 
     def test_doredirect(self):
@@ -311,7 +311,7 @@ class TestEchoView(TestCase):
                 'currentInterfaceUrl': '/dummy/route/url/test?',
             },
             'doRedirect': True,
-            'redirectUrl': '/dummy/route/url/test_redirect?no_redirect=t',
+            'redirectUrl': '/dummy/route/url/test_redirect?',
         }
 
     def test_noredirect(self):
@@ -330,5 +330,5 @@ class TestEchoView(TestCase):
                 'currentInterfaceUrl': '/dummy/route/url/test?',
             },
             'doRedirect': True,
-            'redirectUrl': '/dummy/route/url/test_redirect?no_redirect=t',
+            'redirectUrl': '/dummy/route/url/test_redirect?',
         }

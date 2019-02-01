@@ -13,6 +13,7 @@ def includeme(config):
         os.path.join(os.path.dirname(__file__), '..', '..', 'node_modules'),
         os.path.join(os.path.dirname(__file__), '..', 'admin', 'node_modules'),
         os.path.join(os.path.dirname(__file__), '..', 'node_modules'),
+        '/usr/lib/node_modules/GeoMapFish-Admin/node_modules/',
         '/usr/lib/node_modules/',
     ]:
         if os.path.exists(path_):

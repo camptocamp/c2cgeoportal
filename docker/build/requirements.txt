@@ -1,5 +1,6 @@
 alabaster==0.7.12  # Doc theme
 alembic==1.0.5  # geoportal
+awscli==1.16.80  # Work with Object storage
 Babel==2.6.0  # i18n
 beautifulsoup4==4.6.3  # admin tests
 boto3==1.9.62  # Tile generation

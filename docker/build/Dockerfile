@@ -28,6 +28,7 @@ RUN \
 
 COPY sudoers /etc/
 COPY bin/* /usr/bin/
+COPY etc/bash_completion.d/* /etc/bash_completion.d/
 
 WORKDIR /src
 
