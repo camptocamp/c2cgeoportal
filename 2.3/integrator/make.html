@@ -125,7 +125,17 @@ span.prompt1:before {
 <pre class="highlight"><span class="prompt1">git add secrets.tar.bz2.gpg</span>
 </pre><p>To decrypt the files run:</p>
 <pre class="highlight"><span class="prompt1">make --makefile<span class="o">=</span>&lt;user&gt;.mk secrets</span>
-</pre></div>
+</pre><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>If you have an issue that call about the <code class="docutils literal notranslate"><span class="pre">dirmngr</span></code> package you can try to add:
+<code class="docutils literal notranslate"><span class="pre">pinentry-mode</span> <span class="pre">loopback</span></code> in your <code class="docutils literal notranslate"><span class="pre">~/.gnupg/gpg.conf</span></code> file and
+<code class="docutils literal notranslate"><span class="pre">allow-loopback-pinentry``in</span> <span class="pre">your</span> <span class="pre">``~/.gnupg/gpg-agent.conf</span></code> file.
+Than it should be fixet or you can also try to run it in Docker:
+<code class="docutils literal notranslate"><span class="pre">./docker-run</span> <span class="pre">--home</span> <span class="pre">make</span> <span class="pre">--makefile=&lt;user&gt;.mk</span> <span class="pre">secrets</span></code></p>
+<p class="last">If you have an error about opennig <code class="docutils literal notranslate"><span class="pre">/dev/tty</span></code> try to run it in Docker as root:
+<code class="docutils literal notranslate"><span class="pre">./docker-run</span> <span class="pre">--root</span> <span class="pre">--home</span> <span class="pre">make</span> <span class="pre">--makefile=&lt;user&gt;.mk</span> <span class="pre">secrets</span></code></p>
+</div>
+</div>
 <div class="section" id="custom-rules">
 <h2>Custom rules<a class="headerlink" href="#custom-rules" title="Permalink to this headline">¶</a></h2>
 <p>In the <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;.mk</span></code> file we can create some other rules.
