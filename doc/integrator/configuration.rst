@@ -21,3 +21,4 @@ This chapter describes advanced configuration settings.
    ngeo_new_interface
    multiple_databases
    windows_tools
+   objectstorage
