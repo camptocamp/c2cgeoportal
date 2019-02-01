@@ -43,7 +43,7 @@ class TestMapserverproxyRoutePredicate(TestCase):
         self.assertFalse(self.predicate(None, request))
 
     def test_invalid(self):
-        request = Request.blank("/test?url=http://123456.com/")
+        request = Request.blank("/test?url=http://askdljfhaskdjhfakldjs.com/")
         self.assertFalse(self.predicate(None, request))
 
     def test_google(self):
