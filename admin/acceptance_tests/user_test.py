@@ -262,7 +262,7 @@ class TestUser(AbstractViewsTests):
         assert user.settings_role_id == roles[2].id
         assert user.password is not None and len(user.password)
         assert user.temp_password is None
-        assert user.is_password_changed == False
+        assert user.is_password_changed is False
 
         parts = list(email.message_from_string(sender_mock.sendmail.mock_calls[0][1][2]).walk())
         assert EXPECTED_WELCOME_MAIL.format('new_user', 'new_user', 'basile') == \

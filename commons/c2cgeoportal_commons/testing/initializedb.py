@@ -28,7 +28,7 @@ def usage(argv: List[str]) -> None:
     sys.exit(1)
 
 
-def main(argv: List[str]=sys.argv) -> None:
+def main(argv: List[str] = sys.argv) -> None:
     if len(argv) < 2:
         usage(argv)
     config_uri = argv[1]
@@ -49,7 +49,9 @@ def main(argv: List[str]=sys.argv) -> None:
         )
 
 
-def init_db(connection: Connection, alembic_ini: str=None, force: bool=False, test: bool=False) -> None:
+def init_db(
+    connection: Connection, alembic_ini: str = None, force: bool = False, test: bool = False
+) -> None:
     import c2cgeoportal_commons.models.main  # noqa: F401
     import c2cgeoportal_commons.models.static  # noqa: F401
 
