@@ -605,24 +605,29 @@ def includeme(config: pyramid.config.Configurator):
     # the client receives a status=200 without content.
     config.add_view(error_handler, context=HTTPException)
 
-    c2cwsgiutils.index.additional_title = "<h2>GeoMapFish</h2>"
+    c2cwsgiutils.index.additional_title = '<div class="row"><div class="col-lg-3"><h2>GeoMapFish</h2>' \
+        '</div><div class="col-lg">'
     c2cwsgiutils.index.additional_auth.extend([
-        '<p><a href="../tiles/admin/">TileCloud chain admin</a></p>',
-        '<p><a href="../invalidate">Invalidate the cache</a></p>',
-        '<p><a href="../memory">Memory status</a></p>',
+        '<a href="../tiles/admin/">TileCloud chain admin</a><br>',
+        '<a href="../invalidate">Invalidate the cache</a><br>',
+        '<a href="../memory">Memory status</a>',
     ])
-
     if config.get_settings().get('enable_admin_interface', False):
-        c2cwsgiutils.index.additional_noauth.append('<p><a href="../admin/">Admin</a></p>')
-    c2cwsgiutils.index.additional_noauth.append('<p><a href="../">Default interface</a></p>')
+        c2cwsgiutils.index.additional_noauth.append('<a href="../admin/">Admin</a><br>')
+
+    c2cwsgiutils.index.additional_noauth.append(
+        '</div></div><div class="row"><div class="col-lg-3"><h3>Interfaces</h3></div><div class="col-lg">'
+    )
+    c2cwsgiutils.index.additional_noauth.append('<a href="../">Default</a><br>')
     for interface in config.get_settings().get("interfaces", []):
         if interface != config.get_settings().get("default_interface"):
             c2cwsgiutils.index.additional_noauth.append(
-                '<p><a href="../{interface}">{interface} interface</a></p>'.format(
+                '<p><a href="../{interface}">{interface}</a><br>'.format(
                     interface=interface
                 )
             )
-    c2cwsgiutils.index.additional_noauth.append('<p><a href="../apihelp.html">API help</a></p>')
+    c2cwsgiutils.index.additional_noauth.append('<a href="../apihelp.html">API help</a><br>')
+    c2cwsgiutils.index.additional_noauth.append('</div></div><hr>')
 
 
 def init_dbsessions(settings: dict, config: Configurator, health_check: HealthCheck=None) -> None:
