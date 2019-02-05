@@ -129,7 +129,7 @@ class Functionality(Base):
         'colanderalchemy': {'title': _('Value')}
     })
 
-    def __init__(self, name: str='', value: str='', description: str='') -> None:
+    def __init__(self, name: str = '', value: str = '', description: str = '') -> None:
         self.name = name
         self.value = value
         self.description = description
@@ -204,8 +204,8 @@ class Role(Base):
     )
 
     def __init__(
-        self, name: str='', description: str='',
-        functionalities: List[Functionality]=None, extent: Geometry=None
+        self, name: str = '', description: str = '',
+        functionalities: List[Functionality] = None, extent: Geometry = None
     ) -> None:
         if functionalities is None:
             functionalities = []
@@ -273,7 +273,7 @@ class TreeItem(Base):
     def get_metadatas(self, name: str) -> List['Metadata']:  # pragma: no cover
         return [metadata for metadata in self.metadatas if metadata.name == name]
 
-    def __init__(self, name: str='') -> None:
+    def __init__(self, name: str = '') -> None:
         self.name = name
 
 
@@ -342,7 +342,7 @@ class LayergroupTreeitem(Base):
         'colanderalchemy': {'widget': HiddenWidget()}}
     )
 
-    def __init__(self, group: 'TreeGroup'=None, item: TreeItem=None, ordering: int=0) -> None:
+    def __init__(self, group: 'TreeGroup' = None, item: TreeItem = None, ordering: int = 0) -> None:
         self.treegroup = group
         self.treeitem = item
         self.ordering = ordering
@@ -365,7 +365,7 @@ class TreeGroup(TreeItem):
     def _get_children(self) -> List[TreeItem]:
         return [c.treeitem for c in self.children_relation]
 
-    def _set_children(self, children: List[TreeItem], order: bool=False) -> None:
+    def _set_children(self, children: List[TreeItem], order: bool = False) -> None:
         for child in self.children_relation:
             if child.treeitem not in children:
                 child.treeitem = None
@@ -388,7 +388,7 @@ class TreeGroup(TreeItem):
 
     children = property(_get_children, _set_children)
 
-    def __init__(self, name: str='') -> None:
+    def __init__(self, name: str = '') -> None:
         TreeItem.__init__(self, name=name)
 
 
@@ -415,7 +415,7 @@ class LayerGroup(TreeGroup):
             'column': 2
         }})  # shouldn't be used in V3
 
-    def __init__(self, name: str='', is_expanded: bool=False) -> None:
+    def __init__(self, name: str = '', is_expanded: bool = False) -> None:
         TreeGroup.__init__(self, name=name)
         self.is_expanded = is_expanded
 
@@ -482,7 +482,7 @@ class Theme(TreeGroup):
         }
     )
 
-    def __init__(self, name: str='', ordering: int=100, icon: str='') -> None:
+    def __init__(self, name: str = '', ordering: int = 100, icon: str = '') -> None:
         TreeGroup.__init__(self, name=name)
         self.ordering = ordering
         self.icon = icon
@@ -514,7 +514,7 @@ class Layer(TreeItem):
             'title': _('Exclude properties')
         }})
 
-    def __init__(self, name: str='', public: bool=True) -> None:
+    def __init__(self, name: str = '', public: bool = True) -> None:
         TreeItem.__init__(self, name=name)
         self.public = public
 
@@ -705,8 +705,7 @@ class LayerV1(Layer):  # Deprecated in v2
     )
 
     def __init__(
-        self, name: str='', public: bool=True, icon: str='',
-        layer_type: str='internal WMS'
+        self, name: str = '', public: bool = True, icon: str = '', layer_type: str = 'internal WMS'
     ) -> None:
         Layer.__init__(self, name=name, public=public)
         self.layer = name
@@ -821,9 +820,9 @@ class OGCServer(Base):
     })
 
     def __init__(
-        self, name: str='', description: Optional[str]=None, url: str='https://wms.example.com',
-        url_wfs: str=None, type_: str='mapserver', image_type: str='image/png', auth: str='Standard auth',
-        wfs_support: bool=True, is_single_tile: bool=False
+        self, name: str = '', description: Optional[str] = None, url: str = 'https://wms.example.com',
+        url_wfs: str = None, type_: str = 'mapserver', image_type: str = 'image/png',
+        auth: str = 'Standard auth', wfs_support: bool = True, is_single_tile: bool = False
     ) -> None:
         self.name = name
         self.description = description
@@ -920,9 +919,8 @@ class LayerWMS(DimensionLayer):
     )
 
     def __init__(
-        self, name: str='', layer: str='', public: bool=True,
-        time_mode: str='disabled',
-        time_widget: str='slider'
+        self, name: str = '', layer: str = '', public: bool = True,
+        time_mode: str = 'disabled', time_widget: str = 'slider'
     ) -> None:
         DimensionLayer.__init__(self, name=name, public=public)
         self.layer = layer
@@ -987,7 +985,7 @@ class LayerWMTS(DimensionLayer):
                     ('image/png', 'image/png')))
             }})
 
-    def __init__(self, name: str='', public: bool=True, image_type: str='image/png') -> None:
+    def __init__(self, name: str = '', public: bool = True, image_type: str = 'image/png') -> None:
         DimensionLayer.__init__(self, name=name, public=public)
         self.image_type = image_type
 
@@ -1074,8 +1072,8 @@ class RestrictionArea(Base):
     )
 
     def __init__(
-            self, name: str='', description: str='', layers: List[Layer]=None, roles: List[Role]=None,
-            area: Geometry=None, readwrite: bool=False) -> None:
+            self, name: str = '', description: str = '', layers: List[Layer] = None,
+            roles: List[Role] = None, area: Geometry = None, readwrite: bool = False) -> None:
         if layers is None:
             layers = []
         if roles is None:
@@ -1172,7 +1170,7 @@ class Interface(Base):
         )
     )
 
-    def __init__(self, name: str='', description: str='') -> None:
+    def __init__(self, name: str = '', description: str = '') -> None:
         self.name = name
         self.description = description
 
@@ -1229,7 +1227,7 @@ class Metadata(Base):
         )
     )
 
-    def __init__(self, name: str='', value: str='') -> None:
+    def __init__(self, name: str = '', value: str = '') -> None:
         self.name = name
         self.value = value
 
@@ -1297,7 +1295,7 @@ class Dimension(Base):
         )
     )
 
-    def __init__(self, name: str='', value: str='', layer: str=None, field: str=None) -> None:
+    def __init__(self, name: str = '', value: str = '', layer: str = None, field: str = None) -> None:
         self.name = name
         self.value = value
         self.field = field

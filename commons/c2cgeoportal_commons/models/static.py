@@ -163,8 +163,9 @@ class User(Base):
     })
 
     def __init__(
-        self, username: str='', password: str='', email: str='', is_password_changed: bool=False,
-        settings_role: Role=None, roles: List[Role]=[], expire_on: datetime=None, deactivated: bool=False
+        self, username: str = '', password: str = '', email: str = '', is_password_changed: bool = False,
+        settings_role: Role = None, roles: List[Role] = [], expire_on: datetime = None,
+        deactivated: bool = False
     ) -> None:
         self.username = username
         self.password = password

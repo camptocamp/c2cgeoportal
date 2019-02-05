@@ -7,7 +7,7 @@ from sqlalchemy.engine import Engine
 from sqlalchemy.orm import sessionmaker, Session, configure_mappers
 
 
-def get_engine(settings: dict, prefix: str='sqlalchemy.') -> Engine:
+def get_engine(settings: dict, prefix: str = 'sqlalchemy.') -> Engine:
     return engine_from_config(settings, prefix)
 
 

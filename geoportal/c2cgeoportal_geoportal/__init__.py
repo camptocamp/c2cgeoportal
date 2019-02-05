@@ -630,7 +630,7 @@ def includeme(config: pyramid.config.Configurator):
     c2cwsgiutils.index.additional_noauth.append('</div></div><hr>')
 
 
-def init_dbsessions(settings: dict, config: Configurator, health_check: HealthCheck=None) -> None:
+def init_dbsessions(settings: dict, config: Configurator, health_check: HealthCheck = None) -> None:
     db_chooser = settings.get('db_chooser', {})
     master_paths = [re.compile(i.replace('//', '/')) for i in db_chooser.get('master', [])]
     slave_paths = [re.compile(i.replace('//', '/')) for i in db_chooser.get('slave', [])]
