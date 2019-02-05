@@ -14,3 +14,11 @@
     Header set Access-Control-Allow-Headers "Content-Type"
     Header merge Cache-Control "public"
 </LocationMatch>
+
+<LocationMatch /${instanceid}/mapcache/>
+    # Instructs to set CORS on mapcache tiles
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/x-javascript text/javascript application/javascript application/xml
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Headers "Content-Type"
+    Header merge Cache-Control "public"
+</LocationMatch>
