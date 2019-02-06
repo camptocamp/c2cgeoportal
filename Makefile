@@ -232,9 +232,9 @@ prepare-tests: \
 
 .PHONY: tests
 tests:
-	py.test --verbose --color=yes --cov=commons/c2cgeoportal_commons commons/acceptance_tests
+	py.test --verbose --color=yes --cov=commons/c2cgeoportal_commons commons/tests
 	py.test --verbose --color=yes --cov-append --cov=geoportal/c2cgeoportal_geoportal geoportal/tests
-	py.test --verbose --color=yes --cov-append --cov=admin/c2cgeoportal_admin admin/acceptance_tests
+	py.test --verbose --color=yes --cov-append --cov=admin/c2cgeoportal_admin admin/tests
 
 .PHONY: flake8
 flake8:
@@ -261,12 +261,12 @@ flake8:
 .PHONY: pylint
 pylint: $(BUILD_DIR)/commons.timestamp
 	pylint --errors-only commons/c2cgeoportal_commons
-	$(BUILD_DIR)/venv/bin/python /usr/local/bin/pylint --errors-only commons/acceptance_tests
+	$(BUILD_DIR)/venv/bin/python /usr/local/bin/pylint --errors-only commons/tests
 	$(BUILD_DIR)/venv/bin/python /usr/local/bin/pylint --errors-only --disable=assignment-from-no-return \
 		geoportal/c2cgeoportal_geoportal
 	$(BUILD_DIR)/venv/bin/python /usr/local/bin/pylint --errors-only geoportal/tests
 	$(BUILD_DIR)/venv/bin/python /usr/local/bin/pylint --errors-only admin/c2cgeoportal_admin
-	$(BUILD_DIR)/venv/bin/python /usr/local/bin/pylint --errors-only admin/acceptance_tests
+	$(BUILD_DIR)/venv/bin/python /usr/local/bin/pylint --errors-only admin/tests
 	$(BUILD_DIR)/venv/bin/python /usr/local/bin/pylint --errors-only --disable=import-error \
 		docker/qgisserver/geomapfish_plugin
 

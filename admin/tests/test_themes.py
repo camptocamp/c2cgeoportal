@@ -3,7 +3,7 @@
 import re
 import pytest
 
-from .treegroup_tests import TestTreeGroup
+from .test_treegroup import TestTreeGroup
 
 
 @pytest.fixture(scope='function')

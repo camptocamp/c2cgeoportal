@@ -61,7 +61,7 @@ def app(app_env, dbsession):
     config.add_request_method(lambda request: dbsession, 'dbsession', reify=True)
     config.add_route('user_add', 'user_add')
     config.add_route('users_nb', 'users_nb')
-    config.scan(package='acceptance_tests')
+    config.scan(package='tests')
     app = config.make_wsgi_app()
     yield app
 
