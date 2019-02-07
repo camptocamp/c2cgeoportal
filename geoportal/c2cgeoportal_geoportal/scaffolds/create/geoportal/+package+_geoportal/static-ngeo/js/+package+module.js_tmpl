@@ -4,6 +4,7 @@
  * module.
  */
 import {decodeQueryString} from 'ngeo/utils.js';
+import angular from 'angular';
 
 /**
  * @type {!angular.IModule}
