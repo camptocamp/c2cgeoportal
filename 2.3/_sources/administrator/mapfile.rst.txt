@@ -332,7 +332,8 @@ listed in the ``DATA`` section. For instance::
             ...
             "gml_exclude_items" "type,gid"
             "gml_include_items" "all"
-
+        END
+        VALIDATION
             "default_s_columns" "t.name"
             "s_columns_validation_pattern" "^[a-z,._]*$$"
         END
