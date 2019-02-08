@@ -65,7 +65,7 @@ Functionalities
 Layers
 ------
 
-Layer definitiions are found in to two tables: ``layer_wms`` and ``layer_wmts``.
+Layer definitions are found in to two tables: ``layer_wms`` and ``layer_wmts``.
 The legacy table ``layerv1`` is still present, but only for being able to migration the application,
 for information on migrating layers, see :ref:`integrator_upgrade_application_cgxp_to_ngeo`.
 
