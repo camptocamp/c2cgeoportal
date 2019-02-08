@@ -227,6 +227,7 @@ class TestEntryView(TestCase):
         assert json.loads(response.body.decode("utf-8")) == {
             "success": True,
             "username": "__test_user1",
+            'email': '__test_user1@example.com',
             "is_password_changed": False,
             "roles": [{
                 "name": "__test_role1",
@@ -294,6 +295,7 @@ class TestEntryView(TestCase):
         assert json.loads(response.body.decode("utf-8")) == {
             "success": True,
             "username": "__test_user1",
+            'email': '__test_user1@example.com',
             "is_password_changed": False,
             "roles": [{
                 "name": "__test_role1",

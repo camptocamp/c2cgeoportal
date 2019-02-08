@@ -1129,6 +1129,7 @@ class Entry:
         result = {
             "success": True,  # for Extjs
             "username": user.username,
+            "email": user.email,
             "is_password_changed": user.is_password_changed,
             "roles": [{"name": r.name, "id": r.id} for r in user.roles],
         } if user else {}

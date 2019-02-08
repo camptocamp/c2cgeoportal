@@ -186,6 +186,7 @@ class TestEntryView(TestCase):
         class U:
             username = "__test_user"
             is_password_changed = True
+            email = "info@example.com"
 
             def __init__(self, role="__test_role", functionalities=None):
                 if functionalities is None:
@@ -197,6 +198,7 @@ class TestEntryView(TestCase):
         expected = {
             "success": True,
             "username": "__test_user",
+            "email": "info@example.com",
             "is_password_changed": True,
             "roles": [{
                 "name": "__test_role",
@@ -217,6 +219,7 @@ class TestEntryView(TestCase):
         expected = {
             "success": True,
             "username": "__test_user",
+            'email': 'info@example.com',
             "is_password_changed": True,
             "roles": [{
                 "name": "__test_role2",
