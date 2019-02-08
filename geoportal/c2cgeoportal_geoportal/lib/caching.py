@@ -45,8 +45,9 @@ def map_dbobject(item):
     return item.id if isinstance(item, Base) and hasattr(item, "id") else item
 
 
-def keygen_function(namespace, fn):
-    """Return a function that generates a string
+def keygen_function(namespace, function):
+    """
+    Return a function that generates a string
     key, based on a given function as well as
     arguments to the returned function itself.
 
@@ -55,11 +56,11 @@ def keygen_function(namespace, fn):
     """
 
     if namespace is None:
-        namespace = "{0!s}:{1!s}".format(fn.__module__, fn.__name__)
+        namespace = "{0!s}:{1!s}".format(function.__module__, function.__name__)
     else:  # pragma: no cover
-        namespace = "{0!s}:{1!s}|{2!s}".format(fn.__module__, fn.__name__, namespace)
+        namespace = "{0!s}:{1!s}|{2!s}".format(function.__module__, function.__name__, namespace)
 
-    args = inspect.getargspec(fn)
+    args = inspect.getfullargspec(function)
     has_self = args[0] and args[0][0] in ("self", "cls")
 
     def generate_key(*args, **kw):

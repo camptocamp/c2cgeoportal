@@ -16,7 +16,7 @@ def insert_users_test_data(dbsession):
     dbsession.rollback()
 
 
-@view_config(route_name='user_add', renderer='./learn_test.jinja2')
+@view_config(route_name='user_add', renderer='./test_learn.jinja2')
 def view_committing_user(request):
     from c2cgeoportal_commons.models.static import User
     user = User("momo")
@@ -26,7 +26,7 @@ def view_committing_user(request):
     return {}
 
 
-@view_config(route_name='users_nb', renderer='./learn_test.jinja2')
+@view_config(route_name='users_nb', renderer='./test_learn.jinja2')
 def view_displaying_users_nb(request):
     from c2cgeoportal_commons.models.static import User
     users = request.dbsession.query(User).all()
