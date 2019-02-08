@@ -65,7 +65,7 @@ def factory_build_layers(layer_builder, dbsession, add_dimension=True):
             metadata.item = layer
 
         if i % 10 != 1:
-                layer.interfaces = [interfaces[i % 4], interfaces[(i + 2) % 4]]
+            layer.interfaces = [interfaces[i % 4], interfaces[(i + 2) % 4]]
 
         layer.restrictionareas = [restrictionareas[i % 5], restrictionareas[(i + 2) % 5]]
 

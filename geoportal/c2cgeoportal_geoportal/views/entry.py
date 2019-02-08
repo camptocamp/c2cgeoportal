@@ -314,8 +314,8 @@ class Entry:
         metadata_urls = []
         if len(layer.metadataUrls) > 0:
             metadata_urls = layer.metadataUrls
-        for childLayer in layer.layers:
-            metadata_urls.extend(self._get_layer_metadata_urls(childLayer))
+        for child_layer in layer.layers:
+            metadata_urls.extend(self._get_layer_metadata_urls(child_layer))
         return metadata_urls
 
     def _get_layer_resolution_hint_raw(self, layer):
@@ -328,8 +328,8 @@ class Entry:
             resolution_hint_min = float(layer.scaleHint["min"]) / sqrt(2)
             resolution_hint_max = float(layer.scaleHint["max"]) / sqrt(2) \
                 if layer.scaleHint["max"] != "0" else 999999999
-        for childLayer in layer.layers:
-            resolution = self._get_layer_resolution_hint_raw(childLayer)
+        for child_layer in layer.layers:
+            resolution = self._get_layer_resolution_hint_raw(child_layer)
             resolution_hint_min = resolution[0] if resolution_hint_min is None else (
                 resolution_hint_min if resolution[0] is None else
                 min(resolution_hint_min, resolution[0])
