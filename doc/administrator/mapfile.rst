@@ -335,7 +335,7 @@ listed in the ``DATA`` section. For instance::
         END
         VALIDATION
             "default_s_columns" "t.name"
-            "s_columns_validation_pattern" "^[a-z,._]*$$"
+            "s_columns" "^[a-z,._]*$$"
         END
         CLASS
             EXPRESSION ([type]=1)
