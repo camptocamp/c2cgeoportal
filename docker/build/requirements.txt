@@ -74,7 +74,7 @@ translationstring==1.3  # admin
 virtualenv==16.4.0  # Makefile
 waitress==1.2.1  # pcreate
 WebOb==1.8.5  # geoportal test
-WebTest==2.0.32  # admin tests
+WebTest==2.0.33  # admin tests
 wsgi-lineprof==0.7.0  # profiling
 yamllint==1.14.0  # lint
 zgitignore==0.8.2  # Makefile
