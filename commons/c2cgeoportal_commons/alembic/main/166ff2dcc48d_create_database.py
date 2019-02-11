@@ -220,7 +220,7 @@ def upgrade():
         Column('role_id', Integer, ForeignKey(schema + '.role.id'), nullable=False),
         schema=schema,
     )
-    if parentschema is not None and parentschema is not '':  # pragma: no cover
+    if parentschema is not None and parentschema != '':  # pragma: no cover
         op.add_column(
             'user',
             Column('parent_role_id', Integer, ForeignKey(parentschema + '.role.id')),

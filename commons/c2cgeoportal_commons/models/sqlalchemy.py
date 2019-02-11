@@ -43,7 +43,7 @@ class JSONEncodedDict(TypeDecorator):
     impl = VARCHAR
 
     @staticmethod
-    def process_bind_param(value: Optional[dict], _: Dialect)-> Optional[str]:
+    def process_bind_param(value: Optional[dict], _: Dialect) -> Optional[str]:
         return json.dumps(value) if value is not None else None
 
     @staticmethod
