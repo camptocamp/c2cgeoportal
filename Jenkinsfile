@@ -143,6 +143,16 @@ dockerBuild {
                     }
                     sh './docker-run travis/codacy.sh'
                     sh './docker-run travis/status.sh'
+                }, 'Test QGIS server plugin': {
+                    sh 'cd docker/qgisserver; make build-tests'
+                    try {
+                        sh 'cd docker/qgisserver/tests; docker-compose run --rm qgisserver-tests'
+                    } catch (Exception error) {
+                        sh 'cd docker/qgisserver/tests; docker-compose logs --timestamps'
+                        throw error
+                    } finally {
+                        sh 'cd docker/qgisserver/tests; docker-compose down'
+                    }
                 }, 'Test Docker app': {
                     // Use an internal network to be sure that we have everything we needs in the Docker images
                     sh 'docker network create --internal internal'

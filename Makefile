@@ -31,7 +31,7 @@ VALIDATE_PY_FOLDERS = commons admin \
 	geoportal/c2cgeoportal_geoportal/lib \
 	geoportal/c2cgeoportal_geoportal/scripts \
 	geoportal/c2cgeoportal_geoportal/views \
-	docker/qgisserver/geomapfish_plugin
+	docker/qgisserver/geomapfish_qgisserver
 VALIDATE_TEMPLATE_PY_FOLDERS = geoportal/c2cgeoportal_geoportal/scaffolds
 VALIDATE_PY_TEST_FOLDERS = geoportal/tests
 
@@ -138,6 +138,7 @@ clean:
 	rm --force $(MAKO_FILES:.mako=)
 	rm --force $(APPS_FILES) $(APPS_FILES_ALT)
 	rm --force geoportal/tests/functional/alembic.yaml
+	rm --force docker/qgisserver/tests/geomapfish.yaml
 
 .PHONY: clean-all
 clean-all: clean
@@ -154,6 +155,10 @@ $(BUILD_DIR)/sphinx.timestamp: $(SPHINX_FILES) $(SPHINX_MAKO_FILES:.mako=)
 geoportal/tests/functional/alembic.yaml: $(BUILD_DIR)/c2ctemplate-cache.json
 	$(PRERULE_CMD)
 	c2c-template --cache $(BUILD_DIR)/c2ctemplate-cache.json --get-config $@ srid schema schema_static sqlalchemy.url
+
+docker/qgisserver/tests/geomapfish.yaml: $(BUILD_DIR)/c2ctemplate-cache.json
+	$(PRERULE_CMD)
+	c2c-template --cache $(BUILD_DIR)/c2ctemplate-cache.json --get-config $@ srid schema schema_static sqlalchemy_slave.url
 
 docker-build-test: docker-build-testdb docker-build-testexternaldb docker-build-testmapserver
 
@@ -223,6 +228,7 @@ prepare-tests: \
 		geoportal/tests/functional/alembic.ini \
 		commons/tests.yaml \
 		admin/tests.ini \
+		docker/qgisserver/tests/geomapfish.yaml \
 		docker-compose.yaml \
 		docker-build-testmapserver \
 		docker-build-testdb \
@@ -268,7 +274,9 @@ pylint: $(BUILD_DIR)/commons.timestamp
 	$(BUILD_DIR)/venv/bin/python /usr/local/bin/pylint --errors-only admin/c2cgeoportal_admin
 	$(BUILD_DIR)/venv/bin/python /usr/local/bin/pylint --errors-only admin/tests
 	$(BUILD_DIR)/venv/bin/python /usr/local/bin/pylint --errors-only --disable=import-error \
-		docker/qgisserver/geomapfish_plugin
+		docker/qgisserver/geomapfish_qgisserver
+	$(BUILD_DIR)/venv/bin/python /usr/local/bin/pylint --errors-only --disable=import-error \
+		docker/qgisserver/tests/functional
 
 .PHONY: mypy
 mypy:
@@ -279,7 +287,7 @@ mypy:
 	mypy --ignore-missing-imports --strict-optional --follow-imports skip \
 		geoportal/c2cgeoportal_geoportal \
 		admin/c2cgeoportal_admin \
-		docker/qgisserver/geomapfish_plugin
+		docker/qgisserver/geomapfish_qgisserver
 
 .PHONY: git-attributes
 git-attributes:
@@ -313,6 +321,7 @@ YAML_FILES ?= $(shell find \
 	-name .venv -prune -or \
 	-name .mypy_cache -prune -or \
 	-name functional -prune -or \
+	-name geomapfish.yaml -prune -or \
 	\( -name "*.yml" -or -name "*.yaml" \) -print)
 .PHONY: yamllint
 yamllint:
