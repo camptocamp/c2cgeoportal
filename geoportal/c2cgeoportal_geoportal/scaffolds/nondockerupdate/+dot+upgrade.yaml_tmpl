@@ -132,6 +132,12 @@ files_to_remove:
   - file: requirements_windows.txt
     version: 2.3.5
     from: 2.2
+  - file: {{package}}/scripts/create_db.py
+    version: 2.3.6
+    from: 2.2
+  - file: geoportal/{{package}}_geoportal/scripts/create_db.py
+    version: 2.3.6
+    from: 2.2
 
 files_to_move:
   - from: vars_{{package}}.yaml

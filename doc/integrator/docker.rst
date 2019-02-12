@@ -231,3 +231,22 @@ add something like that in your composition:
 
 When you do an upgrade, backup your DB and upgrade this container first. It will update your
 DB schema, if needed.
+
+Clean
+-----
+
+Docker does not clean anything automatically, in particular it does not clean any images,
+therefore disk space may become problematic after a certain number of builds.
+You can use the following commands to manually remove Docker files.
+
+.. prompt:: bash
+
+   docker ps --all --quiet --filter status=exited | xargs --no-run-if-empty docker rm
+   docker images | grep "<none>" | awk '{print $3}' | xargs --no-run-if-empty docker rmi || true
+   docker volume ls --quiet --filter dangling=true | grep '[0-9a-f]\{64\}' | xargs --no-run-if-empty docker volume rm
+
+This will remove::
+
+  * Container with exit status
+  * Images with version on name as `<none>`
+  * Unnamed dangling volumes
