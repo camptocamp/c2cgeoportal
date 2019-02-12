@@ -48,6 +48,11 @@ Prepare the upgrade:
    git commit --quiet --message="Start upgrade"
    make --makefile=<user>.mk project.yaml
 
+.. note::
+
+   If the last command failed you should create the ``project.yaml`` file
+   from the ``project.yaml.mako`` file.
+
 For Docker (recommended):
 
 .. prompt:: bash
@@ -72,7 +77,7 @@ Then follow the instructions.
 
    If you have the following message:
 
-   .. code::
+   .. code:: text
 
       Host key verification failed.
       fatal: Could not read from remote repository.
