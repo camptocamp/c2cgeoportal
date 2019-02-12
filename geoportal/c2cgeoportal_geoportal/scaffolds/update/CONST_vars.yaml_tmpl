@@ -22,20 +22,40 @@ vars:
   docker_base: '{DOCKER_BASE}'
   docker_tag: '{DOCKER_TAG}'
   docker_global_front: false
+
+  # database user
+  docker_dbuser: www-data
+  # database password
+  docker_dbpassword: www-data
+  # master database host
+  docker_dbhost: 172.17.0.1
+  # slave database host
+  docker_dbhost_slave: 172.17.0.1
+  # database port
+  docker_dbport: 5432
+  # database name
+  docker_db: geomapfish
+  # sqlalchemy schema
+  docker_schema: main
+  # sqlalchemy static schema
+  docker_schema_static: main_static
+
+  docker_port: '{DOCKER_PORT}'
+
   docker_services:
     config:
       environment:
         VISIBLE_WEB_HOST: '{docker_host}'
         VISIBLE_WEB_PROTOCOL: '{docker_web_protocol}'
         VISIBLE_ENTRY_POINT: '{docker_entry_point}'
-        PGHOST: 172.17.0.1
-        PGHOST_SLAVE: 172.17.0.1
-        PGPORT: 5432
-        PGUSER: www-data
-        PGPASSWORD: www-data
-        PGDATABASE: geomapfish
-        PGSCHEMA: main
-        PGSCHEMA_STATIC: main_static
+        PGHOST: '{docker_dbhost}'
+        PGHOST_SLAVE: '{docker_dbhost_slave}'
+        PGPORT: '{docker_dbport}'
+        PGUSER: '{docker_dbuser}'
+        PGPASSWORD: '{docker_dbpassword}'
+        PGDATABASE: '{docker_db}'
+        PGSCHEMA: '{docker_schema}'
+        PGSCHEMA_STATIC: '{docker_schema_static}'
         GEOPORTAL_INTERNAL_URL: http://geoportal:8080
         TILECLOUDCHAIN_INTERNAL_URL: http://tilecloudchain:8080
         MAPCACHE_URL: http://mapcache:8080/mapcache/
@@ -47,20 +67,20 @@ vars:
         TILEGENERATION_SQS_QUEUE: '<queue_name>'
     db:
       environment:
-        POSTGRES_DB: geomapfish
-        POSTGRES_USER: www-data
-        POSTGRES_PASSWORD: www-data
+        POSTGRES_DB: '{docker_db}'
+        POSTGRES_USER: '{docker_dbuser}'
+        POSTGRES_PASSWORD: '{docker_dbpassword}'
     geoportal-build:
       environment: &geo-run-env
         VISIBLE_ENTRY_POINT: '{docker_entry_point}'
-        PGHOST: 172.17.0.1
-        PGHOST_SLAVE: 172.17.0.1
-        PGPORT: 5432
-        PGUSER: www-data
-        PGPASSWORD: www-data
-        PGDATABASE: geomapfish
-        PGSCHEMA: main
-        PGSCHEMA_STATIC: main_static
+        PGHOST: '{docker_dbhost}'
+        PGHOST_SLAVE: '{docker_dbhost_slave}'
+        PGPORT: '{docker_dbport}'
+        PGUSER: '{docker_dbuser}'
+        PGPASSWORD: '{docker_dbpassword}'
+        PGDATABASE: '{docker_db}'
+        PGSCHEMA: '{docker_schema}'
+        PGSCHEMA_STATIC: '{docker_schema_static}'
     geoportal:
       environment:
         <<: *geo-run-env
@@ -117,7 +137,7 @@ vars:
         CATALINA_OPTS: -Xmx1024m
         PGOPTIONS: '-c statement_timeout=30000'
     front:
-      port: 80
+      port: '{docker_port}'
 
   # database user
   dbuser: '{PGUSER}'
@@ -623,6 +643,7 @@ environment:
   - PROJECT_DIRECTORY
   - INSTANCE
   - ALEMBIC_YAML_FILE
+  - DOCKER_PORT
 
 runtime_environment:
   - name: VISIBLE_WEB_HOST
