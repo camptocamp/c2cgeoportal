@@ -53,22 +53,33 @@ class TestFunctionalities(TestCase):
             username="__test_user1",
             password="__test_user1",
             settings_role=role1,
-            roles=[role1]
+            roles=[role1],
         )
         role2 = Role(name="__test_role2")
         user2 = User(
             username="__test_user2",
             password="__test_user2",
             settings_role=role2,
-            roles=[role2]
+            roles=[role2],
+        )
+        role3 = Role(name="__test_role3")
+        role4 = Role(name="__test_role4")
+        user3 = User(
+            username="__test_user3",
+            password="__test_user3",
+            roles=[role3, role4],
+            settings_role=role3,
         )
 
         functionality1 = Functionality("__test_s", "db")
         functionality2 = Functionality("__test_a", "db1")
         functionality3 = Functionality("__test_a", "db2")
+        functionality4 = Functionality("__test_b", "db")
         role2.functionalities = [functionality1, functionality2, functionality3]
+        role3.functionalities = [functionality1, functionality2]
+        role4.functionalities = [functionality2, functionality3, functionality4]
 
-        DBSession.add_all([user1, user2, role1, role2])
+        DBSession.add_all([user1, user2, user3, role1, role2])
         transaction.commit()
 
     def teardown_method(self, _):
@@ -82,30 +93,16 @@ class TestFunctionalities(TestCase):
 
         transaction.commit()
 
-        for o in DBSession.query(User).filter(
-                User.username == "__test_user1").all():
-            o.functionalities = []
-            DBSession.delete(o)
-        for o in DBSession.query(User).filter(
-                User.username == "__test_user2").all():
-            o.functionalities = []
-            DBSession.delete(o)
-        for o in DBSession.query(Role).filter(
-                Role.name == "__test_role1").all():
-            o.functionalities = []
-            DBSession.delete(o)
-        for o in DBSession.query(Role).filter(
-                Role.name == "__test_role2").all():
-            o.functionalities = []
-            DBSession.delete(o)
-        DBSession.query(Functionality).filter(
-            Functionality.name == "__test_s").delete()
-        DBSession.query(Functionality).filter(
-            Functionality.name == "__test_a").delete()
-        DBSession.query(Functionality).filter(
-            Functionality.name == "__test_s").delete()
-        DBSession.query(Functionality).filter(
-            Functionality.name == "__test_a").delete()
+        for user_name in ("__test_user1", "__test_user2", "__test_user3"):
+            for o in DBSession.query(User).filter(User.username == user_name).all():
+                o.functionalities = []
+                DBSession.delete(o)
+        for role_name in ("__test_role1", "__test_role2", "__test_role3", "__test_role4"):
+            for o in DBSession.query(Role).filter(Role.name == role_name).all():
+                o.functionalities = []
+                DBSession.delete(o)
+        for func_name in ("__test_s", "__test_a", "__test_b"):
+            DBSession.query(Functionality).filter(Functionality.name == func_name).delete()
         DBSession.query(OGCServer).delete()
 
         transaction.commit()
@@ -123,6 +120,8 @@ class TestFunctionalities(TestCase):
         request1.user = DBSession.query(User).filter(User.username == "__test_user1").one()
         request2 = create_dummy_request()
         request2.user = DBSession.query(User).filter(User.username == "__test_user2").one()
+        request3 = create_dummy_request()
+        request3.user = DBSession.query(User).filter(User.username == "__test_user3").one()
 
         settings = {
             "functionalities": {
@@ -130,19 +129,27 @@ class TestFunctionalities(TestCase):
                 "registered": {},
             },
             "admin_interface": {
-                "available_functionalities": [{"name": "__test_a"}, {"name": "__test_s"}]
+                "available_functionalities": [
+                    {"name": "__test_a"},
+                    {"name": "__test_b", "single": True},
+                    {"name": "__test_s", "single": True},
+                ]
             }
         }
         functionality.FUNCTIONALITIES_TYPES = None
         request.registry.settings.update(settings)
         request1.registry.settings.update(settings)
         request2.registry.settings.update(settings)
+        request3.registry.settings.update(settings)
         self.assertEqual(get_functionality("__test_s", request), [])
         self.assertEqual(get_functionality("__test_a", request), [])
         self.assertEqual(get_functionality("__test_s", request1), [])
         self.assertEqual(get_functionality("__test_a", request1), [])
         self.assertEqual(get_functionality("__test_s", request2), ["db"])
         self.assertEqual(set(get_functionality("__test_a", request2)), {"db1", "db2"})
+        self.assertEqual(get_functionality("__test_s", request3), ["db"])
+        self.assertEqual(set(get_functionality("__test_a", request3)), {"db1", "db2"})
+        self.assertEqual(get_functionality("__test_b", request3), [])
 
         settings = {
             "functionalities": {
