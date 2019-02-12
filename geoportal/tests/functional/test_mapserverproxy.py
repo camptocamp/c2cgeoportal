@@ -165,6 +165,10 @@ class TestMapserverproxyView(TestCase):
         role3 = Role(name="__test_role3", description="__test_role3", functionalities=[pt1, pt2])
         user3 = User(username="__test_user3", password="__test_user3", settings_role=role3, roles=[role3])
 
+        role4 = Role(name="__test_role4", description="__test_role4", functionalities=[pt1, pt2])
+        role5 = Role(name="__test_role5", description="__test_role5", functionalities=[pt1, pt2])
+        user4 = User(username="__test_user4", password="__test_user4", settings_role=role3, roles=[role4, role5])
+
         main = Interface(name="main")
 
         layer2 = LayerWMS("testpoint_protected", public=False)
@@ -189,9 +193,17 @@ class TestMapserverproxyView(TestCase):
         area = WKTElement(area, srid=21781)
         restricted_area3 = RestrictionArea("__test_ra3", "", [layer3], [role3], area, readwrite=True)
 
+        area = "POLYGON((599909 199954, 599911 199954, 599911 199956, 599909 199956, 599909 199954))"
+        area = WKTElement(area, srid=21781)
+        restricted_area4 = RestrictionArea("__test_ra4", "", [layer2], [role4], area, readwrite=True)
+
+        area = "POLYGON((599909 200044, 599911 200044, 599911 200046, 599909 200046, 599909 200044))"
+        area = WKTElement(area, srid=21781)
+        restricted_area5 = RestrictionArea("__test_ra5", "", [layer2], [role5], area, readwrite=True)
+
         DBSession.add_all([
-            p1, p2, p3, p4, user1, user2, user3, role1, role2, role3,
-            restricted_area1, restricted_area2, restricted_area3, ogcserver_geoserver
+            p1, p2, p3, p4, user1, user2, user3, user4, role1, role2, role3, ogcserver_geoserver,
+            restricted_area1, restricted_area2, restricted_area3, restricted_area4, restricted_area5,
         ])
         DBSession.flush()
 
@@ -634,18 +646,23 @@ class TestMapserverproxyView(TestCase):
         assert "éàè" not in response.body.decode("utf-8")
         assert "123" in response.body.decode("utf-8")
 
-    def _get_feature_is_not_equal_to(self, value):
+    def _get_feature_is_not_equal_to(
+        self, value,
+        propertyname="name",
+        layername="testpoint_unprotected",
+        username=None
+    ):
         from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
-        request = self._create_dummy_request()
+        request = self._create_dummy_request(username)
         request.headers["Content-Type"] = "application/xml; charset=UTF-8"
 
         request.method = "POST"
         request.body = (GETFEATURE_REQUEST % {
-            "feature": "testpoint_unprotected",
+            "feature": layername,
             "function": "NotEqualTo",
             "arguments": "",
-            "property": "name",
+            "property": propertyname,
             "value": value,
         }).encode("utf-8")
         return MapservProxy(request).proxy()
@@ -671,6 +688,42 @@ class TestMapserverproxyView(TestCase):
         assert "bar" in response.body.decode("utf-8")
         assert "éàè" in response.body.decode("utf-8")
         assert "123" not in response.body.decode("utf-8")
+
+    def test_authenticated_get_feature(self):
+        response = self._get_feature_is_not_equal_to("toto", "city", "testpoint_protected")
+        self.assertTrue(response.status_int, 200)
+        assert "Lausanne" not in response.body.decode("utf-8")
+        assert "Chambéry" not in response.body.decode("utf-8")
+        assert "Paris" not in response.body.decode("utf-8")
+        assert "Londre" not in response.body.decode("utf-8")
+
+        response = self._get_feature_is_not_equal_to("toto", "city", "testpoint_protected", "__test_user1")
+        self.assertTrue(response.status_int, 200)
+        assert "Lausanne" not in response.body.decode("utf-8")
+        assert "Chambéry" in response.body.decode("utf-8")
+        assert "Paris" in response.body.decode("utf-8")
+        assert "Londre" not in response.body.decode("utf-8")
+
+        response = self._get_feature_is_not_equal_to("toto", "city", "testpoint_protected", "__test_user2")
+        self.assertTrue(response.status_int, 200)
+        assert "Lausanne" not in response.body.decode("utf-8")
+        assert "Chambéry" not in response.body.decode("utf-8")
+        assert "Paris" not in response.body.decode("utf-8")
+        assert "Londre" not in response.body.decode("utf-8")
+
+        response = self._get_feature_is_not_equal_to("toto", "city", "testpoint_protected", "__test_user3")
+        self.assertTrue(response.status_int, 200)
+        assert "Lausanne" not in response.body.decode("utf-8")
+        assert "Chambéry" not in response.body.decode("utf-8")
+        assert "Paris" not in response.body.decode("utf-8")
+        assert "Londre" not in response.body.decode("utf-8")
+
+        response = self._get_feature_is_not_equal_to("toto", "city", "testpoint_protected", "__test_user4")
+        self.assertTrue(response.status_int, 200)
+        assert "Lausanne" in response.body.decode("utf-8")
+        assert "Chambéry" in response.body.decode("utf-8")
+        assert "Paris" not in response.body.decode("utf-8")
+        assert "Londre" not in response.body.decode("utf-8")
 
     def _get_feature_is_like(self, value):
         from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
