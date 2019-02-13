@@ -96,7 +96,7 @@ def main():
 
         if options.root:
             docker_cmd.append("--volume={}:/root".format(external_home))
-        docker_cmd.append("--volume={}:{}".format(internal_home, external_home))
+        docker_cmd.append("--volume={}:{}".format(external_home, internal_home))
     else:
         docker_cmd.append("--volume={}:/home".format(build_volume_name + "-home"))
 
