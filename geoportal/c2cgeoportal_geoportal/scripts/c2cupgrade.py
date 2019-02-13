@@ -695,7 +695,7 @@ class C2cUpgradeTool:
                 "- To upgrade the database run `./docker-compose-run alembic --name=main "
                 "--config=geoportal/alembic.ini upgrade head`",
                 "- Run `docker-compose pull --ignore-pull-failures && "
-                "docker-compose down && docker-compose up -d`.",
+                "docker-compose down --remove-orphans --timeout=0 && docker-compose up -d`.",
                 "- Test your application on 'http://localhost:8480/desktop'."
             ]
 
