@@ -42,8 +42,7 @@ from tests.functional import (  # noqa, pylint: disable=unused-import
 
 class TestEchoView(TestCase):
 
-    @staticmethod
-    def setup_method(_):
+    def setup_method(self, _):
         import transaction
         from sqlalchemy import func
         from geoalchemy2 import WKTElement
@@ -74,8 +73,7 @@ class TestEchoView(TestCase):
         DBSession.add_all([entry1, entry2, entry3])
         transaction.commit()
 
-    @staticmethod
-    def teardown_method(_):
+    def teardown_method(self, _):
         testing.tearDown()
 
         import transaction
