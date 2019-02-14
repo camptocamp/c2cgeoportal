@@ -130,7 +130,7 @@ def main():
                 return None
 
         for x in netifaces.interfaces():
-            if get_connection_name_from_guid(x) == 'Ethernet':
+            if get_connection_name_from_guid(x).find('Ethernet') == 0:
                 docker_adrs = netifaces.ifaddresses(x)[2][0]['addr']
                 break
     elif 'docker0' in netifaces.interfaces():
