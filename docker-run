@@ -78,9 +78,6 @@ def main():
 
     docker_cmd.extend([
         "--rm",
-        "--volume={socket}:{socket}".format(
-            socket="//./pipe/docker_engine" if is_windows else "/var/run/docker.sock"
-        ),
         "--volume={}:/build".format(build_volume_name),
         "--volume={pwd}:/src".format(pwd=os.getcwd()),
         "--env=USER_NAME={}".format(login),
@@ -89,6 +86,9 @@ def main():
         "--env=GIT_BRANCH={}".format(git_branch),
         "--env=GIT_HASH={}".format(git_hash),
     ])
+
+    if not is_windows:
+        docker_cmd.append("--volume={socket}:{socket}".format(socket="/var/run/docker.sock"))
 
     if options.home:
         internal_home = "/home/{login}".format(login=login) if is_windows else os.environ["HOME"]
