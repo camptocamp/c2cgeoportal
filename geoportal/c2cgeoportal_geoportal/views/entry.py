@@ -818,7 +818,7 @@ class Entry:
             {role.id for role in self.request.user.roles}
 
     def get_ngeo_index_vars(self):
-        set_common_headers(self.request, "index", NO_CACHE, content_type="application/javascript")
+        set_common_headers(self.request, "index", NO_CACHE, content_type="text/html")
         return {}
 
     @view_config(route_name="apijs", renderer="api/api.js")
