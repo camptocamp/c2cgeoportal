@@ -37,68 +37,78 @@ from c2cgeoportal_geoportal.lib.checker import build_url
 
 class TestExportCSVView(TestCase):
 
-    @staticmethod
-    def _create_dummy_request():
+    def test_build_url_docker(self):
         request = DummyRequest()
-        request.environ = {
-            "SERVER_NAME": "example.com"
+        request.registry.settings = {
+            "checker": {
+                "base_internal_url": "http://localhost:8080",
+            }
         }
-        return request
-
-    def test_build_url_http(self):
         self.assertEqual(
             build_url(
                 "Test",
-                "http://example.com/toto?titi#tutu",
-                self._create_dummy_request()
+                "/toto?titi#tutu",
+                request
+            ),
+            {
+                "url": "http://localhost:8080/toto?titi#tutu",
+                "headers": {
+                    "Cache-Control": "no-cache",
+                }
+            }
+        )
+
+    def test_build_url_http(self):
+        request = DummyRequest()
+        request.registry.settings = {
+            "checker": {
+                "base_internal_url": "http://localhost",
+                "forward_host": True,
+            }
+        }
+        self.assertEqual(
+            build_url(
+                "Test",
+                "/toto?titi#tutu",
+                request
             ),
             {
                 "url": "http://localhost/toto?titi#tutu",
                 "headers": {
                     "Cache-Control": "no-cache",
-                    "Host": "example.com"
+                    "Host": "example.com:80"
                 }
             }
         )
 
     def test_build_url_https(self):
-        self.assertEqual(
-            build_url(
-                "Test",
-                "https://example.com/toto?titi#tutu",
-                self._create_dummy_request()
-            ),
-            {
-                "url": "http://localhost/toto?titi#tutu",
-                "headers": {
-                    "Cache-Control": "no-cache",
-                    "Host": "example.com"
-                }
+        request = DummyRequest()
+        request.registry.settings = {
+            "checker": {
+                "base_internal_url": "https://localhost",
+                "forward_host": True,
             }
-        )
-
-    def test_build_url_other(self):
+        }
         self.assertEqual(
             build_url(
                 "Test",
-                "https://camptocamp.com/toto?titi#tutu",
-                self._create_dummy_request()
+                "/toto?titi#tutu",
+                request
             ),
             {
-                "url": "https://camptocamp.com/toto?titi#tutu",
+                "url": "https://localhost/toto?titi#tutu",
                 "headers": {
                     "Cache-Control": "no-cache",
+                    "Host": "example.com:80"
                 }
             }
         )
 
     def test_build_url_forward_headers(self):
         request = DummyRequest()
-        request.environ = {
-            "SERVER_NAME": "example.com"
-        }
         request.registry.settings = {
             "checker": {
+                "base_internal_url": "http://localhost",
                 "forward_headers": ["Cookie"]
             }
         }
@@ -106,11 +116,11 @@ class TestExportCSVView(TestCase):
         self.assertEqual(
             build_url(
                 "Test",
-                "https://camptocamp.com/toto?titi#tutu",
+                "/toto?titi#tutu",
                 request
             ),
             {
-                "url": "https://camptocamp.com/toto?titi#tutu",
+                "url": "http://localhost/toto?titi#tutu",
                 "headers": {
                     "Cache-Control": "no-cache",
                     "Cookie": "test",
