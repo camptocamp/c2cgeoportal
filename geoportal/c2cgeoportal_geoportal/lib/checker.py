@@ -68,8 +68,8 @@ def _build_headers(request, headers=None):
 def _routes(settings, health_check):
     routes_settings = settings["routes"]
     for route in routes_settings["routes"]:
-        if route["name"] not in routes_settings["disable"]:
-            name = "checker_routes_" + route.get("display_name", route["name"])
+        if route.get("checker_name", route["name"]) not in routes_settings["disable"]:
+            name = "checker_routes_" + route.get("checker_name", route["name"])
 
             def get_both(request):
                 return build_url("route", request.route_url(route["name"]), request)
@@ -227,7 +227,7 @@ def _lang_files(global_settings, settings, health_check):
 def _phantomjs(settings, health_check):
     phantomjs_settings = settings["phantomjs"]
     for route in phantomjs_settings["routes"]:
-        if route["name"] in phantomjs_settings["disable"]:
+        if route.get("checker_name", route["name"]) in phantomjs_settings["disable"]:
             continue
 
         def check(request):
@@ -250,7 +250,7 @@ def _phantomjs(settings, health_check):
 command: {}
 output:
 {}""".format(" ".join(e.cmd), e.output.decode("utf-8")))
-        name = "checker_phantomjs_" + route.get("display_name", route["name"])
+        name = "checker_phantomjs_" + route.get("checker_name", route["name"])
         health_check.add_custom_check(name=name, check_cb=check, level=route["level"])
 
 

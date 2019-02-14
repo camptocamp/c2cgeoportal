@@ -613,7 +613,7 @@ vars:
         - name: printproxy_capabilities
           level: 3
         - name: mapserverproxy
-          display_name: mapserverproxy_wms
+          checker_name: mapserverproxy_wms
           params:
             SERVICE: WMS
             VERSION: 1.1.1
@@ -621,7 +621,7 @@ vars:
             ogcserver: '{checker_ogc_server}'
           level: 3
         - name: mapserverproxy
-          display_name: mapserverproxy_wfs
+          checker_name: mapserverproxy_wfs
           params:
             SERVICE: WFS
             VERSION: 1.1.0
