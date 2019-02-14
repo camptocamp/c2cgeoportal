@@ -138,7 +138,7 @@ Run gunicorn to reload on modifications of Python files
 
 Add the following environment variable to the geoportal container:
 
-``GUNICORN_PARAMS="-b :80 --worker-class gthread --threads 1 --workers 1 --reload"``
+``GUNICORN_PARAMS="-b :8080 --worker-class gthread --threads 2 --workers 2 --reload"``
 
 Do a graceful restart of the running geoportal container
 ........................................................
@@ -153,7 +153,7 @@ Mount c2cgeoportal in the container
 
 Clone and build c2cgeoportal, see: developer_server_side.
 
-Add a ``docker-compose.override.yml`` file with a ``geoportal`` service containing the following lines:
+Add a ``docker-compose.override.yaml`` file with a ``geoportal`` service containing the following lines:
 
 .. code:: yaml
 
@@ -196,7 +196,7 @@ Run:
 
 .. prompt:: bash
 
-   docker-compose --file=docker-compose.yaml --file=docker-compose-dev.yaml up
+   docker-compose --file=docker-compose.yaml --file=docker-compose-dev.yaml up -b
 
 Open the application with on the following path: ``https://<host>/<entry_point>/dev/<interface>.html``.
 
