@@ -1,9 +1,9 @@
 alabaster==0.7.12  # Doc theme
 alembic==1.0.7  # geoportal
-awscli==1.16.103  # Work with Object storage
+awscli==1.16.104  # Work with Object storage
 Babel==2.6.0  # i18n
 beautifulsoup4==4.6.3  # admin tests, rq.filter: <4.7
-boto3==1.9.93  # Tile generation
+boto3==1.9.94  # Tile generation
 bottle==0.12.16  # geoportal
 c2c.cssmin==0.7.dev6  # CGXP build
 c2c.template==2.1.0  # geoportal
