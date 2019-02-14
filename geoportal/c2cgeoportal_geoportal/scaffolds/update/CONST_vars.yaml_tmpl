@@ -563,14 +563,14 @@ vars:
           level: 3
         - name: printproxy_capabilities
           level: 3
-        - name: mapserverproxy
+        - name: mapserverproxy_wms_capabilitie
           display_name: mapserverproxy_wms
           params:
             SERVICE: WMS
             VERSION: 1.1.1
             REQUEST: GetCapabilities
           level: 3
-        - name: mapserverproxy
+        - name: mapserverproxy_wfs_capabilitie
           display_name: mapserverproxy_wfs
           params:
             SERVICE: WFS

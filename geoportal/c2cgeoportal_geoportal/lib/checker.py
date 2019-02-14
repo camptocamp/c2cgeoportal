@@ -27,19 +27,30 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-import requests
 import logging
 import subprocess
 from time import sleep
 from urllib.parse import urlsplit, urlunsplit
 
+import requests
+
 log = logging.getLogger(__name__)
 
 
 def build_url(name, url, request, headers=None):
+    settings = {
+        elem['match']: elem['to'] for elem in request.registry.settings["checker"].get("host_map", [])
+    }
     url_fragments = urlsplit(url)
     headers = _build_headers(request, headers)
-    if url_fragments.netloc == request.environ.get("SERVER_NAME") or \
+    if url_fragments.netloc in settings:
+        mapped_host = settings[url_fragments.netloc]
+        url_ = urlunsplit((
+            mapped_host.get('schema', url_fragments.scheme),
+            mapped_host.get('hostname', url_fragments.hostname),
+            url_fragments.path, url_fragments.query, url_fragments.fragment
+        ))
+    elif url_fragments.netloc == request.environ.get("SERVER_NAME") or \
             url_fragments.netloc.startswith("localhost:"):
         url_ = urlunsplit((
             "http", "localhost", url_fragments.path, url_fragments.query, url_fragments.fragment
@@ -228,9 +239,7 @@ def _phantomjs(settings, health_check):
 
         def check(request):
             url = request.route_url(route["name"], _query=route.get("params", {}))
-            if urlsplit(url).netloc.startswith("localhost:"):
-                # For Docker
-                url = build_url("Check", url, request)["url"]
+            url = build_url("Check", url, request)["url"]
 
             cmd = [
                 "phantomjs", "--local-to-remote-url-access=true",
