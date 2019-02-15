@@ -88,12 +88,14 @@ def add_interface(
     config, interface_name="desktop", interface_type=INTERFACE_TYPE_NGEO, default=False, **kwargs
 ):  # pragma: no cover
     del interface_type  # unused
-    route = "/" if default else "/{0!s}".format(interface_name)
+    route = "/" if default else "/{}".format(interface_name)
     add_interface_ngeo(
         config,
         route_name=interface_name,
         route=route,
-        renderer="/{0!s}.html".format(interface_name),
+        renderer="{}_geoportal:static-ngeo/build/{}.html".format(
+            config.get_settings()['package'], interface_name
+        ),
         **kwargs
     )
 
@@ -110,7 +112,7 @@ def add_interface_ngeo(config, route_name, route, renderer=None, permission=None
         renderer=renderer,
         permission=permission
     )
-    # permalink theme: recover the theme for generating custom viewer.js url
+    # Permalink theme: recover the theme for generating custom viewer.js url
     config.add_route(
         "{}theme".format(route_name),
         "{}{}theme/{{themes}}".format(route, "" if route[-1] == "/" else "/"),
@@ -131,8 +133,8 @@ def add_admin_interface(config):
             # pylint: disable=not-callable
             lambda request: c2cgeoportal_commons.models.DBSession(), 'dbsession', reify=True
         )
-        config.add_view(c2cgeoportal_geoportal.views.add_ending_slash, 'add_ending_slash')
-        config.add_route('add_ending_slash', '/admin', request_method='GET')
+        config.add_view(c2cgeoportal_geoportal.views.add_ending_slash, route_name='admin_add_ending_slash')
+        config.add_route('admin_add_ending_slash', '/admin', request_method='GET')
         config.include('c2cgeoportal_admin', route_prefix='/admin')
 
 
@@ -407,7 +409,6 @@ def includeme(config: pyramid.config.Configurator):
     if 'cache_path' not in config.get_settings():
         config.get_settings()['cache_path'] = ['static']
     config.add_tween("c2cgeoportal_geoportal.lib.cacheversion.CachebusterTween")
-    config.add_tween("c2cgeoportal_geoportal.lib.webpack.WebpackTween")
     config.add_tween("c2cgeoportal_geoportal.lib.headers.HeadersTween")
 
     # Bind the mako renderer to other file extensions
