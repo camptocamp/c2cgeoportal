@@ -87,6 +87,9 @@ def main():
     env["C2CGEOPORTAL_LOG_LEVEL"] = "WARN"
     fileConfig(app_config, defaults=env)
     app = get_app(app_config, app_name, options=env)
+    # Can be a PrefixMiddleware
+    if hasattr(app, 'app'):
+        app = app.app
 
     # must be done only once we have loaded the project config
     from c2cgeoportal_commons.models import DBSession
