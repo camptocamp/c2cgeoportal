@@ -198,7 +198,7 @@ Run:
 
    docker-compose --file=docker-compose.yaml --file=docker-compose-dev.yaml up -b
 
-Open the application with on the following path: ``https://<host>/<entry_point>/dev/<interface>.html``.
+Open the application at the following path: ``https://<host>/<entry_point>/dev/<interface>.html``.
 
 Use a specific version of ngeo
 ------------------------------
