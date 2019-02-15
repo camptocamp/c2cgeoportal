@@ -602,7 +602,7 @@ mapping:
                       name:
                         type: str
                         required: true
-                      display_name:
+                      checker_name:
                         type: str
                       params: &params
                         type: map

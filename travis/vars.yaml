@@ -31,7 +31,6 @@ vars:
       disable: [apijs, xapijs]
       routes:
         - name: dynamic
-          display_name: Dynamic
           params:
             interface: desktop
           level: 3
