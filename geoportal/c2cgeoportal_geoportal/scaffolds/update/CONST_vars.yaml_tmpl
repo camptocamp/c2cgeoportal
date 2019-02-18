@@ -537,6 +537,7 @@ vars:
 
   # Checker configuration
   checker:
+    base_internal_url: http://localhost:8080
     fulltextsearch:
       level: 1
       search: text to search

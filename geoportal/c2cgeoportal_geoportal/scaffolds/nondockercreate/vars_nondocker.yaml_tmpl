@@ -53,6 +53,8 @@ vars:
     backend: dogpile.cache.memory_pickle
 
   checker:
+    base_internal_url: http://localhost
+    forward_host: True
     phantomjs:
       routes: []
 
