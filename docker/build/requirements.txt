@@ -60,7 +60,7 @@ python-dateutil==2.6.1  # geoportal, rq.filter: <2.7.0
 PyYAML==3.13  # geoportal
 rasterio==1.0.2  # geoportal raster, rq.filter: <=1.0.2
 requests==2.21.0  # geoportal
-redis==3.1.0  # geoportal cache
+redis==3.2.0  # geoportal cache
 Shapely==1.6.4.post2  # geoportal
 simplejson==3.16.0  # geoportal, rq.filter: !=3.16.1
 six==1.11.0  # required by transifex, rq.filter: ==1.11.0
