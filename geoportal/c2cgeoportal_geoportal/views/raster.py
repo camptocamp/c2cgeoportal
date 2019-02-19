@@ -29,6 +29,7 @@
 
 
 import logging
+import math
 import os
 from decimal import Decimal
 from typing import Dict, Union  # noqa, pylint: disable=unused-import
@@ -60,24 +61,26 @@ class Raster:
                 v.close()
             Raster.data = {}
 
+    def _get_required_finite_float_param(self, name: str) -> float:
+        if name not in self.request.params:
+            raise HTTPBadRequest("'{}' should be in the query string parameters".format(name))
+        try:
+            result = float(self.request.params[name])
+        except ValueError:
+            raise HTTPBadRequest("'{}' ({}) parameters should be a number".format(
+                name, self.request.params[name]
+            ))
+        if not math.isfinite(result):
+            raise HTTPBadRequest("'{}' ({}) parameters should be a finite number".format(
+                name, self.request.params[name]
+            ))
+        return result
+
     @view_config(route_name="raster", renderer="decimaljson")
     def raster(self):
-        if 'lon' not in self.request.params:
-            raise HTTPBadRequest("'lon' should be in the query string parameters")
-        if 'lat' not in self.request.params:
-            raise HTTPBadRequest("'lat' should be in the query string parameters")
-        try:
-            lon = float(self.request.params["lon"])
-        except ValueError:
-            raise HTTPBadRequest("'lon' ({}) parameters should be a number".format(
-                self.request.params["lon"]
-            ))
-        try:
-            lat = float(self.request.params["lat"])
-        except ValueError:
-            raise HTTPBadRequest("'lat' ({}) parameters should be a number".format(
-                self.request.params["lat"]
-            ))
+        lon = self._get_required_finite_float_param('lon')
+        lat = self._get_required_finite_float_param('lat')
+
         if "layers" in self.request.params:
             rasters = {}
             layers = self.request.params["layers"].split(",")
