@@ -177,19 +177,23 @@ def get_class(tablename, session=None, exclude_properties=None, primary_key=None
     return cls
 
 
-def _create_class(table, exclude_properties=None, attributes_order=None, readonly_attributes=None):
+def _create_class(
+    table, exclude_properties=None, attributes_order=None, readonly_attributes=None, pk_name=None
+):
     from c2cgeoportal_commons.models.main import Base
 
     exclude_properties = exclude_properties or ()
-
+    attributes = dict(
+        __table__=table,
+        __mapper_args__={"exclude_properties": exclude_properties},
+        __attributes_order__=attributes_order,
+    )
+    if pk_name is not None:
+        attributes[pk_name] = Column(Integer, primary_key=True)
     cls = type(
         table.name.capitalize(),
         (GeoInterface, Base),
-        dict(
-            __table__=table,
-            __mapper_args__={"exclude_properties": exclude_properties},
-            __attributes_order__=attributes_order,
-        ),
+        attributes,
     )
 
     for col in table.columns:
