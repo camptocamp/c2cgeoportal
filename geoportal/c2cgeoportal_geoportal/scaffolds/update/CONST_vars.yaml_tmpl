@@ -8,6 +8,7 @@ vars:
   geomapfish_version: '{GEOMAPFISH_VERSION}'
   instance: '{INSTANCE}'
   build_volume_name: '{BUILD_VOLUME_NAME}'
+  main_ogc_server: source for image/png
 
   srid: -1
 
@@ -164,7 +165,7 @@ vars:
         ngeoPermalinkOgcserverUrl:
           name: mapserverproxy
           params:
-            ogcserver: source for image/png
+            ogcserver: '{main_ogc_server}'
         fulltextsearchUrl:
           name: fulltextsearch
           params:
@@ -416,7 +417,7 @@ vars:
   tinyowsproxy:
     # URL to internal TinyOWS instance
     tinyows_url: '{TINYOWS_URL}'
-    ogc_server: source for image/png
+    ogc_server: '{main_ogc_server}'
 
     # If the `online_resource` url in the TinyOWS configuration is not set
     # to the TinyOWS proxy url (e.g. when the service is also used without
@@ -430,7 +431,7 @@ vars:
     # tinyows_host: {host}
 
   api:
-    ogc_server: source for image/png
+    ogc_server: '{main_ogc_server}'
 
   resourceproxy:
     # List of urls from which it is safe to load content
