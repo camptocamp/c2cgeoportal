@@ -137,7 +137,10 @@ class PdfReport(OGCProxy):  # pragma: no cover
 
         srs = layer_config["srs"]
 
-        mapserv_url = self.request.route_url("mapserverproxy")
+        mapserv_url = self.request.route_url(
+            "mapserverproxy",
+            _query={'ogcserver': layer_config["ogc_server"]}
+        )
         vector_request_url = add_url_params(
             mapserv_url,
             {
