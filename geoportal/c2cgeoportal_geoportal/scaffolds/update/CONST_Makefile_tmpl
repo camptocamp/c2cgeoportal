@@ -585,7 +585,7 @@ $(APP_OUTPUT_DIR)/vendor%: /opt/vendor%
 	cp $< $@
 
 .PRECIOUS: /build/apps.timestamp
-/build/apps.timestamp: geoportal/webpack.apps.js $(OL_JS_FILES) $(NGEO_JS_FILES) $(APP_JS_FILES) \
+/build/apps.timestamp: geoportal/webpack.apps.js $(OL_JS_FILES) $(APP_JS_FILES) \
 			$(APP_HTML_FILES) geoportal/webpack.config.js \
 			$(HTML_FILES) \
 			$(SASS_FILES) \
