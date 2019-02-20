@@ -20,9 +20,9 @@ const dev = nodeEnv == 'development'
 const name = process.env.INTERFACE;
 process.env.THEME = INTERFACE_THEME[name];
 
-for (const filename of ls(path.resolve(__dirname, '${package}_geoportal/static-ngeo/js/apps/*.html.ejs'))) {
+for (const filename of ls(path.resolve(__dirname, '{{package}}_geoportal/static-ngeo/js/apps/*.html.ejs'))) {
   const name = filename.file.substr(0, filename.file.length - '.html.ejs'.length);
-  entry[name] = '${package}/apps/Controller' + name + '.js';
+  entry[name] = '{{package}}/apps/Controller' + name + '.js';
   plugins.push(
     new HtmlWebpackPlugin({
       template: filename.full,

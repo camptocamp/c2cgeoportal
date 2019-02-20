@@ -1,6 +1,6 @@
 ---
 project_folder: {{project}}
-project_package: ${package}
+project_package: {{package}}
 checker_url: https://172.17.0.1:8480/docker/c2c/health_check?max_level=9
 managed_files: []
 template_vars:
