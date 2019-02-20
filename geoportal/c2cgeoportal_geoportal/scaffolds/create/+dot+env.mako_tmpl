@@ -1,6 +1,6 @@
 COMPOSE_PROJECT_NAME={{package}}_${instance}
-PORT=8080
 PROJECT_DIRECTORY=${project_directory}
+DOCKER_PORT=${docker_port}
 DOCKER_BASE=${docker_base}
 DOCKER_TAG=${docker_tag}
 BUILD_VOLUME_NAME=${build_volume_name}

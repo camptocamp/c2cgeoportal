@@ -5,14 +5,22 @@ export PACKAGE = {{package}}
 INSTANCE ?= main
 export INSTANCE
 
+# Enable Docker target
 DOCKER ?= TRUE
+DOCKER_BASE ?= camptocamp/{{package}}
+DOCKER_PORT ?= 8010
 ifeq ($(INSTANCE), main)
 DOCKER_ENTRY_POINT ?= /
+DOCKER_TAG ?= latest
 else
-DOCKER_ENTRY_POINT ?= /_$(INSTANCE)/
+DOCKER_ENTRY_POINT ?= /$(INSTANCE)/
+DOCKER_TAG ?= $(INSTANCE)
 endif
 DOCKER_WEB_HOST ?= localhost
 DOCKER_WEB_PROTOCOL ?= https
+export DOCKER_PORT
+export DOCKER_BASE
+export DOCKER_TAG
 export DOCKER_ENTRY_POINT
 export DOCKER_WEB_HOST
 export DOCKER_WEB_PROTOCOL
@@ -43,11 +51,6 @@ INTERFACES += $(NGEO_INTERFACES)
 export INTERFACES
 # Use print
 PRINT ?= TRUE
-# Enable Docker target
-DOCKER_BASE ?= camptocamp/{{package}}
-export DOCKER_BASE
-DOCKER_TAG ?= latest
-export DOCKER_TAG
 
 PGHOST ?= localhost
 export PGHOST
