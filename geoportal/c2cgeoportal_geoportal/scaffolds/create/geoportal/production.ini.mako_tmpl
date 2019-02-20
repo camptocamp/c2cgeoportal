@@ -15,6 +15,8 @@ authtkt_timeout = ${authtkt["timeout"]}
 % endif
 app.cfg = %(here)s/config.yaml
 
+tm.annotate_user = false
+
 [filter:proxy-prefix]
 use = egg:PasteDeploy#prefix
 prefix = %(VISIBLE_ENTRY_POINT)s
