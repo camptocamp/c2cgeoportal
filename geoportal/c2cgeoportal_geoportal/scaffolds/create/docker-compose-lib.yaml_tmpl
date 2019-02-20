@@ -201,7 +201,7 @@ services:
     image: nginx:1
     restart: unless-stopped
     ports:
-      - 8081:${PORT}
+      - 8081:${DOCKER_PORT}
 
   build:
     image: camptocamp/geomapfish-build:${GEOMAPFISH_VERSION}

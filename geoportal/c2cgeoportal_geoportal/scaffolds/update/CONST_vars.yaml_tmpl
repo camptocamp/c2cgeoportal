@@ -22,6 +22,7 @@ vars:
   # Docker base image name (comes from the makefile).
   docker_base: '{DOCKER_BASE}'
   docker_tag: '{DOCKER_TAG}'
+  docker_port: '{DOCKER_PORT}'
   docker_global_front: false
 
   # database user
@@ -686,6 +687,7 @@ environment:
   - GEOMAPFISH_VERSION
   - DOCKER_BASE
   - DOCKER_TAG
+  - DOCKER_PORT
   - DOCKER_WEB_PROTOCOL
   - DOCKER_WEB_HOST
   - DOCKER_ENTRY_POINT
