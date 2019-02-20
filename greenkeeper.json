@@ -10,5 +10,10 @@
                 "geoportal/package.json"
             ]
         }
+    },
+    "greenkeeper": {
+        "ignore": [
+            "bootstrap"
+        ]
     }
 }
