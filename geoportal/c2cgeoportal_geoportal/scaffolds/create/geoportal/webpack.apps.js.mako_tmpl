@@ -34,11 +34,11 @@ for (const filename of ls(path.resolve(__dirname, '{{package}}_geoportal/static-
 }
 
 const babelPresets = [[require.resolve('@babel/preset-env'), {
-  "targets": {
-    "browsers": ["last 2 versions", "Firefox ESR", "ie 11"],
+  targets: {
+    browsers: ['last 2 versions', 'Firefox ESR', 'ie 11'],
   },
-  "modules": false,
-  "loose": true,
+  modules: false,
+  loose: true,
 }]]
 
 // Transform code to ES2015 and annotate injectable functions with an $inject array.
