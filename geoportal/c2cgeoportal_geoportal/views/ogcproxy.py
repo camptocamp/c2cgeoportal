@@ -71,11 +71,10 @@ class OGCProxy(Proxy):
             DBSession.expunge(result)
             return result
         except NoResultFound:  # pragma nocover
-            raise HTTPBadRequest(
-                "OGSServer '%s' does not exists (existing: %s).",
+            raise HTTPBadRequest("OGSServer '{}' does not exists (existing: {}).".format(
                 name,
                 ",".join([t[0] for t in DBSession.query(OGCServer.name).all()])
-            )
+            ))
 
     def _get_wms_url(self):
         ogc_server = self.ogc_server
