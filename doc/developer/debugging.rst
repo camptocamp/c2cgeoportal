@@ -164,11 +164,24 @@ Just define an environment variable in the build:
 Developing in Python
 --------------------
 
-Add the following environment variable to the geoportal container:
+Create a development docker-compose.override.yml
+................................................
 
-``GUNICORN_PARAMS="-b :80 --worker-class gthread --threads 1 --workers 1 --reload"``
+Add a ``docker-compose.override.yml`` file with a ``geoportal`` service containing the following lines:
 
-TODO
+.. code:: yaml
+
+   ---
+
+   version: '2'
+
+   services:
+     geoportal:
+       volumes:
+         - ${PWD}/geoportal/<project>_geoportal:/app/<project>_geoportal
+       environment:
+         - GUNICORN_CMD_ARGS=--reload
+       # entrypoint: []  # do not eval templates when using webpack-dev-server
 
 You can also do a graceful restart of the running gunicorn:
 
@@ -184,16 +197,14 @@ And finally if you stop and start the container you will see your modifications:
    docker-compose stop geoportal
    docker-compose start geoportal
 
-Mount c2cgeoportal in the container
-...................................
+Working on c2cgeoportal itself
+..............................
 
 Clone and build c2cgeoportal, see: developer_server_side.
 
-Add a ``docker-compose.override.yml`` file with a ``geoportal`` service containing the following lines:
+Add these volumes to your ``docker-compose.override.yml``:
 
 .. code:: yaml
-
-   version: '2'
 
    services:
      geoportal:
