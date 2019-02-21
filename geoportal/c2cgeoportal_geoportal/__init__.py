@@ -611,7 +611,7 @@ def includeme(config: pyramid.config.Configurator):
     c2cwsgiutils.index.additional_auth.extend([
         '<a href="../tiles/admin/">TileCloud chain admin</a><br>',
         '<a href="../invalidate">Invalidate the cache</a><br>',
-        '<a href="../memory">Memory status</a>',
+        '<a href="../memory">Memory status</a><br>',
     ])
     if config.get_settings().get('enable_admin_interface', False):
         c2cwsgiutils.index.additional_noauth.append('<a href="../admin/">Admin</a><br>')
@@ -623,7 +623,7 @@ def includeme(config: pyramid.config.Configurator):
     for interface in config.get_settings().get("interfaces", []):
         if interface != config.get_settings().get("default_interface"):
             c2cwsgiutils.index.additional_noauth.append(
-                '<p><a href="../{interface}">{interface}</a><br>'.format(
+                '<a href="../{interface}">{interface}</a><br>'.format(
                     interface=interface
                 )
             )
