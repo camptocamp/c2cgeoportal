@@ -171,6 +171,15 @@ files_to_remove:
   - file: .env.mako
     version: 2.4
     from: docker
+  - file: {{package}}/static-ngeo/less/{{package}}.less
+    from: 2.2
+    version: 2.4
+  - file: geoportal/{{package}}_geoportal/static-ngeo/less/{{package}}.less
+    from: 2.2
+    version: 2.4
+  - file: geoportal/{{package}}_geoportal/static-ngeo/less/{{package}}.scss
+    from: 2.3
+    version: 2.4
 
 files_to_move:
   - from: vars_{{package}}.yaml
@@ -257,9 +266,6 @@ files_to_move:
   - from: mapserver/tinyows.xml.tmpl.mako
     to: mapserver/tinyows.xml.mako
     version: 2.3
-  - from: geoportal/{{package}}_geoportal/static-ngeo/less/{{package}}.less
-    to: geoportal/{{package}}_geoportal/static-ngeo/sass/{{package}}.scss
-    version: 2.4
   - from: docker-compose.yaml.mako
     to: docker-compose.yaml
     version: 2.4

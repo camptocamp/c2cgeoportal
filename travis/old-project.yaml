@@ -33,6 +33,8 @@ unmanaged_files:
   - geoportal/testgeomapfish_geoportal/static-ngeo/js/apps/Controllermobile\.js
   - geoportal/testgeomapfish_geoportal/static-ngeo/js/apps/Controlleriframe_api\.js
   - geoportal/testgeomapfish_geoportal/static-ngeo/js/apps/image/.*
+  - geoportal/testgeomapfish_geoportal/static-ngeo/js/apps/sass/desktop.scss
+  - geoportal/testgeomapfish_geoportal/static-ngeo/js/apps/sass/mobile.scss
   - geoportal/testgeomapfish_geoportal/static-ngeo/js/apps/contextualdata\.html
   - geoportal/testgeomapfish_geoportal/static-ngeo/less/desktop\.less
   - geoportal/testgeomapfish_geoportal/static-ngeo/less/mobile\.less
