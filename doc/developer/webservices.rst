@@ -343,7 +343,7 @@ Success JSON result
 
 .. _developer_webservices_fts:
 
-Full-Text Search
+Full-text search
 ================
 
 URL: ``.../fulltextsearch``

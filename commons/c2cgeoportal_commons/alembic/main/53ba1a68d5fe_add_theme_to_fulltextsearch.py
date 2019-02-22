@@ -27,7 +27,7 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-"""Add theme to FullTextSearch
+"""Add theme to full-text search
 
 Revision ID: 53ba1a68d5fe
 Revises: 5109242131ce

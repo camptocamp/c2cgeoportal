@@ -60,7 +60,7 @@ For Docker project:
      * layer in administration (new or modified)
      * raster layer in the vars file (new or modified)
      * print template
-     * full text search
+     * full-text search
      * application (JavaScript and HTML files)
      * layer enumeration
      * some metadata as disclaimer

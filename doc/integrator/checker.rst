@@ -101,7 +101,7 @@ Use as spec the ``spec`` from configuration.
 ``fulltextsearch``
 ~~~~~~~~~~~~~~~~~~
 
-Check that the FullText-search service return an element.
+Check that the Full-text search service return an element.
 
 Use the ``search`` from configuration as text to search.
 
