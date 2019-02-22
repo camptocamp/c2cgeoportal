@@ -73,4 +73,10 @@ def get_app(options, parser):
     }
     env.update(os.environ)
     fileConfig(app_config, defaults=env)
-    return paster_get_app(app_config, options.app_name, options=os.environ)
+    app = paster_get_app(app_config, options.app_name, options=os.environ)
+
+    # Can be a PrefixMiddleware
+    if hasattr(app, 'app'):
+        app = app.app
+
+    return app

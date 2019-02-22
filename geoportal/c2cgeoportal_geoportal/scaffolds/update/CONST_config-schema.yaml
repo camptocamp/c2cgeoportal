@@ -460,6 +460,7 @@ mapping:
                 type: str
           allowed_headers:
             type: seq
+            required: True
             sequence:
               - type: str
                 unique: yes
@@ -547,6 +548,24 @@ mapping:
         type: map
         required: True
         mapping:
+          host_map:
+            type: seq
+            sequence:
+              - type: map
+                mapping:
+                  netloc:
+                    type: str
+                    required: True
+                  to:
+                    type: map
+                    required: True
+                    mapping:
+                      schema:
+                        type: str
+                      netloc:
+                        type: str
+                  forward_host:
+                    type: bool
           fulltextsearch:
             type: map
             required: True

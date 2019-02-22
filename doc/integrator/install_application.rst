@@ -287,6 +287,19 @@ Your application should now be available at:
 
 Where the ``<hostname>`` is directly linked to the virtual host.
 
+Add in the ``/var/www/vhosts/<vhost_name>/conf/proxies.conf`` file (create it if not exist):
+
+.. code::
+
+   ProxyPass "/<instance>"  "http://localhost:8080/<instance>"
+   ProxyPassReverse "/<instance>"  "http://localhost:8080/<instance>"
+   ProxyPreserveHost On
+   RequestHeader set X-Forwarded-Proto "https"
+   RequestHeader set X-Forwarded-Port "443"
+   ProxyRequests Off
+
+The root instance should be at the end.
+
 Migrating to a new server
 -------------------------
 

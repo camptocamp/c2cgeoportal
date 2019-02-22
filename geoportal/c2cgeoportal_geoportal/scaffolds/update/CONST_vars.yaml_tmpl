@@ -25,21 +25,38 @@ vars:
   docker_port: '{DOCKER_PORT}'
   docker_global_front: false
 
-  # database user
+  # Master database host
+  docker_dbhost: '{DOCKER_PGHOST}'
+  # Slave database host
+  docker_dbhost_slave: '{DOCKER_PGHOST_SLAVE}'
+  # Database port
+  docker_dbport: '{DOCKER_PGPORT}'
+  # Database user
+  docker_dbuser: '{DOCKER_PGUSER}'
+  # Database password
+  docker_dbpassword: '{DOCKER_PGPASSWORD}'
+  # Database name
+  docker_db: '{DOCKER_PGDATABASE}'
+  # Sqlalchemy schema
+  docker_schema: '{DOCKER_PGSCHEMA}'
+  # Sqlalchemy static schema
+  docker_schema_static: '{DOCKER_PGSCHEMA_STATIC}'
+
+  # Database user
   dbuser: '{PGUSER}'
-  # database password
+  # Database password
   dbpassword: '{PGPASSWORD}'
-  # master database host
+  # Master database host
   dbhost: '{PGHOST}'
-  # slave database host
+  # Slave database host
   dbhost_slave: '{PGHOST_SLAVE}'
-  # database port
+  # Database port
   dbport: '{PGPORT}'
-  # database name
+  # Database name
   db: '{PGDATABASE}'
-  # sqlalchemy schema
+  # Sqlalchemy schema
   schema: '{PGSCHEMA}'
-  # sqlalchemy static schema
+  # Sqlalchemy static schema
   schema_static: '{PGSCHEMA_STATIC}'
 
   alembic_yaml_file: '{ALEMBIC_YAML_FILE}'
@@ -439,15 +456,15 @@ vars:
     targets: {}
     #   exempletargetname: http://www.camptocamp.com/?param1=%s&param2=%s
 
-  # List of allowed headers
-  allowed_headers:
-    - Cache-Control
-    - Content-Encoding
-    - Content-Language
-    - Content-Type
-    - Date
-    - ETag
-    - Vary
+    # List of allowed headers
+    allowed_headers:
+      - Cache-Control
+      - Content-Encoding
+      - Content-Language
+      - Content-Type
+      - Date
+      - ETag
+      - Vary
 
   fulltextsearch:
     defaultlimit: 30
@@ -588,6 +605,7 @@ vars:
   # Checker configuration
   checker_ogc_server: source for image/png
   checker:
+    base_internal_url: http://localhost:8080
     fulltextsearch:
       level: 1
       search: text to search
@@ -691,12 +709,21 @@ environment:
   - DOCKER_WEB_PROTOCOL
   - DOCKER_WEB_HOST
   - DOCKER_ENTRY_POINT
+  - DOCKER_PGUSER
+  - DOCKER_PGPASSWORD
+  - DOCKER_PGHOST
+  - DOCKER_PGHOST_SLAVE
+  - DOCKER_PGPORT
+  - DOCKER_PGDATABASE
+  - DOCKER_PGSCHEMA
+  - DOCKER_PGSCHEMA_STATIC
   - DEVELOPMENT
   - WMTSCAPABILITIES_PATH
   - BUILD_VOLUME_NAME
   - PROJECT_DIRECTORY
   - INSTANCE
   - ALEMBIC_YAML_FILE
+  - DOCKER_PORT
 
 runtime_environment:
   - name: VISIBLE_WEB_HOST

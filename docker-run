@@ -108,9 +108,6 @@ def main():
 
     docker_cmd.extend([
         "--rm",
-        "--volume={socket}:{socket}".format(
-            socket="//./pipe/docker_engine" if is_windows else "/var/run/docker.sock"
-        ),
         "--volume={}:/build".format(build_volume_name),
         "--volume={pwd}:/src".format(pwd=os.getcwd()),
         "--env=USER_NAME={}".format(login),
@@ -121,13 +118,16 @@ def main():
         "--env=VERSION={}".format(version),
     ])
 
+    if not is_windows:
+        docker_cmd.append("--volume={socket}:{socket}".format(socket="/var/run/docker.sock"))
+
     if options.home:
         internal_home = "/home/{login}".format(login=login) if is_windows else os.environ["HOME"]
         external_home = os.environ["USERPROFILE"] if is_windows else os.environ["HOME"]
 
         if options.root:
             docker_cmd.append("--volume={}:/root".format(external_home))
-        docker_cmd.append("--volume={}:{}".format(internal_home, external_home))
+        docker_cmd.append("--volume={}:{}".format(external_home, internal_home))
     else:
         docker_cmd.append("--volume={}:/home".format(build_volume_name + "-home"))
 
@@ -161,7 +161,7 @@ def main():
                 return None
 
         for x in netifaces.interfaces():
-            if get_connection_name_from_guid(x) == 'Ethernet':
+            if get_connection_name_from_guid(x).find('Ethernet') == 0:
                 docker_adrs = netifaces.ifaddresses(x)[2][0]['addr']
                 break
     elif 'docker0' in netifaces.interfaces():

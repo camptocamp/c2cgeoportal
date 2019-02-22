@@ -70,7 +70,7 @@ MAP
         METADATA
             "wms_title" "changeme"
             "wms_abstract" "changeme"
-            "ows_service_onlineresource" "${web_protocol}://${host}${entry_point}mapserv_proxy?ogcserver=source%20for%20image%2Fpng"
+            "ows_onlineresource" "${web_protocol}://${host}${entry_point}mapserv_proxy?ogcserver=source%20for%20image%2Fpng"
             "wms_srs" "EPSG:{{srid}}"
             "wms_encoding" "UTF-8"
             "wms_enable_request" "*"

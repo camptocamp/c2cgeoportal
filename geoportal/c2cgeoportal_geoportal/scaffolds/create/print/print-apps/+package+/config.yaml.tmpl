@@ -64,7 +64,9 @@ templates:
               https?://${VISIBLE_WEB_HOST_RE_ESCAPED}${VISIBLE_ENTRY_POINT_RE_ESCAPED}(.*): "${GEOPORTAL_INTERNAL_URL}${VISIBLE_ENTRY_POINT}$1"
           - !forwardHeaders
             matchers:
-              - !localMatch {}
+              - !hostnameMatch
+                host: ${GEOPORTAL_INTERNAL_HOST}
+                port: ${GEOPORTAL_INTERNAL_PORT}
             headers:
               - Cookie
               - Host

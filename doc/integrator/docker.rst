@@ -9,6 +9,7 @@ Architecture schema
 .. image:: docker.png
 .. source file is docker.dia.
 
+
 Images
 ------
 
@@ -18,6 +19,7 @@ When we build the project it will generate the following images:
 * ``camptocamp/<package>_config:latest``
 
 The tag is by default ``latest``, but you can change it by setting the ``DOCKER_TAG`` Makefile variable.
+
 
 Docker compose files
 --------------------
@@ -29,6 +31,7 @@ Docker compose files
 ``docker-compose-front.yaml``: Use to start a global front if you don't use Apache to do that.
 ``docker-compose-build.yaml``: Used by the ``docker-compose-run`` script.
 
+
 Run the developer composition
 -----------------------------
 
@@ -37,3 +40,23 @@ Run the developer composition
    docker-compose up -d
 
 You can then access your application with http://localhost:8480/
+
+
+Clean
+-----
+
+Docker does not clean anything automatically, in particular it does not clean any images,
+therefore disk space may become problematic after a certain number of builds.
+You can use the following commands to manually remove Docker files.
+
+.. prompt:: bash
+
+   docker ps --all --quiet --filter status=exited | xargs --no-run-if-empty docker rm
+   docker images | grep "<none>" | awk '{print $3}' | xargs --no-run-if-empty docker rmi || true
+   docker volume ls --quiet --filter dangling=true | grep '[0-9a-f]\{64\}' | xargs --no-run-if-empty docker volume rm
+
+This will remove::
+
+  * Container with exit status
+  * Images with version on name as `<none>`
+  * Unnamed dangling volumes

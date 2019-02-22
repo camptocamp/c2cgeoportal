@@ -74,7 +74,7 @@ To run a specific test use the ``-k`` switch. For example:
 
 .. prompt:: bash
 
-    ./docker-compose-run py.tests -k test_catalogue geoportal/tests
+    ./docker-compose-run py.test -k test_catalogue geoportal/tests
 
 To run the tests for the ``geomapfish_qgisserver`` plugin using dedicated
 docker image and composition:
