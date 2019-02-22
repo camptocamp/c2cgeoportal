@@ -9,10 +9,19 @@ else
 fi
 mkdir --parent ${WORKSPACE}/${PACKAGE}
 
-DOCKER_RUN_ARGS="--env=SRID=21781 --env=EXTENT=489246.36,78873.44,837119.76,296543.14 --image=camptocamp/geomapfish-build --share=${WORKSPACE}"
+if [ -z "$SCAFFOLDS" ]; then
+    SCAFFOLDS="c2cgeoportal_create c2cgeoportal_update"
+fi
+if [ -z "$MAKEFILE" ]; then
+    MAKEFILE="Makefile"
+fi
+
+DOCKER_RUN_ARGS="--env=SRID=21781 --env=EXTENT=489246.36,78873.44,837119.76,296543.14 --image=camptocamp/geomapfish-build --share=${WORKSPACE} ${DOCKER_RUN_ARGS}"
 PCREATE_CMD="pcreate --ignore-conflicting-name --overwrite --package-name ${PACKAGE} ${WORKSPACE}/${PACKAGE}"
-./docker-run ${DOCKER_RUN_ARGS} ${PCREATE_CMD} --scaffold=c2cgeoportal_create
-./docker-run ${DOCKER_RUN_ARGS} ${PCREATE_CMD} --scaffold=c2cgeoportal_update
+for s in $SCAFFOLDS
+do
+    ./docker-run ${DOCKER_RUN_ARGS} ${PCREATE_CMD} --scaffold=$s
+done
 
 # Copy files for travis build and tests
 if [ $# -lt 2 ]
@@ -34,17 +43,21 @@ fi
 git init
 git config user.email travis@camptocamp.com
 git config user.name CI
+if [ -z "`git remote -v | grep origin`" ]; then
 git remote add origin . # add a fake remote
+fi
+if [ -n "`git diff --name-only`" ]; then
 git add --all
 git commit --quiet --message='Initial commit'
+fi
 git clean -fX
 
 # Build
 if [ $# -lt 2 ]
 then
-    ./docker-run --network=internal make --makefile=travis.mk build
+    ./docker-run make --makefile=travis.mk build
     ./docker-compose-run bash -c 'wait-db && PGHOST=externaldb PGDATABASE=test wait-db;'
     ./docker-compose-run make --makefile=travis.mk update-po
 else
-    ./docker-run --env=DOCKER_TAG=${MAJOR_VERSION} make build
+    ./docker-run --env=DOCKER_TAG=${MAJOR_VERSION} make -f $MAKEFILE build
 fi

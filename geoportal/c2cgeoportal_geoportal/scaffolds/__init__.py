@@ -235,3 +235,12 @@ class TemplateNondockerUpdate(TemplateUpdate):  # pragma: no cover
         fix_executables(output_dir, ("get-pip-dependencies", "deploy/hooks/*"), True)
 
         return BaseTemplate.post(self, command, output_dir, vars_)
+
+
+class TemplateTestApp(BaseTemplate):
+    _template_dir = "testapp"
+    summary = "Template used to create a test c2cgeoportal project"
+
+    def pre(self, command, output_dir, vars_):
+        vars_.update(os.environ)
+        return BaseTemplate.pre(self, command, output_dir, vars_)

@@ -92,6 +92,7 @@ setup(
             'c2cgeoportal_update = c2cgeoportal_geoportal.scaffolds:TemplateUpdate',
             'c2cgeoportal_nondockercreate = c2cgeoportal_geoportal.scaffolds:TemplateNondockerCreate',
             'c2cgeoportal_nondockerupdate = c2cgeoportal_geoportal.scaffolds:TemplateNondockerUpdate',
+            'c2cgeoportal_testapp = c2cgeoportal_geoportal.scaffolds:TemplateTestApp',
         ],
         'lingua.extractors': [
             'geomapfish-theme = c2cgeoportal_geoportal.lib.lingua_extractor:GeomapfishThemeExtractor',

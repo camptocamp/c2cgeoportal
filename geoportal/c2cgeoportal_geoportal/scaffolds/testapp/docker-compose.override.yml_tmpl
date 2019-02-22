@@ -1,0 +1,24 @@
+---
+version: '2'
+
+services:
+  db:
+    image: camptocamp/geomapfish-test-db:latest
+
+  externaldb:
+    image: camptocamp/geomapfish-test-external-db:latest
+
+  geoportal:
+    volumes:
+      - ${PWD}/geoportal/testgeomapfishapp_geoportal:/app/testgeomapfishapp_geoportal
+      - {{C2CGEOPORTAL_PATH}}/commons/c2cgeoportal_commons:/opt/c2cgeoportal_commons/c2cgeoportal_commons
+      - {{C2CGEOPORTAL_PATH}}/geoportal/c2cgeoportal_geoportal:/opt/c2cgeoportal_geoportal/c2cgeoportal_geoportal
+      - {{C2CGEOPORTAL_PATH}}/admin/c2cgeoportal_admin:/opt/c2cgeoportal_admin/c2cgeoportal_admin
+    environment:
+      - GUNICORN_CMD_ARGS=--reload
+    # entrypoint: []
+
+  #webpack_dev_server:
+  #  extends:
+  #    file: docker-compose-lib.yaml
+  #    service: webpack_dev_server

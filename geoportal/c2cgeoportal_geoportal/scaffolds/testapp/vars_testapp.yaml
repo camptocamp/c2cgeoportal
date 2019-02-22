@@ -1,0 +1,7 @@
+---
+
+extends: vars.yaml
+
+vars:
+  authorized_referers:
+    - http://localhost:8080
