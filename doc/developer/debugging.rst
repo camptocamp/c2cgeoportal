@@ -31,7 +31,7 @@ Run:
 
 .. prompt:: bash
 
-   docker-compose --file=docker-compose.yaml --file=docker-compose-dev.yaml up
+   docker-compose --file=docker-compose.yaml --file=docker-compose-dev.yaml up -b
 
 Open the application at the following URL: ``https://<host>/<entry_point>/dev/<interface>.html``.
 
@@ -164,10 +164,10 @@ Just define an environment variable in the build:
 Developing in Python
 --------------------
 
-Create a development docker-compose.override.yml
-................................................
+Create a development docker-compose.override.yaml
+.................................................
 
-Add a ``docker-compose.override.yml`` file with a ``geoportal`` service containing the following lines:
+Add a ``docker-compose.override.yaml`` file with a ``geoportal`` service containing the following lines:
 
 .. code:: yaml
 
@@ -202,7 +202,7 @@ Working on c2cgeoportal itself
 
 Clone and build c2cgeoportal, see: developer_server_side.
 
-Add these volumes to your ``docker-compose.override.yml``:
+Add these volumes to your ``docker-compose.override.yaml``:
 
 .. code:: yaml
 

@@ -66,7 +66,7 @@ def main():
 
     app = get_app(options, parser)
 
-    # must be done only once we have loaded the project config
+    # Must be done only once we have loaded the project config
     from c2cgeoportal_commons.models import DBSession
     from c2cgeoportal_commons.models.main import OGCServer, Theme, LayerWMS, LayerWMTS, LayerV1, LayerGroup
 
@@ -76,12 +76,12 @@ def main():
         table_list = [LayerWMTS, LayerWMS, OGCServer]
         for table in table_list:
             print(("Emptying table {0!s}.".format(table.__table__)))
-            # must be done exactly this way otherwise the cascade config in the
+            # Must be done exactly this way otherwise the cascade config in the
             # models are not used
             for t in session.query(table).all():
                 session.delete(t)
 
-        # list and create all distinct ogc_server
+        # List and create all distinct ogc_server
         ogc_server(session, app.registry.settings)
 
         print("Converting layerv1.")
@@ -125,7 +125,7 @@ def ogc_server(session, settings):
         LayerV1.url, LayerV1.image_type, LayerV1.is_single_tile
     ).filter(LayerV1.layer_type != "WMTS").all()
 
-    # get existing list of ogc_server
+    # Get existing list of ogc_server
     servers_ogc = session.query(OGCServer).all()
     unique_servers = {
         (
@@ -136,9 +136,9 @@ def ogc_server(session, settings):
         for server in servers_ogc
     }
 
-    # add new ogc_server
+    # Add new ogc_server
     for url, image_type, is_single_tile in servers_v1:
-        # default image_type
+        # Default image_type
         if image_type is None:
             image_type = "image/png"
         if is_single_tile is None:
@@ -184,7 +184,7 @@ def layer_v1tov2(session, layer):
         LayergroupTreeitem, Dimension
 
     if layer.layer_type in ["internal WMS", "external WMS"]:
-        # use the first one
+        # Use the first one
         new_layer = LayerWMS()
         is_single_tile = layer.is_single_tile
         if is_single_tile is None:

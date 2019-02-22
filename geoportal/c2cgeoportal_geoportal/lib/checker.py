@@ -27,30 +27,28 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-import requests
 import logging
 import subprocess
 import c2cwsgiutils.health_check
 from time import sleep
-from urllib.parse import urlsplit, urlunsplit
+from urllib.parse import urljoin
+
+import requests
 
 log = logging.getLogger(__name__)
 
 
-def build_url(name, url, request, headers=None):
-    url_fragments = urlsplit(url)
-    headers = _build_headers(request, headers)
-    if url_fragments.netloc == request.environ.get("SERVER_NAME") or \
-            url_fragments.netloc.startswith("localhost:"):
-        url_ = urlunsplit((
-            "http", "localhost", url_fragments.path, url_fragments.query, url_fragments.fragment
-        ))
-        headers["Host"] = url_fragments.netloc
-    else:
-        url_ = url
+def build_url(name, path, request, headers=None):
+    base_internal_url = request.registry.settings["checker"]["base_internal_url"]
+    url = urljoin(base_internal_url, path)
 
-    log.debug("%s, URL: %s => %s", name, url, url_)
-    return {"url": url_, "headers": headers}
+    forward_host = request.registry.settings["checker"].get("forward_host", False)
+    headers = _build_headers(request, headers)
+    if forward_host:
+        headers["Host"] = request.host
+
+    log.debug("%s, URL: %s", name, url)
+    return {"url": url, "headers": headers}
 
 
 def _build_headers(request, headers=None):
@@ -72,7 +70,7 @@ def _routes(settings, health_check):
             name = "checker_routes_" + route.get("checker_name", route["name"])
 
             def get_both(request):
-                return build_url("route", request.route_url(route["name"]), request)
+                return build_url("route", request.route_path(route["name"]), request)
 
             health_check.add_url_check(
                 url=lambda r: get_both(r)["url"],
@@ -88,8 +86,8 @@ def _pdf3(settings, health_check):
     print_settings = settings["print"]
 
     def check(request):
-        url = request.route_url("printproxy_report_create", format="pdf")
-        url_headers = build_url("Check the printproxy request (create)", url, request)
+        path = request.route_path("printproxy_report_create", format="pdf")
+        url_headers = build_url("Check the printproxy request (create)", path, request)
 
         session = requests.session()
         resp = session.post(
@@ -101,8 +99,8 @@ def _pdf3(settings, health_check):
 
         job = resp.json()
 
-        url = request.route_url("printproxy_status", ref=job["ref"])
-        url_headers = build_url("Check the printproxy pdf status", url, request)
+        path = request.route_path("printproxy_status", ref=job["ref"])
+        url_headers = build_url("Check the printproxy pdf status", path, request)
         done = False
         while not done:
             sleep(1)
@@ -117,8 +115,8 @@ def _pdf3(settings, health_check):
                 raise Exception("Failed to do the printing: {0!s}".format(status["error"]))
             done = status["done"]
 
-        url = request.route_url("printproxy_report_get", ref=job["ref"])
-        url_headers = build_url("Check the printproxy pdf retrieve", url, request)
+        path = request.route_path("printproxy_report_get", ref=job["ref"])
+        url_headers = build_url("Check the printproxy pdf retrieve", path, request)
         resp = session.get(
             timeout=30,
             **url_headers
@@ -134,7 +132,7 @@ def _fts(settings, health_check):
         return
 
     def get_both(request):
-        return build_url("Check the fulltextsearch", request.route_url("fulltextsearch"), request)
+        return build_url("Check the fulltextsearch", request.route_path("fulltextsearch"), request)
 
     def check(_request, response):
         assert len(response.json()["features"]) > 0, "No result"
@@ -160,7 +158,7 @@ def _themes_errors(settings, health_check):
     interfaces_settings = themes_settings["interfaces"]
 
     def check(request):
-        url = request.route_url("themes")
+        path = request.route_path("themes")
         session = requests.session()
         for interface, in DBSession.query(Interface.name).all():
             params = {}
@@ -168,7 +166,7 @@ def _themes_errors(settings, health_check):
             params.update(interfaces_settings.get(interface, {}).get("params", {}))
             params["interface"] = interface
 
-            interface_url_headers = build_url("checker_themes " + interface, url, request)
+            interface_url_headers = build_url("checker_themes " + interface, path, request)
 
             response = session.get(
                 params=params,
@@ -212,7 +210,7 @@ def _lang_files(global_settings, settings, health_check):
             def get_both(url, lang, request):
                 return build_url(
                     name,
-                    request.static_url(url.format(package=global_settings["package"], lang=lang)),
+                    request.static_path(url.format(package=global_settings["package"], lang=lang)),
                     request
                 )
 
@@ -231,10 +229,8 @@ def _phantomjs(settings, health_check):
             continue
 
         def check(request):
-            url = request.route_url(route["name"], _query=route.get("params", {}))
-            if urlsplit(url).netloc.startswith("localhost:"):
-                # For Docker
-                url = build_url("Check", url, request)["url"]
+            path = request.route_path(route["name"], _query=route.get("params", {}))
+            url = build_url("Check", path, request)["url"]
 
             cmd = [
                 "phantomjs", "--local-to-remote-url-access=true",

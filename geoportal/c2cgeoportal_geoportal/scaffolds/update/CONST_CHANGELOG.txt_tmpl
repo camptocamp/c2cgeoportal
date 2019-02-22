@@ -39,6 +39,8 @@ Information
    ./docker-run make --makefile=<package>.mk update-po
    '''
 
+6. Now we needs the `pg_trgm` Postgres extension, use `CREATE EXTENSION pg_trgm;` to install it.
+
 Changes to apply
 ----------------
 
