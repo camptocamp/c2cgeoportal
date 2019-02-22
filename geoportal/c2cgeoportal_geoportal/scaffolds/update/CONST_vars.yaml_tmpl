@@ -25,20 +25,28 @@ vars:
 
   # database user
   dbuser: '{PGUSER}'
+  docker_dbuser: '{DOCKER_PGUSER}'
   # database password
   dbpassword: '{PGPASSWORD}'
+  docker_dbpassword: '{DOCKER_PGPASSWORD}'
   # master database host
   dbhost: '{PGHOST}'
+  docker_dbhost: '{DOCKER_PGHOST}'
   # slave database host
   dbhost_slave: '{PGHOST_SLAVE}'
+  docker_dbhost_slave: '{DOCKER_PGHOST_SLAVE}'
   # database port
   dbport: '{PGPORT}'
+  docker_dbport: '{DOCKER_PGPORT}'
   # database name
   db: '{PGDATABASE}'
+  docker_db: '{DOCKER_PGDATABASE}'
   # sqlalchemy schema
   schema: '{PGSCHEMA}'
+  docker_schema: '{DOCKER_PGSCHEMA}'
   # sqlalchemy static schema
   schema_static: '{PGSCHEMA_STATIC}'
+  docker_schema_static: '{DOCKER_PGSCHEMA_STATIC}'
 
   alembic_yaml_file: '{ALEMBIC_YAML_FILE}'
 
@@ -694,6 +702,14 @@ environment:
   - PROJECT_DIRECTORY
   - INSTANCE
   - ALEMBIC_YAML_FILE
+  - DOCKER_PGUSER
+  - DOCKER_PGPASSWORD
+  - DOCKER_PGHOST
+  - DOCKER_PGHOST_SLAVE
+  - DOCKER_PGPORT
+  - DOCKER_PGDATABASE
+  - DOCKER_PGSCHEMA
+  - DOCKER_PGSCHEMA_STATIC
 
 runtime_environment:
   - name: VISIBLE_WEB_HOST
