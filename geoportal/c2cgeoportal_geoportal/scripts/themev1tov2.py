@@ -33,7 +33,9 @@ import sys
 import transaction
 
 from argparse import ArgumentParser
-from c2cgeoportal_geoportal.scripts import fill_arguments, get_app
+from c2cgeoportal_commons.testing import get_session
+from c2cgeoportal_geoportal.scripts import fill_arguments, get_appsettings
+
 from json import loads
 
 
@@ -63,42 +65,40 @@ def main():
         help="do not import the themes"
     )
     options = parser.parse_args()
+    settings = get_appsettings(options)
 
-    app = get_app(options, parser)
+    with transaction.manager:
+        session = get_session(settings, transaction.manager)
 
-    # Must be done only once we have loaded the project config
-    from c2cgeoportal_commons.models import DBSession
-    from c2cgeoportal_commons.models.main import OGCServer, Theme, LayerWMS, LayerWMTS, LayerV1, LayerGroup
+        # Must be done only once we have loaded the project config
+        from c2cgeoportal_commons.models.main import (
+            OGCServer, Theme, LayerWMS, LayerWMTS, LayerV1, LayerGroup)
 
-    session = DBSession()
+        if options.layers:
+            table_list = [LayerWMTS, LayerWMS, OGCServer]
+            for table in table_list:
+                print(("Emptying table {0!s}.".format(table.__table__)))
+                # Must be done exactly this way otherwise the cascade config in the
+                # models are not used
+                for t in session.query(table).all():
+                    session.delete(t)
 
-    if options.layers:
-        table_list = [LayerWMTS, LayerWMS, OGCServer]
-        for table in table_list:
-            print(("Emptying table {0!s}.".format(table.__table__)))
-            # Must be done exactly this way otherwise the cascade config in the
-            # models are not used
-            for t in session.query(table).all():
-                session.delete(t)
+            # List and create all distinct ogc_server
+            ogc_server(session, settings)
 
-        # List and create all distinct ogc_server
-        ogc_server(session, app.registry.settings)
+            print("Converting layerv1.")
+            for layer in session.query(LayerV1).all():
+                layer_v1tov2(session, layer)
 
-        print("Converting layerv1.")
-        for layer in session.query(LayerV1).all():
-            layer_v1tov2(session, layer)
+        if options.groups:
+            print("Converting layer groups.")
+            for group in session.query(LayerGroup).all():
+                layergroup_v1tov2(session, group)
 
-    if options.groups:
-        print("Converting layer groups.")
-        for group in session.query(LayerGroup).all():
-            layergroup_v1tov2(session, group)
-
-    if options.themes:
-        print("Converting themes.")
-        for theme in session.query(Theme).all():
-            theme_v1tov2(session, theme)
-
-    transaction.commit()
+        if options.themes:
+            print("Converting themes.")
+            for theme in session.query(Theme).all():
+                theme_v1tov2(session, theme)
 
 
 def ogc_server(session, settings):
@@ -176,7 +176,7 @@ def ogc_server(session, settings):
 
             session.add(new_ogc_server)
 
-    transaction.commit()
+    session.flush()
 
 
 def layer_v1tov2(session, layer):

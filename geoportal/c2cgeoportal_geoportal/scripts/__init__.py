@@ -29,8 +29,8 @@
 
 
 import os
-from pyramid.paster import get_app as paster_get_app
-from logging.config import fileConfig
+from urllib.parse import urlsplit, urlunsplit
+from pyramid.scripts.common import get_config_loader
 
 
 def fill_arguments(parser):
@@ -50,33 +50,19 @@ def fill_arguments(parser):
     )
 
 
-def get_app(options, parser):
-    app_config = options.app_config
-    app_name = options.app_name
+def get_config_uri(options):
+    uri = urlsplit(options.app_config)
+    return urlunsplit((
+        uri.scheme or 'c2cgeoportal',
+        uri.netloc,
+        uri.path,
+        uri.query,
+        options.app_name or uri.fragment
+    ))
 
-    if app_name is None and "#" in app_config:
-        app_config, app_name = app_config.split("#", 1)
-    if not os.path.isfile(app_config):
-        parser.error("Cannot find config file: {}".format(app_config))
 
-    # Read the configuration
-    env = {
-        "VISIBLE_ENTRY_POINT": "cli",
-        "LOG_LEVEL": "INFO",
-        "C2CGEOPORTAL_LOG_LEVEL": "WARN",
-        "GUNICORN_LOG_LEVEL": "INFO",
-        "GUNICORN_ACCESS_LOG_LEVEL": "INFO",
-        "SQL_LOG_LEVEL": "INFO",
-        "OTHER_LOG_LEVEL": "INFO",
-        "LOG_HOST": "localhost",
-        "LOG_PORT": "0",
-    }
-    env.update(os.environ)
-    fileConfig(app_config, defaults=env)
-    app = paster_get_app(app_config, options.app_name, options=os.environ)
-
-    # Can be a PrefixMiddleware
-    if hasattr(app, 'app'):
-        app = app.app
-
-    return app
+def get_appsettings(options, defaults=None):
+    config_uri = get_config_uri(options)
+    loader = get_config_loader(config_uri)
+    loader.setup_logging()
+    return loader.get_wsgi_app_settings(defaults=defaults)

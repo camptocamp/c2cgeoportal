@@ -32,7 +32,8 @@ import argparse
 import logging
 import transaction
 
-from c2cgeoportal_geoportal.scripts import fill_arguments, get_app
+from c2cgeoportal_commons.testing import get_session
+from c2cgeoportal_geoportal.scripts import fill_arguments, get_appsettings
 
 
 LOG = logging.getLogger(__name__)
@@ -43,38 +44,34 @@ def main():
         description="Create and populate the database tables."
     )
     fill_arguments(parser)
-
     options = parser.parse_args()
+    settings = get_appsettings(options)
 
-    get_app(options, parser)
+    with transaction.manager:
+        session = get_session(settings, transaction.manager)
 
-    from c2cgeoportal_commons.models import DBSession
-    from c2cgeoportal_commons.models.main import Interface, OGCServer, Theme, LayerGroup, LayerWMS
+        from c2cgeoportal_commons.models.main import Interface, OGCServer, Theme, LayerGroup, LayerWMS
 
-    session = DBSession()
+        interfaces = session.query(Interface).all()
+        ogc_server = session.query(OGCServer).filter(OGCServer.name == "source for image/png").one()
 
-    interfaces = session.query(Interface).all()
-    ogc_server = session.query(OGCServer).filter(OGCServer.name == "source for image/png").one()
+        layer_borders = LayerWMS("Borders", "borders")
+        layer_borders.interfaces = interfaces
+        layer_borders.ogc_server = ogc_server
+        layer_density = LayerWMS("Density", "density")
+        layer_density.interfaces = interfaces
+        layer_density.ogc_server = ogc_server
 
-    layer_borders = LayerWMS("Borders", "borders")
-    layer_borders.interfaces = interfaces
-    layer_borders.ogc_server = ogc_server
-    layer_density = LayerWMS("Density", "density")
-    layer_density.interfaces = interfaces
-    layer_density.ogc_server = ogc_server
+        group = LayerGroup("Demo")
+        group.children = [layer_borders, layer_density]
 
-    group = LayerGroup("Demo")
-    group.children = [layer_borders, layer_density]
+        theme = Theme("Demo")
+        theme.children = [group]
+        theme.interfaces = interfaces
 
-    theme = Theme("Demo")
-    theme.children = [group]
-    theme.interfaces = interfaces
+        session.add(theme)
 
-    session.add(theme)
-
-    transaction.commit()
-
-    print("Successfully added the demo theme")
+        print("Successfully added the demo theme")
 
 
 if __name__ == "__main__":

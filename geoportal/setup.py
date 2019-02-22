@@ -98,5 +98,15 @@ setup(
             'geomapfish-config = c2cgeoportal_geoportal.lib.lingua_extractor:GeomapfishConfigExtractor',
             'geomapfish-angular = c2cgeoportal_geoportal.lib.lingua_extractor:GeomapfishAngularExtractor',
         ],
+        'plaster.loader_factory': [
+            'c2cgeoportal=c2cgeoportal_geoportal.lib.loader:Loader',
+            'c2cgeoportal+ini=c2cgeoportal_geoportal.lib.loader:Loader',
+            'c2cgeoportal+egg=c2cgeoportal_geoportal.lib.loader:Loader',
+        ],
+        'plaster.wsgi_loader_factory': [
+            'c2cgeoportal=c2cgeoportal_geoportal.lib.loader:Loader',
+            'c2cgeoportal+ini=c2cgeoportal_geoportal.lib.loader:Loader',
+            'c2cgeoportal+egg=c2cgeoportal_geoportal.lib.loader:Loader',
+        ],
     }
 )

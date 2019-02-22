@@ -34,9 +34,9 @@ import sys
 import transaction
 
 from argparse import ArgumentParser
-from c2c.template import get_config
-from c2cgeoportal_geoportal.scripts import fill_arguments, get_app
 from sqlalchemy import func
+from c2cgeoportal_commons.testing import get_session
+from c2cgeoportal_geoportal.scripts import fill_arguments, get_appsettings
 
 
 def main():
@@ -45,12 +45,6 @@ def main():
         description="Tool to fill the tsearch table (full-text search) from the theme information.",
     )
 
-    c2c_config = "geoportal/config.yaml" if os.path.exists("geoportal/config.yaml") else "config.yaml"
-    parser.add_argument(
-        "--config",
-        default=c2c_config,
-        help="the geoportal config, default is '{}'".format(c2c_config),
-    )
     locale_path_1 = os.path.join("{package}_geoportal", "locale", "")
     locale_path_2 = os.path.join("geoportal", locale_path_1)
     locale_path = locale_path_2 if os.path.exists("geoportal") else locale_path_1
@@ -102,28 +96,27 @@ def main():
     )
     fill_arguments(parser)
     options = parser.parse_args()
+    settings = get_appsettings(options)
 
-    get_app(options, parser)
+    with transaction.manager:
+        session = get_session(settings, transaction.manager)
 
-    Import(options)
+        Import(session, settings, options)
 
 
 class Import:
-    def __init__(self, options):
+    def __init__(self, session, settings, options):
         self.options = options
         self.imported = set()
-
-        settings = get_config(options.config)
         package = settings["package"]
 
         self.fts_languages = settings["fulltextsearch"]["languages"]
         self.languages = settings["available_locale_names"]
 
         # must be done only once we have loaded the project config
-        from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import FullTextSearch, Interface, Theme, Role
 
-        self.session = DBSession()
+        self.session = session
         self.session.execute(FullTextSearch.__table__.delete().where(FullTextSearch.from_theme == True))  # noqa
 
         self._ = {}
@@ -157,8 +150,6 @@ class Import:
         for role in self.session.query(Role).all():
             for theme in self.session.query(Theme).all():
                 self._add_theme(theme, role)
-
-        transaction.commit()
 
     def _add_fts(self, item, interface, action, role):
         from c2cgeoportal_commons.models.main import FullTextSearch
