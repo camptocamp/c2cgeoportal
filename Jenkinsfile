@@ -38,6 +38,19 @@ def get_abort_ci() {
     return false
 }
 
+def test_upgrade(String task, String src, String ref) {
+    try {
+        sh "travis/test-upgrade-convert.sh ${task} ${HOME}/workspace"
+    } catch (Exception error) {
+        sh "(cd ${HOME}/workspace/${src}/testgeomapfish; ./docker-run make clean-all) || true"
+        sh "(cd ${HOME}/workspace/${src}/testgeomapfish; rm --recursive --force .UPGRADE* \
+            commons/testgeomapfish_commons.egg-info geoportal/testgeomapfish_geoportal.egg-info) || true"
+        sh "find ${HOME}/workspace/${src} -type d -empty -delete || true"
+        sh "diff --recursive --exclude=.git --exclude=locale ${HOME}/workspace/${ref} ${HOME}/workspace/${src}"
+        throw error
+    }
+}
+
 should_abort_ci = false
 
 def abort_ci() {
@@ -268,21 +281,22 @@ dockerBuild {
                 }, 'Tests upgrades 220': {
                     sh 'travis/test-upgrade-convert.sh init ${HOME}/workspace'
                     // Test Upgrade an convert project
-                    sh 'travis/test-upgrade-convert.sh v220-todocker ${HOME}/workspace'
-                    sh 'travis/test-upgrade-convert.sh v220-tonondocker ${HOME}/workspace'
+                    test_upgrade('v220-todocker', 'v220-todocker', 'dockerref')
+                    test_upgrade('v220-tonondocker', 'v220-tonondocker', 'nondockerref')
                 }
             }
+
             stage('Test Upgrade') {
                 if (abort_ci()) { return }
                 parallel 'Tests upgrades Docker': {
-                    sh 'travis/test-upgrade-convert.sh docker ${HOME}/workspace'
-                    sh 'travis/test-upgrade-convert.sh tonondocker ${HOME}/workspace'
+                    test_upgrade('docker', 'docker', 'dockerref')
+                    test_upgrade('tonondocker', 'docker', 'nondockerref')
                 }, 'Tests upgrades non Docker': {
-                    sh 'travis/test-upgrade-convert.sh nondocker ${HOME}/workspace'
-                    sh 'travis/test-upgrade-convert.sh todocker ${HOME}/workspace'
+                    test_upgrade('nondocker', 'nondocker', 'nondockerref')
+                    test_upgrade('todocker', 'nondocker', 'dockerref')
                 }, 'Tests upgrades 230': {
-                    sh 'travis/test-upgrade-convert.sh v230-docker ${HOME}/workspace'
-                    sh 'travis/test-upgrade-convert.sh v230-nondocker ${HOME}/workspace'
+                    test_upgrade('v230-docker', 'v230-docker', 'dockerref')
+                    test_upgrade('v230-nondocker', 'v230-nondocker', 'nondockerref')
                 }
             }
             stage('Publish') {
