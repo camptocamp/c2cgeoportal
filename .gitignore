@@ -22,6 +22,10 @@
 /geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/
 /geoportal/c2cgeoportal_geoportal/scaffolds/nondockercreate/geoportal/+package+_geoportal/static-ngeo/js/apps/
 /geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/CONST_create_template/
+/geoportal/c2cgeoportal_geoportal/scaffolds/testapp/+dot+dockerignore
+/geoportal/c2cgeoportal_geoportal/scaffolds/testapp/Dockerfile
+/geoportal/c2cgeoportal_geoportal/scaffolds/testapp/front
+/geoportal/c2cgeoportal_geoportal/scaffolds/testapp/ssl
 /geoportal/c2cgeoportal_geoportal.egg-info/
 /admin/tests.ini
 /admin/npm-packages

@@ -18,6 +18,10 @@ services:
       - GUNICORN_CMD_ARGS=--reload
     # entrypoint: []
 
+  front:
+    ports:
+      - ${PORT}:443
+
   #webpack_dev_server:
   #  extends:
   #    file: docker-compose-lib.yaml
