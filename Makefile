@@ -599,7 +599,7 @@ $(BUILD_DIR)/%.mo.timestamp: %.po
 
 $(BUILD_DIR)/venv.timestamp:
 	$(PRERULE_CMD)
-	virtualenv --system-site-packages $(BUILD_DIR)/venv
+	python3 -m venv --system-site-packages $(BUILD_DIR)/venv
 	touch $@
 
 $(BUILD_DIR)/commons.timestamp: $(BUILD_DIR)/venv.timestamp

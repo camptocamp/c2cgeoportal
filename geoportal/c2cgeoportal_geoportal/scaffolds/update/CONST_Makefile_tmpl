@@ -533,7 +533,7 @@ $(APP_OUTPUT_DIR)/api.css: geoportal/$(PACKAGE)_geoportal/static-ngeo/api/api.cs
 /build/venv.timestamp-noclean:
 	$(PRERULE_CMD)
 	rm --recursive --force /build/venv
-	virtualenv --system-site-packages /build/venv
+	python3 -m venv --system-site-packages /build/venv
 	touch $@
 
 # Docker
