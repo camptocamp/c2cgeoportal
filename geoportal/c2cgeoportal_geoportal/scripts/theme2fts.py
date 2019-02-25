@@ -42,8 +42,7 @@ from sqlalchemy import func
 def main():
     parser = ArgumentParser(
         prog=sys.argv[0], add_help=True,
-        description="Tool to fill the tsearch table (Full-Text Search) "
-        "from the theme information.",
+        description="Tool to fill the tsearch table (full-text search) from the theme information.",
     )
 
     c2c_config = "geoportal/config.yaml" if os.path.exists("geoportal/config.yaml") else "config.yaml"

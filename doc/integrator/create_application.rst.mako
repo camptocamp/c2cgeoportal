@@ -306,8 +306,8 @@ Do not forget to add your changes to git:
 After creation and minimal setup the application is ready to be installed.
 Then follow the sections in the install application guide:
 
+* :ref:`integrator_install_application_setup_database`.
 * :ref:`integrator_install_application_create_schema`.
-* :ref:`integrator_install_application_create_user`.
 * :ref:`integrator_install_application_install_application`.
 
 .. note::
