@@ -343,6 +343,7 @@ update_paths:
   - headers.shortener
   - headers.login
   - interfaces_theme
+  - resourceproxy
   - servers
   - shortener
 
