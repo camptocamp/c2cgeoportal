@@ -459,8 +459,9 @@ geoportal/c2cgeoportal_geoportal/scaffolds/create/docker-run: docker-run
 npm-packages: $(BUILD_DIR)/ngeo.timestamp
 	$(PRERULE_CMD)
 	npm-packages \
-		coveralls gaze jasmine-core jsdoc jsdom karma karma-chrome-launcher karma-coverage \
-		karma-jasmine karma-sourcemap-loader karma-webpack angular-jsdoc \
+		@camptocamp/cesium @type jasmine-core karma karma-chrome-launcher karma-coverage \
+		karma-coverage-istanbul-reporter karma-jasmine karma-sourcemap-loader karma-webpack \
+		typedoc typescript \
 		--src=geoportal/node_modules/ngeo/package.json --src=geoportal/package.json --dst=$@
 
 admin/npm-packages: admin/package.json
