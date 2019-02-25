@@ -86,8 +86,13 @@ def main():
             packages.update(input_data.get('devDependencies', {}))
             packages.update(input_data.get('dependencies', {}))
     for package in args.excludes:
-        if package in packages:
-            del packages[package]
+        if package[0] == '@' and '/' not in package:
+            for pkg in packages:
+                if pkg.startswith(package + '/'):
+                    del package[pkg]
+        else:
+            if package in packages:
+                del packages[package]
 
     data = " ".join(["{}@{}".format(p, v) for p, v in packages.items()])
     data = data + "\n"
