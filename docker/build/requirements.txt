@@ -1,9 +1,9 @@
 alabaster==0.7.12  # Doc theme
 alembic==1.0.7  # geoportal
-awscli==1.16.111  # Work with Object storage
+awscli==1.16.112  # Work with Object storage
 Babel==2.6.0  # i18n
 beautifulsoup4==4.6.3  # admin tests, rq.filter: <4.7
-boto3==1.9.101  # Tile generation
+boto3==1.9.102  # Tile generation
 bottle==0.12.16  # geoportal
 c2c.cssmin==0.7.dev6  # CGXP build
 c2c.template==2.1.0  # geoportal
@@ -17,7 +17,7 @@ dateutils==0.6.6  # geoportal pcreate
 deform==2.0.7  # commons, admin
 defusedxml==0.5.0  # geoportal
 dogpile.cache==0.7.1  # geoportal
-flake8==3.7.6  # lint, TODO remove filter on pyflakes
+flake8==3.7.7  # lint, TODO remove filter on pyflakes
 flake8-copyright==0.2.2  # lint
 flake8-mypy==17.8.0  # lint
 Fiona==1.8.4  # geoportal raster
