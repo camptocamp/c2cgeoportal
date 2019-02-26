@@ -110,8 +110,8 @@ def main():
                 data
             )
             data = _sub(
-                re.escape('<meta name="dynamicUrl" content="https://geomapfish-demo-dc.camptocamp.com/2.') +
-                '[0-9]' + re.escape('/dynamic.json">'),
+                re.escape('<meta name="dynamicUrl" content="https://geomapfish-demo-2-') +
+                '[0-9]' + re.escape('.camptocamp.com/dynamic.json">'),
                 '<meta name="dynamicUrl" content="{entry_point}dynamic.json">'.format(
                     entry_point='${htmlWebpackPlugin.options.vars.entry_point}' if args.docker else '',
                 ),
