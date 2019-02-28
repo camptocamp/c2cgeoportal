@@ -511,7 +511,7 @@ class C2cUpgradeTool:
     def is_managed(self, file_, files_to_get=False):
         default_project_file = self.get_upgrade('default_project_file')
 
-        # managed means managed by the application owner, not the c2cupgrade
+        # Managed means managed by the application owner, not the c2cupgrade
         managed = False
         if not files_to_get or os.path.exists(file_) or not \
                 check_git_status_output(["CONST_create_template/" + file_]).startswith("A  "):
