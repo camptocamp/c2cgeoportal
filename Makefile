@@ -86,6 +86,7 @@ APPS_JS_FILES_ALT += $(addprefix $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/Co
 APPS_SASS_FILES_ALT += $(addprefix $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/sass/, $(addsuffix .scss, $(APPS_ALT)))
 APPS_FILES_ALT = $(APPS_HTML_FILES_ALT) $(APPS_JS_FILES_ALT) $(APPS_SASS_FILES_ALT)
 
+API_FILES = $(APPS_PACKAGE_PATH)/static-ngeo/api/api.css $(APPS_PACKAGE_PATH)/static-ngeo/api/apihelp/
 
 .PHONY: help
 help:
@@ -137,7 +138,7 @@ clean:
 	rm --force geoportal/c2cgeoportal_admin/locale/en/LC_MESSAGES/c2cgeoportal_admin.po
 	rm --recursive --force geoportal/c2cgeoportal_geoportal/static/build
 	rm --force $(MAKO_FILES:.mako=)
-	rm --force $(APPS_FILES) $(APPS_FILES_ALT)
+	rm --force $(API_FILES) $(APPS_FILES) $(APPS_FILES_ALT)
 	rm --force geoportal/tests/functional/alembic.yaml
 	rm --force docker/qgisserver/tests/geomapfish.yaml
 
@@ -203,6 +204,7 @@ docker-build-build: $(shell docker-required --path . --replace-pattern='^test(.*
 		geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/CONST_create_template/ \
 		$(MO_FILES) \
 		$(L10N_PO_FILES) \
+		$(API_FILES) \
 		$(APPS_FILES) \
 		$(APPS_FILES_ALT)
 	docker build --build-arg=VERSION=$(VERSION) --tag=$(DOCKER_BASE)-build:$(MAJOR_VERSION) .
@@ -378,7 +380,7 @@ transifex-init: $(TX_DEPENDENCIES) \
 # Import ngeo templates
 
 .PHONY: import-ngeo-apps
-import-ngeo-apps: $(APPS_FILES) $(APPS_FILES_ALT)
+import-ngeo-apps: $(API_FILES) $(APPS_FILES) $(APPS_FILES_ALT)
 
 .PRECIOUS: $(BUILD_DIR)/ngeo.timestamp
 $(BUILD_DIR)/ngeo.timestamp: geoportal/package.json
@@ -452,6 +454,17 @@ $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/%: geoportal/node_modules/ngeo/co
 	mkdir --parent $(dir $@)
 	cp $< $@
 
+$(APPS_PACKAGE_PATH)/static-ngeo/api/api.css: geoportal/node_modules/ngeo/api/src/api.css
+	$(PRERULE_CMD)
+	mkdir --parent $(dir $@)
+	cp $< $@
+
+$(APPS_PACKAGE_PATH)/static-ngeo/api/apihelp/: geoportal/node_modules/ngeo/api/dist/apihelp/
+	$(PRERULE_CMD)
+	mkdir --parent $(dir $@)
+	cp -r $< $@
+
+
 geoportal/c2cgeoportal_geoportal/scaffolds/create/docker-run: docker-run
 	$(PRERULE_CMD)
 	cp $< $@
@@ -473,6 +486,7 @@ geoportal/c2cgeoportal_geoportal/scaffolds%update/CONST_create_template/: \
 		geoportal/c2cgeoportal_geoportal/scaffolds%create/ \
 		$(addprefix geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/locale/,$(addsuffix /LC_MESSAGES/+package+_geoportal-client.po, $(ALL_LANGUAGES))) \
 		geoportal/c2cgeoportal_geoportal/scaffolds/create/docker-run \
+		$(API_FILES) \
 		$(APPS_FILES)
 	$(PRERULE_CMD)
 	rm -rf $@ || true
