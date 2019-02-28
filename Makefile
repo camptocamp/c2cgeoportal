@@ -486,6 +486,7 @@ geoportal/c2cgeoportal_geoportal/scaffolds%update/CONST_create_template/: \
 		geoportal/c2cgeoportal_geoportal/scaffolds%create/ \
 		$(addprefix geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/locale/,$(addsuffix /LC_MESSAGES/+package+_geoportal-client.po, $(ALL_LANGUAGES))) \
 		geoportal/c2cgeoportal_geoportal/scaffolds/create/docker-run \
+		$(API_FILES) \
 		$(APPS_FILES)
 	$(PRERULE_CMD)
 	rm -rf $@ || true
