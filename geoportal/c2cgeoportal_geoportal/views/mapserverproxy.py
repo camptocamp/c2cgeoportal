@@ -156,6 +156,9 @@ class MapservProxy(OGCProxy):
     def _proxy_callback(
         self, user: static.User, cache_control: int, url: str, params: dict, **kwargs: Any
     ) -> Response:
+        callback = params.get("callback")
+        if callback is not None:
+            del params["callback"]
         response = self._proxy(url=url, params=params, **kwargs)
 
         content = response.content
@@ -167,7 +170,14 @@ class MapservProxy(OGCProxy):
                 self.request
             ).encode("utf-8")
 
-        content_type = response.headers["Content-Type"]
+        if callback is not None:
+            content_type = "application/javascript"
+            # escape single quotes in the JavaScript string
+            content = "{}('{}');".format(callback, " ".join(
+                content.decode("utf-8").replace("'", "\\'").splitlines()
+            )).encode("utf-8")
+        else:
+            content_type = response.headers["Content-Type"]
 
         return self._build_response(
             response, content, cache_control, "mapserver",

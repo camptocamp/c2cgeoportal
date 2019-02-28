@@ -548,7 +548,7 @@ vars:
             style-src 'self' 'unsafe-inline' https://stackpath.bootstrapcdn.com/; \
             img-src * data:; \
             connect-src *"
-    - pattern: '^/apihelp.html'
+    - pattern: '^/x?apihelp.html'
       headers:
         Content-Security-Policy: "default-src 'self'; \
             script-src 'self' 'unsafe-inline' 'unsafe-eval'; \
