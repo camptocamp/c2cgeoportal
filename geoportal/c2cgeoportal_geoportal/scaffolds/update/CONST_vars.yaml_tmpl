@@ -522,7 +522,7 @@ vars:
 
   # For base layers
   tiles_url:
-    - '{web_protocol}://{host}/{instance}/tiles/'
+    - '{web_protocol}://{host}{entry_point}tiles/'
   wmtscapabilities_path: '{WMTSCAPABILITIES_PATH}'
 
   ogcproxy_enable: false
