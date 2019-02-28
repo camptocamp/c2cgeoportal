@@ -31,6 +31,8 @@ You need a Postgres database >= 9.1 in UTF-8 with the PostGIS >= 2.1 extension.
 
 Create the "pg_trgm" extension to use the "similarity" function within the full-text search.
 
+Create the "unaccent" extension to have accent-insensitive search within the full-text search.
+
 And by default we assume that the ``www-data`` user exists with all rights on the application schema.
 
 
