@@ -310,7 +310,7 @@ class C2cUpgradeTool:
                 prompt="Fix it and run again the upgrade:")
             exit(1)
 
-        if check_output(["git", "status", "--short"]).decode("utf-8") == "":
+        if check_git_status_output() == "":
             self.run_step(step + 1)
         else:
             check_call(["git", "status"])
@@ -514,7 +514,7 @@ class C2cUpgradeTool:
         # managed means managed by the application owner, not the c2cupgrade
         managed = False
         if not files_to_get or os.path.exists(file_) or not \
-                check_output(["git", "status", "--short", "CONST_create_template/" + file_]).decode("utf-8").startswith("?? "):
+                check_git_status_output(["CONST_create_template/" + file_]).startswith("?? "):
             for pattern in default_project_file['include']:
                 if re.match(pattern + '$', file_):
                     print("File '{}' included by migration config pattern '{}'.".format(file_, pattern))
@@ -615,7 +615,7 @@ class C2cUpgradeTool:
             )
 
     def get_modified(self, status_path):
-        status = check_output(["git", "status", "--short", status_path]).decode("utf-8")
+        status = check_git_status_output([status_path])
         status = [s for s in status.split("\n") if len(s) > 3]
         status = [s[3:] for s in status if s[:3].strip() == "M"]
         for pattern in self.get_upgrade('no_diff'):
@@ -762,6 +762,10 @@ class C2cUpgradeTool:
         print("git push {0!s} {1!s}.".format(
             self.options.git_remote, branch
         ))
+
+
+def check_git_status_output(args=[]):
+    return check_output(["git", "status", "--short"] + args).decode("utf-8")
 
 
 if __name__ == "__main__":
