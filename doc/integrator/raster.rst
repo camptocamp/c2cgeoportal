@@ -36,5 +36,35 @@ One may use GDAL/OGR to convert data to such a format.
 We recommand to use a `vrt <https://www.gdal.org/gdal_vrttut.html>`_ file built with
 `gdalbuildvrt <https://www.gdal.org/gdalbuildvrt.html>`_.
 
+
 ``round`` specifigdalbuildvrtes how the result values should be rounded.
 For instance '1': round to the unit, '0.01': round to the hundredth, etc.
+
+.. note:: gdalbuildvrt usage example:
+
+    Set the variable environnents (Example for Exoscale):
+
+    .. prompt:: bash
+
+        export AWS_DEFAULT_REGION=ch-dk-2
+        export AWS_S3_ENDPOINT=sos-ch-dk-2.exo.io
+        export AWS_ACCESS_KEY_ID=<key>
+        export AWS_SECRET_ACCESS_KEY=<secret>
+
+    Get the list of uploaded files:
+
+    .. prompt:: bash
+
+        aws --endpoint-url https://sos-ch-dk-2.exo.io/ --region ch-dk-2 s3 ls s3://<bucket>/<folder>
+
+    Create a file named e.g.: ``list.txt`` with the files we want to generate.
+
+    .. code::
+
+        /vsis3/<bucket>/<folder>/<file>
+
+    And finally generate the VRT file with:
+
+    .. prompt:: bash
+
+        gdalbuildvrt -input_file_list list.txt /vsis3/<bucket>/<folder>/<file>.vrt
