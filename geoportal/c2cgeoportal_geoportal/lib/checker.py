@@ -69,14 +69,22 @@ def _routes(settings, health_check):
         if route.get("checker_name", route["name"]) not in routes_settings["disable"]:
             name = "checker_routes_" + route.get("checker_name", route["name"])
 
-            def get_both(request):
-                return build_url("route", request.route_path(route["name"]), request)
+            class GetRequest:
+                """
+                Get the request information about the current route name
+                """
+                def __init__(self, route_name, type_):
+                    self.route_name = route_name
+                    self.type = type_
+
+                def __call__(self, request):
+                    return build_url("route", request.route_path(self.route_name), request)[self.type]
 
             health_check.add_url_check(
-                url=lambda r: get_both(r)["url"],
+                url=GetRequest(route['name'], 'url'),
                 name=name,
                 params=route.get("params", None),
-                headers=lambda r: get_both(r)["headers"],
+                headers=GetRequest(route['name'], 'headers'),
                 level=route["level"],
                 timeout=30,
             )
