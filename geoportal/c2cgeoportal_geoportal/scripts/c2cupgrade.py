@@ -514,7 +514,7 @@ class C2cUpgradeTool:
         # managed means managed by the application owner, not the c2cupgrade
         managed = False
         if not files_to_get or os.path.exists(file_) or not \
-                check_git_status_output(["CONST_create_template/" + file_]).startswith("?? "):
+                check_git_status_output(["CONST_create_template/" + file_]).startswith("A  "):
             for pattern in default_project_file['include']:
                 if re.match(pattern + '$', file_):
                     print("File '{}' included by migration config pattern '{}'.".format(file_, pattern))
