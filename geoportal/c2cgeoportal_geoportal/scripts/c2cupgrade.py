@@ -707,7 +707,9 @@ class C2cUpgradeTool:
                 "--config=geoportal/alembic.ini upgrade head`",
                 "- Run `docker-compose pull --ignore-pull-failures && "
                 "docker-compose down --remove-orphans && docker-compose up -d`.",
-                "- Test your application on 'http://localhost:8480/desktop'."
+                "- Test your application on '{}'.".format(
+                    self.project.get('application_url', '... missing ...')
+                )
             ]
 
         if self.options.windows:
