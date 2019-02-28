@@ -44,7 +44,7 @@ Pillow==5.4.1  # Tile generation
 polib==1.1.0  # i18n
 psycopg2-binary==2.7.7  # geoportal
 pycryptodome==3.7.3  # geoportal
-pyflakes==2.1.0  # lint, flake8
+pyflakes==2.1.1  # lint, flake8
 Pygments==2.3.1  # doc
 pylint==2.3.0  # lint
 Pympler==0.6  # geoportal, memory view
