@@ -438,7 +438,6 @@ class C2cUpgradeTool:
                             "because it is in the managed_files as '{}'.".format(file_, pattern),
                             RED
                         ))
-                        error = True
                         managed = True
                 if not managed and not pre:
                     print(colorize("The file '{}' is removed.".format(file_), GREEN))
@@ -636,7 +635,9 @@ class C2cUpgradeTool:
 
         with open("ngeo.diff", "w") as diff_file:
             if len(status) != 0:
-                check_call(["git", "diff", "--staged", "--"] + status, stdout=diff_file)
+                check_call(
+                    ["git", "diff", "--relative=CONST_create_template", "--staged", "--"] + status,
+                    stdout=diff_file)
 
         if os.path.getsize("ngeo.diff") == 0:
             self.run_step(step + 1)
@@ -645,6 +646,7 @@ class C2cUpgradeTool:
                 step + 1,
                 message="Manually apply the ngeo application changes as shown in the `ngeo.diff` file.\n"
                 + DIFF_NOTICE
+                + "\nNote that you can also apply it using: git apply --3way ngeo.diff"
             )
 
     @Step(10)
@@ -665,7 +667,9 @@ class C2cUpgradeTool:
         if len(status) > 0:
             with open("create.diff", "w") as diff_file:
                 if len(status) != 0:
-                    check_call(["git", "diff", "--staged", "--"] + status, stdout=diff_file)
+                    check_call(
+                        ["git", "diff", "--relative=CONST_create_template", "--staged", "--"] + status,
+                        stdout=diff_file)
 
             if os.path.getsize("create.diff") == 0:
                 self.run_step(step + 1)
@@ -673,6 +677,7 @@ class C2cUpgradeTool:
                 self.print_step(
                     step + 1, message="The `create.diff` file is a recommendation of the changes that you "
                     "should apply to your project.\n" + DIFF_NOTICE
+                    + "\nNote that you can also apply it using: git apply --3way create.diff"
                 )
         else:
             self.run_step(step + 1)
