@@ -37,6 +37,23 @@ CONF_FILES_MAKO = $(shell ls -1 apache/*.conf.mako 2> /dev/null)
 CONF_FILES_JINJA = $(shell ls -1 apache/*.conf.jinja 2> /dev/null)
 CONF_FILES += $(shell ls -1 apache/*.conf 2> /dev/null) $(CONF_FILES_MAKO:.mako=) $(CONF_FILES_JINJA:.jinja=)
 
+PGHOST ?= localhost
+export PGHOST
+PGHOST_SLAVE ?= localhost
+export PGHOST_SLAVE
+PGPORT ?= 5432
+export PGPORT
+PGUSER ?= www-data
+export PGUSER
+PGPASSWORD ?= www-data
+export PGPASSWORD
+PGDATABASE ?= geomapfish
+export PGDATABASE
+PGSCHEMA ?= main
+export PGSCHEMA
+PGSCHEMA_STATIC ?= main_static
+export PGSCHEMA_STATIC
+
 DEFAULT_BUILD_RULES ?= docker-build-geoportal \
 	docker-build-config \
 	project.yaml \
