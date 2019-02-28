@@ -42,7 +42,7 @@ For instance '1': round to the unit, '0.01': round to the hundredth, etc.
 
 .. note:: gdalbuildvrt usage example:
 
-    Set the variable environnents (Example for Exoscale):
+    Set the environment variables (example for Exoscale):
 
     .. prompt:: bash
 
