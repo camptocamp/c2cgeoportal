@@ -157,6 +157,7 @@ services:
       - VISIBLE_WEB_PROTOCOL
       - TINYOWS_URL
       - MAPSERVER_URL
+      - QGISSERVER_URL
       - PRINT_URL
       - DEVSERVER_HOST
       - REDIS_HOST
