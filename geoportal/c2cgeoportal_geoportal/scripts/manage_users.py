@@ -30,9 +30,9 @@
 
 import argparse
 import transaction
-import warnings
 
-from c2cgeoportal_geoportal.scripts import fill_arguments, get_app
+from c2cgeoportal_commons.testing import get_session
+from c2cgeoportal_geoportal.scripts import fill_arguments, get_appsettings
 
 
 def main():
@@ -78,78 +78,70 @@ User can be created if it does not exist yet."""
         'user',
         help="The user"
     )
-
     options = parser.parse_args()
     username = options.user
+    settings = get_appsettings(options)
 
-    # Loading schema name from config and setting its value to the
-    # corresponding global variable from c2cgeoportal_geoportal
+    with transaction.manager:
+        sess = get_session(settings, transaction.manager)
 
-    # Ignores pyramid deprecation warnings
-    warnings.simplefilter("ignore", DeprecationWarning)
+        # Must be done only once we have loaded the project config
+        from c2cgeoportal_commons.models import main, static
 
-    get_app(options, parser)
+        print("\n")
 
-    # Must be done only once we have loaded the project config
-    from c2cgeoportal_commons.models import DBSession, main, static
+        # Check that user exists
+        query = sess.query(static.User).filter_by(username=username)
 
-    print("\n")
-
-    # Check that user exists
-    sess = DBSession()
-    query = sess.query(static.User).filter_by(username=username)
-
-    result = query.count()
-    if result == 0:
-        if not options.create:
-            # If doesn't exist and no -c option, throw error
-            print("User {} does not exist in database".format(username))
-            exit(1)
-        else:
-            if options.password is None:
-                parser.error("The password is mandatory on user creation")
-            if options.email is None:
-                parser.error("The email is mandatory on user creation")
-
-            # Get roles
-            query_role = sess.query(main.Role).filter(main.Role.name == options.rolename)
-
-            if query_role.count() == 0:
-                # Role not found in db?
-                print("Role matching {} does not exist in database".format(options.rolename))
+        result = query.count()
+        if result == 0:
+            if not options.create:
+                # If doesn't exist and no -c option, throw error
+                print("User {} does not exist in database".format(username))
                 exit(1)
+            else:
+                if options.password is None:
+                    parser.error("The password is mandatory on user creation")
+                if options.email is None:
+                    parser.error("The email is mandatory on user creation")
 
-            role = query_role.first()
+                # Get roles
+                query_role = sess.query(main.Role).filter(main.Role.name == options.rolename)
 
-            user = static.User(
-                username=username,
-                password=options.password,
-                email=options.email,
-                settings_role=role,
-                roles=[role]
-            )
+                if query_role.count() == 0:
+                    # Role not found in db?
+                    print("Role matching {} does not exist in database".format(options.rolename))
+                    exit(1)
+
+                role = query_role.first()
+
+                user = static.User(
+                    username=username,
+                    password=options.password,
+                    email=options.email,
+                    settings_role=role,
+                    roles=[role]
+                )
+                sess.add(user)
+
+                print(("User {} created with password {} and role {}".format(
+                    username, options.password, options.rolename
+                )))
+
+        else:
+            # If user exists (assuming username are unique)
+            user = query.first()
+
+            if options.password is not None:
+                print("Password set to: {}".format(options.password))
+                user.password = "{}".format(options.password)
+
+            if options.email is not None:
+                user.email = options.email
+
             sess.add(user)
-            transaction.commit()
 
-            print(("User {} created with password {} and role {}".format(
-                username, options.password, options.rolename
-            )))
-
-    else:
-        # If user exists (assuming username are unique)
-        user = query.first()
-
-        if options.password is not None:
-            print("Password set to: {}".format(options.password))
-            user.password = "{}".format(options.password)
-
-        if options.email is not None:
-            user.email = options.email
-
-        sess.add(user)
-        transaction.commit()
-
-        print("Password reset for user {}".format(username))
+            print("Password reset for user {}".format(username))
 
 
 if __name__ == "__main__":

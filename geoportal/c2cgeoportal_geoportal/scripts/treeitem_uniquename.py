@@ -31,7 +31,8 @@
 import argparse
 import transaction
 
-from c2cgeoportal_geoportal.scripts import fill_arguments, get_app
+from c2cgeoportal_commons.testing import get_session
+from c2cgeoportal_geoportal.scripts import fill_arguments, get_appsettings
 
 
 def main():
@@ -39,23 +40,21 @@ def main():
         description="This script will rename all the theme elements to removes duplicated elements."
     )
     fill_arguments(parser)
-
     options = parser.parse_args()
+    settings = get_appsettings(options)
 
-    get_app(options, parser)
+    with transaction.manager:
+        session = get_session(settings, transaction.manager)
 
-    from c2cgeoportal_commons.models import DBSession
-    from c2cgeoportal_commons.models.main import LayerV1, LayerWMS, LayerWMTS, LayerGroup, Theme
+        from c2cgeoportal_commons.models.main import LayerV1, LayerWMS, LayerWMTS, LayerGroup, Theme
 
-    for class_ in [LayerV1, LayerWMS, LayerWMTS, LayerGroup, Theme]:
-        names = []
-        for item in DBSession.query(class_).all():
-            if item.name in names:
-                i = 2
-                while "{}-{}".format(item.name, i) in names:
-                    i += 1
+        for class_ in [LayerV1, LayerWMS, LayerWMTS, LayerGroup, Theme]:
+            names = []
+            for item in session.query(class_).all():
+                if item.name in names:
+                    i = 2
+                    while "{}-{}".format(item.name, i) in names:
+                        i += 1
 
-                item.name = "{}-{}".format(item.name, i)
-            names.append(item.name)
-
-    transaction.commit()
+                    item.name = "{}-{}".format(item.name, i)
+                names.append(item.name)

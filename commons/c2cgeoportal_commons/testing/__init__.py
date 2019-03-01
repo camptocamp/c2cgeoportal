@@ -56,3 +56,11 @@ def generate_mappers() -> None:
     # run configure_mappers after defining all of the models to ensure
     # all relationships can be setup
     configure_mappers()
+
+
+def get_session(settings: dict, transaction_manager: TransactionManager, prefix: str = 'sqlalchemy.'
+                ) -> Session:
+    configure_mappers()
+    engine = get_engine(settings, prefix)
+    session_factory = get_session_factory(engine)
+    return get_tm_session(session_factory, transaction_manager)
