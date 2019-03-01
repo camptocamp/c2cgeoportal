@@ -20,6 +20,7 @@ GEOPORTAL_INTERNAL_URL=http://geoportal:8080
 TILECLOUDCHAIN_INTERNAL_URL=http://tilecloudchain:8080
 MAPCACHE_URL=http://mapcache:8080/mapcache/
 MAPSERVER_URL=http://mapserver:8080/
+QGISSERVER_URL=http://qgisserver:8080/
 MEMCACHED_HOST=memcached
 MEMCACHED_PORT=11211
 REDIS_HOST=redis

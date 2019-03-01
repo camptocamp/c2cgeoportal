@@ -478,6 +478,7 @@ vars:
     internal: http://localhost/
     local: '{web_protocol}://{host}{entry_point}'
     mapserver: '{MAPSERVER_URL}'
+    qgisserver: '{QGISSERVER_URL}'
 
   host_forward_host: []
 
@@ -748,6 +749,8 @@ runtime_environment:
     default: http://tinyows:8080/
   - name: MAPSERVER_URL
     default: http://mapserver:8080/
+  - name: QGISSERVER_URL
+    default: http://qgisserver:8080/
   - name: PRINT_URL
     default: http://print:8080/print/
   - name: MAPCACHE_URL
