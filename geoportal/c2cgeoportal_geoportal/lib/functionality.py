@@ -60,7 +60,7 @@ def _get_db_functionality(name, user: static.User, types, request, errors):
     if types[name].get('single', False):
         values = [
             get_typed(name, functionality.value, types, request, errors)
-            for functionality in user.settings_role.functionalities
+            for functionality in ([] if user.settings_role is None else user.settings_role.functionalities)
             if functionality.name == name
         ]
         return [r for r in values if r is not None]
