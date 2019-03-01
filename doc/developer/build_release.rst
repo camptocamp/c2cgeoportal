@@ -133,6 +133,8 @@ Create a new Transifex resource:
     ./docker-run rm /build/c2ctemplate-cache.yaml
     ./docker-run make transifex-init
 
+Update the references in the `index.html` file of the `gh-pages` branch.
+
 Then continue by creating the release.
 
 Do the new release
