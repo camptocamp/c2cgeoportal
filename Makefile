@@ -86,7 +86,7 @@ APPS_JS_FILES_ALT += $(addprefix $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/Co
 APPS_SASS_FILES_ALT += $(addprefix $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/sass/, $(addsuffix .scss, $(APPS_ALT)))
 APPS_FILES_ALT = $(APPS_HTML_FILES_ALT) $(APPS_JS_FILES_ALT) $(APPS_SASS_FILES_ALT)
 
-API_FILES = $(APPS_PACKAGE_PATH)/static-ngeo/api/api.css $(APPS_PACKAGE_PATH)/static-ngeo/api/apihelp/
+API_FILES = $(APPS_PACKAGE_PATH)/static-ngeo/api/api.css $(APPS_PACKAGE_PATH)/static-ngeo/api/apihelp
 
 .PHONY: help
 help:
@@ -459,9 +459,8 @@ $(APPS_PACKAGE_PATH)/static-ngeo/api/api.css: geoportal/node_modules/ngeo/api/sr
 	mkdir --parent $(dir $@)
 	cp $< $@
 
-$(APPS_PACKAGE_PATH)/static-ngeo/api/apihelp/: geoportal/node_modules/ngeo/api/dist/apihelp/
+$(APPS_PACKAGE_PATH)/static-ngeo/api/apihelp: geoportal/node_modules/ngeo/api/dist/apihelp
 	$(PRERULE_CMD)
-	mkdir --parent $(dir $@)
 	cp -r $< $@
 
 
