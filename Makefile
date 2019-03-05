@@ -462,6 +462,13 @@ $(APPS_PACKAGE_PATH)/static-ngeo/api/api.css: geoportal/node_modules/ngeo/api/sr
 $(APPS_PACKAGE_PATH)/static-ngeo/api/apihelp: geoportal/node_modules/ngeo/api/dist/apihelp
 	$(PRERULE_CMD)
 	cp -r $< $@
+	mv $@/apihelp.html $@/index.html.tmpl
+	sed -i -e 's#https://geomapfish-demo-2-4.camptocamp.com/#$${VISIBLE_WEB_PROTOCOL}://$${VISIBLE_WEB_HOST}$${VISIBLE_ENTRY_POINT}#g' $@/index.html.tmpl
+	sed -i -e 's#github.css#../static-ngeo/api/apihelp/github.css#g' $@/index.html.tmpl
+	sed -i -e 's#rainbow-custom.min.js#../static-ngeo/api/apihelp/rainbow-custom.min.js#g' $@/index.html.tmpl
+	sed -i -e 's#"data.txt"#"../static-ngeo/api/apihelp/data.txt"#g' $@/index.html.tmpl
+	sed -i -e "s#'data.txt'#'../static-ngeo/api/apihelp/data.txt'#g" $@/index.html.tmpl
+	sed -i -e 's#img/#../static-ngeo/api/apihelp/img/#g' $@/index.html.tmpl
 
 
 geoportal/c2cgeoportal_geoportal/scaffolds/create/docker-run: docker-run

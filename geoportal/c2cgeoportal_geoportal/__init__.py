@@ -27,39 +27,39 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+import binascii
 import time
 import logging
 import os
-import binascii
-from urllib.parse import urlsplit
-
-import c2cwsgiutils
 import re
-import simplejson as json
+from urllib.parse import urlsplit
 from socket import gethostbyname, gaierror
+import importlib
+
+import simplejson as json
 from ipcalc import IP, Network
 from Crypto.Cipher import AES
-import importlib
 
 import zope.event.classhandler
 from pyramid.config import Configurator
-from pyramid_mako import add_mako_renderer
 from pyramid.interfaces import IStaticURLInfo
 from pyramid.httpexceptions import HTTPException
+from pyramid.path import AssetResolver
 import pyramid.security
-
+from pyramid_mako import add_mako_renderer
 from papyrus.renderers import GeoJSON
-from c2cgeoportal_geoportal.lib.xsd import XSD
+from sqlalchemy.orm import Session
 
+import c2cwsgiutils
 import c2cwsgiutils.db
 import c2cwsgiutils.index
 from c2cwsgiutils.health_check import HealthCheck
-from sqlalchemy.orm import Session
 
 import c2cgeoportal_commons.models
-import c2cgeoportal_geoportal.views
+from c2cgeoportal_geoportal.lib.xsd import XSD
 from c2cgeoportal_geoportal.lib import dbreflection, caching, \
     C2CPregenerator, MultiDomainStaticURLInfo, checker, check_collector
+import c2cgeoportal_geoportal.views
 
 
 LOG = logging.getLogger(__name__)
@@ -79,6 +79,16 @@ class DecimalJSON:
                 request.response.content_type = "application/json"
             return ret
         return _render
+
+
+class AssetRendererFactory:
+    def __init__(self, info):
+        del info  # unused
+        self.resolver = AssetResolver('c2cgeoportal_geoportal')
+
+    def __call__(self, value, system):
+        asset = self.resolver.resolve(system['renderer_name'])
+        return asset.stream().read()
 
 
 INTERFACE_TYPE_NGEO = "ngeo"
@@ -415,6 +425,8 @@ def includeme(config: pyramid.config.Configurator):
     add_mako_renderer(config, ".html")
     add_mako_renderer(config, ".js")
 
+    package = config.get_settings()["package"]
+
     # Add the "geojson" renderer
     config.add_renderer("geojson", GeoJSON())
 
@@ -467,15 +479,32 @@ def includeme(config: pyramid.config.Configurator):
     add_cors_route(config, "/loginuser", "login")
     config.add_route("loginuser", "/loginuser", request_method="GET")
     config.add_route("testi18n", "/testi18n.html", request_method="GET")
+
+    config.add_renderer(".map", AssetRendererFactory)
+    config.add_renderer(".css", AssetRendererFactory)
     config.add_route("apijs", "/api.js", request_method="GET")
-    config.add_route("xapijs", "/xapi.js", request_method="GET")
-    config.add_route("apihelp", "/apihelp.html", request_method="GET")
-    config.add_route("xapihelp", "/xapihelp.html", request_method="GET")
+    config.add_route("oldxapijs", "/xapi.js", request_method="GET")
+    config.add_route("oldapihelp", "/oldapihelp.html", request_method="GET")
+    config.add_route("oldxapihelp", "/oldxapihelp.html", request_method="GET")
+
+    # Cannot be at the header to do not load the model too early
+    from c2cgeoportal_geoportal.views.entry import Entry
+
+    def add_api_route(name: str, attr: str, path: str, renderer: str):
+        config.add_route(name, path, request_method="GET")
+        config.add_view(
+            Entry, attr=attr, route_name=name,
+            renderer='{}_geoportal:static-ngeo/{}'.format(package, renderer)
+        )
+    add_api_route('apijsmap', 'apijsmap', '/api.js.map', "build/api.js.map")
+    add_api_route('apicss', 'apicss', '/api.css', "build/api.css")
+    add_api_route('apihelp', 'apihelp', '/apihelp/index.html', "api/apihelp/index.html")
     config.add_route(
         "themes", "/themes",
         request_method="GET",
         pregenerator=C2CPregenerator(role=True),
     )
+
     config.add_route("invalidate", "/invalidate", request_method="GET")
 
     # Print proxy routes
@@ -587,7 +616,6 @@ def includeme(config: pyramid.config.Configurator):
 
     # Add the project static view with cache buster
     from c2cgeoportal_geoportal.lib.cacheversion import version_cache_buster
-    package = config.get_settings()["package"]
     config.add_static_view(
         name="static",
         path="{}_geoportal:static".format(package),
@@ -627,7 +655,9 @@ def includeme(config: pyramid.config.Configurator):
                     interface=interface
                 )
             )
-    c2cwsgiutils.index.additional_noauth.append('<a href="../apihelp.html">API help</a><br>')
+    c2cwsgiutils.index.additional_noauth.append('<a href="../apihelp/index.html">API help</a><br>')
+    c2cwsgiutils.index.additional_noauth.append('<a href="../oldapihelp.html">Old API help</a><br>')
+    c2cwsgiutils.index.additional_noauth.append('<a href="../oldxapihelp.html">Old extended API help</a><br>')
     c2cwsgiutils.index.additional_noauth.append('</div></div><hr>')
 
 

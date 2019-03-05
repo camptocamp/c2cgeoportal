@@ -46,6 +46,7 @@ from defusedxml import lxml
 from owslib.wms import WebMapService
 from pyramid.httpexceptions import HTTPBadGateway, HTTPBadRequest, HTTPForbidden, HTTPFound
 from pyramid.i18n import TranslationStringFactory
+from pyramid.renderers import render_to_response
 from pyramid.response import Response
 from pyramid.security import forget, remember
 from pyramid.view import view_config
@@ -238,7 +239,7 @@ class Entry:
             "USER_ID": "0",
         })
 
-        LOG.info("Get WMS GetCapabilities for url: {}".format(url))
+        LOG.info("Get WMS GetCapabilities for url: %s", url)
 
         # Forward request to target (without Host Header)
         headers = dict(self.request.headers)
@@ -821,8 +822,7 @@ class Entry:
         set_common_headers(self.request, "index", NO_CACHE, content_type="text/html")
         return {}
 
-    @view_config(route_name="apijs", renderer="api/api.js")
-    def apijs(self):
+    def get_oldapijs_values(self):
         ogc_server = models.DBSession.query(main.OGCServer).filter(
             main.OGCServer.name == self.settings["api"]["ogc_server"]
         ).one()
@@ -833,12 +833,6 @@ class Entry:
             name for name in list(wms.contents)
             if wms[name].queryable == 1]
         cache_version = get_cache_version()
-
-        set_common_headers(
-            self.request, "api", NO_CACHE,
-            content_type="application/javascript",
-        )
-
         return {
             "lang": self.lang,
             "debug": self.debug,
@@ -847,8 +841,26 @@ class Entry:
             "tiles_url": json.dumps(self.settings.get("tiles_url")),
         }
 
-    @view_config(route_name="xapijs", renderer="api/xapi.js")
-    def xapijs(self):
+    @view_config(route_name="apijs")
+    def apijs(self):
+        version = self.request.params.get('version', '1')
+        if version == '2':
+            package = self.request.registry.settings["package"]
+            data = render_to_response(
+                '{}_geoportal:static-ngeo/build/api.js'.format(package), {}
+            )
+        else:
+            data = render_to_response(
+                'api/api.js', self.get_oldapijs_values()
+            )
+        set_common_headers(
+            self.request, "api", PUBLIC_CACHE,
+            response=data, content_type="application/javascript",
+        )
+        return data
+
+    @view_config(route_name="oldxapijs", renderer="api/xapi.js")
+    def oldxapijs(self):
         ogc_server = models.DBSession.query(main.OGCServer).filter(
             main.OGCServer.name == self.settings["api"]["ogc_server"]
         ).one()
@@ -874,23 +886,41 @@ class Entry:
             "tiles_url": json.dumps(self.settings.get("tiles_url")),
         }
 
-    @view_config(route_name="apihelp", renderer="api/apihelp.html")
+    @view_config(route_name="oldapihelp", renderer="api/apihelp.html")
+    def oldapihelp(self):
+        set_common_headers(self.request, "index", NO_CACHE)
+
+        return {
+            "lang": self.lang,
+            "debug": self.debug,
+        }
+
+    @view_config(route_name="oldxapihelp", renderer="api/xapihelp.html")
+    def oldxapihelp(self):
+        set_common_headers(self.request, "index", NO_CACHE)
+
+        return {
+            "lang": self.lang,
+            "debug": self.debug,
+        }
+
+    def apimap(self):
+        set_common_headers(
+            self.request, "api", NO_CACHE,
+            content_type="application/octet-stream",
+        )
+        return {}
+
+    def apicss(self):
+        set_common_headers(
+            self.request, "api", PUBLIC_CACHE,
+            content_type="text/css",
+        )
+        return {}
+
     def apihelp(self):
         set_common_headers(self.request, "index", NO_CACHE)
-
-        return {
-            "lang": self.lang,
-            "debug": self.debug,
-        }
-
-    @view_config(route_name="xapihelp", renderer="api/xapihelp.html")
-    def xapihelp(self):
-        set_common_headers(self.request, "index", NO_CACHE)
-
-        return {
-            "lang": self.lang,
-            "debug": self.debug,
-        }
+        return {}
 
     def _wms_get_features_type(self, ogc_server_id, wfs_url):
         errors = set()
@@ -1175,7 +1205,7 @@ class Entry:
         if new_password != new_password_confirm:
             LOG.info(
                 "The new password and the new password "
-                "confirmation do not match for user '%s'." % user
+                "confirmation do not match for user '%s'.", user
             )
             raise HTTPBadRequest("See server logs for details")
 

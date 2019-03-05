@@ -485,13 +485,13 @@ class TestEntryView(TestCase):
     def test_entry_points(self):
         entry, _ = self._create_entry()
 
-        result = entry.apijs()
+        result = entry.get_oldapijs_values()
         assert set(result.keys()) == {"lang", "debug", "queryable_layers", "tiles_url", "url_params"}
-        result = entry.xapijs()
+        result = entry.oldxapijs()
         assert set(result.keys()) == {"lang", "debug", "queryable_layers", "tiles_url", "url_params"}
-        result = entry.apihelp()
+        result = entry.oldapihelp()
         assert set(result.keys()) == {"lang", "debug"}
-        result = entry.xapihelp()
+        result = entry.oldxapihelp()
         assert set(result.keys()) == {"lang", "debug"}
 
     def _assert_has_error(self, errors, error):

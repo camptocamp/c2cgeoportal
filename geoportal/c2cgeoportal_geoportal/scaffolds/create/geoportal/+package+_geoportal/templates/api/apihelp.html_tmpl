@@ -52,7 +52,7 @@ This page describes how to use the <em>Simple API</em>. The Simple API
 provides a JavaScript API for inserting simple maps into web pages.
 </p>
 <p>
-See the Extended API Help <a href="${request.route_url('xapihelp')}">page</a>
+See the Extended API Help <a href="${request.route_url('oldxapihelp')}">page</a>
 for help on the <em>Extended API</em>.
 </p>
 <h2>Basis</h2>
