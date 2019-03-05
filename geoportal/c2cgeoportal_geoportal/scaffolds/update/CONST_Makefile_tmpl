@@ -145,7 +145,7 @@ NGEO_OUTPUT_FILES = $(JSON_CLIENT_LOCALISATION_FILES) \
 	$(ANGULAR_LOCALES_FILES)
 NGEO_OUTPUT_FILES += /build/apps.timestamp
 
-NGEO_API_OUTPUT_FILES += $(APP_OUTPUT_DIR)/api.js $(APP_OUTPUT_DIR)/api.css $(APP_OUTPUT_DIR)/apihelp/
+NGEO_API_OUTPUT_FILES += $(APP_OUTPUT_DIR)/api.js $(APP_OUTPUT_DIR)/api.css $(APP_OUTPUT_DIR)/apihelp
 
 
 ifdef CI
@@ -635,9 +635,8 @@ $(APP_OUTPUT_DIR)/api.css: geoportal/$(PACKAGE)_geoportal/static-ngeo/api/api.cs
 	$(PRERULE_CMD)
 	cp $< $@
 
-$(APP_OUTPUT_DIR)/apihelp/: geoportal/$(PACKAGE)_geoportal/static-ngeo/api/apihelp/
+$(APP_OUTPUT_DIR)/apihelp: geoportal/$(PACKAGE)_geoportal/static-ngeo/api/apihelp
 	$(PRERULE_CMD)
-	mkdir --parent $@
 	cp -r $< $@
 
 # Git
