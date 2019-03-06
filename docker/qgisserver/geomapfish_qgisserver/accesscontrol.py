@@ -196,7 +196,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
             browse([], self.project.layerTreeRoot())
 
-            # transform ancestor names in LayerWMS instances
+            # Transform ancestor names in LayerWMS instances
             layers = {}  # dict( node name : list of LayerWMS }
             for layer in self.DBSession.query(LayerWMS) \
                     .filter(LayerWMS.ogc_server_id == self.ogcserver.id).all():
