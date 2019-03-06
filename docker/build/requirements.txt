@@ -37,7 +37,7 @@ mypy==0.670  # lint
 OWSLib==0.17.1  # geoportal
 papyrus==2.4  # commons, geoportal
 passwordgenerator # geoportal
-PasteScript==3.0.0  # geoportal pcreate
+PasteScript==3.1.0  # geoportal pcreate
 pep8==1.7.1  # lint
 pep8-naming==0.8.2  # Lint
 Pillow==5.4.1  # Tile generation
