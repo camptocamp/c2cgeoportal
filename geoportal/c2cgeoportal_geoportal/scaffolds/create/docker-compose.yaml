@@ -98,16 +98,3 @@ services:
       - config:ro
     ports:
       - ${PORT}:80
-## if docker_global_front:
-##     networks:
-##       default: {}
-##       global:
-##         aliases:
-##           - ${instance}
-
-## networks:
-##   default: {}
-##   global:
-##     external:
-##       name: global_default
-## endif

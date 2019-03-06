@@ -114,42 +114,8 @@ Multiple dev on one server
 
 When you want to run multiple instances on the same server you should:
 
-- Use the global front
 - Use a different docker tag for each instance
 - Use a different project name for each instance
-
-Global front
-............
-
-The global front will offer a unique entry point on port 80 that provide the 'main' project on `/` and the
-others on `/<project_name>/`.
-
-Activate it in the vars:
-
-.. code:: yaml
-
-   vars:
-     docker_global_front: true
-
-Build the project:
-
-.. prompt:: bash
-
-   ./docker-run make build
-
-Run the global front:
-
-.. prompt:: bash
-
-   (cd global-front; docker-compose --project-name=global up --build)
-
-
-And we should defined different instance name for the build:
-
-.. prompt:: bash
-
-   INSTANCE=<name> ./docker-run make build
-
 
 Use a different docker tag
 ..........................
