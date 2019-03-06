@@ -664,8 +664,8 @@ def includeme(config):
     )
 
     # Full-text search routes
-    add_cors_route(config, "/fulltextsearch", "fulltextsearch")
-    config.add_route("fulltextsearch", "/fulltextsearch")
+    add_cors_route(config, "/search", "fulltextsearch")
+    config.add_route("fulltextsearch", "/search")
 
     # Access to raster data
     add_cors_route(config, "/raster", "raster")

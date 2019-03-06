@@ -1,5 +1,15 @@
 This file includes migration steps for each release of c2cgeoportal.
 
+
+Version 2.3.6
+=============
+
+Information
+-----------
+
+1. Rename full-text search path from /fulltextsearch to /search for backward compatibility with the version 2.2
+
+
 Version 2.3.0
 =============
 
