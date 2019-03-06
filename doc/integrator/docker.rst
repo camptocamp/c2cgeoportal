@@ -28,7 +28,6 @@ Docker compose files
 ``docker-compose-lib.yaml``: Provide the base description of Geomapfish Docker services.
 ``.env``: Build from ``.env.mako`` the environment variable used by the composition.
 ``docker-compose-dev.yaml``: Use to start a webpack dev server.
-``docker-compose-front.yaml``: Use to start a global front if you don't use Apache to do that.
 ``docker-compose-build.yaml``: Used by the ``docker-compose-run`` script.
 
 

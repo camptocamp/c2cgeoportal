@@ -190,6 +190,15 @@ files_to_remove:
   - file: geoportal/{{package}}_geoportal/static-ngeo/less/{{package}}.scss
     from: 2.3
     version: 2.4
+  - file: docker-compose-front.yaml.mako
+    from: 2.3
+    version: 2.4
+  - file: docker-compose-front.yaml
+    from: 2.3
+    version: 2.4
+  - file: global-front
+    from: 2.3
+    version: 2.4
 
 files_to_move:
   - from: vars_{{package}}.yaml

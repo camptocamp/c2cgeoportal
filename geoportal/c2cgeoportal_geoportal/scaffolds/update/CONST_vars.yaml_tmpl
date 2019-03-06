@@ -23,7 +23,6 @@ vars:
   docker_base: '{DOCKER_BASE}'
   docker_tag: '{DOCKER_TAG}'
   docker_port: '{DOCKER_PORT}'
-  docker_global_front: false
 
   # Master database host
   docker_dbhost: '{DOCKER_PGHOST}'
