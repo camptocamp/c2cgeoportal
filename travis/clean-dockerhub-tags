@@ -39,6 +39,12 @@ def clean_images(image, tag_=lambda tag: tag):
         if tag_(tag) not in (git_tags + git_branch)
     }
 
+    major_re = re.compile(r'^[0-9]+\.[0-9]+$')
+    docker_tags_to_remove = {
+        tag for tag in docker_tags_to_remove
+        if not major_re.match(tag_(tag))
+    }
+
     minor_re = re.compile(r'^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$')
     docker_tags_to_remove = {
         tag for tag in docker_tags_to_remove
