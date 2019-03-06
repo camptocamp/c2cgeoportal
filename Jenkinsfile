@@ -97,6 +97,10 @@ dockerBuild {
                     println("Dev release detected")
                     RELEASE_TAG = TAG
                 }
+                else if (TAG =~ /^[0-9]+\.[0-9]+\.[0-9]+\.?rc[0-9]+$/) {
+                    println("RC release detected")
+                    RELEASE_TAG = TAG
+                }
                 else {
                     if (BRANCH_NAME =~ /^[0-9]\.[0-9]$/) {
                         println("Release branch detected")
