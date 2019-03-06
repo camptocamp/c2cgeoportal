@@ -21,7 +21,7 @@ flake8==3.7.7  # lint, TODO remove filter on pyflakes
 flake8-copyright==0.2.2  # lint
 flake8-mypy==17.8.0  # lint
 Fiona==1.8.4  # geoportal raster
-GeoAlchemy2==0.5.0  # commons, geoportal
+GeoAlchemy2==0.6.1  # commons, geoportal
 geojson==2.4.1  # geoportal
 glob2==0.6  # ngeo
 htmlmin==0.1.12  # ngeo
