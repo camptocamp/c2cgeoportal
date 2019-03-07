@@ -53,7 +53,6 @@ services:
     user: www-data
     restart: unless-stopped
     environment:
-      - VISIBLE_ENTRY_POINT
       - PGHOST
       - PGHOST_SLAVE
       - PGPORT
