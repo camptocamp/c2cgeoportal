@@ -42,7 +42,7 @@
         }
     </style>
     <link href="${request.static_url('{{package}}_geoportal:static/apihelp/github.css')}" rel="stylesheet" type="text/css" media="screen">
-    <script type="text/javascript" src="${(request.route_url('xapijs') + '?lang=%s%s') % (lang, '&debug' if debug else '')}"></script>
+    <script type="text/javascript" src="${(request.route_url('oldxapijs') + '?lang=%s%s') % (lang, '&debug' if debug else '')}"></script>
 </head>
 <body>
 <div id="wrapper">
@@ -53,12 +53,12 @@ provides a JavaScript API for inserting maps with rich functionality to
 web pages.
 </p>
 <p>
-See the Simple API Help <a href="${request.route_url('apihelp')}">page</a>
+See the Simple API Help <a href="${request.route_url('oldapihelp')}">page</a>
 for help on the <em>Simple API</em>.
 </p>
 <h2>Basis</h2>
 <p>To use the API you should add the following HTML:</p>
-<pre><code data-language="html">&lt;script src="${request.route_url('xapijs')}"&gt;&lt;/script&gt;
+<pre><code data-language="html">&lt;script src="${request.route_url('oldxapijs')}"&gt;&lt;/script&gt;
 &lt;script&gt;
 window.onload = function() {
     // add the code here
