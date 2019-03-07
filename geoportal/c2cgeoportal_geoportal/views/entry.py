@@ -398,7 +398,7 @@ class Entry:
         if isinstance(layer, main.LayerWMS) and re.search("[/?#]", layer.layer):  # pragma: no cover
             errors.add("The layer has an unsupported layers '{}'.".format(layer.layer))
         if layer.geo_table:
-            self._fill_editable(layer_info, layer)
+            errors |= self._fill_editable(layer_info, layer)
         if mixed:
             assert time is None
             time = TimeInformation()
@@ -455,16 +455,22 @@ class Entry:
         return errors
 
     def _fill_editable(self, l, layer):
-        if self.request.user:
-            count = models.DBSession.query(main.RestrictionArea) \
-                .join(main.RestrictionArea.roles) \
-                .filter(main.Role.id.in_([r.id for r in self.request.user.roles])) \
-                .filter(main.RestrictionArea.layers.any(main.Layer.id == layer.id)) \
-                .filter(main.RestrictionArea.readwrite.is_(True)) \
-                .count()
-            if count > 0:
-                l["editable"] = True
-                l["edit_columns"] = get_layer_metadatas(layer)
+        errors = set()
+        try:
+            if self.request.user:
+                count = models.DBSession.query(main.RestrictionArea) \
+                    .join(main.RestrictionArea.roles) \
+                    .filter(main.Role.id.in_([r.id for r in self.request.user.roles])) \
+                    .filter(main.RestrictionArea.layers.any(main.Layer.id == layer.id)) \
+                    .filter(main.RestrictionArea.readwrite.is_(True)) \
+                    .count()
+                if count > 0:
+                    l["edit_columns"] = get_layer_metadatas(layer)
+                    l["editable"] = True
+        except Exception as exception:
+            LOG.exception(str(exception))
+            errors.add(str(exception))
+        return errors
 
     def _fill_wms(self, l, layer, errors, mixed):
         wms, wms_layers, wms_errors = self._wms_layers(layer.ogc_server)
