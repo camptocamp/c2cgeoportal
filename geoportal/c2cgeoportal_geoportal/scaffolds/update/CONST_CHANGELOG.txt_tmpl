@@ -14,6 +14,12 @@ Information
    `COMPOSE_PROJECT_NAME` contains the default name of the project.
 
 
+Version 2.3.6
+=============
+
+1. Rename full-text search path from /fulltextsearch to /search for backward compatibility with the version 2.2
+
+
 Version 2.3.0
 =============
 
