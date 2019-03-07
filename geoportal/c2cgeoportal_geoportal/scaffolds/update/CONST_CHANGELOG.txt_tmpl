@@ -1,5 +1,19 @@
 This file includes migration steps for each release of c2cgeoportal.
 
+
+Version 2.4.0
+=============
+
+Information
+-----------
+
+1. The `docker-service` section in the vars files is removed, and the `docker-compose.yaml.mako`.
+   Now we have a `docker-compose-lib.yaml` file with a base of the services,
+   a `docker-compose.yaml` where we can customise the services,
+   a `.env.mako` file where we have the variable environment used in the docker compose files,
+   `COMPOSE_PROJECT_NAME` contains the default name of the project.
+
+
 Version 2.3.0
 =============
 
