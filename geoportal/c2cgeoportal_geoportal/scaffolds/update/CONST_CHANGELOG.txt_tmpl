@@ -10,7 +10,7 @@ Information
 1. The `docker-service` section in the vars files is removed, and the `docker-compose.yaml.mako`.
    Now we have a `docker-compose-lib.yaml` file with a base of the services,
    a `docker-compose.yaml` where we can customise the services,
-   a `.env.mako` file where we have the variable environment used in the docker compose files,
+   a `.env.mako` file where we have the environment variables used in the Docker compose files,
    `COMPOSE_PROJECT_NAME` contains the default name of the project.
 
 
