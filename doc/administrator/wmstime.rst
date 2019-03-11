@@ -36,7 +36,7 @@ date, an end date and an interval between the time stops.
 The format ``value1,value2,value3,...`` allows specifying a time range by
 listing discrete values.
 
-The dates (``min``, ``max`` and ``valueN``) could be specified using any of the
+The dates (``min``, ``max`` and ``valueN``) can be specified using any of the
 following formats:
 
 * ``YYYY``
@@ -50,8 +50,8 @@ requests. For example when a layer has monthly data, the ``YYYY-MM`` should be
 used in the mapfile to make sure that only months and years are displayed in the
 slider tip and passed to the GetMap request.
 
-The interval (``interval``) has to be defined regarding international standard
-ISO 8601 and its duration/time intervals definition (see
+The interval (``interval``) has to be defined according to the
+ISO 8601 standard and its duration/time intervals definition (see
 `ISO 8601 Durations / Time intervals <http://en.wikipedia.org/wiki/ISO_8601#Durations>`_).
 
 Some examples for the interval definition:
@@ -59,7 +59,7 @@ Some examples for the interval definition:
 * An interval of one year: ``P1Y``
 * An interval of six months: ``P6M``
 
-For more information please refer to the `MapServer documentation
+For more information, please refer to the `MapServer documentation
 <http://mapserver.org/ogc/wms_time.html>`_.
 
 Admin interface
@@ -71,7 +71,7 @@ Two different widget types are available: A time slider and a datepicker
 widget. The preferred widget can be selected in the admin interface (field
 ``Time widget``).
 
-Besides, the time mode can be changed. The time mode is one of:
+Note that the time mode can be changed. The time mode is one of:
 
 * ``value``
 * ``range``
@@ -108,5 +108,5 @@ Some of those limitations apply to the mapfile:
 
 There is also a limitation that applies to the admin interface: all the WMS Time
 layers of a group should be configured to use the same widget and the same time mode
-(``single`` or ``range``) except for layers with time mode ``disabled`` that can be mixed
+(``single`` or ``range``), except for layers with time mode ``disabled`` that can be mixed
 within others.
