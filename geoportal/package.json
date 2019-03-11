@@ -6,6 +6,9 @@
     "dependencies": {
         "eslint-plugin-googshift": "0.9.3",
         "googshift": "0.9.10",
-        "ngeo": "2.4.0-latest.20190311T103718Z.9acae08.HEAD"
+        "ngeo": "2.4.0-latest.20190311T103718Z.9acae08.HEAD",
+        "co": "4.6.0",
+        "jsdom": "14.0.0",
+        "popper.js": "1.14.6"
     }
 }
