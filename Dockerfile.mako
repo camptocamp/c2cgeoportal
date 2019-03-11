@@ -17,9 +17,9 @@ COPY webpack.config.js /tmp
 
 RUN extract-ngeo-dependencies && \
   extract-ngeo-dependencies > /tmp/deps.js && \
-  (cd /tmp; webpack --mode production) && \
-  (cd /tmp; webpack --mode production --profile) && \
-  (cd /tmp; webpack --mode production --profile --json > stats.json)
+  (cd /tmp; webpack --mode production) || true && \
+  (cd /tmp; webpack --mode production --profile) || true && \
+  (cd /tmp; webpack --mode production --profile --json > stats.json) || true
 
 RUN \
   mkdir --parents /opt/angular-locale && \
