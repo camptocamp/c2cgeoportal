@@ -7,7 +7,7 @@ Specific configuration for QGIS mapserver
 Apache configuration
 ====================
 
-In the ``apache/mapserv.conf.mako`` do the following changes:
+In the file ``apache/mapserv.conf.mako``, do the following changes:
 
 .. code::
 
@@ -33,13 +33,13 @@ QGIS Desktop configuration
 Create a tunnel on the database server
 **************************************
 
-If you cannot connect directly to the database you can create a tunnel to be able to connect to them:
+If you cannot connect directly to the database, you can create a tunnel to be able to connect:
 
 .. prompt:: bash
 
    ssh -L 5432:localhost:5432 <server>
 
-If you run QGIS in Docker you should bind to a specific IP:
+If you run QGIS in Docker, you should bind to a specific IP:
 
 .. prompt:: bash
 
@@ -62,19 +62,19 @@ OWS configuration
 You should setup your OWS service in the QGIS project properties in the OWS tab.
 
 You should **check** *Service Capabilities* and **fill** *Online resource* to correctly generate
-the URL's in the capabilities.
+the URLs in the capabilities.
 
 In the *WMS capabilities* section, you should take care to **uncheck** the checkbox *User layer ids as
-names*. If this checkbox is enabled you will have unreliable layers name.
+names*. If this checkbox is enabled, you will have unreliable layer names.
 
 In the *WMS capabilities* section, you should **check** the checkbox *Add geometry to feature response* in
-order to make the WMS GetFeatureInfo working correctly.
+order to make the WMS GetFeatureInfo work correctly.
 
 In the *WFS capabilities* section, you should check the layers that need to be available in the WFS service.
-Also take care on the Update Insert delete column to make the layer available throw the WFS transactional
+Also take care on the Update Insert delete column to make the layer available through the WFS transactional
 API.
 
-Finally, your QGIS project layers CRS should all be in the same CSR. This is subject to change.
+Finally, your QGIS project layers' CRS should all be in the same CSR. This is subject to change.
 
 Connect to Postgres database
 ****************************
@@ -99,13 +99,13 @@ and add a section for the DB you want to access:
 * If you know the host you should use, use it.
 
 Note that if you can connect directly to the database, you don't need this tunnel.
-Ask to your database administrator the correct parameters. You probably just need
+Ask your database administrator for the correct parameters. You probably just need
 to change the host parameter.
 
 
 Then, in QGIS, fill only the ``name`` and ``service`` fields when you create the DB connection.
 
-In the project repository you should have a ``qgisserver/pg_service.conf.tmpl`` file
+In the project repository, you should have a ``qgisserver/pg_service.conf.tmpl`` file
 with a section looking like that:
 
 .. code::
@@ -117,22 +117,21 @@ with a section looking like that:
    password=${PGPASSWORD}
    port=${PGPORT}
 
-If you don't use Docker you also should add this int the Apache QGIS configuration:
+If you do not use Docker, you also should add this in the Apache QGIS configuration:
 
 .. code::
 
     SetEnv QGIS_PROJECT_FILE ${directory}/qgisserver.qgs
     + SetEnv PGSERVICEFILE ${directory}/pg_service.conf
 
-Don't forget to graceful Apache.
+Do not forget to gracefully restart Apache.
 
 Extra PostGIS connexion
 ***********************
 
-If you need to add other database connection just add a new section in the
-``$HOME/.pg_service.conf``.
-
-In the and ``qgisserver/pg_service.conf.tmpl`` files add a new section like that:
+If you need to add another database connection, add a new section in the
+``$HOME/.pg_service.conf``.  
+In the ``qgisserver/pg_service.conf.tmpl`` files, add a new section:
 
 .. code::
 
@@ -157,20 +156,20 @@ And in your ``vars.yaml`` file:
            EXTRA_PGPASSWORD: <pass>
            EXTRA_PGPORT: <port>
 
-With that you can respect that the connection should be passed throw the environments variables
-to be able change the database connexion without rebuilding your application.
+With this configuration, the connection will be passed through the environment variables,
+so that you can change the database connection without rebuilding your application.
 
 
 OGC server
 ==========
 
-In the project file you should set the online resource URL
+In the project file, you should set the online resource URL
 (Project/Properties.../QGIS Server/General information/Online resource) to
 ``https://<host>/<entrypoint>/mapservproxy?ogcserver=<name>``, e.-g.
 ``https://geomapfish-demo.camptocamp.com/mapservproxy?ogcserver=QGIS%20server``.
 
-To use the QGIS server in authenticated mode through the mapserv proxy, it's required to be in docker mode,
-and he should be configured as follow:
+To use the QGIS server in authenticated mode through the mapserv proxy, it is required to be in docker mode,
+and the configuration should be as follows:
 
 * Name: ``<name>``, e.-g. ``QGIS server``
 * Base URL: ``http://qgisserver:8080/``
@@ -184,15 +183,15 @@ and he should be configured as follow:
 Access Restriction
 ******************
 
-The access restriction is available only for Docker projects
+The access restriction is available only for Docker projects.
 
 We provide an Docker image named ``camptocamp/geomapfish-qgisserver`` with tag pattern:
 ``gmf<Major GeoMapFish version}-qgis${Major QGIS}``.
 
-Configuration for a single project, just provide the OGC server name in the environment variable named:
+To configure a single project, just provide the OGC server name in the environment variable named:
 ``GEOMAPFISH_OGCSERVER``.
 
-If you need to provide more than one QGIS projects you should write a config file named, e.g.
+If you need to provide more than one QGIS project, you should write a config file named, e.g.
 ``qgisserver/accesscontrol_config.yaml``, with the content:
 
 .. code:: yaml
@@ -201,8 +200,8 @@ If you need to provide more than one QGIS projects you should write a config fil
      <project file path>:
        ogc_server: <OGC server name>
 
-``<project file path>`` should have exactly the same value a the ``MAP`` parameter in the ``Base URL``
-vavalue of the OGC sever.
+``<project file path>`` should have exactly the same value as the ``MAP`` parameter in the ``Base URL``
+value of the OGC server.
 
-And finally you should provide the ``GEOMAPFISH_ACCESSCONTROL_CONFIG`` to point to config file e.-g.
+Finally, you should provide the ``GEOMAPFISH_ACCESSCONTROL_CONFIG`` to point to a config file e.-g.
 ``/etc/qgisserver/accesscontrol_config.yaml``, and ``QGIS_PROJECT_FILE`` to be empty.

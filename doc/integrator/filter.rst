@@ -7,7 +7,7 @@ Filterable layers (public)
 --------------------------
 
 Per default, layers are not filterable.
-If you wish to provide the filter functionality, proceed as follows:
+If you wish to provide filter functionality, proceed as follows:
 
 * Verify your project vars file to make sure that the functionality ``filterable_layers``
   is made available in your project template files:
@@ -94,9 +94,9 @@ attribute level. ``table`` is a mandatory parameter.
 
 If ``column_name`` is not defined, the attribute name is used.
 
-If ``separator`` is defined, the column is considered as a list of values.
+If ``separator`` is defined, the column is treated as a list of values.
 
-Simple example:
+Example:
 
 .. code:: yaml
 
@@ -114,7 +114,7 @@ Step 2: Administration interface
 
 You can add some additional configuration in the administration interface as follows.
 
-It is possible to define enumerated or directed attributes, to wms layers only, via metadata.
+It is possible to define enumerated or directed attributes, to WMS layers only, via metadata.
 The metadata to look at is ``enumeratedAttributes`` or ``directedFilterAttributes``.
 
 For enumerated attributes, the value is a single string or a list of attributes (that we defined earlier
@@ -132,13 +132,12 @@ Client-side documentation related to the enumeratedAttributes and directedFilter
 Using DB sessions
 ~~~~~~~~~~~~~~~~~
 
-As explained above, it is possible to get the attributes lists including
-for layers whose data are hosted in external databases, using the
+It is possible to get attribute lists also
+for a layer whose data is hosted in an external database, using the
 ``dbsession: "<session name>"`` parameter.
 
 Such `DB session objects <http://docs.sqlalchemy.org/en/rel_1_0/orm/session_basics.html#getting-a-session>`_
-must be listed in the ``DBSessions`` dictionary created in c2cgeoportal
-models file. Its default value is:
+must be listed in the ``DBSessions`` dictionary. Its default value is:
 
 .. code:: python
 

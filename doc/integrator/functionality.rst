@@ -13,7 +13,7 @@ A functionality may be associated to users through different ways:
 3. Functionalities for specific roles are defined in the database through the administration interface.
 4. Functionalities for specific users are defined in the database through the administration interface.
 
-Each level overrides the previous ones in the same order as indicated above.
+Each level overrides the previous ones in the order indicated above.
 For example, if the user is authenticated and has associated functionalities in
 the ``user`` database table, then the ``functionalities:anonymous`` and
 ``functionalities:registered`` configuration variables, as well as any
@@ -62,8 +62,8 @@ The ``vars_<project>.yaml`` file includes variables for managing *functionalitie
                 - 2 A3 landscape
                 default_basemap: plan
 
-    In this example anonymous users can print maps using the ``1 A4 portrait``
-    and ``2 A3 landscape`` layouts only. And their default base layer is the
+    In this example, anonymous users can print maps using the ``1 A4 portrait``
+    and ``2 A3 landscape`` layouts only. Their default base layer is the
     ``plan`` layer.
 
 ``functionalities:registered``
@@ -102,11 +102,11 @@ plugins according to the user's permissions.
 Example of the default_basemap Functionality
 ............................................
 
-Using functionalities, it is easy to set the default basemap that will be
+Using functionalities, you can set the default basemap that will be
 displayed when a user loads the application depending on whether he/she is
 anonymous, authenticated or has some specific role.
 
-First make sure that ``default_basemap`` is made available in the templates
+First, make sure that ``default_basemap`` is made available in the templates
 using the ``functionalities:available_in_templates`` parameter in the
 ``vars_<project>.yaml`` configuration file:
 
@@ -125,7 +125,7 @@ for anonymous users:
             # some other configs...
             default_basemap: <some_basemap>
 
-Optionally you may also indicate what basemap to use for authenticated users
+Optionally, you may also indicate what basemap to use for authenticated users
 (if omitted, the anonymous ``default_basemap`` value will be used):
 
 .. code:: yaml
@@ -136,12 +136,11 @@ Optionally you may also indicate what basemap to use for authenticated users
         registered:
             default_basemap: <some_other_basemap>
 
-Finally you may link ``default_basemap`` functionalities to some roles or
+Finally, you may link ``default_basemap`` functionalities to some roles or
 users in the administration interface.
 
-So that the ``default_basemap`` is actually provided to the
-``cgxp_mapopacityslider`` plugin, use the following configuration in your
-project's ``viewer.js`` template:
+If you are using the ``cgxp_mapopacityslider`` plugin, use the following configuration in your
+project's ``viewer.js`` template so that the ``default_basemap`` is provided there:
 
 .. code:: javascript
 

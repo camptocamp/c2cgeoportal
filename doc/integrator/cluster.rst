@@ -7,29 +7,29 @@ A cluster is a configuration where several servers are used to serve the applica
 in production.
 
 Creating a cluster implies to separate the database and the application to
-make sure that the data are the same on all servers.
+make sure that the data is the same on all servers.
 
-A possibility is to have the same database for all servers (integration, production).
+One possibility is to have the same database for all servers (integration, production).
 A single schema for static data is shared, whereas a dedicated main schema will
 be used for each server.
 
 Deploying data from integration to production may be done by
 `cloning the main integration schema <https://wiki.postgresql.org/wiki/Clone_schema>`_.
 
-For the next steps it is important to figure out if the main goal is the scalability
+For the next steps, it is important to know if your main goal is the scalability
 or the robustness of the application.
 
-In general the scalability is more important because the main cause of
-down time is due of too much traffic.
+In general, scalability is more important, because the main cause of
+down time is too much traffic.
 
-In this case the first thing to do is to separate the services:
+In this case, the first thing to do is to separate the services:
 
  * PostgreSQL / PostGIS
  * Print
  * WSGI application
  * MapServer / MapCache / Memcached
 
-To have better DB performances, one can setup multiple Postgres servers in a
+To have better DB performance, one can setup multiple Postgres servers in a
 `master/slave <https://wiki.postgresql.org/wiki/Binary_Replication_Tutorial>`_
 configuration. To enable this feature on GeoMapFish, you must add this to your
 ``vars_<project>.yaml``:
@@ -46,7 +46,7 @@ application (bad practice), add entries to ``db_chooser/master`` in your ``vars_
 For forcing the use of a slave for a POST/PUT/DELETE, add entries to the ``db_chooser/slave``
 configuration.
 
-For having more than one instance of slave and having an automatic election of a new
-master in case of failure, you must setup an high availability proxy (HAProxy, for example).
+To have more than one slave instance and to have an automatic election of a new
+master in case of failure, you must setup a high availability proxy (HAProxy, for example).
 This is out of the scope of this document. If you do not care about failover, you can use one
 DNS entry with multiple IP entries for the slaves.
