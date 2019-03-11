@@ -65,9 +65,8 @@ import c2cgeoportal_geoportal.views
 LOG = logging.getLogger(__name__)
 
 # Header predicate to accept only JSON content
-# OL/cgxp are not setting the correct content type for JSON. We have to accept
-# XML as well even though JSON is actually send.
-JSON_CONTENT_TYPE = "Content-Type:application/(?:json|xml)"
+JSON_CONTENT_TYPE = "Content-Type:application/json"
+GEOJSON_CONTENT_TYPE = "Content-Type:application/geo+json"
 
 
 class DecimalJSON:
@@ -574,10 +573,10 @@ def includeme(config: pyramid.config.Configurator):
         request_method="GET")
     config.add_route(
         "layers_create", "/layers/{layer_id:\\d+}",
-        request_method="POST", header=JSON_CONTENT_TYPE)
+        request_method="POST", header=GEOJSON_CONTENT_TYPE)
     config.add_route(
         "layers_update", "/layers/{layer_id:\\d+}/{feature_id}",
-        request_method="PUT", header=JSON_CONTENT_TYPE)
+        request_method="PUT", header=GEOJSON_CONTENT_TYPE)
     config.add_route(
         "layers_delete", "/layers/{layer_id:\\d+}/{feature_id}",
         request_method="DELETE")
