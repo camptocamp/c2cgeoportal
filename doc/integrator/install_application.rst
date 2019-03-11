@@ -4,7 +4,7 @@ Install an existing application
 ===============================
 
 On this page we explain the procedure to build an application from
-only the code.
+only the current application code.
 
 If you want to use an existing database, you should ignore
 all the commands concerning the database.
@@ -47,7 +47,7 @@ with ``<db_name>`` replaced by the actual database name.
 
 .. note::
 
-   if you do not have the template_postgis you can use:
+   If you do not have the template_postgis you can use:
 
    with Postgres >= 9.1 and PostGIS >= 2.1:
 
@@ -67,8 +67,8 @@ with ``<db_name>`` replaced by the actual database name.
    Note that the path of the postgis scripts and the template name can
    differ on your host.
 
-Create the "pg_trgm" extension to use the "similarity" function within the
-full-text search:
+If you wish to use the "similarity" function within the
+full-text search, create the ``pg_trgm`` extension:
 
 .. prompt:: bash
 
@@ -229,7 +229,7 @@ on RedHat Enterprise Linux (RHEL) 6.
     application in your homedir. If you do so, you will get the following error
     in the Apache logs::
 
-        (13)Permission denied: access to /~elemoine/ denied
+        (13)Permission denied: access to /~<your_user_id>/ denied
 
     So always install the application in an Apache-accessible directory. On
     Camptocamp *puppetized* servers you will typically install the application
@@ -283,11 +283,11 @@ This previous command will do many things like:
 
 
 Your application should now be available at:
-``https://<hostname>/``.
+``https://<hostname>/``,
+where the ``<hostname>`` is directly linked to the virtual host.
 
-Where the ``<hostname>`` is directly linked to the virtual host.
-
-Add in the ``/var/www/vhosts/<vhost_name>/conf/proxies.conf`` file (create it if not exist):
+Add in the ``/var/www/vhosts/<vhost_name>/conf/proxies.conf`` file
+(create it if it does not exist):
 
 .. code::
 
@@ -298,7 +298,7 @@ Add in the ``/var/www/vhosts/<vhost_name>/conf/proxies.conf`` file (create it if
    RequestHeader set X-Forwarded-Port "443"
    ProxyRequests Off
 
-The root instace should be at the end.
+The root instance should be at the end.
 
 Migrating to a new server
 -------------------------

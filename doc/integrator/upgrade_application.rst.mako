@@ -8,7 +8,7 @@ Upgrading a GeoMapFish application
 From a version 2.2
 ~~~~~~~~~~~~~~~~~~
 
-If you have some custom Angular components you should first follow these instructions:
+If you have some custom Angular components, you should first follow these instructions:
 `Migration from ngeo 2.2 to ngeo 2.3
 <https://github.com/camptocamp/ngeo/blob/2.3/docs/how_to_migrate_from_2.2_to_2.3.md>`_
 
@@ -50,7 +50,7 @@ Prepare the upgrade:
 
 .. note::
 
-   If the last command failed you should create the ``project.yaml`` file
+   If the last command failed, you should create the ``project.yaml`` file
    from the ``project.yaml.mako`` file.
 
 For Docker (recommended):
@@ -85,7 +85,7 @@ Then follow the instructions.
       Please make sure you have the correct access rights
       and the repository exists.
 
-   you can fix it by using the following command:
+   you can fix it by using the following command,
 
    .. prompt:: bash
 
@@ -191,38 +191,40 @@ Layer definition for ngeo clients is separate and different from layer
 definition for CGXP clients, see :ref:`administrator_administrate_layers`
 for details.
 To migrate the layer definitions from the CGXP structure to the ngeo
-structure, you can use the script themev1tov2.
+structure, you can use the script ``themev1tov2``.
 
-In non docker context, run the script from venv:
-
-.. prompt:: bash
-
-   .build/venv/bin/themev1tov2 -i geoportal/production.ini
-
-In docker context, run the script from geoportal service:
+In a docker project, run the script from geoportal service:
 
 .. prompt:: bash
 
    docker-compose up -d
    docker-compose exec geoportal themev1tov2
 
+In a non docker project, run the script from venv:
+
+.. prompt:: bash
+
+   .build/venv/bin/themev1tov2 -i geoportal/production.ini
+
+
 Text translations for ngeo clients are separate and different from text
 translations for CGXP clients.
-To migrate the text translations from CGXP to ngeo, you can use the script
-
+To migrate your text translations from CGXP to ngeo, you can use the script
 ``.build/venv/bin/l10nv1tov2``.
-For example, for converting french texts, in non docker context, the script can
-be used as follows:
 
-.. code:: bash
-
-   .build/venv/bin/l10nv1tov2 fr geoportal/<package>_geoportal/static/js/Proj/Lang/fr.js \
-   geoportal/locale/fr/LC_MESSAGES/geoportal-client.po
-
-In docker context, run the script using docker-compose-run:
+In a docker project, run the script using docker-compose-run
+(example for converting french language texts):
 
 .. prompt:: bash
 
    docker-compose up -d
    ./docker-compose-run l10nv1tov2 fr geoportal/<package>_geoportal/static/js/Proj/Lang/fr.js \
    geoportal/<package>_geoportal/locale/fr/LC_MESSAGES/geoportal-client.po
+
+
+In a non docker project, the script can be used as follows:
+
+.. prompt:: bash
+
+   .build/venv/bin/l10nv1tov2 fr geoportal/<package>_geoportal/static/js/Proj/Lang/fr.js \
+   geoportal/locale/fr/LC_MESSAGES/geoportal-client.po
