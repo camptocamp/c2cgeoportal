@@ -60,7 +60,7 @@ WinSCP manual is available online at http://winscp.net/eng/docs/start
 4. In the "SSH > Protocol Options" section, make sure that SSH version is set to "2".
 5. Click on "Connect" and type your passphrase when prompted.
 6. if you get disconnected because of your network configuration (proxies etc.),
-   you should follow 
+   you should follow
    `this explanation <http://superuser.com/questions/389378/winscp-and-putty-drop-out-constantly-on-other-computer-they-dont>`_
 
 Saving your Passphrase with PuTTY or WinSCP

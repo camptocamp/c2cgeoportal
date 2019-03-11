@@ -6,7 +6,7 @@ Automated check
 c2cgeoportal applications include functionality for testing and assessing that the application is correctly
 functioning, i.e. that its web services respond as expected.
 
-For this purpose we have a *checker* and a *check_collector*.  
+For this purpose we have a *checker* and a *check_collector*.
 These (especially the collector) are meant to be used by a
 monitoring system like Nagios to check that the application is alive.
 

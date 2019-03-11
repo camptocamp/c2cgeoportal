@@ -48,7 +48,7 @@ Access to services by external servers
 By default, only localhost can access c2cgeoportal's services.
 To permit access to a specific service by an external server, you must set CORS headers (Access-Control-Allow-Origin) in your ``vars_<project>.yaml`` file.
 
-Add or modify the structure as follows: 
+Add or modify the structure as follows:
 
 .. code:: yaml
 

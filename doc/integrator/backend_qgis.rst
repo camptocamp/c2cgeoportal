@@ -130,7 +130,7 @@ Extra PostGIS connexion
 ***********************
 
 If you need to add another database connection, add a new section in the
-``$HOME/.pg_service.conf``.  
+``$HOME/.pg_service.conf``.
 In the ``qgisserver/pg_service.conf.tmpl`` files, add a new section:
 
 .. code::
