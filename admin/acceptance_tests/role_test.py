@@ -48,8 +48,10 @@ def roles_test_data(dbsession, transact):
         role.restrictionareas = [
             restrictionareas[0],
             restrictionareas[1]]
-        role.extent = from_shape(box(485869.5728, 76443.1884, 837076.5648, 299941.7864),
-                                 srid=21781)
+        role.extent = from_shape(
+            box(485869.5728, 76443.1884, 837076.5648, 299941.7864),
+            srid=21781
+        )
         dbsession.add(role)
         roles.append(role)
 
