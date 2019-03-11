@@ -48,6 +48,7 @@ pycryptodome==3.6.1  # geoportal
 pyflakes==1.6.0  # lint
 Pygments==2.2.0  # doc
 pylint==1.8.4  # lint
+pyproj==1.9.6  # admin, other?
 pyramid==1.9.1
 pyramid_debugtoolbar==4.4  # geoportal
 pyramid_jinja2==2.7  # admin
