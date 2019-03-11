@@ -15,8 +15,9 @@ ENV NODE_PATH=/usr/lib/node_modules
 
 COPY webpack.config.js /tmp
 
-RUN \
+RUN extract-ngeo-dependencies && \
   extract-ngeo-dependencies > /tmp/deps.js && \
+  webpack --mode production --profile --json && \
   (cd /tmp; webpack --mode production --profile --json > stats.json)
 
 RUN \
