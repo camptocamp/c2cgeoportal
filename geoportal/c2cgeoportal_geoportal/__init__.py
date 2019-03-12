@@ -66,7 +66,7 @@ LOG = logging.getLogger(__name__)
 
 # Header predicate to accept only JSON content
 JSON_CONTENT_TYPE = "Content-Type:application/json"
-GEOJSON_CONTENT_TYPE = "Content-Type:application/geo+json"
+GEOJSON_CONTENT_TYPE = r'Content-Type:application/geo\+json'
 
 
 class DecimalJSON:
