@@ -119,7 +119,7 @@ Add the name of your interface to the table. This can be done using the admin in
 Checker
 ~~~~~~~
 
-This section describes how to Enable the checker for the new interface.
+This section describes how to enable the checker for the new interface.
 
 We suggest to add only the main checker in the ``defaults``. It is what is done by default.
 In the ``all`` (``vars.checker.all``) section, check all the ngeo interfaces in standard

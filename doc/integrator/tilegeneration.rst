@@ -6,7 +6,7 @@ TileGeneration
 Introduction
 ------------
 
-With this solution we solve the following issue:
+With this solution, we solve the following issues:
 
 * Managing millions of files on the file system is difficult.
 
@@ -14,23 +14,23 @@ With this solution we solve the following issue:
 
 * We should not have thousands of expired files.
 
-To do so we need need a tool that can generate the tiles,
+To do so, we need need a tool that can generate the tiles,
 update some of them contained in given geometries and delete empty tiles.
 
 On-the-fly tiles generation introduces some issues such as having a growing
-number of tiles that may become unmanageable. For example when updating the
+number of tiles that may become unmanageable. For example, when updating the
 data, it is not possible to figure out what tiles should be updated.
 
-For the high usage website we want to put the tiles on S3
+For high usage websites, we want to put the tiles on S3
 with the same tool.
 
-One issue we have if we want to generate all the tiles, the generation
+One issue we have if we want to generate all the tiles is that the generation
 time can grow to more than one month, especially if we have
 a high resolution (low if in m/px) on the last zoom level.
-Than for the last zoom level we should generate the tiles on the fly
+Therefore for the last zoom level we should generate the tiles on the fly
 with a low expiry (4 hours for example).
-We should use metatiles to do not have too may request to postgres.
-And the tiles should be delete after the expiry time.
+We should use metatiles to reduce the number of requests to postgres.
+And the tiles should be deleted after the expiry time.
 
 The chosen solution is a combination of two tools:
 
@@ -46,7 +46,7 @@ MapCache is a tool of the MapServer Suite.
 It is recommended to use `Memcached <http://memcached.org/>`_ as cache,
 since it is the only system that offers automatic deletion of the expired tiles.
 
-To use it you should have MapCache and Memcached installed on your computer.
+To use it, you should have MapCache and Memcached installed on your computer.
 And Memcached should listen on port 11211.
 
 To clear/flush Memcached cache, use the following command:
@@ -56,7 +56,7 @@ To clear/flush Memcached cache, use the following command:
     echo "flush_all" | /bin/netcat -q 2 127.0.0.1 11211
 
 See the `TileCloud-chain documentation for more details
-<https://github.com/camptocamp/tilecloud-chain#configure-mapcache>`_
+<https://github.com/camptocamp/tilecloud-chain#configure-mapcache>`_.
 
 TileCloud-chain
 ---------------
@@ -68,24 +68,20 @@ WMTS layout.
 It supports the following AWS services for generating tiles:
 EC2, SQS, SNS.
 
-`See readme <http://pypi.python.org/pypi/tilecloud-chain>`_.
+See the `readme <http://pypi.python.org/pypi/tilecloud-chain>`_.
 
 Initialization
 ~~~~~~~~~~~~~~
 
-* Build the project:
+* Build the project as usual
 
-  .. prompt:: bash
-
-     make docker-build
-
-* In the ``<prokect>.mk`` activate the tile generation:
+* In the ``<project>.mk``, activate the tile generation:
 
   .. code::
 
      TILECLOUD_CHAIN ?= TRUE
 
-* If you use local cache activate the capabilities generation with:
+* If you use local cache, activate the capabilities generation with:
 
   .. code::
 
@@ -94,7 +90,7 @@ Initialization
   and set the ``wmtscapabilities_file`` to ``${wmtscapabilities_path}`` in your
   ``tilegeneration/config.yaml.mako`` file.
 
-* In your ``<prod>.mk`` you can also set the capabilities file name with:
+* In your ``<prod>.mk``, you can also set the capabilities file name with:
 
   .. code::
 
@@ -109,15 +105,15 @@ Initialization
 Configuration
 ~~~~~~~~~~~~~
 
-The configuration is done in the self-documented file
-``tilegeneration/config.yaml``. The original file is available at:
+The configuration is done in the file
+``tilegeneration/config.yaml.mako``. The original file is available at:
 https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/scaffolds/create/tilegeneration/config.yaml.mako_tmpl
 
 The main thing to do is to:
 
 * Set the resolutions we want to generate in the ``grids``.
-  If we want to generate different resolution per layers we should create
-  deferent grid.
+  If we want to generate different resolutions per layer, we should create
+  different grids.
   Sub-level of ``grids`` is the grid name.
 
 * Configure the ``caches`` and set the ``generation``/``default_cache``.
@@ -127,7 +123,7 @@ The main thing to do is to:
   ``generation``/``default_layers``.
   Sub-level of ``layers`` is the layer name.
 
-* We can drop the empty tiles with an hash comparison,
+* We can drop the empty tiles with a hash comparison,
   tilecloud-chain has a tool to help us:
 
   .. prompt:: bash
@@ -135,9 +131,9 @@ The main thing to do is to:
      docker-compose exec tilecloudchain generate_tiles --get-hash <max-zoom>/0/0 --layer <layer>
 
   We consider that the first tile of the max zoom is empty.
-  Than copy past the result in the layer config.
+  Then copy-paste the result in the layer config.
 
-* If you need it you can generate the WMTS capabilities file:
+* If you need it, you can generate the WMTS capabilities file:
 
   .. prompt:: bash
 
@@ -149,14 +145,14 @@ The main thing to do is to:
 
      docker-compose exec tilecloudchain generate_controller --openlayers-test
 
-If you generate the tiles locally you do not need all the configuration
+If you generate the tiles locally, you do not need all the configuration
 variables, because many of them in the ``generation`` part are for
 AWS generation.
 
 Tile Generation and management
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This package offers two commands lines, one to generate the tiles locally,
+This package offers two tools, one to generate the tiles locally,
 see help:
 
 .. prompt:: bash
@@ -169,13 +165,13 @@ one to generate the tiles using AWS, see help:
 
     docker-compose exec tilecloudchain generate_controller --help
 
-Before start a tile generation on S3 measure the cost:
+Before starting a tile generation on S3, measure the cost:
 
 .. prompt:: bash
 
     docker-compose exec tilecloudchain generate_controller --cost
 
-If you setup all the default options you can generate the tiles by
+If you setup all the default options, you can generate the tiles by
 using the command:
 
 .. prompt:: bash
@@ -189,4 +185,4 @@ using the command:
        export AWS_ACCESS_KEY_ID=XXXXX
        export AWS_SECRET_ACCESS_KEY=YYYY
 
-   If you forget it you will get an explicit message.
+   If you forget it, you will get an error message.

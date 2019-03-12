@@ -34,7 +34,7 @@ The second output is an in memory collector that adds two URLs to the applicatio
 * /stats.html
 * /stats.json
 
-To enabled it (not recommended for production systems), you can either define the
+To enable it (not recommended for production systems), you can either define the
 following environment variable:
 
 .. prompt:: bash
@@ -55,7 +55,7 @@ Add more statistics
 -------------------
 
 By default, timing statistics are added for the routes and the SQL queries. If you want to
-measures special things in you application, just add code like that:
+measure special things in your application, add code as follows:
 
 .. code:: python
 

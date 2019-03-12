@@ -1,14 +1,13 @@
 .. _integrator_customise:
 
 =========================
-Customise the application
+Customize the application
 =========================
 
 .. toctree::
    :maxdepth: 2
 
-The application can be customised in the following manners:
-
+The application can be customized in the following manners:
 ``functionalities``, ``UI metadata`` and data model extensions.
 
 The functionalities will be attached to the ``role`` and the ``theme``,
@@ -16,8 +15,7 @@ and the UI metadata will be attached to all the elements of the theme.
 
 They should be configured in the vars file, in the ``admin_interface`` /
 ``available_functionalities`` or respectively ``available_metadata``.
-
-It is a list of object who have a ``name`` and a ``type``.
+It is a list of objects which have a ``name`` and a ``type``.
 
 The type can be:
 
@@ -34,13 +32,13 @@ The type can be:
 
 Check ``CONST_vars.yaml`` for examples of usage.
 
-In order to inherit the default values from ``CONST_vars.yaml`` make sure the ``update_paths`` section contains
+In order to inherit the default values from ``CONST_vars.yaml``, make sure the ``update_paths`` section contains
 the item ``admin_interface.available_functionnalities`` or respectively ``admin_interface.available_metadata``.
 
 URL
 ---
 
-In the admin interface we can use in all the URLs the following special schema:
+In the admin interface, we can use for all URL definitions the following special schema:
 
 * ``static``: to use a static route,
 

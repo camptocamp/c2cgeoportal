@@ -70,10 +70,10 @@ You can then access your application with http://localhost:8480/
 Run with a local c2cgeoportal
 -----------------------------
 
-If you need to fix bugs in c2cgeoportal or test new features, you need to hack
+If you need to fix bugs in c2cgeoportal or test new features, you need to alter
 the Docker image creation to use your version of c2cgeoportal.
 
-First, you need to move/copy you c2cgeoportal clone into you project root
+First, you need to move/copy your c2cgeoportal clone into your project root
 directory. That is needed to allow Docker to see those files.
 
 Then, add this line to your ``<package>.mk`` file (before the ``include ...``):
@@ -123,7 +123,7 @@ Then, in your ``<package>/__init__.py`` file, add this function:
         settings[DB_KEY] = new
 
 By setting the ``SQLALCHEMY_URL`` environment variable in your composition
-for the WSGI image, you'll be able to change the DB connection used.
+for the WSGI image, you will be able to change the DB connection used.
 
 You can change your ``production.ini`` and ``development.ini`` files to use
 environment variables for configuring the loggers. Here is an example for
@@ -168,11 +168,10 @@ the part about the logging:
     args = [("%(LOG_HOST)s", %(LOG_PORT)s)]
     level = NOTSET
 
-Please note that to use
-``CeeSysLogHandler`` you need to add ``cee_syslog_handler>=0.3.3`` to your
+Please note that to use ``CeeSysLogHandler``, you need to add ``cee_syslog_handler>=0.3.3`` to your
 dependencies.
 
-Define default values for all those environment variables in your
+Define default values for all the environment variables in your
 ``Dockerfile`` and then you can change them in your composition. For example
 add the following at the end of your ``Dockerfile``:
 
@@ -190,7 +189,7 @@ MapServer
 
 The created ``mapserver/Dockerfile`` file installs a hook to make the setup of
 the DB possible. Just set the ``DB_CONNECTION`` environment variable to
-something like that:
+something like:
 
 .. code:: docker
 

@@ -83,8 +83,8 @@ with the following parameters:
 * ``check_credentials``: boolean, whether layer credentials are checked before generating the report. Defaults to ``True``.
 * ``srs``: projection code (required when showing the map).
 * ``spec``: optional template used to build the ``spec`` argument sent to the MapFish Print webapp.
-* ``map``: optional the map configuration.
-* ``maps``: optional a list of maps configuration.
+* ``map``: optional, the map configuration.
+* ``maps``: optional, a list of maps configurations.
 
 The map configuration can contains the following:
 
@@ -92,7 +92,7 @@ The map configuration can contains the following:
 * ``imageformat``: format of the generated map. Defaults to ``image/png``.
 * ``zoomType``: The type of zoom, default is ``extent``.
 * ``minScale``: The minimum zoom scale, default is ``1000``.
-* ``style``: The used style, default is:
+* ``style``: The style used, default is:
 
   .. code:: yaml
 
@@ -104,7 +104,7 @@ The map configuration can contains the following:
        type: point
        pointRadius: 10
 
-The variables pass to the ``spec`` template using the ``%(<variable name>)s`` syntax:
+The variables are passed to the ``spec`` template using the ``%(<variable name>)s`` syntax:
 
 * ``layername``: name of the layer.
 * ``ids``: JSON representation of the features id.
@@ -115,7 +115,5 @@ The variables pass to the ``spec`` template using the ``%(<variable name>)s`` sy
 Configuration of the reports
 ----------------------------
 
-If you use the ``ids`` in an SQL query you should use ``$X{IN, <column_name>, $P{ids}}``
-to avoid SQL injection, `see also <http://jasperreports.sourceforge.net/sample.reference/query/>`_.
-
-See the `Mapfish Print documentation <http://mapfish.github.io/mapfish-print-doc/>`_.
+If you use the ``ids`` in an SQL query, you should use ``$X{IN, <column_name>, $P{ids}}``
+to avoid SQL injection, `see also the Jasperreports documentation <http://jasperreports.sourceforge.net/sample.reference/query/>`_.
