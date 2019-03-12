@@ -634,7 +634,12 @@ vars:
       routes:
         - name: apijs
           level: 3
-        - name: xapijs
+          params:
+            version: '2'
+        - name: apijs
+          checker_name: oldapijs
+          level: 3
+        - name: oldxapijs
           level: 3
         - name: printproxy_capabilities
           level: 3

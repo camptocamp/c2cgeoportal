@@ -486,7 +486,9 @@ class TestEntryView(TestCase):
         entry, _ = self._create_entry()
 
         result = entry.get_oldapijs_values()
-        assert set(result.keys()) == {"lang", "debug", "queryable_layers", "tiles_url", "url_params"}
+        assert set(result.keys()) == {
+            "lang", "debug", "queryable_layers", "tiles_url", "url_params", "request"
+        }
         result = entry.oldxapijs()
         assert set(result.keys()) == {"lang", "debug", "queryable_layers", "tiles_url", "url_params"}
         result = entry.oldapihelp()
