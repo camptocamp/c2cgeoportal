@@ -15,14 +15,14 @@ Application behind a proxy
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If the application is placed behind some proxy that removes the SSL encryption
-(plain HTTP is used between the proxy and the server) then some specific
-configuration is required both on the c2cgeoportal application, and on the
+(plain HTTP is used between the proxy and the server), then some specific
+configuration is required both on the c2cgeoportal application and on the
 proxy:
 
 * The proxy should add a specific header to the requests. For example ``X-Https
   on`` (``X-Https`` is the header name, and ``on`` is the header value).
 * To make c2cgeoportal generate HTTPS URLs when requests with this header are
-  received you will set the `HTTPS` environment variable by adding the
+  received, you should set the `HTTPS` environment variable by adding the
   following in the ``apache/wsgi.conf.mako`` file in the ``<location ...>``
   section, in our example::
 
@@ -44,32 +44,32 @@ Application and SSL certificate on the same server
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If the SSL certificate and the application are located on the same server, all
-requests will be redirect to https. So you should change the scheme to https
-for all url except for some parameters that should always use http (actually
-all request on localhost): *url* parameter in tilegeneration configuration.
+requests will be redirected to https. So you should change the scheme to https
+for all url except for some cases that should always use http (typically,
+all requests to localhost): see *url* parameter in tilegeneration configuration.
 
 If you apply ssl encryption on your application, you should take care of the
 tiles url to use https scheme to avoid secure and insecure contents.
 
-Finally, you should redirect all http request to https scheme. On Camptocamp's
-server, this should be asked to our sysadmin team.
+Finally, you should redirect all http request to https scheme. On Camptocamp
+servers, this needs to be requested via infrastructure support.
 
 In case you load http external resources into your application, you should use
-resourceproxy service as described below.
+the resourceproxy service as described below.
 
 Loading non https external resources
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you want to load non https external resources in your https application, you
-must use the resourceproxy service and add the list of hosts you want to access
-in your project `vars.yaml` configuration file:
+should use the ``resourceproxy`` service and add the list of hosts you want to access in your project
+`vars.yaml` configuration file:
 
 .. code:: yaml
 
     resourceproxy:
         # list of urls from which it is safe to load content
         targets:
-          #exempletargetname: http://www.camptocamp.com/?param1=%s&param2=%s
+          #exampletargetname: http://www.camptocamp.com/?param1=%s&param2=%s
           rfinfo: http://www.rfinfo.vd.ch/rfinfo.php?no_commune=%s&no_immeuble=%s
 
 Then you can access resources by building urls using the following schema:

@@ -42,12 +42,13 @@ def get_config():
     config.init(context.config.get_main_option('app.cfg'))
     settings = {}
     settings.update(config.get_config())
-    main = context.config.get_main_option('type') == 'main'
+    alembic_name = context.config.get_main_option('type')
+    schema_config_name = 'schema{}'.format('_{}'.format(alembic_name) if alembic_name != 'main' else '')
     settings.update({
         'script_location': context.config.get_main_option('script_location'),
         'version_table': context.config.get_main_option('version_table'),
         'version_locations': context.config.get_main_option('version_locations'),
-        'version_table_schema': config['schema' if main else 'schema_static'],
+        'version_table_schema': config[schema_config_name],
     })
     return settings
 

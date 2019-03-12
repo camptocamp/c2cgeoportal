@@ -4,8 +4,8 @@ Mapfile configuration
 =====================
 
 As mentioned on the index page (:ref:`administrator_guide`) the application
-administrator manages the application through the database, and the
-application's MapServer mapfile.
+administrator manages the application through the database and via
+the application's MapServer mapfile.
 
 The application's mapfile is where WMS and WFS layers are defined.  WMS is used
 for the map (``WMS GetMap``), and for the ``point query`` feature (``WMS GetFeatureInfo``).
@@ -25,7 +25,7 @@ and/or *private* (a.k.a *restricted*).
 Print
 -----
 
-MapFish Print does single tile requests to the WMS server. For that reason we
+MapFish Print performs single tile requests to the WMS server. For that reason we
 need to use a relatively large value for the ``MAXSIZE`` parameter (of the
 ``MAP`` section); 5000 for example.
 
@@ -100,8 +100,8 @@ The ``LAYER`` should also define metadata, with a ``METADATA`` section. For exam
 
 .. warning::
 
-    The geometry columns of layers involved in ``query`` should have the
-    same name. By default the ``filters`` assumes the name is ``geom``.
+    The geometry columns of layers involved in ``query`` should have the same name.
+    By default the ``filters`` assumes the name is ``geom``.
 
 In contrast to WMS GetFeatureInfo, WFS GetFeature supports ``point query`` as
 well as ``box query``. However, it is to be noted that WFS GetFeature may
@@ -144,7 +144,7 @@ The ``gml_include_items``, ``gml_<geometry name>_type`` and ``gml_geometries``
 ``gml_<geometry name>_type``
 
   This specifies the type of a geometry column. Specifying this property is
-  necessary if geometries, instead of bboxes should be returned in
+  necessary if geometries, instead of bboxes, should be returned in
   GetFeatureInfo (GML) responses. ``<geometry name>`` should be replaced the string set
   with the ``gml_geometries``. For example, if ``geom_geometries`` is set to
   ``the_geom`` then ``gml_the_geom_type`` should be used.
@@ -159,22 +159,21 @@ See the `WMS Server MapFile Documentation <http://mapserver.org/ogc/wms_server.h
 Restricted layer
 ----------------
 
-The restricted layers work only with postgres data.  All layer defined as
-restricted in the mapfile should be defined as well in the admin interface and vice versa.
+The restricted layers work only with PostgreSQL data.  All layers defined as restricted in the mapfile
+should be defined as well in the admin interface and vice versa.
 
 With a RestrictionArea area
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-A RestrictionArea is used to restricted the layer displaying to a given area.
-This area is specified in the administration interface by defining the ``RestrictionArea`` element.
+A RestrictionArea is used to restrict the layer displaying to a given area.
+This area is specified in the administration interface while defining the ``RestrictionArea`` element.
 
 .. warning::
 
-   Using an restriction area on a big layer or defining a too complex area
+   Using a restriction area on a big layer or defining a very complex area
    may slow down the application.
 
-To define a restricted layer in the Mapfile the ``DATA`` property of the
-``LAYER`` should look like this:
+To define a restricted layer in the Mapfile, the ``DATA`` property of the ``LAYER`` should look like this:
 
 .. code:: sql
 
@@ -237,7 +236,7 @@ It is defined as follows:
 Without restriction on the RestrictionArea area
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If we do not need to restrict on an area we can use the following
+If we do not need to restrict on an area, we can use the following
 ``DATA`` property of the ``LAYER``::
 
     DATA "the_geom FROM (
@@ -297,7 +296,7 @@ Variable Substitution
 ---------------------
 
 It is possible to adapt some values in the mapfile according to the user's role
-by using variable substitution. For instance to hide some layer objects
+by using variable substitution, for instance to hide some layer objects
 attributes. The list of parameters that support variable substitution is
 available `here <http://mapserver.org/cgi/runsub.html#parameters-supported>`_.
 
@@ -310,7 +309,7 @@ section in the MapFile and add:
     "s_<variable>" "<validation_pattern>"
 
 The ``validation_pattern`` is a regular expression used to validate the
-argument. For example if you only want lowercase characters and commas,
+argument. For example, if you only want lowercase characters and commas,
 use ``^[a-z,]*$``.
 
 Now in ``LAYER`` place ``%s_<variable>%`` where you want to
@@ -319,7 +318,7 @@ insert the variable value, but not at the start of a line (to avoid escape issue
 Then in the administration interface, create a ``functionality`` named
 ``mapserver_substitution`` with the value: ``<variable>=<value>``.
 
-Please note that we cannot use substitution in the ``MATADATA`` values.
+Please note that we cannot use substitution in the ``METADATA`` values.
 As a result, if you would like to adapt the list of attributes returned in a
 WFS GetFeature or WMS GetFeatureInfo request, you have to adapt the columns
 listed in the ``DATA`` section. For instance:
@@ -351,8 +350,8 @@ interface with for instance the following value for the given role:
 
 .. note::
 
-   We are also able to use the ``role_id`` and ``user_id`` as
-   variable substitution, but they are not available for cached query like:
+   You can also use variable substitution for the ``role_id`` and ``user_id``,
+   but beware that these attributes are not available for cached queries like:
    ``GetCapabilities``, ``GetLegendGraphic``, ``DescribeFeatureType``.
 
 `MapServer documentation <http://mapserver.org/cgi/runsub.html>`_
@@ -367,8 +366,8 @@ because it saves MapServer from computing the extent of all layer features.
 Prepare raster files
 ~~~~~~~~~~~~~~~~~~~~
 
-To have good performance you should have tiled files with overview, and probably
-a tileindex, you can doing these steps:
+To achieve good performance, you should have tiled files with overview, and ideally
+a tileindex, you can achieve this with these steps:
 
 Convert your rasters in tiled GeoTIFF:
 
@@ -376,13 +375,13 @@ Convert your rasters in tiled GeoTIFF:
 
   gdal_translate -of GTiff -co "TILED=YES" -co "TFW=YES" <filename_in.tif> <filename_out.tif>
 
-Then build overviews for your rasters
+Then build overviews for your rasters:
 
 .. code::
 
   gdaladdo -r average filename.tif 2 4 8 16
 
-You can generate a shapefile indexing all your rasters
+You can generate a shapefile indexing all your rasters:
 
 .. code::
 
@@ -396,6 +395,6 @@ images and has memory leaks with ECW. See this
 `MapServer ticket <http://trac.osgeo.org/mapserver/ticket/3245>`_
 for example.
 
-If you still want to use it then replace ``SetHandler fcgid-script``
+If you still want to use it, then replace ``SetHandler fcgid-script``
 by ``SetHandler cgi-script`` in the ``apache/mapserver.conf.mako``
 file. But note that this affects performance.

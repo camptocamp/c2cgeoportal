@@ -1,7 +1,6 @@
 .. _administrator_tinyows:
 
 Transactional WFS with TinyOWS
-==============================
 
 Based on `TinyOWS <http://mapserver.org/tinyows/>`_ c2cgeoportal mapserver layers can be
 edited via Transactional WFS (WFS-T), for example using QGIS as a client. c2cgeoportal acts as a
@@ -63,10 +62,9 @@ In the root element ``tinyows`` the following properties have to be set:
 * ``log_level`` - The log level (default: 1). Please refer to the
    `TinyOWS documentation <http://mapserver.org/tinyows/configfile.html#tinyows-element>`__
    for more information.
-* ``check_schema`` - If the input data is validated against the schema when
-   creating new features. In a vhost environment the schema check has to be
-   disabled, so that the proxy can function properly. This does not disable
-   the validation database-side though!
+* ``check_schema`` - Defines if the input data is validated against the schema when new features are
+   created. In a vhost environment, the schema check has to be disabled, so that the proxy can function
+   properly. This does not disable the validation database-side though!
 
 The database connection is configured in the element ``pg``. By default the
 same database as for the c2cgeoportal application will be used.
@@ -86,7 +84,7 @@ The layers that should be accessible with TinyOWS have to specified with ``layer
           title="Points"
           pkey="id" />
 
-In this example a layer named ``point`` is created for table ``point`` in the
+In this example a layer named ``point`` is created for the table ``point`` in the
 database schema ``edit`` with the primary key column ``id``. This layer is both
 ``retrievable`` and ``writable``.
 
@@ -107,11 +105,8 @@ access to a layer to the users of a restriction-area.
     `TinyOWS documentation <http://mapserver.org/tinyows/configfile.html#layer-element>`__
     for more information.
 
-After the configuration is made, re-build the c2cgeoportal application:
+After the configuration is made, re-build your c2cgeoportal application as usual.
 
-.. prompt:: bash
-
-    ./docker-run make build
 
 Editing a layer with WFS-T
 --------------------------

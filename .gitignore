@@ -40,6 +40,7 @@
 /doc/index.rst
 /doc/developer/server_side.rst
 /doc/integrator/create_application.rst
+/doc/integrator/ngeo.rst
 /doc/integrator/upgrade_application.rst
 /dist/
 /docker-compose.yaml

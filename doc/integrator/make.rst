@@ -6,14 +6,14 @@ Build configuration
 Makefiles
 ---------
 
-Usually we have the following makefiles includes:
+Usually we have the following makefile includes:
 ``<user>.mk`` -> ``<package>.mk`` -> ``CONST_Makefile.mk``.
 
 The ``CONST_Makefile.mk`` is a huge makefile that is maintained by the
 GeoMapFish developers.
 
 The ``<package>.mk`` contains the project-specific config and rules,
-Default is:
+default is:
 
 .. code:: makefile
 
@@ -48,13 +48,14 @@ To make such variables available to the python code, for instance using
 
 they must be listed in the makefile as well using ``CONFIG_VARS`` (see below).
 
-To get a variable from the makefile to the vars, you should make your variable as export:
+To be able to use a variable from the makefile in the vars file,
+you should export your variable as follows:
 
 .. code:: make
 
    export MY_VAR ?= my_value
 
-And in your yaml vars file add:
+And in your yaml vars file, add:
 
 .. code:: yaml
 
@@ -67,8 +68,8 @@ And in your yaml vars file add:
       - ...
       - my_var
 
-For more information see the
-`c2c.template <https://github.com/sbrunner/c2c.template>`_ documentation.
+For more information, see the
+`c2c.template <https://github.com/camptocamp/c2c.template>`_ documentation.
 
 
 Makefile config variables
@@ -120,21 +121,21 @@ To decrypt the files run:
 
 .. note::
 
-   If you have an issue that call about the ``dirmngr`` package you can try to add:
+   If you have an issue with the ``dirmngr`` package you can try to add:
    ``pinentry-mode loopback`` in your ``~/.gnupg/gpg.conf`` file and
    ``allow-loopback-pinentry``in your ``~/.gnupg/gpg-agent.conf`` file.
-   Than it should be fixet or you can also try to run it in Docker:
+   Then it should be fixed or you can also try to run it in Docker:
    ``./docker-run --home make --makefile=<user>.mk secrets``
 
-   If you have an error about opennig ``/dev/tty`` try to run it in Docker as root:
+   If you have an error about opening ``/dev/tty``, try to run it in Docker as root:
    ``./docker-run --root --home make --makefile=<user>.mk secrets``
 
 
 Custom rules
 ------------
 
-In the ``<package>.mk`` file we can create some other rules.
-Here is a simple example:
+In the ``<package>.mk`` file, you can create custom rules.
+Here is an example:
 
 .. code:: makefile
 
@@ -156,7 +157,7 @@ Here is a simple example:
 Note
 ----
 
-The ``/build/*.timestamp`` files are not really required  but they are flags
-indicating that an other rule is correctly done.
+The ``/build/*.timestamp`` files are flags
+indicating that another rule is correctly done.
 
 Upstream `make documentation <https://www.gnu.org/software/make/manual/make.html>`_.

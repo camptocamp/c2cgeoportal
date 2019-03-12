@@ -8,8 +8,7 @@ c2cgeoportal applications include web services for getting
 The ``raster`` web service allows getting information for points.
 The ``profile`` web service allows getting information for lines.
 
-To configure these web services you need to set the ``raster`` variable in the
-application config (``vars.yaml``).  For example:
+To configure these web services, you need to set the ``raster`` variable in the application config (``vars.yaml``). For example:
 
 .. code:: yaml
 
@@ -33,11 +32,10 @@ The raster files should be in the Binary Terrain (BT/VTP .bt 1.3) format.
 One may use GDAL/OGR to convert data to such a format.
 
 ``type`` ``shp_index`` (default) for Mapserver shape index, or ``gdal`` for all supported GDAL sources.
-We recommand to use a `vrt <https://www.gdal.org/gdal_vrttut.html>`_ file built with
+We recommend to use a `vrt <https://www.gdal.org/gdal_vrttut.html>`_ file built with
 `gdalbuildvrt <https://www.gdal.org/gdalbuildvrt.html>`_.
 
-
-``round`` specifigdalbuildvrtes how the result values should be rounded.
+``round`` specifies how the result values should be rounded.
 For instance '1': round to the unit, '0.01': round to the hundredth, etc.
 
 .. note:: gdalbuildvrt usage example:

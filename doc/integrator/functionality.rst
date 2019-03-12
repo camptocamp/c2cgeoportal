@@ -13,7 +13,7 @@ A functionality may be associated to users through different ways:
 3. Functionalities for specific roles are defined in the database through the administration interface.
 4. Functionalities for specific users are defined in the database through the administration interface.
 
-Each level overrides the previous ones in the same order as indicated above.
+Each level overrides the previous ones in the order indicated above.
 For example, if the user is authenticated and has associated functionalities in
 the ``user`` database table, then the ``functionalities:anonymous`` and
 ``functionalities:registered`` configuration variables, as well as any
@@ -61,8 +61,8 @@ The ``vars.yaml`` file includes variables for managing *functionalities*.
                 - 2 A3 landscape
                 default_basemap: plan
 
-    In this example anonymous users can print maps using the ``1 A4 portrait``
-    and ``2 A3 landscape`` layouts only. And their default base layer is the
+    In this example, anonymous users can print maps using the ``1 A4 portrait``
+    and ``2 A3 landscape`` layouts only. Their default base layer is the
     ``plan`` layer.
 
 ``functionalities:registered``

@@ -78,8 +78,7 @@ All the layers in the admin interface have the following attributes:
   It is used through the i18n tools to display the name on the layers tree.
 * ``Metadata URL``: (deprecated)
 * ``Description``: a description.
-* ``Public``: makes the layer public. You must use the ``Restriction areas`` to make
-  private layer accessible.
+* ``Public``: makes the layer public. also it is accessible through the ``Restriction areas``.
 * ``Geo table``: the related database table,
   used by the :ref:`administrator_editing`.
 * ``Exclude properties``: the list of attributes (database columns) that should not appear in
@@ -96,11 +95,11 @@ On internal WMS layers we have the following specific attributes:
 
 * ``OGC Server``: the used server.
 * ``WMS layer name``: the WMS layers. Can be one layer, one group, a comma separated list of layers.
-  In the case of a coma separated list of layers, we will get the legend rule for the
+  In the case of a comma separated list of layers, we will get the legend rule for the
   layer icon on the first layer, and the legend will not be supported we should define a legend metadata.
-* ``Style``: the used style, can be empty.
+* ``Style``: the style used, can be empty.
 * ``Time mode``: used for the WMS time component.
-* ``Time widget``: the used component type for the WMS time.
+* ``Time widget``: the component type used for the WMS time.
 
 WMTS layer
 ~~~~~~~~~~
@@ -110,8 +109,7 @@ On WMTS layers we have the following specific attributes:
 * ``GetCapabilities URL``: the URL to the WMTS capabilities.
 * ``WMTS layer name``: the WMTS layer.
 * ``Style``: the used style, if not present we use the default style.
-* ``Matrix set``: the used matrix set, if there is only one matrix set
-  in the capabilities it can be empty.
+* ``Matrix set``: the used matrix set, if there is only one matrix set in the capabilities it can be empty.
 * ``Image type``: the MIME type of the images (e.g.: ``image/png``).
 
 Queryable WMTS

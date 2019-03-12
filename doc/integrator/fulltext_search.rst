@@ -13,7 +13,7 @@ the application-specific schema.
 You do not need to create the table yourself, as it was already created during application installation
 (see the section :ref:`integrator_install_application`).
 
-If you did want to create the table manually you would use the following SQL commands:
+If you do want to create the table manually, you can use the following SQL commands:
 
 .. code:: sql
 
@@ -81,7 +81,7 @@ Here is another example where rows from a ``SELECT`` are inserted:
 
     The language string used as the first argument to the ``to_tsvector``
     function should match that defined in the ``default_locale_name`` variable of
-    the application configuration (``vars.yaml``). For example if you have
+    the application configuration (``vars.yaml``). For example, if you have
     "french" text in the database the application's ``default_locale_name`` should
     be ``fr``. In other words c2cgeoportal assumes that the database language
     and the application's default language match.
@@ -194,13 +194,13 @@ Example of ``SQL`` ``INSERT`` of ``actions`` data to add the layer "cadastre" on
 Interface
 ---------
 
-If the ``interface_id`` column contains a value it means that the result is only for an interface.
+If the ``interface_id`` column contains a value, it means that the result is only for this interface.
 
 
 Lang
 ----
 
-If the ``lang`` column contains a value it means that the result is only for a language.
+If the ``lang`` column contains a value, it means that the result is only for this language.
 
 
 Configuration
@@ -216,9 +216,9 @@ Ranking system
 --------------
 
 By default, the full-text search uses the `similarity` system of the
-`pg_trgm module <https://www.postgresql.org/docs/9.0/static/pgtrgm.html>`. This
-is based only on the  similarities of words, without language analysis, and it
-cares only about how near is your search with the result. `12` is nearer to `12`
+`pg_trgm module <https://www.postgresql.org/docs/9.0/static/pgtrgm.html>`_. This
+is based only on the similarities of words, without language analysis, and it
+cares only about how near your search is to the result. `12` is nearer to `12`
 than `120`.
 
 Ensure that the extension is created in you database:
@@ -228,7 +228,8 @@ Ensure that the extension is created in you database:
   sudo -u postgres psql -c "CREATE EXTENSION pg_trgm" <db_name>
 
 Alternatively, you can use the ``tsvector`` and ``ts_rank_cd`` to rank your search
-results (See: `textsearch-controls <https://www.postgresql.org/docs/9.0/static/textsearch-controls.html>`_.
+results
+(see: `textsearch-controls <https://www.postgresql.org/docs/9.0/static/textsearch-controls.html>`_).
 These methods are useful to handle language-based strings. That means for instance
 that plural nouns are the same as singular nouns. This system only checks if
 your search word exists in the result. That means that if you search `B 12 Zug`,

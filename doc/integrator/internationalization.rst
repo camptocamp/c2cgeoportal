@@ -38,7 +38,13 @@ The files to translate are:
    All the ``#, fuzzy`` strings should be verified and the line should be removed
    (if the line is not removed, the localisation will not be used).
 
-To update the ``po`` files, you must run this specific targets.
+To update the ``po`` files, you must run the following command:
+
+For Docker project:
+
+.. code:: bash
+
+    ./docker-compose-run  make --makefile=<package>.mk update-po
 
 For non Docker project:
 
@@ -46,11 +52,6 @@ For non Docker project:
 
    ./docker-run make --makefile=<package>.mk update-po
 
-For Docker project:
-
-.. code:: bash
-
-    ./docker-compose-run  make --makefile=<package>.mk update-po
 
 .. note::
 
