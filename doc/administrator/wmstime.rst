@@ -59,8 +59,8 @@ Some examples for the interval definition:
 For more information please refer to the `MapServer documentation
 <http://mapserver.org/ogc/wms_time.html>`_.
 
-Admin interface
-~~~~~~~~~~~~~~~
+Admin interface - widget
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 Most of the configuration is done in the mapfile as described in the above
 section. However the time widget must be configured via the admin interface.
@@ -85,6 +85,13 @@ In mode ``range`` the layer will display data that is relative to the defined ra
 
 The ``disabled`` mode hides the time widget. No time parameter will be sent
 to the GetMap request in this case.
+
+Admin interface - query
+~~~~~~~~~~~~~~~~~~~~~~~
+
+By setting a ``timeAttribute`` metadata having as value the attribute used in the OGS server as time item,
+you ensure that the WMS/WFS queries take into account the time filtering values and that no result is returned if an object
+is hidden by the time filter.
 
 Merging configurations
 ----------------------
