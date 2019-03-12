@@ -3,7 +3,7 @@
 Requirements
 ============
 
-To install a GeoMapFish application you need to have the following
+To install a GeoMapFish application, you need to have the following
 components installed on your system:
 
 * **Git** (preferably to other revision control systems)

@@ -21,7 +21,7 @@ The images used from the admin interface should be placed in the folder ``geopor
 HTML file
 ---------
 
-In this file you can add some blocks like
+In this file, you can add some blocks like
 
 .. code:: html
 
@@ -86,20 +86,21 @@ The map configuration will be here:
 Dynamic.json view
 -----------------
 
-To configure the ngeo constants with dynamic or configurable values we have the dynamic view.
+To configure the ngeo constants with dynamic or configurable values,
+you can use the dynamic view.
 
 This view is configurable in the vars files in the section ``interfaces_config``.
-The sub section is the interface name, and after we have:
+The sub section is the interface name, and after that we have:
 
-* ``redirect_interface``: interface to be redirected to if an unexpected device type is used (mobile/desktop).
-* ``do_redirect``: directly do the redirect.
+* ``redirect_interface``: Interface to be redirected to if an unexpected device type is used (mobile/desktop).
+* ``do_redirect``: Directly do the redirect.
 * ``constants``: Directly define an ``angular`` constant in the vars file.
 * ``dynamic_constants``: Define an ``angular`` constant from a dynamic values.
-* ``static``: key: constant name, value: name of the static view that we want to have the URL.
-* ``routes``: key: constant name, value:
-    ``name``: name of the route witch one we want to have the URL.
-    ``params``: view parameters.
-    ``dynamic_params``: view parameters from dynamic values.
+* ``static``: key: Constant name, value: name of the static view that we want to have the URL.
+* ``routes``: key: Constant name, value:
+    ``name``: Name of the route witch one we want to have the URL.
+    ``params``: View parameters.
+    ``dynamic_params``: View parameters from dynamic values.
 
 The dynamic values names are: ``interface``, ``cache_version``, ``lang_urls``, ``fulltextsearch_groups``.
 

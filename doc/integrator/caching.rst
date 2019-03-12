@@ -8,8 +8,9 @@ Headers
 
 By default the statuc elements will be cached for 10 days by the browser.
 
-To change this value change in the ``vars.yaml`` file the ``vars/default_max_age`` value.
-``0`` will mean ``no-cache``. The specified value is in seconds.
+To change this value for the whole application, change in the ``vars.yaml`` file the
+``vars/default_max_age`` value. ``0`` will mean ``no-cache``.
+The specified value is in seconds.
 
 For the services it will be 10 minutes.
 To change this value add the following structure in the ``vars.yaml``:

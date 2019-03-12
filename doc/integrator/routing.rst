@@ -53,8 +53,8 @@ need to be defined in your interface controller, as long as it extends AbstractD
 Configuration
 -------------
 
-To configure the routing feature the constants `ngeoRoutingOptions` and `ngeoNominatimSearchDefaultParams`
-can be defined. Add them to your `interfaces_config` section in your `vars.yaml` file:
+To configure the routing feature, the constants ``ngeoRoutingOptions`` and ``ngeoNominatimSearchDefaultParams``
+can be defined. Add them to your ``interfaces_config`` section in your ``vars.yaml`` file:
 
 .. code: yaml
 
@@ -95,8 +95,7 @@ profile: string, url-path of the profile, example::
         '                |     '     |    '
     backendUrl           |  profile  | osrm query
 
-If more than one profile is supplied, the component will show a drop-down-menu for the user to select a
-profile.
+If more than one profile is supplied, the component will show a drop-down-menu for the user to select a profile.
 
 
 ngeoNominatimSearchDefaultParams

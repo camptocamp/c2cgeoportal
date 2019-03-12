@@ -8,6 +8,7 @@ import subprocess
 
 os.environ["VISIBLE_WEB_HOST_RE_ESCAPED"] = re.escape(os.environ.get('VISIBLE_WEB_HOST'))
 os.environ["VISIBLE_ENTRY_POINT_RE_ESCAPED"] = re.escape(os.environ.get('VISIBLE_ENTRY_POINT'))
+os.environ["DOLLAR"] = '$'
 
 SCHEME_PORT = {
     "http": 80,

@@ -10,11 +10,11 @@ Deploying data from integration to production may be done by
 a customized version of the script, applicable for c2cgeoportal, is available in
 ``scripts/CONST_clone_schema.sql``.
 
-For the next steps it is important to figure out if the main goal is the scalability
+For the next steps, it is important to know if your main goal is the scalability
 or the robustness of the application.
 
-In general the scalability is more important because the main cause of
-down time is due of too much traffic.
+In general, scalability is more important, because the main cause of
+down time is too much traffic.
 
 To have better DB performances, one can setup multiple Postgres servers in a
 `master/slave <https://wiki.postgresql.org/wiki/Binary_Replication_Tutorial>`_
@@ -32,7 +32,7 @@ application (bad practice), add entries to ``db_chooser/master`` in your ``vars.
 For forcing the use of a slave for a POST/PUT/DELETE, add entries to the ``db_chooser/slave``
 configuration.
 
-For having more than one instance of slave and having an automatic election of a new
-master in case of failure, you must setup an high availability proxy (HAProxy, for example).
+To have more than one slave instance and to have an automatic election of a new
+master in case of failure, you must setup a high availability proxy (HAProxy, for example).
 This is out of the scope of this document. If you do not care about failover, you can use one
 DNS entry with multiple IP entries for the slaves.

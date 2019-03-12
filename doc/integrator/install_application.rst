@@ -3,7 +3,7 @@
 Install an existing application
 ===============================
 
-On this page we explain the procedure to build an application from only the code.
+On this page we explain the procedure to build an application from only the current application code.
 
 If you want to use an existing database, you should ignore all the commands concerning the database.
 
@@ -29,9 +29,9 @@ layers*), where joining user/role tables to PostGIS layer tables is necessary.
 
 You need a Postgres database >= 9.1 in UTF-8 with the PostGIS >= 2.1 extension.
 
-Create the "pg_trgm" extension to use the "similarity" function within the full-text search.
+If you wish to use the ``similarity`` function within the full-text search, create the ``pg_trgm`` extension:
 
-Create the "unaccent" extension to have accent-insensitive search within the full-text search.
+Create the ``unaccent`` extension to have accent-insensitive search within the full-text search.
 
 And by default we assume that the ``www-data`` user exists with all rights on the application schema.
 
@@ -113,11 +113,11 @@ Then create the application tables:
     ./docker-compose-run make --makefile=<user>.mk upgrade-db
 
 Your application should now be available at:
-``https://<hostname>/``.
+``https://<hostname>/``,
+where the ``<hostname>`` is directly linked to the virtual host.
 
-Where the ``<hostname>`` is directly linked to the virtual host.
-
-Add in the ``/var/www/vhosts/<vhost_name>/conf/proxies.conf`` file (create it if not exist):
+Add in the ``/var/www/vhosts/<vhost_name>/conf/proxies.conf`` file
+(create it if it does not exist):
 
 .. code::
 

@@ -4,7 +4,8 @@ Reset password
 When a user has forgotten his/her password, a new one may be sent by email if some additional
 GeoMapFish configuration is provided.
 
-And to generate the required e-mail, in the ``vars.yaml`` file, add the following configuration:
+To ensure such an e-mail can be generated, you should add the following configuration
+in the ``vars.yaml`` file:
 
 .. code:: yaml
 
