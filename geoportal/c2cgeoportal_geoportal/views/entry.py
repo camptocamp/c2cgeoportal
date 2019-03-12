@@ -845,6 +845,7 @@ class Entry:
             "queryable_layers": json.dumps(queryable_layers),
             "url_params": {"cache_version": cache_version} if cache_version else {},
             "tiles_url": json.dumps(self.settings.get("tiles_url")),
+            "request": self.request,
         }
 
     @view_config(route_name="apijs")
