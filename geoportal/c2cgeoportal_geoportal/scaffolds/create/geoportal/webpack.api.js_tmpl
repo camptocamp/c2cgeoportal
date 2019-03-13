@@ -16,6 +16,7 @@ module.exports = (env, argv) => {
   return {
     entry: path.resolve(__dirname, '{{package}}_geoportal/static-ngeo/api/index.js'),
     devtool: 'source-map',
+    mode: 'production',
     module: {
       rules: [{
         test: /\.js$/,

@@ -911,7 +911,14 @@ class Entry:
             "debug": self.debug,
         }
 
-    def apimap(self):
+    def favicon(self):
+        set_common_headers(
+            self.request, 'api', NO_CACHE,
+            content_type='image/vnd.microsoft.icon',
+        )
+        return {}
+
+    def apijsmap(self):
         set_common_headers(
             self.request, "api", NO_CACHE,
             content_type="application/octet-stream",
