@@ -335,6 +335,8 @@ mapping:
                             type: str
                           separator:
                             type: str
+                          translate:
+                            type: bool
       functionalities:
         type: map
         required: True

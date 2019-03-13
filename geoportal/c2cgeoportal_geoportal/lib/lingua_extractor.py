@@ -257,7 +257,7 @@ class GeomapfishConfigExtractor(Extractor):  # pragma: no cover
             for fieldname in list(attributes.keys()):
                 values = self._enumerate_attributes_values(DBSessions, Layers, layerinfos, fieldname)
                 for value, in values:
-                    if value != "":
+                    if value is not None and isinstance(value, str) and value != "":
                         msgid = value
                         location = "/layers/{}/values/{}/{}".format(
                             layername,
@@ -288,6 +288,9 @@ class GeomapfishConfigExtractor(Extractor):  # pragma: no cover
     @staticmethod
     def _enumerate_attributes_values(dbsessions, layers, layerinfos, fieldname):
         dbname = layerinfos.get("dbsession", "dbsession")
+        translate = layerinfos.get("attributes").get(fieldname, {}).get("translate", True)
+        if not translate:
+            return []
         try:
             dbsession = dbsessions.get(dbname)
             return layers.query_enumerate_attribute_values(dbsession, layerinfos, fieldname)
