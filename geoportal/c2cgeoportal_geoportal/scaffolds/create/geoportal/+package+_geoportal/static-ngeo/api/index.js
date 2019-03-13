@@ -1,7 +1,7 @@
 import Map from 'api/Map.js';
-import * as constants from 'api/constants.js';
+import config from 'api/constants.js';
 
-constants.themesUrl = 'https://www.example.com';
+config.themesUrl = 'https://www.example.com/themes?version=2&background=background';
 
 const lib = {
   Map

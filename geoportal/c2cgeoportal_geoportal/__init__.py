@@ -481,6 +481,7 @@ def includeme(config: pyramid.config.Configurator):
 
     config.add_renderer(".map", AssetRendererFactory)
     config.add_renderer(".css", AssetRendererFactory)
+    config.add_renderer(".ico", AssetRendererFactory)
     config.add_route("apijs", "/api.js", request_method="GET")
     config.add_route("oldxapijs", "/xapi.js", request_method="GET")
     config.add_route("oldapihelp", "/oldapihelp.html", request_method="GET")
@@ -495,6 +496,7 @@ def includeme(config: pyramid.config.Configurator):
             Entry, attr=attr, route_name=name,
             renderer='{}_geoportal:static-ngeo/{}'.format(package, renderer)
         )
+    add_api_route('favicon', 'favicon', '/favicon.ico', 'js/apps/image/favicon.ico')
     add_api_route('apijsmap', 'apijsmap', '/api.js.map', "build/api.js.map")
     add_api_route('apicss', 'apicss', '/api.css', "build/api.css")
     add_api_route('apihelp', 'apihelp', '/apihelp/index.html', "api/apihelp/index.html")
