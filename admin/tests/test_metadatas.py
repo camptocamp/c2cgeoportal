@@ -192,13 +192,17 @@ class TestMetadatasView(AbstractViewsTests):
             'gnagnagna',
             'Must be a URL')
 
-    def test_valid_url_metadata(self, test_app, metadatas_test_data):
+    @pytest.mark.parametrize("url", [
+        'www.111111111111111111111111111111111111111111111111111111111111.com',
+        'static://static/img/cadastre.jpeg',
+    ])
+    def test_valid_url_metadata(self, test_app, metadatas_test_data, url):
         self._post_metadata(
             test_app,
             '/layers_wms/new',
             self._base_metadata_params(metadatas_test_data),
             '_url',
-            'www.111111111111111111111111111111111111111111111111111111111111.com',
+            url,
             302)
 
     def test_invalid_json_metadata(self, test_app, metadatas_test_data):
