@@ -14,7 +14,6 @@ In the file ``geoportal/demo_geoportal/static-ngeo/api/index.js`` you can custom
 
    constants.themesUrl: '<the theme URL>';
    constants.projection: <the projection>;
-   constants.supportedProjections: [<the projection>, <another projection>];
    constants.resolutions: [<the map resolutions>];
    constants.extent: [<the map extent>];
    constants.backgroundLayer: '<the background layer name>';
