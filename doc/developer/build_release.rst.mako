@@ -6,14 +6,14 @@ Create a new release
 Vocabulary
 ----------
 
-On this page I use the word ``version`` for a major version of MapFish
-Geoportal (1.6), and the word ``release`` for each step in this version
-(1.6.0rc1, 1.6.0, 1.6.1, ...).
+On this page, we use the word ``version`` for a major version of MapFish
+Geoportal, and the word ``release`` for each step in this version.
 
-``MapFish Geoportal`` is the pack that includes CGXP and c2cgeoportal,
-from start of 2014 both projects will synchronize their major versions.
+``MapFish Geoportal`` is the pack that includes ngeo/CGXP and c2cgeoportal;
+from 2014 onwards, the major version number of the client projects and
+the backend project are synchronized.
 
-Then ``<release>`` can be ``1.6.0rc1`` for the first release candidate
+For example, ``<release>`` can be ``1.6.0rc1`` for the first release candidate
 of the version ``1.6.0``, ``1.6.0`` for the final release, ``1.6.1`` for
 the first bug fix release, and ``<version>`` can be ``1.6``, ``2.0``, ...
 
@@ -40,7 +40,7 @@ Get the localisation from Transifex:
     docker build --tag=camptocamp/geomapfish-build-dev docker/build
     ./docker-run make transifex-get
 
-For each version we create a new branch (at the latest at the final release):
+For each version, we create a new branch (at the latest, for the final release):
 
 .. prompt:: bash
 
@@ -118,26 +118,26 @@ Run a new job for the <version> branch on Jenkins.
 
 .. note::
 
-    It's possible to do a version only on the latest commit on a branch,
-    If you relay need to do that, you should create a new branch.
+    It is possible to do a version only on the latest commit on a branch.
+    If you really need to do that, you should create a new branch.
 
 Notes about Travis
 ~~~~~~~~~~~~~~~~~~
 
-When you push a tag with the pattern ``^[0-9]+\.[0-9]+\..+$``
+When you push a tag with the pattern ``^[0-9]+\.[0-9]+\..+$``,
 a new release will automatically be created on Travis CI.
 
 Post release tasks
 ------------------
 
-When a new release or a new version is done you should do the following tasks:
+When a new release or a new version is done, you should do the following tasks:
 
 * Merge the release changes (on ``ngeo`` and on ``c2cgeoportal``)
   to the upper branches i.e.: ``1.6`` => ``2.0``, ``2.0`` => ``master``.
 
   .. note::
 
-     On ``c2cgeoportal`` merge see if an alembic merge should be done:
+     On ``c2cgeoportal`` merge, see if an alembic merge should be done:
 
      .. prompt:: bash
 
@@ -148,7 +148,7 @@ When a new release or a new version is done you should do the following tasks:
             --config=tests/functional/alembic.ini \
             --name=static heads
 
-     If yes create the merge with:
+     If yes, create the merge with:
 
      .. prompt:: bash
 
@@ -169,7 +169,7 @@ When a new release or a new version is done you should do the following tasks:
     sudo -u sigdev make --makefile=demo.mk update
     sudo -u sigdev make --makefile=demo.mk build
 
-* Test the `demo <http://testgmf.sig.cloud.camptocamp.net/>`_.
+* Test the `demo <https://geomapfish-demo.camptocamp.com/${major_version}>`_.
 * Deploy on the demo server with:
 
   .. prompt:: bash

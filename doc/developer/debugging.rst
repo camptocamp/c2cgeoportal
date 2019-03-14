@@ -9,13 +9,13 @@ Webpack
 -------
 
 For debugging purposes, it is better to have all the JavaScript and Style Sheets in separated, non-minified
-files. To achieve this, you can simply use the sources maps, function activable in the browsers debugging
-tool. And to have faster build you need to use the Webpack dev server; you can achieve this as follows.
+files. To achieve this, you can simply use the sources maps, function activable in the browser's debugging
+tool. To have faster builds, you need to use the Webpack dev server; you can achieve this as follows.
 
-In the ``geoportal/demo_geoportal/static-ngeo/js/apps/<interface>.html.ejs`` file
+In the file ``geoportal/demo_geoportal/static-ngeo/js/apps/<interface>.html.ejs``,
 remove the ``ng-strict-di`` in the ``html`` tag.
 
-Add in your makefile ``<user>.mk`` (Each developer should have a different port, e.g.: 8081):
+Add in your makefile ``<user>.mk`` (each developer should have a different port, e.g.: 8081):
 
 .. code:: makefile
 
@@ -25,37 +25,38 @@ Add in your makefile ``<user>.mk`` (Each developer should have a different port,
 
    FINALISE=TRUE make --makefile=<user>.mk serve-<interface>
 
-Open in the browser an URL like: ``https://<host>/<instanceid>/wsgi/dev/<interface>.html``,
-for Docker version: ``https://<host>/<instanceid>/dev/<interface>.html``.
+Open in the browser an URL like:
+``https://<host>/<instanceid>/dev/<interface>.html``.
+for non-Docker version: ``https://<host>/<instanceid>/wsgi/dev/<interface>.html``.
 
 Browser
 -------
 
-Using a browser-integrated debugging tool usually available with the ``F12`` key.
+You can use the browser-integrated debugging tool, usually available with the ``F12`` key.
 
 Pyramid
 -------
 
-If the ``pyramid_debugtoolbar`` is enabled the error is directly shown in the query that fails.
+If the ``pyramid_debugtoolbar`` is enabled, the error is directly shown in the query that fails.
 
 Mapserver
 ---------
 
-Sometime more information are available by using this command:
+Sometimes, more information can be obtained by using this command:
 
 .. prompt:: bash
 
     shp2img -m <mapfile> -o test.png -e <minx> <miny> <maxx> <maxy> -s <sizex> <sizey> -l <layers>
 
-You may also activate MapServer's debug mode and set environment variable of the MapServer container
-``MS_DEBUGLEVEL`` to ``5`` (most verbose level, default is 0).
+You may also activate MapServer's debug mode and set the environment variable ``MS_DEBUGLEVEL``
+of the MapServer container ``MS_DEBUGLEVEL`` to ``5`` (most verbose level, default is 0).
 
 `More information <http://mapserver.org/optimization/debugging.html?highlight=debug#debug-levels>`_
 
 PostgreSQL
 ----------
 
-In the ``/etc/postgresql/9.*/main/postgresql.conf`` configuration file
+In the configuration file ``/etc/postgresql/9.*/main/postgresql.conf``,
 you can set ``log_statement`` to ``all`` to see all the called statements.
 This file must be edited using the ``postgres`` user.
 
@@ -77,7 +78,8 @@ To obtain additional debug messages, you can rebuild your project as follows:
 
    DEBUG=TRUE make ...
 
-Actually we display the running rule and why she is running (dependence update).
+With this setting, the rule being executed is displayed and the reason why it is
+being executed (for example, a dependency update).
 
 Docker
 ------
@@ -85,7 +87,7 @@ Docker
 Multiple dev on one server
 ..........................
 
-When you want to run multiple instances on the same server you should:
+When you want to run multiple instances on the same server, you should:
 
 - Use the global front
 - Use a different docker tag for each instance
@@ -94,7 +96,7 @@ When you want to run multiple instances on the same server you should:
 Global front
 ............
 
-The global front will offer a unique entry point on port 80 that provide the 'main' project on `/` and the
+The global front offers a unique entry point on port 80 that provides the 'main' project on `/` and the
 others on `/<project_name>/`.
 
 Activate it in the vars:
@@ -117,7 +119,7 @@ Run the global front:
    (cd global-front; docker-compose --project-name=global up --build)
 
 
-And we should defined different instance name for the build:
+Define a different instance name for the build:
 
 .. prompt:: bash
 
@@ -151,7 +153,7 @@ Do a graceful restart of the running geoportal container
 Mount c2cgeoportal in the container
 ...................................
 
-Clone and build c2cgeoportal, see: developer_server_side.
+Clone and build c2cgeoportal, see :ref:`developer_server_side`.
 
 Add a ``docker-compose.override.yaml`` file with a ``geoportal`` service containing the following lines:
 
@@ -169,7 +171,7 @@ Add a ``docker-compose.override.yaml`` file with a ``geoportal`` service contain
 Expose a service
 ................
 
-To expose a service out of the Docker composition you can add a port for the service in the vars, e.g.:
+To expose a service out of the Docker composition, you can add a port for the service in the vars, e.g.:
 
 .. code:: yaml
 
@@ -178,8 +180,8 @@ To expose a service out of the Docker composition you can add a port for the ser
        <service>:
          port: 8086
 
-Be careful one port can be open only one time on a server.
-Within the Docker composition you can access a port of a container, you can achieve this via curl.
+Be careful, a port can be open only one time on a server.
+Within the Docker composition, you can access a port of a container; you can achieve this via curl.
 This way, you do not need to publish this port on the main host.
 
 .. prompt:: bash
@@ -190,7 +192,7 @@ This way, you do not need to publish this port on the main host.
 Use Webpack dev server
 ......................
 
-In the file ``docker-compose-dev.yaml`` set the ``INTERFACE`` to the wanted value.
+In the file ``docker-compose-dev.yaml``, set the ``INTERFACE`` to the value wanted.
 
 Run:
 
@@ -238,15 +240,15 @@ Force rebuild the application:
 Performance or network error
 ----------------------------
 
-For performance and proxy issues make sure that all internal URLs in the config file
+For performance and proxy issues, make sure that all internal URLs in the config file
 use localhost (use ``curl "http://localhost/<path>" --header Host:<server_name>``
 to test it).
 
-Tilecloud chain
+TileCloud chain
 ...............
 
 Points to check with TileCloud chain:
 
 * Disabling metatiles should be avoided.
 * Make sure that ``empty_metatile_detection`` and ``empty_tile_detection`` are configured correctly.
-* Make sure to not generate tiles with a higher resolution than in the raster sources.
+* Make sure to not generate tiles with a resolution higher than the one in the raster sources.

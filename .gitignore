@@ -33,7 +33,7 @@
 /docker/test-db/13-alembic-static.sql
 /docker/test-mapserver/mapserver.map
 /doc/index.rst
-/doc/developer/server_side.rst
+/doc/developer/build_release.rst
 /doc/integrator/create_application.rst
 /doc/integrator/ngeo.rst
 /doc/integrator/upgrade_application.rst

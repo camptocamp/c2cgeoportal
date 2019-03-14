@@ -14,7 +14,7 @@ Parameters
 ----------
 
 * ``version``: ``1`` or ``2``, API version, default is ``1``.
-* ``interface``: used interface (optional).
+* ``interface``: interface used (optional).
 * ``sets``: kind of data we want to get, can be ``all``, ``themes``, ``group``
   or ``background_layers``, default is ``all``.
 * ``background``: parent group of background layers to get.
@@ -224,13 +224,13 @@ Parameters (post form):
 
 * ``login``
 * ``password``
-* ``came_from`` the URL where we will redirect after a success
+* ``came_from`` the URL to which we will redirect after a successful request.
 
 Result HTTP code:
 
 * 200 Success: Success with the JSON result as :ref:`developer_webservices_auth_connected`.
-* 302 Found: Success -> redirect on came_from.
-* 400 Bad request: When something wrong.
+* 302 Found: Success -> redirect to ``came_from``.
+* 400 Bad request: When something is wrong.
 
 Logout
 ------
@@ -244,7 +244,7 @@ Method: ``GET``
 Result HTTP code:
 
 * 200 Success: Success.
-* 400 Bad request: When something wrong.
+* 400 Bad request: When something is wrong.
 
 User information
 ----------------
@@ -306,7 +306,7 @@ Parameters (post form):
 Result HTTP code:
 
 * 200 Success: Success.
-* 400 Bad request: When something wrong.
+* 400 Bad request: When something is wrong.
 
 JSON result
 ~~~~~~~~~~~
@@ -325,7 +325,7 @@ URL: ``.../loginresetpassword``
 
 Method: ``POST``
 
-Used when the user lost his password.
+Used when the user lost his/her password.
 
 Parameters (post form):
 
@@ -334,7 +334,7 @@ Parameters (post form):
 Result HTTP code:
 
 * 200 Success: Success.
-* 400 Bad request: When something wrong.
+* 400 Bad request: When something is wrong.
 
 Success JSON result
 ~~~~~~~~~~~~~~~~~~~
@@ -358,8 +358,8 @@ Parameters
 * ``query``: Text to search.
 * ``limit``: The maximum number of results (optional).
 * ``partitionlimit``: The maximum number of results per layer (optional).
-* ``lang``: The used language (optional).
-* ``interface``: The used interface (optional).
+* ``lang``: The language used (optional).
+* ``interface``: The interface used (optional).
 * ``callback``: Name of the callback function (optional, deprecated in v2).
 
 Result
@@ -372,10 +372,10 @@ A GeoJSON of a feature collection with the properties:
 * ``params``: :ref:`integrator_fulltext_search_params` to set.
 * ``actions``: List of actions.
 
-The `action` is a dictionary with:
+The `actions` is a dictionary with:
 
-* ``action``: the action: (add_theme|add_group|add_layer).
-* ``data``: data needed for the action (actually, the item name).
+* ``action``: the type of action (add_theme|add_group|add_layer).
+* ``data``: data needed for the action (the item name).
 
 
 Layers
@@ -389,7 +389,7 @@ URL: ``.../layers/<layer_id>/md.xsd``
 Result
 ~~~~~~
 
-A standard xsd document that describe the layer.
+A standard xsd document that describes the layer.
 
 MapFish protocol
 ----------------
@@ -547,7 +547,7 @@ Parameters
 ----------
 
 * ``geom``: Geometry field used to get the profile data.
-* ``layers``: On witch layers, default to all.
+* ``layers``: On which layers; default to all.
 * ``nbPoints``: Maximum number of points.
 * ``callback``: Function name to do the callback (optional, deprecated in v2).
 
@@ -596,7 +596,7 @@ Echo
 ====
 
 This service returns a file containing data submitted in the POST request as the "file" field.
-This is used to be able to get the data in the client from a file select by the user.
+This is used to be able to get the data in the client from a file selected by the user.
 
 URL: ``.../echo``
 
