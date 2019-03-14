@@ -34,7 +34,7 @@ class UserViews(AbstractViews):
         _list_field('expire_on'),
         _list_field('deactivated'),
         _list_field('settings_role',
-                    renderer=lambda user: user.settings_role.name,
+                    renderer=lambda user: user.settings_role.name if user.settings_role else '',
                     sort_column=settings_role.name,
                     filter_column=settings_role.name),
         _list_field('roles',
