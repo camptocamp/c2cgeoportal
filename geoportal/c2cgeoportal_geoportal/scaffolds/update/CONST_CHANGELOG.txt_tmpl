@@ -13,6 +13,17 @@ Information
    a `.env.mako` file where we have the environment variables used in the Docker compose files,
    `COMPOSE_PROJECT_NAME` contains the default name of the project.
 
+Changes to apply
+----------------
+
+1. The ngeo modules import has changed. The major change that will concern you is that we directly
+   export the module, therefore, in the angular module declaration, you should replace
+   `<module>.module.name` by `<module>.name`.
+
+2. We have migrated from Bootstrap 3 to 4 (https://getbootstrap.com/docs/4.0/migration/). This implies
+   using Sass in place of Less. The major change is that the variables will be prefixed by '$'
+   instead of '@' and we will use rem as recommended unit.
+
 
 Version 2.3.6
 =============
