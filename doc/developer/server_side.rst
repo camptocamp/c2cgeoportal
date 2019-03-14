@@ -17,7 +17,7 @@ Build the new containers:
     cd c2cgeoportal
     make docker-build
 
-Than they are ready to use in the application on the same host.
+Now, the new containers are ready to use in the application on the same host.
 
 Tests
 -----
@@ -25,8 +25,8 @@ Tests
 Running tests
 ~~~~~~~~~~~~~
 
-To be able to run c2cgeoportal tests you need to have the c2cgeoportal source
-code, and a make environment for it. So do that first, as described below.
+Prerequisite: to be able to run c2cgeoportal tests, you need to have the c2cgeoportal source
+code, and a make environment for building the library.
 
 c2cgeoportal has two types of tests: unit tests and functional tests. The unit
 tests are self-contained, and do not require any specific setup. The functional
@@ -41,9 +41,9 @@ docker-run will:
 
 docker-compose will also:
 
-* Have a testing database and a testing MapServer.
+* Create a test database and a test MapServer.
 
-Docker images dependencies:
+Docker image dependencies:
 
 .. image:: docker.png
 .. source file is docker.dia.
@@ -58,7 +58,7 @@ Image nomenclature:
 Unit tests
 ..........
 
-Before to run the tests, install and build all dependencies:
+Before running the tests, install and build all dependencies:
 
 .. prompt:: bash
 
@@ -70,7 +70,7 @@ Run the tests:
 
     ./docker-compose-run make tests
 
-To run a specific test use the ``-k`` switch. For example:
+To run only a specific test, use the ``-k`` switch. For example:
 
 .. prompt:: bash
 
@@ -95,14 +95,14 @@ Object model
 .. source file is database.dia.
    export from DIA using the type "PNG (anti-crénelé) (*.png)", set the width to 1000px.
 
-``TreeItem`` and ``TreeGroup`` are abstract (cannot be create) class used to create the tree.
+``TreeItem`` and ``TreeGroup`` are abstract (cannot be created) classes used to create the tree.
 
-``FullTextSearch`` references a first level ``LayerGroup`` but without any constrains.
+``FullTextSearch`` references a first level ``LayerGroup``, but without any constraints.
 
 ``metadata`` vs ``functionality``
 ....................................
 
-Technically the same ``functionality`` can be reused by more than one element.
+The same ``functionality`` can be reused by more than one element.
 
 ``functionalities`` are designed to configure and customize various parts of the application.
 For instance, via a functionality you can define which basemap is to be used when a new theme is loaded.
@@ -135,13 +135,13 @@ Or in c2cgeoportal root directory:
 This will generate the migration script in
 ``commons/c2cgeoportal/commons/alembic/[main|static]/xxx_<Explicite_name>.py``.
 
-To get the project schema use:
+To get the project schema, use:
 ``schema = context.get_context().config.get_main_option('schema')``
 
-The scripts should not fail if it is run again. See:
+The scripts should not fail if they are run more than once. See:
 http://alembic.readthedocs.org/en/latest/cookbook.html#conditional-migration-elements
 
-Then customize the migration to suit your needs, test it:
+Then, customize the migration to suit your needs, test it:
 
 .. prompt:: bash
 
