@@ -1,0 +1,26 @@
+---
+# This file can be renamed as `docker-compose.override.yaml` and uncomment the desired lines for
+# development. The file `docker-compose.override.yaml` is ignored by Git by default.
+
+# yamllint disable rule:line-length
+
+version: '2'
+
+services:
+  geoportal:
+    volumes:
+      # For Python project development.
+      - ${PWD}/geoportal/{{package}}_geoportal:/app/{{package}}_geoportal
+      # For Python c2cgeportal development.
+      # - '${PWD}/../c2cgeoportal/commons/c2cgeoportal_commons:/opt/c2cgeoportal_commons/c2cgeoportal_commons'
+      # - '${PWD}/../c2cgeoportal/geoportal/c2cgeoportal_geoportal:/opt/c2cgeoportal_geoportal/c2cgeoportal_geoportal'
+      # - '${PWD}/../c2cgeoportal/admin/c2cgeoportal_admin:/opt/c2cgeoportal_admin/c2cgeoportal_admin'
+    environment:
+      - GUNICORN_CMD_ARGS=--reload
+
+  # For Javascript project development.
+  # The debug application will be availavble at ``https://<host>/<entry_point>/dev/<interface>.html``.
+  webpack_dev_server:
+    extends:
+      file: docker-compose-lib.yaml
+      service: webpack_dev_server
