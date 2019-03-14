@@ -3,8 +3,6 @@ const ls = require('ls');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const INTERFACE_THEME = ${__import__('ujson').dumps(interfaces_theme)};
-
 const plugins = [];
 const entry = {};
 
@@ -17,9 +15,6 @@ plugins.push(new webpack.DllReferencePlugin({
 const nodeEnv = process.env['NODE_ENV'] || 'development';
 const dev = nodeEnv == 'development'
 
-const name = process.env.INTERFACE;
-process.env.THEME = INTERFACE_THEME[name];
-
 for (const filename of ls(path.resolve(__dirname, '{{package}}_geoportal/static-ngeo/js/apps/*.html.ejs'))) {
   const name = filename.file.substr(0, filename.file.length - '.html.ejs'.length);
   entry[name] = '{{package}}/apps/Controller' + name + '.js';
@@ -30,19 +25,16 @@ for (const filename of ls(path.resolve(__dirname, '{{package}}_geoportal/static-
       chunksSortMode: 'manual',
       filename: name + '.html',
       chunks: [name],
-      vars: {
-        entry_point: '${entry_point}',
-       },
     })
   );
 }
 
 const babelPresets = [[require.resolve('@babel/preset-env'), {
-  "targets": {
-    "browsers": ["last 2 versions", "Firefox ESR", "ie 11"],
+  targets: {
+    browsers: ['last 2 versions', 'Firefox ESR', 'ie 11'],
   },
-  "modules": false,
-  "loose": true,
+  modules: false,
+  loose: true,
 }]]
 
 // Transform code to ES2015 and annotate injectable functions with an $inject array.
@@ -52,6 +44,9 @@ const projectRule = {
     loader: 'babel-loader',
     options: {
       presets: babelPresets,
+      babelrc: false,
+      comments: false,
+      cacheDirectory: '/build/bable-loader-cache/',
       plugins: [
         require.resolve('@babel/plugin-syntax-object-rest-spread'),
         require.resolve('@babel/plugin-transform-spread'),
@@ -62,11 +57,11 @@ const projectRule = {
 };
 
 const rules = [
-  projectRule
+  projectRule,
 ];
 
 const noDevServer = process.env['NO_DEV_SERVER'] == 'TRUE';
-devServer = dev && !noDevServer;
+const devServer = dev && !noDevServer;
 
 console.log("Use dev mode: " + dev)
 console.log("Use dev server mode: " + devServer)
@@ -74,7 +69,7 @@ console.log("Use dev server mode: " + devServer)
 module.exports = {
   output: {
     path: path.resolve(__dirname, '{{package}}_geoportal/static-ngeo/build/'),
-    publicPath: devServer ? '/${instanceid}/wsgi/dev/' : '/${instanceid}/wsgi/static-ngeo/build/'
+    publicPath: devServer ? '${entry_point}dev/' : '${entry_point}static-ngeo/build/'
   },
   entry: entry,
   module: {
@@ -82,9 +77,9 @@ module.exports = {
   },
   plugins: plugins,
   resolve: {
+    modules: ['/usr/lib/node_modules'],
     alias: {
       {{package}}: path.resolve(__dirname, '{{package}}_geoportal/static-ngeo/js'),
     },
-    modules: ['/usr/lib/node_modules'],
   },
 };
