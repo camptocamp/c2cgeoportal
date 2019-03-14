@@ -7,7 +7,7 @@ We use Transifex to localise the server part (essentially the admin interface).
 
 `c2cgeoportal Transifex interface <https://www.transifex.com/projects/p/geomapfish/resource/c2cgeoportal/>`_.
 
-To access the Transifex service and synchronize the localisation files
+To access the Transifex service and synchronize the localisation files,
 you must create a `~/.transifexrc` config file:
 
 .. code::
