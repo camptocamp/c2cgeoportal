@@ -46,6 +46,7 @@ from defusedxml import lxml
 from owslib.wms import WebMapService
 from pyramid.httpexceptions import HTTPBadGateway, HTTPBadRequest, HTTPForbidden, HTTPFound
 from pyramid.i18n import TranslationStringFactory
+from pyramid.path import AssetResolver
 from pyramid.renderers import render_to_response
 from pyramid.response import Response
 from pyramid.security import forget, remember
@@ -852,19 +853,21 @@ class Entry:
     def apijs(self):
         version = self.request.params.get('version', '1')
         if version == '2':
-            package = self.request.registry.settings["package"]
-            data = render_to_response(
-                '{}_geoportal:static-ngeo/build/api.js'.format(package), {}
-            )
+            resolver = AssetResolver('c2cgeoportal_geoportal')
+            asset = resolver.resolve('{}_geoportal:static-ngeo/build/api.js'.format(
+                self.request.registry.settings['package']
+            ))
+            self.request.response.body = asset.stream().read()
+            response = self.request.response
         else:
-            data = render_to_response(
+            response = render_to_response(
                 'api/api.js', self.get_oldapijs_values()
             )
         set_common_headers(
             self.request, "api", PUBLIC_CACHE,
-            response=data, content_type="application/javascript",
+            response=response, content_type="application/javascript",
         )
-        return data
+        return response
 
     @view_config(route_name="oldxapijs", renderer="api/xapi.js")
     def oldxapijs(self):
