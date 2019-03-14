@@ -1,5 +1,7 @@
 #!/bin/bash -e
 
+export DOLLAR=$
+
 find /app/ -name '*.tmpl' -print | while read file
 do
     echo "Evaluate: ${file}"

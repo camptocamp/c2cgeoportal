@@ -145,7 +145,7 @@ NGEO_OUTPUT_FILES = $(JSON_CLIENT_LOCALISATION_FILES) \
 	$(ANGULAR_LOCALES_FILES)
 NGEO_OUTPUT_FILES += /build/apps.timestamp
 
-NGEO_API_OUTPUT_FILES += $(APP_OUTPUT_DIR)/api.js $(APP_OUTPUT_DIR)/api.css
+NGEO_API_OUTPUT_FILES += $(APP_OUTPUT_DIR)/api.js.tmpl $(APP_OUTPUT_DIR)/api.css
 
 
 ifdef CI
@@ -627,9 +627,14 @@ endif
 .PHONY: build-api
 build-api: $(NGEO_API_OUTPUT_FILES)
 
-$(APP_OUTPUT_DIR)/api.js: geoportal/webpack.api.js geoportal/$(PACKAGE)_geoportal/static-ngeo/api/index.js
+$(APP_OUTPUT_DIR)/api.js.tmpl: geoportal/webpack.api.js geoportal/$(PACKAGE)_geoportal/static-ngeo/api/index.js
 	$(PRERULE_CMD)
 	(cd geoportal; webpack --config webpack.api.js $(WEBPACK_ARGS))
+	cp $(APP_OUTPUT_DIR)/api.js $(APP_OUTPUT_DIR)/api.js_
+	sed --in-place --expression='s/\$$/$${DOLLAR}/g' $(APP_OUTPUT_DIR)/api.js
+	sed --in-place --expression='s#{FULL_ENTRY_POINT}#$${VISIBLE_WEB_PROTOCOL}://$${VISIBLE_WEB_HOST}$${VISIBLE_ENTRY_POINT}#g' $(APP_OUTPUT_DIR)/api.js
+	mv $(APP_OUTPUT_DIR)/api.js $@
+
 
 $(APP_OUTPUT_DIR)/api.css: geoportal/$(PACKAGE)_geoportal/static-ngeo/api/api.css
 	$(PRERULE_CMD)
