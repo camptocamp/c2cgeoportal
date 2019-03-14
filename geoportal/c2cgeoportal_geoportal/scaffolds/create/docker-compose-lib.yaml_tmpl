@@ -231,10 +231,10 @@ services:
     command:
       - webpack-dev-server
       - --mode=development
-      - --host=webpack-dev-server
-      - --port=8080
       - --debug
       - --watch
       - --progress
     environment:
-      - INTERFACE=desktop
+      - VISIBLE_ENTRY_POINT
+      - VISIBLE_WEB_HOST
+      - VISIBLE_WEB_PROTOCOL

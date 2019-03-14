@@ -199,6 +199,12 @@ files_to_remove:
   - file: global-front
     from: 2.3
     version: 2.4
+  - file: docker-compose-dev.yaml.mako
+    from: 2.3
+    version: 2.4
+  - file: docker-compose-dev.yaml
+    from: 2.3
+    version: 2.4
 
 files_to_move:
   - from: vars_{{package}}.yaml

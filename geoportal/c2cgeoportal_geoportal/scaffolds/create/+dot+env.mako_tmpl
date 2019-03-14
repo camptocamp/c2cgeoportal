@@ -30,7 +30,7 @@ GUNICORN_PARAMS=--bind=:8080 --worker-class=gthread --threads=10 --workers=5 --t
 TINYOWS_URL=http://tinyows:8080/
 MAPSERVER_URL=http://mapserver:8080/
 PRINT_URL=http://print:8080/print/
-DEVSERVER_HOST=webpack-dev-server:8080
+DEVSERVER_HOST=webpack_dev_server:8080
 C2C_REDIS_URL=redis://redis:6379
 PGOPTIONS=-c statement_timeout=30000
 CATALINA_OPTS=-Xmx1024m
