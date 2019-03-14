@@ -1,9 +1,9 @@
 alabaster==0.7.12  # Doc theme
 alembic==1.0.8  # geoportal
-awscli==1.16.123  # Work with Object storage
+awscli==1.16.124  # Work with Object storage
 Babel==2.6.0  # i18n
 beautifulsoup4==4.6.3  # admin tests, rq.filter: <4.7
-boto3==1.9.113  # Tile generation
+boto3==1.9.114  # Tile generation
 bottle==0.12.16  # geoportal
 c2c.cssmin==0.7.dev6  # CGXP build
 c2c.template==2.1.0  # geoportal
@@ -58,7 +58,7 @@ pyramid-tm==2.2.1  # geoportal
 pytest-cov==2.6.1  # tests
 pytest-selenium==1.16.0  # admin tests
 python-dateutil==2.6.1  # geoportal, rq.filter: <2.7.0
-PyYAML==3.13  # geoportal
+PyYAML==5.1  # geoportal
 rasterio==1.0.2  # geoportal raster, rq.filter: <=1.0.2
 requests==2.21.0  # geoportal
 redis==3.2.0  # geoportal cache
