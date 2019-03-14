@@ -2,6 +2,7 @@ import json
 import colander
 from deform.widget import MappingWidget, SelectWidget, SequenceWidget, TextAreaWidget
 from c2cgeoform.schema import GeoFormSchemaNode
+from c2cgeoportal_commons.lib.validators import url
 from c2cgeoportal_commons.models.main import Metadata
 from c2cgeoportal_admin import _
 
@@ -59,7 +60,7 @@ class MetadataSchemaNode(GeoFormSchemaNode):
         self._add_value_node('boolean', colander.Boolean())
         self._add_value_node('int', colander.Int())
         self._add_value_node('float', colander.Float())
-        self._add_value_node('url', colander.String(), validator=colander.url)
+        self._add_value_node('url', colander.String(), validator=url)
         self._add_value_node(
             'json',
             colander.String(),
