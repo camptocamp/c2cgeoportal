@@ -75,6 +75,12 @@ module.exports = {
     path: path.resolve(__dirname, '{{package}}_geoportal/static-ngeo/build/'),
     publicPath: devServer ? '${entry_point}dev/' : '${entry_point}static-ngeo/build/'
   },
+  devServer: {
+    publicPath: '${web_protocol}://${host}${entry_point}dev/',
+    port: 8080,
+    host: 'webpack_dev_server',
+    hot: true,
+  },
   entry: entry,
   module: {
     rules

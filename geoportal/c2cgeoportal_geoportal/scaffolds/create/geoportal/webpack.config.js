@@ -1,6 +1,6 @@
 const webpackMerge = require('webpack-merge');
 const apps = require('./webpack.apps.js');
-const commons = require('./webpack.commons');
+const commons = require('./webpack.commons.js');
 
 let config = commons.config;
 

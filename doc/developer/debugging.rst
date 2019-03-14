@@ -25,13 +25,11 @@ To have faster builds you need to use the Webpack dev server; you can achieve th
 In the file ``geoportal/demo_geoportal/static-ngeo/js/apps/<interface>.html.ejs``,
 remove the ``ng-strict-di`` in the ``html`` tag.
 
-In the file ``docker-compose-dev.yaml`` set the ``INTERFACE`` to the wanted value.
+If it's not already done copy the file ``docker-compose.override.sample.yaml`` to
+``docker-compose.override.yaml``.
+Be sure thate the service ``webpack_dev_server`` is present and uncommented.
 
-Run:
-
-.. prompt:: bash
-
-   docker-compose --file=docker-compose.yaml --file=docker-compose-dev.yaml up -b
+Restart your application as usual.
 
 Open the application at the following URL: ``https://<host>/<entry_point>/dev/<interface>.html``.
 
@@ -133,21 +131,10 @@ Developing in Python
 Create a development docker-compose.override.yaml
 .................................................
 
-Add a ``docker-compose.override.yaml`` file with a ``geoportal`` service containing the following lines:
+If it's not already done copy the file ``docker-compose.override.sample.yaml`` to
+``docker-compose.override.yaml``.
 
-.. code:: yaml
-
-   ---
-
-   version: '2'
-
-   services:
-     geoportal:
-       volumes:
-         - ${PWD}/geoportal/<project>_geoportal:/app/<project>_geoportal
-       environment:
-         - GUNICORN_CMD_ARGS=--reload
-       # entrypoint: []  # do not eval templates when using webpack-dev-server
+Be sure that the volume for the project is not commented.
 
 You can also do a graceful restart of the running gunicorn:
 
@@ -156,28 +143,20 @@ You can also do a graceful restart of the running gunicorn:
    docker-compose exec geoportal bash
    kill -s HUP `ps aux|grep gunicorn|head --lines=1|awk '{print $2}'`  # graceful
 
-And finally if you stop and start the container you will see your modifications:
+And finally if you restart the container you will see your modifications:
 
 .. prompt:: bash
 
-   docker-compose stop geoportal
-   docker-compose start geoportal
+   docker-compose restart geoportal
 
 Working on c2cgeoportal itself
 ..............................
 
 Clone and build c2cgeoportal, see :ref:`developer_server_side`.
 
-Add these volumes to your ``docker-compose.override.yaml``:
-
-.. code:: yaml
-
-   services:
-     geoportal:
-       volumes:
-         - <c2cgeoportal_git_root>/commons/c2cgeoportal_commons:/opt/c2cgeoportal_commons/c2cgeoportal_commons
-         - <c2cgeoportal_git_root>/geoportal/c2cgeoportal_geoportal:/opt/c2cgeoportal_geoportal/c2cgeoportal_geoportal
-         - <c2cgeoportal_git_root>/admin/c2cgeoportal_admin:/opt/c2cgeoportal_admin/c2cgeoportal_admin
+If it's not already done copy the file ``docker-compose.override.sample.yaml`` to
+``docker-compose.override.yaml``.
+Be sure that the volumes for c2cgeoportal are uncommented.
 
 Access to a hidden service
 --------------------------
