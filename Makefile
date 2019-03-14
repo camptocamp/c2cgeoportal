@@ -294,7 +294,7 @@ mypy:
 
 .PHONY: git-attributes
 git-attributes:
-	git --no-pager diff --check `git log --oneline | tail -1 | cut --fields=1 --delimiter=' '`
+	git --no-pager diff --check a6eacf93706d94606fb3c68a671f8254aea48e3b
 
 .PHONY: quote
 quote:
