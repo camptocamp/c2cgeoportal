@@ -79,7 +79,7 @@ Get the localisation from Transifex:
     docker build --tag=camptocamp/geomapfish-build-dev docker/build
     ./docker-run make transifex-get
 
-For each version we create a new branch (at the latest at the final release):
+For each version, we create a new branch (at the latest, for the final release):
 
 .. prompt:: bash
 
@@ -159,19 +159,19 @@ Run a new job for the <version> branch on Jenkins.
 
 .. note::
 
-    It's possible to do a version only on the latest commit on a branch,
-    If you relay need to do that, you should create a new branch.
+    It is possible to do a version only on the latest commit on a branch.
+    If you really need to do that, you should create a new branch.
 
 Notes about Travis
 ~~~~~~~~~~~~~~~~~~
 
-When you push a tag with the pattern ``^[0-9]+\.[0-9]+\..+$``
+When you push a tag with the pattern ``^[0-9]+\.[0-9]+\..+$``,
 a new release will automatically be created on Travis CI.
 
 Post release tasks
 ------------------
 
-When a new release or a new version is done you should do the following tasks:
+When a new release or a new version is done, you should do the following tasks:
 
 * Merge the version into the upper one to the master i.e.: ``2.4`` => ``2.5``, ``2.5`` => ``master``.
 

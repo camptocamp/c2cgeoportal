@@ -22,7 +22,7 @@ Webpack
 
 To have faster builds you need to use the Webpack dev server; you can achieve this as follows.
 
-In the ``geoportal/demo_geoportal/static-ngeo/js/apps/<interface>.html.ejs`` file
+In the file ``geoportal/demo_geoportal/static-ngeo/js/apps/<interface>.html.ejs``,
 remove the ``ng-strict-di`` in the ``html`` tag.
 
 In the file ``docker-compose-dev.yaml`` set the ``INTERFACE`` to the wanted value.
@@ -38,27 +38,27 @@ Open the application at the following URL: ``https://<host>/<entry_point>/dev/<i
 Pyramid
 -------
 
-If the ``pyramid_debugtoolbar`` is enabled the error is directly shown in the query that fails.
+If the ``pyramid_debugtoolbar`` is enabled, the error is directly shown in the query that fails.
 
 Mapserver
 ---------
 
-Sometime more information are available by using this command:
+Sometimes, more information can be obtained by using this command:
 
 .. prompt:: bash
 
     docker-compose exec mapserver shp2img -m <mapfile> -o test.png -e <minx> <miny> <maxx> <maxy> \
         -s <sizex> <sizey> -l <layers>
 
-You may also activate MapServer's debug mode and set environment variable of the MapServer container
-``MS_DEBUGLEVEL`` to ``5`` (most verbose level, default is 0).
+You may also activate MapServer's debug mode and set the environment variable ``MS_DEBUGLEVEL``
+of the MapServer container ``MS_DEBUGLEVEL`` to ``5`` (most verbose level, default is 0).
 
 `More information <http://mapserver.org/optimization/debugging.html?highlight=debug#debug-levels>`_
 
 PostgreSQL
 ----------
 
-In the ``/etc/postgresql/9.*/main/postgresql.conf`` configuration file
+In the configuration file ``/etc/postgresql/9.*/main/postgresql.conf``,
 you can set ``log_statement`` to ``all`` to see all the called statements.
 This file must be edited using the ``postgres`` user.
 
@@ -166,7 +166,7 @@ And finally if you stop and start the container you will see your modifications:
 Working on c2cgeoportal itself
 ..............................
 
-Clone and build c2cgeoportal, see: developer_server_side.
+Clone and build c2cgeoportal, see :ref:`developer_server_side`.
 
 Add these volumes to your ``docker-compose.override.yaml``:
 
@@ -238,15 +238,15 @@ Force rebuild the application:
 Performance or network error
 ----------------------------
 
-For performance and proxy issues make sure that all internal URLs in the config file
+For performance and proxy issues, make sure that all internal URLs in the config file
 use localhost (use ``curl "http://localhost/<path>" --header Host:<server_name>``
 to test it).
 
-Tilecloud chain
+TileCloud chain
 ...............
 
 Points to check with TileCloud chain:
 
 * Disabling metatiles should be avoided.
 * Make sure that ``empty_metatile_detection`` and ``empty_tile_detection`` are configured correctly.
-* Make sure to not generate tiles with a higher resolution than in the raster sources.
+* Make sure to not generate tiles with a resolution higher than the one in the raster sources.

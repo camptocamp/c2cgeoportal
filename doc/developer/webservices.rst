@@ -218,13 +218,13 @@ Parameters (post form):
 
 * ``login``
 * ``password``
-* ``came_from`` the URL where we will redirect after a success
+* ``came_from`` the URL to which we will redirect after a successful request.
 
 Result HTTP code:
 
 * 200 Success: Success with the JSON result as :ref:`developer_webservices_auth_connected`.
-* 302 Found: Success -> redirect on came_from.
-* 400 Bad request: When something wrong.
+* 302 Found: Success -> redirect to ``came_from``.
+* 400 Bad request: When something is wrong.
 
 Logout
 ------
@@ -238,7 +238,7 @@ Method: ``GET``
 Result HTTP code:
 
 * 200 Success: Success.
-* 400 Bad request: When something wrong.
+* 400 Bad request: When something is wrong.
 
 User information
 ----------------
@@ -302,7 +302,7 @@ Parameters (post form):
 Result HTTP code:
 
 * 200 Success: Success.
-* 400 Bad request: When something wrong.
+* 400 Bad request: When something is wrong.
 
 JSON result
 ~~~~~~~~~~~
@@ -321,7 +321,7 @@ URL: ``.../loginresetpassword``
 
 Method: ``POST``
 
-Used when the user lost his password.
+Used when the user lost his/her password.
 
 Parameters (post form):
 
@@ -330,7 +330,7 @@ Parameters (post form):
 Result HTTP code:
 
 * 200 Success: Success.
-* 400 Bad request: When something wrong.
+* 400 Bad request: When something is wrong.
 
 Success JSON result
 ~~~~~~~~~~~~~~~~~~~
@@ -354,8 +354,8 @@ Parameters
 * ``query``: Text to search.
 * ``limit``: The maximum number of results (optional).
 * ``partitionlimit``: The maximum number of results per layer (optional).
-* ``lang``: The used language (optional).
-* ``interface``: The used interface (optional).
+* ``lang``: The language used (optional).
+* ``interface``: The interface used (optional).
 
 Result
 ------
@@ -367,10 +367,10 @@ A GeoJSON of a feature collection with the properties:
 * ``params``: :ref:`integrator_fulltext_search_params` to set.
 * ``actions``: List of actions.
 
-The `action` is a dictionary with:
+The `actions` is a dictionary with:
 
-* ``action``: the action: (add_theme|add_group|add_layer).
-* ``data``: data needed for the action (actually, the item name).
+* ``action``: the type of action (add_theme|add_group|add_layer).
+* ``data``: data needed for the action (the item name).
 
 
 Layers
@@ -384,7 +384,7 @@ URL: ``.../layers/<layer_id>/md.xsd``
 Result
 ~~~~~~
 
-A standard xsd document that describe the layer.
+A standard xsd document that describes the layer.
 
 MapFish protocol
 ----------------
@@ -541,7 +541,7 @@ Parameters
 ----------
 
 * ``geom``: Geometry field used to get the profile data.
-* ``layers``: On witch layers, default to all.
+* ``layers``: On which layers; default to all.
 * ``nbPoints``: Maximum number of points.
 
 Result
