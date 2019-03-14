@@ -13,6 +13,9 @@ Information
    a `.env.mako` file where we have the environment variables used in the Docker compose files,
    `COMPOSE_PROJECT_NAME` contains the default name of the project.
 
+2. A page containing services useful for an administrator is now available here:
+   <application base URL>/c2c.
+
 Changes to apply
 ----------------
 
