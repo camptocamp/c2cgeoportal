@@ -557,10 +557,11 @@ vars:
             img-src *;"
     - pattern: '^/apihelp/index.html'
       headers:
-        Content-Security-Policy: "default-src 'self' {Content-Security-Policy_api_extra_script-src}; \
-            script-src 'self' 'unsafe-inline' 'unsafe-eval'; \
+        Content-Security-Policy: "default-src 'self' https://*; \
+            script-src 'self' 'unsafe-inline' 'unsafe-eval' {Content-Security-Policy_api_extra_script-src}; \
             style-src 'self' 'unsafe-inline'; \
-            img-src *;"
+            img-src * data:; \
+            connect-src *"
     - pattern: '^/admin/.*'
       headers:
         Referrer-Policy: same-origin
