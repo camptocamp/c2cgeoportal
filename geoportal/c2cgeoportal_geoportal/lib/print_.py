@@ -172,6 +172,14 @@ class PrintZoomLevels(yaml.YAMLObject):
     yaml_tag = "!zoomLevels"
 
 
+class PrintS3reportStorage(yaml.YAMLObject):
+    yaml_tag = "!s3reportStorage"
+
+
+class PrintSetTiledWms(yaml.YAMLObject):
+    yaml_tag = "!setTiledWms"
+
+
 # Processor
 
 
