@@ -25,13 +25,16 @@ You can access the health_check service with this kind of url:
 
 The levels used in the default configuration (recommended settings):
 
-* ``1``: Vital checkers (quick checks).
-* ``3``: Slow service checks, like print and GetCapabilities.
+* ``1``: Fatal checkers (main database connection, alembic versions).
+* ``2``: Vital checkers (other database connection, redis connexions, versions).
+* ``3``: Quick internal checks.
+* ``4``: Slow service checks (phantomjs checks, theme).
+* ``5``: Maybe cost service checks (print a page).
 * ``10``: collector of different sites.
 
 See also: https://github.com/camptocamp/c2cwsgiutils/#health-checks
 
-The recommended URL that should be checked by services such as Pingdom:
+The recommended URL that should be checked by services such as Pingdom or StatusCake:
 
     <project_url>/c2c/health_check?checks=check_collector
 

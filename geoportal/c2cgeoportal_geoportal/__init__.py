@@ -684,14 +684,20 @@ def init_dbsessions(settings: dict, config: Configurator, health_check: HealthCh
     if health_check is not None:
         for name, session in c2cgeoportal_commons.models.DBSessions.items():
             if name == 'dbsession':
-                health_check.add_db_session_check(session, at_least_one_model=main.Theme)
+                health_check.add_db_session_check(
+                    session, at_least_one_model=main.Theme, level=1
+                )
                 alembic_ini = os.path.join(os.path.abspath(os.path.curdir), 'alembic.ini')
                 if os.path.exists(alembic_ini):
-                    health_check.add_alembic_check(session, alembic_ini_path=alembic_ini, name='main',
-                                                   version_schema=settings['schema'])
-                    health_check.add_alembic_check(session, alembic_ini_path=alembic_ini, name='static',
-                                                   version_schema=settings['schema_static'])
+                    health_check.add_alembic_check(
+                        session, alembic_ini_path=alembic_ini, name='main',
+                        version_schema=settings['schema'], level=1
+                    )
+                    health_check.add_alembic_check(
+                        session, alembic_ini_path=alembic_ini, name='static',
+                        version_schema=settings['schema_static'], level=1
+                    )
             else:  # pragma: no cover
                 def check(session_: Session) -> None:
                     session_.execute('SELECT 1')
-                health_check.add_db_session_check(session, query_cb=check)
+                health_check.add_db_session_check(session, query_cb=check, level=2)

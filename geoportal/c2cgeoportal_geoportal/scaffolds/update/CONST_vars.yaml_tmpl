@@ -614,10 +614,10 @@ vars:
   checker:
     base_internal_url: http://localhost:8080
     fulltextsearch:
-      level: 1
+      level: 3
       search: text to search
     lang:
-      level: 1
+      level: 3
       files: [ngeo, cgxp-api]
     phantomjs:
       disable: []
@@ -625,11 +625,11 @@ vars:
         - name: desktop
           params:
             no_redirect: "true"
-          level: 3
+          level: 4
         - name: mobile
           params:
             no_redirect: "true"
-          level: 3
+          level: 4
     routes:
       disable: []
       routes:
@@ -663,18 +663,18 @@ vars:
     themes:
       params:
         version: "2"
-      level: 1
+      level: 4
       interfaces: {}
     print:
       spec: {}
-      level: 3
+      level: 5
 
   # Check collector configuration
   check_collector:
     hosts:
       - display: Main
-        url: '{web_protocol}://{host}{entry_point}'
-    max_level: 1
+        url: 'http://localhost:8080{entry_point}'
+    max_level: 3
     level: 10
 
   # What web page is authorized to use the API
