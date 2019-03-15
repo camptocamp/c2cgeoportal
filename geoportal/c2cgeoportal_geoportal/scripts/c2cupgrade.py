@@ -177,7 +177,7 @@ class Step:
                     def message():
                         c2cupgradetool.print_step(
                             self.step_number, error=True,
-                            message="The step get an error '{}'.".format(ex),
+                            message="The step had the error '{}'.".format(ex),
                             prompt="Fix the error and run the step again:"
                         )
                     atexit.register(message)
@@ -576,10 +576,10 @@ class C2cUpgradeTool:
                         except PermissionError as e:
                             self.print_step(
                                 step, error=True, message=(
-                                    "All your project files should be own by your user, "
+                                    "All your project files should be owned by your user, "
                                     "current error:\n" + str(e)
                                 ),
-                                prompt="Fix it and run again the upgrade:")
+                                prompt="Fix it and run the upgrade again:")
                             exit(1)
                 elif managed:
                     print("The file '{}' is managed by the project.".format(destination))
@@ -646,7 +646,7 @@ class C2cUpgradeTool:
                 step + 1,
                 message="Manually apply the ngeo application changes as shown in the `ngeo.diff` file.\n"
                 + DIFF_NOTICE
-                + "\nNote that you can also apply it using: git apply --3way ngeo.diff"
+                + "\nNote that you can also apply them using: git apply --3way ngeo.diff"
             )
 
     @Step(10)
@@ -677,7 +677,7 @@ class C2cUpgradeTool:
                 self.print_step(
                     step + 1, message="The `create.diff` file is a recommendation of the changes that you "
                     "should apply to your project.\n" + DIFF_NOTICE
-                    + "\nNote that you can also apply it using: git apply --3way create.diff"
+                    + "\nNote that you can also apply them using: git apply --3way create.diff"
                 )
         else:
             self.run_step(step + 1)
