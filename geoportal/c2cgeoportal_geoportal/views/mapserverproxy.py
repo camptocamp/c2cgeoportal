@@ -73,7 +73,7 @@ class MapservProxy(OGCProxy):
                     # than we need his id.
                     self.params["user_id"] = self.user.id  # pragma: no cover
             else:  # pragma nocover
-                log.warning("The user '%s' has no role", self.user.name)
+                log.warning("The user '%s' has no role", self.user.username)
 
         # do not allows direct variable substitution
         for k in list(self.params.keys()):
