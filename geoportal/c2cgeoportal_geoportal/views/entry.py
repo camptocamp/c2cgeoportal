@@ -1541,8 +1541,6 @@ class Entry:
     def logout(self):
         headers = forget(self.request)
 
-        # if there is no user to log out, we send a 404 Not Found (which
-        # is the status code that applies best here)
         if not self.request.user:
             log.info("Logout on non login user.")
             raise HTTPBadRequest("See server logs for details")
