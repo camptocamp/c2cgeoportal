@@ -1535,7 +1535,7 @@ class Entry:
                     )), headers=headers),
                 )
         else:
-            raise HTTPBadRequest("See server logs for details")
+            raise HTTPForbidden("See server logs for details")
 
     @view_config(route_name="logout")
     def logout(self):
