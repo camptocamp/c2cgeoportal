@@ -528,13 +528,118 @@ vars:
   ogcproxy_enable: false
 
   lingua_extractor: {}
-
-  Content-Security-Policy_extra_script-src: "\
-    https://maps.google.com/ \
-    https://maps.googleapis.com/ \
-    https://fonts.googleapis.com/ \
+  content_security_policy_main_default_src_extra: ""
+  content_security_policy_main_script_src_extra: "
+    https://maps.google.com/
+    https://maps.googleapis.com/
     https://www.google-analytics.com/"
-  Content-Security-Policy_api_extra_script-src: ''
+  content_security_policy_main_style_src_extra: "
+    https://fonts.googleapis.com/"
+  content_security_policy_main_img_src_extra: ""
+  content_security_policy_main_connect_src_extra: ""
+  content_security_policy_main_default_src: "
+    'self'
+    https://*
+    {content_security_policy_main_default_src_extra}"
+  content_security_policy_main_script_src: "
+    'self'
+    'unsafe-inline'
+    https://cdn.polyfill.io/
+    {content_security_policy_main_script_src_extra}"
+  content_security_policy_main_style_src: "
+    'self'
+    'unsafe-inline'
+    {content_security_policy_main_style_src_extra}"
+  content_security_policy_main_img_src: "
+    *
+    data:
+    {content_security_policy_main_img_src_extra}"
+  content_security_policy_main_connect_src: "
+    *
+    {content_security_policy_main_connect_src_extra}"
+
+  content_security_policy_admin_default_src_extra: ""
+  content_security_policy_admin_script_src_extra: ""
+  content_security_policy_admin_style_src_extra: ""
+  content_security_policy_admin_img_src_extra: ""
+  content_security_policy_admin_worker_src_extra: ""
+  content_security_policy_admin_default_src: "
+    'self'
+    {content_security_policy_admin_default_src_extra}"
+  content_security_policy_admin_script_src: "
+    'self'
+    'unsafe-inline'
+    {content_security_policy_admin_script_src_extra}"
+  content_security_policy_admin_style_src: "
+    'self'
+    'unsafe-inline'
+    https://stackpath.bootstrapcdn.com/
+    {content_security_policy_admin_style_src_extra}"
+  content_security_policy_admin_img_src: "
+    *
+    data:
+    {content_security_policy_admin_img_src_extra}"
+  content_security_policy_admin_worker_src: "
+    'self'
+    blob:
+    {content_security_policy_admin_worker_src_extra}"
+
+  content_security_policy_apihelp_default_src_extra: ""
+  content_security_policy_apihelp_script_src_extra: ""
+  content_security_policy_apihelp_style_src_extra: ""
+  content_security_policy_apihelp_img_src_extra: ""
+  content_security_policy_apihelp_connect_src_extra: ""
+  content_security_policy_apihelp_default_src: "
+    'self'
+    https://*
+    {content_security_policy_apihelp_default_src_extra}"
+  content_security_policy_apihelp_script_src: "
+    'self'
+    'unsafe-inline'
+    'unsafe-eval'
+    https://cdn.polyfill.io/
+    {content_security_policy_apihelp_script_src_extra}"
+  content_security_policy_apihelp_style_src: "
+    'self'
+    'unsafe-inline'
+    https://stackpath.bootstrapcdn.com/
+    {content_security_policy_apihelp_style_src_extra}"
+  content_security_policy_apihelp_img_src: "
+    *
+    data:
+    {content_security_policy_apihelp_img_src_extra}"
+  content_security_policy_apihelp_connect_src: "
+    *
+    {content_security_policy_apihelp_connect_src_extra}"
+
+  content_security_policy_oldapihelp_default_src_extra: ""
+  content_security_policy_oldapihelp_script_src_extra: ""
+  content_security_policy_oldapihelp_style_src_extra: ""
+  content_security_policy_oldapihelp_img_src_extra: ""
+  content_security_policy_oldapihelp_worker_src_extra: ""
+  content_security_policy_oldapihelp_default_src: "
+    'self'
+    https://*
+    {content_security_policy_oldapihelp_default_src_extra}"
+  content_security_policy_oldapihelp_script_src: "
+    'self'
+    'unsafe-inline'
+    'unsafe-eval'
+    https://cdn.polyfill.io/
+    {content_security_policy_oldapihelp_script_src_extra}"
+  content_security_policy_oldapihelp_style_src: "
+    'self'
+    'unsafe-inline'
+    https://stackpath.bootstrapcdn.com/
+    {content_security_policy_oldapihelp_style_src_extra}"
+  content_security_policy_oldapihelp_img_src: "
+    *
+    {content_security_policy_oldapihelp_img_src_extra}"
+  content_security_policy_oldapihelp_worker_src: "
+    'self'
+    blob:
+    {content_security_policy_oldapihelp_worker_src_extra}"
+
   global_headers:
     - pattern: '.*'
       headers:
@@ -543,33 +648,37 @@ vars:
         X-Content-Type-Options: nosniff
         Referrer-Policy: origin
         Strict-Transport-Security: max-age=31536000; includeSubDomains
-        Content-Security-Policy: "default-src 'self' https://*; \
-            script-src 'self' 'unsafe-inline' https://cdn.polyfill.io/ \
-               {Content-Security-Policy_extra_script-src}; \
-            style-src 'self' 'unsafe-inline' https://stackpath.bootstrapcdn.com/; \
-            img-src * data:; \
-            connect-src *"
-    - pattern: '^/oldx?apihelp.html'
-      headers:
-        Content-Security-Policy: "default-src 'self'; \
-            script-src 'self' 'unsafe-inline' 'unsafe-eval'; \
-            style-src 'self' 'unsafe-inline'; \
-            img-src *;"
-    - pattern: '^/apihelp/index.html'
-      headers:
-        Content-Security-Policy: "default-src 'self' https://*; \
-            script-src 'self' 'unsafe-inline' 'unsafe-eval' {Content-Security-Policy_api_extra_script-src}; \
-            style-src 'self' 'unsafe-inline'; \
-            img-src * data:; \
-            connect-src *"
+        Content-Security-Policy:
+          "default-src {content_security_policy_main_default_src};
+          script-src {content_security_policy_main_script_src};
+          style-src {content_security_policy_main_style_src};
+          img-src {content_security_policy_main_img_src};
+          connect-src {content_security_policy_main_connect_src}"
     - pattern: '^/admin/.*'
       headers:
         Referrer-Policy: same-origin
-        Content-Security-Policy: "default-src 'self'; \
-            script-src 'self' 'unsafe-inline'; \
-            style-src 'self' 'unsafe-inline'; \
-            img-src * data:; \
-            worker-src 'self' blob:"
+        Content-Security-Policy:
+          "default-src {content_security_policy_admin_default_src};
+          script-src {content_security_policy_admin_script_src};
+          style-src {content_security_policy_admin_style_src};
+          img-src {content_security_policy_admin_img_src};
+          worker-src {content_security_policy_admin_worker_src}"
+    - pattern: '^/apihelp/index.html'
+      headers:
+        Content-Security-Policy:
+          "default-src {content_security_policy_apihelp_default_src};
+          script-src {content_security_policy_apihelp_script_src};
+          style-src {content_security_policy_apihelp_style_src};
+          img-src {content_security_policy_apihelp_img_src};
+          connect-src {content_security_policy_apihelp_connect_src}"
+    - pattern: '^/oldx?apihelp.html'
+      headers:
+        Content-Security-Policy:
+          "default-src {content_security_policy_oldapihelp_default_src};
+          script-src {content_security_policy_oldapihelp_script_src};
+          style-src {content_security_policy_oldapihelp_style_src};
+          img-src {content_security_policy_oldapihelp_img_src};
+          worker-src {content_security_policy_oldapihelp_worker_src}"
     - pattern: '^/static/.*'
       headers:
         Access-Control-Allow-Origin: '*'

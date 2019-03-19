@@ -199,6 +199,10 @@ update_paths:
   - checker.print
   - checker.routes
   - checker.themes
+  - content_security_policy.main
+  - content_security_policy.admin
+  - content_security_policy.apihelp
+  - content_security_policy.oldapihelp
   - fulltextsearch
   - functionalities.available_in_templates
   - global_headers
