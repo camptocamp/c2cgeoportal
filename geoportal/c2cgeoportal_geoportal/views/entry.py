@@ -1518,8 +1518,9 @@ class Entry:
             raise HTTPBadRequest("See server logs for details")
         username = self.request.registry.validate_user(self.request, login, password)
         if username is not None:
-            user = models.DBSession.query(static.User).filter(static.User.username == username).one()
-            user.update_last_login()
+            user = models.DBSession.query(static.User).filter(static.User.username == username).one_or_none()
+            if user:
+                user.update_last_login()
             headers = remember(self.request, username)
             log.info("User '{0!s}' logged in.".format(username))
             came_from = self.request.params.get("came_from")
