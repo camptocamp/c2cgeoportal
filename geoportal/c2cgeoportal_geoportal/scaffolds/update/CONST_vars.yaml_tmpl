@@ -471,7 +471,6 @@ vars:
   Content-Security-Policy_extra_script-src: "\
     https://maps.google.com/ \
     https://maps.googleapis.com/ \
-    https://fonts.googleapis.com/ \
     https://www.google-analytics.com/"
   global_headers:
     - pattern: '.*'
@@ -484,7 +483,7 @@ vars:
         Content-Security-Policy: "default-src 'self' https://*; \
             script-src 'self' 'unsafe-inline' https://cdn.polyfill.io/ \
                {Content-Security-Policy_extra_script-src}; \
-            style-src 'self' 'unsafe-inline'; \
+            style-src 'self' 'unsafe-inline' https://fonts.googleapis.com/; \
             img-src * data:; \
             connect-src *"
     - pattern: '^/apihelp.html'
