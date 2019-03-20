@@ -1135,8 +1135,9 @@ class Entry:
             raise HTTPBadRequest("See server logs for details")
         username = self.request.registry.validate_user(self.request, login, password)
         if username is not None:
-            user = models.DBSession.query(static.User).filter(static.User.username == username).one()
-            user.update_last_login()
+            user = models.DBSession.query(static.User).filter(static.User.username == username).one_or_none()
+            if user:
+                user.update_last_login()
             headers = remember(self.request, username)
             LOG.info("User '%s' logged in.", username)
             came_from = self.request.params.get("came_from")
@@ -1151,14 +1152,12 @@ class Entry:
                     )), headers=headers),
                 )
         else:
-            raise HTTPBadRequest("See server logs for details")
+            raise HTTPForbidden("See server logs for details")
 
     @view_config(route_name="logout")
     def logout(self):
         headers = forget(self.request)
 
-        # if there is no user to log out, we send a 404 Not Found (which
-        # is the status code that applies best here)
         if not self.request.user:
             LOG.info("Logout on non login user.")
             raise HTTPBadRequest("See server logs for details")
