@@ -67,7 +67,8 @@ class MapservProxy(OGCProxy):
             roles = self.user.roles
             if len(roles):
                 if self.ogc_server.auth == main.OGCSERVER_AUTH_STANDARD:
-                    self.params["role_ids"] = ",".join([str(r.id) for r in roles])
+                    self.params["role_ids"] = \
+                        "-1" if len(roles) == 0 else ",".join([str(r.id) for r in roles])
 
                     # In some application we want to display the features owned by a user
                     # than we need his id.
