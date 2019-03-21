@@ -1,9 +1,9 @@
 alabaster==0.7.12  # Doc theme
 alembic==1.0.8  # geoportal
-awscli==1.16.126  # Work with Object storage
+awscli==1.16.127  # Work with Object storage
 Babel==2.6.0  # i18n
 beautifulsoup4==4.6.3  # admin tests, rq.filter: <4.7
-boto3==1.9.116  # Tile generation
+boto3==1.9.117  # Tile generation
 bottle==0.12.16  # geoportal
 c2c.cssmin==0.7.dev6  # CGXP build
 c2c.template==2.1.0  # geoportal
@@ -31,7 +31,7 @@ isodate==0.6.0  # geoportal
 Jinja2==2.10  # c2c.template
 JSTools==1.0  # CGXP build
 lingua==4.13  # i18n
-Mako==1.0.7  # geoportal
+Mako==1.0.8  # geoportal
 mccabe==0.6.1  # lint
 mypy==0.670  # lint
 OWSLib==0.17.1  # geoportal
