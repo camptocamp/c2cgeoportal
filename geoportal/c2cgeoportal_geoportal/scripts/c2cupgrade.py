@@ -254,6 +254,7 @@ class C2cUpgradeTool:
 
     def test_checkers(self):
         try:
+            requests.packages.urllib3.disable_warnings()
             resp = requests.get(
                 self.project["checker_url"],
                 headers=self.project.get("checker_headers"),
