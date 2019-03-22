@@ -211,27 +211,7 @@ what is configured in the admin interface for the layer.
 
 The ``${mapfile_data_subselect}`` variable is defined in the ``CONST_vars.yaml``
 configuration file. Its goal is to simplify the writing of the mapfile.
-It is defined as follows:
 
-.. code:: sql
-
-    SELECT
-      ST_Collect(ra.area)
-    FROM
-      main.restrictionarea AS ra,
-      main.role_restrictionarea AS rra,
-      main.layer_restrictionarea AS lra,
-      main.treeitem AS la
-    WHERE
-      rra.role_id = %role_id%
-    AND
-      rra.restrictionarea_id = ra.id
-    AND
-      lra.restrictionarea_id = ra.id
-    AND
-      lra.layer_id = la.id
-    AND
-      la.name =
 
 Without restriction on the RestrictionArea area
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -245,7 +225,7 @@ If we do not need to restrict on an area, we can use the following
         FROM
             <schema>.<table> AS geo
         WHERE (
-            %role_id% IN (
+            %role_ids% IN (
                 ${mapfile_data_noarea_subselect} '<layername>'
             )
         )
