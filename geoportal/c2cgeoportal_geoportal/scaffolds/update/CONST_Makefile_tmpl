@@ -758,14 +758,26 @@ secrets:
 
 # QGIS
 
+.PHONY: env-source
+env-source:
+	if [ ! -e .env ]; then echo "Run './docker-run make .env' to generate the required file '.env'."; false; fi
+	sed -r 's/^(.+)=(.+)$/export \1=\'\2\'/g' .env > .env.source
+
 .PHONY: edit-qgis-project
-edit-qgis-project:
+edit-qgis-project: env-source
 	IP=$$(ip addr show dev $$(route | grep default | awk '{print $$(NF)}' | head -1) | awk '$$1 ~ /^inet/ { sub("/.*", "", $$2); print $$2 }' | head -1); \
-	docker run -ti \
-		--add-host=db:$${IP} \
+	docker run --rm \
 		--volume=$${PWD}/qgisserver:/etc/qgisserver \
 		--volume=/tmp/.X11-unix:/tmp/.X11-unix \
 		--volume=$${HOME}:$${HOME} \
 		--env=DISPLAY=unix$${DISPLAY} \
 		--env=PGSERVICEFILE=$$HOME/.pg_service.conf \
-		--rm camptocamp/qgis-server:3.2 /usr/local/bin/start-client /etc/qgisserver/project.qgs
+		--env=AWS_ACCESS_KEY_ID \
+		--env=AWS_SECRET_ACCESS_KEY \
+		--env=AWS_DEFAULT_REGION \
+		--env=AWS_S3_ENDPOINT \
+		--env=CPL_VSIL_CURL_USE_CACHE \
+		--env=CPL_VSIL_CURL_CACHE_SIZE \
+		--env=CPL_VSIL_CURL_USE_HEAD \
+		--env=GDAL_DISABLE_READDIR_ON_OPEN \
+		camptocamp/qgis-server:3.4 /usr/local/bin/start-client /etc/qgisserver/project.qgz
