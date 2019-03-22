@@ -132,7 +132,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
 class OGCServerAccessControl(QgsAccessControlFilter):
     """ Implements GeoMapFish access restriction """
 
-    SUBSETSTRING_TYPE = ["GPKG", "PostgreSQL database with PostGIS extension"]
+    SUBSETSTRING_TYPE = ["PostgreSQL database with PostGIS extension"]
 
     def __init__(self, server_iface, ogcserver_name, srid, DBSession):  # noqa: N803
         super().__init__(server_iface)
@@ -283,8 +283,10 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         if len(restriction_areas) == 0:
             return Access.NO, None
 
-        return Access.AREA, [geoalchemy2.shape.to_shape(restriction_area.area)
-                             for restriction_area in restriction_areas]
+        return Access.AREA, [
+            geoalchemy2.shape.to_shape(restriction_area.area)
+            for restriction_area in restriction_areas
+        ]
 
     def get_area(self, layer, rw=False):
         """
@@ -359,10 +361,9 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         self.assert_plugin_initialised()
 
         try:
-            # Actually layerFilterSubsetString don't works on groups
-            # if layer.dataProvider().storageType() in self.SUBSETSTRING_TYPE:
-            #     QgsMessageLog.logMessage("layerFilterExpression not in type")
-            #     return None
+            if layer.dataProvider().storageType() in self.SUBSETSTRING_TYPE:
+                QgsMessageLog.logMessage("layerFilterExpression not in type")
+                return None
 
             access, area = self.get_area(layer)
             if access is Access.FULL:
