@@ -100,7 +100,7 @@ Build the project file:
 
 .. prompt:: bash
 
-   ./docker-run make project.yaml.mako
+   ./docker-run make project.yaml
 
 Change the version in the file ``.config`` to the wanted version.
 
