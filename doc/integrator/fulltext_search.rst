@@ -289,3 +289,33 @@ And define the configuration in the ``vars.yaml`` file:
 
 ``fr: fr`` is a link between the pyramid language and the text search configuration, by default it is
 ``fr: french`` because the default french text search configuration is named 'french'.
+
+
+Synonym and Thesaurus Dictionary
+--------------------------------
+
+With those dictionaries e.-g. 'alignement' is simplifyed as 'align':
+
+.. code:: sql
+
+   SELECT to_tsvector('fr', 'alignement');
+   'align':1
+
+Thus, 'alignem' does not match in the search, which can be an unexpected behavior for the user:
+
+.. code:: sql
+
+   SELECT to_tsquery('fr', 'alignem:*');
+   'alignem':*
+
+The change this behavior, you can create and use a new dictionary named `french_alt`:
+
+.. code:: sql
+
+   CREATE TEXT SEARCH DICTIONARY french_alt (TEMPLATE = pg_catalog.simple);
+   ALTER TEXT SEARCH DICTIONARY french_alt (STOPWORDS = french);
+   ALTER TEXT SEARCH CONFIGURATION fr ALTER MAPPING FOR asciiword WITH french_alt;
+
+.. note::
+
+   We keep the stop words to remove the French short words.
