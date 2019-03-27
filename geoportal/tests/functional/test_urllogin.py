@@ -31,6 +31,7 @@
 
 
 from unittest import TestCase
+from unittest.mock import patch
 import datetime
 import transaction
 import pyramid.security
@@ -124,6 +125,25 @@ class TestUrllogin(TestCase):
         get_user_from_request = create_get_user_from_request(request.registry.settings)
         get_user_from_request(request)
         self.assertIsNone(self.user)
+
+    @patch('c2cgeoportal_geoportal.LOG.error', side_effect=Exception())
+    def test_wrong_method(self, log_mock):  # pylint: disable=unused-argument
+        """
+        POST requests with input named "auth" must not raise exceptions due to urllogin.
+        """
+        def _get_user(method):
+            request = create_dummy_request(
+                params={"auth": "this is a form field value"},
+                method=method)
+            get_user_from_request = create_get_user_from_request(request.registry.settings)
+            get_user_from_request(request)
+
+        # Verify that GET request raises an Exception
+        with self.assertRaises(Exception):
+            _get_user('GET')
+
+        # Verify that POST request does not raises an Exception
+        _get_user('POST')
 
     def test_user_deactivated(self):
         self.assertIsNone(self.get_user("foobar1234567891", "__test_user2", "__test_user2", 1))
