@@ -47,7 +47,7 @@ class OGCProxy(Proxy):
 
     params = {}  # type: Dict[str, str]
 
-    def __init__(self, request):
+    def __init__(self, request, has_default_ogc_server=False):
         Proxy.__init__(self, request)
 
         # params hold the parameters we"re going to send to backend
@@ -60,7 +60,7 @@ class OGCProxy(Proxy):
             del self.params["user_id"]
 
         self.lower_params = self._get_lower_params(self.params)
-        if "ogcserver" not in self.params:
+        if not has_default_ogc_server and "ogcserver" not in self.params:
             raise HTTPBadRequest("The querytring argument 'ogcserver' is required")
         self.ogc_server = self._get_ogcserver_byname(self.params["ogcserver"])
 

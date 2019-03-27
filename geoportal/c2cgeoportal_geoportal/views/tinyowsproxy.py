@@ -49,7 +49,7 @@ LOG = logging.getLogger(__name__)
 class TinyOWSProxy(OGCProxy):
 
     def __init__(self, request):
-        OGCProxy.__init__(self, request)
+        OGCProxy.__init__(self, request, has_default_ogc_server=True)
         self.settings = request.registry.settings.get("tinyowsproxy", {})
 
         assert "tinyows_url" in self.settings, "tinyowsproxy.tinyows_url must be set"
