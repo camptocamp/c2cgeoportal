@@ -294,14 +294,15 @@ And define the configuration in the ``vars.yaml`` file:
 Synonym and Thesaurus Dictionary
 --------------------------------
 
-With those dictionaries e.-g. 'alignement' is simplifyed as 'align':
+You may wish to avoid using the Synonym and Thesaurus dictionaries, because when these are used,
+a word like 'alignement' is simplified as 'align':
 
 .. code:: sql
 
    SELECT to_tsvector('fr', 'alignement');
    'align':1
 
-Thus, 'alignem' does not match in the search, which can be an unexpected behavior for the user:
+Thus, 'alignem' does not match in the search, which might be considered unexpected behavior by users:
 
 .. code:: sql
 
