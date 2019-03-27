@@ -13,7 +13,6 @@ To configure these web services, you need to set the ``raster`` variable in the 
 .. code:: yaml
 
     raster:
-        cache_size: 21
         mns:
             file: /var/sig/altimetrie/mns.vrt
             type: gdal
@@ -24,8 +23,6 @@ To configure these web services, you need to set the ``raster`` variable in the 
             round: 1
 
 ``raster`` is a list of "DEM layers". There are only two entries in this example, but there could be more.
-
-``cache_size`` is the number of DEM files to keep in cache. Default is 10.
 
 ``file`` provides the path to the shape index that references the raster files.
 The raster files should be in the Binary Terrain (BT/VTP .bt 1.3) format.
