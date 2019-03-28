@@ -181,3 +181,29 @@ to see (and edit, if applicable) the features within this area.
 * ``Roles``: Restricted to the following roles.
 * ``Read/write``: Allows the linked users to change the objects.
 * ``Area``: Active in the following area, if not defined it is active everywhere.
+
+Users
+-----
+
+Each user may have from 1 to n roles, but each user has a default role from
+which are taken some settings. Currently the default role (defined through the
+"Settings from role" selection) has an influence on the role extent and on some
+functionalities regarding their configuration.
+
+Role extents for users can only be set in one role, because the application
+is currently not able to check multiple extents for one user, thus it is the
+default role which defines this unique extent.
+
+Any functionality specified as ``single`` can be defined only once per user.
+Hence, these functionalities have to be defined in the default role.
+
+By default, functionalities are not specified as ``single``. Currently, the
+following functionalities are of ``single`` type:
+
+* ``default_basemap``
+* ``default_theme``
+* ``preset_layer_filter``
+* ``open_panel``
+
+Any other functionality (with ``single`` not set or set to ``false``) can
+be defined in any role linked to the user.
