@@ -3,7 +3,7 @@
 Headers
 =======
 
-``c2cgeoportal`` add some HTTP headers on its responses with certain default values.
+``c2cgeoportal`` adds some HTTP headers on its responses with certain default values.
 You may wish to override the values being written. All this is done in the configuration with the
 ``global _headers`` section in the vars file with the following syntax:
 
