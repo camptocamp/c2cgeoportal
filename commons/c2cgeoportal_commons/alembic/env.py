@@ -91,7 +91,7 @@ def run_migrations_online():
     elif alembic_name == 'static':
         from c2cgeoportal_commons.models.static import Base, _schema
 
-    def include_object(obj, name, type_, reflected, compare_to):
+    def include_object(obj, name, type_, reflected, compare_to):  # pylint: disable=unused-argument
         if type_ == 'table':
             return obj.schema == _schema
         else:

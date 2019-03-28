@@ -89,9 +89,9 @@ class FullTextSearch(GeoInterface, Base):
     id = Column(Integer, primary_key=True)
     label = Column(Unicode)
     layer_name = Column(Unicode)  # Deprecated in v2
-    role_id = Column(Integer, ForeignKey(_schema + '.role.id'), nullable=True)
+    role_id = Column(Integer, ForeignKey(_schema + '.role.id', ondelete='CASCADE'), nullable=True)
     role = relationship('Role')
-    interface_id = Column(Integer, ForeignKey(_schema + '.interface.id'), nullable=True)
+    interface_id = Column(Integer, ForeignKey(_schema + '.interface.id', ondelete='CASCADE'), nullable=True)
     interface = relationship('Interface')
     lang = Column(String(2), nullable=True)
     public = Column(Boolean, server_default='true')
