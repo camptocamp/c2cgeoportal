@@ -194,7 +194,7 @@ def create_get_user_from_request(settings):
         from c2cgeoportal_commons.models.static import User
 
         try:
-            if "auth" in request.params:
+            if request.method == 'GET' and "auth" in request.params:
                 auth_enc = request.params.get("auth")
 
                 if auth_enc is not None:
