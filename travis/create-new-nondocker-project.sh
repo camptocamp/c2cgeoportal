@@ -45,7 +45,7 @@ sudo a2enmod fcgid
     geoportal/alembic.yaml \
     geoportal/production.ini \
     geoportal/config.yaml \
-    docker-compose-build.yaml docker-build-testdb
+    docker-compose-build.yaml
 FINALISE=TRUE make --makefile=travis.mk build
 DOCKER_RUN_ALEMBIC="./docker-run --env=PGSCHEMA=main --env=PGSCHEMA_STATIC=main_static alembic"
 ${DOCKER_RUN_ALEMBIC} --config=geoportal/alembic.ini --name=main upgrade head

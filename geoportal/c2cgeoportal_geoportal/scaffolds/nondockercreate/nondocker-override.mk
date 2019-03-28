@@ -86,7 +86,3 @@ docker-build-config:
 docker-build-geoportal: $(CONF_FILES)
 	$(PRERULE_CMD)
 	@echo "Nothing to do for $@"
-
-docker-build-testdb:
-	$(PRERULE_CMD)
-	@echo "Nothing to do for $@"

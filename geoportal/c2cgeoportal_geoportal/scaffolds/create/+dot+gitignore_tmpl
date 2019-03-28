@@ -5,9 +5,6 @@ __pycache__/
 /project.yaml
 /.env
 /docker-compose.override.yaml
-/testdb/11-schemas.sql
-/testdb/12-alembic.sql
-/testdb/13-alembic-static.sql
 /mapcache/
 /tilegeneration/config.yaml.tmpl
 /tilegeneration/config.yaml.mako
@@ -34,5 +31,4 @@ __pycache__/
 /geoportal/{{package}}_geoportal/static/build/
 /geoportal/node_modules
 /geoportal/webpack.apps.js
-/vars_alembic.yaml
 /.upgrade.yaml
