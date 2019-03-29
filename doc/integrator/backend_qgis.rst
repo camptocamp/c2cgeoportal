@@ -52,7 +52,19 @@ In the *WFS capabilities* section, you should check the layers that need to be a
 Also take care on the Update Insert delete column to make the layer available through the WFS transactional
 API.
 
-Finally, your QGIS project layers' CRS should all be in the same CSR. This is subject to change.
+Your QGIS project layers' CRS should all be in the same CRS. This is subject to change.
+
+Finally, edit your project file manually and set:
+
+.. code::
+
+    <WMSUrl type="QString">https://<host>/mapserv_proxy?ogcserver=<name></WMSUrl>
+    <WFSUrl type="QString">https://<host>/mapserv_proxy?ogcserver=<name></WFSUrl>
+    <WMTSUrl type="QString">https://<host>/mapserv_proxy?ogcserver=<name></WMTSUrl>
+    <WCSUrl type="QString">https://<host>/mapserv_proxy?ogcserver=<name></WCSUrl>
+
+By default, ``https://<host>/mapserv_proxy?ogcserver=<name>`` is empty.
+
 
 Connect to Postgres database
 ****************************
