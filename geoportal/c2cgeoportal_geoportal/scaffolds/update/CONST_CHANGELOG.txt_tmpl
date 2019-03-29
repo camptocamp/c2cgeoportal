@@ -51,6 +51,9 @@ Information
 
 6. Now we needs the `pg_trgm` Postgres extension, use `CREATE EXTENSION pg_trgm;` to install it.
 
+7. A mail server is required to send the user his/her password (with the new admin interface the application
+   administrator no longer has access to this information).
+
 Changes to apply
 ----------------
 
