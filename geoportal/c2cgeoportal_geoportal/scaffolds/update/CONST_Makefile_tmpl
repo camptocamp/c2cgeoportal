@@ -86,9 +86,7 @@ WEB_RULE ?= $(DEFAULT_WEB_RULE)
 DEFAULT_BUILD_RULES ?= docker-build-geoportal \
 	docker-build-config \
 	build-api \
-	project.yaml \
-	geoportal/alembic.ini \
-	geoportal/alembic.yaml
+	project.yaml
 ifeq ($(DOCKER), TRUE)
 DEFAULT_BUILD_RULES += .env
 endif
@@ -162,11 +160,6 @@ I18N_SOURCE_FILES += $(APP_HTML_FILES) \
 # The theme from the database
 I18N_SOURCE_FILES += geoportal/development.ini
 I18N_DEPENDENCIES += project.yaml
-
-
-# Alembic
-ALEMBIC_YAML_FILE ?= $(VARS_FILE)
-export ALEMBIC_YAML_FILE
 
 # CGXP
 JSBUILD_MAIN_FILES = $(shell find geoportal/$(PACKAGE)_geoportal/static/lib/cgxp geoportal/$(PACKAGE)_geoportal/static/js -name "*.js" -print 2> /dev/null)
@@ -704,6 +697,7 @@ docker-build-geoportal: $(shell docker-required --path geoportal) \
 		$(WEB_RULE) \
 		$(addprefix geoportal/$(PACKAGE)_geoportal/locale/, $(addsuffix /LC_MESSAGES/$(PACKAGE)_geoportal-$(L10N_CLIENT_POSTFIX).mo, $(LANGUAGES))) \
 		geoportal/config.yaml \
+		geoportal/alembic.ini \
 		geoportal/alembic.yaml
 	docker build --tag=$(DOCKER_BASE)-geoportal:$(DOCKER_TAG) --build-arg=GIT_HASH=$(GIT_HASH) geoportal
 
@@ -712,9 +706,9 @@ push-docker:
 	docker push $(DOCKER_BASE)-config:$(DOCKER_TAG)
 	docker push $(DOCKER_BASE)-geoportal:$(DOCKER_TAG)
 
-geoportal/alembic.yaml: $(ALEMBIC_YAML_FILE) vars.yaml CONST_vars.yaml
+geoportal/alembic.yaml: /build/c2ctemplate-cache.json
 	$(PRERULE_CMD)
-	c2c-template --vars $< --get-config /build/_alembic.yaml srid schema schema_static sqlalchemy.url cache
+	c2c-template --cache $< --get-config /build/_alembic.yaml srid schema schema_static sqlalchemy.url cache
 	mv /build/_alembic.yaml $@
 
 # Upgrade
