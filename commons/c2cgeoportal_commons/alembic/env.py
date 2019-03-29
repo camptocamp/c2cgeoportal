@@ -82,6 +82,28 @@ def run_migrations_online():
 
     """
     conf = get_config()
+
+    # Autogenerate config
+    _schema = False
+    alembic_name = context.config.get_main_option('type')
+    if alembic_name == 'main':
+        from c2cgeoportal_commons.models.main import Base, _schema
+    elif alembic_name == 'static':
+        from c2cgeoportal_commons.models.static import Base, _schema
+
+    def include_object(obj, name, type_, reflected, compare_to):  # pylint: disable=unused-argument
+        if type_ == 'table':
+            return obj.schema == _schema
+        else:
+            return obj.table.schema == _schema
+
+    if _schema:
+        conf.update({
+            'target_metadata': Base.metadata,
+            'include_schemas': True,
+            'include_object': include_object
+        })
+
     engine = engine_from_config(
         conf,
         prefix='sqlalchemy.',
