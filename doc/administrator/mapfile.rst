@@ -225,7 +225,7 @@ If we do not need to restrict on an area, we can use the following
         FROM
             <schema>.<table> AS geo
         WHERE (
-            %role_ids% IN (
+            ARRAY[%role_ids%] && ARRAY(
                 ${mapfile_data_noarea_subselect} '<layername>'
             )
         )
@@ -265,8 +265,8 @@ as follows:
 .. code::
 
     mapserver_layer_validation =
-        "default_role_id" "-1"
-        "role_id" "^-?[0-9]*$$"
+        "default_role_ids" "-1"
+        "role_ids" "^-?[0-9]*$$"
 
 The mapfile should be a ``.map.mako`` file, for the variable to be
 substituted at make execution time.

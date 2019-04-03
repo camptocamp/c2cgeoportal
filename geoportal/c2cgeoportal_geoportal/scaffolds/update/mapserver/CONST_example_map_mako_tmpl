@@ -10,7 +10,7 @@ LAYER
   # Example data for secured layer by restriction area
   DATA "geometry FROM (SELECT geo.* FROM geodata.table AS geo WHERE ST_Contains((${mapfile_data_subselect} 'layer_name'), ST_SetSRID(geo.geometry, {{srid}}))) as foo using unique id using srid={{srid}}"
   # Example data for secured layer by role (without any area)
-  #DATA "geometry FROM (SELECT geo.geom as geom FROM geodata.table AS geo WHERE %role_ids% IN (${mapfile_data_noarea_subselect} 'layer_name')) as foo USING UNIQUE gid USING srid={{srid}}"
+  #DATA "geometry FROM (SELECT geo.geom as geom FROM geodata.table AS geo WHERE ARRAY[%role_ids%] && ARRAY(${mapfile_data_noarea_subselect} 'layer_name')) as foo USING UNIQUE gid USING srid={{srid}}"
   # Example data for public layer
   #DATA "geometry FROM (SELECT geo.geom as geom FROM geodata.table AS geo) AS foo USING UNIQUE gid USING srid={{srid}}"
   METADATA
