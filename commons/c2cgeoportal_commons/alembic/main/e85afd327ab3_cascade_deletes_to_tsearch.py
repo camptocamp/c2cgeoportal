@@ -47,11 +47,11 @@ depends_on = None
 def upgrade():
     schema = config['schema']
 
-    op.drop_constraint('tsearch_role_id_fkey', 'tsearch', schema='main', type_='foreignkey')
+    op.drop_constraint('tsearch_role_id_fkey', 'tsearch', schema=schema, type_='foreignkey')
     op.create_foreign_key('tsearch_role_id_fkey', 'tsearch', 'role', ['role_id'], ['id'],
                           source_schema=schema, referent_schema=schema, ondelete='CASCADE')
 
-    op.drop_constraint('tsearch_interface_id_fkey', 'tsearch', schema='main', type_='foreignkey')
+    op.drop_constraint('tsearch_interface_id_fkey', 'tsearch', schema=schema, type_='foreignkey')
     op.create_foreign_key('tsearch_interface_id_fkey', 'tsearch', 'interface', ['interface_id'], ['id'],
                           source_schema=schema, referent_schema=schema, ondelete='CASCADE')
 
@@ -59,10 +59,10 @@ def upgrade():
 def downgrade():
     schema = config['schema']
 
-    op.drop_constraint('tsearch_role_id_fkey', 'tsearch', schema='main', type_='foreignkey')
+    op.drop_constraint('tsearch_role_id_fkey', 'tsearch', schema=schema, type_='foreignkey')
     op.create_foreign_key('tsearch_role_id_fkey', 'tsearch', 'role', ['role_id'], ['id'],
                           source_schema=schema, referent_schema=schema)
 
-    op.drop_constraint('tsearch_interface_id_fkey', 'tsearch', schema='main', type_='foreignkey')
+    op.drop_constraint('tsearch_interface_id_fkey', 'tsearch', schema=schema, type_='foreignkey')
     op.create_foreign_key('tsearch_interface_id_fkey', 'tsearch', 'interface', ['interface_id'], ['id'],
                           source_schema=schema, referent_schema=schema)
