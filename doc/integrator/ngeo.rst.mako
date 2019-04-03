@@ -99,8 +99,13 @@ The sub section is the interface name, and after that we have:
 * ``static``: key: Constant name, value: name of the static view that we want to have the URL.
 * ``routes``: key: Constant name, value:
     ``name``: Name of the route witch one we want to have the URL.
-    ``params``: View parameters.
-    ``dynamic_params``: View parameters from dynamic values.
+    ``kw``: Keyword arguments to supply for dynamic path elements in the route definition.
+    ``elements``: Additional positional path segments to append the URL after it is generated.
+    ``params``: Query string parameters to append to the URL.
+    ``dynamic_params``: Query string parameters from dynamic values to append to the URL.
+
+For more information ``elements`` and ``kw`` properties see *Pyramid* ``Request.route_url`` documentation:
+https://docs.pylonsproject.org/projects/pyramid/en/latest/api/request.html#pyramid.request.Request.route_url
 
 The dynamic values names are: ``interface``, ``cache_version``, ``lang_urls``, ``fulltextsearch_groups``.
 

@@ -32,7 +32,7 @@
 
 from pyramid import testing
 from unittest import TestCase
-from pyramid.testing import DummyRequest
+from pyramid.testing import DummyRequest, testConfig
 
 from tests.functional import (  # noqa, pylint: disable=unused-import
     teardown_common as teardown_module,
@@ -40,7 +40,7 @@ from tests.functional import (  # noqa, pylint: disable=unused-import
 )
 
 
-class TestEchoView(TestCase):
+class TestDynamicView(TestCase):
 
     def setup_method(self, _):
         import transaction
@@ -214,7 +214,7 @@ class TestEchoView(TestCase):
         dynamic = DynamicView(request).dynamic()
 
         assert 'XTest' in dynamic['constants'], dynamic
-        assert dynamic['constants']['XTest'] == ['layer1', 'layer2']
+        assert set(dynamic['constants']['XTest']) == {'layer1', 'layer2'}
 
     def test_static(self):
         from c2cgeoportal_geoportal.views.dynamic import DynamicView
@@ -254,7 +254,80 @@ class TestEchoView(TestCase):
         assert 'XTest' in dynamic['constants'], dynamic
         assert dynamic['constants']['XTest'] == '/dummy/route/url/test?test=value'
 
-    def test_route_dyamic(self):
+    def test_route_with_keywords(self):
+        from c2cgeoportal_geoportal.views.dynamic import DynamicView
+        with testConfig(settings=self._get_settings({
+            'test': {
+                'routes': {
+                    'XTest': {
+                        'name': 'route_with_keywords',
+                        'kw': {
+                            'key1': 'v1',
+                            'key2': 'v2',
+                        }
+                    }
+                }
+            }
+        })) as config:
+            config.add_static_view(name='static-ngeo', path='package_name_geoportal:static-ngeo')
+            config.add_route('test', '/test')
+            config.add_route('route_with_keywords', '/test/{key1}/{key2}')
+            request = DummyRequest({'interface': 'test'})
+            dynamic = DynamicView(request).dynamic()
+
+        assert 'XTest' in dynamic['constants'], dynamic
+        assert dynamic['constants']['XTest'] == 'http://example.com/test/v1/v2'
+
+    def test_route_with_segments(self):
+        from c2cgeoportal_geoportal.views.dynamic import DynamicView
+        with testConfig(settings=self._get_settings({
+            'test': {
+                'routes': {
+                    'XTest': {
+                        'name': 'route_with_segments',
+                        'elements': ['s1', 's2']
+                    }
+                }
+            }
+        })) as config:
+            config.add_static_view(name='static-ngeo', path='package_name_geoportal:static-ngeo')
+            config.add_route('test', '/test')
+            config.add_route('route_with_segments', '/test')
+            request = DummyRequest({'interface': 'test'})
+            dynamic = DynamicView(request).dynamic()
+
+        assert 'XTest' in dynamic['constants'], dynamic
+        assert dynamic['constants']['XTest'] == 'http://example.com/test/s1/s2'
+
+    def test_route_with_all(self):
+        from c2cgeoportal_geoportal.views.dynamic import DynamicView
+        with testConfig(settings=self._get_settings({
+            'test': {
+                'routes': {
+                    'XTest': {
+                        'name': 'route_with_all',
+                        'kw': {
+                            'key1': 'v1',
+                            'key2': 'v2',
+                        },
+                        'elements': ['s1', 's2'],
+                        'params': {
+                            'test': 'value'
+                        }
+                    }
+                }
+            }
+        })) as config:
+            config.add_static_view(name='static-ngeo', path='package_name_geoportal:static-ngeo')
+            config.add_route('test', '/test')
+            config.add_route('route_with_all', '/test/{key1}/{key2}')
+            request = DummyRequest({'interface': 'test'})
+            dynamic = DynamicView(request).dynamic()
+
+        assert 'XTest' in dynamic['constants'], dynamic
+        assert dynamic['constants']['XTest'] == 'http://example.com/test/v1/v2/s1/s2?test=value'
+
+    def test_route_dynamic(self):
         from c2cgeoportal_geoportal.views.dynamic import DynamicView
         request = self._request()
         request.registry.settings = self._get_settings({

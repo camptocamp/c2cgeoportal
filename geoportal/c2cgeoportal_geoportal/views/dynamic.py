@@ -90,7 +90,10 @@ class DynamicView:
             params.update(config.get('params', {}))
             for name, dyn in config.get('dynamic_params', {}).items():
                 params[name] = dynamic[dyn]
-            constants[constant] = self.request.route_url(config['name'], _query=params)
+            constants[constant] = self.request.route_url(config['name'],
+                                                         *config.get('elements', []),
+                                                         _query=params,
+                                                         **config.get('kw', {}))
 
         do_redirect = False
         url = None

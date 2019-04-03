@@ -152,6 +152,15 @@ mapping:
                       name:
                         type: str
                         required: True
+                      elements:
+                        type: seq
+                        sequence:
+                          - type: str
+                      kw:
+                        type: map
+                        mapping:
+                          regex;.+:
+                            type: str
                       params:
                         type: map
                         mapping:
