@@ -605,8 +605,14 @@ $(APP_OUTPUT_DIR)/vendor%: /opt/vendor%
 	rm --force $(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .*, $(NGEO_INTERFACES)))
 	(cd geoportal; webpack $(WEBPACK_ARGS))
 ifeq ($(DOCKER), TRUE)
-	ls -1 $(APP_OUTPUT_DIR)/*.html|while read file; do mv $${file} $${file}.tmpl; done
-	ls -1 $(APP_OUTPUT_DIR)/*.css|while read file; do mv $${file} $${file}.tmpl; done
+	for interface in $(NGEO_INTERFACES); \
+	do \
+		mv $(APP_OUTPUT_DIR)/$${interface}.html $(APP_OUTPUT_DIR)/$${interface}.html.tmpl; \
+		ls -1 $(APP_OUTPUT_DIR)/$${interface}.*.css|while read file; \
+		do \
+			mv $${file} $${file}.tmpl; \
+		done; \
+	done
 endif
 	touch $@
 
