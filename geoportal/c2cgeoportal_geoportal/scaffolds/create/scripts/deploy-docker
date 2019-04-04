@@ -1,0 +1,59 @@
+#!/usr/bin/env python3
+
+import os.path
+import sys
+import subprocess
+
+if os.environ['TRAVIS_PULL_REQUEST'] == 'true':
+    print('Not deploying images for pull requests')
+    exit(0)
+
+version = os.environ['TRAVIS_BRANCH']
+
+if version not in os.environ.get('HELM_RELEASE_NAMES', '').split(','):
+    print('Not a release branch')
+    exit(0)
+
+print('Deploying images to Docker Hub for tag {}'.format(version))
+sys.stdout.flush()
+subprocess.check_call([
+    'docker', 'login',
+    '--username=' + os.environ['DOCKER_USERNAME'],
+    '--password=' + os.environ['DOCKER_PASSWORD'],
+])
+
+images = ('config', 'geoportal')
+for image in images:
+    full_image = 'camptocamp/{}-{}'.format(os.environ['PROJECT'], image)
+    src_image = '{}:latest'.format(full_image)
+    dest_image = '{}:{}'.format(full_image, version)
+    subprocess.check_call(['docker', 'tag', src_image, dest_image])
+    subprocess.check_call(['docker', 'push', dest_image])
+
+
+openshift_version = '3.11.0'
+openshift_hash = '0cbc58b'
+openshift_version_name = 'openshift-origin-client-tools-v{}-{}-linux-64bit'.format(
+    openshift_version, openshift_hash
+)
+openshift_file = openshift_version_name + '.tar.gz'
+openshift_url = 'https://github.com/openshift/origin/releases/download/v{}/{}'.format(
+    openshift_version, openshift_file
+)
+subprocess.check_call(['wget', '--quiet', openshift_url], cwd='/tmp')
+subprocess.check_call(['tar', 'xfz', openshift_file], cwd='/tmp')
+subprocess.check_call([
+    'mv', '{}/oc'.format(openshift_version_name), os.path.expanduser('~/bin/')
+], cwd='/tmp')
+
+subprocess.check_call([
+    'oc', 'login', os.environ['OPENSHIFT_URL'],
+    '--username=' + os.environ['OPENSHIFT_USERNAME'],
+    '--password=' + os.environ['OPENSHIFT_PASSWORD'],
+])
+subprocess.check_call(['oc', 'project', os.environ['OPENSHIFT_PROJECT']])
+for image in images:
+    openshift_image_ref = '{}-c2cgeoportal-{}:{}'.format(version, image, version)
+    subprocess.check_call([
+        'oc', 'import-image', openshift_image_ref, '--scheduled=true', '--reference-policy=local',
+    ])
