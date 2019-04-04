@@ -7,5 +7,23 @@ addons:
     packages:
       - python3-netifaces
 
+env:
+  global:
+    - PROJECT={{package}}
+#    - OPENSHIFT_PROJECT=gs-gmf-{{package}}
+#    - HELM_RELEASE_NAMES=List of branch that should be deployed on helm
+#    - DOCKER_USERNAME=username
+#    - secure: travis encrypt DOCKER_PASSWORD=password
+#    - OPENSHIFT_URL=https://openshift-ch-3.camptocamp.com/
+#    - OPENSHIFT_USERNAME=username
+#    - secure: travis encrypt OPENSHIFT_PASSWORD=password
+
 script:
   - ./docker-run make checks
+  - ./docker-run make docker-build-config docker-build-geoportal
+
+deploy:
+  provider: script
+  script: travis/deploy
+  on:
+    all_branches: true
