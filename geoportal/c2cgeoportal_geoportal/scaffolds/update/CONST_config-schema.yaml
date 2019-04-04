@@ -601,7 +601,7 @@ mapping:
                 required: True
               spec:
                 type: any
-                required: True
+                required: False
           routes: &routes
             type: map
             required: True

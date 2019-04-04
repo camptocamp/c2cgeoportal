@@ -17,6 +17,15 @@ services:
       # - '${PWD}/../c2cgeoportal/admin/c2cgeoportal_admin:/opt/c2cgeoportal_admin/c2cgeoportal_admin'
     environment:
       - GUNICORN_CMD_ARGS=--reload
+      # - PRINT_URL=http://print:8080/print/
+
+  # Also uncomment the PRINT_URL in geoportal
+  # print:
+  #   extends:
+  #     file: docker-compose-lib.yaml
+  #     service: print
+  #   volumes_from:
+  #     - config:ro
 
   # For Javascript project development.
   # The debug application will be availavble at ``https://<host>/<entry_point>/dev/<interface>.html``.

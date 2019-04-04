@@ -56,12 +56,12 @@ templates:
         directory: '.'
       - !configureHttpRequests &configureHttpRequests
         httpProcessors:
-          - !mapUri
-            mapping:
-              https?://${VISIBLE_WEB_HOST_RE_ESCAPED}${VISIBLE_ENTRY_POINT_RE_ESCAPED}tiles(.*): "${TILECLOUDCHAIN_INTERNAL_URL}${VISIBLE_ENTRY_POINT}tiles$1"
-          - !mapUri
-            mapping:
-              https?://${VISIBLE_WEB_HOST_RE_ESCAPED}${VISIBLE_ENTRY_POINT_RE_ESCAPED}(.*): "${GEOPORTAL_INTERNAL_URL}${VISIBLE_ENTRY_POINT}$1"
+          ## - !mapUri
+          ##   mapping:
+          ##     https?://${VISIBLE_WEB_HOST_RE_ESCAPED}${VISIBLE_ENTRY_POINT_RE_ESCAPED}tiles(.*): "${TILECLOUDCHAIN_INTERNAL_URL}${VISIBLE_ENTRY_POINT}tiles$1"
+          ## - !mapUri
+          ##   mapping:
+          ##     https?://${VISIBLE_WEB_HOST_RE_ESCAPED}${VISIBLE_ENTRY_POINT_RE_ESCAPED}(.*): "${GEOPORTAL_INTERNAL_URL}${VISIBLE_ENTRY_POINT}$1"
           - !forwardHeaders
             matchers:
               - !hostnameMatch
