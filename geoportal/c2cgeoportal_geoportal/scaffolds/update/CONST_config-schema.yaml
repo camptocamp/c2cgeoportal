@@ -527,24 +527,10 @@ mapping:
         type: map
         required: True
         mapping:
-          host_map:
-            type: seq
-            sequence:
-              - type: map
-                mapping:
-                  netloc:
-                    type: str
-                    required: True
-                  to:
-                    type: map
-                    required: True
-                    mapping:
-                      schema:
-                        type: str
-                      netloc:
-                        type: str
-                  forward_host:
-                    type: bool
+          forward_host:
+            type: bool
+          base_internal_url:
+            type: str
           fulltextsearch:
             type: map
             required: True
