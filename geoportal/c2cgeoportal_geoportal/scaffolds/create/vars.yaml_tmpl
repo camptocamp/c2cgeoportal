@@ -129,15 +129,14 @@ vars:
                 profile: routed-hiking
         ngeoNominatimSearchDefaultParams:
           countrycodes: CH
-        ngeoWfsPermalinkOptions:
-          url: https://geomapfish-demo.camptocamp.com/docker/mapserv_proxy?ogcserver=QGIS%20server
-          wfsTypes:
-            - featureType: osm_hospitals
-              label: name
-            - featureType: osm_firestations
-              label: name
-          defaultFeatureNS: http://www.qgis.org/gml
-          defaultFeaturePrefix: feature
+      wfs_permalink:
+        wfsTypes:
+          - featureType: osm_hospitals
+            label: name
+          - featureType: osm_firestations
+            label: name
+        defaultFeatureNS: http://www.qgis.org/gml
+        defaultFeaturePrefix: feature
       routes:
         <<: *routes
         gmfProfileJsonUrl: profile.json
