@@ -38,9 +38,13 @@ extra:
   - geoportal/{{package}}_geoportal/static-ngeo/js/apps/Controlleroeview\.js
   - geoportal/{{package}}_geoportal/static-ngeo/js/apps/Controlleroeedit\.js
   - geoportal/{{package}}_geoportal/static-ngeo/js/apps/sass/desktop_alt\.scss
+  - geoportal/{{package}}_geoportal/static-ngeo/js/apps/sass/vars_desktop_alt\.scss
   - geoportal/{{package}}_geoportal/static-ngeo/js/apps/sass/mobile_alt\.scss
+  - geoportal/{{package}}_geoportal/static-ngeo/js/apps/sass/vars_mobile_alt\.scss
   - geoportal/{{package}}_geoportal/static-ngeo/js/apps/sass/oeview\.scss
+  - geoportal/{{package}}_geoportal/static-ngeo/js/apps/sass/vars_oeview\.scss
   - geoportal/{{package}}_geoportal/static-ngeo/js/apps/sass/oeedit\.scss
+  - geoportal/{{package}}_geoportal/static-ngeo/js/apps/sass/vars_oeedit\.scss
 
 files_to_remove:
   - file: .build
