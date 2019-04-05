@@ -158,23 +158,23 @@ vars:
   checker:
     fulltextsearch:
       search: text to search
-    print:
-      spec:
-        layout: "1 A4 portrait"
-        outputFormat: "pdf"
-        attributes:
-          title: ""
-          comments: ""
-          datasource: []
-          map:
-            projection: "EPSG:21781"
-            dpi: 254
-            rotation: 0
-            center: [600000, 200000]
-            scale: 100000
-            longitudeFirst: true
-            layers: []
-          legend: {}
+    # print:
+    #   spec:
+    #     layout: "1 A4 portrait"
+    #     outputFormat: "pdf"
+    #     attributes:
+    #       title: ""
+    #       comments: ""
+    #       datasource: []
+    #       map:
+    #         projection: "EPSG:21781"
+    #         dpi: 254
+    #         rotation: 0
+    #         center: [600000, 200000]
+    #         scale: 100000
+    #         longitudeFirst: true
+    #         layers: []
+    #       legend: {}
     phantomjs:
       disable: [desktop, mobile]
 

@@ -84,6 +84,9 @@ vars:
   mapfile_data_noarea_subselect: "SELECT rra.role_id FROM {mapserver_join_tables} \
     WHERE rra.restrictionarea_id = ra.id AND lra.restrictionarea_id = ra.id \
     AND lra.layer_id = la.id AND la.name = "
+
+  mutualized_print_app: '{MUTUALIZED_PRINT_APP}'
+
   enable_admin_interface: True
 
   project_directory: '{PROJECT_DIRECTORY}'
@@ -802,7 +805,6 @@ vars:
       level: 4
       interfaces: {}
     print:
-      spec: {}
       level: 5
 
   # Check collector configuration
@@ -871,6 +873,7 @@ environment:
   - PROJECT_DIRECTORY
   - INSTANCE
   - DOCKER_PORT
+  - MUTUALIZED_PRINT_APP
 
 runtime_environment:
   - name: VISIBLE_WEB_HOST

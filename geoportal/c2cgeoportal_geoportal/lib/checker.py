@@ -92,6 +92,8 @@ def _routes(settings, health_check):
 
 def _pdf3(settings, health_check):
     print_settings = settings["print"]
+    if "spec" not in print_settings:
+        return
 
     def check(request):
         path = request.route_path("printproxy_report_create", format="pdf")
