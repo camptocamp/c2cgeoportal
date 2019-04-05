@@ -58,7 +58,8 @@ DEFAULT_BUILD_RULES ?= docker-build-geoportal \
 	docker-build-config \
 	project.yaml \
 	geoportal/alembic.ini \
-	geoportal/alembic.yaml
+	geoportal/alembic.yaml \
+	geoportal/$(PACKAGE)_geoportal/static-ngeo/api/apihelp/index.html
 
 TILECLOUD_CHAIN ?= TRUE
 ifeq ($(TILECLOUD_CHAIN), TRUE)
@@ -66,6 +67,8 @@ CONF_FILES += $(MAPCACHE_FILE)
 endif
 
 UPGRADE_ARGS += --nondocker --makefile=$(firstword $(MAKEFILE_LIST))
+NGEO_API_OUTPUT_JS_FILE ?= $(APP_OUTPUT_DIR)/api.js
+FILES_TO_CLEAN += geoportal/$(PACKAGE)_geoportal/static-ngeo/api/apihelp/index.html
 
 include CONST_Makefile
 
@@ -86,3 +89,10 @@ docker-build-config:
 docker-build-geoportal: $(CONF_FILES)
 	$(PRERULE_CMD)
 	@echo "Nothing to do for $@"
+
+$(APP_OUTPUT_DIR)/api.js: geoportal/webpack.api.js geoportal/$(PACKAGE)_geoportal/static-ngeo/api/index.js
+	$(PRERULE_CMD)
+	(cd geoportal; webpack --config webpack.api.js $(WEBPACK_ARGS))
+
+geoportal/$(PACKAGE)_geoportal/static-ngeo/api/apihelp/index.html: geoportal/$(PACKAGE)_geoportal/static-ngeo/api/apihelp/index.html.tmpl
+	envsubst < $< > $@
