@@ -202,7 +202,7 @@ vars:
       redirect_interface: desktop_alt
       constants:
         gmfTreeManagerModeFlush: false
-        # FIXME: gmfSearchActions: []
+        gmfSearchActions: []
     desktop:
       redirect_interface: mobile
       do_redirect: True
@@ -223,7 +223,6 @@ vars:
                 ITEMFONTFAMILY: DejaVu Sans
                 LAYERFONTSIZE: '10'
                 ITEMFONTSIZE: '8'
-        gmfSearchGroups: []
       routes:
         gmfProfileJsonUrl:
           name: profile.json
@@ -241,6 +240,7 @@ vars:
           legend:
             useBbox: false
         gmfTreeManagerModeFlush: false
+        gmfSearchGroups: []
         ngeoRoutingOptions:
           - backendUrl: https://routing.osm.ch/
           - profiles:
