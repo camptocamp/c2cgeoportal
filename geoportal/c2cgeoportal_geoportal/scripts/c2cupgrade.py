@@ -253,6 +253,12 @@ class C2cUpgradeTool:
         getattr(self, "step{}".format(step))()
 
     def test_checkers(self):
+        run_curl = "Run `curl --insecure {} '{}'` for more information.".format(
+            ' '.join([
+                '--header {}={}'.format(*i) for i in self.project.get("checker_headers", {}).items()
+            ]),
+            self.project["checker_url"]
+        )
         try:
             requests.packages.urllib3.disable_warnings()
             resp = requests.get(
@@ -260,27 +266,21 @@ class C2cUpgradeTool:
                 headers=self.project.get("checker_headers"),
                 verify=False
             )
+        except requests.exceptions.ConnectionError as e:
+            return False, "\n".join([
+                "Connection error: {}".format(e),
+                run_curl
+            ])
         except ConnectionRefusedError as e:
             return False, "\n".join([
-                "Connection refused: {}",
-                "Run `curl --insecure {} '{}'` for more information."
-            ]).format(
-                e,
-                ' '.join([
-                    '--header {}={}'.format(*i) for i in self.project.get("checker_headers", {}).items()
-                ]),
-                self.project["checker_url"],
-            )
+                "Connection refused: {}".format(e),
+                run_curl
+            ])
         if resp.status_code < 200 or resp.status_code >= 300:
             return False, "\n".join([
                 "Checker error:",
-                "Run `curl {} '{}'` for more information."
-            ]).format(
-                ' '.join([
-                    '--header {}={}'.format(*i) for i in self.project.get("checker_headers", {}).items()
-                ]),
-                self.project["checker_url"],
-            )
+                run_curl
+            ])
 
         return True, None
 
