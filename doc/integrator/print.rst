@@ -27,7 +27,7 @@ Infrastructure
 
 By default we use the mutualized print Platform as a service from Camptocamp.
 
-To configure it, you should ask Camptocamp for create e.-g. two new applications on the platform, one for the integration,
+To configure it, you should ask Camptocamp to create e.-g. two new applications on the platform, one for the integration,
 one for the production.
 
 Configure the application name in the ``MUTUALIZED_PRINT_APP`` variable of a ``Makefile``.
