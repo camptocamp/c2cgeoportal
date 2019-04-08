@@ -500,6 +500,10 @@ def includeme(config: pyramid.config.Configurator):
     add_api_route('apijsmap', 'apijsmap', '/api.js.map', "build/api.js.map")
     add_api_route('apicss', 'apicss', '/api.css', "build/api.css")
     add_api_route('apihelp', 'apihelp', '/apihelp/index.html', "api/apihelp/index.html")
+    c2cgeoportal_geoportal.views.add_redirect(
+        config, 'apihelp_redirect', '/apihelp.html', '/apihelp/index.html'
+    )
+
     config.add_route(
         "themes", "/themes",
         request_method="GET",

@@ -62,6 +62,7 @@ try:
             print("Incorrect result ({}):".format(result.status))
             print(data)
             exit(2)
+    print(result.read().decode('utf-8'))
     print("OK")
 except urllib.error.HTTPError as e:
     print("Bad status code {}".format(e.code))

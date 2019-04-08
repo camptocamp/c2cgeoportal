@@ -33,3 +33,12 @@ from pyramid.httpexceptions import HTTPFound
 
 def add_ending_slash(request):
     return HTTPFound(location=request.path + '/')
+
+
+def add_redirect(config, name, from_, to):
+    def redirect_view(request):
+        del request  # unused
+        return HTTPFound(location=to)
+
+    config.add_route(name, from_, request_method='GET')
+    config.add_view(redirect_view, route_name=name)
