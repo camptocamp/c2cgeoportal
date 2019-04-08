@@ -227,7 +227,6 @@ services:
 
   webpack_dev_server:
     image: ${DOCKER_BASE}-geoportal:${DOCKER_TAG}
-    user: www-data
     volumes:
       - ${PROJECT_DIRECTORY}/geoportal/{{package}}_geoportal/static-ngeo:/app/{{package}}_geoportal/static-ngeo
     command:

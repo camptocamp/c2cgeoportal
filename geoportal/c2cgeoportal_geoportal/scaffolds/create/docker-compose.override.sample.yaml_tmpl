@@ -8,6 +8,7 @@ version: '2'
 
 services:
   geoportal:
+    user: root
     volumes:
       # For Python project development.
       - ${PWD}/geoportal/{{package}}_geoportal:/app/{{package}}_geoportal
