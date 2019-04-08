@@ -31,6 +31,16 @@ services:
       - AWS_SECRET_ACCESS_KEY
       - AWS_DEFAULT_REGION
       - AWS_S3_ENDPOINT
+      - "MAPSERVER_DATA_SUBSELECT=SELECT ST_Collect(ra.area)
+        FROM ${PGSCHEMA}.restrictionarea AS ra, ${PGSCHEMA}.role_restrictionarea AS rra,
+        ${PGSCHEMA}.layer_restrictionarea AS lra, ${PGSCHEMA}.treeitem AS la
+        WHERE rra.role_id in (%role_ids%) AND rra.restrictionarea_id = ra.id
+        AND lra.restrictionarea_id = ra.id AND lra.layer_id = la.id AND la.name = "
+      - "MAPSERVER_DATA_NOAREA_SUBSELECT=SELECT rra.role_id
+        FROM ${PGSCHEMA}.restrictionarea AS ra, ${PGSCHEMA}.role_restrictionarea AS rra,
+        ${PGSCHEMA}.layer_restrictionarea AS lra, ${PGSCHEMA}.treeitem AS la
+        WHERE rra.restrictionarea_id = ra.id AND lra.restrictionarea_id = ra.id
+        AND lra.layer_id = la.id AND la.name = "
 
   print:
     image: camptocamp/mapfish_print:3.16
@@ -117,6 +127,7 @@ services:
       - VISIBLE_ENTRY_POINT
       - C2C_REDIS_URL
       - TILEGENERATION_CONFIGFILE=/etc/tilegeneration/config.yaml
+      - WMTSCAPABILITIES_PATH
       - C2C_BASE_PATH=/tiles/c2c
       - C2C_BROADCAST_PREFIX=broadcast_tilecloudchain_
       - C2C_LOG_VIEW_ENABLED=TRUE
@@ -137,6 +148,7 @@ services:
     environment:
       - AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY
+      - WMTSCAPABILITIES_PATH
 
   geoportal:
     image: ${DOCKER_BASE}-geoportal:${DOCKER_TAG}

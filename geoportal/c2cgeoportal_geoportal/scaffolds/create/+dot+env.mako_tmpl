@@ -16,6 +16,7 @@ PGPASSWORD=${docker_dbpassword}
 PGDATABASE=${docker_db}
 PGSCHEMA=${docker_schema}
 PGSCHEMA_STATIC=${docker_schema_static}
+WMTSCAPABILITIES_PATH=${docker_wmtscapabilities_path}
 GEOPORTAL_INTERNAL_URL=http://geoportal:8080
 TILECLOUDCHAIN_INTERNAL_URL=http://tilecloudchain:8080
 MAPCACHE_URL=http://mapcache:8080/mapcache/

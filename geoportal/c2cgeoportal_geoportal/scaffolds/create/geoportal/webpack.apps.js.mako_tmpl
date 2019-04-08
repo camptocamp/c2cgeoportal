@@ -26,7 +26,7 @@ for (const filename of ls(path.resolve(__dirname, '{{package}}_geoportal/static-
       filename: name + '.html',
       chunks: [name],
       vars: {
-        entry_point: '${entry_point}',
+        entry_point: '${'$'}{VISIBLE_ENTRY_POINT}',
         version: '${geomapfish_version}',
        },
     })
@@ -73,10 +73,10 @@ console.log("Use dev server mode: " + devServer)
 module.exports = {
   output: {
     path: path.resolve(__dirname, '{{package}}_geoportal/static-ngeo/build/'),
-    publicPath: devServer ? '${entry_point}dev/' : '${entry_point}static-ngeo/build/'
+    publicPath: devServer ? '${'$'}{VISIBLE_ENTRY_POINT}dev/' : '${'$'}{VISIBLE_ENTRY_POINT}static-ngeo/build/'
   },
   devServer: {
-    publicPath: '${web_protocol}://${host}${entry_point}dev/',
+    publicPath: '${'$'}{VISIBLE_WEB_PROTOCOL}://${'$'}{VISIBLE_WEB_HOST}${'$'}{VISIBLE_ENTRY_POINT}dev/',
     port: 8080,
     host: 'webpack_dev_server',
     hot: true,

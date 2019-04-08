@@ -9,10 +9,7 @@ __pycache__/
 /tilegeneration/config.yaml.tmpl
 /tilegeneration/config.yaml.mako
 /print/print-apps/{{package}}/config.yaml.mako
-/mapserver/mapserver.map.tmpl
-/mapserver/*.map.tmpl
 /mapserver/tinyows.xml.mako
-/mapserver/tinyows.xml.tmpl
 /qgisserver/geomapfish.yaml
 /geoportal/alembic.yaml
 /geoportal/jsbuild/app.cfg

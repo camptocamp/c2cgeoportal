@@ -294,7 +294,6 @@ dockerBuild {
                 if (abort_ci()) { return }
                 parallel 'Tests upgrades Docker': {
                     test_upgrade('docker', 'docker', 'dockerref')
-                    test_upgrade('tonondocker', 'docker', 'nondockerref')
                 }, 'Tests upgrades non Docker': {
                     test_upgrade('nondocker', 'nondocker', 'nondockerref')
                     test_upgrade('todocker', 'nondocker', 'dockerref')

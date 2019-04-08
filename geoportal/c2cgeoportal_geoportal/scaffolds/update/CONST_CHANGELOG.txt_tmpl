@@ -31,6 +31,10 @@ Changes to apply
    using Sass in place of Less. The major change is that the variables will be prefixed by '$'
    instead of '@' and we will use rem as recommended unit.
 
+3. Docker version: To be able to use the mapfile faster we don't use the mako anymore for that,
+   to convert them use:
+   `./docker-run make --always-make --makefile=CONST_convert2tmpl.mk to-tmpl`
+
 
 Version 2.3.6
 =============

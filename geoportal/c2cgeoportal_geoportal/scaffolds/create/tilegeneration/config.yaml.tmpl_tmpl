@@ -13,13 +13,13 @@ caches:
         type: filesystem
         folder: /var/sig/tiles
         # for GetCapabilities
-        http_url: ${web_protocol}://${host}${entry_point}
+        http_url: ${VISIBLE_WEB_PROTOCOL}://${VISIBLE_WEB_HOST}${VISIBLE_ENTRY_POINT}
     s3:
         type: s3
         bucket: tiles
         folder: ''
         # for GetCapabilities
-        http_url: ${web_protocol}://${host}${entry_point}
+        http_url: ${VISIBLE_WEB_PROTOCOL}://${VISIBLE_WEB_HOST}${VISIBLE_ENTRY_POINT}
         cache_control: 'public, max-age=14400'
         hosts:
         - wmts0.<host>
@@ -32,10 +32,10 @@ defaults:
         # The minimum resolution to seed, useful to use with mapcache, optional.
         # min_resolution_seed: 1
         # the URL of the WMS server to used
-        url: ${mapserver_url}
+        url: ${MAPSERVER_URL}
         # Set the headers to get the right virtual host, and don't get any cached result
         headers:
-            Host: '${host}'
+            Host: '${VISIBLE_WEB_HOST}'
             Cache-Control: no-cache, no-store
             Pragma: no-cache
         # file name extension
@@ -101,17 +101,17 @@ generation:
     maxconsecutive_errors: 10
 
 redis:
-    url: '${tilegeneration_redis}'
+    url: 'redis://${REDIS_HOST}:${REDIS_PORT}'
 
 # Not used if the previous redis section is not commented out
 sqs:
     # The region where the SQS queue is
     region: eu-west-1
     # The SQS queue name, it should already exists
-    queue: '${tilegeneration_sqs_queue}'
+    queue: '${TILEGENERATION_SQS_QUEUE}'
 
 server:
-    mapcache_base: '${mapcache_url}'
+    mapcache_base: '${MAPSERVER_URL}'
     wmts_path: tiles
     static_path: tiles/static
     admin_path: tiles/admin
@@ -127,8 +127,8 @@ server:
 mapcache:
     config_file: mapcache/mapcache.xml.tmpl
     location: ''
-    memcache_host: '${memcached_host}'
-    memcache_port: '${memcached_port}'
+    memcache_host: '${MEMCACHED_HOST}'
+    memcache_port: '${MEMCACHED_PORT}'
 
 process:
     optipng_test:

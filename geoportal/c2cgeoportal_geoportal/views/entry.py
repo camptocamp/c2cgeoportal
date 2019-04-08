@@ -1056,7 +1056,7 @@ class Entry:
                 "wfsSupport": ogc_server.wfs_support,
                 "isSingleTile": ogc_server.is_single_tile,
                 "namespace": feature_type.attrib["targetNamespace"]
-                if feature_type is not None else None,
+                if feature_type is not None and "targetNamespace" in feature_type.attrib else None,
                 "attributes": attributes,
             }
         if export_themes:
