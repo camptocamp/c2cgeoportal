@@ -63,3 +63,4 @@ __pycache__/
 /npm-packages
 /package-lock.json
 /.upgrade.yaml
+/geoportal/{{package}}_geoportal/static-ngeo/api/apihelp/index.html
