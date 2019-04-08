@@ -135,6 +135,7 @@ Uses the global configuration ``available_locale_names``, and the checker config
 Check some routes, configured in ``routes`` as array of objects with::
 
   * ``name`` the route name.
+  * ``display_name`` the name to be displayed.
   * ``params`` the used query string as a dictionary.
   * ``level``
 
@@ -150,6 +151,17 @@ using the ``routes`` configuration as an array of route names to check::
   * ``params`` the used query string as a dictionary.
   * ``level``
 
+Infrastructure
+--------------
+
+If you experience connection issues with your checker, the following configuration options may be useful for you::
+
+.. code:: yaml
+
+   vars:
+     checker:
+       [base_internal_url]: URL like http://localhost:8080
+       [forward_host]: <True|False>
 
 Check collector
 ---------------
