@@ -30,6 +30,7 @@
 
 import logging
 
+from pyramid.httpexceptions import HTTPUnauthorized
 from pyramid.view import view_config
 
 from c2cgeoportal.lib.caching import get_region, NO_CACHE, PUBLIC_CACHE, PRIVATE_CACHE
@@ -50,6 +51,11 @@ class MapservProxy(OGCProxy):
 
     @view_config(route_name="mapserverproxy")
     def proxy(self):
+
+        if self.user is None:
+            if "authentication_required" in self.request.params:
+                log.debug("proxy() detected authentication_required")
+                raise HTTPUnauthorized(headers={"WWW-Authenticate": 'Basic realm="Access to all layers"'})
 
         if self.user is not None:
             # We have a user logged in. We need to set group_id and
