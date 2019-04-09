@@ -52,7 +52,6 @@ class MapservProxy(OGCProxy):
     @view_config(route_name="mapserverproxy")
     def proxy(self):
 
-        if self.user is None:
         if self.user is None and "authentication_required" in self.request.params:
                 log.debug("proxy() detected authentication_required")
                 raise HTTPUnauthorized(headers={"WWW-Authenticate": 'Basic realm="Access to restricted layers"'})
