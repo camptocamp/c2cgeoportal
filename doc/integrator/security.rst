@@ -23,7 +23,7 @@ For example, if your WMS is accessible as
 
 .. code:: html
 
-   https://yourserver/yourinstance/wsgi/mapserv_proxy
+   https://<yourserver>/<yourinstance>/wsgi/mapserv_proxy
 
 then you can use the following URL to force authentication:
 
