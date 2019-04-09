@@ -29,7 +29,7 @@ then you can use the following URL to force authentication:
 
 .. code:: html
 
-   https://yourserver/yourinstance/wsgi/mapserv_proxy?authentication_required=true
+   https://<yourserver>/<yourinstance>/wsgi/mapserv_proxy?authentication_required=true
 
 
 Enable / Disable the admin interface
