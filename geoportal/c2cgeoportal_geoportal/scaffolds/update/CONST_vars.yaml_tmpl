@@ -769,6 +769,8 @@ vars:
           params:
             no_redirect: "true"
           level: 4
+        - name: apihelp
+          level: 4
     routes:
       disable: []
       routes:
