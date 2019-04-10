@@ -8,7 +8,7 @@ Security
 .. include:: reset_password.rst
 
 Access to WMS GetCapability
-----------------------------------
+---------------------------
 
 Set ``hide_capabilities`` to ``true`` in your ``vars_<project>.yaml`` to disable
 the WMS GetCapability when accessing the Mapserver proxy (mapserverproxy).
@@ -16,7 +16,7 @@ the WMS GetCapability when accessing the Mapserver proxy (mapserverproxy).
 Default: ``false``
 
 Access to the admin interface
-------------------------------------
+-----------------------------
 
 To disable the admin interface, set ``enable_admin_interface`` to ``false``
 in your ``vars_<project>.yaml`` file.
@@ -24,7 +24,7 @@ in your ``vars_<project>.yaml`` file.
 Default: ``true``
 
 Access to the OGC proxy
-------------------------------
+-----------------------
 
 To enable the OGC proxy, set ``ogcproxy_enable`` to ``true`` in your
 ``vars_<project>.yaml`` file.
@@ -93,3 +93,23 @@ that list by adding an ``authorized_referers`` list in your
 This solution is not the most secure (some people have browser extensions that
 reset the referrer), but that is the easiest to implement with all the different
 JS frameworks.
+
+Force authentication when accessing the mapserver proxy
+-------------------------------------------------------
+
+If your WMS contains private layers and you wish to force a client to authenticate
+in order to always obtain all layers (including private layers), you can force
+authentication by adding the parameter ``authentication_required`` to the WMS URL.
+This setting may be necessary for the good operation of some clients such as ArcMap.
+
+For example, if your WMS is accessible as
+
+.. code:: html
+
+   https://<yourserver>/<yourinstance>/wsgi/mapserv_proxy
+
+then you can use the following URL to force authentication:
+
+.. code:: html
+
+   https://<yourserver>/<yourinstance>/wsgi/mapserv_proxy?authentication_required=true
