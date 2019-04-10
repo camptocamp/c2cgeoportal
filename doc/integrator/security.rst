@@ -11,6 +11,27 @@ the WMS GetCapability when accessing the Mapserver proxy (mapserverproxy).
 
 Default: ``false``
 
+Force authentication when accessing the Mapserver proxy
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If your WMS contains private layers and you wish to force a client to authenticate
+in order to always obtain all layers (including private layers), you can force
+authentication by adding the parameter ``authentication_required`` to the WMS URL.
+This setting may be necessary for the good operation of some clients such as ArcMap.
+
+For example, if your WMS is accessible as
+
+.. code:: html
+
+   https://<yourserver>/<yourinstance>/wsgi/mapserv_proxy
+
+then you can use the following URL to force authentication:
+
+.. code:: html
+
+   https://<yourserver>/<yourinstance>/wsgi/mapserv_proxy?authentication_required=true
+
+
 Enable / Disable the admin interface
 ------------------------------------
 
