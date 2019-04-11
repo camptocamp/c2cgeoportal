@@ -154,7 +154,7 @@ using the ``routes`` configuration as an array of route names to check::
 Infrastructure
 --------------
 
-If you experience connection issues with your checker, the following configuration options may be useful for you::
+If you experience connection issues with your checker, the following configuration options may be useful for you:
 
 .. code:: yaml
 
