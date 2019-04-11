@@ -56,6 +56,6 @@ You can use the following commands to manually remove Docker files.
 
 This will remove::
 
-  * Container with exit status
-  * Images with version on name as `<none>`
-  * Unnamed dangling volumes
+* Container with exit status
+* Images with version on name as `<none>`
+* Unnamed dangling volumes
