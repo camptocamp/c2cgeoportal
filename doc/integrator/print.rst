@@ -25,7 +25,7 @@ of min/max scaling, you should also test map printing to be sure that it also wo
 Infrastructure
 --------------
 
-By default we use the mutualized print Platform as a service from Camptocamp.
+By default we use the `mutualized print platform as a service from Camptocamp <https://www.camptocamp.com/en/actualite/saas-printing-service-offer/>`.
 
 To configure it, you should ask Camptocamp to create e.-g. two new applications on the platform, one for the integration,
 one for the production.
