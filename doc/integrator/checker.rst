@@ -137,10 +137,10 @@ an array of stringis that must be in ``[cgxp-api, ngeo]``.
 
 Check some routes, configured in ``routes`` as array of objects with::
 
-  * ``name`` the route name.
-  * ``display_name`` the name to be displayed.
-  * ``params`` the used query string as a dictionary.
-  * ``level``
+* ``name`` the route name.
+* ``display_name`` the name to be displayed.
+* ``params`` the used query string as a dictionary.
+* ``level``
 
 In the configuration, we can also fill the ``routes_disable`` to disable some routes.
 
@@ -150,14 +150,14 @@ In the configuration, we can also fill the ``routes_disable`` to disable some ro
 Check with phantomjs that the pages load correctly without errors,
 using the ``routes`` configuration as an array of route names to check::
 
-  * ``name`` the route name.
-  * ``params`` the used query string as a dictionary.
-  * ``level``
+* ``name`` the route name.
+* ``params`` the used query string as a dictionary.
+* ``level``
 
 Infrastructure
 --------------
 
-If you experience connection issues with your checker, the following configuration options may be useful for you::
+If you experience connection issues with your checker, the following configuration options may be useful for you:
 
 .. code:: yaml
 
@@ -194,9 +194,9 @@ To add a host:
     vars:
         check_collector:
             hosts:
-            - display: Child
-              url: http://{host}/child/wsgi
-              max_level: 1
+              - display: Child
+                url: http://{host}/child/wsgi
+                max_level: 1
 
     update_paths:
-    - check_collector.hosts
+      - check_collector.hosts
