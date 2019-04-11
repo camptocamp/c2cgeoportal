@@ -48,6 +48,11 @@ Docker does not clean anything automatically, in particular it does not clean an
 therefore disk space may become problematic after a certain number of builds.
 You can use the following commands to manually remove Docker files.
 
+If you use Docker version (``docker --version``) >= ``1.13``, use ``docker system prune`` to clean files;
+you can add the ``--all`` option to do a deeper clean.
+
+Otherwise:
+
 .. prompt:: bash
 
    docker ps --all --quiet --filter status=exited | xargs --no-run-if-empty docker rm
@@ -56,6 +61,11 @@ You can use the following commands to manually remove Docker files.
 
 This will remove::
 
-* Container with exit status
-* Images with version on name as `<none>`
-* Unnamed dangling volumes
+* Containers with exit status.
+* Images with version on name as `<none>`.
+* Unnamed dangling volumes.
+
+You can also remove the unused named images, that should be done manually:
+
+* List the images with ``docker images``.
+* Remove the unwanted images with ``docker rmi <image>:<tag>``.
