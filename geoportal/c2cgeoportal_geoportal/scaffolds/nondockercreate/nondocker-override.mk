@@ -93,6 +93,7 @@ docker-build-geoportal: $(CONF_FILES)
 $(APP_OUTPUT_DIR)/api.js: geoportal/webpack.api.js geoportal/$(PACKAGE)_geoportal/static-ngeo/api/index.js
 	$(PRERULE_CMD)
 	(cd geoportal; webpack --config webpack.api.js $(WEBPACK_ARGS))
+	sed --in-place --expression='s#{FULL_ENTRY_POINT}#$(VISIBLE_WEB_PROTOCOL)://$(VISIBLE_WEB_HOST)$(VISIBLE_ENTRY_POINT)#g' $(APP_OUTPUT_DIR)/api.js
 
 geoportal/$(PACKAGE)_geoportal/static-ngeo/api/apihelp/index.html: geoportal/$(PACKAGE)_geoportal/static-ngeo/api/apihelp/index.html.tmpl
 	envsubst < $< > $@
