@@ -56,10 +56,12 @@ before_script:
   - sudo chmod o+r /var/log/apache2/*.log
   # Database for the GeoMapFish application
   - ./docker-run make docker-build-testdb
-  - "docker run --env=POSTGRES_USER=www-data --env=POSTGRES_PASSWORD=www-data --env=POSTGRES_DB=geomapfish \
-      --publish=5432:5432 --detach camptocamp/geomapfish-test-db"
+  - >
+    docker run --name testdb
+    --env=POSTGRES_USER=www-data --env=POSTGRES_PASSWORD=www-data --env=POSTGRES_DB=geomapfish
+    --publish=5432:5432 --detach camptocamp/geomapfish-test-db
   - docker build --tag=external-db docker/test-external-db
-  - docker run --publish=5433:5432 --detach external-db
+  - docker run --name externaldb --publish=5433:5432 --detach external-db
   - mkdir /tmp/travis
   - travis/create-new-nondocker-project.sh
   - (cd /tmp/travis/nondockertestgeomapfish/; ./docker-run travis/empty-make --makefile=travis.mk help)

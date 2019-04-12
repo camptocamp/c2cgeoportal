@@ -132,12 +132,15 @@ then
     git add temp.mk project.yaml.mako
     git commit --quiet --message="Start upgrade"
     ./docker-run --env=NODE_ENV make --makefile=temp.mk upgrade
+    ./docker-run make --always-make --makefile=CONST_convert2tmpl.mk to-tmpl
     cp {CONST_create_template/,}project.yaml.mako
     cp {CONST_create_template/,}vars.yaml
-    cp {CONST_create_template/,}mapserver/tinyows.xml.tmpl.mako
+    cp {CONST_create_template/,}mapserver/tinyows.xml.tmpl
     cp {CONST_create_template/,}print/print-apps/testgeomapfish/config.yaml.tmpl
     cp {CONST_create_template/,}.env.mako
     cp {CONST_create_template/,}docker-compose.yaml
+    cp {CONST_create_template/,}tilegeneration/config.yaml.tmpl
+    cp CONST_create_template/mapserver/*.tmpl mapserver
     if [ -e .UPGRADE10 ]
     then
         ./docker-run --env=NODE_ENV make upgrade11
@@ -224,7 +227,10 @@ function v220 {
     then
         cp CONST_create_template/docker-compose.yaml .
         cp CONST_create_template/.env.mako .
+        ./docker-run make --always-make --makefile=CONST_convert2tmpl.mk to-tmpl
+        cp CONST_create_template/mapserver/*.tmpl mapserver
     fi
+
     ./docker-run --env=NODE_ENV make $MAKE_ARGS upgrade9
     if [ ! -e .UPGRADE_SUCCESS ]
     then
@@ -267,6 +273,12 @@ function v230 {
     git add project.yaml.mako .config
     git commit --quiet --message="Start upgrade"
     ./docker-run --env=NODE_ENV make ${MAKE_ARGS} upgrade
+    if [ "$1" != 'non' ]
+    then
+        ./docker-run make --always-make --makefile=CONST_convert2tmpl.mk to-tmpl
+        cp CONST_create_template/mapserver/*.tmpl mapserver
+        cp {CONST_create_template/,}tilegeneration/config.yaml.tmpl
+    fi
     if [ -e .UPGRADE8 ]
     then
         ./docker-run --env=NODE_ENV make ${MAKE_ARGS} upgrade9

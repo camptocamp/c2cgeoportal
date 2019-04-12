@@ -3,6 +3,51 @@
 extends: CONST_vars.yaml
 
 vars:
+  host: '{VISIBLE_WEB_HOST}'
+  web_protocol: '{VISIBLE_WEB_PROTOCOL}'
+  entry_point: '{VISIBLE_ENTRY_POINT}'
+
+  # Database user
+  dbuser: '{PGUSER}'
+  # Database password
+  dbpassword: '{PGPASSWORD}'
+  # Database port
+  dbport: '{PGPORT}'
+  # Database name
+  db: '{PGDATABASE}'
+
+  mapserver_url: '{MAPSERVER_URL}'
+  mapcache_url: '{MAPCACHE_URL}'
+  memcached_host: '{MEMCACHED_HOST}'
+  memcached_port: '{MEMCACHED_PORT}'
+  tilegeneration_sqs_queue: '{TILEGENERATION_SQS_QUEUE}'
+  tilegeneration_redis: 'redis://{REDIS_HOST}:{REDIS_PORT}'
+
+  # mapserver connexion string
+  mapserver_connection: user={dbuser} password={dbpassword} dbname={db} host={dbhost}
+  # mapserver join tables
+  mapserver_join_tables: "{schema}.restrictionarea AS ra, {schema}.role_restrictionarea AS rra, \
+    {schema}.layer_restrictionarea AS lra, {schema}.treeitem AS la"
+  # mapserver visible area
+  mapserver_join_area: ra.area
+  # mapserver join close
+  mapserver_join_where: "rra.role_id in (%role_ids%) AND rra.restrictionarea_id = ra.id AND \
+    lra.restrictionarea_id = ra.id AND lra.layer_id = la.id AND la.name = "
+  # mapserver metadata for validation
+  mapserver_layer_metadata: ""
+  mapserver_layer_validation: |
+    "default_role_ids" "-1"
+    "role_ids" "^-?[0-9,]*$"
+  # mapfile data subselect
+  mapfile_data_subselect: "SELECT ST_Collect(ra.area) FROM main.restrictionarea AS ra, \
+    main.role_restrictionarea AS rra, main.layer_restrictionarea AS lra, main.treeitem AS la \
+    WHERE rra.role_id in (%role_ids%) AND rra.restrictionarea_id = ra.id AND lra.restrictionarea_id = ra.id \
+    AND lra.layer_id = la.id AND la.name = "
+  # mapserver filter on role id only
+  mapfile_data_noarea_subselect: "SELECT rra.role_id FROM {mapserver_join_tables} \
+    WHERE rra.restrictionarea_id = ra.id AND lra.restrictionarea_id = ra.id \
+    AND lra.layer_id = la.id AND la.name = "
+
   instance: '{INSTANCE_ID}'
   instanceid: '{instance}'
   python_path: "{project_directory}/.build/venv/lib/python{EXTERNAL_PYTHON_VERSION_MAJOR}.\
@@ -22,6 +67,7 @@ vars:
     Require ip {ADDRESSES} {adrs4} {adrs6}
   waitress_port: 5000
 
+  wmtscapabilities_path: '{WMTSCAPABILITIES_PATH}'
   tinyowsproxy:
     tinyows_url: http://localhost/{instanceid}/tinyows
     ogc_server: source for image/png
@@ -95,3 +141,4 @@ environment:
   - EXTERNAL_PYTHON_VERSION_MAJOR
   - EXTERNAL_PYTHON_VERSION_MINOR
   - DEV_SERVER_PORT
+  - WMTSCAPABILITIES_PATH

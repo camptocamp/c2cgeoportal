@@ -5,7 +5,7 @@ extends: vars.yaml
 vars:
   dbsessions:
     travis_test:
-      url: postgresql://{dbuser}:{dbpassword}@externaldb:{dbport}/test
+      url: postgresql://{PGUSER}:{PGPASSWORD}@externaldb:{PGPORT}/test
 
   admin_interface:
     available_metadata:
@@ -38,7 +38,7 @@ vars:
   check_collector:
     hosts:
       - display: Main
-        url: '{web_protocol}://{host}:8080{entry_point}'
+        url: '{VISIBLE_WEB_PROTOCOL}://{VISIBLE_WEB_HOST}:8080{VISIBLE_ENTRY_POINT}'
 
 update_paths:
   - layers

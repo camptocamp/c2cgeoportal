@@ -37,9 +37,9 @@ CONF_FILES_MAKO = $(shell ls -1 apache/*.conf.mako 2> /dev/null)
 CONF_FILES_JINJA = $(shell ls -1 apache/*.conf.jinja 2> /dev/null)
 CONF_FILES += $(shell ls -1 apache/*.conf 2> /dev/null) $(CONF_FILES_MAKO:.mako=) $(CONF_FILES_JINJA:.jinja=)
 
-PGHOST ?= localhost
+PGHOST ?= 172.17.0.1
 export PGHOST
-PGHOST_SLAVE ?= localhost
+PGHOST_SLAVE ?= $(PGHOST)
 export PGHOST_SLAVE
 PGPORT ?= 5432
 export PGPORT

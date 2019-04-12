@@ -1,0 +1,63 @@
+---
+
+vars:
+  host: '{VISIBLE_WEB_HOST}'
+  web_protocol: '{VISIBLE_WEB_PROTOCOL}'
+  entry_point: '{VISIBLE_ENTRY_POINT}'
+
+  dbuser: '{PGUSER}'
+  dbpassword: '{PGPASSWORD}'
+  dbhost: '{PGHOST}'
+  dbhost_slave: '{PGHOST_SLAVE}'
+  dbport: '{PGPORT}'
+  db: '{PGDATABASE}'
+  schema: '{PGSCHEMA}'
+  schema_static: '{PGSCHEMA_STATIC}'
+  wmtscapabilities_path: '{WMTSCAPABILITIES_PATH}'
+
+  mapserver_layer_metadata: ""
+  mapserver_layer_validation: |
+    "default_role_ids" "-1"
+    "role_ids" "^-?[0-9,]*$"
+  mapserver_connection: user={dbuser} password={dbpassword} dbname={db} host={dbhost}
+  mapfile_data_subselect: '{MAPSERVER_DATA_SUBSELECT}'
+  mapfile_data_noarea_subselect: '{MAPSERVER_DATA_NOAREA_SUBSELECT}'
+
+  # For print proxy
+  print_url: '{PRINT_URL}'
+
+  mapserver_url: '{MAPSERVER_URL}'
+  mapcache_url: '{MAPCACHE_URL}'
+  memcached_host: '{MEMCACHED_HOST}'
+  memcached_port: '{MEMCACHED_PORT}'
+  tilegeneration_sqs_queue: '{TILEGENERATION_SQS_QUEUE}'
+  tilegeneration_redis: 'redis://{REDIS_HOST}:{REDIS_PORT}'
+
+runtime_environment:
+  - VISIBLE_WEB_HOST
+  - VISIBLE_WEB_PROTOCOL
+  - VISIBLE_ENTRY_POINT
+  - PGHOST
+  - PGHOST_SLAVE
+  - PGPORT
+  - PGUSER
+  - PGPASSWORD
+  - PGDATABASE
+  - PGSCHEMA
+  - PGSCHEMA_STATIC
+  - TINYOWS_URL
+  - MAPSERVER_URL
+  - QGISSERVER_URL
+  - PRINT_URL
+  - MAPCACHE_URL
+  - DEVSERVER_HOST
+  - REDIS_HOST
+  - REDIS_PORT
+  - MEMCACHED_HOST
+  - MEMCACHED_PORT
+  - TILEGENERATION_SQS_QUEUE
+  - MAPSERVER_LAYER_METADATA
+  - MAPSERVER_LAYER_VALIDATION
+  - MAPSERVER_DATA_SUBSELECT
+  - MAPSERVER_DATA_NOAREA_SUBSELECT
+  - WMTSCAPABILITIES_PATH

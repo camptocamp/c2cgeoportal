@@ -83,7 +83,7 @@ Initialization
 
      TILECLOUD_CHAIN_LOCAL ?= TRUE
 
-  and set the ``wmtscapabilities_file`` to ``${wmtscapabilities_path}`` in your
+  and set the ``wmtscapabilities_file`` to ``${WMTSCAPABILITIES_PATH}`` in your
   ``tilegeneration/config.yaml.mako`` file.
 
 * In your ``<prod>.mk``, you can also set the capabilities file name with:

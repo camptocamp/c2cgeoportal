@@ -44,9 +44,6 @@ mapping:
       package:
         type: str
         required: True
-      host:
-        type: str
-        required: True
       enable_admin_interface:
         type: bool
         required: True

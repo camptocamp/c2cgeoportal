@@ -209,6 +209,9 @@ files_to_remove:
   - file: docker-compose-dev.yaml
     from: 2.3
     version: 2.4
+  - file: mapserver/CONST_example_map_mako
+    from: 2.3
+    version: 2.4
 
 files_to_move:
   - from: vars_{{package}}.yaml

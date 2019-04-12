@@ -8,9 +8,9 @@ LAYER
   PROCESSING "CLOSE_CONNECTION=DEFER" # For performance
   CONNECTION "${mapserver_connection}"
   # Example data for secured layer by restriction area
-  DATA "geometry FROM (SELECT geo.* FROM geodata.table AS geo WHERE ST_Contains((${mapfile_data_subselect} 'layer_name'), ST_SetSRID(geo.geometry, {{srid}}))) as foo using unique id using srid={{srid}}"
+  DATA "geometry FROM (SELECT geo.* FROM geodata.table AS geo WHERE ST_Contains((${MAPSERVER_DATA_SUBSELECT} 'layer_name'), ST_SetSRID(geo.geometry, {{srid}}))) as foo using unique id using srid={{srid}}"
   # Example data for secured layer by role (without any area)
-  #DATA "geometry FROM (SELECT geo.geom as geom FROM geodata.table AS geo WHERE ARRAY[%role_ids%] && ARRAY(${mapfile_data_noarea_subselect} 'layer_name')) as foo USING UNIQUE gid USING srid={{srid}}"
+  #DATA "geometry FROM (SELECT geo.geom as geom FROM geodata.table AS geo WHERE ARRAY[%role_ids%] && ARRAY(${MAPSERVER_DATA_NOAREA_SUBSELECT} 'layer_name')) as foo USING UNIQUE gid USING srid={{srid}}"
   # Example data for public layer
   #DATA "geometry FROM (SELECT geo.geom as geom FROM geodata.table AS geo) AS foo USING UNIQUE gid USING srid={{srid}}"
   METADATA
@@ -25,11 +25,11 @@ LAYER
     "wms_metadataurl_href" "http://www.example.com/bar" # For metadata URL
     "wms_metadataurl_format" "text/html" # For metadata URL
     "wms_metadataurl_type" "TC211" # For metadata URL
-
-    ${mapserver_layer_metadata} # For secured layers
   END
   VALIDATION
-    ${mapserver_layer_validation} # For secured layers
+    # For secured layers
+    "default_role_ids" "-1"
+    "role_ids" "^-?[0-9,]*$"
   END
   STATUS ON
   TOLERANCE 10
