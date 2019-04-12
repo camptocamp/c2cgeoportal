@@ -31,9 +31,15 @@ Changes to apply
    using Sass in place of Less. The major change is that the variables will be prefixed by '$'
    instead of '@' and we will use rem as recommended unit.
 
-3. Docker version: To be able to use the mapfile faster we don't use the mako anymore for that,
-   to convert them use:
-   `./docker-run make --always-make --makefile=CONST_convert2tmpl.mk to-tmpl`
+3. Docker version: To be able to deploy mapfile modifications faster, we have switched from mako templating
+   to only envsubst templating.
+   1. To convert all your existing mako templates, use:
+      `./docker-run make --always-make --makefile=CONST_convert2tmpl.mk to-tmpl`
+      If the conversion fails for some files, you can add more variables in the `vars_convert2tmpl.yaml`
+      file, and verify that the new variables are present in the config service as environment variables
+      (concerned files: `.env.mako` and `docker-compose.yaml`).
+   2. You should adapt your `vars` files as illustrated in the file `vars_convert2tmpl.yaml`
+      e.-g. `host: '{VISIBLE_WEB_HOST}'` means that you should replace `{host}` by `{VISIBLE_WEB_HOST}`.
 
 
 Version 2.3.6
