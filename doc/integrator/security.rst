@@ -8,7 +8,7 @@ Security
 .. include:: reset_password.rst
 
 Access to WMS GetCapability
-----------------------------------
+---------------------------
 
 Set ``hide_capabilities`` to ``true`` in your ``vars.yaml`` to disable
 the WMS GetCapability when accessing the Mapserver proxy (mapserverproxy).
@@ -17,7 +17,7 @@ Default: ``false``
 
 
 Access to the admin interface
-------------------------------------
+-----------------------------
 
 To disable the admin interface, set ``enable_admin_interface`` to ``false`` in your ``vars.yaml`` file.
 

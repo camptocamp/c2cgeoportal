@@ -32,6 +32,7 @@ import logging
 from typing import Any, Dict  # noqa, pylint: disable=unused-import
 
 from pyramid.response import Response
+from pyramid.httpexceptions import HTTPUnauthorized
 from pyramid.view import view_config
 from pyramid.request import Request
 
@@ -55,6 +56,11 @@ class MapservProxy(OGCProxy):
 
     @view_config(route_name="mapserverproxy")
     def proxy(self) -> Response:
+
+        if self.user is None and "authentication_required" in self.request.params:
+            log.debug("proxy() detected authentication_required")
+            raise HTTPUnauthorized(headers={"WWW-Authenticate": 'Basic realm="Access to restricted layers"'})
+
         if self.user is not None:
             # We have a user logged in. We need to set group_id and
             # possible layer_name in the params. We set layer_name
