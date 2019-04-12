@@ -15,6 +15,11 @@ vars:
   schema_static: '{PGSCHEMA_STATIC}'
   wmtscapabilities_path: '{WMTSCAPABILITIES_PATH}'
 
+  aws_access_key_id: '{AWS_ACCESS_KEY_ID}'
+  aws_secret_access_key: '{AWS_SECRET_ACCESS_KEY}'
+  aws_default_region: '{AWS_DEFAULT_REGION}'
+  aws_s3_endpoint: '{AWS_S3_ENDPOINT}'
+
   mapserver_layer_metadata: ""
   mapserver_layer_validation: |
     "default_role_ids" "-1"
@@ -32,6 +37,7 @@ vars:
   memcached_port: '{MEMCACHED_PORT}'
   tilegeneration_sqs_queue: '{TILEGENERATION_SQS_QUEUE}'
   tilegeneration_redis: 'redis://{REDIS_HOST}:{REDIS_PORT}'
+  tiles_s3_bucket: '{TILEGENERATION_S3_BUCKET}'
 
 runtime_environment:
   - VISIBLE_WEB_HOST
@@ -61,3 +67,8 @@ runtime_environment:
   - MAPSERVER_DATA_SUBSELECT
   - MAPSERVER_DATA_NOAREA_SUBSELECT
   - WMTSCAPABILITIES_PATH
+  - AWS_ACCESS_KEY_ID
+  - AWS_SECRET_ACCESS_KEY
+  - AWS_DEFAULT_REGION
+  - AWS_S3_ENDPOINT
+  - TILEGENERATION_S3_BUCKET
