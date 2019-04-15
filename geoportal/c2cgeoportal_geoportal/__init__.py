@@ -643,6 +643,7 @@ def includeme(config: pyramid.config.Configurator):
         '</div><div class="col-lg">'
     c2cwsgiutils.index.additional_auth.extend([
         '<a href="../tiles/admin/">TileCloud chain admin</a><br>',
+        '<a href="../tiles/c2c/">TileCloud chain c2c tools</a><br>',
         '<a href="../invalidate">Invalidate the cache</a><br>',
         '<a href="../memory">Memory status</a><br>',
     ])

@@ -16,13 +16,12 @@ caches:
         http_url: ${VISIBLE_WEB_PROTOCOL}://${VISIBLE_WEB_HOST}${VISIBLE_ENTRY_POINT}
     s3:
         type: s3
-        bucket: tiles
+        bucket: ${TILEGENERATION_S3_BUCKET}
         folder: ''
         # for GetCapabilities
         http_url: ${VISIBLE_WEB_PROTOCOL}://${VISIBLE_WEB_HOST}${VISIBLE_ENTRY_POINT}
         cache_control: 'public, max-age=14400'
-        hosts:
-        - wmts0.<host>
+        host: ${AWS_S3_ENDPOINT}
 
 # this defines some defaults values for all the layers
 defaults:
@@ -111,7 +110,7 @@ sqs:
     queue: '${TILEGENERATION_SQS_QUEUE}'
 
 server:
-    mapcache_base: '${MAPSERVER_URL}'
+    mapcache_base: '${MAPCACHE_URL}'
     wmts_path: tiles
     static_path: tiles/static
     admin_path: tiles/admin
