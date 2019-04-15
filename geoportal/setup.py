@@ -90,8 +90,6 @@ setup(
         'pyramid.scaffold': [
             'c2cgeoportal_create = c2cgeoportal_geoportal.scaffolds:TemplateCreate',
             'c2cgeoportal_update = c2cgeoportal_geoportal.scaffolds:TemplateUpdate',
-            'c2cgeoportal_nondockercreate = c2cgeoportal_geoportal.scaffolds:TemplateNondockerCreate',
-            'c2cgeoportal_nondockerupdate = c2cgeoportal_geoportal.scaffolds:TemplateNondockerUpdate',
         ],
         'lingua.extractors': [
             'geomapfish-theme = c2cgeoportal_geoportal.lib.lingua_extractor:GeomapfishThemeExtractor',

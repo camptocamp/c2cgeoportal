@@ -68,16 +68,12 @@ def main():
 
     parser = _fill_arguments()
     options = parser.parse_args()
-    if options.force_docker:
-        options.nondocker = False
     if options.new_makefile is None:
         options.new_makefile = options.makefile
 
     print("Starting the upgrade with options:")
     if options.windows:
         print("- windows")
-    if options.nondocker:
-        print("- nondocker")
     print("- git_remote=" + options.git_remote)
     if options.use_makefile:
         print("- use_makefile")
@@ -95,16 +91,6 @@ def _fill_arguments():
         "--windows",
         action="store_true",
         help="Use the windows c2cgeoportal package",
-    )
-    parser.add_argument(
-        "--nondocker",
-        action="store_true",
-        help="Use the nondocker upgrade",
-    )
-    parser.add_argument(
-        "--force-docker",
-        action="store_true",
-        help="Disable the nondocker upgrade",
     )
     parser.add_argument(
         "--git-remote",
@@ -235,10 +221,6 @@ class C2cUpgradeTool:
                 ]
                 if self.options.windows:
                     cmd.append("--windows")
-                if self.options.nondocker:
-                    cmd.append("--nondocker")
-                if self.options.force_docker:
-                    cmd.append("--force-docker")
                 if self.options.git_remote != "origin":
                     cmd.append("--git-remote={}".format(self.options.git_remote))
                 if self.options.makefile != "Makefile":
@@ -338,11 +320,6 @@ class C2cUpgradeTool:
             "pcreate", "--ignore-conflicting-name", "--overwrite",
             "--scaffold=c2cgeoportal_update", project_path
         ])
-        if self.options.nondocker:
-            check_call([
-                "pcreate", "--ignore-conflicting-name", "--overwrite",
-                "--scaffold=c2cgeoportal_nondockerupdate", project_path
-            ])
 
         shutil.copyfile(os.path.join(project_path, ".upgrade.yaml"), ".upgrade.yaml")
         self.files_to_move(prefix="CONST_create_template", force=True)
@@ -373,11 +350,6 @@ class C2cUpgradeTool:
             "pcreate", "--ignore-conflicting-name", "--overwrite",
             "--scaffold=c2cgeoportal_update", project_path
         ])
-        if self.options.nondocker:
-            check_call([
-                "pcreate", "--ignore-conflicting-name", "--overwrite",
-                "--scaffold=c2cgeoportal_nondockerupdate", project_path
-            ])
         os.remove(project_path)
 
         check_call(["git", "add", "--all", "CONST_create_template/"])
@@ -690,28 +662,16 @@ class C2cUpgradeTool:
 
         check_call(["make", "--makefile=" + self.options.new_makefile, "build"])
 
-        if self.options.nondocker:
-            command.upgrade(Config("geoportal/alembic.ini", ini_section="main"), "head")
-            command.upgrade(Config("geoportal/alembic.ini", ini_section="static"), "head")
-
-            args = " --makefile={}".format(self.options.makefile) \
-                if self.options.makefile != "Makefile" else ""
-            message = [
-                "The upgrade is nearly done, now you should:",
-                "- Run the finalisation build with `FINALISE=TRUE make{} build`.".format(args),
-                "- Test your application."
-            ]
-        else:
-            message = [
-                "The upgrade is nearly done, now you should:",
-                "- To upgrade the database run `./docker-compose-run alembic --name=main "
-                "--config=geoportal/alembic.ini upgrade head`",
-                "- Run `DOCKER_TAG=unexisting docker-compose pull --ignore-pull-failures && "
-                "docker-compose down --remove-orphans && docker-compose up -d`.",
-                "- Test your application on '{}'.".format(
-                    self.project.get('application_url', '... missing ...')
-                )
-            ]
+        message = [
+            "The upgrade is nearly done, now you should:",
+            "- To upgrade the database run `./docker-compose-run alembic --name=main "
+            "--config=geoportal/alembic.ini upgrade head`",
+            "- Run `DOCKER_TAG=unexisting docker-compose pull --ignore-pull-failures && "
+            "docker-compose down --remove-orphans && docker-compose up -d`.",
+            "- Test your application on '{}'.".format(
+                self.project.get('application_url', '... missing ...')
+            )
+        ]
 
         if self.options.windows:
             message.append(

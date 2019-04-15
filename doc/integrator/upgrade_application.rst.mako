@@ -16,7 +16,6 @@ Add a section ``managed_files:`` in the file ``project.yaml.mako``.
 In this section, you must select by a regular expression the project files you need to keep, and that are
 not handled by the GeoMapFish upgrade process. You can see in the GeoMapFish upgrade configuration, section
 ``default_project_file``, which files will get handled by the GeoMapFish upgrade process:
-`for non-Docker version <https://github.com/camptocamp/c2cgeoportal/blob/${git_branch}/geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/%2Bdot%2Bupgrade.yaml_tmpl>`_,
 `for Docker version <https://github.com/camptocamp/c2cgeoportal/blob/${git_branch}/geoportal/c2cgeoportal_geoportal/scaffolds/update/%2Bdot%2Bupgrade.yaml_tmpl>`_.
 Any files in your project that are not listed in the section ``managed_files`` will be overwritten by the
 upgrade process.
@@ -53,19 +52,12 @@ Prepare the upgrade:
    If the last command failed, you should create the ``project.yaml`` file
    from the ``project.yaml.mako`` file.
 
-For Docker (recommended):
+For Docker:
 
 .. prompt:: bash
 
    ./docker-run --version=<version> --home --image=camptocamp/geomapfish-build ${'\\'}
        c2cupgrade --force-docker --new-makefile=Makefile --makefile=<package>.mk
-
-For non-Docker:
-
-.. prompt:: bash
-
-   ./docker-run --version=<version> --home --image=camptocamp/geomapfish-build ${'\\'}
-       c2cupgrade --nondocker --makefile=<user>.mk
 
 Where ``<version>`` is the version number of GeoMapFish you want to use.
 You will find available versions on `Dockerhub <https://hub.docker.com/r/camptocamp/geomapfish-build>`_.
@@ -138,24 +130,6 @@ Remove the ``UPGRADE_ARGS`` in your ``<user>.mk`` file.
 
    git add <user>.mk
    git commit --quiet --message="Finish upgrade"
-
-
-Convert a version 2.3 to non-Docker
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Add the ``apache_vhost`` in the ``template_vars`` of the ``project.yaml.mako`` file.
-Add ``UPGRADE_ARGS += --nondocker --new-makefile=<package>.mk`` in the ``Makefile``.
-
-.. prompt:: bash
-
-   git add project.yaml.mako Makefile
-   git commit --message="Start upgrade"
-   ./docker-run --home make --new-makefile=<user>.mk upgrade
-
-Then follow the instructions.
-
-Remove the ``UPGRADE_ARGS`` in your ``Makefile``.
-
 
 Upgrade the database
 ~~~~~~~~~~~~~~~~~~~~

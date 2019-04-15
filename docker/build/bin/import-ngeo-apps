@@ -87,7 +87,6 @@ def main():
 
     parser.add_argument('--html', action="store_true", help="Import the html template")
     parser.add_argument('--js', action="store_true", help="Import the javascript controller")
-    parser.add_argument('--non-docker', action="store_false", dest="docker", help="Import for non Docker")
     parser.add_argument('interface', metavar='INTERFACE', help="The interface we import")
     parser.add_argument('src', metavar='SRC', help="The ngeo source file")
     parser.add_argument('dst', metavar='DST', help="The destination file")
@@ -104,8 +103,8 @@ def main():
                 r'( +)(' + re.escape('<% for (var chunk in htmlWebpackPlugin.files.chunks) { %>') + r')',
                 r'\1<script src="{entry_point}static-ngeo/build/vendor.js?{version}">'
                 r'</script>\n\1\2'.format(
-                    entry_point='${htmlWebpackPlugin.options.vars.entry_point}' if args.docker else '',
-                    version='${htmlWebpackPlugin.options.vars.version}' if args.docker else ''
+                    entry_point='${htmlWebpackPlugin.options.vars.entry_point}',
+                    version='${htmlWebpackPlugin.options.vars.version}'
                 ),
                 data
             )
@@ -113,7 +112,7 @@ def main():
                 re.escape('<meta name="dynamicUrl" content="https://geomapfish-demo-2-') +
                 '[0-9]' + re.escape('.camptocamp.com/dynamic.json">'),
                 '<meta name="dynamicUrl" content="{entry_point}dynamic.json">'.format(
-                    entry_point='${htmlWebpackPlugin.options.vars.entry_point}' if args.docker else '',
+                    entry_point='${htmlWebpackPlugin.options.vars.entry_point}',
                 ),
                 data
             )

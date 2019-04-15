@@ -206,32 +206,3 @@ class TemplateUpdate(BaseTemplate):  # pragma: no cover
         fix_executables(output_dir, ("docker-run", "docker-compose-run", "bin/*"), True)
 
         return BaseTemplate.post(self, command, output_dir, vars_)
-
-
-class TemplateNondockerCreate(TemplateCreate):  # pragma: no cover
-    _template_dir = "nondockercreate"
-    summary = "Template used to create a non Docker c2cgeoportal project"
-
-    def pre(self, command, output_dir, vars_):
-        self._get_vars(vars_, "apache_vhost", "The Apache vhost name: ")
-        return super().pre(command, output_dir, vars_)
-
-    def post(self, command, output_dir, vars_):
-        fix_executables(output_dir, ("get-pip-dependencies", "deploy/hooks/*"))
-
-        return super().post(command, output_dir, vars_)
-
-
-class TemplateNondockerUpdate(TemplateUpdate):  # pragma: no cover
-    _template_dir = "nondockerupdate"
-    summary = "Template used to update a non Docker c2cgeoportal project"
-
-    def pre(self, command, output_dir, vars_):
-        self.open_project(vars_)
-        self._get_vars(vars_, "apache_vhost", "The Apache vhost name: ")
-        return BaseTemplate.pre(self, command, output_dir, vars_)
-
-    def post(self, command, output_dir, vars_):
-        fix_executables(output_dir, ("get-pip-dependencies", "deploy/hooks/*"), True)
-
-        return BaseTemplate.post(self, command, output_dir, vars_)

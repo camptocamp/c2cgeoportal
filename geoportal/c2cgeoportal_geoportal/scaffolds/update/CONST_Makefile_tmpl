@@ -425,8 +425,7 @@ clean-all: clean
 		geoportal/$(PACKAGE)_geoportal/static-ngeo/fonts/ \
 		geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ \
 		$(ANGULAR_LOCALES_FILES) \
-		`find -name __pycache__` \
-		node_modules  # for nondocker
+		`find -name __pycache__`
 
 .PHONY: clean-all-cache
 clean-all-cache: clean-all

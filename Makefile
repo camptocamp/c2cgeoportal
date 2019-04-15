@@ -65,10 +65,8 @@ ADMIN_SRC_FILES = $(shell ls -1 commons/c2cgeoportal_commons/models/*.py) \
 	$(shell find admin/c2cgeoportal_admin/templates/widgets -name "*.pt" -print)
 
 APPS += desktop mobile iframe_api
-APPS_PACKAGE_PATH_NONDOCKER = geoportal/c2cgeoportal_geoportal/scaffolds/nondockercreate/geoportal/+package+_geoportal
 APPS_PACKAGE_PATH = geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal
-APPS_HTML_FILES = $(addprefix $(APPS_PACKAGE_PATH_NONDOCKER)/static-ngeo/js/apps/, $(addsuffix .html.ejs_tmpl, $(APPS)))
-APPS_HTML_FILES += $(addprefix $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/, $(addsuffix .html.ejs_tmpl, $(APPS)))
+APPS_HTML_FILES = $(addprefix $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/, $(addsuffix .html.ejs_tmpl, $(APPS)))
 APPS_JS_FILES = $(addprefix $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/Controller, $(addsuffix .js_tmpl, $(APPS)))
 APPS_SASS_FILES += $(addprefix $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/sass/, $(addsuffix .scss, $(filter-out iframe_api, $(APPS))))
 APPS_SASS_FILES += $(addprefix $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/sass/vars_, $(addsuffix .scss, $(filter-out iframe_api, $(APPS))))
@@ -79,10 +77,8 @@ APPS_FILES = $(APPS_HTML_FILES) $(APPS_JS_FILES) $(APPS_SASS_FILES) \
 	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/logo.png
 
 APPS_ALT += desktop_alt mobile_alt oeedit oeview
-APPS_PACKAGE_PATH_ALT_NONDOCKER = geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/CONST_create_template/geoportal/+package+_geoportal
 APPS_PACKAGE_PATH_ALT = geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/geoportal/+package+_geoportal
-APPS_HTML_FILES_ALT = $(addprefix $(APPS_PACKAGE_PATH_ALT_NONDOCKER)/static-ngeo/js/apps/, $(addsuffix .html.ejs_tmpl, $(APPS_ALT)))
-APPS_HTML_FILES_ALT += $(addprefix $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/, $(addsuffix .html.ejs_tmpl, $(APPS_ALT)))
+APPS_HTML_FILES_ALT = $(addprefix $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/, $(addsuffix .html.ejs_tmpl, $(APPS_ALT)))
 APPS_JS_FILES_ALT += $(addprefix $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/Controller, $(addsuffix .js_tmpl, $(APPS_ALT)))
 APPS_SASS_FILES_ALT += $(addprefix $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/sass/, $(addsuffix .scss, $(APPS_ALT)))
 APPS_SASS_FILES_ALT += $(addprefix $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/sass/vars_, $(addsuffix .scss, $(APPS_ALT)))
@@ -202,7 +198,6 @@ docker-build-build: $(shell docker-required --path . --replace-pattern='^test(.*
 		webpack.config.js \
 		npm-packages admin/npm-packages \
 		geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/ \
-		geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/CONST_create_template/ \
 		$(MO_FILES)
 	docker build --build-arg=VERSION=$(VERSION) --tag=$(DOCKER_BASE)-build:$(MAJOR_VERSION) .
 
@@ -401,11 +396,6 @@ $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/%.html.ejs_tmpl: geoportal/node_modules
 	mkdir --parent $(dir $@)
 	import-ngeo-apps --html $* $< $@
 
-$(APPS_PACKAGE_PATH_NONDOCKER)/static-ngeo/js/apps/%.html.ejs_tmpl: geoportal/node_modules/ngeo/contribs/gmf/apps/%/index.html.ejs
-	$(PRERULE_CMD)
-	mkdir --parent $(dir $@)
-	import-ngeo-apps --html --non-docker $* $< $@
-
 $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/Controller%.js_tmpl: geoportal/node_modules/ngeo/contribs/gmf/apps/%/Controller.js
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
@@ -417,13 +407,6 @@ $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/%.html.ejs_tmpl: \
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	import-ngeo-apps --html $* $< $@
-
-$(APPS_PACKAGE_PATH_ALT_NONDOCKER)/static-ngeo/js/apps/%.html.ejs_tmpl: \
-		geoportal/node_modules/ngeo/contribs/gmf/apps/%/index.html.ejs \
-		geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/
-	$(PRERULE_CMD)
-	mkdir --parent $(dir $@)
-	import-ngeo-apps --html --non-docker $* $< $@
 
 $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/Controller%.js_tmpl: \
 		geoportal/node_modules/ngeo/contribs/gmf/apps/%/Controller.js \
