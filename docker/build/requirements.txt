@@ -7,7 +7,7 @@ boto3==1.9.130  # Tile generation
 bottle==0.12.16  # geoportal
 c2c.cssmin==0.7.dev6  # CGXP build
 c2c.template==2.1.0  # geoportal
-c2cgeoform==2.0.dev20181213  # commons
+c2cgeoform==2.0.dev20190413  # commons
 codacy-coverage==1.3.11  # Codacy send report
 codespell==1.14.0  # Lint
 colander==1.7.0  # commons, admin
@@ -42,7 +42,7 @@ pep8==1.7.1  # lint
 pep8-naming==0.8.2  # Lint
 Pillow==5.4.1  # Tile generation, rq.filter: < 6.0.0
 polib==1.1.0  # i18n
-psycopg2-binary==2.8.1  # geoportal
+psycopg2-binary==2.8.2  # geoportal
 pycryptodome==3.8.1  # geoportal
 pyflakes==2.1.1  # lint, flake8
 Pygments==2.3.1  # doc
