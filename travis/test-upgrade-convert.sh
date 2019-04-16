@@ -91,5 +91,5 @@ fi
 
 if [ "$1" = "cleanup" ]
 then
-    rm --recursive --force ${WORKSPACE}/ref ${WORKSPACE}/v240 ${WORKSPACE}/v25 \
+    rm --recursive --force ${WORKSPACE}/ref ${WORKSPACE}/v240 ${WORKSPACE}/v25
 fi
