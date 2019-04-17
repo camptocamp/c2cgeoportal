@@ -12,10 +12,10 @@ In the file ``geoportal/demo_geoportal/static-ngeo/api/index.js`` you can custom
 
 .. code:: JavaScript
 
-   constants.themesUrl: '<the theme URL>';
-   constants.projection: <the projection>;
-   constants.resolutions: [<the map resolutions>];
-   constants.extent: [<the map extent>];
-   constants.backgroundLayer: '<the background layer name>';
+   config.themesUrl = '<the theme URL>';
+   config.projection = <the projection>;
+   config.resolutions = [<the map resolutions>];
+   config.extent = [<the map extent>];
+   config.backgroundLayer = '<the background layer name>';
 
 The API help is in the folder ``geoportal/<package>_geoportal/static-ngeo/api/apihelp/``.
