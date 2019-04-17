@@ -544,8 +544,7 @@ def includeme(config: pyramid.config.Configurator):
     add_cors_route(config, "/raster", "raster")
     config.add_route("raster", "/raster", request_method="GET")
 
-    add_cors_route(config, "/profile.{ext}", "profile")
-    config.add_route("profile.csv", "/profile.csv", request_method="POST")
+    add_cors_route(config, "/profile.json", "profile")
     config.add_route("profile.json", "/profile.json", request_method="POST")
 
     # Shortener

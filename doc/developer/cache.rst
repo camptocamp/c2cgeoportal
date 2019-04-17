@@ -53,7 +53,6 @@ No cache
  * logout
  * login change password
  * echo
- * export csv
  * full text search
  * layers/read_many
  * layers/read_one
