@@ -1,9 +1,9 @@
 alabaster==0.7.12  # Doc theme
-alembic==1.0.9  # geoportal
-awscli==1.16.140  # Work with Object storage
+alembic==1.0.10  # geoportal
+awscli==1.16.151  # Work with Object storage
 Babel==2.6.0  # i18n
 beautifulsoup4==4.6.3  # admin tests, rq.filter: <4.7
-boto3==1.9.130  # Tile generation
+boto3==1.9.141  # Tile generation
 bottle==0.12.16  # geoportal
 c2c.template==2.1.0  # geoportal
 c2cgeoform==2.0.dev20190413  # commons
@@ -14,13 +14,13 @@ ColanderAlchemy==0.3.3  # commons
 coverage==4.5.3  # Build coverage XML for Codacy
 dateutils==0.6.6  # geoportal pcreate
 deform==2.0.7  # commons, admin
-defusedxml==0.5.0  # geoportal
+defusedxml==0.6.0  # geoportal
 dogpile.cache==0.7.1  # geoportal
 flake8==3.7.7  # lint, TODO remove filter on pyflakes
 flake8-copyright==0.2.2  # lint
 flake8-mypy==17.8.0  # lint
 Fiona==1.8.6  # geoportal raster
-GeoAlchemy2==0.6.1  # commons, geoportal
+GeoAlchemy2==0.6.2  # commons, geoportal
 geojson==2.4.1  # geoportal
 glob2==0.6  # ngeo
 htmlmin==0.1.12  # ngeo
@@ -31,7 +31,7 @@ Jinja2==2.10.1  # c2c.template
 lingua==4.13  # i18n
 Mako==1.0.9  # geoportal
 mccabe==0.6.1  # lint
-mypy==0.700  # lint
+mypy==0.701  # lint
 OWSLib==0.17.1  # geoportal
 papyrus==2.4  # commons, geoportal
 passwordgenerator # geoportal
@@ -67,13 +67,13 @@ Sphinx==1.8.5  # doc, rq.filter: < 2.0.0
 sphinx-prompt==1.1.0  # doc
 SQLAlchemy==1.3.3
 tilecloud==1.3.1  # Tile generation
-tilecloud-chain==1.10.1  # Tile generation
+tilecloud-chain==1.11.1  # Tile generation
 transaction==2.4.0  # commons, geoportal
 transifex-client==0.13.6  # Makefile
 translationstring==1.3  # admin
 urllib3==1.23  # required by transifex, rq.filter: <1.24
-virtualenv==16.4.3  # Makefile
-waitress==1.2.1  # pcreate
+virtualenv==16.5.0  # Makefile
+waitress==1.3.0  # pcreate
 WebOb==1.8.5  # geoportal test
 WebTest==2.0.33  # admin tests
 wsgi-lineprof==0.7.0  # profiling
