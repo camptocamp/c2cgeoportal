@@ -442,14 +442,6 @@ def includeme(config: pyramid.config.Configurator):
     config.set_user_validator(default_user_validator)
 
     config.add_route('dynamic', '/dynamic.json', request_method="GET")
-    if settings.get("ogcproxy_enable", False):  # pragma: no cover
-        # Add an OGCProxy view
-        config.add_route_predicate("ogc_server", OgcproxyRoutePredicate)
-        config.add_route(
-            "ogcproxy", "/ogcproxy",
-            ogc_server=True
-        )
-        config.add_view("papyrus_ogcproxy.views:ogcproxy", route_name="ogcproxy")
 
     # Add routes to the mapserver proxy
     config.add_route_predicate("mapserverproxy", MapserverproxyRoutePredicate)
