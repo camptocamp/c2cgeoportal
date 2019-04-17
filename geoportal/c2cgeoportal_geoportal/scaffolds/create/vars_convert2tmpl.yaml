@@ -27,6 +27,9 @@ vars:
   mapserver_connection: user={dbuser} password={dbpassword} dbname={db} host={dbhost}
   mapfile_data_subselect: '{MAPSERVER_DATA_SUBSELECT}'
   mapfile_data_noarea_subselect: '{MAPSERVER_DATA_NOAREA_SUBSELECT}'
+  mapserver_join_tables: '{MAPSERVER_JOIN_TABLES}'
+  mapserver_join_area: ra.area
+  mapserver_join_where: '{MAPSERVER_JOIN_WHERE}'
 
   # For print proxy
   print_url: '{PRINT_URL}'
@@ -66,6 +69,8 @@ runtime_environment:
   - MAPSERVER_LAYER_VALIDATION
   - MAPSERVER_DATA_SUBSELECT
   - MAPSERVER_DATA_NOAREA_SUBSELECT
+  - MAPSERVER_JOIN_TABLES
+  - MAPSERVER_JOIN_WHERE
   - WMTSCAPABILITIES_PATH
   - AWS_ACCESS_KEY_ID
   - AWS_SECRET_ACCESS_KEY
