@@ -96,15 +96,6 @@ mapping:
                 type: str
                 required: true
 
-      jsbuild:
-        type: map
-        mapping:
-          config:
-            type: str
-            required: True
-          root_dir:
-            type: str
-            required: True
       default_locale_name:
         type: str
         pattern: '[a-z][a-z]'

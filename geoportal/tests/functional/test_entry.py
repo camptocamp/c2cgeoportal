@@ -482,20 +482,6 @@ class TestEntryView(TestCase):
         request.user = None
         return entry, request
 
-    def test_entry_points(self):
-        entry, _ = self._create_entry()
-
-        result = entry.get_oldapijs_values()
-        assert set(result.keys()) == {
-            "lang", "debug", "queryable_layers", "tiles_url", "url_params", "request"
-        }
-        result = entry.oldxapijs()
-        assert set(result.keys()) == {"lang", "debug", "queryable_layers", "tiles_url", "url_params"}
-        result = entry.oldapihelp()
-        assert set(result.keys()) == {"lang", "debug"}
-        result = entry.oldxapihelp()
-        assert set(result.keys()) == {"lang", "debug"}
-
     def _assert_has_error(self, errors, error):
         self.assertIn(error, errors)
         assert len([e for e in errors if e == error]) == 1, \

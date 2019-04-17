@@ -202,7 +202,6 @@ update_paths:
   - content_security_policy.main
   - content_security_policy.admin
   - content_security_policy.apihelp
-  - content_security_policy.oldapihelp
   - fulltextsearch
   - functionalities.available_in_templates
   - global_headers

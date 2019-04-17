@@ -12,14 +12,12 @@ __pycache__/
 /mapserver/tinyows.xml.mako
 /qgisserver/geomapfish.yaml
 /geoportal/alembic.yaml
-/geoportal/jsbuild/app.cfg
 /geoportal/Dockerfile
 /geoportal/development.ini
 /geoportal/production.ini
 /geoportal/config.yaml
 /geoportal/dist/
 /geoportal/{{package}}_geoportal.egg-info/
-/geoportal/{{package}}_geoportal/static/lib/cgxp/
 /geoportal/{{package}}_geoportal/locale/*/LC_MESSAGES/*.mo
 /geoportal/{{package}}_geoportal/locale/{{package}}_geoportal-*.pot
 /geoportal/{{package}}_geoportal/static-ngeo/build/

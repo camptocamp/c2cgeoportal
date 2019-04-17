@@ -78,11 +78,6 @@ The map configuration will be here:
          },
          $scope, $injector);
 
-.. note::
-
-   If you previously had a CGXP application and want to keep your permalinks
-   compatible, the resolutions should be the same as in the previous application.
-
 Dynamic.json view
 -----------------
 

@@ -62,15 +62,12 @@ export DEVELOPMENT
 # Language provided by the application
 LANGUAGES ?= en fr de
 NGEO_INTERFACES ?= desktop mobile iframe_api
-CGXP_API ?= TRUE
-CGXP_XAPI ?= FALSE
 NGEO_API ?= TRUE
 INTERFACES += $(NGEO_INTERFACES)
 export INTERFACES
 # Use print
 PRINT ?= TRUE
 
-DEFAULT_WEB_RULE += $(JSBUILD_OUTPUT_FILES) $(CSS_API_OUTPUT) $(CSS_XAPI_OUTPUT)
 ifneq ($(NGEO_INTERFACES), "")
 DEFAULT_WEB_RULE += $(NGEO_OUTPUT_FILES)
 CLIENT_CHECK_RULE ?= lint-ngeo
@@ -160,106 +157,6 @@ I18N_SOURCE_FILES += $(APP_HTML_FILES) \
 I18N_SOURCE_FILES += geoportal/development.ini
 I18N_DEPENDENCIES += project.yaml
 
-# CGXP
-JSBUILD_MAIN_FILES = $(shell find geoportal/$(PACKAGE)_geoportal/static/lib/cgxp geoportal/$(PACKAGE)_geoportal/static/js -name "*.js" -print 2> /dev/null)
-JSBUILD_MAIN_CONFIG = geoportal/jsbuild/app.cfg
-ifeq ($(CGXP_XAPI), TRUE)
-JSBUILD_OUTPUT_FILES += xapi.js
-JSBUILD_OUTPUT_FILES += $(addprefix lang-, $(addsuffix .js, $(LANGUAGES)))
-CSS_XAPI_OUTPUT = $(OUTPUT_DIR)/xapi.css
-endif
-ifeq ($(CGXP_API), TRUE)
-JSBUILD_OUTPUT_FILES += api.js
-JSBUILD_OUTPUT_FILES += $(addprefix api-lang-, $(addsuffix .js, $(LANGUAGES)))
-CSS_API_OUTPUT = $(OUTPUT_DIR)/api.css
-endif
-JSBUILD_OUTPUT_FILES := $(addprefix $(OUTPUT_DIR)/, $(JSBUILD_OUTPUT_FILES))
-ifeq ($(DEVELOPMENT), TRUE)
-JSBUILD_ARGS += --uncompress
-endif
-CGXP_GIT_REMOTE ?= https://github.com/camptocamp/cgxp.git
-
-
-ifeq ($(DEVELOPMENT), FALSE)
-CSSMIN_ARGS += --compress
-LESS_ARGS += --clean-css="--s0"
-endif
-LESS_ARGS += --autoprefix
-DEFAULT_CSS_API_FILES += \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/openlayers/theme/default/style.css \
-	geoportal/$(PACKAGE)_geoportal/static/css/proj-map.css
-ifdef CSS_API_FILES
-CSS_API_FILES := $(DEFAULT_CSS_API_FILES) $(CSS_API_FILES)
-else
-CSS_API_FILES := $(DEFAULT_CSS_API_FILES)
-endif
-
-DEFAULT_CSS_XAPI_FILES += \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/core/src/theme/reset.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/visual/editor.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/visual/pivotgrid.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/visual/menu.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/visual/panel.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/visual/grid.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/visual/debug.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/visual/qtips.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/visual/dd.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/visual/form.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/visual/resizable.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/visual/toolbar.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/visual/slider.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/visual/combo.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/visual/layout.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/visual/dialog.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/visual/core.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/visual/button.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/visual/progress.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/visual/tabs.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/visual/box.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/visual/borders.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/visual/date-picker.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/visual/tree.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/visual/window.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/visual/list-view.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/structure/editor.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/structure/pivotgrid.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/structure/menu.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/structure/panel.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/structure/grid.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/structure/debug.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/structure/qtips.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/structure/dd.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/structure/form.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/structure/resizable.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/structure/toolbar.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/structure/panel-reset.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/structure/slider.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/structure/combo.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/structure/layout.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/structure/dialog.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/structure/core.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/structure/button.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/structure/progress.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/structure/tabs.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/structure/box.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/structure/borders.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/structure/date-picker.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/structure/tree.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/structure/window.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/structure/list-view.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ext/Ext/resources/css/xtheme-gray.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/openlayers/theme/default/style.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/geoext/resources/css/gxtheme-gray.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/geoext.ux/ux/Measure/resources/css/measure.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/gxp/src/theme/all.css \
-	geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/core/src/theme/all.css \
-	geoportal/$(PACKAGE)_geoportal/static/css/proj-map.css \
-	geoportal/$(PACKAGE)_geoportal/static/css/proj-widgets.css
-ifdef CSS_XAPI_FILES
-CSS_XAPI_FILES := $(DEFAULT_CSS_XAPI_FILES) $(CSS_XAPI_FILES)
-else
-CSS_XAPI_FILES := $(DEFAULT_CSS_XAPI_FILES)
-endif
 
 VALIDATE_PY_FOLDERS = admin/$(PACKAGE)_admin \
 	geoportal/$(PACKAGE)_geoportal/*.py geoportal/$(PACKAGE)_geoportal/lib \
@@ -281,14 +178,14 @@ PY_FILES = $(shell find $(PACKAGE) -type f -name '*.py' -print)
 # Templates
 ALL_MAKO_FILES = $(shell find $(FIND_OPTS) -name "*.mako" -print)
 ALL_JINJA_FILES = $(shell find $(FIND_OPTS) -name "*.jinja" -print)
-EXTRA_EXCLUDE = $(foreach ELEM, print mapfile jsbuild tilegeneration,-path ./$(ELEM) -prune -o)
+EXTRA_EXCLUDE = $(foreach ELEM, print mapfile tilegeneration,-path ./$(ELEM) -prune -o)
 VARS_FILES += CONST_vars.yaml $(VARS_FILE)
 CONFIG_VARS += sqlalchemy.url sqlalchemy.pool_recycle sqlalchemy.pool_size sqlalchemy.max_overflow \
 	sqlalchemy.use_batch_mode sqlalchemy_slave.url sqlalchemy_slave.pool_recycle sqlalchemy_slave.pool_size \
 	sqlalchemy_slave.max_overflow sqlalchemy_slave.use_batch_mode schema schema_static enable_admin_interface \
 	default_locale_name servers layers available_locale_names cache admin_interface functionalities \
 	raster shortener hide_capabilities tinyowsproxy resourceproxy print_url print_get_redirect \
-	tiles_url checker check_collector default_max_age jsbuild package srid \
+	tiles_url checker check_collector default_max_age package srid \
 	reset_password fulltextsearch global_headers headers authorized_referers hooks stats db_chooser \
 	ogcproxy_enable dbsessions urllogin host_forward_host smtp c2c.base_path welcome_email \
 	lingua_extractor interfaces_config interfaces default_interface devserver_url api
@@ -336,7 +233,6 @@ endif
 	@echo
 	@echo  "Secondary targets:"
 	@echo
-	@echo  "- build-cgxp		Build the javascript and the css for cgxp"
 	@echo  "- build-ngeo		Build the javascript and the css for ngeo"
 	@echo  "- build-api		Build the javascript api"
 	@echo  "- flake8		Run Flake8 checker on the Python code"
@@ -373,7 +269,6 @@ YAML_FILES ?= $(filter-out ./tilegeneration/config.yaml ./geoportal/config.yaml 
 	./docker-compose-dev.yaml ./docker-compose.yaml, \
 	$(shell find \
 		-name .build -prune -or \
-		-name cgxp -prune -or \
 		-name node_modules -prune -or \
 		\( -name "*.yml" -or -name "*.yaml" \) -print \
 	))
@@ -390,7 +285,6 @@ spell:
 		-name '__pycache__' -prune -or \
 		-name 'build' -prune -or \
 		-name '.build' -prune -or \
-		-name 'cgxp' -prune -or \
 		-name 'c2cgeoportal_*' -prune -or \( \
 		-type f -and \
 		-not -name '*.png' -and \
@@ -423,7 +317,6 @@ endif
 clean-all: clean
 	rm --recursive --force /build/* \
 		geoportal/$(PACKAGE)_geoportal/static-ngeo/fonts/ \
-		geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ \
 		$(ANGULAR_LOCALES_FILES) \
 		`find -name __pycache__`
 
@@ -440,9 +333,6 @@ theme2fts: geoportal/config.yaml \
 .PHONY: flake8
 flake8:
 	flake8 $(PACKAGE)
-
-.PHONY: build-cgxp
-build-cgxp: $(JSBUILD_OUTPUT_FILES) $(CSS_API_OUTPUT) $(CSS_XAPI_OUTPUT)
 
 .PHONY: lint-ngeo
 lint-ngeo: /build/eslint.timestamp
@@ -637,48 +527,6 @@ $(APP_OUTPUT_DIR)/api.js.tmpl: geoportal/webpack.api.js geoportal/$(PACKAGE)_geo
 $(APP_OUTPUT_DIR)/api.css: geoportal/$(PACKAGE)_geoportal/static-ngeo/api/api.css
 	$(PRERULE_CMD)
 	cp $< $@
-
-# Git
-
-geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/: cgxp_revision
-	$(PRERULE_CMD)
-	# Sometimes we have an empty directory
-	rmdir $@ || true
-	if [ ! -e $@ ]; then git clone $(CGXP_GIT_ARGS) $(CGXP_GIT_REMOTE) $@; fi
-	cd $@ && git fetch
-	cd $@ && git reset --hard $(shell cat $<)
-	cd $@ && git submodule foreach git submodule sync
-	cd $@ && git submodule update --init
-
-
-# CGXP build
-
-# Workaround to fix strange Make missing rule error
-$(OUTPUT_DIR)/api-lang-en.js: \
-		$(JSBUILD_MAIN_CONFIG) \
-		$(JSBUILD_MAIN_FILES) \
-		geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/
-
-$(OUTPUT_DIR)/%.js: \
-		$(JSBUILD_MAIN_CONFIG) \
-		$(JSBUILD_MAIN_FILES) \
-		geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/
-	$(PRERULE_CMD)
-	mkdir --parent $(dir $@)
-	jsbuild $< $(JSBUILD_ARGS) -j $(notdir $@) -o $(dir $@)
-
-$(CSS_API_OUTPUT): \
-		geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ \
-		geoportal/$(PACKAGE)_geoportal/static/css/proj-map.css
-	$(PRERULE_CMD)
-	c2c-cssmin $(CSSMIN_ARGS) $@ $(CSS_API_FILES)
-
-$(CSS_XAPI_OUTPUT): \
-		geoportal/$(PACKAGE)_geoportal/static/lib/cgxp/ \
-		geoportal/$(PACKAGE)_geoportal/static/css/proj-map.css \
-		geoportal/$(PACKAGE)_geoportal/static/css/proj-widgets.css
-	$(PRERULE_CMD)
-	c2c-cssmin $(CSSMIN_ARGS) $@ $(CSS_XAPI_FILES)
 
 # Venv
 

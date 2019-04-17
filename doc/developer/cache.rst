@@ -45,9 +45,7 @@ No cache
  * interface pages
  * dynamic
  * api js
- * xapi js
  * api help
- * xapi help
  * auto login form (loginform403)
  * login
  * logout
