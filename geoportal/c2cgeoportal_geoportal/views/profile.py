@@ -33,7 +33,6 @@ import geojson
 from decimal import Decimal
 
 from pyramid.view import view_config
-from pyramid.response import Response
 from pyramid.httpexceptions import HTTPNotFound
 from pyramid.i18n import TranslationStringFactory
 
@@ -55,29 +54,6 @@ class Profile(Raster):
         _, points = self._compute_points()
         set_common_headers(self.request, "profile", NO_CACHE)
         return {"profile": points}
-
-    @view_config(route_name="profile.csv")
-    def csv(self):
-        """answers to /profile.csv"""
-        layers, points = self._compute_points()
-
-        result = _("distance") + "," + ",".join(layers) + ",x,y"
-        template = ",".join("%s" for l in layers)
-        for point in points:
-            # Handles cases when a layer is undefined, thus when not all raster
-            # have the same geographical coverage
-            for l in layers:
-                if l not in point["values"] or point["values"][l] is None:
-                    point["values"][l] = -9999
-            r = template % tuple((str(point["values"][l]) for l in layers))
-            result += "\n{},{},{:.1f},{:.1f}".format(str(point["dist"]), r, point["x"], point["y"])
-
-        return set_common_headers(
-            self.request, "profile", NO_CACHE,
-            response=Response(result, headers={
-                "Content-Disposition": 'attachment; filename="profile.csv"',
-            }), content_type="text/csv; charset=utf-8", vary=True
-        )
 
     def _compute_points(self):
         """Compute the alt=fct(dist) array"""

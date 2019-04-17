@@ -533,7 +533,7 @@ Result
 Digital Elevation Model
 =======================
 
-URL: ``.../profile.csv`` or ``.../profile.json``
+URL: ``.../profile.json``
 
 Method ``POST``
 
@@ -547,7 +547,7 @@ Parameters
 Result
 ------
 
-A JSON or a CSV file, with 'dist', 'value', 'x', 'y'.
+A JSON file, with 'dist', 'value', 'x', 'y'.
 
 
 Shortener

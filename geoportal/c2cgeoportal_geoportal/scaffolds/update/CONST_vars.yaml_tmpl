@@ -131,8 +131,6 @@ vars:
           name: layers_root
         gmfRasterUrl:
           name: raster
-        gmfProfileCsvUrl:
-          name: profile.csv
         gmfShortenerCreateUrl:
           name: shortener_create
         ngeoPermalinkOgcserverUrl:

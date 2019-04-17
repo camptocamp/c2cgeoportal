@@ -259,35 +259,3 @@ class TestRasterViews(TestCase):
         # test wrong layer name
         request.params["layers"] = "wrong"
         self.assertRaises(HTTPNotFound, profile.json)
-
-    def test_profile_csv(self):
-        from pyramid.testing import DummyRequest
-        from c2cgeoportal_geoportal.views.profile import Profile
-
-        request = DummyRequest()
-        request.registry.settings = {
-            "raster": {
-                "dem": {"file": "/src/geoportal/tests/data/dem.shp", "round": 1},
-                "dem2": {"file": "/src/geoportal/tests/data/dem.shp", "round": 1},
-                "dem4": {"file": "/src/geoportal/tests/data/dem4.shp", "round": 1}
-            }
-        }
-        profile = Profile(request)
-
-        request.params["nbPoints"] = "3"
-        request.params["geom"] = '{"type":"LineString",' \
-            '"coordinates":[[548009.5,215990],[547990,216009.5]]}'
-        response = profile.csv()
-        self.assertEqual(response.body.decode("utf-8"), """distance,dem,dem2,dem4,x,y
-0.0,-9999,-9999,-9999,548009.5,215990.0
-9.2,1181,1181,-9999,548003.0,215996.5
-18.4,1180,1180,-9999,547996.5,216003.0
-27.6,1164,1164,1164,547990.0,216009.5""")
-
-        request.params["layers"] = "dem"
-        response = profile.csv()
-        self.assertEqual(response.body.decode("utf-8"), """distance,dem,x,y
-0.0,-9999,548009.5,215990.0
-9.2,1181,548003.0,215996.5
-18.4,1180,547996.5,216003.0
-27.6,1164,547990.0,216009.5""")
