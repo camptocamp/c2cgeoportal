@@ -157,15 +157,6 @@ vars:
             background: background
           dynamic_params:
             interface: interface
-    mobile:
-      redirect_interface: desktop
-      constants:
-        gmfSearchGroups: []
-    mobile_alt:
-      redirect_interface: desktop_alt
-      constants:
-        gmfTreeManagerModeFlush: false
-        gmfSearchActions: []
     desktop:
       redirect_interface: mobile
       do_redirect: True
@@ -224,6 +215,15 @@ vars:
           name: profile.json
         gmfPrintUrl:
           name: printproxy
+    mobile:
+      redirect_interface: desktop
+      constants:
+        gmfSearchGroups: []
+    mobile_alt:
+      redirect_interface: desktop_alt
+      constants:
+        gmfTreeManagerModeFlush: false
+        gmfSearchActions: []
     iframe_api:
       constants:
         gmfSearchGroups: []
