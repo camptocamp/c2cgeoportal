@@ -62,7 +62,6 @@ class Basic extends Simulation {
         "lang" ->lang,
         "cache_version" -> cache_version,
         "role" -> "6",
-        "callback" -> "stcCallback1001",
         "limit" -> 10
     )).random
 
@@ -308,7 +307,6 @@ class Basic extends Simulation {
                 .queryParam("_dc", "${cache_version}")
                 .queryParam("limit", "${limit}")
                 .queryParam("query", "${query}")
-                .queryParam("callback", "${callback}")
                 .headers(headers_18))
             .pause(1)
             .feed(map_feeder)
@@ -317,7 +315,6 @@ class Basic extends Simulation {
                 .queryParam("_dc", "${cache_version}")
                 .queryParam("limit", "${limit}")
                 .queryParam("query", "${query}")
-                .queryParam("callback", "${callback}")
                 .headers(headers_18))
             .pause(1)
             .feed(map_feeder)
@@ -326,7 +323,6 @@ class Basic extends Simulation {
                 .queryParam("_dc", "${cache_version}")
                 .queryParam("limit", "${limit}")
                 .queryParam("query", "${query}")
-                .queryParam("callback", "${callback}")
                 .headers(headers_18))
             .pause(1)
             .feed(map_feeder)
@@ -335,7 +331,6 @@ class Basic extends Simulation {
                 .queryParam("_dc", "${cache_version}")
                 .queryParam("limit", "${limit}")
                 .queryParam("query", "${query}")
-                .queryParam("callback", "${callback}")
                 .headers(headers_18))
             .pause(1)
             .feed(map_feeder)
@@ -344,7 +339,6 @@ class Basic extends Simulation {
                 .queryParam("_dc", "${cache_version}")
                 .queryParam("limit", "${limit}")
                 .queryParam("query", "${query}")
-                .queryParam("callback", "${callback}")
                 .headers(headers_18))
             .pause(2)
             .feed(map_feeder)
@@ -791,7 +785,6 @@ class Basic extends Simulation {
                 .queryParam("_dc", "${cache_version}")
                 .queryParam("limit", "${limit}")
                 .queryParam("query", "${query}")
-                .queryParam("callback", "${callback}")
                 .headers(headers_18))
             .pause(1)
             .feed(map_feeder)
@@ -800,7 +793,6 @@ class Basic extends Simulation {
                 .queryParam("_dc", "${cache_version}")
                 .queryParam("limit", "${limit}")
                 .queryParam("query", "${query}")
-                .queryParam("callback", "${callback}")
                 .headers(headers_18))
             .feed(map_feeder)
             .exec(http("fulltextsearch${suffix}")
@@ -808,7 +800,6 @@ class Basic extends Simulation {
                 .queryParam("_dc", "${cache_version}")
                 .queryParam("limit", "${limit}")
                 .queryParam("query", "${query}")
-                .queryParam("callback", "${callback}")
                 .headers(headers_18))
             .pause(1)
             .feed(map_feeder)
@@ -817,7 +808,6 @@ class Basic extends Simulation {
                 .queryParam("_dc", "${cache_version}")
                 .queryParam("limit", "${limit}")
                 .queryParam("query", "${query}")
-                .queryParam("callback", "${callback}")
                 .headers(headers_18))
             .pause(1)
             .feed(map_feeder)
