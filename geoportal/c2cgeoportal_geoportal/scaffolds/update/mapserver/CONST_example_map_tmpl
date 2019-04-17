@@ -22,7 +22,7 @@ LAYER
     "ows_geom_type" "polygon" # For returning geometries in GetFeatureInfo
     "ows_geometries" "geom" # For returning geometries in GetFeatureInfo
 
-    "wms_metadataurl_href" "http://www.example.com/bar" # For metadata URL
+    "wms_metadataurl_href" "https://www.example.com/bar" # For metadata URL
     "wms_metadataurl_format" "text/html" # For metadata URL
     "wms_metadataurl_type" "TC211" # For metadata URL
   END

@@ -31,7 +31,7 @@ In this file, you can add some blocks like
 to include a directive.
 
 You can find the available directives in the
-`ngeo documentation <http://camptocamp.github.io/ngeo/master/apidoc/>`_.
+`ngeo documentation <https://camptocamp.github.io/ngeo/master/apidoc/>`_.
 
 The controller (``js`` file) is commonly named ``mainCtrl``. So you can use a value
 from the controller by doing the following (here, the controller is the ``DesktopController``):

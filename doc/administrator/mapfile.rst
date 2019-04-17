@@ -42,7 +42,7 @@ MapFish Print also supports map rotations. This implies specific requirements:
 
 * When rotating the map (with a non-zero value for ``ANGLE``) there are
   important things to be aware of. Make sure to read the notes for the
-  ``ANGLE`` parameter on http://mapserver.org/mapfile/map.html.
+  ``ANGLE`` parameter on https://mapserver.org/mapfile/map.html.
 
 MapFish Print uses a resolution of 254 dpi (instead of 72 dpi as used for the
 web application on the screen). Using ``LAYER``/``SYMBOLSCALEDENOM`` is
@@ -152,9 +152,9 @@ The ``gml_include_items``, ``gml_<geometry name>_type`` and ``gml_geometries``
   ``polygon``, ``multipolygon``, if you do not set the right type
   for multi geometries only the first will be visible on the map.
   See also `gml_<geometry name>_type
-  <http://mapserver.org/ogc/wms_server.html#index-71>`_.
+  <https://mapserver.org/ogc/wms_server.html#index-71>`_.
 
-See the `WMS Server MapFile Documentation <http://mapserver.org/ogc/wms_server.html>`_ for more detail.
+See the `WMS Server MapFile Documentation <https://mapserver.org/ogc/wms_server.html>`_ for more detail.
 
 Restricted layer
 ----------------
@@ -278,7 +278,7 @@ Variable Substitution
 It is possible to adapt some values in the mapfile according to the user's role
 by using variable substitution, for instance to hide some layer objects
 attributes. The list of parameters that support variable substitution is
-available `here <http://mapserver.org/cgi/runsub.html#parameters-supported>`_.
+available `here <https://mapserver.org/cgi/runsub.html#parameters-supported>`_.
 
 To define variables, edit the matching ``MAP``/``LAYER``/``VALIDATION``
 section in the MapFile and add:
@@ -334,7 +334,7 @@ interface with for instance the following value for the given role:
    but beware that these attributes are not available for cached queries like:
    ``GetCapabilities``, ``GetLegendGraphic``, ``DescribeFeatureType``.
 
-`MapServer documentation <http://mapserver.org/cgi/runsub.html>`_
+`MapServer documentation <https://mapserver.org/cgi/runsub.html>`_
 
 
 Performance improvement
@@ -372,7 +372,7 @@ Note about ECW
 
 In general using ECW is not recommended, as MapServer often generates broken
 images and has memory leaks with ECW. See this
-`MapServer ticket <http://trac.osgeo.org/mapserver/ticket/3245>`_
+`MapServer ticket <https://trac.osgeo.org/mapserver/ticket/3245>`_
 for example.
 
 If you still want to use it, then replace ``SetHandler fcgid-script``

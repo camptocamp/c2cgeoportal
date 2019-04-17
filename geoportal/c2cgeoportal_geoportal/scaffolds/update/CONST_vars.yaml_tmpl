@@ -259,7 +259,7 @@ vars:
   #
   # Here is a dogpile.cache configuration example for the memcached backend
   # (equivalent of
-  # http://dogpilecache.readthedocs.org/en/latest/api.html#dogpile.cache.backends.memcached.MemcachedBackend)
+  # https://dogpilecache.readthedocs.org/en/latest/api.html#dogpile.cache.backends.memcached.MemcachedBackend)
   # cache:
   #   backend: dogpile.cache.memcached
   #   expiration_time: 3600
@@ -414,7 +414,7 @@ vars:
   resourceproxy:
     # List of urls from which it is safe to load content
     targets: {}
-    #   exempletargetname: http://www.camptocamp.com/?param1=%s&param2=%s
+    #   exempletargetname: https://www.camptocamp.com/?param1=%s&param2=%s
 
     # List of allowed headers
     allowed_headers:

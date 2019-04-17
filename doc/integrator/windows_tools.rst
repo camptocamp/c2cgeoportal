@@ -9,8 +9,8 @@ Creating a SSH Key with Windows
 
 1. Download PuTTYgen:
 
-   a. Windows: http://the.earth.li/~sgtatham/putty/latest/x86/puttygen.exe
-   b. Other operating systems: http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html
+   a. Windows: https://the.earth.li/~sgtatham/putty/latest/x86/puttygen.exe
+   b. Other operating systems: https://www.chiark.greenend.org.uk/~sgtatham/putty/download.html
 
 2. Choose key type  "SSH-2 RSA"
 
@@ -33,7 +33,7 @@ Command Line
 
 The following instructions are based on the PuTTY software, which is useful to launch commands on the server.
 
-1. Download PuTTY: http://the.earth.li/~sgtatham/putty/latest/x86/putty.exe
+1. Download PuTTY: https://the.earth.li/~sgtatham/putty/latest/x86/putty.exe
 2. Configurate PuTTY:
    a. In the left-hand column (Category), choose "Connection>SSH>Auth"
    b. Fill the "Private key file for authentication" field
@@ -45,23 +45,23 @@ The following instructions are based on the PuTTY software, which is useful to l
    b. Save the configuration
    c. Click on "Open" and type your passphrase when prompted
 5. if you get disconnected because of your network configuration (proxies etc.), you should follow
-   `this explanation <http://superuser.com/questions/389378/winscp-and-putty-drop-out-constantly-on-other-computer-they-dont>`_
+   `this explanation <https://superuser.com/questions/389378/winscp-and-putty-drop-out-constantly-on-other-computer-they-dont>`_
 
 Visual Interface
 ----------------
 
 The following instructions are based on the WinSCP software,
 which is useful to browse the server, download/upload/edit files in a Windows-like interface.
-WinSCP manual is available online at http://winscp.net/eng/docs/start
+WinSCP manual is available online at https://winscp.net/eng/docs/start
 
-1. Download WinSCP: http://winscp.net/eng/download.php
+1. Download WinSCP: https://winscp.net/eng/download.php
 2. Open WinSCP
 3. Edit your connection info in the "Session" tab
 4. In the "SSH > Protocol Options" section, make sure that SSH version is set to "2".
 5. Click on "Connect" and type your passphrase when prompted.
 6. if you get disconnected because of your network configuration (proxies etc.),
    you should follow
-   `this explanation <http://superuser.com/questions/389378/winscp-and-putty-drop-out-constantly-on-other-computer-they-dont>`_
+   `this explanation <https://superuser.com/questions/389378/winscp-and-putty-drop-out-constantly-on-other-computer-they-dont>`_
 
 Saving your Passphrase with PuTTY or WinSCP
 -------------------------------------------
@@ -77,6 +77,6 @@ Using PuTTY to Access the Server Database
 -----------------------------------------
 
 The following page explains how to set up an SSH tunnel using PuTTY:
-http://www.postgresonline.com/journal/archives/38-PuTTY-for-SSH-Tunneling-to-PostgreSQL-Server.html
+https://www.postgresonline.com/journal/archives/38-PuTTY-for-SSH-Tunneling-to-PostgreSQL-Server.html
 
 We recommend to use the PuTTY SSH tunnel and not the PGAdminIII tunnelling functionality.

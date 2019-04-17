@@ -51,7 +51,7 @@ Sometimes, more information can be obtained by using this command:
 You may also activate MapServer's debug mode and set the environment variable ``MS_DEBUGLEVEL``
 of the MapServer container ``MS_DEBUGLEVEL`` to ``5`` (most verbose level, default is 0).
 
-`More information <http://mapserver.org/optimization/debugging.html?highlight=debug#debug-levels>`_
+`More information <https://mapserver.org/optimization/debugging.html?highlight=debug#debug-levels>`_
 
 PostgreSQL
 ----------

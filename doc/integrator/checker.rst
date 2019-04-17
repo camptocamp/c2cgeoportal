@@ -89,7 +89,7 @@ The checker uses the following configuration structure in ``vars.yaml``:
 
         ...
         host: ${host}
-        checker_url: https://${host}/${instanceid}/wsgi/check_collector?
+        checker_url: https://${host}${entrypoint}check_collector?
         ...
 
 
@@ -195,7 +195,7 @@ To add a host:
         check_collector:
             hosts:
               - display: Child
-                url: http://{host}/child/wsgi
+                url: https://{host}/child
                 max_level: 1
 
     update_paths:

@@ -128,15 +128,15 @@ class BaseTemplate(Template):  # pragma: no cover
     @staticmethod
     def _epsg2bbox(srid):
         try:
-            r = requests.get("http://epsg.io/?format=json&q={}".format(srid))
+            r = requests.get("https://epsg.io/?format=json&q={}".format(srid))
             bbox = r.json()["results"][0]["bbox"]
             r = requests.get(
-                "http://epsg.io/trans?s_srs=4326&t_srs={srid}&data={bbox[1]},{bbox[0]}"
+                "https://epsg.io/trans?s_srs=4326&t_srs={srid}&data={bbox[1]},{bbox[0]}"
                         .format(srid=srid, bbox=bbox)
             )
             r1 = r.json()[0]
             r = requests.get(
-                "http://epsg.io/trans?s_srs=4326&t_srs={srid}&data={bbox[3]},{bbox[2]}"
+                "https://epsg.io/trans?s_srs=4326&t_srs={srid}&data={bbox[3]},{bbox[2]}"
                         .format(srid=srid, bbox=bbox)
             )
             r2 = r.json()[0]

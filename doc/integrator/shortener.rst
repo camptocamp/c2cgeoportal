@@ -17,7 +17,7 @@ The configuration in ``vars.yaml`` looks like this:
 
    shortener:
         # The base of created URL
-        base_url:  http://{host}/{apache_entry_point}s/
+        base_url:  https://{host}/{apache_entry_point}s/
         # Used to send a confirmation email
         email_from: info@camptocamp.com
         email_subject: You have created the following short URL

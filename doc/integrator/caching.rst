@@ -34,4 +34,4 @@ The application also has an internal cache, that will be invalidated on
 application start and after each modification in the ``Theme`` or the ``RestrictionArea``.
 
 The internal cache can also be invalidated by calling the URL
-``http://<server>/<instance>/wsgi/invalidate``.
+``https://<server>/<instance>/invalidate``.

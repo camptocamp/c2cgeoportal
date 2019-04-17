@@ -2,7 +2,7 @@
 
 Transactional WFS with TinyOWS
 
-Based on `TinyOWS <http://mapserver.org/tinyows/>`_ c2cgeoportal mapserver layers can be
+Based on `TinyOWS <https://mapserver.org/tinyows/>`_ c2cgeoportal mapserver layers can be
 edited via Transactional WFS (WFS-T), for example using QGIS as a client. c2cgeoportal acts as a
 proxy to TinyOWS to limit access to authorized users.
 
@@ -21,14 +21,14 @@ The configuration of TinyOWS is made in a XML file, which is located at
 .. code:: xml
 
     <tinyows
-        online_resource="http://${host}/wsgi/tinyows_proxy"
+        online_resource="https://${host}/tinyows_proxy"
         schema_dir="/usr/share/tinyows/schema/"
         log_level="1"
         check_schema="0">
 
       <contact
           name="GeoMapFish"
-          site="http://www.geomapfish.org/"
+          site="https://www.geomapfish.org/"
           email="geomapfish@googlegroups.com" />
 
       <metadata
@@ -46,7 +46,7 @@ The configuration of TinyOWS is made in a XML file, which is located at
           retrievable="1"
           writable="1"
           ns_prefix="tows"
-          ns_uri="http://www.tinyows.org/"
+          ns_uri="https://www.tinyows.org/"
           name="point"
           schema="edit"
           table="point"
@@ -57,10 +57,10 @@ The configuration of TinyOWS is made in a XML file, which is located at
 In the root element ``tinyows`` the following properties have to be set:
 
 * ``online_resource`` - This should be the URL to the TinyOWS proxy, usually
-  ``http://${host}/wsgi/tinyows_proxy``.
+  ``https://${host}/tinyows_proxy``.
 * ``schema_dir`` - The path to the TinyOWS schema directory. Adapt this path according to your installation.
 * ``log_level`` - The log level (default: 1). Please refer to the
-   `TinyOWS documentation <http://mapserver.org/tinyows/configfile.html#tinyows-element>`__
+   `TinyOWS documentation <https://mapserver.org/tinyows/configfile.html#tinyows-element>`__
    for more information.
 * ``check_schema`` - Defines if the input data is validated against the schema when new features are
    created. In a vhost environment, the schema check has to be disabled, so that the proxy can function
@@ -77,7 +77,7 @@ The layers that should be accessible with TinyOWS have to specified with ``layer
           retrievable="1"
           writable="1"
           ns_prefix="tows"
-          ns_uri="http://www.tinyows.org/"
+          ns_uri="https://www.tinyows.org/"
           name="point"
           schema="edit"
           table="point"
@@ -102,7 +102,7 @@ access to a layer to the users of a restriction-area.
     The proxy only checks for authorized users. To limit the access to a
     specific area, the ``geobbox`` property has to be set for a layer in the
     TinyOWS XML configuration. Please refer to the
-    `TinyOWS documentation <http://mapserver.org/tinyows/configfile.html#layer-element>`__
+    `TinyOWS documentation <https://mapserver.org/tinyows/configfile.html#layer-element>`__
     for more information.
 
 After the configuration is made, re-build your c2cgeoportal application as usual.
@@ -113,6 +113,6 @@ Editing a layer with WFS-T
 
 The configured layers can now be edited using your favorite GIS supporting
 WFS-T. For example in QGIS add a new WFS layer with the URL
-``http://${host}/wsgi/tinyows_proxy`` (e.g.
-``http://geomapfish.demo-camptocamp.com/demo/wsgi/tinyows_proxy``). For the
+``https://${host}/tinyows_proxy`` (e.g.
+``https://geomapfish.demo-camptocamp.com/demo/tinyows_proxy``). For the
 authentication use your c2cgeoportal account details.

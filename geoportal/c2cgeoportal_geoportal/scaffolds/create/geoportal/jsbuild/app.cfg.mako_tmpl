@@ -1,7 +1,7 @@
 #
 # This is the config file for jsbuild utility
 # Documentation on the syntax of this file is available at:
-# http://pypi.python.org/pypi/JSTools#configuration-format
+# https://pypi.python.org/pypi/JSTools#configuration-format
 #
 
 #

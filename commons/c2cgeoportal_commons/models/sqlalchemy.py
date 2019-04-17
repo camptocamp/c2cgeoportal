@@ -33,7 +33,7 @@ from sqlalchemy.types import TypeDecorator, VARCHAR
 import json
 
 
-# get from http://docs.sqlalchemy.org/en/latest/orm/extensions/
+# get from https://docs.sqlalchemy.org/en/latest/orm/extensions/
 # mutable.html#establishing-mutability-on-scalar-column-values
 class JSONEncodedDict(TypeDecorator):
     """

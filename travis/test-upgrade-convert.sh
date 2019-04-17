@@ -230,6 +230,7 @@ function v220 {
         ./docker-run make --always-make --makefile=CONST_convert2tmpl.mk to-tmpl
         cp CONST_create_template/mapserver/*.tmpl mapserver
     fi
+    cp CONST_create_template/mapserver/data/Readme.txt mapserver/data/
 
     ./docker-run --env=NODE_ENV make $MAKE_ARGS upgrade9
     if [ ! -e .UPGRADE_SUCCESS ]
@@ -283,10 +284,15 @@ function v230 {
     then
         ./docker-run --env=NODE_ENV make ${MAKE_ARGS} upgrade9
     fi
-    if [ -e .UPGRADE10 ] && [ "$2" != non ]
+    if [ -e .UPGRADE10 ]
     then
-        cp CONST_create_template/docker-compose.yaml .
-        cp CONST_create_template/.env.mako .
+        if [ "$1" != non ]
+        then
+            cp CONST_create_template/docker-compose.yaml .
+            cp CONST_create_template/.env.mako .
+        else
+            cp CONST_create_template/mapserver/data/Readme.txt mapserver/data/
+        fi
         ./docker-run --env=NODE_ENV make ${MAKE_ARGS} upgrade11
     fi
     if [ ! -e .UPGRADE_SUCCESS ]
@@ -295,6 +301,7 @@ function v230 {
         echo "Fail to upgrade"
         exit 1
     fi
+    cp CONST_create_template/mapserver/data/Readme.txt mapserver/data/
     ./docker-run make ${MAKE_ARGS} clean-all
     rm --recursive --force .UPGRADE* \
         commons/testgeomapfish_commons.egg-info geoportal/testgeomapfish_geoportal.egg-info

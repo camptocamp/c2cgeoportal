@@ -3,7 +3,7 @@
 Routing interface
 =================
 
-This section describes how to add the `OSRM routing <http://project-osrm.org/>`_ interface to a
+This section describes how to add the `OSRM routing <https://project-osrm.org/>`_ interface to a
 c2cgeoportal application.
 
 
@@ -90,10 +90,10 @@ label: string, label to display in the drop-down-menu for the profile
 
 profile: string, url-path of the profile, example::
 
-    http://routing.osm.ch/routed-bike/route/v1/car/<params>
-        ^                |     ^     |    ^
-        '                |     '     |    '
-    backendUrl           |  profile  | osrm query
+    https://routing.osm.ch/routed-bike/route/v1/car/<params>
+        ^                 |     ^     |    ^
+        '                 |     '     |    '
+    backendUrl            |  profile  | osrm query
 
 If more than one profile is supplied, the component will show a drop-down-menu for the user to select a profile.
 

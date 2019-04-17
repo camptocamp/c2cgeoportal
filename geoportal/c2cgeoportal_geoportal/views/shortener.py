@@ -82,7 +82,7 @@ class Shortener:
 
         url = self.request.params["url"]
 
-        # see: http://httpd.apache.org/docs/2.2/mod/core.html#limitrequestline
+        # see: https://httpd.apache.org/docs/2.2/mod/core.html#limitrequestline
         if len(url) > 8190:  # pragma: no cover
             raise HTTPBadRequest("The parameter url is too long ({} > {})".format(len(url), 8190))
 

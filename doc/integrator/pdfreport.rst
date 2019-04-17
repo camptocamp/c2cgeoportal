@@ -6,11 +6,11 @@ PDF Reporting
 c2cgeoportal offers a *pdfreport* webservice that can be used to generate
 advanced PDF reports about a given feature.
 
-It is based upon `MapfishPrint version 3 <http://mapfish.github.io/mapfish-print-doc/>`_
-and `Jasper Reports <http://community.jaspersoft.com/project/jasperreports-library>`_.
+It is based upon `MapfishPrint version 3 <https://mapfish.github.io/mapfish-print-doc/>`_
+and `Jasper Reports <https://community.jaspersoft.com/project/jasperreports-library>`_.
 
 The webservice is called using the following URL schema:
-``http://<host><entrypoint>/pdfreport/<layername>/<featureid>``.
+``https://<host><entrypoint>/pdfreport/<layername>/<featureid>``.
 
 
 Configuration
@@ -123,4 +123,4 @@ Configuration of the reports
 ----------------------------
 
 If you use the ``ids`` in an SQL query, you should use ``$X{IN, <column_name>, $P{ids}}``
-to avoid SQL injection, `see also the Jasperreports documentation <http://jasperreports.sourceforge.net/sample.reference/query/>`_.
+to avoid SQL injection, `see also the Jasperreports documentation <https://jasperreports.sourceforge.net/sample.reference/query/>`_.

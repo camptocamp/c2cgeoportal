@@ -3,7 +3,7 @@
 WMSTime Layer
 =============
 
-c2cgeoportal supports `WMS Time layers <http://mapserver.org/ogc/wms_time.html>`_.
+c2cgeoportal supports `WMS Time layers <https://mapserver.org/ogc/wms_time.html>`_.
 
 When the time is enabled for a layer group, a time widget (a slider or datepicker)
 is added to this group in the layer tree which enables changing the layer time.
@@ -49,7 +49,7 @@ slider tip and passed to the GetMap request.
 
 The interval (``interval``) has to be defined according to the
 ISO 8601 standard and its duration/time intervals definition (see
-`ISO 8601 Durations / Time intervals <http://en.wikipedia.org/wiki/ISO_8601#Durations>`_).
+`ISO 8601 Durations / Time intervals <https://en.wikipedia.org/wiki/ISO_8601#Durations>`_).
 
 Some examples for the interval definition:
 
@@ -57,7 +57,7 @@ Some examples for the interval definition:
 * An interval of six months: ``P6M``
 
 For more information, please refer to the `MapServer documentation
-<http://mapserver.org/ogc/wms_time.html>`_.
+<https://mapserver.org/ogc/wms_time.html>`_.
 
 Admin interface - widget
 ~~~~~~~~~~~~~~~~~~~~~~~~

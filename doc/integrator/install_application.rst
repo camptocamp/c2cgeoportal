@@ -144,7 +144,7 @@ To accomplish this, you must proceed as follows:
 
   * set ``DOCKER_WEB_HOST`` to ``new-site.customer.ch``
   * install the application on ``new-site.customer.ch`` and test the application
-    at ``http://new-site.customer.ch``
+    at ``https://new-site.customer.ch``
 
   * later, when going live, you must:
 

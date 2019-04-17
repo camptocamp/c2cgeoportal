@@ -1,7 +1,7 @@
 c2cgeoportal application
 ========================
 
-c2cgeoportal is the server part of `GeoMapFish <http://geomapfish.org/>`_,
+c2cgeoportal is the server part of `GeoMapFish <https://geomapfish.org/>`_,
 the client part is `ngeo <https://github.com/camptocamp/ngeo/>`_,
 the old client and API part is `CGXP <https://github.com/camptocamp/cgxp/>`_.
 

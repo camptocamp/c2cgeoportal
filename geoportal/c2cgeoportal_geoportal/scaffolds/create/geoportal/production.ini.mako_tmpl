@@ -27,7 +27,7 @@ pipeline =
 
 ###
 # logging configuration
-# http://docs.pylonsproject.org/projects/pyramid/en/1.5-branch/narr/logging.html
+# https://docs.pylonsproject.org/projects/pyramid/en/1.5-branch/narr/logging.html
 ###
 
 [loggers]
