@@ -21,12 +21,6 @@ proxy:
 
 * The proxy should add a specific header to the requests. For example ``X-Https
   on`` (``X-Https`` is the header name, and ``on`` is the header value).
-* To make c2cgeoportal generate HTTPS URLs when requests with this header are
-  received, you should set the `HTTPS` environment variable by adding the
-  following in the ``apache/wsgi.conf.mako`` file in the ``<location ...>``
-  section, in our example::
-
-    SetEnvIf    X-Https on HTTPS=1
 
 In Mako templates, if you need to know what scheme is used, you may test the
 value of ``request.scheme``. For example::

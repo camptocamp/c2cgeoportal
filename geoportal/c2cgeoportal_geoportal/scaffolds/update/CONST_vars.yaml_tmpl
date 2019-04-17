@@ -401,7 +401,7 @@ vars:
     # to the TinyOWS proxy url (e.g. when the service is also used without
     # the proxy), the proxy can replace the original `online_resource`
     # url with the proxy url.
-    # proxy_online_resource: http://{VISIBLE_WEB_HOST}{VISIBLE_ENTRY_POINT}tinyows_proxy
+    # proxy_online_resource: {VISIBLE_WEB_PROTOCOL}://{VISIBLE_WEB_HOST}{VISIBLE_ENTRY_POINT}tinyows_proxy
     # online_resource: http://localhost{VISIBLE_ENTRY_POINT}tinyows
 
     # When running a c2cgeoportal appl. in debug mode (with `make serve`)
