@@ -281,43 +281,6 @@ def default_user_validator(request, username, password):
     return username
 
 
-class OgcproxyRoutePredicate:
-    """ Serve as a custom route predicate function for ogcproxy.
-    We do not want the OGC proxy to be used to reach the app's
-    mapserv script. We just return False if the url includes
-    "mapserv". It is rather drastic, but works for us. """
-
-    def __init__(self, val, config):
-        del val  # unused
-        del config  # unused
-        self.private_networks = [
-            Network("127.0.0.0/8"),
-            Network("10.0.0.0/8"),
-            Network("172.16.0.0/12"),
-            Network("192.168.0.0/16"),
-        ]
-
-    def __call__(self, context, request):
-        url = request.params.get("url")
-        if url is None:
-            return False
-
-        parts = urlsplit(url)
-        try:
-            ip = IP(gethostbyname(parts.netloc))
-        except gaierror as e:
-            LOG.info("Unable to get host name for %s: %s", url, e)
-            return False
-        for net in self.private_networks:
-            if ip in net:
-                return False
-        return True
-
-    @staticmethod
-    def phash():  # pragma: no cover
-        return ""
-
-
 class MapserverproxyRoutePredicate:
     """ Serve as a custom route predicate function for mapserverproxy.
     If the hide_capabilities setting is set and is true then we want to

@@ -475,8 +475,6 @@ vars:
     - '{VISIBLE_WEB_PROTOCOL}://{VISIBLE_WEB_HOST}{VISIBLE_ENTRY_POINT}tiles/'
   docker_wmtscapabilities_path: '{WMTSCAPABILITIES_PATH}'
 
-  ogcproxy_enable: false
-
   lingua_extractor: {}
 
   content_security_policy_main_default_src_extra: ""
