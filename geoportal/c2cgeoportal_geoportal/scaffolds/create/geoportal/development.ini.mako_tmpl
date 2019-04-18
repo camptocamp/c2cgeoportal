@@ -1,5 +1,6 @@
 [app:app]
 use = egg:{{package}}_geoportal
+filter-with = proxy-prefix
 pyramid.reload_templates = true
 pyramid.debug_authorization = false
 pyramid.debug_notfound = true
@@ -7,6 +8,7 @@ pyramid.debug_routematch = false
 pyramid.debug_templates = true
 pyramid.includes =
     pyramid_debugtoolbar
+debugtoolbar.hosts = 0.0.0.0/0
 mako.directories = {{package}}_geoportal:templates
     c2cgeoportal_geoportal:templates
 authtkt_secret = ${authtkt["secret"]}
@@ -15,6 +17,10 @@ authtkt_cookie_name = ${authtkt["cookie_name"]}
 authtkt_timeout = ${authtkt["timeout"]}
 % endif
 app.cfg = %(here)s/config.yaml
+
+[filter:proxy-prefix]
+use = egg:PasteDeploy#prefix
+prefix = %(VISIBLE_ENTRY_POINT)s
 
 [pipeline:main]
 pipeline =

@@ -31,12 +31,17 @@ Be sure thate the service ``webpack_dev_server`` is present and uncommented.
 
 Restart your application as usual.
 
-Open the application at the following URL: ``https://<host>/<entry_point>/dev/<interface>.html``.
+Open the application at the following URL: ``https://172.17.0.1:8484/dev/<interface>.html``.
 
-Pyramid
--------
+Pyramid debugtoolbar
+--------------------
 
-If the ``pyramid_debugtoolbar`` is enabled, the error is directly shown in the query that fails.
+If it's not already done copy the file ``docker-compose.override.sample.yaml`` to
+``docker-compose.override.yaml``.
+
+Then the error is directly shown in the query that fails.
+
+You can also open it on `https://172.17.0.1:8484/_debug_toolbar/ <https://172.17.0.1:8484/_debug_toolbar/>`_
 
 Mapserver
 ---------

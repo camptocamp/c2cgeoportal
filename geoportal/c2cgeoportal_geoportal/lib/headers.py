@@ -45,6 +45,9 @@ class HeadersTween:
         for pattern, headers in self.settings:
             if pattern.match(request.path_info):
                 for header, value in headers.items():
-                    response.headers[header] = value
+                    if value is None:
+                        del response.headers[header]
+                    else:
+                        response.headers[header] = value
 
         return response

@@ -50,11 +50,11 @@ pylint==2.3.1  # lint
 Pympler==0.7  # geoportal, memory view
 pyproj==1.9.6  # admin, other?, rq.filter: < 2.0.0
 pyramid==1.9.4  # rq.filter: <=1.9.99
-pyramid-debugtoolbar==4.5  # geoportal
+pyramid_debugtoolbar==4.5  # geoportal
 pyramid-jinja2==2.8  # admin
 pyramid_mako==1.0.2  # geoportal
 pyramid_multiauth==0.9.0  # geoportal
-pyramid-tm==2.2.1  # geoportal
+pyramid_tm==2.2.1  # geoportal
 pytest-cov==2.6.1  # tests
 pytest-selenium==1.16.0  # admin tests
 python-dateutil==2.6.1  # geoportal, rq.filter: <2.7.0
