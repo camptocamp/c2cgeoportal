@@ -13,6 +13,7 @@ ENV NODE_PATH=/usr/lib/node_modules \
     PGDATABASE=geomapfish \
     PGSCHEMA=main \
     PGSCHEMA_STATIC=main_static \
+    VISIBLE_ENTRY_POINT=/ \
     TINYOWS_URL=http://tinyows/ \
     MAPSERVER_URL=http://mapserver/ \
     PRINT_URL=http://print:8080/print/ \

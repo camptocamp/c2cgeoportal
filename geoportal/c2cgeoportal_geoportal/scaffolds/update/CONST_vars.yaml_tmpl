@@ -670,6 +670,9 @@ vars:
           "default-src {content_security_policy_c2c_default_src};
           script-src {content_security_policy_c2c_script_src};
           style-src {content_security_policy_c2c_style_src};"
+    - pattern: '^/_debug_toolbar/.*'
+      headers:
+        Content-Security-Policy:
 
   # Control the HTTP headers
   headers:

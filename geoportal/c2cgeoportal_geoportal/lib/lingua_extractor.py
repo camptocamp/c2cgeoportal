@@ -352,7 +352,7 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
         messages = []
 
         try:
-            self.env = bootstrap(filename)
+            self.env = bootstrap(filename, options=os.environ)
 
             try:
                 from c2cgeoportal_commons.models import DBSession
