@@ -44,9 +44,6 @@
 /dist/
 /docker-compose.yaml
 /coverage.xml
-/gatling/.classpath
-/gatling/.project
-/gatling/.cache-main
 /ngeo/
 /.tx/config
 /.coverage
