@@ -243,7 +243,7 @@ Using the unaccent extension
 
 By the default the full-text search is accent-sensitive.
 To make it accent-insensitive Postgres's
-`unaccent extension <http://www.postgresql.org/docs/9.0/static/unaccent.html>`_
+`unaccent extension <https://www.postgresql.org/docs/9.0/static/unaccent.html>`_
 can be used.
 
 First connect to the database:
@@ -259,7 +259,7 @@ For that we need the Postgres unaccent extension and dictionary:
     CREATE EXTENSION unaccent;
 
 Insert the unaccent dictionary into a text search configuration
-(`Documentation <http://www.postgresql.org/docs/9.1/static/sql-altertsconfig.html>`_):
+(`Documentation <https://www.postgresql.org/docs/9.1/static/sql-altertsconfig.html>`_):
 
 .. code:: sql
 

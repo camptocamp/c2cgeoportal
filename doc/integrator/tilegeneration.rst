@@ -30,7 +30,7 @@ And the tiles should be deleted after the expiry time.
 
 The chosen solution is a combination of two tools:
 
-* `MapCache <http://mapserver.org/trunk/mapcache/>`_ for the last zoom level.
+* `MapCache <https://mapserver.org/trunk/mapcache/>`_ for the last zoom level.
 
 * `TileCloud-Chain <https://github.com/camptocamp/tilecloud-chain>`_ for the tile generation.
 
@@ -39,7 +39,7 @@ MapCache
 
 MapCache is a tool of the MapServer Suite.
 
-It is recommended to use `Memcached <http://memcached.org/>`_ as cache,
+It is recommended to use `Memcached <https://memcached.org/>`_ as cache,
 since it is the only system that offers automatic deletion of the expired tiles.
 
 To use it, you should have MapCache and Memcached installed on your computer.
@@ -64,7 +64,7 @@ WMTS layout.
 It supports the following AWS services for generating tiles:
 EC2, SQS, SNS.
 
-See the `readme <http://pypi.python.org/pypi/tilecloud-chain>`_.
+See the `readme <https://pypi.python.org/pypi/tilecloud-chain>`_.
 
 Initialization
 ~~~~~~~~~~~~~~

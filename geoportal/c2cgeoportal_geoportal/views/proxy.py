@@ -196,7 +196,7 @@ class Proxy(object):
         # Hop-by-hop Headers are not supported by WSGI
         # See:
         # https://www.python.org/dev/peps/pep-3333/#other-http-features
-        # chapter 13.5.1 at http://www.faqs.org/rfcs/rfc2616.html
+        # chapter 13.5.1 at https://www.faqs.org/rfcs/rfc2616.html
         for header in [
                 "Connection",
                 "Keep-Alive",

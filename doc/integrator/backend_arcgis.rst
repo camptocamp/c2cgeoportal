@@ -12,8 +12,8 @@ In the ``OgcServer`` file, define:
 
 .. code:: yaml
 
-    mapserv_url: http://your.arcgis.server/arcgis/services/SOME/FOLDER/MapServer/WMSServer
-    mapserv_wfs_url: http://your.arcgis.server/arcgis/services/SOME/FOLDER/MapServer/WFSServer
+    mapserv_url: https://your.arcgis.server/arcgis/services/SOME/FOLDER/MapServer/WMSServer
+    mapserv_wfs_url: https://your.arcgis.server/arcgis/services/SOME/FOLDER/MapServer/WFSServer
 
 These are the urls which respond respectively to the *WMS GetCapabilities* and
 *WFS GetCapabilities*.

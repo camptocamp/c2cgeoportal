@@ -5,7 +5,7 @@ Provided by Bjorn Sandvik, thematicmapping.org
 Use this dataset with care, as several of the borders are disputed.
 
 The original shapefile (world_borders.zip, 3.2 MB) was downloaded from the Mapping Hacks website:
-http://www.mappinghacks.com/data/
+https://www.mappinghacks.com/data/
 
 The dataset was derived by Schuyler Erle from public domain sources.
 Sean Gilles did some clean up and made some enhancements.
@@ -58,12 +58,12 @@ CHANGELOG VERSION 0.1 - 13 March 2008
 
 - Added ISO-3166-1 codes (alpha-2, alpha-3, numeric-3). Source:
   https://www.cia.gov/library/publications/the-world-factbook/appendix/appendix-d.html
-  http://unstats.un.org/unsd/methods/m49/m49alpha.htm
-  http://www.fysh.org/~katie/development/geography.txt
+  https://unstats.un.org/unsd/methods/m49/m49alpha.htm
+  https://www.fysh.org/~katie/development/geography.txt
 - AREA column has been replaced with data from UNdata:
   Land area, 1000 hectares, 2002, FAO Statistics
 - POPULATION column (POP2005) has been replaced with data from UNdata:
   Population, 2005, Medium variant, World Population Prospects: The 2006 Revision
 - Added region and sub-region codes from UN Statistics Division. Source:
-  http://unstats.un.org/unsd/methods/m49/m49regin.htm
+  https://unstats.un.org/unsd/methods/m49/m49regin.htm
 - Added LAT, LONG values for each country

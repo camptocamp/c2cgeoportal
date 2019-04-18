@@ -27,7 +27,7 @@ The type can be:
 * ``json``
 * ``date``
 * ``time``
-* ``datetime`` `see the python-dateutil documentation <http://labix.org/python-dateutil#head-b95ce2094d189a89f80f5ae52a05b4ab7b41af47>`_
+* ``datetime`` `see the python-dateutil documentation <https://labix.org/python-dateutil#head-b95ce2094d189a89f80f5ae52a05b4ab7b41af47>`_
 * ``url`` see below
 
 Check ``CONST_vars.yaml`` for examples of usage.
@@ -51,10 +51,10 @@ In the admin interface, we can use for all URL definitions the following special
   .. code:: yaml
 
      servers:
-        my_server: http://example.com/test
+        my_server: https://example.com/test
 
   ``config://my_server/icon.png`` will be transformed into
-  the URL ``http://example.com/test/icon.png``.
+  the URL ``https://example.com/test/icon.png``.
 
 .. _integrator_functionality:
 

@@ -29,7 +29,7 @@ value of ``request.scheme``. For example::
     % if request.scheme == 'https':
         url: 'https://my.wmts.server/'
     % else:
-        url: 'http://my.wmts.server/'
+        url: 'https://my.wmts.server/'
     % endif
     /* ... */
     };
@@ -63,15 +63,15 @@ should use the ``resourceproxy`` service and add the list of hosts you want to a
     resourceproxy:
         # list of urls from which it is safe to load content
         targets:
-          #exampletargetname: http://www.camptocamp.com/?param1=%s&param2=%s
-          rfinfo: http://www.rfinfo.vd.ch/rfinfo.php?no_commune=%s&no_immeuble=%s
+          #exampletargetname: https://www.camptocamp.com/?param1=%s&param2=%s
+          rfinfo: https://www.rfinfo.vd.ch/rfinfo.php?no_commune=%s&no_immeuble=%s
 
 Then you can access resources by building urls using the following schema:
-``http://<host>/wsgi/resourceproxy?target=<targetname>&values=(<valueparam1>,...)``.
+``https://<host>/resourceproxy?target=<targetname>&values=(<valueparam1>,...)``.
 
 For example:
 
-``http://geoportail.camptocamp.com/main/wsgi/resourceproxy?target=rfinfo&values=(175,2633)``
+``https://geoportail.camptocamp.com/main/resourceproxy?target=rfinfo&values=(175,2633)``
 
 Local certificate checks
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -88,4 +88,4 @@ connections, you can achieve this by adding the following configuration element 
             verify: False
 
 See other options in parameters of
-`requests.Request <http://docs.python-requests.org/en/latest/api.html#requests.Request>`_
+`requests.Request <https://docs.python-requests.org/en/latest/api.html#requests.Request>`_

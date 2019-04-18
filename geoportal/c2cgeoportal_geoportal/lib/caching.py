@@ -114,7 +114,7 @@ CORS_METHODS = "HEAD, GET, POST, PUT, DELETE"
 def set_cors_headers(service_headers_settings, request, service_name,
                      credentials, response):
     """
-    Handle CORS requests, as specified in http://www.w3.org/TR/cors/
+    Handle CORS requests, as specified in https://www.w3.org/TR/cors/
     """
     if "Origin" not in request.headers:
         return  # Not a CORS request if this header is missing

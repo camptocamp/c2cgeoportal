@@ -341,7 +341,7 @@ templating system, such as for loops, conditions, sub-templates, etc.
 
 Please see the Mako documentation for details:
 
-http://docs.makotemplates.org/en/latest/
+https://docs.makotemplates.org/en/latest/
 
 The result is also a file without the ``.mako``.
 

@@ -322,7 +322,7 @@ class _CapabilitiesFilter(XMLFilterBase):
 def normalize_tag(tag):
     """
     Drops the namespace from a tag and converts to lower case.
-    e.g. '{http://....}TypeName' -> 'TypeName'
+    e.g. '{https://....}TypeName' -> 'TypeName'
     """
     normalized = tag
     if len(tag) >= 3:

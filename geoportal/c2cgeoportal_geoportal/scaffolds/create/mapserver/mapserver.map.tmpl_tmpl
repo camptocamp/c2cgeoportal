@@ -26,7 +26,7 @@ MAP
     # RESOLUTION and DEFRESOLUTION default to 96. If you
     # change RESOLUTION to some other value, also change
     # DEFRESOLUTION. See
-    # http://mapserver.org/development/rfc/ms-rfc-55.html
+    # https://mapserver.org/development/rfc/ms-rfc-55.html
     RESOLUTION 96 ## Also set in Openlayers especially for legends
     DEFRESOLUTION 96
 

@@ -139,7 +139,7 @@ To get the project schema, use:
 ``schema = context.get_context().config.get_main_option('schema')``
 
 The scripts should not fail if they are run more than once. See:
-http://alembic.readthedocs.org/en/latest/cookbook.html#conditional-migration-elements
+https://alembic.readthedocs.org/en/latest/cookbook.html#conditional-migration-elements
 
 Then, customize the migration to suit your needs, test it:
 
@@ -148,9 +148,9 @@ Then, customize the migration to suit your needs, test it:
     ./docker-compose-run alembic upgrade head
 
 More information at:
- * http://alembic.readthedocs.org/en/latest/index.html
- * http://alembic.readthedocs.org/en/latest/tutorial.html#create-a-migration-script
- * http://alembic.readthedocs.org/en/latest/ops.html
+ * https://alembic.readthedocs.org/en/latest/index.html
+ * https://alembic.readthedocs.org/en/latest/tutorial.html#create-a-migration-script
+ * https://alembic.readthedocs.org/en/latest/ops.html
 
 
 Code
@@ -159,7 +159,7 @@ Code
 Coding style
 ~~~~~~~~~~~~
 
-Please read http://www.python.org/dev/peps/pep-0008/.
+Please read https://www.python.org/dev/peps/pep-0008/.
 
 And run validation:
 
@@ -172,11 +172,11 @@ Dependencies
 
 Major dependencies docs:
 
-* `SQLAlchemy <http://docs.sqlalchemy.org/>`_
-* `GeoAlchemy2 <http://geoalchemy-2.readthedocs.org/>`_
-* `alembic <http://alembic.readthedocs.org/>`_
-* `Pyramid <http://docs.pylonsproject.org/en/latest/docs/pyramid.html>`_
-* `Papyrus <http://pypi.python.org/pypi/papyrus>`_
-* `MapFish Print <http://mapfish.github.io/mapfish-print-doc/>`_
-* `reStructuredText <http://docutils.sourceforge.net/docs/ref/rst/introduction.html>`_
-* `Sphinx <http://sphinx.pocoo.org/>`_
+* `SQLAlchemy <https://docs.sqlalchemy.org/>`_
+* `GeoAlchemy2 <https://geoalchemy-2.readthedocs.org/>`_
+* `alembic <https://alembic.readthedocs.org/>`_
+* `Pyramid <https://docs.pylonsproject.org/en/latest/docs/pyramid.html>`_
+* `Papyrus <https://pypi.python.org/pypi/papyrus>`_
+* `MapFish Print <https://mapfish.github.io/mapfish-print-doc/>`_
+* `reStructuredText <https://docutils.sourceforge.net/docs/ref/rst/introduction.html>`_
+* `Sphinx <https://sphinx.pocoo.org/>`_

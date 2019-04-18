@@ -59,7 +59,7 @@ setup(
     ],
     author='Camptocamp',
     author_email='info@camptocamp.com',
-    url='http://www.camptocamp.com/solutions/geospatial/',
+    url='https://www.camptocamp.com/solutions/geospatial/',
     packages=find_packages(exclude=['tests.*']),
     package_data={'c2cgeoportal_admin': ['py.typed']},
     include_package_data=True,

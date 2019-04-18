@@ -4,7 +4,7 @@ Digital Elevation Tools
 =======================
 
 c2cgeoportal applications include web services for getting
-`DEM <http://en.wikipedia.org/wiki/Digital_elevation_model>`_ information.
+`DEM <https://en.wikipedia.org/wiki/Digital_elevation_model>`_ information.
 The ``raster`` web service allows getting information for points.
 The ``profile`` web service allows getting information for lines.
 
