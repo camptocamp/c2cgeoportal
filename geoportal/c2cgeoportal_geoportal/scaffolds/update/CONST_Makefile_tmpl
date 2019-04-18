@@ -8,7 +8,7 @@ export INSTANCE
 # Enable Docker target
 DOCKER ?= TRUE
 DOCKER_BASE ?= camptocamp/{{package}}
-DOCKER_PORT ?= 8010
+DOCKER_PORT ?= 8480
 ifeq ($(INSTANCE), main)
 DOCKER_ENTRY_POINT ?= /
 DOCKER_TAG ?= latest
@@ -41,9 +41,6 @@ export DOCKER_PGDATABASE
 export DOCKER_PGSCHEMA
 export DOCKER_PGSCHEMA_STATIC
 export MUTUALIZED_PRINT_APP
-
-DOCKER_PORT ?= 8480
-export DOCKER_PORT
 
 ifeq ($(DEBUG), TRUE)
 PRERULE_CMD ?= @echo "Build \033[1;34m$@\033[0m due modification on \033[1;34m$?\033[0m" 1>&2; ls -t --full-time --reverse $? $@ 1>&2 || true

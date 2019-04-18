@@ -200,15 +200,10 @@ docker-build-testmapserver: $(shell docker-required --path docker/test-mapserver
 .PHONY: docker-build-build
 docker-build-build: $(shell docker-required --path . --replace-pattern='^test(.*).mako$/test/\1') \
 		webpack.config.js \
-		geoportal/c2cgeoportal_geoportal/scaffolds/create/docker-run \
 		npm-packages admin/npm-packages \
 		geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/ \
 		geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/CONST_create_template/ \
-		$(MO_FILES) \
-		$(L10N_PO_FILES) \
-		$(API_FILES) \
-		$(APPS_FILES) \
-		$(APPS_FILES_ALT)
+		$(MO_FILES)
 	docker build --build-arg=VERSION=$(VERSION) --tag=$(DOCKER_BASE)-build:$(MAJOR_VERSION) .
 
 docker/qgisserver/commons: commons
@@ -509,7 +504,13 @@ geoportal/c2cgeoportal_geoportal/scaffolds%update/CONST_create_template/: \
 		$(addprefix geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/locale/,$(addsuffix /LC_MESSAGES/+package+_geoportal-client.po, $(ALL_LANGUAGES))) \
 		geoportal/c2cgeoportal_geoportal/scaffolds/create/docker-run \
 		$(API_FILES) \
-		$(APPS_FILES)
+		$(APPS_FILES) \
+		$(APPS_FILES_ALT) \
+		$(L10N_PO_FILES) \
+		geoportal/c2cgeoportal_geoportal/scaffolds/create/docker-run \
+		geoportal/c2cgeoportal_geoportal/scaffolds/create/front_dev/localhost.pem \
+		geoportal/c2cgeoportal_geoportal/scaffolds/create/front_dev/haproxy.cfg.tmpl
+
 	$(PRERULE_CMD)
 	rm -rf $@ || true
 	cp -r $< $@
@@ -622,3 +623,17 @@ $(BUILD_DIR)/commons.timestamp: $(BUILD_DIR)/venv.timestamp
 	$(PRERULE_CMD)
 	$(BUILD_DIR)/venv/bin/pip install --editable=commons
 	touch $@
+
+# HA proxy on localhost on https
+
+geoportal/c2cgeoportal_geoportal/scaffolds/create/front_dev/localhost.pem: $(BUILD_DIR)/ngeo.timestamp
+	$(PRERULE_CMD)
+	mkdir -p $(dir $@)
+	cat geoportal/node_modules/ngeo/private.crt geoportal/node_modules/ngeo/private.key | tee $@
+
+geoportal/c2cgeoportal_geoportal/scaffolds/create/front_dev/haproxy.cfg.tmpl: \
+		geoportal/c2cgeoportal_geoportal/scaffolds/create/front/haproxy.cfg.tmpl
+	$(PRERULE_CMD)
+	mkdir -p $(dir $@)
+	sed 's#bind :80#bind *:443 ssl crt /etc/haproxy_dev/localhost.pem#g' $< > $@
+	echo '    http-request set-header X-Forwarded-Proto https' >> $@

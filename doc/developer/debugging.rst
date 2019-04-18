@@ -17,6 +17,7 @@ For debugging purposes, it is better to have all the JavaScript and Style Sheets
 files. To achieve this, you can simply use the sources maps, function activable in the browsers debugging
 tool.
 
+
 Webpack
 -------
 
@@ -33,6 +34,7 @@ Restart your application as usual.
 
 Open the application at the following URL: ``https://172.17.0.1:8484/dev/<interface>.html``.
 
+
 Pyramid debugtoolbar
 --------------------
 
@@ -42,6 +44,20 @@ If it's not already done copy the file ``docker-compose.override.sample.yaml`` t
 Then the error is directly shown in the query that fails.
 
 You can also open it on `https://172.17.0.1:8484/_debug_toolbar/ <https://172.17.0.1:8484/_debug_toolbar/>`_
+
+
+Authentication
+--------------
+
+For security issue the cookie is accessible only in http (meens not JavaScript),
+and is secure (means sent on https request, not http).
+For that and for some other issues we should have our application on https also for development.
+
+To do that you should, if it's not already done, just copy the file ``docker-compose.override.sample.yaml``
+to ``docker-compose.override.yaml``.
+
+Then access the application on `https://172.17.0.1:8484/ <https://172.17.0.1:8484/>`_.
+
 
 Mapserver
 ---------
@@ -57,6 +73,7 @@ You may also activate MapServer's debug mode and set the environment variable ``
 of the MapServer container ``MS_DEBUGLEVEL`` to ``5`` (most verbose level, default is 0).
 
 `More information <http://mapserver.org/optimization/debugging.html?highlight=debug#debug-levels>`_
+
 
 PostgreSQL
 ----------
@@ -74,6 +91,7 @@ account:
 
 Logs are available in the ``/var/log/postgresql/postgresql-9.*-main.log`` file.
 
+
 Makefile
 --------
 
@@ -90,6 +108,7 @@ It will add a message at the start of each rule with the list of files that requ
    Build /build/c2ctemplate-cache.json due modification on vars.yaml
    -rw-r--r-- 1 sbrunner geomapfish 1321 2019-01-09 16:59:20.845623078 +0000 /build/c2ctemplate-cache.json
    -rw-rw-r-- 1 sbrunner geomapfish 1299 2019-01-10 08:31:35.707376156 +0000 vars.yaml
+
 
 Docker-compose
 --------------
@@ -163,6 +182,7 @@ If it's not already done copy the file ``docker-compose.override.sample.yaml`` t
 ``docker-compose.override.yaml``.
 Be sure that the volumes for c2cgeoportal are uncommented.
 
+
 Access to a hidden service
 --------------------------
 
@@ -183,6 +203,7 @@ You can also expose a service out of the Docker composition. For that, add a por
          - 8086:8080
 
 Be careful one port can be open only one time on a server.
+
 
 Use a specific version of ngeo
 ------------------------------
