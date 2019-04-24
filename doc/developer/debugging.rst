@@ -8,27 +8,27 @@ The goal of this document is to give some troubleshooting tips.
 Browser
 -------
 
-Using a browser-integrated debugging tool usually available with the ``F12`` key.
+You can use the browser-integrated debugging tool, usually available with the ``F12`` key.
 
 Sources map
 -----------
 
 For debugging purposes, it is better to have all the JavaScript and Style Sheets in separated, non-minified
-files. To achieve this, you can simply use the sources maps, function activable in the browsers debugging
+files. To achieve this, you can use the sources maps, a function activable in the browsers debugging
 tool.
 
 
 Webpack
 -------
 
-To have faster builds you need to use the Webpack dev server; you can achieve this as follows.
+To have faster builds, you need to use the Webpack dev server; you can achieve this as follows.
 
 In the file ``geoportal/demo_geoportal/static-ngeo/js/apps/<interface>.html.ejs``,
 remove the ``ng-strict-di`` in the ``html`` tag.
 
-If it's not already done copy the file ``docker-compose.override.sample.yaml`` to
+If it is not already done, copy the file ``docker-compose.override.sample.yaml`` to
 ``docker-compose.override.yaml``.
-Be sure thate the service ``webpack_dev_server`` is present and uncommented.
+Be sure that the service ``webpack_dev_server`` is present and uncommented.
 
 Restart your application as usual.
 
@@ -38,22 +38,22 @@ Open the application at the following URL: ``https://172.17.0.1:8484/dev/<interf
 Pyramid debugtoolbar
 --------------------
 
-If it's not already done copy the file ``docker-compose.override.sample.yaml`` to
+If it is not already done, copy the file ``docker-compose.override.sample.yaml`` to
 ``docker-compose.override.yaml``.
 
 Then the error is directly shown in the query that fails.
 
-You can also open it on `https://172.17.0.1:8484/_debug_toolbar/ <https://172.17.0.1:8484/_debug_toolbar/>`_
+You can also open the debugtoolbar at `https://172.17.0.1:8484/_debug_toolbar/ <https://172.17.0.1:8484/_debug_toolbar/>`_
 
 
 Authentication
 --------------
 
-For security issue the cookie is accessible only in http (meens not JavaScript),
-and is secure (means sent on https request, not http).
-For that and for some other issues we should have our application on https also for development.
+For better security, the session cookie is accessible only via http protocol (meaning, not in JavaScript),
+and is secure (meaning, the cookie is transmitted only in https requests, not in http requests).
+For this reason, you should have your application running on https also in your development environment.
 
-To do that you should, if it's not already done, just copy the file ``docker-compose.override.sample.yaml``
+To achieve that, if it is not already done, copy the file ``docker-compose.override.sample.yaml``
 to ``docker-compose.override.yaml``.
 
 Then access the application on `https://172.17.0.1:8484/ <https://172.17.0.1:8484/>`_.
@@ -101,7 +101,7 @@ To obtain additional debug messages, you can rebuild your project as follows:
 
    ./docker-run --env=DEBUG=TRUE make ...
 
-It will add a message at the start of each rule with the list of files that required an update, e.-g.:
+This will add a message at the start of each rule with the list of files that required an update, e.-g.:
 
 .. code::
 
@@ -116,7 +116,7 @@ Docker-compose
 Logs
 ....
 
-With the following command you can access the logs:
+With the following command, you can access the logs:
 
 .. prompt:: bash
 
@@ -125,7 +125,7 @@ With the following command you can access the logs:
 Go inside a container
 .....................
 
-With the following command you can get a terminal in a container:
+With the following command, you can get a terminal in a container:
 
 .. prompt:: bash
 
@@ -134,7 +134,7 @@ With the following command you can get a terminal in a container:
 Multiple dev on one server
 ..........................
 
-When you want to run multiple instances on the same server you should:
+When you want to run multiple instances on the same server, you should:
 
 - Use a different docker tag for each instance
 - Use a different project name for each instance
@@ -142,7 +142,7 @@ When you want to run multiple instances on the same server you should:
 Use a different docker tag
 ..........................
 
-Just define an environment variable in the build:
+To use a different docker tag, define an environment variable in the build:
 
 .. prompt:: bash
 
@@ -155,19 +155,19 @@ Developing in Python
 Create a development docker-compose.override.yaml
 .................................................
 
-If it's not already done copy the file ``docker-compose.override.sample.yaml`` to
+If it is not already done, copy the file ``docker-compose.override.sample.yaml`` to
 ``docker-compose.override.yaml``.
 
 Be sure that the volume for the project is not commented.
 
-You can also do a graceful restart of the running gunicorn:
+You can also do a graceful restart of the running webserver:
 
 .. prompt:: bash
 
    docker-compose exec geoportal bash
    kill -s HUP `ps aux|grep gunicorn|head --lines=1|awk '{print $2}'`  # graceful
 
-And finally if you restart the container you will see your modifications:
+And finally, if you restart the container, you will see your modifications:
 
 .. prompt:: bash
 
@@ -178,7 +178,7 @@ Working on c2cgeoportal itself
 
 Clone and build c2cgeoportal, see :ref:`developer_server_side`.
 
-If it's not already done copy the file ``docker-compose.override.sample.yaml`` to
+If it is not already done, copy the file ``docker-compose.override.sample.yaml`` to
 ``docker-compose.override.yaml``.
 Be sure that the volumes for c2cgeoportal are uncommented.
 
@@ -186,7 +186,7 @@ Be sure that the volumes for c2cgeoportal are uncommented.
 Access to a hidden service
 --------------------------
 
-Within the Docker composition you can access a port of a container, you can achieve this via curl, e.-g.:
+Within the Docker composition, you can access a port of a container; you can achieve this via curl, e.-g.:
 
 .. prompt: bash
 
@@ -202,7 +202,7 @@ You can also expose a service out of the Docker composition. For that, add a por
        port:
          - 8086:8080
 
-Be careful one port can be open only one time on a server.
+Be careful, one port can be open only one time on a server.
 
 
 Use a specific version of ngeo
