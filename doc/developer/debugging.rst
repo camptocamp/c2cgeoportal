@@ -160,7 +160,7 @@ If it is not already done, copy the file ``docker-compose.override.sample.yaml``
 
 Be sure that the volume for the project is not commented.
 
-You can also do a graceful restart of the running webserver:
+You can also do a graceful restart of the running webserver (gunicorn in this case):
 
 .. prompt:: bash
 
