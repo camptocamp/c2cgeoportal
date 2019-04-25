@@ -214,7 +214,7 @@ class TestEntryView(TestCase):
     #
 
     def test_login(self):
-        from pyramid.httpexceptions import HTTPForbidden
+        from pyramid.httpexceptions import HTTPUnauthorized
         from c2cgeoportal_geoportal.views.entry import Entry
 
         request = self._create_request_obj(params={
@@ -247,7 +247,7 @@ class TestEntryView(TestCase):
             "password": "bad password",
         })
         entry = Entry(request)
-        self.assertRaises(HTTPForbidden, entry.login)
+        self.assertRaises(HTTPUnauthorized, entry.login)
 
     def test_logout_no_auth(self):
         from pyramid.httpexceptions import HTTPBadRequest
