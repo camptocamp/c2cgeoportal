@@ -134,12 +134,10 @@ def create_default_ogcserver():
     transaction.commit()
     ogcserver = OGCServer(name="__test_ogc_server")
     ogcserver.url = mapserv_url
-    ogcserver_external = OGCServer(name="__test_external_ogc_server")
-    ogcserver_external.url = mapserv_url + "?external=true&"
-    DBSession.add_all([ogcserver, ogcserver_external])
+    DBSession.add(ogcserver)
     transaction.commit()
 
-    return ogcserver, ogcserver_external
+    return ogcserver
 
 
 def _get_user(username):

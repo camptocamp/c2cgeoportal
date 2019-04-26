@@ -1002,6 +1002,10 @@ class Entry:
             if ogc_server.auth != main.OGCSERVER_AUTH_NOAUTH:
                 url = self.request.route_url("mapserverproxy", _query={"ogcserver": ogc_server.name})
                 url_wfs = url
+                url_internal_wfs = get_url2(
+                    "The OGC server (WFS) '{}'".format(ogc_server.name),
+                    ogc_server.url_wfs or ogc_server.url, self.request, errors=all_errors
+                )
             else:
                 url = get_url2(
                     "The OGC server '{}'".format(ogc_server.name),
@@ -1011,7 +1015,8 @@ class Entry:
                     "The OGC server (WFS) '{}'".format(ogc_server.name),
                     ogc_server.url_wfs, self.request, errors=all_errors
                 ) if ogc_server.url_wfs is not None else url
-            feature_type, errors = self._wms_get_features_type(ogc_server.id, url_wfs)
+                url_internal_wfs = url_wfs
+            feature_type, errors = self._wms_get_features_type(ogc_server.id, url_internal_wfs)
             all_errors |= errors
             attributes = None
 

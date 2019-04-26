@@ -90,7 +90,7 @@ class TestEntryView(TestCase):
         a_geo_table.drop(checkfirst=True)
         a_geo_table.create()
 
-        ogcserver, _ = create_default_ogcserver()
+        ogcserver = create_default_ogcserver()
 
         private_layer_edit = LayerWMS(name="__test_private_layer_edit", public=False)
         private_layer_edit.layer = "__test_private_layer"

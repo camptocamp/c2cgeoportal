@@ -71,7 +71,7 @@ class TestThemesPrivateView(TestCase):
             settings_role=role, roles=[role, role2],
         )
         user2.email = "__test_user@example.com"
-        ogc_server_internal, _ = create_default_ogcserver()
+        ogc_server_internal = create_default_ogcserver()
 
         layer_wms = LayerWMS(name=u"__test_layer_wms", public=True)
         layer_wms.layer = "__test_public_layer"
