@@ -41,7 +41,7 @@ from collections import Counter
 
 from pyramid.view import view_config
 from pyramid.i18n import TranslationStringFactory
-from pyramid.httpexceptions import HTTPFound, HTTPBadRequest, HTTPForbidden, HTTPBadGateway
+from pyramid.httpexceptions import HTTPFound, HTTPBadRequest, HTTPForbidden, HTTPUnauthorized, HTTPBadGateway
 from pyramid.security import remember, forget
 from pyramid.response import Response
 from sqlalchemy import func
@@ -1484,7 +1484,7 @@ class Entry:
         self._referer_log()
 
         if self.request.authenticated_userid:
-            return HTTPForbidden()  # pragma: no cover
+            return HTTPUnauthorized()  # pragma: no cover
 
         set_common_headers(self.request, "login", NO_CACHE)
 
@@ -1535,7 +1535,7 @@ class Entry:
                     )), headers=headers),
                 )
         else:
-            raise HTTPForbidden("See server logs for details")
+            raise HTTPUnauthorized("See server logs for details")
 
     @view_config(route_name="logout")
     def logout(self):
