@@ -58,7 +58,7 @@ class TestThemesView(TestCase):
         from c2cgeoportal_commons.models.main import \
             Theme, LayerGroup, Interface, LayerWMS, LayerWMTS, Dimension
 
-        ogc_server, _ = create_default_ogcserver()
+        ogc_server = create_default_ogcserver()
         main = Interface(name="main")
 
         layer_wms_1 = LayerWMS(name="__test_layer_wms_1", public=True)

@@ -76,7 +76,7 @@ class TestThemesTimeView(TestCase):
         PointTest.__table__.create(bind=DBSession.bind, checkfirst=True)
 
         main = Interface(name="desktop")
-        ogc_server, _ = create_default_ogcserver()
+        ogc_server = create_default_ogcserver()
 
         layer_wms_1 = LayerWMS(name="__test_layer_time_1", public=True)
         layer_wms_1.layer = "test_wmstime"

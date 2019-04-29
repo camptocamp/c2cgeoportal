@@ -49,7 +49,7 @@ class TestMapserverproxyViewGroup(TestCase):
         from c2cgeoportal_commons.models.main import Role, LayerWMS, RestrictionArea, Interface
         from c2cgeoportal_commons.models.static import User
 
-        ogc_server_internal, _ = create_default_ogcserver()
+        ogc_server_internal = create_default_ogcserver()
 
         role1 = Role(name="__test_role1", description="__test_role1")
         user1 = User(username="__test_user1", password="__test_user1", settings_role=role1, roles=[role1])

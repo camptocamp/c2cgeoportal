@@ -58,7 +58,7 @@ class TestThemesScale(TestCase):
 
         main = Interface(name="desktop")
 
-        ogc_server, _ = create_default_ogcserver()
+        ogc_server = create_default_ogcserver()
 
         layer_noscale = LayerWMS(name="__test_layer_noscale", public=True)
         layer_noscale.layer = "test_noscale"

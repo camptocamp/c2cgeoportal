@@ -135,7 +135,7 @@ class TestMapserverproxyView(TestCase):
 
         cleanup_db()
 
-        ogc_server_internal, _ = create_default_ogcserver()
+        ogc_server_internal = create_default_ogcserver()
         ogcserver_geoserver = OGCServer(name="__test_ogc_server_geoserver")
         ogcserver_geoserver.url = mapserv_url
         ogcserver_geoserver.type = OGCSERVER_TYPE_GEOSERVER
@@ -798,44 +798,6 @@ class TestMapserverproxyView(TestCase):
             service="wfs", version="1.0.0",
             request="getfeature", typename="testpoint_unprotected",
             featureid=featureid
-        ))
-        response = MapservProxy(request).proxy()
-
-        self.assertTrue(response.body != "")
-        self.assertEqual(str(response.cache_control), "max-age=0, must-revalidate, no-cache, no-store")
-
-    def test_get_feature_external_url(self):
-        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
-
-        request = self._create_dummy_request()
-
-        featureid = "{typename!s}.{fid1!s},{typename!s}.{fid2!s}".format(
-            typename="testpoint_unprotected",
-            fid1=self.id_lausanne,
-            fid2=self.id_paris
-        )
-        request.params.update(dict(
-            service="wfs", version="1.0.0", request="getfeature", typename="testpoint_unprotected",
-            featureid=featureid, ogcserver="__test_external_ogc_server"
-        ))
-        response = MapservProxy(request).proxy()
-
-        self.assertTrue(response.body != "")
-        self.assertEqual(str(response.cache_control), "max-age=0, must-revalidate, no-cache, no-store")
-
-    def test_get_feature_external_wfs_url(self):
-        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
-
-        request = self._create_dummy_request()
-
-        featureid = "{typename!s}.{fid1!s},{typename!s}.{fid2!s}".format(
-            typename="testpoint_unprotected",
-            fid1=self.id_lausanne,
-            fid2=self.id_paris
-        )
-        request.params.update(dict(
-            service="wfs", version="1.0.0", request="getfeature", typename="testpoint_unprotected",
-            featureid=featureid, ogcserver="__test_external_ogc_server"
         ))
         response = MapservProxy(request).proxy()
 

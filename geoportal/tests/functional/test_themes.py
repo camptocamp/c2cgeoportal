@@ -62,7 +62,7 @@ class TestThemesView(TestCase):
         mobile = Interface(name="mobile")
         min_levels = Interface(name="min_levels")
 
-        ogc_server_internal, _ = create_default_ogcserver()
+        ogc_server_internal = create_default_ogcserver()
         ogc_server_external = OGCServer(
             name="__test_ogc_server_chtopo", url="http://wms.geo.admin.ch/",
             image_type="image/jpeg", auth=OGCSERVER_AUTH_NOAUTH
@@ -380,23 +380,19 @@ class TestThemesView(TestCase):
         self.assertEqual(self._get_filtered_errors(themes), set())
         self.assertEqual(
             themes["ogcServers"], {
-                "__test_external_ogc_server": {
-                    "attributes": None,
-                    "credential": True,
-                    "imageType": "image/png",
-                    "isSingleTile": False,
-                    "namespace": None,
-                    "type": "mapserver",
-                    "url": "http://localhost/travis/mapserv?ogcserver=__test_external_ogc_server",
-                    "urlWfs": "http://localhost/travis/mapserv?ogcserver=__test_external_ogc_server",
-                    "wfsSupport": True,
-                },
                 "__test_ogc_server": {
-                    "attributes": None,
+                    "attributes": {
+                        '__test_layer_internal_wms': {
+                            'msGeometry': {
+                                'namespace': 'http://www.opengis.net/gml',
+                                'type': 'GeometryPropertyType'
+                            }
+                        }
+                    },
                     "credential": True,
                     "imageType": "image/png",
                     "isSingleTile": False,
-                    "namespace": None,
+                    "namespace": 'http://mapserver.gis.umn.edu/mapserver',
                     "type": "mapserver",
                     "url": "http://localhost/travis/mapserv?ogcserver=__test_ogc_server",
                     "urlWfs": "http://localhost/travis/mapserv?ogcserver=__test_ogc_server",

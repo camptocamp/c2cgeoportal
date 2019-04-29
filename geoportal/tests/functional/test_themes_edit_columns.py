@@ -71,9 +71,8 @@ class TestThemesEditColumns(TestCase):
         )
         self.main = Interface(name="main")
 
-        self.ogc_server, external_ogc_server = create_default_ogcserver()
+        self.ogc_server = create_default_ogcserver()
         self.ogc_server.auth = OGCSERVER_AUTH_NOAUTH
-        external_ogc_server.auth = OGCSERVER_AUTH_NOAUTH
 
         self.metadata = None
         self.layer_ids = []

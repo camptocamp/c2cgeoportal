@@ -53,7 +53,7 @@ class TestLoopTheme(TestCase):
         from c2cgeoportal_commons.models.main import LayerWMS, \
             Theme, LayerGroup, Interface
 
-        ogc_server, _ = create_default_ogcserver()
+        ogc_server = create_default_ogcserver()
         main = Interface(name="desktop2")
 
         layer = LayerWMS(name="__test_layer", public=True)

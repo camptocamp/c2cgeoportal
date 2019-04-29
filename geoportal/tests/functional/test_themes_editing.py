@@ -74,7 +74,7 @@ class TestThemeEditing(TestCase):
             DBSession.delete(o)
         for o in DBSession.query(TreeItem).all():
             DBSession.delete(o)
-        ogcserver, _ = create_default_ogcserver()
+        ogcserver = create_default_ogcserver()
 
         role1 = Role(name="__test_role1")
         role1.id = 999

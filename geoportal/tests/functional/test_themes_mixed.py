@@ -59,7 +59,7 @@ class TestThemesView(TestCase):
 
         main = Interface(name="main")
 
-        ogc_server_internal, _ = create_default_ogcserver()
+        ogc_server_internal = create_default_ogcserver()
         ogc_server_external = OGCServer(name="__test_ogc_server_external", url="http://wms.geo.admin.ch/", image_type="image/jpeg")
 
         layer_internal_wms = LayerWMS(name="__test_layer_internal_wms", public=True)

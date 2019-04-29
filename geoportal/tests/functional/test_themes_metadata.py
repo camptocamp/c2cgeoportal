@@ -59,7 +59,7 @@ class TestThemesViewMetadata(TestCase):
 
         desktop = Interface(name="desktop")
 
-        ogc_server_internal, _ = create_default_ogcserver()
+        ogc_server_internal = create_default_ogcserver()
 
         layer_wms = LayerWMS(name="__test_layer_internal_wms", public=True)
         layer_wms.layer = "__test_layer_internal_wms"
