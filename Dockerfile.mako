@@ -34,6 +34,7 @@ COPY admin /opt/c2cgeoportal_admin
 RUN \
   (cd /opt/c2cgeoportal_admin/; npm install --no-optional `cat npm-packages`) && \
   npm cache clear --force && \
+  touch /usr/lib/node_modules/webpack-cli/bin/opencollective.js && \
   chmod go+r -R /opt/c2cgeoportal_commons /opt/c2cgeoportal_geoportal /opt/c2cgeoportal_admin && \
   ln -s /opt/c2cgeoportal_commons/c2cgeoportal_commons/alembic /opt && \
   pip install --disable-pip-version-check --no-cache-dir --no-deps \
