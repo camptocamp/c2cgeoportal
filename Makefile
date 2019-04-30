@@ -15,7 +15,7 @@ endif
 endif
 
 export MAJOR_VERSION = 2.4
-export MAIN_BRANCH = master
+export MAIN_BRANCH = 2.4
 ifdef RELEASE_TAG
 export VERSION = $(RELEASE_TAG)
 else
