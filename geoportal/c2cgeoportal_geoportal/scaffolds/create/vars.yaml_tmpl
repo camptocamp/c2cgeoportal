@@ -238,6 +238,8 @@ update_paths:
   - resourceproxy
   - servers
   - shortener
+  - sqlalchemy
+  - sqlalchemy_slave
   - tinyowsproxy
 
 no_interpreted:

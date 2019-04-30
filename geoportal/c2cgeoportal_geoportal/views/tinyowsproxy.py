@@ -128,7 +128,7 @@ class TinyOWSProxy(OGCProxy):
         writable_layers = set()
         for gmflayer in list(get_writable_layers(self.request.user, [self.ogc_server.id]).values()):
             for ogclayer in gmflayer.layer.split(","):
-                writable_layers.add(ogclayer)
+                writable_layers.add(ogclayer.lower())
         return typenames.issubset(writable_layers)
 
     def _get_headers(self):
