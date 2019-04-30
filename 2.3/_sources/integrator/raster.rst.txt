@@ -4,13 +4,13 @@ Digital Elevation Tools
 =======================
 
 c2cgeoportal applications include web services for getting
-`DEM <http://en.wikipedia.org/wiki/Digital_elevation_model>`_.
+`DEM <http://en.wikipedia.org/wiki/Digital_elevation_model>`_
 information.
 The ``raster`` web service allows getting information for points.
 The ``profile`` web service allows getting information for lines.
 
-To configure these web services you need to set the ``raster`` variable in the
-application config (``vars_<project>.yaml``).  For example:
+To configure these web services, you need to set the ``raster`` variable in the
+application config (``vars_<project>.yaml``). For example:
 
 .. code:: yaml
 
@@ -35,10 +35,10 @@ The raster files should be in the Binary Terrain (BT/VTP .bt 1.3) format.
 One may use GDAL/OGR to convert data to such a format.
 
 ``type`` ``shp_index`` (default) for Mapserver shape index, or ``gdal`` for all supported GDAL sources.
-We recommand to use a `vrt <https://www.gdal.org/gdal_vrttut.html>`_ file built with
+We recommend to use a `vrt <https://www.gdal.org/gdal_vrttut.html>`_ file built with
 `gdalbuildvrt <https://www.gdal.org/gdalbuildvrt.html>`_.
 
-``round`` specifigdalbuildvrtes how the result values should be rounded.
+``round`` specifies how the result values should be rounded.
 For instance '1': round to the unit, '0.01': round to the hundredth, etc.
 
 The application viewer should be configured with one (or more) of the

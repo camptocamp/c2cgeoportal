@@ -35,12 +35,12 @@
 <span id="developer-build-release"></span><h1>Create a new release<a class="headerlink" href="#create-a-new-release" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="vocabulary">
 <h2>Vocabulary<a class="headerlink" href="#vocabulary" title="Permalink to this headline">¶</a></h2>
-<p>On this page I use the word <code class="docutils literal notranslate"><span class="pre">version</span></code> for a major version of MapFish
-Geoportal (1.6), and the word <code class="docutils literal notranslate"><span class="pre">release</span></code> for each step in this version
-(1.6.0rc1, 1.6.0, 1.6.1, …).</p>
-<p><code class="docutils literal notranslate"><span class="pre">MapFish</span> <span class="pre">Geoportal</span></code> is the pack that includes CGXP and c2cgeoportal,
-from start of 2014 both projects will synchronize their major versions.</p>
-<p>Then <code class="docutils literal notranslate"><span class="pre">&lt;release&gt;</span></code> can be <code class="docutils literal notranslate"><span class="pre">1.6.0rc1</span></code> for the first release candidate
+<p>On this page, we use the word <code class="docutils literal notranslate"><span class="pre">version</span></code> for a major version of MapFish
+Geoportal, and the word <code class="docutils literal notranslate"><span class="pre">release</span></code> for each step in this version.</p>
+<p><code class="docutils literal notranslate"><span class="pre">MapFish</span> <span class="pre">Geoportal</span></code> is the pack that includes ngeo/CGXP and c2cgeoportal;
+from 2014 onwards, the major version number of the client projects and
+the backend project are synchronized.</p>
+<p>For example, <code class="docutils literal notranslate"><span class="pre">&lt;release&gt;</span></code> can be <code class="docutils literal notranslate"><span class="pre">1.6.0rc1</span></code> for the first release candidate
 of the version <code class="docutils literal notranslate"><span class="pre">1.6.0</span></code>, <code class="docutils literal notranslate"><span class="pre">1.6.0</span></code> for the final release, <code class="docutils literal notranslate"><span class="pre">1.6.1</span></code> for
 the first bug fix release, and <code class="docutils literal notranslate"><span class="pre">&lt;version&gt;</span></code> can be <code class="docutils literal notranslate"><span class="pre">1.6</span></code>, <code class="docutils literal notranslate"><span class="pre">2.0</span></code>, …</p>
 <p><a class="reference external" href="https://github.com/camptocamp/ngeo/blob/master/docs/developer-guide.md#create-a-package-on-npm">For ngeo see here</a>.</p>
@@ -60,7 +60,7 @@ span.prompt1:before {
 </pre><p>Get the localisation from Transifex:</p>
 <pre class="highlight"><span class="prompt1">docker build --tag<span class="o">=</span>camptocamp/geomapfish-build-dev docker/build</span>
 <span class="prompt1">./docker-run make transifex-get</span>
-</pre><p>For each version we create a new branch (at the latest at the final release):</p>
+</pre><p>For each version, we create a new branch (at the latest, for the final release):</p>
 <pre class="highlight"><span class="prompt1">git checkout -b &lt;version&gt;</span>
 <span class="prompt1">git push origin &lt;version&gt;</span>
 </pre><dl class="docutils">
@@ -112,36 +112,29 @@ span.prompt1:before {
 </pre><p>Run a new job for the &lt;version&gt; branch on Jenkins.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">It’s possible to do a version only on the latest commit on a branch,
-If you relay need to do that, you should create a new branch.</p>
+<p class="last">It is possible to do a version only on the latest commit on a branch.
+If you really need to do that, you should create a new branch.</p>
 </div>
 </div>
 <div class="section" id="notes-about-travis">
 <h3>Notes about Travis<a class="headerlink" href="#notes-about-travis" title="Permalink to this headline">¶</a></h3>
-<p>When you push a tag with the pattern <code class="docutils literal notranslate"><span class="pre">^[0-9]+\.[0-9]+\..+$</span></code>
+<p>When you push a tag with the pattern <code class="docutils literal notranslate"><span class="pre">^[0-9]+\.[0-9]+\..+$</span></code>,
 a new release will automatically be created on Travis CI.</p>
 </div>
 </div>
 <div class="section" id="post-release-tasks">
 <h2>Post release tasks<a class="headerlink" href="#post-release-tasks" title="Permalink to this headline">¶</a></h2>
-<p>When a new release or a new version is done you should do the following tasks:</p>
+<p>When a new release or a new version is done, you should do the following tasks:</p>
 <ul>
 <li><p class="first">Merge the release changes (on <code class="docutils literal notranslate"><span class="pre">ngeo</span></code> and on <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code>)
 to the upper branches i.e.: <code class="docutils literal notranslate"><span class="pre">1.6</span></code> =&gt; <code class="docutils literal notranslate"><span class="pre">2.0</span></code>, <code class="docutils literal notranslate"><span class="pre">2.0</span></code> =&gt; <code class="docutils literal notranslate"><span class="pre">master</span></code>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>On <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> merge see if an alembic merge should be done:</p>
-<pre class="highlight"><span class="prompt1">./docker-compose-run alembic <span class="se">\</span>
-    --config<span class="o">=</span>tests/functional/alembic.ini <span class="se">\</span>
-    --name<span class="o">=</span>main heads</span>
-<span class="prompt1">./docker-compose-run alembic <span class="se">\</span>
-    --config<span class="o">=</span>tests/functional/alembic.ini <span class="se">\</span>
-    --name<span class="o">=</span>static heads</span>
-</pre><p>If yes create the merge with:</p>
-<pre class="highlight"><span class="prompt1">./docker-compose-run alembic <span class="se">\</span>
-    --config<span class="o">=</span>tests/functional/alembic.ini --name<span class="o">=[</span>main<span class="p">|</span>static<span class="o">]</span> <span class="se">\</span>
-    merge --message<span class="o">=</span><span class="s2">&quot;Merge &lt;src&gt; and &lt;dst&gt; branches&quot;</span> <span class="se">\</span>
-    &lt;rev <span class="m">1</span>&gt; &lt;rev <span class="m">2</span>&gt;</span>
+<p>On <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> merge, see if an alembic merge should be done:</p>
+<pre class="highlight"><span class="prompt1">./docker-compose-run alembic             --config<span class="o">=</span>tests/functional/alembic.ini             --name<span class="o">=</span>main heads</span>
+<span class="prompt1">./docker-compose-run alembic             --config<span class="o">=</span>tests/functional/alembic.ini             --name<span class="o">=</span>static heads</span>
+</pre><p>If yes, create the merge with:</p>
+<pre class="highlight"><span class="prompt1">./docker-compose-run alembic             --config<span class="o">=</span>tests/functional/alembic.ini --name<span class="o">=[</span>main<span class="p">|</span>static<span class="o">]</span>             merge --message<span class="o">=</span><span class="s2">&quot;Merge &lt;src&gt; and &lt;dst&gt; branches&quot;</span>             &lt;rev <span class="m">1</span>&gt; &lt;rev <span class="m">2</span>&gt;</span>
 </pre><p>Remove the import and replace the core of the method by <code class="docutils literal notranslate"><span class="pre">pass</span></code> in the generated file.</p>
 <p class="last">And finally add the new file.</p>
 </div>
@@ -152,7 +145,7 @@ to the upper branches i.e.: <code class="docutils literal notranslate"><span cla
 <pre class="highlight"><span class="prompt1">sudo -u sigdev make --makefile<span class="o">=</span>demo.mk update</span>
 <span class="prompt1">sudo -u sigdev make --makefile<span class="o">=</span>demo.mk build</span>
 </pre></li>
-<li><p class="first">Test the <a class="reference external" href="http://testgmf.sig.cloud.camptocamp.net/">demo</a>.</p>
+<li><p class="first">Test the <a class="reference external" href="https://geomapfish-demo.camptocamp.com/2.3">demo</a>.</p>
 </li>
 <li><p class="first">Deploy on the demo server with:</p>
 <pre class="highlight"><span class="prompt1">sudo -u deploy deploy -r deploy/deploy.cfg demo_server</span>

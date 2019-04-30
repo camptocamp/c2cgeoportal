@@ -1,11 +1,11 @@
 Extend the data model
 ---------------------
 
-The Data model can be extended in the file ``<package>/models.py``
+The data model can be extended in the file ``<package>/models.py``
 and the corresponding admin interface configuration
 in the file ``<package>/forms.py``.
 
-For example to add some user details, including a link to a
+For example, to add some user details, including a link to a
 new class named "Title", add to ``<package>/models.py``::
 
     # Used to hide the original user in the admin interface

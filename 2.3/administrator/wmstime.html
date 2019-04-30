@@ -60,7 +60,7 @@ formats are supported to define the time:</p>
 date, an end date and an interval between the time stops.</p>
 <p>The format <code class="docutils literal notranslate"><span class="pre">value1,value2,value3,...</span></code> allows specifying a time range by
 listing discrete values.</p>
-<p>The dates (<code class="docutils literal notranslate"><span class="pre">min</span></code>, <code class="docutils literal notranslate"><span class="pre">max</span></code> and <code class="docutils literal notranslate"><span class="pre">valueN</span></code>) could be specified using any of the
+<p>The dates (<code class="docutils literal notranslate"><span class="pre">min</span></code>, <code class="docutils literal notranslate"><span class="pre">max</span></code> and <code class="docutils literal notranslate"><span class="pre">valueN</span></code>) can be specified using any of the
 following formats:</p>
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">YYYY</span></code></li>
@@ -73,15 +73,15 @@ for the slider and the format of the time parameter used for the GetMap
 requests. For example when a layer has monthly data, the <code class="docutils literal notranslate"><span class="pre">YYYY-MM</span></code> should be
 used in the mapfile to make sure that only months and years are displayed in the
 slider tip and passed to the GetMap request.</p>
-<p>The interval (<code class="docutils literal notranslate"><span class="pre">interval</span></code>) has to be defined regarding international standard
-ISO 8601 and its duration/time intervals definition (see
+<p>The interval (<code class="docutils literal notranslate"><span class="pre">interval</span></code>) has to be defined according to the
+ISO 8601 standard and its duration/time intervals definition (see
 <a class="reference external" href="http://en.wikipedia.org/wiki/ISO_8601#Durations">ISO 8601 Durations / Time intervals</a>).</p>
 <p>Some examples for the interval definition:</p>
 <ul class="simple">
 <li>An interval of one year: <code class="docutils literal notranslate"><span class="pre">P1Y</span></code></li>
 <li>An interval of six months: <code class="docutils literal notranslate"><span class="pre">P6M</span></code></li>
 </ul>
-<p>For more information please refer to the <a class="reference external" href="http://mapserver.org/ogc/wms_time.html">MapServer documentation</a>.</p>
+<p>For more information, please refer to the <a class="reference external" href="http://mapserver.org/ogc/wms_time.html">MapServer documentation</a>.</p>
 </div>
 <div class="section" id="admin-interface">
 <h3>Admin interface<a class="headerlink" href="#admin-interface" title="Permalink to this headline">¶</a></h3>
@@ -90,7 +90,7 @@ section. However the time widget must be configured via the admin interface.
 Two different widget types are available: A time slider and a datepicker
 widget. The preferred widget can be selected in the admin interface (field
 <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">widget</span></code>).</p>
-<p>Besides, the time mode can be changed. The time mode is one of:</p>
+<p>Note that the time mode can be changed. The time mode is one of:</p>
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">value</span></code></li>
 <li><code class="docutils literal notranslate"><span class="pre">range</span></code></li>
@@ -124,7 +124,7 @@ all use the same interval.</li>
 </ul>
 <p>There is also a limitation that applies to the admin interface: all the WMS Time
 layers of a group should be configured to use the same widget and the same time mode
-(<code class="docutils literal notranslate"><span class="pre">single</span></code> or <code class="docutils literal notranslate"><span class="pre">range</span></code>) except for layers with time mode <code class="docutils literal notranslate"><span class="pre">disabled</span></code> that can be mixed
+(<code class="docutils literal notranslate"><span class="pre">single</span></code> or <code class="docutils literal notranslate"><span class="pre">range</span></code>), except for layers with time mode <code class="docutils literal notranslate"><span class="pre">disabled</span></code> that can be mixed
 within others.</p>
 </div>
 </div>

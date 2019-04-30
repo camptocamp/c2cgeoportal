@@ -35,8 +35,8 @@
   <div class="section" id="mapfile-configuration">
 <span id="administrator-mapfile"></span><h1>Mapfile configuration<a class="headerlink" href="#mapfile-configuration" title="Permalink to this headline">¶</a></h1>
 <p>As mentioned on the index page (<a class="reference internal" href="index.html#administrator-guide"><span class="std std-ref">Administrator Guide</span></a>) the application
-administrator manages the application through the database, and the
-application’s MapServer mapfile.</p>
+administrator manages the application through the database and via
+the application’s MapServer mapfile.</p>
 <p>The application’s mapfile is where WMS and WFS layers are defined.  WMS is used
 for the map (<code class="docutils literal notranslate"><span class="pre">WMS</span> <span class="pre">GetMap</span></code>), and for the <code class="docutils literal notranslate"><span class="pre">point</span> <span class="pre">query</span></code> feature (<code class="docutils literal notranslate"><span class="pre">WMS</span>
 <span class="pre">GetFeatureInfo</span></code>). WFS is used for the <code class="docutils literal notranslate"><span class="pre">box</span> <span class="pre">query</span></code> and <code class="docutils literal notranslate"><span class="pre">query</span> <span class="pre">builder</span></code>
@@ -59,7 +59,7 @@ update the mapfile configuration, you have to reload apache.</p>
 </div>
 <div class="section" id="print">
 <h2>Print<a class="headerlink" href="#print" title="Permalink to this headline">¶</a></h2>
-<p>MapFish Print does single tile requests to the WMS server. For that reason we
+<p>MapFish Print performs single tile requests to the WMS server. For that reason we
 need to use a relatively large value for the <code class="docutils literal notranslate"><span class="pre">MAXSIZE</span></code> parameter (of the
 <code class="docutils literal notranslate"><span class="pre">MAP</span></code> section); 5000 for example.</p>
 <p>MapFish Print also supports map rotations. This implies specific requirements:</p>
@@ -123,7 +123,7 @@ it. (This is required for the <a class="reference internal" href="../integrator/
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">The geometry columns of layers involved in <code class="docutils literal notranslate"><span class="pre">box</span> <span class="pre">query</span></code> should have the
-same name. By default the WFS GetFeatue CGXP plugin
+same name. By default the WFS GetFeature CGXP plugin
 (<code class="docutils literal notranslate"><span class="pre">cgxp_wfsgetfeature</span></code>) assumes the name is <code class="docutils literal notranslate"><span class="pre">geom</span></code>, but the plugin
 can be configured to use a different name.</p>
 </div>
@@ -163,7 +163,7 @@ geometries instead of bboxes.</div></blockquote>
 <p><code class="docutils literal notranslate"><span class="pre">gml_&lt;geometry</span> <span class="pre">name&gt;_type</span></code></p>
 <blockquote>
 <div>This specifies the type of a geometry column. Specifying this property is
-necessary if geometries, instead of bboxes should be returned in
+necessary if geometries, instead of bboxes, should be returned in
 GetFeatureInfo (GML) responses. <code class="docutils literal notranslate"><span class="pre">&lt;geometry</span> <span class="pre">name&gt;</span></code> should be replaced the string set
 with the <code class="docutils literal notranslate"><span class="pre">gml_geometries</span></code>. For example, if <code class="docutils literal notranslate"><span class="pre">geom_geometries</span></code> is set to
 <code class="docutils literal notranslate"><span class="pre">the_geom</span></code> then <code class="docutils literal notranslate"><span class="pre">gml_the_geom_type</span></code> should be used.
@@ -175,20 +175,20 @@ See also <a class="reference external" href="http://mapserver.org/ogc/wms_server
 </div>
 <div class="section" id="restricted-layer">
 <h2>Restricted layer<a class="headerlink" href="#restricted-layer" title="Permalink to this headline">¶</a></h2>
-<p>The restricted layers work only with postgres data.  All layer defined as
+<p>The restricted layers work only with PostgreSQL data.  All layers defined as
 restricted in the mapfile should be defined as well in the admin interface
 and vice versa.</p>
 <div class="section" id="with-a-restrictionarea-area">
 <h3>With a RestrictionArea area<a class="headerlink" href="#with-a-restrictionarea-area" title="Permalink to this headline">¶</a></h3>
-<p>A RestrictionArea is used to restricted the layer displaying to a given area.
+<p>A RestrictionArea is used to restrict the layer displaying to a given area.
 This area is specified in the administration interface while defining the
 <code class="docutils literal notranslate"><span class="pre">RestrictionArea</span></code> element.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">Using an restriction area on a big layer or defining a too complex area
+<p class="last">Using a restriction area on a big layer or defining a very complex area
 may slow down the application.</p>
 </div>
-<p>To define a restricted layer in the Mapfile the <code class="docutils literal notranslate"><span class="pre">DATA</span></code> property of the
+<p>To define a restricted layer in the Mapfile, the <code class="docutils literal notranslate"><span class="pre">DATA</span></code> property of the
 <code class="docutils literal notranslate"><span class="pre">LAYER</span></code> should look like this:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>DATA &quot;the_geom FROM
       (SELECT
@@ -247,7 +247,7 @@ It is defined as follows:</p>
 </div>
 <div class="section" id="without-restriction-on-the-restrictionarea-area">
 <h3>Without restriction on the RestrictionArea area<a class="headerlink" href="#without-restriction-on-the-restrictionarea-area" title="Permalink to this headline">¶</a></h3>
-<p>If we do not need to restrict on an area we can use the following
+<p>If we do not need to restrict on an area, we can use the following
 <code class="docutils literal notranslate"><span class="pre">DATA</span></code> property of the <code class="docutils literal notranslate"><span class="pre">LAYER</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>DATA &quot;the_geom FROM (
     SELECT
@@ -303,7 +303,7 @@ substituted at make execution time.</p>
 <div class="section" id="variable-substitution">
 <h2>Variable Substitution<a class="headerlink" href="#variable-substitution" title="Permalink to this headline">¶</a></h2>
 <p>It is possible to adapt some values in the mapfile according to the user’s role
-by using variable substitution. For instance to hide some layer objects
+by using variable substitution, for instance to hide some layer objects
 attributes. The list of parameters that support variable substitution is
 available <a class="reference external" href="http://mapserver.org/cgi/runsub.html#parameters-supported">here</a>.</p>
 <p>To define variables, edit the matching <code class="docutils literal notranslate"><span class="pre">MAP</span></code>/<code class="docutils literal notranslate"><span class="pre">LAYER</span></code>/<code class="docutils literal notranslate"><span class="pre">VALIDATION</span></code>
@@ -313,13 +313,13 @@ section in the MapFile and add:</p>
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">validation_pattern</span></code> is a regular expression used to validate the
-argument. For example if you only want lowercase characters and commas,
+argument. For example, if you only want lowercase characters and commas,
 use <code class="docutils literal notranslate"><span class="pre">^[a-z,]*$</span></code>.</p>
 <p>Now in <code class="docutils literal notranslate"><span class="pre">LAYER</span></code> place <code class="docutils literal notranslate"><span class="pre">%s_&lt;variable&gt;%</span></code> where you want to
 insert the variable value, but not at the start of a line (to avoid escape issues).</p>
 <p>Then in the administration interface, create a <code class="docutils literal notranslate"><span class="pre">functionality</span></code> named
 <code class="docutils literal notranslate"><span class="pre">mapserver_substitution</span></code> with the value: <code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;=&lt;value&gt;</span></code>.</p>
-<p>Please note that we cannot use substitution in the <code class="docutils literal notranslate"><span class="pre">MATADATA</span></code> values.
+<p>Please note that we cannot use substitution in the <code class="docutils literal notranslate"><span class="pre">METADATA</span></code> values.
 As a result, if you would like to adapt the list of attributes returned in a
 WFS GetFeature or WMS GetFeatureInfo request, you have to adapt the columns
 listed in the <code class="docutils literal notranslate"><span class="pre">DATA</span></code> section. For instance:</p>
@@ -333,7 +333,7 @@ listed in the <code class="docutils literal notranslate"><span class="pre">DATA<
     <span class="n">END</span>
     <span class="n">VALIDATION</span>
         <span class="s2">&quot;default_s_columns&quot;</span> <span class="s2">&quot;t.name&quot;</span>
-        <span class="s2">&quot;s_columns_validation_pattern&quot;</span> <span class="s2">&quot;^[a-z,._]*$$&quot;</span>
+        <span class="s2">&quot;s_columns&quot;</span> <span class="s2">&quot;^[a-z,._]*$$&quot;</span>
     <span class="n">END</span>
     <span class="n">CLASS</span>
         <span class="n">EXPRESSION</span> <span class="p">([</span><span class="nb">type</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -348,8 +348,8 @@ interface with for instance the following value for the given role:
 <code class="docutils literal notranslate"><span class="pre">columns=t.private</span></code>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">We are also able to use the <code class="docutils literal notranslate"><span class="pre">role_id</span></code> and <code class="docutils literal notranslate"><span class="pre">user_id</span></code> as
-variable substitution, but they are not available for cached query like:
+<p class="last">You can also use variable substitution for the <code class="docutils literal notranslate"><span class="pre">role_id</span></code> and <code class="docutils literal notranslate"><span class="pre">user_id</span></code>,
+but beware that these attributes are not available for cached queries like:
 <code class="docutils literal notranslate"><span class="pre">GetCapabilities</span></code>, <code class="docutils literal notranslate"><span class="pre">GetLegendGraphic</span></code>, <code class="docutils literal notranslate"><span class="pre">DescribeFeatureType</span></code>.</p>
 </div>
 <p><a class="reference external" href="http://mapserver.org/cgi/runsub.html">MapServer documentation</a></p>
@@ -399,17 +399,17 @@ variable substitution, but they are not available for cached query like:
 because it saves MapServer from computing the extent of all layer features.</p>
 <div class="section" id="prepare-raster-files">
 <h3>Prepare raster files<a class="headerlink" href="#prepare-raster-files" title="Permalink to this headline">¶</a></h3>
-<p>To have good performance you should have tiled files with overview, and probably
-a tileindex, you can doing these steps:</p>
+<p>To achieve good performance, you should have tiled files with overview, and ideally
+a tileindex, you can achieve this with these steps:</p>
 <p>Convert your rasters in tiled GeoTIFF:</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gdal_translate</span> <span class="o">-</span><span class="n">of</span> <span class="n">GTiff</span> <span class="o">-</span><span class="n">co</span> <span class="s2">&quot;TILED=YES&quot;</span> <span class="o">-</span><span class="n">co</span> <span class="s2">&quot;TFW=YES&quot;</span> <span class="o">&lt;</span><span class="n">filename_in</span><span class="o">.</span><span class="n">tif</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">filename_out</span><span class="o">.</span><span class="n">tif</span><span class="o">&gt;</span>
 </pre></div>
 </div>
-<p>Then build overviews for your rasters</p>
+<p>Then build overviews for your rasters:</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gdaladdo</span> <span class="o">-</span><span class="n">r</span> <span class="n">average</span> <span class="n">filename</span><span class="o">.</span><span class="n">tif</span> <span class="mi">2</span> <span class="mi">4</span> <span class="mi">8</span> <span class="mi">16</span>
 </pre></div>
 </div>
-<p>You can generate a shapefile indexing all your rasters</p>
+<p>You can generate a shapefile indexing all your rasters:</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gdaltindex</span> <span class="n">filename_index</span><span class="o">.</span><span class="n">shp</span> <span class="n">raster</span><span class="o">/*.</span><span class="n">tif</span>
 </pre></div>
 </div>
@@ -421,7 +421,7 @@ a tileindex, you can doing these steps:</p>
 images and has memory leaks with ECW. See this
 <a class="reference external" href="http://trac.osgeo.org/mapserver/ticket/3245">MapServer ticket</a>
 for example.</p>
-<p>If you still want to use it then replace <code class="docutils literal notranslate"><span class="pre">SetHandler</span> <span class="pre">fcgid-script</span></code>
+<p>If you still want to use it, then replace <code class="docutils literal notranslate"><span class="pre">SetHandler</span> <span class="pre">fcgid-script</span></code>
 by <code class="docutils literal notranslate"><span class="pre">SetHandler</span> <span class="pre">cgi-script</span></code> in the <code class="docutils literal notranslate"><span class="pre">apache/mapserver.conf.mako</span></code>
 file. But note that this affects performance.</p>
 </div>

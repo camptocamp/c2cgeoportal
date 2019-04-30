@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Customise the application &#8212; c2cgeoportal  documentation</title>
+    <title>Customize the application &#8212; c2cgeoportal  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="../_static/documentation_options.js"></script>
@@ -32,17 +32,17 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="customise-the-application">
-<span id="integrator-customise"></span><h1>Customise the application<a class="headerlink" href="#customise-the-application" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="customize-the-application">
+<span id="integrator-customise"></span><h1>Customize the application<a class="headerlink" href="#customize-the-application" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 </div>
-<p>The application can be customised in the following manners:</p>
-<p><code class="docutils literal notranslate"><span class="pre">functionalities</span></code>, <code class="docutils literal notranslate"><span class="pre">UI</span> <span class="pre">metadata</span></code> and data model extensions.</p>
+<p>The application can be customized in the following manners:
+<code class="docutils literal notranslate"><span class="pre">functionalities</span></code>, <code class="docutils literal notranslate"><span class="pre">UI</span> <span class="pre">metadata</span></code> and data model extensions.</p>
 <p>The functionalities will be attached to the <code class="docutils literal notranslate"><span class="pre">role</span></code> and the <code class="docutils literal notranslate"><span class="pre">theme</span></code>,
 and the UI metadata will be attached to all the elements of the theme.</p>
 <p>They should be configured in the vars file, in the <code class="docutils literal notranslate"><span class="pre">admin_interface</span></code> /
-<code class="docutils literal notranslate"><span class="pre">available_functionalities</span></code> or respectively <code class="docutils literal notranslate"><span class="pre">available_metadata</span></code>.</p>
-<p>It is a list of object who have a <code class="docutils literal notranslate"><span class="pre">name</span></code> and a <code class="docutils literal notranslate"><span class="pre">type</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">available_functionalities</span></code> or respectively <code class="docutils literal notranslate"><span class="pre">available_metadata</span></code>.
+It is a list of objects which have a <code class="docutils literal notranslate"><span class="pre">name</span></code> and a <code class="docutils literal notranslate"><span class="pre">type</span></code>.</p>
 <p>The type can be:</p>
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">string</span></code></li>
@@ -57,11 +57,11 @@ and the UI metadata will be attached to all the elements of the theme.</p>
 <li><code class="docutils literal notranslate"><span class="pre">url</span></code> see below</li>
 </ul>
 <p>Check <code class="docutils literal notranslate"><span class="pre">CONST_vars.yaml</span></code> for examples of usage.</p>
-<p>In order to inherit the default values from <code class="docutils literal notranslate"><span class="pre">CONST_vars.yaml</span></code> make sure the <code class="docutils literal notranslate"><span class="pre">update_paths</span></code> section contains
+<p>In order to inherit the default values from <code class="docutils literal notranslate"><span class="pre">CONST_vars.yaml</span></code>, make sure the <code class="docutils literal notranslate"><span class="pre">update_paths</span></code> section contains
 the item <code class="docutils literal notranslate"><span class="pre">admin_interface.available_functionnalities</span></code> or respectively <code class="docutils literal notranslate"><span class="pre">admin_interface.available_metadata</span></code>.</p>
 <div class="section" id="url">
 <h2>URL<a class="headerlink" href="#url" title="Permalink to this headline">¶</a></h2>
-<p>In the admin interface we can use in all the URLs the following special schema:</p>
+<p>In the admin interface, we can use for all URL definitions the following special schema:</p>
 <ul>
 <li><p class="first"><code class="docutils literal notranslate"><span class="pre">static</span></code>: to use a static route,</p>
 <ul class="simple">
@@ -93,7 +93,7 @@ the application according to the user’s permissions.</p>
 <li>Functionalities for specific roles are defined in the database through the administration interface.</li>
 <li>Functionalities for specific users are defined in the database through the administration interface.</li>
 </ol>
-<p>Each level overrides the previous ones in the same order as indicated above.
+<p>Each level overrides the previous ones in the order indicated above.
 For example, if the user is authenticated and has associated functionalities in
 the <code class="docutils literal notranslate"><span class="pre">user</span></code> database table, then the <code class="docutils literal notranslate"><span class="pre">functionalities:anonymous</span></code> and
 <code class="docutils literal notranslate"><span class="pre">functionalities:registered</span></code> configuration variables, as well as any
@@ -132,8 +132,8 @@ key/value pairs, whose values are either arrays or scalars.</p>
         <span class="n">default_basemap</span><span class="p">:</span> <span class="n">plan</span>
 </pre></div>
 </div>
-<p class="last">In this example anonymous users can print maps using the <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">A4</span> <span class="pre">portrait</span></code>
-and <code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">A3</span> <span class="pre">landscape</span></code> layouts only. And their default base layer is the
+<p class="last">In this example, anonymous users can print maps using the <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">A4</span> <span class="pre">portrait</span></code>
+and <code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">A3</span> <span class="pre">landscape</span></code> layouts only. Their default base layer is the
 <code class="docutils literal notranslate"><span class="pre">plan</span></code> layer.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">functionalities:registered</span></code></dt>
@@ -166,10 +166,10 @@ below explain how to set the default basemap and how to limit access to some
 plugins according to the user’s permissions.</p>
 <div class="section" id="example-of-the-default-basemap-functionality">
 <h4>Example of the default_basemap Functionality<a class="headerlink" href="#example-of-the-default-basemap-functionality" title="Permalink to this headline">¶</a></h4>
-<p>Using functionalities, it is easy to set the default basemap that will be
+<p>Using functionalities, you can set the default basemap that will be
 displayed when a user loads the application depending on whether he/she is
 anonymous, authenticated or has some specific role.</p>
-<p>First make sure that <code class="docutils literal notranslate"><span class="pre">default_basemap</span></code> is made available in the templates
+<p>First, make sure that <code class="docutils literal notranslate"><span class="pre">default_basemap</span></code> is made available in the templates
 using the <code class="docutils literal notranslate"><span class="pre">functionalities:available_in_templates</span></code> parameter in the
 <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code> configuration file:</p>
 <div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">functionalities</span><span class="p">:</span>
@@ -184,7 +184,7 @@ for anonymous users:</p>
         <span class="n">default_basemap</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">some_basemap</span><span class="o">&gt;</span>
 </pre></div>
 </div>
-<p>Optionally you may also indicate what basemap to use for authenticated users
+<p>Optionally, you may also indicate what basemap to use for authenticated users
 (if omitted, the anonymous <code class="docutils literal notranslate"><span class="pre">default_basemap</span></code> value will be used):</p>
 <div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">functionalities</span><span class="p">:</span>
     <span class="n">anonymous</span><span class="p">:</span>
@@ -193,11 +193,10 @@ for anonymous users:</p>
         <span class="n">default_basemap</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">some_other_basemap</span><span class="o">&gt;</span>
 </pre></div>
 </div>
-<p>Finally you may link <code class="docutils literal notranslate"><span class="pre">default_basemap</span></code> functionalities to some roles or
+<p>Finally, you may link <code class="docutils literal notranslate"><span class="pre">default_basemap</span></code> functionalities to some roles or
 users in the administration interface.</p>
-<p>So that the <code class="docutils literal notranslate"><span class="pre">default_basemap</span></code> is actually provided to the
-<code class="docutils literal notranslate"><span class="pre">cgxp_mapopacityslider</span></code> plugin, use the following configuration in your
-project’s <code class="docutils literal notranslate"><span class="pre">viewer.js</span></code> template:</p>
+<p>If you are using the <code class="docutils literal notranslate"><span class="pre">cgxp_mapopacityslider</span></code> plugin, use the following configuration in your
+project’s <code class="docutils literal notranslate"><span class="pre">viewer.js</span></code> template so that the <code class="docutils literal notranslate"><span class="pre">default_basemap</span></code> is provided there:</p>
 <div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="n">ptype</span><span class="p">:</span> <span class="s2">&quot;cgxp_mapopacityslider&quot;</span><span class="p">,</span>
     <span class="n">defaultBaseLayerRef</span><span class="p">:</span> <span class="s2">&quot;${functionality[&#39;default_basemap&#39;][0] | n}&quot;</span>
@@ -219,10 +218,10 @@ taken into account.</p>
 </div>
 <div class="section" id="extend-the-data-model">
 <h2>Extend the data model<a class="headerlink" href="#extend-the-data-model" title="Permalink to this headline">¶</a></h2>
-<p>The Data model can be extended in the file <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/models.py</span></code>
+<p>The data model can be extended in the file <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/models.py</span></code>
 and the corresponding admin interface configuration
 in the file <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/forms.py</span></code>.</p>
-<p>For example to add some user details, including a link to a
+<p>For example, to add some user details, including a link to a
 new class named “Title”, add to <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/models.py</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Used to hide the original user in the admin interface</span>
 <span class="n">User</span><span class="o">.</span><span class="n">__acl__</span> <span class="o">=</span> <span class="p">[</span><span class="n">DENY_ALL</span><span class="p">]</span>
@@ -285,7 +284,7 @@ new class named “Title”, add to <code class="docutils literal notranslate"><
             </a></p>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Customise the application</a><ul>
+<li><a class="reference internal" href="#">Customize the application</a><ul>
 <li><a class="reference internal" href="#url">URL</a></li>
 <li><a class="reference internal" href="#functionalities">Functionalities</a><ul>
 <li><a class="reference internal" href="#configuration">Configuration</a></li>

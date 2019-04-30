@@ -34,7 +34,7 @@
             
   <div class="section" id="wfs-t-with-tinyows">
 <span id="administrator-tinyows"></span><h1>WFS-T with TinyOWS<a class="headerlink" href="#wfs-t-with-tinyows" title="Permalink to this headline">¶</a></h1>
-<p>Based on <a class="reference external" href="http://mapserver.org/tinyows/">TinyOWS</a> c2cgeoportal layers can be
+<p>Based on <a class="reference external" href="http://mapserver.org/tinyows/">TinyOWS</a>, c2cgeoportal layers can be
 edited via WFS-T, for example using QGIS as a client. c2cgeoportal acts as a
 proxy to TinyOWS to limit access to authorized users.</p>
 <p>The following explains how to configure WFS-T for a c2cgeoportal layer.</p>
@@ -111,8 +111,8 @@ according to your installation.</li>
 <li><code class="docutils literal notranslate"><span class="pre">log_level</span></code> - The log level (default: 1). Please refer to the
 <a class="reference external" href="http://mapserver.org/tinyows/configfile.html#tinyows-element">TinyOWS documentation</a>
 for more information.</li>
-<li><code class="docutils literal notranslate"><span class="pre">check_schema</span></code> - If the input data is validated against the schema when
-creating new features. In a vhost environment the schema check has to be
+<li><code class="docutils literal notranslate"><span class="pre">check_schema</span></code> - Defines if the input data is validated against the schema when
+new features are created. In a vhost environment, the schema check has to be
 disabled, so that the proxy can function properly. This does not disable
 the validation database-side though!</li>
 </ol>
@@ -132,7 +132,7 @@ same database as for the c2cgeoportal application will be used.</p>
     <span class="n">pkey</span><span class="o">=</span><span class="s2">&quot;id&quot;</span> <span class="o">/&gt;</span>
 </pre></div>
 </div>
-<p>In this example a layer named <code class="docutils literal notranslate"><span class="pre">point</span></code> is created for table <code class="docutils literal notranslate"><span class="pre">point</span></code> in the
+<p>In this example a layer named <code class="docutils literal notranslate"><span class="pre">point</span></code> is created for the table <code class="docutils literal notranslate"><span class="pre">point</span></code> in the
 database schema <code class="docutils literal notranslate"><span class="pre">edit</span></code> with the primary key column <code class="docutils literal notranslate"><span class="pre">id</span></code>. This layer is both
 <code class="docutils literal notranslate"><span class="pre">retrievable</span></code> and <code class="docutils literal notranslate"><span class="pre">writable</span></code>.</p>
 <p>The referenced database table must contain a single geometry column and must
@@ -150,10 +150,7 @@ TinyOWS XML configuration. Please refer to the
 <a class="reference external" href="http://mapserver.org/tinyows/configfile.html#layer-element">TinyOWS documentation</a>
 for more information.</p>
 </div>
-<p>After the configuration is made, re-build the c2cgeoportal application:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">docker</span><span class="o">-</span><span class="n">build</span>
-</pre></div>
-</div>
+<p>After the configuration is made, re-build your c2cgeoportal application as usual.</p>
 </div>
 <div class="section" id="editing-a-layer-with-wfs-t">
 <h2>Editing a layer with WFS-T<a class="headerlink" href="#editing-a-layer-with-wfs-t" title="Permalink to this headline">¶</a></h2>

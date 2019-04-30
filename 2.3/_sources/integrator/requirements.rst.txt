@@ -3,7 +3,7 @@
 Requirements
 ============
 
-To install a GeoMapFish application you need to have the following
+To install a GeoMapFish application, you need to have the following
 components installed on your system:
 
 * **Git** (preferably to other revision control systems)
@@ -54,10 +54,10 @@ Print
 ~~~~~
 
 The print requires a Tomcat server listening by default on port 8080.
-To change it you should overwrite the ``print_url`` vars in ``config.yaml.in``,
+To change this, you can overwrite the ``print_url`` vars in ``config.yaml.in``,
 default is: ``http://localhost:8080/print/pdf/``.
 
-MapFishPrint must be installed in version 3 or later.
+MapFish Print must be installed in version 3 or later.
 
 Additional notes for Windows users
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

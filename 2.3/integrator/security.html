@@ -17,7 +17,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Additional features" href="features.html" />
-    <link rel="prev" title="Customise the application" href="customise.html" />
+    <link rel="prev" title="Customize the application" href="customise.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -74,15 +74,15 @@ prompt “unsecure content” warnings.</p>
 <div class="section" id="application-behind-a-proxy">
 <h3>Application behind a proxy<a class="headerlink" href="#application-behind-a-proxy" title="Permalink to this headline">¶</a></h3>
 <p>If the application is placed behind some proxy that removes the SSL encryption
-(plain HTTP is used between the proxy and the server) then some specific
-configuration is required both on the c2cgeoportal application, and on the
+(plain HTTP is used between the proxy and the server), then some specific
+configuration is required both on the c2cgeoportal application and on the
 proxy:</p>
 <ul>
 <li><p class="first">The proxy should add a specific header to the requests. For example <code class="docutils literal notranslate"><span class="pre">X-Https</span>
 <span class="pre">on</span></code> (<code class="docutils literal notranslate"><span class="pre">X-Https</span></code> is the header name, and <code class="docutils literal notranslate"><span class="pre">on</span></code> is the header value).</p>
 </li>
 <li><p class="first">To make c2cgeoportal generate HTTPS URLs when requests with this header are
-received you will set the <cite>HTTPS</cite> environment variable by adding the
+received, you should set the <cite>HTTPS</cite> environment variable by adding the
 following in the <code class="docutils literal notranslate"><span class="pre">apache/wsgi.conf.mako</span></code> file in the <code class="docutils literal notranslate"><span class="pre">&lt;location</span> <span class="pre">...&gt;</span></code>
 section, in our example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SetEnvIf</span>    <span class="n">X</span><span class="o">-</span><span class="n">Https</span> <span class="n">on</span> <span class="n">HTTPS</span><span class="o">=</span><span class="mi">1</span>
@@ -106,25 +106,25 @@ value of <code class="docutils literal notranslate"><span class="pre">request.sc
 <div class="section" id="application-and-ssl-certificate-on-the-same-server">
 <h3>Application and SSL certificate on the same server<a class="headerlink" href="#application-and-ssl-certificate-on-the-same-server" title="Permalink to this headline">¶</a></h3>
 <p>If the SSL certificate and the application are located on the same server, all
-requests will be redirect to https. So you should change the scheme to https
-for all url except for some parameters that should always use http (actually
-all request on localhost): <em>url</em> parameter in tilegeneration configuration.</p>
+requests will be redirected to https. So you should change the scheme to https
+for all url except for some cases that should always use http (typically,
+all requests to localhost): see <em>url</em> parameter in tilegeneration configuration.</p>
 <p>If you apply ssl encryption on your application, you should take care of the
 tiles url to use https scheme to avoid secure and insecure contents.</p>
-<p>Finally, you should redirect all http request to https scheme. On Camptocamp’s
-server, this should be asked to our sysadmin team.</p>
+<p>Finally, you should redirect all http request to https scheme. On Camptocamp
+servers, this needs to be requested via infrastructure support.</p>
 <p>In case you load http external resources into your application, you should use
-resourceproxy service as described below.</p>
+the resourceproxy service as described below.</p>
 </div>
 <div class="section" id="loading-non-https-external-resources">
 <h3>Loading non https external resources<a class="headerlink" href="#loading-non-https-external-resources" title="Permalink to this headline">¶</a></h3>
 <p>If you want to load non https external resources in your https application, you
-must use the resourceproxy service and add the list of hosts you want to access
+should use the resourceproxy service and add the list of hosts you want to access
 in your project <cite>vars_&lt;project&gt;.yaml</cite> configuration file:</p>
 <div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span>resourceproxy:
     # list of urls from which it is safe to load content
     targets:
-      #exempletargetname: http://www.camptocamp.com/?param1=%s&amp;param2=%s
+      #exampletargetname: http://www.camptocamp.com/?param1=%s&amp;param2=%s
       rfinfo: http://www.rfinfo.vd.ch/rfinfo.php?no_commune=%s&amp;no_immeuble=%s
 </pre></div>
 </div>
@@ -150,7 +150,8 @@ connections, you can achieve this by adding the following configuration element 
 <h2>Reset password<a class="headerlink" href="#reset-password" title="Permalink to this headline">¶</a></h2>
 <p>When a user has forgotten his/her password, a new one may be sent by email if some additional
 GeoMapFish configuration is provided.</p>
-<p>And to generate the required e-mail, in the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file, add the following configuration:</p>
+<p>To ensure such an e-mail can be generated, you should add the following configuration
+in the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file:</p>
 <div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># SMTP configuration could be already there if needed by other feature</span>
 <span class="n">smtp</span><span class="p">:</span>
     <span class="n">host</span><span class="p">:</span> <span class="n">smtp</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="mi">465</span>
@@ -195,8 +196,8 @@ in your <code class="docutils literal notranslate"><span class="pre">vars_&lt;pr
 <p>To enable the OGC proxy, set <code class="docutils literal notranslate"><span class="pre">ogcproxy_enable</span></code> to <code class="docutils literal notranslate"><span class="pre">true</span></code> in your
 <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file.</p>
 <p>Default: <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
-<p>And adding the <code class="docutils literal notranslate"><span class="pre">papyrus_ogcproxy</span></code> package in the <code class="docutils literal notranslate"><span class="pre">install_requires</span></code> of the <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> file.</p>
-<p>In the <code class="docutils literal notranslate"><span class="pre">viewer.js</span></code> files you should also add the <code class="docutils literal notranslate"><span class="pre">OpenLayers.ProxyHost</span></code> configuration:</p>
+<p>Furthermore, add the <code class="docutils literal notranslate"><span class="pre">papyrus_ogcproxy</span></code> package in the <code class="docutils literal notranslate"><span class="pre">install_requires</span></code> of the <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> file.</p>
+<p>In the <code class="docutils literal notranslate"><span class="pre">viewer.js</span></code> files, you should also add the <code class="docutils literal notranslate"><span class="pre">OpenLayers.ProxyHost</span></code> configuration:</p>
 <div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">OpenLayers</span><span class="o">.</span><span class="n">ProxyHost</span> <span class="o">=</span> <span class="s2">&quot;${request.route_url(&#39;ogcproxy&#39;) | n}?url=&quot;</span><span class="p">;</span>
 </pre></div>
 </div>
@@ -205,9 +206,9 @@ have the CORS headers (<a class="reference external" href="http://enable-cors.or
 </div>
 <div class="section" id="access-to-services-by-external-servers">
 <h2>Access to services by external servers<a class="headerlink" href="#access-to-services-by-external-servers" title="Permalink to this headline">¶</a></h2>
-<p>By default, only localhost can access c2c’s services.
-To permit access to a specific service by an external server, you must set headers CORS (Access-Control-Allow-Origin) in your <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file.</p>
-<p>Add or modify the structure like that:</p>
+<p>By default, only localhost can access c2cgeoportal’s services.
+To permit access to a specific service by an external server, you must set CORS headers (Access-Control-Allow-Origin) in your <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file.</p>
+<p>Add or modify the structure as follows:</p>
 <div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">headers</span><span class="p">:</span>
     <span class="o">&lt;</span><span class="n">service_name</span><span class="o">&gt;</span><span class="p">:</span>
         <span class="n">access_control_allow_origin</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;&lt;domain1&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;domain2&gt;&quot;</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
@@ -215,7 +216,7 @@ To permit access to a specific service by an external server, you must set heade
 </pre></div>
 </div>
 <p>A <code class="docutils literal notranslate"><span class="pre">&quot;*&quot;</span></code> can be included in <code class="docutils literal notranslate"><span class="pre">access_control_allow_origin</span></code> to allow everybody to
-access, but no credentials will be passed in the case.</p>
+access, but no credentials will be passed in this case.</p>
 <p>Available services are:</p>
 <p>Entry:</p>
 <ul class="simple">
@@ -239,13 +240,28 @@ access, but no credentials will be passed in the case.</p>
 <div class="section" id="authorized-referrers">
 <h2>Authorized referrers<a class="headerlink" href="#authorized-referrers" title="Permalink to this headline">¶</a></h2>
 <p>To mitigate <a class="reference external" href="https://en.wikipedia.org/wiki/Cross-site_request_forgery">CSRF</a>
-attacks, the server validates the referer against a list of authorized referrers.</p>
-<p>By default, only the pages coming from the server are allowed. You can change
+attacks, the server validates the referrer against a list of authorized referrers.</p>
+<p>By default, only the requests coming from the server are allowed. You can change
 that list by adding an <code class="docutils literal notranslate"><span class="pre">authorized_referers</span></code> list in your
 <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file.</p>
 <p>This solution is not the most secure (some people have browser extensions that
-reset the referer), but that is the easiest to implement with all our different
+reset the referrer), but that is the easiest to implement with all the different
 JS frameworks.</p>
+</div>
+<div class="section" id="force-authentication-when-accessing-the-mapserver-proxy">
+<h2>Force authentication when accessing the mapserver proxy<a class="headerlink" href="#force-authentication-when-accessing-the-mapserver-proxy" title="Permalink to this headline">¶</a></h2>
+<p>If your WMS contains private layers and you wish to force a client to authenticate
+in order to always obtain all layers (including private layers), you can force
+authentication by adding the parameter <code class="docutils literal notranslate"><span class="pre">authentication_required</span></code> to the WMS URL.
+This setting may be necessary for the good operation of some clients such as ArcMap.</p>
+<p>For example, if your WMS is accessible as</p>
+<div class="code html highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">https</span><span class="p">:</span><span class="o">//&lt;</span><span class="n">yourserver</span><span class="o">&gt;/&lt;</span><span class="n">yourinstance</span><span class="o">&gt;/</span><span class="n">wsgi</span><span class="o">/</span><span class="n">mapserv_proxy</span>
+</pre></div>
+</div>
+<p>then you can use the following URL to force authentication:</p>
+<div class="code html highlight-default notranslate"><div class="highlight"><pre><span></span>https://&lt;yourserver&gt;/&lt;yourinstance&gt;/wsgi/mapserv_proxy?authentication_required=true
+</pre></div>
+</div>
 </div>
 </div>
 
@@ -280,6 +296,7 @@ JS frameworks.</p>
 <li><a class="reference internal" href="#access-to-the-ogc-proxy">Access to the OGC proxy</a></li>
 <li><a class="reference internal" href="#access-to-services-by-external-servers">Access to services by external servers</a></li>
 <li><a class="reference internal" href="#authorized-referrers">Authorized referrers</a></li>
+<li><a class="reference internal" href="#force-authentication-when-accessing-the-mapserver-proxy">Force authentication when accessing the mapserver proxy</a></li>
 </ul>
 </li>
 </ul>
@@ -288,7 +305,7 @@ JS frameworks.</p>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="index.html">Integrator Guide</a><ul>
-      <li>Previous: <a href="customise.html" title="previous chapter">Customise the application</a></li>
+      <li>Previous: <a href="customise.html" title="previous chapter">Customize the application</a></li>
       <li>Next: <a href="features.html" title="next chapter">Additional features</a></li>
   </ul></li>
   </ul></li>

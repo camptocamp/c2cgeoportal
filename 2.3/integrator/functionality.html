@@ -43,7 +43,7 @@ the application according to the user’s permissions.</p>
 <li>Functionalities for specific roles are defined in the database through the administration interface.</li>
 <li>Functionalities for specific users are defined in the database through the administration interface.</li>
 </ol>
-<p>Each level overrides the previous ones in the same order as indicated above.
+<p>Each level overrides the previous ones in the order indicated above.
 For example, if the user is authenticated and has associated functionalities in
 the <code class="docutils literal notranslate"><span class="pre">user</span></code> database table, then the <code class="docutils literal notranslate"><span class="pre">functionalities:anonymous</span></code> and
 <code class="docutils literal notranslate"><span class="pre">functionalities:registered</span></code> configuration variables, as well as any
@@ -82,8 +82,8 @@ key/value pairs, whose values are either arrays or scalars.</p>
         <span class="n">default_basemap</span><span class="p">:</span> <span class="n">plan</span>
 </pre></div>
 </div>
-<p class="last">In this example anonymous users can print maps using the <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">A4</span> <span class="pre">portrait</span></code>
-and <code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">A3</span> <span class="pre">landscape</span></code> layouts only. And their default base layer is the
+<p class="last">In this example, anonymous users can print maps using the <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">A4</span> <span class="pre">portrait</span></code>
+and <code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">A3</span> <span class="pre">landscape</span></code> layouts only. Their default base layer is the
 <code class="docutils literal notranslate"><span class="pre">plan</span></code> layer.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">functionalities:registered</span></code></dt>
@@ -116,10 +116,10 @@ below explain how to set the default basemap and how to limit access to some
 plugins according to the user’s permissions.</p>
 <div class="section" id="example-of-the-default-basemap-functionality">
 <h3>Example of the default_basemap Functionality<a class="headerlink" href="#example-of-the-default-basemap-functionality" title="Permalink to this headline">¶</a></h3>
-<p>Using functionalities, it is easy to set the default basemap that will be
+<p>Using functionalities, you can set the default basemap that will be
 displayed when a user loads the application depending on whether he/she is
 anonymous, authenticated or has some specific role.</p>
-<p>First make sure that <code class="docutils literal notranslate"><span class="pre">default_basemap</span></code> is made available in the templates
+<p>First, make sure that <code class="docutils literal notranslate"><span class="pre">default_basemap</span></code> is made available in the templates
 using the <code class="docutils literal notranslate"><span class="pre">functionalities:available_in_templates</span></code> parameter in the
 <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code> configuration file:</p>
 <div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">functionalities</span><span class="p">:</span>
@@ -134,7 +134,7 @@ for anonymous users:</p>
         <span class="n">default_basemap</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">some_basemap</span><span class="o">&gt;</span>
 </pre></div>
 </div>
-<p>Optionally you may also indicate what basemap to use for authenticated users
+<p>Optionally, you may also indicate what basemap to use for authenticated users
 (if omitted, the anonymous <code class="docutils literal notranslate"><span class="pre">default_basemap</span></code> value will be used):</p>
 <div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">functionalities</span><span class="p">:</span>
     <span class="n">anonymous</span><span class="p">:</span>
@@ -143,11 +143,10 @@ for anonymous users:</p>
         <span class="n">default_basemap</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">some_other_basemap</span><span class="o">&gt;</span>
 </pre></div>
 </div>
-<p>Finally you may link <code class="docutils literal notranslate"><span class="pre">default_basemap</span></code> functionalities to some roles or
+<p>Finally, you may link <code class="docutils literal notranslate"><span class="pre">default_basemap</span></code> functionalities to some roles or
 users in the administration interface.</p>
-<p>So that the <code class="docutils literal notranslate"><span class="pre">default_basemap</span></code> is actually provided to the
-<code class="docutils literal notranslate"><span class="pre">cgxp_mapopacityslider</span></code> plugin, use the following configuration in your
-project’s <code class="docutils literal notranslate"><span class="pre">viewer.js</span></code> template:</p>
+<p>If you are using the <code class="docutils literal notranslate"><span class="pre">cgxp_mapopacityslider</span></code> plugin, use the following configuration in your
+project’s <code class="docutils literal notranslate"><span class="pre">viewer.js</span></code> template so that the <code class="docutils literal notranslate"><span class="pre">default_basemap</span></code> is provided there:</p>
 <div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="n">ptype</span><span class="p">:</span> <span class="s2">&quot;cgxp_mapopacityslider&quot;</span><span class="p">,</span>
     <span class="n">defaultBaseLayerRef</span><span class="p">:</span> <span class="s2">&quot;${functionality[&#39;default_basemap&#39;][0] | n}&quot;</span>

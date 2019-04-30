@@ -6,16 +6,18 @@ Working with Object storage (like S3)
 Generalities
 ------------
 
-In this we will consider to use the S3-like from Exoscale.
+In this section, we explain how to use the S3-like storage from Exoscale.
 
-First of all we should set the following variables on the ``geoportal``, ``config`` and ``qgisserver`` services.
+First of all, you should set the following variables
+on the ``geoportal``, ``config`` and ``qgisserver`` services:
 
 * ``AWS_ACCESS_KEY_ID``: The project access key.
 * ``AWS_SECRET_ACCESS_KEY``: The project secret key.
 * ``AWS_DEFAULT_REGION=ch-dk-2``: The region used by Exoscale.
 * ``AWS_S3_ENDPOINT=sos-ch-dk-2.exo.io``: The endpoint used by Exoscale.
 
-For better performance, we should set the following variables on the ``geoportal`` and ``qgisserver`` services.
+For better performance, you should furthermore set the following variables
+on the ``geoportal`` and ``qgisserver`` services:
 
 * ``CPL_VSIL_CURL_USE_CACHE=TRUE``
 * ``CPL_VSIL_CURL_CACHE_SIZE=128000000``
@@ -36,6 +38,7 @@ Create the vrt file for a raster layer:
 
    gdalbuildvrt `aws --endpoint-url https://sos-ch-dk-2.exo.io/ --region ch-dk-2 s3 ls \
         s3://<bucket>/<folder>/*.geotiff|awk '{print $4}'` s3://<bucket>/<folder>/index.vrt
+
 
 MapServer
 ---------

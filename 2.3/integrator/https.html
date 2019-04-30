@@ -44,15 +44,15 @@ prompt “unsecure content” warnings.</p>
 <div class="section" id="application-behind-a-proxy">
 <h2>Application behind a proxy<a class="headerlink" href="#application-behind-a-proxy" title="Permalink to this headline">¶</a></h2>
 <p>If the application is placed behind some proxy that removes the SSL encryption
-(plain HTTP is used between the proxy and the server) then some specific
-configuration is required both on the c2cgeoportal application, and on the
+(plain HTTP is used between the proxy and the server), then some specific
+configuration is required both on the c2cgeoportal application and on the
 proxy:</p>
 <ul>
 <li><p class="first">The proxy should add a specific header to the requests. For example <code class="docutils literal notranslate"><span class="pre">X-Https</span>
 <span class="pre">on</span></code> (<code class="docutils literal notranslate"><span class="pre">X-Https</span></code> is the header name, and <code class="docutils literal notranslate"><span class="pre">on</span></code> is the header value).</p>
 </li>
 <li><p class="first">To make c2cgeoportal generate HTTPS URLs when requests with this header are
-received you will set the <cite>HTTPS</cite> environment variable by adding the
+received, you should set the <cite>HTTPS</cite> environment variable by adding the
 following in the <code class="docutils literal notranslate"><span class="pre">apache/wsgi.conf.mako</span></code> file in the <code class="docutils literal notranslate"><span class="pre">&lt;location</span> <span class="pre">...&gt;</span></code>
 section, in our example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SetEnvIf</span>    <span class="n">X</span><span class="o">-</span><span class="n">Https</span> <span class="n">on</span> <span class="n">HTTPS</span><span class="o">=</span><span class="mi">1</span>
@@ -76,25 +76,25 @@ value of <code class="docutils literal notranslate"><span class="pre">request.sc
 <div class="section" id="application-and-ssl-certificate-on-the-same-server">
 <h2>Application and SSL certificate on the same server<a class="headerlink" href="#application-and-ssl-certificate-on-the-same-server" title="Permalink to this headline">¶</a></h2>
 <p>If the SSL certificate and the application are located on the same server, all
-requests will be redirect to https. So you should change the scheme to https
-for all url except for some parameters that should always use http (actually
-all request on localhost): <em>url</em> parameter in tilegeneration configuration.</p>
+requests will be redirected to https. So you should change the scheme to https
+for all url except for some cases that should always use http (typically,
+all requests to localhost): see <em>url</em> parameter in tilegeneration configuration.</p>
 <p>If you apply ssl encryption on your application, you should take care of the
 tiles url to use https scheme to avoid secure and insecure contents.</p>
-<p>Finally, you should redirect all http request to https scheme. On Camptocamp’s
-server, this should be asked to our sysadmin team.</p>
+<p>Finally, you should redirect all http request to https scheme. On Camptocamp
+servers, this needs to be requested via infrastructure support.</p>
 <p>In case you load http external resources into your application, you should use
-resourceproxy service as described below.</p>
+the resourceproxy service as described below.</p>
 </div>
 <div class="section" id="loading-non-https-external-resources">
 <h2>Loading non https external resources<a class="headerlink" href="#loading-non-https-external-resources" title="Permalink to this headline">¶</a></h2>
 <p>If you want to load non https external resources in your https application, you
-must use the resourceproxy service and add the list of hosts you want to access
+should use the resourceproxy service and add the list of hosts you want to access
 in your project <cite>vars_&lt;project&gt;.yaml</cite> configuration file:</p>
 <div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span>resourceproxy:
     # list of urls from which it is safe to load content
     targets:
-      #exempletargetname: http://www.camptocamp.com/?param1=%s&amp;param2=%s
+      #exampletargetname: http://www.camptocamp.com/?param1=%s&amp;param2=%s
       rfinfo: http://www.rfinfo.vd.ch/rfinfo.php?no_commune=%s&amp;no_immeuble=%s
 </pre></div>
 </div>

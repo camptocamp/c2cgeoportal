@@ -37,17 +37,17 @@
 <p>A cluster is a configuration where several servers are used to serve the application
 in production.</p>
 <p>Creating a cluster implies to separate the database and the application to
-make sure that the data are the same on all servers.</p>
-<p>A possibility is to have the same database for all servers (integration, production).
+make sure that the data is the same on all servers.</p>
+<p>One possibility is to have the same database for all servers (integration, production).
 A single schema for static data is shared, whereas a dedicated main schema will
 be used for each server.</p>
 <p>Deploying data from integration to production may be done by
 <a class="reference external" href="https://wiki.postgresql.org/wiki/Clone_schema">cloning the main integration schema</a>.</p>
-<p>For the next steps it is important to figure out if the main goal is the scalability
+<p>For the next steps, it is important to know if your main goal is the scalability
 or the robustness of the application.</p>
-<p>In general the scalability is more important because the main cause of
-down time is due of too much traffic.</p>
-<p>In this case the first thing to do is to separate the services:</p>
+<p>In general, scalability is more important, because the main cause of
+down time is too much traffic.</p>
+<p>In this case, the first thing to do is to separate the services:</p>
 <blockquote>
 <div><ul class="simple">
 <li>PostgreSQL / PostGIS</li>
@@ -56,7 +56,7 @@ down time is due of too much traffic.</p>
 <li>MapServer / MapCache / Memcached</li>
 </ul>
 </div></blockquote>
-<p>To have better DB performances, one can setup multiple Postgres servers in a
+<p>To have better DB performance, one can setup multiple Postgres servers in a
 <a class="reference external" href="https://wiki.postgresql.org/wiki/Binary_Replication_Tutorial">master/slave</a>
 configuration. To enable this feature on GeoMapFish, you must add this to your
 <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code>:</p>
@@ -70,8 +70,8 @@ operations to the database (not supported by slave instances). If it is not the 
 application (bad practice), add entries to <code class="docutils literal notranslate"><span class="pre">db_chooser/master</span></code> in your <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code>.
 For forcing the use of a slave for a POST/PUT/DELETE, add entries to the <code class="docutils literal notranslate"><span class="pre">db_chooser/slave</span></code>
 configuration.</p>
-<p>For having more than one instance of slave and having an automatic election of a new
-master in case of failure, you must setup an high availability proxy (HAProxy, for example).
+<p>To have more than one slave instance and to have an automatic election of a new
+master in case of failure, you must setup a high availability proxy (HAProxy, for example).
 This is out of the scope of this document. If you do not care about failover, you can use one
 DNS entry with multiple IP entries for the slaves.</p>
 </div>

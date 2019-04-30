@@ -36,41 +36,41 @@
 <span id="integrator-checker"></span><h1>Automated check<a class="headerlink" href="#automated-check" title="Permalink to this headline">¶</a></h1>
 <p>c2cgeoportal applications include functionality for testing and assessing that the application is correctly
 functioning, i.e. that its web services respond as expected.</p>
-<p>For that we have parts: a <em>checker</em> and a <em>check_collector</em>.</p>
-<p>Those (especially the collector) are meant to be used by a
+<p>For this purpose we have a <em>checker</em> and a <em>check_collector</em>.
+These (especially the collector) are meant to be used by a
 monitoring system like Nagios to check that the application is alive.</p>
-<p>They integrate into c2cwsgiutils’s health check service. The return code are:</p>
+<p>They integrate into c2cwsgiutils’s health check service. The return codes are:</p>
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">200</span></code> =&gt; OK</li>
 <li><code class="docutils literal notranslate"><span class="pre">500</span></code> =&gt; Error</li>
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Check collector can only check pages that are on the same server as it.</p>
+<p class="last">Check collector can only check pages that are on the same server as itself.</p>
 </div>
 <p>You can access the health_check service with this kind of url:</p>
 <blockquote>
 <div>&lt;project_url&gt;/c2c/health_check?max_level=3</div></blockquote>
-<p>The used levels with the default configuration (recommended):</p>
+<p>The levels used in the default configuration (recommended settings):</p>
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">1</span></code>: Vital checkers (quick checks).</li>
-<li><code class="docutils literal notranslate"><span class="pre">3</span></code>: Slow service check like print and GetCapabilities.</li>
+<li><code class="docutils literal notranslate"><span class="pre">3</span></code>: Slow service checks, like print and GetCapabilities.</li>
 <li><code class="docutils literal notranslate"><span class="pre">10</span></code>: collector of different sites.</li>
 </ul>
 <p>See also: <a class="reference external" href="https://github.com/camptocamp/c2cwsgiutils/#health-checks">https://github.com/camptocamp/c2cwsgiutils/#health-checks</a></p>
-<p>The recommended URL that should be checked by e service like Pingdom:</p>
+<p>The recommended URL that should be checked by services such as Pingdom:</p>
 <blockquote>
 <div>&lt;project_url&gt;/c2c/health_check?checks=check_collector</div></blockquote>
-<p>The recommended URL to use to validate the migration (<code class="docutils literal notranslate"><span class="pre">checker_url</span></code> in <code class="docutils literal notranslate"><span class="pre">proect.yaml.mako</span></code>):</p>
+<p>The recommended URL to use to validate a migration (<code class="docutils literal notranslate"><span class="pre">checker_url</span></code> in <code class="docutils literal notranslate"><span class="pre">proect.yaml.mako</span></code>):</p>
 <blockquote>
 <div>&lt;project_url&gt;/c2c/health_check?max_level=9</div></blockquote>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">For non Docker project the <code class="docutils literal notranslate"><span class="pre">&lt;project_url&gt;</span></code> should ends with <code class="docutils literal notranslate"><span class="pre">/wsgi</span></code>.</p>
+<p class="last">For non Docker project the <code class="docutils literal notranslate"><span class="pre">&lt;project_url&gt;</span></code> should end with <code class="docutils literal notranslate"><span class="pre">/wsgi</span></code>.</p>
 </div>
 <div class="section" id="checker">
 <h2>Checker<a class="headerlink" href="#checker" title="Permalink to this headline">¶</a></h2>
-<p>The checker use the following configuration structure in <code class="docutils literal notranslate"><span class="pre">vars_&lt;project&gt;.yaml</span></code>:</p>
+<p>The checker uses the following configuration structure in <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code>:</p>
 <div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
     <span class="c1"># Global configuration</span>
     <span class="o">...</span>
@@ -110,59 +110,70 @@ checker_url: https://${host}/${instanceid}/wsgi/check_collector?
 <div class="section" id="print">
 <h3><code class="docutils literal notranslate"><span class="pre">print</span></code><a class="headerlink" href="#print" title="Permalink to this headline">¶</a></h3>
 <p>Check the print version 3.x (try to print a page).</p>
-<p>Use as spec the <code class="docutils literal notranslate"><span class="pre">spec</span></code> from configuration.</p>
+<p>Uses as spec the <code class="docutils literal notranslate"><span class="pre">spec</span></code> from configuration.</p>
 </div>
 <div class="section" id="fulltextsearch">
 <h3><code class="docutils literal notranslate"><span class="pre">fulltextsearch</span></code><a class="headerlink" href="#fulltextsearch" title="Permalink to this headline">¶</a></h3>
 <p>Check that the FullText-search service return an element.</p>
-<p>Use the <code class="docutils literal notranslate"><span class="pre">search</span></code> from configuration as text to search.</p>
+<p>Uses the <code class="docutils literal notranslate"><span class="pre">search</span></code> from configuration as text to search.</p>
 </div>
 <div class="section" id="themes">
 <h3><code class="docutils literal notranslate"><span class="pre">themes</span></code><a class="headerlink" href="#themes" title="Permalink to this headline">¶</a></h3>
-<p>Check that the theme has no error for all interface present in the database.</p>
-<p>It use the <code class="docutils literal notranslate"><span class="pre">themes</span></code> configuration:</p>
+<p>Check that the theme has no error for all interfaces present in the database.</p>
+<p>Uses the <code class="docutils literal notranslate"><span class="pre">themes</span></code> configuration:</p>
 <div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">themes</span><span class="p">:</span>
     <span class="n">params</span><span class="p">:</span>
-        <span class="c1"># Dictionary that represent the query string</span>
+        <span class="c1"># Dictionary that represents the query string</span>
     <span class="o">&lt;</span><span class="n">interface</span><span class="o">&gt;</span><span class="p">:</span>
         <span class="n">params</span><span class="p">:</span>
-            <span class="c1"># Dictionary that represent the query string</span>
+            <span class="c1"># Dictionary that represents the query string</span>
     <span class="n">level</span><span class="p">:</span> <span class="mi">2</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="lang">
 <h3><code class="docutils literal notranslate"><span class="pre">lang</span></code><a class="headerlink" href="#lang" title="Permalink to this headline">¶</a></h3>
-<p>Check that all the language files are present,
-use the global configuration <code class="docutils literal notranslate"><span class="pre">available_locale_names</span></code>, and the checker configuration
-<code class="docutils literal notranslate"><span class="pre">files</span></code>, an array of string that must be in <code class="docutils literal notranslate"><span class="pre">[cgxp,</span> <span class="pre">cgxp-api,</span> <span class="pre">ngeo]</span></code>.</p>
+<p>Check that all the language files are present.</p>
+<p>Uses the global configuration <code class="docutils literal notranslate"><span class="pre">available_locale_names</span></code>, and the checker configuration
+<code class="docutils literal notranslate"><span class="pre">files</span></code>, an array of stringis that must be in <code class="docutils literal notranslate"><span class="pre">[cgxp,</span> <span class="pre">cgxp-api,</span> <span class="pre">ngeo]</span></code>.</p>
 </div>
 <div class="section" id="routes">
 <h3><code class="docutils literal notranslate"><span class="pre">routes</span></code><a class="headerlink" href="#routes" title="Permalink to this headline">¶</a></h3>
 <p>Check some routes, configured in <code class="docutils literal notranslate"><span class="pre">routes</span></code> as array of objects with:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>* ``name`` witch is the route name.
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>* ``name`` the route name.
+* ``display_name`` the name to be displayed.
 * ``params`` the used query string as a dictionary.
 * ``level``
 </pre></div>
 </div>
-<p>In the configuration we can also fill the <code class="docutils literal notranslate"><span class="pre">routes_disable</span></code> to disable some routes.</p>
+<p>In the configuration, we can also fill the <code class="docutils literal notranslate"><span class="pre">routes_disable</span></code> to disable some routes.</p>
 </div>
 <div class="section" id="phantomjs">
 <h3><code class="docutils literal notranslate"><span class="pre">phantomjs</span></code><a class="headerlink" href="#phantomjs" title="Permalink to this headline">¶</a></h3>
 <p>Check with phantomjs that the pages load correctly without errors,
-use the <code class="docutils literal notranslate"><span class="pre">routes</span></code> configuration as an array of route name to check:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>* ``name`` witch is the route name.
+using the <code class="docutils literal notranslate"><span class="pre">routes</span></code> configuration as an array of route names to check:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>* ``name`` the route name.
 * ``params`` the used query string as a dictionary.
 * ``level``
 </pre></div>
 </div>
+</div>
+</div>
+<div class="section" id="infrastructure">
+<h2>Infrastructure<a class="headerlink" href="#infrastructure" title="Permalink to this headline">¶</a></h2>
+<p>If you experience connection issues with your checker, the following configuration options may be useful for you:</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
+  <span class="n">checker</span><span class="p">:</span>
+    <span class="p">[</span><span class="n">base_internal_url</span><span class="p">]:</span> <span class="n">URL</span> <span class="n">like</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">8080</span>
+    <span class="p">[</span><span class="n">forward_host</span><span class="p">]:</span> <span class="o">&lt;</span><span class="kc">True</span><span class="o">|</span><span class="kc">False</span><span class="o">&gt;</span>
+</pre></div>
 </div>
 </div>
 <div class="section" id="check-collector">
 <h2>Check collector<a class="headerlink" href="#check-collector" title="Permalink to this headline">¶</a></h2>
 <p>Used to collect checks from a different instance in the parent/children
 structure. It is useful to perform a set of checks all at once.</p>
-<p>The checker collector use the following configuration structure:</p>
+<p>The check collector uses the following configuration structure:</p>
 <div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
     <span class="c1"># Global configuration</span>
     <span class="o">...</span>
@@ -172,7 +183,7 @@ structure. It is useful to perform a set of checks all at once.</p>
         <span class="n">hosts</span><span class="p">:</span> <span class="p">[]</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">max_level</span></code> is the default max_level parameter used for every hosts. The <code class="docutils literal notranslate"><span class="pre">max_level</span></code> option can be set
+<p>The <code class="docutils literal notranslate"><span class="pre">max_level</span></code> is the default max_level parameter used for every host. The <code class="docutils literal notranslate"><span class="pre">max_level</span></code> option can be set
 for a host to override it.</p>
 <p>To add a host:</p>
 <div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
@@ -210,6 +221,7 @@ for a host to override it.</p>
 <li><a class="reference internal" href="#phantomjs"><code class="docutils literal notranslate"><span class="pre">phantomjs</span></code></a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#infrastructure">Infrastructure</a></li>
 <li><a class="reference internal" href="#check-collector">Check collector</a></li>
 </ul>
 </li>

@@ -35,7 +35,7 @@
   <div class="section" id="install-an-existing-application">
 <span id="integrator-install-application"></span><h1>Install an existing application<a class="headerlink" href="#install-an-existing-application" title="Permalink to this headline">¶</a></h1>
 <p>On this page we explain the procedure to build an application from
-only the code.</p>
+only the current application code.</p>
 <p>If you want to use an existing database, you should ignore
 all the commands concerning the database.</p>
 <dl class="docutils">
@@ -72,7 +72,7 @@ span.prompt1:before {
 </pre><p>with <code class="docutils literal notranslate"><span class="pre">&lt;db_name&gt;</span></code> replaced by the actual database name.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>if you do not have the template_postgis you can use:</p>
+<p>If you do not have the template_postgis you can use:</p>
 <p>with Postgres &gt;= 9.1 and PostGIS &gt;= 2.1:</p>
 <pre class="highlight"><span class="prompt1">sudo -u postgres createdb -E UTF8 -T template0 &lt;db_name&gt;</span>
 <span class="prompt1">sudo -u postgres psql -c <span class="s2">&quot;CREATE EXTENSION postgis;&quot;</span> &lt;db_name&gt;</span>
@@ -83,8 +83,8 @@ span.prompt1:before {
 </pre><p class="last">Note that the path of the postgis scripts and the template name can
 differ on your host.</p>
 </div>
-<p>Create the “pg_trgm” extension to use the “similarity” function within the
-full-text search:</p>
+<p>If you wish to use the “similarity” function within the
+full-text search, create the <code class="docutils literal notranslate"><span class="pre">pg_trgm</span></code> extension:</p>
 <pre class="highlight"><span class="prompt1">sudo -u postgres psql -c <span class="s2">&quot;CREATE EXTENSION pg_trgm&quot;</span> &lt;db_name&gt;</span>
 </pre></div>
 <div class="section" id="create-the-schemas">
@@ -207,7 +207,7 @@ on RedHat Enterprise Linux (RHEL) 6.</p>
 <p>First of all, note that, with RHEL, you cannot install the c2cgeoportal
 application in your homedir. If you do so, you will get the following error
 in the Apache logs:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">13</span><span class="p">)</span><span class="n">Permission</span> <span class="n">denied</span><span class="p">:</span> <span class="n">access</span> <span class="n">to</span> <span class="o">/~</span><span class="n">elemoine</span><span class="o">/</span> <span class="n">denied</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">13</span><span class="p">)</span><span class="n">Permission</span> <span class="n">denied</span><span class="p">:</span> <span class="n">access</span> <span class="n">to</span> <span class="o">/~&lt;</span><span class="n">your_user_id</span><span class="o">&gt;/</span> <span class="n">denied</span>
 </pre></div>
 </div>
 <p class="last">So always install the application in an Apache-accessible directory. On
@@ -246,8 +246,19 @@ already be the case; otherwise look at <code class="docutils literal notranslate
 </ul>
 </div></blockquote>
 <p>Your application should now be available at:
-<code class="docutils literal notranslate"><span class="pre">https://&lt;hostname&gt;/</span></code>.</p>
-<p>Where the <code class="docutils literal notranslate"><span class="pre">&lt;hostname&gt;</span></code> is directly linked to the virtual host.</p>
+<code class="docutils literal notranslate"><span class="pre">https://&lt;hostname&gt;/</span></code>,
+where the <code class="docutils literal notranslate"><span class="pre">&lt;hostname&gt;</span></code> is directly linked to the virtual host.</p>
+<p>Add in the <code class="docutils literal notranslate"><span class="pre">/var/www/vhosts/&lt;vhost_name&gt;/conf/proxies.conf</span></code> file
+(create it if it does not exist):</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ProxyPass</span> <span class="s2">&quot;/&lt;instance&gt;&quot;</span>  <span class="s2">&quot;http://localhost:8080/&lt;instance&gt;&quot;</span>
+<span class="n">ProxyPassReverse</span> <span class="s2">&quot;/&lt;instance&gt;&quot;</span>  <span class="s2">&quot;http://localhost:8080/&lt;instance&gt;&quot;</span>
+<span class="n">ProxyPreserveHost</span> <span class="n">On</span>
+<span class="n">RequestHeader</span> <span class="nb">set</span> <span class="n">X</span><span class="o">-</span><span class="n">Forwarded</span><span class="o">-</span><span class="n">Proto</span> <span class="s2">&quot;https&quot;</span>
+<span class="n">RequestHeader</span> <span class="nb">set</span> <span class="n">X</span><span class="o">-</span><span class="n">Forwarded</span><span class="o">-</span><span class="n">Port</span> <span class="s2">&quot;443&quot;</span>
+<span class="n">ProxyRequests</span> <span class="n">Off</span>
+</pre></div>
+</div>
+<p>The root instance should be at the end.</p>
 </div>
 </div>
 <div class="section" id="migrating-to-a-new-server">

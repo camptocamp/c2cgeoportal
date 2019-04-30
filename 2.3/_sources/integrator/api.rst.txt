@@ -23,10 +23,10 @@ Both expose the same programming interface.
 
     The Extended API is based on the CGXP stack (Ext/GeoExt/GXP) and plugins,
     just like the main (desktop) viewer. It provides more functionality than
-    the Simple API, but it is heavier than the Simple API, and does not on
+    the Simple API, but it is heavier than the Simple API, and does not work on
     mobile.
 
-    To load the Extended API in a page the following script tag should be
+    To load the Extended API in a page, the following script tag should be
     added::
 
         <script src="http://example.com/path-to-wsgi-app/xapi.js"></script>
@@ -43,9 +43,9 @@ Updating an existing project
 You can skip this section if your project has been created using c2cgeoportal
 1.2 or better. If your project was created using an older c2cgeoportal, and if
 you have just upgraded your project to c2cgeoportal 1.2, then you need to follow
-the below instructions.
+the instructions below.
 
-New directories and files are provided by the ``c2cgeoportal_create`` and need
+New directories and files are provided by ``c2cgeoportal_create`` and need
 to be added manually to the project. The easiest way to get all the necessary
 files involves creating a temporary c2cgeoportal project of the same name as
 the target project, and copying the missing files from there:
@@ -61,7 +61,7 @@ the target project, and copying the missing files from there:
 Configuring the API
 -------------------
 
-As the integrator you will edit four Mako template files to configure the
+As the integrator, you will edit four Mako template files to configure the
 APIs:
 
 ``<package>/templates/api/mapconfig.js``

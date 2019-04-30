@@ -60,7 +60,7 @@ span.prompt1:before {
 <li>/stats.html</li>
 <li>/stats.json</li>
 </ul>
-<p>To enabled it (not recommended for production systems), you can either define the
+<p>To enable it (not recommended for production systems), you can either define the
 following environment variable:</p>
 <pre class="highlight"><span class="prompt1"><span class="nb">export</span> <span class="nv">STATS_VIEW</span><span class="o">=</span><span class="m">1</span></span>
 </pre><p>Or add one line to your <code class="docutils literal notranslate"><span class="pre">vars_&lt;instance&gt;.yaml</span></code>:</p>
@@ -74,7 +74,7 @@ following environment variable:</p>
 <div class="section" id="add-more-statistics">
 <h2>Add more statistics<a class="headerlink" href="#add-more-statistics" title="Permalink to this headline">¶</a></h2>
 <p>By default, timing statistics are added for the routes and the SQL queries. If you want to
-measures special things in you application, just add code like that:</p>
+measure special things in your application, add code as follows:</p>
 <div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">c2cgeoportal_geoportal</span> <span class="k">import</span> <span class="n">stats</span>
 <span class="o">...</span>
     <span class="n">measure</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">timer</span><span class="p">()</span>

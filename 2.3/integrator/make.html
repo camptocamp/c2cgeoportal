@@ -36,12 +36,12 @@
 <span id="integrator-make"></span><h1>Build configuration<a class="headerlink" href="#build-configuration" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="makefiles">
 <h2>Makefiles<a class="headerlink" href="#makefiles" title="Permalink to this headline">¶</a></h2>
-<p>Usually we have the following makefiles includes:
+<p>Usually we have the following makefile includes:
 <code class="docutils literal notranslate"><span class="pre">&lt;user&gt;.mk</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;.mk</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">CONST_Makefile.mk</span></code>.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">CONST_Makefile.mk</span></code> is a huge makefile that is maintained by the
 GeoMapFish developers.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;.mk</span></code> contains the project-specific config and rules,
-Default is:</p>
+default is:</p>
 <pre class="code makefile literal-block">
 <span class="name variable"></span><span class="comment preproc">ifdef VARS_FILE
 </span><span class="name variable">VARS_FILES</span> <span class="operator">+=</span> <span class="literal string interpol">${</span><span class="name variable">VARS_FILE</span><span class="literal string interpol">}</span> vars.yaml
@@ -69,11 +69,12 @@ which extends the default <code class="docutils literal notranslate"><span class
 </pre></div>
 </div>
 <p>they must be listed in the makefile as well using <code class="docutils literal notranslate"><span class="pre">CONFIG_VARS</span></code> (see below).</p>
-<p>To get a variable from the makefile to the vars, you should make your variable as export:</p>
+<p>To be able to use a variable from the makefile in the vars file,
+you should export your variable as follows:</p>
 <div class="code make highlight-default notranslate"><div class="highlight"><pre><span></span>export MY_VAR ?= my_value
 </pre></div>
 </div>
-<p>And in your yaml vars file add:</p>
+<p>And in your yaml vars file, add:</p>
 <div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
    <span class="o">...</span>
    <span class="n">my_var</span><span class="p">:</span> <span class="n">MY_VAR</span>
@@ -84,8 +85,8 @@ which extends the default <code class="docutils literal notranslate"><span class
    <span class="o">-</span> <span class="n">my_var</span>
 </pre></div>
 </div>
-<p>For more information see the
-<a class="reference external" href="https://github.com/sbrunner/c2c.template">c2c.template</a> documentation.</p>
+<p>For more information, see the
+<a class="reference external" href="https://github.com/camptocamp/c2c.template">c2c.template</a> documentation.</p>
 </div>
 <div class="section" id="makefile-config-variables">
 <h2>Makefile config variables<a class="headerlink" href="#makefile-config-variables" title="Permalink to this headline">¶</a></h2>
@@ -127,19 +128,19 @@ span.prompt1:before {
 <pre class="highlight"><span class="prompt1">make --makefile<span class="o">=</span>&lt;user&gt;.mk secrets</span>
 </pre><div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>If you have an issue that call about the <code class="docutils literal notranslate"><span class="pre">dirmngr</span></code> package you can try to add:
+<p>If you have an issue with the <code class="docutils literal notranslate"><span class="pre">dirmngr</span></code> package you can try to add:
 <code class="docutils literal notranslate"><span class="pre">pinentry-mode</span> <span class="pre">loopback</span></code> in your <code class="docutils literal notranslate"><span class="pre">~/.gnupg/gpg.conf</span></code> file and
 <code class="docutils literal notranslate"><span class="pre">allow-loopback-pinentry``in</span> <span class="pre">your</span> <span class="pre">``~/.gnupg/gpg-agent.conf</span></code> file.
-Than it should be fixet or you can also try to run it in Docker:
+Then it should be fixed or you can also try to run it in Docker:
 <code class="docutils literal notranslate"><span class="pre">./docker-run</span> <span class="pre">--home</span> <span class="pre">make</span> <span class="pre">--makefile=&lt;user&gt;.mk</span> <span class="pre">secrets</span></code></p>
-<p class="last">If you have an error about opennig <code class="docutils literal notranslate"><span class="pre">/dev/tty</span></code> try to run it in Docker as root:
+<p class="last">If you have an error about opening <code class="docutils literal notranslate"><span class="pre">/dev/tty</span></code>, try to run it in Docker as root:
 <code class="docutils literal notranslate"><span class="pre">./docker-run</span> <span class="pre">--root</span> <span class="pre">--home</span> <span class="pre">make</span> <span class="pre">--makefile=&lt;user&gt;.mk</span> <span class="pre">secrets</span></code></p>
 </div>
 </div>
 <div class="section" id="custom-rules">
 <h2>Custom rules<a class="headerlink" href="#custom-rules" title="Permalink to this headline">¶</a></h2>
-<p>In the <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;.mk</span></code> file we can create some other rules.
-Here is a simple example:</p>
+<p>In the <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;.mk</span></code> file, you can create custom rules.
+Here is an example:</p>
 <div class="code makefile highlight-default notranslate"><div class="highlight"><pre><span></span>MY_FILE ?= &lt;file&gt;
 
 build: $(MY_FILE)
@@ -158,8 +159,8 @@ project-clean:
 </div>
 <div class="section" id="note">
 <h2>Note<a class="headerlink" href="#note" title="Permalink to this headline">¶</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">/build/*.timestamp</span></code> files are not really required  but they are flags
-indicating that an other rule is correctly done.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">/build/*.timestamp</span></code> files are flags
+indicating that another rule is correctly done.</p>
 <p>Upstream <a class="reference external" href="https://www.gnu.org/software/make/manual/make.html">make documentation</a>.</p>
 </div>
 </div>

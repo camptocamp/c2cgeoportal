@@ -32,10 +32,10 @@
             
   <div class="section" id="extend-the-data-model">
 <h1>Extend the data model<a class="headerlink" href="#extend-the-data-model" title="Permalink to this headline">¶</a></h1>
-<p>The Data model can be extended in the file <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/models.py</span></code>
+<p>The data model can be extended in the file <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/models.py</span></code>
 and the corresponding admin interface configuration
 in the file <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/forms.py</span></code>.</p>
-<p>For example to add some user details, including a link to a
+<p>For example, to add some user details, including a link to a
 new class named “Title”, add to <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;/models.py</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Used to hide the original user in the admin interface</span>
 <span class="n">User</span><span class="o">.</span><span class="n">__acl__</span> <span class="o">=</span> <span class="p">[</span><span class="n">DENY_ALL</span><span class="p">]</span>

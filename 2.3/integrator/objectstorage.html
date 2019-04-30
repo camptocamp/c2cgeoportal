@@ -16,7 +16,7 @@
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Customise the application" href="customise.html" />
+    <link rel="next" title="Customize the application" href="customise.html" />
     <link rel="prev" title="Configuring Windows tools required to connect to our servers" href="windows_tools.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -36,15 +36,17 @@
 <span id="integrator-objectstorage"></span><h1>Working with Object storage (like S3)<a class="headerlink" href="#working-with-object-storage-like-s3" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="generalities">
 <h2>Generalities<a class="headerlink" href="#generalities" title="Permalink to this headline">¶</a></h2>
-<p>In this we will consider to use the S3-like from Exoscale.</p>
-<p>First of all we should set the following variables on the <code class="docutils literal notranslate"><span class="pre">geoportal</span></code>, <code class="docutils literal notranslate"><span class="pre">config</span></code> and <code class="docutils literal notranslate"><span class="pre">qgisserver</span></code> services.</p>
+<p>In this section, we explain how to use the S3-like storage from Exoscale.</p>
+<p>First of all, you should set the following variables
+on the <code class="docutils literal notranslate"><span class="pre">geoportal</span></code>, <code class="docutils literal notranslate"><span class="pre">config</span></code> and <code class="docutils literal notranslate"><span class="pre">qgisserver</span></code> services:</p>
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">AWS_ACCESS_KEY_ID</span></code>: The project access key.</li>
 <li><code class="docutils literal notranslate"><span class="pre">AWS_SECRET_ACCESS_KEY</span></code>: The project secret key.</li>
 <li><code class="docutils literal notranslate"><span class="pre">AWS_DEFAULT_REGION=ch-dk-2</span></code>: The region used by Exoscale.</li>
 <li><code class="docutils literal notranslate"><span class="pre">AWS_S3_ENDPOINT=sos-ch-dk-2.exo.io</span></code>: The endpoint used by Exoscale.</li>
 </ul>
-<p>For better performance, we should set the following variables on the <code class="docutils literal notranslate"><span class="pre">geoportal</span></code> and <code class="docutils literal notranslate"><span class="pre">qgisserver</span></code> services.</p>
+<p>For better performance, you should furthermore set the following variables
+on the <code class="docutils literal notranslate"><span class="pre">geoportal</span></code> and <code class="docutils literal notranslate"><span class="pre">qgisserver</span></code> services:</p>
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">CPL_VSIL_CURL_USE_CACHE=TRUE</span></code></li>
 <li><code class="docutils literal notranslate"><span class="pre">CPL_VSIL_CURL_CACHE_SIZE=128000000</span></code></li>
@@ -146,7 +148,7 @@ span.prompt1:before {
   <li><a href="index.html">Integrator Guide</a><ul>
   <li><a href="configuration.html">Configuration Guide for advanced settings</a><ul>
       <li>Previous: <a href="windows_tools.html" title="previous chapter">Configuring Windows tools required to connect to our servers</a></li>
-      <li>Next: <a href="customise.html" title="next chapter">Customise the application</a></li>
+      <li>Next: <a href="customise.html" title="next chapter">Customize the application</a></li>
   </ul></li>
   </ul></li>
   </ul></li>

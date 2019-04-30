@@ -106,8 +106,8 @@ as in the following example:</p>
 <li><code class="docutils literal notranslate"><span class="pre">check_credentials</span></code>: boolean, whether layer credentials are checked before generating the report. Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</li>
 <li><code class="docutils literal notranslate"><span class="pre">srs</span></code>: projection code (required when showing the map).</li>
 <li><code class="docutils literal notranslate"><span class="pre">spec</span></code>: optional template used to build the <code class="docutils literal notranslate"><span class="pre">spec</span></code> argument sent to the MapFish Print webapp.</li>
-<li><code class="docutils literal notranslate"><span class="pre">map</span></code>: optional the map configuration.</li>
-<li><code class="docutils literal notranslate"><span class="pre">maps</span></code>: optional a list of maps configuration.</li>
+<li><code class="docutils literal notranslate"><span class="pre">map</span></code>: optional, the map configuration.</li>
+<li><code class="docutils literal notranslate"><span class="pre">maps</span></code>: optional, a list of maps configurations.</li>
 </ul>
 <p>The map configuration can contains the following:</p>
 <ul>
@@ -119,7 +119,7 @@ as in the following example:</p>
 </li>
 <li><p class="first"><code class="docutils literal notranslate"><span class="pre">minScale</span></code>: The minimum zoom scale, default is <code class="docutils literal notranslate"><span class="pre">1000</span></code>.</p>
 </li>
-<li><p class="first"><code class="docutils literal notranslate"><span class="pre">style</span></code>: The used style, default is:</p>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">style</span></code>: The style used, default is:</p>
 <div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fillColor</span><span class="p">:</span> <span class="n">red</span>
 <span class="n">fillOpacity</span><span class="p">:</span> <span class="mf">0.2</span>
 <span class="n">symbolizers</span><span class="p">:</span>
@@ -131,7 +131,7 @@ as in the following example:</p>
 </div>
 </li>
 </ul>
-<p>The variables pass to the <code class="docutils literal notranslate"><span class="pre">spec</span></code> template using the <code class="docutils literal notranslate"><span class="pre">%(&lt;variable</span> <span class="pre">name&gt;)s</span></code> syntax:</p>
+<p>The variables are passed to the <code class="docutils literal notranslate"><span class="pre">spec</span></code> template using the <code class="docutils literal notranslate"><span class="pre">%(&lt;variable</span> <span class="pre">name&gt;)s</span></code> syntax:</p>
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">layername</span></code>: name of the layer.</li>
 <li><code class="docutils literal notranslate"><span class="pre">ids</span></code>: JSON representation of the features id.</li>
@@ -142,9 +142,8 @@ as in the following example:</p>
 </div>
 <div class="section" id="configuration-of-the-reports">
 <h2>Configuration of the reports<a class="headerlink" href="#configuration-of-the-reports" title="Permalink to this headline">¶</a></h2>
-<p>If you use the <code class="docutils literal notranslate"><span class="pre">ids</span></code> in an SQL query you should use <code class="docutils literal notranslate"><span class="pre">$X{IN,</span> <span class="pre">&lt;column_name&gt;,</span> <span class="pre">$P{ids}}</span></code>
-to avoid SQL injection, <a class="reference external" href="http://jasperreports.sourceforge.net/sample.reference/query/">see also</a>.</p>
-<p>See the <a class="reference external" href="http://mapfish.github.io/mapfish-print-doc/">Mapfish Print documentation</a>.</p>
+<p>If you use the <code class="docutils literal notranslate"><span class="pre">ids</span></code> in an SQL query, you should use <code class="docutils literal notranslate"><span class="pre">$X{IN,</span> <span class="pre">&lt;column_name&gt;,</span> <span class="pre">$P{ids}}</span></code>
+to avoid SQL injection, <a class="reference external" href="http://jasperreports.sourceforge.net/sample.reference/query/">see also the Jasperreports documentation</a>.</p>
 </div>
 </div>
 

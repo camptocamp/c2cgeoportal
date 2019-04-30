@@ -88,9 +88,9 @@ span.prompt1:before {
 </div>
 <div class="section" id="run-with-a-local-c2cgeoportal">
 <h2>Run with a local c2cgeoportal<a class="headerlink" href="#run-with-a-local-c2cgeoportal" title="Permalink to this headline">¶</a></h2>
-<p>If you need to fix bugs in c2cgeoportal or test new features, you need to hack
+<p>If you need to fix bugs in c2cgeoportal or test new features, you need to alter
 the Docker image creation to use your version of c2cgeoportal.</p>
-<p>First, you need to move/copy you c2cgeoportal clone into you project root
+<p>First, you need to move/copy your c2cgeoportal clone into your project root
 directory. That is needed to allow Docker to see those files.</p>
 <p>Then, add this line to your <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;.mk</span></code> file (before the <code class="docutils literal notranslate"><span class="pre">include</span> <span class="pre">...</span></code>):</p>
 <div class="code make highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TEMPLATE_EXCLUDE</span> <span class="o">=</span> <span class="n">c2cgeoportal</span>
@@ -127,7 +127,7 @@ composition, you can add this in your <code class="docutils literal notranslate"
 </pre></div>
 </div>
 <p>By setting the <code class="docutils literal notranslate"><span class="pre">SQLALCHEMY_URL</span></code> environment variable in your composition
-for the WSGI image, you’ll be able to change the DB connection used.</p>
+for the WSGI image, you will be able to change the DB connection used.</p>
 <p>You can change your <code class="docutils literal notranslate"><span class="pre">production.ini</span></code> and <code class="docutils literal notranslate"><span class="pre">development.ini</span></code> files to use
 environment variables for configuring the loggers. Here is an example for
 the part about the logging:</p>
@@ -169,10 +169,9 @@ args = [(&quot;%(LOG_HOST)s&quot;, %(LOG_PORT)s)]
 level = NOTSET
 </pre></div>
 </div>
-<p>Please note that to use
-<code class="docutils literal notranslate"><span class="pre">CeeSysLogHandler</span></code> you need to add <code class="docutils literal notranslate"><span class="pre">cee_syslog_handler&gt;=0.3.3</span></code> to your
+<p>Please note that to use <code class="docutils literal notranslate"><span class="pre">CeeSysLogHandler</span></code>, you need to add <code class="docutils literal notranslate"><span class="pre">cee_syslog_handler&gt;=0.3.3</span></code> to your
 dependencies.</p>
-<p>Define default values for all those environment variables in your
+<p>Define default values for all the environment variables in your
 <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code> and then you can change them in your composition. For example
 add the following at the end of your <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code>:</p>
 <blockquote>
@@ -190,7 +189,7 @@ add the following at the end of your <code class="docutils literal notranslate">
 <h3>MapServer<a class="headerlink" href="#mapserver" title="Permalink to this headline">¶</a></h3>
 <p>The created <code class="docutils literal notranslate"><span class="pre">mapserver/Dockerfile</span></code> file installs a hook to make the setup of
 the DB possible. Just set the <code class="docutils literal notranslate"><span class="pre">DB_CONNECTION</span></code> environment variable to
-something like that:</p>
+something like:</p>
 <div class="code docker highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">environment</span><span class="p">:</span>
   <span class="n">DB_CONNECTION</span><span class="p">:</span> <span class="n">user</span><span class="o">=</span><span class="n">www</span><span class="o">-</span><span class="n">data</span> <span class="n">password</span><span class="o">=</span><span class="n">toto</span> <span class="n">dbname</span><span class="o">=</span><span class="n">geoacordaDev</span> <span class="n">host</span><span class="o">=</span><span class="n">db</span>
 </pre></div>
@@ -228,6 +227,21 @@ add something like that in your composition:</p>
 <p>When you do an upgrade, backup your DB and upgrade this container first. It will update your
 DB schema, if needed.</p>
 </div>
+<div class="section" id="clean">
+<h2>Clean<a class="headerlink" href="#clean" title="Permalink to this headline">¶</a></h2>
+<p>Docker does not clean anything automatically, in particular it does not clean any images,
+therefore disk space may become problematic after a certain number of builds.
+You can use the following commands to manually remove Docker files.</p>
+<pre class="highlight"><span class="prompt1">docker ps --all --quiet --filter <span class="nv">status</span><span class="o">=</span>exited <span class="p">|</span> xargs --no-run-if-empty docker rm</span>
+<span class="prompt1">docker images <span class="p">|</span> grep <span class="s2">&quot;&lt;none&gt;&quot;</span> <span class="p">|</span> awk <span class="s1">&#39;{print $3}&#39;</span> <span class="p">|</span> xargs --no-run-if-empty docker rmi <span class="o">||</span> <span class="nb">true</span></span>
+<span class="prompt1">docker volume ls --quiet --filter <span class="nv">dangling</span><span class="o">=</span><span class="nb">true</span> <span class="p">|</span> grep <span class="s1">&#39;[0-9a-f]\{64\}&#39;</span> <span class="p">|</span> xargs --no-run-if-empty docker volume rm</span>
+</pre><p>This will remove:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>* Container with exit status
+* Images with version on name as `&lt;none&gt;`
+* Unnamed dangling volumes
+</pre></div>
+</div>
+</div>
 </div>
 
 
@@ -254,6 +268,7 @@ DB schema, if needed.</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#keep-your-db-schema-up-to-date">Keep your DB schema up to date</a></li>
+<li><a class="reference internal" href="#clean">Clean</a></li>
 </ul>
 </li>
 </ul>

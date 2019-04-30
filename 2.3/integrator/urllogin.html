@@ -34,27 +34,27 @@
             
   <div class="section" id="url-login">
 <span id="integrator-urllogin"></span><h1>URL login<a class="headerlink" href="#url-login" title="Permalink to this headline">¶</a></h1>
-<p>We are able to share a permalink of the application to access to protected data.</p>
-<p>First you should configure it in the vars file like it:</p>
+<p>You can generate a permalink of your application to give a user direct access to protected data.</p>
+<p>First, you should configure <code class="docutils literal notranslate"><span class="pre">urllogin</span></code> in the vars file:</p>
 <div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">urllogin</span><span class="p">:</span>
     <span class="n">aes_key</span><span class="p">:</span> <span class="n">foobarfoobar1234</span>
 </pre></div>
 </div>
 <p>The AES key must be either 16, 24, or 32 bytes long.</p>
-<p>To do that you should use the urllogin command: <code class="docutils literal notranslate"><span class="pre">./docker-run</span> <span class="pre">urllogin</span> <span class="pre">--help</span></code>.</p>
-<p>It generate a token like: <code class="docutils literal notranslate"><span class="pre">auth=148b60cc...</span></code> that you can add it in the query string of
+<p>To generate a key, you can use the urllogin command: <code class="docutils literal notranslate"><span class="pre">./docker-run</span> <span class="pre">urllogin</span> <span class="pre">--help</span></code>.
+This generates a token like: <code class="docutils literal notranslate"><span class="pre">auth=148b60cc...</span></code> that you can add in the query string of
 the permalink.</p>
-<p>When the use use this link he will be connected as a normal user, then you should be sure
+<p>When the user uses this link, s/he will be connected as a normal user, therefore you should be sure
 that the session timeout is not too big.</p>
-<p>You can change it in the vars file with:</p>
+<p>You can change the session timeout in the vars file with:</p>
 <div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">authtkt</span><span class="p">:</span>
     <span class="c1"># in second =&gt; One day</span>
     <span class="n">timeout</span><span class="p">:</span> <span class="mi">86400</span>
 </pre></div>
 </div>
 <div class="section" id="how-to-build-your-token-in-your-application">
-<h2>How to build your token in your application?<a class="headerlink" href="#how-to-build-your-token-in-your-application" title="Permalink to this headline">¶</a></h2>
-<p>The token is simply a json like this:</p>
+<h2>How to build your token in your application<a class="headerlink" href="#how-to-build-your-token-in-your-application" title="Permalink to this headline">¶</a></h2>
+<p>The content of the token is a json like this:</p>
 <div class="code json highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="n">u</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">username</span><span class="o">&gt;</span><span class="p">,</span>
     <span class="n">p</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">password</span><span class="o">&gt;</span><span class="p">,</span>
@@ -62,7 +62,7 @@ that the session timeout is not too big.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Witch is encrypted in AES with the provided key, and encoded in hexadecimal.</p>
+<p>This content is then encrypted in AES with the provided key, and encoded in hexadecimal.</p>
 </div>
 </div>
 
@@ -78,7 +78,7 @@ that the session timeout is not too big.</p>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">URL login</a><ul>
-<li><a class="reference internal" href="#how-to-build-your-token-in-your-application">How to build your token in your application?</a></li>
+<li><a class="reference internal" href="#how-to-build-your-token-in-your-application">How to build your token in your application</a></li>
 </ul>
 </li>
 </ul>

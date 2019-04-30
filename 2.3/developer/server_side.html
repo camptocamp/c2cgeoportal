@@ -46,14 +46,14 @@ span.prompt1:before {
 </style><span class="prompt1">git clone git@github.com:camptocamp/c2cgeoportal.git</span>
 <span class="prompt1"><span class="nb">cd</span> c2cgeoportal</span>
 <span class="prompt1">make docker-build</span>
-</pre><p>Than they are ready to use in the application on the same host.</p>
+</pre><p>Now, the new containers are ready to use in the application on the same host.</p>
 </div>
 <div class="section" id="tests">
 <h2>Tests<a class="headerlink" href="#tests" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="running-tests">
 <h3>Running tests<a class="headerlink" href="#running-tests" title="Permalink to this headline">¶</a></h3>
-<p>To be able to run c2cgeoportal tests you need to have the c2cgeoportal source
-code, and a make environment for it. So do that first, as described below.</p>
+<p>Prerequisite: to be able to run c2cgeoportal tests, you need to have the c2cgeoportal source
+code, and a make environment for building the library.</p>
 <p>c2cgeoportal has two types of tests: unit tests and functional tests. The unit
 tests are self-contained, and do not require any specific setup. The functional
 tests require to run with <code class="docutils literal notranslate"><span class="pre">docker-compose-run</span></code>.</p>
@@ -66,9 +66,9 @@ tests require to run with <code class="docutils literal notranslate"><span class
 </ul>
 <p>docker-compose will also:</p>
 <ul class="simple">
-<li>Have a testing database and a testing MapServer.</li>
+<li>Create a test database and a test MapServer.</li>
 </ul>
-<p>Docker images dependencies:</p>
+<p>Docker image dependencies:</p>
 <img alt="../_images/docker.png" src="../_images/docker.png" />
 <p>Image nomenclature:</p>
 <ul class="simple">
@@ -82,18 +82,18 @@ tests require to run with <code class="docutils literal notranslate"><span class
 </ul>
 <div class="section" id="unit-tests">
 <h4>Unit tests<a class="headerlink" href="#unit-tests" title="Permalink to this headline">¶</a></h4>
-<p>Before to run the tests, install and build all dependencies:</p>
+<p>Before running the tests, install and build all dependencies:</p>
 <pre class="highlight"><span class="prompt1">./docker-run make prepare-tests</span>
 </pre><p>Run the tests:</p>
 <pre class="highlight"><span class="prompt1">./docker-compose-run make tests</span>
-</pre><p>To run a specific test use the <code class="docutils literal notranslate"><span class="pre">-k</span></code> switch. For example:</p>
-<pre class="highlight"><span class="prompt1">./docker-compose-run py.tests -k test_catalogue geoportal/tests</span>
+</pre><p>To run only a specific test, use the <code class="docutils literal notranslate"><span class="pre">-k</span></code> switch. For example:</p>
+<pre class="highlight"><span class="prompt1">./docker-compose-run py.test -k test_catalogue geoportal/tests</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="profiling">
 <h2>Profiling<a class="headerlink" href="#profiling" title="Permalink to this headline">¶</a></h2>
-<p>At the end of the file <code class="docutils literal notranslate"><span class="pre">apache/application.wsgi</span></code> add:</p>
+<p>At the end of the file <code class="docutils literal notranslate"><span class="pre">apache/application.wsgi</span></code>, add:</p>
 <div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">wsgi_lineprof.middleware</span> <span class="k">import</span> <span class="n">LineProfilerMiddleware</span>
 <span class="kn">from</span> <span class="nn">wsgi_lineprof.filters</span> <span class="k">import</span> <span class="n">FilenameFilter</span><span class="p">,</span> <span class="n">TotalTimeSorter</span>
 
@@ -110,13 +110,13 @@ tests require to run with <code class="docutils literal notranslate"><span class
 </div>
 <div class="section" id="upgrade-dependencies">
 <h2>Upgrade dependencies<a class="headerlink" href="#upgrade-dependencies" title="Permalink to this headline">¶</a></h2>
-<p>When we start a new version of c2cgeoportal or just before a new development
-phase it is a good idea to update the dependencies.</p>
+<p>When we start a new version of c2cgeoportal, or just before a new development
+phase, it is a good idea to update the dependencies.</p>
 <div class="section" id="eggs">
 <h3>Eggs<a class="headerlink" href="#eggs" title="Permalink to this headline">¶</a></h3>
 <p>All the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> (and <code class="docutils literal notranslate"><span class="pre">tilecloud-chain</span></code>) dependencies are present in
 the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal/scaffolds/update/CONST_versions.mako</span></code> file.</p>
-<p>To update them you can simply get them from a travis build in the
+<p>To update them, you can simply get them from a travis build in the
 <code class="docutils literal notranslate"><span class="pre">./docker-run</span> <span class="pre">pip</span> <span class="pre">freeze</span></code> task.</p>
 </div>
 <div class="section" id="submodules">
@@ -137,20 +137,18 @@ the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal/sc
 <div class="section" id="object-model">
 <h3>Object model<a class="headerlink" href="#object-model" title="Permalink to this headline">¶</a></h3>
 <img alt="../_images/database.png" src="../_images/database.png" />
-<p><code class="docutils literal notranslate"><span class="pre">TreeItem</span></code> and <code class="docutils literal notranslate"><span class="pre">TreeGroup</span></code> are abstract (cannot be create) class used to create the tree.</p>
-<p><code class="docutils literal notranslate"><span class="pre">FullTextSearch</span></code> references a first level <code class="docutils literal notranslate"><span class="pre">LayerGroup</span></code> but without any constrains.</p>
-<p>it is not visible on this schema, but the <code class="docutils literal notranslate"><span class="pre">User</span></code> of a child schema has a link (<code class="docutils literal notranslate"><span class="pre">parent_role</span></code>)
+<p><code class="docutils literal notranslate"><span class="pre">TreeItem</span></code> and <code class="docutils literal notranslate"><span class="pre">TreeGroup</span></code> are abstract (cannot be created) classes used to create the tree.</p>
+<p><code class="docutils literal notranslate"><span class="pre">FullTextSearch</span></code> references a first level <code class="docutils literal notranslate"><span class="pre">LayerGroup</span></code>, but without any constraints.</p>
+<p>It is not visible on this schema, but the <code class="docutils literal notranslate"><span class="pre">User</span></code> of a child schema has a link (<code class="docutils literal notranslate"><span class="pre">parent_role</span></code>)
 to the <code class="docutils literal notranslate"><span class="pre">Role</span></code> of the parent schema.</p>
 <div class="section" id="metadata-vs-functionality">
 <h4><code class="docutils literal notranslate"><span class="pre">metadata</span></code> vs <code class="docutils literal notranslate"><span class="pre">functionality</span></code><a class="headerlink" href="#metadata-vs-functionality" title="Permalink to this headline">¶</a></h4>
-<p>Technically the same <code class="docutils literal notranslate"><span class="pre">functionality</span></code> can be reused by more than one element.</p>
+<p>The same <code class="docutils literal notranslate"><span class="pre">functionality</span></code> can be reused by more than one element.</p>
 <p><code class="docutils literal notranslate"><span class="pre">functionalities</span></code> are designed to configure and customize various parts of
-the application. For instance to change the default basemap when a new theme
-is loaded.</p>
-<p>To do that in the CGXP application we trigger an event when we load a theme the
-new <code class="docutils literal notranslate"><span class="pre">functionnalities</span></code>.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">metadata</span></code> contains attributes that are directly related to the element.
-For example the layer disclaimer, …</p>
+the application. For instance, with a <code class="docutils literal notranslate"><span class="pre">functionality</span></code>, you can make the application change
+the default basemap when a new theme is loaded.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">metadata</span></code> contains attributes that are directly related to an element,
+for example the layer disclaimer.</p>
 </div>
 </div>
 <div class="section" id="migration">
@@ -161,14 +159,16 @@ docker image. So developers who modify the <code class="docutils literal notrans
 <p>Add a new script call from the application’s root directory:</p>
 <pre class="highlight"><span class="prompt1">./docker-compose-run alembic --name<span class="o">=[</span>main<span class="p">|</span>static<span class="o">]</span> revision --message <span class="s2">&quot;&lt;Explicit name&gt;&quot;</span></span>
 </pre><p>Or in c2cgeoportal root directory:</p>
-<pre class="highlight"><span class="prompt1">./docker-compose-run alembic         --config geoportal/tests/functional/alembic.ini --name<span class="o">=[</span>main<span class="p">|</span>static<span class="o">]</span>         revision --message <span class="s2">&quot;&lt;Explicit name&gt;&quot;</span></span>
+<pre class="highlight"><span class="prompt1">./docker-compose-run alembic <span class="se">\</span>
+    --config geoportal/tests/functional/alembic.ini --name<span class="o">=[</span>main<span class="p">|</span>static<span class="o">]</span> <span class="se">\</span>
+    revision --message <span class="s2">&quot;&lt;Explicit name&gt;&quot;</span></span>
 </pre><p>This will generate the migration script in
 <code class="docutils literal notranslate"><span class="pre">commons/c2cgeoportal/commons/alembic/[main|static]/xxx_&lt;Explicite_name&gt;.py</span></code>.</p>
-<p>To get the project schema use:
+<p>To get the project schema, use:
 <code class="docutils literal notranslate"><span class="pre">schema</span> <span class="pre">=</span> <span class="pre">context.get_context().config.get_main_option('schema')</span></code></p>
-<p>The scripts should not fail if it is run again. See:
+<p>The scripts should not fail if they are run more than once. See:
 <a class="reference external" href="http://alembic.readthedocs.org/en/latest/cookbook.html#conditional-migration-elements">http://alembic.readthedocs.org/en/latest/cookbook.html#conditional-migration-elements</a></p>
-<p>Then customize the migration to suit your needs, test it:</p>
+<p>Then, customize the migration to suit your needs, test it:</p>
 <pre class="highlight"><span class="prompt1">./docker-compose-run alembic upgrade head</span>
 </pre><dl class="docutils">
 <dt>More information at:</dt>
@@ -181,11 +181,11 @@ docker image. So developers who modify the <code class="docutils literal notrans
 </dl>
 </div>
 </div>
-<div class="section" id="sub-domain">
-<h2>Sub domain<a class="headerlink" href="#sub-domain" title="Permalink to this headline">¶</a></h2>
-<p>All the static resources used sub domains by using the configurations variables:
+<div class="section" id="subdomain">
+<h2>Subdomain<a class="headerlink" href="#subdomain" title="Permalink to this headline">¶</a></h2>
+<p>All the static resources use subdomains by using the configuration variables:
 <code class="docutils literal notranslate"><span class="pre">subdomain_url_template</span></code> and <code class="docutils literal notranslate"><span class="pre">subdomains</span></code>.</p>
-<p>To be able to use sub domain in a view we should configure the route as this:</p>
+<p>To be able to use a subdomain in a view, we should configure the route as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">c2cgeoportal_geoportal.lib</span> <span class="k">import</span> <span class="n">MultiDomainPregenerator</span>
 <span class="n">config</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span>
     <span class="s1">&#39;&lt;name&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;path&gt;&#39;</span><span class="p">,</span>
@@ -256,7 +256,7 @@ docker image. So developers who modify the <code class="docutils literal notrans
 <li><a class="reference internal" href="#migration">Migration</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#sub-domain">Sub domain</a></li>
+<li><a class="reference internal" href="#subdomain">Subdomain</a></li>
 <li><a class="reference internal" href="#code">Code</a><ul>
 <li><a class="reference internal" href="#coding-style">Coding style</a></li>
 </ul>

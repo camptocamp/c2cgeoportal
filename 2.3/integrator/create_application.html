@@ -51,7 +51,7 @@ application scaffolds, should be applied.</p>
 </div>
 <div class="section" id="project-structure">
 <h2>Project structure<a class="headerlink" href="#project-structure" title="Permalink to this headline">¶</a></h2>
-<p>In the simple case the root directory of the application is the directory
+<p>In the simple case, the root directory of the application is the directory
 created by the c2cgeoportal scaffolds (the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_create</span></code> and
 <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_update</span></code> scaffolds).</p>
 </div>
@@ -76,7 +76,7 @@ respectively to the <code class="docutils literal notranslate"><span class="pre"
 </div>
 <div class="section" id="list-existing-scaffolds">
 <h2>List existing scaffolds<a class="headerlink" href="#list-existing-scaffolds" title="Permalink to this headline">¶</a></h2>
-<p>To list the available scaffolds use the following command, either
+<p>To list the available scaffolds, use the following command, either
 from the root directory of c2cgeoportal (if you have followed the instructions
 from the previous section), or from the root directory of the existing
 c2cgeoportal application you want to create the new application from:</p>
@@ -97,7 +97,7 @@ c2cgeoportal application you want to create the new application from:</p>
 <p>Normally the project name should be the same name as the Git repository name.</p>
 <p>The package name should not contain an underscore (<code class="docutils literal notranslate"><span class="pre">_</span></code>) because of an
 issue with Pip.</p>
-<p>To create the application first apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_create</span></code> scaffold:</p>
+<p>To create the application, first apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_create</span></code> scaffold:</p>
 <pre class="highlight"><span class="prompt1">./docker-run -ti --image<span class="o">=</span>camptocamp/geomapfish-build <span class="se">\</span>
     --version<span class="o">=</span>&lt;release<span class="p">|</span>version&gt; <span class="se">\</span>
     pcreate -s c2cgeoportal_create &lt;project&gt;</span>
@@ -148,7 +148,7 @@ Following this rule is important for easier updates.</p>
 <div class="section" id="put-the-application-under-revision-control">
 <h2>Put the application under revision control<a class="headerlink" href="#put-the-application-under-revision-control" title="Permalink to this headline">¶</a></h2>
 <p>Now is a good time to put the application source code under revision
-control (Git preferably).</p>
+control (Git, preferably).</p>
 <div class="section" id="to-add-a-project-in-a-new-repository">
 <h3>To add a project in a new repository<a class="headerlink" href="#to-add-a-project-in-a-new-repository" title="Permalink to this headline">¶</a></h3>
 <p>Add the project:</p>
@@ -183,7 +183,7 @@ This extension mechanism is used in Makefile files as follows:</p>
 <div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">extends</span><span class="p">:</span> <span class="n">CONST_vars</span><span class="o">.</span><span class="n">yaml</span>
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">CONST</span></code> files are files that should not be changed because they are replaced
+<p><code class="docutils literal notranslate"><span class="pre">CONST</span></code> files are files that should not be changed, because they are replaced
 during application updates, so your changes will be systematically lost. You can
 extend these files as many times as you like, although it is not recommended to
 exceed 3-4 levels for readability and simplicity.</p>
@@ -230,7 +230,7 @@ environment variables:</p>
 </div>
 <div class="section" id="configure-the-application">
 <h2>Configure the application<a class="headerlink" href="#configure-the-application" title="Permalink to this headline">¶</a></h2>
-<p>As the integrator you need to edit the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> and
+<p>As the integrator, you need to edit the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> and
 <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;.mk</span></code> files to configure the application.</p>
 <p>Do not forget to add your changes to git:</p>
 <pre class="highlight"><span class="prompt1">git add vars.yaml</span>
@@ -273,7 +273,7 @@ Then follow the sections in the install application guide:</p>
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>After that if you want a default theme you can run:</p>
+<p>If you want a default theme, you can run:</p>
 <pre class="highlight"><span class="prompt1">./docker-compose-run create-demo-theme</span>
 </pre></div>
 <div class="admonition note">
@@ -300,7 +300,7 @@ templating system, such as for loops, conditions, sub-templates, etc.</p>
 <div class="code mako highlight-default notranslate"><div class="highlight"><pre><span></span>${&lt;variablename&gt;}
 </pre></div>
 </div>
-<p>for example:</p>
+<p>For example:</p>
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">${directory}</span></code></li>
 </ul>

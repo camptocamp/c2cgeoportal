@@ -23,7 +23,7 @@ that is already alongside the existing c2cgeoportal application.
 Project structure
 -----------------
 
-In the simple case the root directory of the application is the directory
+In the simple case, the root directory of the application is the directory
 created by the c2cgeoportal scaffolds (the ``c2cgeoportal_create`` and
 ``c2cgeoportal_update`` scaffolds).
 
@@ -50,7 +50,7 @@ To get ``c2cgeoportal``, you need to get the related docker image:
 List existing scaffolds
 -----------------------
 
-To list the available scaffolds use the following command, either
+To list the available scaffolds, use the following command, either
 from the root directory of c2cgeoportal (if you have followed the instructions
 from the previous section), or from the root directory of the existing
 c2cgeoportal application you want to create the new application from:
@@ -78,7 +78,7 @@ Normally the project name should be the same name as the Git repository name.
 The package name should not contain an underscore (``_``) because of an
 issue with Pip.
 
-To create the application first apply the ``c2cgeoportal_create`` scaffold:
+To create the application, first apply the ``c2cgeoportal_create`` scaffold:
 
 .. prompt:: bash
 
@@ -156,7 +156,7 @@ Put the application under revision control
 ------------------------------------------
 
 Now is a good time to put the application source code under revision
-control (Git preferably).
+control (Git, preferably).
 
 To add a project in a new repository
 ....................................
@@ -204,7 +204,7 @@ and in vars files as follows:
 
     extends: CONST_vars.yaml
 
-``CONST`` files are files that should not be changed because they are replaced
+``CONST`` files are files that should not be changed, because they are replaced
 during application updates, so your changes will be systematically lost. You can
 extend these files as many times as you like, although it is not recommended to
 exceed 3-4 levels for readability and simplicity.
@@ -259,7 +259,7 @@ environment variables:
 Configure the application
 -------------------------
 
-As the integrator you need to edit the ``vars.yaml`` and
+As the integrator, you need to edit the ``vars.yaml`` and
 ``<package>.mk`` files to configure the application.
 
 Do not forget to add your changes to git:
@@ -312,7 +312,7 @@ Then follow the sections in the install application guide:
 
 .. note::
 
-   After that if you want a default theme you can run:
+   If you want a default theme, you can run:
 
    .. prompt:: bash
 
@@ -353,6 +353,6 @@ In ``.mako`` files, the variable replacement syntax is as follows:
 
   ${<variablename>}
 
-for example:
+For example:
 
 * ``${directory}``

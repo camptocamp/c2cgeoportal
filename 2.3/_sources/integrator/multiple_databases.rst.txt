@@ -7,7 +7,7 @@ Configuration
 -------------
 In your ``vars`` file, configure any database sessions
 that you want to access in your GMF instance in addition to
-the default database session, as follows. For example, to add sessions
+the default database session. For example, to add sessions
 from a database ``otherdb`` and from a database ``moredb``:
 
 .. code:: yaml
