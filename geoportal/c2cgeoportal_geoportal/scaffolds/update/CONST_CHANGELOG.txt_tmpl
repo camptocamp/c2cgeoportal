@@ -45,7 +45,7 @@ Changes to apply
 Version 2.3.6
 =============
 
-1. Rename full-text search path from /fulltextsearch to /search for backward compatibility with the version 2.2
+1. The url entrypoint for the full-text search has changed from /fulltextsearch to /search to be backward compatible with the version 2.2
 
 
 Version 2.3.0

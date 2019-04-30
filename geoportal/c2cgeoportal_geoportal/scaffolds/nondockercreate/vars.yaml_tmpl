@@ -249,6 +249,8 @@ update_paths:
   - resourceproxy
   - servers
   - shortener
+  - sqlalchemy
+  - sqlalchemy_slave
 
 no_interpreted:
   - reset_password.email_body

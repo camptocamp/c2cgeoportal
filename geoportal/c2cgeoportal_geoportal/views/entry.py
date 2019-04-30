@@ -44,12 +44,12 @@ import zope.event.classhandler
 from c2cwsgiutils.auth import auth_view
 from defusedxml import lxml
 from owslib.wms import WebMapService
-from pyramid.httpexceptions import HTTPBadGateway, HTTPBadRequest, HTTPForbidden, HTTPFound
+from pyramid.httpexceptions import HTTPBadGateway, HTTPBadRequest, HTTPForbidden, HTTPFound, HTTPUnauthorized
 from pyramid.i18n import TranslationStringFactory
 from pyramid.path import AssetResolver
 from pyramid.renderers import render_to_response
 from pyramid.response import Response
-from pyramid.security import forget, remember
+from pyramid.security import remember, forget
 from pyramid.view import view_config
 from sqlalchemy.orm import subqueryload
 from sqlalchemy.orm.exc import NoResultFound
@@ -1109,7 +1109,7 @@ class Entry:
         self._referer_log()
 
         if self.request.authenticated_userid:
-            return HTTPForbidden()  # pragma: no cover
+            return HTTPUnauthorized()  # pragma: no cover
 
         set_common_headers(self.request, "login", NO_CACHE)
 
@@ -1157,7 +1157,7 @@ class Entry:
                     )), headers=headers),
                 )
         else:
-            raise HTTPForbidden("See server logs for details")
+            raise HTTPUnauthorized("See server logs for details")
 
     @view_config(route_name="logout")
     def logout(self):
