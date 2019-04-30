@@ -608,7 +608,7 @@ ifeq ($(DOCKER), TRUE)
 	for interface in $(NGEO_INTERFACES); \
 	do \
 		mv $(APP_OUTPUT_DIR)/$${interface}.html $(APP_OUTPUT_DIR)/$${interface}.html.tmpl; \
-		ls -1 $(APP_OUTPUT_DIR)/$${interface}.*.css $(APP_OUTPUT_DIR)/$${interface}.*.js|while read file; \
+		ls -1 $(APP_OUTPUT_DIR)/$${interface}.*.css|while read file; \
 		do \
 			mv $${file} $${file}.tmpl; \
 		done; \
