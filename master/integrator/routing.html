@@ -14,6 +14,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +38,7 @@
             
   <div class="section" id="routing-interface">
 <span id="integrator-routing"></span><h1>Routing interface<a class="headerlink" href="#routing-interface" title="Permalink to this headline">¶</a></h1>
-<p>This section describes how to add the <a class="reference external" href="http://project-osrm.org/">OSRM routing</a> interface to a
+<p>This section describes how to add the <a class="reference external" href="https://project-osrm.org/">OSRM routing</a> interface to a
 c2cgeoportal application.</p>
 <div class="section" id="requirements">
 <h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
@@ -56,8 +57,8 @@ need to be defined in your interface controller, as long as it extends AbstractD
 </div>
 <div class="section" id="configuration">
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
-<p>To configure the routing feature the constants <cite>ngeoRoutingOptions</cite> and <cite>ngeoNominatimSearchDefaultParams</cite>
-can be defined. Add them to your <cite>interfaces_config</cite> section in your <cite>vars.yaml</cite> file:</p>
+<p>To configure the routing feature, the constants <code class="docutils literal notranslate"><span class="pre">ngeoRoutingOptions</span></code> and <code class="docutils literal notranslate"><span class="pre">ngeoNominatimSearchDefaultParams</span></code>
+can be defined. Add them to your <code class="docutils literal notranslate"><span class="pre">interfaces_config</span></code> section in your <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file:</p>
 <div class="section" id="backendurl">
 <h3>backendUrl<a class="headerlink" href="#backendurl" title="Permalink to this headline">¶</a></h3>
 <p>required, string
@@ -68,14 +69,13 @@ URL to an <a class="reference external" href="https://github.com/Project-OSRM/os
 <p>not required, ngeox.RoutingProfile</p>
 <p>label: string, label to display in the drop-down-menu for the profile</p>
 <p>profile: string, url-path of the profile, example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">routing</span><span class="o">.</span><span class="n">osm</span><span class="o">.</span><span class="n">ch</span><span class="o">/</span><span class="n">routed</span><span class="o">-</span><span class="n">bike</span><span class="o">/</span><span class="n">route</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">car</span><span class="o">/&lt;</span><span class="n">params</span><span class="o">&gt;</span>
-    <span class="o">^</span>                <span class="o">|</span>     <span class="o">^</span>     <span class="o">|</span>    <span class="o">^</span>
-    <span class="s1">&#39;                |     &#39;</span>     <span class="o">|</span>    <span class="s1">&#39;</span>
-<span class="n">backendUrl</span>           <span class="o">|</span>  <span class="n">profile</span>  <span class="o">|</span> <span class="n">osrm</span> <span class="n">query</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">routing</span><span class="o">.</span><span class="n">osm</span><span class="o">.</span><span class="n">ch</span><span class="o">/</span><span class="n">routed</span><span class="o">-</span><span class="n">bike</span><span class="o">/</span><span class="n">route</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">car</span><span class="o">/&lt;</span><span class="n">params</span><span class="o">&gt;</span>
+    <span class="o">^</span>                 <span class="o">|</span>     <span class="o">^</span>     <span class="o">|</span>    <span class="o">^</span>
+    <span class="s1">&#39;                 |     &#39;</span>     <span class="o">|</span>    <span class="s1">&#39;</span>
+<span class="n">backendUrl</span>            <span class="o">|</span>  <span class="n">profile</span>  <span class="o">|</span> <span class="n">osrm</span> <span class="n">query</span>
 </pre></div>
 </div>
-<p>If more than one profile is supplied, the component will show a drop-down-menu for the user to select a
-profile.</p>
+<p>If more than one profile is supplied, the component will show a drop-down-menu for the user to select a profile.</p>
 </div>
 <div class="section" id="ngeonominatimsearchdefaultparams">
 <h3>ngeoNominatimSearchDefaultParams<a class="headerlink" href="#ngeonominatimsearchdefaultparams" title="Permalink to this headline">¶</a></h3>
@@ -162,7 +162,7 @@ Check the  OpenStreetMap wiki for a <a class="reference external" href="https://
       &copy;2011-2019, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

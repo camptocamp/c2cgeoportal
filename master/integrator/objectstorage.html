@@ -14,10 +14,11 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Customise the application" href="customise.html" />
+    <link rel="next" title="Headers" href="headers.html" />
     <link rel="prev" title="Configuring Windows tools required to connect to our servers" href="windows_tools.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -39,15 +40,17 @@
 <span id="integrator-objectstorage"></span><h1>Working with Object storage (like S3)<a class="headerlink" href="#working-with-object-storage-like-s3" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="generalities">
 <h2>Generalities<a class="headerlink" href="#generalities" title="Permalink to this headline">¶</a></h2>
-<p>In this we will consider to use the S3-like from Exoscale.</p>
-<p>First of all we should set the following variables on the <code class="docutils literal notranslate"><span class="pre">geoportal</span></code>, <code class="docutils literal notranslate"><span class="pre">config</span></code> and <code class="docutils literal notranslate"><span class="pre">qgisserver</span></code> services.</p>
+<p>In this section, we explain how to use the S3-like storage from Exoscale.</p>
+<p>First of all, you should set the following variables
+on the <code class="docutils literal notranslate"><span class="pre">geoportal</span></code>, <code class="docutils literal notranslate"><span class="pre">config</span></code> and <code class="docutils literal notranslate"><span class="pre">qgisserver</span></code> services:</p>
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">AWS_ACCESS_KEY_ID</span></code>: The project access key.</li>
 <li><code class="docutils literal notranslate"><span class="pre">AWS_SECRET_ACCESS_KEY</span></code>: The project secret key.</li>
 <li><code class="docutils literal notranslate"><span class="pre">AWS_DEFAULT_REGION=ch-dk-2</span></code>: The region used by Exoscale.</li>
 <li><code class="docutils literal notranslate"><span class="pre">AWS_S3_ENDPOINT=sos-ch-dk-2.exo.io</span></code>: The endpoint used by Exoscale.</li>
 </ul>
-<p>For better performance, we should set the following variables on the <code class="docutils literal notranslate"><span class="pre">geoportal</span></code> and <code class="docutils literal notranslate"><span class="pre">qgisserver</span></code> services.</p>
+<p>For better performance, you should furthermore set the following variables
+on the <code class="docutils literal notranslate"><span class="pre">geoportal</span></code> and <code class="docutils literal notranslate"><span class="pre">qgisserver</span></code> services:</p>
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">CPL_VSIL_CURL_USE_CACHE=TRUE</span></code></li>
 <li><code class="docutils literal notranslate"><span class="pre">CPL_VSIL_CURL_CACHE_SIZE=128000000</span></code></li>
@@ -55,21 +58,21 @@
 <li><code class="docutils literal notranslate"><span class="pre">GDAL_DISABLE_READDIR_ON_OPEN=TRUE</span></code></li>
 </ul>
 <p>Use the aws client to list the files:</p>
-<pre class="highlight"><style type="text/css">
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
 span.prompt1:before {
   content: "$ ";
 }
 </style><span class="prompt1">aws --endpoint-url https://sos-ch-dk-2.exo.io/ --region ch-dk-2 s3 ls s3://&lt;bucket&gt;/&lt;folder&gt;</span>
-</pre><p>Create the vrt file for a raster layer:</p>
-<pre class="highlight"><span class="prompt1">gdalbuildvrt <span class="sb">`</span>aws --endpoint-url https://sos-ch-dk-2.exo.io/ --region ch-dk-2 s3 ls <span class="se">\</span>
+</pre></div></div><p>Create the vrt file for a raster layer:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">gdalbuildvrt <span class="sb">`</span>aws --endpoint-url https://sos-ch-dk-2.exo.io/ --region ch-dk-2 s3 ls <span class="se">\</span>
      s3://&lt;bucket&gt;/&lt;folder&gt;/*.geotiff<span class="p">|</span>awk <span class="s1">&#39;{print $4}&#39;</span><span class="sb">`</span> s3://&lt;bucket&gt;/&lt;folder&gt;/index.vrt</span>
-</pre></div>
+</pre></div></div></div>
 <div class="section" id="mapserver">
 <h2>MapServer<a class="headerlink" href="#mapserver" title="Permalink to this headline">¶</a></h2>
 <p>Create the shape index file for a raster layer:</p>
-<pre class="highlight"><span class="prompt1">gdaltindex mapserver/index.shp <span class="sb">`</span>aws --endpoint-url https://sos-ch-dk-2.exo.io/ --region ch-dk-2 s3 ls <span class="se">\</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">gdaltindex mapserver/index.shp <span class="sb">`</span>aws --endpoint-url https://sos-ch-dk-2.exo.io/ --region ch-dk-2 s3 ls <span class="se">\</span>
      s3://&lt;bucket&gt;/&lt;folder&gt;/*.geotiff<span class="p">|</span>awk <span class="s1">&#39;{print $4}&#39;</span><span class="sb">`</span></span>
-</pre><p>Add the following config in the <code class="docutils literal notranslate"><span class="pre">mapserver/mapserver.map.tmpl</span></code> file:</p>
+</pre></div></div><p>Add the following config in the <code class="docutils literal notranslate"><span class="pre">mapserver/mapserver.map.tmpl</span></code> file:</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="s2">&quot;CPL_VSIL_CURL_USE_CACHE&quot;</span> <span class="s2">&quot;TRUE&quot;</span>
 <span class="n">CONFIG</span> <span class="s2">&quot;CPL_VSIL_CURL_CACHE_SIZE&quot;</span> <span class="s2">&quot;128000000&quot;</span>
 <span class="n">CONFIG</span> <span class="s2">&quot;CPL_VSIL_CURL_USE_HEAD&quot;</span> <span class="s2">&quot;FALSE&quot;</span>
@@ -164,7 +167,7 @@ span.prompt1:before {
   <li><a href="index.html">Integrator Guide</a><ul>
   <li><a href="configuration.html">Configuration Guide for advanced settings</a><ul>
       <li>Previous: <a href="windows_tools.html" title="previous chapter">Configuring Windows tools required to connect to our servers</a></li>
-      <li>Next: <a href="customise.html" title="next chapter">Customise the application</a></li>
+      <li>Next: <a href="headers.html" title="next chapter">Headers</a></li>
   </ul></li>
   </ul></li>
   </ul></li>
@@ -198,7 +201,7 @@ span.prompt1:before {
       &copy;2011-2019, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

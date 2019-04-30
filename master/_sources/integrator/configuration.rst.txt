@@ -22,3 +22,4 @@ This chapter describes advanced configuration settings.
    multiple_databases
    windows_tools
    objectstorage
+   headers

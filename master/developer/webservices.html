@@ -14,6 +14,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -231,13 +232,13 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">login</span></code></li>
 <li><code class="docutils literal notranslate"><span class="pre">password</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">came_from</span></code> the URL where we will redirect after a success</li>
+<li><code class="docutils literal notranslate"><span class="pre">came_from</span></code> the URL to which we will redirect after a successful request.</li>
 </ul>
 <p>Result HTTP code:</p>
 <ul class="simple">
 <li>200 Success: Success with the JSON result as <a class="reference internal" href="#developer-webservices-auth-connected"><span class="std std-ref">Connected JSON result</span></a>.</li>
-<li>302 Found: Success -&gt; redirect on came_from.</li>
-<li>400 Bad request: When something wrong.</li>
+<li>302 Found: Success -&gt; redirect to <code class="docutils literal notranslate"><span class="pre">came_from</span></code>.</li>
+<li>400 Bad request: When something is wrong.</li>
 </ul>
 </div>
 <div class="section" id="logout">
@@ -248,7 +249,7 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <p>Result HTTP code:</p>
 <ul class="simple">
 <li>200 Success: Success.</li>
-<li>400 Bad request: When something wrong.</li>
+<li>400 Bad request: When something is wrong.</li>
 </ul>
 </div>
 <div class="section" id="user-information">
@@ -302,7 +303,7 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <p>Result HTTP code:</p>
 <ul class="simple">
 <li>200 Success: Success.</li>
-<li>400 Bad request: When something wrong.</li>
+<li>400 Bad request: When something is wrong.</li>
 </ul>
 <div class="section" id="json-result">
 <h4>JSON result<a class="headerlink" href="#json-result" title="Permalink to this headline">¶</a></h4>
@@ -317,7 +318,7 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <h3>Generate a new password<a class="headerlink" href="#generate-a-new-password" title="Permalink to this headline">¶</a></h3>
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../loginresetpassword</span></code></p>
 <p>Method: <code class="docutils literal notranslate"><span class="pre">POST</span></code></p>
-<p>Used when the user lost his password.</p>
+<p>Used when the user lost his/her password.</p>
 <p>Parameters (post form):</p>
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">login</span></code></li>
@@ -325,7 +326,7 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <p>Result HTTP code:</p>
 <ul class="simple">
 <li>200 Success: Success.</li>
-<li>400 Bad request: When something wrong.</li>
+<li>400 Bad request: When something is wrong.</li>
 </ul>
 <div class="section" id="success-json-result">
 <h4>Success JSON result<a class="headerlink" href="#success-json-result" title="Permalink to this headline">¶</a></h4>
@@ -338,7 +339,7 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 </div>
 </div>
 <div class="section" id="full-text-search">
-<span id="developer-webservices-fts"></span><h2>Full-Text Search<a class="headerlink" href="#full-text-search" title="Permalink to this headline">¶</a></h2>
+<span id="developer-webservices-fts"></span><h2>Full-text search<a class="headerlink" href="#full-text-search" title="Permalink to this headline">¶</a></h2>
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../fulltextsearch</span></code></p>
 <div class="section" id="id1">
 <h3>Parameters<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
@@ -346,8 +347,8 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <li><code class="docutils literal notranslate"><span class="pre">query</span></code>: Text to search.</li>
 <li><code class="docutils literal notranslate"><span class="pre">limit</span></code>: The maximum number of results (optional).</li>
 <li><code class="docutils literal notranslate"><span class="pre">partitionlimit</span></code>: The maximum number of results per layer (optional).</li>
-<li><code class="docutils literal notranslate"><span class="pre">lang</span></code>: The used language (optional).</li>
-<li><code class="docutils literal notranslate"><span class="pre">interface</span></code>: The used interface (optional).</li>
+<li><code class="docutils literal notranslate"><span class="pre">lang</span></code>: The language used (optional).</li>
+<li><code class="docutils literal notranslate"><span class="pre">interface</span></code>: The interface used (optional).</li>
 </ul>
 </div>
 <div class="section" id="id2">
@@ -359,10 +360,10 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <li><code class="docutils literal notranslate"><span class="pre">params</span></code>: <a class="reference internal" href="../integrator/fulltext_search.html#integrator-fulltext-search-params"><span class="std std-ref">Params</span></a> to set.</li>
 <li><code class="docutils literal notranslate"><span class="pre">actions</span></code>: List of actions.</li>
 </ul>
-<p>The <cite>action</cite> is a dictionary with:</p>
+<p>The <cite>actions</cite> is a dictionary with:</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">action</span></code>: the action: (add_theme|add_group|add_layer).</li>
-<li><code class="docutils literal notranslate"><span class="pre">data</span></code>: data needed for the action (actually, the item name).</li>
+<li><code class="docutils literal notranslate"><span class="pre">action</span></code>: the type of action (add_theme|add_group|add_layer).</li>
+<li><code class="docutils literal notranslate"><span class="pre">data</span></code>: data needed for the action (the item name).</li>
 </ul>
 </div>
 </div>
@@ -373,7 +374,7 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../layers/&lt;layer_id&gt;/md.xsd</span></code></p>
 <div class="section" id="id3">
 <h4>Result<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
-<p>A standard xsd document that describe the layer.</p>
+<p>A standard xsd document that describes the layer.</p>
 </div>
 </div>
 <div class="section" id="mapfish-protocol">
@@ -510,7 +511,7 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <h3>Parameters<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">geom</span></code>: Geometry field used to get the profile data.</li>
-<li><code class="docutils literal notranslate"><span class="pre">layers</span></code>: On witch layers, default to all.</li>
+<li><code class="docutils literal notranslate"><span class="pre">layers</span></code>: On which layers; default to all.</li>
 <li><code class="docutils literal notranslate"><span class="pre">nbPoints</span></code>: Maximum number of points.</li>
 </ul>
 </div>
@@ -640,7 +641,7 @@ and the <code class="docutils literal notranslate"><span class="pre">&lt;geomB&g
       &copy;2011-2019, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

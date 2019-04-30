@@ -14,6 +14,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -41,7 +42,7 @@
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
 <p>In your <code class="docutils literal notranslate"><span class="pre">vars</span></code> file, configure any database sessions
 that you want to access in your GMF instance in addition to
-the default database session, as follows. For example, to add sessions
+the default database session. For example, to add sessions
 from a database <code class="docutils literal notranslate"><span class="pre">otherdb</span></code> and from a database <code class="docutils literal notranslate"><span class="pre">moredb</span></code>:</p>
 <div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dbsessions</span><span class="p">:</span>
    <span class="n">otherdb_session</span><span class="p">:</span>
@@ -70,7 +71,7 @@ via <code class="docutils literal notranslate"><span class="pre">DBSessions</spa
 </pre></div>
 </div>
 <p>This will provide you with a
-<a class="reference external" href="http://docs.sqlalchemy.org/en/rel_1_0/orm/session_basics.html#getting-a-session">DB session object</a>.
+<a class="reference external" href="https://docs.sqlalchemy.org/en/rel_1_0/orm/session_basics.html#getting-a-session">DB session object</a>.
 The session name for the default database is <code class="docutils literal notranslate"><span class="pre">dbsession</span></code>.</p>
 <p>To access attributes of your settings, proceed as follows
 (example for the <code class="docutils literal notranslate"><span class="pre">otherdb_session</span></code> described above):</p>
@@ -164,7 +165,7 @@ only the default database session can be used for such layers.</p>
       &copy;2011-2019, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

@@ -14,6 +14,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -49,14 +50,14 @@ where <code class="docutils literal notranslate"><span class="pre">&lt;interface
 </div>
 <div class="section" id="html-file">
 <h2>HTML file<a class="headerlink" href="#html-file" title="Permalink to this headline">¶</a></h2>
-<p>In this file you can add some blocks like</p>
+<p>In this file, you can add some blocks like</p>
 <div class="code html highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">gmf</span><span class="o">-</span><span class="n">authentication</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;login&quot;</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;slide&quot;</span> <span class="n">data</span><span class="o">-</span><span class="n">header</span><span class="o">-</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Login&quot;</span><span class="o">&gt;</span>
 <span class="o">&lt;/</span><span class="n">gmf</span><span class="o">-</span><span class="n">authentication</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <p>to include a directive.</p>
 <p>You can find the available directives in the
-<a class="reference external" href="http://camptocamp.github.io/ngeo/master/apidoc/">ngeo documentation</a>.</p>
+<a class="reference external" href="https://camptocamp.github.io/ngeo/master/apidoc/">ngeo documentation</a>.</p>
 <p>The controller (<code class="docutils literal notranslate"><span class="pre">js</span></code> file) is commonly named <code class="docutils literal notranslate"><span class="pre">mainCtrl</span></code>. So you can use a value
 from the controller by doing the following (here, the controller is the <code class="docutils literal notranslate"><span class="pre">DesktopController</span></code>):</p>
 <div class="code html highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">html</span> <span class="n">lang</span><span class="o">=</span><span class="s2">&quot;{{desktopCtrl.lang}}&quot;</span> <span class="n">ng</span><span class="o">-</span><span class="n">app</span><span class="o">=</span><span class="s2">&quot;mydemo&quot;</span> <span class="n">ng</span><span class="o">-</span><span class="n">controller</span><span class="o">=</span><span class="s2">&quot;DesktopController as mainCtrl&quot;</span><span class="o">&gt;</span>
@@ -102,23 +103,28 @@ compatible, the resolutions should be the same as in the previous application.</
 </div>
 <div class="section" id="dynamic-json-view">
 <h2>Dynamic.json view<a class="headerlink" href="#dynamic-json-view" title="Permalink to this headline">¶</a></h2>
-<p>To configure the ngeo constants with dynamic or configurable values we have the dynamic view.</p>
+<p>To configure the ngeo constants with dynamic or configurable values,
+you can use the dynamic view.</p>
 <p>This view is configurable in the vars files in the section <code class="docutils literal notranslate"><span class="pre">interfaces_config</span></code>.
-The sub section is the interface name, and after we have:</p>
+The sub section is the interface name, and after that we have:</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">redirect_interface</span></code>: interface to be redirected to if an unexpected device type is used (mobile/desktop).</li>
-<li><code class="docutils literal notranslate"><span class="pre">do_redirect</span></code>: directly do the redirect.</li>
+<li><code class="docutils literal notranslate"><span class="pre">redirect_interface</span></code>: Interface to be redirected to if an unexpected device type is used (mobile/desktop).</li>
+<li><code class="docutils literal notranslate"><span class="pre">do_redirect</span></code>: Directly do the redirect.</li>
 <li><code class="docutils literal notranslate"><span class="pre">constants</span></code>: Directly define an <code class="docutils literal notranslate"><span class="pre">angular</span></code> constant in the vars file.</li>
 <li><code class="docutils literal notranslate"><span class="pre">dynamic_constants</span></code>: Define an <code class="docutils literal notranslate"><span class="pre">angular</span></code> constant from a dynamic values.</li>
-<li><code class="docutils literal notranslate"><span class="pre">static</span></code>: key: constant name, value: name of the static view that we want to have the URL.</li>
+<li><code class="docutils literal notranslate"><span class="pre">static</span></code>: key: Constant name, value: name of the static view that we want to have the URL.</li>
 <li><dl class="first docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">routes</span></code>: key: constant name, value:</dt>
-<dd><code class="docutils literal notranslate"><span class="pre">name</span></code>: name of the route witch one we want to have the URL.
-<code class="docutils literal notranslate"><span class="pre">params</span></code>: view parameters.
-<code class="docutils literal notranslate"><span class="pre">dynamic_params</span></code>: view parameters from dynamic values.</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">routes</span></code>: key: Constant name, value:</dt>
+<dd><code class="docutils literal notranslate"><span class="pre">name</span></code>: Name of the route witch one we want to have the URL.
+<code class="docutils literal notranslate"><span class="pre">kw</span></code>: Keyword arguments to supply for dynamic path elements in the route definition.
+<code class="docutils literal notranslate"><span class="pre">elements</span></code>: Additional positional path segments to append the URL after it is generated.
+<code class="docutils literal notranslate"><span class="pre">params</span></code>: Query string parameters to append to the URL.
+<code class="docutils literal notranslate"><span class="pre">dynamic_params</span></code>: Query string parameters from dynamic values to append to the URL.</dd>
 </dl>
 </li>
 </ul>
+<p>For more information <code class="docutils literal notranslate"><span class="pre">elements</span></code> and <code class="docutils literal notranslate"><span class="pre">kw</span></code> properties see <em>Pyramid</em> <code class="docutils literal notranslate"><span class="pre">Request.route_url</span></code> documentation:
+<a class="reference external" href="https://docs.pylonsproject.org/projects/pyramid/en/latest/api/request.html#pyramid.request.Request.route_url">https://docs.pylonsproject.org/projects/pyramid/en/latest/api/request.html#pyramid.request.Request.route_url</a></p>
 <p>The dynamic values names are: <code class="docutils literal notranslate"><span class="pre">interface</span></code>, <code class="docutils literal notranslate"><span class="pre">cache_version</span></code>, <code class="docutils literal notranslate"><span class="pre">lang_urls</span></code>, <code class="docutils literal notranslate"><span class="pre">fulltextsearch_groups</span></code>.</p>
 <p>You also have a <code class="docutils literal notranslate"><span class="pre">default</span></code> entry from where we can give the base values for <code class="docutils literal notranslate"><span class="pre">constants</span></code>,
 <code class="docutils literal notranslate"><span class="pre">dynamic_constants</span></code>, <code class="docutils literal notranslate"><span class="pre">static</span></code> and <code class="docutils literal notranslate"><span class="pre">routes</span></code>. Values that will be updated with interfaces configuration
@@ -200,7 +206,7 @@ The sub section is the interface name, and after we have:</p>
       &copy;2011-2019, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

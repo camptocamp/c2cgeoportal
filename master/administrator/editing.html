@@ -14,6 +14,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -38,11 +39,11 @@
   <div class="section" id="editing">
 <span id="administrator-editing"></span><h1>Editing<a class="headerlink" href="#editing" title="Permalink to this headline">¶</a></h1>
 <p>This section explains how to configure the edit function in c2cgeoportal.</p>
-<p>Just like most administrative tasks, the configuration of the editing functionality involves intervening
-in the database via the c2cgeoportal administration interface.</p>
+<p>Just like most administrative tasks, setting up editing in a c2cgeoportal application involves intervening
+in the database, through the c2cgeoportal administration interface.</p>
 <div class="section" id="requirements">
 <h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
-<p>To be editable a layer should satisfy the following requirements:</p>
+<p>To be editable, a layer should satisfy the following requirements:</p>
 <ol class="arabic">
 <li><p class="first">It should be accessible with WMS, and correctly configured in the
 mapfile. See <a class="reference internal" href="mapfile.html#administrator-mapfile"><span class="std std-ref">Mapfile configuration</span></a>.</p>
@@ -86,8 +87,8 @@ be named <code class="docutils literal notranslate"><span class="pre">name</span
 by selecting the <em>Layers</em> item in the admin interface’s menu.</p>
 <p>For a <em>layer</em> to be editable its <code class="docutils literal notranslate"><span class="pre">geoTable</span></code> field should be set. This field
 is the name of the PostGIS table containing the layer’s geographic data.  It is
-string of the form <code class="docutils literal notranslate"><span class="pre">[&lt;schemaname&gt;.]&lt;tablename&gt;</span></code>.  If <code class="docutils literal notranslate"><span class="pre">schemaname</span></code> is
-omitted the table is assumed to be in the <code class="docutils literal notranslate"><span class="pre">public</span></code> schema.  The label
+a string of the form <code class="docutils literal notranslate"><span class="pre">[&lt;schemaname&gt;.]&lt;tablename&gt;</span></code>.  If <code class="docutils literal notranslate"><span class="pre">schemaname</span></code> is
+omitted, the table is assumed to be in the <code class="docutils literal notranslate"><span class="pre">public</span></code> schema.  The label
 corresponding to this field is <em>Related Postgres table</em> in the admin interface.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
@@ -200,7 +201,7 @@ The value is a <code class="docutils literal notranslate"><span class="pre">json
       &copy;2011-2019, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

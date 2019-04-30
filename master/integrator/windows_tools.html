@@ -14,6 +14,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -41,8 +42,8 @@
 <h2>Creating a SSH Key with Windows<a class="headerlink" href="#creating-a-ssh-key-with-windows" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic simple">
 <li>Download PuTTYgen:<ol class="loweralpha">
-<li>Windows: <a class="reference external" href="http://the.earth.li/~sgtatham/putty/latest/x86/puttygen.exe">http://the.earth.li/~sgtatham/putty/latest/x86/puttygen.exe</a></li>
-<li>Other operating systems: <a class="reference external" href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html</a></li>
+<li>Windows: <a class="reference external" href="https://the.earth.li/~sgtatham/putty/latest/x86/puttygen.exe">https://the.earth.li/~sgtatham/putty/latest/x86/puttygen.exe</a></li>
+<li>Other operating systems: <a class="reference external" href="https://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">https://www.chiark.greenend.org.uk/~sgtatham/putty/download.html</a></li>
 </ol>
 </li>
 <li>Choose key type  “SSH-2 RSA”</li>
@@ -59,9 +60,9 @@
 <h2>Connecting to a server from Windows<a class="headerlink" href="#connecting-to-a-server-from-windows" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="command-line">
 <h3>Command Line<a class="headerlink" href="#command-line" title="Permalink to this headline">¶</a></h3>
-<p>Based on the PuTTY software. Useful to launch commands on the server.</p>
+<p>The following instructions are based on the PuTTY software, which is useful to launch commands on the server.</p>
 <ol class="arabic simple">
-<li>Download PuTTY: <a class="reference external" href="http://the.earth.li/~sgtatham/putty/latest/x86/putty.exe">http://the.earth.li/~sgtatham/putty/latest/x86/putty.exe</a></li>
+<li>Download PuTTY: <a class="reference external" href="https://the.earth.li/~sgtatham/putty/latest/x86/putty.exe">https://the.earth.li/~sgtatham/putty/latest/x86/putty.exe</a></li>
 <li>Configurate PuTTY:
 a. In the left-hand column (Category), choose “Connection&gt;SSH&gt;Auth”
 b. Fill the “Private key file for authentication” field
@@ -72,32 +73,41 @@ a. One may save his/her username in “Connection&gt;Data” &gt; “Auto-login 
 a. Fill connection info in the Session tab (“Connection Type” should be set at “SSH”)
 b. Save the configuration
 c. Click on “Open” and type your passphrase when prompted</li>
-<li>if you get disconnected because of your network configuration (proxies etc.) you should follow [this explanation](<a class="reference external" href="http://superuser.com/questions/389378/winscp-and-putty-drop-out-constantly-on-other-computer-they-dont">http://superuser.com/questions/389378/winscp-and-putty-drop-out-constantly-on-other-computer-they-dont</a>)</li>
+<li>if you get disconnected because of your network configuration (proxies etc.), you should follow
+<a class="reference external" href="https://superuser.com/questions/389378/winscp-and-putty-drop-out-constantly-on-other-computer-they-dont">this explanation</a></li>
 </ol>
 </div>
 <div class="section" id="visual-interface">
 <h3>Visual Interface<a class="headerlink" href="#visual-interface" title="Permalink to this headline">¶</a></h3>
-<p>Based on the WinSCP software. Useful to browse the server, download/upload/edit files in a Windows-like interface. WinSCP manual is available online at <a class="reference external" href="http://winscp.net/eng/docs/start">http://winscp.net/eng/docs/start</a></p>
+<p>The following instructions are based on the WinSCP software,
+which is useful to browse the server, download/upload/edit files in a Windows-like interface.
+WinSCP manual is available online at <a class="reference external" href="https://winscp.net/eng/docs/start">https://winscp.net/eng/docs/start</a></p>
 <ol class="arabic simple">
-<li>Download WinSCP: <a class="reference external" href="http://winscp.net/eng/download.php">http://winscp.net/eng/download.php</a></li>
+<li>Download WinSCP: <a class="reference external" href="https://winscp.net/eng/download.php">https://winscp.net/eng/download.php</a></li>
 <li>Open WinSCP</li>
 <li>Edit your connection info in the “Session” tab</li>
 <li>In the “SSH &gt; Protocol Options” section, make sure that SSH version is set to “2”.</li>
 <li>Click on “Connect” and type your passphrase when prompted.</li>
-<li>if you get disconnected because of your network configuration (proxies etc.) you should follow [this explanation](<a class="reference external" href="http://superuser.com/questions/389378/winscp-and-putty-drop-out-constantly-on-other-computer-they-dont">http://superuser.com/questions/389378/winscp-and-putty-drop-out-constantly-on-other-computer-they-dont</a>)</li>
+<li>if you get disconnected because of your network configuration (proxies etc.),
+you should follow
+<a class="reference external" href="https://superuser.com/questions/389378/winscp-and-putty-drop-out-constantly-on-other-computer-they-dont">this explanation</a></li>
 </ol>
 </div>
 <div class="section" id="saving-your-passphrase-with-putty-or-winscp">
 <h3>Saving your Passphrase with PuTTY or WinSCP<a class="headerlink" href="#saving-your-passphrase-with-putty-or-winscp" title="Permalink to this headline">¶</a></h3>
-<p>To avoid having to type your passphrase every time you connect to the server using PuTTY or WinSCP, you may use Pageant, an authentication agent program, part of WinSCP (Windows Start Menu &gt; All Programs &gt; WinSCP &gt; Key Tools &gt; Pageant):</p>
-<p>Launch Pageant (appears in the status bar in Windows bottom-right corner)
-Click on “Add Key” and choose your private key
-Type your passphrase when prompted.</p>
+<p>To avoid having to type your passphrase every time you connect to the server using PuTTY or WinSCP,
+you may use Pageant, an authentication agent program, part of WinSCP (Windows Start Menu &gt; All Programs &gt; WinSCP &gt; Key Tools &gt; Pageant):</p>
+<ol class="arabic simple">
+<li>Launch Pageant (appears in the status bar in Windows bottom-right corner)</li>
+<li>Click on “Add Key” and choose your private key</li>
+<li>Type your passphrase when prompted.</li>
+</ol>
 </div>
 <div class="section" id="using-putty-to-access-the-server-database">
 <h3>Using PuTTY to Access the Server Database<a class="headerlink" href="#using-putty-to-access-the-server-database" title="Permalink to this headline">¶</a></h3>
-<p>The following page explains how to set up an SSH tunnel using PuTTY: <a class="reference external" href="http://www.postgresonline.com/journal/archives/38-PuTTY-for-SSH-Tunneling-to-PostgreSQL-Server.html">http://www.postgresonline.com/journal/archives/38-PuTTY-for-SSH-Tunneling-to-PostgreSQL-Server.html</a></p>
-<p>We do recommend to use the PuTTY SSH tunnel and not the PGAdminIII tunnelling functionality.</p>
+<p>The following page explains how to set up an SSH tunnel using PuTTY:
+<a class="reference external" href="https://www.postgresonline.com/journal/archives/38-PuTTY-for-SSH-Tunneling-to-PostgreSQL-Server.html">https://www.postgresonline.com/journal/archives/38-PuTTY-for-SSH-Tunneling-to-PostgreSQL-Server.html</a></p>
+<p>We recommend to use the PuTTY SSH tunnel and not the PGAdminIII tunnelling functionality.</p>
 </div>
 </div>
 </div>
@@ -176,7 +186,7 @@ Type your passphrase when prompted.</p>
       &copy;2011-2019, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

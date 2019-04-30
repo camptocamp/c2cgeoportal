@@ -14,6 +14,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,10 +38,8 @@
             
   <div class="section" id="install-an-existing-application">
 <span id="integrator-install-application"></span><h1>Install an existing application<a class="headerlink" href="#install-an-existing-application" title="Permalink to this headline">¶</a></h1>
-<p>On this page we explain the procedure to build an application from
-only the code.</p>
-<p>If you want to use an existing database, you should ignore
-all the commands concerning the database.</p>
+<p>On this page we explain the procedure to build an application from only the current application code.</p>
+<p>If you want to use an existing database, you should ignore all the commands concerning the database.</p>
 <dl class="docutils">
 <dt>This guide assumes that:</dt>
 <dd><ul class="first last simple">
@@ -51,93 +50,34 @@ all the commands concerning the database.</p>
 </dl>
 <p>For specific environments, this page contains some notes to give some help.</p>
 <div class="section" id="set-up-the-database">
-<h2>Set up the database<a class="headerlink" href="#set-up-the-database" title="Permalink to this headline">¶</a></h2>
+<span id="integrator-install-application-setup-database"></span><h2>Set up the database<a class="headerlink" href="#set-up-the-database" title="Permalink to this headline">¶</a></h2>
 <p>Any c2cgeoportal application requires a PostgreSQL/PostGIS database. The
 application works with its own tables, which store users, layers, etc. These
 tables are located in a specific schema of the database.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">In a multi-project application architecture, multiple specific schemas
-must be used.</p>
-</div>
 <p>If the application has MapServer layers linked to PostGIS tables, these tables
 and the application-specific tables must be in the same database, preferably in
 separate schemas. This is required for layer access control (<em>restricted
 layers</em>), where joining user/role tables to PostGIS layer tables is necessary.</p>
-<div class="section" id="create-the-database">
-<span id="integrator-install-application-create-database"></span><h3>Create the database<a class="headerlink" href="#create-the-database" title="Permalink to this headline">¶</a></h3>
-<p>To create the database you can use:</p>
-<pre class="highlight"><style type="text/css">
-span.prompt1:before {
-  content: "$ ";
-}
-</style><span class="prompt1">sudo -u postgres createdb &lt;db_name&gt; -T template_postgis</span>
-</pre><p>with <code class="docutils literal notranslate"><span class="pre">&lt;db_name&gt;</span></code> replaced by the actual database name.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>if you do not have the template_postgis you can use:</p>
-<p>with Postgres &gt;= 9.1 and PostGIS &gt;= 2.1:</p>
-<pre class="highlight"><span class="prompt1">sudo -u postgres createdb -E UTF8 -T template0 &lt;db_name&gt;</span>
-<span class="prompt1">sudo -u postgres psql -c <span class="s2">&quot;CREATE EXTENSION postgis;&quot;</span> &lt;db_name&gt;</span>
-</pre><p>with older versions:</p>
-<pre class="highlight"><span class="prompt1">sudo -u postgres createdb -E UTF8 -T template0 &lt;db_name&gt;</span>
-<span class="prompt1">sudo -u postgres psql -d &lt;db_name&gt; -f /usr/share/postgresql/9.1/contrib/postgis-2.1/postgis.sql</span>
-<span class="prompt1">sudo -u postgres psql -d &lt;db_name&gt; -f /usr/share/postgresql/9.1/contrib/postgis-2.1/spatial_ref_sys.sql</span>
-</pre><p class="last">Note that the path of the postgis scripts and the template name can
-differ on your host.</p>
-</div>
-<p>Create the “pg_trgm” extension to use the “similarity” function within the
-full-text search:</p>
-<pre class="highlight"><span class="prompt1">sudo -u postgres psql -c <span class="s2">&quot;CREATE EXTENSION pg_trgm&quot;</span> &lt;db_name&gt;</span>
-</pre></div>
+<p>You need a Postgres database &gt;= 9.1 in UTF-8 with the PostGIS &gt;= 2.1 extension.</p>
+<p>If you wish to use the <code class="docutils literal notranslate"><span class="pre">similarity</span></code> function within the full-text search, create the <code class="docutils literal notranslate"><span class="pre">pg_trgm</span></code> extension:</p>
+<p>Create the <code class="docutils literal notranslate"><span class="pre">unaccent</span></code> extension to have accent-insensitive search within the full-text search.</p>
+<p>And by default we assume that the <code class="docutils literal notranslate"><span class="pre">www-data</span></code> user exists with all rights on the application schema.</p>
 <div class="section" id="create-the-schemas">
 <span id="integrator-install-application-create-schema"></span><h3>Create the schemas<a class="headerlink" href="#create-the-schemas" title="Permalink to this headline">¶</a></h3>
 <p>Each application needs two application-specific schemas.
 To create them, do:</p>
-<pre class="highlight"><span class="prompt1">sudo -u postgres psql -c <span class="s2">&quot;CREATE SCHEMA &lt;schema_name&gt;;&quot;</span> &lt;db_name&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">sudo -u postgres psql -c <span class="s2">&quot;CREATE SCHEMA &lt;schema_name&gt;;&quot;</span> &lt;db_name&gt;</span>
 <span class="prompt1">sudo -u postgres psql -c <span class="s2">&quot;CREATE SCHEMA &lt;schema_name&gt;_static;&quot;</span> &lt;db_name&gt;</span>
-</pre><p>with <code class="docutils literal notranslate"><span class="pre">&lt;db_name&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;schema_name&gt;</span></code> replaced by the actual database name,
-and schema name (‘main’ by default), respectively.
-Note that if you are using a multi-project, you need to define both schemas
-for the parent and for each child.</p>
-</div>
-<div class="section" id="create-a-database-user">
-<span id="integrator-install-application-create-user"></span><h3>Create a database user<a class="headerlink" href="#create-a-database-user" title="Permalink to this headline">¶</a></h3>
-<p>We use a specific user for the application, <code class="docutils literal notranslate"><span class="pre">www-data</span></code> by default.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>It the user does not already exist in your database, create it first:</p>
-<pre class="highlight"><span class="prompt1">sudo -u postgres createuser -P &lt;db_user&gt;</span>
-</pre></div>
-<p>Give the necessary rights to the user:</p>
-<pre class="highlight"><span class="prompt1">sudo -u postgres psql -c <span class="s1">&#39;GRANT SELECT ON TABLE spatial_ref_sys TO &quot;www-data&quot;&#39;</span> &lt;db_name&gt;</span>
-<span class="prompt1">sudo -u postgres psql -c <span class="s1">&#39;GRANT ALL ON TABLE geometry_columns TO &quot;www-data&quot;&#39;</span> &lt;db_name&gt;</span>
 <span class="prompt1">sudo -u postgres psql -c <span class="s1">&#39;GRANT ALL ON SCHEMA &lt;schema_name&gt; TO &quot;www-data&quot;&#39;</span> &lt;db_name&gt;</span>
 <span class="prompt1">sudo -u postgres psql -c <span class="s1">&#39;GRANT ALL ON SCHEMA &lt;schema_name&gt;_static TO &quot;www-data&quot;&#39;</span> &lt;db_name&gt;</span>
-</pre><div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If you do not use the <code class="docutils literal notranslate"><span class="pre">www-data</span></code> user for Apache, replace it by the right user.</p>
-</div>
-</div>
+</pre></div></div></div>
 </div>
 <div class="section" id="install-the-application">
 <h2>Install the application<a class="headerlink" href="#install-the-application" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="get-the-application-source-tree">
-<h3>Get the application source tree<a class="headerlink" href="#get-the-application-source-tree" title="Permalink to this headline">¶</a></h3>
-<p>If GitHub is used for the application, use the following command to get the
-application source tree:</p>
-<pre class="highlight"><span class="prompt1">git clone git@github.com:camptocamp/&lt;project&gt;.git</span>
-<span class="prompt1"><span class="nb">cd</span> &lt;project&gt;</span>
-</pre></div>
-<div class="section" id="non-apt-dpkg-based-os-configuration">
-<h3>Non Apt/Dpkg based OS Configuration<a class="headerlink" href="#non-apt-dpkg-based-os-configuration" title="Permalink to this headline">¶</a></h3>
-<p>For example Windows or RedHat.</p>
-<p>Disable the package checking:</p>
-<p>In the <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;.mk</span></code> add:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TEST_PACKAGES</span> <span class="o">=</span> <span class="n">FALSE</span>
-</pre></div>
-</div>
-</div>
 <div class="section" id="windows-specific-configuration">
 <h3>Windows Specific Configuration<a class="headerlink" href="#windows-specific-configuration" title="Permalink to this headline">¶</a></h3>
 <p>Some Python modules cannot currently be installed through the Python Package
@@ -163,74 +103,15 @@ environment variable, for cygwin, git and node binaries.</p>
 <h4>Cygwin<a class="headerlink" href="#cygwin" title="Permalink to this headline">¶</a></h4>
 <p>You must install the following packages:</p>
 <ul class="simple">
-<li>make</li>
 <li>git</li>
-<li>gettext-devel</li>
 </ul>
-</div>
-<div class="section" id="python-wheels">
-<h4>Python Wheels<a class="headerlink" href="#python-wheels" title="Permalink to this headline">¶</a></h4>
-<p>You should create a “wheels” folder at the root folder of your project.</p>
-<p>Then, go to <a class="reference external" href="http://www.lfd.uci.edu/~gohlke/pythonlibs/">http://www.lfd.uci.edu/~gohlke/pythonlibs/</a>, search and download the
-following packages:</p>
-<ul class="simple">
-<li>Psycopg2</li>
-<li>Shapely</li>
-<li>Pillow</li>
-<li>Pyproj</li>
-</ul>
-<p>If your project is configured for Windows, then <code class="docutils literal notranslate"><span class="pre">make</span></code> will expect this folder
-to exist and to contain these wheels.</p>
-</div>
-<div class="section" id="mapserver-mapserver-map-mako">
-<h4>mapserver/mapserver.map.mako<a class="headerlink" href="#mapserver-mapserver-map-mako" title="Permalink to this headline">¶</a></h4>
-<p>You must specify the path to the MapServer’s EPSG file by uncommenting and adapting
-this line under <code class="docutils literal notranslate"><span class="pre">MAP</span></code> (use regular slash <code class="docutils literal notranslate"><span class="pre">/</span></code>)</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">PROJ_LIB</span><span class="s2">&quot; &quot;</span><span class="n">C</span><span class="p">:</span><span class="o">/</span><span class="n">PATH</span><span class="o">/</span><span class="n">TO</span><span class="o">/</span><span class="n">ms4w</span><span class="o">/</span><span class="n">proj</span><span class="o">/</span><span class="n">nad</span><span class="s2">&quot;</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="project-mk">
-<h4>&lt;project&gt;.mk<a class="headerlink" href="#project-mk" title="Permalink to this headline">¶</a></h4>
-<p>The following configuration override must be added to your <code class="docutils literal notranslate"><span class="pre">&lt;project&gt;.mk</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># Sets that is we use Windows
-OPERATING_SYSTEM ?= WINDOWS
-# Path to cygwin
-CYGWIN_PATH ?= c:/path/to/cygwin
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="redhat-specific-configuration">
-<h3>RedHat Specific Configuration<a class="headerlink" href="#redhat-specific-configuration" title="Permalink to this headline">¶</a></h3>
-<p>Specific settings are required when the c2cgeoportal application is to be run
-on RedHat Enterprise Linux (RHEL) 6.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>First of all, note that, with RHEL, you cannot install the c2cgeoportal
-application in your homedir. If you do so, you will get the following error
-in the Apache logs:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">13</span><span class="p">)</span><span class="n">Permission</span> <span class="n">denied</span><span class="p">:</span> <span class="n">access</span> <span class="n">to</span> <span class="o">/~</span><span class="n">elemoine</span><span class="o">/</span> <span class="n">denied</span>
-</pre></div>
-</div>
-<p class="last">So always install the application in an Apache-accessible directory. On
-Camptocamp <em>puppetized</em> servers you will typically install the application
-in <code class="docutils literal notranslate"><span class="pre">/var/www/vhosts/&lt;vhost&gt;/private/dev/&lt;username&gt;/</span></code>, where <code class="docutils literal notranslate"><span class="pre">&lt;vhost&gt;</span></code>
-is the name of the Apache virtual host, and <code class="docutils literal notranslate"><span class="pre">&lt;username&gt;</span></code> is your Unix
-login name.</p>
-</div>
-<div class="section" id="apache-application-wsgi-mako">
-<h4>apache/application.wsgi.mako<a class="headerlink" href="#apache-application-wsgi-mako" title="Permalink to this headline">¶</a></h4>
-<p>Ensure that the regular expression used in <code class="docutils literal notranslate"><span class="pre">apache/application.wsgi.mako</span></code> to modify the <code class="docutils literal notranslate"><span class="pre">sys.path</span></code>
-matches the system directories containing python packages. If you are installing from scratch, this should
-already be the case; otherwise look at <code class="docutils literal notranslate"><span class="pre">scaffolds/create/apache/application.wsgi.mako</span></code> for an example.</p>
 </div>
 </div>
 <div class="section" id="integrator-install-application-install-application">
 <span id="id1"></span><h3>Install the application<a class="headerlink" href="#integrator-install-application-install-application" title="Permalink to this headline">¶</a></h3>
 <p>You can build and install the application with the command:</p>
-<pre class="highlight"><span class="prompt1">./docker-run make --makefile<span class="o">=</span>&lt;user&gt;.mk build</span>
-</pre><p>This previous command will do many things like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./docker-run make --makefile<span class="o">=</span>&lt;user&gt;.mk build</span>
+</pre></div></div><p>This previous command will do many things like:</p>
 <blockquote>
 <div><ul class="simple">
 <li>adapt the application configuration to your environment,</li>
@@ -238,25 +119,27 @@ already be the case; otherwise look at <code class="docutils literal notranslate
 </ul>
 </div></blockquote>
 <p>Then create the application tables:</p>
-<pre class="highlight"><span class="prompt1">./docker-run make --makefile<span class="o">=</span>&lt;user&gt;.mk upgrade-db</span>
-</pre><p>For non Docker installation:</p>
-<pre class="highlight"><span class="prompt1"><span class="nv">FINALISE</span><span class="o">=</span>TRUE make --makefile<span class="o">=</span>&lt;user&gt;.mk build</span>
-</pre><p>This previous command will do many things like:</p>
-<blockquote>
-<div><ul class="simple">
-<li>download and install the project dependencies,</li>
-<li>deploy the MapFish Print service if it is configured for building.</li>
-</ul>
-</div></blockquote>
-<p>Your application should now be available at:
-<code class="docutils literal notranslate"><span class="pre">https://&lt;hostname&gt;/</span></code>.</p>
-<p>Where the <code class="docutils literal notranslate"><span class="pre">&lt;hostname&gt;</span></code> is directly linked to the virtual host.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./docker-compose-run make --makefile<span class="o">=</span>&lt;user&gt;.mk upgrade-db</span>
+</pre></div></div><p>Your application should now be available at:
+<code class="docutils literal notranslate"><span class="pre">https://&lt;hostname&gt;/</span></code>,
+where the <code class="docutils literal notranslate"><span class="pre">&lt;hostname&gt;</span></code> is directly linked to the virtual host.</p>
+<p>Add in the <code class="docutils literal notranslate"><span class="pre">/var/www/vhosts/&lt;vhost_name&gt;/conf/proxies.conf</span></code> file
+(create it if it does not exist):</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ProxyPass</span> <span class="s2">&quot;/&lt;instance&gt;&quot;</span>  <span class="s2">&quot;http://localhost:8080/&lt;instance&gt;&quot;</span>
+<span class="n">ProxyPassReverse</span> <span class="s2">&quot;/&lt;instance&gt;&quot;</span>  <span class="s2">&quot;http://localhost:8080/&lt;instance&gt;&quot;</span>
+<span class="n">ProxyPreserveHost</span> <span class="n">On</span>
+<span class="n">RequestHeader</span> <span class="nb">set</span> <span class="n">X</span><span class="o">-</span><span class="n">Forwarded</span><span class="o">-</span><span class="n">Proto</span> <span class="s2">&quot;https&quot;</span>
+<span class="n">RequestHeader</span> <span class="nb">set</span> <span class="n">X</span><span class="o">-</span><span class="n">Forwarded</span><span class="o">-</span><span class="n">Port</span> <span class="s2">&quot;443&quot;</span>
+<span class="n">ProxyRequests</span> <span class="n">Off</span>
+</pre></div>
+</div>
+<p>The root instance should be at the end.</p>
 </div>
 </div>
 <div class="section" id="migrating-to-a-new-server">
 <h2>Migrating to a new server<a class="headerlink" href="#migrating-to-a-new-server" title="Permalink to this headline">¶</a></h2>
 <p>If you are migrating to a new server, keep in mind that your variable
-<code class="docutils literal notranslate"><span class="pre">VISIBLE_WEB_HOST</span></code> must contain the exact host name that browsers should use
+<code class="docutils literal notranslate"><span class="pre">DOCKER_WEB_HOST</span></code> must contain the exact host name that browsers should use
 to access your site. Consider the following migration scenario:
 your current site runs on server <code class="docutils literal notranslate"><span class="pre">old-site.customer.ch</span></code> with the visible host name
 <code class="docutils literal notranslate"><span class="pre">gis.customer.ch</span></code>. You wish to setup a new server <code class="docutils literal notranslate"><span class="pre">new-site.customer.ch</span></code>,
@@ -265,11 +148,11 @@ install the application and test it, and then switch your DNS so that
 To accomplish this, you must proceed as follows:</p>
 <blockquote>
 <div><ul class="simple">
-<li>set <code class="docutils literal notranslate"><span class="pre">VISIBLE_WEB_HOST</span></code> to <code class="docutils literal notranslate"><span class="pre">new-site.customer.ch</span></code></li>
+<li>set <code class="docutils literal notranslate"><span class="pre">DOCKER_WEB_HOST</span></code> to <code class="docutils literal notranslate"><span class="pre">new-site.customer.ch</span></code></li>
 <li>install the application on <code class="docutils literal notranslate"><span class="pre">new-site.customer.ch</span></code> and test the application
-at <code class="docutils literal notranslate"><span class="pre">http://new-site.customer.ch</span></code></li>
+at <code class="docutils literal notranslate"><span class="pre">https://new-site.customer.ch</span></code></li>
 <li>later, when going live, you must:<ul>
-<li>change <code class="docutils literal notranslate"><span class="pre">VISIBLE_WEB_HOST</span></code> to <code class="docutils literal notranslate"><span class="pre">gis.customer.ch</span></code></li>
+<li>change <code class="docutils literal notranslate"><span class="pre">DOCKER_WEB_HOST</span></code> to <code class="docutils literal notranslate"><span class="pre">gis.customer.ch</span></code></li>
 <li>re-build, re-deploy - but do not test yet!</li>
 <li>change your DNS so that <code class="docutils literal notranslate"><span class="pre">gis.customer.ch</span></code> points to <code class="docutils literal notranslate"><span class="pre">new-site.customer.ch</span></code>.</li>
 <li>Now test your new live site.</li>
@@ -352,7 +235,7 @@ at <code class="docutils literal notranslate"><span class="pre">http://new-site.
       &copy;2011-2019, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

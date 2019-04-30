@@ -14,6 +14,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -63,13 +64,13 @@
 <p class="last">All the <code class="docutils literal notranslate"><span class="pre">#,</span> <span class="pre">fuzzy</span></code> strings should be verified and the line should be removed
 (if the line is not removed, the localisation will not be used).</p>
 </div>
-<p>To update the <code class="docutils literal notranslate"><span class="pre">po</span></code> files, you must run this specific targets.</p>
-<p>For non Docker project:</p>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">docker</span><span class="o">-</span><span class="n">run</span> <span class="n">make</span> <span class="o">--</span><span class="n">makefile</span><span class="o">=&lt;</span><span class="n">package</span><span class="o">&gt;.</span><span class="n">mk</span> <span class="n">update</span><span class="o">-</span><span class="n">po</span>
-</pre></div>
-</div>
+<p>To update the <code class="docutils literal notranslate"><span class="pre">po</span></code> files, you must run the following command:</p>
 <p>For Docker project:</p>
 <div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">docker</span><span class="o">-</span><span class="n">compose</span><span class="o">-</span><span class="n">run</span>  <span class="n">make</span> <span class="o">--</span><span class="n">makefile</span><span class="o">=&lt;</span><span class="n">package</span><span class="o">&gt;.</span><span class="n">mk</span> <span class="n">update</span><span class="o">-</span><span class="n">po</span>
+</pre></div>
+</div>
+<p>For non Docker project:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">docker</span><span class="o">-</span><span class="n">run</span> <span class="n">make</span> <span class="o">--</span><span class="n">makefile</span><span class="o">=&lt;</span><span class="n">package</span><span class="o">&gt;.</span><span class="n">mk</span> <span class="n">update</span><span class="o">-</span><span class="n">po</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -81,7 +82,7 @@
 <li>layer in administration (new or modified)</li>
 <li>raster layer in the vars file (new or modified)</li>
 <li>print template</li>
-<li>full text search</li>
+<li>full-text search</li>
 <li>application (JavaScript and HTML files)</li>
 <li>layer enumeration</li>
 <li>some metadata as disclaimer</li>
@@ -165,7 +166,7 @@
       &copy;2011-2019, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

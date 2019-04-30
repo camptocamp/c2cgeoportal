@@ -14,11 +14,12 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Integrator Guide" href="../integrator/index.html" />
-    <link rel="prev" title="Transactional WFS with TinyOWS" href="tinyows.html" />
+    <link rel="prev" title="TinyOWS configuration" href="tinyows.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -37,7 +38,7 @@
             
   <div class="section" id="wmstime-layer">
 <span id="integrator-wmstime"></span><h1>WMSTime Layer<a class="headerlink" href="#wmstime-layer" title="Permalink to this headline">¶</a></h1>
-<p>c2cgeoportal supports <a class="reference external" href="http://mapserver.org/ogc/wms_time.html">WMS Time layers</a>.</p>
+<p>c2cgeoportal supports <a class="reference external" href="https://mapserver.org/ogc/wms_time.html">WMS Time layers</a>.</p>
 <p>When the time is enabled for a layer group, a time widget (a slider or datepicker)
 is added to this group in the layer tree which enables changing the layer time.</p>
 <div class="section" id="configuration">
@@ -61,7 +62,7 @@ formats are supported to define the time:</p>
 <p>The format <code class="docutils literal notranslate"><span class="pre">min/max/interval</span></code> allows specifying a time range by giving a start
 date, an end date and an interval between the time stops.</p>
 <p>The format <code class="docutils literal notranslate"><span class="pre">value1,value2,value3,...</span></code> allows specifying a time range by listing discrete values.</p>
-<p>The dates (<code class="docutils literal notranslate"><span class="pre">min</span></code>, <code class="docutils literal notranslate"><span class="pre">max</span></code> and <code class="docutils literal notranslate"><span class="pre">valueN</span></code>) could be specified using any of the following formats:</p>
+<p>The dates (<code class="docutils literal notranslate"><span class="pre">min</span></code>, <code class="docutils literal notranslate"><span class="pre">max</span></code> and <code class="docutils literal notranslate"><span class="pre">valueN</span></code>) can be specified using any of the following formats:</p>
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">YYYY</span></code></li>
 <li><code class="docutils literal notranslate"><span class="pre">YYYY-MM</span></code></li>
@@ -73,23 +74,23 @@ for the slider and the format of the time parameter used for the GetMap
 requests. For example when a layer has monthly data, the <code class="docutils literal notranslate"><span class="pre">YYYY-MM</span></code> should be
 used in the mapfile to make sure that only months and years are displayed in the
 slider tip and passed to the GetMap request.</p>
-<p>The interval (<code class="docutils literal notranslate"><span class="pre">interval</span></code>) has to be defined regarding international standard
-ISO 8601 and its duration/time intervals definition (see
-<a class="reference external" href="http://en.wikipedia.org/wiki/ISO_8601#Durations">ISO 8601 Durations / Time intervals</a>).</p>
+<p>The interval (<code class="docutils literal notranslate"><span class="pre">interval</span></code>) has to be defined according to the
+ISO 8601 standard and its duration/time intervals definition (see
+<a class="reference external" href="https://en.wikipedia.org/wiki/ISO_8601#Durations">ISO 8601 Durations / Time intervals</a>).</p>
 <p>Some examples for the interval definition:</p>
 <ul class="simple">
 <li>An interval of one year: <code class="docutils literal notranslate"><span class="pre">P1Y</span></code></li>
 <li>An interval of six months: <code class="docutils literal notranslate"><span class="pre">P6M</span></code></li>
 </ul>
-<p>For more information please refer to the <a class="reference external" href="http://mapserver.org/ogc/wms_time.html">MapServer documentation</a>.</p>
+<p>For more information, please refer to the <a class="reference external" href="https://mapserver.org/ogc/wms_time.html">MapServer documentation</a>.</p>
 </div>
-<div class="section" id="admin-interface">
-<h3>Admin interface<a class="headerlink" href="#admin-interface" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="admin-interface-widget">
+<h3>Admin interface - widget<a class="headerlink" href="#admin-interface-widget" title="Permalink to this headline">¶</a></h3>
 <p>Most of the configuration is done in the mapfile as described in the above
 section. However the time widget must be configured via the admin interface.
 Two different widget types are available: A time slider and a datepicker
 widget. The preferred widget can be selected in the admin interface (field <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">widget</span></code>).</p>
-<p>Besides, the time mode can be changed. The time mode is one of:</p>
+<p>Note that the time mode can be changed. The time mode is one of:</p>
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">value</span></code></li>
 <li><code class="docutils literal notranslate"><span class="pre">range</span></code></li>
@@ -105,6 +106,12 @@ fields are displayed to select the start and end date.
 In mode <code class="docutils literal notranslate"><span class="pre">range</span></code> the layer will display data that is relative to the defined range.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">disabled</span></code> mode hides the time widget. No time parameter will be sent
 to the GetMap request in this case.</p>
+</div>
+<div class="section" id="admin-interface-query">
+<h3>Admin interface - query<a class="headerlink" href="#admin-interface-query" title="Permalink to this headline">¶</a></h3>
+<p>By setting a <code class="docutils literal notranslate"><span class="pre">timeAttribute</span></code> metadata having as value the attribute used in the OGS server as time item,
+you ensure that the WMS/WFS queries take into account the time filtering values and that no result is returned if an object
+is hidden by the time filter.</p>
 </div>
 </div>
 <div class="section" id="merging-configurations">
@@ -122,7 +129,7 @@ different types of definition within the same group,</li>
 </ul>
 <p>There is also a limitation that applies to the admin interface: all the WMS Time
 layers of a group should be configured to use the same widget and the same time mode
-(<code class="docutils literal notranslate"><span class="pre">single</span></code> or <code class="docutils literal notranslate"><span class="pre">range</span></code>) except for layers with time mode <code class="docutils literal notranslate"><span class="pre">disabled</span></code> that can be mixed within others.</p>
+(<code class="docutils literal notranslate"><span class="pre">single</span></code> or <code class="docutils literal notranslate"><span class="pre">range</span></code>), except for layers with time mode <code class="docutils literal notranslate"><span class="pre">disabled</span></code> that can be mixed within others.</p>
 </div>
 </div>
 
@@ -164,7 +171,7 @@ layers of a group should be configured to use the same widget and the same time 
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="index.html">Administrator Guide</a><ul>
-      <li>Previous: <a href="tinyows.html" title="previous chapter">Transactional WFS with TinyOWS</a></li>
+      <li>Previous: <a href="tinyows.html" title="previous chapter">TinyOWS configuration</a></li>
       <li>Next: <a href="../integrator/index.html" title="next chapter">Integrator Guide</a></li>
   </ul></li>
   </ul></li>
@@ -198,7 +205,7 @@ layers of a group should be configured to use the same widget and the same time 
       &copy;2011-2019, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

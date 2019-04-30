@@ -100,7 +100,7 @@ some site-specific configuration issues must be considered:
 
    - if you have V1 configuration and this has not yet been migrated to V2 configuration
      on this DB instance, it must be migrated now (if it is for test purposes, clone the
-     DB first): run script ``./docker-run themev1tov2``
+     DB first): run script ``docker-compose exec geoportal themev1tov2``
    - set default theme of the new interface to the desired one (set "defaultTheme"
      in ``<interface>.html``)
    - set meaningful starting zoom level and center coordinates of new interface,
@@ -120,7 +120,7 @@ Add the name of your interface to the table. This can be done using the admin in
 Checker
 ~~~~~~~
 
-This section describes how to Enable the checker for the new interface.
+This section describes how to enable the checker for the new interface.
 
 We suggest to add only the main checker in the ``defaults``. It is what is done by default.
 In the ``all`` (``vars.checker.all``) section, check all the ngeo interfaces in standard

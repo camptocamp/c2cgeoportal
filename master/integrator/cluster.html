@@ -14,6 +14,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -42,10 +43,10 @@
 <a class="reference external" href="https://wiki.postgresql.org/wiki/Clone_schema">cloning the main integration schema</a>,
 a customized version of the script, applicable for c2cgeoportal, is available in
 <code class="docutils literal notranslate"><span class="pre">scripts/CONST_clone_schema.sql</span></code>.</p>
-<p>For the next steps it is important to figure out if the main goal is the scalability
+<p>For the next steps, it is important to know if your main goal is the scalability
 or the robustness of the application.</p>
-<p>In general the scalability is more important because the main cause of
-down time is due of too much traffic.</p>
+<p>In general, scalability is more important, because the main cause of
+down time is too much traffic.</p>
 <p>To have better DB performances, one can setup multiple Postgres servers in a
 <a class="reference external" href="https://wiki.postgresql.org/wiki/Binary_Replication_Tutorial">master/slave</a>
 configuration. To enable this feature on GeoMapFish, you must add this to your <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code>:</p>
@@ -59,8 +60,8 @@ operations to the database (not supported by slave instances). If it is not the 
 application (bad practice), add entries to <code class="docutils literal notranslate"><span class="pre">db_chooser/master</span></code> in your <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code>.
 For forcing the use of a slave for a POST/PUT/DELETE, add entries to the <code class="docutils literal notranslate"><span class="pre">db_chooser/slave</span></code>
 configuration.</p>
-<p>For having more than one instance of slave and having an automatic election of a new
-master in case of failure, you must setup an high availability proxy (HAProxy, for example).
+<p>To have more than one slave instance and to have an automatic election of a new
+master in case of failure, you must setup a high availability proxy (HAProxy, for example).
 This is out of the scope of this document. If you do not care about failover, you can use one
 DNS entry with multiple IP entries for the slaves.</p>
 </div>
@@ -139,7 +140,7 @@ DNS entry with multiple IP entries for the slaves.</p>
       &copy;2011-2019, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

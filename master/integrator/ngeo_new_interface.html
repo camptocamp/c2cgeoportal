@@ -14,6 +14,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -50,7 +51,7 @@ For example, to have two NGEO interfaces called “mobile” and “new”, set:
 <div class="section" id="copy-files-from-template">
 <h2>Copy files from template<a class="headerlink" href="#copy-files-from-template" title="Permalink to this headline">¶</a></h2>
 <p>If you want a new mobile interface, get the default files as follows:</p>
-<pre class="highlight"><style type="text/css">
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
 span.prompt1:before {
   content: "$ ";
 }
@@ -58,12 +59,12 @@ span.prompt1:before {
   geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/&lt;interface&gt;.html.ejs</span>
 <span class="prompt1">cp CONST_create_template/geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/Controllermobile.js <span class="se">\</span>
   geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/Controller&lt;interface&gt;.js</span>
-</pre><p>If you want a new desktop interface, get the default files as follows:</p>
-<pre class="highlight"><span class="prompt1">cp CONST_create_template/geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/desktop.html.ejs <span class="se">\</span>
+</pre></div></div><p>If you want a new desktop interface, get the default files as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">cp CONST_create_template/geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/desktop.html.ejs <span class="se">\</span>
   geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/&lt;interface&gt;.html.ejs</span>
 <span class="prompt1">cp CONST_create_template/geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/Controllerdesktop.js <span class="se">\</span>
   geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/Controller&lt;interface&gt;.js</span>
-</pre></div>
+</pre></div></div></div>
 <div class="section" id="edit-interface-files">
 <h2>Edit interface files<a class="headerlink" href="#edit-interface-files" title="Permalink to this headline">¶</a></h2>
 <p>In the file <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/Controller&lt;interface&gt;.js</span></code>,
@@ -86,9 +87,9 @@ adapt the name of the controller and the referenced css and js files to the new 
 </pre></div>
 </div>
 <p>Add the new interface files to Git:</p>
-<pre class="highlight"><span class="prompt1">git add geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/&lt;interface&gt;.html.ejs</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git add geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/&lt;interface&gt;.html.ejs</span>
 <span class="prompt1">git add geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/Controller&lt;interface&gt;.js</span>
-</pre></div>
+</pre></div></div></div>
 <div class="section" id="package-file">
 <h2>Package file<a class="headerlink" href="#package-file" title="Permalink to this headline">¶</a></h2>
 <p>Update the interface in your <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/__init__.py</span></code> file:</p>
@@ -113,7 +114,7 @@ some site-specific configuration issues must be considered:</p>
 <div><ul class="simple">
 <li>if you have V1 configuration and this has not yet been migrated to V2 configuration
 on this DB instance, it must be migrated now (if it is for test purposes, clone the
-DB first): run script <code class="docutils literal notranslate"><span class="pre">./docker-run</span> <span class="pre">themev1tov2</span></code></li>
+DB first): run script <code class="docutils literal notranslate"><span class="pre">docker-compose</span> <span class="pre">exec</span> <span class="pre">geoportal</span> <span class="pre">themev1tov2</span></code></li>
 <li>set default theme of the new interface to the desired one (set “defaultTheme”
 in <code class="docutils literal notranslate"><span class="pre">&lt;interface&gt;.html</span></code>)</li>
 <li>set meaningful starting zoom level and center coordinates of new interface,
@@ -133,7 +134,7 @@ Add the name of your interface to the table. This can be done using the admin in
 </div>
 <div class="section" id="checker">
 <h2>Checker<a class="headerlink" href="#checker" title="Permalink to this headline">¶</a></h2>
-<p>This section describes how to Enable the checker for the new interface.</p>
+<p>This section describes how to enable the checker for the new interface.</p>
 <p>We suggest to add only the main checker in the <code class="docutils literal notranslate"><span class="pre">defaults</span></code>. It is what is done by default.
 In the <code class="docutils literal notranslate"><span class="pre">all</span></code> (<code class="docutils literal notranslate"><span class="pre">vars.checker.all</span></code>) section, check all the ngeo interfaces in standard
 and debug mode:</p>
@@ -225,7 +226,7 @@ and debug mode:</p>
       &copy;2011-2019, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

@@ -14,6 +14,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -54,21 +55,21 @@ application scaffolds, should be applied.</p>
 </div>
 <div class="section" id="project-structure">
 <h2>Project structure<a class="headerlink" href="#project-structure" title="Permalink to this headline">¶</a></h2>
-<p>In the simple case the root directory of the application is the directory
+<p>In the simple case, the root directory of the application is the directory
 created by the c2cgeoportal scaffolds (the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_create</span></code> and
 <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_update</span></code> scaffolds).</p>
 </div>
 <div class="section" id="install-c2cgeoportal">
 <h2>Install c2cgeoportal<a class="headerlink" href="#install-c2cgeoportal" title="Permalink to this headline">¶</a></h2>
 <p>To get <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code>, you need to get the related docker image:</p>
-<pre class="highlight"><style type="text/css">
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
 span.prompt1:before {
   content: "$ ";
 }
 </style><span class="prompt1">docker pull camptocamp/geomapfish-build:&lt;release<span class="p">|</span>version&gt;</span>
 <span class="prompt1">wget https://raw.githubusercontent.com/camptocamp/c2cgeoportal/&lt;version&gt;/docker-run</span>
 <span class="prompt1">chmod +x docker-run</span>
-</pre><div class="admonition note">
+</pre></div></div><div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>If you are behind a proxy, you may pass proxy connection information to the <code class="docutils literal notranslate"><span class="pre">docker</span></code> command,
 respectively to the <code class="docutils literal notranslate"><span class="pre">docker-run</span></code> script, with <code class="docutils literal notranslate"><span class="pre">--env</span></code> parameters, like this:</p>
@@ -79,13 +80,13 @@ respectively to the <code class="docutils literal notranslate"><span class="pre"
 </div>
 <div class="section" id="list-existing-scaffolds">
 <h2>List existing scaffolds<a class="headerlink" href="#list-existing-scaffolds" title="Permalink to this headline">¶</a></h2>
-<p>To list the available scaffolds use the following command, either
+<p>To list the available scaffolds, use the following command, either
 from the root directory of c2cgeoportal (if you have followed the instructions
 from the previous section), or from the root directory of the existing
 c2cgeoportal application you want to create the new application from:</p>
-<pre class="highlight"><span class="prompt1">./docker-run --image<span class="o">=</span>camptocamp/geomapfish-build <span class="se">\</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./docker-run --image<span class="o">=</span>camptocamp/geomapfish-build <span class="se">\</span>
     --version<span class="o">=</span>&lt;release<span class="p">|</span>version&gt; pcreate -l</span>
-</pre><p>You should at least see the c2cgeoportal scaffolds:</p>
+</pre></div></div><p>You should at least see the c2cgeoportal scaffolds:</p>
 <ul class="simple">
 <li>c2cgeoportal_create</li>
 <li>c2cgeoportal_nondockercreate</li>
@@ -100,15 +101,15 @@ c2cgeoportal application you want to create the new application from:</p>
 <p>Normally the project name should be the same name as the Git repository name.</p>
 <p>The package name should not contain an underscore (<code class="docutils literal notranslate"><span class="pre">_</span></code>) because of an
 issue with Pip.</p>
-<p>To create the application first apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_create</span></code> scaffold:</p>
-<pre class="highlight"><span class="prompt1">./docker-run -ti --image<span class="o">=</span>camptocamp/geomapfish-build <span class="se">\</span>
+<p>To create the application, first apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_create</span></code> scaffold:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./docker-run -ti --image<span class="o">=</span>camptocamp/geomapfish-build <span class="se">\</span>
     --version<span class="o">=</span>&lt;release<span class="p">|</span>version&gt; <span class="se">\</span>
     pcreate -s c2cgeoportal_create &lt;project&gt;</span>
-</pre><p>And for the non Docker version, apply also the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_nondockercreate</span></code> scaffold:</p>
-<pre class="highlight"><span class="prompt1">./docker-run -ti --image<span class="o">=</span>camptocamp/geomapfish-build <span class="se">\</span>
+</pre></div></div><p>And for the non Docker version, apply also the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_nondockercreate</span></code> scaffold:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./docker-run -ti --image<span class="o">=</span>camptocamp/geomapfish-build <span class="se">\</span>
     --version<span class="o">=</span>&lt;release<span class="p">|</span>version&gt; <span class="se">\</span>
     pcreate -s c2cgeoportal_nondockercreate &lt;project&gt;</span>
-</pre><div class="admonition note">
+</pre></div></div><div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Do not add any ‘/’ after the project name.</p>
 </div>
@@ -120,24 +121,24 @@ it later.</p>
 <p>You can define this information directly in the command line using
 parameters:</p>
 <blockquote class="last">
-<div><pre class="highlight"><span class="prompt1">./docker-run -ti --image<span class="o">=</span>camptocamp/geomapfish-build <span class="se">\</span>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./docker-run -ti --image<span class="o">=</span>camptocamp/geomapfish-build <span class="se">\</span>
     --version<span class="o">=</span>&lt;release<span class="p">|</span>version&gt; <span class="se">\</span>
     --env<span class="o">=</span><span class="nv">SRID</span><span class="o">=</span><span class="m">21781</span> --env<span class="o">=</span><span class="nv">EXTENT</span><span class="o">=</span><span class="s2">&quot;420000,30000,900000,350000&quot;</span> <span class="se">\</span>
     pcreate -s c2cgeoportal_create --package-name &lt;package&gt; &lt;project&gt;</span>
-</pre></div></blockquote>
+</pre></div></div></div></blockquote>
 </div>
 <p>This will create a directory named <code class="docutils literal notranslate"><span class="pre">&lt;project&gt;</span></code> that will be next to the
 <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> directory, or to the directory of the application you are
 creating this application from.</p>
 <p>Now apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_update</span></code> scaffold:</p>
-<pre class="highlight"><span class="prompt1">./docker-run -ti --env<span class="o">=</span><span class="nv">SRID</span><span class="o">=</span><span class="m">21781</span> <span class="se">\</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./docker-run -ti --env<span class="o">=</span><span class="nv">SRID</span><span class="o">=</span><span class="m">21781</span> <span class="se">\</span>
     --image<span class="o">=</span>camptocamp/geomapfish-build --version<span class="o">=</span>&lt;release<span class="p">|</span>version&gt; <span class="se">\</span>
     pcreate -s c2cgeoportal_update --package-name &lt;package&gt; &lt;project&gt;</span>
-</pre><p>And for the non Docker version, apply also the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_nondockerupdate</span></code> scaffold:</p>
-<pre class="highlight"><span class="prompt1">./docker-run -ti --env<span class="o">=</span><span class="nv">SRID</span><span class="o">=</span><span class="m">21781</span> <span class="se">\</span>
+</pre></div></div><p>And for the non Docker version, apply also the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_nondockerupdate</span></code> scaffold:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./docker-run -ti --env<span class="o">=</span><span class="nv">SRID</span><span class="o">=</span><span class="m">21781</span> <span class="se">\</span>
     --image<span class="o">=</span>camptocamp/geomapfish-build --version<span class="o">=</span>&lt;release<span class="p">|</span>version&gt; <span class="se">\</span>
     pcreate -s c2cgeoportal_nondockerupdate --package-name &lt;package&gt; &lt;project&gt;</span>
-</pre><div class="admonition note">
+</pre></div></div><div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Do not add any ‘/’ after the project name.</p>
 </div>
@@ -146,22 +147,22 @@ application. The files generated by this scaffold are prefixed with
 <code class="docutils literal notranslate"><span class="pre">CONST_</span></code>, which means they are <em>constant</em> files that should not be changed.
 Following this rule is important for easier updates.</p>
 <p>Go to your new project:</p>
-<pre class="highlight"><span class="prompt1"><span class="nb">cd</span> &lt;project&gt;</span>
-</pre></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nb">cd</span> &lt;project&gt;</span>
+</pre></div></div></div>
 <div class="section" id="put-the-application-under-revision-control">
 <h2>Put the application under revision control<a class="headerlink" href="#put-the-application-under-revision-control" title="Permalink to this headline">¶</a></h2>
 <p>Now is a good time to put the application source code under revision
-control (Git preferably).</p>
+control (Git, preferably).</p>
 <div class="section" id="to-add-a-project-in-a-new-repository">
 <h3>To add a project in a new repository<a class="headerlink" href="#to-add-a-project-in-a-new-repository" title="Permalink to this headline">¶</a></h3>
 <p>Add the project:</p>
-<pre class="highlight"><span class="prompt1">git init</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git init</span>
 <span class="prompt1">git add .</span>
 <span class="prompt1">git remote add origin git@github.com:camptocamp/&lt;project&gt;.git</span>
-</pre><p>Commit and push on the main repository:</p>
-<pre class="highlight"><span class="prompt1">git commit -m <span class="s2">&quot;Initial commit&quot;</span></span>
+</pre></div></div><p>Commit and push on the main repository:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git commit -m <span class="s2">&quot;Initial commit&quot;</span></span>
 <span class="prompt1">git push origin master</span>
-</pre></div>
+</pre></div></div></div>
 </div>
 <div class="section" id="configuration-of-different-environments-in-your-project">
 <h2>Configuration of different environments in your project<a class="headerlink" href="#configuration-of-different-environments-in-your-project" title="Permalink to this headline">¶</a></h2>
@@ -186,7 +187,7 @@ This extension mechanism is used in Makefile files as follows:</p>
 <div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">extends</span><span class="p">:</span> <span class="n">CONST_vars</span><span class="o">.</span><span class="n">yaml</span>
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">CONST</span></code> files are files that should not be changed because they are replaced
+<p><code class="docutils literal notranslate"><span class="pre">CONST</span></code> files are files that should not be changed, because they are replaced
 during application updates, so your changes will be systematically lost. You can
 extend these files as many times as you like, although it is not recommended to
 exceed 3-4 levels for readability and simplicity.</p>
@@ -233,13 +234,13 @@ environment variables:</p>
 </div>
 <div class="section" id="configure-the-application">
 <h2>Configure the application<a class="headerlink" href="#configure-the-application" title="Permalink to this headline">¶</a></h2>
-<p>As the integrator you need to edit the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> and
+<p>As the integrator, you need to edit the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> and
 <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;.mk</span></code> files to configure the application.</p>
 <p>Do not forget to add your changes to git:</p>
-<pre class="highlight"><span class="prompt1">git add vars.yaml</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git add vars.yaml</span>
 <span class="prompt1">git commit -m <span class="s2">&quot;Configure the project&quot;</span></span>
 <span class="prompt1">git push origin master</span>
-</pre><div class="admonition note">
+</pre></div></div><div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">If you are using a multi-project, you should add all new children to
 the parent site check_collector configuration.</p>
@@ -250,10 +251,10 @@ the parent site check_collector configuration.</p>
 <p>To have a working PNG print you should get and edit the file
 <code class="docutils literal notranslate"><span class="pre">print/WEB-INF/classes/imagemagick-mapfish-spring-application-context-override.xml</span></code>,
 get it:</p>
-<pre class="highlight"><span class="prompt1">wget https://raw.github.com/mapfish/mapfish-print/master/sample-spring/imagemagick/WEB-INF/classes/imagemagick-mapfish-spring-application-context-override.xml</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">wget https://raw.github.com/mapfish/mapfish-print/master/sample-spring/imagemagick/WEB-INF/classes/imagemagick-mapfish-spring-application-context-override.xml</span>
 <span class="prompt1">mv imagemagick-mapfish-spring-application-context-override.xml print/WEB-INF/classes/</span>
 <span class="prompt1">git add print/WEB-INF/classes/imagemagick-mapfish-spring-application-context-override.xml</span>
-</pre><p>and replace the lines:</p>
+</pre></div></div><p>and replace the lines:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;!-- &lt;property name=&quot;cmd&quot;&gt;
     &lt;value&gt;C:\Program Files\ImageMagick-6.7.8-Q16\convert&lt;/value&gt;
 &lt;/property&gt; --&gt;
@@ -270,15 +271,15 @@ get it:</p>
 <p>After creation and minimal setup the application is ready to be installed.
 Then follow the sections in the install application guide:</p>
 <ul class="simple">
+<li><a class="reference internal" href="install_application.html#integrator-install-application-setup-database"><span class="std std-ref">Set up the database</span></a>.</li>
 <li><a class="reference internal" href="install_application.html#integrator-install-application-create-schema"><span class="std std-ref">Create the schemas</span></a>.</li>
-<li><a class="reference internal" href="install_application.html#integrator-install-application-create-user"><span class="std std-ref">Create a database user</span></a>.</li>
 <li><a class="reference internal" href="install_application.html#integrator-install-application-install-application"><span class="std std-ref">Install the application</span></a>.</li>
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>After that if you want a default theme you can run:</p>
-<pre class="highlight"><span class="prompt1">./docker-compose-run create-demo-theme</span>
-</pre></div>
+<p>If you want a default theme, you can run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./docker-compose-run create-demo-theme</span>
+</pre></div></div></div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">If you create the main instance you should do the whole
@@ -296,14 +297,14 @@ have set either in the main <code class="docutils literal notranslate"><span cla
 <p>If you use <code class="docutils literal notranslate"><span class="pre">.mako</span></code>, you can also use all the possibilities allowed by the Mako
 templating system, such as for loops, conditions, sub-templates, etc.</p>
 <p>Please see the Mako documentation for details:</p>
-<p><a class="reference external" href="http://docs.makotemplates.org/en/latest/">http://docs.makotemplates.org/en/latest/</a></p>
+<p><a class="reference external" href="https://docs.makotemplates.org/en/latest/">https://docs.makotemplates.org/en/latest/</a></p>
 <p>The result is also a file without the <code class="docutils literal notranslate"><span class="pre">.mako</span></code>.</p>
 <p><strong>Syntax</strong></p>
 <p>In <code class="docutils literal notranslate"><span class="pre">.mako</span></code> files, the variable replacement syntax is as follows:</p>
 <div class="code mako highlight-default notranslate"><div class="highlight"><pre><span></span>${&lt;variablename&gt;}
 </pre></div>
 </div>
-<p>for example:</p>
+<p>For example:</p>
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">${directory}</span></code></li>
 </ul>
@@ -383,7 +384,7 @@ templating system, such as for loops, conditions, sub-templates, etc.</p>
       &copy;2011-2019, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

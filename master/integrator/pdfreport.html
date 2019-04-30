@@ -14,6 +14,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -39,10 +40,10 @@
 <span id="integrator-pdfreport"></span><h1>PDF Reporting<a class="headerlink" href="#pdf-reporting" title="Permalink to this headline">¶</a></h1>
 <p>c2cgeoportal offers a <em>pdfreport</em> webservice that can be used to generate
 advanced PDF reports about a given feature.</p>
-<p>It is based upon <a class="reference external" href="http://mapfish.github.io/mapfish-print-doc/">MapfishPrint version 3</a>
-and <a class="reference external" href="http://community.jaspersoft.com/project/jasperreports-library">Jasper Reports</a>.</p>
+<p>It is based upon <a class="reference external" href="https://mapfish.github.io/mapfish-print-doc/">MapfishPrint version 3</a>
+and <a class="reference external" href="https://community.jaspersoft.com/project/jasperreports-library">Jasper Reports</a>.</p>
 <p>The webservice is called using the following URL schema:
-<code class="docutils literal notranslate"><span class="pre">http://&lt;host&gt;&lt;entrypoint&gt;/pdfreport/&lt;layername&gt;/&lt;featureid&gt;</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">https://&lt;host&gt;&lt;entrypoint&gt;/pdfreport/&lt;layername&gt;/&lt;featureid&gt;</span></code>.</p>
 <div class="section" id="configuration">
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
 <p>The service is configured in the main <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file of the project as in the following example:</p>
@@ -114,8 +115,8 @@ parameters above are used.</li>
 Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</li>
 <li><code class="docutils literal notranslate"><span class="pre">srs</span></code>: projection code (required when showing the map).</li>
 <li><code class="docutils literal notranslate"><span class="pre">spec</span></code>: optional template used to build the <code class="docutils literal notranslate"><span class="pre">spec</span></code> argument sent to the MapFish Print webapp.</li>
-<li><code class="docutils literal notranslate"><span class="pre">map</span></code>: optional the map configuration.</li>
-<li><code class="docutils literal notranslate"><span class="pre">maps</span></code>: optional a list of maps configuration.</li>
+<li><code class="docutils literal notranslate"><span class="pre">map</span></code>: optional, the map configuration.</li>
+<li><code class="docutils literal notranslate"><span class="pre">maps</span></code>: optional, a list of maps configurations.</li>
 </ul>
 <p>The map configuration can contains the following:</p>
 <ul>
@@ -129,7 +130,7 @@ layernames must be embedded in double-quotes (“). Defaults to <code class="doc
 </li>
 <li><p class="first"><code class="docutils literal notranslate"><span class="pre">minScale</span></code>: The minimum zoom scale, default is <code class="docutils literal notranslate"><span class="pre">1000</span></code>.</p>
 </li>
-<li><p class="first"><code class="docutils literal notranslate"><span class="pre">style</span></code>: The used style, default is:</p>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">style</span></code>: The style used, default is:</p>
 <div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fillColor</span><span class="p">:</span> <span class="n">red</span>
 <span class="n">fillOpacity</span><span class="p">:</span> <span class="mf">0.2</span>
 <span class="n">symbolizers</span><span class="p">:</span>
@@ -141,7 +142,7 @@ layernames must be embedded in double-quotes (“). Defaults to <code class="doc
 </div>
 </li>
 </ul>
-<p>The variables pass to the <code class="docutils literal notranslate"><span class="pre">spec</span></code> template using the <code class="docutils literal notranslate"><span class="pre">%(&lt;variable</span> <span class="pre">name&gt;)s</span></code> syntax:</p>
+<p>The variables are passed to the <code class="docutils literal notranslate"><span class="pre">spec</span></code> template using the <code class="docutils literal notranslate"><span class="pre">%(&lt;variable</span> <span class="pre">name&gt;)s</span></code> syntax:</p>
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">layername</span></code>: name of the layer.</li>
 <li><code class="docutils literal notranslate"><span class="pre">ids</span></code>: JSON representation of the features id.</li>
@@ -152,9 +153,8 @@ layernames must be embedded in double-quotes (“). Defaults to <code class="doc
 </div>
 <div class="section" id="configuration-of-the-reports">
 <h2>Configuration of the reports<a class="headerlink" href="#configuration-of-the-reports" title="Permalink to this headline">¶</a></h2>
-<p>If you use the <code class="docutils literal notranslate"><span class="pre">ids</span></code> in an SQL query you should use <code class="docutils literal notranslate"><span class="pre">$X{IN,</span> <span class="pre">&lt;column_name&gt;,</span> <span class="pre">$P{ids}}</span></code>
-to avoid SQL injection, <a class="reference external" href="http://jasperreports.sourceforge.net/sample.reference/query/">see also</a>.</p>
-<p>See the <a class="reference external" href="http://mapfish.github.io/mapfish-print-doc/">Mapfish Print documentation</a>.</p>
+<p>If you use the <code class="docutils literal notranslate"><span class="pre">ids</span></code> in an SQL query, you should use <code class="docutils literal notranslate"><span class="pre">$X{IN,</span> <span class="pre">&lt;column_name&gt;,</span> <span class="pre">$P{ids}}</span></code>
+to avoid SQL injection, <a class="reference external" href="https://jasperreports.sourceforge.net/sample.reference/query/">see also the Jasperreports documentation</a>.</p>
 </div>
 </div>
 
@@ -232,7 +232,7 @@ to avoid SQL injection, <a class="reference external" href="http://jasperreports
       &copy;2011-2019, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

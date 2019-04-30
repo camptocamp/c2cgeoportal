@@ -3,7 +3,7 @@
 WMSTime Layer
 =============
 
-c2cgeoportal supports `WMS Time layers <http://mapserver.org/ogc/wms_time.html>`_.
+c2cgeoportal supports `WMS Time layers <https://mapserver.org/ogc/wms_time.html>`_.
 
 When the time is enabled for a layer group, a time widget (a slider or datepicker)
 is added to this group in the layer tree which enables changing the layer time.
@@ -34,7 +34,7 @@ date, an end date and an interval between the time stops.
 
 The format ``value1,value2,value3,...`` allows specifying a time range by listing discrete values.
 
-The dates (``min``, ``max`` and ``valueN``) could be specified using any of the following formats:
+The dates (``min``, ``max`` and ``valueN``) can be specified using any of the following formats:
 
 * ``YYYY``
 * ``YYYY-MM``
@@ -47,27 +47,27 @@ requests. For example when a layer has monthly data, the ``YYYY-MM`` should be
 used in the mapfile to make sure that only months and years are displayed in the
 slider tip and passed to the GetMap request.
 
-The interval (``interval``) has to be defined regarding international standard
-ISO 8601 and its duration/time intervals definition (see
-`ISO 8601 Durations / Time intervals <http://en.wikipedia.org/wiki/ISO_8601#Durations>`_).
+The interval (``interval``) has to be defined according to the
+ISO 8601 standard and its duration/time intervals definition (see
+`ISO 8601 Durations / Time intervals <https://en.wikipedia.org/wiki/ISO_8601#Durations>`_).
 
 Some examples for the interval definition:
 
 * An interval of one year: ``P1Y``
 * An interval of six months: ``P6M``
 
-For more information please refer to the `MapServer documentation
-<http://mapserver.org/ogc/wms_time.html>`_.
+For more information, please refer to the `MapServer documentation
+<https://mapserver.org/ogc/wms_time.html>`_.
 
-Admin interface
-~~~~~~~~~~~~~~~
+Admin interface - widget
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 Most of the configuration is done in the mapfile as described in the above
 section. However the time widget must be configured via the admin interface.
 Two different widget types are available: A time slider and a datepicker
 widget. The preferred widget can be selected in the admin interface (field ``Time widget``).
 
-Besides, the time mode can be changed. The time mode is one of:
+Note that the time mode can be changed. The time mode is one of:
 
 * ``value``
 * ``range``
@@ -86,6 +86,13 @@ In mode ``range`` the layer will display data that is relative to the defined ra
 The ``disabled`` mode hides the time widget. No time parameter will be sent
 to the GetMap request in this case.
 
+Admin interface - query
+~~~~~~~~~~~~~~~~~~~~~~~
+
+By setting a ``timeAttribute`` metadata having as value the attribute used in the OGS server as time item,
+you ensure that the WMS/WFS queries take into account the time filtering values and that no result is returned if an object
+is hidden by the time filter.
+
 Merging configurations
 ----------------------
 
@@ -103,4 +110,4 @@ Some of those limitations apply to the mapfile:
 
 There is also a limitation that applies to the admin interface: all the WMS Time
 layers of a group should be configured to use the same widget and the same time mode
-(``single`` or ``range``) except for layers with time mode ``disabled`` that can be mixed within others.
+(``single`` or ``range``), except for layers with time mode ``disabled`` that can be mixed within others.

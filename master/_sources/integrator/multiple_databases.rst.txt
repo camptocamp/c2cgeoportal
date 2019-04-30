@@ -7,7 +7,7 @@ Configuration
 -------------
 In your ``vars`` file, configure any database sessions
 that you want to access in your GMF instance in addition to
-the default database session, as follows. For example, to add sessions
+the default database session. For example, to add sessions
 from a database ``otherdb`` and from a database ``moredb``:
 
 .. code:: yaml
@@ -43,7 +43,7 @@ via ``DBSessions``. For example:
     other_session = DBSessions['otherdb_session']
 
 This will provide you with a
-`DB session object <http://docs.sqlalchemy.org/en/rel_1_0/orm/session_basics.html#getting-a-session>`_.
+`DB session object <https://docs.sqlalchemy.org/en/rel_1_0/orm/session_basics.html#getting-a-session>`_.
 The session name for the default database is ``dbsession``.
 
 To access attributes of your settings, proceed as follows

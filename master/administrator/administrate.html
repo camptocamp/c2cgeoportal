@@ -14,6 +14,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +38,7 @@
             
   <div class="section" id="administrate-a-c2cgeoportal-application">
 <span id="administrator-administrate"></span><h1>Administrate a c2cgeoportal application<a class="headerlink" href="#administrate-a-c2cgeoportal-application" title="Permalink to this headline">¶</a></h1>
-<p>The administration interface is located at <code class="docutils literal notranslate"><span class="pre">http://&lt;server&gt;/&lt;project&gt;/admin</span></code>.</p>
+<p>The administration interface is located at <code class="docutils literal notranslate"><span class="pre">https://&lt;server&gt;/&lt;project&gt;/admin</span></code>.</p>
 <p>Authentication for the administration interface is done through the main application interface. Role <code class="docutils literal notranslate"><span class="pre">role_admin</span></code> is
 required.</p>
 <div class="section" id="ogc-server">
@@ -85,7 +86,7 @@ files in <code class="docutils literal notranslate"><span class="pre">admin_inte
 </div>
 <div class="section" id="layers">
 <span id="administrator-administrate-layers"></span><h2>Layers<a class="headerlink" href="#layers" title="Permalink to this headline">¶</a></h2>
-<p>Layer definitiions are found in to two tables: <code class="docutils literal notranslate"><span class="pre">layer_wms</span></code> and <code class="docutils literal notranslate"><span class="pre">layer_wmts</span></code>.
+<p>Layer definitions are found in to two tables: <code class="docutils literal notranslate"><span class="pre">layer_wms</span></code> and <code class="docutils literal notranslate"><span class="pre">layer_wmts</span></code>.
 The legacy table <code class="docutils literal notranslate"><span class="pre">layerv1</span></code> is still present, but only for being able to migration the application,
 for information on migrating layers, see <a class="reference internal" href="../integrator/upgrade_application.html#integrator-upgrade-application-cgxp-to-ngeo"><span class="std std-ref">From CGXP to ngeo</span></a>.</p>
 <div class="section" id="all-layer-type">
@@ -96,8 +97,7 @@ for information on migrating layers, see <a class="reference internal" href="../
 It is used through the i18n tools to display the name on the layers tree.</li>
 <li><code class="docutils literal notranslate"><span class="pre">Metadata</span> <span class="pre">URL</span></code>: (deprecated)</li>
 <li><code class="docutils literal notranslate"><span class="pre">Description</span></code>: a description.</li>
-<li><code class="docutils literal notranslate"><span class="pre">Public</span></code>: makes the layer public. You must use the <code class="docutils literal notranslate"><span class="pre">Restriction</span> <span class="pre">areas</span></code> to make
-private layer accessible.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Public</span></code>: makes the layer public. also it is accessible through the <code class="docutils literal notranslate"><span class="pre">Restriction</span> <span class="pre">areas</span></code>.</li>
 <li><code class="docutils literal notranslate"><span class="pre">Geo</span> <span class="pre">table</span></code>: the related database table,
 used by the <a class="reference internal" href="editing.html#administrator-editing"><span class="std std-ref">Editing</span></a>.</li>
 <li><code class="docutils literal notranslate"><span class="pre">Exclude</span> <span class="pre">properties</span></code>: the list of attributes (database columns) that should not appear in
@@ -115,11 +115,11 @@ For enumerable attributes (foreign key), the column name should end with ‘_id�
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">OGC</span> <span class="pre">Server</span></code>: the used server.</li>
 <li><code class="docutils literal notranslate"><span class="pre">WMS</span> <span class="pre">layer</span> <span class="pre">name</span></code>: the WMS layers. Can be one layer, one group, a comma separated list of layers.
-In the case of a coma separated list of layers, we will get the legend rule for the
+In the case of a comma separated list of layers, we will get the legend rule for the
 layer icon on the first layer, and the legend will not be supported we should define a legend metadata.</li>
-<li><code class="docutils literal notranslate"><span class="pre">Style</span></code>: the used style, can be empty.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Style</span></code>: the style used, can be empty.</li>
 <li><code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">mode</span></code>: used for the WMS time component.</li>
-<li><code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">widget</span></code>: the used component type for the WMS time.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">widget</span></code>: the component type used for the WMS time.</li>
 </ul>
 </div>
 <div class="section" id="wmts-layer">
@@ -129,8 +129,7 @@ layer icon on the first layer, and the legend will not be supported we should de
 <li><code class="docutils literal notranslate"><span class="pre">GetCapabilities</span> <span class="pre">URL</span></code>: the URL to the WMTS capabilities.</li>
 <li><code class="docutils literal notranslate"><span class="pre">WMTS</span> <span class="pre">layer</span> <span class="pre">name</span></code>: the WMTS layer.</li>
 <li><code class="docutils literal notranslate"><span class="pre">Style</span></code>: the used style, if not present we use the default style.</li>
-<li><code class="docutils literal notranslate"><span class="pre">Matrix</span> <span class="pre">set</span></code>: the used matrix set, if there is only one matrix set
-in the capabilities it can be empty.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Matrix</span> <span class="pre">set</span></code>: the used matrix set, if there is only one matrix set in the capabilities it can be empty.</li>
 <li><code class="docutils literal notranslate"><span class="pre">Image</span> <span class="pre">type</span></code>: the MIME type of the images (e.g.: <code class="docutils literal notranslate"><span class="pre">image/png</span></code>).</li>
 </ul>
 </div>
@@ -206,6 +205,28 @@ to see (and edit, if applicable) the features within this area.</p>
 <li><code class="docutils literal notranslate"><span class="pre">Area</span></code>: Active in the following area, if not defined it is active everywhere.</li>
 </ul>
 </div>
+<div class="section" id="users">
+<h2>Users<a class="headerlink" href="#users" title="Permalink to this headline">¶</a></h2>
+<p>Each user may have from 1 to n roles, but each user has a default role from
+which are taken some settings. Currently the default role (defined through the
+“Settings from role” selection) has an influence on the role extent and on some
+functionalities regarding their configuration.</p>
+<p>Role extents for users can only be set in one role, because the application
+is currently not able to check multiple extents for one user, thus it is the
+default role which defines this unique extent.</p>
+<p>Any functionality specified as <code class="docutils literal notranslate"><span class="pre">single</span></code> can be defined only once per user.
+Hence, these functionalities have to be defined in the default role.</p>
+<p>By default, functionalities are not specified as <code class="docutils literal notranslate"><span class="pre">single</span></code>. Currently, the
+following functionalities are of <code class="docutils literal notranslate"><span class="pre">single</span></code> type:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">default_basemap</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">default_theme</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">preset_layer_filter</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">open_panel</span></code></li>
+</ul>
+<p>Any other functionality (with <code class="docutils literal notranslate"><span class="pre">single</span></code> not set or set to <code class="docutils literal notranslate"><span class="pre">false</span></code>) can
+be defined in any role linked to the user.</p>
+</div>
 </div>
 
 
@@ -280,7 +301,7 @@ to see (and edit, if applicable) the features within this area.</p>
       &copy;2011-2019, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

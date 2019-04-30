@@ -21,7 +21,7 @@ The images used from the admin interface should be placed in the folder ``geopor
 HTML file
 ---------
 
-In this file you can add some blocks like
+In this file, you can add some blocks like
 
 .. code:: html
 
@@ -31,7 +31,7 @@ In this file you can add some blocks like
 to include a directive.
 
 You can find the available directives in the
-`ngeo documentation <http://camptocamp.github.io/ngeo/master/apidoc/>`_.
+`ngeo documentation <https://camptocamp.github.io/ngeo/master/apidoc/>`_.
 
 The controller (``js`` file) is commonly named ``mainCtrl``. So you can use a value
 from the controller by doing the following (here, the controller is the ``DesktopController``):
@@ -86,20 +86,26 @@ The map configuration will be here:
 Dynamic.json view
 -----------------
 
-To configure the ngeo constants with dynamic or configurable values we have the dynamic view.
+To configure the ngeo constants with dynamic or configurable values,
+you can use the dynamic view.
 
 This view is configurable in the vars files in the section ``interfaces_config``.
-The sub section is the interface name, and after we have:
+The sub section is the interface name, and after that we have:
 
-* ``redirect_interface``: interface to be redirected to if an unexpected device type is used (mobile/desktop).
-* ``do_redirect``: directly do the redirect.
+* ``redirect_interface``: Interface to be redirected to if an unexpected device type is used (mobile/desktop).
+* ``do_redirect``: Directly do the redirect.
 * ``constants``: Directly define an ``angular`` constant in the vars file.
 * ``dynamic_constants``: Define an ``angular`` constant from a dynamic values.
-* ``static``: key: constant name, value: name of the static view that we want to have the URL.
-* ``routes``: key: constant name, value:
-    ``name``: name of the route witch one we want to have the URL.
-    ``params``: view parameters.
-    ``dynamic_params``: view parameters from dynamic values.
+* ``static``: key: Constant name, value: name of the static view that we want to have the URL.
+* ``routes``: key: Constant name, value:
+    ``name``: Name of the route witch one we want to have the URL.
+    ``kw``: Keyword arguments to supply for dynamic path elements in the route definition.
+    ``elements``: Additional positional path segments to append the URL after it is generated.
+    ``params``: Query string parameters to append to the URL.
+    ``dynamic_params``: Query string parameters from dynamic values to append to the URL.
+
+For more information ``elements`` and ``kw`` properties see *Pyramid* ``Request.route_url`` documentation:
+https://docs.pylonsproject.org/projects/pyramid/en/latest/api/request.html#pyramid.request.Request.route_url
 
 The dynamic values names are: ``interface``, ``cache_version``, ``lang_urls``, ``fulltextsearch_groups``.
 

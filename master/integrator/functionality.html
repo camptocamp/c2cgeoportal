@@ -14,6 +14,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -46,7 +47,7 @@ the application according to the user’s permissions.</p>
 <li>Functionalities for specific roles are defined in the database through the administration interface.</li>
 <li>Functionalities for specific users are defined in the database through the administration interface.</li>
 </ol>
-<p>Each level overrides the previous ones in the same order as indicated above.
+<p>Each level overrides the previous ones in the order indicated above.
 For example, if the user is authenticated and has associated functionalities in
 the <code class="docutils literal notranslate"><span class="pre">user</span></code> database table, then the <code class="docutils literal notranslate"><span class="pre">functionalities:anonymous</span></code> and
 <code class="docutils literal notranslate"><span class="pre">functionalities:registered</span></code> configuration variables, as well as any
@@ -84,8 +85,8 @@ key/value pairs, whose values are either arrays or scalars.</p>
         <span class="n">default_basemap</span><span class="p">:</span> <span class="n">plan</span>
 </pre></div>
 </div>
-<p class="last">In this example anonymous users can print maps using the <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">A4</span> <span class="pre">portrait</span></code>
-and <code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">A3</span> <span class="pre">landscape</span></code> layouts only. And their default base layer is the
+<p class="last">In this example, anonymous users can print maps using the <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">A4</span> <span class="pre">portrait</span></code>
+and <code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">A3</span> <span class="pre">landscape</span></code> layouts only. Their default base layer is the
 <code class="docutils literal notranslate"><span class="pre">plan</span></code> layer.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">functionalities:registered</span></code></dt>
@@ -193,7 +194,7 @@ taken into account.</p>
       &copy;2011-2019, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

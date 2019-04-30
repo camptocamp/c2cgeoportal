@@ -14,6 +14,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -40,56 +41,69 @@
 <p>The goal of this document is to give some troubleshooting tips.</p>
 <div class="section" id="browser">
 <h2>Browser<a class="headerlink" href="#browser" title="Permalink to this headline">¶</a></h2>
-<p>Using a browser-integrated debugging tool usually available with the <code class="docutils literal notranslate"><span class="pre">F12</span></code> key.</p>
+<p>You can use the browser-integrated debugging tool, usually available with the <code class="docutils literal notranslate"><span class="pre">F12</span></code> key.</p>
 </div>
 <div class="section" id="sources-map">
 <h2>Sources map<a class="headerlink" href="#sources-map" title="Permalink to this headline">¶</a></h2>
 <p>For debugging purposes, it is better to have all the JavaScript and Style Sheets in separated, non-minified
-files. To achieve this, you can simply use the sources maps, function activable in the browsers debugging
+files. To achieve this, you can use the sources maps, a function activable in the browsers debugging
 tool.</p>
 </div>
 <div class="section" id="webpack">
 <h2>Webpack<a class="headerlink" href="#webpack" title="Permalink to this headline">¶</a></h2>
-<p>To have faster builds you need to use the Webpack dev server; you can achieve this as follows.</p>
-<p>In the <code class="docutils literal notranslate"><span class="pre">geoportal/demo_geoportal/static-ngeo/js/apps/&lt;interface&gt;.html.ejs</span></code> file
+<p>To have faster builds, you need to use the Webpack dev server; you can achieve this as follows.</p>
+<p>In the file <code class="docutils literal notranslate"><span class="pre">geoportal/demo_geoportal/static-ngeo/js/apps/&lt;interface&gt;.html.ejs</span></code>,
 remove the <code class="docutils literal notranslate"><span class="pre">ng-strict-di</span></code> in the <code class="docutils literal notranslate"><span class="pre">html</span></code> tag.</p>
-<p>In the file <code class="docutils literal notranslate"><span class="pre">docker-compose-dev.yaml</span></code> set the <code class="docutils literal notranslate"><span class="pre">INTERFACE</span></code> to the wanted value.</p>
-<p>Run:</p>
-<pre class="highlight"><style type="text/css">
-span.prompt1:before {
-  content: "$ ";
-}
-</style><span class="prompt1">docker-compose --file<span class="o">=</span>docker-compose.yaml --file<span class="o">=</span>docker-compose-dev.yaml up</span>
-</pre><p>Open the application at the following URL: <code class="docutils literal notranslate"><span class="pre">https://&lt;host&gt;/&lt;entry_point&gt;/dev/&lt;interface&gt;.html</span></code>.</p>
+<p>If it is not already done, copy the file <code class="docutils literal notranslate"><span class="pre">docker-compose.override.sample.yaml</span></code> to
+<code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code>.
+Be sure that the service <code class="docutils literal notranslate"><span class="pre">webpack_dev_server</span></code> is present and uncommented.</p>
+<p>Restart your application as usual.</p>
+<p>Open the application at the following URL: <code class="docutils literal notranslate"><span class="pre">https://172.17.0.1:8484/dev/&lt;interface&gt;.html</span></code>.</p>
 </div>
-<div class="section" id="pyramid">
-<h2>Pyramid<a class="headerlink" href="#pyramid" title="Permalink to this headline">¶</a></h2>
-<p>If the <code class="docutils literal notranslate"><span class="pre">pyramid_debugtoolbar</span></code> is enabled the error is directly shown in the query that fails.</p>
+<div class="section" id="pyramid-debugtoolbar">
+<h2>Pyramid debugtoolbar<a class="headerlink" href="#pyramid-debugtoolbar" title="Permalink to this headline">¶</a></h2>
+<p>If it is not already done, copy the file <code class="docutils literal notranslate"><span class="pre">docker-compose.override.sample.yaml</span></code> to
+<code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code>.</p>
+<p>Then the error is directly shown in the query that fails.</p>
+<p>You can also open the debugtoolbar at <a class="reference external" href="https://172.17.0.1:8484/_debug_toolbar/">https://172.17.0.1:8484/_debug_toolbar/</a></p>
+</div>
+<div class="section" id="authentication">
+<h2>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h2>
+<p>For better security, the session cookie is accessible only via http protocol (meaning, not in JavaScript),
+and is secure (meaning, the cookie is transmitted only in https requests, not in http requests).
+For this reason, you should have your application running on https also in your development environment.</p>
+<p>To achieve that, if it is not already done, copy the file <code class="docutils literal notranslate"><span class="pre">docker-compose.override.sample.yaml</span></code>
+to <code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code>.</p>
+<p>Then access the application on <a class="reference external" href="https://172.17.0.1:8484/">https://172.17.0.1:8484/</a>.</p>
 </div>
 <div class="section" id="mapserver">
 <h2>Mapserver<a class="headerlink" href="#mapserver" title="Permalink to this headline">¶</a></h2>
-<p>Sometime more information are available by using this command:</p>
-<pre class="highlight"><span class="prompt1">docker-compose <span class="nb">exec</span> mapserver shp2img -m &lt;mapfile&gt; -o test.png -e &lt;minx&gt; &lt;miny&gt; &lt;maxx&gt; &lt;maxy&gt; <span class="se">\</span>
+<p>Sometimes, more information can be obtained by using this command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">docker-compose <span class="nb">exec</span> mapserver shp2img -m &lt;mapfile&gt; -o test.png -e &lt;minx&gt; &lt;miny&gt; &lt;maxx&gt; &lt;maxy&gt; <span class="se">\</span>
     -s &lt;sizex&gt; &lt;sizey&gt; -l &lt;layers&gt;</span>
-</pre><p>You may also activate MapServer’s debug mode and set environment variable of the MapServer container
-<code class="docutils literal notranslate"><span class="pre">MS_DEBUGLEVEL</span></code> to <code class="docutils literal notranslate"><span class="pre">5</span></code> (most verbose level, default is 0).</p>
-<p><a class="reference external" href="http://mapserver.org/optimization/debugging.html?highlight=debug#debug-levels">More information</a></p>
+</pre></div></div><p>You may also activate MapServer’s debug mode and set the environment variable <code class="docutils literal notranslate"><span class="pre">MS_DEBUGLEVEL</span></code>
+of the MapServer container <code class="docutils literal notranslate"><span class="pre">MS_DEBUGLEVEL</span></code> to <code class="docutils literal notranslate"><span class="pre">5</span></code> (most verbose level, default is 0).</p>
+<p><a class="reference external" href="https://mapserver.org/optimization/debugging.html?highlight=debug#debug-levels">More information</a></p>
 </div>
 <div class="section" id="postgresql">
 <h2>PostgreSQL<a class="headerlink" href="#postgresql" title="Permalink to this headline">¶</a></h2>
-<p>In the <code class="docutils literal notranslate"><span class="pre">/etc/postgresql/9.*/main/postgresql.conf</span></code> configuration file
+<p>In the configuration file <code class="docutils literal notranslate"><span class="pre">/etc/postgresql/9.*/main/postgresql.conf</span></code>,
 you can set <code class="docutils literal notranslate"><span class="pre">log_statement</span></code> to <code class="docutils literal notranslate"><span class="pre">all</span></code> to see all the called statements.
 This file must be edited using the <code class="docutils literal notranslate"><span class="pre">postgres</span></code> user.</p>
 <p>Reloading PostgreSQL is required so that the new configuration is taken into
 account:</p>
-<pre class="highlight"><span class="prompt1">sudo /etc/init.d/postgres reload</span>
-</pre><p>Logs are available in the <code class="docutils literal notranslate"><span class="pre">/var/log/postgresql/postgresql-9.*-main.log</span></code> file.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">sudo /etc/init.d/postgres reload</span>
+</pre></div></div><p>Logs are available in the <code class="docutils literal notranslate"><span class="pre">/var/log/postgresql/postgresql-9.*-main.log</span></code> file.</p>
 </div>
 <div class="section" id="makefile">
 <h2>Makefile<a class="headerlink" href="#makefile" title="Permalink to this headline">¶</a></h2>
 <p>To obtain additional debug messages, you can rebuild your project as follows:</p>
-<pre class="highlight"><span class="prompt1">./docker-run --env<span class="o">=</span><span class="nv">DEBUG</span><span class="o">=</span>TRUE make ...</span>
-</pre><p>It will add a message at the start of each rule with the list of files that required an update, e.-g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./docker-run --env<span class="o">=</span><span class="nv">DEBUG</span><span class="o">=</span>TRUE make ...</span>
+</pre></div></div><p>This will add a message at the start of each rule with the list of files that required an update, e.-g.:</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Build</span> <span class="o">/</span><span class="n">build</span><span class="o">/</span><span class="n">c2ctemplate</span><span class="o">-</span><span class="n">cache</span><span class="o">.</span><span class="n">json</span> <span class="n">due</span> <span class="n">modification</span> <span class="n">on</span> <span class="nb">vars</span><span class="o">.</span><span class="n">yaml</span>
 <span class="o">-</span><span class="n">rw</span><span class="o">-</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span> <span class="mi">1</span> <span class="n">sbrunner</span> <span class="n">geomapfish</span> <span class="mi">1321</span> <span class="mi">2019</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">09</span> <span class="mi">16</span><span class="p">:</span><span class="mi">59</span><span class="p">:</span><span class="mf">20.845623078</span> <span class="o">+</span><span class="mi">0000</span> <span class="o">/</span><span class="n">build</span><span class="o">/</span><span class="n">c2ctemplate</span><span class="o">-</span><span class="n">cache</span><span class="o">.</span><span class="n">json</span>
 <span class="o">-</span><span class="n">rw</span><span class="o">-</span><span class="n">rw</span><span class="o">-</span><span class="n">r</span><span class="o">--</span> <span class="mi">1</span> <span class="n">sbrunner</span> <span class="n">geomapfish</span> <span class="mi">1299</span> <span class="mi">2019</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">10</span> <span class="mi">08</span><span class="p">:</span><span class="mi">31</span><span class="p">:</span><span class="mf">35.707376156</span> <span class="o">+</span><span class="mi">0000</span> <span class="nb">vars</span><span class="o">.</span><span class="n">yaml</span>
@@ -100,75 +114,52 @@ account:</p>
 <h2>Docker-compose<a class="headerlink" href="#docker-compose" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="logs">
 <h3>Logs<a class="headerlink" href="#logs" title="Permalink to this headline">¶</a></h3>
-<p>With the following command you can access the logs:</p>
-<pre class="highlight"><span class="prompt1">docker-compose logs <span class="o">[</span>&lt;service_name&gt;<span class="o">]</span></span>
-</pre></div>
+<p>With the following command, you can access the logs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose logs <span class="o">[</span>&lt;service_name&gt;<span class="o">]</span></span>
+</pre></div></div></div>
 <div class="section" id="go-inside-a-container">
 <h3>Go inside a container<a class="headerlink" href="#go-inside-a-container" title="Permalink to this headline">¶</a></h3>
-<p>With the following command you can get a terminal in a container:</p>
-<pre class="highlight"><span class="prompt1">docker-compose <span class="nb">exec</span> <span class="o">[</span>--user<span class="o">=</span>root<span class="o">]</span> &lt;service_name&gt; bash</span>
-</pre></div>
+<p>With the following command, you can get a terminal in a container:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> <span class="o">[</span>--user<span class="o">=</span>root<span class="o">]</span> &lt;service_name&gt; bash</span>
+</pre></div></div></div>
 <div class="section" id="multiple-dev-on-one-server">
 <h3>Multiple dev on one server<a class="headerlink" href="#multiple-dev-on-one-server" title="Permalink to this headline">¶</a></h3>
-<p>When you want to run multiple instances on the same server you should:</p>
+<p>When you want to run multiple instances on the same server, you should:</p>
 <ul class="simple">
-<li>Use the global front</li>
 <li>Use a different docker tag for each instance</li>
 <li>Use a different project name for each instance</li>
 </ul>
 </div>
-<div class="section" id="global-front">
-<h3>Global front<a class="headerlink" href="#global-front" title="Permalink to this headline">¶</a></h3>
-<p>The global front will offer a unique entry point on port 80 that provide the ‘main’ project on <cite>/</cite> and the
-others on <cite>/&lt;project_name&gt;/</cite>.</p>
-<p>Activate it in the vars:</p>
-<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
-  <span class="n">docker_global_front</span><span class="p">:</span> <span class="n">true</span>
-</pre></div>
-</div>
-<p>Build the project:</p>
-<pre class="highlight"><span class="prompt1">./docker-run make build</span>
-</pre><p>Run the global front:</p>
-<pre class="highlight"><span class="prompt1"><span class="o">(</span><span class="nb">cd</span> global-front<span class="p">;</span> docker-compose --project-name<span class="o">=</span>global up --build<span class="o">)</span></span>
-</pre><p>And we should defined different instance name for the build:</p>
-<pre class="highlight"><span class="prompt1"><span class="nv">INSTANCE</span><span class="o">=</span>&lt;name&gt; ./docker-run make build</span>
-</pre></div>
 <div class="section" id="use-a-different-docker-tag">
 <h3>Use a different docker tag<a class="headerlink" href="#use-a-different-docker-tag" title="Permalink to this headline">¶</a></h3>
-<p>Just define an environment variable in the build:</p>
-<pre class="highlight"><span class="prompt1"><span class="nv">DOCKER_TAG</span><span class="o">=</span>&lt;tag&gt; ./docker-run make build</span>
-</pre></div>
+<p>To use a different docker tag, define an environment variable in the build:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nv">DOCKER_TAG</span><span class="o">=</span>&lt;tag&gt; ./docker-run make build</span>
+</pre></div></div></div>
 </div>
 <div class="section" id="developing-in-python">
 <h2>Developing in Python<a class="headerlink" href="#developing-in-python" title="Permalink to this headline">¶</a></h2>
-<p>Add the following environment variable to the geoportal container:</p>
-<p><code class="docutils literal notranslate"><span class="pre">GUNICORN_PARAMS=&quot;-b</span> <span class="pre">:80</span> <span class="pre">--worker-class</span> <span class="pre">gthread</span> <span class="pre">--threads</span> <span class="pre">1</span> <span class="pre">--workers</span> <span class="pre">1</span> <span class="pre">--reload&quot;</span></code></p>
-<p>TODO</p>
-<p>You can also do a graceful restart of the running gunicorn:</p>
-<pre class="highlight"><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal bash</span>
+<div class="section" id="create-a-development-docker-compose-override-yaml">
+<h3>Create a development docker-compose.override.yaml<a class="headerlink" href="#create-a-development-docker-compose-override-yaml" title="Permalink to this headline">¶</a></h3>
+<p>If it is not already done, copy the file <code class="docutils literal notranslate"><span class="pre">docker-compose.override.sample.yaml</span></code> to
+<code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code>.</p>
+<p>Be sure that the volume for the project is not commented.</p>
+<p>You can also do a graceful restart of the running webserver (gunicorn in this case):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal bash</span>
 <span class="prompt1"><span class="nb">kill</span> -s HUP <span class="sb">`</span>ps aux<span class="p">|</span>grep gunicorn<span class="p">|</span>head --lines<span class="o">=</span><span class="m">1</span><span class="p">|</span>awk <span class="s1">&#39;{print $2}&#39;</span><span class="sb">`</span>  <span class="c1"># graceful</span></span>
-</pre><p>And finally if you stop and start the container you will see your modifications:</p>
-<pre class="highlight"><span class="prompt1">docker-compose stop geoportal</span>
-<span class="prompt1">docker-compose start geoportal</span>
-</pre><div class="section" id="mount-c2cgeoportal-in-the-container">
-<h3>Mount c2cgeoportal in the container<a class="headerlink" href="#mount-c2cgeoportal-in-the-container" title="Permalink to this headline">¶</a></h3>
-<p>Clone and build c2cgeoportal, see: developer_server_side.</p>
-<p>Add a <code class="docutils literal notranslate"><span class="pre">docker-compose.override.yml</span></code> file with a <code class="docutils literal notranslate"><span class="pre">geoportal</span></code> service containing the following lines:</p>
-<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">version</span><span class="p">:</span> <span class="s1">&#39;2&#39;</span>
-
-<span class="n">services</span><span class="p">:</span>
-  <span class="n">geoportal</span><span class="p">:</span>
-    <span class="n">volumes</span><span class="p">:</span>
-      <span class="o">-</span> <span class="o">&lt;</span><span class="n">c2cgeoportal_git_root</span><span class="o">&gt;/</span><span class="n">commons</span><span class="o">/</span><span class="n">c2cgeoportal_commons</span><span class="p">:</span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">c2cgeoportal_commons</span><span class="o">/</span><span class="n">c2cgeoportal_commons</span>
-      <span class="o">-</span> <span class="o">&lt;</span><span class="n">c2cgeoportal_git_root</span><span class="o">&gt;/</span><span class="n">geoportal</span><span class="o">/</span><span class="n">c2cgeoportal_geoportal</span><span class="p">:</span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">c2cgeoportal_geoportal</span><span class="o">/</span><span class="n">c2cgeoportal_geoportal</span>
-      <span class="o">-</span> <span class="o">&lt;</span><span class="n">c2cgeoportal_git_root</span><span class="o">&gt;/</span><span class="n">admin</span><span class="o">/</span><span class="n">c2cgeoportal_admin</span><span class="p">:</span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">c2cgeoportal_admin</span><span class="o">/</span><span class="n">c2cgeoportal_admin</span>
-</pre></div>
-</div>
+</pre></div></div><p>And finally, if you restart the container, you will see your modifications:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose restart geoportal</span>
+</pre></div></div></div>
+<div class="section" id="working-on-c2cgeoportal-itself">
+<h3>Working on c2cgeoportal itself<a class="headerlink" href="#working-on-c2cgeoportal-itself" title="Permalink to this headline">¶</a></h3>
+<p>Clone and build c2cgeoportal, see <a class="reference internal" href="server_side.html#developer-server-side"><span class="std std-ref">Server-side development</span></a>.</p>
+<p>If it is not already done, copy the file <code class="docutils literal notranslate"><span class="pre">docker-compose.override.sample.yaml</span></code> to
+<code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code>.
+Be sure that the volumes for c2cgeoportal are uncommented.</p>
 </div>
 </div>
 <div class="section" id="access-to-a-hidden-service">
 <h2>Access to a hidden service<a class="headerlink" href="#access-to-a-hidden-service" title="Permalink to this headline">¶</a></h2>
-<p>Within the Docker composition you can access a port of a container, you can achieve this via curl, e.-g.:</p>
+<p>Within the Docker composition, you can access a port of a container; you can achieve this via curl, e.-g.:</p>
 <p>You can also expose a service out of the Docker composition. For that, add a port in your
 <code class="docutils literal notranslate"><span class="pre">docker-compose.yaml</span></code>, e.g.:</p>
 <div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">:</span>
@@ -177,19 +168,19 @@ others on <cite>/&lt;project_name&gt;/</cite>.</p>
       <span class="o">-</span> <span class="mi">8086</span><span class="p">:</span><span class="mi">8080</span>
 </pre></div>
 </div>
-<p>Be careful one port can be open only one time on a server.</p>
+<p>Be careful, one port can be open only one time on a server.</p>
 </div>
 <div class="section" id="use-a-specific-version-of-ngeo">
 <h2>Use a specific version of ngeo<a class="headerlink" href="#use-a-specific-version-of-ngeo" title="Permalink to this headline">¶</a></h2>
 <p>Clone ngeo and build:</p>
-<pre class="highlight"><span class="prompt1"><span class="nb">cd</span> geoportal</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nb">cd</span> geoportal</span>
 <span class="prompt1">git clone https://github.com/camptocamp/ngeo.git</span>
 <span class="prompt1"><span class="nb">cd</span> ngeo</span>
 <span class="prompt1">git check &lt;branch&gt;</span>
 <span class="prompt1">npm install</span>
 <span class="prompt1">npm prepublish</span>
 <span class="prompt1"><span class="nb">cd</span> ../..</span>
-</pre><p>Add the following alias in your <code class="docutils literal notranslate"><span class="pre">webpack.apps.js.mako</span></code> file:</p>
+</pre></div></div><p>Add the following alias in your <code class="docutils literal notranslate"><span class="pre">webpack.apps.js.mako</span></code> file:</p>
 <div class="code js highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="n">resolve</span><span class="p">:</span> <span class="p">{</span>
    <span class="n">alias</span><span class="p">:</span> <span class="p">{</span>
      <span class="o">&lt;</span><span class="n">package</span><span class="o">&gt;</span><span class="p">:</span> <span class="o">...</span><span class="p">,</span>
@@ -200,21 +191,21 @@ others on <cite>/&lt;project_name&gt;/</cite>.</p>
 </pre></div>
 </div>
 <p>Force rebuild the application:</p>
-<pre class="highlight"><span class="prompt1">./docker-run rm /build/apps.&lt;interface&gt;.timestamp</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./docker-run rm /build/apps.&lt;interface&gt;.timestamp</span>
 <span class="prompt1">./docker-run make build</span>
-</pre></div>
+</pre></div></div></div>
 <div class="section" id="performance-or-network-error">
 <h2>Performance or network error<a class="headerlink" href="#performance-or-network-error" title="Permalink to this headline">¶</a></h2>
-<p>For performance and proxy issues make sure that all internal URLs in the config file
+<p>For performance and proxy issues, make sure that all internal URLs in the config file
 use localhost (use <code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">&quot;http://localhost/&lt;path&gt;&quot;</span> <span class="pre">--header</span> <span class="pre">Host:&lt;server_name&gt;</span></code>
 to test it).</p>
 <div class="section" id="tilecloud-chain">
-<h3>Tilecloud chain<a class="headerlink" href="#tilecloud-chain" title="Permalink to this headline">¶</a></h3>
+<h3>TileCloud chain<a class="headerlink" href="#tilecloud-chain" title="Permalink to this headline">¶</a></h3>
 <p>Points to check with TileCloud chain:</p>
 <ul class="simple">
 <li>Disabling metatiles should be avoided.</li>
 <li>Make sure that <code class="docutils literal notranslate"><span class="pre">empty_metatile_detection</span></code> and <code class="docutils literal notranslate"><span class="pre">empty_tile_detection</span></code> are configured correctly.</li>
-<li>Make sure to not generate tiles with a higher resolution than in the raster sources.</li>
+<li>Make sure to not generate tiles with a resolution higher than the one in the raster sources.</li>
 </ul>
 </div>
 </div>
@@ -292,7 +283,7 @@ to test it).</p>
       &copy;2011-2019, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

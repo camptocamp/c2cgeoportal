@@ -14,6 +14,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -41,8 +42,8 @@
 <h2>Differentiating WMS and WFS services<a class="headerlink" href="#differentiating-wms-and-wfs-services" title="Permalink to this headline">¶</a></h2>
 <p>It may be necessary to differentiate the WMS and WFS services url.</p>
 <p>In the <code class="docutils literal notranslate"><span class="pre">OgcServer</span></code> file, define:</p>
-<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mapserv_url</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">your</span><span class="o">.</span><span class="n">arcgis</span><span class="o">.</span><span class="n">server</span><span class="o">/</span><span class="n">arcgis</span><span class="o">/</span><span class="n">services</span><span class="o">/</span><span class="n">SOME</span><span class="o">/</span><span class="n">FOLDER</span><span class="o">/</span><span class="n">MapServer</span><span class="o">/</span><span class="n">WMSServer</span>
-<span class="n">mapserv_wfs_url</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">your</span><span class="o">.</span><span class="n">arcgis</span><span class="o">.</span><span class="n">server</span><span class="o">/</span><span class="n">arcgis</span><span class="o">/</span><span class="n">services</span><span class="o">/</span><span class="n">SOME</span><span class="o">/</span><span class="n">FOLDER</span><span class="o">/</span><span class="n">MapServer</span><span class="o">/</span><span class="n">WFSServer</span>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mapserv_url</span><span class="p">:</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">your</span><span class="o">.</span><span class="n">arcgis</span><span class="o">.</span><span class="n">server</span><span class="o">/</span><span class="n">arcgis</span><span class="o">/</span><span class="n">services</span><span class="o">/</span><span class="n">SOME</span><span class="o">/</span><span class="n">FOLDER</span><span class="o">/</span><span class="n">MapServer</span><span class="o">/</span><span class="n">WMSServer</span>
+<span class="n">mapserv_wfs_url</span><span class="p">:</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">your</span><span class="o">.</span><span class="n">arcgis</span><span class="o">.</span><span class="n">server</span><span class="o">/</span><span class="n">arcgis</span><span class="o">/</span><span class="n">services</span><span class="o">/</span><span class="n">SOME</span><span class="o">/</span><span class="n">FOLDER</span><span class="o">/</span><span class="n">MapServer</span><span class="o">/</span><span class="n">WFSServer</span>
 </pre></div>
 </div>
 <p>These are the urls which respond respectively to the <em>WMS GetCapabilities</em> and
@@ -132,7 +133,7 @@ instead of GML.</p>
       &copy;2011-2019, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

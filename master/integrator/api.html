@@ -14,6 +14,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -39,6 +40,16 @@
 <span id="integrator-api"></span><h1>JavaScript API<a class="headerlink" href="#javascript-api" title="Permalink to this headline">¶</a></h1>
 <p>Any c2cgeoportal application exposes a JavaScript API. This API can be used in third-party applications,
 like CMS applications.</p>
+<p>In the file <code class="docutils literal notranslate"><span class="pre">geoportal/demo_geoportal/static-ngeo/api/api.css</span></code> you have the API CSS.</p>
+<p>In the file <code class="docutils literal notranslate"><span class="pre">geoportal/demo_geoportal/static-ngeo/api/index.js</span></code> you can customize your API with:</p>
+<div class="code JavaScript highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">config</span><span class="o">.</span><span class="n">themesUrl</span> <span class="o">=</span> <span class="s1">&#39;&lt;the theme URL&gt;&#39;</span><span class="p">;</span>
+<span class="n">config</span><span class="o">.</span><span class="n">projection</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">the</span> <span class="n">projection</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="n">config</span><span class="o">.</span><span class="n">resolutions</span> <span class="o">=</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">the</span> <span class="nb">map</span> <span class="n">resolutions</span><span class="o">&gt;</span><span class="p">];</span>
+<span class="n">config</span><span class="o">.</span><span class="n">extent</span> <span class="o">=</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">the</span> <span class="nb">map</span> <span class="n">extent</span><span class="o">&gt;</span><span class="p">];</span>
+<span class="n">config</span><span class="o">.</span><span class="n">backgroundLayer</span> <span class="o">=</span> <span class="s1">&#39;&lt;the background layer name&gt;&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The API help is in the folder <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static-ngeo/api/apihelp/</span></code>.</p>
 </div>
 
 
@@ -115,7 +126,7 @@ like CMS applications.</p>
       &copy;2011-2019, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

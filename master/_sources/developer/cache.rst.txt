@@ -28,7 +28,7 @@ The ``max-age`` is configurable in a ``vars`` file in the ``default_max_age`` at
 Client side
 -----------
 
-On the client side we will add some attribute in the URL parameters to
+On the client side, some attributes are added in the URL parameters to
 force to have the right version of the cache.
 It will be done automatically by the ``route_url`` method.
 

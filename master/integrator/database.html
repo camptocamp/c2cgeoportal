@@ -14,6 +14,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -55,12 +56,12 @@ integration and production =&gt; <code class="docutils literal notranslate"><spa
 <p>The <code class="docutils literal notranslate"><span class="pre">PGSCHEMA</span></code> should be set in the <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> and the <code class="docutils literal notranslate"><span class="pre">PGSCHEMA_STATIC</span></code> for the production should be
 set in a specific makefile for the production e.-g. <code class="docutils literal notranslate"><span class="pre">production.mk</span></code>.</p>
 <p>To to the schema we provide a Postgres function, to create it:</p>
-<pre class="highlight"><style type="text/css">
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
 span.prompt1:before {
   content: "$ ";
 }
 </style><span class="prompt1">sudo -u postgres psql &lt;database&gt; --file<span class="o">=</span>scripts/CONST_clone_schema.sql</span>
-</pre><p>To use it:</p>
+</pre></div></div><p>To use it:</p>
 <div class="code sql highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">clone_schema</span><span class="p">(</span><span class="s1">&#39;&lt;current_schema_name&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;new_schema_name&gt;&#39;</span><span class="p">,</span> <span class="n">TRUE</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -138,7 +139,7 @@ span.prompt1:before {
       &copy;2011-2019, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
