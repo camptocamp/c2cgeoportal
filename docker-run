@@ -107,10 +107,13 @@ def main():
                 last_git_tag = subprocess.check_output([
                     'git', 'describe', '--abbrev=0', '--tags'
                 ], stderr=subprocess.DEVNULL)
-                minor = subprocess.check_output([
-                    '.venv/bin/python', 'travis/get-minor', '--no-save'
-                ], stderr=subprocess.DEVNULL)
-                version = "{}.{}".format(last_git_tag, minor)
+                if os.path.exists('.venv'):
+                    minor = subprocess.check_output([
+                        '.venv/bin/python', 'travis/get-minor', '--no-save'
+                    ], stderr=subprocess.DEVNULL)
+                    version = "{}.{}".format(last_git_tag, minor)
+                else:
+                    version = ''
             else:
                 version = git_branch
         else:
