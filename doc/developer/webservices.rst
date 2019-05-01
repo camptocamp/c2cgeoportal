@@ -405,7 +405,6 @@ Result
 
     {
         "items": [{
-          "label": "<name>", // deprecated in v2
           "value": "<value>"
         }, ...]
     }

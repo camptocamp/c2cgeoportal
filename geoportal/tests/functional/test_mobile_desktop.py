@@ -50,19 +50,19 @@ class TestMobileDesktop(TestCase):
         self.maxDiff = None
 
         from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import LayerV1, Theme, Interface, LayerGroup
+        from c2cgeoportal_commons.models.main import LayerWMS, Theme, Interface, LayerGroup
 
         create_default_ogcserver()
         main = Interface(name="main")
         mobile = Interface(name="mobile")
 
-        layer = LayerV1(name="__test_layer")
+        layer = LayerWMS(name="__test_layer")
         layer.interfaces = [main, mobile]
 
-        mobile_only_layer = LayerV1(name="__test_mobile_only_layer")
+        mobile_only_layer = LayerWMS(name="__test_mobile_only_layer")
         mobile_only_layer.interfaces = [mobile]
 
-        desktop_only_layer = LayerV1(name="__test_desktop_only_layer")
+        desktop_only_layer = LayerWMS(name="__test_desktop_only_layer")
         desktop_only_layer.interfaces = [main]
 
         group = LayerGroup(name="__test_layer_group")
@@ -104,14 +104,14 @@ class TestMobileDesktop(TestCase):
         functionality.FUNCTIONALITIES_TYPES = None
 
         from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import LayerV1, \
+        from c2cgeoportal_commons.models.main import LayerWMS, \
             Theme, LayerGroup, Interface, OGCServer
 
         for t in DBSession.query(Theme).all():
             DBSession.delete(t)
         for g in DBSession.query(LayerGroup).all():
             DBSession.delete(g)
-        for layer in DBSession.query(LayerV1).all():
+        for layer in DBSession.query(LayerWMS).all():
             DBSession.delete(layer)  # pragma: no cover
         DBSession.query(Interface).filter(
             Interface.name == "main"

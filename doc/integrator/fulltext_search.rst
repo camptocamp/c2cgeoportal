@@ -50,7 +50,7 @@ Here is an example of an insertion in the ``tsearch`` table:
       (the_geom, layer_name, label, public, role_id, ts)
     VALUES (
        ST_GeomFromText('POINT(2660000 1140000)', 21781),
-       'Layer group',
+       'Group',
        'text to display',
        't',
        NULL,

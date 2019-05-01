@@ -35,9 +35,8 @@ from unittest import TestCase
 from tests.functional import (  # noqa
     teardown_common as teardown_module,
     setup_common as setup_module,
-    create_dummy_request, cleanup_db
+    create_dummy_request, cleanup_db, create_default_ogcserver,
 )
-
 
 class TestLayers(TestCase):
 
@@ -98,7 +97,7 @@ class TestLayers(TestCase):
         from sqlalchemy.ext.declarative import declarative_base
         from geoalchemy2 import Geometry, WKTElement
         from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import LayerV1, RestrictionArea
+        from c2cgeoportal_commons.models.main import RestrictionArea, LayerWMS
 
         if self._tables is None:
             self._tables = []
@@ -184,9 +183,12 @@ class TestLayers(TestCase):
             )
             connection.execute(ins)
 
-        layer = LayerV1()
+        ogcserver = create_default_ogcserver()
+
+        layer = LayerWMS()
         layer.id = id
         layer.name = str(id)
+        layer.ogc_server = ogcserver
         layer.geo_table = tablename
         layer.public = public
         layer.interface = [self.main]
