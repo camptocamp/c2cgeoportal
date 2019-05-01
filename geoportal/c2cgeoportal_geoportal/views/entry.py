@@ -44,10 +44,9 @@ import zope.event.classhandler
 from c2cwsgiutils.auth import auth_view
 from defusedxml import lxml
 from owslib.wms import WebMapService
-from pyramid.httpexceptions import HTTPBadGateway, HTTPBadRequest, HTTPForbidden, HTTPFound, HTTPUnauthorized
+from pyramid.httpexceptions import HTTPBadRequest, HTTPForbidden, HTTPFound, HTTPUnauthorized
 from pyramid.i18n import TranslationStringFactory
 from pyramid.path import AssetResolver
-from pyramid.renderers import render_to_response
 from pyramid.response import Response
 from pyramid.security import remember, forget
 from pyramid.view import view_config
@@ -59,7 +58,6 @@ from c2cgeoportal_commons.lib.email_ import send_email_config
 from c2cgeoportal_commons.models import main, static
 from c2cgeoportal_geoportal import is_valid_referer
 from c2cgeoportal_geoportal.lib import add_url_params, get_setting, get_typed, get_types_map, get_url2
-from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
 from c2cgeoportal_geoportal.lib.caching import (
     NO_CACHE, PRIVATE_CACHE, PUBLIC_CACHE, get_region, set_common_headers)
 from c2cgeoportal_geoportal.lib.functionality import get_functionality, get_mapserver_substitution_params
@@ -828,7 +826,6 @@ class Entry:
     def get_ngeo_index_vars(self):
         set_common_headers(self.request, "index", NO_CACHE, content_type="text/html")
         return {}
-
 
     @view_config(route_name="apijs")
     def apijs(self):

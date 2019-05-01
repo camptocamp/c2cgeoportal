@@ -40,8 +40,6 @@ import subprocess
 import filecmp
 from subprocess import check_call, call, check_output
 from argparse import ArgumentParser
-from alembic.config import Config
-from alembic import command
 import requests
 
 from c2cgeoportal_geoportal.lib.bashcolor import colorize, GREEN, YELLOW, RED
@@ -366,8 +364,6 @@ class C2cUpgradeTool:
 
     @Step(4)
     def step4(self, step):
-        error = False
-
         if "managed_files" not in self.project:
             self.print_step(
                 step,
@@ -393,11 +389,11 @@ class C2cUpgradeTool:
             elif action == 'move':
                 task_to_do |= self.files_to_move(upgrade_file)
 
-
         if task_to_do:
             self.print_step(
                 step + 1,
-                message="Some `managed_files` should be updated, see message above to know what should be changed.\n"
+                message="Some `managed_files` should be updated, see message above to know what should be "
+                "changed.\n"
             )
         else:
             self.run_step(step + 1)

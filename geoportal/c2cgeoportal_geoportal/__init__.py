@@ -33,11 +33,9 @@ import logging
 import os
 import re
 from urllib.parse import urlsplit
-from socket import gethostbyname, gaierror
 import importlib
 
 import simplejson as json
-from ipcalc import IP, Network
 from Crypto.Cipher import AES
 
 import zope.event.classhandler
