@@ -6,7 +6,7 @@
   "dependencies": {
     "bootstrap": "3.4.0",
     "bootstrap-table": "1.14.2",
-    "jquery": "3.4.0",
+    "jquery": "3.4.1",
     "jquery.scrollintoview": "1.9.4",
     "jstree": "3.3.8",
     "jstreegrid": "3.9.5",
