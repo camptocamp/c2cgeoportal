@@ -78,6 +78,7 @@ then
     create ${WORKSPACE}/dockerref
     createnondocker ${WORKSPACE}/nondocker
     createnondocker ${WORKSPACE}/nondockerref
+    create ${WORKSPACE}/v240 --version=2.4.0
     create ${WORKSPACE}/v230-docker --version=2.3.1
     createnondocker ${WORKSPACE}/v230-nondocker --version=2.3.1
     mkdir --parent ${WORKSPACE}/v220
@@ -265,12 +266,10 @@ function v230 {
         MAKE_ARGS='--makefile=testgeomapfish.mk'
         DOCKER_ARGS='--env=VISIBLE_WEB_HOST=example.com --env=VISIBLE_WEB_PROTOCOL=https --env=VISIBLE_ENTRY_POINT=/'
     fi
+    cp travis/from23-config ${WORKSPACE}/v230-$1docker/testgeomapfish/.config
     cp travis/old-project.yaml ${WORKSPACE}/v230-$1docker/testgeomapfish/project.yaml.mako
     cd ${WORKSPACE}/v230-$1docker/testgeomapfish
     ./docker-run ${DOCKER_ARGS} make ${MAKE_ARGS} project.yaml
-    cd -
-    cp travis/from23-config ${WORKSPACE}/v230-$1docker/testgeomapfish/.config
-    cd ${WORKSPACE}/v230-$1docker/testgeomapfish
     git add project.yaml.mako .config
     git commit --quiet --message="Start upgrade"
     ./docker-run --env=NODE_ENV make ${MAKE_ARGS} upgrade
@@ -318,6 +317,35 @@ fi
 if [ "$1" = "v230-nondocker" ]
 then
     v230 'non'
+fi
+
+
+
+function v240 {
+    cp travis/from23-config ${WORKSPACE}/v240/testgeomapfish/.config
+    cd ${WORKSPACE}/v240/testgeomapfish
+    ./docker-run make project.yaml
+    git add project.yaml.mako .config
+    git commit --quiet --message="Start upgrade"
+    ./docker-run --env=NODE_ENV make upgrade
+    ./docker-run make --always-make --makefile=CONST_convert2tmpl.mk to-tmpl
+    if [ ! -e .UPGRADE_SUCCESS ]
+    then
+        printdiff
+        echo "Fail to upgrade"
+        exit 1
+    fi
+    ./docker-run make clean-all
+    rm --recursive --force .UPGRADE* \
+        commons/testgeomapfish_commons.egg-info geoportal/testgeomapfish_geoportal.egg-info
+    cd -
+    find ${WORKSPACE}/v240 -type d -empty -delete
+    diff --recursive --exclude=.git ${WORKSPACE}/$1dockerref ${WORKSPACE}/v240
+}
+
+if [ "$1" = "v240" ]
+then
+    v240
 fi
 
 if [ "$1" = "cleanup" ]
