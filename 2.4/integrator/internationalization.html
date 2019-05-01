@@ -1,0 +1,185 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Internationalization &#8212; c2cgeoportal  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Configure short URL" href="shortener.html" />
+    <link rel="prev" title="Full-text search" href="fulltext_search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="internationalization">
+<span id="id1"></span><h1>Internationalization<a class="headerlink" href="#internationalization" title="Permalink to this headline">¶</a></h1>
+<p>In the file <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;.mk</span></code>, define the supported languages with (default):</p>
+<div class="code make highlight-default notranslate"><div class="highlight"><pre><span></span>LANGUAGES ?= en fr de
+</pre></div>
+</div>
+<p>In the file <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code>, define the available and default locales:</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
+     <span class="o">...</span>
+     <span class="n">default_locale_name</span><span class="p">:</span> <span class="n">fr</span>
+     <span class="n">available_locale_names</span><span class="p">:</span> <span class="p">[</span><span class="n">en</span><span class="p">,</span> <span class="n">fr</span><span class="p">,</span> <span class="n">de</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>In the file <code class="docutils literal notranslate"><span class="pre">language_mapping</span></code>, define any desired locale variants, for example:</p>
+<div class="code make highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fr</span><span class="o">=</span><span class="n">fr</span><span class="o">-</span><span class="n">ch</span>
+</pre></div>
+</div>
+<p>Build your application.</p>
+<p>The files to translate are:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/locale/&lt;lang&gt;/LC_MESSAGES/demo-client.po</span></code> for the ngeo client</li>
+<li><code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/locale/&lt;lang&gt;/LC_MESSAGES/demo-server.po</span></code> for the server part (should be empty for ngeo interfaces)</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">All the <code class="docutils literal notranslate"><span class="pre">#,</span> <span class="pre">fuzzy</span></code> strings should be verified and the line should be removed
+(if the line is not removed, the localisation will not be used).</p>
+</div>
+<p>To update the <code class="docutils literal notranslate"><span class="pre">po</span></code> files, you must run the following command:</p>
+<p>For Docker project:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">docker</span><span class="o">-</span><span class="n">compose</span><span class="o">-</span><span class="n">run</span>  <span class="n">make</span> <span class="o">--</span><span class="n">makefile</span><span class="o">=&lt;</span><span class="n">package</span><span class="o">&gt;.</span><span class="n">mk</span> <span class="n">update</span><span class="o">-</span><span class="n">po</span>
+</pre></div>
+</div>
+<p>For non Docker project:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">docker</span><span class="o">-</span><span class="n">run</span> <span class="n">make</span> <span class="o">--</span><span class="n">makefile</span><span class="o">=&lt;</span><span class="n">package</span><span class="o">&gt;.</span><span class="n">mk</span> <span class="n">update</span><span class="o">-</span><span class="n">po</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>You should run this command when you change something in the following:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>layer in mapfile (new or modified)</li>
+<li>layer in administration (new or modified)</li>
+<li>raster layer in the vars file (new or modified)</li>
+<li>print template</li>
+<li>full-text search</li>
+<li>application (JavaScript and HTML files)</li>
+<li>layer enumeration</li>
+<li>some metadata as disclaimer</li>
+<li>editable layer (database structure, data or enumerations)</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">c2cgeoportal</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=camptocamp&repo=c2cgeoportal&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../administrator/index.html">Administrator Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Integrator Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/index.html">Developer Guide</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+  <li><a href="configuration.html">Configuration Guide for advanced settings</a><ul>
+      <li>Previous: <a href="fulltext_search.html" title="previous chapter">Full-text search</a></li>
+      <li>Next: <a href="shortener.html" title="next chapter">Configure short URL</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2019, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/integrator/internationalization.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

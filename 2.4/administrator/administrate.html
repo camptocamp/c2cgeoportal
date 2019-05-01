@@ -1,0 +1,320 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Administrate a c2cgeoportal application &#8212; c2cgeoportal  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Editing" href="editing.html" />
+    <link rel="prev" title="Administrator Guide" href="index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="administrate-a-c2cgeoportal-application">
+<span id="administrator-administrate"></span><h1>Administrate a c2cgeoportal application<a class="headerlink" href="#administrate-a-c2cgeoportal-application" title="Permalink to this headline">¶</a></h1>
+<p>The administration interface is located at <code class="docutils literal notranslate"><span class="pre">https://&lt;server&gt;/&lt;project&gt;/admin</span></code>.</p>
+<p>Authentication for the administration interface is done through the main application interface. Role <code class="docutils literal notranslate"><span class="pre">role_admin</span></code> is
+required.</p>
+<div class="section" id="ogc-server">
+<span id="administrator-administrate-ogc-server"></span><h2>OGC Server<a class="headerlink" href="#ogc-server" title="Permalink to this headline">¶</a></h2>
+<p>This is the description of an OGC server (WMS/WFS).
+For one server we try to create only one request when it is possible.</p>
+<p>If you want to query the same server to get PNG and JPEG images,
+you should define two <code class="docutils literal notranslate"><span class="pre">OGC</span> <span class="pre">servers</span></code>. Attributes:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">Name</span></code>: the name of the OGC Server.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Description</span></code>: a description.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Basis</span> <span class="pre">URL</span></code>: the server URL.</li>
+<li><code class="docutils literal notranslate"><span class="pre">WFS</span> <span class="pre">URL</span></code>: the WFS server URL. If empty, the <code class="docutils literal notranslate"><span class="pre">Basis</span> <span class="pre">URL</span></code> is used.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Server</span> <span class="pre">type</span></code>: the server type which is used to know which custom attribute will be used.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Image</span> <span class="pre">type</span></code>: the MIME type of the images (e.g.: <code class="docutils literal notranslate"><span class="pre">image/png</span></code>).</li>
+<li><code class="docutils literal notranslate"><span class="pre">Authentication</span> <span class="pre">type</span></code>: the kind of authentication to use.</li>
+<li><code class="docutils literal notranslate"><span class="pre">WFS</span> <span class="pre">support</span></code>: whether WFS is supported by the server.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Single</span> <span class="pre">tile</span></code>: whether to use the single tile mode (For future use).</li>
+</ul>
+</div>
+<div class="section" id="metadata">
+<span id="administrator-administrate-metadata"></span><h2>Metadata<a class="headerlink" href="#metadata" title="Permalink to this headline">¶</a></h2>
+<p>You can associate metadata to all theme elements (tree items).
+The purpose of this metadata is to trigger specific features, mainly UI features.
+Each metadata entry has the following attributes:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">Name</span></code>: the type of <code class="docutils literal notranslate"><span class="pre">Metadata</span></code> we want to set (the available names are configured in the <code class="docutils literal notranslate"><span class="pre">vars</span></code>
+files in <code class="docutils literal notranslate"><span class="pre">admin_interface/available_metadata</span></code>).</li>
+<li><code class="docutils literal notranslate"><span class="pre">Value</span></code>: the value of the metadata entry.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Description</span></code>: a description.</li>
+</ul>
+<p>To set a metadata entry, create or edit an entry in the Metadata view of the administration UI.
+Regarding effect on the referenced tree item on the client side, you will find a description for each sort
+of metadata in the <a class="reference external" href="https://camptocamp.github.io/ngeo/master/apidoc/gmfThemes.GmfMetaData.html">NGEO documentation</a>.</p>
+</div>
+<div class="section" id="functionalities">
+<h2>Functionalities<a class="headerlink" href="#functionalities" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">Roles</span></code> and <code class="docutils literal notranslate"><span class="pre">Themes</span></code> can have some functionalities. Attributes:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">Name</span></code>: the type of functionality we want to set (configured in the <code class="docutils literal notranslate"><span class="pre">vars</span></code>
+files in <code class="docutils literal notranslate"><span class="pre">admin_interface/available_functionalities</span></code>).</li>
+<li><code class="docutils literal notranslate"><span class="pre">Description</span></code>: a description.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Value</span></code>: the value of the functionality.</li>
+</ul>
+</div>
+<div class="section" id="layers">
+<span id="administrator-administrate-layers"></span><h2>Layers<a class="headerlink" href="#layers" title="Permalink to this headline">¶</a></h2>
+<p>Layer definitions are found in to two tables: <code class="docutils literal notranslate"><span class="pre">layer_wms</span></code> and <code class="docutils literal notranslate"><span class="pre">layer_wmts</span></code>.
+The legacy table <code class="docutils literal notranslate"><span class="pre">layerv1</span></code> is still present, but only for being able to migration the application,
+for information on migrating layers, see <a class="reference internal" href="../integrator/upgrade_application.html#integrator-upgrade-application-cgxp-to-ngeo"><span class="std std-ref">From CGXP to ngeo</span></a>.</p>
+<div class="section" id="all-layer-type">
+<h3>All layer type<a class="headerlink" href="#all-layer-type" title="Permalink to this headline">¶</a></h3>
+<p>All the layers in the admin interface have the following attributes:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">Name</span></code>: the name of the WMS layer/group, or the WMTS layer.
+It is used through the i18n tools to display the name on the layers tree.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Metadata</span> <span class="pre">URL</span></code>: (deprecated)</li>
+<li><code class="docutils literal notranslate"><span class="pre">Description</span></code>: a description.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Public</span></code>: makes the layer public. also it is accessible through the <code class="docutils literal notranslate"><span class="pre">Restriction</span> <span class="pre">areas</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Geo</span> <span class="pre">table</span></code>: the related database table,
+used by the <a class="reference internal" href="editing.html#administrator-editing"><span class="std std-ref">Editing</span></a>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Exclude</span> <span class="pre">properties</span></code>: the list of attributes (database columns) that should not appear in
+the <a class="reference internal" href="editing.html#administrator-editing"><span class="std std-ref">Editing</span></a> so that they cannot be modified by the end user.
+For enumerable attributes (foreign key), the column name should end with ‘_id’.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Interfaces</span></code>: visible in the checked interfaces.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Restriction</span> <span class="pre">areas</span></code>: the areas through which the user can see the layer.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Metadata</span></code>: Additional metadata.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Dimensions</span></code>: the dimensions, if not provided default values are used.</li>
+</ul>
+</div>
+<div class="section" id="wms-layer">
+<h3>WMS layer<a class="headerlink" href="#wms-layer" title="Permalink to this headline">¶</a></h3>
+<p>On internal WMS layers we have the following specific attributes:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">OGC</span> <span class="pre">Server</span></code>: the used server.</li>
+<li><code class="docutils literal notranslate"><span class="pre">WMS</span> <span class="pre">layer</span> <span class="pre">name</span></code>: the WMS layers. Can be one layer, one group, a comma separated list of layers.
+In the case of a comma separated list of layers, we will get the legend rule for the
+layer icon on the first layer, and the legend will not be supported we should define a legend metadata.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Style</span></code>: the style used, can be empty.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">mode</span></code>: used for the WMS time component.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">widget</span></code>: the component type used for the WMS time.</li>
+</ul>
+</div>
+<div class="section" id="wmts-layer">
+<h3>WMTS layer<a class="headerlink" href="#wmts-layer" title="Permalink to this headline">¶</a></h3>
+<p>On WMTS layers we have the following specific attributes:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">GetCapabilities</span> <span class="pre">URL</span></code>: the URL to the WMTS capabilities.</li>
+<li><code class="docutils literal notranslate"><span class="pre">WMTS</span> <span class="pre">layer</span> <span class="pre">name</span></code>: the WMTS layer.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Style</span></code>: the used style, if not present we use the default style.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Matrix</span> <span class="pre">set</span></code>: the used matrix set, if there is only one matrix set in the capabilities it can be empty.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Image</span> <span class="pre">type</span></code>: the MIME type of the images (e.g.: <code class="docutils literal notranslate"><span class="pre">image/png</span></code>).</li>
+</ul>
+</div>
+<div class="section" id="queryable-wmts">
+<h3>Queryable WMTS<a class="headerlink" href="#queryable-wmts" title="Permalink to this headline">¶</a></h3>
+<p>To make the WMTS queryable, you should add the following <code class="docutils literal notranslate"><span class="pre">Metadata</span></code>:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">ogcServer</span></code> with the name of the used <code class="docutils literal notranslate"><span class="pre">OGC</span> <span class="pre">server</span></code>,</li>
+<li><code class="docutils literal notranslate"><span class="pre">wmsLayers</span></code> or <code class="docutils literal notranslate"><span class="pre">queryLayers</span></code> with the layers to query (groups not supported).</li>
+</ul>
+<p>It is possible to give some scale limits for the queryable layers by setting
+a <code class="docutils literal notranslate"><span class="pre">minResolution</span></code> and/or a <code class="docutils literal notranslate"><span class="pre">maxResolution</span> <span class="pre">Metadata</span></code> value(s) for the
+WMTS layer. These values correspond to the WMTS layer resolution(s) which should
+be the zoom limit.</p>
+</div>
+<div class="section" id="print-wmts-in-high-quality">
+<h3>Print WMTS in high quality<a class="headerlink" href="#print-wmts-in-high-quality" title="Permalink to this headline">¶</a></h3>
+<p>To print the layers in high quality, you can define that the image shall be retrieved with a
+<code class="docutils literal notranslate"><span class="pre">GetMap</span></code> on the original WMS server.
+To activate this, you should add the following <code class="docutils literal notranslate"><span class="pre">Metadata</span></code>:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">ogcServer</span></code> with the name of the used <code class="docutils literal notranslate"><span class="pre">OGC</span> <span class="pre">server</span></code>,</li>
+<li><code class="docutils literal notranslate"><span class="pre">wmsLayers</span></code> or <code class="docutils literal notranslate"><span class="pre">printLayers</span></code> with the layers to print.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">See also: <a class="reference internal" href="#administrator-administrate-metadata"><span class="std std-ref">Metadata</span></a>, <a class="reference internal" href="#administrator-administrate-ogc-server"><span class="std std-ref">OGC Server</span></a>.</p>
+</div>
+</div>
+</div>
+<div class="section" id="layergroup">
+<h2>LayerGroup<a class="headerlink" href="#layergroup" title="Permalink to this headline">¶</a></h2>
+<p>Attributes:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">Name</span></code>: It is used through the i18n tools to display the name on the layers tree.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Metadata</span> <span class="pre">URL</span></code>: (deprecated).</li>
+<li><code class="docutils literal notranslate"><span class="pre">Description</span></code>: a description.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Expanded</span></code>: (deprecated).</li>
+<li><code class="docutils literal notranslate"><span class="pre">Children</span></code>: the ordered children elements.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Metadata</span></code>: Additional metadata.</li>
+</ul>
+</div>
+<div class="section" id="background-layers">
+<h2>Background layers<a class="headerlink" href="#background-layers" title="Permalink to this headline">¶</a></h2>
+<p>The background layers are configured in the database, with the layer group named
+<strong>background</strong> (by default).</p>
+</div>
+<div class="section" id="theme">
+<h2>Theme<a class="headerlink" href="#theme" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">Name</span></code>: It is used through the i18n tools to display the name on the layers tree.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Metadata</span> <span class="pre">URL</span></code>: (deprecated).</li>
+<li><code class="docutils literal notranslate"><span class="pre">Description</span></code>: a description.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Public</span></code>: makes the layer public. You must use the <code class="docutils literal notranslate"><span class="pre">Restriction</span> <span class="pre">Roles</span></code> to make
+private theme accessible.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Icon</span></code>: the icon URL.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Interfaces</span></code>: visible in the checked interfaces.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Restricted</span> <span class="pre">Roles</span></code>: Restricted to the following roles.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Functionalities</span></code>: The linked functionalities.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Children</span></code>: the ordered children elements.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Metadata</span></code>: Additional metadata.</li>
+</ul>
+</div>
+<div class="section" id="restricted-area">
+<h2>Restricted area<a class="headerlink" href="#restricted-area" title="Permalink to this headline">¶</a></h2>
+<p>A restricted area is an area for which a user must possess a specific role in order to be able
+to see (and edit, if applicable) the features within this area.</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">Name</span></code>: a name.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Description</span></code>: a description.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Roles</span></code>: Restricted to the following roles.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Read/write</span></code>: Allows the linked users to change the objects.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Area</span></code>: Active in the following area, if not defined it is active everywhere.</li>
+</ul>
+</div>
+<div class="section" id="users">
+<h2>Users<a class="headerlink" href="#users" title="Permalink to this headline">¶</a></h2>
+<p>Each user may have from 1 to n roles, but each user has a default role from
+which are taken some settings. Currently the default role (defined through the
+“Settings from role” selection) has an influence on the role extent and on some
+functionalities regarding their configuration.</p>
+<p>Role extents for users can only be set in one role, because the application
+is currently not able to check multiple extents for one user, thus it is the
+default role which defines this unique extent.</p>
+<p>Any functionality specified as <code class="docutils literal notranslate"><span class="pre">single</span></code> can be defined only once per user.
+Hence, these functionalities have to be defined in the default role.</p>
+<p>By default, functionalities are not specified as <code class="docutils literal notranslate"><span class="pre">single</span></code>. Currently, the
+following functionalities are of <code class="docutils literal notranslate"><span class="pre">single</span></code> type:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">default_basemap</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">default_theme</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">preset_layer_filter</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">open_panel</span></code></li>
+</ul>
+<p>Any other functionality (with <code class="docutils literal notranslate"><span class="pre">single</span></code> not set or set to <code class="docutils literal notranslate"><span class="pre">false</span></code>) can
+be defined in any role linked to the user.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">c2cgeoportal</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=camptocamp&repo=c2cgeoportal&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Administrator Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../integrator/index.html">Integrator Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/index.html">Developer Guide</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Administrator Guide</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Administrator Guide</a></li>
+      <li>Next: <a href="editing.html" title="next chapter">Editing</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2019, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/administrator/administrate.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
