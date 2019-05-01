@@ -28,15 +28,15 @@ then
     git push origin ${BRANCH_NAME}
 fi
 
-DEPLOY_PIP=TRUE
+DEPLOY_PIP=FALSE
 # Get the version to be published
 if [ "${TAG}" != "" ]
 then
     VERSION=${TAG}
+    DEPLOY_PIP=TRUE
 elif [ "${BRANCH_NAME}" != "master" ]
 then
     VERSION=${BRANCH_NAME//\//_}
-    DEPLOY_PIP=FALSE
 else
     VERSION=${MAJOR_VERSION}
 fi
