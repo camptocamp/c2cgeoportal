@@ -300,6 +300,8 @@ dockerBuild {
                 }, 'Tests upgrades 230': {
                     test_upgrade('v230-docker', 'v230-docker', 'dockerref')
                     test_upgrade('v230-nondocker', 'v230-nondocker', 'nondockerref')
+                }, 'Tests upgrades 240': {
+                    test_upgrade('v240', 'v240', 'dockerref')
                 }
             }
             stage('Publish') {
