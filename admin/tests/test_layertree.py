@@ -189,7 +189,7 @@ class TestLayerTreeView(AbstractViewsTests):
                         '/children?group_id={0}&path=_{1}_{0}'.format(group.id, theme.id),
                         status=200)
         nodes = resp.json
-        assert 3 == len(nodes)
+        assert len(nodes) == 2
 
         layer_wms = layertree_test_data['layers_wms'][0]
         layer_wmts = layertree_test_data['layers_wmts'][0]
