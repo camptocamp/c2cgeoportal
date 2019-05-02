@@ -84,7 +84,7 @@ span.prompt1:before {
 <span class="prompt1">git checkout master</span>
 <span class="prompt1">git reset --hard origin/master</span>
 </pre></div></div><p>Get the localisation from Transifex:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker build --tag<span class="o">=</span>camptocamp/geomapfish-build-dev docker/build</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker build --tag<span class="o">=</span>camptocamp/geomapfish-build-dev:&lt;version&gt; docker/build</span>
 <span class="prompt1">./docker-run make transifex-get</span>
 </pre></div></div><p>For each version, we create a new branch (at the latest, for the final release):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git checkout -b &lt;version&gt;</span>
@@ -119,11 +119,12 @@ span.prompt1:before {
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git add .travis.yml Jenkinsfile Makefile docker-run</span>
 <span class="prompt1">git commit -m <span class="s2">&quot;Start version &lt;version + 1&gt;&quot;</span></span>
 </pre></div></div><p>Push your changes:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git push origin &lt;version&gt; master</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git push origin master</span>
 </pre></div></div><p>Create a new Transifex resource:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">rm .tx/config</span>
-<span class="prompt1">./docker-run rm /build/c2ctemplate-cache.yaml</span>
-<span class="prompt1">./docker-run make transifex-init</span>
+<span class="prompt1">docker build --tag<span class="o">=</span>camptocamp/geomapfish-build-dev:&lt;version+1&gt; docker/build</span>
+<span class="prompt1">./docker-run rm /build/c2ctemplate-cache.json</span>
+<span class="prompt1">./docker-run --home make transifex-init</span>
 </pre></div></div><p>Update the references in the <cite>index.html</cite> file of the <cite>gh-pages</cite> branch.</p>
 <p>Then continue by creating the release.</p>
 </div>
@@ -159,7 +160,7 @@ a new release will automatically be created on Travis CI.</p>
 <ul class="simple">
 <li>Upgrade the demo in your home folder, see <a class="reference internal" href="../integrator/upgrade_application.html#integrator-upgrade-application"><span class="std std-ref">Upgrading a GeoMapFish application</span></a>.</li>
 <li>Some specific things for the demo:
-<cite>UPGRADE.rst &lt;https://github.com/camptocamp/demo_geomapfish/blob/2.4/UPGRADE.rst&gt;_</cite>.</li>
+<a class="reference external" href="https://github.com/camptocamp/demo_geomapfish/blob/2.4/UPGRADE.rst">UPGRADE.rst</a>.</li>
 </ul>
 </div>
 <div class="section" id="for-non-dev-release">
