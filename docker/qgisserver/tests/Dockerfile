@@ -1,4 +1,4 @@
-FROM camptocamp/geomapfish-qgisserver:gmf2.4-qgis3.4
+FROM camptocamp/geomapfish-qgisserver:gmf2.5-qgis3.4
 
 COPY requirements.txt /tmp/
 
