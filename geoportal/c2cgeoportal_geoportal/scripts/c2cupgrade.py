@@ -328,13 +328,6 @@ class C2cUpgradeTool:
         shutil.rmtree(project_path)
         os.remove(".upgrade.yaml")
 
-        # To be removed in 2.4
-        with open("CONST_create_template/vars.yaml", "r") as f:
-            new_syntax = f.readline() == "---\n"
-        if not new_syntax:
-            check_call(["sed", "--in-place", "s/- /  - /g", "CONST_create_template/vars.yaml"])
-            check_call(["sed", "--in-place", "s/    /  /g", "CONST_create_template/vars.yaml"])
-
         check_call(["git", "add", "--all", "--force", "CONST_create_template/"])
         call(["git", "commit", "--message=Perform the move into the CONST_create_template folder"])
 
