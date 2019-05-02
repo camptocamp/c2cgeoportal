@@ -74,11 +74,6 @@ vars:
   # 10 days of default cache
   default_max_age: 864000
 
-  # For debug mode
-  jsbuild:
-    config: /src/jsbuild/app.cfg
-    root_dir: /src
-
   # The application's default language. This is the language used by
   # the application if no specific language is specified in the URLs.
   # This also defines the language used for the text search.
@@ -136,8 +131,6 @@ vars:
           name: layers_root
         gmfRasterUrl:
           name: raster
-        gmfProfileCsvUrl:
-          name: profile.csv
         gmfShortenerCreateUrl:
           name: shortener_create
         ngeoPermalinkOgcserverUrl:
@@ -480,8 +473,6 @@ vars:
     - '{VISIBLE_WEB_PROTOCOL}://{VISIBLE_WEB_HOST}{VISIBLE_ENTRY_POINT}tiles/'
   docker_wmtscapabilities_path: '{WMTSCAPABILITIES_PATH}'
 
-  ogcproxy_enable: false
-
   lingua_extractor: {}
 
   content_security_policy_main_default_src_extra: ""
@@ -568,34 +559,6 @@ vars:
     *
     {content_security_policy_apihelp_connect_src_extra}"
 
-  content_security_policy_oldapihelp_default_src_extra: ""
-  content_security_policy_oldapihelp_script_src_extra: ""
-  content_security_policy_oldapihelp_style_src_extra: ""
-  content_security_policy_oldapihelp_img_src_extra: ""
-  content_security_policy_oldapihelp_worker_src_extra: ""
-  content_security_policy_oldapihelp_default_src: "
-    'self'
-    https://*
-    {content_security_policy_oldapihelp_default_src_extra}"
-  content_security_policy_oldapihelp_script_src: "
-    'self'
-    'unsafe-inline'
-    'unsafe-eval'
-    https://cdn.polyfill.io/
-    {content_security_policy_oldapihelp_script_src_extra}"
-  content_security_policy_oldapihelp_style_src: "
-    'self'
-    'unsafe-inline'
-    https://stackpath.bootstrapcdn.com/
-    {content_security_policy_oldapihelp_style_src_extra}"
-  content_security_policy_oldapihelp_img_src: "
-    *
-    {content_security_policy_oldapihelp_img_src_extra}"
-  content_security_policy_oldapihelp_worker_src: "
-    'self'
-    blob:
-    {content_security_policy_oldapihelp_worker_src_extra}"
-
   content_security_policy_c2c_default_src_extra: ""
   content_security_policy_c2c_script_src_extra: ""
   content_security_policy_c2c_style_src_extra: ""
@@ -642,14 +605,6 @@ vars:
           style-src {content_security_policy_apihelp_style_src};
           img-src {content_security_policy_apihelp_img_src};
           connect-src {content_security_policy_apihelp_connect_src}"
-    - pattern: '^/oldx?apihelp.html'
-      headers:
-        Content-Security-Policy:
-          "default-src {content_security_policy_oldapihelp_default_src};
-          script-src {content_security_policy_oldapihelp_script_src};
-          style-src {content_security_policy_oldapihelp_style_src};
-          img-src {content_security_policy_oldapihelp_img_src};
-          worker-src {content_security_policy_oldapihelp_worker_src}"
     - pattern: '^/static/.*'
       headers:
         Access-Control-Allow-Origin: '*'
@@ -714,7 +669,7 @@ vars:
       search: text to search
     lang:
       level: 3
-      files: [ngeo, cgxp-api]
+      files: [ngeo]
     phantomjs:
       disable: []
       routes:
@@ -735,11 +690,6 @@ vars:
           level: 3
           params:
             version: '2'
-        - name: apijs
-          checker_name: oldapijs
-          level: 3
-        - name: oldxapijs
-          level: 3
         - name: printproxy_capabilities
           level: 3
         - name: mapserverproxy

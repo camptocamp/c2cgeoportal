@@ -98,9 +98,6 @@ Site-specific configuration
 After rebuilding your project and verifying that the new interface has no technical errors,
 some site-specific configuration issues must be considered:
 
-   - if you have V1 configuration and this has not yet been migrated to V2 configuration
-     on this DB instance, it must be migrated now (if it is for test purposes, clone the
-     DB first): run script ``docker-compose exec geoportal themev1tov2``
    - set default theme of the new interface to the desired one (set "defaultTheme"
      in ``<interface>.html``)
    - set meaningful starting zoom level and center coordinates of new interface,

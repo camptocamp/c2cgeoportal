@@ -40,8 +40,6 @@ import subprocess
 import filecmp
 from subprocess import check_call, call, check_output
 from argparse import ArgumentParser
-from alembic.config import Config
-from alembic import command
 import requests
 
 from c2cgeoportal_geoportal.lib.bashcolor import colorize, GREEN, YELLOW, RED
@@ -68,16 +66,12 @@ def main():
 
     parser = _fill_arguments()
     options = parser.parse_args()
-    if options.force_docker:
-        options.nondocker = False
     if options.new_makefile is None:
         options.new_makefile = options.makefile
 
     print("Starting the upgrade with options:")
     if options.windows:
         print("- windows")
-    if options.nondocker:
-        print("- nondocker")
     print("- git_remote=" + options.git_remote)
     if options.use_makefile:
         print("- use_makefile")
@@ -95,16 +89,6 @@ def _fill_arguments():
         "--windows",
         action="store_true",
         help="Use the windows c2cgeoportal package",
-    )
-    parser.add_argument(
-        "--nondocker",
-        action="store_true",
-        help="Use the nondocker upgrade",
-    )
-    parser.add_argument(
-        "--force-docker",
-        action="store_true",
-        help="Disable the nondocker upgrade",
     )
     parser.add_argument(
         "--git-remote",
@@ -235,10 +219,6 @@ class C2cUpgradeTool:
                 ]
                 if self.options.windows:
                     cmd.append("--windows")
-                if self.options.nondocker:
-                    cmd.append("--nondocker")
-                if self.options.force_docker:
-                    cmd.append("--force-docker")
                 if self.options.git_remote != "origin":
                     cmd.append("--git-remote={}".format(self.options.git_remote))
                 if self.options.makefile != "Makefile":
@@ -338,14 +318,12 @@ class C2cUpgradeTool:
             "pcreate", "--ignore-conflicting-name", "--overwrite",
             "--scaffold=c2cgeoportal_update", project_path
         ])
-        if self.options.nondocker:
-            check_call([
-                "pcreate", "--ignore-conflicting-name", "--overwrite",
-                "--scaffold=c2cgeoportal_nondockerupdate", project_path
-            ])
 
         shutil.copyfile(os.path.join(project_path, ".upgrade.yaml"), ".upgrade.yaml")
-        self.files_to_move(prefix="CONST_create_template", force=True)
+        for upgrade_file in self.get_upgrade("upgrade_files"):
+            action = upgrade_file['action']
+            if action == 'move':
+                self.files_to_move(upgrade_file, prefix="CONST_create_template", force=True)
 
         shutil.rmtree(project_path)
         os.remove(".upgrade.yaml")
@@ -373,11 +351,6 @@ class C2cUpgradeTool:
             "pcreate", "--ignore-conflicting-name", "--overwrite",
             "--scaffold=c2cgeoportal_update", project_path
         ])
-        if self.options.nondocker:
-            check_call([
-                "pcreate", "--ignore-conflicting-name", "--overwrite",
-                "--scaffold=c2cgeoportal_nondockerupdate", project_path
-            ])
         os.remove(project_path)
 
         check_call(["git", "add", "--all", "CONST_create_template/"])
@@ -391,22 +364,7 @@ class C2cUpgradeTool:
 
     @Step(4)
     def step4(self, step):
-        error = False
-
-        print("Files to remove")
-        error |= self.files_to_remove(pre=True)
-        print("Files to move")
-        error |= self.files_to_move(pre=True)
-        print("Files to get")
-        error |= self.files_to_get(step, pre=True)
-
-        if error:
-            self.print_step(
-                step, error=True, message="There is an error in your project configuration, see above",
-                prompt="Fix it and run the step again:"
-            )
-            exit(1)
-        elif "managed_files" not in self.project:
+        if "managed_files" not in self.project:
             self.print_step(
                 step,
                 message="In the new version, we will also manage almost all the create "
@@ -423,88 +381,93 @@ class C2cUpgradeTool:
 
     @Step(5)
     def step5(self, step):
-        self.files_to_remove()
-        self.run_step(step + 1)
+        task_to_do = False
+        for upgrade_file in self.get_upgrade("upgrade_files"):
+            action = upgrade_file['action']
+            if action == 'remove':
+                self.files_to_remove(upgrade_file)
+            elif action == 'move':
+                task_to_do |= self.files_to_move(upgrade_file)
 
-    def files_to_remove(self, pre=False):
-        error = False
-        for element in self.get_upgrade("files_to_remove"):
-            file_ = element["file"]
-            if os.path.exists(file_):
-                managed = False
+        if task_to_do:
+            self.print_step(
+                step + 1,
+                message="Some `managed_files` should be updated, see message above to know what should be "
+                "changed.\n"
+            )
+        else:
+            self.run_step(step + 1)
+
+    def files_to_remove(self, element):
+        file_ = element["file"]
+        if os.path.exists(file_):
+            managed = False
+            for pattern in self.project["managed_files"]:
+                if re.match(pattern + '$', file_):
+                    print(colorize(
+                        "The file '{}' is no longer used, but not deleted "
+                        "because it is in the managed_files as '{}'.".format(file_, pattern),
+                        RED
+                    ))
+                    managed = True
+            if not managed:
+                print(colorize("The file '{}' is removed.".format(file_), GREEN))
+                if "version" in element and "from" in element:
+                    print("Was used in version {}, to be removed from version {}.".format(
+                        element["from"], element["version"]
+                    ))
+                if os.path.isdir(file_):
+                    shutil.rmtree(file_)
+                else:
+                    os.remove(file_)
+
+    def files_to_move(self, element, prefix="", force=False):
+        task_to_do = False
+        src = os.path.join(prefix, element["from"])
+        dst = os.path.join(prefix, element["to"])
+        if os.path.exists(src):
+            managed = False
+            type_ = "directory" if os.path.isdir(src) else "file"
+            if not force:
                 for pattern in self.project["managed_files"]:
-                    if re.match(pattern + '$', file_):
+                    if re.match(pattern + '$', src):
                         print(colorize(
-                            "The file '{}' is no longer used, but not deleted "
-                            "because it is in the managed_files as '{}'.".format(file_, pattern),
+                            "The {} '{}' is present in the managed_files as '{}', but it will move."
+                            .format(
+                                type_, src, pattern
+                            ),
                             RED
                         ))
+                        task_to_do = True
                         managed = True
-                if not managed and not pre:
-                    print(colorize("The file '{}' is removed.".format(file_), GREEN))
-                    if "version" in element and "from" in element:
-                        print("Was used in version {}, to be removed from version {}.".format(
-                            element["from"], element["version"]
+                        break
+                    if re.match(pattern + '$', dst):
+                        print(colorize(
+                            "The {} '{}' is present in the managed_files as '{}', but it will move."
+                            .format(
+                                type_, dst, pattern
+                            ),
+                            RED
                         ))
-                    if os.path.isdir(file_):
-                        shutil.rmtree(file_)
-                    else:
-                        os.remove(file_)
-        return error
+                        task_to_do = True
+                        managed = True
+                        break
+            if not managed and os.path.exists(dst):
+                print(colorize(
+                    "The destination '{}' already exists, ignoring.".format(dst),
+                    YELLOW
+                ))
+            if not managed:
+                print(colorize("Move the {} '{}' to '{}'.".format(type_, src, dst), GREEN))
+                if "version" in element:
+                    print("Needed from version {}.".format(element["version"]))
+                if os.path.dirname(dst) != "":
+                    os.makedirs(os.path.dirname(dst), exist_ok=True)
+                os.rename(src, dst)
+        return task_to_do
 
     @Step(6)
     def step6(self, step):
-        self.files_to_move()
-        self.run_step(step + 1)
-
-    def files_to_move(self, pre=False, prefix="", force=False):
-        error = False
-        for element in self.get_upgrade("files_to_move"):
-            src = os.path.join(prefix, element["from"])
-            dst = os.path.join(prefix, element["to"])
-            if os.path.exists(src):
-                managed = False
-                type_ = "directory" if os.path.isdir(src) else "file"
-                if not force:
-                    for pattern in self.project["managed_files"]:
-                        if re.match(pattern + '$', src):
-                            print(colorize(
-                                "The {} '{}' is present in the managed_files as '{}', but it will move."
-                                .format(
-                                    type_, src, pattern
-                                ),
-                                RED
-                            ))
-                            error = True
-                            managed = True
-                            break
-                        if re.match(pattern + '$', dst):
-                            print(colorize(
-                                "The {} '{}' is present in the managed_files as '{}', but it will move."
-                                .format(
-                                    type_, dst, pattern
-                                ),
-                                RED
-                            ))
-                            error = True
-                            managed = True
-                            break
-                if not managed and os.path.exists(dst):
-                    print(colorize(
-                        "The destination '{}' already exists, ignoring.".format(dst),
-                        YELLOW
-                    ))
-                if not managed and not pre:
-                    print(colorize("Move the {} '{}' to '{}'.".format(type_, src, dst), GREEN))
-                    if "version" in element:
-                        print("Needed from version {}.".format(element["version"]))
-                    if os.path.dirname(dst) != "":
-                        os.makedirs(os.path.dirname(dst), exist_ok=True)
-                    os.rename(src, dst)
-        return error
-
-    @Step(7)
-    def step7(self, step):
         self.files_to_get(step)
         self.run_step(step + 1)
 
@@ -591,8 +554,8 @@ class C2cUpgradeTool:
                     exit(2)
         return error
 
-    @Step(8)
-    def step8(self, step):
+    @Step(7)
+    def step7(self, step):
         with open("changelog.diff", "w") as diff_file:
             check_call(["git", "diff", "--", "CONST_CHANGELOG.txt"], stdout=diff_file)
 
@@ -625,8 +588,8 @@ class C2cUpgradeTool:
         status = [s for s in status if not filecmp.cmp(s, s[len("CONST_create_template/"):])]
         return status
 
-    @Step(9)
-    def step9(self, step):
+    @Step(8)
+    def step8(self, step):
         if os.path.isfile("changelog.diff"):
             os.unlink("changelog.diff")
 
@@ -650,8 +613,8 @@ class C2cUpgradeTool:
                 + "\nNote that you can also apply them using: git apply --3way ngeo.diff"
             )
 
-    @Step(10)
-    def step10(self, step):
+    @Step(9)
+    def step9(self, step):
         if os.path.isfile("ngeo.diff"):
             os.unlink("ngeo.diff")
 
@@ -683,35 +646,23 @@ class C2cUpgradeTool:
         else:
             self.run_step(step + 1)
 
-    @Step(11)
-    def step11(self, step):
+    @Step(10)
+    def step10(self, step):
         if os.path.isfile("create.diff"):
             os.unlink("create.diff")
 
         check_call(["make", "--makefile=" + self.options.new_makefile, "build"])
 
-        if self.options.nondocker:
-            command.upgrade(Config("geoportal/alembic.ini", ini_section="main"), "head")
-            command.upgrade(Config("geoportal/alembic.ini", ini_section="static"), "head")
-
-            args = " --makefile={}".format(self.options.makefile) \
-                if self.options.makefile != "Makefile" else ""
-            message = [
-                "The upgrade is nearly done, now you should:",
-                "- Run the finalisation build with `FINALISE=TRUE make{} build`.".format(args),
-                "- Test your application."
-            ]
-        else:
-            message = [
-                "The upgrade is nearly done, now you should:",
-                "- To upgrade the database run `./docker-compose-run alembic --name=main "
-                "--config=geoportal/alembic.ini upgrade head`",
-                "- Run `DOCKER_TAG=unexisting docker-compose pull --ignore-pull-failures && "
-                "docker-compose down --remove-orphans && docker-compose up -d`.",
-                "- Test your application on '{}'.".format(
-                    self.project.get('application_url', '... missing ...')
-                )
-            ]
+        message = [
+            "The upgrade is nearly done, now you should:",
+            "- To upgrade the database run `./docker-compose-run alembic --name=main "
+            "--config=geoportal/alembic.ini upgrade head`",
+            "- Run `DOCKER_TAG=unexisting docker-compose pull --ignore-pull-failures && "
+            "docker-compose down --remove-orphans && docker-compose up -d`.",
+            "- Test your application on '{}'.".format(
+                self.project.get('application_url', '... missing ...')
+            )
+        ]
 
         if self.options.windows:
             message.append(
@@ -725,8 +676,8 @@ class C2cUpgradeTool:
             pass
         self.print_step(step + 1, message="\n".join(message))
 
-    @Step(12, file_marker=False)
-    def step12(self, step):
+    @Step(11, file_marker=False)
+    def step11(self, step):
         if os.path.isfile(".UPGRADE_SUCCESS"):
             os.unlink(".UPGRADE_SUCCESS")
         ok, message = self.test_checkers()
@@ -740,8 +691,8 @@ class C2cUpgradeTool:
             )
             exit(1)
 
-    @Step(13, file_marker=False)
-    def step13(self, step):
+    @Step(12, file_marker=False)
+    def step12(self, step):
         # Required to remove from the Git stage the ignored file when we lunch the step again
         check_call(["git", "reset", "--mixed"])
 
@@ -754,8 +705,8 @@ class C2cUpgradeTool:
             "add them into the `.gitignore` file and launch upgrade{} again.".format(step),
             prompt="Then to commit your changes type:")
 
-    @Step(14, file_marker=False)
-    def step14(self, _):
+    @Step(13, file_marker=False)
+    def step13(self, _):
         check_call(["git", "commit", "--message=Upgrade to GeoMapFish {}".format(
             pkg_resources.get_distribution("c2cgeoportal_commons").version
         )])

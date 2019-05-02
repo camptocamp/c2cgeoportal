@@ -22,7 +22,7 @@ For the ``Content-Security-Policy`` header, ``c2cgeoportal`` includes specific v
 template, to facilitate the customization of these values.
 The naming of these variables follows this pattern: ``content_security_policy_<path>_<directive>[_extra]``.
 
-Where ``<path>`` can be: ``main``, ``admin``, ``apihelp``, ``oldapihelp`` or ``c2c``,
+Where ``<path>`` can be: ``main``, ``admin``, ``apihelp`` or ``c2c``,
 ``<directive>`` can be: ``default_src``, ``script_src``, `style_src``, ``img_src``,
 ``connect_src`` or ``worker_src``,
 ``[_extra]`` is a suffix to be able to extend a directive instance of completely overriding it.

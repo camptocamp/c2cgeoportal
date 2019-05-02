@@ -33,11 +33,9 @@ import logging
 import os
 import re
 from urllib.parse import urlsplit
-from socket import gethostbyname, gaierror
 import importlib
 
 import simplejson as json
-from ipcalc import IP, Network
 from Crypto.Cipher import AES
 
 import zope.event.classhandler
@@ -281,43 +279,6 @@ def default_user_validator(request, username, password):
     return username
 
 
-class OgcproxyRoutePredicate:
-    """ Serve as a custom route predicate function for ogcproxy.
-    We do not want the OGC proxy to be used to reach the app's
-    mapserv script. We just return False if the url includes
-    "mapserv". It is rather drastic, but works for us. """
-
-    def __init__(self, val, config):
-        del val  # unused
-        del config  # unused
-        self.private_networks = [
-            Network("127.0.0.0/8"),
-            Network("10.0.0.0/8"),
-            Network("172.16.0.0/12"),
-            Network("192.168.0.0/16"),
-        ]
-
-    def __call__(self, context, request):
-        url = request.params.get("url")
-        if url is None:
-            return False
-
-        parts = urlsplit(url)
-        try:
-            ip = IP(gethostbyname(parts.netloc))
-        except gaierror as e:
-            LOG.info("Unable to get host name for %s: %s", url, e)
-            return False
-        for net in self.private_networks:
-            if ip in net:
-                return False
-        return True
-
-    @staticmethod
-    def phash():  # pragma: no cover
-        return ""
-
-
 class MapserverproxyRoutePredicate:
     """ Serve as a custom route predicate function for mapserverproxy.
     If the hide_capabilities setting is set and is true then we want to
@@ -442,14 +403,6 @@ def includeme(config: pyramid.config.Configurator):
     config.set_user_validator(default_user_validator)
 
     config.add_route('dynamic', '/dynamic.json', request_method="GET")
-    if settings.get("ogcproxy_enable", False):  # pragma: no cover
-        # Add an OGCProxy view
-        config.add_route_predicate("ogc_server", OgcproxyRoutePredicate)
-        config.add_route(
-            "ogcproxy", "/ogcproxy",
-            ogc_server=True
-        )
-        config.add_view("papyrus_ogcproxy.views:ogcproxy", route_name="ogcproxy")
 
     # Add routes to the mapserver proxy
     config.add_route_predicate("mapserverproxy", MapserverproxyRoutePredicate)
@@ -483,9 +436,6 @@ def includeme(config: pyramid.config.Configurator):
     config.add_renderer(".css", AssetRendererFactory)
     config.add_renderer(".ico", AssetRendererFactory)
     config.add_route("apijs", "/api.js", request_method="GET")
-    config.add_route("oldxapijs", "/xapi.js", request_method="GET")
-    config.add_route("oldapihelp", "/oldapihelp.html", request_method="GET")
-    config.add_route("oldxapihelp", "/oldxapihelp.html", request_method="GET")
 
     # Cannot be at the header to do not load the model too early
     from c2cgeoportal_geoportal.views.entry import Entry
@@ -544,8 +494,7 @@ def includeme(config: pyramid.config.Configurator):
     add_cors_route(config, "/raster", "raster")
     config.add_route("raster", "/raster", request_method="GET")
 
-    add_cors_route(config, "/profile.{ext}", "profile")
-    config.add_route("profile.csv", "/profile.csv", request_method="POST")
+    add_cors_route(config, "/profile.json", "profile")
     config.add_route("profile.json", "/profile.json", request_method="POST")
 
     # Shortener

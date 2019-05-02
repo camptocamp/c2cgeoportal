@@ -208,13 +208,11 @@ def _lang_files(global_settings, settings, health_check):
 
     for type_ in lang_settings.get("files", []):
         for lang in available_locale_names:
-            if type_ == "cgxp-api":
-                url = "{package}_geoportal:static/build/api-lang-{lang}.js"
-            elif type_ == "ngeo":
+            if type_ == "ngeo":
                 url = "{package}_geoportal:static-ngeo/build/{lang}.json"
             else:
                 raise Exception("Your language type value '%s' is not valid, "
-                                "available values [cgxp-api, ngeo]" % type_)
+                                "available values [ngeo]" % type_)
             name = "checker_lang_{}_{}".format(type_, lang)
 
             def get_both(url, lang, request):

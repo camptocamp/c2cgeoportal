@@ -34,8 +34,7 @@ from setuptools import setup, find_packages
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 README = """c2cgeoportal is the server part of `GeoMapFish <http://geomapfish.org/>`_,
-the client part is `ngeo <https://github.com/camptocamp/ngeo/>`_,
-the old client and API part is `CGXP <https://github.com/camptocamp/cgxp/>`_.
+the client part is `ngeo <https://github.com/camptocamp/ngeo/>`_.
 
 Read the `Documentation <https://camptocamp.github.io/c2cgeoportal/master/>`_.
 
@@ -79,19 +78,13 @@ setup(
         'console_scripts': [
             'manage-users = c2cgeoportal_geoportal.scripts.manage_users:main',
             'c2cupgrade = c2cgeoportal_geoportal.scripts.c2cupgrade:main',
-            'db2pot = c2cgeoportal_geoportal.scripts.db2pot:main',
-            'themev1tov2 = c2cgeoportal_geoportal.scripts.themev1tov2:main',
             'theme2fts = c2cgeoportal_geoportal.scripts.theme2fts:main',
-            'l10nv1tov2 = c2cgeoportal_geoportal.scripts.l10nv1tov2:main',
             'create-demo-theme = c2cgeoportal_geoportal.scripts.create_demo_theme:main',
-            'treeitem-uniquename = c2cgeoportal_geoportal.scripts.treeitem_uniquename:main',
             'urllogin = c2cgeoportal_geoportal.scripts.urllogin:main',
         ],
         'pyramid.scaffold': [
             'c2cgeoportal_create = c2cgeoportal_geoportal.scaffolds:TemplateCreate',
             'c2cgeoportal_update = c2cgeoportal_geoportal.scaffolds:TemplateUpdate',
-            'c2cgeoportal_nondockercreate = c2cgeoportal_geoportal.scaffolds:TemplateNondockerCreate',
-            'c2cgeoportal_nondockerupdate = c2cgeoportal_geoportal.scaffolds:TemplateNondockerUpdate',
         ],
         'lingua.extractors': [
             'geomapfish-theme = c2cgeoportal_geoportal.lib.lingua_extractor:GeomapfishThemeExtractor',

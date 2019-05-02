@@ -44,10 +44,9 @@ import zope.event.classhandler
 from c2cwsgiutils.auth import auth_view
 from defusedxml import lxml
 from owslib.wms import WebMapService
-from pyramid.httpexceptions import HTTPBadGateway, HTTPBadRequest, HTTPForbidden, HTTPFound, HTTPUnauthorized
+from pyramid.httpexceptions import HTTPBadRequest, HTTPForbidden, HTTPFound, HTTPUnauthorized
 from pyramid.i18n import TranslationStringFactory
 from pyramid.path import AssetResolver
-from pyramid.renderers import render_to_response
 from pyramid.response import Response
 from pyramid.security import remember, forget
 from pyramid.view import view_config
@@ -59,7 +58,6 @@ from c2cgeoportal_commons.lib.email_ import send_email_config
 from c2cgeoportal_commons.models import main, static
 from c2cgeoportal_geoportal import is_valid_referer
 from c2cgeoportal_geoportal.lib import add_url_params, get_setting, get_typed, get_types_map, get_url2
-from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
 from c2cgeoportal_geoportal.lib.caching import (
     NO_CACHE, PRIVATE_CACHE, PUBLIC_CACHE, get_region, set_common_headers)
 from c2cgeoportal_geoportal.lib.functionality import get_functionality, get_mapserver_substitution_params
@@ -829,90 +827,19 @@ class Entry:
         set_common_headers(self.request, "index", NO_CACHE, content_type="text/html")
         return {}
 
-    def get_oldapijs_values(self):
-        ogc_server = models.DBSession.query(main.OGCServer).filter(
-            main.OGCServer.name == self.settings["api"]["ogc_server"]
-        ).one()
-        wms, wms_errors = self._wms_getcap(ogc_server)
-        if len(wms_errors) > 0:  # pragma: no cover
-            raise HTTPBadGateway("\n".join(wms_errors))
-        queryable_layers = [
-            name for name in list(wms.contents)
-            if wms[name].queryable == 1]
-        cache_version = get_cache_version()
-        return {
-            "lang": self.lang,
-            "debug": self.debug,
-            "queryable_layers": json.dumps(queryable_layers),
-            "url_params": {"cache_version": cache_version} if cache_version else {},
-            "tiles_url": json.dumps(self.settings.get("tiles_url")),
-            "request": self.request,
-        }
-
     @view_config(route_name="apijs")
     def apijs(self):
-        version = self.request.params.get('version', '1')
-        if version == '2':
-            resolver = AssetResolver('c2cgeoportal_geoportal')
-            asset = resolver.resolve('{}_geoportal:static-ngeo/build/api.js'.format(
-                self.request.registry.settings['package']
-            ))
-            self.request.response.body = asset.stream().read()
-            response = self.request.response
-        else:
-            response = render_to_response(
-                'api/api.js', self.get_oldapijs_values()
-            )
+        resolver = AssetResolver('c2cgeoportal_geoportal')
+        asset = resolver.resolve('{}_geoportal:static-ngeo/build/api.js'.format(
+            self.request.registry.settings['package']
+        ))
+        self.request.response.body = asset.stream().read()
+        response = self.request.response
         set_common_headers(
             self.request, "api", PUBLIC_CACHE,
             response=response, content_type="application/javascript",
         )
         return response
-
-    @view_config(route_name="oldxapijs", renderer="api/xapi.js")
-    def oldxapijs(self):
-        ogc_server = models.DBSession.query(main.OGCServer).filter(
-            main.OGCServer.name == self.settings["api"]["ogc_server"]
-        ).one()
-        wms, wms_errors = self._wms_getcap(ogc_server)
-        if len(wms_errors) > 0:  # pragma: no cover
-            raise HTTPBadGateway("\n".join(wms_errors))
-        queryable_layers = [
-            name for name in list(wms.contents)
-            if wms[name].queryable == 1
-        ]
-        cache_version = get_cache_version()
-
-        set_common_headers(
-            self.request, "api", NO_CACHE,
-            content_type="application/javascript",
-        )
-
-        return {
-            "lang": self.lang,
-            "debug": self.debug,
-            "queryable_layers": json.dumps(queryable_layers),
-            "url_params": {"cache_version": cache_version} if cache_version else {},
-            "tiles_url": json.dumps(self.settings.get("tiles_url")),
-        }
-
-    @view_config(route_name="oldapihelp", renderer="api/apihelp.html")
-    def oldapihelp(self):
-        set_common_headers(self.request, "index", NO_CACHE)
-
-        return {
-            "lang": self.lang,
-            "debug": self.debug,
-        }
-
-    @view_config(route_name="oldxapihelp", renderer="api/xapihelp.html")
-    def oldxapihelp(self):
-        set_common_headers(self.request, "index", NO_CACHE)
-
-        return {
-            "lang": self.lang,
-            "debug": self.debug,
-        }
 
     def favicon(self):
         set_common_headers(

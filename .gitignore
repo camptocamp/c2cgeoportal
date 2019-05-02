@@ -23,8 +23,6 @@
 /geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/static-ngeo/api/apihelp/
 /geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_Makefile_tmpl.mk
 /geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/
-/geoportal/c2cgeoportal_geoportal/scaffolds/nondockercreate/geoportal/+package+_geoportal/static-ngeo/js/apps/
-/geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/CONST_create_template/
 /geoportal/c2cgeoportal_geoportal.egg-info/
 /admin/tests.ini
 /admin/npm-packages
@@ -46,9 +44,6 @@
 /dist/
 /docker-compose.yaml
 /coverage.xml
-/gatling/.classpath
-/gatling/.project
-/gatling/.cache-main
 /ngeo/
 /.tx/config
 /.coverage

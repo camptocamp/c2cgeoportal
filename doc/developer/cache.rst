@@ -45,15 +45,12 @@ No cache
  * interface pages
  * dynamic
  * api js
- * xapi js
  * api help
- * xapi help
  * auto login form (loginform403)
  * login
  * logout
  * login change password
  * echo
- * export csv
  * full text search
  * layers/read_many
  * layers/read_one
