@@ -76,7 +76,7 @@ Get the localisation from Transifex:
 
 .. prompt:: bash
 
-    docker build --tag=camptocamp/geomapfish-build-dev docker/build
+    docker build --tag=camptocamp/geomapfish-build-dev:<version> docker/build
     ./docker-run make transifex-get
 
 For each version, we create a new branch (at the latest, for the final release):
@@ -123,15 +123,16 @@ Push your changes:
 
 .. prompt:: bash
 
-    git push origin <version> master
+    git push origin master
 
 Create a new Transifex resource:
 
 .. prompt:: bash
 
     rm .tx/config
-    ./docker-run rm /build/c2ctemplate-cache.yaml
-    ./docker-run make transifex-init
+    docker build --tag=camptocamp/geomapfish-build-dev:<version+1> docker/build
+    ./docker-run rm /build/c2ctemplate-cache.json
+    ./docker-run --home make transifex-init
 
 Update the references in the `index.html` file of the `gh-pages` branch.
 
@@ -179,7 +180,7 @@ See :ref:`developer_build_release_pre_release_task` for more information.
 
 * Upgrade the demo in your home folder, see :ref:`integrator_upgrade_application`.
 * Some specific things for the demo:
-  `UPGRADE.rst <https://github.com/camptocamp/demo_geomapfish/blob/2.4/UPGRADE.rst>_`.
+  `UPGRADE.rst <https://github.com/camptocamp/demo_geomapfish/blob/2.4/UPGRADE.rst>`_.
 
 For non dev release
 -------------------
