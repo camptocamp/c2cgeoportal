@@ -89,8 +89,6 @@ c2cgeoportal application you want to create the new application from:</p>
 </pre></div></div><p>You should at least see the c2cgeoportal scaffolds:</p>
 <ul class="simple">
 <li>c2cgeoportal_create</li>
-<li>c2cgeoportal_nondockercreate</li>
-<li>c2cgeoportal_nondockerupdate</li>
 <li>c2cgeoportal_update</li>
 </ul>
 </div>
@@ -105,10 +103,6 @@ issue with Pip.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./docker-run -ti --image<span class="o">=</span>camptocamp/geomapfish-build <span class="se">\</span>
     --version<span class="o">=</span>&lt;release<span class="p">|</span>version&gt; <span class="se">\</span>
     pcreate -s c2cgeoportal_create &lt;project&gt;</span>
-</pre></div></div><p>And for the non Docker version, apply also the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_nondockercreate</span></code> scaffold:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./docker-run -ti --image<span class="o">=</span>camptocamp/geomapfish-build <span class="se">\</span>
-    --version<span class="o">=</span>&lt;release<span class="p">|</span>version&gt; <span class="se">\</span>
-    pcreate -s c2cgeoportal_nondockercreate &lt;project&gt;</span>
 </pre></div></div><div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Do not add any ‘/’ after the project name.</p>
