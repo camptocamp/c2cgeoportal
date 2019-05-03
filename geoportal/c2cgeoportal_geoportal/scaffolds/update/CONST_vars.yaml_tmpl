@@ -220,16 +220,6 @@ vars:
     iframe_api:
       constants:
         gmfSearchGroups: []
-    oeview:
-      constants:
-        gmfPermalinkOptions:
-          pointRecenterZoom: 10
-      # FIXME: gmfContextualdatacontentTemplateUrl
-      routes:
-        gmfProfileJsonUrl:
-          name: profile.json
-        gmfPrintUrl:
-          name: printproxy
     oeedit:
       # FIXME: gmfContextualdatacontentTemplateUrl
       routes:
