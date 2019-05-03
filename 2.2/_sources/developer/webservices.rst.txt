@@ -13,24 +13,24 @@ URL: ``.../themes``
 Parameters
 ----------
 
-* ``version``: ``2``, API version, default is ``2``.
-* ``interface``: used interface, default is ``desktop``.
+* ``version``: ``1`` or ``2``, API version, default is ``1``.
+* ``interface``: used interface (optional).
 * ``sets``: kind of data we want to get, can be ``all``, ``themes``, ``group``
   or ``background_layers``, default is ``all``.
 * ``background``: parent group of background layers to get.
 * ``group``: the group to get.
+* ``catalog``: ``true`` or ``false``, different error reporting for catalog mode, default is ``false``.
 * ``min_levels``: minimum number of group levels that is required, default is ``1``.
 * ``role``: role name, not used by the server but it is required for the cache management.
 
 Requests examples:
 
-* themes
-* themes?background=background
-* themes?group=Transport
-* themes?group=Transport&sets=group
+* themes?version=2
+* themes?version=2&background=background
+* themes?version=2&group=Transport
 
-Result
-------
+Result in v2
+------------
 
 Base for all possible results:
 
@@ -137,13 +137,19 @@ WMS Layer
         "style": "<style>",
         # if not mixed
         "ogcServer": "<server name>",
+        # derecated
+        "url": "<wms server url>",
+        "urlWfs": "<wfs server url>",
+        "wfsSupport": (true|false),
+        "isSingleTile": (true|false),
+        "imageType": "image/(jpeg|png)",
         "serverType": "(mapserver|geoserver|qgisserver)",
         "minResolutionHint": <minResolutionHint>,
         "maxResolutionHint": <maxResolutionHint>,
         # end derecated
         "metadata": {
             "identifier_attribute_field": "<display_name>",
-            "disclaimer": "<disclaimer>",
+            "disclaimer": "<disclamer>",
             "legend": (true|false),
             "legend_rule": "<legend_rule>",
             "max_resolution": <max_resolution>,
@@ -156,8 +162,8 @@ WMS Layer
         },
         "time": {
             "mode": "(value|range)",
-            "interval": [<year>, <month>, <day>, <second>],
-            "resolution": "(year|month|day|second)",
+            "interval": [<year>, <month>, <day>, <secound>],
+            "resolution": "(year|month|day|secound)",
             "minValue": <minValue>,
             "maxValue": <maxValue>
         },
@@ -167,12 +173,6 @@ WMS Layer
             "minResolutionHint": <minResolutionHint>,
             "maxResolutionHint": <maxResolutionHint>
         }],
-        "dimensionsFilters": {
-            "<name>: {
-               "field": "<field_name>",
-               "value": "<value>"
-            }
-        },
         "edit_columns":[{
             "maxLength": <maxLength>,
             "name": "<name>",
@@ -218,13 +218,13 @@ Parameters (post form):
 
 * ``login``
 * ``password``
-* ``came_from`` the URL to which we will redirect after a successful request.
+* ``came_from`` the URL where we will redirect after a success
 
 Result HTTP code:
 
 * 200 Success: Success with the JSON result as :ref:`developer_webservices_auth_connected`.
-* 302 Found: Success -> redirect to ``came_from``.
-* 400 Bad request: When something is wrong.
+* 302 Found: Success -> redirect on came_from.
+* 400 Bad request: When something wrong.
 
 Logout
 ------
@@ -238,12 +238,12 @@ Method: ``GET``
 Result HTTP code:
 
 * 200 Success: Success.
-* 400 Bad request: When something is wrong.
+* 400 Bad request: When something wrong.
 
-User information
-----------------
+User informations
+-----------------
 
-Used to get the user information.
+Used to get the user informations.
 
 URL: ``.../loginuser``
 
@@ -251,14 +251,14 @@ Result HTTP code:
 
 * 200 Success: Success.
 
-Anonymous JSON result
+Annoymous JSON result
 ~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: json
 
    {
        "functionality": {
-           "<functionality_name>": ["functionality_value"],
+           "<functionnality_name>": ["functionnality_value"],
            ...
        }
    }
@@ -273,12 +273,10 @@ Connected JSON result
    {
        "username": "<username>",
        "is_password_changed": "True"/"False", # If false the user should change his password
-       "roles": [{
-           "name": "<role_name>",
-           "id": <role_id>
-       }, ...],
+       "role_name": "<role_name>",
+       "role_id": <role_id>
        "functionality": {
-           "<functionality_name>": ["functionality_value"],
+           "<functionnality_name>": ["functionnality_value"],
            ...
        }
    }
@@ -302,7 +300,7 @@ Parameters (post form):
 Result HTTP code:
 
 * 200 Success: Success.
-* 400 Bad request: When something is wrong.
+* 400 Bad request: When something wrong.
 
 JSON result
 ~~~~~~~~~~~
@@ -321,7 +319,7 @@ URL: ``.../loginresetpassword``
 
 Method: ``POST``
 
-Used when the user lost his/her password.
+Used when the user lost his password.
 
 Parameters (post form):
 
@@ -330,7 +328,7 @@ Parameters (post form):
 Result HTTP code:
 
 * 200 Success: Success.
-* 400 Bad request: When something is wrong.
+* 400 Bad request: When something wrong.
 
 Success JSON result
 ~~~~~~~~~~~~~~~~~~~
@@ -341,9 +339,8 @@ Success JSON result
        "success": "true"
    }
 
-.. _developer_webservices_fts:
 
-Full-text search
+Full-Text Search
 ================
 
 URL: ``.../fulltextsearch``
@@ -354,8 +351,9 @@ Parameters
 * ``query``: Text to search.
 * ``limit``: The maximum number of results (optional).
 * ``partitionlimit``: The maximum number of results per layer (optional).
-* ``lang``: The language used (optional).
-* ``interface``: The interface used (optional).
+* ``lang``: The used language (optional).
+* ``interface``: The used interface (optional).
+* ``callback``: Name of the callback function (optional, deprecated in v2).
 
 Result
 ------
@@ -367,10 +365,10 @@ A GeoJSON of a feature collection with the properties:
 * ``params``: :ref:`integrator_fulltext_search_params` to set.
 * ``actions``: List of actions.
 
-The `actions` is a dictionary with:
+The `action` is a dictionary with:
 
-* ``action``: the type of action (add_theme|add_group|add_layer).
-* ``data``: data needed for the action (the item name).
+* ``action``: the action: (add_theme|add_group|add_layer).
+* ``data``: data needed for the action (actually, the item name).
 
 
 Layers
@@ -384,7 +382,7 @@ URL: ``.../layers/<layer_id>/md.xsd``
 Result
 ~~~~~~
 
-A standard xsd document that describes the layer.
+A standard xsd document that describe the layer.
 
 MapFish protocol
 ----------------
@@ -405,13 +403,14 @@ Result
 
     {
         "items": [{
+          "label": "<name>", // deprecated in v2
           "value": "<value>"
         }, ...]
     }
 
 
 Update feature
---------------
+------------------
 
 URL: ``.../layers/<layer_name>/<layer_id>/<feature_id>``
 
@@ -458,7 +457,7 @@ Error :
     }
 
 Update feature
---------------
+------------------
 
 URL: ``.../layers/<layer_name>/<layer_id>``
 
@@ -517,6 +516,7 @@ Parameters
 * ``lon``: The longitude.
 * ``lat``: The latitude.
 * ``layers``: The raster layers we want to query.
+* ``callback``: Function name to do the callback (optional, deprecated in v2).
 
 Result
 ------
@@ -532,7 +532,7 @@ Result
 Digital Elevation Model
 =======================
 
-URL: ``.../profile.json``
+URL: ``.../profile.csv`` or ``.../profile.json``
 
 Method ``POST``
 
@@ -540,13 +540,14 @@ Parameters
 ----------
 
 * ``geom``: Geometry field used to get the profile data.
-* ``layers``: On which layers; default to all.
+* ``layers``: On witch layers, default to all.
 * ``nbPoints``: Maximum number of points.
+* ``callback``: Function name to do the callback (optional, deprecated in v2).
 
 Result
 ------
 
-A JSON file, with 'dist', 'value', 'x', 'y'.
+A JSON or a CSV file, with 'dist', 'value', 'x', 'y'.
 
 
 Shortener
@@ -565,6 +566,7 @@ Parameters
 * ``url``: URL to shorten.
 * ``email``: Email address to send a message to (optional).
 * ``message``: The user message to add in the email (optional).
+* ``callback``: Function name to do the callback (optional, deprecated in v2).
 
 Result
 ~~~~~~
@@ -582,6 +584,48 @@ URL: ``short/<ref>``
 
 Result: code: 302, redirect to the original URL.
 
+
+Echo
+====
+
+This service returns a file containing data submitted in the POST request as the "file" field.
+This is used to be able to get the data in the client from a file select by the user.
+
+URL: ``.../echo``
+
+Result
+------
+
+The 'Content-Type' header is 'text/html', and the data is:
+
+.. code:: json
+
+    {
+        "filename": <The base64 encoded file>
+        "success": true
+    }
+
+
+Export CSV
+==========
+
+This service returns a file containing data submitted in the POST request as the "csv" field.
+This is used to be able to get as a download file csv data build on the client.
+
+URL: ``.../csv``
+
+Parameters
+----------
+
+* ``csv_extension``: File extension, defaults to 'csv'.
+* ``csv_encoding``: Character encoding, defaults to 'UTF-8',
+* ``name``: File name without extension set in the 'Content-Disposition', defaults to 'export'.
+
+Result
+------
+
+The 'Content-Type' header is 'text/csv',
+and the data contains the given 'csv' data.
 
 Geometry processing
 ===================

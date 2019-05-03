@@ -1,0 +1,258 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Upgrading a GeoMapFish application &#8212; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="URL login" href="urllogin.html" />
+    <link rel="prev" title="TileGeneration" href="tilegeneration.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="upgrading-a-geomapfish-application">
+<span id="integrator-upgrade-application"></span><h1>Upgrading a GeoMapFish application<a class="headerlink" href="#upgrading-a-geomapfish-application" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="preliminary-work">
+<h2>Preliminary work<a class="headerlink" href="#preliminary-work" title="Permalink to this headline">¶</a></h2>
+<p>Depending on your current installation, some preliminary work is necessary before applying the
+update steps via scripts.</p>
+<div class="section" id="gmf-1-x-to-gmf-2-2">
+<h3>GMF 1.X to GMF 2.2<a class="headerlink" href="#gmf-1-x-to-gmf-2-2" title="Permalink to this headline">¶</a></h3>
+<p>If you are updating directly from a GeoMapFish 1.X version to GeoMapFish 2.2,
+you need to follow the update instructions for GeoMapFish 2.1 first before
+proceeding with the update to GeoMapFish 2.2.
+See
+<a class="reference external" href="https://camptocamp.github.io/c2cgeoportal/2.1/integrator/upgrade_application.html">2.1 upgrade instructions</a>.</p>
+</div>
+<div class="section" id="updating-your-project-environment">
+<h3>updating your project environment<a class="headerlink" href="#updating-your-project-environment" title="Permalink to this headline">¶</a></h3>
+<p>Before upgrading your application to a newer version of c2cgeoportal, you should make sure that
+your project environment is up-to-date with regard to your project repository and with regard to the
+required dependencies.
+For this, execute the following commands:</p>
+<pre class="highlight"><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">make -f &lt;makefile&gt; update</span>
+<span class="prompt1">make -f &lt;makefile&gt; build</span>
+</pre><p>Where <code class="docutils literal"><span class="pre">&lt;makefile&gt;</span></code> is your user make file (<code class="docutils literal"><span class="pre">&lt;user&gt;.mk</span></code>).</p>
+</div>
+</div>
+<div class="section" id="upgrading-the-application">
+<h2>Upgrading the application<a class="headerlink" href="#upgrading-the-application" title="Permalink to this headline">¶</a></h2>
+<p>In the <code class="docutils literal"><span class="pre">setup.py</span></code> be sure not to specify a <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> version,
+because it will prevent the installation of the new <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> egg.</p>
+<p>Verify that you have in your <code class="docutils literal"><span class="pre">project.yaml.mako</span></code> file the following <code class="docutils literal"><span class="pre">template_vars</span></code>:
+<code class="docutils literal"><span class="pre">package</span></code>, <code class="docutils literal"><span class="pre">srid</span></code>, <code class="docutils literal"><span class="pre">extent</span></code>, <code class="docutils literal"><span class="pre">apache_vhost</span></code>, for example:</p>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span>...
+template_vars:
+    package: ${package}
+    srid: ${srid}
+    extent: 489246, 78873, 837119, 296543
+    apache_vhost: &lt;apache_vhost&gt;
+</pre></div>
+</div>
+<p>We consider that your makefile is named <code class="docutils literal"><span class="pre">&lt;instanceid&gt;.mk</span></code>, if it is not the case
+add in your Makefile <code class="docutils literal"><span class="pre">UPGRADE_MAKE_FILE</span> <span class="pre">=</span> <span class="pre">&lt;user.mk&gt;</span></code></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>For Windows:</p>
+<p class="last">You should add <code class="docutils literal"><span class="pre">UPGRADE_ARGS</span> <span class="pre">+=</span> <span class="pre">--windows</span></code> in your <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> file.</p>
+</div>
+<p>To upgrade, run:</p>
+<pre class="highlight"><span class="prompt1"><span class="nb">export</span> <span class="nv">VERSION</span><span class="o">=</span>&lt;target_version&gt;</span>
+<span class="prompt1">make -f &lt;makefile&gt; upgrade</span>
+</pre><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>For Windows:</p>
+<p class="last">You should replace <code class="docutils literal"><span class="pre">export</span> <span class="pre">VERSION=&lt;target_version&gt;</span></code> with
+<code class="docutils literal"><span class="pre">SET</span> <span class="pre">VERSION=&lt;target_version&gt;</span></code>.</p>
+</div>
+<p>Where <code class="docutils literal"><span class="pre">&lt;makefile&gt;</span></code> is your user Makefile (<code class="docutils literal"><span class="pre">&lt;user&gt;.mk</span></code>),
+<code class="docutils literal"><span class="pre">&lt;target_version&gt;</span></code> is the version that you wish to upgrade to.</p>
+<p>And follow the instructions.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>For Windows:</p>
+<p>If you are using Windows, you will have to execute some steps prior
+to the instructions hereunder:</p>
+<ul class="last">
+<li><p class="first">Uninstall manually the old c2cgeoportal egg:</p>
+<blockquote>
+<div><p><code class="docutils literal"><span class="pre">.build/venv/Scripts/pip</span> <span class="pre">uninstall</span> <span class="pre">c2cgeoportal</span></code></p>
+</div></blockquote>
+</li>
+<li><p class="first">Clean / remove the generated files:</p>
+<blockquote>
+<div><p><code class="docutils literal"><span class="pre">make</span> <span class="pre">-f</span> <span class="pre">&lt;makefile&gt;</span> <span class="pre">clean</span></code></p>
+</div></blockquote>
+</li>
+<li><p class="first">Change the version in <code class="docutils literal"><span class="pre">setup.py</span></code> and <code class="docutils literal"><span class="pre">CONST_requirements.txt</span></code>
+to the version you wish to install.</p>
+</li>
+<li><p class="first">Build your application:</p>
+<blockquote>
+<div><p><code class="docutils literal"><span class="pre">make</span> <span class="pre">-f</span> <span class="pre">&lt;makefile&gt;</span> <span class="pre">build</span></code></p>
+</div></blockquote>
+</li>
+<li><p class="first">Put your modifications under git revision:</p>
+<blockquote>
+<div><p><code class="docutils literal"><span class="pre">git</span> <span class="pre">add</span> <span class="pre">setup.py</span></code></p>
+<p><code class="docutils literal"><span class="pre">git</span> <span class="pre">add</span> <span class="pre">CONST_requirements.txt</span></code></p>
+<p><code class="docutils literal"><span class="pre">git</span> <span class="pre">commit</span> <span class="pre">-m</span> <span class="pre">&quot;Upgrade</span> <span class="pre">c2cgeoportal</span> <span class="pre">version&quot;</span></code></p>
+<p><code class="docutils literal"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">&lt;remote&gt;</span> <span class="pre">&lt;branch&gt;</span></code></p>
+</div></blockquote>
+</li>
+<li><p class="first">Follow the Windows instructions hereunder, note that you will have to use
+<code class="docutils literal"><span class="pre">.build\venv\Scripts\...</span></code> instead of <code class="docutils literal"><span class="pre">.build\venv\bin\...</span></code> in all given
+commands</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="upgrade-the-database">
+<h2>Upgrade the database<a class="headerlink" href="#upgrade-the-database" title="Permalink to this headline">¶</a></h2>
+<p>The database will be automatically upgraded during the upgrade process.</p>
+<p>To upgrade only the database you can use alembic directly.</p>
+<p>The help:</p>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">build</span><span class="o">/</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">alembic</span> <span class="o">--</span><span class="n">help</span>
+</pre></div>
+</div>
+<p>Upgrade the main schema:</p>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">build</span><span class="o">/</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">alembic</span> <span class="o">--</span><span class="n">config</span> <span class="n">alembic</span><span class="o">.</span><span class="n">ini</span> <span class="n">upgrade</span> <span class="n">head</span>
+</pre></div>
+</div>
+<p>Upgrade the static schema:</p>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">build</span><span class="o">/</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">alembic</span> <span class="o">--</span><span class="n">config</span> <span class="n">alembic_static</span><span class="o">.</span><span class="n">ini</span> <span class="n">upgrade</span> <span class="n">head</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="from-cgxp-to-ngeo">
+<span id="integrator-upgrade-application-cgxp-to-ngeo"></span><h2>From CGXP to ngeo<a class="headerlink" href="#from-cgxp-to-ngeo" title="Permalink to this headline">¶</a></h2>
+<p>Layer definition for ngeo clients is separate and different from layer
+definition for CGXP clients, see <a class="reference internal" href="../administrator/administrate.html#administrator-administrate-layers"><span class="std std-ref">Layers</span></a>
+for details.
+To migrate the layer definitions from the CGXP structure to the ngeo
+structure, you can use the script <code class="docutils literal"><span class="pre">.build/venv/bin/themev1tov2</span></code>.</p>
+<p>Text translations for ngeo clients are separate and different from text
+translations for CGXP clients.
+To migrate the text translations from CGXP to ngeo, you can use the script
+<code class="docutils literal"><span class="pre">.build/venv/bin/l10nv1tov2</span></code>.
+For example, for converting french texts the script can be used as follows:</p>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">build</span><span class="o">/</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">l10nv1tov2</span> <span class="n">fr</span> <span class="n">geoportal</span><span class="o">/</span><span class="n">static</span><span class="o">/</span><span class="n">js</span><span class="o">/</span><span class="n">Proj</span><span class="o">/</span><span class="n">Lang</span><span class="o">/</span><span class="n">fr</span><span class="o">.</span><span class="n">js</span>    <span class="n">geoportal</span><span class="o">/</span><span class="n">locale</span><span class="o">/</span><span class="n">fr</span><span class="o">/</span><span class="n">LC_MESSAGES</span><span class="o">/</span><span class="n">geoportal</span><span class="o">-</span><span class="n">client</span><span class="o">.</span><span class="n">po</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Upgrading a GeoMapFish application</a><ul>
+<li><a class="reference internal" href="#preliminary-work">Preliminary work</a><ul>
+<li><a class="reference internal" href="#gmf-1-x-to-gmf-2-2">GMF 1.X to GMF 2.2</a></li>
+<li><a class="reference internal" href="#updating-your-project-environment">updating your project environment</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#upgrading-the-application">Upgrading the application</a></li>
+<li><a class="reference internal" href="#upgrade-the-database">Upgrade the database</a></li>
+<li><a class="reference internal" href="#from-cgxp-to-ngeo">From CGXP to ngeo</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+      <li>Previous: <a href="tilegeneration.html" title="previous chapter">TileGeneration</a></li>
+      <li>Next: <a href="urllogin.html" title="next chapter">URL login</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/integrator/upgrade_application.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2018, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/integrator/upgrade_application.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

@@ -3,6 +3,22 @@
 Full-text search
 ================
 
+Enabling the *full-text search* feature involves adding a ``FullTextSearch``
+plugin to the viewer, and creating and populating a dedicated table in the
+database.
+
+The FullTextSearch plugin
+-------------------------
+
+The viewer should include a ``FullTextSearch`` plugin for the *text search*
+feature to be available in the user interface.
+
+See the `FullTextSearch API doc
+<http://docs.camptocamp.net/cgxp/2.2/lib/plugins/FullTextSearch.html>`_ for the
+list of options the plugin can receive.
+
+*The main viewer includes a FullTextSearch plugin by default.*
+
 The full-text search table
 --------------------------
 
@@ -10,34 +26,27 @@ The *text search* feature requires a dedicated PostgreSQL table. The full-text
 search table should be named ``tsearch`` (for *text search*) and should be in
 the application-specific schema.
 
-You do not need to create the table yourself, as it was already created during application installation
-(see the section :ref:`integrator_install_application`).
+You do not need to create the table yourself, as it is created by the
+``create_db`` command line (see the section
+:ref:`integrator_install_application`).
 
-If you do want to create the table manually, you can use the following SQL commands:
+If you did want to create the table manually you would use the following commands:
 
-.. code:: sql
+.. prompt:: bash
 
-    CREATE TABLE <schema_name>.tsearch ( \
-        id SERIAL PRIMARY KEY, \
-        layer_name TEXT, \
-        label TEXT, \
-        public BOOLEAN DEFAULT 't', \
-        params TEXT, \
-        role_id INTEGER REFERENCES <schema_name>.role, \
-        ts TSVECTOR);
-    SELECT AddGeometryColumn('<schema_name>', 'tsearch', 'the_geom', <srid>, 'GEOMETRY', 2);
-    CREATE INDEX tsearch_ts_idx ON <schema_name>.tsearch USING gin(ts);
+    sudo -u postgres psql -c "CREATE TABLE <schema_name>.tsearch (         id SERIAL PRIMARY KEY,         layer_name TEXT,         label TEXT,         public BOOLEAN DEFAULT 't',         params TEXT,         role_id INTEGER REFERENCES <schema_name>.role,         ts TSVECTOR);" <db_name>
+    sudo -u postgres psql -c "SELECT AddGeometryColumn('<schema_name>', 'tsearch', 'the_geom', <srid>, 'GEOMETRY', 2);" <db_name>
+    sudo -u postgres psql -c "CREATE INDEX tsearch_ts_idx ON <schema_name>.tsearch USING gin(ts);" <db_name>
 
-with ``<schema_name>`` and ``<srid>`` substituted as appropriate.
+with ``<schema_name>``, ``<srid>``, and ``<db_name>``  substituted as appropriate.
 
 Also make sure that the db user can ``SELECT`` in the ``tsearch`` table:
 
-.. code:: sql
+.. prompt:: bash
 
-    GRANT SELECT ON TABLE <schema_name>.tsearch TO "<db_user>";
+    sudo -u postgres psql -c 'GRANT SELECT ON TABLE <schema_name>.tsearch TO "<db_user>";' <db_name>
 
-with ``<db_user>`` substituted as appropriately.
-
+with ``<db_user>``, and ``<db_name>`` substituded as appropriately.
 
 Populate the full-text search table
 -----------------------------------
@@ -48,14 +57,10 @@ Here is an example of an insertion in the ``tsearch`` table:
 
     INSERT INTO app_schema.tsearch
       (the_geom, layer_name, label, public, role_id, ts)
-    VALUES (
-       ST_GeomFromText('POINT(2660000 1140000)', 21781),
-       'Group',
-       'text to display',
-       't',
-       NULL,
-       to_tsvector('french', regexp_replace('text to search', E'[\\[\\]\\(\\):&\\*]', ' ', 'g'))
-    );
+    VALUES
+      (ST_GeomFromText('POINT(2660000 1140000)', 21781), 'Layer group',
+       'text to display', 't', NULL,
+       to_tsvector('french', regexp_replace('text to search', E'[\\[\\]\\(\\):&\\*]', ' ', 'g')));
 
 Where ``Layer group`` is the name of the layer group that should be activated,
 ``text to display`` is the text that is displayed in the results,
@@ -69,11 +74,7 @@ Here is another example where rows from a ``SELECT`` are inserted:
     INSERT INTO app_schema.tsearch
       (the_geom, layer_name, label, public, role_id, ts)
     SELECT
-      geom,
-      'layer group name',
-      text,
-      't',
-      NULL,
+      geom, 'layer group name', text, 't', NULL,
       to_tsvector('german', regexp_replace(text, E'[\\[\\]\\(\\):&\\*]', ' ', 'g'))
     FROM table;
 
@@ -81,11 +82,10 @@ Here is another example where rows from a ``SELECT`` are inserted:
 
     The language string used as the first argument to the ``to_tsvector``
     function should match that defined in the ``default_locale_name`` variable of
-    the application configuration (``vars.yaml``). For example, if you have
+    the application configuration (``vars_<project>.yaml``). For example if you have
     "french" text in the database the application's ``default_locale_name`` should
     be ``fr``. In other words c2cgeoportal assumes that the database language
     and the application's default language match.
-
 
 Populate with the themes
 ------------------------
@@ -94,8 +94,7 @@ A script is available to fill the full-text search table, for more information t
 
 .. prompt:: bash
 
-   docker-compose exec geoportal theme2fts --help
-
+   .build/venv/bin/theme2fts --help
 
 Security
 --------
@@ -120,25 +119,16 @@ available to users of the corresponding role.
         INSERT INTO app_schema.tsearch
            (the_geom, layer_name, label, public, role_id, ts)
         SELECT
-           geom,
-           'layer group name',
-           text,
-           'f',
-           1,
+           geom, 'layer group name', text, 'f', 1,
            to_tsvector('german', regexp_replace(text, E'[\\[\\]\\(\\):&\\*]', ' ', 'g'))
         FROM table;
 
         INSERT INTO app_schema.tsearch
            (the_geom, layer_name, label, public, role_id, ts)
         SELECT
-           geom,
-           'layer group name',
-           text,
-           'f',
-           2,
+           geom, 'layer group name', text, 'f', 2,
            to_tsvector('german', regexp_replace(text, E'[\\[\\]\\(\\):&\\*]', ' ', 'g'))
         FROM table;
-
 
 .. _integrator_fulltext_search_params:
 
@@ -156,6 +146,8 @@ For instance to specify a ``floor``:
 
 Query string ``floor=1`` is then automatically appended to all WMS requests.
 
+See `FloorSlider <http://docs.camptocamp.net/cgxp/2.2/lib/plugins/FloorSlider.html>`_
+for more information.
 
 Actions
 -------
@@ -190,60 +182,52 @@ Example of ``SQL`` ``INSERT`` of ``actions`` data to add the layer "cadastre" on
    INSERT INTO app_schema.tsearch (..., actions)
    VALUES (..., '[{"action": "add_layer", "data": "cadastre"}]')
 
-
 Interface
 ---------
 
-If the ``interface_id`` column contains a value, it means that the result is only for this interface.
-
+If the ``interface_id`` column contains a value it means that the result is only for an interface.
 
 Lang
 ----
 
-If the ``lang`` column contains a value, it means that the result is only for this language.
-
+If the ``lang`` column contains a value it means that the result is only for a language.
 
 Configuration
 -------------
 
-In the configuration file ``vars.yaml`` you can add the following variables:
+In the configuration file ``vars_<project>.yaml`` you can add the
+following variables:
 
-*  ``fulltextsearch_defaultlimit`` the default limit on the results, default is 30.
+*  ``fulltextsearch_defaultlimit`` the default limit on the results,
+   default is 30.
 *  ``fulltextsearch_maxlimit`` the max possible limit, default is 200.
-
 
 Ranking system
 --------------
 
-By default, the full-text search uses the `similarity` system of the
-`pg_trgm module <https://www.postgresql.org/docs/9.0/static/pgtrgm.html>`_. This
-is based only on the similarities of words, without language analysis, and it
-cares only about how near your search is to the result. `12` is nearer to `12`
-than `120`.
+By default, the full-text search uses `tsvector` and `ts_rank_cd` to rank your search results (See:
+`textsearch-controls <https://www.postgresql.org/docs/9.0/static/textsearch-controls.html>`_. These methods
+are useful to handle language-based strings. That means for instance that plural nouns are the same as
+singular nouns. This system only checks if your search word exists in the result. That means that if you search
+`B 12 Zug`, `B 120 Zug` has the same weight because the system only see that the `12` exists in each case.
 
-Ensure that the extension is created in you database:
+Alternatively you can use the `similarity` system of the
+`pg_trgm module <https://www.postgresql.org/docs/9.0/static/pgtrgm.html>`. This is based only on the
+similarities of words, without language analysis, and it cares only about how near is your search with the
+result. `12` is nearer to `12` than `120`.
+To use this system, your request must contains the parameter `rank_system=similarity` and your database must
+have the pg_trgm extension:
 
-.. prompt:: bash
+.. code:: sql
 
-  sudo -u postgres psql -c "CREATE EXTENSION pg_trgm" <db_name>
-
-Alternatively, you can use the ``tsvector`` and ``ts_rank_cd`` to rank your search
-results
-(see: `textsearch-controls <https://www.postgresql.org/docs/9.0/static/textsearch-controls.html>`_).
-These methods are useful to handle language-based strings. That means for instance
-that plural nouns are the same as singular nouns. This system only checks if
-your search word exists in the result. That means that if you search `B 12 Zug`,
-`B 120 Zug` has the same weight because the system only see that the `12` exists
-in each case. To use this system, your request must contains the
-parameter ``rank_system=ts_rank_cd``.
-
+   CREATE EXTENSION pg_trgm;
 
 Using the unaccent extension
 ----------------------------
 
 By the default the full-text search is accent-sensitive.
 To make it accent-insensitive Postgres's
-`unaccent extension <https://www.postgresql.org/docs/9.0/static/unaccent.html>`_
+`unaccent extension <http://www.postgresql.org/docs/9.0/static/unaccent.html>`_
 can be used.
 
 First connect to the database:
@@ -259,7 +243,7 @@ For that we need the Postgres unaccent extension and dictionary:
     CREATE EXTENSION unaccent;
 
 Insert the unaccent dictionary into a text search configuration
-(`Documentation <https://www.postgresql.org/docs/9.1/static/sql-altertsconfig.html>`_):
+(`Documentation <http://www.postgresql.org/docs/9.1/static/sql-altertsconfig.html>`_):
 
 .. code:: sql
 
@@ -279,7 +263,7 @@ instead of 'french'. For example:
       (ST_GeomFromText('POINT(2660000 1140000)', 21781), 'Layer group',
        'Accent text to display (éàè)', 't', NULL, to_tsvector('fr', 'Accent text to search (éàè)'));
 
-And define the configuration in the ``vars.yaml`` file:
+And define the configuration in the ``vars_<project>.yaml`` file:
 
 .. code:: yaml
 
@@ -287,36 +271,7 @@ And define the configuration in the ``vars.yaml`` file:
         languages:
             fr: fr
 
-``fr: fr`` is a link between the pyramid language and the text search configuration, by default it is
-``fr: french`` because the default french text search configuration is named 'french'.
-
-
-Synonym and Thesaurus Dictionary
---------------------------------
-
-You may wish to avoid using the Synonym and Thesaurus dictionaries, because when these are used,
-a word like 'alignement' is simplified as 'align':
-
-.. code:: sql
-
-   SELECT to_tsvector('fr', 'alignement');
-   'align':1
-
-Thus, 'alignem' does not match in the search, which might be considered unexpected behavior by users:
-
-.. code:: sql
-
-   SELECT to_tsquery('fr', 'alignem:*');
-   'alignem':*
-
-The change this behavior, you can create and use a new dictionary named `french_alt`:
-
-.. code:: sql
-
-   CREATE TEXT SEARCH DICTIONARY french_alt (TEMPLATE = pg_catalog.simple);
-   ALTER TEXT SEARCH DICTIONARY french_alt (STOPWORDS = french);
-   ALTER TEXT SEARCH CONFIGURATION fr ALTER MAPPING FOR asciiword WITH french_alt;
-
-.. note::
-
-   We keep the stop words to remove the French short words.
+``fr: fr`` is a link between the pyramid language and
+the text search configuration, by default the it is
+``fr: french`` because the default french text search
+configuration is named 'french'.
