@@ -301,6 +301,8 @@ vars:
       - name: legendRule
       - name: legendImage
         type: url
+      - name: hiDPILegendImages
+        type: json
       - name: iconUrl
         type: url
       - name: metadataUrl
