@@ -230,8 +230,6 @@ update_paths:
   - interfaces_config.mobile.constants
   - interfaces_config.mobile_alt.constants
   - interfaces_config.iframe_api.constants
-  - interfaces_config.oeview.constants
-  - interfaces_config.oeview.routes
   - interfaces_config.oeedit.routes
   - interfaces_theme
   - resourceproxy

@@ -31,18 +31,14 @@ no_diff:
 extra:
   - geoportal/{{package}}_geoportal/static-ngeo/js/apps/desktop_alt\.html\.ejs
   - geoportal/{{package}}_geoportal/static-ngeo/js/apps/mobile_alt\.html\.ejs
-  - geoportal/{{package}}_geoportal/static-ngeo/js/apps/oeview\.html\.ejs
   - geoportal/{{package}}_geoportal/static-ngeo/js/apps/oeedit\.html\.ejs
   - geoportal/{{package}}_geoportal/static-ngeo/js/apps/Controllerdesktop_alt\.js
   - geoportal/{{package}}_geoportal/static-ngeo/js/apps/Controllermobile_alt\.js
-  - geoportal/{{package}}_geoportal/static-ngeo/js/apps/Controlleroeview\.js
   - geoportal/{{package}}_geoportal/static-ngeo/js/apps/Controlleroeedit\.js
   - geoportal/{{package}}_geoportal/static-ngeo/js/apps/sass/desktop_alt\.scss
   - geoportal/{{package}}_geoportal/static-ngeo/js/apps/sass/vars_desktop_alt\.scss
   - geoportal/{{package}}_geoportal/static-ngeo/js/apps/sass/mobile_alt\.scss
   - geoportal/{{package}}_geoportal/static-ngeo/js/apps/sass/vars_mobile_alt\.scss
-  - geoportal/{{package}}_geoportal/static-ngeo/js/apps/sass/oeview\.scss
-  - geoportal/{{package}}_geoportal/static-ngeo/js/apps/sass/vars_oeview\.scss
   - geoportal/{{package}}_geoportal/static-ngeo/js/apps/sass/oeedit\.scss
   - geoportal/{{package}}_geoportal/static-ngeo/js/apps/sass/vars_oeedit\.scss
 
