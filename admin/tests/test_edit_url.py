@@ -13,7 +13,7 @@ def edit_url_test_data(dbsession, transact):
 
     from c2cgeoportal_commons.models.main import \
         LayerWMTS, RestrictionArea, Interface, Role, \
-        LayerWMS, LayerV1, LayerGroup, Theme, OGCServer, Functionality
+        LayerWMS, LayerGroup, Theme, OGCServer, Functionality
 
     restrictionareas = [RestrictionArea(name='restrictionarea_{}'.format(i))
                         for i in range(0, 5)]
@@ -54,13 +54,6 @@ def edit_url_test_data(dbsession, transact):
         dbsession.add(layer_wms)
         layers_wms.append(layer_wms)
 
-    layers_v1 = []
-    for i in range(0, 5):
-        layer_v1 = LayerV1(name='layer_v1_{}'.format(i))
-        layer_v1.image_type = 'image/jpeg'
-        dbsession.add(layer_v1)
-        layers_v1.append(layer_v1)
-
     roles = []
     for i in range(0, 5):
         role = Role('secretary_' + str(i))
@@ -89,7 +82,6 @@ def edit_url_test_data(dbsession, transact):
         'layers_wms': layers_wms,
         'restrictionareas': restrictionareas,
         'interfaces': interfaces,
-        'layers_v1': layers_v1,
         'themes': [theme],
         'group': group,
         'roles': roles
@@ -117,11 +109,6 @@ class TestUrlEdit(AbstractViewsTests):
 
     def test_layer_wmts_edit(self, edit_url_test_data, test_app):
         resp = self._get(test_app, 'layers_wmts', edit_url_test_data['layers_wmts'][0].id)
-        self._check_link(test_app, resp, 'restrictionareas', 'restriction_areas', 200)
-        self._check_link(test_app, resp, 'interfaces', 'interfaces', 200)
-
-    def test_layer_v1_edit(self, edit_url_test_data, test_app):
-        resp = self._get(test_app, 'layers_v1', edit_url_test_data['layers_v1'][0].id)
         self._check_link(test_app, resp, 'restrictionareas', 'restriction_areas', 200)
         self._check_link(test_app, resp, 'interfaces', 'interfaces', 200)
 

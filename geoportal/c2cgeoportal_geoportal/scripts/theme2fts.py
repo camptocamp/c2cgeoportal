@@ -223,11 +223,6 @@ class Import:
         return False
 
     def _add_layer(self, layer, interface, role):
-        from c2cgeoportal_commons.models.main import LayerV1
-
-        if isinstance(layer, LayerV1):
-            return False
-
         if role is None:
             fill = layer.public and interface in layer.interfaces
         else:

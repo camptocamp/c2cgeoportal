@@ -286,11 +286,7 @@ class Entry:
         identified to by ``role_id``.
         """
 
-        query = models.DBSession.query(main.Layer.name).filter(
-            main.Layer.item_type.notin_(["layerv1"])
-        )
-
-        query = query.filter(main.Layer.public.is_(True))
+        query = models.DBSession.query(main.Layer.name).filter(main.Layer.public.is_(True))
 
         if interface is not None:
             query = query.join(main.Layer.interfaces)
@@ -620,8 +616,6 @@ class Entry:
                 errors |= gp_errors
                 if gp is not None:
                     children.append(gp)
-            elif isinstance(tree_item, main.LayerV1):
-                pass
             elif self._layer_included(tree_item):
                 if tree_item.name in layers:
                     layers_name.append(tree_item.name)

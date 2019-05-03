@@ -14,13 +14,7 @@ def layertree_test_data(dbsession, transact):
     del transact
 
     from c2cgeoportal_commons.models.main import \
-        LayerGroup, LayergroupTreeitem, LayerV1, LayerWMS, LayerWMTS, OGCServer, Theme
-
-    layers_v1 = []
-    for i in range(0, 10):
-        layer_v1 = LayerV1(name='layer_v1_{}'.format(i))
-        layers_v1.append(layer_v1)
-        dbsession.add(layer_v1)
+        LayerGroup, LayergroupTreeitem, LayerWMS, LayerWMTS, OGCServer, Theme
 
     layers_wms = []
     ogc_server = OGCServer(name='ogc_server')
@@ -45,7 +39,7 @@ def layertree_test_data(dbsession, transact):
         groups.append(group)
         dbsession.add(group)
 
-        for j, items in enumerate((layers_v1, layers_wms, layers_wmts)):
+        for j, items in enumerate((layers_wms, layers_wmts)):
             dbsession.add(LayergroupTreeitem(group=group, item=items[i], ordering=j))
 
     # a group in a group
@@ -71,7 +65,6 @@ def layertree_test_data(dbsession, transact):
     yield({
         'themes': themes,
         'groups': groups,
-        'layers_v1': layers_v1,
         'layers_wms': layers_wms,
         'layers_wmts': layers_wmts,
         'ogc_servers': [ogc_server]
@@ -196,14 +189,12 @@ class TestLayerTreeView(AbstractViewsTests):
                         '/children?group_id={0}&path=_{1}_{0}'.format(group.id, theme.id),
                         status=200)
         nodes = resp.json
-        assert 3 == len(nodes)
+        assert len(nodes) == 2
 
-        layer_v1 = layertree_test_data['layers_v1'][0]
         layer_wms = layertree_test_data['layers_wms'][0]
         layer_wmts = layertree_test_data['layers_wmts'][0]
 
         for table, item_id in (
-            ('layers_v1', layer_v1.id),
             ('layers_wms', layer_wms.id),
             ('layers_wmts', layer_wmts.id),
         ):
@@ -212,11 +203,10 @@ class TestLayerTreeView(AbstractViewsTests):
         for group_id, item_id in (
             (group.id, layer_wmts.id),
             (group.id, layer_wms.id),
-            (group.id, layer_v1.id),
         ):
             self.check_unlink_action(test_app, nodes, group_id, item_id)
 
-        for item in [layer_v1, layer_wms, layer_wmts]:
+        for item in [layer_wms, layer_wmts]:
             self.check_translation(nodes, item)
 
     def test_unlink(self, test_app, layertree_test_data, dbsession):
@@ -239,7 +229,6 @@ class TestLayerTreeSelenium():
 
         themes = layertree_test_data['themes']
         groups = layertree_test_data['groups']
-        layers_v1 = layertree_test_data['layers_v1']
         layers_wms = layertree_test_data['layers_wms']
         layers_wmts = layertree_test_data['layers_wmts']
 
@@ -251,19 +240,18 @@ class TestLayerTreeSelenium():
             (
                 groups[0].id,
                 layers_wmts[0].id,
-                '_{}_{}_{}'.format(themes[0].id, groups[0].id, layers_wmts[0].id)),
+                '_{}_{}_{}'.format(themes[0].id, groups[0].id, layers_wmts[0].id)
+            ),
             (
                 groups[0].id,
                 layers_wms[0].id,
-                '_{}_{}_{}'.format(themes[0].id, groups[0].id, layers_wms[0].id)),
-            (
-                groups[0].id,
-                layers_v1[0].id,
-                '_{}_{}_{}'.format(themes[0].id, groups[0].id, layers_v1[0].id)),
+                '_{}_{}_{}'.format(themes[0].id, groups[0].id, layers_wms[0].id)
+            ),
             (
                 themes[0].id,
                 groups[0].id,
-                '_{}_{}'.format(themes[0].id, groups[0].id)),
+                '_{}_{}'.format(themes[0].id, groups[0].id)
+            ),
         ):
             action_el = page.find_item_action(path, 'unlink', 10)
             expected_url = '{}/layertree/unlink/{}/{}'.format(selenium_app, group_id, item_id)
@@ -287,11 +275,10 @@ class TestLayerTreeSelenium():
     @pytest.mark.selenium
     @pytest.mark.usefixtures('selenium', 'selenium_app')
     def test_delete(self, dbsession, selenium, selenium_app, layertree_test_data):
-        from c2cgeoportal_commons.models.main import LayerWMS, LayerV1, LayerWMTS, LayerGroup
+        from c2cgeoportal_commons.models.main import LayerWMS, LayerWMTS, LayerGroup
 
         themes = layertree_test_data['themes']
         groups = layertree_test_data['groups']
-        layers_v1 = layertree_test_data['layers_v1']
         layers_wms = layertree_test_data['layers_wms']
         layers_wmts = layertree_test_data['layers_wmts']
 
@@ -302,16 +289,16 @@ class TestLayerTreeSelenium():
         for item_id, path, model in (
             (
                 layers_wmts[1].id,
-                '_{}_{}_{}'.format(themes[1].id, groups[1].id, layers_wmts[1].id), LayerWMTS),
+                '_{}_{}_{}'.format(themes[1].id, groups[1].id, layers_wmts[1].id), LayerWMTS
+            ),
             (
                 layers_wms[1].id,
-                '_{}_{}_{}'.format(themes[1].id, groups[1].id, layers_wms[1].id), LayerWMS),
-            (
-                layers_v1[1].id,
-                '_{}_{}_{}'.format(themes[1].id, groups[1].id, layers_v1[1].id), LayerV1),
+                '_{}_{}_{}'.format(themes[1].id, groups[1].id, layers_wms[1].id), LayerWMS
+            ),
             (
                 groups[1].id,
-                '_{}_{}'.format(themes[1].id, groups[1].id), LayerGroup),
+                '_{}_{}'.format(themes[1].id, groups[1].id), LayerGroup
+            ),
         ):
             action_el = page.find_item_action(path, 'delete', 10)
             expected_url = '{}/layertree/delete/{}'.format(selenium_app, item_id)

@@ -47,7 +47,7 @@ def includeme(config):
                      pregenerator=table_pregenerator)
 
     from c2cgeoportal_commons.models.main import (
-        Role, LayerWMS, LayerWMTS, Theme, LayerGroup, LayerV1, Interface, OGCServer,
+        Role, LayerWMS, LayerWMTS, Theme, LayerGroup, Interface, OGCServer,
         Functionality, RestrictionArea)
     from c2cgeoportal_commons.models.static import User
 
@@ -56,7 +56,6 @@ def includeme(config):
         ('layer_groups', LayerGroup),
         ('layers_wms', LayerWMS),
         ('layers_wmts', LayerWMTS),
-        ('layers_v1', LayerV1),
         ('ogc_servers', OGCServer),
         ('restriction_areas', RestrictionArea),
         ('users', User),

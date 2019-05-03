@@ -12,7 +12,7 @@ def metadatas_test_data(dbsession, transact):
     del transact
 
     from c2cgeoportal_commons.models.main import \
-        LayerWMS, LayerWMTS, LayerV1, OGCServer, Metadata, Theme, LayerGroup
+        LayerWMS, LayerWMTS, OGCServer, Metadata, Theme, LayerGroup
 
     ogc_server = OGCServer(name='ogc_server')
 
@@ -42,9 +42,6 @@ def metadatas_test_data(dbsession, transact):
     layer_wmts.layer = 'wmts_layer'
     dbsession.add(layer_wmts)
 
-    layer_v1 = LayerV1(name='layer_v1')
-    dbsession.add(layer_v1)
-
     theme = Theme(name='theme')
     dbsession.add(theme)
 
@@ -57,7 +54,6 @@ def metadatas_test_data(dbsession, transact):
         'ogc_server': ogc_server,
         'layer_wms': layer_wms,
         'layer_wmts': layer_wmts,
-        'layer_v1': layer_v1,
         'theme': theme,
         'group': group
     }
@@ -269,9 +265,6 @@ class TestMetadatasView(AbstractViewsTests):
 
     def test_layer_wmts_metadatas(self, metadatas_test_data, test_app):
         self._test_edit_treeitem('layers_wmts', metadatas_test_data['layer_wmts'], test_app)
-
-    def test_layer_v1_metadatas(self, metadatas_test_data, test_app):
-        self._test_edit_treeitem('layers_v1', metadatas_test_data['layer_v1'], test_app)
 
     def test_theme_metadatas(self, metadatas_test_data, test_app):
         self._test_edit_treeitem('themes', metadatas_test_data['theme'], test_app)

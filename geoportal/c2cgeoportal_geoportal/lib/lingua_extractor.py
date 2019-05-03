@@ -31,6 +31,7 @@
 import subprocess
 import os
 import yaml
+import json
 import re
 import traceback
 import requests
@@ -369,6 +370,14 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
                         messages.append(Message(
                             None, ln, None, [], "", "",
                             ("fts", ln.encode("ascii", errors="replace"))
+                        ))
+
+                for ln, in DBSession.query(FullTextSearch.actions).distinct().all():
+                    if ln is not None and ln != "":
+                        action = json.loads(ln)
+                        messages.append(Message(
+                            None, action['data'], None, [], "", "",
+                            ("fts", action['data'].encode("ascii", errors="replace"))
                         ))
             except ProgrammingError as e:
                 print(colorize(

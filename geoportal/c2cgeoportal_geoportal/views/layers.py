@@ -448,7 +448,7 @@ class Layers:
             )
         values = self.query_enumerate_attribute_values(dbsession, layerinfos, fieldname)
         enum = {
-            "items": [{"label": value[0], "value": value[0]} for value in values]
+            "items": [{"value": value[0]} for value in values]
         }
         return enum
 

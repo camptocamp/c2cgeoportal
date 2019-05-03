@@ -35,7 +35,7 @@ from unittest import TestCase
 from tests.functional import (  # noqa
     teardown_common as teardown_module,
     setup_common as setup_module,
-    create_dummy_request, cleanup_db
+    create_dummy_request, cleanup_db, create_default_ogcserver,
 )
 
 
@@ -74,6 +74,9 @@ class TestLayers(TestCase):
         DBSession.add(self.user)
         DBSession.add(self.role)
         DBSession.add(self.main)
+
+        create_default_ogcserver()
+
         transaction.commit()
 
     def teardown_method(self, _):
@@ -98,7 +101,7 @@ class TestLayers(TestCase):
         from sqlalchemy.ext.declarative import declarative_base
         from geoalchemy2 import Geometry, WKTElement
         from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import LayerV1, RestrictionArea
+        from c2cgeoportal_commons.models.main import RestrictionArea, LayerWMS, OGCServer
 
         if self._tables is None:
             self._tables = []
@@ -184,9 +187,11 @@ class TestLayers(TestCase):
             )
             connection.execute(ins)
 
-        layer = LayerV1()
+        ogc_server = DBSession.query(OGCServer).filter(OGCServer.name == "__test_ogc_server").one()
+        layer = LayerWMS()
         layer.id = id
         layer.name = str(id)
+        layer.ogc_server = ogc_server
         layer.geo_table = tablename
         layer.public = public
         layer.interface = [self.main]
@@ -900,10 +905,8 @@ class TestLayers(TestCase):
         response = layers.enumerate_attribute_values()
         self.assertEqual(response, {
             "items": [{
-                "label": "bar",
                 "value": "bar"
             }, {
-                "label": "foo",
                 "value": "foo"
             }]
         })
@@ -938,16 +941,12 @@ class TestLayers(TestCase):
         response = layers.enumerate_attribute_values()
         self.assertEqual(response, {
             "items": [{
-                "label": "aaa",
                 "value": "aaa"
             }, {
-                "label": "bar",
                 "value": "bar"
             }, {
-                "label": "bbb",
                 "value": "bbb"
             }, {
-                "label": "foo",
                 "value": "foo"
             }]
         })
