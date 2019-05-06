@@ -47,7 +47,7 @@ Pygments==2.3.1  # doc
 pylint==2.3.1  # lint
 Pympler==0.7  # geoportal, memory view
 pyproj==1.9.6  # admin, other?, rq.filter: < 2.0.0
-pyramid==1.9.4  # rq.filter: <=1.9.99
+pyramid==1.10.4  # geoportal
 pyramid_debugtoolbar==4.5  # geoportal
 pyramid-jinja2==2.8  # admin
 pyramid_mako==1.0.2  # geoportal
