@@ -1,9 +1,9 @@
 alabaster==0.7.12  # Doc theme
 alembic==1.0.10  # geoportal
-awscli==1.16.154  # Work with Object storage
+awscli==1.16.155  # Work with Object storage
 Babel==2.6.0  # i18n
 beautifulsoup4==4.6.3  # admin tests, rq.filter: <4.7
-boto3==1.9.144  # Tile generation
+boto3==1.9.145  # Tile generation
 bottle==0.12.16  # geoportal
 c2c.template==2.1.0  # geoportal
 c2cgeoform==2.0.dev20190413  # commons
@@ -43,7 +43,7 @@ polib==1.1.0  # i18n
 psycopg2-binary==2.8.2  # geoportal
 pycryptodome==3.8.1  # geoportal
 pyflakes==2.1.1  # lint, flake8
-Pygments==2.3.1  # doc
+Pygments==2.4.0  # doc
 pylint==2.3.1  # lint
 Pympler==0.7  # geoportal, memory view
 pyproj==1.9.6  # admin, other?, rq.filter: < 2.0.0
