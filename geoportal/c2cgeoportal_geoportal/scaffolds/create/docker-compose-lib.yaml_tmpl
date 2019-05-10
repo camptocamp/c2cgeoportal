@@ -251,6 +251,7 @@ services:
       - --debug
       - --watch
       - --progress
+      - --no-inline
     environment:
       - VISIBLE_ENTRY_POINT
       - VISIBLE_WEB_HOST
