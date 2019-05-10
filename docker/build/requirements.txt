@@ -29,7 +29,7 @@ iso8601==0.1.11  # deform, by default the version 0.1.12 is installed and is inc
 isodate==0.6.0  # geoportal
 Jinja2==2.10.1  # c2c.template
 lingua==4.13  # i18n
-Mako==1.0.9  # geoportal
+Mako==1.0.10  # geoportal
 mccabe==0.6.1  # lint
 mypy==0.701  # lint
 OWSLib==0.17.1  # geoportal
