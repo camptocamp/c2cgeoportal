@@ -654,7 +654,6 @@ $(APP_OUTPUT_DIR)/images/: /usr/lib/node_modules/jquery-ui/themes/base/images
 	(cd geoportal; INTERFACE=$* webpack $(WEBPACK_ARGS))
 ifeq ($(DOCKER), TRUE)
 	mv $(APP_OUTPUT_DIR)/$*.html $(APP_OUTPUT_DIR)/$*.html.tmpl
-	ls -1 $(APP_OUTPUT_DIR)/$*.*.js|while read file; do mv $${file} $${file}.tmpl; done
 ifeq ($(NODE_ENV), development)
 	mv $(APP_OUTPUT_DIR)/$*.css $(APP_OUTPUT_DIR)/$*.css.tmpl
 else
