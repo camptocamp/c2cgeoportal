@@ -41,6 +41,9 @@ We recommend to use a `vrt <https://www.gdal.org/gdal_vrttut.html>`_ file built 
 ``round`` specifies how the result values should be rounded.
 For instance '1': round to the unit, '0.01': round to the hundredth, etc.
 
+``nodata`` specifies the nodata value.
+By default the nodata value is directly read from the source.
+
 The application viewer should be configured with one (or more) of the
 ``ContextualData`` and the ``Profile`` ``CGXP`` plugins for
 the DEM data to be viewable in the web application.
