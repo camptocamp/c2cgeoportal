@@ -25,7 +25,7 @@ subprocess.check_call([
 images = ('config', 'geoportal')
 for image in images:
     full_image = 'camptocamp/{}-{}'.format(os.environ['PROJECT'], image)
-    src_image = '{}:latest'.format(full_image)
+    src_image = full_image
     dest_image = '{}:{}'.format(full_image, version)
     subprocess.check_call(['docker', 'tag', src_image, dest_image])
     subprocess.check_call(['docker', 'push', dest_image])

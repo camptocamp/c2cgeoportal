@@ -1,0 +1,81 @@
+#!/bin/bash -e
+
+echo docker login ***
+docker login --username ${DOCKER_USERNAME} --password ${DOCKER_PASSWORD}
+
+set -x
+
+TAG=${CIRCLE_TAG}
+LAST_TAG=`git describe --abbrev=0 --tags`
+COMMIT=FALSE
+VERSION_QGIS=FALSE
+
+if [[ ${TAG} =~ ^[0-9]\.[0-9]\.[0-9]$ ]]
+then
+    VERSION_QGIS=${TAG}
+    ci/get-minor --reset
+    COMMIT=TRUE
+else
+    if [[ ${CIRCLE_BRANCH} =~ ^[0-9]\.[0-9]$ ]]
+    then
+        VERSION_QGIS=${CIRCLE_BRANCH}
+        TAG=${LAST_TAG}.$(ci/get-minor)
+        COMMIT=TRUE
+    fi
+fi
+
+if [ ${COMMIT} == TRUE ]
+then
+    git add ci/ci.yaml
+    git commit -m "[skip ci] Update the minor version"
+    git push push ${CIRCLE_BRANCH}
+fi
+
+DEPLOY_PIP=TRUE
+# Get the version to be published
+if [ "${TAG}" != "" ]
+then
+    VERSION=${TAG}
+elif [ "${CIRCLE_BRANCH}" != "${MAIN_BRANCH}" ]
+then
+    VERSION=${CIRCLE_BRANCH//\//_}
+    DEPLOY_PIP=FALSE
+else
+    VERSION=${MAJOR_VERSION}
+fi
+export VERSION
+if [ ${VERSION_QGIS} == FALSE ]
+then
+    VERSION_QGIS=${VERSION}
+fi
+
+# Publish the GeoMapFish images
+for IMAGE in geomapfish geomapfish-build geomapfish-scaffolds geomapfish-geoportal
+do
+    docker tag camptocamp/${IMAGE} camptocamp/${IMAGE}:${VERSION}
+    docker push camptocamp/${IMAGE}:${VERSION}
+done
+
+# Publish the GeoMapFish QGIS server images
+for QGIS_VERSION in 3.4 3.6 master
+do
+    docker tag camptocamp/geomapfish-qgisserver:gmf${MAJOR_VERSION}-qgis${QGIS_VERSION} \
+        camptocamp/geomapfish-qgisserver:gmf${VERSION_QGIS}-qgis${QGIS_VERSION}
+    docker push camptocamp/geomapfish-qgisserver:gmf${VERSION_QGIS}-qgis${QGIS_VERSION}
+done
+
+if [ ${DEPLOY_PIP} == TRUE ]
+then
+    # Publish the Python eggs
+    for PKG in commons geoportal admin
+    do
+        export PKG
+        ci/publish-pypi
+    done
+fi
+
+# Cleanup
+if [ -e ~/.docker ]
+then
+    rm --recursive --force ~/.docker
+fi

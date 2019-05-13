@@ -322,6 +322,8 @@ class C2cUpgradeTool:
         shutil.copyfile(os.path.join(project_path, ".upgrade.yaml"), ".upgrade.yaml")
         for upgrade_file in self.get_upgrade("upgrade_files"):
             action = upgrade_file['action']
+            if action == 'remove':
+                self.files_to_remove(upgrade_file, prefix="CONST_create_template")
             if action == 'move':
                 self.files_to_move(upgrade_file, prefix="CONST_create_template", force=True)
 
@@ -348,11 +350,6 @@ class C2cUpgradeTool:
 
         check_call(["git", "add", "--all", "CONST_create_template/"])
         check_call(["git", "clean", "-Xf", "CONST_create_template/"])
-        shutil.copyfile("project.yaml", "/tmp/project.yaml")
-        try:
-            check_call(["make", "--makefile=" + self.options.makefile, "clean-all"])
-        finally:
-            shutil.copyfile("/tmp/project.yaml", "project.yaml")
         self.run_step(step + 1)
 
     @Step(4)
@@ -391,33 +388,34 @@ class C2cUpgradeTool:
         else:
             self.run_step(step + 1)
 
-    def files_to_remove(self, element):
-        file_ = element["file"]
-        if os.path.exists(file_):
-            managed = False
-            for pattern in self.project["managed_files"]:
-                if re.match(pattern + '$', file_):
-                    print(colorize(
-                        "The file '{}' is no longer used, but not deleted "
-                        "because it is in the managed_files as '{}'.".format(file_, pattern),
-                        RED
-                    ))
-                    managed = True
-            if not managed:
-                print(colorize("The file '{}' is removed.".format(file_), GREEN))
-                if "version" in element and "from" in element:
-                    print("Was used in version {}, to be removed from version {}.".format(
-                        element["from"], element["version"]
-                    ))
-                if os.path.isdir(file_):
-                    shutil.rmtree(file_)
-                else:
-                    os.remove(file_)
+    def files_to_remove(self, element, prefix=""):
+        for path in element["paths"]:
+            file_ = os.path.join(prefix, path.format(package=self.project["project_package"]))
+            if os.path.exists(file_):
+                managed = False
+                for pattern in self.project["managed_files"]:
+                    if re.match(pattern + '$', file_):
+                        print(colorize(
+                            "The file '{}' is no longer used, but not deleted "
+                            "because it is in the managed_files as '{}'.".format(file_, pattern),
+                            RED
+                        ))
+                        managed = True
+                if not managed:
+                    print(colorize("The file '{}' is removed.".format(file_), GREEN))
+                    if "version" in element and "from" in element:
+                        print("Was used in version {}, to be removed from version {}.".format(
+                            element["from"], element["version"]
+                        ))
+                    if os.path.isdir(file_):
+                        shutil.rmtree(file_)
+                    else:
+                        os.remove(file_)
 
     def files_to_move(self, element, prefix="", force=False):
         task_to_do = False
-        src = os.path.join(prefix, element["from"])
-        dst = os.path.join(prefix, element["to"])
+        src = os.path.join(prefix, element["from"].format(package=self.project["project_package"]))
+        dst = os.path.join(prefix, element["to"].format(package=self.project["project_package"]))
         if os.path.exists(src):
             managed = False
             type_ = "directory" if os.path.isdir(src) else "file"
@@ -644,10 +642,9 @@ class C2cUpgradeTool:
         if os.path.isfile("create.diff"):
             os.unlink("create.diff")
 
-        check_call(["make", "--makefile=" + self.options.new_makefile, "build"])
-
         message = [
             "The upgrade is nearly done, now you should:",
+            "- Build your application."
             "- To upgrade the database run `./docker-compose-run alembic --name=main "
             "--config=geoportal/alembic.ini upgrade head`",
             "- Run `DOCKER_TAG=unexisting docker-compose pull --ignore-pull-failures && "

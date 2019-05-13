@@ -29,15 +29,6 @@ services:
   #   volumes_from:
   #     - config:ro
 
-  # Use configuration to be on https (comment to disable it)
-  front:
-    command:
-      - haproxy
-      - -f
-      - /etc/haproxy_dev
-    ports:
-      - 8484:443
-
   # For Javascript project development.
   # The debug application will be availavble at ``https://<host>/<entry_point>/dev/<interface>.html``.
   webpack_dev_server:

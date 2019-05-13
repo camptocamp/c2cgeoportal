@@ -29,8 +29,6 @@ default is:
 
 .. code:: makefile
 
-    DEVELOPMENT = TRUE
-
     include <package>.mk
 
 
@@ -78,8 +76,6 @@ Makefile config variables
 The following variables may be set in the makefiles:
 
 * ``CONFIG_VARS``: The list of parameters read from the project YAML configuration file.
-* ``DEVELOPMENT``: If ``TRUE`` the ``CSS`` and ``JS`` files are not minified and the
-    ``development.ini`` pyramid config file is used, default is ``FALSE``.
 * ``DISABLE_BUILD_RULES``: List of rules we want to disable, default is empty.
 * ``LANGUAGES``: List of available languages, default is ``en fr de``.
 * ``NGEO_INTERFACES``: List of ngeo interfaces, default is ``mobile desktop``.

@@ -1,0 +1,48 @@
+COMPOSE_PROJECT_NAME={{package}}
+DOCKER_PORT=8484
+DOCKER_BASE=camptocamp/{{package}}
+DOCKER_TAG=latest
+VISIBLE_WEB_HOST=localhost
+VISIBLE_WEB_PROTOCOL=https
+VISIBLE_ENTRY_POINT=/
+PGHOST=db
+PGHOST_SLAVE=db
+PGPORT=5432
+PGUSER=www-data
+PGPASSWORD=www-data
+PGDATABASE={{package}}
+PGSCHEMA=main
+PGSCHEMA_STATIC=main_static
+AUTHTKT_TIMEOUT=86400
+AUTHTKT_SECRET=change_me
+AUTHTKT_COOKIENAME=auth_tkt_{{package}}
+GEOPORTAL_INTERNAL_URL=http://geoportal:8080
+TILECLOUDCHAIN_INTERNAL_URL=http://tilecloudchain:8080
+MAPCACHE_URL=http://mapcache:8080/mapcache/
+MAPSERVER_URL=http://mapserver:8080/
+QGISSERVER_URL=http://qgisserver:8080/
+MEMCACHED_HOST=memcached
+MEMCACHED_PORT=11211
+REDIS_HOST=redis
+REDIS_PORT=6379
+TILEGENERATION_SQS_QUEUE=<queue_name>
+GUNICORN_PARAMS=--bind=:8080 --worker-class=gthread --threads=10 --workers=5 --timeout=60 --max-requests=1000 --max-requests-jitter=100
+TINYOWS_URL=http://tinyows:8080/
+MAPSERVER_URL=http://mapserver:8080/
+# Use the mutualised print, ask Camptocamp to configure your project.
+PRINT_URL=https://mutualized-print.paas-ch-3.camptocamp.com/print/{{package}}/
+DEVSERVER_HOST=webpack_dev_server:8080
+C2C_REDIS_URL=redis://redis:6379
+PGOPTIONS=-c statement_timeout=30000
+CATALINA_OPTS=-Xmx1024m
+C2C_BROADCAST_PREFIX=broadcast_geoportal_
+CPL_VSIL_CURL_USE_CACHE=TRUE
+CPL_VSIL_CURL_CACHE_SIZE=128000000
+CPL_VSIL_CURL_USE_HEAD=FALSE
+GDAL_DISABLE_READDIR_ON_OPEN=TRUE
+# For production
+#FRONT_INNER_PORT=80
+#FRONT_CONFIG=haproxy
+# For devlopment (front in https)
+FRONT_INNER_PORT=443
+FRONT_CONFIG=haproxy_dev

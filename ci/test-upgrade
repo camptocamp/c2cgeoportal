@@ -1,0 +1,120 @@
+#!/bin/bash -ex
+
+WORKSPACE=$2
+PCREATE_ARGS="--ignore-conflicting-name --overwrite --package-name testgeomapfish"
+
+# $1: folder
+# $2: scaffold
+# $3: version
+function pcreate240 {
+    wget https://raw.githubusercontent.com/camptocamp/c2cgeoportal/2.4/docker-run
+    chmod +x docker-run
+    ./docker-run --env=SRID=21781 --env=APACHE_VHOST=test \
+        --env=EXTENT=489246.36,78873.44,837119.76,296543.14 --image=camptocamp/geomapfish-build \
+        --version=$3 --share=$1 pcreate --scaffold=$2 $1/testgeomapfish ${PCREATE_ARGS}
+}
+
+# $1: folder
+# $2: scaffold
+# $3: version
+function pcreate {
+    if [ $3 == '2.4.0' ]
+    then
+        pcreate240 $1 $2 $3
+    else
+        docker run --rm --env=SRID=21781 --env=EXTENT=489246.36,78873.44,837119.76,296543.14 \
+            --volume=$1/testgeomapfish:/src/testgeomapfish camptocamp/geomapfish-scaffolds:$3 \
+            run $(id -u) $(id -g) pcreate --scaffold=$2 /src/testgeomapfish ${PCREATE_ARGS}
+    fi
+}
+
+# $1: folder
+# $2: version
+function create {
+    rm --recursive --force $1
+    mkdir --parent $1
+    pcreate $1 c2cgeoportal_create $2
+    pcreate $1 c2cgeoportal_update $2
+    cd $1/testgeomapfish
+    git init
+    git config user.email ci@camptocamp.com
+    git config user.name CI
+    git remote add origin . # add a fake remote
+    cd -
+    cd $1/testgeomapfish
+    git add --all
+    git commit --quiet --message="Initial commit"
+    git clean -fX
+    cd -
+}
+
+function printdiff {
+    ls -l .UPGRADE*
+    for f in $(ls -1 *.diff)
+    do
+        echo "--- $f ---"
+        cat "$f"
+    done
+}
+
+function run_c2cupgrade {
+    docker run --rm --volume=${PWD}:/src camptocamp/geomapfish-scaffolds \
+        run $(id -u) $(id -g) c2cupgrade $1 $2
+}
+
+# $1: version
+function upgrade {
+    cd ${WORKSPACE}/v$1/testgeomapfish
+    cp project.yaml.mako project.yaml || true
+    run_c2cupgrade --step 1
+    if [ -e .UPGRADE8 ]
+    then
+        # Workaround
+        git status > /dev/null
+        git apply --3way ngeo.diff
+        run_c2cupgrade --step 9
+    fi
+    if [ -e .UPGRADE9 ]
+    then
+        git apply --3way create.diff || true
+        for file in README.rst
+        do
+            cp CONST_create_template/${file} ${file}
+        done
+        run_c2cupgrade --step 10
+    fi
+    if [ ! -e .UPGRADE_SUCCESS ]
+    then
+        printdiff
+        echo "Fail to upgrade"
+        exit 1
+    fi
+    rm --recursive --force .UPGRADE*
+    cd -
+    find -type d -empty -delete
+    diff --recursive --exclude=.git --exclude=locale ${WORKSPACE}/ref ${WORKSPACE}/v$1
+}
+
+if [ "$1" = "init" ]
+then
+    rm --recursive --force ${WORKSPACE}/ref ${WORKSPACE}/v240  ${WORKSPACE}/v25
+    rm --recursive --force $(find c2cgeoportal/scaffolds -name __pycache__)
+    create ${WORKSPACE}/ref latest
+    create ${WORKSPACE}/v25 latest
+    create ${WORKSPACE}/v240 2.4.0
+fi
+
+if [ "$1" = "240" ]
+then
+    upgrade $1
+fi
+
+if [ "$1" = "25" ]
+then
+    upgrade $1
+fi
+
+if [ "$1" = "cleanup" ]
+then
+    rm --recursive --force ${WORKSPACE}/ref ${WORKSPACE}/v240 ${WORKSPACE}/v25
+fi

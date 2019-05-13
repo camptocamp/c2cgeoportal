@@ -1,0 +1,61 @@
+#!/bin/bash -ex
+
+TAG=$(ci/release-tag)
+docker build --target=builder --tag=camptocamp/geomapfish-build:${TAG} \
+    --build-arg=MAJOR_VERSION=${MAJOR_VERSION} .
+docker build --target=runner --tag=camptocamp/geomapfish:${TAG} \
+    --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=${TAG} .
+docker build --target=upgrader --tag=camptocamp/geomapfish-scaffolds:${TAG} \
+    --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=${TAG} .
+WORKSPACE=$1
+if [ $# -ge 2 ]
+then
+    PACKAGE=$2
+else
+    PACKAGE=testgeomapfishapp
+fi
+rm -rf ${WORKSPACE}/${PACKAGE}
+mkdir --parent ${WORKSPACE}/${PACKAGE}
+
+DOCKER_RUN_ARGS="--env=SRID=21781 --env=EXTENT=489246.36,78873.44,837119.76,296543.14 \
+    --volume=${WORKSPACE}/${PACKAGE}:/src/${PACKAGE} camptocamp/geomapfish-scaffolds:${TAG}"
+PCREATE_CMD="run $(id -u) $(id -g) pcreate --ignore-conflicting-name --overwrite \
+    --package-name ${PACKAGE} /src/${PACKAGE}"
+docker run --rm -ti ${DOCKER_RUN_ARGS} ${PCREATE_CMD} --scaffold=c2cgeoportal_create
+docker run --rm -ti ${DOCKER_RUN_ARGS} ${PCREATE_CMD} --scaffold=c2cgeoportal_update
+
+# Copy files for CI build and tests
+echo $#
+if [ $# -lt 2 ]
+then
+    ls -l ${WORKSPACE}/${PACKAGE}/
+    ls -l ${WORKSPACE}/${PACKAGE}/geoportal
+
+    mv ${WORKSPACE}/${PACKAGE}/geoportal/vars.yaml ${WORKSPACE}/${PACKAGE}/geoportal/vars_origin.yaml
+    cp ci/vars.yaml ${WORKSPACE}/${PACKAGE}/geoportal/
+    mkdir -p ${WORKSPACE}/${PACKAGE}/geoportal/ci
+    cp ci/waitwsgi ${WORKSPACE}/${PACKAGE}/geoportal/ci
+    cp ci/test-new-project ${WORKSPACE}/${PACKAGE}/geoportal/ci
+    mkdir -p ${WORKSPACE}/${PACKAGE}/ci
+    cp ci/run-dc-logs ${WORKSPACE}/${PACKAGE}/ci
+fi
+cd ${WORKSPACE}/${PACKAGE}
+
+# Init Git repository
+git init
+git config user.email ci@camptocamp.com
+git config user.name CI
+git remote add origin . # add a fake remote
+git add --all
+git commit --quiet --message='Initial commit'
+git clean -fX
+
+# Build
+if [ $# -lt 2 ]
+then
+    docker build --tag=camptocamp/${PACKAGE}-config .
+    docker build --tag=camptocamp/${PACKAGE}-geoportal --build-arg=GIT_HASH=$(git rev-parse HEAD) geoportal
+else
+    docker build --tag=camptocamp/${PACKAGE}-config:${TAG} .
+    docker build --tag=camptocamp/${PACKAGE}-geoportal:${TAG} --build-arg=GIT_HASH=$(git rev-parse HEAD) geoportal
+fi

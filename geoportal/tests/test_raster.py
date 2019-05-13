@@ -45,14 +45,14 @@ class TestRasterViews(TestCase):
         request.registry.settings = {
             "raster": {
                 "dem1": {
-                    "file": "/src/geoportal/tests/data/dem.shp",
+                    "file": "/app/c2cgeoportal/geoportal/tests/data/dem.shp",
                     "round": 0.1
                 },
                 "dem2": {
-                    "file": "/src/geoportal/tests/data/dem.shp",
+                    "file": "/app/c2cgeoportal/geoportal/tests/data/dem.shp",
                     "round": 1
                 },
-                "dem3": {"file": "/src/geoportal/tests/data/dem.shp"}
+                "dem3": {"file": "/app/c2cgeoportal/geoportal/tests/data/dem.shp"}
             }
         }
         raster = Raster(request)
@@ -90,7 +90,7 @@ class TestRasterViews(TestCase):
         request.registry.settings = {
             "raster": {
                 "dem5": {
-                    "file": "/src/geoportal/tests/data/dem4.bt",
+                    "file": "/app/c2cgeoportal/geoportal/tests/data/dem4.bt",
                     "type": "gdal",
                     "round": 0.01
                 }
@@ -133,7 +133,7 @@ class TestRasterViews(TestCase):
         request.registry.settings = {
             "raster": {
                 "dem6": {
-                    "file": "/src/geoportal/tests/data/dem4.vrt",
+                    "file": "/app/c2cgeoportal/geoportal/tests/data/dem4.vrt",
                     "type": "gdal",
                     "round": 0.01
                 }
@@ -149,7 +149,7 @@ class TestRasterViews(TestCase):
 
     def test_absolute_path(self):
         import fiona
-        with fiona.open("/src/geoportal/tests/data/dem_absolute.shp") as collection:
+        with fiona.open("/app/c2cgeoportal/geoportal/tests/data/dem_absolute.shp") as collection:
             tiles = [e for e in collection.filter(mask={
                 "type": "Point",
                 "coordinates": [548000, 216000],
@@ -168,8 +168,8 @@ class TestRasterViews(TestCase):
         request = DummyRequest()
         request.registry.settings = {
             "raster": {
-                "dem": {"file": "/src/geoportal/tests/data/dem.shp", "round": 4},
-                "dem2": {"file": "/src/geoportal/tests/data/dem.shp", "round": 4}
+                "dem": {"file": "/app/c2cgeoportal/geoportal/tests/data/dem.shp", "round": 4},
+                "dem2": {"file": "/app/c2cgeoportal/geoportal/tests/data/dem.shp", "round": 4}
             }
         }
         profile = Profile(request)

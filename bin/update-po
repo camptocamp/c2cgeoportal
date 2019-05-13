@@ -1,0 +1,21 @@
+#!/bin/bash -ex
+
+LANG=$1
+
+pot-create --config lingua-client.cfg \
+    --output ${PACKAGE}_geoportal/locale/${PACKAGE}_geoportal-client.pot \
+    $(find ${PACKAGE}_geoportal/static-ngeo/js/apps/ -type f -name '*.html.ejs' 2> /dev/null) \
+    $(find ${PACKAGE}_geoportal/static-ngeo/js/ -type f -name '*.js' 2> /dev/null) \
+    $(find ${PACKAGE}_geoportal/static-ngeo/js -type f -name '*.html' 2> /dev/null) \
+    config.yaml development.ini
+
+mkdir --parent ${PACKAGE}_geoportal/locale/${LANG}/LC_MESSAGES/
+[ -f ${PACKAGE}_geoportal/locale/${LANG}/LC_MESSAGES/${PACKAGE}_geoportal-client.po ] || \
+    msginit --no-translator --input=${PACKAGE}_geoportal/locale/${PACKAGE}_geoportal-client.pot \
+        --output-file=${PACKAGE}_geoportal/locale/${LANG}/LC_MESSAGES/${PACKAGE}_geoportal-client.po\
+        -l ${LANG}
+msgmerge --backup=none --update --sort-output --no-location \
+    ${PACKAGE}_geoportal/locale/${LANG}/LC_MESSAGES/${PACKAGE}_geoportal-client.po \
+    ${PACKAGE}_geoportal/locale/${PACKAGE}_geoportal-client.pot
+
+cat ${PACKAGE}_geoportal/locale/${LANG}/LC_MESSAGES/${PACKAGE}_geoportal-client.po

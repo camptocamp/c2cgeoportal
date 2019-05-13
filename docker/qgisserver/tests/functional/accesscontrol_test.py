@@ -17,7 +17,7 @@ from qgis.core import QgsProject, QgsVectorLayer
 from qgis.server import QgsServerInterface
 
 from geoalchemy2.shape import from_shape
-from shapely.geometry import box, Polygon, shape
+from shapely.geometry import box
 
 from geomapfish_qgisserver.accesscontrol import (
     Access,
@@ -59,7 +59,7 @@ def qgs_access_control_filter():
         def __init__(self, server_iface):
             self.server_iface = server_iface
 
-        def serverInterface(self):
+        def serverInterface(self):  # noqa
             return self.server_iface
 
     with patch.multiple('geomapfish_qgisserver.accesscontrol.QgsAccessControlFilter',
@@ -119,7 +119,6 @@ def test_data(dbsession):
     users = {user.username: user for user in (user1, user2)}
     dbsession.add_all(users.values())
 
-
     project = QgsProject.instance()
 
     def add_node(parent_node, node_def):
@@ -165,7 +164,6 @@ def test_data(dbsession):
         public_group, public_layer, private_layer1, private_layer2
     )}
     dbsession.add_all(layers.values())
-
 
     ra1 = RestrictionArea('restriction_area1',
                           layers=[private_layer1],
@@ -303,7 +301,8 @@ class TestOGCServerAccessControl():
                 'get_area with "{}", "{}" should return {}'.
                 format(user_name, layer_name, expected))
 
-    def test_layerPermissions(self, server_iface, dbsession, test_data):
+    @staticmethod
+    def test_layer_permissions(server_iface, dbsession, test_data):
         ogcserver_accesscontrol = OGCServerAccessControl(
             server_iface,
             'qgisserver1',
@@ -334,7 +333,8 @@ class TestOGCServerAccessControl():
             for key, value in expected.items():
                 assert value == getattr(permissions, key)
 
-    def test_cacheKey(self, server_iface, dbsession, test_data):
+    @staticmethod
+    def test_cache_key(server_iface, dbsession, test_data):
         ogcserver_accesscontrol = OGCServerAccessControl(
             server_iface,
             'qgisserver1',

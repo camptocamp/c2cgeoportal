@@ -159,9 +159,9 @@ class TestThemesPrivateView(TestCase):
             del name  # Unused
             del kwargs  # Unused
             if _query is None:
-                return "http://localhost/travis/mapserv"
+                return "http://localhost/ci/mapserv"
             else:
-                return "http://localhost/travis/mapserv?" + "&".join(["=".join(i) for i in _query.items()])
+                return "http://localhost/ci/mapserv?" + "&".join(["=".join(i) for i in _query.items()])
 
         request.route_url = route_url
         request.params = params

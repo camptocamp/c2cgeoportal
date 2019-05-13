@@ -1,0 +1,43 @@
+#!/bin/bash -ex
+
+rm -rf ${HOME}/workspace/testgeomapfishapp
+
+ci/create-new-project ${HOME}/workspace
+cp ci/docker-compose.override.yaml ${HOME}/workspace/testgeomapfishapp/
+docker build --tag=camptocamp/geomapfish-test-app-db docker/test-app-db
+docker build --tag=camptocamp/geomapfish-test-external-db docker/test-external-db
+
+cd ${HOME}/workspace/testgeomapfishapp/
+cp .env.sample .env
+docker-compose down
+docker-compose up -d
+docker-compose exec geoportal bash -c 'PGHOST=externaldb PGDATABASE=test wait-db;'
+docker-compose exec geoportal wait-db
+docker-compose exec geoportal alembic --config=alembic.ini --name=main upgrade head
+docker-compose exec geoportal alembic --config=alembic.ini --name=static upgrade head
+docker-compose exec geoportal create-demo-theme
+docker-compose exec geoportal theme2fts
+# Requires node => to be fixed in an other pull request
+#docker-compose exec geoportal update-po en > \
+#    testgeomapfishapp_geoportal/locale/en/LC_MESSAGES/testgeomapfishapp_geoportal-client.po
+#docker-compose exec geoportal update-po fr > \
+#    testgeomapfishapp_geoportal/locale/fr/LC_MESSAGES/testgeomapfishapp_geoportal-client.po
+#docker-compose exec geoportal update-po de > \
+#    testgeomapfishapp_geoportal/locale/de/LC_MESSAGES/testgeomapfishapp_geoportal-client.po
+
+# Commit the l10n files modifications
+# To prevent fail on modification files check
+#git diff
+#git add geoportal/testgeomapfishapp_geoportal/locale/*/LC_MESSAGES/testgeomapfishapp_geoportal-*.po
+#git commit -m "Upgrade the po files"
+
+ci/run-dc-logs docker-compose exec geoportal ci/waitwsgi https://front/
+for path in c2c/health_check c2c/health_check?max_level=9 c2c/health_check?checks=check_collector layers/test/values/type enum admin/layertree admin/layertree/children
+do
+    ci/run-dc-logs docker-compose exec geoportal ci/test-new-project https://front/${path}
+    #docker-compose exec geoportal curl --insecure https://front/c2c/debug/stacks?secret=c2c
+done
+ci/run-dc-logs docker-compose exec geoportal alembic --config=alembic.ini --name=static downgrade base
+ci/run-dc-logs docker-compose exec geoportal alembic --config=alembic.ini --name=main downgrade base
+docker-compose down
+rm -rf ${HOME}/workspace/testgeomapfishapp

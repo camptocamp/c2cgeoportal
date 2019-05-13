@@ -1,0 +1,243 @@
+---
+version: 2.1
+jobs:
+  main:
+    environment: &environment
+      MAIN_BRANCH: master
+      MAJOR_VERSION: 2.5
+      CI: true
+      PATH: /usr/local/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin:/home/circleci/.local/bin
+    docker:
+      - image: circleci/python:3.7
+    steps:
+      # Versions
+      - run: docker --version
+      - run: docker-compose --version
+      - run: git --version
+      - run: python --version
+      - run: python -m pip --version
+
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+
+      # Global simple lint
+      - run: git --no-pager diff --check a6eacf93706d94606fb3c68a671f8254aea48e3b
+      - run: python ci/test-eof-newline
+      - run: python -m pip install --user --requirement=ci/requirements.txt
+      - run: >
+          codespell --quiet-level=2 --check-filenames --ignore-words=spell-ignore-words.txt \
+          $(find -name .git -prune -print)
+      - run: >
+          yamllint --strict --config-file=yamllint.yaml -s
+          $(find -name .git -prune -or \( -name "*.yml" -or -name "*.yaml" \) -print)
+
+      # Build images
+      - run: >
+          docker build --target=build --tag=camptocamp/geomapfish-tests
+          --build-arg=MAJOR_VERSION=${MAJOR_VERSION} .
+      - run: >
+          docker build --target=builder --tag=camptocamp/geomapfish-build
+          --build-arg=MAJOR_VERSION=${MAJOR_VERSION} .
+      - run: >
+          docker build --target=runner --tag=camptocamp/geomapfish
+          --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=$(ci/release-tag) .
+      - run: >
+          docker build --target=upgrader --tag=camptocamp/geomapfish-scaffolds
+          --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=$(ci/release-tag) .
+      - run: >
+          docker build --target=checks
+          --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=$(ci/release-tag) .
+
+      # Build QGIS images
+      - run: >
+          docker build --target=lint --build-arg=VERSION=latest docker/qgisserver
+      - run: >
+          docker build --target=runner --build-arg=VERSION=latest
+          --tag=camptocamp/geomapfish-qgisserver:gmf${MAJOR_VERSION}-qgismaster docker/qgisserver
+      # LTR
+      - run: >
+          docker build --target=runner --build-arg=VERSION=3.4
+          --tag=camptocamp/geomapfish-qgisserver:gmf${MAJOR_VERSION}-qgis3.4 docker/qgisserver
+      - run: >
+          docker build --target=runner --build-arg=VERSION=3.6
+          --tag=camptocamp/geomapfish-qgisserver:gmf${MAJOR_VERSION}-qgis3.6 docker/qgisserver
+
+      # Tests
+      - run: ci/preparetest
+      - run: >
+          ci/run-tests tests '' /app/c2cgeoportal/commons/c2cgeoportal_commons
+          commons /app/c2cgeoportal/commons/tests
+      - run: >
+          ci/run-tests tests '--append' /app/c2cgeoportal/geoportal/c2cgeoportal_geoportal
+          geoportal /app/c2cgeoportal/geoportal/tests
+      - run: >
+          ci/run-tests tests '--append' /app/c2cgeoportal/admin/c2cgeoportal_admin
+          admin /app/c2cgeoportal/admin/tests
+      - run: >
+          ci/run-tests qgisserver-tests '' /var/www/plugins/geomapfish_qgisserver
+          qgis /src/tests/functional
+      - run:
+          name: Extract tests artifacts
+          command: |
+              docker-compose exec tests coverage report
+              docker-compose exec tests coverage html --directory=/tmp/coverage
+              docker-compose exec qgisserver-tests coverage report
+              docker-compose exec qgisserver-tests coverage html --directory=/tmp/coverage
+              mkdir --parent artifacts
+              mkdir --parent test-reports
+              docker cp c2cgeoportal_tests_1:/tmp/commons.xml test-reports/
+              docker cp c2cgeoportal_tests_1:/tmp/geoportal.xml test-reports/
+              docker cp c2cgeoportal_tests_1:/tmp/admin.xml test-reports/
+              docker cp c2cgeoportal_qgisserver-tests_1:/tmp/qgis.xml test-reports/
+              docker cp c2cgeoportal_tests_1:/tmp/coverage/ artifacts/geoportal-coverage/
+              docker cp c2cgeoportal_qgisserver-tests_1:/tmp/coverage/ artifacts/qgisserver-plugin-coverage/
+          when: always
+      - run: docker-compose down
+
+      # Documentation
+      - run: docker build --tag=camptocamp/geomapfish-doc --build-arg=MAJOR_VERSION=${MAJOR_VERSION} doc
+
+      - run:
+          command: docker images
+          when: always
+
+      - run:
+          name: Extract webpack stats artifacts
+          command: |
+            docker run --rm --name=runner --detach camptocamp/geomapfish-build tail -f /dev/null
+            docker exec runner ls /tmp
+            docker cp runner:/tmp/stats.json artifacts/
+            docker stop runner
+          when: always
+
+      - run:
+          name: Extract documentation
+          command: |
+            mkdir --parent artifacts/documentations/
+            docker run --rm --name=doc --detach camptocamp/geomapfish-doc tail -f /dev/null
+            docker cp doc:/doc/_build/html/ artifacts/documentations/
+            docker stop doc
+          when: always
+
+      - store_artifacts:
+          path: artifacts
+          destination: results
+      - store_test_results:
+          path: test-reports
+
+  test-app-upgrade:
+    environment: *environment
+    machine: true
+    steps:
+      - run: &python
+          name: Install Python 3.7
+          command: |
+            sudo killall -9 apt-get || true
+            sudo apt-get update
+            sudo apt-get install python3-pip
+            python3 --version
+            python3 -m pip --version
+      - checkout
+      - run: python3 -m pip install --user --requirement=ci/requirements.txt
+
+      # Test App
+      - run: ci/test-app
+
+      # Test Upgrade
+      - run: |
+          docker build --target=builder --tag=camptocamp/geomapfish-build:$(ci/release-tag) \
+          --build-arg=MAJOR_VERSION=${MAJOR_VERSION} .
+          docker build --target=runner --tag=camptocamp/geomapfish:$(ci/release-tag) \
+          --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=$(ci/release-tag) .
+          docker build --target=upgrader --tag=camptocamp/geomapfish-scaffolds \
+          --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=$(ci/release-tag) .
+      - run: ci/test-upgrade init ${HOME}/workspace
+      - run: ci/test-upgrade 240 ${HOME}/workspace
+      - run: ci/test-upgrade 25 ${HOME}/workspace
+      - run: ci/test-upgrade cleanup ${HOME}/workspace
+
+  deploy-nonmain:
+    environment: *environment
+    machine: true
+    steps:
+      - run: *python
+      - checkout
+      - run: python3 -m pip install --user --requirement=ci/requirements.txt
+      - run: &init-git
+          name: Init Git
+          command: |
+            git remote add push https://${GITHUB_TOKEN}@github.com/sbrunner/scan-to-paperless
+            git config user.email "<ci@camptocamp.com>"
+            git config user.name "CI"
+            git fetch push
+      - deploy: &publish-docker-pip
+          name: Push to Docker hub and Pypi
+          # git remote add full https://github.com/camptocamp/c2cgeoportal.git || true
+          # git fetch --tags --prune
+          # ci/clean-dockerhub-tags
+          command: |
+            docker build --target=builder --tag=camptocamp/geomapfish-build \
+            --build-arg=MAJOR_VERSION=${MAJOR_VERSION} .
+            docker build --target=runner --tag=camptocamp/geomapfish \
+            --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=$(ci/release-tag) .
+            docker build --target=upgrader --tag=camptocamp/geomapfish-scaffolds \
+            --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=$(ci/release-tag) .
+            docker build --target=runner --build-arg=VERSION=latest \
+            --tag=camptocamp/geomapfish-qgisserver:gmf${MAJOR_VERSION}-qgismaster \
+            docker/qgisserver
+            # LTR
+            docker build --target=runner --build-arg=VERSION=3.4 \
+            --tag=camptocamp/geomapfish-qgisserver:gmf${MAJOR_VERSION}-qgis3.4 \
+            docker/qgisserver
+            docker build --target=runner --build-arg=VERSION=3.6 \
+            --tag=camptocamp/geomapfish-qgisserver:gmf${MAJOR_VERSION}-qgis3.6 \
+            docker/qgisserver
+            ci/create-new-project ${HOME}/workspace geomapfish
+            docker tag camptocamp/geomapfish-geoportal:${MAJOR_VERSION} camptocamp/geomapfish-geoportal
+            ci/publish
+
+  deploy:
+    environment: *environment
+    docker:
+      - image: circleci/python:3.7
+    steps:
+      - checkout
+      - run: *init-git
+      - deploy: *publish-docker-pip
+      - deploy:
+          name: Push to Transifex
+          command: |
+            echo "[https://www.transifex.com]" > ~/.transifexrc'
+            echo "hostname = https://www.transifex.com" >> ~/.transifexrc'
+            echo "username = ${TRANSIFEX_USERNAME}" >> ~/.transifexrc'
+            echo 'password = ${TRANSIFEX_PASSWORD}' >> ~/.transifexrc"
+            echo "token =" >> ~/.transifexrc'
+            ./docker-run --home make transifex-send'
+      - deploy:
+          name: Publish documentation to GitHub.io
+          command: |
+            ci/publish-documentation
+
+workflows:
+  version: 2
+  full:
+    jobs:
+      - main
+      - test-app-upgrade
+      - deploy:
+          filters:
+            branches:
+              only: &main-branches
+                - master
+                - /[0-9]\.[0-9]/
+          requires:
+            - main
+            - test-app-upgrade
+      - deploy-nonmain:
+          filters:
+            branches:
+              ignore: *main-branches
+          requires:
+            - main
+            - test-app-upgrade

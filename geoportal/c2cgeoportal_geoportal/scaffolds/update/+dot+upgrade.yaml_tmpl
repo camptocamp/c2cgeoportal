@@ -42,4 +42,62 @@ extra:
   - geoportal/{{package}}_geoportal/static-ngeo/js/apps/sass/oeedit\.scss
   - geoportal/{{package}}_geoportal/static-ngeo/js/apps/sass/vars_oeedit\.scss
 
-upgrade_files: []
+upgrade_files:
+#  - action: remove
+#    paths:
+#      - <one file or directory>
+#  - action: move
+#    from: <src file>
+#    to: <dst file>
+  - action: remove
+    paths:
+      - Makefile
+      - docker-run
+      - docker-compose-run
+      - docker-compose-build.yaml
+      - geoportal/Dockerfile.mako
+      - geoportal/jsbuild/
+      - geoportal/{package}_geoportal/templates/
+      - geoportal/{package}_geoportal/static/lib/
+      - testdb/
+      - vars_convert2tmpl.yaml
+      - CONST_convert2tmpl.mk
+      - CONST_config-schema.yaml
+      - CONST_Makefile
+      - CONST_vars.yaml
+  - action: move
+    from: Makefile
+    to: geoportal/Makefile
+  - action: move
+    from: .eslintrc
+    to: geoportal/.eslintrc
+  - action: move
+    from: language_mapping
+    to: geoportal/language_mapping
+  - action: move
+    from: lingua-client.cfg
+    to: geoportal/lingua-client.cfg
+  - action: move
+    from: lingua-server.cfg
+    to: geoportal/lingua-server.cfg
+  - action: move
+    from: vars.yaml
+    to: geoportal/vars.yaml
+  - action: move
+    from: geoportal/webpack.apps.js.mako
+    to: geoportal/webpack.apps.js
+  - action: move
+    from: geoportal/Dockerfile.mako
+    to: geoportal/Dockerfile
+  - action: move
+    from: geoportal/development.ini.mako
+    to: geoportal/development.ini
+  - action: move
+    from: geoportal/production.ini.mako
+    to: geoportal/production.ini
+  - action: move
+    from: project.yaml.mako
+    to: project.yaml
+  - action: move
+    from: .env.mako
+    to: .env.sample

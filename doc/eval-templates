@@ -1,0 +1,7 @@
+#!/bin/bash -e
+
+find -name '*.tmpl' -print | while read file
+do
+    echo "Evaluate: ${file}"
+    DOLLAR=$ envsubst < ${file} > ${file%.tmpl}
+done

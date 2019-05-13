@@ -53,7 +53,7 @@ class TestIncludeme(TestCase):
             "schema": "main",
             "schema_static": "main_static",
             "default_max_age": 86400,
-            "app.cfg": "/src/geoportal/tests/config.yaml",
+            "app.cfg": "/app/c2cgeoportal/geoportal/tests/config.yaml",
             "package": "c2cgeoportal",
             "enable_admin_interface": False,
         })

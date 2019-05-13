@@ -1,4 +1,6 @@
 *
 !geomapfish_qgisserver
-!commons
 !requirements.txt
+!requirements-dev.txt
+!setup.cfg
+!tests

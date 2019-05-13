@@ -1,0 +1,24 @@
+#!/bin/bash -e
+
+TAG=`git tag --list --points-at=HEAD`
+LAST_TAG=`git describe --abbrev=0 --tags`
+RELEASE_TAG=${MAJOR_VERSION}
+if [[ TAG =~ /^[0-9]+\.[0-9]+\.[0-9]+$/ ]]
+then
+    echo Release detected 1>&2
+    RELEASE_TAG = TAG
+elif [[ TAG =~ /^[0-9]+\.[0-9]+\.[0-9]+\.dev[0-9]+$/ ]]
+then
+    echo Dev release detected 1>&2
+    RELEASE_TAG = TAG
+elif [[ TAG =~ /^[0-9]+\.[0-9]+\.[0-9]+\.?rc[0-9]+$/ ]]
+then
+    echo RC release detected 1>&2
+    RELEASE_TAG = TAG
+elif [[ BRANCH_NAME =~ /^[0-9]\.[0-9]$/ ]]
+then
+    echo Release branch detected 1>&2
+    MINOR = `ci/get-minor --no-save`
+    RELEASE_TAG = "${LAST_TAG}.${MINOR}"
+fi
+echo ${RELEASE_TAG}
