@@ -6,7 +6,7 @@ beautifulsoup4==4.6.3  # admin tests, rq.filter: <4.7
 boto3==1.9.146  # Tile generation
 bottle==0.12.16  # geoportal
 c2c.template==2.1.0  # geoportal
-c2cgeoform==2.0.dev20190413  # commons
+c2cgeoform==2.0.dev20190513  # commons
 codacy-coverage==1.3.11  # Codacy send report
 codespell==1.14.0  # Lint
 colander==1.7.0  # commons, admin
