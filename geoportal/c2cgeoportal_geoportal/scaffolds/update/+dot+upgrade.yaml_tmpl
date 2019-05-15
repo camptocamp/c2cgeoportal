@@ -14,7 +14,7 @@ default_project_file:
     - geoportal/{{package}}_geoportal/jsbuild/.*
     - print/print-apps/.*
     - mapserver/.*
-    - tilegeneration/config\.yaml\.tmpl\.mako
+    - tilegeneration/config\.yaml\.tmpl
     - project\.yaml\.mako
     - docker-compose\.yaml
     - \.env\.mako
@@ -24,7 +24,7 @@ default_project_file:
     - README\.rst
   exclude:
     - geoportal/{{package}}_geoportal/static-ngeo/js/{{package}}module\.js
-    - mapserver/demo\.map\.tmpl\.mako
+    - mapserver/demo\.map\.tmpl
 
 no_diff:
   - .*\.po
