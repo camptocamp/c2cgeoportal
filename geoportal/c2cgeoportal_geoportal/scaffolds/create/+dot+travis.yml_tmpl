@@ -24,6 +24,6 @@ script:
 
 deploy:
   provider: script
-  script: travis/deploy
+  script: scripts/deploy-docker
   on:
     all_branches: true
