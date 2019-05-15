@@ -33,20 +33,20 @@ Before doing a release you should merge all the previous branch on this one:
 
      .. prompt:: bash
 
-        ./docker-run alembic \
-            --config=geoportal/tests/functional/alembic.ini \
+        ./docker-run alembic ${'\\'}
+            --config=geoportal/tests/functional/alembic.ini ${'\\'}
             --name=main heads
-        ./docker-run alembic \
-            --config=geoportal/tests/functional/alembic.ini \
+        ./docker-run alembic ${'\\'}
+            --config=geoportal/tests/functional/alembic.ini ${'\\'}
             --name=static heads
 
      If yes create the merge with:
 
      .. prompt:: bash
 
-        ./docker-run alembic \
-            --config=geoportal/tests/functional/alembic.ini --name=[main|static] \
-            merge --message="Merge <src> and <dst> branches" \
+        ./docker-run alembic ${'\\'}
+            --config=geoportal/tests/functional/alembic.ini --name=[main|static] ${'\\'}
+            merge --message="Merge <src> and <dst> branches" ${'\\'}
             <rev 1> <rev 2>
 
      Remove the import and replace the core of the method by ``pass`` in the generated file.

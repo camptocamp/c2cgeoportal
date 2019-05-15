@@ -66,7 +66,7 @@ Sometimes, more information can be obtained by using this command:
 
 .. prompt:: bash
 
-    docker-compose exec mapserver shp2img -m /etc/mapserver/mapserver.map -o /tmp/test.png \
+    docker-compose exec mapserver shp2img -m /etc/mapserver/mapserver.map -o /tmp/test.png ${'\\'}
         -e 500000 100000 700000 300000 -s 1000 1000 [-l <layers>]
 
 You may also activate MapServer's debug mode and set the environment variable ``MS_DEBUGLEVEL``
