@@ -21,6 +21,7 @@ GEOPORTAL_INTERNAL_URL=http://geoportal:8080
 TILECLOUDCHAIN_INTERNAL_URL=http://tilecloudchain:8080
 MAPCACHE_URL=http://mapcache:8080/mapcache/
 MAPSERVER_URL=http://mapserver:8080/
+TINYOWS_URL=http://tinyows:8080/
 QGISSERVER_URL=http://qgisserver:8080/
 MEMCACHED_HOST=memcached
 MEMCACHED_PORT=11211
@@ -28,8 +29,6 @@ REDIS_HOST=redis
 REDIS_PORT=6379
 TILEGENERATION_SQS_QUEUE=<queue_name>
 GUNICORN_PARAMS=--bind=:8080 --worker-class=gthread --threads=10 --workers=5 --timeout=60 --max-requests=1000 --max-requests-jitter=100
-TINYOWS_URL=http://tinyows:8080/
-MAPSERVER_URL=http://mapserver:8080/
 # Use the mutualised print, ask Camptocamp to configure your project.
 PRINT_URL=https://mutualized-print.paas-ch-3.camptocamp.com/print/${mutualized_print_app}/
 DEVSERVER_HOST=webpack_dev_server:8080
