@@ -306,7 +306,7 @@ function v230 {
         commons/testgeomapfish_commons.egg-info geoportal/testgeomapfish_geoportal.egg-info
     cd -
     find ${WORKSPACE}/v230-$1docker -type d -empty -delete
-    diff --recursive --exclude=.git ${WORKSPACE}/$1dockerref ${WORKSPACE}/v230-$1docker
+    diff --recursive --exclude=.git --exclude=locale ${WORKSPACE}/$1dockerref ${WORKSPACE}/v230-$1docker
 }
 
 if [ "$1" = "v230-docker" ]
@@ -340,7 +340,7 @@ function v240 {
         commons/testgeomapfish_commons.egg-info geoportal/testgeomapfish_geoportal.egg-info
     cd -
     find ${WORKSPACE}/v240 -type d -empty -delete
-    diff --recursive --exclude=.git ${WORKSPACE}/$1dockerref ${WORKSPACE}/v240
+    diff --recursive --exclude=.git --exclude=locale ${WORKSPACE}/$1dockerref ${WORKSPACE}/v240
 }
 
 if [ "$1" = "v240" ]
