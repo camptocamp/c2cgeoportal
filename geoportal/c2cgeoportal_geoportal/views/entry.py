@@ -783,8 +783,9 @@ class Entry:
             isinstance(layer, main.LayerV1) and layer.layer_type == "internal WMS"
 
     @cache_region.cache_on_arguments()
-    def _get_ogc_servers(self, group, depth):
+    def _get_ogc_servers(self, host_url, group, depth):
         """ Recurse on all children to get unique identifier for each child. """
+
         ogc_servers = set()
 
         # escape loop
@@ -795,7 +796,7 @@ class Entry:
         # recurse on children
         if isinstance(group, main.LayerGroup) and len(group.children) > 0:
             for tree_item in group.children:
-                ogc_servers.update(self._get_ogc_servers(tree_item, depth + 1))
+                ogc_servers.update(self._get_ogc_servers(host_url, tree_item, depth + 1))
 
         if isinstance(group, main.LayerWMS):
             ogc_servers.add(group.ogc_server.name)
@@ -806,7 +807,7 @@ class Entry:
         return ogc_servers
 
     def _group(
-        self, path, group, layers, depth=1, min_levels=1,
+        self, host_url, path, group, layers, depth=1, min_levels=1,
         catalogue=True, role_id=None, version=1, mixed=True, time=None, dim=None,
         wms_layers=None, layers_name=None, **kwargs
     ):
@@ -830,7 +831,7 @@ class Entry:
         ogc_servers = None
         org_depth = depth
         if depth == 1:
-            ogc_servers = list(self._get_ogc_servers(group, 1))
+            ogc_servers = list(self._get_ogc_servers(host_url, group, 1))
             # check if mixed content
             mixed = len(ogc_servers) != 1 or ogc_servers[0] is False
             if not mixed:
@@ -842,7 +843,7 @@ class Entry:
                 if isinstance(group, main.Theme) or catalogue or \
                         group.is_internal_wms == tree_item.is_internal_wms:
                     gp, gp_errors = self._group(
-                        u"{0!s}/{1!s}".format(path, tree_item.name),
+                        host_url, u"{0!s}/{1!s}".format(path, tree_item.name),
                         tree_item, layers, depth=depth + 1, min_levels=min_levels,
                         catalogue=catalogue, role_id=role_id, version=version, mixed=mixed,
                         time=time, dim=dim, wms_layers=wms_layers, layers_name=layers_name, **kwargs
@@ -922,7 +923,8 @@ class Entry:
             return None, errors
 
     @cache_region.cache_on_arguments()
-    def _layers(self, role_id, version, interface):
+    def _layers(self, host_url, role_id, version, interface):
+        del host_url  # Only for cache
         query = self._create_layer_query(role_id, version, interface=interface)
         return [name for (name,) in query.all()]
 
@@ -960,7 +962,7 @@ class Entry:
 
     @cache_region.cache_on_arguments()
     def _themes(
-        self, role_id, interface="desktop", filter_themes=True, version=1,
+        self, host_url, role_id, interface="desktop", filter_themes=True, version=1,
         catalogue=False, min_levels=1
     ):
         """
@@ -969,7 +971,7 @@ class Entry:
         """
         self._load_tree_items()
         errors = set()
-        layers = self._layers(role_id, version, interface)
+        layers = self._layers(host_url, role_id, version, interface)
 
         themes = models.DBSession.query(main.Theme)
         themes = themes.filter(main.Theme.public.is_(True))
@@ -994,7 +996,7 @@ class Entry:
                 continue
 
             children, children_errors = self._get_children(
-                theme, layers, version, catalogue, min_levels, role_id
+                host_url, theme, layers, version, catalogue, min_levels, role_id
             )
             errors |= children_errors
 
@@ -1041,12 +1043,13 @@ class Entry:
             "success": True
         }
 
-    def _get_children(self, theme, layers, version, catalogue, min_levels, role_id):
+    def _get_children(self, host_url, theme, layers, version, catalogue, min_levels, role_id):
         children = []
         errors = set()
         for item in theme.children:
             if isinstance(item, main.LayerGroup):
                 gp, gp_errors = self._group(
+                    host_url,
                     "{0!s}/{1!s}".format(theme.name, item.name),
                     item, layers,
                     role_id=role_id, version=version, catalogue=catalogue,
@@ -1161,14 +1164,15 @@ class Entry:
         except Exception:  # pragma: no cover
             return get_capabilities_xml, errors
 
-    def _functionality(self):
+    def _functionality(self, host_url):
         return self._functionality_cached(
-            self.request.user.role.name if self.request.user is not None else None
+            host_url, self.request.user.role.name if self.request.user is not None else None
         )
 
     @cache_region.cache_on_arguments()
-    def _functionality_cached(self, role):
+    def _functionality_cached(self, host_url, role):
         del role  # Just for caching
+        del host_url  # Just for caching
         functionality = {}
         for func_ in get_setting(
                 self.settings,
@@ -1235,7 +1239,7 @@ class Entry:
         role_id = self._get_role_id()
         interface = self.request.interface_name
 
-        themes, errors = self._themes(role_id, interface)
+        themes, errors = self._themes(self.request.host_url, role_id, interface)
         wfs_types, add_errors = self._internal_wfs_types(role_id)
         errors |= add_errors
 
@@ -1255,7 +1259,7 @@ class Entry:
             "user": self.request.user,
             "WFSTypes": json.dumps(wfs_types),
             "tiles_url": json.dumps(self.settings.get("tiles_url")),
-            "functionality": self._functionality(),
+            "functionality": self._functionality(self.request.host_url),
             "queryer_attribute_urls": json.dumps(self._get_layers_enum()),
             "serverError": json.dumps(list(errors)),
             "version_params": version_params,
@@ -1433,7 +1437,7 @@ class Entry:
                 }
         if export_themes:
             themes, errors = self._themes(
-                role_id, interface, True, version, catalogue, min_levels
+                self.request.host_url, role_id, interface, True, version, catalogue, min_levels
             )
 
             if version == 1:
@@ -1443,13 +1447,15 @@ class Entry:
             all_errors |= errors
 
         if export_group:
-            group, errors = self._get_group(group, role_id, interface, version)
+            group, errors = self._get_group(self.request.host_url, group, role_id, interface, version)
             if group is not None:
                 result["group"] = group
             all_errors |= errors
 
         if export_background:
-            group, errors = self._get_group(background_layers_group, role_id, interface, version)
+            group, errors = self._get_group(
+                self.request.host_url, background_layers_group, role_id, interface, version
+            )
             result["background_layers"] = group["children"] if group is not None else []
             all_errors |= errors
 
@@ -1458,12 +1464,12 @@ class Entry:
             log.info("Theme errors:\n{}".format("\n".join(all_errors)))
         return result
 
-    def _get_group(self, group, role_id, interface, version):
-        layers = self._layers(role_id, version, interface)
+    def _get_group(self, host_url, group, role_id, interface, version):
+        layers = self._layers(host_url, role_id, version, interface)
         try:
             lg = models.DBSession.query(main.LayerGroup).filter(main.LayerGroup.name == group).one()
             return self._group(
-                lg.name, lg, layers,
+                host_url, lg.name, lg, layers,
                 role_id=role_id, version=version
             )
         except NoResultFound:  # pragma: no cover
@@ -1566,7 +1572,7 @@ class Entry:
             "role_id": user.role.id
         } if user else {}
 
-        result["functionalities"] = self._functionality()
+        result["functionalities"] = self._functionality(self.request.host_url)
 
         return result
 

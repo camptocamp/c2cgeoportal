@@ -426,7 +426,7 @@ class TestEntryView(TestCase):
         entry = Entry(request)
 
         # unautenticated
-        themes, errors = entry._themes(None, "desktop")
+        themes, errors = entry._themes('', None, "desktop")
         self.assertEqual(errors, {
             "The layer '__test_layer_in_group' (__test_layer_in_group) is not defined in WMS capabilities from '__test_ogc_server'",
         })
@@ -452,7 +452,7 @@ class TestEntryView(TestCase):
         # authenticated
         request.params = {}
         request.user = DBSession.query(User).filter_by(username="__test_user1").one()
-        themes, errors = entry._themes(request.user.role.id)
+        themes, errors = entry._themes('', request.user.role.id)
         self.assertEqual(errors, {
             "The layer '__test_layer_in_group' (__test_layer_in_group) is not defined in WMS capabilities from '__test_ogc_server'",
         })
@@ -478,7 +478,7 @@ class TestEntryView(TestCase):
 
         from c2cgeoportal_geoportal.lib import caching
         caching.invalidate_region()
-        _, errors = entry._themes(None, "desktop")
+        _, errors = entry._themes('', None, "desktop")
         self.assertEqual({e[:43] for e in errors}, {
             "The layer '__test_public_layer' (__test_pub",
             "The layer '__test_layer_in_group' (__test_l",
@@ -541,7 +541,7 @@ class TestEntryView(TestCase):
         entry = Entry(request)
 
         # unautenticated v1
-        themes, errors = entry._themes(None, "desktop")
+        themes, errors = entry._themes('', None, "desktop")
         self.assertEqual(errors, set())
         self.assertEqual(len(themes), 1)
         layers = {l["name"] for l in themes[0]["children"][0]["children"]}
@@ -554,7 +554,7 @@ class TestEntryView(TestCase):
         # authenticated v1
         request.params = {}
         request.user = DBSession.query(User).filter_by(username="__test_user1").one()
-        themes, errors = entry._themes(request.user.role.id)
+        themes, errors = entry._themes('', request.user.role.id)
         self.assertEqual(errors, set())
         self.assertEqual(len(themes), 1)
         layers = {l["name"] for l in themes[0]["children"][0]["children"]}
@@ -935,7 +935,7 @@ class TestEntryView(TestCase):
         entry = Entry(request)
 
         self.assertEqual(entry._group(
-            "", LayerGroup(), layers=[]), (None, set())
+            '', "", LayerGroup(), layers=[]), (None, set())
         )
 
         layer = LayerV1()
@@ -1234,7 +1234,7 @@ class TestEntryView(TestCase):
         group.children = [layer_t1, layer_t2]
         time = TimeInformation()
         entry._group(
-            "", group, [layer_t1.name, layer_t2.name],
+            '', "", group, [layer_t1.name, layer_t2.name],
             time=time, mixed=False, depth=2
         )
         self.assertEqual(time.to_dict(), {
@@ -1355,7 +1355,7 @@ class TestEntryView(TestCase):
         group2.children = [layer]
 
         self.assertEqual(entry._group(
-            "", group1, [layer.name],
+            '', "", group1, [layer.name],
         ), ({
             "id": 11,
             "isExpanded": False,
@@ -1409,7 +1409,7 @@ class TestEntryView(TestCase):
         group2 = LayerGroup()
         group2.is_internal_wms = False
         group1.children = [group2]
-        _, errors = entry._group("", group1, [], catalogue=False)
+        _, errors = entry._group('', "", group1, [], catalogue=False)
         self._assert_has_error(errors, "Group '' cannot be in group '' (internal/external mix).")
 
         group1 = LayerGroup()
@@ -1417,7 +1417,7 @@ class TestEntryView(TestCase):
         group2 = LayerGroup()
         group2.is_internal_wms = True
         group1.children = [group2]
-        _, errors = entry._group("", group1, [], catalogue=False)
+        _, errors = entry._group('', "", group1, [], catalogue=False)
         self._assert_has_error(errors, "Group '' cannot be in group '' (internal/external mix).")
 
         group = LayerGroup()
@@ -1425,7 +1425,7 @@ class TestEntryView(TestCase):
         layer = LayerV1()
         layer.layer_type = "internal WMS"
         group.children = [layer]
-        _, errors = entry._group("", group, [layer.name], catalogue=False)
+        _, errors = entry._group('', "", group, [layer.name], catalogue=False)
         self.assertEqual(errors, {
             "The layer '' () is not defined in WMS capabilities from '__test_ogc_server'",
         })
@@ -1435,7 +1435,7 @@ class TestEntryView(TestCase):
         layer = LayerV1()
         layer.layer_type = "external WMS"
         group.children = [layer]
-        _, errors = entry._group("", group, [layer.name], catalogue=False)
+        _, errors = entry._group('', "", group, [layer.name], catalogue=False)
         self._assert_has_error(errors, "Layer '' cannot be in the group '' (internal/external mix).")
 
         group = LayerGroup()
@@ -1443,7 +1443,7 @@ class TestEntryView(TestCase):
         layer = LayerV1()
         layer.layer_type = "WMTS"
         group.children = [layer]
-        _, errors = entry._group("", group, [layer.name], catalogue=False)
+        _, errors = entry._group('', "", group, [layer.name], catalogue=False)
         self._assert_has_error(errors, "Layer '' cannot be in the group '' (internal/external mix).")
 
         group = LayerGroup()
@@ -1451,7 +1451,7 @@ class TestEntryView(TestCase):
         layer = LayerV1()
         layer.layer_type = "no 2D"
         group.children = [layer]
-        _, errors = entry._group("", group, [layer.name], catalogue=False)
+        _, errors = entry._group('', "", group, [layer.name], catalogue=False)
         self._assert_has_error(errors, "Layer '' cannot be in the group '' (internal/external mix).")
 
         group = LayerGroup()
@@ -1459,7 +1459,7 @@ class TestEntryView(TestCase):
         layer = LayerV1()
         layer.layer_type = "internal WMS"
         group.children = [layer]
-        _, errors = entry._group("", group, [layer.name], catalogue=False)
+        _, errors = entry._group('', "", group, [layer.name], catalogue=False)
         self._assert_has_error(errors, "Layer '' cannot be in the group '' (internal/external mix).")
 
         group = LayerGroup()
@@ -1467,7 +1467,7 @@ class TestEntryView(TestCase):
         layer = LayerV1()
         layer.layer_type = "external WMS"
         group.children = [layer]
-        _, errors = entry._group("", group, [layer.name], catalogue=False, min_levels=0)
+        _, errors = entry._group('', "", group, [layer.name], catalogue=False, min_levels=0)
         self.assertEqual(errors, set())
 
         group = LayerGroup()
@@ -1475,7 +1475,7 @@ class TestEntryView(TestCase):
         layer = LayerV1()
         layer.layer_type = "WMTS"
         group.children = [layer]
-        _, errors = entry._group("", group, [layer.name], catalogue=False, min_levels=0)
+        _, errors = entry._group('', "", group, [layer.name], catalogue=False, min_levels=0)
         self.assertEqual(errors, set())
 
         group = LayerGroup()
@@ -1483,7 +1483,7 @@ class TestEntryView(TestCase):
         layer = LayerV1()
         layer.layer_type = "no 2D"
         group.children = [layer]
-        _, errors = entry._group("", group, [layer.name], catalogue=False, min_levels=0)
+        _, errors = entry._group('', "", group, [layer.name], catalogue=False, min_levels=0)
         self.assertEqual(errors, set())
 
     def test_loginchange_no_params(self):
