@@ -7,7 +7,7 @@ from c2cgeoportal_commons.lib.validators import url
 class TestUrl():
 
     @pytest.mark.parametrize("valid_url", [
-        'https://geomapfish.org',
+        'http://geomapfish.org',
         'https://geomapfish.org/functionalities',
         'geomapfish.org/functionalities',
         'static://img/cadastre.jpeg',
