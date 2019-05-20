@@ -6,7 +6,7 @@ do
     envsubst < ${file} > ${file%.tmpl}
 done
 
-find /app/*_geoportal/static-ngeo/build/ -name '*.js' -print | while read file
+find /app/*_geoportal/static-ngeo/build/ \( -name '*.js' -or -name '*.css' -or -name '*.html' \) -print | while read file
 do
     echo "Evaluate: ${file}"
     sed --in-place --expression="s#__ENTRY_POINT__#${VISIBLE_ENTRY_POINT}#g" "${file}"
