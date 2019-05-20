@@ -561,6 +561,7 @@ class Entry:
 
     def _get_ogc_servers(self, group, depth):
         """ Recurse on all children to get unique identifier for each child. """
+
         ogc_servers = set()
 
         # escape loop
