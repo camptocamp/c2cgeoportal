@@ -230,6 +230,8 @@ function v220 {
         cp CONST_create_template/.env.mako .
         ./docker-run make --always-make --makefile=CONST_convert2tmpl.mk to-tmpl
         cp CONST_create_template/mapserver/*.tmpl mapserver
+        mkdir -p tilegeneration
+        cp CONST_create_template/tilegeneration/config.yaml.tmpl tilegeneration/
     fi
     cp CONST_create_template/mapserver/data/Readme.txt mapserver/data/
 
@@ -289,6 +291,7 @@ function v230 {
         then
             cp CONST_create_template/docker-compose.yaml .
             cp CONST_create_template/.env.mako .
+            cp CONST_create_template/tilegeneration/config.yaml.tmpl tilegeneration/
         else
             cp CONST_create_template/mapserver/data/Readme.txt mapserver/data/
         fi
