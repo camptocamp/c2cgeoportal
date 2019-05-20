@@ -335,7 +335,12 @@ function v240 {
     if [ -e .UPGRADE9 ]
     then
         git apply --3way ngeo.diff
-        ./docker-run --env=NODE_ENV make ${MAKE_ARGS} upgrade10
+        ./docker-run --env=NODE_ENV make upgrade10
+    fi
+    if [ -e .UPGRADE10 ]
+    then
+        git apply --3way create.diff
+        ./docker-run --env=NODE_ENV make upgrade11
     fi
     if [ ! -e .UPGRADE_SUCCESS ]
     then
