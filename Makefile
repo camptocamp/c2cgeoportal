@@ -108,6 +108,7 @@ docker-build:
 .PHONY: build
 build: \
 	docker-build-build \
+	docker-build-config \
 	docker-build-qgisserver \
 	docker-build-testdb \
 	prepare-tests
@@ -186,6 +187,10 @@ docker-build-build: $(shell docker-required --path . --replace-pattern='^test(.*
 		$(APPS_FILES) \
 		$(APPS_FILES_ALT)
 	docker build --build-arg=VERSION=$(VERSION) --tag=$(DOCKER_BASE)-build:$(MAJOR_VERSION) .
+
+.PHONY: docker-build-config
+docker-build-config:
+	docker build --tag=$(DOCKER_BASE)-config:$(MAJOR_VERSION) docker/config
 
 docker/qgisserver/commons: commons
 	rm --recursive --force $@

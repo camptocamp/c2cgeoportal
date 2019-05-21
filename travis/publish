@@ -47,7 +47,7 @@ then
 fi
 
 # Publish the GeoMapFish images
-for IMAGE in geomapfish-build-dev geomapfish-build
+for IMAGE in geomapfish-build-dev geomapfish-build geomapfish-config
 do
     docker tag camptocamp/${IMAGE}:${MAJOR_VERSION} camptocamp/${IMAGE}:${VERSION}
     docker push camptocamp/${IMAGE}:${VERSION}

@@ -740,7 +740,7 @@ docker-build-config: $(shell docker-required --path .) \
 		$(PRINT_CONFIG_FILE) \
 		$(MAPCACHE_FILE) \
 		qgisserver/geomapfish.yaml
-	docker build --tag=$(DOCKER_BASE)-config:$(DOCKER_TAG) .
+	docker build --tag=$(DOCKER_BASE)-config:$(DOCKER_TAG) --build-arg=VERSION=$(GEOMAPFISH_VERSION) .
 
 .PHONY: docker-build-geoportal
 docker-build-geoportal: $(shell docker-required --path geoportal) \
