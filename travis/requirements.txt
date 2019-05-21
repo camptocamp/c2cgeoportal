@@ -1,3 +1,4 @@
 docker-compose==1.20.1
 netifaces==0.10.6
 PyYAML==3.13
+twine
