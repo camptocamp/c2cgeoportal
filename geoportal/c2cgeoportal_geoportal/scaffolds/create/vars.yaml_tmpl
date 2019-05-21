@@ -23,7 +23,7 @@ vars:
     default: &interface
       constants: &constants
         defaultTheme: Demo
-        defaultLang: en
+        defaultLang: '{default_locale_name}'
         gmfSearchActions:
           - action: add_theme
             title: Add a theme
