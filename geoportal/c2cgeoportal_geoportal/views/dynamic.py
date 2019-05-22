@@ -77,6 +77,7 @@ class DynamicView:
         constants.update({
             name: dynamic[value]
             for name, value in self.get('dynamic_constants', interface_name).items()
+            if value is not None
         })
         constants.update({
             name: self.request.static_url(static_['name']) + static_.get('append', '')
