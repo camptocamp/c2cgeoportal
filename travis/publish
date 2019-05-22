@@ -67,7 +67,7 @@ then
     for PKG in commons geoportal admin
     do
         export PKG
-        ./docker-run --env=PYPI_USERNAME --env=PYPI_PASSWORD --env=VERSION --env=PKG travis/publish-pypi
+        travis/publish-pypi
     done
 fi
 

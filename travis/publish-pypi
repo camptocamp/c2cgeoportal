@@ -7,8 +7,6 @@ echo "[pypi]" >> ~/.pypirc
 echo "username:${PYPI_USERNAME}" >> ~/.pypirc
 echo "password:${PYPI_PASSWORD}" >> ~/.pypirc
 
-.venv/bin/python3 -m pip install --requirement=travis/requirements.txt
-
 # Publish the Python eggs
 cd ${PKG}
 ../.venv/bin/python3 setup.py egg_info --no-date sdist bdist_wheel
