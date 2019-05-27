@@ -329,7 +329,7 @@ class Entry:
             # ratio between edge and diagonal of a square.
             resolution_hint_min = float(layer.scaleHint["min"]) / sqrt(2)
             resolution_hint_max = float(layer.scaleHint["max"]) / sqrt(2) \
-                if layer.scaleHint["max"] != "0" else 999999999
+                if layer.scaleHint["max"] not in ("0", "Infinity") else 999999999
         for child_layer in layer.layers:
             resolution = self._get_layer_resolution_hint_raw(child_layer)
             resolution_hint_min = resolution[0] if resolution_hint_min is None else (
