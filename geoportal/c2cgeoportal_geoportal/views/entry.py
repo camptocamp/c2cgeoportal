@@ -140,6 +140,8 @@ class Entry:
         self.metadata_type = get_types_map(
             self.settings.get("admin_interface", {}).get("available_metadata", [])
         )
+        self._ogcservers_cache = None
+        self._treeitems_cache = None
         self._layerswms_cache = None
         self._layerswmts_cache = None
         self._layergroup_cache = None
@@ -683,6 +685,9 @@ class Entry:
         return wms, list(wms.contents), wms_errors
 
     def _load_tree_items(self):
+        # Populate sqlalchemy session.identity_map to reduce the number of database requests.
+        self._ogcservers_cache = models.DBSession.query(main.OGCServer).all()
+        self._treeitems_cache = models.DBSession.query(main.TreeItem).all()
         self._layerswms_cache = models.DBSession.query(main.LayerWMS).options(
             subqueryload(main.LayerWMS.dimensions), subqueryload(main.LayerWMS.metadatas)
         ).all()
