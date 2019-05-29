@@ -16,6 +16,7 @@ RUN \
   rm --recursive --force /tmp/* /var/tmp/* /root/.cache/*
 
 #############################################################################################################
+# Finally used by builder
 
 FROM base AS common-build
 
@@ -42,6 +43,7 @@ RUN \
 COPY etc/bash_completion.d/* /etc/bash_completion.d/
 
 #############################################################################################################
+# Finally used by runner and upgrader
 
 FROM common-build AS build1
 
@@ -76,6 +78,9 @@ RUN \
   npm cache clear --force && \
   rm -rf /tmp/*
 
+#############################################################################################################
+# Base image for builder
+
 FROM common-build AS common-build-npm
 
 COPY --from=build1 /app/c2cgeoportal/geoportal/npm-packages /opt/npm-packages
@@ -92,6 +97,7 @@ RUN \
   curl --output /opt/jasperreport.xsd http://jasperreports.sourceforge.net/xsd/jasperreport.xsd
 
 #############################################################################################################
+# Base image for runner and upgrader
 
 FROM build1 AS build
 
@@ -121,12 +127,14 @@ COPY --from=build /app/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/ \
     /opt/c2cgeoportal_geoportal/c2cgeoportal_geoportal/locale/
 
 #############################################################################################################
+# Intermediate image used to prepare the copy files to upgrade image
 
 FROM build AS build-upgrade
 
 RUN rm --recursive --force /app/c2cgeoportal/*/tests
 
 #############################################################################################################
+# Intermediate image used to prepare the copy files to run image
 
 FROM build-upgrade AS build-run
 
@@ -174,6 +182,7 @@ RUN \
   pcreate -l|grep c2cgeoportal
 
 #############################################################################################################
+# Image that run the checks
 
 FROM build AS checks
 RUN make checks

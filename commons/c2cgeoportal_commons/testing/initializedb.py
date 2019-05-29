@@ -2,16 +2,10 @@ import os
 import sys
 from typing import List
 
-from logging.config import fileConfig
-
-from pyramid.scripts.common import parse_vars
 from sqlalchemy.engine import Connection
 from sqlalchemy.orm import Session
 
-from c2cgeoportal_commons.models import (
-    Base,
-)
-from c2cgeoportal_commons.testing import generate_mappers
+from c2cgeoportal_commons.models import Base
 
 
 def usage(argv: List[str]) -> None:
@@ -21,17 +15,6 @@ def usage(argv: List[str]) -> None:
         '(example: "%s development.ini")' % (cmd, cmd)
     )
     sys.exit(1)
-
-
-def main(argv: List[str] = sys.argv) -> None:
-    if len(argv) < 2:
-        usage(argv)
-    config_uri = argv[1]
-    options = parse_vars(argv[2:])
-
-    fileConfig(config_uri, defaults=dict(os.environ))
-    options.update(os.environ)
-    generate_mappers()
 
 
 def schema_exists(connection: Connection, schema_name: str) -> bool:
