@@ -1,5 +1,4 @@
-ARG VERSION
-FROM camptocamp/geomapfish-build:${VERSION}
+FROM camptocamp/geomapfish-build:${geomapfish_version}
 
 COPY . /tmp/config/
 

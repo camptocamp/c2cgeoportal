@@ -3,6 +3,7 @@
 *.pyo
 __pycache__/
 /project.yaml
+/Dockerfile
 /docker-compose.yaml
 /docker-compose-build.yaml
 /docker-compose-dev.yaml
