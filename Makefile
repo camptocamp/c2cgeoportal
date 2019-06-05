@@ -120,6 +120,7 @@ docker-build: docker-pull
 .PHONY: build
 build: \
 	docker-build-build \
+	docker-build-config \
 	docker-build-qgisserver \
 	prepare-tests
 
@@ -205,6 +206,10 @@ docker-build-build: $(shell docker-required --path . --replace-pattern='^test(.*
 		geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/CONST_create_template/ \
 		$(MO_FILES)
 	docker build --build-arg=VERSION=$(VERSION) --tag=$(DOCKER_BASE)-build:$(MAJOR_VERSION) .
+
+.PHONY: docker-build-config
+docker-build-config:
+	docker build --tag=$(DOCKER_BASE)-config:$(MAJOR_VERSION) docker/config
 
 docker/qgisserver/commons: commons
 	rm --recursive --force $@

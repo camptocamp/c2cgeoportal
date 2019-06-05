@@ -460,6 +460,7 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
             layers = [d.value for d in layer.metadatas if d.name == "wmsLayer"]
         server = [d.value for d in layer.metadatas if d.name == "ogcServer"]
         if len(server) >= 1 and len(layers) >= 1:
+            layers = [l for ls in layers for l in ls.split(',')]
             for wms_layer in layers:
                 try:
                     db_server = DBSession.query(OGCServer).filter(OGCServer.name == server[0]).one()

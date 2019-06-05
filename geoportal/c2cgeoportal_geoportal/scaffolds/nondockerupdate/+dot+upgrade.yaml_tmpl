@@ -310,3 +310,6 @@ files_to_move:
   - from: docker-compose-dev.yaml.mako
     to: docker-compose-dev.yaml
     version: 2.4
+  - from: Dockerfile
+    to: Dockerfile.mako
+    version: 2.3

@@ -67,6 +67,8 @@ module.exports = {
       'quickselect': '/usr/lib/node_modules/ol/node_modules/quickselect',
       'mgrs': '/usr/lib/node_modules/proj4/node_modules/mgrs',
       'wkt-parser': '/usr/lib/node_modules/proj4/node_modules/wkt-parser',
+      'lie': '/usr/lib/node_modules/localforage/node_modules/lie',
+      'immediate': '/usr/lib/node_modules/localforage/node_modules/immediate',
     }
   },
   optimization: {

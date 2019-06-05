@@ -273,10 +273,10 @@ class Entry:
             return url, None, errors
 
         # With wms 1.3 it returns text/xml also in case of error :-(
-        if response.headers["Content-Type"].split(";")[0].strip() not in \
+        if response.headers.get("Content-Type", '').split(";")[0].strip() not in \
                 ["application/vnd.ogc.wms_xml", "text/xml"]:
             error = "GetCapabilities from URL {} returns a wrong Content-Type: {}\n{}".format(
-                url, response.headers["Content-Type"], response.text
+                url, response.headers.get("Content-Type", ''), response.text
             )
             errors.add(error)
             LOG.error(error)
