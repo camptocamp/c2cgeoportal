@@ -1,5 +1,5 @@
 awscli==1.16.156  # Work with Object storage
-Babel==2.6.0  # i18n
+Babel==2.7.0  # i18n
 beautifulsoup4==4.6.3  # admin tests, rq.filter: <4.7
 boto3==1.9.146  # Tile generation
 bottle==0.12.16  # geoportal
