@@ -26,7 +26,7 @@ six==1.11.0  # required by transifex, rq.filter: ==1.11.0
 tilecloud==1.3.1  # Tile generation
 tilecloud-chain==1.11.1  # Tile generation
 transifex-client==0.13.6  # Makefile
-urllib3==1.23  # required by transifex, rq.filter: <1.24
+urllib3==1.25.3  # required by transifex, rq.filter: <1.24
 waitress==1.3.0  # pcreate
 WebOb==1.8.5  # geoportal test
 WebTest==2.0.33  # admin tests
