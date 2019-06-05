@@ -3,6 +3,7 @@
 *.pyo
 __pycache__/
 /project.yaml
+/Dockerfile
 /.env
 /docker-compose.override.yaml
 /mapcache/

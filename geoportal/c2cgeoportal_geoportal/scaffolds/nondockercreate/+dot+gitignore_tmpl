@@ -4,6 +4,7 @@
 __pycache__/
 /.build
 /project.yaml
+/Dockerfile
 /docker-compose-dev.yaml
 /docker-compose-front.yaml
 /docker-compose-lib.yaml_tmpl
