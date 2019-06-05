@@ -16,14 +16,13 @@ docker-compose exec geoportal wait-db
 docker-compose exec geoportal alembic --config=alembic.ini --name=main upgrade head
 docker-compose exec geoportal alembic --config=alembic.ini --name=static upgrade head
 docker-compose exec geoportal create-demo-theme
+docker-compose exec geoportal update-po en > \
+    geoportal/testgeomapfishapp_geoportal/locale/en/LC_MESSAGES/testgeomapfishapp_geoportal-client.po
+docker-compose exec geoportal update-po fr > \
+    geoportal/testgeomapfishapp_geoportal/locale/fr/LC_MESSAGES/testgeomapfishapp_geoportal-client.po
+docker-compose exec geoportal update-po de > \
+    geoportal/testgeomapfishapp_geoportal/locale/de/LC_MESSAGES/testgeomapfishapp_geoportal-client.po
 docker-compose exec geoportal theme2fts
-# Requires node => to be fixed in an other pull request
-#docker-compose exec geoportal update-po en > \
-#    testgeomapfishapp_geoportal/locale/en/LC_MESSAGES/testgeomapfishapp_geoportal-client.po
-#docker-compose exec geoportal update-po fr > \
-#    testgeomapfishapp_geoportal/locale/fr/LC_MESSAGES/testgeomapfishapp_geoportal-client.po
-#docker-compose exec geoportal update-po de > \
-#    testgeomapfishapp_geoportal/locale/de/LC_MESSAGES/testgeomapfishapp_geoportal-client.po
 
 # Commit the l10n files modifications
 # To prevent fail on modification files check

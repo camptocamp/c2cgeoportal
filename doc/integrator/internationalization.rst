@@ -38,20 +38,12 @@ The files to translate are:
    All the ``#, fuzzy`` strings should be verified and the line should be removed
    (if the line is not removed, the localisation will not be used).
 
-To update the ``po`` files, you must run the following command:
-
-For Docker project:
+To update each ``po`` files, you must run the following command:
 
 .. code:: bash
 
-    ./docker-compose-run  make --makefile=<package>.mk update-po
-
-For non Docker project:
-
-.. code:: bash
-
-   ./docker-run make --makefile=<package>.mk update-po
-
+    docker-compose exec geoportal update-po <lang> > \
+      geoportal/testgeomapfishapp_geoportal/locale/<lang>/LC_MESSAGES/testgeomapfishapp_geoportal-client.po
 
 .. note::
 

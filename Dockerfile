@@ -6,7 +6,8 @@ ENV \
 RUN \
   . /etc/os-release && \
   apt-get update && \
-  apt-get install --assume-yes --no-install-recommends apt-utils gettext && \
+  apt-get install --assume-yes --no-install-recommends apt-utils && \
+  apt-get install --assume-yes --no-install-recommends gettext && \
   apt-get clean && \
   rm --recursive --force /var/lib/apt/lists/*
 
@@ -15,11 +16,12 @@ RUN \
   python3 -m pip install --disable-pip-version-check --no-cache-dir --requirement=/tmp/requirements.txt && \
   rm --recursive --force /tmp/* /var/tmp/* /root/.cache/*
 
+
 #############################################################################################################
-# Finally used by builder
 
-FROM base AS common-build
+FROM base AS base-node
 
+ENV NODE_PATH=/usr/lib/node_modules
 RUN \
   . /etc/os-release && \
   apt-get update && \
@@ -31,6 +33,28 @@ RUN \
   apt-get clean && \
   rm --recursive --force /var/lib/apt/lists/*
 
+
+#############################################################################################################
+# Finally used by runner
+
+FROM base-node AS base-runner
+
+COPY geoportal/package.json /app/c2cgeoportal/geoportal/
+WORKDIR /app/c2cgeoportal/geoportal
+RUN \
+  npm --no-optional --global --unsafe-perm --no-package-lock install commander angular-gettext-tools && \
+  npm cache clear --force && \
+  rm -rf /tmp/*
+
+# For awscli
+COPY etc/bash_completion.d/* /etc/bash_completion.d/
+
+
+#############################################################################################################
+# Finally used by builder
+
+FROM base-node AS common-build
+
 COPY requirements-dev.txt /tmp/
 RUN \
   python3 -m pip install --disable-pip-version-check --no-cache-dir --requirement=/tmp/requirements-dev.txt && \
@@ -39,11 +63,10 @@ RUN \
 RUN \
   touch /usr/local/lib/python3.6/dist-packages/zope/__init__.py && \
   touch /usr/local/lib/python3.6/dist-packages/c2c/__init__.py
-# For awscli
-COPY etc/bash_completion.d/* /etc/bash_completion.d/
+
 
 #############################################################################################################
-# Finally used by runner and upgrader
+# Finally used by builder and upgrader
 
 FROM common-build AS build1
 
@@ -78,6 +101,7 @@ RUN \
   npm cache clear --force && \
   rm -rf /tmp/*
 
+
 #############################################################################################################
 # Base image for builder
 
@@ -96,8 +120,9 @@ RUN \
 RUN \
   curl --output /opt/jasperreport.xsd http://jasperreports.sourceforge.net/xsd/jasperreport.xsd
 
+
 #############################################################################################################
-# Base image for runner and upgrader
+# Base image for builder and upgrader
 
 FROM build1 AS build
 
@@ -107,6 +132,7 @@ COPY bin/import-ngeo-apps bin/eval-templates bin/wait-db /usr/bin/
 RUN make build
 RUN python3 -m pip install --editable=commons --editable=geoportal --editable=admin
 
+
 #############################################################################################################
 # Image used to build the project
 
@@ -114,7 +140,6 @@ FROM common-build-npm AS builder
 
 WORKDIR /src
 
-ENV NODE_PATH=/usr/lib/node_modules
 COPY webpack.config.js /tmp
 COPY bin/extract-ngeo-dependencies /usr/bin/
 
@@ -126,12 +151,14 @@ RUN \
 COPY --from=build /app/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/ \
     /opt/c2cgeoportal_geoportal/c2cgeoportal_geoportal/locale/
 
+
 #############################################################################################################
 # Intermediate image used to prepare the copy files to upgrade image
 
 FROM build AS build-upgrade
 
 RUN rm --recursive --force /app/c2cgeoportal/*/tests
+
 
 #############################################################################################################
 # Intermediate image used to prepare the copy files to run image
@@ -140,10 +167,11 @@ FROM build-upgrade AS build-run
 
 RUN rm --recursive --force /app/c2cgeoportal/geoportal/c2cgeoportal_geoportal/scaffolds
 
+
 #############################################################################################################
 # Image used to run the project
 
-FROM base AS runner
+FROM base-runner AS runner
 
 ARG VERSION
 ENV VERSION=$VERSION
@@ -161,6 +189,7 @@ RUN \
     --editable=/opt/c2cgeoportal_admin
 
 RUN adduser www-data root
+
 
 #############################################################################################################
 # Image used to upgrade the project
@@ -180,6 +209,7 @@ RUN \
     --editable=/opt/c2cgeoportal_commons \
     --editable=/opt/c2cgeoportal_geoportal && \
   pcreate -l|grep c2cgeoportal
+
 
 #############################################################################################################
 # Image that run the checks
