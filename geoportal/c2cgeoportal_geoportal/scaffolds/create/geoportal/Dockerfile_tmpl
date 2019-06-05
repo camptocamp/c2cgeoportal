@@ -1,0 +1,39 @@
+FROM camptocamp/geomapfish-build:{{geomapfish_version}} as builder
+LABEL maintainer Camptocamp "info@camptocamp.com"
+
+ENV NODE_PATH=/usr/lib/node_modules
+
+WORKDIR /app
+COPY . /app
+
+RUN make checks
+RUN make build
+RUN mv webpack.apps.js webpack.apps.js.tmpl && \
+    ln --symbolic /usr/lib/node_modules/ .
+
+###############################################################################
+
+FROM camptocamp/geomapfish:{{geomapfish_version}} as runner
+
+ENV LOG_LEVEL=INFO \
+    GUNICORN_ACCESS_LOG_LEVEL=INFO \
+    C2CGEOPORTAL_LOG_LEVEL=WARN \
+    PGPORT=5432 \
+    VISIBLE_ENTRY_POINT=/ \
+    SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
+
+WORKDIR /app
+COPY . /app
+COPY --from=builder /app/{{package}}_geoportal/static-ngeo/build/* \
+    /app/{{package}}_geoportal/static-ngeo/build/
+COPY --from=builder /app/config.yaml /app/alembic.ini /app/alembic.yaml ./
+RUN chmod go+w /app/{{package}}_geoportal/static-ngeo/build/ /app/{{package}}_geoportal/static-ngeo/api/apihelp/
+
+RUN pip install --disable-pip-version-check --no-cache-dir --no-deps --editable=/app/ && \
+    python -m compileall -q /app/{{package}}_geoportal -x /app/{{package}}_geoportal/static.*
+
+ARG GIT_HASH
+RUN c2cwsgiutils_genversion.py $GIT_HASH
+
+ENTRYPOINT [ "/usr/bin/eval-templates" ]
+CMD ["c2cwsgiutils_run"]

@@ -1,0 +1,8 @@
+#!/bin/bash -e
+
+user=$1
+group=$2
+shift
+shift
+"$@"
+chown -R ${user}:${group} /src

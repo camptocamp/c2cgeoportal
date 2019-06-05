@@ -17,20 +17,15 @@ Build
 
 .. code::
 
-  ./docker-run make --makefile=<user.mk> build
-
-If you want to work on your own instance, create a ${USER}.mk file like that:
-
-.. script::
-
-  INSTANCE=myUserName
-  include Makefile
+  cp .env.sample .env
+  docker build --tag=camptocamp/{{package}}-geoportal --build-arg=GIT_HASH=$(git rev-parse HEAD) geoportal
+  docker build --tag=camptocamp/{{package}}-config .
 
 Run
 ---
 
 .. code::
 
-   docker-compose up
+   docker-compose up -d
 
 .. Feel free to add project-specific things.

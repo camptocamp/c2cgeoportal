@@ -1,0 +1,26 @@
+#!/bin/bash -ex
+
+docker build --target=build --tag=camptocamp/geomapfish-tests \
+    --build-arg=MAJOR_VERSION=${MAJOR_VERSION} .
+docker build --target=runner --tag=camptocamp/geomapfish \
+    --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=$(ci/release-tag) .
+
+if [ ! -f docker/test-db/13-alembic-static.sql ]
+then
+    docker run --rm camptocamp/geomapfish alembic \
+        --config=/opt/c2cgeoportal_commons/alembic.ini \
+        --name=main upgrade --sql head > docker/test-db/12-alembic.sql
+    docker run --rm camptocamp/geomapfish alembic \
+        --config=/opt/c2cgeoportal_commons/alembic.ini \
+        --name=static upgrade --sql head > docker/test-db/13-alembic-static.sql
+fi
+
+docker build --tag=camptocamp/geomapfish-test-db docker/test-db
+docker build --tag=camptocamp/geomapfish-test-mapserver docker/test-mapserver
+docker build --target=tests --build-arg=VERSION=3.4 \
+    --tag=camptocamp/geomapfish-qgisserver-tests docker/qgisserver
+
+docker-compose up -d
+docker-compose exec tests wait-db
+docker-compose exec tests psql --command='DELETE FROM main_static.user_role'
+docker-compose exec tests psql --command='DELETE FROM main_static."user"'

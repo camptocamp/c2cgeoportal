@@ -1,0 +1,172 @@
+export PACKAGE = {{package}}
+
+TEMPLATE_EXCLUDE += $(PACKAGE)_geoportal/static/lib
+FIND_OPTS = $(foreach ELEM, $(TEMPLATE_EXCLUDE),-path ./$(ELEM) -prune -o) -type f
+
+# Language provided by the application
+LANGUAGES ?= en fr de
+NGEO_INTERFACES ?= desktop mobile iframe_api
+NGEO_API ?= TRUE
+INTERFACES += $(NGEO_INTERFACES)
+export INTERFACES
+
+ifneq ($(NGEO_INTERFACES), "")
+DEFAULT_WEB_RULE += $(NGEO_OUTPUT_FILES)
+endif
+ifneq ($(NGEO_API), "")
+DEFAULT_WEB_RULE += $(NGEO_API_OUTPUT_FILES)
+endif
+
+WEB_RULE ?= $(DEFAULT_WEB_RULE)
+
+DEFAULT_BUILD_RULES ?= $(WEB_RULE) \
+	config.yaml \
+	alembic.ini \
+	alembic.yaml \
+	build-api
+
+
+# Make rules
+BUILD_RULES ?= $(filter-out $(DISABLE_BUILD_RULES),$(DEFAULT_BUILD_RULES))
+
+OUTPUT_DIR = $(PACKAGE)_geoportal/static/build
+
+# ngeo
+NODE_ENV ?= production
+export NODE_ENV
+NO_DEV_SERVER ?= TRUE
+export NO_DEV_SERVER
+APP_OUTPUT_DIR = $(PACKAGE)_geoportal/static-ngeo/build
+GCC_JS_FILES = $(shell find /usr/lib/node_modules/openlayers/src/ol /usr/lib/node_modules/ngeo/src /usr/lib/node_modules/ol-cesium/src -type f -name '*.js' 2> /dev/null)
+APP_JS_FILES = $(shell find $(PACKAGE)_geoportal/static-ngeo/js -type f -name '*.js' 2> /dev/null)
+HTML_FILES += $(shell find $(PACKAGE)_geoportal/static-ngeo/js -type f -name '*.html' 2> /dev/null)
+SASS_FILES += $(shell find $(PACKAGE)_geoportal/static-ngeo/js -type f -name '*.scss' 2> /dev/null)
+CSS_FILES += $(shell find $(PACKAGE)_geoportal/static-ngeo/js -type f -name '*.css' 2> /dev/null)
+JSON_CLIENT_LOCALISATION_FILES = $(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .json, $(LANGUAGES)))
+ANGULAR_LOCALES_FILES = $(addprefix $(APP_OUTPUT_DIR)/angular-locale_, $(addsuffix .js, $(LANGUAGES)))
+NGEO_OUTPUT_FILES = $(JSON_CLIENT_LOCALISATION_FILES) \
+	$(ANGULAR_LOCALES_FILES)
+NGEO_OUTPUT_FILES += apps
+
+NGEO_API_OUTPUT_JS_FILE ?= $(APP_OUTPUT_DIR)/api.js.tmpl
+NGEO_API_OUTPUT_FILES += $(NGEO_API_OUTPUT_JS_FILE) $(APP_OUTPUT_DIR)/api.css
+
+
+ifdef CI
+WEBPACK_ARGS ?= --debug
+else
+WEBPACK_ARGS ?= --progress --debug
+endif
+
+VALIDATE_PY_FOLDERS = admin/$(PACKAGE)_admin \
+	$(PACKAGE)_geoportal/*.py $(PACKAGE)_geoportal/lib \
+	$(PACKAGE)_geoportal/scripts $(PACKAGE)_geoportal/views
+VALIDATE_PY_TEST_FOLDERS = $(PACKAGE)_geoportal/tests
+
+PY_FILES = $(shell find $(PACKAGE) -type f -name '*.py' -print)
+
+# Templates
+CONFIG_VARS += sqlalchemy.url sqlalchemy.pool_recycle sqlalchemy.pool_size sqlalchemy.max_overflow \
+	sqlalchemy.use_batch_mode sqlalchemy_slave.url sqlalchemy_slave.pool_recycle sqlalchemy_slave.pool_size \
+	sqlalchemy_slave.max_overflow sqlalchemy_slave.use_batch_mode schema schema_static enable_admin_interface \
+	default_locale_name servers layers available_locale_names cache admin_interface functionalities \
+	raster shortener hide_capabilities tinyowsproxy resourceproxy print_url print_get_redirect \
+	checker check_collector default_max_age package srid \
+	reset_password fulltextsearch global_headers headers authorized_referers hooks stats db_chooser \
+	dbsessions urllogin host_forward_host smtp c2c.base_path welcome_email \
+	lingua_extractor interfaces_config interfaces default_interface devserver_url api
+
+# Disabling Make built-in rules to speed up execution time
+.SUFFIXES:
+
+.PHONY: build
+build: $(BUILD_RULES)
+
+.PHONY: checks
+checks: flake8 eslint
+
+.PHONY: flake8
+flake8:
+	flake8 $(PACKAGE)
+
+.PHONY: lint-ngeo
+eslint: $(APP_JS_FILES)
+	eslint $?
+
+# Templates
+
+/tmp/c2ctemplate-cache.json:
+ifeq ($(origin VARS_FILE), undefined)
+	@echo "Error: the variable VARS_FILE is required."
+	exit 1
+endif
+	c2c-template --vars $(VARS_FILE) --get-cache $@
+
+config.yaml: /tmp/c2ctemplate-cache.json
+	c2c-template --cache /tmp/c2ctemplate-cache.json --get-config /tmp/_config.yaml $(CONFIG_VARS)
+	pykwalify --data-file /tmp/_config.yaml --schema-file CONST_config-schema.yaml
+	mv /tmp/_config.yaml $@
+
+# Server localisation
+
+.PRECIOUS: %.mo
+%.mo: %.po
+	msgfmt -o $@ $<
+
+# ngeo
+
+.PHONY: build-ngeo
+build-ngeo: $(NGEO_OUTPUT_FILES)
+
+.PRECIOUS: $(APP_OUTPUT_DIR)/%.json
+$(APP_OUTPUT_DIR)/%.json:
+	mkdir --parent $(dir $@)
+	node /usr/bin/compile-catalog \
+		/opt/c2cgeoportal_geoportal/c2cgeoportal_geoportal/locale/$*/LC_MESSAGES/ngeo.po \
+		/opt/c2cgeoportal_geoportal/c2cgeoportal_geoportal/locale/$*/LC_MESSAGES/gmf.po \
+		$(PACKAGE)_geoportal/locale/$*/LC_MESSAGES/$(PACKAGE)_geoportal-client.po > $@
+
+$(APP_OUTPUT_DIR)/angular-locale_%.js: /usr/lib/node_modules/ngeo/package.json language_mapping
+	mkdir --parent $(dir $@)
+	rm --force $@
+	cp /opt/angular-locale/angular-locale_`(grep $* language_mapping || echo $*) | cut --delimiter = --fields 2 | tr --delete '\r\n'`.js $@
+
+$(APP_OUTPUT_DIR)/images/: /usr/lib/node_modules/jquery-ui/themes/base/images
+	mkdir --parent $@
+	cp -r $</* $@
+
+.PRECIOUS: $(APP_OUTPUT_DIR)/vendor%
+$(APP_OUTPUT_DIR)/vendor%: /opt/vendor%
+	cp $< $@
+
+apps: webpack.apps.js
+	rm --force $(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .*, $(NGEO_INTERFACES)))
+	webpack $(WEBPACK_ARGS)
+	for interface in $(NGEO_INTERFACES); \
+	do \
+		mv $(APP_OUTPUT_DIR)/$${interface}.html $(APP_OUTPUT_DIR)/$${interface}.html.tmpl; \
+		ls -1 $(APP_OUTPUT_DIR)/$${interface}.*.css $(APP_OUTPUT_DIR)/$${interface}.*.js|while read file; \
+		do \
+			mv $${file} $${file}.tmpl; \
+		done; \
+	done
+
+# API
+
+.PHONY: build-api
+build-api: $(NGEO_API_OUTPUT_FILES)
+
+$(APP_OUTPUT_DIR)/api.js.tmpl: webpack.api.js $(PACKAGE)_geoportal/static-ngeo/api/index.js
+	webpack --config webpack.api.js $(WEBPACK_ARGS)
+	cp $(APP_OUTPUT_DIR)/api.js $(APP_OUTPUT_DIR)/api.js_
+	sed --in-place --expression='s/\$$/$${DOLLAR}/g' $(APP_OUTPUT_DIR)/api.js
+	sed --in-place --expression='s#{FULL_ENTRY_POINT}#$${VISIBLE_WEB_PROTOCOL}://$${VISIBLE_WEB_HOST}$${VISIBLE_ENTRY_POINT}#g' $(APP_OUTPUT_DIR)/api.js
+	mv $(APP_OUTPUT_DIR)/api.js $@
+
+
+$(APP_OUTPUT_DIR)/api.css: $(PACKAGE)_geoportal/static-ngeo/api/api.css
+	cp $< $@
+
+alembic.yaml: /tmp/c2ctemplate-cache.json
+	c2c-template --cache $< --get-config /tmp/_alembic.yaml srid schema schema_static sqlalchemy.url cache
+	mv /tmp/_alembic.yaml $@

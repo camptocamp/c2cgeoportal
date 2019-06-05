@@ -1,0 +1,20 @@
+---
+
+# The project Docker compose file for development.
+
+version: '2'
+
+services:
+  db:
+    image: camptocamp/geomapfish-test-app-db
+    environment:
+      POSTGRES_PASSWORD: www-data
+      POSTGRES_USER: www-data
+      POSTGRES_DB: testgeomapfishapp
+
+  externaldb:
+    image: camptocamp/geomapfish-test-external-db
+    environment:
+      POSTGRES_PASSWORD: www-data
+      POSTGRES_USER: www-data
+      POSTGRES_DB: test

@@ -1,11 +1,1 @@
-*
-!alembic.ini
-!alembic.yaml
-!webpack.*.js
-!config.yaml
-!eval_templates.sh
-!production.ini
-!development.ini
-!setup.cfg
-!setup.py
-!{{package}}_geoportal
+Dockerfile

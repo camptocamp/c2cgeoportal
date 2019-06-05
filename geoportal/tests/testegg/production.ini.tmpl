@@ -1,0 +1,9 @@
+[app:app]
+use = egg:testegg
+sqlalchemy.url = postgresql://${PGUSER}:${PGPASSWORD}@${PGHOST}:${PGPORT}/${PGDATABASE}
+mapserv.url = ${MAPSERVER_URL}
+project = testegg
+schema = main
+
+[pipeline:main]
+pipeline = app

@@ -114,8 +114,8 @@ class GeomapfishAngularExtractor(Extractor):  # pragma: no cover
 
     def __init__(self):
         super().__init__()
-        if os.path.exists("geoportal/config.yaml"):
-            config.init("geoportal/config.yaml")
+        if os.path.exists("config.yaml"):
+            config.init("config.yaml")
             self.config = config.get_config()
         else:
             self.config = None
@@ -337,16 +337,11 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
 
     def __init__(self):
         super().__init__()
-        if os.path.exists("geoportal/config.yaml"):
-            config.init("geoportal/config.yaml")
+        if os.path.exists("config.yaml"):
+            config.init("config.yaml")
             self.config = config.get_config()
         else:
             self.config = None
-        if os.path.exists("project.yaml"):
-            with open("project.yaml") as f:
-                self.package = yaml.safe_load(f)
-        else:
-            self.package = None
         self.env = None
 
     def __call__(self, filename, options):

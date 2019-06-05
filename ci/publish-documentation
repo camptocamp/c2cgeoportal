@@ -1,0 +1,23 @@
+#!/bin/bash -ex
+
+GIT_REV=$(git log | head --lines=1 | awk '{{print $2}}')
+
+git fetch origin gh-pages:gh-pages
+git checkout gh-pages
+
+if [ -e ${MAIN_BRANCH} ]
+then
+    git rm -r --force -- ${MAIN_BRANCH}
+fi
+
+mkdir --parent ${MAIN_BRANCH}
+docker run --rm --name=doc camptocamp/geomapfish-doc tail -f /vec/null
+docker cp doc:_build/html/ ${MAIN_BRANCH}/
+docker stop doc
+
+git add --all ${MAIN_BRANCH}
+git commit --message="Update documentation for the revision ${GIT_REV}" || true
+git push origin gh-pages
+
+# Back to the original branch
+git checkout ${GIT_REV}

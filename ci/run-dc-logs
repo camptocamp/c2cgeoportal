@@ -1,0 +1,18 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+import sys
+import subprocess
+import datetime
+
+run_cmd = sys.argv[1:]
+
+since = datetime.datetime.now().isoformat()
+
+try:
+    subprocess.check_call(run_cmd)
+except subprocess.CalledProcessError:
+    exit(2)
+finally:
+    for container in subprocess.check_output(['docker-compose', 'ps', '-q']).decode().strip().split('\n'):
+        subprocess.check_call(['docker', 'logs', '--timestamps', '--since', since, container])

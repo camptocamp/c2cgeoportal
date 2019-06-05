@@ -153,9 +153,9 @@ class TestThemesView(TestCase):
             del name  # Unused
             del kwargs  # Unused
             if _query is None:
-                return "http://localhost/travis/mapserv"
+                return "http://localhost/ci/mapserv"
             else:
-                return "http://localhost/travis/mapserv?" + "&".join(["=".join(i) for i in list(_query.items())])
+                return "http://localhost/ci/mapserv?" + "&".join(["=".join(i) for i in list(_query.items())])
 
         request.route_url = route_url
         request.params = params
@@ -394,8 +394,8 @@ class TestThemesView(TestCase):
                     "isSingleTile": False,
                     "namespace": 'http://mapserver.gis.umn.edu/mapserver',
                     "type": "mapserver",
-                    "url": "http://localhost/travis/mapserv?ogcserver=__test_ogc_server",
-                    "urlWfs": "http://localhost/travis/mapserv?ogcserver=__test_ogc_server",
+                    "url": "http://localhost/ci/mapserv?ogcserver=__test_ogc_server",
+                    "urlWfs": "http://localhost/ci/mapserv?ogcserver=__test_ogc_server",
                     "wfsSupport": True,
                 },
                 "__test_ogc_server_chtopo": {
