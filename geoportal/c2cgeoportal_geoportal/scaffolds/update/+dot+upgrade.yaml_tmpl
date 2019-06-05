@@ -261,3 +261,6 @@ files_to_move:
   - from: mapserver/tinyows.xml.mako
     to: mapserver/tinyows.xml.tmpl.mako
     version: 2.3
+  - from: Dockerfile
+    to: Dockerfile.mako
+    version: 2.3
