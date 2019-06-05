@@ -1,0 +1,15 @@
+#!/bin/bash -e
+
+if [ $# -lt 1 ]
+then
+    echo Usage ./upgrade VERSION [STEP]
+    exit 1
+fi
+
+if [ $# -gt 1 ]
+then
+    args="--step $2"
+fi
+
+docker run --rm --volume=${PWD}:/src camptocamp/geomapfish-scaffolds:$1 \
+        run $(id -u) $(id -g) c2cupgrade $args

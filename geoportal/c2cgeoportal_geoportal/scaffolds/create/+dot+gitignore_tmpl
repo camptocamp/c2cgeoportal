@@ -3,5 +3,6 @@
 __pycache__/
 /.env
 /docker-compose.override.yaml
+/upgrade
 /.upgrade.yaml
 /.UPGRADE*

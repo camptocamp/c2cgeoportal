@@ -66,18 +66,6 @@ def main():
 
     parser = _fill_arguments()
     options = parser.parse_args()
-    if options.new_makefile is None:
-        options.new_makefile = options.makefile
-
-    print("Starting the upgrade with options:")
-    if options.windows:
-        print("- windows")
-    print("- git_remote=" + options.git_remote)
-    if options.use_makefile:
-        print("- use_makefile")
-    print("- makefile=" + options.makefile)
-    print("- new_makefile=" + options.new_makefile)
-    sys.stdout.flush()
 
     c2cupgradetool = C2cUpgradeTool(options)
     c2cupgradetool.upgrade()
@@ -86,24 +74,10 @@ def main():
 def _fill_arguments():
     parser = ArgumentParser()
     parser.add_argument(
-        "--windows",
-        action="store_true",
-        help="Use the windows c2cgeoportal package",
-    )
-    parser.add_argument(
         "--git-remote",
         metavar="GITREMOTE",
         help="Specify the remote branch",
         default="origin",
-    )
-    parser.add_argument(
-        "--makefile", help="The makefile used to build", default="Makefile",
-    )
-    parser.add_argument(
-        "--new-makefile", help="The makefile used to override the makefile",
-    )
-    parser.add_argument(
-        "--use-makefile", action="store_true", help="c2cupgrade is running from a makefile",
     )
     parser.add_argument(
         "--step", type=int, help=argparse.SUPPRESS, default=0
@@ -140,7 +114,7 @@ class Step:
             except subprocess.CalledProcessError as e:
                 c2cupgradetool.print_step(
                     self.step_number, error=True,
-                    message="The command `./docker-run {}` returns the error code {}.".format(
+                    message="The command `{}` returns the error code {}.".format(
                         " ".join(["'{}'".format(e) for e in e.cmd]), e.returncode
                     ),
                     prompt="Fix the error and run the step again:"
@@ -203,31 +177,12 @@ class C2cUpgradeTool:
             print(colorize(message, RED if error else YELLOW))
         if step >= 0:
             print(colorize(prompt, GREEN))
-            if self.options.use_makefile:
-                args = " --makefile={}".format(self.options.makefile) \
-                    if self.options.makefile != "Makefile" else ""
-                print(colorize("./docker-run --home make{} upgrade{}".format(
-                    args, step if step != 0 else "",
-                ), GREEN))
-            else:
-                cmd = [
-                    "./docker-run",
-                    "--home",
-                    "--image=camptocamp/geomapfish-build",
-                    "--version=" + pkg_resources.get_distribution("c2cgeoportal_commons").version,
-                    "c2cupgrade",
-                ]
-                if self.options.windows:
-                    cmd.append("--windows")
-                if self.options.git_remote != "origin":
-                    cmd.append("--git-remote={}".format(self.options.git_remote))
-                if self.options.makefile != "Makefile":
-                    cmd.append("--makefile={}".format(self.options.makefile))
-                if self.options.new_makefile != self.options.makefile:
-                    cmd.append("--new-makefile={}".format(self.options.new_makefile))
-                if step != 0:
-                    cmd.append("--step={}".format(step))
-                print(colorize(" ".join(cmd), GREEN))
+            cmd = [
+                "./upgrade", os.environ['VERSION']
+            ]
+            if step != 0:
+                cmd.append("{}".format(step))
+            print(colorize(" ".join(cmd), GREEN))
 
     def run_step(self, step):
         getattr(self, "step{}".format(step))()
@@ -616,9 +571,6 @@ class C2cUpgradeTool:
             ),
         )]
 
-        self.options.use_makefile = True
-        self.options.makefile = self.options.new_makefile
-
         if len(status) > 0:
             with open("create.diff", "w") as diff_file:
                 if len(status) != 0:
@@ -653,12 +605,6 @@ class C2cUpgradeTool:
                 self.project.get('application_url', '... missing ...')
             )
         ]
-
-        if self.options.windows:
-            message.append(
-                "You are running on Windows, please restart your Apache server,"
-                "because we can not do that automatically."
-            )
 
         if os.path.isfile(".upgrade.yaml"):
             os.unlink(".upgrade.yaml")
