@@ -90,8 +90,8 @@ function upgrade {
         exit 1
     fi
     rm --recursive --force .UPGRADE*
-    cd -
     find -type d -empty -delete
+    cd -
     diff --recursive --exclude=.git --exclude=locale ${WORKSPACE}/ref ${WORKSPACE}/v$1
 }
 

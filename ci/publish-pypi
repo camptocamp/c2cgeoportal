@@ -13,9 +13,10 @@ set -x
 cd ${PKG}
 if [ "${VERSION}" == "${MAJOR_VERSION}" ]
 then
-    python3 setup.py egg_info --tag-date sdist bdist_wheel upload -r pypi || true
+    ../.venv/bin/python3 setup.py egg_info --tag-date sdist bdist_wheel
 else
-    python3 setup.py egg_info --no-date sdist bdist_wheel upload -r pypi
+    ../.venv/bin/python3 setup.py egg_info --no-date sdist bdist_wheel
 fi
+../.venv/bin/python3 ../.venv/bin/twine upload dist/*
 
 rm ~/.pypirc

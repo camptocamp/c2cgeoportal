@@ -12,7 +12,7 @@ default_project_file:
     - geoportal/{{package}}_geoportal/static-ngeo/.*
     - print/print-apps/.*
     - mapserver/.*
-    - tilegeneration/config\.yaml\.tmpl\.mako
+    - tilegeneration/config\.yaml\.tmpl
     - project\.yaml\.mako
     - docker-compose\.yaml
     - \.env\.mako
@@ -22,7 +22,7 @@ default_project_file:
     - README\.rst
   exclude:
     - geoportal/{{package}}_geoportal/static-ngeo/js/{{package}}module\.js
-    - mapserver/demo\.map\.tmpl\.mako
+    - mapserver/demo\.map\.tmpl
 
 no_diff:
   - .*\.po
@@ -55,10 +55,9 @@ upgrade_files:
       - docker-run
       - docker-compose-run
       - docker-compose-build.yaml
-      - geoportal/Dockerfile.mako
       - geoportal/jsbuild/
-      - geoportal/{package}_geoportal/templates/
-      - geoportal/{package}_geoportal/static/lib/
+      - geoportal/{package}_geoportal/templates/api/
+      - geoportal/{package}_geoportal/static/lib/.gitignore
       - testdb/
       - vars_convert2tmpl.yaml
       - CONST_convert2tmpl.mk
@@ -101,3 +100,6 @@ upgrade_files:
   - action: move
     from: .env.mako
     to: .env.sample
+  - action: move
+    from: Dockerfile.mako
+    to: Dockerfile
