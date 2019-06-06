@@ -1,43 +1,43 @@
-alembic==1.0.10  # geoportal
-c2c.template==2.1.0  # geoportal
-c2cgeoform==2.0.dev20190513  # commons
-colander==1.7.0  # commons, admin
-ColanderAlchemy==0.3.3  # commons
-dateutils==0.6.6  # geoportal pcreate
-deform==2.0.7  # commons, admin
-defusedxml==0.6.0  # geoportal
-dogpile.cache==0.7.1  # geoportal
-Fiona==1.8.6  # geoportal raster
-GeoAlchemy2==0.6.2  # commons, geoportal
-geojson==2.4.1  # geoportal
-ipcalc==1.99.0  # geoportal
+alembic~=1.0.10  # geoportal
+c2c.template~=2.1.0  # geoportal
+c2cgeoform~=2.0.dev20190513  # commons
+colander~=1.7.0  # commons, admin
+ColanderAlchemy~=0.3.3  # commons
+dateutils~=0.6.6  # geoportal pcreate
+deform~=2.0.7  # commons, admin
+defusedxml~=0.6.0  # geoportal
+dogpile.cache~=0.7.1  # geoportal
+Fiona~=1.8.6  # geoportal raster
+GeoAlchemy2~=0.6.2  # commons, geoportal
+geojson~=2.4.1  # geoportal
+ipcalc~=1.99.0  # geoportal
 iso8601==0.1.11  # deform, by default the version 0.1.12 is installed and is incompatible with deform, rq.filter: <=0.1.11
-isodate==0.6.0  # geoportal
-Mako==1.0.12  # geoportal
-OWSLib==0.17.1  # geoportal
-papyrus==2.4  # commons, geoportal
+isodate~=0.6.0  # geoportal
+Mako~=1.0.10  # geoportal
+OWSLib~=0.17.1  # geoportal
+papyrus~=2.4  # commons, geoportal
 passwordgenerator # geoportal
-PasteScript==3.1.0  # geoportal pcreate
-psycopg2-binary==2.8.2  # geoportal
-pycryptodome==3.8.2  # geoportal
-pykwalify==1.7.0 # geoportal build
-Pympler==0.7  # geoportal, memory view
-pyproj==1.9.6  # admin, other?, rq.filter: < 2.0.0
-pyramid==1.10.4  # geoportal
-pyramid_debugtoolbar==4.5  # geoportal
-pyramid-jinja2==2.8  # admin
-pyramid_mako==1.0.2  # geoportal
-pyramid_multiauth==0.9.0  # geoportal
-pyramid_tm==2.2.1  # geoportal
-python-dateutil==2.6.1  # geoportal, rq.filter: <2.7.0
-PyYAML==5.1  # geoportal
-rasterio==1.0.2  # geoportal raster, rq.filter: <=1.0.2
-requests==2.22.0  # geoportal
-redis==3.2.1  # geoportal cache
-Shapely==1.6.4.post2  # geoportal
-simplejson==3.16.0  # geoportal, rq.filter: !=3.16.1
-SQLAlchemy==1.3.4
-transaction==2.4.0  # commons, geoportal
-translationstring==1.3  # admin
-wsgi-lineprof==0.7.0  # profiling
-zope.event==4.4  # commons, geoportal
+PasteScript~=3.1.0  # geoportal pcreate
+psycopg2-binary~=2.8.2  # geoportal
+pycryptodome~=3.8.1  # geoportal
+pykwalify~=1.7.0 # geoportal build
+Pympler~=0.7  # geoportal, memory view
+pyproj~=1.9.6  # admin, other?, rq.filter: < 2.0.0
+pyramid~=1.10.4  # geoportal
+pyramid_debugtoolbar~=4.5  # geoportal
+pyramid-jinja2~=2.8  # admin
+pyramid_mako~=1.0.2  # geoportal
+pyramid_multiauth~=0.9.0  # geoportal
+pyramid_tm~=2.2.1  # geoportal
+python-dateutil~=2.8.0  # geoportal
+PyYAML~=5.1  # geoportal
+rasterio~=1.0.2  # geoportal raster, rq.filter: <=1.0.2
+requests~=2.22.0  # geoportal
+redis~=3.2.1  # geoportal cache
+Shapely~=1.6.4.post2  # geoportal
+simplejson~=3.16.0  # geoportal, rq.filter: !=3.16.1
+SQLAlchemy~=1.3.4
+transaction~=2.4.0  # commons, geoportal
+translationstring~=1.3  # admin
+wsgi-lineprof~=0.7.0  # profiling
+zope.event~=4.4  # commons, geoportal
