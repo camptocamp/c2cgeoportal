@@ -171,11 +171,11 @@ jobs:
             git config user.email "<ci@camptocamp.com>"
             git config user.name "CI"
             git fetch push
+      - run:
+          name: Clean Docker hub tags
+          command: ci/clean-dockerhub-tags
       - deploy: &publish-docker-pip
           name: Push to Docker hub and Pypi
-          # git remote add full https://github.com/camptocamp/c2cgeoportal.git || true
-          # git fetch --tags --prune
-          # ci/clean-dockerhub-tags
           command: |
             docker build --target=builder --tag=camptocamp/geomapfish-build \
             --build-arg=MAJOR_VERSION=${MAJOR_VERSION} .
