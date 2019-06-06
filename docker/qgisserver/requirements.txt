@@ -1,13 +1,13 @@
-c2cgeoform==2.0.dev20190513  # commons
-c2cwsgiutils==2.19.2  # commons, rq.filter: <3
-c2c.template==2.1.0  # geoportal
-ColanderAlchemy==0.3.3  # commons
-colander==1.7.0  # commons, admin
-deform==2.0.7  # commons, admin
-GeoAlchemy2==0.6.2  # commons, geoportal
-geojson==2.4.1  # geoportal
+c2cgeoform~=2.0.dev20190513  # commons
+c2cwsgiutils~=2.19.2  # commons, rq.filter: <3
+c2c.template~=2.1.0  # geoportal
+ColanderAlchemy~=0.3.3  # commons
+colander~=1.7.0  # commons, admin
+deform~=2.0.7  # commons, admin
+GeoAlchemy2~=0.6.2  # commons, geoportal
+geojson~=2.4.1  # geoportal
 iso8601==0.1.11  # deform, by default the version 0.1.12 is installed and is incompatible with deform, rq.filter: <=0.1.11
-papyrus==2.4  # commons, geoportal
-redis==3.2.1  # geoportal cache
-SQLAlchemy==1.3.3
-transaction==2.4.0  # commons, geoportal
+papyrus~=2.4  # commons, geoportal
+redis~=3.2.1  # geoportal cache
+SQLAlchemy~=1.3.3
+transaction~=2.4.0  # commons, geoportal
