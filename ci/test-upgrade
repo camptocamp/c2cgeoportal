@@ -57,22 +57,21 @@ function printdiff {
     done
 }
 
-function run_c2cupgrade {
-    docker run --rm --volume=${PWD}:/src camptocamp/geomapfish-scaffolds \
-        run $(id -u) $(id -g) c2cupgrade $1 $2
-}
-
 # $1: version
 function upgrade {
+    cp scripts/upgrade ${WORKSPACE}/v$1/testgeomapfish/
     cd ${WORKSPACE}/v$1/testgeomapfish
     cp project.yaml.mako project.yaml || true
-    run_c2cupgrade --step 1
+    echo /upgrade >> .gitignore
+    git add .gitignore
+    git commit -m "Add /upgrade in .gitignore"
+    ./upgrade latest
     if [ -e .UPGRADE8 ]
     then
         # Workaround
         git status > /dev/null
         git apply --3way ngeo.diff
-        run_c2cupgrade --step 9
+        ./upgrade latest 9
     fi
     if [ -e .UPGRADE9 ]
     then
@@ -81,7 +80,7 @@ function upgrade {
         do
             cp CONST_create_template/${file} ${file}
         done
-        run_c2cupgrade --step 10
+        ./upgrade latest 10
     fi
     if [ ! -e .UPGRADE_SUCCESS ]
     then
@@ -89,7 +88,7 @@ function upgrade {
         echo "Fail to upgrade"
         exit 1
     fi
-    rm --recursive --force .UPGRADE*
+    git clean -Xf
     find -type d -empty -delete
     cd -
     diff --recursive --exclude=.git --exclude=locale ${WORKSPACE}/ref ${WORKSPACE}/v$1

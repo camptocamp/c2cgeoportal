@@ -5,28 +5,35 @@ Upgrading a GeoMapFish application
 ==================================
 
 
-From a version 2.3 and next
+From a version 2.4 and next
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Build the project file:
+Build the project file if needed (2.4):
 
 .. prompt:: bash
 
    ./docker-run make project.yaml
 
-Change the version in the file ``.config`` to the wanted version.
-
-If you should specify a makefile:
+Get the upgrade script:
 
 .. prompt:: bash
 
-   ./docker-run --home make --makefile=<user>.mk upgrade
+    curl https://raw.githubusercontent.com/camptocamp/c2cgeoportal/${MAIN_BRANCH}/scripts/upgrade > upgrade
+    chmod +x upgrade
 
-Also:
+For 2.4 add upgrade in Git ignore:
 
 .. prompt:: bash
 
-   ./docker-run --home make upgrade
+    echo /upgrade >> .gitignore
+    git add .gitignore
+    git comit -m "Add /upgrade in .gitignore"
+
+Run the upgrade:
+
+.. prompt:: bash
+
+   ./upgrade <version>
 
 Then follow the instructions.
 
