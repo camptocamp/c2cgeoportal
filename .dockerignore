@@ -1,5 +1,6 @@
 *
 !npm-packages
+!bin/
 !webpack.config.js
 !commons/c2cgeoportal_commons/
 !commons/setup.py
