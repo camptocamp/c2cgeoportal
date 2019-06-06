@@ -61,7 +61,7 @@ class OGCProxy(Proxy):
 
         self.lower_params = self._get_lower_params(self.params)
         if not has_default_ogc_server and "ogcserver" not in self.params:
-            raise HTTPBadRequest("The querytring argument 'ogcserver' is required")
+            raise HTTPBadRequest("The querystring argument 'ogcserver' is required")
         if "ogcserver" in self.params:
             self.ogc_server = self._get_ogcserver_byname(self.params["ogcserver"])
 
