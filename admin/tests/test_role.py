@@ -120,7 +120,7 @@ class TestRole(AbstractViewsTests):
                             (658348.6696383564, 6080273.63626964),
                             (664577.4194513536, 5753148.2510447875),
                             (1167544.3397631699, 5748064.729594703)])
-        assert expected.almost_equals(shape(json.loads(form['extent'].value)))
+        assert expected.almost_equals(shape(json.loads(form['extent'].value)), decimal=0)
 
         functionalities = roles_test_data['functionalities']
         assert set((
@@ -192,7 +192,7 @@ class TestRole(AbstractViewsTests):
                             (513083.1504351135, 245400.5416369234),
                             (511073.1973649057, 108541.7344432737),
                             (719383.7988896352, 109062.8141734005)])
-        assert expected.almost_equals(to_shape(role.extent))
+        assert expected.almost_equals(to_shape(role.extent), decimal=0)
 
         assert set(functionality_ids) == set([f.id for f in role.functionalities])
         assert set(ra_ids) == set([f.id for f in role.restrictionareas])

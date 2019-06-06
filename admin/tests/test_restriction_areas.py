@@ -101,7 +101,7 @@ class TestRestrictionAreaViews(AbstractViewsTests):
                             (658348.6696383564, 6080273.63626964),
                             (664577.4194513536, 5753148.2510447875),
                             (1167544.3397631699, 5748064.729594703)])
-        assert expected.almost_equals(shape(json.loads(form['area'].value)))
+        assert expected.almost_equals(shape(json.loads(form['area'].value)), decimal=0)
         self._check_roles(form, roles, restriction_area)
 
         form['description'] = 'new_description'
