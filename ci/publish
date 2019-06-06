@@ -31,7 +31,7 @@ then
     git push push ${CIRCLE_BRANCH}
 fi
 
-DEPLOY_PIP=TRUE
+DEPLOY_PIP=FALSE
 # Get the version to be published
 if [ "${TAG}" != "" ]
 then

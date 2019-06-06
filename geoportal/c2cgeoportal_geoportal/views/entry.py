@@ -138,6 +138,8 @@ class Entry:
         self.metadata_type = get_types_map(
             self.settings.get("admin_interface", {}).get("available_metadata", [])
         )
+        self._ogcservers_cache = None
+        self._treeitems_cache = None
         self._layerswms_cache = None
         self._layerswmts_cache = None
         self._layergroup_cache = None
@@ -269,10 +271,10 @@ class Entry:
             return url, None, errors
 
         # With wms 1.3 it returns text/xml also in case of error :-(
-        if response.headers["Content-Type"].split(";")[0].strip() not in \
+        if response.headers.get("Content-Type", '').split(";")[0].strip() not in \
                 ["application/vnd.ogc.wms_xml", "text/xml"]:
             error = "GetCapabilities from URL {} returns a wrong Content-Type: {}\n{}".format(
-                url, response.headers["Content-Type"], response.text
+                url, response.headers.get("Content-Type", ''), response.text
             )
             errors.add(error)
             LOG.error(error)
@@ -323,7 +325,7 @@ class Entry:
             # ratio between edge and diagonal of a square.
             resolution_hint_min = float(layer.scaleHint["min"]) / sqrt(2)
             resolution_hint_max = float(layer.scaleHint["max"]) / sqrt(2) \
-                if layer.scaleHint["max"] != "0" else 999999999
+                if layer.scaleHint["max"] not in ("0", "Infinity") else 999999999
         for child_layer in layer.layers:
             resolution = self._get_layer_resolution_hint_raw(child_layer)
             resolution_hint_min = resolution[0] if resolution_hint_min is None else (
@@ -555,6 +557,7 @@ class Entry:
 
     def _get_ogc_servers(self, group, depth):
         """ Recurse on all children to get unique identifier for each child. """
+
         ogc_servers = set()
 
         # escape loop
@@ -674,6 +677,9 @@ class Entry:
         return wms, list(wms.contents), wms_errors
 
     def _load_tree_items(self):
+        # Populate sqlalchemy session.identity_map to reduce the number of database requests.
+        self._ogcservers_cache = models.DBSession.query(main.OGCServer).all()
+        self._treeitems_cache = models.DBSession.query(main.TreeItem).all()
         self._layerswms_cache = models.DBSession.query(main.LayerWMS).options(
             subqueryload(main.LayerWMS.dimensions), subqueryload(main.LayerWMS.metadatas)
         ).all()

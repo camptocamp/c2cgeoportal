@@ -48,6 +48,7 @@ setup(
     version=VERSION,
     description='c2cgeoportal admin',
     long_description=README,
+    long_description_content_type='text/markdown',
     classifiers=[
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',

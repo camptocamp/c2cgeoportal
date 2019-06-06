@@ -22,18 +22,18 @@ If you want a new mobile interface, get the default files as follows:
 
 .. prompt:: bash
 
-  cp CONST_create_template/geoportal/<package>_geoportal/static-ngeo/js/apps/mobile.html.ejs \
+  cp CONST_create_template/geoportal/<package>_geoportal/static-ngeo/js/apps/mobile.html.ejs ${'\\'}
     geoportal/<package>_geoportal/static-ngeo/js/apps/<interface>.html.ejs
-  cp CONST_create_template/geoportal/<package>_geoportal/static-ngeo/js/apps/Controllermobile.js \
+  cp CONST_create_template/geoportal/<package>_geoportal/static-ngeo/js/apps/Controllermobile.js ${'\\'}
     geoportal/<package>_geoportal/static-ngeo/js/apps/Controller<interface>.js
 
 If you want a new desktop interface, get the default files as follows:
 
 .. prompt:: bash
 
-  cp CONST_create_template/geoportal/<package>_geoportal/static-ngeo/js/apps/desktop.html.ejs \
+  cp CONST_create_template/geoportal/<package>_geoportal/static-ngeo/js/apps/desktop.html.ejs ${'\\'}
     geoportal/<package>_geoportal/static-ngeo/js/apps/<interface>.html.ejs
-  cp CONST_create_template/geoportal/<package>_geoportal/static-ngeo/js/apps/Controllerdesktop.js \
+  cp CONST_create_template/geoportal/<package>_geoportal/static-ngeo/js/apps/Controllerdesktop.js ${'\\'}
     geoportal/<package>_geoportal/static-ngeo/js/apps/Controller<interface>.js
 
 Edit interface files

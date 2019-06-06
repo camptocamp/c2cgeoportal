@@ -32,10 +32,8 @@ import logging
 import math
 import os
 from decimal import Decimal
-from typing import Dict, Union  # noqa, pylint: disable=unused-import
+from typing import Dict, Any  # noqa, pylint: disable=unused-import
 
-from fiona.collection import Collection
-import rasterio
 import zope.event.classhandler
 from pyramid.httpexceptions import HTTPBadRequest, HTTPNotFound
 from pyramid.view import view_config
@@ -46,7 +44,7 @@ log = logging.getLogger(__name__)
 
 
 class Raster:
-    data = {}  # type: Dict[str, Union[Collection, rasterio.DatasetReader]]
+    data = {}  # type: Dict[str, Any]
 
     def __init__(self, request):
         self.request = request
@@ -103,15 +101,18 @@ class Raster:
         if name not in self.data:
             path = layer["file"]
             if layer.get("type", "shp_index") == "shp_index":
+                from fiona.collection import Collection
                 self.data[name] = Collection(path)
             elif layer.get("type") == "gdal":
+                import rasterio
                 self.data[name] = rasterio.open(path)
 
         return self.data[name]
 
     def _get_raster_value(self, layer, name, lon, lat):
         data = self._get_data(layer, name)
-        if layer.get("type", "shp_index") == "shp_index":
+        type_ = layer.get("type", "shp_index")
+        if type_ == "shp_index":
             tiles = [e for e in data.filter(mask={
                 "type": "Point",
                 "coordinates": [lon, lat],
@@ -125,10 +126,13 @@ class Raster:
                 tiles[0]["properties"]["location"],
             )
 
+            import rasterio
             with rasterio.open(path) as dataset:
                 result = self._get_value(layer, name, dataset, lon, lat)
-        elif layer.get("type") == "gdal":
+        elif type_ == "gdal":
             result = self._get_value(layer, name, data, lon, lat)
+        else:
+            raise ValueError("Unsupported type " + type_)
 
         if "round" in layer:
             result = self._round(result, layer["round"])
@@ -142,9 +146,9 @@ class Raster:
         index = dataset.index(lon, lat)
 
         shape = dataset.shape
-        if index[0] >= 0 and index[1] >= 0 and index[0] < shape[0] and index[1] < shape[1]:
+        if 0 <= index[0] < shape[0] and 0 <= index[1] < shape[1]:
             def get_index(index_):
-                return (index_, index_ + 1)
+                return index_, index_ + 1
             result = dataset.read(1, window=(
                 get_index(index[0]),
                 get_index(index[1]),

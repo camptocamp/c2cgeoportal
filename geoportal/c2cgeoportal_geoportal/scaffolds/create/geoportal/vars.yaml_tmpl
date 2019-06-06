@@ -23,7 +23,7 @@ vars:
     default:
       constants:
         defaultTheme: Demo
-        defaultLang: en
+        defaultLang: '{default_locale_name}'
         ngeoWfsPermalinkOptions:
           wfsTypes:
             - featureType: fuel
