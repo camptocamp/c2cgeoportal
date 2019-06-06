@@ -25,6 +25,7 @@ DOCKER_PGHOST_SLAVE ?= 172.17.0.1
 DOCKER_PGPORT ?= 5432
 DOCKER_PGDATABASE ?= geomapfish
 DOCKER_PGSCHEMA ?= main
+PGSCHEMA ?= main
 DOCKER_PGSCHEMA_STATIC ?= main_static
 export DOCKER_PORT
 export DOCKER_BASE
@@ -696,7 +697,8 @@ docker-build-config: $(shell docker-required --path .) \
 		$(PRINT_CONFIG_FILE) \
 		$(MAPCACHE_FILE) \
 		qgisserver/geomapfish.yaml
-	docker build --tag=$(DOCKER_BASE)-config:$(DOCKER_TAG) .
+	docker build --tag=$(DOCKER_BASE)-config:$(DOCKER_TAG) \
+		--build-arg=PGSCHEMA=$(PGSCHEMA) .
 
 .PHONY: docker-build-geoportal
 docker-build-geoportal: $(shell docker-required --path geoportal) \
@@ -705,7 +707,8 @@ docker-build-geoportal: $(shell docker-required --path geoportal) \
 		geoportal/config.yaml \
 		geoportal/alembic.ini \
 		geoportal/alembic.yaml
-	docker build --tag=$(DOCKER_BASE)-geoportal:$(DOCKER_TAG) --build-arg=GIT_HASH=$(GIT_HASH) geoportal
+	docker build --tag=$(DOCKER_BASE)-geoportal:$(DOCKER_TAG) \
+		--build-arg=GIT_HASH=$(GIT_HASH) geoportal
 
 .PHONY: push-docker
 push-docker:

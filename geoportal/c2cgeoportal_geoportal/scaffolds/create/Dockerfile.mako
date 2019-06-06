@@ -1,5 +1,8 @@
 FROM camptocamp/geomapfish-config-build:${geomapfish_version}
 
+ARG PGSCHEMA
+ENV PGSCHEMA=$PGSCHEMA
+
 COPY . /tmp/config/
 
 RUN mv /tmp/config/bin/* /usr/bin/ && \
