@@ -157,13 +157,12 @@ jobs:
       - run: ci/test-upgrade 25 ${HOME}/workspace
       - run: ci/test-upgrade cleanup ${HOME}/workspace
 
-  deploy-nonmain:
+  publish-nonmain:
     environment: *environment
     machine: true
     steps:
       - run: *python
       - checkout
-      - run: python3 -m pip install --user --requirement=ci/requirements.txt
       - run: &init-git
           name: Init Git
           command: |
@@ -197,11 +196,11 @@ jobs:
             docker tag camptocamp/geomapfish-geoportal:${MAJOR_VERSION} camptocamp/geomapfish-geoportal
             ci/publish
 
-  deploy:
+  publish:
     environment: *environment
-    docker:
-      - image: circleci/python:3.7
+    machine: true
     steps:
+      - run: *python
       - checkout
       - run: *init-git
       - deploy: *publish-docker-pip
@@ -225,7 +224,7 @@ workflows:
     jobs:
       - main
       - test-app-upgrade
-      - deploy:
+      - publish:
           filters:
             branches:
               only: &main-branches
@@ -234,7 +233,7 @@ workflows:
           requires:
             - main
             - test-app-upgrade
-      - deploy-nonmain:
+      - publish-nonmain:
           filters:
             branches:
               ignore: *main-branches
