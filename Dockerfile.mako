@@ -28,6 +28,7 @@ RUN \
   done && \
   curl --output /opt/jasperreport.xsd http://jasperreports.sourceforge.net/xsd/jasperreport.xsd
 
+COPY bin/list4vrt /usr/bin/
 COPY commons /opt/c2cgeoportal_commons
 COPY geoportal /opt/c2cgeoportal_geoportal
 COPY admin /opt/c2cgeoportal_admin

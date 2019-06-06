@@ -1,0 +1,28 @@
+#!/usr/bin/env python3
+
+import boto3
+import os
+import argparse
+
+
+def main():
+    parser = argparse.ArgumentParser(description='Get the list of geotiff files for `gdalbuildvrt`')
+    parser.add_argument('bucket')
+    parser.add_argument('prefix')
+    parser.add_argument('postfix', default='.bt')
+    args = parser.parse_args()
+
+    session = boto3.session.Session()
+
+    s3_client = session.client(
+        service_name='s3',
+        endpoint_url=f"https://{os.environ['AWS_S3_ENDPOINT']}/",
+        region_name=os.environ['AWS_DEFAULT_REGION']
+    )
+    keys = [i['Key'] for i in s3_client.list_objects(Bucket=args.bucket, Prefix=args.prefix)['Contents']]
+    filtered_keys = list(filter(lambda i: i.endswith(args.postfix), keys))
+    full_keys = [f'/vsis3/{args.bucket}/{i}' for i in filtered_keys]
+    print('\n'.join(full_keys))
+
+
+main()
