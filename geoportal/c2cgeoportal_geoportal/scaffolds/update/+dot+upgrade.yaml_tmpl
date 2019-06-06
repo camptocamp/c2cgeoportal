@@ -103,3 +103,6 @@ upgrade_files:
   - action: move
     from: Dockerfile.mako
     to: Dockerfile
+  - action: move
+    from: tools/extract-messages.js
+    to: geoportal/tools/extract-messages.js

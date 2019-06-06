@@ -27,7 +27,10 @@ COPY . /app
 COPY --from=builder /app/{{package}}_geoportal/static-ngeo/build/* \
     /app/{{package}}_geoportal/static-ngeo/build/
 COPY --from=builder /app/config.yaml /app/alembic.ini /app/alembic.yaml ./
-RUN chmod go+w /app/{{package}}_geoportal/static-ngeo/build/ /app/{{package}}_geoportal/static-ngeo/api/apihelp/
+RUN chmod go+w /app/{{package}}_geoportal/static-ngeo/build/ \
+    /app/{{package}}_geoportal/static-ngeo/api/apihelp/ \
+    /app/{{package}}_geoportal/locale/ \
+    /app/{{package}}_geoportal/locale/*/LC_MESSAGES/{{package}}_geoportal-client.po
 
 RUN pip install --disable-pip-version-check --no-cache-dir --no-deps --editable=/app/ && \
     python -m compileall -q /app/{{package}}_geoportal -x /app/{{package}}_geoportal/static.*
