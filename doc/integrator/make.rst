@@ -121,10 +121,7 @@ To decrypt the files run:
    ``pinentry-mode loopback`` in your ``~/.gnupg/gpg.conf`` file and
    ``allow-loopback-pinentry``in your ``~/.gnupg/gpg-agent.conf`` file.
    Then it should be fixed or you can also try to run it in Docker:
-   ``./docker-run --home make --makefile=<user>.mk secrets``
-
-   If you have an error about opening ``/dev/tty``, try to run it in Docker as root:
-   ``./docker-run --root --home make --makefile=<user>.mk secrets``
+   ``docker exec camptocamp/geoportal:${MAIN_VERSION} make --makefile=<user>.mk secrets``
 
 
 Custom rules

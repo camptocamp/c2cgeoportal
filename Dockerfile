@@ -148,7 +148,7 @@ FROM build1 AS build
 
 COPY . /app/c2cgeoportal/
 WORKDIR /app/c2cgeoportal
-COPY bin/import-ngeo-apps bin/eval-templates bin/wait-db /usr/bin/
+COPY bin/import-ngeo-apps bin/eval-templates bin/wait-db bin/transifex-init /usr/bin/
 RUN make build
 RUN python3 -m pip install --editable=commons --editable=geoportal --editable=admin
 

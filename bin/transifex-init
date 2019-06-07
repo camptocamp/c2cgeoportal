@@ -1,0 +1,4 @@
+#!/bin/bash -e
+
+rm .tx/config
+MAJOR_VERSION=$1 make transifex-init

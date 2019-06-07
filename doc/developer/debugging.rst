@@ -92,24 +92,6 @@ account:
 Logs are available in the ``/var/log/postgresql/postgresql-9.*-main.log`` file.
 
 
-Makefile
---------
-
-To obtain additional debug messages, you can rebuild your project as follows:
-
-.. prompt:: bash
-
-   ./docker-run --env=DEBUG=TRUE make ...
-
-This will add a message at the start of each rule with the list of files that required an update, e.-g.:
-
-.. code::
-
-   Build /build/c2ctemplate-cache.json due modification on vars.yaml
-   -rw-r--r-- 1 sbrunner geomapfish 1321 2019-01-09 16:59:20.845623078 +0000 /build/c2ctemplate-cache.json
-   -rw-rw-r-- 1 sbrunner geomapfish 1299 2019-01-10 08:31:35.707376156 +0000 vars.yaml
-
-
 Docker-compose
 --------------
 
@@ -138,15 +120,6 @@ When you want to run multiple instances on the same server, you should:
 
 - Use a different docker tag for each instance
 - Use a different project name for each instance
-
-Use a different docker tag
-..........................
-
-To use a different docker tag, define an environment variable in the build:
-
-.. prompt:: bash
-
-   DOCKER_TAG=<tag> ./docker-run make build
 
 
 Developing in Python
@@ -231,13 +204,6 @@ Add the following alias in your ``webpack.apps.js.mako`` file:
    +    gmf: path.resolve(__dirname, 'ngeo/contribs/gmf/src'),
       }
     }
-
-Force rebuild the application:
-
-.. prompt:: bash
-
-   ./docker-run rm /build/apps.<interface>.timestamp
-   ./docker-run make build
 
 
 Performance or network error

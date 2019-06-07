@@ -66,6 +66,10 @@ function upgrade {
     git add .gitignore
     git commit -m "Add /upgrade in .gitignore"
     ./upgrade latest
+    if [ -e .UPGRADE7 ]
+    then
+        ./upgrade latest 8
+    fi
     if [ -e .UPGRADE8 ]
     then
         # Workaround

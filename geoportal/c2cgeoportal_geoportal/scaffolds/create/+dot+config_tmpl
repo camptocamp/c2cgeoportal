@@ -1,3 +1,0 @@
-[docker-run]
-image=camptocamp/geomapfish-build
-version={{geomapfish_version}}

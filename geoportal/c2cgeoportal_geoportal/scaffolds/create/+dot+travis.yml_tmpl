@@ -10,6 +10,7 @@ addons:
 env:
   global:
     - PROJECT={{package}}
+    - TAG=int
 #    - OPENSHIFT_PROJECT=gs-gmf-{{package}}
 #    - HELM_RELEASE_NAMES=List of branch that should be deployed on helm
 #    - DOCKER_USERNAME=username
@@ -19,8 +20,9 @@ env:
 #    - secure: travis encrypt OPENSHIFT_PASSWORD=password
 
 script:
-  - ./docker-run make checks
-  - ./docker-run make docker-build-config docker-build-geoportal
+  - docker build --tag=camptocamp/{{package}}-config:${TAG} .
+  - docker build --tag=camptocamp/{{package}}-geoportal:${TAG} \
+        --build-arg=GIT_HASH=$(git rev-parse HEAD) geoportal
 
 deploy:
   provider: script
