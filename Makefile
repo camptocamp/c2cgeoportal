@@ -209,7 +209,7 @@ docker-build-build: $(shell docker-required --path . --replace-pattern='^test(.*
 
 .PHONY: docker-build-config
 docker-build-config:
-	docker build --tag=$(DOCKER_BASE)-config:$(MAJOR_VERSION) docker/config
+	docker build --tag=$(DOCKER_BASE)-config-build:$(MAJOR_VERSION) docker/config
 
 docker/qgisserver/commons: commons
 	rm --recursive --force $@
