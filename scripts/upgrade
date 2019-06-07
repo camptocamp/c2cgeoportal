@@ -1,9 +1,40 @@
 #!/bin/bash -e
 
+function help {
+    echo Usage:
+    echo ./upgrade VERSION [STEP]
+    echo ./upgrade finalise PACKAGE [DOCKER_TAG]
+    exit 1
+}
+
 if [ $# -lt 1 ]
 then
-    echo Usage ./upgrade VERSION [STEP]
-    exit 1
+    help
+fi
+
+if [ $1 == finalise ]
+then
+    if [ $# -lt 2 ]
+    then
+        help
+    fi
+    package=$2
+    tag=
+    if [ $# -gt 2 ]
+    then
+        tag=:$3
+    fi
+
+    docker build --tag=camptocamp/${package}-config${tag} .
+    docker build --tag=camptocamp/${package}-geoportal${tag} \
+        --build-arg=GIT_HASH=$(git rev-parse HEAD) geoportal
+
+    docker-compose down --remove-orphans || true
+    DOCKER_TAG=unexisting docker-compose pull --ignore-pull-failures
+    docker-compose up -d
+    docker-compose exec geoportal alembic --name=main --config=alembic.ini upgrade head
+
+    exit 0
 fi
 
 if [ $# -gt 1 ]
