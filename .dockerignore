@@ -13,4 +13,5 @@ admin/Makefile
 !.gitattributes
 !.pylintrc
 !setup.cfg
+!lingua.cfg
 **/__pycache__/
