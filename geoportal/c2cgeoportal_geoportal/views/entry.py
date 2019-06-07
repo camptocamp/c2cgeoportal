@@ -1022,8 +1022,11 @@ class Entry:
                     ogc_server.url_wfs, self.request, errors=all_errors
                 ) if ogc_server.url_wfs is not None else url
                 url_internal_wfs = url_wfs
-            feature_type, errors = self._wms_get_features_type(ogc_server.id, url_internal_wfs)
-            all_errors |= errors
+            if ogc_server.wfs_support:
+                feature_type, errors = self._wms_get_features_type(ogc_server.id, url_internal_wfs)
+                all_errors |= errors
+            else:
+                feature_type = None
             attributes = None
 
             if feature_type is not None:
