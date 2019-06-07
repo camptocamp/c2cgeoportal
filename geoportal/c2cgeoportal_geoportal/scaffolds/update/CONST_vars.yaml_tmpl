@@ -270,7 +270,7 @@ vars:
     arguments:
       host: '{REDIS_HOST}'
       port: '{REDIS_PORT}'
-      db: 0
+      lock_timeout: 120  # Two minutes
       redis_expiration_time: 86400  # One day
       distributed_lock: True
 
