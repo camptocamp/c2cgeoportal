@@ -9,11 +9,6 @@ VALIDATE_PY_TEST_FOLDERS = geoportal/tests
 
 export TX_VERSION = $(shell echo $(MAJOR_VERSION) | awk -F . '{{print $$1"_"$$2}}')
 TX_DEPENDENCIES = $(HOME)/.transifexrc .tx/config
-ifeq (,$(wildcard $(HOME)/.transifexrc))
-TOUCHBACK_TXRC := touch --no-create --date "$(shell date --iso-8601=seconds)" $(HOME)/.transifexrc
-else
-TOUCHBACK_TXRC := touch --no-create --date "$(shell stat -c '%y' $(HOME)/.transifexrc)" $(HOME)/.transifexrc
-endif
 LANGUAGES = fr de it
 export LANGUAGES
 ALL_LANGUAGES = en $(LANGUAGES)
@@ -126,16 +121,12 @@ $(HOME)/.transifexrc:
 	echo "password = c2cc2c" >> $@
 	echo "token =" >> $@
 
-.PHONY: transifex-get
-transifex-get: $(L10N_PO_FILES)
-
 .PHONY: transifex-send
 transifex-send: $(TX_DEPENDENCIES) \
 		geoportal/c2cgeoportal_geoportal/locale/c2cgeoportal_geoportal.pot \
 		admin/c2cgeoportal_admin/locale/c2cgeoportal_admin.pot
 	tx push --source --resource=geomapfish.c2cgeoportal_geoportal-$(TX_VERSION)
 	tx push --source --resource=geomapfish.c2cgeoportal_admin-$(TX_VERSION)
-	$(TOUCHBACK_TXRC)
 
 .PHONY: transifex-init
 transifex-init: $(TX_DEPENDENCIES) \
@@ -145,12 +136,8 @@ transifex-init: $(TX_DEPENDENCIES) \
 	tx push --source --force --no-interactive --resource=geomapfish.c2cgeoportal_admin-$(TX_VERSION)
 	tx push --translations --force --no-interactive --resource=geomapfish.c2cgeoportal_geoportal-$(TX_VERSION)
 	tx push --translations --force --no-interactive --resource=geomapfish.c2cgeoportal_admin-$(TX_VERSION)
-	$(TOUCHBACK_TXRC)
 
 # Import ngeo templates
-
-.PHONY: import-ngeo-apps
-import-ngeo-apps: $(API_FILES) $(APPS_FILES) $(APPS_FILES_ALT)
 
 $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/%.html.ejs_tmpl: /usr/lib/node_modules/ngeo/contribs/gmf/apps/%/index.html.ejs
 	mkdir --parent $(dir $@)
@@ -262,28 +249,24 @@ geoportal/c2cgeoportal_geoportal/locale/%/LC_MESSAGES/c2cgeoportal_geoportal.po:
 	mkdir --parent $(dir $@)
 	tx pull --language $* --resource geomapfish.c2cgeoportal_geoportal-$(TX_VERSION) --force
 	sed -i 's/[[:space:]]\+$$//' $@
-	$(TOUCHBACK_TXRC)
 	test -s $@
 
 geoportal/c2cgeoportal_geoportal/locale/%/LC_MESSAGES/ngeo.po: $(TX_DEPENDENCIES)
 	mkdir --parent $(dir $@)
 	tx pull --language $* --resource ngeo.ngeo-$(TX_VERSION) --force
 	sed -i 's/[[:space:]]\+$$//' $@
-	$(TOUCHBACK_TXRC)
 	test -s $@
 
 geoportal/c2cgeoportal_geoportal/locale/%/LC_MESSAGES/gmf.po: $(TX_DEPENDENCIES)
 	mkdir --parent $(dir $@)
 	tx pull --language $* --resource ngeo.gmf-$(TX_VERSION) --force
 	sed -i 's/[[:space:]]\+$$//' $@
-	$(TOUCHBACK_TXRC)
 	test -s $@
 
 admin/c2cgeoportal_admin/locale/%/LC_MESSAGES/c2cgeoportal_admin.po: $(TX_DEPENDENCIES)
 	mkdir --parent $(dir $@)
 	tx pull --language $* --resource geomapfish.c2cgeoportal_admin-$(TX_VERSION) --force
 	sed -i 's/[[:space:]]\+$$//' $@
-	$(TOUCHBACK_TXRC)
 	test -s $@
 
 geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/locale/%/LC_MESSAGES/+package+_geoportal-client.po: \
@@ -291,14 +274,10 @@ geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/
 	mkdir --parent $(dir $@)
 	tx pull --language $* --resource ngeo.gmf-apps-$(TX_VERSION) --force
 	sed -i 's/[[:space:]]\+$$//' $@
-	$(TOUCHBACK_TXRC)
 	test -s $@
 
 geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/locale/en/LC_MESSAGES/+package+_geoportal-client.po:
 	@echo "Nothing to be done for $@"
-
-.PHONY: buildlocales
-buildlocales: $(MO_FILES)
 
 %.mo: %.po
 	mkdir --parent $(dir $@)

@@ -99,24 +99,42 @@ You can build and install the application with the command:
 
 .. prompt:: bash
 
-    ./docker-run make --makefile=<user>.mk build
+    docker build --tag=camptocamp/<package>-config[:<tag>] .
+    docker build --tag=camptocamp/<package>-geoportal[:<tag>] \
+        --build-arg=GIT_HASH=$(git rev-parse HEAD) geoportal
 
 This previous command will do many things like:
 
   * adapt the application configuration to your environment,
   * build the JavaScript and CSS resources into compressed files.
 
+Activate the devlopement environment:
+
+.. prompt:: bash
+
+    cp docker-compose.override.sample.yaml docker-compose.override.yaml
+
+Run the composition:
+
+.. prompt:: bash
+
+    docker-compose up -d
+
 Then create the application tables:
 
 .. prompt:: bash
 
-    ./docker-compose-run make --makefile=<user>.mk upgrade-db
+    docker-compose exec geoportal alembic --config=alembic.ini \
+        --name=main upgrade head
+    docker-compose exec geoportal alembic --config=alembic.ini \
+        --name=static upgrade head
 
-Your application should now be available at:
-``https://<hostname>/``,
-where the ``<hostname>`` is directly linked to the virtual host.
+    docker-compose exec -run make --makefile=<user>.mk upgrade-db
 
-Add in the ``/var/www/vhosts/<vhost_name>/conf/proxies.conf`` file
+Your application should now be available at: ``https://localhost:8484/``.
+
+If you ahave an Apache in front of your application,
+add in the ``/var/www/vhosts/<vhost_name>/conf/proxies.conf`` file
 (create it if it does not exist):
 
 .. code::

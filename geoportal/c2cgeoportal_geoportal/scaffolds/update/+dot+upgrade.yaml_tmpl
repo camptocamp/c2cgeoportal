@@ -53,6 +53,7 @@ upgrade_files:
     paths:
       - Makefile
       - docker-run
+      - .config
       - docker-compose-run
       - docker-compose-build.yaml
       - geoportal/jsbuild/

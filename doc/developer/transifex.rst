@@ -17,11 +17,3 @@ you must create a `~/.transifexrc` config file:
    username = <username>
    password = <password>
    token =
-
-And run the command:
-
-.. prompt:: bash
-
-   ./docker-run make transifex-sync
-
-It will push the current pot file and get the French and German po files.
