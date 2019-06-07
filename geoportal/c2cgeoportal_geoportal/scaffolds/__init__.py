@@ -76,7 +76,6 @@ class BaseTemplate(Template):  # pragma: no cover
             extent = [match.group(n + 1) for n in range(4)]
         vars_["extent"] = ",".join(extent)
         vars_["extent_mapserver"] = " ".join(extent)
-        vars_["extent_viewer"] = json.dumps(extent)
 
         ret = Template.pre(self, command, output_dir, vars_)
 
