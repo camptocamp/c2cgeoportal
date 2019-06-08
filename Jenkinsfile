@@ -117,6 +117,7 @@ dockerBuild {
                 sh './docker-run travis/status.sh'
                 sh './docker-run --env=RELEASE_TAG travis/short-make build'
                 sh "docker tag camptocamp/geomapfish-build:${MAJOR_VERSION} camptocamp/geomapfish-build:${RELEASE_TAG}"
+                sh "docker tag camptocamp/geomapfish-config-build:${MAJOR_VERSION} camptocamp/geomapfish-config-build:${RELEASE_TAG}"
                 sh 'travis/test-upgrade-convert.sh init ${HOME}/workspace'
             }
             stage('Tests') {
