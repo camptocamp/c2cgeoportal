@@ -66,11 +66,11 @@ Sometimes, more information can be obtained by using this command:
 
 .. prompt:: bash
 
-    docker-compose exec mapserver shp2img -m <mapfile> -o test.png -e <minx> <miny> <maxx> <maxy> \
-        -s <sizex> <sizey> -l <layers>
+    docker-compose exec mapserver shp2img -m /etc/mapserver/mapserver.map -o /tmp/test.png ${'\\'}
+        -e 500000 100000 700000 300000 -s 1000 1000 [-l <layers>]
 
 You may also activate MapServer's debug mode and set the environment variable ``MS_DEBUGLEVEL``
-of the MapServer container ``MS_DEBUGLEVEL`` to ``5`` (most verbose level, default is 0).
+of the MapServer container ``DEBUG`` to ``5`` (most verbose level, default is 0).
 
 `More information <https://mapserver.org/optimization/debugging.html?highlight=debug#debug-levels>`_
 

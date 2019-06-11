@@ -83,10 +83,10 @@ to <code class="docutils literal notranslate"><span class="pre">docker-compose.o
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">docker-compose <span class="nb">exec</span> mapserver shp2img -m &lt;mapfile&gt; -o test.png -e &lt;minx&gt; &lt;miny&gt; &lt;maxx&gt; &lt;maxy&gt; <span class="se">\</span>
-    -s &lt;sizex&gt; &lt;sizey&gt; -l &lt;layers&gt;</span>
+</style><span class="prompt1">docker-compose <span class="nb">exec</span> mapserver shp2img -m /etc/mapserver/mapserver.map -o /tmp/test.png <span class="si">${</span><span class="s1">&#39;\\&#39;</span><span class="si">}</span></span>
+<span class="prompt1">    -e <span class="m">500000</span> <span class="m">100000</span> <span class="m">700000</span> <span class="m">300000</span> -s <span class="m">1000</span> <span class="m">1000</span> <span class="o">[</span>-l &lt;layers&gt;<span class="o">]</span></span>
 </pre></div></div><p>You may also activate MapServer’s debug mode and set the environment variable <code class="docutils literal notranslate"><span class="pre">MS_DEBUGLEVEL</span></code>
-of the MapServer container <code class="docutils literal notranslate"><span class="pre">MS_DEBUGLEVEL</span></code> to <code class="docutils literal notranslate"><span class="pre">5</span></code> (most verbose level, default is 0).</p>
+of the MapServer container <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code> to <code class="docutils literal notranslate"><span class="pre">5</span></code> (most verbose level, default is 0).</p>
 <p><a class="reference external" href="https://mapserver.org/optimization/debugging.html?highlight=debug#debug-levels">More information</a></p>
 </div>
 <div class="section" id="postgresql">

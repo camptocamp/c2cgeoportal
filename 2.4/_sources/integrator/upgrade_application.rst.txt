@@ -204,12 +204,15 @@ For example, for converting french texts, in non docker context, the script can 
 .. prompt:: bash
 
    docker-compose up -d
-   ./docker-compose-run l10nv1tov2 fr geoportal/<package>_geoportal/static/js/Proj/Lang/fr.js \
-   geoportal/<package>_geoportal/locale/fr/LC_MESSAGES/geoportal-client.po
+   ./docker-compose-run l10nv1tov2 fr \
+        geoportal/<package>_geoportal/static/js/Proj/Lang/fr.js \
+        geoportal/<package>_geoportal/locale/fr/LC_MESSAGES/geoportal-client.po
 
 
 In a non docker project, the script can be used as follows:
 
 .. prompt:: bash
 
-   .build/venv/bin/l10nv1tov2 fr geoportal/<package>_geoportal/static/js/Proj/Lang/fr.js    geoportal/locale/fr/LC_MESSAGES/geoportal-client.po
+   .build/venv/bin/l10nv1tov2 fr \
+        geoportal/<package>_geoportal/static/js/Proj/Lang/fr.js \
+        geoportal/locale/fr/LC_MESSAGES/geoportal-client.po

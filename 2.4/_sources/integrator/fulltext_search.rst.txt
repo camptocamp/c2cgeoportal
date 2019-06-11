@@ -17,13 +17,13 @@ If you do want to create the table manually, you can use the following SQL comma
 
 .. code:: sql
 
-    CREATE TABLE <schema_name>.tsearch ( \
-        id SERIAL PRIMARY KEY, \
-        layer_name TEXT, \
-        label TEXT, \
-        public BOOLEAN DEFAULT 't', \
-        params TEXT, \
-        role_id INTEGER REFERENCES <schema_name>.role, \
+    CREATE TABLE <schema_name>.tsearch (
+        id SERIAL PRIMARY KEY,
+        layer_name TEXT,
+        label TEXT,
+        public BOOLEAN DEFAULT 't',
+        params TEXT,
+        role_id INTEGER REFERENCES <schema_name>.role,
         ts TSVECTOR);
     SELECT AddGeometryColumn('<schema_name>', 'tsearch', 'the_geom', <srid>, 'GEOMETRY', 2);
     CREATE INDEX tsearch_ts_idx ON <schema_name>.tsearch USING gin(ts);

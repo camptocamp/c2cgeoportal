@@ -159,10 +159,13 @@ structure, you can use the script <code class="docutils literal notranslate"><sp
 To migrate your text translations from CGXP to ngeo, you can use the script <code class="docutils literal notranslate"><span class="pre">.build/venv/bin/l10nv1tov2</span></code>.
 For example, for converting french texts, in non docker context, the script can be used as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose up -d</span>
-<span class="prompt1">./docker-compose-run l10nv1tov2 fr geoportal/&lt;package&gt;_geoportal/static/js/Proj/Lang/fr.js <span class="se">\</span>
-geoportal/&lt;package&gt;_geoportal/locale/fr/LC_MESSAGES/geoportal-client.po</span>
+<span class="prompt1">./docker-compose-run l10nv1tov2 fr <span class="se">\</span>
+     geoportal/&lt;package&gt;_geoportal/static/js/Proj/Lang/fr.js <span class="se">\</span>
+     geoportal/&lt;package&gt;_geoportal/locale/fr/LC_MESSAGES/geoportal-client.po</span>
 </pre></div></div><p>In a non docker project, the script can be used as follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">.build/venv/bin/l10nv1tov2 fr geoportal/&lt;package&gt;_geoportal/static/js/Proj/Lang/fr.js    geoportal/locale/fr/LC_MESSAGES/geoportal-client.po</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">.build/venv/bin/l10nv1tov2 fr <span class="se">\</span>
+     geoportal/&lt;package&gt;_geoportal/static/js/Proj/Lang/fr.js <span class="se">\</span>
+     geoportal/locale/fr/LC_MESSAGES/geoportal-client.po</span>
 </pre></div></div></div>
 </div>
 

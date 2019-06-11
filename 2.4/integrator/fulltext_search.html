@@ -46,13 +46,13 @@ the application-specific schema.</p>
 <p>You do not need to create the table yourself, as it was already created during application installation
 (see the section <a class="reference internal" href="install_application.html#integrator-install-application"><span class="std std-ref">Install an existing application</span></a>).</p>
 <p>If you do want to create the table manually, you can use the following SQL commands:</p>
-<div class="code sql highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CREATE</span> <span class="n">TABLE</span> <span class="o">&lt;</span><span class="n">schema_name</span><span class="o">&gt;.</span><span class="n">tsearch</span> <span class="p">(</span> \
-    <span class="nb">id</span> <span class="n">SERIAL</span> <span class="n">PRIMARY</span> <span class="n">KEY</span><span class="p">,</span> \
-    <span class="n">layer_name</span> <span class="n">TEXT</span><span class="p">,</span> \
-    <span class="n">label</span> <span class="n">TEXT</span><span class="p">,</span> \
-    <span class="n">public</span> <span class="n">BOOLEAN</span> <span class="n">DEFAULT</span> <span class="s1">&#39;t&#39;</span><span class="p">,</span> \
-    <span class="n">params</span> <span class="n">TEXT</span><span class="p">,</span> \
-    <span class="n">role_id</span> <span class="n">INTEGER</span> <span class="n">REFERENCES</span> <span class="o">&lt;</span><span class="n">schema_name</span><span class="o">&gt;.</span><span class="n">role</span><span class="p">,</span> \
+<div class="code sql highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CREATE</span> <span class="n">TABLE</span> <span class="o">&lt;</span><span class="n">schema_name</span><span class="o">&gt;.</span><span class="n">tsearch</span> <span class="p">(</span>
+    <span class="nb">id</span> <span class="n">SERIAL</span> <span class="n">PRIMARY</span> <span class="n">KEY</span><span class="p">,</span>
+    <span class="n">layer_name</span> <span class="n">TEXT</span><span class="p">,</span>
+    <span class="n">label</span> <span class="n">TEXT</span><span class="p">,</span>
+    <span class="n">public</span> <span class="n">BOOLEAN</span> <span class="n">DEFAULT</span> <span class="s1">&#39;t&#39;</span><span class="p">,</span>
+    <span class="n">params</span> <span class="n">TEXT</span><span class="p">,</span>
+    <span class="n">role_id</span> <span class="n">INTEGER</span> <span class="n">REFERENCES</span> <span class="o">&lt;</span><span class="n">schema_name</span><span class="o">&gt;.</span><span class="n">role</span><span class="p">,</span>
     <span class="n">ts</span> <span class="n">TSVECTOR</span><span class="p">);</span>
 <span class="n">SELECT</span> <span class="n">AddGeometryColumn</span><span class="p">(</span><span class="s1">&#39;&lt;schema_name&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;tsearch&#39;</span><span class="p">,</span> <span class="s1">&#39;the_geom&#39;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">srid</span><span class="o">&gt;</span><span class="p">,</span> <span class="s1">&#39;GEOMETRY&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
 <span class="n">CREATE</span> <span class="n">INDEX</span> <span class="n">tsearch_ts_idx</span> <span class="n">ON</span> <span class="o">&lt;</span><span class="n">schema_name</span><span class="o">&gt;.</span><span class="n">tsearch</span> <span class="n">USING</span> <span class="n">gin</span><span class="p">(</span><span class="n">ts</span><span class="p">);</span>

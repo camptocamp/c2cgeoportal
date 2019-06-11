@@ -61,6 +61,8 @@ One may use GDAL/OGR to convert data to such a format.</p>
 <p><code class="docutils literal notranslate"><span class="pre">type</span></code> <code class="docutils literal notranslate"><span class="pre">shp_index</span></code> (default) for Mapserver shape index, or <code class="docutils literal notranslate"><span class="pre">gdal</span></code> for all supported GDAL sources.
 We recommend to use a <a class="reference external" href="https://www.gdal.org/gdal_vrttut.html">vrt</a> file built with
 <a class="reference external" href="https://www.gdal.org/gdalbuildvrt.html">gdalbuildvrt</a>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">nodata</span></code> specifies the nodata value.
+By default the nodata value is directly read from the source.</p>
 <p><code class="docutils literal notranslate"><span class="pre">round</span></code> specifies how the result values should be rounded.
 For instance ‘1’: round to the unit, ‘0.01’: round to the hundredth, etc.</p>
 <div class="admonition note">

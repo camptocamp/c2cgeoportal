@@ -32,6 +32,9 @@ One may use GDAL/OGR to convert data to such a format.
 We recommend to use a `vrt <https://www.gdal.org/gdal_vrttut.html>`_ file built with
 `gdalbuildvrt <https://www.gdal.org/gdalbuildvrt.html>`_.
 
+``nodata`` specifies the nodata value.
+By default the nodata value is directly read from the source.
+
 ``round`` specifies how the result values should be rounded.
 For instance '1': round to the unit, '0.01': round to the hundredth, etc.
 
