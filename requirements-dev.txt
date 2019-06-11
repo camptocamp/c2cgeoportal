@@ -22,7 +22,7 @@ pylint~=2.3.1  # lint
 Pillow~=6.0.0  # Tile generation, rq.filter: < 6.0.0
 pytest-cov~=2.7.1  # tests
 pytest-selenium~=1.16.0  # admin tests
-six~=1.11.0  # required by transifex, rq.filter: ==1.11.0
+six~=1.12.0  # required by transifex, rq.filter: ==1.11.0
 tilecloud~=1.3.1  # Tile generation
 tilecloud-chain~=1.11.1  # Tile generation
 transifex-client~=0.13.6  # Makefile
