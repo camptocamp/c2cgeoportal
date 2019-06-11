@@ -34,7 +34,7 @@ Result
 
 Base for all possible results:
 
-.. code:: json
+.. code::
 
     {
         "ogcServers": {
@@ -50,7 +50,7 @@ Base for all possible results:
 OGC Server
 ~~~~~~~~~~
 
-.. code:: json
+.. code::
 
    {
         "url": "<wms server url>",
@@ -66,7 +66,7 @@ OGC Server
 Theme
 ~~~~~
 
-.. code:: json
+.. code::
 
     {
         "name": "<name>",
@@ -84,7 +84,7 @@ Theme
 Group
 ~~~~~
 
-.. code:: json
+.. code::
 
     {
         "name": "<name>",
@@ -128,7 +128,7 @@ Layer
 WMS Layer
 ~~~~~~~~~
 
-.. code:: json
+.. code::
 
     {
         "id": <id>,
@@ -254,7 +254,7 @@ Result HTTP code:
 Anonymous JSON result
 ~~~~~~~~~~~~~~~~~~~~~
 
-.. code:: json
+.. code::
 
    {
        "functionality": {
@@ -268,7 +268,7 @@ Anonymous JSON result
 Connected JSON result
 ~~~~~~~~~~~~~~~~~~~~~
 
-.. code:: json
+.. code::
 
    {
        "username": "<username>",
@@ -401,7 +401,7 @@ URL: ``.../layers/<layer_name>/values/<field_name>``
 Result
 ~~~~~~
 
-.. code:: json
+.. code::
 
     {
         "items": [{
@@ -521,7 +521,7 @@ Parameters
 Result
 ------
 
-.. code:: json
+.. code::
 
     {
         "<layer>": <value>,
@@ -569,7 +569,7 @@ Parameters
 Result
 ~~~~~~
 
-.. code:: json
+.. code::
 
     {
         "short_url": <the short URL>
@@ -597,7 +597,7 @@ Method: ``POST``
 
 Data:
 
-.. code:: json
+.. code::
 
    {
        "geometries": [<geomA>, <geomB>]
