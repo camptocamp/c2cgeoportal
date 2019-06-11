@@ -16,8 +16,9 @@ docker-compose exec geoportal wait-db
 docker-compose exec geoportal alembic --config=alembic.ini --name=main upgrade head
 docker-compose exec geoportal alembic --config=alembic.ini --name=static upgrade head
 docker-compose exec geoportal create-demo-theme
-docker-compose exec geoportal update-po en > \
-    geoportal/testgeomapfishapp_geoportal/locale/en/LC_MESSAGES/testgeomapfishapp_geoportal-client.po
+((docker-compose exec geoportal update-po en > \
+    geoportal/testgeomapfishapp_geoportal/locale/en/LC_MESSAGES/testgeomapfishapp_geoportal-client.po) \
+    || ci/run-dc-logs docker-compose exec geoportal update-po en)
 docker-compose exec geoportal update-po fr > \
     geoportal/testgeomapfishapp_geoportal/locale/fr/LC_MESSAGES/testgeomapfishapp_geoportal-client.po
 docker-compose exec geoportal update-po de > \

@@ -596,11 +596,7 @@ class C2cUpgradeTool:
 
         message = [
             "The upgrade is nearly done, now you should:",
-            "- Build your application."
-            "- To upgrade the database run `./docker-compose-run alembic --name=main "
-            "--config=geoportal/alembic.ini upgrade head`",
-            "- Run `DOCKER_TAG=unexisting docker-compose pull --ignore-pull-failures && "
-            "docker-compose down --remove-orphans && docker-compose up -d`.",
+            "- Build your application with ./upgrade PACKAGE [DOCKER_TAG]."
             "- Test your application on '{}'.".format(
                 self.project.get('application_url', '... missing ...')
             )

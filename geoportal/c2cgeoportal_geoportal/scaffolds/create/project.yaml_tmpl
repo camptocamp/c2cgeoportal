@@ -1,8 +1,8 @@
 ---
 project_folder: {{project}}
 project_package: {{package}}
-application_url: https://localhost/
-checker_url: https://localhost/c2c/health_check?max_level=9
+application_url: https://localhost:8484/
+checker_url: https://localhost:8484/c2c/health_check?max_level=9
 managed_files: []
 unmanaged_files: []
 template_vars:
