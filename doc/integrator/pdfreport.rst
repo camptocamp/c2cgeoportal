@@ -18,7 +18,7 @@ Configuration
 
 The service is configured in the main ``vars.yaml`` file of the project as in the following example:
 
-.. code:: yaml
+.. code::
 
     vars:
         ...
