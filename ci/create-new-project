@@ -25,12 +25,8 @@ docker run --rm -ti ${DOCKER_RUN_ARGS} ${PCREATE_CMD} --scaffold=c2cgeoportal_cr
 docker run --rm -ti ${DOCKER_RUN_ARGS} ${PCREATE_CMD} --scaffold=c2cgeoportal_update
 
 # Copy files for CI build and tests
-echo $#
 if [ $# -lt 2 ]
 then
-    ls -l ${WORKSPACE}/${PACKAGE}/
-    ls -l ${WORKSPACE}/${PACKAGE}/geoportal
-
     mv ${WORKSPACE}/${PACKAGE}/geoportal/vars.yaml ${WORKSPACE}/${PACKAGE}/geoportal/vars_origin.yaml
     cp ci/vars.yaml ${WORKSPACE}/${PACKAGE}/geoportal/
     mkdir -p ${WORKSPACE}/${PACKAGE}/geoportal/ci
@@ -49,6 +45,8 @@ git remote add origin . # add a fake remote
 git add --all
 git commit --quiet --message='Initial commit'
 git clean -fX
+
+find -name *.ejs
 
 # Build
 if [ $# -lt 2 ]
