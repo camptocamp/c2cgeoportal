@@ -130,7 +130,7 @@ Uses the ``themes`` configuration:
 Check that all the language files are present.
 
 Uses the global configuration ``available_locale_names``, and the checker configuration ``files``,
-an array of stringis that must be in ``[cgxp-api, ngeo]``.
+an array of strings that must be in ``[cgxp-api, ngeo]``.
 
 ``routes``
 ~~~~~~~~~~
