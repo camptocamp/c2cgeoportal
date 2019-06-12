@@ -4,8 +4,9 @@
 import json
 import os
 import re
-import requests
 import subprocess
+
+import requests
 
 
 token = requests.post(
@@ -54,7 +55,7 @@ def clean_images(image, tag_=lambda tag: tag):
     print(docker_tags_to_remove)
 
     for tag in docker_tags_to_remove:
-        requests.delete(
+        response = requests.delete(
             'https://hub.docker.com/v2/repositories/camptocamp/{image}/tags/{tag}/'.format(
                 image=image,
                 tag=tag,
@@ -63,6 +64,9 @@ def clean_images(image, tag_=lambda tag: tag):
                 "Authorization": "JWT " + token
             }
         )
+        if not response.ok:
+            print(response.text)
+            exit(2)
 
 for image in ["geomapfish", "geomapfish-build", "geomapfish-scaffolds", "geomapfish-geoportal"]:
     clean_images(image)

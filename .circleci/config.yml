@@ -113,11 +113,7 @@ jobs:
 
       - run:
           name: Extract documentation
-          command: |
-            mkdir --parent artifacts/documentations/
-            docker run --rm --name=doc --detach camptocamp/geomapfish-doc tail -f /dev/null
-            docker cp doc:/doc/_build/html/ artifacts/documentations/
-            docker stop doc
+          command: ci/extract-documentation artifacts/documentations/
           when: always
 
       - store_artifacts:
@@ -170,9 +166,6 @@ jobs:
             git config user.email "<ci@camptocamp.com>"
             git config user.name "CI"
             git fetch push
-      - run:
-          name: Clean Docker hub tags
-          command: ci/clean-dockerhub-tags
       - deploy: &publish-docker-pip
           name: Push to Docker hub and Pypi
           command: |
@@ -203,6 +196,9 @@ jobs:
       - run: *python
       - checkout
       - run: *init-git
+      - run:
+          name: Clean Docker hub tags
+          command: ci/clean-dockerhub-tags
       - deploy: *publish-docker-pip
       - deploy:
           name: Push to Transifex
