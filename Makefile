@@ -139,6 +139,9 @@ transifex-init: $(TX_DEPENDENCIES) \
 
 # Import ngeo templates
 
+.PHONY: import-ngeo-apps
+import-ngeo-apps: $(API_FILES) $(APPS_FILES) $(APPS_FILES_ALT)
+
 $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/%.html.ejs_tmpl: /usr/lib/node_modules/ngeo/contribs/gmf/apps/%/index.html.ejs
 	mkdir --parent $(dir $@)
 	import-ngeo-apps --html $* $< $@
