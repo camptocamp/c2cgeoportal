@@ -113,11 +113,7 @@ jobs:
 
       - run:
           name: Extract documentation
-          command: |
-            mkdir --parent artifacts/documentations/
-            docker run --rm --name=doc --detach camptocamp/geomapfish-doc tail -f /dev/null
-            docker cp doc:/doc/_build/html/ artifacts/documentations/
-            docker stop doc
+          command: ci/extract-documentation artifacts/documentations/
           when: always
 
       - store_artifacts:

@@ -1,7 +1,7 @@
 #!/bin/bash -ex
 
-mkdir --parent ${MAIN_BRANCH}
+mkdir --parent ${1}
 docker build --tag=camptocamp/geomapfish-doc --build-arg=MAJOR_VERSION=${MAJOR_VERSION} doc
 docker run --rm --name=doc --detach camptocamp/geomapfish-doc tail -f /dev/null
-docker cp doc:/doc/_build/html/ ${MAIN_BRANCH}/
+docker cp doc:/doc/_build/html/ ${1}/
 docker stop doc
