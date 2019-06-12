@@ -75,11 +75,9 @@ function upgrade {
     fi
     if [ -e .UPGRADE9 ]
     then
-        git apply --3way create.diff || true
-        for file in README.rst
-        do
-            cp CONST_create_template/${file} ${file}
-        done
+        # Workaround
+        git status > /dev/null
+        git apply --3way create.diff
         ./upgrade latest 10
     fi
     if [ ! -e .UPGRADE_SUCCESS ]

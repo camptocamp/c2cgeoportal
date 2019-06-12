@@ -45,7 +45,10 @@ vars:
     - de
 
   # All the application interfaces used to create the apache rewrite rules
-  interfaces: __import__('os').environ.get("INTERFACES").split(" ")
+  interfaces:
+    - desktop
+    - mobile
+    - iframe_api
 
   default_interface: desktop
 
@@ -698,10 +701,6 @@ vars:
     # List of {method path} regexes to force the usage of the slave
     slave:
       - \w+ /printproxy/.*  # The print proxy is never writing to the DB
-
-interpreted:
-  python:
-    - interfaces
 
 environment:
   - name: PGSCHEMA

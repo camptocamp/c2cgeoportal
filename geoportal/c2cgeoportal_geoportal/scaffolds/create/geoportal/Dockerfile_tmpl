@@ -26,7 +26,7 @@ WORKDIR /app
 COPY . /app
 COPY --from=builder /app/{{package}}_geoportal/static-ngeo/build/* \
     /app/{{package}}_geoportal/static-ngeo/build/
-COPY --from=builder /app/config.yaml /app/alembic.ini /app/alembic.yaml ./
+COPY --from=builder /app/alembic.ini /app/alembic.yaml ./
 RUN chmod go+w /app/{{package}}_geoportal/static-ngeo/build/ \
     /app/{{package}}_geoportal/static-ngeo/api/apihelp/ \
     /app/{{package}}_geoportal/locale/ \
