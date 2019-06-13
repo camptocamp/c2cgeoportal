@@ -60,7 +60,6 @@ from c2cgeoportal_geoportal import init_dbsessions
 from c2cgeoportal_geoportal.lib import add_url_params, get_url2
 from c2cgeoportal_geoportal.lib.bashcolor import colorize, RED
 from c2cgeoportal_geoportal.lib.caching import init_region
-from c2cgeoportal_geoportal.lib.print_ import *  # noqa
 
 
 class _Registry:  # pragma: no cover
@@ -213,11 +212,11 @@ class GeomapfishConfigExtractor(Extractor):  # pragma: no cover
         init_region({"backend": "dogpile.cache.memory"})
 
         with open(filename) as config_file:
-            config = yaml.safe_load(config_file)
-            # for application config (config.yaml)
+            config = yaml.load(config_file, Loader=yaml.BaseLoader)
+            # For application config (config.yaml)
             if "vars" in config:
                 return self._collect_app_config(filename)
-            # for the print config
+            # For the print config
             elif "templates" in config:
                 return self._collect_print_config(config, filename)
             else:
