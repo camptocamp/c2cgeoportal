@@ -43,4 +43,4 @@ then
 fi
 
 docker run --rm --volume=${PWD}:/src camptocamp/geomapfish-scaffolds:$1 \
-        run $(id -u) $(id -g) c2cupgrade $args
+        run $(id -u) $(id -g) /src c2cupgrade $args

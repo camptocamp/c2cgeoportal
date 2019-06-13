@@ -24,7 +24,7 @@ function pcreate {
     else
         docker run --rm --env=SRID=21781 --env=EXTENT=489246.36,78873.44,837119.76,296543.14 \
             --volume=$1/testgeomapfish:/src/testgeomapfish camptocamp/geomapfish-scaffolds:$3 \
-            run $(id -u) $(id -g) pcreate --scaffold=$2 /src/testgeomapfish ${PCREATE_ARGS}
+            run $(id -u) $(id -g) /src pcreate --scaffold=$2 /src/testgeomapfish ${PCREATE_ARGS}
     fi
 }
 
@@ -75,11 +75,9 @@ function upgrade {
     fi
     if [ -e .UPGRADE9 ]
     then
-        git apply --3way create.diff || true
-        for file in README.rst
-        do
-            cp CONST_create_template/${file} ${file}
-        done
+        # Workaround
+        git status > /dev/null
+        git apply --3way create.diff
         ./upgrade latest 10
     fi
     if [ ! -e .UPGRADE_SUCCESS ]
