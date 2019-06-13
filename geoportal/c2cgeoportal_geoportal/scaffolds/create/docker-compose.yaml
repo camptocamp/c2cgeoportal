@@ -47,18 +47,6 @@ services:
     volumes_from:
       - config:ro
 
-  mapcache:
-    extends:
-      file: docker-compose-lib.yaml
-      service: mapcache
-    volumes_from:
-      - config:ro
-
-  memcached:
-    extends:
-      file: docker-compose-lib.yaml
-      service: memcached
-
   redis:
     extends:
       file: docker-compose-lib.yaml

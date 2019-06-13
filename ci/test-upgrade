@@ -43,6 +43,8 @@ function create {
     cd -
     cd $1/testgeomapfish
     git add --all
+    # Workaround for issue in 2.4.0
+    git add -f tilegeneration/config.yaml.tmpl || true
     git commit --quiet --message="Initial commit"
     git clean -fX
     cd -
