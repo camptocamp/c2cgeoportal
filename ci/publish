@@ -28,7 +28,7 @@ if [ ${COMMIT} == TRUE ]
 then
     git add ci/ci.yaml
     git commit -m "[skip ci] Update the minor version"
-    git push push ${CIRCLE_BRANCH}
+    git push origin ${CIRCLE_BRANCH}
 fi
 
 DEPLOY_PIP=FALSE

@@ -162,10 +162,10 @@ jobs:
       - run: &init-git
           name: Init Git
           command: |
-            git remote add push https://${GITHUB_TOKEN}@github.com/sbrunner/scan-to-paperless
+            git remote set-url origin https://${GITHUB_TOKEN}@github.com/camptocamp/c2cgeoportal
             git config user.email "<ci@camptocamp.com>"
             git config user.name "CI"
-            git fetch push
+            git fetch origin
       - deploy: &publish-docker-pip
           name: Push to Docker hub and Pypi
           command: |
