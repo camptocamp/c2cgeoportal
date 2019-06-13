@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Upgrading a GeoMapFish application &#8212; c2cgeoportal  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Database" href="database.html" />
+    <link rel="prev" title="Install an existing application" href="install_application.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="upgrading-a-geomapfish-application">
+<span id="integrator-upgrade-application"></span><h1>Upgrading a GeoMapFish application<a class="headerlink" href="#upgrading-a-geomapfish-application" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="from-a-version-2-4-and-next">
+<h2>From a version 2.4 and next<a class="headerlink" href="#from-a-version-2-4-and-next" title="Permalink to this headline">¶</a></h2>
+<p>Build the project file if needed (2.4):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">./docker-run make project.yaml</span>
+</pre></div></div><p>Get the upgrade script:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">curl https://raw.githubusercontent.com/camptocamp/c2cgeoportal//scripts/upgrade &gt; upgrade</span>
+<span class="prompt1">chmod +x upgrade</span>
+</pre></div></div><p>For 2.4 add upgrade in Git ignore:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nb">echo</span> /upgrade &gt;&gt; .gitignore</span>
+<span class="prompt1">git add .gitignore</span>
+<span class="prompt1">git comit -m <span class="s2">&quot;Add /upgrade in .gitignore&quot;</span></span>
+</pre></div></div><p>Run the upgrade:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./upgrade &lt;version&gt;</span>
+</pre></div></div><p>Then follow the instructions.</p>
+</div>
+<div class="section" id="upgrade-the-database">
+<h2>Upgrade the database<a class="headerlink" href="#upgrade-the-database" title="Permalink to this headline">¶</a></h2>
+<p>The database will be automatically upgraded during the upgrade process.</p>
+<p>To upgrade only the database you can use alembic directly.</p>
+<p>The help:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./docker-compose-run alembic --help</span>
+</pre></div></div><p>Upgrade the main schema:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./docker-compose-run alembic --name<span class="o">=</span>main --config<span class="o">=</span>geoportal/alembic.ini upgrade head</span>
+</pre></div></div><p>Upgrade the static schema:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./docker-compose-run alembic --name<span class="o">=</span>static --config<span class="o">=</span>geoportal/alembic.ini upgrade head</span>
+</pre></div></div></div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">c2cgeoportal</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=camptocamp&repo=c2cgeoportal&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../administrator/index.html">Administrator Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Integrator Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/index.html">Developer Guide</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+      <li>Previous: <a href="install_application.html" title="previous chapter">Install an existing application</a></li>
+      <li>Next: <a href="database.html" title="next chapter">Database</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2019, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/integrator/upgrade_application.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

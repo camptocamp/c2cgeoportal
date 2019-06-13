@@ -1,0 +1,64 @@
+.. _integrator_upgrade_application:
+
+==================================
+Upgrading a GeoMapFish application
+==================================
+
+
+From a version 2.4 and next
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Build the project file if needed (2.4):
+
+.. prompt:: bash
+
+   ./docker-run make project.yaml
+
+Get the upgrade script:
+
+.. prompt:: bash
+
+    curl https://raw.githubusercontent.com/camptocamp/c2cgeoportal//scripts/upgrade > upgrade
+    chmod +x upgrade
+
+For 2.4 add upgrade in Git ignore:
+
+.. prompt:: bash
+
+    echo /upgrade >> .gitignore
+    git add .gitignore
+    git comit -m "Add /upgrade in .gitignore"
+
+Run the upgrade:
+
+.. prompt:: bash
+
+   ./upgrade <version>
+
+Then follow the instructions.
+
+
+Upgrade the database
+~~~~~~~~~~~~~~~~~~~~
+
+The database will be automatically upgraded during the upgrade process.
+
+To upgrade only the database you can use alembic directly.
+
+The help:
+
+.. prompt:: bash
+
+   ./docker-compose-run alembic --help
+
+Upgrade the main schema:
+
+.. prompt:: bash
+
+   ./docker-compose-run alembic --name=main --config=geoportal/alembic.ini upgrade head
+
+Upgrade the static schema:
+
+.. prompt:: bash
+
+   ./docker-compose-run alembic --name=static --config=geoportal/alembic.ini upgrade head

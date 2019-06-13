@@ -1,0 +1,221 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>ngeo &#8212; c2cgeoportal  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Specific Backend Configuration" href="backend.html" />
+    <link rel="prev" title="Build configuration" href="make.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="ngeo">
+<span id="integrator-ngeo"></span><h1>ngeo<a class="headerlink" href="#ngeo" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="organization">
+<h2>Organization<a class="headerlink" href="#organization" title="Permalink to this headline">¶</a></h2>
+<p>The main page where we can redefine the header is in the file:
+<code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/&lt;interface&gt;.html.ejs</span></code> and
+<code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/Controller&lt;interface&gt;.js</span></code>
+where <code class="docutils literal notranslate"><span class="pre">&lt;interface&gt;</span></code> is the interface name.</p>
+<p>The style sheet file is <code class="docutils literal notranslate"><span class="pre">geoportal/demo_geoportal/static-ngeo/js/apps/sass/&lt;interface&gt;.scss</span></code>.</p>
+<p>The images used by the application code should be placed in the folder <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static-ngeo/images/</span></code>.</p>
+<p>The images used from the admin interface should be placed in the folder <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static/images/</span></code>.</p>
+</div>
+<div class="section" id="html-file">
+<h2>HTML file<a class="headerlink" href="#html-file" title="Permalink to this headline">¶</a></h2>
+<p>In this file, you can add some blocks like</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">gmf-authentication</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;login&quot;</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;slide&quot;</span> <span class="na">data-header-title</span><span class="o">=</span><span class="s">&quot;Login&quot;</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">gmf-authentication</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>to include a directive.</p>
+<p>You can find the available directives in the
+<a class="reference external" href="https://camptocamp.github.io/ngeo/master/apidoc/">ngeo documentation</a>.</p>
+<p>The controller (<code class="docutils literal notranslate"><span class="pre">js</span></code> file) is commonly named <code class="docutils literal notranslate"><span class="pre">mainCtrl</span></code>. So you can use a value
+from the controller by doing the following (here, the controller is the <code class="docutils literal notranslate"><span class="pre">DesktopController</span></code>):</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&quot;{{desktopCtrl.lang}}&quot;</span> <span class="na">ng-app</span><span class="o">=</span><span class="s">&quot;mydemo&quot;</span> <span class="na">ng-controller</span><span class="o">=</span><span class="s">&quot;DesktopController as mainCtrl&quot;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+  ...
+  <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+  ...
+  <span class="p">&lt;</span><span class="nt">gmf-mydirective</span> <span class="na">gmf-mydirective-variableproperty</span><span class="o">=</span><span class="s">&quot;mainCtrl.open&quot;</span>
+                   <span class="na">gmf-mydirective-staticproperty</span><span class="o">=</span><span class="s">&quot;::mainCtrl.map&quot;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">gmf-mydirective</span><span class="p">&gt;</span>
+  ...
+  <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="controller-js-file">
+<h2>Controller (js file)<a class="headerlink" href="#controller-js-file" title="Permalink to this headline">¶</a></h2>
+<p>In the controller you have some lines like:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kr">import</span> <span class="nx">gmf</span><span class="o">&lt;</span><span class="nx">Component</span><span class="o">&gt;</span><span class="nx">Component</span> <span class="nx">from</span> <span class="s1">&#39;gmf/&lt;component&gt;/component.js&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>This is needed to include the javascript of the used directives.</p>
+<p>The map configuration will be here:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">goog</span><span class="p">.</span><span class="nx">base</span><span class="p">(</span>
+      <span class="k">this</span><span class="p">,</span> <span class="p">{</span>
+        <span class="nx">srid</span><span class="o">:</span> <span class="mi">21781</span><span class="p">,</span>
+        <span class="nx">mapViewConfig</span><span class="o">:</span> <span class="p">{</span>
+          <span class="nx">center</span><span class="o">:</span> <span class="p">[</span><span class="mi">632464</span><span class="p">,</span> <span class="mi">185457</span><span class="p">],</span>
+          <span class="nx">zoom</span><span class="o">:</span> <span class="mi">3</span><span class="p">,</span>
+          <span class="nx">resolutions</span><span class="o">:</span> <span class="p">[</span><span class="mi">250</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">]</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="p">,</span> <span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you previously had a CGXP application and want to keep your permalinks
+compatible, the resolutions should be the same as in the previous application.</p>
+</div>
+</div>
+<div class="section" id="dynamic-json-view">
+<h2>Dynamic.json view<a class="headerlink" href="#dynamic-json-view" title="Permalink to this headline">¶</a></h2>
+<p>To configure the ngeo constants with dynamic or configurable values,
+you can use the dynamic view.</p>
+<p>This view is configurable in the vars files in the section <code class="docutils literal notranslate"><span class="pre">interfaces_config</span></code>.
+The sub section is the interface name, and after that we have:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">redirect_interface</span></code>: Interface to be redirected to if an unexpected device type is used (mobile/desktop).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">do_redirect</span></code>: Directly do the redirect.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">constants</span></code>: Directly define an <code class="docutils literal notranslate"><span class="pre">angular</span></code> constant in the vars file.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dynamic_constants</span></code>: Define an <code class="docutils literal notranslate"><span class="pre">angular</span></code> constant from a dynamic values.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">static</span></code>: key: Constant name, value: name of the static view that we want to have the URL.</p></li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">routes</span></code>: key: Constant name, value:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: Name of the route witch one we want to have the URL.
+<code class="docutils literal notranslate"><span class="pre">kw</span></code>: Keyword arguments to supply for dynamic path elements in the route definition.
+<code class="docutils literal notranslate"><span class="pre">elements</span></code>: Additional positional path segments to append the URL after it is generated.
+<code class="docutils literal notranslate"><span class="pre">params</span></code>: Query string parameters to append to the URL.
+<code class="docutils literal notranslate"><span class="pre">dynamic_params</span></code>: Query string parameters from dynamic values to append to the URL.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>For more information <code class="docutils literal notranslate"><span class="pre">elements</span></code> and <code class="docutils literal notranslate"><span class="pre">kw</span></code> properties see <em>Pyramid</em> <code class="docutils literal notranslate"><span class="pre">Request.route_url</span></code> documentation:
+<a class="reference external" href="https://docs.pylonsproject.org/projects/pyramid/en/latest/api/request.html#pyramid.request.Request.route_url">https://docs.pylonsproject.org/projects/pyramid/en/latest/api/request.html#pyramid.request.Request.route_url</a></p>
+<p>The dynamic values names are: <code class="docutils literal notranslate"><span class="pre">interface</span></code>, <code class="docutils literal notranslate"><span class="pre">cache_version</span></code>, <code class="docutils literal notranslate"><span class="pre">lang_urls</span></code>, <code class="docutils literal notranslate"><span class="pre">fulltextsearch_groups</span></code>.</p>
+<p>You also have a <code class="docutils literal notranslate"><span class="pre">default</span></code> entry from where we can give the base values for <code class="docutils literal notranslate"><span class="pre">constants</span></code>,
+<code class="docutils literal notranslate"><span class="pre">dynamic_constants</span></code>, <code class="docutils literal notranslate"><span class="pre">static</span></code> and <code class="docutils literal notranslate"><span class="pre">routes</span></code>. Values that will be updated with interfaces configuration
+(can’t be removed with interface configuration).</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">c2cgeoportal</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=camptocamp&repo=c2cgeoportal&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../administrator/index.html">Administrator Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Integrator Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/index.html">Developer Guide</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+  <li><a href="configuration.html">Configuration Guide for advanced settings</a><ul>
+      <li>Previous: <a href="make.html" title="previous chapter">Build configuration</a></li>
+      <li>Next: <a href="backend.html" title="next chapter">Specific Backend Configuration</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2019, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/integrator/ngeo.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
