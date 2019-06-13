@@ -20,6 +20,20 @@ services:
     volumes_from:
       - config:rw
 
+  ## qgisserver:
+  ##   extends:
+  ##     file: docker-compose-lib.yaml
+  ##     service: qgisserver
+  ##   volumes_from:
+  ##     - config:ro
+  ##   environment:
+  ##     # Single QGIS project files
+  ##     QGIS_PROJECT_FILE: /etc/qgisserver/project.qgz
+  ##     GEOMAPFISH_OGCSERVER: <OGC server name>
+  ##     # Multiple QGIS project files
+  ##     # QGIS_PROJECT_FILE:
+  ##     # GEOMAPFISH_ACCESSCONTROL_CONFIG: /etc/qgisserver/accesscontrol_config.yaml
+
   build:
     extends:
       file: docker-compose-lib.yaml
