@@ -403,7 +403,7 @@ class TestThemesView(TestCase):
                     "credential": False,
                     "imageType": "image/jpeg",
                     "isSingleTile": False,
-                    "namespace": "http://mapserver.gis.umn.edu/mapserver",
+                    "namespace": None,
                     "type": "mapserver",
                     "url": "http://wms.geo.admin.ch/",
                     "urlWfs": "http://wms.geo.admin.ch/",
