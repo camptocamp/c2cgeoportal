@@ -97,17 +97,6 @@ account:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">sudo /etc/init.d/postgres reload</span>
 </pre></div></div><p>Logs are available in the <code class="docutils literal notranslate"><span class="pre">/var/log/postgresql/postgresql-9.*-main.log</span></code> file.</p>
 </div>
-<div class="section" id="makefile">
-<h2>Makefile<a class="headerlink" href="#makefile" title="Permalink to this headline">¶</a></h2>
-<p>To obtain additional debug messages, you can rebuild your project as follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./docker-run --env<span class="o">=</span><span class="nv">DEBUG</span><span class="o">=</span>TRUE make ...</span>
-</pre></div></div><p>This will add a message at the start of each rule with the list of files that required an update, e.-g.:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Build</span> <span class="o">/</span><span class="n">build</span><span class="o">/</span><span class="n">c2ctemplate</span><span class="o">-</span><span class="n">cache</span><span class="o">.</span><span class="n">json</span> <span class="n">due</span> <span class="n">modification</span> <span class="n">on</span> <span class="nb">vars</span><span class="o">.</span><span class="n">yaml</span>
-<span class="o">-</span><span class="n">rw</span><span class="o">-</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span> <span class="mi">1</span> <span class="n">sbrunner</span> <span class="n">geomapfish</span> <span class="mi">1321</span> <span class="mi">2019</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">09</span> <span class="mi">16</span><span class="p">:</span><span class="mi">59</span><span class="p">:</span><span class="mf">20.845623078</span> <span class="o">+</span><span class="mi">0000</span> <span class="o">/</span><span class="n">build</span><span class="o">/</span><span class="n">c2ctemplate</span><span class="o">-</span><span class="n">cache</span><span class="o">.</span><span class="n">json</span>
-<span class="o">-</span><span class="n">rw</span><span class="o">-</span><span class="n">rw</span><span class="o">-</span><span class="n">r</span><span class="o">--</span> <span class="mi">1</span> <span class="n">sbrunner</span> <span class="n">geomapfish</span> <span class="mi">1299</span> <span class="mi">2019</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">10</span> <span class="mi">08</span><span class="p">:</span><span class="mi">31</span><span class="p">:</span><span class="mf">35.707376156</span> <span class="o">+</span><span class="mi">0000</span> <span class="nb">vars</span><span class="o">.</span><span class="n">yaml</span>
-</pre></div>
-</div>
-</div>
 <div class="section" id="docker-compose">
 <h2>Docker-compose<a class="headerlink" href="#docker-compose" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="logs">
@@ -128,11 +117,6 @@ account:</p>
 <li><p>Use a different project name for each instance</p></li>
 </ul>
 </div>
-<div class="section" id="use-a-different-docker-tag">
-<h3>Use a different docker tag<a class="headerlink" href="#use-a-different-docker-tag" title="Permalink to this headline">¶</a></h3>
-<p>To use a different docker tag, define an environment variable in the build:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nv">DOCKER_TAG</span><span class="o">=</span>&lt;tag&gt; ./docker-run make build</span>
-</pre></div></div></div>
 </div>
 <div class="section" id="developing-in-python">
 <h2>Developing in Python<a class="headerlink" href="#developing-in-python" title="Permalink to this headline">¶</a></h2>
@@ -188,10 +172,7 @@ Be sure that the volumes for c2cgeoportal are uncommented.</p>
  <span class="p">}</span>
 </pre></div>
 </div>
-<p>Force rebuild the application:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./docker-run rm /build/apps.&lt;interface&gt;.timestamp</span>
-<span class="prompt1">./docker-run make build</span>
-</pre></div></div></div>
+</div>
 <div class="section" id="performance-or-network-error">
 <h2>Performance or network error<a class="headerlink" href="#performance-or-network-error" title="Permalink to this headline">¶</a></h2>
 <p>For performance and proxy issues, make sure that all internal URLs in the config file

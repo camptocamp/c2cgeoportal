@@ -42,10 +42,6 @@ The recommended URL to use to validate a migration (``checker_url`` in ``proect.
 
     <project_url>/c2c/health_check?max_level=9
 
-.. note::
-
-    For non Docker project the ``<project_url>`` should end with ``/wsgi``.
-
 Checker
 -------
 

@@ -43,7 +43,7 @@
 </pre></div>
 </div>
 <p>The AES key must be either 16, 24, or 32 bytes long.</p>
-<p>To generate a key, you can use the urllogin command: <code class="docutils literal notranslate"><span class="pre">./docker-run</span> <span class="pre">urllogin</span> <span class="pre">--help</span></code>.
+<p>To generate a key, you can use the urllogin command: <code class="docutils literal notranslate"><span class="pre">docker-compose</span> <span class="pre">exec</span> <span class="pre">geoportal</span> <span class="pre">urllogin</span> <span class="pre">--help</span></code>.
 This generates a token like: <code class="docutils literal notranslate"><span class="pre">auth=148b60cc...</span></code> that you can add in the query string of the permalink.</p>
 <p>When the user uses this link, s/he will be connected as a normal user, therefore you should be sure
 that the session timeout is not too big.</p>

@@ -107,7 +107,9 @@ environment variable, for cygwin, git and node binaries.</p>
 <div class="section" id="integrator-install-application-install-application">
 <span id="id1"></span><h3>Install the application<a class="headerlink" href="#integrator-install-application-install-application" title="Permalink to this headline">¶</a></h3>
 <p>You can build and install the application with the command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./docker-run make --makefile<span class="o">=</span>&lt;user&gt;.mk build</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker build --tag<span class="o">=</span>camptocamp/&lt;package&gt;-config<span class="o">[</span>:&lt;tag&gt;<span class="o">]</span> .</span>
+<span class="prompt1">docker build --tag<span class="o">=</span>camptocamp/&lt;package&gt;-geoportal<span class="o">[</span>:&lt;tag&gt;<span class="o">]</span> <span class="se">\</span>
+    --build-arg<span class="o">=</span><span class="nv">GIT_HASH</span><span class="o">=</span><span class="k">$(</span>git rev-parse HEAD<span class="k">)</span> geoportal</span>
 </pre></div></div><p>This previous command will do many things like:</p>
 <blockquote>
 <div><ul class="simple">
@@ -115,12 +117,20 @@ environment variable, for cygwin, git and node binaries.</p>
 <li><p>build the JavaScript and CSS resources into compressed files.</p></li>
 </ul>
 </div></blockquote>
-<p>Then create the application tables:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./docker-compose-run make --makefile<span class="o">=</span>&lt;user&gt;.mk upgrade-db</span>
-</pre></div></div><p>Your application should now be available at:
-<code class="docutils literal notranslate"><span class="pre">https://&lt;hostname&gt;/</span></code>,
-where the <code class="docutils literal notranslate"><span class="pre">&lt;hostname&gt;</span></code> is directly linked to the virtual host.</p>
-<p>Add in the <code class="docutils literal notranslate"><span class="pre">/var/www/vhosts/&lt;vhost_name&gt;/conf/proxies.conf</span></code> file
+<p>Activate the devlopement environment:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">cp docker-compose.override.sample.yaml docker-compose.override.yaml</span>
+</pre></div></div><p>Run the composition:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose up -d</span>
+</pre></div></div><p>Then create the application tables:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal alembic --config<span class="o">=</span>alembic.ini <span class="se">\</span>
+    --name<span class="o">=</span>main upgrade head</span>
+<span class="prompt1">docker-compose <span class="nb">exec</span> geoportal alembic --config<span class="o">=</span>alembic.ini <span class="se">\</span>
+    --name<span class="o">=</span>static upgrade head</span>
+<span class="prompt1"></span>
+<span class="prompt1">docker-compose <span class="nb">exec</span> -run make --makefile<span class="o">=</span>&lt;user&gt;.mk upgrade-db</span>
+</pre></div></div><p>Your application should now be available at: <code class="docutils literal notranslate"><span class="pre">https://localhost:8484/</span></code>.</p>
+<p>If you ahave an Apache in front of your application,
+add in the <code class="docutils literal notranslate"><span class="pre">/var/www/vhosts/&lt;vhost_name&gt;/conf/proxies.conf</span></code> file
 (create it if it does not exist):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ProxyPass</span> <span class="s2">&quot;/&lt;instance&gt;&quot;</span>  <span class="s2">&quot;http://localhost:8080/&lt;instance&gt;&quot;</span>
 <span class="n">ProxyPassReverse</span> <span class="s2">&quot;/&lt;instance&gt;&quot;</span>  <span class="s2">&quot;http://localhost:8080/&lt;instance&gt;&quot;</span>

@@ -33,18 +33,18 @@ Before doing a release you should merge all the previous branch on this one:
 
      .. prompt:: bash
 
-        ./docker-run alembic ${'\\'}
-            --config=geoportal/tests/functional/alembic.ini ${'\\'}
+        docker exec geoportal alembic \
+            --config=geoportal/tests/functional/alembic.ini \
             --name=main heads
-        ./docker-run alembic ${'\\'}
-            --config=geoportal/tests/functional/alembic.ini ${'\\'}
+        docker exec geoportal alembic \
+            --config=geoportal/tests/functional/alembic.ini \
             --name=static heads
 
      If yes create the merge with:
 
      .. prompt:: bash
 
-        ./docker-run alembic \
+        docker exec geoportal alembic \
             --config=geoportal/tests/functional/alembic.ini \
             --name=[main|static] \
             merge --message="Merge <src> and <dst> branches" \
@@ -73,12 +73,13 @@ Checkout the code:
     git checkout master
     git reset --hard origin/master
 
-Get the localisation from Transifex:
+Create a new Transifex resource:
 
 .. prompt:: bash
 
-    docker build --tag=camptocamp/geomapfish-build-dev:<version> docker/build
-    ./docker-run make transifex-get
+    docker build --target=builder --tag=camptocamp/geomapfish-build \
+          --build-arg=MAJOR_VERSION=2.5 .
+    docker run camptocamp/geomapfish-build transifex-init <version + 1>
 
 For each version, we create a new branch (at the latest, for the final release):
 
@@ -94,7 +95,7 @@ Commit your changes:
 
 .. prompt:: bash
 
-    git add .circleci/config.yml Jenkinsfile Makefile docker-run
+    git add .circleci/config.yml
     git commit -m "Create the version <version> branch"
 
 Go back to the master branch:
@@ -111,7 +112,7 @@ Commit your changes:
 
 .. prompt:: bash
 
-    git add .circleci/config.yml Jenkinsfile Makefile docker-run
+    git add .circleci/config.yml
     git commit -m "Start version <version + 1>"
 
 Push your changes:
@@ -119,14 +120,6 @@ Push your changes:
 .. prompt:: bash
 
     git push origin master
-
-Create a new Transifex resource:
-
-.. prompt:: bash
-
-    rm .tx/config
-    docker build --tag=camptocamp/geomapfish-build-dev:<version+1> docker/build
-    ./docker-run make transifex-init
 
 Update the references in the `index.html` file of the `gh-pages` branch.
 
