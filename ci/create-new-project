@@ -7,6 +7,7 @@ docker build --target=runner --tag=camptocamp/geomapfish:${TAG} \
     --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=${TAG} .
 docker build --target=upgrader --tag=camptocamp/geomapfish-scaffolds:${TAG} \
     --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=${TAG} .
+docker build --tag=camptocamp/geomapfish-config-build:${TAG} docker/config
 WORKSPACE=$1
 if [ $# -ge 2 ]
 then
