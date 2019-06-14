@@ -4,7 +4,6 @@ LABEL maintainer Camptocamp "info@camptocamp.com"
 ENV \
   DEBIAN_FRONTEND=noninteractive
 RUN \
-  . /etc/os-release && \
   apt-get update && \
   apt-get install --assume-yes --no-install-recommends apt-utils && \
   apt-get install --assume-yes --no-install-recommends gettext && \
@@ -23,9 +22,9 @@ FROM base AS base-node
 
 ENV NODE_PATH=/usr/lib/node_modules
 RUN \
-  . /etc/os-release && \
   apt-get update && \
   apt-get install --assume-yes --no-install-recommends apt-transport-https && \
+  . /etc/os-release && \
   echo "deb https://deb.nodesource.com/node_10.x ${VERSION_CODENAME} main" > /etc/apt/sources.list.d/nodesource.list && \
   curl --silent https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - && \
   apt-get update && \
@@ -74,7 +73,6 @@ ARG MAJOR_VERSION
 ENV MAJOR_VERSION=$MAJOR_VERSION
 
 RUN \
-  . /etc/os-release && \
   apt-get update && \
   apt-get install --assume-yes --no-install-recommends libxml2-utils && \
   apt-get clean && \

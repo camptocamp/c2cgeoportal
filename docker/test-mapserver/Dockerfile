@@ -2,7 +2,6 @@ FROM camptocamp/mapserver:7.4
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
 RUN \
-  . /etc/os-release && \
   apt-get update && \
   apt-get install --assume-yes --no-install-recommends gettext && \
   apt-get clean && \

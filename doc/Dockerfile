@@ -1,10 +1,7 @@
 FROM debian
 
-RUN \
-  . /etc/os-release && \
-  apt-get update
-RUN \
-  apt-get install --assume-yes --no-install-recommends python3-pip python3-setuptools gettext
+RUN apt-get update
+RUN apt-get install --assume-yes --no-install-recommends python3-pip python3-setuptools gettext
 
 COPY requirements.txt /tmp/
 RUN \
