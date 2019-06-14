@@ -62,19 +62,19 @@ on the <code class="docutils literal notranslate"><span class="pre">geoportal</s
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">aws --endpoint-url https://sos-ch-dk-2.exo.io/ --region ch-dk-2 s3 ls <span class="si">${</span><span class="s1">&#39;\\&#39;</span><span class="si">}</span></span>
-<span class="prompt1">     s3://&lt;bucket&gt;/&lt;folder&gt;</span>
+</style><span class="prompt1">aws --endpoint-url https://sos-ch-dk-2.exo.io/ --region ch-dk-2 s3 ls <span class="se">\</span>
+     s3://&lt;bucket&gt;/&lt;folder&gt;</span>
 </pre></div></div><p>Create the vrt file for a raster layer:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal <span class="si">${</span><span class="s1">&#39;\\&#39;</span><span class="si">}</span></span>
-<span class="prompt1">     gdalbuildvrt /vsis3/&lt;bucket&gt;/&lt;folder&gt;/index.vrt <span class="si">${</span><span class="s1">&#39;\\&#39;</span><span class="si">}</span></span>
-<span class="prompt1">     <span class="k">$(</span>list4vrt &lt;bucket&gt; &lt;folder&gt;/<span class="k">)</span></span>
+<span class="prompt1">     gdalbuildvrt /vsis3/&lt;bucket&gt;/&lt;folder&gt;/index.vrt <span class="se">\</span>
+     <span class="k">$(</span>list4vrt &lt;bucket&gt; &lt;folder&gt;/<span class="k">)</span></span>
 </pre></div></div></div>
 <div class="section" id="mapserver">
 <h2>MapServer<a class="headerlink" href="#mapserver" title="Permalink to this headline">¶</a></h2>
 <p>Create the shape index file for a raster layer:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">gdaltindex mapserver/index.shp <span class="si">${</span><span class="s1">&#39;\\&#39;</span><span class="si">}</span></span>
-<span class="prompt1">     <span class="sb">`</span>aws --endpoint-url https://sos-ch-dk-2.exo.io/ --region ch-dk-2 <span class="si">${</span><span class="s1">&#39;\\&#39;</span><span class="si">}</span></span>
-<span class="prompt1">     s3 ls s3://&lt;bucket&gt;/&lt;folder&gt;/*.geotiff<span class="p">|</span>awk <span class="s1">&#39;{print $4}&#39;</span><span class="sb">`</span></span>
+<span class="prompt1">     <span class="sb">`</span>aws --endpoint-url https://sos-ch-dk-2.exo.io/ --region ch-dk-2 <span class="se">\</span>
+     s3 ls s3://&lt;bucket&gt;/&lt;folder&gt;/*.geotiff<span class="p">|</span>awk <span class="s1">&#39;{print $4}&#39;</span><span class="sb">`</span></span>
 </pre></div></div><p>Add the following config in the <code class="docutils literal notranslate"><span class="pre">mapserver/mapserver.map.tmpl</span></code> file:</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="s2">&quot;CPL_VSIL_CURL_USE_CACHE&quot;</span> <span class="s2">&quot;TRUE&quot;</span>
 <span class="n">CONFIG</span> <span class="s2">&quot;CPL_VSIL_CURL_CACHE_SIZE&quot;</span> <span class="s2">&quot;128000000&quot;</span>
