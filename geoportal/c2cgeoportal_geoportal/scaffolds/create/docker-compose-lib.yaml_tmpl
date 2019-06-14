@@ -240,6 +240,8 @@ services:
       - USER_NAME
       - USER_ID
       - GROUP_ID
+      - BUILD_VOLUME_NAME
+      - PROJECT_DIRECTORY
 
   webpack_dev_server:
     image: ${DOCKER_BASE}-geoportal:${DOCKER_TAG}
