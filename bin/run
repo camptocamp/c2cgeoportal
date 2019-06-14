@@ -2,7 +2,8 @@
 
 user=$1
 group=$2
-shift
-shift
+dir=$3
+shift 3
+cd ${dir}
 "$@"
-chown -R ${user}:${group} /src
+chown -R ${user}:${group} ${dir}

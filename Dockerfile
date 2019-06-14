@@ -1,4 +1,4 @@
-FROM camptocamp/c2cwsgiutils:2 AS base
+FROM camptocamp/c2cwsgiutils:3 AS base
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
 ENV \
@@ -7,7 +7,7 @@ RUN \
   . /etc/os-release && \
   apt-get update && \
   apt-get install --assume-yes --no-install-recommends apt-utils && \
-  apt-get install --assume-yes --no-install-recommends gettext && \
+  apt-get install --assume-yes --no-install-recommends gettext postgresql-client && \
   apt-get clean && \
   rm --recursive --force /var/lib/apt/lists/*
 
@@ -18,6 +18,20 @@ RUN \
 
 
 #############################################################################################################
+# Finally used by upgrader
+
+FROM base AS base-upgrader
+
+RUN \
+  . /etc/os-release && \
+  apt-get update && \
+  apt-get install --assume-yes --no-install-recommends git && \
+  apt-get clean && \
+  rm --recursive --force /var/lib/apt/lists/*
+
+
+#############################################################################################################
+# Finally used by runner and builder
 
 FROM base AS base-node
 
@@ -57,16 +71,22 @@ FROM base-node AS common-build
 
 COPY requirements-dev.txt /tmp/
 RUN \
+  . /etc/os-release && \
+  apt-get update && \
+  apt-get install --assume-yes --no-install-recommends git make && \
+  apt-get clean && \
+  rm --recursive --force /var/lib/apt/lists/*
+RUN \
   python3 -m pip install --disable-pip-version-check --no-cache-dir --requirement=/tmp/requirements-dev.txt && \
   rm --recursive --force /tmp/* /var/tmp/* /root/.cache/*
 # For mypy
 RUN \
-  touch /usr/local/lib/python3.6/dist-packages/zope/__init__.py && \
-  touch /usr/local/lib/python3.6/dist-packages/c2c/__init__.py
+  touch /usr/local/lib/python3.7/dist-packages/zope/__init__.py && \
+  touch /usr/local/lib/python3.7/dist-packages/c2c/__init__.py
 
 
 #############################################################################################################
-# Finally used by builder and upgrader
+# Build files for builder
 
 FROM common-build AS build1
 
@@ -122,7 +142,7 @@ RUN \
 
 
 #############################################################################################################
-# Base image for builder and upgrader
+# Build files for builder
 
 FROM build1 AS build
 
@@ -194,7 +214,7 @@ RUN adduser www-data root
 #############################################################################################################
 # Image used to upgrade the project
 
-FROM base AS upgrader
+FROM base-upgrader AS upgrader
 
 ARG VERSION
 ENV VERSION=$VERSION
