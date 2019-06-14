@@ -113,8 +113,11 @@ class GeomapfishAngularExtractor(Extractor):  # pragma: no cover
 
     def __init__(self):
         super().__init__()
-        config.init("/etc/geomapfish/config.yaml")
-        self.config = config.get_config()
+        if os.path.exists("/etc/geomapfish/config.yaml"):
+            config.init("/etc/geomapfish/config.yaml")
+            self.config = config.get_config()
+        else:
+            self.config = None
         self.tpl = None
 
     def __call__(self, filename, options):
@@ -333,8 +336,11 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
 
     def __init__(self):
         super().__init__()
-        config.init("/etc/geomapfish/config.yaml")
-        self.config = config.get_config()
+        if os.path.exists("/etc/geomapfish/config.yaml"):
+            config.init("/etc/geomapfish/config.yaml")
+            self.config = config.get_config()
+        else:
+            self.config = None
         self.env = None
 
     def __call__(self, filename, options):
