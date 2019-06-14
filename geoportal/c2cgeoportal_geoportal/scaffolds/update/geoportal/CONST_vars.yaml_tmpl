@@ -731,18 +731,12 @@ runtime_environment:
     default: http://qgisserver:8080/
   - name: PRINT_URL
     default: http://print:8080/print/
-  - name: MAPCACHE_URL
-    default: http://mapcache:8080/
   - name: DEVSERVER_HOST
     default: webpack-dev-server:8080
   - name: REDIS_HOST
     default: redis
   - name: REDIS_PORT
     default: '6372'
-  - name: MEMCACHED_HOST
-    default: memcached
-  - name: MEMCACHED_PORT
-    default: '11211'
   - name: TILEGENERATION_SQS_QUEUE
     default: queue_name
 

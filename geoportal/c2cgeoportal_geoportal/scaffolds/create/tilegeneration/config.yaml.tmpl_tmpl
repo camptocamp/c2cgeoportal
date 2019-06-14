@@ -110,11 +110,11 @@ sqs:
     queue: '${TILEGENERATION_SQS_QUEUE}'
 
 server:
-    mapcache_base: '${MAPCACHE_URL}'
     wmts_path: tiles
     static_path: tiles/static
     admin_path: tiles/admin
     expires: 8  # 8 hours
+    mapcache_internal: True
     predefined_commands:
     -   name: Generation all layers
         command: generate_tiles --role=master
@@ -122,12 +122,6 @@ server:
         command: generate_tiles --role=master --layer=plan
     -   name: Generation layer ortho
         command: generate_tiles --role=master --layer=ortho
-
-mapcache:
-    config_file: mapcache/mapcache.xml.tmpl
-    location: ''
-    memcache_host: '${MEMCACHED_HOST}'
-    memcache_port: '${MEMCACHED_PORT}'
 
 process:
     optipng_test:
