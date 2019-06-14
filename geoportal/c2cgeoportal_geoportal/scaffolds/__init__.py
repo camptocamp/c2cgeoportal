@@ -171,7 +171,7 @@ class TemplateCreate(BaseTemplate):  # pragma: no cover
         Overrides the base template class to print the next step.
         """
 
-        fix_executables(output_dir, ("docker-run", "docker-compose-run", "bin/*"))
+        fix_executables(output_dir, ("bin/*",))
 
         return BaseTemplate.post(self, command, output_dir, vars_)
 
@@ -202,6 +202,6 @@ class TemplateUpdate(BaseTemplate):  # pragma: no cover
         after a successful scaffolding rendering.
         """
 
-        fix_executables(output_dir, ("docker-run", "docker-compose-run", "bin/*"), True)
+        fix_executables(output_dir, ("bin/*",), True)
 
         return BaseTemplate.post(self, command, output_dir, vars_)

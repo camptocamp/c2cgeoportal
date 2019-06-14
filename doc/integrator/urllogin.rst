@@ -14,7 +14,7 @@ First, you should configure ``urllogin`` in the vars file:
 
 The AES key must be either 16, 24, or 32 bytes long.
 
-To generate a key, you can use the urllogin command: ``./docker-run urllogin --help``.
+To generate a key, you can use the urllogin command: ``docker-compose exec geoportal urllogin --help``.
 This generates a token like: ``auth=148b60cc...`` that you can add in the query string of the permalink.
 
 When the user uses this link, s/he will be connected as a normal user, therefore you should be sure
