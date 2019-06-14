@@ -7,8 +7,6 @@ FIND_OPTS = $(foreach ELEM, $(TEMPLATE_EXCLUDE),-path ./$(ELEM) -prune -o) -type
 LANGUAGES ?= en fr de
 NGEO_INTERFACES ?= desktop mobile iframe_api
 NGEO_API ?= TRUE
-INTERFACES += $(NGEO_INTERFACES)
-export INTERFACES
 
 ifneq ($(NGEO_INTERFACES), "")
 DEFAULT_WEB_RULE += $(NGEO_OUTPUT_FILES)
@@ -20,7 +18,6 @@ endif
 WEB_RULE ?= $(DEFAULT_WEB_RULE)
 
 DEFAULT_BUILD_RULES ?= $(WEB_RULE) \
-	config.yaml \
 	alembic.ini \
 	alembic.yaml \
 	build-api
@@ -66,15 +63,7 @@ VALIDATE_PY_TEST_FOLDERS = $(PACKAGE)_geoportal/tests
 PY_FILES = $(shell find $(PACKAGE) -type f -name '*.py' -print)
 
 # Templates
-CONFIG_VARS += sqlalchemy.url sqlalchemy.pool_recycle sqlalchemy.pool_size sqlalchemy.max_overflow \
-	sqlalchemy.use_batch_mode sqlalchemy_slave.url sqlalchemy_slave.pool_recycle sqlalchemy_slave.pool_size \
-	sqlalchemy_slave.max_overflow sqlalchemy_slave.use_batch_mode schema schema_static enable_admin_interface \
-	default_locale_name servers layers available_locale_names cache admin_interface functionalities \
-	raster shortener hide_capabilities tinyowsproxy resourceproxy print_url print_get_redirect \
-	checker check_collector default_max_age package srid \
-	reset_password fulltextsearch global_headers headers authorized_referers hooks stats db_chooser \
-	dbsessions urllogin host_forward_host smtp c2c.base_path welcome_email \
-	lingua_extractor interfaces_config interfaces default_interface devserver_url api
+
 
 # Disabling Make built-in rules to speed up execution time
 .SUFFIXES:
@@ -92,20 +81,6 @@ flake8:
 .PHONY: lint-ngeo
 eslint: $(APP_JS_FILES)
 	eslint $?
-
-# Templates
-
-/tmp/c2ctemplate-cache.json:
-ifeq ($(origin VARS_FILE), undefined)
-	@echo "Error: the variable VARS_FILE is required."
-	exit 1
-endif
-	c2c-template --vars $(VARS_FILE) --get-cache $@
-
-config.yaml: /tmp/c2ctemplate-cache.json
-	c2c-template --cache /tmp/c2ctemplate-cache.json --get-config /tmp/_config.yaml $(CONFIG_VARS)
-	pykwalify --data-file /tmp/_config.yaml --schema-file CONST_config-schema.yaml
-	mv /tmp/_config.yaml $@
 
 # Server localisation
 
@@ -166,7 +141,3 @@ $(APP_OUTPUT_DIR)/api.js.tmpl: webpack.api.js $(PACKAGE)_geoportal/static-ngeo/a
 
 $(APP_OUTPUT_DIR)/api.css: $(PACKAGE)_geoportal/static-ngeo/api/api.css
 	cp $< $@
-
-alembic.yaml: /tmp/c2ctemplate-cache.json
-	c2c-template --cache $< --get-config /tmp/_alembic.yaml srid schema schema_static sqlalchemy.url cache
-	mv /tmp/_alembic.yaml $@

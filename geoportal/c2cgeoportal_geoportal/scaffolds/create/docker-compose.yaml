@@ -22,7 +22,7 @@ services:
       file: docker-compose-lib.yaml
       service: mapserver
     volumes_from:
-      - config:rw
+      - config:ro
     volumes:
       - /var/sig:/var/sig:ro
 
@@ -82,6 +82,8 @@ services:
     extends:
       file: docker-compose-lib.yaml
       service: geoportal
+    volumes_from:
+      - config:ro
     volumes:
       - /var/sig:/var/sig:ro
 

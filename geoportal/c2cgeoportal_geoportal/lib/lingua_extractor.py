@@ -113,11 +113,8 @@ class GeomapfishAngularExtractor(Extractor):  # pragma: no cover
 
     def __init__(self):
         super().__init__()
-        if os.path.exists("config.yaml"):
-            config.init("config.yaml")
-            self.config = config.get_config()
-        else:
-            self.config = None
+        config.init("/etc/geomapfish/config.yaml")
+        self.config = config.get_config()
         self.tpl = None
 
     def __call__(self, filename, options):
@@ -336,11 +333,8 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
 
     def __init__(self):
         super().__init__()
-        if os.path.exists("config.yaml"):
-            config.init("config.yaml")
-            self.config = config.get_config()
-        else:
-            self.config = None
+        config.init("/etc/geomapfish/config.yaml")
+        self.config = config.get_config()
         self.env = None
 
     def __call__(self, filename, options):
@@ -513,7 +507,7 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
 
         request = _Request()
         request.registry.settings = self.config
-        # static schema will not be supported
+        # Static schema will not be supported
         url = get_url2("Layer", url, request, errors)
         if len(errors) > 0:
             print("\n".join(errors))

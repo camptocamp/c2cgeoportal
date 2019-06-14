@@ -1,0 +1,17 @@
+---
+vars:
+  schema: '{PGSCHEMA}'
+  schema_static: '{PGSCHEMA_STATIC}'
+  sqlalchemy.url: postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST}:{PGPORT}/{PGDATABASE}
+  srid: 21781
+environment:
+  - name: PGHOST
+  - name: PGPORT
+    default: '5432'
+  - name: PGUSER
+  - name: PGPASSWORD
+  - name: PGDATABASE
+  - name: PGSCHEMA
+    default: main
+  - name: PGSCHEMA_STATIC
+    default: main_static
