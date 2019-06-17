@@ -34,8 +34,8 @@ import logging
 from dogpile.cache.util import compat
 from dogpile.cache.region import make_region
 
-log = logging.getLogger(__name__)
-_regions = {}
+LOG = logging.getLogger(__name__)
+_REGION = {}
 
 
 def map_dbobject(item):
@@ -56,9 +56,9 @@ def keygen_function(namespace, function):
     """
 
     if namespace is None:
-        namespace = "{0!s}:{1!s}".format(function.__module__, function.__name__)
+        namespace = "{}:{}".format(function.__module__, function.__name__)
     else:  # pragma: no cover
-        namespace = "{0!s}:{1!s}|{2!s}".format(function.__module__, function.__name__, namespace)
+        namespace = "{}:{}|{}".format(function.__module__, function.__name__, namespace)
 
     args = inspect.getfullargspec(function)
     has_self = args[0] and args[0][0] in ("self", "cls")
@@ -84,7 +84,7 @@ def init_region(conf, region=None):
         (k, conf[k]) for k in
         ("arguments", "expiration_time") if k in conf)
     cache_region.configure(conf["backend"], **kwargs)
-    _regions[region] = cache_region
+    _REGION[region] = cache_region
     return cache_region
 
 
@@ -93,11 +93,11 @@ def get_region(region=None):
     Return a cache region.
     """
     try:
-        return _regions[region]
+        return _REGION[region]
     except KeyError:  # pragma: no cover
         raise Exception(
-            "No such caching region. A region must be"
-            "initialized before it can be used")
+            "No such caching region. A region must be initialized before it can be used"
+        )
 
 
 def invalidate_region(region=None):
@@ -111,36 +111,29 @@ PRIVATE_CACHE = 2
 CORS_METHODS = "HEAD, GET, POST, PUT, DELETE"
 
 
-def set_cors_headers(service_headers_settings, request, service_name,
-                     credentials, response):
+def _set_cors_headers(
+    request, response, service_name, service_headers_settings, credentials
+):
     """
     Handle CORS requests, as specified in https://www.w3.org/TR/cors/
     """
-    if "Vary" not in response.headers:
-        response.headers["Vary"] = set()
-    response.headers["Vary"].add("Origin")
+    response.vary = (response.vary or ()) + ("Origin",)
 
     if "Origin" not in request.headers:
         return  # Not a CORS request if this header is missing
     origin = request.headers["Origin"]
 
-    if not service_headers_settings or \
-            "access_control_allow_origin" not in service_headers_settings:
-        log.warning("CORS query not configured for service=%s", service_name)
+    if request.method == "OPTIONS" and "Access-Control-Request-Method" not in request.headers:
+        LOG.warning("CORS preflight query missing the Access-Control-Request-Method header")
         return
 
-    preflight = request.method == "OPTIONS"
-    if preflight and "Access-Control-Request-Method" not in request.headers:
-        log.warning("CORS preflight query missing the Access-Control-Request-Method header")
-        return
-
-    allowed_origins = service_headers_settings["access_control_allow_origin"]
+    allowed_origins = service_headers_settings.get("access_control_allow_origin", [])
     if origin not in allowed_origins:
         if "*" in allowed_origins:
             origin = "*"
             credentials = False  # Force no credentials
         else:
-            log.warning(
+            LOG.warning(
                 "CORS query not allowed for origin=%s, service=%s",
                 origin, service_name
             )
@@ -151,13 +144,21 @@ def set_cors_headers(service_headers_settings, request, service_name,
         "Access-Control-Allow-Methods": CORS_METHODS,
     })
 
-    if preflight:
-        max_age = service_headers_settings.get("access_control_max_age", 3600)
-        response.headers["Access-Control-Max-Age"] = str(max_age)
-        response.cache_control.max_age = max_age
+    max_age = service_headers_settings.get("access_control_max_age", 3600)
+    response.headers["Access-Control-Max-Age"] = str(max_age)
+
+    if request.method != "OPTIONS":
+        return
+
+    response.cache_control.max_age = max_age
 
     if credentials:
         response.headers["Access-Control-Allow-Credentials"] = "true"
+
+    if not service_headers_settings or \
+            "access_control_allow_origin" not in service_headers_settings:
+        LOG.warning("CORS query not configured for service=%s", service_name)
+        return
 
     requested_headers = \
         request.headers.get("Access-Control-Request-Headers", False)
@@ -169,53 +170,53 @@ def set_cors_headers(service_headers_settings, request, service_name,
     # Access-Control-Expose-Headers
 
 
-def set_common_headers(
-        request, service_name, cache,
-        response=None, credentials=True, vary=False, content_type=None):
+def _set_common_headers(
+    request, response, service_headers_settings, cache, content_type
+):
     """
     Set the common headers
-    vary: Vary on Accept-Language
+    """
+
+    response.headers.update(service_headers_settings.get('headers', {}))
+
+    if cache == NO_CACHE:
+        response.cache_control.no_cache = True
+        response.cache_control.max_age = 0
+    elif cache == PUBLIC_CACHE:
+        response.cache_control.public = True
+    elif cache == PRIVATE_CACHE:
+        if request.user is not None:
+            response.cache_control.private = True
+        else:
+            response.cache_control.public = True
+    else:  # pragma: no cover
+        raise "Invalid cache type"
+
+    if cache != NO_CACHE:
+        max_age = service_headers_settings.get("cache_control_max_age", 3600)
+
+        response.cache_control.max_age = max_age
+        if max_age == 0:
+            response.cache_control.no_cache = True
+
+    if content_type is not None:
+        response.content_type = content_type
+
+    return response
+
+
+def set_common_headers(
+    request, service_name, cache, response=None, credentials=True, content_type=None
+):
+    """
+    Set the common headers
     """
     if response is None:
         response = request.response
 
+    headers_settings = request.registry.settings.get("headers", {})
+    service_headers_settings = headers_settings.get(service_name, {})
+
+    _set_cors_headers(request, response, service_name, service_headers_settings, credentials)
     if request.method != "OPTIONS":
-        if cache == NO_CACHE:
-            response.cache_control.no_cache = True
-            response.cache_control.max_age = 0
-        elif cache == PUBLIC_CACHE:
-            response.cache_control.public = True
-        elif cache == PRIVATE_CACHE:
-            if request.user is not None:
-                response.cache_control.private = True
-            else:
-                response.cache_control.public = True
-        else:  # pragma: no cover
-            raise "Invalid cache type"
-
-    response.headers["Vary"] = set(["Accept-Encoding"])
-    if hasattr(request, "registry"):
-        headers_settings = request.registry.settings.get("headers", {})
-        service_headers_settings = headers_settings.get(service_name, {})
-
-        if cache != NO_CACHE and request.method != "OPTIONS":
-            max_age = service_headers_settings.get("cache_control_max_age", 3600)
-
-            response.cache_control.max_age = max_age
-            if max_age == 0:
-                response.cache_control.no_cache = True
-
-        set_cors_headers(
-            service_headers_settings, request, service_name,
-            credentials, response
-        )
-
-    if vary and request.method != "OPTIONS":
-        response.headers["Vary"].add("Accept-Language")
-
-    response.headers["Vary"] = ", ".join(response.headers["Vary"])
-
-    if content_type is not None and request.method != "OPTIONS":
-        response.content_type = content_type
-
-    return response
+        return _set_common_headers(request, response, service_headers_settings, cache, content_type)

@@ -32,9 +32,9 @@
 
 from unittest import TestCase
 
-from pyramid.request import Request, Response
+from pyramid.testing import DummyRequest
 
-from c2cgeoportal_geoportal.lib.caching import set_cors_headers, CORS_METHODS
+from c2cgeoportal_geoportal.lib.caching import set_common_headers, CORS_METHODS, NO_CACHE
 
 
 class TestSetCorsHeaders(TestCase):
@@ -48,23 +48,21 @@ class TestSetCorsHeaders(TestCase):
 
     @staticmethod
     def _do(method, headers, credentials=False, settings=SETTINGS):
-        req = Request({}, method=method, headers=headers)
-        req.response = Response()
-        set_cors_headers(settings, req, "foo", credentials, req.response)
-        if 'Vary' in req.response.headers:
-            req.response.headers['Vary'] = ', '.join(req.response.headers['Vary'])
-        return req.response.headers
+        request = DummyRequest({}, method=method, headers=headers)
+        if settings is not None:
+            request.registry.settings = {
+                'headers': {
+                    'foo': settings
+                }
+            }
+        else:
+            request.registry.settings = {
+                'headers': {
+                }
+            }
+        set_common_headers(request, "foo", NO_CACHE, credentials=credentials)
 
-    def _assert_headers(self, actual, expected):
-        # need to add the headers automatically added by Request
-        base_headers = {
-            "Content-Type": "text/html; charset=UTF-8",
-            "Content-Length": "0",
-            'Vary': 'Origin',
-        }
-        expected = expected.copy()
-        expected.update(base_headers)
-        self.assertEqual(actual, expected)
+        return dict(request.response.headers)
 
     def test_simple(self):
         """
@@ -72,31 +70,44 @@ class TestSetCorsHeaders(TestCase):
         """
         # 1. If the Origin header is not present terminate this set of steps.
         #    The request is outside the scope of this specification.
-        self._assert_headers(self._do("POST", {}), {})
+        assert self._do("POST", {}) == {
+            'Cache-Control': 'max-age=0, no-cache',
+            'Content-Length': '0',
+            'Content-Type': 'text/html; charset=UTF-8',
+            'Vary': 'Origin',
+        }
 
         # 2. If the value of the Origin header is not a case-sensitive match for
         #    any of the values in list of origins, do not set any additional
         #    headers and terminate this set of steps.
-        self._assert_headers(self._do("POST", {"Origin": "http://foe.com"}), {})
+        assert self._do("POST", {
+            "Origin": "http://foe.com",
+        }) == {
+            'Cache-Control': 'max-age=0, no-cache',
+            'Content-Length': '0',
+            'Content-Type': 'text/html; charset=UTF-8',
+            'Vary': 'Origin',
+        }
 
         # 3. If the resource supports credentials add a single
         #    Access-Control-Allow-Origin header, with the value of the Origin
         #    header as value, and add a single Access-Control-Allow-Credentials
         #    header with the case-sensitive string "true" as value.
-        self._assert_headers(self._do("POST", {
-            "Origin": self. ORIGIN2
-        }, credentials=True), {
+        assert self._do("POST", {
+            "Origin": self. ORIGIN2,
+        }, credentials=True) == {
+            'Cache-Control': 'max-age=0, no-cache',
+            'Content-Length': '0',
+            'Content-Type': 'text/html; charset=UTF-8',
+            'Vary': 'Origin',
+            "Access-Control-Max-Age": self.MAX_AGE,
             "Access-Control-Allow-Origin": self.ORIGIN2,
-            "Access-Control-Allow-Credentials": "true",
             "Access-Control-Allow-Methods": CORS_METHODS,
-        })
+        }
 
         # 3. Otherwise, add a single Access-Control-Allow-Origin header, with
         #    either the value of the Origin header or the string "*" as value.
-        self._assert_headers(self._do("POST", {"Origin": self. ORIGIN2}), {
-            "Access-Control-Allow-Origin": self.ORIGIN2,
-            "Access-Control-Allow-Methods": CORS_METHODS,
-        })
+        # tested in test_match_all
 
         # 4. If the list of exposed headers is not empty add one or more
         #    Access-Control-Expose-Headers headers, with as values the header
@@ -110,33 +121,51 @@ class TestSetCorsHeaders(TestCase):
         """
         # 1. If the Origin header is not present terminate this set of steps.
         #    The request is outside the scope of this specification.
-        self._assert_headers(self._do("OPTIONS", {}), {})
+        assert self._do("OPTIONS", {
+            "Access-Control-Request-Method": "GET",
+        }) == {
+            'Content-Length': '0',
+            'Content-Type': 'text/html; charset=UTF-8',
+            'Vary': 'Origin',
+        }
 
         # 2. If the value of the Origin header is not a case-sensitive match for
         #    any of the values in list of origins do not set any additional
         #    headers and terminate this set of steps.
-        self._assert_headers(
-            self._do("OPTIONS", {"Origin": "http://foe.com"}),
-            {}
-        )
+        assert self._do("OPTIONS", {
+            "Origin": "http://foe.com",
+            "Access-Control-Request-Method": "GET",
+        }) == {
+            'Content-Length': '0',
+            'Content-Type': 'text/html; charset=UTF-8',
+            'Vary': 'Origin',
+        }
 
         # 3. If there is no Access-Control-Request-Method header or if parsing
         #    failed, do not set any additional headers and terminate this set
         #    of steps. The request is outside the scope of this specification.
-        self._assert_headers(self._do("OPTIONS", {
-            "Origin": self.ORIGIN1}), {})
+        assert self._do("OPTIONS", {
+            "Origin": self.ORIGIN1,
+        }) == {
+            'Content-Length': '0',
+            'Content-Type': 'text/html; charset=UTF-8',
+            'Vary': 'Origin',
+        }
 
         # 4. If there are no Access-Control-Request-Headers headers let header
         #    field-names be the empty list.
-        self._assert_headers(self._do("OPTIONS", {
+        assert self._do("OPTIONS", {
             "Origin": self.ORIGIN1,
-            "Access-Control-Request-Method": "GET"
-        }), {
+            "Access-Control-Request-Method": "GET",
+        }) == {
+            'Content-Length': '0',
+            'Content-Type': 'text/html; charset=UTF-8',
+            'Vary': 'Origin',
             "Access-Control-Allow-Origin": self.ORIGIN1,
             "Access-Control-Max-Age": self.MAX_AGE,
             "Access-Control-Allow-Methods": CORS_METHODS,
             'Cache-Control': 'max-age=' + self.MAX_AGE,
-        })
+        }
 
         # 5. If method is not a case-sensitive match for any of the values in
         #    list of methods do not set any additional headers and terminate
@@ -152,16 +181,19 @@ class TestSetCorsHeaders(TestCase):
         #    Access-Control-Allow-Origin header, with the value of the Origin
         #    header as value, and add a single Access-Control-Allow-Credentials
         #    header with the case-sensitive string "true" as value.
-        self._assert_headers(self._do("OPTIONS", {
+        assert self._do("OPTIONS", {
             "Origin": self.ORIGIN1,
             "Access-Control-Request-Method": "GET"
-        }, credentials=True), {
+        }, credentials=True) == {
+            'Content-Length': '0',
+            'Content-Type': 'text/html; charset=UTF-8',
+            'Vary': 'Origin',
             "Access-Control-Allow-Origin": self.ORIGIN1,
             "Access-Control-Allow-Credentials": "true",
             "Access-Control-Max-Age": self.MAX_AGE,
             "Access-Control-Allow-Methods": CORS_METHODS,
             'Cache-Control': 'max-age=' + self.MAX_AGE,
-        })
+        }
 
         # 8. Optionally add a single Access-Control-Max-Age header with as value
         #    the amount of seconds the user agent is allowed to cache the result
@@ -174,22 +206,29 @@ class TestSetCorsHeaders(TestCase):
 
         # 10. Add one or more Access-Control-Allow-Headers headers consisting of
         #     (a subset of) the list of headers.
-        self._assert_headers(self._do("OPTIONS", {
+        assert self._do("OPTIONS", {
             "Origin": self.ORIGIN1,
             "Access-Control-Request-Method": "GET",
             "Access-Control-Request-Headers": "X-Foo, X-Bar"
-        }), {
+        }) == {
+            'Content-Length': '0',
+            'Content-Type': 'text/html; charset=UTF-8',
+            'Vary': 'Origin',
             "Access-Control-Allow-Origin": self.ORIGIN1,
             "Access-Control-Max-Age": self.MAX_AGE,
             "Access-Control-Allow-Methods": CORS_METHODS,
             "Access-Control-Allow-Headers": "X-Foo, X-Bar",
             'Cache-Control': 'max-age=' + self.MAX_AGE,
-        })
+        }
 
     def test_not_configured(self):
         # If the service is not configured, then no CORS head.
-        self._assert_headers(
-            self._do("GET", {"Origin": self. ORIGIN1}, settings=None), {})
+        assert self._do("GET", {"Origin": self. ORIGIN1}, settings=None) == {
+            'Cache-Control': 'max-age=0, no-cache',
+            'Content-Length': '0',
+            'Content-Type': 'text/html; charset=UTF-8',
+            'Vary': 'Origin',
+        }
 
     def test_match_all(self):
         settings = {
@@ -199,19 +238,46 @@ class TestSetCorsHeaders(TestCase):
 
         # An origin included in the access_control_allow_origin list is OK with
         # credentials
-        self._assert_headers(self._do("POST", {
+        assert self._do("POST", {
             "Origin": self.ORIGIN1
-        }, credentials=True, settings=settings), {
+        }, credentials=True, settings=settings) == {
+            'Cache-Control': 'max-age=0, no-cache',
+            'Content-Length': '0',
+            'Content-Type': 'text/html; charset=UTF-8',
+            'Vary': 'Origin',
+            "Access-Control-Max-Age": self.MAX_AGE,
             "Access-Control-Allow-Origin": self.ORIGIN1,
-            "Access-Control-Allow-Credentials": "true",
             "Access-Control-Allow-Methods": CORS_METHODS,
-        })
+        }
 
-        # An origin not included in the access_control_allow_origin is allowed,
-        # but without credentials
-        self._assert_headers(self._do("POST", {
-            "Origin": "http://guest.com"
-        }, credentials=True, settings=settings), {
+        # 3. Otherwise, add a single Access-Control-Allow-Origin header, with
+        #    either the value of the Origin header or the string "*" as value.
+        assert self._do("POST", {
+            "Origin": "http://www.guest.com",
+        }, settings=settings) == {
+            'Cache-Control': 'max-age=0, no-cache',
+            'Content-Length': '0',
+            'Content-Type': 'text/html; charset=UTF-8',
+            'Vary': 'Origin',
+            "Access-Control-Max-Age": self.MAX_AGE,
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": CORS_METHODS,
-        })
+        }
+
+        # 7. If the resource supports credentials add a single
+        #    Access-Control-Allow-Origin header, with the value of the Origin
+        #    header as value, and add a single Access-Control-Allow-Credentials
+        #    header with the case-sensitive string "true" as value.
+        # but out of the allow list
+        assert self._do("OPTIONS", {
+            "Origin": "http://www.guest.com",
+            "Access-Control-Request-Method": "GET",
+        }, credentials=True, settings=settings) == {
+            'Content-Length': '0',
+            'Content-Type': 'text/html; charset=UTF-8',
+            'Vary': 'Origin',
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Max-Age": self.MAX_AGE,
+            "Access-Control-Allow-Methods": CORS_METHODS,
+            'Cache-Control': 'max-age=' + self.MAX_AGE,
+        }

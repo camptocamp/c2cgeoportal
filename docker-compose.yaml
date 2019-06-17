@@ -48,6 +48,8 @@ services:
 
   tests:
     image: camptocamp/geomapfish-tests
+    # volumes:
+    #   - .:/app/c2cgeoportal
     environment:
       - PGHOST=db
       - PGPORT=5432

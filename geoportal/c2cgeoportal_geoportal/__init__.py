@@ -319,9 +319,7 @@ def error_handler(http_exception, request):  # pragma: no cover
     View callable for handling all the exceptions that are not already handled.
     """
     LOG.warning("%s returned status code %s", request.url, http_exception.status_code)
-    return caching.set_common_headers(
-        request, "error", caching.NO_CACHE, http_exception, vary=True
-    )
+    return caching.set_common_headers(request, "error", caching.NO_CACHE, http_exception)
 
 
 def call_hook(settings, name, *args, **kwargs):

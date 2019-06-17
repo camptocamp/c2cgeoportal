@@ -524,36 +524,19 @@ vars:
     {content_security_policy_c2c_style_src_extra}"
 
   global_headers:
-    - pattern: '.*'
+    - pattern: '^/admin/.*'
       headers:
         X-Frame-Options: SAMEORIGIN
         X-Xss-Protection: 1; mode=block
         X-Content-Type-Options: nosniff
-        Referrer-Policy: origin
-        Strict-Transport-Security: max-age=31536000; includeSubDomains
-        Content-Security-Policy:
-          "default-src {content_security_policy_main_default_src};
-          script-src {content_security_policy_main_script_src};
-          style-src {content_security_policy_main_style_src};
-          img-src {content_security_policy_main_img_src};
-          connect-src {content_security_policy_main_connect_src}"
-    - pattern: '^/admin/.*'
-      headers:
         Referrer-Policy: same-origin
+        Strict-Transport-Security: max-age=31536000; includeSubDomains
         Content-Security-Policy:
           "default-src {content_security_policy_admin_default_src};
           script-src {content_security_policy_admin_script_src};
           style-src {content_security_policy_admin_style_src};
           img-src {content_security_policy_admin_img_src};
           worker-src {content_security_policy_admin_worker_src}"
-    - pattern: '^/apihelp/index.html'
-      headers:
-        Content-Security-Policy:
-          "default-src {content_security_policy_apihelp_default_src};
-          script-src {content_security_policy_apihelp_script_src};
-          style-src {content_security_policy_apihelp_style_src};
-          img-src {content_security_policy_apihelp_img_src};
-          connect-src {content_security_policy_apihelp_connect_src}"
     - pattern: '^/static/.*'
       headers:
         Access-Control-Allow-Origin: '*'
@@ -574,19 +557,39 @@ vars:
           "default-src {content_security_policy_c2c_default_src};
           script-src {content_security_policy_c2c_script_src};
           style-src {content_security_policy_c2c_style_src};"
-    - pattern: '^/_debug_toolbar/.*'
-      headers:
-        Content-Security-Policy:
 
   # Control the HTTP headers
   headers:
-    index: &header
+    dynamic: &header
       cache_control_max_age: 600  # 10 minutes
       access_control_max_age: 600  # 10 minutes
       access_control_allow_origin:
         - "*"
-    dynamic: *header
+    index:
+      <<: *header
+      headers: &sec_headers
+        X-Frame-Options: SAMEORIGIN
+        X-Xss-Protection: 1; mode=block
+        X-Content-Type-Options: nosniff
+        Referrer-Policy: origin
+        Strict-Transport-Security: max-age=31536000; includeSubDomains
+        Content-Security-Policy:
+          "default-src {content_security_policy_main_default_src};
+          script-src {content_security_policy_main_script_src};
+          style-src {content_security_policy_main_style_src};
+          img-src {content_security_policy_main_img_src};
+          connect-src {content_security_policy_main_connect_src}"
     api: *header
+    apihelp:
+      <<: *header
+      headers:
+        <<: *sec_headers
+        Content-Security-Policy:
+          "default-src {content_security_policy_apihelp_default_src};
+          script-src {content_security_policy_apihelp_script_src};
+          style-src {content_security_policy_apihelp_style_src};
+          img-src {content_security_policy_apihelp_img_src};
+          connect-src {content_security_policy_apihelp_connect_src}"
     profile: *header
     raster: *header
     error: *header
