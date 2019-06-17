@@ -3,7 +3,6 @@ c2cgeoform
 c2cwsgiutils
 colander
 deform
-iso8601
 passwordgenerator
 pyproj
 pyramid
