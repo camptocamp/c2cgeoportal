@@ -29,7 +29,7 @@ Use the aws client to list the files:
 
 .. prompt:: bash
 
-   aws --endpoint-url https://sos-ch-dk-2.exo.io/ --region ch-dk-2 s3 ls ${'\\'}
+   aws --endpoint-url https://sos-ch-dk-2.exo.io/ --region ch-dk-2 s3 ls \
         s3://<bucket>/<folder>
 
 
@@ -37,10 +37,9 @@ Create the vrt file for a raster layer:
 
 .. prompt:: bash
 
-   gdalbuildvrt `aws --endpoint-url https://sos-ch-dk-2.exo.io/ ${'\\'}
-        --region ch-dk-2 s3 ls s3://<bucket>/<folder>/*.geotiff ${'\\'}
-        |awk '{print $4}'` s3://<bucket>/<folder>/index.vrt
-
+   docker-compose exec geoportal ${'\\'}
+        gdalbuildvrt /vsis3/<bucket>/<folder>/index.vrt \
+        $(list4vrt <bucket> <folder>/)
 
 MapServer
 ---------
@@ -50,7 +49,7 @@ Create the shape index file for a raster layer:
 .. prompt:: bash
 
    gdaltindex mapserver/index.shp ${'\\'}
-        `aws --endpoint-url https://sos-ch-dk-2.exo.io/ --region ch-dk-2 ${'\\'}
+        `aws --endpoint-url https://sos-ch-dk-2.exo.io/ --region ch-dk-2 \
         s3 ls s3://<bucket>/<folder>/*.geotiff|awk '{print $4}'`
 
 

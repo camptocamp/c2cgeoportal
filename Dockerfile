@@ -194,7 +194,7 @@ FROM base-runner AS runner
 ARG VERSION
 ENV VERSION=$VERSION
 
-COPY bin/eval-templates bin/wait-db bin/update-po /usr/bin/
+COPY bin/eval-templates bin/wait-db bin/update-po bin/list4vrt /usr/bin/
 COPY --from=build-run /app/c2cgeoportal/commons /opt/c2cgeoportal_commons
 COPY --from=build-run /app/c2cgeoportal/geoportal /opt/c2cgeoportal_geoportal
 COPY --from=build-run /app/c2cgeoportal/admin /opt/c2cgeoportal_admin
