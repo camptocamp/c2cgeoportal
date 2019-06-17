@@ -23,8 +23,6 @@ Pillow~=6.0.0  # Tile generation, rq.filter: < 6.0.0
 pytest-cov~=2.7.1  # tests
 pytest-selenium~=1.16.0  # admin tests
 six~=1.11.0  # required by transifex, rq.filter: ==1.11.0
-tilecloud~=1.3.1  # Tile generation
-tilecloud-chain~=1.11.1  # Tile generation
 transifex-client~=0.13.6  # Makefile
 urllib3==1.23  # required by transifex, rq.filter: <1.24
 waitress~=1.3.0  # pcreate
