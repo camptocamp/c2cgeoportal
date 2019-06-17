@@ -51,13 +51,16 @@ class TestSetCorsHeaders(TestCase):
         req = Request({}, method=method, headers=headers)
         req.response = Response()
         set_cors_headers(settings, req, "foo", credentials, req.response)
+        if 'Vary' in req.response.headers:
+            req.response.headers['Vary'] = ', '.join(req.response.headers['Vary'])
         return req.response.headers
 
     def _assert_headers(self, actual, expected):
         # need to add the headers automatically added by Request
         base_headers = {
             "Content-Type": "text/html; charset=UTF-8",
-            "Content-Length": "0"
+            "Content-Length": "0",
+            'Vary': 'Origin',
         }
         expected = expected.copy()
         expected.update(base_headers)
@@ -86,7 +89,6 @@ class TestSetCorsHeaders(TestCase):
             "Access-Control-Allow-Origin": self.ORIGIN2,
             "Access-Control-Allow-Credentials": "true",
             "Access-Control-Allow-Methods": CORS_METHODS,
-            "Vary": set(["Origin"]),
         })
 
         # 3. Otherwise, add a single Access-Control-Allow-Origin header, with
@@ -94,7 +96,6 @@ class TestSetCorsHeaders(TestCase):
         self._assert_headers(self._do("POST", {"Origin": self. ORIGIN2}), {
             "Access-Control-Allow-Origin": self.ORIGIN2,
             "Access-Control-Allow-Methods": CORS_METHODS,
-            "Vary": set(["Origin"]),
         })
 
         # 4. If the list of exposed headers is not empty add one or more
@@ -114,8 +115,10 @@ class TestSetCorsHeaders(TestCase):
         # 2. If the value of the Origin header is not a case-sensitive match for
         #    any of the values in list of origins do not set any additional
         #    headers and terminate this set of steps.
-        self._assert_headers(self._do("OPTIONS", {"Origin": "http://foe.com"}),
-                             {})
+        self._assert_headers(
+            self._do("OPTIONS", {"Origin": "http://foe.com"}),
+            {}
+        )
 
         # 3. If there is no Access-Control-Request-Method header or if parsing
         #    failed, do not set any additional headers and terminate this set
@@ -132,7 +135,7 @@ class TestSetCorsHeaders(TestCase):
             "Access-Control-Allow-Origin": self.ORIGIN1,
             "Access-Control-Max-Age": self.MAX_AGE,
             "Access-Control-Allow-Methods": CORS_METHODS,
-            "Vary": set(["Origin"]),
+            'Cache-Control': 'max-age=' + self.MAX_AGE,
         })
 
         # 5. If method is not a case-sensitive match for any of the values in
@@ -157,7 +160,7 @@ class TestSetCorsHeaders(TestCase):
             "Access-Control-Allow-Credentials": "true",
             "Access-Control-Max-Age": self.MAX_AGE,
             "Access-Control-Allow-Methods": CORS_METHODS,
-            "Vary": set(["Origin"]),
+            'Cache-Control': 'max-age=' + self.MAX_AGE,
         })
 
         # 8. Optionally add a single Access-Control-Max-Age header with as value
@@ -180,7 +183,7 @@ class TestSetCorsHeaders(TestCase):
             "Access-Control-Max-Age": self.MAX_AGE,
             "Access-Control-Allow-Methods": CORS_METHODS,
             "Access-Control-Allow-Headers": "X-Foo, X-Bar",
-            "Vary": set(["Origin"]),
+            'Cache-Control': 'max-age=' + self.MAX_AGE,
         })
 
     def test_not_configured(self):
@@ -202,7 +205,6 @@ class TestSetCorsHeaders(TestCase):
             "Access-Control-Allow-Origin": self.ORIGIN1,
             "Access-Control-Allow-Credentials": "true",
             "Access-Control-Allow-Methods": CORS_METHODS,
-            "Vary": set(["Origin"]),
         })
 
         # An origin not included in the access_control_allow_origin is allowed,
@@ -212,5 +214,4 @@ class TestSetCorsHeaders(TestCase):
         }, credentials=True, settings=settings), {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": CORS_METHODS,
-            "Vary": set(["Origin"]),
         })
