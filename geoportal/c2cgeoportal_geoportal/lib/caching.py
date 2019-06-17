@@ -116,6 +116,10 @@ def set_cors_headers(service_headers_settings, request, service_name,
     """
     Handle CORS requests, as specified in https://www.w3.org/TR/cors/
     """
+    if "Vary" not in response.headers:
+        response.headers["Vary"] = set()
+    response.headers["Vary"].add("Origin")
+
     if "Origin" not in request.headers:
         return  # Not a CORS request if this header is missing
     origin = request.headers["Origin"]
@@ -146,13 +150,11 @@ def set_cors_headers(service_headers_settings, request, service_name,
         "Access-Control-Allow-Origin": origin,
         "Access-Control-Allow-Methods": CORS_METHODS,
     })
-    if "Vary" not in response.headers:
-        response.headers["Vary"] = set([])
-    response.headers["Vary"].add("Origin")
 
     if preflight:
         max_age = service_headers_settings.get("access_control_max_age", 3600)
         response.headers["Access-Control-Max-Age"] = str(max_age)
+        response.cache_control.max_age = max_age
 
     if credentials:
         response.headers["Access-Control-Allow-Credentials"] = "true"
@@ -212,7 +214,7 @@ def set_common_headers(
 
     response.headers["Vary"] = ", ".join(response.headers["Vary"])
 
-    if content_type is not None:
+    if content_type is not None and request.method != "OPTIONS":
         response.content_type = content_type
 
     return response
