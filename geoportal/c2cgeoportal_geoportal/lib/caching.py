@@ -179,25 +179,26 @@ def set_common_headers(
     if response is None:
         response = request.response
 
-    if cache == NO_CACHE:
-        response.cache_control.no_cache = True
-        response.cache_control.max_age = 0
-    elif cache == PUBLIC_CACHE:
-        response.cache_control.public = True
-    elif cache == PRIVATE_CACHE:
-        if request.user is not None:
-            response.cache_control.private = True
-        else:
+    if request.method != "OPTIONS":
+        if cache == NO_CACHE:
+            response.cache_control.no_cache = True
+            response.cache_control.max_age = 0
+        elif cache == PUBLIC_CACHE:
             response.cache_control.public = True
-    else:  # pragma: no cover
-        raise "Invalid cache type"
+        elif cache == PRIVATE_CACHE:
+            if request.user is not None:
+                response.cache_control.private = True
+            else:
+                response.cache_control.public = True
+        else:  # pragma: no cover
+            raise "Invalid cache type"
 
     response.headers["Vary"] = set(["Accept-Encoding"])
     if hasattr(request, "registry"):
         headers_settings = request.registry.settings.get("headers", {})
         service_headers_settings = headers_settings.get(service_name, {})
 
-        if cache != NO_CACHE:
+        if cache != NO_CACHE and request.method != "OPTIONS":
             max_age = service_headers_settings.get("cache_control_max_age", 3600)
 
             response.cache_control.max_age = max_age
@@ -209,7 +210,7 @@ def set_common_headers(
             credentials, response
         )
 
-    if vary:
+    if vary and request.method != "OPTIONS":
         response.headers["Vary"].add("Accept-Language")
 
     response.headers["Vary"] = ", ".join(response.headers["Vary"])
