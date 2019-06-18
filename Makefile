@@ -54,7 +54,6 @@ API_FILES = $(APPS_PACKAGE_PATH)/static-ngeo/api/api.css $(APPS_PACKAGE_PATH)/st
 
 .PHONY: build
 build: \
-	webpack.config.js \
 	geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/ \
 	$(MO_FILES)
 

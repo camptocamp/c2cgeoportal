@@ -105,15 +105,6 @@ jobs:
           when: always
 
       - run:
-          name: Extract webpack stats artifacts
-          command: |
-            docker run --rm --name=runner --detach camptocamp/geomapfish-build tail -f /dev/null
-            docker exec runner ls /tmp
-            docker cp runner:/tmp/stats.json artifacts/
-            docker stop runner
-          when: always
-
-      - run:
           name: Extract documentation
           command: ci/extract-documentation artifacts/documentations/
           when: always

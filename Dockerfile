@@ -158,14 +158,6 @@ FROM common-build-npm AS builder
 
 WORKDIR /src
 
-COPY webpack.config.js /tmp
-COPY bin/extract-ngeo-dependencies /usr/bin/
-
-RUN \
-  extract-ngeo-dependencies > /tmp/deps.js && \
-  cd /tmp && \
-  webpack --mode production --profile --json > stats.json
-
 COPY --from=build /app/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/ \
     /opt/c2cgeoportal_geoportal/c2cgeoportal_geoportal/locale/
 
