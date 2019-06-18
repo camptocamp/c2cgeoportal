@@ -40,7 +40,16 @@ fi
 if [ $# -gt 1 ]
 then
     args="--step $2"
+else
+    if [ "$CI" != "true" ]
+    then
+        docker pull camptocamp/geomapfish:$1
+        docker pull camptocamp/geomapfish-build:$1
+        docker pull camptocamp/geomapfish-config-build:$1
+        docker pull camptocamp/geomapfish-scaffolds:$1
+    fi
 fi
 
 docker run --rm --volume=${PWD}:/src camptocamp/geomapfish-scaffolds:$1 \
-        run $(id -u) $(id -g) /src c2cupgrade $args
+        run-git "$(git config --get user.name)" $(git config --get user.email) $(id -u) $(id -g) \
+        /src c2cupgrade $args
