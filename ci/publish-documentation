@@ -9,7 +9,7 @@ then
     git rm -r --force -- ${MAIN_BRANCH}
 fi
 
-mv /tmp/doc ${MAIN_BRANCH}
+mv /tmp/doc/html ${MAIN_BRANCH}
 
 git add --all ${MAIN_BRANCH}
 git commit --message="Update documentation for the revision ${GIT_REV}" || true
