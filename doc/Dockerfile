@@ -9,6 +9,7 @@ RUN \
   rm --recursive --force /tmp/* /var/tmp/* /root/.cache/*
 
 ARG MAJOR_VERSION
+ARG MAIN_BRANCH
 
 COPY . /doc
 WORKDIR /doc

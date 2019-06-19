@@ -596,7 +596,7 @@ class C2cUpgradeTool:
 
         message = [
             "The upgrade is nearly done, now you should:",
-            "- Build your application with ./upgrade PACKAGE [DOCKER_TAG]."
+            "- Build your application with ./upgrade finalise PACKAGE [DOCKER_TAG].",
             "- Test your application on '{}'.".format(
                 self.project.get('application_url', '... missing ...')
             )

@@ -98,7 +98,11 @@ jobs:
       - run: docker-compose down
 
       # Documentation
-      - run: docker build --tag=camptocamp/geomapfish-doc --build-arg=MAJOR_VERSION=${MAJOR_VERSION} doc
+      - run: >
+            docker build --tag=camptocamp/geomapfish-doc
+            --build-arg=MAJOR_VERSION=${MAJOR_VERSION}
+            --build-arg=MAIN_BRANCH=${MAIN_BRANCH}
+            doc
 
       - run:
           command: docker images

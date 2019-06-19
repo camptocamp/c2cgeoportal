@@ -210,7 +210,7 @@ ARG VERSION
 ENV VERSION=$VERSION
 
 WORKDIR /src
-COPY bin/run /usr/bin/
+COPY bin/run bin/run-git /usr/bin/
 COPY --from=build-upgrade /app/c2cgeoportal/commons /opt/c2cgeoportal_commons
 COPY --from=build-upgrade /app/c2cgeoportal/geoportal /opt/c2cgeoportal_geoportal
 
