@@ -141,8 +141,8 @@ docker image. So developers who modify the <code class="docutils literal notrans
 <h3>Coding style<a class="headerlink" href="#coding-style" title="Permalink to this headline">¶</a></h3>
 <p>Please read <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">https://www.python.org/dev/peps/pep-0008/</a>.</p>
 <p>And run validation:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker build --target<span class="o">=</span>checks</span>
-<span class="prompt1">    --build-arg<span class="o">=</span><span class="nv">MAJOR_VERSION</span><span class="o">=</span><span class="m">2</span>.5 <span class="se">\</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker build --target<span class="o">=</span>checks <span class="se">\</span>
+    --build-arg<span class="o">=</span><span class="nv">MAJOR_VERSION</span><span class="o">=</span><span class="m">2</span>.5 <span class="se">\</span>
     --build-arg<span class="o">=</span><span class="nv">VERSION</span><span class="o">=</span><span class="m">2</span>.5.0 .</span>
 </pre></div></div></div>
 </div>
@@ -232,7 +232,7 @@ docker image. So developers who modify the <code class="docutils literal notrans
       &copy;2011-2019, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

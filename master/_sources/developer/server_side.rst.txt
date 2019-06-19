@@ -150,7 +150,7 @@ And run validation:
 
 .. prompt:: bash
 
-    docker build --target=checks
+    docker build --target=checks \
         --build-arg=MAJOR_VERSION=2.5 \
         --build-arg=VERSION=2.5.0 .
 
