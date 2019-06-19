@@ -455,8 +455,13 @@ def includeme(config: pyramid.config.Configurator):
     config.add_route_predicate("mapserverproxy", MapserverproxyRoutePredicate)
     config.add_route(
         "mapserverproxy", "/mapserv_proxy",
-        mapserverproxy=True, pregenerator=C2CPregenerator(role=True),
+        mapserverproxy=True, pregenerator=C2CPregenerator(role=True), request_method="GET"
     )
+    config.add_route(
+        "mapserverproxy_post", "/mapserv_proxy",
+        mapserverproxy=True, pregenerator=C2CPregenerator(role=True), request_method="POST"
+    )
+    add_cors_route(config, "/mapserv_proxy", "mapserver")
 
     # Add route to the tinyows proxy
     config.add_route(
@@ -538,7 +543,7 @@ def includeme(config: pyramid.config.Configurator):
 
     # Full-text search routes
     add_cors_route(config, "/search", "fulltextsearch")
-    config.add_route("fulltextsearch", "/search")
+    config.add_route("fulltextsearch", "/search", request_method="GET")
 
     # Access to raster data
     add_cors_route(config, "/raster", "raster")
@@ -603,7 +608,6 @@ def includeme(config: pyramid.config.Configurator):
     config.add_route("dev", "/dev/*path", request_method="GET")
 
     # Used memory in caches
-    add_cors_route(config, "/memory", "memory")
     config.add_route("memory", "/memory", request_method="GET")
 
     # Scan view decorator for adding routes
