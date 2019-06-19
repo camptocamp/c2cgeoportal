@@ -14,6 +14,12 @@ Build the project file if needed (2.4):
 
    ./docker-run make project.yaml
 
+For 2.4 you also should clean your project (include ignored files):
+
+.. prompt:: bash
+
+   git clean -dx --force
+
 Get the upgrade script:
 
 .. prompt:: bash

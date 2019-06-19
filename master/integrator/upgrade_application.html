@@ -44,6 +44,8 @@ span.prompt1:before {
   content: "$ ";
 }
 </style><span class="prompt1">./docker-run make project.yaml</span>
+</pre></div></div><p>For 2.4 you also should clean your project (include ignored files):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git clean -dx --force</span>
 </pre></div></div><p>Get the upgrade script:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">curl https://raw.githubusercontent.com/camptocamp/c2cgeoportal//scripts/upgrade &gt; upgrade</span>
 <span class="prompt1">chmod +x upgrade</span>
