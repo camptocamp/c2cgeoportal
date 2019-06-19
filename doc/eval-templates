@@ -1,5 +1,7 @@
 #!/bin/bash -e
 
+export MAJOR_VERSION_DASH=${MAJOR_VERSION/\./-}
+
 find -name '*.tmpl' -print | while read file
 do
     echo "Evaluate: ${file}"
