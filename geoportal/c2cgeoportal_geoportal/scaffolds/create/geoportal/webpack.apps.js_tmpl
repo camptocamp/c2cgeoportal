@@ -1,15 +1,9 @@
 const path = require('path');
 const ls = require('ls');
-const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const plugins = [];
 const entry = {};
-
-plugins.push(new webpack.DllReferencePlugin({
-  manifest: '/opt/vendor-manifest.json',
-  context: '/usr/lib/node_modules/',
-}));
 
 // The dev mode will be used for builds on local machine outside docker
 const nodeEnv = process.env['NODE_ENV'] || 'development';
