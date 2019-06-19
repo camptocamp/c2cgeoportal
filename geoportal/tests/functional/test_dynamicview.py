@@ -89,7 +89,7 @@ class TestDynamicView(TestCase):
     @staticmethod
     def _get_settings(settings):
         return {
-            'interfaces': ['test'],
+            'interfaces': [{'name': 'test', 'default': True}],
             'available_locale_names': ['fr'],
             'package': 'package_name',
             'interfaces_config': settings,

@@ -28,6 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import json
 import urllib.parse
 
 from c2cgeoportal_commons import models
@@ -54,9 +55,17 @@ class DynamicView:
 
     @view_config(route_name='dynamic', renderer='fast_json')
     def dynamic(self):
+        interfaces_names = [interface['name'] for interface in self.settings.get('interfaces')]
+        default_interfaces_names = [
+            interface['name'] for interface in self.settings.get('interfaces')
+            if interface.get('default', False)
+        ]
+        assert len(default_interfaces_names) == 1, "More than one default interface in: " + \
+            json.dumps(self.settings.get('interfaces'))
+        default_interface_name = default_interfaces_names[0]
         interface_name = self.request.params.get('interface')
-        if interface_name not in self.settings.get('interfaces'):
-            interface_name = self.settings.get('default_interface')
+        if interface_name not in interfaces_names:
+            interface_name = default_interface_name
         interface_config = self.interfaces_config[interface_name]
 
         dynamic = {

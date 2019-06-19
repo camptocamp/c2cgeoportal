@@ -606,10 +606,10 @@ def includeme(config: pyramid.config.Configurator):
     )
     c2cwsgiutils.index.additional_noauth.append('<a href="../">Default</a><br>')
     for interface in config.get_settings().get("interfaces", []):
-        if interface != config.get_settings().get("default_interface"):
+        if not interface.get('default', False):
             c2cwsgiutils.index.additional_noauth.append(
                 '<a href="../{interface}">{interface}</a><br>'.format(
-                    interface=interface
+                    interface=interface['name']
                 )
             )
     c2cwsgiutils.index.additional_noauth.append('<a href="../apihelp/index.html">API help</a><br>')

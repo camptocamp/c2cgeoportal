@@ -107,10 +107,17 @@ mapping:
         required: True
         type: seq
         sequence:
-          - type: str
-      default_interface:
-        required: True
-        type: str
+          - type: map
+            mapping:
+              name:
+                required: True
+                type: str
+              default:
+                type: bool
+                default: False
+              type:
+                type: str
+                default: ngeo
       interfaces_config:
         required: True
         type: map
