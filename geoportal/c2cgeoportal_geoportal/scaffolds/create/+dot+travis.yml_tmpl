@@ -23,7 +23,8 @@ jobs:
   include:
     - stage: config-geoportal
       script:
-        - docker build --tag=camptocamp/{{package}}-config:${TAG} .
+        - docker build --tag=camptocamp/{{package}}-config:${TAG} \
+          --build-arg=PGSCHEMA=main .
       after_success:
         - scripts/publish-docker config
     - script:

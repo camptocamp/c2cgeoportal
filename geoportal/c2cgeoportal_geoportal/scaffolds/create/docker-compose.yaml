@@ -32,13 +32,12 @@ services:
   ##     service: qgisserver
   ##   volumes_from:
   ##     - config:ro
-  ##   environment:
   ##     # Single QGIS project files
-  ##     QGIS_PROJECT_FILE: /etc/qgisserver/project.qgz
-  ##     GEOMAPFISH_OGCSERVER: <OGC server name>
+  ##     - QGIS_PROJECT_FILE=/etc/qgisserver/project.qgz
+  ##     - GEOMAPFISH_OGCSERVER=<OGC server name>
   ##     # Multiple QGIS project files
-  ##     # QGIS_PROJECT_FILE:
-  ##     # GEOMAPFISH_ACCESSCONTROL_CONFIG: /etc/qgisserver/accesscontrol_config.yaml
+  ##     - QGIS_PROJECT_FILE=
+  ##     - GEOMAPFISH_ACCESSCONTROL_CONFIG=/etc/qgisserver/accesscontrol_config.yaml
 
   tinyows:
     extends:

@@ -16,7 +16,6 @@ services:
       - PGUSER
       - PGPASSWORD
       - PGDATABASE
-      - PGSCHEMA
       - PGSCHEMA_STATIC
       - GEOPORTAL_INTERNAL_URL
       - TILECLOUDCHAIN_INTERNAL_URL
@@ -28,20 +27,6 @@ services:
       - AWS_SECRET_ACCESS_KEY
       - AWS_DEFAULT_REGION
       - AWS_S3_ENDPOINT
-      - "MAPSERVER_DATA_SUBSELECT=SELECT ST_Collect(ra.area)
-        FROM ${PGSCHEMA}.restrictionarea AS ra, ${PGSCHEMA}.role_restrictionarea AS rra,
-        ${PGSCHEMA}.layer_restrictionarea AS lra, ${PGSCHEMA}.treeitem AS la
-        WHERE rra.role_id in (%role_ids%) AND rra.restrictionarea_id = ra.id
-        AND lra.restrictionarea_id = ra.id AND lra.layer_id = la.id AND la.name = "
-      - "MAPSERVER_DATA_NOAREA_SUBSELECT=SELECT rra.role_id
-        FROM ${PGSCHEMA}.restrictionarea AS ra, ${PGSCHEMA}.role_restrictionarea AS rra,
-        ${PGSCHEMA}.layer_restrictionarea AS lra, ${PGSCHEMA}.treeitem AS la
-        WHERE rra.restrictionarea_id = ra.id AND lra.restrictionarea_id = ra.id
-        AND lra.layer_id = la.id AND la.name = "
-      - "MAPSERVER_JOIN_TABLES=${PGSCHEMA}.restrictionarea AS ra, ${PGSCHEMA}.role_restrictionarea AS rra,
-        ${PGSCHEMA}.layer_restrictionarea AS lra, ${PGSCHEMA}.treeitem AS la"
-      - "MAPSERVER_JOIN_WHERE=rra.role_id in (%role_ids%) AND rra.restrictionarea_id = ra.id AND
-        lra.restrictionarea_id = ra.id AND lra.layer_id = la.id AND la.name = "
 
   print:
     image: camptocamp/mapfish_print:3.20
@@ -70,7 +55,6 @@ services:
       - PGUSER
       - PGPASSWORD
       - PGDATABASE
-      - PGSCHEMA
       - PGSCHEMA_STATIC
       - C2C_REDIS_URL
       - C2C_BROADCAST_PREFIX
@@ -149,7 +133,6 @@ services:
       - PGUSER
       - PGPASSWORD
       - PGDATABASE
-      - PGSCHEMA
       - PGSCHEMA_STATIC
       - PGOPTIONS
       - GUNICORN_PARAMS
@@ -187,7 +170,6 @@ services:
       - PGUSER
       - PGPASSWORD
       - PGDATABASE
-      - PGSCHEMA
       - PGSCHEMA_STATIC
 
   front:
