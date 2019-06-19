@@ -207,10 +207,16 @@ mapping:
               cache_control_max_age:
                 required: True
                 type: int
+              headers:
+                type: map
+                mapping:
+                  regex;.+:
+                    type: str
           index: *header
           dynamic: *header
           config: *header
           api: *header
+          apihelp: *header
           themes: *header
           fulltextsearch: *header
           mapserver: *header

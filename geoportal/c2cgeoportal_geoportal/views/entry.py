@@ -863,7 +863,7 @@ class Entry:
         return {}
 
     def apihelp(self):
-        set_common_headers(self.request, "index", NO_CACHE)
+        set_common_headers(self.request, "apihelp", NO_CACHE)
         return {}
 
     def _wms_get_features_type(self, ogc_server_id, wfs_url):
@@ -1052,7 +1052,7 @@ class Entry:
     def loginform(self):
         self._referer_log()
 
-        set_common_headers(self.request, "login", PUBLIC_CACHE, vary=True)
+        set_common_headers(self.request, "login", PUBLIC_CACHE)
 
         return {
             "lang": self.lang,
