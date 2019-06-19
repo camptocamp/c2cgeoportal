@@ -47,14 +47,12 @@ git add --all
 git commit --quiet --message='Initial commit'
 git clean -fX
 
-find -name *.ejs
-
 # Build
 if [ $# -lt 2 ]
 then
-    docker build --tag=camptocamp/${PACKAGE}-config .
+    docker build --tag=camptocamp/${PACKAGE}-config --build-arg=PGSCHEMA=main .
     docker build --tag=camptocamp/${PACKAGE}-geoportal --build-arg=GIT_HASH=$(git rev-parse HEAD) geoportal
 else
-    docker build --tag=camptocamp/${PACKAGE}-config:${TAG} .
+    docker build --tag=camptocamp/${PACKAGE}-config:${TAG} --build-arg=PGSCHEMA=main .
     docker build --tag=camptocamp/${PACKAGE}-geoportal:${TAG} --build-arg=GIT_HASH=$(git rev-parse HEAD) geoportal
 fi
