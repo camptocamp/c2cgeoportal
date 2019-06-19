@@ -29,12 +29,14 @@
 
 
 import urllib.parse
+
 from c2cgeoportal_commons import models
 from c2cgeoportal_commons.models import main
-from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
-from c2cgeoportal_geoportal.lib.caching import set_common_headers, NO_CACHE
 from pyramid.view import view_config
 from sqlalchemy import func
+
+from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
+from c2cgeoportal_geoportal.lib.caching import NO_CACHE, set_common_headers
 
 
 class DynamicView:
