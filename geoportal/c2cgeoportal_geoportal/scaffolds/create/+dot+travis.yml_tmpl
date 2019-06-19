@@ -19,13 +19,15 @@ env:
 #    - OPENSHIFT_USERNAME=username
 #    - secure: travis encrypt OPENSHIFT_PASSWORD=password
 
-script:
-  - docker build --tag=camptocamp/{{package}}-config:${TAG} .
-  - docker build --tag=camptocamp/{{package}}-geoportal:${TAG} \
-        --build-arg=GIT_HASH=$(git rev-parse HEAD) geoportal
-
-deploy:
-  provider: script
-  script: scripts/deploy-docker
-  on:
-    all_branches: true
+jobs:
+  include:
+    - stage: config-geoportal
+      script:
+        - docker build --tag=camptocamp/{{package}}-config:${TAG} .
+      after_success:
+        - scripts/publish-docker config
+    - script:
+        - docker build --tag=camptocamp/{{package}}-geoportal:${TAG} \
+          --build-arg=GIT_HASH=$(git rev-parse HEAD) geoportal
+      after_success:
+        - scripts/publish-docker geoportal

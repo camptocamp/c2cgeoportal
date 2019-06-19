@@ -107,3 +107,6 @@ upgrade_files:
   - action: move
     from: tools/extract-messages.js
     to: geoportal/tools/extract-messages.js
+  - action: move
+    from: scripts/deploy-docker
+    to: scripts/publish-docker
