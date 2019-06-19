@@ -22,7 +22,7 @@ subprocess.check_call([
     '--password=' + os.environ['DOCKER_PASSWORD'],
 ])
 
-images = ('config', 'geoportal')
+images = sys.args[1:]
 for image in images:
     full_image = 'camptocamp/{}-{}'.format(os.environ['PROJECT'], image)
     src_image = full_image
