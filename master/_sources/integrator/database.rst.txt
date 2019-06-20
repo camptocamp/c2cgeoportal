@@ -26,16 +26,19 @@ integration and production => ``main_2018``
 
 The schema ``main_2017`` still exists to be able to rollback the production.
 
-To do that we should manage the ``PGSCHEMA`` and the ``PGSCHEMA_STATIC`` variable in your makefiles.
+To do that we should manage the ``PGSCHEMA`` and the ``DOCKER_PGSCHEMA_STATIC`` variable in your
+makefiles.
 
-The ``PGSCHEMA`` should be set in the ``Makefile`` and the ``PGSCHEMA_STATIC`` for the production should be
-set in a specific makefile for the production e.-g. ``production.mk``.
+The ``PGSCHEMA`` should be set in the ``Makefile`` and the ``DOCKER_PGSCHEMA_STATIC`` for the
+production should be set in a specific makefile for the production e.-g. ``production.mk``.
 
-To to the schema we provide a Postgres function, to create it:
+And the line `PGSCHEMA=${docker_schema}` should be removed from your `.env.mako` file.
+
+To copy the schema, we provide a Postgres function, to create it use:
 
 .. prompt:: bash
 
-   sudo -u postgres psql <database> --file=scripts/CONST_clone_schema.sql
+   docker-compose exec geoporal psql <database> --file=scripts/CONST_clone_schema.sql
 
 To use it:
 

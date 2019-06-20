@@ -50,15 +50,17 @@ integration = <code class="docutils literal notranslate"><span class="pre">main_
 <p>Publish the new version:
 integration and production =&gt; <code class="docutils literal notranslate"><span class="pre">main_2018</span></code></p>
 <p>The schema <code class="docutils literal notranslate"><span class="pre">main_2017</span></code> still exists to be able to rollback the production.</p>
-<p>To do that we should manage the <code class="docutils literal notranslate"><span class="pre">PGSCHEMA</span></code> and the <code class="docutils literal notranslate"><span class="pre">PGSCHEMA_STATIC</span></code> variable in your makefiles.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">PGSCHEMA</span></code> should be set in the <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> and the <code class="docutils literal notranslate"><span class="pre">PGSCHEMA_STATIC</span></code> for the production should be
-set in a specific makefile for the production e.-g. <code class="docutils literal notranslate"><span class="pre">production.mk</span></code>.</p>
-<p>To to the schema we provide a Postgres function, to create it:</p>
+<p>To do that we should manage the <code class="docutils literal notranslate"><span class="pre">PGSCHEMA</span></code> and the <code class="docutils literal notranslate"><span class="pre">DOCKER_PGSCHEMA_STATIC</span></code> variable in your
+makefiles.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">PGSCHEMA</span></code> should be set in the <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> and the <code class="docutils literal notranslate"><span class="pre">DOCKER_PGSCHEMA_STATIC</span></code> for the
+production should be set in a specific makefile for the production e.-g. <code class="docutils literal notranslate"><span class="pre">production.mk</span></code>.</p>
+<p>And the line <cite>PGSCHEMA=${docker_schema}</cite> should be removed from your <cite>.env.mako</cite> file.</p>
+<p>To copy the schema, we provide a Postgres function, to create it use:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">sudo -u postgres psql &lt;database&gt; --file<span class="o">=</span>scripts/CONST_clone_schema.sql</span>
+</style><span class="prompt1">docker-compose <span class="nb">exec</span> geoporal psql &lt;database&gt; --file<span class="o">=</span>scripts/CONST_clone_schema.sql</span>
 </pre></div></div><p>To use it:</p>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="n">clone_schema</span><span class="p">(</span><span class="s1">&#39;&lt;current_schema_name&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;new_schema_name&gt;&#39;</span><span class="p">,</span> <span class="k">TRUE</span><span class="p">);</span>
 </pre></div>
