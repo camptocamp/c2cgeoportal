@@ -204,6 +204,7 @@ docker-build-build: $(shell docker-required --path . --replace-pattern='^test(.*
 		npm-packages admin/npm-packages \
 		geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/ \
 		geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/CONST_create_template/ \
+		$(APPS_FILES_ALT) \
 		$(MO_FILES)
 	docker build --build-arg=VERSION=$(VERSION) --tag=$(DOCKER_BASE)-build:$(MAJOR_VERSION) .
 
@@ -425,7 +426,7 @@ $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/%.html.ejs_tmpl: \
 
 $(APPS_PACKAGE_PATH_ALT_NONDOCKER)/static-ngeo/js/apps/%.html.ejs_tmpl: \
 		geoportal/node_modules/ngeo/contribs/gmf/apps/%/index.html.ejs \
-		geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/
+		geoportal/c2cgeoportal_geoportal/scaffolds/nondockerupdate/CONST_create_template/
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	import-ngeo-apps --html --non-docker $* $< $@
@@ -447,12 +448,14 @@ $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/sass/vars_%.scss: $(BUILD_DIR)/ngeo.tim
 	mkdir --parent $(dir $@)
 	cp geoportal/node_modules/ngeo/contribs/gmf/apps/$*/sass/vars_$*.scss $@
 
-$(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/sass/%.scss: $(BUILD_DIR)/ngeo.timestamp
+$(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/sass/%.scss: $(BUILD_DIR)/ngeo.timestamp \
+		geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	cp geoportal/node_modules/ngeo/contribs/gmf/apps/$*/sass/$*.scss $@
 
-$(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/sass/vars_%.scss: $(BUILD_DIR)/ngeo.timestamp
+$(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/sass/vars_%.scss: $(BUILD_DIR)/ngeo.timestamp \
+		geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	cp geoportal/node_modules/ngeo/contribs/gmf/apps/$*/sass/vars_$*.scss $@
@@ -510,12 +513,9 @@ geoportal/c2cgeoportal_geoportal/scaffolds%update/CONST_create_template/: \
 		geoportal/c2cgeoportal_geoportal/scaffolds/create/docker-run \
 		$(API_FILES) \
 		$(APPS_FILES) \
-		$(APPS_FILES_ALT) \
 		$(L10N_PO_FILES) \
-		geoportal/c2cgeoportal_geoportal/scaffolds/create/docker-run \
 		geoportal/c2cgeoportal_geoportal/scaffolds/create/front_dev/localhost.pem \
 		geoportal/c2cgeoportal_geoportal/scaffolds/create/front_dev/haproxy.cfg.tmpl
-
 	$(PRERULE_CMD)
 	rm -rf $@ || true
 	cp -r $< $@
