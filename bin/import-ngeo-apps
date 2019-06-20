@@ -100,13 +100,13 @@ def main():
 
         if args.html:
             data = _sub(
-                r'( +)(' + re.escape('<% for (var chunk in htmlWebpackPlugin.files.chunks) { %>') + r')',
-                r'\1<script src="{entry_point}static-ngeo/build/vendor.js?{version}">'
-                r'</script>\n\1\2'.format(
+                re.escape('<script src="../../../dist/vendor.js') + r'.*',
+                r'<script src="{entry_point}static-ngeo/build/vendor.js?{version}"></script>'.format(
                     entry_point='${htmlWebpackPlugin.options.vars.entry_point}',
                     version='${htmlWebpackPlugin.options.vars.version}'
                 ),
-                data
+                data,
+                required=False,
             )
             data = _sub(
                 re.escape('<meta name="dynamicUrl" content="https://geomapfish-demo-2-') +
@@ -114,7 +114,7 @@ def main():
                 '<meta name="dynamicUrl" content="{entry_point}dynamic.json">'.format(
                     entry_point='${htmlWebpackPlugin.options.vars.entry_point}',
                 ),
-                data
+                data,
             )
         else:
             data = re.sub("app", "{{package}}", data)
