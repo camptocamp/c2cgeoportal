@@ -29,8 +29,9 @@
 
 
 import uuid
-import pyramid.registry
 from urllib.parse import urljoin
+
+import pyramid.registry
 
 from c2cgeoportal_geoportal.lib.caching import get_region
 

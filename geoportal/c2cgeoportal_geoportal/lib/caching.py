@@ -95,9 +95,8 @@ def get_region(region=None):
     try:
         return _REGION[region]
     except KeyError:  # pragma: no cover
-        raise Exception(
-            "No such caching region. A region must be initialized before it can be used"
-        )
+        LOG.error("No such caching region. A region must be initialized before it can be used")
+        return make_region(function_key_generator=keygen_function)
 
 
 def invalidate_region(region=None):
