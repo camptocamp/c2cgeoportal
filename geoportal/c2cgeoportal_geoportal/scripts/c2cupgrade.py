@@ -409,7 +409,11 @@ class C2cUpgradeTool:
                     print("Needed from version {}.".format(element["version"]))
                 if os.path.dirname(dst) != "":
                     os.makedirs(os.path.dirname(dst), exist_ok=True)
-                os.rename(src, dst)
+                try:
+                    check_call(["git", "mv", src, dst])
+                except Exception as e:
+                    print("[Warning] Git move error: {}.".format(e))
+                    os.rename(src, dst)
         return task_to_do
 
     @Step(6)
@@ -596,7 +600,7 @@ class C2cUpgradeTool:
 
         message = [
             "The upgrade is nearly done, now you should:",
-            "- Build your application with ./upgrade finalise PACKAGE [DOCKER_TAG].",
+            "- Build your application with ./upgrade finalise [build arguments]",
             "- Test your application on '{}'.".format(
                 self.project.get('application_url', '... missing ...')
             )

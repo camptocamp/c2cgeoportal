@@ -1,0 +1,31 @@
+#!/bin/bash -e
+
+function help {
+    echo Usage:
+    echo './build  -> keep the curent .env if exists or use the .env.sample'
+    echo './build [env files...]  -> use the ordered env files list'
+    exit 1
+}
+
+if [ $# -gt 0 ] && ( [ $1 == '-h' ] || [ $1 == '--help' ]
+then
+    help
+fi
+
+set -x
+docker build --tag=camptocamp/{{package}]-config \
+    --build-arg=PGSCHEMA=main .
+docker build --tag=camptocamp/{{package}}-geoportal \
+    --build-arg=PGSCHEMA=main \
+    --build-arg=GIT_HASH=$(git rev-parse HEAD) geoportal
+
+if [ $# -gt 0 ]
+then
+    shift
+    echo "$@" > .env
+else
+    if [ ! -f .env ]
+    then
+        cp .env.sample .env
+    fi
+fi

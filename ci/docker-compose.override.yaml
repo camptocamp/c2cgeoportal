@@ -10,7 +10,7 @@ services:
     environment:
       POSTGRES_PASSWORD: www-data
       POSTGRES_USER: www-data
-      POSTGRES_DB: testgeomapfishapp
+      POSTGRES_DB: gmf_testgeomapfishapp
 
   externaldb:
     image: camptocamp/geomapfish-test-external-db
