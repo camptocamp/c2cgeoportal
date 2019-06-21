@@ -54,8 +54,8 @@ from c2cgeoportal_commons.models.sqlalchemy import JSONEncodedDict
 
 LOG = logging.getLogger(__name__)
 
-_schema = config['schema']  # type: str
-_srid = config['srid']  # type: int
+_schema = config['schema'] or 'main'  # type: str
+_srid = config['srid'] or 3857  # type: int
 
 
 class InvalidateCacheEvent:
