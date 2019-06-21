@@ -55,6 +55,7 @@ API_FILES = $(APPS_PACKAGE_PATH)/static-ngeo/api/api.css $(APPS_PACKAGE_PATH)/st
 .PHONY: build
 build: \
 	geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/ \
+	$(APPS_FILES_ALT) \
 	$(MO_FILES)
 
 .PHONY: checks
@@ -152,12 +153,14 @@ $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/Controller%.js_tmpl: /usr/lib/node_modu
 	import-ngeo-apps --js $* $< $@
 
 $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/%.html.ejs_tmpl: \
-		/usr/lib/node_modules/ngeo/contribs/gmf/apps/%/index.html.ejs
+		/usr/lib/node_modules/ngeo/contribs/gmf/apps/%/index.html.ejs \
+		geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/
 	mkdir --parent $(dir $@)
 	import-ngeo-apps --html $* $< $@
 
 $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/Controller%.js_tmpl: \
-		/usr/lib/node_modules/ngeo/contribs/gmf/apps/%/Controller.js
+		/usr/lib/node_modules/ngeo/contribs/gmf/apps/%/Controller.js \
+		geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/
 	mkdir --parent $(dir $@)
 	import-ngeo-apps --js $* $< $@
 
@@ -169,11 +172,13 @@ $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/sass/vars_%.scss:
 	mkdir --parent $(dir $@)
 	cp /usr/lib/node_modules/ngeo/contribs/gmf/apps/$*/sass/vars_$*.scss $@
 
-$(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/sass/%.scss:
+$(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/sass/%.scss: \
+		geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/
 	mkdir --parent $(dir $@)
 	cp /usr/lib/node_modules/ngeo/contribs/gmf/apps/$*/sass/$*.scss $@
 
-$(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/sass/vars_%.scss:
+$(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/sass/vars_%.scss: \
+		geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/
 	mkdir --parent $(dir $@)
 	cp /usr/lib/node_modules/ngeo/contribs/gmf/apps/$*/sass/vars_$*.scss $@
 
@@ -208,11 +213,9 @@ geoportal/c2cgeoportal_geoportal/scaffolds%update/CONST_create_template/: \
 		$(addprefix geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/locale/,$(addsuffix /LC_MESSAGES/+package+_geoportal-client.po, $(ALL_LANGUAGES))) \
 		$(API_FILES) \
 		$(APPS_FILES) \
-		$(APPS_FILES_ALT) \
 		$(L10N_PO_FILES) \
 		geoportal/c2cgeoportal_geoportal/scaffolds/create/front_dev/localhost.pem \
 		geoportal/c2cgeoportal_geoportal/scaffolds/create/front_dev/haproxy.cfg.tmpl
-
 	rm -rf $@ || true
 	cp -r $< $@
 

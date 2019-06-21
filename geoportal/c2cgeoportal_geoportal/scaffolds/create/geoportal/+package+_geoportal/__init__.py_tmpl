@@ -26,12 +26,16 @@ def main(global_config, **settings):
 
     config.add_translation_dirs('{{package}}_geoportal:locale/')
 
-    # scan view decorator for adding routes
+    # Scan view decorator for adding routes
     config.scan()
 
-    # add the interfaces
-    add_interface(config, 'desktop', INTERFACE_TYPE_NGEO, default=True)
-    add_interface(config, 'mobile', INTERFACE_TYPE_NGEO)
-    add_interface(config, 'iframe_api', INTERFACE_TYPE_NGEO)
+    # Add the interfaces
+    for interface in config.get_settings().get("interfaces", []):
+        add_interface(
+            config,
+            interface['name'],
+            interface.get('type', INTERFACE_TYPE_NGEO),
+            default=interface.get('default', False)
+        )
 
     return config.make_wsgi_app()

@@ -46,11 +46,10 @@ vars:
 
   # All the application interfaces used to create the apache rewrite rules
   interfaces:
-    - desktop
-    - mobile
-    - iframe_api
-
-  default_interface: desktop
+    - name: desktop
+      default: True
+    - name: mobile
+    - name: iframe_api
 
   interfaces_config:
     default:
