@@ -24,7 +24,7 @@ Get the upgrade script:
 
 .. prompt:: bash
 
-    curl https://raw.githubusercontent.com/camptocamp/c2cgeoportal//scripts/upgrade > upgrade
+    curl https://raw.githubusercontent.com/camptocamp/c2cgeoportal/master/scripts/upgrade > upgrade
     chmod +x upgrade
 
 For 2.4 add upgrade in Git ignore:

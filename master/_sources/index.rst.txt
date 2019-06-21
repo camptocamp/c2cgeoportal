@@ -35,4 +35,4 @@ ourselves!*
 `with features grid <https://camptocamp-2-5.camptocamp.com/desktop_alt/>`_,
 to test the editing you can use the username 'demo' with the password 'demo'.
 
-`ngeo (client) documentation <https://camptocamp.github.io/ngeo//apidoc/>`_.
+`ngeo (client) documentation <https://camptocamp.github.io/ngeo/master/apidoc/>`_.
