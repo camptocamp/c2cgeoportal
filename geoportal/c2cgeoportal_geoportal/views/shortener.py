@@ -28,21 +28,19 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import logging
 import random
 import string
-import logging
 from datetime import datetime
 from urllib.parse import urlparse
 
-from pyramid.httpexceptions import HTTPFound, HTTPBadRequest, \
-    HTTPNotFound, HTTPInternalServerError
-from pyramid.view import view_config
-
+from c2cgeoportal_commons.lib.email_ import send_email_config
 from c2cgeoportal_commons.models import DBSession
 from c2cgeoportal_commons.models.static import Shorturl
-from c2cgeoportal_commons.lib.email_ import send_email_config
-from c2cgeoportal_geoportal.lib.caching import set_common_headers, NO_CACHE
+from pyramid.httpexceptions import HTTPBadRequest, HTTPFound, HTTPInternalServerError, HTTPNotFound
+from pyramid.view import view_config
 
+from c2cgeoportal_geoportal.lib.caching import NO_CACHE, set_common_headers
 
 logger = logging.getLogger(__name__)
 

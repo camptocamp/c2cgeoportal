@@ -41,6 +41,9 @@ from typing import Dict, Set, Tuple  # noqa # pylint: disable=unused-import
 
 import requests
 import zope.event.classhandler
+from c2cgeoportal_commons import models
+from c2cgeoportal_commons.lib.email_ import send_email_config
+from c2cgeoportal_commons.models import main, static
 from c2cwsgiutils.auth import auth_view
 from defusedxml import lxml
 from owslib.wms import WebMapService
@@ -48,18 +51,15 @@ from pyramid.httpexceptions import HTTPBadRequest, HTTPForbidden, HTTPFound, HTT
 from pyramid.i18n import TranslationStringFactory
 from pyramid.path import AssetResolver
 from pyramid.response import Response
-from pyramid.security import remember, forget
+from pyramid.security import forget, remember
 from pyramid.view import view_config
 from sqlalchemy.orm import subqueryload
 from sqlalchemy.orm.exc import NoResultFound
 
-from c2cgeoportal_commons import models
-from c2cgeoportal_commons.lib.email_ import send_email_config
-from c2cgeoportal_commons.models import main, static
 from c2cgeoportal_geoportal import is_valid_referer
 from c2cgeoportal_geoportal.lib import add_url_params, get_setting, get_typed, get_types_map, get_url2
-from c2cgeoportal_geoportal.lib.caching import (
-    NO_CACHE, PRIVATE_CACHE, PUBLIC_CACHE, get_region, set_common_headers)
+from c2cgeoportal_geoportal.lib.caching import (NO_CACHE, PRIVATE_CACHE, PUBLIC_CACHE, get_region,
+                                                set_common_headers)
 from c2cgeoportal_geoportal.lib.functionality import get_functionality, get_mapserver_substitution_params
 from c2cgeoportal_geoportal.lib.layers import get_protected_layers_query
 from c2cgeoportal_geoportal.lib.wmstparsing import TimeInformation, parse_extent

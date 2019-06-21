@@ -27,38 +27,33 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+import logging
 from datetime import datetime
 
-from pyramid.httpexceptions import HTTPInternalServerError, \
-    HTTPNotFound, HTTPBadRequest, HTTPForbidden
-from pyramid.view import view_config
-
-from sqlalchemy import Enum, exc, func, distinct, Numeric, String, Text, Unicode, UnicodeText
-from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
-from sqlalchemy.sql import and_, or_
-from sqlalchemy.orm.util import class_mapper
-from sqlalchemy.orm.properties import ColumnProperty
-
-from geoalchemy2 import Geometry, func as ga_func
-from geoalchemy2.shape import from_shape, to_shape
-
 import geojson
-from geojson.feature import FeatureCollection, Feature
-
-from shapely.geometry import asShape
-from shapely.ops import cascaded_union
-from shapely.geos import TopologicalError
-
-from papyrus.protocol import Protocol, create_filter
-from papyrus.xsd import XSDGenerator
-
 from c2cgeoportal_commons import models
 from c2cgeoportal_commons.models.main import Layer, RestrictionArea, Role
-from c2cgeoportal_geoportal.lib.caching import get_region, \
-    set_common_headers, NO_CACHE, PUBLIC_CACHE, PRIVATE_CACHE
-from c2cgeoportal_geoportal.lib.dbreflection import get_class, get_table, _AssociationProxy
+from geoalchemy2 import Geometry
+from geoalchemy2 import func as ga_func
+from geoalchemy2.shape import from_shape, to_shape
+from geojson.feature import Feature, FeatureCollection
+from papyrus.protocol import Protocol, create_filter
+from papyrus.xsd import XSDGenerator
+from pyramid.httpexceptions import HTTPBadRequest, HTTPForbidden, HTTPInternalServerError, HTTPNotFound
+from pyramid.view import view_config
+from shapely.geometry import asShape
+from shapely.geos import TopologicalError
+from shapely.ops import cascaded_union
+from sqlalchemy import Enum, Numeric, String, Text, Unicode, UnicodeText, distinct, exc, func
+from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
+from sqlalchemy.orm.properties import ColumnProperty
+from sqlalchemy.orm.util import class_mapper
+from sqlalchemy.sql import and_, or_
 
-import logging
+from c2cgeoportal_geoportal.lib.caching import (NO_CACHE, PRIVATE_CACHE, PUBLIC_CACHE, get_region,
+                                                set_common_headers)
+from c2cgeoportal_geoportal.lib.dbreflection import _AssociationProxy, get_class, get_table
+
 log = logging.getLogger(__name__)
 
 cache_region = get_region()

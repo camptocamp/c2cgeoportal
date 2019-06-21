@@ -28,11 +28,13 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from c2cgeoportal_geoportal.views.proxy import Proxy
 import logging
+import re
+
 from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config
-import re
+
+from c2cgeoportal_geoportal.views.proxy import Proxy
 
 logger = logging.getLogger(__name__)
 

@@ -28,17 +28,16 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import logging
 import sys
 import urllib.parse
-import logging
+
 import requests
-
-from pyramid.response import Response
 from pyramid.httpexceptions import HTTPBadGateway, exception_response
+from pyramid.response import Response
 
-from c2cgeoportal_geoportal.lib.caching import get_region, set_common_headers, \
-    NO_CACHE, PUBLIC_CACHE, PRIVATE_CACHE
-
+from c2cgeoportal_geoportal.lib.caching import (NO_CACHE, PRIVATE_CACHE, PUBLIC_CACHE, get_region,
+                                                set_common_headers)
 
 log = logging.getLogger(__name__)
 cache_region = get_region()

@@ -30,11 +30,11 @@
 import logging
 from typing import Dict  # noqa, pylint: disable=unused-import
 
+from c2cgeoportal_commons.models import DBSession
+from c2cgeoportal_commons.models.main import OGCServer
 from pyramid.httpexceptions import HTTPBadRequest
 from sqlalchemy.orm.exc import NoResultFound
 
-from c2cgeoportal_commons.models import DBSession
-from c2cgeoportal_commons.models.main import OGCServer
 from c2cgeoportal_geoportal.lib import get_url2
 from c2cgeoportal_geoportal.lib.caching import get_region
 from c2cgeoportal_geoportal.views.proxy import Proxy

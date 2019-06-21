@@ -28,15 +28,14 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import urllib.parse
-import logging
-
 import json
+import logging
+import urllib.parse
 
-from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPBadGateway, HTTPFound
+from pyramid.view import view_config
 
-from c2cgeoportal_geoportal.lib.caching import get_region, PRIVATE_CACHE
+from c2cgeoportal_geoportal.lib.caching import PRIVATE_CACHE, get_region
 from c2cgeoportal_geoportal.lib.functionality import get_functionality
 from c2cgeoportal_geoportal.views.proxy import Proxy
 

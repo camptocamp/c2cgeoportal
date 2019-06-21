@@ -30,18 +30,17 @@
 
 import logging
 
+from c2cgeoportal_commons import models
+from c2cgeoportal_commons.models import main, static
 from defusedxml import ElementTree
 from pyramid.httpexceptions import HTTPBadRequest, HTTPForbidden, HTTPUnauthorized
 from pyramid.view import view_config
 
-from c2cgeoportal_commons import models
-from c2cgeoportal_commons.models import main, static
 from c2cgeoportal_geoportal.lib.caching import NO_CACHE, PRIVATE_CACHE
 from c2cgeoportal_geoportal.lib.filter_capabilities import (filter_wfst_capabilities, normalize_tag,
                                                             normalize_typename)
 from c2cgeoportal_geoportal.lib.layers import get_writable_layers
 from c2cgeoportal_geoportal.views.ogcproxy import OGCProxy
-
 
 LOG = logging.getLogger(__name__)
 

@@ -28,18 +28,18 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from pyramid.httpexceptions import HTTPBadRequest, HTTPInternalServerError
-from pyramid.view import view_config
-
-from geojson import Feature, FeatureCollection
-from sqlalchemy import func, desc, or_, and_
-from geoalchemy2.shape import to_shape
 import re
 
-from c2cgeoportal_geoportal import locale_negotiator
 from c2cgeoportal_commons.models import DBSession
 from c2cgeoportal_commons.models.main import FullTextSearch, Interface
-from c2cgeoportal_geoportal.lib.caching import get_region, set_common_headers, NO_CACHE
+from geoalchemy2.shape import to_shape
+from geojson import Feature, FeatureCollection
+from pyramid.httpexceptions import HTTPBadRequest, HTTPInternalServerError
+from pyramid.view import view_config
+from sqlalchemy import and_, desc, func, or_
+
+from c2cgeoportal_geoportal import locale_negotiator
+from c2cgeoportal_geoportal.lib.caching import NO_CACHE, get_region, set_common_headers
 
 cache_region = get_region()
 

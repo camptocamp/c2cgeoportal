@@ -28,13 +28,13 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from geojson import loads
-from shapely.geometry import asShape
-from geoalchemy2.shape import from_shape, to_shape
-from pyramid.view import view_config
-from sqlalchemy import func
-from pyramid.httpexceptions import HTTPBadRequest
 from c2cgeoportal_commons.models import DBSession
+from geoalchemy2.shape import from_shape, to_shape
+from geojson import loads
+from pyramid.httpexceptions import HTTPBadRequest
+from pyramid.view import view_config
+from shapely.geometry import asShape
+from sqlalchemy import func
 
 
 class GeometryProcessing:
