@@ -43,7 +43,7 @@ Internal print
 
 To use the internal print you should:
 
-* Set ``PRINT_URL`` to ``http://print:8080/print/`` in the ``.env.mako`` file.
+* Set ``PRINT_URL`` to ``http://print:8080/print/`` in the ``.env.sample`` file.
 * Uncomment the ``print`` service in the ``docker-compose.yaml`` file.
 * Uncomment the ``!mapUri`` in the print configuration.
 * Uncomment the ``print``/``spec`` configuration section of the ``checker`` in the ``vars.yaml``.

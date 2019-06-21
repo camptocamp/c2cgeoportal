@@ -13,7 +13,7 @@ ENV CONFIG_VARS sqlalchemy.url sqlalchemy.pool_recycle sqlalchemy.pool_size sqla
     checker check_collector default_max_age package srid \
     reset_password fulltextsearch global_headers headers authorized_referers hooks stats db_chooser \
     dbsessions urllogin host_forward_host smtp c2c.base_path welcome_email \
-    lingua_extractor interfaces_config interfaces default_interface devserver_url api
+    lingua_extractor interfaces_config interfaces devserver_url api
 ENV VARS_FILE=vars.yaml
 
 RUN mv /tmp/config/bin/* /usr/bin/ && \

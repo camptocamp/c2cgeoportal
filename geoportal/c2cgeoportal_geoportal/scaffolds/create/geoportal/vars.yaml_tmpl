@@ -17,7 +17,12 @@ vars:
     - fr
     - de
 
-  default_interface: desktop
+  # All the application interfaces used to create the apache rewrite rules
+  interfaces:
+    - name: desktop
+      default: True
+    - name: mobile
+    - name: iframe_api
 
   interfaces_config:
     default:

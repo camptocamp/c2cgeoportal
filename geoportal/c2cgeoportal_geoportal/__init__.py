@@ -100,9 +100,7 @@ def add_interface(
         config,
         route_name=interface_name,
         route=route,
-        renderer="{}_geoportal:static-ngeo/build/{}.html".format(
-            config.get_settings()['package'], interface_name
-        ),
+        renderer="/etc/static-ngeo/{}.html".format(interface_name),
         **kwargs
     )
 
@@ -450,8 +448,8 @@ def includeme(config: pyramid.config.Configurator):
             renderer='{}_geoportal:static-ngeo/{}'.format(package, renderer)
         )
     add_api_route('favicon', 'favicon', '/favicon.ico', 'js/apps/image/favicon.ico')
-    add_api_route('apijsmap', 'apijsmap', '/api.js.map', "build/api.js.map")
-    add_api_route('apicss', 'apicss', '/api.css', "build/api.css")
+    add_api_route('apijsmap', 'apijsmap', '/api.js.map', "api.js.map")
+    add_api_route('apicss', 'apicss', '/api.css', "api.css")
     add_api_route('apihelp', 'apihelp', '/apihelp/index.html', "api/apihelp/index.html")
     c2cgeoportal_geoportal.views.add_redirect(
         config, 'apihelp_redirect', '/apihelp.html', '/apihelp/index.html'
@@ -582,7 +580,7 @@ def includeme(config: pyramid.config.Configurator):
     # Add the project static view without cache buster
     config.add_static_view(
         name="static-ngeo",
-        path="{}_geoportal:static-ngeo".format(package),
+        path="/etc/static-ngeo",
         cache_max_age=int(config.get_settings()["default_max_age"]),
     )
 

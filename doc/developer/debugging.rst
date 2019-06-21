@@ -193,7 +193,7 @@ Clone ngeo and build:
    npm prepublish
    cd ../..
 
-Add the following alias in your ``webpack.apps.js.mako`` file:
+Add the following alias in your ``webpack.apps.js.tmpl`` file:
 
 .. code:: js
 

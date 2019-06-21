@@ -3,7 +3,7 @@
 function help {
     echo Usage:
     echo ./upgrade VERSION [STEP]
-    echo ./upgrade finalise PACKAGE [DOCKER_TAG]
+    echo ./upgrade --finalise PACKAGE [DOCKER_TAG]
     exit 1
 }
 
@@ -14,7 +14,7 @@ fi
 
 if [ $1 == '--finalise' ]
 then
-    shift 2
+    shift
     ./build "$@"
 
     docker-compose down --remove-orphans || true
