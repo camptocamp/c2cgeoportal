@@ -12,22 +12,10 @@ then
     help
 fi
 
-if [ $1 == finalise ]
+if [ $1 == '--finalise' ]
 then
-    if [ $# -lt 2 ]
-    then
-        help
-    fi
-    package=$2
-    tag=
-    if [ $# -gt 2 ]
-    then
-        tag=:$3
-    fi
-
-    docker build --tag=camptocamp/${package}-config${tag} .
-    docker build --tag=camptocamp/${package}-geoportal${tag} \
-        --build-arg=GIT_HASH=$(git rev-parse HEAD) geoportal
+    shift 2
+    ./build "$@"
 
     docker-compose down --remove-orphans || true
     DOCKER_TAG=unexisting docker-compose pull --ignore-pull-failures

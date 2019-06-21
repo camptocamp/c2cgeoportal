@@ -704,10 +704,6 @@ vars:
     slave:
       - \w+ /printproxy/.*  # The print proxy is never writing to the DB
 
-environment:
-  - name: PGSCHEMA
-    default: main
-
 runtime_environment:
   - name: VISIBLE_WEB_HOST
     default: localhost
@@ -723,6 +719,8 @@ runtime_environment:
   - PGPASSWORD
   - name: PGDATABASE
     default: geomapfish
+  - name: PGSCHEMA
+    default: main
   - name: PGSCHEMA_STATIC
     default: main_static
   - name: TINYOWS_URL

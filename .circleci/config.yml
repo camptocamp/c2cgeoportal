@@ -49,7 +49,8 @@ jobs:
           docker build --target=checks
           --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=$(ci/release-tag) .
       - run: >
-          docker build --tag=camptocamp/geomapfish-config-build docker/config
+          docker build --tag=camptocamp/geomapfish-config-build
+          --build-arg=VERSION=$(ci/release-tag) docker/config
 
       # Build QGIS images
       - run: >
@@ -145,7 +146,8 @@ jobs:
           --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=$(ci/release-tag) .
           docker build --target=upgrader --tag=camptocamp/geomapfish-scaffolds \
           --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=$(ci/release-tag) .
-          docker build --tag=camptocamp/geomapfish-config-build:$(ci/release-tag) docker/config
+          docker build --tag=camptocamp/geomapfish-config-build:$(ci/release-tag) \
+          --build-arg=VERSION=$(ci/release-tag) docker/config
       - run: ci/test-upgrade init ${HOME}/workspace
       - run: ci/test-upgrade 240 ${HOME}/workspace
       - run: ci/test-upgrade 25 ${HOME}/workspace
@@ -173,7 +175,8 @@ jobs:
             --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=$(ci/release-tag) .
             docker build --target=upgrader --tag=camptocamp/geomapfish-scaffolds \
             --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=$(ci/release-tag) .
-            docker build --tag=camptocamp/geomapfish-config-build docker/config
+            docker build --tag=camptocamp/geomapfish-config-build \
+            --build-arg=VERSION=$(ci/release-tag) docker/config
             docker build --target=runner --build-arg=VERSION=latest \
             --tag=camptocamp/geomapfish-qgisserver:gmf${MAJOR_VERSION}-qgismaster \
             docker/qgisserver

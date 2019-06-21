@@ -7,7 +7,8 @@ docker build --target=runner --tag=camptocamp/geomapfish:${TAG} \
     --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=${TAG} .
 docker build --target=upgrader --tag=camptocamp/geomapfish-scaffolds:${TAG} \
     --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=${TAG} .
-docker build --tag=camptocamp/geomapfish-config-build:${TAG} docker/config
+docker build --tag=camptocamp/geomapfish-config-build:${TAG} \
+    --build-arg=VERSION=${TAG} docker/config
 WORKSPACE=$1
 BASE_APP=false
 if [ $# -ge 2 ]
@@ -40,6 +41,8 @@ then
 fi
 
 cd ${WORKSPACE}/${PACKAGE}
+echo 'PGHOST=db' >> .env.sample
+echo 'PGHOST_SLAVE=db' >> .env.sample
 
 if [ $BASE_APP == true ]
 then
