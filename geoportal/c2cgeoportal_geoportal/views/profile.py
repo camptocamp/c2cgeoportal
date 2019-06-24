@@ -29,16 +29,15 @@
 
 
 import math
-import geojson
 from decimal import Decimal
 
-from pyramid.view import view_config
+import geojson
 from pyramid.httpexceptions import HTTPNotFound
 from pyramid.i18n import TranslationStringFactory
+from pyramid.view import view_config
 
+from c2cgeoportal_geoportal.lib.caching import NO_CACHE, set_common_headers
 from c2cgeoportal_geoportal.views.raster import Raster
-from c2cgeoportal_geoportal.lib.caching import set_common_headers, NO_CACHE
-
 
 _ = TranslationStringFactory("c2cgeoportal")
 

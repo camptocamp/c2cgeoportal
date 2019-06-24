@@ -28,37 +28,34 @@
 # either expressed or implied, of the FreeBSD Project.
 
 import binascii
-import time
+import importlib
 import logging
 import os
 import re
+import time
 from urllib.parse import urlsplit
-import importlib
 
-import simplejson as json
-from Crypto.Cipher import AES
-
-import zope.event.classhandler
-from pyramid.config import Configurator
-from pyramid.interfaces import IStaticURLInfo
-from pyramid.httpexceptions import HTTPException
-from pyramid.path import AssetResolver
-import pyramid.security
-from pyramid_mako import add_mako_renderer
-from papyrus.renderers import GeoJSON
-from sqlalchemy.orm import Session
-
+import c2cgeoportal_commons.models
 import c2cwsgiutils
 import c2cwsgiutils.db
 import c2cwsgiutils.index
+import pyramid.security
+import simplejson as json
+import zope.event.classhandler
 from c2cwsgiutils.health_check import HealthCheck
+from Crypto.Cipher import AES
+from papyrus.renderers import GeoJSON
+from pyramid.config import Configurator
+from pyramid.httpexceptions import HTTPException
+from pyramid.interfaces import IStaticURLInfo
+from pyramid.path import AssetResolver
+from pyramid_mako import add_mako_renderer
+from sqlalchemy.orm import Session
 
-import c2cgeoportal_commons.models
-from c2cgeoportal_geoportal.lib.xsd import XSD
-from c2cgeoportal_geoportal.lib import dbreflection, caching, \
-    C2CPregenerator, MultiDomainStaticURLInfo, checker, check_collector
 import c2cgeoportal_geoportal.views
-
+from c2cgeoportal_geoportal.lib import (C2CPregenerator, MultiDomainStaticURLInfo, caching, check_collector,
+                                        checker, dbreflection)
+from c2cgeoportal_geoportal.lib.xsd import XSD
 
 LOG = logging.getLogger(__name__)
 

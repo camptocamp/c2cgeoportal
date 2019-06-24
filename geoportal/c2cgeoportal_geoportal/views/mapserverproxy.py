@@ -31,16 +31,16 @@
 import logging
 from typing import Any, Dict  # noqa, pylint: disable=unused-import
 
-from pyramid.response import Response
-from pyramid.httpexceptions import HTTPUnauthorized
-from pyramid.view import view_config
-from pyramid.request import Request
-
-from c2cgeoportal_geoportal.lib.caching import get_region, NO_CACHE, PUBLIC_CACHE, PRIVATE_CACHE
-from c2cgeoportal_geoportal.lib.functionality import get_mapserver_substitution_params
-from c2cgeoportal_geoportal.lib.filter_capabilities import filter_capabilities
-from c2cgeoportal_geoportal.views.ogcproxy import OGCProxy
 from c2cgeoportal_commons.models import main, static
+from pyramid.httpexceptions import HTTPUnauthorized
+from pyramid.request import Request
+from pyramid.response import Response
+from pyramid.view import view_config
+
+from c2cgeoportal_geoportal.lib.caching import NO_CACHE, PRIVATE_CACHE, PUBLIC_CACHE, get_region
+from c2cgeoportal_geoportal.lib.filter_capabilities import filter_capabilities
+from c2cgeoportal_geoportal.lib.functionality import get_mapserver_substitution_params
+from c2cgeoportal_geoportal.views.ogcproxy import OGCProxy
 
 cache_region = get_region()
 log = logging.getLogger(__name__)

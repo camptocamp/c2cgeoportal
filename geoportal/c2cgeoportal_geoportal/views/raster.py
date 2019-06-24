@@ -32,7 +32,7 @@ import logging
 import math
 import os
 from decimal import Decimal
-from typing import Dict, Any  # noqa, pylint: disable=unused-import
+from typing import Any, Dict  # noqa, pylint: disable=unused-import
 
 import zope.event.classhandler
 from pyramid.httpexceptions import HTTPBadRequest, HTTPNotFound

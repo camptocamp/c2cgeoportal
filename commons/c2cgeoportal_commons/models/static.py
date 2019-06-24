@@ -49,7 +49,7 @@ from c2cgeoportal_commons.models.main import Role
 
 LOG = logging.getLogger(__name__)
 
-_schema = config['schema_static']  # type: str
+_schema = config['schema_static'] or 'static'  # type: str
 
 # association table user <> role
 user_role = Table(
