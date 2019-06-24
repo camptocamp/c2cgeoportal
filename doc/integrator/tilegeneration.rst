@@ -84,7 +84,7 @@ Initialization
      TILECLOUD_CHAIN_LOCAL ?= TRUE
 
   and set the ``wmtscapabilities_file`` to ``${WMTSCAPABILITIES_PATH}`` in your
-  ``tilegeneration/config.yaml.mako`` file.
+  ``tilegeneration/config.yaml.tmpl`` file.
 
 * In your ``<prod>.mk``, you can also set the capabilities file name with:
 
@@ -102,8 +102,8 @@ Configuration
 ~~~~~~~~~~~~~
 
 The configuration is done in the file
-``tilegeneration/config.yaml.mako``. The original file is available at:
-https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/scaffolds/create/tilegeneration/config.yaml.mako_tmpl
+``tilegeneration/config.yaml.tmpl``. The original file is available at:
+https://github.com/camptocamp/c2cgeoportal/blob/2.4/geoportal/c2cgeoportal_geoportal/scaffolds/create/tilegeneration/config.yaml.tmpl_tmpl
 
 The main thing to do is to:
 
