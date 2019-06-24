@@ -32,7 +32,7 @@ makefiles.
 The ``PGSCHEMA`` should be set in the ``Makefile`` and the ``DOCKER_PGSCHEMA_STATIC`` for the
 production should be set in a specific makefile for the production e.-g. ``production.mk``.
 
-And the line `PGSCHEMA=${docker_schema}` should be removed from your `.env.mako` file.
+And the line `PGSCHEMA=main` should be removed from your `.env.sample` file.
 
 To copy the schema, we provide a Postgres function, to create it use:
 

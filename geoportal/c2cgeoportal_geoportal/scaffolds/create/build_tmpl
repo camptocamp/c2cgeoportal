@@ -7,14 +7,17 @@ function help {
     exit 1
 }
 
-if [ $# -gt 0 ] && ( [ $1 == '-h' ] || [ $1 == '--help' ]
+if [ $# -gt 0 ] && ( [ $1 == '-h' ] || [ $1 == '--help' ] )
 then
     help
 fi
 
 set -x
-docker build --tag=camptocamp/{{package}]-config \
+docker build --tag=camptocamp/{{package}}-config \
     --build-arg=PGSCHEMA=main .
+docker build --target=builder --tag=camptocamp/{{package}}-geoportal-dev \
+    --build-arg=PGSCHEMA=main \
+    --build-arg=GIT_HASH=$(git rev-parse HEAD) geoportal
 docker build --tag=camptocamp/{{package}}-geoportal \
     --build-arg=PGSCHEMA=main \
     --build-arg=GIT_HASH=$(git rev-parse HEAD) geoportal

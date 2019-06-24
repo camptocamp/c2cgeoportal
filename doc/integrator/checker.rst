@@ -38,7 +38,7 @@ The recommended URL that should be checked by services such as Pingdom or Status
 
     <project_url>/c2c/health_check?checks=check_collector
 
-The recommended URL to use to validate a migration (``checker_url`` in ``proect.yaml.mako``):
+The recommended URL to use to validate a migration (``checker_url`` in ``project.yaml``):
 
     <project_url>/c2c/health_check?max_level=9
 
@@ -78,7 +78,7 @@ The checker uses the following configuration structure in ``vars.yaml``:
             checker:
                 rewrite_as_http_localhost: False
 
-    Now, in your configuration file ``project.yaml.mako``, instead of defining the ``checker_path``,
+    Now, in your configuration file ``project.yaml``, instead of defining the ``checker_path``,
     define a ``checker_url`` with the full URL to be used, for example:
 
     .. code:: yaml

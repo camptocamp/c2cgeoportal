@@ -65,7 +65,7 @@ function upgrade {
     cd ${WORKSPACE}/v$1/testgeomapfish
     cp project.yaml.mako project.yaml || true
     echo /upgrade >> .gitignore
-    git add .gitignore
+    git add --force .gitignore project.yaml
     git commit -m "Add /upgrade in .gitignore"
     ./upgrade latest
     if [ -e .UPGRADE7 ]
@@ -84,6 +84,7 @@ function upgrade {
         # Workaround
         git status > /dev/null
         git apply --3way create.diff
+        cp CONST_create_template/project.yaml .
         ./upgrade latest 10
     fi
     if [ ! -e .UPGRADE_SUCCESS ]

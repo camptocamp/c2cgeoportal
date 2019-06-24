@@ -1,7 +1,7 @@
 const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
 
-const destDir = path.resolve(__dirname, '{{package}}_geoportal/static-ngeo/build/');
+const destDir = '/etc/static-ngeo/';
 
 const babelPresets = [[require.resolve('@babel/preset-env'), {
   targets: {
@@ -26,7 +26,6 @@ module.exports = (env, argv) => {
             presets: babelPresets,
             babelrc: false,
             comments: false,
-            cacheDirectory: '/build/bable-loader-cache/',
             plugins: [
               require.resolve('@babel/plugin-syntax-object-rest-spread'),
               require.resolve('@babel/plugin-transform-spread'),

@@ -830,9 +830,7 @@ class Entry:
     @view_config(route_name="apijs")
     def apijs(self):
         resolver = AssetResolver('c2cgeoportal_geoportal')
-        asset = resolver.resolve('{}_geoportal:static-ngeo/build/api.js'.format(
-            self.request.registry.settings['package']
-        ))
+        asset = resolver.resolve('/etc/static-ngeo/api.js')
         self.request.response.body = asset.stream().read()
         response = self.request.response
         set_common_headers(

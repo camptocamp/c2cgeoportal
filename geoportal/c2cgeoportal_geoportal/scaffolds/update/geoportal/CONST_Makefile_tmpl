@@ -33,7 +33,7 @@ NODE_ENV ?= production
 export NODE_ENV
 NO_DEV_SERVER ?= TRUE
 export NO_DEV_SERVER
-APP_OUTPUT_DIR = $(PACKAGE)_geoportal/static-ngeo/build
+APP_OUTPUT_DIR = /etc/static-ngeo
 GCC_JS_FILES = $(shell find /usr/lib/node_modules/openlayers/src/ol /usr/lib/node_modules/ngeo/src /usr/lib/node_modules/ol-cesium/src -type f -name '*.js' 2> /dev/null)
 APP_JS_FILES = $(shell find $(PACKAGE)_geoportal/static-ngeo/js -type f -name '*.js' 2> /dev/null)
 HTML_FILES += $(shell find $(PACKAGE)_geoportal/static-ngeo/js -type f -name '*.html' 2> /dev/null)
@@ -120,7 +120,7 @@ apps: webpack.apps.js
 	for interface in $(NGEO_INTERFACES); \
 	do \
 		mv $(APP_OUTPUT_DIR)/$${interface}.html $(APP_OUTPUT_DIR)/$${interface}.html.tmpl; \
-		ls -1 $(APP_OUTPUT_DIR)/$${interface}.*.css $(APP_OUTPUT_DIR)/$${interface}.*.js|while read file; \
+		ls -1 $(APP_OUTPUT_DIR)/$${interface}.*.css|while read file; \
 		do \
 			mv $${file} $${file}.tmpl; \
 		done; \

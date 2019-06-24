@@ -202,6 +202,6 @@ class TemplateUpdate(BaseTemplate):  # pragma: no cover
         after a successful scaffolding rendering.
         """
 
-        fix_executables(output_dir, ("bin/*",), True)
+        fix_executables(output_dir, ("bin/*", "build"), True)
 
         return BaseTemplate.post(self, command, output_dir, vars_)

@@ -55,7 +55,7 @@ DIFF_NOTICE = "You should apply the changes shown in the diff file on `CONST_cre
     "Some advice to be more efficient: if the changes on a file concern a file that you never customize, " \
     "you can simply copy the new file from `CONST_create_template` " \
     "(`cp CONST_create_template/<file> <file>`)." \
-    "You can furthermore add this file to the `unmanaged_files` section of the `project.yaml.mako` file, " \
+    "You can furthermore add this file to the `unmanaged_files` section of the `project.yaml` file, " \
     "to avoid its contents appearing in the diff file for the next upgrade."
 
 
@@ -230,13 +230,13 @@ class C2cUpgradeTool:
             if required not in project_template_keys:
                 messages.append(
                     "The element '{}' is missing in the 'template_vars' of "
-                    "the file 'project.yaml.mako', you should have for example: {}: {}.".format(
+                    "the file 'project.yaml', you should have for example: {}: {}.".format(
                         required, required, TEMPLATE_EXAMPLE.get('required', '')
                     )
                 )
         if self.project.get("managed_files") is None:
             messages.append(
-                "The element 'managed_files' is missing in the file 'project.yaml.mako', "
+                "The element 'managed_files' is missing in the file 'project.yaml', "
                 "you must define this element with a list of regular expressions or with an empty array. "
                 "See upgrade documentation for more information."
             )
@@ -600,7 +600,7 @@ class C2cUpgradeTool:
 
         message = [
             "The upgrade is nearly done, now you should:",
-            "- Build your application with ./upgrade finalise [build arguments]",
+            "- Build your application with ./upgrade --finalise [build arguments]",
             "- Test your application on '{}'.".format(
                 self.project.get('application_url', '... missing ...')
             )

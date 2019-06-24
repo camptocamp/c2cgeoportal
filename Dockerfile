@@ -158,6 +158,7 @@ FROM common-build-npm AS builder
 
 WORKDIR /src
 
+COPY bin/eval-templates /usr/bin/
 COPY --from=build /app/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/ \
     /opt/c2cgeoportal_geoportal/c2cgeoportal_geoportal/locale/
 

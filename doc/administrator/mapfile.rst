@@ -12,11 +12,11 @@ for the map (``WMS GetMap``), and for the ``point query`` feature (``WMS GetFeat
 WFS is used for the ``query`` (box and point), the ``filters``, and the WFS permalink features.
 
 The application's mapfile is located in the ``mapserver`` directory, it is
-commonly named ``mapserver.map.mako``.
+commonly named ``mapserver.map.tmpl``.
 
 .. note::
 
-    The application's mapfile is a ``.mako`` file because it contains variables.
+    The application's mapfile is a ``.tmpl`` file because it contains variables.
     These variables are substituted when the ``make`` build command is executed.
 
 This section describes how to make layers *printable* and/or *queryable*
@@ -268,7 +268,7 @@ as follows:
         "default_role_ids" "-1"
         "role_ids" "^-?[0-9]*$$"
 
-The mapfile should be a ``.map.mako`` file, for the variable to be
+The mapfile should be a ``.map.tmpl`` file, for the variable to be
 substituted at make execution time.
 
 
@@ -376,5 +376,5 @@ images and has memory leaks with ECW. See this
 for example.
 
 If you still want to use it, then replace ``SetHandler fcgid-script``
-by ``SetHandler cgi-script`` in the ``apache/mapserver.conf.mako``
+by ``SetHandler cgi-script`` in the ``apache/mapserver.conf.tmpl``
 file. But note that this affects performance.

@@ -13,7 +13,7 @@ default_project_file:
     - print/print-apps/.*
     - mapserver/.*
     - tilegeneration/config\.yaml\.tmpl
-    - project\.yaml\.mako
+    - project\.yaml
     - docker-compose\.yaml
     - \.env\.sample
     - geoportal/setup\.py
@@ -69,6 +69,7 @@ upgrade_files:
       - CONST_config-schema.yaml
       - CONST_Makefile
       - CONST_vars.yaml
+      - project.yaml.mako
   - action: move
     from: Makefile
     to: geoportal/Makefile
@@ -99,9 +100,6 @@ upgrade_files:
   - action: move
     from: geoportal/production.ini.mako
     to: geoportal/production.ini
-  - action: move
-    from: project.yaml.mako
-    to: project.yaml
   - action: move
     from: .env.mako
     to: .env.sample

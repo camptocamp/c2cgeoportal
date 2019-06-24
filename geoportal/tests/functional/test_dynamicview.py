@@ -197,7 +197,7 @@ class TestDynamicView(TestCase):
 
         assert 'XTest' in dynamic['constants'], dynamic
         assert dynamic['constants']['XTest'] == {
-            'fr': '/dummy/route/url/package_name_geoportal:static-ngeo/build/fr.json'
+            'fr': '/dummy/route/url/package_name_geoportal:static-ngeo/fr.json'
         }
 
     def test_constant_dynamic_fulltextsearch_groups(self):

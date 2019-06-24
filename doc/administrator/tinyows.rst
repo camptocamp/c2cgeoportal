@@ -16,7 +16,7 @@ TinyOWS configuration
 ---------------------
 
 The configuration of TinyOWS is made in a XML file, which is located at
-``mapserver/tinyows.xml.mako``:
+``mapserver/tinyows.xml.tmpl``:
 
 .. code:: xml
 

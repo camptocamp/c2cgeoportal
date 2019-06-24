@@ -185,16 +185,9 @@ services:
       - ${DOCKER_PORT}:${FRONT_INNER_PORT}
 
   webpack_dev_server:
-    image: ${DOCKER_BASE}-geoportal:${DOCKER_TAG}
+    image: ${DOCKER_BASE}-geoportal-dev:${DOCKER_TAG}
     volumes:
       - ${PWD}/geoportal/{{package}}_geoportal/static-ngeo:/app/{{package}}_geoportal/static-ngeo
-    command:
-      - webpack-dev-server
-      - --mode=development
-      - --debug
-      - --watch
-      - --progress
-      - --no-inline
     environment:
       - VISIBLE_ENTRY_POINT
       - VISIBLE_WEB_HOST
