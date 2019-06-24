@@ -68,7 +68,7 @@ monitoring system like Nagios to check that the application is alive.</p>
 <blockquote>
 <div><p>&lt;project_url&gt;/c2c/health_check?checks=check_collector</p>
 </div></blockquote>
-<p>The recommended URL to use to validate a migration (<code class="docutils literal notranslate"><span class="pre">checker_url</span></code> in <code class="docutils literal notranslate"><span class="pre">proect.yaml.mako</span></code>):</p>
+<p>The recommended URL to use to validate a migration (<code class="docutils literal notranslate"><span class="pre">checker_url</span></code> in <code class="docutils literal notranslate"><span class="pre">project.yaml</span></code>):</p>
 <blockquote>
 <div><p>&lt;project_url&gt;/c2c/health_check?max_level=9</p>
 </div></blockquote>
@@ -102,7 +102,7 @@ In your <code class="docutils literal notranslate"><span class="pre">vars</span>
         <span class="nt">rewrite_as_http_localhost</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">False</span>
 </pre></div>
 </div>
-<p>Now, in your configuration file <code class="docutils literal notranslate"><span class="pre">project.yaml.mako</span></code>, instead of defining the <code class="docutils literal notranslate"><span class="pre">checker_path</span></code>,
+<p>Now, in your configuration file <code class="docutils literal notranslate"><span class="pre">project.yaml</span></code>, instead of defining the <code class="docutils literal notranslate"><span class="pre">checker_path</span></code>,
 define a <code class="docutils literal notranslate"><span class="pre">checker_url</span></code> with the full URL to be used, for example:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">...</span>
 <span class="nt">host</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${host}</span>

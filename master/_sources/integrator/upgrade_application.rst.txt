@@ -5,16 +5,16 @@ Upgrading a GeoMapFish application
 ==================================
 
 
-From a version 2.4 and next
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+From a version 2.4.x
+~~~~~~~~~~~~~~~~~~~~
 
-Build the project file if needed (2.4):
+Build the project file if needed:
 
 .. prompt:: bash
 
    ./docker-run make project.yaml
 
-For 2.4 you also should clean your project (include ignored files):
+Clean your project (include ignored files):
 
 .. prompt:: bash
 
@@ -27,13 +27,32 @@ Get the upgrade script:
     curl https://raw.githubusercontent.com/camptocamp/c2cgeoportal/master/scripts/upgrade > upgrade
     chmod +x upgrade
 
-For 2.4 add upgrade in Git ignore:
+Upgrade in Git ignore:
 
 .. prompt:: bash
 
     echo /upgrade >> .gitignore
     git add .gitignore
     git comit -m "Add /upgrade in .gitignore"
+
+Run the upgrade:
+
+.. prompt:: bash
+
+   ./upgrade <version>
+
+Then follow the instructions.
+
+
+From a version 2.5 and next
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Get the upgrade script:
+
+.. prompt:: bash
+
+    curl https://raw.githubusercontent.com/camptocamp/c2cgeoportal/master/scripts/upgrade > upgrade
+    chmod +x upgrade
 
 Run the upgrade:
 

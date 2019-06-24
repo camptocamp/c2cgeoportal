@@ -9,6 +9,6 @@ See its `documentation <https://github.com/camptocamp/c2cwsgiutils/#camptocamp-w
 The entry point URL is ``<application main URL>/c2c`` And here we will have a dashboard with the
 c2cwsgiutils and c2cgeoportal services.
 
-To use the protected tools you should at least set C2C_SECRET to a secret password in the file `.env.mako`.
+To use the protected tools you should at least set C2C_SECRET to a secret password in the file `.env.sample`.
 
 Now the invalidate view is also protected with this secret.

@@ -43,10 +43,10 @@ the application’s MapServer mapfile.</p>
 for the map (<code class="docutils literal notranslate"><span class="pre">WMS</span> <span class="pre">GetMap</span></code>), and for the <code class="docutils literal notranslate"><span class="pre">point</span> <span class="pre">query</span></code> feature (<code class="docutils literal notranslate"><span class="pre">WMS</span> <span class="pre">GetFeatureInfo</span></code>).
 WFS is used for the <code class="docutils literal notranslate"><span class="pre">query</span></code> (box and point), the <code class="docutils literal notranslate"><span class="pre">filters</span></code>, and the WFS permalink features.</p>
 <p>The application’s mapfile is located in the <code class="docutils literal notranslate"><span class="pre">mapserver</span></code> directory, it is
-commonly named <code class="docutils literal notranslate"><span class="pre">mapserver.map.mako</span></code>.</p>
+commonly named <code class="docutils literal notranslate"><span class="pre">mapserver.map.tmpl</span></code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The application’s mapfile is a <code class="docutils literal notranslate"><span class="pre">.mako</span></code> file because it contains variables.
+<p>The application’s mapfile is a <code class="docutils literal notranslate"><span class="pre">.tmpl</span></code> file because it contains variables.
 These variables are substituted when the <code class="docutils literal notranslate"><span class="pre">make</span></code> build command is executed.</p>
 </div>
 <p>This section describes how to make layers <em>printable</em> and/or <em>queryable</em>
@@ -265,7 +265,7 @@ as follows:</p>
     <span class="s2">&quot;role_ids&quot;</span> <span class="s2">&quot;^-?[0-9]*$$&quot;</span>
 </pre></div>
 </div>
-<p>The mapfile should be a <code class="docutils literal notranslate"><span class="pre">.map.mako</span></code> file, for the variable to be
+<p>The mapfile should be a <code class="docutils literal notranslate"><span class="pre">.map.tmpl</span></code> file, for the variable to be
 substituted at make execution time.</p>
 </div>
 </div>
@@ -352,7 +352,7 @@ images and has memory leaks with ECW. See this
 <a class="reference external" href="https://trac.osgeo.org/mapserver/ticket/3245">MapServer ticket</a>
 for example.</p>
 <p>If you still want to use it, then replace <code class="docutils literal notranslate"><span class="pre">SetHandler</span> <span class="pre">fcgid-script</span></code>
-by <code class="docutils literal notranslate"><span class="pre">SetHandler</span> <span class="pre">cgi-script</span></code> in the <code class="docutils literal notranslate"><span class="pre">apache/mapserver.conf.mako</span></code>
+by <code class="docutils literal notranslate"><span class="pre">SetHandler</span> <span class="pre">cgi-script</span></code> in the <code class="docutils literal notranslate"><span class="pre">apache/mapserver.conf.tmpl</span></code>
 file. But note that this affects performance.</p>
 </div>
 </div>

@@ -54,7 +54,7 @@ integration and production =&gt; <code class="docutils literal notranslate"><spa
 makefiles.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">PGSCHEMA</span></code> should be set in the <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> and the <code class="docutils literal notranslate"><span class="pre">DOCKER_PGSCHEMA_STATIC</span></code> for the
 production should be set in a specific makefile for the production e.-g. <code class="docutils literal notranslate"><span class="pre">production.mk</span></code>.</p>
-<p>And the line <cite>PGSCHEMA=${docker_schema}</cite> should be removed from your <cite>.env.mako</cite> file.</p>
+<p>And the line <cite>PGSCHEMA=main</cite> should be removed from your <cite>.env.sample</cite> file.</p>
 <p>To copy the schema, we provide a Postgres function, to create it use:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
 span.prompt1:before {
