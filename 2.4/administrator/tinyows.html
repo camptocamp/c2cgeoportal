@@ -48,9 +48,9 @@ proxy to TinyOWS to limit access to authorized users.</p>
 <div class="section" id="tinyows-configuration">
 <h1>TinyOWS configuration<a class="headerlink" href="#tinyows-configuration" title="Permalink to this headline">¶</a></h1>
 <p>The configuration of TinyOWS is made in a XML file, which is located at
-<code class="docutils literal notranslate"><span class="pre">mapserver/tinyows.xml.mako</span></code>:</p>
+<code class="docutils literal notranslate"><span class="pre">mapserver/tinyows.xml.tmpl</span></code>:</p>
 <div class="code xml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">tinyows</span>
-    <span class="n">online_resource</span><span class="o">=</span><span class="s2">&quot;https://$</span><span class="si">{host}</span><span class="s2">/tinyows_proxy&quot;</span>
+    <span class="n">online_resource</span><span class="o">=</span><span class="s2">&quot;https://$</span><span class="si">{VISIBLE_WEB_HOST}</span><span class="s2">/tinyows_proxy&quot;</span>
     <span class="n">schema_dir</span><span class="o">=</span><span class="s2">&quot;/usr/share/tinyows/schema/&quot;</span>
     <span class="n">log_level</span><span class="o">=</span><span class="s2">&quot;1&quot;</span>
     <span class="n">check_schema</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="o">&gt;</span>
@@ -65,11 +65,11 @@ proxy to TinyOWS to limit access to authorized users.</p>
       <span class="n">title</span><span class="o">=</span><span class="s2">&quot;GeoMapFish TinyOWS Server&quot;</span> <span class="o">/&gt;</span>
 
   <span class="o">&lt;</span><span class="n">pg</span>
-      <span class="n">host</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{dbhost}</span><span class="s2">&quot;</span>
-      <span class="n">user</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{dbuser}</span><span class="s2">&quot;</span>
-      <span class="n">password</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{dbpassword}</span><span class="s2">&quot;</span>
-      <span class="n">port</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{dbport}</span><span class="s2">&quot;</span>
-      <span class="n">dbname</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{db}</span><span class="s2">&quot;</span> <span class="o">/&gt;</span>
+      <span class="n">host</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{PGHOST}</span><span class="s2">&quot;</span>
+      <span class="n">user</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{PGUSER}</span><span class="s2">&quot;</span>
+      <span class="n">password</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{PGPASSWORD}</span><span class="s2">&quot;</span>
+      <span class="n">port</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{PGPORT}</span><span class="s2">&quot;</span>
+      <span class="n">dbname</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{PGDATABASE}</span><span class="s2">&quot;</span> <span class="o">/&gt;</span>
 
   <span class="o">&lt;</span><span class="n">layer</span>
       <span class="n">retrievable</span><span class="o">=</span><span class="s2">&quot;1&quot;</span>
@@ -87,7 +87,7 @@ proxy to TinyOWS to limit access to authorized users.</p>
 <p>In the root element <code class="docutils literal notranslate"><span class="pre">tinyows</span></code> the following properties have to be set:</p>
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">online_resource</span></code> - This should be the URL to the TinyOWS proxy, usually
-<code class="docutils literal notranslate"><span class="pre">https://${host}/tinyows_proxy</span></code>.</li>
+<code class="docutils literal notranslate"><span class="pre">https://${VISIBLE_WEB_HOST}/tinyows_proxy</span></code>.</li>
 <li><code class="docutils literal notranslate"><span class="pre">schema_dir</span></code> - The path to the TinyOWS schema directory. Adapt this path according to your installation.</li>
 <li><dl class="first docutils">
 <dt><code class="docutils literal notranslate"><span class="pre">log_level</span></code> - The log level (default: 1). Please refer to the</dt>

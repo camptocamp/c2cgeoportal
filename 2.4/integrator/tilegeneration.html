@@ -102,7 +102,7 @@ EC2, SQS, SNS.</p>
 </pre></div>
 </div>
 <p>and set the <code class="docutils literal notranslate"><span class="pre">wmtscapabilities_file</span></code> to <code class="docutils literal notranslate"><span class="pre">${WMTSCAPABILITIES_PATH}</span></code> in your
-<code class="docutils literal notranslate"><span class="pre">tilegeneration/config.yaml.mako</span></code> file.</p>
+<code class="docutils literal notranslate"><span class="pre">tilegeneration/config.yaml.tmpl</span></code> file.</p>
 </li>
 <li><p class="first">In your <code class="docutils literal notranslate"><span class="pre">&lt;prod&gt;.mk</span></code>, you can also set the capabilities file name with:</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">WMTSCAPABILITIES_PATH</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">.</span><span class="mi">0</span><span class="o">/</span><span class="n">WMTSCapabilities</span><span class="o">.</span><span class="n">xml</span>
@@ -117,8 +117,8 @@ EC2, SQS, SNS.</p>
 <div class="section" id="configuration">
 <h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h3>
 <p>The configuration is done in the file
-<code class="docutils literal notranslate"><span class="pre">tilegeneration/config.yaml.mako</span></code>. The original file is available at:
-<a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/scaffolds/create/tilegeneration/config.yaml.mako_tmpl">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/scaffolds/create/tilegeneration/config.yaml.mako_tmpl</a></p>
+<code class="docutils literal notranslate"><span class="pre">tilegeneration/config.yaml.tmpl</span></code>. The original file is available at:
+<a class="reference external" href="https://github.com/camptocamp/c2cgeoportal/blob/2.4/geoportal/c2cgeoportal_geoportal/scaffolds/create/tilegeneration/config.yaml.tmpl_tmpl">https://github.com/camptocamp/c2cgeoportal/blob/2.4/geoportal/c2cgeoportal_geoportal/scaffolds/create/tilegeneration/config.yaml.tmpl_tmpl</a></p>
 <p>The main thing to do is to:</p>
 <ul>
 <li><p class="first">Set the resolutions we want to generate in the <code class="docutils literal notranslate"><span class="pre">grids</span></code>.
