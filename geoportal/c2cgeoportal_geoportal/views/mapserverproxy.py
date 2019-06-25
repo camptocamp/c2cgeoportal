@@ -55,6 +55,7 @@ class MapservProxy(OGCProxy):
         self.user = self.request.user
 
     @view_config(route_name="mapserverproxy")
+    @view_config(route_name="mapserverproxy_post")
     def proxy(self) -> Response:
 
         if self.user is None and "authentication_required" in self.request.params:
