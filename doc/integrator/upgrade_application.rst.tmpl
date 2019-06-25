@@ -80,10 +80,12 @@ Upgrade the main schema:
 
 .. prompt:: bash
 
-   ./docker-compose-run alembic --name=main --config=geoportal/alembic.ini upgrade head
+   ./docker-compose-run alembic --name=main \
+        --config=geoportal/alembic.ini upgrade head
 
 Upgrade the static schema:
 
 .. prompt:: bash
 
-   ./docker-compose-run alembic --name=static --config=geoportal/alembic.ini upgrade head
+   ./docker-compose-run alembic --name=static \
+        --config=geoportal/alembic.ini upgrade head
