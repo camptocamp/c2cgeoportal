@@ -525,12 +525,6 @@ mapping:
                     type: seq
                     sequence:
                       - *map
-      subdomain_url_template:
-        type: str
-      subdomains:
-        type: seq
-        sequence:
-          - type: str
 
       lingua_extractor:
         type: map

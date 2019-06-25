@@ -31,9 +31,7 @@
 import datetime
 import dateutil
 import json
-from pyramid.compat import WIN
-from pyramid.config.views import StaticURLInfo
-from pyramid.interfaces import IRoutePregenerator, IStaticURLInfo
+from pyramid.interfaces import IRoutePregenerator
 from string import Formatter
 import urllib.parse
 from zope.interface import implementer
@@ -270,24 +268,11 @@ def get_ogc_server_wfs_url_ids(request):
 
 @implementer(IRoutePregenerator)
 class C2CPregenerator:  # pragma: no cover
-    def __init__(self, subdomain=False, version=True, role=False):
-        self.subdomain = subdomain
+    def __init__(self, version=True, role=False):
         self.version = version
         self.role = role
 
     def __call__(self, request, elements, kw):
-        if self.subdomain and "subdomain" in kw:
-            if "subdomain_url_template" in request.registry.settings:
-                subdomain_url_template = \
-                    request.registry.settings["subdomain_url_template"]
-            else:
-                subdomain_url_template = "http://%(sub)s.%(host)s"
-
-            kw["_app_url"] = subdomain_url_template % {
-                "sub": kw["subdomain"],
-                "host": request.host,
-            } + request.script_name
-
         query = kw.get("_query", {})
 
         if self.version:
@@ -302,39 +287,6 @@ class C2CPregenerator:  # pragma: no cover
 
         kw["_query"] = query
         return elements, kw
-
-
-@implementer(IStaticURLInfo)
-class MultiDomainStaticURLInfo(StaticURLInfo):  # pragma: no cover
-    def generate(self, path, request, **kw):
-        if WIN:
-            path = path.replace("\\", "/")
-        for (url, spec, route_name) in self.registrations:
-            if WIN:
-                spec = spec.replace("\\", "/")
-            if path.startswith(spec):
-                subpath = path[len(spec):]
-                if self.cache_busters:
-                    subpath, kw = self._bust_asset_path(
-                        request, spec, subpath, kw)
-                if url is None:
-                    kw["subpath"] = subpath
-                    subdomains = request.registry.settings["subdomains"]
-                    return request.route_url(
-                        route_name,
-                        subdomain=subdomains[hash(subpath) % len(subdomains)],
-                        **kw
-                    )
-                else:
-                    subpath = urllib.parse.quote(subpath)
-                    return urllib.parse.urljoin(url, subpath[1:])
-        raise ValueError("No static URL definition matching {0!s}".format(path))
-
-    def add(self, config, name, spec, **extra):
-        if "pregenerator" not in extra:
-            extra["pregenerator"] = C2CPregenerator(subdomain=True, version=False)
-        return super(MultiDomainStaticURLInfo, self) \
-            .add(config, name, spec, **extra)
 
 
 _formatter = Formatter()
