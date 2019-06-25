@@ -11,6 +11,7 @@ cd ${HOME}/workspace/testgeomapfishapp/
 cp .env.sample .env
 docker-compose down
 docker-compose up -d
+docker-compose logs geoportal
 docker-compose exec geoportal bash -c 'PGHOST=externaldb PGDATABASE=test wait-db;'
 docker-compose exec geoportal wait-db
 docker-compose exec geoportal alembic --config=alembic.ini --name=main upgrade head
