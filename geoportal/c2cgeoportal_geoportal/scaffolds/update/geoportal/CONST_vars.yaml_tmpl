@@ -63,9 +63,9 @@ vars:
         gmfSearchGroups: fulltextsearch_groups
       static:
         assetsBaseUrl:
-          name: '{package}_geoportal:static-ngeo/'
+          name: '/etc/static-ngeo/'
         angularLocaleScript:
-          name: '{package}_geoportal:static-ngeo/'
+          name: '/etc/static-ngeo/'
           append: angular-locale_\{\{locale\}\}.js
       routes:
         authenticationBaseUrl:

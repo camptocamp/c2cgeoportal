@@ -209,7 +209,7 @@ def _lang_files(global_settings, settings, health_check):
     for type_ in lang_settings.get("files", []):
         for lang in available_locale_names:
             if type_ == "ngeo":
-                url = "{package}_geoportal:static-ngeo/{lang}.json"
+                url = "/etc/static-ngeo/{lang}.json"
             else:
                 raise Exception("Your language type value '%s' is not valid, "
                                 "available values [ngeo]" % type_)

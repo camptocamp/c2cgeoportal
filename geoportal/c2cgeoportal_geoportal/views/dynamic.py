@@ -72,7 +72,7 @@ class DynamicView:
             'interface': interface_name,
             'cache_version': get_cache_version(),
             'lang_urls': {
-                lang: self.request.static_url('{package}_geoportal:static-ngeo/{lang}.json'.format(
+                lang: self.request.static_url('/etc/static-ngeo/{lang}.json'.format(
                     package=self.request.registry.settings["package"],
                     lang=lang,
                     _query={
