@@ -441,7 +441,7 @@ def includeme(config: pyramid.config.Configurator):
         config.add_route(name, path, request_method="GET")
         config.add_view(
             Entry, attr=attr, route_name=name,
-            renderer='{}_geoportal:static-ngeo/{}'.format(package, renderer)
+            renderer='/etc/static-ngeo/{}'.format(renderer)
         )
     add_api_route('favicon', 'favicon', '/favicon.ico', 'js/apps/image/favicon.ico')
     add_api_route('apijsmap', 'apijsmap', '/api.js.map', "api.js.map")
