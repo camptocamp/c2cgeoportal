@@ -2,7 +2,7 @@ flake8==3.7.7  # lint, TODO remove filter on pyflakes
 flake8-copyright==0.2.2  # lint
 flake8-mypy==17.8.0  # lint
 mccabe==0.6.1  # lint
-mypy==0.701  # lint
+mypy==0.711  # lint
 pep8==1.7.1  # lint
 pep8-naming==0.8.2  # Lint
 pyflakes==2.1.1  # lint, flake8
