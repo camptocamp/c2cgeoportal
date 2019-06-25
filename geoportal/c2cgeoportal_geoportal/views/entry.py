@@ -976,10 +976,11 @@ class Entry:
                     if type_ in types:
                         attributes[name] = types[type_]
                     else:
-                        LOG.warning(
-                            "The provided type '%s' does not exist, available types are %s.",
-                            type_, ', '.join(types.keys())
-                        )
+                        if type_ != 'Character':
+                            LOG.warning(
+                                "The provided type '%s' does not exist, available types are %s.",
+                                type_, ', '.join(types.keys())
+                            )
             result["ogcServers"][ogc_server.name] = {
                 "url": url,
                 "urlWfs": url_wfs,
