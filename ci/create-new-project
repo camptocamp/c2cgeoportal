@@ -72,12 +72,4 @@ git add --all
 git commit --quiet --message='Initial commit'
 git clean -fX
 
-# Build
-if [ $BASE_APP == false ]
-then
-    docker build --tag=camptocamp/${PACKAGE}-config --build-arg=PGSCHEMA=main .
-    docker build --tag=camptocamp/${PACKAGE}-geoportal --build-arg=GIT_HASH=$(git rev-parse HEAD) geoportal
-else
-    docker build --tag=camptocamp/${PACKAGE}-config:${TAG} --build-arg=PGSCHEMA=main .
-    docker build --tag=camptocamp/${PACKAGE}-geoportal:${TAG} --build-arg=GIT_HASH=$(git rev-parse HEAD) geoportal
-fi
+./build
