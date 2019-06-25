@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
-find /app/ -name '*.tmpl' -print | while read file
-do
+function evaluate {
+    file=$1
     echo "Evaluate: ${file}"
     DOLLAR=$ envsubst < ${file} > ${file%.tmpl}
     if [ `id -u` == 0 ]
@@ -9,6 +9,16 @@ do
         chmod --reference=${file} ${file%.tmpl}
         chown --reference=${file} ${file%.tmpl}
     fi
+}
+
+find /app/ -name '*.tmpl' -print | while read file
+do
+    evaluate $file
+done
+
+find /etc/static-ngeo/ -name '*.tmpl' -print | while read file
+do
+    evaluate $file
 done
 
 find /etc/static-ngeo/ \( -name '*.js' -or -name '*.css' -or -name '*.html' \) -print | while read file
