@@ -88,13 +88,6 @@ vars:
   layers:
     geometry_validation: True
 
-  # The URL template used to generate the sub domain URL
-  # %(sub)s will be replaced by the sub domain value.
-  # subdomain_url_template: https://%(sub)s.{host}
-  # The used sub domain for the static resources
-  # Do not works with pyramid debug toolbar
-  # subdomains: [s1, s2, s3]
-
   fulltextsearch:
     languages:
       fr: french

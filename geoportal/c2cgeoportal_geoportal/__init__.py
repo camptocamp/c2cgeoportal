@@ -47,13 +47,12 @@ from Crypto.Cipher import AES
 from papyrus.renderers import GeoJSON
 from pyramid.config import Configurator
 from pyramid.httpexceptions import HTTPException
-from pyramid.interfaces import IStaticURLInfo
 from pyramid.path import AssetResolver
 from pyramid_mako import add_mako_renderer
 from sqlalchemy.orm import Session
 
 import c2cgeoportal_geoportal.views
-from c2cgeoportal_geoportal.lib import (C2CPregenerator, MultiDomainStaticURLInfo, caching, check_collector,
+from c2cgeoportal_geoportal.lib import (C2CPregenerator, caching, check_collector,
                                         checker, dbreflection)
 from c2cgeoportal_geoportal.lib.xsd import XSD
 
@@ -558,10 +557,6 @@ def includeme(config: pyramid.config.Configurator):
         "c2cgeoportal_geoportal.scaffolds",
         "c2cgeoportal_geoportal.scripts"
     ])
-
-    if "subdomains" in settings:  # pragma: no cover
-        config.registry.registerUtility(
-            MultiDomainStaticURLInfo(), IStaticURLInfo)
 
     add_admin_interface(config)
 
