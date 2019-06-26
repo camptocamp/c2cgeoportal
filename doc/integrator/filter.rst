@@ -30,6 +30,10 @@ If you wish to provide filter functionality, proceed as follows:
             - my_layer_name_1
             - my_layer_name_2
 
+.. note::
+
+    Ngeo offers the filter functionality only for single layers, not for grouped layers.
+
 
 Filterable layers (private)
 ---------------------------
