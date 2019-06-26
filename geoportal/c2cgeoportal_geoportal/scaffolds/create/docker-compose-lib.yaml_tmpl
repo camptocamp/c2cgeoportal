@@ -158,6 +158,7 @@ services:
   alembic:
     image: ${DOCKER_BASE}-geoportal:${DOCKER_TAG}
     user: www-data
+    entrypoint: []
     command:
       - alembic
       - --name=static

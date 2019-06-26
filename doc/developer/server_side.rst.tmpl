@@ -112,13 +112,13 @@ Add a new script in c2cgeoportal root directory:
 
 .. prompt:: bash
 
-    docker-compose exec geoportal alembic \
-        --config geoportal/tests/functional/alembic.ini \
+    python3 -m pip install --user -e commons
+    alembic --config=commons/alembic.ini \
         --name=[main|static] \
         revision --message "<Explicit name>"
 
 This will generate the migration script in
-``commons/c2cgeoportal/commons/alembic/[main|static]/xxx_<Explicite_name>.py``.
+``commons/c2cgeoportal_commons/alembic/[main|static]/xxx_<Explicite_name>.py``.
 
 To get the project schema, use:
 ``schema = context.get_context().config.get_main_option('schema')``
