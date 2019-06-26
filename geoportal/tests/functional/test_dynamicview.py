@@ -197,7 +197,7 @@ class TestDynamicView(TestCase):
 
         assert 'XTest' in dynamic['constants'], dynamic
         assert dynamic['constants']['XTest'] == {
-            'fr': '/dummy/route/url/package_name_geoportal:static-ngeo/fr.json'
+            'fr': '/dummy/route/url//etc/static-ngeo/fr.json'
         }
 
     def test_constant_dynamic_fulltextsearch_groups(self):
@@ -269,7 +269,7 @@ class TestDynamicView(TestCase):
                 }
             }
         })) as config:
-            config.add_static_view(name='static-ngeo', path='package_name_geoportal:static-ngeo')
+            config.add_static_view(name='static-ngeo', path='/etc/static-ngeo')
             config.add_route('test', '/test')
             config.add_route('route_with_keywords', '/test/{key1}/{key2}')
             request = DummyRequest({'interface': 'test'})
@@ -290,7 +290,7 @@ class TestDynamicView(TestCase):
                 }
             }
         })) as config:
-            config.add_static_view(name='static-ngeo', path='package_name_geoportal:static-ngeo')
+            config.add_static_view(name='static-ngeo', path='/etc/static-ngeo')
             config.add_route('test', '/test')
             config.add_route('route_with_segments', '/test')
             request = DummyRequest({'interface': 'test'})
@@ -318,7 +318,7 @@ class TestDynamicView(TestCase):
                 }
             }
         })) as config:
-            config.add_static_view(name='static-ngeo', path='package_name_geoportal:static-ngeo')
+            config.add_static_view(name='static-ngeo', path='/etc/static-ngeo')
             config.add_route('test', '/test')
             config.add_route('route_with_all', '/test/{key1}/{key2}')
             request = DummyRequest({'interface': 'test'})
