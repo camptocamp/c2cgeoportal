@@ -1,0 +1,11 @@
+{
+    "name": "GeoMapFish-Geoportal-run",
+    "version": "1.0.0",
+    "description": "GeoMapFish geoportal interface",
+    "author": "",
+    "dependencies": {
+        "angular-gettext-tools": "^2.4.1",
+        "commander": "^2.20.0",
+        "phantomjs-prebuilt": "^2.1.16"
+    }
+}
