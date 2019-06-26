@@ -44,5 +44,7 @@ If you have not created it in your database, use to following command to create 
 To use the function, connect to your database and perform the following statement:
 
 .. code:: sql
-
+    SELECT clone_schema(
+        '<current_schema_name>',
+        '<new_schema_name>', TRUE);
    SELECT clone_schema('<current_schema_name>', '<new_schema_name>', TRUE);
