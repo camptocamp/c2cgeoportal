@@ -24,6 +24,7 @@ default_project_file:
     - README\.rst
     - \.travis\.yml
     - qgisserver/geomapfish\.yaml
+    - build
   exclude:
     - geoportal/{{package}}_geoportal/static-ngeo/js/{{package}}module\.js
     - mapserver/demo\.map\.tmpl
