@@ -1,46 +1,46 @@
 .. _integrator_database:
 
-========
 Database
 ========
 
-To be able to do a rollback the integration and the production data should be in the same database,
-but the schema will be different.
+Update lifecycle
+----------------
+The recommended setup is to have integration and production data on the same database, using
+separate schemas. This setup allows for simpler switches between integration and production.
 
-For the static schema will have one for the integration and one for the production environments, e.-g.:
+The recommended setup for the ``static`` schema is to have exactly one schema for integration
+and one for the production, e.-g.:
 ``integration_static`` for the integration environment,
 and ``production_static`` for the production environment.
 
-For the main schema will have one for each version of the application. We will have the following livecycle:
+For the data of the ``main`` schema, we recommend to have one schema for each version of the application.
+The following example shows how an update can be performed from a version ``2017`` to a version ``2018``:
 
-Current version:
-integration and production => ``main_2017``
+* Starting point is that the current version is the same on integration and production => ``main_2017``
+* When starting the changes, such as an application change and/or administration settings,
+  create a new schema ``main_2018`` and use it on integration. Now, integration uses ``main_2018``,
+  while production still uses ``main_2017``.
+* Do the changes or the upgrade.
+* Publish the new version on production: now, integration and production both use ``main_2018``
+* The schema ``main_2017`` still exists, so if needed, the production can be rolled back to this content.
 
-Start an upgrade (application or admin (layertree)), create an new schema and use it on integration:
-integration = ``main_2018``, and production => ``main_2017``
+To be able to proceed like this, the variables ``PGSCHEMA`` and the ``DOCKER_PGSCHEMA_STATIC``
+should be managed in your makefiles:
 
-Do the changes or the upgrade.
+* the ``PGSCHEMA`` variable should be set in the ``Makefile``.
+* the ``DOCKER_PGSCHEMA_STATIC`` variable for the production should be set in a specific makefile for the production e.-g. ``production.mk``.
+* the line ``PGSCHEMA=${docker_schema}`` should be removed from your ``.env.mako`` file.
 
-Publish the new version:
-integration and production => ``main_2018``
-
-The schema ``main_2017`` still exists to be able to rollback the production.
-
-To do that we should manage the ``PGSCHEMA`` and the ``DOCKER_PGSCHEMA_STATIC`` variable in your
-makefiles.
-
-The ``PGSCHEMA`` should be set in the ``Makefile`` and the ``DOCKER_PGSCHEMA_STATIC`` for the
-production should be set in a specific makefile for the production e.-g. ``production.mk``.
-
-And the line `PGSCHEMA=${docker_schema}` should be removed from your `.env.mako` file.
-
-To copy the schema, we provide a Postgres function, to create it use:
+Copying a schema
+----------------
+To copy a schema, `c2cgeoportal` provides a Postgres function called `clone_schema`.
+If you have not created it in your database, use to following command to create this function:
 
 .. prompt:: bash
 
-   docker-compose exec geoporal psql <database> --file=scripts/CONST_clone_schema.sql
+   docker-compose exec geoportal psql <database> --file=scripts/CONST_clone_schema.sql
 
-To use it:
+To use the function, connect to your database and perform the following statement:
 
 .. code:: sql
 
