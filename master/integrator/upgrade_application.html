@@ -73,9 +73,11 @@ span.prompt1:before {
 <p>The help:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./docker-compose-run alembic --help</span>
 </pre></div></div><p>Upgrade the main schema:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./docker-compose-run alembic --name<span class="o">=</span>main --config<span class="o">=</span>geoportal/alembic.ini upgrade head</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./docker-compose-run alembic --name<span class="o">=</span>main <span class="se">\</span>
+     --config<span class="o">=</span>geoportal/alembic.ini upgrade head</span>
 </pre></div></div><p>Upgrade the static schema:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./docker-compose-run alembic --name<span class="o">=</span>static --config<span class="o">=</span>geoportal/alembic.ini upgrade head</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./docker-compose-run alembic --name<span class="o">=</span>static <span class="se">\</span>
+     --config<span class="o">=</span>geoportal/alembic.ini upgrade head</span>
 </pre></div></div></div>
 </div>
 
