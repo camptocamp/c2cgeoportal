@@ -9,8 +9,8 @@ services:
     extends:
       file: docker-compose-lib.yaml
       service: config
-      environment:
-        - PGSCHEMA
+    environment:
+      - PGSCHEMA
 
   ## print:
   ##   extends:
