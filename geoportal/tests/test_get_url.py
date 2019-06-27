@@ -54,7 +54,7 @@ class TestGetURL(TestCase):
         request.static_url = static_url
 
         self.assertEqual(get_url2("test", "static://pr:st/icon.png", request, set()), "http://server.org/pr:st/icon.png")
-        self.assertEqual(get_url2("test", "static:///icon.png", request, set()), "http://server.org/my_project_geoportal:static/icon.png")
+        self.assertEqual(get_url2("test", "static:///icon.png", request, set()), "http://server.org//etc/geomapfish/static/icon.png")
         self.assertEqual(get_url2("test", "config://srv/icon.png", request, set()), "https://example.com/test/icon.png")
         self.assertEqual(get_url2("test", "config://srv/", request, set()), "https://example.com/test/")
         self.assertEqual(get_url2("test", "config://srv", request, set()), "https://example.com/test")

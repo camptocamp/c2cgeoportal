@@ -71,6 +71,7 @@ upgrade_files:
       - CONST_Makefile
       - CONST_vars.yaml
       - project.yaml.mako
+      - geoportal/{{package}}_geoportal/static/apihelp/images
   - action: move
     from: Makefile
     to: geoportal/Makefile
@@ -113,3 +114,22 @@ upgrade_files:
   - action: move
     from: scripts/deploy-docker
     to: scripts/publish-docker
+  - action: move
+    from: geoportal/{{package}}_geoportal/static-ngeo/api/apihelp/index.html
+    to: geoportal/{{package}}_geoportal/static/apihelp/index.html
+  - action: move
+    from: geoportal/{{package}}_geoportal/static-ngeo/api/apihelp/rainbow-custom.min.js
+    to: geoportal/{{package}}_geoportal/static/apihelp/rainbow-custom.min.js
+  - action: move
+    from: geoportal/{{package}}_geoportal/static-ngeo/api/apihelp/github.css
+    to: geoportal/{{package}}_geoportal/static/apihelp/github.css
+  - action: move
+    from: geoportal/{{package}}_geoportal/static-ngeo/api/apihelp/data.txt
+    to: geoportal/{{package}}_geoportal/static/apihelp/data.txt
+  - action: move
+    from: geoportal/{{package}}_geoportal/static-ngeo/api/apihelp/img
+    to: geoportal/{{package}}_geoportal/static/apihelp/img
+  - action: remove
+    paths:
+      - geoportal/{{package}}_geoportal/static/apihelp/track0.gpx
+      - geoportal/{{package}}_geoportal/static-ngeo/api/apihelp/

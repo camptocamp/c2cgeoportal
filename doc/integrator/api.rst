@@ -18,4 +18,4 @@ In the file ``geoportal/demo_geoportal/static-ngeo/api/index.js`` you can custom
    config.extent = [<the map extent>];
    config.backgroundLayer = '<the background layer name>';
 
-The API help is in the folder ``geoportal/<package>_geoportal/static-ngeo/api/apihelp/``.
+The API help is in the folder ``geoportal/<package>_geoportal/static/apihelp/``.

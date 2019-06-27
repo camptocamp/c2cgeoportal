@@ -735,7 +735,7 @@ class Entry:
                     "The Theme '{}'".format(theme.name),
                     theme.icon, self.request, errors,
                 ) if theme.icon is not None and len(theme.icon) > 0 else self.request.static_url(
-                    "{}_geoportal:static/images/blank.png".format(self.request.registry.settings["package"])
+                    "/etc/geomapfish/static/images/blank.png"
                 )
 
                 t = {

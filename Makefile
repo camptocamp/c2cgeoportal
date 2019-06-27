@@ -50,7 +50,7 @@ APPS_SASS_FILES_ALT += $(addprefix $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/
 APPS_SASS_FILES_ALT += $(addprefix $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/sass/vars_, $(addsuffix .scss, $(APPS_ALT)))
 APPS_FILES_ALT = $(APPS_HTML_FILES_ALT) $(APPS_JS_FILES_ALT) $(APPS_SASS_FILES_ALT)
 
-API_FILES = $(APPS_PACKAGE_PATH)/static-ngeo/api/api.css $(APPS_PACKAGE_PATH)/static-ngeo/api/apihelp
+API_FILES = $(APPS_PACKAGE_PATH)/static-ngeo/api/api.css $(APPS_PACKAGE_PATH)/static/apihelp
 
 .PHONY: build
 build: \
@@ -194,18 +194,18 @@ $(APPS_PACKAGE_PATH)/static-ngeo/api/api.css: /usr/lib/node_modules/ngeo/api/src
 	mkdir --parent $(dir $@)
 	cp $< $@
 
-$(APPS_PACKAGE_PATH)/static-ngeo/api/apihelp: /usr/lib/node_modules/ngeo/api/dist/apihelp
+$(APPS_PACKAGE_PATH)/static/apihelp: /usr/lib/node_modules/ngeo/api/dist/apihelp
 	rm --recursive --force $@
 	cp -r $< $@
 	mv $@/apihelp.html $@/index.html.tmpl_tmpl
 	sed -i -e 's#https://geomapfish-demo-2-4.camptocamp.com/#$${VISIBLE_WEB_PROTOCOL}://$${VISIBLE_WEB_HOST}$${VISIBLE_ENTRY_POINT}#g' $@/index.html.tmpl_tmpl
 	sed -i -e 's#var map = new demo.Map#var map = new {{package}}.Map#g' $@/index.html.tmpl_tmpl
 	sed -i -e 's#\.\./api\.js#../api.js?version=2#g' $@/index.html.tmpl_tmpl
-	sed -i -e 's#github\.css#../static-ngeo/api/apihelp/github.css#g' $@/index.html.tmpl_tmpl
-	sed -i -e 's#rainbow-custom\.min\.js#../static-ngeo/api/apihelp/rainbow-custom.min.js#g' $@/index.html.tmpl_tmpl
-	sed -i -e 's#"data\.txt"#"../static-ngeo/api/apihelp/data.txt"#g' $@/index.html.tmpl_tmpl
-	sed -i -e "s#'data\.txt'#'../static-ngeo/api/apihelp/data.txt'#g" $@/index.html.tmpl_tmpl
-	sed -i -e 's#img/#../static-ngeo/api/apihelp/img/#g' $@/index.html.tmpl_tmpl
+	sed -i -e 's#github\.css#../static/apihelp/github.css#g' $@/index.html.tmpl_tmpl
+	sed -i -e 's#rainbow-custom\.min\.js#../static/apihelp/rainbow-custom.min.js#g' $@/index.html.tmpl_tmpl
+	sed -i -e 's#"data\.txt"#"../static/apihelp/data.txt"#g' $@/index.html.tmpl_tmpl
+	sed -i -e "s#'data\.txt'#'../static/apihelp/data.txt'#g" $@/index.html.tmpl_tmpl
+	sed -i -e 's#img/#../static/apihelp/img/#g' $@/index.html.tmpl_tmpl
 
 .PRECIOUS: geoportal/c2cgeoportal_geoportal/scaffolds%update/CONST_create_template/
 geoportal/c2cgeoportal_geoportal/scaffolds%update/CONST_create_template/: \

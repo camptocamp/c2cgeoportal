@@ -70,7 +70,7 @@ def get_url2(name, url, request, errors):
         proj = url_split.netloc
         package = request.registry.settings["package"]
         if proj == "":
-            proj = "{}_geoportal:static".format(package)
+            proj = "/etc/geomapfish/static"
         elif ":" not in proj:
             if proj == "static-ngeo":
                 errors.add(
