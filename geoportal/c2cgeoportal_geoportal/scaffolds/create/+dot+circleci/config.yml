@@ -1,0 +1,41 @@
+---
+
+version: 2
+jobs:
+
+  config:
+    docker:
+      - image: circleci/python:3
+    environment: &environment
+      - PROJECT=demo
+    # - OPENSHIFT_PROJECT=gs-gmf-demo
+    # - HELM_RELEASE_NAMES=2.5
+    # - DOCKER_USERNAME=dockerhubc2c
+    #   Requires a DOCKER_PASSWORD in the Circle CI secrets
+    # - OPENSHIFT_URL=https://openshift-ch-3.camptocamp.com/
+    # - OPENSHIFT_USERNAME=sbrunner
+    #   Requires an OPENSHIFT_PASSWORD in the Circle CI secrets
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run: ./build --config
+      - deploy:
+          command: scripts/publish-docker config
+
+  geoportal:
+    docker:
+      - image: circleci/python:3
+    environment: *environment
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run: ./build --geoportal
+      - deploy:
+          command: scripts/publish-docker geoportal
+
+workflows:
+  version: 2
+  build-test-and-deploy:
+    jobs:
+      - config
+      - geoportal
