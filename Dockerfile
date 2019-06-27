@@ -52,12 +52,16 @@ RUN \
 
 FROM base-node AS base-runner
 
-COPY geoportal/package.json /app/c2cgeoportal/geoportal/
-WORKDIR /app/c2cgeoportal/geoportal
+COPY bin/npm-packages /usr/bin/
+COPY package.json /tmp/
 RUN \
-  npm --no-optional --global --unsafe-perm --no-package-lock install commander angular-gettext-tools && \
+  cd /tmp && \
+  npm-packages --src=package.json --dst=npm-packages && \
+  npm --no-optional --global --unsafe-perm --no-package-lock install $(cat npm-packages) && \
   npm cache clear --force && \
   rm -rf /tmp/*
+
+WORKDIR /app/c2cgeoportal/geoportal
 
 # For awscli
 COPY etc/bash_completion.d/* /etc/bash_completion.d/
