@@ -377,8 +377,6 @@ def includeme(config: pyramid.config.Configurator):
     add_mako_renderer(config, ".html")
     add_mako_renderer(config, ".js")
 
-    package = config.get_settings()["package"]
-
     # Add the "geojson" renderer
     config.add_renderer("geojson", GeoJSON())
 
@@ -446,7 +444,7 @@ def includeme(config: pyramid.config.Configurator):
     add_api_route('favicon', 'favicon', '/favicon.ico', 'js/apps/image/favicon.ico')
     add_api_route('apijsmap', 'apijsmap', '/api.js.map', "api.js.map")
     add_api_route('apicss', 'apicss', '/api.css', "api.css")
-    add_api_route('apihelp', 'apihelp', '/apihelp/index.html', "api/apihelp/index.html")
+    add_api_route('apihelp', 'apihelp', '/apihelp/index.html', "apihelp/index.html")
     c2cgeoportal_geoportal.views.add_redirect(
         config, 'apihelp_redirect', '/apihelp.html', '/apihelp/index.html'
     )
@@ -564,10 +562,10 @@ def includeme(config: pyramid.config.Configurator):
     from c2cgeoportal_geoportal.lib.cacheversion import version_cache_buster
     config.add_static_view(
         name="static",
-        path="{}_geoportal:static".format(package),
+        path="/etc/geomapfish/static",
         cache_max_age=int(config.get_settings()["default_max_age"]),
     )
-    config.add_cache_buster("{}_geoportal:static".format(package), version_cache_buster)
+    config.add_cache_buster("/etc/geomapfish/static", version_cache_buster)
 
     # Add the project static view without cache buster
     config.add_static_view(

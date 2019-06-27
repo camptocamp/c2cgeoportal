@@ -239,7 +239,7 @@ class TestThemesViewMetadata(TestCase):
                             "time": "10:36:28",
                             "datetime": "2003-09-25T10:36:28",
                             "url1": "http://example.com/hi?a=b#c",
-                            "url2": "http://dummy.org/tests_geoportal:static/path/icon.png",
+                            "url2": "http://dummy.org//etc/geomapfish/static/path/icon.png",
                             "url3": "http://dummy.org/tests_geoportal:static/path/icon.png",
                             "url4": "http://dummy.org/tests_geoportal:cgxp/path/icon.png",
                             "url5": "http://dummy.org/project:static/path/icon.png",

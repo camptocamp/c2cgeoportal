@@ -25,12 +25,13 @@ RUN mv /tmp/config/bin/* /usr/bin/ && \
     if [ -e /tmp/config/front_dev ]; then mv /tmp/config/front_dev /etc/haproxy_dev; fi && \
     mkdir --parent /usr/local/tomcat/webapps/ROOT/ && \
     if [ -e /tmp/config/print ]; then mv /tmp/config/print/print-apps /usr/local/tomcat/webapps/ROOT/; fi && \
-    chmod g+w -R /etc /usr/local/tomcat/webapps && \
     cd /tmp/config/geoportal && \
     mkdir --parent /etc/geomapfish/ && \
     c2c-template --vars ${VARS_FILE} --get-config /tmp/_config.yaml ${CONFIG_VARS} && \
     pykwalify --data-file /tmp/_config.yaml --schema-file CONST_config-schema.yaml && \
     mv /tmp/_config.yaml /etc/geomapfish/config.yaml && \
+    mv /tmp/config/geoportal/{{package}}_geoportal/static /etc/geomapfish/ && \
+    chmod g+w -R /etc /usr/local/tomcat/webapps && \
     adduser www-data root
 
 VOLUME /etc/geomapfish \
