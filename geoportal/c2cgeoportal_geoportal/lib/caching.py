@@ -146,13 +146,13 @@ def _set_cors_headers(
     max_age = service_headers_settings.get("access_control_max_age", 3600)
     response.headers["Access-Control-Max-Age"] = str(max_age)
 
+    if credentials:
+        response.headers["Access-Control-Allow-Credentials"] = "true"
+
     if request.method != "OPTIONS":
         return
 
     response.cache_control.max_age = max_age
-
-    if credentials:
-        response.headers["Access-Control-Allow-Credentials"] = "true"
 
     if not service_headers_settings or \
             "access_control_allow_origin" not in service_headers_settings:
