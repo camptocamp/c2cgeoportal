@@ -603,8 +603,6 @@ def includeme(config: pyramid.config.Configurator):
                 )
             )
     c2cwsgiutils.index.additional_noauth.append('<a href="../apihelp/index.html">API help</a><br>')
-    c2cwsgiutils.index.additional_noauth.append('<a href="../oldapihelp.html">Old API help</a><br>')
-    c2cwsgiutils.index.additional_noauth.append('<a href="../oldxapihelp.html">Old extended API help</a><br>')
     c2cwsgiutils.index.additional_noauth.append('</div></div><hr>')
 
 
