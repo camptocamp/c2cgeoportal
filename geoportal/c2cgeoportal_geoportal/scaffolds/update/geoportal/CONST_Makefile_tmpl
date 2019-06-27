@@ -39,11 +39,8 @@ APP_JS_FILES = $(shell find $(PACKAGE)_geoportal/static-ngeo/js -type f -name '*
 HTML_FILES += $(shell find $(PACKAGE)_geoportal/static-ngeo/js -type f -name '*.html' 2> /dev/null)
 SASS_FILES += $(shell find $(PACKAGE)_geoportal/static-ngeo/js -type f -name '*.scss' 2> /dev/null)
 CSS_FILES += $(shell find $(PACKAGE)_geoportal/static-ngeo/js -type f -name '*.css' 2> /dev/null)
-JSON_CLIENT_LOCALISATION_FILES = $(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .json, $(LANGUAGES)))
 ANGULAR_LOCALES_FILES = $(addprefix $(APP_OUTPUT_DIR)/angular-locale_, $(addsuffix .js, $(LANGUAGES)))
-NGEO_OUTPUT_FILES = $(JSON_CLIENT_LOCALISATION_FILES) \
-	$(ANGULAR_LOCALES_FILES)
-NGEO_OUTPUT_FILES += apps
+NGEO_OUTPUT_FILES = $(ANGULAR_LOCALES_FILES) apps
 
 NGEO_API_OUTPUT_JS_FILE ?= $(APP_OUTPUT_DIR)/api.js.tmpl
 NGEO_API_OUTPUT_FILES += $(NGEO_API_OUTPUT_JS_FILE) $(APP_OUTPUT_DIR)/api.css
@@ -92,14 +89,6 @@ eslint: $(APP_JS_FILES)
 
 .PHONY: build-ngeo
 build-ngeo: $(NGEO_OUTPUT_FILES)
-
-.PRECIOUS: $(APP_OUTPUT_DIR)/%.json
-$(APP_OUTPUT_DIR)/%.json:
-	mkdir --parent $(dir $@)
-	node /usr/bin/compile-catalog \
-		/opt/c2cgeoportal_geoportal/c2cgeoportal_geoportal/locale/$*/LC_MESSAGES/ngeo.po \
-		/opt/c2cgeoportal_geoportal/c2cgeoportal_geoportal/locale/$*/LC_MESSAGES/gmf.po \
-		$(PACKAGE)_geoportal/locale/$*/LC_MESSAGES/$(PACKAGE)_geoportal-client.po > $@
 
 $(APP_OUTPUT_DIR)/angular-locale_%.js: /usr/lib/node_modules/ngeo/package.json language_mapping
 	mkdir --parent $(dir $@)
