@@ -1,2 +1,0 @@
-c2c.template~=2.1.0
-pykwalify==1.7.0
