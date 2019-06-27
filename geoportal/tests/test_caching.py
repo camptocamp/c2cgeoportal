@@ -103,6 +103,7 @@ class TestSetCorsHeaders(TestCase):
             "Access-Control-Max-Age": self.MAX_AGE,
             "Access-Control-Allow-Origin": self.ORIGIN2,
             "Access-Control-Allow-Methods": CORS_METHODS,
+            "Access-Control-Allow-Credentials": "true",
         }
 
         # 3. Otherwise, add a single Access-Control-Allow-Origin header, with
@@ -248,6 +249,7 @@ class TestSetCorsHeaders(TestCase):
             "Access-Control-Max-Age": self.MAX_AGE,
             "Access-Control-Allow-Origin": self.ORIGIN1,
             "Access-Control-Allow-Methods": CORS_METHODS,
+            "Access-Control-Allow-Credentials": "true",
         }
 
         # 3. Otherwise, add a single Access-Control-Allow-Origin header, with
