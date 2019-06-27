@@ -44,6 +44,10 @@ def create_authentication(settings):
     http_only = http_only.lower() in ("true", "yes", "1")
     secure = settings.get("authtkt_secure", "True")
     secure = secure.lower() in ("true", "yes", "1")
+    if len(settings["authtkt_secret"]) < 64:
+        raise Exception('"authtkt_secret should be at least 64 characters.'
+                        'See https://docs.pylonsproject.org/projects/pyramid/en/latest/api/session.html')
+
     cookie_authentication_policy = AuthTktAuthenticationPolicy(
         settings["authtkt_secret"],
         callback=defaultgroupsfinder,

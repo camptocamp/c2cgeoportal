@@ -182,7 +182,7 @@ def create_dummy_request(additional_settings=None, authentication=True, user=Non
     if authentication and user is None:
         request._get_authentication_policy = lambda: create_authentication({
             "authtkt_cookie_name": "__test",
-            "authtkt_secret": "123",
+            "authtkt_secret": "long enough secret!!  00000000000000000000000000000000000000000000000",
         })
     elif user is not None:
         config.testing_securitypolicy(user)
