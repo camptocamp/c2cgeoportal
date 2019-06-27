@@ -4,7 +4,7 @@ function help {
     echo Usage:
     echo './build  -> keep the curent .env if exists or use the .env.sample'
     echo './build [env files...]  -> use the ordered env files list'
-    exit 1
+    exit 0
 }
 
 if [ $# -gt 0 ] && ( [ $1 == '-h' ] || [ $1 == '--help' ] )
@@ -12,15 +12,35 @@ then
     help
 fi
 
-set -x
-docker build --tag=camptocamp/{{package}}-config \
-    --build-arg=PGSCHEMA=main .
-docker build --target=builder --tag=camptocamp/{{package}}-geoportal-dev \
-    --build-arg=PGSCHEMA=main \
-    --build-arg=GIT_HASH=$(git rev-parse HEAD) geoportal
-docker build --tag=camptocamp/{{package}}-geoportal \
-    --build-arg=PGSCHEMA=main \
-    --build-arg=GIT_HASH=$(git rev-parse HEAD) geoportal
+CONFIG=true
+GEOPORTAL=true
+if [ $1 == '--config' ]
+then
+    GEOPORTAL=false
+    shift
+fi
+if [ $1 == '--geoportal' ]
+then
+    CONFIG=false
+    shift
+fi
+
+if [ $CONFIG == true ]
+then
+    set -x
+    docker build --tag=camptocamp/{{package}}-config \
+        --build-arg=PGSCHEMA=main .
+fi
+if [ $GEOPORTAL == true ]
+then
+    set -x
+    docker build --target=builder --tag=camptocamp/{{package}}-geoportal-dev \
+        --build-arg=PGSCHEMA=main \
+        --build-arg=GIT_HASH=$(git rev-parse HEAD) geoportal
+    docker build --tag=camptocamp/{{package}}-geoportal \
+        --build-arg=PGSCHEMA=main \
+        --build-arg=GIT_HASH=$(git rev-parse HEAD) geoportal
+fi
 
 if [ $# -gt 0 ]
 then

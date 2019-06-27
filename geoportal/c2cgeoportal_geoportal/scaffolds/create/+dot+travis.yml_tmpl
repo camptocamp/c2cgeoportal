@@ -10,7 +10,6 @@ addons:
 env:
   global:
     - PROJECT={{package}}
-    - TAG=int
 #    - OPENSHIFT_PROJECT=gs-gmf-{{package}}
 #    - HELM_RELEASE_NAMES=List of branch that should be deployed on helm
 #    - DOCKER_USERNAME=username
@@ -23,12 +22,16 @@ jobs:
   include:
     - stage: config-geoportal
       script:
-        - docker build --tag=camptocamp/{{package}}-config:${TAG} \
-          --build-arg=PGSCHEMA=main .
-      after_success:
-        - scripts/publish-docker config
+        - ./build --config
+      deploy:
+        - provider: script
+          script: scripts/publish-docker config
+          on:
+            all_branches: true
     - script:
-        - docker build --tag=camptocamp/{{package}}-geoportal:${TAG} \
-          --build-arg=GIT_HASH=$(git rev-parse HEAD) geoportal
-      after_success:
-        - scripts/publish-docker geoportal
+        - ./build --geoportal
+      deploy:
+        - provider: script
+          script: scripts/publish-docker geoportal
+          on:
+            all_branches: true
