@@ -107,9 +107,7 @@ environment variable, for cygwin, git and node binaries.</p>
 <div class="section" id="integrator-install-application-install-application">
 <span id="id1"></span><h3>Install the application<a class="headerlink" href="#integrator-install-application-install-application" title="Permalink to this headline">¶</a></h3>
 <p>You can build and install the application with the command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker build --tag<span class="o">=</span>camptocamp/&lt;package&gt;-config<span class="o">[</span>:&lt;tag&gt;<span class="o">]</span> .</span>
-<span class="prompt1">docker build --tag<span class="o">=</span>camptocamp/&lt;package&gt;-geoportal<span class="o">[</span>:&lt;tag&gt;<span class="o">]</span> <span class="se">\</span>
-    --build-arg<span class="o">=</span><span class="nv">GIT_HASH</span><span class="o">=</span><span class="k">$(</span>git rev-parse HEAD<span class="k">)</span> geoportal</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./build</span>
 </pre></div></div><p>This previous command will do many things like:</p>
 <blockquote>
 <div><ul class="simple">
