@@ -3,7 +3,7 @@
 docker-compose stop --timeout=0
 docker-compose down --remove-orphans
 docker build --target=build --tag=camptocamp/geomapfish-tests \
-    --build-arg=MAJOR_VERSION=${MAJOR_VERSION} .
+    --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=$(ci/release-tag) .
 docker build --target=runner --tag=camptocamp/geomapfish \
     --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=$(ci/release-tag) .
 

@@ -1,6 +1,9 @@
 FROM camptocamp/c2cwsgiutils:3 AS base
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
+ARG VERSION
+ENV VERSION=$VERSION
+
 ENV \
   DEBIAN_FRONTEND=noninteractive
 RUN \
@@ -187,9 +190,6 @@ RUN rm --recursive --force /app/c2cgeoportal/geoportal/c2cgeoportal_geoportal/sc
 # Image used to run the project
 
 FROM base-runner AS runner
-
-ARG VERSION
-ENV VERSION=$VERSION
 
 COPY bin/eval-templates bin/wait-db bin/update-po bin/list4vrt /usr/bin/
 COPY --from=build-run /app/c2cgeoportal/commons /opt/c2cgeoportal_commons
