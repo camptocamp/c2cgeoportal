@@ -242,7 +242,7 @@ def _phantomjs(settings, health_check):
 
             cmd = [
                 "phantomjs", "--local-to-remote-url-access=true",
-                "/usr/lib/node_modules/ngeo/buildtools/check-example.js", url
+                "/usr/bin/check-example.js", url
             ]
 
             try:
