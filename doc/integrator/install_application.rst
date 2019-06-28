@@ -99,9 +99,7 @@ You can build and install the application with the command:
 
 .. prompt:: bash
 
-    docker build --tag=camptocamp/<package>-config[:<tag>] .
-    docker build --tag=camptocamp/<package>-geoportal[:<tag>] \
-        --build-arg=GIT_HASH=$(git rev-parse HEAD) geoportal
+    ./build
 
 This previous command will do many things like:
 

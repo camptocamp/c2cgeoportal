@@ -4,6 +4,7 @@ function help {
     echo Usage:
     echo './build  -> keep the curent .env if exists or use the .env.sample'
     echo './build [env files...]  -> use the ordered env files list'
+    echo './build [--config|--geoportal] [env files...]  -> build only the config or the geoportal image'
     exit 0
 }
 
