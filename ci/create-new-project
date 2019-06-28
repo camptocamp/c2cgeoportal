@@ -2,7 +2,7 @@
 
 TAG=$(ci/release-tag)
 docker build --target=builder --tag=camptocamp/geomapfish-build:${TAG} \
-    --build-arg=MAJOR_VERSION=${MAJOR_VERSION} .
+    --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=${TAG} .
 docker build --target=runner --tag=camptocamp/geomapfish:${TAG} \
     --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=${TAG} .
 docker build --target=upgrader --tag=camptocamp/geomapfish-scaffolds:${TAG} \

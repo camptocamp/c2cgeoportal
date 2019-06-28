@@ -78,7 +78,7 @@ Create a new Transifex resource:
 .. prompt:: bash
 
     docker build --target=builder --tag=camptocamp/geomapfish-build \
-          --build-arg=MAJOR_VERSION=${MAJOR_VERSION} .
+          --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=${MAJOR_VERSION}.0 .
     docker run camptocamp/geomapfish-build transifex-init <version + 1>
 
 For each version, we create a new branch (at the latest, for the final release):

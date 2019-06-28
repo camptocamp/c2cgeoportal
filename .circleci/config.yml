@@ -35,10 +35,10 @@ jobs:
       # Build images
       - run: >
           docker build --target=build --tag=camptocamp/geomapfish-tests
-          --build-arg=MAJOR_VERSION=${MAJOR_VERSION} .
+          --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=$(ci/release-tag) .
       - run: >
           docker build --target=builder --tag=camptocamp/geomapfish-build
-          --build-arg=MAJOR_VERSION=${MAJOR_VERSION} .
+          --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=$(ci/release-tag) .
       - run: >
           docker build --target=runner --tag=camptocamp/geomapfish
           --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=$(ci/release-tag) .
@@ -141,7 +141,7 @@ jobs:
       # Test Upgrade
       - run: |
           docker build --target=builder --tag=camptocamp/geomapfish-build:$(ci/release-tag) \
-          --build-arg=MAJOR_VERSION=${MAJOR_VERSION} .
+          --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=$(ci/release-tag) .
           docker build --target=runner --tag=camptocamp/geomapfish:$(ci/release-tag) \
           --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=$(ci/release-tag) .
           docker build --target=upgrader --tag=camptocamp/geomapfish-scaffolds \
@@ -170,7 +170,7 @@ jobs:
           name: Push to Docker hub and Pypi
           command: |
             docker build --target=builder --tag=camptocamp/geomapfish-build \
-            --build-arg=MAJOR_VERSION=${MAJOR_VERSION} .
+            --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=$(ci/release-tag) .
             docker build --target=runner --tag=camptocamp/geomapfish \
             --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=$(ci/release-tag) .
             docker build --target=upgrader --tag=camptocamp/geomapfish-scaffolds \
