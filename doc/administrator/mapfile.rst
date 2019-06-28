@@ -17,7 +17,7 @@ commonly named ``mapserver.map.tmpl``.
 .. note::
 
     The application's mapfile is a ``.tmpl`` file because it contains variables.
-    These variables are substituted when the ``make`` build command is executed.
+    These variables are substituted at container start.
 
 This section describes how to make layers *printable* and/or *queryable*
 and/or *private* (a.k.a *restricted*).
@@ -254,13 +254,13 @@ The ``${mapfile_data_noarea_subselect}`` is defined as follows::
 Metadata and filename
 ~~~~~~~~~~~~~~~~~~~~~
 
-It is required to have the following in the ``VALIDATION`` section of
-the ``LAYER``::
+It is required to have the following in the ``VALIDATION`` section of the ``LAYER``:
+
+.. code::
 
     ${mapserver_layer_validation}
 
-This variable is defined in the ``CONST_vars.yaml`` configuration file
-as follows:
+This variable is defined in the ``CONST_vars.yaml`` configuration file as follows:
 
 .. code::
 
@@ -268,8 +268,7 @@ as follows:
         "default_role_ids" "-1"
         "role_ids" "^-?[0-9]*$$"
 
-The mapfile should be a ``.map.tmpl`` file, for the variable to be
-substituted at make execution time.
+The mapfile should be a ``.map.tmpl`` file, for the variable to be substituted at container start.
 
 
 Variable Substitution

@@ -21,7 +21,7 @@ The configuration of TinyOWS is made in a XML file, which is located at
 .. code:: xml
 
     <tinyows
-        online_resource="https://${host}/tinyows_proxy"
+        online_resource="https://${VISIBLE_WEB_HOST}/tinyows_proxy"
         schema_dir="/usr/share/tinyows/schema/"
         log_level="1"
         check_schema="0">
@@ -36,11 +36,11 @@ The configuration of TinyOWS is made in a XML file, which is located at
           title="GeoMapFish TinyOWS Server" />
 
       <pg
-          host="${dbhost}"
-          user="${dbuser}"
-          password="${dbpassword}"
-          port="${dbport}"
-          dbname="${db}" />
+          host="${PGHOST}"
+          user="${PGUSER}"
+          password="${PGPASSWORD}"
+          port="${PGPORT}"
+          dbname="${PGDATABASE}" />
 
       <layer
           retrievable="1"
@@ -57,7 +57,7 @@ The configuration of TinyOWS is made in a XML file, which is located at
 In the root element ``tinyows`` the following properties have to be set:
 
 * ``online_resource`` - This should be the URL to the TinyOWS proxy, usually
-  ``https://${host}/tinyows_proxy``.
+  ``https://${VISIBLE_WEB_HOST}/tinyows_proxy``.
 * ``schema_dir`` - The path to the TinyOWS schema directory. Adapt this path according to your installation.
 * ``log_level`` - The log level (default: 1). Please refer to the
    `TinyOWS documentation <https://mapserver.org/tinyows/configfile.html#tinyows-element>`__
