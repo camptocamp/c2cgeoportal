@@ -1,9 +1,9 @@
 {
-    "name": "GeoMapFish-Geoportal-build",
+    "name": "geomapfish-geoportal-build",
     "version": "1.0.0",
     "description": "GeoMapFish geoportal interface",
     "author": "",
     "dependencies": {
-        "ngeo": "2.5.0-latest.20190625T125231Z.2bb4020.HEAD"
+        "ngeo": "2.5.0-latest.20190628T092750Z.30e5fb1.HEAD"
     }
 }

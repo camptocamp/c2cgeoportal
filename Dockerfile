@@ -116,7 +116,7 @@ COPY bin/npm-packages /usr/bin/
 RUN npm-packages \
   @camptocamp/cesium @type jasmine-core karma karma-chrome-launcher karma-coverage \
   karma-coverage-istanbul-reporter karma-jasmine karma-sourcemap-loader karma-webpack \
-  typedoc typescript \
+  typedoc \
   --src=/usr/lib/node_modules/ngeo/package.json --src=package.json --dst=npm-packages
 
 COPY admin/package.json /app/c2cgeoportal/admin/
