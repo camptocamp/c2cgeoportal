@@ -57,7 +57,7 @@ do
 done
 
 # Publish the GeoMapFish QGIS server images
-for QGIS_VERSION in 3.4 3.6 master
+for QGIS_VERSION in 3.4 3.6 3.8 master
 do
     docker tag camptocamp/geomapfish-qgisserver:gmf${MAJOR_VERSION}-qgis${QGIS_VERSION} \
         camptocamp/geomapfish-qgisserver:gmf${VERSION_QGIS}-qgis${QGIS_VERSION}
