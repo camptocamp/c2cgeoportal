@@ -40,7 +40,50 @@
 <h2>Filterable layers (public)<a class="headerlink" href="#filterable-layers-public" title="Permalink to this headline">¶</a></h2>
 <p>Per default, layers are not filterable.
 If you wish to provide filter functionality, proceed as follows:</p>
-<p>Add the layer names in a <a class="reference internal" href="customise.html#integrator-functionality"><span class="std std-ref">Functionalities</span></a> named <code class="docutils literal notranslate"><span class="pre">filterable_layers``</span></code></p>
+<ul class="simple">
+<li><p>Verify your project vars file to make sure that the functionality <code class="docutils literal notranslate"><span class="pre">filterable_layers</span></code>
+is made available in your project template files:</p>
+<ul>
+<li><p>If you have a custom definition for <code class="docutils literal notranslate"><span class="pre">functionalities.available_in_templates</span></code>
+or <code class="docutils literal notranslate"><span class="pre">admin_interface.available_functionalities</span></code>, then ensure that the value
+<code class="docutils literal notranslate"><span class="pre">filterable_layers</span></code> is contained in both of these.</p></li>
+<li><p>Alternatively, you can add these two paths in the <code class="docutils literal notranslate"><span class="pre">update_paths</span></code> variable to use
+the definition provided by <code class="docutils literal notranslate"><span class="pre">CONST_vars.yaml</span></code> (and keep the inheritance) instead of replacing it.</p></li>
+</ul>
+</li>
+<li><p>If you wish to provide layers for filtering independently of user authorization (in particular,
+for not-logged-in users), add the layer names as follows to your project vars file:</p></li>
+</ul>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">functionalities</span><span class="p">:</span>
+    <span class="nt">anonymous</span><span class="p">:</span>
+        <span class="nt">filterable_layers</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">my_layer_name_1</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">my_layer_name_2</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Ngeo offers the filter functionality only for single layers, not for grouped layers.</p>
+</div>
+</div>
+<div class="section" id="filterable-layers-private">
+<h2>Filterable layers (private)<a class="headerlink" href="#filterable-layers-private" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>If you wish to provide layers for filtering only for specific user roles, define this in the
+admin interface as follows:</p>
+<ul>
+<li><p>Add a functionality <code class="docutils literal notranslate"><span class="pre">filterable_layers</span></code>; as value provide the GeoMapFish layer name (not the
+WMS layer name).</p></li>
+<li><p>Edit the role that shall be able to use this filter, and activate the corresponding
+functionality checkbox.</p></li>
+</ul>
+</li>
+<li><p>Note that if there are functionalities associated to a role, then users with this role will
+not have access to any of the “anonymous” functionalities. Instead, you will need to activate
+all functionalities that this role shall be able to use in the admin interface or, for
+functionalities that all registered users shall have access to, via the
+<code class="docutils literal notranslate"><span class="pre">functionalities.registered</span></code> variable of your vars file.</p></li>
+</ul>
 </div>
 <div class="section" id="available-attributes-and-operators-in-filters">
 <h2>Available attributes and operators in filters<a class="headerlink" href="#available-attributes-and-operators-in-filters" title="Permalink to this headline">¶</a></h2>

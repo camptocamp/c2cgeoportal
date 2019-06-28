@@ -48,7 +48,7 @@ proxy to TinyOWS to limit access to authorized users.</p>
 <p>The configuration of TinyOWS is made in a XML file, which is located at
 <code class="docutils literal notranslate"><span class="pre">mapserver/tinyows.xml.tmpl</span></code>:</p>
 <div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;tinyows</span>
-    <span class="na">online_resource=</span><span class="s">&quot;https://${host}/tinyows_proxy&quot;</span>
+    <span class="na">online_resource=</span><span class="s">&quot;https://${VISIBLE_WEB_HOST}/tinyows_proxy&quot;</span>
     <span class="na">schema_dir=</span><span class="s">&quot;/usr/share/tinyows/schema/&quot;</span>
     <span class="na">log_level=</span><span class="s">&quot;1&quot;</span>
     <span class="na">check_schema=</span><span class="s">&quot;0&quot;</span><span class="nt">&gt;</span>
@@ -63,11 +63,11 @@ proxy to TinyOWS to limit access to authorized users.</p>
       <span class="na">title=</span><span class="s">&quot;GeoMapFish TinyOWS Server&quot;</span> <span class="nt">/&gt;</span>
 
   <span class="nt">&lt;pg</span>
-      <span class="na">host=</span><span class="s">&quot;${dbhost}&quot;</span>
-      <span class="na">user=</span><span class="s">&quot;${dbuser}&quot;</span>
-      <span class="na">password=</span><span class="s">&quot;${dbpassword}&quot;</span>
-      <span class="na">port=</span><span class="s">&quot;${dbport}&quot;</span>
-      <span class="na">dbname=</span><span class="s">&quot;${db}&quot;</span> <span class="nt">/&gt;</span>
+      <span class="na">host=</span><span class="s">&quot;${PGHOST}&quot;</span>
+      <span class="na">user=</span><span class="s">&quot;${PGUSER}&quot;</span>
+      <span class="na">password=</span><span class="s">&quot;${PGPASSWORD}&quot;</span>
+      <span class="na">port=</span><span class="s">&quot;${PGPORT}&quot;</span>
+      <span class="na">dbname=</span><span class="s">&quot;${PGDATABASE}&quot;</span> <span class="nt">/&gt;</span>
 
   <span class="nt">&lt;layer</span>
       <span class="na">retrievable=</span><span class="s">&quot;1&quot;</span>
@@ -85,7 +85,7 @@ proxy to TinyOWS to limit access to authorized users.</p>
 <p>In the root element <code class="docutils literal notranslate"><span class="pre">tinyows</span></code> the following properties have to be set:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">online_resource</span></code> - This should be the URL to the TinyOWS proxy, usually
-<code class="docutils literal notranslate"><span class="pre">https://${host}/tinyows_proxy</span></code>.</p></li>
+<code class="docutils literal notranslate"><span class="pre">https://${VISIBLE_WEB_HOST}/tinyows_proxy</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">schema_dir</span></code> - The path to the TinyOWS schema directory. Adapt this path according to your installation.</p></li>
 <li><dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">log_level</span></code> - The log level (default: 1). Please refer to the</dt><dd><p><a class="reference external" href="https://mapserver.org/tinyows/configfile.html#tinyows-element">TinyOWS documentation</a>

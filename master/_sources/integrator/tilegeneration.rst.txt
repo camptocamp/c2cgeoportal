@@ -103,7 +103,7 @@ Configuration
 
 The configuration is done in the file
 ``tilegeneration/config.yaml.tmpl``. The original file is available at:
-https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/scaffolds/create/tilegeneration/config.yaml.mako_tmpl
+https://github.com/camptocamp/c2cgeoportal/blob/master/geoportal/c2cgeoportal_geoportal/scaffolds/create/tilegeneration/config.yaml.tmpl_tmpl
 
 The main thing to do is to:
 

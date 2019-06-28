@@ -47,7 +47,7 @@ commonly named <code class="docutils literal notranslate"><span class="pre">maps
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The application’s mapfile is a <code class="docutils literal notranslate"><span class="pre">.tmpl</span></code> file because it contains variables.
-These variables are substituted when the <code class="docutils literal notranslate"><span class="pre">make</span></code> build command is executed.</p>
+These variables are substituted at container start.</p>
 </div>
 <p>This section describes how to make layers <em>printable</em> and/or <em>queryable</em>
 and/or <em>private</em> (a.k.a <em>restricted</em>).</p>
@@ -253,20 +253,17 @@ configuration file. Its goal is to simplify the writing of the mapfile.</p>
 </div>
 <div class="section" id="metadata-and-filename">
 <h3>Metadata and filename<a class="headerlink" href="#metadata-and-filename" title="Permalink to this headline">¶</a></h3>
-<p>It is required to have the following in the <code class="docutils literal notranslate"><span class="pre">VALIDATION</span></code> section of
-the <code class="docutils literal notranslate"><span class="pre">LAYER</span></code>:</p>
+<p>It is required to have the following in the <code class="docutils literal notranslate"><span class="pre">VALIDATION</span></code> section of the <code class="docutils literal notranslate"><span class="pre">LAYER</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>${mapserver_layer_validation}
 </pre></div>
 </div>
-<p>This variable is defined in the <code class="docutils literal notranslate"><span class="pre">CONST_vars.yaml</span></code> configuration file
-as follows:</p>
+<p>This variable is defined in the <code class="docutils literal notranslate"><span class="pre">CONST_vars.yaml</span></code> configuration file as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mapserver_layer_validation</span> <span class="o">=</span>
     <span class="s2">&quot;default_role_ids&quot;</span> <span class="s2">&quot;-1&quot;</span>
     <span class="s2">&quot;role_ids&quot;</span> <span class="s2">&quot;^-?[0-9]*$$&quot;</span>
 </pre></div>
 </div>
-<p>The mapfile should be a <code class="docutils literal notranslate"><span class="pre">.map.tmpl</span></code> file, for the variable to be
-substituted at make execution time.</p>
+<p>The mapfile should be a <code class="docutils literal notranslate"><span class="pre">.map.tmpl</span></code> file, for the variable to be substituted at container start.</p>
 </div>
 </div>
 <div class="section" id="variable-substitution">

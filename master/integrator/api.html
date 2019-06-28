@@ -40,11 +40,26 @@
 like CMS applications.</p>
 <p>In the file <code class="docutils literal notranslate"><span class="pre">geoportal/demo_geoportal/static-ngeo/api/api.css</span></code> you have the API CSS.</p>
 <p>In the file <code class="docutils literal notranslate"><span class="pre">geoportal/demo_geoportal/static-ngeo/api/index.js</span></code> you can customize your API with:</p>
-<div class="highlight-JavaScript notranslate"><div class="highlight"><pre><span></span><span class="nx">config</span><span class="p">.</span><span class="nx">themesUrl</span> <span class="o">=</span> <span class="s1">&#39;&lt;the theme URL&gt;&#39;</span><span class="p">;</span>
+<div class="highlight-JavaScript notranslate"><div class="highlight"><pre><span></span><span class="c1">// The URL to the themes service.</span>
+<span class="nx">config</span><span class="p">.</span><span class="nx">themesUrl</span> <span class="o">=</span> <span class="s1">&#39;&lt;the theme URL&gt;&#39;</span><span class="p">;</span>
+
+<span class="c1">// The projection of the map, for example: &#39;EPSG:21781&#39;</span>
 <span class="nx">config</span><span class="p">.</span><span class="nx">projection</span> <span class="o">=</span> <span class="o">&lt;</span><span class="nx">the</span> <span class="nx">projection</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="c1">// The resolutions list, for example: [250, 100, 50, 20, 10, 5, 2, 1, 0.5, 0.25, 0.1, 0.05]</span>
 <span class="nx">config</span><span class="p">.</span><span class="nx">resolutions</span> <span class="o">=</span> <span class="p">[</span><span class="o">&lt;</span><span class="nx">the</span> <span class="nx">map</span> <span class="nx">resolutions</span><span class="o">&gt;</span><span class="p">];</span>
+
+<span class="c1">// The extent restriction, must be in the same projection as `config.projection`.</span>
+<span class="c1">// the format is `[minx, miny, maxx, maxy]`, for example: `[420000, 30000, 660000, 350000]`</span>
+<span class="c1">// the default is ǹo restriction.</span>
 <span class="nx">config</span><span class="p">.</span><span class="nx">extent</span> <span class="o">=</span> <span class="p">[</span><span class="o">&lt;</span><span class="nx">the</span> <span class="nx">map</span> <span class="nx">extent</span><span class="o">&gt;</span><span class="p">];</span>
+
+<span class="c1">// The name of the layer to use as background, the layer must be present in the &#39;background_layers&#39;</span>
+<span class="c1">// section of the theme</span>
 <span class="nx">config</span><span class="p">.</span><span class="nx">backgroundLayer</span> <span class="o">=</span> <span class="s1">&#39;&lt;the background layer name&gt;&#39;</span><span class="p">;</span>
+
+<span class="c1">// The list of layers (names) that can be queried on mouse click</span>
+<span class="nx">config</span><span class="p">.</span><span class="nx">queryableLayers</span> <span class="o">=</span> <span class="p">[</span><span class="o">&lt;</span><span class="nx">layer</span> <span class="nx">a</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="nx">layer</span> <span class="nx">b</span><span class="o">&gt;</span><span class="p">,</span> <span class="p">...];</span>
 </pre></div>
 </div>
 <p>The API help is in the folder <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static/apihelp/</span></code>.</p>
