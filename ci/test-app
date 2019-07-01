@@ -32,7 +32,7 @@ docker-compose exec geoportal theme2fts
 #git commit -m "Upgrade the po files"
 
 ci/run-dc-logs docker-compose exec geoportal ci/waitwsgi https://front/
-for path in c2c/health_check c2c/health_check?max_level=9 c2c/health_check?checks=check_collector layers/test/values/type enum admin/layertree admin/layertree/children
+for path in c2c/health_check c2c/health_check?max_level=9 c2c/health_check?checks=check_collector "layers/test/values/type enum" admin/layertree admin/layertree/children
 do
     ci/run-dc-logs docker-compose exec geoportal ci/test-new-project https://front/${path}
     #docker-compose exec geoportal curl --insecure https://front/c2c/debug/stacks?secret=c2c
