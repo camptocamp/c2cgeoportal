@@ -109,7 +109,8 @@ RUN \
 COPY geoportal/package.json /app/c2cgeoportal/geoportal/
 WORKDIR /app/c2cgeoportal/geoportal
 RUN \
-  npm --no-optional --global --unsafe-perm --no-package-lock install ngeo && \
+  npm-packages --src=package.json --dst=/tmp/npm-packages && \
+  npm --no-optional --global --unsafe-perm --no-package-lock install `cat /tmp/npm-packages` && \
   npm cache clear --force && \
   rm -rf /tmp/*
 
@@ -196,6 +197,7 @@ COPY bin/eval-templates bin/wait-db bin/update-po bin/list4vrt /usr/bin/
 COPY --from=build-run /app/c2cgeoportal/commons /opt/c2cgeoportal_commons
 COPY --from=build-run /app/c2cgeoportal/geoportal /opt/c2cgeoportal_geoportal
 COPY --from=build-run /app/c2cgeoportal/admin /opt/c2cgeoportal_admin
+COPY --from=build1 /usr/lib/node_modules/ngeo/buildtools/check-example.js /usr/bin/
 
 RUN \
   ln -s /opt/c2cgeoportal_commons/c2cgeoportal_commons/alembic /opt && \
