@@ -43,7 +43,7 @@ url = sys.argv[1]
 result = requests.get(url, timeout=240, verify=False)
 
 if len(sys.argv) == 3 and sys.argv[2] == "enum":
-    if result.status_code == 200 and result.json() == {
+    if result.ok and result.json() == {
         "items": [{
             "value": "car"
         }, {
@@ -56,5 +56,10 @@ if len(sys.argv) == 3 and sys.argv[2] == "enum":
         print("Incorrect result ({}):".format(result.status_code))
         print(result.text)
         exit(2)
-#print(result.text)
-print("OK")
+
+if result.ok:
+    print("OK")
+else:
+    print("NOT OK")
+    print(result.text)
+    exit(2)
