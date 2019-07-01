@@ -108,6 +108,7 @@ RUN \
   apt-get clean && \
   rm --recursive --force /var/lib/apt/lists/*
 
+COPY bin/npm-packages /usr/bin/
 COPY geoportal/package.json /app/c2cgeoportal/geoportal/
 WORKDIR /app/c2cgeoportal/geoportal
 RUN \
@@ -116,7 +117,6 @@ RUN \
   npm cache clear --force && \
   rm -rf /tmp/*
 
-COPY bin/npm-packages /usr/bin/
 RUN npm-packages \
   @camptocamp/cesium @type jasmine-core karma karma-chrome-launcher karma-coverage \
   karma-coverage-istanbul-reporter karma-jasmine karma-sourcemap-loader karma-webpack \
