@@ -29,7 +29,8 @@ RUN \
   apt-get update && \
   apt-get install --assume-yes --no-install-recommends git && \
   apt-get clean && \
-  rm --recursive --force /var/lib/apt/lists/*
+  rm --recursive --force /var/lib/apt/lists/* && \
+  curl https://raw.githubusercontent.com/awslabs/git-secrets/1.3.0/git-secrets > /usr/bin/git-secrets
 
 
 #############################################################################################################
