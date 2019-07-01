@@ -1,4 +1,4 @@
-alembic~=1.0.10  # geoportal
+alembic~=1.0.11  # geoportal
 c2c.template~=2.1.0  # geoportal
 c2cgeoform~=2.0.dev20190613  # commons
 colander~=1.7.0  # commons, admin
