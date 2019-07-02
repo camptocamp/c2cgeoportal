@@ -5,7 +5,9 @@ ARG VERSION
 ENV VERSION=$VERSION
 
 ENV \
-  DEBIAN_FRONTEND=noninteractive
+  DEBIAN_FRONTEND=noninteractive \
+  SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
+
 RUN \
   apt-get update && \
   apt-get install --assume-yes --no-install-recommends apt-utils && \
