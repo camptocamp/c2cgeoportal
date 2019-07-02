@@ -645,6 +645,7 @@ $(APP_OUTPUT_DIR)/images/: /usr/lib/node_modules/jquery-ui/themes/base/images
 			geoportal/webpack.config.js \
 			$(APP_JS_FILES) \
 			$(HTML_FILES) \
+			$(APP_HTML_FILES) \
 			$(LESS_FILES) \
 			${CSS_FILES} \
 			$(NGEO_FONTS) \
