@@ -28,11 +28,14 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from pyramid.authentication import AuthTktAuthenticationPolicy, \
-    BasicAuthAuthenticationPolicy
+import logging
+
+from pyramid.authentication import AuthTktAuthenticationPolicy, BasicAuthAuthenticationPolicy
 from pyramid_multiauth import MultiAuthenticationPolicy
 
 from c2cgeoportal_geoportal.resources import defaultgroupsfinder
+
+LOG = logging.getLogger(__name__)
 
 
 def create_authentication(settings):
@@ -44,14 +47,17 @@ def create_authentication(settings):
     http_only = http_only.lower() in ("true", "yes", "1")
     secure = settings.get("authtkt_secure", "True")
     secure = secure.lower() in ("true", "yes", "1")
-    if len(settings["authtkt_secret"]) < 64:
+    samesite = settings.get("authtkt_samesite", "Lax")
+    secret = settings["authtkt_secret"]
+    if len(secret) < 64:
         raise Exception('"authtkt_secret should be at least 64 characters.'
                         'See https://docs.pylonsproject.org/projects/pyramid/en/latest/api/session.html')
 
     cookie_authentication_policy = AuthTktAuthenticationPolicy(
-        settings["authtkt_secret"],
+        secret,
         callback=defaultgroupsfinder,
         cookie_name=settings["authtkt_cookie_name"],
+        samesite=samesite is None if samesite == '' else samesite,
         timeout=timeout, max_age=timeout, reissue_time=reissue_time,
         hashalg="sha512", http_only=http_only, secure=secure,
     )
