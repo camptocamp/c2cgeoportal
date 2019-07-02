@@ -9,14 +9,16 @@ ENV \
 RUN \
   apt-get update && \
   apt-get install --assume-yes --no-install-recommends apt-utils && \
-  apt-get install --assume-yes --no-install-recommends gettext postgresql-client && \
+  apt-get install --assume-yes --no-install-recommends gettext postgresql-client binutils && \
   apt-get clean && \
   rm --recursive --force /var/lib/apt/lists/*
 
 COPY requirements.txt /tmp/
 RUN \
   python3 -m pip install --disable-pip-version-check --no-cache-dir --requirement=/tmp/requirements.txt && \
-  rm --recursive --force /tmp/* /var/tmp/* /root/.cache/*
+  rm --recursive --force /tmp/* /var/tmp/* /root/.cache/* && \
+  strip --strip-all $(file $(find /usr/local/lib/python3.7/dist-packages -name *.so*) | \
+  grep "not stripped" | sed -ne 's%\(/usr/local/lib/python3.7/dist-packages/.*\):.*%\1%p')
 
 
 #############################################################################################################
