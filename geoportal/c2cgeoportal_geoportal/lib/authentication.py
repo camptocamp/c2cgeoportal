@@ -57,7 +57,7 @@ def create_authentication(settings):
         secret,
         callback=defaultgroupsfinder,
         cookie_name=settings["authtkt_cookie_name"],
-        samesite=samesite is None if samesite == '' else samesite,
+        samesite=None if samesite == '' else samesite,
         timeout=timeout, max_age=timeout, reissue_time=reissue_time,
         hashalg="sha512", http_only=http_only, secure=secure,
     )
