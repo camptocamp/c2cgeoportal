@@ -56,7 +56,7 @@ def clean_images(image, tag_=lambda tag: tag):
 
     for tag in docker_tags_to_remove:
         response = requests.delete(
-            'https://hub.docker.com/v2/repositories/camptocamp/{image}/tags/{tag}/'.format(
+            'https://cloud.docker.com/v2/repositories/camptocamp/{image}/tags/{tag}/'.format(
                 image=image,
                 tag=tag,
             ),
