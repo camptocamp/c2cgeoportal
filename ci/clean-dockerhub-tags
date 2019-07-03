@@ -51,8 +51,8 @@ def clean_images(image, tag_=lambda tag: tag):
         tag for tag in docker_tags_to_remove
         if not minor_re.match(tag_(tag))
     }
-    print("Docker tags to be removed for image camptocamp/" + image)
-    print(docker_tags_to_remove)
+    print("Docker tags to be removed for image camptocamp/{} ({}):".format(image, len(docker_tags_to_remove)))
+    print("\n".join(docker_tags_to_remove))
 
     for tag in docker_tags_to_remove:
         response = requests.delete(
