@@ -62,8 +62,6 @@ vars:
         langUrls: lang_urls
         gmfSearchGroups: fulltextsearch_groups
       static:
-        assetsBaseUrl:
-          name: '/etc/static-ngeo/'
         angularLocaleScript:
           name: '/etc/static-ngeo/'
           append: angular-locale_\{\{locale\}\}.js
