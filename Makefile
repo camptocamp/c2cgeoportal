@@ -258,12 +258,14 @@ geoportal/c2cgeoportal_geoportal/locale/%/LC_MESSAGES/c2cgeoportal_geoportal.po:
 	sed -i 's/[[:space:]]\+$$//' $@
 	test -s $@
 
+.PRECIOUS: geoportal/c2cgeoportal_geoportal/locale/%/LC_MESSAGES/ngeo.po
 geoportal/c2cgeoportal_geoportal/locale/%/LC_MESSAGES/ngeo.po: $(TX_DEPENDENCIES)
 	mkdir --parent $(dir $@)
 	tx pull --language $* --resource ngeo.ngeo-$(TX_VERSION) --force
 	sed -i 's/[[:space:]]\+$$//' $@
 	test -s $@
 
+.PRECIOUS: geoportal/c2cgeoportal_geoportal/locale/%/LC_MESSAGES/gmf.po
 geoportal/c2cgeoportal_geoportal/locale/%/LC_MESSAGES/gmf.po: $(TX_DEPENDENCIES)
 	mkdir --parent $(dir $@)
 	tx pull --language $* --resource ngeo.gmf-$(TX_VERSION) --force
@@ -276,6 +278,7 @@ admin/c2cgeoportal_admin/locale/%/LC_MESSAGES/c2cgeoportal_admin.po: $(TX_DEPEND
 	sed -i 's/[[:space:]]\+$$//' $@
 	test -s $@
 
+.PRECIOUS: geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/locale/%/LC_MESSAGES/+package+_geoportal-client.po
 geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/locale/%/LC_MESSAGES/+package+_geoportal-client.po: \
 		$(TX_DEPENDENCIES)
 	mkdir --parent $(dir $@)
@@ -286,6 +289,7 @@ geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/
 geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/locale/en/LC_MESSAGES/+package+_geoportal-client.po:
 	@echo "Nothing to be done for $@"
 
+.PRECIOUS: %.mo
 %.mo: %.po
 	mkdir --parent $(dir $@)
 	msgfmt -o $*.mo $<
