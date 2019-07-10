@@ -7,13 +7,6 @@ vars:
     travis_test:
       url: postgresql://{PGUSER}:{PGPASSWORD}@externaldb:{PGPORT}/test
 
-  admin_interface:
-    available_metadata:
-      - name: _color
-        type: regex
-        regex: "^#([A-Fa-f0-9]{{{{6}}}}|[A-Fa-f0-9]{{{{3}}}})$"
-        error_message: "Expecting hex format for color, e.g. #007DCD"
-
   layers:
     enum:
       test:
@@ -25,15 +18,9 @@ vars:
   checker:
     fulltextsearch:
       disable: true
-    lang:
-      files: [ngeo]
     routes:
-      disable: [apijs, xapijs]
-      routes:
-        - name: dynamic
-          params:
-            interface: desktop
-          level: 3
+      disable:
+        - printproxy_capabilities
 
   check_collector:
     hosts:
@@ -43,7 +30,5 @@ vars:
 update_paths:
   - layers
   - checker.fulltextsearch
-  - checker.lang
   - checker.routes
   - check_collector
-  - admin_interface.available_metadata
