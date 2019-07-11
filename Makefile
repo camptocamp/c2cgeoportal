@@ -40,7 +40,9 @@ APPS_FILES = $(APPS_HTML_FILES) $(APPS_JS_FILES) $(APPS_SASS_FILES) \
 	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/contextualdata.html \
 	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/background-layer-button.png \
 	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/favicon.ico \
-	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/logo.png
+	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/logo.png \
+	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/logo.svg \
+	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/crosshair.svg
 
 APPS_ALT += desktop_alt mobile_alt oeedit
 APPS_PACKAGE_PATH_ALT = geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/geoportal/+package+_geoportal
@@ -187,6 +189,12 @@ $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/contextualdata.html: /usr/lib/node_modu
 	cp $< $@
 
 $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/%: /usr/lib/node_modules/ngeo/contribs/gmf/apps/desktop/image/%
+	$(PRERULE_CMD)
+	mkdir --parent $(dir $@)
+	cp $< $@
+
+$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/%: /usr/lib/node_modules/ngeo/contribs/gmf/apps/desktop_alt/image/%
+	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	cp $< $@
 
@@ -218,11 +226,6 @@ geoportal/c2cgeoportal_geoportal/scaffolds%update/CONST_create_template/: \
 		geoportal/c2cgeoportal_geoportal/scaffolds/create/front_dev/haproxy.cfg.tmpl
 	rm -rf $@ || true
 	cp -r $< $@
-
-.PRECIOUS: $(APPS_PACKAGE_PATH)/static-ngeo/images/%
-$(APPS_PACKAGE_PATH)/static-ngeo/images/%: /usr/lib/node_modules/ngeo/contribs/gmf/apps/desktop/image/%
-	mkdir --parent $(dir $@)
-	cp $< $@
 
 # Templates
 

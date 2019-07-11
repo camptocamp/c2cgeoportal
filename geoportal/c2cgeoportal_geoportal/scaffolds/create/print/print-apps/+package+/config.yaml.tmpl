@@ -53,17 +53,23 @@ templates:
         directory: '.'
       - !configureHttpRequests &configureHttpRequests
         httpProcessors:
+          ## For internal print
           ## - !mapUri
           ##   mapping:
           ##     https?://${VISIBLE_WEB_HOST_RE_ESCAPED}${VISIBLE_ENTRY_POINT_RE_ESCAPED}tiles(.*): "${TILECLOUDCHAIN_INTERNAL_URL}${VISIBLE_ENTRY_POINT}tiles$1"
           ## - !mapUri
           ##   mapping:
           ##     https?://${VISIBLE_WEB_HOST_RE_ESCAPED}${VISIBLE_ENTRY_POINT_RE_ESCAPED}(.*): "${GEOPORTAL_INTERNAL_URL}${VISIBLE_ENTRY_POINT}$1"
+          ## - !forwardHeaders
+          ##   matchers:
+          ##     - !hostnameMatch
+          ##       host: ${GEOPORTAL_INTERNAL_HOST}
+          ##       port: ${GEOPORTAL_INTERNAL_PORT}
           - !forwardHeaders
             matchers:
               - !hostnameMatch
-                host: ${GEOPORTAL_INTERNAL_HOST}
-                port: ${GEOPORTAL_INTERNAL_PORT}
+                host: ${VISIBLE_WEB_HOSTNAME}
+                port: ${VISIBLE_WEB_PORT}
             headers:
               - Cookie
               - Host
@@ -75,12 +81,13 @@ templates:
             matchers:
               - !localMatch
                 reject: true
-              - !hostnameMatch
-                host: ${GEOPORTAL_INTERNAL_HOST}
-                port: ${GEOPORTAL_INTERNAL_PORT}
-              - !hostnameMatch
-                host: ${TILECLOUDCHAIN_INTERNAL_HOST}
-                port: ${TILECLOUDCHAIN_INTERNAL_PORT}
+              ## For internal print
+              ## - !hostnameMatch
+              ##   host: ${GEOPORTAL_INTERNAL_HOST}
+              ##   port: ${GEOPORTAL_INTERNAL_PORT}
+              ## - !hostnameMatch
+              ##   host: ${TILECLOUDCHAIN_INTERNAL_HOST}
+              ##   port: ${TILECLOUDCHAIN_INTERNAL_PORT}
               - !ipMatch
                 ip: 10.0.0.0
                 mask: 255.0.0.0
