@@ -1,6 +1,16 @@
 This file includes migration steps for each release of c2cgeoportal.
 
 
+Version 2.4.2
+=============
+
+Information
+-----------
+
+1. The SVG inclusion through Webpack has changed, See ngeo SVG example for more information:
+   https://camptocamp.github.io/ngeo/master/examples/svg.html
+
+
 Version 2.4.0
 =============
 

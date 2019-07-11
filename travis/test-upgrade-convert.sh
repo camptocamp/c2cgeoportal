@@ -332,6 +332,11 @@ function v240 {
     git commit --quiet --message="Start upgrade"
     ./docker-run --env=NODE_ENV make upgrade
     ./docker-run make --always-make --makefile=CONST_convert2tmpl.mk to-tmpl
+    if [ -e .UPGRADE8 ]
+    then
+        cat changelog.diff
+        ./docker-run --env=NODE_ENV make upgrade9
+    fi
     if [ -e .UPGRADE9 ]
     then
         git apply --3way ngeo.diff
