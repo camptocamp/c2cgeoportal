@@ -367,7 +367,7 @@ git-attributes:
 PRINT_REPORTS_FILES ?= $(shell find print/print-apps -name "*.jrxml" -print)
 .PHONY: printlint
 printlint: $(PRINT_REPORTS_FILES)
-	xmllint --schema /opt/jasperreport.xsd --encode utf-8 $(PRINT_REPORTS_FILES)
+	xmllint --noout --schema /opt/jasperreport.xsd --encode utf-8 $(PRINT_REPORTS_FILES)
 
 YAML_FILES ?= $(filter-out ./tilegeneration/config.yaml ./geoportal/config.yaml \
 	./qgisserver/geomapfish.yaml ./geoportal/alembic.yaml \
