@@ -172,7 +172,7 @@ class TemplateCreate(BaseTemplate):  # pragma: no cover
         Overrides the base template class to print the next step.
         """
 
-        fix_executables(output_dir, ("docker-run", "docker-compose-run", "bin/*"))
+        fix_executables(output_dir, ("docker-run", "docker-compose-run", "bin/*", "scripts/deploy-docker"))
 
         return BaseTemplate.post(self, command, output_dir, vars_)
 
