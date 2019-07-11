@@ -195,6 +195,18 @@ vars:
             useBbox: false
         gmfTreeManagerModeFlush: false
         gmfSearchGroups: []
+        gmfFloors:
+          # Communes
+          - value: '8'
+            label: '8'
+          # District
+          - value: '6'
+            label: '6'
+          # Canton
+          - value: '4'
+            label: '4'
+          - value: '*'
+            label: '*'
         ngeoRoutingOptions:
           - backendUrl: https://routing.osm.ch/
           - profiles:
