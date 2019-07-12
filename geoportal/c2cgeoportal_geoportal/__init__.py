@@ -439,7 +439,7 @@ def includeme(config: pyramid.config.Configurator):
         config.add_route(name, path, request_method="GET")
         config.add_view(
             Entry, attr=attr, route_name=name,
-            renderer='/etc/static-ngeo/{}'.format(renderer)
+            renderer='/etc/geomapfish/static/{}'.format(renderer)
         )
     add_api_route('favicon', 'favicon', '/favicon.ico', 'js/apps/image/favicon.ico')
     add_api_route('apijsmap', 'apijsmap', '/api.js.map', "api.js.map")
