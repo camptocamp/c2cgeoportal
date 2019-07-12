@@ -1,0 +1,62 @@
+#!/usr/bin/env python3
+
+import sys
+import re
+
+if len(sys.argv) != 2:
+    print("Export Docker file relation in a dot file.")
+    print("Usage: {} <Dockerfile> > <dotfile>".format(sys.argv[0]))
+    print("Then: dot -o<svgfile> -Tsvg <dotfile>")
+    exit()
+
+
+def get_label(number, label):
+    #return label
+    #return '({})'.format(number)
+    return '{} - {}'.format(number, label.split(' ')[0])
+
+label_re = re.compile('^\#(.*)$')
+from_as = re.compile('(?i)^FROM\s+([^\s]+)\s+AS\s+([^\s]+)\s*$')
+from_ = re.compile('(?i)^FROM\s+([^\s]+)\s*$')
+copy = re.compile('(?i)^COPY\s+--from=([^\s]+)\s+.*$')
+
+current = None
+label = ''
+number = 0
+print('digraph {')
+with open(sys.argv[1]) as fp:
+    for line in fp.readlines():
+        label_match = label_re.match(line)
+        from_as_match = from_as.match(line)
+        from_match = from_.match(line)
+        copy_match = copy.match(line)
+
+        if label_match is not None:
+            label = label_match.group(1).strip()
+            continue
+
+        elif from_as_match is not None:
+            number += 1
+            current = from_as_match.group(2)
+            if len(label) > 0:
+                print('  "{}" -> "{}" [label="{}"]'.format(
+                    from_as_match.group(1), current, get_label(number, label)
+                ))
+            else:
+                print('  "{}" -> "{}"'.format(from_as_match.group(1), current))
+
+        elif from_match is not None:
+            number += 1
+            current = '<unnamed>'
+            if len(label) > 0:
+                print('  "{}" -> "{}" [label="{}"]'.format(
+                    from_as_match.group(1), current, get_label(number, label)
+                ))
+            else:
+                print('  "{}" -> "{}"'.format(from_as_match.group(1), current))
+
+        elif copy_match is not None:
+            print('  "{}" -> "{}" [color=gray,style=dashed,arrowhead=open]'.format(copy_match.group(1), current))
+
+        label = ''
+print('}')

@@ -1,3 +1,8 @@
+# (1) For install external dependencies
+# (2) For building the project
+# (3) For copy built files, ...
+
+# (1) Install apt and python packages
 FROM camptocamp/c2cwsgiutils:3 AS base
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
@@ -24,6 +29,7 @@ RUN \
 #############################################################################################################
 # Finally used by upgrader
 
+# (1) Install apt packages
 FROM base AS base-upgrader
 
 RUN \
@@ -38,6 +44,7 @@ RUN \
 #############################################################################################################
 # Finally used by runner and builder
 
+# (1) Install apt packages
 FROM base AS base-node
 
 ENV NODE_PATH=/usr/lib/node_modules
@@ -56,6 +63,7 @@ RUN \
 #############################################################################################################
 # Finally used by runner
 
+# (1) Install node packages
 FROM base-node AS base-runner
 
 COPY bin/npm-packages /usr/bin/
@@ -73,6 +81,7 @@ WORKDIR /app/c2cgeoportal/geoportal
 #############################################################################################################
 # Finally used by builder
 
+# (1) Install apt and python packages
 FROM base-node AS common-build
 
 COPY requirements-dev.txt /tmp/
@@ -103,6 +112,7 @@ RUN \
 #############################################################################################################
 # Build files for builder
 
+# (1) Install apt and node packages
 FROM common-build AS build1
 
 ARG MAJOR_VERSION
@@ -140,6 +150,7 @@ RUN \
 #############################################################################################################
 # Base image for builder
 
+# (1) Install node packages
 FROM common-build AS common-build-npm
 
 COPY --from=build1 /app/c2cgeoportal/geoportal/npm-packages /opt/npm-packages
@@ -159,6 +170,7 @@ RUN \
 #############################################################################################################
 # Build files for builder
 
+# (2) Run build, install c2cgeoportal packages
 FROM build1 AS build
 
 COPY . /app/c2cgeoportal/
@@ -171,6 +183,7 @@ RUN python3 -m pip install --editable=commons --editable=geoportal --editable=ad
 #############################################################################################################
 # Image used to build the project
 
+# (3) Copy files
 FROM common-build-npm AS builder
 
 WORKDIR /src
@@ -183,6 +196,7 @@ COPY --from=build /app/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/ \
 #############################################################################################################
 # Intermediate image used to prepare the copy files to upgrade image
 
+# (3) Clean
 FROM build AS build-upgrade
 
 RUN rm --recursive --force /app/c2cgeoportal/*/tests
@@ -191,6 +205,7 @@ RUN rm --recursive --force /app/c2cgeoportal/*/tests
 #############################################################################################################
 # Intermediate image used to prepare the copy files to run image
 
+# (3) Clean
 FROM build-upgrade AS build-run
 
 RUN rm --recursive --force /app/c2cgeoportal/geoportal/c2cgeoportal_geoportal/scaffolds
@@ -199,6 +214,7 @@ RUN rm --recursive --force /app/c2cgeoportal/geoportal/c2cgeoportal_geoportal/sc
 #############################################################################################################
 # Image used to run the project
 
+# (3) Copy files install c2cgeoportal packages
 FROM base-runner AS runner
 
 COPY bin/eval-templates bin/wait-db bin/update-po bin/list4vrt /usr/bin/
@@ -220,6 +236,7 @@ RUN adduser www-data root
 #############################################################################################################
 # Image used to upgrade the project
 
+# (3) Copy files install c2cgeoportal packages
 FROM base-upgrader AS upgrader
 
 ARG VERSION
@@ -240,5 +257,6 @@ RUN \
 #############################################################################################################
 # Image that run the checks
 
+# (4) Run checks
 FROM build AS checks
 RUN make checks
