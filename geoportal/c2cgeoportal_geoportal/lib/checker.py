@@ -266,7 +266,10 @@ def _phantomjs(settings, health_check):
                 try:
                     subprocess.check_output(cmd, timeout=10)
                 except subprocess.CalledProcessError as exception:
-                    raise Exception(exception.output.decode("utf-8"))
+                    raise Exception("{} exit with code: {}\n{}".format(
+                        ' '.join(exception.cmd),
+                        exception.returncode, exception.output.decode("utf-8")
+                    ))
                 except subprocess.TimeoutExpired as exception:
                     raise Exception("""Timeout:
 command: {}
