@@ -241,8 +241,7 @@ def _phantomjs(settings, health_check):
             url = build_url("Check", path, request)["url"]
 
             cmd = [
-                "phantomjs", "--local-to-remote-url-access=true",
-                "/usr/bin/check-example.js", url
+                "node", "/usr/bin/check-example.js", url
             ]
 
             try:

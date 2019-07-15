@@ -42,8 +42,7 @@ FROM base AS base-node
 ENV NODE_PATH=/usr/lib/node_modules
 RUN \
   apt-get update && \
-  # libfontconfig1 for phantomjs
-  apt-get install --assume-yes --no-install-recommends apt-transport-https libfontconfig1 && \
+  apt-get install --assume-yes --no-install-recommends apt-transport-https chromium-browser && \
   . /etc/os-release && \
   echo "deb https://deb.nodesource.com/node_10.x ${VERSION_CODENAME} main" > /etc/apt/sources.list.d/nodesource.list && \
   curl --silent https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - && \
@@ -108,6 +107,7 @@ RUN \
   apt-get clean && \
   rm --recursive --force /var/lib/apt/lists/*
 
+COPY bin/npm-packages /usr/bin/
 COPY geoportal/package.json /app/c2cgeoportal/geoportal/
 WORKDIR /app/c2cgeoportal/geoportal
 RUN \
@@ -116,7 +116,6 @@ RUN \
   npm cache clear --force && \
   rm -rf /tmp/*
 
-COPY bin/npm-packages /usr/bin/
 RUN npm-packages \
   @camptocamp/cesium @type jasmine-core karma karma-chrome-launcher karma-coverage \
   karma-coverage-istanbul-reporter karma-jasmine karma-sourcemap-loader karma-webpack \
