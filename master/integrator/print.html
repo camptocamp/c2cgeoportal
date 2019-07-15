@@ -54,14 +54,15 @@ of min/max scaling, you should also test map printing to be sure that it also wo
 <div class="section" id="infrastructure">
 <h2>Infrastructure<a class="headerlink" href="#infrastructure" title="Permalink to this headline">¶</a></h2>
 <p>By default we use the <cite>mutualized print platform as a service from Camptocamp &lt;https://www.camptocamp.com/en/actualite/saas-printing-service-offer/&gt;</cite>.</p>
-<p>To configure it, you should ask Camptocamp to create e.-g. two new applications on the platform, one for the integration,
-one for the production.</p>
+<p>To configure it, you should ask Camptocamp to create e.-g. two new applications on the platform, one for the
+integration, one for the production.</p>
 <p>Configure the application name in the <code class="docutils literal notranslate"><span class="pre">MUTUALIZED_PRINT_APP</span></code> variable of a <code class="docutils literal notranslate"><span class="pre">Makefile</span></code>.</p>
 </div>
 <div class="section" id="development">
 <h2>Development<a class="headerlink" href="#development" title="Permalink to this headline">¶</a></h2>
-<p>To test the print locally you can copy the <code class="docutils literal notranslate"><span class="pre">docker-compose.override.sample.yaml</span></code> to <code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code>,
-and uncomment the <code class="docutils literal notranslate"><span class="pre">PRINT_URL</span></code> environment variable and the <code class="docutils literal notranslate"><span class="pre">print</span></code> service.</p>
+<p>To test the print locally you can copy the <code class="docutils literal notranslate"><span class="pre">docker-compose.override.sample.yaml</span></code> to
+<code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code>, and uncomment the <code class="docutils literal notranslate"><span class="pre">PRINT_URL</span></code> environment variable and the
+<code class="docutils literal notranslate"><span class="pre">print</span></code> service.</p>
 </div>
 <div class="section" id="internal-print">
 <h2>Internal print<a class="headerlink" href="#internal-print" title="Permalink to this headline">¶</a></h2>
@@ -69,7 +70,7 @@ and uncomment the <code class="docutils literal notranslate"><span class="pre">P
 <ul class="simple">
 <li><p>Set <code class="docutils literal notranslate"><span class="pre">PRINT_URL</span></code> to <code class="docutils literal notranslate"><span class="pre">http://print:8080/print/</span></code> in the <code class="docutils literal notranslate"><span class="pre">.env.sample</span></code> file.</p></li>
 <li><p>Uncomment the <code class="docutils literal notranslate"><span class="pre">print</span></code> service in the <code class="docutils literal notranslate"><span class="pre">docker-compose.yaml</span></code> file.</p></li>
-<li><p>Uncomment the <code class="docutils literal notranslate"><span class="pre">!mapUri</span></code> in the print configuration.</p></li>
+<li><p>Uncomment the <code class="docutils literal notranslate"><span class="pre">!mapUri</span></code>, <code class="docutils literal notranslate"><span class="pre">!forwardHeaders</span></code> and <code class="docutils literal notranslate"><span class="pre">!hostnameMatch</span></code> in the print configuration.</p></li>
 <li><p>Uncomment the <code class="docutils literal notranslate"><span class="pre">print</span></code>/<code class="docutils literal notranslate"><span class="pre">spec</span></code> configuration section of the <code class="docutils literal notranslate"><span class="pre">checker</span></code> in the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code>.</p></li>
 </ul>
 </div>
