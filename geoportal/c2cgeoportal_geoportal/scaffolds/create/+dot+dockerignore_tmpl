@@ -11,3 +11,4 @@
 !geoportal/CONST_vars.yaml
 !geoportal/CONST_config-schema.yaml
 !geoportal/{{package}}_geoportal/static
+!geoportal/{{package}}_geoportal/locale
