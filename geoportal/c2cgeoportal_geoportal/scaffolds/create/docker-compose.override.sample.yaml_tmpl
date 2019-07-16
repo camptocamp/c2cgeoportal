@@ -32,6 +32,8 @@ services:
   # For Javascript project development.
   # The debug application will be availavble at ``https://<host>/<entry_point>/dev/<interface>.html``.
   webpack_dev_server:
+    volumes_from:
+      - config:rw
     extends:
       file: docker-compose-lib.yaml
       service: webpack_dev_server

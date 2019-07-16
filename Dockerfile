@@ -68,9 +68,6 @@ RUN \
 
 WORKDIR /app/c2cgeoportal/geoportal
 
-# For awscli
-COPY etc/bash_completion.d/* /etc/bash_completion.d/
-
 
 #############################################################################################################
 # Finally used by builder
@@ -81,12 +78,21 @@ COPY requirements-dev.txt /tmp/
 RUN \
   . /etc/os-release && \
   apt-get update && \
-  apt-get install --assume-yes --no-install-recommends git make && \
+  apt-get install --assume-yes --no-install-recommends git make postgresql-client-10 net-tools iputils-ping \
+  vim vim-editorconfig vim-addon-manager tree && \
   apt-get clean && \
-  rm --recursive --force /var/lib/apt/lists/*
+  rm --recursive --force /var/lib/apt/lists/* && \
+  vim-addon-manager --system-wide install editorconfig && \
+  echo 'set hlsearch  " Highlight search' > /etc/vim/vimrc.local && \
+  echo 'set wildmode=list:longest  " Completion menu' >> /etc/vim/vimrc.local && \
+  echo 'set term=xterm-256color " Make home and end working' >> /etc/vim/vimrc.local
 RUN \
   python3 -m pip install --disable-pip-version-check --no-cache-dir --requirement=/tmp/requirements-dev.txt && \
   rm --recursive --force /tmp/* /var/tmp/* /root/.cache/*
+
+# For awscli
+COPY etc/bash_completion.d/* /etc/bash_completion.d/
+
 # For mypy
 RUN \
   touch /usr/local/lib/python3.7/dist-packages/zope/__init__.py && \
