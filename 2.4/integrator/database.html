@@ -43,43 +43,101 @@
 <p>The recommended setup is to have integration and production data on the same database, using
 separate schemas. This setup allows for simpler switches between integration and production.</p>
 <p>The recommended setup for the <code class="docutils literal notranslate"><span class="pre">static</span></code> schema is to have exactly one schema for integration
-and one for the production, e.-g.:
+and one for production, e.-g.:
 <code class="docutils literal notranslate"><span class="pre">integration_static</span></code> for the integration environment,
-and <code class="docutils literal notranslate"><span class="pre">production_static</span></code> for the production environment.</p>
+and <code class="docutils literal notranslate"><span class="pre">production_static</span></code> for production environment.</p>
 <p>For the data of the <code class="docutils literal notranslate"><span class="pre">main</span></code> schema, we recommend to have one schema for each version of the application.
-The following example shows how an update can be performed from a version <code class="docutils literal notranslate"><span class="pre">2017</span></code> to a version <code class="docutils literal notranslate"><span class="pre">2018</span></code>:</p>
-<ul class="simple">
-<li>Starting point is that the current version is the same on integration and production =&gt; <code class="docutils literal notranslate"><span class="pre">main_2017</span></code></li>
-<li>When starting the changes, such as an application change and/or administration settings,
-create a new schema <code class="docutils literal notranslate"><span class="pre">main_2018</span></code> and use it on integration. Now, integration uses <code class="docutils literal notranslate"><span class="pre">main_2018</span></code>,
-while production still uses <code class="docutils literal notranslate"><span class="pre">main_2017</span></code>.</li>
-<li>Do the changes or the upgrade.</li>
-<li>Publish the new version on production: now, integration and production both use <code class="docutils literal notranslate"><span class="pre">main_2018</span></code></li>
-<li>The schema <code class="docutils literal notranslate"><span class="pre">main_2017</span></code> still exists, so if needed, the production can be rolled back to this content.</li>
-</ul>
+The following example shows how an update can be performed from a version <code class="docutils literal notranslate"><span class="pre">2019</span></code> to a version <code class="docutils literal notranslate"><span class="pre">2020</span></code>:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="48%" />
+<col width="26%" />
+<col width="26%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&#160;</th>
+<th class="head">&#160;</th>
+<th class="head">&#160;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Initial state</td>
+<td>main_2019</td>
+<td>main_2019</td>
+</tr>
+<tr class="row-odd"><td>Start a new version</td>
+<td>main_2020</td>
+<td>main_2019</td>
+</tr>
+<tr class="row-even"><td>Do the changes</td>
+<td>main_2020</td>
+<td>main_2019</td>
+</tr>
+<tr class="row-odd"><td>Publish the new version</td>
+<td>main_2020</td>
+<td>main_2020</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="initial-state">
+<h3>Initial state<a class="headerlink" href="#initial-state" title="Permalink to this headline">¶</a></h3>
+<p>Starting point is that the current version is the same on integration and production =&gt; <code class="docutils literal notranslate"><span class="pre">main_2019</span></code>.</p>
+</div>
+<div class="section" id="prepare-the-project">
+<h3>Prepare the project<a class="headerlink" href="#prepare-the-project" title="Permalink to this headline">¶</a></h3>
 <p>To be able to proceed like this, the variables <code class="docutils literal notranslate"><span class="pre">PGSCHEMA</span></code> and the <code class="docutils literal notranslate"><span class="pre">DOCKER_PGSCHEMA_STATIC</span></code>
 should be managed in your makefiles:</p>
 <ul class="simple">
-<li>the <code class="docutils literal notranslate"><span class="pre">PGSCHEMA</span></code> variable should be set in the <code class="docutils literal notranslate"><span class="pre">Makefile</span></code>.</li>
-<li>the <code class="docutils literal notranslate"><span class="pre">DOCKER_PGSCHEMA_STATIC</span></code> variable for the production should be set in a specific makefile for the production e.-g. <code class="docutils literal notranslate"><span class="pre">production.mk</span></code>.</li>
+<li>the <code class="docutils literal notranslate"><span class="pre">PGSCHEMA</span></code> variable should be set in the <code class="docutils literal notranslate"><span class="pre">Makefile</span></code>, in this example, it will be set to <code class="docutils literal notranslate"><span class="pre">main_2019</span></code>.</li>
+<li>the <code class="docutils literal notranslate"><span class="pre">DOCKER_PGSCHEMA_STATIC</span></code> variable for production should be set in a specific makefile
+for production e.-g. <code class="docutils literal notranslate"><span class="pre">production.mk</span></code>, it will be set for example to <code class="docutils literal notranslate"><span class="pre">integration_static</span></code> in the
+Makefile, and to <code class="docutils literal notranslate"><span class="pre">production_static</span></code> in the production makefile.</li>
 <li>the line <code class="docutils literal notranslate"><span class="pre">PGSCHEMA=${docker_schema}</span></code> should be removed from your <code class="docutils literal notranslate"><span class="pre">.env.mako</span></code> file.</li>
 </ul>
 </div>
-<div class="section" id="copying-a-schema">
-<h2>Copying a schema<a class="headerlink" href="#copying-a-schema" title="Permalink to this headline">¶</a></h2>
-<p>To copy a schema, <cite>c2cgeoportal</cite> provides a Postgres function called <cite>clone_schema</cite>.
+<div class="section" id="start-a-new-version">
+<h3>Start a new version<a class="headerlink" href="#start-a-new-version" title="Permalink to this headline">¶</a></h3>
+<p>When starting the changes, such as an application change and/or administration settings,
+create a new schema <code class="docutils literal notranslate"><span class="pre">main_2020</span></code> and use it on integration. Now, integration uses <code class="docutils literal notranslate"><span class="pre">main_2020</span></code>,
+hile production still uses <code class="docutils literal notranslate"><span class="pre">main_2019</span></code>.</p>
+<p>To create the new schema, you should copy the old one, for that <cite>c2cgeoportal</cite> provides a Postgres
+function called <cite>clone_schema</cite>.
 If you have not created it in your database, use to following command to create this function:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal psql &lt;database&gt; <span class="se">\</span>
-    --file<span class="o">=</span>scripts/CONST_clone_schema.sql</span>
+</style><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal psql --file<span class="o">=</span>scripts/CONST_clone_schema.sql</span>
 </pre></div></div><p>To use the function, connect to your database and perform the following statement:</p>
 <div class="code sql highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">clone_schema</span><span class="p">(</span>
     <span class="s1">&#39;&lt;current_schema_name&gt;&#39;</span><span class="p">,</span>
     <span class="s1">&#39;&lt;new_schema_name&gt;&#39;</span><span class="p">,</span> <span class="n">TRUE</span><span class="p">);</span>
 </pre></div>
+</div>
+<p>In our example, it will be:</p>
+<div class="code sql highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">clone_schema</span><span class="p">(</span><span class="s1">&#39;main_2019&#39;</span><span class="p">,</span> <span class="s1">&#39;main_2020&#39;</span><span class="p">,</span> <span class="n">TRUE</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">PGSCHEMA</span></code> variable should be set in the <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> to <code class="docutils literal notranslate"><span class="pre">main_2020</span></code>.</p>
+</div>
+<div class="section" id="do-the-changes">
+<h3>Do the changes<a class="headerlink" href="#do-the-changes" title="Permalink to this headline">¶</a></h3>
+<p>Now you can do the changes including upgrades.</p>
+<p>If you want to restructure a geodata table, you should create a new table, use the new table name in your
+mapfiles and your QGIS projects. The new table will be automatically used when you publish the new version.</p>
+<p>To do a test on an editing table during integration, you should copy the table with e.-g.:</p>
+<div class="code sql highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CREATE</span> <span class="n">TABLE</span> <span class="n">edit</span><span class="o">.</span><span class="n">poi</span> <span class="n">AS</span> <span class="n">TABLE</span> <span class="n">edit</span><span class="o">.</span><span class="n">oi_integration</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Use the new table in the ‘Geo table’ field of your layer in the administration interface.</p>
+<p>Do your tests.</p>
+<p>Don’t forget to put back your old value before publishing the new version.</p>
+</div>
+<div class="section" id="publish-the-new-version">
+<h3>Publish the new version<a class="headerlink" href="#publish-the-new-version" title="Permalink to this headline">¶</a></h3>
+<p>Publish the new version on production: now, integration and production both use <code class="docutils literal notranslate"><span class="pre">main_2020</span></code>.</p>
+<p>For OpenShift projects, just push the integration branch into the production branch.</p>
+<p>The schema <code class="docutils literal notranslate"><span class="pre">main_2019</span></code> still exists, so if needed, the production can be rolled back to this content.</p>
 </div>
 </div>
 </div>
