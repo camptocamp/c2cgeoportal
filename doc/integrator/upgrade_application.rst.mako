@@ -128,7 +128,7 @@ Add ``UPGRADE_ARGS += --force-docker --new-makefile=Makefile`` in your ``<user>.
 
    git add <user>.mk
    git commit --message="Start upgrade"
-   ./docker-run --home make --makefile=temp.mk upgrade
+   ./docker-run --home make --makefile=<user>.mk upgrade
 
 Then follow the instructions.
 
@@ -137,7 +137,7 @@ Remove the ``UPGRADE_ARGS`` in your ``<user>.mk`` file.
 .. prompt:: bash
 
    git add <user>.mk
-   git commit --quiet --message="Finish upgrade"
+   git commit --message="Finish upgrade"
 
 
 Convert a version 2.3 to non-Docker
