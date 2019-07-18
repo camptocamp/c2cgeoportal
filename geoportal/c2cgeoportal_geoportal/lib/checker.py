@@ -29,16 +29,17 @@
 
 import logging
 import subprocess
-import c2cwsgiutils.health_check
 from time import sleep
 from urllib.parse import urljoin
 
+import c2cwsgiutils.health_check
 import requests
 
-log = logging.getLogger(__name__)
+LOG = logging.getLogger(__name__)
 
 
 def build_url(name, path, request, headers=None):
+    """ Build an URL and headers for the checkers """
     base_internal_url = request.registry.settings["checker"]["base_internal_url"]
     url = urljoin(base_internal_url, path)
 
@@ -47,7 +48,7 @@ def build_url(name, path, request, headers=None):
     if forward_host:
         headers["Host"] = request.host
 
-    log.debug("%s, URL: %s", name, url)
+    LOG.warning("%s, URL: %s", name, url)
     return {"url": url, "headers": headers}
 
 
@@ -213,19 +214,33 @@ def _lang_files(global_settings, settings, health_check):
             else:
                 raise Exception("Your language type value '%s' is not valid, "
                                 "available values [ngeo]" % type_)
+
             name = "checker_lang_{}_{}".format(type_, lang)
 
-            def get_both(url, lang, request):
-                return build_url(
-                    name,
-                    request.static_path(url.format(package=global_settings["package"], lang=lang)),
-                    request
-                )
+            class GetRequest:
+                """
+                Get the request information about the current route name
+                """
+                def __init__(self, name, url, lang, type_):
+                    self.name = name
+                    self.url = url
+                    self.lang = lang
+                    self.type = type_
+
+                def __call__(self, request):
+                    return build_url(
+                        self.name,
+                        request.static_path(self.url.format(
+                            package=global_settings["package"],
+                            lang=self.lang
+                        )),
+                        request
+                    )[self.type]
 
             health_check.add_url_check(
                 name=name,
-                url=lambda r, u=url, la=lang: get_both(u, la, r)["url"],
-                headers=lambda r, u=url, la=lang: get_both(u, la, r)["headers"],
+                url=GetRequest(name, url, lang, 'url'),
+                headers=GetRequest(name, url, lang, 'headers'),
                 level=lang_settings["level"],
             )
 
@@ -236,28 +251,36 @@ def _phantomjs(settings, health_check):
         if route.get("checker_name", route["name"]) in phantomjs_settings["disable"]:
             continue
 
-        def check(request):
-            path = request.route_path(route["name"], _query=route.get("params", {}))
-            url = build_url("Check", path, request)["url"]
+        class _Check:
+            def __init__(self, route):
+                self.route = route
 
-            cmd = [
-                "node", "/usr/bin/check-example.js", url
-            ]
+            def __call__(self, request):
+                path = request.route_path(self.route["name"], _query=self.route.get("params", {}))
+                url = build_url("Check", path, request)["url"]
 
-            try:
-                subprocess.check_output(cmd, timeout=10)
-            except subprocess.CalledProcessError as e:
-                raise Exception(e.output.decode("utf-8"))
-            except subprocess.TimeoutExpired as e:
-                raise Exception("""Timeout:
+                cmd = [
+                    "node", "/usr/bin/check-example.js", url
+                ]
+
+                try:
+                    subprocess.check_output(cmd, timeout=10)
+                except subprocess.CalledProcessError as exception:
+                    raise Exception("{} exit with code: {}\n{}".format(
+                        ' '.join(exception.cmd),
+                        exception.returncode, exception.output.decode("utf-8")
+                    ))
+                except subprocess.TimeoutExpired as exception:
+                    raise Exception("""Timeout:
 command: {}
 output:
-{}""".format(" ".join(e.cmd), e.output.decode("utf-8")))
+{}""".format(" ".join(exception.cmd), exception.output.decode("utf-8")))
         name = "checker_phantomjs_" + route.get("checker_name", route["name"])
-        health_check.add_custom_check(name=name, check_cb=check, level=route["level"])
+        health_check.add_custom_check(name=name, check_cb=_Check(route), level=route["level"])
 
 
 def init(config, health_check):
+    """ Init the ckeckers """
     global_settings = config.get_settings()
     if "checker" not in global_settings:
         return

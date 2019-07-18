@@ -170,7 +170,7 @@ vars:
     #         layers: []
     #       legend: {}
     phantomjs:
-      disable: [desktop, mobile]
+      disable: [desktop, mobile, apihelp]
 
   check_collector:
     hosts: []
