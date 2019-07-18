@@ -28,9 +28,11 @@
 # either expressed or implied, of the FreeBSD Project.
 
 import argparse
-import time
-import json
 import binascii
+import json
+import os
+import time
+
 import c2c.template
 from Crypto.Cipher import AES
 
@@ -61,7 +63,10 @@ def main():
     parser.add_argument("valid", type=int, default=1, nargs='?', help="Is valid for, in days")
 
     args = parser.parse_args()
-    config = c2c.template.get_config("config.yaml")
+    if os.path.exists("geoportal/config.yaml"):
+        config = c2c.template.get_config("geoportal/config.yaml")
+    else:
+        config = c2c.template.get_config("config.yaml")
     urllogin = config.get('urllogin', {})
     aeskey = urllogin.get("aes_key")
     auth_enc = create_token(aeskey, args.user, args.password, args.valid)

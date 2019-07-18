@@ -76,6 +76,10 @@ class WebpackTween:
         response = self.handler(request)
 
         if default:
+            # To get the set cookie headers on URL login
+            request.response = response
+            request.get_user()
+
             response.cache_control.no_cache = True
             response.cache_control.max_age = 0
 

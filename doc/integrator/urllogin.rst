@@ -14,7 +14,7 @@ First, you should configure ``urllogin`` in the vars file:
 
 The AES key must be either 16, 24, or 32 bytes long.
 
-To generate a key, you can use the urllogin command: ``./docker-run urllogin --help``.
+To generate a key, you can use the urllogin command: ``./docker-compose-run urllogin --help``.
 This generates a token like: ``auth=148b60cc...`` that you can add in the query string of
 the permalink.
 
