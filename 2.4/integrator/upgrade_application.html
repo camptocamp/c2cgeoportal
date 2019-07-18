@@ -121,11 +121,11 @@ For example, <code class="docutils literal notranslate"><span class="pre">2.4.0<
 <p>Add <code class="docutils literal notranslate"><span class="pre">UPGRADE_ARGS</span> <span class="pre">+=</span> <span class="pre">--force-docker</span> <span class="pre">--new-makefile=Makefile</span></code> in your <code class="docutils literal notranslate"><span class="pre">&lt;user&gt;.mk</span></code> file.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git add &lt;user&gt;.mk</span>
 <span class="prompt1">git commit --message<span class="o">=</span><span class="s2">&quot;Start upgrade&quot;</span></span>
-<span class="prompt1">./docker-run --home make --makefile<span class="o">=</span>temp.mk upgrade</span>
+<span class="prompt1">./docker-run --home make --makefile<span class="o">=</span>&lt;user&gt;.mk upgrade</span>
 </pre></div></div><p>Then follow the instructions.</p>
 <p>Remove the <code class="docutils literal notranslate"><span class="pre">UPGRADE_ARGS</span></code> in your <code class="docutils literal notranslate"><span class="pre">&lt;user&gt;.mk</span></code> file.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git add &lt;user&gt;.mk</span>
-<span class="prompt1">git commit --quiet --message<span class="o">=</span><span class="s2">&quot;Finish upgrade&quot;</span></span>
+<span class="prompt1">git commit --message<span class="o">=</span><span class="s2">&quot;Finish upgrade&quot;</span></span>
 </pre></div></div></div>
 <div class="section" id="convert-a-version-2-3-to-non-docker">
 <h2>Convert a version 2.3 to non-Docker<a class="headerlink" href="#convert-a-version-2-3-to-non-docker" title="Permalink to this headline">¶</a></h2>
