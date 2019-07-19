@@ -35,7 +35,7 @@ Features
 
     * Access a feature via a URL, center on it if it exists.
     * Editing of this one feature (only one).
-        * No tool chosen: Change the feature
+        * No tool chosen: Modify the vertices of the feature
         * Plus-tool chosen: Add new parts to the feature (supports
           multi-point, multi-line, multi-polygon)
         * Minus-tool chosen: Remove parts from the feature
@@ -45,3 +45,25 @@ Features
         * Cut from: Cut the feature with a geometry from another layer. The
           layer needs WFS and a copyable Metadata.
     * FeatureQuery showing a FeatureWindow
+
+Configuration
+-------------
+
+The layer must be editable.
+
+Copy / cut: The layer from where one wants to copy / cut from has to be:
+
+    * Available as WFS layer
+    * Metadata "copyable" (checked) set on the layer
+
+Add the following configuration int the ``vars.yaml`` file to change the triangle size:
+
+.. code:: yaml
+
+   vars:
+     interfaces_config:
+       oeedit:
+         constants:
+           <<: *constants
+           gmfObjectEditingToolsOptions:
+             regularPolygonRadius: 150
