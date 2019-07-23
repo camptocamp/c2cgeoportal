@@ -93,6 +93,17 @@ Then follow the instructions.
 
    and then re-executing the step that failed.
 
+
+Prepare upgrade
+~~~~~~~~~~~~~~~
+
+Be sure that your ``managed_files`` list is up to date in your ``project.yaml.mako`` file.
+
+If your not sure the best way to update it is to do an update (until step 7) to the same version
+and see if some files are modified.
+If there are any unwanted modified files, add them to the ``managed_files``.
+
+
 From a version 2.3 and next
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
