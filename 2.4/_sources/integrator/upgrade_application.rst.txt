@@ -98,10 +98,10 @@ Prepare upgrade
 ~~~~~~~~~~~~~~~
 
 Be sure that your ``managed_files`` list is up to date in your ``project.yaml.mako`` file.
-
-If your not sure the best way to update it is to do an update (until step 7) to the same version
-and see if some files are modified.
-If there are any unwanted modified files, add them to the ``managed_files``.
+If you are not sure whether this list is up to date, you can perform an update up to
+step 7 on your current version and see if some files get modified by the update process.
+If the update process modified files which you do not want modified, then add these files
+to the ``managed_files`` list.
 
 
 From a version 2.3 and next
