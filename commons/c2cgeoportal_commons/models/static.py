@@ -34,6 +34,9 @@ from hashlib import sha1
 import pytz
 from typing import List
 
+import crypt
+from hmac import compare_digest as compare_hash
+
 from sqlalchemy import Column, ForeignKey, Table
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.types import Integer, Boolean, Unicode, String, DateTime
@@ -192,9 +195,14 @@ class User(Base):
         self.temp_password = self.__encrypt_password(password)
 
     @staticmethod
-    def __encrypt_password(password: str) -> str:
+    def __encrypt_password_legacy(password: str) -> str:
         """Hash the given password with SHA1."""
         return sha1(password.encode('utf8')).hexdigest()
+
+    @staticmethod
+    def __encrypt_password(password: str) -> str:
+        # TODO: remove pylint disable when https://github.com/PyCQA/pylint/issues/3047 is fixed
+        return crypt.crypt(password, crypt.METHOD_SHA512)  # pylint: disable=E1101
 
     def validate_password(self, passwd: str) -> bool:
         """Check the password against existing credentials.
@@ -205,12 +213,21 @@ class User(Base):
         need to match against the (possibly) encrypted one in the database.
         @type password: string
         """
-        if self._password == self.__encrypt_password(passwd):
-            return True
+        if self._password.startswith('$'):
+            # new encryption method
+            if compare_hash(self._password, crypt.crypt(passwd, self._password)):
+                return True
+        else:
+            # legacy encryption method
+            if compare_hash(self._password, self.__encrypt_password_legacy(passwd)):
+                # convert to the new encryption method
+                self._password = self.__encrypt_password(passwd)
+                return True
+
         if \
                 self.temp_password is not None and \
                 self.temp_password != '' and \
-                self.temp_password == self.__encrypt_password(passwd):
+                compare_hash(self.temp_password, crypt.crypt(passwd, self.temp_password)):
             self._password = self.temp_password
             self.temp_password = None
             self.is_password_changed = False
