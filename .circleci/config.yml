@@ -87,7 +87,8 @@ jobs:
               docker-compose exec tests coverage html --directory=/tmp/coverage
               docker-compose exec qgisserver-tests coverage report
               docker-compose exec qgisserver-tests coverage html --directory=/tmp/coverage
-              mkdir --parent artifacts
+              mkdir --parent artifacts/geoportal-coverage
+              mkdir --parent artifacts/qgisserver-plugin-coverage
               mkdir --parent test-reports
               docker cp c2cgeoportal_tests_1:/tmp/commons.xml test-reports/
               docker cp c2cgeoportal_tests_1:/tmp/geoportal.xml test-reports/
