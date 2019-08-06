@@ -48,7 +48,7 @@ def build_url(name, path, request, headers=None):
     if forward_host:
         headers["Host"] = request.host
 
-    LOG.warning("%s, URL: %s", name, url)
+    LOG.debug("%s, URL: %s", name, url)
     return {"url": url, "headers": headers}
 
 
