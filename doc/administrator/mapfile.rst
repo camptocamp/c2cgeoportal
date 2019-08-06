@@ -187,9 +187,9 @@ To define a restricted layer in the Mapfile, the ``DATA`` property of the ``LAYE
     ) as foo USING UNIQUE gid USING srid=<projection>"
 
 ``<schema>``, ``<table>``, ``<layername>``, ``<projection>`` and ``<the_geom>``
- need to be replaced as appropriate. ``<table>`` is the name of the PostGIS table
- including the geographic data for this layer. ``<the_geom>`` is the name of the
- table's geometry column. ``<schema>`` is the name of the schema including the table.
+need to be replaced as appropriate. ``<table>`` is the name of the PostGIS table
+including the geographic data for this layer. ``<the_geom>`` is the name of the
+table's geometry column. ``<schema>`` is the name of the schema including the table.
 ``<layer_name>`` can be either the layer NAME or the layer GROUP, depending on
 what is configured in the admin interface for the layer.
 
