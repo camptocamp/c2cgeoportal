@@ -84,7 +84,7 @@ To create the application, first apply the ``c2cgeoportal_create`` scaffold:
 
    ./docker-run -ti --image=camptocamp/geomapfish-build ${'\\'}
        --version=<release|version> ${'\\'}
-       pcreate -s c2cgeoportal_create <project>
+       pcreate -s c2cgeoportal_create --package-name <package> <project>
 
 And for the non Docker version, apply also the ``c2cgeoportal_nondockercreate`` scaffold:
 
