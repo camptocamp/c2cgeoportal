@@ -175,30 +175,37 @@ This area is specified in the administration interface while defining the <code 
 may slow down the application.</p>
 </div>
 <p>To define a restricted layer in the Mapfile, the <code class="docutils literal notranslate"><span class="pre">DATA</span></code> property of the <code class="docutils literal notranslate"><span class="pre">LAYER</span></code> should look like this:</p>
-<div class="code sql highlight-default notranslate"><div class="highlight"><pre><span></span>DATA &quot;the_geom FROM
-      (SELECT
-         geo.*
-       FROM
-         &lt;schema&gt;.&lt;table&gt; AS geo
-       WHERE
-         ST_Contains(
-           (${mapfile_data_subselect} &#39;&lt;layername&gt;&#39;),
-           ST_SetSRID(geo.&lt;the_geom&gt;, 21781)
-         )
-      ) as foo using unique id using srid=21781&quot;
+<div class="code sql highlight-default notranslate"><div class="highlight"><pre><span></span>DATA &quot;&lt;the_geom&gt; FROM (
+    SELECT *
+    FROM &lt;schema&gt;.&lt;table&gt;
+    WHERE ST_Contains(
+       (${MAPSERVER_DATA_SUBSELECT} &#39;&lt;layername&gt;&#39;),
+       ST_SetSRID(&lt;the_geom&gt;, &lt;projection&gt;)
+     )
+) as foo USING UNIQUE gid USING srid=&lt;projection&gt;&quot;
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">&lt;schema&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;table&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;layername&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;the_geom&gt;</span></code> need to be
-replaced as appropriate. <code class="docutils literal notranslate"><span class="pre">&lt;table&gt;</span></code> is the name of the PostGIS table including
-the geographic data for this layer. <code class="docutils literal notranslate"><span class="pre">&lt;the_geom&gt;</span></code> is the name of the table’s
-geometry column. <code class="docutils literal notranslate"><span class="pre">&lt;schema&gt;</span></code> is the name of the schema including the table.
+<p><code class="docutils literal notranslate"><span class="pre">&lt;schema&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;table&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;layername&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;projection&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;the_geom&gt;</span></code>
+need to be replaced as appropriate. <code class="docutils literal notranslate"><span class="pre">&lt;table&gt;</span></code> is the name of the PostGIS table
+including the geographic data for this layer. <code class="docutils literal notranslate"><span class="pre">&lt;the_geom&gt;</span></code> is the name of the
+table’s geometry column. <code class="docutils literal notranslate"><span class="pre">&lt;schema&gt;</span></code> is the name of the schema including the table.
 <code class="docutils literal notranslate"><span class="pre">&lt;layer_name&gt;</span></code> can be either the layer NAME or the layer GROUP, depending on
 what is configured in the admin interface for the layer.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The DATA example above is developed on several lines to make it
-easily readable in this documentation. However please note that MapServer
-requires that this directive is contained on a single line.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">${MAPSERVER_DATA_SUBSELECT}</span></code> is defined as follows:</p>
+<div class="code sql highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span>
+    <span class="n">rra</span><span class="o">.</span><span class="n">role_id</span>
+<span class="n">FROM</span>
+    <span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;.</span><span class="n">restrictionarea</span> <span class="n">AS</span> <span class="n">ra</span><span class="p">,</span>
+    <span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;.</span><span class="n">role_restrictionarea</span> <span class="n">AS</span> <span class="n">rra</span><span class="p">,</span>
+    <span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;.</span><span class="n">layer_restrictionarea</span> <span class="n">AS</span> <span class="n">lra</span><span class="p">,</span>
+    <span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;.</span><span class="n">treeitem</span> <span class="n">AS</span> <span class="n">la</span>
+<span class="n">WHERE</span>
+    <span class="n">rra</span><span class="o">.</span><span class="n">restrictionarea_id</span> <span class="o">=</span> <span class="n">ra</span><span class="o">.</span><span class="n">id</span>
+<span class="n">AND</span>
+    <span class="n">lra</span><span class="o">.</span><span class="n">restrictionarea_id</span> <span class="o">=</span> <span class="n">ra</span><span class="o">.</span><span class="n">id</span>
+<span class="n">AND</span>
+    <span class="n">lra</span><span class="o">.</span><span class="n">layer_id</span> <span class="o">=</span> <span class="n">la</span><span class="o">.</span><span class="n">id</span> <span class="n">AND</span> <span class="n">la</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span>
+</pre></div>
 </div>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
@@ -221,21 +228,21 @@ configuration file. Its goal is to simplify the writing of the mapfile.</p>
         &lt;schema&gt;.&lt;table&gt; AS geo
     WHERE (
         ARRAY[%role_ids%] &amp;&amp; ARRAY(
-            ${mapfile_data_noarea_subselect} &#39;&lt;layername&gt;&#39;
+            ${MAPSERVER_DATA_NOAREA_SUBSELECT} &#39;&lt;layername&gt;&#39;
         )
     )
 ) AS foo USING UNIQUE id USING srid=21781&quot;
 </pre></div>
 </div>
 <p>Then you do not need to define an area in the admin interface.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">${mapfile_data_noarea_subselect}</span></code> is defined as follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span>
+<p>The <code class="docutils literal notranslate"><span class="pre">${MAPSERVER_DATA_NOAREA_SUBSELECT}</span></code> is defined as follows:</p>
+<div class="code sql highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span>
     <span class="n">rra</span><span class="o">.</span><span class="n">role_id</span>
 <span class="n">FROM</span>
-    <span class="n">main</span><span class="o">.</span><span class="n">restrictionarea</span> <span class="n">AS</span> <span class="n">ra</span><span class="p">,</span>
-    <span class="n">main</span><span class="o">.</span><span class="n">role_restrictionarea</span> <span class="n">AS</span> <span class="n">rra</span><span class="p">,</span>
-    <span class="n">main</span><span class="o">.</span><span class="n">layer_restrictionarea</span> <span class="n">AS</span> <span class="n">lra</span><span class="p">,</span>
-    <span class="n">main</span><span class="o">.</span><span class="n">treeitem</span> <span class="n">AS</span> <span class="n">la</span>
+    <span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;.</span><span class="n">restrictionarea</span> <span class="n">AS</span> <span class="n">ra</span><span class="p">,</span>
+    <span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;.</span><span class="n">role_restrictionarea</span> <span class="n">AS</span> <span class="n">rra</span><span class="p">,</span>
+    <span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;.</span><span class="n">layer_restrictionarea</span> <span class="n">AS</span> <span class="n">lra</span><span class="p">,</span>
+    <span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;.</span><span class="n">treeitem</span> <span class="n">AS</span> <span class="n">la</span>
 <span class="n">WHERE</span>
     <span class="n">rra</span><span class="o">.</span><span class="n">restrictionarea_id</span> <span class="o">=</span> <span class="n">ra</span><span class="o">.</span><span class="n">id</span>
 <span class="n">AND</span>
