@@ -888,6 +888,8 @@ runtime_environment:
     default: '11211'
   - name: TILEGENERATION_SQS_QUEUE
     default: queue_name
+  - name: TILEGENERATION_S3_BUCKET
+    default: bucket_name
 
 runtime_postprocess:
   - expression: int({})
