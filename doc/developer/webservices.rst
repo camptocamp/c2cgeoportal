@@ -387,9 +387,12 @@ A standard xsd document that describe the layer.
 MapFish protocol
 ----------------
 
-URL: ``.../layers/<layer_id>/....``
+URL: ``.../layers/<layer_id>...``
 
 `Parameters and results, see the MapFish protocol <https://github.com/elemoine/papyrus/wiki/Protocol>`_.
+
+With GeoMapFish on Create/Update features (POST and PUT), you have to provide a correct
+`Content-Type` header, the value must be `application/json`.
 
 Enumerate attributes
 --------------------
