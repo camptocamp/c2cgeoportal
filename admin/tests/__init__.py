@@ -218,7 +218,7 @@ class AbstractViewsTests():
         assert 'Errors have been highlighted below' == \
             resp.html.select_one('div[class="error-msg-detail"]').text
         assert expected_msg == \
-            resp.html.select_one("[class~'has-error']").select_one("[class~'help-block']").getText().strip()
+            resp.html.select_one("[class~='has-error']").select_one("[class~='help-block']").getText().strip()
 
     def _check_dimensions(self, html, dimensions, duplicated=False):
         item = html.select_one('.item-dimensions')

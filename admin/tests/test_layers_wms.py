@@ -430,7 +430,7 @@ class TestLayerWMSViews(AbstractViewsTests):
             resp.html.select_one('div[class="error-msg-detail"]').text
         assert ['WMS layer name'] == \
             sorted([(x.select_one("label").text.strip())
-                    for x in resp.html.select("[class~'has-error']")])
+                    for x in resp.html.select("[class~='has-error']")])
 
 
 @skip_if_ci
