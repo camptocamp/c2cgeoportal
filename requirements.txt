@@ -31,7 +31,7 @@ python-dateutil~=2.8.0  # geoportal
 PyYAML~=5.1  # geoportal
 rasterio~=1.0.24  # geoportal raster, rq.filter: <=1.0.2
 requests~=2.22.0  # geoportal
-redis~=3.3.4  # geoportal cache
+redis~=3.3.6  # geoportal cache
 Shapely~=1.7a2  # geoportal
 simplejson~=3.16.0  # geoportal, rq.filter: !=3.16.1
 SQLAlchemy~=1.3.4
