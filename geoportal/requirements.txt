@@ -9,7 +9,6 @@ dogpile.cache>=0.6
 Fiona
 GeoAlchemy2
 geojson
-ipcalc
 isodate  # WMST support
 lingua
 Mako
