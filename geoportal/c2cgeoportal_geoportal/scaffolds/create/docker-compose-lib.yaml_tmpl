@@ -29,6 +29,7 @@ services:
       - MEMCACHED_PORT
       - REDIS_HOST
       - REDIS_PORT
+      - REDIS_DB
       - TILEGENERATION_SQS_QUEUE
       - TILEGENERATION_S3_BUCKET
       - AWS_ACCESS_KEY_ID
@@ -166,6 +167,7 @@ services:
       - DEVSERVER_HOST
       - REDIS_HOST
       - REDIS_PORT
+      - REDIS_DB
       - C2C_REDIS_URL
       - PGOPTIONS
       - C2C_BROADCAST_PREFIX_
