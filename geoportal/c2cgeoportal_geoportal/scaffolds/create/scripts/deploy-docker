@@ -47,13 +47,11 @@ subprocess.check_call([
 ], cwd='/tmp')
 
 subprocess.check_call([
-    'oc', 'login', os.environ['OPENSHIFT_URL'],
-    '--username=' + os.environ['OPENSHIFT_USERNAME'],
-    '--password=' + os.environ['OPENSHIFT_PASSWORD'],
+    'oc', 'login', os.environ['OPENSHIFT_URL'], '--token=' + os.environ['OPENSHIFT_TOKEN'],
 ])
-subprocess.check_call(['oc', 'project', os.environ['OPENSHIFT_PROJECT']])
 for image in images:
     openshift_image_ref = '{}-c2cgeoportal-{}:{}'.format(version, image, version)
     subprocess.check_call([
         'oc', 'import-image', openshift_image_ref, '--scheduled=true', '--reference-policy=local',
+        '--namespace=' + os.environ['OPENSHIFT_PROJECT']
     ])
