@@ -203,7 +203,6 @@ class User(Base):
         @param passwd: the password that was provided by the user to
         try and authenticate. This is the clear text version that we will
         need to match against the (possibly) encrypted one in the database.
-        @type password: string
         """
         if self._password == self.__encrypt_password(passwd):
             return True
