@@ -78,7 +78,7 @@ then
     create ${WORKSPACE}/dockerref
     createnondocker ${WORKSPACE}/nondocker
     createnondocker ${WORKSPACE}/nondockerref
-    create ${WORKSPACE}/v240 --version=2.4.0
+    create ${WORKSPACE}/v240 --version=2.4.1
     create ${WORKSPACE}/v230-docker --version=2.3.1
     createnondocker ${WORKSPACE}/v230-nondocker --version=2.3.1
     mkdir --parent ${WORKSPACE}/v220

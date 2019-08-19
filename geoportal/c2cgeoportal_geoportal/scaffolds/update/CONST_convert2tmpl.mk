@@ -12,4 +12,4 @@ to-tmpl: $(ALL_TMPL_MAKO_FILES:.mako=)
 	sed -e 's#/\$${instanceid}/#${entry_point}#g' -i $<
 	c2c-template --vars vars_convert2tmpl.yaml --engine mako \
 		--runtime-environment-pattern '$${{{}}}' --files $<
-	rm $<
+	git rm $< && git add $@ || rm $<

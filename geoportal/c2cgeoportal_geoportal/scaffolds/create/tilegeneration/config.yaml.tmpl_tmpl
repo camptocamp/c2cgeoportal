@@ -100,7 +100,7 @@ generation:
     maxconsecutive_errors: 10
 
 redis:
-    url: 'redis://${REDIS_HOST}:${REDIS_PORT}'
+    url: 'redis://${REDIS_HOST}:${REDIS_PORT}/${REDIS_DB}'
 
 # Not used if the previous redis section is not commented out
 sqs:
