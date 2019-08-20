@@ -70,7 +70,7 @@ the database. If not found, a new feature with this value will be created.</li>
 <li><dl class="first docutils">
 <dt>Editing of this one feature (only one).</dt>
 <dd><ul class="first last">
-<li>No tool chosen: Change the feature</li>
+<li>No tool chosen: Modify the vertices of the feature</li>
 <li>Plus-tool chosen: Add new parts to the feature (supports multi-point, multi-line, multi-polygon)</li>
 <li>Minus-tool chosen: Remove parts from the feature</li>
 <li>Triangle-tool chosen: Draw a fixed-sized by clicking on the map</li>
@@ -84,6 +84,27 @@ copyable Metadata.</li>
 <li>FeatureQuery showing a FeatureWindow</li>
 </ul>
 </div></blockquote>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>The layer must be editable.</p>
+<p>Copy / cut: The layer from where one wants to copy / cut from has to be:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Available as WFS layer</li>
+<li>Metadata “copyable” (checked) set on the layer</li>
+</ul>
+</div></blockquote>
+<p>Add the following configuration int the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file to change the triangle size:</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
+  <span class="n">interfaces_config</span><span class="p">:</span>
+    <span class="n">oeedit</span><span class="p">:</span>
+      <span class="n">constants</span><span class="p">:</span>
+        <span class="o">&lt;&lt;</span><span class="p">:</span> <span class="o">*</span><span class="n">constants</span>
+        <span class="n">gmfObjectEditingToolsOptions</span><span class="p">:</span>
+          <span class="n">regularPolygonRadius</span><span class="p">:</span> <span class="mi">150</span>
+</pre></div>
+</div>
 </div>
 </div>
 
