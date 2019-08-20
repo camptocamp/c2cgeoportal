@@ -17,15 +17,14 @@ and ``production_static`` for production environment.
 For the data of the ``main`` schema, we recommend to have one schema for each version of the application.
 The following example shows how an update can be performed from a version ``2019`` to a version ``2020``:
 
-========================  =============  =============
-                           Integration    Production
-                           schema name    schema name
-========================  =============  =============
-Initial state              main_2019      main_2019
-Start a new version        main_2020      main_2019
-Do the changes             main_2020      main_2019
-Publish the new version    main_2020      main_2020
-========================  =============  =============
+========================  =========================  ========================
+                           Integration schema name    Production schema name
+========================  =========================  ========================
+Initial state              main_2019                  main_2019
+Start a new version        main_2020                  main_2019
+Do the changes             main_2020                  main_2019
+Publish the new version    main_2020                  main_2020
+========================  =========================  ========================
 
 
 Initial state
