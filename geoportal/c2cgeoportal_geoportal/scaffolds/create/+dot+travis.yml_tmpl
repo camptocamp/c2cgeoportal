@@ -15,8 +15,6 @@ env:
 #    - DOCKER_USERNAME=username
 #    - secure: travis encrypt DOCKER_PASSWORD=password
 #    - OPENSHIFT_URL=https://openshift-ch-3.camptocamp.com/
-#    - OPENSHIFT_USERNAME=username
-#    - secure: travis encrypt OPENSHIFT_PASSWORD=password
 
 jobs:
   include:
