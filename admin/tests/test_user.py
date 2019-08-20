@@ -261,6 +261,7 @@ class TestUser(AbstractViewsTests):
         assert user.email == 'valid@email.net'
         assert user.settings_role_id == roles[2].id
         assert user.password is not None and len(user.password)
+        assert user.password.startswith('$')
         assert user.temp_password is None
         assert user.is_password_changed is False
 

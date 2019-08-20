@@ -527,7 +527,7 @@ class TestEntryView(TestCase):
 
     def test_loginchange_good_is_password_changed(self):
         from c2cgeoportal_geoportal.views.entry import Entry
-        from hashlib import sha1
+        import crypt
 
         request = self._create_request_obj(username="__test_user1", params={
             "lang": "en"
@@ -537,11 +537,11 @@ class TestEntryView(TestCase):
             "confirmNewPassword": "1234"
         })
         assert request.user.is_password_changed is False
-        assert request.user._password == str(sha1("__test_user1".encode("utf-8")).hexdigest())
+        assert request.user._password == crypt.crypt("__test_user1", request.user._password)
         entry = Entry(request)
         self.assertNotEqual(entry.loginchange(), None)
         assert request.user.is_password_changed is True
-        assert request.user._password == str(sha1("1234".encode("utf-8")).hexdigest())
+        assert request.user._password == crypt.crypt("1234", request.user._password)
 
     def test_json_extent(self):
         from c2cgeoportal_commons.models import DBSession
