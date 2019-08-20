@@ -177,30 +177,39 @@ To define a restricted layer in the Mapfile, the ``DATA`` property of the ``LAYE
 
 .. code:: sql
 
-    DATA "the_geom FROM
-          (SELECT
-             geo.*
-           FROM
-             <schema>.<table> AS geo
-           WHERE
-             ST_Contains(
-               (${mapfile_data_subselect} '<layername>'),
-               ST_SetSRID(geo.<the_geom>, 21781)
-             )
-          ) as foo using unique id using srid=21781"
+    DATA "<the_geom> FROM (
+        SELECT *
+        FROM <schema>.<table>
+        WHERE ST_Contains(
+           (${MAPSERVER_DATA_SUBSELECT} '<layername>'),
+           ST_SetSRID(<the_geom>, <projection>)
+         )
+    ) as foo USING UNIQUE gid USING srid=<projection>"
 
-``<schema>``, ``<table>``, ``<layername>`` and ``<the_geom>`` need to be
-replaced as appropriate. ``<table>`` is the name of the PostGIS table including
-the geographic data for this layer. ``<the_geom>`` is the name of the table's
-geometry column. ``<schema>`` is the name of the schema including the table.
+``<schema>``, ``<table>``, ``<layername>``, ``<projection>`` and ``<the_geom>``
+need to be replaced as appropriate. ``<table>`` is the name of the PostGIS table
+including the geographic data for this layer. ``<the_geom>`` is the name of the
+table's geometry column. ``<schema>`` is the name of the schema including the table.
 ``<layer_name>`` can be either the layer NAME or the layer GROUP, depending on
 what is configured in the admin interface for the layer.
 
-.. note::
+The ``${MAPSERVER_DATA_SUBSELECT}`` is defined as follows:
 
-    The DATA example above is developed on several lines to make it
-    easily readable in this documentation. However please note that MapServer
-    requires that this directive is contained on a single line.
+.. code:: sql
+
+    SELECT
+        rra.role_id
+    FROM
+        <main_schema>.restrictionarea AS ra,
+        <main_schema>.role_restrictionarea AS rra,
+        <main_schema>.layer_restrictionarea AS lra,
+        <main_schema>.treeitem AS la
+    WHERE
+        rra.restrictionarea_id = ra.id
+    AND
+        lra.restrictionarea_id = ra.id
+    AND
+        lra.layer_id = la.id AND la.name =
 
 .. warning::
 
@@ -226,22 +235,24 @@ If we do not need to restrict on an area, we can use the following
             <schema>.<table> AS geo
         WHERE (
             ARRAY[%role_ids%] && ARRAY(
-                ${mapfile_data_noarea_subselect} '<layername>'
+                ${MAPSERVER_DATA_NOAREA_SUBSELECT} '<layername>'
             )
         )
     ) AS foo USING UNIQUE id USING srid=21781"
 
 Then you do not need to define an area in the admin interface.
 
-The ``${mapfile_data_noarea_subselect}`` is defined as follows::
+The ``${MAPSERVER_DATA_NOAREA_SUBSELECT}`` is defined as follows:
+
+.. code:: sql
 
     SELECT
         rra.role_id
     FROM
-        main.restrictionarea AS ra,
-        main.role_restrictionarea AS rra,
-        main.layer_restrictionarea AS lra,
-        main.treeitem AS la
+        <main_schema>.restrictionarea AS ra,
+        <main_schema>.role_restrictionarea AS rra,
+        <main_schema>.layer_restrictionarea AS lra,
+        <main_schema>.treeitem AS la
     WHERE
         rra.restrictionarea_id = ra.id
     AND

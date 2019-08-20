@@ -206,6 +206,7 @@ vars:
     arguments:
       host: '{REDIS_HOST}'
       port: '{REDIS_PORT}'
+      db: '{REDIS_DB}'
       lock_timeout: 120  # Two minutes
       redis_expiration_time: 86400  # One day
       distributed_lock: True
@@ -729,8 +730,12 @@ runtime_environment:
     default: redis
   - name: REDIS_PORT
     default: '6372'
+  - name: REDIS_DB
+    default: '0'
   - name: TILEGENERATION_SQS_QUEUE
     default: queue_name
+  - name: TILEGENERATION_S3_BUCKET
+    default: bucket_name
 
 runtime_postprocess:
   - expression: int({})
