@@ -36,6 +36,14 @@
             
   <div class="section" id="upgrading-a-geomapfish-application">
 <span id="integrator-upgrade-application"></span><h1>Upgrading a GeoMapFish application<a class="headerlink" href="#upgrading-a-geomapfish-application" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="prepare-upgrade">
+<h2>Prepare upgrade<a class="headerlink" href="#prepare-upgrade" title="Permalink to this headline">¶</a></h2>
+<p>Be sure that your <code class="docutils literal notranslate"><span class="pre">managed_files</span></code> list is up to date in your <code class="docutils literal notranslate"><span class="pre">project.yaml</span></code> file.</p>
+<p>If you are not sure whether this list is up to date, you can perform an update up to step 7 on your
+current version and see if some files get modified by the update process.
+If the update process modified files which you do not want modified, then add these files to the
+<code class="docutils literal notranslate"><span class="pre">managed_files</span></code> list.</p>
+</div>
 <div class="section" id="from-a-version-2-4-x">
 <h2>From a version 2.4.x<a class="headerlink" href="#from-a-version-2-4-x" title="Permalink to this headline">¶</a></h2>
 <p>Build the project file if needed:</p>

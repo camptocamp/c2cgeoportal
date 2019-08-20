@@ -46,7 +46,7 @@ c2cgeoportal application you want to create the new application from:
 
 .. prompt:: bash
 
-    docker run --rm \
+    docker run --rm --volume=$(pwd):/src \
         camptocamp/geomapfish-scaffolds:<release|version> \
         pcreate -l
 

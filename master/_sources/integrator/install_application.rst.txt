@@ -127,8 +127,6 @@ Then create the application tables:
     docker-compose exec geoportal alembic --config=alembic.ini \
         --name=static upgrade head
 
-    docker-compose exec -run make --makefile=<user>.mk upgrade-db
-
 Your application should now be available at: ``https://localhost:8484/``.
 
 If you ahave an Apache in front of your application,

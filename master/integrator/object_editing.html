@@ -67,7 +67,7 @@ the database. If not found, a new feature with this value will be created.</p></
 <li><p>Access a feature via a URL, center on it if it exists.</p></li>
 <li><dl class="simple">
 <dt>Editing of this one feature (only one).</dt><dd><ul>
-<li><p>No tool chosen: Change the feature</p></li>
+<li><p>No tool chosen: Modify the vertices of the feature</p></li>
 <li><p>Plus-tool chosen: Add new parts to the feature (supports multi-point, multi-line, multi-polygon)</p></li>
 <li><p>Minus-tool chosen: Remove parts from the feature</p></li>
 <li><p>Triangle-tool chosen: Draw a fixed-sized by clicking on the map</p></li>
@@ -81,6 +81,27 @@ copyable Metadata.</p></li>
 <li><p>FeatureQuery showing a FeatureWindow</p></li>
 </ul>
 </div></blockquote>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>The layer must be editable.</p>
+<p>Copy / cut: The layer from where one wants to copy / cut from has to be:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Available as WFS layer</p></li>
+<li><p>Metadata “copyable” (checked) set on the layer</p></li>
+</ul>
+</div></blockquote>
+<p>Add the following configuration int the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file to change the triangle size:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
+  <span class="nt">interfaces_config</span><span class="p">:</span>
+    <span class="nt">oeedit</span><span class="p">:</span>
+      <span class="nt">constants</span><span class="p">:</span>
+        <span class="nt">&lt;&lt;</span><span class="p">:</span> <span class="nv">*constants</span>
+        <span class="nt">gmfObjectEditingToolsOptions</span><span class="p">:</span>
+          <span class="nt">regularPolygonRadius</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">150</span>
+</pre></div>
+</div>
 </div>
 </div>
 

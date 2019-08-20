@@ -124,8 +124,6 @@ environment variable, for cygwin, git and node binaries.</p>
     --name<span class="o">=</span>main upgrade head</span>
 <span class="prompt1">docker-compose <span class="nb">exec</span> geoportal alembic --config<span class="o">=</span>alembic.ini <span class="se">\</span>
     --name<span class="o">=</span>static upgrade head</span>
-<span class="prompt1"></span>
-<span class="prompt1">docker-compose <span class="nb">exec</span> -run make --makefile<span class="o">=</span>&lt;user&gt;.mk upgrade-db</span>
 </pre></div></div><p>Your application should now be available at: <code class="docutils literal notranslate"><span class="pre">https://localhost:8484/</span></code>.</p>
 <p>If you ahave an Apache in front of your application,
 add in the <code class="docutils literal notranslate"><span class="pre">/var/www/vhosts/&lt;vhost_name&gt;/conf/proxies.conf</span></code> file
