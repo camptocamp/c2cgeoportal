@@ -441,7 +441,7 @@ def includeme(config: pyramid.config.Configurator):
             Entry, attr=attr, route_name=name,
             renderer='/etc/geomapfish/static/{}'.format(renderer)
         )
-    add_api_route('favicon', 'favicon', '/favicon.ico', 'js/apps/image/favicon.ico')
+    add_api_route('favicon', 'favicon', '/favicon.ico', 'images/favicon.ico')
     add_api_route('apijsmap', 'apijsmap', '/api.js.map', "api.js.map")
     add_api_route('apicss', 'apicss', '/api.css', "api.css")
     add_api_route('apihelp', 'apihelp', '/apihelp/index.html', "apihelp/index.html")
