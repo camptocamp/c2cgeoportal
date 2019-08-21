@@ -75,7 +75,7 @@ tests require to run with <code class="docutils literal notranslate"><span class
 <div class="section" id="unit-tests">
 <h4>Unit tests<a class="headerlink" href="#unit-tests" title="Permalink to this headline">¶</a></h4>
 <p>Before running the tests, install and build all dependencies:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ci/preparetest</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nv">MAJOR_VERSION</span><span class="o">=</span><span class="m">2</span>.5 ci/preparetest</span>
 </pre></div></div><p>Run the tests:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> tests pytest --verbose --color<span class="o">=</span>yes <span class="se">\</span>
     /app/c2cgeoportal/commons/tests</span>
