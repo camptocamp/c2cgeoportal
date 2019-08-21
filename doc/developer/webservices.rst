@@ -310,7 +310,7 @@ JSON result
 .. code:: json
 
    {
-       "success": "true"
+       "success": true
    }
 
 
@@ -338,7 +338,7 @@ Success JSON result
 .. code:: json
 
    {
-       "success": "true"
+       "success": true
    }
 
 .. _developer_webservices_fts:
