@@ -217,5 +217,7 @@ def set_common_headers(
     service_headers_settings = headers_settings.get(service_name, {})
 
     _set_cors_headers(request, response, service_name, service_headers_settings, credentials)
-    if request.method != "OPTIONS":
+    if request.method == "OPTIONS":
+        return response
+    else:
         return _set_common_headers(request, response, service_headers_settings, cache, content_type)
