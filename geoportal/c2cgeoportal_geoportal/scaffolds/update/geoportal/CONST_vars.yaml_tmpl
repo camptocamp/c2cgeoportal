@@ -591,6 +591,8 @@ vars:
       access_control_allow_origin:
         - "{VISIBLE_WEB_PROTOCOL}://{VISIBLE_WEB_HOST}"
         - "*"
+      headers:
+        Strict-Transport-Security: max-age=31536000; includeSubDomains
     config: *auth_header
     print: *auth_header
     fulltextsearch: *auth_header
@@ -599,8 +601,7 @@ vars:
     layers: *auth_header
     shortener: *auth_header
     login:
-      cache_control_max_age: 600  # 10 minutes
-      access_control_max_age: 600  # 10 minutes
+      <<: *auth_header
       access_control_allow_origin:
         - "{VISIBLE_WEB_PROTOCOL}://{VISIBLE_WEB_HOST}"
 
