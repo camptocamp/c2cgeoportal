@@ -29,12 +29,12 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import json
 import os
 import re
-import json
 import subprocess
+import sys
 from argparse import ArgumentParser
-
 
 RE_NPM_VERSION = re.compile(r"^([0-9]+)\.([0-9]+)\.([0-9]+)$")
 RE_NPM_PRERELEASE_VERSION = re.compile(r"^([0-9]+)\.([0-9]+)\.([0-9]+)\.?([a-z]+)([0-9]+)$")
@@ -86,13 +86,22 @@ def main():
             packages.update(input_data.get('devDependencies', {}))
             packages.update(input_data.get('dependencies', {}))
     for package in args.excludes:
+        used = False
         if package[0] == '@' and '/' not in package:
+            packages_to_rm = []
             for pkg in packages:
                 if pkg.startswith(package + '/'):
-                    del package[pkg]
+                    packages_to_rm.append(pkg)
+                    used = True
+            for pkg in packages_to_rm:
+                del packages[pkg]
         else:
             if package in packages:
+                used = True
                 del packages[package]
+        if not used:
+            print("Package '{}' not used.".format(package))
+            sys.exit(1)
 
     data = " ".join(["{}@{}".format(p, v) for p, v in packages.items()])
     data = data + "\n"

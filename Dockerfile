@@ -124,8 +124,8 @@ RUN \
   rm -rf /tmp/*
 
 RUN npm-packages \
-  @camptocamp/cesium @type jasmine-core karma karma-chrome-launcher karma-coverage \
-  karma-coverage-istanbul-reporter karma-jasmine karma-sourcemap-loader karma-webpack \
+  @camptocamp/cesium @types @typescript-eslint jasmine-core karma karma-chrome-launcher \
+  karma-jasmine karma-sinon karma-sourcemap-loader karma-webpack \
   typedoc \
   --src=/usr/lib/node_modules/ngeo/package.json --src=package.json --dst=npm-packages
 
