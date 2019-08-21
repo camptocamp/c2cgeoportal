@@ -20,13 +20,15 @@ This generates a token like: ``auth=148b60cc...`` that you can add in the query 
 When the user uses this link, s/he will be connected as a normal user, therefore you should be sure
 that the session timeout is not too big.
 
-You can change the session timeout in the vars file with:
+You can change the session timeout in the ``docker-compose.yaml`` file with:
 
 .. code:: yaml
 
-    authtkt:
-        # in second => One day
-        timeout: 86400
+    services:
+        geoportal:
+            environment:
+                # in second => One day
+                AUTHTKT_TIMEOUT: 86400
 
 How to build your token in your application
 -------------------------------------------
