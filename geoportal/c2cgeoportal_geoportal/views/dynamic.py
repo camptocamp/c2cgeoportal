@@ -28,13 +28,16 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import re
 import urllib.parse
+
+from pyramid.view import view_config
+from sqlalchemy import func
+
 from c2cgeoportal_commons import models
 from c2cgeoportal_commons.models import main
 from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
-from c2cgeoportal_geoportal.lib.caching import set_common_headers, NO_CACHE
-from pyramid.view import view_config
-from sqlalchemy import func
+from c2cgeoportal_geoportal.lib.caching import NO_CACHE, set_common_headers
 
 
 class DynamicView:
@@ -111,15 +114,20 @@ class DynamicView:
                 no_redirect_query.update(query)
             else:
                 query = {}
-            if 'themes' in self.request.matchdict:
+            theme = None
+            if 'path' in self.request.params:
+                match = re.match('.*/theme/(.*)', self.request.params['path'])
+                if match is not None:
+                    theme = match.group(1)
+            if theme is not None:
                 no_redirect_url = self.request.route_url(
                     interface_config['redirect_interface'] + 'theme',
-                    themes=self.request.matchdict['themes'],
+                    themes=theme,
                     _query=no_redirect_query
                 )
                 url = self.request.route_url(
                     interface_config['redirect_interface'] + 'theme',
-                    themes=self.request.matchdict['themes'],
+                    themes=theme,
                     _query=query
                 )
             else:
