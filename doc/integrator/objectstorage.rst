@@ -48,9 +48,9 @@ Create the shape index file for a raster layer:
 
 .. prompt:: bash
 
-   gdaltindex mapserver/index.shp ${'\\'}
+   gdaltindex mapserver/index.shp \
         `aws --endpoint-url https://sos-ch-dk-2.exo.io/ --region ch-dk-2 \
-        s3 ls s3://<bucket>/<folder>/*.geotiff|awk '{print $4}'`
+        s3 ls s3://<bucket>/<folder>/ | grep tif | awk '{print "/vsis3/<bucket>/<folder>/"$4}'`
 
 
 Add the following config in the ``mapserver/mapserver.map.tmpl`` file:
