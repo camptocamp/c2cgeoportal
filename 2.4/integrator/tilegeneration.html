@@ -89,9 +89,7 @@ EC2, SQS, SNS.</p>
 <p>See the <a class="reference external" href="https://pypi.python.org/pypi/tilecloud-chain">readme</a>.</p>
 <div class="section" id="configuration">
 <h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h3>
-<p>The configuration is done in the file
-<code class="docutils literal notranslate"><span class="pre">tilegeneration/config.yaml.tmpl</span></code>. The original file is available at:
-<a class="reference external" href="https://github.com/camptocamp/c2cgeoportal/blob/2.4/geoportal/c2cgeoportal_geoportal/scaffolds/create/tilegeneration/config.yaml.tmpl_tmpl">https://github.com/camptocamp/c2cgeoportal/blob/2.4/geoportal/c2cgeoportal_geoportal/scaffolds/create/tilegeneration/config.yaml.tmpl_tmpl</a></p>
+<p>The configuration is done in the file <code class="docutils literal notranslate"><span class="pre">tilegeneration/config.yaml.tmpl</span></code>.</p>
 <p>The main thing to do is to:</p>
 <ul>
 <li><p class="first">Set the resolutions we want to generate in the <code class="docutils literal notranslate"><span class="pre">grids</span></code>.
@@ -109,16 +107,9 @@ Sub-level of <code class="docutils literal notranslate"><span class="pre">layers
 </pre></div></div><p>We consider that the first tile of the max zoom is empty.
 Then copy-paste the result in the layer config.</p>
 </li>
-<li><p class="first">If you need it, you can generate the WMTS capabilities file:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> tilecloudchain generate_controller --generate-wmts-capabilities</span>
-</pre></div></div></li>
-<li><p class="first">And an OpenLayers test page:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> tilecloudchain generate_controller --openlayers-test</span>
-</pre></div></div></li>
 </ul>
-<p>If you generate the tiles locally, you do not need all the configuration
-variables, because many of them in the <code class="docutils literal notranslate"><span class="pre">generation</span></code> part are for
-AWS generation.</p>
+<p>If you generate the tiles locally, you do not need all the configuration variables, because many of them
+in the <code class="docutils literal notranslate"><span class="pre">generation</span></code> part are for AWS generation.</p>
 </div>
 <div class="section" id="tile-generation-and-management">
 <h3>Tile Generation and management<a class="headerlink" href="#tile-generation-and-management" title="Permalink to this headline">¶</a></h3>
@@ -130,14 +121,7 @@ AWS generation.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> tilecloudchain generate_controller --cost</span>
 </pre></div></div><p>If you setup all the default options, you can generate the tiles by using the command:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> tilecloudchain generate_tiles</span>
-</pre></div></div><div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>Make sure you export AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nb">export</span> <span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">=</span>XXXXX</span>
-<span class="prompt1"><span class="nb">export</span> <span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">=</span>YYYY</span>
-</pre></div></div><p class="last">If you forget it, you will get an error message.</p>
-</div>
-</div>
+</pre></div></div></div>
 </div>
 </div>
 
