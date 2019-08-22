@@ -88,6 +88,21 @@
 </ul>
 </div></blockquote>
 </div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In mapfiles, attributes added by mapserver substitution will not be collected
+for translation.</p>
+</div>
+<div class="section" id="collecte-custom-strings">
+<h3>Collecte custom strings<a class="headerlink" href="#collecte-custom-strings" title="Permalink to this headline">¶</a></h3>
+<p>If the standard system can not collect some strings, you can add them manually in
+one of your JavaScript application controllers:</p>
+<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span>/** @type {angular.gettext.gettextCatalog} */
+const gettextCatalog = $injector.get(&#39;gettextCatalog&#39;);
+gettextCatalog.getString(&#39;My previously not collected string&#39;);
+</pre></div>
+</div>
+</div>
 </div>
 <div class="section" id="cgxp">
 <h2>CGXP<a class="headerlink" href="#cgxp" title="Permalink to this headline">¶</a></h2>
@@ -147,7 +162,10 @@ separated files because of API constraints. Read more at <a class="reference int
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Internationalization</a><ul>
-<li><a class="reference internal" href="#ngeo-and-server">ngeo and server</a></li>
+<li><a class="reference internal" href="#ngeo-and-server">ngeo and server</a><ul>
+<li><a class="reference internal" href="#collecte-custom-strings">Collecte custom strings</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#cgxp">CGXP</a></li>
 </ul>
 </li>
