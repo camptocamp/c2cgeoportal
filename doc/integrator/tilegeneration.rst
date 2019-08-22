@@ -66,38 +66,6 @@ EC2, SQS, SNS.
 
 See the `readme <https://pypi.python.org/pypi/tilecloud-chain>`_.
 
-Initialization
-~~~~~~~~~~~~~~
-
-* Build the project as usual
-
-* In the ``<project>.mk``, activate the tile generation:
-
-  .. code::
-
-     TILECLOUD_CHAIN ?= TRUE
-
-* If you use local cache, activate the capabilities generation with:
-
-  .. code::
-
-     TILECLOUD_CHAIN_LOCAL ?= TRUE
-
-  and set the ``wmtscapabilities_file`` to ``${WMTSCAPABILITIES_PATH}`` in your
-  ``tilegeneration/config.yaml.tmpl`` file.
-
-* In your ``<prod>.mk``, you can also set the capabilities file name with:
-
-  .. code::
-
-     WMTSCAPABILITIES_PATH = 1.0.0/WMTSCapabilities.xml
-
-* Add configuration to Git:
-
-  .. prompt:: bash
-
-    git add tilegeneration
-
 Configuration
 ~~~~~~~~~~~~~
 
