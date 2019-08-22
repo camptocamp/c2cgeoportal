@@ -87,33 +87,6 @@ WMTS layout.</p>
 <p>It supports the following AWS services for generating tiles:
 EC2, SQS, SNS.</p>
 <p>See the <a class="reference external" href="https://pypi.python.org/pypi/tilecloud-chain">readme</a>.</p>
-<div class="section" id="initialization">
-<h3>Initialization<a class="headerlink" href="#initialization" title="Permalink to this headline">¶</a></h3>
-<ul>
-<li><p class="first">Build the project as usual</p>
-</li>
-<li><p class="first">In the <code class="docutils literal notranslate"><span class="pre">&lt;project&gt;.mk</span></code>, activate the tile generation:</p>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>TILECLOUD_CHAIN ?= TRUE
-</pre></div>
-</div>
-</li>
-<li><p class="first">If you use local cache, activate the capabilities generation with:</p>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>TILECLOUD_CHAIN_LOCAL ?= TRUE
-</pre></div>
-</div>
-<p>and set the <code class="docutils literal notranslate"><span class="pre">wmtscapabilities_file</span></code> to <code class="docutils literal notranslate"><span class="pre">${WMTSCAPABILITIES_PATH}</span></code> in your
-<code class="docutils literal notranslate"><span class="pre">tilegeneration/config.yaml.tmpl</span></code> file.</p>
-</li>
-<li><p class="first">In your <code class="docutils literal notranslate"><span class="pre">&lt;prod&gt;.mk</span></code>, you can also set the capabilities file name with:</p>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">WMTSCAPABILITIES_PATH</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">.</span><span class="mi">0</span><span class="o">/</span><span class="n">WMTSCapabilities</span><span class="o">.</span><span class="n">xml</span>
-</pre></div>
-</div>
-</li>
-<li><p class="first">Add configuration to Git:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git add tilegeneration</span>
-</pre></div></div></li>
-</ul>
-</div>
 <div class="section" id="configuration">
 <h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h3>
 <p>The configuration is done in the file

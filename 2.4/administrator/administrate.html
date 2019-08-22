@@ -132,6 +132,9 @@ layer icon on the first layer, and the legend will not be supported we should de
 <li><code class="docutils literal notranslate"><span class="pre">Matrix</span> <span class="pre">set</span></code>: the used matrix set, if there is only one matrix set in the capabilities it can be empty.</li>
 <li><code class="docutils literal notranslate"><span class="pre">Image</span> <span class="pre">type</span></code>: the MIME type of the images (e.g.: <code class="docutils literal notranslate"><span class="pre">image/png</span></code>).</li>
 </ul>
+<p>When using self generated WMTS tiles, you should use the following url: <code class="docutils literal notranslate"><span class="pre">config://local/tiles/1.0.0/WMTSCapabilities.xml</span></code>.
+* <code class="docutils literal notranslate"><span class="pre">config://local</span></code> is a dynamic path based on the project configuration.
+* <code class="docutils literal notranslate"><span class="pre">/tiles</span></code> is a proxy in the tilecloudchain container.</p>
 </div>
 <div class="section" id="queryable-wmts">
 <h3>Queryable WMTS<a class="headerlink" href="#queryable-wmts" title="Permalink to this headline">¶</a></h3>
