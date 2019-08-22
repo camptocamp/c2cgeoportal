@@ -112,6 +112,10 @@ On WMTS layers we have the following specific attributes:
 * ``Matrix set``: the used matrix set, if there is only one matrix set in the capabilities it can be empty.
 * ``Image type``: the MIME type of the images (e.g.: ``image/png``).
 
+When using self generated WMTS tiles, you should use the following url: ``config://local/tiles/1.0.0/WMTSCapabilities.xml``.
+* ``config://local`` is a dynamic path based on the project configuration.
+* ``/tiles`` is a proxy in the tilecloudchain container.
+
 Queryable WMTS
 ~~~~~~~~~~~~~~
 To make the WMTS queryable, you should add the following ``Metadata``:
