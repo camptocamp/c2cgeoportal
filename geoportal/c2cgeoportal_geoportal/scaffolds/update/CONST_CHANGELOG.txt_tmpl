@@ -10,6 +10,8 @@ Information
 1. The SVG inclusion through Webpack has changed, See ngeo SVG example for more information:
    https://camptocamp.github.io/ngeo/master/examples/svg.html
 
+2. The WMTS capabilities is now generated on runtime.
+
 
 Version 2.4.0
 =============

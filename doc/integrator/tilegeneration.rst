@@ -69,9 +69,7 @@ See the `readme <https://pypi.python.org/pypi/tilecloud-chain>`_.
 Configuration
 ~~~~~~~~~~~~~
 
-The configuration is done in the file
-``tilegeneration/config.yaml.tmpl``. The original file is available at:
-https://github.com/camptocamp/c2cgeoportal/blob/2.4/geoportal/c2cgeoportal_geoportal/scaffolds/create/tilegeneration/config.yaml.tmpl_tmpl
+The configuration is done in the file ``tilegeneration/config.yaml.tmpl``.
 
 The main thing to do is to:
 
@@ -94,21 +92,9 @@ The main thing to do is to:
   We consider that the first tile of the max zoom is empty.
   Then copy-paste the result in the layer config.
 
-* If you need it, you can generate the WMTS capabilities file:
+If you generate the tiles locally, you do not need all the configuration variables, because many of them
+in the ``generation`` part are for AWS generation.
 
-  .. prompt:: bash
-
-     docker-compose exec tilecloudchain generate_controller --generate-wmts-capabilities
-
-* And an OpenLayers test page:
-
-  .. prompt:: bash
-
-     docker-compose exec tilecloudchain generate_controller --openlayers-test
-
-If you generate the tiles locally, you do not need all the configuration
-variables, because many of them in the ``generation`` part are for
-AWS generation.
 
 Tile Generation and management
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -136,12 +122,3 @@ If you setup all the default options, you can generate the tiles by using the co
 .. prompt:: bash
 
     docker-compose exec tilecloudchain generate_tiles
-
-.. note:: Make sure you export AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY:
-
-   .. prompt:: bash
-
-       export AWS_ACCESS_KEY_ID=XXXXX
-       export AWS_SECRET_ACCESS_KEY=YYYY
-
-   If you forget it, you will get an error message.
