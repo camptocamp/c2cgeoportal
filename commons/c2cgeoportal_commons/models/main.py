@@ -527,6 +527,7 @@ class DimensionLayer(Layer):
 OGCSERVER_TYPE_MAPSERVER = 'mapserver'
 OGCSERVER_TYPE_QGISSERVER = 'qgisserver'
 OGCSERVER_TYPE_GEOSERVER = 'geoserver'
+OGCSERVER_TYPE_ARCGIS = 'arcgis'
 OGCSERVER_TYPE_OTHER = 'other'
 
 OGCSERVER_AUTH_NOAUTH = 'No auth'
@@ -567,6 +568,7 @@ class OGCServer(Base):
             OGCSERVER_TYPE_MAPSERVER,
             OGCSERVER_TYPE_QGISSERVER,
             OGCSERVER_TYPE_GEOSERVER,
+            OGCSERVER_TYPE_ARCGIS,
             OGCSERVER_TYPE_OTHER,
             native_enum=False
         ),
@@ -579,6 +581,7 @@ class OGCServer(Base):
                         (OGCSERVER_TYPE_MAPSERVER, OGCSERVER_TYPE_MAPSERVER),
                         (OGCSERVER_TYPE_QGISSERVER, OGCSERVER_TYPE_QGISSERVER),
                         (OGCSERVER_TYPE_GEOSERVER, OGCSERVER_TYPE_GEOSERVER),
+                        (OGCSERVER_TYPE_ARCGIS, OGCSERVER_TYPE_ARCGIS),
                         (OGCSERVER_TYPE_OTHER, OGCSERVER_TYPE_OTHER)
                     )
                 )
