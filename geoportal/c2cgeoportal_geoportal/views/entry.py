@@ -28,6 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import asyncio
 import json
 import logging
 import re
@@ -41,13 +42,11 @@ from typing import Dict, Set, Tuple  # noqa # pylint: disable=unused-import
 
 import requests
 import zope.event.classhandler
-from c2cgeoportal_commons import models
-from c2cgeoportal_commons.lib.email_ import send_email_config
-from c2cgeoportal_commons.models import main, static
 from c2cwsgiutils.auth import auth_view
 from defusedxml import lxml
 from owslib.wms import WebMapService
-from pyramid.httpexceptions import HTTPBadRequest, HTTPForbidden, HTTPFound, HTTPUnauthorized
+from pyramid.httpexceptions import (HTTPBadRequest, HTTPForbidden, HTTPFound,
+                                    HTTPUnauthorized)
 from pyramid.i18n import TranslationStringFactory
 from pyramid.path import AssetResolver
 from pyramid.response import Response
@@ -56,18 +55,32 @@ from pyramid.view import view_config
 from sqlalchemy.orm import subqueryload
 from sqlalchemy.orm.exc import NoResultFound
 
+from c2cgeoportal_commons import models
+from c2cgeoportal_commons.lib.email_ import send_email_config
+from c2cgeoportal_commons.models import main, static
 from c2cgeoportal_geoportal import is_valid_referer
-from c2cgeoportal_geoportal.lib import add_url_params, get_setting, get_typed, get_types_map, get_url2
-from c2cgeoportal_geoportal.lib.caching import (NO_CACHE, PRIVATE_CACHE, PUBLIC_CACHE, get_region,
+from c2cgeoportal_geoportal.lib import (add_url_params, get_setting, get_typed,
+                                        get_types_map, get_url2)
+from c2cgeoportal_geoportal.lib.caching import (NO_CACHE, PRIVATE_CACHE,
+                                                PUBLIC_CACHE, get_region,
                                                 set_common_headers)
-from c2cgeoportal_geoportal.lib.functionality import get_functionality, get_mapserver_substitution_params
+from c2cgeoportal_geoportal.lib.functionality import (
+    get_functionality, get_mapserver_substitution_params)
 from c2cgeoportal_geoportal.lib.layers import get_protected_layers_query
-from c2cgeoportal_geoportal.lib.wmstparsing import TimeInformation, parse_extent
+from c2cgeoportal_geoportal.lib.wmstparsing import (TimeInformation,
+                                                    parse_extent)
 from c2cgeoportal_geoportal.views.layers import get_layer_metadatas
 
 _ = TranslationStringFactory("c2cgeoportal")
 LOG = logging.getLogger(__name__)
 CACHE_REGION = get_region()
+
+
+@CACHE_REGION.cache_on_arguments()
+def get_http_cached(http_options, url, headers):
+    response = requests.get(url, headers=headers, timeout=300, **http_options)
+    LOG.info("Get url '%s' in %.1fs.", url, response.elapsed.total_seconds())
+    return response
 
 
 class DimensionInformation:
@@ -186,11 +199,11 @@ class Entry:
 
         return metadatas
 
-    def _wms_getcap(self, ogc_server):
+    async def _wms_getcap(self, ogc_server):
         if ogc_server.id in self.server_wms_capabilities:
             return self.server_wms_capabilities[ogc_server.id]
 
-        url, content, errors = self._wms_getcap_cached(
+        url, content, errors = await self._wms_getcap_cached(
             ogc_server, self._get_capabilities_cache_role_key(ogc_server)
         )
 
@@ -210,12 +223,7 @@ class Entry:
 
         return wms, errors
 
-    @CACHE_REGION.cache_on_arguments()
-    def get_http_cached(self, url, headers):
-        return requests.get(url, headers=headers, **self.http_options)
-
-    @CACHE_REGION.cache_on_arguments()
-    def _wms_getcap_cached(self, ogc_server, _):
+    async def _wms_getcap_cached(self, ogc_server, _):
         """ _ is just for cache on the role id """
 
         errors = set()
@@ -255,7 +263,9 @@ class Entry:
             headers.pop("Host")
 
         try:
-            response = self.get_http_cached(url, headers)
+            response = await asyncio.get_event_loop().run_in_executor(
+                None, get_http_cached, self.http_options, url, headers
+            )
         except Exception:  # pragma: no cover
             error = "Unable to GetCapabilities from URL {}".format(url)
             errors.add(error)
@@ -670,7 +680,7 @@ class Entry:
 
     def _wms_layers(self, ogc_server):
         # retrieve layers metadata via GetCapabilities
-        wms, wms_errors = self._wms_getcap(ogc_server)
+        wms, wms_errors = asyncio.run(self._wms_getcap(ogc_server))
         if len(wms_errors) > 0:
             return None, [], wms_errors
 
@@ -864,7 +874,7 @@ class Entry:
         set_common_headers(self.request, "apihelp", NO_CACHE)
         return {}
 
-    def _wms_get_features_type(self, ogc_server_id, wfs_url):
+    async def _wms_get_features_type(self, ogc_server_id, wfs_url):
         errors = set()
 
         if ogc_server_id in self.server_wfs_feature_type:
@@ -885,7 +895,9 @@ class Entry:
             headers.pop("Host")  # pragma nocover
 
         try:
-            response = self.get_http_cached(wfs_url, headers)
+            response = await asyncio.get_event_loop().run_in_executor(
+                None, get_http_cached, self.http_options, wfs_url, headers
+            )
         except Exception:  # pragma: no cover
             errors.add("Unable to get DescribeFeatureType from URL {}".format(wfs_url))
             return None, errors
@@ -905,6 +917,38 @@ class Entry:
             ))
             return None, errors
 
+        return response, errors
+
+    def get_url_internal_wfs(self, ogc_server, errors):
+        # required to do every time to validate the url.
+        if ogc_server.auth != main.OGCSERVER_AUTH_NOAUTH:
+            url = self.request.route_url("mapserverproxy", _query={"ogcserver": ogc_server.name})
+            url_wfs = url
+            url_internal_wfs = get_url2(
+                "The OGC server (WFS) '{}'".format(ogc_server.name),
+                ogc_server.url_wfs or ogc_server.url, self.request, errors=errors
+            )
+        else:
+            url = get_url2(
+                "The OGC server '{}'".format(ogc_server.name),
+                ogc_server.url, self.request, errors=errors
+            )
+            url_wfs = get_url2(
+                "The OGC server (WFS) '{}'".format(ogc_server.name),
+                ogc_server.url_wfs, self.request, errors=errors
+            ) if ogc_server.url_wfs is not None else url
+            url_internal_wfs = url_wfs
+        return url_internal_wfs, url, url_wfs
+
+    async def preload(self, errors):
+        tasks = set()
+        for ogc_server in models.DBSession.query(main.OGCServer).all():
+            url_internal_wfs, _, _ = self.get_url_internal_wfs(ogc_server, errors)
+            tasks.add(self._wms_get_features_type(ogc_server.id, url_internal_wfs))
+            tasks.add(self._wms_getcap(ogc_server))
+
+        await asyncio.gather(*tasks)
+
     @view_config(route_name="themes", renderer="json")
     def themes(self):
         interface = self.request.params.get("interface", "desktop")
@@ -921,28 +965,16 @@ class Entry:
 
         result = {}
         all_errors = set()
+        LOG.info("Start preload")
+        asyncio.run(self.preload(all_errors))
+        LOG.info("End preload")
         result["ogcServers"] = {}
         for ogc_server in models.DBSession.query(main.OGCServer).all():
-            # required to do every time to validate the url.
-            if ogc_server.auth != main.OGCSERVER_AUTH_NOAUTH:
-                url = self.request.route_url("mapserverproxy", _query={"ogcserver": ogc_server.name})
-                url_wfs = url
-                url_internal_wfs = get_url2(
-                    "The OGC server (WFS) '{}'".format(ogc_server.name),
-                    ogc_server.url_wfs or ogc_server.url, self.request, errors=all_errors
-                )
-            else:
-                url = get_url2(
-                    "The OGC server '{}'".format(ogc_server.name),
-                    ogc_server.url, self.request, errors=all_errors
-                )
-                url_wfs = get_url2(
-                    "The OGC server (WFS) '{}'".format(ogc_server.name),
-                    ogc_server.url_wfs, self.request, errors=all_errors
-                ) if ogc_server.url_wfs is not None else url
-                url_internal_wfs = url_wfs
+            url_internal_wfs, url, url_wfs = self.get_url_internal_wfs(ogc_server, all_errors)
             if ogc_server.wfs_support:
-                feature_type, errors = self._wms_get_features_type(ogc_server.id, url_internal_wfs)
+                feature_type, errors = asyncio.run(
+                    self._wms_get_features_type(ogc_server.id, url_internal_wfs)
+                )
                 all_errors |= errors
             else:
                 feature_type = None
