@@ -1166,7 +1166,7 @@ class Entry:
         LOG.info("Password changed for user '%s'", self.request.user.username)
 
         return {
-            "success": "true"
+            "success": True
         }
 
     @staticmethod
