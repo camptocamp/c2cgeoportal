@@ -212,6 +212,8 @@ class TestThemesEditColumns(TestCase):
         request.route_url = lambda name, _query: "http://server/{}?{}".format(name, urlencode(_query))
         request.matchdict = {"layer_id": str(layerid)}
         request.params = params
+        from c2cgeoportal_geoportal.lib import functionality
+        functionality.FUNCTIONALITIES_TYPES = None
         return request
 
     def test_themes_edit_columns(self):
