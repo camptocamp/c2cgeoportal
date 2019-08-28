@@ -592,7 +592,7 @@ $(APP_OUTPUT_DIR)/images/: /usr/lib/node_modules/jquery-ui/themes/base/images
 	cp -r $</* $@
 
 .PRECIOUS: $(APP_OUTPUT_DIR)/vendor%
-$(APP_OUTPUT_DIR)/vendor%: /opt/vendor%
+$(APP_OUTPUT_DIR)/vendor%: /opt/vendor% .config
 	$(PRERULE_CMD)
 	cp $< $@
 
