@@ -75,23 +75,6 @@ of the MapServer container ``DEBUG`` to ``5`` (most verbose level, default is 0)
 `More information <https://mapserver.org/optimization/debugging.html?highlight=debug#debug-levels>`_
 
 
-PostgreSQL
-----------
-
-In the configuration file ``/etc/postgresql/9.*/main/postgresql.conf``,
-you can set ``log_statement`` to ``all`` to see all the called statements.
-This file must be edited using the ``postgres`` user.
-
-Reloading PostgreSQL is required so that the new configuration is taken into
-account:
-
-.. prompt:: bash
-
-    sudo /etc/init.d/postgres reload
-
-Logs are available in the ``/var/log/postgresql/postgresql-9.*-main.log`` file.
-
-
 Docker-compose
 --------------
 
@@ -103,6 +86,9 @@ With the following command, you can access the logs:
 .. prompt:: bash
 
    docker-compose logs [<service_name>]
+
+To have the access log on gunicorn you should add the option ``--access-logfile=-`` in the gunicorn
+arguments (``GUNICORN_PARAMS`` environement variable).
 
 Go inside a container
 .....................

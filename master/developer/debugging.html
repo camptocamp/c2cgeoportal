@@ -87,23 +87,15 @@ span.prompt1:before {
 of the MapServer container <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code> to <code class="docutils literal notranslate"><span class="pre">5</span></code> (most verbose level, default is 0).</p>
 <p><a class="reference external" href="https://mapserver.org/optimization/debugging.html?highlight=debug#debug-levels">More information</a></p>
 </div>
-<div class="section" id="postgresql">
-<h2>PostgreSQL<a class="headerlink" href="#postgresql" title="Permalink to this headline">¶</a></h2>
-<p>In the configuration file <code class="docutils literal notranslate"><span class="pre">/etc/postgresql/9.*/main/postgresql.conf</span></code>,
-you can set <code class="docutils literal notranslate"><span class="pre">log_statement</span></code> to <code class="docutils literal notranslate"><span class="pre">all</span></code> to see all the called statements.
-This file must be edited using the <code class="docutils literal notranslate"><span class="pre">postgres</span></code> user.</p>
-<p>Reloading PostgreSQL is required so that the new configuration is taken into
-account:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">sudo /etc/init.d/postgres reload</span>
-</pre></div></div><p>Logs are available in the <code class="docutils literal notranslate"><span class="pre">/var/log/postgresql/postgresql-9.*-main.log</span></code> file.</p>
-</div>
 <div class="section" id="docker-compose">
 <h2>Docker-compose<a class="headerlink" href="#docker-compose" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="logs">
 <h3>Logs<a class="headerlink" href="#logs" title="Permalink to this headline">¶</a></h3>
 <p>With the following command, you can access the logs:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose logs <span class="o">[</span>&lt;service_name&gt;<span class="o">]</span></span>
-</pre></div></div></div>
+</pre></div></div><p>To have the access log on gunicorn you should add the option <code class="docutils literal notranslate"><span class="pre">--access-logfile=-</span></code> in the gunicorn
+arguments (<code class="docutils literal notranslate"><span class="pre">GUNICORN_PARAMS</span></code> environement variable).</p>
+</div>
 <div class="section" id="go-inside-a-container">
 <h3>Go inside a container<a class="headerlink" href="#go-inside-a-container" title="Permalink to this headline">¶</a></h3>
 <p>With the following command, you can get a terminal in a container:</p>
