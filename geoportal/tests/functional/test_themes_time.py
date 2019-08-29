@@ -193,7 +193,8 @@ class TestThemesTimeView(TestCase):
         entry = self._create_entry_obj()
         themes = entry.themes()
         self.assertEqual(self._get_filtered_errors(themes), set([
-            "Error while handling time for layer '__test_layer_time_group': Could not mix time mode 'range' and 'value'"
+            "Error while handling time for layer '__test_layer_time_group': Could not mix time mode 'range' and 'value'",
+            "Error: time layer '__test_layer_time_group' has no time information in capabilities"
         ]))
         self.assertEqual(
             [self._only(t) for t in themes["themes"]],

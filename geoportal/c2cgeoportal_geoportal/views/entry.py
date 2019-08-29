@@ -438,12 +438,19 @@ class Entry:
             if wmslayer in wms_layers:
                 wms_layer_obj = wms[wmslayer]
 
-                if wms_layer_obj.timepositions:
-                    extent = parse_extent(
-                        wms_layer_obj.timepositions,
-                        wms_layer_obj.defaulttimeposition
-                    )
-                    time.merge(layer_theme, extent, layer.time_mode, layer.time_widget)
+                if layer.time_mode != 'disabled':
+                    if wms_layer_obj.timepositions:
+                        extent = parse_extent(
+                            wms_layer_obj.timepositions,
+                            wms_layer_obj.defaulttimeposition
+                        )
+                        time.merge(layer_theme, extent, layer.time_mode, layer.time_widget)
+                    else:
+                        errors.add(
+                            "Error: time layer '{}' has no time information in capabilities".format(
+                                layer.name
+                            )
+                        )
 
                 for child_layer in wms_layer_obj.layers:
                     if child_layer.timepositions:
