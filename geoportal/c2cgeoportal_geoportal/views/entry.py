@@ -28,6 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import asyncio
 import json
 import logging
 import re
@@ -41,13 +42,11 @@ from typing import Dict, Set, Tuple  # noqa # pylint: disable=unused-import
 
 import requests
 import zope.event.classhandler
-from c2cgeoportal_commons import models
-from c2cgeoportal_commons.lib.email_ import send_email_config
-from c2cgeoportal_commons.models import main, static
 from c2cwsgiutils.auth import auth_view
 from defusedxml import lxml
 from owslib.wms import WebMapService
-from pyramid.httpexceptions import HTTPBadRequest, HTTPForbidden, HTTPFound, HTTPUnauthorized
+from pyramid.httpexceptions import (HTTPBadRequest, HTTPForbidden, HTTPFound,
+                                    HTTPUnauthorized)
 from pyramid.i18n import TranslationStringFactory
 from pyramid.path import AssetResolver
 from pyramid.response import Response
@@ -56,18 +55,32 @@ from pyramid.view import view_config
 from sqlalchemy.orm import subqueryload
 from sqlalchemy.orm.exc import NoResultFound
 
+from c2cgeoportal_commons import models
+from c2cgeoportal_commons.lib.email_ import send_email_config
+from c2cgeoportal_commons.models import main, static
 from c2cgeoportal_geoportal import is_valid_referer
-from c2cgeoportal_geoportal.lib import add_url_params, get_setting, get_typed, get_types_map, get_url2
-from c2cgeoportal_geoportal.lib.caching import (NO_CACHE, PRIVATE_CACHE, PUBLIC_CACHE, get_region,
+from c2cgeoportal_geoportal.lib import (add_url_params, get_setting, get_typed,
+                                        get_types_map, get_url2)
+from c2cgeoportal_geoportal.lib.caching import (NO_CACHE, PRIVATE_CACHE,
+                                                PUBLIC_CACHE, get_region,
                                                 set_common_headers)
-from c2cgeoportal_geoportal.lib.functionality import get_functionality, get_mapserver_substitution_params
+from c2cgeoportal_geoportal.lib.functionality import (
+    get_functionality, get_mapserver_substitution_params)
 from c2cgeoportal_geoportal.lib.layers import get_protected_layers_query
-from c2cgeoportal_geoportal.lib.wmstparsing import TimeInformation, parse_extent
+from c2cgeoportal_geoportal.lib.wmstparsing import (TimeInformation,
+                                                    parse_extent)
 from c2cgeoportal_geoportal.views.layers import get_layer_metadatas
 
 _ = TranslationStringFactory("c2cgeoportal")
 LOG = logging.getLogger(__name__)
 CACHE_REGION = get_region()
+
+
+@CACHE_REGION.cache_on_arguments()
+def get_http_cached(http_options, url, headers):
+    response = requests.get(url, headers=headers, timeout=300, **http_options)
+    LOG.info("Get url '%s' in %.1fs.", url, response.elapsed.total_seconds())
+    return response
 
 
 class DimensionInformation:
@@ -86,7 +99,7 @@ class DimensionInformation:
         for dimension in layer.dimensions:
             if not isinstance(layer, main.LayerWMS) and dimension.value is not None and \
                     not self.URL_PART_RE.match(dimension.value):
-                errors.add(u"The layer '{}' has an unsupported dimension value '{}' ('{}').".format(
+                errors.add("The layer '{}' has an unsupported dimension value '{}' ('{}').".format(
                     layer.name, dimension.value, dimension.name
                 ))
             elif dimension.name in dimensions:  # pragma: nocover
@@ -167,7 +180,7 @@ class Entry:
     def _get_metadata(self, item, metadata, errors):
         metadatas = item.get_metadatas(metadata)
         return \
-            None if len(metadatas) == 0 \
+            None if not metadatas \
             else get_typed(
                 metadata, metadatas[0].value,
                 self.metadata_type, self.request, errors,
@@ -186,15 +199,15 @@ class Entry:
 
         return metadatas
 
-    def _wms_getcap(self, ogc_server):
+    async def _wms_getcap(self, ogc_server):
         if ogc_server.id in self.server_wms_capabilities:
             return self.server_wms_capabilities[ogc_server.id]
 
-        url, content, errors = self._wms_getcap_cached(
+        url, content, errors = await self._wms_getcap_cached(
             ogc_server, self._get_capabilities_cache_role_key(ogc_server)
         )
 
-        if len(errors) != 0:
+        if errors:
             return None, errors
 
         wms = None
@@ -210,12 +223,7 @@ class Entry:
 
         return wms, errors
 
-    @CACHE_REGION.cache_on_arguments()
-    def get_http_cached(self, url, headers):
-        return requests.get(url, headers=headers, **self.http_options)
-
-    @CACHE_REGION.cache_on_arguments()
-    def _wms_getcap_cached(self, ogc_server, _):
+    async def _wms_getcap_cached(self, ogc_server, _):
         """ _ is just for cache on the role id """
 
         errors = set()
@@ -223,7 +231,7 @@ class Entry:
             "The OGC server '{}'".format(ogc_server.name),
             ogc_server.url, self.request, errors
         )
-        if len(errors):  # pragma: no cover
+        if errors:  # pragma: no cover
             return url, None, errors
 
         # Add functionality params
@@ -255,7 +263,9 @@ class Entry:
             headers.pop("Host")
 
         try:
-            response = self.get_http_cached(url, headers)
+            response = await asyncio.get_event_loop().run_in_executor(
+                None, get_http_cached, self.http_options, url, headers
+            )
         except Exception:  # pragma: no cover
             error = "Unable to GetCapabilities from URL {}".format(url)
             errors.add(error)
@@ -310,7 +320,7 @@ class Entry:
 
     def _get_layer_metadata_urls(self, layer):
         metadata_urls = []
-        if len(layer.metadataUrls) > 0:
+        if layer.metadataUrls:
             metadata_urls = layer.metadataUrls
         for child_layer in layer.layers:
             metadata_urls.extend(self._get_layer_metadata_urls(child_layer))
@@ -421,7 +431,7 @@ class Entry:
         return layer_info, errors
 
     @staticmethod
-    def _merge_time(time, l, layer, wms, wms_layers):
+    def _merge_time(time, layer_theme, layer, wms, wms_layers):
         errors = set()
         wmslayer = layer.layer
         try:
@@ -433,7 +443,7 @@ class Entry:
                         wms_layer_obj.timepositions,
                         wms_layer_obj.defaulttimeposition
                     )
-                    time.merge(l, extent, layer.time_mode, layer.time_widget)
+                    time.merge(layer_theme, extent, layer.time_mode, layer.time_widget)
 
                 for child_layer in wms_layer_obj.layers:
                     if child_layer.timepositions:
@@ -442,7 +452,7 @@ class Entry:
                             child_layer.defaulttimeposition
                         )
                         # The time mode comes from the layer group
-                        time.merge(l, extent, layer.time_mode, layer.time_widget)
+                        time.merge(layer_theme, extent, layer.time_mode, layer.time_widget)
 
         except ValueError:  # pragma no cover
             errors.add(
@@ -451,7 +461,7 @@ class Entry:
 
         return errors
 
-    def _fill_editable(self, l, layer):
+    def _fill_editable(self, layer_theme, layer):
         errors = set()
         try:
             if self.request.user:
@@ -462,31 +472,31 @@ class Entry:
                     .filter(main.RestrictionArea.readwrite.is_(True)) \
                     .count()
                 if count > 0:
-                    l["edit_columns"] = get_layer_metadatas(layer)
-                    l["editable"] = True
+                    layer_theme["edit_columns"] = get_layer_metadatas(layer)
+                    layer_theme["editable"] = True
         except Exception as exception:
             LOG.exception(str(exception))
             errors.add(str(exception))
         return errors
 
-    def _fill_wms(self, l, layer, errors, mixed):
+    def _fill_wms(self, layer_theme, layer, errors, mixed):
         wms, wms_layers, wms_errors = self._wms_layers(layer.ogc_server)
         errors |= wms_errors
 
-        l["imageType"] = layer.ogc_server.image_type
+        layer_theme["imageType"] = layer.ogc_server.image_type
         if layer.style:  # pragma: no cover
-            l["style"] = layer.style
+            layer_theme["style"] = layer.style
 
         # now look at what is in the WMS capabilities doc
-        l["childLayers"] = []
+        layer_theme["childLayers"] = []
         for layer_name in layer.layer.split(","):
             if layer_name in wms_layers:
                 wms_layer_obj = wms[layer_name]
-                if len(wms_layer_obj.layers) == 0:
-                    l["childLayers"].append(self._get_child_layers_info(wms_layer_obj))
+                if not wms_layer_obj.layers:
+                    layer_theme["childLayers"].append(self._get_child_layers_info(wms_layer_obj))
                 else:
                     for child_layer in wms_layer_obj.layers:
-                        l["childLayers"].append(self._get_child_layers_info(child_layer))
+                        layer_theme["childLayers"].append(self._get_child_layers_info(child_layer))
             else:
                 errors.add(
                     "The layer '{}' ({}) is not defined in WMS capabilities from '{}'".format(
@@ -494,40 +504,40 @@ class Entry:
                     )
                 )
 
-        if "minResolutionHint" not in l:
+        if "minResolutionHint" not in layer_theme:
             resolution_min = self._get_metadata(layer, "minResolution", errors)
 
             if resolution_min is not None:
-                l["minResolutionHint"] = resolution_min
+                layer_theme["minResolutionHint"] = resolution_min
             else:
                 min_resolutions_hint = [
                     l_["minResolutionHint"]
-                    for l_ in l["childLayers"]
+                    for l_ in layer_theme["childLayers"]
                     if "minResolutionHint" in l_
                 ]
-                if len(min_resolutions_hint) > 0:
-                    l["minResolutionHint"] = min(min_resolutions_hint)
-        if "maxResolutionHint" not in l:
+                if min_resolutions_hint:
+                    layer_theme["minResolutionHint"] = min(min_resolutions_hint)
+        if "maxResolutionHint" not in layer_theme:
             resolution_max = self._get_metadata(layer, "maxResolution", errors)
 
             if resolution_max is not None:
-                l["maxResolutionHint"] = resolution_max
+                layer_theme["maxResolutionHint"] = resolution_max
             else:
                 max_resolutions_hint = [
                     l_["maxResolutionHint"]
-                    for l_ in l["childLayers"]
+                    for l_ in layer_theme["childLayers"]
                     if "maxResolutionHint" in l_
                 ]
-                if len(max_resolutions_hint) > 0:
-                    l["maxResolutionHint"] = max(max_resolutions_hint)
+                if max_resolutions_hint:
+                    layer_theme["maxResolutionHint"] = max(max_resolutions_hint)
 
         if mixed:
-            l["ogcServer"] = layer.ogc_server.name
+            layer_theme["ogcServer"] = layer.ogc_server.name
 
     @staticmethod
-    def _fill_legend_rule_query_string(l, layer, url):
+    def _fill_legend_rule_query_string(layer_theme, layer, url):
         if layer.legend_rule and url:
-            l["icon"] = add_url_params(url, {
+            layer_theme["icon"] = add_url_params(url, {
                 "SERVICE": "WMS",
                 "VERSION": "1.1.1",
                 "REQUEST": "GetLegendGraphic",
@@ -537,19 +547,19 @@ class Entry:
                 "RULE": layer.legend_rule,
             })
 
-    def _fill_wmts(self, l, layer, errors):
-        l["url"] = get_url2(
+    def _fill_wmts(self, layer_theme, layer, errors):
+        layer_theme["url"] = get_url2(
             "The WMTS layer '{}'".format(layer.name),
             layer.url, self.request, errors=errors
         )
 
         if layer.style:
-            l["style"] = layer.style
+            layer_theme["style"] = layer.style
         if layer.matrix_set:
-            l["matrixSet"] = layer.matrix_set
+            layer_theme["matrixSet"] = layer.matrix_set
 
-        l["layer"] = layer.layer
-        l["imageType"] = layer.image_type
+        layer_theme["layer"] = layer.layer
+        layer_theme["imageType"] = layer.image_type
 
     @staticmethod
     def _layer_included(tree_item):
@@ -566,7 +576,7 @@ class Entry:
             return ogc_servers
 
         # recurse on children
-        if isinstance(group, main.LayerGroup) and len(group.children) > 0:
+        if isinstance(group, main.LayerGroup) and group.children:
             for tree_item in group.children:
                 ogc_servers.update(self._get_ogc_servers(tree_item, depth + 1))
 
@@ -611,32 +621,34 @@ class Entry:
 
         for tree_item in group.children:
             if isinstance(tree_item, main.LayerGroup):
-                gp, gp_errors = self._group(
-                    u"{}/{}".format(path, tree_item.name), tree_item, layers,
+                group_theme, gp_errors = self._group(
+                    "{}/{}".format(path, tree_item.name), tree_item, layers,
                     depth=depth + 1, min_levels=min_levels,
                     mixed=mixed, time=time, dim=dim, wms_layers=wms_layers, layers_name=layers_name, **kwargs
                 )
                 errors |= gp_errors
-                if gp is not None:
-                    children.append(gp)
+                if group_theme is not None:
+                    children.append(group_theme)
             elif self._layer_included(tree_item):
                 if tree_item.name in layers:
                     layers_name.append(tree_item.name)
                     if isinstance(tree_item, main.LayerWMS):
                         wms_layers.extend(tree_item.layer.split(","))
 
-                    l, l_errors = self._layer(tree_item, mixed=mixed, time=time, dim=dim, **kwargs)
+                    layer_theme, l_errors = self._layer(
+                        tree_item, mixed=mixed, time=time, dim=dim, **kwargs
+                    )
                     errors |= l_errors
-                    if l is not None:
+                    if layer_theme is not None:
                         if depth < min_levels:
                             errors.add("The Layer '{}' is under indented ({:d}/{:d}).".format(
                                 path + "/" + tree_item.name, depth, min_levels
                             ))
                         else:
-                            children.append(l)
+                            children.append(layer_theme)
 
-        if len(children) > 0:
-            g = {
+        if children:
+            group_theme = {
                 "id": group.id,
                 "name": group.name,
                 "children": children,
@@ -651,16 +663,16 @@ class Entry:
                             "in the same block (first level group).".format(name)
                         )
 
-            g["mixed"] = mixed
+            group_theme["mixed"] = mixed
             if org_depth == 1:
                 if not mixed:
-                    g["ogcServer"] = ogc_servers[0]
+                    group_theme["ogcServer"] = ogc_servers[0]
                     if time.has_time() and time.layer is None:
-                        g["time"] = time.to_dict()
+                        group_theme["time"] = time.to_dict()
 
-                    g["dimensions"] = dim.get_dimensions()
+                    group_theme["dimensions"] = dim.get_dimensions()
 
-            return g, errors
+            return group_theme, errors
         else:
             return None, errors
 
@@ -670,8 +682,8 @@ class Entry:
 
     def _wms_layers(self, ogc_server):
         # retrieve layers metadata via GetCapabilities
-        wms, wms_errors = self._wms_getcap(ogc_server)
-        if len(wms_errors) > 0:
+        wms, wms_errors = asyncio.run(self._wms_getcap(ogc_server))
+        if wms_errors:
             return None, [], wms_errors
 
         return wms, list(wms.contents), wms_errors
@@ -729,16 +741,16 @@ class Entry:
             children, children_errors = self._get_children(theme, layers, min_levels)
             errors |= children_errors
 
-            # test if the theme is visible for the current user
-            if len(children) > 0:
+            # Test if the theme is visible for the current user
+            if children:
                 icon = get_url2(
                     "The Theme '{}'".format(theme.name),
                     theme.icon, self.request, errors,
-                ) if theme.icon is not None and len(theme.icon) > 0 else self.request.static_url(
+                ) if theme.icon is not None and theme.icon else self.request.static_url(
                     "/etc/geomapfish/static/images/blank.png"
                 )
 
-                t = {
+                theme_theme = {
                     "id": theme.id,
                     "name": theme.name,
                     "icon": icon,
@@ -746,7 +758,7 @@ class Entry:
                     "functionalities": self._get_functionalities(theme),
                     "metadata": self._get_metadatas(theme, errors),
                 }
-                export_themes.append(t)
+                export_themes.append(theme_theme)
 
         return export_themes, errors
 
@@ -773,22 +785,22 @@ class Entry:
         errors = set()
         for item in theme.children:
             if isinstance(item, main.LayerGroup):
-                gp, gp_errors = self._group(
+                group_theme, gp_errors = self._group(
                     "{}/{}".format(theme.name, item.name), item, layers, min_levels=min_levels
                 )
                 errors |= gp_errors
-                if gp is not None:
-                    children.append(gp)
+                if group_theme is not None:
+                    children.append(group_theme)
             elif self._layer_included(item):
                 if min_levels > 0:
                     errors.add("The Layer '{}' cannot be directly in the theme '{}' (0/{:d}).".format(
                         item.name, theme.name, min_levels
                     ))
                 elif item.name in layers:
-                    l, l_errors = self._layer(item, dim=DimensionInformation())
+                    layer_theme, l_errors = self._layer(item, dim=DimensionInformation())
                     errors |= l_errors
-                    if l is not None:
-                        children.append(l)
+                    if layer_theme is not None:
+                        children.append(layer_theme)
         return children, errors
 
     def _functionality(self):
@@ -864,7 +876,7 @@ class Entry:
         set_common_headers(self.request, "apihelp", NO_CACHE)
         return {}
 
-    def _wms_get_features_type(self, ogc_server_id, wfs_url):
+    async def _wms_get_features_type(self, ogc_server_id, wfs_url):
         errors = set()
 
         if ogc_server_id in self.server_wfs_feature_type:
@@ -885,7 +897,9 @@ class Entry:
             headers.pop("Host")  # pragma nocover
 
         try:
-            response = self.get_http_cached(wfs_url, headers)
+            response = await asyncio.get_event_loop().run_in_executor(
+                None, get_http_cached, self.http_options, wfs_url, headers
+            )
         except Exception:  # pragma: no cover
             errors.add("Unable to get DescribeFeatureType from URL {}".format(wfs_url))
             return None, errors
@@ -905,6 +919,38 @@ class Entry:
             ))
             return None, errors
 
+        return response, errors
+
+    def get_url_internal_wfs(self, ogc_server, errors):
+        # required to do every time to validate the url.
+        if ogc_server.auth != main.OGCSERVER_AUTH_NOAUTH:
+            url = self.request.route_url("mapserverproxy", _query={"ogcserver": ogc_server.name})
+            url_wfs = url
+            url_internal_wfs = get_url2(
+                "The OGC server (WFS) '{}'".format(ogc_server.name),
+                ogc_server.url_wfs or ogc_server.url, self.request, errors=errors
+            )
+        else:
+            url = get_url2(
+                "The OGC server '{}'".format(ogc_server.name),
+                ogc_server.url, self.request, errors=errors
+            )
+            url_wfs = get_url2(
+                "The OGC server (WFS) '{}'".format(ogc_server.name),
+                ogc_server.url_wfs, self.request, errors=errors
+            ) if ogc_server.url_wfs is not None else url
+            url_internal_wfs = url_wfs
+        return url_internal_wfs, url, url_wfs
+
+    async def preload(self, errors):
+        tasks = set()
+        for ogc_server in models.DBSession.query(main.OGCServer).all():
+            url_internal_wfs, _, _ = self.get_url_internal_wfs(ogc_server, errors)
+            tasks.add(self._wms_get_features_type(ogc_server.id, url_internal_wfs))
+            tasks.add(self._wms_getcap(ogc_server))
+
+        await asyncio.gather(*tasks)
+
     @view_config(route_name="themes", renderer="json")
     def themes(self):
         interface = self.request.params.get("interface", "desktop")
@@ -921,28 +967,16 @@ class Entry:
 
         result = {}
         all_errors = set()
+        LOG.info("Start preload")
+        asyncio.run(self.preload(all_errors))
+        LOG.info("End preload")
         result["ogcServers"] = {}
         for ogc_server in models.DBSession.query(main.OGCServer).all():
-            # required to do every time to validate the url.
-            if ogc_server.auth != main.OGCSERVER_AUTH_NOAUTH:
-                url = self.request.route_url("mapserverproxy", _query={"ogcserver": ogc_server.name})
-                url_wfs = url
-                url_internal_wfs = get_url2(
-                    "The OGC server (WFS) '{}'".format(ogc_server.name),
-                    ogc_server.url_wfs or ogc_server.url, self.request, errors=all_errors
-                )
-            else:
-                url = get_url2(
-                    "The OGC server '{}'".format(ogc_server.name),
-                    ogc_server.url, self.request, errors=all_errors
-                )
-                url_wfs = get_url2(
-                    "The OGC server (WFS) '{}'".format(ogc_server.name),
-                    ogc_server.url_wfs, self.request, errors=all_errors
-                ) if ogc_server.url_wfs is not None else url
-                url_internal_wfs = url_wfs
+            url_internal_wfs, url, url_wfs = self.get_url_internal_wfs(ogc_server, all_errors)
             if ogc_server.wfs_support:
-                feature_type, errors = self._wms_get_features_type(ogc_server.id, url_internal_wfs)
+                feature_type, errors = asyncio.run(
+                    self._wms_get_features_type(ogc_server.id, url_internal_wfs)
+                )
                 all_errors |= errors
             else:
                 feature_type = None
@@ -956,20 +990,20 @@ class Entry:
                         elements[child.attrib['name']] = child.attrib['type'].split(':')[1]
 
                     if child.tag == '{http://www.w3.org/2001/XMLSchema}complexType':
-                        s = child.find('.//{http://www.w3.org/2001/XMLSchema}sequence')
+                        sequence = child.find('.//{http://www.w3.org/2001/XMLSchema}sequence')
                         attrib = {}
-                        for c in s.getchildren():
+                        for children in sequence.getchildren():
                             namespace = None
-                            type_ = c.attrib['type']
+                            type_ = children.attrib['type']
                             if len(type_.split(':')) == 2:
                                 namespace, type_ = type_.split(':')
-                            namespace = c.nsmap[namespace]
-                            attrib[c.attrib['name']] = {
+                            namespace = children.nsmap[namespace]
+                            attrib[children.attrib['name']] = {
                                 'namespace': namespace,
                                 'type': type_,
                             }
-                            if 'alias' in c.attrib:
-                                attrib[c.attrib['name']] = c.attrib['alias']
+                            if 'alias' in children.attrib:
+                                attrib[children.attrib['name']] = children.attrib['alias']
                         types[child.attrib['name']] = attrib
                 attributes = {}
                 for name, type_ in elements.items():
@@ -1011,15 +1045,15 @@ class Entry:
             all_errors |= errors
 
         result["errors"] = list(all_errors)
-        if len(all_errors) > 0:
+        if all_errors:
             LOG.info("Theme errors:\n%s", "\n".join(all_errors))
         return result
 
     def _get_group(self, group, interface):
         layers = self._layers(interface)
         try:
-            lg = models.DBSession.query(main.LayerGroup).filter(main.LayerGroup.name == group).one()
-            return self._group(lg.name, lg, layers)
+            group_db = models.DBSession.query(main.LayerGroup).filter(main.LayerGroup.name == group).one()
+            return self._group(group_db.name, group_db, layers)
         except NoResultFound:  # pragma: no cover
             return None, set(["Unable to find the Group named: {}, Available Groups: {}".format(
                 group, ", ".join([i[0] for i in models.DBSession.query(main.LayerGroup.name).all()])
@@ -1159,9 +1193,9 @@ class Entry:
             )
             raise HTTPBadRequest("See server logs for details")
 
-        u = self.request.user
-        u.password = new_password
-        u.is_password_changed = True
+        user = self.request.user
+        user.password = new_password
+        user.is_password_changed = True
         models.DBSession.flush()
         LOG.info("Password changed for user '%s'", self.request.user.username)
 

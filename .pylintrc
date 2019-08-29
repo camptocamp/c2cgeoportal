@@ -1,5 +1,5 @@
 [MESSAGES CONTROL]
-disable=
+disable=missing-docstring, bad-continuation
 
 [TYPECHECK]
 ignored-classes=sqlalchemy.orm.scoping.scoped_session,
@@ -10,3 +10,4 @@ generated-members=requests.packages
 
 [FORMAT]
 max-line-length=110
+good-names=nb
