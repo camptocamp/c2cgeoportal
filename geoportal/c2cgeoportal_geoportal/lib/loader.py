@@ -13,7 +13,6 @@ class Loader(BaseLoader):
             "LOG_LEVEL": "INFO",
             "C2CGEOPORTAL_LOG_LEVEL": "WARN",
             "GUNICORN_LOG_LEVEL": "INFO",
-            "GUNICORN_ACCESS_LOG_LEVEL": "INFO",
             "SQL_LOG_LEVEL": "INFO",
             "OTHER_LOG_LEVEL": "INFO",
             "LOG_HOST": "localhost",

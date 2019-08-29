@@ -169,7 +169,6 @@ services:
       - C2CGEOPORTAL_LOG_LEVEL
       - SQL_LOG_LEVEL
       - GUNICORN_LOG_LEVEL
-      - GUNICORN_ACCESS_LOG_LEVEL
       - OTHER_LOG_LEVEL
 
   alembic:
