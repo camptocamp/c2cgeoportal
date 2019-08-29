@@ -27,6 +27,7 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+import os
 from datetime import datetime
 
 from pyramid.httpexceptions import HTTPInternalServerError, \
@@ -498,7 +499,7 @@ def get_layer_class(layer, with_last_update_columns=False):
 
     primary_key = Layers.get_metadata(layer, "geotablePrimaryKey")
     cls = get_class(
-        str(layer.geo_table),
+        str(layer.geo_table.format(os.environ)),
         exclude_properties=exclude,
         primary_key=primary_key,
         attributes_order=attributes_order,
