@@ -122,15 +122,16 @@ Add a new script call from the application's root directory:
 
 .. prompt:: bash
 
-    ./docker-compose-run alembic --name=[main|static] revision --message "<Explicit name>"
+    ./docker-compose-run alembic \
+        --name=[main|static] revision --message "<Explicit name>"
 
 Or in c2cgeoportal root directory:
 
 .. prompt:: bash
 
-    ./docker-compose-run alembic ${'\\'}
-        --config geoportal/tests/functional/alembic.ini --name=[main|static] ${'\\'}
-        revision --message "<Explicit name>"
+    ./docker-compose-run alembic \
+        --config=geoportal/tests/functional/alembic.ini \
+        --name=[main|static] revision --message "<Explicit name>"
 
 This will generate the migration script in
 ``commons/c2cgeoportal/commons/alembic/[main|static]/xxx_<Explicite_name>.py``.
