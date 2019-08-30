@@ -246,14 +246,14 @@ class Entry:
             "REQUEST": "GetCapabilities",
             "ROLE_ID": "0",
             "USER_ID": "0",
-        }))
+        })))
         print(requests.get(add_url_params(url, {
             "SERVICE": "WMS",
             "VERSION": "1.3.0",
             "REQUEST": "GetCapabilities",
             "ROLE_ID": "0",
             "USER_ID": "0",
-        }))
+        })))
         url = add_url_params(url, {
             "SERVICE": "WMS",
             "VERSION": "1.3.0",
