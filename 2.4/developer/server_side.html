@@ -121,11 +121,12 @@ For example the layer disclaimer, …</p>
 so-called <em>migration repository</em>, which is a simple directory <code class="docutils literal notranslate"><span class="pre">/opt/alembic</span></code> in the
 docker image. So developers who modify the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> database schema should add migration scripts.</p>
 <p>Add a new script call from the application’s root directory:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./docker-compose-run alembic --name<span class="o">=[</span>main<span class="p">|</span>static<span class="o">]</span> revision --message <span class="s2">&quot;&lt;Explicit name&gt;&quot;</span></span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./docker-compose-run alembic <span class="se">\</span>
+    --name<span class="o">=[</span>main<span class="p">|</span>static<span class="o">]</span> revision --message <span class="s2">&quot;&lt;Explicit name&gt;&quot;</span></span>
 </pre></div></div><p>Or in c2cgeoportal root directory:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./docker-compose-run alembic <span class="si">${</span><span class="s1">&#39;\\&#39;</span><span class="si">}</span></span>
-<span class="prompt1">    --config geoportal/tests/functional/alembic.ini --name<span class="o">=[</span>main<span class="p">|</span>static<span class="o">]</span> <span class="si">${</span><span class="s1">&#39;\\&#39;</span><span class="si">}</span></span>
-<span class="prompt1">    revision --message <span class="s2">&quot;&lt;Explicit name&gt;&quot;</span></span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./docker-compose-run alembic <span class="se">\</span>
+    --config<span class="o">=</span>geoportal/tests/functional/alembic.ini <span class="se">\</span>
+    --name<span class="o">=[</span>main<span class="p">|</span>static<span class="o">]</span> revision --message <span class="s2">&quot;&lt;Explicit name&gt;&quot;</span></span>
 </pre></div></div><p>This will generate the migration script in
 <code class="docutils literal notranslate"><span class="pre">commons/c2cgeoportal/commons/alembic/[main|static]/xxx_&lt;Explicite_name&gt;.py</span></code>.</p>
 <p>To get the project schema, use:
