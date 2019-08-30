@@ -212,7 +212,7 @@ class Entry:
 
         wms = None
         try:
-            wms = WebMapService(None, xml=content)
+            wms = WebMapService(None, version='1.3.0', xml=content)
         except Exception:  # pragma: no cover
             error = "WARNING! an error occurred while trying to read the mapfile and recover the themes." \
                 "\nURL: {}\n{}".format(url, content)
@@ -242,7 +242,7 @@ class Entry:
 
         url = add_url_params(url, {
             "SERVICE": "WMS",
-            "VERSION": "1.1.1",
+            "VERSION": "1.3.0",
             "REQUEST": "GetCapabilities",
             "ROLE_ID": "0",
             "USER_ID": "0",

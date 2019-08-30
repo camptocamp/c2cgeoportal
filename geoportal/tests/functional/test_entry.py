@@ -437,7 +437,7 @@ class TestEntryView(TestCase):
         }
         assert {e[:90] for e in errors} == {
             "The layer '__test_public_layer_notmapfile' (__test_public_layer_notmapfile) is not defined",
-            "GetCapabilities from URL http://mapserver:8080/?map=not_a_mapfile&SERVICE=WMS&VERSION=1.1."
+            "GetCapabilities from URL http://mapserver:8080/?map=not_a_mapfile&SERVICE=WMS&VERSION=1.3."
         }
 
     def test_theme_geoserver(self):
