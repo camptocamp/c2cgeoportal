@@ -74,7 +74,7 @@ flake8:
 		--copyright-check \
 		--copyright-min-file-size=1 \
 		--copyright-regexp="Copyright \(c\) ([0-9][0-9][0-9][0-9]-)?$(shell date +%Y), Camptocamp SA"
-	grep --recursive --files-with-match '/usr/bin/env python' | grep -v Makefile | grep -v node_modules \
+	grep --recursive --files-with-match '/usr/bin/env python' | grep -v internal.mk | grep -v node_modules \
 		| xargs flake8 \
 		--copyright-check \
 		--copyright-min-file-size=1 \
