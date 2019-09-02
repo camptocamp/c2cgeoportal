@@ -17,15 +17,17 @@ and ``production_static`` for production environment.
 For the data of the ``main`` schema, we recommend to have one schema for each version of the application.
 The following example shows how an update can be performed from a version ``2019`` to a version ``2020``:
 
-========================  =============  =============
-                           Integration    Production
-                           schema name    schema name
-========================  =============  =============
-Initial state              main_2019      main_2019
-Start a new version        main_2020      main_2019
-Do the changes             main_2020      main_2019
-Publish the new version    main_2020      main_2020
-========================  =============  =============
++-------------------------+-------------------------------+------------------------------+
+|                         | Integration schema name       | Production schema name       |
++=========================+===============================+==============================+
+| Initial state           | main_2019                     | main_2019                    |
++-------------------------+-------------------------------+------------------------------+
+| Start a new version     | main_2020                     | main_2019                    |
++-------------------------+-------------------------------+------------------------------+
+| Do the changes          | main_2020                     | main_2019                    |
++-------------------------+-------------------------------+------------------------------+
+| Publish the new version | main_2020                     | main_2020                    |
++-------------------------+-------------------------------+------------------------------+
 
 
 Initial state
@@ -40,7 +42,8 @@ Prepare the project
 To be able to proceed like this, the variables ``PGSCHEMA`` and the ``DOCKER_PGSCHEMA_STATIC``
 should be managed in your makefiles:
 
-* The ``PGSCHEMA`` variable should be set in the ``Makefile``, in this example, it will be set to ``main_2019``.
+* The ``PGSCHEMA`` variable should be set in the ``Makefile``, in this example, it will be set to
+  ``main_2019``.
 * The ``DOCKER_PGSCHEMA_STATIC`` variable for production should be set in a specific makefile
   for production e.-g. ``production.mk``, it will be set for example to ``integration_static`` in the
   Makefile, and to ``production_static`` in the production makefile.
@@ -108,3 +111,11 @@ Publish the new version on production: now, integration and production both use 
 For OpenShift projects, just push the integration branch into the production branch.
 
 The schema ``main_2019`` still exists, so if needed, the production can be rolled back to this content.
+
+
+Editing
+~~~~~~~
+
+To have a different schema for the geodata used in the editing, we can define the geo_table as follows:
+``{GEODATA_SCHEMA}.table`` where ``{GEODATA_SCHEMA}`` will be replaced by the ``GEODATA_SCHEMA``
+environment variable.

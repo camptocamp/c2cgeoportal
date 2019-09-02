@@ -28,31 +28,36 @@
 # either expressed or implied, of the FreeBSD Project.
 
 import logging
+import os
 from datetime import datetime
 
 import geojson
-from c2cgeoportal_commons import models
-from c2cgeoportal_commons.models.main import Layer, RestrictionArea, Role
 from geoalchemy2 import Geometry
 from geoalchemy2 import func as ga_func
 from geoalchemy2.shape import from_shape, to_shape
 from geojson.feature import Feature, FeatureCollection
 from papyrus.protocol import Protocol, create_filter
 from papyrus.xsd import XSDGenerator
-from pyramid.httpexceptions import HTTPBadRequest, HTTPForbidden, HTTPInternalServerError, HTTPNotFound
+from pyramid.httpexceptions import (HTTPBadRequest, HTTPForbidden,
+                                    HTTPInternalServerError, HTTPNotFound)
 from pyramid.view import view_config
 from shapely.geometry import asShape
 from shapely.geos import TopologicalError
 from shapely.ops import cascaded_union
-from sqlalchemy import Enum, Numeric, String, Text, Unicode, UnicodeText, distinct, exc, func
+from sqlalchemy import (Enum, Numeric, String, Text, Unicode, UnicodeText,
+                        distinct, exc, func)
 from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 from sqlalchemy.orm.properties import ColumnProperty
 from sqlalchemy.orm.util import class_mapper
 from sqlalchemy.sql import and_, or_
 
-from c2cgeoportal_geoportal.lib.caching import (NO_CACHE, PRIVATE_CACHE, PUBLIC_CACHE, get_region,
+from c2cgeoportal_commons import models
+from c2cgeoportal_commons.models.main import Layer, RestrictionArea, Role
+from c2cgeoportal_geoportal.lib.caching import (NO_CACHE, PRIVATE_CACHE,
+                                                PUBLIC_CACHE, get_region,
                                                 set_common_headers)
-from c2cgeoportal_geoportal.lib.dbreflection import _AssociationProxy, get_class, get_table
+from c2cgeoportal_geoportal.lib.dbreflection import (_AssociationProxy,
+                                                     get_class, get_table)
 
 log = logging.getLogger(__name__)
 
@@ -493,7 +498,7 @@ def get_layer_class(layer, with_last_update_columns=False):
 
     primary_key = Layers.get_metadata(layer, "geotablePrimaryKey")
     cls = get_class(
-        str(layer.geo_table),
+        str(layer.geo_table.format(os.environ)),
         exclude_properties=exclude,
         primary_key=primary_key,
         attributes_order=attributes_order,

@@ -138,7 +138,7 @@ class TinyOWSProxy(OGCProxy):
 
     def _proxy_callback(self, operation, user: static.User, cache_control, *args, **kwargs):
         response = self._proxy(*args, **kwargs)
-        content = response.text
+        content = response.content.decode()
 
         if operation == "getcapabilities":
             content = filter_wfst_capabilities(

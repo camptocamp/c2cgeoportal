@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2019, Camptocamp SA
+# Copyright (c) 2019, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,55 +27,24 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+"""Merge 2.4 and master branches
 
-import argparse
-import logging
-import transaction
-
-from c2cgeoportal_commons.testing import get_session
-from c2cgeoportal_geoportal.scripts import fill_arguments, get_appsettings
-
-
-LOG = logging.getLogger(__name__)
+Revision ID: eeb345672454
+Revises: ('78fd093c8393', '56dc90838d90')
+Create Date: 2019-09-03 09:11:57.786920
+"""
 
 
-def main():
-    parser = argparse.ArgumentParser(
-        description="Create and populate the database tables."
-    )
-    fill_arguments(parser)
-    options = parser.parse_args()
-    settings = get_appsettings(options)
-
-    with transaction.manager:
-        session = get_session(settings, transaction.manager)
-
-        from c2cgeoportal_commons.models.main import Interface, OGCServer, Theme, LayerGroup, LayerWMS
-
-        interfaces = session.query(Interface) \
-            .filter(Interface.name != 'api') \
-            .filter(Interface.name != 'iframe_api') \
-            .all()
-        ogc_server = session.query(OGCServer).filter(OGCServer.name == "source for image/png").one()
-
-        layer_borders = LayerWMS("Borders", "borders")
-        layer_borders.interfaces = interfaces
-        layer_borders.ogc_server = ogc_server
-        layer_density = LayerWMS("Density", "density")
-        layer_density.interfaces = interfaces
-        layer_density.ogc_server = ogc_server
-
-        group = LayerGroup("Demo")
-        group.children = [layer_borders, layer_density]
-
-        theme = Theme("Demo")
-        theme.children = [group]
-        theme.interfaces = interfaces
-
-        session.add(theme)
-
-        print("Successfully added the demo theme")
+# revision identifiers, used by Alembic.
+revision = 'eeb345672454'
+down_revision = ('78fd093c8393', '56dc90838d90')
+branch_labels = None
+depends_on = None
 
 
-if __name__ == "__main__":
-    main()
+def upgrade():
+    pass
+
+
+def downgrade():
+    pass

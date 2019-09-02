@@ -9,6 +9,17 @@ Information
 
 1.
 
+2. The WMTS capabilities is now generated on runtime.
+
+3. If not already done the 'api' and 'iframe_api' will be created, and the 'edit' and 'routing' interface
+   will be removed. After the database upgrade you can run the following request to fill e.-g. the api's
+   interfaces with the desktop interface:
+
+    INSERT INTO main.interface_layer (interface_id, layer_id)
+    SELECT <api_interface_id>, layer_id FROM main.interface_layer WHERE interface_id = <other_interface_id>;
+    INSERT INTO main.interface_theme (interface_id, theme_id)
+    SELECT <api_interface_id>, theme_id FROM main.interface_theme WHERE interface_id = <other_interface_id>;
+
 
 Changes to apply
 ----------------

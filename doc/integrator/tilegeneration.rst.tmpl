@@ -66,44 +66,10 @@ EC2, SQS, SNS.
 
 See the `readme <https://pypi.python.org/pypi/tilecloud-chain>`_.
 
-Initialization
-~~~~~~~~~~~~~~
-
-* Build the project as usual
-
-* In the ``<project>.mk``, activate the tile generation:
-
-  .. code::
-
-     TILECLOUD_CHAIN ?= TRUE
-
-* If you use local cache, activate the capabilities generation with:
-
-  .. code::
-
-     TILECLOUD_CHAIN_LOCAL ?= TRUE
-
-  and set the ``wmtscapabilities_file`` to ``${DOLLAR}{WMTSCAPABILITIES_PATH}`` in your
-  ``tilegeneration/config.yaml.tmpl`` file.
-
-* In your ``<prod>.mk``, you can also set the capabilities file name with:
-
-  .. code::
-
-     WMTSCAPABILITIES_PATH = 1.0.0/WMTSCapabilities.xml
-
-* Add configuration to Git:
-
-  .. prompt:: bash
-
-    git add tilegeneration
-
 Configuration
 ~~~~~~~~~~~~~
 
-The configuration is done in the file
-``tilegeneration/config.yaml.tmpl``. The original file is available at:
-https://github.com/camptocamp/c2cgeoportal/blob/${MAIN_BRANCH}/geoportal/c2cgeoportal_geoportal/scaffolds/create/tilegeneration/config.yaml.tmpl_tmpl
+The configuration is done in the file ``tilegeneration/config.yaml.tmpl``.
 
 The main thing to do is to:
 
@@ -126,21 +92,9 @@ The main thing to do is to:
   We consider that the first tile of the max zoom is empty.
   Then copy-paste the result in the layer config.
 
-* If you need it, you can generate the WMTS capabilities file:
+If you generate the tiles locally, you do not need all the configuration variables, because many of them
+in the ``generation`` part are for AWS generation.
 
-  .. prompt:: bash
-
-     docker-compose exec tilecloudchain generate_controller --generate-wmts-capabilities
-
-* And an OpenLayers test page:
-
-  .. prompt:: bash
-
-     docker-compose exec tilecloudchain generate_controller --openlayers-test
-
-If you generate the tiles locally, you do not need all the configuration
-variables, because many of them in the ``generation`` part are for
-AWS generation.
 
 Tile Generation and management
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -168,12 +122,3 @@ If you setup all the default options, you can generate the tiles by using the co
 .. prompt:: bash
 
     docker-compose exec tilecloudchain generate_tiles
-
-.. note:: Make sure you export AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY:
-
-   .. prompt:: bash
-
-       export AWS_ACCESS_KEY_ID=XXXXX
-       export AWS_SECRET_ACCESS_KEY=YYYY
-
-   If you forget it, you will get an error message.
