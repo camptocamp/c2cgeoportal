@@ -88,11 +88,12 @@ The following example shows how an update can be performed from a version <code 
 <p>To be able to proceed like this, the variables <code class="docutils literal notranslate"><span class="pre">PGSCHEMA</span></code> and the <code class="docutils literal notranslate"><span class="pre">DOCKER_PGSCHEMA_STATIC</span></code>
 should be managed in your makefiles:</p>
 <ul class="simple">
-<li>the <code class="docutils literal notranslate"><span class="pre">PGSCHEMA</span></code> variable should be set in the <code class="docutils literal notranslate"><span class="pre">Makefile</span></code>, in this example, it will be set to <code class="docutils literal notranslate"><span class="pre">main_2019</span></code>.</li>
-<li>the <code class="docutils literal notranslate"><span class="pre">DOCKER_PGSCHEMA_STATIC</span></code> variable for production should be set in a specific makefile
+<li>The <code class="docutils literal notranslate"><span class="pre">PGSCHEMA</span></code> variable should be set in the <code class="docutils literal notranslate"><span class="pre">Makefile</span></code>, in this example, it will be set to
+<code class="docutils literal notranslate"><span class="pre">main_2019</span></code>.</li>
+<li>The <code class="docutils literal notranslate"><span class="pre">DOCKER_PGSCHEMA_STATIC</span></code> variable for production should be set in a specific makefile
 for production e.-g. <code class="docutils literal notranslate"><span class="pre">production.mk</span></code>, it will be set for example to <code class="docutils literal notranslate"><span class="pre">integration_static</span></code> in the
 Makefile, and to <code class="docutils literal notranslate"><span class="pre">production_static</span></code> in the production makefile.</li>
-<li>the line <code class="docutils literal notranslate"><span class="pre">PGSCHEMA=${docker_schema}</span></code> should be removed from your <code class="docutils literal notranslate"><span class="pre">.env.mako</span></code> file.</li>
+<li>The line <code class="docutils literal notranslate"><span class="pre">PGSCHEMA=${docker_schema}</span></code> should be removed from your <code class="docutils literal notranslate"><span class="pre">.env.mako</span></code> file.</li>
 </ul>
 </div>
 <div class="section" id="start-a-new-version">
@@ -138,6 +139,12 @@ mapfiles and your QGIS projects. The new table will be automatically used when y
 <p>Publish the new version on production: now, integration and production both use <code class="docutils literal notranslate"><span class="pre">main_2020</span></code>.</p>
 <p>For OpenShift projects, just push the integration branch into the production branch.</p>
 <p>The schema <code class="docutils literal notranslate"><span class="pre">main_2019</span></code> still exists, so if needed, the production can be rolled back to this content.</p>
+</div>
+<div class="section" id="editing">
+<h3>Editing<a class="headerlink" href="#editing" title="Permalink to this headline">¶</a></h3>
+<p>To have a different schema for the geodata used in the editing, we can define the geo_table as follows:
+<code class="docutils literal notranslate"><span class="pre">{GEODATA_SCHEMA}.table</span></code> where <code class="docutils literal notranslate"><span class="pre">{GEODATA_SCHEMA}</span></code> will be replaced by the <code class="docutils literal notranslate"><span class="pre">GEODATA_SCHEMA</span></code>
+environment variable.</p>
 </div>
 </div>
 </div>

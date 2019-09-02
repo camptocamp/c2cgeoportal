@@ -52,7 +52,6 @@ For non Docker project:
 
    ./docker-run make --makefile=<package>.mk update-po
 
-
 .. note::
 
    You should run this command when you change something in the following:
@@ -66,3 +65,21 @@ For non Docker project:
      * layer enumeration
      * some metadata as disclaimer
      * editable layer (database structure, data or enumerations)
+
+.. note::
+
+   In mapfiles, attributes added by mapserver substitution will not be collected
+   for translation.
+
+~~~~~~~~~~~~~~~~~~~~~~~
+Collecte custom strings
+~~~~~~~~~~~~~~~~~~~~~~~
+
+If the standard system can not collect some strings, you can add them manually in
+one of your JavaScript application controllers:
+
+.. code:: javascript
+
+    /** @type {angular.gettext.gettextCatalog} */
+    const gettextCatalog = $injector.get('gettextCatalog');
+    gettextCatalog.getString('My previously not collected string');

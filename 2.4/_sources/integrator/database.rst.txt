@@ -42,11 +42,12 @@ Prepare the project
 To be able to proceed like this, the variables ``PGSCHEMA`` and the ``DOCKER_PGSCHEMA_STATIC``
 should be managed in your makefiles:
 
-* the ``PGSCHEMA`` variable should be set in the ``Makefile``, in this example, it will be set to ``main_2019``.
-* the ``DOCKER_PGSCHEMA_STATIC`` variable for production should be set in a specific makefile
+* The ``PGSCHEMA`` variable should be set in the ``Makefile``, in this example, it will be set to
+  ``main_2019``.
+* The ``DOCKER_PGSCHEMA_STATIC`` variable for production should be set in a specific makefile
   for production e.-g. ``production.mk``, it will be set for example to ``integration_static`` in the
   Makefile, and to ``production_static`` in the production makefile.
-* the line ``PGSCHEMA=${docker_schema}`` should be removed from your ``.env.mako`` file.
+* The line ``PGSCHEMA=${docker_schema}`` should be removed from your ``.env.mako`` file.
 
 
 Start a new version
@@ -110,3 +111,11 @@ Publish the new version on production: now, integration and production both use 
 For OpenShift projects, just push the integration branch into the production branch.
 
 The schema ``main_2019`` still exists, so if needed, the production can be rolled back to this content.
+
+
+Editing
+~~~~~~~
+
+To have a different schema for the geodata used in the editing, we can define the geo_table as follows:
+``{GEODATA_SCHEMA}.table`` where ``{GEODATA_SCHEMA}`` will be replaced by the ``GEODATA_SCHEMA``
+environment variable.
