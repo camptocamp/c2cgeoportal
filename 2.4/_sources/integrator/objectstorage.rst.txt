@@ -3,6 +3,13 @@
 Working with Object storage (like S3)
 =====================================
 
+
+Prepare files
+-------------
+
+We can prepare a GeoTIFF for the Cloud, see the `COG file format <https://www.cogeo.org/>`_
+and the `GDAL output driver options <https://gdal.org/drivers/raster/cog.html>`_.
+
 Generalities
 ------------
 
