@@ -33,19 +33,15 @@ Before doing a release you should merge all the previous branch on this one:
 
      .. prompt:: bash
 
-        docker exec geoportal alembic \
-            --config=geoportal/tests/functional/alembic.ini \
-            --name=main heads
-        docker exec geoportal alembic \
-            --config=geoportal/tests/functional/alembic.ini \
-            --name=static heads
+        python3 -m pip install --user -e commons
+        alembic --config=commons/alembic.ini \
+            --name=[main|static] heads
 
      If yes create the merge with:
 
      .. prompt:: bash
 
-        docker exec geoportal alembic \
-            --config=geoportal/tests/functional/alembic.ini \
+        alembic --config=commons/alembic.ini \
             --name=[main|static] \
             merge --message="Merge <src> and <dst> branches" \
             <rev 1> <rev 2>

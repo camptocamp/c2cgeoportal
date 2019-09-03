@@ -58,3 +58,21 @@ To update each ``po`` files, you must run the following command:
      * layer enumeration
      * some metadata as disclaimer
      * editable layer (database structure, data or enumerations)
+
+.. note::
+
+   In mapfiles, attributes added by mapserver substitution will not be collected
+   for translation.
+
+~~~~~~~~~~~~~~~~~~~~~~~
+Collecte custom strings
+~~~~~~~~~~~~~~~~~~~~~~~
+
+If the standard system can not collect some strings, you can add them manually in
+one of your JavaScript application controllers:
+
+.. code:: javascript
+
+    /** @type {angular.gettext.gettextCatalog} */
+    const gettextCatalog = $injector.get('gettextCatalog');
+    gettextCatalog.getString('My previously not collected string');
