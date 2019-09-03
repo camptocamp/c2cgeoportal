@@ -227,7 +227,6 @@ update_paths:
   - interfaces_theme
   - resourceproxy
   - servers
-  - shortener
   - shortener.allowed_hosts
   - sqlalchemy
   - sqlalchemy_slave
