@@ -3,7 +3,7 @@ FROM camptocamp/qgis-server:${VERSION} AS base
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
 COPY requirements.txt /tmp/
-RUN python3 -m pip install --requirement=/tmp/requirements.txt
+RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --requirement=/tmp/requirements.txt
 
 #############################################################################################################
 
@@ -12,7 +12,7 @@ FROM debian:stretch AS lint
 RUN apt-get update
 RUN apt-get install --assume-yes --no-install-recommends apt-utils
 RUN apt-get install --assume-yes --no-install-recommends python3-pip python3-setuptools
-RUN python3 -m pip install wheel
+RUN python3 -m pip install --disable-pip-version-check --no-cache-dir wheel
 
 COPY requirements-dev.txt /src/
 RUN python3 -m pip install --requirement=/src/requirements-dev.txt
@@ -28,14 +28,17 @@ RUN	mypy --ignore-missing-imports --strict-optional --follow-imports skip /src/g
 FROM base AS runner
 
 COPY geomapfish_qgisserver/* /var/www/plugins/geomapfish_qgisserver/
-COPY --from=camptocamp/geomapfish /opt/c2cgeoportal_commons/* /opt/c2cgeoportal_commons/
+COPY --from=camptocamp/geomapfish /opt/c2cgeoportal/commons /opt/c2cgeoportal/commons
 
-RUN python3 -m pip install --editable=/opt/c2cgeoportal_commons
+RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --no-deps \
+    --editable=/opt/c2cgeoportal/commons
 
 #############################################################################################################
 
 FROM runner as tests
 
+COPY --from=camptocamp/geomapfish-tools /opt/c2cgeoportal/commons/c2cgeoportal_commons/testing \
+    /opt/c2cgeoportal/commons/c2cgeoportal_commons/testing
 COPY tests/requirements.txt /tmp/
 
 RUN python3 -m pip install --requirement=/tmp/requirements.txt

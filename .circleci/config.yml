@@ -33,10 +33,8 @@ jobs:
           $(find -name .git -prune -or \( -name "*.yml" -or -name "*.yaml" \) -print)
 
       # Build images
-      - run: VERSION=$(ci/release-tag) make build-tests
-      - run: VERSION=$(ci/release-tag) make build-build
-      - run: VERSION=$(ci/release-tag) make build-main
-      - run: VERSION=$(ci/release-tag) make build-scaffolds
+      - run: VERSION=$(ci/release-tag) make build-tools
+      - run: VERSION=$(ci/release-tag) make build-runner
       - run: VERSION=$(ci/release-tag) make checks
       - run: VERSION=$(ci/release-tag) make build-config-build
 
@@ -57,14 +55,14 @@ jobs:
       # Tests
       - run: make preparetest
       - run: >
-          ci/run-tests tests '' /app/c2cgeoportal/commons/c2cgeoportal_commons
-          commons /app/c2cgeoportal/commons/tests
+          ci/run-tests tests '' /opt/c2cgeoportal/commons/c2cgeoportal_commons
+          commons /opt/c2cgeoportal/commons/tests
       - run: >
-          ci/run-tests tests '--append' /app/c2cgeoportal/geoportal/c2cgeoportal_geoportal
-          geoportal /app/c2cgeoportal/geoportal/tests
+          ci/run-tests tests '--append' /opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal
+          geoportal /opt/c2cgeoportal/geoportal/tests
       - run: >
-          ci/run-tests tests '--append' /app/c2cgeoportal/admin/c2cgeoportal_admin
-          admin /app/c2cgeoportal/admin/tests
+          ci/run-tests tests '--append' /opt/c2cgeoportal/admin/c2cgeoportal_admin
+          admin /opt/c2cgeoportal/admin/tests
       - run: >
           ci/run-tests qgisserver-tests '' /var/www/plugins/geomapfish_qgisserver
           qgis /src/tests/functional
@@ -128,15 +126,9 @@ jobs:
       - run: ci/test-app
 
       # Test Upgrade
-      - run: |
-          docker build --target=builder --tag=camptocamp/geomapfish-build:$(ci/release-tag) \
-          --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=$(ci/release-tag) .
-          docker build --target=runner --tag=camptocamp/geomapfish:$(ci/release-tag) \
-          --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=$(ci/release-tag) .
-          docker build --target=upgrader --tag=camptocamp/geomapfish-scaffolds \
-          --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=$(ci/release-tag) .
-          docker build --tag=camptocamp/geomapfish-config-build:$(ci/release-tag) \
-          --build-arg=VERSION=$(ci/release-tag) docker/config
+      - run: VERSION=$(ci/release-tag) DOCKER_TAG=$(ci/release-tag) make build-tools
+      - run: VERSION=$(ci/release-tag) DOCKER_TAG=$(ci/release-tag) make build-runner
+      - run: VERSION=$(ci/release-tag) DOCKER_TAG=$(ci/release-tag) make build-config-build
       - run: ci/test-upgrade init ${HOME}/workspace
       - run: ci/test-upgrade 240 ${HOME}/workspace
       - run: ci/test-upgrade 25 ${HOME}/workspace
@@ -158,14 +150,9 @@ jobs:
       - deploy: &publish-docker-pip
           name: Push to Docker hub and Pypi
           command: |
-            docker build --target=builder --tag=camptocamp/geomapfish-build \
-            --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=$(ci/release-tag) .
-            docker build --target=runner --tag=camptocamp/geomapfish \
-            --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=$(ci/release-tag) .
-            docker build --target=upgrader --tag=camptocamp/geomapfish-scaffolds \
-            --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=$(ci/release-tag) .
-            docker build --tag=camptocamp/geomapfish-config-build \
-            --build-arg=VERSION=$(ci/release-tag) docker/config
+            VERSION=$(ci/release-tag) make build-tools
+            VERSION=$(ci/release-tag) make build-runner
+            VERSION=$(ci/release-tag) make build-config-build
             docker build --target=runner --build-arg=VERSION=latest \
             --tag=camptocamp/geomapfish-qgisserver:gmf${MAJOR_VERSION}-qgismaster \
             docker/qgisserver

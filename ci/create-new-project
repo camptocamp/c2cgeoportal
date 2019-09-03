@@ -1,14 +1,10 @@
 #!/bin/bash -ex
 
 TAG=$(ci/release-tag)
-docker build --target=builder --tag=camptocamp/geomapfish-build:${TAG} \
-    --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=${TAG} .
-docker build --target=runner --tag=camptocamp/geomapfish:${TAG} \
-    --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=${TAG} .
-docker build --target=upgrader --tag=camptocamp/geomapfish-scaffolds:${TAG} \
-    --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=${TAG} .
-docker build --tag=camptocamp/geomapfish-config-build:${TAG} \
-    --build-arg=VERSION=${TAG} docker/config
+VERSION=${TAG} DOCKER_TAG=${TAG} make build-tools
+VERSION=${TAG} DOCKER_TAG=${TAG} make build-runner
+VERSION=${TAG} DOCKER_TAG=${TAG} make build-config-build
+
 WORKSPACE=$1
 BASE_APP=false
 if [ $# -ge 2 ]
@@ -22,7 +18,7 @@ rm -rf ${WORKSPACE}/${PACKAGE}
 mkdir --parent ${WORKSPACE}/${PACKAGE}
 
 DOCKER_RUN_ARGS="--env=SRID=21781 --env=EXTENT=489246.36,78873.44,837119.76,296543.14 \
-    --volume=${WORKSPACE}/${PACKAGE}:/src/${PACKAGE} camptocamp/geomapfish-scaffolds:${TAG}"
+    --volume=${WORKSPACE}/${PACKAGE}:/src/${PACKAGE} camptocamp/geomapfish-tools:${TAG}"
 PCREATE_CMD="run $(id -u) $(id -g) /src pcreate --ignore-conflicting-name --overwrite \
     --package-name ${PACKAGE} /src/${PACKAGE}"
 docker run --rm -ti ${DOCKER_RUN_ARGS} ${PCREATE_CMD} --scaffold=c2cgeoportal_create

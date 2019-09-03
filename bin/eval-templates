@@ -11,6 +11,14 @@ function evaluate {
     fi
 }
 
+if [ "${TEST}" == true ]
+then
+    find /opt/c2cgeoportal/ -name '*.tmpl' -print | while read file
+    do
+        evaluate $file
+    done
+fi
+
 find /app/ -name '*.tmpl' -print | while read file
 do
     evaluate $file

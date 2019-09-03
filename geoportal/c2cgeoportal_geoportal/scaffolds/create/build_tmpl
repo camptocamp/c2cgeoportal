@@ -15,12 +15,12 @@ fi
 
 CONFIG=true
 GEOPORTAL=true
-if [ $1 == '--config' ]
+if [ "$1" == '--config' ]
 then
     GEOPORTAL=false
     shift
 fi
-if [ $1 == '--geoportal' ]
+if [ "$1" == '--geoportal' ]
 then
     CONFIG=false
     shift

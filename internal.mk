@@ -90,8 +90,7 @@ flake8:
 pylint:
 	pylint --errors-only commons/c2cgeoportal_commons
 	pylint --errors-only commons/tests
-	pylint --errors-only --disable=assignment-from-no-return \
-		geoportal/c2cgeoportal_geoportal
+	pylint --errors-only --disable=assignment-from-no-return geoportal/c2cgeoportal_geoportal
 	pylint --errors-only geoportal/tests
 	pylint --errors-only admin/c2cgeoportal_admin
 	pylint --errors-only admin/tests

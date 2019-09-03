@@ -1,5 +1,6 @@
 MAJOR_VERSION ?= 2.5
 VERSION ?= 2.5.0
+DOCKER_TAG ?= latest
 
 .PHONY: help
 help: ## Display this help message
@@ -11,36 +12,26 @@ help: ## Display this help message
 
 .PHONY: build
 build: ## Build all docker images
-build: build-main build-build build-scaffolds build-config-build
+build: build-tools build-runner build-config-build
 
 .PHONY: checks
 checks: ## Run the application checks
 	docker build --target=checks \
 		--build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --build-arg=VERSION=$(VERSION) .
 
-.PHONY: build-build
-build-build:
-	docker build --target=builder --tag=camptocamp/geomapfish-build \
-		--build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --build-arg=VERSION=$(VERSION) .
-
-.PHONY: build-scaffolds
-build-scaffolds:
-	docker build --target=upgrader --tag=camptocamp/geomapfish-scaffolds \
+.PHONY: build-tools
+build-tools:
+	docker build --target=tools --tag=camptocamp/geomapfish-tools:$(DOCKER_TAG) \
 		--build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --build-arg=VERSION=$(VERSION) .
 
 .PHONY: build-config-build
 build-config-build:
-	docker build --tag=camptocamp/geomapfish-config-build \
+	docker build --tag=camptocamp/geomapfish-config-build:$(DOCKER_TAG) \
 		--build-arg=VERSION=$(MAJOR_VERSION) docker/config
 
-.PHONY: build-tests
-build-tests:
-	docker build --target=build --tag=camptocamp/geomapfish-tests \
-		--build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --build-arg=VERSION=$(VERSION) .
-
-.PHONY: build-main
-build-main:
-	docker build --target=runner --tag=camptocamp/geomapfish \
+.PHONY: build-runner
+build-runner:
+	docker build --target=runner --tag=camptocamp/geomapfish:$(DOCKER_TAG) \
 		--build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --build-arg=VERSION=$(VERSION) .
 
 .PHONY: build-test-db
@@ -58,15 +49,15 @@ build-qgis-server-tests:
 
 docker/test-db/12-alembic.sql:
 	docker run --rm camptocamp/geomapfish alembic \
-		--config=/opt/c2cgeoportal_commons/alembic.ini --name=main upgrade --sql head > $@
+		--config=/opt/c2cgeoportal/commons/alembic.ini --name=main upgrade --sql head > $@
 
 docker/test-db/13-alembic-static.sql:
 	docker run --rm camptocamp/geomapfish alembic \
-		--config=/opt/c2cgeoportal_commons/alembic.ini --name=static upgrade --sql head > $@
+		--config=/opt/c2cgeoportal/commons/alembic.ini --name=static upgrade --sql head > $@
 
 .PHONY: preparetest
 preparetest: ## Run the compositon used to run the tests
-preparetest: stoptest build-tests build-main build-test-db build-test-mapserver build-qgis-server-tests
+preparetest: stoptest build-tools build-test-db build-test-mapserver build-qgis-server-tests
 	docker-compose up -d
 	docker-compose exec tests wait-db
 	docker-compose exec tests psql --command='DELETE FROM main_static.user_role'

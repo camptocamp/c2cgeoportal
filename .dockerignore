@@ -1,8 +1,6 @@
 *
 !bin/
-!etc/
 !internal.mk
-!webpack.config.js
 !requirements*.txt
 !commons
 !geoportal
