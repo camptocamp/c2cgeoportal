@@ -59,15 +59,11 @@ to the upper branches i.e.: <code class="docutils literal notranslate"><span cla
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">docker <span class="nb">exec</span> geoportal alembic <span class="se">\</span>
-    --config<span class="o">=</span>geoportal/tests/functional/alembic.ini <span class="se">\</span>
-    --name<span class="o">=</span>main heads</span>
-<span class="prompt1">docker <span class="nb">exec</span> geoportal alembic <span class="se">\</span>
-    --config<span class="o">=</span>geoportal/tests/functional/alembic.ini <span class="se">\</span>
-    --name<span class="o">=</span>static heads</span>
+</style><span class="prompt1">python3 -m pip install --user -e commons</span>
+<span class="prompt1">alembic --config<span class="o">=</span>commons/alembic.ini <span class="se">\</span>
+    --name<span class="o">=[</span>main<span class="p">|</span>static<span class="o">]</span> heads</span>
 </pre></div></div><p>If yes create the merge with:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker <span class="nb">exec</span> geoportal alembic <span class="se">\</span>
-    --config<span class="o">=</span>geoportal/tests/functional/alembic.ini <span class="se">\</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">alembic --config<span class="o">=</span>commons/alembic.ini <span class="se">\</span>
     --name<span class="o">=[</span>main<span class="p">|</span>static<span class="o">]</span> <span class="se">\</span>
     merge --message<span class="o">=</span><span class="s2">&quot;Merge &lt;src&gt; and &lt;dst&gt; branches&quot;</span> <span class="se">\</span>
     &lt;rev <span class="m">1</span>&gt; &lt;rev <span class="m">2</span>&gt;</span>

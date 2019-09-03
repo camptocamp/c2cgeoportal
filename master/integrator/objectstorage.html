@@ -36,6 +36,11 @@
             
   <div class="section" id="working-with-object-storage-like-s3">
 <span id="integrator-objectstorage"></span><h1>Working with Object storage (like S3)<a class="headerlink" href="#working-with-object-storage-like-s3" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="prepare-files">
+<h2>Prepare files<a class="headerlink" href="#prepare-files" title="Permalink to this headline">¶</a></h2>
+<p>We can prepare a GeoTIFF for the Cloud, see the <a class="reference external" href="https://www.cogeo.org/">COG file format</a>
+and the <a class="reference external" href="https://gdal.org/drivers/raster/cog.html">GDAL output driver options</a>.</p>
+</div>
 <div class="section" id="generalities">
 <h2>Generalities<a class="headerlink" href="#generalities" title="Permalink to this headline">¶</a></h2>
 <p>In this section, we explain how to use the S3-like storage from Exoscale.</p>
@@ -70,9 +75,9 @@ span.prompt1:before {
 <div class="section" id="mapserver">
 <h2>MapServer<a class="headerlink" href="#mapserver" title="Permalink to this headline">¶</a></h2>
 <p>Create the shape index file for a raster layer:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">gdaltindex mapserver/index.shp <span class="si">${</span><span class="s1">&#39;\\&#39;</span><span class="si">}</span></span>
-<span class="prompt1">     <span class="sb">`</span>aws --endpoint-url https://sos-ch-dk-2.exo.io/ --region ch-dk-2 <span class="se">\</span>
-     s3 ls s3://&lt;bucket&gt;/&lt;folder&gt;/*.geotiff<span class="p">|</span>awk <span class="s1">&#39;{print $4}&#39;</span><span class="sb">`</span></span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">gdaltindex mapserver/index.shp <span class="se">\</span>
+     <span class="sb">`</span>aws --endpoint-url https://sos-ch-dk-2.exo.io/ --region ch-dk-2 <span class="se">\</span>
+     s3 ls s3://&lt;bucket&gt;/&lt;folder&gt;/ <span class="p">|</span> grep tif <span class="p">|</span> awk <span class="s1">&#39;{print &quot;/vsis3/&lt;bucket&gt;/&lt;folder&gt;/&quot;$4}&#39;</span><span class="sb">`</span></span>
 </pre></div></div><p>Add the following config in the <code class="docutils literal notranslate"><span class="pre">mapserver/mapserver.map.tmpl</span></code> file:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="s2">&quot;CPL_VSIL_CURL_USE_CACHE&quot;</span> <span class="s2">&quot;TRUE&quot;</span>
 <span class="n">CONFIG</span> <span class="s2">&quot;CPL_VSIL_CURL_CACHE_SIZE&quot;</span> <span class="s2">&quot;128000000&quot;</span>

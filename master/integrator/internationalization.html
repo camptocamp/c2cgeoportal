@@ -84,6 +84,21 @@
 </ul>
 </div></blockquote>
 </div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In mapfiles, attributes added by mapserver substitution will not be collected
+for translation.</p>
+</div>
+<div class="section" id="collecte-custom-strings">
+<h2>Collecte custom strings<a class="headerlink" href="#collecte-custom-strings" title="Permalink to this headline">¶</a></h2>
+<p>If the standard system can not collect some strings, you can add them manually in
+one of your JavaScript application controllers:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="cm">/** @type {angular.gettext.gettextCatalog} */</span>
+<span class="kr">const</span> <span class="nx">gettextCatalog</span> <span class="o">=</span> <span class="nx">$injector</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;gettextCatalog&#39;</span><span class="p">);</span>
+<span class="nx">gettextCatalog</span><span class="p">.</span><span class="nx">getString</span><span class="p">(</span><span class="s1">&#39;My previously not collected string&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 
