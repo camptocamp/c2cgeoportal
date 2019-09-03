@@ -46,7 +46,6 @@ from defusedxml import lxml
 from owslib.wms import WebMapService
 from pyramid.httpexceptions import HTTPBadGateway, HTTPBadRequest, HTTPForbidden, HTTPFound, HTTPUnauthorized
 from pyramid.i18n import TranslationStringFactory
-from pyramid.path import AssetResolver
 from pyramid.renderers import render_to_response
 from pyramid.response import Response
 from pyramid.security import remember, forget
@@ -859,12 +858,9 @@ class Entry:
     def apijs(self):
         version = self.request.params.get('version', '1')
         if version == '2':
-            resolver = AssetResolver('c2cgeoportal_geoportal')
-            asset = resolver.resolve('{}_geoportal:static-ngeo/build/api.js'.format(
+            response = HTTPFound(self.request.static_url('{}_geoportal:static-ngeo/build/api.js'.format(
                 self.request.registry.settings['package']
-            ))
-            self.request.response.body = asset.stream().read()
-            response = self.request.response
+            )))
         else:
             response = render_to_response(
                 'api/api.js', self.get_oldapijs_values()
