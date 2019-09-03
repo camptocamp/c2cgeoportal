@@ -56,6 +56,7 @@ pyramid_mako==1.0.2  # geoportal
 pyramid_multiauth==0.9.0  # geoportal
 pyramid_tm==2.2.1  # geoportal
 pytest-cov==2.6.1  # tests
+pytest-html==1.22.0  # For Travis
 pytest-selenium==1.16.0  # admin tests
 python-dateutil==2.6.1  # geoportal, rq.filter: <2.7.0
 PyYAML==5.1  # geoportal
