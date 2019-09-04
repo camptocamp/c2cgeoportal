@@ -31,8 +31,7 @@
 import argparse
 import transaction
 
-from c2cgeoportal_commons.testing import get_session
-from c2cgeoportal_geoportal.scripts import fill_arguments, get_appsettings
+from c2cgeoportal_geoportal.scripts import fill_arguments, get_appsettings, get_session
 
 
 def main():

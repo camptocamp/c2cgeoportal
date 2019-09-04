@@ -215,7 +215,7 @@ class User(Base):
     @staticmethod
     def __encrypt_password_legacy(password: str) -> str:
         """Hash the given password with SHA1."""
-        return sha1(password.encode('utf8')).hexdigest()
+        return sha1(password.encode('utf8')).hexdigest()  # nosec
 
     @staticmethod
     def __encrypt_password(password: str) -> str:

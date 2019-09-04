@@ -11,6 +11,7 @@ admin/Makefile
 !.tx
 !.gitattributes
 !.pylintrc
+!.bandit
 !setup.cfg
 !lingua.cfg
 !package.json

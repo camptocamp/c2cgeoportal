@@ -1,3 +1,3 @@
 [bandit]
-exclude: /commons/c2cgeoportal_commons/alembic/main/,/commons/c2cgeoportal_commons/alembic/static/,/commons/tests/,/geoportal/tests/,/admin/tests/,/venv/
+exclude: /commons/c2cgeoportal_commons/alembic/main/,/commons/c2cgeoportal_commons/alembic/static/,/commons/c2cgeoportal_commons/testing/,/commons/tests/,/geoportal/tests/,/geoportal/c2cgeoportal_geoportal/scripts/c2cupgrade.py,/admin/tests/,/admin/node_modules
 skips: B101

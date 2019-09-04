@@ -43,7 +43,7 @@ import pyramid.security
 import simplejson as json
 import zope.event.classhandler
 from c2cwsgiutils.health_check import HealthCheck
-from Crypto.Cipher import AES
+from Crypto.Cipher import AES  # nosec
 from papyrus.renderers import GeoJSON
 from pyramid.config import Configurator
 from pyramid.httpexceptions import HTTPException

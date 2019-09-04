@@ -111,8 +111,11 @@ WORKDIR /src
 
 FROM tools AS tools-cleaned
 
+# Removes unwanted and unsecured (see bandit checks) files
 RUN rm --recursive --force /opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/scaffolds \
-    /opt/c2cgeoportal/*/tests
+    /opt/c2cgeoportal/*/tests \
+    /opt/c2cgeoportal/commons/c2cgeoportal_commons/testing/ \
+    /opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/scripts/c2cupgrade.py
 
 
 #############################################################################################################

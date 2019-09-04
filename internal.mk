@@ -61,7 +61,7 @@ build: \
 	$(MO_FILES)
 
 .PHONY: checks
-checks: flake8 mypy pylint additionallint
+checks: flake8 mypy pylint bandit additionallint
 
 .PHONY: flake8
 flake8:
@@ -104,6 +104,10 @@ mypy:
 	mypy --ignore-missing-imports --strict-optional --follow-imports skip \
 		geoportal/c2cgeoportal_geoportal \
 		admin/c2cgeoportal_admin
+
+.PHONY: bandit
+bandit:
+	bandit --recursive -ll .
 
 .PHONY: additionallint
 additionallint:

@@ -31,12 +31,13 @@
 import gettext
 import os
 import sys
-import transaction
-
 from argparse import ArgumentParser
+
+import transaction
 from sqlalchemy import func
-from c2cgeoportal_commons.testing import get_session
-from c2cgeoportal_geoportal.scripts import fill_arguments, get_appsettings
+
+from c2cgeoportal_geoportal.scripts import (fill_arguments, get_appsettings,
+                                            get_session)
 
 
 def main():

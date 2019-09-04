@@ -30,11 +30,10 @@
 
 import argparse
 import logging
+
 import transaction
 
-from c2cgeoportal_commons.testing import get_session
-from c2cgeoportal_geoportal.scripts import fill_arguments, get_appsettings
-
+from c2cgeoportal_geoportal.scripts import fill_arguments, get_appsettings, get_session
 
 LOG = logging.getLogger(__name__)
 
