@@ -17,6 +17,7 @@ papyrus
 PasteScript
 psycopg2-binary
 pycryptodome
+pyotp
 pyramid
 pyramid_debugtoolbar  # Needed by the development.ini
 pyramid_mako  # to render the HTML files
