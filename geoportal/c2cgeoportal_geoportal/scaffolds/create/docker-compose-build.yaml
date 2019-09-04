@@ -11,7 +11,9 @@ volumes:
 
 services:
   config:
-    image: ${DOCKER_BASE}-config:${DOCKER_TAG}
+    extends:
+      file: docker-compose-lib.yaml
+      service: config
 
   mapserver:
     extends:
