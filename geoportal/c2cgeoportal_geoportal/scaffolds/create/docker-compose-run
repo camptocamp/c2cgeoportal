@@ -15,6 +15,12 @@ try:
     subprocess.check_call([
         'docker-compose',
         '--file=docker-compose-build.yaml',
+        'down',
+        '--remove-orphan',
+    ])
+    subprocess.check_call([
+        'docker-compose',
+        '--file=docker-compose-build.yaml',
         'up',
         '-d',
     ])
