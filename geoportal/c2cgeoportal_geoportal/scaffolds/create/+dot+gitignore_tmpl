@@ -6,3 +6,6 @@ __pycache__/
 /upgrade
 /.upgrade.yaml
 /.UPGRADE*
+
+# Generated with dev mode
+/geoportal/{{package}}_geoportal/static/apihelp/index.html
