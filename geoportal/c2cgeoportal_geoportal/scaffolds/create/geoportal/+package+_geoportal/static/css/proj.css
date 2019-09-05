@@ -1,8 +1,0 @@
-#header-in {
-    background: url('../images/banner_left.png') top left no-repeat;
-    height: 72px;
-}
-#header-out {
-    background: url('../images/banner_right.png') top right no-repeat;
-    background-color: white;
-}
