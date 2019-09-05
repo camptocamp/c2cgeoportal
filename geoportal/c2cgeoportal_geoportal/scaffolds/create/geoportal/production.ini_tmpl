@@ -15,6 +15,7 @@ authtkt_reissue_time = %(AUTHTKT_REISSUE_TIME)s
 authtkt_http_only = %(AUTHTKT_HTTP_ONLY)s
 authtkt_secure = %(AUTHTKT_SECURE)s
 authtkt_samesite = %(AUTHTKT_SAMESITE)s
+basicauth = %(BASICAUTH)s
 
 app.cfg = /etc/geomapfish/config.yaml
 
