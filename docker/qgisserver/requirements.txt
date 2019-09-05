@@ -1,4 +1,4 @@
-c2cgeoform~=2.0.dev20190513  # commons
+c2cgeoform~=2.0.dev20190813  # commons
 c2cwsgiutils~=2.19.2  # commons, rq.filter: <3
 c2c.template~=2.1.0  # geoportal
 ColanderAlchemy~=0.3.3  # commons
