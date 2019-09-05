@@ -178,6 +178,19 @@ mapping:
                 type: str
               do_redirect:
                 type: bool
+      authentication:
+        type: map
+        required: false
+        mapping:
+          two_factor:
+            type: bool
+            required: false
+          two_factor_issuer_name:
+            type: str
+            required: false
+          max_consecutive_failures:
+            type: int
+            required: false
       authorized_referers:
         type: seq
         sequence:

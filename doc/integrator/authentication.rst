@@ -52,6 +52,7 @@ To enable the two factors authentication you should set the following settings:
    vars:
      authentication:
        two_factor: true
+       two_factor_issuer_name: <used_issuer_name>
 
 If a user lost his second authentication factor he can't ask for a new one, to reset it the administrator
 should uncheck the 'The user changed his password' field on the user in the admin interface.
@@ -59,3 +60,17 @@ should uncheck the 'The user changed his password' field on the user in the admi
 .. note::
 
    For security reasons, basic authentication and two factor authentication should not be enabled together.
+
+Account lockout
+~~~~~~~~~~~~~~~
+
+To lock an account after a certain number of authentication failures, set the following settings:
+
+.. code:: yaml
+
+   vars:
+     authentication:
+       max_consecutive_failures: 10
+
+To unlock a user, the administrator should uncheck the 'Deactivated' field on the user in the
+admin interface.
