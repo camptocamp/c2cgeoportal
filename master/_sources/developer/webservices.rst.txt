@@ -272,7 +272,9 @@ Connected JSON result
 
    {
        "username": "<username>",
-       "is_password_changed": "True"/"False", # If false the user should change his password
+       "is_password_changed": true/false, # If false the user should change his password
+       "two_factor_enable": true/false, # Is the two factors authentication enabled?
+       "two_factor_totp_secret": "<secret>", # The two factors authentication secret on first login
        "roles": [{
            "name": "<role_name>",
            "id": <role_id>

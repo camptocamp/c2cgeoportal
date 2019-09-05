@@ -273,7 +273,9 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <span id="developer-webservices-auth-connected"></span><h4>Connected JSON result<a class="headerlink" href="#connected-json-result" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;username&gt;&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;is_password_changed&quot;</span><span class="p">:</span> <span class="s2">&quot;True&quot;</span><span class="o">/</span><span class="s2">&quot;False&quot;</span><span class="p">,</span> <span class="c1"># If false the user should change his password</span>
+    <span class="s2">&quot;is_password_changed&quot;</span><span class="p">:</span> <span class="n">true</span><span class="o">/</span><span class="n">false</span><span class="p">,</span> <span class="c1"># If false the user should change his password</span>
+    <span class="s2">&quot;two_factor_enable&quot;</span><span class="p">:</span> <span class="n">true</span><span class="o">/</span><span class="n">false</span><span class="p">,</span> <span class="c1"># Is the two factors authentication enabled?</span>
+    <span class="s2">&quot;two_factor_totp_secret&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;secret&gt;&quot;</span><span class="p">,</span> <span class="c1"># The two factors authentication secret on first login</span>
     <span class="s2">&quot;roles&quot;</span><span class="p">:</span> <span class="p">[{</span>
         <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;role_name&gt;&quot;</span><span class="p">,</span>
         <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">role_id</span><span class="o">&gt;</span>

@@ -57,6 +57,19 @@ table. If a c2cgeoportal application should work with another user information
 source, like LDAP, a custom <em>client validation</em> mechanism can be set up.
 Our knowledge base has an example of how this can be achieved.</p>
 </div>
+<div class="section" id="two-factors-authentication">
+<h2>Two factors authentication<a class="headerlink" href="#two-factors-authentication" title="Permalink to this headline">¶</a></h2>
+<p>GeoMapFish support TOTP (Time-Based One-Time Password Algorithm) two factors authentication
+(<a class="reference external" href="https://tools.ietf.org/html/rfc6238">RFC 6238</a>).
+To enable the two factors authentication you should set the following settings:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
+  <span class="nt">authentication</span><span class="p">:</span>
+    <span class="nt">two_factor</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+</pre></div>
+</div>
+<p>If a user lost his second authentication factor he can’t ask for a new one, to reset it the administrator
+should uncheck the ‘The user changed his password’ field on the user in the admin interface.</p>
+</div>
 </div>
 
 
