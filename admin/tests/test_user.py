@@ -264,6 +264,8 @@ class TestUser(AbstractViewsTests):
         assert user.password.startswith('$')
         assert user.temp_password is None
         assert user.is_password_changed is False
+        assert '2fa_totp_secret' in user.tech_data
+        assert 'temp_2fa_totp_secret' not in user.tech_data
 
         parts = list(email.message_from_string(sender_mock.sendmail.mock_calls[0][1][2]).walk())
         assert EXPECTED_WELCOME_MAIL.format('new_user', 'new_user', 'basile') == \

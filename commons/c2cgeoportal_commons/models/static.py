@@ -28,27 +28,26 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import crypt
 import logging
 from datetime import datetime
 from hashlib import sha1
-import pytz
+from hmac import compare_digest as compare_hash
 from typing import List
 
-import crypt
-from hmac import compare_digest as compare_hash
-
-from sqlalchemy import Column, ForeignKey, Table
-from sqlalchemy.orm import relationship, backref
-from sqlalchemy.types import Integer, Boolean, Unicode, String, DateTime
-
 import colander
-from deform.widget import HiddenWidget, DateTimeInputWidget
-from c2cgeoform.ext import deform_ext
-
+import pytz
 from c2c.template.config import config
+from c2cgeoform.ext import deform_ext
+from deform.widget import DateTimeInputWidget, HiddenWidget
+from sqlalchemy import Column, ForeignKey, Table
+from sqlalchemy.dialects.postgresql import HSTORE
+from sqlalchemy.orm import backref, relationship
+from sqlalchemy.types import Boolean, DateTime, Integer, String, Unicode
+
+import pyotp
 from c2cgeoportal_commons.models import Base, _
 from c2cgeoportal_commons.models.main import Role
-
 
 LOG = logging.getLogger(__name__)
 
@@ -98,14 +97,20 @@ class User(Base):
                        info={'colanderalchemy': {'exclude': True}})
     temp_password = Column('temp_password', Unicode, nullable=True,
                            info={'colanderalchemy': {'exclude': True}})
+    tech_data = Column(HSTORE, info={'colanderalchemy': {'exclude': True}})
     email = Column(Unicode, nullable=False, info={
         'colanderalchemy': {
             'title': _('Email'),
             'validator': colander.Email()
         }
     })
-    is_password_changed = Column(Boolean, default=False,
-                                 info={'colanderalchemy': {'exclude': True}})
+    is_password_changed = Column(
+        Boolean, default=False, info={
+            'colanderalchemy': {
+                'title': _('The user changed his password')
+            }
+        }
+    )
 
     settings_role_id = Column(Integer, info={
         'colanderalchemy': {
@@ -172,6 +177,9 @@ class User(Base):
     ) -> None:
         self.username = username
         self.password = password
+        self.tech_data = {
+            '2fa_totp_secret': pyotp.random_base32(),
+        }
         self.email = email
         self.is_password_changed = is_password_changed
         if settings_role:
@@ -193,6 +201,12 @@ class User(Base):
     def set_temp_password(self, password: str) -> None:
         """encrypts password on the fly."""
         self.temp_password = self.__encrypt_password(password)
+
+    def generate_2fa_totp_secret(self) -> None:
+        self.tech_data['2fa_totp_secret'] = pyotp.random_base32()
+
+    def generate_2fa_totp_temp_secret(self) -> None:
+        self.tech_data['temp_2fa_totp_secret'] = pyotp.random_base32()
 
     @staticmethod
     def __encrypt_password_legacy(password: str) -> str:
@@ -232,6 +246,20 @@ class User(Base):
             self.is_password_changed = False
             return True
         return False
+
+    def validate_2fa_totp(self, otp: str) -> bool:
+        if pyotp.TOTP(self.tech_data['2fa_totp_secret']).verify(otp):
+            return True
+        if self.tech_data['temp_2fa_totp_secret'] is not None and \
+                pyotp.TOTP(self.tech_data['temp_2fa_totp_secret']).verify(otp):
+            self.tech_data['2fa_totp_secret'] = self.tech_data['temp_2fa_totp_secret']
+            self.tech_data['temp_2fa_totp_secret'] = None
+            return True
+        return False
+
+    def otp_uri(self, issuer_name: str) -> str:
+        return pyotp.TOTP(self.tech_data['2fa_totp_secret']) \
+            .provisioning_uri(self.email, issuer_name=issuer_name)
 
     def expired(self) -> bool:
         return self.expire_on is not None and self.expire_on < datetime.now(pytz.utc)

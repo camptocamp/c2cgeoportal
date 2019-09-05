@@ -13,4 +13,5 @@ Information
 Changes to apply
 ----------------
 
-1.
+1. We need a new PostgreSQL extention named hstore, run in PostgreSQL console:
+   CREATE EXTENSION IF NOT EXISTS hstore;

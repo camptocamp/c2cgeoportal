@@ -196,10 +196,10 @@ class TestEntryView(TestCase):
         request.user = U()
         entry = Entry(request)
         expected = {
-            "success": True,
             "username": "__test_user",
             "email": "info@example.com",
             "is_password_changed": True,
+            "two_factor_enable": False,
             "roles": [{
                 "name": "__test_role",
                 "id": 123,
@@ -217,10 +217,10 @@ class TestEntryView(TestCase):
         request.user = U("__test_role2", [F()])
         entry = Entry(request)
         expected = {
-            "success": True,
             "username": "__test_user",
             'email': 'info@example.com',
             "is_password_changed": True,
+            "two_factor_enable": False,
             "roles": [{
                 "name": "__test_role2",
                 "id": 123,

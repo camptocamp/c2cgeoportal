@@ -151,6 +151,11 @@ class Entry:
         self.metadata_type = get_types_map(
             self.settings.get("admin_interface", {}).get("available_metadata", [])
         )
+
+        authentication_settings = self.settings.get("authentication", {})
+        self.two_factor_auth = authentication_settings.get("two_factor", False)
+        self.two_factor_issuer_name = authentication_settings.get("two_factor_issuer_name")
+
         self._ogcservers_cache = None
         self._treeitems_cache = None
         self._layerswms_cache = None
@@ -1110,10 +1115,15 @@ class Entry:
             raise HTTPBadRequest("See server logs for details")
         username = self.request.registry.validate_user(self.request, login, password)
         if username is not None:
-            user = models.DBSession.query(static.User).filter(static.User.username == username).one_or_none()
-            if user:
-                user.update_last_login()
-            headers = remember(self.request, username)
+            user = models.DBSession.query(static.User).filter(static.User.username == username).one()
+            if self.two_factor_auth:
+                if not user.validate_2fa_totp(self.request.POST.get("otp")):
+                    raise HTTPUnauthorized("See server logs for details")
+            user.update_last_login()
+
+            headers = remember(self.request, username) if user.is_password_changed else []
+            if not user.is_password_changed:
+                user.generate_2fa_totp_secret()
             LOG.info("User '%s' logged in.", username)
             came_from = self.request.params.get("came_from")
             if came_from:
@@ -1146,17 +1156,23 @@ class Entry:
         )
 
     def _user(self, user=None):
-        user = self.request.user if user is None else user
         result = {
-            "success": True,  # for Extjs
-            "username": user.username,
-            "email": user.email,
-            "is_password_changed": user.is_password_changed,
-            "roles": [{"name": r.name, "id": r.id} for r in user.roles],
-        } if user else {}
-
-        result["functionalities"] = self._functionality()
-
+            "functionalities": self._functionality(),
+        }
+        user = self.request.user if user is None else user
+        if user is not None:
+            result.update({
+                "username": user.username,
+                "email": user.email,
+                "is_password_changed": user.is_password_changed,
+                "two_factor_enable": self.two_factor_auth,
+                "roles": [{"name": r.name, "id": r.id} for r in user.roles],
+            })
+            if self.two_factor_auth and not user.is_password_changed:
+                result.update({
+                    "two_factor_totp_secret": user.tech_data['2fa_totp_secret'],
+                    "otp_uri": user.otp_uri(self.two_factor_issuer_name),
+                })
         return result
 
     @view_config(route_name="loginuser", renderer="json")
@@ -1235,6 +1251,7 @@ class Entry:
 
         password = self.generate_password()
         user.set_temp_password(password)
+        user.generate_2fa_totp_temp_secret()
 
         return user, username, password, None
 

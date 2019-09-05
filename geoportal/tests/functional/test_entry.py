@@ -225,10 +225,10 @@ class TestEntryView(TestCase):
         response = Entry(request).login()
         assert response.status_int == 200
         assert json.loads(response.body.decode("utf-8")) == {
-            "success": True,
             "username": "__test_user1",
             'email': '__test_user1@example.com',
             "is_password_changed": False,
+            "two_factor_enable": False,
             "roles": [{
                 "name": "__test_role1",
                 "id": self.role1_id,
@@ -284,7 +284,10 @@ class TestEntryView(TestCase):
             "login": "__test_user1",
         })
         entry = Entry(request)
-        _, username, password, _ = entry._loginresetpassword()
+        user, username, password, _ = entry._loginresetpassword()
+
+        assert user.temp_password is not None
+        assert 'temp_2fa_totp_secret' in user.tech_data
 
         request = self._create_request_obj(POST={
             "login": username,
@@ -293,10 +296,10 @@ class TestEntryView(TestCase):
         response = Entry(request).login()
         assert response.status_int == 200
         assert json.loads(response.body.decode("utf-8")) == {
-            "success": True,
             "username": "__test_user1",
             'email': '__test_user1@example.com',
             "is_password_changed": False,
+            "two_factor_enable": False,
             "roles": [{
                 "name": "__test_role1",
                 "id": self.role1_id,
