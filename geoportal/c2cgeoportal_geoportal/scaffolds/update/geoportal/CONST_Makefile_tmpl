@@ -40,7 +40,7 @@ HTML_FILES += $(shell find $(PACKAGE)_geoportal/static-ngeo/js -type f -name '*.
 SASS_FILES += $(shell find $(PACKAGE)_geoportal/static-ngeo/js -type f -name '*.scss' 2> /dev/null)
 CSS_FILES += $(shell find $(PACKAGE)_geoportal/static-ngeo/js -type f -name '*.css' 2> /dev/null)
 ANGULAR_LOCALES_FILES = $(addprefix $(APP_OUTPUT_DIR)/angular-locale_, $(addsuffix .js, $(LANGUAGES)))
-NGEO_OUTPUT_FILES = $(ANGULAR_LOCALES_FILES) apps
+NGEO_OUTPUT_FILES = $(ANGULAR_LOCALES_FILES)
 
 NGEO_API_OUTPUT_JS_FILE ?= $(APP_OUTPUT_DIR)/api.js.tmpl
 NGEO_API_OUTPUT_FILES += $(NGEO_API_OUTPUT_JS_FILE) $(APP_OUTPUT_DIR)/api.css

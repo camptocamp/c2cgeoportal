@@ -2,6 +2,10 @@ FROM camptocamp/geomapfish-tools:{{geomapfish_version}} as builder
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
 WORKDIR /app
+COPY webpack.*.js Makefile CONST_Makefile /app/
+COPY {{package}}_geoportal/static-ngeo /app/{{package}}_geoportal/static-ngeo
+RUN make apps
+
 COPY . /app
 
 RUN make checks
