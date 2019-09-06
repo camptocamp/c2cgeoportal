@@ -1,7 +1,5 @@
-FROM camptocamp/geomapfish-build:{{geomapfish_version}} as builder
+FROM camptocamp/geomapfish-tools:{{geomapfish_version}} as builder
 LABEL maintainer Camptocamp "info@camptocamp.com"
-
-ENV NODE_PATH=/usr/lib/node_modules
 
 WORKDIR /app
 COPY . /app

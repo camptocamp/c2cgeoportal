@@ -32,18 +32,15 @@
 Pyramid application test package
 """
 
-import os
 from configparser import ConfigParser
-import webob.acceptparse
 
+import tests
+import webob.acceptparse
+from c2c.template.config import config as configuration
 from pyramid import testing
 
 import c2cgeoportal_geoportal
-import tests
-
-from c2c.template.config import config as configuration
 from c2cgeoportal_geoportal.lib import caching
-
 
 mapserv_url = "http://mapserver:8080/"
 config = None
@@ -87,8 +84,7 @@ def cleanup_db():
 def setup_common():
     global config
 
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    configfile = os.path.realpath(os.path.join(current_dir, "test.ini"))
+    configfile = "/opt/c2cgeoportal/geoportal/tests/tests.ini"
     cfg = ConfigParser()
     cfg.read(configfile)
     db_url = cfg.get("test", "sqlalchemy.url")
@@ -101,7 +97,7 @@ def setup_common():
         "schema": "main",
         "schema_static": "main_static",
         "default_max_age": 86400,
-        "app.cfg": "/app/c2cgeoportal/geoportal/tests/config.yaml",
+        "app.cfg": "/opt/c2cgeoportal/geoportal/tests/config.yaml",
         "package": "c2cgeoportal",
         "enable_admin_interface": True,
     }

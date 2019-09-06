@@ -130,7 +130,7 @@ services:
     image: ${DOCKER_BASE}-geoportal:${DOCKER_TAG}
     user: www-data
     restart: unless-stopped
-    environment:
+    environment: &env
       - VISIBLE_ENTRY_POINT
       - PACKAGE={{package}}
       - PGHOST
@@ -170,6 +170,11 @@ services:
       - SQL_LOG_LEVEL
       - GUNICORN_LOG_LEVEL
       - OTHER_LOG_LEVEL
+
+  tools:
+    image: camptocamp/geoportal-tools:{{geomapfish_main_version}}
+    restart: unless-stopped
+    environment: *env
 
   alembic:
     image: ${DOCKER_BASE}-geoportal:${DOCKER_TAG}

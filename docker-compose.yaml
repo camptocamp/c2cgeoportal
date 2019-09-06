@@ -47,9 +47,9 @@ services:
 
 
   tests:
-    image: camptocamp/geomapfish-tests
+    image: camptocamp/geomapfish-tools
     # volumes:
-    #   - .:/app/c2cgeoportal
+    #   - .:/opt/c2cgeoportal
     environment:
       - PGHOST=db
       - PGPORT=5432
@@ -57,6 +57,7 @@ services:
       - PGPASSWORD=www-data
       - PGDATABASE=geomapfish_tests
       - CI=true
+      - TEST=true
     entrypoint:
       - /usr/bin/eval-templates
     command:

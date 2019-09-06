@@ -23,7 +23,7 @@ function pcreate {
         pcreate240 $1 $2 $3
     else
         docker run --rm --env=SRID=21781 --env=EXTENT=489246.36,78873.44,837119.76,296543.14 \
-            --volume=$1/testgeomapfish:/src/testgeomapfish camptocamp/geomapfish-scaffolds:$3 \
+            --volume=$1/testgeomapfish:/src/testgeomapfish camptocamp/geomapfish-tools:$3 \
             run $(id -u) $(id -g) /src pcreate --scaffold=$2 /src/testgeomapfish ${PCREATE_ARGS}
     fi
 }
@@ -67,17 +67,17 @@ function upgrade {
     echo /upgrade >> .gitignore
     git add --force .gitignore project.yaml
     git commit -m "Add /upgrade in .gitignore"
-    ./upgrade latest
+    ./upgrade ${MAJOR_VERSION}
     if [ -e .UPGRADE7 ]
     then
-        ./upgrade latest 8
+        ./upgrade ${MAJOR_VERSION} 8
     fi
     if [ -e .UPGRADE8 ]
     then
         # Workaround
         git status > /dev/null
         git apply --3way ngeo.diff
-        ./upgrade latest 9
+        ./upgrade ${MAJOR_VERSION} 9
     fi
     if [ -e .UPGRADE9 ]
     then
@@ -85,7 +85,7 @@ function upgrade {
         git status > /dev/null
         git apply --3way create.diff
         cp CONST_create_template/project.yaml .
-        ./upgrade latest 10
+        ./upgrade ${MAJOR_VERSION} 10
     fi
     if [ ! -e .UPGRADE_SUCCESS ]
     then
@@ -103,8 +103,8 @@ if [ "$1" = "init" ]
 then
     rm --recursive --force ${WORKSPACE}/ref ${WORKSPACE}/v240  ${WORKSPACE}/v25
     rm --recursive --force $(find c2cgeoportal/scaffolds -name __pycache__)
-    create ${WORKSPACE}/ref latest
-    create ${WORKSPACE}/v25 latest
+    create ${WORKSPACE}/ref ${MAJOR_VERSION}
+    create ${WORKSPACE}/v25 ${MAJOR_VERSION}
     create ${WORKSPACE}/v240 2.4.0
 fi
 

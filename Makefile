@@ -1,310 +1,69 @@
-VALIDATE_PY_FOLDERS = commons admin \
-	geoportal/setup.py \
-	geoportal/c2cgeoportal_geoportal/*.py \
-	geoportal/c2cgeoportal_geoportal/lib \
-	geoportal/c2cgeoportal_geoportal/scripts \
-	geoportal/c2cgeoportal_geoportal/views
-VALIDATE_TEMPLATE_PY_FOLDERS = geoportal/c2cgeoportal_geoportal/scaffolds
-VALIDATE_PY_TEST_FOLDERS = geoportal/tests
+MAJOR_VERSION ?= 2.5
+VERSION ?= 2.5.0
+DOCKER_TAG ?= latest
 
-export TX_VERSION = $(shell echo $(MAJOR_VERSION) | awk -F . '{{print $$1"_"$$2}}')
-TX_DEPENDENCIES = $(HOME)/.transifexrc .tx/config
-LANGUAGES = fr de it
-export LANGUAGES
-ALL_LANGUAGES = en $(LANGUAGES)
-L10N_PO_FILES = $(addprefix geoportal/c2cgeoportal_geoportal/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal_geoportal.po, $(LANGUAGES))) \
-	$(addprefix geoportal/c2cgeoportal_geoportal/locale/,$(addsuffix /LC_MESSAGES/ngeo.po, $(LANGUAGES))) \
-	$(addprefix geoportal/c2cgeoportal_geoportal/locale/,$(addsuffix /LC_MESSAGES/gmf.po, $(LANGUAGES))) \
-	$(addprefix geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/locale/,$(addsuffix /LC_MESSAGES/+package+_geoportal-client.po, $(ALL_LANGUAGES))) \
-	geoportal/c2cgeoportal_geoportal/locale/c2cgeoportal_geoportal.pot \
-	admin/c2cgeoportal_admin/locale/c2cgeoportal_admin.pot
-PO_FILES = $(addprefix geoportal/c2cgeoportal_geoportal/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal_geoportal.po, $(LANGUAGES)))
-PO_FILES += $(addprefix admin/c2cgeoportal_admin/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal_admin.po, $(LANGUAGES)))
-MO_FILES = $(addsuffix .mo,$(basename $(PO_FILES)))
-SRC_FILES = $(shell ls -1 geoportal/c2cgeoportal_geoportal/*.py) \
-	$(shell find geoportal/c2cgeoportal_geoportal/lib -name "*.py" -print) \
-	$(shell find geoportal/c2cgeoportal_geoportal/views -name "*.py" -print) \
-	$(filter-out geoportal/c2cgeoportal_geoportal/scripts/theme2fts.py, $(shell find geoportal/c2cgeoportal_geoportal/scripts -name "*.py" -print))
-ADMIN_SRC_FILES = $(shell ls -1 commons/c2cgeoportal_commons/models/*.py) \
-	$(shell find admin/c2cgeoportal_admin -name "*.py" -print) \
-	$(shell find admin/c2cgeoportal_admin/templates -name "*.jinja2" -print) \
-	$(shell find admin/c2cgeoportal_admin/templates/widgets -name "*.pt" -print)
-
-APPS += desktop mobile iframe_api
-APPS_PACKAGE_PATH = geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal
-APPS_HTML_FILES = $(addprefix $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/, $(addsuffix .html.ejs_tmpl, $(APPS)))
-APPS_JS_FILES = $(addprefix $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/Controller, $(addsuffix .js_tmpl, $(APPS)))
-APPS_SASS_FILES += $(addprefix $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/sass/, $(addsuffix .scss, $(filter-out iframe_api, $(APPS))))
-APPS_SASS_FILES += $(addprefix $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/sass/vars_, $(addsuffix .scss, $(filter-out iframe_api, $(APPS))))
-APPS_FILES = $(APPS_HTML_FILES) $(APPS_JS_FILES) $(APPS_SASS_FILES) \
-	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/contextualdata.html \
-	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/background-layer-button.png \
-	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/favicon.ico \
-	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/logo.png \
-	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/logo.svg \
-	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/crosshair.svg
-
-APPS_ALT += desktop_alt mobile_alt oeedit
-APPS_PACKAGE_PATH_ALT = geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/geoportal/+package+_geoportal
-APPS_HTML_FILES_ALT = $(addprefix $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/, $(addsuffix .html.ejs_tmpl, $(APPS_ALT)))
-APPS_JS_FILES_ALT += $(addprefix $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/Controller, $(addsuffix .js_tmpl, $(APPS_ALT)))
-APPS_SASS_FILES_ALT += $(addprefix $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/sass/, $(addsuffix .scss, $(APPS_ALT)))
-APPS_SASS_FILES_ALT += $(addprefix $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/sass/vars_, $(addsuffix .scss, $(APPS_ALT)))
-APPS_FILES_ALT = $(APPS_HTML_FILES_ALT) $(APPS_JS_FILES_ALT) $(APPS_SASS_FILES_ALT)
-
-API_FILES = $(APPS_PACKAGE_PATH)/static-ngeo/api/api.css $(APPS_PACKAGE_PATH)/static/apihelp
+.PHONY: help
+help: ## Display this help message
+	@echo "Usage: make <target>"
+	@echo
+	@echo "Available targets:"
+	@grep --extended-regexp --no-filename '^[a-zA-Z_-]+:.*## ' $(MAKEFILE_LIST) | sort | \
+		awk 'BEGIN {FS = ":.*?## "}; {printf "	%-20s%s\n", $$1, $$2}'
 
 .PHONY: build
-build: \
-	geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/ \
-	$(APPS_FILES_ALT) \
-	$(MO_FILES)
+build: ## Build all docker images
+build: build-tools build-runner build-config-build
 
 .PHONY: checks
-checks: flake8 mypy pylint additionallint
+checks: ## Run the application checks
+	docker build --target=checks \
+		--build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --build-arg=VERSION=$(VERSION) .
 
-.PHONY: flake8
-flake8:
-	# E712 is not compatible with SQLAlchemy
-	find $(VALIDATE_PY_FOLDERS) \
-		-not \( -path "*/.build" -prune \) \
-		-not \( -path "*/node_modules" -prune \) \
-		-name \*.py | xargs flake8 \
-		--ignore=W503 \
-		--copyright-check \
-		--copyright-min-file-size=1 \
-		--copyright-regexp="Copyright \(c\) ([0-9][0-9][0-9][0-9]-)?$(shell date +%Y), Camptocamp SA"
-	grep --recursive --files-with-match '/usr/bin/env python' | grep -v Makefile | grep -v node_modules \
-		| xargs flake8 \
-		--copyright-check \
-		--copyright-min-file-size=1 \
-		--copyright-regexp="Copyright \(c\) ([0-9][0-9][0-9][0-9]-)?$(shell date +%Y), Camptocamp SA"
-	find $(VALIDATE_TEMPLATE_PY_FOLDERS) -name \*.py | xargs flake8 --config=setup.cfg
-	find $(VALIDATE_PY_TEST_FOLDERS) -name \*.py | xargs flake8 \
-		--ignore=E501,W503 \
-		--copyright-check \
-		--copyright-min-file-size=1 \
-		--copyright-regexp="Copyright \(c\) ([0-9][0-9][0-9][0-9]-)?$(shell date +%Y), Camptocamp SA"
+.PHONY: build-tools
+build-tools:
+	docker build --target=tools --tag=camptocamp/geomapfish-tools:$(DOCKER_TAG) \
+		--build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --build-arg=VERSION=$(VERSION) .
 
-.PHONY: pylint
-pylint:
-	pylint --errors-only commons/c2cgeoportal_commons
-	pylint --errors-only commons/tests
-	pylint --errors-only --disable=assignment-from-no-return \
-		geoportal/c2cgeoportal_geoportal
-	pylint --errors-only geoportal/tests
-	pylint --errors-only admin/c2cgeoportal_admin
-	pylint --errors-only admin/tests
+.PHONY: build-config-build
+build-config-build:
+	docker build --tag=camptocamp/geomapfish-config-build:$(DOCKER_TAG) \
+		--build-arg=VERSION=$(MAJOR_VERSION) docker/config
 
-.PHONY: mypy
-mypy:
-	MYPYPATH=/opt/c2cwsgiutils \
-		mypy --ignore-missing-imports --disallow-untyped-defs --strict-optional --follow-imports skip \
-			commons/c2cgeoportal_commons
-	# TODO: add --disallow-untyped-defs
-	mypy --ignore-missing-imports --strict-optional --follow-imports skip \
-		geoportal/c2cgeoportal_geoportal \
-		admin/c2cgeoportal_admin
+.PHONY: build-runner
+build-runner:
+	docker build --target=runner --tag=camptocamp/geomapfish:$(DOCKER_TAG) \
+		--build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --build-arg=VERSION=$(VERSION) .
 
-.PHONY: additionallint
-additionallint:
-	# Verify that we don't directly use the CI project name in the scaffolds
-	if [ "`grep --recursive testgeomapfish geoportal/c2cgeoportal_geoportal/scaffolds`" != "" ]; \
-	then \
-		echo "ERROR: You still have a testgeomapfish in one of your scaffolds"; \
-		grep --recursive testgeomapfish geoportal/c2cgeoportal_geoportal/scaffolds; \
-		false; \
-	fi
+.PHONY: build-test-db
+build-test-db: docker/test-db/12-alembic.sql docker/test-db/13-alembic-static.sql
+	docker build --tag=camptocamp/geomapfish-test-db docker/test-db
 
-# i18n
-$(HOME)/.transifexrc:
-	mkdir --parent $(dir $@)
-	echo "[https://www.transifex.com]" > $@
-	echo "hostname = https://www.transifex.com" >> $@
-	echo "username = c2c" >> $@
-	echo "password = c2cc2c" >> $@
-	echo "token =" >> $@
+.PHONY: build-test-mapserver
+build-test-mapserver:
+	docker build --tag=camptocamp/geomapfish-test-mapserver docker/test-mapserver
 
-.PHONY: transifex-send
-transifex-send: $(TX_DEPENDENCIES) \
-		geoportal/c2cgeoportal_geoportal/locale/c2cgeoportal_geoportal.pot \
-		admin/c2cgeoportal_admin/locale/c2cgeoportal_admin.pot
-	tx push --source --resource=geomapfish.c2cgeoportal_geoportal-$(TX_VERSION)
-	tx push --source --resource=geomapfish.c2cgeoportal_admin-$(TX_VERSION)
+.PHONY: build-qgis-server-tests
+build-qgis-server-tests:
+	docker build --target=tests --build-arg=VERSION=3.4 \
+		--tag=camptocamp/geomapfish-qgisserver-tests docker/qgisserver
 
-.PHONY: transifex-init
-transifex-init: $(TX_DEPENDENCIES) \
-		geoportal/c2cgeoportal_geoportal/locale/c2cgeoportal_geoportal.pot \
-		admin/c2cgeoportal_admin/locale/c2cgeoportal_admin.pot
-	tx push --source --force --no-interactive --resource=geomapfish.c2cgeoportal_geoportal-$(TX_VERSION)
-	tx push --source --force --no-interactive --resource=geomapfish.c2cgeoportal_admin-$(TX_VERSION)
-	tx push --translations --force --no-interactive --resource=geomapfish.c2cgeoportal_geoportal-$(TX_VERSION)
-	tx push --translations --force --no-interactive --resource=geomapfish.c2cgeoportal_admin-$(TX_VERSION)
+docker/test-db/12-alembic.sql:
+	docker run --rm camptocamp/geomapfish alembic \
+		--config=/opt/c2cgeoportal/commons/alembic.ini --name=main upgrade --sql head > $@
 
-# Import ngeo templates
+docker/test-db/13-alembic-static.sql:
+	docker run --rm camptocamp/geomapfish alembic \
+		--config=/opt/c2cgeoportal/commons/alembic.ini --name=static upgrade --sql head > $@
 
-.PHONY: import-ngeo-apps
-import-ngeo-apps: $(API_FILES) $(APPS_FILES) $(APPS_FILES_ALT)
+.PHONY: preparetest
+preparetest: ## Run the compositon used to run the tests
+preparetest: stoptest build-tools build-test-db build-test-mapserver build-qgis-server-tests
+	docker-compose up -d
+	docker-compose exec tests wait-db
+	docker-compose exec tests psql --command='DELETE FROM main_static.user_role'
+	docker-compose exec tests psql --command='DELETE FROM main_static."user"'
 
-$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/%.html.ejs_tmpl: /usr/lib/node_modules/ngeo/contribs/gmf/apps/%/index.html.ejs
-	mkdir --parent $(dir $@)
-	import-ngeo-apps --html $* $< $@
-
-$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/Controller%.js_tmpl: /usr/lib/node_modules/ngeo/contribs/gmf/apps/%/Controller.js
-	mkdir --parent $(dir $@)
-	import-ngeo-apps --js $* $< $@
-
-$(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/%.html.ejs_tmpl: \
-		/usr/lib/node_modules/ngeo/contribs/gmf/apps/%/index.html.ejs \
-		geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/
-	mkdir --parent $(dir $@)
-	import-ngeo-apps --html $* $< $@
-
-$(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/Controller%.js_tmpl: \
-		/usr/lib/node_modules/ngeo/contribs/gmf/apps/%/Controller.js \
-		geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/
-	mkdir --parent $(dir $@)
-	import-ngeo-apps --js $* $< $@
-
-$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/sass/%.scss:
-	mkdir --parent $(dir $@)
-	cp /usr/lib/node_modules/ngeo/contribs/gmf/apps/$*/sass/$*.scss $@
-
-$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/sass/vars_%.scss:
-	mkdir --parent $(dir $@)
-	cp /usr/lib/node_modules/ngeo/contribs/gmf/apps/$*/sass/vars_$*.scss $@
-
-$(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/sass/%.scss: \
-		geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/
-	mkdir --parent $(dir $@)
-	cp /usr/lib/node_modules/ngeo/contribs/gmf/apps/$*/sass/$*.scss $@
-
-$(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/sass/vars_%.scss: \
-		geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/
-	mkdir --parent $(dir $@)
-	cp /usr/lib/node_modules/ngeo/contribs/gmf/apps/$*/sass/vars_$*.scss $@
-
-$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/contextualdata.html: /usr/lib/node_modules/ngeo/contribs/gmf/apps/desktop/contextualdata.html
-	mkdir --parent $(dir $@)
-	cp $< $@
-
-$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/%: /usr/lib/node_modules/ngeo/contribs/gmf/apps/desktop/image/%
-	$(PRERULE_CMD)
-	mkdir --parent $(dir $@)
-	cp $< $@
-
-$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/%: /usr/lib/node_modules/ngeo/contribs/gmf/apps/desktop_alt/image/%
-	$(PRERULE_CMD)
-	mkdir --parent $(dir $@)
-	cp $< $@
-
-$(APPS_PACKAGE_PATH)/static-ngeo/api/api.css: /usr/lib/node_modules/ngeo/api/src/api.css
-	mkdir --parent $(dir $@)
-	cp $< $@
-
-$(APPS_PACKAGE_PATH)/static/apihelp: /usr/lib/node_modules/ngeo/api/dist/apihelp
-	rm --recursive --force $@
-	cp -r $< $@
-	mv $@/apihelp.html $@/index.html.tmpl_tmpl
-	sed -i -e 's#https://geomapfish-demo-2-4.camptocamp.com/#$${VISIBLE_WEB_PROTOCOL}://$${VISIBLE_WEB_HOST}$${VISIBLE_ENTRY_POINT}#g' $@/index.html.tmpl_tmpl
-	sed -i -e 's#var map = new demo.Map#var map = new {{package}}.Map#g' $@/index.html.tmpl_tmpl
-	sed -i -e 's#\.\./api\.js#../api.js?version=2#g' $@/index.html.tmpl_tmpl
-	sed -i -e 's#github\.css#../static/apihelp/github.css#g' $@/index.html.tmpl_tmpl
-	sed -i -e 's#rainbow-custom\.min\.js#../static/apihelp/rainbow-custom.min.js#g' $@/index.html.tmpl_tmpl
-	sed -i -e 's#"data\.txt"#"../static/apihelp/data.txt"#g' $@/index.html.tmpl_tmpl
-	sed -i -e "s#'data\.txt'#'../static/apihelp/data.txt'#g" $@/index.html.tmpl_tmpl
-	sed -i -e 's#img/#../static/apihelp/img/#g' $@/index.html.tmpl_tmpl
-
-.PRECIOUS: geoportal/c2cgeoportal_geoportal/scaffolds%update/CONST_create_template/
-geoportal/c2cgeoportal_geoportal/scaffolds%update/CONST_create_template/: \
-		geoportal/c2cgeoportal_geoportal/scaffolds%create/ \
-		$(addprefix geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/locale/,$(addsuffix /LC_MESSAGES/+package+_geoportal-client.po, $(ALL_LANGUAGES))) \
-		$(API_FILES) \
-		$(APPS_FILES) \
-		$(L10N_PO_FILES) \
-		geoportal/c2cgeoportal_geoportal/scaffolds/create/front_dev/localhost.pem \
-		geoportal/c2cgeoportal_geoportal/scaffolds/create/front_dev/haproxy.cfg.tmpl
-	rm -rf $@ || true
-	cp -r $< $@
-
-# Templates
-
-/tmp/c2ctemplate-cache.json:
-	c2c-template --vars vars.yaml --get-cache $@
-
-%: %.mako /tmp/c2ctemplate-cache.json
-	c2c-template --cache /tmp/c2ctemplate-cache.json --engine mako --files $<
-
-geoportal/c2cgeoportal_geoportal/locale/c2cgeoportal_geoportal.pot: \
-		lingua.cfg $(SRC_FILES)
-	mkdir --parent $(dir $@)
-	pot-create --config $< --keyword _ --output $@ $(SRC_FILES)
-
-admin/c2cgeoportal_admin/locale/c2cgeoportal_admin.pot: \
-		lingua.cfg $(ADMIN_SRC_FILES)
-	mkdir --parent $(dir $@)
-	pot-create --config $< --keyword _ --output $@ $(ADMIN_SRC_FILES)
-
-geoportal/c2cgeoportal_geoportal/locale/en/LC_MESSAGES/c2cgeoportal_geoportal.po: geoportal/c2cgeoportal_geoportal/locale/c2cgeoportal_geoportal.pot
-	mkdir --parent $(dir $@)
-	touch $@
-	msgmerge --update $@ $<
-
-admin/c2cgeoportal_admin/locale/en/LC_MESSAGES/c2cgeoportal_admin.po: admin/c2cgeoportal_admin/locale/c2cgeoportal_admin.pot
-	mkdir --parent $(dir $@)
-	touch $@
-	msgmerge --update $@ $<
-
-geoportal/c2cgeoportal_geoportal/locale/%/LC_MESSAGES/c2cgeoportal_geoportal.po: $(TX_DEPENDENCIES)
-	mkdir --parent $(dir $@)
-	tx pull --language $* --resource geomapfish.c2cgeoportal_geoportal-$(TX_VERSION) --force
-	sed -i 's/[[:space:]]\+$$//' $@
-	test -s $@
-
-.PRECIOUS: geoportal/c2cgeoportal_geoportal/locale/%/LC_MESSAGES/ngeo.po
-geoportal/c2cgeoportal_geoportal/locale/%/LC_MESSAGES/ngeo.po: $(TX_DEPENDENCIES)
-	mkdir --parent $(dir $@)
-	tx pull --language $* --resource ngeo.ngeo-$(TX_VERSION) --force
-	sed -i 's/[[:space:]]\+$$//' $@
-	test -s $@
-
-.PRECIOUS: geoportal/c2cgeoportal_geoportal/locale/%/LC_MESSAGES/gmf.po
-geoportal/c2cgeoportal_geoportal/locale/%/LC_MESSAGES/gmf.po: $(TX_DEPENDENCIES)
-	mkdir --parent $(dir $@)
-	tx pull --language $* --resource ngeo.gmf-$(TX_VERSION) --force
-	sed -i 's/[[:space:]]\+$$//' $@
-	test -s $@
-
-admin/c2cgeoportal_admin/locale/%/LC_MESSAGES/c2cgeoportal_admin.po: $(TX_DEPENDENCIES)
-	mkdir --parent $(dir $@)
-	tx pull --language $* --resource geomapfish.c2cgeoportal_admin-$(TX_VERSION) --force
-	sed -i 's/[[:space:]]\+$$//' $@
-	test -s $@
-
-.PRECIOUS: geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/locale/%/LC_MESSAGES/+package+_geoportal-client.po
-geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/locale/%/LC_MESSAGES/+package+_geoportal-client.po: \
-		$(TX_DEPENDENCIES)
-	mkdir --parent $(dir $@)
-	tx pull --language $* --resource ngeo.gmf-apps-$(TX_VERSION) --force
-	sed -i 's/[[:space:]]\+$$//' $@
-	test -s $@
-
-geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/locale/en/LC_MESSAGES/+package+_geoportal-client.po:
-	@echo "Nothing to be done for $@"
-
-.PRECIOUS: %.mo
-%.mo: %.po
-	mkdir --parent $(dir $@)
-	msgfmt -o $*.mo $<
-
-# HA proxy on localhost on https
-
-geoportal/c2cgeoportal_geoportal/scaffolds/create/front_dev/localhost.pem:
-	mkdir -p $(dir $@)
-	cat /usr/lib/node_modules/ngeo/private.crt /usr/lib/node_modules/ngeo/private.key | tee $@
-
-geoportal/c2cgeoportal_geoportal/scaffolds/create/front_dev/haproxy.cfg.tmpl: \
-		geoportal/c2cgeoportal_geoportal/scaffolds/create/front/haproxy.cfg.tmpl
-	mkdir -p $(dir $@)
-	sed 's#bind :80#bind *:443 ssl crt /etc/haproxy_dev/localhost.pem#g' $< > $@
-	echo '    http-request set-header X-Forwarded-Proto https' >> $@
+.PHONY: stoptest
+stoptest: ## Stop the compositon used to run the tests
+	docker-compose stop --timeout=0
+	docker-compose down --remove-orphans

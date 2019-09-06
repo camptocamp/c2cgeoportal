@@ -34,7 +34,7 @@ def transact(dbsession):
 
 @pytest.fixture(scope='session')
 def settings():
-    config_uri = 'tests.ini' if os.path.exists('tests.ini') else 'commons/tests.ini'
+    config_uri = '/opt/c2cgeoportal/commons/tests/tests.ini'
     fileConfig(config_uri, defaults=dict(os.environ))
     settings = plaster.get_settings(config_uri, 'tests')
     config.init(settings.get('app.cfg'))
