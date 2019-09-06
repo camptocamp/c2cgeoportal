@@ -33,19 +33,31 @@ import logging
 from datetime import datetime
 from hashlib import sha1
 from hmac import compare_digest as compare_hash
-from typing import List
+from typing import List, Any
 
-import colander
 import pytz
 from c2c.template.config import config
-from c2cgeoform.ext import deform_ext
-from deform.widget import DateTimeInputWidget, HiddenWidget
 from sqlalchemy import Column, ForeignKey, Table
 from sqlalchemy.dialects.postgresql import HSTORE
 from sqlalchemy.orm import backref, relationship
 from sqlalchemy.types import Boolean, DateTime, Integer, String, Unicode
 
-import pyotp
+try:
+    from colander import drop, Email
+    from deform.widget import HiddenWidget, DateTimeInputWidget
+    from c2cgeoform.ext.deform_ext import RelationSelect2Widget
+except ModuleNotFoundError:
+    drop = None
+
+    class GenericClass:
+        def __init__(self, *args: Any, **kwargs: Any):
+            pass
+    Email = GenericClass
+    HiddenWidget = GenericClass
+    DateTimeInputWidget = GenericClass
+    CollenderGeometry = GenericClass
+    RelationSelect2Widget = GenericClass
+
 from c2cgeoportal_commons.models import Base, _
 from c2cgeoportal_commons.models.main import Role
 
@@ -101,7 +113,7 @@ class User(Base):
     email = Column(Unicode, nullable=False, info={
         'colanderalchemy': {
             'title': _('Email'),
-            'validator': colander.Email()
+            'validator': Email()
         }
     })
     is_password_changed = Column(
@@ -116,7 +128,7 @@ class User(Base):
         'colanderalchemy': {
             'title': _('Settings from role'),
             'description': 'Only used for settings not for permissions',
-            'widget': deform_ext.RelationSelect2Widget(
+            'widget': RelationSelect2Widget(
                 Role,
                 'id',
                 'name',
@@ -153,7 +165,7 @@ class User(Base):
     last_login = Column(DateTime(timezone=True), info={
         'colanderalchemy': {
             'title': _('Last login'),
-            'missing': colander.drop,
+            'missing': drop,
             'widget': DateTimeInputWidget(readonly=True)
         }
     })
@@ -177,9 +189,7 @@ class User(Base):
     ) -> None:
         self.username = username
         self.password = password
-        self.tech_data = {
-            '2fa_totp_secret': pyotp.random_base32(),
-        }
+        self.tech_data = {}
         self.email = email
         self.is_password_changed = is_password_changed
         if settings_role:
@@ -201,12 +211,6 @@ class User(Base):
     def set_temp_password(self, password: str) -> None:
         """encrypts password on the fly."""
         self.temp_password = self.__encrypt_password(password)
-
-    def generate_2fa_totp_secret(self) -> None:
-        self.tech_data['2fa_totp_secret'] = pyotp.random_base32()
-
-    def generate_2fa_totp_temp_secret(self) -> None:
-        self.tech_data['temp_2fa_totp_secret'] = pyotp.random_base32()
 
     @staticmethod
     def __encrypt_password_legacy(password: str) -> str:
@@ -246,20 +250,6 @@ class User(Base):
             self.is_password_changed = False
             return True
         return False
-
-    def validate_2fa_totp(self, otp: str) -> bool:
-        if pyotp.TOTP(self.tech_data['2fa_totp_secret']).verify(otp):
-            return True
-        if self.tech_data['temp_2fa_totp_secret'] is not None and \
-                pyotp.TOTP(self.tech_data['temp_2fa_totp_secret']).verify(otp):
-            self.tech_data['2fa_totp_secret'] = self.tech_data['temp_2fa_totp_secret']
-            self.tech_data['temp_2fa_totp_secret'] = None
-            return True
-        return False
-
-    def otp_uri(self, issuer_name: str) -> str:
-        return pyotp.TOTP(self.tech_data['2fa_totp_secret']) \
-            .provisioning_uri(self.email, issuer_name=issuer_name)
 
     def expired(self) -> bool:
         return self.expire_on is not None and self.expire_on < datetime.now(pytz.utc)

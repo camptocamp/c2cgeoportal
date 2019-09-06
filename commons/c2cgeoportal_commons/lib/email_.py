@@ -35,7 +35,11 @@ from socket import gaierror
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.utils import formatdate
-from pyramid.httpexceptions import HTTPInternalServerError
+try:
+    from pyramid.httpexceptions import HTTPInternalServerError
+except ModuleNotFoundError:
+    class HTTPInternalServerError(BaseException):  # type: ignore
+        pass
 
 
 LOG = logging.getLogger(__name__)
