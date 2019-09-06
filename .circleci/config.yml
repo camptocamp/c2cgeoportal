@@ -41,28 +41,26 @@ jobs:
       # Build QGIS images
       - run: >
           docker build --target=lint --build-arg=VERSION=latest docker/qgisserver
-      - run: >
-          docker build --target=runner --build-arg=VERSION=latest
-          --tag=camptocamp/geomapfish-qgisserver:gmf${MAJOR_VERSION}-qgismaster docker/qgisserver
+      - run: QGIS_VERSION=latest make build-qgisserver
       # LTR
-      - run: >
-          docker build --target=runner --build-arg=VERSION=3.4
-          --tag=camptocamp/geomapfish-qgisserver:gmf${MAJOR_VERSION}-qgis3.4 docker/qgisserver
-      - run: >
-          docker build --target=runner --build-arg=VERSION=3.8
-          --tag=camptocamp/geomapfish-qgisserver:gmf${MAJOR_VERSION}-qgis3.8 docker/qgisserver
+      - run: QGIS_VERSION=3.4 make build-qgisserver
+      - run: QGIS_VERSION=3.8 make build-qgisserver
 
       # Tests
       - run: make preparetest
+      # Similar to: make tests-commons
       - run: >
           ci/run-tests tests '' /opt/c2cgeoportal/commons/c2cgeoportal_commons
           commons /opt/c2cgeoportal/commons/tests
+      # Similar to: make tests-geoportal
       - run: >
           ci/run-tests tests '--append' /opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal
           geoportal /opt/c2cgeoportal/geoportal/tests
+      # Similar to: make tests-admin
       - run: >
           ci/run-tests tests '--append' /opt/c2cgeoportal/admin/c2cgeoportal_admin
           admin /opt/c2cgeoportal/admin/tests
+      # Similar to: make tests-qgisserver
       - run: >
           ci/run-tests qgisserver-tests '' /var/www/plugins/geomapfish_qgisserver
           qgis /src/tests/functional
