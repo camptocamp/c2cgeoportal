@@ -76,7 +76,9 @@ class TestRequestProperty(TestCase):
         self.assertEqual([role.name for role in request.user.roles], ["__test_role"])
 
     def test_request_right_auth(self):
-        request = create_dummy_request(headers={
+        request = create_dummy_request({
+            'basicauth': 'true'
+        }, headers={
             "Authorization": "Basic " + base64.b64encode(
                 "__test_user:__test_user".encode("utf-8")
             ).decode("utf-8").replace("\n", "")

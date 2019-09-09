@@ -71,7 +71,7 @@ class Proxy(object):
                 parsed_url.path, query_string
             )
 
-        log.info("Send query to URL:\n{0!s}.".format(url))
+        log.info("Send query to URL:\n%s.", url)
 
         if method is None:
             method = self.request.method

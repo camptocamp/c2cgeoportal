@@ -176,10 +176,12 @@ def create_dummy_request(additional_settings=None, authentication=True, user=Non
     request.client_addr = None
     request.c2c_request_id = 'test'
     if authentication and user is None:
-        request._get_authentication_policy = lambda: create_authentication({
+        authentication_settings = {
             "authtkt_cookie_name": "__test",
             "authtkt_secret": "long enough secret!!  00000000000000000000000000000000000000000000000",
-        })
+        }
+        authentication_settings.update(additional_settings)
+        request._get_authentication_policy = lambda: create_authentication(authentication_settings)
     elif user is not None:
         config.testing_securitypolicy(user)
     request.set_property(

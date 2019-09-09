@@ -27,6 +27,19 @@ table. If a c2cgeoportal application should work with another user information
 source, like LDAP, a custom *client validation* mechanism can be set up.
 Our knowledge base has an example of how this can be achieved.
 
+Basic auth
+~~~~~~~~~~
+
+To be able to access the OGC services from your desktop GIS, you should enable the basic authentication
+by setting ``BASICAUTH`` to ``True`` in the ``.env.sample`` file.
+
+To force the application to ask for a password, you should have the attribute ``authentication_required``
+in your query string.
+
+.. note::
+
+   For security reasons, basic authentication and two factor authentication should not be enabled together.
+
 Two factors authentication
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -42,3 +55,7 @@ To enable the two factors authentication you should set the following settings:
 
 If a user lost his second authentication factor he can't ask for a new one, to reset it the administrator
 should uncheck the 'The user changed his password' field on the user in the admin interface.
+
+.. note::
+
+   For security reasons, basic authentication and two factor authentication should not be enabled together.
