@@ -22,6 +22,7 @@ for (const filename of ls(path.resolve(__dirname, '{{package}}_geoportal/static-
       vars: {
         entry_point: '${VISIBLE_ENTRY_POINT}',
         version: '{{geomapfish_version}}',
+        cache_version: '${CACHE_VERSION}',
        },
     })
   );

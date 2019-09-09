@@ -101,9 +101,9 @@ def main():
         if args.html:
             data = _sub(
                 re.escape('<script src="../../../dist/vendor.js') + r'.*',
-                r'<script src="{entry_point}static-ngeo/vendor.js?{version}"></script>'.format(
+                r'<script src="{entry_point}static-ngeo/vendor.js?{cache_version}"></script>'.format(
                     entry_point='${htmlWebpackPlugin.options.vars.entry_point}',
-                    version='${htmlWebpackPlugin.options.vars.version}'
+                    cache_version='${htmlWebpackPlugin.options.vars.cache_version}'
                 ),
                 data,
                 required=False,
@@ -113,6 +113,16 @@ def main():
                 '[0-9]' + re.escape('.camptocamp.com/dynamic.json">'),
                 '<meta name="dynamicUrl" content="{entry_point}dynamic.json">'.format(
                     entry_point='${htmlWebpackPlugin.options.vars.entry_point}',
+                ),
+                data,
+            )
+            data = _sub(
+                re.escape('</head>'),
+                '  <link href="{entry_point}static/{version}/{interface}.css" rel="stylesheet">\n  </head>'
+                .format(
+                    entry_point='${htmlWebpackPlugin.options.vars.entry_point}',
+                    version='${htmlWebpackPlugin.options.vars.version}',
+                    interface=args.interface
                 ),
                 data,
             )

@@ -1,5 +1,7 @@
 #!/bin/bash -e
 
+export CACHE_VERSION=$RANDOM
+
 function evaluate {
     file=$1
     echo "Evaluate: ${file}"
