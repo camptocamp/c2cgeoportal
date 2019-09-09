@@ -59,14 +59,7 @@ Run the tests:
 
 .. prompt:: bash
 
-    docker-compose exec tests pytest --verbose --color=yes \
-        /opt/c2cgeoportal/commons/tests
-    docker-compose exec tests pytest --verbose --color=yes \
-        /opt/c2cgeoportal/geoportal/tests
-    docker-compose exec tests pytest --verbose --color=yes \
-        /opt/c2cgeoportal/admin/tests
-    docker-compose exec qgisserver-tests pytest --verbose --color=yes \
-        /src/tests/functional
+    make tests
 
 To run only a specific test, use the ``-k`` switch. For example:
 
