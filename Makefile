@@ -35,7 +35,7 @@ build-runner:
 		--build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --build-arg=VERSION=$(VERSION) .
 
 .PHONY: build-test-db
-build-test-db: docker/test-db/12-alembic.sql docker/test-db/13-alembic-static.sql
+build-test-db:
 	docker build --tag=camptocamp/geomapfish-test-db docker/test-db
 
 .PHONY: build-test-mapserver
@@ -47,19 +47,15 @@ build-qgis-server-tests:
 	docker build --target=tests --build-arg=VERSION=3.4 \
 		--tag=camptocamp/geomapfish-qgisserver-tests docker/qgisserver
 
-docker/test-db/12-alembic.sql:
-	docker run --rm camptocamp/geomapfish alembic \
-		--config=/opt/c2cgeoportal/commons/alembic.ini --name=main upgrade --sql head > $@
-
-docker/test-db/13-alembic-static.sql:
-	docker run --rm camptocamp/geomapfish alembic \
-		--config=/opt/c2cgeoportal/commons/alembic.ini --name=static upgrade --sql head > $@
-
 .PHONY: preparetest
 preparetest: ## Run the compositon used to run the tests
 preparetest: stoptest build-tools build-test-db build-test-mapserver build-qgis-server-tests
 	docker-compose up -d
 	docker-compose exec tests wait-db
+	docker-compose exec tests alembic --config=/opt/c2cgeoportal/commons/alembic.ini --name=main \
+		upgrade head
+	docker-compose exec tests alembic --config=/opt/c2cgeoportal/commons/alembic.ini --name=static \
+		upgrade head
 	docker-compose exec tests psql --command='DELETE FROM main_static.user_role'
 	docker-compose exec tests psql --command='DELETE FROM main_static."user"'
 

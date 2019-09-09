@@ -4,5 +4,3 @@
 **/__pycache__/
 *.egg-info/
 /.mypy_cache/
-/docker/test-db/12-alembic.sql
-/docker/test-db/13-alembic-static.sql
