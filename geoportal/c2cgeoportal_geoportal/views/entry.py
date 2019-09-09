@@ -1120,6 +1120,7 @@ class Entry:
                 if not user.validate_2fa_totp(self.request.POST.get("otp")):
                     raise HTTPUnauthorized("See server logs for details")
             user.update_last_login()
+            user.tech_data['consecutive_failed'] = 0
 
             headers = remember(self.request, username) if user.is_password_changed else []
             if not user.is_password_changed:
@@ -1137,6 +1138,17 @@ class Entry:
                     )), headers=headers),
                 )
         else:
+            user = models.DBSession.query(static.User).filter(static.User.username == username).one_or_none()
+            if user and not user.deactivated:
+                if 'consecutive_failed' not in user.tech_data:
+                    user.tech_data['consecutive_failed'] = 0
+                user.tech_data['consecutive_failed'] += 1
+                if user.tech_data['consecutive_failed'] >= \
+                    self.request.settings.get('authentication', {}) \
+                        .get('max_consecutive_failures', sys.maxsize):
+                    user.deactivated = True
+                    user.tech_data['consecutive_failed'] = 0
+
             raise HTTPUnauthorized("See server logs for details")
 
     @view_config(route_name="logout")
@@ -1264,6 +1276,9 @@ class Entry:
         user, username, password, error = self._loginresetpassword()
         if error is not None:
             LOG.info(error)
+            raise HTTPBadRequest("See server logs for details")
+        if user.deactivated:
+            LOG.info("The user '%s' is deactivated", username)
             raise HTTPBadRequest("See server logs for details")
 
         send_email_config(
