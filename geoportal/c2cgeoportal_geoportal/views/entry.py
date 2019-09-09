@@ -55,6 +55,7 @@ from pyramid.view import view_config
 from sqlalchemy.orm import subqueryload
 from sqlalchemy.orm.exc import NoResultFound
 
+import pyotp
 from c2cgeoportal_commons import models
 from c2cgeoportal_commons.lib.email_ import send_email_config
 from c2cgeoportal_commons.models import main, static
@@ -1104,6 +1105,16 @@ class Entry:
             "came_from": self.request.params.get("came_from") or "/",
         }
 
+    def _validate_2fa_totp(self, user, otp: str) -> bool:
+        if pyotp.TOTP(user.tech_data['2fa_totp_secret']).verify(otp):
+            return True
+        if user.tech_data['temp_2fa_totp_secret'] is not None and \
+                pyotp.TOTP(user.tech_data['temp_2fa_totp_secret']).verify(otp):
+            user.tech_data['2fa_totp_secret'] = user.tech_data['temp_2fa_totp_secret']
+            user.tech_data['temp_2fa_totp_secret'] = None
+            return True
+        return False
+
     @view_config(route_name="login")
     def login(self):
         self._referer_log()
@@ -1117,14 +1128,14 @@ class Entry:
         if username is not None:
             user = models.DBSession.query(static.User).filter(static.User.username == username).one()
             if self.two_factor_auth:
-                if not user.validate_2fa_totp(self.request.POST.get("otp")):
+                if not self._validate_2fa_totp(user, self.request.POST.get("otp")):
                     raise HTTPUnauthorized("See server logs for details")
             user.update_last_login()
             user.tech_data['consecutive_failed'] = 0
 
             headers = remember(self.request, username) if user.is_password_changed else []
             if not user.is_password_changed:
-                user.generate_2fa_totp_secret()
+                user.tech_data['2fa_totp_secret'] = pyotp.random_base32()
             LOG.info("User '%s' logged in.", username)
             came_from = self.request.params.get("came_from")
             if came_from:
@@ -1183,7 +1194,9 @@ class Entry:
             if self.two_factor_auth and not user.is_password_changed:
                 result.update({
                     "two_factor_totp_secret": user.tech_data['2fa_totp_secret'],
-                    "otp_uri": user.otp_uri(self.two_factor_issuer_name),
+                    "otp_uri":
+                    pyotp.TOTP(user.tech_data['2fa_totp_secret'])
+                    .provisioning_uri(user.email, issuer_name=self.two_factor_issuer_name)
                 })
         return result
 
@@ -1263,7 +1276,7 @@ class Entry:
 
         password = self.generate_password()
         user.set_temp_password(password)
-        user.generate_2fa_totp_temp_secret()
+        user.tech_data['temp_2fa_totp_secret'] = pyotp.random_base32()
 
         return user, username, password, None
 

@@ -34,8 +34,11 @@ import sqlalchemy.orm  # noqa
 import sqlalchemy.ext.declarative
 import sqlalchemy.ext.declarative.api
 
-from pyramid.i18n import TranslationStringFactory
-_ = TranslationStringFactory('c2cgeoportal_admin')
+try:
+    from pyramid.i18n import TranslationStringFactory
+    _ = TranslationStringFactory('c2cgeoportal_admin')
+except ModuleNotFoundError:
+    pass
 
 
 # Should be filed on application initialisation

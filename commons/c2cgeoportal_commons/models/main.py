@@ -43,9 +43,22 @@ from geoalchemy2.shape import to_shape
 from c2cwsgiutils import broadcast
 
 import zope.event
-import colander
-from deform.widget import HiddenWidget, SelectWidget, TextAreaWidget
-from c2cgeoform.ext import colander_ext, deform_ext
+try:
+    from colander import drop
+    from deform.widget import HiddenWidget, SelectWidget, TextAreaWidget
+    from c2cgeoform.ext.colander_ext import Geometry as ColanderGeometry
+    from c2cgeoform.ext.deform_ext import RelationSelect2Widget
+except ModuleNotFoundError:
+    drop = None
+
+    class GenericClass:
+        def __init__(self, *args: Any, **kwargs: Any):
+            pass
+    HiddenWidget = GenericClass
+    SelectWidget = GenericClass
+    TextAreaWidget = GenericClass
+    ColanderGeometry = GenericClass
+    RelationSelect2Widget = GenericClass
 
 from c2c.template.config import config
 from c2cgeoportal_commons.models import Base, _
@@ -186,7 +199,7 @@ class Role(Base):
     })
     extent = Column(Geometry('POLYGON', srid=_srid), info={
         'colanderalchemy': {
-            'typ': colander_ext.Geometry('POLYGON', srid=_srid, map_srid=3857)
+            'typ': ColanderGeometry('POLYGON', srid=_srid, map_srid=3857)
         }
     })
 
@@ -405,7 +418,7 @@ class LayerGroup(TreeGroup):
 
     id = Column(Integer, ForeignKey(_schema + '.treegroup.id'), primary_key=True, info={
         'colanderalchemy': {
-            'missing': colander.drop,
+            'missing': drop,
             'widget': HiddenWidget()
         }})
     is_expanded = Column(Boolean, info={
@@ -442,7 +455,7 @@ class Theme(TreeGroup):
 
     id = Column(Integer, ForeignKey(_schema + '.treegroup.id'), primary_key=True, info={
         'colanderalchemy': {
-            'missing': colander.drop,
+            'missing': drop,
             'widget': HiddenWidget()
         }})
     ordering = Column(Integer, nullable=False, info={
@@ -680,7 +693,7 @@ class LayerWMS(DimensionLayer):
         'colanderalchemy': {
             'title': _('OGC server'),
             'column': 2,
-            'widget': deform_ext.RelationSelect2Widget(
+            'widget': RelationSelect2Widget(
                 OGCServer,
                 'id',
                 'name',
@@ -839,7 +852,7 @@ class RestrictionArea(Base):
         'colanderalchemy': {'widget': HiddenWidget()}}
     )
     area = Column(Geometry('POLYGON', srid=_srid), info={'colanderalchemy': {
-        'typ': colander_ext.Geometry('POLYGON', srid=_srid, map_srid=3857)
+        'typ': ColanderGeometry('POLYGON', srid=_srid, map_srid=3857)
     }})
 
     name = Column(Unicode, info={
