@@ -139,7 +139,9 @@ RUN \
   python3 -m pip install --disable-pip-version-check --no-cache-dir --no-deps \
     --editable=/opt/c2cgeoportal/commons \
     --editable=/opt/c2cgeoportal/geoportal \
-    --editable=/opt/c2cgeoportal/admin
+    --editable=/opt/c2cgeoportal/admin && \
+    python3 -OO -m compileall -q /opt/c2cgeoportal /usr/local/lib/python3.7 \
+        -x /usr/local/lib/python3.7/dist-packages/dateutils/
 
 RUN adduser www-data root
 
