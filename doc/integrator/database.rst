@@ -63,7 +63,7 @@ If you have not created it in your database, use to following command to create 
 
 .. prompt:: bash
 
-   docker-compose exec geoportal psql --file=scripts/CONST_clone_schema.sql
+   docker-compose exec tools psql --file=/opt/clone_schema.sql
 
 To use the function, connect to your database and perform the following statement:
 

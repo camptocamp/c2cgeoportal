@@ -5,6 +5,7 @@
 !commons
 !geoportal
 !admin
+!scripts/clone_schema.sql
 admin/Makefile
 !vars.yaml
 !.tx

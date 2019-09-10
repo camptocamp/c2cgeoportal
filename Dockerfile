@@ -99,6 +99,7 @@ RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --no-deps 
 # For awscli
 RUN echo 'complete -C aws_completer aws' >> /etc/bash_completion.d/aws_completer
 COPY bin/bashrc ~/.bashrc
+COPY scripts/clone_schema.sql /opt/
 
 ENV NODE_PATH=/usr/lib/node_modules
 
