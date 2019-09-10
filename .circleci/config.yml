@@ -188,7 +188,7 @@ jobs:
             docker exec transifex bash -c "echo \"username = ${TRANSIFEX_USERNAME}\" >> ~/.transifexrc"
             docker exec transifex bash -c "echo \"password = ${TRANSIFEX_PASSWORD}\" >> ~/.transifexrc"
             docker exec transifex bash -c "echo \"token =\" >> ~/.transifexrc"
-            docker exec transifex make transifex-send
+            docker exec transifex make --makefile=internal.mk transifex-send
             docker stop transifex
       - deploy:
           name: Publish documentation to GitHub.io
