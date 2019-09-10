@@ -33,7 +33,7 @@ FROM base AS tools
 
 RUN \
   apt-get update && \
-  apt-get install --assume-yes --no-install-recommends git make postgresql-client-10 net-tools iputils-ping \
+  apt-get install --assume-yes --no-install-recommends git make postgresql-client-10 gdal-bin net-tools iputils-ping \
         vim vim-editorconfig vim-addon-manager tree groff-base libxml2-utils && \
   apt-get clean && \
   rm --recursive --force /var/lib/apt/lists/* && \
@@ -98,7 +98,7 @@ RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --no-deps 
 
 # For awscli
 RUN echo 'complete -C aws_completer aws' >> /etc/bash_completion.d/aws_completer
-RUN echo '. /etc/bash_completion' >> ~/.bashrc
+COPY bin/bashrc ~/.bashrc
 
 ENV NODE_PATH=/usr/lib/node_modules
 
