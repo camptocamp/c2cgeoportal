@@ -141,6 +141,10 @@ services:
       - PGDATABASE
       - PGSCHEMA_STATIC
       - PGOPTIONS
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_DEFAULT_REGION
+      - AWS_S3_ENDPOINT
       - GUNICORN_PARAMS
       - VISIBLE_WEB_HOST
       - VISIBLE_WEB_PROTOCOL
@@ -174,7 +178,7 @@ services:
       - OTHER_LOG_LEVEL
 
   tools:
-    image: camptocamp/geoportal-tools:{{geomapfish_main_version}}
+    image: camptocamp/geomapfish-tools:{{geomapfish_main_version}}
     restart: unless-stopped
     environment: *env
 
