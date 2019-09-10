@@ -181,7 +181,7 @@ jobs:
       - deploy:
           name: Push to Transifex
           command: |
-            docker build --target=build --tag=transifex --build-arg=MAJOR_VERSION=${MAJOR_VERSION} .
+            docker build --target=tools --tag=transifex --build-arg=MAJOR_VERSION=${MAJOR_VERSION} .
             docker run --name=transifex -ti --rm --detach transifex tail -f /dev/null
             docker exec transifex bash -c "echo \"[https://www.transifex.com]\" > ~/.transifexrc"
             docker exec transifex bash -c "echo \"hostname = https://www.transifex.com\" >> ~/.transifexrc"
