@@ -7,7 +7,7 @@ Version 2.5.0
 Information
 -----------
 
-1. Basic authentication is disabled by default from this version onward..
+1. Basic authentication is disabled by default from this version onward.
    To enable basic auth see:
    https://camptocamp.github.io/c2cgeoportal/{{geomapfish_version}}/integrator/security.html#basic-auth
 
