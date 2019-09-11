@@ -126,6 +126,8 @@ def test_data(dbsession):
 
         if node_def['type'] == 'layer':
             vlayer = QgsVectorLayer("Point", node_def['name'], 'memory')
+            if 'shortName' in node_def:
+                vlayer.setShortName(node_def['shortName'])
             project.addMapLayer(vlayer)
             node = project.layerTreeRoot().findLayer(vlayer)
             clone = node.clone()
@@ -134,18 +136,27 @@ def test_data(dbsession):
 
         if node_def['type'] == 'group':
             node = parent_node.addGroup(node_def['name'])
+            if 'shortName' in node_def:
+                node.setCustomProperty("wmsShortName", node_def['shortName'])
             for child_def in node_def['children']:
                 add_node(node, child_def)
 
     for node in [
         {'name': 'root', 'type': 'group', 'children': [
             {'name': 'public_group', 'type': 'group', 'children': [
-                {'name': 'public_layer', 'type': 'layer'}]},
+                {'name': 'public_layer', 'type': 'layer'},
+            ]},
             {'name': 'private_group1', 'type': 'group', 'children': [
-                {'name': 'private_layer1', 'type': 'layer'}]},
+                {'name': 'private_layer1', 'type': 'layer'},
+            ]},
             {'name': 'private_group2', 'type': 'group', 'children': [
-                {'name': 'private_layer2', 'type': 'layer'}]},
-        ]}
+                {'name': 'private_layer2', 'type': 'layer'},
+            ]},
+            # For group and layer short names
+            {'name': 'private_group3', 'type': 'group', 'shortName': 'pg3', 'children': [
+                {'name': 'private_layer3', 'type': 'layer', 'shortName': 'pl3'},
+            ]},
+        ]},
     ]:
         add_node(project.layerTreeRoot(), node)
 
@@ -161,14 +172,20 @@ def test_data(dbsession):
     private_layer2 = LayerWMS(name='private_layer2', layer='private_layer2', public=False)
     private_layer2.ogc_server = ogc_server1
 
+    private_group3 = LayerWMS(name='private_group3', layer='pg3', public=False)
+    private_group3.ogc_server = ogc_server1
+
+    private_layer3 = LayerWMS(name='private_layer3', layer='pl3', public=False)
+    private_layer3.ogc_server = ogc_server1
+
     layers = {layer.name: layer for layer in (
-        public_group, public_layer, private_layer1, private_layer2
+        public_group, public_layer, private_layer1, private_layer2, private_group3, private_layer3
     )}
     dbsession.add_all(layers.values())
 
 
     ra1 = RestrictionArea('restriction_area1',
-                          layers=[private_layer1],
+                          layers=[private_layer1, private_layer3],
                           roles=[role1],
                           area=from_shape(area1, srid=21781))
     ra2 = RestrictionArea('restriction_area2',
@@ -193,6 +210,19 @@ def test_data(dbsession):
     t.rollback()
 
 
+@pytest.fixture(scope='function')
+def wms_use_layer_ids():
+    """
+    Activate WMSUseLayerIDs
+    """
+    project = QgsProject.instance()
+    try:
+        project.writeEntry("WMSUseLayerIDs", "/", True)
+        yield
+    finally:
+        project.writeEntry("WMSUseLayerIDs", "/", False)
+
+
 @pytest.mark.usefixtures("server_iface",
                          "qgs_access_control_filter",
                          "test_data")
@@ -207,6 +237,31 @@ class TestOGCServerAccessControl():
         )
         assert ogcserver_accesscontrol.ogcserver is test_data['ogc_servers']['qgisserver1']
 
+    def test_ogc_layer_name(self, server_iface, dbsession):
+        ogcserver_accesscontrol = OGCServerAccessControl(
+            server_iface,
+            'qgisserver1',
+            21781,
+            dbsession
+        )
+        for layer_name, expected in (
+            ('private_layer1', 'private_layer1'),
+            ('private_layer3', 'pl3'),
+        ):
+            layer = QgsProject.instance().mapLayersByName(layer_name)[0]
+            assert expected == ogcserver_accesscontrol.ogc_layer_name(layer)
+
+    @pytest.mark.usefixtures("wms_use_layer_ids")
+    def test_ogc_layer_with_wms_use_layer_ids(self, server_iface, dbsession):
+        ogcserver_accesscontrol = OGCServerAccessControl(
+            server_iface,
+            'qgisserver1',
+            21781,
+            dbsession
+        )
+        layer = QgsProject.instance().mapLayersByName('private_layer1')[0]
+        assert layer.id() == ogcserver_accesscontrol.ogc_layer_name(layer)
+
     def test_get_layers(self, server_iface, dbsession, test_data):
         ogcserver_accesscontrol = OGCServerAccessControl(
             server_iface,
@@ -215,8 +270,6 @@ class TestOGCServerAccessControl():
             dbsession
         )
 
-        layers = ogcserver_accesscontrol.get_layers()
-
         test_layers = test_data['layers']
         expected = {
             'public_group': [test_layers['public_group']],
@@ -224,7 +277,13 @@ class TestOGCServerAccessControl():
                              test_layers['public_layer']],
             'private_layer1': [test_layers['private_layer1']],
             'private_layer2': [test_layers['private_layer2']],
+            'pg3': [test_layers['private_group3']],
+            'pl3': [test_layers['private_group3'],
+                    test_layers['private_layer3']],
         }
+
+        layers = ogcserver_accesscontrol.get_layers()
+
         assert set(expected.keys()) == set(layers.keys())
         for key in expected.keys():
             assert set(expected[key]) == set(layers[key])
@@ -272,6 +331,7 @@ class TestOGCServerAccessControl():
 
         for layer_names, rw, role_names, expected in (
             (('private_layer1',), False, ('role1',), (Access.AREA, [area1])),
+            (('private_layer3',), False, ('role1',), (Access.AREA, [area1])),
         ):
             layers = [test_layers[layer_name] for layer_name in layer_names]
             roles = [test_roles[role_name] for role_name in role_names]
@@ -292,6 +352,7 @@ class TestOGCServerAccessControl():
             ('user1', 'public_layer', (Access.FULL, None)),
             ('user1', 'private_layer1', (Access.AREA, area1.wkt)),
             ('user1', 'private_layer2', (Access.NO, None)),
+            ('user1', 'private_layer3', (Access.AREA, area1.wkt)),
         ):
             user = test_data['users'][user_name]
             set_request_parameters(server_iface, {
