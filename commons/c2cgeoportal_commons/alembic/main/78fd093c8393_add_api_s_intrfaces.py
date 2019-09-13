@@ -69,6 +69,13 @@ def upgrade():
             name=interface_name, schema=schema
         ))
         if results:
+            op.execute(
+                "DELETE FROM {schema}.interface_theme it "
+                "USING {schema}.interface i "
+                "WHERE it.interface_id = i.id AND i.name = '{name}'".format(
+                    name=interface_name, schema=schema
+                )
+            )
             op.execute("DELETE FROM {schema}.interface WHERE name='{name}'".format(
                 name=interface_name, schema=schema
             ))
@@ -97,6 +104,13 @@ def downgrade():
             name=interface_name, schema=schema
         ))
         if results:
+            op.execute(
+                "DELETE FROM {schema}.interface_theme it "
+                "USING {schema}.interface i "
+                "WHERE it.interface_id = i.id AND i.name = '{name}'".format(
+                    name=interface_name, schema=schema
+                )
+            )
             op.execute("DELETE FROM {schema}.interface WHERE name='{name}'".format(
                 name=interface_name, schema=schema
             ))
