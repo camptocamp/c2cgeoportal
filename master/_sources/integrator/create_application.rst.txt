@@ -34,7 +34,7 @@ To get ``c2cgeoportal``, you need to get the related docker image:
 
 .. prompt:: bash
 
-   docker pull camptocamp/geomapfish-scaffolds:<release|version>
+   docker pull camptocamp/geomapfish-tools:<release|version>
 
 List existing scaffolds
 -----------------------
@@ -47,7 +47,7 @@ c2cgeoportal application you want to create the new application from:
 .. prompt:: bash
 
     docker run --rm --volume=$(pwd):/src \
-        camptocamp/geomapfish-scaffolds:<release|version> \
+        camptocamp/geomapfish-tools:<release|version> \
         pcreate -l
 
 You should at least see the c2cgeoportal scaffolds:
@@ -71,7 +71,7 @@ To create the application, first apply the ``c2cgeoportal_create`` scaffold:
 .. prompt:: bash
 
     docker run --rm -ti \
-        camptocamp/geomapfish-scaffolds:<release|version> \
+        camptocamp/geomapfish-tools:<release|version> \
         run $(id -u) $(id -g) /src \
         pcreate -s c2cgeoportal_create <project>
 
@@ -93,7 +93,7 @@ it later.
         docker run --rm -ti \
             --env=SRID=21781 \
             --env=EXTENT="420000,30000,900000,350000" \
-            camptocamp/geomapfish-scaffolds:<release|version> \
+            camptocamp/geomapfish-tools:<release|version> \
             run $(id -u) $(id -g) /src \
             pcreate -s c2cgeoportal_create \
             --package-name <package> <project>
@@ -107,7 +107,7 @@ Now apply the ``c2cgeoportal_update`` scaffold:
 .. prompt:: bash
 
     docker run --rm -ti --env=SRID=21781 \
-        camptocamp/geomapfish-scaffolds:<release|version> \
+        camptocamp/geomapfish-tools:<release|version> \
         run $(id -u) $(id -g) /src \
         pcreate -s c2cgeoportal_update \
         --package-name <package> <project>

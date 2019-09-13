@@ -10,6 +10,22 @@ obtained from the "auth ticket" cookie set in the request.
 The policy is created, and added to the application's configuration, in the
 application's main ``__init__.py`` file.
 
+In the file ``.env.sample``, you can configure the policy with the following variables:
+
+.. code::
+
+   AUTHTKT_TIMEOUT  # Default to one day.
+   AUTHTKT_REISSUE_TIME  # Default to 2h30, recommended to be 10 times smaller than AUTHTKT_TIMEOUT.
+   AUTHTKT_MAXAGE  # Default to one day, good to have the same value as AUTHTKT_TIMEOUT.
+   AUTHTKT_SECRET  # Should be defined
+   AUTHTKT_COOKIENAME
+   AUTHTKT_HTTP_ONLY  # Default to true.
+   AUTHTKT_SECURE  # Default to true.
+   AUTHTKT_SAMESITE  # Default to Lax.
+
+See also `the official documentation <https://docs.pylonsproject.org/projects/pyramid/en/latest/api/authentication.html#pyramid.authentication.AuthTktAuthenticationPolicy>`_.
+
+
 Using another policy
 ~~~~~~~~~~~~~~~~~~~~
 
@@ -27,6 +43,19 @@ table. If a c2cgeoportal application should work with another user information
 source, like LDAP, a custom *client validation* mechanism can be set up.
 Our knowledge base has an example of how this can be achieved.
 
+Basic auth
+~~~~~~~~~~
+
+To be able to access the OGC services from your desktop GIS, you should enable the basic authentication
+by setting ``BASICAUTH`` to ``True`` in the ``.env.sample`` file.
+
+To force the application to ask for a password, you should have the attribute ``authentication_required``
+in your query string.
+
+.. note::
+
+   For security reasons, basic authentication and two factor authentication should not be enabled together.
+
 Two factors authentication
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -39,6 +68,25 @@ To enable the two factors authentication you should set the following settings:
    vars:
      authentication:
        two_factor: true
+       two_factor_issuer_name: <used_issuer_name>
 
 If a user lost his second authentication factor he can't ask for a new one, to reset it the administrator
 should uncheck the 'The user changed his password' field on the user in the admin interface.
+
+.. note::
+
+   For security reasons, basic authentication and two factor authentication should not be enabled together.
+
+Account lockout
+~~~~~~~~~~~~~~~
+
+To lock an account after a certain number of authentication failures, set the following settings:
+
+.. code:: yaml
+
+   vars:
+     authentication:
+       max_consecutive_failures: 10
+
+To unlock a user, the administrator should uncheck the 'Deactivated' field on the user in the
+admin interface.

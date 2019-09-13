@@ -53,27 +53,20 @@ Before running the tests, install and build all dependencies:
 
 .. prompt:: bash
 
-    MAJOR_VERSION=2.5 ci/preparetest
+    make preparetest
 
 Run the tests:
 
 .. prompt:: bash
 
-    docker-compose exec tests pytest --verbose --color=yes \
-        /app/c2cgeoportal/commons/tests
-    docker-compose exec tests pytest --verbose --color=yes \
-        /app/c2cgeoportal/geoportal/tests
-    docker-compose exec tests pytest --verbose --color=yes \
-        /app/c2cgeoportal/admin/tests
-    docker-compose exec qgisserver-tests pytest --verbose --color=yes \
-        /src/tests/functional
+    make tests
 
 To run only a specific test, use the ``-k`` switch. For example:
 
 .. prompt:: bash
 
     docker-compose exec tests pytest --verbose --color=yes \
-        -k test_catalogue /app/c2cgeoportal/geoportal/tests
+        -k test_catalogue /opt/c2cgeoportal/geoportal/tests
 
 Database
 --------
@@ -150,9 +143,7 @@ And run validation:
 
 .. prompt:: bash
 
-    docker build --target=checks \
-        --build-arg=MAJOR_VERSION=2.5 \
-        --build-arg=VERSION=2.5.0 .
+    make checks
 
 Dependencies
 ------------

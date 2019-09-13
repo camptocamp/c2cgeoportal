@@ -86,9 +86,8 @@ span.prompt1:before {
 <span class="prompt1">git checkout master</span>
 <span class="prompt1">git reset --hard origin/master</span>
 </pre></div></div><p>Create a new Transifex resource:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker build --target<span class="o">=</span>builder --tag<span class="o">=</span>camptocamp/geomapfish-build <span class="se">\</span>
-      --build-arg<span class="o">=</span><span class="nv">MAJOR_VERSION</span><span class="o">=</span><span class="m">2</span>.5 --build-arg<span class="o">=</span><span class="nv">VERSION</span><span class="o">=</span><span class="m">2</span>.5.0 .</span>
-<span class="prompt1">docker run camptocamp/geomapfish-build transifex-init &lt;version + <span class="m">1</span>&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">make build-tools</span>
+<span class="prompt1">docker run camptocamp/geomapfish-tools transifex-init &lt;version + <span class="m">1</span>&gt;</span>
 </pre></div></div><p>For each version, we create a new branch (at the latest, for the final release):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git checkout -b &lt;version&gt;</span>
 <span class="prompt1">git push origin &lt;version&gt;</span>

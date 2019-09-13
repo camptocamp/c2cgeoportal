@@ -64,7 +64,7 @@ created by the c2cgeoportal scaffolds (the <code class="docutils literal notrans
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">docker pull camptocamp/geomapfish-scaffolds:&lt;release<span class="p">|</span>version&gt;</span>
+</style><span class="prompt1">docker pull camptocamp/geomapfish-tools:&lt;release<span class="p">|</span>version&gt;</span>
 </pre></div></div></div>
 <div class="section" id="list-existing-scaffolds">
 <h2>List existing scaffolds<a class="headerlink" href="#list-existing-scaffolds" title="Permalink to this headline">¶</a></h2>
@@ -73,7 +73,7 @@ from the root directory of c2cgeoportal (if you have followed the instructions
 from the previous section), or from the root directory of the existing
 c2cgeoportal application you want to create the new application from:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm --volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src <span class="se">\</span>
-    camptocamp/geomapfish-scaffolds:&lt;release<span class="p">|</span>version&gt; <span class="se">\</span>
+    camptocamp/geomapfish-tools:&lt;release<span class="p">|</span>version&gt; <span class="se">\</span>
     pcreate -l</span>
 </pre></div></div><p>You should at least see the c2cgeoportal scaffolds:</p>
 <ul class="simple">
@@ -90,7 +90,7 @@ c2cgeoportal application you want to create the new application from:</p>
 issue with Pip.</p>
 <p>To create the application, first apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_create</span></code> scaffold:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm -ti <span class="se">\</span>
-    camptocamp/geomapfish-scaffolds:&lt;release<span class="p">|</span>version&gt; <span class="se">\</span>
+    camptocamp/geomapfish-tools:&lt;release<span class="p">|</span>version&gt; <span class="se">\</span>
     run <span class="k">$(</span>id -u<span class="k">)</span> <span class="k">$(</span>id -g<span class="k">)</span> /src <span class="se">\</span>
     pcreate -s c2cgeoportal_create &lt;project&gt;</span>
 </pre></div></div><div class="admonition note">
@@ -108,7 +108,7 @@ parameters:</p>
 <div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm -ti <span class="se">\</span>
     --env<span class="o">=</span><span class="nv">SRID</span><span class="o">=</span><span class="m">21781</span> <span class="se">\</span>
     --env<span class="o">=</span><span class="nv">EXTENT</span><span class="o">=</span><span class="s2">&quot;420000,30000,900000,350000&quot;</span> <span class="se">\</span>
-    camptocamp/geomapfish-scaffolds:&lt;release<span class="p">|</span>version&gt; <span class="se">\</span>
+    camptocamp/geomapfish-tools:&lt;release<span class="p">|</span>version&gt; <span class="se">\</span>
     run <span class="k">$(</span>id -u<span class="k">)</span> <span class="k">$(</span>id -g<span class="k">)</span> /src <span class="se">\</span>
     pcreate -s c2cgeoportal_create <span class="se">\</span>
     --package-name &lt;package&gt; &lt;project&gt;</span>
@@ -119,7 +119,7 @@ parameters:</p>
 creating this application from.</p>
 <p>Now apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_update</span></code> scaffold:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm -ti --env<span class="o">=</span><span class="nv">SRID</span><span class="o">=</span><span class="m">21781</span> <span class="se">\</span>
-    camptocamp/geomapfish-scaffolds:&lt;release<span class="p">|</span>version&gt; <span class="se">\</span>
+    camptocamp/geomapfish-tools:&lt;release<span class="p">|</span>version&gt; <span class="se">\</span>
     run <span class="k">$(</span>id -u<span class="k">)</span> <span class="k">$(</span>id -g<span class="k">)</span> /src <span class="se">\</span>
     pcreate -s c2cgeoportal_update <span class="se">\</span>
     --package-name &lt;package&gt; &lt;project&gt;</span>
