@@ -114,9 +114,11 @@ def test_data(dbsession):
     roles = {role.name: role for role in (role1, role2)}
     dbsession.add_all(roles.values())
 
+    root = User('root')
+    root.id = 0
     user1 = User('user1', roles=[role1])
     user2 = User('user12', roles=[role1, role2])
-    users = {user.username: user for user in (user1, user2)}
+    users = {user.username: user for user in (root, user1, user2)}
     dbsession.add_all(users.values())
 
 
@@ -348,12 +350,20 @@ class TestOGCServerAccessControl():
             dbsession
         )
 
-        for user_name, layer_name, expected in (
+        for user_name, layer_name, expected in [
+            ('root', layer_name, (Access.FULL, None))
+            for layer_name in (
+                'public_layer',
+                'private_layer1',
+                'private_layer2',
+                'private_layer3',
+            )
+        ] + [
             ('user1', 'public_layer', (Access.FULL, None)),
             ('user1', 'private_layer1', (Access.AREA, area1.wkt)),
             ('user1', 'private_layer2', (Access.NO, None)),
             ('user1', 'private_layer3', (Access.AREA, area1.wkt)),
-        ):
+        ]:
             user = test_data['users'][user_name]
             set_request_parameters(server_iface, {
                 'USER_ID': str(user.id)

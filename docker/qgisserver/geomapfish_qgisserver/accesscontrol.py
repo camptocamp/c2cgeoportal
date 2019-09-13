@@ -311,6 +311,9 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         - Access area as WKT or None
         """
         roles = self.get_roles()
+        if roles == 'ROOT':
+            return Access.FULL, None
+
         ogc_name = self.ogc_layer_name(layer)
         key = (ogc_name, tuple(sorted(role.id for role in roles)), rw)
 
