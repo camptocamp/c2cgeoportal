@@ -139,3 +139,6 @@ upgrade_files:
       - geoportal/{{package}}_geoportal/static/css/proj-map.css
       - geoportal/{{package}}_geoportal/static/css/proj-widgets.css
       - geoportal/{{package}}_geoportal/static/js/
+  - action: remove
+    paths:
+      - scripts/CONST_clone_schema.sql
