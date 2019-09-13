@@ -106,7 +106,7 @@ If you have not created it in your database, use to following command to create 
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal psql --file<span class="o">=</span>scripts/CONST_clone_schema.sql</span>
+</style><span class="prompt1">docker-compose <span class="nb">exec</span> tools psql --file<span class="o">=</span>/opt/clone_schema.sql</span>
 </pre></div></div><p>To use the function, connect to your database and perform the following statement:</p>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="n">clone_schema</span><span class="p">(</span>
     <span class="s1">&#39;&lt;current_schema_name&gt;&#39;</span><span class="p">,</span>
