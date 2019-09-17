@@ -31,8 +31,8 @@ RUN chmod go+w /etc/static-ngeo/ \
     /app/{{package}}_geoportal/locale/*/LC_MESSAGES/{{package}}_geoportal-client.po
 
 RUN pip install --disable-pip-version-check --no-cache-dir --no-deps --editable=/app/ && \
-    python3 -OO -m compileall -q /usr/local/lib/python3.7 -x /usr/local/lib/python3.7/dist-packages/dateutils/ && \
-    python3 -OO -m compileall -q /app/{{package}}_geoportal -x /app/{{package}}_geoportal/static.*
+    python3 -m compileall -q /usr/local/lib/python3.7 -x /usr/local/lib/python3.7/dist-packages/dateutils/ && \
+    python3 -m compileall -q /app/{{package}}_geoportal -x /app/{{package}}_geoportal/static.*
 
 ARG GIT_HASH
 RUN c2cwsgiutils_genversion.py $GIT_HASH
