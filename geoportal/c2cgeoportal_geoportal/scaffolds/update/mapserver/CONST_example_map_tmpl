@@ -8,7 +8,7 @@ LAYER
   PROCESSING "CLOSE_CONNECTION=DEFER" # For performance
   CONNECTION "${mapserver_connection}"
   # Example data for secured layer by restriction area
-  DATA "geometry FROM (SELECT geo.* FROM geodata.table AS geo WHERE ST_Contains((${MAPSERVER_DATA_SUBSELECT} 'layer_name'), ST_SetSRID(geo.geometry, {{srid}}))) as foo using unique id using srid={{srid}}"
+  DATA "geometry FROM (SELECT geo.* FROM geodata.table AS geo WHERE ST_Contains((${MAPSERVER_DATA_SUBSELECT} 'layer_name'), ST_SetSRID(geo.geometry, {{srid}}))) as foo using unique gid using srid={{srid}}"
   # Example data for secured layer by role (without any area)
   #DATA "geometry FROM (SELECT geo.geom as geom FROM geodata.table AS geo WHERE ARRAY[%role_ids%] && ARRAY(${MAPSERVER_DATA_NOAREA_SUBSELECT} 'layer_name')) as foo USING UNIQUE gid USING srid={{srid}}"
   # Example data for public layer
@@ -19,8 +19,10 @@ LAYER
 
     "wfs_enable_request" "*" # Enable WFS for this layer
     "gml_include_items" "all" # For GetFeatureInfo and WFS GetFeature (QueryBuilder)
+    "gml_types" "auto"
     "ows_geom_type" "polygon" # For returning geometries in GetFeatureInfo
     "ows_geometries" "geom" # For returning geometries in GetFeatureInfo
+    "gml_featureid" "gid" # For returning id in GetFeature
 
     "wms_metadataurl_href" "https://www.example.com/bar" # For metadata URL
     "wms_metadataurl_format" "text/html" # For metadata URL
