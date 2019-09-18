@@ -431,6 +431,7 @@ def includeme(config: pyramid.config.Configurator):
     config.add_renderer(".css", AssetRendererFactory)
     config.add_renderer(".ico", AssetRendererFactory)
     config.add_route("apijs", "/api.js", request_method="GET")
+    config.add_route("localejson", "/locale.json", request_method="GET")
 
     # Cannot be at the header to do not load the model too early
     from c2cgeoportal_geoportal.views.entry import Entry

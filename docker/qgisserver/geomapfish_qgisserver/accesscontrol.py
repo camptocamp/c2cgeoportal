@@ -21,7 +21,7 @@ import yaml
 import zope.event.classhandler
 from c2c.template.config import config
 from enum import Enum
-from qgis.core import QgsMessageLog, QgsDataSourceUri, QgsProject
+from qgis.core import QgsMessageLog, QgsDataSourceUri, QgsProject, QgsLayerTreeLayer, QgsLayerTreeGroup
 from qgis.server import QgsAccessControlFilter
 from shapely import ops
 from sqlalchemy.orm import configure_mappers, scoped_session, sessionmaker
@@ -165,6 +165,13 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             QgsMessageLog.logMessage(''.join(traceback.format_exception(*sys.exc_info())))
             raise
 
+    def ogc_layer_name(self, layer):
+        use_layer_id, _ = QgsProject.instance().readBoolEntry("WMSUseLayerIDs", "/", False)
+        if use_layer_id:
+            return layer.id()
+        else:
+            return layer.shortName() or layer.name()
+
     def get_layers(self):
         """
         Get the list of GMF WMS layers that can give access to each QGIS layer or group.
@@ -186,13 +193,20 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             nodes = {}  # dict { node name : list of ancestor node names }
 
             def browse(path, node):
-                nodes[node.name()] = [node.name()]
+                if isinstance(node, QgsLayerTreeLayer):
+                    ogc_name = self.ogc_layer_name(node.layer())
+                elif isinstance(node, QgsLayerTreeGroup):
+                    ogc_name = node.customProperty("wmsShortName") or node.name()
+                else:
+                    ogc_name = node.name()
+
+                nodes[ogc_name] = [ogc_name]
 
                 for name in path:
-                    nodes[name].append(node.name())
+                    nodes[ogc_name].append(name)
 
                 for l in node.children():
-                    browse(path + [node.name()], l)
+                    browse(path + [ogc_name], l)
 
             browse([], self.project.layerTreeRoot())
 
@@ -200,9 +214,10 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             layers = {}  # dict( node name : list of LayerWMS }
             for layer in self.DBSession.query(LayerWMS) \
                     .filter(LayerWMS.ogc_server_id == self.ogcserver.id).all():
-                for node_name in layer.layer.split(','):
-                    for name in nodes.get(node_name, []):
-                        layers.setdefault(name, []).append(layer)
+                for ogc_layer_name, ancestors in nodes.items():
+                    for ancestor in ancestors:
+                        if ancestor in layer.layer.split(','):
+                            layers.setdefault(ogc_layer_name, []).append(layer)
             QgsMessageLog.logMessage('[accesscontrol] layers:\n{}'.format(
                 json.dumps(
                     dict([(k, [l.name for l in v]) for k, v in layers.items()]),
@@ -296,12 +311,16 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         - Access area as WKT or None
         """
         roles = self.get_roles()
-        key = (layer.name(), tuple(sorted(role.id for role in roles)), rw)
+        if roles == 'ROOT':
+            return Access.FULL, None
+
+        ogc_name = self.ogc_layer_name(layer)
+        key = (ogc_name, tuple(sorted(role.id for role in roles)), rw)
 
         if key in self.area_cache:
             return self.area_cache[key]
 
-        gmf_layers = self.get_layers().get(layer.name(), None)
+        gmf_layers = self.get_layers().get(ogc_name, None)
         if gmf_layers is None:
             raise Exception("Access to an unknown layer")
 
@@ -392,10 +411,11 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             rights = QgsAccessControlFilter.LayerPermissions()
             rights.canRead = rights.canInsert = rights.canUpdate = rights.canDelete = False
 
-            if layer.name() not in self.get_layers():
+            layers = self.get_layers()
+            ogc_layer_name = self.ogc_layer_name(layer)
+            if ogc_layer_name not in layers:
                 return rights
-
-            gmf_layers = self.get_layers()[layer.name()]
+            gmf_layers = self.get_layers()[ogc_layer_name]
 
             roles = self.get_roles()
             access, _ = self.get_restriction_areas(gmf_layers, roles=roles)
