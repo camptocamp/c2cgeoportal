@@ -12,8 +12,7 @@ RUN \
   . /etc/os-release && \
   apt-get update && \
   apt-get install --assume-yes --no-install-recommends apt-utils && \
-  apt-get install --assume-yes --no-install-recommends apt-transport-https gettext postgresql-client less \
-    bash-completion && \
+  apt-get install --assume-yes --no-install-recommends apt-transport-https gettext less && \
   echo "For Chome installed by Pupetter" && \
   apt-get install --assume-yes --no-install-recommends libx11-6 libx11-xcb1 libxcomposite1 libxcursor1 \
     libxdamage1 libxext6 libxi6 libxtst6 libnss3 libcups2 libxss1 libxrandr2 libasound2 libatk1.0-0 \
@@ -39,7 +38,7 @@ FROM base AS tools
 RUN \
   apt-get update && \
   apt-get install --assume-yes --no-install-recommends git make postgresql-client gdal-bin net-tools iputils-ping \
-        vim vim-editorconfig vim-addon-manager tree groff-base libxml2-utils && \
+        vim vim-editorconfig vim-addon-manager tree groff-base libxml2-utils bash-completion && \
   apt-get clean && \
   rm --recursive --force /var/lib/apt/lists/* && \
   curl https://raw.githubusercontent.com/awslabs/git-secrets/1.3.0/git-secrets > /usr/bin/git-secrets && \
