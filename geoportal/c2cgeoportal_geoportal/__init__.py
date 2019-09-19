@@ -430,7 +430,6 @@ def includeme(config: pyramid.config.Configurator):
     config.add_renderer(".map", AssetRendererFactory)
     config.add_renderer(".css", AssetRendererFactory)
     config.add_renderer(".ico", AssetRendererFactory)
-    config.add_route("apijs", "/api.js", request_method="GET")
     config.add_route("localejson", "/locale.json", request_method="GET")
 
     # Cannot be at the header to do not load the model too early
@@ -438,14 +437,12 @@ def includeme(config: pyramid.config.Configurator):
 
     def add_api_route(name: str, attr: str, path: str, renderer: str):
         config.add_route(name, path, request_method="GET")
-        config.add_view(
-            Entry, attr=attr, route_name=name,
-            renderer='/etc/geomapfish/static/{}'.format(renderer)
-        )
-    add_api_route('favicon', 'favicon', '/favicon.ico', 'images/favicon.ico')
-    add_api_route('apijsmap', 'apijsmap', '/api.js.map', "api.js.map")
-    add_api_route('apicss', 'apicss', '/api.css', "api.css")
-    add_api_route('apihelp', 'apihelp', '/apihelp/index.html', "apihelp/index.html")
+        config.add_view(Entry, attr=attr, route_name=name, renderer=renderer)
+    add_api_route('favicon', 'favicon', '/favicon.ico', '/etc/geomapfish/static/images/favicon.ico')
+    add_api_route('apijs', 'apijs', '/api.js', "/etc/static-ngeo/api.js")
+    add_api_route('apijsmap', 'apijsmap', '/api.js.map', "/etc/static-ngeo/api.js.map")
+    add_api_route('apicss', 'apicss', '/api.css', "/etc/static-ngeo/api.css")
+    add_api_route('apihelp', 'apihelp', '/apihelp/index.html', "/etc/geomapfish/static/apihelp/index.html")
     c2cgeoportal_geoportal.views.add_redirect(
         config, 'apihelp_redirect', '/apihelp.html', '/apihelp/index.html'
     )
