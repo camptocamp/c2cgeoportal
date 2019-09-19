@@ -12,8 +12,24 @@ Information
    https://camptocamp.github.io/c2cgeoportal/{{geomapfish_version}}/integrator/security.html#basic-auth
 
 
-Changes to apply
-----------------
+Version 2.4.2
+=============
 
-1. We need a new PostgreSQL extention named hstore, run in PostgreSQL console:
-   CREATE EXTENSION IF NOT EXISTS hstore;
+Information
+-----------
+
+1. The SVG inclusion through Webpack has changed, See ngeo SVG example for more information:
+   https://camptocamp.github.io/ngeo/master/examples/svg.html
+
+2. The WMTS capabilities is now generated on runtime.
+
+3. If not already done the 'edit' and 'routing' interfaces and their relations will be removed from the
+   database, If you don't want that, you should rename the interfaces before applying the alembic scripts.
+
+4. If not already done the 'api' and 'iframe_api' will be created. After the database upgrade you can run
+   the following request to fill e.-g. the api's interfaces with the desktop interface:
+
+    INSERT INTO main.interface_layer (interface_id, layer_id)
+    SELECT <api_interface_id>, layer_id FROM main.interface_layer WHERE interface_id = <other_interface_id>;
+    INSERT INTO main.interface_theme (interface_id, theme_id)
+    SELECT <api_interface_id>, theme_id FROM main.interface_theme WHERE interface_id = <other_interface_id>;

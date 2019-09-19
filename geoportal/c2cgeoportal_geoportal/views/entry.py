@@ -45,10 +45,8 @@ import zope.event.classhandler
 from c2cwsgiutils.auth import auth_view
 from defusedxml import lxml
 from owslib.wms import WebMapService
-from pyramid.httpexceptions import (HTTPBadRequest, HTTPForbidden, HTTPFound,
-                                    HTTPUnauthorized)
+from pyramid.httpexceptions import HTTPBadRequest, HTTPForbidden, HTTPFound, HTTPUnauthorized
 from pyramid.i18n import TranslationStringFactory
-from pyramid.path import AssetResolver
 from pyramid.response import Response
 from pyramid.security import forget, remember
 from pyramid.view import view_config
@@ -60,16 +58,12 @@ from c2cgeoportal_commons import models
 from c2cgeoportal_commons.lib.email_ import send_email_config
 from c2cgeoportal_commons.models import main, static
 from c2cgeoportal_geoportal import is_valid_referer
-from c2cgeoportal_geoportal.lib import (add_url_params, get_setting, get_typed,
-                                        get_types_map, get_url2)
-from c2cgeoportal_geoportal.lib.caching import (NO_CACHE, PRIVATE_CACHE,
-                                                PUBLIC_CACHE, get_region,
+from c2cgeoportal_geoportal.lib import add_url_params, get_setting, get_typed, get_types_map, get_url2
+from c2cgeoportal_geoportal.lib.caching import (NO_CACHE, PRIVATE_CACHE, PUBLIC_CACHE, get_region,
                                                 set_common_headers)
-from c2cgeoportal_geoportal.lib.functionality import (
-    get_functionality, get_mapserver_substitution_params)
+from c2cgeoportal_geoportal.lib.functionality import get_functionality, get_mapserver_substitution_params
 from c2cgeoportal_geoportal.lib.layers import get_protected_layers_query
-from c2cgeoportal_geoportal.lib.wmstparsing import (TimeInformation,
-                                                    parse_extent)
+from c2cgeoportal_geoportal.lib.wmstparsing import TimeInformation, parse_extent
 from c2cgeoportal_geoportal.views.layers import get_layer_metadatas
 
 _ = TranslationStringFactory("c2cgeoportal")
@@ -854,10 +848,7 @@ class Entry:
 
     @view_config(route_name="apijs")
     def apijs(self):
-        resolver = AssetResolver('c2cgeoportal_geoportal')
-        asset = resolver.resolve('/etc/static-ngeo/api.js')
-        self.request.response.body = asset.stream().read()
-        response = self.request.response
+        response = HTTPFound(self.request.static_url('/etc/static-ngeo/api.js'))
         set_common_headers(
             self.request, "api", PUBLIC_CACHE,
             response=response, content_type="application/javascript",
