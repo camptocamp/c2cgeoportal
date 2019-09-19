@@ -12,7 +12,12 @@ RUN \
   . /etc/os-release && \
   apt-get update && \
   apt-get install --assume-yes --no-install-recommends apt-utils && \
-  apt-get install --assume-yes --no-install-recommends apt-transport-https gettext postgresql-client less bash-completion && \
+  apt-get install --assume-yes --no-install-recommends apt-transport-https gettext postgresql-client less \
+    bash-completion && \
+  echo "For Chome installed by Pupetter" && \
+  apt-get install --assume-yes --no-install-recommends libx11-6 libx11-xcb1 libxcomposite1 libxcursor1 \
+    libxdamage1 libxext6 libxi6 libxtst6 libnss3 libcups2 libxss1 libxrandr2 libasound2 libatk1.0-0 \
+    libatk-bridge2.0-0 libpangocairo-1.0-0 libgtk-3.0 && \
   echo "deb https://deb.nodesource.com/node_10.x ${VERSION_CODENAME} main" > /etc/apt/sources.list.d/nodesource.list && \
   curl --silent https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - && \
   apt-get update && \
