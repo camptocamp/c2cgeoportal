@@ -30,7 +30,12 @@
 
 import os
 from urllib.parse import urlsplit, urlunsplit
+
+import transaction
+import zope.sqlalchemy
 from pyramid.scripts.common import get_config_loader
+from sqlalchemy import engine_from_config
+from sqlalchemy.orm import Session, configure_mappers, sessionmaker
 
 
 def fill_arguments(parser):
@@ -66,3 +71,13 @@ def get_appsettings(options, defaults=None):
     loader = get_config_loader(config_uri)
     loader.setup_logging()
     return loader.get_wsgi_app_settings(defaults=defaults)
+
+
+def get_session(settings: dict, transaction_manager: transaction.TransactionManager) -> Session:
+    configure_mappers()
+    engine = engine_from_config(settings)
+    session_factory = sessionmaker()
+    session_factory.configure(bind=engine)
+    dbsession = session_factory()
+    zope.sqlalchemy.register(dbsession, transaction_manager=transaction_manager)
+    return dbsession
