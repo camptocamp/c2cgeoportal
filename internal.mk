@@ -148,6 +148,7 @@ import-ngeo-apps: $(API_FILES) $(APPS_FILES) $(APPS_FILES_ALT)
 $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/%.html.ejs_tmpl: /usr/lib/node_modules/ngeo/contribs/gmf/apps/%/index.html.ejs
 	mkdir --parent $(dir $@)
 	import-ngeo-apps --html $* $< $@
+	touch $(APPS_PACKAGE_PATH)/static/$*.css
 
 $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/Controller%.js_tmpl: /usr/lib/node_modules/ngeo/contribs/gmf/apps/%/Controller.js
 	mkdir --parent $(dir $@)
