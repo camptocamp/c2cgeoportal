@@ -38,7 +38,7 @@ The files to translate are:
    All the ``#, fuzzy`` strings should be verified and the line should be removed
    (if the line is not removed, the localisation will not be used).
 
-To update each ``po`` files, you must run the following command:
+To update your ``po`` files, you should proceed as follows.
 
 .. code:: bash
 
