@@ -33,7 +33,7 @@ FROM base AS tools
 
 RUN \
   apt-get update && \
-  apt-get install --assume-yes --no-install-recommends git make postgresql-client-10 gdal-bin net-tools iputils-ping \
+  apt-get install --assume-yes --no-install-recommends git make postgresql-client gdal-bin net-tools iputils-ping \
         vim vim-editorconfig vim-addon-manager tree groff-base libxml2-utils && \
   apt-get clean && \
   rm --recursive --force /var/lib/apt/lists/* && \
