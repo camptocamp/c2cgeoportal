@@ -33,14 +33,18 @@ import logging
 from datetime import datetime
 from hashlib import sha1
 from hmac import compare_digest as compare_hash
-from typing import List, Any
+from typing import Any, List
 
 import pytz
 from c2c.template.config import config
 from sqlalchemy import Column, ForeignKey, Table
 from sqlalchemy.dialects.postgresql import HSTORE
+from sqlalchemy.ext.mutable import MutableDict
 from sqlalchemy.orm import backref, relationship
 from sqlalchemy.types import Boolean, DateTime, Integer, String, Unicode
+
+from c2cgeoportal_commons.models import Base, _
+from c2cgeoportal_commons.models.main import Role
 
 try:
     from colander import drop, Email
@@ -58,8 +62,6 @@ except ModuleNotFoundError:
     CollenderGeometry = GenericClass
     RelationSelect2Widget = GenericClass
 
-from c2cgeoportal_commons.models import Base, _
-from c2cgeoportal_commons.models.main import Role
 
 LOG = logging.getLogger(__name__)
 
@@ -109,7 +111,7 @@ class User(Base):
                        info={'colanderalchemy': {'exclude': True}})
     temp_password = Column('temp_password', Unicode, nullable=True,
                            info={'colanderalchemy': {'exclude': True}})
-    tech_data = Column(HSTORE, info={'colanderalchemy': {'exclude': True}})
+    tech_data = Column(MutableDict.as_mutable(HSTORE), info={'colanderalchemy': {'exclude': True}})
     email = Column(Unicode, nullable=False, info={
         'colanderalchemy': {
             'title': _('Email'),
