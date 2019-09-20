@@ -152,6 +152,7 @@ import-ngeo-apps: $(API_FILES) $(APPS_FILES) $(APPS_FILES_ALT)
 $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/%.html.ejs_tmpl: /usr/lib/node_modules/ngeo/contribs/gmf/apps/%/index.html.ejs
 	mkdir --parent $(dir $@)
 	import-ngeo-apps --html $* $< $@
+	touch $(APPS_PACKAGE_PATH)/static/$*.css
 
 $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/Controller%.js_tmpl: /usr/lib/node_modules/ngeo/contribs/gmf/apps/%/Controller.js
 	mkdir --parent $(dir $@)
@@ -210,13 +211,13 @@ $(APPS_PACKAGE_PATH)/static/apihelp: /usr/lib/node_modules/ngeo/api/dist/apihelp
 	cp -r $< $@
 	mv $@/apihelp.html $@/index.html.tmpl_tmpl
 	sed -i -e 's#https://geomapfish-demo-2-4.camptocamp.com/#$${VISIBLE_WEB_PROTOCOL}://$${VISIBLE_WEB_HOST}$${VISIBLE_ENTRY_POINT}#g' $@/index.html.tmpl_tmpl
-	sed -i -e 's#var map = new demo.Map#var map = new {{package}}.Map#g' $@/index.html.tmpl_tmpl
+	sed -i -e 's# = new demo.Map# = new {{package}}.Map#g' $@/index.html.tmpl_tmpl
 	sed -i -e 's#\.\./api\.js#../api.js?version=2#g' $@/index.html.tmpl_tmpl
-	sed -i -e 's#github\.css#../static/apihelp/github.css#g' $@/index.html.tmpl_tmpl
-	sed -i -e 's#rainbow-custom\.min\.js#../static/apihelp/rainbow-custom.min.js#g' $@/index.html.tmpl_tmpl
-	sed -i -e 's#"data\.txt"#"../static/apihelp/data.txt"#g' $@/index.html.tmpl_tmpl
-	sed -i -e "s#'data\.txt'#'../static/apihelp/data.txt'#g" $@/index.html.tmpl_tmpl
-	sed -i -e 's#img/#../static/apihelp/img/#g' $@/index.html.tmpl_tmpl
+	sed -i -e 's#github\.css#../static/{CACHE_VERSION}/apihelp/github.css#g' $@/index.html.tmpl_tmpl
+	sed -i -e 's#rainbow-custom\.min\.js#../static/{CACHE_VERSION}/apihelp/rainbow-custom.min.js#g' $@/index.html.tmpl_tmpl
+	sed -i -e 's#"data\.txt"#"../static/{CACHE_VERSION}/apihelp/data.txt"#g' $@/index.html.tmpl_tmpl
+	sed -i -e "s#'data\.txt'#'../static/{CACHE_VERSION}/apihelp/data.txt'#g" $@/index.html.tmpl_tmpl
+	sed -i -e 's#img/#../static/{CACHE_VERSION}/apihelp/img/#g' $@/index.html.tmpl_tmpl
 
 .PRECIOUS: geoportal/c2cgeoportal_geoportal/scaffolds%update/CONST_create_template/
 geoportal/c2cgeoportal_geoportal/scaffolds%update/CONST_create_template/: \

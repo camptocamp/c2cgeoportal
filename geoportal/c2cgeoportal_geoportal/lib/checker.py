@@ -264,7 +264,7 @@ def _phantomjs(settings, health_check):
                 ]
 
                 try:
-                    subprocess.check_output(cmd, timeout=10)
+                    subprocess.check_output(cmd, timeout=70)
                 except subprocess.CalledProcessError as exception:
                     raise Exception("{} exit with code: {}\n{}".format(
                         ' '.join(exception.cmd),

@@ -846,14 +846,12 @@ class Entry:
         set_common_headers(self.request, "index", NO_CACHE, content_type="text/html")
         return {}
 
-    @view_config(route_name="apijs")
     def apijs(self):
-        response = HTTPFound(self.request.static_url('/etc/static-ngeo/api.js'))
         set_common_headers(
             self.request, "api", PUBLIC_CACHE,
-            response=response, content_type="application/javascript",
+            content_type="application/javascript",
         )
-        return response
+        return {}
 
     def favicon(self):
         set_common_headers(
