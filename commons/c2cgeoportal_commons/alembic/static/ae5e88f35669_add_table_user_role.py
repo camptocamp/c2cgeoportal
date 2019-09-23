@@ -61,7 +61,7 @@ def upgrade():
 INSERT INTO "{staticschema}"."user_role" ("user_id", "role_id")
 SELECT "user"."id", "role"."id"
 FROM "{staticschema}"."user"
-LEFT JOIN "{schema}"."role" ON "role"."name" = "user"."role_name";""".
+JOIN "{schema}"."role" ON "role"."name" = "user"."role_name";""".
         format(schema=schema, staticschema=staticschema)
     )
 
