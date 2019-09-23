@@ -49,7 +49,6 @@ endif
 
 # Use TileCloud chain
 TILECLOUD_CHAIN ?= TRUE
-TILECLOUD_CHAIN_LOCAL ?= FALSE
 
 TEMPLATE_EXCLUDE += node_modules \
 	print/templates \
@@ -94,7 +93,6 @@ endif
 WMTSCAPABILITIES_PATH ?= 1.0.0/WMTSCapabilities-$(ENVIRONMENT).xml
 export WMTSCAPABILITIES_PATH
 ifeq ($(TILECLOUD_CHAIN), TRUE)
-WMTSCAPABILITIES_FILE ?= /var/sig/tiles/$(WMTSCAPABILITIES_PATH)
 MAPCACHE_FILE ?= mapcache/mapcache.xml.tmpl
 GEN_MAPCACHE_ARGS ?= --generate-mapcache-config
 ifeq ($(DOCKER), TRUE)
@@ -103,9 +101,6 @@ endif
 
 TILEGENERATION_CONFIG_FILE ?= tilegeneration/config.yaml.tmpl
 DEFAULT_BUILD_RULES += $(TILEGENERATION_CONFIG_FILE)
-ifeq ($(TILECLOUD_CHAIN_LOCAL), TRUE)
-DEFAULT_BUILD_RULES += $(WMTSCAPABILITIES_FILE)
-endif
 endif
 
 
@@ -419,9 +414,6 @@ clean: template-clean
 		mapcache \
 		$(addprefix geoportal/$(PACKAGE)_geoportal/locale/, $(addsuffix /LC_MESSAGES/$(PACKAGE)_geoportal-$(L10N_CLIENT_POSTFIX).mo, $(LANGUAGES))) \
 		$(addprefix geoportal/$(PACKAGE)_geoportal/locale/, $(addsuffix /LC_MESSAGES/$(PACKAGE)_geoportal-$(L10N_SERVER_POSTFIX).mo, $(LANGUAGES)))
-ifeq ($(TILECLOUD_CHAIN_LOCAL), TRUE)
-	rm --force $(WMTSCAPABILITIES_FILE)
-endif
 
 .PHONY: clean-all
 clean-all: clean
@@ -742,11 +734,6 @@ $(MAPCACHE_FILE): $(TILEGENERATION_CONFIG_FILE)
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	generate_controller --config=$< $(GEN_MAPCACHE_ARGS)
-
-$(WMTSCAPABILITIES_FILE): $(TILEGENERATION_CONFIG_FILE)
-	$(PRERULE_CMD)
-	mkdir --parent $(dir $@)
-	generate_controller --config=$< --capabilities
 
 # Secrets
 
