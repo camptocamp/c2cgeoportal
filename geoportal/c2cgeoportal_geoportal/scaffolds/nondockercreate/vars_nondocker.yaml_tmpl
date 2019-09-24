@@ -39,8 +39,8 @@ vars:
     "default_role_ids" "-1"
     "role_ids" "^-?[0-9,]*$"
   # mapfile data subselect
-  mapfile_data_subselect: "SELECT ST_Collect(ra.area) FROM main.restrictionarea AS ra, \
-    main.role_restrictionarea AS rra, main.layer_restrictionarea AS lra, main.treeitem AS la \
+  mapfile_data_subselect: "SELECT ST_Collect(ra.area) FROM {schema}.restrictionarea AS ra, \
+    {schema}.role_restrictionarea AS rra, {schema}.layer_restrictionarea AS lra, {schema}.treeitem AS la \
     WHERE rra.role_id in (%role_ids%) AND rra.restrictionarea_id = ra.id AND lra.restrictionarea_id = ra.id \
     AND lra.layer_id = la.id AND la.name = "
   # mapserver filter on role id only
