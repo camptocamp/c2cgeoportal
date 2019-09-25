@@ -1,6 +1,7 @@
+astroid~=2.2.5  # pylint
 awscli~=1.16.156  # Work with Object storage
 Babel~=2.7.0  # i18n
-bandit==1.6.2  # lint
+bandit~=1.6.2  # lint
 beautifulsoup4~=4.8.0  # admin tests, rq.filter: <4.7
 boto3~=1.9.161  # Tile generation
 bottle~=0.12.16  # geoportal
