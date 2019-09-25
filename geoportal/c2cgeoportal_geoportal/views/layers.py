@@ -271,18 +271,23 @@ class Layers:
         protocol = self._get_protocol_for_layer(layer, before_create=check_geometry)
         try:
             features = protocol.create(self.request)
+            # pylint: disable=no-member
             for feature in features.features:
                 self._log_last_update(layer, feature)
             return features
         except TopologicalError as e:
             self.request.response.status_int = 400
-            return {"error_type": "validation_error",
-                    "message": str(e)}
+            return {
+                "error_type": "validation_error",
+                "message": str(e)
+            }
         except exc.IntegrityError as e:
             log.error(str(e))
             self.request.response.status_int = 400
-            return {"error_type": "integrity_error",
-                    "message": str(e.orig.diag.message_primary)}
+            return {
+                "error_type": "integrity_error",
+                "message": str(e.orig.diag.message_primary)
+            }
 
     @view_config(route_name="layers_update", renderer="geojson")
     def update(self):
