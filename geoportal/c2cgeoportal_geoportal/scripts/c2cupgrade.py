@@ -332,7 +332,7 @@ class C2cUpgradeTool:
             if action == 'remove':
                 self.files_to_remove(upgrade_file)
             elif action == 'move':
-                task_to_do |= self.files_to_move(upgrade_file)
+                task_to_do |= self.files_to_move(upgrade_file, force=True)
 
         if task_to_do:
             self.print_step(
