@@ -56,7 +56,7 @@ Before doing a release you should merge all the previous branch on this one:
 ngeo
 ----
 
-`For ngeo see here <https://github.com/camptocamp/ngeo/blob/master/docs/developer-guide.md#create-a-package-on-npm>`_.
+`For ngeo see here <https://github.com/camptocamp/ngeo/blob/${major_version}/docs/developer-guide.md#create-a-package-on-npm>`_.
 
 c2cgeoportal
 ------------
