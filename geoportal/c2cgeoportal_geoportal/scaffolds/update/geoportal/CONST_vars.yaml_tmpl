@@ -35,7 +35,7 @@ vars:
 
   authentication:
     two_factor: &two_factor_auth false
-    two_factor_issuer_name: {VISIBLE_WEB_HOST}
+    two_factor_issuer_name: {{project}}
 
   interfaces_config:
     default:
