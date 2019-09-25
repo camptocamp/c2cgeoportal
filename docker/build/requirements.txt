@@ -1,5 +1,6 @@
 alabaster==0.7.12  # Doc theme
 alembic==1.0.9  # geoportal
+astroid==2.2.5  # pylint
 awscli==1.16.140  # Work with Object storage
 Babel==2.6.0  # i18n
 beautifulsoup4==4.6.3  # admin tests, rq.filter: <4.7
