@@ -35,6 +35,7 @@ RUN \
 
 FROM base AS tools
 
+CMD ["sleep", "infinity"]
 RUN \
   apt-get update && \
   apt-get install --assume-yes --no-install-recommends git make postgresql-client gdal-bin net-tools iputils-ping \
