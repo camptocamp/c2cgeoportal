@@ -161,10 +161,10 @@ vars:
     #       comments: ""
     #       datasource: []
     #       map:
-    #         projection: "EPSG:21781"
+    #         projection: "EPSG:{{srid}}"
     #         dpi: 254
     #         rotation: 0
-    #         center: [600000, 200000]
+    #         center: [2600000, 1200000]
     #         scale: 100000
     #         longitudeFirst: true
     #         layers: []
