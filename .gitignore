@@ -39,9 +39,12 @@
 /docker/test-db/13-alembic-static.sql
 /docker/test-mapserver/mapserver.map
 /doc/index.rst
+/doc/administrator/administrate.rst
 /doc/developer/build_release.rst
 /doc/integrator/create_application.rst
+/doc/integrator/filter.rst
 /doc/integrator/ngeo.rst
+/doc/integrator/routing.rst
 /doc/integrator/upgrade_application.rst
 /dist/
 /docker-compose.yaml
