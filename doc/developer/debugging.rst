@@ -32,7 +32,7 @@ Be sure that the service ``webpack_dev_server`` is present and uncommented.
 
 Restart your application as usual.
 
-Open the application at the following URL: ``https://172.17.0.1:8484/dev/<interface>.html``.
+Open the application at the following URL: ``https://localhost:8484/dev/<interface>.html``.
 
 
 Pyramid debugtoolbar
@@ -43,7 +43,7 @@ If it is not already done, copy the file ``docker-compose.override.sample.yaml``
 
 Then the error is directly shown in the query that fails.
 
-You can also open the debugtoolbar at `https://172.17.0.1:8484/_debug_toolbar/ <https://172.17.0.1:8484/_debug_toolbar/>`_
+You can also open the debugtoolbar at `https://localhost:8484/_debug_toolbar/ <https://localhost:8484/_debug_toolbar/>`_
 
 
 Authentication
@@ -56,7 +56,7 @@ For this reason, you should have your application running on https also in your 
 To achieve that, if it is not already done, copy the file ``docker-compose.override.sample.yaml``
 to ``docker-compose.override.yaml``.
 
-Then access the application on `https://172.17.0.1:8484/ <https://172.17.0.1:8484/>`_.
+Then access the application on `https://localhost:8484/ <https://localhost:8484/>`_.
 
 
 Mapserver

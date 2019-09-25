@@ -60,7 +60,7 @@ class BaseTemplate(Template):  # pragma: no cover
         self._get_vars(vars_, "package", "Get a package name: ")
         self._get_vars(
             vars_, "srid",
-            "Spatial Reference System Identifier (e.g. 21781): ", int,
+            "Spatial Reference System Identifier (e.g. 2056): ", int,
         )
         srid = vars_["srid"]
         extent = self._epsg2bbox(srid)

@@ -3,7 +3,7 @@ vars:
   schema: '{PGSCHEMA}'
   schema_static: '{PGSCHEMA_STATIC}'
   sqlalchemy.url: postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST}:{PGPORT}/{PGDATABASE}
-  srid: 21781
+  srid: {{srid}}
 environment:
   - name: PGHOST
   - name: PGPORT
