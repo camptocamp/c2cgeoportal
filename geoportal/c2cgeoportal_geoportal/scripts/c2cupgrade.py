@@ -28,21 +28,22 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import argparse
 import atexit
+import filecmp
 import os
 import re
-import sys
-import argparse
-import yaml
 import shutil
-import pkg_resources
 import subprocess
-import filecmp
-from subprocess import check_call, call, check_output
+import sys
 from argparse import ArgumentParser
-import requests
+from subprocess import call, check_call, check_output
 
-from c2cgeoportal_geoportal.lib.bashcolor import colorize, GREEN, YELLOW, RED
+import pkg_resources
+import requests
+import yaml
+
+from c2cgeoportal_geoportal.lib.bashcolor import GREEN, RED, YELLOW, colorize
 
 REQUIRED_TEMPLATE_KEYS = ["package", "srid", "extent"]
 TEMPLATE_EXAMPLE = {
@@ -111,31 +112,32 @@ class Step:
                 print("Start step {}.".format(self.step_number))
                 sys.stdout.flush()
                 current_step(c2cupgradetool, self.step_number, *args, **kwargs)
-            except subprocess.CalledProcessError as e:
+            except subprocess.CalledProcessError as exception:
                 c2cupgradetool.print_step(
                     self.step_number, error=True,
                     message="The command `{}` returns the error code {}.".format(
-                        " ".join(["'{}'".format(e) for e in e.cmd]), e.returncode
+                        " ".join(["'{}'".format(exception) for exception in exception.cmd]),
+                        exception.returncode
                     ),
                     prompt="Fix the error and run the step again:"
                 )
                 exit(1)
-            except InteruptedException as e:
+            except InteruptedException as exception:
                 c2cupgradetool.print_step(
                     self.step_number, error=True,
-                    message="There was an error: {}.".format(e),
+                    message="There was an error: {}.".format(exception),
                     prompt="Fix the error and run the step again:"
                 )
                 exit(1)
-            except Exception as e:
-                ex = e
+            except Exception as exception:
+                cautch_exception = exception
 
                 global current_step_number
                 if self.step_number == current_step_number:
                     def message():
                         c2cupgradetool.print_step(
                             self.step_number, error=True,
-                            message="The step had the error '{}'.".format(ex),
+                            message="The step had the error '{}'.".format(cautch_exception),
                             prompt="Fix the error and run the step again:"
                         )
                     atexit.register(message)
@@ -156,19 +158,19 @@ class C2cUpgradeTool:
     def get_project():
         if not os.path.isfile("project.yaml"):
             print(colorize("Unable to find the required 'project.yaml' file.", RED))
-            exit(1)
+            sys.exit(1)
 
-        with open("project.yaml", "r") as f:
-            return yaml.safe_load(f)
+        with open("project.yaml", "r") as project_file:
+            return yaml.safe_load(project_file)
 
     @staticmethod
     def get_upgrade(section):
         if not os.path.isfile(".upgrade.yaml"):
             print(colorize("Unable to find the required '.upgrade.yaml' file.", RED))
-            exit(1)
+            sys.exit(1)
 
-        with open(".upgrade.yaml", "r") as f:
-            return yaml.safe_load(f)[section]
+        with open(".upgrade.yaml", "r") as project_file:
+            return yaml.safe_load(project_file)[section]
 
     def print_step(self, step, error=False, message=None, prompt="To continue, type:"):
         print("")
@@ -201,14 +203,14 @@ class C2cUpgradeTool:
                 headers=self.project.get("checker_headers"),
                 verify=False
             )
-        except requests.exceptions.ConnectionError as e:
+        except requests.exceptions.ConnectionError as exception:
             return False, "\n".join([
-                "Connection error: {}".format(e),
+                "Connection error: {}".format(exception),
                 run_curl
             ])
-        except ConnectionRefusedError as e:
+        except ConnectionRefusedError as exception:
             return False, "\n".join([
-                "Connection refused: {}".format(e),
+                "Connection refused: {}".format(exception),
                 run_curl
             ])
         if resp.status_code < 200 or resp.status_code >= 300:
@@ -229,14 +231,14 @@ class C2cUpgradeTool:
         for required in REQUIRED_TEMPLATE_KEYS:
             if required not in project_template_keys:
                 messages.append(
-                    "The element '{}' is missing in the 'template_vars' of "
+                    "The element '{}' is missing in the `template_vars` of "
                     "the file 'project.yaml', you should have for example: {}: {}.".format(
                         required, required, TEMPLATE_EXAMPLE.get('required', '')
                     )
                 )
         if self.project.get("managed_files") is None:
             messages.append(
-                "The element 'managed_files' is missing in the file 'project.yaml', "
+                "The element `managed_files` is missing in the file 'project.yaml', "
                 "you must define this element with a list of regular expressions or with an empty array. "
                 "See upgrade documentation for more information."
             )
@@ -278,7 +280,7 @@ class C2cUpgradeTool:
         for upgrade_file in self.get_upgrade("upgrade_files"):
             action = upgrade_file['action']
             if action == 'remove':
-                self.files_to_remove(upgrade_file, prefix="CONST_create_template")
+                self.files_to_remove(upgrade_file, prefix="CONST_create_template", force=True)
             if action == 'move':
                 self.files_to_move(upgrade_file, prefix="CONST_create_template", force=True)
 
@@ -330,34 +332,59 @@ class C2cUpgradeTool:
         for upgrade_file in self.get_upgrade("upgrade_files"):
             action = upgrade_file['action']
             if action == 'remove':
-                self.files_to_remove(upgrade_file)
+                task_to_do |= self.files_to_remove(upgrade_file)
             elif action == 'move':
                 task_to_do |= self.files_to_move(upgrade_file)
 
         if task_to_do:
             self.print_step(
                 step + 1,
-                message="Some `managed_files` should be updated, see message above to know what should be "
-                "changed.\n"
+                message="""Some `managed_files` or `unmanaged_files` should be updated,
+                see message above red and yellow messages to know what should be changed.
+                If there is some false positive you should manually revert the changes and
+                in the (un)managed files replace the pattern by:
+
+                - pattern: <pattern>
+                  no_touch: True
+                """
             )
         else:
             self.run_step(step + 1)
 
-    def files_to_remove(self, element, prefix=""):
+    def files_to_remove(self, element, prefix="", force=False):
+        task_to_do = False
         for path in element["paths"]:
             file_ = os.path.join(prefix, path.format(package=self.project["project_package"]))
             if os.path.exists(file_):
                 managed = False
-                for pattern in self.project["managed_files"]:
-                    if re.match(pattern + '$', file_):
-                        print(colorize(
-                            "The file '{}' is no longer used, but not deleted "
-                            "because it is in the managed_files as '{}'.".format(file_, pattern),
-                            RED
-                        ))
-                        managed = True
+                if not force:
+                    for files in self.project["managed_files"]:
+                        if isinstance(files, str):
+                            pattern = files
+                            no_touch = False
+                        else:
+                            pattern = files['pattern']
+                            no_touch = files.get('no_touch', False)
+                        if re.match(pattern + '$', file_):
+                            if no_touch:
+                                managed = True
+                            else:
+                                print(colorize(
+                                    "The file '{}' has been removed but he is in the `managed_files` as '{}'."
+                                    .format(file_, pattern),
+                                    RED
+                                ))
+                                task_to_do = True
+                    for pattern in self.project.get("unmanaged_files", []):
+                        if re.match(pattern + '$', file_):
+                            print(colorize(
+                                "The file '{}' has been removed but he is in the `unmanaged_files` as '{}'."
+                                .format(file_, pattern),
+                                YELLOW
+                            ))
+                            task_to_do = True
                 if not managed:
-                    print(colorize("The file '{}' is removed.".format(file_), GREEN))
+                    print("The file '{}' is removed.".format(file_))
                     if "version" in element and "from" in element:
                         print("Was used in version {}, to be removed from version {}.".format(
                             element["from"], element["version"]
@@ -366,6 +393,7 @@ class C2cUpgradeTool:
                         shutil.rmtree(file_)
                     else:
                         os.remove(file_)
+        return task_to_do
 
     def files_to_move(self, element, prefix="", force=False):
         task_to_do = False
@@ -375,44 +403,72 @@ class C2cUpgradeTool:
             managed = False
             type_ = "directory" if os.path.isdir(src) else "file"
             if not force:
-                for pattern in self.project["managed_files"]:
+                for files in self.project["managed_files"]:
+                    if isinstance(files, str):
+                        pattern = files
+                        no_touch = False
+                    else:
+                        pattern = files['pattern']
+                        no_touch = files.get('no_touch', False)
                     if re.match(pattern + '$', src):
-                        print(colorize(
-                            "The {} '{}' is present in the managed_files as '{}', but it will move."
-                            .format(
-                                type_, src, pattern
-                            ),
-                            RED
-                        ))
-                        task_to_do = True
-                        managed = True
-                        break
+                        if no_touch:
+                            managed = True
+                        else:
+                            print(colorize(
+                                "The {} '{}' is present in the `managed_files` as '{}', "
+                                "but it has been moved to '{}'."
+                                .format(
+                                    type_, src, pattern, dst
+                                ),
+                                RED
+                            ))
+                            task_to_do = True
                     if re.match(pattern + '$', dst):
                         print(colorize(
-                            "The {} '{}' is present in the managed_files as '{}', but it will move."
+                            "The {} '{}' is present in the `managed_files` as '{}', "
+                            "but a file have been moved on it from '{}'."
                             .format(
-                                type_, dst, pattern
+                                type_, dst, pattern, src
                             ),
                             RED
                         ))
                         task_to_do = True
-                        managed = True
-                        break
+                for pattern in self.project["unmanaged_files"]:
+                    if re.match(pattern + '$', src):
+                        print(colorize(
+                            "The {} '{}' is present in the `unmanaged_files` as '{}', "
+                            "but it has been moved to '{}'."
+                            .format(
+                                type_, src, pattern, dst
+                            ),
+                            YELLOW
+                        ))
+                        task_to_do = True
+                    if re.match(pattern + '$', dst):
+                        print(colorize(
+                            "The {} '{}' is present in the `unmanaged_files` as '{}', "
+                            "but a file have been moved on it from '{}'."
+                            .format(
+                                type_, dst, pattern, src
+                            ),
+                            YELLOW
+                        ))
+                        task_to_do = True
             if not managed and os.path.exists(dst):
                 print(colorize(
                     "The destination '{}' already exists, ignoring.".format(dst),
                     YELLOW
                 ))
             if not managed:
-                print(colorize("Move the {} '{}' to '{}'.".format(type_, src, dst), GREEN))
+                print("Move the {} '{}' to '{}'.".format(type_, src, dst))
                 if "version" in element:
                     print("Needed from version {}.".format(element["version"]))
                 if os.path.dirname(dst) != "":
                     os.makedirs(os.path.dirname(dst), exist_ok=True)
                 try:
                     check_call(["git", "mv", src, dst])
-                except Exception as e:
-                    print("[Warning] Git move error: {}.".format(e))
+                except Exception as exception:
+                    print("[Warning] Git move error: {}.".format(exception))
                     os.rename(src, dst)
         return task_to_do
 
@@ -450,9 +506,13 @@ class C2cUpgradeTool:
                     managed = True
 
         if not managed:
-            for pattern in self.project['managed_files']:
+            for files in self.project['managed_files']:
+                if isinstance(files, str):
+                    pattern = files
+                else:
+                    pattern = files['pattern']
                 if re.match(pattern + '$', file_):
-                    print("File '{}' included by project config pattern (managed_files) '{}'.".format(
+                    print("File '{}' included by project config pattern `managed_files` '{}'.".format(
                         file_, pattern
                     ))
                     print('managed', file_, pattern)
@@ -461,7 +521,7 @@ class C2cUpgradeTool:
         if managed:
             for pattern in self.project.get('unmanaged_files', []):
                 if re.match(pattern + '$', file_):
-                    print("File '{}' excluded by project config pattern (unmanaged_files) '{}'.".format(
+                    print("File '{}' excluded by project config pattern `unmanaged_files` '{}'.".format(
                         file_, pattern
                     ))
                     managed = False
@@ -487,11 +547,11 @@ class C2cUpgradeTool:
                         try:
                             shutil.copyfile(source, destination)
                             shutil.copymode(source, destination)
-                        except PermissionError as e:
+                        except PermissionError as exception:
                             self.print_step(
                                 step, error=True, message=(
                                     "All your project files should be owned by your user, "
-                                    "current error:\n" + str(e)
+                                    "current error:\n" + str(exception)
                                 ),
                                 prompt="Fix it and run the upgrade again:")
                             exit(1)
@@ -616,8 +676,8 @@ class C2cUpgradeTool:
     def step11(self, step):
         if os.path.isfile(".UPGRADE_SUCCESS"):
             os.unlink(".UPGRADE_SUCCESS")
-        ok, message = self.test_checkers()
-        if ok:
+        good, message = self.test_checkers()
+        if good:
             self.run_step(step + 1)
         else:
             self.print_step(
@@ -659,8 +719,8 @@ class C2cUpgradeTool:
         ))
 
 
-def check_git_status_output(args=[]):
-    return check_output(["git", "status", "--short"] + args).decode("utf-8")
+def check_git_status_output(args=None):
+    return check_output(["git", "status", "--short"] + (args if args is not None else [])).decode("utf-8")
 
 
 if __name__ == "__main__":
