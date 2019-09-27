@@ -23,6 +23,17 @@ vars:
 
     layer_tree_max_nodes: 1000
 
+    # Used to add a new page to the administration
+    # Format example:
+    # - [route_name, path.to.model]
+    include_pages:
+      - [layers_vectortiles, c2cgeoportal_commons.models.main.LayerVectorTiles]
+
+    # Used to remove pages of the administration
+    # Format example:
+    #   - route_name
+    exclude_pages: []
+
     available_metadata:
       # Layers group
       - name: isExpanded

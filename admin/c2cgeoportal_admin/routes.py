@@ -39,18 +39,33 @@ def includeme(config):
     )
     from c2cgeoportal_commons.models.static import User
 
+    visible_routes = [
+        ("themes", Theme),
+        ("layer_groups", LayerGroup),
+        ("layers_wms", LayerWMS),
+        ("layers_wmts", LayerWMTS),
+        ("ogc_servers", OGCServer),
+        ("restriction_areas", RestrictionArea),
+        ("users", User),
+        ("roles", Role),
+        ("functionalities", Functionality),
+        ("interfaces", Interface),
+    ]
+
+    admin_interface_config = config.registry.settings["admin_interface"]
+
+    # Include pages
+    for url_path, model in admin_interface_config.get("include_pages", []):
+        mytuple = (url_path, config.maybe_dotted(model))
+        visible_routes.append(mytuple)
+
+    # Exclude pages
+    visible_routes = [
+        (url_path, model)
+        for (url_path, model) in visible_routes
+        if url_path not in admin_interface_config.get("exclude_pages", [])
+    ]
+
     register_models(
-        config,
-        (
-            ("themes", Theme),
-            ("layer_groups", LayerGroup),
-            ("layers_wms", LayerWMS),
-            ("layers_wmts", LayerWMTS),
-            ("ogc_servers", OGCServer),
-            ("restriction_areas", RestrictionArea),
-            ("users", User),
-            ("roles", Role),
-            ("functionalities", Functionality),
-            ("interfaces", Interface),
-        ),
+        config, visible_routes,
     )
