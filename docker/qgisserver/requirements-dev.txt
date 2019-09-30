@@ -6,4 +6,4 @@ mypy~=0.720  # lint
 pep8~=1.7.1  # lint
 pep8-naming~=0.8.2  # Lint
 pyflakes~=2.1.1  # lint, flake8
-pylint~=2.3.1  # lint
+pylint~=2.4.1  # lint
