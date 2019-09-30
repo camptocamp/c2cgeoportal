@@ -156,6 +156,7 @@ def _fts(settings, health_check):
             "limit": "1",
         },
         check_cb=check,
+        level=fts_settings["level"],
     )
 
 
