@@ -39,7 +39,7 @@ from geojson.feature import Feature, FeatureCollection
 from papyrus.protocol import Protocol, create_filter
 from papyrus.xsd import XSDGenerator
 from pyramid.httpexceptions import (HTTPBadRequest, HTTPForbidden,
-                                    HTTPInternalServerError, HTTPNotFound)
+                                    HTTPInternalServerError, HTTPNotFound, HTTPException)
 from pyramid.view import view_config
 from shapely.geometry import asShape
 from shapely.geos import TopologicalError
@@ -271,8 +271,13 @@ class Layers:
         protocol = self._get_protocol_for_layer(layer, before_create=check_geometry)
         try:
             features = protocol.create(self.request)
-            for feature in features.features:
-                self._log_last_update(layer, feature)
+            if isinstance(features, HTTPException):
+                # pylint: disable=raising-bad-type
+                raise features
+            if features is not None:
+                # pylint: disable=no-member
+                for feature in features.features:
+                    self._log_last_update(layer, feature)
             return features
         except TopologicalError as e:
             self.request.response.status_int = 400
