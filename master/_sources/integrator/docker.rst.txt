@@ -38,7 +38,7 @@ Run the developer composition
 
    docker-compose up -d
 
-You can then access your application with http://172.17.0.1:8480/
+You can then access your application with `https://localhost:8484/ <https://localhost:8484/>`_.
 
 
 Clean

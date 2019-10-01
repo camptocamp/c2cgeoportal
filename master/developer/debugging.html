@@ -56,14 +56,14 @@ remove the <code class="docutils literal notranslate"><span class="pre">ng-stric
 <code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code>.
 Be sure that the service <code class="docutils literal notranslate"><span class="pre">webpack_dev_server</span></code> is present and uncommented.</p>
 <p>Restart your application as usual.</p>
-<p>Open the application at the following URL: <code class="docutils literal notranslate"><span class="pre">https://172.17.0.1:8484/dev/&lt;interface&gt;.html</span></code>.</p>
+<p>Open the application at the following URL: <code class="docutils literal notranslate"><span class="pre">https://localhost:8484/dev/&lt;interface&gt;.html</span></code>.</p>
 </div>
 <div class="section" id="pyramid-debugtoolbar">
 <h2>Pyramid debugtoolbar<a class="headerlink" href="#pyramid-debugtoolbar" title="Permalink to this headline">¶</a></h2>
 <p>If it is not already done, copy the file <code class="docutils literal notranslate"><span class="pre">docker-compose.override.sample.yaml</span></code> to
 <code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code>.</p>
 <p>Then the error is directly shown in the query that fails.</p>
-<p>You can also open the debugtoolbar at <a class="reference external" href="https://172.17.0.1:8484/_debug_toolbar/">https://172.17.0.1:8484/_debug_toolbar/</a></p>
+<p>You can also open the debugtoolbar at <a class="reference external" href="https://localhost:8484/_debug_toolbar/">https://localhost:8484/_debug_toolbar/</a></p>
 </div>
 <div class="section" id="authentication">
 <h2>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h2>
@@ -72,7 +72,7 @@ and is secure (meaning, the cookie is transmitted only in https requests, not in
 For this reason, you should have your application running on https also in your development environment.</p>
 <p>To achieve that, if it is not already done, copy the file <code class="docutils literal notranslate"><span class="pre">docker-compose.override.sample.yaml</span></code>
 to <code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code>.</p>
-<p>Then access the application on <a class="reference external" href="https://172.17.0.1:8484/">https://172.17.0.1:8484/</a>.</p>
+<p>Then access the application on <a class="reference external" href="https://localhost:8484/">https://localhost:8484/</a>.</p>
 </div>
 <div class="section" id="mapserver">
 <h2>Mapserver<a class="headerlink" href="#mapserver" title="Permalink to this headline">¶</a></h2>
