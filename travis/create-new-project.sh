@@ -23,6 +23,7 @@ then
     cp travis/docker-compose.yaml ${WORKSPACE}/${PACKAGE}/docker-compose.yaml
     cp travis/docker-compose-build.yaml ${WORKSPACE}/${PACKAGE}/docker-compose-build.yaml
     cp --recursive travis ${WORKSPACE}/${PACKAGE}/travis
+    rm ${WORKSPACE}/${PACKAGE}/travis/changelog.yaml
 fi
 cd ${WORKSPACE}/${PACKAGE}
 if [ $# -lt 2 ]

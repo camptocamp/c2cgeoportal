@@ -12,6 +12,7 @@ cp travis/vars-nondocker.yaml /tmp/travis/nondockertestgeomapfish/vars_travis.ya
 cp travis/empty-vars.mk /tmp/travis/nondockertestgeomapfish/
 echo 'include testgeomapfish.mk' > /tmp/travis/nondockertestgeomapfish/Makefile
 cp --recursive travis /tmp/travis/nondockertestgeomapfish/travis
+rm /tmp/travis/nondockertestgeomapfish/travis/changelog.yaml
 
 export TRAVIS_FOLDER=$(pwd)
 cd /tmp/travis/nondockertestgeomapfish
