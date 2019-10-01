@@ -104,15 +104,19 @@ def main():
         ], stderr=subprocess.DEVNULL).decode("utf-8").strip()
         if git_tag == '':
             if re.match(r'^[0-9]+.[0-9]+$', git_branch):
-                last_git_tag = subprocess.check_output([
-                    'git', 'describe', '--abbrev=0', '--tags'
-                ], stderr=subprocess.DEVNULL)
-                if os.path.exists('.venv'):
-                    minor = subprocess.check_output([
-                        '.venv/bin/python', 'travis/get-minor', '--no-save'
+                try:
+                    last_git_tag = subprocess.check_output([
+                        'git', 'describe', '--abbrev=0', '--tags'
                     ], stderr=subprocess.DEVNULL)
-                    version = "{}.{}".format(last_git_tag, minor)
-                else:
+                    if os.path.exists('.venv'):
+                        minor = subprocess.check_output([
+                            '.venv/bin/python', 'travis/get-minor', '--no-save'
+                        ], stderr=subprocess.DEVNULL)
+                        version = "{}.{}".format(last_git_tag, minor)
+                    else:
+                        version = ''
+                except subprocess.CalledProcessError as error:
+                    print('Ignore unexpected error: ' + str(error))
                     version = ''
             else:
                 version = git_branch
