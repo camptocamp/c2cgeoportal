@@ -41,6 +41,12 @@ services:
   # For Javascript project development.
   # The debug application will be availavble at ``https://<host>/<entry_point>/dev/<interface>.html``.
   webpack_dev_server:
+    # Uncomment these lines when you want to debug respectively the project js, ngeo js and/or the gmf contrib js.
+    # Adapt the path for ngeo / gmf contrib to point where you have checkouted the code.
+    # volumes:
+    #   - ${PWD}/geoportal/{{package}}_geoportal/static-ngeo:/app/{{package}}_geoportal/static-ngeo
+    #   - ${PWD}/../ngeo/src:/usr/lib/node_modules/ngeo/src
+    #   - ${PWD}/../ngeo/contribs:/usr/lib/node_modules/ngeo/contribs
     extends:
       file: docker-compose-lib.yaml
       service: webpack_dev_server
