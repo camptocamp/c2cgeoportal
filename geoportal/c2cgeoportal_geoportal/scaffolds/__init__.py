@@ -143,13 +143,13 @@ class BaseTemplate(Template):  # pragma: no cover
             return [r1["x"], r2["y"], r2["x"], r1["y"]]
         except requests.RequestException:
             print("Failed to establish a connexion to epsg.io.")
-            return None
         except json.JSONDecodeError:
             print("epsg.io doesn't return a correct json.")
-            return None
         except IndexError:
             print("Unable to get the bbox")
-            return None
+        except Exception as exception:
+            print('unexpected error: {}'.format(str(exception)))
+        return None
 
 
 def fix_executables(output_dir, patterns, in_const_create_template=False):
