@@ -109,12 +109,14 @@ def add_new_release():
 
 
 def add_commit(commits, all_pulls, repo, ref):
-    if ref not in commits:
+    if ref in commits:
+        return
+    commit = get_commit(repo, ref)
+    if commit['sha'] not in commits:
         pulls = get_pulls(repo, ref)
         for pull in pulls:
             all_pulls[pull['number']] = pull
-        commits[ref] = True
-        commit = get_commit(repo, ref)
+        commits[commit['sha']] = True
         # Get only the first parent to don't go in the pull request
         add_commit(commits, all_pulls, repo, commit['parents'][0]['sha'])
 
