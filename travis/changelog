@@ -145,7 +145,7 @@ def main():
             )
 
     with open('CHANGELOG.md', 'wt') as md_file:
-        for release, pulls in release_pulls.items():
+        for release, pulls in release_pulls.items()[::-1]:
             md_file.write('##### {}\n'.format(release))
             for repo in REPOS:
                 for pull in pulls[repo].values():
