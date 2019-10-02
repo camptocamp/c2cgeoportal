@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# pylint: disable=no-member
 
 # Copyright (c) 2013-2019, Camptocamp SA
 # All rights reserved.

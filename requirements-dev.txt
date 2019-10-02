@@ -1,4 +1,4 @@
-astroid~=2.2.5  # pylint
+astroid~=2.3.0  # pylint
 awscli~=1.16.156  # Work with Object storage
 Babel~=2.7.0  # i18n
 bandit~=1.6.2  # lint
@@ -21,7 +21,7 @@ pep8-naming~=0.8.2  # Lint
 polib~=1.1.0  # i18n
 pyflakes~=2.1.1  # lint, flake8
 pykwalify==1.7.0  # Validate config
-pylint~=2.3.1  # lint
+pylint~=2.4.1  # lint
 Pillow~=6.1.0  # Tile generation, rq.filter: < 6.0.0
 pytest-cov~=2.7.1  # tests
 pytest-selenium~=1.17.0  # admin tests
