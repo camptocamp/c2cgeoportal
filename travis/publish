@@ -11,14 +11,14 @@ if [[ ${TAG} =~ ^[0-9]\.[0-9]\.[0-9]$ ]]
 then
     VERSION_QGIS=${TAG}
     .venv/bin/python travis/get-minor --reset
-    travis/changelog ${TAG}
+    .venv/bin/python travis/changelog ${TAG}
     COMMIT=TRUE
 else
     if [[ ${BRANCH_NAME} =~ ^[0-9]\.[0-9]$ ]]
     then
         VERSION_QGIS=${BRANCH_NAME}
         TAG=${LAST_TAG}.`.venv/bin/python travis/get-minor`
-        travis/changelog ${TAG}
+        .venv/bin/python travis/changelog ${TAG}
         COMMIT=TRUE
     fi
 fi

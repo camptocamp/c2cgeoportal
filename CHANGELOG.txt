@@ -1,1 +1,0 @@
-The changelog has been moved to the "update" template to be available within the project as a file named CONST_CHANGELOG.txt.
