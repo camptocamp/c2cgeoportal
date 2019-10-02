@@ -11,20 +11,22 @@ if [[ ${TAG} =~ ^[0-9]\.[0-9]\.[0-9]$ ]]
 then
     VERSION_QGIS=${TAG}
     .venv/bin/python travis/get-minor --reset
+    travis/changelog ${TAG}
     COMMIT=TRUE
 else
     if [[ ${BRANCH_NAME} =~ ^[0-9]\.[0-9]$ ]]
     then
         VERSION_QGIS=${BRANCH_NAME}
         TAG=${LAST_TAG}.`.venv/bin/python travis/get-minor`
+        travis/changelog ${TAG}
         COMMIT=TRUE
     fi
 fi
 
 if [ ${COMMIT} == TRUE ]
 then
-    git add travis/ci.yaml
-    git commit -m "Update the minor version"
+    git add travis/ci.yaml travis/changelog.yaml CHANGELOG.md
+    git commit -m "Update the minor version and changelog"
     git push origin ${BRANCH_NAME}
 fi
 

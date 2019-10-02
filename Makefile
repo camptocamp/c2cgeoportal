@@ -320,8 +320,14 @@ spell:
 		-name .mypy_cache -prune -or \
 		-name '__pycache__' -prune -or \
 		-name _build -prune -or \
-		\( -type f -and -not -name '*.png' -and -not -name '*.mo' -and -not -name '*.po*' \
-		-and -not -name 'CONST_Makefile_tmpl' -and -not -name 'package-lock.json' \) -print)
+		\( -type f \
+		-and -not -name '*.png' \
+		-and -not -name '*.mo' \
+		-and -not -name '*.po*' \
+		-and -not -name 'CONST_Makefile_tmpl' \
+		-and -not -name 'package-lock.json' \
+		-and -not -name 'changelog.yaml' \
+		-and -not -name 'CHANGELOG.md' \) -print)
 
 
 YAML_FILES ?= $(shell find \
@@ -331,6 +337,7 @@ YAML_FILES ?= $(shell find \
 	-name .mypy_cache -prune -or \
 	-name functional -prune -or \
 	-name geomapfish.yaml -prune -or \
+	-name changelog.yaml -prune -or \
 	\( -name "*.yml" -or -name "*.yaml" \) -print)
 .PHONY: yamllint
 yamllint:
