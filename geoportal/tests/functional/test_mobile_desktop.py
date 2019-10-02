@@ -100,9 +100,6 @@ class TestMobileDesktop(TestCase):
     def teardown_method(self, _):
         testing.tearDown()
 
-        from c2cgeoportal_geoportal.lib import functionality
-        functionality.FUNCTIONALITIES_TYPES = None
-
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import LayerWMS, \
             Theme, LayerGroup, Interface, OGCServer

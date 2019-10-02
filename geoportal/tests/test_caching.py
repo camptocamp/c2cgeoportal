@@ -32,7 +32,7 @@
 
 from unittest import TestCase
 
-from pyramid.testing import DummyRequest
+from tests import DummyRequest
 
 from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
 from c2cgeoportal_geoportal.lib.caching import (CORS_METHODS, NO_CACHE, init_region, invalidate_region,

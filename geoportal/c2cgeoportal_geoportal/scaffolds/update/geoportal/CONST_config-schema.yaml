@@ -191,6 +191,14 @@ mapping:
           max_consecutive_failures:
             type: int
             required: false
+      intranet:
+        type: map
+        required: false
+        mapping:
+          networks:
+            type: seq
+            sequence:
+              - type: str
       authorized_referers:
         type: seq
         sequence:
@@ -364,12 +372,6 @@ mapping:
         type: map
         required: True
         mapping:
-          anonymous:
-            <<: *free_dict
-            required: True
-          registered:
-            <<: *free_dict
-            required: True
           available_in_templates:
             type: seq
             required: True

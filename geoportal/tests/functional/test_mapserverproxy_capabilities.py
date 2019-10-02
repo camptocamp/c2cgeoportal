@@ -35,7 +35,7 @@ import transaction
 from tests.functional import (  # noqa
     teardown_common as teardown_module,
     setup_common as setup_module,
-    create_dummy_request, mapserv_url, create_default_ogcserver, cleanup_db,
+    create_dummy_request, mapserv_url, create_default_ogcserver, cleanup_db, setup_db,
 )
 
 
@@ -49,7 +49,7 @@ class TestMapserverproxyCapabilities(TestCase):
             OGCServer, OGCSERVER_TYPE_MAPSERVER, OGCSERVER_AUTH_STANDARD
         from c2cgeoportal_commons.models.static import User
 
-        cleanup_db()
+        setup_db()
         create_default_ogcserver()
 
         ogcserver_jpeg = OGCServer(name="__test_ogc_server_jpeg")

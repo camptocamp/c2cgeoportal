@@ -54,9 +54,6 @@ class TestThemeEditing(TestCase):
         self.maxDiff = None
         self._tables = []
 
-        from c2cgeoportal_geoportal.lib import functionality
-        functionality.FUNCTIONALITIES_TYPES = None
-
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import Role, \
             RestrictionArea, TreeItem, Theme, LayerGroup, Interface, LayerWMS
@@ -69,8 +66,6 @@ class TestThemeEditing(TestCase):
         for o in DBSession.query(RestrictionArea).all():
             DBSession.delete(o)
         for o in DBSession.query(Role).all():
-            DBSession.delete(o)
-        for o in DBSession.query(User).all():
             DBSession.delete(o)
         for o in DBSession.query(TreeItem).all():
             DBSession.delete(o)
@@ -131,9 +126,6 @@ class TestThemeEditing(TestCase):
 
     def teardown_method(self, _):
         testing.tearDown()
-
-        from c2cgeoportal_geoportal.lib import functionality
-        functionality.FUNCTIONALITIES_TYPES = None
 
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import Role, Layer, \

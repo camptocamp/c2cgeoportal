@@ -260,7 +260,8 @@ Anonymous JSON result
        "functionality": {
            "<functionality_name>": ["functionality_value"],
            ...
-       }
+       },
+       "is_intranet": false
    }
 
 .. _developer_webservices_auth_connected:
@@ -272,6 +273,7 @@ Connected JSON result
 
    {
        "username": "<username>",
+       "is_intranet": true,
        "is_password_changed": true/false, # If false the user should change his password
        "two_factor_enable": true/false, # Is the two factors authentication enabled?
        "two_factor_totp_secret": "<secret>", # The two factors authentication secret on first login

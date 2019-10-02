@@ -35,6 +35,7 @@ import urllib.parse
 from pyramid.httpexceptions import HTTPBadGateway, HTTPFound
 from pyramid.view import view_config
 
+from c2cgeoportal_geoportal.lib import is_intranet
 from c2cgeoportal_geoportal.lib.caching import PRIVATE_CACHE, get_region
 from c2cgeoportal_geoportal.lib.functionality import get_functionality
 from c2cgeoportal_geoportal.views.proxy import Proxy
@@ -54,7 +55,7 @@ class PrintProxy(Proxy):  # pragma: no cover
         """ Get print capabilities. """
 
         templates = get_functionality(
-            "print_template", self.request
+            "print_template", self.request, is_intranet(self.request)
         )
 
         # get query string

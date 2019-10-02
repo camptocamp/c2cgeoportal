@@ -34,12 +34,10 @@ from unittest import TestCase
 
 import transaction
 from pyramid import testing
-
-from tests.functional import (  # noqa
-    teardown_common as teardown_module,
-    setup_common as setup_module,
-    mapserv_url, create_default_ogcserver,
-)
+from tests import DummyRequest
+from tests.functional import create_default_ogcserver, mapserv_url
+from tests.functional import setup_common as setup_module  # noqa
+from tests.functional import teardown_common as teardown_module  # noqa
 
 
 class TestLoopTheme(TestCase):
@@ -91,10 +89,9 @@ class TestLoopTheme(TestCase):
     def test_theme(self):
         from c2cgeoportal_geoportal.views.entry import Entry
 
-        request = testing.DummyRequest()
+        request = DummyRequest()
         request.static_url = lambda url: "http://example.com/dummy/static/url"
         request.route_url = lambda url, _query={}: mapserv_url
-        request.client_addr = None
         request.user = None
         entry = Entry(request)
         _, errors = entry._themes("desktop2", True, 2)

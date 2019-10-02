@@ -30,9 +30,10 @@
 # pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access
 
 
-import pyramid.registry
 from unittest import TestCase
-from pyramid.testing import DummyRequest
+
+import pyramid.registry
+from tests import DummyRequest
 
 
 def handler(request):

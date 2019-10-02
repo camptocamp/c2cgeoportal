@@ -38,7 +38,8 @@ from unittest import TestCase
 import transaction
 from geoalchemy2 import WKTElement
 from pyramid import testing
-from tests.functional import cleanup_db, create_default_ogcserver, create_dummy_request, mapserv_url
+from tests.functional import (cleanup_db, setup_db, create_default_ogcserver, create_dummy_request,
+                              fill_tech_user_functionality, mapserv_url)
 from tests.functional import setup_common as setup_module  # noqa, pylint: disable=unused-import
 from tests.functional import teardown_common as teardown_module  # noqa, pylint: disable=unused-import
 
@@ -64,7 +65,7 @@ class TestEntryView(TestCase):
         from sqlalchemy.ext.declarative import declarative_base
         from geoalchemy2 import Geometry
 
-        cleanup_db()
+        setup_db()
 
         role1 = Role(name="__test_role1")
         user1 = User(username="__test_user1", password="__test_user1", settings_role=role1, roles=[role1])
@@ -229,6 +230,7 @@ class TestEntryView(TestCase):
         assert json.loads(response.body.decode("utf-8")) == {
             "username": "__test_user1",
             'email': '__test_user1@example.com',
+            "is_intranet": False,
             "is_password_changed": False,
             "two_factor_enable": False,
             "roles": [{
@@ -300,6 +302,7 @@ class TestEntryView(TestCase):
         assert json.loads(response.body.decode("utf-8")) == {
             "username": "__test_user1",
             'email': '__test_user1@example.com',
+            "is_intranet": False,
             "is_password_changed": False,
             "two_factor_enable": False,
             "roles": [{
@@ -554,3 +557,265 @@ class TestEntryView(TestCase):
 
         role = DBSession.query(Role).filter(Role.name == "__test_role2").one()
         assert role.bounds == (1, 2, 3, 4)
+
+    def test_decimal_json(self):
+        from decimal import Decimal
+        from tests import DummyRequest
+        from c2cgeoportal_geoportal import DecimalJSON
+        renderer = DecimalJSON()(None)
+        request = DummyRequest()
+        request.user = None
+        system = {"request": request}
+
+        self.assertEqual(
+            renderer({"a": Decimal("3.3")}, system),
+            '{"a": 3.3}'
+        )
+        self.assertEqual(request.response.content_type, "application/json")
+
+    def test__get_child_layers_info_with_scalehint(self):
+        import math
+        from tests import DummyRequest
+        from c2cgeoportal_geoportal.views.entry import Entry
+
+        request = DummyRequest()
+        request.user = None
+        entry = Entry(request)
+
+        class Layer:
+            pass
+
+        child_layer_1 = Layer()
+        child_layer_1.name = "layer_1"
+        child_layer_1.scaleHint = {
+            "min": 1 * math.sqrt(2),
+            "max": 2 * math.sqrt(2)
+        }
+        child_layer_1.layers = []
+
+        child_layer_2 = Layer()
+        child_layer_2.name = "layer_2"
+        child_layer_2.scaleHint = {
+            "min": 3 * math.sqrt(2),
+            "max": 4 * math.sqrt(2)
+        }
+        child_layer_2.layers = []
+
+        layer = Layer()
+        layer.layers = [child_layer_1, child_layer_2]
+
+        child_layers_info = entry._get_child_layers_info_1(layer)
+
+        expected = [{
+            "name": "layer_1",
+            "minResolutionHint": 1.0,
+            "maxResolutionHint": 2.0
+        }, {
+            "name": "layer_2",
+            "minResolutionHint": 3.0,
+            "maxResolutionHint": 4.0
+        }]
+        self.assertEqual(child_layers_info, expected)
+
+    def test_login_0(self):
+        from tests import DummyRequest
+        from c2cgeoportal_geoportal.views.entry import Entry
+
+        request = DummyRequest()
+        request.is_valid_referer = True
+        request.user = None
+        entry = Entry(request)
+
+        request.path = "/for_test"
+        responce = entry.loginform403()
+        assert responce['came_from'] == '/for_test'
+
+        request.params = {
+            "came_from": "/for_a_second_test",
+        }
+        entry = Entry(request)
+        responce = entry.loginform()
+        assert responce['came_from'] == '/for_a_second_test'
+
+        entry = Entry(request)
+        request.params = {}
+        responce = entry.loginform()
+        assert responce['came_from'] == '/'
+
+        request.registry.settings = {
+            "functionalities": {
+                "available_in_templates": ["func"]
+            },
+            "admin_interface": {
+                "available_functionalities": [{"name": "func"}]
+            }
+        }
+        fill_tech_user_functionality('anonymous', (('func', 'anon'), ('toto', 'anon_value2')))
+        fill_tech_user_functionality('registered', (('func', 'reg'),))
+        entry = Entry(request)
+        self.assertEqual(entry.loginuser()['functionalities'], {
+            'func': ['anon']
+        })
+
+        class R:
+            id = 123
+
+            def __init__(self, name, functionalities):
+                self.name = name
+                self.functionalities = functionalities
+
+        class U:
+            username = "__test_user"
+            is_password_changed = True
+            email = "info@example.com"
+            settings_role = None
+
+            def __init__(self, role="__test_role", functionalities=None):
+                if functionalities is None:
+                    functionalities = []
+                self.roles = [R(role, functionalities)]
+
+        request.user = U()
+        entry = Entry(request)
+        expected = {
+            'username': '__test_user',
+            'email': 'info@example.com',
+            'is_intranet': False,
+            'is_password_changed': True,
+            'two_factor_enable': False,
+            'roles': [{
+                'name': '__test_role',
+                'id': 123,
+            }],
+            'functionalities': {
+                'func': ['reg']
+            }
+        }
+        self.assertEqual(entry.loginuser(), expected)
+
+        class F:
+            name = 'func'
+            value = 'value'
+
+        request.user = U('__test_role2', [F()])
+        entry = Entry(request)
+        expected = {
+            'username': '__test_user',
+            'email': 'info@example.com',
+            'is_intranet': False,
+            'is_password_changed': True,
+            'two_factor_enable': False,
+            'roles': [{
+                'name': '__test_role2',
+                'id': 123,
+            }],
+            'functionalities': {
+                'func': ['value']
+            }
+        }
+        self.assertEqual(entry.loginuser(), expected)
+
+    def test__get_child_layers_info_without_scalehint(self):
+        from tests import DummyRequest
+        from c2cgeoportal_geoportal.views.entry import Entry
+
+        request = DummyRequest()
+        request.user = None
+        entry = Entry(request)
+
+        class Layer:
+            pass
+
+        child_layer_1 = Layer()
+        child_layer_1.name = "layer_1"
+        child_layer_1.scaleHint = None
+        child_layer_1.layers = []
+
+        child_layer_2 = Layer()
+        child_layer_2.name = "layer_2"
+        child_layer_2.scaleHint = None
+        child_layer_2.layers = []
+
+        layer = Layer()
+        layer.layers = [child_layer_1, child_layer_2]
+
+        child_layers_info = entry._get_child_layers_info_1(layer)
+
+        expected = [{
+            "name": "layer_1",
+            "minResolutionHint": 0.0,
+            "maxResolutionHint": 999999999.0,
+        }, {
+            "name": "layer_2",
+            "minResolutionHint": 0.0,
+            "maxResolutionHint": 999999999.0,
+        }]
+        self.assertEqual(child_layers_info, expected)
+
+    def test_intranet(self):
+        from tests import DummyRequest
+        from c2cgeoportal_geoportal.views.entry import Entry
+
+        request = DummyRequest()
+        request.registry.settings = {
+            'intranet': {
+                'networks': ['192.168.1.0/255.255.255.0']
+            }
+        }
+        request.user = None
+
+        entry = Entry(request)
+        self.assertEqual(entry.loginuser(), {
+            "is_intranet": False,
+            "functionalities": {}
+        })
+
+        request.client_addr = '192.168.1.20'
+        entry = Entry(request)
+        self.assertEqual(entry.loginuser(), {
+            "is_intranet": True,
+            "functionalities": {}
+        })
+
+        class G:
+            id = 123
+
+            def __init__(self, name, functionalities):
+                self.name = name
+                self.functionalities = functionalities
+
+        class U:
+            username = "__test_user"
+            is_password_changed = True
+            email = "info@example.com"
+
+            def __init__(self, role="__test_role", functionalities=None):
+                if functionalities is None:
+                    functionalities = []
+                self.roles = [G(role, functionalities)]
+
+        request.user = U()
+
+        entry = Entry(request)
+        request.client_addr = '192.168.2.20'
+        self.assertEqual(entry.loginuser(), {
+            'email': 'info@example.com',
+            'functionalities': {},
+            'is_intranet': False,
+            'is_password_changed': True,
+            'roles': [{'id': 123, 'name': '__test_role'}],
+            'two_factor_enable': False,
+            'username': '__test_user',
+        })
+
+        entry = Entry(request)
+        request.client_addr = '192.168.1.20'
+        self.assertEqual(entry.loginuser(), {
+            'email': 'info@example.com',
+            'functionalities': {},
+            'is_intranet': True,
+            'is_password_changed': True,
+            'roles': [{'id': 123, 'name': '__test_role'}],
+            'two_factor_enable': False,
+            'username': '__test_user',
+        })

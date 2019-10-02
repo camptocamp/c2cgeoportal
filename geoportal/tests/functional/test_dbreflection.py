@@ -34,7 +34,8 @@ from unittest import TestCase
 
 from tests.functional import (  # noqa
     teardown_common as teardown_module,
-    setup_common as setup_module)
+    setup_common as setup_module
+)
 
 
 class TestReflection(TestCase):

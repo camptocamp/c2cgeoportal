@@ -31,13 +31,14 @@
 
 
 from unittest import TestCase
-from pyramid import testing
-from pyramid.testing import DummyRequest
 
 from c2c.template.config import config
+from pyramid import testing
+from tests import DummyRequest
+
 import c2cgeoportal_geoportal
-from c2cgeoportal_geoportal import call_hook, set_user_validator, \
-    default_user_validator, create_get_user_from_request, is_valid_referer
+from c2cgeoportal_geoportal import (call_hook, create_get_user_from_request, default_user_validator,
+                                    is_valid_referer, set_user_validator)
 
 
 class TestIncludeme(TestCase):

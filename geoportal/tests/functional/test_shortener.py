@@ -51,7 +51,7 @@ class TestshortenerView(TestCase):
         transaction.commit()
 
     def test_shortener(self):
-        from pyramid.testing import DummyRequest
+        from tests import DummyRequest
         from pyramid.httpexceptions import HTTPNotFound, HTTPBadRequest
         from c2cgeoportal_geoportal.views.shortener import Shortener
 
@@ -86,7 +86,7 @@ class TestshortenerView(TestCase):
         self.assertRaises(HTTPBadRequest, shortener.create)
 
     def test_shortener_create_1(self):
-        from pyramid.testing import DummyRequest
+        from tests import DummyRequest
         from pyramid.httpexceptions import HTTPFound
         from c2cgeoportal_geoportal.views.shortener import Shortener
 
@@ -122,7 +122,7 @@ class TestshortenerView(TestCase):
         self.assertEqual(result.location, "https://example.com/hi")
 
     def test_shortener_create_2(self):
-        from pyramid.testing import DummyRequest
+        from tests import DummyRequest
         from pyramid.httpexceptions import HTTPFound
         from c2cgeoportal_geoportal.views.shortener import Shortener
 
@@ -156,7 +156,7 @@ class TestshortenerView(TestCase):
         self.assertEqual(result.location, "https://example.com/hi")
 
     def test_shortener_noreplace_1(self):
-        from pyramid.testing import DummyRequest
+        from tests import DummyRequest
         from c2cgeoportal_geoportal.views.shortener import Shortener
 
         def route_url(name, *elements, **kw):
@@ -179,7 +179,7 @@ class TestshortenerView(TestCase):
         self.assertEqual(result["short_url"], "https://example.com/s/truite")
 
     def test_shortener_noreplace_2(self):
-        from pyramid.testing import DummyRequest
+        from tests import DummyRequest
         from c2cgeoportal_geoportal.views.shortener import Shortener
 
         def route_url(name, *elements, **kw):
@@ -202,7 +202,7 @@ class TestshortenerView(TestCase):
         self.assertEqual(result["short_url"], "https://example.com/s/truite")
 
     def test_shortener_baseurl(self):
-        from pyramid.testing import DummyRequest
+        from tests import DummyRequest
         from c2cgeoportal_geoportal.views.shortener import Shortener
 
         def route_url(name, *elements, **kw):

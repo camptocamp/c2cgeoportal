@@ -31,14 +31,15 @@
 
 
 from unittest import TestCase
-from pyramid import testing
+
+from tests import DummyRequest
 
 
 class TestLocalNegociator(TestCase):
     def test_lang_param(self):
         from c2cgeoportal_geoportal import locale_negotiator
 
-        request = testing.DummyRequest(params=dict(lang="fr"))
+        request = DummyRequest(params=dict(lang="fr"))
         lang = locale_negotiator(request)
         self.assertEqual(lang, "fr")
 

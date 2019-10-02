@@ -32,7 +32,7 @@
 
 from unittest import TestCase
 
-from pyramid.testing import DummyRequest
+from tests import DummyRequest
 
 from c2cgeoportal_geoportal.lib.checker import build_url
 

@@ -32,11 +32,9 @@
 
 from unittest import TestCase
 
-from tests.functional import (  # noqa
-    teardown_common as teardown_module,
-    setup_common as setup_module,
-    create_default_ogcserver,
-)
+from tests.functional import create_default_ogcserver, fill_tech_user_functionality
+from tests.functional import setup_common as setup_module  # noqa
+from tests.functional import teardown_common as teardown_module  # noqa
 
 
 class TestFunctionalities(TestCase):
@@ -88,9 +86,6 @@ class TestFunctionalities(TestCase):
         from c2cgeoportal_commons.models.main import Role, Functionality, OGCServer
         from c2cgeoportal_commons.models.static import User
 
-        from c2cgeoportal_geoportal.lib import functionality
-        functionality.FUNCTIONALITIES_TYPES = None
-
         transaction.commit()
 
         for user_name in ("__test_user1", "__test_user2", "__test_user3"):
@@ -112,7 +107,6 @@ class TestFunctionalities(TestCase):
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
         from c2cgeoportal_geoportal.lib.functionality import get_functionality
-        from c2cgeoportal_geoportal.lib import functionality
 
         request = create_dummy_request()
         request.user = None
@@ -124,10 +118,6 @@ class TestFunctionalities(TestCase):
         request3.user = DBSession.query(User).filter(User.username == "__test_user3").one()
 
         settings = {
-            "functionalities": {
-                "anonymous": {},
-                "registered": {},
-            },
             "admin_interface": {
                 "available_functionalities": [
                     {"name": "__test_a"},
@@ -136,98 +126,99 @@ class TestFunctionalities(TestCase):
                 ]
             }
         }
-        functionality.FUNCTIONALITIES_TYPES = None
         request.registry.settings.update(settings)
         request1.registry.settings.update(settings)
         request2.registry.settings.update(settings)
         request3.registry.settings.update(settings)
-        self.assertEqual(get_functionality("__test_s", request), [])
-        self.assertEqual(get_functionality("__test_a", request), [])
-        self.assertEqual(get_functionality("__test_s", request1), [])
-        self.assertEqual(get_functionality("__test_a", request1), [])
-        self.assertEqual(get_functionality("__test_s", request2), ["db"])
-        self.assertEqual(set(get_functionality("__test_a", request2)), {"db1", "db2"})
-        self.assertEqual(get_functionality("__test_s", request3), ["db"])
-        self.assertEqual(set(get_functionality("__test_a", request3)), {"db1", "db2"})
-        self.assertEqual(get_functionality("__test_b", request3), [])
+        self.assertEqual(get_functionality("__test_s", request, False), [])
+        self.assertEqual(get_functionality("__test_a", request, False), [])
+        self.assertEqual(get_functionality("__test_s", request1, False), [])
+        self.assertEqual(get_functionality("__test_a", request1, False), [])
+        self.assertEqual(get_functionality("__test_s", request2, False), ["db"])
+        self.assertEqual(set(get_functionality("__test_a", request2, False)), {"db1", "db2"})
+        self.assertEqual(get_functionality("__test_s", request3, False), ["db"])
+        self.assertEqual(set(get_functionality("__test_a", request3, False)), {"db1", "db2"})
+        self.assertEqual(get_functionality("__test_b", request3, False), [])
 
+        fill_tech_user_functionality('registered', (
+            ("__test_s", "registered"),
+            ("__test_a", "r1"),
+            ("__test_a", "r2"),
+        ))
         settings = {
-            "functionalities": {
-                "anonymous": {},
-                "registered": {
-                    "__test_s": "registered",
-                    "__test_a": ["r1", "r2"]
-                }
-            },
             "admin_interface": {
                 "available_functionalities": [{"name": "__test_a"}, {"name": "__test_s"}]
             }
         }
-        functionality.FUNCTIONALITIES_TYPES = None
         request.registry.settings.update(settings)
         request1.registry.settings.update(settings)
         request2.registry.settings.update(settings)
-        self.assertEqual(get_functionality("__test_s", request), [])
-        self.assertEqual(get_functionality("__test_a", request), [])
-        self.assertEqual(get_functionality("__test_s", request1), ["registered"])
-        self.assertEqual(get_functionality("__test_a", request1), ["r1", "r2"])
-        self.assertEqual(get_functionality("__test_s", request2), ["db"])
-        self.assertEqual(set(get_functionality("__test_a", request2)), {"db1", "db2"})
+        request1.user = DBSession.query(User).filter(User.username == "__test_user1").one()
+        request2.user = DBSession.query(User).filter(User.username == "__test_user2").one()
+        request3.user = DBSession.query(User).filter(User.username == "__test_user3").one()
+        self.assertEqual(get_functionality("__test_s", request, False), [])
+        self.assertEqual(get_functionality("__test_a", request, False), [])
+        self.assertEqual(get_functionality("__test_s", request1, False), ["registered"])
+        self.assertEqual(set(get_functionality("__test_a", request1, False)), {"r1", "r2"})
+        self.assertEqual(get_functionality("__test_s", request2, False), ["db"])
+        self.assertEqual(set(get_functionality("__test_a", request2, False)), {"db1", "db2"})
 
+        fill_tech_user_functionality('registered', [])
+        fill_tech_user_functionality('anonymous', (
+            ("__test_s", "anonymous"),
+            ("__test_a", "a1"),
+            ("__test_a", "a2"),
+        ))
         settings = {
-            "functionalities": {
-                "anonymous": {
-                    "__test_s": "anonymous",
-                    "__test_a": ["a1", "a2"]
-                },
-                "registered": {}
-            },
             "admin_interface": {
                 "available_functionalities": [{"name": "__test_a"}, {"name": "__test_s"}]
             }
         }
-        functionality.FUNCTIONALITIES_TYPES = None
         request.registry.settings.update(settings)
         request1.registry.settings.update(settings)
         request2.registry.settings.update(settings)
-        self.assertEqual(get_functionality("__test_s", request), ["anonymous"])
-        self.assertEqual(get_functionality("__test_a", request), ["a1", "a2"])
-        self.assertEqual(get_functionality("__test_s", request1), ["anonymous"])
-        self.assertEqual(get_functionality("__test_a", request1), ["a1", "a2"])
-        self.assertEqual(get_functionality("__test_s", request2), ["db"])
-        self.assertEqual(set(get_functionality("__test_a", request2)), {"db1", "db2"})
+        request1.user = DBSession.query(User).filter(User.username == "__test_user1").one()
+        request2.user = DBSession.query(User).filter(User.username == "__test_user2").one()
+        request3.user = DBSession.query(User).filter(User.username == "__test_user3").one()
+        self.assertEqual(get_functionality("__test_s", request, False), ["anonymous"])
+        self.assertEqual(set(get_functionality("__test_a", request, False)), {"a1", "a2"})
+        self.assertEqual(get_functionality("__test_s", request1, False), ["anonymous"])
+        self.assertEqual(set(get_functionality("__test_a", request1, False)), {"a1", "a2"})
+        self.assertEqual(get_functionality("__test_s", request2, False), ["db"])
+        self.assertEqual(set(get_functionality("__test_a", request2, False)), {"db1", "db2"})
 
+        fill_tech_user_functionality('registered', (
+            ("__test_s", "registered"),
+            ("__test_a", "r1"),
+            ("__test_a", "r2"),
+        ))
+        fill_tech_user_functionality('anonymous', (
+            ("__test_s", "anonymous"),
+            ("__test_a", "a1"),
+            ("__test_a", "a2"),
+        ))
         settings = {
-            "functionalities": {
-                "anonymous": {
-                    "__test_s": "anonymous",
-                    "__test_a": ["a1", "a2"]
-                },
-                "registered": {
-                    "__test_s": "registered",
-                    "__test_a": ["r1", "r2"]
-                }
-            },
             "admin_interface": {
                 "available_functionalities": [{"name": "__test_a"}, {"name": "__test_s"}]
             }
         }
-        functionality.FUNCTIONALITIES_TYPES = None
         request.registry.settings.update(settings)
         request1.registry.settings.update(settings)
         request2.registry.settings.update(settings)
-        self.assertEqual(get_functionality("__test_s", request), ["anonymous"])
-        self.assertEqual(get_functionality("__test_a", request), ["a1", "a2"])
-        self.assertEqual(get_functionality("__test_s", request1), ["registered"])
-        self.assertEqual(get_functionality("__test_a", request1), ["r1", "r2"])
-        self.assertEqual(get_functionality("__test_s", request2), ["db"])
-        self.assertEqual(set(get_functionality("__test_a", request2)), {"db1", "db2"})
+        request1.user = DBSession.query(User).filter(User.username == "__test_user1").one()
+        request2.user = DBSession.query(User).filter(User.username == "__test_user2").one()
+        request3.user = DBSession.query(User).filter(User.username == "__test_user3").one()
+        self.assertEqual(get_functionality("__test_s", request, False), ["anonymous"])
+        self.assertEqual(set(get_functionality("__test_a", request, False)), {"a1", "a2"})
+        self.assertEqual(get_functionality("__test_s", request1, False), ["registered"])
+        self.assertEqual(set(get_functionality("__test_a", request1, False)), {"r1", "r2"})
+        self.assertEqual(get_functionality("__test_s", request2, False), ["db"])
+        self.assertEqual(set(get_functionality("__test_a", request2, False)), {"db1", "db2"})
 
     def test_web_client_functionalities(self):
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
         from tests.functional import create_dummy_request
-        from c2cgeoportal_geoportal.lib import functionality
 
         request = create_dummy_request()
         request.static_url = lambda url: "http://example.com/dummy/static/url"
@@ -238,23 +229,24 @@ class TestFunctionalities(TestCase):
         request2.static_url = lambda url: "http://example.com/dummy/static/url"
         request2.user = DBSession.query(User).filter(User.username == "__test_user2").one()
 
+        fill_tech_user_functionality('registered', (
+            ("__test_s", "registered"),
+            ("__test_a", "r1"),
+            ("__test_a", "r2"),
+        ))
+        fill_tech_user_functionality('anonymous', (
+            ("__test_s", "anonymous"),
+            ("__test_a", "a1"),
+            ("__test_a", "a2"),
+        ))
         settings = {
             "functionalities": {
-                "anonymous": {
-                    "__test_s": "anonymous",
-                    "__test_a": ["a1", "a2"]
-                },
-                "registered": {
-                    "__test_s": "registered",
-                    "__test_a": ["r1", "r2"]
-                },
                 "available_in_templates": ["__test_s", "__test_a"],
             },
             "admin_interface": {
                 "available_functionalities": [{"name": "__test_a"}, {"name": "__test_s"}]
             },
         }
-        functionality.FUNCTIONALITIES_TYPES = None
         request.registry.settings.update(settings)
         request1.registry.settings.update(settings)
         request2.registry.settings.update(settings)
