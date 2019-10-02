@@ -124,6 +124,19 @@ dockerBuild {
                 sh "docker tag camptocamp/geomapfish-build:${MAJOR_VERSION} camptocamp/geomapfish-build:${RELEASE_TAG}"
                 sh "docker tag camptocamp/geomapfish-config-build:${MAJOR_VERSION} camptocamp/geomapfish-config-build:${RELEASE_TAG}"
                 sh 'travis/test-upgrade-convert.sh init ${HOME}/workspace'
+
+                // Test changelog
+                withCredentials([[
+                    $class: 'UsernamePasswordMultiBinding',
+                    credentialsId: 'geoportal_changelog_github_token',
+                    usernameVariable: 'USERNAME',
+                    passwordVariable: 'GITHUB_TOKEN'
+                ]]) {
+                    env.GITHUB_TOKEN = GITHUB_TOKEN
+                    sh '.venv/bin/python travis/changelog new_version'
+                }
+                sh 'git diff CHANGELOG.md'
+                sh 'git checkout CHANGELOG.md travis/changelog.yaml'
             }
             stage('Tests') {
                 if (abort_ci()) { return }
@@ -334,7 +347,16 @@ dockerBuild {
                         sh '.venv/bin/python travis/clean-dockerhub-tags'
 
                         sshagent (credentials: ['c2c-infra-ci']) {
-                            sh 'travis/publish'
+
+                            withCredentials([[
+                                $class: 'UsernamePasswordMultiBinding',
+                                credentialsId: 'geoportal_changelog_github_token',
+                                usernameVariable: 'USERNAME',
+                                passwordVariable: 'GITHUB_TOKEN'
+                            ]]) {
+                                env.GITHUB_TOKEN = GITHUB_TOKEN
+                                sh 'travis/publish'
+                            }
                         }
                     }
                 }, 'Push to Transifex': {
