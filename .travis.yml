@@ -111,4 +111,6 @@ script:
 
 notifications:
   email:
-    on_failure: change
+    recipients:
+      - stephane.brunner@camptocamp.com
+    if: branch = env(MAIN_BRANCH)
