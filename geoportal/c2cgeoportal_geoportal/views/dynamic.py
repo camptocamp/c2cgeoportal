@@ -72,6 +72,7 @@ class DynamicView:
         dynamic = {
             'interface': interface_name,
             'cache_version': get_cache_version(),
+            'two_factor': self.request.registry.settings.get("authentication", {}).get("two_factor", False),
             'lang_urls': {
                 lang: self.request.static_url('/etc/geomapfish/static/{lang}.json'.format(
                     package=self.request.registry.settings["package"],
