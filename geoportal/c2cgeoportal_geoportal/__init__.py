@@ -396,6 +396,7 @@ def includeme(config: pyramid.config.Configurator):
 
     config.include('c2cwsgiutils.pyramid.includeme')
     health_check = HealthCheck(config)
+    config.registry['health_check'] = health_check
 
     # Initialise DBSessions
     init_dbsessions(settings, config, health_check)
