@@ -336,8 +336,10 @@ class MapserverproxyRoutePredicate:
         return "request" not in params or params["request"] != "getcapabilities"
 
     @staticmethod
-    def phash():
-        return ""
+    def text():
+        return 'mapserverproxy'
+
+    phash = text
 
 
 def add_cors_route(config, pattern, service):
