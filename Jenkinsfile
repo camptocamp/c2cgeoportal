@@ -10,21 +10,26 @@ env.CI = 'true'
 env.DOCKER_USERNAME = 'amplerancid'
 
 def clean() {
-    sh 'git clean -dx --force'
+    try {
+        sh 'git clean -dx --force'
 
-    sh 'docker ps --all | grep camptocamp/c2cgeoportal | awk \'{print($1)}\' | xargs --no-run-if-empty docker rm --force --volumes'
-    sh 'docker ps --all | grep camptocamp/geomapfish | awk \'{print($1)}\' | xargs --no-run-if-empty docker rm --force --volumes'
-    sh 'docker ps --all | grep camptocamp/testgeomapfish | awk \'{print($1)}\' | xargs --no-run-if-empty docker rm --force --volumes'
-    sh 'docker volume ls | grep home-jenkins-slave-workspace | awk \'{print($2)}\' | xargs --no-run-if-empty docker volume rm'
-    sh 'docker network rm internal || true'
+        sh 'docker ps --all | grep camptocamp/c2cgeoportal | awk \'{print($1)}\' | xargs --no-run-if-empty docker rm --force --volumes'
+        sh 'docker ps --all | grep camptocamp/geomapfish | awk \'{print($1)}\' | xargs --no-run-if-empty docker rm --force --volumes'
+        sh 'docker ps --all | grep camptocamp/testgeomapfish | awk \'{print($1)}\' | xargs --no-run-if-empty docker rm --force --volumes'
+        sh 'docker volume ls | grep home-jenkins-slave-workspace | awk \'{print($2)}\' | xargs --no-run-if-empty docker volume rm'
+        sh 'docker network rm internal || true'
 
-    sh 'docker ps'
-    sh 'docker ps --all --filter status=exited'
-    sh 'docker volume ls'
+        sh 'docker ps'
+        sh 'docker ps --all --filter status=exited'
+        sh 'docker volume ls'
 
-    sh 'travis/test-upgrade-convert.sh cleanup ${HOME}/workspace'
-    sh 'rm -rf ${HOME}/workspace/testgeomapfishapp'
-    sh 'rm -rf ${HOME}/workspace/geomapfish'
+        sh 'travis/test-upgrade-convert.sh cleanup ${HOME}/workspace'
+        sh 'rm -rf ${HOME}/workspace/testgeomapfishapp'
+        sh 'rm -rf ${HOME}/workspace/geomapfish'
+    } catch (Exception error) {
+        System.out.println("Unexpected error in clean");
+        error.printStackTrace(System.out);
+    }
 }
 
 def get_abort_ci() {
@@ -119,6 +124,19 @@ dockerBuild {
                 sh "docker tag camptocamp/geomapfish-build:${MAJOR_VERSION} camptocamp/geomapfish-build:${RELEASE_TAG}"
                 sh "docker tag camptocamp/geomapfish-config-build:${MAJOR_VERSION} camptocamp/geomapfish-config-build:${RELEASE_TAG}"
                 sh 'travis/test-upgrade-convert.sh init ${HOME}/workspace'
+
+                // Test changelog
+                withCredentials([[
+                    $class: 'UsernamePasswordMultiBinding',
+                    credentialsId: 'geoportal_changelog_github_token',
+                    usernameVariable: 'USERNAME',
+                    passwordVariable: 'GITHUB_TOKEN'
+                ]]) {
+                    env.GITHUB_TOKEN = GITHUB_TOKEN
+                    sh '.venv/bin/python travis/changelog new_version'
+                }
+                sh 'git diff CHANGELOG.md'
+                sh 'git checkout CHANGELOG.md travis/changelog.yaml'
             }
             stage('Tests') {
                 if (abort_ci()) { return }
@@ -329,7 +347,16 @@ dockerBuild {
                         sh '.venv/bin/python travis/clean-dockerhub-tags'
 
                         sshagent (credentials: ['c2c-infra-ci']) {
-                            sh 'travis/publish'
+
+                            withCredentials([[
+                                $class: 'UsernamePasswordMultiBinding',
+                                credentialsId: 'geoportal_changelog_github_token',
+                                usernameVariable: 'USERNAME',
+                                passwordVariable: 'GITHUB_TOKEN'
+                            ]]) {
+                                env.GITHUB_TOKEN = GITHUB_TOKEN
+                                sh 'travis/publish'
+                            }
                         }
                     }
                 }, 'Push to Transifex': {

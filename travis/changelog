@@ -13,12 +13,17 @@ import yaml
 REPOS = ('c2cgeoportal', 'ngeo')
 
 with open('travis/changelog.yaml') as cl_file:
-    changelog = yaml.load(cl_file, Loader=yaml.CSafeLoader)
+    changelog = yaml.load(cl_file, Loader=yaml.SafeLoader)
 
 
 def save():
     with open('travis/changelog.yaml', 'w') as cl_file_w:
-        cl_file_w.write(yaml.dump(changelog, Dumper=yaml.CSafeDumper))
+        cl_file_w.write(yaml.dump(changelog, Dumper=yaml.SafeDumper))
+
+
+def output(cmd):
+    with subprocess.Popen(cmd, stdout=subprocess.PIPE) as proc:
+        return proc.stdout.read()
 
 
 def get_any(repo, ref, section, url):
@@ -86,23 +91,28 @@ def get_pulls(repo, ref):
 
 def add_new_release():
     if len(sys.argv) == 2:
-        npm_list = json.loads(subprocess.check_output([
-            'docker', 'run', '--rm', '--entrypoint=', 'camptocamp/geomapfish-build',
-            'npm', 'list', '--global', '--json'
-        ]))
+        npm_list = json.loads(output([
+            './docker-run', '--image=camptocamp/geomapfish-build', 'npm', 'list', '--global', '--json'
+        ]).decode())
+        # For 2.5
+        # npm_list = json.loads(output([
+        #     'docker', 'run', '--rm', '--entrypoint=',
+        #     'camptocamp/geomapfish-build:{}'.format(os.environ['MAJOR_VERSION']),
+        #     'npm', 'list', '--global', '--json'
+        # ])
 
         version = npm_list['dependencies']['ngeo']['version']
-        match = re.match(
-            r'([0-9]\.[0-9]\.[0-9])\-version\-[0-9]\.[0-9]\-latest\.[0-9]{8}T[0-9]{6}Z\.([0-9a-f]+)\.HEAD',
+        ngeo_ref = re.match(
+            r'[0-9]\.[0-9]\.[0-9]\-version\-[0-9]\.[0-9]\-latest\.[0-9]{8}T[0-9]{6}Z\.([0-9a-f]+)\.HEAD',
             version
-        )
+        ).group(1)
 
-        c2cgeoportal_ref = subprocess.check_call([
-            'git', 'log', 'pretty=format:%h', '--abbrev-commit', '-n1'
-        ]).strip('\n ')
+        c2cgeoportal_ref = subprocess.check_output([
+            'git', 'log', '--pretty=format:%h', '--abbrev-commit', '-n1'
+        ]).decode().strip('\n ')
 
-        changelog['release'].append({
-            'ngeo': match.group(2),
+        changelog['releases'].append({
+            'ngeo': ngeo_ref,
             'c2cgeoportal': c2cgeoportal_ref,
             'name': sys.argv[1]
         })
@@ -126,6 +136,7 @@ def main():
 
     first = True
     release_pulls = {}
+    releases = []
     commits = {}
     for repo in REPOS:
         commits[repo] = {}
@@ -137,6 +148,7 @@ def main():
             first = False
             continue
 
+        releases.append(release['name'])
         release_pulls[release['name']] = {}
         for repo in REPOS:
             release_pulls[release['name']][repo] = {}
@@ -146,15 +158,16 @@ def main():
                 repo, release[repo]
             )
 
-    with open('CHANGELOG.md', 'wt') as md_file:
-        for release, pulls in release_pulls.items()[::-1]:
-            md_file.write('##### {}\n'.format(release))
+    with open('CHANGELOG.md', 'wb') as md_file:
+        for release in releases[::-1]:
+            pulls = release_pulls[release]
+            md_file.write('##### {}\n'.format(release).encode('utf-8'))
             for repo in REPOS:
                 for pull in pulls[repo].values():
                     if pull['base_ref'] != 'master':
                         md_file.write('* {} [{}#{}]({})\n'.format(
                             pull['title'], repo, pull['number'], pull['html_url']
-                        ))
+                        ).encode('utf-8'))
 
 
 if __name__ == "__main__":
