@@ -34,7 +34,9 @@ from unittest import TestCase
 
 from pyramid.testing import DummyRequest
 
-from c2cgeoportal_geoportal.lib.caching import set_common_headers, CORS_METHODS, NO_CACHE
+from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
+from c2cgeoportal_geoportal.lib.caching import (CORS_METHODS, NO_CACHE, init_region, invalidate_region,
+                                                set_common_headers)
 
 
 class TestSetCorsHeaders(TestCase):
@@ -283,3 +285,24 @@ class TestSetCorsHeaders(TestCase):
             "Access-Control-Allow-Methods": CORS_METHODS,
             'Cache-Control': 'max-age=' + self.MAX_AGE,
         }
+
+    def test_cache(self):
+        init_region({
+            'backend': 'dogpile.cache.memory',
+        }, 'std')
+        cache_version = get_cache_version()
+        assert cache_version == get_cache_version()
+
+    def test_cache_invalidation(self):
+        init_region({
+            'backend': 'dogpile.cache.memory',
+        }, 'std')
+        cache_version = get_cache_version()
+        invalidate_region()
+        assert cache_version != get_cache_version()
+
+    def test_nocache(self):
+        init_region({
+            'backend': 'dogpile.cache.null',
+        }, 'std')
+        assert get_cache_version() != get_cache_version()
