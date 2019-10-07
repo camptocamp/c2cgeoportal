@@ -35,8 +35,9 @@ build-runner:
 		--build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --build-arg=VERSION=$(VERSION) .
 
 QGIS_VERSION ?= latest
-.PHONY: build-runner
-build-qgisserver:
+.PHONY: build-qgisserver
+build-qgisserver: build-runner
+	docker tag camptocamp/geomapfish:$(DOCKER_TAG) camptocamp/geomapfish
 	docker build --target=runner --build-arg=VERSION=$(QGIS_VERSION) \
 		--tag=camptocamp/geomapfish-qgisserver:gmf${MAJOR_VERSION}-qgis$(QGIS_VERSION) docker/qgisserver
 
@@ -49,7 +50,8 @@ build-test-mapserver:
 	docker build --tag=camptocamp/geomapfish-test-mapserver docker/test-mapserver
 
 .PHONY: build-qgis-server-tests
-build-qgis-server-tests:
+build-qgis-server-tests: build-runner
+	docker tag camptocamp/geomapfish:$(DOCKER_TAG) camptocamp/geomapfish
 	docker build --target=tests --build-arg=VERSION=3.4 \
 		--tag=camptocamp/geomapfish-qgisserver-tests docker/qgisserver
 
