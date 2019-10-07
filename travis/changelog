@@ -73,8 +73,6 @@ def get_pulls(repo, ref):
     for pull in pulls:
         if 'base' in pull:
             pull['base_ref'] = pull['base']['ref']
-    print(pulls[0]['closed_at'])
-    print(pulls[0]['base_ref'])
 
     for pull in pulls:
         for key in list(pull.keys()):
