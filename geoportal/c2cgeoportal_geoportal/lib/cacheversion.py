@@ -63,18 +63,3 @@ class CachebusterTween:
             request.path_info = "/" .join(path)
 
         return self.handler(request)
-
-
-class VersionCache:
-    _value = None
-    _cache = None
-
-    def uptodate(self):
-        return self._cache == get_cache_version()
-
-    def get(self):
-        return self._value if self.uptodate() else None
-
-    def set(self, value):
-        self._value = value
-        self._cache = get_cache_version()

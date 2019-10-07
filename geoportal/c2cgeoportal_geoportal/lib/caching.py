@@ -62,13 +62,13 @@ def keygen_function(namespace, function):
         namespace = "{}:{}|{}".format(function.__module__, function.__name__, namespace)
 
     args = inspect.getfullargspec(function)
-    has_self_or_request = args[0] and args[0][0] in ('self', 'cls', 'request')
+    ignore_first_argument = args[0] and args[0][0] in ('self', 'cls', 'request', 'no_cache')
 
     def generate_key(*args, **kw):
         if kw:  # pragma: no cover
             raise ValueError("key creation function does not accept keyword arguments.")
         parts = [namespace]
-        if has_self_or_request:
+        if ignore_first_argument:
             args = args[1:]
         parts.extend(map(compat.text_type, map(map_dbobject, args)))
         return "|".join(parts)

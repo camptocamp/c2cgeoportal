@@ -29,12 +29,17 @@
 
 
 import datetime
-import dateutil
 import json
-from pyramid.interfaces import IRoutePregenerator
-from string import Formatter
 import urllib.parse
+from string import Formatter
+
+import dateutil
+from pyramid.interfaces import IRoutePregenerator
 from zope.interface import implementer
+
+from c2cgeoportal_geoportal.lib.caching import get_region
+
+CACHE_REGION_OBJ = get_region('obj')
 
 
 def get_types_map(types_array):
@@ -218,51 +223,29 @@ def get_setting(settings, path, default=None):
     return value if value else default
 
 
-ogc_server_wms_url_ids = None
-
-
+@CACHE_REGION_OBJ.cache_on_arguments()
 def get_ogc_server_wms_url_ids(request):
     from c2cgeoportal_commons.models import DBSession
     from c2cgeoportal_commons.models.main import OGCServer
-    from c2cgeoportal_geoportal.lib.cacheversion import VersionCache
-    global ogc_server_wms_url_ids
-    if ogc_server_wms_url_ids is None:
-        ogc_server_wms_url_ids = VersionCache()
 
     errors = set()
-    servers = ogc_server_wms_url_ids.get()
-    if servers is None:
-        servers = dict()
-        ogc_server_wms_url_ids.set(servers)
-        for ogc_server in DBSession.query(OGCServer).all():
-            url = get_url2(ogc_server.name, ogc_server.url, request, errors)
-            if servers.get(url) is None:
-                servers[url] = []
-            servers.get(url).append(ogc_server.id)
+    servers = dict()
+    for ogc_server in DBSession.query(OGCServer).all():
+        url = get_url2(ogc_server.name, ogc_server.url, request, errors)
+        servers.setdefault(url, []).append(ogc_server.id)
     return servers
 
 
-ogc_server_wfs_url_ids = None
-
-
+@CACHE_REGION_OBJ.cache_on_arguments()
 def get_ogc_server_wfs_url_ids(request):
     from c2cgeoportal_commons.models import DBSession
     from c2cgeoportal_commons.models.main import OGCServer
-    from c2cgeoportal_geoportal.lib.cacheversion import VersionCache
-    global ogc_server_wfs_url_ids
-    if ogc_server_wfs_url_ids is None:
-        ogc_server_wfs_url_ids = VersionCache()
 
     errors = set()
-    servers = ogc_server_wfs_url_ids.get()
-    if servers is None:
-        servers = dict()
-        ogc_server_wfs_url_ids.set(servers)
-        for ogc_server in DBSession.query(OGCServer).all():
-            url = get_url2(ogc_server.name, ogc_server.url_wfs or ogc_server.url, request, errors)
-            if servers.get(url) is None:
-                servers[url] = []
-            servers.get(url).append(ogc_server.id)
+    servers = dict()
+    for ogc_server in DBSession.query(OGCServer).all():
+        url = get_url2(ogc_server.name, ogc_server.url_wfs or ogc_server.url, request, errors)
+        servers.setdefault(url, []).append(ogc_server.id)
     return servers
 
 
