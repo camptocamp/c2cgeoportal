@@ -42,6 +42,8 @@ from tests.functional import cleanup_db, create_default_ogcserver, create_dummy_
 from tests.functional import setup_common as setup_module  # noqa, pylint: disable=unused-import
 from tests.functional import teardown_common as teardown_module  # noqa, pylint: disable=unused-import
 
+from c2cgeoportal_geoportal.lib.caching import invalidate_region
+
 LOG = logging.getLogger(__name__)
 
 
@@ -392,8 +394,7 @@ class TestEntryView(TestCase):
         entry = Entry(request)
         request.params = {}
 
-        from c2cgeoportal_geoportal.lib import caching
-        caching.invalidate_region()
+        invalidate_region()
         themes, errors = entry._themes("interface_no_layers")
         assert themes == []
         assert {e[:90] for e in errors} == {
@@ -405,8 +406,7 @@ class TestEntryView(TestCase):
         from c2cgeoportal_geoportal.views.entry import Entry
         entry = Entry(self._create_request_obj())
 
-        from c2cgeoportal_geoportal.lib import caching
-        caching.invalidate_region()
+        invalidate_region()
         themes, errors = entry._themes("interface_not_in_mapfile")
         assert len(themes) == 1
         groups = {g["name"] for g in themes[0]["children"]}
@@ -426,8 +426,7 @@ class TestEntryView(TestCase):
         from c2cgeoportal_geoportal.views.entry import Entry
         entry = Entry(self._create_request_obj())
 
-        from c2cgeoportal_geoportal.lib import caching
-        caching.invalidate_region()
+        invalidate_region()
         themes, errors = entry._themes("interface_notmapfile")
         assert len(themes) == 1
         groups = {g["name"] for g in themes[0]["children"]}

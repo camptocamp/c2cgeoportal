@@ -30,12 +30,13 @@
 
 import inspect
 import logging
+from typing import Dict, Any  # noqa
 
 from dogpile.cache.util import compat
 from dogpile.cache.region import make_region
 
 LOG = logging.getLogger(__name__)
-_REGION = {}
+_REGION = {}  # type: Dict[str, Any]
 
 
 def map_dbobject(item):
@@ -61,14 +62,13 @@ def keygen_function(namespace, function):
         namespace = "{}:{}|{}".format(function.__module__, function.__name__, namespace)
 
     args = inspect.getfullargspec(function)
-    has_self = args[0] and args[0][0] in ("self", "cls")
+    has_self_or_request = args[0] and args[0][0] in ('self', 'cls', 'request')
 
     def generate_key(*args, **kw):
         if kw:  # pragma: no cover
-            raise ValueError(
-                "key creation function does not accept keyword arguments.")
+            raise ValueError("key creation function does not accept keyword arguments.")
         parts = [namespace]
-        if has_self:
+        if has_self_or_request:
             args = args[1:]
         parts.extend(map(compat.text_type, map(map_dbobject, args)))
         return "|".join(parts)
@@ -79,24 +79,26 @@ def init_region(conf, region=None):
     """
     Initialize the caching module.
     """
-    cache_region = make_region(function_key_generator=keygen_function)
-    kwargs = dict(
-        (k, conf[k]) for k in
-        ("arguments", "expiration_time") if k in conf)
-    cache_region.configure(conf["backend"], **kwargs)
-    _REGION[region] = cache_region
+    cache_region = get_region(region)
+    _configure_region(conf, cache_region)
     return cache_region
+
+
+def _configure_region(conf, cache_region):
+    kwargs = {
+        'replace_existing_backend': True,
+    }
+    kwargs.update({k: conf[k] for k in conf if k != 'backend'})
+    cache_region.configure(conf['backend'], **kwargs)
 
 
 def get_region(region=None):
     """
     Return a cache region.
     """
-    try:
-        return _REGION[region]
-    except KeyError:  # pragma: no cover
-        LOG.error("No such caching region. A region must be initialized before it can be used")
-        return make_region(function_key_generator=keygen_function)
+    if region not in _REGION:
+        _REGION[region] = make_region(function_key_generator=keygen_function)
+    return _REGION[region]
 
 
 def invalidate_region(region=None):

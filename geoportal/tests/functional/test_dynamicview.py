@@ -30,14 +30,15 @@
 # pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access
 
 
-from pyramid import testing
 from unittest import TestCase
-from pyramid.testing import DummyRequest, testConfig
 
-from tests.functional import (  # noqa, pylint: disable=unused-import
-    teardown_common as teardown_module,
-    setup_common as setup_module
-)
+from pyramid import testing
+from pyramid.testing import testConfig
+from tests import DummyRequest
+from tests.functional import setup_common as setup_module  # noqa, pylint: disable=unused-import
+from tests.functional import teardown_common as teardown_module  # noqa, pylint: disable=unused-import
+
+from c2cgeoportal_geoportal.lib.caching import init_region
 
 
 class TestDynamicView(TestCase):
@@ -72,6 +73,10 @@ class TestDynamicView(TestCase):
 
         DBSession.add_all([entry1, entry2, entry3])
         transaction.commit()
+
+        init_region({
+            'backend': 'dogpile.cache.memory',
+        })
 
     def teardown_method(self, _):
         testing.tearDown()
@@ -272,7 +277,9 @@ class TestDynamicView(TestCase):
             config.add_static_view(name='static', path='/etc/geomapfish/static')
             config.add_route('test', '/test')
             config.add_route('route_with_keywords', '/test/{key1}/{key2}')
-            request = DummyRequest({'interface': 'test'})
+            request = DummyRequest({
+                'interface': 'test',
+            })
             dynamic = DynamicView(request).dynamic()
 
         assert 'XTest' in dynamic['constants'], dynamic
@@ -293,7 +300,9 @@ class TestDynamicView(TestCase):
             config.add_static_view(name='static', path='/etc/geomapfish/static')
             config.add_route('test', '/test')
             config.add_route('route_with_segments', '/test')
-            request = DummyRequest({'interface': 'test'})
+            request = DummyRequest({
+                'interface': 'test',
+            })
             dynamic = DynamicView(request).dynamic()
 
         assert 'XTest' in dynamic['constants'], dynamic
@@ -321,7 +330,9 @@ class TestDynamicView(TestCase):
             config.add_static_view(name='static', path='/etc/geomapfish/static')
             config.add_route('test', '/test')
             config.add_route('route_with_all', '/test/{key1}/{key2}')
-            request = DummyRequest({'interface': 'test'})
+            request = DummyRequest({
+                'interface': 'test',
+            })
             dynamic = DynamicView(request).dynamic()
 
         assert 'XTest' in dynamic['constants'], dynamic

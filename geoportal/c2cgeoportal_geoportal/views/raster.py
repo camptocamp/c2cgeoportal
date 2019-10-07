@@ -50,7 +50,7 @@ class Raster:
         self.request = request
         self.rasters = self.request.registry.settings["raster"]
 
-        from c2cgeoportal_commons.models.main import InvalidateCacheEvent
+        from c2cgeoportal_commons.models import InvalidateCacheEvent
 
         @zope.event.classhandler.handler(InvalidateCacheEvent)
         def handle(event: InvalidateCacheEvent):  # pylint: disable=unused-variable

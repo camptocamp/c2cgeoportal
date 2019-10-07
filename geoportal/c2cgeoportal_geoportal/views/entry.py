@@ -158,7 +158,7 @@ class Entry:
         self._layergroup_cache = None
         self._themes_cache = None
 
-        from c2cgeoportal_commons.models.main import InvalidateCacheEvent
+        from c2cgeoportal_commons.models import InvalidateCacheEvent
 
         @zope.event.classhandler.handler(InvalidateCacheEvent)
         def handle(event: InvalidateCacheEvent):  # pylint: disable=unused-variable
