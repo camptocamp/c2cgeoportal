@@ -1,35 +1,16 @@
-import os
 from c2cgeoform.routes import register_models, table_pregenerator
 
 
 def includeme(config):
-    config.add_static_view('node_modules_for_insider', 'c2cgeoportal_admin:node_modules')
-    config.add_static_view(
-        'node_modules_for_outsider',
-        '{}:node_modules'.format(config.root_package.__name__))
-    path = None
-    for path_ in [
-        os.path.join(os.path.dirname(__file__), '..', '..', 'admin', 'node_modules'),
-        os.path.join(os.path.dirname(__file__), '..', '..', 'node_modules'),
-        os.path.join(os.path.dirname(__file__), '..', 'admin', 'node_modules'),
-        os.path.join(os.path.dirname(__file__), '..', 'node_modules'),
-        '/usr/lib/node_modules/GeoMapFish-Admin/node_modules/',
-        '/usr/lib/node_modules/',
-    ]:
-        if os.path.exists(path_):
-            path = path_
-            break
-    if path is None:
-        raise Exception("Unable to find the node_module from path '{}'.".format(os.path.dirname(__file__)))
-
+    config.add_static_view('c2cgeoportal_admin_node_modules', 'c2cgeoportal_admin:node_modules')
     config.override_asset(
         to_override='c2cgeoportal_admin:node_modules/',
-        override_with=path
+        override_with='/opt/c2cgeoportal/admin/node_modules'
     )
-    config.override_asset(
-        to_override='{}:node_modules/'.format(config.root_package.__name__),
-        override_with=path
-    )
+    # Because c2cgeoform widgets target {root_package}:node_modules/...
+    asset_spec = '{}:node_modules/'.format(config.root_package.__name__)
+    config.add_static_view('root_package_node_modules', asset_spec)
+    config.override_asset(to_override=asset_spec, override_with='/opt/c2cgeoportal/admin/node_modules')
 
     config.add_static_view('static', 'c2cgeoportal_admin:static', cache_max_age=3600)
 
