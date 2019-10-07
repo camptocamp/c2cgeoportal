@@ -75,7 +75,7 @@ def keygen_function(namespace, function):
     return generate_key
 
 
-def init_region(conf, region=None):
+def init_region(conf, region):
     """
     Initialize the caching module.
     """
@@ -92,7 +92,7 @@ def _configure_region(conf, cache_region):
     cache_region.configure(conf['backend'], **kwargs)
 
 
-def get_region(region=None):
+def get_region(region):
     """
     Return a cache region.
     """
@@ -102,7 +102,11 @@ def get_region(region=None):
 
 
 def invalidate_region(region=None):
-    return get_region(region).invalidate()
+    if region is None:
+        for cache_region in _REGION.values():
+            cache_region.invalidate()
+    else:
+        get_region(region).invalidate()
 
 
 NO_CACHE = 0

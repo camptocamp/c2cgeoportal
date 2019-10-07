@@ -39,8 +39,8 @@ from pyramid.response import Response
 from c2cgeoportal_geoportal.lib.caching import (NO_CACHE, PRIVATE_CACHE, PUBLIC_CACHE, get_region,
                                                 set_common_headers)
 
-log = logging.getLogger(__name__)
-cache_region = get_region()
+LOG = logging.getLogger(__name__)
+CACHE_REGION = get_region('std')
 
 
 class Proxy(object):
@@ -71,7 +71,7 @@ class Proxy(object):
                 parsed_url.path, query_string
             )
 
-        log.info("Send query to URL:\n%s.", url)
+        LOG.info("Send query to URL:\n%s.", url)
 
         if method is None:
             method = self.request.method
@@ -120,7 +120,7 @@ class Proxy(object):
                     "%s",
                 ]
                 args.append(body.decode("utf-8"))
-            log.error("\n".join(errors), *args, exc_info=True)
+            LOG.error("\n".join(errors), *args, exc_info=True)
 
             raise HTTPBadGateway("Error on backend, See logs for detail")
 
@@ -148,13 +148,13 @@ class Proxy(object):
                 "%s",
             ]
             args.append(response.text)
-            log.error("\n".join(errors), *args)
+            LOG.error("\n".join(errors), *args)
 
             raise exception_response(response.status_code)
 
         return response
 
-    @cache_region.cache_on_arguments()
+    @CACHE_REGION.cache_on_arguments()
     def _proxy_cache(self, method, *args, **kwargs):  # pragma: no cover
         # method is only for the cache
         del method

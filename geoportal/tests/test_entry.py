@@ -43,8 +43,11 @@ def setup_module():  # noqa
         'srid': 21781,
     }
     caching.init_region({
-        "backend": "dogpile.cache.null",
-    })
+        'backend': 'dogpile.cache.null',
+    }, 'std')
+    caching.init_region({
+        'backend': 'dogpile.cache.null',
+    }, 'obj')
 
 
 class TestEntryView(TestCase):

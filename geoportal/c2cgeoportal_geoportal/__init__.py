@@ -359,13 +359,14 @@ def includeme(config: pyramid.config.Configurator):
 
     # dogpile.cache configuration
     if 'cache' in settings:
-        caching.init_region(settings['cache'])
-        from c2cgeoportal_commons.models import InvalidateCacheEvent
+        for name, cache_config in settings['cache'].items():
+            caching.init_region(cache_config, name)
+            from c2cgeoportal_commons.models import InvalidateCacheEvent
 
-        @zope.event.classhandler.handler(InvalidateCacheEvent)
-        def handle(event: InvalidateCacheEvent):  # pylint: disable=unused-variable
-            del event
-            caching.invalidate_region()
+            @zope.event.classhandler.handler(InvalidateCacheEvent)
+            def handle(event: InvalidateCacheEvent):  # pylint: disable=unused-variable
+                del event
+                caching.invalidate_region()
 
     # Register a tween to get back the cache buster path.
     if 'cache_path' not in config.get_settings():

@@ -31,8 +31,7 @@
 from c2cgeoportal_commons.models import static
 from c2cgeoportal_geoportal.lib import caching
 
-
-cache_region = caching.get_region()
+CACHE_REGION = caching.get_region('std')
 
 
 def _get_layers_query(user: static.User, what):
@@ -97,7 +96,7 @@ def get_writable_layers(user: static.User, ogc_server_ids):
     return {r.id: r for r in results}
 
 
-@cache_region.cache_on_arguments()
+@CACHE_REGION.cache_on_arguments()
 def get_private_layers(ogc_server_ids):
     from c2cgeoportal_commons.models import DBSession, main
 

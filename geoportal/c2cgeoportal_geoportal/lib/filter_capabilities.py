@@ -29,28 +29,31 @@
 
 
 import copy
-import defusedxml.expatreader
 import logging
-import requests
 import xml.sax.handler
-
 from io import StringIO
-from owslib.wms import WebMapService
-from pyramid.httpexceptions import HTTPBadGateway
 from typing import List  # noqa, pylint: disable=unused-import
 from urllib.parse import urlsplit
 from xml.sax.saxutils import XMLFilterBase, XMLGenerator
 
+import defusedxml.expatreader
+import requests
+from owslib.wms import WebMapService
+from pyramid.httpexceptions import HTTPBadGateway
+
 from c2cgeoportal_commons.models import static
-from c2cgeoportal_geoportal.lib import caching, add_url_params, get_ogc_server_wms_url_ids,\
-    get_ogc_server_wfs_url_ids
-from c2cgeoportal_geoportal.lib.layers import get_protected_layers, get_writable_layers, get_private_layers
+from c2cgeoportal_geoportal.lib import (add_url_params, caching,
+                                        get_ogc_server_wfs_url_ids,
+                                        get_ogc_server_wms_url_ids)
+from c2cgeoportal_geoportal.lib.layers import (get_private_layers,
+                                               get_protected_layers,
+                                               get_writable_layers)
 
-cache_region = caching.get_region()
-log = logging.getLogger(__name__)
+CACHE_REGION = caching.get_region('std')
+LOG = logging.getLogger(__name__)
 
 
-@cache_region.cache_on_arguments()
+@CACHE_REGION.cache_on_arguments()
 def wms_structure(wms_url, host, request):
     url = urlsplit(wms_url)
     wms_url = add_url_params(wms_url, {
@@ -98,14 +101,14 @@ def wms_structure(wms_url, host, request):
         error = "WARNING! an error occurred while trying to " \
             "read the mapfile and recover the themes."
         error = "{0!s}\nurl: {1!s}\nxml:\n{2!s}".format(error, wms_url, response.text)
-        log.exception(error)
+        LOG.exception(error)
         raise HTTPBadGateway(error)
 
     except SyntaxError:  # pragma: no cover
         error = "WARNING! an error occurred while trying to " \
             "read the mapfile and recover the themes."
         error = "{0!s}\nurl: {1!s}\nxml:\n{2!s}".format(error, wms_url, response.text)
-        log.exception(error)
+        LOG.exception(error)
         raise HTTPBadGateway(error)
 
 

@@ -30,19 +30,19 @@
 
 import re
 
-from c2cgeoportal_commons.models import DBSession
-from c2cgeoportal_commons.models.main import FullTextSearch, Interface
 from geoalchemy2.shape import to_shape
 from geojson import Feature, FeatureCollection
 from pyramid.httpexceptions import HTTPBadRequest, HTTPInternalServerError
 from pyramid.view import view_config
 from sqlalchemy import and_, desc, func, or_
 
+from c2cgeoportal_commons.models import DBSession
+from c2cgeoportal_commons.models.main import FullTextSearch, Interface
 from c2cgeoportal_geoportal import locale_negotiator
-from c2cgeoportal_geoportal.lib.caching import NO_CACHE, get_region, set_common_headers
+from c2cgeoportal_geoportal.lib.caching import (NO_CACHE, get_region,
+                                                set_common_headers)
 
-cache_region = get_region()
-
+CACHE_REGION = get_region('std')
 IGNORED_CHARS_RE = re.compile(r"[()&|!:]")
 
 
@@ -55,7 +55,7 @@ class FullTextSearchView:
         self.languages = self.settings.get("languages", {})
 
     @staticmethod
-    @cache_region.cache_on_arguments()
+    @CACHE_REGION.cache_on_arguments()
     def _get_interface_id(interface):
         return DBSession.query(Interface).filter_by(name=interface).one().id
 

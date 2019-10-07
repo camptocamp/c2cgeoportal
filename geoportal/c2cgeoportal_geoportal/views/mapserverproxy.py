@@ -31,19 +31,21 @@
 import logging
 from typing import Any, Dict  # noqa, pylint: disable=unused-import
 
-from c2cgeoportal_commons.models import main, static
 from pyramid.httpexceptions import HTTPUnauthorized
 from pyramid.request import Request
 from pyramid.response import Response
 from pyramid.view import view_config
 
-from c2cgeoportal_geoportal.lib.caching import NO_CACHE, PRIVATE_CACHE, PUBLIC_CACHE, get_region
+from c2cgeoportal_commons.models import main, static
+from c2cgeoportal_geoportal.lib.caching import (NO_CACHE, PRIVATE_CACHE,
+                                                PUBLIC_CACHE, get_region)
 from c2cgeoportal_geoportal.lib.filter_capabilities import filter_capabilities
-from c2cgeoportal_geoportal.lib.functionality import get_mapserver_substitution_params
+from c2cgeoportal_geoportal.lib.functionality import \
+    get_mapserver_substitution_params
 from c2cgeoportal_geoportal.views.ogcproxy import OGCProxy
 
-cache_region = get_region()
-log = logging.getLogger(__name__)
+CACHE_REGION = get_region('std')
+LOG = logging.getLogger(__name__)
 
 
 class MapservProxy(OGCProxy):
@@ -59,7 +61,7 @@ class MapservProxy(OGCProxy):
     def proxy(self) -> Response:
 
         if self.user is None and "authentication_required" in self.request.params:
-            log.debug("proxy() detected authentication_required")
+            LOG.debug("proxy() detected authentication_required")
             raise HTTPUnauthorized(headers={"WWW-Authenticate": 'Basic realm="Access to restricted layers"'})
 
         if self.user is not None:
@@ -81,12 +83,12 @@ class MapservProxy(OGCProxy):
                     # than we need his id.
                     self.params["user_id"] = self.user.id  # pragma: no cover
             else:  # pragma nocover
-                log.warning("The user '%s' has no role", self.user.username)
+                LOG.warning("The user '%s' has no role", self.user.username)
 
         # do not allows direct variable substitution
         for k in list(self.params.keys()):
             if k[:2].capitalize() == "S_":
-                log.warning("Direct substitution not allowed ({0!s}={1!s}).".format(k, self.params[k]))
+                LOG.warning("Direct substitution not allowed ({0!s}={1!s}).".format(k, self.params[k]))
                 del self.params[k]
 
         # add functionalities params

@@ -76,7 +76,10 @@ class TestDynamicView(TestCase):
 
         init_region({
             'backend': 'dogpile.cache.memory',
-        })
+        }, 'std')
+        init_region({
+            'backend': 'dogpile.cache.memory',
+        }, 'obj')
 
     def teardown_method(self, _):
         testing.tearDown()
