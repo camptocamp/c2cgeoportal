@@ -139,7 +139,7 @@ class TestMapserverproxyView(TestCase):
         ogcserver_geoserver.type = OGCSERVER_TYPE_GEOSERVER
         ogcserver_geoserver.auth = OGCSERVER_AUTH_GEOSERVER
 
-        PointTest.__table__.create(bind=DBSession.bind, checkfirst=True)
+        DBSession.query(PointTest).delete()
 
         geom = WKTElement("POINT(599910 199955)", srid=21781)
         p1 = PointTest(geom=geom, name="foo", city="Lausanne", country="Swiss")
@@ -216,10 +216,8 @@ class TestMapserverproxyView(TestCase):
 
     def teardown_method(self, _):
         from c2cgeoportal_commons.models import DBSession
-
         cleanup_db()
-
-        PointTest.__table__.drop(bind=DBSession.bind, checkfirst=True)
+        DBSession.query(PointTest).delete()
 
     @staticmethod
     def _create_dummy_request(username=None):

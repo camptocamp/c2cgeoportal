@@ -1,4 +1,0 @@
-#!/bin/bash -ex
-
-ci/run-dc-logs docker-compose exec $1 coverage run $2 \
-    --source=$3 --module pytest --verbose --color=yes --junitxml=/tmp/$4.xml $5

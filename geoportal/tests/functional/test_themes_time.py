@@ -56,9 +56,9 @@ Base: typing.Any = sqlalchemy.ext.declarative.declarative_base()
 
 class PointTest(Base):
     __tablename__ = "testpointtime"
-    __table_args__ = {"schema": "main"}
+    __table_args__ = {"schema": "geodata"}
     id = Column(Integer, primary_key=True)
-    the_geom = Column(Geometry("POINT", srid=21781))
+    geom = Column(Geometry("POINT", srid=21781))
     name = Column(Unicode)
     time = Column(DateTime)
 
@@ -73,7 +73,7 @@ class TestThemesTimeView(TestCase):
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import Theme, LayerGroup, Interface, LayerWMS, LayerWMTS
 
-        PointTest.__table__.create(bind=DBSession.bind, checkfirst=True)
+        DBSession.query(PointTest).delete()
 
         main = Interface(name="desktop")
         ogc_server = create_default_ogcserver()
@@ -148,7 +148,7 @@ class TestThemesTimeView(TestCase):
         DBSession.query(OGCServer).delete()
 
         transaction.commit()
-        PointTest.__table__.drop(bind=DBSession.bind, checkfirst=True)
+        DBSession.query(PointTest).delete()
 
     @staticmethod
     def _create_request_obj(params=None, **kwargs):

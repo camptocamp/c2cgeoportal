@@ -55,22 +55,33 @@ jobs:
 
       # Tests
       - run: make preparetest
+      - run:
+          command: docker-compose logs --timestamps
+          when: on_fail
       # Similar to: make tests-commons
       - run: >
-          ci/run-tests tests '' /opt/c2cgeoportal/commons/c2cgeoportal_commons
-          commons /opt/c2cgeoportal/commons/tests
+          ci/run-dc-logs docker-compose exec tests coverage run
+          --source=/opt/c2cgeoportal/commons/c2cgeoportal_commons
+          --module pytest --verbose --color=yes --junitxml=/tmp/commons.xml
+          /opt/c2cgeoportal/commons/tests
       # Similar to: make tests-geoportal
       - run: >
-          ci/run-tests tests '--append' /opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal
-          geoportal /opt/c2cgeoportal/geoportal/tests
+          ci/run-dc-logs docker-compose exec tests coverage run --append
+          --source=/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal
+          --module pytest --verbose --color=yes --junitxml=/tmp/geoportal.xml
+          /opt/c2cgeoportal/geoportal/tests
       # Similar to: make tests-admin
       - run: >
-          ci/run-tests tests '--append' /opt/c2cgeoportal/admin/c2cgeoportal_admin
-          admin /opt/c2cgeoportal/admin/tests
+          ci/run-dc-logs docker-compose exec tests coverage run --append
+          --source=/opt/c2cgeoportal/admin/c2cgeoportal_admin
+          --module pytest --verbose --color=yes --junitxml=/tmp/admin.xml
+          /opt/c2cgeoportal/admin/tests
       # Similar to: make tests-qgisserver
       - run: >
-          ci/run-tests qgisserver-tests '' /var/www/plugins/geomapfish_qgisserver
-          qgis /src/tests/functional
+          ci/run-dc-logs docker-compose exec qgisserver-tests coverage run
+          --source=/var/www/plugins/geomapfish_qgisserver
+          --module pytest --verbose --color=yes --junitxml=/tmp/qgis.xml
+          /src/tests/functional
       - run:
           name: Extract tests artifacts
           command: |
