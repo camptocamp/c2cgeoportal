@@ -1,8 +1,8 @@
 import os
 from typing import Dict
-from plaster_pastedeploy import Loader as BaseLoader
 
 from c2c.template.config import config as configuration
+from plaster_pastedeploy import Loader as BaseLoader
 
 
 class Loader(BaseLoader):
@@ -19,7 +19,9 @@ class Loader(BaseLoader):
             "LOG_HOST": "localhost",
             "LOG_PORT": "0",
         }  # type: Dict[str, str]
-        d.update(os.environ)
+        d.update({
+            k: v.replace('%', '%%') for k, v in os.environ.items()
+        })
         if defaults:
             d.update(defaults)
         return super()._get_defaults(d)
