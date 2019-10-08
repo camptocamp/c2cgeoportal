@@ -1,3 +1,5 @@
+##### 2.4.1.38
+* Update the readme [c2cgeoportal#5379](https://github.com/camptocamp/c2cgeoportal/pull/5379)
 ##### 2.4.1.37
 * Allow adding custom checkers [c2cgeoportal#5360](https://github.com/camptocamp/c2cgeoportal/pull/5360)
 * Fix percents in environement variables [c2cgeoportal#5377](https://github.com/camptocamp/c2cgeoportal/pull/5377)
