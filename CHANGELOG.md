@@ -1,3 +1,10 @@
+##### 2.4.1.37
+* Allow adding custom checkers [c2cgeoportal#5360](https://github.com/camptocamp/c2cgeoportal/pull/5360)
+* Fix percents in environement variables [c2cgeoportal#5377](https://github.com/camptocamp/c2cgeoportal/pull/5377)
+* Allow build behind proxy [c2cgeoportal#5362](https://github.com/camptocamp/c2cgeoportal/pull/5362)
+* Fix MapservproxyRoutePredicate with proutes [c2cgeoportal#5361](https://github.com/camptocamp/c2cgeoportal/pull/5361)
+* Remove debug message [c2cgeoportal#5375](https://github.com/camptocamp/c2cgeoportal/pull/5375)
+* Fix reenhable external WMS layer [ngeo#5198](https://github.com/camptocamp/ngeo/pull/5198)
 ##### 2.4.1.36
 * Version log [c2cgeoportal#5348](https://github.com/camptocamp/c2cgeoportal/pull/5348)
 * Ignore unexpected error on Travis [c2cgeoportal#5349](https://github.com/camptocamp/c2cgeoportal/pull/5349)
