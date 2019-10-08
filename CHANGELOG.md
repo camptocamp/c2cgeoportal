@@ -1,3 +1,5 @@
+##### 2.4.1.39
+* Fix percents in environment variables [c2cgeoportal#5377](https://github.com/camptocamp/c2cgeoportal/pull/5377)
 ##### 2.4.1.38
 * Update the readme [c2cgeoportal#5379](https://github.com/camptocamp/c2cgeoportal/pull/5379)
 ##### 2.4.1.37
