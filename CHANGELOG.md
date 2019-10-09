@@ -1,3 +1,7 @@
+##### 2.4.1.40
+* Add QGIS server Docker image in readme [c2cgeoportal#5383](https://github.com/camptocamp/c2cgeoportal/pull/5383)
+* Always rotate the text with the view [ngeo#5208](https://github.com/camptocamp/ngeo/pull/5208)
+* Use the latest valid print scale instead of using '-1' [ngeo#5207](https://github.com/camptocamp/ngeo/pull/5207)
 ##### 2.4.1.39
 * Fix percents in environment variables [c2cgeoportal#5377](https://github.com/camptocamp/c2cgeoportal/pull/5377)
 ##### 2.4.1.38
