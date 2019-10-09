@@ -7,4 +7,7 @@ vars:
   schema_static: main_static
   srid: 21781
   cache:
-    backend: dogpile.cache.memory
+    std:
+      backend: dogpile.cache.memory
+    obj:
+      backend: dogpile.cache.memory

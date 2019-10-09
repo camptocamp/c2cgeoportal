@@ -40,7 +40,7 @@ from pyramid.view import view_config
 
 from c2cgeoportal_geoportal.lib.caching import NO_CACHE, set_common_headers
 
-log = logging.getLogger(__name__)
+LOG = logging.getLogger(__name__)
 
 
 class Raster:
@@ -50,7 +50,7 @@ class Raster:
         self.request = request
         self.rasters = self.request.registry.settings["raster"]
 
-        from c2cgeoportal_commons.models.main import InvalidateCacheEvent
+        from c2cgeoportal_commons.models import InvalidateCacheEvent
 
         @zope.event.classhandler.handler(InvalidateCacheEvent)
         def handle(event: InvalidateCacheEvent):  # pylint: disable=unused-variable
@@ -155,7 +155,7 @@ class Raster:
             ))[0][0]  # pylint: disable=no-member
             result = None if result == layer.get("nodata", dataset.nodata) else result
         else:
-            log.debug(
+            LOG.debug(
                 "Out of index for layer: %s (%s), "
                 "lon/lat: %dx%d, index: %dx%d, shape: %dx%d.",
                 name, layer["file"],

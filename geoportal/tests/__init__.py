@@ -32,7 +32,19 @@
 """
 
 import os
+
 from pyramid.testing import DummyRequest
+
+from c2cgeoportal_geoportal.lib import caching
+
+
+def setup_common():
+    caching.init_region({
+        'backend': 'dogpile.cache.null',
+    }, 'std')
+    caching.init_region({
+        'backend': 'dogpile.cache.null',
+    }, 'obj')
 
 
 def create_dummy_request(additional_settings=None, *args, **kargs):

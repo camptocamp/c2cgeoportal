@@ -47,9 +47,13 @@ class MyRequest(DummyRequest):
 
 class TestCacheBuster(TestCase):
 
-    @classmethod
-    def setup_class(cls):
-        init_region({"backend": "dogpile.cache.memory"})
+    def setup_class(self):
+        init_region({
+            'backend': 'dogpile.cache.memory',
+        }, 'std')
+        init_region({
+            'backend': 'dogpile.cache.memory',
+        }, 'obj')
 
     def test_replace(self):
         from c2cgeoportal_geoportal.lib.cacheversion import CachebusterTween

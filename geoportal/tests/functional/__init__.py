@@ -76,8 +76,11 @@ def cleanup_db():
     c2cgeoportal_geoportal.lib.ogc_server_wfs_url_ids = None
 
     caching.init_region({
-        "backend": "dogpile.cache.null",
-    })
+        'backend': 'dogpile.cache.null',
+    }, 'std')
+    caching.init_region({
+        'backend': 'dogpile.cache.null',
+    }, 'obj')
     caching.invalidate_region()
 
 

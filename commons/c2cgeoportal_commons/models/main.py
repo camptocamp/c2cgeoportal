@@ -40,9 +40,7 @@ from sqlalchemy.schema import Index
 from sqlalchemy.orm import relationship, backref, Session
 from geoalchemy2 import Geometry
 from geoalchemy2.shape import to_shape
-from c2cwsgiutils import broadcast
 
-import zope.event
 try:
     from colander import drop
     from deform.widget import HiddenWidget, SelectWidget, TextAreaWidget
@@ -61,7 +59,7 @@ except ModuleNotFoundError:
     RelationSelect2Widget = GenericClass
 
 from c2c.template.config import config
-from c2cgeoportal_commons.models import Base, _
+from c2cgeoportal_commons.models import Base, _, cache_invalidate_cb
 from c2cgeoportal_commons.models.sqlalchemy import JSONEncodedDict
 
 
@@ -69,19 +67,6 @@ LOG = logging.getLogger(__name__)
 
 _schema = config['schema'] or 'main'  # type: str
 _srid = config['srid'] or 3857  # type: int
-
-
-class InvalidateCacheEvent:
-    pass
-
-
-def cache_invalidate_cb(*args: List[Any]) -> None:
-    _cache_invalidate_cb()
-
-
-@broadcast.decorator()
-def _cache_invalidate_cb() -> None:
-    zope.event.notify(InvalidateCacheEvent())
 
 
 class TsVector(UserDefinedType):

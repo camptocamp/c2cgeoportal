@@ -122,7 +122,12 @@ class GeomapfishAngularExtractor(Extractor):  # pragma: no cover
 
     def __call__(self, filename, options):
 
-        init_region({"backend": "dogpile.cache.memory"})
+        init_region({
+            'backend': 'dogpile.cache.memory'
+        }, 'std')
+        init_region({
+            'backend': 'dogpile.cache.memory'
+        }, 'obj')
 
         int_filename = filename
         if re.match("^" + re.escape("./{}/templates".format(self.config["package"])), filename):
@@ -210,7 +215,12 @@ class GeomapfishConfigExtractor(Extractor):  # pragma: no cover
     extensions = [".yaml", ".tmpl"]
 
     def __call__(self, filename, options):
-        init_region({"backend": "dogpile.cache.memory"})
+        init_region({
+            'backend': 'dogpile.cache.memory'
+        }, 'std')
+        init_region({
+            'backend': 'dogpile.cache.memory'
+        }, 'obj')
 
         with open(filename) as config_file:
             config = yaml.load(config_file, Loader=yaml.BaseLoader)  # nosec

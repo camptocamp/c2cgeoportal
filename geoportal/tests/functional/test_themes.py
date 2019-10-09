@@ -376,19 +376,13 @@ class TestThemesView(TestCase):
         entry = self._create_entry_obj()
 
         themes = entry.themes()
+        themes["ogcServers"]["__test_ogc_server"]["attributes"] = {}
         themes["ogcServers"]["__test_ogc_server_chtopo"]["attributes"] = {}
         self.assertEqual(self._get_filtered_errors(themes), set())
         self.assertEqual(
             themes["ogcServers"], {
                 "__test_ogc_server": {
-                    "attributes": {
-                        '__test_layer_internal_wms': {
-                            'msGeometry': {
-                                'namespace': 'http://www.opengis.net/gml',
-                                'type': 'GeometryPropertyType'
-                            }
-                        }
-                    },
+                    "attributes": {},
                     "credential": True,
                     "imageType": "image/png",
                     "isSingleTile": False,

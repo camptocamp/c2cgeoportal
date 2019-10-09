@@ -36,7 +36,7 @@ from c2cwsgiutils.auth import auth_view
 from pympler import asizeof, muppy
 from pyramid.view import view_config
 
-from c2cgeoportal_geoportal.views import entry, raster
+from c2cgeoportal_geoportal.views import raster
 
 LOG = logging.getLogger(__name__)
 
@@ -53,16 +53,8 @@ def memory(request):
 
 @broadcast.decorator(expect_answers=True, timeout=110)
 def _memory(with_others: bool, with_all: bool, with_repr: bool) -> Dict[str, Any]:
-    wms_capabilities_cache = entry.Entry.server_wms_capabilities
-    wfs_feature_type_cache = entry.Entry.server_wfs_feature_type
     raster_data = raster.Raster.data
     result = {
-        "parsed_wms_capabilities_cache_by_ogcserver_id": {
-            id: _get_size(wms_capabilities_cache[id]) / 1024 / 1024 for id in wms_capabilities_cache
-        },
-        "parsed_wfs_feature_type_cache_by_ogcserver_id": {
-            id: _get_size(wfs_feature_type_cache[id]) / 1024 / 1024 for id in wfs_feature_type_cache
-        },
         "raster_data": {
             id: _get_size(raster_data[id]) / 1024 / 1024 for id in raster_data
         },

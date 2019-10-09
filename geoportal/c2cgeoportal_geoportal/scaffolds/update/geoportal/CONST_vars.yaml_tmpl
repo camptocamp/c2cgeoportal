@@ -207,14 +207,17 @@ vars:
   #   arguments:
   #   url: 127.0.0.1:11211
   cache:
-    backend: dogpile.cache.redis
-    arguments:
-      host: '{REDIS_HOST}'
-      port: '{REDIS_PORT}'
-      db: '{REDIS_DB}'
-      lock_timeout: 120  # Two minutes
-      redis_expiration_time: 86400  # One day
-      distributed_lock: True
+    std:
+      backend: dogpile.cache.redis
+      arguments:
+        host: '{REDIS_HOST}'
+        port: '{REDIS_PORT}'
+        db: '{REDIS_DB}'
+        lock_timeout: 120  # Two minutes
+        redis_expiration_time: 86400  # One day
+        distributed_lock: True
+    obj:
+      backend: dogpile.cache.memory
 
   admin_interface:
     # Default values for the admin interface's maps.

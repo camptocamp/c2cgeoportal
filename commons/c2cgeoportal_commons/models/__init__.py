@@ -28,11 +28,13 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from typing import Dict, Union  # noqa
+from typing import Any, Dict, List, Optional, Union  # noqa
 
-import sqlalchemy.orm  # noqa
 import sqlalchemy.ext.declarative
 import sqlalchemy.ext.declarative.api
+import sqlalchemy.orm  # noqa
+import zope.event
+from c2cwsgiutils import broadcast
 
 try:
     from pyramid.i18n import TranslationStringFactory
@@ -45,3 +47,16 @@ except ModuleNotFoundError:
 DBSession = None  # type: sqlalchemy.orm.Session
 Base = sqlalchemy.ext.declarative.declarative_base()  # type: sqlalchemy.ext.declarative.api.Base
 DBSessions = {}  # type: Dict[str, sqlalchemy.orm.Session]
+
+
+class InvalidateCacheEvent:
+    pass
+
+
+def cache_invalidate_cb(*args: List[Any]) -> None:
+    _cache_invalidate_cb()
+
+
+@broadcast.decorator()
+def _cache_invalidate_cb() -> None:
+    zope.event.notify(InvalidateCacheEvent())

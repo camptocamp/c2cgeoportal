@@ -39,8 +39,8 @@ from c2cgeoportal_geoportal.lib.caching import PRIVATE_CACHE, get_region
 from c2cgeoportal_geoportal.lib.functionality import get_functionality
 from c2cgeoportal_geoportal.views.proxy import Proxy
 
-log = logging.getLogger(__name__)
-cache_region = get_region()
+LOG = logging.getLogger(__name__)
+CACHE_REGION = get_region('std')
 
 
 class PrintProxy(Proxy):  # pragma: no cover
@@ -71,7 +71,7 @@ class PrintProxy(Proxy):  # pragma: no cover
             resp, content, PRIVATE_CACHE, "print",
         )
 
-    @cache_region.cache_on_arguments()
+    @CACHE_REGION.cache_on_arguments()
     def _capabilities(self, templates, query_string, method):
         del query_string  # Just for caching
         del method  # Just for caching
@@ -86,9 +86,9 @@ class PrintProxy(Proxy):  # pragma: no cover
                     capabilities = response.json()
                 except json.decoder.JSONDecodeError as e:
                     # log and raise
-                    log.error("Unable to parse capabilities.")
-                    log.exception(e)
-                    log.error(response.text)
+                    LOG.error("Unable to parse capabilities.")
+                    LOG.exception(e)
+                    LOG.error(response.text)
                     raise HTTPBadGateway(response.text)
 
                 capabilities["layouts"] = list(

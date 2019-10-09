@@ -35,10 +35,10 @@ import pyramid.registry
 
 from c2cgeoportal_geoportal.lib.caching import get_region
 
-cache_region = get_region()
+CACHE_REGION = get_region('std')
 
 
-@cache_region.cache_on_arguments()
+@CACHE_REGION.cache_on_arguments()
 def get_cache_version():
     """Return a cache version that is regenerate after each cache invalidation"""
     return uuid.uuid4().hex
@@ -63,18 +63,3 @@ class CachebusterTween:
             request.path_info = "/" .join(path)
 
         return self.handler(request)
-
-
-class VersionCache:
-    _value = None
-    _cache = None
-
-    def uptodate(self):
-        return self._cache == get_cache_version()
-
-    def get(self):
-        return self._value if self.uptodate() else None
-
-    def set(self, value):
-        self._value = value
-        self._cache = get_cache_version()

@@ -40,12 +40,13 @@ from math import sqrt
 from random import Random
 from typing import Dict, Set, Tuple  # noqa # pylint: disable=unused-import
 
+import pyotp
 import requests
-import zope.event.classhandler
 from c2cwsgiutils.auth import auth_view
 from defusedxml import lxml
 from owslib.wms import WebMapService
-from pyramid.httpexceptions import HTTPBadRequest, HTTPForbidden, HTTPFound, HTTPUnauthorized
+from pyramid.httpexceptions import (HTTPBadRequest, HTTPForbidden, HTTPFound,
+                                    HTTPUnauthorized)
 from pyramid.i18n import TranslationStringFactory
 from pyramid.response import Response
 from pyramid.security import forget, remember
@@ -53,22 +54,26 @@ from pyramid.view import view_config
 from sqlalchemy.orm import subqueryload
 from sqlalchemy.orm.exc import NoResultFound
 
-import pyotp
 from c2cgeoportal_commons import models
 from c2cgeoportal_commons.lib.email_ import send_email_config
 from c2cgeoportal_commons.models import main, static
 from c2cgeoportal_geoportal import is_valid_referer
-from c2cgeoportal_geoportal.lib import add_url_params, get_setting, get_typed, get_types_map, get_url2
-from c2cgeoportal_geoportal.lib.caching import (NO_CACHE, PRIVATE_CACHE, PUBLIC_CACHE, get_region,
+from c2cgeoportal_geoportal.lib import (add_url_params, get_setting, get_typed,
+                                        get_types_map, get_url2)
+from c2cgeoportal_geoportal.lib.caching import (NO_CACHE, PRIVATE_CACHE,
+                                                PUBLIC_CACHE, get_region,
                                                 set_common_headers)
-from c2cgeoportal_geoportal.lib.functionality import get_functionality, get_mapserver_substitution_params
+from c2cgeoportal_geoportal.lib.functionality import (
+    get_functionality, get_mapserver_substitution_params)
 from c2cgeoportal_geoportal.lib.layers import get_protected_layers_query
-from c2cgeoportal_geoportal.lib.wmstparsing import TimeInformation, parse_extent
+from c2cgeoportal_geoportal.lib.wmstparsing import (TimeInformation,
+                                                    parse_extent)
 from c2cgeoportal_geoportal.views.layers import get_layer_metadatas
 
 _ = TranslationStringFactory("c2cgeoportal")
 LOG = logging.getLogger(__name__)
-CACHE_REGION = get_region()
+CACHE_REGION = get_region('std')
+CACHE_REGION_OBJ = get_region('obj')
 
 
 @CACHE_REGION.cache_on_arguments()
@@ -76,6 +81,20 @@ def get_http_cached(http_options, url, headers):
     response = requests.get(url, headers=headers, timeout=300, **http_options)
     LOG.info("Get url '%s' in %.1fs.", url, response.elapsed.total_seconds())
     return response
+
+
+@CACHE_REGION_OBJ.cache_on_arguments()
+def _build_web_map_service(no_cache, ogc_server_id):
+    # The content is named no_cache to don't be concidered in the cache key
+    del ogc_server_id  # Just for cache
+    return WebMapService(None, xml=no_cache)
+
+
+@CACHE_REGION_OBJ.cache_on_arguments()
+def _read_xml(no_cache, cache_key):
+    # The content is named no_cache to don't be concidered in the cache key
+    del cache_key  # Just for cache
+    return lxml.XML(no_cache.encode('utf-8'))
 
 
 class DimensionInformation:
@@ -134,8 +153,6 @@ class DimensionInformation:
 class Entry:
 
     WFS_NS = "http://www.opengis.net/wfs"
-    server_wms_capabilities = {}  # type: Dict[int, Tuple[WebMapService, Set[str]]]
-    server_wfs_feature_type = {}  # type: Dict[int, xml.dom.minidom.Document]
 
     def __init__(self, request):
         self.request = request
@@ -157,14 +174,6 @@ class Entry:
         self._layerswmts_cache = None
         self._layergroup_cache = None
         self._themes_cache = None
-
-        from c2cgeoportal_commons.models.main import InvalidateCacheEvent
-
-        @zope.event.classhandler.handler(InvalidateCacheEvent)
-        def handle(event: InvalidateCacheEvent):  # pylint: disable=unused-variable
-            del event
-            Entry.server_wms_capabilities = {}
-            Entry.server_wfs_feature_type = {}
 
     @view_config(route_name="testi18n", renderer="testi18n.html")
     def testi18n(self):  # pragma: no cover
@@ -200,9 +209,6 @@ class Entry:
         return metadatas
 
     async def _wms_getcap(self, ogc_server):
-        if ogc_server.id in self.server_wms_capabilities:
-            return self.server_wms_capabilities[ogc_server.id]
-
         url, content, errors = await self._wms_getcap_cached(
             ogc_server, self._get_capabilities_cache_role_key(ogc_server)
         )
@@ -212,14 +218,12 @@ class Entry:
 
         wms = None
         try:
-            wms = WebMapService(None, xml=content)
+            wms = _build_web_map_service(content, ogc_server.id)
         except Exception:  # pragma: no cover
             error = "WARNING! an error occurred while trying to read the mapfile and recover the themes." \
                 "\nURL: {}\n{}".format(url, content)
             errors.add(error)
             LOG.error(error, exc_info=True)
-
-        self.server_wms_capabilities[ogc_server.id] = (wms, errors)
 
         return wms, errors
 
@@ -881,13 +885,12 @@ class Entry:
     async def _wms_get_features_type(self, ogc_server_id, wfs_url):
         errors = set()
 
-        if ogc_server_id in self.server_wfs_feature_type:
-            return self.server_wfs_feature_type[ogc_server_id], errors
-
         params = {
             "SERVICE": "WFS",
             "VERSION": "1.0.0",
             "REQUEST": "DescribeFeatureType",
+            "ROLE_ID": "0",
+            "USER_ID": "0",
         }
         wfs_url = add_url_params(wfs_url, params)
 
@@ -913,8 +916,7 @@ class Entry:
             return None, errors
 
         try:
-            self.server_wfs_feature_type[ogc_server_id] = lxml.XML(response.text.encode('utf-8'))
-            return self.server_wfs_feature_type[ogc_server_id], errors
+            return _read_xml(response.text, ogc_server_id), errors
         except Exception as e:  # pragma: no cover
             errors.add("Error '{}' on reading DescribeFeatureType from URL {}:\n{}".format(
                 str(e), wfs_url, response.text

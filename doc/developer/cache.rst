@@ -87,3 +87,34 @@ Private cache
  * WFS/GetCapabilities
  * WFS/DescribeFeaturesType
  * print/capabilities.json
+
+
+Internal cache
+--------------
+
+We have two different internal cache types, one (``std``) for the serializable objets (Like JSON) and
+one (``obj``) for the non serializable objects.
+
+The ``std`` cache is stored on redis, and the ``obj`` cache is stored in memory.
+
+Example usage:
+
+.. code:: python
+
+   from c2cgeoportal_geoportal.caching import get_region
+   CACHE_REGION = get_region('std')
+
+   @CACHE_REGION.cache_on_arguments()
+   def method_to_be_cached():
+     return {
+       'key': 'value'
+     }
+
+.. code:: python
+
+   from c2cgeoportal_geoportal.caching import get_region
+   CACHE_REGION_OBJ = get_region('obj')
+
+   @CACHE_REGION_OBJ.cache_on_arguments()
+   def method_to_be_cached():
+     return AnyObject()

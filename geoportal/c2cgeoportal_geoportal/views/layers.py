@@ -38,8 +38,9 @@ from geoalchemy2.shape import from_shape, to_shape
 from geojson.feature import Feature, FeatureCollection
 from papyrus.protocol import Protocol, create_filter
 from papyrus.xsd import XSDGenerator
-from pyramid.httpexceptions import (HTTPBadRequest, HTTPForbidden,
-                                    HTTPInternalServerError, HTTPNotFound, HTTPException)
+from pyramid.httpexceptions import (HTTPBadRequest, HTTPException,
+                                    HTTPForbidden, HTTPInternalServerError,
+                                    HTTPNotFound)
 from pyramid.view import view_config
 from shapely.geometry import asShape
 from shapely.geos import TopologicalError
@@ -59,9 +60,8 @@ from c2cgeoportal_geoportal.lib.caching import (NO_CACHE, PRIVATE_CACHE,
 from c2cgeoportal_geoportal.lib.dbreflection import (_AssociationProxy,
                                                      get_class, get_table)
 
-log = logging.getLogger(__name__)
-
-cache_region = get_region()
+LOG = logging.getLogger(__name__)
+CACHE_REGION = get_region('std')
 
 
 class Layers:
@@ -284,7 +284,7 @@ class Layers:
             return {"error_type": "validation_error",
                     "message": str(e)}
         except exc.IntegrityError as e:
-            log.error(str(e))
+            LOG.error(str(e))
             self.request.response.status_int = 400
             return {"error_type": "integrity_error",
                     "message": str(e.orig.diag.message_primary)}
@@ -342,7 +342,7 @@ class Layers:
             return {"error_type": "validation_error",
                     "message": str(e)}
         except exc.IntegrityError as e:
-            log.error(str(e))
+            LOG.error(str(e))
             self.request.response.status_int = 400
             return {"error_type": "integrity_error",
                     "message": str(e.orig.diag.message_primary)}
@@ -437,7 +437,7 @@ class Layers:
             layername, fieldname
         )
 
-    @cache_region.cache_on_arguments()
+    @CACHE_REGION.cache_on_arguments()
     def _enumerate_attribute_values(self, layername, fieldname):
         if layername not in self.layers_enum_config:  # pragma: no cover
             raise HTTPBadRequest("Unknown layer: {0!s}".format(layername))
@@ -515,7 +515,7 @@ def get_layer_class(layer, with_last_update_columns=False):
     for attribute_name in attributes_order or []:
         if attribute_name not in column_properties:
             table = mapper.mapped_table
-            log.warning(
+            LOG.warning(
                 'Attribute "{}" does not exists in table "{}".\n'
                 'Please correct metadata "editingAttributesOrder" in layer "{}" (id={}).\n'
                 'Available attributes are: {}.'.format(

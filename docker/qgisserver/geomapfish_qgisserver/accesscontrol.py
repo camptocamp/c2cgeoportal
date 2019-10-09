@@ -146,7 +146,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         self.srid = srid
 
         try:
-            from c2cgeoportal_commons.models.main import InvalidateCacheEvent
+            from c2cgeoportal_commons.models import InvalidateCacheEvent
 
             @zope.event.classhandler.handler(InvalidateCacheEvent)
             def handle(event: InvalidateCacheEvent):
