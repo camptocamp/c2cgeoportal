@@ -32,6 +32,7 @@ then
 fi
 
 DEPLOY_PIP=FALSE
+MAJOR_VERSION_TAG=${MAJOR_VERSION}
 # Get the version to be published
 if [ "${TAG}" != "" ]
 then
@@ -39,6 +40,7 @@ then
 elif [ "${CIRCLE_BRANCH}" != "${MAIN_BRANCH}" ]
 then
     VERSION=${CIRCLE_BRANCH//\//_}
+    MAJOR_VERSION_TAG=${VERSION}
     DEPLOY_PIP=FALSE
 else
     VERSION=${MAJOR_VERSION}
@@ -58,8 +60,8 @@ done
 # Publish the GeoMapFish run and default geoportal images
 for IMAGE in geomapfish geomapfish-geoportal
 do
-    docker tag camptocamp/${IMAGE} camptocamp/${IMAGE}:${MAJOR_VERSION}
-    docker push camptocamp/${IMAGE}:${MAJOR_VERSION}
+    docker tag camptocamp/${IMAGE} camptocamp/${IMAGE}:${MAJOR_VERSION_TAG}
+    docker push camptocamp/${IMAGE}:${MAJOR_VERSION_TAG}
 done
 
 # Publish the GeoMapFish QGIS server images

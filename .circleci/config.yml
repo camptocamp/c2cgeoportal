@@ -18,8 +18,9 @@ jobs:
       - run: python -m pip --version
 
       - checkout
-      - setup_remote_docker:
-          docker_layer_caching: true
+      - setup_remote_docker
+      # - setup_remote_docker:
+      #     docker_layer_caching: true
 
       # Global simple lint
       - run: git --no-pager diff --check a6eacf93706d94606fb3c68a671f8254aea48e3b
@@ -108,6 +109,8 @@ jobs:
   test-app-upgrade:
     environment: *environment
     machine: true
+    # machine:
+    #   docker_layer_caching: true
     steps:
       - run: &python
           name: Install Python 3.7
@@ -135,6 +138,8 @@ jobs:
   publish-nonmain:
     environment: *environment
     machine: true
+    # machine:
+    #   docker_layer_caching: true
     steps:
       - run: *python
       - checkout
@@ -170,6 +175,8 @@ jobs:
   publish:
     environment: *environment
     machine: true
+    # machine:
+    #   docker_layer_caching: true
     steps:
       - run: *python
       - checkout
