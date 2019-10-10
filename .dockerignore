@@ -4,9 +4,14 @@
 !requirements*.txt
 !commons
 !geoportal
-!admin
+!admin/c2cgeoportal_admin
+!admin/tests
+!admin/package.json
+!admin/README.md
+!admin/requirements.txt
+!admin/setup.cfg
+!admin/setup.py
 !scripts/clone_schema.sql
-admin/Makefile
 !vars.yaml
 !.tx
 !.gitattributes

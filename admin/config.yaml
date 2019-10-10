@@ -1,0 +1,119 @@
+---
+
+# Used for development: please do not remove this file
+
+vars:
+  schema: main
+  schema_static: main_static
+  srid: 21781
+
+  available_locale_names:
+    - en
+    - fr
+    - de
+    - it
+
+  admin_interface:
+
+    map_base_layer: "new ol.layer.Tile({ source: new ol.source.OSM() })"
+    map_x: 740000
+    map_y: 5860000
+    map_zoom: 10
+    map_fit_max_zoom: 14
+
+    layer_tree_max_nodes: 1000
+
+    available_metadata:
+      # Layers group
+      - name: isExpanded
+        type: boolean
+      # Layer
+      - name: copyTo  # V1
+      - name: copyable
+        type: boolean
+      - name: legend
+        type: boolean
+      - name: isLegendExpanded
+        type: boolean
+      - name: legendRule
+      - name: legendImage
+        type: url
+      - name: iconUrl
+        type: url
+      - name: metadataUrl
+        type: url
+      - name: disclaimer
+      - name: isChecked
+        type: boolean
+      - name: identifierAttributeField
+      - name: maxResolution
+        type: float
+      - name: minResolution
+        type: float
+      - name: opacity
+        type: float
+      - name: thumbnail
+        type: url
+      - name: timeAttribute
+      - name: lastUpdateDateColumn
+      - name: lastUpdateUserColumn
+      - name: snappingConfig
+        type: json
+      - name: geometryValidation  # V1
+        type: boolean
+      - name: excludeProperties  # not yet used
+      # WMS
+      - name: directedFilterAttributes
+        type: list
+      - name: enumeratedAttributes
+        type: list
+      # WMTS layers
+      - name: ogcServer
+      - name: wmsLayers
+      - name: queryLayers
+      - name: printLayers
+
+      # For dev /tests purpose
+      - name: _string
+        type: string
+      - name: _liste
+        type: liste
+      - name: _boolean
+        type: boolean
+      - name: _int
+        type: int
+      - name: _float
+        type: float
+      - name: _url
+        type: url
+      - name: _json
+        type: json
+      - name: _unknown
+        type: unknown
+      - name: _color
+        type: regex
+        regex: "^#([A-Fa-f0-9]{{6}}|[A-Fa-f0-9]{{3}})$"
+        error_message: "Expecting hex format for color, e.g. #007DCD"
+
+  smtp:
+    # Used to send email from various feature
+    host: psemail.epfl.ch
+
+  welcome_email:
+    # Used to send a welcome email for new user
+    email_from: info@camptocamp.com
+    email_subject: Welcome to GeoMapFish demo
+    email_body: |
+      Hello {user},
+
+      You have a new account on GeoMapFish demo: https://geomapfish-demo.camptocamp.com/2.3
+      Your user name is: {user}
+      Your password is: {password}
+
+      Sincerely yours
+      The GeoMapFish team
+
+environment: []
+no_interpreted:
+  - admin_interface.map_base_layer
+  - welcome_email.email_body

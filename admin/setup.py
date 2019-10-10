@@ -40,9 +40,6 @@ with open(os.path.join(HERE, 'README.md')) as f:
 with open(os.path.join(HERE, 'requirements.txt')) as f:
     install_requires = f.read().splitlines()
 
-with open(os.path.join(HERE, 'requirements-dev.txt')) as f:
-    tests_require = f.read().splitlines()
-
 setup(
     name='c2cgeoportal_admin',
     version=VERSION,
@@ -65,9 +62,6 @@ setup(
     package_data={'c2cgeoportal_admin': ['py.typed']},
     include_package_data=True,
     zip_safe=False,
-    extras_require={
-        'testing': tests_require,
-    },
     install_requires=install_requires,
     entry_points={
         'paste.app_factory': [

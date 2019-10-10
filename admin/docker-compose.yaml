@@ -1,0 +1,28 @@
+---
+
+# Used for development: please do not remove this file
+
+version: '2'
+
+services:
+  db:
+    image: camptocamp/geomapfish-test-db
+    environment:
+      - POSTGRES_USER=www-data
+      - POSTGRES_PASSWORD=www-data
+      - POSTGRES_DB=geomapfish
+
+  admin:
+    image: camptocamp/c2cgeoportal_admin:latest
+    environment:
+      - PGHOST=db
+      - PGPORT=5432
+      - PGUSER=www-data
+      - PGPASSWORD=www-data
+      - PGDATABASE=geomapfish
+    volumes:
+      - ${PWD}/development.ini:/app/development.ini
+      - ${PWD}/c2cgeoportal_admin:/app/c2cgeoportal_admin
+      - ${PWD}/../commons/c2cgeoportal_commons:/opt/commons/c2cgeoportal_commons
+    ports:
+      - 8888:8080
