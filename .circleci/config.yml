@@ -106,6 +106,41 @@ jobs:
       - store_test_results:
           path: test-reports
 
+      - run: &notify
+          name: Notify
+          when: on_fail
+          command: |
+            if [ "${CIRCLE_BRANCH}" == ${MAIN_BRANCH} ]
+            then
+            sudo killall -9 apt-get || true
+            sudo apt-get update
+            sudo apt-get install msmtp-mta
+            cat \<< EOF > /tmp/msmtprc
+            defaults
+            tls on
+            tls_certcheck off
+            syslog on
+            account default
+            host email-smtp.eu-west-1.amazonaws.com
+            port 587
+            auth on
+            user ${SMTP_USERNAME}
+            password ${SMTP_PASSWORD}
+            from ci@camptocamp.com
+            EOF
+            chmod 600 /tmp/msmtprc
+            cat \<< EOF > /tmp/msg
+            Subject: CircleCI build failed on ${CIRCLE_PROJECT_REPONAME}
+
+            The build failed on:
+            project: ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}
+            Branch: ${CIRCLE_BRANCH}
+            Job: ${CIRCLE_JOB}
+            ${CIRCLE_BUILD_URL}
+            EOF
+            sendmail --file=/tmp/msmtprc stephane.brunner@camptocamp.com < /tmp/msg
+            fi
+
   test-app-upgrade:
     environment: *environment
     machine: true
@@ -134,6 +169,7 @@ jobs:
       - run: ci/test-upgrade 240 ${HOME}/workspace
       - run: ci/test-upgrade 25 ${HOME}/workspace
       - run: ci/test-upgrade cleanup ${HOME}/workspace
+      - run: *notify
 
   publish-nonmain:
     environment: *environment
@@ -171,6 +207,7 @@ jobs:
             docker/qgisserver
             ci/create-new-project ${HOME}/workspace geomapfish
             ci/publish
+      - run: *notify
 
   publish:
     environment: *environment
@@ -201,6 +238,7 @@ jobs:
           name: Publish documentation to GitHub.io
           command: |
             ci/publish-documentation
+      - run: *notify
 
 workflows:
   version: 2
