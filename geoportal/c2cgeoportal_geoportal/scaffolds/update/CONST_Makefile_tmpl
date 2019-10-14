@@ -652,7 +652,8 @@ $(APP_OUTPUT_DIR)/images/: /usr/lib/node_modules/jquery-ui/themes/base/images
 			$(LESS_FILES) \
 			${CSS_FILES} \
 			$(NGEO_FONTS) \
-			$(APP_OUTPUT_DIR)/images/
+			$(APP_OUTPUT_DIR)/images/ \
+			/build/npm-install.timestamp
 	$(PRERULE_CMD)
 	rm --force $(APP_OUTPUT_DIR)/$*.*
 	(cd geoportal; INTERFACE=$* webpack $(WEBPACK_ARGS))
@@ -664,6 +665,11 @@ else
 	ls -1 $(APP_OUTPUT_DIR)/$*.*.css|while read file; do mv $${file} $${file}.tmpl; done
 endif
 endif
+	touch $@
+
+/build/npm-install.timestamp: geoportal/package.json
+	cp geoportal/package.json /build
+	(cd /build; HOME=/tmp npm install)
 	touch $@
 
 /build/eslint.timestamp: $(APP_JS_FILES)
