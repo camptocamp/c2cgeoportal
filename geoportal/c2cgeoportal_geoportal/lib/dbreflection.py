@@ -30,17 +30,16 @@ import threading
 import warnings
 from typing import Dict, Tuple  # noqa, pylint: disable=unused-import
 
-from sqlalchemy import Table, MetaData, Column, Integer
-from sqlalchemy.orm import relationship
-from sqlalchemy.orm.util import class_mapper
+from papyrus.geo_interface import GeoInterface
+from sqlalchemy import Column, Integer, MetaData, Table
 from sqlalchemy.exc import SAWarning
 from sqlalchemy.ext.declarative.api import DeclarativeMeta  # noqa, pylint: disable=unused-import
+from sqlalchemy.orm import relationship
+from sqlalchemy.orm.util import class_mapper
 
-from papyrus.geo_interface import GeoInterface
+from c2cgeoportal_geoportal.lib.caching import get_region
 
-
-_class_cache = {}  # type: Dict[Tuple[str, str, str], DeclarativeMeta]
-
+CACHE_REGION_OBJ = get_region('obj')
 SQL_GEOMETRY_COLUMNS = """
     SELECT srid, type
     FROM geometry_columns
@@ -49,15 +48,6 @@ SQL_GEOMETRY_COLUMNS = """
       f_table_name = :table_name AND
       f_geometry_column = :geometry_column
     """
-
-
-def init():
-    """
-    Initialize the db reflection module. Give the declarative base
-    class an engine, required for the reflection.
-    """
-    global _class_cache
-    _class_cache.clear()
 
 
 class _AssociationProxy(object):
@@ -138,7 +128,8 @@ def get_table(tablename, schema=None, session=None, primary_key=None):
     return table
 
 
-def get_class(tablename, session=None, exclude_properties=None, primary_key=None, attributes_order=None,
+@CACHE_REGION_OBJ.cache_on_arguments()
+def get_class(tablename, exclude_properties=None, primary_key=None, attributes_order=None,
               readonly_attributes=None):
     """
     Get the SQLAlchemy mapped class for "tablename". If no class exists
@@ -149,19 +140,8 @@ def get_class(tablename, session=None, exclude_properties=None, primary_key=None
     """
 
     tablename, schema = _get_schema(tablename)
-    cache_key = (
-        schema,
-        tablename,
-        tuple(exclude_properties or ()),
-        primary_key,
-        tuple(attributes_order or ()),
-        tuple(readonly_attributes or ()),
-    )
 
-    if cache_key in _class_cache:
-        return _class_cache[cache_key]
-
-    table = get_table(tablename, schema, session, primary_key=primary_key)
+    table = get_table(tablename, schema, None, primary_key=primary_key)
 
     # create the mapped class
     cls = _create_class(
@@ -170,9 +150,6 @@ def get_class(tablename, session=None, exclude_properties=None, primary_key=None
         attributes_order=attributes_order,
         readonly_attributes=readonly_attributes,
     )
-
-    # add class to cache
-    _class_cache[cache_key] = cls
 
     return cls
 
