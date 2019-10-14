@@ -30,10 +30,11 @@
 
 import inspect
 import logging
-from typing import Dict, Any  # noqa
+from typing import Any, Dict  # noqa
 
-from dogpile.cache.util import compat
 from dogpile.cache.region import make_region
+from dogpile.cache.util import compat
+from sqlalchemy.orm.util import identity_key
 
 LOG = logging.getLogger(__name__)
 _REGION = {}  # type: Dict[str, Any]
@@ -43,7 +44,7 @@ def map_dbobject(item):
     # here to avoid import loop
     from c2cgeoportal_commons.models import Base
 
-    return item.id if isinstance(item, Base) and hasattr(item, "id") else item
+    return identity_key(item) if isinstance(item, Base) else item
 
 
 def keygen_function(namespace, function):
@@ -57,9 +58,9 @@ def keygen_function(namespace, function):
     """
 
     if namespace is None:
-        namespace = "{}:{}".format(function.__module__, function.__name__)
+        namespace = (function.__module__, function.__name__)
     else:  # pragma: no cover
-        namespace = "{}:{}|{}".format(function.__module__, function.__name__, namespace)
+        namespace = (function.__module__, function.__name__, namespace)
 
     args = inspect.getfullargspec(function)
     ignore_first_argument = args[0] and args[0][0] in ('self', 'cls', 'request', 'no_cache')
@@ -71,7 +72,7 @@ def keygen_function(namespace, function):
         if ignore_first_argument:
             args = args[1:]
         parts.extend(map(compat.text_type, map(map_dbobject, args)))
-        return "|".join(parts)
+        return hash(tuple(parts))
     return generate_key
 
 
