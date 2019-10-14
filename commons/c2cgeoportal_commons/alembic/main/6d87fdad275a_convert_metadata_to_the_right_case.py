@@ -51,10 +51,12 @@ def upgrade():
         "UPDATE ONLY {schema}.metadata SET name = 'copyTo' where name = 'copy_to'"
         .format(schema=schema)
     )
+    # fmt: off
     op.execute(
         "UPDATE ONLY {schema}.metadata SET name = 'geometryValidation' where name = 'geometry_validation'"
         .format(schema=schema)
     )
+    # fmt: on
 
 
 def downgrade():
@@ -64,7 +66,9 @@ def downgrade():
         "UPDATE ONLY {schema}.metadata SET name = 'copy_to' where name = 'copyTo'"
         .format(schema=schema)
     )
+    # fmt: off
     op.execute(
         "UPDATE ONLY {schema}.metadata SET name = 'geometry_validation' where name = 'geometryValidation'"
         .format(schema=schema)
     )
+    # fmt: on

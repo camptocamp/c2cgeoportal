@@ -141,7 +141,9 @@ def get_mapserver_substitution_params(request):
             index = s.find("=")
             if index > 0:
                 attribute = "s_" + s[:index]
+                # fmt: off
                 value = s[index + 1:]
+                # fmt: on
                 if attribute in params:
                     params[attribute] += "," + value
                 else:

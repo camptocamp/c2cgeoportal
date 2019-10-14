@@ -191,7 +191,9 @@ def _add_association_proxy(cls, col):
     child_cls = get_class(child_tablename)
 
     try:
+        # fmt: off
         proxy = col.name[0:col.name.rindex("_id")]
+        # fmt: on
     except ValueError:  # pragma: no cover
         proxy = col.name + "_"
 

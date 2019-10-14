@@ -157,7 +157,9 @@ def _match_url_start(reference, value):
     Checks that the val URL starts like the ref URL.
     """
     reference_parts = reference.rstrip("/").split("/")
+    # fmt: off
     value_parts = value[0:len(reference_parts)]
+    # fmt: on
     return reference_parts == value_parts
 
 

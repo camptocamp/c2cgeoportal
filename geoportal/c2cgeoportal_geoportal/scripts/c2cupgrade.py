@@ -369,19 +369,23 @@ class C2cUpgradeTool:
                             if no_touch:
                                 managed = True
                             else:
+                                # fmt: off
                                 print(colorize(
                                     "The file '{}' has been removed but he is in the `managed_files` as '{}'."
                                     .format(file_, pattern),
                                     RED
                                 ))
+                                # fmt: on
                                 task_to_do = True
                     for pattern in self.project.get("unmanaged_files", []):
                         if re.match(pattern + '$', file_):
+                            # fmt: off
                             print(colorize(
                                 "The file '{}' has been removed but he is in the `unmanaged_files` as '{}'."
                                 .format(file_, pattern),
                                 YELLOW
                             ))
+                            # fmt: on
                             task_to_do = True
                 if not managed:
                     print("The file '{}' is removed.".format(file_))
@@ -532,7 +536,9 @@ class C2cUpgradeTool:
     def files_to_get(self, step, pre=False):
         error = False
         for root, _, files in os.walk("CONST_create_template"):
+            # fmt: off
             root = root[len("CONST_create_template/"):]
+            # fmt: on
             for file_ in files:
                 destination = os.path.join(root, file_)
                 managed = self.is_managed(destination, True)
@@ -594,8 +600,10 @@ class C2cUpgradeTool:
         for pattern in self.get_upgrade('no_diff'):
             matcher = re.compile('CONST_create_template/{}$'.format(pattern))
             status = [s for s in status if not matcher.match(s)]
+        # fmt: off
         status = [s for s in status if os.path.exists(s[len("CONST_create_template/"):])]
         status = [s for s in status if not filecmp.cmp(s, s[len("CONST_create_template/"):])]
+        # fmt: on
         return status
 
     @Step(8)

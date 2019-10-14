@@ -114,9 +114,9 @@ class TestshortenerView(TestCase):
         )
 
         request.params = {}
-        request.matchdict = {
-            "ref": result["short_url"][index + 1:]
-        }
+        # fmt: off
+        request.matchdict = {"ref": result["short_url"][index + 1:]}
+        # fmt: on
         result = shortener.get()
         self.assertEqual(type(result), HTTPFound)
         self.assertEqual(result.location, "https://example.com/hi")
@@ -148,9 +148,9 @@ class TestshortenerView(TestCase):
         )
 
         request.params = {}
-        request.matchdict = {
-            "ref": result["short_url"][index + 1:]
-        }
+        # fmt: off
+        request.matchdict = {"ref": result["short_url"][index + 1:]}
+        # fmt: on
         result = shortener.get()
         self.assertEqual(type(result), HTTPFound)
         self.assertEqual(result.location, "https://example.com/hi")
