@@ -37,5 +37,5 @@ simplejson~=3.16.0  # geoportal, rq.filter: !=3.16.1
 SQLAlchemy~=1.3.4
 transaction~=2.4.0  # commons, geoportal
 translationstring~=1.3  # admin
-wsgi-lineprof~=0.8.0  # profiling
+wsgi-lineprof~=0.9.0  # profiling
 zope.event~=4.4  # commons, geoportal
