@@ -4,13 +4,13 @@ extends: vars_origin.yaml
 
 vars:
   dbsessions:
-    travis_test:
+    ci_test:
       url: postgresql://{PGUSER}:{PGPASSWORD}@externaldb:{PGPORT}/test
 
   layers:
     enum:
       test:
-        dbsession: travis_test
+        dbsession: ci_test
         attributes:
           type:
             table: main.test

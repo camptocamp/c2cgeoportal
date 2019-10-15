@@ -14,19 +14,21 @@ if [[ ${TAG} =~ ^[0-9]\.[0-9]\.[0-9]$ ]]
 then
     VERSION_QGIS=${TAG}
     ci/get-minor --reset
+    ci/changelog ${TAG}
     COMMIT=TRUE
 else
     if [[ ${CIRCLE_BRANCH} =~ ^[0-9]\.[0-9]$ ]]
     then
         VERSION_QGIS=${CIRCLE_BRANCH}
         TAG=${LAST_TAG}.$(ci/get-minor)
+        ci/changelog ${TAG}
         COMMIT=TRUE
     fi
 fi
 
 if [ ${COMMIT} == TRUE ]
 then
-    git add ci/ci.yaml
+    git add ci/ci.yaml ci/changelog.yaml CHANGELOG.md
     git commit -m "[skip ci] Update the minor version"
     git push origin ${CIRCLE_BRANCH}
 fi
