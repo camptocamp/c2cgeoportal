@@ -109,6 +109,28 @@ should uncheck the ‘The user changed his password’ field on the user in the 
 <p>To unlock a user, the administrator should uncheck the ‘Deactivated’ field on the user in the
 admin interface.</p>
 </div>
+<div class="section" id="intranet">
+<h2>Intranet<a class="headerlink" href="#intranet" title="Permalink to this headline">¶</a></h2>
+<p>To configure the intranet networks fill in the configuration like:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
+  <span class="nt">intranet</span><span class="p">:</span>
+    <span class="nt">networks</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">192.168.1.0/24</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">192.168.1.0/255.255.255.0</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">192.168.1.0/0.0.0.255</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">2001:db00::0/24</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">2001:db00::0/ffff:ff00:</span><span class="p p-Indicator">:</span>
+</pre></div>
+</div>
+<p>See <a class="reference external" href="https://docs.python.org/3.4/library/ipaddress.html#ipaddress.IPv4Network">Python documentation</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Intranet detection is provided to improve usability for web site usage within the Intranet;
+however, please be aware that Intranet detection is not a secure mechanism. To secure access to sensitive
+data, do not rely on Intranet detection; for that, you must use user authentication.</p>
+<p>A user can easily manually set the <cite>Forwarded</cite> or <cite>X-Forwarded-For</cite> header to spoof his IP.</p>
+</div>
+</div>
 </div>
 
 
