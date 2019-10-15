@@ -31,11 +31,12 @@ jobs:
           $(find -name .git -prune -print)
       - run: >
           yamllint --strict --config-file=yamllint.yaml -s
-          $(find -name .git -prune -or \( -name "*.yml" -or -name "*.yaml" \) -print)
+          $(find -name .git -prune  -or -name changelog.yaml -prune -or
+          \( -name "*.yml" -or -name "*.yaml" \) -print)
 
       # Build images
-      - run: VERSION=$(ci/release-tag) make build-tools
       - run: VERSION=$(ci/release-tag) make build-runner
+      - run: VERSION=$(ci/release-tag) make build-tools
       - run: VERSION=$(ci/release-tag) make checks
       - run: VERSION=$(ci/release-tag) make build-config-build
 
@@ -46,6 +47,11 @@ jobs:
       # LTR
       - run: QGIS_VERSION=3.4 make build-qgisserver
       - run: QGIS_VERSION=3.8 make build-qgisserver
+
+      # Test changelog
+      - run: ci/changelog new_version
+      - run: git diff CHANGELOG.md
+      - run: git checkout CHANGELOG.md ci/changelog.yaml
 
       # Tests
       - run: make preparetest

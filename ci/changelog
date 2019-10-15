@@ -1,0 +1,170 @@
+#!/usr/bin/env python3
+
+import json
+import os
+import re
+import subprocess
+import sys
+
+import requests
+import yaml
+
+
+REPOS = ('c2cgeoportal', 'ngeo')
+
+with open('ci/changelog.yaml') as cl_file:
+    changelog = yaml.load(cl_file, Loader=yaml.SafeLoader)
+
+
+def save():
+    with open('ci/changelog.yaml', 'w') as cl_file_w:
+        cl_file_w.write(yaml.dump(changelog, Dumper=yaml.SafeDumper))
+
+
+def output(cmd):
+    with subprocess.Popen(cmd, stdout=subprocess.PIPE) as proc:
+        return proc.stdout.read()
+
+
+def get_any(repo, ref, section, url):
+    if section not in changelog:
+        changelog[section] = {}
+    if repo not in changelog[section]:
+        changelog[section][repo] = {}
+
+    if ref in changelog[section][repo]:
+        return False, changelog[section][repo][ref]
+
+    json_stuff = requests.get(url.format(repo, ref), headers={
+        'Accept': 'application/vnd.github.groot-preview+json',
+        'Authorization': 'token {}'.format(os.environ['GITHUB_TOKEN'])
+    }).json()
+
+    changelog[section][repo][ref] = json_stuff
+    return True, json_stuff
+
+
+def get_commit(repo, ref):
+    dirty, commit = get_any(repo, ref, 'commits', 'https://api.github.com/repos/camptocamp/{}/commits/{}')
+    if 'sha' not in commit:
+        print('Error on commit {}.'.format(ref))
+        print(commit)
+        sys.exit(1)
+    print(commit['sha'])
+
+    for key in list(commit.keys()):
+        if key not in ('parents', 'sha'):
+            del commit[key]
+            dirty = True
+    if commit['sha'] not in changelog['commits'][repo]:
+        changelog['commits'][repo][commit['sha']] = commit
+        dirty = True
+    if dirty:
+        save()
+    return commit
+
+
+def get_pulls(repo, ref):
+    dirty, pulls = get_any(repo, ref, 'pulls', 'https://api.github.com/repos/camptocamp/{}/commits/{}/pulls')
+    if type(pulls) != list:
+        print('Error on commit {}.'.format(ref))
+        print(pulls)
+        sys.exit(1)
+    for pull in pulls:
+        if 'base' in pull:
+            pull['base_ref'] = pull['base']['ref']
+
+    for pull in pulls:
+        for key in list(pull.keys()):
+            if key not in (
+                'number', 'title', 'number', 'closed_at', 'created_at', 'html_url', 'state',
+                'updated_at', 'base_ref'
+            ):
+                del pull[key]
+                dirty = True
+    if dirty:
+        save()
+    return pulls
+
+
+def add_new_release():
+    if len(sys.argv) == 2:
+        npm_list = json.loads(output([
+            'docker', 'run', '--rm', 'camptocamp/geomapfish',
+            'npm', 'list', '--global', '--json'
+        ]).decode())
+
+        version = npm_list['dependencies']['ngeo']['version']
+        ngeo_ref = re.match(
+            r'[0-9]\.[0-9]\.[0-9]\-latest\.[0-9]{8}T[0-9]{6}Z\.([0-9a-f]+)\.HEAD',
+            version
+        ).group(1)
+
+        c2cgeoportal_ref = subprocess.check_output([
+            'git', 'log', '--pretty=format:%h', '--abbrev-commit', '-n1'
+        ]).decode().strip('\n ')
+
+        changelog['releases'].append({
+            'ngeo': ngeo_ref,
+            'c2cgeoportal': c2cgeoportal_ref,
+            'name': sys.argv[1]
+        })
+
+
+def add_commit(commits, all_pulls, repo, ref):
+    if ref in commits:
+        return
+    commit = get_commit(repo, ref)
+    if commit['sha'] not in commits:
+        pulls = get_pulls(repo, ref)
+        for pull in pulls:
+            all_pulls[pull['number']] = pull
+        commits[commit['sha']] = True
+        # Get only the first parent to don't go in the pull request
+        add_commit(commits, all_pulls, repo, commit['parents'][0]['sha'])
+
+
+def main():
+    if os.environ.get('MAIN_BRANCH') == 'master':
+        print('Ignored for master main branch')
+        return
+    add_new_release()
+
+    first = True
+    release_pulls = {}
+    releases = []
+    commits = {}
+    for repo in REPOS:
+        commits[repo] = {}
+
+    for release in changelog['releases']:
+        if first:
+            for repo in REPOS:
+                commits[repo][get_commit(repo, release[repo])['sha']] = True
+            first = False
+            continue
+
+        releases.append(release['name'])
+        release_pulls[release['name']] = {}
+        for repo in REPOS:
+            release_pulls[release['name']][repo] = {}
+            add_commit(
+                commits[repo],
+                release_pulls[release['name']][repo],
+                repo, release[repo]
+            )
+
+    with open('CHANGELOG.md', 'wb') as md_file:
+        for release in releases[::-1]:
+            pulls = release_pulls[release]
+            md_file.write('##### {}\n'.format(release).encode('utf-8'))
+            for repo in REPOS:
+                for pull in pulls[repo].values():
+                    if pull['base_ref'] != 'master':
+                        md_file.write('* {} [{}#{}]({})\n'.format(
+                            pull['title'], repo, pull['number'], pull['html_url']
+                        ).encode('utf-8'))
+
+
+if __name__ == "__main__":
+    main()
