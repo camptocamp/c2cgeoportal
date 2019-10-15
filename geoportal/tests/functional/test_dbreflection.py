@@ -37,6 +37,8 @@ from tests.functional import (  # noqa
     setup_common as setup_module
 )
 
+from c2cgeoportal_geoportal.lib.caching import init_region
+
 
 class TestReflection(TestCase):
 
@@ -50,15 +52,9 @@ class TestReflection(TestCase):
         self.metadata = None
 
     def teardown_method(self, _):
-        import c2cgeoportal_geoportal.lib.dbreflection
-
         if self._tables is not None:
             for table in self._tables[::-1]:
                 table.drop()
-                # table.drop(checkfirst=True)
-
-        # clear the dbreflection class cache
-        c2cgeoportal_geoportal.lib.dbreflection._class_cache = {}
 
     def _create_table(self, tablename):
         """ Test functions use this function to create a table object.
@@ -109,16 +105,20 @@ class TestReflection(TestCase):
 
     def test_get_class_nonexisting_table(self):
         from sqlalchemy.exc import NoSuchTableError
-        import c2cgeoportal_geoportal.lib.dbreflection
         from c2cgeoportal_geoportal.lib.dbreflection import get_class
 
         self.assertRaises(NoSuchTableError, get_class, "nonexisting")
-        self.assertEqual(c2cgeoportal_geoportal.lib.dbreflection._class_cache, {})
 
     def test_get_class(self):
         from geoalchemy2 import Geometry
-        import c2cgeoportal_geoportal.lib.dbreflection
         from c2cgeoportal_geoportal.lib.dbreflection import get_class, _AssociationProxy
+
+        init_region({
+            'backend': 'dogpile.cache.memory',
+        }, 'std')
+        init_region({
+            'backend': 'dogpile.cache.memory',
+        }, 'obj')
 
         self._create_table("table_a")
         modelclass = get_class("table_a")
@@ -176,13 +176,7 @@ class TestReflection(TestCase):
         self.assertEqual(col_multipolygon.name, "multipolygon")
         self.assertEqual(col_multipolygon.type.geometry_type, "MULTIPOLYGON")
 
-        # the class should now be in the cache
-        self.assertTrue(
-            ("public", "table_a", (), None, (), ()) in
-            c2cgeoportal_geoportal.lib.dbreflection._class_cache
-        )
-        _modelclass = get_class("table_a")
-        self.assertTrue(_modelclass is modelclass)
+        assert get_class("table_a") is modelclass
 
     def test_get_class_dotted_notation(self):
         from c2cgeoportal_geoportal.lib.dbreflection import get_class
@@ -215,20 +209,12 @@ class TestReflection(TestCase):
         transaction.commit()
 
     def test_get_class_exclude_properties(self):
-        import c2cgeoportal_geoportal.lib.dbreflection
         from c2cgeoportal_geoportal.lib.dbreflection import get_class
 
         self._create_table("table_d")
-        get_class("table_d", exclude_properties=["foo", "bar"])
-
-        # the class should now be in the cache
-        self.assertTrue(
-            ("public", "table_d", ("foo", "bar"), None, (), ()) in
-            c2cgeoportal_geoportal.lib.dbreflection._class_cache
-        )
+        assert get_class("table_d", exclude_properties=["foo", "bar"]) is not None
 
     def test_get_class_attributes_order(self):
-        import c2cgeoportal_geoportal.lib.dbreflection
         from c2cgeoportal_geoportal.lib.dbreflection import get_class
 
         attributes_order = ["child1_id", "point", "child2_id"]
@@ -238,14 +224,7 @@ class TestReflection(TestCase):
 
         self.assertEqual(attributes_order, cls.__attributes_order__)
 
-        # the class should now be in the cache
-        self.assertTrue(
-            ("public", "table_d", (), None, ("child1_id", "point", "child2_id"), ()) in
-            c2cgeoportal_geoportal.lib.dbreflection._class_cache
-        )
-
     def test_get_class_readonly_attributes(self):
-        import c2cgeoportal_geoportal.lib.dbreflection
         from c2cgeoportal_geoportal.lib.dbreflection import get_class
 
         readonly_attributes = ["child1_id", "point"]
@@ -255,9 +234,3 @@ class TestReflection(TestCase):
 
         self.assertEqual(True, cls.child1_id.info.get('readonly'))
         self.assertEqual(True, cls.point.info.get('readonly'))
-
-        # the class should now be in the cache
-        self.assertTrue(
-            ("public", "table_d", (), None, (), ("child1_id", "point")) in
-            c2cgeoportal_geoportal.lib.dbreflection._class_cache
-        )

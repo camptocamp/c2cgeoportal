@@ -52,8 +52,7 @@ from pyramid_mako import add_mako_renderer
 from sqlalchemy.orm import Session
 
 import c2cgeoportal_geoportal.views
-from c2cgeoportal_geoportal.lib import (C2CPregenerator, caching, check_collector,
-                                        checker, dbreflection)
+from c2cgeoportal_geoportal.lib import C2CPregenerator, caching, check_collector, checker
 from c2cgeoportal_geoportal.lib.xsd import XSD
 
 LOG = logging.getLogger(__name__)
@@ -353,9 +352,6 @@ def includeme(config: pyramid.config.Configurator):
 
     # Initialise DBSessions
     init_dbsessions(settings, config, health_check)
-
-    # Initialize the dbreflection module
-    dbreflection.init()
 
     checker.init(config, health_check)
     check_collector.init(config, health_check)
