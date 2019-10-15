@@ -33,11 +33,9 @@
 
 from unittest import TestCase
 
-from tests.functional import (  # noqa
-    teardown_common as teardown_module,
-    setup_common as setup_module,
-    create_dummy_request, cleanup_db, create_default_ogcserver,
-)
+from tests.functional import cleanup_db, setup_db, create_default_ogcserver, create_dummy_request
+from tests.functional import setup_common as setup_module  # noqa
+from tests.functional import teardown_common as teardown_module  # noqa
 
 
 class TestLayers(TestCase):
@@ -53,15 +51,13 @@ class TestLayers(TestCase):
         from c2cgeoportal_commons.models.main import Role, Interface
         from c2cgeoportal_commons.models.static import User
 
-        cleanup_db()
+        setup_db()
 
         self.metadata = None
         self.layer_ids = []
 
-        DBSession.query(User).delete()
-        DBSession.query(User).filter(
-            User.username == "__test_user"
-        ).delete()
+        for o in DBSession.query(User).all():
+            DBSession.delete(o)
 
         self.role = Role(name="__test_role")
         self.user = User(
@@ -935,8 +931,8 @@ class TestLayers(TestCase):
 
         request = self._get_request(layer_id)
         request.registry.settings.update(settings)
-        request.matchdict["layer_name"] = "layer_test"
-        request.matchdict["field_name"] = "label"
+        request.matchdict['layer_name'] = 'layer_test'
+        request.matchdict['field_name'] = 'label'
 
         layers = Layers(request)
         response = layers.enumerate_attribute_values()

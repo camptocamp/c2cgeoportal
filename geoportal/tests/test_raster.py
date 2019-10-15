@@ -37,7 +37,7 @@ class TestRasterViews(TestCase):
 
     def test_raster(self):
         from decimal import Decimal
-        from pyramid.testing import DummyRequest
+        from tests import DummyRequest
         from pyramid.httpexceptions import HTTPNotFound
         from c2cgeoportal_geoportal.views.raster import Raster
 
@@ -83,7 +83,7 @@ class TestRasterViews(TestCase):
 
     def test_raster_angle(self):
         from decimal import Decimal
-        from pyramid.testing import DummyRequest
+        from tests import DummyRequest
         from c2cgeoportal_geoportal.views.raster import Raster
 
         request = DummyRequest()
@@ -126,7 +126,7 @@ class TestRasterViews(TestCase):
 
     def test_raster_vrt(self):
         from decimal import Decimal
-        from pyramid.testing import DummyRequest
+        from tests import DummyRequest
         from c2cgeoportal_geoportal.views.raster import Raster
 
         request = DummyRequest()
@@ -161,7 +161,7 @@ class TestRasterViews(TestCase):
 
     def test_profile_json(self):
         from decimal import Decimal
-        from pyramid.testing import DummyRequest
+        from tests import DummyRequest
         from pyramid.httpexceptions import HTTPNotFound
         from c2cgeoportal_geoportal.views.profile import Profile
 

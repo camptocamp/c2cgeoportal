@@ -4,20 +4,26 @@ Functionalities
 c2cgeoportal provides the concept of *functionality* that can be used to customize
 the application according to the user's permissions.
 
-A functionality may be associated to users through different ways:
+A functionality may be associated to users through the admin interface.
 
-1. Functionalities for anonymous users are defined through the
-   ``functionalities:anonymous`` variable in the ``vars.yaml`` configuration file.
-2. Functionalities for authenticated users are defined through the
-   ``functionalities:registered`` variable in the ``vars.yaml`` configuration file.
-3. Functionalities for specific roles are defined in the database through the administration interface.
-4. Functionalities for specific users are defined in the database through the administration interface.
+Some technical roles are used to define default functionalities depending on the user's context,
+they are named `anonymous`, `registered` and `intranet`.
 
-Each level overrides the previous ones in the order indicated above.
-For example, if the user is authenticated and has associated functionalities in
-the ``user`` database table, then the ``functionalities:anonymous`` and
-``functionalities:registered`` configuration variables, as well as any
-functionality associated with his/her role, will be ignored.
+User get functionnalities from, by priority order:
+
+If authenticated::
+
+    - roles associated to his user profile
+    - role named `registered`
+
+If his IP is included in the intranet networks::
+
+    - role named `intranet`
+
+In all cases::
+
+    - role named `anonymous`
+
 
 Configuration
 ~~~~~~~~~~~~~
@@ -45,29 +51,6 @@ The ``vars.yaml`` file includes variables for managing *functionalities*.
         admin_interface:
             available_functionalities: [default_basemap, print_template, mapserver_substitution]
 
-
-``functionalities:anonymous``
-    Functionalities accessible to anonymous users. This is a list of
-    key/value pairs, whose values are either arrays or scalars.
-
-    For example:
-
-    .. code:: yaml
-
-        functionalities:
-            anonymous:
-                print_template:
-                - 1 A4 portrait
-                - 2 A3 landscape
-                default_basemap: plan
-
-    In this example, anonymous users can print maps using the ``1 A4 portrait``
-    and ``2 A3 landscape`` layouts only. Their default base layer is the
-    ``plan`` layer.
-
-``functionalities:registered``
-    Functionalities accessible to any authenticated user. This is a list of
-    key/value pairs, of the same form as for ``functionalities:anonymous``.
 
 ``functionalities:available_in_templates``
     Functionalities that are made available to Mako templates (e.g.

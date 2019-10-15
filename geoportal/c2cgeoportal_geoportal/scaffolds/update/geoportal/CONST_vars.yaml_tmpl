@@ -37,6 +37,9 @@ vars:
     two_factor: false
     two_factor_issuer_name: {{project}}
 
+  intranet:
+    networks: []
+
   interfaces_config:
     default:
       constants:
@@ -305,26 +308,6 @@ vars:
         single: true
 
   functionalities:
-    # Functionalities that are accessible to anonymous
-    # users.
-    anonymous:
-      print_template:
-        - 1 A4 portrait
-        - 2 A3 landscape
-      default_basemap: plan
-
-      # The name of the theme to use as the default theme.
-      # The default theme is the theme loaded when no
-      # theme name is specified in the mobile app URL. If unset
-      # then there is no default theme, and no theme information
-      # will be passed to the config.js template.
-      default_theme:
-
-    # Functionalities that are accessible to authenticated
-    # users with no associated functionalities in the
-    # database.
-    registered: {}
-
     # Functionalities that are made available to Mako templates and loginuser.
     available_in_templates:
       - default_basemap

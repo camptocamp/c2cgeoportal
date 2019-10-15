@@ -11,6 +11,12 @@ Information
    To enable basic auth see:
    https://camptocamp.github.io/c2cgeoportal/{{geomapfish_version}}/integrator/security.html#basic-auth
 
+Changes to apply
+----------------
+
+1. The configuration vars `vars/functionalities/anonymous` and `vars/functionalities/registered` should
+   be moved to the new roles `anonymous` and `registered` that will exist after the upgrade of the database.
+
 
 Version 2.4.2
 =============

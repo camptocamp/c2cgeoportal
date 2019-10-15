@@ -90,3 +90,29 @@ To lock an account after a certain number of authentication failures, set the fo
 
 To unlock a user, the administrator should uncheck the 'Deactivated' field on the user in the
 admin interface.
+
+Intranet
+~~~~~~~~
+
+To configure the intranet networks fill in the configuration like:
+
+.. code:: yaml
+
+   vars:
+     intranet:
+       networks:
+         - 192.168.1.0/24
+         - 192.168.1.0/255.255.255.0
+         - 192.168.1.0/0.0.0.255
+         - 2001:db00::0/24
+         - 2001:db00::0/ffff:ff00::
+
+See `Python documentation <https://docs.python.org/3.4/library/ipaddress.html#ipaddress.IPv4Network>`_.
+
+.. note::
+
+   Intranet detection is provided to improve usability for web site usage within the Intranet;
+   however, please be aware that Intranet detection is not a secure mechanism. To secure access to sensitive
+   data, do not rely on Intranet detection; for that, you must use user authentication.
+
+   A user can easily manually set the `Forwarded` or `X-Forwarded-For` header to spoof his IP.

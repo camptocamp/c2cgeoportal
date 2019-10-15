@@ -35,11 +35,14 @@ Pyramid application test package
 from configparser import ConfigParser
 
 import tests
+import transaction
 import webob.acceptparse
 from c2c.template.config import config as configuration
+from c2cgeoportal_commons import models
 from pyramid import testing
 
 import c2cgeoportal_geoportal
+import c2cgeoportal_geoportal.lib
 from c2cgeoportal_geoportal.lib import caching
 
 mapserv_url = "http://mapserver:8080/"
@@ -48,28 +51,37 @@ config = None
 
 def cleanup_db():
     """ Cleanup the database """
-    import transaction
-    import c2cgeoportal_geoportal.lib
-    from c2cgeoportal_commons.models import DBSession
+    from c2cgeoportal_commons import models
     from c2cgeoportal_commons.models.main import OGCServer, TreeItem, Role, RestrictionArea, \
         Interface, Functionality, FullTextSearch
     from c2cgeoportal_commons.models.static import Shorturl, User
 
     transaction.commit()
-    for ra in DBSession.query(RestrictionArea).all():
+    for ra in models.DBSession.query(RestrictionArea).all():
         ra.roles = []
-        DBSession.delete(ra)
-    for ti in DBSession.query(TreeItem).all():
-        DBSession.delete(ti)
-    DBSession.query(OGCServer).delete()
-    DBSession.query(Interface).delete()
-    for r in DBSession.query(Role).all():
+        models.DBSession.delete(ra)
+    for ti in models.DBSession.query(TreeItem).all():
+        models.DBSession.delete(ti)
+    models.DBSession.query(OGCServer).delete()
+    models.DBSession.query(Interface).delete()
+    for r in models.DBSession.query(Role).all():
         r.functionnalities = []
-        DBSession.delete(r)
-    DBSession.query(User).delete()
-    DBSession.query(Functionality).delete()
-    DBSession.query(FullTextSearch).delete()
-    DBSession.query(Shorturl).delete()
+        models.DBSession.delete(r)
+    models.DBSession.query(User).delete()
+    models.DBSession.query(Functionality).delete()
+    models.DBSession.query(FullTextSearch).delete()
+    models.DBSession.query(Shorturl).delete()
+    transaction.commit()
+
+
+def setup_db():
+    """ Cleanup the database """
+    cleanup_db()
+
+    from c2cgeoportal_commons.models import DBSession
+    from c2cgeoportal_commons.models.main import Role
+    DBSession.add_all([Role(name) for name in ('anonymous', 'registered', 'intranet')])
+
     transaction.commit()
 
     c2cgeoportal_geoportal.lib.ogc_server_wms_url_ids = None
@@ -107,18 +119,13 @@ def setup_common():
     config = testing.setUp(settings=configuration.get_config())
 
     c2cgeoportal_geoportal.init_dbsessions(config.get_settings(), config)
-    from c2cgeoportal_geoportal.lib import functionality
-    functionality.FUNCTIONALITIES_TYPES = None
 
-    cleanup_db()
+    setup_db()
 
 
 def teardown_common():
-    from c2cgeoportal_commons import models
     cleanup_db()
     testing.tearDown()
-    from c2cgeoportal_geoportal.lib import functionality
-    functionality.FUNCTIONALITIES_TYPES = None
 
     models.DBSession.close()
     models.DBSession = None
@@ -126,7 +133,6 @@ def teardown_common():
 
 
 def create_default_ogcserver():
-    import transaction
     from c2cgeoportal_commons.models import DBSession
     from c2cgeoportal_commons.models.main import OGCServer
 
@@ -135,6 +141,7 @@ def create_default_ogcserver():
     ogcserver.url = mapserv_url
     DBSession.add(ogcserver)
     transaction.commit()
+    caching.invalidate_region()
 
     return ogcserver
 
@@ -155,8 +162,6 @@ def create_dummy_request(additional_settings=None, authentication=True, user=Non
     request = tests.create_dummy_request({
         "host_forward_host": [],
         "functionalities": {
-            "registered": {},
-            "anonymous": {},
             "available_in_templates": []
         },
         "layers": {
@@ -176,7 +181,6 @@ def create_dummy_request(additional_settings=None, authentication=True, user=Non
     request.interface_name = "main"
     request.get_user = _get_user
     request.registry.validate_user = default_user_validator
-    request.client_addr = None
     request.c2c_request_id = 'test'
     if authentication and user is None:
         authentication_settings = {
@@ -193,3 +197,13 @@ def create_dummy_request(additional_settings=None, authentication=True, user=Non
         reify=True
     )
     return request
+
+
+def fill_tech_user_functionality(name, functionalities):
+    from c2cgeoportal_commons.models import DBSession
+    from c2cgeoportal_commons.models.main import Functionality, Role
+    role = DBSession.query(Role).filter_by(name=name).one()
+    role.functionalities = [Functionality(name, value) for name, value in functionalities]
+    DBSession.add(role)
+    transaction.commit()
+    caching.invalidate_region()

@@ -33,9 +33,18 @@
 
 import os
 
-from pyramid.testing import DummyRequest
+from pyramid.testing import DummyRequest as PyramidDummyRequest
 
 from c2cgeoportal_geoportal.lib import caching
+
+
+class DummyRequest(PyramidDummyRequest):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.client_addr = '1.1.1.1'
+        self.referer = None
+        if self.registry.settings is None:
+            self.registry.settings = {}
 
 
 def setup_common():

@@ -63,16 +63,14 @@ import hashlib
 import typing
 from unittest import TestCase
 
-from sqlalchemy import Column, types
 import sqlalchemy.ext.declarative
-from geoalchemy2 import Geometry, WKTElement
 import transaction
-
-from tests.functional import (  # noqa
-    teardown_common as teardown_module,
-    setup_common as setup_module,
-    create_dummy_request, mapserv_url, create_default_ogcserver, cleanup_db
-)
+from geoalchemy2 import Geometry, WKTElement
+from sqlalchemy import Column, types
+from tests.functional import (cleanup_db, setup_db, create_default_ogcserver, create_dummy_request,
+                              fill_tech_user_functionality, mapserv_url)
+from tests.functional import setup_common as setup_module  # noqa
+from tests.functional import teardown_common as teardown_module  # noqa
 
 # GetMap hash for MapServer 6.0 and 7.0
 FOUR_POINTS = ["61cbb0a6d18b72e4a28c1087019de245", "e2fe30a8085b0db4040c9ad0d331b6b8"]
@@ -133,7 +131,7 @@ class TestMapserverproxyView(TestCase):
             Functionality, Interface, OGCServer, OGCSERVER_TYPE_GEOSERVER, OGCSERVER_AUTH_GEOSERVER
         from c2cgeoportal_commons.models.static import User
 
-        cleanup_db()
+        setup_db()
 
         ogc_server_internal = create_default_ogcserver()
         ogcserver_geoserver = OGCServer(name="__test_ogc_server_geoserver")
@@ -218,9 +216,6 @@ class TestMapserverproxyView(TestCase):
 
     def teardown_method(self, _):
         from c2cgeoportal_commons.models import DBSession
-
-        from c2cgeoportal_geoportal.lib import functionality
-        functionality.FUNCTIONALITIES_TYPES = None
 
         cleanup_db()
 
@@ -841,9 +836,8 @@ class TestMapserverproxyView(TestCase):
         request = self._create_dummy_request()
         request.method = "POST"
         request.body = SUBSTITUTION_GETFEATURE_REQUEST
-        request.registry.settings["functionalities"]["anonymous"] = {
-            "mapserver_substitution": ["name=bar"]
-        }
+        fill_tech_user_functionality('anonymous', (("mapserver_substitution", "name=bar"),))
+
         response = MapservProxy(request).proxy()
         self.assertTrue(response.status_int, 200)
         assert "foo" not in response.body.decode("utf-8")
@@ -852,33 +846,33 @@ class TestMapserverproxyView(TestCase):
         assert "123" not in response.body.decode("utf-8")
 
         request.body = COLUMN_RESTRICTION_GETFEATURE_REQUEST
-        request.registry.settings["functionalities"]["anonymous"] = {
-            "mapserver_substitution": ["cols=name", "cols=city", "cols=country"]
-        }
+        fill_tech_user_functionality('anonymous', [
+            ("mapserver_substitution", e) for e in ["cols=name", "cols=city", "cols=country"]
+        ])
         response = MapservProxy(request).proxy()
         self.assertTrue(response.status_int, 200)
         assert "Lausanne" in response.body.decode("utf-8")
         assert "Swiss" in response.body.decode("utf-8")
 
-        request.registry.settings["functionalities"]["anonymous"] = {
-            "mapserver_substitution": ["cols=name", "cols=city"]
-        }
+        fill_tech_user_functionality('anonymous', [
+            ("mapserver_substitution", e) for e in ["cols=name", "cols=city"]
+        ])
         response = MapservProxy(request).proxy()
         self.assertTrue(response.status_int, 200)
         assert "Lausanne" in response.body.decode("utf-8")
         assert "Swiss" not in response.body.decode("utf-8")
 
-        request.registry.settings["functionalities"]["anonymous"] = {
-            "mapserver_substitution": ["cols=name", "cols=country"]
-        }
+        fill_tech_user_functionality('anonymous', [
+            ("mapserver_substitution", e) for e in ["cols=name", "cols=country"]
+        ])
         response = MapservProxy(request).proxy()
         self.assertTrue(response.status_int, 200)
         assert "Lausanne" not in response.body.decode("utf-8")
         assert "Swiss" in response.body.decode("utf-8")
 
-        request.registry.settings["functionalities"]["anonymous"] = {
-            "mapserver_substitution": ["cols=name"]
-        }
+        fill_tech_user_functionality('anonymous', [
+            ("mapserver_substitution", e) for e in ["cols=name"]
+        ])
         response = MapservProxy(request).proxy()
         self.assertTrue(response.status_int, 200)
         assert "Lausanne" not in response.body.decode("utf-8")
@@ -890,9 +884,8 @@ class TestMapserverproxyView(TestCase):
         }]}
         request.method = "POST"
         request.body = SUBSTITUTION_GETFEATURE_REQUEST
-        request.registry.settings["functionalities"]["anonymous"] = {
-            "mapserver_substitution": ["foo_bar"]
-        }
+        fill_tech_user_functionality('anonymous', (("mapserver_substitution", "foo_bar"),))
+
         request.params.update(dict(
             s_test1="to be removed", S_TEST2="to be removed"
         ))

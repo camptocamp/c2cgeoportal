@@ -29,7 +29,9 @@
 
 
 import datetime
+import ipaddress
 import json
+import logging
 import urllib.parse
 from string import Formatter
 
@@ -39,6 +41,7 @@ from zope.interface import implementer
 
 from c2cgeoportal_geoportal.lib.caching import get_region
 
+LOG = logging.getLogger(__name__)
 CACHE_REGION_OBJ = get_region('obj')
 
 
@@ -273,3 +276,19 @@ class C2CPregenerator:  # pragma: no cover
 
 
 _formatter = Formatter()
+
+
+@CACHE_REGION_OBJ.cache_on_arguments()
+def _get_intranet_networks(request):
+    return [
+        ipaddress.ip_network(network) for network in
+        request.registry.settings.get('intranet', {}).get('networks', [])
+    ]
+
+
+def is_intranet(request):
+    address = ipaddress.ip_address(request.client_addr)
+    for network in _get_intranet_networks(request):
+        if address in ipaddress.ip_network(network):
+            return True
+    return False

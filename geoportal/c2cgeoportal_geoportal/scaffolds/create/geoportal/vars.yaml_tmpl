@@ -59,28 +59,6 @@ vars:
     map_zoom: 10
 
   functionalities:
-    # Functionalities that are accessible to anonymous
-    # users.
-    anonymous:
-      print_template:
-        - 1 A4 portrait
-        - 2 A4 landscape
-        - 3 A3 portrait
-        - 4 A3 landscape
-      default_basemap: map
-
-      # The name of the theme to use as the default theme.
-      # The default theme is the theme loaded when no
-      # theme name is specified in the mobile app URL. If unset
-      # then there is no default theme, and no theme information
-      # will be passed to the config.js template.
-      default_theme:
-
-    # Functionalities that are accessible to authenticated
-    # users with no associated functionalities in the
-    # database.
-    registered: {}
-
     # Functionalities that are made available to Mako templates.
     available_in_templates:
       - default_basemap

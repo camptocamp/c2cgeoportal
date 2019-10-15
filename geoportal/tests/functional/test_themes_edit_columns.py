@@ -36,7 +36,7 @@ from unittest import TestCase
 from tests.functional import (  # noqa
     teardown_common as teardown_module,
     setup_common as setup_module,
-    create_dummy_request, create_default_ogcserver, cleanup_db,
+    create_dummy_request, create_default_ogcserver, cleanup_db, setup_db,
 )
 
 
@@ -49,7 +49,7 @@ class TestThemesEditColumns(TestCase):
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
 
-        cleanup_db()
+        setup_db()
 
         self._tables = []
 
@@ -212,8 +212,6 @@ class TestThemesEditColumns(TestCase):
         request.route_url = lambda name, _query: "http://server/{}?{}".format(name, urlencode(_query))
         request.matchdict = {"layer_id": str(layerid)}
         request.params = params
-        from c2cgeoportal_geoportal.lib import functionality
-        functionality.FUNCTIONALITIES_TYPES = None
         return request
 
     def test_themes_edit_columns(self):
