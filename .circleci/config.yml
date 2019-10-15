@@ -35,8 +35,8 @@ jobs:
           \( -name "*.yml" -or -name "*.yaml" \) -print)
 
       # Build images
-      - run: VERSION=$(ci/release-tag) make build-tools
       - run: VERSION=$(ci/release-tag) make build-runner
+      - run: VERSION=$(ci/release-tag) make build-tools
       - run: VERSION=$(ci/release-tag) make checks
       - run: VERSION=$(ci/release-tag) make build-config-build
 

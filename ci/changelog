@@ -90,14 +90,13 @@ def get_pulls(repo, ref):
 def add_new_release():
     if len(sys.argv) == 2:
         npm_list = json.loads(output([
-            'docker', 'run', '--rm', '--entrypoint=',
-            'camptocamp/geomapfish-build:{}'.format(os.environ['MAJOR_VERSION']),
+            'docker', 'run', '--rm', 'camptocamp/geomapfish',
             'npm', 'list', '--global', '--json'
         ]).decode())
 
         version = npm_list['dependencies']['ngeo']['version']
         ngeo_ref = re.match(
-            r'[0-9]\.[0-9]\.[0-9]\-version\-[0-9]\.[0-9]\-latest\.[0-9]{8}T[0-9]{6}Z\.([0-9a-f]+)\.HEAD',
+            r'[0-9]\.[0-9]\.[0-9]\-latest\.[0-9]{8}T[0-9]{6}Z\.([0-9a-f]+)\.HEAD',
             version
         ).group(1)
 
@@ -126,6 +125,9 @@ def add_commit(commits, all_pulls, repo, ref):
 
 
 def main():
+    if os.environ.get('MAIN_BRANCH') == 'master':
+        print('Ignored for master main branch')
+        return
     add_new_release()
 
     first = True
