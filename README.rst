@@ -7,9 +7,10 @@ the client part is `ngeo <https://github.com/camptocamp/ngeo/>`_.
 Read the `Documentation <https://camptocamp.github.io/c2cgeoportal/master/>`_.
 
 Docker images:
-`to build the project <https://hub.docker.com/r/camptocamp/geomapfish-build>`_,
-`to build c2cgeoportal <https://hub.docker.com/r/camptocamp/geomapfish-build-dev>`_,
-`to config base image <https://hub.docker.com/r/camptocamp/geomapfish-config-build>`_,
+`To build the project and more tools <https://hub.docker.com/r/camptocamp/geomapfish-tools>`_,
+`To config base image <https://hub.docker.com/r/camptocamp/geomapfish-config-build>`_,
+`Base image to run the project <https://hub.docker.com/r/camptocamp/geomapfish-geoportal>`_,
+`Default image to run the project <https://hub.docker.com/r/camptocamp/geomapfish>`_,
 `QGIS server with access control plugin <https://hub.docker.com/r/camptocamp/geomapfish-qgisserver>`_.
 
 Python packages:
