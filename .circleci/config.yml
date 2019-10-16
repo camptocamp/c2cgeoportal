@@ -138,8 +138,7 @@ jobs:
             cat \<< EOF > /tmp/msg
             Subject: CircleCI build failed on ${CIRCLE_PROJECT_REPONAME}
 
-            The build failed on:
-            project: ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}
+            Project: ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}
             Branch: ${CIRCLE_BRANCH}
             Job: ${CIRCLE_JOB}
             ${CIRCLE_BUILD_URL}
