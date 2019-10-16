@@ -132,14 +132,14 @@ class MapservProxy(OGCProxy):
         if method == "GET" and \
                 "service" in self.lower_params and \
                 self.lower_params["service"] == "wms":
-            if self.lower_params["request"] in ("getmap", "getfeatureinfo"):
+            if self.lower_params.get("request") in ("getmap", "getfeatureinfo"):
                 cache_control = NO_CACHE
-            elif self.lower_params["request"] == "getlegendgraphic":
+            elif self.lower_params.get("request") == "getlegendgraphic":
                 cache_control = PUBLIC_CACHE
         elif method == "GET" and \
                 "service" in self.lower_params and \
                 self.lower_params["service"] == "wfs":
-            if self.lower_params["request"] == "getfeature":
+            if self.lower_params.get("request") == "getfeature":
                 cache_control = NO_CACHE
         elif method != "GET":
             cache_control = NO_CACHE
