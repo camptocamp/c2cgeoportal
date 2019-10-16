@@ -38,4 +38,11 @@ def main(global_config, **settings):
             default=interface.get('default', False)
         )
 
+    try:
+        import ptvsd
+        ptvsd.enable_attach(address=('172.17.0.1', 5678))
+        # ptvsd.wait_for_attach()
+    except ModuleNotFoundError as e:
+        pass
+
     return config.make_wsgi_app()

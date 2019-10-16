@@ -13,11 +13,15 @@ services:
       # For Python project development.
       - ${PWD}/geoportal/{{package}}_geoportal:/app/{{package}}_geoportal
       # For Python c2cgeportal development.
-      # - '${PWD}/../c2cgeoportal:/opt/c2cgeoportal'
+      # - '${PWD}/../c2cgeoportal/commons/c2cgeoportal_gcommons:/opt/c2cgeoportal/commons/c2cgeoportal_commons'
+      # - '${PWD}/../c2cgeoportal/geoportal/c2cgeoportal_geoportal:/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal'
+      # - '${PWD}/../c2cgeoportal/admin/c2cgeoportal_admin:/opt/c2cgeoportal/admin/c2cgeoportal_admin'
     environment:
       - GUNICORN_CMD_ARGS=--reload
       - C2CWSGIUTILS_CONFIG=/app/development.ini
       # - PRINT_URL=http://print:8080/print/
+    ports:
+      - 5678:5678  # For remote debugging using Visual Studio Code
 
   # Also uncomment the PRINT_URL in geoportal
   # print:
