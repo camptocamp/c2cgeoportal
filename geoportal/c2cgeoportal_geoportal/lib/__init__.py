@@ -281,7 +281,7 @@ _formatter = Formatter()
 @CACHE_REGION_OBJ.cache_on_arguments()
 def _get_intranet_networks(request):
     return [
-        ipaddress.ip_network(network) for network in
+        ipaddress.ip_network(network, strict=False) for network in
         request.registry.settings.get('intranet', {}).get('networks', [])
     ]
 
@@ -289,6 +289,6 @@ def _get_intranet_networks(request):
 def is_intranet(request):
     address = ipaddress.ip_address(request.client_addr)
     for network in _get_intranet_networks(request):
-        if address in ipaddress.ip_network(network):
+        if address in network:
             return True
     return False
