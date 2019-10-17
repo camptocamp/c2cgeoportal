@@ -38,12 +38,6 @@ MAP
 
     WEB
         METADATA
-            "wms_title" "changeme"
-            "wms_abstract" "changeme"
-            "ows_onlineresource" "changeme"
-            "wms_encoding" "UTF-8"
-            "wms_enable_request" "*"
-            "ows_title" "changeme"
             "ows_enable_request" "*"
             "ows_encoding" "UTF-8"
         END
@@ -418,7 +412,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom from main.testpoint using unique id using srid=21781"
+        DATA "geom from geodata.testpoint using unique id using srid=21781"
         PROJECTION
            "init=epsg:21781"
         END
@@ -439,7 +433,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom from main.testpoint using unique id using srid=21781"
+        DATA "geom FROM (SELECT geo.* FROM geodata.testpoint as geo) as foo using unique id using srid=21781"
         PROJECTION
            "init=epsg:21781"
         END
@@ -451,7 +445,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom from main.testpoint using unique id using srid=21781"
+        DATA "geom from geodata.testpoint using unique id using srid=21781"
         PROJECTION
            "init=epsg:21781"
         END
@@ -463,7 +457,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom from main.testpoint using unique id using srid=21781"
+        DATA "geom from geodata.testpoint using unique id using srid=21781"
         PROJECTION
            "init=epsg:21781"
         END
@@ -475,7 +469,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom from main.testpoint using unique id using srid=21781"
+        DATA "geom from geodata.testpoint using unique id using srid=21781"
         PROJECTION
            "init=epsg:21781"
         END
@@ -487,7 +481,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom from main.testpoint using unique id using srid=21781"
+        DATA "geom from geodata.testpoint using unique id using srid=21781"
         PROJECTION
            "init=epsg:21781"
         END
@@ -499,7 +493,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom from main.testpoint using unique id using srid=21781"
+        DATA "geom from geodata.testpoint using unique id using srid=21781"
         PROJECTION
            "init=epsg:21781"
         END
@@ -511,7 +505,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom from main.testpoint using unique id using srid=21781"
+        DATA "geom from geodata.testpoint using unique id using srid=21781"
         PROJECTION
            "init=epsg:21781"
         END
@@ -523,7 +517,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom from main.testpoint using unique id using srid=21781"
+        DATA "geom from geodata.testpoint using unique id using srid=21781"
         PROJECTION
            "init=epsg:21781"
         END
@@ -535,7 +529,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom from main.testpoint using unique id using srid=21781"
+        DATA "geom from geodata.testpoint using unique id using srid=21781"
         PROJECTION
            "init=epsg:21781"
         END
@@ -547,7 +541,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom from main.testpoint using unique id using srid=21781"
+        DATA "geom from geodata.testpoint using unique id using srid=21781"
         PROJECTION
            "init=epsg:21781"
         END
@@ -560,7 +554,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom from main.testpoint using unique id using srid=21781"
+        DATA "geom from geodata.testpoint using unique id using srid=21781"
         PROJECTION
            "init=epsg:21781"
         END
@@ -581,7 +575,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom from main.testpoint using unique id using srid=21781"
+        DATA "geom from geodata.testpoint using unique id using srid=21781"
         PROJECTION
            "init=epsg:21781"
         END

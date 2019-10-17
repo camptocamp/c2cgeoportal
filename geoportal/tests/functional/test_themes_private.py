@@ -79,7 +79,7 @@ class TestThemesPrivateView(TestCase):
         layer_wms.ogc_server = ogc_server_internal
 
         layer_wms_private = LayerWMS(name=u"__test_layer_wms_private", public=False)
-        layer_wms_private.layer = "__test_private_layer"
+        layer_wms_private.layer = "testpoint_protected"
         layer_wms_private.interfaces = [main]
         layer_wms_private.ogc_server = ogc_server_internal
 
@@ -264,3 +264,15 @@ class TestThemesPrivateView(TestCase):
                 }]
             }]
         )
+
+    def test_ogc_server_private_layers(self):
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.static import User
+
+        entry = self._create_entry_obj()
+        themes = entry.themes()
+        assert "testpoint_protected" not in themes["ogcServers"]["__test_ogc_server"]["attributes"]
+
+        entry = self._create_entry_obj(user=DBSession.query(User).filter_by(username=u"__test_user").one())
+        themes = entry.themes()
+        assert "testpoint_protected" in themes["ogcServers"]["__test_ogc_server"]["attributes"]

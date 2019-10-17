@@ -62,7 +62,8 @@ from c2cgeoportal_geoportal.lib import (add_url_params, get_setting, get_typed, 
 from c2cgeoportal_geoportal.lib.caching import (NO_CACHE, PRIVATE_CACHE, PUBLIC_CACHE, get_region,
                                                 set_common_headers)
 from c2cgeoportal_geoportal.lib.functionality import get_functionality, get_mapserver_substitution_params
-from c2cgeoportal_geoportal.lib.layers import get_protected_layers_query
+from c2cgeoportal_geoportal.lib.layers import (get_private_layers, get_protected_layers,
+                                               get_protected_layers_query)
 from c2cgeoportal_geoportal.lib.wmstparsing import TimeInformation, parse_extent
 from c2cgeoportal_geoportal.views.layers import get_layer_metadatas
 
@@ -983,11 +984,24 @@ class Entry:
             attributes = None
 
             if feature_type is not None:
+
+                all_private_layers = get_private_layers([ogc_server.id]).values()
+                protected_layers_name = [
+                    l.name for l in get_protected_layers(self.request.user, [ogc_server.id]).values()
+                ]
+                private_layers_name = []
+                for layers in [v.layer for v in all_private_layers if v.name not in protected_layers_name]:
+                    private_layers_name.extend(layers.split(','))
+
                 types = {}
                 elements = {}
                 for child in feature_type.getchildren():
+                    print(child.tag)
                     if child.tag == '{http://www.w3.org/2001/XMLSchema}element':
-                        elements[child.attrib['name']] = child.attrib['type'].split(':')[1]
+                        name = child.attrib['name']
+                        print(name)
+                        if name not in private_layers_name:
+                            elements[name] = child.attrib['type'].split(':')[1]
 
                     if child.tag == '{http://www.w3.org/2001/XMLSchema}complexType':
                         sequence = child.find('.//{http://www.w3.org/2001/XMLSchema}sequence')

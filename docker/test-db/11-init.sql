@@ -9,3 +9,10 @@ CREATE TABLE geodata.testpoint (
     country varchar,
     geom geometry(POINT, 21781)
 );
+
+CREATE TABLE geodata.testpointtime (
+    id serial PRIMARY KEY,
+    name varchar,
+    time timestamp with time zone,
+    geom geometry(POINT, 21781)
+);
