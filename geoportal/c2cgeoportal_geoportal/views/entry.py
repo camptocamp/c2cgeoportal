@@ -42,6 +42,7 @@ from typing import Dict, Set, Tuple  # noqa # pylint: disable=unused-import
 
 import pyotp
 import requests
+import time
 from c2cwsgiutils.auth import auth_view
 from defusedxml import lxml
 from owslib.wms import WebMapService
@@ -266,7 +267,7 @@ class Entry:
             },
         )
 
-        LOG.info("Get WMS GetCapabilities for url: %s", url)
+        LOG.debug("Get WMS GetCapabilities for url: %s", url)
 
         # Forward request to target (without Host Header)
         headers = dict(self.request.headers)
@@ -913,7 +914,7 @@ class Entry:
         }
         wfs_url = add_url_params(wfs_url, params)
 
-        LOG.info("WFS DescribeFeatureType for base url: %s", wfs_url)
+        LOG.debug("WFS DescribeFeatureType for base url: %s", wfs_url)
 
         # forward request to target (without Host Header)
         headers = dict(self.request.headers)
@@ -985,6 +986,45 @@ class Entry:
 
         await asyncio.gather(*tasks)
 
+    def _get_features_attributes(self, ogc_server_id, url_internal_wfs):
+        all_errors = set()
+        feature_type, errors = asyncio.run(self._wms_get_features_type(ogc_server_id, url_internal_wfs))
+        all_errors |= errors
+        types = {}
+        elements = {}
+        for child in feature_type.getchildren():
+            if child.tag == "{http://www.w3.org/2001/XMLSchema}element":
+                name = child.attrib["name"]
+                elements[name] = child.attrib["type"].split(":")[1]
+
+            if child.tag == "{http://www.w3.org/2001/XMLSchema}complexType":
+                sequence = child.find(".//{http://www.w3.org/2001/XMLSchema}sequence")
+                attrib = {}
+                for children in sequence.getchildren():
+                    namespace = None
+                    type_ = children.attrib["type"]
+                    if len(type_.split(":")) == 2:
+                        namespace, type_ = type_.split(":")
+                    namespace = children.nsmap[namespace]
+                    attrib[children.attrib["name"]] = {"namespace": namespace, "type": type_}
+                    if "alias" in children.attrib:
+                        attrib[children.attrib["name"]] = children.attrib["alias"]
+                types[child.attrib["name"]] = attrib
+        attributes = {}
+        for name, type_ in elements.items():
+            if type_ in types:
+                attributes[name] = types[type_]
+            else:
+                if type_ != "Character":
+                    LOG.warning(
+                        "The provided type '%s' does not exist, available types are %s.",
+                        type_,
+                        ", ".join(types.keys()),
+                    )
+
+        namespace = feature_type.attrib.get("targetNamespace") if feature_type is not None else None
+        return attributes, namespace, all_errors
+
     @view_config(route_name="themes", renderer="json")
     def themes(self):
         interface = self.request.params.get("interface", "desktop")
@@ -1001,22 +1041,20 @@ class Entry:
 
         result = {}
         all_errors = set()
-        LOG.info("Start preload")
+        LOG.debug("Start preload")
+        start_time = time.time()
         asyncio.run(self.preload(all_errors))
-        LOG.info("End preload")
+        LOG.debug("End preload")
+        LOG.info("Do preload in %.3fs.", time.time() - start_time)
         result["ogcServers"] = {}
         for ogc_server in models.DBSession.query(main.OGCServer).all():
             url_internal_wfs, url, url_wfs = self.get_url_internal_wfs(ogc_server, all_errors)
-            if ogc_server.wfs_support:
-                feature_type, errors = asyncio.run(
-                    self._wms_get_features_type(ogc_server.id, url_internal_wfs)
-                )
-                all_errors |= errors
-            else:
-                feature_type = None
-            attributes = None
 
-            if feature_type is not None:
+            attributes = None
+            namespace = None
+            if ogc_server.wfs_support:
+                attributes, namespace, errors = self._get_features_attributes(ogc_server.id, url_internal_wfs)
+                all_errors |= errors
 
                 all_private_layers = get_private_layers([ogc_server.id]).values()
                 protected_layers_name = [
@@ -1026,40 +1064,10 @@ class Entry:
                 for layers in [v.layer for v in all_private_layers if v.name not in protected_layers_name]:
                     private_layers_name.extend(layers.split(","))
 
-                types = {}
-                elements = {}
-                for child in feature_type.getchildren():
-                    print(child.tag)
-                    if child.tag == "{http://www.w3.org/2001/XMLSchema}element":
-                        name = child.attrib["name"]
-                        print(name)
-                        if name not in private_layers_name:
-                            elements[name] = child.attrib["type"].split(":")[1]
+                for name in private_layers_name:
+                    if name in attributes:
+                        del attributes[name]
 
-                    if child.tag == "{http://www.w3.org/2001/XMLSchema}complexType":
-                        sequence = child.find(".//{http://www.w3.org/2001/XMLSchema}sequence")
-                        attrib = {}
-                        for children in sequence.getchildren():
-                            namespace = None
-                            type_ = children.attrib["type"]
-                            if len(type_.split(":")) == 2:
-                                namespace, type_ = type_.split(":")
-                            namespace = children.nsmap[namespace]
-                            attrib[children.attrib["name"]] = {"namespace": namespace, "type": type_}
-                            if "alias" in children.attrib:
-                                attrib[children.attrib["name"]] = children.attrib["alias"]
-                        types[child.attrib["name"]] = attrib
-                attributes = {}
-                for name, type_ in elements.items():
-                    if type_ in types:
-                        attributes[name] = types[type_]
-                    else:
-                        if type_ != "Character":
-                            LOG.warning(
-                                "The provided type '%s' does not exist, available types are %s.",
-                                type_,
-                                ", ".join(types.keys()),
-                            )
             result["ogcServers"][ogc_server.name] = {
                 "url": url,
                 "urlWfs": url_wfs,
@@ -1068,9 +1076,7 @@ class Entry:
                 "imageType": ogc_server.image_type,
                 "wfsSupport": ogc_server.wfs_support,
                 "isSingleTile": ogc_server.is_single_tile,
-                "namespace": feature_type.attrib["targetNamespace"]
-                if feature_type is not None and "targetNamespace" in feature_type.attrib
-                else None,
+                "namespace": namespace,
                 "attributes": attributes,
             }
         if export_themes:
