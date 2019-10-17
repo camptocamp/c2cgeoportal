@@ -113,6 +113,10 @@ bandit:
 black:
 	black --line-length=110 --target-version py37 --exclude=.*/node_modules/.* --check --diff .
 
+.PHONY: black-fix
+black-fix:
+	black --line-length=110 --target-version py37 --exclude=.*/node_modules/.* /src
+
 .PHONY: additionallint
 additionallint:
 	# Verify that we don't directly use the CI project name in the scaffolds
