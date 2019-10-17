@@ -291,6 +291,8 @@ def layergroup_v1tov2(session, group):
             session.add(new_metadata("isExpanded", "true", group))
     elif len(is_expended_metadatas) > 0:
         session.delete(is_expended_metadatas)
+    if group.metadata_url is not None:
+        session.add(new_metadata("metadataUrl", group.metadata_url, group))
 
 
 def theme_v1tov2(session, theme):
