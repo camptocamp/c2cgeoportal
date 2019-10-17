@@ -261,7 +261,8 @@ Anonymous JSON result
            "<functionality_name>": ["functionality_value"],
            ...
        },
-       "is_intranet": false
+       "two_factor_enable": true/false, # Is the two-factor authentication enabled?
+       "is_intranet": true/false
    }
 
 .. _developer_webservices_auth_connected:
@@ -273,10 +274,8 @@ Connected JSON result
 
    {
        "username": "<username>",
-       "is_intranet": true,
-       "is_password_changed": true/false, # If false the user should change his password
-       "two_factor_enable": true/false, # Is the two factors authentication enabled?
-       "two_factor_totp_secret": "<secret>", # The two factors authentication secret on first login
+       "is_intranet": true/true,
+       "two_factor_enable": true/false, # Is the two-factor authentication enabled?
        "roles": [{
            "name": "<role_name>",
            "id": <role_id>
@@ -287,18 +286,66 @@ Connected JSON result
        }
    }
 
+User login
+----------
+
+Login to the application.
+
+URL: ``.../login``
+
+Parameters (post form):
+
+* ``login``
+* ``password``
+* ``otp``: The second factor code
+
+Result HTTP code:
+
+* 200 Success: Success.
+* 302 Found: Success with providing ``came_from`` parameter.
+* 400 Bad request: When ``login`` or ``password`` is missing.
+* 401 Unauthorized: On login failed.
+
+
+Login successful
+~~~~~~~~~~~~~~~~
+
+
+Init without two-factor authentication JSON result
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code::
+
+   {
+       "is_password_changed": false, # Always false
+       "two_factor_enable": false # Always false
+   }
+
+
+Init two-factor authentication JSON result
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code::
+
+   {
+       "two_factor_totp_secret": "<secret>", # The two-factor authentication secret on first login
+       "otp_uri": "The OTM URI"
+       "is_password_changed": false, # Always false
+       "two_factor_enable": true # Always true
+   }
 
 Change password
 ---------------
 
 Used to change the user password.
 
-URL: ``.../loginchange``
+URL: ``.../loginchangepassword``
 
 Method: ``POST``
 
 Parameters (post form):
 
+* ``login``
 * ``oldPassword``
 * ``newPassword``
 * ``confirmNewPassword``
