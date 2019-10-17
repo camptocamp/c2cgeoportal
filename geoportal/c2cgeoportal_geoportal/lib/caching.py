@@ -63,7 +63,7 @@ def keygen_function(namespace, function):
         namespace = (function.__module__, function.__name__, namespace)
 
     args = inspect.getfullargspec(function)
-    ignore_first_argument = args[0] and args[0][0] in ('self', 'cls', 'request', 'no_cache')
+    ignore_first_argument = args[0] and args[0][0] in ("self", "cls", "request", "no_cache")
 
     def generate_key(*args, **kw):
         if kw:  # pragma: no cover
@@ -73,6 +73,7 @@ def keygen_function(namespace, function):
             args = args[1:]
         parts.extend(map(compat.text_type, map(map_dbobject, args)))
         return hash(tuple(parts))
+
     return generate_key
 
 
@@ -86,11 +87,9 @@ def init_region(conf, region):
 
 
 def _configure_region(conf, cache_region):
-    kwargs = {
-        'replace_existing_backend': True,
-    }
-    kwargs.update({k: conf[k] for k in conf if k != 'backend'})
-    cache_region.configure(conf['backend'], **kwargs)
+    kwargs = {"replace_existing_backend": True}
+    kwargs.update({k: conf[k] for k in conf if k != "backend"})
+    cache_region.configure(conf["backend"], **kwargs)
 
 
 def get_region(region):
@@ -117,9 +116,7 @@ PRIVATE_CACHE = 2
 CORS_METHODS = "HEAD, GET, POST, PUT, DELETE"
 
 
-def _set_cors_headers(
-    request, response, service_name, service_headers_settings, credentials
-):
+def _set_cors_headers(request, response, service_name, service_headers_settings, credentials):
     """
     Handle CORS requests, as specified in https://www.w3.org/TR/cors/
     """
@@ -139,16 +136,12 @@ def _set_cors_headers(
             origin = "*"
             credentials = False  # Force no credentials
         else:
-            LOG.warning(
-                "CORS query not allowed for origin=%s, service=%s",
-                origin, service_name
-            )
+            LOG.warning("CORS query not allowed for origin=%s, service=%s", origin, service_name)
             return
 
-    response.headers.update({
-        "Access-Control-Allow-Origin": origin,
-        "Access-Control-Allow-Methods": CORS_METHODS,
-    })
+    response.headers.update(
+        {"Access-Control-Allow-Origin": origin, "Access-Control-Allow-Methods": CORS_METHODS}
+    )
 
     max_age = service_headers_settings.get("access_control_max_age", 3600)
     response.headers["Access-Control-Max-Age"] = str(max_age)
@@ -161,13 +154,11 @@ def _set_cors_headers(
 
     response.cache_control.max_age = max_age
 
-    if not service_headers_settings or \
-            "access_control_allow_origin" not in service_headers_settings:
+    if not service_headers_settings or "access_control_allow_origin" not in service_headers_settings:
         LOG.warning("CORS query not configured for service=%s", service_name)
         return
 
-    requested_headers = \
-        request.headers.get("Access-Control-Request-Headers", False)
+    requested_headers = request.headers.get("Access-Control-Request-Headers", False)
     if requested_headers:
         # For the moment, we allow all requested headers
         response.headers["Access-Control-Allow-Headers"] = requested_headers
@@ -176,14 +167,12 @@ def _set_cors_headers(
     # Access-Control-Expose-Headers
 
 
-def _set_common_headers(
-    request, response, service_headers_settings, cache, content_type
-):
+def _set_common_headers(request, response, service_headers_settings, cache, content_type):
     """
     Set the common headers
     """
 
-    response.headers.update(service_headers_settings.get('headers', {}))
+    response.headers.update(service_headers_settings.get("headers", {}))
 
     if cache == NO_CACHE:
         response.cache_control.no_cache = True
@@ -211,9 +200,7 @@ def _set_common_headers(
     return response
 
 
-def set_common_headers(
-    request, service_name, cache, response=None, credentials=True, content_type=None
-):
+def set_common_headers(request, service_name, cache, response=None, credentials=True, content_type=None):
     """
     Set the common headers
     """

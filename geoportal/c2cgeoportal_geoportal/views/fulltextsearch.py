@@ -39,15 +39,13 @@ from sqlalchemy import and_, desc, func, or_
 from c2cgeoportal_commons.models import DBSession
 from c2cgeoportal_commons.models.main import FullTextSearch, Interface
 from c2cgeoportal_geoportal import locale_negotiator
-from c2cgeoportal_geoportal.lib.caching import (NO_CACHE, get_region,
-                                                set_common_headers)
+from c2cgeoportal_geoportal.lib.caching import NO_CACHE, get_region, set_common_headers
 
-CACHE_REGION = get_region('std')
+CACHE_REGION = get_region("std")
 IGNORED_CHARS_RE = re.compile(r"[()&|!:]")
 
 
 class FullTextSearchView:
-
     def __init__(self, request):
         self.request = request
         set_common_headers(request, "fulltextsearch", NO_CACHE)
@@ -66,8 +64,7 @@ class FullTextSearchView:
         try:
             language = self.languages[lang]
         except KeyError:
-            return HTTPInternalServerError(
-                detail="{0!s} not defined in languages".format(lang))
+            return HTTPInternalServerError(detail="{0!s} not defined in languages".format(lang))
 
         if "query" not in self.request.params:
             return HTTPBadRequest(detail="no query")
@@ -76,9 +73,7 @@ class FullTextSearchView:
         maxlimit = self.settings.get("maxlimit", 200)
 
         try:
-            limit = int(self.request.params.get(
-                "limit",
-                self.settings.get("defaultlimit", 30)))
+            limit = int(self.request.params.get("limit", self.settings.get("defaultlimit", 30)))
         except ValueError:
             return HTTPBadRequest(detail="limit value is incorrect")
         if limit > maxlimit:
@@ -91,8 +86,7 @@ class FullTextSearchView:
         if partitionlimit > maxlimit:
             partitionlimit = maxlimit
 
-        terms_ts = "&".join(w + ":*"
-                            for w in IGNORED_CHARS_RE.sub(" ", terms).split(" ") if w != "")
+        terms_ts = "&".join(w + ":*" for w in IGNORED_CHARS_RE.sub(" ", terms).split(" ") if w != "")
         _filter = FullTextSearch.ts.op("@@")(func.to_tsquery(language, terms_ts))
 
         if self.request.user is None:
@@ -103,24 +97,22 @@ class FullTextSearchView:
                 or_(
                     FullTextSearch.public.is_(True),
                     FullTextSearch.role_id.is_(None),
-                    FullTextSearch.role_id.in_([r.id for r in self.request.user.roles])
-                )
+                    FullTextSearch.role_id.in_([r.id for r in self.request.user.roles]),
+                ),
             )
 
         if "interface" in self.request.params:
-            _filter = and_(_filter, or_(
-                FullTextSearch.interface_id.is_(None),
-                FullTextSearch.interface_id == self._get_interface_id(
-                    self.request.params["interface"]
-                )
-            ))
+            _filter = and_(
+                _filter,
+                or_(
+                    FullTextSearch.interface_id.is_(None),
+                    FullTextSearch.interface_id == self._get_interface_id(self.request.params["interface"]),
+                ),
+            )
         else:
             _filter = and_(_filter, FullTextSearch.interface_id.is_(None))
 
-        _filter = and_(_filter, or_(
-            FullTextSearch.lang.is_(None),
-            FullTextSearch.lang == lang,
-        ))
+        _filter = and_(_filter, or_(FullTextSearch.lang.is_(None), FullTextSearch.lang == lang))
 
         rank_system = self.request.params.get("ranksystem")
         if rank_system == "ts_rank_cd":
@@ -141,15 +133,14 @@ class FullTextSearchView:
         if partitionlimit:
             # Here we want to partition the search results based on
             # layer_name and limit each partition.
-            row_number = func.row_number().over(
-                partition_by=FullTextSearch.layer_name,
-                order_by=(desc(rank), FullTextSearch.label)
-            ).label("row_number")
-            subq = DBSession.query(FullTextSearch) \
-                .add_columns(row_number).filter(_filter).subquery()
+            row_number = (
+                func.row_number()
+                .over(partition_by=FullTextSearch.layer_name, order_by=(desc(rank), FullTextSearch.label))
+                .label("row_number")
+            )
+            subq = DBSession.query(FullTextSearch).add_columns(row_number).filter(_filter).subquery()
             query = DBSession.query(
-                subq.c.id, subq.c.label, subq.c.params, subq.c.layer_name,
-                subq.c.the_geom, subq.c.actions
+                subq.c.id, subq.c.label, subq.c.params, subq.c.layer_name, subq.c.the_geom, subq.c.actions
             )
             query = query.filter(subq.c.row_number <= partitionlimit)
         else:
@@ -162,9 +153,7 @@ class FullTextSearchView:
 
         features = []
         for o in objs:
-            properties = {
-                "label": o.label,
-            }
+            properties = {"label": o.label}
             if o.layer_name is not None:
                 properties["layer_name"] = o.layer_name
             if o.params is not None:
@@ -172,22 +161,14 @@ class FullTextSearchView:
             if o.actions is not None:
                 properties["actions"] = o.actions
             if o.actions is None and o.layer_name is not None:
-                properties["actions"] = [{
-                    "action": "add_layer",
-                    "data": o.layer_name,
-                }]
+                properties["actions"] = [{"action": "add_layer", "data": o.layer_name}]
 
             if o.the_geom is not None:
                 geom = to_shape(o.the_geom)
-                feature = Feature(
-                    id=o.id, geometry=geom,
-                    properties=properties, bbox=geom.bounds
-                )
+                feature = Feature(id=o.id, geometry=geom, properties=properties, bbox=geom.bounds)
                 features.append(feature)
             else:
-                feature = Feature(
-                    id=o.id, properties=properties
-                )
+                feature = Feature(id=o.id, properties=properties)
                 features.append(feature)
 
         return FeatureCollection(features)

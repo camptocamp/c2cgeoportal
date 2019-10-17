@@ -35,8 +35,8 @@ Create Date: 2016-06-29 13:50:59.746514
 """
 
 # revision identifiers, used by Alembic.
-revision = 'daf738d5bae4'
-down_revision = ('6a412d9437b1', '951ff84bd8ec')
+revision = "daf738d5bae4"
+down_revision = ("6a412d9437b1", "951ff84bd8ec")
 branch_labels = None
 depends_on = None
 

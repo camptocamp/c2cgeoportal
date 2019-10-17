@@ -72,7 +72,8 @@ feature = """
     </gml:featureMember>
     """
 
-featurecollection_outlimit = """
+featurecollection_outlimit = (
+    """
 <wfs:FeatureCollection xmlns:ms="http://mapserver.gis.umn.edu/mapserver" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:wfs="http://www.opengis.net/wfs" xsi:schemaLocation="http://mapserver.gis.umn.edu/mapserver http://c2cpc29.camptocamp.com/sbrunner/mapserv?SERVICE=WFS&amp;VERSION=1.1.0&amp;REQUEST=DescribeFeatureType&amp;TYPENAME=feature:grundstueck&amp;OUTPUTFORMAT=text/xml;%20subtype=gml/3.1.1  http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd">
     <gml:boundedBy>
       <gml:Envelope srsName="EPSG:2056">
@@ -80,11 +81,15 @@ featurecollection_outlimit = """
           <gml:upperCorner>2638409.063753 1267658.751429</gml:upperCorner>
       </gml:Envelope>
     </gml:boundedBy>
-    """ + feature * 205 + """
+    """
+    + feature * 205
+    + """
 </wfs:FeatureCollection>
     """
+)
 
-featurecollection_inlimit = """
+featurecollection_inlimit = (
+    """
 <wfs:FeatureCollection xmlns:ms="http://mapserver.gis.umn.edu/mapserver" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:wfs="http://www.opengis.net/wfs" xsi:schemaLocation="http://mapserver.gis.umn.edu/mapserver http://c2cpc29.camptocamp.com/sbrunner/mapserv?SERVICE=WFS&amp;VERSION=1.1.0&amp;REQUEST=DescribeFeatureType&amp;TYPENAME=feature:grundstueck&amp;OUTPUTFORMAT=text/xml;%20subtype=gml/3.1.1  http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd">
     <gml:boundedBy>
       <gml:Envelope srsName="EPSG:2056">
@@ -92,6 +97,9 @@ featurecollection_inlimit = """
           <gml:upperCorner>2638409.063753 1267658.751429</gml:upperCorner>
       </gml:Envelope>
     </gml:boundedBy>
-    """ + feature * 199 + """
+    """
+    + feature * 199
+    + """
 </wfs:FeatureCollection>
     """
+)

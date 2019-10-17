@@ -43,7 +43,6 @@ _ = TranslationStringFactory("c2cgeoportal")
 
 
 class Profile(Raster):
-
     def __init__(self, request):
         Raster.__init__(self, request)
 
@@ -87,12 +86,7 @@ class Profile(Raster):
 
             # 10cm accuracy is enough for distances
             rounded_dist = Decimal(str(dist)).quantize(Decimal("0.1"))
-            points.append({
-                "dist": rounded_dist,
-                "values": values,
-                "x": coord[0],
-                "y": coord[1]
-            })
+            points.append({"dist": rounded_dist, "values": values, "x": coord[0], "y": coord[1]})
             prev_coord = coord
 
         return layers, points
@@ -100,10 +94,7 @@ class Profile(Raster):
     @staticmethod
     def _dist(coord1, coord2):
         """Compute the distance between 2 points"""
-        return math.sqrt(
-            math.pow(coord1[0] - coord2[0], 2.0)
-            + math.pow(coord1[1] - coord2[1], 2.0)
-        )
+        return math.sqrt(math.pow(coord1[0] - coord2[0], 2.0) + math.pow(coord1[1] - coord2[1], 2.0))
 
     def _create_points(self, coords, nb_points):
         """Add some points in order to reach roughly the asked number of points"""

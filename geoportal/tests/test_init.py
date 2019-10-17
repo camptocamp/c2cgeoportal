@@ -37,8 +37,13 @@ from pyramid import testing
 from tests import DummyRequest
 
 import c2cgeoportal_geoportal
-from c2cgeoportal_geoportal import (call_hook, create_get_user_from_request, default_user_validator,
-                                    is_valid_referer, set_user_validator)
+from c2cgeoportal_geoportal import (
+    call_hook,
+    create_get_user_from_request,
+    default_user_validator,
+    is_valid_referer,
+    set_user_validator,
+)
 
 
 class TestIncludeme(TestCase):
@@ -48,30 +53,26 @@ class TestIncludeme(TestCase):
     def setup_method(self, _):
         # the c2cgeoportal includeme function requires a number
         # of settings
-        self.config = testing.setUp(settings={
-            "sqlalchemy.url": "postgresql://www-data:www-data@db:5432/geomapfish_tests",
-            "srid": 3857,
-            "schema": "main",
-            "schema_static": "main_static",
-            "default_max_age": 86400,
-            "app.cfg": "/opt/c2cgeoportal/geoportal/tests/config.yaml",
-            "package": "c2cgeoportal",
-            "enable_admin_interface": False,
-        })
+        self.config = testing.setUp(
+            settings={
+                "sqlalchemy.url": "postgresql://www-data:www-data@db:5432/geomapfish_tests",
+                "srid": 3857,
+                "schema": "main",
+                "schema_static": "main_static",
+                "default_max_age": 86400,
+                "app.cfg": "/opt/c2cgeoportal/geoportal/tests/config.yaml",
+                "package": "c2cgeoportal",
+                "enable_admin_interface": False,
+            }
+        )
 
     def test_set_user_validator_directive(self):
         self.config.include(c2cgeoportal_geoportal.includeme)
-        self.assertTrue(
-            self.config.set_user_validator.__func__.__docobj__ is
-            set_user_validator
-        )
+        self.assertTrue(self.config.set_user_validator.__func__.__docobj__ is set_user_validator)
 
     def test_default_user_validator(self):
         self.config.include(c2cgeoportal_geoportal.includeme)
-        self.assertEqual(
-            self.config.registry.validate_user,
-            default_user_validator
-        )
+        self.assertEqual(self.config.registry.validate_user, default_user_validator)
 
     def test_user_validator_overwrite(self):
         self.config.include(c2cgeoportal_geoportal.includeme)
@@ -80,6 +81,7 @@ class TestIncludeme(TestCase):
             del username  # Unused
             del password  # Unused
             return False  # pragma: no cover
+
         self.config.set_user_validator(custom_validator)
         self.assertEqual(self.config.registry.validate_user, custom_validator)
 
@@ -89,12 +91,10 @@ class TestReferer(TestCase):
     Check that accessing something with a bad HTTP referer is equivalent to a
     not authenticated query.
     """
+
     BASE1 = "http://example.com/app"
     BASE2 = "http://friend.com/app2"
-    SETTINGS = {"authorized_referers": [
-        BASE1,
-        BASE2
-    ]}
+    SETTINGS = {"authorized_referers": [BASE1, BASE2]}
     USER = "toto"
 
     def _get_user(self, to, ref, method="GET"):
@@ -105,11 +105,7 @@ class TestReferer(TestCase):
                 self.user_ = TestReferer.USER
                 self.method = method
 
-        config._config = {
-            'schema': 'main',
-            'schema_static': 'main_static',
-            'srid': 21781
-        }
+        config._config = {"schema": "main", "schema_static": "main_static", "srid": 21781}
         get_user = create_get_user_from_request(self.SETTINGS)
         return get_user(MockRequest(to=to, ref=ref, method=method))
 
@@ -117,9 +113,7 @@ class TestReferer(TestCase):
         def match(reference, value, expected):
             r = DummyRequest()
             r.referer = value
-            self.assertEqual(is_valid_referer(r, {
-                "authorized_referers": [reference]
-            }), expected)
+            self.assertEqual(is_valid_referer(r, {"authorized_referers": [reference]}), expected)
 
         match("http://example.com/app/", "http://example.com/app?k=v", True)
         match("http://example.com/app/", "http://example.com/app?k=v#link", True)
@@ -134,12 +128,9 @@ class TestReferer(TestCase):
         match("http://example.com", "http://example.com.bad.org/app/x/y", False)
 
     def test_positive(self):
-        self.assertEqual(
-            self._get_user(to=self.BASE1 + "/1", ref=self.BASE1), self.USER)
-        self.assertEqual(
-            self._get_user(to=self.BASE1 + "/2", ref=self.BASE1 + "/3"), self.USER)
-        self.assertEqual(
-            self._get_user(to=self.BASE1 + "/4", ref=self.BASE2 + "/5"), self.USER)
+        self.assertEqual(self._get_user(to=self.BASE1 + "/1", ref=self.BASE1), self.USER)
+        self.assertEqual(self._get_user(to=self.BASE1 + "/2", ref=self.BASE1 + "/3"), self.USER)
+        self.assertEqual(self._get_user(to=self.BASE1 + "/4", ref=self.BASE2 + "/5"), self.USER)
 
     def test_no_ref(self):
         self.assertEqual(self._get_user(to=self.BASE1, ref=None), self.USER)
@@ -149,9 +140,7 @@ class TestReferer(TestCase):
         self.assertIsNone(self._get_user(to=self.BASE1, ref="", method="POST"))
 
     def test_bad_ref(self):
-        self.assertIsNone(self._get_user(
-            to=self.BASE1,
-            ref="http://bad.com/hacker"))
+        self.assertIsNone(self._get_user(to=self.BASE1, ref="http://bad.com/hacker"))
 
 
 def hook(tracer):
@@ -159,12 +148,7 @@ def hook(tracer):
 
 
 class TestHooks(TestCase):
-    settings = {
-        "hooks": {
-            "test": "tests.test_init.hook",
-            "bad": "c2cgeoportal_geoportal.not_here"
-        }
-    }
+    settings = {"hooks": {"test": "tests.test_init.hook", "bad": "c2cgeoportal_geoportal.not_here"}}
 
     def test_existing(self):
         tracer = {"called": False}
@@ -186,6 +170,7 @@ class TestInit(TestCase):
     def test_add_url_params(self):
         from c2cgeoportal_geoportal.lib import add_url_params
         from urllib.parse import urlparse, parse_qs
+
         params = {"Name": "Bob", "Age": 18, "Nationality": "Việt Nam"}
         result = add_url_params("http://test/", params)
         presult = urlparse(result)
@@ -194,8 +179,6 @@ class TestInit(TestCase):
         self.assertEqual(presult.path, "/")
         self.assertEqual(presult.params, "")
         self.assertEqual(presult.fragment, "")
-        self.assertEqual(parse_qs(presult.query), {
-            "Name": ["Bob"],
-            "Age": ["18"],
-            "Nationality": ["Việt Nam"],
-        })
+        self.assertEqual(
+            parse_qs(presult.query), {"Name": ["Bob"], "Age": ["18"], "Nationality": ["Việt Nam"]}
+        )

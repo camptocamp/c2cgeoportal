@@ -41,19 +41,15 @@ from c2cgeoportal_geoportal.lib import caching
 class DummyRequest(PyramidDummyRequest):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.client_addr = '1.1.1.1'
+        self.client_addr = "1.1.1.1"
         self.referer = None
         if self.registry.settings is None:
             self.registry.settings = {}
 
 
 def setup_common():
-    caching.init_region({
-        'backend': 'dogpile.cache.null',
-    }, 'std')
-    caching.init_region({
-        'backend': 'dogpile.cache.null',
-    }, 'obj')
+    caching.init_region({"backend": "dogpile.cache.null"}, "std")
+    caching.init_region({"backend": "dogpile.cache.null"}, "obj")
 
 
 def create_dummy_request(additional_settings=None, *args, **kargs):
@@ -64,7 +60,7 @@ def create_dummy_request(additional_settings=None, *args, **kargs):
         "available_locale_names": ["en", "fr", "de"],
         "default_locale_name": "fr",
         "default_max_age": 1000,
-        "package": "package_for_test"
+        "package": "package_for_test",
     }
     request.registry.settings.update(additional_settings)
     request.is_valid_referer = True

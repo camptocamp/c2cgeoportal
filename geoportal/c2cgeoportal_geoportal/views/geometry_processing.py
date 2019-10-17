@@ -38,23 +38,29 @@ from sqlalchemy import func
 
 
 class GeometryProcessing:
-
     def __init__(self, request):
         self.request = request
 
     @view_config(route_name="difference", renderer="geojson")
     def difference(self):
         body = loads(self.request.body)
-        if "geometries" not in body or \
-                not isinstance(body["geometries"], list) or \
-                len(body["geometries"]) != 2:  # pragma: no cover
-            raise HTTPBadRequest("""Wrong body, it should be like that:
+        if (
+            "geometries" not in body
+            or not isinstance(body["geometries"], list)
+            or len(body["geometries"]) != 2
+        ):  # pragma: no cover
+            raise HTTPBadRequest(
+                """Wrong body, it should be like that:
             {
                 "geometries": [geomA, geomB]
             }
-            """)
+            """
+            )
 
-        return to_shape(DBSession.query(func.ST_Difference(
-            from_shape(asShape(body["geometries"][0])),
-            from_shape(asShape(body["geometries"][1]))
-        )).scalar())
+        return to_shape(
+            DBSession.query(
+                func.ST_Difference(
+                    from_shape(asShape(body["geometries"][0])), from_shape(asShape(body["geometries"][1]))
+                )
+            ).scalar()
+        )

@@ -37,8 +37,11 @@ from pyramid.httpexceptions import HTTPBadRequest, HTTPForbidden, HTTPUnauthoriz
 from pyramid.view import view_config
 
 from c2cgeoportal_geoportal.lib.caching import NO_CACHE, PRIVATE_CACHE
-from c2cgeoportal_geoportal.lib.filter_capabilities import (filter_wfst_capabilities, normalize_tag,
-                                                            normalize_typename)
+from c2cgeoportal_geoportal.lib.filter_capabilities import (
+    filter_wfst_capabilities,
+    normalize_tag,
+    normalize_typename,
+)
 from c2cgeoportal_geoportal.lib.layers import get_writable_layers
 from c2cgeoportal_geoportal.views.ogcproxy import OGCProxy
 
@@ -46,15 +49,16 @@ LOG = logging.getLogger(__name__)
 
 
 class TinyOWSProxy(OGCProxy):
-
     def __init__(self, request):
         OGCProxy.__init__(self, request, has_default_ogc_server=True)
         self.settings = request.registry.settings.get("tinyowsproxy", {})
 
         assert "tinyows_url" in self.settings, "tinyowsproxy.tinyows_url must be set"
-        self.ogc_server = models.DBSession.query(main.OGCServer).filter(
-            main.OGCServer.name == self.settings["ogc_server"]
-        ).one()
+        self.ogc_server = (
+            models.DBSession.query(main.OGCServer)
+            .filter(main.OGCServer.name == self.settings["ogc_server"])
+            .one()
+        )
 
         self.user = self.request.user
 
@@ -68,21 +72,20 @@ class TinyOWSProxy(OGCProxy):
     def proxy(self):
         if self.user is None:
             raise HTTPUnauthorized(
-                "Authentication required",
-                headers=[("WWW-Authenticate", 'Basic realm="TinyOWS"')]
+                "Authentication required", headers=[("WWW-Authenticate", 'Basic realm="TinyOWS"')]
             )
 
         operation = self.lower_params.get("request")
-        typenames = \
-            set([normalize_typename(self.lower_params.get("typename"))]) \
-            if "typename" in self.lower_params \
+        typenames = (
+            set([normalize_typename(self.lower_params.get("typename"))])
+            if "typename" in self.lower_params
             else set()
+        )
 
         method = self.request.method
         if method == "POST":
             try:
-                (operation, typenames_post) = \
-                    self._parse_body(self.request.body)
+                (operation, typenames_post) = self._parse_body(self.request.body)
             except Exception as e:
                 LOG.error("Error while parsing POST request body")
                 LOG.exception(e)
@@ -98,23 +101,25 @@ class TinyOWSProxy(OGCProxy):
             # is given, otherwise we would have to filter the result
             if len(typenames) != 1:
                 raise HTTPBadRequest(
-                    "Exactly one type-name must be given for "
-                    "DescribeFeatureType requests"
+                    "Exactly one type-name must be given for " "DescribeFeatureType requests"
                 )
 
         if not self._is_allowed(typenames):
-            raise HTTPForbidden(
-                "No access rights for at least one of the given type-names"
-            )
+            raise HTTPForbidden("No access rights for at least one of the given type-names")
 
         # we want clients to cache GetCapabilities and DescribeFeatureType req.
         use_cache = method == "GET" and operation in ("getcapabilities", "describefeaturetype")
         cache_control = PRIVATE_CACHE if use_cache else NO_CACHE
 
         response = self._proxy_callback(
-            operation, self.user, cache_control,
-            url=self._get_wfs_url(), params=dict(self.request.params), cache=use_cache,
-            headers=self._get_headers(), body=self.request.body,
+            operation,
+            self.user,
+            cache_control,
+            url=self._get_wfs_url(),
+            params=dict(self.request.params),
+            cache=use_cache,
+            headers=self._get_headers(),
+            body=self.request.body,
         )
         return response
 
@@ -146,14 +151,10 @@ class TinyOWSProxy(OGCProxy):
             )
 
         content = self._filter_urls(
-            content,
-            self.settings.get("online_resource"),
-            self.settings.get("proxy_online_resource")
+            content, self.settings.get("online_resource"), self.settings.get("proxy_online_resource")
         )
 
-        return self._build_response(
-            response, content, cache_control, "tinyows"
-        )
+        return self._build_response(response, content, cache_control, "tinyows")
 
     @staticmethod
     def _filter_urls(content, online_resource, proxy_online_resource):

@@ -13,6 +13,6 @@ def includeme(config: Configurator) -> None:
     """
     settings = config.get_settings()
 
-    configuration.init(settings.get('app.cfg'))
+    configuration.init(settings.get("app.cfg"))
     # update the settings object from the YAML application config file
     settings.update(configuration.get_config())

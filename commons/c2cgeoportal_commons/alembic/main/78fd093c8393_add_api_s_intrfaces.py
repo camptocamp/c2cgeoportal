@@ -40,34 +40,32 @@ from sqlalchemy import Column, MetaData, Table
 from sqlalchemy.types import Unicode
 
 # revision identifiers, used by Alembic.
-revision = '78fd093c8393'
-down_revision = 'e85afd327ab3'
+revision = "78fd093c8393"
+down_revision = "e85afd327ab3"
 branch_labels = None
 depends_on = None
 
 
 def upgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
     # Instructions
-    interface = Table(
-        'interface', MetaData(),
-        Column('name', Unicode),
-        schema=schema,
-    )
+    interface = Table("interface", MetaData(), Column("name", Unicode), schema=schema)
     connection = op.get_bind()
-    for interface_name in ('api', 'iframe_api'):
-        results = connection.execute("SELECT name FROM {schema}.interface WHERE name='{name}'".format(
-            name=interface_name, schema=schema
-        ))
+    for interface_name in ("api", "iframe_api"):
+        results = connection.execute(
+            "SELECT name FROM {schema}.interface WHERE name='{name}'".format(
+                name=interface_name, schema=schema
+            )
+        )
         if not results:
-            op.bulk_insert(interface, [
-                {'name': interface_name},
-            ])
-    for interface_name in ('edit', 'routing'):
-        results = connection.execute("SELECT name FROM {schema}.interface WHERE name='{name}'".format(
-            name=interface_name, schema=schema
-        ))
+            op.bulk_insert(interface, [{"name": interface_name}])
+    for interface_name in ("edit", "routing"):
+        results = connection.execute(
+            "SELECT name FROM {schema}.interface WHERE name='{name}'".format(
+                name=interface_name, schema=schema
+            )
+        )
         if results:
             op.execute(
                 "DELETE FROM {schema}.interface_theme it "
@@ -83,33 +81,33 @@ def upgrade():
                     name=interface_name, schema=schema
                 )
             )
-            op.execute("DELETE FROM {schema}.interface WHERE name='{name}'".format(
-                name=interface_name, schema=schema
-            ))
+            op.execute(
+                "DELETE FROM {schema}.interface WHERE name='{name}'".format(
+                    name=interface_name, schema=schema
+                )
+            )
 
 
 def downgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
     # Instructions
-    interface = Table(
-        'interface', MetaData(),
-        Column('name', Unicode),
-        schema=schema,
-    )
+    interface = Table("interface", MetaData(), Column("name", Unicode), schema=schema)
     connection = op.get_bind()
-    for interface_name in ('edit', 'routing'):
-        results = connection.execute("SELECT name FROM {schema}.interface WHERE name='{name}'".format(
-            name=interface_name, schema=schema
-        ))
+    for interface_name in ("edit", "routing"):
+        results = connection.execute(
+            "SELECT name FROM {schema}.interface WHERE name='{name}'".format(
+                name=interface_name, schema=schema
+            )
+        )
         if not results:
-            op.bulk_insert(interface, [
-                {'name': interface_name},
-            ])
-    for interface_name in ('api', 'iframe_api'):
-        results = connection.execute("SELECT name FROM {schema}.interface WHERE name='{name}'".format(
-            name=interface_name, schema=schema
-        ))
+            op.bulk_insert(interface, [{"name": interface_name}])
+    for interface_name in ("api", "iframe_api"):
+        results = connection.execute(
+            "SELECT name FROM {schema}.interface WHERE name='{name}'".format(
+                name=interface_name, schema=schema
+            )
+        )
         if results:
             op.execute(
                 "DELETE FROM {schema}.interface_theme it "
@@ -125,6 +123,8 @@ def downgrade():
                     name=interface_name, schema=schema
                 )
             )
-            op.execute("DELETE FROM {schema}.interface WHERE name='{name}'".format(
-                name=interface_name, schema=schema
-            ))
+            op.execute(
+                "DELETE FROM {schema}.interface WHERE name='{name}'".format(
+                    name=interface_name, schema=schema
+                )
+            )

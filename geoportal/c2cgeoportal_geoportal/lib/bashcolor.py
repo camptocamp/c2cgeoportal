@@ -38,5 +38,5 @@ CYAN = 6
 WHITE = 7
 
 
-def colorize(text, color):   # pragma: no cover
+def colorize(text, color):  # pragma: no cover
     return "\x1b[01;3{0:d}m{1!s}\x1b[0m".format(color, text)

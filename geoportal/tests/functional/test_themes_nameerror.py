@@ -39,15 +39,17 @@ from pyramid import testing
 from tests.functional import (  # noqa
     teardown_common as teardown_module,
     setup_common as setup_module,
-    mapserv_url, create_dummy_request, create_default_ogcserver,
+    mapserv_url,
+    create_dummy_request,
+    create_default_ogcserver,
 )
 
 import logging
+
 log = logging.getLogger(__name__)
 
 
 class TestThemesNameErrorView(TestCase):
-
     def setup_method(self, _):
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
@@ -70,9 +72,7 @@ class TestThemesNameErrorView(TestCase):
 
         theme = Theme(name="__test/theme")
         theme.interfaces = [main]
-        theme.children = [
-            layer_group
-        ]
+        theme.children = [layer_group]
 
         DBSession.add(theme)
         transaction.commit()
@@ -90,9 +90,7 @@ class TestThemesNameErrorView(TestCase):
         for t in DBSession.query(Theme).all():
             DBSession.delete(t)
         DBSession.query(OGCServer).delete()
-        DBSession.query(Interface).filter(
-            Interface.name == "main"
-        ).delete()
+        DBSession.query(Interface).filter(Interface.name == "main").delete()
 
         transaction.commit()
 
@@ -115,10 +113,6 @@ class TestThemesNameErrorView(TestCase):
     def test_error(self):
         from c2cgeoportal_geoportal.views.entry import Entry
 
-        entry = Entry(self._create_request_obj(params={
-            "version": "2",
-        }))
+        entry = Entry(self._create_request_obj(params={"version": "2"}))
         themes = entry.themes()
-        self.assertEqual(set(themes["errors"]), set([
-            "The theme has an unsupported name '__test/theme'."
-        ]))
+        self.assertEqual(set(themes["errors"]), set(["The theme has an unsupported name '__test/theme'."]))

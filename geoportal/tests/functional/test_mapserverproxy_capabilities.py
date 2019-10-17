@@ -35,18 +35,28 @@ import transaction
 from tests.functional import (  # noqa
     teardown_common as teardown_module,
     setup_common as setup_module,
-    create_dummy_request, mapserv_url, create_default_ogcserver, cleanup_db, setup_db,
+    create_dummy_request,
+    mapserv_url,
+    create_default_ogcserver,
+    cleanup_db,
+    setup_db,
 )
 
 
 class TestMapserverproxyCapabilities(TestCase):
-
     def setup_method(self, _):
         self.maxDiff = None
 
         from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import Role, LayerWMS, RestrictionArea, Interface, \
-            OGCServer, OGCSERVER_TYPE_MAPSERVER, OGCSERVER_AUTH_STANDARD
+        from c2cgeoportal_commons.models.main import (
+            Role,
+            LayerWMS,
+            RestrictionArea,
+            Interface,
+            OGCServer,
+            OGCSERVER_TYPE_MAPSERVER,
+            OGCSERVER_AUTH_STANDARD,
+        )
         from c2cgeoportal_commons.models.static import User
 
         setup_db()
@@ -105,9 +115,7 @@ class TestMapserverproxyCapabilities(TestCase):
 
         restricted_area = RestrictionArea("__test_ra", "", [layer1, layer2, layer3, layer4], [role])
 
-        DBSession.add_all([
-            user, restricted_area
-        ])
+        DBSession.add_all([user, restricted_area])
         transaction.commit()
 
     def teardown_method(self, _):
@@ -117,46 +125,42 @@ class TestMapserverproxyCapabilities(TestCase):
     def _wms_get_capabilities(ogcserver, service="wms", username=None):
         from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
-        request = create_dummy_request({
-            "admin_interface": {
-                "available_functionalities": [
-                    {"name": "mapserver_substitution"},
-                    {"name": "print_template"},
-                ]
+        request = create_dummy_request(
+            {
+                "admin_interface": {
+                    "available_functionalities": [
+                        {"name": "mapserver_substitution"},
+                        {"name": "print_template"},
+                    ]
+                },
+                "servers": {"srv": "http://example.com"},
             },
-            "servers": {
-                "srv": "http://example.com"
-            }
-        }, user=username)
-        request.params.update(dict(
-            service=service,
-            version="1.1.1",
-            request="getcapabilities",
-            ogcserver=ogcserver
-        ))
+            user=username,
+        )
+        request.params.update(
+            dict(service=service, version="1.1.1", request="getcapabilities", ogcserver=ogcserver)
+        )
         return MapservProxy(request).proxy()
 
     @staticmethod
     def _wms_get_capabilities_config(ogcserver, service="wms", username=None):
         from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
-        request = create_dummy_request({
-            "admin_interface": {
-                "available_functionalities": [
-                    {"name": "mapserver_substitution"},
-                    {"name": "print_template"},
-                ]
+        request = create_dummy_request(
+            {
+                "admin_interface": {
+                    "available_functionalities": [
+                        {"name": "mapserver_substitution"},
+                        {"name": "print_template"},
+                    ]
+                },
+                "servers": {"srv": "http://example.com"},
             },
-            "servers": {
-                "srv": "http://example.com"
-            },
-        }, user=username)
-        request.params.update(dict(
-            service=service,
-            version="1.1.1",
-            request="getcapabilities",
-            ogcserver=ogcserver
-        ))
+            user=username,
+        )
+        request.params.update(
+            dict(service=service, version="1.1.1", request="getcapabilities", ogcserver=ogcserver)
+        )
         return MapservProxy(request).proxy()
 
     def test_wms_osjpeg(self):

@@ -42,35 +42,29 @@ from owslib.wms import WebMapService
 from pyramid.httpexceptions import HTTPBadGateway
 
 from c2cgeoportal_commons.models import static
-from c2cgeoportal_geoportal.lib import (add_url_params, caching,
-                                        get_ogc_server_wfs_url_ids,
-                                        get_ogc_server_wms_url_ids)
-from c2cgeoportal_geoportal.lib.layers import (get_private_layers,
-                                               get_protected_layers,
-                                               get_writable_layers)
+from c2cgeoportal_geoportal.lib import (
+    add_url_params,
+    caching,
+    get_ogc_server_wfs_url_ids,
+    get_ogc_server_wms_url_ids,
+)
+from c2cgeoportal_geoportal.lib.layers import get_private_layers, get_protected_layers, get_writable_layers
 
-CACHE_REGION = caching.get_region('std')
+CACHE_REGION = caching.get_region("std")
 LOG = logging.getLogger(__name__)
 
 
 @CACHE_REGION.cache_on_arguments()
 def wms_structure(wms_url, host, request):
     url = urlsplit(wms_url)
-    wms_url = add_url_params(wms_url, {
-        "SERVICE": "WMS",
-        "VERSION": "1.1.1",
-        "REQUEST": "GetCapabilities",
-    })
+    wms_url = add_url_params(wms_url, {"SERVICE": "WMS", "VERSION": "1.1.1", "REQUEST": "GetCapabilities"})
 
     # Forward request to target (without Host Header)
     headers = dict()
     if url.hostname == "localhost" and host is not None:  # pragma: no cover
         headers["Host"] = host
     try:
-        response = requests.get(
-            wms_url, headers=headers,
-            **request.registry.settings.get("http_options", {})
-        )
+        response = requests.get(wms_url, headers=headers, **request.registry.settings.get("http_options", {}))
     except Exception:  # pragma: no cover
         raise HTTPBadGateway("Unable to GetCapabilities from wms_url {0!s}".format(wms_url))
 
@@ -98,15 +92,13 @@ def wms_structure(wms_url, host, request):
         return result
 
     except AttributeError:  # pragma: no cover
-        error = "WARNING! an error occurred while trying to " \
-            "read the mapfile and recover the themes."
+        error = "WARNING! an error occurred while trying to " "read the mapfile and recover the themes."
         error = "{0!s}\nurl: {1!s}\nxml:\n{2!s}".format(error, wms_url, response.text)
         LOG.exception(error)
         raise HTTPBadGateway(error)
 
     except SyntaxError:  # pragma: no cover
-        error = "WARNING! an error occurred while trying to " \
-            "read the mapfile and recover the themes."
+        error = "WARNING! an error occurred while trying to " "read the mapfile and recover the themes."
         error = "{0!s}\nurl: {1!s}\nxml:\n{2!s}".format(error, wms_url, response.text)
         LOG.exception(error)
         raise HTTPBadGateway(error)
@@ -117,8 +109,7 @@ def filter_capabilities(content, user: static.User, wms, url, headers, request):
     wms_structure_ = wms_structure(url, headers.get("Host"), request)
 
     ogc_server_ids = (
-        get_ogc_server_wms_url_ids(request) if wms else
-        get_ogc_server_wfs_url_ids(request)
+        get_ogc_server_wms_url_ids(request) if wms else get_ogc_server_wfs_url_ids(request)
     ).get(url)
     gmf_private_layers = copy.copy(get_private_layers(ogc_server_ids))
     for id_ in list(get_protected_layers(user, ogc_server_ids).keys()):
@@ -140,9 +131,7 @@ def filter_capabilities(content, user: static.User, wms, url, headers, request):
     result = StringIO()
     downstream_handler = XMLGenerator(result, "utf-8")
     filter_handler = _CapabilitiesFilter(
-        parser, downstream_handler,
-        "Layer" if wms else "FeatureType",
-        layers_blacklist=private_layers
+        parser, downstream_handler, "Layer" if wms else "FeatureType", layers_blacklist=private_layers
     )
     filter_handler.parse(StringIO(content))
     return result.getvalue()
@@ -162,9 +151,7 @@ def filter_wfst_capabilities(content, user: static.User, wfs_url, request):
     result = StringIO()
     downstream_handler = XMLGenerator(result, "utf-8")
     filter_handler = _CapabilitiesFilter(
-        parser, downstream_handler,
-        "FeatureType",
-        layers_whitelist=writable_layers
+        parser, downstream_handler, "FeatureType", layers_whitelist=writable_layers
     )
     filter_handler.parse(StringIO(content))
     return result.getvalue()
@@ -188,15 +175,14 @@ class _CapabilitiesFilter(XMLFilterBase):
     `layers_whitelist` is given).
     """
 
-    def __init__(
-            self, upstream, downstream, tag_name,
-            layers_blacklist=None, layers_whitelist=None):
+    def __init__(self, upstream, downstream, tag_name, layers_blacklist=None, layers_whitelist=None):
         XMLFilterBase.__init__(self, upstream)
         self._downstream = downstream
         self._accumulator = []
 
-        assert layers_blacklist is not None or layers_whitelist is not None, \
-            "either layers_blacklist OR layers_whitelist must be set"
+        assert (
+            layers_blacklist is not None or layers_whitelist is not None
+        ), "either layers_blacklist OR layers_whitelist must be set"
         assert not (
             layers_blacklist is not None and layers_whitelist is not None
         ), "only either layers_blacklist OR layers_whitelist can be set"
@@ -226,9 +212,7 @@ class _CapabilitiesFilter(XMLFilterBase):
             action()
 
     def _add_child(self, layer):
-        if not layer.hidden and not (
-                layer.has_children and layer.children_nb == 0
-        ):
+        if not layer.hidden and not (layer.has_children and layer.children_nb == 0):
             for action in layer.accumul:
                 self._complete_text_node()
                 action()
@@ -257,15 +241,11 @@ class _CapabilitiesFilter(XMLFilterBase):
                 parent_layer = self.layers_path[-1]
                 parent_layer.has_children = True
                 parent_layer.children_nb += 1
-            layer = _Layer(
-                parent_layer.self_hidden
-            ) if len(self.layers_path) > 1 else _Layer()
+            layer = _Layer(parent_layer.self_hidden) if len(self.layers_path) > 1 else _Layer()
             self.layers_path.append(layer)
 
             if parent_layer is not None:
-                parent_layer.accumul.append(
-                    lambda: self._add_child(layer)
-                )
+                parent_layer.accumul.append(lambda: self._add_child(layer))
         elif name == "Name" and len(self.layers_path) != 0:
             self.in_name = True
 
@@ -291,15 +271,12 @@ class _CapabilitiesFilter(XMLFilterBase):
         self._do(lambda: self._downstream.endElementNS(name, qname))
 
     def _keep_layer(self, layer_name):
-        return (
-            self.layers_blacklist is not None and layer_name not in self.layers_blacklist
-        ) or (
+        return (self.layers_blacklist is not None and layer_name not in self.layers_blacklist) or (
             self.layers_whitelist is not None and layer_name in self.layers_whitelist
         )
 
     def characters(self, content):
-        if self.in_name and len(self.layers_path) != 0 and not \
-                self.layers_path[-1].self_hidden is True:
+        if self.in_name and len(self.layers_path) != 0 and not self.layers_path[-1].self_hidden is True:
             layer_name = normalize_typename(content)
             if self._keep_layer(layer_name):
                 for layer in self.layers_path:

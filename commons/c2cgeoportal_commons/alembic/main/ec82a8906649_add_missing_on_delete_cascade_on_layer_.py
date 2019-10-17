@@ -38,46 +38,40 @@ from alembic import op
 from c2c.template.config import config
 
 # revision identifiers, used by Alembic.
-revision = 'ec82a8906649'
-down_revision = 'e7e03dedade3'
+revision = "ec82a8906649"
+down_revision = "e7e03dedade3"
 branch_labels = None
 depends_on = None
 
 
 def upgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
-    for source, dest in [
-        ('layer_wmts', 'layer'),
-        ('layerv1', 'layer'),
-        ('theme', 'treegroup'),
-    ]:
-        op.drop_constraint(
-            '{}_id_fkey'.format(source),
-            source, schema=schema,
-        )
+    for source, dest in [("layer_wmts", "layer"), ("layerv1", "layer"), ("theme", "treegroup")]:
+        op.drop_constraint("{}_id_fkey".format(source), source, schema=schema)
         op.create_foreign_key(
-            '{}_id_fkey'.format(source),
-            source, source_schema=schema, local_cols=['id'],
-            referent_table=dest, referent_schema=schema, remote_cols=['id'],
-            ondelete='cascade',
+            "{}_id_fkey".format(source),
+            source,
+            source_schema=schema,
+            local_cols=["id"],
+            referent_table=dest,
+            referent_schema=schema,
+            remote_cols=["id"],
+            ondelete="cascade",
         )
 
 
 def downgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
-    for source, dest in [
-        ('layer_wmts', 'layer'),
-        ('layerv1', 'layer'),
-        ('theme', 'treegroup'),
-    ]:
-        op.drop_constraint(
-            '{}_id_fkey'.format(source),
-            source, schema=schema,
-        )
+    for source, dest in [("layer_wmts", "layer"), ("layerv1", "layer"), ("theme", "treegroup")]:
+        op.drop_constraint("{}_id_fkey".format(source), source, schema=schema)
         op.create_foreign_key(
-            '{}_id_fkey'.format(source),
-            source, source_schema=schema, local_cols=['id'],
-            referent_table=dest, referent_schema=schema, remote_cols=['id'],
+            "{}_id_fkey".format(source),
+            source,
+            source_schema=schema,
+            local_cols=["id"],
+            referent_table=dest,
+            referent_schema=schema,
+            remote_cols=["id"],
         )

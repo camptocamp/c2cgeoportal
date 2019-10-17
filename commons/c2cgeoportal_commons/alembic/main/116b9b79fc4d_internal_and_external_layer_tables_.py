@@ -40,46 +40,40 @@ from sqlalchemy.types import Integer, Boolean, Unicode
 from c2c.template.config import config
 
 # revision identifiers, used by Alembic.
-revision = '116b9b79fc4d'
-down_revision = 'a4f1aac9bda'
+revision = "116b9b79fc4d"
+down_revision = "a4f1aac9bda"
 branch_labels = None
 depends_on = None
 
 
 def upgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
     # Instructions
     op.create_table(
-        'server_ogc',
-        Column('id', Integer, primary_key=True),
-        Column('name', Unicode, nullable=False),
-        Column('description', Unicode),
-        Column('url', Unicode),
+        "server_ogc",
+        Column("id", Integer, primary_key=True),
+        Column("name", Unicode, nullable=False),
+        Column("description", Unicode),
+        Column("url", Unicode),
         # url_wfs needed for Arcgis because wms and wfs url may be different
-        Column('url_wfs', Unicode),
-        Column('type', Unicode),
-        Column('image_type', Unicode),
-        Column('auth', Unicode),
-        Column('wfs_support', Boolean, server_default='false'),
-        Column('is_single_tile', Boolean, server_default='false'),
+        Column("url_wfs", Unicode),
+        Column("type", Unicode),
+        Column("image_type", Unicode),
+        Column("auth", Unicode),
+        Column("wfs_support", Boolean, server_default="false"),
+        Column("is_single_tile", Boolean, server_default="false"),
         schema=schema,
     )
 
     op.create_table(
-        'layer_wms',
-        Column(
-            'id', Integer,
-            ForeignKey(schema + '.layer.id'), primary_key=True
-        ),
-        Column(
-            'server_ogc_id', Integer,
-            ForeignKey(schema + '.server_ogc.id')
-        ),
-        Column('layer', Unicode),
-        Column('style', Unicode),
-        Column('time_mode', Unicode, server_default='disabled', nullable=False),
-        Column('time_widget', Unicode, server_default='slider', nullable=False),
+        "layer_wms",
+        Column("id", Integer, ForeignKey(schema + ".layer.id"), primary_key=True),
+        Column("server_ogc_id", Integer, ForeignKey(schema + ".server_ogc.id")),
+        Column("layer", Unicode),
+        Column("style", Unicode),
+        Column("time_mode", Unicode, server_default="disabled", nullable=False),
+        Column("time_widget", Unicode, server_default="slider", nullable=False),
         schema=schema,
     )
 
@@ -90,7 +84,7 @@ def upgrade():
 
     # default 'image/jpeg', 'image/png'
     op.execute(
-        'INSERT INTO %(schema)s.server_ogc (name, description, type, image_type, '
+        "INSERT INTO %(schema)s.server_ogc (name, description, type, image_type, "
         "  auth, wfs_support) "
         "SELECT 'source for ' || image_type AS name, "
         "  'default source for internal ' || image_type AS description, "
@@ -100,13 +94,11 @@ def upgrade():
         "  'true' AS wfs_support "
         "FROM ("
         "  SELECT UNNEST(ARRAY['image/jpeg', 'image/png']) AS image_type"
-        ") AS foo" % {
-            'schema': schema,
-        }
+        ") AS foo" % {"schema": schema}
     )
     # other custom image types
     op.execute(
-        'INSERT INTO %(schema)s.server_ogc (name, description, type, image_type, '
+        "INSERT INTO %(schema)s.server_ogc (name, description, type, image_type, "
         "  auth, wfs_support) "
         "SELECT 'source for ' || image_type AS name, "
         "  'default source for internal ' || image_type AS description, "
@@ -117,129 +109,109 @@ def upgrade():
         "FROM ("
         "  SELECT DISTINCT(image_type) FROM %(schema)s.layer_internal_wms "
         "  WHERE image_type NOT IN ('image/jpeg', 'image/png')"
-        ") as foo" % {
-            'schema': schema,
-        }
+        ") as foo" % {"schema": schema}
     )
 
     # layers for internal
 
     # internal with not null image_type
     op.execute(
-        'INSERT INTO %(schema)s.layer_wms (id, server_ogc_id, layer, style, '
-        '  time_mode, time_widget) '
-        'SELECT lew.id, so.id, layer, style, time_mode, time_widget '
-        'FROM %(schema)s.layer_internal_wms AS lew, %(schema)s.server_ogc AS so '
-        'WHERE lew.image_type=so.image_type AND so.type IS NOT NULL' % {
-            'schema': schema,
-        }
+        "INSERT INTO %(schema)s.layer_wms (id, server_ogc_id, layer, style, "
+        "  time_mode, time_widget) "
+        "SELECT lew.id, so.id, layer, style, time_mode, time_widget "
+        "FROM %(schema)s.layer_internal_wms AS lew, %(schema)s.server_ogc AS so "
+        "WHERE lew.image_type=so.image_type AND so.type IS NOT NULL" % {"schema": schema}
     )
     # internal with null image_type
     op.execute(
-        'INSERT INTO %(schema)s.layer_wms (id, server_ogc_id, layer, style, '
-        '  time_mode, time_widget) '
-        'SELECT lew.id, so.id, layer, style, time_mode, time_widget '
-        'FROM %(schema)s.layer_internal_wms AS lew, %(schema)s.server_ogc AS so '
-        "WHERE lew.image_type IS NULL AND so.image_type='image/png'" % {
-            'schema': schema,
-        }
+        "INSERT INTO %(schema)s.layer_wms (id, server_ogc_id, layer, style, "
+        "  time_mode, time_widget) "
+        "SELECT lew.id, so.id, layer, style, time_mode, time_widget "
+        "FROM %(schema)s.layer_internal_wms AS lew, %(schema)s.server_ogc AS so "
+        "WHERE lew.image_type IS NULL AND so.image_type='image/png'" % {"schema": schema}
     )
 
     # ocg for externals
     op.execute(
-        'INSERT INTO %(schema)s.server_ogc (name, url, type, image_type, auth, is_single_tile) '
+        "INSERT INTO %(schema)s.server_ogc (name, url, type, image_type, auth, is_single_tile) "
         "SELECT 'source for ' || url, url, 'mapserver' AS type, image_type, 'none', CASE "
-        'WHEN is_single_tile IS TRUE THEN TRUE ELSE FALSE END as is_single_tile '
-        'FROM %(schema)s.layer_external_wms GROUP BY url, image_type, is_single_tile' % {
-            'schema': schema,
-        }
+        "WHEN is_single_tile IS TRUE THEN TRUE ELSE FALSE END as is_single_tile "
+        "FROM %(schema)s.layer_external_wms GROUP BY url, image_type, is_single_tile" % {"schema": schema}
     )
 
     # layers for external
     op.execute(
-        'INSERT INTO %(schema)s.layer_wms (id, server_ogc_id, layer, style, '
-        '  time_mode, time_widget) '
-        'SELECT lew.id, so.id, layer, style, time_mode, time_widget '
-        'FROM %(schema)s.layer_external_wms as lew, %(schema)s.server_ogc as so '
-        'WHERE lew.url=so.url AND lew.is_single_tile=so.is_single_tile '
-        'AND lew.image_type=so.image_type' % {
-            'schema': schema,
-        }
+        "INSERT INTO %(schema)s.layer_wms (id, server_ogc_id, layer, style, "
+        "  time_mode, time_widget) "
+        "SELECT lew.id, so.id, layer, style, time_mode, time_widget "
+        "FROM %(schema)s.layer_external_wms as lew, %(schema)s.server_ogc as so "
+        "WHERE lew.url=so.url AND lew.is_single_tile=so.is_single_tile "
+        "AND lew.image_type=so.image_type" % {"schema": schema}
     )
 
-    op.drop_table('layer_external_wms', schema=schema)
-    op.drop_table('layer_internal_wms', schema=schema)
+    op.drop_table("layer_external_wms", schema=schema)
+    op.drop_table("layer_internal_wms", schema=schema)
 
     # update layer type in treeitems
     op.execute(
-        'UPDATE %(schema)s.treeitem '
+        "UPDATE %(schema)s.treeitem "
         "SET type='l_wms' "
-        "WHERE type='l_int_wms' OR type='l_ext_wms'" % {
-            'schema': schema,
-        }
+        "WHERE type='l_int_wms' OR type='l_ext_wms'" % {"schema": schema}
     )
 
 
 def downgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
     # Instructions
 
     # recreate tables 'layer_internal_wms' and 'layer_external_wms'
     op.create_table(
-        'layer_internal_wms',
-        Column(
-            'id', Integer, ForeignKey(schema + '.layer.id'), primary_key=True
-        ),
-        Column('layer', Unicode),
-        Column('image_type', Unicode(10)),
-        Column('style', Unicode),
-        Column('time_mode', Unicode(8)),
-        Column('time_widget', Unicode(10), server_default='slider'),
+        "layer_internal_wms",
+        Column("id", Integer, ForeignKey(schema + ".layer.id"), primary_key=True),
+        Column("layer", Unicode),
+        Column("image_type", Unicode(10)),
+        Column("style", Unicode),
+        Column("time_mode", Unicode(8)),
+        Column("time_widget", Unicode(10), server_default="slider"),
         schema=schema,
     )
 
     op.create_table(
-        'layer_external_wms',
-        Column(
-            'id', Integer, ForeignKey(schema + '.layer.id'), primary_key=True
-        ),
-        Column('url', Unicode),
-        Column('layer', Unicode),
-        Column('image_type', Unicode(10)),
-        Column('style', Unicode),
-        Column('is_single_tile', Boolean),
-        Column('time_mode', Unicode(8)),
-        Column('time_widget', Unicode(10), server_default='slider'),
+        "layer_external_wms",
+        Column("id", Integer, ForeignKey(schema + ".layer.id"), primary_key=True),
+        Column("url", Unicode),
+        Column("layer", Unicode),
+        Column("image_type", Unicode(10)),
+        Column("style", Unicode),
+        Column("is_single_tile", Boolean),
+        Column("time_mode", Unicode(8)),
+        Column("time_widget", Unicode(10), server_default="slider"),
         schema=schema,
     )
     # move data back
 
     # internal (type is not null)
     op.execute(
-        'INSERT INTO %(schema)s.layer_internal_wms (id, layer, image_type, style, '
-        '  time_mode, time_widget) '
-        'SELECT w.id, layer, image_type, style, time_mode, time_widget '
-        'FROM %(schema)s.layer_wms AS w, %(schema)s.server_ogc AS o '
-        'WHERE w.server_ogc_id=o.id AND o.type IS NOT NULL' % {
-            'schema': schema,
-        }
+        "INSERT INTO %(schema)s.layer_internal_wms (id, layer, image_type, style, "
+        "  time_mode, time_widget) "
+        "SELECT w.id, layer, image_type, style, time_mode, time_widget "
+        "FROM %(schema)s.layer_wms AS w, %(schema)s.server_ogc AS o "
+        "WHERE w.server_ogc_id=o.id AND o.type IS NOT NULL" % {"schema": schema}
     )
 
     # external (type is null)
     op.execute(
-        'INSERT INTO %(schema)s.layer_external_wms (id, url, layer, image_type, style, '
-        '  is_single_tile, time_mode, time_widget) '
-        'SELECT w.id, url, layer, image_type, style, is_single_tile, time_mode, time_widget '
-        'FROM %(schema)s.layer_wms AS w, %(schema)s.server_ogc AS o '
-        'WHERE w.server_ogc_id=o.id AND o.type IS NULL' % {
-            'schema': schema,
-        }
+        "INSERT INTO %(schema)s.layer_external_wms (id, url, layer, image_type, style, "
+        "  is_single_tile, time_mode, time_widget) "
+        "SELECT w.id, url, layer, image_type, style, is_single_tile, time_mode, time_widget "
+        "FROM %(schema)s.layer_wms AS w, %(schema)s.server_ogc AS o "
+        "WHERE w.server_ogc_id=o.id AND o.type IS NULL" % {"schema": schema}
     )
 
     # drop table AFTER moving data back
-    op.drop_table('layer_wms', schema=schema)
-    op.drop_table('server_ogc', schema=schema)
+    op.drop_table("layer_wms", schema=schema)
+    op.drop_table("server_ogc", schema=schema)
 
     # update layer type in treeitems
     # internal
@@ -247,16 +219,12 @@ def downgrade():
         "UPDATE %(schema)s.treeitem "
         "SET type='l_int_wms' "
         "FROM %(schema)s.layer_internal_wms as w "
-        "WHERE %(schema)s.treeitem.id=w.id" % {
-            'schema': schema,
-        }
+        "WHERE %(schema)s.treeitem.id=w.id" % {"schema": schema}
     )
     # external
     op.execute(
         "UPDATE %(schema)s.treeitem "
         "SET type='l_ext_wms' "
         "FROM %(schema)s.layer_external_wms as w "
-        "WHERE %(schema)s.treeitem.id=w.id" % {
-            'schema': schema,
-        }
+        "WHERE %(schema)s.treeitem.id=w.id" % {"schema": schema}
     )

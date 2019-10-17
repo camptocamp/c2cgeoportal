@@ -57,6 +57,7 @@ class TimeInformation:
     * ``mode`` The layer mode ("single", "range" or "disabled")
     * ``widget`` The layer mode ("slider" (default) or "datepicker")
     """
+
     def __init__(self):
         self.extent = None
         self.mode = None
@@ -64,9 +65,7 @@ class TimeInformation:
         self.layer = None
 
     def merge(self, layer, extent, mode, widget):
-        layer_apply = \
-            self.layer == layer or \
-            (not self.has_time() and extent is not None)
+        layer_apply = self.layer == layer or (not self.has_time() and extent is not None)
 
         self.merge_extent(extent)
         self.merge_mode(mode)
@@ -89,9 +88,7 @@ class TimeInformation:
         if mode != "disabled":
             if self.mode is not None:
                 if self.mode != mode:
-                    raise ValueError(
-                        "Could not mix time mode '{0!s}' and '{1!s}'".format(mode, self.mode)
-                    )
+                    raise ValueError("Could not mix time mode '{0!s}' and '{1!s}'".format(mode, self.mode))
             else:
                 self.mode = mode
 
@@ -100,9 +97,7 @@ class TimeInformation:
 
         if self.widget is not None:
             if self.widget != widget:
-                raise ValueError(
-                    "Could not mix time widget '{0!s}' and '{1!s}'".format(widget, self.widget)
-                )
+                raise ValueError("Could not mix time widget '{0!s}' and '{1!s}'".format(widget, self.widget))
         else:
             self.widget = widget
 
@@ -123,6 +118,7 @@ class TimeExtentValue:
     """
     Represents time as a list of values.
     """
+
     def __init__(self, values, resolution, min_def_value, max_def_value):
         """
         Arguments:
@@ -140,18 +136,16 @@ class TimeExtentValue:
     def merge(self, extent):
         if not isinstance(extent, TimeExtentValue):
             raise ValueError(
-                "Could not mix time defined as a list of "
-                "values with other type of definition")
+                "Could not mix time defined as a list of " "values with other type of definition"
+            )
         self.values.update(extent.values)
         self.min_def_value = min_none(self.min_def_value, extent.min_def_value)
         self.max_def_value = max_none(self.max_def_value, extent.max_def_value)
 
     def to_dict(self):
         values = sorted(self.values)
-        min_def_value = _format_date(self.min_def_value) \
-            if self.min_def_value else None
-        max_def_value = _format_date(self.max_def_value) \
-            if self.max_def_value else None
+        min_def_value = _format_date(self.min_def_value) if self.min_def_value else None
+        max_def_value = _format_date(self.max_def_value) if self.max_def_value else None
 
         return {
             "minValue": _format_date(values[0]),
@@ -167,6 +161,7 @@ class TimeExtentInterval:
     """
     Represents time with the help of a start, an end and an interval.
     """
+
     def __init__(self, start, end, interval, resolution, min_def_value, max_def_value):
         """
         Arguments:
@@ -188,28 +183,30 @@ class TimeExtentInterval:
     def merge(self, extent):
         if not isinstance(extent, TimeExtentInterval):
             raise ValueError(
-                "Could not merge time defined as with an "
-                " interval with other type of definition")
+                "Could not merge time defined as with an " " interval with other type of definition"
+            )
         if self.interval != extent.interval:
-            raise ValueError(
-                "Could not merge times defined with a "
-                "different interval")
+            raise ValueError("Could not merge times defined with a " "different interval")
         self.start = min_none(self.start, extent.start)
         self.end = max_none(self.end, extent.end)
-        self.min_def_value = \
-            self.min_def_value if extent.min_def_value is None else \
-            extent.min_def_value if self.min_def_value is None else \
-            min_none(self.min_def_value, extent.min_def_value)
-        self.max_def_value = \
-            self.max_def_value if extent.max_def_value is None else \
-            extent.max_def_value if self.max_def_value is None else \
-            max_none(self.max_def_value, extent.max_def_value)
+        self.min_def_value = (
+            self.min_def_value
+            if extent.min_def_value is None
+            else extent.min_def_value
+            if self.min_def_value is None
+            else min_none(self.min_def_value, extent.min_def_value)
+        )
+        self.max_def_value = (
+            self.max_def_value
+            if extent.max_def_value is None
+            else extent.max_def_value
+            if self.max_def_value is None
+            else max_none(self.max_def_value, extent.max_def_value)
+        )
 
     def to_dict(self):
-        min_def_value = _format_date(self.min_def_value) \
-            if self.min_def_value is not None else None
-        max_def_value = _format_date(self.max_def_value) \
-            if self.max_def_value is not None else None
+        min_def_value = _format_date(self.min_def_value) if self.min_def_value is not None else None
+        max_def_value = _format_date(self.max_def_value) if self.max_def_value is not None else None
 
         return {
             "minValue": _format_date(self.start),
@@ -238,23 +235,20 @@ def parse_extent(extent, default_values):
         if extent[0].count("/") > 0:
             # case "start/end/interval"
             if len(extent) > 1 or extent[0].count("/") != 2:
-                raise ValueError(
-                    "Unsupported time definition '{0!s}'".format(extent))
+                raise ValueError("Unsupported time definition '{0!s}'".format(extent))
             s, e, i = extent[0].split("/")
             start = _parse_date(s)
             end = _parse_date(e)
             interval = _parse_duration(i)
 
-            return TimeExtentInterval(start[1], end[1], interval, start[0],
-                                      min_def_value, max_def_value)
+            return TimeExtentInterval(start[1], end[1], interval, start[0], min_def_value, max_def_value)
         else:
             # case "value1, value2, ..., valueN"
             dates = [_parse_date(d) for d in extent]
             resolution = dates[0][0]
             values = set(d[1] for d in dates)
 
-            return TimeExtentValue(values, resolution, min_def_value,
-                                   max_def_value)
+            return TimeExtentValue(values, resolution, min_def_value, max_def_value)
     else:
         raise ValueError("Invalid time extent format '%s'", extent)
 
@@ -289,11 +283,7 @@ def _parse_date(date):
 
     The returned datetime always has a timezone (default to UTC)
     """
-    resolutions = {
-        "year": "%Y",
-        "month": "%Y-%m",
-        "day": "%Y-%m-%d",
-    }
+    resolutions = {"year": "%Y", "month": "%Y-%m", "day": "%Y-%m-%d"}
 
     for resolution, pattern in list(resolutions.items()):
         try:

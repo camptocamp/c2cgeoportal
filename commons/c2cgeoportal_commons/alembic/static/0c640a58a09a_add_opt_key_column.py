@@ -40,19 +40,19 @@ from c2c.template.config import config
 from sqlalchemy.dialects.postgresql import HSTORE
 
 # revision identifiers, used by Alembic.
-revision = '0c640a58a09a'
-down_revision = 'ae5e88f35669'
+revision = "0c640a58a09a"
+down_revision = "ae5e88f35669"
 branch_labels = None
 depends_on = None
 
 
 def upgrade():
-    staticschema = config['schema_static']
+    staticschema = config["schema_static"]
 
-    op.add_column('user', Column('tech_data', HSTORE), schema=staticschema)
+    op.add_column("user", Column("tech_data", HSTORE), schema=staticschema)
 
 
 def downgrade():
-    staticschema = config['schema_static']
+    staticschema = config["schema_static"]
 
-    op.drop_column('user', 'tech_data', schema=staticschema)
+    op.drop_column("user", "tech_data", schema=staticschema)

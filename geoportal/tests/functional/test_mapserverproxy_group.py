@@ -38,12 +38,13 @@ import transaction
 from tests.functional import (  # noqa
     teardown_common as teardown_module,
     setup_common as setup_module,
-    create_dummy_request, mapserv_url, create_default_ogcserver,
+    create_dummy_request,
+    mapserv_url,
+    create_default_ogcserver,
 )
 
 
 class TestMapserverproxyViewGroup(TestCase):
-
     def setup_method(self, _):
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import Role, LayerWMS, RestrictionArea, Interface
@@ -78,15 +79,12 @@ class TestMapserverproxyViewGroup(TestCase):
 
     def teardown_method(self, _):
         from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import Role, LayerWMS, RestrictionArea, \
-            Interface, OGCServer
+        from c2cgeoportal_commons.models.main import Role, LayerWMS, RestrictionArea, Interface, OGCServer
         from c2cgeoportal_commons.models.static import User
 
         DBSession.delete(DBSession.query(User).filter(User.username == "__test_user1").one())
 
-        ra = DBSession.query(RestrictionArea).filter(
-            RestrictionArea.name == "__test_ra1"
-        ).one()
+        ra = DBSession.query(RestrictionArea).filter(RestrictionArea.name == "__test_ra1").one()
         ra.roles = []
         ra.layers = []
         DBSession.delete(ra)
@@ -94,13 +92,13 @@ class TestMapserverproxyViewGroup(TestCase):
         r = DBSession.query(Role).filter(Role.name == "__test_role1").one()
         DBSession.delete(r)
 
-        for layer in DBSession.query(LayerWMS).filter(
-                LayerWMS.name.in_(["testpoint_group_name", "testpoint_protected_2_name"])
-        ).all():
+        for layer in (
+            DBSession.query(LayerWMS)
+            .filter(LayerWMS.name.in_(["testpoint_group_name", "testpoint_protected_2_name"]))
+            .all()
+        ):
             DBSession.delete(layer)
-        DBSession.query(Interface).filter(
-            Interface.name == "main"
-        ).delete()
+        DBSession.query(Interface).filter(Interface.name == "main").delete()
         DBSession.query(OGCServer).delete()
 
         transaction.commit()
@@ -111,8 +109,7 @@ class TestMapserverproxyViewGroup(TestCase):
         from c2cgeoportal_commons.models.static import User
 
         request = create_dummy_request()
-        request.user = None if username is None else \
-            DBSession.query(User).filter_by(username=username).one()
+        request.user = None if username is None else DBSession.query(User).filter_by(username=username).one()
         request.params.update({"ogcserver": "__test_ogc_server"})
         return request
 
@@ -120,9 +117,7 @@ class TestMapserverproxyViewGroup(TestCase):
         from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_getcap_request()
-        request.params.update(dict(
-            service="wms", version="1.1.1", request="getcapabilities",
-        ))
+        request.params.update(dict(service="wms", version="1.1.1", request="getcapabilities"))
         response = MapservProxy(request).proxy()
 
         assert "<Name>testpoint_protected</Name>" not in response.body.decode("utf-8")
@@ -134,9 +129,7 @@ class TestMapserverproxyViewGroup(TestCase):
         assert "<Name>testpoint_group_2</Name>" not in response.body.decode("utf-8")
 
         request = self._create_getcap_request(username="__test_user1")
-        request.params.update(dict(
-            service="wms", version="1.1.1", request="getcapabilities",
-        ))
+        request.params.update(dict(service="wms", version="1.1.1", request="getcapabilities"))
         response = MapservProxy(request).proxy()
         assert "<Name>testpoint_protected</Name>" in response.body.decode("utf-8")
         assert "<Name>testpoint_protected_2</Name>" in response.body.decode("utf-8")
@@ -148,9 +141,7 @@ class TestMapserverproxyViewGroup(TestCase):
         from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_getcap_request()
-        request.params.update(dict(
-            service="wfs", version="1.1.1", request="getcapabilities",
-        ))
+        request.params.update(dict(service="wfs", version="1.1.1", request="getcapabilities"))
         response = MapservProxy(request).proxy()
 
         assert "<Name>testpoint_protected</Name>" not in response.body.decode("utf-8")
@@ -159,9 +150,7 @@ class TestMapserverproxyViewGroup(TestCase):
         assert "<Name>testpoint_group</Name>" not in response.body.decode("utf-8")
 
         request = self._create_getcap_request(username="__test_user1")
-        request.params.update(dict(
-            service="wfs", version="1.1.1", request="getcapabilities",
-        ))
+        request.params.update(dict(service="wfs", version="1.1.1", request="getcapabilities"))
         response = MapservProxy(request).proxy()
         assert "<Name>testpoint_protected</Name>" in response.body.decode("utf-8")
         assert "<Name>testpoint_unprotected</Name>" in response.body.decode("utf-8")

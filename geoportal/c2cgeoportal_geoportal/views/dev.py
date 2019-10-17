@@ -41,18 +41,16 @@ logger = logging.getLogger(__name__)
 
 class Dev(Proxy):
 
-    THEME_RE = re.compile(r'/theme/.*$')
+    THEME_RE = re.compile(r"/theme/.*$")
 
     def __init__(self, request):
         super().__init__(request)
-        self.dev_url = self.request.registry.settings['devserver_url']
+        self.dev_url = self.request.registry.settings["devserver_url"]
 
-    @view_config(route_name='dev')
+    @view_config(route_name="dev")
     def dev(self):
-        path = self.THEME_RE.sub('', self.request.path_info)
-        if self.request.path.endswith('/dynamic.js'):
-            return HTTPFound(location=self.request.route_url('dynamic', _query=self.request.params))
+        path = self.THEME_RE.sub("", self.request.path_info)
+        if self.request.path.endswith("/dynamic.js"):
+            return HTTPFound(location=self.request.route_url("dynamic", _query=self.request.params))
         else:
-            return self._proxy_response('dev', "{}/{}".format(
-                self.dev_url.rstrip('/'), path.lstrip('/')
-            ))
+            return self._proxy_response("dev", "{}/{}".format(self.dev_url.rstrip("/"), path.lstrip("/")))

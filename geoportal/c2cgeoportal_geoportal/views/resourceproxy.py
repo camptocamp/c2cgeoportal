@@ -41,7 +41,6 @@ log = logging.getLogger(__name__)
 
 
 class ResourceProxy(Proxy):
-
     def __init__(self, request):  # pragma: no cover
         Proxy.__init__(self, request)
         self.request = request
@@ -62,8 +61,7 @@ class ResourceProxy(Proxy):
             content_type = response.headers["Content-Type"]
 
             response = self._build_response(
-                response, response.text, cache_control, "externalresource",
-                content_type=content_type
+                response, response.text, cache_control, "externalresource", content_type=content_type
             )
             for header in response.headers.keys():
                 if header not in self.settings["allowed_headers"]:

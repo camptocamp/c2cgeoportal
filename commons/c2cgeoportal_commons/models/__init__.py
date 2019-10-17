@@ -38,7 +38,8 @@ from c2cwsgiutils import broadcast
 
 try:
     from pyramid.i18n import TranslationStringFactory
-    _ = TranslationStringFactory('c2cgeoportal_admin')
+
+    _ = TranslationStringFactory("c2cgeoportal_admin")
 except ModuleNotFoundError:
     pass
 

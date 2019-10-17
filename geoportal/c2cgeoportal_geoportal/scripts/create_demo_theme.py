@@ -39,9 +39,7 @@ LOG = logging.getLogger(__name__)
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Create and populate the database tables."
-    )
+    parser = argparse.ArgumentParser(description="Create and populate the database tables.")
     fill_arguments(parser)
     options = parser.parse_args()
     settings = get_appsettings(options)
@@ -51,10 +49,12 @@ def main():
 
         from c2cgeoportal_commons.models.main import Interface, OGCServer, Theme, LayerGroup, LayerWMS
 
-        interfaces = session.query(Interface) \
-            .filter(Interface.name != 'api') \
-            .filter(Interface.name != 'iframe_api') \
+        interfaces = (
+            session.query(Interface)
+            .filter(Interface.name != "api")
+            .filter(Interface.name != "iframe_api")
             .all()
+        )
         ogc_server = session.query(OGCServer).filter(OGCServer.name == "source for image/png").one()
 
         layer_borders = LayerWMS("Borders", "borders")

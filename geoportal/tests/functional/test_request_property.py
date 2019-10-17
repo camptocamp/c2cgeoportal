@@ -41,7 +41,6 @@ from tests.functional import (  # noqa
 
 
 class TestRequestProperty(TestCase):
-
     def setup_method(self, _):
         import transaction
         from c2cgeoportal_commons.models import DBSession
@@ -76,22 +75,27 @@ class TestRequestProperty(TestCase):
         self.assertEqual([role.name for role in request.user.roles], ["__test_role"])
 
     def test_request_right_auth(self):
-        request = create_dummy_request({
-            'basicauth': 'true'
-        }, headers={
-            "Authorization": "Basic " + base64.b64encode(
-                "__test_user:__test_user".encode("utf-8")
-            ).decode("utf-8").replace("\n", "")
-        })
+        request = create_dummy_request(
+            {"basicauth": "true"},
+            headers={
+                "Authorization": "Basic "
+                + base64.b64encode("__test_user:__test_user".encode("utf-8"))
+                .decode("utf-8")
+                .replace("\n", "")
+            },
+        )
 
         self.assertEqual(request.user.username, "__test_user")
 
     def test_request_wrong_auth(self):
-        request = create_dummy_request(headers={
-            "Authorization": "Basic " + base64.b64encode(
-                "__test_user:__wrong_pass".encode("utf-8")
-            ).decode("utf-8").replace("\n", "")
-        })
+        request = create_dummy_request(
+            headers={
+                "Authorization": "Basic "
+                + base64.b64encode("__test_user:__wrong_pass".encode("utf-8"))
+                .decode("utf-8")
+                .replace("\n", "")
+            }
+        )
 
         self.assertEqual(request.user, None)
 

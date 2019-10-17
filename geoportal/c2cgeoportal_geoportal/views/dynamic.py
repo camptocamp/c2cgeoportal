@@ -42,125 +42,116 @@ from c2cgeoportal_geoportal.lib.caching import NO_CACHE, set_common_headers
 
 
 class DynamicView:
-
     def __init__(self, request):
         self.request = request
         self.settings = request.registry.settings
-        self.interfaces_config = self.settings['interfaces_config']
-        self.default = self.interfaces_config.get('default', {})
+        self.interfaces_config = self.settings["interfaces_config"]
+        self.default = self.interfaces_config.get("default", {})
 
     def get(self, value, interface):
         result = dict(self.default.get(value, {}))
         result.update(self.interfaces_config.get(interface, {}).get(value, {}))
         return result
 
-    @view_config(route_name='dynamic', renderer='fast_json')
+    @view_config(route_name="dynamic", renderer="fast_json")
     def dynamic(self):
-        interfaces_names = [interface['name'] for interface in self.settings.get('interfaces')]
+        interfaces_names = [interface["name"] for interface in self.settings.get("interfaces")]
         default_interfaces_names = [
-            interface['name'] for interface in self.settings.get('interfaces')
-            if interface.get('default', False)
+            interface["name"]
+            for interface in self.settings.get("interfaces")
+            if interface.get("default", False)
         ]
-        assert len(default_interfaces_names) == 1, "More than one default interface in: " + \
-            json.dumps(self.settings.get('interfaces'))
+        assert len(default_interfaces_names) == 1, "More than one default interface in: " + json.dumps(
+            self.settings.get("interfaces")
+        )
         default_interface_name = default_interfaces_names[0]
-        interface_name = self.request.params.get('interface')
+        interface_name = self.request.params.get("interface")
         if interface_name not in interfaces_names:
             interface_name = default_interface_name
         interface_config = self.interfaces_config[interface_name]
 
         dynamic = {
-            'interface': interface_name,
-            'cache_version': get_cache_version(),
-            'two_factor': self.request.registry.settings.get("authentication", {}).get("two_factor", False),
-            'lang_urls': {
-                lang: self.request.static_url('/etc/geomapfish/static/{lang}.json'.format(
-                    package=self.request.registry.settings["package"],
-                    lang=lang,
-                    _query={
-                        'cache': get_cache_version(),
-                    }
-                ))
+            "interface": interface_name,
+            "cache_version": get_cache_version(),
+            "two_factor": self.request.registry.settings.get("authentication", {}).get("two_factor", False),
+            "lang_urls": {
+                lang: self.request.static_url(
+                    "/etc/geomapfish/static/{lang}.json".format(
+                        package=self.request.registry.settings["package"],
+                        lang=lang,
+                        _query={"cache": get_cache_version()},
+                    )
+                )
                 for lang in self.request.registry.settings["available_locale_names"]
             },
-            'fulltextsearch_groups': [
-                group[0] for group in models.DBSession.query(
-                    func.distinct(main.FullTextSearch.layer_name)
-                ).filter(main.FullTextSearch.layer_name.isnot(None)).all()
+            "fulltextsearch_groups": [
+                group[0]
+                for group in models.DBSession.query(func.distinct(main.FullTextSearch.layer_name))
+                .filter(main.FullTextSearch.layer_name.isnot(None))
+                .all()
             ],
         }
 
-        constants = {name: value for name, value in self.get('constants', interface_name).items()}
-        constants.update({
-            name: dynamic[value]
-            for name, value in self.get('dynamic_constants', interface_name).items()
-            if value is not None
-        })
-        constants.update({
-            name: self.request.static_url(static_['name']) + static_.get('append', '')
-            for name, static_ in self.get('static', interface_name).items()
-        })
+        constants = {name: value for name, value in self.get("constants", interface_name).items()}
+        constants.update(
+            {
+                name: dynamic[value]
+                for name, value in self.get("dynamic_constants", interface_name).items()
+                if value is not None
+            }
+        )
+        constants.update(
+            {
+                name: self.request.static_url(static_["name"]) + static_.get("append", "")
+                for name, static_ in self.get("static", interface_name).items()
+            }
+        )
 
-        routes = dict(currentInterfaceUrl={'name': interface_name})
-        routes.update(self.get('routes', interface_name))
+        routes = dict(currentInterfaceUrl={"name": interface_name})
+        routes.update(self.get("routes", interface_name))
         for constant, config in routes.items():
             params = {}
-            params.update(config.get('params', {}))
-            for name, dyn in config.get('dynamic_params', {}).items():
+            params.update(config.get("params", {}))
+            for name, dyn in config.get("dynamic_params", {}).items():
                 params[name] = dynamic[dyn]
-            constants[constant] = self.request.route_url(config['name'],
-                                                         *config.get('elements', []),
-                                                         _query=params,
-                                                         **config.get('kw', {}))
+            constants[constant] = self.request.route_url(
+                config["name"], *config.get("elements", []), _query=params, **config.get("kw", {})
+            )
 
         do_redirect = False
         url = None
-        if 'redirect_interface' in interface_config:
-            no_redirect_query = {
-                'no_redirect': 't'
-            }
-            if 'query' in self.request.params:
-                query = urllib.parse.parse_qs(self.request.params['query'][1:])
+        if "redirect_interface" in interface_config:
+            no_redirect_query = {"no_redirect": "t"}
+            if "query" in self.request.params:
+                query = urllib.parse.parse_qs(self.request.params["query"][1:])
                 no_redirect_query.update(query)
             else:
                 query = {}
             theme = None
-            if 'path' in self.request.params:
-                match = re.match('.*/theme/(.*)', self.request.params['path'])
+            if "path" in self.request.params:
+                match = re.match(".*/theme/(.*)", self.request.params["path"])
                 if match is not None:
                     theme = match.group(1)
             if theme is not None:
                 no_redirect_url = self.request.route_url(
-                    interface_config['redirect_interface'] + 'theme',
-                    themes=theme,
-                    _query=no_redirect_query
+                    interface_config["redirect_interface"] + "theme", themes=theme, _query=no_redirect_query
                 )
                 url = self.request.route_url(
-                    interface_config['redirect_interface'] + 'theme',
-                    themes=theme,
-                    _query=query
+                    interface_config["redirect_interface"] + "theme", themes=theme, _query=query
                 )
             else:
                 no_redirect_url = self.request.route_url(
-                    interface_config['redirect_interface'],
-                    _query=no_redirect_query
+                    interface_config["redirect_interface"], _query=no_redirect_query
                 )
-                url = self.request.route_url(
-                    interface_config['redirect_interface'],
-                    _query=query
-                )
+                url = self.request.route_url(interface_config["redirect_interface"], _query=query)
 
-            if 'no_redirect' in query:
-                constants['redirectUrl'] = ''
+            if "no_redirect" in query:
+                constants["redirectUrl"] = ""
             else:
-                if interface_config.get('do_redirect', False):
+                if interface_config.get("do_redirect", False):
                     do_redirect = True
                 else:
-                    constants['redirectUrl'] = no_redirect_url
+                    constants["redirectUrl"] = no_redirect_url
 
         set_common_headers(self.request, "dynamic", NO_CACHE)
-        return {
-            'constants': constants,
-            'doRedirect': do_redirect,
-            'redirectUrl': url,
-        }
+        return {"constants": constants, "doRedirect": do_redirect, "redirectUrl": url}

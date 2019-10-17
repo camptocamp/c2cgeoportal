@@ -19,6 +19,7 @@ def serverClassFactory(serverIface):  # noqa
 
     try:
         from geomapfish_qgisserver.accesscontrol import GeoMapFishAccessControl
+
         return GeoMapFishAccessControl(serverIface)
     except GMFException as e:
         QgsMessageLog.logMessage(str(e))

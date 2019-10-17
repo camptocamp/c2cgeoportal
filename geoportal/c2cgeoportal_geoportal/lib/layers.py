@@ -31,7 +31,7 @@
 from c2cgeoportal_commons.models import static
 from c2cgeoportal_geoportal.lib import caching
 
-CACHE_REGION = caching.get_region('std')
+CACHE_REGION = caching.get_region("std")
 
 
 def _get_layers_query(user: static.User, what):
@@ -66,10 +66,11 @@ def get_writable_layers_query(user: static.User, ogc_server_ids):
     assert user is not None
 
     q = _get_layers_query(user, main.LayerWMS)
-    return q \
-        .filter(main.RestrictionArea.readwrite.is_(True)) \
-        .join(main.LayerWMS.ogc_server) \
+    return (
+        q.filter(main.RestrictionArea.readwrite.is_(True))
+        .join(main.LayerWMS.ogc_server)
         .filter(main.OGCServer.id.in_(ogc_server_ids))
+    )
 
 
 def get_protected_layers(user: static.User, ogc_server_ids):
@@ -100,10 +101,12 @@ def get_writable_layers(user: static.User, ogc_server_ids):
 def get_private_layers(ogc_server_ids):
     from c2cgeoportal_commons.models import DBSession, main
 
-    q = DBSession.query(main.LayerWMS) \
-        .filter(main.LayerWMS.public.is_(False)) \
-        .join(main.LayerWMS.ogc_server) \
+    q = (
+        DBSession.query(main.LayerWMS)
+        .filter(main.LayerWMS.public.is_(False))
+        .join(main.LayerWMS.ogc_server)
         .filter(main.OGCServer.id.in_(ogc_server_ids))
+    )
     results = q.all()
     DBSession.expunge_all()
     return {r.id: r for r in results}

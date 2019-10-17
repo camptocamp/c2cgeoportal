@@ -37,14 +37,12 @@ from pyramid.response import Response
 from pyramid.view import view_config
 
 from c2cgeoportal_commons.models import main, static
-from c2cgeoportal_geoportal.lib.caching import (NO_CACHE, PRIVATE_CACHE,
-                                                PUBLIC_CACHE, get_region)
+from c2cgeoportal_geoportal.lib.caching import NO_CACHE, PRIVATE_CACHE, PUBLIC_CACHE, get_region
 from c2cgeoportal_geoportal.lib.filter_capabilities import filter_capabilities
-from c2cgeoportal_geoportal.lib.functionality import \
-    get_mapserver_substitution_params
+from c2cgeoportal_geoportal.lib.functionality import get_mapserver_substitution_params
 from c2cgeoportal_geoportal.views.ogcproxy import OGCProxy
 
-CACHE_REGION = get_region('std')
+CACHE_REGION = get_region("std")
 LOG = logging.getLogger(__name__)
 
 
@@ -76,8 +74,9 @@ class MapservProxy(OGCProxy):
             roles = self.user.roles
             if len(roles):
                 if self.ogc_server.auth == main.OGCSERVER_AUTH_STANDARD:
-                    self.params["role_ids"] = \
+                    self.params["role_ids"] = (
                         "-1" if len(roles) == 0 else ",".join([str(r.id) for r in roles])
+                    )
 
                     # In some application we want to display the features owned by a user
                     # than we need his id.
@@ -107,12 +106,9 @@ class MapservProxy(OGCProxy):
             if "request" not in self.lower_params:
                 self.params = {}  # pragma: no cover
             else:
-                if self.ogc_server.type != main.OGCSERVER_TYPE_QGISSERVER or \
-                        "user_id" not in self.params:
+                if self.ogc_server.type != main.OGCSERVER_TYPE_QGISSERVER or "user_id" not in self.params:
 
-                    use_cache = self.lower_params["request"] in (
-                        "getlegendgraphic",
-                    )
+                    use_cache = self.lower_params["request"] in ("getlegendgraphic",)
 
                     # no user_id and role_id or cached queries
                     if use_cache and "user_id" in self.params:
@@ -129,16 +125,12 @@ class MapservProxy(OGCProxy):
             _url = self._get_wfs_url()
 
         cache_control = PRIVATE_CACHE
-        if method == "GET" and \
-                "service" in self.lower_params and \
-                self.lower_params["service"] == "wms":
+        if method == "GET" and "service" in self.lower_params and self.lower_params["service"] == "wms":
             if self.lower_params.get("request") in ("getmap", "getfeatureinfo"):
                 cache_control = NO_CACHE
             elif self.lower_params.get("request") == "getlegendgraphic":
                 cache_control = PUBLIC_CACHE
-        elif method == "GET" and \
-                "service" in self.lower_params and \
-                self.lower_params["service"] == "wfs":
+        elif method == "GET" and "service" in self.lower_params and self.lower_params["service"] == "wfs":
             if self.lower_params.get("request") == "getfeature":
                 cache_control = NO_CACHE
         elif method != "GET":
@@ -146,19 +138,25 @@ class MapservProxy(OGCProxy):
 
         headers = self._get_headers()
         # Add headers for Geoserver
-        if self.ogc_server.auth == main.OGCSERVER_AUTH_GEOSERVER and \
-                self.user is not None:
+        if self.ogc_server.auth == main.OGCSERVER_AUTH_GEOSERVER and self.user is not None:
             headers["sec-username"] = self.user.username
             headers["sec-roles"] = ";".join([r.name for r in roles])
 
         response = self._proxy_callback(
-            self.user, cache_control,
-            url=_url, params=self.params, cache=use_cache, headers=headers, body=self.request.body
+            self.user,
+            cache_control,
+            url=_url,
+            params=self.params,
+            cache=use_cache,
+            headers=headers,
+            body=self.request.body,
         )
 
-        if self.lower_params.get("request") == "getmap" and \
-                not response.content_type.startswith('image/') and \
-                response.status_code < 400:
+        if (
+            self.lower_params.get("request") == "getmap"
+            and not response.content_type.startswith("image/")
+            and response.status_code < 400
+        ):
             response.status_code = 400
 
         return response
@@ -171,15 +169,14 @@ class MapservProxy(OGCProxy):
         content = response.content
         if self.lower_params.get("request") == "getcapabilities":
             content = filter_capabilities(
-                response.text, user, self.lower_params.get("service") == "wms",
+                response.text,
+                user,
+                self.lower_params.get("service") == "wms",
                 url,
                 self.request.headers,
-                self.request
+                self.request,
             ).encode("utf-8")
 
         content_type = response.headers["Content-Type"]
 
-        return self._build_response(
-            response, content, cache_control, "mapserver",
-            content_type=content_type
-        )
+        return self._build_response(response, content, cache_control, "mapserver", content_type=content_type)

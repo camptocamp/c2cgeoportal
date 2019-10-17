@@ -35,23 +35,23 @@ from unittest import TestCase
 from tests.functional import (  # noqa
     teardown_common as teardown_module,
     setup_common as setup_module,
-    create_dummy_request
+    create_dummy_request,
 )
 
 
 class TestGeometryProcessing(TestCase):
-
     def test_difference(self):
         from shapely.geometry import Polygon
         from c2cgeoportal_geoportal.views.geometry_processing import GeometryProcessing
 
         request = create_dummy_request()
         request.method = "POST"
-        request.body = '{ "geometries": [{ "type": "Polygon", "coordinates": [[[0, 0], [0, 4], [4, 4], [4, 0], [0, 0]]] }, ' \
+        request.body = (
+            '{ "geometries": [{ "type": "Polygon", "coordinates": [[[0, 0], [0, 4], [4, 4], [4, 0], [0, 0]]] }, '
             '{ "type": "Polygon", "coordinates": [[[2, 1], [2, 3], [6, 3], [6, 1], [2, 1]]] }]}'
+        )
         geom_ops = GeometryProcessing(request)
         geom = geom_ops.difference()
         self.assertEqual(
-            geom,
-            Polygon([(0, 0), (0, 4), (4, 4), (4, 3), (2, 3), (2, 1), (4, 1), (4, 0), (0, 0)])
+            geom, Polygon([(0, 0), (0, 4), (4, 4), (4, 3), (2, 3), (2, 1), (4, 1), (4, 0), (0, 0)])
         )

@@ -65,19 +65,19 @@ class Raster:
         try:
             result = float(self.request.params[name])
         except ValueError:
-            raise HTTPBadRequest("'{}' ({}) parameters should be a number".format(
-                name, self.request.params[name]
-            ))
+            raise HTTPBadRequest(
+                "'{}' ({}) parameters should be a number".format(name, self.request.params[name])
+            )
         if not math.isfinite(result):
-            raise HTTPBadRequest("'{}' ({}) parameters should be a finite number".format(
-                name, self.request.params[name]
-            ))
+            raise HTTPBadRequest(
+                "'{}' ({}) parameters should be a finite number".format(name, self.request.params[name])
+            )
         return result
 
     @view_config(route_name="raster", renderer="decimaljson")
     def raster(self):
-        lon = self._get_required_finite_float_param('lon')
-        lat = self._get_required_finite_float_param('lat')
+        lon = self._get_required_finite_float_param("lon")
+        lat = self._get_required_finite_float_param("lat")
 
         if "layers" in self.request.params:
             rasters = {}
@@ -102,9 +102,11 @@ class Raster:
             path = layer["file"]
             if layer.get("type", "shp_index") == "shp_index":
                 from fiona.collection import Collection
+
                 self.data[name] = Collection(path)
             elif layer.get("type") == "gdal":
                 import rasterio
+
                 self.data[name] = rasterio.open(path)
 
         return self.data[name]
@@ -113,20 +115,15 @@ class Raster:
         data = self._get_data(layer, name)
         type_ = layer.get("type", "shp_index")
         if type_ == "shp_index":
-            tiles = [e for e in data.filter(mask={
-                "type": "Point",
-                "coordinates": [lon, lat],
-            })]
+            tiles = [e for e in data.filter(mask={"type": "Point", "coordinates": [lon, lat]})]
 
             if len(tiles) == 0:
                 return None
 
-            path = os.path.join(
-                os.path.dirname(layer["file"]),
-                tiles[0]["properties"]["location"],
-            )
+            path = os.path.join(os.path.dirname(layer["file"]), tiles[0]["properties"]["location"])
 
             import rasterio
+
             with rasterio.open(path) as dataset:
                 result = self._get_value(layer, name, dataset, lon, lat)
         elif type_ == "gdal":
@@ -147,19 +144,25 @@ class Raster:
 
         shape = dataset.shape
         if 0 <= index[0] < shape[0] and 0 <= index[1] < shape[1]:
+
             def get_index(index_):
                 return index_, index_ + 1
-            result = dataset.read(1, window=(
-                get_index(index[0]),
-                get_index(index[1]),
-            ))[0][0]  # pylint: disable=no-member
+
+            result = dataset.read(1, window=(get_index(index[0]), get_index(index[1])))[0][
+                0
+            ]  # pylint: disable=no-member
             result = None if result == layer.get("nodata", dataset.nodata) else result
         else:
             LOG.debug(
-                "Out of index for layer: %s (%s), "
-                "lon/lat: %dx%d, index: %dx%d, shape: %dx%d.",
-                name, layer["file"],
-                lon, lat, index[0], index[1], dataset.shape[0], dataset.shape[1],
+                "Out of index for layer: %s (%s), " "lon/lat: %dx%d, index: %dx%d, shape: %dx%d.",
+                name,
+                layer["file"],
+                lon,
+                lat,
+                index[0],
+                index[1],
+                dataset.shape[0],
+                dataset.shape[1],
             )
             result = None
 

@@ -40,19 +40,18 @@ class Access(Enum):
 
 
 class GeoMapFishAccessControl(QgsAccessControlFilter):
-
     def __init__(self, server_iface):
         super().__init__(server_iface)
 
         self.server_iface = server_iface
 
         try:
-            config.init(os.environ.get('GEOMAPFISH_CONFIG', '/etc/qgisserver/geomapfish.yaml'))
+            config.init(os.environ.get("GEOMAPFISH_CONFIG", "/etc/qgisserver/geomapfish.yaml"))
 
             c2cwsgiutils.broadcast.init(None)
 
             configure_mappers()
-            engine = sqlalchemy.create_engine(config.get('sqlalchemy_slave.url'))
+            engine = sqlalchemy.create_engine(config.get("sqlalchemy_slave.url"))
             session_factory = sessionmaker()
             session_factory.configure(bind=engine)
             DBSession = scoped_session(session_factory)  # noqa: N806
@@ -60,12 +59,12 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             if "GEOMAPFISH_OGCSERVER" in os.environ:
                 self.single = True
                 self.ogcserver_accesscontrol = OGCServerAccessControl(
-                    server_iface, os.environ['GEOMAPFISH_OGCSERVER'], config.get('srid'), DBSession
+                    server_iface, os.environ["GEOMAPFISH_OGCSERVER"], config.get("srid"), DBSession
                 )
 
-                QgsMessageLog.logMessage("Use OGC server named '{}'.".format(
-                    os.environ["GEOMAPFISH_OGCSERVER"]
-                ))
+                QgsMessageLog.logMessage(
+                    "Use OGC server named '{}'.".format(os.environ["GEOMAPFISH_OGCSERVER"])
+                )
             elif "GEOMAPFISH_ACCESSCONTROL_CONFIG" in os.environ:
                 self.single = False
                 self.ogcserver_accesscontrols = {}
@@ -74,12 +73,12 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
 
                 for map_, map_config in ac_config.get("map_config").items():
                     map_config["access_control"] = OGCServerAccessControl(
-                        server_iface, map_config["ogc_server"], config.get('srid'), DBSession
+                        server_iface, map_config["ogc_server"], config.get("srid"), DBSession
                     )
                     self.ogcserver_accesscontrols[map_] = map_config
-                QgsMessageLog.logMessage("Use config '{}'.".format(
-                    os.environ["GEOMAPFISH_ACCESSCONTROL_CONFIG"]
-                ))
+                QgsMessageLog.logMessage(
+                    "Use config '{}'.".format(os.environ["GEOMAPFISH_ACCESSCONTROL_CONFIG"])
+                )
             else:
                 raise GMFException(
                     "The environment variable 'GEOMAPFISH_OGCSERVER' or "
@@ -87,7 +86,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
                 )
 
         except Exception:
-            QgsMessageLog.logMessage(''.join(traceback.format_exception(*sys.exc_info())))
+            QgsMessageLog.logMessage("".join(traceback.format_exception(*sys.exc_info())))
             raise
 
         server_iface.registerAccessControl(self, int(os.environ.get("GEOMAPFISH_POSITION", 100)))
@@ -157,12 +156,10 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
             from c2cgeoportal_commons.models.main import OGCServer
 
-            self.ogcserver = self.DBSession.query(OGCServer) \
-                .filter(OGCServer.name == ogcserver_name) \
-                .one()
+            self.ogcserver = self.DBSession.query(OGCServer).filter(OGCServer.name == ogcserver_name).one()
 
         except Exception:
-            QgsMessageLog.logMessage(''.join(traceback.format_exception(*sys.exc_info())))
+            QgsMessageLog.logMessage("".join(traceback.format_exception(*sys.exc_info())))
             raise
 
     def ogc_layer_name(self, layer):
@@ -212,18 +209,20 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
             # Transform ancestor names in LayerWMS instances
             layers = {}  # dict( node name : list of LayerWMS }
-            for layer in self.DBSession.query(LayerWMS) \
-                    .filter(LayerWMS.ogc_server_id == self.ogcserver.id).all():
+            for layer in (
+                self.DBSession.query(LayerWMS).filter(LayerWMS.ogc_server_id == self.ogcserver.id).all()
+            ):
                 for ogc_layer_name, ancestors in nodes.items():
                     for ancestor in ancestors:
-                        if ancestor in layer.layer.split(','):
+                        if ancestor in layer.layer.split(","):
                             layers.setdefault(ogc_layer_name, []).append(layer)
-            QgsMessageLog.logMessage('[accesscontrol] layers:\n{}'.format(
-                json.dumps(
-                    dict([(k, [l.name for l in v]) for k, v in layers.items()]),
-                    sort_keys=True, indent=4
+            QgsMessageLog.logMessage(
+                "[accesscontrol] layers:\n{}".format(
+                    json.dumps(
+                        dict([(k, [l.name for l in v]) for k, v in layers.items()]), sort_keys=True, indent=4
+                    )
                 )
-            ))
+            )
             self.layers = layers
             return layers
 
@@ -242,16 +241,14 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
         parameters = self.serverInterface().requestHandler().parameterMap()
 
-        if parameters.get('USER_ID') == "0":
+        if parameters.get("USER_ID") == "0":
             return "ROOT"
 
-        roles = self.DBSession.query(Role). \
-            join(Role.users). \
-            filter(User.id == parameters.get('USER_ID')). \
-            all()
+        roles = self.DBSession.query(Role).join(Role.users).filter(User.id == parameters.get("USER_ID")).all()
 
-        QgsMessageLog.logMessage("Roles: {}".format(
-            ','.join([role.name for role in roles]) if roles else '-'))
+        QgsMessageLog.logMessage(
+            "Roles: {}".format(",".join([role.name for role in roles]) if roles else "-")
+        )
         return roles
 
     @staticmethod
@@ -284,12 +281,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         for layer in gmf_layers:
             for restriction_area in layer.restrictionareas:
                 for role in roles:
-                    if (
-                        role in restriction_area.roles and (
-                            rw is False
-                            or restriction_area.readwrite is True
-                        )
-                    ):
+                    if role in restriction_area.roles and (rw is False or restriction_area.readwrite is True):
                         if restriction_area.area is None:
                             return Access.FULL, None
                         else:
@@ -298,10 +290,10 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         if len(restriction_areas) == 0:
             return Access.NO, None
 
-        return Access.AREA, [
-            geoalchemy2.shape.to_shape(restriction_area.area)
-            for restriction_area in restriction_areas
-        ]
+        return (
+            Access.AREA,
+            [geoalchemy2.shape.to_shape(restriction_area.area) for restriction_area in restriction_areas],
+        )
 
     def get_area(self, layer, rw=False):
         """
@@ -311,7 +303,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         - Access area as WKT or None
         """
         roles = self.get_roles()
-        if roles == 'ROOT':
+        if roles == "ROOT":
             return Access.FULL, None
 
         ogc_name = self.ogc_layer_name(layer)
@@ -336,8 +328,8 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
     def layerFilterSubsetString(self, layer):  # NOQA
         """ Returns an additional subset string (typically SQL) filter """
-        QgsMessageLog.logMessage("layerFilterSubsetString {} {}".format(
-            layer.name(), layer.dataProvider().storageType())
+        QgsMessageLog.logMessage(
+            "layerFilterSubsetString {} {}".format(layer.name(), layer.dataProvider().storageType())
         )
 
         self.assert_plugin_initialised()
@@ -355,27 +347,23 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                 QgsMessageLog.logMessage("layerFilterSubsetString not allowed")
                 return "0"
 
-            area = "ST_GeomFromText('{}', {})".format(
-                area, self.srid
-            )
+            area = "ST_GeomFromText('{}', {})".format(area, self.srid)
             if self.srid != layer.crs().postgisSrid():
-                area = "ST_transform({}, {})".format(
-                    area, layer.crs().postgisSrid()
-                )
+                area = "ST_transform({}, {})".format(area, layer.crs().postgisSrid())
             result = "ST_intersects({}, {})".format(
                 QgsDataSourceUri(layer.dataProvider().dataSourceUri()).geometryColumn(), area
             )
             QgsMessageLog.logMessage("layerFilterSubsetString filter: {}".format(result))
             return result
         except Exception:
-            QgsMessageLog.logMessage(''.join(traceback.format_exception(*sys.exc_info())))
+            QgsMessageLog.logMessage("".join(traceback.format_exception(*sys.exc_info())))
             raise
 
     def layerFilterExpression(self, layer):  # NOQA
         """ Returns an additional expression filter """
-        QgsMessageLog.logMessage("layerFilterExpression {} {}".format(
-            layer.name(), layer.dataProvider().storageType()
-        ))
+        QgsMessageLog.logMessage(
+            "layerFilterExpression {} {}".format(layer.name(), layer.dataProvider().storageType())
+        )
 
         self.assert_plugin_initialised()
 
@@ -398,7 +386,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             QgsMessageLog.logMessage("layerFilterExpression filter: {}".format(result))
             return result
         except Exception:
-            QgsMessageLog.logMessage(''.join(traceback.format_exception(*sys.exc_info())))
+            QgsMessageLog.logMessage("".join(traceback.format_exception(*sys.exc_info())))
             raise
 
     def layerPermissions(self, layer):  # NOQA
@@ -427,7 +415,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
             return rights
         except Exception:
-            QgsMessageLog.logMessage(''.join(traceback.format_exception(*sys.exc_info())))
+            QgsMessageLog.logMessage("".join(traceback.format_exception(*sys.exc_info())))
             raise
 
     @staticmethod
@@ -456,17 +444,15 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
             return area.intersect(feature.geom)
         except Exception:
-            QgsMessageLog.logMessage(''.join(traceback.format_exception(*sys.exc_info())))
+            QgsMessageLog.logMessage("".join(traceback.format_exception(*sys.exc_info())))
             raise
 
     def cacheKey(self):  # NOQA
         # Root...
         roles = self.get_roles()
         if roles == "ROOT":
-            return "{}-{}".format(
-                self.serverInterface().requestHandler().parameter("Host"), -1
-            )
+            return "{}-{}".format(self.serverInterface().requestHandler().parameter("Host"), -1)
         return "{}-{}".format(
             self.serverInterface().requestHandler().parameter("Host"),
-            ','.join(str(role.id) for role in sorted(roles, key=lambda role: role.id)),
+            ",".join(str(role.id) for role in sorted(roles, key=lambda role: role.id)),
         )

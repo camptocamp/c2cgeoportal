@@ -34,19 +34,17 @@ from unittest import TestCase
 
 from pyramid import testing
 
-from tests.functional import (  # noqa
-    teardown_common as teardown_module, setup_common as setup_module
-)
+from tests.functional import teardown_common as teardown_module, setup_common as setup_module  # noqa
 
 
 class TestshortenerView(TestCase):
-
     def teardown_method(self, _):
         testing.tearDown()
 
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import Shorturl
         import transaction
+
         DBSession.query(Shorturl).delete()
         transaction.commit()
 
@@ -65,24 +63,18 @@ class TestshortenerView(TestCase):
         request.host = "example.com:443"
         request.server_name = "example.com"
         request.route_url = route_url
-        request.registry.settings["shortener"] = {
-            "base_url": "https://example.com/s/"
-        }
+        request.registry.settings["shortener"] = {"base_url": "https://example.com/s/"}
         shortener = Shortener(request)
 
         request.params = {}
-        request.matchdict = {
-            "ref": "AAAAAA"
-        }
+        request.matchdict = {"ref": "AAAAAA"}
         self.assertRaises(HTTPNotFound, shortener.get)
 
         request.params = {}
         request.matchdict = {}
         self.assertRaises(HTTPBadRequest, shortener.create)
 
-        request.params = {
-            "url": "https://other-site.com/hi"
-        }
+        request.params = {"url": "https://other-site.com/hi"}
         self.assertRaises(HTTPBadRequest, shortener.create)
 
     def test_shortener_create_1(self):
@@ -98,25 +90,18 @@ class TestshortenerView(TestCase):
         request.host = "example.com:443"
         request.server_name = "example.com"
         request.route_url = route_url
-        request.registry.settings["shortener"] = {
-            "base_url": "https://example.com/s/"
-        }
+        request.registry.settings["shortener"] = {"base_url": "https://example.com/s/"}
         shortener = Shortener(request)
 
-        request.params = {
-            "url": "https://example.com/hi"
-        }
+        request.params = {"url": "https://example.com/hi"}
         result = shortener.create()
         index = result["short_url"].rfind("/")
-        self.assertEqual(
-            result["short_url"][:index],
-            "https://example.com/s"
-        )
+        self.assertEqual(result["short_url"][:index], "https://example.com/s")
 
         request.params = {}
-        request.matchdict = {
-            "ref": result["short_url"][index + 1:]
-        }
+        # fmt: off
+        request.matchdict = {"ref": result["short_url"][index + 1:]}
+        # fmt: on
         result = shortener.get()
         self.assertEqual(type(result), HTTPFound)
         self.assertEqual(result.location, "https://example.com/hi")
@@ -137,20 +122,15 @@ class TestshortenerView(TestCase):
         request.registry.settings["shortener"] = {}
         shortener = Shortener(request)
 
-        request.params = {
-            "url": "https://example.com/hi"
-        }
+        request.params = {"url": "https://example.com/hi"}
         result = shortener.create()
         index = result["short_url"].rfind("/")
-        self.assertEqual(
-            result["short_url"][:index],
-            "https://example.com/short"
-        )
+        self.assertEqual(result["short_url"][:index], "https://example.com/short")
 
         request.params = {}
-        request.matchdict = {
-            "ref": result["short_url"][index + 1:]
-        }
+        # fmt: off
+        request.matchdict = {"ref": result["short_url"][index + 1:]}
+        # fmt: on
         result = shortener.get()
         self.assertEqual(type(result), HTTPFound)
         self.assertEqual(result.location, "https://example.com/hi")
@@ -167,14 +147,10 @@ class TestshortenerView(TestCase):
         request.host = "example.com:443"
         request.server_name = "example.com"
         request.route_url = route_url
-        request.registry.settings["shortener"] = {
-            "base_url": "https://example.com/s/"
-        }
+        request.registry.settings["shortener"] = {"base_url": "https://example.com/s/"}
         shortener = Shortener(request)
 
-        request.params = {
-            "url": "https://example.com/short/truite"
-        }
+        request.params = {"url": "https://example.com/short/truite"}
         result = shortener.create()
         self.assertEqual(result["short_url"], "https://example.com/s/truite")
 
@@ -190,14 +166,10 @@ class TestshortenerView(TestCase):
         request.host = "example.com:443"
         request.server_name = "example.com"
         request.route_url = route_url
-        request.registry.settings["shortener"] = {
-            "base_url": "https://example.com/s/"
-        }
+        request.registry.settings["shortener"] = {"base_url": "https://example.com/s/"}
         shortener = Shortener(request)
 
-        request.params = {
-            "url": "https://example.com/s/truite"
-        }
+        request.params = {"url": "https://example.com/s/truite"}
         result = shortener.create()
         self.assertEqual(result["short_url"], "https://example.com/s/truite")
 
@@ -213,17 +185,10 @@ class TestshortenerView(TestCase):
         request.host = "example.com:443"
         request.server_name = "example.com"
         request.route_url = route_url
-        request.registry.settings["shortener"] = {
-            "base_url": "http://my_host/my_short/"
-        }
+        request.registry.settings["shortener"] = {"base_url": "http://my_host/my_short/"}
         shortener = Shortener(request)
 
-        request.params = {
-            "url": "https://example.com/hi"
-        }
+        request.params = {"url": "https://example.com/hi"}
         result = shortener.create()
         index = result["short_url"].rfind("/")
-        self.assertEqual(
-            result["short_url"][:index],
-            "http://my_host/my_short"
-        )
+        self.assertEqual(result["short_url"][:index], "http://my_host/my_short")

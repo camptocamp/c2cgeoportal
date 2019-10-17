@@ -39,7 +39,7 @@ from c2cgeoportal_geoportal.lib import get_url2
 from c2cgeoportal_geoportal.lib.caching import get_region
 from c2cgeoportal_geoportal.views.proxy import Proxy
 
-CACHE_REGION = get_region('std')
+CACHE_REGION = get_region("std")
 LOG = logging.getLogger(__name__)
 
 
@@ -72,10 +72,11 @@ class OGCProxy(Proxy):
             DBSession.expunge(result)
             return result
         except NoResultFound:  # pragma nocover
-            raise HTTPBadRequest("OGSServer '{}' does not exists (existing: {}).".format(
-                name,
-                ",".join([t[0] for t in DBSession.query(OGCServer.name).all()])
-            ))
+            raise HTTPBadRequest(
+                "OGSServer '{}' does not exists (existing: {}).".format(
+                    name, ",".join([t[0] for t in DBSession.query(OGCServer.name).all()])
+                )
+            )
 
     def _get_wms_url(self):
         ogc_server = self.ogc_server
@@ -90,7 +91,9 @@ class OGCProxy(Proxy):
         errors = set()
         url = get_url2(
             "The OGC server (WFS) '{}'".format(ogc_server.name),
-            ogc_server.url_wfs or ogc_server.url, self.request, errors
+            ogc_server.url_wfs or ogc_server.url,
+            self.request,
+            errors,
         )
         if len(errors) > 0:  # pragma: no cover
             LOG.error("\n".join(errors))

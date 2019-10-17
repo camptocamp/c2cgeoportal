@@ -36,7 +36,10 @@ from unittest import TestCase
 from tests.functional import (  # noqa
     teardown_common as teardown_module,
     setup_common as setup_module,
-    create_dummy_request, create_default_ogcserver, cleanup_db, setup_db,
+    create_dummy_request,
+    create_default_ogcserver,
+    cleanup_db,
+    setup_db,
 )
 
 
@@ -55,8 +58,14 @@ class TestThemesEditColumns(TestCase):
 
         import transaction
         from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import Role, Interface, TreeItem, Theme, \
-            LayerGroup, OGCSERVER_AUTH_NOAUTH
+        from c2cgeoportal_commons.models.main import (
+            Role,
+            Interface,
+            TreeItem,
+            Theme,
+            LayerGroup,
+            OGCSERVER_AUTH_NOAUTH,
+        )
         from c2cgeoportal_commons.models.static import User
 
         for treeitem in DBSession.query(TreeItem).all():
@@ -64,10 +73,7 @@ class TestThemesEditColumns(TestCase):
 
         self.role = Role(name="__test_role")
         self.user = User(
-            username="__test_user",
-            password="__test_user",
-            settings_role=self.role,
-            roles=[self.role]
+            username="__test_user", password="__test_user", settings_role=self.role, roles=[self.role]
         )
         self.main = Interface(name="main")
 
@@ -121,19 +127,22 @@ class TestThemesEditColumns(TestCase):
         schemaname = "geodata"
 
         table1 = Table(
-            "{0!s}_child".format(tablename), self.metadata,
+            "{0!s}_child".format(tablename),
+            self.metadata,
             Column("id", types.Integer, primary_key=True),
             Column("name", types.Unicode),
-            schema=schemaname
+            schema=schemaname,
         )
 
         self._tables.append(table1)
 
         table2 = Table(
-            tablename, self.metadata,
+            tablename,
+            self.metadata,
             Column("id", types.Integer, primary_key=True),
-            Column("child_id", types.Integer,
-                   ForeignKey("{0!s}.{1!s}_child.id".format(schemaname, tablename))),
+            Column(
+                "child_id", types.Integer, ForeignKey("{0!s}.{1!s}_child.id".format(schemaname, tablename))
+            ),
             Column("name", types.Unicode, nullable=False),
             Column("deleted", types.Boolean),
             Column("last_update_user", types.Unicode),
@@ -149,16 +158,12 @@ class TestThemesEditColumns(TestCase):
             Column("value", types.Enum("one", "two", "three", name="an_enum_value")),
             Column("numeric", types.Numeric(precision=5, scale=2), nullable=True),
             Column("numeric2", types.Numeric(), nullable=True),
-            schema=schemaname
+            schema=schemaname,
         )
         if geom_type:
-            table2.append_column(
-                Column("geom", Geometry("POINT", srid=21781))
-            )
+            table2.append_column(Column("geom", Geometry("POINT", srid=21781)))
         else:
-            table2.append_column(
-                Column("geom", Geometry(srid=21781))
-            )
+            table2.append_column(Column("geom", Geometry(srid=21781)))
 
         self._tables.append(table2)
 
@@ -218,102 +223,60 @@ class TestThemesEditColumns(TestCase):
         from c2cgeoportal_geoportal.views.entry import Entry
 
         layer_id = self._create_layer(geom_type=True)
-        entry = Entry(self._get_request(layer_id, username="__test_user", params={
-            "interface": "main"
-        }))
+        entry = Entry(self._get_request(layer_id, username="__test_user", params={"interface": "main"}))
 
         themes = entry.themes()
         layers = themes["themes"][0]["children"][0]["children"]
 
         self.assertEqual(
             [layer["edit_columns"] for layer in layers],
-            [[{
-                "nillable": True,
-                "type": "xsd:integer",
-                "name": "child_id"
-            }, {
-                "type": "xsd:string",
-                "name": "name"
-            }, {
-                "nillable": True,
-                "type": "xsd:boolean",
-                "name": "deleted"
-            }, {
-                "nillable": True,
-                "type": "xsd:string",
-                "name": "last_update_user"
-            }, {
-                "nillable": True,
-                "type": "xsd:dateTime",
-                "name": "last_update_date"
-            }, {
-                "nillable": True,
-                "type": "xsd:date",
-                "name": "date"
-            }, {
-                "nillable": True,
-                "type": "xsd:time",
-                "name": "start_time"
-                # }, {
-                #     "nillable": True,
-                #     "type": "xsd:duration",
-                #     "name": "interval"
-            }, {
-                "nillable": True,
-                "type": "xsd:string",
-                "name": "short_name1"
-            }, {
-                "nillable": True,
-                "type": "xsd:string",
-                "name": "short_name2",
-                "maxLength": 50
-            }, {
-                "nillable": True,
-                "type": "xsd:integer",
-                "name": "short_number"
-            }, {
-                "nillable": True,
-                "type": "xsd:double",
-                "name": "double_number"
-            }, {
-                "nillable": True,
-                "type": "xsd:base64Binary",
-                "name": "large_binary"
-            }, {
-                "enumeration": [
-                    "one",
-                    "two",
-                    "three",
-                ],
-                "type": "xsd:string",
-                "name": "value",
-                "nillable": True,
-                "restriction": "enumeration"
-            }, {
-                "fractionDigits": 2,
-                "nillable": True,
-                "type": "xsd:decimal",
-                "name": "numeric",
-                "totalDigits": 5
-            }, {
-                "nillable": True,
-                "type": "xsd:decimal",
-                "name": "numeric2"
-            }, {
-                "srid": 21781,
-                "nillable": True,
-                "type": "gml:PointPropertyType",
-                "name": "geom"
-            }, {
-                "restriction": "enumeration",
-                "nillable": True,
-                "type": "xsd:string",
-                "name": "child",
-                "enumeration": [
-                    "c1\xe9",
-                    "c2\xe9"
+            [
+                [
+                    {"nillable": True, "type": "xsd:integer", "name": "child_id"},
+                    {"type": "xsd:string", "name": "name"},
+                    {"nillable": True, "type": "xsd:boolean", "name": "deleted"},
+                    {"nillable": True, "type": "xsd:string", "name": "last_update_user"},
+                    {"nillable": True, "type": "xsd:dateTime", "name": "last_update_date"},
+                    {"nillable": True, "type": "xsd:date", "name": "date"},
+                    {
+                        "nillable": True,
+                        "type": "xsd:time",
+                        "name": "start_time"
+                        # }, {
+                        #     "nillable": True,
+                        #     "type": "xsd:duration",
+                        #     "name": "interval"
+                    },
+                    {"nillable": True, "type": "xsd:string", "name": "short_name1"},
+                    {"nillable": True, "type": "xsd:string", "name": "short_name2", "maxLength": 50},
+                    {"nillable": True, "type": "xsd:integer", "name": "short_number"},
+                    {"nillable": True, "type": "xsd:double", "name": "double_number"},
+                    {"nillable": True, "type": "xsd:base64Binary", "name": "large_binary"},
+                    {
+                        "enumeration": ["one", "two", "three"],
+                        "type": "xsd:string",
+                        "name": "value",
+                        "nillable": True,
+                        "restriction": "enumeration",
+                    },
+                    {
+                        "fractionDigits": 2,
+                        "nillable": True,
+                        "type": "xsd:decimal",
+                        "name": "numeric",
+                        "totalDigits": 5,
+                    },
+                    {"nillable": True, "type": "xsd:decimal", "name": "numeric2"},
+                    {"srid": 21781, "nillable": True, "type": "gml:PointPropertyType", "name": "geom"},
+                    {
+                        "restriction": "enumeration",
+                        "nillable": True,
+                        "type": "xsd:string",
+                        "name": "child",
+                        "enumeration": ["c1\xe9", "c2\xe9"],
+                    },
                 ]
-            }]]
+            ],
         )
 
     def test_themes_edit_columns_extras(self):
@@ -325,89 +288,55 @@ class TestThemesEditColumns(TestCase):
             Metadata("lastUpdateUserColumn", "last_update_user"),
         ]
         layer_id = self._create_layer(geom_type=False, exclude_properties=True, metadatas=metadatas)
-        entry = Entry(self._get_request(layer_id, username="__test_user", params={
-            "interface": "main"
-        }))
+        entry = Entry(self._get_request(layer_id, username="__test_user", params={"interface": "main"}))
 
         themes = entry.themes()
         layers = themes["themes"][0]["children"][0]["children"]
 
         self.assertEqual(
             [layer["edit_columns"] for layer in layers],
-            [[{
-                "nillable": True,
-                "type": "xsd:integer",
-                "name": "child_id"
-            }, {
-                "nillable": True,
-                "type": "xsd:boolean",
-                "name": "deleted"
-            }, {
-                "nillable": True,
-                "type": "xsd:date",
-                "name": "date"
-            }, {
-                "nillable": True,
-                "type": "xsd:time",
-                "name": "start_time"
-                # }, {
-                #     "nillable": True,
-                #     "type": "xsd:duration",
-                #     "name": "interval"
-            }, {
-                "nillable": True,
-                "type": "xsd:string",
-                "name": "short_name1"
-            }, {
-                "nillable": True,
-                "type": "xsd:string",
-                "name": "short_name2",
-                "maxLength": 50
-            }, {
-                "nillable": True,
-                "type": "xsd:integer",
-                "name": "short_number"
-            }, {
-                "nillable": True,
-                "type": "xsd:double",
-                "name": "double_number"
-            }, {
-                "nillable": True,
-                "type": "xsd:base64Binary",
-                "name": "large_binary"
-            }, {
-                "enumeration": [
-                    "one",
-                    "two",
-                    "three",
-                ],
-                "type": "xsd:string",
-                "name": "value",
-                "nillable": True,
-                "restriction": "enumeration"
-            }, {
-                "fractionDigits": 2,
-                "nillable": True,
-                "type": "xsd:decimal",
-                "name": "numeric",
-                "totalDigits": 5,
-            }, {
-                "name": "numeric2",
-                "type": "xsd:decimal",
-                "nillable": True
-            }, {
-                "srid": 21781,
-                "nillable": True,
-                "type": "gml:GeometryPropertyType",
-                "name": "geom"
-            }, {
-                "restriction": "enumeration",
-                "nillable": True,
-                "type": "xsd:string",
-                "name": "child",
-                "enumeration": [
-                    "c1\xe9",
-                    "c2\xe9"
+            [
+                [
+                    {"nillable": True, "type": "xsd:integer", "name": "child_id"},
+                    {"nillable": True, "type": "xsd:boolean", "name": "deleted"},
+                    {"nillable": True, "type": "xsd:date", "name": "date"},
+                    {
+                        "nillable": True,
+                        "type": "xsd:time",
+                        "name": "start_time"
+                        # }, {
+                        #     "nillable": True,
+                        #     "type": "xsd:duration",
+                        #     "name": "interval"
+                    },
+                    {"nillable": True, "type": "xsd:string", "name": "short_name1"},
+                    {"nillable": True, "type": "xsd:string", "name": "short_name2", "maxLength": 50},
+                    {"nillable": True, "type": "xsd:integer", "name": "short_number"},
+                    {"nillable": True, "type": "xsd:double", "name": "double_number"},
+                    {"nillable": True, "type": "xsd:base64Binary", "name": "large_binary"},
+                    {
+                        "enumeration": ["one", "two", "three"],
+                        "type": "xsd:string",
+                        "name": "value",
+                        "nillable": True,
+                        "restriction": "enumeration",
+                    },
+                    {
+                        "fractionDigits": 2,
+                        "nillable": True,
+                        "type": "xsd:decimal",
+                        "name": "numeric",
+                        "totalDigits": 5,
+                    },
+                    {"name": "numeric2", "type": "xsd:decimal", "nillable": True},
+                    {"srid": 21781, "nillable": True, "type": "gml:GeometryPropertyType", "name": "geom"},
+                    {
+                        "restriction": "enumeration",
+                        "nillable": True,
+                        "type": "xsd:string",
+                        "name": "child",
+                        "enumeration": ["c1\xe9", "c2\xe9"],
+                    },
                 ]
-            }]]
+            ],
         )

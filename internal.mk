@@ -61,7 +61,7 @@ build: \
 	$(MO_FILES)
 
 .PHONY: checks
-checks: flake8 mypy pylint bandit additionallint
+checks: flake8 mypy pylint bandit black additionallint
 
 .PHONY: flake8
 flake8:
@@ -108,6 +108,14 @@ mypy:
 .PHONY: bandit
 bandit:
 	bandit --recursive -ll .
+
+.PHONY: black
+black:
+	black --line-length=110 --target-version py37 --exclude=.*/node_modules/.* --check --diff .
+
+.PHONY: black-fix
+black-fix:
+	black --line-length=110 --target-version py37 --exclude=.*/node_modules/.* /src
 
 .PHONY: additionallint
 additionallint:

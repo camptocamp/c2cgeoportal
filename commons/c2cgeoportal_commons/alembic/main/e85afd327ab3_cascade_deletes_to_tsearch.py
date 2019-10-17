@@ -38,31 +38,61 @@ from alembic import op
 from c2c.template.config import config
 
 # revision identifiers, used by Alembic.
-revision = 'e85afd327ab3'
-down_revision = 'c75124553bf3'
+revision = "e85afd327ab3"
+down_revision = "c75124553bf3"
 branch_labels = None
 depends_on = None
 
 
 def upgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
-    op.drop_constraint('tsearch_role_id_fkey', 'tsearch', schema=schema, type_='foreignkey')
-    op.create_foreign_key('tsearch_role_id_fkey', 'tsearch', 'role', ['role_id'], ['id'],
-                          source_schema=schema, referent_schema=schema, ondelete='CASCADE')
+    op.drop_constraint("tsearch_role_id_fkey", "tsearch", schema=schema, type_="foreignkey")
+    op.create_foreign_key(
+        "tsearch_role_id_fkey",
+        "tsearch",
+        "role",
+        ["role_id"],
+        ["id"],
+        source_schema=schema,
+        referent_schema=schema,
+        ondelete="CASCADE",
+    )
 
-    op.drop_constraint('tsearch_interface_id_fkey', 'tsearch', schema=schema, type_='foreignkey')
-    op.create_foreign_key('tsearch_interface_id_fkey', 'tsearch', 'interface', ['interface_id'], ['id'],
-                          source_schema=schema, referent_schema=schema, ondelete='CASCADE')
+    op.drop_constraint("tsearch_interface_id_fkey", "tsearch", schema=schema, type_="foreignkey")
+    op.create_foreign_key(
+        "tsearch_interface_id_fkey",
+        "tsearch",
+        "interface",
+        ["interface_id"],
+        ["id"],
+        source_schema=schema,
+        referent_schema=schema,
+        ondelete="CASCADE",
+    )
 
 
 def downgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
-    op.drop_constraint('tsearch_role_id_fkey', 'tsearch', schema=schema, type_='foreignkey')
-    op.create_foreign_key('tsearch_role_id_fkey', 'tsearch', 'role', ['role_id'], ['id'],
-                          source_schema=schema, referent_schema=schema)
+    op.drop_constraint("tsearch_role_id_fkey", "tsearch", schema=schema, type_="foreignkey")
+    op.create_foreign_key(
+        "tsearch_role_id_fkey",
+        "tsearch",
+        "role",
+        ["role_id"],
+        ["id"],
+        source_schema=schema,
+        referent_schema=schema,
+    )
 
-    op.drop_constraint('tsearch_interface_id_fkey', 'tsearch', schema=schema, type_='foreignkey')
-    op.create_foreign_key('tsearch_interface_id_fkey', 'tsearch', 'interface', ['interface_id'], ['id'],
-                          source_schema=schema, referent_schema=schema)
+    op.drop_constraint("tsearch_interface_id_fkey", "tsearch", schema=schema, type_="foreignkey")
+    op.create_foreign_key(
+        "tsearch_interface_id_fkey",
+        "tsearch",
+        "interface",
+        ["interface_id"],
+        ["id"],
+        source_schema=schema,
+        referent_schema=schema,
+    )

@@ -38,38 +38,31 @@ from alembic import op
 from c2c.template.config import config
 
 # revision identifiers, used by Alembic.
-revision = '20137477bd02'
-down_revision = '1d5d4abfebd1'
+revision = "20137477bd02"
+down_revision = "1d5d4abfebd1"
 
 
 def upgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
     updates = [
         "UPDATE %(schema)s.%(table)s SET %(column)s = 'static:///' || %(column)s "
         "WHERE (%(column)s IS NOT NULL) AND (NOT %(column)s = '') "
-        "AND NOT (%(column)s LIKE 'http%%') ""AND NOT (%(column)s LIKE '/%%')",
+        "AND NOT (%(column)s LIKE 'http%%') "
+        "AND NOT (%(column)s LIKE '/%%')",
         "UPDATE %(schema)s.%(table)s SET %(column)s = 'static://' || %(column)s "
         "WHERE (%(column)s IS NOT NULL) AND (NOT %(column)s = '') "
         "AND NOT (%(column)s LIKE 'http%%') AND NOT (%(column)s LIKE 'static://%%')",
     ]
     for update in updates:
-        op.execute(update % {
-            'schema': schema, 'table': 'theme', 'column': 'icon'
-        })
-        op.execute(update % {
-            'schema': schema, 'table': 'layerv1', 'column': 'icon'
-        })
-        op.execute(update % {
-            'schema': schema, 'table': 'layerv1', 'column': 'kml'
-        })
-        op.execute(update % {
-            'schema': schema, 'table': 'layerv1', 'column': 'legend_image'
-        })
+        op.execute(update % {"schema": schema, "table": "theme", "column": "icon"})
+        op.execute(update % {"schema": schema, "table": "layerv1", "column": "icon"})
+        op.execute(update % {"schema": schema, "table": "layerv1", "column": "kml"})
+        op.execute(update % {"schema": schema, "table": "layerv1", "column": "legend_image"})
 
 
 def downgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
     updates = [
         "UPDATE %(schema)s.%(table)s SET %(column)s = substring(%(column)s from 11) "
@@ -78,15 +71,7 @@ def downgrade():
         "WHERE %(column)s LIKE 'static://%%'",
     ]
     for update in updates:
-        op.execute(update % {
-            'schema': schema, 'table': 'theme', 'column': 'icon'
-        })
-        op.execute(update % {
-            'schema': schema, 'table': 'layerv1', 'column': 'icon'
-        })
-        op.execute(update % {
-            'schema': schema, 'table': 'layerv1', 'column': 'kml'
-        })
-        op.execute(update % {
-            'schema': schema, 'table': 'layerv1', 'column': 'legend_image'
-        })
+        op.execute(update % {"schema": schema, "table": "theme", "column": "icon"})
+        op.execute(update % {"schema": schema, "table": "layerv1", "column": "icon"})
+        op.execute(update % {"schema": schema, "table": "layerv1", "column": "kml"})
+        op.execute(update % {"schema": schema, "table": "layerv1", "column": "legend_image"})

@@ -38,15 +38,18 @@ from geoalchemy2.shape import from_shape, to_shape
 from geojson.feature import Feature, FeatureCollection
 from papyrus.protocol import Protocol, create_filter
 from papyrus.xsd import XSDGenerator
-from pyramid.httpexceptions import (HTTPBadRequest, HTTPException,
-                                    HTTPForbidden, HTTPInternalServerError,
-                                    HTTPNotFound)
+from pyramid.httpexceptions import (
+    HTTPBadRequest,
+    HTTPException,
+    HTTPForbidden,
+    HTTPInternalServerError,
+    HTTPNotFound,
+)
 from pyramid.view import view_config
 from shapely.geometry import asShape
 from shapely.geos import TopologicalError
 from shapely.ops import cascaded_union
-from sqlalchemy import (Enum, Numeric, String, Text, Unicode, UnicodeText,
-                        distinct, exc, func)
+from sqlalchemy import Enum, Numeric, String, Text, Unicode, UnicodeText, distinct, exc, func
 from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 from sqlalchemy.orm.properties import ColumnProperty
 from sqlalchemy.orm.util import class_mapper
@@ -54,18 +57,20 @@ from sqlalchemy.sql import and_, or_
 
 from c2cgeoportal_commons import models
 from c2cgeoportal_commons.models.main import Layer, RestrictionArea, Role
-from c2cgeoportal_geoportal.lib.caching import (NO_CACHE, PRIVATE_CACHE,
-                                                PUBLIC_CACHE, get_region,
-                                                set_common_headers)
-from c2cgeoportal_geoportal.lib.dbreflection import (_AssociationProxy,
-                                                     get_class, get_table)
+from c2cgeoportal_geoportal.lib.caching import (
+    NO_CACHE,
+    PRIVATE_CACHE,
+    PUBLIC_CACHE,
+    get_region,
+    set_common_headers,
+)
+from c2cgeoportal_geoportal.lib.dbreflection import _AssociationProxy, get_class, get_table
 
 LOG = logging.getLogger(__name__)
-CACHE_REGION = get_region('std')
+CACHE_REGION = get_region("std")
 
 
 class Layers:
-
     def __init__(self, request):
         self.request = request
         self.settings = request.registry.settings.get("layers", {})
@@ -88,9 +93,7 @@ class Layers:
             if isinstance(col.type, Geometry):
                 return col.name, col.type.srid
         raise HTTPInternalServerError(
-            'Failed getting geometry column info for table "{0!s}".'.format(
-                layer.geo_table
-            )
+            'Failed getting geometry column info for table "{0!s}".'.format(layer.geo_table)
         )  # pragma: no cover
 
     @staticmethod
@@ -104,9 +107,7 @@ class Layers:
         except NoResultFound:
             raise HTTPNotFound("Layer {0:d} not found".format(layer_id))
         except MultipleResultsFound:  # pragma: no cover
-            raise HTTPInternalServerError(
-                "Too many layers found with id {0:d}".format(layer_id)
-            )
+            raise HTTPInternalServerError("Too many layers found with id {0:d}".format(layer_id))
         if not geo_table:  # pragma: no cover
             raise HTTPNotFound("Layer {0:d} has no geo table".format(layer_id))
         return layer
@@ -116,15 +117,13 @@ class Layers:
         on the layer ids found in the ``layer_id`` matchdict. """
         try:
             layer_ids = (
-                int(layer_id) for layer_id in
-                self.request.matchdict["layer_id"].split(",") if layer_id)
+                int(layer_id) for layer_id in self.request.matchdict["layer_id"].split(",") if layer_id
+            )
             for layer_id in layer_ids:
                 yield self._get_layer(layer_id)
         except ValueError:
             raise HTTPBadRequest(
-                "A Layer id in '{0!s}' is not an integer".format(
-                    self.request.matchdict["layer_id"]
-                )
+                "A Layer id in '{0!s}' is not an integer".format(self.request.matchdict["layer_id"])
             )  # pragma: no cover
 
     def _get_layer_for_request(self):
@@ -172,10 +171,7 @@ class Layers:
 
         filter1_ = create_filter(self.request, cls, geom_attr)
         ra = cascaded_union(collect_ra)
-        filter2_ = ga_func.ST_Contains(
-            from_shape(ra, use_srid),
-            getattr(cls, geom_attr)
-        )
+        filter2_ = ga_func.ST_Contains(from_shape(ra, use_srid), getattr(cls, geom_attr))
         filter_ = filter2_ if filter1_ is None else and_(filter1_, filter2_)
 
         return proto.read(self.request, filter=filter_)
@@ -217,10 +213,9 @@ class Layers:
         allowed = allowed.join(RestrictionArea.layers)
         allowed = allowed.filter(Role.id.in_([role.id for role in self.request.user.roles]))
         allowed = allowed.filter(Layer.id == layer.id)
-        allowed = allowed.filter(or_(
-            RestrictionArea.area.is_(None),
-            RestrictionArea.area.ST_Contains(spatial_elt)
-        ))
+        allowed = allowed.filter(
+            or_(RestrictionArea.area.is_(None), RestrictionArea.area.ST_Contains(spatial_elt))
+        )
         if allowed.scalar() == 0:
             raise HTTPForbidden()
 
@@ -257,10 +252,9 @@ class Layers:
                 allowed = allowed.filter(RestrictionArea.readwrite.is_(True))
                 allowed = allowed.filter(Role.id.in_([r.id for r in self.request.user.roles]))
                 allowed = allowed.filter(Layer.id == layer.id)
-                allowed = allowed.filter(or_(
-                    RestrictionArea.area.is_(None),
-                    RestrictionArea.area.ST_Contains(spatial_elt)
-                ))
+                allowed = allowed.filter(
+                    or_(RestrictionArea.area.is_(None), RestrictionArea.area.ST_Contains(spatial_elt))
+                )
                 if allowed.scalar() == 0:
                     raise HTTPForbidden()
 
@@ -281,13 +275,11 @@ class Layers:
             return features
         except TopologicalError as e:
             self.request.response.status_int = 400
-            return {"error_type": "validation_error",
-                    "message": str(e)}
+            return {"error_type": "validation_error", "message": str(e)}
         except exc.IntegrityError as e:
             LOG.error(str(e))
             self.request.response.status_int = 400
-            return {"error_type": "integrity_error",
-                    "message": str(e.orig.diag.message_primary)}
+            return {"error_type": "integrity_error", "message": str(e.orig.diag.message_primary)}
 
     @view_config(route_name="layers_update", renderer="geojson")
     def update(self):
@@ -313,18 +305,16 @@ class Layers:
             allowed = allowed.filter(RestrictionArea.readwrite.is_(True))
             allowed = allowed.filter(Role.id.in_([role.id for role in self.request.user.roles]))
             allowed = allowed.filter(Layer.id == layer.id)
-            allowed = allowed.filter(or_(
-                RestrictionArea.area.is_(None),
-                RestrictionArea.area.ST_Contains(geom_attr)
-            ))
+            allowed = allowed.filter(
+                or_(RestrictionArea.area.is_(None), RestrictionArea.area.ST_Contains(geom_attr))
+            )
             spatial_elt = None
             if geom and not isinstance(geom, geojson.geometry.Default):
                 shape = asShape(geom)
                 spatial_elt = from_shape(shape, srid=srid)
-                allowed = allowed.filter(or_(
-                    RestrictionArea.area.is_(None),
-                    RestrictionArea.area.ST_Contains(spatial_elt)
-                ))
+                allowed = allowed.filter(
+                    or_(RestrictionArea.area.is_(None), RestrictionArea.area.ST_Contains(spatial_elt))
+                )
             if allowed.scalar() == 0:
                 raise HTTPForbidden()
 
@@ -339,13 +329,11 @@ class Layers:
             return feature
         except TopologicalError as e:
             self.request.response.status_int = 400
-            return {"error_type": "validation_error",
-                    "message": str(e)}
+            return {"error_type": "validation_error", "message": str(e)}
         except exc.IntegrityError as e:
             LOG.error(str(e))
             self.request.response.status_int = 400
-            return {"error_type": "integrity_error",
-                    "message": str(e.orig.diag.message_primary)}
+            return {"error_type": "integrity_error", "message": str(e.orig.diag.message_primary)}
 
     @staticmethod
     def _validate_geometry(geom):
@@ -398,19 +386,15 @@ class Layers:
             allowed = allowed.filter(RestrictionArea.readwrite.is_(True))
             allowed = allowed.filter(Role.id.in_([role.id for role in self.request.user.roles]))
             allowed = allowed.filter(Layer.id == layer.id)
-            allowed = allowed.filter(or_(
-                RestrictionArea.area.is_(None),
-                RestrictionArea.area.ST_Contains(geom_attr)
-            ))
+            allowed = allowed.filter(
+                or_(RestrictionArea.area.is_(None), RestrictionArea.area.ST_Contains(geom_attr))
+            )
             if allowed.scalar() == 0:
                 raise HTTPForbidden()
 
         protocol = self._get_protocol_for_layer(layer, before_delete=security_cb)
         response = protocol.delete(self.request, feature_id)
-        set_common_headers(
-            self.request, "layers", NO_CACHE,
-            response=response,
-        )
+        set_common_headers(self.request, "layers", NO_CACHE, response=response)
         return response
 
     @view_config(route_name="layers_metadata", renderer="xsd")
@@ -433,9 +417,7 @@ class Layers:
         fieldname = self.request.matchdict["field_name"]
         # TODO check if layer is public or not
 
-        return self._enumerate_attribute_values(
-            layername, fieldname
-        )
+        return self._enumerate_attribute_values(layername, fieldname)
 
     @CACHE_REGION.cache_on_arguments()
     def _enumerate_attribute_values(self, layername, fieldname):
@@ -452,9 +434,7 @@ class Layers:
                 "No dbsession found for layer '{0!s}' ({1!s})".format(layername, dbsession_name)
             )
         values = self.query_enumerate_attribute_values(dbsession, layerinfos, fieldname)
-        enum = {
-            "items": [{"value": value[0]} for value in values]
-        }
+        enum = {"items": [{"value": value[0]} for value in values]}
         return enum
 
     @staticmethod
@@ -468,9 +448,7 @@ class Layers:
         # comma separate list of values e.g.: "value1,value2".
         if "separator" in attrinfos:
             separator = attrinfos["separator"]
-            attribute = func.unnest(func.string_to_array(
-                func.string_agg(attribute, separator), separator
-            ))
+            attribute = func.unnest(func.string_to_array(func.string_agg(attribute, separator), separator))
         return dbsession.query(distinct(attribute)).order_by(attribute).all()
 
 
@@ -497,9 +475,9 @@ def get_layer_class(layer, with_last_update_columns=False):
         exclude = []
 
     m = Layers.get_metadata(layer, "editingAttributesOrder")
-    attributes_order = m.split(',') if m else None
+    attributes_order = m.split(",") if m else None
     m = Layers.get_metadata(layer, "readonlyAttributes")
-    readonly_attributes = m.split(',') if m else None
+    readonly_attributes = m.split(",") if m else None
 
     primary_key = Layers.get_metadata(layer, "geotablePrimaryKey")
     cls = get_class(
@@ -507,7 +485,7 @@ def get_layer_class(layer, with_last_update_columns=False):
         exclude_properties=exclude,
         primary_key=primary_key,
         attributes_order=attributes_order,
-        readonly_attributes=readonly_attributes
+        readonly_attributes=readonly_attributes,
     )
 
     mapper = class_mapper(cls)
@@ -518,12 +496,12 @@ def get_layer_class(layer, with_last_update_columns=False):
             LOG.warning(
                 'Attribute "{}" does not exists in table "{}".\n'
                 'Please correct metadata "editingAttributesOrder" in layer "{}" (id={}).\n'
-                'Available attributes are: {}.'.format(
+                "Available attributes are: {}.".format(
                     attribute_name,
-                    '{}.{}'.format(table.schema, table.name),
+                    "{}.{}".format(table.schema, table.name),
                     layer.name,
                     layer.id,
-                    ', '.join(column_properties)
+                    ", ".join(column_properties),
                 )
             )
 
@@ -555,8 +533,7 @@ def get_layer_metadatas(layer):
                 if not isinstance(p, _AssociationProxy):
                     continue
 
-                relationship_property = class_mapper(cls) \
-                    .get_property(p.target)
+                relationship_property = class_mapper(cls).get_property(p.target)
                 target_cls = relationship_property.argument
                 query = models.DBSession.query(getattr(target_cls, p.value_attr))
                 properties = {}

@@ -38,27 +38,35 @@ from alembic import op
 from c2c.template.config import config
 
 # revision identifiers, used by Alembic.
-revision = '596ba21e3833'
-down_revision = 'ec82a8906649'
+revision = "596ba21e3833"
+down_revision = "ec82a8906649"
 branch_labels = None
 depends_on = None
 
 
 def upgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
-    op.execute("""
+    op.execute(
+        """
         UPDATE "{schema}".ogc_server
         SET url = 'config://internal/mapserv'
         WHERE url = 'config://local/mapserv'
-    """.format(schema=schema))
+    """.format(
+            schema=schema
+        )
+    )
 
 
 def downgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
-    op.execute("""
+    op.execute(
+        """
         UPDATE "{schema}".ogc_server
         SET url = 'config://local/mapserv'
         WHERE url = 'config://internal/mapserv'
-    """.format(schema=schema))
+    """.format(
+            schema=schema
+        )
+    )

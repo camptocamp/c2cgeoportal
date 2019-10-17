@@ -41,23 +41,23 @@ from sqlalchemy import Boolean, Column, DateTime
 from c2c.template.config import config
 
 # revision identifiers, used by Alembic.
-revision = '1857owc78a07'
-down_revision = '5472fbc19f39'
+revision = "1857owc78a07"
+down_revision = "5472fbc19f39"
 
 
 def upgrade():
-    staticschema = config['schema_static']
+    staticschema = config["schema_static"]
 
     # Instructions
-    op.add_column('user', Column('last_login', DateTime), schema=staticschema)
-    op.add_column('user', Column('expire_on', DateTime), schema=staticschema)
-    op.add_column('user', Column('deactivated', Boolean, default=False), schema=staticschema)
+    op.add_column("user", Column("last_login", DateTime), schema=staticschema)
+    op.add_column("user", Column("expire_on", DateTime), schema=staticschema)
+    op.add_column("user", Column("deactivated", Boolean, default=False), schema=staticschema)
 
 
 def downgrade():
-    staticschema = config['schema_static']
+    staticschema = config["schema_static"]
 
     # Instructions
-    op.drop_column('user', 'deactivated', schema=staticschema)
-    op.drop_column('user', 'expire_on', schema=staticschema)
-    op.drop_column('user', 'last_login', schema=staticschema)
+    op.drop_column("user", "deactivated", schema=staticschema)
+    op.drop_column("user", "expire_on", schema=staticschema)
+    op.drop_column("user", "last_login", schema=staticschema)

@@ -51,23 +51,17 @@ class TestMapserverproxyRoutePredicate(TestCase):
     def test_hide_capabilities_set_no_request_param(self):
         request = Request.blank("/test")
         request.registry = get_current_registry()
-        request.registry.settings = {
-            "hide_capabilities": True
-        }
+        request.registry.settings = {"hide_capabilities": True}
         self.assertTrue(self.predicate(None, request))
 
     def test_hide_capabilities_set_not_get_capabilities_request(self):
         request = Request.blank("/test?REQUEST=GetMap")
         request.registry = get_current_registry()
-        request.registry.settings = {
-            "hide_capabilities": True
-        }
+        request.registry.settings = {"hide_capabilities": True}
         self.assertTrue(self.predicate(None, request))
 
     def test_hide_capabilities_set_get_capabilities_request(self):
         request = Request.blank("/test?REQUEST=GetCapabilities")
         request.registry = get_current_registry()
-        request.registry.settings = {
-            "hide_capabilities": True
-        }
+        request.registry.settings = {"hide_capabilities": True}
         self.assertFalse(self.predicate(None, request))

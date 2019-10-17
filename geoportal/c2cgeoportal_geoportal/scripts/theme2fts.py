@@ -36,13 +36,13 @@ from argparse import ArgumentParser
 import transaction
 from sqlalchemy import func
 
-from c2cgeoportal_geoportal.scripts import (fill_arguments, get_appsettings,
-                                            get_session)
+from c2cgeoportal_geoportal.scripts import fill_arguments, get_appsettings, get_session
 
 
 def main():
     parser = ArgumentParser(
-        prog=sys.argv[0], add_help=True,
+        prog=sys.argv[0],
+        add_help=True,
         description="Tool to fill the tsearch table (full-text search) from the theme information.",
     )
 
@@ -50,15 +50,9 @@ def main():
     locale_path_2 = os.path.join("geoportal", locale_path_1)
     locale_path = locale_path_2 if os.path.exists("geoportal") else locale_path_1
     parser.add_argument(
-        "--locale-folder",
-        default=locale_path,
-        help="The folder where the locale files are stored",
+        "--locale-folder", default=locale_path, help="The folder where the locale files are stored"
     )
-    parser.add_argument(
-        "--interfaces",
-        nargs='+',
-        help="the interfaces to export",
-    )
+    parser.add_argument("--interfaces", nargs="+", help="the interfaces to export")
     parser.add_argument(
         "--duplicate-name",
         action="store_true",
@@ -67,12 +61,7 @@ def main():
         "by default if we find more than one element with the same name "
         "only one will be imported",
     )
-    parser.add_argument(
-        "--no-themes",
-        action="store_false",
-        dest="themes",
-        help="do not import the themes",
-    )
+    parser.add_argument("--no-themes", action="store_false", dest="themes", help="do not import the themes")
     parser.add_argument(
         "--no-blocks",
         action="store_false",
@@ -80,21 +69,12 @@ def main():
         help="do not import the blocks (first level layer groups)",
     )
     parser.add_argument(
-        "--no-folders",
-        action="store_false",
-        dest="folders",
-        help="do not import the folders (tree folders)",
+        "--no-folders", action="store_false", dest="folders", help="do not import the folders (tree folders)"
     )
     parser.add_argument(
-        "--no-layers",
-        action="store_false",
-        dest="layers",
-        help="do not import the layers (tree leaf)",
+        "--no-layers", action="store_false", dest="layers", help="do not import the layers (tree leaf)"
     )
-    parser.add_argument(
-        "--package",
-        help="the application package",
-    )
+    parser.add_argument("--package", help="the application package")
     fill_arguments(parser)
     options = parser.parse_args()
     settings = get_appsettings(options)
@@ -118,7 +98,9 @@ class Import:
         from c2cgeoportal_commons.models.main import FullTextSearch, Interface, Theme, Role
 
         self.session = session
-        self.session.execute(FullTextSearch.__table__.delete().where(FullTextSearch.from_theme == True))  # noqa
+        self.session.execute(
+            FullTextSearch.__table__.delete().where(FullTextSearch.from_theme == True)
+        )  # noqa
 
         self._ = {}
         for lang in self.languages:
@@ -134,9 +116,7 @@ class Import:
 
         query = self.session.query(Interface)
         if options.interfaces is not None:
-            query = query.filter(
-                Interface.name.in_(options.interfaces)
-            )
+            query = query.filter(Interface.name.in_(options.interfaces))
         self.interfaces = query.all()
 
         self.public_theme = {}
@@ -158,7 +138,7 @@ class Import:
         key = (
             item.name if self.options.name else item.id,
             interface.id,
-            role.id if role is not None else None
+            role.id if role is not None else None,
         )
         if key not in self.imported:
             self.imported.add(key)
@@ -170,10 +150,7 @@ class Import:
                 fts.lang = lang
                 fts.public = role is None
                 fts.ts = func.to_tsvector(self.fts_languages[lang], fts.label)
-                fts.actions = [{
-                    "action": action,
-                    "data": item.name,
-                }]
+                fts.actions = [{"action": action, "data": item.name}]
                 fts.from_theme = True
                 self.session.add(fts)
 
@@ -227,8 +204,7 @@ class Import:
         if role is None:
             fill = layer.public and interface in layer.interfaces
         else:
-            fill = interface in layer.interfaces and not layer.public and \
-                self._layer_visible(layer, role)
+            fill = interface in layer.interfaces and not layer.public and self._layer_visible(layer, role)
 
         if fill and self.options.layers:
             self._add_fts(layer, interface, "add_layer", role)

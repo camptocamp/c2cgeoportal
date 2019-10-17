@@ -19,6 +19,13 @@ checks: ## Run the application checks
 	docker build --target=checks \
 		--build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --build-arg=VERSION=$(VERSION) .
 
+.PHONY: black-fix
+black-fix: build-tools
+black-fix: ## Fix the application code style with black
+	docker run --rm --volume=`pwd`:/src camptocamp/geomapfish-tools:$(DOCKER_TAG) \
+		make --makefile=internal.mk black-fix
+
+
 .PHONY: build-tools
 build-tools:
 	docker build --target=tools --tag=camptocamp/geomapfish-tools:$(DOCKER_TAG) \

@@ -61,10 +61,7 @@ class TestLayers(TestCase):
 
         self.role = Role(name="__test_role")
         self.user = User(
-            username="__test_user",
-            password="__test_user",
-            settings_role=self.role,
-            roles=[self.role]
+            username="__test_user", password="__test_user", settings_role=self.role, roles=[self.role]
         )
         self.main = Interface(name="main")
 
@@ -88,8 +85,14 @@ class TestLayers(TestCase):
         transaction.commit()
 
     def _create_layer(
-            self, public=False, none_area=False, attr_list=False,
-            exclude_properties=False, metadatas=None, geom_type=False):
+        self,
+        public=False,
+        none_area=False,
+        attr_list=False,
+        exclude_properties=False,
+        metadatas=None,
+        geom_type=False,
+    ):
         """ This function is central for this test class. It creates
         a layer with two features, and associates a restriction area
         to it. """
@@ -115,43 +118,41 @@ class TestLayers(TestCase):
         tablename = "table_{0:d}".format(id)
 
         table1 = Table(
-            "{0!s}_child".format(tablename), self.metadata,
+            "{0!s}_child".format(tablename),
+            self.metadata,
             Column("id", types.Integer, primary_key=True),
             Column("name", types.Unicode),
-            schema="public"
+            schema="public",
         )
         if geom_type:
-            table1.append_column(
-                Column("geom", Geometry("POINT", srid=21781))
-            )
+            table1.append_column(Column("geom", Geometry("POINT", srid=21781)))
         else:
-            table1.append_column(
-                Column("geom", Geometry(srid=21781))
-            )
+            table1.append_column(Column("geom", Geometry(srid=21781)))
         self._tables.append(table1)
 
         table2 = Table(
-            tablename, self.metadata,
+            tablename,
+            self.metadata,
             Column("id", types.Integer, primary_key=True),
-            Column("child_id", types.Integer,
-                   ForeignKey("public.{0!s}_child.id".format(tablename))),
+            Column("child_id", types.Integer, ForeignKey("public.{0!s}_child.id".format(tablename))),
             Column("name", types.Unicode),
-            Column("email", types.Unicode,
-                   CheckConstraint("""email ~* '^[A-Za-z0-9._%%-]
+            Column(
+                "email",
+                types.Unicode,
+                CheckConstraint(
+                    """email ~* '^[A-Za-z0-9._%%-]
                                       +@[A-Za-z0-9.-]+[.][A-Za-z]+$'""",
-                                   name="proper_email")),
+                    name="proper_email",
+                ),
+            ),
             Column("last_update_user", types.Unicode),
             Column("last_update_date", types.DateTime),
-            schema="public"
+            schema="public",
         )
         if geom_type:
-            table2.append_column(
-                Column("geom", Geometry("POINT", srid=21781))
-            )
+            table2.append_column(Column("geom", Geometry("POINT", srid=21781)))
         else:
-            table2.append_column(
-                Column("geom", Geometry(srid=21781))
-            )
+            table2.append_column(Column("geom", Geometry(srid=21781)))
         self._tables.append(table2)
 
         table1.drop(checkfirst=True)
@@ -164,23 +165,13 @@ class TestLayers(TestCase):
         ins = table1.insert().values(name="c2é")
         c2_id = connection.execute(ins).inserted_primary_key[0]
 
-        ins = table2.insert().values(
-            child_id=c1_id,
-            name="foo",
-            geom=WKTElement("POINT(5 45)", 21781)
-        )
+        ins = table2.insert().values(child_id=c1_id, name="foo", geom=WKTElement("POINT(5 45)", 21781))
         connection.execute(ins)
-        ins = table2.insert().values(
-            child_id=c2_id,
-            name="bar",
-            geom=WKTElement("POINT(6 46)", 21781)
-        )
+        ins = table2.insert().values(child_id=c2_id, name="bar", geom=WKTElement("POINT(6 46)", 21781))
         connection.execute(ins)
         if attr_list:
             ins = table2.insert().values(
-                child_id=c2_id,
-                name="aaa,bbb,foo",
-                geom=WKTElement("POINT(6 46)", 21781)
+                child_id=c2_id, name="aaa,bbb,foo", geom=WKTElement("POINT(6 46)", 21781)
             )
             connection.execute(ins)
 
@@ -221,12 +212,11 @@ class TestLayers(TestCase):
     def _get_request(layerid, username=None):
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
+
         request = create_dummy_request()
         request.matchdict = {"layer_id": str(layerid)}
         if username is not None:
-            request.user = DBSession.query(User).filter_by(
-                username=username
-            ).one()
+            request.user = DBSession.query(User).filter_by(username=username).one()
         return request
 
     def test_read_public(self):
@@ -238,10 +228,7 @@ class TestLayers(TestCase):
 
         collection = Layers(request).read_many()
         self.assertTrue(isinstance(collection, FeatureCollection))
-        self.assertEqual(
-            [f.properties["child"] for f in collection.features],
-            ["c1é", "c2é"],
-        )
+        self.assertEqual([f.properties["child"] for f in collection.features], ["c1é", "c2é"])
 
     def test_read_many_no_auth(self):
         from pyramid.httpexceptions import HTTPForbidden
@@ -290,8 +277,7 @@ class TestLayers(TestCase):
         collection = layers.read_many()
         self.assertTrue(isinstance(collection, FeatureCollection))
         self.assertEqual(
-            [f.properties["__layer_id__"] for f in collection.features],
-            [layer_id1, layer_id2, layer_id3],
+            [f.properties["__layer_id__"] for f in collection.features], [layer_id1, layer_id2, layer_id3]
         )
 
     def test_read_one_public(self):
@@ -407,7 +393,7 @@ class TestLayers(TestCase):
         from c2cgeoportal_geoportal.views.layers import Layers
 
         layer_id = self._create_layer()
-        request = self._get_request(layer_id, username=u"__test_user")
+        request = self._get_request(layer_id, username="__test_user")
         request.method = "POST"
         request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"email": "novalidemail", "name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # noqa
         layers = Layers(request)
@@ -468,9 +454,7 @@ class TestLayers(TestCase):
         from c2cgeoportal_geoportal.views.layers import Layers
         from c2cgeoportal_commons.models.main import Metadata
 
-        metadatas = [
-            Metadata("geometryValidation", "False")
-        ]
+        metadatas = [Metadata("geometryValidation", "False")]
         layer_id = self._create_layer(metadatas=metadatas, geom_type=False)
         request = self._get_request(layer_id, username="__test_user")
         request.method = "POST"
@@ -587,7 +571,7 @@ class TestLayers(TestCase):
         from c2cgeoportal_geoportal.views.layers import Layers
 
         layer_id = self._create_layer()
-        request = self._get_request(layer_id, username=u"__test_user")
+        request = self._get_request(layer_id, username="__test_user")
         request.matchdict["feature_id"] = 1
         request.method = "PUT"
         request.body = '{"type": "Feature", "id": 1, "properties": {"email": "novalidemail"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # noqa
@@ -602,9 +586,7 @@ class TestLayers(TestCase):
         from c2cgeoportal_geoportal.views.layers import Layers
         from c2cgeoportal_commons.models.main import Metadata
 
-        metadatas = [
-            Metadata("geometryValidation", "False")
-        ]
+        metadatas = [Metadata("geometryValidation", "False")]
         layer_id = self._create_layer(metadatas=metadatas, geom_type=False)
         request = self._get_request(layer_id, username="__test_user")
         request.matchdict["feature_id"] = 1
@@ -703,13 +685,13 @@ class TestLayers(TestCase):
 
         attributes_order = "name,email,child_id"
 
-        layer_id = self._create_layer(metadatas=[Metadata('editingAttributesOrder', attributes_order)])
+        layer_id = self._create_layer(metadatas=[Metadata("editingAttributesOrder", attributes_order)])
         request = self._get_request(layer_id, username="__test_user")
 
         layers = Layers(request)
         cls = layers.metadata()
 
-        self.assertEqual(attributes_order.split(','), cls.__attributes_order__)
+        self.assertEqual(attributes_order.split(","), cls.__attributes_order__)
 
     # # # With None area # # #
     def test_read_public_none_area(self):
@@ -722,10 +704,7 @@ class TestLayers(TestCase):
         layers = Layers(request)
         collection = layers.read_many()
         self.assertTrue(isinstance(collection, FeatureCollection))
-        self.assertEqual(
-            [f.properties["child"] for f in collection.features],
-            ["c1é", "c2é"],
-        )
+        self.assertEqual([f.properties["child"] for f in collection.features], ["c1é", "c2é"])
 
     def test_read_many_no_auth_none_area(self):
         from pyramid.httpexceptions import HTTPForbidden
@@ -881,16 +860,7 @@ class TestLayers(TestCase):
         tablename = "table_{0:d}".format(layer_id)
         settings = {
             "layers": {
-                "enum": {
-                    "layer_test": {
-                        "attributes": {
-                            "label": {
-                                "table": tablename,
-                                "column_name": "name"
-                            }
-                        }
-                    }
-                }
+                "enum": {"layer_test": {"attributes": {"label": {"table": tablename, "column_name": "name"}}}}
             }
         }
 
@@ -900,13 +870,7 @@ class TestLayers(TestCase):
         request.matchdict["field_name"] = "label"
         layers = Layers(request)
         response = layers.enumerate_attribute_values()
-        self.assertEqual(response, {
-            "items": [{
-                "value": "bar"
-            }, {
-                "value": "foo"
-            }]
-        })
+        self.assertEqual(response, {"items": [{"value": "bar"}, {"value": "foo"}]})
 
     def test_enumerate_attribute_values_list(self):
         from c2cgeoportal_geoportal.views.layers import Layers
@@ -917,13 +881,7 @@ class TestLayers(TestCase):
             "layers": {
                 "enum": {
                     "layer_test": {
-                        "attributes": {
-                            "label": {
-                                "table": tablename,
-                                "column_name": "name",
-                                "separator": ","
-                            }
-                        }
+                        "attributes": {"label": {"table": tablename, "column_name": "name", "separator": ","}}
                     }
                 }
             }
@@ -931,19 +889,11 @@ class TestLayers(TestCase):
 
         request = self._get_request(layer_id)
         request.registry.settings.update(settings)
-        request.matchdict['layer_name'] = 'layer_test'
-        request.matchdict['field_name'] = 'label'
+        request.matchdict["layer_name"] = "layer_test"
+        request.matchdict["field_name"] = "label"
 
         layers = Layers(request)
         response = layers.enumerate_attribute_values()
-        self.assertEqual(response, {
-            "items": [{
-                "value": "aaa"
-            }, {
-                "value": "bar"
-            }, {
-                "value": "bbb"
-            }, {
-                "value": "foo"
-            }]
-        })
+        self.assertEqual(
+            response, {"items": [{"value": "aaa"}, {"value": "bar"}, {"value": "bbb"}, {"value": "foo"}]}
+        )

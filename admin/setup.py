@@ -32,40 +32,36 @@ import os
 from setuptools import setup, find_packages
 
 HERE = os.path.abspath(os.path.dirname(__file__))
-VERSION = os.environ.get('VERSION', 'dev')
+VERSION = os.environ.get("VERSION", "dev")
 
-with open(os.path.join(HERE, 'README.md')) as f:
+with open(os.path.join(HERE, "README.md")) as f:
     README = f.read()
 
-with open(os.path.join(HERE, 'requirements.txt')) as f:
+with open(os.path.join(HERE, "requirements.txt")) as f:
     install_requires = f.read().splitlines()
 
 setup(
-    name='c2cgeoportal_admin',
+    name="c2cgeoportal_admin",
     version=VERSION,
-    description='c2cgeoportal admin',
+    description="c2cgeoportal admin",
     long_description=README,
-    long_description_content_type='text/markdown',
+    long_description_content_type="text/markdown",
     classifiers=[
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-        'Framework :: Pyramid',
-        'Topic :: Internet :: WWW/HTTP',
-        'Topic :: Internet :: WWW/HTTP :: WSGI :: Application',
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
+        "Framework :: Pyramid",
+        "Topic :: Internet :: WWW/HTTP",
+        "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
     ],
-    author='Camptocamp',
-    author_email='info@camptocamp.com',
-    url='https://www.camptocamp.com/solutions/geospatial/',
-    packages=find_packages(exclude=['tests.*']),
-    package_data={'c2cgeoportal_admin': ['py.typed']},
+    author="Camptocamp",
+    author_email="info@camptocamp.com",
+    url="https://www.camptocamp.com/solutions/geospatial/",
+    packages=find_packages(exclude=["tests.*"]),
+    package_data={"c2cgeoportal_admin": ["py.typed"]},
     include_package_data=True,
     zip_safe=False,
     install_requires=install_requires,
-    entry_points={
-        'paste.app_factory': [
-            'main = c2cgeoportal_admin:main',
-        ],
-    },
+    entry_points={"paste.app_factory": ["main = c2cgeoportal_admin:main"]},
 )

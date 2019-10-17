@@ -32,11 +32,10 @@ import re
 
 
 class HeadersTween:
-
     def __init__(self, handler, registry):
         self.handler = handler
         self.settings = [
-            (re.compile(e['pattern']), e['headers']) for e in registry.settings['global_headers']
+            (re.compile(e["pattern"]), e["headers"]) for e in registry.settings["global_headers"]
         ]
 
     def __call__(self, request):

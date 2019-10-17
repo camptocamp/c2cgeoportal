@@ -35,11 +35,11 @@ from sqlalchemy.orm.util import class_mapper
 from six import BytesIO
 
 import logging
+
 log = logging.getLogger(__name__)
 
 
 class XSDGenerator(PapyrusXSDGenerator):
-
     def add_class_properties_xsd(self, tb, cls):
         """ Add the XSD for the class properties to the ``TreeBuilder``. And
         call the user ``sequence_callback``. """
@@ -77,13 +77,13 @@ class XSDGenerator(PapyrusXSDGenerator):
     # pylint: disable=no-self-use
     def add_association_proxy_xsd(self, tb, column_property):
         from c2cgeoportal_commons.models import DBSession
+
         column = column_property.columns[0]
-        proxy = column.info['association_proxy']
+        proxy = column.info["association_proxy"]
         attribute = column_property.class_attribute
         cls = attribute.parent.entity
         association_proxy = getattr(cls, proxy)
-        relationship_property = class_mapper(cls) \
-            .get_property(association_proxy.target)
+        relationship_property = class_mapper(cls).get_property(association_proxy.target)
         target_cls = relationship_property.argument
         query = DBSession.query(getattr(target_cls, association_proxy.value_attr))
         attrs = {}
@@ -93,19 +93,18 @@ class XSDGenerator(PapyrusXSDGenerator):
         attrs["name"] = proxy
         with tag(tb, "xsd:element", attrs) as tb:
             with tag(tb, "xsd:simpleType") as tb:
-                with tag(tb, "xsd:restriction",
-                         {"base": "xsd:string"}) as tb:
-                    for value, in query:
+                with tag(tb, "xsd:restriction", {"base": "xsd:string"}) as tb:
+                    for (value,) in query:
                         with tag(tb, "xsd:enumeration", {"value": value}):
                             pass
             self.element_callback(tb, column)
 
     # pylint: disable=method-hidden, no-self-use
     def element_callback(self, tb, column):
-        if column.info.get('readonly'):
-            with tag(tb, 'xsd:annotation'):
-                with tag(tb, 'xsd:appinfo'):
-                    with tag(tb, 'readonly', {'value': 'true'}):
+        if column.info.get("readonly"):
+            with tag(tb, "xsd:annotation"):
+                with tag(tb, "xsd:appinfo"):
+                    with tag(tb, "readonly", {"value": "true"}):
                         pass
 
 
@@ -115,21 +114,22 @@ class XSD(object):
         include_primary_keys=False,
         include_foreign_keys=False,
         sequence_callback=None,
-        element_callback=None
+        element_callback=None,
     ):
         self.generator = XSDGenerator(
             include_primary_keys=include_primary_keys,
             include_foreign_keys=include_foreign_keys,
             sequence_callback=sequence_callback,
-            element_callback=element_callback
+            element_callback=element_callback,
         )
 
     def __call__(self, table):
         def _render(cls, system):
-            request = system.get('request')
+            request = system.get("request")
             if request is not None:
                 response = request.response
-                response.content_type = 'application/xml'
+                response.content_type = "application/xml"
                 io = self.generator.get_class_xsd(BytesIO(), cls)
                 return io.getvalue()
+
         return _render

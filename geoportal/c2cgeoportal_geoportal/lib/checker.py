@@ -74,6 +74,7 @@ def _routes(settings, health_check):
                 """
                 Get the request information about the current route name
                 """
+
                 def __init__(self, route_name, type_):
                     self.route_name = route_name
                     self.type = type_
@@ -82,10 +83,10 @@ def _routes(settings, health_check):
                     return build_url("route", request.route_path(self.route_name), request)[self.type]
 
             health_check.add_url_check(
-                url=GetRequest(route['name'], 'url'),
+                url=GetRequest(route["name"], "url"),
                 name=name,
                 params=route.get("params", None),
-                headers=GetRequest(route['name'], 'headers'),
+                headers=GetRequest(route["name"], "headers"),
                 level=route["level"],
                 timeout=30,
             )
@@ -101,11 +102,7 @@ def _pdf3(settings, health_check):
         url_headers = build_url("Check the printproxy request (create)", path, request)
 
         session = requests.session()
-        resp = session.post(
-            json=print_settings["spec"],
-            timeout=30,
-            **url_headers
-        )
+        resp = session.post(json=print_settings["spec"], timeout=30, **url_headers)
         resp.raise_for_status()
 
         job = resp.json()
@@ -115,10 +112,7 @@ def _pdf3(settings, health_check):
         done = False
         while not done:
             sleep(1)
-            resp = session.get(
-                timeout=30,
-                **url_headers
-            )
+            resp = session.get(timeout=30, **url_headers)
             resp.raise_for_status()
 
             status = resp.json()
@@ -128,10 +122,7 @@ def _pdf3(settings, health_check):
 
         path = request.route_path("printproxy_report_get", ref=job["ref"])
         url_headers = build_url("Check the printproxy pdf retrieve", path, request)
-        resp = session.get(
-            timeout=30,
-            **url_headers
-        )
+        resp = session.get(timeout=30, **url_headers)
         resp.raise_for_status()
 
     health_check.add_custom_check(name="checker_print", check_cb=check, level=print_settings["level"])
@@ -152,10 +143,7 @@ def _fts(settings, health_check):
         name="checker_fulltextsearch",
         url=lambda r: get_both(r)["url"],
         headers=lambda r: get_both(r)["headers"],
-        params={
-            "query": fts_settings["search"],
-            "limit": "1",
-        },
+        params={"query": fts_settings["search"], "limit": "1"},
         check_cb=check,
         level=fts_settings["level"],
     )
@@ -172,7 +160,7 @@ def _themes_errors(settings, health_check):
     def check(request):
         path = request.route_path("themes")
         session = requests.session()
-        for interface, in DBSession.query(Interface.name).all():
+        for (interface,) in DBSession.query(Interface.name).all():
             params = {}
             params.update(default_params)
             params.update(interfaces_settings.get(interface, {}).get("params", {}))
@@ -180,18 +168,13 @@ def _themes_errors(settings, health_check):
 
             interface_url_headers = build_url("checker_themes " + interface, path, request)
 
-            response = session.get(
-                params=params,
-                timeout=120,
-                **interface_url_headers
-            )
+            response = session.get(params=params, timeout=120, **interface_url_headers)
             response.raise_for_status()
 
             result = response.json()
             if len(result["errors"]) != 0:
                 raise c2cwsgiutils.health_check.JsonCheckException(
-                    "Interface '{}' has error in Theme.".format(interface),
-                    result["errors"]
+                    "Interface '{}' has error in Theme.".format(interface), result["errors"]
                 )
 
     health_check.add_custom_check(name="checker_themes", check_cb=check, level=themes_settings["level"])
@@ -202,19 +185,20 @@ def _lang_files(global_settings, settings, health_check):
     available_locale_names = global_settings["available_locale_names"]
 
     default_name = global_settings["default_locale_name"]
-    assert \
-        default_name in available_locale_names, \
-        "default_locale_name '{}' not in available_locale_names: {}".format(
-            default_name, ", ".join(available_locale_names)
-        )
+    assert (
+        default_name in available_locale_names
+    ), "default_locale_name '{}' not in available_locale_names: {}".format(
+        default_name, ", ".join(available_locale_names)
+    )
 
     for type_ in lang_settings.get("files", []):
         for lang in available_locale_names:
             if type_ == "ngeo":
                 url = "/etc/geomapfish/static/{lang}.json"
             else:
-                raise Exception("Your language type value '%s' is not valid, "
-                                "available values [ngeo]" % type_)
+                raise Exception(
+                    "Your language type value '%s' is not valid, " "available values [ngeo]" % type_
+                )
 
             name = "checker_lang_{}_{}".format(type_, lang)
 
@@ -222,6 +206,7 @@ def _lang_files(global_settings, settings, health_check):
                 """
                 Get the request information about the current route name
                 """
+
                 def __init__(self, name, url, lang, type_):
                     self.name = name
                     self.url = url
@@ -231,17 +216,16 @@ def _lang_files(global_settings, settings, health_check):
                 def __call__(self, request):
                     return build_url(
                         self.name,
-                        request.static_path(self.url.format(
-                            package=global_settings["package"],
-                            lang=self.lang
-                        )),
-                        request
+                        request.static_path(
+                            self.url.format(package=global_settings["package"], lang=self.lang)
+                        ),
+                        request,
                     )[self.type]
 
             health_check.add_url_check(
                 name=name,
-                url=GetRequest(name, url, lang, 'url'),
-                headers=GetRequest(name, url, lang, 'headers'),
+                url=GetRequest(name, url, lang, "url"),
+                headers=GetRequest(name, url, lang, "headers"),
                 level=lang_settings["level"],
             )
 
@@ -260,22 +244,26 @@ def _phantomjs(settings, health_check):
                 path = request.route_path(self.route["name"], _query=self.route.get("params", {}))
                 url = build_url("Check", path, request)["url"]
 
-                cmd = [
-                    "node", "/usr/bin/check-example.js", url
-                ]
+                cmd = ["node", "/usr/bin/check-example.js", url]
 
                 try:
                     subprocess.check_output(cmd, timeout=70)
                 except subprocess.CalledProcessError as exception:
-                    raise Exception("{} exit with code: {}\n{}".format(
-                        ' '.join(exception.cmd),
-                        exception.returncode, exception.output.decode("utf-8")
-                    ))
+                    raise Exception(
+                        "{} exit with code: {}\n{}".format(
+                            " ".join(exception.cmd), exception.returncode, exception.output.decode("utf-8")
+                        )
+                    )
                 except subprocess.TimeoutExpired as exception:
-                    raise Exception("""Timeout:
+                    raise Exception(
+                        """Timeout:
 command: {}
 output:
-{}""".format(" ".join(exception.cmd), exception.output.decode("utf-8")))
+{}""".format(
+                            " ".join(exception.cmd), exception.output.decode("utf-8")
+                        )
+                    )
+
         name = "checker_phantomjs_" + route.get("checker_name", route["name"])
         health_check.add_custom_check(name=name, check_cb=_Check(route), level=route["level"])
 

@@ -4,13 +4,13 @@ from pyramid.i18n import get_localizer, TranslationStringFactory
 
 
 def add_renderer_globals(event):
-    request = event['request']
-    event['_'] = request.translate
-    event['localizer'] = request.localizer
+    request = event["request"]
+    event["_"] = request.translate
+    event["localizer"] = request.localizer
 
 
-tsf1 = TranslationStringFactory('c2cgeoportal_admin')
-tsf2 = TranslationStringFactory('c2cgeoform')
+tsf1 = TranslationStringFactory("c2cgeoportal_admin")
+tsf2 = TranslationStringFactory("c2cgeoform")
 
 
 def add_localizer(event):

@@ -52,8 +52,15 @@ config = None
 def cleanup_db():
     """ Cleanup the database """
     from c2cgeoportal_commons import models
-    from c2cgeoportal_commons.models.main import OGCServer, TreeItem, Role, RestrictionArea, \
-        Interface, Functionality, FullTextSearch
+    from c2cgeoportal_commons.models.main import (
+        OGCServer,
+        TreeItem,
+        Role,
+        RestrictionArea,
+        Interface,
+        Functionality,
+        FullTextSearch,
+    )
     from c2cgeoportal_commons.models.static import Shorturl, User
 
     transaction.commit()
@@ -80,19 +87,16 @@ def setup_db():
 
     from c2cgeoportal_commons.models import DBSession
     from c2cgeoportal_commons.models.main import Role
-    DBSession.add_all([Role(name) for name in ('anonymous', 'registered', 'intranet')])
+
+    DBSession.add_all([Role(name) for name in ("anonymous", "registered", "intranet")])
 
     transaction.commit()
 
     c2cgeoportal_geoportal.lib.ogc_server_wms_url_ids = None
     c2cgeoportal_geoportal.lib.ogc_server_wfs_url_ids = None
 
-    caching.init_region({
-        'backend': 'dogpile.cache.null',
-    }, 'std')
-    caching.init_region({
-        'backend': 'dogpile.cache.null',
-    }, 'obj')
+    caching.init_region({"backend": "dogpile.cache.null"}, "std")
+    caching.init_region({"backend": "dogpile.cache.null"}, "obj")
     caching.invalidate_region()
 
 
@@ -159,29 +163,29 @@ def create_dummy_request(additional_settings=None, authentication=True, user=Non
     from c2cgeoportal_geoportal import default_user_validator
     from c2cgeoportal_geoportal import create_get_user_from_request
     from c2cgeoportal_geoportal.lib.authentication import create_authentication
-    request = tests.create_dummy_request({
-        "host_forward_host": [],
-        "functionalities": {
-            "available_in_templates": []
+
+    request = tests.create_dummy_request(
+        {
+            "host_forward_host": [],
+            "functionalities": {"available_in_templates": []},
+            "layers": {"geometry_validation": True},
+            "admin_interface": {
+                "available_functionalities": [{"name": "mapserver_substitution", "single": False}]
+            },
         },
-        "layers": {
-            "geometry_validation": True
-        },
-        "admin_interface": {
-            "available_functionalities": [{
-                "name": "mapserver_substitution",
-                "single": False,
-            }]
-        }
-    }, *args, **kargs)
-    request.accept_language = webob.acceptparse.create_accept_language_header("fr-CH,fr;q=0.8,en;q=0.5,en-US;q=0.3")
+        *args,
+        **kargs,
+    )
+    request.accept_language = webob.acceptparse.create_accept_language_header(
+        "fr-CH,fr;q=0.8,en;q=0.5,en-US;q=0.3"
+    )
     request.registry.settings.update(additional_settings)
     request.referer = "http://example.com/app"
     request.path_info_peek = lambda: "main"
     request.interface_name = "main"
     request.get_user = _get_user
     request.registry.validate_user = default_user_validator
-    request.c2c_request_id = 'test'
+    request.c2c_request_id = "test"
     if authentication and user is None:
         authentication_settings = {
             "authtkt_cookie_name": "__test",
@@ -192,9 +196,7 @@ def create_dummy_request(additional_settings=None, authentication=True, user=Non
     elif user is not None:
         config.testing_securitypolicy(user)
     request.set_property(
-        create_get_user_from_request({"authorized_referers": [request.referer]}),
-        name="user",
-        reify=True
+        create_get_user_from_request({"authorized_referers": [request.referer]}), name="user", reify=True
     )
     return request
 
@@ -202,6 +204,7 @@ def create_dummy_request(additional_settings=None, authentication=True, user=Non
 def fill_tech_user_functionality(name, functionalities):
     from c2cgeoportal_commons.models import DBSession
     from c2cgeoportal_commons.models.main import Functionality, Role
+
     role = DBSession.query(Role).filter_by(name=name).one()
     role.functionalities = [Functionality(name, value) for name, value in functionalities]
     DBSession.add(role)
