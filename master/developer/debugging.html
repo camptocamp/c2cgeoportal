@@ -130,6 +130,36 @@ arguments (<code class="docutils literal notranslate"><span class="pre">GUNICORN
 <code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code>.
 Be sure that the volumes for c2cgeoportal are uncommented.</p>
 </div>
+<div class="section" id="remote-debugging-using-visual-studio-code">
+<h3>Remote debugging using Visual Studio Code<a class="headerlink" href="#remote-debugging-using-visual-studio-code" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p>In <code class="docutils literal notranslate"><span class="pre">geoportal/requirements.txt</span></code> uncomment <code class="docutils literal notranslate"><span class="pre">ptvsd</span></code>.</p></li>
+<li><p>In the code add <code class="docutils literal notranslate"><span class="pre">breakpoint()</span></code> where you want to add a breakpoint.</p></li>
+<li><p>In Visual Studio Code use the config:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Python: Remote Attach&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;python&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;request&quot;</span><span class="p">:</span> <span class="s2">&quot;attach&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;port&quot;</span><span class="p">:</span> <span class="mi">5678</span><span class="p">,</span>
+    <span class="s2">&quot;host&quot;</span><span class="p">:</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pathMappings&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;localRoot&quot;</span><span class="p">:</span> <span class="s2">&quot;$</span><span class="si">{workspaceFolder}</span><span class="s2">/project/&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;remoteRoot&quot;</span><span class="p">:</span> <span class="s2">&quot;/app/&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;localRoot&quot;</span><span class="p">:</span> <span class="s2">&quot;$</span><span class="si">{workspaceFolder}</span><span class="s2">/c2cgeoportal/&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;remoteRoot&quot;</span><span class="p">:</span> <span class="s2">&quot;/opt/c2cgeoportal/&quot;</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">},</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>See also: <a class="reference external" href="https://github.com/microsoft/ptvsd#ptvsd-import-usage">ptvsd usage</a>,
+<a class="reference external" href="https://code.visualstudio.com/docs/python/debugging">Python debug configurations in Visual Studio Code</a></p>
+</div>
 </div>
 <div class="section" id="access-to-a-hidden-service">
 <h2>Access to a hidden service<a class="headerlink" href="#access-to-a-hidden-service" title="Permalink to this headline">¶</a></h2>

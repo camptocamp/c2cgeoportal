@@ -141,6 +141,35 @@ If it is not already done, copy the file ``docker-compose.override.sample.yaml``
 ``docker-compose.override.yaml``.
 Be sure that the volumes for c2cgeoportal are uncommented.
 
+Remote debugging using Visual Studio Code
+.........................................
+
+* In ``geoportal/requirements.txt`` uncomment ``ptvsd``.
+* In the code add ``breakpoint()`` where you want to add a breakpoint.
+* In Visual Studio Code use the config:
+
+  .. code::
+
+     {
+         "name": "Python: Remote Attach",
+         "type": "python",
+         "request": "attach",
+         "port": 5678,
+         "host": "localhost",
+         "pathMappings": [
+             {
+                 "localRoot": "${workspaceFolder}/project/",
+                 "remoteRoot": "/app/"
+             },
+             {
+                 "localRoot": "${workspaceFolder}/c2cgeoportal/",
+                 "remoteRoot": "/opt/c2cgeoportal/"
+             }
+         ]
+     },
+
+See also: `ptvsd usage <https://github.com/microsoft/ptvsd#ptvsd-import-usage>`_,
+`Python debug configurations in Visual Studio Code <https://code.visualstudio.com/docs/python/debugging>`_
 
 Access to a hidden service
 --------------------------
