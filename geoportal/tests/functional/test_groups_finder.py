@@ -40,7 +40,6 @@ from tests.functional import (  # noqa
 
 
 class TestGroupsFinder(TestCase):
-
     def setup_method(self, _):
         import transaction
         from c2cgeoportal_commons.models import DBSession
@@ -48,12 +47,7 @@ class TestGroupsFinder(TestCase):
         from c2cgeoportal_commons.models.static import User
 
         r = Role(name="__test_role")
-        u = User(
-            username="__test_user",
-            password="__test_user",
-            settings_role=r,
-            roles=[r]
-        )
+        u = User(username="__test_user", password="__test_user", settings_role=r, roles=[r])
 
         DBSession.add_all([r, u])
         transaction.commit()
@@ -72,6 +66,7 @@ class TestGroupsFinder(TestCase):
 
     def test_it(self):
         from c2cgeoportal_geoportal.resources import defaultgroupsfinder
+
         request = create_dummy_request(authentication=False, user="__test_user")
         roles = defaultgroupsfinder("__test_user", request)
         self.assertEqual(roles, ["__test_role"])

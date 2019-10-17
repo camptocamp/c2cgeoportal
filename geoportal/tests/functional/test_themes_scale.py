@@ -39,15 +39,17 @@ from pyramid import testing
 from tests.functional import (  # noqa
     teardown_common as teardown_module,
     setup_common as setup_module,
-    mapserv_url, create_dummy_request, create_default_ogcserver,
+    mapserv_url,
+    create_dummy_request,
+    create_default_ogcserver,
 )
 
 import logging
+
 log = logging.getLogger(__name__)
 
 
 class TestThemesScale(TestCase):
-
     def setup_method(self, _):
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
@@ -84,13 +86,16 @@ class TestThemesScale(TestCase):
         layer_metadatascale.layer = "test_boothscale"
         layer_metadatascale.interfaces = [main]
         layer_metadatascale.ogc_server = ogc_server
-        layer_metadatascale.metadatas = [
-            Metadata("minResolution", "100"),
-            Metadata("maxResolution", "1000"),
-        ]
+        layer_metadatascale.metadatas = [Metadata("minResolution", "100"), Metadata("maxResolution", "1000")]
 
         layer_group = LayerGroup(name="__test_layer_group")
-        layer_group.children = [layer_noscale, layer_minscale, layer_maxscale, layer_boothscale, layer_metadatascale]
+        layer_group.children = [
+            layer_noscale,
+            layer_minscale,
+            layer_maxscale,
+            layer_boothscale,
+            layer_metadatascale,
+        ]
 
         theme = Theme(name="__test_theme")
         theme.interfaces = [main]
@@ -112,9 +117,7 @@ class TestThemesScale(TestCase):
             DBSession.delete(g)
         for t in DBSession.query(Theme).all():
             DBSession.delete(t)
-        DBSession.query(Interface).filter(
-            Interface.name == "main"
-        ).delete()
+        DBSession.query(Interface).filter(Interface.name == "main").delete()
         DBSession.query(OGCServer).delete()
 
         transaction.commit()
@@ -127,19 +130,17 @@ class TestThemesScale(TestCase):
     def _create_request_obj(params=None, **kwargs):
         if params is None:
             params = {}
-        request = create_dummy_request(additional_settings={
-            "admin_interface": {
-                "available_metadata": [
-                    {
-                        "name": "minResolution",
-                        "type": "float"
-                    }, {
-                        "name": "maxResolution",
-                        "type": "float"
-                    }
-                ]
-            }
-        }, **kwargs)
+        request = create_dummy_request(
+            additional_settings={
+                "admin_interface": {
+                    "available_metadata": [
+                        {"name": "minResolution", "type": "float"},
+                        {"name": "maxResolution", "type": "float"},
+                    ]
+                }
+            },
+            **kwargs,
+        )
         request.static_url = lambda url: "/dummy/static/url"
         request.route_url = lambda url, **kwargs: mapserv_url
         request.params = params
@@ -161,9 +162,7 @@ class TestThemesScale(TestCase):
                 result[attribute] = item[attribute]
 
         if "children" in item:
-            result["children"] = [
-                self._only_name(i, attributes) for i in item["children"]
-            ]
+            result["children"] = [self._only_name(i, attributes) for i in item["children"]]
 
         return result
 
@@ -172,62 +171,85 @@ class TestThemesScale(TestCase):
         themes = entry.themes()
         self.assertEqual(set(themes["errors"]), set())
         self.assertEqual(
-            [self._only_name(t, ["name", "childLayers", "minResolutionHint", "maxResolutionHint"]) for t in themes["themes"]],
-            [{
-                "name": "__test_theme",
-                "children": [{
-                    "name": "__test_layer_group",
-                    "children": [{
-                        "childLayers": [{
-                            "minResolutionHint": 0.0,
-                            "name": "test_noscale",
-                            "maxResolutionHint": 999999999.0,
-                            "queryable": True,
-                        }],
-                        "maxResolutionHint": 999999999.0,
-                        "minResolutionHint": 0.0,
-                        "name": "__test_layer_noscale",
-                    }, {
-                        "childLayers": [{
-                            "minResolutionHint": 1.76,
-                            "name": "test_minscale",
-                            "maxResolutionHint": 999999999.0,
-                            "queryable": True,
-                        }],
-                        "maxResolutionHint": 999999999.0,
-                        "minResolutionHint": 1.76,
-                        "name": "__test_layer_minscale",
-                    }, {
-                        "childLayers": [{
-                            "minResolutionHint": 0.0,
-                            "name": "test_maxscale",
-                            "maxResolutionHint": 8.82,
-                            "queryable": True,
-                        }],
-                        "maxResolutionHint": 8.82,
-                        "minResolutionHint": 0.0,
-                        "name": "__test_layer_maxscale",
-                    }, {
-                        "childLayers": [{
-                            "minResolutionHint": 1.76,
-                            "name": "test_boothscale",
-                            "maxResolutionHint": 8.82,
-                            "queryable": True,
-                        }],
-                        "maxResolutionHint": 8.82,
-                        "minResolutionHint": 1.76,
-                        "name": "__test_layer_boothscale",
-                    }, {
-                        "childLayers": [{
-                            "minResolutionHint": 1.76,
-                            "name": "test_boothscale",
-                            "maxResolutionHint": 8.82,
-                            "queryable": True,
-                        }],
-                        "maxResolutionHint": 1000.0,
-                        "minResolutionHint": 100.0,
-                        "name": "__test_layer_metadatascale",
-                    }]
-                }]
-            }]
+            [
+                self._only_name(t, ["name", "childLayers", "minResolutionHint", "maxResolutionHint"])
+                for t in themes["themes"]
+            ],
+            [
+                {
+                    "name": "__test_theme",
+                    "children": [
+                        {
+                            "name": "__test_layer_group",
+                            "children": [
+                                {
+                                    "childLayers": [
+                                        {
+                                            "minResolutionHint": 0.0,
+                                            "name": "test_noscale",
+                                            "maxResolutionHint": 999999999.0,
+                                            "queryable": True,
+                                        }
+                                    ],
+                                    "maxResolutionHint": 999999999.0,
+                                    "minResolutionHint": 0.0,
+                                    "name": "__test_layer_noscale",
+                                },
+                                {
+                                    "childLayers": [
+                                        {
+                                            "minResolutionHint": 1.76,
+                                            "name": "test_minscale",
+                                            "maxResolutionHint": 999999999.0,
+                                            "queryable": True,
+                                        }
+                                    ],
+                                    "maxResolutionHint": 999999999.0,
+                                    "minResolutionHint": 1.76,
+                                    "name": "__test_layer_minscale",
+                                },
+                                {
+                                    "childLayers": [
+                                        {
+                                            "minResolutionHint": 0.0,
+                                            "name": "test_maxscale",
+                                            "maxResolutionHint": 8.82,
+                                            "queryable": True,
+                                        }
+                                    ],
+                                    "maxResolutionHint": 8.82,
+                                    "minResolutionHint": 0.0,
+                                    "name": "__test_layer_maxscale",
+                                },
+                                {
+                                    "childLayers": [
+                                        {
+                                            "minResolutionHint": 1.76,
+                                            "name": "test_boothscale",
+                                            "maxResolutionHint": 8.82,
+                                            "queryable": True,
+                                        }
+                                    ],
+                                    "maxResolutionHint": 8.82,
+                                    "minResolutionHint": 1.76,
+                                    "name": "__test_layer_boothscale",
+                                },
+                                {
+                                    "childLayers": [
+                                        {
+                                            "minResolutionHint": 1.76,
+                                            "name": "test_boothscale",
+                                            "maxResolutionHint": 8.82,
+                                            "queryable": True,
+                                        }
+                                    ],
+                                    "maxResolutionHint": 1000.0,
+                                    "minResolutionHint": 100.0,
+                                    "name": "__test_layer_metadatascale",
+                                },
+                            ],
+                        }
+                    ],
+                }
+            ],
         )

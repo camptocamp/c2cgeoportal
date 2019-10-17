@@ -57,18 +57,13 @@ class PdfReport(OGCProxy):  # pragma: no cover
         headers = dict(self.request.headers)
         headers["Content-Type"] = "application/json"
         response = self._proxy(
-            "{0!s}/buildreport.{1!s}".format(
-                self.config["print_url"],
-                spec["outputFormat"]
-            ),
+            "{0!s}/buildreport.{1!s}".format(self.config["print_url"], spec["outputFormat"]),
             method="POST",
             body=dumps(spec),
-            headers=headers
+            headers=headers,
         )
 
-        return self._build_response(
-            response, response.text, NO_CACHE, "pdfreport",
-        )
+        return self._build_response(response, response.text, NO_CACHE, "pdfreport")
 
     @staticmethod
     def _build_map(mapserv_url, vector_request_url, srs, map_config):
@@ -84,23 +79,23 @@ class PdfReport(OGCProxy):  # pragma: no cover
                 "layer": "vector",
                 "minScale": map_config["minScale"],
             },
-            "layers": [{
-                "type": "gml",
-                "name": "vector",
-                "style": {
-                    "version": "2",
-                    "[1 > 0]": map_config["style"]
+            "layers": [
+                {
+                    "type": "gml",
+                    "name": "vector",
+                    "style": {"version": "2", "[1 > 0]": map_config["style"]},
+                    "opacity": 1,
+                    "url": vector_request_url,
                 },
-                "opacity": 1,
-                "url": vector_request_url
-            }, {
-                "baseURL": mapserv_url,
-                "opacity": 1,
-                "type": "WMS",
-                "serverType": "mapserver",
-                "layers": backgroundlayers,
-                "imageFormat": imageformat
-            }]
+                {
+                    "baseURL": mapserv_url,
+                    "opacity": 1,
+                    "type": "WMS",
+                    "serverType": "mapserver",
+                    "layers": backgroundlayers,
+                    "imageFormat": imageformat,
+                },
+            ],
         }
 
     @view_config(route_name="pdfreport", renderer="json")
@@ -116,14 +111,17 @@ class PdfReport(OGCProxy):  # pragma: no cover
         if layer_config is None:
             raise HTTPBadRequest("Layer not found")
 
-        features_ids = [self.layername + "." + id_ for id_ in ids] if multiple \
-            else [self.layername + "." + ids]
+        features_ids = (
+            [self.layername + "." + id_ for id_ in ids] if multiple else [self.layername + "." + ids]
+        )
 
         if layer_config["check_credentials"]:
             # FIXME: support of mapserver groups
-            ogc_server = models.DBSession.query(main.OGCServer).filter(
-                main.OGCServer.name == layer_config["ogc_server"]
-            ).one()
+            ogc_server = (
+                models.DBSession.query(main.OGCServer)
+                .filter(main.OGCServer.name == layer_config["ogc_server"])
+                .one()
+            )
             ogc_server_ids = [ogc_server]
 
             private_layers_object = get_private_layers(ogc_server_ids)
@@ -138,8 +136,7 @@ class PdfReport(OGCProxy):  # pragma: no cover
         srs = layer_config["srs"]
 
         mapserv_url = self.request.route_url(
-            "mapserverproxy",
-            _query={'ogcserver': layer_config["ogc_server"]}
+            "mapserverproxy", _query={"ogcserver": layer_config["ogc_server"]}
         )
         vector_request_url = add_url_params(
             mapserv_url,
@@ -150,8 +147,8 @@ class PdfReport(OGCProxy):  # pragma: no cover
                 "request": "GetFeature",
                 "typeName": self.layername,
                 "featureid": ",".join(features_ids),
-                "srsName": srs
-            }
+                "srsName": srs,
+            },
         )
 
         spec = layer_config["spec"]
@@ -159,62 +156,68 @@ class PdfReport(OGCProxy):  # pragma: no cover
             spec = {
                 "layout": self.layername,
                 "outputFormat": "pdf",
-                "attributes": {
-                    "ids": [{
-                        "id": id_
-                    } for id_ in ids]
-                } if multiple else {
-                    "id": id
-                }
+                "attributes": {"ids": [{"id": id_} for id_ in ids]} if multiple else {"id": id},
             }
             map_config = layer_config.get("map")
             if map_config is not None:
-                spec["attributes"]["map"] = self._build_map(
-                    mapserv_url, vector_request_url, srs, map_config
-                )
+                spec["attributes"]["map"] = self._build_map(mapserv_url, vector_request_url, srs, map_config)
 
             maps_config = layer_config.get("maps")
             if maps_config is not None:
                 spec["attributes"]["maps"] = []
                 for map_config in maps_config:
-                    spec["attributes"]["maps"].append(self._build_map(
-                        mapserv_url, vector_request_url, srs, map_config
-                    ))
+                    spec["attributes"]["maps"].append(
+                        self._build_map(mapserv_url, vector_request_url, srs, map_config)
+                    )
         else:
             datasource = layer_config.get("datasource", True)
             if multiple and datasource:
                 data = dumps(layer_config["data"])
                 datas = [
-                    loads(data % {
+                    loads(
+                        data
+                        % {
+                            "layername": self.layername,
+                            "id": id_,
+                            "srs": srs,
+                            "mapserv_url": mapserv_url,
+                            "vector_request_url": vector_request_url,
+                        }
+                    )
+                    for id_ in ids
+                ]
+                self.walker(spec, "%(datasource)s", datas)
+                spec = loads(
+                    dumps(spec)
+                    % {
                         "layername": self.layername,
-                        "id": id_,
                         "srs": srs,
                         "mapserv_url": mapserv_url,
                         "vector_request_url": vector_request_url,
-                    }) for id_ in ids]
-                self.walker(spec, "%(datasource)s", datas)
-                spec = loads(dumps(spec) % {
-                    "layername": self.layername,
-                    "srs": srs,
-                    "mapserv_url": mapserv_url,
-                    "vector_request_url": vector_request_url,
-                })
+                    }
+                )
             elif multiple:
-                spec = loads(dumps(spec) % {
-                    "layername": self.layername,
-                    "ids": ",".join(ids),
-                    "srs": srs,
-                    "mapserv_url": mapserv_url,
-                    "vector_request_url": vector_request_url,
-                })
+                spec = loads(
+                    dumps(spec)
+                    % {
+                        "layername": self.layername,
+                        "ids": ",".join(ids),
+                        "srs": srs,
+                        "mapserv_url": mapserv_url,
+                        "vector_request_url": vector_request_url,
+                    }
+                )
             else:
-                spec = loads(dumps(spec) % {
-                    "layername": self.layername,
-                    "id": ids,
-                    "srs": srs,
-                    "mapserv_url": mapserv_url,
-                    "vector_request_url": vector_request_url,
-                })
+                spec = loads(
+                    dumps(spec)
+                    % {
+                        "layername": self.layername,
+                        "id": ids,
+                        "srs": srs,
+                        "mapserv_url": mapserv_url,
+                        "vector_request_url": vector_request_url,
+                    }
+                )
 
         return self._do_print(spec)
 

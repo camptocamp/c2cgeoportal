@@ -45,10 +45,13 @@ from pyramid import testing
 from tests.functional import (  # noqa
     teardown_common as teardown_module,
     setup_common as setup_module,
-    mapserv_url, create_dummy_request, create_default_ogcserver,
+    mapserv_url,
+    create_dummy_request,
+    create_default_ogcserver,
 )
 
 import logging
+
 log = logging.getLogger(__name__)
 
 Base: typing.Any = sqlalchemy.ext.declarative.declarative_base()
@@ -64,7 +67,6 @@ class PointTest(Base):
 
 
 class TestThemesTimeView(TestCase):
-
     def setup_method(self, _):
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
@@ -126,8 +128,13 @@ class TestThemesTimeView(TestCase):
         theme = Theme(name="__test_theme")
         theme.interfaces = [main]
         theme.children = [
-            layer_group_1, layer_group_2, layer_group_3, layer_group_4,
-            layer_group_5, layer_group_6, layer_group_7,
+            layer_group_1,
+            layer_group_2,
+            layer_group_3,
+            layer_group_4,
+            layer_group_5,
+            layer_group_6,
+            layer_group_7,
         ]
 
         DBSession.add_all([theme])
@@ -142,9 +149,7 @@ class TestThemesTimeView(TestCase):
 
         for item in DBSession.query(TreeItem).all():
             DBSession.delete(item)
-        DBSession.query(Interface).filter(
-            Interface.name == "main"
-        ).delete()
+        DBSession.query(Interface).filter(Interface.name == "main").delete()
         DBSession.query(OGCServer).delete()
 
         transaction.commit()
@@ -177,157 +182,170 @@ class TestThemesTimeView(TestCase):
                 result[attribute] = item[attribute]
 
         if "children" in item:
-            result["children"] = [
-                self._only(i, attributes) for i in item["children"]
-            ]
+            result["children"] = [self._only(i, attributes) for i in item["children"]]
 
         return result
 
     @staticmethod
     def _get_filtered_errors(themes):
         errors = themes["errors"]
-        regex = re.compile(r"The (GeoMapFish|WMS) layer name '[a-z0-9_.]*', cannot be two times in the same block \(first level group\).")
+        regex = re.compile(
+            r"The (GeoMapFish|WMS) layer name '[a-z0-9_.]*', cannot be two times in the same block \(first level group\)."
+        )
         errors = [e for e in errors if not regex.match(e)]
         return set(errors)
 
     def test_time(self):
         entry = self._create_entry_obj()
         themes = entry.themes()
-        self.assertEqual(self._get_filtered_errors(themes), set([
-            "Error while handling time for layer '__test_layer_time_group': Could not mix time mode 'range' and 'value'",
-            "Error: time layer '__test_layer_time_group' has no time information in capabilities"
-        ]))
+        self.assertEqual(
+            self._get_filtered_errors(themes),
+            set(
+                [
+                    "Error while handling time for layer '__test_layer_time_group': Could not mix time mode 'range' and 'value'",
+                    "Error: time layer '__test_layer_time_group' has no time information in capabilities",
+                ]
+            ),
+        )
         self.assertEqual(
             [self._only(t) for t in themes["themes"]],
-            [{
-                "name": "__test_theme",
-                "children": [{
-                    "name": "__test_layer_group_1",
-                    "time": {
-                        "maxDefValue": None,
-                        "interval": (1, 0, 0, 0),
-                        "maxValue": "2020-01-01T00:00:00Z",
-                        "minDefValue": "2000-01-01T00:00:00Z",
-                        "minValue": "2000-01-01T00:00:00Z",
-                        "mode": "value",
-                        "resolution": "year",
-                        "widget": "slider"
-                    },
-                    "children": [{
-                        "name": "__test_layer_time_1",
-                    }, {
-                        "name": "__test_layer_time_2",
-                    }]
-                }, {
-                    "name": "__test_layer_group_2",
-                    "children": [{
-                        "name": "__test_layer_time_1",
-                        "time": {
-                            "maxDefValue": None,
-                            "interval": (1, 0, 0, 0),
-                            "maxValue": "2010-01-01T00:00:00Z",
-                            "minDefValue": "2000-01-01T00:00:00Z",
-                            "minValue": "2000-01-01T00:00:00Z",
-                            "mode": "value",
-                            "resolution": "year",
-                            "widget": "slider"
+            [
+                {
+                    "name": "__test_theme",
+                    "children": [
+                        {
+                            "name": "__test_layer_group_1",
+                            "time": {
+                                "maxDefValue": None,
+                                "interval": (1, 0, 0, 0),
+                                "maxValue": "2020-01-01T00:00:00Z",
+                                "minDefValue": "2000-01-01T00:00:00Z",
+                                "minValue": "2000-01-01T00:00:00Z",
+                                "mode": "value",
+                                "resolution": "year",
+                                "widget": "slider",
+                            },
+                            "children": [{"name": "__test_layer_time_1"}, {"name": "__test_layer_time_2"}],
                         },
-                    }]
-                }, {
-                    "name": "__test_layer_group_3",
-                    "time": {
-                        "maxDefValue": None,
-                        "interval": (1, 0, 0, 0),
-                        "maxValue": "2020-01-01T00:00:00Z",
-                        "minDefValue": "2000-01-01T00:00:00Z",
-                        "minValue": "2000-01-01T00:00:00Z",
-                        "mode": "value",
-                        "resolution": "year",
-                        "widget": "slider"
-                    },
-                    "children": [{
-                        "name": "__test_layer_time_1",
-                    }, {
-                        "name": "__test_layer_time_2",
-                    }, {
-                        "name": "__test_layer_time_group",
-                    }]
-                }, {
-                    "name": "__test_layer_group_4",
-                    "children": [{
-                        "name": "__test_layer_time_group",
-                        "time": {
-                            "maxDefValue": None,
-                            "interval": (1, 0, 0, 0),
-                            "maxValue": "2020-01-01T00:00:00Z",
-                            "minDefValue": "2000-01-01T00:00:00Z",
-                            "minValue": "2000-01-01T00:00:00Z",
-                            "mode": "range",
-                            "resolution": "year",
-                            "widget": "datepicker"
+                        {
+                            "name": "__test_layer_group_2",
+                            "children": [
+                                {
+                                    "name": "__test_layer_time_1",
+                                    "time": {
+                                        "maxDefValue": None,
+                                        "interval": (1, 0, 0, 0),
+                                        "maxValue": "2010-01-01T00:00:00Z",
+                                        "minDefValue": "2000-01-01T00:00:00Z",
+                                        "minValue": "2000-01-01T00:00:00Z",
+                                        "mode": "value",
+                                        "resolution": "year",
+                                        "widget": "slider",
+                                    },
+                                }
+                            ],
                         },
-                    }]
-                }, {
-                    "name": "__test_layer_group_5",
-                    "children": [{
-                        "name": "__test_layer_time_1",
-                    }, {
-                        "name": "__test_layer_time_2",
-                    }],
-                    "time": {
-                        "maxDefValue": None,
-                        "interval": (1, 0, 0, 0),
-                        "maxValue": "2020-01-01T00:00:00Z",
-                        "minDefValue": "2000-01-01T00:00:00Z",
-                        "minValue": "2000-01-01T00:00:00Z",
-                        "mode": "value",
-                        "resolution": "year",
-                        "widget": "slider"
-                    },
-                }, {
-                    "name": "__test_layer_group_6",
-                    "children": [{
-                        "name": "__test_layer_time_1",
-                        "time": {
-                            "maxDefValue": None,
-                            "interval": (1, 0, 0, 0),
-                            "maxValue": "2010-01-01T00:00:00Z",
-                            "minDefValue": "2000-01-01T00:00:00Z",
-                            "minValue": "2000-01-01T00:00:00Z",
-                            "mode": "value",
-                            "resolution": "year",
-                            "widget": "slider"
+                        {
+                            "name": "__test_layer_group_3",
+                            "time": {
+                                "maxDefValue": None,
+                                "interval": (1, 0, 0, 0),
+                                "maxValue": "2020-01-01T00:00:00Z",
+                                "minDefValue": "2000-01-01T00:00:00Z",
+                                "minValue": "2000-01-01T00:00:00Z",
+                                "mode": "value",
+                                "resolution": "year",
+                                "widget": "slider",
+                            },
+                            "children": [
+                                {"name": "__test_layer_time_1"},
+                                {"name": "__test_layer_time_2"},
+                                {"name": "__test_layer_time_group"},
+                            ],
                         },
-                    }, {
-                        "name": "__test_layer_time_2",
-                        "time": {
-                            "maxDefValue": None,
-                            "interval": (1, 0, 0, 0),
-                            "maxValue": "2020-01-01T00:00:00Z",
-                            "minDefValue": "2015-01-01T00:00:00Z",
-                            "minValue": "2015-01-01T00:00:00Z",
-                            "mode": "value",
-                            "resolution": "year",
-                            "widget": "slider"
+                        {
+                            "name": "__test_layer_group_4",
+                            "children": [
+                                {
+                                    "name": "__test_layer_time_group",
+                                    "time": {
+                                        "maxDefValue": None,
+                                        "interval": (1, 0, 0, 0),
+                                        "maxValue": "2020-01-01T00:00:00Z",
+                                        "minDefValue": "2000-01-01T00:00:00Z",
+                                        "minValue": "2000-01-01T00:00:00Z",
+                                        "mode": "range",
+                                        "resolution": "year",
+                                        "widget": "datepicker",
+                                    },
+                                }
+                            ],
                         },
-                    }, {
-                        "name": "__test_layer_wmts",
-                    }]
-                }, {
-                    "name": "__test_layer_group_7",
-                    "children": [{
-                        "name": "__test_layer_time_1",
-                        "time": {
-                            "maxDefValue": None,
-                            "interval": (1, 0, 0, 0),
-                            "maxValue": "2010-01-01T00:00:00Z",
-                            "minDefValue": "2000-01-01T00:00:00Z",
-                            "minValue": "2000-01-01T00:00:00Z",
-                            "mode": "value",
-                            "resolution": "year",
-                            "widget": "slider"
+                        {
+                            "name": "__test_layer_group_5",
+                            "children": [{"name": "__test_layer_time_1"}, {"name": "__test_layer_time_2"}],
+                            "time": {
+                                "maxDefValue": None,
+                                "interval": (1, 0, 0, 0),
+                                "maxValue": "2020-01-01T00:00:00Z",
+                                "minDefValue": "2000-01-01T00:00:00Z",
+                                "minValue": "2000-01-01T00:00:00Z",
+                                "mode": "value",
+                                "resolution": "year",
+                                "widget": "slider",
+                            },
                         },
-                    }]
-                }]
-            }]
+                        {
+                            "name": "__test_layer_group_6",
+                            "children": [
+                                {
+                                    "name": "__test_layer_time_1",
+                                    "time": {
+                                        "maxDefValue": None,
+                                        "interval": (1, 0, 0, 0),
+                                        "maxValue": "2010-01-01T00:00:00Z",
+                                        "minDefValue": "2000-01-01T00:00:00Z",
+                                        "minValue": "2000-01-01T00:00:00Z",
+                                        "mode": "value",
+                                        "resolution": "year",
+                                        "widget": "slider",
+                                    },
+                                },
+                                {
+                                    "name": "__test_layer_time_2",
+                                    "time": {
+                                        "maxDefValue": None,
+                                        "interval": (1, 0, 0, 0),
+                                        "maxValue": "2020-01-01T00:00:00Z",
+                                        "minDefValue": "2015-01-01T00:00:00Z",
+                                        "minValue": "2015-01-01T00:00:00Z",
+                                        "mode": "value",
+                                        "resolution": "year",
+                                        "widget": "slider",
+                                    },
+                                },
+                                {"name": "__test_layer_wmts"},
+                            ],
+                        },
+                        {
+                            "name": "__test_layer_group_7",
+                            "children": [
+                                {
+                                    "name": "__test_layer_time_1",
+                                    "time": {
+                                        "maxDefValue": None,
+                                        "interval": (1, 0, 0, 0),
+                                        "maxValue": "2010-01-01T00:00:00Z",
+                                        "minDefValue": "2000-01-01T00:00:00Z",
+                                        "minValue": "2000-01-01T00:00:00Z",
+                                        "mode": "value",
+                                        "resolution": "year",
+                                        "widget": "slider",
+                                    },
+                                }
+                            ],
+                        },
+                    ],
+                }
+            ],
         )

@@ -38,17 +38,18 @@ from alembic import op
 from c2c.template.config import config
 
 # revision identifiers, used by Alembic.
-revision = '7530011a66a7'
-down_revision = 'd8ef99bc227e'
+revision = "7530011a66a7"
+down_revision = "d8ef99bc227e"
 branch_labels = None
 depends_on = None
 
 
 def upgrade():
-    schema = config['schema']
-    staticschema = config['schema_static']
+    schema = config["schema"]
+    staticschema = config["schema_static"]
 
-    op.execute("""
+    op.execute(
+        """
 CREATE OR REPLACE FUNCTION {schema}.on_role_name_change()
 RETURNS trigger AS
 $$
@@ -59,13 +60,17 @@ END IF;
 RETURN NEW;
 END;
 $$
-LANGUAGE plpgsql""".format(schema=schema, staticschema=staticschema))
+LANGUAGE plpgsql""".format(
+            schema=schema, staticschema=staticschema
+        )
+    )
 
 
 def downgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
-    op.execute("""
+    op.execute(
+        """
 CREATE OR REPLACE FUNCTION {schema}.on_role_name_change()
 RETURNS trigger AS
 $$
@@ -76,4 +81,7 @@ END IF;
 RETURN NEW;
 END;
 $$
-LANGUAGE plpgsql""".format(schema=schema))
+LANGUAGE plpgsql""".format(
+            schema=schema
+        )
+    )

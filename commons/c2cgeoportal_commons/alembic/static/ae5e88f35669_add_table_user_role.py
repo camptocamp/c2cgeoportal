@@ -40,59 +40,62 @@ from sqlalchemy.types import Integer, Unicode
 from c2c.template.config import config
 
 # revision identifiers, used by Alembic.
-revision = 'ae5e88f35669'
-down_revision = '53d671b17b20'
+revision = "ae5e88f35669"
+down_revision = "53d671b17b20"
 branch_labels = None
 depends_on = None
 
 
 def upgrade():
-    schema = config['schema']
-    staticschema = config['schema_static']
+    schema = config["schema"]
+    staticschema = config["schema_static"]
 
     op.create_table(
-        'user_role',
-        Column('user_id', Integer, ForeignKey(staticschema + '.user.id'), primary_key=True),
-        Column('role_id', Integer, primary_key=True),
-        schema=staticschema
+        "user_role",
+        Column("user_id", Integer, ForeignKey(staticschema + ".user.id"), primary_key=True),
+        Column("role_id", Integer, primary_key=True),
+        schema=staticschema,
     )
     op.execute(
         """
 INSERT INTO "{staticschema}"."user_role" ("user_id", "role_id")
 SELECT "user"."id", "role"."id"
 FROM "{staticschema}"."user"
-JOIN "{schema}"."role" ON "role"."name" = "user"."role_name";""".
-        format(schema=schema, staticschema=staticschema)
+JOIN "{schema}"."role" ON "role"."name" = "user"."role_name";""".format(
+            schema=schema, staticschema=staticschema
+        )
     )
 
-    op.add_column('user', Column('settings_role_id', Integer), schema=staticschema)
+    op.add_column("user", Column("settings_role_id", Integer), schema=staticschema)
     op.execute(
         """
 UPDATE "{staticschema}"."user"
 SET "settings_role_id" = "role"."id"
 FROM "{schema}"."role"
-WHERE "role"."name" = "user"."role_name";""".
-        format(schema=schema, staticschema=staticschema)
+WHERE "role"."name" = "user"."role_name";""".format(
+            schema=schema, staticschema=staticschema
+        )
     )
 
-    op.drop_column('user', 'role_name', schema=staticschema)
+    op.drop_column("user", "role_name", schema=staticschema)
 
 
 def downgrade():
-    schema = config['schema']
-    staticschema = config['schema_static']
+    schema = config["schema"]
+    staticschema = config["schema_static"]
 
-    op.add_column('user', Column('role_name', Unicode), schema=staticschema)
+    op.add_column("user", Column("role_name", Unicode), schema=staticschema)
 
     op.execute(
         """
 UPDATE "{staticschema}"."user"
 SET "role_name" = "role"."name"
 FROM "{schema}"."role"
-WHERE "role"."id" = "user"."settings_role_id";""".
-        format(schema=schema, staticschema=staticschema)
+WHERE "role"."id" = "user"."settings_role_id";""".format(
+            schema=schema, staticschema=staticschema
+        )
     )
 
-    op.drop_column('user', 'settings_role_id', schema=staticschema)
+    op.drop_column("user", "settings_role_id", schema=staticschema)
 
-    op.drop_table('user_role', schema=staticschema)
+    op.drop_table("user_role", schema=staticschema)

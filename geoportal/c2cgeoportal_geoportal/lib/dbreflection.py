@@ -39,7 +39,7 @@ from sqlalchemy.orm.util import class_mapper
 
 from c2cgeoportal_geoportal.lib.caching import get_region
 
-CACHE_REGION_OBJ = get_region('obj')
+CACHE_REGION_OBJ = get_region("obj")
 SQL_GEOMETRY_COLUMNS = """
     SELECT srid, type
     FROM geometry_columns
@@ -70,16 +70,15 @@ class _AssociationProxy(object):
 
     def __set__(self, obj, val):
         from c2cgeoportal_commons.models import DBSession
+
         o = getattr(obj, self.target)
         # if the obj as no child object or if the child object
         # does not correspond to the new value then we need to
         # read a new child object from the database
         if not o or getattr(o, self.value_attr) != val:
-            relationship_property = class_mapper(obj.__class__) \
-                .get_property(self.target)
+            relationship_property = class_mapper(obj.__class__).get_property(self.target)
             child_cls = relationship_property.argument
-            o = DBSession.query(child_cls).filter(
-                getattr(child_cls, self.value_attr) == val).first()
+            o = DBSession.query(child_cls).filter(getattr(child_cls, self.value_attr) == val).first()
             setattr(obj, self.target, o)
 
 
@@ -105,32 +104,26 @@ def get_table(tablename, schema=None, session=None, primary_key=None):
     else:
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import Base
+
         engine = DBSession.bind.engine
         metadata = Base.metadata
 
     # create table and reflect it
     with warnings.catch_warnings():
-        warnings.filterwarnings(
-            "ignore",
-            "Did not recognize type 'geometry' of column",
-            SAWarning)
+        warnings.filterwarnings("ignore", "Did not recognize type 'geometry' of column", SAWarning)
         args = [tablename, metadata]
         if primary_key is not None:
             # Ensure we have a primary key to be able to edit views
             args.append(Column(primary_key, Integer, primary_key=True))
         with _get_table_lock:
-            table = Table(
-                *args,
-                schema=schema,
-                autoload=True,
-                autoload_with=engine
-            )
+            table = Table(*args, schema=schema, autoload=True, autoload_with=engine)
     return table
 
 
 @CACHE_REGION_OBJ.cache_on_arguments()
-def get_class(tablename, exclude_properties=None, primary_key=None, attributes_order=None,
-              readonly_attributes=None):
+def get_class(
+    tablename, exclude_properties=None, primary_key=None, attributes_order=None, readonly_attributes=None
+):
     """
     Get the SQLAlchemy mapped class for "tablename". If no class exists
     for "tablename" one is created, and added to the cache. "tablename"
@@ -167,15 +160,11 @@ def _create_class(
     )
     if pk_name is not None:
         attributes[pk_name] = Column(Integer, primary_key=True)
-    cls = type(
-        table.name.capitalize(),
-        (GeoInterface, Base),
-        attributes,
-    )
+    cls = type(table.name.capitalize(), (GeoInterface, Base), attributes)
 
     for col in table.columns:
         if col.name in (readonly_attributes or []):
-            col.info['readonly'] = True
+            col.info["readonly"] = True
         if col.foreign_keys and col.name not in exclude_properties:
             _add_association_proxy(cls, col)
 
@@ -205,9 +194,8 @@ def _add_association_proxy(cls, col):
         proxy = "type_"  # pragma: no cover
 
     rel = proxy + "_"
-    primaryjoin = (getattr(cls, col.name) == getattr(child_cls, child_pk))
-    relationship_ = relationship(child_cls, primaryjoin=primaryjoin,
-                                 lazy="immediate")
+    primaryjoin = getattr(cls, col.name) == getattr(child_cls, child_pk)
+    relationship_ = relationship(child_cls, primaryjoin=primaryjoin, lazy="immediate")
     setattr(cls, rel, relationship_)
 
     nullable = True
@@ -222,4 +210,4 @@ def _add_association_proxy(cls, col):
     else:
         cls.__add_properties__.append(proxy)
 
-    col.info['association_proxy'] = proxy
+    col.info["association_proxy"] = proxy

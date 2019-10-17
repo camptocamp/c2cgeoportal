@@ -48,20 +48,15 @@ class MyRequest(DummyRequest):
 
 
 class TestCacheBuster(TestCase):
-
     def setup_class(self):
-        init_region({
-            'backend': 'dogpile.cache.memory',
-        }, 'std')
-        init_region({
-            'backend': 'dogpile.cache.memory',
-        }, 'obj')
+        init_region({"backend": "dogpile.cache.memory"}, "std")
+        init_region({"backend": "dogpile.cache.memory"}, "obj")
 
     def test_replace(self):
         from c2cgeoportal_geoportal.lib.cacheversion import CachebusterTween
 
         registry = pyramid.registry.Registry()
-        registry.settings = {'cache_path': ['test']}
+        registry.settings = {"cache_path": ["test"]}
         ctf = CachebusterTween(handler, registry)
         request = MyRequest("/test/123456/build.css")
         ctf(request)
@@ -71,7 +66,7 @@ class TestCacheBuster(TestCase):
         from c2cgeoportal_geoportal.lib.cacheversion import CachebusterTween
 
         registry = pyramid.registry.Registry()
-        registry.settings = {'cache_path': ['test']}
+        registry.settings = {"cache_path": ["test"]}
         ctf = CachebusterTween(handler, registry)
         request = MyRequest("/test2/123456/build.css")
         ctf(request)

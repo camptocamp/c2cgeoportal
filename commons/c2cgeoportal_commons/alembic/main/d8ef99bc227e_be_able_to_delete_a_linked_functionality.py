@@ -39,47 +39,55 @@ import psycopg2
 from c2c.template.config import config
 
 # revision identifiers, used by Alembic.
-revision = 'd8ef99bc227e'
-down_revision = '9268a1dffac0'
+revision = "d8ef99bc227e"
+down_revision = "9268a1dffac0"
 branch_labels = None
 depends_on = None
 
 
 def upgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
     for source, dest in [
-        ('role_functionality', 'role'),
-        ('role_functionality', 'functionality'),
-        ('theme_functionality', 'theme'),
-        ('theme_functionality', 'functionality'),
+        ("role_functionality", "role"),
+        ("role_functionality", "functionality"),
+        ("theme_functionality", "theme"),
+        ("theme_functionality", "functionality"),
     ]:
         try:
-            op.drop_constraint('{}_{}_id_fkey'.format(source, dest), source, schema=schema)
+            op.drop_constraint("{}_{}_id_fkey".format(source, dest), source, schema=schema)
         except psycopg2.ProgrammingError as e:
             print(e)
             print("The constraint will probably don't exists, so we continue.")
 
         op.create_foreign_key(
-            '{}_{}_id_fkey'.format(source, dest),
-            source, source_schema=schema, local_cols=['{}_id'.format(dest)],
-            referent_table=dest, referent_schema=schema, remote_cols=['id'],
-            ondelete='cascade',
+            "{}_{}_id_fkey".format(source, dest),
+            source,
+            source_schema=schema,
+            local_cols=["{}_id".format(dest)],
+            referent_table=dest,
+            referent_schema=schema,
+            remote_cols=["id"],
+            ondelete="cascade",
         )
 
 
 def downgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
     for source, dest in [
-        ('role_functionality', 'role'),
-        ('role_functionality', 'functionality'),
-        ('theme_functionality', 'theme'),
-        ('theme_functionality', 'functionality'),
+        ("role_functionality", "role"),
+        ("role_functionality", "functionality"),
+        ("theme_functionality", "theme"),
+        ("theme_functionality", "functionality"),
     ]:
-        op.drop_constraint('{}_{}_id_fkey'.format(source, dest), source, schema=schema)
+        op.drop_constraint("{}_{}_id_fkey".format(source, dest), source, schema=schema)
         op.create_foreign_key(
-            '{}_{}_id_fkey'.format(source, dest),
-            source, source_schema=schema, local_cols=['{}_id'.format(dest)],
-            referent_table=dest, referent_schema=schema, remote_cols=['id'],
+            "{}_{}_id_fkey".format(source, dest),
+            source,
+            source_schema=schema,
+            local_cols=["{}_id".format(dest)],
+            referent_table=dest,
+            referent_schema=schema,
+            remote_cols=["id"],
         )

@@ -39,15 +39,17 @@ from pyramid import testing
 from tests.functional import (  # noqa
     teardown_common as teardown_module,
     setup_common as setup_module,
-    mapserv_url, create_dummy_request, create_default_ogcserver,
+    mapserv_url,
+    create_dummy_request,
+    create_default_ogcserver,
 )
 
 import logging
+
 log = logging.getLogger(__name__)
 
 
 class TestThemeEditing(TestCase):
-
     def setup_method(self, _):
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
@@ -55,8 +57,15 @@ class TestThemeEditing(TestCase):
         self._tables = []
 
         from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import Role, \
-            RestrictionArea, TreeItem, Theme, LayerGroup, Interface, LayerWMS
+        from c2cgeoportal_commons.models.main import (
+            Role,
+            RestrictionArea,
+            TreeItem,
+            Theme,
+            LayerGroup,
+            Interface,
+            LayerWMS,
+        )
         from c2cgeoportal_commons.models.static import User
 
         from sqlalchemy import Column, Table, types
@@ -76,9 +85,7 @@ class TestThemeEditing(TestCase):
         user1 = User(username="__test_user1", password="__test_user1", settings_role=role1, roles=[role1])
         user1.email = "__test_user1@example.com"
 
-        role2 = Role(name="__test_role2", extent=WKTElement(
-            "POLYGON((1 2, 1 4, 3 4, 3 2, 1 2))", srid=21781
-        ))
+        role2 = Role(name="__test_role2", extent=WKTElement("POLYGON((1 2, 1 4, 3 4, 3 2, 1 2))", srid=21781))
         user2 = User(username="__test_user2", password="__test_user2", settings_role=role2, roles=[role2])
 
         main = Interface(name="main")
@@ -86,10 +93,11 @@ class TestThemeEditing(TestCase):
         engine = DBSession.c2c_rw_bind
         engine.connect()
         a_geo_table = Table(
-            "a_geo_table", declarative_base(bind=engine).metadata,
+            "a_geo_table",
+            declarative_base(bind=engine).metadata,
             Column("id", types.Integer, primary_key=True),
             Column("geom", Geometry("POINT", srid=21781)),
-            schema="geodata"
+            schema="geodata",
         )
 
         self._tables = [a_geo_table]
@@ -109,18 +117,16 @@ class TestThemeEditing(TestCase):
         theme.children = [group]
         theme.interfaces = [main]
 
-        DBSession.add(RestrictionArea(
-            name="__test_ra1", description="", layers=[private_layer],
-            roles=[role1],
-        ))
-        DBSession.add(RestrictionArea(
-            name="__test_ra2", description="", layers=[private_layer],
-            roles=[role2], readwrite=True,
-        ))
+        DBSession.add(
+            RestrictionArea(name="__test_ra1", description="", layers=[private_layer], roles=[role1])
+        )
+        DBSession.add(
+            RestrictionArea(
+                name="__test_ra2", description="", layers=[private_layer], roles=[role2], readwrite=True
+            )
+        )
 
-        DBSession.add_all([
-            user1, user2, role1, role2, theme, group, private_layer,
-        ])
+        DBSession.add_all([user1, user2, role1, role2, theme, group, private_layer])
 
         transaction.commit()
 
@@ -128,21 +134,24 @@ class TestThemeEditing(TestCase):
         testing.tearDown()
 
         from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import Role, Layer, \
-            RestrictionArea, Theme, LayerGroup, Interface, OGCServer
+        from c2cgeoportal_commons.models.main import (
+            Role,
+            Layer,
+            RestrictionArea,
+            Theme,
+            LayerGroup,
+            Interface,
+            OGCServer,
+        )
         from c2cgeoportal_commons.models.static import User
 
         DBSession.delete(DBSession.query(User).filter(User.username == "__test_user1").one())
         DBSession.delete(DBSession.query(User).filter(User.username == "__test_user2").one())
 
-        ra = DBSession.query(RestrictionArea).filter(
-            RestrictionArea.name == "__test_ra1"
-        ).one()
+        ra = DBSession.query(RestrictionArea).filter(RestrictionArea.name == "__test_ra1").one()
         ra.roles = []
         DBSession.delete(ra)
-        ra = DBSession.query(RestrictionArea).filter(
-            RestrictionArea.name == "__test_ra2"
-        ).one()
+        ra = DBSession.query(RestrictionArea).filter(RestrictionArea.name == "__test_ra2").one()
         ra.roles = []
         DBSession.delete(ra)
 
@@ -155,9 +164,7 @@ class TestThemeEditing(TestCase):
             DBSession.delete(g)
         for layer in DBSession.query(Layer).all():
             DBSession.delete(layer)
-        DBSession.query(Interface).filter(
-            Interface.name == "main"
-        ).delete()
+        DBSession.query(Interface).filter(Interface.name == "main").delete()
         DBSession.query(OGCServer).delete()
 
         for table in self._tables[::-1]:
@@ -179,8 +186,7 @@ class TestThemeEditing(TestCase):
         request.params = params
 
         if username is not None:
-            request.user = DBSession.query(User) \
-                .filter_by(username=username).one()
+            request.user = DBSession.query(User).filter_by(username=username).one()
 
         return request
 
@@ -188,9 +194,7 @@ class TestThemeEditing(TestCase):
         from c2cgeoportal_geoportal.views.entry import Entry
 
         request = self._create_request_obj()
-        request.params = {
-            "interface": "main",
-        }
+        request.params = {"interface": "main"}
         entry = Entry(request)
         themes = entry.themes()
         self.assertEqual(set(themes["errors"]), set())
@@ -200,9 +204,7 @@ class TestThemeEditing(TestCase):
         from c2cgeoportal_geoportal.views.entry import Entry
 
         request = self._create_request_obj(username="__test_user1")
-        request.params = {
-            "interface": "main",
-        }
+        request.params = {"interface": "main"}
         entry = Entry(request)
         themes = entry.themes()
         self.assertEqual(set(themes["errors"]), set())
@@ -216,12 +218,8 @@ class TestThemeEditing(TestCase):
     def test_themev2_auth_edit_permission(self):
         from c2cgeoportal_geoportal.views.entry import Entry
 
-        request = self._create_request_obj(username="__test_user2", params={
-            "min_levels": "0"
-        })
-        request.params = {
-            "interface": "main",
-        }
+        request = self._create_request_obj(username="__test_user2", params={"min_levels": "0"})
+        request.params = {"interface": "main"}
 
         entry = Entry(request)
         themes = entry.themes()

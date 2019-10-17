@@ -42,7 +42,6 @@ from c2cgeoportal_geoportal.lib.caching import init_region
 
 
 class TestDynamicView(TestCase):
-
     def setup_method(self, _):
         import transaction
         from sqlalchemy import func
@@ -74,12 +73,8 @@ class TestDynamicView(TestCase):
         DBSession.add_all([entry1, entry2, entry3])
         transaction.commit()
 
-        init_region({
-            'backend': 'dogpile.cache.memory',
-        }, 'std')
-        init_region({
-            'backend': 'dogpile.cache.memory',
-        }, 'obj')
+        init_region({"backend": "dogpile.cache.memory"}, "std")
+        init_region({"backend": "dogpile.cache.memory"}, "obj")
 
     def teardown_method(self, _):
         testing.tearDown()
@@ -97,323 +92,255 @@ class TestDynamicView(TestCase):
     @staticmethod
     def _get_settings(settings):
         return {
-            'interfaces': [{'name': 'test', 'default': True}],
-            'available_locale_names': ['fr'],
-            'package': 'package_name',
-            'interfaces_config': settings,
+            "interfaces": [{"name": "test", "default": True}],
+            "available_locale_names": ["fr"],
+            "package": "package_name",
+            "interfaces_config": settings,
         }
 
     @staticmethod
     def _request(query={}):
-        query_ = {'interface': 'test'}
+        query_ = {"interface": "test"}
         query_.update(query)
         request = DummyRequest(query_)
-        request.route_url = lambda url, _query=None: "/dummy/route/url/{}".format(url) if _query is None \
-            else "/dummy/route/url/{}?{}".format(url, '&'.join(['='.join(e) for e in _query.items()]))
+        request.route_url = (
+            lambda url, _query=None: "/dummy/route/url/{}".format(url)
+            if _query is None
+            else "/dummy/route/url/{}?{}".format(url, "&".join(["=".join(e) for e in _query.items()]))
+        )
         request.static_url = lambda url: "/dummy/static/url/" + url
         return request
 
     def test_constant(self):
         from c2cgeoportal_geoportal.views.dynamic import DynamicView
+
         request = self._request()
-        request.registry.settings = self._get_settings({
-            'test': {
-                'constants': {
-                    'XTest': 'TOTO'
-                }
-            }
-        })
+        request.registry.settings = self._get_settings({"test": {"constants": {"XTest": "TOTO"}}})
         dynamic = DynamicView(request).dynamic()
 
-        assert 'XTest' in dynamic['constants'], dynamic
-        assert dynamic['constants']['XTest'] == 'TOTO'
+        assert "XTest" in dynamic["constants"], dynamic
+        assert dynamic["constants"]["XTest"] == "TOTO"
 
     def test_constant_default(self):
         from c2cgeoportal_geoportal.views.dynamic import DynamicView
+
         request = self._request()
-        request.registry.settings = self._get_settings({
-            'default': {
-                'constants': {
-                    'XTest': 'TOTO'
-                }
-            },
-            'test': {}
-        })
+        request.registry.settings = self._get_settings(
+            {"default": {"constants": {"XTest": "TOTO"}}, "test": {}}
+        )
         dynamic = DynamicView(request).dynamic()
 
-        assert 'XTest' in dynamic['constants'], dynamic
-        assert dynamic['constants']['XTest'] == 'TOTO'
+        assert "XTest" in dynamic["constants"], dynamic
+        assert dynamic["constants"]["XTest"] == "TOTO"
 
     def test_constant_json(self):
         from c2cgeoportal_geoportal.views.dynamic import DynamicView
+
         request = self._request()
-        request.registry.settings = self._get_settings({
-            'test': {
-                'constants': {
-                    'XTest': ['TOTO']
-                }
-            }
-        })
+        request.registry.settings = self._get_settings({"test": {"constants": {"XTest": ["TOTO"]}}})
         dynamic = DynamicView(request).dynamic()
 
-        assert 'XTest' in dynamic['constants'], dynamic
-        assert dynamic['constants']['XTest'] == ['TOTO']
+        assert "XTest" in dynamic["constants"], dynamic
+        assert dynamic["constants"]["XTest"] == ["TOTO"]
 
     def test_constant_dynamic_interface(self):
         from c2cgeoportal_geoportal.views.dynamic import DynamicView
+
         request = self._request()
-        request.registry.settings = self._get_settings({
-            'test': {
-                'dynamic_constants': {
-                    'XTest': 'interface'
-                }
-            }
-        })
+        request.registry.settings = self._get_settings(
+            {"test": {"dynamic_constants": {"XTest": "interface"}}}
+        )
         dynamic = DynamicView(request).dynamic()
 
-        assert 'XTest' in dynamic['constants'], dynamic
-        assert dynamic['constants']['XTest'] == 'test'
+        assert "XTest" in dynamic["constants"], dynamic
+        assert dynamic["constants"]["XTest"] == "test"
 
     def test_constant_dynamic_cache_version(self):
         from c2cgeoportal_geoportal.views.dynamic import DynamicView
+
         request = self._request()
-        request.registry.settings = self._get_settings({
-            'test': {
-                'dynamic_constants': {
-                    'XTest': 'cache_version'
-                }
-            }
-        })
+        request.registry.settings = self._get_settings(
+            {"test": {"dynamic_constants": {"XTest": "cache_version"}}}
+        )
         dynamic = DynamicView(request).dynamic()
 
-        assert 'XTest' in dynamic['constants'], dynamic
+        assert "XTest" in dynamic["constants"], dynamic
         from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
-        assert dynamic['constants']['XTest'] == get_cache_version()
+
+        assert dynamic["constants"]["XTest"] == get_cache_version()
 
     def test_constant_dynamic_lang_urls(self):
         from c2cgeoportal_geoportal.views.dynamic import DynamicView
+
         request = self._request()
         request.static_url = lambda url: "/dummy/route/url/" + url
-        request.registry.settings = self._get_settings({
-            'test': {
-                'dynamic_constants': {
-                    'XTest': 'lang_urls'
-                }
-            }
-        })
+        request.registry.settings = self._get_settings(
+            {"test": {"dynamic_constants": {"XTest": "lang_urls"}}}
+        )
         dynamic = DynamicView(request).dynamic()
 
-        assert 'XTest' in dynamic['constants'], dynamic
-        assert dynamic['constants']['XTest'] == {
-            'fr': '/dummy/route/url//etc/geomapfish/static/fr.json'
-        }
+        assert "XTest" in dynamic["constants"], dynamic
+        assert dynamic["constants"]["XTest"] == {"fr": "/dummy/route/url//etc/geomapfish/static/fr.json"}
 
     def test_constant_dynamic_fulltextsearch_groups(self):
         from c2cgeoportal_geoportal.views.dynamic import DynamicView
+
         request = self._request()
         request.static_url = lambda url: "/dummy/route/url/" + url
-        request.registry.settings = self._get_settings({
-            'test': {
-                'dynamic_constants': {
-                    'XTest': 'fulltextsearch_groups'
-                }
-            }
-        })
+        request.registry.settings = self._get_settings(
+            {"test": {"dynamic_constants": {"XTest": "fulltextsearch_groups"}}}
+        )
         dynamic = DynamicView(request).dynamic()
 
-        assert 'XTest' in dynamic['constants'], dynamic
-        assert set(dynamic['constants']['XTest']) == {'layer1', 'layer2'}
+        assert "XTest" in dynamic["constants"], dynamic
+        assert set(dynamic["constants"]["XTest"]) == {"layer1", "layer2"}
 
     def test_static(self):
         from c2cgeoportal_geoportal.views.dynamic import DynamicView
+
         request = self._request()
-        request.registry.settings = self._get_settings({
-            'test': {
-                'static': {
-                    'XTest': {
-                        'name': 'test',
-                        'append': '/{{name}}.yaml'
-                    }
-                }
-            }
-        })
+        request.registry.settings = self._get_settings(
+            {"test": {"static": {"XTest": {"name": "test", "append": "/{{name}}.yaml"}}}}
+        )
         dynamic = DynamicView(request).dynamic()
 
-        assert 'XTest' in dynamic['constants'], dynamic
-        assert dynamic['constants']['XTest'] == '/dummy/static/url/test/{{name}}.yaml'
+        assert "XTest" in dynamic["constants"], dynamic
+        assert dynamic["constants"]["XTest"] == "/dummy/static/url/test/{{name}}.yaml"
 
     def test_route(self):
         from c2cgeoportal_geoportal.views.dynamic import DynamicView
+
         request = self._request()
-        request.registry.settings = self._get_settings({
-            'test': {
-                'routes': {
-                    'XTest': {
-                        'name': 'test',
-                        'params': {
-                            'test': 'value'
-                        }
-                    }
-                }
-            }
-        })
+        request.registry.settings = self._get_settings(
+            {"test": {"routes": {"XTest": {"name": "test", "params": {"test": "value"}}}}}
+        )
         dynamic = DynamicView(request).dynamic()
 
-        assert 'XTest' in dynamic['constants'], dynamic
-        assert dynamic['constants']['XTest'] == '/dummy/route/url/test?test=value'
+        assert "XTest" in dynamic["constants"], dynamic
+        assert dynamic["constants"]["XTest"] == "/dummy/route/url/test?test=value"
 
     def test_route_with_keywords(self):
         from c2cgeoportal_geoportal.views.dynamic import DynamicView
-        with testConfig(settings=self._get_settings({
-            'test': {
-                'routes': {
-                    'XTest': {
-                        'name': 'route_with_keywords',
-                        'kw': {
-                            'key1': 'v1',
-                            'key2': 'v2',
+
+        with testConfig(
+            settings=self._get_settings(
+                {
+                    "test": {
+                        "routes": {
+                            "XTest": {"name": "route_with_keywords", "kw": {"key1": "v1", "key2": "v2"}}
                         }
                     }
                 }
-            }
-        })) as config:
-            config.add_static_view(name='static', path='/etc/geomapfish/static')
-            config.add_route('test', '/test')
-            config.add_route('route_with_keywords', '/test/{key1}/{key2}')
-            request = DummyRequest({
-                'interface': 'test',
-            })
+            )
+        ) as config:
+            config.add_static_view(name="static", path="/etc/geomapfish/static")
+            config.add_route("test", "/test")
+            config.add_route("route_with_keywords", "/test/{key1}/{key2}")
+            request = DummyRequest({"interface": "test"})
             dynamic = DynamicView(request).dynamic()
 
-        assert 'XTest' in dynamic['constants'], dynamic
-        assert dynamic['constants']['XTest'] == 'http://example.com/test/v1/v2'
+        assert "XTest" in dynamic["constants"], dynamic
+        assert dynamic["constants"]["XTest"] == "http://example.com/test/v1/v2"
 
     def test_route_with_segments(self):
         from c2cgeoportal_geoportal.views.dynamic import DynamicView
-        with testConfig(settings=self._get_settings({
-            'test': {
-                'routes': {
-                    'XTest': {
-                        'name': 'route_with_segments',
-                        'elements': ['s1', 's2']
-                    }
-                }
-            }
-        })) as config:
-            config.add_static_view(name='static', path='/etc/geomapfish/static')
-            config.add_route('test', '/test')
-            config.add_route('route_with_segments', '/test')
-            request = DummyRequest({
-                'interface': 'test',
-            })
+
+        with testConfig(
+            settings=self._get_settings(
+                {"test": {"routes": {"XTest": {"name": "route_with_segments", "elements": ["s1", "s2"]}}}}
+            )
+        ) as config:
+            config.add_static_view(name="static", path="/etc/geomapfish/static")
+            config.add_route("test", "/test")
+            config.add_route("route_with_segments", "/test")
+            request = DummyRequest({"interface": "test"})
             dynamic = DynamicView(request).dynamic()
 
-        assert 'XTest' in dynamic['constants'], dynamic
-        assert dynamic['constants']['XTest'] == 'http://example.com/test/s1/s2'
+        assert "XTest" in dynamic["constants"], dynamic
+        assert dynamic["constants"]["XTest"] == "http://example.com/test/s1/s2"
 
     def test_route_with_all(self):
         from c2cgeoportal_geoportal.views.dynamic import DynamicView
-        with testConfig(settings=self._get_settings({
-            'test': {
-                'routes': {
-                    'XTest': {
-                        'name': 'route_with_all',
-                        'kw': {
-                            'key1': 'v1',
-                            'key2': 'v2',
-                        },
-                        'elements': ['s1', 's2'],
-                        'params': {
-                            'test': 'value'
+
+        with testConfig(
+            settings=self._get_settings(
+                {
+                    "test": {
+                        "routes": {
+                            "XTest": {
+                                "name": "route_with_all",
+                                "kw": {"key1": "v1", "key2": "v2"},
+                                "elements": ["s1", "s2"],
+                                "params": {"test": "value"},
+                            }
                         }
                     }
                 }
-            }
-        })) as config:
-            config.add_static_view(name='static', path='/etc/geomapfish/static')
-            config.add_route('test', '/test')
-            config.add_route('route_with_all', '/test/{key1}/{key2}')
-            request = DummyRequest({
-                'interface': 'test',
-            })
+            )
+        ) as config:
+            config.add_static_view(name="static", path="/etc/geomapfish/static")
+            config.add_route("test", "/test")
+            config.add_route("route_with_all", "/test/{key1}/{key2}")
+            request = DummyRequest({"interface": "test"})
             dynamic = DynamicView(request).dynamic()
 
-        assert 'XTest' in dynamic['constants'], dynamic
-        assert dynamic['constants']['XTest'] == 'http://example.com/test/v1/v2/s1/s2?test=value'
+        assert "XTest" in dynamic["constants"], dynamic
+        assert dynamic["constants"]["XTest"] == "http://example.com/test/v1/v2/s1/s2?test=value"
 
     def test_route_dynamic(self):
         from c2cgeoportal_geoportal.views.dynamic import DynamicView
+
         request = self._request()
-        request.registry.settings = self._get_settings({
-            'test': {
-                'routes': {
-                    'XTest': {
-                        'name': 'test',
-                        'dynamic_params': {
-                            'test': 'interface'
-                        }
-                    }
-                }
-            }
-        })
+        request.registry.settings = self._get_settings(
+            {"test": {"routes": {"XTest": {"name": "test", "dynamic_params": {"test": "interface"}}}}}
+        )
         dynamic = DynamicView(request).dynamic()
 
-        assert 'XTest' in dynamic['constants'], dynamic
-        assert dynamic['constants']['XTest'] == '/dummy/route/url/test?test=test'
+        assert "XTest" in dynamic["constants"], dynamic
+        assert dynamic["constants"]["XTest"] == "/dummy/route/url/test?test=test"
 
     def test_redirect(self):
         from c2cgeoportal_geoportal.views.dynamic import DynamicView
+
         request = self._request()
-        request.registry.settings = self._get_settings({
-            'test': {
-                'redirect_interface': 'test_redirect'
-            }
-        })
+        request.registry.settings = self._get_settings({"test": {"redirect_interface": "test_redirect"}})
         dynamic = DynamicView(request).dynamic()
 
         assert dynamic == {
-            'constants': {
-                'currentInterfaceUrl': '/dummy/route/url/test?',
-                'redirectUrl': '/dummy/route/url/test_redirect?no_redirect=t',
+            "constants": {
+                "currentInterfaceUrl": "/dummy/route/url/test?",
+                "redirectUrl": "/dummy/route/url/test_redirect?no_redirect=t",
             },
-            'doRedirect': False,
-            'redirectUrl': '/dummy/route/url/test_redirect?',
+            "doRedirect": False,
+            "redirectUrl": "/dummy/route/url/test_redirect?",
         }
 
     def test_doredirect(self):
         from c2cgeoportal_geoportal.views.dynamic import DynamicView
+
         request = self._request()
-        request.registry.settings = self._get_settings({
-            'test': {
-                'redirect_interface': 'test_redirect',
-                'do_redirect': True
-            }
-        })
+        request.registry.settings = self._get_settings(
+            {"test": {"redirect_interface": "test_redirect", "do_redirect": True}}
+        )
         dynamic = DynamicView(request).dynamic()
 
         assert dynamic == {
-            'constants': {
-                'currentInterfaceUrl': '/dummy/route/url/test?',
-            },
-            'doRedirect': True,
-            'redirectUrl': '/dummy/route/url/test_redirect?',
+            "constants": {"currentInterfaceUrl": "/dummy/route/url/test?"},
+            "doRedirect": True,
+            "redirectUrl": "/dummy/route/url/test_redirect?",
         }
 
     def test_noredirect(self):
         from c2cgeoportal_geoportal.views.dynamic import DynamicView
-        request = self._request({'no_redirect': 't'})
-        request.registry.settings = self._get_settings({
-            'test': {
-                'redirect_interface': 'test_redirect',
-                'do_redirect': True
-            }
-        })
+
+        request = self._request({"no_redirect": "t"})
+        request.registry.settings = self._get_settings(
+            {"test": {"redirect_interface": "test_redirect", "do_redirect": True}}
+        )
         dynamic = DynamicView(request).dynamic()
 
         assert dynamic == {
-            'constants': {
-                'currentInterfaceUrl': '/dummy/route/url/test?',
-            },
-            'doRedirect': True,
-            'redirectUrl': '/dummy/route/url/test_redirect?',
+            "constants": {"currentInterfaceUrl": "/dummy/route/url/test?"},
+            "doRedirect": True,
+            "redirectUrl": "/dummy/route/url/test_redirect?",
         }

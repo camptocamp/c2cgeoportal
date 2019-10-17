@@ -38,18 +38,17 @@ from alembic import op
 from c2c.template.config import config
 
 # revision identifiers, used by Alembic.
-revision = '6d87fdad275a'
-down_revision = '9268a1dffac0'
+revision = "6d87fdad275a"
+down_revision = "9268a1dffac0"
 branch_labels = None
 depends_on = None
 
 
 def upgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
     op.execute(
-        "UPDATE ONLY {schema}.metadata SET name = 'copyTo' where name = 'copy_to'"
-        .format(schema=schema)
+        "UPDATE ONLY {schema}.metadata SET name = 'copyTo' where name = 'copy_to'".format(schema=schema)
     )
     # fmt: off
     op.execute(
@@ -60,11 +59,10 @@ def upgrade():
 
 
 def downgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
     op.execute(
-        "UPDATE ONLY {schema}.metadata SET name = 'copy_to' where name = 'copyTo'"
-        .format(schema=schema)
+        "UPDATE ONLY {schema}.metadata SET name = 'copy_to' where name = 'copyTo'".format(schema=schema)
     )
     # fmt: off
     op.execute(

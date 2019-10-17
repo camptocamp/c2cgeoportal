@@ -39,15 +39,17 @@ from pyramid import testing
 from tests.functional import (  # noqa
     teardown_common as teardown_module,
     setup_common as setup_module,
-    mapserv_url, create_dummy_request, create_default_ogcserver,
+    mapserv_url,
+    create_dummy_request,
+    create_default_ogcserver,
 )
 
 import logging
+
 log = logging.getLogger(__name__)
 
 
 class TestLayerMultiNameErrorView(TestCase):
-
     def setup_method(self, _):
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
@@ -83,9 +85,7 @@ class TestLayerMultiNameErrorView(TestCase):
 
         theme = Theme(name="__test_theme")
         theme.interfaces = [main]
-        theme.children = [
-            layer_group_1, layer_group_2
-        ]
+        theme.children = [layer_group_1, layer_group_2]
 
         DBSession.add(theme)
         transaction.commit()
@@ -99,9 +99,7 @@ class TestLayerMultiNameErrorView(TestCase):
         for item in DBSession.query(TreeItem).all():
             DBSession.delete(item)
         DBSession.query(OGCServer).delete()
-        DBSession.query(Interface).filter(
-            Interface.name == "main"
-        ).delete()
+        DBSession.query(Interface).filter(Interface.name == "main").delete()
 
         transaction.commit()
 

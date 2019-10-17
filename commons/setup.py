@@ -32,51 +32,39 @@ import os
 from setuptools import setup, find_packages
 
 HERE = os.path.abspath(os.path.dirname(__file__))
-VERSION = os.environ.get('VERSION', 'dev')
+VERSION = os.environ.get("VERSION", "dev")
 
-with open(os.path.join(HERE, 'README.md')) as f:
+with open(os.path.join(HERE, "README.md")) as f:
     README = f.read()
-with open(os.path.join(HERE, 'requirements.txt')) as f:
+with open(os.path.join(HERE, "requirements.txt")) as f:
     install_requires = f.read().splitlines()
 
 setup(
-    name='c2cgeoportal_commons',
+    name="c2cgeoportal_commons",
     version=VERSION,
-    description='c2cgeoportal commons',
+    description="c2cgeoportal commons",
     long_description=README,
-    long_description_content_type='text/markdown',
+    long_description_content_type="text/markdown",
     classifiers=[
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-        'Framework :: Pyramid',
-        'Topic :: Internet :: WWW/HTTP',
-        'Topic :: Internet :: WWW/HTTP :: WSGI :: Application',
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
+        "Framework :: Pyramid",
+        "Topic :: Internet :: WWW/HTTP",
+        "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
     ],
-    author='Camptocamp',
-    author_email='info@camptocamp.com',
-    url='https://www.camptocamp.com/solutions/geospatial/',
-    packages=find_packages(exclude=['tests.*']),
-    package_data={'c2cgeoportal_commons': ['py.typed']},
+    author="Camptocamp",
+    author_email="info@camptocamp.com",
+    url="https://www.camptocamp.com/solutions/geospatial/",
+    packages=find_packages(exclude=["tests.*"]),
+    package_data={"c2cgeoportal_commons": ["py.typed"]},
     include_package_data=True,
     zip_safe=False,
     install_requires=install_requires,
     extras_require={
-        'tests': [
-            'c2c.template',
-            'psycopg2-binary',
-            'pytest',
-            'pytest-cov',
-            'flake8',
-            'PyYAML',
-        ],
-        'testing': [
-            'transaction',
-        ],
-        'upgrade': [
-            'alembic',
-            'psycopg2-binary',
-        ],
+        "tests": ["c2c.template", "psycopg2-binary", "pytest", "pytest-cov", "flake8", "PyYAML"],
+        "testing": ["transaction"],
+        "upgrade": ["alembic", "psycopg2-binary"],
     },
 )

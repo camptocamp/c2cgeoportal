@@ -58,18 +58,16 @@ class BaseTemplate(Template):  # pragma: no cover
         """
 
         self._get_vars(vars_, "package", "Get a package name: ")
-        self._get_vars(
-            vars_, "srid",
-            "Spatial Reference System Identifier (e.g. 2056): ", int,
-        )
+        self._get_vars(vars_, "srid", "Spatial Reference System Identifier (e.g. 2056): ", int)
         srid = vars_["srid"]
         extent = self._epsg2bbox(srid)
         self._get_vars(
-            vars_, "extent",
+            vars_,
+            "extent",
             "Extent (minx miny maxx maxy): in EPSG: {srid} projection, default is "
             "[{bbox[0]} {bbox[1]} {bbox[2]} {bbox[3]}]: ".format(srid=srid, bbox=extent)
-            if extent else
-            "Extent (minx miny maxx maxy): in EPSG: {srid} projection: ".format(srid=srid)
+            if extent
+            else "Extent (minx miny maxx maxy): in EPSG: {srid} projection: ".format(srid=srid),
         )
         match = re.match(r"([\d.]+)[,; ] *([\d.]+)[,; ] *([\d.]+)[,; ] *([\d.]+)", vars_["extent"])
         if match is not None:
@@ -83,7 +81,8 @@ class BaseTemplate(Template):  # pragma: no cover
             raise ValueError(
                 "Sorry, you may not name your package 'site'. "
                 "The package name 'site' has a special meaning in "
-                "Python.  Please name it anything except 'site'.")
+                "Python.  Please name it anything except 'site'."
+            )
 
         package_logger = vars_["package"]
         if package_logger == "root":
@@ -91,9 +90,9 @@ class BaseTemplate(Template):  # pragma: no cover
             # is named "root"
             package_logger = "app"
         vars_["package_logger"] = package_logger
-        geomapfish_version = pkg_resources.get_distribution('c2cgeoportal_commons').version
+        geomapfish_version = pkg_resources.get_distribution("c2cgeoportal_commons").version
         vars_["geomapfish_version"] = geomapfish_version
-        vars_["geomapfish_main_version"] = '.'.join(geomapfish_version.split('.')[:2])
+        vars_["geomapfish_main_version"] = ".".join(geomapfish_version.split(".")[:2])
 
         return ret
 
@@ -130,13 +129,15 @@ class BaseTemplate(Template):  # pragma: no cover
             r = requests.get("https://epsg.io/?format=json&q={}".format(srid))
             bbox = r.json()["results"][0]["bbox"]
             r = requests.get(
-                "https://epsg.io/trans?s_srs=4326&t_srs={srid}&data={bbox[1]},{bbox[0]}"
-                        .format(srid=srid, bbox=bbox)
+                "https://epsg.io/trans?s_srs=4326&t_srs={srid}&data={bbox[1]},{bbox[0]}".format(
+                    srid=srid, bbox=bbox
+                )
             )
             r1 = r.json()[0]
             r = requests.get(
-                "https://epsg.io/trans?s_srs=4326&t_srs={srid}&data={bbox[3]},{bbox[2]}"
-                        .format(srid=srid, bbox=bbox)
+                "https://epsg.io/trans?s_srs=4326&t_srs={srid}&data={bbox[3]},{bbox[2]}".format(
+                    srid=srid, bbox=bbox
+                )
             )
             r2 = r.json()[0]
             return [r1["x"], r2["y"], r2["x"], r1["y"]]
@@ -147,12 +148,12 @@ class BaseTemplate(Template):  # pragma: no cover
         except IndexError:
             print("Unable to get the bbox")
         except Exception as exception:
-            print('unexpected error: {}'.format(str(exception)))
+            print("unexpected error: {}".format(str(exception)))
         return None
 
 
 def fix_executables(output_dir, patterns, in_const_create_template=False):
-    if os.name == 'posix':
+    if os.name == "posix":
         for pattern in patterns:
             if in_const_create_template:
                 pattern = os.path.join(output_dir, "CONST_create_template", pattern)

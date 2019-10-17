@@ -55,13 +55,11 @@ def memory(request):
 def _memory(with_others: bool, with_all: bool, with_repr: bool) -> Dict[str, Any]:
     raster_data = raster.Raster.data
     result = {
-        "raster_data": {
-            id: _get_size(raster_data[id]) / 1024 / 1024 for id in raster_data
-        },
+        "raster_data": {id: _get_size(raster_data[id]) / 1024 / 1024 for id in raster_data}
     }  # type: Dict[str, Any]
 
     if with_others:
-        result['others'] = _get_used_memory(with_all, with_repr)
+        result["others"] = _get_used_memory(with_all, with_repr)
 
     return result
 
@@ -84,18 +82,18 @@ def _get_size(obj: Any) -> int:
 
 def _order_by_size(elements: Dict[str, Any]) -> List[Dict[str, Any]]:
     for name, elem in elements.items():
-        if 'children' in elem:
-            elem['children'] = _order_by_size(elem['children'])
+        if "children" in elem:
+            elem["children"] = _order_by_size(elem["children"])
 
-    return sorted(elements.values(), key=lambda elem: elem['size'])
+    return sorted(elements.values(), key=lambda elem: elem["size"])
 
 
 def _get_used_memory(with_all: bool, with_repr: bool) -> List[Dict[str, Any]]:
-    all_objects = [(
-        ".".join((type(o).__module__, type(o).__name__)),
-        o,
-        _get_size(o)
-    ) for o in muppy.get_objects() if _filter(type(o).__module__, with_all)]
+    all_objects = [
+        (".".join((type(o).__module__, type(o).__name__)), o, _get_size(o))
+        for o in muppy.get_objects()
+        if _filter(type(o).__module__, with_all)
+    ]
     result = {}  # type: Dict[str, Any]
     for name, obj, size in all_objects:
         path = name.split(".")
@@ -106,11 +104,7 @@ def _get_used_memory(with_all: bool, with_repr: bool) -> List[Dict[str, Any]]:
 
 def _fill_path(base: Dict[str, Any], path: List[str], object_: Any, size: int, with_repr: bool):
     if len(path) == 1:
-        base.setdefault(path[0], {
-            "name": path[0],
-            "size": 0,
-            "numbers": 0,
-        })
+        base.setdefault(path[0], {"name": path[0], "size": 0, "numbers": 0})
         obj = base[path[0]]
         obj["size"] += size
         obj["numbers"] += 1
@@ -118,12 +112,7 @@ def _fill_path(base: Dict[str, Any], path: List[str], object_: Any, size: int, w
             obj.setdefault("objects", [])
             obj["objects"].append((repr(object_), size))
     else:
-        base.setdefault(path[0], {
-            "name": path[0],
-            "size": 0,
-            "numbers": 0,
-            "children": {},
-        })
+        base.setdefault(path[0], {"name": path[0], "size": 0, "numbers": 0, "children": {}})
         obj = base[path[0]]
         obj["size"] += size
         obj["numbers"] += 1

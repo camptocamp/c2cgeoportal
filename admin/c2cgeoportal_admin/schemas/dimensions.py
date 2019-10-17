@@ -6,12 +6,8 @@ from c2cgeoportal_admin import _
 
 
 dimensions_schema_node = colander.SequenceSchema(
-    GeoFormSchemaNode(
-        Dimension,
-        name='dimension',
-        widget=MappingWidget(template='dimension'),
-    ),
-    name='dimensions',
-    title=_('Dimensions'),
-    widget=SequenceWidget(category='structural', template='dimensions')
+    GeoFormSchemaNode(Dimension, name="dimension", widget=MappingWidget(template="dimension")),
+    name="dimensions",
+    title=_("Dimensions"),
+    widget=SequenceWidget(category="structural", template="dimensions"),
 )

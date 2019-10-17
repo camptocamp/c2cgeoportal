@@ -39,24 +39,35 @@ from pyramid import testing
 from tests.functional import (  # noqa
     teardown_common as teardown_module,
     setup_common as setup_module,
-    mapserv_url, create_dummy_request, create_default_ogcserver,
+    mapserv_url,
+    create_dummy_request,
+    create_default_ogcserver,
 )
 
 import logging
+
 log = logging.getLogger(__name__)
 
 
 class TestThemesView(TestCase):
-
     def setup_method(self, _):
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
 
         from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import \
-            Theme, LayerGroup, Functionality, Interface, OGCServer, LayerWMS, LayerWMTS, \
-            Metadata, Dimension, OGCSERVER_AUTH_NOAUTH
+        from c2cgeoportal_commons.models.main import (
+            Theme,
+            LayerGroup,
+            Functionality,
+            Interface,
+            OGCServer,
+            LayerWMS,
+            LayerWMTS,
+            Metadata,
+            Dimension,
+            OGCSERVER_AUTH_NOAUTH,
+        )
 
         main = Interface(name="desktop")
         mobile = Interface(name="mobile")
@@ -64,8 +75,10 @@ class TestThemesView(TestCase):
 
         ogc_server_internal = create_default_ogcserver()
         ogc_server_external = OGCServer(
-            name="__test_ogc_server_chtopo", url="http://wms.geo.admin.ch/",
-            image_type="image/jpeg", auth=OGCSERVER_AUTH_NOAUTH
+            name="__test_ogc_server_chtopo",
+            url="http://wms.geo.admin.ch/",
+            image_type="image/jpeg",
+            auth=OGCSERVER_AUTH_NOAUTH,
         )
         ogc_server_external.wfs_support = False
 
@@ -75,7 +88,9 @@ class TestThemesView(TestCase):
         layer_internal_wms.metadatas = [Metadata("test", "internal_wms")]
         layer_internal_wms.ogc_server = ogc_server_internal
 
-        layer_external_wms = LayerWMS(name="__test_layer_external_wms", layer="ch.swisstopo.dreiecksvermaschung", public=True)
+        layer_external_wms = LayerWMS(
+            name="__test_layer_external_wms", layer="ch.swisstopo.dreiecksvermaschung", public=True
+        )
         layer_external_wms.interfaces = [main]
         layer_external_wms.metadatas = [Metadata("test", "external_wms")]
         layer_external_wms.ogc_server = ogc_server_external
@@ -103,14 +118,10 @@ class TestThemesView(TestCase):
         theme = Theme(name="__test_theme")
         theme.interfaces = [main, mobile]
         theme.metadatas = [Metadata("test", "theme")]
-        theme.children = [
-            layer_group_1, layer_group_2
-        ]
+        theme.children = [layer_group_1, layer_group_2]
         theme_layer = Theme(name="__test_theme_layer")
         theme_layer.interfaces = [min_levels]
-        theme_layer.children = [
-            layer_internal_wms
-        ]
+        theme_layer.children = [layer_internal_wms]
 
         functionality1 = Functionality(name="test_name", value="test_value_1")
         functionality2 = Functionality(name="test_name", value="test_value_2")
@@ -124,16 +135,13 @@ class TestThemesView(TestCase):
         testing.tearDown()
 
         from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import OGCServer, TreeItem, \
-            Interface, Metadata, Dimension
+        from c2cgeoportal_commons.models.main import OGCServer, TreeItem, Interface, Metadata, Dimension
 
         DBSession.query(Metadata).delete()
         DBSession.query(Dimension).delete()
         for item in DBSession.query(TreeItem).all():
             DBSession.delete(item)
-        DBSession.query(Interface).filter(
-            Interface.name == "main"
-        ).delete()
+        DBSession.query(Interface).filter(Interface.name == "main").delete()
         DBSession.query(OGCServer).delete()
 
         transaction.commit()
@@ -165,9 +173,7 @@ class TestThemesView(TestCase):
     def _create_entry_obj(self, **kwargs):
         from c2cgeoportal_geoportal.views.entry import Entry
 
-        kwargs["additional_settings"] = {
-            "admin_interface": {"available_metadata": [{"name": "test"}]}
-        }
+        kwargs["additional_settings"] = {"admin_interface": {"available_metadata": [{"name": "test"}]}}
         return Entry(self._create_request_obj(**kwargs))
 
     def _only_name(self, item, attribute="name"):
@@ -177,9 +183,7 @@ class TestThemesView(TestCase):
             result[attribute] = item[attribute]
 
         if "children" in item:
-            result["children"] = [
-                self._only_name(i, attribute) for i in item["children"]
-            ]
+            result["children"] = [self._only_name(i, attribute) for i in item["children"]]
 
         return result
 
@@ -187,15 +191,14 @@ class TestThemesView(TestCase):
     def _get_filtered_errors(themes):
         print(themes["errors"])
         return {
-            e for e in themes["errors"]
+            e
+            for e in themes["errors"]
             if e != "The layer '' (__test_layer_external_wms) is not defined in WMS capabilities"
             and not e.startswith("Unable to get DescribeFeatureType from URL ")
         }
 
     def test_group(self):
-        entry = self._create_entry_obj(params={
-            "group": "__test_layer_group_3",
-        })
+        entry = self._create_entry_obj(params={"group": "__test_layer_group_3"})
         themes = entry.themes()
         self.assertEqual(self._get_filtered_errors(themes), set())
         self.assertEqual(
@@ -203,49 +206,44 @@ class TestThemesView(TestCase):
             {
                 "name": "__test_layer_group_3",
                 # order is important
-                "children": [{
-                    "name": "__test_layer_wmts"
-                }, {
-                    "name": "__test_layer_internal_wms"
-                }, {
-                    "name": "__test_layer_external_wms"
-                }]
-            }
+                "children": [
+                    {"name": "__test_layer_wmts"},
+                    {"name": "__test_layer_internal_wms"},
+                    {"name": "__test_layer_external_wms"},
+                ],
+            },
         )
 
-        entry = self._create_entry_obj(params={
-            "group": "__test_layer_group_4",
-        })
+        entry = self._create_entry_obj(params={"group": "__test_layer_group_4"})
         themes = entry.themes()
         self.assertEqual(self._get_filtered_errors(themes), set())
         self.assertEqual(
             self._only_name(themes["group"]),
             {
                 "name": "__test_layer_group_4",
-                "children": [{
-                    "name": "__test_layer_group_2",
-                    # order is important
-                    "children": [{
-                        "name": "__test_layer_wmts"
-                    }, {
-                        "name": "__test_layer_internal_wms"
-                    }, {
-                        "name": "__test_layer_external_wms"
-                    }]
-                }]
-            }
+                "children": [
+                    {
+                        "name": "__test_layer_group_2",
+                        # order is important
+                        "children": [
+                            {"name": "__test_layer_wmts"},
+                            {"name": "__test_layer_internal_wms"},
+                            {"name": "__test_layer_external_wms"},
+                        ],
+                    }
+                ],
+            },
         )
 
     def test_group_update(self):
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import LayerGroup
+
         layer_group_3 = DBSession.query(LayerGroup).filter(LayerGroup.name == "__test_layer_group_3").one()
         layer_group_3.children = layer_group_3.children[:-1]
         transaction.commit()
 
-        entry = self._create_entry_obj(params={
-            "group": "__test_layer_group_3",
-        })
+        entry = self._create_entry_obj(params={"group": "__test_layer_group_3"})
         themes = entry.themes()
         self.assertEqual(self._get_filtered_errors(themes), set())
         self.assertEqual(
@@ -253,75 +251,62 @@ class TestThemesView(TestCase):
             {
                 "name": "__test_layer_group_3",
                 # order is important
-                "children": [{
-                    "name": "__test_layer_wmts"
-                }, {
-                    "name": "__test_layer_internal_wms"
-                }]
-            }
+                "children": [{"name": "__test_layer_wmts"}, {"name": "__test_layer_internal_wms"}],
+            },
         )
 
     def test_min_levels(self):
-        entry = self._create_entry_obj(params={
-            "interface": "min_levels",
-        })
+        entry = self._create_entry_obj(params={"interface": "min_levels"})
         themes = entry.themes()
-        self.assertEqual(self._get_filtered_errors(themes), set([
-            "The Layer '__test_layer_internal_wms' cannot be directly in the theme '__test_theme_layer' (0/1)."
-        ]))
+        self.assertEqual(
+            self._get_filtered_errors(themes),
+            set(
+                [
+                    "The Layer '__test_layer_internal_wms' cannot be directly in the theme '__test_theme_layer' (0/1)."
+                ]
+            ),
+        )
 
-        entry = self._create_entry_obj(params={
-            "min_levels": "2",
-        })
+        entry = self._create_entry_obj(params={"min_levels": "2"})
         themes = entry.themes()
-        self.assertEqual(self._get_filtered_errors(themes), set([
-            "The Layer '__test_theme/__test_layer_group_1/__test_layer_internal_wms' is under indented (1/2).",
-            "The Layer '__test_theme/__test_layer_group_1/__test_layer_wmts' is under indented (1/2).",
-            "The Layer '__test_theme/__test_layer_group_2/__test_layer_external_wms' is under indented (1/2).",
-            "The Layer '__test_theme/__test_layer_group_2/__test_layer_internal_wms' is under indented (1/2).",
-            "The Layer '__test_theme/__test_layer_group_1/__test_layer_external_wms' is under indented (1/2).",
-            "The Layer '__test_theme/__test_layer_group_2/__test_layer_wmts' is under indented (1/2).",
-        ]))
+        self.assertEqual(
+            self._get_filtered_errors(themes),
+            set(
+                [
+                    "The Layer '__test_theme/__test_layer_group_1/__test_layer_internal_wms' is under indented (1/2).",
+                    "The Layer '__test_theme/__test_layer_group_1/__test_layer_wmts' is under indented (1/2).",
+                    "The Layer '__test_theme/__test_layer_group_2/__test_layer_external_wms' is under indented (1/2).",
+                    "The Layer '__test_theme/__test_layer_group_2/__test_layer_internal_wms' is under indented (1/2).",
+                    "The Layer '__test_theme/__test_layer_group_1/__test_layer_external_wms' is under indented (1/2).",
+                    "The Layer '__test_theme/__test_layer_group_2/__test_layer_wmts' is under indented (1/2).",
+                ]
+            ),
+        )
 
     def test_theme_layer(self):
-        entry = self._create_entry_obj(params={
-            "interface": "min_levels",
-            "min_levels": "0",
-        })
+        entry = self._create_entry_obj(params={"interface": "min_levels", "min_levels": "0"})
         themes = entry.themes()
         self.assertEqual(self._get_filtered_errors(themes), set())
         self.assertEqual(
             [self._only_name(t) for t in themes["themes"]],
-            [{
-                "name": "__test_theme_layer",
-                "children": [{
-                    "name": "__test_layer_internal_wms",
-                }]
-            }]
+            [{"name": "__test_theme_layer", "children": [{"name": "__test_layer_internal_wms"}]}],
         )
 
     def test_interface(self):
-        entry = self._create_entry_obj(params={
-            "interface": "mobile",
-        })
+        entry = self._create_entry_obj(params={"interface": "mobile"})
         themes = entry.themes()
         self.assertEqual(self._get_filtered_errors(themes), set())
         self.assertEqual(
             [self._only_name(t) for t in themes["themes"]],
-            [{
-                "name": "__test_theme",
-                "children": [{
-                    "name": "__test_layer_group_1",
-                    "children": [{
-                        "name": "__test_layer_wmts"
-                    }]
-                }, {
-                    "name": "__test_layer_group_2",
-                    "children": [{
-                        "name": "__test_layer_wmts"
-                    }]
-                }]
-            }]
+            [
+                {
+                    "name": "__test_theme",
+                    "children": [
+                        {"name": "__test_layer_group_1", "children": [{"name": "__test_layer_wmts"}]},
+                        {"name": "__test_layer_group_2", "children": [{"name": "__test_layer_wmts"}]},
+                    ],
+                }
+            ],
         )
 
     def test_metadata(self):
@@ -330,46 +315,31 @@ class TestThemesView(TestCase):
         self.assertEqual(self._get_filtered_errors(themes), set())
         self.assertEqual(
             [self._only_name(t, "metadata") for t in themes["themes"]],
-            [{
-                "metadata": {
-                    "test": "theme",
-                },
-                "children": [{
-                    "metadata": {
-                        "test": "group_1",
-                    },
-                    # order is important
-                    "children": [{
-                        "metadata": {
-                            "test": "internal_wms",
-                        }
-                    }, {
-                        "metadata": {
-                            "test": "external_wms",
-                        }
-                    }, {
-                        "metadata": {
-                            "test": "wmts",
-                        }
-                    }]
-                }, {
-                    "metadata": {},
-                    # order is important
-                    "children": [{
-                        "metadata": {
-                            "test": "wmts",
-                        }
-                    }, {
-                        "metadata": {
-                            "test": "internal_wms",
-                        }
-                    }, {
-                        "metadata": {
-                            "test": "external_wms",
-                        }
-                    }]
-                }]
-            }]
+            [
+                {
+                    "metadata": {"test": "theme"},
+                    "children": [
+                        {
+                            "metadata": {"test": "group_1"},
+                            # order is important
+                            "children": [
+                                {"metadata": {"test": "internal_wms"}},
+                                {"metadata": {"test": "external_wms"}},
+                                {"metadata": {"test": "wmts"}},
+                            ],
+                        },
+                        {
+                            "metadata": {},
+                            # order is important
+                            "children": [
+                                {"metadata": {"test": "wmts"}},
+                                {"metadata": {"test": "internal_wms"}},
+                                {"metadata": {"test": "external_wms"}},
+                            ],
+                        },
+                    ],
+                }
+            ],
         )
 
     def test_ogc_server(self):
@@ -380,13 +350,14 @@ class TestThemesView(TestCase):
         themes["ogcServers"]["__test_ogc_server_chtopo"]["attributes"] = {}
         self.assertEqual(self._get_filtered_errors(themes), set())
         self.assertEqual(
-            themes["ogcServers"], {
+            themes["ogcServers"],
+            {
                 "__test_ogc_server": {
                     "attributes": {},
                     "credential": True,
                     "imageType": "image/png",
                     "isSingleTile": False,
-                    "namespace": 'http://mapserver.gis.umn.edu/mapserver',
+                    "namespace": "http://mapserver.gis.umn.edu/mapserver",
                     "type": "mapserver",
                     "url": "http://localhost/ci/mapserv?ogcserver=__test_ogc_server",
                     "urlWfs": "http://localhost/ci/mapserv?ogcserver=__test_ogc_server",
@@ -402,67 +373,57 @@ class TestThemesView(TestCase):
                     "url": "http://wms.geo.admin.ch/",
                     "urlWfs": "http://wms.geo.admin.ch/",
                     "wfsSupport": False,
-                }
+                },
             },
         )
         self.assertEqual(
             [self._only_name(t, "ogcServer") for t in themes["themes"]],
-            [{
-                "children": [{
-                    # order is important
-                    "children": [{
-                        "ogcServer": "__test_ogc_server",
-                    }, {
-                        "ogcServer": "__test_ogc_server_chtopo",
-                    }, {
-                    }]
-                }, {
-                    # order is important
-                    "children": [{
-                    }, {
-                        "ogcServer": "__test_ogc_server",
-                    }, {
-                        "ogcServer": "__test_ogc_server_chtopo",
-                    }]
-                }]
-            }]
+            [
+                {
+                    "children": [
+                        {
+                            # order is important
+                            "children": [
+                                {"ogcServer": "__test_ogc_server"},
+                                {"ogcServer": "__test_ogc_server_chtopo"},
+                                {},
+                            ]
+                        },
+                        {
+                            # order is important
+                            "children": [
+                                {},
+                                {"ogcServer": "__test_ogc_server"},
+                                {"ogcServer": "__test_ogc_server_chtopo"},
+                            ]
+                        },
+                    ]
+                }
+            ],
         )
 
     def test_dimensions(self):
-        entry = self._create_entry_obj(params={
-            "group": "__test_layer_group_3",
-        })
+        entry = self._create_entry_obj(params={"group": "__test_layer_group_3"})
         themes = entry.themes()
         self.assertEqual(self._get_filtered_errors(themes), set())
         self.assertEqual(
             self._only_name(themes["group"], "dimensions"),
             {
                 # order is important
-                "children": [{
-                    "dimensions": {"year": "2015"}
-                }, {
-                    "dimensions": {}
-                }, {
-                    "dimensions": {}
-                }]
-            }
+                "children": [{"dimensions": {"year": "2015"}}, {"dimensions": {}}, {"dimensions": {}}]
+            },
         )
 
     def test_background(self):
-        entry = self._create_entry_obj(params={
-            "background": "__test_layer_group_3",
-            "set": "background",
-        })
+        entry = self._create_entry_obj(params={"background": "__test_layer_group_3", "set": "background"})
         themes = entry.themes()
         self.assertEqual(self._get_filtered_errors(themes), set())
         self.assertEqual(
             [self._only_name(e) for e in themes["background_layers"]],
             # order is important
-            [{
-                "name": "__test_layer_wmts"
-            }, {
-                "name": "__test_layer_internal_wms"
-            }, {
-                "name": "__test_layer_external_wms"
-            }]
+            [
+                {"name": "__test_layer_wmts"},
+                {"name": "__test_layer_internal_wms"},
+                {"name": "__test_layer_external_wms"},
+            ],
         )

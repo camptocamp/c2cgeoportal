@@ -38,11 +38,7 @@ from Crypto.Cipher import AES  # nosec
 
 
 def create_token(aeskey, user, password, valid):
-    auth = {
-        "u": user,
-        "p": password,
-        "t": int(time.time()) + valid * 3600 * 24,
-    }
+    auth = {"u": user, "p": password, "t": int(time.time()) + valid * 3600 * 24}
 
     if aeskey is None:
         print("urllogin is not configured")
@@ -60,14 +56,14 @@ def main():
     parser = argparse.ArgumentParser(description="Generate an auth token")
     parser.add_argument("user", help="The username")
     parser.add_argument("password", help="The password")
-    parser.add_argument("valid", type=int, default=1, nargs='?', help="Is valid for, in days")
+    parser.add_argument("valid", type=int, default=1, nargs="?", help="Is valid for, in days")
 
     args = parser.parse_args()
     if os.path.exists("geoportal/config.yaml"):
         config = c2c.template.get_config("geoportal/config.yaml")
     else:
         config = c2c.template.get_config("config.yaml")
-    urllogin = config.get('urllogin', {})
+    urllogin = config.get("urllogin", {})
     aeskey = urllogin.get("aes_key")
     auth_enc = create_token(aeskey, args.user, args.password, args.valid)
 

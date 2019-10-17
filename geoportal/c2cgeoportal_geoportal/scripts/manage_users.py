@@ -54,29 +54,15 @@ User can be created if it does not exist yet."""
 
     parser = argparse.ArgumentParser(description=usage)
     fill_arguments(parser)
+    parser.add_argument("--password", "-p", help="Set password (if not set, username is used as password")
     parser.add_argument(
-        "--password", "-p",
-        help="Set password (if not set, username is used as password"
+        "--create", "-c", action="store_true", default=False, help="Create user if it does not already exist"
     )
     parser.add_argument(
-        "--create", "-c",
-        action="store_true", default=False,
-        help="Create user if it does not already exist"
+        "--rolename", "-r", default="role_admin", help="The role name which must exist in the database"
     )
-    parser.add_argument(
-        "--rolename", "-r",
-        default="role_admin",
-        help="The role name which must exist in the database"
-    )
-    parser.add_argument(
-        "--email", "-e",
-        default=None,
-        help="The user email"
-    )
-    parser.add_argument(
-        'user',
-        help="The user"
-    )
+    parser.add_argument("--email", "-e", default=None, help="The user email")
+    parser.add_argument("user", help="The user")
     options = parser.parse_args()
     username = options.user
     settings = get_appsettings(options)
@@ -119,13 +105,17 @@ User can be created if it does not exist yet."""
                     password=options.password,
                     email=options.email,
                     settings_role=role,
-                    roles=[role]
+                    roles=[role],
                 )
                 sess.add(user)
 
-                print(("User {} created with password {} and role {}".format(
-                    username, options.password, options.rolename
-                )))
+                print(
+                    (
+                        "User {} created with password {} and role {}".format(
+                            username, options.password, options.rolename
+                        )
+                    )
+                )
 
         else:
             # If user exists (assuming username are unique)

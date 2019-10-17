@@ -39,31 +39,26 @@ from sqlalchemy.orm import Session, configure_mappers, sessionmaker
 
 
 def fill_arguments(parser):
-    default_app_config = "geoportal/production.ini" \
-        if os.path.isfile("geoportal/production.ini") \
-        else "production.ini"
+    default_app_config = (
+        "geoportal/production.ini" if os.path.isfile("geoportal/production.ini") else "production.ini"
+    )
 
     parser.add_argument(
-        "--app-config", "-i",
+        "--app-config",
+        "-i",
         default=default_app_config,
-        help="The application .ini config file (optional, default is '{}')".format(default_app_config)
+        help="The application .ini config file (optional, default is '{}')".format(default_app_config),
     )
     parser.add_argument(
-        "--app-name", "-n",
-        default="app",
-        help="The application name (optional, default is 'app')"
+        "--app-name", "-n", default="app", help="The application name (optional, default is 'app')"
     )
 
 
 def get_config_uri(options):
     uri = urlsplit(options.app_config)
-    return urlunsplit((
-        uri.scheme or 'c2cgeoportal',
-        uri.netloc,
-        uri.path,
-        uri.query,
-        options.app_name or uri.fragment
-    ))
+    return urlunsplit(
+        (uri.scheme or "c2cgeoportal", uri.netloc, uri.path, uri.query, options.app_name or uri.fragment)
+    )
 
 
 def get_appsettings(options, defaults=None):

@@ -38,55 +38,49 @@ from c2cgeoportal_geoportal.lib import get_typed, get_types_map, is_intranet
 from c2cgeoportal_geoportal.lib.caching import get_region
 
 LOG = logging.getLogger(__name__)
-CACHE_REGION_OBJ = get_region('obj')
-CACHE_REGION = get_region('std')
+CACHE_REGION_OBJ = get_region("obj")
+CACHE_REGION = get_region("std")
 
 
 @CACHE_REGION.cache_on_arguments()
 def _get_role(name: str) -> Dict[str, Any]:
     from c2cgeoportal_commons.models import DBSession
-    role = DBSession.query(static.Role).filter(static.Role.name == name).options(
-        joinedload(main.Role.functionalities),
-    ).one_or_none()
+
+    role = (
+        DBSession.query(static.Role)
+        .filter(static.Role.name == name)
+        .options(joinedload(main.Role.functionalities))
+        .one_or_none()
+    )
     struct = _role_to_struct(role)
-    return {
-        'settings_functionalities': struct,
-        'roles_functionalities': {
-            name: struct
-        }
-    }
+    return {"settings_functionalities": struct, "roles_functionalities": {name: struct}}
 
 
 def _user_to_struct(user):
     return {
-        'settings_functionalities': _role_to_struct(user.settings_role),
-        'roles_functionalities': {
-            role.name: _role_to_struct(role) for role in user.roles
-        }
+        "settings_functionalities": _role_to_struct(user.settings_role),
+        "roles_functionalities": {role.name: _role_to_struct(role) for role in user.roles},
     }
 
 
 def _role_to_struct(role):
-    return [{
-        'name': f.name,
-        'value': f.value,
-    } for f in role.functionalities] if role else []
+    return [{"name": f.name, "value": f.value} for f in role.functionalities] if role else []
 
 
 def _get_db_functionality(name, user: Dict[str, Any], types, request, errors):
-    if types.get(name, {}).get('single', False):
+    if types.get(name, {}).get("single", False):
         values = [
-            get_typed(name, functionality['value'], types, request, errors)
-            for functionality in user['settings_functionalities']
-            if functionality['name'] == name
+            get_typed(name, functionality["value"], types, request, errors)
+            for functionality in user["settings_functionalities"]
+            if functionality["name"] == name
         ]
         return [r for r in values if r is not None]
     else:
         functionalities = {
-            functionality['value']
-            for functionalities in user['roles_functionalities'].values()
+            functionality["value"]
+            for functionalities in user["roles_functionalities"].values()
             for functionality in functionalities
-            if functionality['name'] == name
+            if functionality["name"] == name
         }
         values = [
             get_typed(name, functionality_value, types, request, errors)
@@ -113,17 +107,17 @@ def get_functionality(name, request, is_intranet):
         )
         if len(result) == 0:
             result = _get_db_functionality(
-                name, _get_role('registered'), _getfunctionalities_type(request), request, errors
+                name, _get_role("registered"), _getfunctionalities_type(request), request, errors
             )
 
     if len(result) == 0 and is_intranet:
         result = _get_db_functionality(
-            name, _get_role('intranet'), _getfunctionalities_type(request), request, errors
+            name, _get_role("intranet"), _getfunctionalities_type(request), request, errors
         )
 
     if len(result) == 0:
         result = _get_db_functionality(
-            name, _get_role('anonymous'), _getfunctionalities_type(request), request, errors
+            name, _get_role("anonymous"), _getfunctionalities_type(request), request, errors
         )
 
     if errors != set():  # pragma: no cover
@@ -133,9 +127,7 @@ def get_functionality(name, request, is_intranet):
 
 def get_mapserver_substitution_params(request):
     params = {}
-    mss = get_functionality(
-        "mapserver_substitution", request, is_intranet(request)
-    )
+    mss = get_functionality("mapserver_substitution", request, is_intranet(request))
     if mss:
         for s in mss:
             index = s.find("=")
@@ -150,7 +142,6 @@ def get_mapserver_substitution_params(request):
                     params[attribute] = value
             else:
                 LOG.warning(
-                    "Mapserver Substitution '%s' does not "
-                    "respect pattern: <attribute>=<value>" % s
+                    "Mapserver Substitution '%s' does not " "respect pattern: <attribute>=<value>" % s
                 )
     return params

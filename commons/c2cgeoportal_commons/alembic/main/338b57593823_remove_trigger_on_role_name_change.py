@@ -38,26 +38,22 @@ from alembic import op
 from c2c.template.config import config
 
 # revision identifiers, used by Alembic.
-revision = '338b57593823'
-down_revision = 'dba87f2647f9'
+revision = "338b57593823"
+down_revision = "dba87f2647f9"
 branch_labels = None
 depends_on = None
 
 
 def upgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
-    op.execute('DROP TRIGGER on_role_name_change ON {schema}.role'.format(
-        schema=schema
-    ))
-    op.execute('DROP FUNCTION {schema}.on_role_name_change()'.format(
-        schema=schema
-    ))
+    op.execute("DROP TRIGGER on_role_name_change ON {schema}.role".format(schema=schema))
+    op.execute("DROP FUNCTION {schema}.on_role_name_change()".format(schema=schema))
 
 
 def downgrade():
-    schema = config['schema']
-    staticschema = config['schema_static']
+    schema = config["schema"]
+    staticschema = config["schema_static"]
 
     op.execute(
         """
@@ -71,12 +67,11 @@ END IF;
 RETURN NEW;
 END;
 $$
-LANGUAGE plpgsql""".
-        format(schema=schema, staticschema=staticschema)
+LANGUAGE plpgsql""".format(
+            schema=schema, staticschema=staticschema
+        )
     )
     op.execute(
-        'CREATE TRIGGER on_role_name_change AFTER UPDATE ON {schema}.role FOR EACH ROW '
-        'EXECUTE PROCEDURE {schema}.on_role_name_change()'.format(
-            schema=schema
-        )
+        "CREATE TRIGGER on_role_name_change AFTER UPDATE ON {schema}.role FOR EACH ROW "
+        "EXECUTE PROCEDURE {schema}.on_role_name_change()".format(schema=schema)
     )

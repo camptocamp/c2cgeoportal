@@ -37,10 +37,7 @@ from xml import sax
 from xml.sax.saxutils import XMLGenerator
 
 from tests import load_file
-from tests.functional import (  # noqa
-    teardown_common as teardown_module,
-    setup_common as setup_module
-)
+from tests.functional import teardown_common as teardown_module, setup_common as setup_module  # noqa
 
 
 class TestFilterCapabilities(TestCase):
@@ -49,8 +46,7 @@ class TestFilterCapabilities(TestCase):
     def test_capabilities_filter_featuretype(self):
         xml = load_file(TestFilterCapabilities.capabilities_file)
         layers_whitelist = set()
-        filtered_xml = self._filter_xml(
-            xml, "FeatureType", layers_whitelist)
+        filtered_xml = self._filter_xml(xml, "FeatureType", layers_whitelist)
 
         self.assertTrue("<Name>tows:parks</Name>" not in filtered_xml)
 
@@ -70,8 +66,7 @@ class TestFilterCapabilities(TestCase):
         result = StringIO()
         downstream_handler = XMLGenerator(result, "utf-8")
         filter_handler = _CapabilitiesFilter(
-            parser, downstream_handler,
-            tag_name, layers_whitelist=layers_whitelist
+            parser, downstream_handler, tag_name, layers_whitelist=layers_whitelist
         )
         filter_handler.parse(StringIO(xml))
         return result.getvalue()

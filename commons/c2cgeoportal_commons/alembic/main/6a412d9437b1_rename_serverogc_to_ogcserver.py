@@ -38,23 +38,23 @@ from alembic import op
 from c2c.template.config import config
 
 # revision identifiers, used by Alembic.
-revision = '6a412d9437b1'
-down_revision = '29f2a32859ec'
+revision = "6a412d9437b1"
+down_revision = "29f2a32859ec"
 branch_labels = None
 depends_on = None
 
 
 def upgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
-    op.rename_table('server_ogc', 'ogc_server', schema=schema)
-    with op.batch_alter_table('layer_wms', schema=schema) as table_op:
-        table_op.alter_column('server_ogc_id', new_column_name='ogc_server_id')
+    op.rename_table("server_ogc", "ogc_server", schema=schema)
+    with op.batch_alter_table("layer_wms", schema=schema) as table_op:
+        table_op.alter_column("server_ogc_id", new_column_name="ogc_server_id")
 
 
 def downgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
-    op.rename_table('ogc_server', 'server_ogc', schema=schema)
-    with op.batch_alter_table('layer_wms', schema=schema) as table_op:
-        table_op.alter_column('ogc_server_id', new_column_name='server_ogc_id')
+    op.rename_table("ogc_server", "server_ogc", schema=schema)
+    with op.batch_alter_table("layer_wms", schema=schema) as table_op:
+        table_op.alter_column("ogc_server_id", new_column_name="server_ogc_id")

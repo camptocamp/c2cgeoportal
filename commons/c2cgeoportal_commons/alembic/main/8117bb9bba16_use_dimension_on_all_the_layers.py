@@ -38,31 +38,37 @@ from alembic import op
 from c2c.template.config import config
 
 # revision identifiers, used by Alembic.
-revision = '8117bb9bba16'
-down_revision = 'b60f2a505f42'
+revision = "8117bb9bba16"
+down_revision = "b60f2a505f42"
 branch_labels = None
 depends_on = None
 
 
 def upgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
-    op.rename_table('wmts_dimension', 'dimension', schema=schema)
-    with op.batch_alter_table('dimension', schema=schema) as table_op:
-        table_op.drop_constraint('wmts_dimension_layer_id_fkey', type_='foreignkey')
+    op.rename_table("wmts_dimension", "dimension", schema=schema)
+    with op.batch_alter_table("dimension", schema=schema) as table_op:
+        table_op.drop_constraint("wmts_dimension_layer_id_fkey", type_="foreignkey")
         table_op.create_foreign_key(
-            'dimension_layer_id_fkey', local_cols=['layer_id'],
-            referent_schema=schema, referent_table='layer', remote_cols=['id'],
+            "dimension_layer_id_fkey",
+            local_cols=["layer_id"],
+            referent_schema=schema,
+            referent_table="layer",
+            remote_cols=["id"],
         )
 
 
 def downgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
-    with op.batch_alter_table('dimension', schema=schema) as table_op:
-        table_op.drop_constraint('dimension_layer_id_fkey', type_='foreignkey')
+    with op.batch_alter_table("dimension", schema=schema) as table_op:
+        table_op.drop_constraint("dimension_layer_id_fkey", type_="foreignkey")
         table_op.create_foreign_key(
-            'wmts_dimension_layer_id_fkey', local_cols=['layer_id'],
-            referent_schema=schema, referent_table='layer_wmts', remote_cols=['id'],
+            "wmts_dimension_layer_id_fkey",
+            local_cols=["layer_id"],
+            referent_schema=schema,
+            referent_table="layer_wmts",
+            remote_cols=["id"],
         )
-    op.rename_table('dimension', 'wmts_dimension', schema=schema)
+    op.rename_table("dimension", "wmts_dimension", schema=schema)

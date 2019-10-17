@@ -38,36 +38,30 @@ from sqlalchemy.types import Integer, Boolean
 from c2c.template.config import config
 
 # revision identifiers, used by Alembic.
-revision = '1d5d4abfebd1'
-down_revision = '54645a535ad6'
+revision = "1d5d4abfebd1"
+down_revision = "54645a535ad6"
 
 
 def upgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
     engine = op.get_bind().engine
-    if type(engine).__name__ != 'MockConnection' and \
-            op.get_context().dialect.has_table(
-                engine, 'restricted_role_theme', schema=schema):  # pragma: no cover
+    if type(engine).__name__ != "MockConnection" and op.get_context().dialect.has_table(
+        engine, "restricted_role_theme", schema=schema
+    ):  # pragma: no cover
         return
 
-    op.add_column('theme', Column(
-        'public', Boolean, server_default='t', nullable=False
-    ), schema=schema)
+    op.add_column("theme", Column("public", Boolean, server_default="t", nullable=False), schema=schema)
     op.create_table(
-        'restricted_role_theme',
-        Column(
-            'role_id', Integer, ForeignKey(schema + '.role.id'), primary_key=True
-        ),
-        Column(
-            'theme_id', Integer, ForeignKey(schema + '.theme.id'), primary_key=True
-        ),
-        schema=schema
+        "restricted_role_theme",
+        Column("role_id", Integer, ForeignKey(schema + ".role.id"), primary_key=True),
+        Column("theme_id", Integer, ForeignKey(schema + ".theme.id"), primary_key=True),
+        schema=schema,
     )
 
 
 def downgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
-    op.drop_table('restricted_role_theme', schema=schema)
-    op.drop_column('theme', 'public', schema=schema)
+    op.drop_table("restricted_role_theme", schema=schema)
+    op.drop_column("theme", "public", schema=schema)

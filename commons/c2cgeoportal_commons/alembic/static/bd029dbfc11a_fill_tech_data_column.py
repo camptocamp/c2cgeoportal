@@ -38,14 +38,14 @@ from alembic import op
 from c2c.template.config import config
 
 # revision identifiers, used by Alembic.
-revision = 'bd029dbfc11a'
-down_revision = '0c640a58a09a'
+revision = "bd029dbfc11a"
+down_revision = "0c640a58a09a"
 branch_labels = None
 depends_on = None
 
 
 def upgrade():
-    staticschema = config['schema_static']
+    staticschema = config["schema_static"]
 
     op.execute("UPDATE {staticschema}.\"user\" SET tech_data = '';".format(staticschema=staticschema))
 

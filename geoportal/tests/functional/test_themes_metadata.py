@@ -40,15 +40,17 @@ from pyramid import testing
 from tests.functional import (  # noqa
     teardown_common as teardown_module,
     setup_common as setup_module,
-    mapserv_url, create_dummy_request, create_default_ogcserver,
+    mapserv_url,
+    create_dummy_request,
+    create_default_ogcserver,
 )
 
 import logging
+
 log = logging.getLogger(__name__)
 
 
 class TestThemesViewMetadata(TestCase):
-
     def setup_method(self, _):
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
@@ -125,9 +127,7 @@ class TestThemesViewMetadata(TestCase):
             DBSession.delete(t)
         for item in DBSession.query(TreeItem).all():
             DBSession.delete(item)
-        DBSession.query(Interface).filter(
-            Interface.name == "desktop"
-        ).delete()
+        DBSession.query(Interface).filter(Interface.name == "desktop").delete()
 
         transaction.commit()
 
@@ -138,19 +138,22 @@ class TestThemesViewMetadata(TestCase):
             result[attribute] = item[attribute]
 
         if "children" in item:
-            result["children"] = [
-                self._only_name(i, attribute) for i in item["children"]
-            ]
+            result["children"] = [self._only_name(i, attribute) for i in item["children"]]
 
         return result
 
     @staticmethod
     def _get_filtered_errors(themes):
         errors = themes["errors"]
-        regex1 = re.compile(r"The (GeoMapFish|WMS) layer name '[a-z0-9_.]*', cannot be two times in the same block \(first level group\).")
+        regex1 = re.compile(
+            r"The (GeoMapFish|WMS) layer name '[a-z0-9_.]*', cannot be two times in the same block \(first level group\)."
+        )
         regex2 = re.compile(r"Error \'.*\' on reading DescribeFeatureType from URL .*")
         errors = [
-            e for e in errors if not regex1.match(e) and not regex2.match(e)
+            e
+            for e in errors
+            if not regex1.match(e)
+            and not regex2.match(e)
             and not e.startswith("Unable to get DescribeFeatureType from URL ")
         ]
         return set(errors)
@@ -178,78 +181,89 @@ class TestThemesViewMetadata(TestCase):
         ]
         types += [{"name": "url{}".format(n), "type": "url"} for n in range(1, 21)]
 
-        request = create_dummy_request(additional_settings={
-            "package": "tests",
-            "servers": {
-                "server": "http://example.com/test"
-            },
-            "admin_interface": {"available_metadata": types}
-        })
+        request = create_dummy_request(
+            additional_settings={
+                "package": "tests",
+                "servers": {"server": "http://example.com/test"},
+                "admin_interface": {"available_metadata": types},
+            }
+        )
 
         def route_url(url, **kwargs):
             del url
             del kwargs
             return "http://mapserver.org/"
+
         request.route_url = route_url
 
         def static_url(url, **kwargs):
             del kwargs
             return "http://dummy.org/{}".format(url)
+
         request.static_url = static_url
-        request.params = {
-            "interface": "desktop",
-        }
+        request.params = {"interface": "desktop"}
         entry = Entry(request)
 
         themes = entry.themes()
-        self.assertEqual(self._get_filtered_errors(themes), set([
-            "The boolean attribute 'boolean3'='hello' is not in [yes, y, on, 1, true, no, n, off, 0, false].",
-            "Unable to parse the attribute 'json_wrong'='{\"test\": 123' with the type 'json', error:\n'set' object has no attribute 'append'",
-            "The date attribute 'date2'='Sep 25 10:36:28 BRST 2003' should not have any time",
-            "The time attribute 'time2'='Sep 25 10:36:28 BRST 2003' should not have any date",
-            "Unable to parse the attribute 'datetime2'='Hello' with the type 'datetime', error:\n('Unknown string format:', 'Hello')",
-            "The attribute 'url11'='https:///static/icon.png' is not a valid URL.",
-            "The attribute 'url12'='static://test' cannot have an empty path.",
-            "The attribute 'url13'='static://test/' cannot have an empty path.",
-            "The attribute 'url14'='config:///static/icon.png' cannot have an empty netloc.",
-            "The attribute 'url15': The server 'unknown_server' (config://unknown_server) is not found in the config: [server]",
-            "The attribute 'url16'='https://' is not a valid URL.",
-            "The attribute 'url17'='https:///' is not a valid URL.",
-            "The attribute 'url18'='https:///static' is not a valid URL.",
-            "The attribute 'url19'='' is not an URL.",
-            "The attribute 'url20'='/' is not an URL.",
-            "Unknown type 'unknown'.",
-        ]))
+        self.assertEqual(
+            self._get_filtered_errors(themes),
+            set(
+                [
+                    "The boolean attribute 'boolean3'='hello' is not in [yes, y, on, 1, true, no, n, off, 0, false].",
+                    "Unable to parse the attribute 'json_wrong'='{\"test\": 123' with the type 'json', error:\n'set' object has no attribute 'append'",
+                    "The date attribute 'date2'='Sep 25 10:36:28 BRST 2003' should not have any time",
+                    "The time attribute 'time2'='Sep 25 10:36:28 BRST 2003' should not have any date",
+                    "Unable to parse the attribute 'datetime2'='Hello' with the type 'datetime', error:\n('Unknown string format:', 'Hello')",
+                    "The attribute 'url11'='https:///static/icon.png' is not a valid URL.",
+                    "The attribute 'url12'='static://test' cannot have an empty path.",
+                    "The attribute 'url13'='static://test/' cannot have an empty path.",
+                    "The attribute 'url14'='config:///static/icon.png' cannot have an empty netloc.",
+                    "The attribute 'url15': The server 'unknown_server' (config://unknown_server) is not found in the config: [server]",
+                    "The attribute 'url16'='https://' is not a valid URL.",
+                    "The attribute 'url17'='https:///' is not a valid URL.",
+                    "The attribute 'url18'='https:///static' is not a valid URL.",
+                    "The attribute 'url19'='' is not an URL.",
+                    "The attribute 'url20'='/' is not an URL.",
+                    "Unknown type 'unknown'.",
+                ]
+            ),
+        )
         self.assertEqual(
             [self._only_name(t, "metadata") for t in themes["themes"]],
-            [{
-                "metadata": {},
-                "children": [{
+            [
+                {
                     "metadata": {},
-                    "children": [{
-                        "metadata": {
-                            "string": "string",
-                            "list": ["1", "2", "a"],
-                            "boolean": True,
-                            "boolean2": False,
-                            "integer": 1,
-                            "float": 5.5,
-                            "json": {"test": 123},
-                            "date": "2003-09-25",
-                            "time": "10:36:28",
-                            "datetime": "2003-09-25T10:36:28",
-                            "url1": "http://example.com/hi?a=b#c",
-                            "url2": "http://dummy.org//etc/geomapfish/static/path/icon.png",
-                            "url3": "http://dummy.org//etc/geomapfish/static/path/icon.png",
-                            "url4": "http://dummy.org/tests_geoportal:cgxp/path/icon.png",
-                            "url5": "http://dummy.org/project:static/path/icon.png",
-                            "url6": "http://dummy.org/project:cgxp/path/icon.png",
-                            "url7": "http://example.com/test",
-                            "url8": "http://example.com/test/index.html",
-                            "url9": "/dummy/static/icon.png",
-                            "url10": "dummy/static/icon.png",
+                    "children": [
+                        {
+                            "metadata": {},
+                            "children": [
+                                {
+                                    "metadata": {
+                                        "string": "string",
+                                        "list": ["1", "2", "a"],
+                                        "boolean": True,
+                                        "boolean2": False,
+                                        "integer": 1,
+                                        "float": 5.5,
+                                        "json": {"test": 123},
+                                        "date": "2003-09-25",
+                                        "time": "10:36:28",
+                                        "datetime": "2003-09-25T10:36:28",
+                                        "url1": "http://example.com/hi?a=b#c",
+                                        "url2": "http://dummy.org//etc/geomapfish/static/path/icon.png",
+                                        "url3": "http://dummy.org//etc/geomapfish/static/path/icon.png",
+                                        "url4": "http://dummy.org/tests_geoportal:cgxp/path/icon.png",
+                                        "url5": "http://dummy.org/project:static/path/icon.png",
+                                        "url6": "http://dummy.org/project:cgxp/path/icon.png",
+                                        "url7": "http://example.com/test",
+                                        "url8": "http://example.com/test/index.html",
+                                        "url9": "/dummy/static/icon.png",
+                                        "url10": "dummy/static/icon.png",
+                                    }
+                                }
+                            ],
                         }
-                    }]
-                }]
-            }]
+                    ],
+                }
+            ],
         )

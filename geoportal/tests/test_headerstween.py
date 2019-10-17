@@ -46,7 +46,6 @@ class MyRequest(DummyRequest):
 
 
 class TestCacheBuster(TestCase):
-
     @classmethod
     def setup_class(cls):
         pass
@@ -55,20 +54,13 @@ class TestCacheBuster(TestCase):
         from c2cgeoportal_geoportal.lib.headers import HeadersTween
 
         registry = pyramid.registry.Registry()
-        registry.settings = {
-            'global_headers': [{
-                'pattern': '^/test/.*',
-                'headers': {
-                    'X-Test': 'TOTO'
-                }
-            }]
-        }
+        registry.settings = {"global_headers": [{"pattern": "^/test/.*", "headers": {"X-Test": "TOTO"}}]}
         ht = HeadersTween(handler, registry)
 
         request = MyRequest("/test/titi")
         response = ht(request)
-        assert response.headers['X-Test'] == 'TOTO'
+        assert response.headers["X-Test"] == "TOTO"
 
         request = MyRequest("/test2/titi")
         response = ht(request)
-        assert 'X-Test' not in response.headers
+        assert "X-Test" not in response.headers

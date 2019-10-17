@@ -38,19 +38,19 @@ from alembic import op
 from c2c.template.config import config
 
 # revision identifiers, used by Alembic.
-revision = 'b60f2a505f42'
-down_revision = 'daf738d5bae4'
+revision = "b60f2a505f42"
+down_revision = "daf738d5bae4"
 branch_labels = None
 depends_on = None
 
 
 def upgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
-    op.rename_table('ui_metadata', 'metadata', schema=schema)
+    op.rename_table("ui_metadata", "metadata", schema=schema)
 
 
 def downgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
-    op.rename_table('metadata', 'ui_metadata', schema=schema)
+    op.rename_table("metadata", "ui_metadata", schema=schema)

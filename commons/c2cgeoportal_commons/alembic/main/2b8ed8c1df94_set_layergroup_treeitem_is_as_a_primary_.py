@@ -38,24 +38,19 @@ from alembic import op
 from c2c.template.config import config
 
 # revision identifiers, used by Alembic.
-revision = '2b8ed8c1df94'
-down_revision = '32527659d57b'
+revision = "2b8ed8c1df94"
+down_revision = "32527659d57b"
 branch_labels = None
 depends_on = None
 
 
 def upgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
-    op.create_primary_key(
-        'layergroup_treeitem_pkey', 'layergroup_treeitem', ['id'],
-        schema=schema
-    )
+    op.create_primary_key("layergroup_treeitem_pkey", "layergroup_treeitem", ["id"], schema=schema)
 
 
 def downgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
-    op.drop_constraint(
-        'layergroup_treeitem_pkey', 'layergroup_treeitem', schema=schema
-    )
+    op.drop_constraint("layergroup_treeitem_pkey", "layergroup_treeitem", schema=schema)

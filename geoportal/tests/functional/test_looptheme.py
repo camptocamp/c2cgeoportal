@@ -41,15 +41,13 @@ from tests.functional import teardown_common as teardown_module  # noqa
 
 
 class TestLoopTheme(TestCase):
-
     def setup_method(self, _):
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
 
         from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import LayerWMS, \
-            Theme, LayerGroup, Interface
+        from c2cgeoportal_commons.models.main import LayerWMS, Theme, LayerGroup, Interface
 
         ogc_server = create_default_ogcserver()
         main = Interface(name="desktop2")
@@ -73,8 +71,7 @@ class TestLoopTheme(TestCase):
         testing.tearDown()
 
         from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import LayerWMS, \
-            Theme, LayerGroup, OGCServer
+        from c2cgeoportal_commons.models.main import LayerWMS, Theme, LayerGroup, OGCServer
 
         for t in DBSession.query(Theme).filter(Theme.name == "__test_theme").all():
             DBSession.delete(t)
@@ -95,4 +92,6 @@ class TestLoopTheme(TestCase):
         request.user = None
         entry = Entry(request)
         _, errors = entry._themes("desktop2", True, 2)
-        self.assertEqual(len([e for e in errors if e == "Too many recursions with group '__test_layer_group'"]), 1)
+        self.assertEqual(
+            len([e for e in errors if e == "Too many recursions with group '__test_layer_group'"]), 1
+        )

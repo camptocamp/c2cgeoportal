@@ -38,12 +38,13 @@ from pyramid import testing
 from tests.functional import (  # noqa
     teardown_common as teardown_module,
     setup_common as setup_module,
-    mapserv_url, create_dummy_request, create_default_ogcserver,
+    mapserv_url,
+    create_dummy_request,
+    create_default_ogcserver,
 )
 
 
 class TestMobileDesktop(TestCase):
-
     def setup_method(self, _):
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
@@ -91,18 +92,24 @@ class TestMobileDesktop(TestCase):
         mobile_private_theme = Theme(name="__test_mobile_private_theme")
         mobile_private_theme.children = [mobile_private_group]
 
-        DBSession.add_all([
-            layer, mobile_only_layer, desktop_only_layer, theme,
-            mobile_only_theme, desktop_only_theme, mobile_private_theme
-        ])
+        DBSession.add_all(
+            [
+                layer,
+                mobile_only_layer,
+                desktop_only_layer,
+                theme,
+                mobile_only_theme,
+                desktop_only_theme,
+                mobile_private_theme,
+            ]
+        )
         transaction.commit()
 
     def teardown_method(self, _):
         testing.tearDown()
 
         from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import LayerWMS, \
-            Theme, LayerGroup, Interface, OGCServer
+        from c2cgeoportal_commons.models.main import LayerWMS, Theme, LayerGroup, Interface, OGCServer
 
         for t in DBSession.query(Theme).all():
             DBSession.delete(t)
@@ -110,9 +117,7 @@ class TestMobileDesktop(TestCase):
             DBSession.delete(g)
         for layer in DBSession.query(LayerWMS).all():
             DBSession.delete(layer)  # pragma: no cover
-        DBSession.query(Interface).filter(
-            Interface.name == "main"
-        ).delete()
+        DBSession.query(Interface).filter(Interface.name == "main").delete()
         DBSession.query(OGCServer).delete()
 
         transaction.commit()

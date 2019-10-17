@@ -40,34 +40,47 @@ from pyramid import testing
 from tests.functional import (  # noqa
     teardown_common as teardown_module,
     setup_common as setup_module,
-    mapserv_url, create_dummy_request, create_default_ogcserver,
+    mapserv_url,
+    create_dummy_request,
+    create_default_ogcserver,
 )
 
 import logging
+
 log = logging.getLogger(__name__)
 
 
 class TestThemesView(TestCase):
-
     def setup_method(self, _):
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
 
         from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import Theme, LayerGroup, Interface, OGCServer, LayerWMS, LayerWMTS
+        from c2cgeoportal_commons.models.main import (
+            Theme,
+            LayerGroup,
+            Interface,
+            OGCServer,
+            LayerWMS,
+            LayerWMTS,
+        )
 
         main = Interface(name="main")
 
         ogc_server_internal = create_default_ogcserver()
-        ogc_server_external = OGCServer(name="__test_ogc_server_external", url="http://wms.geo.admin.ch/", image_type="image/jpeg")
+        ogc_server_external = OGCServer(
+            name="__test_ogc_server_external", url="http://wms.geo.admin.ch/", image_type="image/jpeg"
+        )
 
         layer_internal_wms = LayerWMS(name="__test_layer_internal_wms", public=True)
         layer_internal_wms.layer = "__test_layer_internal_wms"
         layer_internal_wms.interfaces = [main]
         layer_internal_wms.ogc_server = ogc_server_internal
 
-        layer_external_wms = LayerWMS(name="__test_layer_external_wms", layer="ch.swisstopo.dreiecksvermaschung", public=True)
+        layer_external_wms = LayerWMS(
+            name="__test_layer_external_wms", layer="ch.swisstopo.dreiecksvermaschung", public=True
+        )
         layer_external_wms.interfaces = [main]
         layer_external_wms.ogc_server = ogc_server_external
 
@@ -103,9 +116,13 @@ class TestThemesView(TestCase):
         theme = Theme(name="__test_theme")
         theme.interfaces = [main]
         theme.children = [
-            layer_group_1, layer_group_2, layer_group_3,
-            layer_group_4, layer_group_5,
-            layer_group_7, layer_group_8,
+            layer_group_1,
+            layer_group_2,
+            layer_group_3,
+            layer_group_4,
+            layer_group_5,
+            layer_group_7,
+            layer_group_8,
         ]
 
         DBSession.add(theme)
@@ -122,9 +139,7 @@ class TestThemesView(TestCase):
         DBSession.query(Dimension).delete()
         for item in DBSession.query(TreeItem).all():
             DBSession.delete(item)
-        DBSession.query(Interface).filter(
-            Interface.name == "main"
-        ).delete()
+        DBSession.query(Interface).filter(Interface.name == "main").delete()
         DBSession.query(OGCServer).delete()
 
         transaction.commit()
@@ -159,9 +174,7 @@ class TestThemesView(TestCase):
                 result[attribute] = item[attribute]
 
         if "children" in item:
-            result["children"] = [
-                self._only_name(i, attributes) for i in item["children"]
-            ]
+            result["children"] = [self._only_name(i, attributes) for i in item["children"]]
 
         return result
 
@@ -169,105 +182,106 @@ class TestThemesView(TestCase):
     def _get_filtered_errors(themes):
         errors = themes["errors"]
         errors = [
-            e for e in errors
+            e
+            for e in errors
             if e != "The layer '' (__test_layer_external_wms) is not defined in WMS capabilities"
         ]
-        regex = re.compile(r"The (GeoMapFish|WMS) layer name '[a-z0-9_]*', cannot be two times in the same block (first level group).")
+        regex = re.compile(
+            r"The (GeoMapFish|WMS) layer name '[a-z0-9_]*', cannot be two times in the same block (first level group)."
+        )
         errors = [e for e in errors if regex.match(e)]
         return set(errors)
 
     def test_theme_mixed(self):
-        entry = self._create_entry_obj(params={
-            "interface": "main",
-        })
+        entry = self._create_entry_obj(params={"interface": "main"})
         themes = entry.themes()
         self.assertEqual(self._get_filtered_errors(themes), set())
         self.assertEqual(
             [self._only_name(t, ["name", "mixed"]) for t in themes["themes"]],
-            [{
-                "children": [{
-                    "children": [{
-                        "name": "__test_layer_internal_wms"
-                    }],
-                    "mixed": False,
-                    "name": "__test_layer_group_1"
-                }, {
-                    "children": [{
-                        "name": "__test_layer_external_wms"
-                    }],
-                    "mixed": False,
-                    "name": "__test_layer_group_2"
-                }, {
-                    "children": [{
-                        "name": "__test_layer_wmts"
-                    }],
-                    "mixed": True,
-                    "name": "__test_layer_group_3"
-                }, {
-                    "children": [{
-                        "children": [{
-                            "name": "__test_layer_internal_wms"
-                        }],
-                        "mixed": True,
-                        "name": "__test_layer_group_1"
-                    }, {
-                        "children": [{
-                            "name": "__test_layer_external_wms"
-                        }],
-                        "mixed": True,
-                        "name": "__test_layer_group_2"
-                    }],
-                    "mixed": True,
-                    "name": "__test_layer_group_4"
-                }, {
-                    "children": [{
-                        "children": [{
-                            "name": "__test_layer_internal_wms"
-                        }],
-                        "mixed": True,
-                        "name": "__test_layer_group_1"
-                    }, {
-                        "children": [{
-                            "name": "__test_layer_wmts"
-                        }],
-                        "mixed": True,
-                        "name": "__test_layer_group_3"
-                    }],
-                    "mixed": True,
-                    "name": "__test_layer_group_5"
-                }, {
-                    "children": [{
-                        "children": [{
-                            "name": "__test_layer_internal_wms"
-                        }],
-                        "mixed": False,
-                        "name": "__test_layer_group_1"
-                    }, {
-                        "children": [{
-                            "name": "__test_layer_internal_wms"
-                        }],
-                        "mixed": False,
-                        "name": "__test_layer_group_6"
-                    }],
-                    "mixed": False,
-                    "name": "__test_layer_group_7"
-                }, {
-                    "children": [{
-                        "children": [{
-                            "name": "__test_layer_external_wms"
-                        }],
-                        "mixed": True,
-                        "name": "__test_layer_group_2"
-                    }, {
-                        "children": [{
-                            "name": "__test_layer_internal_wms"
-                        }],
-                        "mixed": True,
-                        "name": "__test_layer_group_6"
-                    }],
-                    "mixed": True,
-                    "name": "__test_layer_group_8"
-                }],
-                "name": "__test_theme"
-            }]
+            [
+                {
+                    "children": [
+                        {
+                            "children": [{"name": "__test_layer_internal_wms"}],
+                            "mixed": False,
+                            "name": "__test_layer_group_1",
+                        },
+                        {
+                            "children": [{"name": "__test_layer_external_wms"}],
+                            "mixed": False,
+                            "name": "__test_layer_group_2",
+                        },
+                        {
+                            "children": [{"name": "__test_layer_wmts"}],
+                            "mixed": True,
+                            "name": "__test_layer_group_3",
+                        },
+                        {
+                            "children": [
+                                {
+                                    "children": [{"name": "__test_layer_internal_wms"}],
+                                    "mixed": True,
+                                    "name": "__test_layer_group_1",
+                                },
+                                {
+                                    "children": [{"name": "__test_layer_external_wms"}],
+                                    "mixed": True,
+                                    "name": "__test_layer_group_2",
+                                },
+                            ],
+                            "mixed": True,
+                            "name": "__test_layer_group_4",
+                        },
+                        {
+                            "children": [
+                                {
+                                    "children": [{"name": "__test_layer_internal_wms"}],
+                                    "mixed": True,
+                                    "name": "__test_layer_group_1",
+                                },
+                                {
+                                    "children": [{"name": "__test_layer_wmts"}],
+                                    "mixed": True,
+                                    "name": "__test_layer_group_3",
+                                },
+                            ],
+                            "mixed": True,
+                            "name": "__test_layer_group_5",
+                        },
+                        {
+                            "children": [
+                                {
+                                    "children": [{"name": "__test_layer_internal_wms"}],
+                                    "mixed": False,
+                                    "name": "__test_layer_group_1",
+                                },
+                                {
+                                    "children": [{"name": "__test_layer_internal_wms"}],
+                                    "mixed": False,
+                                    "name": "__test_layer_group_6",
+                                },
+                            ],
+                            "mixed": False,
+                            "name": "__test_layer_group_7",
+                        },
+                        {
+                            "children": [
+                                {
+                                    "children": [{"name": "__test_layer_external_wms"}],
+                                    "mixed": True,
+                                    "name": "__test_layer_group_2",
+                                },
+                                {
+                                    "children": [{"name": "__test_layer_internal_wms"}],
+                                    "mixed": True,
+                                    "name": "__test_layer_group_6",
+                                },
+                            ],
+                            "mixed": True,
+                            "name": "__test_layer_group_8",
+                        },
+                    ],
+                    "name": "__test_theme",
+                }
+            ],
         )

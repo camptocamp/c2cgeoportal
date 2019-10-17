@@ -46,13 +46,10 @@ logger = logging.getLogger(__name__)
 
 
 class Shortener:
-
     def __init__(self, request):
         self.request = request
         self.settings = request.registry.settings.get("shortener", {})
-        self.short_bases = [
-            self.request.route_url("shortener_get", ref="")
-        ]
+        self.short_bases = [self.request.route_url("shortener_get", ref="")]
         if "base_url" in self.settings:
             self.short_bases.append(self.settings["base_url"])
 
@@ -67,9 +64,7 @@ class Shortener:
         short_urls[0].nb_hits += 1
         short_urls[0].last_hit = datetime.now()
 
-        set_common_headers(
-            self.request, "shortener", NO_CACHE
-        )
+        set_common_headers(self.request, "shortener", NO_CACHE)
         return HTTPFound(location=short_urls[0].url)
 
     @view_config(route_name="shortener_create", renderer="json")
@@ -92,9 +87,9 @@ class Shortener:
                 raise HTTPBadRequest("The requested host is not allowed.")
         else:
             if hostname != self.request.server_name:
-                raise HTTPBadRequest("The requested host '{0!s}' should be '{1!s}'".format(
-                    hostname, self.request.server_name
-                ))
+                raise HTTPBadRequest(
+                    "The requested host '{0!s}' should be '{1!s}'".format(hostname, self.request.server_name)
+                )
 
         shortened = False
 
@@ -119,8 +114,7 @@ class Shortener:
                 logging.error(message)
                 raise HTTPInternalServerError(message)
 
-        user_email = self.request.user.email \
-            if self.request.user is not None else None
+        user_email = self.request.user.email if self.request.user is not None else None
         email = self.request.params.get("email")
         if not shortened:
             short_url = Shorturl()
@@ -139,13 +133,13 @@ class Shortener:
 
         if email is not None:  # pragma: no cover
             send_email_config(
-                self.request.registry.settings, "shortener", email,
+                self.request.registry.settings,
+                "shortener",
+                email,
                 full_url=url,
                 short_url=s_url,
                 message=self.request.params.get("message", ""),
             )
 
-        set_common_headers(
-            self.request, "shortener", NO_CACHE
-        )
+        set_common_headers(self.request, "shortener", NO_CACHE)
         return {"short_url": s_url}

@@ -40,19 +40,19 @@ from c2c.template.config import config
 
 
 # revision identifiers, used by Alembic.
-revision = '5472fbc19f39'
-down_revision = '1da396a88908'
+revision = "5472fbc19f39"
+down_revision = "1da396a88908"
 
 
 def upgrade():
-    staticschema = config['schema_static']
+    staticschema = config["schema_static"]
 
     # Instructions
-    op.add_column('user', Column('temp_password', Unicode), schema=staticschema)
+    op.add_column("user", Column("temp_password", Unicode), schema=staticschema)
 
 
 def downgrade():
-    staticschema = config['schema_static']
+    staticschema = config["schema_static"]
 
     # Instructions
-    op.drop_column('user', 'temp_password', schema=staticschema)
+    op.drop_column("user", "temp_password", schema=staticschema)

@@ -38,29 +38,37 @@ from alembic import op
 from c2c.template.config import config
 
 # revision identifiers, used by Alembic.
-revision = '53d671b17b20'
-down_revision = '1857owc78a07'
+revision = "53d671b17b20"
+down_revision = "1857owc78a07"
 branch_labels = None
 depends_on = None
 
 
 def upgrade():
-    staticschema = config['schema_static']
+    staticschema = config["schema_static"]
 
-    op.execute("""
+    op.execute(
+        """
 SET TIME ZONE 'UTC';
 ALTER TABLE {staticschema}.user ALTER COLUMN last_login TYPE timestamp with time zone;
 SET TIME ZONE LOCAL;
 ALTER TABLE {staticschema}.user ALTER COLUMN expire_on TYPE timestamp with time zone;
-""".format(staticschema=staticschema))
+""".format(
+            staticschema=staticschema
+        )
+    )
 
 
 def downgrade():
-    staticschema = config['schema_static']
+    staticschema = config["schema_static"]
 
-    op.execute("""
+    op.execute(
+        """
 SET TIME ZONE 'UTC';
 ALTER TABLE {staticschema}.user ALTER COLUMN last_login TYPE timestamp without time zone;
 SET TIME ZONE LOCAL;
 ALTER TABLE {staticschema}.user ALTER COLUMN expire_on TYPE timestamp without time zone;
-""".format(staticschema=staticschema))
+""".format(
+            staticschema=staticschema
+        )
+    )

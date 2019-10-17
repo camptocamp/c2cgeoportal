@@ -40,19 +40,19 @@ from sqlalchemy.types import Unicode
 from c2c.template.config import config
 
 # revision identifiers, used by Alembic.
-revision = '809650bd04c3'
-down_revision = '21f11066f8ec'
+revision = "809650bd04c3"
+down_revision = "21f11066f8ec"
 branch_labels = None
 depends_on = None
 
 
 def upgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
-    op.add_column('dimension', Column('field', Unicode), schema=schema)
+    op.add_column("dimension", Column("field", Unicode), schema=schema)
 
 
 def downgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
-    op.drop_column('dimension', 'field', schema=schema)
+    op.drop_column("dimension", "field", schema=schema)

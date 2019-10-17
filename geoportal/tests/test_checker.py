@@ -38,94 +38,50 @@ from c2cgeoportal_geoportal.lib.checker import build_url
 
 
 class TestExportCSVView(TestCase):
-
     def test_build_url_docker(self):
         request = DummyRequest()
-        request.registry.settings = {
-            "checker": {
-                "base_internal_url": "http://localhost:8080",
-            }
-        }
+        request.registry.settings = {"checker": {"base_internal_url": "http://localhost:8080"}}
         self.assertEqual(
-            build_url(
-                "Test",
-                "/toto?titi#tutu",
-                request
-            ),
-            {
-                "url": "http://localhost:8080/toto?titi#tutu",
-                "headers": {
-                    "Cache-Control": "no-cache",
-                }
-            }
+            build_url("Test", "/toto?titi#tutu", request),
+            {"url": "http://localhost:8080/toto?titi#tutu", "headers": {"Cache-Control": "no-cache"}},
         )
 
     def test_build_url_http(self):
         request = DummyRequest()
         request.registry.settings = {
-            "checker": {
-                "base_internal_url": "http://localhost",
-                "forward_host": True,
-            }
+            "checker": {"base_internal_url": "http://localhost", "forward_host": True}
         }
         self.assertEqual(
-            build_url(
-                "Test",
-                "/toto?titi#tutu",
-                request
-            ),
+            build_url("Test", "/toto?titi#tutu", request),
             {
                 "url": "http://localhost/toto?titi#tutu",
-                "headers": {
-                    "Cache-Control": "no-cache",
-                    "Host": "example.com:80"
-                }
-            }
+                "headers": {"Cache-Control": "no-cache", "Host": "example.com:80"},
+            },
         )
 
     def test_build_url_https(self):
         request = DummyRequest()
         request.registry.settings = {
-            "checker": {
-                "base_internal_url": "https://localhost",
-                "forward_host": True,
-            }
+            "checker": {"base_internal_url": "https://localhost", "forward_host": True}
         }
         self.assertEqual(
-            build_url(
-                "Test",
-                "/toto?titi#tutu",
-                request
-            ),
+            build_url("Test", "/toto?titi#tutu", request),
             {
                 "url": "https://localhost/toto?titi#tutu",
-                "headers": {
-                    "Cache-Control": "no-cache",
-                    "Host": "example.com:80"
-                }
-            }
+                "headers": {"Cache-Control": "no-cache", "Host": "example.com:80"},
+            },
         )
 
     def test_build_url_forward_headers(self):
         request = DummyRequest()
         request.registry.settings = {
-            "checker": {
-                "base_internal_url": "http://localhost",
-                "forward_headers": ["Cookie"]
-            }
+            "checker": {"base_internal_url": "http://localhost", "forward_headers": ["Cookie"]}
         }
         request.headers["Cookie"] = "test"
         self.assertEqual(
-            build_url(
-                "Test",
-                "/toto?titi#tutu",
-                request
-            ),
+            build_url("Test", "/toto?titi#tutu", request),
             {
                 "url": "http://localhost/toto?titi#tutu",
-                "headers": {
-                    "Cache-Control": "no-cache",
-                    "Cookie": "test",
-                }
-            }
+                "headers": {"Cache-Control": "no-cache", "Cookie": "test"},
+            },
         )

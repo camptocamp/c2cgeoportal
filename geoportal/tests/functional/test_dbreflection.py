@@ -32,10 +32,7 @@
 
 from unittest import TestCase
 
-from tests.functional import (  # noqa
-    teardown_common as teardown_module,
-    setup_common as setup_module
-)
+from tests.functional import teardown_common as teardown_module, setup_common as setup_module  # noqa
 
 from c2cgeoportal_geoportal.lib.caching import init_region
 
@@ -70,25 +67,25 @@ class TestReflection(TestCase):
             self._tables = []
 
         ctable = Table(
-            "{0!s}_child".format(tablename), Base.metadata,
+            "{0!s}_child".format(tablename),
+            Base.metadata,
             Column("id", types.Integer, primary_key=True),
             Column("name", types.Unicode),
-            schema="public"
+            schema="public",
         )
         ctable.create(checkfirst=True)
         self._tables.append(ctable)
 
         ptable = Table(
-            tablename, Base.metadata,
+            tablename,
+            Base.metadata,
             Column("id", types.Integer, primary_key=True),
+            Column("child1_id", types.Integer, ForeignKey("public.{0!s}_child.id".format(tablename))),
             Column(
-                "child1_id", types.Integer,
-                ForeignKey("public.{0!s}_child.id".format(tablename))
-            ),
-            Column(
-                "child2_id", types.Integer,
+                "child2_id",
+                types.Integer,
                 ForeignKey("public.{0!s}_child.id".format(tablename)),
-                nullable=False
+                nullable=False,
             ),
             Column("point", Geometry("POINT")),
             Column("linestring", Geometry("LINESTRING")),
@@ -96,7 +93,7 @@ class TestReflection(TestCase):
             Column("multipoint", Geometry("MULTIPOINT")),
             Column("multilinestring", Geometry("MULTILINESTRING")),
             Column("multipolygon", Geometry("MULTIPOLYGON")),
-            schema="public"
+            schema="public",
         )
         ptable.create(checkfirst=True)
         self._tables.append(ptable)
@@ -113,12 +110,8 @@ class TestReflection(TestCase):
         from geoalchemy2 import Geometry
         from c2cgeoportal_geoportal.lib.dbreflection import get_class, _AssociationProxy
 
-        init_region({
-            'backend': 'dogpile.cache.memory',
-        }, 'std')
-        init_region({
-            'backend': 'dogpile.cache.memory',
-        }, 'obj')
+        init_region({"backend": "dogpile.cache.memory"}, "std")
+        init_region({"backend": "dogpile.cache.memory"}, "obj")
 
         self._create_table("table_a")
         modelclass = get_class("table_a")
@@ -137,10 +130,10 @@ class TestReflection(TestCase):
 
         self.assertTrue(isinstance(modelclass.child1, _AssociationProxy))
         self.assertTrue(modelclass.child1.nullable)
-        self.assertEqual(modelclass.child1_id.info.get('association_proxy'), 'child1')
+        self.assertEqual(modelclass.child1_id.info.get("association_proxy"), "child1")
         self.assertTrue(isinstance(modelclass.child2, _AssociationProxy))
         self.assertFalse(modelclass.child2.nullable)
-        self.assertEqual(modelclass.child2_id.info.get('association_proxy'), 'child2')
+        self.assertEqual(modelclass.child2_id.info.get("association_proxy"), "child2")
 
         # test the Table object
         table = modelclass.__table__
@@ -232,5 +225,5 @@ class TestReflection(TestCase):
         self._create_table("table_d")
         cls = get_class("table_d", readonly_attributes=readonly_attributes)
 
-        self.assertEqual(True, cls.child1_id.info.get('readonly'))
-        self.assertEqual(True, cls.point.info.get('readonly'))
+        self.assertEqual(True, cls.child1_id.info.get("readonly"))
+        self.assertEqual(True, cls.point.info.get("readonly"))

@@ -45,7 +45,6 @@ from tests.functional import (  # noqa
 
 
 class TestUrllogin(TestCase):
-
     def setup_method(self, _):
         self.maxDiff = None
 
@@ -92,11 +91,7 @@ class TestUrllogin(TestCase):
 
     def get_user(self, aeskey, user, password, valid):
         token = create_token(aeskey, user, password, valid)
-        request = create_dummy_request({
-            "urllogin": {
-                "aes_key": aeskey
-            }
-        }, params={"auth": token})
+        request = create_dummy_request({"urllogin": {"aes_key": aeskey}}, params={"auth": token})
         get_user_from_request = create_get_user_from_request(request.registry.settings)
         get_user_from_request(request)
         return self.user
@@ -117,33 +112,28 @@ class TestUrllogin(TestCase):
 
     def test_wrong_key(self):
         token = create_token("foobar1234567890", "__test_user1", "__test_user1", 1)
-        request = create_dummy_request({
-            "urllogin": {
-                "aes_key": "foobar1234567891"
-            }
-        }, params={"auth": token})
+        request = create_dummy_request({"urllogin": {"aes_key": "foobar1234567891"}}, params={"auth": token})
         get_user_from_request = create_get_user_from_request(request.registry.settings)
         get_user_from_request(request)
         self.assertIsNone(self.user)
 
-    @patch('c2cgeoportal_geoportal.LOG.error', side_effect=Exception())
+    @patch("c2cgeoportal_geoportal.LOG.error", side_effect=Exception())
     def test_wrong_method(self, log_mock):  # pylint: disable=unused-argument
         """
         POST requests with input named "auth" must not raise exceptions due to urllogin.
         """
+
         def _get_user(method):
-            request = create_dummy_request(
-                params={"auth": "this is a form field value"},
-                method=method)
+            request = create_dummy_request(params={"auth": "this is a form field value"}, method=method)
             get_user_from_request = create_get_user_from_request(request.registry.settings)
             get_user_from_request(request)
 
         # Verify that GET request raises an Exception
         with self.assertRaises(Exception):
-            _get_user('GET')
+            _get_user("GET")
 
         # Verify that POST request does not raises an Exception
-        _get_user('POST')
+        _get_user("POST")
 
     def test_user_deactivated(self):
         self.assertIsNone(self.get_user("foobar1234567891", "__test_user2", "__test_user2", 1))

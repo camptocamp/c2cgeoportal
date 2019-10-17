@@ -38,7 +38,6 @@ from tests.functional import teardown_common as teardown_module  # noqa
 
 
 class TestFunctionalities(TestCase):
-
     def setup_method(self, _):
         import transaction
         from c2cgeoportal_commons.models import DBSession
@@ -47,26 +46,13 @@ class TestFunctionalities(TestCase):
 
         create_default_ogcserver()
         role1 = Role(name="__test_role1")
-        user1 = User(
-            username="__test_user1",
-            password="__test_user1",
-            settings_role=role1,
-            roles=[role1],
-        )
+        user1 = User(username="__test_user1", password="__test_user1", settings_role=role1, roles=[role1])
         role2 = Role(name="__test_role2")
-        user2 = User(
-            username="__test_user2",
-            password="__test_user2",
-            settings_role=role2,
-            roles=[role2],
-        )
+        user2 = User(username="__test_user2", password="__test_user2", settings_role=role2, roles=[role2])
         role3 = Role(name="__test_role3")
         role4 = Role(name="__test_role4")
         user3 = User(
-            username="__test_user3",
-            password="__test_user3",
-            roles=[role3, role4],
-            settings_role=role3,
+            username="__test_user3", password="__test_user3", roles=[role3, role4], settings_role=role3
         )
 
         functionality1 = Functionality("__test_s", "db")
@@ -140,15 +126,11 @@ class TestFunctionalities(TestCase):
         self.assertEqual(set(get_functionality("__test_a", request3, False)), {"db1", "db2"})
         self.assertEqual(get_functionality("__test_b", request3, False), [])
 
-        fill_tech_user_functionality('registered', (
-            ("__test_s", "registered"),
-            ("__test_a", "r1"),
-            ("__test_a", "r2"),
-        ))
+        fill_tech_user_functionality(
+            "registered", (("__test_s", "registered"), ("__test_a", "r1"), ("__test_a", "r2"))
+        )
         settings = {
-            "admin_interface": {
-                "available_functionalities": [{"name": "__test_a"}, {"name": "__test_s"}]
-            }
+            "admin_interface": {"available_functionalities": [{"name": "__test_a"}, {"name": "__test_s"}]}
         }
         request.registry.settings.update(settings)
         request1.registry.settings.update(settings)
@@ -163,16 +145,12 @@ class TestFunctionalities(TestCase):
         self.assertEqual(get_functionality("__test_s", request2, False), ["db"])
         self.assertEqual(set(get_functionality("__test_a", request2, False)), {"db1", "db2"})
 
-        fill_tech_user_functionality('registered', [])
-        fill_tech_user_functionality('anonymous', (
-            ("__test_s", "anonymous"),
-            ("__test_a", "a1"),
-            ("__test_a", "a2"),
-        ))
+        fill_tech_user_functionality("registered", [])
+        fill_tech_user_functionality(
+            "anonymous", (("__test_s", "anonymous"), ("__test_a", "a1"), ("__test_a", "a2"))
+        )
         settings = {
-            "admin_interface": {
-                "available_functionalities": [{"name": "__test_a"}, {"name": "__test_s"}]
-            }
+            "admin_interface": {"available_functionalities": [{"name": "__test_a"}, {"name": "__test_s"}]}
         }
         request.registry.settings.update(settings)
         request1.registry.settings.update(settings)
@@ -187,20 +165,14 @@ class TestFunctionalities(TestCase):
         self.assertEqual(get_functionality("__test_s", request2, False), ["db"])
         self.assertEqual(set(get_functionality("__test_a", request2, False)), {"db1", "db2"})
 
-        fill_tech_user_functionality('registered', (
-            ("__test_s", "registered"),
-            ("__test_a", "r1"),
-            ("__test_a", "r2"),
-        ))
-        fill_tech_user_functionality('anonymous', (
-            ("__test_s", "anonymous"),
-            ("__test_a", "a1"),
-            ("__test_a", "a2"),
-        ))
+        fill_tech_user_functionality(
+            "registered", (("__test_s", "registered"), ("__test_a", "r1"), ("__test_a", "r2"))
+        )
+        fill_tech_user_functionality(
+            "anonymous", (("__test_s", "anonymous"), ("__test_a", "a1"), ("__test_a", "a2"))
+        )
         settings = {
-            "admin_interface": {
-                "available_functionalities": [{"name": "__test_a"}, {"name": "__test_s"}]
-            }
+            "admin_interface": {"available_functionalities": [{"name": "__test_a"}, {"name": "__test_s"}]}
         }
         request.registry.settings.update(settings)
         request1.registry.settings.update(settings)
@@ -229,23 +201,15 @@ class TestFunctionalities(TestCase):
         request2.static_url = lambda url: "http://example.com/dummy/static/url"
         request2.user = DBSession.query(User).filter(User.username == "__test_user2").one()
 
-        fill_tech_user_functionality('registered', (
-            ("__test_s", "registered"),
-            ("__test_a", "r1"),
-            ("__test_a", "r2"),
-        ))
-        fill_tech_user_functionality('anonymous', (
-            ("__test_s", "anonymous"),
-            ("__test_a", "a1"),
-            ("__test_a", "a2"),
-        ))
+        fill_tech_user_functionality(
+            "registered", (("__test_s", "registered"), ("__test_a", "r1"), ("__test_a", "r2"))
+        )
+        fill_tech_user_functionality(
+            "anonymous", (("__test_s", "anonymous"), ("__test_a", "a1"), ("__test_a", "a2"))
+        )
         settings = {
-            "functionalities": {
-                "available_in_templates": ["__test_s", "__test_a"],
-            },
-            "admin_interface": {
-                "available_functionalities": [{"name": "__test_a"}, {"name": "__test_s"}]
-            },
+            "functionalities": {"available_in_templates": ["__test_s", "__test_a"]},
+            "admin_interface": {"available_functionalities": [{"name": "__test_a"}, {"name": "__test_s"}]},
         }
         request.registry.settings.update(settings)
         request1.registry.settings.update(settings)

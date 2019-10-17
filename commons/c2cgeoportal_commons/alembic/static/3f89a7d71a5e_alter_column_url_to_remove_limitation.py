@@ -40,13 +40,13 @@ from sqlalchemy import types
 from c2c.template.config import config
 
 # revision identifiers, used by Alembic.
-revision = '3f89a7d71a5e'
+revision = "3f89a7d71a5e"
 down_revision = None
 
 
 def upgrade():
-    schema = config['schema_static']
-    op.alter_column('shorturl', 'url', type_=types.Unicode, schema=schema)
+    schema = config["schema_static"]
+    op.alter_column("shorturl", "url", type_=types.Unicode, schema=schema)
 
 
 def downgrade():

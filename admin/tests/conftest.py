@@ -8,12 +8,11 @@ from pyramid.paster import bootstrap
 from sqlalchemy.exc import DBAPIError
 from webtest import TestApp as WebTestApp  # Avoid warning with pytest
 
-from c2cgeoportal_commons.testing import (generate_mappers, get_engine,
-                                          get_session_factory, get_tm_session)
+from c2cgeoportal_commons.testing import generate_mappers, get_engine, get_session_factory, get_tm_session
 from c2cgeoportal_commons.testing.initializedb import truncate_tables
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 @pytest.mark.usefixtures("settings")
 def dbsession(settings):
     generate_mappers()
@@ -24,7 +23,7 @@ def dbsession(settings):
     yield session
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope="function")
 @pytest.mark.usefixtures("dbsession")
 def transact(dbsession):
     t = dbsession.begin_nested()
@@ -34,10 +33,10 @@ def transact(dbsession):
 
 
 def raise_db_error(_):
-    raise DBAPIError('this is a test !', None, None)
+    raise DBAPIError("this is a test !", None, None)
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope="function")
 @pytest.mark.usefixtures("dbsession")
 def raise_db_error_on_query(dbsession):
     query = dbsession.query
@@ -48,7 +47,7 @@ def raise_db_error_on_query(dbsession):
 
 @pytest.fixture(scope="session")
 def app_env():
-    file_name = '/opt/c2cgeoportal/admin/tests/tests.ini'
+    file_name = "/opt/c2cgeoportal/admin/tests/tests.ini"
     with bootstrap(file_name) as env:
         yield env
 
@@ -56,11 +55,11 @@ def app_env():
 @pytest.fixture(scope="session")
 @pytest.mark.usefixtures("app_env", "dbsession")
 def app(app_env, dbsession):
-    config = testing.setUp(registry=app_env['registry'])
-    config.add_request_method(lambda request: dbsession, 'dbsession', reify=True)
-    config.add_route('user_add', 'user_add')
-    config.add_route('users_nb', 'users_nb')
-    config.scan(package='tests')
+    config = testing.setUp(registry=app_env["registry"])
+    config.add_request_method(lambda request: dbsession, "dbsession", reify=True)
+    config.add_route("user_add", "user_add")
+    config.add_route("users_nb", "users_nb")
+    config.scan(package="tests")
     app = config.make_wsgi_app()
     yield app
 
@@ -68,20 +67,20 @@ def app(app_env, dbsession):
 @pytest.fixture(scope="session")
 @pytest.mark.usefixtures("app_env")
 def settings(app_env):
-    yield app_env.get('registry').settings
+    yield app_env.get("registry").settings
 
 
-@pytest.fixture(scope='session')  # noqa: F811
+@pytest.fixture(scope="session")  # noqa: F811
 @pytest.mark.usefixtures("app")
 def test_app(request, app):
     testapp = WebTestApp(app)
     yield testapp
 
 
-@pytest.fixture(scope='session')  # noqa: F811
+@pytest.fixture(scope="session")  # noqa: F811
 @pytest.mark.usefixtures("app")
 def selenium_app(app):
-    srv = make_server('', 6544, app)
+    srv = make_server("", 6544, app)
     threading.Thread(target=srv.serve_forever).start()
-    yield('http://localhost:6544')
+    yield ("http://localhost:6544")
     srv.shutdown()

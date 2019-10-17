@@ -35,7 +35,7 @@ import pyramid.registry
 
 from c2cgeoportal_geoportal.lib.caching import get_region
 
-CACHE_REGION = get_region('std')
+CACHE_REGION = get_region("std")
 
 
 @CACHE_REGION.cache_on_arguments()
@@ -51,15 +51,16 @@ def version_cache_buster(request, subpath, kw):  # pragma: no cover
 
 class CachebusterTween:
     """ Get back the cachebuster URL. """
+
     def __init__(self, handler, registry: pyramid.registry.Registry):
         self.handler = handler
-        self.cache_path = registry.settings['cache_path']
+        self.cache_path = registry.settings["cache_path"]
 
     def __call__(self, request):
         path = request.path_info.split("/")
         if len(path) > 1 and path[1] in self.cache_path:
             # remove the cache buster
             path.pop(2)
-            request.path_info = "/" .join(path)
+            request.path_info = "/".join(path)
 
         return self.handler(request)

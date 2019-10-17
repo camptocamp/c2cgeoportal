@@ -43,123 +43,113 @@ from sqlalchemy.types import Integer, String, Unicode, Boolean
 from c2c.template.config import config
 
 # revision identifiers, used by Alembic.
-revision = '1da396a88908'
-down_revision = '3f89a7d71a5e'
+revision = "1da396a88908"
+down_revision = "3f89a7d71a5e"
 
 
 def upgrade():
-    schema = config['schema']
-    staticschema = config['schema_static']
-    parentschema = config.get('parentschema')
+    schema = config["schema"]
+    staticschema = config["schema_static"]
+    parentschema = config.get("parentschema")
 
     engine = op.get_bind().engine
-    if type(engine).__name__ != 'MockConnection' and \
-            op.get_context().dialect.has_table(
-                engine, 'user', schema=staticschema):  # pragma: no cover
+    if type(engine).__name__ != "MockConnection" and op.get_context().dialect.has_table(
+        engine, "user", schema=staticschema
+    ):  # pragma: no cover
         return
 
     op.create_table(
-        'user',
-        Column('type', String(10), nullable=False),
-        Column('id', Integer, primary_key=True),
-        Column('username', Unicode, unique=True, nullable=False),
-        Column('password', Unicode, nullable=False),
-        Column('email', Unicode, nullable=False),
-        Column('is_password_changed', Boolean, default=False),
-        Column('role_name', String),
+        "user",
+        Column("type", String(10), nullable=False),
+        Column("id", Integer, primary_key=True),
+        Column("username", Unicode, unique=True, nullable=False),
+        Column("password", Unicode, nullable=False),
+        Column("email", Unicode, nullable=False),
+        Column("is_password_changed", Boolean, default=False),
+        Column("role_name", String),
         schema=staticschema,
     )
-    parent_column = ''
-    parent_select = ''
-    parent_join = ''
-    if parentschema is not None and parentschema != '':  # pragma: no cover
-        op.add_column(
-            'user',
-            Column('parent_role_name', String),
-            schema=staticschema
-        )
-        parent_column = ', parent_role_name'
-        parent_select = ', pr.name'
-        parent_join = (
-            'LEFT OUTER JOIN {parentschema!s}.role AS pr ON (pr.id = u.parent_role_id)'.format(
-                parentschema=parentschema,
-            )
+    parent_column = ""
+    parent_select = ""
+    parent_join = ""
+    if parentschema is not None and parentschema != "":  # pragma: no cover
+        op.add_column("user", Column("parent_role_name", String), schema=staticschema)
+        parent_column = ", parent_role_name"
+        parent_select = ", pr.name"
+        parent_join = "LEFT OUTER JOIN {parentschema!s}.role AS pr ON (pr.id = u.parent_role_id)".format(
+            parentschema=parentschema
         )
 
     try:
         op.execute(
-            'INSERT INTO %(staticschema)s.user '
-            '(type, username, password, email, is_password_changed, role_name%(parent_column)s) ('
-            'SELECT u.type, u.username, u.password, u.email, '
-            'u.is_password_changed, r.name%(parent_select)s '
-            'FROM %(schema)s.user AS u '
-            'LEFT OUTER JOIN %(schema)s.role AS r ON (r.id = u.role_id) %(parent_join)s'
-            ')' % {
-                'staticschema': staticschema,
-                'schema': schema,
-                'parent_select': parent_select,
-                'parent_column': parent_column,
-                'parent_join': parent_join,
+            "INSERT INTO %(staticschema)s.user "
+            "(type, username, password, email, is_password_changed, role_name%(parent_column)s) ("
+            "SELECT u.type, u.username, u.password, u.email, "
+            "u.is_password_changed, r.name%(parent_select)s "
+            "FROM %(schema)s.user AS u "
+            "LEFT OUTER JOIN %(schema)s.role AS r ON (r.id = u.role_id) %(parent_join)s"
+            ")"
+            % {
+                "staticschema": staticschema,
+                "schema": schema,
+                "parent_select": parent_select,
+                "parent_column": parent_column,
+                "parent_join": parent_join,
             }
         )
-        op.drop_table('user', schema=schema)
+        op.drop_table("user", schema=schema)
     except Exception:
         op.execute(
             "INSERT INTO %(staticschema)s.user (type, username, email, password, role) "
-            "VALUES ( 'user', 'admin', 'info@example.com', '%(pass)s', 'role_admin')" % {
-                'staticschema': staticschema,
-                'pass': sha1('admin'.encode('utf-8')).hexdigest()
-            }
+            "VALUES ( 'user', 'admin', 'info@example.com', '%(pass)s', 'role_admin')"
+            % {"staticschema": staticschema, "pass": sha1("admin".encode("utf-8")).hexdigest()}
         )
 
 
 def downgrade():
-    schema = config['schema']
-    staticschema = config.get('schema_static')
-    parentschema = config.get('parentschema')
+    schema = config["schema"]
+    staticschema = config.get("schema_static")
+    parentschema = config.get("parentschema")
 
     op.create_table(
-        'user',
-        Column('type', String(10), nullable=False),
-        Column('id', Integer, primary_key=True),
-        Column('username', Unicode, unique=True, nullable=False),
-        Column('password', Unicode, nullable=False),
-        Column('email', Unicode, nullable=False),
-        Column('is_password_changed', Boolean, default=False),
-        Column('role_id', Integer, ForeignKey(schema + '.role.id'), nullable=False),
+        "user",
+        Column("type", String(10), nullable=False),
+        Column("id", Integer, primary_key=True),
+        Column("username", Unicode, unique=True, nullable=False),
+        Column("password", Unicode, nullable=False),
+        Column("email", Unicode, nullable=False),
+        Column("is_password_changed", Boolean, default=False),
+        Column("role_id", Integer, ForeignKey(schema + ".role.id"), nullable=False),
         schema=schema,
     )
-    parent_column = ''
-    parent_select = ''
-    parent_join = ''
-    if parentschema is not None and parentschema != '':  # pragma: no cover
+    parent_column = ""
+    parent_select = ""
+    parent_join = ""
+    if parentschema is not None and parentschema != "":  # pragma: no cover
         op.add_column(
-            'user',
-            Column('parent_role_id', Integer, ForeignKey(parentschema + '.role.id')),
-            schema=schema
+            "user", Column("parent_role_id", Integer, ForeignKey(parentschema + ".role.id")), schema=schema
         )
-        parent_column = ', parent_role_id'
-        parent_select = ', pr.id'
-        parent_join = (
-            'LEFT OUTER JOIN {parentschema}.role AS pr ON (pr.name = u.parent_role_name)'.format(
-                parentschema=parentschema,
-            )
+        parent_column = ", parent_role_id"
+        parent_select = ", pr.id"
+        parent_join = "LEFT OUTER JOIN {parentschema}.role AS pr ON (pr.name = u.parent_role_name)".format(
+            parentschema=parentschema
         )
 
     op.execute(
-        'INSERT INTO %(schema)s.user '
-        '(type, username, password, email, is_password_changed, role_id%(parent_column)s) ('
-        'SELECT u.type, u.username, u.password, u.email, '
-        'u.is_password_changed, r.id%(parent_select)s '
-        'FROM %(staticschema)s.user AS u '
-        'LEFT OUTER JOIN %(schema)s.role AS r ON (r.name = u.role_name) %(parent_join)s'
-        ')' % {
-            'staticschema': staticschema,
-            'schema': schema,
-            'parent_select': parent_select,
-            'parent_column': parent_column,
-            'parent_join': parent_join,
+        "INSERT INTO %(schema)s.user "
+        "(type, username, password, email, is_password_changed, role_id%(parent_column)s) ("
+        "SELECT u.type, u.username, u.password, u.email, "
+        "u.is_password_changed, r.id%(parent_select)s "
+        "FROM %(staticschema)s.user AS u "
+        "LEFT OUTER JOIN %(schema)s.role AS r ON (r.name = u.role_name) %(parent_join)s"
+        ")"
+        % {
+            "staticschema": staticschema,
+            "schema": schema,
+            "parent_select": parent_select,
+            "parent_column": parent_column,
+            "parent_join": parent_join,
         }
     )
 
-    op.drop_table('user', schema=staticschema)
+    op.drop_table("user", schema=staticschema)

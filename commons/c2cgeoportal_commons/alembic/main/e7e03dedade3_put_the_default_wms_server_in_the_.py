@@ -38,39 +38,45 @@ from alembic import op
 from c2c.template.config import config
 
 # revision identifiers, used by Alembic.
-revision = 'e7e03dedade3'
-down_revision = '8117bb9bba16'
+revision = "e7e03dedade3"
+down_revision = "8117bb9bba16"
 branch_labels = None
 depends_on = None
 
 
 def upgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
-    op.execute("""
+    op.execute(
+        """
         UPDATE "{schema}".ogc_server
         SET url = 'config://local/mapserv'
         WHERE url IS NULL
-    """.format(schema=schema))
-
-    op.alter_column('ogc_server', 'url', nullable=False, schema=schema)
-    op.create_unique_constraint('name_unique_ogc_server', 'ogc_server', ['name'], schema=schema)
-    op.alter_column('treeitem', 'name', nullable=False, schema=schema)
-    op.create_unique_constraint(
-        'type_name_unique_treeitem', 'treeitem', ['type', 'name'], schema=schema
+    """.format(
+            schema=schema
+        )
     )
+
+    op.alter_column("ogc_server", "url", nullable=False, schema=schema)
+    op.create_unique_constraint("name_unique_ogc_server", "ogc_server", ["name"], schema=schema)
+    op.alter_column("treeitem", "name", nullable=False, schema=schema)
+    op.create_unique_constraint("type_name_unique_treeitem", "treeitem", ["type", "name"], schema=schema)
 
 
 def downgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
-    op.alter_column('ogc_server', 'url', nullable=True, schema=schema)
-    op.drop_constraint('name_unique_ogc_server', 'ogc_server', schema=schema)
-    op.alter_column('treeitem', 'name', nullable=True, schema=schema)
-    op.drop_constraint('type_name_unique_treeitem', 'treeitem', schema=schema)
+    op.alter_column("ogc_server", "url", nullable=True, schema=schema)
+    op.drop_constraint("name_unique_ogc_server", "ogc_server", schema=schema)
+    op.alter_column("treeitem", "name", nullable=True, schema=schema)
+    op.drop_constraint("type_name_unique_treeitem", "treeitem", schema=schema)
 
-    op.execute("""
+    op.execute(
+        """
         UPDATE "{schema}".ogc_server
         SET url = NULL
         WHERE url = 'config://local/mapserv'
-    """.format(schema=schema))
+    """.format(
+            schema=schema
+        )
+    )

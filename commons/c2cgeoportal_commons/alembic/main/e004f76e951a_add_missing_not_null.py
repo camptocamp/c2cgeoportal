@@ -38,61 +38,63 @@ from alembic import op
 from c2c.template.config import config
 
 # revision identifiers, used by Alembic.
-revision = 'e004f76e951a'
-down_revision = 'ee25d267bf46'
+revision = "e004f76e951a"
+down_revision = "ee25d267bf46"
 branch_labels = None
 depends_on = None
 
 
 def upgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
-    op.alter_column('layer_wmts', 'url', nullable=False, schema=schema)
-    op.alter_column('layer_wmts', 'layer', nullable=False, schema=schema)
+    op.alter_column("layer_wmts", "url", nullable=False, schema=schema)
+    op.alter_column("layer_wmts", "layer", nullable=False, schema=schema)
     op.execute(
-        "UPDATE ONLY {schema}.layer_wmts SET image_type = 'image/png' where image_type IS NULL"
-        .format(schema=schema)
+        "UPDATE ONLY {schema}.layer_wmts SET image_type = 'image/png' where image_type IS NULL".format(
+            schema=schema
+        )
     )
-    op.alter_column('layer_wmts', 'image_type', nullable=False, schema=schema)
-    op.alter_column('layer_wms', 'ogc_server_id', nullable=False, schema=schema)
-    op.alter_column('layer_wms', 'layer', nullable=False, schema=schema)
+    op.alter_column("layer_wmts", "image_type", nullable=False, schema=schema)
+    op.alter_column("layer_wms", "ogc_server_id", nullable=False, schema=schema)
+    op.alter_column("layer_wms", "layer", nullable=False, schema=schema)
     op.execute(
-        "UPDATE ONLY {schema}.layer_wms SET time_mode = 'disabled' where time_mode IS NULL"
-        .format(schema=schema)
+        "UPDATE ONLY {schema}.layer_wms SET time_mode = 'disabled' where time_mode IS NULL".format(
+            schema=schema
+        )
     )
-    op.alter_column('layer_wms', 'time_mode', nullable=False, schema=schema)
+    op.alter_column("layer_wms", "time_mode", nullable=False, schema=schema)
     op.execute(
-        "UPDATE ONLY {schema}.layer_wms SET time_widget = 'slider' where time_widget IS NULL"
-        .format(schema=schema)
+        "UPDATE ONLY {schema}.layer_wms SET time_widget = 'slider' where time_widget IS NULL".format(
+            schema=schema
+        )
     )
-    op.alter_column('layer_wms', 'time_widget', nullable=False, schema=schema)
+    op.alter_column("layer_wms", "time_widget", nullable=False, schema=schema)
     op.execute(
-        "UPDATE ONLY {schema}.ogc_server SET image_type = 'image/png' where image_type IS NULL"
-        .format(schema=schema)
+        "UPDATE ONLY {schema}.ogc_server SET image_type = 'image/png' where image_type IS NULL".format(
+            schema=schema
+        )
     )
-    op.alter_column('ogc_server', 'image_type', nullable=False, schema=schema)
+    op.alter_column("ogc_server", "image_type", nullable=False, schema=schema)
     op.execute(
-        "UPDATE ONLY {schema}.ogc_server SET type = 'mapserver' where type IS NULL"
-        .format(schema=schema)
+        "UPDATE ONLY {schema}.ogc_server SET type = 'mapserver' where type IS NULL".format(schema=schema)
     )
-    op.alter_column('ogc_server', 'type', nullable=False, schema=schema)
+    op.alter_column("ogc_server", "type", nullable=False, schema=schema)
     op.execute(
-        "UPDATE ONLY {schema}.ogc_server SET auth = 'Standard auth' where auth IS NULL"
-        .format(schema=schema)
+        "UPDATE ONLY {schema}.ogc_server SET auth = 'Standard auth' where auth IS NULL".format(schema=schema)
     )
-    op.alter_column('ogc_server', 'auth', nullable=False, schema=schema)
+    op.alter_column("ogc_server", "auth", nullable=False, schema=schema)
 
 
 def downgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
-    op.alter_column('layer_wmts', 'url', nullable=True, schema=schema)
-    op.alter_column('layer_wmts', 'layer', nullable=True, schema=schema)
-    op.alter_column('layer_wmts', 'image_type', nullable=True, schema=schema)
-    op.alter_column('layer_wms', 'ogc_server_id', nullable=True, schema=schema)
-    op.alter_column('layer_wms', 'layer', nullable=True, schema=schema)
-    op.alter_column('layer_wms', 'time_mode', nullable=True, schema=schema)
-    op.alter_column('layer_wms', 'time_widget', nullable=True, schema=schema)
-    op.alter_column('ogc_server', 'image_type', nullable=True, schema=schema)
-    op.alter_column('ogc_server', 'type', nullable=True, schema=schema)
-    op.alter_column('ogc_server', 'auth', nullable=True, schema=schema)
+    op.alter_column("layer_wmts", "url", nullable=True, schema=schema)
+    op.alter_column("layer_wmts", "layer", nullable=True, schema=schema)
+    op.alter_column("layer_wmts", "image_type", nullable=True, schema=schema)
+    op.alter_column("layer_wms", "ogc_server_id", nullable=True, schema=schema)
+    op.alter_column("layer_wms", "layer", nullable=True, schema=schema)
+    op.alter_column("layer_wms", "time_mode", nullable=True, schema=schema)
+    op.alter_column("layer_wms", "time_widget", nullable=True, schema=schema)
+    op.alter_column("ogc_server", "image_type", nullable=True, schema=schema)
+    op.alter_column("ogc_server", "type", nullable=True, schema=schema)
+    op.alter_column("ogc_server", "auth", nullable=True, schema=schema)

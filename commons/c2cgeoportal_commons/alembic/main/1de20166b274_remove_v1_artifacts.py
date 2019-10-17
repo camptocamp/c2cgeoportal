@@ -40,49 +40,47 @@ from sqlalchemy.types import Unicode, Integer, Boolean, Float
 from c2c.template.config import config
 
 # revision identifiers, used by Alembic.
-revision = '1de20166b274'
-down_revision = 'e85afd327ab3'
+revision = "1de20166b274"
+down_revision = "e85afd327ab3"
 branch_labels = None
 depends_on = None
 
 
 def upgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
-    op.drop_table('layerv1', schema=schema)
+    op.drop_table("layerv1", schema=schema)
 
 
 def downgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
     op.create_table(
-        'layerv1',
-        Column(
-            'id', Integer, ForeignKey(schema + '.layer.id', ondelete='cascade'), primary_key=True
-        ),
-        Column('is_checked', Boolean, default=True),
-        Column('icon', Unicode),
-        Column('layer_type', Unicode(12)),
-        Column('url', Unicode),
-        Column('image_type', Unicode(10)),
-        Column('style', Unicode),
-        Column('dimensions', Unicode),
-        Column('matrix_set', Unicode),
-        Column('wms_url', Unicode),
-        Column('wms_layers', Unicode),
-        Column('query_layers', Unicode),
-        Column('kml', Unicode),
-        Column('is_single_tile', Boolean),
-        Column('legend', Boolean, default=True),
-        Column('legend_image', Unicode),
-        Column('legend_rule', Unicode),
-        Column('is_legend_expanded', Boolean, default=False),
-        Column('min_resolution', Float),
-        Column('max_resolution', Float),
-        Column('disclaimer', Unicode),
-        Column('identifier_attribute_field', Unicode),
-        Column('time_mode', Unicode(8)),
-        Column('time_widget', Unicode(10), default='slider'),
-        Column('layer', Unicode),
+        "layerv1",
+        Column("id", Integer, ForeignKey(schema + ".layer.id", ondelete="cascade"), primary_key=True),
+        Column("is_checked", Boolean, default=True),
+        Column("icon", Unicode),
+        Column("layer_type", Unicode(12)),
+        Column("url", Unicode),
+        Column("image_type", Unicode(10)),
+        Column("style", Unicode),
+        Column("dimensions", Unicode),
+        Column("matrix_set", Unicode),
+        Column("wms_url", Unicode),
+        Column("wms_layers", Unicode),
+        Column("query_layers", Unicode),
+        Column("kml", Unicode),
+        Column("is_single_tile", Boolean),
+        Column("legend", Boolean, default=True),
+        Column("legend_image", Unicode),
+        Column("legend_rule", Unicode),
+        Column("is_legend_expanded", Boolean, default=False),
+        Column("min_resolution", Float),
+        Column("max_resolution", Float),
+        Column("disclaimer", Unicode),
+        Column("identifier_attribute_field", Unicode),
+        Column("time_mode", Unicode(8)),
+        Column("time_widget", Unicode(10), default="slider"),
+        Column("layer", Unicode),
         schema=schema,
     )

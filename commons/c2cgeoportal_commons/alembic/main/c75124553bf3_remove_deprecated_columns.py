@@ -40,21 +40,21 @@ from sqlalchemy import Column
 from sqlalchemy.types import Boolean
 
 # revision identifiers, used by Alembic.
-revision = 'c75124553bf3'
-down_revision = '338b57593823'
+revision = "c75124553bf3"
+down_revision = "338b57593823"
 branch_labels = None
 depends_on = None
 
 
 def upgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
-    op.drop_column('layergroup', 'is_internal_wms', schema=schema)
-    op.drop_column('layergroup', 'is_base_layer', schema=schema)
+    op.drop_column("layergroup", "is_internal_wms", schema=schema)
+    op.drop_column("layergroup", "is_base_layer", schema=schema)
 
 
 def downgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
-    op.add_column('layergroup', Column('is_internal_wms', Boolean), schema=schema)
-    op.add_column('layergroup', Column('is_base_layer', Boolean), schema=schema)
+    op.add_column("layergroup", Column("is_internal_wms", Boolean), schema=schema)
+    op.add_column("layergroup", Column("is_base_layer", Boolean), schema=schema)

@@ -39,17 +39,17 @@ from sqlalchemy import Column, Unicode
 from c2c.template.config import config
 
 # revision identifiers, used by Alembic.
-revision = '164ac0819a61'
-down_revision = '20137477bd02'
+revision = "164ac0819a61"
+down_revision = "20137477bd02"
 
 
 def upgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
-    op.add_column('layer_wmts', Column('image_type', Unicode(10)), schema=schema)
+    op.add_column("layer_wmts", Column("image_type", Unicode(10)), schema=schema)
 
 
 def downgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
-    op.drop_column('layer_wmts', 'image_type', schema=schema)
+    op.drop_column("layer_wmts", "image_type", schema=schema)

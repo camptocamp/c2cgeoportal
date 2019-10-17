@@ -40,38 +40,31 @@ from sqlalchemy import Column, MetaData, Table
 from sqlalchemy.types import Unicode
 
 # revision identifiers, used by Alembic.
-revision = '028477929d13'
-down_revision = 'eeb345672454'
+revision = "028477929d13"
+down_revision = "eeb345672454"
 branch_labels = None
 depends_on = None
 
 
 def upgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
-    role = Table(
-        'role', MetaData(),
-        Column('name', Unicode),
-        Column('description', Unicode),
-        schema=schema,
+    role = Table("role", MetaData(), Column("name", Unicode), Column("description", Unicode), schema=schema)
+    op.bulk_insert(
+        role,
+        [
+            {"name": name, "description": description}
+            for name, description in (
+                ("anonymous", "Used to define default functionalities for all the users"),
+                ("registered", "Used to define default functionalities for registered users"),
+                ("intranet", "Used to define default functionalities for accesses from the intranet"),
+            )
+        ],
     )
-    op.bulk_insert(role, [
-        {'name': name, 'description': description}
-        for name, description in (
-            ('anonymous', 'Used to define default functionalities for all the users'),
-            ('registered', 'Used to define default functionalities for registered users'),
-            ('intranet', 'Used to define default functionalities for accesses from the intranet'),
-        )
-    ])
 
 
 def downgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
-    for name in ('anonymous', 'registered', 'intranet'):
-        op.execute(
-            "DELETE FROM {schema}.\"role\" "
-            "WHERE name = '{name}'".format(
-                name=name, schema=schema
-            )
-        )
+    for name in ("anonymous", "registered", "intranet"):
+        op.execute('DELETE FROM {schema}."role" ' "WHERE name = '{name}'".format(name=name, schema=schema))

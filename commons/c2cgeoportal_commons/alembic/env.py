@@ -39,17 +39,19 @@ fileConfig(context.config.config_file_name)
 
 
 def get_config():
-    config.init(context.config.get_main_option('app.cfg'))
+    config.init(context.config.get_main_option("app.cfg"))
     settings = {}
     settings.update(config.get_config())
-    alembic_name = context.config.get_main_option('type')
-    schema_config_name = 'schema{}'.format('_{}'.format(alembic_name) if alembic_name != 'main' else '')
-    settings.update({
-        'script_location': context.config.get_main_option('script_location'),
-        'version_table': context.config.get_main_option('version_table'),
-        'version_locations': context.config.get_main_option('version_locations'),
-        'version_table_schema': config[schema_config_name],
-    })
+    alembic_name = context.config.get_main_option("type")
+    schema_config_name = "schema{}".format("_{}".format(alembic_name) if alembic_name != "main" else "")
+    settings.update(
+        {
+            "script_location": context.config.get_main_option("script_location"),
+            "version_table": context.config.get_main_option("version_table"),
+            "version_locations": context.config.get_main_option("version_locations"),
+            "version_table_schema": config[schema_config_name],
+        }
+    )
     return settings
 
 
@@ -67,7 +69,7 @@ def run_migrations_offline():  # pragma: no cover
 
     """
     conf = get_config()
-    context.configure(url=conf['sqlalchemy.url'], **conf)
+    context.configure(url=conf["sqlalchemy.url"], **conf)
 
     with context.begin_transaction():
         context.run_migrations()
@@ -85,30 +87,24 @@ def run_migrations_online():
 
     # Autogenerate config
     _schema = False
-    alembic_name = context.config.get_main_option('type')
-    if alembic_name == 'main':
+    alembic_name = context.config.get_main_option("type")
+    if alembic_name == "main":
         from c2cgeoportal_commons.models.main import Base, _schema
-    elif alembic_name == 'static':
+    elif alembic_name == "static":
         from c2cgeoportal_commons.models.static import Base, _schema
 
     def include_object(obj, name, type_, reflected, compare_to):  # pylint: disable=unused-argument
-        if type_ == 'table':
+        if type_ == "table":
             return obj.schema == _schema
         else:
             return obj.table.schema == _schema
 
     if _schema:
-        conf.update({
-            'target_metadata': Base.metadata,
-            'include_schemas': True,
-            'include_object': include_object
-        })
+        conf.update(
+            {"target_metadata": Base.metadata, "include_schemas": True, "include_object": include_object}
+        )
 
-    engine = engine_from_config(
-        conf,
-        prefix='sqlalchemy.',
-        poolclass=pool.NullPool
-    )
+    engine = engine_from_config(conf, prefix="sqlalchemy.", poolclass=pool.NullPool)
     connection = engine.connect()
     context.configure(connection=connection, **conf)
 

@@ -36,15 +36,19 @@ import requests
 from pyramid.httpexceptions import HTTPBadGateway, exception_response
 from pyramid.response import Response
 
-from c2cgeoportal_geoportal.lib.caching import (NO_CACHE, PRIVATE_CACHE, PUBLIC_CACHE, get_region,
-                                                set_common_headers)
+from c2cgeoportal_geoportal.lib.caching import (
+    NO_CACHE,
+    PRIVATE_CACHE,
+    PUBLIC_CACHE,
+    get_region,
+    set_common_headers,
+)
 
 LOG = logging.getLogger(__name__)
-CACHE_REGION = get_region('std')
+CACHE_REGION = get_region("std")
 
 
 class Proxy(object):
-
     def __init__(self, request):
         self.request = request
         self.host_forward_host = request.registry.settings["host_forward_host"]
@@ -62,13 +66,11 @@ class Proxy(object):
 
         if parsed_url.port is None:
             url = "{0!s}://{1!s}{2!s}?{3!s}".format(
-                parsed_url.scheme, parsed_url.hostname,
-                parsed_url.path, query_string
+                parsed_url.scheme, parsed_url.hostname, parsed_url.path, query_string
             )
         else:  # pragma: no cover
             url = "{0!s}://{1!s}:{2:d}{3!s}?{4!s}".format(
-                parsed_url.scheme, parsed_url.hostname, parsed_url.port,
-                parsed_url.path, query_string
+                parsed_url.scheme, parsed_url.hostname, parsed_url.port, parsed_url.path, query_string
             )
 
         LOG.info("Send query to URL:\n%s.", url)
@@ -85,7 +87,7 @@ class Proxy(object):
 
         # Forward the request tracking ID to the other service. This will allow to follow the logs belonging
         # to a single request coming from the user
-        headers.setdefault('X-Request-ID', self.request.c2c_request_id)
+        headers.setdefault("X-Request-ID", self.request.c2c_request_id)
 
         if not cache:
             headers["Cache-Control"] = "no-cache"
@@ -95,30 +97,19 @@ class Proxy(object):
 
         try:
             if method in ("POST", "PUT"):
-                response = requests.request(
-                    method, url, data=body, headers=headers, **self.http_options
-                )
+                response = requests.request(method, url, data=body, headers=headers, **self.http_options)
             else:
-                response = requests.request(
-                    method, url, headers=headers, **self.http_options
-                )
+                response = requests.request(method, url, headers=headers, **self.http_options)
         except Exception:  # pragma: no cover
-            errors = [
-                "Error '%s' while getting the URL:",
-                "%s",
-                "Method: %s",
-                "--- With headers ---",
-                "%s",
-            ]
+            errors = ["Error '%s' while getting the URL:", "%s", "Method: %s", "--- With headers ---", "%s"]
             args = [
-                sys.exc_info()[0], url, method,
+                sys.exc_info()[0],
+                url,
+                method,
                 "\n".join(["{}: {}".format(*h) for h in list(headers.items())]),
             ]
             if method in ("POST", "PUT"):
-                errors += [
-                    "--- Query with body ---",
-                    "%s",
-                ]
+                errors += ["--- Query with body ---", "%s"]
                 args.append(body.decode("utf-8"))
             LOG.error("\n".join(errors), *args, exc_info=True)
 
@@ -134,19 +125,16 @@ class Proxy(object):
                 "%s",
             ]
             args = [
-                response.reason, url, response.status_code, method,
+                response.reason,
+                url,
+                response.status_code,
+                method,
                 "\n".join(["{}: {}".format(*h) for h in list(headers.items())]),
             ]
             if method in ("POST", "PUT"):
-                errors += [
-                    "--- Query with body ---",
-                    "%s",
-                ]
+                errors += ["--- Query with body ---", "%s"]
                 args.append(body.decode("utf-8"))
-            errors += [
-                "--- Return content ---",
-                "%s",
-            ]
+            errors += ["--- Return content ---", "%s"]
             args.append(response.text)
             LOG.error("\n".join(errors), *args)
 
@@ -161,30 +149,30 @@ class Proxy(object):
         return self._proxy(*args, cache=True, **kwargs)
 
     def _proxy_response(
-        self, service_name, url,
-        headers_update=None, public=False, **kwargs
+        self, service_name, url, headers_update=None, public=False, **kwargs
     ):  # pragma: no cover
         if headers_update is None:
             headers_update = {}
         cache = kwargs.get("cache", False)
         if cache is True:
-            response = self._proxy_cache(
-                url,
-                self.request.method,
-                **kwargs
-            )
+            response = self._proxy_cache(url, self.request.method, **kwargs)
         else:
             response = self._proxy(url, **kwargs)
 
         cache_control = (PUBLIC_CACHE if public else PRIVATE_CACHE) if cache else NO_CACHE
         return self._build_response(
-            response, response.content, cache_control, service_name,
-            headers_update=headers_update
+            response, response.content, cache_control, service_name, headers_update=headers_update
         )
 
     def _build_response(
-        self, response, content, cache_control, service_name,
-        headers=None, headers_update=None, content_type=None
+        self,
+        response,
+        content,
+        cache_control,
+        service_name,
+        headers=None,
+        headers_update=None,
+        content_type=None,
     ):
         if isinstance(content, str):
             content = content.encode("utf-8")
@@ -197,23 +185,19 @@ class Proxy(object):
         # https://www.python.org/dev/peps/pep-3333/#other-http-features
         # chapter 13.5.1 at https://www.faqs.org/rfcs/rfc2616.html
         for header in [
-                "Connection",
-                "Keep-Alive",
-                "Proxy-Authenticate",
-                "Proxy-Authorization",
-                "te",
-                "Trailers",
-                "Transfer-Encoding",
-                "Upgrade",
+            "Connection",
+            "Keep-Alive",
+            "Proxy-Authenticate",
+            "Proxy-Authorization",
+            "te",
+            "Trailers",
+            "Transfer-Encoding",
+            "Upgrade",
         ]:  # pragma: no cover
             if header in headers:
                 del headers[header]
         # Other problematic headers
-        for header in [
-            "Content-Length",
-            "Content-Location",
-            "Content-Encoding",
-        ]:  # pragma: no cover
+        for header in ["Content-Length", "Content-Location", "Content-Encoding"]:  # pragma: no cover
             if header in headers:
                 del headers[header]
 
@@ -222,16 +206,12 @@ class Proxy(object):
         response = Response(content, status=response.status_code, headers=headers)
 
         return set_common_headers(
-            self.request, service_name, cache_control,
-            response=response,
-            content_type=content_type,
+            self.request, service_name, cache_control, response=response, content_type=content_type
         )
 
     @staticmethod
     def _get_lower_params(params):
-        return dict(
-            (k.lower(), str(v).lower()) for k, v in params.items()
-        )
+        return dict((k.lower(), str(v).lower()) for k, v in params.items())
 
     def _get_headers(self):
         headers = self.request.headers

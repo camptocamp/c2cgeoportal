@@ -7,7 +7,7 @@ from sqlalchemy.engine import Engine
 from sqlalchemy.orm import sessionmaker, Session, configure_mappers
 
 
-def get_engine(settings: dict, prefix: str = 'sqlalchemy.') -> Engine:
+def get_engine(settings: dict, prefix: str = "sqlalchemy.") -> Engine:
     return engine_from_config(settings, prefix)
 
 
@@ -39,8 +39,7 @@ def get_tm_session(session_factory: sessionmaker, transaction_manager: Transacti
 
     """
     dbsession = session_factory()
-    zope.sqlalchemy.register(
-        dbsession, transaction_manager=transaction_manager)
+    zope.sqlalchemy.register(dbsession, transaction_manager=transaction_manager)
     return dbsession
 
 
@@ -58,8 +57,9 @@ def generate_mappers() -> None:
     configure_mappers()
 
 
-def get_session(settings: dict, transaction_manager: TransactionManager, prefix: str = 'sqlalchemy.'
-                ) -> Session:
+def get_session(
+    settings: dict, transaction_manager: TransactionManager, prefix: str = "sqlalchemy."
+) -> Session:
     configure_mappers()
     engine = get_engine(settings, prefix)
     session_factory = get_session_factory(engine)

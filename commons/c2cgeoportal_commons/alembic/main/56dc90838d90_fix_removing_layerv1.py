@@ -38,20 +38,22 @@ from alembic import op
 from c2c.template.config import config
 
 # revision identifiers, used by Alembic.
-revision = '56dc90838d90'
-down_revision = '1de20166b274'
+revision = "56dc90838d90"
+down_revision = "1de20166b274"
 branch_labels = None
 depends_on = None
 
 
 def upgrade():
-    schema = config['schema']
+    schema = config["schema"]
 
-    op.execute((
-        "DELETE from {schema}.layer_restrictionarea WHERE layer_id IN ("
-        "SELECT id from {schema}.treeitem WHERE type = 'layerv1'"
-        ");"
-    ).format(schema=schema))
+    op.execute(
+        (
+            "DELETE from {schema}.layer_restrictionarea WHERE layer_id IN ("
+            "SELECT id from {schema}.treeitem WHERE type = 'layerv1'"
+            ");"
+        ).format(schema=schema)
+    )
     op.execute("DELETE from {schema}.treeitem WHERE type = 'layerv1';".format(schema=schema))
 
 

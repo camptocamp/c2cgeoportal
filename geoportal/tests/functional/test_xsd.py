@@ -33,9 +33,7 @@
 from unittest import TestCase
 from unittest.mock import Mock, patch
 
-from tests.functional import (  # noqa
-    teardown_common as teardown_module,
-    setup_common as setup_module)
+from tests.functional import teardown_common as teardown_module, setup_common as setup_module  # noqa
 
 
 class TestXSDGenerator(TestCase):
@@ -72,15 +70,13 @@ class TestXSDGenerator(TestCase):
             child1_id = Column(types.Integer, ForeignKey("child.id"))
             child2_id = Column(types.Integer, ForeignKey("child.id"))
             other = Column(types.String)
-            readonly = Column(types.String, info={
-                'readonly': True
-            })
+            readonly = Column(types.String, info={"readonly": True})
             child1_ = relationship(Child, primaryjoin=(child1_id == Child.id))
             child1 = _AssociationProxy("child1_", "name")
-            child1_id.info['association_proxy'] = 'child1'
+            child1_id.info["association_proxy"] = "child1"
             child2_ = relationship(Child, primaryjoin=(child2_id == Child.id))
             child2 = _AssociationProxy("child2_", "name", nullable=False)
-            child2_id.info['association_proxy'] = 'child2'
+            child2_id.info["association_proxy"] = "child2"
 
         Child.__table__.create()
         Parent.__table__.create()
@@ -93,30 +89,29 @@ class TestXSDGenerator(TestCase):
 
     def teardown_method(self, _):
         import transaction
+
         transaction.commit()
 
         if self._tables is not None:
             for table in self._tables:
                 table.drop()
 
-    @patch('c2cgeoportal_geoportal.lib.xsd.XSDGenerator.add_column_property_xsd')
+    @patch("c2cgeoportal_geoportal.lib.xsd.XSDGenerator.add_column_property_xsd")
     def test_add_class_properties_xsd_column_order(self, column_mock):
         from c2cgeoportal_geoportal.lib.xsd import XSDGenerator
+
         tb = Mock()
-        self.cls.__attributes_order__ = ['child1_id', 'other']
+        self.cls.__attributes_order__ = ["child1_id", "other"]
 
         gen = XSDGenerator(include_foreign_keys=True)
         gen.add_class_properties_xsd(tb, self.cls)
 
-        called_properties = [
-            kall[0][1].class_attribute.name
-            for kall in column_mock.call_args_list
-        ]
+        called_properties = [kall[0][1].class_attribute.name for kall in column_mock.call_args_list]
         assert len(called_properties) == 5
-        assert self.cls.__attributes_order__ == called_properties[:len(self.cls.__attributes_order__)]
+        assert self.cls.__attributes_order__ == called_properties[: len(self.cls.__attributes_order__)]
 
-    @patch('c2cgeoportal_geoportal.lib.xsd.XSDGenerator.add_association_proxy_xsd')
-    @patch('c2cgeoportal_geoportal.lib.xsd.PapyrusXSDGenerator.add_column_property_xsd')
+    @patch("c2cgeoportal_geoportal.lib.xsd.XSDGenerator.add_association_proxy_xsd")
+    @patch("c2cgeoportal_geoportal.lib.xsd.PapyrusXSDGenerator.add_column_property_xsd")
     def test_add_column_property_xsd(self, column_mock, proxy_mock):
         from c2cgeoportal_geoportal.lib.xsd import XSDGenerator
         from sqlalchemy.orm.util import class_mapper
@@ -126,11 +121,11 @@ class TestXSDGenerator(TestCase):
         tb = Mock()
         mapper = class_mapper(self.cls)
 
-        p = mapper.attrs['child1_id']
+        p = mapper.attrs["child1_id"]
         gen.add_column_property_xsd(tb, p)
         proxy_mock.assert_called_once_with(tb, p)
 
-        p = mapper.attrs['other']
+        p = mapper.attrs["other"]
         gen.add_column_property_xsd(tb, p)
         column_mock.assert_called_once_with(tb, p)
 
@@ -143,19 +138,20 @@ class TestXSDGenerator(TestCase):
         mapper = class_mapper(self.cls)
         tb = TreeBuilder()
 
-        p = mapper.attrs['readonly']
+        p = mapper.attrs["readonly"]
         gen.add_column_property_xsd(tb, p)
         e = tb.close()
 
         self.assertEqual(
             '<xsd:element minOccurs="0" name="readonly" nillable="true" type="xsd:string">'
-            '<xsd:annotation>'
-            '<xsd:appinfo>'
+            "<xsd:annotation>"
+            "<xsd:appinfo>"
             '<readonly value="true" />'
-            '</xsd:appinfo>'
-            '</xsd:annotation>'
-            '</xsd:element>',
-            tostring(e).decode("utf-8"))
+            "</xsd:appinfo>"
+            "</xsd:annotation>"
+            "</xsd:element>",
+            tostring(e).decode("utf-8"),
+        )
 
     def test_add_association_proxy_xsd(self):
         from xml.etree.ElementTree import TreeBuilder, tostring
@@ -167,31 +163,33 @@ class TestXSDGenerator(TestCase):
         mapper = class_mapper(self.cls)
 
         tb = TreeBuilder()
-        gen.add_association_proxy_xsd(tb, mapper.attrs['child1_id'])
+        gen.add_association_proxy_xsd(tb, mapper.attrs["child1_id"])
         e = tb.close()
 
         self.assertEqual(
             '<xsd:element minOccurs="0" name="child1" nillable="true">'
-            '<xsd:simpleType>'
+            "<xsd:simpleType>"
             '<xsd:restriction base="xsd:string">'
             '<xsd:enumeration value="foo" />'
             '<xsd:enumeration value="bar" />'
-            '</xsd:restriction>'
-            '</xsd:simpleType>'
-            '</xsd:element>',
-            tostring(e).decode("utf-8"))
+            "</xsd:restriction>"
+            "</xsd:simpleType>"
+            "</xsd:element>",
+            tostring(e).decode("utf-8"),
+        )
 
         tb = TreeBuilder()
-        gen.add_association_proxy_xsd(tb, mapper.attrs['child2_id'])
+        gen.add_association_proxy_xsd(tb, mapper.attrs["child2_id"])
         e = tb.close()
 
         self.assertEqual(
             '<xsd:element name="child2">'
-            '<xsd:simpleType>'
+            "<xsd:simpleType>"
             '<xsd:restriction base="xsd:string">'
             '<xsd:enumeration value="foo" />'
             '<xsd:enumeration value="bar" />'
-            '</xsd:restriction>'
-            '</xsd:simpleType>'
-            '</xsd:element>',
-            tostring(e).decode("utf-8"))
+            "</xsd:restriction>"
+            "</xsd:simpleType>"
+            "</xsd:element>",
+            tostring(e).decode("utf-8"),
+        )
