@@ -1240,9 +1240,8 @@ class Entry:
     @view_config(route_name="loginuser", renderer="json")
     def loginuser(self):
         self._referer_log()
-
+        LOG.info("Client IP adresse: %s", self.request.client_addr)
         set_common_headers(self.request, "login", NO_CACHE)
-
         return self._user()
 
     @view_config(route_name="loginchange", renderer="json")
