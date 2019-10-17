@@ -1117,12 +1117,10 @@ class Entry:
         if not hasattr(self.request, "is_valid_referer"):
             self.request.is_valid_referer = is_valid_referer(self.request)
         if not self.request.is_valid_referer:
-            LOG.error("Invalid referer for %s: %s", self.request.path_qs, repr(self.request.referer))
+            LOG.info("Invalid referer for %s: %s", self.request.path_qs, repr(self.request.referer))
 
     @view_config(context=HTTPForbidden, renderer="login.html")
     def loginform403(self):
-        self._referer_log()
-
         if self.request.authenticated_userid:
             return HTTPUnauthorized()  # pragma: no cover
 
@@ -1132,8 +1130,6 @@ class Entry:
 
     @view_config(route_name="loginform", renderer="login.html")
     def loginform(self):
-        self._referer_log()
-
         set_common_headers(self.request, "login", PUBLIC_CACHE)
 
         return {"lang": self.lang, "came_from": self.request.params.get("came_from") or "/"}
@@ -1239,10 +1235,8 @@ class Entry:
 
     @view_config(route_name="loginuser", renderer="json")
     def loginuser(self):
-        self._referer_log()
-
+        LOG.info("Client IP adresse: %s", self.request.client_addr)
         set_common_headers(self.request, "login", NO_CACHE)
-
         return self._user()
 
     @view_config(route_name="loginchange", renderer="json")
