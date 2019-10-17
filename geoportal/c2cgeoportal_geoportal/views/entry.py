@@ -1117,7 +1117,7 @@ class Entry:
         if not hasattr(self.request, "is_valid_referer"):
             self.request.is_valid_referer = is_valid_referer(self.request)
         if not self.request.is_valid_referer:
-            LOG.error("Invalid referer for %s: %s", self.request.path_qs, repr(self.request.referer))
+            LOG.info("Invalid referer for %s: %s", self.request.path_qs, repr(self.request.referer))
 
     @view_config(context=HTTPForbidden, renderer="login.html")
     def loginform403(self):
