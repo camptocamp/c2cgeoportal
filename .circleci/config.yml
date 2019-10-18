@@ -255,9 +255,6 @@ jobs:
       - run: *python
       - checkout
       - run: *init-git
-      - run:
-          name: Clean Docker hub tags
-          command: ci/clean-dockerhub-tags
       - deploy: *publish-docker-pip
       - deploy:
           name: Push to Transifex
@@ -275,6 +272,9 @@ jobs:
           name: Publish documentation to GitHub.io
           command: |
             ci/publish-documentation
+      - run:
+          name: Clean Docker hub tags
+          command: ci/clean-dockerhub-tags
       - run: *notify
 
 workflows:
