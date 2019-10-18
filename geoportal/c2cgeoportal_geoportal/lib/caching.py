@@ -33,7 +33,7 @@ import logging
 from typing import Any, Dict  # noqa
 
 from dogpile.cache.region import make_region
-from dogpile.cache.util import compat
+from dogpile.cache.util import compat, sha1_mangle_key
 from sqlalchemy.orm.util import identity_key
 
 LOG = logging.getLogger(__name__)
@@ -68,11 +68,12 @@ def keygen_function(namespace, function):
     def generate_key(*args, **kw):
         if kw:  # pragma: no cover
             raise ValueError("key creation function does not accept keyword arguments.")
-        parts = [namespace]
+        parts = []
+        parts.extend(namespace)
         if ignore_first_argument:
             args = args[1:]
         parts.extend(map(compat.text_type, map(map_dbobject, args)))
-        return hash(tuple(parts))
+        return '|'.join(parts)
 
     return generate_key
 
@@ -97,7 +98,7 @@ def get_region(region):
     Return a cache region.
     """
     if region not in _REGION:
-        _REGION[region] = make_region(function_key_generator=keygen_function)
+        _REGION[region] = make_region(function_key_generator=keygen_function, key_mangler=sha1_mangle_key)
     return _REGION[region]
 
 
