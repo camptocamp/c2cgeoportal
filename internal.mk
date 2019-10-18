@@ -12,23 +12,26 @@ TX_DEPENDENCIES = $(HOME)/.transifexrc .tx/config
 LANGUAGES = fr de it
 export LANGUAGES
 ALL_LANGUAGES = en $(LANGUAGES)
-L10N_PO_FILES = $(addprefix geoportal/c2cgeoportal_geoportal/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal_geoportal.po, $(LANGUAGES))) \
-	$(addprefix geoportal/c2cgeoportal_geoportal/locale/,$(addsuffix /LC_MESSAGES/ngeo.po, $(LANGUAGES))) \
-	$(addprefix geoportal/c2cgeoportal_geoportal/locale/,$(addsuffix /LC_MESSAGES/gmf.po, $(LANGUAGES))) \
-	$(addprefix geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/locale/,$(addsuffix /LC_MESSAGES/+package+_geoportal-client.po, $(ALL_LANGUAGES))) \
+GEOPORTAL_PO_FILES = $(addprefix geoportal/c2cgeoportal_geoportal/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal_geoportal.po, $(LANGUAGES)))
+NGEO_PO_FILES = $(addprefix geoportal/c2cgeoportal_geoportal/locale/,$(addsuffix /LC_MESSAGES/ngeo.po, $(LANGUAGES)))
+GMF_PO_FILES = $(addprefix geoportal/c2cgeoportal_geoportal/locale/,$(addsuffix /LC_MESSAGES/gmf.po, $(LANGUAGES)))
+ADMIN_PO_FILES = $(addprefix admin/c2cgeoportal_admin/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal_admin.po, $(LANGUAGES)))
+APPLICATION_PO_FILES = $(addprefix geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/locale/,$(addsuffix /LC_MESSAGES/+package+_geoportal-client.po, $(ALL_LANGUAGES)))
+PYTHON_PO_FILES = $(GEOPORTAL_PO_FILES) $(ADMIN_PO_FILES)
+JAVASCRIPT_PO_FILES = $(NGEO_PO_FILES) $(GMF_PO_FILES) $(APPLICATION_PO_FILES)
+TRANSIFEX_PO_FILES = $(PYTHON_PO_FILES) $(JAVASCRIPT_PO_FILES)
+L10N_PO_FILES = $(JAVASCRIPT_PO_FILES) \
 	geoportal/c2cgeoportal_geoportal/locale/c2cgeoportal_geoportal.pot \
 	admin/c2cgeoportal_admin/locale/c2cgeoportal_admin.pot
-PO_FILES = $(addprefix geoportal/c2cgeoportal_geoportal/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal_geoportal.po, $(LANGUAGES)))
-PO_FILES += $(addprefix admin/c2cgeoportal_admin/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal_admin.po, $(LANGUAGES)))
-MO_FILES = $(addsuffix .mo,$(basename $(PO_FILES)))
-SRC_FILES = $(shell ls -1 geoportal/c2cgeoportal_geoportal/*.py) \
-	$(shell find geoportal/c2cgeoportal_geoportal/lib -name "*.py" -print) \
-	$(shell find geoportal/c2cgeoportal_geoportal/views -name "*.py" -print) \
-	$(filter-out geoportal/c2cgeoportal_geoportal/scripts/theme2fts.py, $(shell find geoportal/c2cgeoportal_geoportal/scripts -name "*.py" -print))
-ADMIN_SRC_FILES = $(shell ls -1 commons/c2cgeoportal_commons/models/*.py) \
-	$(shell find admin/c2cgeoportal_admin -name "*.py" -print) \
-	$(shell find admin/c2cgeoportal_admin/templates -name "*.jinja2" -print) \
-	$(shell find admin/c2cgeoportal_admin/templates/widgets -name "*.pt" -print)
+MO_FILES = $(addsuffix .mo,$(basename $(PYTHON_PO_FILES)))
+SRC_FILES = $(shell ls -1 geoportal/c2cgeoportal_geoportal/*.py 2> /dev/null) \
+	$(shell find geoportal/c2cgeoportal_geoportal/lib -name "*.py" -print 2> /dev/null) \
+	$(shell find geoportal/c2cgeoportal_geoportal/views -name "*.py" -print 2> /dev/null) \
+	$(filter-out geoportal/c2cgeoportal_geoportal/scripts/theme2fts.py, $(shell find geoportal/c2cgeoportal_geoportal/scripts -name "*.py" -print 2> /dev/null))
+ADMIN_SRC_FILES = $(shell ls -1 commons/c2cgeoportal_commons/models/*.py 2> /dev/null) \
+	$(shell find admin/c2cgeoportal_admin -name "*.py" -print 2> /dev/null) \
+	$(shell find admin/c2cgeoportal_admin/templates -name "*.jinja2" -print 2> /dev/null) \
+	$(shell find admin/c2cgeoportal_admin/templates/widgets -name "*.pt" -print 2> /dev/null)
 
 APPS += desktop mobile iframe_api
 APPS_PACKAGE_PATH = geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal
@@ -53,6 +56,13 @@ APPS_SASS_FILES_ALT += $(addprefix $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/
 APPS_FILES_ALT = $(APPS_HTML_FILES_ALT) $(APPS_JS_FILES_ALT) $(APPS_SASS_FILES_ALT)
 
 API_FILES = $(APPS_PACKAGE_PATH)/static-ngeo/api/api.css $(APPS_PACKAGE_PATH)/static/apihelp
+
+.PHONY: dependencies
+dependencies: $(TRANSIFEX_PO_FILES)
+
+.PHONY: dependencies-touch
+dependencies-touch:
+	touch $(TRANSIFEX_PO_FILES)
 
 .PHONY: build
 build: \
@@ -241,8 +251,8 @@ geoportal/c2cgeoportal_geoportal/scaffolds%update/CONST_create_template/: \
 
 # Templates
 
-/tmp/c2ctemplate-cache.json:
-	c2c-template --vars vars.yaml --get-cache $@
+/tmp/c2ctemplate-cache.json: vars.yaml
+	c2c-template --vars $< --get-cache $@
 
 %: %.mako /tmp/c2ctemplate-cache.json
 	c2c-template --cache /tmp/c2ctemplate-cache.json --engine mako --files $<

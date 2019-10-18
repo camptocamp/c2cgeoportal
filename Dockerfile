@@ -87,11 +87,16 @@ RUN \
 RUN \
   curl --output /opt/jasperreport.xsd http://jasperreports.sourceforge.net/xsd/jasperreport.xsd
 
-COPY . /opt/c2cgeoportal/
+COPY internal.mk vars.yaml /opt/c2cgeoportal/
+COPY .tx/ /opt/c2cgeoportal/.tx/
 WORKDIR /opt/c2cgeoportal/
-RUN mv bin/import-ngeo-apps bin/eval-templates bin/wait-db bin/transifex-init bin/run bin/run-git /usr/bin/
 ARG MAJOR_VERSION
 ENV MAJOR_VERSION=$MAJOR_VERSION
+RUN make --makefile=internal.mk dependencies
+
+COPY . /opt/c2cgeoportal/
+RUN mv bin/import-ngeo-apps bin/eval-templates bin/wait-db bin/transifex-init bin/run bin/run-git /usr/bin/
+RUN make --makefile=internal.mk dependencies-touch
 RUN make --makefile=internal.mk build
 
 ARG VERSION
