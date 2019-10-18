@@ -23,21 +23,33 @@ jobs:
       #     docker_layer_caching: true
 
       # Global simple lint
-      - run: git --no-pager diff --check a6eacf93706d94606fb3c68a671f8254aea48e3b
-      - run: python ci/test-eof-newline
-      - run: python -m pip install --user --requirement=ci/requirements.txt
-      - run: >
-          codespell --quiet-level=2 --check-filenames --ignore-words=spell-ignore-words.txt \
-          $(find -name .git -prune -print)
-      - run: >
-          yamllint --strict --config-file=yamllint.yaml -s
-          $(find -name .git -prune  -or -name changelog.yaml -prune -or
-          \( -name "*.yml" -or -name "*.yaml" \) -print)
+      - run:
+          command: git --no-pager diff --check a6eacf93706d94606fb3c68a671f8254aea48e3b
+          when: always
+      - run:
+          command: python ci/test-eof-newline
+          when: always
+      - run:
+          command: python -m pip install --user --requirement=ci/requirements.txt
+          when: always
+      - run:
+          command: >
+            codespell --quiet-level=2 --check-filenames --ignore-words=spell-ignore-words.txt \
+            $(find -name .git -prune -print)
+          when: always
+      - run:
+          command: >
+            yamllint --strict --config-file=yamllint.yaml -s
+            $(find -name .git -prune  -or -name changelog.yaml -prune -or
+            \( -name "*.yml" -or -name "*.yaml" \) -print)
+          when: always
 
       # Build images
       - run: VERSION=$(ci/release-tag) make build-runner
       - run: VERSION=$(ci/release-tag) make build-tools
-      - run: VERSION=$(ci/release-tag) make checks
+      - run:
+          command: VERSION=$(ci/release-tag) make checks
+          when: always
       - run: VERSION=$(ci/release-tag) make build-config-build
 
       # Build QGIS images
@@ -54,34 +66,43 @@ jobs:
       - run: git checkout CHANGELOG.md ci/changelog.yaml
 
       # Tests
-      - run: make preparetest
+      - run:
+          command: make preparetest
       - run:
           command: docker-compose logs --timestamps
           when: on_fail
       # Similar to: make tests-commons
-      - run: >
-          ci/run-dc-logs docker-compose exec tests coverage run
-          --source=/opt/c2cgeoportal/commons/c2cgeoportal_commons
-          --module pytest --verbose --color=yes --junitxml=/tmp/commons.xml
-          /opt/c2cgeoportal/commons/tests
+      - run:
+          command: >
+            ci/run-dc-logs docker-compose exec tests coverage run
+            --source=/opt/c2cgeoportal/commons/c2cgeoportal_commons
+            --module pytest --verbose --color=yes --junitxml=/tmp/commons.xml
+            /opt/c2cgeoportal/commons/tests
+          when: always
       # Similar to: make tests-geoportal
-      - run: >
-          ci/run-dc-logs docker-compose exec tests coverage run --append
-          --source=/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal
-          --module pytest --verbose --color=yes --junitxml=/tmp/geoportal.xml
-          /opt/c2cgeoportal/geoportal/tests
+      - run:
+          command: >
+            ci/run-dc-logs docker-compose exec tests coverage run --append
+            --source=/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal
+            --module pytest --verbose --color=yes --junitxml=/tmp/geoportal.xml
+            /opt/c2cgeoportal/geoportal/tests
+          when: always
       # Similar to: make tests-admin
-      - run: >
-          ci/run-dc-logs docker-compose exec tests coverage run --append
-          --source=/opt/c2cgeoportal/admin/c2cgeoportal_admin
-          --module pytest --verbose --color=yes --junitxml=/tmp/admin.xml
-          /opt/c2cgeoportal/admin/tests
+      - run:
+          command: >
+            ci/run-dc-logs docker-compose exec tests coverage run --append
+            --source=/opt/c2cgeoportal/admin/c2cgeoportal_admin
+            --module pytest --verbose --color=yes --junitxml=/tmp/admin.xml
+            /opt/c2cgeoportal/admin/tests
+          when: always
       # Similar to: make tests-qgisserver
-      - run: >
-          ci/run-dc-logs docker-compose exec qgisserver-tests coverage run
-          --source=/var/www/plugins/geomapfish_qgisserver
-          --module pytest --verbose --color=yes --junitxml=/tmp/qgis.xml
-          /src/tests/functional
+      - run:
+          command: >
+            ci/run-dc-logs docker-compose exec qgisserver-tests coverage run
+            --source=/var/www/plugins/geomapfish_qgisserver
+            --module pytest --verbose --color=yes --junitxml=/tmp/qgis.xml
+            /src/tests/functional
+          when: always
       - run:
           name: Extract tests artifacts
           command: |
