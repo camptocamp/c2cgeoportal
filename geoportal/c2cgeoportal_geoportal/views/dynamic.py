@@ -64,13 +64,15 @@ class DynamicView:
             'interface': interface_name,
             'cache_version': get_cache_version(),
             'lang_urls': {
-                lang: self.request.static_url('{package}_geoportal:static-ngeo/build/{lang}.json'.format(
-                    package=self.request.registry.settings["package"],
-                    lang=lang,
+                lang: self.request.static_url(
+                    '{package}_geoportal:static-ngeo/build/{lang}.json'.format(
+                        package=self.request.registry.settings["package"],
+                        lang=lang,
+                    ),
                     _query={
                         'cache': get_cache_version(),
                     }
-                ))
+                )
                 for lang in self.request.registry.settings["available_locale_names"]
             },
             'fulltextsearch_groups': [
