@@ -1141,13 +1141,7 @@ class Entry:
         return {"lang": self.lang, "came_from": self.request.params.get("came_from") or "/"}
 
     def _validate_2fa_totp(self, user, otp: str) -> bool:
-        if pyotp.TOTP(user.tech_data["2fa_totp_secret"]).verify(otp):
-            return True
-        if user.tech_data["temp_2fa_totp_secret"] is not None and pyotp.TOTP(
-            user.tech_data["temp_2fa_totp_secret"]
-        ).verify(otp):
-            user.tech_data["2fa_totp_secret"] = user.tech_data["temp_2fa_totp_secret"]
-            user.tech_data["temp_2fa_totp_secret"] = None
+        if pyotp.TOTP(user.tech_data.get("2fa_totp_secret", "")).verify(otp):
             return True
         return False
 
@@ -1158,20 +1152,52 @@ class Entry:
         login = self.request.POST.get("login")
         password = self.request.POST.get("password")
         if login is None or password is None:  # pragma nocover
-            LOG.info("'login' and 'password' should be available in request params.")
-            raise HTTPBadRequest("See server logs for details")
+            raise HTTPBadRequest("'login' and 'password' should be available in request params.")
         username = self.request.registry.validate_user(self.request, login, password)
         if username is not None:
             user = models.DBSession.query(static.User).filter(static.User.username == username).one()
             if self.two_factor_auth:
-                if not self._validate_2fa_totp(user, self.request.POST.get("otp")):
+                if not user.is_password_changed:
+                    user.tech_data["2fa_totp_secret"] = pyotp.random_base32()
+                    return set_common_headers(
+                        self.request,
+                        "login",
+                        NO_CACHE,
+                        response=Response(
+                            json.dumps(
+                                {
+                                    "is_password_changed": False,
+                                    "two_factor_enable": True,
+                                    "two_factor_totp_secret": user.tech_data["2fa_totp_secret"],
+                                    "otp_uri": pyotp.TOTP(user.tech_data["2fa_totp_secret"]).provisioning_uri(
+                                        user.email, issuer_name=self.two_factor_issuer_name
+                                    ),
+                                }
+                            ),
+                            headers=(("Content-Type", "text/json"),),
+                        ),
+                    )
+                otp = self.request.POST.get("otp")
+                if otp is None:
+                    raise HTTPBadRequest("The second factor is missing.")
+                if not self._validate_2fa_totp(user, otp):
+                    LOG.info("The second factor is wrong for user '%s'.", user)
                     raise HTTPUnauthorized("See server logs for details")
             user.update_last_login()
             user.tech_data["consecutive_failed"] = "0"
 
-            headers = remember(self.request, username) if user.is_password_changed else []
             if not user.is_password_changed:
-                user.tech_data["2fa_totp_secret"] = pyotp.random_base32()
+                return set_common_headers(
+                    self.request,
+                    "login",
+                    NO_CACHE,
+                    response=Response(
+                        json.dumps({"is_password_changed": False, "two_factor_enable": True}),
+                        headers=(("Content-Type", "text/json"),),
+                    ),
+                )
+
+            headers = remember(self.request, username) if user.is_password_changed else []
             LOG.info("User '%s' logged in.", username)
             came_from = self.request.params.get("came_from")
             if came_from:
@@ -1208,7 +1234,7 @@ class Entry:
 
         if not self.request.user:
             LOG.info("Logout on non login user.")
-            raise HTTPBadRequest("See server logs for details")
+            raise HTTPUnauthorized("See server logs for details")
 
         LOG.info("User '%s' (%s) logging out.", self.request.user.username, self.request.user.id)
 
@@ -1216,27 +1242,20 @@ class Entry:
         return set_common_headers(self.request, "login", NO_CACHE, response=Response("true", headers=headers))
 
     def _user(self, user=None):
-        result = {"functionalities": self._functionality(), "is_intranet": is_intranet(self.request)}
+        result = {
+            "functionalities": self._functionality(),
+            "is_intranet": is_intranet(self.request),
+            "two_factor_enable": self.two_factor_auth,
+        }
         user = self.request.user if user is None else user
         if user is not None:
             result.update(
                 {
                     "username": user.username,
                     "email": user.email,
-                    "is_password_changed": user.is_password_changed,
-                    "two_factor_enable": self.two_factor_auth,
                     "roles": [{"name": r.name, "id": r.id} for r in user.roles],
                 }
             )
-            if self.two_factor_auth and not user.is_password_changed:
-                result.update(
-                    {
-                        "two_factor_totp_secret": user.tech_data["2fa_totp_secret"],
-                        "otp_uri": pyotp.TOTP(user.tech_data["2fa_totp_secret"]).provisioning_uri(
-                            user.email, issuer_name=self.two_factor_issuer_name
-                        ),
-                    }
-                )
         return result
 
     @view_config(route_name="loginuser", renderer="json")
@@ -1245,43 +1264,62 @@ class Entry:
         set_common_headers(self.request, "login", NO_CACHE)
         return self._user()
 
-    @view_config(route_name="loginchange", renderer="json")
-    def loginchange(self):
+    @view_config(route_name="change_password", renderer="json")
+    def change_password(self):
         set_common_headers(self.request, "login", NO_CACHE)
 
+        login = self.request.POST.get("login")
         old_password = self.request.POST.get("oldPassword")
         new_password = self.request.POST.get("newPassword")
         new_password_confirm = self.request.POST.get("confirmNewPassword")
         if new_password is None or new_password_confirm is None or old_password is None:
-            LOG.info(
-                "'oldPassword', 'newPassword' and 'confirmNewPassword' should be "
-                "available in request params."
+            raise HTTPBadRequest(
+                "'oldPassword', 'newPassword' and 'confirmNewPassword' should be available in "
+                "request params."
             )
-            raise HTTPBadRequest("See server logs for details")
 
-        # check if logged in
-        if not self.request.user:  # pragma nocover
-            LOG.info("Change password on non login user.")
-            raise HTTPBadRequest("See server logs for details")
+        if login is not None:
+            try:
+                user = self.request.get_user(login)
+            except NoResultFound:  # pragma: no cover
+                LOG.info("The login '%s' does not exist.", login)
+                raise HTTPUnauthorized("See server logs for details")
 
-        user = self.request.registry.validate_user(self.request, self.request.user.username, old_password)
-        if user is None:
-            LOG.info("The old password is wrong for user '%s'.", user)
-            raise HTTPBadRequest("See server logs for details")
+            if self.two_factor_auth:
+                otp = self.request.POST.get("otp")
+                if otp is None:
+                    raise HTTPBadRequest("The second factor is missing.")
+                if not self._validate_2fa_totp(user, otp):
+                    LOG.info("The second factor is wrong for user '%s'.", login)
+                    raise HTTPUnauthorized("See server logs for details")
+
+        else:
+            if self.request.user is not None:
+                user = self.request.user
+                username = user.username
+            else:
+                raise HTTPBadRequest(
+                    "You should be logged in or 'login' should be available in request params."
+                )
+
+        username = self.request.registry.validate_user(self.request, user.username, old_password)
+        if username is None:
+            LOG.info("The old password is wrong for user '%s'.", username)
+            raise HTTPUnauthorized("See server logs for details")
 
         if new_password != new_password_confirm:
-            LOG.info(
-                "The new password and the new password " "confirmation do not match for user '%s'.", user
-            )
-            raise HTTPBadRequest("See server logs for details")
+            raise HTTPBadRequest("The new password and the new password confirmation do not match")
 
-        user = self.request.user
         user.password = new_password
         user.is_password_changed = True
         models.DBSession.flush()
-        LOG.info("Password changed for user '%s'", self.request.user.username)
+        LOG.info("Password changed for user '%s'", username)
 
-        return {"success": True}
+        headers = remember(self.request, username)
+        headers.append(("Content-Type", "text/json"))
+        return set_common_headers(
+            self.request, "login", NO_CACHE, response=Response(json.dumps(self._user(user)), headers=headers)
+        )
 
     @staticmethod
     def generate_password():
@@ -1295,18 +1333,27 @@ class Entry:
         return password
 
     def _loginresetpassword(self):
+        username = self.request.POST.get("login")
+        if username is None:
+            raise HTTPBadRequest("'login' should be available in request params.")
         username = self.request.POST["login"]
         try:
             user = models.DBSession.query(static.User).filter(static.User.username == username).one()
         except NoResultFound:  # pragma: no cover
             return None, None, None, "The login '{}' does not exist.".format(username)
 
+        if self.two_factor_auth:
+            otp = self.request.POST.get("otp")
+            if otp is None:
+                raise HTTPBadRequest("The second factor is missing.")
+            if not self._validate_2fa_totp(user, otp):
+                return None, None, None, "The second factor is wrong for user '{}'.".format(username)
+
         if user.email is None or user.email == "":  # pragma: no cover
             return None, None, None, "The user '{}' has no registered email address.".format(user.username)
 
         password = self.generate_password()
         user.set_temp_password(password)
-        user.tech_data["temp_2fa_totp_secret"] = pyotp.random_base32()
 
         return user, username, password, None
 
@@ -1317,10 +1364,10 @@ class Entry:
         user, username, password, error = self._loginresetpassword()
         if error is not None:
             LOG.info(error)
-            raise HTTPBadRequest("See server logs for details")
+            raise HTTPUnauthorized("See server logs for details")
         if user.deactivated:
             LOG.info("The user '%s' is deactivated", username)
-            raise HTTPBadRequest("See server logs for details")
+            raise HTTPUnauthorized("See server logs for details")
 
         send_email_config(
             self.request.registry.settings, "reset_password", user.email, user=username, password=password
