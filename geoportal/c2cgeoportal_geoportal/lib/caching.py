@@ -73,7 +73,7 @@ def keygen_function(namespace, function):
         if ignore_first_argument:
             args = args[1:]
         parts.extend(map(compat.text_type, map(map_dbobject, args)))
-        return '|'.join(parts)
+        return "|".join(parts)
 
     return generate_key
 

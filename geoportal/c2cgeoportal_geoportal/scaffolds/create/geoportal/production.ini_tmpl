@@ -35,7 +35,7 @@ pipeline =
 ###
 
 [loggers]
-keys = root, sqlalchemy, gunicorn, c2cgeoportal_commons, c2cgeoportal_geoportal, c2cgeoportal_admin, {{package}}_geoportal, c2cwsgiutils
+keys = root, sqlalchemy, gunicorn, c2cgeoportal_commons, c2cgeoportal_geoportal, c2cgeoportal_admin, {{package}}_geoportal, c2cwsgiutils, dogpilecache
 
 [handlers]
 keys = console, logstash, json
@@ -84,6 +84,11 @@ qualname = sqlalchemy.engine
 # "level = INFO" logs SQL queries.
 # "level = DEBUG" logs SQL queries and results.
 # "level = WARN" logs neither.  (Recommended for production systems.)
+
+[logger_dogpilecache]
+level = %(DOGPILECACHE_LOG_LEVEL)s
+handlers =
+qualname = dogpile.cache
 
 [handler_console]
 class = StreamHandler
