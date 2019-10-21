@@ -265,7 +265,8 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
         <span class="s2">&quot;&lt;functionality_name&gt;&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;functionality_value&quot;</span><span class="p">],</span>
         <span class="o">...</span>
     <span class="p">},</span>
-    <span class="s2">&quot;is_intranet&quot;</span><span class="p">:</span> <span class="n">false</span>
+    <span class="s2">&quot;two_factor_enable&quot;</span><span class="p">:</span> <span class="n">true</span><span class="o">/</span><span class="n">false</span><span class="p">,</span> <span class="c1"># Is the two-factor authentication enabled?</span>
+    <span class="s2">&quot;is_intranet&quot;</span><span class="p">:</span> <span class="n">true</span><span class="o">/</span><span class="n">false</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -274,10 +275,8 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <span id="developer-webservices-auth-connected"></span><h4>Connected JSON result<a class="headerlink" href="#connected-json-result" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;username&gt;&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;is_intranet&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
-    <span class="s2">&quot;is_password_changed&quot;</span><span class="p">:</span> <span class="n">true</span><span class="o">/</span><span class="n">false</span><span class="p">,</span> <span class="c1"># If false the user should change his password</span>
-    <span class="s2">&quot;two_factor_enable&quot;</span><span class="p">:</span> <span class="n">true</span><span class="o">/</span><span class="n">false</span><span class="p">,</span> <span class="c1"># Is the two factors authentication enabled?</span>
-    <span class="s2">&quot;two_factor_totp_secret&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;secret&gt;&quot;</span><span class="p">,</span> <span class="c1"># The two factors authentication secret on first login</span>
+    <span class="s2">&quot;is_intranet&quot;</span><span class="p">:</span> <span class="n">true</span><span class="o">/</span><span class="n">true</span><span class="p">,</span>
+    <span class="s2">&quot;two_factor_enable&quot;</span><span class="p">:</span> <span class="n">true</span><span class="o">/</span><span class="n">false</span><span class="p">,</span> <span class="c1"># Is the two-factor authentication enabled?</span>
     <span class="s2">&quot;roles&quot;</span><span class="p">:</span> <span class="p">[{</span>
         <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;role_name&gt;&quot;</span><span class="p">,</span>
         <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">role_id</span><span class="o">&gt;</span>
@@ -291,13 +290,55 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 </div>
 </div>
 </div>
+<div class="section" id="user-login">
+<h3>User login<a class="headerlink" href="#user-login" title="Permalink to this headline">¶</a></h3>
+<p>Login to the application.</p>
+<p>URL: <code class="docutils literal notranslate"><span class="pre">.../login</span></code></p>
+<p>Parameters (post form):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">login</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">password</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">otp</span></code>: The second factor code</p></li>
+</ul>
+<p>Result HTTP code:</p>
+<ul class="simple">
+<li><p>200 Success: Success.</p></li>
+<li><p>302 Found: Success with providing <code class="docutils literal notranslate"><span class="pre">came_from</span></code> parameter.</p></li>
+<li><p>400 Bad request: When <code class="docutils literal notranslate"><span class="pre">login</span></code> or <code class="docutils literal notranslate"><span class="pre">password</span></code> is missing.</p></li>
+<li><p>401 Unauthorized: On login failed.</p></li>
+</ul>
+<div class="section" id="login-successful">
+<h4>Login successful<a class="headerlink" href="#login-successful" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="init-without-two-factor-authentication-json-result">
+<h4>Init without two-factor authentication JSON result<a class="headerlink" href="#init-without-two-factor-authentication-json-result" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;is_password_changed&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span> <span class="c1"># Always false</span>
+    <span class="s2">&quot;two_factor_enable&quot;</span><span class="p">:</span> <span class="n">false</span> <span class="c1"># Always false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="init-two-factor-authentication-json-result">
+<h4>Init two-factor authentication JSON result<a class="headerlink" href="#init-two-factor-authentication-json-result" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;two_factor_totp_secret&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;secret&gt;&quot;</span><span class="p">,</span> <span class="c1"># The two-factor authentication secret on first login</span>
+    <span class="s2">&quot;otp_uri&quot;</span><span class="p">:</span> <span class="s2">&quot;The OTM URI&quot;</span>
+    <span class="s2">&quot;is_password_changed&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span> <span class="c1"># Always false</span>
+    <span class="s2">&quot;two_factor_enable&quot;</span><span class="p">:</span> <span class="n">true</span> <span class="c1"># Always true</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
 <div class="section" id="change-password">
 <h3>Change password<a class="headerlink" href="#change-password" title="Permalink to this headline">¶</a></h3>
 <p>Used to change the user password.</p>
-<p>URL: <code class="docutils literal notranslate"><span class="pre">.../loginchange</span></code></p>
+<p>URL: <code class="docutils literal notranslate"><span class="pre">.../loginchangepassword</span></code></p>
 <p>Method: <code class="docutils literal notranslate"><span class="pre">POST</span></code></p>
 <p>Parameters (post form):</p>
 <ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">login</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">oldPassword</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">newPassword</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">confirmNewPassword</span></code></p></li>
