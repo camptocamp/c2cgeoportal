@@ -313,6 +313,7 @@ class TestEntryView(TestCase):
         response = Entry(request).login()
         assert response.status_int == 200
         assert json.loads(response.body.decode("utf-8")) == {
+            "username": "__test_user1",
             "is_password_changed": False,
             "two_factor_enable": True,
         }

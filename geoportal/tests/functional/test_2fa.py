@@ -96,7 +96,11 @@ class TestEntryView(TestCase):
         totp = pyotp.TOTP(response_json["two_factor_totp_secret"])
         del response_json["two_factor_totp_secret"]
         del response_json["otp_uri"]
-        assert response_json == {"is_password_changed": False, "two_factor_enable": True}
+        assert response_json == {
+            "username": "__test_user",
+            "is_password_changed": False,
+            "two_factor_enable": True,
+        }
         user = DBSession.query(User).filter_by(username="__test_user").one()
         assert user.is_password_changed is False
 
@@ -159,7 +163,11 @@ class TestEntryView(TestCase):
         totp = pyotp.TOTP(response_json["two_factor_totp_secret"])
         del response_json["two_factor_totp_secret"]
         del response_json["otp_uri"]
-        assert response_json == {"is_password_changed": False, "two_factor_enable": True}
+        assert response_json == {
+            "username": "__test_user",
+            "is_password_changed": False,
+            "two_factor_enable": True,
+        }
 
         request = self._create_request_obj(
             POST={
