@@ -1,3 +1,5 @@
+##### 2.4.1.41
+* added migration of metadataurl on layer-groups [c2cgeoportal#5406](https://github.com/camptocamp/c2cgeoportal/pull/5406)
 ##### 2.4.1.40
 * Add QGIS server Docker image in readme [c2cgeoportal#5383](https://github.com/camptocamp/c2cgeoportal/pull/5383)
 * Always rotate the text with the view [ngeo#5208](https://github.com/camptocamp/ngeo/pull/5208)
