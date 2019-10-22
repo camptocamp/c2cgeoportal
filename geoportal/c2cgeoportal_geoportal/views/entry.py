@@ -947,8 +947,6 @@ class Entry:
             )
             return None, errors
 
-        return response, errors
-
     def get_url_internal_wfs(self, ogc_server, errors):
         # required to do every time to validate the url.
         if ogc_server.auth != main.OGCSERVER_AUTH_NOAUTH:
@@ -1014,13 +1012,19 @@ class Entry:
         for name, type_ in elements.items():
             if type_ in types:
                 attributes[name] = types[type_]
+            elif (type_ == "Character") and (name + "Type") in types:
+                LOG.debug(
+                    "Due mapserver strange result the type 'ms:Character' is fallbacked to type '{name}Type'"
+                    " for feature '{name}', This is a stange comportement of mapserver when we use the "
+                    'METADATA "gml_types" "auto"'.format(name=name)
+                )
+                attributes[name] = types[name + "Type"]
             else:
-                if type_ != "Character":
-                    LOG.warning(
-                        "The provided type '%s' does not exist, available types are %s.",
-                        type_,
-                        ", ".join(types.keys()),
-                    )
+                LOG.warning(
+                    "The provided type '%s' does not exist, available types are %s.",
+                    type_,
+                    ", ".join(types.keys()),
+                )
 
         namespace = feature_type.attrib.get("targetNamespace") if feature_type is not None else None
         return attributes, namespace, all_errors
