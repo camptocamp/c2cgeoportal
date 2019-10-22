@@ -313,6 +313,7 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <div class="section" id="init-without-two-factor-authentication-json-result">
 <h4>Init without two-factor authentication JSON result<a class="headerlink" href="#init-without-two-factor-authentication-json-result" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;username&gt;&quot;</span><span class="p">,</span>
     <span class="s2">&quot;is_password_changed&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span> <span class="c1"># Always false</span>
     <span class="s2">&quot;two_factor_enable&quot;</span><span class="p">:</span> <span class="n">false</span> <span class="c1"># Always false</span>
 <span class="p">}</span>
@@ -322,6 +323,7 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <div class="section" id="init-two-factor-authentication-json-result">
 <h4>Init two-factor authentication JSON result<a class="headerlink" href="#init-two-factor-authentication-json-result" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;username&gt;&quot;</span><span class="p">,</span>
     <span class="s2">&quot;two_factor_totp_secret&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;secret&gt;&quot;</span><span class="p">,</span> <span class="c1"># The two-factor authentication secret on first login</span>
     <span class="s2">&quot;otp_uri&quot;</span><span class="p">:</span> <span class="s2">&quot;The OTM URI&quot;</span>
     <span class="s2">&quot;is_password_changed&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span> <span class="c1"># Always false</span>
