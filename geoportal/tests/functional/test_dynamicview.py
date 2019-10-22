@@ -108,7 +108,11 @@ class TestDynamicView(TestCase):
             if _query is None
             else "/dummy/route/url/{}?{}".format(url, "&".join(["=".join(e) for e in _query.items()]))
         )
-        request.static_url = lambda url: "/dummy/static/url/" + url
+        request.static_url = (
+            lambda url, _query=None: "/dummy/static/url/{}".format(url)
+            if _query is None
+            else "/dummy/static/url/{}?{}".format(url, "&".join(["=".join(e) for e in _query.items()]))
+        )
         return request
 
     def test_constant(self):
@@ -173,20 +177,32 @@ class TestDynamicView(TestCase):
         from c2cgeoportal_geoportal.views.dynamic import DynamicView
 
         request = self._request()
-        request.static_url = lambda url: "/dummy/route/url/" + url
+        request.static_url = (
+            lambda url, _query=None: "/dummy/static/url/{}".format(url)
+            if _query is None
+            else "/dummy/static/url/{}?{}".format(url, "&".join(["=".join(e) for e in _query.items()]))
+        )
         request.registry.settings = self._get_settings(
             {"test": {"dynamic_constants": {"XTest": "lang_urls"}}}
         )
         dynamic = DynamicView(request).dynamic()
 
         assert "XTest" in dynamic["constants"], dynamic
-        assert dynamic["constants"]["XTest"] == {"fr": "/dummy/route/url//etc/geomapfish/static/fr.json"}
+        assert "fr" in dynamic["constants"]["XTest"], dynamic
+        assert (
+            dynamic["constants"]["XTest"]["fr"][:-32]
+            == "/dummy/static/url//etc/geomapfish/static/fr.json?cache="
+        )
 
     def test_constant_dynamic_fulltextsearch_groups(self):
         from c2cgeoportal_geoportal.views.dynamic import DynamicView
 
         request = self._request()
-        request.static_url = lambda url: "/dummy/route/url/" + url
+        request.static_url = (
+            lambda url, _query=None: "/dummy/static/url/{}".format(url)
+            if _query is None
+            else "/dummy/static/url/{}?{}".format(url, "&".join(["=".join(e) for e in _query.items()]))
+        )
         request.registry.settings = self._get_settings(
             {"test": {"dynamic_constants": {"XTest": "fulltextsearch_groups"}}}
         )
