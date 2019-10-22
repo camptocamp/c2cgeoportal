@@ -317,6 +317,7 @@ Init without two-factor authentication JSON result
 .. code::
 
    {
+       "username": "<username>",
        "is_password_changed": false, # Always false
        "two_factor_enable": false # Always false
    }
@@ -328,6 +329,7 @@ Init two-factor authentication JSON result
 .. code::
 
    {
+       "username": "<username>",
        "two_factor_totp_secret": "<secret>", # The two-factor authentication secret on first login
        "otp_uri": "The OTM URI"
        "is_password_changed": false, # Always false

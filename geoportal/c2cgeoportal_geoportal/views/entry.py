@@ -1166,6 +1166,7 @@ class Entry:
                         response=Response(
                             json.dumps(
                                 {
+                                    "username": user.username,
                                     "is_password_changed": False,
                                     "two_factor_enable": True,
                                     "two_factor_totp_secret": user.tech_data["2fa_totp_secret"],
@@ -1192,7 +1193,13 @@ class Entry:
                     "login",
                     NO_CACHE,
                     response=Response(
-                        json.dumps({"is_password_changed": False, "two_factor_enable": True}),
+                        json.dumps(
+                            {
+                                "username": user.username,
+                                "is_password_changed": False,
+                                "two_factor_enable": True,
+                            }
+                        ),
                         headers=(("Content-Type", "text/json"),),
                     ),
                 )
