@@ -2,11 +2,11 @@
 
 # Check that the make command don't execute any rules and had an unexpected error
 
-import time
-import sys
 import os
 import re
 import subprocess
+import sys
+import time
 
 os.environ["DEBUG"] = "TRUE"
 p = subprocess.Popen(["make"] + sys.argv[1:], stdout=subprocess.PIPE, stderr=subprocess.PIPE)

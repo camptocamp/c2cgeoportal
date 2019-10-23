@@ -3,11 +3,11 @@
 from functools import partial
 
 from c2cgeoform.views.abstract_views import AbstractViews, ListField
+from pyramid.view import view_config
 from sqlalchemy.orm import subqueryload
 from sqlalchemy.sql.functions import concat
-from pyramid.view import view_config
 
-from c2cgeoportal_commons.models.main import TreeItem, Metadata, LayergroupTreeitem, TreeGroup
+from c2cgeoportal_commons.models.main import LayergroupTreeitem, Metadata, TreeGroup, TreeItem
 
 _list_field = partial(ListField, TreeItem)
 

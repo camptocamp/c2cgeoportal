@@ -35,25 +35,25 @@ import re
 import time
 from urllib.parse import urlsplit
 
-import c2cgeoportal_commons.models
-import c2cwsgiutils
-import c2cwsgiutils.db
-import c2cwsgiutils.index
-import pyramid.security
-import simplejson as json
-import zope.event.classhandler
-from c2cwsgiutils.health_check import HealthCheck
 from Crypto.Cipher import AES  # nosec
 from papyrus.renderers import GeoJSON
 from pyramid.config import Configurator
 from pyramid.httpexceptions import HTTPException
 from pyramid.path import AssetResolver
+import pyramid.security
 from pyramid_mako import add_mako_renderer
+import simplejson as json
 from sqlalchemy.orm import Session
+import zope.event.classhandler
 
-import c2cgeoportal_geoportal.views
+import c2cgeoportal_commons.models
 from c2cgeoportal_geoportal.lib import C2CPregenerator, caching, check_collector, checker
 from c2cgeoportal_geoportal.lib.xsd import XSD
+import c2cgeoportal_geoportal.views
+import c2cwsgiutils
+import c2cwsgiutils.db
+from c2cwsgiutils.health_check import HealthCheck
+import c2cwsgiutils.index
 
 LOG = logging.getLogger(__name__)
 

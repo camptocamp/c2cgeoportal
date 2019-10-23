@@ -2,14 +2,14 @@
 
 import json
 import re
-import pytest
-from pyramid.testing import DummyRequest
 
 from geoalchemy2.shape import from_shape, to_shape
+from pyramid.testing import DummyRequest
+import pytest
 from selenium.webdriver.common.by import By
-from shapely.geometry import box, Polygon, shape
+from shapely.geometry import Polygon, box, shape
 
-from . import skip_if_ci, AbstractViewsTests
+from . import AbstractViewsTests, skip_if_ci
 from .selenium.page import IndexPage
 
 

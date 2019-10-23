@@ -29,8 +29,9 @@
 # either expressed or implied, of the FreeBSD Project.
 
 import json
-import requests
 import sys
+
+import requests
 
 initial_error_length = 0
 initial_access_length = 0

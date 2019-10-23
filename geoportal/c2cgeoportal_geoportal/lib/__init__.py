@@ -32,8 +32,8 @@ import datetime
 import ipaddress
 import json
 import logging
-import urllib.parse
 from string import Formatter
+import urllib.parse
 
 import dateutil
 from pyramid.interfaces import IRoutePregenerator

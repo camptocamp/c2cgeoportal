@@ -33,7 +33,8 @@
 from unittest import TestCase
 from unittest.mock import Mock, patch
 
-from tests.functional import teardown_common as teardown_module, setup_common as setup_module  # noqa
+from tests.functional import setup_common as setup_module
+from tests.functional import teardown_common as teardown_module  # noqa
 
 
 class TestXSDGenerator(TestCase):

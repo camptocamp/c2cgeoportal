@@ -33,8 +33,8 @@ import json
 import os
 import time
 
-import c2c.template
 from Crypto.Cipher import AES  # nosec
+import c2c.template
 
 
 def create_token(aeskey, user, password, valid):

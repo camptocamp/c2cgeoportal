@@ -28,17 +28,17 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import re
-import subprocess
-import os
 import glob
 import json
+import os
+import re
+import subprocess
+
+import pkg_resources
+from pyramid.compat import input_
+from pyramid.scaffolds.template import Template
 import requests
 import yaml
-import pkg_resources
-
-from pyramid.scaffolds.template import Template
-from pyramid.compat import input_
 
 
 class BaseTemplate(Template):  # pragma: no cover

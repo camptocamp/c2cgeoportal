@@ -1,7 +1,8 @@
 # pylint: disable=no-self-use
 
-import pytest
 import re
+
+import pytest
 
 from . import AbstractViewsTests
 

@@ -34,13 +34,13 @@ Pyramid application test package
 
 from configparser import ConfigParser
 
+from c2c.template.config import config as configuration
+from pyramid import testing
 import tests
 import transaction
 import webob.acceptparse
-from c2c.template.config import config as configuration
-from c2cgeoportal_commons import models
-from pyramid import testing
 
+from c2cgeoportal_commons import models
 import c2cgeoportal_geoportal
 import c2cgeoportal_geoportal.lib
 from c2cgeoportal_geoportal.lib import caching

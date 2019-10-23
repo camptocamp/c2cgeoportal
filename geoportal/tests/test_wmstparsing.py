@@ -30,8 +30,9 @@
 # pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access
 
 
-from unittest import TestCase
 import datetime
+from unittest import TestCase
+
 import isodate
 
 

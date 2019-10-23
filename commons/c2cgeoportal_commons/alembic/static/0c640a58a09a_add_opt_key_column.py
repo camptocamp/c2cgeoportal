@@ -35,8 +35,8 @@ Create Date: 2019-08-16 14:06:15.405096
 """
 
 from alembic import op
-from sqlalchemy import Column
 from c2c.template.config import config
+from sqlalchemy import Column
 from sqlalchemy.dialects.postgresql import HSTORE
 
 # revision identifiers, used by Alembic.

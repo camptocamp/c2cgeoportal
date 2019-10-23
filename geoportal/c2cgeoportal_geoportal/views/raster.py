@@ -28,15 +28,15 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from decimal import Decimal
 import logging
 import math
 import os
-from decimal import Decimal
 from typing import Any, Dict  # noqa, pylint: disable=unused-import
 
-import zope.event.classhandler
 from pyramid.httpexceptions import HTTPBadRequest, HTTPNotFound
 from pyramid.view import view_config
+import zope.event.classhandler
 
 from c2cgeoportal_geoportal.lib.caching import NO_CACHE, set_common_headers
 

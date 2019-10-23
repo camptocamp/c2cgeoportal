@@ -1,10 +1,11 @@
 # pylint: disable=no-self-use,unsubscriptable-object
 
-from selenium.webdriver.common.by import By
 import re
-import pytest
 
-from . import skip_if_ci, AbstractViewsTests, get_test_default_layers, factory_build_layers
+import pytest
+from selenium.webdriver.common.by import By
+
+from . import AbstractViewsTests, factory_build_layers, get_test_default_layers, skip_if_ci
 from .selenium.page import IndexPage
 
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from pyramid.security import Allow, ALL_PERMISSIONS
+from pyramid.security import ALL_PERMISSIONS, Allow
 
 
 class Root:

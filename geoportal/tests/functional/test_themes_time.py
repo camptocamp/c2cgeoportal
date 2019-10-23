@@ -30,27 +30,20 @@
 # pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access
 
 
+import logging
 import re
 import typing
-import transaction
-
 from unittest import TestCase
 
-from sqlalchemy import Column
-import sqlalchemy.ext.declarative
-from sqlalchemy.types import Integer, Unicode, DateTime
 from geoalchemy2 import Geometry
 from pyramid import testing
-
-from tests.functional import (  # noqa
-    teardown_common as teardown_module,
-    setup_common as setup_module,
-    mapserv_url,
-    create_dummy_request,
-    create_default_ogcserver,
-)
-
-import logging
+from sqlalchemy import Column
+import sqlalchemy.ext.declarative
+from sqlalchemy.types import DateTime, Integer, Unicode
+from tests.functional import create_default_ogcserver, create_dummy_request, mapserv_url
+from tests.functional import setup_common as setup_module
+from tests.functional import teardown_common as teardown_module  # noqa
+import transaction
 
 log = logging.getLogger(__name__)
 

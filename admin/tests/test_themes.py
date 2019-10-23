@@ -1,6 +1,7 @@
 # pylint: disable=no-self-use
 
 import re
+
 import pytest
 
 from .test_treegroup import TestTreeGroup

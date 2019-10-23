@@ -1,12 +1,10 @@
-from c2cgeoportal_commons.models.main import Functionality
 from functools import partial
-from pyramid.view import view_defaults
-from pyramid.view import view_config
 
 from c2cgeoform.schema import GeoFormSchemaNode
+from c2cgeoform.views.abstract_views import AbstractViews, ListField
+from pyramid.view import view_config, view_defaults
 
-from c2cgeoform.views.abstract_views import AbstractViews
-from c2cgeoform.views.abstract_views import ListField
+from c2cgeoportal_commons.models.main import Functionality
 
 _list_field = partial(ListField, Functionality)
 

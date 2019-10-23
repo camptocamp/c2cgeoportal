@@ -26,11 +26,11 @@
 # The views and conclusions contained in the software and documentation are those
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
+import json
 from typing import Optional
 
 from sqlalchemy.engine import Dialect
-from sqlalchemy.types import TypeDecorator, VARCHAR
-import json
+from sqlalchemy.types import VARCHAR, TypeDecorator
 
 
 # get from https://docs.sqlalchemy.org/en/latest/orm/extensions/

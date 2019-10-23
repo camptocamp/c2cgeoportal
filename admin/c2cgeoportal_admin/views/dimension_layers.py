@@ -1,12 +1,11 @@
-from itertools import groupby
 from functools import partial
+from itertools import groupby
 
 from c2cgeoform.views.abstract_views import ListField
 from sqlalchemy.orm import subqueryload
 
-from c2cgeoportal_commons.models.main import DimensionLayer
-
 from c2cgeoportal_admin.views.layers import LayerViews
+from c2cgeoportal_commons.models.main import DimensionLayer
 
 _list_field = partial(ListField, DimensionLayer)
 

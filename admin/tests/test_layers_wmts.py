@@ -1,9 +1,10 @@
 # pylint: disable=no-self-use
 
 import re
+
 import pytest
 
-from . import AbstractViewsTests, get_test_default_layers, factory_build_layers
+from . import AbstractViewsTests, factory_build_layers, get_test_default_layers
 
 
 @pytest.fixture(scope="function")

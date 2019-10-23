@@ -9,7 +9,6 @@ import sys
 import requests
 import yaml
 
-
 REPOS = ('c2cgeoportal', 'ngeo')
 
 with open('ci/changelog.yaml') as cl_file:

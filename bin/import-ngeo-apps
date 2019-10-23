@@ -29,10 +29,10 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import re
-from json import dumps
-from urllib.parse import parse_qsl
 from argparse import ArgumentParser
+from json import dumps
+import re
+from urllib.parse import parse_qsl
 
 
 def _sub(pattern, repl, string, count=0, flags=0, required=True):

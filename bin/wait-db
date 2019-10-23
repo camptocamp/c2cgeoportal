@@ -30,8 +30,8 @@
 
 
 import time
-import psycopg2
 
+import psycopg2
 
 sleep_time = 1
 max_sleep = 30

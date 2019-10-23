@@ -30,8 +30,8 @@
 # pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access
 
 
-from urllib.parse import urlparse, parse_qs
 from unittest import TestCase
+from urllib.parse import parse_qs, urlparse
 
 from c2cgeoportal_geoportal.lib import add_url_params
 

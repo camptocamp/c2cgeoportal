@@ -10,16 +10,15 @@ Contact: info@camptocamp.com
 """
 
 import os
-import pytest
 from unittest.mock import Mock, patch
 
-from qgis.core import QgsProject, QgsVectorLayer
-from qgis.server import QgsServerInterface
-
 from geoalchemy2.shape import from_shape
+import pytest
 from shapely.geometry import box
 
 from geomapfish_qgisserver.accesscontrol import Access, GeoMapFishAccessControl, OGCServerAccessControl
+from qgis.core import QgsProject, QgsVectorLayer
+from qgis.server import QgsServerInterface
 
 area1 = box(485869.5728, 76443.1884, 837076.5648, 299941.7864)
 

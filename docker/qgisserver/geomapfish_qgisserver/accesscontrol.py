@@ -10,22 +10,24 @@ Contact: info@camptocamp.com
 """
 
 
-import c2cwsgiutils.broadcast
-import geoalchemy2
+from enum import Enum
 import json
 import os
-import sqlalchemy
 import sys
+from threading import Lock
 import traceback
+
+from c2c.template.config import config
+import geoalchemy2
+from shapely import ops
+import sqlalchemy
+from sqlalchemy.orm import configure_mappers, scoped_session, sessionmaker
 import yaml
 import zope.event.classhandler
-from c2c.template.config import config
-from enum import Enum
-from qgis.core import QgsMessageLog, QgsDataSourceUri, QgsProject, QgsLayerTreeLayer, QgsLayerTreeGroup
+
+import c2cwsgiutils.broadcast
+from qgis.core import QgsDataSourceUri, QgsLayerTreeGroup, QgsLayerTreeLayer, QgsMessageLog, QgsProject
 from qgis.server import QgsAccessControlFilter
-from shapely import ops
-from sqlalchemy.orm import configure_mappers, scoped_session, sessionmaker
-from threading import Lock
 
 
 class GMFException(Exception):

@@ -1,19 +1,17 @@
 from functools import partial
-from pyramid.httpexceptions import HTTPFound
-from pyramid.view import view_defaults
-from pyramid.view import view_config
 
-from passwordgenerator import pwgenerator
-
-from sqlalchemy.orm import aliased, subqueryload
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import AbstractViews, ListField
 from deform.widget import FormWidget
+from passwordgenerator import pwgenerator
+from pyramid.httpexceptions import HTTPFound
+from pyramid.view import view_config, view_defaults
+from sqlalchemy.orm import aliased, subqueryload
 
+from c2cgeoportal_admin.schemas.roles import roles_schema_node
+from c2cgeoportal_commons.lib.email_ import send_email_config
 from c2cgeoportal_commons.models.main import Role
 from c2cgeoportal_commons.models.static import User
-from c2cgeoportal_commons.lib.email_ import send_email_config
-from c2cgeoportal_admin.schemas.roles import roles_schema_node
 
 _list_field = partial(ListField, User)
 

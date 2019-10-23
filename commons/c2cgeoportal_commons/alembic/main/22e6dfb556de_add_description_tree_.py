@@ -35,8 +35,8 @@ Create Date: 2015-12-04 13:44:42.475652
 """
 
 from alembic import op
-from sqlalchemy import Column, Unicode
 from c2c.template.config import config
+from sqlalchemy import Column, Unicode
 
 # revision identifiers, used by Alembic.
 revision = "22e6dfb556de"

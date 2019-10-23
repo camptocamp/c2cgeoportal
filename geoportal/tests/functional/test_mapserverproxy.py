@@ -63,20 +63,20 @@ import hashlib
 import typing
 from unittest import TestCase
 
-import sqlalchemy.ext.declarative
-import transaction
 from geoalchemy2 import Geometry, WKTElement
 from sqlalchemy import Column, types
+import sqlalchemy.ext.declarative
 from tests.functional import (
     cleanup_db,
-    setup_db,
     create_default_ogcserver,
     create_dummy_request,
     fill_tech_user_functionality,
     mapserv_url,
 )
 from tests.functional import setup_common as setup_module  # noqa
+from tests.functional import setup_db
 from tests.functional import teardown_common as teardown_module  # noqa
+import transaction
 
 # GetMap hash for MapServer 6.0 and 7.0
 FOUR_POINTS = ["61cbb0a6d18b72e4a28c1087019de245", "e2fe30a8085b0db4040c9ad0d331b6b8"]

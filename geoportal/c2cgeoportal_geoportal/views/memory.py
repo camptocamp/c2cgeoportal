@@ -31,12 +31,12 @@
 import logging
 from typing import Any, Dict, List
 
-from c2cwsgiutils import broadcast
-from c2cwsgiutils.auth import auth_view
 from pympler import asizeof, muppy
 from pyramid.view import view_config
 
 from c2cgeoportal_geoportal.views import raster
+from c2cwsgiutils import broadcast
+from c2cwsgiutils.auth import auth_view
 
 LOG = logging.getLogger(__name__)
 

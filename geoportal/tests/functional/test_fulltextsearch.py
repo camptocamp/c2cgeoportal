@@ -34,13 +34,10 @@ from unittest import TestCase
 
 from pyramid import testing
 from pyramid.response import Response
+from tests.functional import create_dummy_request
+from tests.functional import setup_common as setup_module
+from tests.functional import teardown_common as teardown_module  # noqa
 import webob.acceptparse
-
-from tests.functional import (  # noqa
-    teardown_common as teardown_module,
-    setup_common as setup_module,
-    create_dummy_request,
-)
 
 
 class TestFulltextsearchView(TestCase):

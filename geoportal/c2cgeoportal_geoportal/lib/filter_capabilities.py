@@ -29,17 +29,17 @@
 
 
 import copy
-import logging
-import xml.sax.handler
 from io import StringIO
+import logging
 from typing import List  # noqa, pylint: disable=unused-import
 from urllib.parse import urlsplit
+import xml.sax.handler
 from xml.sax.saxutils import XMLFilterBase, XMLGenerator
 
 import defusedxml.expatreader
-import requests
 from owslib.wms import WebMapService
 from pyramid.httpexceptions import HTTPBadGateway
+import requests
 
 from c2cgeoportal_commons.models import static
 from c2cgeoportal_geoportal.lib import (

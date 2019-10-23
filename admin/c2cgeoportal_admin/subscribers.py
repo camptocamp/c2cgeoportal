@@ -1,4 +1,4 @@
-from pyramid.i18n import get_localizer, TranslationStringFactory
+from pyramid.i18n import TranslationStringFactory, get_localizer
 
 # see https://docs.pylonsproject.org/projects/pyramid-cookbook/en/latest/templates/mako_i18n.html*
 

@@ -32,9 +32,9 @@ import logging
 import sys
 import urllib.parse
 
-import requests
 from pyramid.httpexceptions import HTTPBadGateway, exception_response
 from pyramid.response import Response
+import requests
 
 from c2cgeoportal_geoportal.lib.caching import (
     NO_CACHE,

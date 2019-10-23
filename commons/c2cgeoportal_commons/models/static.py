@@ -29,14 +29,14 @@
 
 
 import crypt
-import logging
 from datetime import datetime
 from hashlib import sha1
 from hmac import compare_digest as compare_hash
+import logging
 from typing import Any, List
 
-import pytz
 from c2c.template.config import config
+import pytz
 from sqlalchemy import Column, ForeignKey, Table
 from sqlalchemy.dialects.postgresql import HSTORE
 from sqlalchemy.ext.mutable import MutableDict

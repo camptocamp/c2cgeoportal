@@ -30,22 +30,15 @@
 # pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access
 
 
+import logging
 import re
-import transaction
-
 from unittest import TestCase
 
 from pyramid import testing
-
-from tests.functional import (  # noqa
-    teardown_common as teardown_module,
-    setup_common as setup_module,
-    mapserv_url,
-    create_dummy_request,
-    create_default_ogcserver,
-)
-
-import logging
+from tests.functional import create_default_ogcserver, create_dummy_request, mapserv_url
+from tests.functional import setup_common as setup_module
+from tests.functional import teardown_common as teardown_module  # noqa
+import transaction
 
 log = logging.getLogger(__name__)
 

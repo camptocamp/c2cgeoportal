@@ -1,13 +1,14 @@
 # pylint: disable=no-self-use
 
-import pytest
-import re
-from pyramid.testing import DummyRequest
-
-from . import skip_if_ci, AbstractViewsTests
-from .selenium.page import IndexPage
-from unittest.mock import patch, MagicMock
 import email
+import re
+from unittest.mock import MagicMock, patch
+
+from pyramid.testing import DummyRequest
+import pytest
+
+from . import AbstractViewsTests, skip_if_ci
+from .selenium.page import IndexPage
 
 
 @pytest.fixture(scope="function")

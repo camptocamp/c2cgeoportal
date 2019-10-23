@@ -2,10 +2,11 @@
 
 
 import json
-import pytest
 import re
+
 from geoalchemy2.shape import from_shape
-from shapely.geometry import box, Polygon, shape
+import pytest
+from shapely.geometry import Polygon, box, shape
 
 from . import AbstractViewsTests
 

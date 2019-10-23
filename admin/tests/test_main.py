@@ -1,5 +1,5 @@
-import pytest
 from pyramid import testing
+import pytest
 from webtest import TestApp as WebTestApp
 
 

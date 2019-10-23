@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 
 import os
-import pytest
 
+from c2c.template.config import config
+import pytest
 import transaction
 
+from c2cgeoportal_commons.testing import generate_mappers, get_engine, get_session_factory, get_tm_session
 from c2cgeoportal_commons.testing.initializedb import truncate_tables
-from c2cgeoportal_commons.testing import get_engine, get_session_factory, get_tm_session, generate_mappers
-from c2c.template.config import config
 
 
 @pytest.fixture(scope="session")
