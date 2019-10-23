@@ -16,7 +16,7 @@ htmlmin~=0.1.12  # ngeo
 Jinja2~=2.10.3  # c2c.template
 lingua~=4.13  # i18n
 mccabe~=0.6.1  # lint
-mypy==0.730  # lint
+mypy==0.740  # lint
 pep8~=1.7.1  # lint
 pep8-naming~=0.8.2  # Lint
 polib~=1.1.0  # i18n
