@@ -68,6 +68,7 @@ jobs:
       # Tests
       - run:
           command: make preparetest
+          when: always
       - run:
           command: docker-compose logs --timestamps
           when: on_fail
