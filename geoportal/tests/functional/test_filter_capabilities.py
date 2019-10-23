@@ -36,7 +36,7 @@ from xml import sax
 from xml.sax.saxutils import XMLGenerator
 
 from tests import load_file
-from tests.functional import setup_common as setup_module
+from tests.functional import setup_common as setup_module  # noqa
 from tests.functional import teardown_common as teardown_module  # noqa
 
 

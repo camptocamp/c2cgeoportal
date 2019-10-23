@@ -33,7 +33,7 @@
 from unittest import TestCase
 
 from tests.functional import cleanup_db, create_default_ogcserver, create_dummy_request, mapserv_url
-from tests.functional import setup_common as setup_module
+from tests.functional import setup_common as setup_module  # noqa
 from tests.functional import setup_db
 from tests.functional import teardown_common as teardown_module  # noqa
 import transaction

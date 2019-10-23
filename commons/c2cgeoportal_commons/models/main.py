@@ -62,7 +62,6 @@ except ModuleNotFoundError:
     RelationSelect2Widget = GenericClass
 
 
-
 LOG = logging.getLogger(__name__)
 
 _schema = config["schema"] or "main"  # type: str
