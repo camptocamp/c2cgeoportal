@@ -987,26 +987,44 @@ class Entry:
     def _get_features_attributes(self, ogc_server_id, url_internal_wfs):
         all_errors = set()
         feature_type, errors = asyncio.run(self._wms_get_features_type(ogc_server_id, url_internal_wfs))
+        namespace = feature_type.attrib.get("targetNamespace")
         all_errors |= errors
         types = {}
         elements = {}
         for child in feature_type.getchildren():
             if child.tag == "{http://www.w3.org/2001/XMLSchema}element":
                 name = child.attrib["name"]
-                elements[name] = child.attrib["type"].split(":")[1]
+                type_namespace, type_ = child.attrib["type"].split(":")
+                if type_namespace not in child.nsmap:
+                    LOG.info(
+                        "The namespace '%s' of the type '%s' is not found in the available namespaces: %s",
+                        type_namespace,
+                        name,
+                        ", ".join(child.nsmap.keys()),
+                    )
+                if child.nsmap[type_namespace] != namespace:
+                    LOG.info(
+                        "The namespace '%s' of the thye '%s' should be '%s'.",
+                        child.nsmap[type_namespace],
+                        name,
+                        namespace,
+                    )
+                elements[name] = type_
 
             if child.tag == "{http://www.w3.org/2001/XMLSchema}complexType":
                 sequence = child.find(".//{http://www.w3.org/2001/XMLSchema}sequence")
                 attrib = {}
                 for children in sequence.getchildren():
-                    namespace = None
+                    type_namespace = None
                     type_ = children.attrib["type"]
                     if len(type_.split(":")) == 2:
-                        namespace, type_ = type_.split(":")
-                    namespace = children.nsmap[namespace]
-                    attrib[children.attrib["name"]] = {"namespace": namespace, "type": type_}
-                    if "alias" in children.attrib:
-                        attrib[children.attrib["name"]] = children.attrib["alias"]
+                        type_namespace, type_ = type_.split(":")
+                    type_namespace = children.nsmap[type_namespace]
+                    name = children.attrib["name"]
+                    attrib[name] = {"namespace": type_namespace, "type": type_}
+                    for key, value in children.attrib.items():
+                        if key not in ("name", "type", "namespace"):
+                            attrib[name][key] = value
                 types[child.attrib["name"]] = attrib
         attributes = {}
         for name, type_ in elements.items():
@@ -1026,7 +1044,6 @@ class Entry:
                     ", ".join(types.keys()),
                 )
 
-        namespace = feature_type.attrib.get("targetNamespace") if feature_type is not None else None
         return attributes, namespace, all_errors
 
     @view_config(route_name="themes", renderer="json")
