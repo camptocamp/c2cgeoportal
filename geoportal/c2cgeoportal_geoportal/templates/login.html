@@ -56,11 +56,25 @@
                 <table style="margin-left: auto; margin-right: auto;">
                     <tbody>
                         <tr>
-                            <td class="field"><p><label for="email">${_('Username')}</label></p><input id="login" name="login" type="text"></td>
+                            <td class="field"><p>
+                                <label for="email">${_('Username')}</label></p>
+                                <input id="login" name="login" type="text">
+                            </td>
                         </tr>
                         <tr>
-                            <td class="field"><p><label for="password">${_('Password')}</label></p><input id="password" name="password" type="password"></td>
+                            <td class="field"><p>
+                                <label for="password">${_('Password')}</label></p>
+                                <input id="password" name="password" type="password">
+                            </td>
                         </tr>
+% if two_fa:
+                        <tr>
+                            <td class="field">
+                                <p><label for="otp">${_('Authentication code')}</label></p>
+                                <input id="otp" name="otp" type="text" autocomplete="off">
+                            </td>
+                        </tr>
+% endif
                         <tr>
                             <td class="buttons"><input tabindex="4" value="${_('Login')}" type="submit"></td>
                         </tr>

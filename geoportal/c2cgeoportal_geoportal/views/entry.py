@@ -1153,13 +1153,17 @@ class Entry:
 
         set_common_headers(self.request, "login", NO_CACHE)
 
-        return {"lang": self.lang, "came_from": self.request.path}
+        return {"lang": self.lang, "came_from": self.request.path, "two_fa": self.two_factor_auth}
 
     @view_config(route_name="loginform", renderer="login.html")
     def loginform(self):
         set_common_headers(self.request, "login", PUBLIC_CACHE)
 
-        return {"lang": self.lang, "came_from": self.request.params.get("came_from") or "/"}
+        return {
+            "lang": self.lang,
+            "came_from": self.request.params.get("came_from") or "/",
+            "two_fa": self.two_factor_auth,
+        }
 
     def _validate_2fa_totp(self, user, otp: str) -> bool:
         if pyotp.TOTP(user.tech_data.get("2fa_totp_secret", "")).verify(otp):
