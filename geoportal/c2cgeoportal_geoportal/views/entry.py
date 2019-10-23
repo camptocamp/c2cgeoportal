@@ -987,7 +987,7 @@ class Entry:
     def _get_features_attributes(self, ogc_server_id, url_internal_wfs):
         all_errors = set()
         feature_type, errors = asyncio.run(self._wms_get_features_type(ogc_server_id, url_internal_wfs))
-        namespace = feature_type.attrib.get("targetNamespace") if feature_type is not None else None
+        namespace = feature_type.attrib.get("targetNamespace")
         all_errors |= errors
         types = {}
         elements = {}
@@ -1015,14 +1015,16 @@ class Entry:
                 sequence = child.find(".//{http://www.w3.org/2001/XMLSchema}sequence")
                 attrib = {}
                 for children in sequence.getchildren():
-                    namespace = None
+                    type_namespace = None
                     type_ = children.attrib["type"]
                     if len(type_.split(":")) == 2:
-                        namespace, type_ = type_.split(":")
-                    namespace = children.nsmap[namespace]
-                    attrib[children.attrib["name"]] = {"namespace": namespace, "type": type_}
-                    if "alias" in children.attrib:
-                        attrib[children.attrib["name"]] = children.attrib["alias"]
+                        type_namespace, type_ = type_.split(":")
+                    type_namespace = children.nsmap[type_namespace]
+                    name = children.attrib["name"]
+                    attrib[name] = {"namespace": type_namespace, "type": type_}
+                    for key, value in children.attrib.items():
+                        if key not in ("name", "type", "namespace"):
+                            attrib[name][key] = value
                 types[child.attrib["name"]] = attrib
         attributes = {}
         for name, type_ in elements.items():

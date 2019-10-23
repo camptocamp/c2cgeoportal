@@ -60,6 +60,17 @@ OGC Server
         "isSingleTile": (true|false),
         "type": "(mapserver|geoserver|qgisserver|arcgis|other)",
         "credential: (true|false),"
+        "attributes": {
+            "<type name>": {
+                "<attribute name>": {
+                    "type": "<the type name>",
+                    "namespace": "<the namespace URL>",
+                    "alias": "<the optional alias>",
+                    "minOccurs": "<the optional minimum occurs>",
+                    "maxOccurs": "<the optional maximum occurs>"
+                }
+            }
+        }
     }
 
 
