@@ -76,9 +76,7 @@ class DynamicView:
             "two_factor": self.request.registry.settings.get("authentication", {}).get("two_factor", False),
             "lang_urls": {
                 lang: self.request.static_url(
-                    "/etc/geomapfish/static/{lang}.json".format(
-                        package=self.request.registry.settings["package"], lang=lang
-                    ),
+                    "/etc/geomapfish/static/{lang}.json".format(lang=lang),
                     _query={"cache": get_cache_version()},
                 )
                 for lang in self.request.registry.settings["available_locale_names"]
