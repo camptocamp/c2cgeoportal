@@ -1178,6 +1178,8 @@ class Entry:
         if username is not None:
             user = models.DBSession.query(static.User).filter(static.User.username == username).one()
             if self.two_factor_auth:
+                if "2fa_totp_secret" not in user.tech_data:
+                    user.is_password_changed = False
                 if not user.is_password_changed:
                     user.tech_data["2fa_totp_secret"] = pyotp.random_base32()
                     return set_common_headers(
