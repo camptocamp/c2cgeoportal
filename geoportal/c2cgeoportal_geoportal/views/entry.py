@@ -1231,7 +1231,7 @@ class Entry:
                     ),
                 )
 
-            headers = remember(self.request, username) if user.is_password_changed else []
+            headers = remember(self.request, username)
             LOG.info("User '%s' logged in.", username)
             came_from = self.request.params.get("came_from")
             if came_from:
