@@ -18,6 +18,8 @@ authtkt_reissue_time = %(AUTHTKT_REISSUE_TIME)s
 authtkt_http_only = %(AUTHTKT_HTTP_ONLY)s
 authtkt_secure = %(AUTHTKT_SECURE)s
 authtkt_samesite = %(AUTHTKT_SAMESITE)s
+basicauth = %(BASICAUTH)s
+
 app.cfg = /etc/geomapfish/config.yaml
 
 [filter:proxy-prefix]
@@ -34,7 +36,7 @@ pipeline =
 ###
 
 [loggers]
-keys = root, sqlalchemy, gunicorn.access, gunicorn.error, c2cgeoportal_commons, c2cgeoportal_geoportal, c2cgeoportal_admin, {{package}}_geoportal, c2cwsgiutils
+keys = root, sqlalchemy, gunicorn, c2cgeoportal_commons, c2cgeoportal_geoportal, c2cgeoportal_admin, {{package}}_geoportal, c2cwsgiutils
 
 [handlers]
 keys = console
@@ -43,7 +45,7 @@ keys = console
 keys = generic
 
 [logger_root]
-level = WARN
+level = %(OTHER_LOG_LEVEL)s
 handlers = console
 
 [logger_c2cgeoportal_commons]
@@ -71,18 +73,13 @@ level = %(LOG_LEVEL)s
 handlers =
 qualname = c2cwsgiutils
 
-[logger_gunicorn.access]
-level = INFO
+[logger_gunicorn]
+level = %(GUNICORN_LOG_LEVEL)s
 handlers =
-qualname = gunicorn.access
-
-[logger_gunicorn.error]
-level = INFO
-handlers =
-qualname = gunicorn.error
+qualname = gunicorn
 
 [logger_sqlalchemy]
-level = WARN
+level = %(SQL_LOG_LEVEL)s
 handlers =
 qualname = sqlalchemy.engine
 # "level = INFO" logs SQL queries.
@@ -96,4 +93,4 @@ level = NOTSET
 formatter = generic
 
 [formatter_generic]
-format = %(asctime)s %(levelname)-5.5s [%(name)s][%(threadName)s] %(message)s
+format = %(levelname)-5.5s [%(name)s] %(message)s
