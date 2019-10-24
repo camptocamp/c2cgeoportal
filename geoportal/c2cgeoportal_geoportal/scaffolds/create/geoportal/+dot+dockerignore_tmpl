@@ -8,6 +8,7 @@
 !development.ini
 !setup.cfg
 !setup.py
+!gunicorn_config.py
 !{{package}}_geoportal
 {{package}}_geoportal/static/lib/cgxp
 !{{package}}_geoportal/static/lib/cgxp/core/src/theme
