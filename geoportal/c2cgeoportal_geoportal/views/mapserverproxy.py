@@ -36,7 +36,8 @@ from pyramid.request import Request
 from pyramid.response import Response
 from pyramid.view import view_config
 
-from c2cgeoportal_commons.models import main, static
+from c2cgeoportal_commons.models import main
+from c2cgeoportal_geoportal.lib import get_roles_id, get_roles_name
 from c2cgeoportal_geoportal.lib.caching import NO_CACHE, PRIVATE_CACHE, PUBLIC_CACHE, get_region
 from c2cgeoportal_geoportal.lib.filter_capabilities import filter_capabilities
 from c2cgeoportal_geoportal.lib.functionality import get_mapserver_substitution_params
@@ -62,29 +63,18 @@ class MapservProxy(OGCProxy):
             LOG.debug("proxy() detected authentication_required")
             raise HTTPUnauthorized(headers={"WWW-Authenticate": 'Basic realm="Access to restricted layers"'})
 
-        if self.user is not None:
-            # We have a user logged in. We need to set group_id and
-            # possible layer_name in the params. We set layer_name
-            # when either QUERY_PARAMS or LAYERS is set in the
-            # WMS params, i.e. for GetMap and GetFeatureInfo
-            # requests. For GetLegendGraphic requests we do not
-            # send layer_name, but MapServer should not use the DATA
-            # string for GetLegendGraphic.
+        # We have a user logged in. We need to set group_id and possible layer_name in the params. We set
+        # layer_name when either QUERY_PARAMS or LAYERS is set in the WMS params, i.e. for GetMap and
+        # GetFeatureInfo requests. For GetLegendGraphic requests we do not send layer_name, but MapServer
+        # should not use the DATA string for GetLegendGraphic.
 
-            roles = self.user.roles
-            if len(roles):
-                if self.ogc_server.auth == main.OGCSERVER_AUTH_STANDARD:
-                    self.params["role_ids"] = (
-                        "-1" if len(roles) == 0 else ",".join([str(r.id) for r in roles])
-                    )
+        if self.ogc_server.auth == main.OGCSERVER_AUTH_STANDARD:
+            self.params["role_ids"] = ",".join([str(e) for e in get_roles_id(self.request)])
 
-                    # In some application we want to display the features owned by a user
-                    # than we need his id.
-                    self.params["user_id"] = self.user.id  # pragma: no cover
-            else:  # pragma nocover
-                LOG.warning("The user '%s' has no role", self.user.username)
+            # In some application we want to display the features owned by a user than we need his id.
+            self.params["user_id"] = self.user.id if self.user is not None else "-1"  # pragma: no cover
 
-        # do not allows direct variable substitution
+        # Do not allows direct variable substitution
         for k in list(self.params.keys()):
             if k[:2].capitalize() == "S_":
                 LOG.warning("Direct substitution not allowed ({0!s}={1!s}).".format(k, self.params[k]))
@@ -138,12 +128,11 @@ class MapservProxy(OGCProxy):
 
         headers = self._get_headers()
         # Add headers for Geoserver
-        if self.ogc_server.auth == main.OGCSERVER_AUTH_GEOSERVER and self.user is not None:
+        if self.ogc_server.auth == main.OGCSERVER_AUTH_GEOSERVER:
             headers["sec-username"] = self.user.username
-            headers["sec-roles"] = ";".join([r.name for r in roles])
+            headers["sec-roles"] = ";".join(get_roles_name(self.request))
 
         response = self._proxy_callback(
-            self.user,
             cache_control,
             url=_url,
             params=self.params,
@@ -161,16 +150,13 @@ class MapservProxy(OGCProxy):
 
         return response
 
-    def _proxy_callback(
-        self, user: static.User, cache_control: int, url: str, params: dict, **kwargs: Any
-    ) -> Response:
+    def _proxy_callback(self, cache_control: int, url: str, params: dict, **kwargs: Any) -> Response:
         response = self._proxy(url=url, params=params, **kwargs)
 
         content = response.content
         if self.lower_params.get("request") == "getcapabilities":
             content = filter_capabilities(
                 response.text,
-                user,
                 self.lower_params.get("service") == "wms",
                 url,
                 self.request.headers,

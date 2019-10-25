@@ -624,51 +624,45 @@ class TestMapserverproxyView(TestCase):
         )
 
     def test_protected_layers1(self):
-        from c2cgeoportal_commons.models import DBSession, static
         from c2cgeoportal_geoportal.lib.layers import get_protected_layers
 
-        pl = get_protected_layers(DBSession.query(static.User).get(self.user1_id), [self.ogc_server_id])
+        pl = get_protected_layers(self._create_dummy_request("__test_user1"), [self.ogc_server_id])
         self.assertEqual(
             {pl[l].name for l in pl}, {"testpoint_protected", "testpoint_protected_query_with_collect"}
         )
 
     def test_protected_layers2(self):
-        from c2cgeoportal_commons.models import DBSession, static
         from c2cgeoportal_geoportal.lib.layers import get_protected_layers
 
-        pl = get_protected_layers(DBSession.query(static.User).get(self.user2_id), [self.ogc_server_id])
+        pl = get_protected_layers(self._create_dummy_request("__test_user2"), [self.ogc_server_id])
         self.assertEqual(
             {pl[l].name for l in pl}, {"testpoint_protected", "testpoint_protected_query_with_collect"}
         )
 
     def test_protected_layers3(self):
-        from c2cgeoportal_commons.models import DBSession, static
         from c2cgeoportal_geoportal.lib.layers import get_protected_layers
 
-        pl = get_protected_layers(DBSession.query(static.User).get(self.user3_id), [self.ogc_server_id])
+        pl = get_protected_layers(self._create_dummy_request("__test_user3"), [self.ogc_server_id])
         self.assertEqual(
             {pl[l].name for l in pl}, {"testpoint_protected", "testpoint_protected_query_with_collect"}
         )
 
     def test_writable_layers1(self):
-        from c2cgeoportal_commons.models import DBSession, static
         from c2cgeoportal_geoportal.lib.layers import get_writable_layers
 
-        pl = get_writable_layers(DBSession.query(static.User).get(self.user1_id), [self.ogc_server_id])
+        pl = get_writable_layers(self._create_dummy_request("__test_user1"), [self.ogc_server_id])
         self.assertEqual({pl[l].name for l in pl}, set())
 
     def test_writable_layers2(self):
-        from c2cgeoportal_commons.models import DBSession, static
         from c2cgeoportal_geoportal.lib.layers import get_writable_layers
 
-        pl = get_writable_layers(DBSession.query(static.User).get(self.user2_id), [self.ogc_server_id])
+        pl = get_writable_layers(self._create_dummy_request("__test_user2"), [self.ogc_server_id])
         self.assertEqual({pl[l].name for l in pl}, set())
 
     def test_writable_layers3(self):
-        from c2cgeoportal_commons.models import DBSession, static
         from c2cgeoportal_geoportal.lib.layers import get_writable_layers
 
-        pl = get_writable_layers(DBSession.query(static.User).get(self.user3_id), [self.ogc_server_id])
+        pl = get_writable_layers(self._create_dummy_request("__test_user3"), [self.ogc_server_id])
         self.assertEqual({pl[l].name for l in pl}, {"testpoint_protected_query_with_collect"})
 
     def test_wms_get_capabilities(self):
