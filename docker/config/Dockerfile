@@ -9,3 +9,7 @@ RUN \
   apt-get install --assume-yes --no-install-recommends gettext-base python3 && \
   apt-get clean && \
   rm --recursive --force /var/lib/apt/lists/*
+
+COPY gunicorn_config.py /etc/gunicorn/config.py
+
+VOLUME [ "/etc/gunicorn" ]
