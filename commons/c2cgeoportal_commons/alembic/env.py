@@ -28,14 +28,19 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from alembic import context
-from sqlalchemy import engine_from_config, pool
 from logging.config import fileConfig
+import os
+
+from alembic import context
 from c2c.template.config import config
+from sqlalchemy import engine_from_config, pool
+
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
-fileConfig(context.config.config_file_name)
+os.environ.setdefault('LOG_HOST', 'localhost')
+os.environ.setdefault('LOG_PORT', '0')
+fileConfig(context.config.config_file_name, defaults=dict(os.environ))
 
 
 def get_config():

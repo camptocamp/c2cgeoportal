@@ -175,6 +175,7 @@ services:
       - C2C_SQL_PROFILER_ENABLED=TRUE
       - C2C_DEBUG_VIEW_ENABLED=TRUE
       - C2C_SECRET
+      - LOG_TYPE
 
   alembic:
     image: ${DOCKER_BASE}-geoportal:${DOCKER_TAG}
@@ -192,6 +193,7 @@ services:
       - PGPASSWORD
       - PGDATABASE
       - PGSCHEMA_STATIC
+      - LOG_TYPE
 
   front:
     image: haproxy:1.8.8
