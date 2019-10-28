@@ -118,7 +118,7 @@ def main():
             )
             data = _sub(
                 re.escape('</head>'),
-                '  <link href="{entry_point}static/{version}/{interface}.css" rel="stylesheet">\n  </head>'
+                '  <link href="{entry_point}static/{version}/css/{interface}.css" rel="stylesheet">\n  </head>'
                 .format(
                     entry_point='${htmlWebpackPlugin.options.vars.entry_point}',
                     version='${htmlWebpackPlugin.options.vars.version}',
