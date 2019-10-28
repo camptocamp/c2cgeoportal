@@ -108,7 +108,7 @@ services:
       - --maxmemory
       - 512mb
       - --maxmemory-policy
-      - allkeys-lru
+      - volatile-lru
       - --tcp-keepalive
       - '30'
 
