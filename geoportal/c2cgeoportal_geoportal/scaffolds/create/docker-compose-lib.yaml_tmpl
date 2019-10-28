@@ -97,7 +97,7 @@ services:
       - '30'
 
   tilecloudchain:
-    image: camptocamp/tilecloud-chain:1.12
+    image: camptocamp/tilecloud-chain:1.13
     user: www-data
     restart: unless-stopped
     environment:
@@ -115,7 +115,7 @@ services:
       - AWS_SECRET_ACCESS_KEY
 
   tilegeneration_slave:
-    image: camptocamp/tilecloud-chain:1.12
+    image: camptocamp/tilecloud-chain:1.13
     user: www-data
     restart: unless-stopped
     entrypoint:
