@@ -1,3 +1,6 @@
+##### 2.4.1.42
+* Fix _query [c2cgeoportal#5418](https://github.com/camptocamp/c2cgeoportal/pull/5418)
+* Add translation for ng-options list [ngeo#5244](https://github.com/camptocamp/ngeo/pull/5244)
 ##### 2.4.1.41
 * added migration of metadataurl on layer-groups [c2cgeoportal#5406](https://github.com/camptocamp/c2cgeoportal/pull/5406)
 ##### 2.4.1.40
