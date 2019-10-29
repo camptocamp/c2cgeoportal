@@ -1,3 +1,5 @@
+##### 2.4.1.44
+* Be able to have logs in JSON [c2cgeoportal#5443](https://github.com/camptocamp/c2cgeoportal/pull/5443)
 ##### 2.4.1.43
 * Switch redis to volatile-lru [c2cgeoportal#5444](https://github.com/camptocamp/c2cgeoportal/pull/5444)
 ##### 2.4.1.42
