@@ -69,6 +69,7 @@ from c2cgeoportal_geoportal.lib.caching import (
     NO_CACHE,
     PRIVATE_CACHE,
     PUBLIC_CACHE,
+    NoCacheDecorator,
     get_region,
     set_common_headers,
 )
@@ -88,25 +89,26 @@ CACHE_REGION = get_region("std")
 CACHE_REGION_OBJ = get_region("obj")
 
 
+@NoCacheDecorator([0, 2])
 @CACHE_REGION.cache_on_arguments()
 def get_http_cached(http_options, url, headers):
-    response = requests.get(url, headers=headers, timeout=300, **http_options)
+    response = requests.get(url, headers=headers.get(), timeout=300, **http_options.get())
     LOG.info("Get url '%s' in %.1fs.", url, response.elapsed.total_seconds())
     return response
 
 
+@NoCacheDecorator([0])
 @CACHE_REGION_OBJ.cache_on_arguments()
-def _build_web_map_service(no_cache, ogc_server_id):
-    # The content is named no_cache to don't be concidered in the cache key
+def _build_web_map_service(content, ogc_server_id):
     del ogc_server_id  # Just for cache
-    return WebMapService(None, xml=no_cache)
+    return WebMapService(None, xml=content.get())
 
 
+@NoCacheDecorator([0])
 @CACHE_REGION_OBJ.cache_on_arguments()
-def _read_xml(no_cache, cache_key):
-    # The content is named no_cache to don't be concidered in the cache key
+def _read_xml(content, cache_key):
     del cache_key  # Just for cache
-    return lxml.XML(no_cache.encode("utf-8"))
+    return lxml.XML(content.get().encode("utf-8"))
 
 
 class DimensionInformation:
