@@ -12,7 +12,7 @@ help: ## Display this help message
 
 .PHONY: build
 build: ## Build all docker images
-build: build-tools build-runner build-config-build
+build: build-tools build-runner build-config
 
 .PHONY: checks
 checks: ## Run the application checks
@@ -31,9 +31,9 @@ build-tools:
 	docker build --target=tools --tag=camptocamp/geomapfish-tools:$(DOCKER_TAG) \
 		--build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --build-arg=VERSION=$(VERSION) .
 
-.PHONY: build-config-build
-build-config-build:
-	docker build --tag=camptocamp/geomapfish-config-build:$(DOCKER_TAG) \
+.PHONY: build-config
+build-config:
+	docker build --tag=camptocamp/geomapfish-config:$(DOCKER_TAG) \
 		--build-arg=VERSION=$(MAJOR_VERSION) docker/config
 
 .PHONY: build-runner

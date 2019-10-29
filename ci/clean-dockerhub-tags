@@ -71,7 +71,7 @@ def clean_images(image, tag_=lambda tag: tag):
 for image in [
     "geomapfish",
     "geomapfish-build",
-    "geomapfish-config-build",
+    "geomapfish-config",
     "geomapfish-geoportal"
 ]:
     clean_images(image)
