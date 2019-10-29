@@ -176,6 +176,7 @@ services:
       - SQL_LOG_LEVEL
       - GUNICORN_LOG_LEVEL
       - OTHER_LOG_LEVEL
+      - DOGPILECACHE_LOG_LEVEL
 
   tools:
     image: camptocamp/geomapfish-tools:{{geomapfish_main_version}}
