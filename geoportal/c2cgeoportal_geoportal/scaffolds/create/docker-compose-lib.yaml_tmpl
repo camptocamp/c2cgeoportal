@@ -92,7 +92,7 @@ services:
       - --maxmemory
       - 512mb
       - --maxmemory-policy
-      - allkeys-lru
+      - volatile-lru
       - --tcp-keepalive
       - '30'
 
@@ -177,6 +177,7 @@ services:
       - GUNICORN_LOG_LEVEL
       - OTHER_LOG_LEVEL
       - DOGPILECACHE_LOG_LEVEL
+      - LOG_TYPE
 
   tools:
     image: camptocamp/geomapfish-tools:{{geomapfish_main_version}}
@@ -200,6 +201,7 @@ services:
       - PGPASSWORD
       - PGDATABASE
       - PGSCHEMA_STATIC
+      - LOG_TYPE
 
   front:
     image: haproxy:1.9
