@@ -1,3 +1,5 @@
+##### 2.4.1.43
+* Switch redis to volatile-lru [c2cgeoportal#5444](https://github.com/camptocamp/c2cgeoportal/pull/5444)
 ##### 2.4.1.42
 * Fix _query [c2cgeoportal#5418](https://github.com/camptocamp/c2cgeoportal/pull/5418)
 * Add translation for ng-options list [ngeo#5244](https://github.com/camptocamp/ngeo/pull/5244)
