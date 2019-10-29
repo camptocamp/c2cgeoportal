@@ -29,6 +29,7 @@
 
 
 import argparse
+
 import transaction
 
 from c2cgeoportal_geoportal.scripts import fill_arguments, get_appsettings, get_session

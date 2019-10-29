@@ -29,15 +29,15 @@
 
 
 import argparse
+from argparse import ArgumentParser
 import atexit
 import filecmp
 import os
 import re
 import shutil
 import subprocess
-import sys
-from argparse import ArgumentParser
 from subprocess import call, check_call, check_output
+import sys
 
 import pkg_resources
 import requests

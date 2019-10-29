@@ -28,8 +28,8 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import math
 from decimal import Decimal
+import math
 
 import geojson
 from pyramid.httpexceptions import HTTPNotFound

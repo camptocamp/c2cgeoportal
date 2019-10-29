@@ -10,8 +10,8 @@ Contact: info@camptocamp.com
 """
 
 
-from qgis.core import QgsMessageLog
 from geomapfish_qgisserver.accesscontrol import GMFException
+from qgis.core import QgsMessageLog
 
 
 def serverClassFactory(serverIface):  # noqa

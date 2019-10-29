@@ -25,6 +25,12 @@ black-fix: ## Fix the application code style with black
 	docker run --rm --volume=`pwd`:/src camptocamp/geomapfish-tools:$(DOCKER_TAG) \
 		make --makefile=internal.mk black-fix
 
+.PHONY: isort-fix
+isort-fix: build-tools
+isort-fix: ## Fix the application import order with isort
+	docker run --rm --volume=`pwd`:/src camptocamp/geomapfish-tools:$(DOCKER_TAG) \
+		make --makefile=internal.mk isort-fix
+
 
 .PHONY: build-tools
 build-tools:

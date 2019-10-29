@@ -28,13 +28,13 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from argparse import ArgumentParser
 import gettext
 import os
 import sys
-from argparse import ArgumentParser
 
-import transaction
 from sqlalchemy import func
+import transaction
 
 from c2cgeoportal_geoportal.scripts import fill_arguments, get_appsettings, get_session
 

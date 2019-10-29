@@ -37,9 +37,9 @@ Create Date: 2014-10-24 11:43:23.886123
 from hashlib import sha1
 
 from alembic import op
-from sqlalchemy import ForeignKey, Column, Table, MetaData
-from sqlalchemy.types import Integer, Boolean, Unicode, String, Float, UserDefinedType, DateTime
 from c2c.template.config import config
+from sqlalchemy import Column, ForeignKey, MetaData, Table
+from sqlalchemy.types import Boolean, DateTime, Float, Integer, String, Unicode, UserDefinedType
 
 # revision identifiers, used by Alembic.
 revision = "166ff2dcc48d"

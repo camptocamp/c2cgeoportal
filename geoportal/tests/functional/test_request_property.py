@@ -33,11 +33,9 @@
 import base64
 from unittest import TestCase
 
-from tests.functional import (  # noqa
-    teardown_common as teardown_module,
-    setup_common as setup_module,
-    create_dummy_request,
-)
+from tests.functional import create_dummy_request
+from tests.functional import setup_common as setup_module  # noqa
+from tests.functional import teardown_common as teardown_module  # noqa
 
 
 class TestRequestProperty(TestCase):

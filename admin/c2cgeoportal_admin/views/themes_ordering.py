@@ -1,16 +1,14 @@
-from pyramid.view import view_config
-from pyramid.httpexceptions import HTTPFound
-
-import colander
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import AbstractViews
+import colander
 from deform import ValidationFailure
+from pyramid.httpexceptions import HTTPFound
+from pyramid.view import view_config
 from sqlalchemy.sql.expression import literal_column
 
-from c2cgeoportal_commons.models.main import Theme
-
 from c2cgeoportal_admin import _
-from c2cgeoportal_admin.widgets import ThemeOrderWidget, ChildrenWidget
+from c2cgeoportal_admin.widgets import ChildrenWidget, ThemeOrderWidget
+from c2cgeoportal_commons.models.main import Theme
 
 
 class ThemeOrderSchema(GeoFormSchemaNode):

@@ -71,7 +71,7 @@ build: \
 	$(MO_FILES)
 
 .PHONY: checks
-checks: flake8 mypy pylint bandit black additionallint
+checks: flake8 mypy pylint bandit black isort additionallint
 
 .PHONY: flake8
 flake8:
@@ -126,6 +126,18 @@ black:
 .PHONY: black-fix
 black-fix:
 	black --line-length=110 --target-version py37 --exclude=.*/node_modules/.* /src
+
+.PHONY: isort
+isort:
+	isort --check-only --multi-line=3 --trailing-comma \
+	--force-grid-wrap=0 --use-parentheses --line-width=110 --force-sort-within-sections \
+	--recursive commons geoportal admin/c2cgeoportal_admin admin/tests bin docker
+
+.PHONY: isort-fix
+isort-fix:
+	isort --apply --multi-line=3 --trailing-comma \
+	--force-grid-wrap=0 --use-parentheses --line-width=110 --force-sort-within-sections \
+	--recursive commons geoportal admin/c2cgeoportal_admin admin/tests bin docker
 
 .PHONY: additionallint
 additionallint:

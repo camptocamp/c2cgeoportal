@@ -28,13 +28,13 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.utils import formatdate
 import logging
 import smtplib
-from typing import Dict, Any, List, cast
 from socket import gaierror
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-from email.utils import formatdate
+from typing import Any, Dict, List, cast
 
 try:
     from pyramid.httpexceptions import HTTPInternalServerError

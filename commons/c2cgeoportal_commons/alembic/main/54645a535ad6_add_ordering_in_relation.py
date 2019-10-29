@@ -35,9 +35,9 @@ Create Date: 2014-11-25 14:39:05.110315
 """
 
 from alembic import op
+from c2c.template.config import config
 from sqlalchemy import Column
 from sqlalchemy.types import Integer
-from c2c.template.config import config
 
 # revision identifiers, used by Alembic.
 revision = "54645a535ad6"

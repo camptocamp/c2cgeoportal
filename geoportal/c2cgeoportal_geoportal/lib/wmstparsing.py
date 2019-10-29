@@ -28,8 +28,9 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import isodate
 import datetime
+
+import isodate
 
 
 def min_none(a, b):

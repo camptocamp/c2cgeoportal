@@ -28,37 +28,36 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import subprocess
-import os
-import yaml
 import json
-import re
-import traceback
-import requests
-from typing import Dict  # noqa, pylint: disable=unused-import
 from json import loads
+import os
+import re
+import subprocess
+import traceback
+from typing import Dict  # noqa, pylint: disable=unused-import
 from urllib.parse import urlsplit
-from defusedxml.minidom import parseString
 from xml.parsers.expat import ExpatError
-from sqlalchemy.exc import ProgrammingError, NoSuchTableError, OperationalError
-from sqlalchemy.orm.exc import NoResultFound
-from sqlalchemy.orm.util import class_mapper
-from sqlalchemy.orm.properties import ColumnProperty
-from geoalchemy2.types import Geometry
 
-from lingua.extractors import Extractor
-from lingua.extractors import Message
-from pyramid.paster import bootstrap
-from bottle import template, MakoTemplate
-from mako.template import Template
+from bottle import MakoTemplate, template
+from c2c.template.config import config
+from defusedxml.minidom import parseString
+from geoalchemy2.types import Geometry
+from lingua.extractors import Extractor, Message
 from mako.lookup import TemplateLookup
+from mako.template import Template
 from owslib.wms import WebMapService
+from pyramid.paster import bootstrap
+import requests
+from sqlalchemy.exc import NoSuchTableError, OperationalError, ProgrammingError
+from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.orm.properties import ColumnProperty
+from sqlalchemy.orm.util import class_mapper
+import yaml
 
 import c2cgeoportal_geoportal
-from c2c.template.config import config
 from c2cgeoportal_geoportal import init_dbsessions
 from c2cgeoportal_geoportal.lib import add_url_params, get_url2
-from c2cgeoportal_geoportal.lib.bashcolor import colorize, RED
+from c2cgeoportal_geoportal.lib.bashcolor import RED, colorize
 from c2cgeoportal_geoportal.lib.caching import init_region
 
 

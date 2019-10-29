@@ -1,5 +1,5 @@
-import colander
 from c2cgeoform.ext.deform_ext import MapWidget
+import colander
 
 
 @colander.deferred

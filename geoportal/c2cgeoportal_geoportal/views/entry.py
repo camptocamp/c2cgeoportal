@@ -29,28 +29,27 @@
 
 
 import asyncio
+from collections import Counter
 import json
 import logging
-import re
-import sys
-import urllib.parse
-import xml.dom.minidom  # noqa # pylint: disable=unused-import
-from collections import Counter
 from math import sqrt
 from random import Random
-from typing import Dict, Set, Tuple  # noqa # pylint: disable=unused-import
-
-import pyotp
-import requests
+import re
+import sys
 import time
-from c2cwsgiutils.auth import auth_view
+from typing import Dict, Set, Tuple  # noqa # pylint: disable=unused-import
+import urllib.parse
+import xml.dom.minidom  # noqa # pylint: disable=unused-import
+
 from defusedxml import lxml
 from owslib.wms import WebMapService
+import pyotp
 from pyramid.httpexceptions import HTTPBadRequest, HTTPForbidden, HTTPFound, HTTPUnauthorized
 from pyramid.i18n import TranslationStringFactory
 from pyramid.response import Response
 from pyramid.security import forget, remember
 from pyramid.view import view_config
+import requests
 from sqlalchemy.orm import subqueryload
 from sqlalchemy.orm.exc import NoResultFound
 
@@ -81,6 +80,7 @@ from c2cgeoportal_geoportal.lib.layers import (
 )
 from c2cgeoportal_geoportal.lib.wmstparsing import TimeInformation, parse_extent
 from c2cgeoportal_geoportal.views.layers import get_layer_metadatas
+from c2cwsgiutils.auth import auth_view
 
 _ = TranslationStringFactory("c2cgeoportal")
 LOG = logging.getLogger(__name__)

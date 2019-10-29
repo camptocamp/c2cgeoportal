@@ -13,6 +13,7 @@ flake8-copyright~=0.2.2  # lint
 flake8-mypy~=17.8.0  # lint
 glob2~=0.7  # ngeo
 htmlmin~=0.1.12  # ngeo
+isort~=4.3.21  # lint
 Jinja2~=2.10.3  # c2c.template
 lingua~=4.13  # i18n
 mccabe~=0.6.1  # lint

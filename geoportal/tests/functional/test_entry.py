@@ -35,10 +35,9 @@ import logging
 import re
 from unittest import TestCase
 
-import pytest
-import transaction
 from geoalchemy2 import WKTElement
 from pyramid import testing
+import pytest
 from tests.functional import (
     cleanup_db,
     create_default_ogcserver,
@@ -49,6 +48,7 @@ from tests.functional import (
 from tests.functional import setup_common as setup_module  # noqa, pylint: disable=unused-import
 from tests.functional import setup_db
 from tests.functional import teardown_common as teardown_module  # noqa, pylint: disable=unused-import
+import transaction
 
 from c2cgeoportal_geoportal.lib.caching import invalidate_region
 

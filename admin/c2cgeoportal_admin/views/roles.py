@@ -1,17 +1,15 @@
 from functools import partial
-from pyramid.view import view_defaults
-from pyramid.view import view_config
 
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import AbstractViews, ListField
+from deform.widget import FormWidget
+from pyramid.view import view_config, view_defaults
 from sqlalchemy.orm import subqueryload
 
-from c2cgeoportal_commons.models.main import Role
-from c2cgeoportal_admin.schemas.map import map_widget
 from c2cgeoportal_admin.schemas.functionalities import functionalities_schema_node
+from c2cgeoportal_admin.schemas.map import map_widget
 from c2cgeoportal_admin.schemas.restriction_areas import restrictionareas_schema_node
-from deform.widget import FormWidget
-
+from c2cgeoportal_commons.models.main import Role
 
 _list_field = partial(ListField, Role)
 

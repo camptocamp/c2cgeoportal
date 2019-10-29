@@ -1,9 +1,8 @@
 """c2cgeoportal_commons package."""
 from typing import Optional  # noqa, pylint: disable=unused-import
 
-from pyramid.config import Configurator
-
 from c2c.template.config import config as configuration
+from pyramid.config import Configurator
 
 
 def includeme(config: Configurator) -> None:

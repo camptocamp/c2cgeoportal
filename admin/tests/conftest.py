@@ -1,11 +1,11 @@
 import threading
 from wsgiref.simple_server import make_server
 
-import pytest
-import transaction
 from pyramid import testing
 from pyramid.paster import bootstrap
+import pytest
 from sqlalchemy.exc import DBAPIError
+import transaction
 from webtest import TestApp as WebTestApp  # Avoid warning with pytest
 
 from c2cgeoportal_commons.testing import generate_mappers, get_engine, get_session_factory, get_tm_session

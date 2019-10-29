@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 
-import os
-import pytest
 from logging.config import fileConfig
+import os
 
+from c2c.template.config import config
 import plaster
+import pytest
 from sqlalchemy.exc import DBAPIError
 import transaction
 
+from c2cgeoportal_commons.testing import generate_mappers, get_engine, get_session_factory, get_tm_session
 from c2cgeoportal_commons.testing.initializedb import truncate_tables
-from c2cgeoportal_commons.testing import get_engine, get_session_factory, get_tm_session, generate_mappers
-from c2c.template.config import config
 
 
 @pytest.fixture(scope="session")

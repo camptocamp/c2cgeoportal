@@ -1,11 +1,12 @@
 # pylint: disable=no-self-use
 
-import pytest
-
-from . import skip_if_ci, AbstractViewsTests
-from .selenium.page import LayertreePage
-from selenium.common.exceptions import NoSuchElementException
 from unittest.mock import patch
+
+import pytest
+from selenium.common.exceptions import NoSuchElementException
+
+from . import AbstractViewsTests, skip_if_ci
+from .selenium.page import LayertreePage
 
 
 @pytest.fixture(scope="function")

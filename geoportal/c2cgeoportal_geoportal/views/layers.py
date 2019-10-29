@@ -27,14 +27,14 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+from datetime import datetime
 import logging
 import os
-from datetime import datetime
 
-import geojson
 from geoalchemy2 import Geometry
 from geoalchemy2 import func as ga_func
 from geoalchemy2.shape import from_shape, to_shape
+import geojson
 from geojson.feature import Feature, FeatureCollection
 from papyrus.protocol import Protocol, create_filter
 from papyrus.xsd import XSDGenerator

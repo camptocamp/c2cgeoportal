@@ -1,13 +1,10 @@
+from c2cgeoform.views.abstract_views import ItemAction
 from pyramid.httpexceptions import HTTPNotFound
 from pyramid.view import view_config
 from translationstring import TranslationStringFactory
 
-from c2cgeoform.views.abstract_views import ItemAction
-
-from c2cgeoportal_commons.models.main import LayergroupTreeitem, Theme, TreeItem
-
 from c2cgeoportal_admin import _
-
+from c2cgeoportal_commons.models.main import LayergroupTreeitem, Theme, TreeItem
 
 itemtypes_tables = {
     "theme": "themes",

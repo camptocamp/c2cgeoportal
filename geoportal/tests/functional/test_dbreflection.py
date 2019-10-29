@@ -32,7 +32,8 @@
 
 from unittest import TestCase
 
-from tests.functional import teardown_common as teardown_module, setup_common as setup_module  # noqa
+from tests.functional import setup_common as setup_module
+from tests.functional import teardown_common as teardown_module  # noqa
 
 from c2cgeoportal_geoportal.lib.caching import init_region
 

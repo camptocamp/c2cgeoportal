@@ -28,10 +28,11 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from alembic import context
-from sqlalchemy import engine_from_config, pool
 from logging.config import fileConfig
+
+from alembic import context
 from c2c.template.config import config
+from sqlalchemy import engine_from_config, pool
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.

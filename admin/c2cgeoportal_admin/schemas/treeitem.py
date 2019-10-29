@@ -1,7 +1,7 @@
+from functools import partial
+
 import colander
 import deform
-
-from functools import partial
 
 from c2cgeoportal_admin.schemas.treegroup import base_deferred_parent_id_validator
 

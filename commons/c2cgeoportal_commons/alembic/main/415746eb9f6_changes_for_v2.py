@@ -35,9 +35,9 @@ Create Date: 2014-10-23 16:00:47.940216
 """
 
 from alembic import op
-from sqlalchemy import Column, ForeignKey, Table, MetaData
-from sqlalchemy.types import Integer, Boolean, Unicode, Float
 from c2c.template.config import config
+from sqlalchemy import Column, ForeignKey, MetaData, Table
+from sqlalchemy.types import Boolean, Float, Integer, Unicode
 
 # revision identifiers, used by Alembic.
 revision = "415746eb9f6"

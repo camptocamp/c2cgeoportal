@@ -1,11 +1,13 @@
-import colander
 from functools import partial
-from sqlalchemy.orm import aliased
-from sqlalchemy.sql.expression import func, case
+
 from c2cgeoform.schema import GeoFormSchemaNode
-from c2cgeoportal_commons.models.main import LayergroupTreeitem, TreeItem
+import colander
+from sqlalchemy.orm import aliased
+from sqlalchemy.sql.expression import case, func
+
 from c2cgeoportal_admin import _
 from c2cgeoportal_admin.widgets import ChildrenWidget, ChildWidget
+from c2cgeoportal_commons.models.main import LayergroupTreeitem, TreeItem
 
 
 class ChildSchemaNode(GeoFormSchemaNode):

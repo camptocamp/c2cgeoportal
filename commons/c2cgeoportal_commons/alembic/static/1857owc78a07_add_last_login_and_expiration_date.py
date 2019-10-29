@@ -37,8 +37,8 @@ Create Date: 2018-03-29 13:15:23.228907
 """
 
 from alembic import op
-from sqlalchemy import Boolean, Column, DateTime
 from c2c.template.config import config
+from sqlalchemy import Boolean, Column, DateTime
 
 # revision identifiers, used by Alembic.
 revision = "1857owc78a07"

@@ -1,6 +1,7 @@
-import colander
 from c2cgeoform.ext.deform_ext import RelationCheckBoxListWidget
 from c2cgeoform.schema import GeoFormManyToManySchemaNode, manytomany_validator
+import colander
+
 from c2cgeoportal_commons.models.main import Role
 
 

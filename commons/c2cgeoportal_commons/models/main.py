@@ -29,17 +29,19 @@
 
 
 import logging
-from typing import List, Optional, Any
-from typing import Union, Tuple, Dict  # noqa, pylint: disable=unused-import
+from typing import Any, Dict, List, Optional, Tuple, Union  # noqa, pylint: disable=unused-import
 
-from papyrus.geo_interface import GeoInterface
-from sqlalchemy import ForeignKey, Table, event
-from sqlalchemy.types import Integer, Boolean, Unicode, String, Enum, UserDefinedType
-from sqlalchemy import UniqueConstraint, Column
-from sqlalchemy.schema import Index
-from sqlalchemy.orm import relationship, backref, Session
+from c2c.template.config import config
 from geoalchemy2 import Geometry
 from geoalchemy2.shape import to_shape
+from papyrus.geo_interface import GeoInterface
+from sqlalchemy import Column, ForeignKey, Table, UniqueConstraint, event
+from sqlalchemy.orm import Session, backref, relationship
+from sqlalchemy.schema import Index
+from sqlalchemy.types import Boolean, Enum, Integer, String, Unicode, UserDefinedType
+
+from c2cgeoportal_commons.models import Base, _, cache_invalidate_cb
+from c2cgeoportal_commons.models.sqlalchemy import JSONEncodedDict
 
 try:
     from colander import drop
@@ -58,10 +60,6 @@ except ModuleNotFoundError:
     TextAreaWidget = GenericClass
     ColanderGeometry = GenericClass
     RelationSelect2Widget = GenericClass
-
-from c2c.template.config import config
-from c2cgeoportal_commons.models import Base, _, cache_invalidate_cb
-from c2cgeoportal_commons.models.sqlalchemy import JSONEncodedDict
 
 
 LOG = logging.getLogger(__name__)

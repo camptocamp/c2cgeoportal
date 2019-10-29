@@ -27,14 +27,14 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-import logging
 from json import dumps, loads
+import logging
 
-from c2cgeoportal_commons import models
-from c2cgeoportal_commons.models import main
 from pyramid.httpexceptions import HTTPBadRequest, HTTPForbidden
 from pyramid.view import view_config
 
+from c2cgeoportal_commons import models
+from c2cgeoportal_commons.models import main
 from c2cgeoportal_geoportal.lib import add_url_params
 from c2cgeoportal_geoportal.lib.caching import NO_CACHE
 from c2cgeoportal_geoportal.lib.layers import get_private_layers, get_protected_layers

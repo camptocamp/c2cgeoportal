@@ -30,14 +30,14 @@
 # pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access
 
 
-from unittest import TestCase
-
 from io import StringIO
+from unittest import TestCase
 from xml import sax
 from xml.sax.saxutils import XMLGenerator
 
 from tests import load_file
-from tests.functional import teardown_common as teardown_module, setup_common as setup_module  # noqa
+from tests.functional import setup_common as setup_module  # noqa
+from tests.functional import teardown_common as teardown_module  # noqa
 
 
 class TestFilterCapabilities(TestCase):

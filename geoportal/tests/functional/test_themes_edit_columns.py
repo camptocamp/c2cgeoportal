@@ -30,17 +30,13 @@
 # pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access,no-value-for-parameter
 
 
-from urllib.parse import urlencode
 from unittest import TestCase
+from urllib.parse import urlencode
 
-from tests.functional import (  # noqa
-    teardown_common as teardown_module,
-    setup_common as setup_module,
-    create_dummy_request,
-    create_default_ogcserver,
-    cleanup_db,
-    setup_db,
-)
+from tests.functional import cleanup_db, create_default_ogcserver, create_dummy_request
+from tests.functional import setup_common as setup_module  # noqa
+from tests.functional import setup_db
+from tests.functional import teardown_common as teardown_module  # noqa
 
 
 class TestThemesEditColumns(TestCase):
