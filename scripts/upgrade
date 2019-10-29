@@ -33,7 +33,7 @@ else
     then
         docker pull camptocamp/geomapfish:$1
         docker pull camptocamp/geomapfish-tools:$1
-        docker pull camptocamp/geomapfish-config-build:$1
+        docker pull camptocamp/geomapfish-config:$1
     fi
 fi
 

@@ -3,7 +3,7 @@
 TAG=$(ci/release-tag)
 VERSION=${TAG} DOCKER_TAG=${TAG} make build-tools
 VERSION=${TAG} DOCKER_TAG=${TAG} make build-runner
-VERSION=${TAG} DOCKER_TAG=${TAG} make build-config-build
+VERSION=${TAG} DOCKER_TAG=${TAG} make build-config
 
 WORKSPACE=$1
 BASE_APP=false

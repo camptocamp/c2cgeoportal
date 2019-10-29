@@ -53,8 +53,8 @@ then
     VERSION_QGIS=${VERSION}
 fi
 
-# Publish the GeoMapFish tools and config-build images
-for IMAGE in geomapfish-tools geomapfish-config-build
+# Publish the GeoMapFish tools and config images
+for IMAGE in geomapfish-tools geomapfish-config
 do
     docker tag camptocamp/${IMAGE} camptocamp/${IMAGE}:${VERSION}
     docker push camptocamp/${IMAGE}:${VERSION}
