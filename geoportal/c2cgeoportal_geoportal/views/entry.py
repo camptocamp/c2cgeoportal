@@ -89,25 +89,14 @@ CACHE_REGION = get_region("std")
 CACHE_REGION_OBJ = get_region("obj")
 
 
-@CACHE_REGION.cache_on_arguments()
 def get_http_cached(http_options, url, headers):
-    response = requests.get(url, headers=headers, timeout=300, **http_options)
-    LOG.info("Get url '%s' in %.1fs.", url, response.elapsed.total_seconds())
-    return response
+    @CACHE_REGION.cache_on_arguments()
+    def do_get_http_cached(url):
+        response = requests.get(url, headers=headers, timeout=300, **http_options)
+        LOG.info("Get url '%s' in %.1fs.", url, response.elapsed.total_seconds())
+        return response
 
-
-@CACHE_REGION_OBJ.cache_on_arguments()
-def _build_web_map_service(no_cache, ogc_server_id):
-    # The content is named no_cache to don't be concidered in the cache key
-    del ogc_server_id  # Just for cache
-    return WebMapService(None, xml=no_cache)
-
-
-@CACHE_REGION_OBJ.cache_on_arguments()
-def _read_xml(no_cache, cache_key):
-    # The content is named no_cache to don't be concidered in the cache key
-    del cache_key  # Just for cache
-    return lxml.XML(no_cache.encode("utf-8"))
+    return do_get_http_cached(url)
 
 
 class DimensionInformation:
@@ -232,7 +221,13 @@ class Entry:
 
         wms = None
         try:
-            wms = _build_web_map_service(content, ogc_server.id)
+
+            @CACHE_REGION_OBJ.cache_on_arguments()
+            def build_web_map_service(ogc_server_id):
+                del ogc_server_id  # Just for cache
+                return WebMapService(None, xml=content)
+
+            wms = build_web_map_service(ogc_server.id)
         except Exception:  # pragma: no cover
             error = (
                 "WARNING! an error occurred while trying to read the mapfile and recover the themes."
@@ -935,7 +930,13 @@ class Entry:
             return None, errors
 
         try:
-            return _read_xml(response.text, ogc_server_id), errors
+
+            @CACHE_REGION_OBJ.cache_on_arguments()
+            def read_xml(cache_key):
+                del cache_key  # Just for cache
+                return lxml.XML(response.text.encode("utf-8"))
+
+            return read_xml(ogc_server_id), errors
         except Exception as e:  # pragma: no cover
             errors.add(
                 "Error '{}' on reading DescribeFeatureType from URL {}:\n{}".format(
