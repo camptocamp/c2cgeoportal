@@ -1,3 +1,5 @@
+##### 2.4.1.45
+* update print version to 3.20 [c2cgeoportal#5450](https://github.com/camptocamp/c2cgeoportal/pull/5450)
 ##### 2.4.1.44
 * Be able to have logs in JSON [c2cgeoportal#5443](https://github.com/camptocamp/c2cgeoportal/pull/5443)
 ##### 2.4.1.43
