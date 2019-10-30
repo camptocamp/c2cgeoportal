@@ -984,8 +984,10 @@ class Entry:
     def _get_features_attributes(self, ogc_server_id, url_internal_wfs):
         all_errors = set()
         feature_type, errors = asyncio.run(self._wms_get_features_type(ogc_server_id, url_internal_wfs))
+        if errors:
+            all_errors |= errors
+            return None, None, all_errors
         namespace = feature_type.attrib.get("targetNamespace")
-        all_errors |= errors
         types = {}
         elements = {}
         for child in feature_type.getchildren():
@@ -1082,9 +1084,10 @@ class Entry:
                 for layers in [v.layer for v in all_private_layers if v.name not in protected_layers_name]:
                     private_layers_name.extend(layers.split(","))
 
-                for name in private_layers_name:
-                    if name in attributes:
-                        del attributes[name]
+                if attributes is not None:
+                    for name in private_layers_name:
+                        if name in attributes:
+                            del attributes[name]
 
             result["ogcServers"][ogc_server.name] = {
                 "url": url,
