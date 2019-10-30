@@ -102,18 +102,18 @@ Example usage:
 .. code:: python
 
    from c2cgeoportal_geoportal.caching import get_region
-   CACHE_REGION = get_region('std')
+   CACHE_REGION = get_region("std")
 
    @CACHE_REGION.cache_on_arguments()
    def method_to_be_cached():
      return {
-       'key': 'value'
+       "key": "value"
      }
 
 .. code:: python
 
    from c2cgeoportal_geoportal.caching import get_region
-   CACHE_REGION_OBJ = get_region('obj')
+   CACHE_REGION_OBJ = get_region("obj")
 
    @CACHE_REGION_OBJ.cache_on_arguments()
    def method_to_be_cached():
