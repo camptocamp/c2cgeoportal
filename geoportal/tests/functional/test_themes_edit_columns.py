@@ -216,12 +216,12 @@ class TestThemesEditColumns(TestCase):
         return request
 
     def test_themes_edit_columns(self):
-        from c2cgeoportal_geoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.theme import Theme
 
         layer_id = self._create_layer(geom_type=True)
-        entry = Entry(self._get_request(layer_id, username="__test_user", params={"interface": "main"}))
+        theme_view = Theme(self._get_request(layer_id, username="__test_user", params={"interface": "main"}))
 
-        themes = entry.themes()
+        themes = theme_view.themes()
         layers = themes["themes"][0]["children"][0]["children"]
 
         self.assertEqual(
@@ -276,7 +276,7 @@ class TestThemesEditColumns(TestCase):
         )
 
     def test_themes_edit_columns_extras(self):
-        from c2cgeoportal_geoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.theme import Theme
         from c2cgeoportal_commons.models.main import Metadata
 
         metadatas = [
@@ -284,9 +284,9 @@ class TestThemesEditColumns(TestCase):
             Metadata("lastUpdateUserColumn", "last_update_user"),
         ]
         layer_id = self._create_layer(geom_type=False, exclude_properties=True, metadatas=metadatas)
-        entry = Entry(self._get_request(layer_id, username="__test_user", params={"interface": "main"}))
+        theme_view = Theme(self._get_request(layer_id, username="__test_user", params={"interface": "main"}))
 
-        themes = entry.themes()
+        themes = theme_view.themes()
         layers = themes["themes"][0]["children"][0]["children"]
 
         self.assertEqual(

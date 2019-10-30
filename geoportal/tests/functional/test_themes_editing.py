@@ -178,22 +178,22 @@ class TestThemeEditing(TestCase):
         return request
 
     def test_themev2_noauth_edit_permission(self):
-        from c2cgeoportal_geoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.theme import Theme
 
         request = self._create_request_obj()
         request.params = {"interface": "main"}
-        entry = Entry(request)
-        themes = entry.themes()
+        theme_view = Theme(request)
+        themes = theme_view.themes()
         self.assertEqual(set(themes["errors"]), set())
         self.assertEqual([t["name"] for t in themes["themes"]], [])
 
     def test_themev2_auth_no_edit_permission(self):
-        from c2cgeoportal_geoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.theme import Theme
 
         request = self._create_request_obj(username="__test_user1")
         request.params = {"interface": "main"}
-        entry = Entry(request)
-        themes = entry.themes()
+        theme_view = Theme(request)
+        themes = theme_view.themes()
         self.assertEqual(set(themes["errors"]), set())
         self.assertEqual([t["name"] for t in themes["themes"]], ["__test_theme"])
         self.assertEqual([c["name"] for c in themes["themes"][0]["children"]], ["__test_layer_group"])
@@ -203,13 +203,13 @@ class TestThemeEditing(TestCase):
         self.assertEqual("editable" in layers[0], False)
 
     def test_themev2_auth_edit_permission(self):
-        from c2cgeoportal_geoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.theme import Theme
 
         request = self._create_request_obj(username="__test_user2", params={"min_levels": "0"})
         request.params = {"interface": "main"}
 
-        entry = Entry(request)
-        themes = entry.themes()
+        theme_view = Theme(request)
+        themes = theme_view.themes()
         self.assertEqual(set(themes["errors"]), set())
         self.assertEqual([t["name"] for t in themes["themes"]], ["__test_theme"])
         self.assertEqual([c["name"] for c in themes["themes"][0]["children"]], ["__test_layer_group"])

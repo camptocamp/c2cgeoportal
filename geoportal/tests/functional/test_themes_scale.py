@@ -140,10 +140,10 @@ class TestThemesScale(TestCase):
 
         return request
 
-    def _create_entry_obj(self, **kwargs):
-        from c2cgeoportal_geoportal.views.entry import Entry
+    def _create_theme_obj(self, **kwargs):
+        from c2cgeoportal_geoportal.views.theme import Theme
 
-        return Entry(self._create_request_obj(**kwargs))
+        return Theme(self._create_request_obj(**kwargs))
 
     def _only_name(self, item, attributes=None):
         if attributes is None:
@@ -160,8 +160,8 @@ class TestThemesScale(TestCase):
         return result
 
     def test_scale(self):
-        entry = self._create_entry_obj()
-        themes = entry.themes()
+        theme_view = self._create_theme_obj()
+        themes = theme_view.themes()
         self.assertEqual(set(themes["errors"]), set())
         self.assertEqual(
             [

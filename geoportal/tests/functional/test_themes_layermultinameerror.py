@@ -107,7 +107,7 @@ class TestLayerMultiNameErrorView(TestCase):
 
         return request
 
-    def _create_entry_obj(self, **kwargs):
-        from c2cgeoportal_geoportal.views.entry import Entry
+    def _create_theme_obj(self, **kwargs):
+        from c2cgeoportal_geoportal.views.theme import Theme
 
-        return Entry(self._create_request_obj(**kwargs))
+        return Theme(self._create_request_obj(**kwargs))

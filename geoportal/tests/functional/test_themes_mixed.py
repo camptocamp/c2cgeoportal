@@ -152,10 +152,10 @@ class TestThemesView(TestCase):
 
         return request
 
-    def _create_entry_obj(self, **kwargs):
-        from c2cgeoportal_geoportal.views.entry import Entry
+    def _create_theme_obj(self, **kwargs):
+        from c2cgeoportal_geoportal.views.theme import Theme
 
-        return Entry(self._create_request_obj(**kwargs))
+        return Theme(self._create_request_obj(**kwargs))
 
     def _only_name(self, item, attributes=None):
         if attributes is None:
@@ -186,8 +186,8 @@ class TestThemesView(TestCase):
         return set(errors)
 
     def test_theme_mixed(self):
-        entry = self._create_entry_obj(params={"interface": "main"})
-        themes = entry.themes()
+        theme_view = self._create_theme_obj(params={"interface": "main"})
+        themes = theme_view.themes()
         self.assertEqual(self._get_filtered_errors(themes), set())
         self.assertEqual(
             [self._only_name(t, ["name", "mixed"]) for t in themes["themes"]],

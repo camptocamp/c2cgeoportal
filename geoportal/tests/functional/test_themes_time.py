@@ -160,10 +160,10 @@ class TestThemesTimeView(TestCase):
 
         return request
 
-    def _create_entry_obj(self, **kwargs):
-        from c2cgeoportal_geoportal.views.entry import Entry
+    def _create_theme_obj(self, **kwargs):
+        from c2cgeoportal_geoportal.views.theme import Theme
 
-        return Entry(self._create_request_obj(**kwargs))
+        return Theme(self._create_request_obj(**kwargs))
 
     def _only(self, item, attributes=None):
         if attributes is None:
@@ -189,8 +189,8 @@ class TestThemesTimeView(TestCase):
         return set(errors)
 
     def test_time(self):
-        entry = self._create_entry_obj()
-        themes = entry.themes()
+        theme_view = self._create_theme_obj()
+        themes = theme_view.themes()
         self.assertEqual(
             self._get_filtered_errors(themes),
             set(
