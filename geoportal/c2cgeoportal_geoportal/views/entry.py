@@ -1150,13 +1150,17 @@ class Entry:
 
         set_common_headers(self.request, "login", NO_CACHE)
 
-        return {"lang": self.lang, "came_from": self.request.path}
+        return {"lang": self.lang, "came_from": self.request.path, "two_fa": self.two_factor_auth}
 
     @view_config(route_name="loginform", renderer="login.html")
     def loginform(self):
         set_common_headers(self.request, "login", PUBLIC_CACHE)
 
-        return {"lang": self.lang, "came_from": self.request.params.get("came_from") or "/"}
+        return {
+            "lang": self.lang,
+            "came_from": self.request.params.get("came_from") or "/",
+            "two_fa": self.two_factor_auth,
+        }
 
     def _validate_2fa_totp(self, user, otp: str) -> bool:
         if pyotp.TOTP(user.tech_data.get("2fa_totp_secret", "")).verify(otp):
@@ -1175,6 +1179,8 @@ class Entry:
         if username is not None:
             user = models.DBSession.query(static.User).filter(static.User.username == username).one()
             if self.two_factor_auth:
+                if "2fa_totp_secret" not in user.tech_data:
+                    user.is_password_changed = False
                 if not user.is_password_changed:
                     user.tech_data["2fa_totp_secret"] = pyotp.random_base32()
                     return set_common_headers(
@@ -1222,7 +1228,7 @@ class Entry:
                     ),
                 )
 
-            headers = remember(self.request, username) if user.is_password_changed else []
+            headers = remember(self.request, username)
             LOG.info("User '%s' logged in.", username)
             came_from = self.request.params.get("came_from")
             if came_from:
