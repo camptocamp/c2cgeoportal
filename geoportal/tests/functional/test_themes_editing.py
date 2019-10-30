@@ -54,7 +54,6 @@ class TestThemeEditing(TestCase):
         from c2cgeoportal_commons.models.main import (
             Role,
             RestrictionArea,
-            TreeItem,
             Theme,
             LayerGroup,
             Interface,
@@ -66,12 +65,6 @@ class TestThemeEditing(TestCase):
         from sqlalchemy.ext.declarative import declarative_base
         from geoalchemy2 import Geometry
 
-        for o in DBSession.query(RestrictionArea).all():
-            DBSession.delete(o)
-        for o in DBSession.query(Role).all():
-            DBSession.delete(o)
-        for o in DBSession.query(TreeItem).all():
-            DBSession.delete(o)
         ogcserver = create_default_ogcserver()
 
         role1 = Role(name="__test_role1")

@@ -42,6 +42,7 @@ from zope.interface import implementer
 from c2cgeoportal_geoportal.lib.caching import get_region
 
 LOG = logging.getLogger(__name__)
+CACHE_REGION = get_region("std")
 CACHE_REGION_OBJ = get_region("obj")
 
 
@@ -253,6 +254,33 @@ def _get_intranet_networks(request):
         ipaddress.ip_network(network, strict=False)
         for network in request.registry.settings.get("intranet", {}).get("networks", [])
     ]
+
+
+@CACHE_REGION.cache_on_arguments()
+def get_role_id(name):
+    from c2cgeoportal_commons.models import DBSession, main
+
+    return DBSession.query(main.Role.id).filter(main.Role.name == name).one()[0]
+
+
+def get_roles_id(request):
+    result = [get_role_id("anonymous")]
+    if is_intranet(request):
+        result.append(get_role_id("intranet"))
+    if request.user is not None:
+        result.append(get_role_id("registered"))
+        result.extend([r.id for r in request.user.roles])
+    return result
+
+
+def get_roles_name(request):
+    result = ["anonymous"]
+    if is_intranet(request):
+        result.append("intranet")
+    if request.user is not None:
+        result.append("registered")
+        result.extend([r.name for r in request.user.roles])
+    return result
 
 
 def is_intranet(request):

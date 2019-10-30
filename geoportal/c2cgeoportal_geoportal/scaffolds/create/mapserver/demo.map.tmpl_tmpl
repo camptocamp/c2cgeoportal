@@ -48,7 +48,7 @@ LAYER
   CONNECTIONTYPE postgis
   PROCESSING "CLOSE_CONNECTION=DEFER" # For performance
   CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-  DATA "geom FROM (SELECT geo.*, (pop2005/(area*10)) AS density FROM data.europe_borders AS geo WHERE ARRAY[%role_ids%] && ARRAY(${mapfile_data_noarea_subselect} 'density')) as foo USING UNIQUE gid USING srid=4326"
+  DATA "geom FROM (SELECT geo.*, (pop2005/(area*10)) AS density FROM data.europe_borders AS geo WHERE ARRAY[%role_ids%] && ARRAY(${MAPSERVER_DATA_NOAREA_SUBSELECT} 'density')) as foo USING UNIQUE gid USING srid=4326"
   PROJECTION
     "init=epsg:4326"
   END

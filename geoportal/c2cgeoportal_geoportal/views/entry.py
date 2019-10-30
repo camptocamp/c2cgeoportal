@@ -59,6 +59,7 @@ from c2cgeoportal_commons.models import main, static
 from c2cgeoportal_geoportal import is_valid_referer
 from c2cgeoportal_geoportal.lib import (
     add_url_params,
+    get_roles_id,
     get_setting,
     get_typed,
     get_types_map,
@@ -273,11 +274,9 @@ class Entry:
         headers = dict(self.request.headers)
 
         # Add headers for Geoserver
-        if ogc_server.auth == main.OGCSERVER_AUTH_GEOSERVER and self.request.user is not None:
-            headers["sec-username"] = self.request.user.username
-            headers["sec-roles"] = (
-                "" if self.request.user is None else ";".join([role.name for role in self.request.user.roles])
-            )
+        if ogc_server.auth == main.OGCSERVER_AUTH_GEOSERVER:
+            headers["sec-username"] = "root"
+            headers["sec-roles"] = "root"
 
         if urllib.parse.urlsplit(url).hostname != "localhost" and "Host" in headers:  # pragma: no cover
             headers.pop("Host")
@@ -326,17 +325,16 @@ class Entry:
             query = query.join(main.Layer.interfaces)
             query = query.filter(main.Interface.name == interface)
 
-        if self.request.user is not None:
-            query2 = get_protected_layers_query(self.request.user, None, what=main.LayerWMS.name)
-            if interface is not None:
-                query2 = query2.join(main.Layer.interfaces)
-                query2 = query2.filter(main.Interface.name == interface)
-            query = query.union(query2)
-            query3 = get_protected_layers_query(self.request.user, None, what=main.LayerWMTS.name)
-            if interface is not None:
-                query3 = query3.join(main.Layer.interfaces)
-                query3 = query3.filter(main.Interface.name == interface)
-            query = query.union(query3)
+        query2 = get_protected_layers_query(self.request, None, what=main.LayerWMS.name)
+        if interface is not None:
+            query2 = query2.join(main.Layer.interfaces)
+            query2 = query2.filter(main.Interface.name == interface)
+        query = query.union(query2)
+        query3 = get_protected_layers_query(self.request, None, what=main.LayerWMTS.name)
+        if interface is not None:
+            query3 = query3.join(main.Layer.interfaces)
+            query3 = query3.filter(main.Interface.name == interface)
+        query = query.union(query3)
 
         return query
 
@@ -493,7 +491,7 @@ class Entry:
                 count = (
                     models.DBSession.query(main.RestrictionArea)
                     .join(main.RestrictionArea.roles)
-                    .filter(main.Role.id.in_([r.id for r in self.request.user.roles]))
+                    .filter(main.Role.id.in_(get_roles_id(self.request)))
                     .filter(main.RestrictionArea.layers.any(main.Layer.id == layer.id))
                     .filter(main.RestrictionArea.readwrite.is_(True))
                     .count()
@@ -769,13 +767,12 @@ class Entry:
 
         themes = models.DBSession.query(main.Theme)
         themes = themes.filter(main.Theme.public.is_(True))
-        if self.request.user is not None:
-            auth_themes = models.DBSession.query(main.Theme)
-            auth_themes = auth_themes.filter(main.Theme.public.is_(False))
-            auth_themes = auth_themes.join(main.Theme.restricted_roles)
-            auth_themes = auth_themes.filter(main.Role.id.in_([r.id for r in self.request.user.roles]))
+        auth_themes = models.DBSession.query(main.Theme)
+        auth_themes = auth_themes.filter(main.Theme.public.is_(False))
+        auth_themes = auth_themes.join(main.Theme.restricted_roles)
+        auth_themes = auth_themes.filter(main.Role.id.in_(get_roles_id(self.request)))
 
-            themes = themes.union(auth_themes)
+        themes = themes.union(auth_themes)
 
         themes = themes.order_by(main.Theme.ordering.asc())
 
@@ -1079,7 +1076,7 @@ class Entry:
 
                 all_private_layers = get_private_layers([ogc_server.id]).values()
                 protected_layers_name = [
-                    l.name for l in get_protected_layers(self.request.user, [ogc_server.id]).values()
+                    l.name for l in get_protected_layers(self.request, [ogc_server.id]).values()
                 ]
                 private_layers_name = []
                 for layers in [v.layer for v in all_private_layers if v.name not in protected_layers_name]:

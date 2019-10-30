@@ -35,7 +35,7 @@ from pyramid.httpexceptions import HTTPBadRequest, HTTPForbidden, HTTPUnauthoriz
 from pyramid.view import view_config
 
 from c2cgeoportal_commons import models
-from c2cgeoportal_commons.models import main, static
+from c2cgeoportal_commons.models import main
 from c2cgeoportal_geoportal.lib.caching import NO_CACHE, PRIVATE_CACHE
 from c2cgeoportal_geoportal.lib.filter_capabilities import (
     filter_wfst_capabilities,
@@ -113,7 +113,6 @@ class TinyOWSProxy(OGCProxy):
 
         response = self._proxy_callback(
             operation,
-            self.user,
             cache_control,
             url=self._get_wfs_url(),
             params=dict(self.request.params),
@@ -130,7 +129,7 @@ class TinyOWSProxy(OGCProxy):
         """
 
         writable_layers = set()
-        for gmflayer in list(get_writable_layers(self.request.user, [self.ogc_server.id]).values()):
+        for gmflayer in list(get_writable_layers(self.request, [self.ogc_server.id]).values()):
             for ogclayer in gmflayer.layer.split(","):
                 writable_layers.add(ogclayer.lower())
         return typenames.issubset(writable_layers)
@@ -141,13 +140,13 @@ class TinyOWSProxy(OGCProxy):
             headers["Host"] = self.settings.get("tinyows_host")
         return headers
 
-    def _proxy_callback(self, operation, user: static.User, cache_control, *args, **kwargs):
+    def _proxy_callback(self, operation, cache_control, *args, **kwargs):
         response = self._proxy(*args, **kwargs)
         content = response.content.decode()
 
         if operation == "getcapabilities":
             content = filter_wfst_capabilities(
-                content, user, super(TinyOWSProxy, self)._get_wfs_url(), self.request
+                content, super(TinyOWSProxy, self)._get_wfs_url(), self.request
             )
 
         content = self._filter_urls(
