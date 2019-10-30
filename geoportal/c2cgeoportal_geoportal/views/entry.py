@@ -30,10 +30,8 @@
 
 import asyncio
 from collections import Counter
-import json
 import logging
 from math import sqrt
-from random import Random
 import re
 import sys
 import time
@@ -41,31 +39,18 @@ from typing import Dict, Set, Tuple  # noqa # pylint: disable=unused-import
 import urllib.parse
 import xml.dom.minidom  # noqa # pylint: disable=unused-import
 
+from c2cwsgiutils.auth import auth_view
 from defusedxml import lxml
 from owslib.wms import WebMapService
-import pyotp
-from pyramid.httpexceptions import HTTPBadRequest, HTTPForbidden, HTTPFound, HTTPUnauthorized
 from pyramid.i18n import TranslationStringFactory
-from pyramid.response import Response
-from pyramid.security import forget, remember
 from pyramid.view import view_config
 import requests
 from sqlalchemy.orm import subqueryload
 from sqlalchemy.orm.exc import NoResultFound
 
 from c2cgeoportal_commons import models
-from c2cgeoportal_commons.lib.email_ import send_email_config
-from c2cgeoportal_commons.models import main, static
-from c2cgeoportal_geoportal import is_valid_referer
-from c2cgeoportal_geoportal.lib import (
-    add_url_params,
-    get_roles_id,
-    get_setting,
-    get_typed,
-    get_types_map,
-    get_url2,
-    is_intranet,
-)
+from c2cgeoportal_commons.models import main
+from c2cgeoportal_geoportal.lib import add_url_params, get_roles_id, get_typed, get_types_map, get_url2
 from c2cgeoportal_geoportal.lib.caching import (
     NO_CACHE,
     PRIVATE_CACHE,
@@ -73,7 +58,7 @@ from c2cgeoportal_geoportal.lib.caching import (
     get_region,
     set_common_headers,
 )
-from c2cgeoportal_geoportal.lib.functionality import get_functionality, get_mapserver_substitution_params
+from c2cgeoportal_geoportal.lib.functionality import get_mapserver_substitution_params
 from c2cgeoportal_geoportal.lib.layers import (
     get_private_layers,
     get_protected_layers,
@@ -81,7 +66,6 @@ from c2cgeoportal_geoportal.lib.layers import (
 )
 from c2cgeoportal_geoportal.lib.wmstparsing import TimeInformation, parse_extent
 from c2cgeoportal_geoportal.views.layers import get_layer_metadatas
-from c2cwsgiutils.auth import auth_view
 
 _ = TranslationStringFactory("c2cgeoportal")
 LOG = logging.getLogger(__name__)
@@ -161,14 +145,9 @@ class Entry:
         self.settings = request.registry.settings
         self.http_options = self.request.registry.settings.get("http_options", {})
         self.debug = "debug" in request.params
-        self.lang = request.locale_name
         self.metadata_type = get_types_map(
             self.settings.get("admin_interface", {}).get("available_metadata", [])
         )
-
-        authentication_settings = self.settings.get("authentication", {})
-        self.two_factor_auth = authentication_settings.get("two_factor", False)
-        self.two_factor_issuer_name = authentication_settings.get("two_factor_issuer_name")
 
         self._ogcservers_cache = None
         self._treeitems_cache = None
@@ -845,12 +824,6 @@ class Entry:
                         children.append(layer_theme)
         return children, errors
 
-    def _functionality(self):
-        functionality = {}
-        for func_ in get_setting(self.settings, ("functionalities", "available_in_templates"), []):
-            functionality[func_] = get_functionality(func_, self.request, is_intranet(self.request))
-        return functionality
-
     @CACHE_REGION.cache_on_arguments()
     def _get_layers_enum(self):
         layers_enum = {}
@@ -1140,272 +1113,3 @@ class Entry:
                     ]
                 ),
             )
-
-    def _referer_log(self):
-        if not hasattr(self.request, "is_valid_referer"):
-            self.request.is_valid_referer = is_valid_referer(self.request)
-        if not self.request.is_valid_referer:
-            LOG.info("Invalid referer for %s: %s", self.request.path_qs, repr(self.request.referer))
-
-    @view_config(context=HTTPForbidden, renderer="login.html")
-    def loginform403(self):
-        if self.request.authenticated_userid:
-            return HTTPUnauthorized()  # pragma: no cover
-
-        set_common_headers(self.request, "login", NO_CACHE)
-
-        return {"lang": self.lang, "came_from": self.request.path, "two_fa": self.two_factor_auth}
-
-    @view_config(route_name="loginform", renderer="login.html")
-    def loginform(self):
-        set_common_headers(self.request, "login", PUBLIC_CACHE)
-
-        return {
-            "lang": self.lang,
-            "came_from": self.request.params.get("came_from") or "/",
-            "two_fa": self.two_factor_auth,
-        }
-
-    def _validate_2fa_totp(self, user, otp: str) -> bool:
-        if pyotp.TOTP(user.tech_data.get("2fa_totp_secret", "")).verify(otp):
-            return True
-        return False
-
-    @view_config(route_name="login")
-    def login(self):
-        self._referer_log()
-
-        login = self.request.POST.get("login")
-        password = self.request.POST.get("password")
-        if login is None or password is None:  # pragma nocover
-            raise HTTPBadRequest("'login' and 'password' should be available in request params.")
-        username = self.request.registry.validate_user(self.request, login, password)
-        if username is not None:
-            user = models.DBSession.query(static.User).filter(static.User.username == username).one()
-            if self.two_factor_auth:
-                if "2fa_totp_secret" not in user.tech_data:
-                    user.is_password_changed = False
-                if not user.is_password_changed:
-                    user.tech_data["2fa_totp_secret"] = pyotp.random_base32()
-                    return set_common_headers(
-                        self.request,
-                        "login",
-                        NO_CACHE,
-                        response=Response(
-                            json.dumps(
-                                {
-                                    "username": user.username,
-                                    "is_password_changed": False,
-                                    "two_factor_enable": True,
-                                    "two_factor_totp_secret": user.tech_data["2fa_totp_secret"],
-                                    "otp_uri": pyotp.TOTP(user.tech_data["2fa_totp_secret"]).provisioning_uri(
-                                        user.email, issuer_name=self.two_factor_issuer_name
-                                    ),
-                                }
-                            ),
-                            headers=(("Content-Type", "text/json"),),
-                        ),
-                    )
-                otp = self.request.POST.get("otp")
-                if otp is None:
-                    raise HTTPBadRequest("The second factor is missing.")
-                if not self._validate_2fa_totp(user, otp):
-                    LOG.info("The second factor is wrong for user '%s'.", user)
-                    raise HTTPUnauthorized("See server logs for details")
-            user.update_last_login()
-            user.tech_data["consecutive_failed"] = "0"
-
-            if not user.is_password_changed:
-                return set_common_headers(
-                    self.request,
-                    "login",
-                    NO_CACHE,
-                    response=Response(
-                        json.dumps(
-                            {
-                                "username": user.username,
-                                "is_password_changed": False,
-                                "two_factor_enable": True,
-                            }
-                        ),
-                        headers=(("Content-Type", "text/json"),),
-                    ),
-                )
-
-            headers = remember(self.request, username)
-            LOG.info("User '%s' logged in.", username)
-            came_from = self.request.params.get("came_from")
-            if came_from:
-                return HTTPFound(location=came_from, headers=headers)
-            else:
-                headers.append(("Content-Type", "text/json"))
-                return set_common_headers(
-                    self.request,
-                    "login",
-                    NO_CACHE,
-                    response=Response(
-                        json.dumps(self._user(self.request.get_user(username))), headers=headers
-                    ),
-                )
-        else:
-            user = models.DBSession.query(static.User).filter(static.User.username == login).one_or_none()
-            if user and not user.deactivated:
-                if "consecutive_failed" not in user.tech_data:
-                    user.tech_data["consecutive_failed"] = "0"
-                user.tech_data["consecutive_failed"] = str(int(user.tech_data["consecutive_failed"]) + 1)
-                if int(user.tech_data["consecutive_failed"]) >= self.request.registry.settings.get(
-                    "authentication", {}
-                ).get("max_consecutive_failures", sys.maxsize):
-                    user.deactivated = True
-                    user.tech_data["consecutive_failed"] = "0"
-
-            if hasattr(self.request, "tm"):
-                self.request.tm.commit()
-            raise HTTPUnauthorized("See server logs for details")
-
-    @view_config(route_name="logout")
-    def logout(self):
-        headers = forget(self.request)
-
-        if not self.request.user:
-            LOG.info("Logout on non login user.")
-            raise HTTPUnauthorized("See server logs for details")
-
-        LOG.info("User '%s' (%s) logging out.", self.request.user.username, self.request.user.id)
-
-        headers.append(("Content-Type", "text/json"))
-        return set_common_headers(self.request, "login", NO_CACHE, response=Response("true", headers=headers))
-
-    def _user(self, user=None):
-        result = {
-            "functionalities": self._functionality(),
-            "is_intranet": is_intranet(self.request),
-            "two_factor_enable": self.two_factor_auth,
-        }
-        user = self.request.user if user is None else user
-        if user is not None:
-            result.update(
-                {
-                    "username": user.username,
-                    "email": user.email,
-                    "roles": [{"name": r.name, "id": r.id} for r in user.roles],
-                }
-            )
-        return result
-
-    @view_config(route_name="loginuser", renderer="json")
-    def loginuser(self):
-        LOG.info("Client IP adresse: %s", self.request.client_addr)
-        set_common_headers(self.request, "login", NO_CACHE)
-        return self._user()
-
-    @view_config(route_name="change_password", renderer="json")
-    def change_password(self):
-        set_common_headers(self.request, "login", NO_CACHE)
-
-        login = self.request.POST.get("login")
-        old_password = self.request.POST.get("oldPassword")
-        new_password = self.request.POST.get("newPassword")
-        new_password_confirm = self.request.POST.get("confirmNewPassword")
-        if new_password is None or new_password_confirm is None or old_password is None:
-            raise HTTPBadRequest(
-                "'oldPassword', 'newPassword' and 'confirmNewPassword' should be available in "
-                "request params."
-            )
-
-        if login is not None:
-            try:
-                user = self.request.get_user(login)
-            except NoResultFound:  # pragma: no cover
-                LOG.info("The login '%s' does not exist.", login)
-                raise HTTPUnauthorized("See server logs for details")
-
-            if self.two_factor_auth:
-                otp = self.request.POST.get("otp")
-                if otp is None:
-                    raise HTTPBadRequest("The second factor is missing.")
-                if not self._validate_2fa_totp(user, otp):
-                    LOG.info("The second factor is wrong for user '%s'.", login)
-                    raise HTTPUnauthorized("See server logs for details")
-
-        else:
-            if self.request.user is not None:
-                user = self.request.user
-                username = user.username
-            else:
-                raise HTTPBadRequest(
-                    "You should be logged in or 'login' should be available in request params."
-                )
-
-        username = self.request.registry.validate_user(self.request, user.username, old_password)
-        if username is None:
-            LOG.info("The old password is wrong for user '%s'.", username)
-            raise HTTPUnauthorized("See server logs for details")
-
-        if new_password != new_password_confirm:
-            raise HTTPBadRequest("The new password and the new password confirmation do not match")
-
-        user.password = new_password
-        user.is_password_changed = True
-        models.DBSession.flush()
-        LOG.info("Password changed for user '%s'", username)
-
-        headers = remember(self.request, username)
-        headers.append(("Content-Type", "text/json"))
-        return set_common_headers(
-            self.request, "login", NO_CACHE, response=Response(json.dumps(self._user(user)), headers=headers)
-        )
-
-    @staticmethod
-    def generate_password():
-        allchars = "123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        rand = Random()
-
-        password = ""
-        for _ in range(8):
-            password += rand.choice(allchars)
-
-        return password
-
-    def _loginresetpassword(self):
-        username = self.request.POST.get("login")
-        if username is None:
-            raise HTTPBadRequest("'login' should be available in request params.")
-        username = self.request.POST["login"]
-        try:
-            user = models.DBSession.query(static.User).filter(static.User.username == username).one()
-        except NoResultFound:  # pragma: no cover
-            return None, None, None, "The login '{}' does not exist.".format(username)
-
-        if self.two_factor_auth:
-            otp = self.request.POST.get("otp")
-            if otp is None:
-                raise HTTPBadRequest("The second factor is missing.")
-            if not self._validate_2fa_totp(user, otp):
-                return None, None, None, "The second factor is wrong for user '{}'.".format(username)
-
-        if user.email is None or user.email == "":  # pragma: no cover
-            return None, None, None, "The user '{}' has no registered email address.".format(user.username)
-
-        password = self.generate_password()
-        user.set_temp_password(password)
-
-        return user, username, password, None
-
-    @view_config(route_name="loginresetpassword", renderer="json")
-    def loginresetpassword(self):  # pragma: no cover
-        set_common_headers(self.request, "login", NO_CACHE)
-
-        user, username, password, error = self._loginresetpassword()
-        if error is not None:
-            LOG.info(error)
-            raise HTTPUnauthorized("See server logs for details")
-        if user.deactivated:
-            LOG.info("The user '%s' is deactivated", username)
-            raise HTTPUnauthorized("See server logs for details")
-
-        send_email_config(
-            self.request.registry.settings, "reset_password", user.email, user=username, password=password
-        )
-
-        return {"success": True}
