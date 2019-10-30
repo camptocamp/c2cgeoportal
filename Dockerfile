@@ -29,6 +29,14 @@ RUN \
   python3 -m pip install --disable-pip-version-check --no-cache-dir --requirement=/tmp/requirements.txt && \
   rm --recursive --force /tmp/* /var/tmp/* /root/.cache/*
 
+ENV VISIBLE_ENTRY_POINT=cli \
+    LOG_LEVEL=INFO \
+    C2CGEOPORTAL_LOG_LEVEL=WARN \
+    GUNICORN_LOG_LEVEL=INFO \
+    SQL_LOG_LEVEL=INFO \
+    OTHER_LOG_LEVEL=INFO \
+    DOGPILECACHE_LOG_LEVEL=INFO
+
 
 #############################################################################################################
 # Finally used for all misk task, will not be used on prod runtime
