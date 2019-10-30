@@ -87,7 +87,7 @@ qualname = sqlalchemy.engine
 # "level = WARN" logs neither.  (Recommended for production systems.)
 
 [logger_dogpilecache]
-level = DEBUG
+level = %(DOGPILECACHE_LOG_LEVEL)s
 handlers =
 qualname = dogpile.cache
 
