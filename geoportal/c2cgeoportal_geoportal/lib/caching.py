@@ -34,6 +34,7 @@ from typing import Any, Dict  # noqa
 
 from dogpile.cache.region import make_region
 from dogpile.cache.util import compat, sha1_mangle_key
+from pyramid.request import Request
 from sqlalchemy.orm.util import identity_key
 
 LOG = logging.getLogger(__name__)
@@ -63,7 +64,7 @@ def keygen_function(namespace, function):
         namespace = (function.__module__, function.__name__, namespace)
 
     args = inspect.getfullargspec(function)
-    ignore_first_argument = args[0] and args[0][0] in ("self", "cls", "request", "no_cache")
+    ignore_first_argument = args[0] and args[0][0] in ("self", "cls")
 
     def generate_key(*args, **kw):
         if kw:  # pragma: no cover
@@ -72,6 +73,7 @@ def keygen_function(namespace, function):
         parts.extend(namespace)
         if ignore_first_argument:
             args = args[1:]
+        args = [arg for arg in args if not isinstance(arg, Request)]
         parts.extend(map(compat.text_type, map(map_dbobject, args)))
         return "|".join(parts)
 
