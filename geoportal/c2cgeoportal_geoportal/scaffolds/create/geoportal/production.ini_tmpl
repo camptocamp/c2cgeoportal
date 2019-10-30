@@ -38,7 +38,7 @@ pipeline =
 keys = root, sqlalchemy, gunicorn, c2cgeoportal_commons, c2cgeoportal_geoportal, c2cgeoportal_admin, {{package}}_geoportal, c2cwsgiutils, dogpilecache
 
 [handlers]
-keys = console, logstash, json
+keys = console, json
 
 [formatters]
 keys = generic
@@ -95,11 +95,6 @@ class = StreamHandler
 args = (sys.stderr,)
 level = NOTSET
 formatter = generic
-
-[handler_logstash]
-class = c2cwsgiutils.pyramid_logging.PyramidCeeSysLogHandler
-args = [("%(LOG_HOST)s", %(LOG_PORT)s)]
-level = NOTSET
 
 [handler_json]
 class = c2cwsgiutils.pyramid_logging.JsonLogHandler

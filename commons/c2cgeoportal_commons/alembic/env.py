@@ -37,8 +37,6 @@ from sqlalchemy import engine_from_config, pool
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
-os.environ.setdefault("LOG_HOST", "localhost")
-os.environ.setdefault("LOG_PORT", "0")
 fileConfig(context.config.config_file_name, defaults=dict(os.environ))
 
 
