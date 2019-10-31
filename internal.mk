@@ -254,9 +254,7 @@ geoportal/c2cgeoportal_geoportal/scaffolds%update/CONST_create_template/: \
 		$(addprefix geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/locale/,$(addsuffix /LC_MESSAGES/+package+_geoportal-client.po, $(ALL_LANGUAGES))) \
 		$(API_FILES) \
 		$(APPS_FILES) \
-		$(L10N_PO_FILES) \
-		geoportal/c2cgeoportal_geoportal/scaffolds/create/front_dev/localhost.pem \
-		geoportal/c2cgeoportal_geoportal/scaffolds/create/front_dev/haproxy.cfg.tmpl
+		$(L10N_PO_FILES)
 	rm -rf $@ || true
 	cp -r $< $@
 
@@ -329,15 +327,3 @@ geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/
 %.mo: %.po
 	mkdir --parent $(dir $@)
 	msgfmt -o $*.mo $<
-
-# HA proxy on localhost on https
-
-geoportal/c2cgeoportal_geoportal/scaffolds/create/front_dev/localhost.pem:
-	mkdir -p $(dir $@)
-	cat /usr/lib/node_modules/ngeo/private.crt /usr/lib/node_modules/ngeo/private.key | tee $@
-
-geoportal/c2cgeoportal_geoportal/scaffolds/create/front_dev/haproxy.cfg.tmpl: \
-		geoportal/c2cgeoportal_geoportal/scaffolds/create/front/haproxy.cfg.tmpl
-	mkdir -p $(dir $@)
-	sed 's#bind :80#bind *:443 ssl crt /etc/haproxy_dev/localhost.pem#g' $< > $@
-	echo '    http-request set-header X-Forwarded-Proto https' >> $@
