@@ -11,6 +11,7 @@ RUN \
   rm --recursive --force /var/lib/apt/lists/*
 
 COPY gunicorn_config.py /etc/gunicorn/config.py
+COPY bin/ /usr/bin/
 COPY haproxy/ /etc/haproxy/
 COPY haproxy_dev/ /etc/haproxy_dev/
 

@@ -43,7 +43,7 @@ ENV PGSCHEMA=$PGSCHEMA
 
 COPY --from=builder /tmp/config/ /tmp/config/
 
-RUN mv /tmp/config/bin/* /usr/bin/ && \
+RUN \
     if [ -e /tmp/config/mapserver ]; then mv /tmp/config/mapserver /etc/; fi && \
     if [ -e /tmp/config/tilegeneration ]; then mv /tmp/config/tilegeneration /etc/; fi && \
     if [ -e /tmp/config/qgisserver ]; then mv /tmp/config/qgisserver /etc/qgisserver; fi && \
