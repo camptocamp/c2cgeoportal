@@ -187,7 +187,7 @@ We can profile the application by using `wsgi_lineprof <https://wsgi-lineprof.re
         FilenameFilter("c2cgeoportal.*", regex=True),
         TotalTimeSorter(),
     ]
-    return LineProfilerMiddleware(config.make_wsgi_app())
+    return LineProfilerMiddleware(config.make_wsgi_app(), filters=filters)
 
 Then in the logs you will have messages with the profiling information.
 
