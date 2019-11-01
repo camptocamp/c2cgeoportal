@@ -55,10 +55,12 @@ class Proxy(object):
         # get query string
         params = dict(self.request.params) if params is None else params
         parsed_url = urllib.parse.urlparse(url)
-        all_params = urllib.parse.parse_qs(parsed_url.query)
-        for p in all_params:  # pragma: no cover
-            all_params[p] = ",".join(all_params[p])
+        url_params = urllib.parse.parse_qs(parsed_url.query)
+        for p in url_params:  # pragma: no cover
+            url_params[p] = ",".join(url_params[p])
+        all_params = {}
         all_params.update(params)
+        all_params.update(url_params)
         query_string = urllib.parse.urlencode(all_params)
 
         if parsed_url.port is None:
