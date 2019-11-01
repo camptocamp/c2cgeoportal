@@ -171,6 +171,26 @@ Remote debugging using Visual Studio Code
 See also: `ptvsd usage <https://github.com/microsoft/ptvsd#ptvsd-import-usage>`_,
 `Python debug configurations in Visual Studio Code <https://code.visualstudio.com/docs/python/debugging>`_
 
+Profiling
+.........
+
+We can profile the application by using `wsgi_lineprof <https://wsgi-lineprof.readthedocs.io/>`_.
+
+* In ``geoportal/requirements.txt`` uncomment ``wsgi-lineprof``.
+* In ``geoportal/<package>_geoportal/__init__.py`` replace ``return config.make_wsgi_app()`` by:
+
+  .. code:: python
+
+    from wsgi_lineprof.middleware import LineProfilerMiddleware
+    from wsgi_lineprof.filters import FilenameFilter, TotalTimeSorter
+    filters = [
+        FilenameFilter("c2cgeoportal.*", regex=True),
+        TotalTimeSorter(),
+    ]
+    return LineProfilerMiddleware(config.make_wsgi_app())
+
+Then in the logs you will have messages with the profiling information.
+
 Access to a hidden service
 --------------------------
 

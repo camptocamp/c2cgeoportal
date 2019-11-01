@@ -160,6 +160,25 @@ Be sure that the volumes for c2cgeoportal are uncommented.</p>
 <p>See also: <a class="reference external" href="https://github.com/microsoft/ptvsd#ptvsd-import-usage">ptvsd usage</a>,
 <a class="reference external" href="https://code.visualstudio.com/docs/python/debugging">Python debug configurations in Visual Studio Code</a></p>
 </div>
+<div class="section" id="profiling">
+<h3>Profiling<a class="headerlink" href="#profiling" title="Permalink to this headline">¶</a></h3>
+<p>We can profile the application by using <a class="reference external" href="https://wsgi-lineprof.readthedocs.io/">wsgi_lineprof</a>.</p>
+<ul>
+<li><p>In <code class="docutils literal notranslate"><span class="pre">geoportal/requirements.txt</span></code> uncomment <code class="docutils literal notranslate"><span class="pre">wsgi-lineprof</span></code>.</p></li>
+<li><p>In <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/__init__.py</span></code> replace <code class="docutils literal notranslate"><span class="pre">return</span> <span class="pre">config.make_wsgi_app()</span></code> by:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">wsgi_lineprof.middleware</span> <span class="kn">import</span> <span class="n">LineProfilerMiddleware</span>
+<span class="kn">from</span> <span class="nn">wsgi_lineprof.filters</span> <span class="kn">import</span> <span class="n">FilenameFilter</span><span class="p">,</span> <span class="n">TotalTimeSorter</span>
+<span class="n">filters</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">FilenameFilter</span><span class="p">(</span><span class="s2">&quot;c2cgeoportal.*&quot;</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+    <span class="n">TotalTimeSorter</span><span class="p">(),</span>
+<span class="p">]</span>
+<span class="k">return</span> <span class="n">LineProfilerMiddleware</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">make_wsgi_app</span><span class="p">())</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Then in the logs you will have messages with the profiling information.</p>
+</div>
 </div>
 <div class="section" id="access-to-a-hidden-service">
 <h2>Access to a hidden service<a class="headerlink" href="#access-to-a-hidden-service" title="Permalink to this headline">¶</a></h2>
