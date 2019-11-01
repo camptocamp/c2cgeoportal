@@ -142,3 +142,9 @@ upgrade_files:
   - action: remove
     paths:
       - scripts/CONST_clone_schema.sql
+  - action: remove
+    paths:
+      - front
+      - front_dev
+      - bin/entrypoint
+      - bin/eval-templates

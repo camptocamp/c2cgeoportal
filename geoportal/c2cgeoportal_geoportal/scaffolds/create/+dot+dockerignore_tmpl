@@ -1,7 +1,5 @@
 *
 !bin/
-!front/
-!front_dev/
 !mapserver/
 !qgisserver/
 !mapcache/
