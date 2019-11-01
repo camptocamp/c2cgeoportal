@@ -33,6 +33,7 @@ import logging
 
 from dogpile.cache.util import compat
 from dogpile.cache.region import make_region
+from pyramid.request import Request
 
 log = logging.getLogger(__name__)
 _regions = {}
@@ -70,6 +71,7 @@ def keygen_function(namespace, function):
         parts = [namespace]
         if has_self:
             args = args[1:]
+        args = [arg for arg in args if not isinstance(arg, Request)]
         parts.extend(map(compat.text_type, map(map_dbobject, args)))
         return "|".join(parts)
     return generate_key
