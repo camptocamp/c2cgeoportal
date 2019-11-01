@@ -31,7 +31,6 @@
 
 
 import logging
-import re
 from unittest import TestCase
 
 from geoalchemy2 import WKTElement
@@ -42,10 +41,12 @@ from tests.functional import setup_db
 from tests.functional import teardown_common as teardown_module  # noqa, pylint: disable=unused-import
 import transaction
 
+from c2cgeoportal_geoportal.lib.caching import invalidate_region
+
 LOG = logging.getLogger(__name__)
 
 
-class TestEntryView(TestCase):
+class TestThemeEntryView(TestCase):
     def setup_method(self, _):
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
@@ -224,10 +225,6 @@ class TestEntryView(TestCase):
 
         cleanup_db()
 
-    #
-    # viewer view tests
-    #
-
     @staticmethod
     def _create_request_obj(username=None, params=None, **kwargs):
         if params is None:
@@ -246,60 +243,160 @@ class TestEntryView(TestCase):
 
         return request
 
-    def _create_entry_obj(self, **kwargs):
-        from c2cgeoportal_geoportal.views.entry import Entry
-
-        return Entry(self._create_request_obj(**kwargs))
-
-    @staticmethod
-    def _get_filtered_errors(errors):
-        regex = re.compile(
-            r"The layer \'[a-z0-9_]*\' \([a-z0-9_]*\) is not defined in WMS capabilities from \'[a-z0-9_]*\'"
-        )
-        errors = [e for e in errors if not regex.match(e)]
-        return set(errors)
-
-    def _create_entry(self):
-        from c2cgeoportal_geoportal.views.entry import Entry
+    def test_theme(self):
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.static import User
+        from c2cgeoportal_geoportal.views.theme import Theme
 
         request = self._create_request_obj()
-        request.current_route_url = lambda **kwargs: "http://example.com/current/view"
-        request.registry.settings.update(
-            {
-                "layers": {"enum": {"layer_test": {"attributes": {"label": None}}}},
-                "api": {"ogc_server": "__test_ogc_server"},
-            }
-        )
-        request.matchdict = {"themes": ["theme"]}
-        entry = Entry(request)
-        request.user = None
-        return entry, request
+        theme_view = Theme(request)
 
-    def _assert_has_error(self, errors, error):
-        self.assertIn(error, errors)
-        assert (
-            len([e for e in errors if e == error]) == 1
-        ), "Error '{}' more than one time in errors:\n{!r}".format(error, errors)
+        # unautenticated
+        themes, errors = theme_view._themes()
+        assert {e[:90] for e in errors} == set()
+        assert len(themes) == 1
+        groups = {g["name"] for g in themes[0]["children"]}
+        assert groups == {"__test_layer_group"}
+        layers = {l["name"] for l in themes[0]["children"][0]["children"]}
+        assert layers == {"__test_public_layer"}
 
-    def test_json_extent(self):
-        from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import Role
+        # authenticated
+        request.params = {}
+        request.user = DBSession.query(User).filter_by(username="__test_user1").one()
+        themes, errors = theme_view._themes()
+        assert {e[:90] for e in errors} == set()
+        assert len(themes) == 1
+        groups = {g["name"] for g in themes[0]["children"]}
+        assert groups == {"__test_layer_group"}
+        layers = {l["name"] for l in themes[0]["children"][0]["children"]}
+        assert layers == {"__test_private_layer_edit", "__test_public_layer", "__test_private_layer"}
 
-        role = DBSession.query(Role).filter(Role.name == "__test_role1").one()
-        assert role.bounds is None
+    def test_no_layers(self):
+        # mapfile error
+        from c2cgeoportal_geoportal.views.theme import Theme
 
-        role = DBSession.query(Role).filter(Role.name == "__test_role2").one()
-        assert role.bounds == (1, 2, 3, 4)
+        request = self._create_request_obj()
+        theme_view = Theme(request)
+        request.params = {}
 
-    def test_decimal_json(self):
-        from decimal import Decimal
+        invalidate_region()
+        themes, errors = theme_view._themes("interface_no_layers")
+        assert themes == []
+        assert {e[:90] for e in errors} == {
+            "The layer '__test_public_layer_no_layers' do not have any layers"
+        }
+
+    def test_not_in_mapfile(self):
+        # mapfile error
+        from c2cgeoportal_geoportal.views.theme import Theme
+
+        theme_view = Theme(self._create_request_obj())
+
+        invalidate_region()
+        themes, errors = theme_view._themes("interface_not_in_mapfile")
+        assert len(themes) == 1
+        groups = {g["name"] for g in themes[0]["children"]}
+        assert groups == {"__test_layer_group"}
+        layers = {l["name"] for l in themes[0]["children"][0]["children"]}
+        assert layers == {"__test_public_layer_not_in_mapfile"}
+        assert {e[:90] for e in errors} == {
+            "The layer '__test_public_layer_not_in_mapfile' (__test_public_layer_not_in_mapfile) is not"
+        }
+
+    def test_notmapfile(self):
+        # mapfile error
+        from c2cgeoportal_geoportal.views.theme import Theme
+
+        theme_view = Theme(self._create_request_obj())
+
+        invalidate_region()
+        themes, errors = theme_view._themes("interface_notmapfile")
+        assert len(themes) == 1
+        groups = {g["name"] for g in themes[0]["children"]}
+        assert groups == {"__test_layer_group"}
+        layers = {l["name"] for l in themes[0]["children"][0]["children"]}
+        assert layers == {"__test_public_layer_notmapfile"}
+        assert {e[:90] for e in errors} == {
+            "The layer '__test_public_layer_notmapfile' (__test_public_layer_notmapfile) is not defined",
+            "GetCapabilities from URL http://mapserver:8080/?map=not_a_mapfile&SERVICE=WMS&VERSION=1.1.",
+        }
+
+    def test_theme_geoserver(self):
+        from c2cgeoportal_geoportal.views.theme import Theme
+
+        request = self._create_request_obj()
+        theme_view = Theme(request)
+
+        # unautenticated v1
+        themes, errors = theme_view._themes("interface_geoserver")
+        assert {e[:90] for e in errors} == {
+            "The layer '__test_public_layer_geoserver' (__test_public_layer_geoserver) is not defined i"
+        }
+        assert len(themes) == 1
+        layers = {l["name"] for l in themes[0]["children"][0]["children"]}
+        assert layers == {"__test_public_layer_geoserver"}
+
+    def test__get_child_layers_info_with_scalehint(self):
+        import math
         from tests import DummyRequest
-        from c2cgeoportal_geoportal import DecimalJSON
+        from c2cgeoportal_geoportal.views.theme import Theme
 
-        renderer = DecimalJSON()(None)
         request = DummyRequest()
         request.user = None
-        system = {"request": request}
+        theme_view = Theme(request)
 
-        self.assertEqual(renderer({"a": Decimal("3.3")}, system), '{"a": 3.3}')
-        self.assertEqual(request.response.content_type, "application/json")
+        class Layer:
+            pass
+
+        child_layer_1 = Layer()
+        child_layer_1.name = "layer_1"
+        child_layer_1.scaleHint = {"min": 1 * math.sqrt(2), "max": 2 * math.sqrt(2)}
+        child_layer_1.layers = []
+
+        child_layer_2 = Layer()
+        child_layer_2.name = "layer_2"
+        child_layer_2.scaleHint = {"min": 3 * math.sqrt(2), "max": 4 * math.sqrt(2)}
+        child_layer_2.layers = []
+
+        layer = Layer()
+        layer.layers = [child_layer_1, child_layer_2]
+
+        child_layers_info = theme_view._get_child_layers_info_1(layer)
+
+        expected = [
+            {"name": "layer_1", "minResolutionHint": 1.0, "maxResolutionHint": 2.0},
+            {"name": "layer_2", "minResolutionHint": 3.0, "maxResolutionHint": 4.0},
+        ]
+        self.assertEqual(child_layers_info, expected)
+
+    def test__get_child_layers_info_without_scalehint(self):
+        from tests import DummyRequest
+        from c2cgeoportal_geoportal.views.theme import Theme
+
+        request = DummyRequest()
+        request.user = None
+        theme_view = Theme(request)
+
+        class Layer:
+            pass
+
+        child_layer_1 = Layer()
+        child_layer_1.name = "layer_1"
+        child_layer_1.scaleHint = None
+        child_layer_1.layers = []
+
+        child_layer_2 = Layer()
+        child_layer_2.name = "layer_2"
+        child_layer_2.scaleHint = None
+        child_layer_2.layers = []
+
+        layer = Layer()
+        layer.layers = [child_layer_1, child_layer_2]
+
+        child_layers_info = theme_view._get_child_layers_info_1(layer)
+
+        expected = [
+            {"name": "layer_1", "minResolutionHint": 0.0, "maxResolutionHint": 999999999.0},
+            {"name": "layer_2", "minResolutionHint": 0.0, "maxResolutionHint": 999999999.0},
+        ]
+        self.assertEqual(child_layers_info, expected)

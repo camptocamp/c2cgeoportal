@@ -47,7 +47,7 @@ import transaction
 LOG = logging.getLogger(__name__)
 
 
-class TestEntryView(TestCase):
+class Test2faView(TestCase):
     def setup_method(self, _):
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
@@ -85,12 +85,12 @@ class TestEntryView(TestCase):
         return request
 
     def test_new_user(self):
-        from c2cgeoportal_geoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.login import Login
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
 
         request = self._create_request_obj(POST={"login": "__test_user", "password": "__test_user"})
-        response = Entry(request).login()
+        response = Login(request).login()
         response_json = json.loads(response.body.decode("utf-8"))
         assert "Cookie" not in dict(response.headers)
         totp = pyotp.TOTP(response_json["two_factor_totp_secret"])
@@ -113,7 +113,7 @@ class TestEntryView(TestCase):
                 "otp": totp.now(),
             }
         )
-        response = Entry(request).change_password()
+        response = Login(request).change_password()
         assert "Cookie" in dict(response.headers)
         assert set(user.tech_data.keys()) == {"2fa_totp_secret"}
         assert user.is_password_changed is True
@@ -129,7 +129,7 @@ class TestEntryView(TestCase):
         request = self._create_request_obj(
             POST={"login": "__test_user", "password": "1234", "otp": totp.now()}
         )
-        response = Entry(request).login()
+        response = Login(request).login()
         assert "Cookie" in dict(response.headers)
         assert json.loads(response.body.decode("utf-8")) == {
             "username": "__test_user",
@@ -141,7 +141,7 @@ class TestEntryView(TestCase):
         }
 
     def test_user_reset_password(self):
-        from c2cgeoportal_geoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.login import Login
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
 
@@ -152,12 +152,12 @@ class TestEntryView(TestCase):
         user.is_password_changed = True
 
         request = self._create_request_obj(POST={"login": "__test_user", "otp": totp.now()})
-        _, _, password, error = Entry(request)._loginresetpassword()
+        _, _, password, error = Login(request)._loginresetpassword()
 
         request = self._create_request_obj(
             POST={"login": "__test_user", "password": password, "otp": totp.now()}
         )
-        response = Entry(request).login()
+        response = Login(request).login()
         response_json = json.loads(response.body.decode("utf-8"))
         assert "Cookie" not in dict(response.headers)
         totp = pyotp.TOTP(response_json["two_factor_totp_secret"])
@@ -178,7 +178,7 @@ class TestEntryView(TestCase):
                 "otp": totp.now(),
             }
         )
-        response = Entry(request).change_password()
+        response = Login(request).change_password()
         assert "Cookie" in dict(response.headers)
         assert set(user.tech_data.keys()) == {"2fa_totp_secret"}
         assert user.is_password_changed is True
@@ -194,7 +194,7 @@ class TestEntryView(TestCase):
         request = self._create_request_obj(
             POST={"login": "__test_user", "password": "1234", "otp": totp.now()}
         )
-        response = Entry(request).login()
+        response = Login(request).login()
         assert "Cookie" in dict(response.headers)
         assert json.loads(response.body.decode("utf-8")) == {
             "username": "__test_user",
@@ -206,7 +206,7 @@ class TestEntryView(TestCase):
         }
 
     def test_change_password(self):
-        from c2cgeoportal_geoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.login import Login
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
 
@@ -225,7 +225,7 @@ class TestEntryView(TestCase):
                 "otp": totp.now(),
             },
         )
-        response = Entry(request).change_password()
+        response = Login(request).change_password()
         assert "Cookie" in dict(response.headers)
         assert set(user.tech_data.keys()) == {"2fa_totp_secret"}
         assert user.is_password_changed is True
@@ -241,7 +241,7 @@ class TestEntryView(TestCase):
         request = self._create_request_obj(
             POST={"login": "__test_user", "password": "1234", "otp": totp.now()}
         )
-        response = Entry(request).login()
+        response = Login(request).login()
         assert "Cookie" in dict(response.headers)
         assert json.loads(response.body.decode("utf-8")) == {
             "username": "__test_user",
@@ -265,22 +265,22 @@ class TestEntryView(TestCase):
         assert original_2fa_totp_secret != user.tech_data["2fa_totp_secret"]
 
     def test_wrong_firstlogin(self):
-        from c2cgeoportal_geoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.login import Login
 
         request = self._create_request_obj(POST={"login": "__test_user"})
         with pytest.raises(pyramid.httpexceptions.HTTPBadRequest):
-            Entry(request).login()
+            Login(request).login()
 
         request = self._create_request_obj(POST={"password": "__test_user"})
         with pytest.raises(pyramid.httpexceptions.HTTPBadRequest):
-            Entry(request).login()
+            Login(request).login()
 
         request = self._create_request_obj(POST={"login": "__test_user", "password": "toto"})
         with pytest.raises(pyramid.httpexceptions.HTTPUnauthorized):
-            Entry(request).login()
+            Login(request).login()
 
     def test_wrong_login(self):
-        from c2cgeoportal_geoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.login import Login
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
 
@@ -292,30 +292,30 @@ class TestEntryView(TestCase):
 
         request = self._create_request_obj(POST={"password": "__test_user", "otp": totp.now()})
         with pytest.raises(pyramid.httpexceptions.HTTPBadRequest):
-            Entry(request).login()
+            Login(request).login()
 
         request = self._create_request_obj(POST={"login": "__test_user", "password": "__test_user"})
         with pytest.raises(pyramid.httpexceptions.HTTPBadRequest):
-            Entry(request).login()
+            Login(request).login()
 
         request = self._create_request_obj(
             POST={"login": "__test_user", "password": "toto", "otp": totp.now()}
         )
         with pytest.raises(pyramid.httpexceptions.HTTPUnauthorized):
-            Entry(request).login()
+            Login(request).login()
 
         request = self._create_request_obj(
             POST={"login": "__test_user", "password": "__test_user", "otp": "toto"}
         )
         with pytest.raises(pyramid.httpexceptions.HTTPUnauthorized):
-            Entry(request).login()
+            Login(request).login()
 
         request = self._create_request_obj(POST={"login": "__test_user", "otp": totp.now()})
         with pytest.raises(pyramid.httpexceptions.HTTPBadRequest):
-            Entry(request).login()
+            Login(request).login()
 
     def test_wrong_change_password(self):
-        from c2cgeoportal_geoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.login import Login
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
 
@@ -333,7 +333,7 @@ class TestEntryView(TestCase):
             }
         )
         with pytest.raises(pyramid.httpexceptions.HTTPBadRequest):
-            Entry(request).change_password()
+            Login(request).change_password()
 
         request = self._create_request_obj(
             POST={
@@ -344,7 +344,7 @@ class TestEntryView(TestCase):
             }
         )
         with pytest.raises(pyramid.httpexceptions.HTTPBadRequest):
-            Entry(request).change_password()
+            Login(request).change_password()
 
         request = self._create_request_obj(
             POST={
@@ -355,7 +355,7 @@ class TestEntryView(TestCase):
             }
         )
         with pytest.raises(pyramid.httpexceptions.HTTPBadRequest):
-            Entry(request).change_password()
+            Login(request).change_password()
 
         request = self._create_request_obj(
             POST={
@@ -366,7 +366,7 @@ class TestEntryView(TestCase):
             }
         )
         with pytest.raises(pyramid.httpexceptions.HTTPBadRequest):
-            Entry(request).change_password()
+            Login(request).change_password()
 
         request = self._create_request_obj(
             POST={
@@ -377,7 +377,7 @@ class TestEntryView(TestCase):
             }
         )
         with pytest.raises(pyramid.httpexceptions.HTTPBadRequest):
-            Entry(request).change_password()
+            Login(request).change_password()
 
         request = self._create_request_obj(
             POST={
@@ -389,7 +389,7 @@ class TestEntryView(TestCase):
             }
         )
         with pytest.raises(pyramid.httpexceptions.HTTPUnauthorized):
-            Entry(request).change_password()
+            Login(request).change_password()
 
         request = self._create_request_obj(
             POST={
@@ -401,7 +401,7 @@ class TestEntryView(TestCase):
             }
         )
         with pytest.raises(pyramid.httpexceptions.HTTPUnauthorized):
-            Entry(request).change_password()
+            Login(request).change_password()
 
         request = self._create_request_obj(
             POST={
@@ -413,7 +413,7 @@ class TestEntryView(TestCase):
             }
         )
         with pytest.raises(pyramid.httpexceptions.HTTPBadRequest):
-            Entry(request).change_password()
+            Login(request).change_password()
 
         request = self._create_request_obj(
             POST={
@@ -425,10 +425,10 @@ class TestEntryView(TestCase):
             }
         )
         with pytest.raises(pyramid.httpexceptions.HTTPUnauthorized):
-            Entry(request).change_password()
+            Login(request).change_password()
 
     def test_wrong_login_change_password(self):
-        from c2cgeoportal_geoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.login import Login
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
 
@@ -440,29 +440,29 @@ class TestEntryView(TestCase):
             username="__test_user", POST={"newPassword": "1234", "confirmNewPassword": "1234"}
         )
         with pytest.raises(pyramid.httpexceptions.HTTPBadRequest):
-            Entry(request).change_password()
+            Login(request).change_password()
 
         request = self._create_request_obj(
             username="__test_user", POST={"oldPassword": "__test_user", "confirmNewPassword": "1234"}
         )
         with pytest.raises(pyramid.httpexceptions.HTTPBadRequest):
-            Entry(request).change_password()
+            Login(request).change_password()
 
         request = self._create_request_obj(
             username="__test_user", POST={"oldPassword": "__test_user", "newPassword": "1234"}
         )
         with pytest.raises(pyramid.httpexceptions.HTTPBadRequest):
-            Entry(request).change_password()
+            Login(request).change_password()
 
         request = self._create_request_obj(
             username="__test_user",
             POST={"oldPassword": "__test_user", "newPassword": "111", "confirmNewPassword": "222"},
         )
         with pytest.raises(pyramid.httpexceptions.HTTPBadRequest):
-            Entry(request).change_password()
+            Login(request).change_password()
 
     def test_wrong_loginresetpassword(self):
-        from c2cgeoportal_geoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.login import Login
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
 
@@ -474,16 +474,16 @@ class TestEntryView(TestCase):
 
         request = self._create_request_obj(POST={"otp": totp.now()})
         with pytest.raises(pyramid.httpexceptions.HTTPBadRequest):
-            Entry(request).loginresetpassword()
+            Login(request).loginresetpassword()
 
         request = self._create_request_obj(POST={"login": "__test_user"})
         with pytest.raises(pyramid.httpexceptions.HTTPBadRequest):
-            Entry(request).loginresetpassword()
+            Login(request).loginresetpassword()
 
         request = self._create_request_obj(POST={"login": "__test_user_unexisting", "otp": totp.now()})
         with pytest.raises(pyramid.httpexceptions.HTTPUnauthorized):
-            Entry(request).loginresetpassword()
+            Login(request).loginresetpassword()
 
         request = self._create_request_obj(POST={"login": "__test_user", "otp": "wrong"})
         with pytest.raises(pyramid.httpexceptions.HTTPUnauthorized):
-            Entry(request).loginresetpassword()
+            Login(request).loginresetpassword()

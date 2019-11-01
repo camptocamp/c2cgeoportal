@@ -98,14 +98,14 @@ class TestThemesNameErrorView(TestCase):
 
         return request
 
-    def _create_entry_obj(self, **kwargs):
-        from c2cgeoportal_geoportal.views.entry import Entry
+    def _create_theme_obj(self, **kwargs):
+        from c2cgeoportal_geoportal.views.theme import Theme
 
-        return Entry(self._create_request_obj(**kwargs))
+        return Theme(self._create_request_obj(**kwargs))
 
     def test_error(self):
-        from c2cgeoportal_geoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.theme import Theme
 
-        entry = Entry(self._create_request_obj(params={"version": "2"}))
-        themes = entry.themes()
+        theme_view = Theme(self._create_request_obj(params={"version": "2"}))
+        themes = theme_view.themes()
         self.assertEqual(set(themes["errors"]), set(["The theme has an unsupported name '__test/theme'."]))

@@ -152,7 +152,7 @@ class TestThemesViewMetadata(TestCase):
         return set(errors)
 
     def test_metadata(self):
-        from c2cgeoportal_geoportal.views.entry import Entry
+        from c2cgeoportal_geoportal.views.theme import Theme
 
         types = [
             {"name": "string", "type": "string"},
@@ -195,9 +195,9 @@ class TestThemesViewMetadata(TestCase):
 
         request.static_url = static_url
         request.params = {"interface": "desktop"}
-        entry = Entry(request)
+        theme_view = Theme(request)
 
-        themes = entry.themes()
+        themes = theme_view.themes()
         self.assertEqual(
             self._get_filtered_errors(themes),
             set(
