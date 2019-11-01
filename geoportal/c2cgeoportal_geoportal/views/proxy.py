@@ -64,17 +64,17 @@ class Proxy(object):
         query_string = urllib.parse.urlencode(all_params)
 
         if parsed_url.port is None:
-            url = "{0!s}://{1!s}{2!s}?{3!s}".format(
+            url = "{}://{}{}?{}".format(
                 parsed_url.scheme, parsed_url.hostname,
                 parsed_url.path, query_string
             )
         else:  # pragma: no cover
-            url = "{0!s}://{1!s}:{2:d}{3!s}?{4!s}".format(
+            url = "{}://{}:{:d}{}?{}".format(
                 parsed_url.scheme, parsed_url.hostname, parsed_url.port,
                 parsed_url.path, query_string
             )
 
-        log.info("Send query to URL:\n{0!s}.".format(url))
+        log.debug("Send query to URL:\n%s.", url)
 
         if method is None:
             method = self.request.method
