@@ -1,3 +1,5 @@
+##### 2.4.1.48
+* Fix interface override defaults [c2cgeoportal#5357](https://github.com/camptocamp/c2cgeoportal/pull/5357)
 ##### 2.4.1.47
 * Use only LTR QGIS version 3.4 [c2cgeoportal#5461](https://github.com/camptocamp/c2cgeoportal/pull/5461)
 * Less logs [c2cgeoportal#5462](https://github.com/camptocamp/c2cgeoportal/pull/5462)
