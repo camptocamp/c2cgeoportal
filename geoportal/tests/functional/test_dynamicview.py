@@ -406,3 +406,43 @@ class TestDynamicView(TestCase):
             'doRedirect': True,
             'redirectUrl': '/dummy/route/url/test_redirect?',
         }
+
+    def test_cross_overrid_1(self):
+        from c2cgeoportal_geoportal.views.dynamic import DynamicView
+        request = self._request()
+        request.registry.settings = self._get_settings({
+            'default': {
+                'constants': {
+                    'XTest': 'TOTO'
+                }
+            },
+            'test': {
+                'dynamic_constants': {
+                    'XTest': 'interface'
+                }
+            }
+        })
+        dynamic = DynamicView(request).dynamic()
+
+        assert 'XTest' in dynamic['constants'], dynamic
+        assert dynamic['constants']['XTest'] == 'test'
+
+    def test_cross_overrid_2(self):
+        from c2cgeoportal_geoportal.views.dynamic import DynamicView
+        request = self._request()
+        request.registry.settings = self._get_settings({
+            'default': {
+                'dynamic_constants': {
+                    'XTest': 'interface'
+                }
+            },
+            'test': {
+                'constants': {
+                    'XTest': 'TOTO'
+                }
+            }
+        })
+        dynamic = DynamicView(request).dynamic()
+
+        assert 'XTest' in dynamic['constants'], dynamic
+        assert dynamic['constants']['XTest'] == 'TOTO'
