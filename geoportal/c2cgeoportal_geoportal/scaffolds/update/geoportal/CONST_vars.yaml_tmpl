@@ -190,25 +190,6 @@ vars:
           name: printproxy
 
   # The dogpile.cache configuration.
-  #
-  # Do not touch if unsure.
-  #
-  # The cache section below takes three properties:
-  #
-  # - backend: the name of the cache backend (ex: dogpile.cache.memory,
-  #   dogpile.cache.memcached, etc.). Mandatory.
-  # - expiration_time: the cache expiration time. Optional (infinite if not
-  #   specified).
-  # - arguments: backend-specific arguments. Optional.
-  #
-  # Here is a dogpile.cache configuration example for the memcached backend
-  # (equivalent of
-  # https://dogpilecache.readthedocs.org/en/latest/api.html#dogpile.cache.backends.memcached.MemcachedBackend)
-  # cache:
-  #   backend: dogpile.cache.memcached
-  #   expiration_time: 3600
-  #   arguments:
-  #   url: 127.0.0.1:11211
   cache:
     std:
       backend: dogpile.cache.redis
