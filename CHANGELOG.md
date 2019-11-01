@@ -1,3 +1,7 @@
+##### 2.4.1.47
+* Use only LTR QGIS version 3.4 [c2cgeoportal#5461](https://github.com/camptocamp/c2cgeoportal/pull/5461)
+* Less logs [c2cgeoportal#5462](https://github.com/camptocamp/c2cgeoportal/pull/5462)
+* Removes the Roman GPG key [c2cgeoportal#5463](https://github.com/camptocamp/c2cgeoportal/pull/5463)
 ##### 2.4.1.46
 * We shouldn't be able to override the parameter from the original URL [c2cgeoportal#5458](https://github.com/camptocamp/c2cgeoportal/pull/5458)
 * Don't use request as cache key [c2cgeoportal#5460](https://github.com/camptocamp/c2cgeoportal/pull/5460)
