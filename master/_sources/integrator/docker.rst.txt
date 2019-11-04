@@ -6,8 +6,15 @@ Use Docker to deploy your application
 Architecture schema
 -------------------
 
-.. image:: docker.png
-.. source file is docker.dia.
+For OpenShift projects:
+
+.. image:: docker-openshift.png
+.. source file is docker-openshift.dia.
+
+For stand alone projects:
+
+.. image:: docker-apache.png
+.. source file is docker-apache.dia.
 
 
 Images
