@@ -46,8 +46,9 @@ FROM base AS tools
 CMD ["sleep", "infinity"]
 RUN \
   apt-get update && \
-  apt-get install --assume-yes --no-install-recommends git make postgresql-client gdal-bin net-tools iputils-ping \
-        vim vim-editorconfig vim-addon-manager tree groff-base libxml2-utils bash-completion && \
+  apt-get install --assume-yes --no-install-recommends git make python3.7-dev gcc postgresql-client gdal-bin \
+        net-tools iputils-ping vim vim-editorconfig vim-addon-manager tree groff-base libxml2-utils \
+        bash-completion && \
   apt-get clean && \
   rm --recursive --force /var/lib/apt/lists/* && \
   curl https://raw.githubusercontent.com/awslabs/git-secrets/1.3.0/git-secrets > /usr/bin/git-secrets && \
