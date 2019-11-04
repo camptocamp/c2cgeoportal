@@ -139,7 +139,7 @@ class Login:
                 if otp is None:
                     raise HTTPBadRequest("The second factor is missing.")
                 if not self._validate_2fa_totp(user, otp):
-                    LOG.info("The second factor is wrong for user '%s'.", user)
+                    LOG.info("The second factor is wrong for user '%s'.", user.username)
                     raise HTTPUnauthorized("See server logs for details")
             user.update_last_login()
             user.tech_data["consecutive_failed"] = "0"
