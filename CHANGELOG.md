@@ -1,3 +1,23 @@
+##### 2.4.1.49
+* [Backport 2.4] Don't forward the host on OpenShift environment [c2cgeoportal#5480](https://github.com/camptocamp/c2cgeoportal/pull/5480)
+* Replace __unicode__ by __str__ [c2cgeoportal#5481](https://github.com/camptocamp/c2cgeoportal/pull/5481)
+##### 2.4.1.48
+* Fix interface override defaults [c2cgeoportal#5357](https://github.com/camptocamp/c2cgeoportal/pull/5357)
+##### 2.4.1.47
+* Use only LTR QGIS version 3.4 [c2cgeoportal#5461](https://github.com/camptocamp/c2cgeoportal/pull/5461)
+* Less logs [c2cgeoportal#5462](https://github.com/camptocamp/c2cgeoportal/pull/5462)
+* Removes the Roman GPG key [c2cgeoportal#5463](https://github.com/camptocamp/c2cgeoportal/pull/5463)
+##### 2.4.1.46
+* We shouldn't be able to override the parameter from the original URL [c2cgeoportal#5458](https://github.com/camptocamp/c2cgeoportal/pull/5458)
+* Don't use request as cache key [c2cgeoportal#5460](https://github.com/camptocamp/c2cgeoportal/pull/5460)
+* Use only LTR QGIS version 3.4 [c2cgeoportal#5461](https://github.com/camptocamp/c2cgeoportal/pull/5461)
+* Less logs [c2cgeoportal#5462](https://github.com/camptocamp/c2cgeoportal/pull/5462)
+* Don't set css 'bottom' property form the displayquerywindow [ngeo#5266](https://github.com/camptocamp/ngeo/pull/5266)
+* Use all window resize handles [ngeo#5268](https://github.com/camptocamp/ngeo/pull/5268)
+##### 2.4.1.45
+* update print version to 3.20 [c2cgeoportal#5450](https://github.com/camptocamp/c2cgeoportal/pull/5450)
+##### 2.4.1.44
+* Be able to have logs in JSON [c2cgeoportal#5443](https://github.com/camptocamp/c2cgeoportal/pull/5443)
 ##### 2.4.1.43
 * Switch redis to volatile-lru [c2cgeoportal#5444](https://github.com/camptocamp/c2cgeoportal/pull/5444)
 ##### 2.4.1.42
