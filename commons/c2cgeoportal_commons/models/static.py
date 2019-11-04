@@ -223,7 +223,7 @@ class User(Base):
     def update_last_login(self) -> None:
         self.last_login = datetime.now(pytz.utc)
 
-    def __unicode__(self) -> str:
+    def __str__(self) -> str:
         return self.username or ''  # pragma: no cover
 
 
