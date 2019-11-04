@@ -172,7 +172,7 @@ Be sure that the volumes for c2cgeoportal are uncommented.</p>
     <span class="n">FilenameFilter</span><span class="p">(</span><span class="s2">&quot;c2cgeoportal.*&quot;</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
     <span class="n">TotalTimeSorter</span><span class="p">(),</span>
 <span class="p">]</span>
-<span class="k">return</span> <span class="n">LineProfilerMiddleware</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">make_wsgi_app</span><span class="p">())</span>
+<span class="k">return</span> <span class="n">LineProfilerMiddleware</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">make_wsgi_app</span><span class="p">(),</span> <span class="n">filters</span><span class="o">=</span><span class="n">filters</span><span class="p">)</span>
 </pre></div>
 </div>
 </li>
