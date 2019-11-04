@@ -58,27 +58,11 @@ We should use metatiles to reduce the number of requests to postgres.
 And the tiles should be deleted after the expiry time.</p>
 <p>The chosen solution is a combination of two tools:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://mapserver.org/trunk/mapcache/">MapCache</a> for the last zoom level.</p></li>
 <li><p><a class="reference external" href="https://github.com/camptocamp/tilecloud-chain">TileCloud-Chain</a> for the tile generation.</p></li>
 </ul>
 </div>
 <div class="section" id="id1">
-<h2>MapCache<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<p>MapCache is a tool of the MapServer Suite.</p>
-<p>It is recommended to use <a class="reference external" href="https://memcached.org/">Memcached</a> as cache,
-since it is the only system that offers automatic deletion of the expired tiles.</p>
-<p>To use it, you should have MapCache and Memcached installed on your computer.
-And Memcached should listen on port 11211.</p>
-<p>To clear/flush Memcached cache, use the following command in the container:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
-span.prompt1:before {
-  content: "$ ";
-}
-</style><span class="prompt1"><span class="nb">echo</span> <span class="s2">&quot;flush_all&quot;</span> <span class="p">|</span> /bin/netcat -q <span class="m">2</span> <span class="m">127</span>.0.0.1 <span class="m">11211</span></span>
-</pre></div></div><p>See the <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain#configure-mapcache">TileCloud-chain documentation for more details</a>.</p>
-</div>
-<div class="section" id="id2">
-<h2>TileCloud-chain<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<h2>TileCloud-chain<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p>TileCloud-chain is a TileCloud-based tool that offers a build chain for
 generating tiles from WMS of Mapnik on a local storage or S3 using a
 WMTS layout.</p>
@@ -98,7 +82,11 @@ Sub-level of <code class="docutils literal notranslate"><span class="pre">caches
 <li><p>Configure the <code class="docutils literal notranslate"><span class="pre">layer_default</span></code>, the <code class="docutils literal notranslate"><span class="pre">layers</span></code>, and the <code class="docutils literal notranslate"><span class="pre">generation</span></code>/<code class="docutils literal notranslate"><span class="pre">default_layers</span></code>.
 Sub-level of <code class="docutils literal notranslate"><span class="pre">layers</span></code> is the layer name.</p></li>
 <li><p>We can drop the empty tiles with a hash comparison, tilecloud-chain has a tool to help us:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> tilecloudchain generate_tiles --get-hash &lt;max-zoom&gt;/0/0 --layer &lt;layer&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">docker-compose <span class="nb">exec</span> tilecloudchain generate_tiles --get-hash &lt;max-zoom&gt;/0/0 --layer &lt;layer&gt;</span>
 </pre></div></div><p>We consider that the first tile of the max zoom is empty.
 Then copy-paste the result in the layer config.</p>
 </li>
