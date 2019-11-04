@@ -134,8 +134,8 @@ class Functionality(Base):
         self.value = value
         self.description = description
 
-    def __unicode__(self) -> str:
-        return '{0!s} - {1!s}'.format(self.name or '', self.value or '')  # pragma: no cover
+    def __str__(self) -> str:
+        return '{} - {}'.format(self.name or '', self.value or '')  # pragma: no cover
 
 
 event.listen(Functionality, 'after_update', cache_invalidate_cb)
@@ -214,7 +214,7 @@ class Role(Base):
         self.extent = extent
         self.description = description
 
-    def __unicode__(self) -> str:
+    def __str__(self) -> str:
         return self.name or ''  # pragma: no cover
 
     @property
@@ -834,7 +834,7 @@ class OGCServer(Base):
         self.wfs_support = wfs_support
         self.is_single_tile = is_single_tile
 
-    def __unicode__(self) -> str:
+    def __str__(self) -> str:
         return self.name or ''  # pragma: no cover
 
 
@@ -1085,7 +1085,7 @@ class RestrictionArea(Base):
         self.area = area
         self.readwrite = readwrite
 
-    def __unicode__(self) -> str:  # pragma: no cover
+    def __str__(self) -> str:  # pragma: no cover
         return self.name or ''
 
 
@@ -1174,7 +1174,7 @@ class Interface(Base):
         self.name = name
         self.description = description
 
-    def __unicode__(self) -> str:  # pragma: no cover
+    def __str__(self) -> str:  # pragma: no cover
         return self.name or ''
 
 
@@ -1231,7 +1231,7 @@ class Metadata(Base):
         self.name = name
         self.value = value
 
-    def __unicode__(self) -> str:  # pragma: no cover
+    def __str__(self) -> str:  # pragma: no cover
         return '{0!s}: {1!s}'.format(self.name or '', self.value or '')
 
 
@@ -1302,5 +1302,5 @@ class Dimension(Base):
         if layer is not None:
             self.layer = layer
 
-    def __unicode__(self) -> str:  # pragma: no cover
+    def __str__(self) -> str:  # pragma: no cover
         return self.name or ''
