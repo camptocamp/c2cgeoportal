@@ -2,7 +2,6 @@
 !bin/
 !mapserver/
 !qgisserver/
-!mapcache/
 !tilegeneration/
 !print/print-apps/
 !geoportal/vars*.yaml

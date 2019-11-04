@@ -30,29 +30,7 @@ And the tiles should be deleted after the expiry time.
 
 The chosen solution is a combination of two tools:
 
-* `MapCache <https://mapserver.org/trunk/mapcache/>`_ for the last zoom level.
-
 * `TileCloud-Chain <https://github.com/camptocamp/tilecloud-chain>`_ for the tile generation.
-
-MapCache
---------
-
-MapCache is a tool of the MapServer Suite.
-
-It is recommended to use `Memcached <https://memcached.org/>`_ as cache,
-since it is the only system that offers automatic deletion of the expired tiles.
-
-To use it, you should have MapCache and Memcached installed on your computer.
-And Memcached should listen on port 11211.
-
-To clear/flush Memcached cache, use the following command in the container:
-
-.. prompt:: bash
-
-    echo "flush_all" | /bin/netcat -q 2 127.0.0.1 11211
-
-See the `TileCloud-chain documentation for more details
-<https://github.com/camptocamp/tilecloud-chain#configure-mapcache>`_.
 
 TileCloud-chain
 ---------------
