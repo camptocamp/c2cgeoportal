@@ -986,74 +986,90 @@ class Theme:
         group = self.request.params.get("group")
         background_layers_group = self.request.params.get("background")
 
-        export_themes = sets in ("all", "themes")
-        export_group = group is not None and sets in ("all", "group")
-        export_background = background_layers_group is not None and sets in ("all", "background")
+        def get_theme():
+            export_themes = sets in ("all", "themes")
+            export_group = group is not None and sets in ("all", "group")
+            export_background = background_layers_group is not None and sets in ("all", "background")
 
-        set_common_headers(self.request, "themes", PRIVATE_CACHE)
+            set_common_headers(self.request, "themes", PRIVATE_CACHE)
 
-        result = {}
-        all_errors = set()
-        LOG.debug("Start preload")
-        start_time = time.time()
-        asyncio.run(self.preload(all_errors))
-        LOG.debug("End preload")
-        LOG.info("Do preload in %.3fs.", time.time() - start_time)
-        result["ogcServers"] = {}
-        for ogc_server in models.DBSession.query(main.OGCServer).all():
-            url_internal_wfs, url, url_wfs = self.get_url_internal_wfs(ogc_server, all_errors)
+            result = {}
+            all_errors = set()
+            LOG.debug("Start preload")
+            start_time = time.time()
+            asyncio.run(self.preload(all_errors))
+            LOG.debug("End preload")
+            LOG.info("Do preload in %.3fs.", time.time() - start_time)
+            result["ogcServers"] = {}
+            for ogc_server in models.DBSession.query(main.OGCServer).all():
+                url_internal_wfs, url, url_wfs = self.get_url_internal_wfs(ogc_server, all_errors)
 
-            attributes = None
-            namespace = None
-            if ogc_server.wfs_support:
-                attributes, namespace, errors = self._get_features_attributes(ogc_server.id, url_internal_wfs)
+                attributes = None
+                namespace = None
+                if ogc_server.wfs_support:
+                    attributes, namespace, errors = self._get_features_attributes(
+                        ogc_server.id, url_internal_wfs
+                    )
+                    all_errors |= errors
+
+                    all_private_layers = get_private_layers([ogc_server.id]).values()
+                    protected_layers_name = [
+                        l.name for l in get_protected_layers(self.request, [ogc_server.id]).values()
+                    ]
+                    private_layers_name = []
+                    for layers in [
+                        v.layer for v in all_private_layers if v.name not in protected_layers_name
+                    ]:
+                        private_layers_name.extend(layers.split(","))
+
+                    if attributes is not None:
+                        for name in private_layers_name:
+                            if name in attributes:
+                                del attributes[name]
+
+                result["ogcServers"][ogc_server.name] = {
+                    "url": url,
+                    "urlWfs": url_wfs,
+                    "type": ogc_server.type,
+                    "credential": ogc_server.auth != main.OGCSERVER_AUTH_NOAUTH,
+                    "imageType": ogc_server.image_type,
+                    "wfsSupport": ogc_server.wfs_support,
+                    "isSingleTile": ogc_server.is_single_tile,
+                    "namespace": namespace,
+                    "attributes": attributes,
+                }
+            if export_themes:
+                themes, errors = self._themes(interface, True, min_levels)
+
+                result["themes"] = themes
                 all_errors |= errors
 
-                all_private_layers = get_private_layers([ogc_server.id]).values()
-                protected_layers_name = [
-                    l.name for l in get_protected_layers(self.request, [ogc_server.id]).values()
-                ]
-                private_layers_name = []
-                for layers in [v.layer for v in all_private_layers if v.name not in protected_layers_name]:
-                    private_layers_name.extend(layers.split(","))
+            if export_group:
+                exported_group, errors = self._get_group(group, interface)
+                if exported_group is not None:
+                    result["group"] = exported_group
+                all_errors |= errors
 
-                if attributes is not None:
-                    for name in private_layers_name:
-                        if name in attributes:
-                            del attributes[name]
+            if export_background:
+                exported_group, errors = self._get_group(background_layers_group, interface)
+                result["background_layers"] = exported_group["children"] if exported_group is not None else []
+                all_errors |= errors
 
-            result["ogcServers"][ogc_server.name] = {
-                "url": url,
-                "urlWfs": url_wfs,
-                "type": ogc_server.type,
-                "credential": ogc_server.auth != main.OGCSERVER_AUTH_NOAUTH,
-                "imageType": ogc_server.image_type,
-                "wfsSupport": ogc_server.wfs_support,
-                "isSingleTile": ogc_server.is_single_tile,
-                "namespace": namespace,
-                "attributes": attributes,
-            }
-        if export_themes:
-            themes, errors = self._themes(interface, True, min_levels)
+            result["errors"] = list(all_errors)
+            if all_errors:
+                LOG.info("Theme errors:\n%s", "\n".join(all_errors))
+            return result
 
-            result["themes"] = themes
-            all_errors |= errors
+        @CACHE_REGION_OBJ.cache_on_arguments()
+        def get_theme_anonymous(interface, sets, min_levels, group, background_layers_group):
+            # Only for cache key
+            del interface, sets, min_levels, group, background_layers_group
+            return get_theme()
 
-        if export_group:
-            group, errors = self._get_group(group, interface)
-            if group is not None:
-                result["group"] = group
-            all_errors |= errors
-
-        if export_background:
-            group, errors = self._get_group(background_layers_group, interface)
-            result["background_layers"] = group["children"] if group is not None else []
-            all_errors |= errors
-
-        result["errors"] = list(all_errors)
-        if all_errors:
-            LOG.info("Theme errors:\n%s", "\n".join(all_errors))
-        return result
+        if self.request.user is None:
+            return get_theme_anonymous(interface, sets, min_levels, group, background_layers_group)
+        else:
+            return get_theme()
 
     def _get_group(self, group, interface):
         layers = self._layers(interface)
