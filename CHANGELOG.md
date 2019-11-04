@@ -1,3 +1,6 @@
+##### 2.4.1.49
+* [Backport 2.4] Don't forward the host on OpenShift environment [c2cgeoportal#5480](https://github.com/camptocamp/c2cgeoportal/pull/5480)
+* Replace __unicode__ by __str__ [c2cgeoportal#5481](https://github.com/camptocamp/c2cgeoportal/pull/5481)
 ##### 2.4.1.48
 * Fix interface override defaults [c2cgeoportal#5357](https://github.com/camptocamp/c2cgeoportal/pull/5357)
 ##### 2.4.1.47
