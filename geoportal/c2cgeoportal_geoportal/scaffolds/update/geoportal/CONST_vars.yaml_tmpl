@@ -286,6 +286,8 @@ vars:
         type: list
       - name: enumeratedAttributes
         type: list
+      - name: getData
+        type: list
       # WMTS layers
       - name: ogcServer
       - name: wmsLayers
