@@ -32,6 +32,8 @@ import inspect
 import logging
 from typing import Any, Dict  # noqa
 
+from dogpile.cache.api import NO_VALUE
+from dogpile.cache.backends.redis import RedisBackend
 from dogpile.cache.region import make_region
 from dogpile.cache.util import compat, sha1_mangle_key
 from pyramid.request import Request
@@ -94,9 +96,9 @@ def _configure_region(conf, cache_region):
     global MEMORY_CACHE_DICT
     kwargs = {"replace_existing_backend": True}
     backend = conf["backend"]
-    if backend == "dogpile.cache.memory":
-        kwargs["arguments"] = {"cache_dict": MEMORY_CACHE_DICT}
     kwargs.update({k: conf[k] for k in conf if k != "backend"})
+    kwargs.setdefault("arguments", {})
+    kwargs["arguments"]["cache_dict"] = MEMORY_CACHE_DICT
     cache_region.configure(backend, **kwargs)
 
 
@@ -116,6 +118,39 @@ def invalidate_region(region=None):
             cache_region.invalidate()
     else:
         get_region(region).invalidate()
+
+
+class HybridBackend(RedisBackend):
+    """
+    A memory and redis backend
+    """
+
+    def __init__(self, arguments):
+        self._cache = arguments.pop("cache_dict", {})
+        super().__init__(arguments)
+
+    def get(self, key):
+        value = self._cache.get(key, NO_VALUE)
+        if value == NO_VALUE:
+            value = super().get(key)
+        if value != NO_VALUE:
+            self._cache[key] = value
+        return value
+
+    def get_multi(self, keys):
+        return [self.get(key) for key in keys]
+
+    def set(self, key, value):
+        self._cache[key] = value
+        super().set(key, value)
+
+    def set_multi(self, mapping):
+        for key, value in mapping.items():
+            self.set(key, value)
+
+    def delete(self, key):
+        self._cache.pop(key, None)
+        super().delete(key)
 
 
 NO_CACHE = 0
