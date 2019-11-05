@@ -986,12 +986,12 @@ class Theme:
         group = self.request.params.get("group")
         background_layers_group = self.request.params.get("background")
 
+        set_common_headers(self.request, "themes", PRIVATE_CACHE)
+
         def get_theme():
             export_themes = sets in ("all", "themes")
             export_group = group is not None and sets in ("all", "group")
             export_background = background_layers_group is not None and sets in ("all", "background")
-
-            set_common_headers(self.request, "themes", PRIVATE_CACHE)
 
             result = {}
             all_errors = set()
