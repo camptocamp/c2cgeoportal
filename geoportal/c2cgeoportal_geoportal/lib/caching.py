@@ -39,6 +39,7 @@ from sqlalchemy.orm.util import identity_key
 
 LOG = logging.getLogger(__name__)
 _REGION = {}  # type: Dict[str, Any]
+MEMORY_CACHE_DICT = {}  # type: Dict[str, Any]
 
 
 def map_dbobject(item):
@@ -90,9 +91,13 @@ def init_region(conf, region):
 
 
 def _configure_region(conf, cache_region):
+    global MEMORY_CACHE_DICT
     kwargs = {"replace_existing_backend": True}
+    backend = conf["backend"]
+    if backend == "dogpile.cache.memory":
+        kwargs["arguments"] = {"cache_dict": MEMORY_CACHE_DICT}
     kwargs.update({k: conf[k] for k in conf if k != "backend"})
-    cache_region.configure(conf["backend"], **kwargs)
+    cache_region.configure(backend, **kwargs)
 
 
 def get_region(region):
