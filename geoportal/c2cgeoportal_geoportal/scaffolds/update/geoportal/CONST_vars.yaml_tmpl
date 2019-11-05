@@ -171,8 +171,6 @@ vars:
           name: printproxy
     mobile:
       redirect_interface: desktop
-      constants:
-        gmfSearchGroups: []
     mobile_alt:
       redirect_interface: desktop_alt
       constants:

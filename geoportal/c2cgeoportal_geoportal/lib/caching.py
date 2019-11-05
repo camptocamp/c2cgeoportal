@@ -99,6 +99,7 @@ def get_region(region):
     """
     Return a cache region.
     """
+    global _REGION
     if region not in _REGION:
         _REGION[region] = make_region(function_key_generator=keygen_function, key_mangler=sha1_mangle_key)
     return _REGION[region]

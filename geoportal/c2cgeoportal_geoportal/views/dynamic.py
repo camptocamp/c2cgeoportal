@@ -38,7 +38,9 @@ from sqlalchemy import func
 from c2cgeoportal_commons import models
 from c2cgeoportal_commons.models import main
 from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
-from c2cgeoportal_geoportal.lib.caching import NO_CACHE, set_common_headers
+from c2cgeoportal_geoportal.lib.caching import NO_CACHE, get_region, set_common_headers
+
+CACHE_REGION = get_region("std")
 
 
 class DynamicView:
@@ -52,6 +54,44 @@ class DynamicView:
         result = dict(self.default.get(value, {}))
         result.update(self.interfaces_config.get(interface, {}).get(value, {}))
         return result
+
+    @CACHE_REGION.cache_on_arguments()
+    def _fulltextsearch_groups(self):
+        return [
+            group[0]
+            for group in models.DBSession.query(func.distinct(main.FullTextSearch.layer_name))
+            .filter(main.FullTextSearch.layer_name.isnot(None))
+            .all()
+        ]
+
+    def _interface(self, interface_config, interface_name, dynamic, constants):
+        constants.update({name: value for name, value in interface_config.get("constants", {}).items()})
+        constants.update(
+            {
+                name: dynamic[value]
+                for name, value in interface_config.get("dynamic_constants", {}).items()
+                if value is not None
+            }
+        )
+        constants.update(
+            {
+                name: self.request.static_url(static_["name"]) + static_.get("append", "")
+                for name, static_ in interface_config.get("static", {}).items()
+            }
+        )
+
+        routes = dict(currentInterfaceUrl={"name": interface_name})
+        routes.update(interface_config.get("routes", {}))
+        for constant, config in routes.items():
+            params = {}
+            params.update(config.get("params", {}))
+            for name, dyn in config.get("dynamic_params", {}).items():
+                params[name] = dynamic[dyn]
+            constants[constant] = self.request.route_url(
+                config["name"], *config.get("elements", []), _query=params, **config.get("kw", {})
+            )
+
+        return constants
 
     @view_config(route_name="dynamic", renderer="fast_json")
     def dynamic(self):
@@ -81,39 +121,11 @@ class DynamicView:
                 )
                 for lang in self.request.registry.settings["available_locale_names"]
             },
-            "fulltextsearch_groups": [
-                group[0]
-                for group in models.DBSession.query(func.distinct(main.FullTextSearch.layer_name))
-                .filter(main.FullTextSearch.layer_name.isnot(None))
-                .all()
-            ],
+            "fulltextsearch_groups": self._fulltextsearch_groups(),
         }
 
-        constants = {name: value for name, value in self.get("constants", interface_name).items()}
-        constants.update(
-            {
-                name: dynamic[value]
-                for name, value in self.get("dynamic_constants", interface_name).items()
-                if value is not None
-            }
-        )
-        constants.update(
-            {
-                name: self.request.static_url(static_["name"]) + static_.get("append", "")
-                for name, static_ in self.get("static", interface_name).items()
-            }
-        )
-
-        routes = dict(currentInterfaceUrl={"name": interface_name})
-        routes.update(self.get("routes", interface_name))
-        for constant, config in routes.items():
-            params = {}
-            params.update(config.get("params", {}))
-            for name, dyn in config.get("dynamic_params", {}).items():
-                params[name] = dynamic[dyn]
-            constants[constant] = self.request.route_url(
-                config["name"], *config.get("elements", []), _query=params, **config.get("kw", {})
-            )
+        constants = self._interface(self.default, interface_name, dynamic, {})
+        constants = self._interface(interface_config, interface_name, dynamic, constants)
 
         do_redirect = False
         url = None

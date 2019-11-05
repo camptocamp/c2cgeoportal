@@ -58,22 +58,22 @@ class Proxy(object):
         # get query string
         params = dict(self.request.params) if params is None else params
         parsed_url = urllib.parse.urlparse(url)
-        all_params = urllib.parse.parse_qs(parsed_url.query)
-        for p in all_params:  # pragma: no cover
-            all_params[p] = ",".join(all_params[p])
+        url_params = urllib.parse.parse_qs(parsed_url.query)
+        for p in url_params:  # pragma: no cover
+            url_params[p] = ",".join(url_params[p])
+        all_params = {}
         all_params.update(params)
+        all_params.update(url_params)
         query_string = urllib.parse.urlencode(all_params)
 
         if parsed_url.port is None:
-            url = "{0!s}://{1!s}{2!s}?{3!s}".format(
-                parsed_url.scheme, parsed_url.hostname, parsed_url.path, query_string
-            )
+            url = "{}://{}{}?{}".format(parsed_url.scheme, parsed_url.hostname, parsed_url.path, query_string)
         else:  # pragma: no cover
-            url = "{0!s}://{1!s}:{2:d}{3!s}?{4!s}".format(
+            url = "{}://{}:{:d}{}?{}".format(
                 parsed_url.scheme, parsed_url.hostname, parsed_url.port, parsed_url.path, query_string
             )
 
-        LOG.info("Send query to URL:\n%s.", url)
+        LOG.debug("Send query to URL:\n%s.", url)
 
         if method is None:
             method = self.request.method
