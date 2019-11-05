@@ -91,7 +91,7 @@ def _get_db_functionality(name, user: Dict[str, Any], types, request, errors):
 
 
 @CACHE_REGION_OBJ.cache_on_arguments()
-def _getfunctionalities_type(request):
+def _get_functionalities_type(request):
     return get_types_map(
         request.registry.settings.get("admin_interface", {}).get("available_functionalities", [])
     )
@@ -103,21 +103,21 @@ def get_functionality(name, request, is_intranet):
 
     if request.user is not None:
         result = _get_db_functionality(
-            name, _user_to_struct(request.user), _getfunctionalities_type(request), request, errors
+            name, _user_to_struct(request.user), _get_functionalities_type(request), request, errors
         )
         if len(result) == 0:
             result = _get_db_functionality(
-                name, _get_role("registered"), _getfunctionalities_type(request), request, errors
+                name, _get_role("registered"), _get_functionalities_type(request), request, errors
             )
 
     if len(result) == 0 and is_intranet:
         result = _get_db_functionality(
-            name, _get_role("intranet"), _getfunctionalities_type(request), request, errors
+            name, _get_role("intranet"), _get_functionalities_type(request), request, errors
         )
 
     if len(result) == 0:
         result = _get_db_functionality(
-            name, _get_role("anonymous"), _getfunctionalities_type(request), request, errors
+            name, _get_role("anonymous"), _get_functionalities_type(request), request, errors
         )
 
     if errors != set():  # pragma: no cover
