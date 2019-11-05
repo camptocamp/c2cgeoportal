@@ -42,7 +42,7 @@ CACHE_REGION_OBJ = get_region("obj")
 CACHE_REGION = get_region("std")
 
 
-@CACHE_REGION.cache_on_arguments()
+@CACHE_REGION_OBJ.cache_on_arguments()
 def _get_role(name: str) -> Dict[str, Any]:
     from c2cgeoportal_commons.models import DBSession
 
