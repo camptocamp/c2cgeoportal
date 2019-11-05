@@ -34,6 +34,7 @@ from typing import Any, Dict, List
 from pympler import asizeof, muppy
 from pyramid.view import view_config
 
+from c2cgeoportal_geoportal.lib.caching import MEMORY_CACHE_DICT
 from c2cgeoportal_geoportal.views import raster
 from c2cwsgiutils import broadcast
 from c2cwsgiutils.auth import auth_view
@@ -55,7 +56,11 @@ def memory(request):
 def _memory(with_others: bool, with_all: bool, with_repr: bool) -> Dict[str, Any]:
     raster_data = raster.Raster.data
     result = {
-        "raster_data": {id: _get_size(raster_data[id]) / 1024 / 1024 for id in raster_data}
+        "raster_data": {id: _get_size(raster_data[id]) / 1024 / 1024 for id in raster_data},
+        "memory_cache": {
+            key: {"type": type(value), "size": _get_size(value) / 1024 / 1024}
+            for key, value in MEMORY_CACHE_DICT.items()
+        },
     }  # type: Dict[str, Any]
 
     if with_others:
