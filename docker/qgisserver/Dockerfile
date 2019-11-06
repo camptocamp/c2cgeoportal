@@ -2,6 +2,13 @@ ARG VERSION
 FROM camptocamp/qgis-server:${VERSION} AS base
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
+RUN \
+  . /etc/os-release && \
+  apt-get update && \
+  apt-get install --assume-yes --no-install-recommends gcc && \
+  apt-get clean && \
+  rm --recursive --force /var/lib/apt/lists/*
+
 COPY requirements.txt /tmp/
 RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --requirement=/tmp/requirements.txt
 
