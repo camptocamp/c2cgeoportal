@@ -190,7 +190,7 @@ vars:
   # The dogpile.cache configuration.
   cache:
     std:
-      backend: dogpile.cache.redis
+      backend: c2cgeoportal.hybrid
       arguments:
         host: '{REDIS_HOST}'
         port: '{REDIS_PORT}'

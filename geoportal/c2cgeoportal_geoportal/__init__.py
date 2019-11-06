@@ -36,6 +36,7 @@ import time
 from urllib.parse import urlsplit
 
 from Crypto.Cipher import AES  # nosec
+from dogpile.cache import register_backend
 from papyrus.renderers import GeoJSON
 from pyramid.config import Configurator
 from pyramid.httpexceptions import HTTPException
@@ -360,6 +361,7 @@ def includeme(config: pyramid.config.Configurator):
 
     # dogpile.cache configuration
     if "cache" in settings:
+        register_backend("c2cgeoportal.hybrid", "c2cgeoportal_geoportal.lib.caching", "HybridBackend")
         for name, cache_config in settings["cache"].items():
             caching.init_region(cache_config, name)
             from c2cgeoportal_commons.models import InvalidateCacheEvent
