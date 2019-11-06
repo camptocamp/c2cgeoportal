@@ -29,6 +29,11 @@ services:
   #   volumes_from:
   #     - config:ro
 
+  # qgisserver:
+  #   environment:
+  #     env:
+  #       - QGIS_SERVER_LOG_LEVEL=0
+
   # Use configuration to be on https (comment to disable it)
   front:
     command:
