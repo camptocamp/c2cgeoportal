@@ -31,6 +31,11 @@ services:
   #   volumes_from:
   #     - config:ro
 
+  # qgisserver:
+  #   environment:
+  #     env:
+  #       - QGIS_SERVER_LOG_LEVEL=0
+
   # For Javascript project development.
   # The debug application will be availavble at ``https://<host>/<entry_point>/dev/<interface>.html``.
   webpack_dev_server:
