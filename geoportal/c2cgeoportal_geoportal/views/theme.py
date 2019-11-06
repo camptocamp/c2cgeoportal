@@ -1061,13 +1061,15 @@ class Theme:
             return result
 
         @CACHE_REGION_OBJ.cache_on_arguments()
-        def get_theme_anonymous(interface, sets, min_levels, group, background_layers_group):
+        def get_theme_anonymous(interface, sets, min_levels, group, background_layers_group, host):
             # Only for cache key
-            del interface, sets, min_levels, group, background_layers_group
+            del interface, sets, min_levels, group, background_layers_group, host
             return get_theme()
 
         if self.request.user is None:
-            return get_theme_anonymous(interface, sets, min_levels, group, background_layers_group)
+            return get_theme_anonymous(
+                interface, sets, min_levels, group, background_layers_group, self.request.headers.get("Host")
+            )
         else:
             return get_theme()
 
