@@ -44,9 +44,6 @@ LOG = logging.getLogger(__name__)
 
 
 class OGCProxy(Proxy):
-
-    params = {}  # type: Dict[str, str]
-
     def __init__(self, request, has_default_ogc_server=False):
         Proxy.__init__(self, request)
 
