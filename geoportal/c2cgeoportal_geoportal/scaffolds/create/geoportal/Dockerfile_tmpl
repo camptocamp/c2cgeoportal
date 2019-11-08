@@ -37,7 +37,7 @@ RUN chmod go+w /etc/static-ngeo/ \
 
 RUN pip install --disable-pip-version-check --no-cache-dir --no-deps --editable=/app/ && \
     python3 -m compileall -q /usr/local/lib/python3.7 \
-        -x '/usr/local/lib/python3.7/dist-packages/(dateutils|pydevd|ptvsd)/' && \
+        -x '/usr/local/lib/python3.7/dist-packages/(pydevd|ptvsd)/' && \
     python3 -m compileall -q /app/{{package}}_geoportal -x /app/{{package}}_geoportal/static.*
 
 ARG GIT_HASH

@@ -163,8 +163,7 @@ RUN \
     --editable=/opt/c2cgeoportal/commons \
     --editable=/opt/c2cgeoportal/geoportal \
     --editable=/opt/c2cgeoportal/admin && \
-    python3 -m compileall -q /opt/c2cgeoportal /usr/local/lib/python3.7 \
-        -x /usr/local/lib/python3.7/dist-packages/dateutils/
+    python3 -m compileall -q /opt/c2cgeoportal /usr/local/lib/python3.7
 
 RUN adduser www-data root
 
