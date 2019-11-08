@@ -35,8 +35,6 @@ import sqlalchemy.ext.declarative.api
 import sqlalchemy.orm  # noqa
 import zope.event
 
-from c2cwsgiutils import broadcast
-
 try:
     from pyramid.i18n import TranslationStringFactory
 
@@ -59,6 +57,13 @@ def cache_invalidate_cb(*args: List[Any]) -> None:
     _cache_invalidate_cb()
 
 
-@broadcast.decorator()
-def _cache_invalidate_cb() -> None:
-    zope.event.notify(InvalidateCacheEvent())
+try:
+    from c2cwsgiutils import broadcast
+
+    @broadcast.decorator()
+    def _cache_invalidate_cb() -> None:
+        zope.event.notify(InvalidateCacheEvent())
+
+
+except ModuleNotFoundError:
+    pass
