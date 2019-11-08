@@ -2,7 +2,7 @@ astroid==2.3.3  # pylint
 awscli==1.16.156  # Work with Object storage
 Babel==2.7.0  # i18n
 bandit==1.6.2  # lint
-beautifulsoup4==4.8.1  # admin tests, rq.filter: <4.7
+beautifulsoup4==4.8.1  # admin tests
 black==19.10b0   # lint
 boto3==1.10.2  # Tile generation
 bottle==0.12.16  # geoportal
@@ -25,12 +25,12 @@ polib==1.1.0  # i18n
 pyflakes==2.1.1  # lint, flake8
 pykwalify==1.7.0  # Validate config
 pylint==2.4.1  # lint
-Pillow==6.2.1  # Tile generation, rq.filter: < 6.0.0
+Pillow==6.2.1  # Tile generation
 pytest-cov==2.8.1  # tests
 pytest-selenium==1.17.0  # admin tests
-six==1.11.0  # required by transifex, rq.filter: ==1.11.0
+six==1.11.0  # required by transifex
 transifex-client==0.13.6  # Makefile
-urllib3==1.23  # required by transifex, rq.filter: <1.24
+urllib3==1.23  # required by transifex
 waitress==1.3.0  # pcreate
 WebOb==1.8.5  # geoportal test
 WebTest==2.0.33  # admin tests
