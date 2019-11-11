@@ -20,7 +20,7 @@ mccabe==0.6.1  # lint
 mypy==0.740  # lint
 PasteScript==3.2.0  # geoportal pcreate
 pep8==1.7.1  # lint
-pep8-naming==0.8.2  # Lint
+pep8-naming==0.9.0  # Lint
 polib==1.1.0  # i18n
 pyflakes==2.1.1  # lint, flake8
 pykwalify==1.7.0  # Validate config
