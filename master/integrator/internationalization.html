@@ -63,8 +63,9 @@
 (if the line is not removed, the localisation will not be used).</p>
 </div>
 <p>To update your <code class="docutils literal notranslate"><span class="pre">po</span></code> files, you should proceed as follows.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker-compose <span class="nb">exec</span> geoportal update-po &lt;lang&gt; &gt; <span class="se">\</span>
-  geoportal/testgeomapfishapp_geoportal/locale/&lt;lang&gt;/LC_MESSAGES/testgeomapfishapp_geoportal-client.po
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker-compose <span class="nb">exec</span> geoportal update-po &lt;lang&gt;
+docker-compose <span class="nb">exec</span> cat &lt;package&gt;_geoportal/locale/&lt;lang&gt;/LC_MESSAGES/&lt;package&gt;_geoportal-client.po &gt; <span class="se">\</span>
+    geoportal/&lt;package&gt;_geoportal/locale/&lt;lang&gt;/LC_MESSAGES/&lt;package&gt;_geoportal-client.po
 </pre></div>
 </div>
 <div class="admonition note">
