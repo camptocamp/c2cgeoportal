@@ -73,6 +73,7 @@ services:
       - CPL_VSIL_CURL_CACHE_SIZE
       - CPL_VSIL_CURL_USE_HEAD
       - GDAL_DISABLE_READDIR_ON_OPEN
+      - QGIS_SERVER_LOG_LEVEL=2
 
   tinyows:
     image: camptocamp/tinyows
