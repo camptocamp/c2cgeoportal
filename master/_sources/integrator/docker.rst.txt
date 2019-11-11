@@ -34,8 +34,8 @@ Docker compose files
 ``docker-compose.yaml``: The main file that describes the composition.
 ``docker-compose-lib.yaml``: Provide the base description of Geomapfish Docker services.
 ``.env``: Build from ``.env.sample`` the environment variable used by the composition.
-``docker-compose-dev.yaml``: Use to start a webpack dev server.
-``docker-compose-build.yaml``: Used by the ``docker-compose-run`` script.
+``docker-compose.override[.sample].yaml``: Some rules for debuggung.
+``.env``: The variable used in the compose files.
 
 
 Run the developer composition

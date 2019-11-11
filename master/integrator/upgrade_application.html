@@ -79,12 +79,12 @@ span.prompt1:before {
 <p>The database will be automatically upgraded during the upgrade process.</p>
 <p>To upgrade only the database you can use alembic directly.</p>
 <p>The help:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./docker-compose-run alembic --help</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal alembic --help</span>
 </pre></div></div><p>Upgrade the main schema:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./docker-compose-run alembic --name<span class="o">=</span>main <span class="se">\</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal alembic --name<span class="o">=</span>main <span class="se">\</span>
      --config<span class="o">=</span>geoportal/alembic.ini upgrade head</span>
 </pre></div></div><p>Upgrade the static schema:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./docker-compose-run alembic --name<span class="o">=</span>static <span class="se">\</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal alembic --name<span class="o">=</span>static <span class="se">\</span>
      --config<span class="o">=</span>geoportal/alembic.ini upgrade head</span>
 </pre></div></div></div>
 </div>
