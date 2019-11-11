@@ -29,7 +29,6 @@
 
 
 import json
-from json import loads
 import os
 import re
 import subprocess
@@ -186,7 +185,7 @@ class GeomapfishAngularExtractor(Extractor):  # pragma: no cover
             os.unlink(int_filename)
         try:
             messages = []
-            for contexts, message in loads(message_str):
+            for contexts, message in json.loads(message_str):
                 for context in contexts.split(", "):
                     messages.append(Message(None, message, None, [], "", "", context.split(":")))
             return messages
@@ -235,6 +234,12 @@ class GeomapfishConfigExtractor(Extractor):  # pragma: no cover
 
         class C:
             registry = R()
+
+            def get_settings(self):
+                return self.registry.settings
+
+            def add_tween(self, *args, **kwargs):
+                pass
 
         config_ = C()
         config_.registry.settings = settings
@@ -366,26 +371,34 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
                 self._import(LayerWMS, messages, self._import_layer_wms)
                 self._import(LayerWMTS, messages, self._import_layer_wmts)
 
-                for (ln,) in DBSession.query(FullTextSearch.layer_name).distinct().all():
-                    if ln is not None and ln != "":
-                        messages.append(
-                            Message(None, ln, None, [], "", "", ("fts", ln.encode("ascii", errors="replace")))
-                        )
-
-                for (ln,) in DBSession.query(FullTextSearch.actions).distinct().all():
-                    if ln is not None and ln != "":
-                        action = json.loads(ln)
+                for (layer_name,) in DBSession.query(FullTextSearch.layer_name).distinct().all():
+                    if layer_name is not None and layer_name != "":
                         messages.append(
                             Message(
                                 None,
-                                action["data"],
+                                layer_name,
                                 None,
                                 [],
                                 "",
                                 "",
-                                ("fts", action["data"].encode("ascii", errors="replace")),
+                                ("fts", layer_name.encode("ascii", errors="replace")),
                             )
                         )
+
+                for (actions,) in DBSession.query(FullTextSearch.actions).distinct().all():
+                    if actions is not None and actions != "":
+                        for action in actions:
+                            messages.append(
+                                Message(
+                                    None,
+                                    action["data"],
+                                    None,
+                                    [],
+                                    "",
+                                    "",
+                                    ("fts", action["data"].encode("ascii", errors="replace")),
+                                )
+                            )
             except ProgrammingError as e:
                 print(
                     colorize(
