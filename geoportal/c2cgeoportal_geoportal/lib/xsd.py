@@ -28,11 +28,11 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from io import BytesIO
 import logging
 
 from papyrus.xsd import XSDGenerator as PapyrusXSDGenerator
 from papyrus.xsd import tag
-from six import BytesIO
 from sqlalchemy.orm.properties import ColumnProperty
 from sqlalchemy.orm.util import class_mapper
 
