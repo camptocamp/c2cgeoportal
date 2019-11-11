@@ -84,18 +84,18 @@ The help:
 
 .. prompt:: bash
 
-   ./docker-compose-run alembic --help
+   docker-compose exec geoportal alembic --help
 
 Upgrade the main schema:
 
 .. prompt:: bash
 
-   ./docker-compose-run alembic --name=main \
+   docker-compose exec geoportal alembic --name=main \
         --config=geoportal/alembic.ini upgrade head
 
 Upgrade the static schema:
 
 .. prompt:: bash
 
-   ./docker-compose-run alembic --name=static \
+   docker-compose exec geoportal alembic --name=static \
         --config=geoportal/alembic.ini upgrade head
