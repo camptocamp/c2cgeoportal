@@ -1,13 +1,14 @@
 ARG VERSION
+
+FROM camptocamp/c2cwsgiutils:3 AS c2cwsgiutils
+
 FROM camptocamp/qgis-server:${VERSION} AS base
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
-RUN \
-  . /etc/os-release && \
-  apt-get update && \
-  apt-get install --assume-yes --no-install-recommends gcc && \
-  apt-get clean && \
-  rm --recursive --force /var/lib/apt/lists/*
+COPY --from=c2cwsgiutils /opt/c2cwsgiutils /opt/c2cwsgiutils
+COPY --from=c2cwsgiutils /usr/local/lib/python3.7/dist-packages/c2cwsgiutils.egg-link \
+    /usr/local/lib/python3.6/dist-packages/c2cwsgiutils.egg-link
+RUN echo /opt/c2cwsgiutils >> /usr/local/lib/python3.6/dist-packages/easy-install.pth
 
 COPY requirements.txt /tmp/
 RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --requirement=/tmp/requirements.txt

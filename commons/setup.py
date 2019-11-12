@@ -67,5 +67,6 @@ setup(
         "tests": ["c2c.template", "psycopg2-binary", "pytest", "pytest-cov", "flake8", "PyYAML"],
         "testing": ["transaction"],
         "upgrade": ["alembic", "psycopg2-binary"],
+        "broadcast": ["c2cwsgiutils"],
     },
 )
