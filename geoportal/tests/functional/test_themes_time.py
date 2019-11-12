@@ -30,7 +30,6 @@
 # pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access
 
 
-import logging
 import re
 import typing
 from unittest import TestCase
@@ -44,8 +43,6 @@ from tests.functional import create_default_ogcserver, create_dummy_request, map
 from tests.functional import setup_common as setup_module  # noqa
 from tests.functional import teardown_common as teardown_module  # noqa
 import transaction
-
-log = logging.getLogger(__name__)
 
 Base: typing.Any = sqlalchemy.ext.declarative.declarative_base()
 

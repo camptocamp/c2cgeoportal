@@ -29,14 +29,11 @@
 
 
 from io import BytesIO
-import logging
 
 from papyrus.xsd import XSDGenerator as PapyrusXSDGenerator
 from papyrus.xsd import tag
 from sqlalchemy.orm.properties import ColumnProperty
 from sqlalchemy.orm.util import class_mapper
-
-log = logging.getLogger(__name__)
 
 
 class XSDGenerator(PapyrusXSDGenerator):
