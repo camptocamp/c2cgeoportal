@@ -1,3 +1,7 @@
+##### 2.4.1.51
+* Use resolutions from eCH [c2cgeoportal#5522](https://github.com/camptocamp/c2cgeoportal/pull/5522)
+* Less QGIS server logs by default [c2cgeoportal#5517](https://github.com/camptocamp/c2cgeoportal/pull/5517)
+* Add Gunicorn access log [c2cgeoportal#5519](https://github.com/camptocamp/c2cgeoportal/pull/5519)
 ##### 2.4.1.50
 * Use the same tilecloud-chain version as on OpenShift [c2cgeoportal#5495](https://github.com/camptocamp/c2cgeoportal/pull/5495)
 * Less QGIS server logs by default [c2cgeoportal#5517](https://github.com/camptocamp/c2cgeoportal/pull/5517)
