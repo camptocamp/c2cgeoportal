@@ -290,16 +290,3 @@ class TestEntryView(TestCase):
 
         role = DBSession.query(Role).filter(Role.name == "__test_role2").one()
         assert role.bounds == (1, 2, 3, 4)
-
-    def test_decimal_json(self):
-        from decimal import Decimal
-        from tests import DummyRequest
-        from c2cgeoportal_geoportal import DecimalJSON
-
-        renderer = DecimalJSON()(None)
-        request = DummyRequest()
-        request.user = None
-        system = {"request": request}
-
-        self.assertEqual(renderer({"a": Decimal("3.3")}, system), '{"a": 3.3}')
-        self.assertEqual(request.response.content_type, "application/json")
