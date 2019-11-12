@@ -1,3 +1,9 @@
+##### 2.4.1.50
+* Use the same tilecloud-chain version as on OpenShift [c2cgeoportal#5495](https://github.com/camptocamp/c2cgeoportal/pull/5495)
+* Less QGIS server logs by default [c2cgeoportal#5517](https://github.com/camptocamp/c2cgeoportal/pull/5517)
+* Gcc is required to install c2cwsgiutils [c2cgeoportal#5518](https://github.com/camptocamp/c2cgeoportal/pull/5518)
+* Add Gunicorn access log [c2cgeoportal#5519](https://github.com/camptocamp/c2cgeoportal/pull/5519)
+* Use all window resize handles [ngeo#5268](https://github.com/camptocamp/ngeo/pull/5268)
 ##### 2.4.1.49
 * [Backport 2.4] Don't forward the host on OpenShift environment [c2cgeoportal#5480](https://github.com/camptocamp/c2cgeoportal/pull/5480)
 * Replace __unicode__ by __str__ [c2cgeoportal#5481](https://github.com/camptocamp/c2cgeoportal/pull/5481)
