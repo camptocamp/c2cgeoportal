@@ -29,6 +29,7 @@
 
 import binascii
 import importlib
+import json
 import logging
 import os
 import re
@@ -43,7 +44,6 @@ from pyramid.httpexceptions import HTTPException
 from pyramid.path import AssetResolver
 import pyramid.security
 from pyramid_mako import add_mako_renderer
-import simplejson as json
 from sqlalchemy.orm import Session
 import zope.event.classhandler
 
@@ -61,18 +61,6 @@ LOG = logging.getLogger(__name__)
 # Header predicate to accept only JSON content
 JSON_CONTENT_TYPE = "Content-Type:application/json"
 GEOJSON_CONTENT_TYPE = r"Content-Type:application/geo\+json"
-
-
-class DecimalJSON:
-    def __call__(self, info):
-        def _render(value, system):
-            ret = json.dumps(value, use_decimal=True)
-            request = system.get("request")
-            if request is not None:
-                request.response.content_type = "application/json"
-            return ret
-
-        return _render
 
 
 class AssetRendererFactory:
@@ -384,9 +372,6 @@ def includeme(config: pyramid.config.Configurator):
 
     # Add the "geojson" renderer
     config.add_renderer("geojson", GeoJSON())
-
-    # Add decimal json renderer
-    config.add_renderer("decimaljson", DecimalJSON())
 
     # Add the "xsd" renderer
     config.add_renderer("xsd", XSD(include_foreign_keys=True))

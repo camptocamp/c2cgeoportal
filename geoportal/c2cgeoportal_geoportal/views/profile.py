@@ -46,7 +46,7 @@ class Profile(Raster):
     def __init__(self, request):
         Raster.__init__(self, request)
 
-    @view_config(route_name="profile.json", renderer="decimaljson")
+    @view_config(route_name="profile.json", renderer="fast_json")
     def json(self):
         """answers to /profile.json"""
         _, points = self._compute_points()

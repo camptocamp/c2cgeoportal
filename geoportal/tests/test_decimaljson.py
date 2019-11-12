@@ -34,21 +34,14 @@ import decimal
 import json
 from unittest import TestCase
 
-from tests import DummyRequest
+from c2cwsgiutils.pretty_json import fast_dumps
 
 
 class TestDecimalJSON(TestCase):
-    @staticmethod
-    def _call_fut(**kwargs):
-        from c2cgeoportal_geoportal import DecimalJSON
-
-        fake_info = {}
-        return DecimalJSON(**kwargs)(fake_info)
-
     def test_decimal(self):
-        renderer = self._call_fut()
         value = {"str": "an str", "int": 1, "dec": decimal.Decimal("1.2")}
-        request = DummyRequest()
-        result = renderer(value, {"request": request})
+        result = fast_dumps(value)
         self.assertEqual(json.loads(result), {"int": 1, "dec": 1.2, "str": "an str"})
-        self.assertEqual(request.response.content_type, "application/json")
+
+    def test_decimal_json(self):
+        self.assertEqual(fast_dumps({"a": decimal.Decimal("3.3")}), '{\n  "a":3.3\n}')

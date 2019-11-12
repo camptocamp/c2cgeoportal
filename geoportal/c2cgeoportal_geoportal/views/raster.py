@@ -74,7 +74,7 @@ class Raster:
             )
         return result
 
-    @view_config(route_name="raster", renderer="decimaljson")
+    @view_config(route_name="raster", renderer="fast_json")
     def raster(self):
         lon = self._get_required_finite_float_param("lon")
         lat = self._get_required_finite_float_param("lat")

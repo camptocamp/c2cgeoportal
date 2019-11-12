@@ -129,7 +129,7 @@ black-fix:
 
 .PHONY: isort
 isort:
-	isort --check-only --multi-line=3 --trailing-comma \
+	isort --check-only --diff --multi-line=3 --trailing-comma \
 	--force-grid-wrap=0 --use-parentheses --line-width=110 --force-sort-within-sections \
 	--recursive commons geoportal admin/c2cgeoportal_admin admin/tests bin docker
 

@@ -27,6 +27,5 @@ rasterio
 requests
 redis
 Shapely
-simplejson
 SQLAlchemy
 transaction
