@@ -37,7 +37,7 @@ from pyramid.view import view_config
 from c2cgeoportal_geoportal.lib.caching import NO_CACHE
 from c2cgeoportal_geoportal.views.proxy import Proxy
 
-log = logging.getLogger(__name__)
+LOG = logging.getLogger(__name__)
 
 
 class ResourceProxy(Proxy):
@@ -68,5 +68,5 @@ class ResourceProxy(Proxy):
                     response.headers.pop(header)
             return response
         else:  # pragma: no cover
-            log.warning("target url not found: {0!s}".format(target))
+            LOG.warning("target url not found: {0!s}".format(target))
             return HTTPBadRequest("url not allowed")
