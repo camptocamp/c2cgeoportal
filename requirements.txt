@@ -16,7 +16,6 @@ papyrus==2.4  # commons, geoportal
 passwordgenerator # geoportal
 psycopg2-binary==2.8.2  # geoportal
 pycryptodome==3.9.0  # geoportal
-Pympler==0.7  # geoportal, memory view
 pyproj==2.4.1  # admin, other?
 pyotp==2.3.0  # geoportal
 pyramid==1.10.4  # geoportal
