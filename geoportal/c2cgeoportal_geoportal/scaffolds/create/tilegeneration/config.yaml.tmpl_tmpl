@@ -2,7 +2,9 @@ grids:
     # grid name, I just recommends to add the min resolution because it's common to not generate all the layers at the same resolution.
     swissgrid_05:
         # resolutions [required]
-        resolutions: [1000, 500, 250, 100, 50, 20, 10, 5, 2, 1, 0.5]
+        # Resolutions from eCH-0056 - WMTS-07
+        # https://www.ech.ch/dokument/473ea824-bbcd-43fa-ad0a-c7c84edfa1b8
+        resolutions: [4000, 2000, 1000, 500, 250, 100, 50, 20, 10, 5, 2.5, 1, 0.5, 0.25, 0.1, 0.05]
         # bbox [required]
         bbox: [420000, 30000, 900000, 350000]
         # srs [required]
