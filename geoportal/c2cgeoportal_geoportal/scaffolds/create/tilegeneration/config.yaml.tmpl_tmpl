@@ -94,12 +94,7 @@ layers:
             hash: 2892fea0a474228f5d66a534b0b5231d923696da
 
 generation:
-    default_cache: local
-    # used to allowed only a specific user to generate tiles (for rights issue)
-    authorised_user: www-data
-
-    # maximum allowed consecutive errors, after it exit [default to 10]
-    maxconsecutive_errors: 10
+    default_cache: s3
 
 redis:
     url: 'redis://${REDIS_HOST}:${REDIS_PORT}/${REDIS_DB}'
