@@ -58,7 +58,7 @@ jobs:
       - run: QGIS_VERSION=latest make build-qgisserver
       # LTR
       - run: QGIS_VERSION=3.4 make build-qgisserver
-      - run: QGIS_VERSION=3.8 make build-qgisserver
+      - run: QGIS_VERSION=3.10 make build-qgisserver
 
       # Test changelog
       - run: ci/changelog new_version
@@ -237,11 +237,8 @@ jobs:
             docker build --target=runner --build-arg=VERSION=3.4 \
             --tag=camptocamp/geomapfish-qgisserver:gmf${MAJOR_VERSION}-qgis3.4 \
             docker/qgisserver
-            docker build --target=runner --build-arg=VERSION=3.6 \
-            --tag=camptocamp/geomapfish-qgisserver:gmf${MAJOR_VERSION}-qgis3.6 \
-            docker/qgisserver
-            docker build --target=runner --build-arg=VERSION=3.8 \
-            --tag=camptocamp/geomapfish-qgisserver:gmf${MAJOR_VERSION}-qgis3.8 \
+            docker build --target=runner --build-arg=VERSION=3.10 \
+            --tag=camptocamp/geomapfish-qgisserver:gmf${MAJOR_VERSION}-qgis3.10 \
             docker/qgisserver
             ci/publish
       - run: *notify
