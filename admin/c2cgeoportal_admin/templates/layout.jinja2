@@ -32,16 +32,19 @@
     <![endif]-->
 
     <!-- Bootstrap core JavaScript -->
-    <script type="text/javascript" src="{{request.static_url('c2cgeoportal_admin:node_modules/jquery/dist/jquery.min.js')}}"></script>
-    <script type="text/javascript" src="{{request.static_url('c2cgeoportal_admin:node_modules/bootstrap/dist/js/bootstrap.min.js')}}"></script>
-    <script type="text/javascript" src="{{request.static_url('c2cgeoform:static/js/c2cgeoform.js')}}"></script>
+    <script src="{{request.static_url('c2cgeoportal_admin:node_modules/jquery/dist/jquery.min.js')}}"></script>
+    <script src="{{request.static_url('c2cgeoportal_admin:node_modules/bootstrap/dist/js/bootstrap.min.js')}}"></script>
     {% block extra_scripts %}{% endblock extra_scripts %}
+
+    <!-- c2cgeoform  -->
+    <script src="{{request.static_url('c2cgeoform:static/dist/index.js')}}"></script>
+    <link href="{{request.static_url('c2cgeoform:static/dist/styles.css')}}" rel="stylesheet">
 
     <!-- Deform JavaScript -->
     {% if deform_dependencies %}
-    <script type="text/javascript" src="{{request.static_url('deform:static/scripts/deform.js')}}" type="text/css" />
+    <script src="{{request.static_url('deform:static/scripts/deform.js')}}" type="text/css" />
     {% for js in deform_dependencies['js'] %}
-    <script type="text/javascript" src="{{request.static_url(js)}}"></script>
+    <script src="{{request.static_url(js)}}"></script>
     {% endfor %}
     {% endif %}
   </head>

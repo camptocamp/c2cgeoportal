@@ -39,7 +39,7 @@ def layer_wmts_test_data(dbsession, transact):
 @pytest.mark.usefixtures('layer_wmts_test_data', 'test_app')
 class TestLayerWMTS(AbstractViewsTests):
 
-    _prefix = '/layers_wmts'
+    _prefix = '/admin/layers_wmts'
 
     def test_index_rendering(self, test_app):
         resp = self.get(test_app)
@@ -166,7 +166,7 @@ class TestLayerWMTS(AbstractViewsTests):
         from c2cgeoportal_commons.models.main import LayerWMTS
         layer = layer_wmts_test_data['layers'][3]
 
-        resp = test_app.get("/layers_wmts/{}/duplicate".format(layer.id), status=200)
+        resp = test_app.get("/admin/layers_wmts/{}/duplicate".format(layer.id), status=200)
         form = resp.form
 
         assert '' == self.get_first_field_named(form, 'id').value
@@ -190,7 +190,7 @@ class TestLayerWMTS(AbstractViewsTests):
             filter(LayerWMTS.name == 'clone'). \
             one()
         assert str(layer.id) == re.match(
-            r'http://localhost/layers_wmts/(.*)\?msg_col=submit_ok',
+            r'http://localhost/admin/layers_wmts/(.*)\?msg_col=submit_ok',
             resp.location
         ).group(1)
 
@@ -198,7 +198,7 @@ class TestLayerWMTS(AbstractViewsTests):
         from c2cgeoportal_commons.models.main import LayerWMTS, Layer, TreeItem
         layer_id = dbsession.query(LayerWMTS.id).first().id
 
-        test_app.delete('/layers_wmts/{}'.format(layer_id), status=200)
+        test_app.delete('/admin/layers_wmts/{}'.format(layer_id), status=200)
 
         assert dbsession.query(LayerWMTS).get(layer_id) is None
         assert dbsession.query(Layer).get(layer_id) is None
@@ -206,7 +206,7 @@ class TestLayerWMTS(AbstractViewsTests):
 
     def test_unicity_validator(self, layer_wmts_test_data, test_app):
         layer = layer_wmts_test_data['layers'][2]
-        resp = test_app.get("/layers_wmts/{}/duplicate".format(layer.id), status=200)
+        resp = test_app.get("/admin/layers_wmts/{}/duplicate".format(layer.id), status=200)
 
         resp = resp.form.submit('submit')
 
@@ -223,9 +223,9 @@ class TestLayerWMTS(AbstractViewsTests):
             filter(LayerWMTS.name == layer.name). \
             count()
 
-        resp = test_app.post("/layers_wmts/{}/convert_to_wms".format(layer.id), status=200)
+        resp = test_app.post("/admin/layers_wmts/{}/convert_to_wms".format(layer.id), status=200)
         assert (
-            'http://localhost/layers_wms/{}?msg_col=submit_ok'.format(layer.id)
+            'http://localhost/admin/layers_wms/{}?msg_col=submit_ok'.format(layer.id)
             == resp.json['redirect']
         )
 
@@ -264,4 +264,4 @@ class TestLayerWMTS(AbstractViewsTests):
         from c2cgeoportal_commons.models.main import LayerWMS
         dbsession.delete(LayerWMS.get_default(dbsession))
         layer = layer_wmts_test_data['layers'][3]
-        test_app.post("/layers_wmts/{}/convert_to_wms".format(layer.id), status=200)
+        test_app.post("/admin/layers_wmts/{}/convert_to_wms".format(layer.id), status=200)

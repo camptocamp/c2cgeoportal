@@ -1,5 +1,5 @@
 import os
-from c2cgeoform.routes import register_models, table_pregenerator
+from c2cgeoform.routes import register_route, register_routes
 
 
 def includeme(config):
@@ -31,27 +31,23 @@ def includeme(config):
         override_with=path
     )
 
-    config.add_static_view('static', 'c2cgeoportal_admin:static', cache_max_age=3600)
+    config.add_static_view('admin_static', 'c2cgeoportal_admin:static', cache_max_age=3600)
 
-    config.add_route('home', '/')
-    config.add_route('layertree', '/layertree')
-    config.add_route('layertree_children', '/layertree/children')
-    config.add_route('layertree_ordering', '/layertree/ordering')
-    config.add_route('layertree_unlink', '/layertree/unlink/{group_id}/{item_id}')
-    config.add_route('layertree_delete', '/layertree/delete/{item_id}')
-    config.add_route('convert_to_wms',
-                     '/{table:layers_wmts}/{id}/convert_to_wms',
-                     pregenerator=table_pregenerator)
-    config.add_route('convert_to_wmts',
-                     '/{table:layers_wms}/{id}/convert_to_wmts',
-                     pregenerator=table_pregenerator)
+    register_route(config, 'admin', '/{application:admin}/')
+    register_route(config, 'layertree', '/{application:admin}/layertree')
+    register_route(config, 'layertree_children', '/{application:admin}/layertree/children')
+    register_route(config, 'layertree_ordering', '/{application:admin}/layertree/ordering')
+    register_route(config, 'layertree_unlink', '/{application:admin}/layertree/unlink/{group_id}/{item_id}')
+    register_route(config, 'layertree_delete', '/{application:admin}/layertree/delete/{item_id}')
+    register_route(config, 'convert_to_wms', '/{application:admin}/{table:layers_wmts}/{id}/convert_to_wms')
+    register_route(config, 'convert_to_wmts', '/{application:admin}/{table:layers_wms}/{id}/convert_to_wmts')
 
     from c2cgeoportal_commons.models.main import (
         Role, LayerWMS, LayerWMTS, Theme, LayerGroup, LayerV1, Interface, OGCServer,
         Functionality, RestrictionArea)
     from c2cgeoportal_commons.models.static import User
 
-    register_models(config, (
+    config.add_c2cgeoform_application('admin', (
         ('themes', Theme),
         ('layer_groups', LayerGroup),
         ('layers_wms', LayerWMS),
@@ -64,3 +60,4 @@ def includeme(config):
         ('functionalities', Functionality),
         ('interfaces', Interface),
     ))
+    register_routes(config)

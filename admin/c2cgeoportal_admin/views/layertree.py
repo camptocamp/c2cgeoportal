@@ -1,5 +1,5 @@
 from pyramid.httpexceptions import HTTPNotFound
-from pyramid.view import view_config
+from pyramid.view import view_config, view_defaults
 from translationstring import TranslationStringFactory
 
 from c2cgeoform.views.abstract_views import ItemAction
@@ -19,6 +19,7 @@ itemtypes_tables = {
 }
 
 
+@view_defaults(match_param=('application=admin'))
 class LayerTreeViews():
 
     def __init__(self, request):
