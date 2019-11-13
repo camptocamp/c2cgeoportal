@@ -99,7 +99,7 @@ def edit_url_test_data(dbsession, transact):
 @pytest.mark.usefixtures('edit_url_test_data', 'test_app')
 class TestUrlEdit(AbstractViewsTests):
 
-    _prefix = '/'
+    _prefix = '/admin/'
 
     def _get(self, test_app, tablename, pk):
         path = '/{}/{}'.format(tablename, pk)
@@ -107,31 +107,31 @@ class TestUrlEdit(AbstractViewsTests):
 
     def _check_link(self, test_app, resp, item, table, status):
         link = resp.html.select_one('.form-group.item-{} a'.format(item))
-        assert re.match(r'http://localhost/{}/\d+'.format(table), link['href']) is not None
+        assert re.match(r'http://localhost/admin/{}/\d+'.format(table), link['href']) is not None
         test_app.get(link.get('href'), status=status)
 
     def test_layer_wms_edit(self, edit_url_test_data, test_app):
-        resp = self._get(test_app, 'layers_wms', edit_url_test_data['layers_wms'][0].id)
+        resp = self._get(test_app, 'admin/layers_wms', edit_url_test_data['layers_wms'][0].id)
         self._check_link(test_app, resp, 'restrictionareas', 'restriction_areas', 200)
         self._check_link(test_app, resp, 'interfaces', 'interfaces', 200)
 
     def test_layer_wmts_edit(self, edit_url_test_data, test_app):
-        resp = self._get(test_app, 'layers_wmts', edit_url_test_data['layers_wmts'][0].id)
+        resp = self._get(test_app, 'admin/layers_wmts', edit_url_test_data['layers_wmts'][0].id)
         self._check_link(test_app, resp, 'restrictionareas', 'restriction_areas', 200)
         self._check_link(test_app, resp, 'interfaces', 'interfaces', 200)
 
     def test_layer_v1_edit(self, edit_url_test_data, test_app):
-        resp = self._get(test_app, 'layers_v1', edit_url_test_data['layers_v1'][0].id)
+        resp = self._get(test_app, 'admin/layers_v1', edit_url_test_data['layers_v1'][0].id)
         self._check_link(test_app, resp, 'restrictionareas', 'restriction_areas', 200)
         self._check_link(test_app, resp, 'interfaces', 'interfaces', 200)
 
     def test_roles_edit(self, edit_url_test_data, test_app):
-        resp = self._get(test_app, 'roles', edit_url_test_data['roles'][0].id)
+        resp = self._get(test_app, 'admin/roles', edit_url_test_data['roles'][0].id)
         self._check_link(test_app, resp, 'functionalities', 'functionalities', 200)
         self._check_link(test_app, resp, 'restrictionareas', 'restriction_areas', 200)
 
     def test_themes_edit(self, edit_url_test_data, test_app):
-        resp = self._get(test_app, 'themes', edit_url_test_data['themes'][0].id)
+        resp = self._get(test_app, 'admin/themes', edit_url_test_data['themes'][0].id)
         self._check_link(test_app, resp, 'functionalities', 'functionalities', 200)
         self._check_link(test_app, resp, 'interfaces', 'interfaces', 200)
         self._check_link(test_app, resp, 'restricted_roles', 'roles', 200)

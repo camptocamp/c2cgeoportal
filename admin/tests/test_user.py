@@ -49,7 +49,7 @@ EXPECTED_WELCOME_MAIL = \
 @pytest.mark.usefixtures("users_test_data", "test_app")
 class TestUser(AbstractViewsTests):
 
-    _prefix = '/users'
+    _prefix = '/admin/users'
 
     def test_index_rendering(self, test_app):
         resp = self.get(test_app)
@@ -85,7 +85,7 @@ class TestUser(AbstractViewsTests):
         user = users_test_data['users'][9]
         roles = users_test_data['roles']
 
-        resp = test_app.get('/users/{}'.format(user.id), status=200)
+        resp = test_app.get('/admin/users/{}'.format(user.id), status=200)
 
         assert resp.form['username'].value == user.username
         assert resp.form['email'].value == user.email
@@ -122,7 +122,7 @@ class TestUser(AbstractViewsTests):
         from c2cgeoportal_commons.models.static import User, user_role
         user = users_test_data['users'][9]
         deleted_id = user.id
-        test_app.delete('/users/{}'.format(deleted_id), status=200)
+        test_app.delete('/admin/users/{}'.format(deleted_id), status=200)
         assert dbsession.query(User).get(deleted_id) is None
         assert dbsession.query(user_role). \
             filter(user_role.c.user_id == user.id). \
@@ -135,7 +135,7 @@ class TestUser(AbstractViewsTests):
         roles = users_test_data['roles']
 
         resp = test_app.post(
-            '/users/{}'.format(user.id),
+            '/admin/users/{}'.format(user.id),
             (
                 ('__formid__', 'deform'),
                 ('_charset_', 'UTF-8'),
@@ -151,7 +151,7 @@ class TestUser(AbstractViewsTests):
                 ('__end__', 'roles:sequence'),
             ),
             status=302)
-        assert resp.location == 'http://localhost/users/{}?msg_col=submit_ok'.format(user.id)
+        assert resp.location == 'http://localhost/admin/users/{}?msg_col=submit_ok'.format(user.id)
 
         dbsession.expire(user)
         assert user.username == 'new_name_withéàô'
@@ -168,7 +168,7 @@ class TestUser(AbstractViewsTests):
         roles = users_test_data['roles']
 
         resp = test_app.post(
-            '/users/{}'.format(user.id),
+            '/admin/users/{}'.format(user.id),
             {
                 '__formid__': 'deform',
                 '_charset_': 'UTF-8',
@@ -193,7 +193,7 @@ class TestUser(AbstractViewsTests):
         user = users_test_data['users'][7]
         roles = users_test_data['roles']
 
-        resp = test_app.get("/users/{}/duplicate".format(user.id), status=200)
+        resp = test_app.get("/admin/users/{}/duplicate".format(user.id), status=200)
         form = resp.form
 
         assert '' == form['id'].value
@@ -209,7 +209,7 @@ class TestUser(AbstractViewsTests):
         new_user = dbsession.query(User).filter(User.username == 'clone').one()
 
         assert str(new_user.id) == re.match(
-            r'http://localhost/users/(.*)\?msg_col=submit_ok',
+            r'http://localhost/admin/users/(.*)\?msg_col=submit_ok',
             resp.location
         ).group(1)
         assert user.id != new_user.id
@@ -235,7 +235,7 @@ class TestUser(AbstractViewsTests):
         roles = users_test_data['roles']
 
         resp = test_app.post(
-            '/users/new',
+            '/admin/users/new',
             (
                 ('__formid__', 'deform'),
                 ('_charset_', 'UTF-8'),
@@ -253,7 +253,7 @@ class TestUser(AbstractViewsTests):
             one()
 
         assert str(user.id) == re.match(
-            r'http://localhost/users/(.*)\?msg_col=submit_ok',
+            r'http://localhost/admin/users/(.*)\?msg_col=submit_ok',
             resp.location
         ).group(1)
 
@@ -271,7 +271,7 @@ class TestUser(AbstractViewsTests):
 
     def test_invalid_email(self, test_app):
         resp = test_app.post(
-            '/users/new',
+            '/admin/users/new',
             {
                 '__formid__': 'deform',
                 '_charset_': 'UTF-8',
@@ -313,7 +313,7 @@ class TestUser(AbstractViewsTests):
 @pytest.mark.usefixtures('selenium', 'selenium_app', 'users_test_data')
 class TestUserSelenium():
 
-    _prefix = '/users'
+    _prefix = '/admin/users'
 
     def test_index(self, selenium, selenium_app, users_test_data, dbsession):
         from c2cgeoportal_commons.models.static import User

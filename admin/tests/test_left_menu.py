@@ -27,10 +27,10 @@ def left_menu_test_data(dbsession, transact):
 @pytest.mark.usefixtures('test_app')
 class TestLeftMenu(AbstractViewsTests):
 
-    _prefix = '/roles'
+    _prefix = '/admin/roles'
 
     def test_index(self, test_app):
-        resp = test_app.get('/roles', status=200)
+        resp = test_app.get('/admin/roles', status=200)
         self.check_left_menu(resp, 'Roles')
 
     @pytest.mark.usefixtures('left_menu_test_data')

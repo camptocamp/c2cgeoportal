@@ -73,7 +73,7 @@ def theme_test_data(dbsession, transact):
 @pytest.mark.usefixtures('theme_test_data', 'test_app')
 class TestTheme(TestTreeGroup):
 
-    _prefix = '/themes'
+    _prefix = '/admin/themes'
 
     def test_index_rendering(self, test_app):
         resp = self.get(test_app)
@@ -131,16 +131,16 @@ class TestTheme(TestTreeGroup):
 
     def test_public_checkbox_edit(self, test_app, theme_test_data):
         theme = theme_test_data['themes'][10]
-        form10 = test_app.get('/themes/{}'.format(theme.id), status=200).form
+        form10 = test_app.get('/admin/themes/{}'.format(theme.id), status=200).form
         assert not form10['public'].checked
         theme = theme_test_data['themes'][11]
-        form11 = test_app.get('/themes/{}'.format(theme.id), status=200).form
+        form11 = test_app.get('/admin/themes/{}'.format(theme.id), status=200).form
         assert form11['public'].checked
 
     def test_edit(self, test_app, theme_test_data, dbsession):
         theme = theme_test_data['themes'][0]
 
-        resp = test_app.get('/themes/{}'.format(theme.id), status=200)
+        resp = test_app.get('/admin/themes/{}'.format(theme.id), status=200)
         form = resp.form
 
         assert str(theme.id) == self.get_first_field_named(form, 'id').value
@@ -197,7 +197,7 @@ class TestTheme(TestTreeGroup):
 
         resp = form.submit('submit')
         assert str(theme.id) == re.match(
-            r'http://localhost/themes/(.*)\?msg_col=submit_ok',
+            r'http://localhost/admin/themes/(.*)\?msg_col=submit_ok',
             resp.location).group(1)
 
         dbsession.expire(theme)
@@ -275,7 +275,7 @@ class TestTheme(TestTreeGroup):
             one()
 
         assert str(theme.id) == re.match(
-            r'http://localhost/themes/(.*)\?msg_col=submit_ok',
+            r'http://localhost/admin/themes/(.*)\?msg_col=submit_ok',
             resp.location).group(1)
 
         assert (
@@ -382,7 +382,7 @@ class TestTheme(TestTreeGroup):
     def test_delete(self, test_app, dbsession):
         from c2cgeoportal_commons.models.main import Theme
         theme_id = dbsession.query(Theme.id).first().id
-        test_app.delete('/themes/{}'.format(theme_id), status=200)
+        test_app.delete('/admin/themes/{}'.format(theme_id), status=200)
         assert dbsession.query(Theme).get(theme_id) is None
 
     def test_unicity_validator(self, theme_test_data, test_app):

@@ -29,7 +29,7 @@ def themes_ordering_test_data(dbsession, transact):
 @pytest.mark.usefixtures('themes_ordering_test_data', 'test_app')
 class TestThemesOrdering(TestTreeGroup):
 
-    _prefix = '/layertree/ordering'
+    _prefix = '/admin/layertree/ordering'
 
     def test_edit(self, test_app, themes_ordering_test_data):
         resp = self.get(test_app, status=200)
@@ -48,7 +48,7 @@ class TestThemesOrdering(TestTreeGroup):
         )
 
         resp = form.submit('submit', status=302)
-        assert 'http://localhost/layertree' == resp.location
+        assert 'http://localhost/admin/layertree' == resp.location
 
         for i, theme in enumerate(sorted(themes_ordering_test_data['themes'],
                                          key=lambda t: t.name)):

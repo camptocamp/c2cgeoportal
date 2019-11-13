@@ -30,7 +30,7 @@ def layer_v1_test_data(dbsession, transact):
 @pytest.mark.usefixtures('layer_v1_test_data', 'test_app')
 class TestLayerV1Views(AbstractViewsTests):
 
-    _prefix = '/layers_v1'
+    _prefix = '/admin/layers_v1'
 
     def test_index_rendering(self, test_app):
         resp = self.get(test_app)
@@ -172,7 +172,7 @@ class TestLayerV1Views(AbstractViewsTests):
 
         resp = form.submit('submit')
         assert str(layer.id) == re.match(
-            r'http://localhost/layers_v1/(.*)\?msg_col=submit_ok',
+            r'http://localhost/admin/layers_v1/(.*)\?msg_col=submit_ok',
             resp.location
         ).group(1)
 
@@ -190,7 +190,7 @@ class TestLayerV1Views(AbstractViewsTests):
         from c2cgeoportal_commons.models.main import LayerV1
 
         resp = test_app.post(
-            '/layers_v1/new',
+            '/admin/layers_v1/new',
             {
                 'name': 'new_name',
                 'metadata_url': 'https://new_metadata_url',
@@ -209,7 +209,7 @@ class TestLayerV1Views(AbstractViewsTests):
             filter(LayerV1.name == 'new_name'). \
             one()
         assert str(layer.id) == re.match(
-            r'http://localhost/layers_v1/(.*)\?msg_col=submit_ok',
+            r'http://localhost/admin/layers_v1/(.*)\?msg_col=submit_ok',
             resp.location
         ).group(1)
 
@@ -217,7 +217,7 @@ class TestLayerV1Views(AbstractViewsTests):
         from c2cgeoportal_commons.models.main import LayerV1
         layer = layer_v1_test_data['layers'][3]
 
-        resp = test_app.get("/layers_v1/{}/duplicate".format(layer.id), status=200)
+        resp = test_app.get("/admin/layers_v1/{}/duplicate".format(layer.id), status=200)
         form = resp.form
 
         assert '' == self.get_first_field_named(form, 'id').value
@@ -261,7 +261,7 @@ class TestLayerV1Views(AbstractViewsTests):
             filter(LayerV1.name == 'clone'). \
             one()
         assert str(layer.id) == re.match(
-            r'http://localhost/layers_v1/(.*)\?msg_col=submit_ok',
+            r'http://localhost/admin/layers_v1/(.*)\?msg_col=submit_ok',
             resp.location
         ).group(1)
         assert layer_v1_test_data['layers'][3].metadatas[0].name == layer.metadatas[0].name
@@ -269,7 +269,7 @@ class TestLayerV1Views(AbstractViewsTests):
 
     def test_unicity_validator(self, layer_v1_test_data, test_app):
         layer = layer_v1_test_data['layers'][2]
-        resp = test_app.get("/layers_v1/{}/duplicate".format(layer.id), status=200)
+        resp = test_app.get("/admin/layers_v1/{}/duplicate".format(layer.id), status=200)
 
         resp = resp.form.submit('submit')
 
@@ -279,7 +279,7 @@ class TestLayerV1Views(AbstractViewsTests):
         from c2cgeoportal_commons.models.main import LayerV1, Layer, TreeItem
         layer_id = dbsession.query(LayerV1.id).first().id
 
-        test_app.delete('/layers_v1/{}'.format(layer_id), status=200)
+        test_app.delete('/admin/layers_v1/{}'.format(layer_id), status=200)
 
         assert dbsession.query(LayerV1).get(layer_id) is None
         assert dbsession.query(Layer).get(layer_id) is None
@@ -291,7 +291,7 @@ class TestLayerV1Views(AbstractViewsTests):
 @pytest.mark.usefixtures('selenium', 'selenium_app', 'layer_v1_test_data')
 class TestLayerV1Selenium():
 
-    _prefix = '/layers_v1'
+    _prefix = '/admin/layers_v1'
 
     def test_index(self, selenium, selenium_app):
         selenium.get(selenium_app + self._prefix)
