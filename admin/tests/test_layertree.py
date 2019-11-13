@@ -83,7 +83,7 @@ def layertree_test_data(dbsession, transact):
 @pytest.mark.usefixtures('layertree_test_data', 'test_app')
 class TestLayerTreeView(AbstractViewsTests):
 
-    _prefix = '/layertree'
+    _prefix = '/admin/layertree'
 
     def test_index(self, test_app):
         self.get(test_app, status=200)
@@ -91,13 +91,13 @@ class TestLayerTreeView(AbstractViewsTests):
     def check_edit_action(self, test_app, nodes, table, item_id):
         node = next(n for n in nodes if n['id'] == item_id)
         action = next(a for a in node['actions'] if a['name'] == 'edit')
-        assert 'http://localhost/{}/{}'.format(table, item_id) == action['url']
+        assert 'http://localhost/admin/{}/{}'.format(table, item_id) == action['url']
         test_app.get(action['url'], status=200)
 
     def check_unlink_action(self, test_app, nodes, group_id, item_id):
         node = next(n for n in nodes if n['id'] == item_id)
         action = next(a for a in node['actions'] if a['name'] == 'unlink')
-        assert 'http://localhost/layertree/unlink/{}/{}'.format(group_id, item_id) == action['url']
+        assert 'http://localhost/admin/layertree/unlink/{}/{}'.format(group_id, item_id) == action['url']
         test_app.delete(action['url'], status=200)
 
     def check_translation(self, nodes, item):
@@ -109,7 +109,7 @@ class TestLayerTreeView(AbstractViewsTests):
         node = next(n for n in nodes if n['id'] == parent_id)
         action = next(a for a in node['actions'] if a['name'] == action_name)
         assert label == action['label']
-        assert 'http://localhost/{}/new?parent_id={}'.format(route_table, parent_id) == action['url']
+        assert 'http://localhost/admin/{}/new?parent_id={}'.format(route_table, parent_id) == action['url']
 
         form = test_app.get(action['url'], status=200).form
         assert form['parent_id'].value == str(parent_id)
@@ -222,7 +222,7 @@ class TestLayerTreeView(AbstractViewsTests):
     def test_unlink(self, test_app, layertree_test_data, dbsession):
         group = layertree_test_data['groups'][0]
         item = layertree_test_data['layers_wms'][0]
-        test_app.delete('/layertree/unlink/{}/{}'.format(group.id, item.id), status=200)
+        test_app.delete('/admin/layertree/unlink/{}/{}'.format(group.id, item.id), status=200)
         dbsession.expire_all()
         assert item not in group.children
 
@@ -314,7 +314,7 @@ class TestLayerTreeSelenium():
                 '_{}_{}'.format(themes[1].id, groups[1].id), LayerGroup),
         ):
             action_el = page.find_item_action(path, 'delete', 10)
-            expected_url = '{}/layertree/delete/{}'.format(selenium_app, item_id)
+            expected_url = '{}/admin/layertree/delete/{}'.format(selenium_app, item_id)
             assert expected_url == action_el.get_attribute('data-url')
             page.click_and_confirm(action_el)
             page.wait_jquery_to_be_active()
