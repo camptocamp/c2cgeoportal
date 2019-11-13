@@ -51,7 +51,7 @@ def interface_test_data(dbsession, transact):
 @pytest.mark.usefixtures('interface_test_data', 'test_app')
 class TestInterface(AbstractViewsTests):
 
-    _prefix = '/interfaces'
+    _prefix = '/admin/interfaces'
 
     def test_index_rendering(self, test_app):
         resp = self.get(test_app)
@@ -88,7 +88,7 @@ class TestInterface(AbstractViewsTests):
         from c2cgeoportal_commons.models.main import Interface
 
         resp = test_app.post(
-            '/interfaces/new',
+            '/admin/interfaces/new',
             {
                 'name': 'new_name',
                 'description': 'new description',
@@ -99,7 +99,7 @@ class TestInterface(AbstractViewsTests):
             filter(Interface.name == 'new_name'). \
             one()
         assert str(interface.id) == re.match(
-            r'http://localhost/interfaces/(.*)\?msg_col=submit_ok',
+            r'http://localhost/admin/interfaces/(.*)\?msg_col=submit_ok',
             resp.location).group(1)
         assert interface.name == 'new_name'
 
@@ -108,7 +108,7 @@ class TestInterface(AbstractViewsTests):
         interface = interface_test_data['interfaces'][0]
         descriptions = '{}, {}'.format(interface_test_data['interfaces'][0].description,
                                        interface_test_data['interfaces'][1].description)
-        resp = test_app.get('/interfaces/{}'.format(interface.id), status=200)
+        resp = test_app.get('/admin/interfaces/{}'.format(interface.id), status=200)
         form = resp.form
         form['description'] = descriptions
         assert str(interface.id) == self.get_first_field_named(form, 'id').value
@@ -121,12 +121,12 @@ class TestInterface(AbstractViewsTests):
         from c2cgeoportal_commons.models.main import Interface
 
         interface = interface_test_data['interfaces'][0]
-        test_app.delete('/interfaces/{}'.format(interface.id), status=200)
+        test_app.delete('/admin/interfaces/{}'.format(interface.id), status=200)
         assert len(dbsession.query(Interface).filter(Interface.id == interface.id).all()) == 0
 
     def test_duplicate(self, interface_test_data, test_app):
         interface = interface_test_data['interfaces'][3]
-        resp = test_app.get("/interfaces/{}/duplicate".format(interface.id), status=200)
+        resp = test_app.get("/admin/interfaces/{}/duplicate".format(interface.id), status=200)
         form = resp.form
         assert '' == self.get_first_field_named(form, 'id').value
         assert str(interface.description or '') == 'description_3'
