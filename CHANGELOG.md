@@ -1,3 +1,5 @@
+##### 2.4.1.52
+* Use resolutions from eCH [c2cgeoportal#5522](https://github.com/camptocamp/c2cgeoportal/pull/5522)
 ##### 2.4.1.51
 * Use resolutions from eCH [c2cgeoportal#5522](https://github.com/camptocamp/c2cgeoportal/pull/5522)
 * Less QGIS server logs by default [c2cgeoportal#5517](https://github.com/camptocamp/c2cgeoportal/pull/5517)
