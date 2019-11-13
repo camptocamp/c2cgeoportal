@@ -65,7 +65,7 @@ build-test-mapserver:
 .PHONY: build-qgis-server-tests
 build-qgis-server-tests: build-runner
 	docker tag camptocamp/geomapfish:$(DOCKER_TAG) camptocamp/geomapfish
-	docker build --target=tests --build-arg=VERSION=3.4 \
+	docker build --target=tests --build-arg=VERSION=3.10 \
 		--tag=camptocamp/geomapfish-qgisserver-tests docker/qgisserver
 
 .PHONY: tests
