@@ -70,7 +70,7 @@ def roles_test_data(dbsession, transact):
 @pytest.mark.usefixtures("roles_test_data", "test_app")
 class TestRole(AbstractViewsTests):
 
-    _prefix = "/roles"
+    _prefix = "/admin/roles"
 
     def test_index_rendering(self, test_app):
         resp = self.get(test_app)
@@ -184,7 +184,7 @@ class TestRole(AbstractViewsTests):
         resp = form.submit("submit")
 
         assert str(role.id) == re.match(
-            r"http://localhost/roles/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/roles/(.*)\?msg_col=submit_ok", resp.location
         ).group(1)
 
         dbsession.expire(role)
@@ -211,7 +211,7 @@ class TestRole(AbstractViewsTests):
 
         role_proto = roles_test_data["roles"][7]
 
-        resp = test_app.get("/roles/{}/duplicate".format(role_proto.id), status=200)
+        resp = test_app.get("/admin/roles/{}/duplicate".format(role_proto.id), status=200)
         form = resp.form
 
         assert "" == form["id"].value
@@ -222,7 +222,7 @@ class TestRole(AbstractViewsTests):
 
         role = dbsession.query(Role).filter(Role.name == "clone").one()
         assert str(role.id) == re.match(
-            r"http://localhost/roles/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/roles/(.*)\?msg_col=submit_ok", resp.location
         ).group(1)
         assert role_proto.id != role.id
         assert role_proto.functionalities[2].name == role.functionalities[2].name
@@ -235,12 +235,12 @@ class TestRole(AbstractViewsTests):
         from c2cgeoportal_commons.models.main import Role
 
         role_id = dbsession.query(Role.id).first().id
-        test_app.delete("/roles/{}".format(role_id), status=200)
+        test_app.delete("/admin/roles/{}".format(role_id), status=200)
         assert dbsession.query(Role).get(role_id) is None
 
     def test_unicity_validator(self, roles_test_data, test_app):
         role_proto = roles_test_data["roles"][7]
-        resp = test_app.get("/roles/{}/duplicate".format(role_proto.id), status=200)
+        resp = test_app.get("/admin/roles/{}/duplicate".format(role_proto.id), status=200)
 
         resp = resp.form.submit("submit")
 
@@ -260,7 +260,7 @@ class TestRole(AbstractViewsTests):
 @pytest.mark.usefixtures("selenium", "selenium_app", "roles_test_data")
 class TestRoleSelenium:
 
-    _prefix = "/roles"
+    _prefix = "/admin/roles"
 
     def test_index(self, selenium, selenium_app, roles_test_data, dbsession):
         from c2cgeoportal_commons.models.static import Role

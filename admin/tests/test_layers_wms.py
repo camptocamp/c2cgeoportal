@@ -42,7 +42,7 @@ def layer_wms_test_data(dbsession, transact):
 @pytest.mark.usefixtures("layer_wms_test_data", "test_app")
 class TestLayerWMSViews(AbstractViewsTests):
 
-    _prefix = "/layers_wms"
+    _prefix = "/admin/layers_wms"
 
     def test_index_rendering(self, test_app):
         resp = self.get(test_app)
@@ -218,7 +218,7 @@ class TestLayerWMSViews(AbstractViewsTests):
         from c2cgeoportal_commons.models.main import LayerWMS
 
         resp = test_app.post(
-            "/layers_wms/new",
+            "/admin/layers_wms/new",
             {
                 "name": "new_name",
                 "description": "new description",
@@ -236,7 +236,7 @@ class TestLayerWMSViews(AbstractViewsTests):
 
         layer = dbsession.query(LayerWMS).filter(LayerWMS.name == "new_name").one()
         assert str(layer.id) == re.match(
-            r"http://localhost/layers_wms/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/layers_wms/(.*)\?msg_col=submit_ok", resp.location
         ).group(1)
 
     def test_duplicate(self, layer_wms_test_data, test_app, dbsession):
@@ -244,7 +244,7 @@ class TestLayerWMSViews(AbstractViewsTests):
 
         layer = layer_wms_test_data["layers"][3]
 
-        resp = test_app.get("/layers_wms/{}/duplicate".format(layer.id), status=200)
+        resp = test_app.get("/admin/layers_wms/{}/duplicate".format(layer.id), status=200)
         form = resp.form
 
         assert "" == self.get_first_field_named(form, "id").value
@@ -274,7 +274,7 @@ class TestLayerWMSViews(AbstractViewsTests):
 
         layer = dbsession.query(LayerWMS).filter(LayerWMS.name == "clone").one()
         assert str(layer.id) == re.match(
-            r"http://localhost/layers_wms/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/layers_wms/(.*)\?msg_col=submit_ok", resp.location
         ).group(1)
         assert layer.id == layer.dimensions[0].layer_id
         assert layer.id == layer.metadatas[0].item_id
@@ -289,9 +289,12 @@ class TestLayerWMSViews(AbstractViewsTests):
         assert 0 == dbsession.query(LayerWMTS).filter(LayerWMTS.name == layer.name).count()
         assert 1 == dbsession.query(LayerWMS).filter(LayerWMS.name == layer.name).count()
 
-        resp = test_app.post("/layers_wms/{}/convert_to_wmts".format(layer.id), status=200)
+        resp = test_app.post("/admin/layers_wms/{}/convert_to_wmts".format(layer.id), status=200)
         assert resp.json["success"]
-        assert "http://localhost/layers_wmts/{}?msg_col=submit_ok".format(layer.id) == resp.json["redirect"]
+        assert (
+            "http://localhost/admin/layers_wmts/{}?msg_col=submit_ok".format(layer.id)
+            == resp.json["redirect"]
+        )
 
         assert 1 == dbsession.query(LayerWMTS).filter(LayerWMTS.name == layer.name).count()
         assert 0 == dbsession.query(LayerWMS).filter(LayerWMS.name == layer.name).count()
@@ -325,17 +328,23 @@ class TestLayerWMSViews(AbstractViewsTests):
     def test_convert_image_type_from_ogcserver(self, layer_wms_test_data, test_app):
         layer = layer_wms_test_data["layers"][3]
 
-        resp = test_app.post("/layers_wms/{}/convert_to_wmts".format(layer.id), status=200)
+        resp = test_app.post("/admin/layers_wms/{}/convert_to_wmts".format(layer.id), status=200)
         assert resp.json["success"]
-        assert "http://localhost/layers_wmts/{}?msg_col=submit_ok".format(layer.id) == resp.json["redirect"]
+        assert (
+            "http://localhost/admin/layers_wmts/{}?msg_col=submit_ok".format(layer.id)
+            == resp.json["redirect"]
+        )
 
         resp = test_app.get(resp.json["redirect"], status=200)
         assert "image/png" == resp.form["image_type"].value
 
         layer = layer_wms_test_data["layers"][2]
-        resp = test_app.post("/layers_wms/{}/convert_to_wmts".format(layer.id), status=200)
+        resp = test_app.post("/admin/layers_wms/{}/convert_to_wmts".format(layer.id), status=200)
         assert resp.json["success"]
-        assert "http://localhost/layers_wmts/{}?msg_col=submit_ok".format(layer.id) == resp.json["redirect"]
+        assert (
+            "http://localhost/admin/layers_wmts/{}?msg_col=submit_ok".format(layer.id)
+            == resp.json["redirect"]
+        )
 
         resp = test_app.get(resp.json["redirect"], status=200)
         assert "image/jpeg" == resp.form["image_type"].value
@@ -345,11 +354,11 @@ class TestLayerWMSViews(AbstractViewsTests):
 
         dbsession.delete(LayerWMTS.get_default(dbsession))
         layer = layer_wms_test_data["layers"][3]
-        test_app.post("/layers_wms/{}/convert_to_wmts".format(layer.id), status=200)
+        test_app.post("/admin/layers_wms/{}/convert_to_wmts".format(layer.id), status=200)
 
     def test_unicity_validator(self, layer_wms_test_data, test_app):
         layer = layer_wms_test_data["layers"][2]
-        resp = test_app.get("/layers_wms/{}/duplicate".format(layer.id), status=200)
+        resp = test_app.get("/admin/layers_wms/{}/duplicate".format(layer.id), status=200)
 
         resp = resp.form.submit("submit")
 
@@ -363,21 +372,21 @@ class TestLayerWMSViews(AbstractViewsTests):
         assert dbsession.query(LayerWMS).filter(LayerWMS.name == "layer_group_0").one_or_none() is None
 
         layer = layer_wms_test_data["layers"][2]
-        resp = test_app.get("/layers_wms/{}/duplicate".format(layer.id), status=200)
+        resp = test_app.get("/admin/layers_wms/{}/duplicate".format(layer.id), status=200)
         self.set_first_field_named(resp.form, "name", "layer_group_0")
         resp = resp.form.submit("submit")
 
         # layer = dbsession.query(LayerWMS). \
         #     filter(LayerWMS.name == 'layer_group_0'). \
         #     one()
-        # assert str(layer.id) == re.match('http://localhost/layers_wms/(.*)', resp.location).group(1)
+        # assert str(layer.id) == re.match('http://localhost/admin/layers_wms/(.*)', resp.location).group(1)
 
     def test_delete(self, test_app, dbsession):
         from c2cgeoportal_commons.models.main import LayerWMS, Layer, TreeItem
 
         layer_id = dbsession.query(LayerWMS.id).first().id
 
-        test_app.delete("/layers_wms/{}".format(layer_id), status=200)
+        test_app.delete("/admin/layers_wms/{}".format(layer_id), status=200)
 
         assert dbsession.query(LayerWMS).get(layer_id) is None
         assert dbsession.query(Layer).get(layer_id) is None
@@ -386,7 +395,7 @@ class TestLayerWMSViews(AbstractViewsTests):
     @pytest.mark.skip(reason="Contraint has to be added at model side, alambiced")
     def test_submit_new_no_layer_name(self, test_app):
         resp = test_app.post(
-            "/layers_wms/new",
+            "/admin/layers_wms/new",
             {
                 "name": "new_name",
                 "description": "new description",
@@ -418,7 +427,7 @@ class TestLayerWMSViews(AbstractViewsTests):
 @pytest.mark.usefixtures("selenium", "selenium_app", "layer_wms_test_data")
 class TestLayerWMSSelenium:
 
-    _prefix = "/layers_wms"
+    _prefix = "/admin/layers_wms"
 
     def test_index(self, selenium, selenium_app, layer_wms_test_data):
         selenium.get(selenium_app + self._prefix)
@@ -436,4 +445,4 @@ class TestLayerWMSSelenium:
         )
         index_page.dbl_click(el)
 
-        assert selenium.current_url.endswith("/layers_wms/{}".format(layer.id))
+        assert selenium.current_url.endswith("/admin/layers_wms/{}".format(layer.id))

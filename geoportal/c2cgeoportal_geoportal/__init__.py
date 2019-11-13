@@ -128,7 +128,7 @@ def add_admin_interface(config):
         )
         config.add_view(c2cgeoportal_geoportal.views.add_ending_slash, route_name="admin_add_ending_slash")
         config.add_route("admin_add_ending_slash", "/admin", request_method="GET")
-        config.include("c2cgeoportal_admin", route_prefix="/admin")
+        config.include("c2cgeoportal_admin")
 
 
 def locale_negotiator(request):

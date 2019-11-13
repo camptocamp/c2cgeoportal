@@ -61,7 +61,7 @@ def layer_groups_test_data(dbsession, transact):
 @pytest.mark.usefixtures("layer_groups_test_data", "test_app")
 class TestLayersGroups(TestTreeGroup):
 
-    _prefix = "/layer_groups"
+    _prefix = "/admin/layer_groups"
 
     def test_index_rendering(self, test_app):
         resp = self.get(test_app)
@@ -132,7 +132,7 @@ class TestLayersGroups(TestTreeGroup):
 
         resp = form.submit("submit")
         assert str(group.id) == re.match(
-            r"http://localhost/layer_groups/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/layer_groups/(.*)\?msg_col=submit_ok", resp.location
         ).group(1)
 
         dbsession.expire(group)
@@ -203,7 +203,7 @@ class TestLayersGroups(TestTreeGroup):
         group = dbsession.query(LayerGroup).filter(LayerGroup.name == "new_with_children").one()
 
         assert str(group.id) == re.match(
-            r"http://localhost/layer_groups/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/layer_groups/(.*)\?msg_col=submit_ok", resp.location
         ).group(1)
 
         assert [groups[3].id, groups[4].id, groups[5].id] == [
@@ -296,7 +296,7 @@ class TestLayersGroups(TestTreeGroup):
             == dbsession.query(LayergroupTreeitem).filter(LayergroupTreeitem.treeitem_id == group_id).count()
         )
 
-        test_app.delete("/layer_groups/{}".format(group_id), status=200)
+        test_app.delete("/admin/layer_groups/{}".format(group_id), status=200)
 
         dbsession.expire_all()
 

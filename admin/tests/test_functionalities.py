@@ -29,7 +29,7 @@ def functionality_test_data(dbsession, transact):
 @pytest.mark.usefixtures("functionality_test_data", "test_app")
 class TestFunctionality(AbstractViewsTests):
 
-    _prefix = "/functionalities"
+    _prefix = "/admin/functionalities"
 
     def test_index_rendering(self, test_app):
         resp = self.get(test_app)
@@ -53,19 +53,19 @@ class TestFunctionality(AbstractViewsTests):
         from c2cgeoportal_commons.models.main import Functionality
 
         resp = test_app.post(
-            "/functionalities/new",
+            "/admin/functionalities/new",
             {"name": "new_name", "description": "new_description", "value": "new_value"},
             status=302,
         )
         functionality = dbsession.query(Functionality).filter(Functionality.name == "new_name").one()
         assert str(functionality.id) == re.match(
-            r"http://localhost/functionalities/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/functionalities/(.*)\?msg_col=submit_ok", resp.location
         ).group(1)
         assert functionality.name == "new_name"
 
     def test_edit(self, test_app, functionality_test_data):
         functionality = functionality_test_data["functionalities"][0]
-        resp = test_app.get("/functionalities/{}".format(functionality.id), status=200)
+        resp = test_app.get("/admin/functionalities/{}".format(functionality.id), status=200)
         form = resp.form
         assert str(functionality.id) == self.get_first_field_named(form, "id").value
         assert "hidden" == self.get_first_field_named(form, "id").attrs["type"]
@@ -79,14 +79,14 @@ class TestFunctionality(AbstractViewsTests):
 
         functionality = functionality_test_data["functionalities"][0]
         deleted_id = functionality.id
-        test_app.delete("/functionalities/{}".format(deleted_id), status=200)
+        test_app.delete("/admin/functionalities/{}".format(deleted_id), status=200)
         assert dbsession.query(Functionality).get(deleted_id) is None
 
     def test_duplicate(self, functionality_test_data, test_app, dbsession):
         from c2cgeoportal_commons.models.main import Functionality
 
         functionality = functionality_test_data["functionalities"][3]
-        resp = test_app.get("/functionalities/{}/duplicate".format(functionality.id), status=200)
+        resp = test_app.get("/admin/functionalities/{}/duplicate".format(functionality.id), status=200)
         form = resp.form
         assert "" == self.get_first_field_named(form, "id").value
         self.set_first_field_named(form, "name", "clone")
@@ -94,5 +94,5 @@ class TestFunctionality(AbstractViewsTests):
         assert resp.status_int == 302
         functionality = dbsession.query(Functionality).filter(Functionality.name == "clone").one()
         assert str(functionality.id) == re.match(
-            r"http://localhost/functionalities/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/functionalities/(.*)\?msg_col=submit_ok", resp.location
         ).group(1)
