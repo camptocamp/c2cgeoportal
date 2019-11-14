@@ -39,6 +39,12 @@
     <!-- c2cgeoform  -->
     <script src="{{request.static_url('c2cgeoform:static/dist/index.js')}}"></script>
     <link href="{{request.static_url('c2cgeoform:static/dist/styles.css')}}" rel="stylesheet">
+    {% for map_projection in request.registry.settings['admin_interface']['map_projections'] %}
+    <script>
+      // Register custom projection
+      c2cgeoform.registerProjection("{{ map_projection['code'] }}", "{{ map_projection['definition'] }}")
+    </script>
+    {% endfor %}
 
     <!-- Deform JavaScript -->
     {% if deform_dependencies %}
