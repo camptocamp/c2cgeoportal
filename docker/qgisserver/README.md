@@ -48,7 +48,7 @@ This target is a local target calling necessary root Makefile targets to ease de
 
 Build:
 
-* QGIS 3.4 docker image with geomapfish_qgisserver plugin
+* QGIS Docker image with `geomapfish_qgisserver` plugin
 * Plugin configuration file for tests (`tests/geomapfish.yaml`)
 
 ```bash
