@@ -4,7 +4,6 @@ from pyramid.view import view_defaults
 from pyramid.view import view_config
 
 from c2cgeoportal_commons.models.main import RestrictionArea
-from c2cgeoportal_admin.schemas.map import map_widget
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoportal_admin.schemas.roles import roles_schema_node
 
@@ -15,7 +14,6 @@ from deform.widget import FormWidget
 _list_field = partial(ListField, RestrictionArea)
 
 base_schema = GeoFormSchemaNode(RestrictionArea, widget=FormWidget(fields_template='restriction_area_fields'))
-base_schema['area'].widget = map_widget
 base_schema.add_before('area', roles_schema_node('roles'))
 base_schema.add_unique_validator(RestrictionArea.name, RestrictionArea.id)
 

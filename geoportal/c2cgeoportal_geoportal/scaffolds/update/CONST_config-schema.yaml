@@ -260,7 +260,23 @@ mapping:
           layer_tree_max_nodes:
             type: int
           map_base_layer:
-            type: str
+            type: map
+            mapping:
+              regex;.+:
+                type: any
+          map_projections:
+            type: seq
+            sequence:
+              - type: map
+                mapping:
+                  code:
+                    type: str
+                    required: True
+                  definition:
+                    type: str
+                    required: True
+          map_srid:
+            type: int
           map_x:
             type: int
             required: True

@@ -57,6 +57,7 @@ LOG = logging.getLogger(__name__)
 
 _schema = config['schema']  # type: str
 _srid = config['srid']  # type: int
+_admin_config = config.get_config().get('admin_interface', {})
 
 
 class InvalidateCacheEvent:
@@ -187,7 +188,18 @@ class Role(Base):
     })
     extent = Column(Geometry('POLYGON', srid=_srid), info={
         'colanderalchemy': {
-            'typ': colander_ext.Geometry('POLYGON', srid=_srid, map_srid=3857)
+            'typ': colander_ext.Geometry('POLYGON', srid=_srid, map_srid=_admin_config.get('map_srid', 3857)),
+            'widget': deform_ext.MapWidget(
+                base_layer=_admin_config.get('map_base_layer', deform_ext.MapWidget.base_layer),
+                projection=(
+                    'EPSG:{}'.format(_admin_config['map_srid']) if 'map_srid' in _admin_config
+                    else deform_ext.MapWidget.projection),
+                center=[
+                    _admin_config.get('map_x', deform_ext.MapWidget.center[0]),
+                    _admin_config.get('map_y', deform_ext.MapWidget.center[1])],
+                zoom=_admin_config.get('map_zoom', deform_ext.MapWidget.zoom),
+                fit_max_zoom=_admin_config.get('map_fit_max_zoom', deform_ext.MapWidget.fit_max_zoom)
+            )
         }
     })
 
@@ -1025,7 +1037,18 @@ class RestrictionArea(Base):
         'colanderalchemy': {'widget': HiddenWidget()}}
     )
     area = Column(Geometry('POLYGON', srid=_srid), info={'colanderalchemy': {
-        'typ': colander_ext.Geometry('POLYGON', srid=_srid, map_srid=3857)
+        'typ': colander_ext.Geometry('POLYGON', srid=_srid, map_srid=_admin_config.get('map_srid', 3857)),
+        'widget': deform_ext.MapWidget(
+            base_layer=_admin_config.get('map_base_layer', deform_ext.MapWidget.base_layer),
+            projection=(
+                'EPSG:{}'.format(_admin_config['map_srid']) if 'map_srid' in _admin_config
+                else deform_ext.MapWidget.projection),
+            center=[
+                _admin_config.get('map_x', deform_ext.MapWidget.center[0]),
+                _admin_config.get('map_y', deform_ext.MapWidget.center[1])],
+            zoom=_admin_config.get('map_zoom', deform_ext.MapWidget.zoom),
+            fit_max_zoom=_admin_config.get('map_fit_max_zoom', deform_ext.MapWidget.fit_max_zoom)
+        )
     }})
 
     name = Column(Unicode, info={
