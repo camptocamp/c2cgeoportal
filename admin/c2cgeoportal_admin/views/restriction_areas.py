@@ -6,14 +6,12 @@ from deform.widget import FormWidget
 from pyramid.view import view_config, view_defaults
 from sqlalchemy.orm import subqueryload
 
-from c2cgeoportal_admin.schemas.map import map_widget
 from c2cgeoportal_admin.schemas.roles import roles_schema_node
 from c2cgeoportal_commons.models.main import RestrictionArea
 
 _list_field = partial(ListField, RestrictionArea)
 
 base_schema = GeoFormSchemaNode(RestrictionArea, widget=FormWidget(fields_template="restriction_area_fields"))
-base_schema["area"].widget = map_widget
 base_schema.add_before("area", roles_schema_node("roles"))
 base_schema.add_unique_validator(RestrictionArea.name, RestrictionArea.id)
 

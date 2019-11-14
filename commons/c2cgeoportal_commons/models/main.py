@@ -47,7 +47,7 @@ try:
     from colander import drop
     from deform.widget import HiddenWidget, SelectWidget, TextAreaWidget
     from c2cgeoform.ext.colander_ext import Geometry as ColanderGeometry
-    from c2cgeoform.ext.deform_ext import RelationSelect2Widget
+    from c2cgeoform.ext.deform_ext import MapWidget, RelationSelect2Widget
 except ModuleNotFoundError:
     drop = None
 
@@ -56,6 +56,7 @@ except ModuleNotFoundError:
             pass
 
     HiddenWidget = GenericClass
+    MapWidget = GenericClass
     SelectWidget = GenericClass
     TextAreaWidget = GenericClass
     ColanderGeometry = GenericClass
@@ -66,6 +67,7 @@ LOG = logging.getLogger(__name__)
 
 _schema: str = config["schema"] or "main"
 _srid: int = cast(int, config["srid"]) or 3857
+_admin_config: Dict = config.get_config().get("admin_interface", {})
 
 
 class FullTextSearch(GeoInterface, Base):
@@ -143,7 +145,25 @@ class Role(Base):
     description = Column(Unicode, info={"colanderalchemy": {"title": _("Description")}})
     extent = Column(
         Geometry("POLYGON", srid=_srid),
-        info={"colanderalchemy": {"typ": ColanderGeometry("POLYGON", srid=_srid, map_srid=3857)}},
+        info={
+            "colanderalchemy": {
+                "typ": ColanderGeometry("POLYGON", srid=_srid, map_srid=_admin_config.get("map_srid", 3857)),
+                "widget": MapWidget(
+                    base_layer=_admin_config.get("map_base_layer", MapWidget.base_layer),
+                    projection=(
+                        "EPSG:{}".format(_admin_config["map_srid"])
+                        if "map_srid" in _admin_config
+                        else MapWidget.projection
+                    ),
+                    center=[
+                        _admin_config.get("map_x", MapWidget.center[0]),
+                        _admin_config.get("map_y", MapWidget.center[1]),
+                    ],
+                    zoom=_admin_config.get("map_zoom", MapWidget.zoom),
+                    fit_max_zoom=_admin_config.get("map_fit_max_zoom", MapWidget.fit_max_zoom),
+                ),
+            }
+        },
     )
 
     # functionality
@@ -717,7 +737,25 @@ class RestrictionArea(Base):
     id = Column(Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}})
     area = Column(
         Geometry("POLYGON", srid=_srid),
-        info={"colanderalchemy": {"typ": ColanderGeometry("POLYGON", srid=_srid, map_srid=3857)}},
+        info={
+            "colanderalchemy": {
+                "typ": ColanderGeometry("POLYGON", srid=_srid, map_srid=_admin_config.get("map_srid", 3857)),
+                "widget": MapWidget(
+                    base_layer=_admin_config.get("map_base_layer", MapWidget.base_layer),
+                    projection=(
+                        "EPSG:{}".format(_admin_config["map_srid"])
+                        if "map_srid" in _admin_config
+                        else MapWidget.projection
+                    ),
+                    center=[
+                        _admin_config.get("map_x", MapWidget.center[0]),
+                        _admin_config.get("map_y", MapWidget.center[1]),
+                    ],
+                    zoom=_admin_config.get("map_zoom", MapWidget.zoom),
+                    fit_max_zoom=_admin_config.get("map_fit_max_zoom", MapWidget.fit_max_zoom),
+                ),
+            }
+        },
     )
 
     name = Column(Unicode, info={"colanderalchemy": {"title": _("Name")}})
