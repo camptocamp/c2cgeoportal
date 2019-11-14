@@ -1,3 +1,5 @@
+##### 2.4.1.53
+* Fix theme selector on desktop alt [ngeo#5297](https://github.com/camptocamp/ngeo/pull/5297)
 ##### 2.4.1.52
 * Use resolutions from eCH [c2cgeoportal#5522](https://github.com/camptocamp/c2cgeoportal/pull/5522)
 ##### 2.4.1.51
