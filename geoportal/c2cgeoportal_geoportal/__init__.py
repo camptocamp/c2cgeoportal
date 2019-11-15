@@ -147,6 +147,17 @@ def add_admin_interface(config):
         config.include('c2cgeoportal_admin')
 
 
+def add_getitfixed(config):
+    if config.get_settings()['getitfixed'].get('enabled', False):
+        config.include("getitfixed.models")
+        config.include("getitfixed.routes")
+        config.add_translation_dirs("getitfixed:locale")
+        config.scan("getitfixed")
+        # Fix up for admin and getitfixed custom search_paths
+        from c2cgeoform import Form, default_search_paths, translator
+        Form.set_zpt_renderer(default_search_paths, translator=translator)
+
+
 def locale_negotiator(request):
     lang = request.params.get("lang")
     if lang is None:
@@ -629,6 +640,7 @@ def includeme(config: pyramid.config.Configurator):
             MultiDomainStaticURLInfo(), IStaticURLInfo)
 
     add_admin_interface(config)
+    add_getitfixed(config)
 
     # Add the project static view with cache buster
     from c2cgeoportal_geoportal.lib.cacheversion import version_cache_buster

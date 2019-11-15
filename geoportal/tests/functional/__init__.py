@@ -104,6 +104,7 @@ def setup_common():
         "app.cfg": "/src/geoportal/tests/config.yaml",
         "package": "c2cgeoportal",
         "enable_admin_interface": True,
+        "getitfixed": {"enabled": False},
     }
     config = testing.setUp(settings=configuration.get_config())
 
