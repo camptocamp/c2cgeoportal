@@ -253,6 +253,15 @@ mapping:
             mapping:
               regex;.+:
                 type: any
+      getitfixed:
+        type: map
+        required: True
+        mapping:
+          enabled:
+            type: bool
+            required: True
+          regex;.+:
+            type: any
       admin_interface:
         type: map
         required: True

@@ -56,6 +56,7 @@ class TestIncludeme(TestCase):
             "app.cfg": "/src/geoportal/tests/config.yaml",
             "package": "c2cgeoportal",
             "enable_admin_interface": False,
+            "getitfixed": {"enabled": False},
         })
 
     def test_set_user_validator_directive(self):
