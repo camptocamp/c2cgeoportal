@@ -288,6 +288,9 @@ vars:
       - name: open_panel
         single: true
 
+  getitfixed:
+    enabled: false
+
   functionalities:
     # Functionalities that are made available to Mako templates and loginuser.
     available_in_templates:
