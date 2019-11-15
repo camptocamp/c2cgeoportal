@@ -370,6 +370,9 @@ vars:
       - name: open_panel
         single: true
 
+  getitfixed:
+    enabled: false
+
   functionalities:
     # Functionalities that are accessible to anonymous
     # users.
