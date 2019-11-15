@@ -278,8 +278,12 @@ workflows:
   version: 2
   full:
     jobs:
-      - main
-      - test-app-upgrade
+      - main:
+          filters: &ignore-cherry-pick-branches
+            branches:
+              ignore: /cherry-pick-backport.*/
+      - test-app-upgrade:
+          filters: *ignore-cherry-pick-branches
       - publish:
           filters:
             branches:
