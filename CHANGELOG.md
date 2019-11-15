@@ -1,3 +1,6 @@
+##### 2.4.1.54
+* Fix some replacement variables [c2cgeoportal#5528](https://github.com/camptocamp/c2cgeoportal/pull/5528)
+* Also forward the geometry name [ngeo#5302](https://github.com/camptocamp/ngeo/pull/5302)
 ##### 2.4.1.53
 * Fix theme selector on desktop alt [ngeo#5297](https://github.com/camptocamp/ngeo/pull/5297)
 ##### 2.4.1.52
