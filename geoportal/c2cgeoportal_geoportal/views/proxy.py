@@ -88,6 +88,13 @@ class Proxy(object):
         # Forward the request tracking ID to the other service. This will allow to follow the logs belonging
         # to a single request coming from the user
         headers.setdefault("X-Request-ID", self.request.c2c_request_id)
+        # If we releay want to respect the specification, we should chain with the content of the previus
+        # proxy, see also:
+        # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Forwarded
+        forwarded = {"for": self.request.client_addr, "proto": self.request.scheme}
+        if "Host" in self.request.headers:
+            forwarded["host"] = self.request.headers["Host"]
+        headers.setdefault("Forwarded", ";".join(["=".join(e) for e in forwarded.items()]))
 
         if not cache:
             headers["Cache-Control"] = "no-cache"

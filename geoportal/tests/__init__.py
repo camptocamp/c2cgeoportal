@@ -64,6 +64,7 @@ def create_dummy_request(additional_settings=None, *args, **kargs):
     }
     request.registry.settings.update(additional_settings)
     request.is_valid_referer = True
+    request.scheme = "https"
     return request
 
 
