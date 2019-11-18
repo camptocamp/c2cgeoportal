@@ -26,7 +26,7 @@ pyramid_multiauth==0.9.0  # geoportal
 pyramid_tm==2.3  # geoportal
 python-dateutil==2.8.1  # geoportal
 PyYAML==5.1.2  # geoportal
-rasterio==1.1.0  # geoportal raster
+rasterio==1.1.1  # geoportal raster
 requests==2.22.0  # geoportal
 redis==3.3.8  # geoportal cache
 Shapely==1.7a2  # geoportal
