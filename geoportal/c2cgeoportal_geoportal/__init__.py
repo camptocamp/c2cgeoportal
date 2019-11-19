@@ -435,9 +435,7 @@ def includeme(config: pyramid.config.Configurator):
     add_api_route("apijsmap", "apijsmap", "/api.js.map", "/etc/static-ngeo/api.js.map")
     add_api_route("apicss", "apicss", "/api.css", "/etc/static-ngeo/api.css")
     add_api_route("apihelp", "apihelp", "/apihelp/index.html", "/etc/geomapfish/static/apihelp/index.html")
-    c2cgeoportal_geoportal.views.add_redirect(
-        config, "apihelp_redirect", "/apihelp.html", "/apihelp/index.html"
-    )
+    c2cgeoportal_geoportal.views.add_redirect(config, "apihelp_redirect", "/apihelp.html", "apihelp")
 
     config.add_route("themes", "/themes", request_method="GET", pregenerator=C2CPregenerator(role=True))
 
