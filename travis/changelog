@@ -9,7 +9,6 @@ import sys
 import requests
 import yaml
 
-
 REPOS = ('c2cgeoportal', 'ngeo')
 
 with open('travis/changelog.yaml') as cl_file:
@@ -50,7 +49,6 @@ def get_commit(repo, ref):
         print('Error on commit {}.'.format(ref))
         print(commit)
         sys.exit(1)
-    print(commit['sha'])
 
     for key in list(commit.keys()):
         if key not in ('parents', 'sha'):
@@ -82,8 +80,15 @@ def get_pulls(repo, ref):
             ):
                 del pull[key]
                 dirty = True
+
     if dirty:
+        changelog['pulls'][repo][ref] = [
+            pull for pull in changelog['pulls'][repo][ref]
+            if pull['state'] == 'closed' and pull['base_ref'] != 'master'
+        ]
+
         save()
+
     return pulls
 
 
@@ -161,7 +166,7 @@ def main():
             pulls = release_pulls[release]
             md_file.write('##### {}\n'.format(release).encode('utf-8'))
             for repo in REPOS:
-                for pull in pulls[repo].values():
+                for pull in sorted(pulls[repo].values(), key=lambda pull: pull['number']):
                     if pull['base_ref'] != 'master':
                         md_file.write('* {} [{}#{}]({})\n'.format(
                             pull['title'], repo, pull['number'], pull['html_url']
