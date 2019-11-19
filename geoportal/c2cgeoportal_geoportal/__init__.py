@@ -495,6 +495,9 @@ def includeme(config: pyramid.config.Configurator):
     config.add_route("oldxapijs", "/xapi.js", request_method="GET")
     config.add_route("oldapihelp", "/oldapihelp.html", request_method="GET")
     config.add_route("oldxapihelp", "/oldxapihelp.html", request_method="GET")
+    c2cgeoportal_geoportal.views.add_redirect(
+        config, 'oldapijs_redirect', '/wsgi/api.js', '/apijs'
+    )
 
     # Cannot be at the header to do not load the model too early
     from c2cgeoportal_geoportal.views.entry import Entry
