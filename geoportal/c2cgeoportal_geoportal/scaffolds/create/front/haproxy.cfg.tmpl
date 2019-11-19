@@ -65,12 +65,12 @@ backend tilecloudchain
 frontend plain
     bind :80
 
-    # Required variables from the request
-    http-request set-var(req.path) path
-
     # If the path starts with /tiles/, use the tilecloudchain backend
     acl is_tiles var(req.path) -m beg ${VISIBLE_ENTRY_POINT}tiles/
     use_backend tilecloudchain if is_tiles
+
+    # Required variables from the request
+    http-request set-var(req.path) path
 
     # Redirect all to geoportal by default
     default_backend geoportal
