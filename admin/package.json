@@ -4,7 +4,7 @@
   "description": "GeoMapFish administration interface",
   "author": "",
   "dependencies": {
-    "bootstrap": "^3.4.1",
+    "bootstrap": "^4.3.1",
     "bootstrap-table": "^1.14.2",
     "jquery": "^3.4.1",
     "jquery.scrollintoview": "^1.9.4",
