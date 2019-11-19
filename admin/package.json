@@ -12,6 +12,12 @@
     "jstreegrid": "^3.9.5",
     "magicsuggest-alpine": "^1.0.0",
     "openlayers": "^4.6.5",
-    "typeahead.js": "^0.11.1"
-  }
+    "typeahead.js": "^0.11.1",
+    "snyk": "^1.248.0"
+  },
+  "scripts": {
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
+  },
+  "snyk": true
 }
