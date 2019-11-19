@@ -70,7 +70,7 @@ To create the application, first apply the ``c2cgeoportal_create`` scaffold:
 
 .. prompt:: bash
 
-    docker run --rm -ti \
+    docker run --rm -ti --volume=$(pwd):/src \
         camptocamp/geomapfish-tools:<release|version> \
         run $(id -u) $(id -g) /src \
         pcreate -s c2cgeoportal_create <project>
@@ -90,7 +90,7 @@ it later.
 
      .. prompt:: bash
 
-        docker run --rm -ti \
+        docker run --rm -ti --volume=$(pwd):/src \
             --env=SRID=21781 \
             --env=EXTENT="420000,30000,900000,350000" \
             camptocamp/geomapfish-tools:<release|version> \
@@ -106,7 +106,7 @@ Now apply the ``c2cgeoportal_update`` scaffold:
 
 .. prompt:: bash
 
-    docker run --rm -ti --env=SRID=21781 \
+    docker run --rm -ti --volume=$(pwd):/src --env=SRID=21781 \
         camptocamp/geomapfish-tools:<release|version> \
         run $(id -u) $(id -g) /src \
         pcreate -s c2cgeoportal_update \
