@@ -302,6 +302,7 @@ GPG_KEYS += 1DAFEE6A # Oliver Christen
 GPG_KEYS += C8A0FF72 # Wolfgang Kaltz
 GPG_KEYS += A510717D # Michael Künzli
 GPG_KEYS += A68C2F5F # Arnaud Morvan
+GPG_KEYS += 0545262E5AE04436C83B654D4CEC60DAC4F68132 # Andrea Borghi
 endif
 
 # Disabling Make built-in rules to speed up execution time
