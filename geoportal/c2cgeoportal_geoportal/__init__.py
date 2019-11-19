@@ -496,7 +496,7 @@ def includeme(config: pyramid.config.Configurator):
     config.add_route("oldapihelp", "/oldapihelp.html", request_method="GET")
     config.add_route("oldxapihelp", "/oldxapihelp.html", request_method="GET")
     c2cgeoportal_geoportal.views.add_redirect(
-        config, 'oldapijs_redirect', '/wsgi/api.js', '/apijs'
+        config, 'oldapijs_redirect', '/wsgi/api.js', 'apijs'
     )
 
     # Cannot be at the header to do not load the model too early
@@ -513,7 +513,7 @@ def includeme(config: pyramid.config.Configurator):
     add_api_route('apicss', 'apicss', '/api.css', "build/api.css")
     add_api_route('apihelp', 'apihelp', '/apihelp/index.html', "api/apihelp/index.html")
     c2cgeoportal_geoportal.views.add_redirect(
-        config, 'apihelp_redirect', '/apihelp.html', '/apihelp/index.html'
+        config, 'apihelp_redirect', '/apihelp.html', 'apihelp'
     )
 
     config.add_route(
