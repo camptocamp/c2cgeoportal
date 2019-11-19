@@ -1,3 +1,6 @@
+##### 2.4.1.55
+* Add Andrea Borghi key [c2cgeoportal#5540](https://github.com/camptocamp/c2cgeoportal/pull/5540)
+* Add a redirect from the old URL (pre 2.3) [c2cgeoportal#5542](https://github.com/camptocamp/c2cgeoportal/pull/5542)
 ##### 2.4.1.54
 * Fix some replacement variables [c2cgeoportal#5528](https://github.com/camptocamp/c2cgeoportal/pull/5528)
 * Also forward the geometry name [ngeo#5302](https://github.com/camptocamp/ngeo/pull/5302)
