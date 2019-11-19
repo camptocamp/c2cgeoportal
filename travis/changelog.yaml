@@ -2286,22 +2286,6 @@ pulls:
   c2cgeoportal:
     006abca:
     - base_ref: '2.4'
-      closed_at: null
-      created_at: '2019-11-12T16:44:26Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5522
-      number: 5522
-      state: open
-      title: Use resolutions from eCH
-      updated_at: '2019-11-12T16:44:26Z'
-    - base_ref: master
-      closed_at: null
-      created_at: '2019-11-12T16:53:59Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5523
-      number: 5523
-      state: open
-      title: Merge remote-tracking branch 'origin/2.4'
-      updated_at: '2019-11-12T16:54:04Z'
-    - base_ref: '2.4'
       closed_at: '2019-11-12T16:16:43Z'
       created_at: '2019-11-12T12:27:54Z'
       html_url: https://github.com/camptocamp/c2cgeoportal/pull/5519
@@ -2318,33 +2302,9 @@ pulls:
       state: closed
       title: Switch redis to volatile-lru
       updated_at: '2019-10-29T10:38:17Z'
-    018fa389d0007bcdb8b75b01dbc53722423ba42b:
-    - base_ref: '2.4'
-      closed_at: null
-      created_at: '2019-10-08T07:38:21Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5377
-      number: 5377
-      state: open
-      title: Fix percents in environement variables
-      updated_at: '2019-10-08T07:38:21Z'
-    02c4850a7bfb27ac66f570d72ba47042d89b4fc5:
-    - base_ref: master
-      closed_at: '2019-09-03T08:46:57Z'
-      created_at: '2019-09-02T14:59:02Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5255
-      number: 5255
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4'
-      updated_at: '2019-09-03T08:47:00Z'
+    018fa389d0007bcdb8b75b01dbc53722423ba42b: []
+    02c4850a7bfb27ac66f570d72ba47042d89b4fc5: []
     039d409:
-    - base_ref: '2.4'
-      closed_at: null
-      created_at: '2019-10-03T09:06:15Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5357
-      number: 5357
-      state: open
-      title: Fix interface override defaults
-      updated_at: '2019-10-03T12:27:30Z'
     - base_ref: '2.4'
       closed_at: '2019-10-01T14:54:43Z'
       created_at: '2019-10-01T11:26:54Z'
@@ -2371,15 +2331,7 @@ pulls:
       state: closed
       title: Add list4vrt helper
       updated_at: '2019-06-07T08:17:35Z'
-    046b86f076ab53a81bf4ffafd149ceee10b83b19:
-    - base_ref: master
-      closed_at: '2019-06-06T07:54:01Z'
-      created_at: '2019-06-05T13:28:15Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/4978
-      number: 4978
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4
-      updated_at: '2019-06-06T07:54:04Z'
+    046b86f076ab53a81bf4ffafd149ceee10b83b19: []
     05742cc:
     - base_ref: '2.4'
       closed_at: '2019-08-20T12:34:31Z'
@@ -2416,15 +2368,7 @@ pulls:
       state: closed
       title: Add command to remove old stuff at start
       updated_at: '2019-09-18T14:55:38Z'
-    0879289f141e5be1af91736548a815873726911a:
-    - base_ref: master
-      closed_at: '2019-06-17T07:09:33Z'
-      created_at: '2019-06-14T13:21:21Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5032
-      number: 5032
-      state: closed
-      title: ' Merge remote-tracking branch ''origin/2.4'' '
-      updated_at: '2019-06-19T16:52:45Z'
+    0879289f141e5be1af91736548a815873726911a: []
     0924cd0:
     - base_ref: '2.4'
       closed_at: '2019-07-11T09:03:25Z'
@@ -2443,33 +2387,9 @@ pulls:
       state: closed
       title: Set scripts/deploy-docker as executable on scaffold init.
       updated_at: '2019-08-23T09:06:12Z'
-    0aa0d71a1fbbe7f76e2ce2b28cdd8b36829cd53d:
-    - base_ref: master
-      closed_at: '2019-06-17T07:09:33Z'
-      created_at: '2019-06-14T13:21:21Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5032
-      number: 5032
-      state: closed
-      title: ' Merge remote-tracking branch ''origin/2.4'' '
-      updated_at: '2019-06-19T16:52:45Z'
-    0cdbfb3d3625bc5ef24a777a69816d1e615eff44:
-    - base_ref: master
-      closed_at: '2019-09-03T08:46:57Z'
-      created_at: '2019-09-02T14:59:02Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5255
-      number: 5255
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4'
-      updated_at: '2019-09-03T08:47:00Z'
-    0d268d402cb60b9d4ad18d85992d46299f1cfdd8:
-    - base_ref: master
-      closed_at: '2019-06-17T07:09:33Z'
-      created_at: '2019-06-14T13:21:21Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5032
-      number: 5032
-      state: closed
-      title: ' Merge remote-tracking branch ''origin/2.4'' '
-      updated_at: '2019-06-19T16:52:45Z'
+    0aa0d71a1fbbe7f76e2ce2b28cdd8b36829cd53d: []
+    0cdbfb3d3625bc5ef24a777a69816d1e615eff44: []
+    0d268d402cb60b9d4ad18d85992d46299f1cfdd8: []
     0f26075:
     - base_ref: '2.4'
       closed_at: '2019-08-30T08:06:15Z'
@@ -2506,15 +2426,7 @@ pulls:
       state: closed
       title: Fix JQuery UI icon loading
       updated_at: '2019-06-12T08:45:41Z'
-    137c82322d97462039165814e5c7fe8f1c2ba4db:
-    - base_ref: master
-      closed_at: '2019-08-20T14:06:31Z'
-      created_at: '2019-08-20T12:48:55Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5218
-      number: 5218
-      state: closed
-      title: 'Merge remote-tracking branch ''origin/2.4'' '
-      updated_at: '2019-08-20T14:06:35Z'
+    137c82322d97462039165814e5c7fe8f1c2ba4db: []
     142da03:
     - base_ref: '2.4'
       closed_at: '2019-08-21T09:49:27Z'
@@ -2572,14 +2484,6 @@ pulls:
       updated_at: '2019-06-25T13:47:40Z'
     19c16943d7937e1af58416761af2fa141002754d:
     - base_ref: '2.4'
-      closed_at: null
-      created_at: '2019-10-03T09:06:15Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5357
-      number: 5357
-      state: open
-      title: Fix interface override defaults
-      updated_at: '2019-10-03T12:27:30Z'
-    - base_ref: '2.4'
       closed_at: '2019-10-02T08:16:06Z'
       created_at: '2019-10-02T07:31:05Z'
       html_url: https://github.com/camptocamp/c2cgeoportal/pull/5351
@@ -2587,34 +2491,10 @@ pulls:
       state: closed
       title: Make notifications working ...
       updated_at: '2019-10-02T08:16:09Z'
-    1a4cae960a1dac2d5e9d6720c7ad6758d9c2dd08:
-    - base_ref: master
-      closed_at: '2019-06-28T14:45:34Z'
-      created_at: '2019-06-28T13:37:49Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5113
-      number: 5113
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4'
-      updated_at: '2019-06-28T14:45:36Z'
+    1a4cae960a1dac2d5e9d6720c7ad6758d9c2dd08: []
     1a9f9e55081e25de60425b9468f4166795e85296: []
-    1aba58fe41845260bcc9536067e998306e798f25:
-    - base_ref: master
-      closed_at: '2019-09-19T06:35:02Z'
-      created_at: '2019-09-18T15:06:41Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5306
-      number: 5306
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4'
-      updated_at: '2019-09-19T06:35:05Z'
-    1c050af2d910c71638b5773ae2225f5f231c4671:
-    - base_ref: master
-      closed_at: '2019-09-19T06:35:02Z'
-      created_at: '2019-09-18T15:06:41Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5306
-      number: 5306
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4'
-      updated_at: '2019-09-19T06:35:05Z'
+    1aba58fe41845260bcc9536067e998306e798f25: []
+    1c050af2d910c71638b5773ae2225f5f231c4671: []
     1ce2c928681b3d3b30c03345ba2b8c9da0953353:
     - base_ref: '2.4'
       closed_at: '2019-05-16T09:29:07Z'
@@ -2634,22 +2514,6 @@ pulls:
       title: Don't ignore the tilegeneration config file
       updated_at: '2019-06-14T09:42:22Z'
     1f6c52e:
-    - base_ref: '2.4'
-      closed_at: null
-      created_at: '2019-11-12T12:27:54Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5519
-      number: 5519
-      state: open
-      title: Add Gunicorn access log
-      updated_at: '2019-11-12T14:24:35Z'
-    - base_ref: '2.4'
-      closed_at: null
-      created_at: '2019-11-12T12:02:47Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5517
-      number: 5517
-      state: open
-      title: Less QGIS server logs by default
-      updated_at: '2019-11-12T14:02:12Z'
     - base_ref: '2.4'
       closed_at: '2019-11-12T14:01:36Z'
       created_at: '2019-11-12T12:21:16Z'
@@ -2694,24 +2558,8 @@ pulls:
       state: closed
       title: Do not try to generate WMTS capabilities at build
       updated_at: '2019-09-23T16:38:10Z'
-    22b898605f4422965f8dc4be47e88e663c0faf6e:
-    - base_ref: master
-      closed_at: '2019-08-20T14:06:31Z'
-      created_at: '2019-08-20T12:48:55Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5218
-      number: 5218
-      state: closed
-      title: 'Merge remote-tracking branch ''origin/2.4'' '
-      updated_at: '2019-08-20T14:06:35Z'
-    241d2fd94cebaaa9b1f8e1f3ddc2a4f199029b5c:
-    - base_ref: master
-      closed_at: '2019-09-25T16:16:14Z'
-      created_at: '2019-09-25T14:39:38Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5325
-      number: 5325
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4'
-      updated_at: '2019-09-25T16:16:17Z'
+    22b898605f4422965f8dc4be47e88e663c0faf6e: []
+    241d2fd94cebaaa9b1f8e1f3ddc2a4f199029b5c: []
     242e7c7:
     - base_ref: '2.4'
       closed_at: '2019-10-30T11:43:08Z'
@@ -2731,22 +2579,6 @@ pulls:
       title: Merge remote-tracking branch 'origin/2.3' into 2.4
       updated_at: '2019-06-14T13:04:41Z'
     24d5b586cca06c492b7ab95763f55a5781dc38eb:
-    - base_ref: '2.4'
-      closed_at: null
-      created_at: '2019-11-01T09:49:16Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5462
-      number: 5462
-      state: open
-      title: Less logs
-      updated_at: '2019-11-01T09:49:16Z'
-    - base_ref: '2.4'
-      closed_at: null
-      created_at: '2019-11-01T09:39:58Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5461
-      number: 5461
-      state: open
-      title: Use only LTR QGIS version 3.4
-      updated_at: '2019-11-01T09:39:58Z'
     - base_ref: '2.4'
       closed_at: '2019-11-01T07:59:08Z'
       created_at: '2019-10-31T16:39:25Z'
@@ -2820,14 +2652,6 @@ pulls:
       updated_at: '2019-06-07T13:18:02Z'
     306a3831e5a69b9cf73b39b55391913e0c983249:
     - base_ref: '2.4'
-      closed_at: null
-      created_at: '2019-10-08T07:38:21Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5377
-      number: 5377
-      state: open
-      title: Fix percents in environement variables
-      updated_at: '2019-10-08T07:38:21Z'
-    - base_ref: '2.4'
       closed_at: '2019-10-04T15:52:47Z'
       created_at: '2019-10-04T09:03:28Z'
       html_url: https://github.com/camptocamp/c2cgeoportal/pull/5362
@@ -2844,33 +2668,9 @@ pulls:
       state: closed
       title: Add QGIS server Docker image in readme
       updated_at: '2019-10-09T14:04:31Z'
-    314be4922dca3181e4abefa7a1114895c2cdc90f:
-    - base_ref: master
-      closed_at: '2019-06-06T07:54:01Z'
-      created_at: '2019-06-05T13:28:15Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/4978
-      number: 4978
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4
-      updated_at: '2019-06-06T07:54:04Z'
-    3198ccced073b9072b43afd90f3b66a9386f3b43:
-    - base_ref: master
-      closed_at: '2019-06-18T12:25:27Z'
-      created_at: '2019-06-18T12:00:44Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5044
-      number: 5044
-      state: closed
-      title: 'Merge remote-tracking branch ''origin/2.4'' '
-      updated_at: '2019-06-18T12:25:30Z'
-    328fbd1002396f49658c7c355f14e0e29254ffa7:
-    - base_ref: master
-      closed_at: '2019-06-19T20:38:46Z'
-      created_at: '2019-06-19T18:38:47Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5053
-      number: 5053
-      state: closed
-      title: 'Merge remote-tracking branch ''origin/2.4'' '
-      updated_at: '2019-06-19T20:38:49Z'
+    314be4922dca3181e4abefa7a1114895c2cdc90f: []
+    3198ccced073b9072b43afd90f3b66a9386f3b43: []
+    328fbd1002396f49658c7c355f14e0e29254ffa7: []
     32c76ff:
     - base_ref: '2.4'
       closed_at: '2019-10-17T09:56:34Z'
@@ -2907,15 +2707,7 @@ pulls:
       state: closed
       title: Fix docutils install on Travis
       updated_at: '2019-08-05T12:08:51Z'
-    3466b94339045ee67fbcea5254436ef644095f2f:
-    - base_ref: master
-      closed_at: '2019-09-03T08:46:57Z'
-      created_at: '2019-09-02T14:59:02Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5255
-      number: 5255
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4'
-      updated_at: '2019-09-03T08:47:00Z'
+    3466b94339045ee67fbcea5254436ef644095f2f: []
     349cb5995f2218b26a37ed3fbb4b70e26d5ad121:
     - base_ref: '2.4'
       closed_at: '2019-05-20T08:26:28Z'
@@ -2934,24 +2726,8 @@ pulls:
       state: closed
       title: Fix _query
       updated_at: '2019-10-22T11:06:35Z'
-    371640e9872eb407edf9883bc1c4f650bc0d9c1b:
-    - base_ref: master
-      closed_at: '2019-06-06T07:54:01Z'
-      created_at: '2019-06-05T13:28:15Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/4978
-      number: 4978
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4
-      updated_at: '2019-06-06T07:54:04Z'
-    3761b33feafe945529e49642180d65245c586306:
-    - base_ref: master
-      closed_at: '2019-06-06T07:54:01Z'
-      created_at: '2019-06-05T13:28:15Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/4978
-      number: 4978
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4
-      updated_at: '2019-06-06T07:54:04Z'
+    371640e9872eb407edf9883bc1c4f650bc0d9c1b: []
+    3761b33feafe945529e49642180d65245c586306: []
     38327682f2dbfa74908cd98fc8edc97537eafb02: []
     39785abce8a9c9b98c3f015752745477d2e55444:
     - base_ref: '2.4'
@@ -2963,15 +2739,7 @@ pulls:
       title: Tinyows utf encode
       updated_at: '2019-08-30T12:14:36Z'
     3a36351561c1fa39c33b482eb5d0dbfc37053842: []
-    3be11748be5818a1d72bdbe8c1f510a22198b0ef:
-    - base_ref: master
-      closed_at: '2019-06-18T12:25:27Z'
-      created_at: '2019-06-18T12:00:44Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5044
-      number: 5044
-      state: closed
-      title: 'Merge remote-tracking branch ''origin/2.4'' '
-      updated_at: '2019-06-18T12:25:30Z'
+    3be11748be5818a1d72bdbe8c1f510a22198b0ef: []
     3ce9df0b22b38b529a104b90a3911b03adc2c905:
     - base_ref: '2.4'
       closed_at: '2019-11-01T12:48:43Z'
@@ -2981,24 +2749,8 @@ pulls:
       state: closed
       title: Less logs
       updated_at: '2019-11-01T12:48:46Z'
-    3ed449589f776ee6cbdcf6dcb99027016516f9b6:
-    - base_ref: master
-      closed_at: '2019-06-28T14:45:34Z'
-      created_at: '2019-06-28T13:37:49Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5113
-      number: 5113
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4'
-      updated_at: '2019-06-28T14:45:36Z'
+    3ed449589f776ee6cbdcf6dcb99027016516f9b6: []
     3f50ccee3321be68c6439e5883cbab7561dc22ae:
-    - base_ref: '2.4'
-      closed_at: null
-      created_at: '2019-10-03T09:06:15Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5357
-      number: 5357
-      state: open
-      title: Fix interface override defaults
-      updated_at: '2019-10-03T12:27:30Z'
     - base_ref: '2.4'
       closed_at: '2019-10-02T08:29:36Z'
       created_at: '2019-10-01T15:46:04Z'
@@ -3007,68 +2759,12 @@ pulls:
       state: closed
       title: Ignore unexpected error on Travis
       updated_at: '2019-10-02T08:29:39Z'
-    3f8caa9536d8effcdc7eaaa2f688cb51455dbe2a:
-    - base_ref: master
-      closed_at: '2019-06-18T12:25:27Z'
-      created_at: '2019-06-18T12:00:44Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5044
-      number: 5044
-      state: closed
-      title: 'Merge remote-tracking branch ''origin/2.4'' '
-      updated_at: '2019-06-18T12:25:30Z'
-    3fb54eff2078dc91e5c614ab4aea963a5d41f28c:
-    - base_ref: master
-      closed_at: '2019-06-06T07:54:01Z'
-      created_at: '2019-06-05T13:28:15Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/4978
-      number: 4978
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4
-      updated_at: '2019-06-06T07:54:04Z'
-    414e9f89e3d42be7aedd712a966fb684f1b7abe2:
-    - base_ref: master
-      closed_at: '2019-06-28T14:45:34Z'
-      created_at: '2019-06-28T13:37:49Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5113
-      number: 5113
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4'
-      updated_at: '2019-06-28T14:45:36Z'
-    41737e4ccd8222d1398297f9f56fe99568ce1dec:
-    - base_ref: '2.4'
-      closed_at: null
-      created_at: '2019-11-01T09:49:16Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5462
-      number: 5462
-      state: open
-      title: Less logs
-      updated_at: '2019-11-01T09:49:16Z'
-    - base_ref: '2.4'
-      closed_at: null
-      created_at: '2019-11-01T09:39:58Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5461
-      number: 5461
-      state: open
-      title: Use only LTR QGIS version 3.4
-      updated_at: '2019-11-01T09:39:58Z'
-    4208b3d28f5a374827409355249a1146c9b4f66e:
-    - base_ref: master
-      closed_at: null
-      created_at: '2019-10-29T12:27:23Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5446
-      number: 5446
-      state: open
-      title: Merge remote-tracking branch 'origin/2.4'
-      updated_at: '2019-10-29T13:33:14Z'
+    3f8caa9536d8effcdc7eaaa2f688cb51455dbe2a: []
+    3fb54eff2078dc91e5c614ab4aea963a5d41f28c: []
+    414e9f89e3d42be7aedd712a966fb684f1b7abe2: []
+    41737e4ccd8222d1398297f9f56fe99568ce1dec: []
+    4208b3d28f5a374827409355249a1146c9b4f66e: []
     428dbcb:
-    - base_ref: '2.4'
-      closed_at: null
-      created_at: '2019-10-03T09:06:15Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5357
-      number: 5357
-      state: open
-      title: Fix interface override defaults
-      updated_at: '2019-10-03T12:27:30Z'
     - base_ref: '2.4'
       closed_at: '2019-10-01T12:58:49Z'
       created_at: '2019-10-01T09:43:48Z'
@@ -3079,15 +2775,7 @@ pulls:
         \ \u2026"
       updated_at: '2019-10-01T12:58:53Z'
     4406a451c9d03ca3e40db7999086803c22dd38c0: []
-    4867bd17b70aeaa77f9b88ea629de221efc939e9:
-    - base_ref: master
-      closed_at: '2019-09-03T08:46:57Z'
-      created_at: '2019-09-02T14:59:02Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5255
-      number: 5255
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4'
-      updated_at: '2019-09-03T08:47:00Z'
+    4867bd17b70aeaa77f9b88ea629de221efc939e9: []
     49b4e655f30bffefc80b99107cc71b2bbda691ad:
     - base_ref: '2.4'
       closed_at: '2019-06-14T09:33:11Z'
@@ -3098,14 +2786,6 @@ pulls:
       title: Fix upgrade PO
       updated_at: '2019-06-14T09:33:15Z'
     4cefc73:
-    - base_ref: master
-      closed_at: null
-      created_at: '2019-10-29T12:27:23Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5446
-      number: 5446
-      state: open
-      title: Merge remote-tracking branch 'origin/2.4'
-      updated_at: '2019-10-29T13:33:14Z'
     - base_ref: '2.4'
       closed_at: '2019-10-29T12:22:53Z'
       created_at: '2019-10-28T12:19:54Z'
@@ -3132,15 +2812,7 @@ pulls:
       state: closed
       title: improve text (Follow-up to PR#5162)
       updated_at: '2019-08-23T09:06:05Z'
-    4ee15e44dfb4daf770f87d99180138dd189c6456:
-    - base_ref: master
-      closed_at: '2019-08-20T14:06:31Z'
-      created_at: '2019-08-20T12:48:55Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5218
-      number: 5218
-      state: closed
-      title: 'Merge remote-tracking branch ''origin/2.4'' '
-      updated_at: '2019-08-20T14:06:35Z'
+    4ee15e44dfb4daf770f87d99180138dd189c6456: []
     52a9dbd:
     - base_ref: '2.4'
       closed_at: '2019-09-23T15:06:38Z'
@@ -3161,22 +2833,6 @@ pulls:
       updated_at: '2019-09-23T15:06:42Z'
     53400f90aa9b623ee48f413db0ad9ea43d3c6418:
     - base_ref: '2.4'
-      closed_at: null
-      created_at: '2019-11-12T16:44:26Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5522
-      number: 5522
-      state: open
-      title: Use resolutions from eCH
-      updated_at: '2019-11-12T16:44:26Z'
-    - base_ref: master
-      closed_at: null
-      created_at: '2019-11-12T16:53:59Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5523
-      number: 5523
-      state: open
-      title: Merge remote-tracking branch 'origin/2.4'
-      updated_at: '2019-11-12T16:54:04Z'
-    - base_ref: '2.4'
       closed_at: '2019-11-12T16:16:28Z'
       created_at: '2019-11-12T12:02:47Z'
       html_url: https://github.com/camptocamp/c2cgeoportal/pull/5517
@@ -3193,15 +2849,7 @@ pulls:
       state: closed
       title: Be able to have dynamic geo_table
       updated_at: '2019-09-02T11:37:07Z'
-    5a22d35b6c968e69fe738235091f10aad273a38b:
-    - base_ref: master
-      closed_at: '2019-10-15T10:45:45Z'
-      created_at: '2019-10-15T07:23:41Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5397
-      number: 5397
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4'
-      updated_at: '2019-10-15T10:45:48Z'
+    5a22d35b6c968e69fe738235091f10aad273a38b: []
     5b9ab86:
     - base_ref: '2.4'
       closed_at: '2019-08-22T11:05:12Z'
@@ -3220,24 +2868,8 @@ pulls:
       state: closed
       title: Fix the theme redirect
       updated_at: '2019-09-20T09:34:54Z'
-    5cb7d70b095ee5da04ff73b2ab5d905f4c66ced6:
-    - base_ref: master
-      closed_at: '2019-06-06T07:54:01Z'
-      created_at: '2019-06-05T13:28:15Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/4978
-      number: 4978
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4
-      updated_at: '2019-06-06T07:54:04Z'
-    5d2a1af:
-    - base_ref: master
-      closed_at: '2019-09-19T06:35:02Z'
-      created_at: '2019-09-18T15:06:41Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5306
-      number: 5306
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4'
-      updated_at: '2019-09-19T06:35:05Z'
+    5cb7d70b095ee5da04ff73b2ab5d905f4c66ced6: []
+    5d2a1af: []
     5d2a1afd347ae0e1013d0c5ae50d32ae407e2724:
     - base_ref: master
       closed_at: '2019-09-19T06:35:02Z'
@@ -3274,24 +2906,8 @@ pulls:
       state: closed
       title: Add Cloud Optimized GeoTIFF doc
       updated_at: '2019-08-30T12:50:42Z'
-    5e238e8265ef632631564f49b3f44df57e5badbb:
-    - base_ref: master
-      closed_at: '2019-09-03T08:46:57Z'
-      created_at: '2019-09-02T14:59:02Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5255
-      number: 5255
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4'
-      updated_at: '2019-09-03T08:47:00Z'
-    5e6e568d879cb55868b0f7f50911fbb24c901894:
-    - base_ref: master
-      closed_at: '2019-06-06T07:54:01Z'
-      created_at: '2019-06-05T13:28:15Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/4978
-      number: 4978
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4
-      updated_at: '2019-06-06T07:54:04Z'
+    5e238e8265ef632631564f49b3f44df57e5badbb: []
+    5e6e568d879cb55868b0f7f50911fbb24c901894: []
     61d835a:
     - base_ref: '2.4'
       closed_at: '2019-08-22T09:02:37Z'
@@ -3310,43 +2926,11 @@ pulls:
       state: closed
       title: "Updated documentation got WMTS: removed deprecated initialization inf\u2026"
       updated_at: '2019-08-23T09:05:20Z'
-    627042723d3a73393bca6e9f64beff9df0676e6c:
-    - base_ref: master
-      closed_at: '2019-06-17T07:09:33Z'
-      created_at: '2019-06-14T13:21:21Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5032
-      number: 5032
-      state: closed
-      title: ' Merge remote-tracking branch ''origin/2.4'' '
-      updated_at: '2019-06-19T16:52:45Z'
-    6610ce35d38d04a7d04bbc046de899afbefe2deb:
-    - base_ref: master
-      closed_at: '2019-08-20T14:06:31Z'
-      created_at: '2019-08-20T12:48:55Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5218
-      number: 5218
-      state: closed
-      title: 'Merge remote-tracking branch ''origin/2.4'' '
-      updated_at: '2019-08-20T14:06:35Z'
+    627042723d3a73393bca6e9f64beff9df0676e6c: []
+    6610ce35d38d04a7d04bbc046de899afbefe2deb: []
     6863761eda1e82622049c4b12a077b73f7812f53: []
-    6a0e3ade8dcf227a3fc4588f64f4beff19c546a8:
-    - base_ref: master
-      closed_at: '2019-06-06T07:54:01Z'
-      created_at: '2019-06-05T13:28:15Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/4978
-      number: 4978
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4
-      updated_at: '2019-06-06T07:54:04Z'
+    6a0e3ade8dcf227a3fc4588f64f4beff19c546a8: []
     6a15ecbac3213a1a483ef8e0d063ba43951a615f:
-    - base_ref: '2.4'
-      closed_at: null
-      created_at: '2019-10-03T09:06:15Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5357
-      number: 5357
-      state: open
-      title: Fix interface override defaults
-      updated_at: '2019-10-03T12:27:30Z'
     - base_ref: '2.4'
       closed_at: '2019-09-30T14:31:11Z'
       created_at: '2019-09-30T08:42:14Z'
@@ -3401,24 +2985,8 @@ pulls:
       state: closed
       title: Fix the cache on options
       updated_at: '2019-06-17T14:32:41Z'
-    78c7a09c33de0b3faa1093d7e90c366f5cd409e5:
-    - base_ref: master
-      closed_at: '2019-07-11T14:12:06Z'
-      created_at: '2019-07-11T13:10:05Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5149
-      number: 5149
-      state: closed
-      title: ' Merge remote-tracking branch ''origin/2.4'' '
-      updated_at: '2019-07-11T14:12:09Z'
-    78e982207cd6da5fed8341e8e304344fd642f15e:
-    - base_ref: master
-      closed_at: '2019-09-03T08:46:57Z'
-      created_at: '2019-09-02T14:59:02Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5255
-      number: 5255
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4'
-      updated_at: '2019-09-03T08:47:00Z'
+    78c7a09c33de0b3faa1093d7e90c366f5cd409e5: []
+    78e982207cd6da5fed8341e8e304344fd642f15e: []
     7cac3d3:
     - base_ref: '2.4'
       closed_at: '2019-11-01T12:49:07Z'
@@ -3456,15 +3024,7 @@ pulls:
       state: closed
       title: Fix main schema in mapfile_data_subselect
       updated_at: '2019-09-25T11:32:53Z'
-    7f894a7e8a2ebdb672c27b7cea35881261032cc6:
-    - base_ref: master
-      closed_at: '2019-11-05T07:48:53Z'
-      created_at: '2019-11-04T15:04:08Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5483
-      number: 5483
-      state: closed
-      title: ' Merge remote-tracking branch ''origin/2.4'' '
-      updated_at: '2019-11-05T07:48:58Z'
+    7f894a7e8a2ebdb672c27b7cea35881261032cc6: []
     80cccef:
     - base_ref: '2.4'
       closed_at: '2019-07-11T08:22:47Z'
@@ -3483,15 +3043,7 @@ pulls:
       state: closed
       title: "Added --noout to xmllint command to prevent the print jrxml to be out\u2026"
       updated_at: '2019-08-23T09:06:15Z'
-    8319432d0742ddb131f968e230db8878a9c692af:
-    - base_ref: master
-      closed_at: '2019-09-03T08:46:57Z'
-      created_at: '2019-09-02T14:59:02Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5255
-      number: 5255
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4'
-      updated_at: '2019-09-03T08:47:00Z'
+    8319432d0742ddb131f968e230db8878a9c692af: []
     8410581498f0a8a306f20abecc45c4aff054220f:
     - base_ref: '2.4'
       closed_at: '2019-06-07T08:50:52Z'
@@ -3501,15 +3053,7 @@ pulls:
       state: closed
       title: Fix typo in OGC proxy error
       updated_at: '2019-07-01T14:07:04Z'
-    8622235b55c906d66f0462660665c1b5f78538ba:
-    - base_ref: master
-      closed_at: '2019-09-19T06:35:02Z'
-      created_at: '2019-09-18T15:06:41Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5306
-      number: 5306
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4'
-      updated_at: '2019-09-19T06:35:05Z'
+    8622235b55c906d66f0462660665c1b5f78538ba: []
     89c28562586c0af47e2e2d3a313fccd90979f0be:
     - base_ref: '2.4'
       closed_at: '2019-06-21T09:49:25Z'
@@ -3520,14 +3064,6 @@ pulls:
       title: Add missing _alt files
       updated_at: '2019-06-21T09:49:29Z'
     8a5fd91219cbfe838fa77a4ff046b661141bd04d:
-    - base_ref: '2.4'
-      closed_at: null
-      created_at: '2019-10-08T07:38:21Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5377
-      number: 5377
-      state: open
-      title: Fix percents in environement variables
-      updated_at: '2019-10-08T07:38:21Z'
     - base_ref: '2.4'
       closed_at: '2019-10-04T15:53:02Z'
       created_at: '2019-10-04T08:57:48Z'
@@ -3545,24 +3081,8 @@ pulls:
       state: closed
       title: Make docker-compose.yaml and  docker-compose-build.yaml consistent
       updated_at: '2019-09-18T14:55:36Z'
-    8becca754be69714ceb25c92c20f8de2508b7a07:
-    - base_ref: '2.4'
-      closed_at: null
-      created_at: '2019-10-03T09:06:15Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5357
-      number: 5357
-      state: open
-      title: Fix interface override defaults
-      updated_at: '2019-10-03T12:27:30Z'
-    8bf30423f1f924d57df4841d5ac71789ee09b427:
-    - base_ref: master
-      closed_at: '2019-07-11T14:12:06Z'
-      created_at: '2019-07-11T13:10:05Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5149
-      number: 5149
-      state: closed
-      title: ' Merge remote-tracking branch ''origin/2.4'' '
-      updated_at: '2019-07-11T14:12:09Z'
+    8becca754be69714ceb25c92c20f8de2508b7a07: []
+    8bf30423f1f924d57df4841d5ac71789ee09b427: []
     902c6d8a4a6f9894ed61e724a15a772b3cda6b33:
     - base_ref: '2.4'
       closed_at: '2019-05-16T08:37:44Z'
@@ -3608,24 +3128,8 @@ pulls:
       state: closed
       title: Fix config image name
       updated_at: '2019-06-07T09:36:57Z'
-    9680f2578630dd24cde646a1ba30d54e37e657bc:
-    - base_ref: master
-      closed_at: '2019-09-25T16:16:14Z'
-      created_at: '2019-09-25T14:39:38Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5325
-      number: 5325
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4'
-      updated_at: '2019-09-25T16:16:17Z'
-    96e2a9b24fe7f7b2e399f4231d57b3acaa20b61c:
-    - base_ref: master
-      closed_at: '2019-08-20T14:06:31Z'
-      created_at: '2019-08-20T12:48:55Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5218
-      number: 5218
-      state: closed
-      title: 'Merge remote-tracking branch ''origin/2.4'' '
-      updated_at: '2019-08-20T14:06:35Z'
+    9680f2578630dd24cde646a1ba30d54e37e657bc: []
+    96e2a9b24fe7f7b2e399f4231d57b3acaa20b61c: []
     98242a9:
     - base_ref: '2.4'
       closed_at: '2019-10-08T10:46:25Z'
@@ -3636,14 +3140,6 @@ pulls:
       title: Fix percents in environment variables
       updated_at: '2019-10-08T10:46:28Z'
     986e93f9049fe139c7876faad5b9bee586f036ac:
-    - base_ref: '2.4'
-      closed_at: null
-      created_at: '2019-10-03T09:06:15Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5357
-      number: 5357
-      state: open
-      title: Fix interface override defaults
-      updated_at: '2019-10-03T12:27:30Z'
     - base_ref: '2.4'
       closed_at: '2019-10-02T13:35:08Z'
       created_at: '2019-10-02T11:05:08Z'
@@ -3661,15 +3157,7 @@ pulls:
       state: closed
       title: Updated mapfile documentation for layers restrictions.
       updated_at: '2019-08-06T14:41:43Z'
-    9aec892:
-    - base_ref: master
-      closed_at: '2019-09-19T06:35:02Z'
-      created_at: '2019-09-18T15:06:41Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5306
-      number: 5306
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4'
-      updated_at: '2019-09-19T06:35:05Z'
+    9aec892: []
     9aec89211f75916be5880bb2b35e1a31043ce67e:
     - base_ref: master
       closed_at: '2019-09-19T06:35:02Z'
@@ -3679,15 +3167,7 @@ pulls:
       state: closed
       title: Merge remote-tracking branch 'origin/2.4'
       updated_at: '2019-09-19T06:35:05Z'
-    9aedaf2bf6c3509757d109f692c823ea48f67184:
-    - base_ref: master
-      closed_at: '2019-06-06T07:54:01Z'
-      created_at: '2019-06-05T13:28:15Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/4978
-      number: 4978
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4
-      updated_at: '2019-06-06T07:54:04Z'
+    9aedaf2bf6c3509757d109f692c823ea48f67184: []
     9b6dea1:
     - base_ref: '2.4'
       closed_at: '2019-11-04T13:07:38Z'
@@ -3735,14 +3215,6 @@ pulls:
       updated_at: '2019-07-11T09:54:17Z'
     a172fadbc70bc09ebcbecc78c0dde873a67b0fc1:
     - base_ref: '2.4'
-      closed_at: null
-      created_at: '2019-10-03T09:06:15Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5357
-      number: 5357
-      state: open
-      title: Fix interface override defaults
-      updated_at: '2019-10-03T12:27:30Z'
-    - base_ref: '2.4'
       closed_at: '2019-10-02T08:14:10Z'
       created_at: '2019-10-01T14:37:02Z'
       html_url: https://github.com/camptocamp/c2cgeoportal/pull/5348
@@ -3750,24 +3222,8 @@ pulls:
       state: closed
       title: Version log
       updated_at: '2019-10-02T08:14:14Z'
-    a24704a77644a83cd889970d17778a14468e2228:
-    - base_ref: master
-      closed_at: '2019-06-06T07:54:01Z'
-      created_at: '2019-06-05T13:28:15Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/4978
-      number: 4978
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4
-      updated_at: '2019-06-06T07:54:04Z'
-    a273f5b5808677150160a5d76d04aeac47b23395:
-    - base_ref: master
-      closed_at: '2019-07-11T14:12:06Z'
-      created_at: '2019-07-11T13:10:05Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5149
-      number: 5149
-      state: closed
-      title: ' Merge remote-tracking branch ''origin/2.4'' '
-      updated_at: '2019-07-11T14:12:09Z'
+    a24704a77644a83cd889970d17778a14468e2228: []
+    a273f5b5808677150160a5d76d04aeac47b23395: []
     a39c4b7464e737438341cfbaf222751aa5f57178:
     - base_ref: '2.4'
       closed_at: '2019-06-18T09:33:40Z'
@@ -3777,15 +3233,7 @@ pulls:
       state: closed
       title: No default cache headers on OPTION request
       updated_at: '2019-06-18T09:33:43Z'
-    a43b457fa8154c910c0d7763e1291dbabcc510b4:
-    - base_ref: master
-      closed_at: '2019-06-17T07:09:33Z'
-      created_at: '2019-06-14T13:21:21Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5032
-      number: 5032
-      state: closed
-      title: ' Merge remote-tracking branch ''origin/2.4'' '
-      updated_at: '2019-06-19T16:52:45Z'
+    a43b457fa8154c910c0d7763e1291dbabcc510b4: []
     a6b4009610d37d3cdbc2656049ebcbaeb9070aca:
     - base_ref: '2.4'
       closed_at: '2019-05-20T08:22:05Z'
@@ -3795,15 +3243,7 @@ pulls:
       state: closed
       title: Add a trivial circleci configuration file to avoid CI error on GitHub
       updated_at: '2019-05-20T08:22:09Z'
-    a8b03d23002e3a6eac2a86542f42b1fa80f51485:
-    - base_ref: master
-      closed_at: '2019-06-28T14:45:34Z'
-      created_at: '2019-06-28T13:37:49Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5113
-      number: 5113
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4'
-      updated_at: '2019-06-28T14:45:36Z'
+    a8b03d23002e3a6eac2a86542f42b1fa80f51485: []
     a9e595d0dc4d357f1d28d91047a29d9031813f05:
     - base_ref: '2.4'
       closed_at: '2019-09-23T15:06:10Z'
@@ -3822,15 +3262,7 @@ pulls:
       state: closed
       title: Fix options on mapserver proxy
       updated_at: '2019-06-19T16:09:24Z'
-    aad98d5:
-    - base_ref: master
-      closed_at: '2019-09-03T08:46:57Z'
-      created_at: '2019-09-02T14:59:02Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5255
-      number: 5255
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4'
-      updated_at: '2019-09-03T08:47:00Z'
+    aad98d5: []
     aad98d59ef8e2b550704169fa9b564dc3cee7a18:
     - base_ref: master
       closed_at: '2019-09-03T08:46:57Z'
@@ -3849,15 +3281,7 @@ pulls:
       state: closed
       title: Use only LTR QGIS version 3.4
       updated_at: '2019-11-01T12:49:01Z'
-    ac0b0fa588e794824329e6d99796174661a941e1:
-    - base_ref: master
-      closed_at: '2019-08-20T14:06:31Z'
-      created_at: '2019-08-20T12:48:55Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5218
-      number: 5218
-      state: closed
-      title: 'Merge remote-tracking branch ''origin/2.4'' '
-      updated_at: '2019-08-20T14:06:35Z'
+    ac0b0fa588e794824329e6d99796174661a941e1: []
     ad01e040a26eedfab33bdd490644675f0f14b9a5:
     - base_ref: '2.4'
       closed_at: '2019-06-05T13:16:48Z'
@@ -3867,51 +3291,11 @@ pulls:
       state: closed
       title: Merge remote-tracking branch 'origin/2.3' into 2.4
       updated_at: '2019-06-05T13:16:52Z'
-    adb1ac1a62e15c8a8ab8465a45dcc492c14ae16a:
-    - base_ref: master
-      closed_at: '2019-08-20T14:06:31Z'
-      created_at: '2019-08-20T12:48:55Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5218
-      number: 5218
-      state: closed
-      title: 'Merge remote-tracking branch ''origin/2.4'' '
-      updated_at: '2019-08-20T14:06:35Z'
-    ae7526b52ae24331ba34a47e1f0c3e8bcea89e25:
-    - base_ref: master
-      closed_at: '2019-09-25T16:16:14Z'
-      created_at: '2019-09-25T14:39:38Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5325
-      number: 5325
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4'
-      updated_at: '2019-09-25T16:16:17Z'
-    af727ef64e86bfd3d88add7209970684c221995d:
-    - base_ref: master
-      closed_at: '2019-06-17T07:09:33Z'
-      created_at: '2019-06-14T13:21:21Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5032
-      number: 5032
-      state: closed
-      title: ' Merge remote-tracking branch ''origin/2.4'' '
-      updated_at: '2019-06-19T16:52:45Z'
-    af74687d529c67c64939b6c76640d43fad260645:
-    - base_ref: master
-      closed_at: '2019-09-03T08:46:57Z'
-      created_at: '2019-09-02T14:59:02Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5255
-      number: 5255
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4'
-      updated_at: '2019-09-03T08:47:00Z'
-    afb98a00847558d17d0a92aaa2c1baa85e2e62b5:
-    - base_ref: master
-      closed_at: '2019-09-19T06:35:02Z'
-      created_at: '2019-09-18T15:06:41Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5306
-      number: 5306
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4'
-      updated_at: '2019-09-19T06:35:05Z'
+    adb1ac1a62e15c8a8ab8465a45dcc492c14ae16a: []
+    ae7526b52ae24331ba34a47e1f0c3e8bcea89e25: []
+    af727ef64e86bfd3d88add7209970684c221995d: []
+    af74687d529c67c64939b6c76640d43fad260645: []
+    afb98a00847558d17d0a92aaa2c1baa85e2e62b5: []
     b037aec:
     - base_ref: '2.4'
       closed_at: '2019-07-22T07:48:15Z'
@@ -3939,24 +3323,8 @@ pulls:
       state: closed
       title: Merge remote-tracking branch 'origin/2.3' into 2.4
       updated_at: '2019-05-20T08:45:22Z'
-    b7f323324ffd69f523e87a7ab2ed6e23596a4dc1:
-    - base_ref: master
-      closed_at: '2019-08-20T14:06:31Z'
-      created_at: '2019-08-20T12:48:55Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5218
-      number: 5218
-      state: closed
-      title: 'Merge remote-tracking branch ''origin/2.4'' '
-      updated_at: '2019-08-20T14:06:35Z'
-    b8ecd10628ba07697a670ffefce7cdd1a74e8f53:
-    - base_ref: master
-      closed_at: '2019-09-03T08:46:57Z'
-      created_at: '2019-09-02T14:59:02Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5255
-      number: 5255
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4'
-      updated_at: '2019-09-03T08:47:00Z'
+    b7f323324ffd69f523e87a7ab2ed6e23596a4dc1: []
+    b8ecd10628ba07697a670ffefce7cdd1a74e8f53: []
     ba5b331da5740a09741f97d2614f882a59439f4e:
     - base_ref: '2.4'
       closed_at: '2019-05-03T07:16:40Z'
@@ -3966,50 +3334,10 @@ pulls:
       state: closed
       title: Add the hiDPILegendImages metadata
       updated_at: '2019-05-03T07:16:44Z'
-    ba8499b71122a91eb9c6a84ba4be1960650214de:
-    - base_ref: master
-      closed_at: '2019-06-28T14:45:34Z'
-      created_at: '2019-06-28T13:37:49Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5113
-      number: 5113
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4'
-      updated_at: '2019-06-28T14:45:36Z'
-    bf7398ab65dd34858b9fbd52e4490662e3359a92:
-    - base_ref: master
-      closed_at: '2019-06-17T07:09:33Z'
-      created_at: '2019-06-14T13:21:21Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5032
-      number: 5032
-      state: closed
-      title: ' Merge remote-tracking branch ''origin/2.4'' '
-      updated_at: '2019-06-19T16:52:45Z'
-    bfa42e4afb1f48cb7ba6d5aa76cbe8567f6f587d:
-    - base_ref: master
-      closed_at: '2019-06-06T07:54:01Z'
-      created_at: '2019-06-05T13:28:15Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/4978
-      number: 4978
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4
-      updated_at: '2019-06-06T07:54:04Z'
+    ba8499b71122a91eb9c6a84ba4be1960650214de: []
+    bf7398ab65dd34858b9fbd52e4490662e3359a92: []
+    bfa42e4afb1f48cb7ba6d5aa76cbe8567f6f587d: []
     c07da9e82af298c9053ecc16acbbd9cb289124de:
-    - base_ref: '2.4'
-      closed_at: null
-      created_at: '2019-11-12T12:27:54Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5519
-      number: 5519
-      state: open
-      title: Add Gunicorn access log
-      updated_at: '2019-11-12T14:24:35Z'
-    - base_ref: '2.4'
-      closed_at: null
-      created_at: '2019-11-12T12:02:47Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5517
-      number: 5517
-      state: open
-      title: Less QGIS server logs by default
-      updated_at: '2019-11-12T14:02:12Z'
     - base_ref: '2.4'
       closed_at: '2019-11-07T08:24:34Z'
       created_at: '2019-11-06T16:19:48Z'
@@ -4036,15 +3364,7 @@ pulls:
       state: closed
       title: Trigger vendor.js update on config change.
       updated_at: '2019-09-18T14:55:46Z'
-    c2192a4c32f02c81681d9545925e3e914fa204a1:
-    - base_ref: master
-      closed_at: '2019-10-22T12:28:56Z'
-      created_at: '2019-10-22T11:09:56Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5424
-      number: 5424
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4'
-      updated_at: '2019-10-22T12:28:59Z'
+    c2192a4c32f02c81681d9545925e3e914fa204a1: []
     c34576c:
     - base_ref: '2.4'
       closed_at: '2019-08-09T12:37:47Z'
@@ -4090,24 +3410,8 @@ pulls:
       state: closed
       title: Better API setup doc
       updated_at: '2019-07-01T14:06:49Z'
-    c98480a11f243fcc6f49fc68b8ced7aa96cc3ba7:
-    - base_ref: master
-      closed_at: '2019-09-19T06:35:02Z'
-      created_at: '2019-09-18T15:06:41Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5306
-      number: 5306
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4'
-      updated_at: '2019-09-19T06:35:05Z'
-    c9b5574a119b994afcbe426d5f9d4e2f51ddfd5c:
-    - base_ref: '2.4'
-      closed_at: null
-      created_at: '2019-10-03T09:06:15Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5357
-      number: 5357
-      state: open
-      title: Fix interface override defaults
-      updated_at: '2019-10-03T12:27:30Z'
+    c98480a11f243fcc6f49fc68b8ced7aa96cc3ba7: []
+    c9b5574a119b994afcbe426d5f9d4e2f51ddfd5c: []
     c9fc723b14b46784dc5c13aac93de8d59479e20e:
     - base_ref: '2.4'
       closed_at: '2019-05-16T10:50:32Z'
@@ -4153,42 +3457,10 @@ pulls:
       state: closed
       title: Switch to a token for OpenShift Auth in Travis
       updated_at: '2019-08-23T09:05:35Z'
-    ccc3369dea3059f70d78ba5769bde1d618ac9ff9:
-    - base_ref: master
-      closed_at: '2019-06-19T20:38:46Z'
-      created_at: '2019-06-19T18:38:47Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5053
-      number: 5053
-      state: closed
-      title: 'Merge remote-tracking branch ''origin/2.4'' '
-      updated_at: '2019-06-19T20:38:49Z'
-    d463a723dcec59a2b85a19b82e908a59cd0d97d2:
-    - base_ref: master
-      closed_at: '2019-08-20T14:06:31Z'
-      created_at: '2019-08-20T12:48:55Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5218
-      number: 5218
-      state: closed
-      title: 'Merge remote-tracking branch ''origin/2.4'' '
-      updated_at: '2019-08-20T14:06:35Z'
-    d4ac0cc68809ce1aef5c03ab4bdf1c687488b197:
-    - base_ref: master
-      closed_at: '2019-06-06T07:54:01Z'
-      created_at: '2019-06-05T13:28:15Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/4978
-      number: 4978
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4
-      updated_at: '2019-06-06T07:54:04Z'
-    d52362367c64dfc0497375dc6dc50720a004bb4b:
-    - base_ref: master
-      closed_at: '2019-09-19T06:35:02Z'
-      created_at: '2019-09-18T15:06:41Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5306
-      number: 5306
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4'
-      updated_at: '2019-09-19T06:35:05Z'
+    ccc3369dea3059f70d78ba5769bde1d618ac9ff9: []
+    d463a723dcec59a2b85a19b82e908a59cd0d97d2: []
+    d4ac0cc68809ce1aef5c03ab4bdf1c687488b197: []
+    d52362367c64dfc0497375dc6dc50720a004bb4b: []
     d73a8d0f8ca3ab60401778797e40093cda2d6880:
     - base_ref: '2.4'
       closed_at: '2019-07-08T12:29:06Z'
@@ -4218,24 +3490,8 @@ pulls:
       state: closed
       title: Changelog
       updated_at: '2019-10-04T08:19:59Z'
-    da1198ead25d592d6f3f2d332f57dc8cadb1152c:
-    - base_ref: master
-      closed_at: '2019-06-17T07:09:33Z'
-      created_at: '2019-06-14T13:21:21Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5032
-      number: 5032
-      state: closed
-      title: ' Merge remote-tracking branch ''origin/2.4'' '
-      updated_at: '2019-06-19T16:52:45Z'
-    da6295a1dac76af639ce7ac1a76790a01b31d0e6:
-    - base_ref: master
-      closed_at: '2019-07-11T14:12:06Z'
-      created_at: '2019-07-11T13:10:05Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5149
-      number: 5149
-      state: closed
-      title: ' Merge remote-tracking branch ''origin/2.4'' '
-      updated_at: '2019-07-11T14:12:09Z'
+    da1198ead25d592d6f3f2d332f57dc8cadb1152c: []
+    da6295a1dac76af639ce7ac1a76790a01b31d0e6: []
     de679e53ab804743668dcfa8e088243788bd9805: []
     de6e124:
     - base_ref: '2.4'
@@ -4354,41 +3610,9 @@ pulls:
       state: closed
       title: clarify docker usage
       updated_at: '2019-09-18T14:55:41Z'
-    ef8a289bd57ed36bbe251a0fb92d8499561d3d78:
-    - base_ref: master
-      closed_at: '2019-09-03T08:46:57Z'
-      created_at: '2019-09-02T14:59:02Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5255
-      number: 5255
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4'
-      updated_at: '2019-09-03T08:47:00Z'
-    f007929d1a14d2981212a0b73ee8ce2c46e07a81:
-    - base_ref: '2.4'
-      closed_at: null
-      created_at: '2019-11-12T16:44:26Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5522
-      number: 5522
-      state: open
-      title: Use resolutions from eCH
-      updated_at: '2019-11-12T16:44:26Z'
-    - base_ref: master
-      closed_at: null
-      created_at: '2019-11-12T16:53:59Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5523
-      number: 5523
-      state: open
-      title: Merge remote-tracking branch 'origin/2.4'
-      updated_at: '2019-11-12T16:54:04Z'
-    f182acbd68d0ca8eafa08efece4a34d9e155efda:
-    - base_ref: master
-      closed_at: '2019-06-06T07:54:01Z'
-      created_at: '2019-06-05T13:28:15Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/4978
-      number: 4978
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4
-      updated_at: '2019-06-06T07:54:04Z'
+    ef8a289bd57ed36bbe251a0fb92d8499561d3d78: []
+    f007929d1a14d2981212a0b73ee8ce2c46e07a81: []
+    f182acbd68d0ca8eafa08efece4a34d9e155efda: []
     f58c9b1d115685d7ba6ef54c255c333d969bd2ff:
     - base_ref: '2.4'
       closed_at: '2019-06-07T12:12:40Z'
@@ -4399,14 +3623,6 @@ pulls:
       title: Don't do WFS query on server that don't support WFS...
       updated_at: '2019-06-07T12:12:44Z'
     f59477dda75a2f29c2ed09a35d7a1fe10a75e50d:
-    - base_ref: '2.4'
-      closed_at: null
-      created_at: '2019-10-08T07:38:21Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5377
-      number: 5377
-      state: open
-      title: Fix percents in environement variables
-      updated_at: '2019-10-08T07:38:21Z'
     - base_ref: '2.4'
       closed_at: '2019-10-04T15:52:54Z'
       created_at: '2019-10-04T09:00:12Z'
@@ -4469,24 +3685,8 @@ pulls:
       state: closed
       title: Allow to set the redis DB to use
       updated_at: '2019-08-23T09:05:27Z'
-    fd8044abf445bd326b5c8bc0532ab43b12f4fae1:
-    - base_ref: master
-      closed_at: '2019-06-17T07:09:33Z'
-      created_at: '2019-06-14T13:21:21Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5032
-      number: 5032
-      state: closed
-      title: ' Merge remote-tracking branch ''origin/2.4'' '
-      updated_at: '2019-06-19T16:52:45Z'
-    fd87cd5fe7b8db1c2a7951ad22cd348f33a690ba:
-    - base_ref: master
-      closed_at: '2019-06-28T14:45:34Z'
-      created_at: '2019-06-28T13:37:49Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/5113
-      number: 5113
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4'
-      updated_at: '2019-06-28T14:45:36Z'
+    fd8044abf445bd326b5c8bc0532ab43b12f4fae1: []
+    fd87cd5fe7b8db1c2a7951ad22cd348f33a690ba: []
     fec9f65e4aaf2ea49f197cd3a731a7ff80fab64d:
     - base_ref: '2.4'
       closed_at: '2019-06-18T12:32:57Z'
@@ -4496,15 +3696,7 @@ pulls:
       state: closed
       title: Be able to configure the PGSCHEMA in mapserver
       updated_at: '2019-06-18T12:33:01Z'
-    fed30dcf3140dec561759ce621ccc3f9c0e38a8b:
-    - base_ref: master
-      closed_at: '2019-06-06T07:54:01Z'
-      created_at: '2019-06-05T13:28:15Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/4978
-      number: 4978
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4
-      updated_at: '2019-06-06T07:54:04Z'
+    fed30dcf3140dec561759ce621ccc3f9c0e38a8b: []
     fefe4beab232dfd0e876f41ffbee085147e689d6:
     - base_ref: '2.4'
       closed_at: '2019-06-27T14:38:44Z'
@@ -4525,14 +3717,6 @@ pulls:
       title: Fix query on a WMS layer group
       updated_at: '2019-06-05T09:28:36Z'
     07b85e9:
-    - base_ref: master
-      closed_at: null
-      created_at: '2019-10-09T13:23:36Z'
-      html_url: https://github.com/camptocamp/ngeo/pull/5210
-      number: 5210
-      state: open
-      title: Merge 2.4 into master
-      updated_at: '2019-10-09T14:17:46Z'
     - base_ref: '2.4'
       closed_at: '2019-10-09T09:52:36Z'
       created_at: '2019-10-09T09:00:55Z'
@@ -4678,14 +3862,6 @@ pulls:
       title: Fix typo in api doc
       updated_at: '2019-08-23T08:47:34Z'
     3e0942f:
-    - base_ref: '2.4'
-      closed_at: null
-      created_at: '2019-10-31T15:56:57Z'
-      html_url: https://github.com/camptocamp/ngeo/pull/5268
-      number: 5268
-      state: open
-      title: Use all window resize handles
-      updated_at: '2019-10-31T15:59:39Z'
     - base_ref: '2.4'
       closed_at: '2019-10-30T13:42:50Z'
       created_at: '2019-10-30T12:11:44Z'
@@ -4938,14 +4114,6 @@ pulls:
       title: Merge remote-tracking branch 'origin/2.3' into 2.4
       updated_at: '2019-08-20T15:37:30Z'
     a2367c5e5fef5e9441b3ae5f3962d97de21dec92:
-    - base_ref: master
-      closed_at: null
-      created_at: '2019-10-09T13:23:36Z'
-      html_url: https://github.com/camptocamp/ngeo/pull/5210
-      number: 5210
-      state: open
-      title: Merge 2.4 into master
-      updated_at: '2019-10-09T14:17:46Z'
     - base_ref: '2.4'
       closed_at: '2019-10-09T09:37:55Z'
       created_at: '2019-10-09T08:13:58Z'
@@ -4972,15 +4140,7 @@ pulls:
       state: closed
       title: Reorder private groups
       updated_at: '2019-08-30T11:05:30Z'
-    a7fb569:
-    - base_ref: master
-      closed_at: '2019-07-10T14:55:16Z'
-      created_at: '2019-07-10T12:55:28Z'
-      html_url: https://github.com/camptocamp/ngeo/pull/5001
-      number: 5001
-      state: closed
-      title: Merge remote-tracking branch 'origin/2.4'
-      updated_at: '2019-07-10T14:55:19Z'
+    a7fb569: []
     a7fb569943afb49a26869f40e25282cf8dd99923:
     - base_ref: master
       closed_at: '2019-07-10T14:55:16Z'
@@ -5161,15 +4321,7 @@ pulls:
       state: closed
       title: Fix the opacity slider, don't download unneeded tiles
       updated_at: '2019-09-10T09:40:15Z'
-    d2b1362bd5002190fecc32b257c381be89f284b4:
-    - base_ref: master
-      closed_at: '2019-04-30T12:26:17Z'
-      created_at: '2019-04-30T11:54:33Z'
-      html_url: https://github.com/camptocamp/ngeo/pull/4864
-      number: 4864
-      state: closed
-      title: Bump version to 2.5
-      updated_at: '2019-04-30T12:26:20Z'
+    d2b1362bd5002190fecc32b257c381be89f284b4: []
     d99ac9031b3097c0a01d267f939a422e9d3bbd42:
     - base_ref: '2.4'
       closed_at: '2019-06-28T13:24:46Z'
