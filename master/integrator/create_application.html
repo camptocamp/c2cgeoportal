@@ -89,7 +89,7 @@ c2cgeoportal application you want to create the new application from:</p>
 <p>The package name should not contain an underscore (<code class="docutils literal notranslate"><span class="pre">_</span></code>) because of an
 issue with Pip.</p>
 <p>To create the application, first apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_create</span></code> scaffold:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm -ti <span class="se">\</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm -ti --volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src <span class="se">\</span>
     camptocamp/geomapfish-tools:&lt;release<span class="p">|</span>version&gt; <span class="se">\</span>
     run <span class="k">$(</span>id -u<span class="k">)</span> <span class="k">$(</span>id -g<span class="k">)</span> /src <span class="se">\</span>
     pcreate -s c2cgeoportal_create &lt;project&gt;</span>
@@ -105,7 +105,7 @@ it later.</p>
 <p>You can define this information directly in the command line using
 parameters:</p>
 <blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm -ti <span class="se">\</span>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm -ti --volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src <span class="se">\</span>
     --env<span class="o">=</span><span class="nv">SRID</span><span class="o">=</span><span class="m">21781</span> <span class="se">\</span>
     --env<span class="o">=</span><span class="nv">EXTENT</span><span class="o">=</span><span class="s2">&quot;420000,30000,900000,350000&quot;</span> <span class="se">\</span>
     camptocamp/geomapfish-tools:&lt;release<span class="p">|</span>version&gt; <span class="se">\</span>
@@ -118,7 +118,7 @@ parameters:</p>
 <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> directory, or to the directory of the application you are
 creating this application from.</p>
 <p>Now apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_update</span></code> scaffold:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm -ti --env<span class="o">=</span><span class="nv">SRID</span><span class="o">=</span><span class="m">21781</span> <span class="se">\</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm -ti --volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src --env<span class="o">=</span><span class="nv">SRID</span><span class="o">=</span><span class="m">21781</span> <span class="se">\</span>
     camptocamp/geomapfish-tools:&lt;release<span class="p">|</span>version&gt; <span class="se">\</span>
     run <span class="k">$(</span>id -u<span class="k">)</span> <span class="k">$(</span>id -g<span class="k">)</span> /src <span class="se">\</span>
     pcreate -s c2cgeoportal_update <span class="se">\</span>
