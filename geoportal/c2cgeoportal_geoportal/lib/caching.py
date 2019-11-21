@@ -108,7 +108,7 @@ def get_region(region):
     """
     global _REGION
     if region not in _REGION:
-        _REGION[region] = make_region(function_key_generator=keygen_function, key_mangler=sha1_mangle_key)
+        _REGION[region] = make_region(function_key_generator=keygen_function)
     return _REGION[region]
 
 
@@ -132,7 +132,7 @@ class HybridBackend(RedisBackend):
     def get(self, key):
         value = self._cache.get(key, NO_VALUE)
         if value == NO_VALUE:
-            value = super().get(key)
+            value = super().get(sha1_mangle_key(key.encode()))
         if value != NO_VALUE:
             self._cache[key] = value
         return value
@@ -142,7 +142,7 @@ class HybridBackend(RedisBackend):
 
     def set(self, key, value):
         self._cache[key] = value
-        super().set(key, value)
+        super().set(sha1_mangle_key(key.encode()), value)
 
     def set_multi(self, mapping):
         for key, value in mapping.items():
