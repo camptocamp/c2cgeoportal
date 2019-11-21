@@ -49,12 +49,14 @@ import zope.event.classhandler
 
 import c2cgeoportal_commons.models
 from c2cgeoportal_geoportal.lib import C2CPregenerator, caching, check_collector, checker
+from c2cgeoportal_geoportal.lib.metrics import MemoryCacheSizeProvider, RasterDataSizeProvider
 from c2cgeoportal_geoportal.lib.xsd import XSD
 import c2cgeoportal_geoportal.views
 import c2cwsgiutils
 import c2cwsgiutils.db
 from c2cwsgiutils.health_check import HealthCheck
 import c2cwsgiutils.index
+from c2cwsgiutils.metrics import MemoryMapProvider, add_provider
 
 LOG = logging.getLogger(__name__)
 
@@ -340,6 +342,16 @@ def includeme(config: pyramid.config.Configurator):
     config.include("c2cwsgiutils.pyramid.includeme")
     health_check = HealthCheck(config)
     config.registry["health_check"] = health_check
+
+    metrics_config = config.registry.settings["metrics"]
+    if metrics_config["memory_maps_rss"]:
+        add_provider(MemoryMapProvider("rss"))
+    if metrics_config["memory_maps_size"]:
+        add_provider(MemoryMapProvider("size"))
+    if metrics_config["memory_cache"]:
+        add_provider(MemoryCacheSizeProvider())
+    if metrics_config["raster_data"]:
+        add_provider(RasterDataSizeProvider())
 
     # Initialise DBSessions
     init_dbsessions(settings, config, health_check)

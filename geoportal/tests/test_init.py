@@ -63,6 +63,12 @@ class TestIncludeme(TestCase):
                 "app.cfg": "/opt/c2cgeoportal/geoportal/tests/config.yaml",
                 "package": "c2cgeoportal",
                 "enable_admin_interface": False,
+                "metrics": {
+                    "memory_maps_rss": False,
+                    "memory_maps_size": False,
+                    "memory_cache": False,
+                    "raster_data": False,
+                },
             }
         )
 

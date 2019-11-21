@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2018-2019, Camptocamp SA
+# Copyright (c) 2019, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,54 +27,44 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-
-import logging
-import time
-from typing import Any, Dict
-
-from pyramid.view import view_config
-
 from c2cgeoportal_geoportal.lib.caching import MEMORY_CACHE_DICT
-from c2cgeoportal_geoportal.views import raster
+from c2cgeoportal_geoportal.views.raster import Raster
 from c2cwsgiutils import broadcast
-from c2cwsgiutils.auth import auth_view
 from c2cwsgiutils.debug import get_size
-
-LOG = logging.getLogger(__name__)
-
-
-@view_config(route_name="memory", renderer="fast_json")
-def memory(request):
-    auth_view(request)
-    return _memory()
+from c2cwsgiutils.metrics import Provider
 
 
-def _nice_type_name(obj):
-    type_ = type(obj)
-    return "{}.{}".format(type_.__module__, type_.__name__)
+class MemoryCacheSizeProvider(Provider):
+    def __init__(self):
+        super().__init__("pod_process_memory_cache_kb", "Used memory cache")
+
+    def get_data(self):
+        result = []
+        for elem in _get_memory_cache().values():
+            for value in elem["values"]:
+                value["pid"] = elem["pid"]
+                result.append(value)
 
 
-def _process_dict(dict_):
-    # Timeout after one minute, must be set to a bit less that the timeout of the broadcast
-    timeout = time.monotonic() + 20
-
-    return sorted(
-        [
-            {
-                "key": key,
-                "type": _nice_type_name(value),
-                "repr": repr(value),
-                "size_kb": get_size(value) / 1024 if time.monotonic() < timeout else -1,
-            }
-            for key, value in dict_.items()
-        ],
-        key=lambda i: -i["size_kb"],
-    )
-
-
-@broadcast.decorator(expect_answers=True, timeout=110)
-def _memory() -> Dict[str, Any]:
+@broadcast.decorator(expect_answers=True, timeout=15)
+def _get_memory_cache():
     return {
-        "raster_data": _process_dict(raster.Raster.data),
-        "memory_cache": _process_dict(MEMORY_CACHE_DICT),
+        "values": [({"key": key}, get_size(value) + 1024) for key, value in list(MEMORY_CACHE_DICT.items())]
     }
+
+
+class RasterDataSizeProvider(Provider):
+    def __init__(self):
+        super().__init__("pod_process_raster_data_kb", "Memory used by raster")
+
+    def get_data(self):
+        result = []
+        for elem in _get_raster_data().values():
+            for value in elem["values"]:
+                value["pid"] = elem["pid"]
+                result.append(value)
+
+
+@broadcast.decorator(expect_answers=True, timeout=15)
+def _get_raster_data():
+    return {"values": [({"key": key}, get_size(value) + 1024) for key, value in list(Raster.data.items())]}
