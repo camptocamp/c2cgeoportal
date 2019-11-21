@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2013-2019, Camptocamp SA
+# Copyright (c) 2013-2020, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -81,10 +81,10 @@ def send_email(
         smtp: smtplib.SMTP = smtplib.SMTP_SSL(smtp_config["host"])
     else:
         smtp = smtplib.SMTP(smtp_config["host"])
-    if smtp_config.get("user", False):
-        smtp.login(smtp_config["user"], smtp_config["password"])
     if smtp_config.get("starttls", False):
         smtp.starttls()
+    if smtp_config.get("user", False):
+        smtp.login(smtp_config["user"], smtp_config["password"])
 
     smtp.sendmail(from_addr, to_addrs, msg.as_string())
     smtp.close()
