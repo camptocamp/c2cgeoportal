@@ -32,13 +32,13 @@ import logging
 import time
 from typing import Any, Dict
 
+from c2cwsgiutils import broadcast
+from c2cwsgiutils.auth import auth_view
+from c2cwsgiutils.debug import get_size
 from pyramid.view import view_config
 
 from c2cgeoportal_geoportal.lib.caching import MEMORY_CACHE_DICT
 from c2cgeoportal_geoportal.views import raster
-from c2cwsgiutils import broadcast
-from c2cwsgiutils.auth import auth_view
-from c2cwsgiutils.debug import get_size
 
 LOG = logging.getLogger(__name__)
 
@@ -62,9 +62,9 @@ def _process_dict(dict_):
             "key": key,
             "type": _nice_type_name(value),
             "repr": repr(value),
-            "size": get_size(value) if time.monotonic() < timeout else -1,
+            "size_kb": get_size(value) / 1024 if time.monotonic() < timeout else -1,
         }
-        for key, value in dict_.items()], key=lambda i: -i["size"])
+        for key, value in dict_.items()], key=lambda i: -i["size_kb"])
 
 
 @broadcast.decorator(expect_answers=True, timeout=110)
