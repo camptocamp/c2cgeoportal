@@ -58,14 +58,13 @@ def _process_dict(dict_):
     # Timeout after one minute, must be set to a bit less that the timeout of the broadcast
     timeout = time.monotonic() + 20
 
-    return {
-        key: {
+    return sorted([{
+            "key": key,
             "type": _nice_type_name(value),
             "repr": repr(value),
             "size": get_size(value) if time.monotonic() < timeout else -1,
         }
-        for key, value in dict_.items()
-    }
+        for key, value in dict_.items()], key=lambda i: -i["size"])
 
 
 @broadcast.decorator(expect_answers=True, timeout=110)
