@@ -77,10 +77,10 @@ def send_email(
         smtp = smtplib.SMTP_SSL(smtp_config['host'])  # type: smtplib.SMTP
     else:
         smtp = smtplib.SMTP(smtp_config['host'])
-    if smtp_config.get('user', False):
-        smtp.login(smtp_config['user'], smtp_config['password'])
     if smtp_config.get('starttls', False):
         smtp.starttls()
+    if smtp_config.get("user", False):
+        smtp.login(smtp_config["user"], smtp_config["password"])
 
     smtp.sendmail(from_addr, to_addrs, msg.as_string())
     smtp.close()
