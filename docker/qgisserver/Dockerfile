@@ -1,6 +1,6 @@
 ARG VERSION
 
-FROM camptocamp/c2cwsgiutils:3 AS c2cwsgiutils
+FROM camptocamp/c2cwsgiutils:3-lite AS c2cwsgiutils
 
 FROM camptocamp/qgis-server:${VERSION} AS base
 LABEL maintainer Camptocamp "info@camptocamp.com"

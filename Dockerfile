@@ -1,7 +1,7 @@
 #############################################################################################################
 # The base image with apt and python packages.
 
-FROM camptocamp/c2cwsgiutils:3 AS base
+FROM camptocamp/c2cwsgiutils:3-lite AS base
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
 ENV \
