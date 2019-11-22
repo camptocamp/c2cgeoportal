@@ -198,7 +198,7 @@ class _CapabilitiesFilter(XMLFilterBase):
         self.tag_name = tag_name
         self.level = 0
 
-    def _complete_text_node(self):
+    def _complete_text_node(self) -> None:
         if self._accumulator:
             self._downstream.characters("".join(self._accumulator))
             self._accumulator = []

@@ -62,7 +62,7 @@ class PermissionSetter:
         self.default_permission_to_revert = None
         self.config = config
 
-    def __enter__(self):
+    def __enter__(self) -> None:
         self.config.commit()  # avoid .ConfigurationConflictError
         if self.config.introspector.get_category("default permission"):
             self.default_permission_to_revert = self.config.introspector.get_category("default permission")[
