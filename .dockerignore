@@ -1,6 +1,8 @@
 *
 !bin/
-!internal.mk
+!checks.mk
+!dependencies.mk
+!build.mk
 !requirements*.txt
 !commons
 !geoportal
