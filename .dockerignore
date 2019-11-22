@@ -19,6 +19,7 @@
 !.gitattributes
 !.pylintrc
 !.bandit
+!.isort.cfg
 !setup.cfg
 !lingua.cfg
 !package.json
