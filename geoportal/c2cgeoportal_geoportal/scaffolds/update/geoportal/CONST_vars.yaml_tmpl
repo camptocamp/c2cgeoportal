@@ -645,6 +645,12 @@ vars:
   authorized_referers:
     - '{VISIBLE_WEB_PROTOCOL}://{VISIBLE_WEB_HOST}/'
 
+  metrics:
+    memory_maps_rss: False
+    memory_maps_size: False
+    memory_cache: False
+    raster_data: False
+
   # Hooks that can be called at different moments in the life of the
   # application. The value is the full python name
   # (full.module.path.function_name) of the function to call

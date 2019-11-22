@@ -681,3 +681,19 @@ mapping:
             required: True
       regex;(.+):
         type: any
+      metrics:
+        type: map
+        required: True
+        mapping:
+          memory_maps_rss:
+            required: True
+            type: bool
+          memory_maps_size:
+            required: True
+            type: bool
+          memory_cache:
+            required: True
+            type: bool
+          raster_data:
+            required: True
+            type: bool
