@@ -37,6 +37,11 @@ import time
 from urllib.parse import urlsplit
 
 from Crypto.Cipher import AES  # nosec
+import c2cwsgiutils
+import c2cwsgiutils.db
+from c2cwsgiutils.health_check import HealthCheck
+import c2cwsgiutils.index
+from c2cwsgiutils.metrics import MemoryMapProvider, add_provider
 from dogpile.cache import register_backend
 from papyrus.renderers import GeoJSON
 from pyramid.config import Configurator
@@ -52,11 +57,6 @@ from c2cgeoportal_geoportal.lib import C2CPregenerator, caching, check_collector
 from c2cgeoportal_geoportal.lib.metrics import MemoryCacheSizeProvider, RasterDataSizeProvider
 from c2cgeoportal_geoportal.lib.xsd import XSD
 import c2cgeoportal_geoportal.views
-import c2cwsgiutils
-import c2cwsgiutils.db
-from c2cwsgiutils.health_check import HealthCheck
-import c2cwsgiutils.index
-from c2cwsgiutils.metrics import MemoryMapProvider, add_provider
 
 LOG = logging.getLogger(__name__)
 

@@ -39,6 +39,7 @@ from typing import Dict, Set, Tuple  # noqa # pylint: disable=unused-import
 import urllib.parse
 import xml.dom.minidom  # noqa # pylint: disable=unused-import
 
+from c2cwsgiutils.auth import auth_view
 from defusedxml import lxml
 from owslib.wms import WebMapService
 from pyramid.view import view_config
@@ -58,7 +59,6 @@ from c2cgeoportal_geoportal.lib.layers import (
 )
 from c2cgeoportal_geoportal.lib.wmstparsing import TimeInformation, parse_extent
 from c2cgeoportal_geoportal.views.layers import get_layer_metadatas
-from c2cwsgiutils.auth import auth_view
 
 LOG = logging.getLogger(__name__)
 CACHE_REGION = get_region("std")

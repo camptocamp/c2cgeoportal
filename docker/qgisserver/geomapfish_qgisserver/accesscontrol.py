@@ -18,6 +18,7 @@ from threading import Lock
 import traceback
 
 from c2c.template.config import config
+import c2cwsgiutils.broadcast
 import geoalchemy2
 from shapely import ops
 import sqlalchemy
@@ -25,7 +26,6 @@ from sqlalchemy.orm import configure_mappers, scoped_session, sessionmaker
 import yaml
 import zope.event.classhandler
 
-import c2cwsgiutils.broadcast
 from qgis.core import QgsDataSourceUri, QgsLayerTreeGroup, QgsLayerTreeLayer, QgsMessageLog, QgsProject
 from qgis.server import QgsAccessControlFilter
 

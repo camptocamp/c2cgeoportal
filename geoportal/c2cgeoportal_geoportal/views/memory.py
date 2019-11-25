@@ -32,13 +32,13 @@ import logging
 import time
 from typing import Any, Dict
 
+from c2cwsgiutils import broadcast
+from c2cwsgiutils.auth import auth_view
+from c2cwsgiutils.debug import get_size
 from pyramid.view import view_config
 
 from c2cgeoportal_geoportal.lib.caching import MEMORY_CACHE_DICT
 from c2cgeoportal_geoportal.views import raster
-from c2cwsgiutils import broadcast
-from c2cwsgiutils.auth import auth_view
-from c2cwsgiutils.debug import get_size
 
 LOG = logging.getLogger(__name__)
 

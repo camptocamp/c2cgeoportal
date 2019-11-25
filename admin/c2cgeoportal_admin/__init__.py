@@ -1,5 +1,6 @@
 from c2c.template.config import config as configuration
 import c2cgeoform
+import c2cwsgiutils.pretty_json
 from pkg_resources import resource_filename
 from pyramid.config import Configurator
 from pyramid.events import BeforeRender, NewRequest
@@ -9,7 +10,6 @@ from translationstring import TranslationStringFactory
 import zope.sqlalchemy
 
 from c2cgeoportal_admin.subscribers import add_localizer, add_renderer_globals
-import c2cwsgiutils.pretty_json
 
 search_paths = (resource_filename(__name__, "templates/widgets"),) + c2cgeoform.default_search_paths
 c2cgeoform.default_search_paths = search_paths

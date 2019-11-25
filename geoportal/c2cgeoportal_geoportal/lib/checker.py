@@ -32,9 +32,8 @@ import subprocess
 from time import sleep
 from urllib.parse import urljoin
 
-import requests
-
 import c2cwsgiutils.health_check
+import requests
 
 LOG = logging.getLogger(__name__)
 
