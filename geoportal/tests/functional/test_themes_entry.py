@@ -317,7 +317,6 @@ class TestThemeEntryView(TestCase):
         layers = {l["name"] for l in themes[0]["children"][0]["children"]}
         assert layers == {"__test_public_layer_notmapfile"}
         assert {e[:90] for e in errors} == {
-            "The layer '__test_public_layer_notmapfile' (__test_public_layer_notmapfile) is not defined",
             "GetCapabilities from URL http://mapserver:8080/?map=not_a_mapfile&SERVICE=WMS&VERSION=1.1.",
         }
 
@@ -335,68 +334,3 @@ class TestThemeEntryView(TestCase):
         assert len(themes) == 1
         layers = {l["name"] for l in themes[0]["children"][0]["children"]}
         assert layers == {"__test_public_layer_geoserver"}
-
-    def test__get_child_layers_info_with_scalehint(self):
-        import math
-        from tests import DummyRequest
-        from c2cgeoportal_geoportal.views.theme import Theme
-
-        request = DummyRequest()
-        request.user = None
-        theme_view = Theme(request)
-
-        class Layer:
-            pass
-
-        child_layer_1 = Layer()
-        child_layer_1.name = "layer_1"
-        child_layer_1.scaleHint = {"min": 1 * math.sqrt(2), "max": 2 * math.sqrt(2)}
-        child_layer_1.layers = []
-
-        child_layer_2 = Layer()
-        child_layer_2.name = "layer_2"
-        child_layer_2.scaleHint = {"min": 3 * math.sqrt(2), "max": 4 * math.sqrt(2)}
-        child_layer_2.layers = []
-
-        layer = Layer()
-        layer.layers = [child_layer_1, child_layer_2]
-
-        child_layers_info = theme_view._get_child_layers_info_1(layer)
-
-        expected = [
-            {"name": "layer_1", "minResolutionHint": 1.0, "maxResolutionHint": 2.0},
-            {"name": "layer_2", "minResolutionHint": 3.0, "maxResolutionHint": 4.0},
-        ]
-        self.assertEqual(child_layers_info, expected)
-
-    def test__get_child_layers_info_without_scalehint(self):
-        from tests import DummyRequest
-        from c2cgeoportal_geoportal.views.theme import Theme
-
-        request = DummyRequest()
-        request.user = None
-        theme_view = Theme(request)
-
-        class Layer:
-            pass
-
-        child_layer_1 = Layer()
-        child_layer_1.name = "layer_1"
-        child_layer_1.scaleHint = None
-        child_layer_1.layers = []
-
-        child_layer_2 = Layer()
-        child_layer_2.name = "layer_2"
-        child_layer_2.scaleHint = None
-        child_layer_2.layers = []
-
-        layer = Layer()
-        layer.layers = [child_layer_1, child_layer_2]
-
-        child_layers_info = theme_view._get_child_layers_info_1(layer)
-
-        expected = [
-            {"name": "layer_1", "minResolutionHint": 0.0, "maxResolutionHint": 999999999.0},
-            {"name": "layer_2", "minResolutionHint": 0.0, "maxResolutionHint": 999999999.0},
-        ]
-        self.assertEqual(child_layers_info, expected)
