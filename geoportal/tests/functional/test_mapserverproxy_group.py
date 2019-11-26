@@ -33,10 +33,11 @@
 from unittest import TestCase
 
 from geoalchemy2 import WKTElement
+import transaction
+
 from tests.functional import create_default_ogcserver, create_dummy_request
 from tests.functional import setup_common as setup_module  # noqa
 from tests.functional import teardown_common as teardown_module  # noqa
-import transaction
 
 
 class TestMapserverproxyViewGroup(TestCase):

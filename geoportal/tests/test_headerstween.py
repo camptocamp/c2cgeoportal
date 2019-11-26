@@ -33,6 +33,7 @@
 from unittest import TestCase
 
 import pyramid.registry
+
 from tests import DummyRequest
 
 

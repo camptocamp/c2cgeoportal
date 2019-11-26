@@ -35,13 +35,13 @@ from unittest import TestCase
 from unittest.mock import patch
 
 import pyramid.security
-from tests.functional import create_dummy_request
-from tests.functional import setup_common as setup_module  # noqa
-from tests.functional import teardown_common as teardown_module  # noqa
 import transaction
 
 from c2cgeoportal_geoportal import create_get_user_from_request
 from c2cgeoportal_geoportal.scripts.urllogin import create_token
+from tests.functional import create_dummy_request
+from tests.functional import setup_common as setup_module  # noqa
+from tests.functional import teardown_common as teardown_module  # noqa
 
 
 class TestUrllogin(TestCase):
