@@ -49,12 +49,15 @@ def memory(request):
     return _memory()
 
 
-def _nice_type_name(obj):
+def _nice_type_name(obj, dogpile_cache=False):
+    # See: https://dogpilecache.sqlalchemy.org/en/latest/api.html#dogpile.cache.api.CachedValue
+    if dogpile_cache:
+        obj, _ = obj
     type_ = type(obj)
     return "{}.{}".format(type_.__module__, type_.__name__)
 
 
-def _process_dict(dict_):
+def _process_dict(dict_, dogpile_cache=False):
     # Timeout after one minute, must be set to a bit less that the timeout of the broadcast
     timeout = time.monotonic() + 20
 
@@ -62,7 +65,7 @@ def _process_dict(dict_):
         [
             {
                 "key": key,
-                "type": _nice_type_name(value),
+                "type": _nice_type_name(value, dogpile_cache),
                 "repr": repr(value),
                 "size_kb": get_size(value) / 1024 if time.monotonic() < timeout else -1,
             }
@@ -76,5 +79,5 @@ def _process_dict(dict_):
 def _memory() -> Dict[str, Any]:
     return {
         "raster_data": _process_dict(raster.Raster.data),
-        "memory_cache": _process_dict(MEMORY_CACHE_DICT),
+        "memory_cache": _process_dict(MEMORY_CACHE_DICT, True),
     }
