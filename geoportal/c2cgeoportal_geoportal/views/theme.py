@@ -181,8 +181,6 @@ class Theme:
         if errors:
             return None, errors
 
-        wms = None
-
         @CACHE_REGION_OBJ.cache_on_arguments()
         def build_web_map_service(ogc_server_id):
             del ogc_server_id  # Just for cache
@@ -195,9 +193,8 @@ class Theme:
                     "WARNING! an error '{}' occurred while trying to read the mapfile and recover the themes."
                     "\nURL: {}\n{}".format(e, url, content)
                 )
-                errors.add(error)
                 LOG.error(error, exc_info=True)
-                return None
+                return None, {error}
             wms_layers_name = list(wms.contents)
             for layer_name in wms_layers_name:
                 wms_layer = wms[layer_name]
@@ -217,11 +214,9 @@ class Theme:
                     "children": [l.name for l in wms_layer.layers],
                 }
 
-            return {"layers": layers}
+            return {"layers": layers}, set()
 
-        wms = build_web_map_service(ogc_server.id)
-
-        return wms, errors
+        return build_web_map_service(ogc_server.id)
 
     async def _wms_getcap_cached(self, ogc_server, _):
         """ _ is just for cache on the role id """
@@ -234,8 +229,6 @@ class Theme:
         # Add functionality params
         sparams = get_mapserver_substitution_params(self.request)
         url = add_url_params(url, sparams)
-
-        errors = set()
 
         url = add_url_params(
             url,
@@ -678,7 +671,7 @@ class Theme:
         if wms_errors:
             return None, wms_errors
 
-        return wms, wms_errors
+        return wms, set()
 
     def _load_tree_items(self):
         # Populate sqlalchemy session.identity_map to reduce the number of database requests.
