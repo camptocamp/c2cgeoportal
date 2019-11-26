@@ -96,24 +96,36 @@ RUN \
 RUN \
   curl --output /opt/jasperreport.xsd http://jasperreports.sourceforge.net/xsd/jasperreport.xsd
 
-COPY internal.mk vars.yaml /opt/c2cgeoportal/
-COPY .tx/ /opt/c2cgeoportal/.tx/
-WORKDIR /opt/c2cgeoportal/
+WORKDIR /opt/c2cgeoportal
+COPY dependencies.mk vars.yaml ./
+COPY .tx/ .tx/
 ARG MAJOR_VERSION
 ENV MAJOR_VERSION=$MAJOR_VERSION
-RUN make --makefile=internal.mk dependencies
+RUN make --makefile=dependencies.mk dependencies
 
-COPY . /opt/c2cgeoportal/
+COPY bin/ bin/
+COPY scripts/ scripts/
+COPY geoportal/c2cgeoportal_geoportal/scaffolds/ geoportal/c2cgeoportal_geoportal/scaffolds/
+COPY build.mk lingua.cfg ./
+
 RUN mv bin/import-ngeo-apps bin/eval-templates bin/wait-db bin/transifex-init bin/run bin/run-git /usr/bin/
-RUN make --makefile=internal.mk dependencies-touch
-RUN make --makefile=internal.mk build
+RUN make --makefile=build.mk dependencies-touch
+RUN make --makefile=build.mk build
 
-ARG VERSION
+COPY commons/ commons/
+COPY geoportal/ geoportal/
+COPY admin/ admin/
+RUN make --makefile=build.mk \
+        geoportal/c2cgeoportal_geoportal/locale/c2cgeoportal_geoportal.pot \
+        admin/c2cgeoportal_admin/locale/c2cgeoportal_admin.pot
+
+ARG VERSION=2.5
 ENV VERSION=$VERSION
+
 RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --no-deps \
-    --editable=/opt/c2cgeoportal/commons \
-    --editable=/opt/c2cgeoportal/geoportal \
-    --editable=/opt/c2cgeoportal/admin
+    --editable=commons \
+    --editable=geoportal \
+    --editable=admin
 
 # For awscli
 RUN echo 'complete -C aws_completer aws' >> /etc/bash_completion.d/aws_completer
@@ -131,10 +143,10 @@ WORKDIR /src
 FROM tools AS tools-cleaned
 
 # Removes unwanted and unsecured (see bandit checks) files
-RUN rm --recursive --force /opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/scaffolds \
-    /opt/c2cgeoportal/*/tests \
-    /opt/c2cgeoportal/commons/c2cgeoportal_commons/testing/ \
-    /opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/scripts/c2cupgrade.py
+RUN rm --recursive --force geoportal/c2cgeoportal_geoportal/scaffolds \
+    */tests \
+    commons/c2cgeoportal_commons/testing/ \
+    geoportal/c2cgeoportal_geoportal/scripts/c2cupgrade.py
 
 
 #############################################################################################################
@@ -155,15 +167,16 @@ COPY bin/eval-templates bin/wait-db bin/update-po bin/list4vrt /usr/bin/
 COPY --from=tools-cleaned /opt/c2cgeoportal /opt/c2cgeoportal
 COPY --from=tools-cleaned /usr/lib/node_modules/ngeo/buildtools/check-example.js /usr/bin/
 
-WORKDIR /opt/c2cgeoportal/geoportal
-
+WORKDIR /opt/c2cgeoportal
 RUN \
   ln -s /opt/c2cgeoportal/commons/c2cgeoportal_commons/alembic /opt && \
   python3 -m pip install --disable-pip-version-check --no-cache-dir --no-deps \
-    --editable=/opt/c2cgeoportal/commons \
-    --editable=/opt/c2cgeoportal/geoportal \
-    --editable=/opt/c2cgeoportal/admin && \
+    --editable=commons \
+    --editable=geoportal \
+    --editable=admin && \
     python3 -m compileall -q /opt/c2cgeoportal /usr/local/lib/python3.7
+
+WORKDIR /opt/c2cgeoportal/geoportal
 
 RUN adduser www-data root
 
@@ -172,6 +185,7 @@ RUN adduser www-data root
 # Image that run the checks
 
 FROM tools AS checks
+
 WORKDIR /opt/c2cgeoportal
 
 # For mypy
@@ -179,4 +193,6 @@ RUN \
   touch /usr/local/lib/python3.7/dist-packages/zope/__init__.py && \
   touch /usr/local/lib/python3.7/dist-packages/c2c/__init__.py
 
-RUN make --makefile=internal.mk checks
+COPY .bandit .gitattributes .pylintrc checks.mk setup.cfg ./
+
+RUN make --makefile=checks.mk checks
