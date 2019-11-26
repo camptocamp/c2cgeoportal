@@ -1,3 +1,4 @@
+##### 2.4.1.59
 ##### 2.4.1.58
 * Start TLS before login on SMTP server [c2cgeoportal#5557](https://github.com/camptocamp/c2cgeoportal/pull/5557)
 ##### 2.4.1.57
