@@ -109,7 +109,7 @@ class GeomapfishAngularExtractor(Extractor):  # pragma: no cover
 
     extensions = [".js", ".html"]
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         if os.path.exists("/etc/geomapfish/config.yaml"):
             config.init("/etc/geomapfish/config.yaml")
@@ -341,7 +341,7 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
     featuretype_cache = {}  # type: Dict[str, Dict]
     wmscap_cache = {}  # type: Dict[str, WebMapService]
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         if os.path.exists("/etc/geomapfish/config.yaml"):
             config.init("/etc/geomapfish/config.yaml")

@@ -79,7 +79,7 @@ class DimensionInformation:
 
     URL_PART_RE = re.compile(r"[a-zA-Z0-9_\-\+~\.]*$")
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._dimensions = {}
         self._dimension_filters = {}
 
@@ -673,7 +673,7 @@ class Theme:
 
         return wms, set()
 
-    def _load_tree_items(self):
+    def _load_tree_items(self) -> None:
         # Populate sqlalchemy session.identity_map to reduce the number of database requests.
         self._ogcservers_cache = models.DBSession.query(main.OGCServer).all()
         self._treeitems_cache = models.DBSession.query(main.TreeItem).all()

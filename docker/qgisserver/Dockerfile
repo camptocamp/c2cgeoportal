@@ -28,8 +28,6 @@ RUN python3 -m pip install --requirement=/src/requirements-dev.txt
 COPY . /src/
 RUN flake8 /src
 RUN pylint --errors-only --disable=import-error /src/geomapfish_qgisserver
-# TODO: add --disallow-untyped-defs
-RUN	mypy --ignore-missing-imports --strict-optional --follow-imports skip /src/geomapfish_qgisserver
 
 #############################################################################################################
 

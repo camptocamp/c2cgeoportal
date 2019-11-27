@@ -70,7 +70,7 @@ class Login:
             functionality[func_] = get_functionality(func_, self.request, is_intranet(self.request))
         return functionality
 
-    def _referer_log(self):
+    def _referer_log(self) -> None:
         if not hasattr(self.request, "is_valid_referer"):
             self.request.is_valid_referer = is_valid_referer(self.request)
         if not self.request.is_valid_referer:

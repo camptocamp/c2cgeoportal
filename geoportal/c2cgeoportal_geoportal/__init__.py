@@ -233,7 +233,7 @@ def set_user_validator(config, user_validator):
     by calling ``remember``, this is handled by the ``login`` view.
     """
 
-    def register():
+    def register() -> None:
         config.registry.validate_user = user_validator
 
     config.action("user_validator", register)

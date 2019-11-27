@@ -8,29 +8,14 @@ VALIDATE_TEMPLATE_PY_FOLDERS = geoportal/c2cgeoportal_geoportal/scaffolds
 VALIDATE_PY_TEST_FOLDERS = geoportal/tests
 
 .PHONY: checks
-checks: flake8 mypy pylint bandit black isort additionallint
+checks: flake8 pylint bandit black isort additionallint
 
 .PHONY: flake8
 flake8:
-	# E712 is not compatible with SQLAlchemy
-	find $(VALIDATE_PY_FOLDERS) \
-		-not \( -path "*/.build" -prune \) \
-		-not \( -path "*/node_modules" -prune \) \
-		-name \*.py | xargs flake8 \
-		--ignore=W503 \
-		--copyright-check \
-		--copyright-min-file-size=1 \
+	MYPYPATH=/opt/c2cwsgiutils flake8 \
 		--copyright-regexp="Copyright \(c\) ([0-9][0-9][0-9][0-9]-)?$(shell date +%Y), Camptocamp SA"
-	grep --recursive --files-with-match '/usr/bin/env python' | grep -v checks.mk | grep -v node_modules \
-		| xargs flake8 \
-		--copyright-check \
-		--copyright-min-file-size=1 \
-		--copyright-regexp="Copyright \(c\) ([0-9][0-9][0-9][0-9]-)?$(shell date +%Y), Camptocamp SA"
-	find $(VALIDATE_TEMPLATE_PY_FOLDERS) -name \*.py | xargs flake8 --config=setup.cfg
-	find $(VALIDATE_PY_TEST_FOLDERS) -name \*.py | xargs flake8 \
-		--ignore=E501,W503 \
-		--copyright-check \
-		--copyright-min-file-size=1 \
+	grep --recursive --files-with-match '/usr/bin/env python' | grep -v checks.mk | grep -v node_modules | \
+		xargs flake8 \
 		--copyright-regexp="Copyright \(c\) ([0-9][0-9][0-9][0-9]-)?$(shell date +%Y), Camptocamp SA"
 
 .PHONY: pylint
@@ -41,16 +26,6 @@ pylint:
 	pylint --errors-only geoportal/tests
 	pylint --errors-only admin/c2cgeoportal_admin
 	pylint --errors-only admin/tests
-
-.PHONY: mypy
-mypy:
-	MYPYPATH=/opt/c2cwsgiutils \
-		mypy --ignore-missing-imports --disallow-untyped-defs --strict-optional --follow-imports skip \
-			commons/c2cgeoportal_commons
-	# TODO: add --disallow-untyped-defs
-	mypy --ignore-missing-imports --strict-optional --follow-imports skip \
-		geoportal/c2cgeoportal_geoportal \
-		admin/c2cgeoportal_admin
 
 .PHONY: bandit
 bandit:
