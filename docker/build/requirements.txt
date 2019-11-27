@@ -76,6 +76,7 @@ transaction==2.4.0  # commons, geoportal
 transifex-client==0.13.6  # Makefile
 translationstring==1.3  # admin
 urllib3==1.23  # required by transifex, rq.filter: <1.24
+venusian==2.1.0  # pyramid
 virtualenv==16.4.3  # Makefile
 waitress==1.2.1  # pcreate
 WebOb==1.8.5  # geoportal test
