@@ -39,10 +39,11 @@ from pyramid import testing
 from sqlalchemy import Column
 import sqlalchemy.ext.declarative
 from sqlalchemy.types import DateTime, Integer, Unicode
+import transaction
+
 from tests.functional import create_default_ogcserver, create_dummy_request, mapserv_url
 from tests.functional import setup_common as setup_module  # noqa
 from tests.functional import teardown_common as teardown_module  # noqa
-import transaction
 
 Base: typing.Any = sqlalchemy.ext.declarative.declarative_base()
 

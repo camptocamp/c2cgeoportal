@@ -33,11 +33,12 @@
 from unittest import TestCase
 
 from pyramid import testing
+import transaction
+
 from tests import DummyRequest
 from tests.functional import create_default_ogcserver, mapserv_url
 from tests.functional import setup_common as setup_module  # noqa
 from tests.functional import teardown_common as teardown_module  # noqa
-import transaction
 
 
 class TestLoopTheme(TestCase):

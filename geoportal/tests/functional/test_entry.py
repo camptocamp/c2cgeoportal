@@ -36,11 +36,12 @@ from unittest import TestCase
 
 from geoalchemy2 import WKTElement
 from pyramid import testing
+import transaction
+
 from tests.functional import cleanup_db, create_default_ogcserver, create_dummy_request, mapserv_url
 from tests.functional import setup_common as setup_module  # noqa, pylint: disable=unused-import
 from tests.functional import setup_db
 from tests.functional import teardown_common as teardown_module  # noqa, pylint: disable=unused-import
-import transaction
 
 LOG = logging.getLogger(__name__)
 

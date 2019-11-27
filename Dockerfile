@@ -27,7 +27,7 @@ RUN \
 COPY requirements.txt /tmp/
 RUN \
   python3 -m pip install --disable-pip-version-check --no-cache-dir --requirement=/tmp/requirements.txt && \
-  rm --recursive --force /tmp/* /var/tmp/* /root/.cache/*
+  rm --recursive --force /usr/local/lib/python3.7/dist-packages/tests/ /tmp/* /var/tmp/* /root/.cache/*
 
 ENV VISIBLE_ENTRY_POINT=cli \
     LOG_LEVEL=INFO \

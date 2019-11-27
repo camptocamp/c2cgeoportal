@@ -32,10 +32,9 @@
 
 from unittest import TestCase
 
+from c2cgeoportal_geoportal.lib.caching import init_region
 from tests.functional import setup_common as setup_module
 from tests.functional import teardown_common as teardown_module  # noqa
-
-from c2cgeoportal_geoportal.lib.caching import init_region
 
 
 class TestReflection(TestCase):
