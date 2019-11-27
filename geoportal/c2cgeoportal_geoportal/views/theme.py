@@ -181,24 +181,42 @@ class Theme:
         if errors:
             return None, errors
 
-        wms = None
-        try:
+        @CACHE_REGION_OBJ.cache_on_arguments()
+        def build_web_map_service(ogc_server_id):
+            del ogc_server_id  # Just for cache
 
-            @CACHE_REGION_OBJ.cache_on_arguments()
-            def build_web_map_service(ogc_server_id):
-                del ogc_server_id  # Just for cache
-                return WebMapService(None, xml=content)
+            layers = {}
+            try:
+                wms = WebMapService(None, xml=content)
+            except Exception as e:  # pragma: no cover
+                error = (
+                    "WARNING! an error '{}' occurred while trying to read the mapfile and recover the themes."
+                    "\nURL: {}\n{}".format(e, url, content)
+                )
+                LOG.error(error, exc_info=True)
+                return None, {error}
+            wms_layers_name = list(wms.contents)
+            for layer_name in wms_layers_name:
+                wms_layer = wms[layer_name]
+                resolution = self._get_layer_resolution_hint(wms_layer)
+                info = {
+                    "name": wms_layer.name,
+                    "minResolutionHint": float("{:0.2f}".format(resolution[0])),
+                    "maxResolutionHint": float("{:0.2f}".format(resolution[1])),
+                }
+                if hasattr(wms_layer, "queryable"):
+                    info["queryable"] = wms_layer.queryable
 
-            wms = build_web_map_service(ogc_server.id)
-        except Exception:  # pragma: no cover
-            error = (
-                "WARNING! an error occurred while trying to read the mapfile and recover the themes."
-                "\nURL: {}\n{}".format(url, content)
-            )
-            errors.add(error)
-            LOG.error(error, exc_info=True)
+                layers[layer_name] = {
+                    "info": info,
+                    "timepositions": wms_layer.timepositions,
+                    "defaulttimeposition": wms_layer.defaulttimeposition,
+                    "children": [l.name for l in wms_layer.layers],
+                }
 
-        return wms, errors
+            return {"layers": layers}, set()
+
+        return build_web_map_service(ogc_server.id)
 
     async def _wms_getcap_cached(self, ogc_server, _):
         """ _ is just for cache on the role id """
@@ -211,8 +229,6 @@ class Theme:
         # Add functionality params
         sparams = get_mapserver_substitution_params(self.request)
         url = add_url_params(url, sparams)
-
-        errors = set()
 
         url = add_url_params(
             url,
@@ -342,42 +358,6 @@ class Theme:
             999999999 if resolution_hint_max is None else resolution_hint_max,
         )
 
-    def _get_child_layers_info_1(self, layer):
-        """ Return information about sub layers of a layer.
-
-            Arguments:
-
-            * ``layer`` The layer object in the WMS capabilities.
-        """
-        child_layers_info = []
-        for child_layer in layer.layers:
-            resolution = self._get_layer_resolution_hint(child_layer)
-            child_layer_info = {
-                "name": child_layer.name,
-                "minResolutionHint": float("{:0.2f}".format(resolution[0])),
-                "maxResolutionHint": float("{:0.2f}".format(resolution[1])),
-            }
-            if hasattr(child_layer, "queryable"):
-                child_layer_info["queryable"] = child_layer.queryable
-            child_layers_info.append(child_layer_info)
-        return child_layers_info
-
-    def _get_child_layers_info(self, layer):
-        """ Return information about sub layers of a layer.
-
-            Arguments:
-
-            * ``layer`` The layer object in the WMS capabilities.
-        """
-        resolution = self._get_layer_resolution_hint(layer)
-        layer_info = {
-            "name": layer.name,
-            "minResolutionHint": float("{:0.2f}".format(resolution[0])),
-            "maxResolutionHint": float("{:0.2f}".format(resolution[1])),
-        }
-        layer_info["queryable"] = layer.queryable == 1 if hasattr(layer, "queryable") else True
-        return layer_info
-
     def _layer(self, layer, time=None, dim=None, mixed=True):
         errors = set()
         layer_info = {"id": layer.id, "name": layer.name, "metadata": self._get_metadatas(layer, errors)}
@@ -395,15 +375,17 @@ class Theme:
         errors |= dim.merge(layer, layer_info, mixed)
 
         if isinstance(layer, main.LayerWMS):
-            wms, wms_layers, wms_errors = self._wms_layers(layer.ogc_server)
+            wms, wms_errors = self._wms_layers(layer.ogc_server)
             errors |= wms_errors
+            if wms is None:
+                return layer_info, errors
             if layer.layer is None or layer.layer == "":
                 errors.add("The layer '{}' do not have any layers".format(layer.name))
                 return None, errors
             layer_info["type"] = "WMS"
             layer_info["layers"] = layer.layer
             self._fill_wms(layer_info, layer, errors, mixed=mixed)
-            errors |= self._merge_time(time, layer_info, layer, wms, wms_layers)
+            errors |= self._merge_time(time, layer_info, layer, wms)
 
         elif isinstance(layer, main.LayerWMTS):
             layer_info["type"] = "WMTS"
@@ -412,17 +394,19 @@ class Theme:
         return layer_info, errors
 
     @staticmethod
-    def _merge_time(time, layer_theme, layer, wms, wms_layers):
+    def _merge_time(time_, layer_theme, layer, wms):
         errors = set()
         wmslayer = layer.layer
         try:
-            if wmslayer in wms_layers:
-                wms_layer_obj = wms[wmslayer]
+            if wmslayer in wms["layers"]:
+                wms_layer_obj = wms["layers"][wmslayer]
 
                 if layer.time_mode != "disabled":
-                    if wms_layer_obj.timepositions:
-                        extent = parse_extent(wms_layer_obj.timepositions, wms_layer_obj.defaulttimeposition)
-                        time.merge(layer_theme, extent, layer.time_mode, layer.time_widget)
+                    if wms_layer_obj["timepositions"]:
+                        extent = parse_extent(
+                            wms_layer_obj["timepositions"], wms_layer_obj["defaulttimeposition"]
+                        )
+                        time_.merge(layer_theme, extent, layer.time_mode, layer.time_widget)
                     else:
                         errors.add(
                             "Error: time layer '{}' has no time information in capabilities".format(
@@ -430,11 +414,14 @@ class Theme:
                             )
                         )
 
-                for child_layer in wms_layer_obj.layers:
-                    if child_layer.timepositions:
-                        extent = parse_extent(child_layer.timepositions, child_layer.defaulttimeposition)
+                for child_layer_name in wms_layer_obj["children"]:
+                    child_layer = wms["layers"][child_layer_name]
+                    if child_layer["timepositions"]:
+                        extent = parse_extent(
+                            child_layer["timepositions"], child_layer["defaulttimeposition"]
+                        )
                         # The time mode comes from the layer group
-                        time.merge(layer_theme, extent, layer.time_mode, layer.time_widget)
+                        time_.merge(layer_theme, extent, layer.time_mode, layer.time_widget)
 
         except ValueError:  # pragma no cover
             errors.add("Error while handling time for layer '{}': {}".format(layer.name, sys.exc_info()[1]))
@@ -462,8 +449,10 @@ class Theme:
         return errors
 
     def _fill_wms(self, layer_theme, layer, errors, mixed):
-        wms, wms_layers, wms_errors = self._wms_layers(layer.ogc_server)
+        wms, wms_errors = self._wms_layers(layer.ogc_server)
         errors |= wms_errors
+        if wms is None:
+            return
 
         layer_theme["imageType"] = layer.ogc_server.image_type
         if layer.style:  # pragma: no cover
@@ -472,13 +461,13 @@ class Theme:
         # now look at what is in the WMS capabilities doc
         layer_theme["childLayers"] = []
         for layer_name in layer.layer.split(","):
-            if layer_name in wms_layers:
-                wms_layer_obj = wms[layer_name]
-                if not wms_layer_obj.layers:
-                    layer_theme["childLayers"].append(self._get_child_layers_info(wms_layer_obj))
+            if layer_name in wms["layers"]:
+                wms_layer_obj = wms["layers"][layer_name]
+                if not wms_layer_obj["children"]:
+                    layer_theme["childLayers"].append(wms["layers"][layer_name]["info"])
                 else:
-                    for child_layer in wms_layer_obj.layers:
-                        layer_theme["childLayers"].append(self._get_child_layers_info(child_layer))
+                    for child_layer in wms_layer_obj["children"]:
+                        layer_theme["childLayers"].append(wms["layers"][child_layer]["info"])
             else:
                 errors.add(
                     "The layer '{}' ({}) is not defined in WMS capabilities from '{}'".format(
@@ -680,9 +669,9 @@ class Theme:
         # retrieve layers metadata via GetCapabilities
         wms, wms_errors = asyncio.run(self._wms_getcap(ogc_server))
         if wms_errors:
-            return None, [], wms_errors
+            return None, wms_errors
 
-        return wms, list(wms.contents), wms_errors
+        return wms, set()
 
     def _load_tree_items(self):
         # Populate sqlalchemy session.identity_map to reduce the number of database requests.
