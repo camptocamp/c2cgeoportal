@@ -1,5 +1,6 @@
-##### 2.4.1.60
+##### 2.4.1.61
 * Add Andrea Borghi key [c2cgeoportal#5540](https://github.com/camptocamp/c2cgeoportal/pull/5540)
+##### 2.4.1.60
 * Fix branch 2.4 [c2cgeoportal#5579](https://github.com/camptocamp/c2cgeoportal/pull/5579)
 ##### 2.4.1.59
 ##### 2.4.1.58
