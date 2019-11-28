@@ -1,0 +1,28 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+flake8 = "==3.7.7"  # lint
+flake8-copyright = "==0.2.2"  # lint
+flake8-mypy = "==17.8.0"  # lint
+mccabe = "==0.6.1"  # lint
+mypy = "==0.740"  # lint
+pep8 = "==1.7.1"  # lint
+pep8-naming = "==0.9.1"  # Lint
+pyflakes = "==2.1.1"  # lint, flake8
+pylint = "==2.4.1"  # lint
+
+[packages]
+papyrus = "==2.4"  # commons
+redis = "==3.3.8"
+transaction = "==2.4.0"  # commons
+"c2c.template" = "==2.1.0"
+GeoAlchemy2 = "==0.6.2"
+SQLAlchemy = "==1.3.3"  # commons
+"zope.event" = "==4.4"  # commons
+"zope.sqlalchemy" = "==1.2"  # commons
+
+[requires]
+python_version = "3.6"

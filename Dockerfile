@@ -13,7 +13,7 @@ RUN \
   apt-get update && \
   apt-get install --assume-yes --no-install-recommends apt-utils && \
   apt-get install --assume-yes --no-install-recommends apt-transport-https gettext less && \
-  echo "For Chome installed by Pupetter" && \
+  echo "For Chrome installed by Pupetter" && \
   apt-get install --assume-yes --no-install-recommends libx11-6 libx11-xcb1 libxcomposite1 libxcursor1 \
     libxdamage1 libxext6 libxi6 libxtst6 libnss3 libcups2 libxss1 libxrandr2 libasound2 libatk1.0-0 \
     libatk-bridge2.0-0 libpangocairo-1.0-0 libgtk-3.0 && \
@@ -23,11 +23,13 @@ RUN \
   apt-get install --assume-yes --no-install-recommends 'nodejs=10.*' && \
   apt-get clean && \
   rm --recursive --force /var/lib/apt/lists/*
-
 COPY requirements.txt /tmp/
-RUN \
-  python3 -m pip install --disable-pip-version-check --no-cache-dir --requirement=/tmp/requirements.txt && \
-  rm --recursive --force /usr/local/lib/python3.7/dist-packages/tests/ /tmp/* /var/tmp/* /root/.cache/*
+RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --requirement=/tmp/requirements.txt && \
+  rm --recursive --force /tmp/*
+
+COPY Pipfile Pipfile.lock /tmp/
+RUN cd /tmp && pipenv install --system --clear && \
+  rm --recursive --force /usr/local/lib/python3.7/dist-packages/tests/ /tmp/* /root/.cache/*
 
 ENV VISIBLE_ENTRY_POINT=cli \
     LOG_LEVEL=INFO \
@@ -57,10 +59,11 @@ RUN \
   echo 'set wildmode=list:longest  " Completion menu' >> /etc/vim/vimrc.local && \
   echo 'set term=xterm-256color " Make home and end working' >> /etc/vim/vimrc.local
 
-COPY requirements-dev.txt /tmp/
+COPY Pipfile Pipfile.lock /tmp/
 RUN \
-  python3 -m pip install --disable-pip-version-check --no-cache-dir --requirement=/tmp/requirements-dev.txt && \
-  rm --recursive --force /tmp/* /var/tmp/* /root/.cache/*
+  cd /tmp && \
+  pipenv install --system --clear --dev && \
+  rm --recursive --force /tmp/* /root/.cache/*
 
 COPY bin/npm-packages /usr/bin/
 COPY geoportal/package.json /opt/c2cgeoportal/geoportal/

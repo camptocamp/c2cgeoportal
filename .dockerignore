@@ -1,9 +1,11 @@
 *
 !bin/
+!requirements.txt
+!Pipfile
+!Pipfile.lock
 !checks.mk
 !dependencies.mk
 !build.mk
-!requirements*.txt
 !commons
 !geoportal
 !admin/c2cgeoportal_admin
