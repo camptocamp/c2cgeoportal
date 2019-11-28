@@ -45,10 +45,18 @@ Each metadata entry has the following attributes:
 
 To set a metadata entry, create or edit an entry in the Metadata view of the administration UI.
 Regarding effect on the referenced tree item on the client side, you will find a description for each sort
-of metadata in the `NGEO documentation
-<https://camptocamp.github.io/ngeo/${major_version}/apidoc/gmfThemes.GmfMetaData.html>`_.
+of metadata in the ``GmfMetaData`` definition in
+`themes.js <https://github.com/camptocamp/ngeo/blob/${git_branch}/contribs/gmf/src/themes.js>`_.
 
-.. TODO: the URL should be fixed when the ngeo documentation will be generated.
+Some metadata items are used by the ``layers`` views (for editing) on the server side:
+
+* ``editingAttributesOrder``: Specify the order of the editable attributes in the edit interface.
+* ``geometryValidation``: Force validation of the geometries according to the layer type (point, line,
+    polygon), for example, to prevent creation of a 2 points polygon.
+* ``lastUpdateDateColumn``: Define a column which will be automatically filled with the date of the last edit.
+* ``lastUpdateUserColumn``: Define a column which will be automatically filled with the user of the last edit.
+* ``readonlyAttributes``: Set attributes as read only.
+
 
 Functionalities
 ---------------
