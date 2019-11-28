@@ -1,3 +1,5 @@
+##### 2.4.1.62
+* Add some metadata documentation [c2cgeoportal#5581](https://github.com/camptocamp/c2cgeoportal/pull/5581)
 ##### 2.4.1.61
 * Add Andrea Borghi key [c2cgeoportal#5540](https://github.com/camptocamp/c2cgeoportal/pull/5540)
 ##### 2.4.1.60
