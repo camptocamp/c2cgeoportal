@@ -45,8 +45,8 @@ Each metadata entry has the following attributes:
 
 To set a metadata entry, create or edit an entry in the Metadata view of the administration UI.
 Regarding effect on the referenced tree item on the client side, you will find a description for each sort
-of metadata in the `NGEO documentation
-<https://camptocamp.github.io/ngeo/${major_version}/apidoc/gmfThemes.GmfMetaData.html>`_.
+of metadata in the ``GmfMetaData`` definition in
+`themes.js <https://github.com/camptocamp/ngeo/blob/${git_branch}/contribs/gmf/src/themes.js>`_.
 
 .. TODO: the URL should be fixed when the ngeo documentation will be generated.
 
