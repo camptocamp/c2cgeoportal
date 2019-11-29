@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Headers &#8212; c2cgeoportal  documentation</title>
+    <title>Configure the admin interface &#8212; c2cgeoportal  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css" />
@@ -16,8 +16,8 @@
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Configure the admin interface" href="admin_interface.html" />
-    <link rel="prev" title="Working with Object storage (like S3)" href="objectstorage.html" />
+    <link rel="next" title="Customize the application" href="customise.html" />
+    <link rel="prev" title="Headers" href="headers.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -34,27 +34,53 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="headers">
-<span id="integrator-headers"></span><h1>Headers<a class="headerlink" href="#headers" title="Permalink to this headline">¶</a></h1>
-<p><code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> adds some HTTP headers on its responses with certain default values.
-You may wish to override the values being written. All this is done in the configuration with the
-<code class="docutils literal notranslate"><span class="pre">global</span> <span class="pre">_headers</span></code> section in the vars file with the following syntax:</p>
+  <div class="section" id="configure-the-admin-interface">
+<span id="integrator-admin-interface"></span><h1>Configure the admin interface<a class="headerlink" href="#configure-the-admin-interface" title="Permalink to this headline">¶</a></h1>
+<p>You can activate or deactivate (tabs, modules, models or tables) in administration interface using configuration key <code class="docutils literal notranslate"><span class="pre">exclude_pages</span></code> and <code class="docutils literal notranslate"><span class="pre">include_pages</span></code>.</p>
+<div class="section" id="include-and-excludes-tabs">
+<h2>Include and excludes tabs<a class="headerlink" href="#include-and-excludes-tabs" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="default-tabs-modules">
+<h3>Default tabs/modules<a class="headerlink" href="#default-tabs-modules" title="Permalink to this headline">¶</a></h3>
+<p>The active default tabs (route urls) are:
+- layertree
+- themes
+- layer_groups
+- layers_wms
+- layers_wmts
+- ogc_servers
+- restriction_areas
+- users
+- roles
+- functionalities
+- interfaces</p>
+</div>
+<div class="section" id="optional-tabs-modules">
+<h3>Optional tabs/modules<a class="headerlink" href="#optional-tabs-modules" title="Permalink to this headline">¶</a></h3>
+<p>There are optional tabs, not available if not explicitly included.</p>
+<p>The list is:
+- layers_vectortiles</p>
+</div>
+<div class="section" id="include-a-new-page">
+<h3>Include a new page<a class="headerlink" href="#include-a-new-page" title="Permalink to this headline">¶</a></h3>
+<p>We need a url path and a class to include a new page.</p>
+<p>Here is an example using the existing vector tiles page:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
-  <span class="nt">global_headers</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="nt">pattern</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;regex&gt;</span>
-      <span class="nt">headers</span><span class="p">:</span>
-        <span class="nt">&lt;header&gt;</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;value&gt;</span>
+  <span class="nt">admin_interface</span><span class="p">:</span>
+    <span class="nt">include_pages</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="p p-Indicator">[</span><span class="nv">layers_vectortiles</span><span class="p p-Indicator">,</span> <span class="nv">c2cgeoportal_commons.models.main.LayerVectorTiles</span><span class="p p-Indicator">]</span>
 </pre></div>
 </div>
-<p>If a path matches more than one pattern, all headers listed in each match will be applied.
-If the same header is matched more than once, the last value is kept.</p>
-<p>For the <code class="docutils literal notranslate"><span class="pre">Content-Security-Policy</span></code> header, <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> includes specific variables in its standard
-template, to facilitate the customization of these values.
-The naming of these variables follows this pattern: <code class="docutils literal notranslate"><span class="pre">content_security_policy_&lt;path&gt;_&lt;directive&gt;[_extra]</span></code>.</p>
-<p>Where <code class="docutils literal notranslate"><span class="pre">&lt;path&gt;</span></code> can be: <code class="docutils literal notranslate"><span class="pre">main</span></code>, <code class="docutils literal notranslate"><span class="pre">admin</span></code>, <code class="docutils literal notranslate"><span class="pre">apihelp</span></code> or <code class="docutils literal notranslate"><span class="pre">c2c</span></code>,
-<code class="docutils literal notranslate"><span class="pre">&lt;directive&gt;</span></code> can be: <code class="docutils literal notranslate"><span class="pre">default_src</span></code>, <code class="docutils literal notranslate"><span class="pre">script_src</span></code>, <cite>style_src`</cite>, <code class="docutils literal notranslate"><span class="pre">img_src</span></code>,
-<code class="docutils literal notranslate"><span class="pre">connect_src</span></code> or <code class="docutils literal notranslate"><span class="pre">worker_src</span></code>,
-<code class="docutils literal notranslate"><span class="pre">[_extra]</span></code> is a suffix to be able to extend a directive instance of completely overriding it.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It is possible also to add totally new tables, models, tabs.</p>
+</div>
+</div>
+<div class="section" id="exclude-a-page">
+<h3>Exclude a page<a class="headerlink" href="#exclude-a-page" title="Permalink to this headline">¶</a></h3>
+<p>We can exclude any of the default tabs.
+The syntax use a list under <code class="docutils literal notranslate"><span class="pre">vars/admin_interface/exclude_pages</span></code>.</p>
+</div>
+</div>
 </div>
 
 
@@ -96,8 +122,8 @@ The naming of these variables follows this pattern: <code class="docutils litera
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="index.html">Integrator Guide</a><ul>
   <li><a href="configuration.html">Configuration Guide for advanced settings</a><ul>
-      <li>Previous: <a href="objectstorage.html" title="previous chapter">Working with Object storage (like S3)</a></li>
-      <li>Next: <a href="admin_interface.html" title="next chapter">Configure the admin interface</a></li>
+      <li>Previous: <a href="headers.html" title="previous chapter">Headers</a></li>
+      <li>Next: <a href="customise.html" title="next chapter">Customize the application</a></li>
   </ul></li>
   </ul></li>
   </ul></li>
@@ -133,7 +159,7 @@ The naming of these variables follows this pattern: <code class="docutils litera
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
-      <a href="../_sources/integrator/headers.rst.txt"
+      <a href="../_sources/integrator/admin_interface.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 

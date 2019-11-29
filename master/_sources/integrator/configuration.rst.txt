@@ -23,3 +23,4 @@ This chapter describes advanced configuration settings.
    windows_tools
    objectstorage
    headers
+   admin_interface
