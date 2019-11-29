@@ -593,13 +593,13 @@ vars:
         - name: desktop
           params:
             no_redirect: "true"
-          level: 4
+          level: 6
         - name: mobile
           params:
             no_redirect: "true"
-          level: 4
+          level: 6
         - name: apihelp
-          level: 4
+          level: 6
     routes:
       disable: []
       routes:
