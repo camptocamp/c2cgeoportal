@@ -1,3 +1,5 @@
+##### 2.4.1.63
+* Not working with tilecloud chain, not needed -> remove [c2cgeoportal#5583](https://github.com/camptocamp/c2cgeoportal/pull/5583)
 ##### 2.4.1.62
 * Add some metadata documentation [c2cgeoportal#5581](https://github.com/camptocamp/c2cgeoportal/pull/5581)
 ##### 2.4.1.61
