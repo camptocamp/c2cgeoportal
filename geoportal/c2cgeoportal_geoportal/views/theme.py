@@ -48,7 +48,14 @@ from sqlalchemy.orm.exc import NoResultFound
 
 from c2cgeoportal_commons import models
 from c2cgeoportal_commons.models import main
-from c2cgeoportal_geoportal.lib import add_url_params, get_roles_id, get_typed, get_types_map, get_url2
+from c2cgeoportal_geoportal.lib import (
+    add_url_params,
+    get_roles_id,
+    get_typed,
+    get_types_map,
+    get_url2,
+    is_intranet,
+)
 from c2cgeoportal_geoportal.lib.caching import PRIVATE_CACHE, get_region, set_common_headers
 from c2cgeoportal_geoportal.lib.functionality import get_mapserver_substitution_params
 from c2cgeoportal_geoportal.lib.layers import (
@@ -1050,14 +1057,20 @@ class Theme:
             return result
 
         @CACHE_REGION_OBJ.cache_on_arguments()
-        def get_theme_anonymous(interface, sets, min_levels, group, background_layers_group, host):
+        def get_theme_anonymous(intranet, interface, sets, min_levels, group, background_layers_group, host):
             # Only for cache key
-            del interface, sets, min_levels, group, background_layers_group, host
+            del intranet, interface, sets, min_levels, group, background_layers_group, host
             return get_theme()
 
         if self.request.user is None:
             return get_theme_anonymous(
-                interface, sets, min_levels, group, background_layers_group, self.request.headers.get("Host")
+                is_intranet(self.request),
+                interface,
+                sets,
+                min_levels,
+                group,
+                background_layers_group,
+                self.request.headers.get("Host"),
             )
         else:
             return get_theme()
