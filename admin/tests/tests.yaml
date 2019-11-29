@@ -20,6 +20,10 @@ vars:
 
     layer_tree_max_nodes: 1000
 
+    include_pages:
+      - [layers_vectortiles, c2cgeoportal_commons.models.main.LayerVectorTiles]
+    exclude_pages: []
+
     available_metadata:
       # Layers group
       - name: isExpanded

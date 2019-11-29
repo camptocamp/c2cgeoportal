@@ -391,6 +391,10 @@ class Theme:
             layer_info["type"] = "WMTS"
             self._fill_wmts(layer_info, layer, errors)
 
+        elif isinstance(layer, main.LayerVectorTiles):
+            layer_info["type"] = "VectorTiles"
+            self._vectortiles_layers(layer_info, layer)
+
         return layer_info, errors
 
     @staticmethod
@@ -529,6 +533,11 @@ class Theme:
 
         layer_theme["layer"] = layer.layer
         layer_theme["imageType"] = layer.image_type
+
+    def _vectortiles_layers(self, layer_theme, layer):
+        layer_theme["style"] = layer.style
+        if layer.xyz:
+            layer_theme["xyz"] = layer.xyz
 
     @staticmethod
     def _layer_included(tree_item):

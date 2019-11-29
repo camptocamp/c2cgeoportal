@@ -678,6 +678,47 @@ layer_ra = Table(
 )
 
 
+class LayerVectorTiles(DimensionLayer):
+    __tablename__ = "layer_vectortiles"
+    __table_args__ = {"schema": _schema}
+    __colanderalchemy_config__ = {"title": _("Vector Tiles Layer"), "plural": _("Vector Tiles Layers")}
+
+    __c2cgeoform_config__ = {"duplicate": True}
+
+    __mapper_args__ = {"polymorphic_identity": "l_mvt"}
+
+    id = Column(
+        Integer,
+        ForeignKey(_schema + ".layer.id"),
+        primary_key=True,
+        info={"colanderalchemy": {"missing": None, "widget": HiddenWidget()}},
+    )
+
+    style = Column(
+        Unicode,
+        nullable=False,
+        info={
+            "colanderalchemy": {
+                "title": _("Style"),
+                "description": "The path to json style. Example: https://url/style.json",
+                "column": 2,
+            }
+        },
+    )
+
+    xyz = Column(
+        Unicode,
+        nullable=True,
+        info={
+            "colanderalchemy": {
+                "title": _("Raster URL"),
+                "description": "The raster url. Example: https://url/{z}/{x}/{y}.png",
+                "column": 2,
+            }
+        },
+    )
+
+
 class RestrictionArea(Base):
     __tablename__ = "restrictionarea"
     __table_args__ = {"schema": _schema}

@@ -9,7 +9,7 @@ skip_if_ci = pytest.mark.skipif(os.environ.get("CI", "false") == "true", reason=
 
 
 def get_test_default_layers(dbsession, default_ogc_server):
-    from c2cgeoportal_commons.models.main import LayerWMTS, LayerWMS
+    from c2cgeoportal_commons.models.main import LayerWMTS, LayerWMS, LayerVectorTiles
 
     default_wms = LayerWMS("wms-defaults")
     default_wms.ogc_server = default_ogc_server
@@ -20,10 +20,12 @@ def get_test_default_layers(dbsession, default_ogc_server):
     default_wmts.url = "https:///wmts.geo.admin_default.ch.org?service=wms&request=GetCapabilities"
     default_wmts.layer = "default"
     default_wmts.matrix_set = "matrix"
-
     dbsession.add(default_wmts)
+    default_vectortiles = LayerVectorTiles("vectortiles-defaults")
+    default_vectortiles.style = "https://vectortiles-staging.geoportail.lu/styles/roadmap/style.json"
+    dbsession.add(default_vectortiles)
     dbsession.flush()
-    return {"wms": default_wms, "wmts": default_wmts}
+    return {"wms": default_wms, "wmts": default_wmts, "vectortiles": default_vectortiles}
 
 
 def factory_build_layers(layer_builder, dbsession, add_dimension=True):
