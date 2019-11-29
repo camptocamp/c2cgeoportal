@@ -94,7 +94,11 @@ class Proxy(object):
         forwarded = {"for": self.request.client_addr, "proto": self.request.scheme}
         if "Host" in self.request.headers:
             forwarded["host"] = self.request.headers["Host"]
-        headers.setdefault("Forwarded", ";".join(["=".join(e) for e in forwarded.items()]))
+        forwarded_str = ";".join(["=".join(e) for e in forwarded.items()])
+        if "Forwarded" in headers:
+            headers["Forwarded"] = ",".join([headers["Forwarded"], forwarded_str])
+        else:
+            headers["Forwarded"] = forwarded_str
 
         if not cache:
             headers["Cache-Control"] = "no-cache"
