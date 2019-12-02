@@ -35,7 +35,7 @@ services:
       - AWS_S3_ENDPOINT
 
   print:
-    image: camptocamp/mapfish_print:3.20
+    image: camptocamp/mapfish_print:3.21
     user: www-data
     restart: unless-stopped
     environment:
