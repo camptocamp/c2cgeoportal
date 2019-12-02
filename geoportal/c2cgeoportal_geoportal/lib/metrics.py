@@ -27,11 +27,12 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-from c2cgeoportal_geoportal.lib.caching import MEMORY_CACHE_DICT
-from c2cgeoportal_geoportal.views.raster import Raster
 from c2cwsgiutils import broadcast
 from c2cwsgiutils.debug import get_size
 from c2cwsgiutils.metrics import Provider
+
+from c2cgeoportal_geoportal.lib.caching import MEMORY_CACHE_DICT
+from c2cgeoportal_geoportal.views.raster import Raster
 
 
 class MemoryCacheSizeProvider(Provider):

@@ -41,15 +41,13 @@ black-fix:
 
 .PHONY: isort
 isort:
-	isort --check-only --diff --multi-line=3 --trailing-comma \
-	--force-grid-wrap=0 --use-parentheses --line-width=110 --force-sort-within-sections \
-	--recursive commons geoportal admin/c2cgeoportal_admin admin/tests bin docker
+	isort --check-only --diff --settings-path=`pwd` \
+		 --recursive commons geoportal admin/c2cgeoportal_admin admin/tests bin || cat .isort.cfg
 
 .PHONY: isort-fix
 isort-fix:
-	isort --apply --multi-line=3 --trailing-comma \
-	--force-grid-wrap=0 --use-parentheses --line-width=110 --force-sort-within-sections \
-	--recursive commons geoportal admin/c2cgeoportal_admin admin/tests bin docker
+	isort --apply --settings-path=`pwd` \
+		 --recursive commons geoportal admin/c2cgeoportal_admin admin/tests bin docker
 
 .PHONY: additionallint
 additionallint:
