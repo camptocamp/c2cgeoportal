@@ -27,6 +27,9 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+import gc
+import sys
+
 from c2cwsgiutils import broadcast
 from c2cwsgiutils.debug import get_size
 from c2cwsgiutils.metrics import Provider
@@ -36,22 +39,29 @@ from c2cgeoportal_geoportal.views.raster import Raster
 
 
 class MemoryCacheSizeProvider(Provider):
-    def __init__(self):
+    def __init__(self, all=False):
         super().__init__("pod_process_memory_cache_kb", "Used memory cache")
+        self.all = all
 
     def get_data(self):
         result = []
-        for elem in _get_memory_cache().values():
+        for elem in _get_memory_cache(self.all):
             for value in elem["values"]:
-                value["pid"] = elem["pid"]
+                value[0]["pid"] = str(elem["pid"])
+                value[0]["hostname"] = elem["hostname"]
                 result.append(value)
+        return result
 
 
 @broadcast.decorator(expect_answers=True, timeout=15)
-def _get_memory_cache():
-    return {
-        "values": [({"key": key}, get_size(value) * 1024) for key, value in list(MEMORY_CACHE_DICT.items())]
-    }
+def _get_memory_cache(all):
+    values = (
+        [({"key": key}, get_size(value) * 1024) for key, value in list(MEMORY_CACHE_DICT.items())]
+        if all
+        else []
+    )
+    values.append(({"key": "total"}, get_size(MEMORY_CACHE_DICT)))
+    return {"values": values}
 
 
 class RasterDataSizeProvider(Provider):
@@ -60,12 +70,30 @@ class RasterDataSizeProvider(Provider):
 
     def get_data(self):
         result = []
-        for elem in _get_raster_data().values():
+        for elem in _get_raster_data():
             for value in elem["values"]:
-                value["pid"] = elem["pid"]
+                value[0]["pid"] = str(elem["pid"])
+                value[0]["hostname"] = elem["hostname"]
                 result.append(value)
+        return result
 
 
 @broadcast.decorator(expect_answers=True, timeout=15)
 def _get_raster_data():
-    return {"values": [({"key": key}, get_size(value) + 1024) for key, value in list(Raster.data.items())]}
+    return {"values": [({"key": key}, get_size(value) * 1024) for key, value in list(Raster.data.items())]}
+
+
+class TotalPythonObjectMemoryProvider(Provider):
+    def __init__(self):
+        super().__init__("total_python_object_memory_kb", "Memory used by raster")
+
+    def get_data(self):
+        return [
+            ({"pid": str(val["pid"]), "hostname": val["hostname"]}, val["value"])
+            for val in _get_python_object_size()
+        ]
+
+
+@broadcast.decorator(expect_answers=True, timeout=15)
+def _get_python_object_size():
+    return {"value": sum([sys.getsizeof(o) for o in gc.get_objects()])}
