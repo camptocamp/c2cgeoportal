@@ -50,7 +50,7 @@ class MemoryCacheSizeProvider(Provider):
 @broadcast.decorator(expect_answers=True, timeout=15)
 def _get_memory_cache():
     return {
-        "values": [({"key": key}, get_size(value) + 1024) for key, value in list(MEMORY_CACHE_DICT.items())]
+        "values": [({"key": key}, get_size(value) * 1024) for key, value in list(MEMORY_CACHE_DICT.items())]
     }
 
 
