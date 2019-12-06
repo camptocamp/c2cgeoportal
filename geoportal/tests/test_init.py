@@ -67,7 +67,9 @@ class TestIncludeme(TestCase):
                     "memory_maps_rss": False,
                     "memory_maps_size": False,
                     "memory_cache": False,
+                    "memory_cache_all": False,
                     "raster_data": False,
+                    "total_python_object_memory": False,
                 },
             }
         )

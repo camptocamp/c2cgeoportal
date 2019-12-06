@@ -61,18 +61,24 @@ def _process_dict(dict_, dogpile_cache=False):
     # Timeout after one minute, must be set to a bit less that the timeout of the broadcast
     timeout = time.monotonic() + 20
 
-    return sorted(
-        [
-            {
-                "key": key,
-                "type": _nice_type_name(value, dogpile_cache),
-                "repr": repr(value),
-                "size_kb": get_size(value) / 1024 if time.monotonic() < timeout else -1,
-            }
-            for key, value in dict_.items()
-        ],
-        key=lambda i: -i["size_kb"],
-    )
+    return {
+        "elements": sorted(
+            [
+                {
+                    "key": key,
+                    "type": _nice_type_name(value, dogpile_cache),
+                    "repr": repr(value),
+                    "id": id(value),
+                    "size_kb": get_size(value) / 1024 if time.monotonic() < timeout else -1,
+                }
+                for key, value in dict_.items()
+            ],
+            key=lambda i: -i["size_kb"],
+        ),
+        "id": id(dict_),
+        "size_kb": get_size(dict_) / 1024 if time.monotonic() < timeout else -1,
+        "timeout": time.monotonic() > timeout,
+    }
 
 
 @broadcast.decorator(expect_answers=True, timeout=110)

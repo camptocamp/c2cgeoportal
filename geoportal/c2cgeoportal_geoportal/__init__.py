@@ -54,7 +54,11 @@ import zope.event.classhandler
 
 import c2cgeoportal_commons.models
 from c2cgeoportal_geoportal.lib import C2CPregenerator, caching, check_collector, checker
-from c2cgeoportal_geoportal.lib.metrics import MemoryCacheSizeProvider, RasterDataSizeProvider
+from c2cgeoportal_geoportal.lib.metrics import (
+    MemoryCacheSizeProvider,
+    RasterDataSizeProvider,
+    TotalPythonObjectMemoryProvider,
+)
 from c2cgeoportal_geoportal.lib.xsd import XSD
 import c2cgeoportal_geoportal.views
 
@@ -349,9 +353,11 @@ def includeme(config: pyramid.config.Configurator):
     if metrics_config["memory_maps_size"]:
         add_provider(MemoryMapProvider("size"))
     if metrics_config["memory_cache"]:
-        add_provider(MemoryCacheSizeProvider())
+        add_provider(MemoryCacheSizeProvider(metrics_config.get("memory_cache_all", False)))
     if metrics_config["raster_data"]:
         add_provider(RasterDataSizeProvider())
+    if metrics_config["total_python_object_memory"]:
+        add_provider(TotalPythonObjectMemoryProvider())
 
     # Initialise DBSessions
     init_dbsessions(settings, config, health_check)

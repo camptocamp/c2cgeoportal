@@ -694,6 +694,12 @@ mapping:
           memory_cache:
             required: True
             type: bool
+          memory_cache_all:
+            required: True
+            type: bool
           raster_data:
+            required: True
+            type: bool
+          total_python_object_memory:
             required: True
             type: bool

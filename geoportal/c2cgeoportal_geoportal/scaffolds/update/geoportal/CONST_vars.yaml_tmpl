@@ -648,8 +648,10 @@ vars:
   metrics:
     memory_maps_rss: False
     memory_maps_size: False
-    memory_cache: False
+    memory_cache: True
+    memory_cache_all: False
     raster_data: False
+    total_python_object_memory: True
 
   # Hooks that can be called at different moments in the life of the
   # application. The value is the full python name
