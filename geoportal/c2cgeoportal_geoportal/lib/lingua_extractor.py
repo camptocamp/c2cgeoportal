@@ -266,7 +266,7 @@ class GeomapfishConfigExtractor(Extractor):  # pragma: no cover
                         enums.append(Message(None, msgid, None, [], "", "", (filename, location)))
 
         metadata_list = []
-        defs = config["admin_interface"]["available_metadata"]
+        defs = config["admin_interface"]["available_metadata"]  # pylint: disable=unsubscriptable-object
         names = [e["name"] for e in defs if e.get("translate", False)]
 
         if len(names) > 0:
