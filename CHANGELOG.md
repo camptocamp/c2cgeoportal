@@ -1,3 +1,7 @@
+##### 2.4.1.64
+* Removes unneded extra error [c2cgeoportal#5592](https://github.com/camptocamp/c2cgeoportal/pull/5592)
+* Remove one haproxy warning [c2cgeoportal#5594](https://github.com/camptocamp/c2cgeoportal/pull/5594)
+* Update c2c.template to 2.2.0 to be able to import a yaml file in the … [c2cgeoportal#5595](https://github.com/camptocamp/c2cgeoportal/pull/5595)
 ##### 2.4.1.63
 * Not working with tilecloud chain, not needed -> remove [c2cgeoportal#5583](https://github.com/camptocamp/c2cgeoportal/pull/5583)
 ##### 2.4.1.62
