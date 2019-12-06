@@ -27,17 +27,15 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-
 import asyncio
 from collections import Counter
+import gc
 import logging
 from math import sqrt
 import re
 import sys
 import time
-from typing import Dict, Set, Tuple  # noqa # pylint: disable=unused-import
 import urllib.parse
-import xml.dom.minidom  # noqa # pylint: disable=unused-import
 
 from c2cwsgiutils.auth import auth_view
 from defusedxml import lxml
@@ -69,7 +67,6 @@ from c2cgeoportal_geoportal.views.layers import get_layer_metadatas
 
 LOG = logging.getLogger(__name__)
 CACHE_REGION = get_region("std")
-CACHE_REGION_OBJ = get_region("obj")
 
 
 def get_http_cached(http_options, url, headers):
@@ -180,15 +177,15 @@ class Theme:
 
         return metadatas
 
-    async def _wms_getcap(self, ogc_server):
+    async def _wms_getcap(self, ogc_server, preload=False):
         url, content, errors = await self._wms_getcap_cached(
             ogc_server, self._get_capabilities_cache_role_key(ogc_server)
         )
 
-        if errors:
+        if errors or preload:
             return None, errors
 
-        @CACHE_REGION_OBJ.cache_on_arguments()
+        @CACHE_REGION.cache_on_arguments()
         def build_web_map_service(ogc_server_id):
             del ogc_server_id  # Just for cache
 
@@ -220,6 +217,9 @@ class Theme:
                     "defaulttimeposition": wms_layer.defaulttimeposition,
                     "children": [l.name for l in wms_layer.layers],
                 }
+
+            del wms
+            LOG.debug("Run garbage collection: %s", ", ".join([str(gc.collect(n)) for n in range(3)]))
 
             return {"layers": layers}, set()
 
@@ -831,7 +831,7 @@ class Theme:
     def _get_role_ids(self):
         return None if self.request.user is None else {role.id for role in self.request.user.roles}
 
-    async def _wms_get_features_type(self, ogc_server_id, wfs_url):
+    async def _wms_get_features_type(self, wfs_url, preload=False):
         errors = set()
 
         params = {
@@ -866,14 +866,11 @@ class Theme:
             )
             return None, errors
 
+        if preload:
+            return None, errors
+
         try:
-
-            @CACHE_REGION_OBJ.cache_on_arguments()
-            def read_xml(cache_key):
-                del cache_key  # Just for cache
-                return lxml.XML(response.text.encode("utf-8"))
-
-            return read_xml(ogc_server_id), errors
+            return lxml.XML(response.text.encode("utf-8")), errors
         except Exception as e:  # pragma: no cover
             errors.add(
                 "Error '{}' on reading DescribeFeatureType from URL {}:\n{}".format(
@@ -914,14 +911,16 @@ class Theme:
         tasks = set()
         for ogc_server in models.DBSession.query(main.OGCServer).all():
             url_internal_wfs, _, _ = self.get_url_internal_wfs(ogc_server, errors)
-            tasks.add(self._wms_get_features_type(ogc_server.id, url_internal_wfs))
-            tasks.add(self._wms_getcap(ogc_server))
+            tasks.add(self._wms_get_features_type(url_internal_wfs, True))
+            tasks.add(self._wms_getcap(ogc_server, True))
 
         await asyncio.gather(*tasks)
 
-    def _get_features_attributes(self, ogc_server_id, url_internal_wfs):
+    @CACHE_REGION.cache_on_arguments()
+    def _get_features_attributes(self, url_internal_wfs):
         all_errors = set()
-        feature_type, errors = asyncio.run(self._wms_get_features_type(ogc_server_id, url_internal_wfs))
+        feature_type, errors = asyncio.run(self._wms_get_features_type(url_internal_wfs))
+        LOG.debug("Run garbage collection: %s", ", ".join([str(gc.collect(n)) for n in range(3)]))
         if errors:
             all_errors |= errors
             return None, None, all_errors
@@ -1012,9 +1011,7 @@ class Theme:
                 attributes = None
                 namespace = None
                 if ogc_server.wfs_support:
-                    attributes, namespace, errors = self._get_features_attributes(
-                        ogc_server.id, url_internal_wfs
-                    )
+                    attributes, namespace, errors = self._get_features_attributes(url_internal_wfs)
                     all_errors |= errors
 
                     all_private_layers = get_private_layers([ogc_server.id]).values()
@@ -1065,7 +1062,7 @@ class Theme:
                 LOG.info("Theme errors:\n%s", "\n".join(all_errors))
             return result
 
-        @CACHE_REGION_OBJ.cache_on_arguments()
+        @CACHE_REGION.cache_on_arguments()
         def get_theme_anonymous(intranet, interface, sets, min_levels, group, background_layers_group, host):
             # Only for cache key
             del intranet, interface, sets, min_levels, group, background_layers_group, host
