@@ -4,6 +4,7 @@ global
     pidfile     /run/haproxy.pid
     maxconn     4000
     max-spread-checks 500  #ms between heathchecks of different services
+    tune.ssl.default-dh-param 2048  # remove warning
 
     user        nobody
     group       nogroup
