@@ -264,7 +264,7 @@ VALIDATE_PY_FOLDERS = admin/$(PACKAGE)_admin \
 VALIDATE_PY_TEST_FOLDERS = geoportal/$(PACKAGE)_geoportal/tests
 
 # Documentation
-SPHINX_FILES = $(shell find doc -name "*.rst" -print)
+SPHINX_FILES = $(shell find doc -name "*.rst" -print 2> /dev/null)
 
 # Print
 ifeq ($(PRINT), TRUE)
@@ -273,11 +273,11 @@ PRINT_CONFIG_FILE ?= print/print-apps/$(PACKAGE)/config.yaml.tmpl
 I18N_SOURCE_FILES += $(PRINT_CONFIG_FILE)
 endif
 
-PY_FILES = $(shell find $(PACKAGE) -type f -name '*.py' -print)
+PY_FILES = $(shell find $(PACKAGE) -type f -name '*.py' -print 2> /dev/null)
 
 # Templates
-ALL_MAKO_FILES = $(shell find $(FIND_OPTS) -name "*.mako" -print)
-ALL_JINJA_FILES = $(shell find $(FIND_OPTS) -name "*.jinja" -print)
+ALL_MAKO_FILES = $(shell find $(FIND_OPTS) -name "*.mako" -print 2> /dev/null)
+ALL_JINJA_FILES = $(shell find $(FIND_OPTS) -name "*.jinja" -print 2> /dev/null)
 EXTRA_EXCLUDE = $(foreach ELEM, print mapfile jsbuild tilegeneration,-path ./$(ELEM) -prune -o)
 VARS_FILES += CONST_vars.yaml $(VARS_FILE)
 CONFIG_VARS += sqlalchemy.url sqlalchemy.pool_recycle sqlalchemy.pool_size sqlalchemy.max_overflow \
@@ -363,7 +363,7 @@ checks: flake8 $(CLIENT_CHECK_RULE) git-attributes yamllint spell printlint
 git-attributes:
 	git --no-pager diff --check `git log --oneline | tail -1 | cut --fields=1 --delimiter=' '`
 
-PRINT_REPORTS_FILES ?= $(shell find print/print-apps -name "*.jrxml" -print)
+PRINT_REPORTS_FILES ?= $(shell find print/print-apps -name "*.jrxml" -print 2> /dev/null)
 .PHONY: printlint
 printlint: $(PRINT_REPORTS_FILES)
 	xmllint --noout --schema /opt/jasperreport.xsd --encode utf-8 $(PRINT_REPORTS_FILES)
