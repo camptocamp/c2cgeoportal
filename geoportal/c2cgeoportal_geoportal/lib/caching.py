@@ -127,13 +127,15 @@ class HybridBackend(RedisBackend):
 
     def __init__(self, arguments):
         self._cache = arguments.pop("cache_dict", {})
+        self._use_memory_cache = not arguments.pop("disable_memory_cache", False)
+
         super().__init__(arguments)
 
     def get(self, key):
         value = self._cache.get(key, NO_VALUE)
         if value == NO_VALUE:
             value = super().get(sha1_mangle_key(key.encode()))
-        if value != NO_VALUE:
+        if value != NO_VALUE and self._use_memory_cache:
             self._cache[key] = value
         return value
 
@@ -141,7 +143,8 @@ class HybridBackend(RedisBackend):
         return [self.get(key) for key in keys]
 
     def set(self, key, value):
-        self._cache[key] = value
+        if self._use_memory_cache:
+            self._cache[key] = value
         super().set(sha1_mangle_key(key.encode()), value)
 
     def set_multi(self, mapping):
