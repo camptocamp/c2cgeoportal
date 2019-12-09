@@ -1,55 +1,77 @@
-#!/bin/bash -e
+#!/usr/bin/env python3
 
-function help {
-    echo Usage:
-    echo './build  -> keep the curent .env if exists or use the .env.sample'
-    echo './build [env files...]  -> use the ordered env files list'
-    echo './build [--config|--geoportal] [env files...]  -> build only the config or the geoportal image'
-    exit 0
-}
+import argparse
+import os
+import re
+import stat
+import subprocess
+import urllib.request
 
-if [ $# -gt 0 ] && ( [ $1 == '-h' ] || [ $1 == '--help' ] )
-then
-    help
-fi
+parser = argparse.ArgumentParser(description="Build the project,")
+parser.add_argument("--config", action="store_true", help="Build only the configuration image")
+parser.add_argument("--geoportal", action="store_true", help="Build only the geoportal image")
+parser.add_argument("--env", action="store_true", help="Force to create the `.env` file")
+parser.add_argument("--upgrade", help="Start upgrading the project to version")
+parser.add_argument("env_files", nargs="*", help="The environment files")
 
-CONFIG=true
-GEOPORTAL=true
-if [ "$1" == '--config' ]
-then
-    GEOPORTAL=false
-    shift
-fi
-if [ "$1" == '--geoportal' ]
-then
-    CONFIG=false
-    shift
-fi
+args = parser.parse_args()
 
-if [ $CONFIG == true ]
-then
-    set -x
-    docker build --tag=camptocamp/{{package}}-config \
-        --build-arg=PGSCHEMA=main .
-fi
-if [ $GEOPORTAL == true ]
-then
-    set -x
-    docker build --target=builder --tag=camptocamp/{{package}}-geoportal-dev \
-        --build-arg=PGSCHEMA=main \
-        --build-arg=GIT_HASH=$(git rev-parse HEAD) geoportal
-    docker build --tag=camptocamp/{{package}}-geoportal \
-        --build-arg=PGSCHEMA=main \
-        --build-arg=GIT_HASH=$(git rev-parse HEAD) geoportal
-fi
+if args.upgrade:
+    version_re = re.search(r"([0-9]\.[0-9])\.[0-9]", args.upgrade)
+    major_version = version_re.group(0) if version_re is not None else args.upgrade
+    full_version = args.upgrade if args.upgrade != "master" else "{{geomapfish_main_version}}"
+    with open("upgrade", "w") as f:
+        result = urllib.request.urlopen(
+            "https://raw.githubusercontent.com/camptocamp/c2cgeoportal/{}/scripts/upgrade".format(
+                major_version
+            )
+        )
+        if result.code != 200:
+            print("ERROR:")
+            print(result.read())
+            exit(1)
+        f.write(result.read().decode())
+    os.chmod("upgrade", os.stat("upgrade").st_mode | stat.S_IXUSR)
+    try:
+        subprocess.check_call(["./upgrade", full_version])
+    except subprocess.CalledProcessError:
+        exit(1)
+    exit(0)
 
-if [ $# -gt 0 ]
-then
-    shift
-    echo "$@" > .env
-else
-    if [ ! -f .env ]
-    then
-        cp .env.sample .env
-    fi
-fi
+auto = not (args.config or args.geoportal or args.env)
+
+if auto or args.config:
+    subprocess.check_call(
+        ["docker", "build", "--tag=camptocamp/{{package}}-config", "--build-arg=PGSCHEMA=main", "."]
+    )
+if auto or args.geoportal:
+    git_hash = subprocess.check_output(["git", "rev-parse", "HEAD"]).strip().decode()
+    subprocess.check_call(
+        [
+            "docker",
+            "build",
+            "--tag=camptocamp/{{package}}-geoportal",
+            "--build-arg=PGSCHEMA=main",
+            "--build-arg=GIT_HASH=" + git_hash,
+            "geoportal",
+        ]
+    )
+    subprocess.check_call(
+        [
+            "docker",
+            "build",
+            "--target=builder",
+            "--tag=camptocamp/{{package}}-geoportal-dev",
+            "--build-arg=PGSCHEMA=main",
+            "--build-arg=GIT_HASH=" + git_hash,
+            "geoportal",
+        ]
+    )
+
+if args.env or auto and not os.path.exists(".env"):
+    with open(".env", "w") as dest:
+        env_files = args.env_files if args.env_files else [".env.sample"]
+        for file_ in env_files:
+            print("Use env file: " + file_)
+            with open(file_) as src:
+                dest.write(src.read())
