@@ -57,11 +57,11 @@ class MemoryCacheSizeProvider(Provider):
 @broadcast.decorator(expect_answers=True, timeout=15)
 def _get_memory_cache(all):
     values = (
-        [({"key": key}, get_size(value) * 1024) for key, value in list(MEMORY_CACHE_DICT.items())]
+        [({"key": key}, get_size(value) / 1024) for key, value in list(MEMORY_CACHE_DICT.items())]
         if all
         else []
     )
-    values.append(({"key": "total"}, get_size(MEMORY_CACHE_DICT)))
+    values.append(({"key": "total"}, get_size(MEMORY_CACHE_DICT) / 1024))
     return {"values": values}
 
 
@@ -81,7 +81,7 @@ class RasterDataSizeProvider(Provider):
 
 @broadcast.decorator(expect_answers=True, timeout=15)
 def _get_raster_data():
-    return {"values": [({"key": key}, get_size(value) * 1024) for key, value in list(Raster.data.items())]}
+    return {"values": [({"key": key}, get_size(value) / 1024) for key, value in list(Raster.data.items())]}
 
 
 class TotalPythonObjectMemoryProvider(Provider):
@@ -97,4 +97,4 @@ class TotalPythonObjectMemoryProvider(Provider):
 
 @broadcast.decorator(expect_answers=True, timeout=15)
 def _get_python_object_size():
-    return {"value": sum([sys.getsizeof(o) for o in gc.get_objects()])}
+    return {"value": sum([sys.getsizeof(o) / 1024 for o in gc.get_objects()])}
