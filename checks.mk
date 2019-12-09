@@ -42,7 +42,7 @@ black-fix:
 .PHONY: isort
 isort:
 	isort --check-only --diff --settings-path=`pwd` \
-		 --recursive commons geoportal admin/c2cgeoportal_admin admin/tests bin || cat .isort.cfg
+		 --recursive commons geoportal admin/c2cgeoportal_admin admin/tests bin
 
 .PHONY: isort-fix
 isort-fix:
