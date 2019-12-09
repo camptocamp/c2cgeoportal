@@ -45,7 +45,7 @@ class MemoryCacheSizeProvider(Provider):
 
     def get_data(self):
         result = []
-        for elem in _get_memory_cache(self.all):
+        for elem in _get_memory_cache(all=self.all):
             for value in elem["values"]:
                 value[0]["pid"] = str(elem["pid"])
                 value[0]["hostname"] = elem["hostname"]
