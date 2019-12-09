@@ -57,7 +57,7 @@ VALIDATE_PY_FOLDERS = admin/$(PACKAGE)_admin \
 	$(PACKAGE)_geoportal/scripts $(PACKAGE)_geoportal/views
 VALIDATE_PY_TEST_FOLDERS = $(PACKAGE)_geoportal/tests
 
-PY_FILES = $(shell find $(PACKAGE) -type f -name '*.py' -print)
+PY_FILES = $(shell find $(PACKAGE) -type f -name '*.py' -print 2> /dev/null)
 
 # Templates
 
