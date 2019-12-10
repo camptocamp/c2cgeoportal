@@ -86,9 +86,9 @@ class TinyOWSProxy(OGCProxy):
         if method == "POST":
             try:
                 (operation, typenames_post) = self._parse_body(self.request.body)
-            except Exception as e:
+            except Exception as exception:
                 LOG.error("Error while parsing POST request body")
-                LOG.exception(e)
+                LOG.exception(exception)
                 raise HTTPBadRequest("Error parsing the request (see logs for more details)")
 
             typenames = typenames.union(typenames_post)
@@ -159,8 +159,7 @@ class TinyOWSProxy(OGCProxy):
     def _filter_urls(content, online_resource, proxy_online_resource):
         if online_resource is not None and proxy_online_resource is not None:
             return content.replace(online_resource, proxy_online_resource)
-        else:
-            return content
+        return content
 
     @staticmethod
     def _parse_body(body):

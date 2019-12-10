@@ -118,7 +118,8 @@ class GeomapfishAngularExtractor(Extractor):  # pragma: no cover
             self.config = None
         self.tpl = None
 
-    def __call__(self, filename, options):
+    def __call__(self, filename, options, fileobj=None, lineno=0):
+        del fileobj, lineno
 
         init_region({"backend": "dogpile.cache.memory"}, "std")
         init_region({"backend": "dogpile.cache.memory"}, "obj")
@@ -203,20 +204,20 @@ class GeomapfishConfigExtractor(Extractor):  # pragma: no cover
 
     extensions = [".yaml", ".tmpl"]
 
-    def __call__(self, filename, options):
+    def __call__(self, filename, options, fileobj=None, lineno=0):
+        del fileobj, lineno
         init_region({"backend": "dogpile.cache.memory"}, "std")
         init_region({"backend": "dogpile.cache.memory"}, "obj")
 
         with open(filename) as config_file:
-            config = yaml.load(config_file, Loader=yaml.BaseLoader)  # nosec
+            gmf_config = yaml.load(config_file, Loader=yaml.BaseLoader)  # nosec
             # For application config (config.yaml)
-            if "vars" in config:
+            if "vars" in gmf_config:
                 return self._collect_app_config(filename)
             # For the print config
-            elif "templates" in config:
-                return self._collect_print_config(config, filename)
-            else:
-                raise Exception("Not a known config file")
+            if "templates" in gmf_config:
+                return self._collect_print_config(gmf_config, filename)
+            raise Exception("Not a known config file")
 
     def _collect_app_config(self, filename):
         config.init(filename)
@@ -271,7 +272,7 @@ class GeomapfishConfigExtractor(Extractor):  # pragma: no cover
         defs = config["admin_interface"]["available_metadata"]
         names = [e["name"] for e in defs if e.get("translate", False)]
 
-        if len(names) > 0:
+        if names:
             import sqlalchemy
 
             engine = sqlalchemy.create_engine(config["sqlalchemy.url"])
@@ -306,13 +307,12 @@ class GeomapfishConfigExtractor(Extractor):  # pragma: no cover
             )
             if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
                 return []
-            else:
-                raise
+            raise
 
     @staticmethod
-    def _collect_print_config(config, filename):
+    def _collect_print_config(print_config, filename):
         result = []
-        for template_ in list(config.get("templates").keys()):
+        for template_ in list(print_config.get("templates").keys()):
             result.append(
                 Message(None, template_, None, [], "", "", (filename, "template/{}".format(template_)))
             )
@@ -326,7 +326,7 @@ class GeomapfishConfigExtractor(Extractor):  # pragma: no cover
                     "",
                     (filename, "template/{}/{}".format(template_, attribute)),
                 )
-                for attribute in list(config.get("templates")[template_].attributes.keys())
+                for attribute in list(print_config.get("templates")[template_].attributes.keys())
             ]
         return result
 
@@ -350,7 +350,8 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
             self.config = None
         self.env = None
 
-    def __call__(self, filename, options):
+    def __call__(self, filename, options, fileobj=None, lineno=0):
+        del fileobj, lineno
         messages = []
 
         try:
@@ -507,10 +508,10 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
         from c2cgeoportal_commons.models.main import OGCServer
 
         layers = [d.value for d in layer.metadatas if d.name == "queryLayers"]
-        if len(layers) == 0:
+        if not layers:
             layers = [d.value for d in layer.metadatas if d.name == "wmsLayer"]
         server = [d.value for d in layer.metadatas if d.name == "ogcServer"]
-        if len(server) >= 1 and len(layers) >= 1:
+        if server and layers:
             layers = [l for ls in layers for l in ls.split(",")]
             for wms_layer in layers:
                 try:
@@ -532,16 +533,16 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
 
     def _import_layer_attributes(self, url, layer, item_type, name, messages):
         attributes, layers = self._layer_attributes(url, layer)
-        for layer in layers:
+        for sub_layer in layers:
             messages.append(
                 Message(
                     None,
-                    layer,
+                    sub_layer,
                     None,
                     [],
                     "",
                     "",
-                    (".".join([item_type, name]), layer.encode("ascii", "replace")),
+                    (".".join([item_type, name]), sub_layer.encode("ascii", "replace")),
                 )
             )
         for attribute in attributes:
@@ -578,7 +579,7 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
         request.registry.settings = self.config
         # Static schema will not be supported
         url = get_url2("Layer", url, request, errors)
-        if len(errors) > 0:
+        if errors:
             print("\n".join(errors))
             return [], []
         url, headers, kwargs = self._build_url(url)
@@ -644,8 +645,7 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
                 )
                 if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
                     return [], []
-                else:
-                    raise
+                raise
 
             if not response.ok:  # pragma: no cover
                 print(
@@ -658,8 +658,7 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
                 )
                 if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
                     return [], []
-                else:
-                    raise Exception("Aborted")
+                raise Exception("Aborted")
 
             try:
                 describe = parseString(response.text)
@@ -680,8 +679,7 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
                 print("URL: {}\nxml:\n{}".format(wfs_descrfeat_url, response.text))
                 if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
                     return [], []
-                else:
-                    raise
+                raise
             except AttributeError:
                 print(
                     colorize(
@@ -693,8 +691,7 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
                 print("URL: {}\nxml:\n{}".format(wfs_descrfeat_url, response.text))
                 if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
                     return [], []
-                else:
-                    raise
+                raise
         else:
             featurestype = self.featuretype_cache[url]
 
@@ -704,7 +701,7 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
         layers = [layer]
         if wmscap is not None and layer in list(wmscap.contents):
             layer_obj = wmscap[layer]
-            if len(layer_obj.layers) > 0:
+            if layer_obj.layers:
                 layers = [l.name for l in layer_obj.layers]
 
         attributes = []

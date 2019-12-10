@@ -71,7 +71,6 @@ class XSDGenerator(PapyrusXSDGenerator):
 
         super().add_column_property_xsd(tb, column_property)
 
-    # pylint: disable=no-self-use
     def add_association_proxy_xsd(self, tb, column_property):
         from c2cgeoportal_commons.models import DBSession
 
@@ -88,15 +87,15 @@ class XSDGenerator(PapyrusXSDGenerator):
             attrs["minOccurs"] = "0"
             attrs["nillable"] = "true"
         attrs["name"] = proxy
-        with tag(tb, "xsd:element", attrs) as tb:
-            with tag(tb, "xsd:simpleType") as tb:
-                with tag(tb, "xsd:restriction", {"base": "xsd:string"}) as tb:
+        with tag(tb, "xsd:element", attrs) as tb2:
+            with tag(tb2, "xsd:simpleType") as tb3:
+                with tag(tb3, "xsd:restriction", {"base": "xsd:string"}) as tb4:
                     for (value,) in query:
-                        with tag(tb, "xsd:enumeration", {"value": value}):
+                        with tag(tb4, "xsd:enumeration", {"value": value}):
                             pass
-            self.element_callback(tb, column)
+            self.element_callback(tb4, column)
 
-    # pylint: disable=method-hidden, no-self-use
+    # pylint: disable=method-hidden
     def element_callback(self, tb, column):
         if column.info.get("readonly"):
             with tag(tb, "xsd:annotation"):
@@ -105,7 +104,7 @@ class XSDGenerator(PapyrusXSDGenerator):
                         pass
 
 
-class XSD(object):
+class XSD:
     def __init__(
         self,
         include_primary_keys=False,
@@ -128,5 +127,6 @@ class XSD(object):
                 response.content_type = "application/xml"
                 io = self.generator.get_class_xsd(BytesIO(), cls)
                 return io.getvalue()
+            return None
 
         return _render

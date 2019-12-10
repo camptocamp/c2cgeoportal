@@ -33,6 +33,7 @@ import ipaddress
 import json
 import logging
 from string import Formatter
+from typing import Optional
 import urllib.parse
 
 import dateutil
@@ -50,7 +51,7 @@ def get_types_map(types_array):
     return {type_["name"]: type_ for type_ in types_array}
 
 
-def get_url2(name, url, request, errors):
+def get_url2(name, url, request, errors) -> Optional[str]:  # pylint: disable=inconsistent-return-statements
     url_split = urllib.parse.urlsplit(url)
     if url_split.scheme == "":
         if url_split.netloc == "" and url_split.path not in ("", "/"):
@@ -58,12 +59,12 @@ def get_url2(name, url, request, errors):
             return urllib.parse.urlunsplit(url_split)
         errors.add("{}='{}' is not an URL.".format(name, url))
         return None
-    elif url_split.scheme in ("http", "https"):
+    if url_split.scheme in ("http", "https"):
         if url_split.netloc == "":
             errors.add("{}='{}' is not a valid URL.".format(name, url))
             return None
         return urllib.parse.urlunsplit(url_split)
-    elif url_split.scheme == "static":
+    if url_split.scheme == "static":
         if url_split.path in ("", "/"):
             errors.add("{}='{}' cannot have an empty path.".format(name, url))
             return None
@@ -79,7 +80,7 @@ def get_url2(name, url, request, errors):
                 )
             proj = "{}_geoportal:{}".format(package, proj)
         return request.static_url("{}{}".format(proj, url_split.path))
-    elif url_split.scheme == "config":
+    if url_split.scheme == "config":
         if url_split.netloc == "":
             errors.add("{}='{}' cannot have an empty netloc.".format(name, url))
             return None
@@ -100,7 +101,7 @@ def get_url2(name, url, request, errors):
             url = urllib.parse.urljoin(server, url_split.path[1:])
         else:
             url = server
-        return url if len(url_split.query) == 0 else "{}?{}".format(url, url_split.query)
+        return url if not url_split.query else "{}?{}".format(url, url_split.query)
 
 
 def get_typed(name, value, types, request, errors, layer_name=None):
@@ -113,19 +114,18 @@ def get_typed(name, value, types, request, errors, layer_name=None):
         type_ = types[name]
         if type_.get("type", "string") == "string":
             return value
-        elif type_["type"] == "list":
+        if type_["type"] == "list":
             return [v.strip() for v in value.split(",")]
-        elif type_["type"] == "boolean":
+        if type_["type"] == "boolean":
             value = value.lower()
             if value in ["yes", "y", "on", "1", "true"]:
                 return True
-            elif value in ["no", "n", "off", "0", "false"]:
+            if value in ["no", "n", "off", "0", "false"]:
                 return False
-            else:
-                errors.add(
-                    "{}The boolean attribute '{}'='{}' is not in "
-                    "[yes, y, on, 1, true, no, n, off, 0, false].".format(prefix, name, value.lower())
-                )
+            errors.add(
+                "{}The boolean attribute '{}'='{}' is not in "
+                "[yes, y, on, 1, true, no, n, off, 0, false].".format(prefix, name, value.lower())
+            )
         elif type_["type"] == "integer":
             return int(value)
         elif type_["type"] == "float":
@@ -170,13 +170,13 @@ def get_typed(name, value, types, request, errors, layer_name=None):
 
 
 def add_url_params(url, params):
-    if len(params) == 0:
+    if not params:
         return url
     return add_spliturl_params(urllib.parse.urlsplit(url), params)
 
 
 def add_spliturl_params(spliturl, params):
-    query = dict([(k, v[-1]) for k, v in list(urllib.parse.parse_qs(spliturl.query).items())])
+    query = {k: v[-1] for k, v in list(urllib.parse.parse_qs(spliturl.query).items())}
     for key, value in list(params.items()):
         query[key] = value
 

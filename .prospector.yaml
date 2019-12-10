@@ -1,0 +1,8 @@
+---
+strictness: veryhigh
+
+ignore-paths:
+  - node_modules
+
+mccabe:
+  run: false

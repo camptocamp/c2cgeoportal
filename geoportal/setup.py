@@ -43,11 +43,11 @@ VERSION = os.environ.get("VERSION", "dev")
 
 
 with open(os.path.join(HERE, "requirements.txt")) as f:
-    install_requires = f.read().splitlines()
+    INSTALL_REQUIRES = f.read().splitlines()
 
-setup_requires = []
+SETUP_REQUIRES = []
 
-tests_require = []
+TESTS_REQUIRE = []
 
 setup(
     name="c2cgeoportal_geoportal",
@@ -71,9 +71,9 @@ setup(
     package_data={"c2cgeoportal_geoportal": ["py.typed"]},
     include_package_data=True,
     zip_safe=False,
-    install_requires=install_requires,
-    setup_requires=setup_requires,
-    tests_require=tests_require,
+    install_requires=INSTALL_REQUIRES,
+    setup_requires=SETUP_REQUIRES,
+    tests_require=TESTS_REQUIRE,
     entry_points={
         "console_scripts": [
             "manage-users = c2cgeoportal_geoportal.scripts.manage_users:main",

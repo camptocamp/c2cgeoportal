@@ -137,7 +137,7 @@ def _fts(settings, health_check):
         return build_url("Check the fulltextsearch", request.route_path("fulltextsearch"), request)
 
     def check(_request, response):
-        assert len(response.json()["features"]) > 0, "No result"
+        assert response.json()["features"], "No result"
 
     health_check.add_url_check(
         name="checker_fulltextsearch",
@@ -172,7 +172,7 @@ def _themes_errors(settings, health_check):
             response.raise_for_status()
 
             result = response.json()
-            if len(result["errors"]) != 0:
+            if result["errors"]:
                 raise c2cwsgiutils.health_check.JsonCheckException(
                     "Interface '{}' has error in Theme.".format(interface), result["errors"]
                 )

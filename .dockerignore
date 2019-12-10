@@ -24,5 +24,6 @@
 !.isort.cfg
 !setup.cfg
 !lingua.cfg
+!.prospector.yaml
 !package.json
 **/__pycache__/

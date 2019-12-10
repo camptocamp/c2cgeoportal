@@ -49,7 +49,8 @@ class LayerWmsViews(DimensionLayerViews):
     _model = LayerWMS
     _base_schema = base_schema
 
-    def _base_query(self):
+    def _base_query(self, query=None):
+        del query
         return super()._base_query(self._request.dbsession.query(LayerWMS).distinct().outerjoin("ogc_server"))
 
     @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")

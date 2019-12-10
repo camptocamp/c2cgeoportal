@@ -122,10 +122,7 @@ def add_interface_ngeo(config, route_name, route, renderer=None, permission=None
 def add_admin_interface(config):
     if config.get_settings().get("enable_admin_interface", False):
         config.add_request_method(
-            # pylint: disable=not-callable
-            lambda request: c2cgeoportal_commons.models.DBSession(),
-            "dbsession",
-            reify=True,
+            lambda request: c2cgeoportal_commons.models.DBSession(), "dbsession", reify=True,
         )
         config.add_view(c2cgeoportal_geoportal.views.add_ending_slash, route_name="admin_add_ending_slash")
         config.add_route("admin_add_ending_slash", "/admin", request_method="GET")
@@ -165,8 +162,7 @@ def is_valid_referer(request, settings=None):
             settings = request.registry.settings
         list_ = settings.get("authorized_referers", [])
         return any(_match_url_start(e, referer) for e in list_)
-    else:
-        return True
+    return True
 
 
 def create_get_user_from_request(settings):

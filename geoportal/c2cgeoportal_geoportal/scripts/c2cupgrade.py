@@ -215,9 +215,9 @@ class C2cUpgradeTool:
         for required in REQUIRED_TEMPLATE_KEYS:
             if required not in project_template_keys:
                 messages.append(
-                    "The element '{}' is missing in the `template_vars` of "
-                    "the file 'project.yaml', you should have for example: {}: {}.".format(
-                        required, required, TEMPLATE_EXAMPLE.get("required", "")
+                    "The element '{required}' is missing in the `template_vars` of "
+                    "the file 'project.yaml', you should have for example: {required}: {template}.".format(
+                        required=required, template=TEMPLATE_EXAMPLE.get("required", "")
                     )
                 )
         if self.project.get("managed_files") is None:
@@ -226,7 +226,7 @@ class C2cUpgradeTool:
                 "you must define this element with a list of regular expressions or with an empty array. "
                 "See upgrade documentation for more information."
             )
-        if len(messages) > 0:
+        if messages:
             self.print_step(
                 step, error=True, message="\n".join(messages), prompt="Fix it and run again the upgrade:"
             )
@@ -616,7 +616,7 @@ class C2cUpgradeTool:
         )
 
         with open("ngeo.diff", "w") as diff_file:
-            if len(status) != 0:
+            if status:
                 check_call(
                     ["git", "diff", "--relative=CONST_create_template", "--staged", "--"] + status,
                     stdout=diff_file,
@@ -648,9 +648,9 @@ class C2cUpgradeTool:
             )
         ]
 
-        if len(status) > 0:
+        if status:
             with open("create.diff", "w") as diff_file:
-                if len(status) != 0:
+                if status:
                     check_call(
                         ["git", "diff", "--relative=CONST_create_template", "--staged", "--"] + status,
                         stdout=diff_file,

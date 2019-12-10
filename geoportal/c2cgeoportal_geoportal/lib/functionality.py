@@ -75,19 +75,18 @@ def _get_db_functionality(name, user: Dict[str, Any], types, request, errors):
             if functionality["name"] == name
         ]
         return [r for r in values if r is not None]
-    else:
-        functionalities = {
-            functionality["value"]
-            for functionalities in user["roles_functionalities"].values()
-            for functionality in functionalities
-            if functionality["name"] == name
-        }
-        values = [
-            get_typed(name, functionality_value, types, request, errors)
-            for functionality_value in functionalities
-        ]
+    functionalities = {
+        functionality["value"]
+        for functionalities in user["roles_functionalities"].values()
+        for functionality in functionalities
+        if functionality["name"] == name
+    }
+    values = [
+        get_typed(name, functionality_value, types, request, errors)
+        for functionality_value in functionalities
+    ]
 
-        return [r for r in values if r is not None]
+    return [r for r in values if r is not None]
 
 
 @CACHE_REGION_OBJ.cache_on_arguments()
@@ -97,7 +96,7 @@ def _get_functionalities_type(request):
     )
 
 
-def get_functionality(name, request, is_intranet):
+def get_functionality(name, request, is_intranet_):
     result = []
     errors = set()
 
@@ -105,17 +104,17 @@ def get_functionality(name, request, is_intranet):
         result = _get_db_functionality(
             name, _user_to_struct(request.user), _get_functionalities_type(request), request, errors
         )
-        if len(result) == 0:
+        if not result:
             result = _get_db_functionality(
                 name, _get_role("registered"), _get_functionalities_type(request), request, errors
             )
 
-    if len(result) == 0 and is_intranet:
+    if not result and is_intranet_:
         result = _get_db_functionality(
             name, _get_role("intranet"), _get_functionalities_type(request), request, errors
         )
 
-    if len(result) == 0:
+    if not result:
         result = _get_db_functionality(
             name, _get_role("anonymous"), _get_functionalities_type(request), request, errors
         )
@@ -141,7 +140,5 @@ def get_mapserver_substitution_params(request):
                 else:
                     params[attribute] = value
             else:
-                LOG.warning(
-                    "Mapserver Substitution '%s' does not " "respect pattern: <attribute>=<value>" % s
-                )
+                LOG.warning("Mapserver Substitution '%s' does not " "respect pattern: <attribute>=<value>", s)
     return params

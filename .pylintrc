@@ -1,5 +1,23 @@
+# can be moved to setup.cfg with pylint 2.5, prefixed with 'pylint.'.
 [MESSAGES CONTROL]
-disable=missing-docstring, bad-continuation
+disable=missing-docstring,
+    bad-continuation,
+    too-few-public-methods,
+    too-many-arguments,
+    wrong-import-order,
+    too-many-locals,
+    too-many-branches,
+    too-many-statements,
+    too-many-lines,
+    too-many-instance-attributes,
+    too-many-return-statements,
+    too-many-public-methods,
+    too-many-nested-blocks,
+    locally-disabled,
+    global-statement,
+    fixme,
+    broad-except,
+    invalid-name
 
 [TYPECHECK]
 ignored-classes=sqlalchemy.orm.scoping.scoped_session,

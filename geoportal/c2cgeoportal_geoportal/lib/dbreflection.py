@@ -50,7 +50,7 @@ SQL_GEOMETRY_COLUMNS = """
     """
 
 
-class _AssociationProxy(object):
+class _AssociationProxy:
     # A specific "association proxy" implementation
 
     def __init__(self, target, value_attr, nullable=True):

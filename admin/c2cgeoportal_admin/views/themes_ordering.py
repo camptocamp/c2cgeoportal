@@ -11,7 +11,7 @@ from c2cgeoportal_admin.widgets import ChildrenWidget, ThemeOrderWidget
 from c2cgeoportal_commons.models.main import Theme
 
 
-class ThemeOrderSchema(GeoFormSchemaNode):
+class ThemeOrderSchema(GeoFormSchemaNode):  # pylint: disable=abstract-method
     def objectify(self, dict_, context=None):
         context = self.dbsession.query(Theme).get(dict_["id"])
         context = super().objectify(dict_, context)

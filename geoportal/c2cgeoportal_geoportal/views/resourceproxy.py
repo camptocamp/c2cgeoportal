@@ -67,6 +67,5 @@ class ResourceProxy(Proxy):
                 if header not in self.settings["allowed_headers"]:
                     response.headers.pop(header)
             return response
-        else:  # pragma: no cover
-            LOG.warning("target url not found: {0!s}".format(target))
-            return HTTPBadRequest("url not allowed")
+        LOG.warning("Target url not found: %s", target)
+        return HTTPBadRequest("URL not allowed")

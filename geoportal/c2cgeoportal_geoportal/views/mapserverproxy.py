@@ -77,7 +77,7 @@ class MapservProxy(OGCProxy):
         # Do not allows direct variable substitution
         for k in list(self.params.keys()):
             if k[:2].capitalize() == "S_":
-                LOG.warning("Direct substitution not allowed ({0!s}={1!s}).".format(k, self.params[k]))
+                LOG.warning("Direct substitution not allowed (%s=%s).", k, self.params[k])
                 del self.params[k]
 
         # add functionalities params

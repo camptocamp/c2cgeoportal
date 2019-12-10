@@ -39,13 +39,13 @@ from c2cgeoportal_geoportal.views.raster import Raster
 
 
 class MemoryCacheSizeProvider(Provider):
-    def __init__(self, all=False):
+    def __init__(self, all_=False):
         super().__init__("pod_process_memory_cache_kb", "Used memory cache")
-        self.all = all
+        self.all = all_
 
     def get_data(self):
         result = []
-        for elem in _get_memory_cache(all=self.all):
+        for elem in _get_memory_cache(all_=self.all):
             if elem is not None:
                 for value in elem["values"]:
                     value[0]["pid"] = str(elem["pid"])
@@ -55,10 +55,10 @@ class MemoryCacheSizeProvider(Provider):
 
 
 @broadcast.decorator(expect_answers=True, timeout=15)
-def _get_memory_cache(all):
+def _get_memory_cache(all_):
     values = (
         [({"key": key}, get_size(value) / 1024) for key, value in list(MEMORY_CACHE_DICT.items())]
-        if all
+        if all_
         else []
     )
     values.append(({"key": "total"}, get_size(MEMORY_CACHE_DICT) / 1024))

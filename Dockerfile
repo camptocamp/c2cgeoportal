@@ -63,6 +63,7 @@ COPY Pipfile Pipfile.lock /tmp/
 RUN \
   cd /tmp && \
   pipenv install --system --clear --dev && \
+  python3 -m pip install prospector && \
   rm --recursive --force /tmp/* /root/.cache/*
 
 COPY bin/npm-packages /usr/bin/
@@ -196,6 +197,6 @@ RUN \
   touch /usr/local/lib/python3.7/dist-packages/zope/__init__.py && \
   touch /usr/local/lib/python3.7/dist-packages/c2c/__init__.py
 
-COPY .bandit .gitattributes .pylintrc checks.mk setup.cfg ./
+COPY setup.cfg .prospector.yaml .pylintrc .bandit .gitattributes checks.mk ./
 
 RUN make --makefile=checks.mk checks

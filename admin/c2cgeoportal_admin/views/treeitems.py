@@ -1,5 +1,3 @@
-# pylint: disable=no-self-use
-
 from functools import partial
 
 from c2cgeoform.views.abstract_views import AbstractViews, ListField
@@ -54,7 +52,7 @@ class TreeItemViews(AbstractViews):
             self._request.dbsession.add(rel)
         return response
 
-    def _base_query(self, query):
+    def _base_query(self, query):  # pylint: disable=arguments-differ
         return (
             query.outerjoin("metadatas")
             .options(subqueryload("parents_relation").joinedload("treegroup"))

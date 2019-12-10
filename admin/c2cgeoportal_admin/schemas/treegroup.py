@@ -10,7 +10,7 @@ from c2cgeoportal_admin.widgets import ChildrenWidget, ChildWidget
 from c2cgeoportal_commons.models.main import LayergroupTreeitem, TreeItem
 
 
-class ChildSchemaNode(GeoFormSchemaNode):
+class ChildSchemaNode(GeoFormSchemaNode):  # pylint: disable=abstract-method
     def objectify(self, dict_, context=None):
         if dict_.get("id", None):
             context = self.dbsession.query(LayergroupTreeitem).get(dict_["id"])

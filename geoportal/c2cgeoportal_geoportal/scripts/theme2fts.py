@@ -98,9 +98,7 @@ class Import:
         from c2cgeoportal_commons.models.main import FullTextSearch, Interface, Theme, Role
 
         self.session = session
-        self.session.execute(
-            FullTextSearch.__table__.delete().where(FullTextSearch.from_theme == True)
-        )  # noqa
+        self.session.execute(FullTextSearch.__table__.delete().where(FullTextSearch.from_theme))  # noqa
 
         self._ = {}
         for lang in self.languages:

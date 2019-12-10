@@ -365,7 +365,7 @@ class Theme:
             999999999 if resolution_hint_max is None else resolution_hint_max,
         )
 
-    def _layer(self, layer, time=None, dim=None, mixed=True):
+    def _layer(self, layer, time_=None, dim=None, mixed=True):
         errors = set()
         layer_info = {"id": layer.id, "name": layer.name, "metadata": self._get_metadatas(layer, errors)}
         if re.search("[/?#]", layer.name):  # pragma: no cover
@@ -375,9 +375,9 @@ class Theme:
         if layer.geo_table:
             errors |= self._fill_editable(layer_info, layer)
         if mixed:
-            assert time is None
-            time = TimeInformation()
-        assert time is not None
+            assert time_ is None
+            time_ = TimeInformation()
+        assert time_ is not None
 
         errors |= dim.merge(layer, layer_info, mixed)
 
@@ -392,7 +392,7 @@ class Theme:
             layer_info["type"] = "WMS"
             layer_info["layers"] = layer.layer
             self._fill_wms(layer_info, layer, errors, mixed=mixed)
-            errors |= self._merge_time(time, layer_info, layer, wms)
+            errors |= self._merge_time(time_, layer_info, layer, wms)
 
         elif isinstance(layer, main.LayerWMTS):
             layer_info["type"] = "WMTS"
@@ -541,7 +541,8 @@ class Theme:
         layer_theme["layer"] = layer.layer
         layer_theme["imageType"] = layer.image_type
 
-    def _vectortiles_layers(self, layer_theme, layer):
+    @staticmethod
+    def _vectortiles_layers(layer_theme, layer):
         layer_theme["style"] = layer.style
         if layer.xyz:
             layer_theme["xyz"] = layer.xyz
@@ -581,7 +582,7 @@ class Theme:
         depth=1,
         min_levels=1,
         mixed=True,
-        time=None,
+        time_=None,
         dim=None,
         wms_layers=None,
         layers_name=None,
@@ -609,7 +610,7 @@ class Theme:
             # check if mixed content
             mixed = len(ogc_servers) != 1 or ogc_servers[0] is False
             if not mixed:
-                time = TimeInformation()
+                time_ = TimeInformation()
             dim = DimensionInformation()
 
         for tree_item in group.children:
@@ -621,7 +622,7 @@ class Theme:
                     depth=depth + 1,
                     min_levels=min_levels,
                     mixed=mixed,
-                    time=time,
+                    time_=time_,
                     dim=dim,
                     wms_layers=wms_layers,
                     layers_name=layers_name,
@@ -636,7 +637,9 @@ class Theme:
                     if isinstance(tree_item, main.LayerWMS):
                         wms_layers.extend(tree_item.layer.split(","))
 
-                    layer_theme, l_errors = self._layer(tree_item, mixed=mixed, time=time, dim=dim, **kwargs)
+                    layer_theme, l_errors = self._layer(
+                        tree_item, mixed=mixed, time_=time_, dim=dim, **kwargs
+                    )
                     errors |= l_errors
                     if layer_theme is not None:
                         if depth < min_levels:
@@ -668,14 +671,13 @@ class Theme:
             if org_depth == 1:
                 if not mixed:
                     group_theme["ogcServer"] = ogc_servers[0]
-                    if time.has_time() and time.layer is None:
-                        group_theme["time"] = time.to_dict()
+                    if time_.has_time() and time_.layer is None:
+                        group_theme["time"] = time_.to_dict()
 
                     group_theme["dimensions"] = dim.get_dimensions()
 
             return group_theme, errors
-        else:
-            return None, errors
+        return None, errors
 
     def _layers(self, interface):
         query = self._create_layer_query(interface=interface)
@@ -968,9 +970,11 @@ class Theme:
                 attributes[name] = types[type_]
             elif (type_ == "Character") and (name + "Type") in types:
                 LOG.debug(
-                    "Due mapserver strange result the type 'ms:Character' is fallbacked to type '{name}Type'"
-                    " for feature '{name}', This is a stange comportement of mapserver when we use the "
-                    'METADATA "gml_types" "auto"'.format(name=name)
+                    "Due mapserver strange result the type 'ms:Character' is fallbacked to type '%sType'"
+                    " for feature '%s', This is a stange comportement of mapserver when we use the "
+                    'METADATA "gml_types" "auto"',
+                    name,
+                    name,
                 )
                 attributes[name] = types[name + "Type"]
             else:
@@ -1078,8 +1082,7 @@ class Theme:
                 background_layers_group,
                 self.request.headers.get("Host"),
             )
-        else:
-            return get_theme()
+        return get_theme()
 
     def _get_group(self, group, interface):
         layers = self._layers(interface)

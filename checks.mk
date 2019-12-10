@@ -8,24 +8,11 @@ VALIDATE_TEMPLATE_PY_FOLDERS = geoportal/c2cgeoportal_geoportal/scaffolds
 VALIDATE_PY_TEST_FOLDERS = geoportal/tests
 
 .PHONY: checks
-checks: flake8 pylint bandit black isort additionallint
+checks: prospector bandit black isort additionallint
 
-.PHONY: flake8
-flake8:
-	MYPYPATH=/opt/c2cwsgiutils flake8 \
-		--copyright-regexp="Copyright \(c\) ([0-9][0-9][0-9][0-9]-)?$(shell date +%Y), Camptocamp SA"
-	grep --recursive --files-with-match '/usr/bin/env python' | grep -v checks.mk | grep -v node_modules | \
-		xargs flake8 \
-		--copyright-regexp="Copyright \(c\) ([0-9][0-9][0-9][0-9]-)?$(shell date +%Y), Camptocamp SA"
-
-.PHONY: pylint
-pylint:
-	pylint --errors-only commons/c2cgeoportal_commons
-	pylint --errors-only commons/tests
-	pylint --errors-only --disable=assignment-from-no-return geoportal/c2cgeoportal_geoportal
-	pylint --errors-only geoportal/tests
-	pylint --errors-only admin/c2cgeoportal_admin
-	pylint --errors-only admin/tests
+.PHONY: prospector
+prospector:
+	prospector
 
 .PHONY: bandit
 bandit:

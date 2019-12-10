@@ -46,7 +46,7 @@ def regex_validator(node, value):
             raise error
 
 
-class MetadataSchemaNode(GeoFormSchemaNode):
+class MetadataSchemaNode(GeoFormSchemaNode):  # pylint: disable=abstract-method
 
     metadata_definitions = None
 

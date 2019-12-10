@@ -106,7 +106,7 @@ class Shortener:
                 for i in range(self.settings.get("length", 4))
             )
             test_url = DBSession.query(Shorturl).filter(Shorturl.ref == ref).all()
-            if len(test_url) == 0:
+            if not test_url:
                 break
             tries += 1  # pragma: no cover
             if tries > 20:  # pragma: no cover

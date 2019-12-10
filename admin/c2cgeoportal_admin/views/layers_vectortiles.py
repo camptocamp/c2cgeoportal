@@ -34,7 +34,8 @@ class LayerVectorTilesViews(DimensionLayerViews):
     _model = LayerVectorTiles
     _base_schema = base_schema
 
-    def _base_query(self):
+    def _base_query(self, query=None):
+        del query
         return super()._base_query(self._request.dbsession.query(LayerVectorTiles).distinct())
 
     @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")
