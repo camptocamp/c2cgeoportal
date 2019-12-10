@@ -6,14 +6,12 @@ Requirements
 To install a GeoMapFish application, you need to have the following
 components installed on your system:
 
-* **Git** (preferably to other revision control systems)
-* **Docker** >= 1.12
+* **Git**
+* **Docker** >= 1.12 (>= 17 is recommended)
 * **Docker-compose** >= 1.8
 * **Python** >= 3.5
-* **Python-netifaces**
-* **Apache** >= 2.4
+* **Apache** >= 2.4 (optional, can be used as a front for SSL)
 * **PostgreSQL** >= 9.1/**PostGIS** >= 2.1
-* **gnupg** (with **dirmngr**) optional
 
 
 Required Apache modules
