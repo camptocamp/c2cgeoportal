@@ -92,6 +92,7 @@ class TotalPythonObjectMemoryProvider(Provider):
         return [
             ({"pid": str(val["pid"]), "hostname": val["hostname"]}, val["value"])
             for val in _get_python_object_size()
+            if val is not None
         ]
 
 
