@@ -241,8 +241,7 @@ interpreted parameters section:
             - log_level
             - host
 
-In the ``<project>.mk`` file, add parameters you want to change as exported
-parameters:
+In the ``Makefile`` file, add parameters you want to change as exported variables:
 
 .. code:: make
 
@@ -259,8 +258,7 @@ environment variables:
 Configure the application
 -------------------------
 
-As the integrator, you need to edit the ``vars.yaml`` and
-``<package>.mk`` files to configure the application.
+As the integrator, you need to edit the ``vars.yaml`` and ``Makefile`` files to configure the application.
 
 Do not forget to add your changes to git:
 
