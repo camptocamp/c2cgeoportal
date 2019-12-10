@@ -1,6 +1,7 @@
+##### 2.4.1.67
+* Upgrade c2cgeoform to have italian l10n [c2cgeoportal#5600](https://github.com/camptocamp/c2cgeoportal/pull/5600)
 ##### 2.4.1.66
 * Remove one haproxy warning [c2cgeoportal#5594](https://github.com/camptocamp/c2cgeoportal/pull/5594)
-* Upgrade c2cgeoform to have italian l10n [c2cgeoportal#5600](https://github.com/camptocamp/c2cgeoportal/pull/5600)
 ##### 2.4.1.65
 * Update c2c.template to 2.2.1 to be able to import a yaml file in the … [c2cgeoportal#5595](https://github.com/camptocamp/c2cgeoportal/pull/5595)
 ##### 2.4.1.64
