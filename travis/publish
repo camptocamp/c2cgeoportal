@@ -69,7 +69,6 @@ then
     for PKG in commons geoportal admin
     do
         export PKG
-        travis/publish-pypi
     done
 fi
 
