@@ -29,7 +29,7 @@
 
 
 import logging.config
-from typing import Any, Dict
+from typing import Any, Dict, List, Set, Union, cast
 
 from sqlalchemy.orm import joinedload
 
@@ -67,7 +67,9 @@ def _role_to_struct(role):
     return [{"name": f.name, "value": f.value} for f in role.functionalities] if role else []
 
 
-def _get_db_functionality(name, user: Dict[str, Any], types, request, errors):
+def _get_db_functionality(
+    name, user: Dict[str, Any], types, request, errors
+) -> List[Union[str, int, float, bool, List[Any], Dict[str, Any]]]:
     if types.get(name, {}).get("single", False):
         values = [
             get_typed(name, functionality["value"], types, request, errors)
@@ -96,9 +98,11 @@ def _get_functionalities_type(request):
     )
 
 
-def get_functionality(name, request, is_intranet_):
-    result = []
-    errors = set()
+def get_functionality(
+    name, request, is_intranet_
+) -> List[Union[str, int, float, bool, List[Any], Dict[str, Any]]]:
+    result: List[Union[str, int, float, bool, List[Any], Dict[str, Any]]] = []
+    errors: Set[str] = set()
 
     if request.user is not None:
         result = _get_db_functionality(
@@ -125,10 +129,11 @@ def get_functionality(name, request, is_intranet_):
 
 
 def get_mapserver_substitution_params(request):
-    params = {}
+    params: Dict[str, str] = {}
     mss = get_functionality("mapserver_substitution", request, is_intranet(request))
     if mss:
-        for s in mss:
+        for s_ in mss:
+            s = cast(str, s_)
             index = s.find("=")
             if index > 0:
                 attribute = "s_" + s[:index]

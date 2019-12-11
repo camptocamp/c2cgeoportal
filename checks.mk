@@ -29,7 +29,7 @@ black-fix:
 .PHONY: isort
 isort:
 	isort --check-only --diff --settings-path=`pwd` \
-		 --recursive commons geoportal admin/c2cgeoportal_admin admin/tests bin
+		 --recursive commons geoportal admin/c2cgeoportal_admin admin/tests bin docker
 
 .PHONY: isort-fix
 isort-fix:

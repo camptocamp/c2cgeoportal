@@ -30,6 +30,7 @@
 
 import json
 import re
+from typing import Dict
 import urllib.parse
 
 from pyramid.view import view_config
@@ -83,7 +84,7 @@ class DynamicView:
         routes = dict(currentInterfaceUrl={"name": interface_name})
         routes.update(interface_config.get("routes", {}))
         for constant, config in routes.items():
-            params = {}
+            params: Dict[str, str] = {}
             params.update(config.get("params", {}))
             for name, dyn in config.get("dynamic_params", {}).items():
                 params[name] = dynamic[dyn]

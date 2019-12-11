@@ -1,4 +1,5 @@
 import json
+from typing import List
 
 from c2cgeoform.schema import GeoFormSchemaNode
 import colander
@@ -53,7 +54,7 @@ class MetadataSchemaNode(GeoFormSchemaNode):  # pylint: disable=abstract-method
     def __init__(self, *args, **kw):
         super().__init__(*args, **kw)
 
-        self.available_types = []
+        self.available_types: List[str] = []
 
         self._add_value_node("string", colander.String())
         self._add_value_node("liste", colander.String())

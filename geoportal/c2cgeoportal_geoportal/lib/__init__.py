@@ -33,7 +33,7 @@ import ipaddress
 import json
 import logging
 from string import Formatter
-from typing import Optional
+from typing import Any, Dict, List, Optional, Set, Union
 import urllib.parse
 
 import dateutil
@@ -51,7 +51,7 @@ def get_types_map(types_array):
     return {type_["name"]: type_ for type_ in types_array}
 
 
-def get_url2(name, url, request, errors) -> Optional[str]:  # pylint: disable=inconsistent-return-statements
+def get_url2(name, url, request, errors) -> Optional[str]:
     url_split = urllib.parse.urlsplit(url)
     if url_split.scheme == "":
         if url_split.netloc == "" and url_split.path not in ("", "/"):
@@ -102,9 +102,12 @@ def get_url2(name, url, request, errors) -> Optional[str]:  # pylint: disable=in
         else:
             url = server
         return url if not url_split.query else "{}?{}".format(url, url_split.query)
+    return None
 
 
-def get_typed(name, value, types, request, errors, layer_name=None):
+def get_typed(
+    name, value, types, request, errors, layer_name=None
+) -> Union[str, int, float, bool, None, List[Any], Dict[str, Any]]:
     prefix = "Layer '{}': ".format(layer_name) if layer_name is not None else ""
     type_ = {"type": "not init"}
     try:
@@ -169,7 +172,7 @@ def get_typed(name, value, types, request, errors, layer_name=None):
     return None
 
 
-def add_url_params(url, params):
+def add_url_params(url: str, params: Optional[Dict[str, str]]) -> str:
     if not params:
         return url
     return add_spliturl_params(urllib.parse.urlsplit(url), params)
@@ -200,11 +203,12 @@ def get_ogc_server_wms_url_ids(request):
     from c2cgeoportal_commons.models import DBSession
     from c2cgeoportal_commons.models.main import OGCServer
 
-    errors = set()
-    servers = dict()
+    errors: Set[str] = set()
+    servers: Dict[str, List[int]] = {}
     for ogc_server in DBSession.query(OGCServer).all():
         url = get_url2(ogc_server.name, ogc_server.url, request, errors)
-        servers.setdefault(url, []).append(ogc_server.id)
+        if url is not None:
+            servers.setdefault(url, []).append(ogc_server.id)
     return servers
 
 
@@ -213,11 +217,12 @@ def get_ogc_server_wfs_url_ids(request):
     from c2cgeoportal_commons.models import DBSession
     from c2cgeoportal_commons.models.main import OGCServer
 
-    errors = set()
-    servers = dict()
+    errors: Set[str] = set()
+    servers: Dict[str, List[int]] = {}
     for ogc_server in DBSession.query(OGCServer).all():
         url = get_url2(ogc_server.name, ogc_server.url_wfs or ogc_server.url, request, errors)
-        servers.setdefault(url, []).append(ogc_server.id)
+        if url is not None:
+            servers.setdefault(url, []).append(ogc_server.id)
     return servers
 
 
