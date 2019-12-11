@@ -9,9 +9,7 @@ from c2cgeoportal_geoportal.lib.caching import NO_CACHE, set_common_headers
 def locale(request):
     response = HTTPFound(
         request.static_url(
-            "{package}_geoportal:static-ngeo/build/{lang}.json".format(
-                package=request.registry.settings["package"], lang=request.locale_name
-            ),
+            "/etc/geomapfish/static/{lang}.json".format(lang=request.locale_name),
             _query={"cache": get_cache_version()},
         )
     )
