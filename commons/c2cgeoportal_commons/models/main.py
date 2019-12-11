@@ -28,8 +28,8 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import re
 import logging
+import re
 from typing import Any, Dict, List, Optional, Tuple, Union, cast  # noqa, pylint: disable=unused-import
 
 from c2c.template.config import config
@@ -52,12 +52,7 @@ try:
     from c2cgeoform.ext.deform_ext import MapWidget, RelationSelect2Widget
 except ModuleNotFoundError:
     drop = None
-    default_map_settings = {
-        "srid": 3857,
-        "view": {
-            "projection": "EPSG:3857"
-        }
-    }
+    default_map_settings = {"srid": 3857, "view": {"projection": "EPSG:3857"}}
 
     class GenericClass:
         def __init__(self, *args: Any, **kwargs: Any):
@@ -78,13 +73,10 @@ _srid: int = cast(int, config["srid"]) or 3857
 
 # Set some default values for the admin interface
 _admin_config: Dict = config.get_config().get("admin_interface", {})
-_map_config: Dict = {
-    **_admin_config.get("map", {}),
-    **default_map_settings
-}
-_admin_config["map_srid"] = _admin_config.get(
-    "map_srid",
-    re.match(r'EPSG:(\d+)', _map_config["view"]["projection"]).group(1))
+_map_config: Dict = {**default_map_settings, **_admin_config.get("map", {})}
+view_srid_match = re.match(r"EPSG:(\d+)", _map_config["view"]["projection"])
+if "map_srid" not in _admin_config and view_srid_match is not None:
+    _admin_config["map_srid"] = view_srid_match.group(1)
 
 
 class FullTextSearch(GeoInterface, Base):
@@ -165,9 +157,7 @@ class Role(Base):
         info={
             "colanderalchemy": {
                 "typ": ColanderGeometry("POLYGON", srid=_srid, map_srid=_admin_config["map_srid"]),
-                "widget": MapWidget(
-                    map_options=_map_config
-                ),
+                "widget": MapWidget(map_options=_map_config),
             }
         },
     )
@@ -745,10 +735,8 @@ class RestrictionArea(Base):
         Geometry("POLYGON", srid=_srid),
         info={
             "colanderalchemy": {
-                "typ": ColanderGeometry("POLYGON", srid=_srid, map_srid=_map_config['srid']),
-                "widget": MapWidget(
-                    map_options=_map_config
-                ),
+                "typ": ColanderGeometry("POLYGON", srid=_srid, map_srid=_map_config["srid"]),
+                "widget": MapWidget(map_options=_map_config),
             }
         },
     )

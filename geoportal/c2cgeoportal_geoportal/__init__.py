@@ -37,6 +37,8 @@ import time
 from urllib.parse import urlsplit
 
 from Crypto.Cipher import AES  # nosec
+import c2cgeoform
+from c2cgeoform import Form, translator
 import c2cwsgiutils
 import c2cwsgiutils.db
 from c2cwsgiutils.health_check import HealthCheck
@@ -137,11 +139,8 @@ def add_getitfixed(config):
         config.include("getitfixed.routes")
         config.add_translation_dirs("getitfixed:locale")
         config.scan("getitfixed")
-        # Fix up for admin and getitfixed custom search_paths
-        # pylint: disable=import-outside-toplevel
-        from c2cgeoform import Form, default_search_paths, translator
-
-        Form.set_zpt_renderer(default_search_paths, translator=translator)
+        # Register admin and getitfixed search paths together
+        Form.set_zpt_renderer(c2cgeoform.default_search_paths, translator=translator)
 
 
 def locale_negotiator(request):
