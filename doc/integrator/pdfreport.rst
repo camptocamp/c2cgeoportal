@@ -27,7 +27,7 @@ The service is configured in the main ``vars.yaml`` file of the project as in th
             layer-defaults: &pdfreport-layer-default
                 ogcserver: source for image/png
                 check_credentials: True
-                srs: EPSG:21781
+                srs: EPSG:2056
                 map:
                     backgroundlayers: [grp_ly_tilegenerierung_landeskarte]
                     imageformat: image/png

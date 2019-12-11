@@ -13,7 +13,7 @@ vars:
     schema: main,
     schema_static: main_static,
     sqlalchemy_slave.url: 'postgresql://www-data:www-data@db:5432/geomapfish_tests',
-    srid: 21781
+    srid: 2056
 ```
 
 Plugin configuration file path is given by `GEOMAPFISH_CONFIG` environment variable and default to `/etc/qgisserver/geomapfish.yaml`.

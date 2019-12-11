@@ -15,7 +15,7 @@ In the file ``geoportal/demo_geoportal/static-ngeo/api/index.js`` you can custom
    // The URL to the themes service.
    config.themesUrl = '<the theme URL>';
 
-   // The projection of the map, for example: 'EPSG:21781'
+   // The projection of the map, for example: 'EPSG:2056'
    config.projection = <the projection>;
 
    // The resolutions list, for example: [250, 100, 50, 20, 10, 5, 2, 1, 0.5, 0.25, 0.1, 0.05]

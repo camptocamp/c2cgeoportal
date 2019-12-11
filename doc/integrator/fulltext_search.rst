@@ -49,7 +49,7 @@ Here is an example of an insertion in the ``tsearch`` table:
     INSERT INTO app_schema.tsearch
       (the_geom, layer_name, label, public, role_id, ts)
     VALUES (
-       ST_GeomFromText('POINT(2660000 1140000)', 21781),
+       ST_GeomFromText('POINT(2660000 1140000)', 2056),
        'Group',
        'text to display',
        't',
@@ -276,7 +276,7 @@ instead of 'french'. For example:
     INSERT INTO <schema>.tsearch
       (the_geom, layer_name, label, public, role_id, ts)
     VALUES
-      (ST_GeomFromText('POINT(2660000 1140000)', 21781), 'Layer group',
+      (ST_GeomFromText('POINT(2660000 1140000)', 2056), 'Layer group',
        'Accent text to display (éàè)', 't', NULL, to_tsvector('fr', 'Accent text to search (éàè)'));
 
 And define the configuration in the ``vars.yaml`` file:
