@@ -219,8 +219,7 @@ interpreted parameters section:</p>
         <span class="o">-</span> <span class="n">host</span>
 </pre></div>
 </div>
-<p>In the <code class="docutils literal notranslate"><span class="pre">&lt;project&gt;.mk</span></code> file, add parameters you want to change as exported
-parameters:</p>
+<p>In the <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> file, add parameters you want to change as exported variables:</p>
 <div class="code make highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">HOST</span> <span class="o">=</span> <span class="n">domaine</span><span class="o">.</span><span class="n">different</span><span class="o">.</span><span class="n">com</span>
 <span class="n">export</span> <span class="n">LOG_LEVEL</span>
 </pre></div>
@@ -234,8 +233,7 @@ environment variables:</p>
 </div>
 <div class="section" id="configure-the-application">
 <h2>Configure the application<a class="headerlink" href="#configure-the-application" title="Permalink to this headline">¶</a></h2>
-<p>As the integrator, you need to edit the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> and
-<code class="docutils literal notranslate"><span class="pre">&lt;package&gt;.mk</span></code> files to configure the application.</p>
+<p>As the integrator, you need to edit the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> and <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> files to configure the application.</p>
 <p>Do not forget to add your changes to git:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git add vars.yaml</span>
 <span class="prompt1">git commit -m <span class="s2">&quot;Configure the project&quot;</span></span>
