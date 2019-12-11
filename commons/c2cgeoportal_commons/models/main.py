@@ -38,10 +38,10 @@ from papyrus.geo_interface import GeoInterface
 from sqlalchemy import Column, ForeignKey, Table, UniqueConstraint, event
 from sqlalchemy.orm import Session, backref, relationship
 from sqlalchemy.schema import Index
-from sqlalchemy.types import Boolean, Enum, Integer, String, Unicode, UserDefinedType
+from sqlalchemy.types import Boolean, Enum, Integer, String, Unicode
 
 from c2cgeoportal_commons.models import Base, _, cache_invalidate_cb
-from c2cgeoportal_commons.models.sqlalchemy import JSONEncodedDict
+from c2cgeoportal_commons.models.sqlalchemy import JSONEncodedDict, TsVector
 
 try:
     from colander import drop
@@ -66,13 +66,6 @@ LOG = logging.getLogger(__name__)
 
 _schema = config["schema"] or "main"  # type: str
 _srid = config["srid"] or 3857  # type: int
-
-
-class TsVector(UserDefinedType):
-    """ A custom type for PostgreSQL's tsvector type. """
-
-    def get_col_spec(self) -> str:  # pragma: no cover
-        return "TSVECTOR"
 
 
 class FullTextSearch(GeoInterface, Base):

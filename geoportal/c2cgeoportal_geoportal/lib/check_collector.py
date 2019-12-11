@@ -27,6 +27,7 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 import logging
+from typing import Any
 
 import requests
 
@@ -46,21 +47,27 @@ def init(config, health_check):
 
     for host in settings["hosts"]:
 
-        def check(request):
-            params = request.params
-            display = host["display"]
-            if "host" not in params or display == params["host"]:
-                url_headers = build_url(
-                    "check_collector",
-                    "%s/%s/health_check" % (host["url"].rstrip("/"), c2c_base.strip("/")),
-                    request,
-                )
-                r = requests.get(
-                    params={"max_level": str(host.get("max_level", max_level))}, timeout=120, **url_headers
-                )
-                r.raise_for_status()
-                return r.json()
+        class Check:
+            def __init__(self, host):
+                self.host = host
+
+            def __call__(self, request) -> Any:  # pylint: disable=inconsistent-return-statements
+                params = request.params
+                display = self.host["display"]
+                if "host" not in params or display == params["host"]:
+                    url_headers = build_url(
+                        "check_collector",
+                        "%s/%s/health_check" % (self.host["url"].rstrip("/"), c2c_base.strip("/")),
+                        request,
+                    )
+                    r = requests.get(
+                        params={"max_level": str(self.host.get("max_level", max_level))},
+                        timeout=120,
+                        **url_headers,
+                    )
+                    r.raise_for_status()
+                    return r.json()
 
         health_check.add_custom_check(
-            name="check_collector_" + host["display"], check_cb=check, level=settings["level"]
+            name="check_collector_" + host["display"], check_cb=Check(host), level=settings["level"]
         )

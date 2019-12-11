@@ -63,7 +63,7 @@ class OGCProxy(Proxy):
             self.ogc_server = self._get_ogcserver_byname(self.params["ogcserver"])
 
     @CACHE_REGION.cache_on_arguments()
-    def _get_ogcserver_byname(self, name):
+    def _get_ogcserver_byname(self, name):  # pylint: disable=no-self-use
         try:
             result = DBSession.query(OGCServer).filter(OGCServer.name == name).one()
             DBSession.expunge(result)
@@ -79,7 +79,7 @@ class OGCProxy(Proxy):
         ogc_server = self.ogc_server
         errors = set()
         url = get_url2("The OGC server '{}'".format(ogc_server.name), ogc_server.url, self.request, errors)
-        if len(errors) > 0:  # pragma: no cover
+        if errors:  # pragma: no cover
             LOG.error("\n".join(errors))
         return url
 
@@ -92,6 +92,6 @@ class OGCProxy(Proxy):
             self.request,
             errors,
         )
-        if len(errors) > 0:  # pragma: no cover
+        if errors:  # pragma: no cover
             LOG.error("\n".join(errors))
         return url

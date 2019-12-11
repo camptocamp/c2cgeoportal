@@ -1,5 +1,0 @@
-[run]
-source = c2cgeoportal_geoportal
-omit =
-    c2cgeoportal_geoportal/lib/raster/*
-    c2cgeoportal_geoportal/scripts/*

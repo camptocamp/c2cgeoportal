@@ -154,7 +154,7 @@ class User(Base):
         email: str = "",
         is_password_changed: bool = False,
         settings_role: Role = None,
-        roles: List[Role] = [],
+        roles: List[Role] = None,
         expire_on: datetime = None,
         deactivated: bool = False,
     ) -> None:
@@ -165,7 +165,7 @@ class User(Base):
         self.is_password_changed = is_password_changed
         if settings_role:
             self.settings_role = settings_role
-        self.roles = roles
+        self.roles = roles or []
         self.expire_on = expire_on
         self.deactivated = deactivated
 
@@ -191,7 +191,7 @@ class User(Base):
     @staticmethod
     def __encrypt_password(password: str) -> str:
         # TODO: remove pylint disable when https://github.com/PyCQA/pylint/issues/3047 is fixed
-        return crypt.crypt(password, crypt.METHOD_SHA512)  # pylint: disable=E1101
+        return crypt.crypt(password, crypt.METHOD_SHA512)  # pylint: disable=no-member
 
     def validate_password(self, passwd: str) -> bool:
         """Check the password against existing credentials.

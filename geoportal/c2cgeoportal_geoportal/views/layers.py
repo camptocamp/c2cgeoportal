@@ -164,10 +164,9 @@ class Layers:
         for ra, srid in ras.all():
             if ra is None:
                 return proto.read(self.request)
-            else:
-                use_srid = srid
-                collect_ra.append(to_shape(ra))
-        if len(collect_ra) == 0:  # pragma: no cover
+            use_srid = srid
+            collect_ra.append(to_shape(ra))
+        if not collect_ra:  # pragma: no cover
             raise HTTPForbidden()
 
         filter1_ = create_filter(self.request, cls, geom_attr)
@@ -267,10 +266,8 @@ class Layers:
         try:
             features = protocol.create(self.request)
             if isinstance(features, HTTPException):
-                # pylint: disable=raising-bad-type
                 raise features
             if features is not None:
-                # pylint: disable=no-member
                 for feature in features.features:
                     self._log_last_update(layer, feature)
             return features
@@ -495,15 +492,15 @@ def get_layer_class(layer, with_last_update_columns=False):
         if attribute_name not in column_properties:
             table = mapper.mapped_table
             LOG.warning(
-                'Attribute "{}" does not exists in table "{}".\n'
-                'Please correct metadata "editingAttributesOrder" in layer "{}" (id={}).\n'
-                "Available attributes are: {}.".format(
-                    attribute_name,
-                    "{}.{}".format(table.schema, table.name),
-                    layer.name,
-                    layer.id,
-                    ", ".join(column_properties),
-                )
+                'Attribute "%s" does not exists in table "%s.%s".\n'
+                'Please correct metadata "editingAttributesOrder" in layer "%s" (id=%s).\n'
+                "Available attributes are: %s.",
+                attribute_name,
+                table.schema,
+                table.name,
+                layer.name,
+                layer.id,
+                ", ".join(column_properties),
             )
 
     return cls
@@ -584,8 +581,7 @@ def _convert_column_type(column_type):
     if isinstance(column_type, (String, Text, Unicode, UnicodeText)):
         if column_type.length is None:
             return {"type": "xsd:string"}
-        else:
-            return {"type": "xsd:string", "maxLength": int(column_type.length)}
+        return {"type": "xsd:string", "maxLength": int(column_type.length)}
 
     # Numeric Type
     if isinstance(column_type, Numeric):
@@ -593,11 +589,10 @@ def _convert_column_type(column_type):
         if column_type.scale is None and column_type.precision is None:
             return xsd_type
 
-        else:
-            if column_type.scale is not None:
-                xsd_type["fractionDigits"] = int(column_type.scale)
-            if column_type.precision is not None:
-                xsd_type["totalDigits"] = int(column_type.precision)
-            return xsd_type
+        if column_type.scale is not None:
+            xsd_type["fractionDigits"] = int(column_type.scale)
+        if column_type.precision is not None:
+            xsd_type["totalDigits"] = int(column_type.precision)
+        return xsd_type
 
     raise NotImplementedError  # pragma: no cover

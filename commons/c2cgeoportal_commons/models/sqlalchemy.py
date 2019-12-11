@@ -30,7 +30,7 @@ import json
 from typing import Optional
 
 from sqlalchemy.engine import Dialect
-from sqlalchemy.types import VARCHAR, TypeDecorator
+from sqlalchemy.types import VARCHAR, TypeDecorator, UserDefinedType
 
 
 # get from https://docs.sqlalchemy.org/en/latest/orm/extensions/
@@ -49,3 +49,23 @@ class JSONEncodedDict(TypeDecorator):
     @staticmethod
     def process_result_value(value: Optional[str], _: Dialect) -> Optional[dict]:
         return json.loads(value) if value is not None else None
+
+    @property
+    def python_type(self):
+        return dict
+
+    @staticmethod
+    def process_literal_param(value, dialect):
+        del dialect
+        json.dumps(value)
+
+
+class TsVector(UserDefinedType):
+    """ A custom type for PostgreSQL's tsvector type. """
+
+    def get_col_spec(self) -> str:  # pylint: disable=no-self-use
+        return "TSVECTOR"
+
+    @property
+    def python_type(self):
+        return dict

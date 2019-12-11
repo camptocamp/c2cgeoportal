@@ -35,7 +35,7 @@ import transaction
 from c2cgeoportal_geoportal.scripts import fill_arguments, get_appsettings, get_session
 
 
-def main():
+def _main():
     """
     Emergency user create and password reset script
     example, reset toto password to foobar:
@@ -135,4 +135,4 @@ User can be created if it does not exist yet."""
 
 
 if __name__ == "__main__":
-    main()
+    _main()

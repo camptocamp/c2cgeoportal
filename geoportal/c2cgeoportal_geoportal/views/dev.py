@@ -52,5 +52,4 @@ class Dev(Proxy):
         path = self.THEME_RE.sub("", self.request.path_info)
         if self.request.path.endswith("/dynamic.js"):
             return HTTPFound(location=self.request.route_url("dynamic", _query=self.request.params))
-        else:
-            return self._proxy_response("dev", "{}/{}".format(self.dev_url.rstrip("/"), path.lstrip("/")))
+        return self._proxy_response("dev", "{}/{}".format(self.dev_url.rstrip("/"), path.lstrip("/")))

@@ -49,7 +49,7 @@ class BaseTemplate(Template):  # pragma: no cover
     Greatly inspired from ``pyramid.scaffolds.template.PyramidTemplate``.
     """
 
-    def pre(self, command, output_dir, vars_):
+    def pre(self, command, output_dir, vars_):  # pylint: disable=arguments-differ
         """
         Overrides ``pyramid.scaffold.template.Template.pre``, adding
         several variables to the default variables list. Also prevents
@@ -75,7 +75,7 @@ class BaseTemplate(Template):  # pragma: no cover
         vars_["extent"] = ",".join(extent)
         vars_["extent_mapserver"] = " ".join(extent)
 
-        ret = Template.pre(self, command, output_dir, vars_)
+        super().pre(command, output_dir, vars_)
 
         if vars_["package"] == "site":
             raise ValueError(
@@ -93,8 +93,6 @@ class BaseTemplate(Template):  # pragma: no cover
         geomapfish_version = pkg_resources.get_distribution("c2cgeoportal_commons").version
         vars_["geomapfish_version"] = geomapfish_version
         vars_["geomapfish_main_version"] = ".".join(geomapfish_version.split(".")[:2])
-
-        return ret
 
     @staticmethod
     def out(msg):
@@ -167,7 +165,7 @@ class TemplateCreate(BaseTemplate):  # pragma: no cover
     _template_dir = "create"
     summary = "Template used to create a c2cgeoportal project"
 
-    def post(self, command, output_dir, vars_):
+    def post(self, command, output_dir, vars_):  # pylint: disable=arguments-differ
         """
         Overrides the base template class to print the next step.
         """
@@ -197,7 +195,7 @@ class TemplateUpdate(BaseTemplate):  # pragma: no cover
         self.open_project(vars_)
         return BaseTemplate.pre(self, command, output_dir, vars_)
 
-    def post(self, command, output_dir, vars_):
+    def post(self, command, output_dir, vars_):  # pylint: disable=arguments-differ
         """
         Overrides the base template class to print "Welcome to c2cgeoportal!"
         after a successful scaffolding rendering.

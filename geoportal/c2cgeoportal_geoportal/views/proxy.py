@@ -48,7 +48,7 @@ LOG = logging.getLogger(__name__)
 CACHE_REGION = get_region("std")
 
 
-class Proxy(object):
+class Proxy:
     def __init__(self, request):
         self.request = request
         self.host_forward_host = request.registry.settings["host_forward_host"]

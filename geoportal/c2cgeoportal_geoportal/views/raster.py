@@ -117,7 +117,7 @@ class Raster:
         if type_ == "shp_index":
             tiles = [e for e in data.filter(mask={"type": "Point", "coordinates": [lon, lat]})]
 
-            if len(tiles) == 0:
+            if not tiles:
                 return None
 
             path = os.path.join(os.path.dirname(layer["file"]), tiles[0]["properties"]["location"])
@@ -148,9 +148,7 @@ class Raster:
             def get_index(index_):
                 return index_, index_ + 1
 
-            result = dataset.read(1, window=(get_index(index[0]), get_index(index[1])))[0][
-                0
-            ]  # pylint: disable=no-member
+            result = dataset.read(1, window=(get_index(index[0]), get_index(index[1])))[0][0]
             result = None if result == layer.get("nodata", dataset.nodata) else result
         else:
             LOG.debug(
@@ -172,5 +170,4 @@ class Raster:
     def _round(value, round_to):
         if value is not None:
             return Decimal(str(value)).quantize(Decimal(str(round_to)))
-        else:
-            return None
+        return None

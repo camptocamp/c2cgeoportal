@@ -111,8 +111,7 @@ class TimeInformation:
             time["mode"] = self.mode
             time["widget"] = self.widget
             return time
-        else:
-            return None
+        return None
 
 
 class TimeExtentValue:
@@ -231,7 +230,7 @@ def parse_extent(extent, default_values):
     default_values must be a slash separated String from OWSLib's a
     defaulttimeposition
     """
-    if len(extent) > 0:
+    if extent:
         min_def_value, max_def_value = _parse_default_values(default_values)
         if extent[0].count("/") > 0:
             # case "start/end/interval"
@@ -243,15 +242,13 @@ def parse_extent(extent, default_values):
             interval = _parse_duration(i)
 
             return TimeExtentInterval(start[1], end[1], interval, start[0], min_def_value, max_def_value)
-        else:
-            # case "value1, value2, ..., valueN"
-            dates = [_parse_date(d) for d in extent]
-            resolution = dates[0][0]
-            values = set(d[1] for d in dates)
+        # case "value1, value2, ..., valueN"
+        dates = [_parse_date(d) for d in extent]
+        resolution = dates[0][0]
+        values = set(d[1] for d in dates)
 
-            return TimeExtentValue(values, resolution, min_def_value, max_def_value)
-    else:
-        raise ValueError("Invalid time extent format '%s'", extent)
+        return TimeExtentValue(values, resolution, min_def_value, max_def_value)
+    raise ValueError("Invalid time extent format '{}'".format(extent))
 
 
 def _parse_default_values(default_values):

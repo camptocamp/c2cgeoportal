@@ -95,7 +95,8 @@ class Login:
             "two_fa": self.two_factor_auth,
         }
 
-    def _validate_2fa_totp(self, user, otp: str) -> bool:
+    @staticmethod
+    def _validate_2fa_totp(user, otp: str) -> bool:
         if pyotp.TOTP(user.tech_data.get("2fa_totp_secret", "")).verify(otp):
             return True
         return False
@@ -166,31 +167,27 @@ class Login:
             came_from = self.request.params.get("came_from")
             if came_from:
                 return HTTPFound(location=came_from, headers=headers)
-            else:
-                headers.append(("Content-Type", "text/json"))
-                return set_common_headers(
-                    self.request,
-                    "login",
-                    NO_CACHE,
-                    response=Response(
-                        json.dumps(self._user(self.request.get_user(username))), headers=headers
-                    ),
-                )
-        else:
-            user = models.DBSession.query(static.User).filter(static.User.username == login).one_or_none()
-            if user and not user.deactivated:
-                if "consecutive_failed" not in user.tech_data:
-                    user.tech_data["consecutive_failed"] = "0"
-                user.tech_data["consecutive_failed"] = str(int(user.tech_data["consecutive_failed"]) + 1)
-                if int(user.tech_data["consecutive_failed"]) >= self.request.registry.settings.get(
-                    "authentication", {}
-                ).get("max_consecutive_failures", sys.maxsize):
-                    user.deactivated = True
-                    user.tech_data["consecutive_failed"] = "0"
+            headers.append(("Content-Type", "text/json"))
+            return set_common_headers(
+                self.request,
+                "login",
+                NO_CACHE,
+                response=Response(json.dumps(self._user(self.request.get_user(username))), headers=headers),
+            )
+        user = models.DBSession.query(static.User).filter(static.User.username == login).one_or_none()
+        if user and not user.deactivated:
+            if "consecutive_failed" not in user.tech_data:
+                user.tech_data["consecutive_failed"] = "0"
+            user.tech_data["consecutive_failed"] = str(int(user.tech_data["consecutive_failed"]) + 1)
+            if int(user.tech_data["consecutive_failed"]) >= self.request.registry.settings.get(
+                "authentication", {}
+            ).get("max_consecutive_failures", sys.maxsize):
+                user.deactivated = True
+                user.tech_data["consecutive_failed"] = "0"
 
-            if hasattr(self.request, "tm"):
-                self.request.tm.commit()
-            raise HTTPUnauthorized("See server logs for details")
+        if hasattr(self.request, "tm"):
+            self.request.tm.commit()
+        raise HTTPUnauthorized("See server logs for details")
 
     @view_config(route_name="logout")
     def logout(self):

@@ -20,19 +20,17 @@ import traceback
 from c2c.template.config import config
 import c2cwsgiutils.broadcast
 import geoalchemy2
+from qgis.core import QgsDataSourceUri, QgsLayerTreeGroup, QgsLayerTreeLayer, QgsMessageLog, QgsProject
+from qgis.server import QgsAccessControlFilter
 from shapely import ops
 import sqlalchemy
 from sqlalchemy.orm import configure_mappers, scoped_session, sessionmaker
 import yaml
 import zope.event.classhandler
 
-from qgis.core import QgsDataSourceUri, QgsLayerTreeGroup, QgsLayerTreeLayer, QgsMessageLog, QgsProject
-from qgis.server import QgsAccessControlFilter
-
 
 class GMFException(Exception):
-    def __init__(self, msg):
-        super(GMFException, self).__init__(msg)
+    pass
 
 
 class Access(Enum):
@@ -102,9 +100,8 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
     def get_ogcserver_accesscontrol(self):
         if self.single:
             return self.ogcserver_accesscontrol
-        else:
-            parameters = self.serverInterface().requestHandler().parameterMap()
-            return self.ogcserver_accesscontrols[parameters["MAP"]]["access_control"]
+        parameters = self.serverInterface().requestHandler().parameterMap()
+        return self.ogcserver_accesscontrols[parameters["MAP"]]["access_control"]
 
     def layerFilterSubsetString(self, layer):  # NOQA
         """ Return an additional subset string (typically SQL) filter """
@@ -150,7 +147,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             from c2cgeoportal_commons.models import InvalidateCacheEvent
 
             @zope.event.classhandler.handler(InvalidateCacheEvent)
-            def handle(event: InvalidateCacheEvent):
+            def handle(event: InvalidateCacheEvent):  # pylint: disable=unused-variable
                 del event
                 QgsMessageLog.logMessage("=== invalidate ===")
                 with self.lock:
@@ -164,12 +161,12 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             QgsMessageLog.logMessage("".join(traceback.format_exception(*sys.exc_info())))
             raise
 
-    def ogc_layer_name(self, layer):
+    @staticmethod
+    def ogc_layer_name(layer):
         use_layer_id, _ = QgsProject.instance().readBoolEntry("WMSUseLayerIDs", "/", False)
         if use_layer_id:
             return layer.id()
-        else:
-            return layer.shortName() or layer.name()
+        return layer.shortName() or layer.name()
 
     def get_layers(self):
         """
@@ -220,9 +217,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                             layers.setdefault(ogc_layer_name, []).append(layer)
             QgsMessageLog.logMessage(
                 "[accesscontrol] layers:\n{}".format(
-                    json.dumps(
-                        dict([(k, [l.name for l in v]) for k, v in layers.items()]), sort_keys=True, indent=4
-                    )
+                    json.dumps({k: [l.name for l in v] for k, v in layers.items()}, sort_keys=True, indent=4)
                 )
             )
             self.layers = layers
@@ -254,12 +249,12 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         return roles
 
     @staticmethod
-    def get_restriction_areas(gmf_layers, rw=False, roles=[]):
+    def get_restriction_areas(gmf_layers, rw=False, roles=None):
         """
         Get access areas given by GMF layers and user roles for an access mode.
 
         If roles is "ROOT" => full access
-        If roles is [] => no access
+        If roles is None or [] => no access
         Else shapely.ops.cascaded_union(result) => area of access
 
         Returns:
@@ -282,14 +277,13 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         restriction_areas = set()
         for layer in gmf_layers:
             for restriction_area in layer.restrictionareas:
-                for role in roles:
+                for role in roles or []:
                     if role in restriction_area.roles and (rw is False or restriction_area.readwrite is True):
                         if restriction_area.area is None:
                             return Access.FULL, None
-                        else:
-                            restriction_areas.update({restriction_area})
+                        restriction_areas.update({restriction_area})
 
-        if len(restriction_areas) == 0:
+        if not restriction_areas:
             return Access.NO, None
 
         return (
@@ -345,7 +339,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             if access is Access.FULL:
                 QgsMessageLog.logMessage("layerFilterSubsetString no area")
                 return None
-            elif access is Access.NO:
+            if access is Access.NO:
                 QgsMessageLog.logMessage("layerFilterSubsetString not allowed")
                 return "0"
 
@@ -378,7 +372,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             if access is Access.FULL:
                 QgsMessageLog.logMessage("layerFilterExpression no area")
                 return None
-            elif access is Access.NO:
+            if access is Access.NO:
                 QgsMessageLog.logMessage("layerFilterExpression not allowed")
                 return "0"
 
@@ -440,7 +434,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             if access is Access.FULL:
                 QgsMessageLog.logMessage("layerFilterExpression no area")
                 return True
-            elif access is Access.NO:
+            if access is Access.NO:
                 QgsMessageLog.logMessage("layerFilterExpression not allowed")
                 return False
 

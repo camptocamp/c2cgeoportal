@@ -125,5 +125,4 @@ class PrintProxy(Proxy):  # pragma: no cover
         url = "{0!s}/report/{1!s}".format(self.config["print_url"], self.request.matchdict.get("ref"))
         if self.config.get("print_get_redirect", False):
             raise HTTPFound(location=url)
-        else:
-            return self._proxy_response("print", url)
+        return self._proxy_response("print", url)
