@@ -70,44 +70,9 @@ before_script:
   - docker build --tag=external-db docker/test-external-db
   - docker run --name externaldb --publish=5433:5432 --detach external-db
   - mkdir --parent /tmp/travis
-  - travis/create-new-nondocker-project.sh
-  - (cd /tmp/travis/nondockertestgeomapfish/; ./docker-run travis/empty-make --makefile=travis.mk help)
-  - (cd /tmp/travis/nondockertestgeomapfish/; ./docker-run make --makefile=travis.mk build)
-  - (cd /tmp/travis/nondockertestgeomapfish/; FINALISE=TRUE make --makefile=travis.mk build)
 
 script:
-  # Test new non Docker project
-  - (cd /tmp/travis/nondockertestgeomapfish/; ./docker-run travis/short-make --makefile=travis.mk build)
-  - (cd /tmp/travis/nondockertestgeomapfish/; ./docker-run make --makefile=travis.mk checks)
-  - find
-      /tmp/travis/nondockertestgeomapfish/geoportal/setup.py
-      /tmp/travis/nondockertestgeomapfish/geoportal/testgeomapfish_geoportal/*.py
-      /tmp/travis/nondockertestgeomapfish/geoportal/testgeomapfish_geoportal/views
-      /tmp/travis/nondockertestgeomapfish/commons/setup.py
-      /tmp/travis/nondockertestgeomapfish/commons/testgeomapfish_commons
-      -name \*.py | xargs travis/squote
-  - travis/test-new-project http://localhost/testgeomapfish/wsgi/c2c/health_check
-  - travis/test-new-project http://localhost/testgeomapfish/wsgi/c2c/health_check?max_level=9
-  - travis/test-new-project http://localhost/testgeomapfish/wsgi/c2c/health_check?checks=check_collector
-  - travis/test-new-project http://localhost/testgeomapfish/wsgi/admin/layertree
-  - travis/test-new-project http://localhost/testgeomapfish/wsgi/admin/layertree/children
-  - cat /var/log/apache2/error.log
-  - cat /var/log/apache2/access.log
-  - sudo cat /var/log/tomcat7/catalina.out
-  - (cd /tmp/travis/nondockertestgeomapfish/; ./docker-run travis/status.sh)
-  - (cd /tmp/travis/nondockertestgeomapfish/; ./docker-run rm /build/c2ctemplate-cache.json)
-  - "(cd /tmp/travis/nondockertestgeomapfish/; \
-      ./docker-run make --makefile=empty-vars.mk geoportal/config.yaml)"
-  - (cd /tmp/travis/nondockertestgeomapfish/; ./docker-run make --makefile=travis.mk geoportal/alembic.ini)
-  - "(cd /tmp/travis/nondockertestgeomapfish/; \
-      ./docker-run alembic --config=geoportal/alembic.ini --name=main upgrade head)"
-  - "(cd /tmp/travis/nondockertestgeomapfish/; \
-      ./docker-run alembic --config=geoportal/alembic.ini --name=static upgrade head)"
-  - "(cd /tmp/travis/nondockertestgeomapfish/; \
-      ./docker-run alembic --config=geoportal/alembic.ini --name=static downgrade base)"
-  - "(cd /tmp/travis/nondockertestgeomapfish/; \
-      ./docker-run alembic --config=geoportal/alembic.ini --name=main downgrade base)"
-  ## END FOR NON DOCKER TESTS
+  - echo "We do not test non docker app in this branch"
 
 notifications:
   email:
