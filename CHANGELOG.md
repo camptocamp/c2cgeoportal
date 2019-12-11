@@ -1,3 +1,5 @@
+##### 2.4.1.68
+* Some little documentation fix [c2cgeoportal#5606](https://github.com/camptocamp/c2cgeoportal/pull/5606)
 ##### 2.4.1.67
 * Upgrade c2cgeoform to have italian l10n [c2cgeoportal#5600](https://github.com/camptocamp/c2cgeoportal/pull/5600)
 ##### 2.4.1.66
