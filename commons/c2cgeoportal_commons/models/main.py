@@ -46,6 +46,7 @@ from c2cwsgiutils import broadcast
 import zope.event
 import colander
 from deform.widget import HiddenWidget, SelectWidget, TextAreaWidget
+from c2cgeoform import default_map_settings
 from c2cgeoform.ext import colander_ext, deform_ext
 
 from c2c.template.config import config
@@ -58,6 +59,10 @@ LOG = logging.getLogger(__name__)
 _schema = config['schema']  # type: str
 _srid = config['srid']  # type: int
 _admin_config = config.get_config().get('admin_interface', {})
+_map_config = {
+    **_admin_config.get('map', {}),
+    **default_map_settings
+}
 
 
 class InvalidateCacheEvent:
@@ -188,18 +193,10 @@ class Role(Base):
     })
     extent = Column(Geometry('POLYGON', srid=_srid), info={
         'colanderalchemy': {
-            'typ': colander_ext.Geometry('POLYGON', srid=_srid, map_srid=_admin_config.get('map_srid', 3857)),
+            'typ': colander_ext.Geometry('POLYGON', srid=_srid, map_srid=_map_config['srid']),
             'widget': deform_ext.MapWidget(
-                base_layer=_admin_config.get('map_base_layer', deform_ext.MapWidget.base_layer),
-                projection=(
-                    'EPSG:{}'.format(_admin_config['map_srid']) if 'map_srid' in _admin_config
-                    else deform_ext.MapWidget.projection),
-                center=[
-                    _admin_config.get('map_x', deform_ext.MapWidget.center[0]),
-                    _admin_config.get('map_y', deform_ext.MapWidget.center[1])],
-                zoom=_admin_config.get('map_zoom', deform_ext.MapWidget.zoom),
-                fit_max_zoom=_admin_config.get('map_fit_max_zoom', deform_ext.MapWidget.fit_max_zoom)
-            )
+                map_options=_map_config
+            ),
         }
     })
 
@@ -1037,17 +1034,9 @@ class RestrictionArea(Base):
         'colanderalchemy': {'widget': HiddenWidget()}}
     )
     area = Column(Geometry('POLYGON', srid=_srid), info={'colanderalchemy': {
-        'typ': colander_ext.Geometry('POLYGON', srid=_srid, map_srid=_admin_config.get('map_srid', 3857)),
+        'typ': colander_ext.Geometry('POLYGON', srid=_srid, map_srid=_map_config['srid']),
         'widget': deform_ext.MapWidget(
-            base_layer=_admin_config.get('map_base_layer', deform_ext.MapWidget.base_layer),
-            projection=(
-                'EPSG:{}'.format(_admin_config['map_srid']) if 'map_srid' in _admin_config
-                else deform_ext.MapWidget.projection),
-            center=[
-                _admin_config.get('map_x', deform_ext.MapWidget.center[0]),
-                _admin_config.get('map_y', deform_ext.MapWidget.center[1])],
-            zoom=_admin_config.get('map_zoom', deform_ext.MapWidget.zoom),
-            fit_max_zoom=_admin_config.get('map_fit_max_zoom', deform_ext.MapWidget.fit_max_zoom)
+            map_options=_map_config
         )
     }})
 
