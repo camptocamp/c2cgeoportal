@@ -37,7 +37,7 @@ MapFish Print also supports map rotations. This implies specific requirements:
   .. code::
 
       PROJECTION
-          "init=epsg:21781"
+          "init=epsg:2056"
       END
 
 * When rotating the map (with a non-zero value for ``ANGLE``) there are
@@ -238,7 +238,7 @@ If we do not need to restrict on an area, we can use the following
                 ${MAPSERVER_DATA_NOAREA_SUBSELECT} '<layername>'
             )
         )
-    ) AS foo USING UNIQUE id USING srid=21781"
+    ) AS foo USING UNIQUE id USING srid=2056"
 
 Then you do not need to define an area in the admin interface.
 
@@ -317,7 +317,7 @@ listed in the ``DATA`` section. For instance:
 
     LAYER
         ...
-        DATA "geom FROM (SELECT t.geom, t.type, t.gid, %s_columns% FROM geodata.table as t)  AS foo using unique gid using SRID=21781"
+        DATA "geom FROM (SELECT t.geom, t.type, t.gid, %s_columns% FROM geodata.table as t)  AS foo using unique gid using SRID=2056"
         METADATA
             ...
             "gml_exclude_items" "type,gid"

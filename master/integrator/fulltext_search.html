@@ -69,7 +69,7 @@ the application-specific schema.</p>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">app_schema</span><span class="p">.</span><span class="n">tsearch</span>
   <span class="p">(</span><span class="n">the_geom</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="k">public</span><span class="p">,</span> <span class="n">role_id</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
 <span class="k">VALUES</span> <span class="p">(</span>
-   <span class="n">ST_GeomFromText</span><span class="p">(</span><span class="s1">&#39;POINT(2660000 1140000)&#39;</span><span class="p">,</span> <span class="mi">21781</span><span class="p">),</span>
+   <span class="n">ST_GeomFromText</span><span class="p">(</span><span class="s1">&#39;POINT(2660000 1140000)&#39;</span><span class="p">,</span> <span class="mi">2056</span><span class="p">),</span>
    <span class="s1">&#39;Group&#39;</span><span class="p">,</span>
    <span class="s1">&#39;text to display&#39;</span><span class="p">,</span>
    <span class="s1">&#39;t&#39;</span><span class="p">,</span>
@@ -252,7 +252,7 @@ instead of ‘french’. For example:</p>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span> <span class="k">INTO</span> <span class="o">&lt;</span><span class="k">schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">tsearch</span>
   <span class="p">(</span><span class="n">the_geom</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="k">public</span><span class="p">,</span> <span class="n">role_id</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
 <span class="k">VALUES</span>
-  <span class="p">(</span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="s1">&#39;POINT(2660000 1140000)&#39;</span><span class="p">,</span> <span class="mi">21781</span><span class="p">),</span> <span class="s1">&#39;Layer group&#39;</span><span class="p">,</span>
+  <span class="p">(</span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="s1">&#39;POINT(2660000 1140000)&#39;</span><span class="p">,</span> <span class="mi">2056</span><span class="p">),</span> <span class="s1">&#39;Layer group&#39;</span><span class="p">,</span>
    <span class="s1">&#39;Accent text to display (éàè)&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="k">NULL</span><span class="p">,</span> <span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;fr&#39;</span><span class="p">,</span> <span class="s1">&#39;Accent text to search (éàè)&#39;</span><span class="p">));</span>
 </pre></div>
 </div>

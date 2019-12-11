@@ -72,7 +72,7 @@ span.prompt1:before {
 from the root directory of c2cgeoportal (if you have followed the instructions
 from the previous section), or from the root directory of the existing
 c2cgeoportal application you want to create the new application from:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm --volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src <span class="se">\</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm <span class="se">\</span>
     camptocamp/geomapfish-tools:&lt;release<span class="p">|</span>version&gt; <span class="se">\</span>
     pcreate -l</span>
 </pre></div></div><p>You should at least see the c2cgeoportal scaffolds:</p>
@@ -106,8 +106,8 @@ it later.</p>
 parameters:</p>
 <blockquote>
 <div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm -ti --volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src <span class="se">\</span>
-    --env<span class="o">=</span><span class="nv">SRID</span><span class="o">=</span><span class="m">21781</span> <span class="se">\</span>
-    --env<span class="o">=</span><span class="nv">EXTENT</span><span class="o">=</span><span class="s2">&quot;420000,30000,900000,350000&quot;</span> <span class="se">\</span>
+    --env<span class="o">=</span><span class="nv">SRID</span><span class="o">=</span><span class="m">2056</span> <span class="se">\</span>
+    --env<span class="o">=</span><span class="nv">EXTENT</span><span class="o">=</span><span class="s2">&quot;2420000,1030000,2900000,1350000&quot;</span> <span class="se">\</span>
     camptocamp/geomapfish-tools:&lt;release<span class="p">|</span>version&gt; <span class="se">\</span>
     run <span class="k">$(</span>id -u<span class="k">)</span> <span class="k">$(</span>id -g<span class="k">)</span> /src <span class="se">\</span>
     pcreate -s c2cgeoportal_create <span class="se">\</span>
@@ -118,7 +118,7 @@ parameters:</p>
 <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> directory, or to the directory of the application you are
 creating this application from.</p>
 <p>Now apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_update</span></code> scaffold:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm -ti --volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src --env<span class="o">=</span><span class="nv">SRID</span><span class="o">=</span><span class="m">21781</span> <span class="se">\</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm -ti --volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src <span class="se">\</span>
     camptocamp/geomapfish-tools:&lt;release<span class="p">|</span>version&gt; <span class="se">\</span>
     run <span class="k">$(</span>id -u<span class="k">)</span> <span class="k">$(</span>id -g<span class="k">)</span> /src <span class="se">\</span>
     pcreate -s c2cgeoportal_update <span class="se">\</span>
@@ -204,8 +204,7 @@ interpreted parameters section:</p>
         <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">host</span>
 </pre></div>
 </div>
-<p>In the <code class="docutils literal notranslate"><span class="pre">&lt;project&gt;.mk</span></code> file, add parameters you want to change as exported
-parameters:</p>
+<p>In the <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> file, add parameters you want to change as exported variables:</p>
 <div class="highlight-make notranslate"><div class="highlight"><pre><span></span><span class="k">export </span><span class="nv">HOST</span> <span class="o">=</span> domaine.different.com
 <span class="k">export</span> <span class="nv">LOG_LEVEL</span>
 </pre></div>
@@ -219,8 +218,7 @@ environment variables:</p>
 </div>
 <div class="section" id="configure-the-application">
 <h2>Configure the application<a class="headerlink" href="#configure-the-application" title="Permalink to this headline">¶</a></h2>
-<p>As the integrator, you need to edit the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> and
-<code class="docutils literal notranslate"><span class="pre">&lt;package&gt;.mk</span></code> files to configure the application.</p>
+<p>As the integrator, you need to edit the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> and <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> files to configure the application.</p>
 <p>Do not forget to add your changes to git:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git add vars.yaml</span>
 <span class="prompt1">git commit -m <span class="s2">&quot;Configure the project&quot;</span></span>
