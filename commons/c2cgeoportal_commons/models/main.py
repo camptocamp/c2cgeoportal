@@ -28,6 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import re
 import logging
 from typing import Any, Dict, List, Optional, Tuple, Union, cast  # noqa, pylint: disable=unused-import
 
@@ -46,10 +47,17 @@ from c2cgeoportal_commons.models.sqlalchemy import JSONEncodedDict, TsVector
 try:
     from colander import drop
     from deform.widget import HiddenWidget, SelectWidget, TextAreaWidget
+    from c2cgeoform import default_map_settings
     from c2cgeoform.ext.colander_ext import Geometry as ColanderGeometry
     from c2cgeoform.ext.deform_ext import MapWidget, RelationSelect2Widget
 except ModuleNotFoundError:
     drop = None
+    default_map_settings = {
+        "srid": 3857,
+        "view": {
+            "projection": "EPSG:3857"
+        }
+    }
 
     class GenericClass:
         def __init__(self, *args: Any, **kwargs: Any):
@@ -67,7 +75,16 @@ LOG = logging.getLogger(__name__)
 
 _schema: str = config["schema"] or "main"
 _srid: int = cast(int, config["srid"]) or 3857
+
+# Set some default values for the admin interface
 _admin_config: Dict = config.get_config().get("admin_interface", {})
+_map_config: Dict = {
+    **_admin_config.get("map", {}),
+    **default_map_settings
+}
+_admin_config["map_srid"] = _admin_config.get(
+    "map_srid",
+    re.match(r'EPSG:(\d+)', _map_config["view"]["projection"]).group(1))
 
 
 class FullTextSearch(GeoInterface, Base):
@@ -147,20 +164,9 @@ class Role(Base):
         Geometry("POLYGON", srid=_srid),
         info={
             "colanderalchemy": {
-                "typ": ColanderGeometry("POLYGON", srid=_srid, map_srid=_admin_config.get("map_srid", 3857)),
+                "typ": ColanderGeometry("POLYGON", srid=_srid, map_srid=_admin_config["map_srid"]),
                 "widget": MapWidget(
-                    base_layer=_admin_config.get("map_base_layer", MapWidget.base_layer),
-                    projection=(
-                        "EPSG:{}".format(_admin_config["map_srid"])
-                        if "map_srid" in _admin_config
-                        else MapWidget.projection
-                    ),
-                    center=[
-                        _admin_config.get("map_x", MapWidget.center[0]),
-                        _admin_config.get("map_y", MapWidget.center[1]),
-                    ],
-                    zoom=_admin_config.get("map_zoom", MapWidget.zoom),
-                    fit_max_zoom=_admin_config.get("map_fit_max_zoom", MapWidget.fit_max_zoom),
+                    map_options=_map_config
                 ),
             }
         },
@@ -739,20 +745,9 @@ class RestrictionArea(Base):
         Geometry("POLYGON", srid=_srid),
         info={
             "colanderalchemy": {
-                "typ": ColanderGeometry("POLYGON", srid=_srid, map_srid=_admin_config.get("map_srid", 3857)),
+                "typ": ColanderGeometry("POLYGON", srid=_srid, map_srid=_map_config['srid']),
                 "widget": MapWidget(
-                    base_layer=_admin_config.get("map_base_layer", MapWidget.base_layer),
-                    projection=(
-                        "EPSG:{}".format(_admin_config["map_srid"])
-                        if "map_srid" in _admin_config
-                        else MapWidget.projection
-                    ),
-                    center=[
-                        _admin_config.get("map_x", MapWidget.center[0]),
-                        _admin_config.get("map_y", MapWidget.center[1]),
-                    ],
-                    zoom=_admin_config.get("map_zoom", MapWidget.zoom),
-                    fit_max_zoom=_admin_config.get("map_fit_max_zoom", MapWidget.fit_max_zoom),
+                    map_options=_map_config
                 ),
             }
         },
