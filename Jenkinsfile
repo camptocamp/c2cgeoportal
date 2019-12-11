@@ -145,7 +145,6 @@ dockerBuild {
                     sh './docker-run make checks'
                     sh './docker-run travis/empty-make help'
                     sh 'bash -c "test \\"`./docker-run id`\\" == \\"uid=0(root) gid=0(root) groups=0(root)\\""'
-                    sh './docker-run make doc'
                     // Test return code
                     sh './docker-run true'
                     sh 'if ./docker-run false; then false; fi'
@@ -350,25 +349,6 @@ dockerBuild {
                             }
                         }
                     }
-                }, 'Push to Transifex': {
-                    branch = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD')
-                    if (branch == MAIN_BRANCH) {
-                        withCredentials([string(credentialsId: 'transifex-sbrunner', variable: 'TRANSIFEX_PASSWORD')]) {
-                            sh 'echo "[https://www.transifex.com]" > ~/.transifexrc'
-                            sh 'echo "hostname = https://www.transifex.com" >> ~/.transifexrc'
-                            sh 'echo "username = stephane.brunner@camptocamp.com" >> ~/.transifexrc'
-                            sh "echo 'password = ${TRANSIFEX_PASSWORD}' >> ~/.transifexrc"
-                            sh 'echo "token =" >> ~/.transifexrc'
-                            sh './docker-run --home make transifex-send'
-                        }
-                    }
-                }
-            }
-            stage('Publish documentation to GitHub.io') {
-                if (abort_ci()) { return }
-                sh './docker-run make doc'
-                sshagent (credentials: ['c2c-infra-ci']) {
-                    sh 'travis/doc.sh'
                 }
             }
         } finally {
