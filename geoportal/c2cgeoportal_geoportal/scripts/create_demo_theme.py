@@ -49,12 +49,7 @@ def main():
 
         from c2cgeoportal_commons.models.main import Interface, OGCServer, Theme, LayerGroup, LayerWMS
 
-        interfaces = (
-            session.query(Interface)
-            .filter(Interface.name != "api")
-            .filter(Interface.name != "iframe_api")
-            .all()
-        )
+        interfaces = session.query(Interface).all()
         ogc_server = session.query(OGCServer).filter(OGCServer.name == "source for image/png").one()
 
         layer_borders = LayerWMS("Borders", "borders")

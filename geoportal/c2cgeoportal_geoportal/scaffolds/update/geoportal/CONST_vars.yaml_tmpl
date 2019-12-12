@@ -598,6 +598,10 @@ vars:
           params:
             no_redirect: "true"
           level: 6
+        - name: iframe_api
+          params:
+            no_redirect: "true"
+          level: 6
         - name: apihelp
           level: 6
     routes:
