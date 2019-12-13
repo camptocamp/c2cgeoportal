@@ -10,7 +10,7 @@ obtained from the "auth ticket" cookie set in the request.
 The policy is created, and added to the application's configuration, in the
 application's main ``__init__.py`` file.
 
-In the file ``.env.sample``, you can configure the policy with the following variables:
+In the file ``env.sample``, you can configure the policy with the following variables:
 
 .. code::
 
@@ -47,7 +47,7 @@ Basic auth
 ~~~~~~~~~~
 
 To be able to access the OGC services from your desktop GIS, you should enable the basic authentication
-by setting ``BASICAUTH`` to ``True`` in the ``.env.sample`` file.
+by setting ``BASICAUTH`` to ``True`` in the ``env.sample`` file.
 
 To force the application to ask for a password, you should have the attribute ``authentication_required``
 in your query string.

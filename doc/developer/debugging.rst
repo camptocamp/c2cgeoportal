@@ -5,17 +5,23 @@ Application debugging
 
 The goal of this document is to give some troubleshooting tips.
 
+First, you should copy the file ``docker-compose.override.sample.yaml`` to
+``docker-compose.override.yaml``, and update the composition ``docker-compose up -d``.
+
+Then access the application on `https://localhost:8484/ <https://localhost:8484/>`_.
+
+
 Browser
 -------
 
 You can use the browser-integrated debugging tool, usually available with the ``F12`` key.
 
+
 Sources map
 -----------
 
 For debugging purposes, it is better to have all the JavaScript and Style Sheets in separated, non-minified
-files. To achieve this, you can use the sources maps, a function activable in the browsers debugging
-tool.
+files. To achieve this, you can use the sources maps, a function activable in the browser's debugging tool.
 
 
 Webpack
@@ -26,9 +32,8 @@ To have faster builds, you need to use the Webpack dev server; you can achieve t
 In the file ``geoportal/demo_geoportal/static-ngeo/js/apps/<interface>.html.ejs``,
 remove the ``ng-strict-di`` in the ``html`` tag.
 
-If it is not already done, copy the file ``docker-compose.override.sample.yaml`` to
-``docker-compose.override.yaml``.
-Be sure that the service ``webpack_dev_server`` is present and uncommented.
+Be sure that the service ``webpack_dev_server`` is present and uncommented in the
+``docker-compose.override.yaml`` file.
 
 Restart your application as usual.
 
@@ -38,12 +43,11 @@ Open the application at the following URL: ``https://localhost:8484/dev/<interfa
 Pyramid debugtoolbar
 --------------------
 
-If it is not already done, copy the file ``docker-compose.override.sample.yaml`` to
-``docker-compose.override.yaml``.
+With the default ``docker-compose.override.yaml``, the debug toolbar should appear.
 
-Then the error is directly shown in the query that fails.
+Then the error is directly shown in the request that fails.
 
-You can also open the debugtoolbar at `https://localhost:8484/_debug_toolbar/ <https://localhost:8484/_debug_toolbar/>`_
+You can also open the debug toolbar at `https://localhost:8484/_debug_toolbar/ <https://localhost:8484/_debug_toolbar/>`_
 
 
 Authentication
@@ -53,10 +57,8 @@ For better security, the session cookie is accessible only via http protocol (me
 and is secure (meaning, the cookie is transmitted only in https requests, not in http requests).
 For this reason, you should have your application running on https also in your development environment.
 
-To achieve that, if it is not already done, copy the file ``docker-compose.override.sample.yaml``
-to ``docker-compose.override.yaml``.
-
-Then access the application on `https://localhost:8484/ <https://localhost:8484/>`_.
+With the default configuration in the file ``docker-compose.override.yaml``, your application will be
+available in ``https``, and the authentication will work.
 
 
 Mapserver
@@ -85,7 +87,7 @@ With the following command, you can access the logs:
 
 .. prompt:: bash
 
-   docker-compose logs [<service_name>]
+   docker-compose logs -f --tail=20 [<service_name>]
 
 To have the access log on gunicorn you should add the option ``--access-logfile=-`` in the gunicorn
 arguments (``GUNICORN_PARAMS`` environement variable).
@@ -104,8 +106,13 @@ Multiple dev on one server
 
 When you want to run multiple instances on the same server, you should:
 
-- Use a different docker tag for each instance
-- Use a different project name for each instance
+- Use a different docker tag for each instance (``DOCKER_TAG`` in the file ``.env`` files,
+  used on the build and on the run)
+- Use a different project name for each instance (``COMPOSE_PROJECT_NAME`` in the
+  ``.env`` or option ``-p`` of ``docker-compose``)
+- Use a different port for each instance (``DOCKER_PORT`` in the ``.env``)
+- If you want to serve your instances through the same Apache server, each instance must have
+  different entry points. (``VISIBLE_ENTRY_POINT`` in the ``.env``)
 
 
 Developing in Python
@@ -114,23 +121,10 @@ Developing in Python
 Create a development docker-compose.override.yaml
 .................................................
 
-If it is not already done, copy the file ``docker-compose.override.sample.yaml`` to
-``docker-compose.override.yaml``.
+Be sure that the volume for the project is not commented out in ``docker-compose.override.yaml``.
 
-Be sure that the volume for the project is not commented.
-
-You can also do a graceful restart of the running webserver (gunicorn in this case):
-
-.. prompt:: bash
-
-   docker-compose exec geoportal bash
-   kill -s HUP `ps aux|grep gunicorn|head --lines=1|awk '{print $2}'`  # graceful
-
-And finally, if you restart the container, you will see your modifications:
-
-.. prompt:: bash
-
-   docker-compose restart geoportal
+With the ``docker-compose.override.yaml`` configuration, ``gunicorn`` will automatically restart
+on code modification.
 
 Working on c2cgeoportal itself
 ..............................
@@ -198,7 +192,7 @@ Within the Docker composition, you can access a port of a container; you can ach
 
 .. prompt: bash
 
-   curl "http://mapserver:8080?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetCapabilities"
+   docker-compose exec tools curl "http://mapserver:8080?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetCapabilities"
 
 You can also expose a service out of the Docker composition. For that, add a port in your
 ``docker-compose.yaml``, e.g.:
