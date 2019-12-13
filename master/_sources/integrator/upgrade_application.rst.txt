@@ -57,18 +57,11 @@ Then follow the instructions.
 From a version 2.5 and next
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Get the upgrade script:
+Start the upgrade:
 
 .. prompt:: bash
 
-    curl https://raw.githubusercontent.com/camptocamp/c2cgeoportal/master/scripts/upgrade > upgrade
-    chmod +x upgrade
-
-Run the upgrade:
-
-.. prompt:: bash
-
-   ./upgrade <version>
+    ./build --upgrade <version>
 
 Then follow the instructions.
 
