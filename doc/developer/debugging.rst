@@ -239,20 +239,3 @@ Add the following alias in your ``webpack.apps.js.tmpl`` file:
    +    gmf: path.resolve(__dirname, 'ngeo/contribs/gmf/src'),
       }
     }
-
-
-Performance or network error
-----------------------------
-
-For performance and proxy issues, make sure that all internal URLs in the config file
-use localhost (use ``curl "http://localhost/<path>" --header Host:<server_name>``
-to test it).
-
-TileCloud chain
-...............
-
-Points to check with TileCloud chain:
-
-* Disabling metatiles should be avoided.
-* Make sure that ``empty_metatile_detection`` and ``empty_tile_detection`` are configured correctly.
-* Make sure to not generate tiles with a resolution higher than the one in the raster sources.
