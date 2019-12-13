@@ -14,7 +14,6 @@ class TreeItemViews(AbstractViews):
     _list_fields = [
         _list_field("id"),
         _list_field("name"),
-        _list_field("metadata_url"),
         _list_field("description"),
     ]
 

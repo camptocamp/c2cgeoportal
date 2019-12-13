@@ -98,7 +98,6 @@ class TestTheme(TestTreeGroup):
             ("actions", "", "false"),
             ("id", "id", "true"),
             ("name", "Name"),
-            ("metadata_url", "Metadata URL"),
             ("description", "Description"),
             ("ordering", "Order"),
             ("public", "Public"),
@@ -162,7 +161,6 @@ class TestTheme(TestTreeGroup):
         assert str(theme.id) == self.get_first_field_named(form, "id").value
         assert "hidden" == self.get_first_field_named(form, "id").attrs["type"]
         assert theme.name == self.get_first_field_named(form, "name").value
-        assert str(theme.metadata_url or "") == form["metadata_url"].value
         assert str(theme.description or "") == self.get_first_field_named(form, "description").value
         assert str(theme.ordering or "") == self.get_first_field_named(form, "ordering").value
         assert theme.public == form["public"].checked
@@ -200,7 +198,6 @@ class TestTheme(TestTreeGroup):
 
         new_values = {
             "name": "new_name",
-            "metadata_url": "https://new_metadata_url",
             "description": "new description",
             "ordering": 442,
             "public": True,
@@ -264,7 +261,6 @@ class TestTheme(TestTreeGroup):
                 ("_charset_", "UTF-8"),
                 ("__formid__", "deform"),
                 ("name", "new_with_children"),
-                ("metadata_url", ""),
                 ("description", ""),
                 ("ordering", "100"),
                 ("id", ""),
@@ -313,7 +309,6 @@ class TestTheme(TestTreeGroup):
                 ("_charset_", "UTF-8"),
                 ("__formid__", "deform"),
                 ("name", "new_with_child_layer"),
-                ("metadata_url", ""),
                 ("description", ""),
                 ("ordering", "100"),
                 ("id", ""),
@@ -344,7 +339,6 @@ class TestTheme(TestTreeGroup):
         assert "" == self.get_first_field_named(form, "id").value
         assert "hidden" == self.get_first_field_named(form, "id").attrs["type"]
         assert theme.name == self.get_first_field_named(form, "name").value
-        assert str(theme.metadata_url or "") == form["metadata_url"].value
         assert str(theme.description or "") == self.get_first_field_named(form, "description").value
         assert str(theme.ordering or "") == self.get_first_field_named(form, "ordering").value
 

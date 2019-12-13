@@ -53,7 +53,6 @@ class TestLayerWMSViews(AbstractViewsTests):
             ("actions", "", "false"),
             ("id", "id", "true"),
             ("name", "Name"),
-            ("metadata_url", "Metadata URL"),
             ("description", "Description"),
             ("public", "Public"),
             ("geo_table", "Geo table"),
@@ -163,7 +162,6 @@ class TestLayerWMSViews(AbstractViewsTests):
         assert "hidden" == self.get_first_field_named(form, "id").attrs["type"]
         assert layer.name == self.get_first_field_named(form, "name").value
         assert str(layer.description or "") == self.get_first_field_named(form, "description").value
-        assert str(layer.metadata_url or "") == form["metadata_url"].value
         assert layer.public is False
         assert layer.public == form["public"].checked
         assert str(layer.geo_table or "") == form["geo_table"].value
@@ -184,7 +182,6 @@ class TestLayerWMSViews(AbstractViewsTests):
 
         new_values = {
             "name": "new_name",
-            "metadata_url": "https://new_metadata_url",
             "description": "new description",
             "public": True,
             "geo_table": "new_geo_table",
@@ -224,7 +221,6 @@ class TestLayerWMSViews(AbstractViewsTests):
             "/layers_wms/new",
             {
                 "name": "new_name",
-                "metadata_url": "https://new_metadata_url",
                 "description": "new description",
                 "public": True,
                 "geo_table": "new_geo_table",
@@ -253,7 +249,6 @@ class TestLayerWMSViews(AbstractViewsTests):
 
         assert "" == self.get_first_field_named(form, "id").value
         assert layer.name == self.get_first_field_named(form, "name").value
-        assert str(layer.metadata_url or "") == form["metadata_url"].value
         assert str(layer.description or "") == self.get_first_field_named(form, "description").value
         assert layer.public is True
         assert layer.public == form["public"].checked
@@ -306,7 +301,6 @@ class TestLayerWMSViews(AbstractViewsTests):
 
         assert str(layer.id) == self.get_first_field_named(form, "id").value
         assert layer.name == self.get_first_field_named(form, "name").value
-        assert str(layer.metadata_url or "") == form["metadata_url"].value
         assert str(layer.description or "") == self.get_first_field_named(form, "description").value
         assert layer.public is True
         assert layer.public == form["public"].checked
@@ -395,7 +389,6 @@ class TestLayerWMSViews(AbstractViewsTests):
             "/layers_wms/new",
             {
                 "name": "new_name",
-                "metadata_url": "https://new_metadata_url",
                 "description": "new description",
                 "public": True,
                 "geo_table": "new_geo_table",
