@@ -1,3 +1,5 @@
+##### 2.4.1.69
+* Only add the background layer to the overview map [ngeo#5356](https://github.com/camptocamp/ngeo/pull/5356)
 ##### 2.4.1.68
 * Some little documentation fix [c2cgeoportal#5606](https://github.com/camptocamp/c2cgeoportal/pull/5606)
 ##### 2.4.1.67
