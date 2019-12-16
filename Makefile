@@ -8,7 +8,7 @@ C2C_TEMPLATE_CMD = .build/venv/bin/c2c-template --vars $(VARS_FILE)
 DEVELOPPEMENT ?= FALSE
 
 PIP_CMD ?= .build/venv/bin/pip
-PIP_INSTALL_ARGS += install --trusted-host pypi.camptocamp.net
+PIP_INSTALL_ARGS += install
 
 ADMIN_OUTPUT_DIR = c2cgeoportal/static/build/admin/
 

@@ -198,13 +198,6 @@ When a new release or a new version is done you should do the following tasks:
 
 * Merge the release changes (on ``cgxp`` and on ``c2cgeoportal``)
   to the upper branches i.e.: ``1.6`` => ``2.0``, ``2.0`` => ``master``.
-* Regenerate the pypi's index:
-
-  .. prompt:: bash
-
-   curl 'http://pypi.camptocamp.net/internal-pypi/regenerate-index' --data '' \
-       --max-time 1000
-
 * Upgrade the demo project in your home folder, by following upgrade application
   instructions and pushing the results to the repository.
 * Update the demo on the main folder as follows, using a Makefile appropriate

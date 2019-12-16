@@ -1,4 +1,3 @@
---find-links http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal-win
 -r CONST_versions.txt
 wheels/psycopg2-2.5.5-cp27-none-win32.whl
 wheels/Shapely-1.5.13-cp27-none-win32.whl

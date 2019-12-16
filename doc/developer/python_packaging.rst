@@ -3,50 +3,8 @@
 Python Packaging
 ================
 
-Infrastructure
---------------
-
-We rely on two *Python Package Index* (PyPI): http://pypi.camptocamp.net/pypi
-and http://pypi.camptocamp.net/internal-pypi/index.
-
-http://pypi.camptocamp.net/pypi is a mirror of the official PyPI,
-http://pypi.python.org. It is based on `collective.eggproxy
-<http://pypi.python.org/pypi/collective.eggproxy>`_. We use this mirror as
-a proxy cache for our external dependencies.
-
-http://pypi.camptocamp.net/internal-pypi/index includes ``c2cgeoportal`` and
-``tileforge`` eggs (and possibly other private eggs in the future). It is based
-on `CheesePrism <https://github.com/SurveyMonkey/CheesePrism>`_. To access this
-PyPI a login/password is required.
-
-The requirement of c2cgeoportal applications use ``index``
-and ``find-links`` to reference these Package Index::
-
-    --index-url http://pypi.camptocamp.net/pypi
-    --find-links = http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal
-    ...
-
 c2cgeoportal releases
 ---------------------
-
-Releasing c2cgeoportal means creating a source distribution of c2cgeoportal and
-uploading it to http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal.
-
-``pypirc`` configuration
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-To be able to upload distributions to the Camptocamp internal PyPI it is
-required to have an appropriate (e.g. ``[c2c-internal]``) section in
-``~/.pypirc``::
-
-    [distutils]
-    index-servers =
-        c2c-internal
-
-    [c2c-internal]
-    username:<pypi.camptocamp.net/internal-pypi_username>
-    password:<pypi.camptocamp.net/internal-pypi_password>
-    repository:http://pypi.camptocamp.net/internal-pypi/simple
 
 Prepare your repository
 ~~~~~~~~~~~~~~~~~~~~~~~

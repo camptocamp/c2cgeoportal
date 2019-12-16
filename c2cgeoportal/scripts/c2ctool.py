@@ -60,9 +60,6 @@ MAGENTA = 5
 CYAN = 6
 WHITE = 7
 
-DEFAULT_INDEX_URL = "http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal"
-DEFAULT_C2CGEOPORTAL_URL = \
-    "http://pypi.camptocamp.net/internal-pypi/index/%(package)s-%(version)s.tar.gz"
 VERSION_RE = "^[0-9]+.[0-9]+.[0-9]+(rc[0-9]+|dev[0-9]+|\.[0-9]+)?$"
 
 
@@ -349,7 +346,6 @@ class C2cTool:
             check_call(["make", "-f", self.options.file, ".build/requirements.timestamp"])
             pip_cmd = [
                 "%s/pip" % self.venv_bin, "install",
-                "--trusted-host", "pypi.camptocamp.net",
                 "--find-links", self.options.index_url,
             ]
             if self.options.version == "master":

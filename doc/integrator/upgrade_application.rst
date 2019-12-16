@@ -163,12 +163,8 @@ Get the right version of the egg:
    mkdir .build
    virtualenv --setuptools --no-site-packages .build/venv
    .build/venv/bin/pip install \
-        --index-url http://pypi.camptocamp.net/pypi \
         'pip>=7' 'setuptools>=12'
    .build/venv/bin/pip install \
-        --index-url http://pypi.camptocamp.net/pypi \
-        --trusted-host pypi.camptocamp.net \
-        --find-links http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal \
         https://github.com/camptocamp/pyramid_closure/archive/819bc43420b3cd924d8698c5a9606592c19dbb15.zip#egg=pyramid_closure \
         https://github.com/Pylons/pyramid/archive/1e02bbfc0df09259bf207112acf019c8dba44a90.zip#egg=pyramid \
         c2cgeoportal==<egg_version>

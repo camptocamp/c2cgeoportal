@@ -23,7 +23,7 @@ instanceid = ref
 host = geocommunes.ch/ref
 """)
 
-    check_call("python bootstrap.py --version 1.5.2 --distribute --download-base http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/ --setup-source http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/distribute_setup.py", cwd="ref/geoportal", shell=True)
+    check_call("python bootstrap.py --version 1.5.2", cwd="ref/geoportal", shell=True)
     check_call("./buildout/bin/buildout", cwd="ref/geoportal", shell=True)'''
 
     for n in range(int(argv[1])):
@@ -47,7 +47,7 @@ appcfg = config_{project}.yaml
 # used for mapfile and print template
 commune = {project}""".format(no=n, project=projects[n%len(projects)]))
 
-        check_call("python bootstrap.py --version 1.5.2 --distribute --download-base http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/ --setup-source http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/distribute_setup.py", cwd="{no}/geoportal".format(no=n), shell=True)
+        check_call("python bootstrap.py --version 1.5.2 --distribute", cwd="{no}/geoportal".format(no=n), shell=True)
         check_call("./buildout/bin/buildout -c run.cfg", cwd="{no}/geoportal".format(no=n), shell=True)
 
 if __name__ == "__main__":

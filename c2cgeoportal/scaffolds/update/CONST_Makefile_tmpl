@@ -19,7 +19,7 @@ TILECLOUD_CHAIN_LOCAL ?= FALSE
 PRINT_VERSION ?= 3
 
 PIP_CMD ?= $(VENV_BIN)/pip
-PIP_INSTALL_ARGS += install --trusted-host pypi.camptocamp.net
+PIP_INSTALL_ARGS += install
 PIP_VERSION ?= pip==7.1.2
 SETUPTOOL_VERSION ?= setuptools==21.0.0
 TILECLOUD_VERSION ?= tilecloud==0.2.dev20150115
@@ -809,8 +809,6 @@ $(INSTANCE_ID_MARKER):
 .PHONY: upgrade
 upgrade: .build/requirements.timestamp project.yaml
 	.build/venv/bin/pip install \
-		--trusted-host pypi.camptocamp.net \
-		--find-links http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal \
 		c2cgeoportal==${VERSION}
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION}
 

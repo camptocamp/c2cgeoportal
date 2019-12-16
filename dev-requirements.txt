@@ -1,5 +1,5 @@
 c2c.cssmin
-c2c.template==1.1.2
+c2c.template==1.2.0dev1
 c2cgeoportal/tests/testegg/dist/testegg-1.0.tar.gz
 flake8==3.0.4
 flake8-copyright==0.2.0
