@@ -76,7 +76,7 @@ setup(
     tests_require=TESTS_REQUIRE,
     entry_points={
         "console_scripts": [
-            "manage-users = c2cgeoportal_geoportal.scripts.manage_users:main",
+            "manage-users = c2cgeoportal_geoportal.scripts.manage_users:main_",
             "c2cupgrade = c2cgeoportal_geoportal.scripts.c2cupgrade:main",
             "theme2fts = c2cgeoportal_geoportal.scripts.theme2fts:main",
             "create-demo-theme = c2cgeoportal_geoportal.scripts.create_demo_theme:main",
