@@ -17,11 +17,10 @@ fi
 rm -rf ${WORKSPACE}/${PACKAGE}
 mkdir --parent ${WORKSPACE}/${PACKAGE}
 
-DOCKER_RUN_ARGS="--env=SRID=21781 --env=EXTENT=489246.36,78873.44,837119.76,296543.14 \
-    --volume=${WORKSPACE}/${PACKAGE}:/src/${PACKAGE} camptocamp/geomapfish-tools:${TAG}"
-PCREATE_CMD="run $(id -u) $(id -g) /src pcreate --ignore-conflicting-name --overwrite \
-    --package-name ${PACKAGE} /src/${PACKAGE}"
-docker run --rm -ti ${DOCKER_RUN_ARGS} ${PCREATE_CMD} --scaffold=c2cgeoportal_create
+DOCKER_RUN_ENV_ARGS="--env=SRID=21781 --env=EXTENT=489246.36,78873.44,837119.76,296543.14"
+DOCKER_RUN_ARGS="--volume=${WORKSPACE}/${PACKAGE}:/src/${PACKAGE} camptocamp/geomapfish-tools:${TAG}"
+PCREATE_CMD="run $(id -u) $(id -g) /src pcreate --ignore-conflicting-name --overwrite ${PACKAGE}"
+docker run --rm -ti ${DOCKER_RUN_ENV_ARGS} ${DOCKER_RUN_ARGS} ${PCREATE_CMD} --scaffold=c2cgeoportal_create
 docker run --rm -ti ${DOCKER_RUN_ARGS} ${PCREATE_CMD} --scaffold=c2cgeoportal_update
 
 if [ $BASE_APP != true ]
@@ -39,7 +38,6 @@ fi
 cd ${WORKSPACE}/${PACKAGE}
 echo 'PGHOST=db' >> env.sample
 echo 'PGHOST_SLAVE=db' >> env.sample
-echo 'AUTHTKT_SECRET=some super long secret bigger than 64 characters otherwise it is not good enough' >> env.sample
 
 if [ $BASE_APP == true ]
 then
