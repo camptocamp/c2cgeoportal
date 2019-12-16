@@ -32,6 +32,7 @@ from argparse import ArgumentParser
 import gettext
 import os
 import sys
+from typing import Dict, List, Set, Tuple, Union
 
 from sqlalchemy import func
 import transaction
@@ -88,7 +89,7 @@ def main():
 class Import:
     def __init__(self, session, settings, options):
         self.options = options
-        self.imported = set()
+        self.imported: Set[Tuple[Union[str, int]]] = set()
         package = settings["package"]
 
         self.fts_languages = settings["fulltextsearch"]["languages"]
@@ -100,7 +101,7 @@ class Import:
         self.session = session
         self.session.execute(FullTextSearch.__table__.delete().where(FullTextSearch.from_theme))  # noqa
 
-        self._ = {}
+        self._: Dict[str, gettext.NullTranslations] = {}
         for lang in self.languages:
             try:
                 self._[lang] = gettext.translation(
@@ -117,8 +118,8 @@ class Import:
             query = query.filter(Interface.name.in_(options.interfaces))
         self.interfaces = query.all()
 
-        self.public_theme = {}
-        self.public_group = {}
+        self.public_theme: Dict[int, List[int]] = {}
+        self.public_group: Dict[int, List[int]] = {}
         for interface in self.interfaces:
             self.public_theme[interface.id] = []
             self.public_group[interface.id] = []

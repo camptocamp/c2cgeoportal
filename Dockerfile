@@ -63,7 +63,10 @@ COPY Pipfile Pipfile.lock /tmp/
 RUN \
   cd /tmp && \
   pipenv install --system --clear --dev && \
-  python3 -m pip install prospector && \
+  # TODO: remove and use:
+  # pipenv uninstall flake8 mypy pep8 pyflakes pylint typed-ast
+  # pipenv install --dev prospector[with_mypy]
+  python3 -m pip install prospector[with_mypy] mypy==0.720 && \
   rm --recursive --force /tmp/* /root/.cache/*
 
 COPY bin/npm-packages /usr/bin/

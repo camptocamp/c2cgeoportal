@@ -30,7 +30,7 @@
 
 import inspect
 import logging
-from typing import Any, Dict  # noqa
+from typing import Any, Dict, List
 
 from dogpile.cache.api import NO_VALUE
 from dogpile.cache.backends.redis import RedisBackend
@@ -40,8 +40,8 @@ from pyramid.request import Request
 from sqlalchemy.orm.util import identity_key
 
 LOG = logging.getLogger(__name__)
-_REGION = {}  # type: Dict[str, Any]
-MEMORY_CACHE_DICT = {}  # type: Dict[str, Any]
+_REGION: Dict[str, Any] = {}
+MEMORY_CACHE_DICT: Dict[str, Any] = {}
 
 
 def map_dbobject(item):
@@ -72,12 +72,12 @@ def keygen_function(namespace, function):
     def generate_key(*args, **kw):
         if kw:  # pragma: no cover
             raise ValueError("key creation function does not accept keyword arguments.")
-        parts = []
+        parts: List[str] = []
         parts.extend(namespace)
         if ignore_first_argument:
             args = args[1:]
-        args = [arg for arg in args if not isinstance(arg, Request)]
-        parts.extend(map(compat.text_type, map(map_dbobject, args)))
+        new_args: List[str] = [arg for arg in args if not isinstance(arg, Request)]
+        parts.extend(map(compat.text_type, map(map_dbobject, new_args)))
         return "|".join(parts)
 
     return generate_key
@@ -97,8 +97,8 @@ def _configure_region(conf, cache_region):
     kwargs = {"replace_existing_backend": True}
     backend = conf["backend"]
     kwargs.update({k: conf[k] for k in conf if k != "backend"})
-    kwargs.setdefault("arguments", {})
-    kwargs["arguments"]["cache_dict"] = MEMORY_CACHE_DICT
+    kwargs.setdefault("arguments", {})  # type: ignore
+    kwargs["arguments"]["cache_dict"] = MEMORY_CACHE_DICT  # type: ignore
     cache_region.configure(backend, **kwargs)
 
 
@@ -167,7 +167,7 @@ def _set_cors_headers(request, response, service_name, service_headers_settings,
     """
     Handle CORS requests, as specified in https://www.w3.org/TR/cors/
     """
-    response.vary = (response.vary or ()) + ("Origin",)
+    response.vary = (response.vary or ()) + ("Origin",)  # type: ignore
 
     if "Origin" not in request.headers:
         return  # Not a CORS request if this header is missing
@@ -232,7 +232,7 @@ def _set_common_headers(request, response, service_headers_settings, cache, cont
         else:
             response.cache_control.public = True
     else:  # pragma: no cover
-        raise "Invalid cache type"
+        raise Exception("Invalid cache type")
 
     if cache != NO_CACHE:
         max_age = service_headers_settings.get("cache_control_max_age", 3600)

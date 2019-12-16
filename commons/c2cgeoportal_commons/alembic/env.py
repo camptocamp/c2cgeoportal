@@ -30,6 +30,7 @@
 
 from logging.config import fileConfig
 import os
+from typing import Dict
 
 from alembic import context
 from c2c.template.config import config
@@ -42,7 +43,7 @@ fileConfig(context.config.config_file_name, defaults=dict(os.environ))
 
 def get_config():
     config.init(context.config.get_main_option("app.cfg"))
-    settings = {}
+    settings: Dict[str, str] = {}
     settings.update(config.get_config())
     alembic_name = context.config.get_main_option("type")
     schema_config_name = "schema{}".format("_{}".format(alembic_name) if alembic_name != "main" else "")
@@ -88,12 +89,11 @@ def run_migrations_online():
     conf = get_config()
 
     # Autogenerate config
-    _schema = False
     alembic_name = context.config.get_main_option("type")
-    if alembic_name == "main":
-        from c2cgeoportal_commons.models.main import Base, _schema
-    elif alembic_name == "static":
-        from c2cgeoportal_commons.models.static import Base, _schema
+    from c2cgeoportal_commons.models import main, static
+
+    Base = main.Base if alembic_name == "main" else static.Base  # nopep8
+    _schema = main._schema if alembic_name == "main" else static._schema
 
     def include_object(obj, name, type_, reflected, compare_to):  # pylint: disable=unused-argument
         if type_ == "table":

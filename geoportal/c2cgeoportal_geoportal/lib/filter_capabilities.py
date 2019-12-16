@@ -31,7 +31,7 @@
 import copy
 from io import StringIO
 import logging
-from typing import List  # noqa, pylint: disable=unused-import
+from typing import Callable, Dict, List
 from urllib.parse import urlsplit
 import xml.sax.handler
 from xml.sax.saxutils import XMLFilterBase, XMLGenerator
@@ -76,7 +76,7 @@ def wms_structure(wms_url, host, request):
 
     try:
         wms = WebMapService(None, xml=response.content)
-        result = {}
+        result: Dict[str, List[str]] = {}
 
         def _fill(name, parent):
             if parent is None:
@@ -158,7 +158,7 @@ def filter_wfst_capabilities(content, wfs_url, request):
 
 class _Layer:
     def __init__(self, self_hidden=False):
-        self.accumul = []
+        self.accumul: List[Callable] = []
         self.hidden = True
         self.self_hidden = self_hidden
         self.has_children = False
@@ -177,7 +177,7 @@ class _CapabilitiesFilter(XMLFilterBase):
     def __init__(self, upstream, downstream, tag_name, layers_blacklist=None, layers_whitelist=None):
         XMLFilterBase.__init__(self, upstream)
         self._downstream = downstream
-        self._accumulator = []
+        self._accumulator: List[str] = []
 
         assert (
             layers_blacklist is not None or layers_whitelist is not None
@@ -193,7 +193,7 @@ class _CapabilitiesFilter(XMLFilterBase):
         self.layers_blacklist = layers_blacklist
         self.layers_whitelist = layers_whitelist
 
-        self.layers_path = []
+        self.layers_path: List[_Layer] = []
         self.in_name = False
         self.tag_name = tag_name
         self.level = 0
@@ -235,16 +235,17 @@ class _CapabilitiesFilter(XMLFilterBase):
     def startElement(self, name, attrs):  # noqa
         if name == self.tag_name:
             self.level += 1
-            parent_layer = None
             if self.layers_path:
                 parent_layer = self.layers_path[-1]
                 parent_layer.has_children = True
                 parent_layer.children_nb += 1
-            layer = _Layer(parent_layer.self_hidden) if len(self.layers_path) > 1 else _Layer()
-            self.layers_path.append(layer)
+                layer = _Layer(parent_layer.self_hidden) if len(self.layers_path) > 1 else _Layer()
+                self.layers_path.append(layer)
 
-            if parent_layer is not None:
                 parent_layer.accumul.append(lambda: self._add_child(layer))
+            else:
+                layer = _Layer()
+                self.layers_path.append(layer)
         elif name == "Name" and self.layers_path:
             self.in_name = True
 

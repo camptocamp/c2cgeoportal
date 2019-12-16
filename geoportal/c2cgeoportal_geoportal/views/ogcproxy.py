@@ -28,7 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 import logging
-from typing import Dict  # noqa, pylint: disable=unused-import
+from typing import Set
 
 from pyramid.httpexceptions import HTTPBadRequest
 from sqlalchemy.orm.exc import NoResultFound
@@ -77,7 +77,7 @@ class OGCProxy(Proxy):
 
     def _get_wms_url(self):
         ogc_server = self.ogc_server
-        errors = set()
+        errors: Set[str] = set()
         url = get_url2("The OGC server '{}'".format(ogc_server.name), ogc_server.url, self.request, errors)
         if errors:  # pragma: no cover
             LOG.error("\n".join(errors))
@@ -85,7 +85,7 @@ class OGCProxy(Proxy):
 
     def _get_wfs_url(self):
         ogc_server = self.ogc_server
-        errors = set()
+        errors: Set[str] = set()
         url = get_url2(
             "The OGC server (WFS) '{}'".format(ogc_server.name),
             ogc_server.url_wfs or ogc_server.url,

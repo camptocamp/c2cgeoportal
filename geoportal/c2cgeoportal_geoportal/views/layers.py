@@ -30,6 +30,7 @@
 from datetime import datetime
 import logging
 import os
+from typing import Dict, List, Union
 
 from geoalchemy2 import Geometry
 from geoalchemy2 import func as ga_func
@@ -569,12 +570,10 @@ def _convert_column_type(column_type):
 
     # Enumeration type
     if isinstance(column_type, Enum):
-        restriction = {}
+        restriction: Dict[str, Union[str, List[str]]] = {}
         restriction["restriction"] = "enumeration"
         restriction["type"] = "xsd:string"
-        restriction["enumeration"] = []
-        for enum in column_type.enums:
-            restriction["enumeration"].append(enum)
+        restriction["enumeration"] = column_type.enums
         return restriction
 
     # String type

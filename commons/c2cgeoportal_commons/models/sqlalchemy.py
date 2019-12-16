@@ -27,7 +27,7 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 import json
-from typing import Optional
+from typing import Any, Optional, Type
 
 from sqlalchemy.engine import Dialect
 from sqlalchemy.types import VARCHAR, TypeDecorator, UserDefinedType
@@ -51,13 +51,13 @@ class JSONEncodedDict(TypeDecorator):
         return json.loads(value) if value is not None else None
 
     @property
-    def python_type(self):
+    def python_type(self) -> Type:
         return dict
 
     @staticmethod
-    def process_literal_param(value, dialect):
+    def process_literal_param(value: str, dialect: Any) -> str:
         del dialect
-        json.dumps(value)
+        return json.dumps(value)
 
 
 class TsVector(UserDefinedType):
@@ -67,5 +67,5 @@ class TsVector(UserDefinedType):
         return "TSVECTOR"
 
     @property
-    def python_type(self):
+    def python_type(self) -> Type:
         return dict

@@ -30,6 +30,7 @@
 import logging
 import subprocess
 from time import sleep
+from typing import Dict
 from urllib.parse import urljoin
 
 import c2cwsgiutils.health_check
@@ -161,7 +162,7 @@ def _themes_errors(settings, health_check):
         path = request.route_path("themes")
         session = requests.session()
         for (interface,) in DBSession.query(Interface.name).all():
-            params = {}
+            params: Dict[str, str] = {}
             params.update(default_params)
             params.update(interfaces_settings.get(interface, {}).get("params", {}))
             params["interface"] = interface

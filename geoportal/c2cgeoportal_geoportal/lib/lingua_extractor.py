@@ -33,8 +33,9 @@ import os
 import re
 import subprocess
 import traceback
-from typing import Dict  # noqa, pylint: disable=unused-import
+from typing import Dict, List, Set
 from urllib.parse import urlsplit
+from xml.dom import Node
 from xml.parsers.expat import ExpatError
 
 from bottle import MakoTemplate, template
@@ -352,7 +353,7 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
 
     def __call__(self, filename, options, fileobj=None, lineno=0):
         del fileobj, lineno
-        messages = []
+        messages: List[Message] = []
 
         try:
             self.env = bootstrap(filename, options=os.environ)
@@ -573,7 +574,7 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
         return url, {}, {}
 
     def _layer_attributes(self, url, layer):
-        errors = set()
+        errors: Set[str] = set()
 
         request = _Request()
         request.registry.settings = self.config
@@ -662,7 +663,7 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
 
             try:
                 describe = parseString(response.text)
-                featurestype = {}
+                featurestype: Dict[str, Node] = {}
                 self.featuretype_cache[url] = featurestype
                 for type_element in describe.getElementsByTagNameNS(
                     "http://www.w3.org/2001/XMLSchema", "complexType"

@@ -48,8 +48,8 @@ def create_token(aeskey, user, password, valid):
     mod_len = len(data) % 16
     if mod_len != 0:
         data += "".join([" " for i in range(16 - mod_len)])
-    ciphertext, tag = cipher.encrypt_and_digest(data.encode("utf-8"))
-    return binascii.hexlify(cipher.nonce + tag + ciphertext).decode("ascii")
+    ciphertext, tag = cipher.encrypt_and_digest(data.encode("utf-8"))  # type: ignore
+    return binascii.hexlify(cipher.nonce + tag + ciphertext).decode("ascii")  # type: ignore
 
 
 def main():

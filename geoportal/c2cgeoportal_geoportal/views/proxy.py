@@ -30,6 +30,7 @@
 
 import logging
 import sys
+from typing import Dict, List, Union
 import urllib.parse
 
 from pyramid.httpexceptions import HTTPBadGateway, exception_response
@@ -60,8 +61,8 @@ class Proxy:
         parsed_url = urllib.parse.urlparse(url)
         url_params = urllib.parse.parse_qs(parsed_url.query)
         for p in url_params:  # pragma: no cover
-            url_params[p] = ",".join(url_params[p])
-        all_params = {}
+            url_params[p] = [",".join(url_params[p])]
+        all_params: Dict[str, Union[str, List[str]]] = {}
         all_params.update(params)
         all_params.update(url_params)
         query_string = urllib.parse.urlencode(all_params)
@@ -113,7 +114,7 @@ class Proxy:
                 response = requests.request(method, url, headers=headers, **self.http_options)
         except Exception:  # pragma: no cover
             errors = ["Error '%s' while getting the URL:", "%s", "Method: %s", "--- With headers ---", "%s"]
-            args = [
+            args1 = [
                 sys.exc_info()[0],
                 url,
                 method,
@@ -121,8 +122,8 @@ class Proxy:
             ]
             if method in ("POST", "PUT"):
                 errors += ["--- Query with body ---", "%s"]
-                args.append(body.decode("utf-8"))
-            LOG.error("\n".join(errors), *args, exc_info=True)
+                args1.append(body.decode("utf-8"))
+            LOG.error("\n".join(errors), *args1, exc_info=True)
 
             raise HTTPBadGateway("Error on backend, See logs for detail")
 
@@ -135,7 +136,7 @@ class Proxy:
                 "--- With headers ---",
                 "%s",
             ]
-            args = [
+            args2: List[Union[str, int]] = [
                 response.reason,
                 url,
                 response.status_code,
@@ -144,10 +145,10 @@ class Proxy:
             ]
             if method in ("POST", "PUT"):
                 errors += ["--- Query with body ---", "%s"]
-                args.append(body.decode("utf-8"))
+                args2.append(body.decode("utf-8"))
             errors += ["--- Return content ---", "%s"]
-            args.append(response.text)
-            LOG.error("\n".join(errors), *args)
+            args2.append(response.text)
+            LOG.error("\n".join(errors), *args2)
 
             raise exception_response(response.status_code)
 

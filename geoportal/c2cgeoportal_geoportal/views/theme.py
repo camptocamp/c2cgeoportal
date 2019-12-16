@@ -35,6 +35,7 @@ from math import sqrt
 import re
 import sys
 import time
+from typing import Any, Dict, List, Set, Union, cast
 import urllib.parse
 
 from c2cwsgiutils.auth import auth_view
@@ -84,13 +85,12 @@ class DimensionInformation:
     URL_PART_RE = re.compile(r"[a-zA-Z0-9_\-\+~\.]*$")
 
     def __init__(self) -> None:
-        self._dimensions = {}
-        self._dimension_filters = {}
+        self._dimensions: Dict[str, str] = {}
 
     def merge(self, layer, layer_node, mixed):
         errors = set()
 
-        dimensions = {}
+        dimensions: Dict[str, str] = {}
         dimensions_filters = {}
         for dimension in layer.dimensions:
             if (
@@ -228,9 +228,9 @@ class Theme:
     async def _wms_getcap_cached(self, ogc_server, _):
         """ _ is just for cache on the role id """
 
-        errors = set()
+        errors: Set[str] = set()
         url = get_url2("The OGC server '{}'".format(ogc_server.name), ogc_server.url, self.request, errors)
-        if errors:  # pragma: no cover
+        if errors or url is None:  # pragma: no cover
             return url, None, errors
 
         # Add functionality params
@@ -319,7 +319,7 @@ class Theme:
         return query
 
     def _get_layer_metadata_urls(self, layer):
-        metadata_urls = []
+        metadata_urls: List[str] = []
         if layer.metadataUrls:
             metadata_urls = layer.metadataUrls
         for child_layer in layer.layers:
@@ -366,7 +366,7 @@ class Theme:
         )
 
     def _layer(self, layer, time_=None, dim=None, mixed=True):
-        errors = set()
+        errors: Set[str] = set()
         layer_info = {"id": layer.id, "name": layer.name, "metadata": self._get_metadatas(layer, errors)}
         if re.search("[/?#]", layer.name):  # pragma: no cover
             errors.add("The layer has an unsupported name '{}'.".format(layer.name))
@@ -554,7 +554,7 @@ class Theme:
     def _get_ogc_servers(self, group, depth):
         """ Recurse on all children to get unique identifier for each child. """
 
-        ogc_servers = set()
+        ogc_servers: Set[Union[str, bool]] = set()
 
         # escape loop
         if depth > 30:
@@ -670,7 +670,7 @@ class Theme:
             group_theme["mixed"] = mixed
             if org_depth == 1:
                 if not mixed:
-                    group_theme["ogcServer"] = ogc_servers[0]
+                    group_theme["ogcServer"] = cast(List, ogc_servers)[0]
                     if time_.has_time() and time_.layer is None:
                         group_theme["time"] = time_.to_dict()
 
@@ -775,7 +775,7 @@ class Theme:
 
     @staticmethod
     def _get_functionalities(theme):
-        result = {}
+        result: Dict[str, List[str]] = {}
         for functionality in theme.functionalities:
             if functionality.name in result:
                 result[functionality.name].append(functionality.value)
@@ -791,7 +791,7 @@ class Theme:
 
     def _get_children(self, theme, layers, min_levels):
         children = []
-        errors = set()
+        errors: Set[str] = set()
         for item in theme.children:
             if isinstance(item, main.LayerGroup):
                 group_theme, gp_errors = self._group(
@@ -819,7 +819,7 @@ class Theme:
         layers_enum = {}
         if "enum" in self.settings.get("layers", {}):
             for layer_name, layer in list(self.settings["layers"]["enum"].items()):
-                layer_enum = {}
+                layer_enum: Dict[str, str] = {}
                 layers_enum[layer_name] = layer_enum
                 for attribute in list(layer["attributes"].keys()):
                     layer_enum[attribute] = self.request.route_url(
@@ -920,7 +920,7 @@ class Theme:
 
     @CACHE_REGION.cache_on_arguments()
     def _get_features_attributes(self, url_internal_wfs):
-        all_errors = set()
+        all_errors: Set[str] = set()
         feature_type, errors = asyncio.run(self._wms_get_features_type(url_internal_wfs))
         LOG.debug("Run garbage collection: %s", ", ".join([str(gc.collect(n)) for n in range(3)]))
         if errors:
@@ -1001,8 +1001,8 @@ class Theme:
             export_group = group is not None and sets in ("all", "group")
             export_background = background_layers_group is not None and sets in ("all", "background")
 
-            result = {}
-            all_errors = set()
+            result: Dict[str, Union[Dict[str, Dict[str, Any]], List[str]]] = {}
+            all_errors: Set[str] = set()
             LOG.debug("Start preload")
             start_time = time.time()
             asyncio.run(self.preload(all_errors))
@@ -1022,7 +1022,7 @@ class Theme:
                     protected_layers_name = [
                         l.name for l in get_protected_layers(self.request, [ogc_server.id]).values()
                     ]
-                    private_layers_name = []
+                    private_layers_name: List[str] = []
                     for layers in [
                         v.layer for v in all_private_layers if v.name not in protected_layers_name
                     ]:
