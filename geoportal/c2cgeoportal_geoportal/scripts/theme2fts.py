@@ -96,7 +96,12 @@ class Import:
         self.languages = settings["available_locale_names"]
 
         # must be done only once we have loaded the project config
-        from c2cgeoportal_commons.models.main import FullTextSearch, Interface, Theme, Role
+        from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+            FullTextSearch,
+            Interface,
+            Theme,
+            Role,
+        )
 
         self.session = session
         self.session.execute(FullTextSearch.__table__.delete().where(FullTextSearch.from_theme))  # noqa
@@ -132,7 +137,7 @@ class Import:
                 self._add_theme(theme, role)
 
     def _add_fts(self, item, interface, action, role):
-        from c2cgeoportal_commons.models.main import FullTextSearch
+        from c2cgeoportal_commons.models.main import FullTextSearch  # pylint: disable=import-outside-toplevel
 
         key = (
             item.name if self.options.name else item.id,
@@ -174,7 +179,7 @@ class Import:
         return self._add_group(group, interface, self.options.folders, role)
 
     def _add_group(self, group, interface, export, role):
-        from c2cgeoportal_commons.models.main import LayerGroup
+        from c2cgeoportal_commons.models.main import LayerGroup  # pylint: disable=import-outside-toplevel
 
         fill = False
         for child in group.children:

@@ -39,14 +39,14 @@ from dogpile.cache.util import compat, sha1_mangle_key
 from pyramid.request import Request
 from sqlalchemy.orm.util import identity_key
 
+from c2cgeoportal_commons.models import Base
+
 LOG = logging.getLogger(__name__)
 _REGION: Dict[str, Any] = {}
 MEMORY_CACHE_DICT: Dict[str, Any] = {}
 
 
 def map_dbobject(item):
-    # here to avoid import loop
-    from c2cgeoportal_commons.models import Base
 
     return identity_key(item) if isinstance(item, Base) else item
 

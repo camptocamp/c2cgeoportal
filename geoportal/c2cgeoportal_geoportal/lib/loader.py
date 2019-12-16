@@ -7,7 +7,7 @@ from plaster_pastedeploy import Loader as BaseLoader
 
 class Loader(BaseLoader):
     def _get_defaults(self, defaults: Dict[str, str] = None) -> Dict[str, str]:
-        d = {}  # type: Dict[str, str]
+        d: Dict[str, str] = {}
         d.update({k: v.replace("%", "%%") for k, v in os.environ.items()})
         if defaults:
             d.update(defaults)

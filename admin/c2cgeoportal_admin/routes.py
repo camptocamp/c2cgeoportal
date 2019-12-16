@@ -26,7 +26,7 @@ def includeme(config):
         "convert_to_wmts", "/{table:layers_wms}/{id}/convert_to_wmts", pregenerator=table_pregenerator
     )
 
-    from c2cgeoportal_commons.models.main import (
+    from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
         Role,
         LayerWMS,
         LayerWMTS,
@@ -37,7 +37,7 @@ def includeme(config):
         Functionality,
         RestrictionArea,
     )
-    from c2cgeoportal_commons.models.static import User
+    from c2cgeoportal_commons.models.static import User  # pylint: disable=import-outside-toplevel
 
     visible_routes = [
         ("themes", Theme),

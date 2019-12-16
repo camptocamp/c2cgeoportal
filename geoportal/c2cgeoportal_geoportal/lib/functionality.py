@@ -44,7 +44,7 @@ CACHE_REGION = get_region("std")
 
 @CACHE_REGION_OBJ.cache_on_arguments()
 def _get_role(name: str) -> Dict[str, Any]:
-    from c2cgeoportal_commons.models import DBSession
+    from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
 
     role = (
         DBSession.query(static.Role)

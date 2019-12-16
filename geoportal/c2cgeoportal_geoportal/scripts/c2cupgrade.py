@@ -115,7 +115,7 @@ class Step:
                     ),
                     prompt="Fix the error and run the step again:",
                 )
-                exit(1)
+                sys.exit(1)
             except InteruptedException as exception:
                 c2cupgradetool.print_step(
                     self.step_number,
@@ -123,7 +123,7 @@ class Step:
                     message="There was an error: {}.".format(exception),
                     prompt="Fix the error and run the step again:",
                 )
-                exit(1)
+                sys.exit(1)
             except Exception as exception:
                 cautch_exception = exception
 
@@ -230,7 +230,7 @@ class C2cUpgradeTool:
             self.print_step(
                 step, error=True, message="\n".join(messages), prompt="Fix it and run again the upgrade:"
             )
-            exit(1)
+            sys.exit(1)
 
         if check_git_status_output() == "":
             self.run_step(step + 1)
@@ -560,14 +560,14 @@ class C2cUpgradeTool:
                                 ),
                                 prompt="Fix it and run the upgrade again:",
                             )
-                            exit(1)
+                            sys.exit(1)
                 elif managed:
                     print("The file '{}' is managed by the project.".format(destination))
                 elif os.path.exists(destination) and filecmp.cmp(source, destination):
                     print("The file '{}' does not change.".format(destination))
                 else:
                     print("Unknown stat for the file '{}'.".format(destination))
-                    exit(2)
+                    sys.exit(2)
         return error
 
     @Step(7)
@@ -701,7 +701,7 @@ class C2cUpgradeTool:
                 prompt="Correct the checker, then run the step again "
                 "(If you want to fix it later you can pass to the next step):",
             )
-            exit(1)
+            sys.exit(1)
 
     @Step(12, file_marker=False)
     def step12(self, step):

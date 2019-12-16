@@ -31,6 +31,7 @@ import argparse
 import binascii
 import json
 import os
+import sys
 import time
 
 from Crypto.Cipher import AES  # nosec
@@ -42,7 +43,7 @@ def create_token(aeskey, user, password, valid):
 
     if aeskey is None:
         print("urllogin is not configured")
-        exit(1)
+        sys.exit(1)
     cipher = AES.new(aeskey.encode("ascii"), AES.MODE_EAX)
     data = json.dumps(auth)
     mod_len = len(data) % 16

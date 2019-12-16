@@ -47,7 +47,13 @@ def main():
     with transaction.manager:
         session = get_session(settings, transaction.manager)
 
-        from c2cgeoportal_commons.models.main import Interface, OGCServer, Theme, LayerGroup, LayerWMS
+        from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+            Interface,
+            OGCServer,
+            Theme,
+            LayerGroup,
+            LayerWMS,
+        )
 
         interfaces = session.query(Interface).all()
         ogc_server = session.query(OGCServer).filter(OGCServer.name == "source for image/png").one()

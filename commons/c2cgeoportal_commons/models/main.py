@@ -64,8 +64,8 @@ except ModuleNotFoundError:
 
 LOG = logging.getLogger(__name__)
 
-_schema = config["schema"] or "main"  # type: str
-_srid = config["srid"] or 3857  # type: int
+_schema: str = config["schema"] or "main"
+_srid: str = config["srid"] or 3857
 
 
 class FullTextSearch(GeoInterface, Base):
@@ -185,10 +185,10 @@ event.listen(Role.functionalities, "remove", cache_invalidate_cb)
 
 class TreeItem(Base):
     __tablename__ = "treeitem"
-    __table_args__ = (
+    __table_args__: Union[Tuple, Dict[str, Any]] = (
         UniqueConstraint("type", "name"),
         {"schema": _schema},
-    )  # type: Union[Tuple, Dict[str, Any]]
+    )
     item_type = Column("type", String(10), nullable=False, info={"colanderalchemy": {"exclude": True}})
     __mapper_args__ = {"polymorphic_on": item_type}
 

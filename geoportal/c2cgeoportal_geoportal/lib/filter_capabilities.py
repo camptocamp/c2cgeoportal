@@ -137,7 +137,7 @@ def filter_capabilities(content, wms, url, headers, request):
 
 
 def filter_wfst_capabilities(content, wfs_url, request):
-    writable_layers = []  # type: List[str]
+    writable_layers: List[str] = []
     ogc_server_ids = get_ogc_server_wfs_url_ids(request).get(wfs_url)
     for gmflayer in list(get_writable_layers(request, ogc_server_ids).values()):
         writable_layers += gmflayer.layer.split(",")

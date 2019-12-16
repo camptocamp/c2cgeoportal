@@ -78,7 +78,7 @@ def send_email(
 
     # Connect to server
     if smtp_config.get("ssl", False):
-        smtp = smtplib.SMTP_SSL(smtp_config["host"])  # type: smtplib.SMTP
+        smtp: smtplib.SMTP = smtplib.SMTP_SSL(smtp_config["host"])
     else:
         smtp = smtplib.SMTP(smtp_config["host"])
     if smtp_config.get("user", False):

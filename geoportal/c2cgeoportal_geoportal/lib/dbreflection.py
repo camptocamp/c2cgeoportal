@@ -69,7 +69,7 @@ class _AssociationProxy:
         return getattr(target, self.value_attr) if target else None
 
     def __set__(self, obj, val):
-        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
 
         o = getattr(obj, self.target)
         # if the obj as no child object or if the child object
@@ -102,8 +102,8 @@ def get_table(tablename, schema=None, session=None, primary_key=None):
         engine = session.bind.engine
         metadata = MetaData(bind=engine)
     else:
-        from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import Base
+        from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models.main import Base  # pylint: disable=import-outside-toplevel
 
         engine = DBSession.bind.engine
         metadata = Base.metadata
@@ -150,7 +150,7 @@ def get_class(
 def _create_class(
     table, exclude_properties=None, attributes_order=None, readonly_attributes=None, pk_name=None
 ):
-    from c2cgeoportal_commons.models.main import Base
+    from c2cgeoportal_commons.models.main import Base  # pylint: disable=import-outside-toplevel
 
     exclude_properties = exclude_properties or ()
     attributes = dict(

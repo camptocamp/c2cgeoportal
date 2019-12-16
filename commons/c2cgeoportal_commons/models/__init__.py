@@ -44,9 +44,9 @@ except ModuleNotFoundError:
 
 
 # Should be filed on application initialisation
-DBSession = None  # type: sqlalchemy.orm.Session
-Base = sqlalchemy.ext.declarative.declarative_base()  # type: sqlalchemy.ext.declarative.api.Base
-DBSessions = {}  # type: Dict[str, sqlalchemy.orm.Session]
+DBSession: sqlalchemy.orm.Session = None
+Base: sqlalchemy.ext.declarative.api.ConcreteBase = sqlalchemy.ext.declarative.declarative_base()
+DBSessions: Dict[str, sqlalchemy.orm.Session] = {}
 
 
 class InvalidateCacheEvent:

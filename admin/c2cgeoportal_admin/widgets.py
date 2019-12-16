@@ -27,7 +27,7 @@ class ChildWidget(MappingWidget):
     template = "child"
 
     def serialize(self, field, cstruct, **kw):
-        from c2cgeoportal_commons.models.main import TreeItem
+        from c2cgeoportal_commons.models.main import TreeItem  # pylint: disable=import-outside-toplevel
 
         if cstruct["treeitem_id"] == colander.null:
             kw["treeitem"] = TreeItem()
@@ -41,7 +41,7 @@ class ThemeOrderWidget(MappingWidget):
     template = "child"
 
     def serialize(self, field, cstruct, **kw):
-        from c2cgeoportal_commons.models.main import TreeItem
+        from c2cgeoportal_commons.models.main import TreeItem  # pylint: disable=import-outside-toplevel
 
         if cstruct["id"] == colander.null:
             kw["treeitem"] = TreeItem()
