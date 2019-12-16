@@ -38,19 +38,18 @@ from pyramid.httpexceptions import HTTPBadRequest, HTTPNotFound
 from pyramid.view import view_config
 import zope.event.classhandler
 
+from c2cgeoportal_commons.models import InvalidateCacheEvent
 from c2cgeoportal_geoportal.lib.caching import NO_CACHE, set_common_headers
 
 LOG = logging.getLogger(__name__)
 
 
 class Raster:
-    data = {}  # type: Dict[str, Any]
+    data: Dict[str, Any] = {}
 
     def __init__(self, request):
         self.request = request
         self.rasters = self.request.registry.settings["raster"]
-
-        from c2cgeoportal_commons.models import InvalidateCacheEvent
 
         @zope.event.classhandler.handler(InvalidateCacheEvent)
         def handle(event: InvalidateCacheEvent):  # pylint: disable=unused-variable
@@ -101,11 +100,13 @@ class Raster:
         if name not in self.data:
             path = layer["file"]
             if layer.get("type", "shp_index") == "shp_index":
-                from fiona.collection import Collection
+                # Avoid loading if not needed
+                from fiona.collection import Collection  # pylint: disable=import-outside-toplevel
 
                 self.data[name] = Collection(path)
             elif layer.get("type") == "gdal":
-                import rasterio
+                # Avoid loading if not needed
+                import rasterio  # pylint: disable=import-outside-toplevel
 
                 self.data[name] = rasterio.open(path)
 
@@ -115,14 +116,15 @@ class Raster:
         data = self._get_data(layer, name)
         type_ = layer.get("type", "shp_index")
         if type_ == "shp_index":
-            tiles = [e for e in data.filter(mask={"type": "Point", "coordinates": [lon, lat]})]
+            tiles = list(data.filter(mask={"type": "Point", "coordinates": [lon, lat]}))
 
             if not tiles:
                 return None
 
             path = os.path.join(os.path.dirname(layer["file"]), tiles[0]["properties"]["location"])
 
-            import rasterio
+            # Avoid loading if not needed
+            import rasterio  # pylint: disable=import-outside-toplevel
 
             with rasterio.open(path) as dataset:
                 result = self._get_value(layer, name, dataset, lon, lat)

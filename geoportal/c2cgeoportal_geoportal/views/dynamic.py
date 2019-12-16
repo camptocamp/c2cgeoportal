@@ -65,7 +65,7 @@ class DynamicView:
         ]
 
     def _interface(self, interface_config, interface_name, dynamic, constants):
-        constants.update({name: value for name, value in interface_config.get("constants", {}).items()})
+        constants.update(interface_config.get("constants", {}))
         constants.update(
             {
                 name: dynamic[value]

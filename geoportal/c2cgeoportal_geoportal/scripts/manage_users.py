@@ -29,6 +29,7 @@
 
 
 import argparse
+import sys
 
 import transaction
 
@@ -72,7 +73,7 @@ User can be created if it does not exist yet."""
         sess = get_session(settings, transaction.manager)
 
         # Must be done only once we have loaded the project config
-        from c2cgeoportal_commons.models import main, static
+        from c2cgeoportal_commons.models import main, static  # pylint: disable=import-outside-toplevel
 
         print("\n")
 
@@ -84,7 +85,7 @@ User can be created if it does not exist yet."""
             if not options.create:
                 # If doesn't exist and no -c option, throw error
                 print("User {} does not exist in database".format(username))
-                exit(1)
+                sys.exit(1)
             else:
                 if options.password is None:
                     parser.error("The password is mandatory on user creation")
@@ -97,7 +98,7 @@ User can be created if it does not exist yet."""
                 if query_role.count() == 0:
                     # Role not found in db?
                     print("Role matching {} does not exist in database".format(options.rolename))
-                    exit(1)
+                    sys.exit(1)
 
                 role = query_role.first()
 

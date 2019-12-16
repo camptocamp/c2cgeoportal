@@ -66,7 +66,7 @@ except ModuleNotFoundError:
 
 LOG = logging.getLogger(__name__)
 
-_schema = config["schema_static"] or "static"  # type: str
+_schema: str = config["schema_static"] or "static"
 
 # association table user <> role
 user_role = Table(
@@ -190,8 +190,7 @@ class User(Base):
 
     @staticmethod
     def __encrypt_password(password: str) -> str:
-        # TODO: remove pylint disable when https://github.com/PyCQA/pylint/issues/3047 is fixed
-        return crypt.crypt(password, crypt.METHOD_SHA512)  # pylint: disable=no-member
+        return crypt.crypt(password, crypt.METHOD_SHA512)
 
     def validate_password(self, passwd: str) -> bool:
         """Check the password against existing credentials.

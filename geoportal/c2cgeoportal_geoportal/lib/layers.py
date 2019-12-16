@@ -36,7 +36,7 @@ CACHE_REGION = caching.get_region("std")
 
 
 def _get_layers_query(request: Request, what):
-    from c2cgeoportal_commons.models import DBSession, main
+    from c2cgeoportal_commons.models import DBSession, main  # pylint: disable=import-outside-toplevel
 
     q = DBSession.query(what)
     q = q.join(main.Layer.restrictionareas)
@@ -47,7 +47,7 @@ def _get_layers_query(request: Request, what):
 
 
 def get_protected_layers_query(request: Request, ogc_server_ids, what=None):
-    from c2cgeoportal_commons.models import main
+    from c2cgeoportal_commons.models import main  # pylint: disable=import-outside-toplevel
 
     q = _get_layers_query(request, what)
     q = q.filter(main.Layer.public.is_(False))
@@ -58,7 +58,7 @@ def get_protected_layers_query(request: Request, ogc_server_ids, what=None):
 
 
 def get_writable_layers_query(request: Request, ogc_server_ids):
-    from c2cgeoportal_commons.models import main
+    from c2cgeoportal_commons.models import main  # pylint: disable=import-outside-toplevel
 
     q = _get_layers_query(request, main.LayerWMS)
     return (
@@ -69,7 +69,7 @@ def get_writable_layers_query(request: Request, ogc_server_ids):
 
 
 def get_protected_layers(request: Request, ogc_server_ids):
-    from c2cgeoportal_commons.models import DBSession, main
+    from c2cgeoportal_commons.models import DBSession, main  # pylint: disable=import-outside-toplevel
 
     q = get_protected_layers_query(request, ogc_server_ids, what=main.LayerWMS)
     results = q.all()
@@ -78,7 +78,7 @@ def get_protected_layers(request: Request, ogc_server_ids):
 
 
 def get_writable_layers(request: Request, ogc_server_ids):
-    from c2cgeoportal_commons.models import DBSession
+    from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
 
     q = get_writable_layers_query(request, ogc_server_ids)
     results = q.all()
@@ -88,7 +88,7 @@ def get_writable_layers(request: Request, ogc_server_ids):
 
 @CACHE_REGION.cache_on_arguments()
 def get_private_layers(ogc_server_ids):
-    from c2cgeoportal_commons.models import DBSession, main
+    from c2cgeoportal_commons.models import DBSession, main  # pylint: disable=import-outside-toplevel
 
     q = (
         DBSession.query(main.LayerWMS)

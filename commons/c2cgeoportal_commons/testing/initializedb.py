@@ -33,8 +33,8 @@ def truncate_tables(connection: Connection) -> None:
 
 
 def setup_test_data(dbsession: Session) -> None:
-    from c2cgeoportal_commons.models.main import Role
-    from c2cgeoportal_commons.models.static import User
+    from c2cgeoportal_commons.models.main import Role  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models.static import User  # pylint: disable=import-outside-toplevel
 
     role_admin = dbsession.merge(Role(name="role_admin"))
     role_user = dbsession.merge(Role(name="role_user"))

@@ -49,7 +49,7 @@ LOG = logging.getLogger(__name__)
 
 class MapservProxy(OGCProxy):
 
-    params = {}  # type: Dict[str, str]
+    params: Dict[str, str] = {}
 
     def __init__(self, request: Request) -> None:
         OGCProxy.__init__(self, request)

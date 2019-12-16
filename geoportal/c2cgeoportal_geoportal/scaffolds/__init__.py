@@ -33,6 +33,7 @@ import json
 import os
 import re
 import subprocess
+import sys
 
 import pkg_resources
 from pyramid.compat import input_
@@ -117,7 +118,7 @@ class BaseTemplate(Template):  # pragma: no cover
                 type_(value)
             except ValueError:
                 print(("The attribute {}={} is not a {}".format(name, value, type_)))
-                exit(1)
+                sys.exit(1)
 
         vars_[name] = value
 

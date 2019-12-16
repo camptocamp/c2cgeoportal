@@ -53,7 +53,10 @@ from sqlalchemy.orm import Session
 import zope.event.classhandler
 
 import c2cgeoportal_commons.models
+from c2cgeoportal_commons.models import InvalidateCacheEvent
 from c2cgeoportal_geoportal.lib import C2CPregenerator, caching, check_collector, checker
+from c2cgeoportal_geoportal.lib.cacheversion import version_cache_buster
+from c2cgeoportal_geoportal.lib.caching import NO_CACHE, set_common_headers
 from c2cgeoportal_geoportal.lib.metrics import (
     MemoryCacheSizeProvider,
     RasterDataSizeProvider,
@@ -61,6 +64,7 @@ from c2cgeoportal_geoportal.lib.metrics import (
 )
 from c2cgeoportal_geoportal.lib.xsd import XSD
 import c2cgeoportal_geoportal.views
+from c2cgeoportal_geoportal.views.entry import Entry
 
 LOG = logging.getLogger(__name__)
 
@@ -97,8 +101,6 @@ def add_interface(
 
 
 def add_interface_ngeo(config, route_name, route, renderer=None, permission=None):  # pragma: no cover
-    # Cannot be at the header to do not load the model too early
-    from c2cgeoportal_geoportal.views.entry import Entry
 
     config.add_route(route_name, route, request_method="GET")
     config.add_view(
@@ -174,8 +176,8 @@ def create_get_user_from_request(settings):
         * it does not exist in the database
         * the referer is invalid
         """
-        from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.static import User
+        from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models.static import User  # pylint: disable=import-outside-toplevel
 
         try:
             if request.method == "GET" and "auth" in request.params:
@@ -246,8 +248,8 @@ def default_user_validator(request, username, password):
     Return None if we are anonymous, the string to remember otherwise.
     """
     del request  # unused
-    from c2cgeoportal_commons.models import DBSession
-    from c2cgeoportal_commons.models.static import User
+    from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models.static import User  # pylint: disable=import-outside-toplevel
 
     user = DBSession.query(User).filter_by(username=username).first()
     if user is None:
@@ -293,8 +295,6 @@ def add_cors_route(config, pattern, service):
     """
 
     def view(request):  # pragma: no cover
-        from c2cgeoportal_geoportal.lib.caching import set_common_headers, NO_CACHE
-
         return set_common_headers(request, service, NO_CACHE)
 
     name = pattern + "_options"
@@ -366,7 +366,6 @@ def includeme(config: pyramid.config.Configurator):
         register_backend("c2cgeoportal.hybrid", "c2cgeoportal_geoportal.lib.caching", "HybridBackend")
         for name, cache_config in settings["cache"].items():
             caching.init_region(cache_config, name)
-            from c2cgeoportal_commons.models import InvalidateCacheEvent
 
             @zope.event.classhandler.handler(InvalidateCacheEvent)
             def handle(event: InvalidateCacheEvent):  # pylint: disable=unused-variable
@@ -437,9 +436,6 @@ def includeme(config: pyramid.config.Configurator):
     config.add_renderer(".css", AssetRendererFactory)
     config.add_renderer(".ico", AssetRendererFactory)
     config.add_route("localejson", "/locale.json", request_method="GET")
-
-    # Cannot be at the header to do not load the model too early
-    from c2cgeoportal_geoportal.views.entry import Entry
 
     def add_api_route(name: str, attr: str, path: str, renderer: str):
         config.add_route(name, path, request_method="GET")
@@ -551,8 +547,6 @@ def includeme(config: pyramid.config.Configurator):
     add_admin_interface(config)
 
     # Add the project static view with cache buster
-    from c2cgeoportal_geoportal.lib.cacheversion import version_cache_buster
-
     config.add_static_view(
         name="static",
         path="/etc/geomapfish/static",
@@ -617,7 +611,7 @@ def init_dbsessions(settings: dict, config: Configurator, health_check: HealthCh
         )
 
     c2cgeoportal_commons.models.Base.metadata.clear()
-    from c2cgeoportal_commons.models import main
+    from c2cgeoportal_commons.models import main  # pylint: disable=import-outside-toplevel
 
     if health_check is not None:
         for name, session in c2cgeoportal_commons.models.DBSessions.items():

@@ -40,6 +40,7 @@ import dateutil
 from pyramid.interfaces import IRoutePregenerator
 from zope.interface import implementer
 
+from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
 from c2cgeoportal_geoportal.lib.caching import get_region
 
 LOG = logging.getLogger(__name__)
@@ -197,8 +198,8 @@ def get_setting(settings, path, default=None):
 
 @CACHE_REGION_OBJ.cache_on_arguments()
 def get_ogc_server_wms_url_ids(request):
-    from c2cgeoportal_commons.models import DBSession
-    from c2cgeoportal_commons.models.main import OGCServer
+    from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models.main import OGCServer  # pylint: disable=import-outside-toplevel
 
     errors = set()
     servers = dict()
@@ -210,8 +211,8 @@ def get_ogc_server_wms_url_ids(request):
 
 @CACHE_REGION_OBJ.cache_on_arguments()
 def get_ogc_server_wfs_url_ids(request):
-    from c2cgeoportal_commons.models import DBSession
-    from c2cgeoportal_commons.models.main import OGCServer
+    from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models.main import OGCServer  # pylint: disable=import-outside-toplevel
 
     errors = set()
     servers = dict()
@@ -231,8 +232,6 @@ class C2CPregenerator:  # pragma: no cover
         query = kw.get("_query", {})
 
         if self.version:
-            from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
-
             query["cache_version"] = get_cache_version()
 
         if self.role and request.user:
@@ -258,7 +257,7 @@ def _get_intranet_networks(request):
 
 @CACHE_REGION.cache_on_arguments()
 def get_role_id(name):
-    from c2cgeoportal_commons.models import DBSession, main
+    from c2cgeoportal_commons.models import DBSession, main  # pylint: disable=import-outside-toplevel
 
     return DBSession.query(main.Role.id).filter(main.Role.name == name).one()[0]
 

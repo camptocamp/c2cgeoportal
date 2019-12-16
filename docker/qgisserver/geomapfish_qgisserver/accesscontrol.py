@@ -20,13 +20,14 @@ import traceback
 from c2c.template.config import config
 import c2cwsgiutils.broadcast
 import geoalchemy2
-from qgis.core import QgsDataSourceUri, QgsLayerTreeGroup, QgsLayerTreeLayer, QgsMessageLog, QgsProject
-from qgis.server import QgsAccessControlFilter
 from shapely import ops
 import sqlalchemy
 from sqlalchemy.orm import configure_mappers, scoped_session, sessionmaker
 import yaml
 import zope.event.classhandler
+
+from qgis.core import QgsDataSourceUri, QgsLayerTreeGroup, QgsLayerTreeLayer, QgsMessageLog, QgsProject
+from qgis.server import QgsAccessControlFilter
 
 
 class GMFException(Exception):

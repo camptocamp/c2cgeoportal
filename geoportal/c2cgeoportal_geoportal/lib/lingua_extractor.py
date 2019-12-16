@@ -47,6 +47,7 @@ from mako.template import Template
 from owslib.wms import WebMapService
 from pyramid.paster import bootstrap
 import requests
+import sqlalchemy
 from sqlalchemy.exc import NoSuchTableError, OperationalError, ProgrammingError
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm.properties import ColumnProperty
@@ -58,6 +59,7 @@ from c2cgeoportal_geoportal import init_dbsessions
 from c2cgeoportal_geoportal.lib import add_url_params, get_url2
 from c2cgeoportal_geoportal.lib.bashcolor import RED, colorize
 from c2cgeoportal_geoportal.lib.caching import init_region
+from c2cgeoportal_geoportal.views.layers import Layers, get_layer_class
 
 
 class _Registry:  # pragma: no cover
@@ -68,11 +70,10 @@ class _Registry:  # pragma: no cover
 
 
 class _Request:  # pragma: no cover
-    registry = None  # type: _Registry
-    params = {}  # type: Dict[str, str]
-    matchdict = {}  # type: Dict[str, str]
-    GET = {}  # type: Dict[str, str]
-    user_agent = ""  # type: str
+    registry: _Registry = None
+    params: Dict[str, str] = {}
+    matchdict: Dict[str, str] = {}
+    GET: Dict[str, str] = {}
 
     def __init__(self, settings=None):
         self.registry = _Registry(settings)
@@ -245,11 +246,10 @@ class GeomapfishConfigExtractor(Extractor):  # pragma: no cover
         config_ = C()
         config_.registry.settings = settings
         init_dbsessions(settings, config_)
-        from c2cgeoportal_commons.models import DBSessions
-        from c2cgeoportal_commons.models.main import Metadata
+        from c2cgeoportal_commons.models import DBSessions  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models.main import Metadata  # pylint: disable=import-outside-toplevel
 
         c2cgeoportal_geoportal.init_dbsessions(settings, config_)
-        from c2cgeoportal_geoportal.views.layers import Layers
 
         enums = []
         enum_layers = settings.get("layers", {}).get("enum", {})
@@ -273,8 +273,6 @@ class GeomapfishConfigExtractor(Extractor):  # pragma: no cover
         names = [e["name"] for e in defs if e.get("translate", False)]
 
         if names:
-            import sqlalchemy
-
             engine = sqlalchemy.create_engine(config["sqlalchemy.url"])
             Session = sqlalchemy.orm.session.sessionmaker()  # noqa
             Session.configure(bind=engine)
@@ -338,8 +336,8 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
 
     # Run on the development.ini file
     extensions = [".ini"]
-    featuretype_cache = {}  # type: Dict[str, Dict]
-    wmscap_cache = {}  # type: Dict[str, WebMapService]
+    featuretype_cache: Dict[str, Dict] = {}
+    wmscap_cache: Dict[str, WebMapService] = {}
 
     def __init__(self) -> None:
         super().__init__()
@@ -358,8 +356,8 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
             self.env = bootstrap(filename, options=os.environ)
 
             try:
-                from c2cgeoportal_commons.models import DBSession
-                from c2cgeoportal_commons.models.main import (
+                from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
+                from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
                     Theme,
                     LayerGroup,
                     LayerWMS,
@@ -438,7 +436,7 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
 
     @staticmethod
     def _import(object_type, messages, callback=None):
-        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
 
         items = DBSession.query(object_type)
         for item in items:
@@ -466,8 +464,6 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
             self._import_layer_attributes(url, wms_layer, layer.item_type, layer.name, messages)
         if layer.geo_table is not None and layer.geo_table != "":
             try:
-                from c2cgeoportal_geoportal.views.layers import get_layer_class
-
                 cls = get_layer_class(layer, with_last_update_columns=True)
                 for column_property in class_mapper(cls).iterate_properties:
                     if isinstance(column_property, ColumnProperty) and len(column_property.columns) == 1:
@@ -504,8 +500,8 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
                     raise
 
     def _import_layer_wmts(self, layer, messages):
-        from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import OGCServer
+        from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models.main import OGCServer  # pylint: disable=import-outside-toplevel
 
         layers = [d.value for d in layer.metadatas if d.name == "queryLayers"]
         if not layers:

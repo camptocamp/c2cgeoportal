@@ -56,7 +56,6 @@ from sqlalchemy.orm.util import class_mapper
 from sqlalchemy.sql import and_, or_
 
 from c2cgeoportal_commons import models
-from c2cgeoportal_commons.models.main import Layer, RestrictionArea, Role
 from c2cgeoportal_geoportal.lib import get_roles_id
 from c2cgeoportal_geoportal.lib.caching import (
     NO_CACHE,
@@ -100,6 +99,8 @@ class Layers:
     @staticmethod
     def _get_layer(layer_id):
         """ Return a ``Layer`` object for ``layer_id``. """
+        from c2cgeoportal_commons.models.main import Layer  # pylint: disable=import-outside-toplevel
+
         layer_id = int(layer_id)
         try:
             query = models.DBSession.query(Layer, Layer.geo_table)
@@ -146,6 +147,12 @@ class Layers:
 
     def _proto_read(self, layer):
         """ Read features for the layer based on the self.request. """
+        from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+            Layer,
+            RestrictionArea,
+            Role,
+        )
+
         proto = self._get_protocol_for_layer(layer)
         if layer.public:
             return proto.read(self.request)
@@ -190,6 +197,12 @@ class Layers:
 
     @view_config(route_name="layers_read_one", renderer="geojson")
     def read_one(self):
+        from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+            Layer,
+            RestrictionArea,
+            Role,
+        )
+
         set_common_headers(self.request, "layers", NO_CACHE)
 
         layer = self._get_layer_for_request()
@@ -230,6 +243,12 @@ class Layers:
 
     @view_config(route_name="layers_create", renderer="geojson")
     def create(self):
+        from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+            Layer,
+            RestrictionArea,
+            Role,
+        )
+
         set_common_headers(self.request, "layers", NO_CACHE)
 
         if self.request.user is None:
@@ -266,9 +285,9 @@ class Layers:
         try:
             features = protocol.create(self.request)
             if isinstance(features, HTTPException):
-                raise features
+                raise features  # pylint: disable=raising-bad-type
             if features is not None:
-                for feature in features.features:
+                for feature in features.features:  # pylint: disable=no-member
                     self._log_last_update(layer, feature)
             return features
         except TopologicalError as e:
@@ -281,6 +300,12 @@ class Layers:
 
     @view_config(route_name="layers_update", renderer="geojson")
     def update(self):
+        from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+            Layer,
+            RestrictionArea,
+            Role,
+        )
+
         set_common_headers(self.request, "layers", NO_CACHE)
 
         if self.request.user is None:
@@ -370,6 +395,12 @@ class Layers:
 
     @view_config(route_name="layers_delete")
     def delete(self):
+        from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+            Layer,
+            RestrictionArea,
+            Role,
+        )
+
         if self.request.user is None:
             raise HTTPForbidden()
 
