@@ -74,6 +74,14 @@ If you generate the tiles locally, you do not need all the configuration variabl
 in the ``generation`` part are for AWS generation.
 
 
+.. note::
+
+   Points to check with TileCloud chain::
+
+   * Disabling metatiles should be avoided.
+   * Make sure that ``empty_metatile_detection`` and ``empty_tile_detection`` are configured correctly.
+   * Make sure to not generate tiles with a resolution higher than the one in the raster sources.
+
 Tile Generation and management
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

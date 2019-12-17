@@ -17,6 +17,11 @@ Changes to apply
 1. The configuration vars `vars/functionalities/anonymous` and `vars/functionalities/registered` should
    be moved to the new roles `anonymous` and `registered` that will exist after the upgrade of the database.
 
+2. The 'INSTANCE' configuration variable is removed, it should be in the '.env' files, and also the
+   environment makefiles, these contents should also be moved to the '.env' files. In a multi-instance
+   project you can have a chain of multiple '.env' files => e.-g.
+   `./build env.sample env.dev env.myinstance`.
+
 
 Version 2.4.2
 =============

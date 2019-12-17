@@ -148,3 +148,6 @@ upgrade_files:
       - front_dev
       - bin/entrypoint
       - bin/eval-templates
+  - action: move
+    from: .env.sample
+    to: env.sample
