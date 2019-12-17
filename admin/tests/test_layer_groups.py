@@ -72,7 +72,6 @@ class TestLayersGroups(TestTreeGroup):
             ("actions", "", "false"),
             ("id", "id", "true"),
             ("name", "Name"),
-            ("metadata_url", "Metadata URL"),
             ("description", "Description"),
             ("is_expanded", "Expanded"),
             ("parents_relation", "Parents", "false"),
@@ -107,7 +106,6 @@ class TestLayersGroups(TestTreeGroup):
         assert str(group.id) == self.get_first_field_named(form, "id").value
         assert "hidden" == self.get_first_field_named(form, "id").attrs["type"]
         assert group.name == self.get_first_field_named(form, "name").value
-        assert str(group.metadata_url or "") == form["metadata_url"].value
         assert str(group.description or "") == self.get_first_field_named(form, "description").value
         assert group.is_expanded is False
         assert group.is_expanded == form["is_expanded"].checked
@@ -126,7 +124,6 @@ class TestLayersGroups(TestTreeGroup):
 
         new_values = {
             "name": "new_name",
-            "metadata_url": "https://new_metadata_url",
             "description": "new description",
             "is_expanded": True,
         }
@@ -177,7 +174,6 @@ class TestLayersGroups(TestTreeGroup):
                 ("_charset_", "UTF-8"),
                 ("__formid__", "deform"),
                 ("name", "new_with_children"),
-                ("metadata_url", ""),
                 ("description", ""),
                 ("id", ""),
                 ("__start__", "children_relation:sequence"),
@@ -252,7 +248,6 @@ class TestLayersGroups(TestTreeGroup):
 
         assert "" == self.get_first_field_named(form, "id").value
         assert group.name == self.get_first_field_named(form, "name").value
-        assert str(group.metadata_url or "") == form["metadata_url"].value
         assert str(group.description or "") == self.get_first_field_named(form, "description").value
         assert group.is_expanded is False
         assert group.is_expanded == form["is_expanded"].checked

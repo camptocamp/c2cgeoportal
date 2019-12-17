@@ -194,9 +194,6 @@ class TreeItem(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(Unicode, nullable=False, info={"colanderalchemy": {"title": _("Name")}})
-    metadata_url = Column(
-        Unicode, info={"colanderalchemy": {"title": _("Metadata URL")}}
-    )  # should not be used in V2
     description = Column(Unicode, info={"colanderalchemy": {"title": _("Description")}})
 
     @property
