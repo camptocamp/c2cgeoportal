@@ -37,6 +37,9 @@
   <div class="section" id="application-debugging">
 <span id="developer-debugging"></span><h1>Application debugging<a class="headerlink" href="#application-debugging" title="Permalink to this headline">¶</a></h1>
 <p>The goal of this document is to give some troubleshooting tips.</p>
+<p>First, you should copy the file <code class="docutils literal notranslate"><span class="pre">docker-compose.override.sample.yaml</span></code> to
+<code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code>, and update the composition <code class="docutils literal notranslate"><span class="pre">docker-compose</span> <span class="pre">up</span> <span class="pre">-d</span></code>.</p>
+<p>Then access the application on <a class="reference external" href="https://localhost:8484/">https://localhost:8484/</a>.</p>
 <div class="section" id="browser">
 <h2>Browser<a class="headerlink" href="#browser" title="Permalink to this headline">¶</a></h2>
 <p>You can use the browser-integrated debugging tool, usually available with the <code class="docutils literal notranslate"><span class="pre">F12</span></code> key.</p>
@@ -44,35 +47,31 @@
 <div class="section" id="sources-map">
 <h2>Sources map<a class="headerlink" href="#sources-map" title="Permalink to this headline">¶</a></h2>
 <p>For debugging purposes, it is better to have all the JavaScript and Style Sheets in separated, non-minified
-files. To achieve this, you can use the sources maps, a function activable in the browsers debugging
-tool.</p>
+files. To achieve this, you can use the sources maps, a function activable in the browser’s debugging tool.</p>
 </div>
 <div class="section" id="webpack">
 <h2>Webpack<a class="headerlink" href="#webpack" title="Permalink to this headline">¶</a></h2>
 <p>To have faster builds, you need to use the Webpack dev server; you can achieve this as follows.</p>
 <p>In the file <code class="docutils literal notranslate"><span class="pre">geoportal/demo_geoportal/static-ngeo/js/apps/&lt;interface&gt;.html.ejs</span></code>,
 remove the <code class="docutils literal notranslate"><span class="pre">ng-strict-di</span></code> in the <code class="docutils literal notranslate"><span class="pre">html</span></code> tag.</p>
-<p>If it is not already done, copy the file <code class="docutils literal notranslate"><span class="pre">docker-compose.override.sample.yaml</span></code> to
-<code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code>.
-Be sure that the service <code class="docutils literal notranslate"><span class="pre">webpack_dev_server</span></code> is present and uncommented.</p>
+<p>Be sure that the service <code class="docutils literal notranslate"><span class="pre">webpack_dev_server</span></code> is present and uncommented in the
+<code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code> file.</p>
 <p>Restart your application as usual.</p>
 <p>Open the application at the following URL: <code class="docutils literal notranslate"><span class="pre">https://localhost:8484/dev/&lt;interface&gt;.html</span></code>.</p>
 </div>
 <div class="section" id="pyramid-debugtoolbar">
 <h2>Pyramid debugtoolbar<a class="headerlink" href="#pyramid-debugtoolbar" title="Permalink to this headline">¶</a></h2>
-<p>If it is not already done, copy the file <code class="docutils literal notranslate"><span class="pre">docker-compose.override.sample.yaml</span></code> to
-<code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code>.</p>
-<p>Then the error is directly shown in the query that fails.</p>
-<p>You can also open the debugtoolbar at <a class="reference external" href="https://localhost:8484/_debug_toolbar/">https://localhost:8484/_debug_toolbar/</a></p>
+<p>With the default <code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code>, the debug toolbar should appear.</p>
+<p>Then the error is directly shown in the request that fails.</p>
+<p>You can also open the debug toolbar at <a class="reference external" href="https://localhost:8484/_debug_toolbar/">https://localhost:8484/_debug_toolbar/</a></p>
 </div>
 <div class="section" id="authentication">
 <h2>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h2>
 <p>For better security, the session cookie is accessible only via http protocol (meaning, not in JavaScript),
 and is secure (meaning, the cookie is transmitted only in https requests, not in http requests).
 For this reason, you should have your application running on https also in your development environment.</p>
-<p>To achieve that, if it is not already done, copy the file <code class="docutils literal notranslate"><span class="pre">docker-compose.override.sample.yaml</span></code>
-to <code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code>.</p>
-<p>Then access the application on <a class="reference external" href="https://localhost:8484/">https://localhost:8484/</a>.</p>
+<p>With the default configuration in the file <code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code>, your application will be
+available in <code class="docutils literal notranslate"><span class="pre">https</span></code>, and the authentication will work.</p>
 </div>
 <div class="section" id="mapserver">
 <h2>Mapserver<a class="headerlink" href="#mapserver" title="Permalink to this headline">¶</a></h2>
@@ -92,7 +91,7 @@ of the MapServer container <code class="docutils literal notranslate"><span clas
 <div class="section" id="logs">
 <h3>Logs<a class="headerlink" href="#logs" title="Permalink to this headline">¶</a></h3>
 <p>With the following command, you can access the logs:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose logs <span class="o">[</span>&lt;service_name&gt;<span class="o">]</span></span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose logs -f --tail<span class="o">=</span><span class="m">20</span> <span class="o">[</span>&lt;service_name&gt;<span class="o">]</span></span>
 </pre></div></div><p>To have the access log on gunicorn you should add the option <code class="docutils literal notranslate"><span class="pre">--access-logfile=-</span></code> in the gunicorn
 arguments (<code class="docutils literal notranslate"><span class="pre">GUNICORN_PARAMS</span></code> environement variable).</p>
 </div>
@@ -105,8 +104,13 @@ arguments (<code class="docutils literal notranslate"><span class="pre">GUNICORN
 <h3>Multiple dev on one server<a class="headerlink" href="#multiple-dev-on-one-server" title="Permalink to this headline">¶</a></h3>
 <p>When you want to run multiple instances on the same server, you should:</p>
 <ul class="simple">
-<li><p>Use a different docker tag for each instance</p></li>
-<li><p>Use a different project name for each instance</p></li>
+<li><p>Use a different docker tag for each instance (<code class="docutils literal notranslate"><span class="pre">DOCKER_TAG</span></code> in the file <code class="docutils literal notranslate"><span class="pre">.env</span></code> files,
+used on the build and on the run)</p></li>
+<li><p>Use a different project name for each instance (<code class="docutils literal notranslate"><span class="pre">COMPOSE_PROJECT_NAME</span></code> in the
+<code class="docutils literal notranslate"><span class="pre">.env</span></code> or option <code class="docutils literal notranslate"><span class="pre">-p</span></code> of <code class="docutils literal notranslate"><span class="pre">docker-compose</span></code>)</p></li>
+<li><p>Use a different port for each instance (<code class="docutils literal notranslate"><span class="pre">DOCKER_PORT</span></code> in the <code class="docutils literal notranslate"><span class="pre">.env</span></code>)</p></li>
+<li><p>If you want to serve your instances through the same Apache server, each instance must have
+different entry points. (<code class="docutils literal notranslate"><span class="pre">VISIBLE_ENTRY_POINT</span></code> in the <code class="docutils literal notranslate"><span class="pre">.env</span></code>)</p></li>
 </ul>
 </div>
 </div>
@@ -114,15 +118,10 @@ arguments (<code class="docutils literal notranslate"><span class="pre">GUNICORN
 <h2>Developing in Python<a class="headerlink" href="#developing-in-python" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="create-a-development-docker-compose-override-yaml">
 <h3>Create a development docker-compose.override.yaml<a class="headerlink" href="#create-a-development-docker-compose-override-yaml" title="Permalink to this headline">¶</a></h3>
-<p>If it is not already done, copy the file <code class="docutils literal notranslate"><span class="pre">docker-compose.override.sample.yaml</span></code> to
-<code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code>.</p>
-<p>Be sure that the volume for the project is not commented.</p>
-<p>You can also do a graceful restart of the running webserver (gunicorn in this case):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal bash</span>
-<span class="prompt1"><span class="nb">kill</span> -s HUP <span class="sb">`</span>ps aux<span class="p">|</span>grep gunicorn<span class="p">|</span>head --lines<span class="o">=</span><span class="m">1</span><span class="p">|</span>awk <span class="s1">&#39;{print $2}&#39;</span><span class="sb">`</span>  <span class="c1"># graceful</span></span>
-</pre></div></div><p>And finally, if you restart the container, you will see your modifications:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose restart geoportal</span>
-</pre></div></div></div>
+<p>Be sure that the volume for the project is not commented out in <code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code>.</p>
+<p>With the <code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code> configuration, <code class="docutils literal notranslate"><span class="pre">gunicorn</span></code> will automatically restart
+on code modification.</p>
+</div>
 <div class="section" id="working-on-c2cgeoportal-itself">
 <h3>Working on c2cgeoportal itself<a class="headerlink" href="#working-on-c2cgeoportal-itself" title="Permalink to this headline">¶</a></h3>
 <p>Clone and build c2cgeoportal, see <a class="reference internal" href="server_side.html#developer-server-side"><span class="std std-ref">Server-side development</span></a>.</p>
@@ -212,21 +211,6 @@ Be sure that the volumes for c2cgeoportal are uncommented.</p>
    <span class="p">}</span>
  <span class="p">}</span>
 </pre></div>
-</div>
-</div>
-<div class="section" id="performance-or-network-error">
-<h2>Performance or network error<a class="headerlink" href="#performance-or-network-error" title="Permalink to this headline">¶</a></h2>
-<p>For performance and proxy issues, make sure that all internal URLs in the config file
-use localhost (use <code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">&quot;http://localhost/&lt;path&gt;&quot;</span> <span class="pre">--header</span> <span class="pre">Host:&lt;server_name&gt;</span></code>
-to test it).</p>
-<div class="section" id="tilecloud-chain">
-<h3>TileCloud chain<a class="headerlink" href="#tilecloud-chain" title="Permalink to this headline">¶</a></h3>
-<p>Points to check with TileCloud chain:</p>
-<ul class="simple">
-<li><p>Disabling metatiles should be avoided.</p></li>
-<li><p>Make sure that <code class="docutils literal notranslate"><span class="pre">empty_metatile_detection</span></code> and <code class="docutils literal notranslate"><span class="pre">empty_tile_detection</span></code> are configured correctly.</p></li>
-<li><p>Make sure to not generate tiles with a resolution higher than the one in the raster sources.</p></li>
-</ul>
 </div>
 </div>
 </div>

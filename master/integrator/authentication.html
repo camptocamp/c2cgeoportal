@@ -41,7 +41,7 @@ policy (<code class="docutils literal notranslate"><span class="pre">AuthTktAuth
 obtained from the “auth ticket” cookie set in the request.
 The policy is created, and added to the application’s configuration, in the
 application’s main <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> file.</p>
-<p>In the file <code class="docutils literal notranslate"><span class="pre">.env.sample</span></code>, you can configure the policy with the following variables:</p>
+<p>In the file <code class="docutils literal notranslate"><span class="pre">env.sample</span></code>, you can configure the policy with the following variables:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AUTHTKT_TIMEOUT</span>  <span class="c1"># Default to one day.</span>
 <span class="n">AUTHTKT_REISSUE_TIME</span>  <span class="c1"># Default to 2h30, recommended to be 10 times smaller than AUTHTKT_TIMEOUT.</span>
 <span class="n">AUTHTKT_MAXAGE</span>  <span class="c1"># Default to one day, good to have the same value as AUTHTKT_TIMEOUT.</span>
@@ -72,7 +72,7 @@ Our knowledge base has an example of how this can be achieved.</p>
 <div class="section" id="basic-auth">
 <h2>Basic auth<a class="headerlink" href="#basic-auth" title="Permalink to this headline">¶</a></h2>
 <p>To be able to access the OGC services from your desktop GIS, you should enable the basic authentication
-by setting <code class="docutils literal notranslate"><span class="pre">BASICAUTH</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code> in the <code class="docutils literal notranslate"><span class="pre">.env.sample</span></code> file.</p>
+by setting <code class="docutils literal notranslate"><span class="pre">BASICAUTH</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code> in the <code class="docutils literal notranslate"><span class="pre">env.sample</span></code> file.</p>
 <p>To force the application to ask for a password, you should have the attribute <code class="docutils literal notranslate"><span class="pre">authentication_required</span></code>
 in your query string.</p>
 <div class="admonition note">

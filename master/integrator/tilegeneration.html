@@ -93,6 +93,15 @@ Then copy-paste the result in the layer config.</p>
 </ul>
 <p>If you generate the tiles locally, you do not need all the configuration variables, because many of them
 in the <code class="docutils literal notranslate"><span class="pre">generation</span></code> part are for AWS generation.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Points to check with TileCloud chain:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>* Disabling metatiles should be avoided.
+* Make sure that ``empty_metatile_detection`` and ``empty_tile_detection`` are configured correctly.
+* Make sure to not generate tiles with a resolution higher than the one in the raster sources.
+</pre></div>
+</div>
+</div>
 </div>
 <div class="section" id="tile-generation-and-management">
 <h3>Tile Generation and management<a class="headerlink" href="#tile-generation-and-management" title="Permalink to this headline">¶</a></h3>
