@@ -40,17 +40,6 @@
 (a.k.a. templates and scaffolds). These scaffolds are provided by the
 <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> package. So to be able to create a c2cgeoportal application
 the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> package must be installed.</p>
-<p>If you already have a c2cgeoportal application installed, and if that
-application uses a version of c2cgeoportal that fits you, then you do not need
-to install c2cgeoportal again. Instead, you can use the version of c2cgeoportal
-that is already alongside the existing c2cgeoportal application.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Some c2cgeoportal applications provide their own scaffolds. For example
-in a multi-project, a <em>parent</em> application may provide a scaffold for creating <em>child</em>
-applications. In that case, the c2cgeoportal scaffolds, as well as the
-application scaffolds, should be applied.</p>
-</div>
 <div class="section" id="project-structure">
 <h2>Project structure<a class="headerlink" href="#project-structure" title="Permalink to this headline">¶</a></h2>
 <p>In the simple case, the root directory of the application is the directory
@@ -86,8 +75,6 @@ c2cgeoportal application you want to create the new application from:</p>
 <p>The first step in the project creation is to choose a project name
 <code class="docutils literal notranslate"><span class="pre">&lt;project&gt;</span></code>, and a package name <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;</span></code>.</p>
 <p>Normally the project name should be the same name as the Git repository name.</p>
-<p>The package name should not contain an underscore (<code class="docutils literal notranslate"><span class="pre">_</span></code>) because of an
-issue with Pip.</p>
 <p>To create the application, first apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_create</span></code> scaffold:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm -ti --volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src <span class="se">\</span>
     camptocamp/geomapfish-tools:&lt;release<span class="p">|</span>version&gt; <span class="se">\</span>
@@ -121,8 +108,7 @@ creating this application from.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm -ti --volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src <span class="se">\</span>
     camptocamp/geomapfish-tools:&lt;release<span class="p">|</span>version&gt; <span class="se">\</span>
     run <span class="k">$(</span>id -u<span class="k">)</span> <span class="k">$(</span>id -g<span class="k">)</span> /src <span class="se">\</span>
-    pcreate -s c2cgeoportal_update <span class="se">\</span>
-    --package-name &lt;package&gt; &lt;project&gt;</span>
+    pcreate -s c2cgeoportal_update &lt;project&gt;</span>
 </pre></div></div><div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Do not add any ‘/’ after the project name.</p>
@@ -136,16 +122,15 @@ Following this rule is important for easier updates.</p>
 </pre></div></div></div>
 <div class="section" id="put-the-application-under-revision-control">
 <h2>Put the application under revision control<a class="headerlink" href="#put-the-application-under-revision-control" title="Permalink to this headline">¶</a></h2>
-<p>Now is a good time to put the application source code under revision
-control (Git, preferably).</p>
+<p>Now is a good time to put the application source code under revision control.</p>
 <div class="section" id="to-add-a-project-in-a-new-repository">
 <h3>To add a project in a new repository<a class="headerlink" href="#to-add-a-project-in-a-new-repository" title="Permalink to this headline">¶</a></h3>
 <p>Add the project:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git init</span>
-<span class="prompt1">git add .</span>
 <span class="prompt1">git remote add origin git@github.com:camptocamp/&lt;project&gt;.git</span>
 </pre></div></div><p>Commit and push on the main repository:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git commit -m <span class="s2">&quot;Initial commit&quot;</span></span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git add .</span>
+<span class="prompt1">git commit -m <span class="s2">&quot;Initial commit&quot;</span></span>
 <span class="prompt1">git push origin master</span>
 </pre></div></div></div>
 </div>
@@ -153,30 +138,9 @@ control (Git, preferably).</p>
 <h2>Configuration of different environments in your project<a class="headerlink" href="#configuration-of-different-environments-in-your-project" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="concepts">
 <h3>Concepts<a class="headerlink" href="#concepts" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><p>Makefile: These files are environment configuration files. Each environment will
-have its configuration file (developer, preprod, prod)</p></li>
-<li><p>vars_xxx.yaml: These files are application configuration files. Generally only
-one file is needed to configure your application.</p></li>
-</ul>
-</div>
-<div class="section" id="hierarchy-and-extending-your-configuration-files">
-<h3>Hierarchy and extending your configuration files<a class="headerlink" href="#hierarchy-and-extending-your-configuration-files" title="Permalink to this headline">¶</a></h3>
-<p>The configuration files (Makefile and vars) are organized in a hierarchy.
-A Makefile extends another Makefile and similarly a vars file extends another vars file.
-This extension mechanism is used in Makefile files as follows:</p>
-<div class="highlight-make notranslate"><div class="highlight"><pre><span></span><span class="cp">include CONST_Makefile</span>
-</pre></div>
-</div>
-<p>and in vars files as follows:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">extends</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">CONST_vars.yaml</span>
-</pre></div>
-</div>
-<p><code class="docutils literal notranslate"><span class="pre">CONST</span></code> files are files that should not be changed, because they are replaced
-during application updates, so your changes will be systematically lost. You can
-extend these files as many times as you like, although it is not recommended to
-exceed 3-4 levels for readability and simplicity.</p>
-<img alt="../_images/doc_hierarchie.png" src="../_images/doc_hierarchie.png" />
+<p>Application instances for different environments or for personal development should be configured through
+environment variables that are defined in the <code class="docutils literal notranslate"><span class="pre">env</span></code> files (default file: <code class="docutils literal notranslate"><span class="pre">env.sample</span></code>). Each environment
+can have its own <code class="docutils literal notranslate"><span class="pre">env</span></code> file (for example, development, integration, production).</p>
 <p>Whenever possible, it is strongly advised not to extend the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file.
 We recommend instead that you use dynamic variables as described below.
 However, in some use cases extending <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> may be needed:</p>
@@ -189,67 +153,40 @@ However, in some use cases extending <code class="docutils literal notranslate">
 <h3>Use of dynamic variables<a class="headerlink" href="#use-of-dynamic-variables" title="Permalink to this headline">¶</a></h3>
 <p>Variables used in the application configuration files (files <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code>)
 can be made dynamic by means of environment variable. For this, in the main file
-<code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code>, add a block <code class="docutils literal notranslate"><span class="pre">interpreted</span></code> at the bottom of the file.</p>
+<code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code>, add a block <code class="docutils literal notranslate"><span class="pre">runtime_environment</span></code> at the bottom of the file.</p>
 <p>In this same file, you can change the value of a parameter by putting it in
-uppercase (example: <code class="docutils literal notranslate"><span class="pre">host:</span> <span class="pre">HOST</span></code>). This parameter must be listed in the
+uppercase (example: <code class="docutils literal notranslate"><span class="pre">host:</span> <span class="pre">'{HOST}'</span></code>). This parameter must be listed in the
 interpreted parameters section:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">extends</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">CONST_vars.yaml</span>
 
 <span class="nt">vars</span><span class="p">:</span>
-    <span class="nt">host</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">HOST</span>
+    <span class="nt">host</span><span class="p">:</span> <span class="s">&#39;{HOST}&#39;</span>
 <span class="nn">...</span>
-<span class="nt">interpreted</span><span class="p">:</span>
-    <span class="nt">environment</span><span class="p">:</span>
-        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">log_level</span>
-        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">host</span>
+<span class="nt">runtime_environment</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">HOST</span>
 </pre></div>
 </div>
-<p>In the <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> file, add parameters you want to change as exported variables:</p>
-<div class="highlight-make notranslate"><div class="highlight"><pre><span></span><span class="k">export </span><span class="nv">HOST</span> <span class="o">=</span> domaine.different.com
-<span class="k">export</span> <span class="nv">LOG_LEVEL</span>
+<p>In the <code class="docutils literal notranslate"><span class="pre">env.sample</span></code> file, add parameters you want to change as exported variables:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HOST</span><span class="o">=</span><span class="n">domaine</span><span class="o">.</span><span class="n">different</span><span class="o">.</span><span class="n">com</span>
 </pre></div>
 </div>
-<p>In the Makefiles that extend this main file, you only need to define the
-environment variables:</p>
-<div class="highlight-make notranslate"><div class="highlight"><pre><span></span><span class="k">export </span><span class="nv">HOST</span> <span class="o">=</span> prod.different.com
+<p>In the <code class="docutils literal notranslate"><span class="pre">env</span></code> file that extends this main file, you only need to define the environment variables:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HOST</span><span class="o">=</span><span class="n">prod</span><span class="o">.</span><span class="n">different</span><span class="o">.</span><span class="n">com</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="section" id="configure-the-application">
 <h2>Configure the application<a class="headerlink" href="#configure-the-application" title="Permalink to this headline">¶</a></h2>
-<p>As the integrator, you need to edit the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> and <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> files to configure the application.</p>
+<p>As the integrator, you need to edit the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> and <code class="docutils literal notranslate"><span class="pre">env.sample</span></code> files to configure the application.</p>
 <p>Do not forget to add your changes to git:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git add vars.yaml</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git add vars.yaml env.sample</span>
 <span class="prompt1">git commit -m <span class="s2">&quot;Configure the project&quot;</span></span>
 <span class="prompt1">git push origin master</span>
 </pre></div></div><div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>If you are using a multi-project, you should add all new children to
 the parent site check_collector configuration.</p>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Additional notes for Windows users:</p>
-<p>To have a working PNG print you should get and edit the file
-<code class="docutils literal notranslate"><span class="pre">print/WEB-INF/classes/imagemagick-mapfish-spring-application-context-override.xml</span></code>,
-get it:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">wget https://raw.github.com/mapfish/mapfish-print/master/sample-spring/imagemagick/WEB-INF/classes/imagemagick-mapfish-spring-application-context-override.xml</span>
-<span class="prompt1">mv imagemagick-mapfish-spring-application-context-override.xml print/WEB-INF/classes/</span>
-<span class="prompt1">git add print/WEB-INF/classes/imagemagick-mapfish-spring-application-context-override.xml</span>
-</pre></div></div><p>and replace the lines:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;!-- &lt;property name=&quot;cmd&quot;&gt;
-    &lt;value&gt;C:\Program Files\ImageMagick-6.7.8-Q16\convert&lt;/value&gt;
-&lt;/property&gt; --&gt;
-</pre></div>
-</div>
-<p>by those ones:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="nb">property</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;cmd&quot;</span><span class="o">&gt;</span>
-    <span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span><span class="n">C</span><span class="p">:</span>\<span class="n">Program</span> <span class="n">Files</span>\<span class="n">ImageMagick</span><span class="o">-</span><span class="mf">6.7</span><span class="o">.</span><span class="mi">8</span><span class="o">-</span><span class="n">Q16</span>\<span class="n">convert</span><span class="o">&lt;/</span><span class="n">value</span><span class="o">&gt;</span>
-<span class="o">&lt;/</span><span class="nb">property</span><span class="o">&gt;</span>
-</pre></div>
-</div>
-<p>with the right path to <code class="docutils literal notranslate"><span class="pre">convert</span></code>.</p>
 </div>
 <p>After creation and minimal setup the application is ready to be installed.
 Then follow the sections in the install application guide:</p>
@@ -263,12 +200,6 @@ Then follow the sections in the install application guide:</p>
 <p>If you want a default theme, you can run:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal create-demo-theme</span>
 </pre></div></div></div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If you create the main instance you should do the whole
-database creation as described in <a class="reference internal" href="install_application.html#integrator-install-application"><span class="std std-ref">Install an existing application</span></a>,
-except the ‘Get the application source tree’ chapter.</p>
-</div>
 </div>
 <div class="section" id="dynamic-configuration">
 <h2>Dynamic configuration<a class="headerlink" href="#dynamic-configuration" title="Permalink to this headline">¶</a></h2>
