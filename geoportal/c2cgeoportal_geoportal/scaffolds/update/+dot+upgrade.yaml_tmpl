@@ -23,7 +23,7 @@ default_project_file:
     - geoportal/vars\.yaml
     - geoportal/Makefile
     - geoportal/alembic\.yaml
-    - geoportal/demo_geoportal/__init__\.py
+    - geoportal/{{package}}_geoportal/__init__\.py
     - README\.rst
     - \.circleci/config\.yml
     - \.travis\.yml
