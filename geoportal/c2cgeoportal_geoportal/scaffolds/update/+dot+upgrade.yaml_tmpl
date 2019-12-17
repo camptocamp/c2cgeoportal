@@ -151,3 +151,6 @@ upgrade_files:
   - action: move
     from: .env.sample
     to: env.sample
+  - action: remove
+    paths:
+      - cgxp_revision
