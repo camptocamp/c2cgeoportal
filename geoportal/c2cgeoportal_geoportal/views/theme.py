@@ -209,7 +209,7 @@ class Theme:
                     "maxResolutionHint": float("{:0.2f}".format(resolution[1])),
                 }
                 if hasattr(wms_layer, "queryable"):
-                    info["queryable"] = wms_layer.queryable == 1 if hasattr(wms_layer, "queryable") else False
+                    info["queryable"] = wms_layer.queryable == 1
 
                 layers[layer_name] = {
                     "info": info,
