@@ -9,17 +9,32 @@ Contact: info@camptocamp.com
     option) any later version.
 """
 
+import logging
+import sys
+import traceback
 
-from geomapfish_qgisserver.accesscontrol import GMFException
-from qgis.core import QgsMessageLog
+from qgis.core import Qgis, QgsMessageLog
+
+from . import gmf_logging
+
+LOG = logging.getLogger(__name__)
+
+
+try:
+    gmf_logging.init()
+except Exception:
+    print("".join(traceback.format_exception(*sys.exc_info())))
+    QgsMessageLog.logMessage(
+        "".join(traceback.format_exception(*sys.exc_info())), "GeoMapFishAccessControl", level=Qgis.Critical,
+    )
 
 
 def serverClassFactory(serverIface):  # noqa
-    QgsMessageLog.logMessage("Starting GeoMapFish access restriction...")
+    LOG.info("Starting GeoMapFish access restriction...")
 
     try:
-        from geomapfish_qgisserver.accesscontrol import GeoMapFishAccessControl
+        from .accesscontrol import GMFException, GeoMapFishAccessControl
 
         return GeoMapFishAccessControl(serverIface)
-    except GMFException as e:
-        QgsMessageLog.logMessage(str(e))
+    except GMFException:
+        LOG.error("Cannot setup GeoMapFishAccessControl", exc_info=True)
