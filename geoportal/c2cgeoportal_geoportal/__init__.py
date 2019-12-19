@@ -373,7 +373,8 @@ def includeme(config: pyramid.config.Configurator):
             def handle(event: InvalidateCacheEvent):  # pylint: disable=unused-variable
                 del event
                 caching.invalidate_region()
-                caching.get_region("std").delete_multi(caching.MEMORY_CACHE_DICT.keys())
+                if caching.MEMORY_CACHE_DICT:
+                    caching.get_region("std").delete_multi(caching.MEMORY_CACHE_DICT.keys())
                 caching.MEMORY_CACHE_DICT.clear()
 
     # Register a tween to get back the cache buster path.
