@@ -42,7 +42,7 @@ from c2cgeoportal_geoportal import locale_negotiator
 from c2cgeoportal_geoportal.lib.caching import NO_CACHE, get_region, set_common_headers
 
 CACHE_REGION = get_region("std")
-IGNORED_CHARS_RE = re.compile(r"[()&|!:]")
+IGNORED_CHARS_RE = re.compile(r"[()&|!:<>]")
 
 
 class FullTextSearchView:
