@@ -43,6 +43,11 @@ policy (<code class="docutils literal notranslate"><span class="pre">AuthTktAuth
 obtained from the “auth ticket” cookie set in the request.
 The policy is created, and added to the application’s configuration, in the
 application’s main <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> file.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">With the default configuration, for security reasons, the authentication will only work if the project is
+served on <code class="docutils literal notranslate"><span class="pre">https</span></code>.</p>
+</div>
 </div>
 <div class="section" id="using-another-policy">
 <h2>Using another policy<a class="headerlink" href="#using-another-policy" title="Permalink to this headline">¶</a></h2>
