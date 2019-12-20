@@ -1,3 +1,6 @@
+##### 2.4.1.71
+* The character <> are not allowed in a fulltext search request [c2cgeoportal#5635](https://github.com/camptocamp/c2cgeoportal/pull/5635)
+* Add security note on authentication [c2cgeoportal#5636](https://github.com/camptocamp/c2cgeoportal/pull/5636)
 ##### 2.4.1.70
 * Fix print custom scale [ngeo#5371](https://github.com/camptocamp/ngeo/pull/5371)
 ##### 2.4.1.69
