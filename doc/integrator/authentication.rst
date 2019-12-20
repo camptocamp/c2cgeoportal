@@ -10,6 +10,11 @@ obtained from the "auth ticket" cookie set in the request.
 The policy is created, and added to the application's configuration, in the
 application's main ``__init__.py`` file.
 
+.. note::
+
+   With the default configuration, for security reasons, the authentication will only work if the project is
+   served on ``https``.
+
 Using another policy
 ~~~~~~~~~~~~~~~~~~~~
 
