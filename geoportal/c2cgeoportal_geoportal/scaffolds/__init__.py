@@ -162,9 +162,22 @@ def fix_executables(output_dir, patterns, in_const_create_template=False):
                 subprocess.check_call(["chmod", "+x", file_])
 
 
+def _gen_authtkt_secret():
+    if os.environ.get("CI") == "true":
+        return "io7heoDui8xaikie1rushaeGeiph8Bequei6ohchaequob6viejei0xooWeuvohf"
+    return subprocess.check_output(["pwgen", "64"]).decode().strip()
+
+
 class TemplateCreate(BaseTemplate):  # pragma: no cover
     _template_dir = "create"
     summary = "Template used to create a c2cgeoportal project"
+
+    def pre(self, command, output_dir, vars_):
+        """
+        Overrides the base template
+        """
+        super().pre(command, output_dir, vars_)
+        vars_["authtkt_secret"] = _gen_authtkt_secret()
 
     def post(self, command, output_dir, vars_):  # pylint: disable=arguments-differ
         """
@@ -173,7 +186,7 @@ class TemplateCreate(BaseTemplate):  # pragma: no cover
 
         fix_executables(output_dir, ("bin/*", "build", "scripts/publish-docker"))
 
-        return BaseTemplate.post(self, command, output_dir, vars_)
+        super().post(command, output_dir, vars_)
 
 
 class TemplateUpdate(BaseTemplate):  # pragma: no cover
@@ -181,20 +194,28 @@ class TemplateUpdate(BaseTemplate):  # pragma: no cover
     summary = "Template used to update a c2cgeoportal project"
 
     @staticmethod
-    def open_project(vars_):
-        if os.path.exists("project.yaml"):
-            with open("project.yaml", "r") as f:
+    def open_project(output_dir, vars_):
+        project_file = os.path.join(output_dir, "project.yaml")
+        if os.path.exists(project_file):
+            with open(project_file, "r") as f:
                 project = yaml.safe_load(f)
                 if "template_vars" in project:
                     for key, value in list(project["template_vars"].items()):
                         vars_[key] = value
+        else:
+            print("Missing project file: " + project_file)
+            sys.exit(1)
 
     def pre(self, command, output_dir, vars_):
         """
         Overrides the base template
         """
-        self.open_project(vars_)
-        return BaseTemplate.pre(self, command, output_dir, vars_)
+        self.open_project(output_dir, vars_)
+
+        if "authtkt_secret" not in vars_:
+            vars_["authtkt_secret"] = _gen_authtkt_secret()
+
+        super().pre(command, output_dir, vars_)
 
     def post(self, command, output_dir, vars_):  # pylint: disable=arguments-differ
         """
@@ -204,4 +225,4 @@ class TemplateUpdate(BaseTemplate):  # pragma: no cover
 
         fix_executables(output_dir, ("bin/*", "build", "scripts/publish-docker"), True)
 
-        return BaseTemplate.post(self, command, output_dir, vars_)
+        super().post(command, output_dir, vars_)

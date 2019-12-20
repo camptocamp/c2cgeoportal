@@ -9,3 +9,4 @@ template_vars:
   package: {{package}}
   srid: {{srid}}
   extent: {{extent}}
+  authtkt_secret: {{authtkt_secret}}

@@ -37,6 +37,6 @@ else
     fi
 fi
 
-docker run --rm --volume=${PWD}:/src camptocamp/geomapfish-tools:$1 \
+docker run --rm --env=CI --volume=${PWD}:/src camptocamp/geomapfish-tools:$1 \
         run-git "$(git config --get user.name)" $(git config --get user.email) $(id -u) $(id -g) \
         /src c2cupgrade $args

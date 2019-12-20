@@ -256,6 +256,8 @@ class C2cUpgradeTool:
     @Step(2)
     def step2(self, step):
         project_path = os.path.join("/tmp", self.project["project_folder"])
+        os.mkdir(project_path)
+        shutil.copyfile("/src/project.yaml", os.path.join(project_path, "project.yaml"))
         check_call(
             [
                 "pcreate",

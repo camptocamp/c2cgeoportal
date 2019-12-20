@@ -22,9 +22,13 @@ function pcreate {
     then
         pcreate240 $1 $2 $3
     else
-        docker run --rm --env=SRID=21781 --env=EXTENT=489246.36,78873.44,837119.76,296543.14 \
+        if [ $2 == c2cgeoportal_create ]
+        then
+            DOCKER_ENV="--env=CI --env=SRID=21781 --env=EXTENT=489246.36,78873.44,837119.76,296543.14"
+        fi
+        docker run --rm ${DOCKER_ENV} \
             --volume=$1/testgeomapfish:/src/testgeomapfish camptocamp/geomapfish-tools:$3 \
-            run $(id -u) $(id -g) /src pcreate --scaffold=$2 /src/testgeomapfish ${PCREATE_ARGS}
+            run $(id -u) $(id -g) /src pcreate --scaffold=$2 testgeomapfish ${PCREATE_ARGS}
     fi
 }
 
